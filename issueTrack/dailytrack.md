@@ -7,6 +7,7 @@
 
 问题|发现日期/开始跟踪日期|问题简单描述|状态|详细情况跟踪Jira
 --------|--------|--------|--------|--------|--------
+部分任务显示一直在执行中，实际已经执行完成| 2015-06-02|dwd_usr_immessage_200_dump，哨兵job中任务状态为恢复中，job已经提交到client| 跟踪 | http://jira.mogujie.org/browse/BDA-287
 特殊字符'\xF0\x9F\x9A\xB9\xE9\xA1...'进入mysql db时不兼容出错 |2015-06-01|st_site_mobile_searchkey_top10_output任务中又特殊字符导致进入mysql db时出错|跟踪|http://jira.mogujie.org/browse/BDA-278
 调度机制会自动禁用离职人的脚本，导致依赖任务没执行  | 2015-06-01 | combine_im_log_usr_action，dwd_usr_shoplevelmonthdetail_dump，st_im_daily_chat_person等任务有同样问题。| 跟踪  | http://jira.mogujie.org/browse/BDA-273
 dwd_usr_shoplevelmonthdetail_dump任务java.lang.ClassCastException  | 2015-05-30 | 人工填写脚本错误 | fix  | http://jira.mogujie.org/browse/BDA-271
