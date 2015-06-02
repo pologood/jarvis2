@@ -18,8 +18,8 @@
    * 以必要的HA方式运行
 
  * Jarvis Worker
-   * 多个无差别实例
-   * 负责管理和执行具体的作业
+   * 多个无差别实例(指的是运行逻辑上, 实际可以考虑分组以支持定向执行任务等.)
+   * 负责管理具体的任务的执行生命周期
  
  * Jarvis Console
    * 展示作业调度信息, 比如当前运行情况, 历史信息查询等
@@ -54,7 +54,6 @@
 * ScheId : JobId_PlanId
 * TaskId : ScheId_TryID(标识用作区分失败重试)
  
- 
 
 ### 技术要点
 
@@ -78,28 +77,61 @@ Rest API
 
 具体API待明确.
 
-### 技术选型
+### 外部依赖/技术点选择
 
-* 依赖注入: google guice: http://code.google.com/p/google-guice/wiki/GettingStarted
+* 依赖注入: 轻量级的google guice? http://code.google.com/p/google-guice/wiki/GettingStarted
+* DB连接池相关, 阿里Druid?
+* REST接口: javax.ws.rs ?
+* 内部通讯协议: Protobuf
+* 定时触发相关: quartz? java自己的ScheduledFuture? guava项目里的ListenableScheduledFuture? 其它系统用的方案?
+* metrics相关? JMX?
+* 其它开发中可以考虑使用的:  google collection包: 比如MapMaker等.
+* 有没有成熟的Observer模式实现框架?
 
-## 各模块概要
+## 各模块需求和整体逻辑概要
 
 ### Jarvis Master
 
+* 监听Worker注册信息.
+* 接受作业调度请求,更新作业配置信息.
+* 根据作业调度配置信息, 决定任务执行调度计划.
+* 根据Worker负载和类型,配置信息决定具体任务的分发执行.
+* HA流程. 
 
 ### Jarvis Worker
 
-* worker状态的变更, 在worker内部, 可以通过observer模式实现? 这样状态变更是否直接写DB, 是否透过代理写DB, 是否写ZK, 是否汇报给Master, 严重错误是否报警,  是否发监控数据, 都可以通过注册不同的listener来实现. 逻辑互相不影响. 就是listener调用链要做好,不能有一个listener block 其它listener的执行. 不知道这一点有什么好的实现办法没有.  或者比如只是调用listener的put方法, 重要的listener实现的时候用同步处理的方式(比如写DB和通知master), 其它listener使用异步处理的方式(比如通知报警,发邮件,监控统计之类). -> java.util.Observable;
+* 向Master注册自身信息.
+* 和Master保持长连, 做心跳汇报, 报告任务运行统计等信息.
+* 支持业务分组信息, 便于Master做调度依据
+* 任务状态信息写DB更新,同时汇报给Master
+* 负载的流控, 如果本地负载超过阀值, 应该拒绝接收任务.
+* 和Master失去连接以后,主动停止任务,更新DB,改变任务状态等. Master在更长的时间等待后, 更新任务Owner, 重新分配任务等.
+
 
 ### Jarvis Console
 
+* 功能点请整理目前console的功能, 梳理出交互不合理的地方, 整理出功能需求.
 
 ### DB接口
 
+结合数据结构制定.
 
 ### client模块
 
  * 可以考虑提供对REST API的封装.
  * 提供JAVA API
 
-## 其它杂项？
+### 外围模块
+
+不在Jarvis覆盖范围内, 但是写在这里, 明确实现方式, 用来分清楚什么是Jarvis不做的.
+
+ * 作业的父子依赖关系的设置 : 这个是通过如Xray等周边系统来判断和设置到Jarvis里的.
+
+## 插件模块化编程
+
+一些组件需要以可配置的模块化的方式设计加载, 有些是为了提高灵活性, 有些是为了进行隔离解耦便于调整实现, 比如目前没有细想太完美的方案, 做好模块化的工作,不妨碍主流程的开发.
+
+* 调度计划生成模块: 静态生成还是动态生成, 是否便于比较和调试,修改调度策略. 接口需要设计好,和其它部分代码解耦, 便于修改.
+* Worker端, 作业状态更新模块: 便于接入多种方式,接入监控等
+
+
