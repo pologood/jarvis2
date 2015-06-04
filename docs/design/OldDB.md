@@ -8,6 +8,36 @@
 
 字段 | 用途/参数/值等 描述 | 备注: 有没有用, 需要调整, 有什么问题之类 |
 -----|-----|-----|
+id | 自增id |  |
+client_key | 表示client的key | 需要在client的配置文件和数据库中配置，用来做权限校验 |
+client_ip |  client的ip |  |
+client_port | client的端口 |  |
+status | 状态 | 标识是否上线 |
+deleted | 删除标识 |  |
+group_id | group的id | client属于哪个组 |
+
+
+表结构参考:
+<pre/>
+CREATE TABLE `client` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `client_key` varchar(30) DEFAULT NULL,
+  `client_ip` varchar(18) DEFAULT NULL,
+  `client_port` int(6) DEFAULT NULL,
+  `status` int(1) NOT NULL DEFAULT '1',
+  `deleted` int(1) NOT NULL DEFAULT '0',
+  `group_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idx_client_key` (`client_key`),
+  KEY `idx_groupid` (`group_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+</pre>
+
+
+* 执行流水表 sentenel.job_exec
+
+字段 | 用途/参数/值等 描述 | 备注: 有没有用, 需要调整, 有什么问题之类 |
+-----|-----|-----|
 id | 自增id | 有必要? |
 jobid |  |  |
 client id |  smallint(4) 用于标识哨兵client, 关联 | 这个id如何能自动映射? 怎么保证不同client id不需要人工干预自动正确分配? 是否直接用IP+port? 或者其它自动唯一生成的方法来避免手工添加映射问题? 这个谁来写入的? master? client? |
