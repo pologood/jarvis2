@@ -7,6 +7,8 @@
 
 问题|发现日期/开始跟踪日期|问题简单描述|状态|详细情况跟踪Jira
 --------|--------|--------|--------|--------|--------
+hive任务成功后被hang住 | 2015-06-08 | st_trd_complaint_detail任务执行成功了，但是进程没结束，导致任务被提示错误| 跟踪 | http://jira.mogujie.org/browse/BDA-303
+dwd_uni_unidarenschedule_dump失败 | 2015-06-08 | 任务失败，ods_uni_unidarenschedule_20150607表不存在| 跟踪 | http://jira.mogujie.org/browse/BDA-304
 hadoop集群出现峰值负载过高 | 2015-06-05 | 2015.6.5，2:22 ~2:27 hadoop集群出现峰值负载过高情况，观察到是mofa8023这台机器内存和cpu使用率都达到了100%。| 跟踪 | http://jira.mogujie.org/browse/BDA-299
 dwd_trd_punish_cheat_dump任务失败 | 2015-06-05| DB多了一个字段，需要在hive中加上相应的字段 | fix | http://jira.mogujie.org/browse/BDA-298
 output任务丢失数据库连接造成任务失败| 2015-06-03|st_magic_activity_output，2015-06-03 17:26:15,119 - ERROR - output_data error (2013, "Lost connection to MySQL server at 'reading initial communication packet', system error: 111") | 跟踪 | http://jira.mogujie.org/browse/BDA-297
