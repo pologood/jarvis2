@@ -9,7 +9,7 @@
 --------|--------|--------|--------|--------|--------
 st_im_daily_chat_num_output脚本错误 | 2015-06-10 | output_data error st_im_daily_chat_num 2015-06-09 create status file FAIL| fix | @千凡暂时停止任务。
 st_trd_coupon_count临时表重复 | 2015-06-10 | 提示临时表不存在，原因是临时表命名重复| fix | @玄龄
-st_trd_coupon_count_output文件读取失败,再执行后成功|2015-06-10|No lease on /apps/hive/warehouse/etlprd/output/st_trd_coupon_count.20150609.data.gz._COPYING_ (inode 280379051): File does not exist. Holder DFSClient_NONMAPREDUCE_-216610404_1 does not have any open files.|跟踪|@清远
+st_trd_coupon_count_output文件读取失败,再执行后成功|2015-06-10|/apps/hive/warehouse/etlprd/output/st_trd_coupon_count.20150609.data.gz._COPYING_ (inode 280379051): File does not exist.|跟踪|@清远
 dw_trd_shop_kpi_step7代码错误|2015-06-10|字段写错了Invalid column reference 'orderid'|fix|@海贼
 hive任务成功后被hang住 | 2015-06-08 | st_trd_complaint_detail任务执行成功了，但是进程没结束，导致任务被提示错误| 跟踪 | http://jira.mogujie.org/browse/BDA-303
 dwd_uni_unidarenschedule_dump失败 | 2015-06-08 | 任务失败，ods_uni_unidarenschedule_20150607表不存在| 跟踪 | http://jira.mogujie.org/browse/BDA-304
