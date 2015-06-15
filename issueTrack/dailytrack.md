@@ -7,10 +7,11 @@
 
 问题|发现日期/开始跟踪日期|问题简单描述|状态|详细情况跟踪Jira
 --------|--------|--------|--------|--------|--------
-提交到Sentinel失败,原因与gson有关|2015-06-11|6月11日16:00左右，Sentinel出错导致16个任务执行失败.java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 |跟踪|http://jira.mogujie.org/browse/BDA-311
+st_cps_unioncpsadseffect_output,st_cps_unioncpscommodityeffect_delta_output错误|2015-06-15|output_data error (2006, 'MySQL server has gone away')。|跟踪|http://jira.mogujie.org/browse/BDA-314 @南山
+提交到Sentinel失败,原因与gson有关|2015-06-11|6月11日16:00左右，Sentinel出错导致16个任务执行失败.java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 |Fix|http://jira.mogujie.org/browse/BDA-311
 资源管理程序yarn出问题导致任务执行失败|2015-06-12|资源管理程序yarn出问题导致任务执行失|跟踪|http://jira.mogujie.org/browse/BDA-312
 ironMan提交大任务导致资源占用|2015-06-11|ironMan提交大任务导致资源占用,却又通过了maps检查|跟踪|http://jira.mogujie.org/browse/BDA-313
-哨兵Client日志太多磁盘空间不够，导致任务失败 | 2015-06-10 |177磁盘空间不足导致失败，原因是日志文件太大未及时清理 | 跟踪 | @冰山 http://jira.mogujie.org/browse/BDA-309
+哨兵Client日志太多磁盘空间不够，导致任务失败 | 2015-06-10 |177磁盘空间不足导致失败，原因是日志文件太大未及时清理 | Fix | @冰山 http://jira.mogujie.org/browse/BDA-309
 st_im_daily_chat_num_output脚本错误 | 2015-06-10 | output_data error st_im_daily_chat_num 2015-06-09 create status file FAIL| fix | @千凡暂时停止任务。
 st_trd_coupon_count临时表重复 | 2015-06-10 | 提示临时表不存在，原因是临时表命名重复| fix | @玄龄
 st_trd_coupon_count_output文件读取失败,再执行后成功|2015-06-10|/apps/hive/warehouse/etlprd/output/st_trd_coupon_count.20150609.data.gz._COPYING_ (inode 280379051): File does not exist.|跟踪|@清远
