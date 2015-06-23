@@ -7,7 +7,6 @@
 
 问题|发现日期/开始跟踪日期|问题简单描述|状态|详细情况跟踪Jira|后续工作?|
 --------|--------|--------|--------|--------|--------|
-dwd_xd_marketabroadlive_dump中类型转换错误|2015-06-19|字符串转整数错误，java.lang.NumberFormatException: For input string: "澳洲"。|fix|vhttp://jira.mogujie.org/browse/BDA-338 南山已经解决 |
 st_usr_nightmarket一直在执行中|2015-06-16|sql问题，处理大量数据，11个小时不能结束。|跟踪|http://jira.mogujie.org/browse/BDA-324 @南山 |
 mid_cps_commodity_clicks,mid_cpc_unioncommodity错误|2015-06-16|sql语法错误，拓邪提交的，目前南山和他沟通负责跟进。|跟踪|http://jira.mogujie.org/browse/BDA-323 @南山 |
 st_cps_unioncpsadseffect_output,st_cps_unioncpscommodityeffect_delta_output错误|2015-06-15|output_data error (2006, 'MySQL server has gone away')。|跟踪|http://jira.mogujie.org/browse/BDA-314 @南山 |
@@ -42,6 +41,7 @@ metadata_prepare error | 2015-05-28 | data_prepare_mysql_bda,MySql bda 不存在
 
 问题|发现日期/开始跟踪日期|问题简单描述|状态|详细情况跟踪Jira|后续工作?|
 --------|--------|--------|--------|--------|------------|
+dwd_xd_marketabroadlive_dump中类型转换错误|2015-06-19|字符串转整数错误，java.lang.NumberFormatException: For input string: "澳洲"。|fix|http://jira.mogujie.org/browse/BDA-338 南山已经解决 |
 提交到Sentinel失败,原因与gson有关|2015-06-11|6月11日16:00左右，Sentinel出错导致16个任务执行失败.java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 |Fix|http://jira.mogujie.org/browse/BDA-311 |
 哨兵Client日志太多磁盘空间不够，导致任务失败 | 2015-06-10 |177磁盘空间不足导致失败，原因是日志文件太大未及时清理 | Fix | @冰山 http://jira.mogujie.org/browse/BDA-309 |
 st_im_daily_chat_num_output脚本错误 | 2015-06-10 | output_data error st_im_daily_chat_num 2015-06-09 create status file FAIL| fix | @千凡暂时停止任务。 |
