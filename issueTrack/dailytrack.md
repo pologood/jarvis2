@@ -7,16 +7,12 @@
 
 问题|发现日期/开始跟踪日期|问题简单描述|状态|详细情况跟踪Jira|后续工作?|
 --------|--------|--------|--------|--------|--------|
-st_usr_nightmarket一直在执行中|2015-06-16|sql问题，处理大量数据，11个小时不能结束。|跟踪|http://jira.mogujie.org/browse/BDA-324 @南山 |
-mid_cps_commodity_clicks,mid_cpc_unioncommodity错误|2015-06-16|sql语法错误，拓邪提交的，目前南山和他沟通负责跟进。|跟踪|http://jira.mogujie.org/browse/BDA-323 @南山 |
-st_cps_unioncpsadseffect_output,st_cps_unioncpscommodityeffect_delta_output错误|2015-06-15|output_data error (2006, 'MySQL server has gone away')。|跟踪|http://jira.mogujie.org/browse/BDA-314 @南山 |
 资源管理程序yarn出问题导致任务执行失败|2015-06-12|资源管理程序yarn出问题导致任务执行失|跟踪|http://jira.mogujie.org/browse/BDA-312 |
 ironMan提交大任务导致资源占用|2015-06-11|ironMan提交大任务导致资源占用,却又通过了maps检查|跟踪|http://jira.mogujie.org/browse/BDA-313 |
 st_trd_coupon_count_output文件读取失败,再执行后成功|2015-06-10|/apps/hive/warehouse/etlprd/output/st_trd_coupon_count.20150609.data.gz._COPYING_ (inode 280379051): File does not exist.|跟踪|@清远 http://data.mogujie.org/sche/tasklog/errorInfo.htm?id=1355641|
 hive任务成功后被hang住 | 2015-06-08 | st_trd_complaint_detail任务执行成功了，但是进程没结束，导致任务被提示错误| 跟踪 | http://jira.mogujie.org/browse/BDA-303 |
 dwd_uni_unidarenschedule_dump失败 | 2015-06-08 | 任务失败，ods_uni_unidarenschedule_20150607表不存在| 跟踪 | http://jira.mogujie.org/browse/BDA-304 |
 hadoop集群出现峰值负载过高 | 2015-06-05 | 2015.6.5，2:22 ~2:27 hadoop集群出现峰值负载过高情况，观察到是mofa8023这台机器内存和cpu使用率都达到了100%。| 跟踪 | http://jira.mogujie.org/browse/BDA-299 |
-output任务丢失数据库连接造成任务失败| 2015-06-03|st_magic_activity_output，2015-06-03 17:26:15,119 - ERROR - output_data error (2013, "Lost connection to MySQL server at 'reading initial communication packet', system error: 111") | 跟踪 | http://jira.mogujie.org/browse/BDA-297 |
 
 
 # 历史问题归档
@@ -56,4 +52,7 @@ st_site_mgcms_cvt任务中有非法表名或字段 | 2015-05-28 | Invalid table 
 频繁出现Dump失败 | 2015-05-21 开始跟踪, 之前一直都有 | 0:20左右的一批dump任务经常超时失败 | fix | http://jira.mogujie.org/browse/BDA-244| jarvis/sentinel等做了调度和流控.
 output错误|2015-05-27|st_yungu_magicshop_all_device_output等job是由于job配置时字符串里面包含了分隔符引起的，已经解决。st_yungu_magicshop_all_device_output是由于mysql表结构引起，bi组已经解决|fix|http://jira.mogujie.org/browse/BDA-255 | 无?
 临时表未找到(st_trd_magic_user_analysis)  | 2015-05-23 | Table not found 'tmp_st_trd_mobin_all_magic_spuxray20150514',一度发生，再执行又OK | 重复  |  |
-
+st_usr_nightmarket一直在执行中|2015-06-16|sql问题，处理大量数据，11个小时不能结束。|跟踪|http://jira.mogujie.org/browse/BDA-324 @南山 |
+mid_cps_commodity_clicks,mid_cpc_unioncommodity错误|2015-06-16|sql语法错误，拓邪提交的，目前南山和他沟通负责跟进。|跟踪|http://jira.mogujie.org/browse/BDA-323 @南山 |
+st_cps_unioncpsadseffect_output,st_cps_unioncpscommodityeffect_delta_output错误|2015-06-15|output_data error (2006, 'MySQL server has gone away')。|跟踪|http://jira.mogujie.org/browse/BDA-314 @南山 |
+output任务丢失数据库连接造成任务失败| 2015-06-03|st_magic_activity_output，2015-06-03 17:26:15,119 - ERROR - output_data error (2013, "Lost connection to MySQL server at 'reading initial communication packet', system error: 111") | 跟踪 | http://jira.mogujie.org/browse/BDA-297 |
