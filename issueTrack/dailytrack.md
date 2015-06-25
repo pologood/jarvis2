@@ -7,6 +7,9 @@
 
 问题|发现日期/开始跟踪日期|问题简单描述|状态|详细情况跟踪Jira|后续工作?|
 --------|--------|--------|--------|--------|--------|
+data_prepare_mysql_data_meta失败|2015-06-25|元数据监控中没有注册meta|跟踪|http://data.mogujie.org/sche/tasklog/errorInfo.htm?id=1407398 @博文跟踪|
+dwd_usr_tradevipuser_dump失败|2015-06-25|业务变更问题，对应的钻石会员业务下线|跟踪|http://data.mogujie.org/sche/tasklog/errorInfo.htm?id=1407321 @南山跟踪|
+st_cps_unioncpsadseffect_output,st_cps_unioncpscommodityeffect_delta_output错误|2015-06-25|output_data error (2006, 'MySQL server has gone away')。|复现|http://jira.mogujie.org/browse/BDA-314 @清远 |
 资源管理程序yarn出问题导致任务执行失败|2015-06-12|资源管理程序yarn出问题导致任务执行失|跟踪|http://jira.mogujie.org/browse/BDA-312 |
 ironMan提交大任务导致资源占用|2015-06-11|ironMan提交大任务导致资源占用,却又通过了maps检查|跟踪|http://jira.mogujie.org/browse/BDA-313 |
 st_trd_coupon_count_output文件读取失败,再执行后成功|2015-06-10|/apps/hive/warehouse/etlprd/output/st_trd_coupon_count.20150609.data.gz._COPYING_ (inode 280379051): File does not exist.|跟踪|@清远 http://data.mogujie.org/sche/tasklog/errorInfo.htm?id=1355641|
