@@ -7,7 +7,6 @@
 
 问题|发现日期/开始跟踪日期|问题简单描述|状态|详细情况跟踪Jira|后续工作?|
 --------|--------|--------|--------|--------|--------|
-st_trd_youdian_good_end任务失败|2015-06-26|Table not found 'tmp_st_trd_youdian_good_1xray20150625'|跟踪|@南山 http://data.mogujie.org/sche/tasklog/log.htm?id=1413496 |
 资源管理程序yarn出问题导致任务执行失败|2015-06-12|资源管理程序yarn出问题导致任务执行失|跟踪|http://jira.mogujie.org/browse/BDA-312 |
 ironMan提交大任务导致资源占用|2015-06-11|ironMan提交大任务导致资源占用,却又通过了maps检查|跟踪|http://jira.mogujie.org/browse/BDA-313 |
 st_trd_coupon_count_output文件读取失败,再执行后成功|2015-06-10|/apps/hive/warehouse/etlprd/output/st_trd_coupon_count.20150609.data.gz._COPYING_ (inode 280379051): File does not exist.|跟踪|@清远 http://data.mogujie.org/sche/tasklog/errorInfo.htm?id=1355641|
@@ -38,6 +37,7 @@ metadata_prepare error | 2015-05-28 | data_prepare_mysql_bda,MySql bda 不存在
 
 问题|发现日期/开始跟踪日期|问题简单描述|状态|详细情况跟踪Jira|后续工作?|
 --------|--------|--------|--------|--------|------------|
+st_trd_youdian_good_end任务失败|2015-06-26|Table not found 'tmp_st_trd_youdian_good_1xray20150625'|跟踪|@南山 http://data.mogujie.org/sche/tasklog/log.htm?id=1413496 |
 data_prepare_mysql_data_meta失败|2015-06-25|元数据监控中没有注册meta|fix|http://data.mogujie.org/sche/tasklog/errorInfo.htm?id=1407398 @博文跟踪|
 dwd_usr_tradevipuser_dump失败|2015-06-25|业务变更问题，对应的钻石会员业务下线|fix|http://data.mogujie.org/sche/tasklog/errorInfo.htm?id=1407321 @南山跟踪|
 dwd_xd_marketabroadlive_dump中类型转换错误|2015-06-19|字符串转整数错误，java.lang.NumberFormatException: For input string: "澳洲"。|fix|http://jira.mogujie.org/browse/BDA-338 南山已经解决 |
