@@ -9,7 +9,6 @@
 --------|--------|--------|--------|--------|--------|
 data_prepare_mysql_data_meta失败|2015-06-25|元数据监控中没有注册meta|跟踪|http://data.mogujie.org/sche/tasklog/errorInfo.htm?id=1407398 @博文跟踪|
 dwd_usr_tradevipuser_dump失败|2015-06-25|业务变更问题，对应的钻石会员业务下线|跟踪|http://data.mogujie.org/sche/tasklog/errorInfo.htm?id=1407321 @南山跟踪|
-st_cps_unioncpsadseffect_output,st_cps_unioncpscommodityeffect_delta_output错误|2015-06-25|output_data error (2006, 'MySQL server has gone away')。|复现|http://jira.mogujie.org/browse/BDA-314 @清远 |
 资源管理程序yarn出问题导致任务执行失败|2015-06-12|资源管理程序yarn出问题导致任务执行失|跟踪|http://jira.mogujie.org/browse/BDA-312 |
 ironMan提交大任务导致资源占用|2015-06-11|ironMan提交大任务导致资源占用,却又通过了maps检查|跟踪|http://jira.mogujie.org/browse/BDA-313 |
 st_trd_coupon_count_output文件读取失败,再执行后成功|2015-06-10|/apps/hive/warehouse/etlprd/output/st_trd_coupon_count.20150609.data.gz._COPYING_ (inode 280379051): File does not exist.|跟踪|@清远 http://data.mogujie.org/sche/tasklog/errorInfo.htm?id=1355641|
@@ -25,6 +24,7 @@ hadoop集群出现峰值负载过高 | 2015-06-05 | 2015.6.5，2:22 ~2:27 hadoop
 
 问题|发现日期/开始跟踪日期|问题简单描述|状态|详细情况跟踪Jira|后续工作?|
 --------|--------|--------|--------|--------|------------|
+st_cps_unioncpsadseffect_output,st_cps_unioncpscommodityeffect_delta_output错误|2015-06-25|output_data error (2006, 'MySQL server has gone away')。|fix|http://jira.mogujie.org/browse/BDA-314 @清远 | 解决办法是给表加索引，需要排查其他表
 dwd_trd_punish_cheat_dump任务失败 | 2015-06-05| DB多了一个字段，需要在hive中加上相应的字段 | fix | http://jira.mogujie.org/browse/BDA-298 | 以后如何跟踪表结构变化,及时发现问题?
 dwd_usr_shoplevelmonthdetail_dump任务java.lang.ClassCastException  | 2015-05-30 | 人工填写脚本错误 | fix  | http://jira.mogujie.org/browse/BDA-271 | 可以考虑建表语句的修改需要测试执行验证通过? 比如在测试集群里建表成功?
 任务执行时缺少权限  | 2015-05-29 | st_site_magic_outlets_group_output，t_dongcheng_app_push2_output等任务执行时python权限问题 | fix  | http://jira.mogujie.org/browse/BDA-270 | 需要过一下这类权限问题的现状, 帐号使用方式等.
