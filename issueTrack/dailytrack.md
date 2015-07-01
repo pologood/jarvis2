@@ -38,8 +38,10 @@ metadata_prepare error | 2015-05-28 | data_prepare_mysql_bda,MySql bda 不存在
 
 ## 没有后续工作,或者后续工作做完的
 
-问题|发现日期/开始跟踪日期|问题简单描述|状态|详细情况跟踪Jira|后续工作?|
+问题|发现日期/开始跟踪日期|问题简单描述|状态|详细情况跟踪Jira|后续工作|
 --------|--------|--------|--------|--------|------------|
+dw_trd_shop_click_stepend任务失败|2015-07-01|Table insclause-0 has 51 columns, but query has 49 columns.|fix|@海贼 脚本未保存 |
+user_action_from_search_data任务失败|2015-07-01|Table not found 'user_action_from_search_1'|fix|@洋平 业务表已经删除，脚本停用 |
 st_trd_youdian_good_end任务失败|2015-06-26|Table not found 'tmp_st_trd_youdian_good_1xray20150625'|跟踪|@南山 http://data.mogujie.org/sche/tasklog/log.htm?id=1413496 |
 data_prepare_mysql_data_meta失败|2015-06-25|元数据监控中没有注册meta|fix|http://data.mogujie.org/sche/tasklog/errorInfo.htm?id=1407398 @博文跟踪|
 dwd_usr_tradevipuser_dump失败|2015-06-25|业务变更问题，对应的钻石会员业务下线|fix|http://data.mogujie.org/sche/tasklog/errorInfo.htm?id=1407321 @南山跟踪|
