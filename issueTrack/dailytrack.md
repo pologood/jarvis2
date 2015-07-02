@@ -7,6 +7,7 @@
 
 问题|发现日期/开始跟踪日期|问题简单描述|状态|详细情况跟踪Jira|后续工作?|
 --------|--------|--------|--------|--------|--------|
+上午批量任务执行失败 |2015-07-02|哨兵maser重新回滚上个版本，影响到187个左右任务需要再次执行|跟踪|http://jira.mogujie.org/browse/BDA-364 @无崖 @冰山 |
 调整yarn jvm参数造成任务失败 |2015-06-30|调整yarn jvm参数，部分任务java heap异常，需要在脚本中调大参数|跟踪|http://jira.mogujie.org/browse/BDA-361 @无崖 |
 yarn主动kill app造成状态不一致，无法kill掉| 2015-06-30|部分任务java heap异常，yarn主动kill app，出现state=running,但是finalStatus=killed的现象，且使用yarn application -kill命令无法删除，比如http://10.11.2.182:8088/cluster/app/application_1434073018192_339101|跟踪|http://jira.mogujie.org/browse/BDA-360 @光明|
 ntp同步问题造成大量任务失败和超时|2015-06-29|ntp同步问题造成大量任务失败和超时|跟踪|http://jira.mogujie.org/browse/BDA-344 @鸣人 |
