@@ -7,7 +7,6 @@
 
 问题|发现日期/开始跟踪日期|问题简单描述|状态|详细情况跟踪Jira|后续工作?|
 --------|--------|--------|--------|--------|--------|
-上午批量任务执行失败 |2015-07-02|哨兵maser临时回滚到上个版本，导致同一时间执行中的批量任务受到影响，需要重新执行。|跟踪|http://jira.mogujie.org/browse/BDA-364 @无崖 @冰山 |
 调整yarn jvm参数造成任务失败 |2015-06-30|调整yarn jvm参数，部分任务java heap异常，需要在脚本中调大参数|跟踪|http://jira.mogujie.org/browse/BDA-361 @无崖 |
 yarn主动kill app造成状态不一致，无法kill掉| 2015-06-30|部分任务java heap异常，yarn主动kill app，出现state=running,但是finalStatus=killed的现象，且使用yarn application -kill命令无法删除，比如http://10.11.2.182:8088/cluster/app/application_1434073018192_339101|跟踪|http://jira.mogujie.org/browse/BDA-360 @光明|
 ntp同步问题造成大量任务失败和超时|2015-06-29|ntp同步问题造成大量任务失败和超时|跟踪|http://jira.mogujie.org/browse/BDA-344 @鸣人 |
@@ -41,6 +40,12 @@ metadata_prepare error | 2015-05-28 | data_prepare_mysql_bda,MySql bda 不存在
 
 问题|发现日期/开始跟踪日期|问题简单描述|状态|详细情况跟踪Jira|后续工作|
 --------|--------|--------|--------|--------|------------|
+st_yungu_magic_search 任务失败|2015-07-03|文件拷贝失败，权限问题。|fix|@晓海 把文件所有者改为etlprd |
+dw_usr_zhongan_step2 任务失败|2015-07-03|空值异常|fix|@暖馨 where语句加入对于空值判断 |
+st_im_whitename 任务失败|2015-07-03|表格列数不对|fix|@馥雅 文件修改后未保存 |
+st_title_post_output任务失败|2015-07-03|导入mysql的记录数和原本记录数不相等对|解决中|@雪伦  |
+mid_cps_directplanshopstat_output 任务失败|2015-07-03|output_data error (1317, 'Query execution was interrupted')|解决中|@拓邪  |
+上午批量任务执行失败 |2015-07-02|哨兵maser临时回滚到上个版本，导致同一时间执行中的批量任务受到影响，需要重新执行。|fix|http://jira.mogujie.org/browse/BDA-364 @无崖 @冰山 |
 dw_trd_shop_click_stepend任务失败|2015-07-01|Table insclause-0 has 51 columns, but query has 49 columns.|fix|@海贼 脚本未保存 |
 user_action_from_search_data任务失败|2015-07-01|Table not found 'user_action_from_search_1'|fix|@洋平 业务表已经删除，脚本停用 |
 st_trd_youdian_good_end任务失败|2015-06-26|Table not found 'tmp_st_trd_youdian_good_1xray20150625'|跟踪|@南山 http://data.mogujie.org/sche/tasklog/log.htm?id=1413496 |
