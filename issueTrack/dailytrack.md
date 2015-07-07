@@ -7,6 +7,7 @@
 
 问题|发现日期/开始跟踪日期|问题简单描述|状态|详细情况跟踪Jira|后续工作?|
 --------|--------|--------|--------|--------|--------|
+dw_trd_item_advertise_stepend任务中Table not found 'tmp_trd_item_cpcxray20150626' | 2015-07-07| Table not found 'tmp_trd_item_cpcxray20150626'|跟踪|http://jira.mogujie.org/browse/BDA-371 @南山|
 fw_app_event_lx_count_day_output和fw_app_event_url_lx_count_day_output任务中导入mysql的记录数和原hive中记录数不相等 | 2015-07-06| 导入mysql的记录数和原hive中记录数不相等。|跟踪|http://jira.mogujie.org/browse/BDA-369 @清远|
 account_pay_bill_export任务本身有sql错误 | 2015-07-06| Invalid table alias or column reference 'refundid':。|跟踪|http://jira.mogujie.org/browse/BDA-368 @南山|
 db连接超时后自动被kill导致lurker_stat_urlstat_c_output任务失败 | 2015-07-06|lurker_stat_urlstat_c_output中因为插入数据量大耗时长，而db端有连接时长限制，导致连接超时被kill掉。|跟踪|http://jira.mogujie.org/browse/BDA-367 @清远|
@@ -43,6 +44,7 @@ metadata_prepare error | 2015-05-28 | data_prepare_mysql_bda,MySql bda 不存在
 
 问题|发现日期/开始跟踪日期|问题简单描述|状态|详细情况跟踪Jira|后续工作|
 --------|--------|--------|--------|--------|------------|
+st_title_post_output任务中使用的mysql表的字符集问题 | 2015-07-07| 表名：st_title_post，Incorrect string value: '\xF0\x9F\x98\x98+\xE5...' for column 'title'。将表和相应字段的字符集改为utf8mb4|fix||
 st_yungu_magic_search 任务失败|2015-07-03|文件拷贝失败，权限问题。|fix|@晓海 把文件所有者改为etlprd |
 dw_usr_zhongan_step2 任务失败|2015-07-03|空值异常|fix|@暖馨 where语句加入对于空值判断 |
 st_im_whitename 任务失败|2015-07-03|表格列数不对|fix|@馥雅 文件修改后未保存 |
