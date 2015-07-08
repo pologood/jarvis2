@@ -7,6 +7,7 @@
 
 问题|发现日期/开始跟踪日期|问题简单描述|状态|详细情况跟踪Jira|后续工作?|
 --------|--------|--------|--------|--------|--------|
+哨兵Client日志太多磁盘空间不够，导致任务失败 | 2015-06-10 |177磁盘空间不足导致失败，原因是程序不经log4j直接写本地文件，异常时写入巨量内容 | 跟踪 | @冰山 http://jira.mogujie.org/browse/BDA-309 |
 dw_trd_item_advertise_stepend任务中Table not found 'tmp_trd_item_cpcxray20150626' | 2015-07-07| Table not found 'tmp_trd_item_cpcxray20150626'|跟踪|http://jira.mogujie.org/browse/BDA-371 @南山|
 fw_app_event_lx_count_day_output和fw_app_event_url_lx_count_day_output任务中导入mysql的记录数和原hive中记录数不相等 | 2015-07-06| 导入mysql的记录数和原hive中记录数不相等。|跟踪|http://jira.mogujie.org/browse/BDA-369 @清远|
 account_pay_bill_export任务本身有sql错误 | 2015-07-06| Invalid table alias or column reference 'refundid':。|跟踪|http://jira.mogujie.org/browse/BDA-368 @南山|
