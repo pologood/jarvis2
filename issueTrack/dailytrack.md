@@ -7,6 +7,7 @@
 
 问题|发现日期/开始跟踪日期|问题简单描述|状态|详细情况跟踪Jira|后续工作?|
 --------|--------|--------|--------|--------|--------|
+st_app_fashion_maimaimai这个任务在07-08 16:51:15同时启动了两个执行流水 | 2015-07-09| 同一任务在调度系统不应同时出现多个执行流水| 跟踪 | http://jira.mogujie.org/browse/BDA-380 |
 奇克执行st_app_fashion_maimaimai时没有写表权限 | 2015-07-08|Authorization failed:No privilege 'Update' found for outputs { database:default, table:st_app_fastfashion_jingxuan}. Use show grant to get more details. | 跟踪 | @南山 http://jira.mogujie.org/browse/BDA-374 |
 哨兵Client日志太多磁盘空间不够，导致任务失败 | 2015-06-10 |70磁盘空间不足导致失败，原因是程序不经log4j直接写本地文件，异常时写入巨量内容 | 跟踪 | @冰山 http://jira.mogujie.org/browse/BDA-309 |
 dw_trd_item_advertise_stepend任务中Table not found 'tmp_trd_item_cpcxray20150626' | 2015-07-07| Table not found 'tmp_trd_item_cpcxray20150626'|跟踪|http://jira.mogujie.org/browse/BDA-371 @南山|
