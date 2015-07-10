@@ -7,9 +7,10 @@
 
 问题|发现日期/开始跟踪日期|问题简单描述|状态|详细情况跟踪Jira|后续工作?|
 --------|--------|--------|--------|--------|--------|
+网络事件路径分布output执行时数据长度与mysql表中path字段不符 | 2015-07-10| Caused by: java.sql.BatchUpdateException: Data truncation: Data too long for column 'path' at row 1| 跟踪 | http://jira.mogujie.org/browse/BDA-384 @清远 |
+业务方创建分区但是没有文件，导致st_site_kpi_output执行错误 | 2015-07-10| 业务方没有提供分区文件,st_site_kpi_output执行错误| 跟踪 | http://jira.mogujie.org/browse/BDA-383 @清远 |
 st_app_fashion_maimaimai这个任务在07-08 16:51:15同时启动了两个执行流水 | 2015-07-09| 同一任务在调度系统不应同时出现多个执行流水| 跟踪 | http://jira.mogujie.org/browse/BDA-380 |
 奇克执行st_app_fashion_maimaimai时没有写表权限 | 2015-07-08|Authorization failed:No privilege 'Update' found for outputs { database:default, table:st_app_fastfashion_jingxuan}. Use show grant to get more details. | 跟踪 | @南山 http://jira.mogujie.org/browse/BDA-374 |
-哨兵Client日志太多磁盘空间不够，导致任务失败 | 2015-06-10 |70磁盘空间不足导致失败，原因是程序不经log4j直接写本地文件，异常时写入巨量内容 | 跟踪 | @冰山 http://jira.mogujie.org/browse/BDA-309 |
 dw_trd_item_advertise_stepend任务中Table not found 'tmp_trd_item_cpcxray20150626' | 2015-07-07| Table not found 'tmp_trd_item_cpcxray20150626'|跟踪|http://jira.mogujie.org/browse/BDA-371 @南山|
 account_pay_bill_export任务本身有sql错误 | 2015-07-06| Invalid table alias or column reference 'refundid':。|跟踪|http://jira.mogujie.org/browse/BDA-368 @南山|
 db连接超时后自动被kill导致lurker_stat_urlstat_c_output任务失败 | 2015-07-06|lurker_stat_urlstat_c_output中因为插入数据量大耗时长，而db端有连接时长限制，导致连接超时被kill掉。|跟踪|http://jira.mogujie.org/browse/BDA-367 @清远|
@@ -28,6 +29,7 @@ dwd_uni_unidarenschedule_dump失败 | 2015-06-08 | 任务失败，ods_uni_unidar
 
 问题|发现日期/开始跟踪日期|问题简单描述|状态|详细情况跟踪Jira|后续工作?|
 --------|--------|--------|--------|--------|------------|
+哨兵Client日志太多磁盘空间不够，导致任务失败 | 2015-06-10 |70磁盘空间不足导致失败，原因是程序不经log4j直接写本地文件，异常时写入巨量内容 | fix | @光明 http://jira.mogujie.org/browse/BDA-309 |
 ntp同步问题造成大量任务失败和超时|2015-06-29|ntp同步问题造成大量任务失败和超时|fix|http://jira.mogujie.org/browse/BDA-344 @鸣人 |后续可能要找一个方式监控起来
 调整yarn jvm参数造成任务失败 |2015-06-30|调整yarn jvm参数，部分任务java heap异常，需要在脚本中调大参数|fix|http://jira.mogujie.org/browse/BDA-361 @无崖 | 一旦出现该问题，还是需要手工调整脚本，增大mapred.map.child.java.opts和mapred.reduce.child.java.opts设置值
 hadoop集群出现峰值负载过高 | 2015-06-05 | 2015.6.5，2:22 ~2:27 hadoop集群出现峰值负载过高情况，观察到是mofa8023这台机器内存和cpu使用率都达到了100%。| fix | http://jira.mogujie.org/browse/BDA-299 | 原先presto服务配置不合理, 已经迁移出这几个节点, 暂时放到96G内存的节点上.
