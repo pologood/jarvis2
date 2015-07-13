@@ -7,11 +7,10 @@
 
 问题|发现日期/开始跟踪日期|问题简单描述|状态|详细情况跟踪Jira|后续工作?|
 --------|--------|--------|--------|--------|--------|
+执行hive job时文件不存在错误|2015-07-12| http://data.mogujie.org/sche/tasklog/errorInfo.htm?id=1473341|跟踪|http://jira.mogujie.org/browse/BDA-393|
 网络事件路径分布output执行时数据长度与mysql表中path字段不符 | 2015-07-10| Caused by: java.sql.BatchUpdateException: Data truncation: Data too long for column 'path' at row 1| 跟踪 | http://jira.mogujie.org/browse/BDA-384 @清远 |
 业务方创建分区但是没有文件，导致st_site_kpi_output执行错误 | 2015-07-10| 业务方没有提供分区文件,st_site_kpi_output执行错误| 跟踪 | http://jira.mogujie.org/browse/BDA-383 @清远 |
 st_app_fashion_maimaimai这个任务在07-08 16:51:15同时启动了两个执行流水 | 2015-07-09| 同一任务在调度系统不应同时出现多个执行流水| 跟踪 | http://jira.mogujie.org/browse/BDA-380 |
-奇克执行st_app_fashion_maimaimai时没有写表权限 | 2015-07-08|Authorization failed:No privilege 'Update' found for outputs { database:default, table:st_app_fastfashion_jingxuan}. Use show grant to get more details. | 跟踪 | @南山 http://jira.mogujie.org/browse/BDA-374 |
-dw_trd_item_advertise_stepend任务中Table not found 'tmp_trd_item_cpcxray20150626' | 2015-07-07| Table not found 'tmp_trd_item_cpcxray20150626'|跟踪|http://jira.mogujie.org/browse/BDA-371 @南山|
 account_pay_bill_export任务本身有sql错误 | 2015-07-06| Invalid table alias or column reference 'refundid':。|跟踪|http://jira.mogujie.org/browse/BDA-368 @南山|
 db连接超时后自动被kill导致lurker_stat_urlstat_c_output任务失败 | 2015-07-06|lurker_stat_urlstat_c_output中因为插入数据量大耗时长，而db端有连接时长限制，导致连接超时被kill掉。|跟踪|http://jira.mogujie.org/browse/BDA-367 @清远|
 yarn主动kill app造成状态不一致，无法kill掉| 2015-06-30|部分任务java heap异常，yarn主动kill app，出现state=running,但是finalStatus=killed的现象，且使用yarn application -kill命令无法删除，比如http://10.11.2.182:8088/cluster/app/application_1434073018192_339101|跟踪|http://jira.mogujie.org/browse/BDA-360 @光明|
@@ -48,6 +47,8 @@ metadata_prepare error | 2015-05-28 | data_prepare_mysql_bda,MySql bda 不存在
 
 问题|发现日期/开始跟踪日期|问题简单描述|状态|详细情况跟踪Jira|后续工作|
 --------|--------|--------|--------|--------|------------|
+奇克执行st_app_fashion_maimaimai时没有写表权限 | 2015-07-08|Authorization failed:No privilege 'Update' found for outputs { database:default, table:st_app_fastfashion_jingxuan}. Use show grant to get more details. | 跟踪 | @南山 http://jira.mogujie.org/browse/BDA-374 |
+dw_trd_item_advertise_stepend任务中Table not found 'tmp_trd_item_cpcxray20150626' | 2015-07-07| Table not found 'tmp_trd_item_cpcxray20150626'|跟踪|http://jira.mogujie.org/browse/BDA-371 @南山|
 fw_app_event_lx_count_day_output和fw_app_event_url_lx_count_day_output任务中导入mysql的记录数和原hive中记录数不相等 | 2015-07-06| 导入mysql的记录数和原hive中记录数不相等。|fix|http://jira.mogujie.org/browse/BDA-369 @清远|
 st_title_post_output任务中使用的mysql表的字符集问题 | 2015-07-07| 表名：st_title_post，Incorrect string value: '\xF0\x9F\x98\x98+\xE5...' for column 'title'。将表和相应字段的字符集改为utf8mb4|fix||
 st_yungu_magic_search 任务失败|2015-07-03|文件拷贝失败，权限问题。|fix|@晓海 把文件所有者改为etlprd |
