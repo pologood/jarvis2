@@ -5,7 +5,7 @@
 
 问题汇总只是一个列表, 具体详情见Jira
 
-问题|发现日期/开始跟踪日期|问题简单描述|状态|详细情况跟踪Jira|后续工作?|问题类型
+问题|发现日期|问题简单描述|状态|详细情况跟踪Jira|后续工作?|问题类型
 --------|--------|--------|--------|--------|--------|--------|
 st_cpc_income_step3与st_cpc_income_step4任务闭环依赖|2015-07-16|任务闭环依赖导致任务执行等待中|跟踪|@公冶 http://jira.mogujie.org/browse/BDA-399||开发问题
 mbi_st_xd_share_count_output_sailfish执行失败|2015-07-16|BDA数据库磁盘满了未报警导致写入失败|跟踪|@大鹏 http://jira.mogujie.org/browse/BDA-400u||环境问题
@@ -23,7 +23,7 @@ hive任务成功后被hang住 | 2015-06-08 | st_trd_complaint_detail任务执行
 
 ## 还有后续工作要考虑的
 
-问题|发现日期/开始跟踪日期|问题简单描述|状态|详细情况跟踪Jira|后续工作?|问题类型|
+问题|发现日期|问题简单描述|状态|详细情况跟踪Jira|后续工作?|问题类型|
 --------|--------|--------|--------|--------|------------|------------|
 ironMan提交大任务导致资源占用|2015-06-11|ironMan提交大任务导致资源占用,却又通过了maps检查|保留|http://jira.mogujie.org/browse/BDA-313 @牧名||开发问题
 哨兵Client日志太多磁盘空间不够，导致任务失败 | 2015-06-10 |70磁盘空间不足导致失败，原因是程序不经log4j直接写本地文件，异常时写入巨量内容 | fix | @光明 http://jira.mogujie.org/browse/BDA-309 ||开发问题
@@ -44,7 +44,7 @@ metadata_prepare error | 2015-05-28 | data_prepare_mysql_bda,MySql bda 不存在
 
 ## 没有后续工作,或者后续工作做完的
 
-问题|发现日期/开始跟踪日期|问题简单描述|状态|详细情况跟踪Jira|后续工作|问题类型
+问题|发现日期|问题简单描述|状态|详细情况跟踪Jira|后续工作|问题类型
 --------|--------|--------|--------|--------|------------|------------|
 hdata错误 | 2015-05-28| st_search_keyword_pc_output，java.sql.SQLException: Parameter index out of bounds. 12 is not between valid values of 1 and 11 | fix | http://jira.mogujie.org/browse/BDA-265 | 改进Pyramid Hive output任务, 减少数据落地, 减少中间步骤.|开发问题
 dwd_uni_unidarenschedule_dump失败 | 2015-06-08 | 任务失败，ods_uni_unidarenschedule_20150607表不存在|fix | http://jira.mogujie.org/browse/BDA-304 @清远 ||环境配置
