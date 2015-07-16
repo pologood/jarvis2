@@ -7,9 +7,9 @@
 
 问题|发现日期/开始跟踪日期|问题简单描述|状态|详细情况跟踪Jira|后续工作?|
 --------|--------|--------|--------|--------|--------|
+st_cpc_income_step3与st_cpc_income_step4任务闭环依赖|2015-07-16|任务闭环依赖导致任务执行等待中|跟踪|@公冶 http://jira.mogujie.org/browse/BDA-399
 mbi_st_xd_share_count_output_sailfish执行失败|2015-07-16|BDA数据库磁盘满了未报警导致写入失败|跟踪|@大鹏 http://jira.mogujie.org/browse/BDA-400u
 dw_trd_shop_advertise_step8执行失败|2015-07-16|临时文件未删除|跟踪|@海贼 http://jira.mogujie.org/browse/BDA-402
-执行hive job时文件不存在错误|2015-07-12| http://data.mogujie.org/sche/tasklog/errorInfo.htm?id=1473341|跟踪|http://jira.mogujie.org/browse/BDA-393|
 网络事件路径分布output执行时数据长度与mysql表中path字段不符 | 2015-07-10| Caused by: java.sql.BatchUpdateException: Data truncation: Data too long for column 'path' at row 1| 跟踪 | http://jira.mogujie.org/browse/BDA-384 @清远 |
 业务方创建分区但是没有文件，导致st_site_kpi_output执行错误 | 2015-07-10| 业务方没有提供分区文件,st_site_kpi_output执行错误| 跟踪 | http://jira.mogujie.org/browse/BDA-383 @清远 |
 st_app_fashion_maimaimai这个任务在07-08 16:51:15同时启动了两个执行流水 | 2015-07-09| 同一任务在调度系统不应同时出现多个执行流水| 跟踪 | http://jira.mogujie.org/browse/BDA-380 |
@@ -31,6 +31,7 @@ dwd_uni_unidarenschedule_dump失败 | 2015-06-08 | 任务失败，ods_uni_unidar
 --------|--------|--------|--------|--------|------------|
 ironMan提交大任务导致资源占用|2015-06-11|ironMan提交大任务导致资源占用,却又通过了maps检查|保留|http://jira.mogujie.org/browse/BDA-313 @牧名|
 哨兵Client日志太多磁盘空间不够，导致任务失败 | 2015-06-10 |70磁盘空间不足导致失败，原因是程序不经log4j直接写本地文件，异常时写入巨量内容 | fix | @光明 http://jira.mogujie.org/browse/BDA-309 |
+临时表不存在|2015-07-12| http://data.mogujie.org/sche/tasklog/errorInfo.htm?id=1473341|跟踪|@光明 http://jira.mogujie.org/browse/BDA-393|
 ntp同步问题造成大量任务失败和超时|2015-06-29|ntp同步问题造成大量任务失败和超时|fix|http://jira.mogujie.org/browse/BDA-344 @鸣人 |后续可能要找一个方式监控起来
 调整yarn jvm参数造成任务失败 |2015-06-30|调整yarn jvm参数，部分任务java heap异常，需要在脚本中调大参数|fix|http://jira.mogujie.org/browse/BDA-361 @无崖 | 一旦出现该问题，还是需要手工调整脚本，增大mapred.map.child.java.opts和mapred.reduce.child.java.opts设置值
 hadoop集群出现峰值负载过高 | 2015-06-05 | 2015.6.5，2:22 ~2:27 hadoop集群出现峰值负载过高情况，观察到是mofa8023这台机器内存和cpu使用率都达到了100%。| fix | http://jira.mogujie.org/browse/BDA-299 | 原先presto服务配置不合理, 已经迁移出这几个节点, 暂时放到96G内存的节点上.
