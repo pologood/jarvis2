@@ -27,11 +27,11 @@ hive任务成功后被hang住 | 2015-06-08 | st_trd_complaint_detail任务执行
 --------|--------|--------|--------|--------|------------|------------|
 ironMan提交大任务导致资源占用|2015-06-11|ironMan提交大任务导致资源占用,却又通过了maps检查|保留|http://jira.mogujie.org/browse/BDA-313 @牧名||开发问题
 哨兵Client日志太多磁盘空间不够，导致任务失败 | 2015-06-10 |70磁盘空间不足导致失败，原因是程序不经log4j直接写本地文件，异常时写入巨量内容 | fix | @光明 http://jira.mogujie.org/browse/BDA-309 ||开发问题
-MR任务失败时候导致的临时表不存在|2015-07-12| http://data.mogujie.org/sche/tasklog/errorInfo.htm?id=1473341|跟踪|@光明 http://jira.mogujie.org/browse/BDA-393||环境配置
+MR任务失败时候导致的临时表不存在|2015-07-12| |跟踪|@光明 http://jira.mogujie.org/browse/BDA-393||环境配置
 ntp同步问题造成大量任务失败和超时|2015-06-29|ntp同步问题造成大量任务失败和超时|fix|http://jira.mogujie.org/browse/BDA-344 @鸣人 |后续可能要找一个方式监控起来|环境配置
 调整yarn jvm参数造成任务失败 |2015-06-30|调整yarn jvm参数，部分任务java heap异常，需要在脚本中调大参数|fix|http://jira.mogujie.org/browse/BDA-361 @无崖 | 一旦出现该问题，还是需要手工调整脚本，增大mapred.map.child.java.opts和mapred.reduce.child.java.opts设置值|环境配置
 hadoop集群出现峰值负载过高 | 2015-06-05 | 2015.6.5，2:22 ~2:27 hadoop集群出现峰值负载过高情况，观察到是mofa8023这台机器内存和cpu使用率都达到了100%。| fix | http://jira.mogujie.org/browse/BDA-299 | 原先presto服务配置不合理, 已经迁移出这几个节点, 暂时放到96G内存的节点上.|环境配置
-st_cps_unioncpsadseffect_output,st_cps_unioncpscommodityeffect_delta_output错误|2015-06-25|output_data error (2006, 'MySQL server has gone away')。|fix|http://jira.mogujie.org/browse/BDA-314 @清远 | 解决办法是给表加索引，需要排查其他表|环境配置
+st_cps_unioncpsadseffect_output错误|2015-06-25|output_data error (2006, 'MySQL server has gone away')。|fix|http://jira.mogujie.org/browse/BDA-314 @清远 | 解决办法是给表加索引，需要排查其他表|环境配置
 dwd_trd_punish_cheat_dump任务失败 | 2015-06-05| DB多了一个字段，需要在hive中加上相应的字段 | fix | http://jira.mogujie.org/browse/BDA-298 | 以后如何跟踪表结构变化,及时发现问题?|环境配置
 dwd_usr_shoplevelmonthdetail_dump任务java.lang.ClassCastException  | 2015-05-30 | 人工填写脚本错误 | fix  | http://jira.mogujie.org/browse/BDA-271 | 可以考虑建表语句的修改需要测试执行验证通过? 比如在测试集群里建表成功?|环境配置
 任务执行时缺少权限  | 2015-05-29 | st_site_magic_outlets_group_output，t_dongcheng_app_push2_output等任务执行时python权限问题 | fix  | http://jira.mogujie.org/browse/BDA-270 | 需要过一下这类权限问题的现状, 帐号使用方式等.|环境配置
