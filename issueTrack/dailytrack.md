@@ -87,5 +87,5 @@ st_site_mgcms_cvt任务中有非法表名或字段 | 2015-05-28 | Invalid table 
 output错误|2015-05-27|st_yungu_magicshop_all_device_output等job是由于job配置时字符串里面包含了分隔符引起的，已经解决。st_yungu_magicshop_all_device_output是由于mysql表结构引起，bi组已经解决|fix|http://jira.mogujie.org/browse/BDA-255 | 无?|环境配置
 临时表未找到(st_trd_magic_user_analysis)  | 2015-05-23 | Table not found 'tmp_st_trd_mobin_all_magic_spuxray20150514',一度发生，再执行又OK | 重复  |  ||开发问题
 st_usr_nightmarket一直在执行中|2015-06-16|sql问题，处理大量数据，11个小时不能结束。|跟踪|http://jira.mogujie.org/browse/BDA-324 @南山 ||脚本问题
-mid_cps_commodity_clicks,mid_cpc_unioncommodity错误|2015-06-16|sql语法错误，拓邪提交的，目前南山和他沟通负责跟进。|跟踪|http://jira.mogujie.org/browse/BDA-323 @南山 ||脚本问题
+mid_cps_commodity_clicks mid_cpc_unioncommodity错误|2015-06-16|sql语法错误，拓邪提交的，目前南山和他沟通负责跟进。|跟踪|http://jira.mogujie.org/browse/BDA-323 @南山 ||脚本问题
 st_cps_unioncpsadseffect_output错误|2015-06-15|output_data error (2006, 'MySQL server has gone away')。|跟踪|http://jira.mogujie.org/browse/BDA-314 @南山 ||环境配置
