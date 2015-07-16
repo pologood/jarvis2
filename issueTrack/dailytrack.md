@@ -7,6 +7,7 @@
 
 问题|发现日期/开始跟踪日期|问题简单描述|状态|详细情况跟踪Jira|后续工作?|
 --------|--------|--------|--------|--------|--------|
+dw_trd_shop_advertise_step8执行失败|2015-07-16|临时文件未删除|跟踪|@海贼 http://jira.mogujie.org/browse/BDA-402
 执行hive job时文件不存在错误|2015-07-12| http://data.mogujie.org/sche/tasklog/errorInfo.htm?id=1473341|跟踪|http://jira.mogujie.org/browse/BDA-393|
 网络事件路径分布output执行时数据长度与mysql表中path字段不符 | 2015-07-10| Caused by: java.sql.BatchUpdateException: Data truncation: Data too long for column 'path' at row 1| 跟踪 | http://jira.mogujie.org/browse/BDA-384 @清远 |
 业务方创建分区但是没有文件，导致st_site_kpi_output执行错误 | 2015-07-10| 业务方没有提供分区文件,st_site_kpi_output执行错误| 跟踪 | http://jira.mogujie.org/browse/BDA-383 @清远 |
