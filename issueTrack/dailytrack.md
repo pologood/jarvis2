@@ -47,21 +47,23 @@ metadata_prepare error | 2015-05-28 | data_prepare_mysql_bda,MySql bda 不存在
 
 ## 没有后续工作,或者后续工作做完的
 
-问题|发现日期/开始跟踪日期|问题简单描述|状态|详细情况跟踪Jira|后续工作|
+问题|发现日期/开始跟踪日期|问题简单描述|状态|详细情况跟踪Jira|后续工作|问题类型
 --------|--------|--------|--------|--------|------------|
-account_business_bill_export执行失败|2015-07-16|表名未修改|fix|纳兰
-奇克执行st_app_fashion_maimaimai时没有写表权限 | 2015-07-08|Authorization failed:No privilege 'Update' found for outputs { database:default, table:st_app_fastfashion_jingxuan}. Use show grant to get more details. | 跟踪 | @南山 http://jira.mogujie.org/browse/BDA-374 |
-dw_trd_item_advertise_stepend任务中Table not found 'tmp_trd_item_cpcxray20150626' | 2015-07-07| Table not found 'tmp_trd_item_cpcxray20150626'|跟踪|http://jira.mogujie.org/browse/BDA-371 @南山|
-fw_app_event_lx_count_day_output和fw_app_event_url_lx_count_day_output任务中导入mysql的记录数和原hive中记录数不相等 | 2015-07-06| 导入mysql的记录数和原hive中记录数不相等。|fix|http://jira.mogujie.org/browse/BDA-369 @清远|
-st_title_post_output任务中使用的mysql表的字符集问题 | 2015-07-07| 表名：st_title_post，Incorrect string value: '\xF0\x9F\x98\x98+\xE5...' for column 'title'。将表和相应字段的字符集改为utf8mb4|fix||
-st_yungu_magic_search 任务失败|2015-07-03|文件拷贝失败，权限问题。|fix|@晓海 把文件所有者改为etlprd |
-dw_usr_zhongan_step2 任务失败|2015-07-03|空值异常|fix|@暖馨 where语句加入对于空值判断 |
-st_im_whitename 任务失败|2015-07-03|表格列数不对|fix|@馥雅 文件修改后未保存 |
-st_title_post_output任务失败|2015-07-03|导入mysql的记录数和原本记录数不相等对|解决中|@雪伦  |
-mid_cps_directplanshopstat_output 任务失败|2015-07-03|output_data error (1317, 'Query execution was interrupted')|解决中|@拓邪  |
-上午批量任务执行失败 |2015-07-02|哨兵maser临时回滚到上个版本，导致同一时间执行中的批量任务受到影响，需要重新执行。|fix|http://jira.mogujie.org/browse/BDA-364 @无崖 @冰山 |
-dw_trd_shop_click_stepend任务失败|2015-07-01|Table insclause-0 has 51 columns, but query has 49 columns.|fix|@海贼 脚本未保存 |
-user_action_from_search_data任务失败|2015-07-01|Table not found 'user_action_from_search_1'|fix|@洋平 业务表已经删除，脚本停用 |
+dw_trd_xshop_wide执行失败|2015-07-16|字段添加了，脚本没有改|fix|@馥雅||脚本错误
+st_cpc_income_step2执行失败|2015-07-16|脚本修改后未保存|fix|@暖馨||脚本错误|
+account_business_bill_export执行失败|2015-07-16|表名未修改|fix|@纳兰||脚本错误
+奇克执行st_app_fashion_maimaimai时没有写表权限 | 2015-07-08|Authorization failed:No privilege 'Update' found for outputs { database:default, table:st_app_fastfashion_jingxuan}. Use show grant to get more details. | fix | @南山 http://jira.mogujie.org/browse/BDA-374 ||环境配置
+dw_trd_item_advertise_stepend任务中Table not found 'tmp_trd_item_cpcxray20150626' | 2015-07-07| Table not found 'tmp_trd_item_cpcxray20150626'|fix|http://jira.mogujie.org/browse/BDA-371 @南山||脚本问题
+fw_app_event_lx_count_day_output和fw_app_event_url_lx_count_day_output任务中导入mysql的记录数和原hive中记录数不相等 | 2015-07-06| 导入mysql的记录数和原hive中记录数不相等。|fix|http://jira.mogujie.org/browse/BDA-369 @清远||环境配置
+st_title_post_output任务中使用的mysql表的字符集问题 | 2015-07-07| 表名：st_title_post，Incorrect string value: '\xF0\x9F\x98\x98+\xE5...' for column 'title'。将表和相应字段的字符集改为utf8mb4|fix|||环境配置
+st_yungu_magic_search 任务失败|2015-07-03|文件拷贝失败，权限问题。|fix|@晓海 把文件所有者改为etlprd ||环境配置
+dw_usr_zhongan_step2 任务失败|2015-07-03|空值异常|fix|@暖馨 where语句加入对于空值判断 ||脚本错误
+st_im_whitename 任务失败|2015-07-03|表格列数不对|fix|@馥雅 文件修改后未保存 ||脚本错误
+st_title_post_output任务失败|2015-07-03|导入mysql的记录数和原本记录数不相等对|fix|@雪伦  ||环境配置
+mid_cps_directplanshopstat_output 任务失败|2015-07-03|output_data error (1317, 'Query execution was interrupted')|fix|@拓邪  ||脚本问题
+上午批量任务执行失败 |2015-07-02|哨兵maser临时回滚到上个版本，导致同一时间执行中的批量任务受到影响，需要重新执行。|fix|http://jira.mogujie.org/browse/BDA-364 @无崖 @冰山 ||开发问题
+dw_trd_shop_click_stepend任务失败|2015-07-01|Table insclause-0 has 51 columns, but query has 49 columns.|fix|@海贼 脚本未保存 ||脚本问题
+user_action_from_search_data任务失败|2015-07-01|Table not found 'user_action_from_search_1'|fix|@洋平 业务表已经删除，脚本停用 ||脚本问题
 st_trd_youdian_good_end任务失败|2015-06-26|Table not found 'tmp_st_trd_youdian_good_1xray20150625'|跟踪|@南山 http://data.mogujie.org/sche/tasklog/log.htm?id=1413496 |
 data_prepare_mysql_data_meta失败|2015-06-25|元数据监控中没有注册meta|fix|http://data.mogujie.org/sche/tasklog/errorInfo.htm?id=1407398 @博文跟踪|
 dwd_usr_tradevipuser_dump失败|2015-06-25|业务变更问题，对应的钻石会员业务下线|fix|http://data.mogujie.org/sche/tasklog/errorInfo.htm?id=1407321 @南山跟踪|
