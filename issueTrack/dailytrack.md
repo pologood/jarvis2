@@ -8,8 +8,7 @@
 问题|发现日期|问题简单描述|状态|详细情况跟踪Jira|后续工作?|问题类型
 --------|--------|--------|--------|--------|--------|--------|
 st_cpc_income_step3与st_cpc_income_step4任务闭环依赖|2015-07-16|任务闭环依赖导致任务执行等待中|跟踪|@公冶 http://jira.mogujie.org/browse/BDA-399||开发问题
-mbi_st_xd_share_count_output_sailfish执行失败|2015-07-16|BDA数据库磁盘满了未报警导致写入失败|跟踪|@大鹏 http://jira.mogujie.org/browse/BDA-400u||环境问题
-dw_trd_shop_advertise_step8执行失败|2015-07-16|临时文件未删除|跟踪|@海贼 http://jira.mogujie.org/browse/BDA-402||其他
+mbi_st_xd_share_count_output_sailfish执行失败|2015-07-16|BDA数据库磁盘满了未报警导致写入失败|跟踪|@大鹏 http://jira.mogujie.org/browse/BDA-400||环境问题
 st_app_fashion_maimaimai这个任务在07-08 16:51:15同时启动了两个执行流水 | 2015-07-09| 同一任务在调度系统不应同时出现多个执行流水| 跟踪 |@光明 http://jira.mogujie.org/browse/BDA-380 || 开发问题
 yarn主动kill app造成状态不一致，无法kill掉| 2015-06-30|部分任务java heap异常，yarn主动kill app，出现state=running,但是finalStatus=killed的现象，且使用yarn application -kill命令无法删。|跟踪|@光明 http://jira.mogujie.org/browse/BDA-360 ||其他
 资源管理程序yarn出问题导致任务执行失败|2015-06-12|资源管理程序yarn出问题导致任务执行失败|跟踪|http://jira.mogujie.org/browse/BDA-312 @冰山||其他
@@ -46,6 +45,7 @@ metadata_prepare error | 2015-05-28 | data_prepare_mysql_bda,MySql bda 不存在
 
 问题|发现日期|问题简单描述|状态|详细情况跟踪Jira|后续工作|问题类型
 --------|--------|--------|--------|--------|------------|------------|
+dw_trd_shop_advertise_step8执行失败|2015-07-16|临时文件未删除|fix|@海贼 http://jira.mogujie.org/browse/BDA-402||其他
 hdata错误 | 2015-05-28| st_search_keyword_pc_output，java.sql.SQLException: Parameter index out of bounds. 12 is not between valid values of 1 and 11 | fix | http://jira.mogujie.org/browse/BDA-265 | 改进Pyramid Hive output任务, 减少数据落地, 减少中间步骤.|开发问题
 dwd_uni_unidarenschedule_dump失败 | 2015-06-08 | 任务失败，ods_uni_unidarenschedule_20150607表不存在|fix | http://jira.mogujie.org/browse/BDA-304 @清远 ||环境配置
 db连接超时后自动被kill导致lurker_stat_urlstat_c_output任务失败 | 2015-07-06|lurker_stat_urlstat_c_output表未建索引，导致导致连接超时被kill掉。|fix|http://jira.mogujie.org/browse/BDA-367 @清远||环境配置
