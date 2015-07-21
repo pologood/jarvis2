@@ -43,6 +43,7 @@ metadata_prepare error | 2015-05-28 | data_prepare_mysql_bda,MySql bda 不存在
 
 问题|发现日期|问题简单描述|状态|详细情况跟踪Jira|后续工作|问题类型
 --------|--------|--------|--------|--------|------------|------------|
+st_dc_shopaccount_consult_output执行失败|2015-07-21|没有配置hdfs-site.xml的路径，找不到mgjcluster|fix|@清远 http://data.mogujie.org/sche/tasklog/errorInfo.htm?id=1511528 ||配置问题
 mbi_st_xd_share_count_output_sailfish执行失败|2015-07-16|BDA数据库磁盘满了未报警导致写入失败|跟踪|@大鹏 http://jira.mogujie.org/browse/BDA-400||环境问题
 st_app_fashion_maimaimai这个任务在07-08 16:51:15同时启动了两个执行流水 | 2015-07-09| 同一任务在调度系统不应同时出现多个执行流水| 跟踪 |@光明 http://jira.mogujie.org/browse/BDA-380 || 开发问题
 dw_trd_shop_advertise_step8执行失败|2015-07-16|临时文件未删除|fix|@海贼 http://jira.mogujie.org/browse/BDA-402||其他
