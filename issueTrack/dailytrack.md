@@ -8,7 +8,7 @@
 
 问题|发现日期|问题简单描述|状态|详细情况跟踪Jira|后续工作?|问题类型
 --------|--------|--------|--------|--------|--------|--------|
-多个脚本中使用了相同的临时表名，导致任务同时运行时会失败|2015-07-22|a任务删除了b任务的临时表，导致失败|跟踪|http://jira.mogujie.org/browse/BDA-408||开发问题
+dw_trd_item_click_source 任务失败|2015-07-22|dw_trd_item_click_source和dw_trd_item_click_source_all使用了相同的临时表名，导致任务同时运行时会失败|跟踪|http://jira.mogujie.org/browse/BDA-408||脚本问题
 st_cpc_income_step3与st_cpc_income_step4任务闭环依赖|2015-07-16|任务闭环依赖导致任务执行等待中|跟踪|@公冶 http://jira.mogujie.org/browse/BDA-399||开发问题
 yarn主动kill app造成状态不一致，无法kill掉| 2015-06-30|部分任务java heap异常，yarn主动kill app，出现state=running,但是finalStatus=killed的现象，且使用yarn application -kill命令无法删。|跟踪|@光明 http://jira.mogujie.org/browse/BDA-360 ||其他
 资源管理程序yarn出问题导致任务执行失败|2015-06-12|资源管理程序yarn出问题导致任务执行失败|跟踪|http://jira.mogujie.org/browse/BDA-312 @冰山||其他
