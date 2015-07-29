@@ -28,7 +28,7 @@
 
 ### 2.2 系统设计
 
-![系统设计](./img/jarvis_design.png)
+![系统设计](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/jarvis_design.png)
 
 
 
@@ -87,7 +87,7 @@
 
 	时间调度器负责调度基于时间触发的任务，支持Cron表达式时间配置。
 
-![时间调度器](./img/time_based_scheduler.png)
+![时间调度器](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/time_based_scheduler.png)
 
 	时间调度器从数据库中加载周期性调度任务，或者从Rest API请求增加/修改/删除任务。根据任务配置的调度时间(CronExpression)，调度器定时计算出每个任务后面一段时间内（如：一天）的具体调度时间，并生成调度计划(Schedule Plan)。
 
@@ -101,7 +101,7 @@
 
 	依赖调度器负责调度基于依赖触发的任务，支持调度周期不相同的依赖配置。
 
-![依赖调度器](./img/dependency_based_scheduler.png)
+![依赖调度器](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/dependency_based_scheduler.png)
 
 	依赖调度器内部维护任务的依赖满足条件，并采用事件方式触发任务。当某个任务执行完成后，依赖调度器收到消息通知，根据完成任务的ID和状态更新依赖关系数据，然后检查依赖此任务的任务是否所有依赖任务都已成功，若满足则触发，并重置依赖任务的状态等待下次触发。
 
@@ -141,25 +141,25 @@
 
 #### 2.4.1 任务执行流程
 
-![任务执行流程](./img/job_execution_flow.png)
+![任务执行流程](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/job_execution_flow.png)
 
 
 
 #### 2.4.2 任务终止流程
 
-![任务终止流程](./img/kill_job.png)
+![任务终止流程](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/kill_job.png)
 
 
 
 #### 2.4.3 任务重跑流程
 
-![任务重跑流程](./img/job_rerun.png)
+![任务重跑流程](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/job_rerun.png)
 
 
 
 #### 2.4.4 调度计划修改流程
 
-![调度计划修改流程](./img/plan_modify.png)
+![调度计划修改流程](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/plan_modify.png)
 
 
 
@@ -208,8 +208,6 @@ Worker响应
 | accept  | bool   | T    |      | 是否被Worker接受 | 
 | message | string | F    |      |             | 
 
-
-
 #### 3.1.2 终止任务(Server -> Worker)
 
 Server请求
@@ -223,8 +221,6 @@ Worker响应
 | 字段      | 类型   | 必选   | 默认值  | 描述     | 
 | ------- | ---- | ---- | ---- | ------ | 
 | success | bool | T    |      | 是否终止成功 | 
-
-
 
 #### 3.1.3 任务状态汇报(Worker -> Server)
 
@@ -242,8 +238,6 @@ Server响应
 | ------- | ---- | ---- | ---- | ------ | 
 | success | bool | T    |      | 是否请求成功 | 
 
-
-
 #### 3.1.4 日志写入(Worker -> LogServer)
 
 Worker请求
@@ -260,8 +254,6 @@ LogServer响应
 | 字段      | 类型   | 必选   | 默认值  | 描述     | 
 | ------- | ---- | ---- | ---- | ------ | 
 | success | bool | T    |      | 是否请求成功 | 
-
-
 
 #### 3.1.5 日志读取(RestServer -> LogServer)
 
@@ -282,8 +274,6 @@ LogServer响应
 | log    | string | F    |      | 日志内容         | 
 | offset | int64  | T    |      | 当前日志内容的字节偏移量 | 
 
-
-
 #### 3.1.6 心跳汇报(Worker -> Server)
 
 Worker请求
@@ -299,8 +289,6 @@ Server响应
 | 字段      | 类型   | 必选   | 默认值  | 描述     | 
 | ------- | ---- | ---- | ---- | ------ | 
 | success | bool | T    |      | 是否请求成功 | 
-
-
 
 #### 3.1.7 Worker上下线(RestServer -> Worker)
 
@@ -341,8 +329,6 @@ Method：POST
 | jobType  | string | F    | hive | 任务类型      | 
 | groupId  | int    | F    | 1    | Worker组ID | 
 
-
-
 #### 3.2.2 获取日志
 
 接口：/server/querylog
@@ -356,8 +342,6 @@ Method：POST
 | name  | string | T    |      | 应用名称   | 
 | jobId | long   | T    |      | 任务ID   | 
 
-
-
 #### 3.2.3 获取任务状态
 
 接口：/server/jobstatus
@@ -370,8 +354,6 @@ Method：POST
 | time  | long   | T    |      | 时间戳    | 
 | name  | string | T    |      | 应用名称   | 
 | jobId | long   | T    |      | 任务ID   | 
-
-
 
 #### 3.2.4 获取查询结果
 
@@ -388,8 +370,6 @@ Method：POST
 | offset | long   | F    | 0     | 字节偏移量  | 
 | lines  | int    | F    | 10000 | 日志读取行数 | 
 
-
-
 #### 3.2.5 终止任务
 
 接口：/server/killjob
@@ -403,8 +383,6 @@ Method：POST
 | name  | string | T    |      | 应用名称   | 
 | jobId | long   | T    |      | 任务ID   | 
 
-
-
 #### 3.2.6 下载查询结果
 
 接口：/server/result/download
@@ -417,8 +395,6 @@ Method：GET
 | time  | long   | T    |      | 时间戳    | 
 | name  | string | T    |      | 应用名称   | 
 | jobId | long   | T    |      | 任务ID   | 
-
-
 
 #### 3.2.7 Worker上下线
 
@@ -434,8 +410,6 @@ Method：POST
 | ip     | string | T    |      | Worker IP地址  | 
 | port   | int    | T    |      | Worker 端口    | 
 | status | int    | T    |      | 状态：1-上线，0-下线 | 
-
-
 
 ## 四、数据结构设计
 
