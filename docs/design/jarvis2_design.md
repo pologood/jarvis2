@@ -99,20 +99,20 @@
 
 #### 2.3.2 依赖调度器(Dependency-based Scheduler)
 
-依赖调度器负责调度基于依赖触发的任务，支持调度周期不相同的依赖配置。
+核心调度器通过观察者模式，以监听事件的方式进行任务调度、依赖触发等操作
 
-![依赖调度器](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/dependency_based_scheduler.png)
+![核心调度器](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/dependency_based_scheduler_new.png)
 
-依赖调度器内部维护任务的依赖满足条件，并采用事件方式触发任务。当某个任务执行完成后，依赖调度器收到消息通知，根据完成任务的ID和状态更新依赖关系数据，然后检查依赖此任务的任务是否所有依赖任务都已成功，若满足则触发，并重置依赖任务的状态等待下次触发。
-
-- 当依赖任务的状态无法通知时（如：重跑任务），依赖调度器从数据库中获取依赖任务的状态
-- 任务的依赖修改时，更新依赖关系数据
+- 当系统启动的时候，会把包括job依赖关系的元数据信息，从数据库load到内存中来。  
+- 定时任务通过时间调度器触发scheduleEvent，发送给observer，listener监听到scheduleEvent，会开始调度任务。
+- 当任务完成，发送successEvent给observer，listener监听到successEvent，同时计算自己依赖的任务是否都完成了，如果完成了，给observer发送scheduleEvent。
+- 如果任务失败，发送failureEvent给observer，listener通过自定义的最大失败重试次数，判断任务是否还可以重试，如果还可以重试，给observer发送scheduleEvent。
 
 
 
 #### 2.3.3 任务分发器(Job Dispatcher)
 
-任务分发器负责按照分发策略将Server端的任务发送给相应的Worker执行，以实现负载均衡。
+server通过push的方式，由任务分发器按照可扩展的分发策略，主动推送任务给某一个worker执行任务。
 
 - 任务分发策略可自定义扩展
 - 默认的分发策略：轮询分发策略(RoundRobin)、随机分发策略(Random)
