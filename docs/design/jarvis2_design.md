@@ -89,8 +89,8 @@
 
 ![调度器](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/core_scheduler.png)
 
-如上图所示，TimeScheduler负责进行定时任务的调度，DAGScheduler负责依赖任务的调度，TaskScheduler是真正的调度器，负责执行任务，反馈任务结果和状态。
-三个Scheduler协同工作，共同完成调度系统调度的调度工作。
+如上图所示，TimeScheduler负责进行定时任务的调度，DAGScheduler负责依赖任务的调度，TaskScheduler是真正的调度器，负责执行任务、反馈任务结果和状态。
+三个Scheduler协同工作，共同完成调度系统的调度工作。
 
 
 #### 2.3.2 时间调度器(TimeScheduler)
@@ -111,7 +111,7 @@
 
 依赖调度器通过观察者模式，以监听事件的方式进行依赖触发等操作  
 - jobListener是一个job的监听器，用来监听一个job的事件，内部维护了job的依赖关系等原信息。 
-- Observer是一个单例，负责添加、删除jobListener，以及通知事件给jobListener。observer维护整准备进入调度的依赖任务。
+- Observer是一个单例，负责添加、删除jobListener，以及通知事件给jobListener。observer只维护准备进入调度的依赖任务。
 
 ![核心调度器](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/dependency_based_scheduler_new.png)
 
@@ -128,7 +128,7 @@
 
 #### 2.3.4 任务调度器(TaskScheduler)
 
-TaskScheduler中最主要的模块是任务分发器。
+TaskScheduler具体模块图入上图，其中最主要的模块是任务分发器。
 server通过push的方式，由任务分发器按照可扩展的分发策略，主动推送任务给某一个worker执行任务。
 
 - 任务分发策略可自定义扩展
@@ -170,10 +170,11 @@ Hive任务：YarnStrategy
 
 
 #### 2.4.3 任务重跑流程
+调度系统的server不提供任务重跑的逻辑，由外部系统自己计算需要重跑的任务，然后传给调度系统。
 
 ![任务重跑流程](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/job_rerun.png)  
 
-如上图，当重跑任务的时候，需要先判断是否是依赖任务还是定时任务，如果是定时任务，加入到定时任务调度中。如果是依赖任务，需要判断是否有重跑前置依赖任务，如果重跑，和正常流程一样，加入核心调度器，由前置依赖触发。如果没有重跑前置依赖，那么需要通过计算其所有前置依赖任务的运行周期，然后加入到定时任务调度中。
+如上图所示是外部系统重跑的逻辑，当重跑任务的时候，需要先判断是否是依赖任务还是定时任务，如果是定时任务，加入到调度系统的TimeScheduler中。如果是依赖任务，需要判断是否有重跑前置依赖任务，如果重跑，和正常流程一样，由前置依赖触发（参考2.3.3节）。如果没有重跑前置依赖，那么需要通过计算其所有前置依赖任务的运行周期，然后加入到TimeScheduler中。
 
 比如任务b依赖于任务a1，a2，a3，T表示运行周期，则  T(b) = min(T(a1), T(a2), T(a3))
 
@@ -202,7 +203,7 @@ Hive任务：YarnStrategy
 - 其它：guava
 
 
-### QA
+### FAQ
 - 系统启动的时候做什么？
 
   > worker启动的时候会向master发送心跳，同时扫描本地文件系统，发现有任务没有发送成功的，再次发送。
@@ -211,13 +212,17 @@ Hive任务：YarnStrategy
   
 - 任务如何调度？
 
-  > 任务分为定时任务和依赖任务，定时通过配置crontab表达式定义自己的启动时间，依赖任务通过配置依赖关系，当前置依赖都满足的时候触发依赖任务。
+  > 任务分为定时任务和依赖任务，定时任务通过配置crontab表达式定义自己的启动时间，依赖任务通过配置依赖关系，当前置依赖都满足的时候触发依赖任务。
   
-  > 当系统启动的时候，会把定时任务生成当前执行计划表，把定时任务和依赖任务都加入核心调度器中。
+  > 当系统启动的时候，会把所有任务的原信息load到内存中，如果任务配置了crontab表达式，则加入TimeScheduler中。
   
-  > 执行计划表中的任务，通过一个调度线程不断轮询是否满足调度时间，如果满足则向核心调度器发送scheduleEvent。
+  > TimeScheduler是一个时间调度器，满足时间就会提交任务到TaskScheduler中。
   
-  > 核心调度器通过观察者模式接收事件，当收到scheduleEvent，会把任务放入执行队列中。当收到successEvent的时候，会轮询所有监听者，当前置依赖任务有这个成功任务时，更新依赖状态，当所有依赖都满足的时候，给核心调度器发送scheduleEvent。
+  > TaskScheduler内部维护一个executeQueue和jobDispatcher，jobDispatcher并发地从executeQueue中取任务执行。
+  
+  > 当jobDispatcher取到一个任务，就会计算这个任务的孩子任务，并注册到DAGScheduler的observer中。
+  
+  > 当某个任务执行成功，TaskScheduler的statusManager就会向DAGScheduler发送successEvent，某个jobListener监听到自己的依赖有这个成功的任务时，就会更新自己依赖任务的状态，当依赖全部满足时，就会提交任务到TaskScheduler中。
 
 - 任务如何分发？
 
@@ -231,11 +236,11 @@ Hive任务：YarnStrategy
   
 - 任务的生命周期和持久化？
 
-  > 任务状态：等待中（WAITING），池子中(POOLING)，运行中(RUNNING)，成功（SUCCESS），失败(FAILED)，接收（ACCEPTED），拒绝(REJECTED)
+  > 任务状态：等待中（WAITING），准备中(READY)，运行中(RUNNING)，成功（SUCCESS），失败(FAILED)，接收（ACCEPTED），拒绝(REJECTED)
   
   > 任务持久化在数据库中，每一次更新任务状态都确保能更新到数据库中
   
-  > 当任务生成执行计划的时候，任务初始状态为WAITING。当任务进入执行队列时，状态更新为POOLING。当任务被work接收时，状态更新为ACCEPTED，反之更新为REJECTED。当worker开始运行任务的时候，状态更新为RUNNING。当任务运行成功后，状态更新为SUCCESS，反之更新为FAILED。
+  > 当任务生成执行计划的时候，任务初始状态为WAITING。当任务进入执行队列时，状态更新为READY。当任务被work接收时，状态更新为ACCEPTED，反之更新为REJECTED。当worker开始运行任务的时候，状态更新为RUNNING。当任务运行成功后，状态更新为SUCCESS，反之更新为FAILED。
 
 ## 三、接口设计
 
