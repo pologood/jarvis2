@@ -83,7 +83,17 @@
 
 ### 2.3 模块设计
 
-#### 2.3.1 时间调度器(Time-based Scheduler)
+#### 2.3.1 调度模块总体设计
+
+调度模块总体分为TimeScheduler，DAGScheduler和TaskScheduler
+
+![调度器](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/core_scheduler.png)
+
+如上图所示，TimeScheduler负责进行定时任务的调度，DAGScheduler负责依赖任务的调度，TaskScheduler是真正的调度器，负责执行任务，反馈任务结果和状态。
+三个Scheduler协同工作，共同完成调度系统调度的调度工作。
+
+
+#### 2.3.2 时间调度器(TimeScheduler)
 
 时间调度器负责调度基于时间触发的任务，支持Cron表达式时间配置。
 
@@ -97,21 +107,28 @@
 
 
 
-#### 2.3.2 依赖调度器(Dependency-based Scheduler)
+#### 2.3.3 依赖调度器(DAGScheduler)
 
-核心调度器通过观察者模式，以监听事件的方式进行任务调度、依赖触发等操作
+依赖调度器通过观察者模式，以监听事件的方式进行依赖触发等操作  
+- jobListener是一个job的监听器，用来监听一个job的事件，内部维护了job的依赖关系等原信息。 
+- Observer是一个单例，负责添加、删除jobListener，以及通知事件给jobListener。observer维护整准备进入调度的依赖任务。
 
 ![核心调度器](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/dependency_based_scheduler_new.png)
 
-- 当系统启动的时候，会把包括job依赖关系的元数据信息，从数据库load到内存中来。  
-- 定时任务通过时间调度器触发scheduleEvent，发送给observer，listener监听到scheduleEvent，会开始调度任务。
-- 当任务完成，发送successEvent给observer，listener监听到successEvent，同时计算自己依赖的任务是否都完成了，如果完成了，给observer发送scheduleEvent。
-- 如果任务失败，发送failureEvent给observer，listener通过自定义的最大失败重试次数，判断任务是否还可以重试，如果还可以重试，给observer发送scheduleEvent。
+如上图所示
+ > 当TimeScheduler提交任务给TaskScheduler之后，TaskScheduler会计算当前任务的孩子（即后置任务），把孩子注册到DAGScheduler中的observer中。
+ 
+ > 当某个任务执行完成，TaskScheduler中的statusManager会发送successEvent给DAGScheduler。jobListener监听到这个事件后，判断它是否是自己需要的前置依赖，如果是则更新前置依赖状态。当前置依赖全部完成了，提交任务到TaskScheduler中。
+ 
+ > 当依赖任务提交到TaskScheduler中后，就会开始调度，jobDispatcher会发送scheduledEvent给DAGScheduler，具体的某一个jobListener监听到这个事件的jobid和自己一样，就会把自己从observer中注销掉。同时jobDispatcher还会计算这个任务的孩子，注册到DAGScheduler中的observer中。
+ 
+ > TaskManager中的statusManager自己处理失败重试策略
 
 
 
-#### 2.3.3 任务分发器(Job Dispatcher)
+#### 2.3.4 任务调度器(TaskScheduler)
 
+TaskScheduler中最主要的模块是任务分发器。
 server通过push的方式，由任务分发器按照可扩展的分发策略，主动推送任务给某一个worker执行任务。
 
 - 任务分发策略可自定义扩展
@@ -123,7 +140,7 @@ server通过push的方式，由任务分发器按照可扩展的分发策略，�
 
 	
 
-#### 2.3.4 任务接受策略(Job Accept Strategy)
+#### 2.3.5 任务接受策略(Job Accept Strategy)
 
 任务接受策略用于控制Worker或任务后端执行系统的负载，Worker根据负载情况决定是否接受Server发送的任务。
 
