@@ -65,6 +65,8 @@
   
   > 无状态，可以配置多个，通过nginx进行负载均衡
 
+  > logserver和server分离开来的好处是因为logserver是无状态的，可以配置多个，负载均衡地进行日志的读写。
+
   > 接收Worker发送的日志，将日志写入相应的存储系统中（如：本地文件系统、分布式文件系统、数据库）
   > 
   > 接收Rest Server的日志读请求，将读取的日志返回
@@ -72,6 +74,8 @@
 - RestServer
   
   > 无状态，可以配置多个，通过nginx进行负载均衡
+
+  > restServer和server分开来的好处和logserver一样。
   
   > 与Server、Worker、LogServer进行数据交互，提供统一的REST API（任务调度、任务修改、状态查询、日志查询、Worker的上下线等）
   
@@ -116,19 +120,19 @@
 #### 2.3.3 依赖调度器(DAGScheduler)
 
 依赖调度器通过观察者模式，以监听事件的方式进行依赖触发等操作  
-- jobListener是一个job的监听器，用来监听一个job的事件，内部维护了job的依赖关系等原信息。 
+- JobListener是一个job的监听器，用来监听一个job的事件，内部维护了job的依赖关系等原信息。 
 - Observer是一个单例，负责添加、删除jobListener，以及通知事件给jobListener。observer只维护准备进入调度的依赖任务。
 
 ![核心调度器](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/dependency_based_scheduler_new.png)
 
 如上图所示
- > 当TimeScheduler提交任务给TaskScheduler之后，TaskScheduler会计算当前任务的孩子（即后置任务），把孩子注册到DAGScheduler中的observer中。
+当TimeScheduler提交任务给TaskScheduler之后，TaskScheduler会获取当前任务的孩子任务，把孩子注册到DAGScheduler中的observer中。
  
- > 当某个任务执行完成，TaskScheduler中的statusManager会发送successEvent给DAGScheduler。jobListener监听到这个事件后，判断它是否是自己需要的前置依赖，如果是则更新前置依赖状态。当前置依赖全部完成了，提交任务到TaskScheduler中。
+当某个任务执行完成，TaskScheduler中的statusManager会发送successEvent给DAGScheduler。jobListener监听到这个事件后，判断它是否是自己需要的前置依赖，如果是则更新前置依赖状态。当前置依赖全部完成了，提交任务到TaskScheduler中。
  
- > 当依赖任务提交到TaskScheduler中后，就会开始调度，jobDispatcher会发送scheduledEvent给DAGScheduler，具体的某一个jobListener监听到这个事件的jobid和自己一样，就会把自己从observer中注销掉。同时jobDispatcher还会计算这个任务的孩子，注册到DAGScheduler中的observer中。
+当依赖任务提交到TaskScheduler中后，就会开始调度，jobDispatcher会发送scheduledEvent给DAGScheduler，具体的某一个jobListener监听到这个事件的jobid和自己一样，就会把自己从observer中注销掉。同时jobDispatcher还会去获取这个任务的孩子任务，把孩子注册到DAGScheduler中的observer中。
  
- > TaskManager中的statusManager自己处理失败重试策略
+TaskManager中的statusManager自己处理失败重试策略
 
 
 
@@ -180,9 +184,12 @@ Hive任务：YarnStrategy
 
 ![任务重跑流程](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/job_rerun.png)  
 
-如上图所示是外部系统重跑的逻辑，当重跑任务的时候，需要先判断是否是依赖任务还是定时任务，如果是定时任务，加入到调度系统的TimeScheduler中。如果是依赖任务，需要判断是否有重跑前置依赖任务，如果重跑，和正常流程一样，由前置依赖触发（参考2.3.3节）。如果没有重跑前置依赖，那么需要通过计算其所有前置依赖任务的运行周期，然后加入到TimeScheduler中。
+如上图所示是外部系统重跑的逻辑
+- 1. 当重跑任务的时候，需要先判断是否是依赖任务还是定时任务。
+- 2. 如果是定时任务，加入到调度系统的TimeScheduler中。
+- 3. 如果是依赖任务，需要判断是否有重跑前置依赖任务，如果重跑，和正常流程一样，由前置依赖触发（参考2.3.3节）。如果没有重跑前置依赖，那么需要通过计算其所有前置依赖任务的运行周期，然后加入到TimeScheduler中。
 
-比如任务b依赖于任务a1，a2，a3，T表示运行周期，则  T(b) = min(T(a1), T(a2), T(a3))
+针对第3点，比如任务b依赖于任务a1，a2，a3，T表示运行周期，则  T(b) = min(T(a1), T(a2), T(a3))
 
 
 
@@ -192,9 +199,9 @@ Hive任务：YarnStrategy
 
 如上图，当修改任务的内容的时候，只需要修改数据库中的内容，不会影响调度逻辑。调度系统不会在内存中维护任务的执行内容，每次会去数据库中动态拿。
 
-当修改定时任务的执行时间时，会把旧的执行计划删除，同时添加新的执行计划。
+当修改定时任务的执行时间时，需要把TimeScheduler中对应的任务删除，再重新添加。
 
-当修改依赖任务的依赖关系时，只需要把内存中维护的任务原信息中依赖关系修改就行，也不会影响调度逻辑。
+当修改依赖任务的依赖关系时，需要修改内存中维护的任务原信息中依赖关系，并重新计算对应的父亲和孩子。（如果必要的话这里要做环路检测）
 
 
 
@@ -214,19 +221,19 @@ Hive任务：YarnStrategy
 
   > worker启动的时候会向master发送心跳，同时扫描本地文件系统，发现有任务没有发送成功的，再次发送。
   
-  > master启动的时候，接收worker发送过来的心跳，如果通过权限校验则把worker加入workerManager中。同时从DB load任务原信息、执行计划等信息，在内存中恢复执行计划和任务原信息。
+  > master启动的时候，接收worker发送过来的心跳，如果通过权限校验则把worker加入workerManager中。同时从DB load任务原信息，在内存中计算任务的孩子和父亲，并把定时任务加入到TimeScheduler中。
   
 - 任务如何调度？
 
   > 任务分为定时任务和依赖任务，定时任务通过配置crontab表达式定义自己的启动时间，依赖任务通过配置依赖关系，当前置依赖都满足的时候触发依赖任务。
   
-  > 当系统启动的时候，会把所有任务的原信息load到内存中，如果任务配置了crontab表达式，则加入TimeScheduler中。
+  > 当系统启动的时候，会把所有任务的原信息从数据库中load到内存中来，并计算任务的孩子和父亲，维护在内存中。如果任务配置了crontab表达式，则加入TimeScheduler中。
   
   > TimeScheduler是一个时间调度器，满足时间就会提交任务到TaskScheduler中。
   
   > TaskScheduler内部维护一个executeQueue和jobDispatcher，jobDispatcher并发地从executeQueue中取任务执行。
   
-  > 当jobDispatcher取到一个任务，就会计算这个任务的孩子任务，并注册到DAGScheduler的observer中。
+  > 当jobDispatcher取到一个任务，就会获取这个任务的孩子是谁，然后把孩子注册到DAGScheduler的observer中。
   
   > 当某个任务执行成功，TaskScheduler的statusManager就会向DAGScheduler发送successEvent，某个jobListener监听到自己的依赖有这个成功的任务时，就会更新自己依赖任务的状态，当依赖全部满足时，就会提交任务到TaskScheduler中。
 
@@ -243,6 +250,8 @@ Hive任务：YarnStrategy
 - 任务的生命周期和持久化？
 
   > 任务状态：等待中（WAITING），准备中(READY)，运行中(RUNNING)，成功（SUCCESS），失败(FAILED)，接收（ACCEPTED），拒绝(REJECTED)
+  
+  > 特别的：任务从server提交到client端，还有个隐含的状态，提交中(SUBMITTING)，但是这个状态极其短暂，发过去之后不是接收就是拒绝，所以没有持久化在数据库中。
   
   > 任务持久化在数据库中，每一次更新任务状态都确保能更新到数据库中
   
