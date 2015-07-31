@@ -34,6 +34,8 @@
 
 #### 2.2.1 系统组成
 
+![系统设计](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/server_topology.png)
+
 - Server
   
   > 主要由调度器（时间调度器、依赖调度器）、执行队列、任务分发器组成
@@ -61,11 +63,15 @@
   
 - LogServer
   
+  > 无状态，可以配置多个，通过nginx进行负载均衡
+
   > 接收Worker发送的日志，将日志写入相应的存储系统中（如：本地文件系统、分布式文件系统、数据库）
   > 
   > 接收Rest Server的日志读请求，将读取的日志返回
   
 - RestServer
+  
+  > 无状态，可以配置多个，通过nginx进行负载均衡
   
   > 与Server、Worker、LogServer进行数据交互，提供统一的REST API（任务调度、任务修改、状态查询、日志查询、Worker的上下线等）
   
