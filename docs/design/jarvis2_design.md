@@ -257,6 +257,16 @@ Hive任务：YarnStrategy
   
   > 当任务生成执行计划的时候，任务初始状态为WAITING。当任务进入执行队列时，状态更新为READY。当任务被work接收时，状态更新为ACCEPTED，反之更新为REJECTED。当worker开始运行任务的时候，状态更新为RUNNING。当任务运行成功后，状态更新为SUCCESS，反之更新为FAILED。
 
+- 任务如何标识？
+  
+  > 表结构设计中，主要有job表(任务的内容表)，task表(任务的配置表，在job表基础上增加crontab)，plan表(任务每次的执行表)，所以在调度系统的数据结构中，有taskid和planid两个字段。
+
+  > 因为任务支持重试策略，还有attemptid。
+  
+  > taskid，planid和attemptid在调度系统中分成三个字段存储，这样和存成一个字段的好处是，每次新增一个planid或者attemptid，不需要先split。
+  
+  > 最终反映在jobname上，jobname = originjobname_taskid_planid_attemptid，这样可以唯一标识一个job，在yarn上观察和kill都很方便，也支持现有bgmonitor通过jobname唯一标识一个任务的需求。
+
 ## 三、接口设计
 
 ### 3.1 内部接口
