@@ -229,7 +229,8 @@ Hive任务：YarnStrategy
 
 ![Executor交互流程](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/job_executor.png)
 
-
+Job是一个抽象类，包括preExecute()、execute()、postExecute()3个抽象方法，根据各自需求实现这些方法以此来支持不同类型的任务，其中JobContext包含了任务运行参数，如：ID、名称、类型以及其它扩展参数等。
+Server将任务提交至Worker，然后Worker分别先后执行preExecute()、execute()、postExecute()方法，并且Worker在执行前后会向Server汇报任务状态，任务运行过程中生成的日志由LogCollector发送给LogServer，最终由LogServer保存至存储系统中(可以是HDFS、HBase等)。
 
 ### 2.5 涉及技术
 
