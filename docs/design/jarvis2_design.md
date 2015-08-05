@@ -570,12 +570,20 @@ Method：POST
 
 DAGScheduler通过观察者模式，由事件触发依赖调度
 
-#### 4.4.1 Event设计
+#### 4.1.1 Event设计
 
 ![mvc事件](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/uml_mvc_event.png)
 
-#### 4.4.2 Observable和Observer设计
+如图所示，Event是一个接口，DAGEvent是一个抽象类，其子类有SuccessEvent,FailureEvent,ScheduledEvent等。DAGEvent中主要有两个成员，jobid和planid。
+
+#### 4.1.2 Observable和Observer设计
 
 ![mvc事件](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/uml_mvc_DAGScheduler.png)
+
+如图所示，Observable是一个接口，相当于观察者模式中的主题，Listener是一个接口是观察者模式中的观察者。
+
+Observable提供注册、移除、通知观察者的接口。EventBusObservable是一个抽象类，是基于google EventBus观察者模式中的主题。DAGScheduler是具体的实现类。
+
+Listener可以有多种实现，订阅继承Event接口的事件进行处理。
 
 ## 五、系统容错设计
