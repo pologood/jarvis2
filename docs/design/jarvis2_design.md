@@ -139,7 +139,7 @@
 
 - Observer是一个单例，负责添加、删除jobListener，以及通知事件给jobListener。observer只维护准备进入调度的依赖任务。
 
-![核心调度器](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/dependency_based_scheduler_new.png)
+![依赖调度器](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/dependency_based_scheduler_new.png)
 
 如上图所示
 
@@ -566,6 +566,16 @@ Method：POST
 
 ## 四、数据结构设计
 
+### 4.1 DAG调度器设计
 
+DAGScheduler通过观察者模式，由事件触发依赖调度
+
+#### 4.4.1 Event设计
+
+![mvc事件](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/uml_mvc_event.png)
+
+#### 4.4.2 Observable和Observer设计
+
+![mvc事件](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/uml_mvc_DAGScheduler.png)
 
 ## 五、系统容错设计
