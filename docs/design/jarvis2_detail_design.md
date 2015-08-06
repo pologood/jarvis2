@@ -108,7 +108,9 @@ RandomJobDispatcher：随机生成一个Worker数以内的整数作为Worker索�
 
 ### 1.4 service模块设计
 
-### 1.5 job模块设计
+### 1.5 Job模块设计
+
+![Job](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/uml_job.png)
 
 ## 二、流程设计
 
