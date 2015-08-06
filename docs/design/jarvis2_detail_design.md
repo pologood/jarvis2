@@ -32,51 +32,97 @@
 
 ## 三、内部接口设计
 
-Server、Worker、LogServer、RestServer之间的通信接口均采用Protocol Buffers。
+Server、Worker、LogServer、RestServer之间的通信均采用Netty、Protocol Buffers。
 
 
-### 3.1 提交任务(Server -> Worker)
+### 3.1 提交任务
 
-Server请求
+- RestServer -> Server
+
+请求:
 
 | 字段         | 类型     | 必选   | 默认值  | 描述        | 
-| :--------- | ------ | ---- | ---- | --------- | 
-| job_id     | int64  | T    |      | 任务ID      | 
-| job_name   | string | T    |      | 任务名称      | 
-| app_name   | string | T    |      | 应用名称      | 
+| :--------- | ------ | ---- | ---- | --------- |
+| job_name   | string | T    |      | 任务名称      |
+| cron_expression   | string | F    |      | cron表达式，如：0 0 23 * * ?      | 
+| dependency_jobids | int32 | F    |      | 依赖任务ID，可以多个      |  
+| app_name   | string | T    |      | 应用名称，如：XRay      | 
 | app_key    | string | T    |      | 应用授权Key   | 
-| user       | string | T    |      | 用户名       | 
-| job_type   | string | T    |      | 任务类型      | 
+| user       | string | T    |      | 提交任务的用户名称 | 
+| job_type   | string | T    |      | 任务类型，如：hive、shell、mapreduce      | 
 | command    | string | T    |      | 执行命令      | 
 | group_id   | int32  | T    |      | Worker组ID | 
-| priority   | int32  | F    | 1    | 优先级       | 
-| parameters | string | F    |      | 扩展参数      | 
+| priority   | int32  | F    | 1    | 任务优先级，取值范围1-10。后端执行系统可根据此值映射成自己对应的优先级      | 
+| parameters | map | F    |      | 扩展参数，用于支持不同类型任务执行需要的额外参数，如：权限验证等      | 
 
-Worker响应
+响应:
 
 | 字段      | 类型     | 必选   | 默认值  | 描述          | 
 | ------- | ------ | ---- | ---- | ----------- | 
 | job_id  | int64  | F    | -1   | 任务ID        | 
-| accept  | bool   | T    |      | 是否被Worker接受 | 
-| message | string | F    |      |             | 
+| accept  | bool   | T    |      | 提交的任务是否被接受 | 
+| message | string | F    |      | 描述消息，用于说明任务被拒绝的原因。任务被接受时此字段为空            |
 
-### 3.2 终止任务(Server -> Worker)
 
-Server请求
+- Server -> Worker
+
+请求:
+
+| 字段         | 类型     | 必选   | 默认值  | 描述        | 
+| :--------- | ------ | ---- | ---- | --------- |
+| job_id   | string | T    |      | 任务名称      |
+| job_name   | string | T    |      | 任务名称      | 
+| app_name   | string | T    |      | 应用名称，如：XRay      |
+| user       | string | T    |      | 提交任务的用户名称 | 
+| job_type   | string | T    |      | 任务类型，如：hive、shell、mapreduce      | 
+| command    | string | T    |      | 执行命令      |
+| priority   | int32  | F    | 1    | 任务优先级，取值范围1-10。后端执行系统可根据此值映射成自己对应的优先级      | 
+| parameters | map | F    |      | 扩展参数，用于支持不同类型任务执行需要的额外参数，如：权限验证等      | 
+
+响应:
+
+| 字段      | 类型     | 必选   | 默认值  | 描述          | 
+| ------- | ------ | ---- | ---- | ----------- | 
+| job_id  | int64  | F    | -1   | 任务ID        | 
+| accept  | bool   | T    |      | 提交的任务是否被接受 | 
+| message | string | F    |      | 描述消息，用于说明任务被拒绝的原因。任务被接受时此字段为空            |
+
+### 3.2 终止任务
+
+- RestServer -> Server
+
+请求：
 
 | 字段     | 类型    | 必选   | 默认值  | 描述   | 
 | ------ | ----- | ---- | ---- | ---- | 
 | job_id | int64 | T    |      | 任务ID | 
 
-Worker响应
+响应：
 
 | 字段      | 类型   | 必选   | 默认值  | 描述     | 
 | ------- | ---- | ---- | ---- | ------ | 
 | success | bool | T    |      | 是否终止成功 | 
 
-### 3.3 任务状态汇报(Worker -> Server)
+- Server -> Worker
 
-Worker请求
+请求：
+
+| 字段     | 类型    | 必选   | 默认值  | 描述   | 
+| ------ | ----- | ---- | ---- | ---- | 
+| job_id | int64 | T    |      | 任务ID | 
+
+响应：
+
+| 字段      | 类型   | 必选   | 默认值  | 描述     | 
+| ------- | ---- | ---- | ---- | ------ | 
+| success | bool | T    |      | 是否终止成功 | 
+
+
+### 3.3 任务状态汇报
+
+- Worker -> Server
+
+请求：
 
 | 字段        | 类型    | 必选   | 默认值  | 描述   | 
 | --------- | ----- | ---- | ---- | ---- | 
@@ -84,32 +130,36 @@ Worker请求
 | status    | int32 | F    | -1   | 状态   | 
 | timestamp | int64 | F    | 0    | 时间戳  | 
 
-Server响应
+响应：
 
 | 字段      | 类型   | 必选   | 默认值  | 描述     | 
 | ------- | ---- | ---- | ---- | ------ | 
 | success | bool | T    |      | 是否请求成功 | 
 
-### 3.4 日志写入(Worker -> LogServer)
+### 3.4 日志写入
 
-Worker请求
+- Worker -> LogServer
+
+请求：
 
 | 字段     | 类型     | 必选   | 默认值  | 描述                 | 
 | ------ | ------ | ---- | ---- | ------------------ | 
 | job_id | int64  | T    |      | 任务ID               | 
 | log    | string | T    |      | 日志内容               | 
-| type   | int32  | T    |      | 日志类型：stdout、stderr | 
+| type   | int32  | T    |      | 日志类型：1-stdout、2-stderr | 
 | is_end | bool   | T    |      | 日志写请求是否结束          | 
 
-LogServer响应
+响应：
 
 | 字段      | 类型   | 必选   | 默认值  | 描述     | 
 | ------- | ---- | ---- | ---- | ------ | 
 | success | bool | T    |      | 是否请求成功 | 
 
-### 3.5 日志读取(RestServer -> LogServer)
+### 3.5 日志读取
 
-RestServer请求
+- RestServer -> LogServer
+
+请求:
 
 | 字段     | 类型    | 必选   | 默认值  | 描述                 | 
 | ------ | ----- | ---- | ---- | ------------------ | 
@@ -118,7 +168,7 @@ RestServer请求
 | offset | int64 | F    | 0    | 日志内容的字节偏移量         | 
 | lines  | int32 | F    | 100  | 日志读取的行数            | 
 
-LogServer响应
+响应:
 
 | 字段     | 类型     | 必选   | 默认值  | 描述           | 
 | ------ | ------ | ---- | ---- | ------------ | 
@@ -126,25 +176,45 @@ LogServer响应
 | log    | string | F    |      | 日志内容         | 
 | offset | int64  | T    |      | 当前日志内容的字节偏移量 | 
 
-### 3.6 心跳汇报(Worker -> Server)
 
-Worker请求
+### 3.6 Worker注册
+
+- Worker -> Server
+
+请求：
 
 | 字段       | 类型     | 必选   | 默认值  | 描述          | 
 | -------- | ------ | ---- | ---- | ----------- | 
 | key      | string | T    |      | Worker授权Key | 
-| group_id | int32  | T    |      | Worker组ID   | 
+| group_id | int32  | T    |      | Worker组ID   |
+
+响应：
+
+| 字段      | 类型   | 必选   | 默认值  | 描述     | 
+| ------- | ---- | ---- | ---- | ------ | 
+| success | bool | T    |      | 是否注册成功 | 
+
+### 3.7 Worker心跳汇报
+
+- Worker -> Server
+
+请求：
+
+| 字段       | 类型     | 必选   | 默认值  | 描述          | 
+| -------- | ------ | ---- | ---- | ----------- |
 | job_num  | int32  | T    |      | 正在运行的任务数    | 
 
-Server响应
+响应：
 
 | 字段      | 类型   | 必选   | 默认值  | 描述     | 
 | ------- | ---- | ---- | ---- | ------ | 
 | success | bool | T    |      | 是否请求成功 | 
 
-### 3.7 Worker上下线(RestServer -> Worker)
+### 3.8 Worker上下线
 
-RestServer请求
+- RestServer -> Worker
+
+请求：
 
 | 字段      | 类型     | 必选   | 默认值  | 描述                  | 
 | ------- | ------ | ---- | ---- | ------------------- | 
@@ -152,114 +222,160 @@ RestServer请求
 | port    | int32  | T    |      | Worker组ID           | 
 | offline | bool   | T    |      | 状态：True-下线，False-上线 | 
 
-Worker响应
+响应：
 
 | 字段      | 类型   | 必选   | 默认值  | 描述     | 
 | ------- | ---- | ---- | ---- | ------ | 
 | success | bool | T    |      | 是否请求成功 | 
+
+### 3.9 任务状态查询
+
+- RestServer -> Server
+
+请求：
+
+| 字段      | 类型     | 必选   | 默认值  | 描述                  | 
+| ------- | ------ | ---- | ---- | ------------------- | 
+| job_id | int64   | T    |      | 任务ID | 
+
+响应：
+
+| 字段      | 类型   | 必选   | 默认值  | 描述     | 
+| ------- | ---- | ---- | ---- | ------ | 
+| status | int32 | T    |      | 状态 |
 
 ## 四、外部接口设计
 
 RestServer对外提供REST API。
 
 
-### 4.1 执行任务
+### 4.1 提交任务
 
-接口：/server/execute
+接口：/api/job/submit
 
 Method：POST
 
 | 字段       | 类型     | 必选   | 默认值  | 描述        | 
 | -------- | ------ | ---- | ---- | --------- | 
-| token    | string | T    |      | 接口调用口令    | 
-| time     | long   | T    |      | 时间戳       | 
-| name     | string | T    |      | 应用名称      | 
-| content  | string | T    |      | 执行命令      | 
-| jobName  | string | T    |      | 任务名称      | 
-| executor | string | T    |      | 用户名称      | 
-| jobType  | string | F    | hive | 任务类型      | 
-| groupId  | int    | F    | 1    | Worker组ID | 
+| app_name   | string | T    |      | 应用名称，如：XRay      | 
+| app_key    | string | T    |      | 应用授权Key   | 
+| job_name   | string | T    |      | 任务名称      |
+| cron_expression   | string | F    |      | cron表达式，如：0 0 23 * * ?      | 
+| dependency_jobids | int32 | F    |      | 依赖任务ID，可以多个      |  
+| user       | string | T    |      | 提交任务的用户名称 | 
+| job_type   | string | T    |      | 任务类型，如：hive、shell、mapreduce      | 
+| command    | string | T    |      | 执行命令      | 
+| group_id   | int32  | T    |      | Worker组ID | 
+| priority   | int32  | F    | 1    | 任务优先级，取值范围1-10。后端执行系统可根据此值映射成自己对应的优先级      | 
+| parameters | map | F    |      | 扩展参数，用于支持不同类型任务执行需要的额外参数，如：权限验证等      | 
 
-### 4.2 获取日志
+响应:
 
-接口：/server/querylog
+| 字段      | 类型     | 必选   | 默认值  | 描述          | 
+| ------- | ------ | ---- | ---- | ----------- | 
+| job_id  | int64  | F    | -1   | 任务ID        | 
+| accept  | bool   | T    |      | 提交的任务是否被接受 | 
+| message | string | F    |      | 描述消息，用于说明任务被拒绝的原因。任务被接受时此字段为空            |
 
-Method：POST
+### 4.2 读取日志
 
-| 字段    | 类型     | 必选   | 默认值  | 描述     | 
-| ----- | ------ | ---- | ---- | ------ | 
-| token | string | T    |      | 接口调用口令 | 
-| time  | long   | T    |      | 时间戳    | 
-| name  | string | T    |      | 应用名称   | 
-| jobId | long   | T    |      | 任务ID   | 
-
-### 4.3 获取任务状态
-
-接口：/server/jobstatus
-
-Method：POST
-
-| 字段    | 类型     | 必选   | 默认值  | 描述     | 
-| ----- | ------ | ---- | ---- | ------ | 
-| token | string | T    |      | 接口调用口令 | 
-| time  | long   | T    |      | 时间戳    | 
-| name  | string | T    |      | 应用名称   | 
-| jobId | long   | T    |      | 任务ID   | 
-
-### 4.4 获取查询结果
-
-接口：/server/result
-
-Method：POST
-
-| 字段     | 类型     | 必选   | 默认值   | 描述     | 
-| ------ | ------ | ---- | ----- | ------ | 
-| token  | string | T    |       | 接口调用口令 | 
-| time   | long   | T    |       | 时间戳    | 
-| name   | string | T    |       | 应用名称   | 
-| jobId  | long   | T    |       | 任务ID   | 
-| offset | long   | F    | 0     | 字节偏移量  | 
-| lines  | int    | F    | 10000 | 日志读取行数 | 
-
-### 4.5 终止任务
-
-接口：/server/killjob
-
-Method：POST
-
-| 字段    | 类型     | 必选   | 默认值  | 描述     | 
-| ----- | ------ | ---- | ---- | ------ | 
-| token | string | T    |      | 接口调用口令 | 
-| time  | long   | T    |      | 时间戳    | 
-| name  | string | T    |      | 应用名称   | 
-| jobId | long   | T    |      | 任务ID   | 
-
-### 4.6 下载查询结果
-
-接口：/server/result/download
+接口：/api/log
 
 Method：GET
 
 | 字段    | 类型     | 必选   | 默认值  | 描述     | 
 | ----- | ------ | ---- | ---- | ------ | 
-| token | string | T    |      | 接口调用口令 | 
-| time  | long   | T    |      | 时间戳    | 
-| name  | string | T    |      | 应用名称   | 
-| jobId | long   | T    |      | 任务ID   | 
+| app_name   | string | T    |      | 应用名称，如：XRay      | 
+| app_key    | string | T    |      | 应用授权Key   | 
+| job_id | int64 | T    |      | 任务ID               | 
+| type   | int32 | T    |      | 日志类型：stdout、stderr | 
+| offset | int64 | F    | 0    | 日志内容的字节偏移量         | 
+| lines  | int32 | F    | 100  | 日志读取的行数            |
 
-### 4.7 Worker上下线
+响应:
 
-接口：/server/clientstatus
+| 字段     | 类型     | 必选   | 默认值  | 描述           | 
+| ------ | ------ | ---- | ---- | ------------ | 
+| job_id | int64 | T    |      | 任务ID               | 
+| type   | int32 | T    |      | 日志类型：stdout、stderr | 
+| is_end | bool   | T    |      | 是否请求成功       | 
+| log    | string | F    |      | 日志内容         | 
+| offset | int64  | T    |      | 当前日志内容的字节偏移量 |
+
+### 4.3 下载日志
+
+接口：/api/log/download
+
+Method：GET
+
+| 字段    | 类型     | 必选   | 默认值  | 描述     | 
+| ----- | ------ | ---- | ---- | ------ |
+| app_name   | string | T    |      | 应用名称，如：XRay      | 
+| app_key    | string | T    |      | 应用授权Key   |
+| job_id | long   | T    |      | 任务ID   |
+| type   | int32 | T    |      | 日志类型：stdout、stderr | 
+
+响应：文件
+
+### 4.4 获取任务状态
+
+接口：/api/job/status
+
+Method：GET
+
+| 字段    | 类型     | 必选   | 默认值  | 描述     | 
+| ----- | ------ | ---- | ---- | ------ |
+| app_name   | string | T    |      | 应用名称，如：XRay      | 
+| app_key    | string | T    |      | 应用授权Key   |
+| job_id | long   | T    |      | 任务ID   | 
+
+响应：
+
+| 字段      | 类型   | 必选   | 默认值  | 描述     | 
+| ------- | ---- | ---- | ---- | ------ | 
+| job_id | long   | T    |      | 任务ID   | 
+| status | int32 | T    |      | 状态 |
+
+### 4.5 终止任务
+
+接口：/api/job/kill
+
+Method：DELETE
+
+| 字段    | 类型     | 必选   | 默认值  | 描述     | 
+| ----- | ------ | ---- | ---- | ------ |
+| app_name   | string | T    |      | 应用名称，如：XRay      | 
+| app_key    | string | T    |      | 应用授权Key   | 
+| job_id | long   | T    |      | 任务ID   | 
+
+响应：
+
+| 字段      | 类型   | 必选   | 默认值  | 描述     | 
+| ------- | ---- | ---- | ---- | ------ | 
+| job_id | long   | T    |      | 任务ID   | 
+| success | bool | T    |      | 是否终止成功 | 
+
+
+### 4.6 Worker上下线
+
+接口：/api/worker/status
 
 Method：POST
 
 | 字段     | 类型     | 必选   | 默认值  | 描述           | 
-| ------ | ------ | ---- | ---- | ------------ | 
-| token  | string | T    |      | 接口调用口令       | 
-| time   | long   | T    |      | 时间戳          | 
-| name   | string | T    |      | 应用名称         | 
+| ------ | ------ | ---- | ---- | ------------ |
+| app_name   | string | T    |      | 应用名称，如：XRay      | 
+| app_key    | string | T    |      | 应用授权Key   | 
 | ip     | string | T    |      | Worker IP地址  | 
 | port   | int    | T    |      | Worker 端口    | 
 | status | int    | T    |      | 状态：1-上线，0-下线 |
+
+响应：
+
+| 字段      | 类型   | 必选   | 默认值  | 描述     | 
+| ------- | ---- | ---- | ---- | ------ |
+| ip     | string | T    |      | Worker IP地址  | 
+| port   | int    | T    |      | Worker 端口    | 
+| success | bool | T    |      | 是否请求成功 | 
 
 ## 五、表结构设计
