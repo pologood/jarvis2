@@ -48,6 +48,26 @@ Listener可以有多种实现，订阅继承Event接口的事件进行处理。
 
 ##### 1.1.2.3 基于依赖策略的调度设计
 
+DAGScheduler中有一个成员JobDependencyStatus，用来维护当前任务的依赖的状态，其内部数据结构主要是Map<Integer,Map<Integer,Boolean>>, 表示Map<jobid,Map<taskid,status>>
+
+比如c依赖于任务a和b，a每小时跑4次，b每小时跑1次，最终生成的依赖状态表如下表：
+
+| jobid | taskid | 状态 |
+| ------| ------ | ---- |
+| joba  | taska1 |  T   | 
+| joba  | taska2 |  T   |
+| joba  | taska3 |  F   |  
+| joba  | taska4 |  T   | 
+| jobb  | taskb1 |  T   | 
+
+然后根据任务的依赖策略判定依赖是否满足，当前支持的依赖策略有：ANYONE,LASTONE,ALL
+
+- ANYONE表示b成功，a四次中任意一次成功都可以触发c;
+
+- LASTONE表示b成功，a四次中最后一次成功才可以触发c；
+
+- ALL表示b成功，a四次中全部成功才可以触发c；
+
 
 #### 1.1.3 任务调度器(TaskScheduler)
 
@@ -69,7 +89,7 @@ JobDispatcher主要接口有preSchedule, schedule, postSchedule，执行顺序�
 
 在schedule方法中，会开始调度任务，具体详情会在1.2节 dispatcher模块设计中介绍。
 
-在postScheduler方法中，会把自己的后置依赖任务根据任务依赖类型（DAG or Time+DAG）生成DAGListener或者TimeDAGListener，注册到DAGScheduler中。并且发送ScheduledEvent给DAGScheduler。
+在postScheduler方法中，会把自己的后置依赖任务根据任务依赖类型（DAG or Time+DAG）生成DAGListener或者TimeDAGListener，注册到DAGScheduler中。并且发送InitializeEvent和ScheduledEvent给DAGScheduler。
 
 
 ### 1.2 Job Dispatcher模块设计
