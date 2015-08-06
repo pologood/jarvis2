@@ -48,7 +48,7 @@ Listener可以有多种实现，订阅继承Event接口的事件进行处理。
 
 ##### 1.1.2.3 基于依赖策略的调度设计
 
-DAGScheduler中有一个成员JobDependencyStatus，用来维护当前任务的依赖的状态，其内部数据结构主要是Map<Integer,Map<Integer,Boolean>>, 表示Map<jobid,Map<taskid,status>>
+DAGScheduler中有一个成员JobDependencyStatus，用来维护当前任务的依赖的状态，其内部数据结构主要是Map\<Integer,Map\<Integer,Boolean>>, 表示Map\<jobid,Map\<taskid,status>>
 
 比如c依赖于任务a和b，a每小时跑4次，b每小时跑1次，最终生成的依赖状态表如下表：
 
