@@ -46,15 +46,22 @@ Observable提供注册、移除、通知观察者的接口。EventBusObservable�
 
 Listener可以有多种实现，订阅继承Event接口的事件进行处理。
 
-#### 1.1.3 基于依赖策略的调度设计
+##### 1.1.2.3 基于依赖策略的调度设计
 
 
-#### 2.3.4 任务调度器(TaskScheduler)
+#### 1.1.3 任务调度器(TaskScheduler)
+
+TaskScheduler是一个单例，负责任务的执行和状态结果的反馈。
 
 ![uml_TaskScheduler](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/uml_TaskScheduler.png)
 
-![flow_TaskScheduler](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/flow_TaskScheduler.png)
+如上图所示：
 
+TaskScheduler主要成员有ExecuteQueue, List<JobDispatcher>和statusManager，主要的接口是submitJob
+
+JobDispatcher主要接口有preSchedule, schedule, postSchedule，其主要流程图如下：
+
+![flow_TaskScheduler](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/flow_TaskScheduler.png)
 
 
 ### 1.2 dispatcher模块设计
