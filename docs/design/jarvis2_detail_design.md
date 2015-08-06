@@ -72,7 +72,17 @@ JobDispatcher主要接口有preSchedule, schedule, postSchedule，执行顺序�
 在postScheduler方法中，会把自己的后置依赖任务根据任务依赖类型（DAG or Time+DAG）生成DAGListener或者TimeDAGListener，注册到DAGScheduler中。并且发送ScheduledEvent给DAGScheduler。
 
 
-### 1.2 dispatcher模块设计
+### 1.2 Job Dispatcher模块设计
+
+![Job Dispatcher](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/jarvis2_detail_design.png)
+
+Job Dispatcher负责从Worker组中分配一个Worker，然后将任务发给此Worker执行。
+
+JobDispatcher接口中只有一个select方法，具体Worker分配逻辑在此方法中实现，以支持对不同分配策略的支持。默认已实现的有轮询分配(RoundRobinJobDispatcher)、随机分配(RandomJobDispatcher)。
+
+RoundRobinJobDispatcher：内部维护Worker的索引，分配完一个Worker后索引递增，当索引超过Worker数后归0从新开始计算，与索引位置对应的Worker即为此次任务分配的Worker。
+
+RandomJobDispatcher：随机生成一个Worker数以内的整数作为Worker索引，与此索引位置对应的Worker即为此次任务分配的Worker。
 
 ### 1.3 dao模块设计
 
