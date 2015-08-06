@@ -49,7 +49,7 @@
 | ------ | ------ | ---- | ---- | ------------ | ---- |
 | taskId    | int(11) | key|F    |      | taskId       | 
 | attemptId | int(11) |key  | F    |      |attemptID  |
-| jobId     | int(11) |  | F    |      | 关联JobID  |
+| jobId     | int(11) |  | F    |      | 关联JobID ，冗余字段 |
 | status    | tinyint |  | F    |      | task状态： 1:waittng；2:ready；3:running；4:success；5:failed；6:killed   | 
 
 
