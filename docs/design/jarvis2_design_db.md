@@ -7,9 +7,12 @@
 | ------ | ------ | ---- | ---- | ------------ | ---- |
 | jobId    | int(11) | key|F|   | 任务Id           | 
 | jobName  | string  |    |F|'' | 任务名称          | 
-| type     | string  |    |F|1  | 任务类型:1 hive；2:shell;3 java; 4:MR | 
+| type     | string  |    |F|1  | 任务类型 1：hive；2：shell；3：java； 4：MR； | 
 | content  | string |     |F|'' | 任务内容          | 
-| executor | string |     |F|'' | 执行者           | 
+| priorty  | tinyint |     |F|'' | 优先级          | 
+| workerGroupId  | int(11) |     |F|'' | worker组ID          | 
+| submitUser | string |     |F|'' | 提交用户           | 
+| executUser | string |     |F|'' | 执行用户           | 
 | createTime  | int(11)|     |F|0  |   创建时间      | 
 | updateTime  | int(11)|     |F|0  |   更新时间      | 
 
@@ -19,19 +22,19 @@
 | ------ | ------ | ---- | ---- | ------------ | ---- |
 | jobId  | int(11)   | key|F    |      | jobId           | 
 | preJobId  | int(11) |key  | F    |   0   | 前置JobId    | 
-| editor    | string  | | F    |   ''   | 设定者     | 
+| updateUser| string  | | F    |   ''   | 更新用户     | 
 | updateTime| int(11) | | F    | 0     |   更新时间      | 
 
 ### crontab表
 | 字段    | 类型  |  主键  | 是否为NULL | 默认值  | 描述           | 
 | ------ | ------ | ---- | ---- | ------------ | ---- |
 | cronId    | int(11) |key  | F    |      | cronId           | 
-| jobId     | int(11) | | F    |   0   | 关联jobId           | 
+| jobId     | int(11) | | F    |   0   | 所属jobId           | 
 | status    | tinyint |  | F    |   1   | 状态：0无效；1有效           | 
 | exp       | string  | | F    |   ''   | cron表达式           | 
 | startDate | int(8)  | | F    | 0     | 开始日期  YMD     | 
 | endDate   | int(8)  | | F    |  0    | 结束日期  YMD     | 
-| editor    | string  | | F    |   ''   | 设定者     | 
+| updateUser    | string  | | F    |   ''   | 更新用户     | 
 | updateTime| int(11) | | F    | 0     |   更新时间      | 
 
 
@@ -39,8 +42,10 @@
 | 字段    | 类型   |  主键   | 是否为NULL   | 默认值  | 描述           | 
 | ------ | ------ | ---- | ---- | ------------ | ---- |
 | taskId | int(11) |key|F    |      | taskId       | 
-| jobId   | int(11) |  | F    |      | 关联JobID          | 
+| jobId   | int(11) |  | F    |      | 所属JobID          | 
 | status  | tinyint | |F    |      | task状态： 1:waittng；2:ready；3:running；4:success；5:failed；6:killed   | 
+| submitUser | string |     |F|'' | 提交用户           | 
+| executUser | string |     |F|'' | 执行用户           | 
 | createTime  | int(11)|     |F|0  |   创建时间      | 
 | updateTime  | int(11)|     |F|0  |   更新时间      | 
 
@@ -49,7 +54,7 @@
 | ------ | ------ | ---- | ---- | ------------ | ---- |
 | taskId | int(11) |key|F    |      | taskId       | 
 | preTaskId   | int(11) |key  | F    |      | 前置taskID          | 
-| preFinishFlag  | tinyint | |F    |0      | 前置完成标记： 0:未完成 ；1：完成   | 
+| preFinishFlag  | tinyint | |F    |0      | 前置Task完成标记： 0:未完成 ；1：完成   | 
 | updateTime  | int(11)|     |F|0  |   更新时间      | 
 
 
@@ -58,7 +63,7 @@
 | ------ | ------ | ---- | ---- | ------------ | ---- |
 | taskId    | int(11) | key|F    |      | taskId       | 
 | attemptId | int(11) |key  | F    |      |attemptID  |
-| jobId     | int(11) |  | F    |      | 关联JobID ，冗余字段 |
+| jobId     | int(11) |  | F    |      | 所属JobID ，冗余字段 |
 | status    | tinyint |  | F    |      | task状态： 1:waittng；2:ready；3:running；4:success；5:failed；6:killed   | 
 | createTime  | int(11)|     |F|0  |   创建时间      | 
 | updateTime  | int(11)|     |F|0  |   更新时间      | 
@@ -93,6 +98,18 @@
 | groupId  |  string | key|F    |      | groupID      | 
 | createTime  | int(11)|     |F|0  |   创建时间      | 
 | updateTime  | int(11)|     |F|0  |   更新时间      | 
+
+
+### jobWorkerGroupRelation表
+##### -- 描述job类型与worker组ID之间的关系。
+| 字段     | 类型   |  主键   | 必选   | 默认值  | 描述    | 
+| ------ | ------ | ---- | ---- | ------------ | ---- |
+| jobType  | tinyint | key|F    |      | job类型    | 
+| groupId  |  string | key|F    |      | work组ID      | 
+| createTime  | int(11)|     |F|0  |   创建时间      | 
+| updateTime  | int(11)|     |F|0  |   更新时间      | 
+
+
 
 
 
