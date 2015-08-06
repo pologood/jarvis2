@@ -45,7 +45,9 @@
 | jobId   | int(11) |  | F    |      | 所属JobID          | 
 | status  | tinyint | |F    |      | task状态： 1:waittng；2:ready；3:running；4:success；5:failed；6:killed   | 
 | submitUser | string |     |F|'' | 提交用户           | 
-| executUser | string |     |F|'' | 执行用户           | 
+| executeUser | string |     |F|'' | 执行用户           | 
+| executeTime  | int(11)|     |F|0  |   执行时间      | 
+| dataTime  | int(11)|     |F|0  |   数据时间      | 
 | createTime  | int(11)|     |F|0  |   创建时间      | 
 | updateTime  | int(11)|     |F|0  |   更新时间      | 
 
