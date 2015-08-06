@@ -310,9 +310,12 @@ Server将任务提交至Worker，然后Worker分别先后执行preExecute()、ex
 
 - 任务的生命周期和持久化？
 
->任务状态：等待中（WAITING），准备中(READY)，运行中(RUNNING)，成功（SUCCESS），失败(FAILED)，接收（ACCEPTED），拒绝(REJECTED)
+>任务(Task)状态：等待中（WAITING），准备中(READY)，运行中(RUNNING)，成功（SUCCESS），失败(FAILED)，删除（KILLED）
+
+> ready包含4个子阶段：ready.queue(队列中)  ready.dispatching(分发中)  ready.accepted(接受) ready.Rejected(拒绝了)。
 
 >特别的：任务从server提交到client端，还有个隐含的状态，提交中(SUBMITTING)，但是这个状态极其短暂，发过去之后不是接收就是拒绝，所以没有持久化在数据库中。
+rejected(拒绝)状态也很快，马上切换为 dispatching(分发中)
 
 >任务持久化在数据库中，每一次更新任务状态都确保能更新到数据库中
 
