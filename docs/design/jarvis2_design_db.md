@@ -48,7 +48,7 @@
 | ------ | ------ | ---- | ---- | ------------ | ---- |
 | taskId | int(11) |key|F    |      | taskId       | 
 | preTaskId   | int(11) |key  | F    |      | 前置taskID          | 
-| preStatus  | tinyint | |F    |0      | 前置状态： 0:未完成 ；1：完成   | 
+| preFinishFlag  | tinyint | |F    |0      | 前置完成标记： 0:未完成 ；1：完成   | 
 | updateTime  | int(11)|     |F|0  |   更新时间      | 
 
 
