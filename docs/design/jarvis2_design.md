@@ -145,9 +145,9 @@
 
 - DAG依赖任务调度：
 
-当TimeScheduler提交任务给TaskScheduler之后，TaskScheduler会获取当前任务的后置任务，把后置任务注册到DAGScheduler中的observer中。
+当TimeScheduler提交任务给TaskScheduler之后，TaskScheduler会获取当前任务的后置任务，把后置任务注册到DAGScheduler中的observer中，并且发送InitializeEvent。当某个jobListener监听到这个事件后，会把依赖状态置为false。
 
-当某个任务执行完成，TaskScheduler中的statusManager会发送successEvent给DAGScheduler。jobListener监听到这个事件后，判断它是否是自己需要的前置依赖，如果是则更新前置依赖状态。当前置依赖全部完成了，提交任务到TaskScheduler中。
+当某个任务执行完成，TaskScheduler中的statusManager会发送successEvent给DAGScheduler。jobListener监听到这个事件后，判断它是否是自己需要的前置依赖，如果是则更新前置依赖状态为true。当前置依赖全部完成了，提交任务到TaskScheduler中。
 
 当依赖任务提交到TaskScheduler中后，就会开始调度，当任务调度起来之后，进入postSchedule，会发送scheduledEvent给DAGScheduler，具体的某一个jobListener监听到这个事件的jobid和自己一样，就会把自己从observer中注销掉。同时jobDispatcher还会去获取这个任务的后置任务，把后置任务注册到DAGScheduler中的observer中。
 
@@ -574,7 +574,7 @@ DAGScheduler通过观察者模式，由事件触发依赖调度
 
 ![mvc事件](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/uml_mvc_event.png)
 
-如图所示，Event是一个接口，DAGEvent是一个抽象类，其子类有SuccessEvent,FailureEvent,ScheduledEvent等。DAGEvent中主要有两个成员，jobid和planid。
+如图所示，Event是一个接口，DAGEvent是一个抽象类，其子类有InitializeEvent,SuccessEvent,ScheduledEvent等。DAGEvent中主要有两个成员，jobid和planid。
 
 #### 4.1.2 Observable和Observer设计
 
