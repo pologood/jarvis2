@@ -59,22 +59,20 @@ TaskScheduler是一个单例，负责任务的执行和状态结果的反馈。
 
 TaskScheduler主要成员有ExecuteQueue, List<JobDispatcher>和statusManager，主要的接口是submitJob
 
-JobDispatcher主要接口有preSchedule, schedule, postSchedule，其主要流程图如下：
+JobDispatcher主要接口有preSchedule, schedule, postSchedule，执行顺序是preSchedule->schedule->postSchedule，其主要流程图如下：
 
 ![flow_TaskScheduler](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/flow_TaskScheduler.png)
 
+如上图所示：
 
-### 1.2 Job Dispatcher模块设计
+在preSchedule方法中，会判断当前job是否是Time+DAG任务，如果是，会把自己生成TimeDAGListener，注册到DAGScheduler中。并且发送TimeReadyEvent给DAGScheduler。
 
-![Job Dispatcher模块设计](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/uml_job_dispatcher.png)
+在schedule方法中，会开始调度任务，具体详情会在1.2节 dispatcher模块设计中介绍。
 
-Job Dispatcher负责从Worker组中分配一个Worker，然后将任务发给此Worker执行。
+在postScheduler方法中，会把自己的后置依赖任务根据任务依赖类型（DAG or Time+DAG）生成DAGListener或者TimeDAGListener，注册到DAGScheduler中。并且发送ScheduledEvent给DAGScheduler。
 
-JobDispatcher接口中只有一个select方法，具体Worker分配逻辑在此方法中实现，以支持对不同分配策略的支持。默认已实现的有轮询分配(RoundRobinJobDispatcher)、随机分配(RandomJobDispatcher)。
 
-RoundRobinJobDispatcher：内部维护Worker的索引，分配完一个Worker后索引递增，当索引超过Worker数后归0从新开始计算，与索引位置对应的Worker即为此次任务分配的Worker。
-
-RandomJobDispatcher：随机生成一个Worker数以内的整数作为Worker索引，与此索引位置对应的Worker即为此次任务分配的Worker。
+### 1.2 dispatcher模块设计
 
 ### 1.3 dao模块设计
 
