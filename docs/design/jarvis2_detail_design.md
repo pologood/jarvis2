@@ -68,6 +68,8 @@ DAGScheduler中有一个成员JobDependencyStatus，用来维护当前任务的�
 
 - ALL表示b成功，a四次中全部成功才可以触发c；
 
+这个任务当前依赖任务状态表会实时持久化到数据库中，当重跑历史任务或者系统异常重启的时候，也能获取之前依赖任务的状态。
+
 
 #### 1.1.3 任务调度器(TaskScheduler)
 
@@ -112,18 +114,6 @@ RandomJobDispatcher：随机生成一个Worker数以内的整数作为Worker索�
 
 ![Job](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/uml_job.png)
 
-Job为任务的抽象类，主要包括4个接口：preExecute()、execute()、postExecute()、kill()，作用分别为：
-
-preExecute()：执行任务之前的预处理，如：数据库连接、数据清理等，此方法在execute()之前调用；
-
-execute()：任务的主要执行方法，具体执行内容在此方法中实现，如：执行HiveQL等。JobContext中包含了任务运行所需的输入参数，如：任务类型、执行命令、任务名称、扩展参数等。任务执行中输出的日志通过调用LogCollector的方法将日志发送给LogServer，LogServer收到后将日志持久化至存储系统中。此方法调用时向Server汇报”执行中“状态，执行完成时向Server汇报”成功“或”失败“状态。
-
-postExecute()：任务运行完成后的处理，如：报警等，此方法在execute()之后调用；
-
-kill()：终止任务。
-
-通过实现不同的Job抽象类可以支持多种类型任务的运行，默认实现的任务包括：Shell、Hive、Presto、Java、MapReduce等。
-
 ## 二、流程设计
 
 ### 2.1 提交任务
@@ -131,6 +121,13 @@ kill()：终止任务。
 ### 2.2 kill任务
 
 ### 2.3 重跑任务
+
+1. task表根据日期持久化到数据库中，如果没有修改crontab表，每次重跑历史任务或者当天任务，taskid不变。
+2. 重跑任务时，可以选择是否重跑后置依赖，如果不选，不会主动把后置依赖任务注册到DAGScheduler中，反之，则会把后置依赖注册到DAGScheduler中。
+3. 重跑指定任务时，直接根据taskid重跑，如果是定时任务，加入到TimeScheduler，如果是依赖任务，注册到DAGScheduler中。
+4. 重跑一段时间的定时任务，首先根据cron表的updateTime判断是否需要更新task。如果不需要更新，直接根据起止时间计算出要重跑哪些taskid，然后重跑这些task。如果需要更新，则重新生成task。
+5. 重跑一段时间的依赖任务，首先根据jobDependency表的updateTime判断是否需要更新。如果需要更新则更新taskDependency表，把没用的依赖去掉。接着把这个任务当天所有task变成Time+DAG任务，并且Time为当前系统时间，立即执行。当这个任务收到TimeReadyEvent时，会从数据库的taskDependency表中获取依赖状态，如果通过依赖检查，则会开始调度。
+6. 重跑任务结束后，会主动更新taskDependency中的状态。便于后续依赖任务的依赖检查。
 
 ### 2.4 修改任务
 
