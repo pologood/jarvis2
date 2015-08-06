@@ -112,6 +112,18 @@ RandomJobDispatcher：随机生成一个Worker数以内的整数作为Worker索�
 
 ![Job](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/uml_job.png)
 
+Job为任务的抽象类，主要包括4个接口：preExecute()、execute()、postExecute()、kill()，作用分别为：
+
+preExecute()：执行任务之前的预处理，如：数据库连接、数据清理等，此方法在execute()之前调用；
+
+execute()：任务的主要执行方法，具体执行内容在此方法中实现，如：执行HiveQL等。JobContext中包含了任务运行所需的输入参数，如：任务类型、执行命令、任务名称、扩展参数等。任务执行中输出的日志通过调用LogCollector的方法将日志发送给LogServer，LogServer收到后将日志持久化至存储系统中。此方法调用时向Server汇报”执行中“状态，执行完成时向Server汇报”成功“或”失败“状态。
+
+postExecute()：任务运行完成后的处理，如：报警等，此方法在execute()之后调用；
+
+kill()：终止任务。
+
+通过实现不同的Job抽象类可以支持多种类型任务的运行，默认实现的任务包括：Shell、Hive、Presto、Java、MapReduce等。
+
 ## 二、流程设计
 
 ### 2.1 提交任务
