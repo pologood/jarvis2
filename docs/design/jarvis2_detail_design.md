@@ -74,7 +74,7 @@ JobDispatcher主要接口有preSchedule, schedule, postSchedule，执行顺序�
 
 ### 1.2 Job Dispatcher模块设计
 
-![Job Dispatcher](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/jarvis2_detail_design.png)
+![Job Dispatcher](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/uml_job_dispatcher.png)
 
 Job Dispatcher负责从Worker组中分配一个Worker，然后将任务发给此Worker执行。
 
