@@ -12,7 +12,7 @@
 
 三个Scheduler协同工作，共同完成调度系统的调度工作。
 
-#### 2.3.2 时间调度器(TimeScheduler)
+#### 1.1.1 时间调度器(TimeScheduler)
 
 时间调度器负责调度基于时间触发的任务，支持Cron表达式时间配置。
 
@@ -26,19 +26,19 @@
 
 - cron schedule thread是一个线程，不断轮询task表，当满足时间就会提交给TaskScheduler。
 
-#### 2.3.3 依赖调度器(DAGScheduler)
+#### 1.1.2 依赖调度器(DAGScheduler)
 
 依赖调度器通过观察者模式，以监听事件的方式进行依赖触发等操作  
 
-#### 2.3.3.1 Event设计
+##### 1.1.2.1 Event设计
 
-![mvc事件](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/uml_mvc_event.png)
+![uml_event](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/uml_mvc_event.png)
 
 如图所示，Event是一个接口，DAGEvent是一个抽象类，其子类有InitializeEvent,SuccessEvent,ScheduledEvent等。DAGEvent中主要有两个成员，jobid和planid。
 
-#### 2.3.3.2 Observable和Observer设计
+##### 1.1.2.2 Observable和Observer设计
 
-![mvc事件](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/uml_mvc_DAGScheduler.png)
+![uml_observable](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/uml_mvc_DAGScheduler.png)
 
 如图所示，Observable是一个接口，相当于观察者模式中的主题，Listener是一个接口是观察者模式中的观察者。
 
@@ -46,10 +46,22 @@ Observable提供注册、移除、通知观察者的接口。EventBusObservable�
 
 Listener可以有多种实现，订阅继承Event接口的事件进行处理。
 
-#### 2.3.3.3 基于依赖策略的调度设计
+##### 1.1.2.3 基于依赖策略的调度设计
 
 
-#### 2.3.4 任务调度器(TaskScheduler)
+#### 1.1.3 任务调度器(TaskScheduler)
+
+TaskScheduler是一个单例，负责任务的执行和状态结果的反馈。
+
+![uml_TaskScheduler](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/uml_TaskScheduler.png)
+
+如上图所示：
+
+TaskScheduler主要成员有ExecuteQueue, List<JobDispatcher>和statusManager，主要的接口是submitJob
+
+JobDispatcher主要接口有preSchedule, schedule, postSchedule，其主要流程图如下：
+
+![flow_TaskScheduler](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/flow_TaskScheduler.png)
 
 
 ### 1.2 Job Dispatcher模块设计
