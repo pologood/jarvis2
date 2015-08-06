@@ -19,7 +19,8 @@
 | ------ | ------ | ---- | ---- | ------------ | ---- |
 | jobId  | int(11)   | key|F    |      | jobId           | 
 | preJobId  | int(11) |key  | F    |   0   | 前置JobId    | 
-
+| editor    | string  | | F    |   ''   | 设定者     | 
+| updateTime| int(11) | | F    | 0     |   更新时间      | 
 
 ### crontab表
 | 字段    | 类型  |  主键  | 是否为NULL | 默认值  | 描述           | 
@@ -64,17 +65,16 @@
 
 
 
-
 ### worker表
 | 字段     | 类型  |  主键    | 是否为NULL   | 默认值  | 描述  | 
 | ------ | ------ | ---- | ---- | ------------ | ---- |
 | workerId   | int(11) |key| F    |      | workerId       | 
 | workerName | string  |   | F    |      | worker名称      | 
 | ip         | string  |   | F    |      | ip地址          | 
+| port        | int(8)  |   | F    |      | 端口          | 
+| status      | tinyint  |   | F    |      | 状态。0：已下线；1：下线中；2：断线中； 3：上线。          | 
 | createTime  | int(11)|     |F|0  |   创建时间      | 
 | updateTime  | int(11)|     |F|0  |   更新时间      | 
-
-
 
 
 ### workerGroup表
