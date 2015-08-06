@@ -10,8 +10,8 @@
 | type     | string  |    |F|1  | 任务类型:1 hive；2:shell;3 java; 4:MR | 
 | content  | string |     |F|'' | 任务内容          | 
 | executor | string |     |F|'' | 执行者           | 
-| created  | int(11)|     |F|0  |   创建时间      | 
-| updated  | int(11)|     |F|0  |   修改时间      | 
+| createTime  | int(11)|     |F|0  |   创建时间      | 
+| updateTime  | int(11)|     |F|0  |   修改时间      | 
 
 
 ### jobDependence表
@@ -31,7 +31,7 @@
 | startDate | int(8)  | | F    | 0     | 开始日期  YMD     | 
 | endDate   | int(8)  | | F    |  0    | 结束日期  YMD     | 
 | editor    | string  | | F    |   ''   | 设定者     | 
-| updated   | int(11) | | F    | 0     |   修改时间      | 
+| updateTime| int(11) | | F    | 0     |   修改时间      | 
 
 
 
@@ -42,6 +42,8 @@
 | taskId | int(11) |key|F    |      | taskId       | 
 | jobId   | int(11) |  | F    |      | 关联JobID          | 
 | status  | tinyint | |F    |      | task状态： 1:waittng；2:ready；3:running；4:success；5:failed；6:killed   | 
+| createTime  | int(11)|     |F|0  |   创建时间      | 
+| updateTime  | int(11)|     |F|0  |   修改时间      | 
 
 
 ### taskAttempt表
@@ -51,6 +53,8 @@
 | attemptId | int(11) |key  | F    |      |attemptID  |
 | jobId     | int(11) |  | F    |      | 关联JobID ，冗余字段 |
 | status    | tinyint |  | F    |      | task状态： 1:waittng；2:ready；3:running；4:success；5:failed；6:killed   | 
+| createTime  | int(11)|     |F|0  |   创建时间      | 
+| updateTime  | int(11)|     |F|0  |   修改时间      | 
 
 
 
@@ -61,6 +65,8 @@
 | workerId   | int(11) |key| F    |      | workerId       | 
 | workerName | string  |   | F    |      | worker名称      | 
 | ip         | string  |   | F    |      | ip地址          | 
+| createTime  | int(11)|     |F|0  |   创建时间      | 
+| updateTime  | int(11)|     |F|0  |   修改时间      | 
 
 
 
@@ -69,7 +75,9 @@
 | 字段     | 类型  |  主键    | 必选   | 默认值  | 描述           | 
 | ------ | ------ | ---- | ---- | ------------ | ---- |
 | groupId    | int(11) |key | F    |      | workerGroupID    | 
-| groupName  |  string |    | F    |      | group名称       | 
+| groupName  |  string |    | F    |      | group名称       |
+| createTime  | int(11)|     |F|0  |   创建时间      | 
+| updateTime  | int(11)|     |F|0  |   修改时间      | 
 
 
 ### workerGroupRelation表
@@ -77,6 +85,8 @@
 | ------ | ------ | ---- | ---- | ------------ | ---- |
 | workerId  | int(11) | key|F    |      | workerID    | 
 | groupId  |  string | key|F    |      | groupID      | 
+| createTime  | int(11)|     |F|0  |   创建时间      | 
+| updateTime  | int(11)|     |F|0  |   修改时间      | 
 
 
 
