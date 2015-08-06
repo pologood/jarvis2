@@ -4,7 +4,7 @@
 ### job表 
 
 | 字段    | 类型    |  主键  |是否为NULL | 默认值  | 描述           | 
-| ------ | ------ | ---- | ---- | ------------ | 
+| ------ | ------ | ---- | ---- | ------------ | ---- |
 | jobId    | int(11) | key|F|   | 任务Id           | 
 | jobName  | string  |    |F|'' | 任务名称          | 
 | type     | string  |    |F|1  | 任务类型:1 hive；2:shell;3 java; 4:MR | 
@@ -16,14 +16,14 @@
 
 ### jobDependence表
 | 字段    | 类型   |  主键  | 是否为NULL | 默认值  | 描述           | 
-| ------ | ------ | ---- | ---- | ------------ | 
+| ------ | ------ | ---- | ---- | ------------ | ---- |
 | jobId  | int(11)   | key|F    |      | jobId           | 
 | preJobId  | int(11) |key  | F    |   0   | 前置JobId    | 
 
 
 ### crontab表
 | 字段    | 类型  |  主键  | 是否为NULL | 默认值  | 描述           | 
-| ------ | ------ | ---- | ---- | ------------ | 
+| ------ | ------ | ---- | ---- | ------------ | ---- |
 | cronId    | int(11) |key  | F    |      | cronId           | 
 | jobId     | int(11) | | F    |   0   | 关联jobId           | 
 | status    | tinyint |  | F    |   1   | 状态：0无效；1有效           | 
@@ -38,7 +38,7 @@
 
 ### task表
 | 字段    | 类型   |  主键   | 是否为NULL   | 默认值  | 描述           | 
-| ------ | ------ | ---- | ---- | ------------ | 
+| ------ | ------ | ---- | ---- | ------------ | ---- |
 | taskId | int(11) |key|F    |      | taskId       | 
 | jobId   | int(11) |  | F    |      | 关联JobID          | 
 | status  | tinyint | |F    |      | task状态： 1:waittng；2:ready；3:running；4:success；5:failed；6:killed   | 
@@ -46,7 +46,7 @@
 
 ### taskAttempt表
 | 字段    | 类型     |  主键 | 是否为NULL   | 默认值  | 描述           | 
-| ------ | ------ | ---- | ---- | ------------ | 
+| ------ | ------ | ---- | ---- | ------------ | ---- |
 | taskId    | int(11) | key|F    |      | taskId       | 
 | attemptId | int(11) |key  | F    |      |attemptID  |
 | jobId     | int(11) |  | F    |      | 关联JobID  |
@@ -67,14 +67,14 @@
 
 ### workerGroup表
 | 字段     | 类型  |  主键    | 必选   | 默认值  | 描述           | 
-| ------ | ------ | ---- | ---- | ------------ | 
+| ------ | ------ | ---- | ---- | ------------ | ---- |
 | groupId    | int(11) |key | F    |      | workerGroupID    | 
 | groupName  |  string |    | F    |      | group名称       | 
 
 
 ### workerGroupRelation表
 | 字段     | 类型   |  主键   | 必选   | 默认值  | 描述    | 
-| ------ | ------ | ---- | ---- | ------------ | 
+| ------ | ------ | ---- | ---- | ------------ | ---- |
 | workerId  | int(11) | key|F    |      | workerID    | 
 | groupId  |  string | key|F    |      | groupID      | 
 
