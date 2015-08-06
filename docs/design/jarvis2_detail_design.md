@@ -20,79 +20,37 @@
 
 时间调度器从数据库中加载周期性调度任务，或者从Rest API请求增加/修改/删除任务。根据任务配置的调度时间(CronExpression)，调度器定时计算出每个任务后面一段时间内（如：一天）的具体调度时间，并生成调度计划(Schedule Plan)。
 
-- 调度计划中的任务按照调度时间升序排序，调度器依次轮询检查任务的调度时间是否到达，到达调度时间的任务将被触发以等待执行
+- cron analyzer是一个cronTab表达式的语法分析器，输入是一个job，产出是一些task。
 
-- 当任务的调度时间被修改时，调度器将从调度计划中删除该任务已生成的计划，然后重新生成新的调度计划
+- task表会把时间最小的task排在最前面，数据结构上采用堆？
 
-- 为使调度计划可恢复，调度计划存储于数据库中。
-
+- cron schedule thread是一个线程，不断轮询task表，当满足时间就会提交给TaskScheduler。
 
 #### 2.3.3 依赖调度器(DAGScheduler)
 
 依赖调度器通过观察者模式，以监听事件的方式进行依赖触发等操作  
 
-- JobListener是一个job的监听器，用来监听一个job的事件，内部维护了job的依赖关系等原信息。当前支持两种listener: DAGListener和TimeDAGListener。
+#### 2.3.3.1 Event设计
 
-> DAGListener处理只有DAG依赖关系的任务的调度
+![mvc事件](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/uml_mvc_event.png)
 
-> TimeDAGListener处理既有时间依赖，又有任务依赖的任务的调度。
+如图所示，Event是一个接口，DAGEvent是一个抽象类，其子类有InitializeEvent,SuccessEvent,ScheduledEvent等。DAGEvent中主要有两个成员，jobid和planid。
 
-- Observer是一个单例，负责添加、删除jobListener，以及通知事件给jobListener。observer只维护准备进入调度的依赖任务。
+#### 2.3.3.2 Observable和Observer设计
 
-![依赖调度器](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/dependency_based_scheduler_new.png)
+![mvc事件](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/uml_mvc_DAGScheduler.png)
 
-如上图所示
+如图所示，Observable是一个接口，相当于观察者模式中的主题，Listener是一个接口是观察者模式中的观察者。
 
-- DAG依赖任务调度：
+Observable提供注册、移除、通知观察者的接口。EventBusObservable是一个抽象类，是基于google EventBus观察者模式中的主题。DAGScheduler是具体的实现类。
 
-当TimeScheduler提交任务给TaskScheduler之后，TaskScheduler会获取当前任务的后置任务，把后置任务注册到DAGScheduler中的observer中，并且发送InitializeEvent。当某个jobListener监听到这个事件后，会把依赖状态置为false。
+Listener可以有多种实现，订阅继承Event接口的事件进行处理。
 
-当某个任务执行完成，TaskScheduler中的statusManager会发送successEvent给DAGScheduler。jobListener监听到这个事件后，判断它是否是自己需要的前置依赖，如果是则更新前置依赖状态为true。当前置依赖全部完成了，提交任务到TaskScheduler中。
-
-当依赖任务提交到TaskScheduler中后，就会开始调度，当任务调度起来之后，进入postSchedule，会发送scheduledEvent给DAGScheduler，具体的某一个jobListener监听到这个事件的jobid和自己一样，就会把自己从observer中注销掉。同时jobDispatcher还会去获取这个任务的后置任务，把后置任务注册到DAGScheduler中的observer中。
-
-如果修改了依赖关系，外部会发送modifyEvent给DAGScheduler，observer会通知所有的jobListener检查下自己的依赖，如果满足，向TaskScheduler提交任务。
-
-TaskManager中的statusManager自己处理失败重试策略
-
-- 混合依赖（时间依赖和DAG依赖）任务的调度：
-
-TimeDAGListener比DAGListener多监听一个事件，即TimeReadyEvent。由于混合依赖的不确定性，一开始可能由前置依赖或者TimeScheduler把它加入到DAGScheduler中。
-
-如果是由TimeScheduler先提交给TaskScheduler，在preSchedule中，会检查任务类型，如果是时间+DAG依赖，则检查job信息中的依赖标志位是否为true，如果为true，则进入jobDispatcher进行调度；如果为false，则把自己注册到DAGScheduler中，并发送TimeReadyEvent。
-
-TimeDAGListener收到前置依赖的successEvent，会更新依赖状态。收到TimeReadyEvent，会更新timeReady标志位。每次收到这两个事件后，都会做依赖检查，这里要检查前置依赖和时间标志位是否都满足。如果都满足了，更新job元信息中的依赖标志位，并且向TaskScheduler提交任务。
-
-TimeDAGListener收到scheduledEvent之后，不但要把自己从observer中注销掉，还要把job元信息中的依赖标志位复位为false。
-
-- 支持不通周期依赖策略的调度：
-
-DAG依赖任务的前置依赖可能有不同的周期，现在有三种依赖策略：ANYONE, LASTONE, ALL。比如c依赖于a和b，a一小时跑4次，b一小时跑1次。
-
-ANYONE表示b成功，a四次中任意一次成功都可以触发c;
-
-LASTONE表示b成功，a四次中最后一次成功才可以触发c；
-
-ALL表示b成功，a四次中全部成功才可以触发c；
+#### 2.3.3.3 基于依赖策略的调度设计
 
 
 #### 2.3.4 任务调度器(TaskScheduler)
 
-TaskScheduler具体模块图入上图，其中最主要的模块是任务分发器。
-
-server通过push的方式，由任务分发器按照可扩展的分发策略，主动推送任务给某一个worker执行任务。
-
-- 任务分发策略可自定义扩展
-
-- 默认的分发策略：轮询分发策略(RoundRobin)、随机分发策略(Random)
-
-- 按照任务的优先级分发
-
-- 当分发的任务被Worker拒绝时，任务分发器将选择同一个组内的另一个Worker分发
-
-- 未避免任务分发过于频繁，当所有的Worker都拒绝后，任务分发器需间隔一段时间后再尝试重新发送
-
-- 当任务运行失败时，根据重试配置重新分发任务
 
 ### 1.2 dispatcher模块设计
 
