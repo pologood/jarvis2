@@ -12,6 +12,10 @@
 
 三个Scheduler协同工作，共同完成调度系统的调度工作。
 
+其时序图如下：
+
+![调度器时序图](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/sequence_scheduler.png)
+
 #### 1.1.1 时间调度器(TimeScheduler)
 
 时间调度器负责调度基于时间触发的任务，支持Cron表达式时间配置。
