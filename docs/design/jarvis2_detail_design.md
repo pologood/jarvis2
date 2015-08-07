@@ -79,7 +79,7 @@ TaskScheduler是一个单例，负责任务的执行和状态结果的反馈。
 
 如上图所示：
 
-TaskScheduler主要成员有ExecuteQueue, List<JobDispatcher>和statusManager，主要的接口是submitJob
+TaskScheduler主要成员有ExecuteQueue, List\<JobDispatcher>和statusManager，主要的接口是submitJob
 
 JobDispatcher主要接口有preSchedule, schedule, postSchedule，执行顺序是preSchedule->schedule->postSchedule，其主要流程图如下：
 
@@ -143,7 +143,13 @@ kill()：终止任务。
 
 ### 2.4 修改任务
 
+1. 如果修改job内容，即job表，不会影响调度逻辑
+2. 如果修改cron表，会重新刷新task表，已经提交的任务不做回退
+3. 如果修改依赖关系，修改jobDependency和taskDependency表，并且发送ModifyEvent给DAGScheduler重新刷新依赖关系。
+
 ### 2.5 升级处理
+
+不考虑RollingUpgrade，目标做到无状态重启，重启服务不丢失任务状态。
 
 #### 2.5.1 master升级
 
