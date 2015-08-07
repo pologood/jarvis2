@@ -114,6 +114,10 @@ RandomJobDispatcher：随机生成一个Worker数以内的整数作为Worker索�
 
 ### 1.4 service模块设计
 
+调度系统有四个service，master,worker,logserver和restfulserver. 其中master,worker,logserver通过rpc协议通信，使用akka框架，其akka架构图如下：
+
+![akka_service](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/akka_service.png)
+
 ### 1.5 Job模块设计
 
 ![Job](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/uml_job.png)
