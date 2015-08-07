@@ -506,3 +506,5 @@ Method：POST
 | success | bool | T    |      | 是否请求成功 | 
 
 ## 五、表结构设计
+
+http://gitlab.mogujie.org/bigdata/jarvis2/blob/master/docs/design/jarvis2_design_db.md
