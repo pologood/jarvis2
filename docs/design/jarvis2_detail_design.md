@@ -12,6 +12,10 @@
 
 三个Scheduler协同工作，共同完成调度系统的调度工作。
 
+其时序图如下：
+
+![调度器时序图](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/sequence_scheduler.png)
+
 #### 1.1.1 时间调度器(TimeScheduler)
 
 时间调度器负责调度基于时间触发的任务，支持Cron表达式时间配置。
@@ -109,6 +113,10 @@ RandomJobDispatcher：随机生成一个Worker数以内的整数作为Worker索�
 ### 1.3 dao模块设计
 
 ### 1.4 service模块设计
+
+调度系统有四个service，master,worker,logserver和restfulserver. 其中master,worker,logserver通过rpc协议通信，使用akka框架，其akka架构图如下：
+
+![akka_service](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/akka_service.png)
 
 ### 1.5 Job模块设计
 
