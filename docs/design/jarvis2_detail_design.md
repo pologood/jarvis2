@@ -130,7 +130,11 @@ kill()：终止任务。
 
 ### 2.1 提交任务
 
-### 2.2 kill任务
+### 2.2 Kill任务
+
+![Kill Job](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/uml_kill_job.png)
+
+RestServer收到Kill请求转发给Server，然后Server将Kill请求发送到执行对应任务的Worker，由Worker调用job的kill()方法终止任务，完成后向Server返回响应。
 
 ### 2.3 重跑任务
 
