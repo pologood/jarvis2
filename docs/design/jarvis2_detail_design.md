@@ -132,7 +132,7 @@ Job为任务的抽象类，主要包括4个接口：preExecute()、execute()、p
 
 preExecute()：执行任务之前的预处理，如：数据库连接、数据清理等，此方法在execute()之前调用；
 
-execute()：任务的主要执行方法，具体执行内容在此方法中实现，如：执行HiveQL等。JobContext中包含了任务运行所需的输入参数，如：任务类型、执行命令、任务名称、扩展参数等。任务执行中输出的日志通过调用LogCollector的方法将日志发送给LogServer，LogServer收到后将日志持久化至存储系统中。此方法调用时向Server汇报”执行中“状态，执行完成时向Server汇报”成功“或”失败“状态。
+execute()：任务的主要执行方法，具体执行内容在此方法中实现，如：执行HiveQL等。JobContext中包含了任务运行所需的输入参数，如：任务类型、执行命令、任务名称、扩展参数等。任务执行中输出的日志通过调用LogCollector的方法将日志发送给LogServer，LogServer收到后将日志持久化至存储系统中。此方法调用时向Server汇报”执行中“状态，执行完成时向Server汇报”成功“或”失败“状态。执行过程中可调用ProgressReporter汇报任务进度。
 
 postExecute()：任务运行完成后的处理，如：报警等，此方法在execute()之后调用；
 
