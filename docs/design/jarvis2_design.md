@@ -153,7 +153,7 @@
 1. 一开始由TimeScheduler调度定时任务，发送TimeReady事件给DAGScheduler，如果waiting表中没有该任务，则加入waiting表中，并标记time_ready标识。
 2. waiting表中的任务通过DependencyCheckManager进行依赖检查，如果通过依赖检查，表示开始调度，把waiting表中该任务移除，并加入到running表中。
 3. running表新增一条记录会做三件事：1）分配一个唯一的taskid。2）将该job的后置任务加入到waiting表中。3）提交该task到TaskScheduler中。
-4. TaskScheduler负责提交任务和状态结果反馈，当收到某个任务成功时，发送SuccessEvent给DAGScheduler。DAGScheduler会把该任务的taskid所在的记录从running表中移除，更新DependencyStatusManager中的依赖的状态，然后到第2步进行依赖检查。
+4. TaskScheduler负责提交任务和状态结果反馈，当收到某个任务成功时，发送SuccessEvent给DAGScheduler。DAGScheduler收到成功事件会做两件事：1）把该任务的taskid所在的记录从running表中移除。2）从JobDescriptor表获取该任务的孩子任务，对每一个孩子任务，从waiting表获取该任务，更新依赖状态，然后到第2步进行依赖检查。
 5. TaskScheduler发送某个任务的失败事件时，running表通过失败重试策略进行失败重试。
 6. 如果修改了依赖关系，需要修改JobDescriptor表，taskDependency表，并重新对waiting表中的任务进行第2步操作。如果任务已经引入了running表，不做处理。
 
