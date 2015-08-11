@@ -103,7 +103,7 @@
 
 调度模块总体分为TimeScheduler，DAGScheduler和TaskScheduler
 
-![调度器](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/core_scheduler.png)
+![调度器](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/core_scheduler_new.png)
 
 如上图所示，TimeScheduler负责进行定时任务的调度，DAGScheduler负责依赖任务的调度，TaskScheduler是真正的调度器，负责执行任务、反馈任务结果和状态。
 
@@ -129,15 +129,20 @@
 
 #### 2.3.3 依赖调度器(DAGScheduler)
 
-依赖调度器通过观察者模式，以监听事件的方式进行依赖触发等操作  
+依赖调度器是一个单例，内部维护一个waiting表和一个running表。
 
-- JobListener是一个job的监听器，用来监听一个job的事件，内部维护了job的依赖关系等原信息。当前支持两种listener: DAGListener和TimeDAGListener。
+- waiting表处理正在waiting的依赖任务，一条记录通过jobid唯一标识，需要处理TimeReadyEvent, DependencyModifyEvent, SuccessEvent
 
-> DAGListener处理只有DAG依赖关系的任务的调度
+- running表处理正在running的任务，一条记录通过taskid唯一标识，处理自己的SuccessEvent和FailedEvent.
 
-> TimeDAGListener处理既有时间依赖，又有任务依赖的任务的调度。
+- DependencyCheckManager负责进行依赖检查，支持可扩展的依赖策略，和JobDescriptor表和DependencyStatusManager交互。
 
-- Observer是一个单例，负责添加、删除jobListener，以及通知事件给jobListener。observer只维护准备进入调度的依赖任务。
+- DependencyStatusManager维护当前任务的依赖状态，和taskDependency表交互。
+
+- JobDescriptor表维护job的元信息，包括每个job的父亲和孩子，每次系统启动、修改任务、增加任务的时候会自动构造父子关系。
+
+- taskDependency表是一个接口，实现可以直接是DB中taskDependency的Entity，也可以做一个缓存。
+
 
 ![依赖调度器](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/dependency_based_scheduler_new.png)
 
@@ -145,25 +150,13 @@
 
 - DAG依赖任务调度：
 
-当TimeScheduler提交任务给TaskScheduler之后，TaskScheduler会获取当前任务的后置任务，把后置任务注册到DAGScheduler中的observer中，并且发送InitializeEvent。当某个jobListener监听到这个事件后，会把依赖状态置为false。
+1. 一开始由TimeScheduler调度定时任务，发送TimeReady事件给DAGScheduler，如果waiting表中没有该任务，则加入waiting表中，并标记time_ready标识。
+2. waiting表中的任务通过DependencyCheckManager进行依赖检查，如果通过依赖检查，表示开始调度，把waiting表中该任务移除，并加入到running表中。
+3. running表新增一条记录会做三件事：1）分配一个唯一的taskid。2）将该job的后置任务加入到waiting表中。3）提交该task到TaskScheduler中。
+4. TaskScheduler负责提交任务和状态结果反馈，当收到某个任务成功时，发送SuccessEvent给DAGScheduler。DAGScheduler会把该任务的taskid所在的记录从running表中移除，更新DependencyStatusManager中的依赖的状态，然后到第2步进行依赖检查。
+5. TaskScheduler发送某个任务的失败事件时，running表通过失败重试策略进行失败重试。
+6. 如果修改了依赖关系，需要修改JobDescriptor表，taskDependency表，并重新对waiting表中的任务进行第2步操作。如果任务已经引入了running表，不做处理。
 
-当某个任务执行完成，TaskScheduler中的statusManager会发送successEvent给DAGScheduler。jobListener监听到这个事件后，判断它是否是自己需要的前置依赖，如果是则更新前置依赖状态为true。当前置依赖全部完成了，提交任务到TaskScheduler中。
-
-当依赖任务提交到TaskScheduler中后，就会开始调度，当任务调度起来之后，进入postSchedule，会发送scheduledEvent给DAGScheduler，具体的某一个jobListener监听到这个事件的jobid和自己一样，就会把自己从observer中注销掉。同时jobDispatcher还会去获取这个任务的后置任务，把后置任务注册到DAGScheduler中的observer中。
-
-如果修改了依赖关系，外部会发送modifyEvent给DAGScheduler，observer会通知所有的jobListener检查下自己的依赖，如果满足，向TaskScheduler提交任务。
-
-TaskManager中的statusManager自己处理失败重试策略
-
-- 混合依赖（时间依赖和DAG依赖）任务的调度：
-
-TimeDAGListener比DAGListener多监听一个事件，即TimeReadyEvent。由于混合依赖的不确定性，一开始可能由前置依赖或者TimeScheduler把它加入到DAGScheduler中。
-
-如果是由TimeScheduler先提交给TaskScheduler，在preSchedule中，会检查任务类型，如果是时间+DAG依赖，则检查job信息中的依赖标志位是否为true，如果为true，则进入jobDispatcher进行调度；如果为false，则把自己注册到DAGScheduler中，并发送TimeReadyEvent。
-
-TimeDAGListener收到前置依赖的successEvent，会更新依赖状态。收到TimeReadyEvent，会更新timeReady标志位。每次收到这两个事件后，都会做依赖检查，这里要检查前置依赖和时间标志位是否都满足。如果都满足了，更新job元信息中的依赖标志位，并且向TaskScheduler提交任务。
-
-TimeDAGListener收到scheduledEvent之后，不但要把自己从observer中注销掉，还要把job元信息中的依赖标志位复位为false。
 
 - 支持不通周期依赖策略的调度：
 
