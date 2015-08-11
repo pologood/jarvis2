@@ -299,10 +299,10 @@ rejected(拒绝)状态也很快，马上切换为 dispatching(分发中)
 
 - 任务如何标识？
 
->表结构设计中，主要有job表(任务的内容表)，task表(任务的配置表，在job表基础上增加crontab)，plan表(任务每次的执行表)，所以在调度系统的数据结构中，有taskid和planid两个字段。
+>表结构设计中，主要有job表(任务的配置表，包括任务的cron表达式，起始时间等)，task表(任务的每一次的执行)，所以在调度系统的数据结构中，有jobid和taskid两个字段。
 
 >因为任务支持重试策略，还有attemptid。
 
->taskid，planid和attemptid在调度系统中分成三个字段存储，这样和存成一个字段的好处是，每次新增一个planid或者attemptid，不需要先split。
+>jobidid，taskid和attemptid在调度系统中分成三个字段存储，这样和存成一个字段的好处是，每次新增一个taskid或者attemptid，不需要先split。
 
->最终反映在jobname上，jobname = originjobname_taskid_planid_attemptid，这样可以唯一标识一个job，在yarn上观察和kill都很方便，也支持现有bgmonitor通过jobname唯一标识一个任务的需求。
+>最终反映在jobname上，jobname = originjobname_jobid_taskid_attemptid，这样可以唯一标识一个job，在yarn上观察和kill都很方便，也支持现有bgmonitor通过jobname唯一标识一个任务的需求。
