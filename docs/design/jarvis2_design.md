@@ -303,6 +303,6 @@ rejected(拒绝)状态也很快，马上切换为 dispatching(分发中)
 
 >因为任务支持重试策略，还有attemptid。
 
->jobidid，taskid和attemptid在调度系统中分成三个字段存储，这样和存成一个字段的好处是，每次新增一个taskid或者attemptid，不需要先split。
+>jobid，taskid和attemptid在调度系统中分成三个字段存储，这样和存成一个字段的好处是，每次新增一个taskid或者attemptid，不需要先split。
 
 >最终反映在jobname上，jobname = originjobname_jobid_taskid_attemptid，这样可以唯一标识一个job，在yarn上观察和kill都很方便，也支持现有bgmonitor通过jobname唯一标识一个任务的需求。
