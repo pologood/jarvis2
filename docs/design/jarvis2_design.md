@@ -101,48 +101,30 @@
 
 #### 2.3.1 调度模块总体设计
 
-调度模块总体分为TimeScheduler，DAGScheduler和TaskScheduler
+调度模块总体分为DAGScheduler和TaskScheduler
 
 ![调度器](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/core_scheduler_new.png)
 
-如上图所示，TimeScheduler负责进行定时任务的调度，DAGScheduler负责依赖任务的调度，TaskScheduler是真正的调度器，负责执行任务、反馈任务结果和状态。
-
-三个Scheduler协同工作，共同完成调度系统的调度工作。
+如上图所示，DAGScheduler负责定时任务和依赖任务的调度，TaskScheduler是真正的调度器，负责执行任务、反馈任务结果和状态。
 
 
+#### 2.3.2 依赖调度器(DAGScheduler)
 
-#### 2.3.2 时间调度器(TimeScheduler)
+依赖调度器是一个单例，内部维护一个plan表，DAG表和一个running表。
 
-时间调度器负责调度基于时间触发的任务，支持Cron表达式时间配置。
+- plan表是定时任务下一周期（比如一小时）的执行计划，由定时调度器（比如quartz）进行调度。
 
-![时间调度器](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/time_based_scheduler.png)
+- DAG表维护所有的任务的依赖关系，一条记录通过jobid唯一标识，需要处理DependencyModifyEvent, SuccessEvent。
 
-时间调度器从数据库中加载周期性调度任务，或者从Rest API请求增加/修改/删除任务。根据任务配置的调度时间(CronExpression)，调度器定时计算出每个任务后面一段时间内（如：一天）的具体调度时间，并生成调度计划(Schedule Plan)。
+- running表处理正在running的任务，一条记录通过taskid唯一标识，处理自己的SuccessEvent和FailedEvent。
 
-- 调度计划中的任务按照调度时间升序排序，调度器依次轮询检查任务的调度时间是否到达，到达调度时间的任务将被触发以等待执行
+- DAG表中每一条记录表示一个DAGJob，主要维护父子关系（定时任务只有孩子，没有父亲），依赖状态等信息，并提供依赖检查的方法。DAGJob是一个抽象类，至少支持DAGonly任务，Time+DAG任务，Time+DAG+offset任务的实现。
 
-- 当任务的调度时间被修改时，调度器将从调度计划中删除该任务已生成的计划，然后重新生成新的调度计划
+- DAG表中的父子关系与DB中的jobDependency表映射，每次系统启动的时候，会通过该表重建DAG表所有任务，建立父子关系，并进行循环依赖检测。
 
-- 为使调度计划可恢复，调度计划存储于数据库中。
+- DAG表中的依赖状态与DB中的jobDependStatus表映射。
 
-
-
-#### 2.3.3 依赖调度器(DAGScheduler)
-
-依赖调度器是一个单例，内部维护一个waiting表和一个running表。
-
-- waiting表处理正在waiting的依赖任务，一条记录通过jobid唯一标识，需要处理TimeReadyEvent, DependencyModifyEvent, SuccessEvent
-
-- running表处理正在running的任务，一条记录通过taskid唯一标识，处理自己的SuccessEvent和FailedEvent.
-
-- DependencyCheckManager负责进行依赖检查，支持可扩展的依赖策略，和JobDescriptor表和DependencyStatusManager交互。
-
-- DependencyStatusManager维护当前任务的依赖状态，和taskDependency表交互。
-
-- JobDescriptor表维护job的元信息，包括每个job的父亲和孩子，每次系统启动、修改任务、增加任务的时候会自动构造父子关系。
-
-- taskDependency表是一个接口，实现可以直接是DB中taskDependency的Entity，也可以做一个缓存。
-
+- 每次DAG表中父子关系或者依赖状态的修改，都确保实时更新到DB中相应的表中。
 
 ![依赖调度器](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/dependency_based_scheduler_new.png)
 
@@ -150,12 +132,13 @@
 
 - DAG依赖任务调度：
 
-1. 一开始由TimeScheduler调度定时任务，发送TimeReady事件给DAGScheduler，如果waiting表中没有该任务，则加入waiting表中，并标记time_ready标识。
-2. waiting表中的任务通过DependencyCheckManager进行依赖检查，如果通过依赖检查，表示开始调度，把waiting表中该任务移除，并加入到running表中。
-3. running表新增一条记录会做三件事：1）分配一个唯一的taskid。2）将该job的后置任务加入到waiting表中。3）提交该task到TaskScheduler中。
-4. TaskScheduler负责提交任务和状态结果反馈，当收到某个任务成功时，发送SuccessEvent给DAGScheduler。DAGScheduler收到成功事件会做两件事：1）把该任务的taskid所在的记录从running表中移除。2）从JobDescriptor表获取该任务的孩子任务，对每一个孩子任务，从waiting表获取该任务，更新依赖状态，然后到第2步进行依赖检查。
-5. TaskScheduler发送某个任务的失败事件时，running表通过失败重试策略进行失败重试。
-6. 如果修改了依赖关系，需要修改JobDescriptor表，taskDependency表，并重新对waiting表中的任务进行第2步操作。如果任务已经引入了running表，不做处理。
+1. 系统启动的时候，从DB中的jobDependency表重建所有任务到DAG表中，并从jobDependStatus表恢复每个DAGJob的依赖状态。
+2. 定时调度器调度plan表中的task，如果该任务没有依赖，加入到running表中，进入步骤4. 如果有依赖，从DAG表中找到该job，标记time_ready标识为true，进入步骤3.
+3. 对DAG表中的某一任务进行依赖检查，如果通过依赖检查，就会把该任务加入到running表中，并复位依赖状态，然后进入步骤4.
+4. running表新增一条记录会分配一个唯一的taskid，并提交该task到TaskScheduler中，进入步骤5.
+5. TaskScheduler负责提交任务和状态结果反馈，当收到某个任务成功时，发送SuccessEvent给DAGScheduler。DAGScheduler收到成功事件会做两件事：1）把该任务的taskid所在的记录从running表中移除。2）先从DAG表中找到该任务的孩子，分别对每一个孩子，从DAG表中找到它，更新依赖状态，然后进入步骤3。
+6. TaskScheduler发送某个任务的失败事件时，running表通过失败重试策略进行失败重试。
+7. 如果修改了依赖关系，需要修改DAG表中的依赖关系，并更新到DB中的jobDependency表和jobDependStatus表，并重新对DAG表中的受影响的任务进行第3步操作。如果任务已经引入了running表，不做处理。
 
 
 - 支持不通周期依赖策略的调度：
@@ -170,7 +153,7 @@ ALL表示b成功，a四次中全部成功才可以触发c；
 
 
 
-#### 2.3.4 任务调度器(TaskScheduler)
+#### 2.3.3 任务调度器(TaskScheduler)
 
 TaskScheduler具体模块图入上图，其中最主要的模块是任务分发器。
 
@@ -190,7 +173,7 @@ server通过push的方式，由任务分发器按照可扩展的分发策略，�
 
 	
 
-#### 2.3.5 任务接受策略(Job Accept Strategy)
+#### 2.3.4 任务接受策略(Job Accept Strategy)
 
 任务接受策略用于控制Worker或任务后端执行系统的负载，Worker根据负载情况决定是否接受Server发送的任务。
 
