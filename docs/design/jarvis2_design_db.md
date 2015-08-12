@@ -25,6 +25,15 @@
 | updateUser| string  | | F    |   ''   | 更新用户     | 
 | updateTime| int(11) | | F    | 0     |   更新时间      | 
 
+
+### jobDependStatus表
+| 字段    | 类型   |  主键   | 是否为NULL   | 默认值  | 描述           | 
+| ------ | ------ | ---- | ---- | ------------ | ---- |
+| jobId | int(11) |key|F    |      | taskId       | 
+| preStatus   | string |key  | F    |      | 前置依赖的状态信息 ，由（jobID，status）的组成的json串  | 
+| updateTime  | int(11)|     |F|0  |   更新时间      | 
+
+
 ### crontab表
 | 字段    | 类型  |  主键  | 是否为NULL | 默认值  | 描述           | 
 | ------ | ------ | ---- | ---- | ------------ | ---- |
@@ -51,13 +60,7 @@
 | createTime  | int(11)|     |F|0  |   创建时间      | 
 | updateTime  | int(11)|     |F|0  |   更新时间      | 
 
-### taskDependence表
-| 字段    | 类型   |  主键   | 是否为NULL   | 默认值  | 描述           | 
-| ------ | ------ | ---- | ---- | ------------ | ---- |
-| taskId | int(11) |key|F    |      | taskId       | 
-| preTaskId   | int(11) |key  | F    |      | 前置taskID          | 
-| preFinishFlag  | tinyint | |F    |0      | 前置Task完成标记： 0:未完成 ；1：完成   | 
-| updateTime  | int(11)|     |F|0  |   更新时间      | 
+
 
 
 ### taskAttempt表
