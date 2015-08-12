@@ -70,30 +70,9 @@ DAGJob中有一个成员JobDependStatus，用来维护当前任务的依赖的�
 这个任务当前依赖任务状态表会实时持久化到数据库中，当重跑历史任务或者系统异常重启的时候，也能获取之前依赖任务的状态。
 
 
-#### 1.1.3 任务调度器(TaskScheduler)
+### 1.2 ExecuteQueue模块设计
 
-TaskScheduler是一个单例，负责任务的执行和状态结果的反馈。
-
-![uml_TaskScheduler](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/uml_TaskScheduler.png)
-
-如上图所示：
-
-TaskScheduler主要成员有ExecuteQueue, List[JobDispatcher]和statusManager，主要的接口是submitJob
-
-JobDispatcher主要接口有preSchedule, schedule, postSchedule，执行顺序是preSchedule->schedule->postSchedule，其主要流程图如下：
-
-![flow_TaskScheduler](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/flow_TaskScheduler.png)
-
-如上图所示：
-
-在preSchedule方法中，会判断当前job是否是Time+DAG任务，如果是，会把自己生成TimeDAGListener，注册到DAGScheduler中。并且发送TimeReadyEvent给DAGScheduler。
-
-在schedule方法中，会开始调度任务，具体详情会在1.2节 dispatcher模块设计中介绍。
-
-在postScheduler方法中，会把自己的后置依赖任务根据任务依赖类型（DAG or Time+DAG）生成DAGListener或者TimeDAGListener，注册到DAGScheduler中。并且发送InitializeEvent和ScheduledEvent给DAGScheduler。
-
-
-### 1.2 TaskScheduler模块设计
+### 1.3 JobDispatcher模块设计
 
 ![Job Dispatcher](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/uml_job_dispatcher.png)
 
