@@ -2,27 +2,15 @@
 
 ## 一、模块设计
 
-### 1.1 scheduler模块设计
+### 1.1 DAGScheduler模块设计
 
-调度器模块总体分为TimeScheduler，DAGScheduler和TaskScheduler
 
-![调度器](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/core_scheduler.png)
+DAGScheduler类图如下：
 
-如上图所示，TimeScheduler负责进行定时任务的调度，DAGScheduler负责依赖任务的调度，TaskScheduler是真正的调度器，负责执行任务、反馈任务结果和状态。
+![uml_DAGScheduler](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/uml_DAGScheduler.png)
 
-三个Scheduler协同工作，共同完成调度系统的调度工作。
 
-其时序图如下：
-
-![调度器时序图](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/sequence_scheduler.png)
-
-如上图所示，sentinel master内部有ServerActor，HeartBeatActor，和JobStatusRoutingActor。HeartBeatActor用来接收slave发送过来的心跳信息，由HeartBeatManager来维护所有client的信息。ServerActor作为master的核心actor，接收restfulServer发送过来的信息，通过负载均衡的分发策略把任务提交给ClientActor，向JobStatusRoutingActor汇报任务状态，把log通过LogRoutingActor写到logserver中。
-
-JobStatusRoutingActor对jobId进行哈希，把任务状态路由给具体的jobStatusActor。JobStatusActor把任务状态写到DB中，来持久化任务状态。
-
-LogRoutingActor和JobStatusRoutingActor类似，只是路由功能。由具体的LogWriterActor来写log，LogReadActor来读log。
-
-#### 1.1.1 时间调度器(TimeScheduler)
+#### 1.1.1 定时任务调度
 
 时间调度器负责调度基于时间触发的任务，支持Cron表达式时间配置。
 
@@ -36,19 +24,20 @@ LogRoutingActor和JobStatusRoutingActor类似，只是路由功能。由具体�
 
 - cron schedule thread是一个线程，不断轮询task表，当满足时间就会提交给TaskScheduler。
 
-#### 1.1.2 依赖调度器(DAGScheduler)
+#### 1.1.2 事件处理
 
-依赖调度器通过观察者模式，以监听事件的方式进行依赖触发等操作  
+DAGScheduler通过观察者模式进行事件处理，目的是把同步调用变成异步调用，跟外部调用者进一步解耦。并且为将来支持其他功能的监听提供了可扩展性。
+
 
 ##### 1.1.2.1 Event设计
 
 ![uml_event](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/uml_mvc_event.png)
 
-如图所示，Event是一个接口，DAGEvent是一个抽象类，其子类有InitializeEvent,SuccessEvent,ScheduledEvent等。DAGEvent中主要有两个成员，jobid和planid。
+如图所示，Event是一个接口，DAGEvent是一个抽象类，其子类有InitializeEvent,SuccessEvent,ScheduledEvent等。DAGEvent中主要有两个成员，jobid和taskid。
 
 ##### 1.1.2.2 Observable和Observer设计
 
-![uml_observable](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/uml_mvc_DAGScheduler.png)
+![uml_observable](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/uml_mvc_observable.png)
 
 如图所示，Observable是一个接口，相当于观察者模式中的主题，Listener是一个接口是观察者模式中的观察者。
 
@@ -56,9 +45,9 @@ Observable提供注册、移除、通知观察者的接口。EventBusObservable�
 
 Listener可以有多种实现，订阅继承Event接口的事件进行处理。
 
-##### 1.1.2.3 基于依赖策略的调度设计
+#### 1.1.3 支持可扩展的依赖策略
 
-DAGScheduler中有一个成员JobDependencyStatus，用来维护当前任务的依赖的状态，其内部数据结构主要是Map[Integer,Map[Integer,Boolean]], 表示Map[jobid,Map[taskid,status]]
+DAGJob中有一个成员JobDependStatus，用来维护当前任务的依赖的状态，其内部数据结构主要是Map[Integer,Map[Integer,Boolean]], 表示Map[jobid,Map[taskid,status]]
 
 比如c依赖于任务a和b，a每小时跑4次，b每小时跑1次，最终生成的依赖状态表如下表：
 
@@ -104,7 +93,7 @@ JobDispatcher主要接口有preSchedule, schedule, postSchedule，执行顺序�
 在postScheduler方法中，会把自己的后置依赖任务根据任务依赖类型（DAG or Time+DAG）生成DAGListener或者TimeDAGListener，注册到DAGScheduler中。并且发送InitializeEvent和ScheduledEvent给DAGScheduler。
 
 
-### 1.2 Job Dispatcher模块设计
+### 1.2 TaskScheduler模块设计
 
 ![Job Dispatcher](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/uml_job_dispatcher.png)
 
@@ -123,6 +112,12 @@ RandomJobDispatcher：随机生成一个Worker数以内的整数作为Worker索�
 调度系统有四个service，master,worker,logserver和restfulserver. 其中master,worker,logserver通过rpc协议通信，使用akka框架，其akka架构图如下：
 
 ![akka_service](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/akka_service.png)
+
+如上图所示，sentinel master内部有ServerActor，HeartBeatActor，和JobStatusRoutingActor。HeartBeatActor用来接收slave发送过来的心跳信息，由HeartBeatManager来维护所有client的信息。ServerActor作为master的核心actor，接收restfulServer发送过来的信息，通过负载均衡的分发策略把任务提交给ClientActor，向JobStatusRoutingActor汇报任务状态，把log通过LogRoutingActor写到logserver中。
+
+JobStatusRoutingActor对jobId进行哈希，把任务状态路由给具体的jobStatusActor。JobStatusActor把任务状态写到DB中，来持久化任务状态。
+
+LogRoutingActor和JobStatusRoutingActor类似，只是路由功能。由具体的LogWriterActor来写log，LogReadActor来读log。
 
 ### 1.5 Job模块设计
 
@@ -175,7 +170,7 @@ RestServer收到Kill请求转发给Server，然后Server将Kill请求发送到�
 
 确保每次生成和修改执行计划，都实时更新到DB的task表中。
 
-master启动的时候，会从task表重建执行计划，当天正在running的定时任务不管，当前正在running的依赖任务，注册到DAGScheduler中，并从DB的taskDependency表中恢复依赖任务的状态。
+master启动的时候，会从task表重建执行计划，当天正在running的定时任务不管，当前正在running的依赖任务，注册到DAGScheduler中，并从DB的jobDependStatus表中恢复依赖任务的状态。
 
 
 #### 2.5.2 worker升级
