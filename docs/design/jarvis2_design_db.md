@@ -31,6 +31,7 @@
 | ------ | ------ | ---- | ---- | ------------ | ---- |
 | jobId | int(11) |key|F    |      | taskId       | 
 | preJobId  | int(11) |key  | F    |   0   | 前置JobId    | 
+| preTaskId  | int(11) |key  | F    |   0   | 前置taskId  | 
 | preStatus   | string |  | F    |  0    | 前置依赖的状态信息 0 未完成，1完成  | 
 | updateTime  | int(11)|     |F|0  |   更新时间      | 
 
