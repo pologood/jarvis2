@@ -30,7 +30,8 @@
 | 字段    | 类型   |  主键   | 是否为NULL   | 默认值  | 描述           | 
 | ------ | ------ | ---- | ---- | ------------ | ---- |
 | jobId | int(11) |key|F    |      | taskId       | 
-| preStatus   | string |key  | F    |      | 前置依赖的状态信息 ，由（jobID，status）的组成的json串  | 
+| preJobId  | int(11) |key  | F    |   0   | 前置JobId    | 
+| preStatus   | string |  | F    |  0    | 前置依赖的状态信息 0 未完成，1完成  | 
 | updateTime  | int(11)|     |F|0  |   更新时间      | 
 
 
