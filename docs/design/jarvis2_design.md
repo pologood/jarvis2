@@ -114,7 +114,7 @@
 
 - plan表是定时任务下一周期（比如一小时）的执行计划，由定时调度器（比如quartz）进行调度。
 
-- DAG表维护所有的任务的依赖关系，一条记录通过jobid唯一标识，需要处理DependencyModifyEvent, SuccessEvent。
+- DAG表维护所有的任务的依赖关系，一条记录通过jobid唯一标识，需要处理ScheduledEvent, DependencyModifyEvent, SuccessEvent。
 
 - running表处理正在running的任务，一条记录通过taskid唯一标识，处理自己的SuccessEvent和FailedEvent。
 
@@ -134,11 +134,12 @@
 
 1. 系统启动的时候，从DB中的jobDependency表重建所有任务到DAG表中，并从jobDependStatus表恢复每个DAGJob的依赖状态。
 2. 定时调度器调度plan表中的task，如果该任务没有依赖，加入到running表中，进入步骤4. 如果有依赖，从DAG表中找到该job，标记time_ready标识为true，进入步骤3.
-3. 对DAG表中的某一任务进行依赖检查，如果通过依赖检查，就会把该任务加入到running表中，并复位依赖状态，然后进入步骤4.
+3. 对DAG表中的某一任务进行依赖检查，如果通过依赖检查，就会把该任务加入到running表中，然后进入步骤4.
 4. running表新增一条记录会分配一个唯一的taskid，并提交该task到TaskScheduler中，进入步骤5.
-5. TaskScheduler负责提交任务和状态结果反馈，当收到某个任务成功时，发送SuccessEvent给DAGScheduler。DAGScheduler收到成功事件会做两件事：1）把该任务的taskid所在的记录从running表中移除。2）先从DAG表中找到该任务的孩子，分别对每一个孩子，从DAG表中找到它，更新依赖状态，然后进入步骤3。
-6. TaskScheduler发送某个任务的失败事件时，running表通过失败重试策略进行失败重试。
-7. 如果修改了依赖关系，需要修改DAG表中的依赖关系，并更新到DB中的jobDependency表和jobDependStatus表，并重新对DAG表中的受影响的任务进行第3步操作。如果任务已经引入了running表，不做处理。
+5. 任务提交到TaskScheduler中，先进入ExecuteQueue，当开始调度的时候，发送ScheduledEvent给DAGScheduler。DAGScheduler收到ScheduledEvent会复位依赖状态。
+6. TaskScheduler负责提交任务和状态结果反馈，当收到某个任务成功时，发送SuccessEvent给DAGScheduler。DAGScheduler收到成功事件会做两件事：1）把该任务的taskid所在的记录从running表中移除。2）先从DAG表中找到该任务的孩子，分别对每一个孩子，从DAG表中找到它，更新依赖状态，然后进入步骤3。
+7. TaskScheduler发送某个任务的失败事件时，running表通过失败重试策略进行失败重试。
+8. 如果修改了依赖关系，需要修改DAG表中的依赖关系，并更新到DB中的jobDependency表和jobDependStatus表，并重新对DAG表中的受影响的任务进行第3步操作。如果任务已经引入了running表，不做处理。
 
 
 - 支持不通周期依赖策略的调度：  
