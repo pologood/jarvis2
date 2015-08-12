@@ -145,11 +145,12 @@ RestServer收到Kill请求转发给Server，然后Server将Kill请求发送到�
 
 #### 2.5.1 master升级
 
-确保每次更新任务状态和依赖任务的状态，都实时更新到DB中。
+确保每次更新任务状态和依赖任务的状态，都实时更新到DB中。确保每次生成和修改执行计划，都实时更新到DB的task表中。
 
-确保每次生成和修改执行计划，都实时更新到DB的task表中。
-
-master启动的时候，会从task表重建执行计划，当天正在running的定时任务不管，当前正在running的依赖任务，注册到DAGScheduler中，并从DB的jobDependStatus表中恢复依赖任务的状态。
+master启动的时候，包括standbyserver切换为active的时候，做如下事情：   
+1. load jobDependency表，重建DAG表  
+2. load task表，恢复定时任务  
+3. load jobDependStatus表，恢复依赖任务 
 
 
 #### 2.5.2 worker升级
@@ -162,7 +163,8 @@ master启动的时候，会从task表重建执行计划，当天正在running的
 
 如果无法获取任务状态，执行异常处理流程。
 
-### 2.6 异常处理
+
+### 2.7 异常处理
 
 ## 三、内部接口设计
 
