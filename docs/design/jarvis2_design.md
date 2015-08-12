@@ -105,9 +105,13 @@ DAGScheduler为调度模块，负责定时任务和依赖任务的调度，JobDi
 
 ![调度器](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/core_scheduler_new.png)
 
-如上图所示：
+如上图所示：  
 
-- DAGScheduler，ExecuteQueue和JobDispatcher是一个生产者、消费者的关系，DAGScheduler是生产者，负责向执行队列中提交任务，是push的方式。JobDispatcher是消费者，从执行队列中取任务，是pull的方式。
+- DAGScheduler提交任务并不是直接提交给JobDispatcher，而是先发送给ExecuteQueue。
+
+- JobDispatcher首先向ExecuteQueue注册自己，当ExecuteQueue中有任务到来的时候，会主动推送给JobDispatcher。如果注册多个JobDispatcher实例，则可以并发分发任务。
+
+- DAGScheduler和JobDispatcher是一个生产者、消费者的关系，DAGScheduler是生产者，负责向执行队列中提交任务。JobDispatcher是消费者，由执行队列主动推送任务给JobDispatcher。
 
 - StatuManager维护任务状态，向DAGScheduler发送事件，进行依赖触发。
 
