@@ -380,6 +380,23 @@ Server、Worker、LogServer、RestServer之间的通信均采用Netty、Protocol
 | ------- | ---- | ---- | ---- | ------ | 
 | status | int32 | T    |      | 状态 |
 
+### 3.10 进度汇报
+
+- Worker -> Server
+
+请求：
+
+| 字段      | 类型     | 必选   | 默认值  | 描述                  | 
+| ------- | ------ | ---- | ---- | ------------------- | 
+| job_id      | int64 | T    |      | 任务ID         | 
+| progress    | double  | T    |      | 任务完成进度           |
+
+响应：
+
+| 字段      | 类型   | 必选   | 默认值  | 描述     | 
+| ------- | ---- | ---- | ---- | ------ | 
+| success | bool | T    |      | 是否请求成功 |
+
 ## 四、外部接口设计
 
 RestServer对外提供REST API。
