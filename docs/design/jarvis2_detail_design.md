@@ -92,9 +92,9 @@ RandomJobDispatcher：随机生成一个Worker数以内的整数作为Worker索�
 
 ![akka_service](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/akka_service.png)
 
-如上图所示，sentinel master内部有ServerActor，HeartBeatActor，和JobStatusRoutingActor。HeartBeatActor用来接收slave发送过来的心跳信息，由HeartBeatManager来维护所有client的信息。ServerActor作为master的核心actor，接收restfulServer发送过来的信息，通过负载均衡的分发策略把任务提交给ClientActor，向JobStatusRoutingActor汇报任务状态，把log通过LogRoutingActor写到logserver中。
+如上图所示，sentinel master内部有ServerActor，HeartBeatActor，和JobMetricsRoutingActor。HeartBeatActor用来接收slave发送过来的心跳信息，由HeartBeatManager来维护所有client的信息。ServerActor作为master的核心actor，接收restfulServer发送过来的信息，通过负载均衡的分发策略把任务提交给ClientActor，向JobMetricsRoutingActor汇报任务状态和进度，把log通过LogRoutingActor写到logserver中。
 
-JobStatusRoutingActor对jobId进行哈希，把任务状态路由给具体的jobStatusActor。JobStatusActor把任务状态写到DB中，来持久化任务状态。
+JobMetricsRoutingActor对jobId进行哈希，把任务状态和进度路由给具体的JobMetricsActor。JobMetricsActor把任务状态写到DB中，来持久化任务状态，把任务进度反馈给前段。
 
 LogRoutingActor和JobStatusRoutingActor类似，只是路由功能。由具体的LogWriterActor来写log，LogReadActor来读log。
 
