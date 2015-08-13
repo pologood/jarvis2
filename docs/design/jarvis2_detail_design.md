@@ -9,6 +9,10 @@ DAGScheduler类图如下：
 
 ![uml_DAGScheduler](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/uml_DAGScheduler.png)
 
+DAGScheduler中的DAGMap，其数据结构为Map[Integer, DAGJob]  
+DAGScheduler中的runningMap，其数据结构为Map[Integer, DAGTask]  
+JobDependStatus中的jobStatusMap，其数据结构为Map[Integer,Map[Integer,Boolean]]
+
 
 #### 1.1.1 定时任务调度
 
