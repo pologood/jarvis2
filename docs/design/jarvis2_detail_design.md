@@ -177,6 +177,8 @@ master/stand by HA切换处理
 恢复上次运行的状态
 包括，DAG表，task表，jobDependStatus表等
 
+检查时间触发器，恢复重启过程中未触发的时间事件。
+
 与worker取得联系，继续接受worker消息。
 
 - worker失联处理
@@ -189,6 +191,7 @@ master/stand by HA切换处理
 #### 2.7.2 worker端的异常处理
 - worker重启
 恢复执行中的任务，并向server继续发送消息。
+
 如果任务不可恢复，则汇报任务执行失败。
 
 - server失联处理
