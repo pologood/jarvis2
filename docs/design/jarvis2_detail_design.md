@@ -165,6 +165,35 @@ master启动的时候，包括standbyserver切换为active的时候，做如下�
 
 
 ### 2.7 异常处理
+#### 2.7.1 server端的异常处理
+- server重启
+
+master/stand by HA切换处理
+
+恢复上次运行的状态
+包括，DAG表，task表，jobDependStatus表等
+
+与worker取得联系，继续接受worker消息。
+
+- worker失联处理
+
+超过3分钟联系不上worker，则把该worker上的任务重新发到其他worker执行。
+（先把任务设置为失败，然后重新执行任务）
+
+![worker_miss](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/worker_miss.png)
+
+#### 2.7.2 worker端的异常处理
+- worker重启
+恢复执行中的任务，并向server继续发送消息。
+如果任务不可恢复，则汇报任务执行失败。
+
+- server失联处理
+
+超过3分钟联系不上server，则把执行中的任务都kill掉。
+
+![worker_miss](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/server_miss.png)
+
+
 
 ## 三、内部接口设计
 
