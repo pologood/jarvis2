@@ -165,9 +165,9 @@ master启动的时候，包括standbyserver切换为active的时候，做如下�
 
 发现该文件是running，根据任务类型去获取任务状态，如果能获取到并且是成功或失败，重新向master发送状态，然后删除该文件。
 
-如果状态是running，则kill该任务，同时向master发送失败状态。
+如果状态是running，向master发送失败状态，必要场合，释放该任务相关的资源（比如kill yarn上的任务）。
 
-如果无法获取任务状态，则kill该任务，同时向master发送失败状态。
+如果无法获取任务状态，向master发送失败状态，必要场合，释放该任务相关的资源（比如kill yarn上的任务）。
 
 
 ### 2.7 异常处理
