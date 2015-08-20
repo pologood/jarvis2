@@ -263,10 +263,10 @@ Server、Worker、LogServer、RestServer之间的通信均采用Netty、Protocol
 | group_id   | int32  | T    |      | Worker组ID | 
 | priority   | int32  | F    | 1    | 任务优先级，取值范围1-10。后端执行系统可根据此值映射成自己对应的优先级      |
 | reject_retries   | int32  | F    | 0    | 任务被Worker拒绝时的重试次数      |
-| reject_interval   | int32  | F    | 3    | 任务被Worker拒绝时重试的间隔，单位：秒      |
+| reject_interval   | int32  | F    | 3    | 任务被Worker拒绝时重试的间隔，单位：秒 |
 | failed_retries   | int32  | F    | 0    | 任务运行失败时的重试次数      |
 | failed_interval   | int32  | F    | 3    | 任务运行失败时重试的间隔，单位：秒      | 
-| start_time   | string  | F    |     | 起始调度时间，格式：yyyy-MM-dd HH:mm:ss      | 
+| start_time   | string  | F    |     | 起始调度时间，格式：yyyy-MM-dd HH:mm:ss   | 
 | end_time   | string  | F    |     | 结束调度时间，格式：yyyy-MM-dd HH:mm:ss     |  
 | parameters | map | F    |      | 扩展参数，用于支持不同类型任务执行需要的额外参数，如：权限验证等      | 
 
@@ -321,10 +321,10 @@ Server、Worker、LogServer、RestServer之间的通信均采用Netty、Protocol
 | group_id   | int32  | T    |      | Worker组ID | 
 | priority   | int32  | F    | 1    | 任务优先级，取值范围1-10。后端执行系统可根据此值映射成自己对应的优先级      |
 | reject_retries   | int32  | F    | 0    | 任务被Worker拒绝时的重试次数      |
-| reject_interval   | int32  | F    | 3    | 任务被Worker拒绝时重试的间隔，单位：秒      |
+| reject_interval   | int32  | F    | 3    | 任务被Worker拒绝时重试的间隔，单位：秒 |
 | failed_retries   | int32  | F    | 0    | 任务运行失败时的重试次数      |
 | failed_interval   | int32  | F    | 3    | 任务运行失败时重试的间隔，单位：秒      | 
-| start_time   | string  | F    |     | 起始调度时间，格式：yyyy-MM-dd HH:mm:ss      | 
+| start_time   | string  | F    |     | 起始调度时间，格式：yyyy-MM-dd HH:mm:ss   | 
 | end_time   | string  | F    |     | 结束调度时间，格式：yyyy-MM-dd HH:mm:ss     |  
 | parameters | map | F    |      | 扩展参数，用于支持不同类型任务执行需要的额外参数，如：权限验证等      | 
 
@@ -561,7 +561,9 @@ Method：POST
 | reject_retries   | int32  | F    | 0    | 任务被Worker拒绝时的重试次数      |
 | reject_interval   | int32  | F    | 3    | 任务被Worker拒绝时重试的间隔，单位：秒      |
 | failed_retries   | int32  | F    | 0    | 任务运行失败时的重试次数      |
-| failed_interval   | int32  | F    | 3    | 任务运行失败时重试的间隔，单位：秒      | 
+| failed_interval   | int32  | F    | 3    | 任务运行失败时重试的间隔，单位：秒    | 
+| start_time   | string  | F    |     | 起始调度时间，格式：yyyy-MM-dd HH:mm:ss   | 
+| end_time   | string  | F    |     | 结束调度时间，格式：yyyy-MM-dd HH:mm:ss     |  
 | priority   | int32  | F    | 1    | 任务优先级，取值范围1-10。后端执行系统可根据此值映射成自己对应的优先级      | 
 | parameters | map | F    |      | 扩展参数，用于支持不同类型任务执行需要的额外参数，如：权限验证等      | 
 
@@ -594,6 +596,8 @@ Method：POST
 | reject_interval   | int32  | F    | 3    | 任务被Worker拒绝时重试的间隔，单位：秒      |
 | failed_retries   | int32  | F    | 0    | 任务运行失败时的重试次数      |
 | failed_interval   | int32  | F    | 3    | 任务运行失败时重试的间隔，单位：秒      | 
+| start_time   | string  | F    |     | 起始调度时间，格式：yyyy-MM-dd HH:mm:ss   | 
+| end_time   | string  | F    |     | 结束调度时间，格式：yyyy-MM-dd HH:mm:ss     |  
 | priority   | int32  | F    | 1    | 任务优先级，取值范围1-10。后端执行系统可根据此值映射成自己对应的优先级      | 
 | parameters | map | F    |      | 扩展参数，用于支持不同类型任务执行需要的额外参数，如：权限验证等      | 
 
