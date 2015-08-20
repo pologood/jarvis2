@@ -11,6 +11,7 @@
 | content  | string |     |F|'' | 任务内容          | 
 | priorty  | tinyint |     |F|'' | 优先级          | 
 | workerGroupId  | int(11) |     |F|'' | worker组ID          | 
+| appName|string|   |F|''| 应用名称 
 | submitUser | string |     |F|'' | 提交用户           | 
 | executUser | string |     |F|'' | 执行用户           | 
 | createTime  | int(11)|     |F|0  |   创建时间      | 
