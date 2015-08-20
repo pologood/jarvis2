@@ -476,7 +476,11 @@ Method：POST
 | user       | string | T    |      | 提交任务的用户名称 | 
 | job_type   | string | T    |      | 任务类型，如：hive、shell、mapreduce      | 
 | command    | string | T    |      | 执行命令      | 
-| group_id   | int32  | T    |      | Worker组ID | 
+| group_id   | int32  | T    |      | Worker组ID |
+| reject_retries   | int32  | F    | 0    | 任务被Worker拒绝时的重试次数      |
+| reject_interval   | int32  | F    | 3    | 任务被Worker拒绝时重试的间隔，单位：秒      |
+| failed_retries   | int32  | F    | 0    | 任务运行失败时的重试次数      |
+| failed_interval   | int32  | F    | 3    | 任务运行失败时重试的间隔，单位：秒      | 
 | priority   | int32  | F    | 1    | 任务优先级，取值范围1-10。后端执行系统可根据此值映射成自己对应的优先级      | 
 | parameters | map | F    |      | 扩展参数，用于支持不同类型任务执行需要的额外参数，如：权限验证等      | 
 
@@ -484,9 +488,8 @@ Method：POST
 
 | 字段      | 类型     | 必选   | 默认值  | 描述          | 
 | ------- | ------ | ---- | ---- | ----------- | 
-| job_id  | int64  | F    | -1   | 任务ID        | 
-| accept  | bool   | T    |      | 提交的任务是否被接受 | 
-| message | string | F    |      | 描述消息，用于说明任务被拒绝的原因。任务被接受时此字段为空            |
+| job_id  | int64  | F    | -1   | 任务ID        |
+| message | string | F    |      | 描述消息            |
 
 ### 4.2 读取日志
 
