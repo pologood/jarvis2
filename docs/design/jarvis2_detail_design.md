@@ -192,6 +192,16 @@ jobID + taskId + attemptID. log
 zookeeper中的配置
 
 
+### 2.8 接入认证
+##### 2.8.1 业务方接入认证
+通过 app 与appKey 来认证。
+
+每个app方有个appKey来验证。
+
+#### 2.8.2 worker验证
+worker通过 workerKey，来验证。
+
+server会验证worker的 组id，ip，端口号，key是否OK。
 
 
 
