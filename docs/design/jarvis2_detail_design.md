@@ -601,12 +601,13 @@ Method：POST
 | app_name   | string | T    |      | 应用名称，如：XRay      | 
 | app_key    | string | T    |      | 应用授权Key   | 
 | job_name   | string | T    |      | 任务名称      |
+| job_id   | string | T    |      | 任务ID|
 | cron_expression   | string | F    |      | cron表达式，如：0 0 23 * * ?      | 
 | dependency_jobids | int32 | F    |      | 依赖任务ID，可以多个      |  
-| user       | string | T    |      | 提交任务的用户名称 | 
-| job_type   | string | T    |      | 任务类型，如：hive、shell、mapreduce      | 
-| command    | string | T    |      | 执行命令      | 
-| group_id   | int32  | T    |      | Worker组ID |
+| user       | string | F    |     | 提交任务的用户名称 | 
+| job_type   | string | F    |      | 任务类型，如：hive、shell、mapreduce      | 
+| command    | string | F    |      | 执行命令      | 
+| group_id   | int32  | F    |      | Worker组ID |
 | reject_retries   | int32  | F    | 0    | 任务被Worker拒绝时的重试次数      |
 | reject_interval   | int32  | F    | 3    | 任务被Worker拒绝时重试的间隔，单位：秒      |
 | failed_retries   | int32  | F    | 0    | 任务运行失败时的重试次数      |
