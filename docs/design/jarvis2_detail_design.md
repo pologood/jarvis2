@@ -284,7 +284,7 @@ Server、Worker、LogServer、RestServer之间的通信均采用Netty、Protocol
 
 | 字段         | 类型     | 必选   | 默认值  | 描述        | 
 | :--------- | ------ | ---- | ---- | --------- |
-| job_id   | string | T    |      | 任务名称      |
+| full_id   | string | T    |      | 全部ID，(jobId+taskId+attemptId)      |
 | job_name   | string | T    |      | 任务名称      | 
 | app_name   | string | T    |      | 应用名称，如：XRay      |
 | user       | string | T    |      | 提交任务的用户名称 | 
@@ -301,25 +301,39 @@ Server、Worker、LogServer、RestServer之间的通信均采用Netty、Protocol
 | message | string | F    |      | 描述消息，用于说明任务被拒绝的原因。任务被接受时此字段为空            |
 
 
-### 3.2 任务状态汇报
+### 3.2 修改任务
 
-- Worker -> Server
+- RestServer -> Server
 
-请求：
+请求:
 
-| 字段        | 类型    | 必选   | 默认值  | 描述   | 
-| --------- | ----- | ---- | ---- | ---- | 
-| job_id    | int64 | T    |      | 任务ID | 
-| status    | int32 | F    | -1   | 状态   | 
-| timestamp | int64 | F    | 0    | 时间戳  | 
+| 字段         | 类型     | 必选   | 默认值  | 描述        | 
+| :--------- | ------ | ---- | ---- | --------- |
+| job_id  | int64  | T    |    | 任务ID        |
+| job_name   | string | T    |      | 任务名称      |
+| cron_expression   | string | F    |      | cron表达式，如：0 0 23 * * ?      | 
+| dependency_jobids | int32 | F    |      | 依赖任务ID，可以多个      |  
+| app_name   | string | T    |      | 应用名称，如：XRay      | 
+| app_key    | string | T    |      | 应用授权Key   | 
+| user       | string | T    |      | 提交任务的用户名称 | 
+| job_type   | string | T    |      | 任务类型，如：hive、shell、mapreduce      | 
+| command    | string | T    |      | 执行命令      | 
+| group_id   | int32  | T    |      | Worker组ID | 
+| priority   | int32  | F    | 1    | 任务优先级，取值范围1-10。后端执行系统可根据此值映射成自己对应的优先级      |
+| reject_retries   | int32  | F    | 0    | 任务被Worker拒绝时的重试次数      |
+| reject_interval   | int32  | F    | 3    | 任务被Worker拒绝时重试的间隔，单位：秒      |
+| failed_retries   | int32  | F    | 0    | 任务运行失败时的重试次数      |
+| failed_interval   | int32  | F    | 3    | 任务运行失败时重试的间隔，单位：秒      | 
+| start_time   | string  | F    |     | 起始调度时间，格式：yyyy-MM-dd HH:mm:ss      | 
+| end_time   | string  | F    |     | 结束调度时间，格式：yyyy-MM-dd HH:mm:ss     |  
+| parameters | map | F    |      | 扩展参数，用于支持不同类型任务执行需要的额外参数，如：权限验证等      | 
 
-响应：
+响应:
 
-| 字段      | 类型   | 必选   | 默认值  | 描述     | 
-| ------- | ---- | ---- | ---- | ------ | 
-| success | bool | T    |      | 是否请求成功 | 
-
-
+| 字段      | 类型     | 必选   | 默认值  | 描述          | 
+| ------- | ------ | ---- | ---- | ----------- | 
+| job_id  | int64  | T    |    | 任务ID        |
+| success | bool | T    |      | 是否提交成功 | 
 
 
 ### 3.3 删除任务
@@ -339,7 +353,63 @@ Server、Worker、LogServer、RestServer之间的通信均采用Netty、Protocol
 | success | bool | T    |      | 是否删除成功 | 
 
 
-### 3.4 终止任务
+
+### 3.4 Task状态汇报
+
+- Worker -> Server
+
+请求：
+
+| 字段        | 类型    | 必选   | 默认值  | 描述   | 
+| --------- | ----- | ---- | ---- | ---- | 
+| full_id    | int64 | T    |      | 全部ID，(jobId+taskId+attemptId) | 
+| status    | int32 | F    | -1   | 状态   | 
+| timestamp | int64 | F    | 0    | 时间戳  | 
+
+响应：
+
+| 字段      | 类型   | 必选   | 默认值  | 描述     | 
+| ------- | ---- | ---- | ---- | ------ | 
+| success | bool | T    |      | 是否请求成功 | 
+
+
+### 3.5 Task进度汇报
+
+- Worker -> Server
+
+请求：
+
+| 字段      | 类型     | 必选   | 默认值  | 描述                  | 
+| ------- | ------ | ---- | ---- | ------------------- | 
+| full_id      | int64 | T    |      | 全部ID，(jobId+taskId+attemptId)        | 
+| progress    | double  | T    |      | 任务完成进度           |
+
+响应：
+
+| 字段      | 类型   | 必选   | 默认值  | 描述     | 
+| ------- | ---- | ---- | ---- | ------ | 
+| success | bool | T    |      | 是否请求成功 |
+
+
+### 3.6 Task状态查询
+
+- RestServer -> Server
+
+请求：
+
+| 字段      | 类型     | 必选   | 默认值  | 描述                  | 
+| ------- | ------ | ---- | ---- | ------------------- | 
+| task_id | int64   | T    |      |taskID | 
+
+响应：
+
+| 字段      | 类型   | 必选   | 默认值  | 描述     | 
+| ------- | ---- | ---- | ---- | ------ | 
+| status | int32 | T    |      | 状态 |
+
+
+
+### 3.7 终止Task
 
 - RestServer -> Server
 
@@ -347,7 +417,7 @@ Server、Worker、LogServer、RestServer之间的通信均采用Netty、Protocol
 
 | 字段     | 类型    | 必选   | 默认值  | 描述   | 
 | ------ | ----- | ---- | ---- | ---- | 
-| job_id | int64 | T    |      | 任务ID | 
+| task_id | int64 | T    |      | taskID | 
 
 响应：
 
@@ -361,7 +431,7 @@ Server、Worker、LogServer、RestServer之间的通信均采用Netty、Protocol
 
 | 字段     | 类型    | 必选   | 默认值  | 描述   | 
 | ------ | ----- | ---- | ---- | ---- | 
-| job_id | int64 | T    |      | 任务ID | 
+| full_id | String | T    |      | fullID(jobId+taskId+attemptId) | 
 
 响应：
 
@@ -372,7 +442,7 @@ Server、Worker、LogServer、RestServer之间的通信均采用Netty、Protocol
 
 
 
-### 3.5 日志写入
+### 3.8 日志写入
 
 - Worker -> LogServer
 
@@ -380,7 +450,7 @@ Server、Worker、LogServer、RestServer之间的通信均采用Netty、Protocol
 
 | 字段     | 类型     | 必选   | 默认值  | 描述                 | 
 | ------ | ------ | ---- | ---- | ------------------ | 
-| job_id | int64  | T    |      | 任务ID               | 
+| full_id | int64  | T    |      | fullID (jobId+taskId+attemptId) | 
 | log    | string | T    |      | 日志内容               | 
 | type   | int32  | T    |      | 日志类型：1-stdout、2-stderr | 
 | is_end | bool   | T    |      | 日志写请求是否结束          | 
@@ -391,7 +461,7 @@ Server、Worker、LogServer、RestServer之间的通信均采用Netty、Protocol
 | ------- | ---- | ---- | ---- | ------ | 
 | success | bool | T    |      | 是否请求成功 | 
 
-### 3.6 日志读取
+### 3.9 日志读取
 
 - RestServer -> LogServer
 
@@ -399,7 +469,7 @@ Server、Worker、LogServer、RestServer之间的通信均采用Netty、Protocol
 
 | 字段     | 类型    | 必选   | 默认值  | 描述                 | 
 | ------ | ----- | ---- | ---- | ------------------ | 
-| job_id | int64 | T    |      | 任务ID               | 
+| task_id | int64 | T    |      | taskID               | 
 | type   | int32 | T    |      | 日志类型：stdout、stderr | 
 | offset | int64 | F    | 0    | 日志内容的字节偏移量         | 
 | lines  | int32 | F    | 100  | 日志读取的行数            | 
@@ -413,7 +483,7 @@ Server、Worker、LogServer、RestServer之间的通信均采用Netty、Protocol
 | offset | int64  | T    |      | 当前日志内容的字节偏移量 | 
 
 
-### 3.7 Worker注册
+### 3.10 Worker注册
 
 - Worker -> Server
 
@@ -430,7 +500,7 @@ Server、Worker、LogServer、RestServer之间的通信均采用Netty、Protocol
 | ------- | ---- | ---- | ---- | ------ | 
 | success | bool | T    |      | 是否注册成功 | 
 
-### 3.8 Worker心跳汇报
+### 3.11 Worker心跳汇报
 
 - Worker -> Server
 
@@ -438,7 +508,7 @@ Server、Worker、LogServer、RestServer之间的通信均采用Netty、Protocol
 
 | 字段       | 类型     | 必选   | 默认值  | 描述          | 
 | -------- | ------ | ---- | ---- | ----------- |
-| job_num  | int32  | T    |      | 正在运行的任务数    | 
+| task_num  | int32  | T    |      | 正在运行的task数    | 
 
 响应：
 
@@ -446,7 +516,7 @@ Server、Worker、LogServer、RestServer之间的通信均采用Netty、Protocol
 | ------- | ---- | ---- | ---- | ------ | 
 | success | bool | T    |      | 是否请求成功 | 
 
-### 3.9 Worker上下线
+### 3.12 Worker上下线
 
 - RestServer -> Worker
 
@@ -464,38 +534,7 @@ Server、Worker、LogServer、RestServer之间的通信均采用Netty、Protocol
 | ------- | ---- | ---- | ---- | ------ | 
 | success | bool | T    |      | 是否请求成功 | 
 
-### 3.10 任务状态查询
 
-- RestServer -> Server
-
-请求：
-
-| 字段      | 类型     | 必选   | 默认值  | 描述                  | 
-| ------- | ------ | ---- | ---- | ------------------- | 
-| job_id | int64   | T    |      | 任务ID | 
-
-响应：
-
-| 字段      | 类型   | 必选   | 默认值  | 描述     | 
-| ------- | ---- | ---- | ---- | ------ | 
-| status | int32 | T    |      | 状态 |
-
-### 3.11 进度汇报
-
-- Worker -> Server
-
-请求：
-
-| 字段      | 类型     | 必选   | 默认值  | 描述                  | 
-| ------- | ------ | ---- | ---- | ------------------- | 
-| job_id      | int64 | T    |      | 任务ID         | 
-| progress    | double  | T    |      | 任务完成进度           |
-
-响应：
-
-| 字段      | 类型   | 必选   | 默认值  | 描述     | 
-| ------- | ---- | ---- | ---- | ------ | 
-| success | bool | T    |      | 是否请求成功 |
 
 ## 四、外部接口设计
 
@@ -533,7 +572,125 @@ Method：POST
 | job_id  | int64  | F    | -1   | 任务ID        |
 | message | string | F    |      | 描述消息            |
 
-### 4.2 读取日志
+
+### 4.2 修改任务
+
+接口：/api/job/edit
+
+Method：POST
+
+| 字段       | 类型     | 必选   | 默认值  | 描述        | 
+| -------- | ------ | ---- | ---- | --------- | 
+| app_name   | string | T    |      | 应用名称，如：XRay      | 
+| app_key    | string | T    |      | 应用授权Key   | 
+| job_name   | string | T    |      | 任务名称      |
+| cron_expression   | string | F    |      | cron表达式，如：0 0 23 * * ?      | 
+| dependency_jobids | int32 | F    |      | 依赖任务ID，可以多个      |  
+| user       | string | T    |      | 提交任务的用户名称 | 
+| job_type   | string | T    |      | 任务类型，如：hive、shell、mapreduce      | 
+| command    | string | T    |      | 执行命令      | 
+| group_id   | int32  | T    |      | Worker组ID |
+| reject_retries   | int32  | F    | 0    | 任务被Worker拒绝时的重试次数      |
+| reject_interval   | int32  | F    | 3    | 任务被Worker拒绝时重试的间隔，单位：秒      |
+| failed_retries   | int32  | F    | 0    | 任务运行失败时的重试次数      |
+| failed_interval   | int32  | F    | 3    | 任务运行失败时重试的间隔，单位：秒      | 
+| priority   | int32  | F    | 1    | 任务优先级，取值范围1-10。后端执行系统可根据此值映射成自己对应的优先级      | 
+| parameters | map | F    |      | 扩展参数，用于支持不同类型任务执行需要的额外参数，如：权限验证等      | 
+
+响应:
+
+| 字段      | 类型     | 必选   | 默认值  | 描述          | 
+| ------- | ------ | ---- | ---- | ----------- | 
+| success | bool | T    |      | 是否成功 | 
+| message | string | F    |      | 描述消息            |
+
+
+### 4.3 删除任务
+
+接口：/api/job/delete
+
+Method：POST
+
+请求：
+
+| 字段     | 类型    | 必选   | 默认值  | 描述   | 
+| ------ | ----- | ---- | ---- | ---- | 
+| app_name   | string | T    |      | 应用名称，如：XRay      | 
+| app_key    | string | T    |      | 应用授权Key   | 
+| job_id | int64 | T    |      | 任务ID | 
+
+响应：
+
+| 字段      | 类型   | 必选   | 默认值  | 描述     | 
+| ------- | ---- | ---- | ---- | ------ | 
+| success | bool | T    |      | 是否删除成功 | 
+| message | string | F    |      | 描述消息            |
+
+
+
+### 4.4 获取task一览
+
+接口：/api/job/getTaskList
+
+Method：GET
+
+| 字段    | 类型     | 必选   | 默认值  | 描述     | 
+| ----- | ------ | ---- | ---- | ------ |
+| app_name   | string | T    |      | 应用名称，如：XRay      | 
+| app_key    | string | T    |      | 应用授权Key   |
+| job_id | long   | T    |      | 任务ID   | 
+
+响应：
+
+| 字段      | 类型   | 必选   | 默认值  | 描述     | 
+| ------- | ---- | ---- | ---- | ------ | 
+| task_id | long   | T    |      | taskID   | 
+
+
+
+### 4.5 获取task状态
+
+接口：/api/task/status
+
+Method：GET
+
+| 字段    | 类型     | 必选   | 默认值  | 描述     | 
+| ----- | ------ | ---- | ---- | ------ |
+| app_name   | string | T    |      | 应用名称，如：XRay      | 
+| app_key    | string | T    |      | 应用授权Key   |
+| task_id | long   | T    |      | taskID   | 
+
+响应：
+
+| 字段      | 类型   | 必选   | 默认值  | 描述     | 
+| ------- | ---- | ---- | ---- | ------ | 
+| task_id | long   | T    |      | 任务ID   | 
+| status | int32 | T    |      | 状态 |
+
+
+### 4.6 终止Task
+
+接口：/api/task/kill
+
+Method：POST
+
+请求：
+
+| 字段     | 类型    | 必选   | 默认值  | 描述   | 
+| ------ | ----- | ---- | ---- | ---- | 
+| app_name   | string | T    |      | 应用名称，如：XRay      | 
+| app_key    | string | T    |      | 应用授权Key   | 
+| task_id | int64 | T    |      | taskID | 
+
+响应：
+
+| 字段      | 类型   | 必选   | 默认值  | 描述     | 
+| ------- | ---- | ---- | ---- | ------ | 
+| success | bool | T    |      | 是否终止成功 | 
+
+
+
+### 4.3 读取日志
 
 接口：/api/log
 
@@ -543,7 +700,7 @@ Method：GET
 | ----- | ------ | ---- | ---- | ------ | 
 | app_name   | string | T    |      | 应用名称，如：XRay      | 
 | app_key    | string | T    |      | 应用授权Key   | 
-| job_id | int64 | T    |      | 任务ID               | 
+| task_id | int64 | T    |      | taskID               | 
 | type   | int32 | T    |      | 日志类型：stdout、stderr | 
 | offset | int64 | F    | 0    | 日志内容的字节偏移量         | 
 | lines  | int32 | F    | 100  | 日志读取的行数            |
@@ -552,13 +709,13 @@ Method：GET
 
 | 字段     | 类型     | 必选   | 默认值  | 描述           | 
 | ------ | ------ | ---- | ---- | ------------ | 
-| job_id | int64 | T    |      | 任务ID               | 
+| task_id | int64 | T    |      | taskID               | 
 | type   | int32 | T    |      | 日志类型：stdout、stderr | 
 | is_end | bool   | T    |      | 是否请求成功       | 
 | log    | string | F    |      | 日志内容         | 
 | offset | int64  | T    |      | 当前日志内容的字节偏移量 |
 
-### 4.3 下载日志
+### 4.4 下载日志
 
 接口：/api/log/download
 
@@ -568,48 +725,10 @@ Method：GET
 | ----- | ------ | ---- | ---- | ------ |
 | app_name   | string | T    |      | 应用名称，如：XRay      | 
 | app_key    | string | T    |      | 应用授权Key   |
-| job_id | long   | T    |      | 任务ID   |
+| task_id | long   | T    |      | taskID   |
 | type   | int32 | T    |      | 日志类型：stdout、stderr | 
 
 响应：文件
-
-### 4.4 获取任务状态
-
-接口：/api/job/status
-
-Method：GET
-
-| 字段    | 类型     | 必选   | 默认值  | 描述     | 
-| ----- | ------ | ---- | ---- | ------ |
-| app_name   | string | T    |      | 应用名称，如：XRay      | 
-| app_key    | string | T    |      | 应用授权Key   |
-| job_id | long   | T    |      | 任务ID   | 
-
-响应：
-
-| 字段      | 类型   | 必选   | 默认值  | 描述     | 
-| ------- | ---- | ---- | ---- | ------ | 
-| job_id | long   | T    |      | 任务ID   | 
-| status | int32 | T    |      | 状态 |
-
-### 4.5 终止任务
-
-接口：/api/job/kill
-
-Method：DELETE
-
-| 字段    | 类型     | 必选   | 默认值  | 描述     | 
-| ----- | ------ | ---- | ---- | ------ |
-| app_name   | string | T    |      | 应用名称，如：XRay      | 
-| app_key    | string | T    |      | 应用授权Key   | 
-| job_id | long   | T    |      | 任务ID   | 
-
-响应：
-
-| 字段      | 类型   | 必选   | 默认值  | 描述     | 
-| ------- | ---- | ---- | ---- | ------ | 
-| job_id | long   | T    |      | 任务ID   | 
-| success | bool | T    |      | 是否终止成功 | 
 
 
 ### 4.6 Worker上下线
@@ -633,6 +752,7 @@ Method：POST
 | ip     | string | T    |      | Worker IP地址  | 
 | port   | int    | T    |      | Worker 端口    | 
 | success | bool | T    |      | 是否请求成功 | 
+
 
 ## 五、表结构设计
 
