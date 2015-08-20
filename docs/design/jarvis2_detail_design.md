@@ -226,7 +226,11 @@ Server、Worker、LogServer、RestServer之间的通信均采用Netty、Protocol
 | job_type   | string | T    |      | 任务类型，如：hive、shell、mapreduce      | 
 | command    | string | T    |      | 执行命令      | 
 | group_id   | int32  | T    |      | Worker组ID | 
-| priority   | int32  | F    | 1    | 任务优先级，取值范围1-10。后端执行系统可根据此值映射成自己对应的优先级      | 
+| priority   | int32  | F    | 1    | 任务优先级，取值范围1-10。后端执行系统可根据此值映射成自己对应的优先级      |
+| reject_retries   | int32  | F    | 0    | 任务被Worker拒绝时的重试次数      |
+| reject_interval   | int32  | F    | 3    | 任务被Worker拒绝时重试的间隔，单位：秒      |
+| failed_retries   | int32  | F    | 0    | 任务运行失败时的重试次数      |
+| failed_interval   | int32  | F    | 3    | 任务运行失败时重试的间隔，单位：秒      |  
 | parameters | map | F    |      | 扩展参数，用于支持不同类型任务执行需要的额外参数，如：权限验证等      | 
 
 响应:
@@ -234,8 +238,7 @@ Server、Worker、LogServer、RestServer之间的通信均采用Netty、Protocol
 | 字段      | 类型     | 必选   | 默认值  | 描述          | 
 | ------- | ------ | ---- | ---- | ----------- | 
 | job_id  | int64  | F    | -1   | 任务ID        | 
-| accept  | bool   | T    |      | 提交的任务是否被接受 | 
-| message | string | F    |      | 描述消息，用于说明任务被拒绝的原因。任务被接受时此字段为空            |
+| message | string | F    |      | 描述消息            |
 
 
 - Server -> Worker
@@ -261,7 +264,24 @@ Server、Worker、LogServer、RestServer之间的通信均采用Netty、Protocol
 | accept  | bool   | T    |      | 提交的任务是否被接受 | 
 | message | string | F    |      | 描述消息，用于说明任务被拒绝的原因。任务被接受时此字段为空            |
 
-### 3.2 终止任务
+### 3.2 删除任务
+
+- RestServer -> Server
+
+请求：
+
+| 字段     | 类型    | 必选   | 默认值  | 描述   | 
+| ------ | ----- | ---- | ---- | ---- | 
+| job_id | int64 | T    |      | 任务ID | 
+
+响应：
+
+| 字段      | 类型   | 必选   | 默认值  | 描述     | 
+| ------- | ---- | ---- | ---- | ------ | 
+| success | bool | T    |      | 是否删除成功 | 
+
+
+### 3.3 终止任务
 
 - RestServer -> Server
 
@@ -292,7 +312,7 @@ Server、Worker、LogServer、RestServer之间的通信均采用Netty、Protocol
 | success | bool | T    |      | 是否终止成功 | 
 
 
-### 3.3 任务状态汇报
+### 3.4 任务状态汇报
 
 - Worker -> Server
 
@@ -310,7 +330,7 @@ Server、Worker、LogServer、RestServer之间的通信均采用Netty、Protocol
 | ------- | ---- | ---- | ---- | ------ | 
 | success | bool | T    |      | 是否请求成功 | 
 
-### 3.4 日志写入
+### 3.5 日志写入
 
 - Worker -> LogServer
 
@@ -329,7 +349,7 @@ Server、Worker、LogServer、RestServer之间的通信均采用Netty、Protocol
 | ------- | ---- | ---- | ---- | ------ | 
 | success | bool | T    |      | 是否请求成功 | 
 
-### 3.5 日志读取
+### 3.6 日志读取
 
 - RestServer -> LogServer
 
@@ -351,7 +371,7 @@ Server、Worker、LogServer、RestServer之间的通信均采用Netty、Protocol
 | offset | int64  | T    |      | 当前日志内容的字节偏移量 | 
 
 
-### 3.6 Worker注册
+### 3.7 Worker注册
 
 - Worker -> Server
 
@@ -368,7 +388,7 @@ Server、Worker、LogServer、RestServer之间的通信均采用Netty、Protocol
 | ------- | ---- | ---- | ---- | ------ | 
 | success | bool | T    |      | 是否注册成功 | 
 
-### 3.7 Worker心跳汇报
+### 3.8 Worker心跳汇报
 
 - Worker -> Server
 
@@ -384,7 +404,7 @@ Server、Worker、LogServer、RestServer之间的通信均采用Netty、Protocol
 | ------- | ---- | ---- | ---- | ------ | 
 | success | bool | T    |      | 是否请求成功 | 
 
-### 3.8 Worker上下线
+### 3.9 Worker上下线
 
 - RestServer -> Worker
 
@@ -402,7 +422,7 @@ Server、Worker、LogServer、RestServer之间的通信均采用Netty、Protocol
 | ------- | ---- | ---- | ---- | ------ | 
 | success | bool | T    |      | 是否请求成功 | 
 
-### 3.9 任务状态查询
+### 3.10 任务状态查询
 
 - RestServer -> Server
 
@@ -418,7 +438,7 @@ Server、Worker、LogServer、RestServer之间的通信均采用Netty、Protocol
 | ------- | ---- | ---- | ---- | ------ | 
 | status | int32 | T    |      | 状态 |
 
-### 3.10 进度汇报
+### 3.11 进度汇报
 
 - Worker -> Server
 
@@ -489,7 +509,7 @@ Method：GET
 | ------ | ------ | ---- | ---- | ------------ | 
 | job_id | int64 | T    |      | 任务ID               | 
 | type   | int32 | T    |      | 日志类型：stdout、stderr | 
-| is_end | bool   | T    |      | 是否请求成功       | 
+| is_end | bool   | T    |      | 日志是否结束       | 
 | log    | string | F    |      | 日志内容         | 
 | offset | int64  | T    |      | 当前日志内容的字节偏移量 |
 
