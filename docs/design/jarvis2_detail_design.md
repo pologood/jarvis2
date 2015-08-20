@@ -300,7 +300,29 @@ Server、Worker、LogServer、RestServer之间的通信均采用Netty、Protocol
 | accept  | bool   | T    |      | 提交的任务是否被接受 | 
 | message | string | F    |      | 描述消息，用于说明任务被拒绝的原因。任务被接受时此字段为空            |
 
-### 3.2 删除任务
+
+### 3.2 任务状态汇报
+
+- Worker -> Server
+
+请求：
+
+| 字段        | 类型    | 必选   | 默认值  | 描述   | 
+| --------- | ----- | ---- | ---- | ---- | 
+| job_id    | int64 | T    |      | 任务ID | 
+| status    | int32 | F    | -1   | 状态   | 
+| timestamp | int64 | F    | 0    | 时间戳  | 
+
+响应：
+
+| 字段      | 类型   | 必选   | 默认值  | 描述     | 
+| ------- | ---- | ---- | ---- | ------ | 
+| success | bool | T    |      | 是否请求成功 | 
+
+
+
+
+### 3.3 删除任务
 
 - RestServer -> Server
 
@@ -317,7 +339,7 @@ Server、Worker、LogServer、RestServer之间的通信均采用Netty、Protocol
 | success | bool | T    |      | 是否删除成功 | 
 
 
-### 3.3 终止任务
+### 3.4 终止任务
 
 - RestServer -> Server
 
@@ -348,23 +370,7 @@ Server、Worker、LogServer、RestServer之间的通信均采用Netty、Protocol
 | success | bool | T    |      | 是否终止成功 | 
 
 
-### 3.4 任务状态汇报
 
-- Worker -> Server
-
-请求：
-
-| 字段        | 类型    | 必选   | 默认值  | 描述   | 
-| --------- | ----- | ---- | ---- | ---- | 
-| job_id    | int64 | T    |      | 任务ID | 
-| status    | int32 | F    | -1   | 状态   | 
-| timestamp | int64 | F    | 0    | 时间戳  | 
-
-响应：
-
-| 字段      | 类型   | 必选   | 默认值  | 描述     | 
-| ------- | ---- | ---- | ---- | ------ | 
-| success | bool | T    |      | 是否请求成功 | 
 
 ### 3.5 日志写入
 
