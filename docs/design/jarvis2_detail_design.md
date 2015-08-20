@@ -205,8 +205,8 @@ server会验证worker的 组id，ip，端口号，key是否OK。
 
 
 
-### 2.8 异常处理
-#### 2.8.1 server端的异常处理
+### 2.9 异常处理
+#### 2.9.1 server端的异常处理
 - server重启
 
 master/stand by HA切换处理
@@ -225,7 +225,7 @@ master/stand by HA切换处理
 
 ![worker_miss](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/worker_miss.png)
 
-#### 2.8.2 worker端的异常处理
+#### 2.9.2 worker端的异常处理
 - worker重启
 恢复执行中的任务，并向server继续发送消息。
 
