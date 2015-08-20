@@ -264,8 +264,8 @@ Server、Worker、LogServer、RestServer之间的通信均采用Netty、Protocol
 
 | 字段      | 类型     | 必选   | 默认值  | 描述          | 
 | ------- | ------ | ---- | ---- | ----------- | 
-| job_id  | int64  | F    | -1   | 任务ID        | 
-| message | string | F    |      | 描述消息            |
+| job_id  | int64  | T    |    | 任务ID        |
+| success | bool | T    |      | 是否提交成功 | 
 
 
 - Server -> Worker
@@ -287,7 +287,6 @@ Server、Worker、LogServer、RestServer之间的通信均采用Netty、Protocol
 
 | 字段      | 类型     | 必选   | 默认值  | 描述          | 
 | ------- | ------ | ---- | ---- | ----------- | 
-| job_id  | int64  | F    | -1   | 任务ID        | 
 | accept  | bool   | T    |      | 提交的任务是否被接受 | 
 | message | string | F    |      | 描述消息，用于说明任务被拒绝的原因。任务被接受时此字段为空            |
 
