@@ -391,7 +391,22 @@ Server、Worker、LogServer、RestServer之间的通信均采用Netty、Protocol
 | success | bool | T    |      | 是否请求成功 |
 
 
-### 3.6 Task状态查询
+### 3.6 获取task一览
+
+- RestServer -> Server
+
+| 字段    | 类型     | 必选   | 默认值  | 描述     | 
+| ----- | ------ | ---- | ---- | ------ |
+| job_id | long   | T    |      | 任务ID   | 
+
+响应：
+
+| 字段      | 类型   | 必选   | 默认值  | 描述     | 
+| ------- | ---- | ---- | ---- | ------ | 
+| task_id | long   | T    |      | taskID   | 
+
+
+### 3.7 Task状态查询
 
 - RestServer -> Server
 
@@ -409,7 +424,7 @@ Server、Worker、LogServer、RestServer之间的通信均采用Netty、Protocol
 
 
 
-### 3.7 终止Task
+### 3.8 终止Task
 
 - RestServer -> Server
 
@@ -442,7 +457,7 @@ Server、Worker、LogServer、RestServer之间的通信均采用Netty、Protocol
 
 
 
-### 3.8 日志写入
+### 3.9 日志写入
 
 - Worker -> LogServer
 
@@ -461,7 +476,7 @@ Server、Worker、LogServer、RestServer之间的通信均采用Netty、Protocol
 | ------- | ---- | ---- | ---- | ------ | 
 | success | bool | T    |      | 是否请求成功 | 
 
-### 3.9 日志读取
+### 3.10 日志读取
 
 - RestServer -> LogServer
 
@@ -483,7 +498,7 @@ Server、Worker、LogServer、RestServer之间的通信均采用Netty、Protocol
 | offset | int64  | T    |      | 当前日志内容的字节偏移量 | 
 
 
-### 3.10 Worker注册
+### 3.11 Worker注册
 
 - Worker -> Server
 
@@ -500,7 +515,7 @@ Server、Worker、LogServer、RestServer之间的通信均采用Netty、Protocol
 | ------- | ---- | ---- | ---- | ------ | 
 | success | bool | T    |      | 是否注册成功 | 
 
-### 3.11 Worker心跳汇报
+### 3.12 Worker心跳汇报
 
 - Worker -> Server
 
@@ -516,7 +531,7 @@ Server、Worker、LogServer、RestServer之间的通信均采用Netty、Protocol
 | ------- | ---- | ---- | ---- | ------ | 
 | success | bool | T    |      | 是否请求成功 | 
 
-### 3.12 Worker上下线
+### 3.13 Worker上下线
 
 - RestServer -> Worker
 
