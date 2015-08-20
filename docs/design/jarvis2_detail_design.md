@@ -381,7 +381,7 @@ Server、Worker、LogServer、RestServer之间的通信均采用Netty、Protocol
 
 | 字段      | 类型     | 必选   | 默认值  | 描述                  | 
 | ------- | ------ | ---- | ---- | ------------------- | 
-| full_id      | int64 | T    |      | 全部ID，(jobId+taskId+attemptId)        | 
+| full_id      | string | T    |      | 全部ID，(jobId+taskId+attemptId)        | 
 | progress    | double  | T    |      | 任务完成进度           |
 
 响应：
@@ -403,7 +403,7 @@ Server、Worker、LogServer、RestServer之间的通信均采用Netty、Protocol
 
 | 字段      | 类型   | 必选   | 默认值  | 描述     | 
 | ------- | ---- | ---- | ---- | ------ | 
-| task_id | long   | T    |      | taskID   | 
+| task_id | long数组   | T    |      | taskID数组   | 
 
 
 ### 3.7 Task状态查询
@@ -465,7 +465,7 @@ Server、Worker、LogServer、RestServer之间的通信均采用Netty、Protocol
 
 | 字段     | 类型     | 必选   | 默认值  | 描述                 | 
 | ------ | ------ | ---- | ---- | ------------------ | 
-| full_id | int64  | T    |      | fullID (jobId+taskId+attemptId) | 
+| full_id | string  | T    |      | fullID (jobId+taskId+attemptId) | 
 | log    | string | T    |      | 日志内容               | 
 | type   | int32  | T    |      | 日志类型：1-stdout、2-stderr | 
 | is_end | bool   | T    |      | 日志写请求是否结束          | 
