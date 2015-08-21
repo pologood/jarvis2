@@ -726,7 +726,7 @@ Method：POST
 
 
 
-### 4.3 读取日志
+### 4.7 读取日志
 
 接口：/api/log
 
@@ -751,7 +751,7 @@ Method：GET
 | log    | string | F    |      | 日志内容         | 
 | offset | int64  | T    |      | 当前日志内容的字节偏移量 |
 
-### 4.4 下载日志
+### 4.8 下载日志
 
 接口：/api/log/download
 
@@ -767,7 +767,7 @@ Method：GET
 响应：文件
 
 
-### 4.6 Worker上下线
+### 4.9 Worker上下线
 
 接口：/api/worker/status
 
