@@ -7,18 +7,22 @@
 | ------ | ------ | ---- | ---- | ------------ | ---- |
 | jobId    | int(11) | key|F|   | 任务Id           | 
 | jobName  | string  |    |F|'' | 任务名称          | 
-| type     | string  |    |F|1  | 任务类型 1：hive；2：shell；3：java； 4：MR； | 
+| type     | tinyint  |    |F|1  | 任务类型 1：hive；2：shell；3：java； 4：MR； | 
 | content  | string |     |F|'' | 任务内容          | 
 | priorty  | tinyint |     |F|'' | 优先级          | 
-| workerGroupId  | int(11) |     |F|'' | worker组ID          | 
-| appName|string|   |F|''| 应用名称 
+| appName|string|   |F|''| 应用名称 |
+| workerGroupId  | int(11) |     |F|'' | worker组ID| 
+| reject_retries   | int32 | | F    | 0    | 任务被Worker拒绝时的重试次数      |
+| reject_interval   | int32 | | F    | 3    | 任务被Worker拒绝时重试的间隔(秒) |
+| failed_retries   | int32 | | F    | 0    | 任务运行失败时的重试次数      |
+| failed_interval   | int32 | | F    | 3    | 任务运行失败时重试的间隔(秒) | 
 | submitUser | string |     |F|'' | 提交用户           | 
 | executUser | string |     |F|'' | 执行用户           | 
 | createTime  | int(11)|     |F|0  |   创建时间      | 
 | updateTime  | int(11)|     |F|0  |   更新时间      | 
 
 
-### jobDependence表
+### jobDepend表
 | 字段    | 类型   |  主键  | 是否为NULL | 默认值  | 描述           | 
 | ------ | ------ | ---- | ---- | ------------ | ---- |
 | jobId  | int(11)   | key|F    |      | jobId           | 
@@ -30,7 +34,7 @@
 ### jobDependStatus表
 | 字段    | 类型   |  主键   | 是否为NULL   | 默认值  | 描述           | 
 | ------ | ------ | ---- | ---- | ------------ | ---- |
-| jobId | int(11) |key|F    |      | taskId       | 
+| jobId | int(11) |key|F    |      | jobId       | 
 | preJobId  | int(11) |key  | F    |   0   | 前置JobId    | 
 | preTaskId  | int(11) |key  | F    |   0   | 前置taskId  | 
 | preStatus   | string |  | F    |  0    | 前置依赖的状态信息 0 未完成，1完成  | 
@@ -55,24 +59,13 @@
 | ------ | ------ | ---- | ---- | ------------ | ---- |
 | taskId | int(11) |key|F    |      | taskId       | 
 | jobId   | int(11) |  | F    |      | 所属JobID          | 
-| status  | tinyint | |F    |      | task状态： 1:waittng；2:ready；3:running；4:success；5:failed；6:killed   | 
+| status  | tinyint | |F    |    1  | task状态： 1:waittng；2:ready；3:running；4:success；5:failed；6:killed   | 
+| attemptNum | tinyint |     |F|0 | 尝试次数           | 
+| attemptInfo | string |     |F|'' | 尝试信息,json格式| 
 | submitUser | string |     |F|'' | 提交用户           | 
 | executeUser | string |     |F|'' | 执行用户           | 
 | executeTime  | int(11)|     |F|0  |   执行时间      | 
 | dataTime  | int(11)|     |F|0  |   数据时间      | 
-| createTime  | int(11)|     |F|0  |   创建时间      | 
-| updateTime  | int(11)|     |F|0  |   更新时间      | 
-
-
-
-
-### taskAttempt表
-| 字段    | 类型     |  主键 | 是否为NULL   | 默认值  | 描述           | 
-| ------ | ------ | ---- | ---- | ------------ | ---- |
-| taskId    | int(11) | key|F    |      | taskId       | 
-| attemptId | int(11) |key  | F    |      |attemptID  |
-| jobId     | int(11) |  | F    |      | 所属JobID ，冗余字段 |
-| status    | tinyint |  | F    |      | task状态： 1:waittng；2:ready；3:running；4:success；5:failed；6:killed   | 
 | createTime  | int(11)|     |F|0  |   创建时间      | 
 | updateTime  | int(11)|     |F|0  |   更新时间      | 
 
@@ -116,12 +109,6 @@
 | groupId  |  string | key|F    |      | work组ID      | 
 | createTime  | int(11)|     |F|0  |   创建时间      | 
 | updateTime  | int(11)|     |F|0  |   更新时间      | 
-
-### sysConf表
-##### -- 系统配置表
-| 字段     | 类型   |  主键   | 必选   | 默认值  | 描述    | 
-| ------ | ------ | ---- | ---- | ------------ | ---- |
-| taskCount  | int | |F    |      | 任务并发度    | 
 
 
 

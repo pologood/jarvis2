@@ -533,14 +533,14 @@ Server、Worker、LogServer、RestServer之间的通信均采用Netty、Protocol
 
 ### 3.13 Worker上下线
 
-- RestServer -> Worker
+- RestServer -> Server
 
 请求：
 
 | 字段      | 类型     | 必选   | 默认值  | 描述                  | 
 | ------- | ------ | ---- | ---- | ------------------- | 
-| ip      | string | T    |      | Worker授权Key         | 
-| port    | int32  | T    |      | Worker组ID           | 
+| ip      | string | T    |      | ip地址         | 
+| port    | int32  | T    |      | 端口          | 
 | offline | bool   | T    |      | 状态：True-下线，False-上线 | 
 
 响应：
@@ -548,6 +548,22 @@ Server、Worker、LogServer、RestServer之间的通信均采用Netty、Protocol
 | 字段      | 类型   | 必选   | 默认值  | 描述     | 
 | ------- | ---- | ---- | ---- | ------ | 
 | success | bool | T    |      | 是否请求成功 | 
+
+
+- server -> worker
+
+请求：
+
+| 字段      | 类型     | 必选   | 默认值  | 描述                  | 
+| ------- | ------ | ---- | ---- | ------------------- | 
+| offline | bool   | T    |      | 状态：True-下线，False-上线 | 
+
+响应：
+
+| 字段      | 类型   | 必选   | 默认值  | 描述     | 
+| ------- | ---- | ---- | ---- | ------ | 
+| success | bool | T    |      | 是否请求成功 | 
+
 
 
 
@@ -601,7 +617,7 @@ Method：POST
 | app_name   | string | T    |      | 应用名称，如：XRay      | 
 | app_key    | string | T    |      | 应用授权Key   | 
 | job_name   | string | T    |      | 任务名称      |
-| job_id   | string | T    |      | 任务ID|
+| job_id   | int64 | T    |      | 任务ID|
 | cron_expression   | string | F    |      | cron表达式，如：0 0 23 * * ?      | 
 | dependency_jobids | int32 | F    |      | 依赖任务ID，可以多个      |  
 | user       | string | F    |     | 提交任务的用户名称 | 
@@ -609,7 +625,7 @@ Method：POST
 | command    | string | F    |      | 执行命令      | 
 | group_id   | int32  | F    |      | Worker组ID |
 | reject_retries   | int32  | F    | 0    | 任务被Worker拒绝时的重试次数      |
-| reject_interval   | int32  | F    | 3    | 任务被Worker拒绝时重试的间隔，单位：秒      |
+| reject_interval   | int32  | F    | 3    | 任务被Worker拒绝时重试的间隔，单位：秒 |
 | failed_retries   | int32  | F    | 0    | 任务运行失败时的重试次数      |
 | failed_interval   | int32  | F    | 3    | 任务运行失败时重试的间隔，单位：秒      | 
 | start_time   | string  | F    |     | 起始调度时间，格式：yyyy-MM-dd HH:mm:ss   | 
