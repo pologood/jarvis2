@@ -150,8 +150,13 @@ RestServer收到Kill请求转发给Server，然后Server将Kill请求发送到�
 
 master启动的时候，包括standbyserver切换为active的时候，做如下事情：   
 1. load jobDependency表，重建DAG表  
-2. load task表，恢复定时任务  
-3. load jobDependStatus表，恢复依赖任务 
+2. load task表，恢复ready的任务  
+3. load cron表，恢复定时任务    
+4. 恢复依赖任务有两种方法。  
+   1）把jobDependStatus持久化，恢复这个表。  
+   2）通过计算。扫描所有的依赖任务，对于每一个依赖任务，找出上一次的task和依赖的task，进而计算出这一次应该依赖哪些task，再把状态恢复到JobDependStatus中。
+
+针对第4点，我比较倾向于第一种方法，虽然多了一个存储表，但是并没有多少存储代价。第二种方法在依赖任务开始提交的时候，同样要把依赖的taskid持久化，所以存储代价上是一样的。第一种方法恢复速度快，不需要扫描全表。第一种方法恢复的时候不需要复杂的计算，只需要把数据库中的表load进来就可以了。另外，第二种方法也无法保证计算的正确性，第一种方法所见即所得，不需要去验证正确性。
 
 
 #### 2.5.2 worker升级
