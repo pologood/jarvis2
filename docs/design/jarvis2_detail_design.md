@@ -130,12 +130,9 @@ RestServer收到Kill请求转发给Server，然后Server将Kill请求发送到�
 
 ### 2.3 重跑任务
 
-1. task表根据日期持久化到数据库中，如果没有修改crontab表，每次重跑历史任务或者当天任务，taskid不变。
-2. 重跑任务时，可以选择是否重跑后置依赖，如果不选，不会主动把后置依赖任务注册到DAGScheduler中，反之，则会把后置依赖注册到DAGScheduler中。
-3. 重跑指定任务时，直接根据taskid重跑，如果是定时任务，加入到TimeScheduler，如果是依赖任务，注册到DAGScheduler中。
-4. 重跑一段时间的定时任务，首先根据cron表的updateTime判断是否需要更新task。如果不需要更新，直接根据起止时间计算出要重跑哪些taskid，然后重跑这些task。如果需要更新，则重新生成task。
-5. 重跑一段时间的依赖任务，首先根据jobDependency表的updateTime判断是否需要更新。如果需要更新则更新taskDependency表，把没用的依赖去掉。接着把这个任务当天所有task变成Time+DAG任务，并且Time为当前系统时间，立即执行。当这个任务收到TimeReadyEvent时，会从数据库的taskDependency表中获取依赖状态，如果通过依赖检查，则会开始调度。
-6. 重跑任务结束后，会主动更新taskDependency中的状态。便于后续依赖任务的依赖检查。
+1. 如果是原地重跑，taskid不变
+2. 如果是手动重跑，由外部系统生成新的jobid和依赖关系，提交到调度系统。
+
 
 ### 2.4 修改任务
 
@@ -237,6 +234,16 @@ master/stand by HA切换处理
 
 ![worker_miss](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/server_miss.png)
 
+### 2.10 master暂停处理
+
+master维护一个可动态配置的任务并发度，和当前正在running的任务数。每次jobDispatcher模块派发任务的时候都会比较当前任务数是否达到最大并发度，如果超过了则每隔5秒进行sleep，把jobDispatcher阻塞住。因为消费者还没有消费完，ExecuteQueue就不会继续发送事件。
+
+对于暂停，可以临时把并发度调为0，则任务将不会再进行分发。
+
+
+### 2.11 定时任务的多次触发
+
+把这种问题归类为一种情况，即任务可以配置一个属性，超过多少时间没有执行的，则skip掉，不再进行调度。默认情况下，不管超过多少时间都要执行。
 
 
 ## 三、内部接口设计
