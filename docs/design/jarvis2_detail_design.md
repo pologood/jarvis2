@@ -82,7 +82,7 @@ DAGJob中有一个成员JobDependStatus，用来维护当前任务的依赖的�
 
 Job Dispatcher负责从Worker组中分配一个Worker，然后将任务发给此Worker执行。
 
-JobDispatcher接口中只有一个select方法，具体Worker分配逻辑在此方法中实现，以支持对不同分配策略的支持。不同的Work Group可以配置不同的分发策略，默认已实现的有轮询分配(RoundRobinJobDispatcher)、随机分配(RandomJobDispatcher)。
+JobDispatcher接口中只有一个select方法，具体Worker分配逻辑在此方法中实现，以支持对不同分配策略的支持。默认已实现的有轮询分配(RoundRobinJobDispatcher)、随机分配(RandomJobDispatcher)。
 
 RoundRobinJobDispatcher：内部维护Worker的索引，分配完一个Worker后索引递增，当索引超过Worker数后归0从新开始计算，与索引位置对应的Worker即为此次任务分配的Worker。
 
@@ -96,11 +96,13 @@ RandomJobDispatcher：随机生成一个Worker数以内的整数作为Worker索�
 
 ![akka_service](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/akka_service.png)
 
-如上图所示，sentinel master内部有ServerActor，HeartBeatActor，和JobMetricsRoutingActor。HeartBeatActor用来接收slave发送过来的心跳信息，由HeartBeatManager来维护所有client的信息。ServerActor作为master的核心actor，接收restfulServer发送过来的信息，通过负载均衡的分发策略把任务提交给ClientActor，向JobMetricsRoutingActor汇报任务状态和进度，把log通过LogRoutingActor写到logserver中。
+如上图所示，sentinel master内部有ServerActor，DAGSchedulerActor, HeartBeatActor，和JobMetricsRoutingActor。HeartBeatActor用来接收slave发送过来的心跳信息，由HeartBeatManager来维护所有client的信息。ServerActor作为master对外的唯一actor，只负责转发消息。DAGSchedulerActor是调度器的actor，接收ServerActor和JobMetricsActor发送过来的消息进行任务调度，并提交任务给ExecuteQueue模块。
 
 JobMetricsRoutingActor对jobId进行哈希，把任务状态和进度路由给具体的JobMetricsActor。JobMetricsActor把任务状态写到DB中，来持久化任务状态，把任务进度反馈给前段。
 
 LogRoutingActor和JobStatusRoutingActor类似，只是路由功能。由具体的LogWriterActor来写log，LogReadActor来读log。
+
+ClientActor负责接收任务，并从线程池中取线程进行任务的执行。
 
 ### 1.5 Job模块设计
 
@@ -179,11 +181,15 @@ logServer支持多个，有哪些可用的logServer可以通过配置获得。
 log存储
 存储在HDFS中。
 
-log文件命名格式为：
-jobID + taskId + attemptID.log
+log命名
 
-日志写入结束
-在文件最后一行追加特殊标记
+log文件命名格式为： 
+
+执行中的文件：
+jobID + taskId + attemptID. tmp
+
+执行完毕的日志：
+jobID + taskId + attemptID. log
 
 
 ### 2.7 全局配置
