@@ -80,13 +80,16 @@ DAGJob中有一个成员JobDependStatus，用来维护当前任务的依赖的�
 
 ![Job Dispatcher](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/uml_job_dispatcher.png)
 
-Job Dispatcher负责从Worker组中分配一个Worker，然后将任务发给此Worker执行。
+Job Dispatcher负责从Worker组中分配一个Worker，然后从执行队列中选取优先级最高的任务发给此Worker执行。JobDispatcher会对应用限制任务并行度（如应用需控制用户级别的并行度，则由该应用自行管理）。
 
 JobDispatcher接口中只有一个select方法，具体Worker分配逻辑在此方法中实现，以支持对不同分配策略的支持。默认已实现的有轮询分配(RoundRobinJobDispatcher)、随机分配(RandomJobDispatcher)。
 
 RoundRobinJobDispatcher：内部维护Worker的索引，分配完一个Worker后索引递增，当索引超过Worker数后归0从新开始计算，与索引位置对应的Worker即为此次任务分配的Worker。
 
 RandomJobDispatcher：随机生成一个Worker数以内的整数作为Worker索引，与此索引位置对应的Worker即为此次任务分配的Worker。
+
+
+
 
 ### 1.3 dao模块设计
 
@@ -251,6 +254,10 @@ master维护一个可动态配置的任务并发度，和当前正在running的�
 ### 2.11 定时任务的多次触发
 
 把这种问题归类为一种情况，即任务可以配置一个属性，超过多少时间没有执行的，则skip掉，不再进行调度。默认情况下，不管超过多少时间都要执行。
+
+### 2.12 系统监控
+
+采用Metrics收集监控指标。Metrics是一个给Java提供度量工具的包，可以方便地对业务代码的各个指标进行监控，同时，Metrics能够很好的跟Ganglia、Graphite结合，提供图形化接口。
 
 
 ## 三、内部接口设计
