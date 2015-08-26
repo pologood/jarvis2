@@ -82,7 +82,7 @@ DAGJob中有一个成员JobDependStatus，用来维护当前任务的依赖的�
 
 Job Dispatcher负责从Worker组中分配一个Worker，然后将任务发给此Worker执行。
 
-JobDispatcher接口中只有一个select方法，具体Worker分配逻辑在此方法中实现，以支持对不同分配策略的支持。默认已实现的有轮询分配(RoundRobinJobDispatcher)、随机分配(RandomJobDispatcher)。
+JobDispatcher接口中只有一个select方法，具体Worker分配逻辑在此方法中实现，以支持对不同分配策略的支持。不同的Work Group可以配置不同的分发策略，默认已实现的有轮询分配(RoundRobinJobDispatcher)、随机分配(RandomJobDispatcher)。
 
 RoundRobinJobDispatcher：内部维护Worker的索引，分配完一个Worker后索引递增，当索引超过Worker数后归0从新开始计算，与索引位置对应的Worker即为此次任务分配的Worker。
 
@@ -179,15 +179,11 @@ logServer支持多个，有哪些可用的logServer可以通过配置获得。
 log存储
 存储在HDFS中。
 
-log命名
+log文件命名格式为：
+jobID + taskId + attemptID.log
 
-log文件命名格式为： 
-
-执行中的文件：
-jobID + taskId + attemptID. tmp
-
-执行完毕的日志：
-jobID + taskId + attemptID. log
+日志写入结束
+在文件最后一行追加特殊标记
 
 
 ### 2.7 全局配置
