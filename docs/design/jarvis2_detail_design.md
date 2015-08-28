@@ -80,16 +80,13 @@ DAGJob中有一个成员JobDependStatus，用来维护当前任务的依赖的�
 
 ![Job Dispatcher](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/uml_job_dispatcher.png)
 
-Job Dispatcher负责从Worker组中分配一个Worker，然后从执行队列中选取优先级最高的任务发给此Worker执行。JobDispatcher会对应用限制任务并行度（如应用需控制用户级别的并行度，则由该应用自行管理）。
+Job Dispatcher负责从Worker组中分配一个Worker，然后将任务发给此Worker执行。
 
 JobDispatcher接口中只有一个select方法，具体Worker分配逻辑在此方法中实现，以支持对不同分配策略的支持。默认已实现的有轮询分配(RoundRobinJobDispatcher)、随机分配(RandomJobDispatcher)。
 
 RoundRobinJobDispatcher：内部维护Worker的索引，分配完一个Worker后索引递增，当索引超过Worker数后归0从新开始计算，与索引位置对应的Worker即为此次任务分配的Worker。
 
 RandomJobDispatcher：随机生成一个Worker数以内的整数作为Worker索引，与此索引位置对应的Worker即为此次任务分配的Worker。
-
-
-
 
 ### 1.3 dao模块设计
 
@@ -122,6 +119,19 @@ postExecute()：任务运行完成后的处理，如：报警等，此方法在e
 kill()：终止任务。
 
 通过实现不同的Job抽象类可以支持多种类型任务的运行，默认实现的任务包括：Shell、Hive、Presto、Java、MapReduce等。
+
+#### 1.5.1 hive job
+hive job继承shell job，通过fock一个子进程，运行shell命令的方式调用hive cli或者beeline来运行hive任务。比如hive cli使用“hive -e sql”命令运行job。
+
+hive cli运行在worker本地，hive的执行结果作为shell的标准输出会写到logserver中。
+
+本地shell进程会等待hive输出完所有日志才会结束，即hive任务执行完成。
+
+通过shell进程结束的错误码返回任务状态，征程结束即返回成功，反之失败。
+
+#### 1.5.2 java job
+
+#### 1.5.3 mr job
 
 ## 二、流程设计
 
@@ -254,10 +264,6 @@ master维护一个可动态配置的任务并发度，和当前正在running的�
 ### 2.11 定时任务的多次触发
 
 把这种问题归类为一种情况，即任务可以配置一个属性，超过多少时间没有执行的，则skip掉，不再进行调度。默认情况下，不管超过多少时间都要执行。
-
-### 2.12 系统监控
-
-采用Metrics收集监控指标。Metrics是一个给Java提供度量工具的包，可以方便地对业务代码的各个指标进行监控，同时，Metrics能够很好的跟Ganglia、Graphite结合，提供图形化接口。
 
 
 ## 三、内部接口设计
