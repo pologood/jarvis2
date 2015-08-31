@@ -6,7 +6,7 @@ import java.math.BigDecimal;
  * @author wuya
  *
  */
-public interface Cons {
+public interface Constants {
 
     public static final String CLIENT_AKKA_PATH = "client";
     public static final String SERVER_AKKA_PATH = "server";
