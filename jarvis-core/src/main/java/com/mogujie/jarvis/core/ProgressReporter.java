@@ -6,7 +6,7 @@
  * Create Date: 2015年8月31日 下午3:00:58
  */
 
-package com.mogujie.jarvis.worker;
+package com.mogujie.jarvis.core;
 
 /**
  * @author wuya
@@ -14,5 +14,5 @@ package com.mogujie.jarvis.worker;
  */
 public interface ProgressReporter {
 
-  void report(double progress);
+    void report(double progress);
 }
