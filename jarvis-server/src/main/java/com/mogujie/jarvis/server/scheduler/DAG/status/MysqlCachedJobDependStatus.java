@@ -8,7 +8,6 @@
 
 package com.mogujie.jarvis.server.scheduler.DAG.status;
 
-
 /**
  * @author guangming
  *
@@ -25,7 +24,7 @@ public class MysqlCachedJobDependStatus extends CachedJobDependStatus {
     public void removeReadyDependency(int jobid, int taskid) {
         super.removeReadyDependency(jobid, taskid);
         flush2DB();
-      }
+    }
 
     @Override
     public void removeDependency(int jobid) {
@@ -40,6 +39,6 @@ public class MysqlCachedJobDependStatus extends CachedJobDependStatus {
     }
 
     public void flush2DB() {
-        //TODO flush to mysql
+        // TODO flush to mysql
     }
 }

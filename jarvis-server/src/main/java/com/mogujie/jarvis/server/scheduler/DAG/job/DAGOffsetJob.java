@@ -27,8 +27,7 @@ public class DAGOffsetJob extends DAGJob {
      * @param parents
      * @param children
      */
-    public DAGOffsetJob(Configuration conf, int jobid, JobDependencyStrategy dependStrategy,
-            List<Integer> parents, List<Integer> children) {
+    public DAGOffsetJob(Configuration conf, int jobid, JobDependencyStrategy dependStrategy, List<Integer> parents, List<Integer> children) {
         super(conf, jobid, dependStrategy, parents, children);
         // TODO Auto-generated constructor stub
     }

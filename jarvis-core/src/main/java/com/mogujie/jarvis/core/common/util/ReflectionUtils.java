@@ -21,10 +21,8 @@ import org.apache.commons.configuration.Configuration;
  */
 public class ReflectionUtils {
     private static final Class<?>[] EMPTY_ARRAY = new Class[] {};
-    private static final Map<Class<?>, Constructor<?>> CONSTRUCTOR_CACHE
-        = new ConcurrentHashMap<Class<?>, Constructor<?>>();
-    private static final Map<String, Class<?>> CLASS_CACHE
-        = new ConcurrentHashMap<String, Class<?>>();
+    private static final Map<Class<?>, Constructor<?>> CONSTRUCTOR_CACHE = new ConcurrentHashMap<Class<?>, Constructor<?>>();
+    private static final Map<String, Class<?>> CLASS_CACHE = new ConcurrentHashMap<String, Class<?>>();
 
     @SuppressWarnings("unchecked")
     private static <T> T newInstance(Class<T> clazz) {

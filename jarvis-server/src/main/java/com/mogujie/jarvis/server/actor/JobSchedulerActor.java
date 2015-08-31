@@ -19,10 +19,10 @@ import com.mogujie.jarvis.server.scheduler.task.TaskScheduler;
 import com.mogujie.jarvis.server.scheduler.time.TimeScheduler;
 
 /**
- * Actor used to schedule job with three schedulers
- * ({@link com.mogujie.jarvis.server.scheduler.time.TimeScheduler},
- * {@link com.mogujie.jarvis.server.scheduler.DAG.DAGScheduler},
- * and {@link com.mogujie.jarvis.server.scheduler.task.TaskScheduler})
+ * Actor used to schedule job with three schedulers (
+ * {@link com.mogujie.jarvis.server.scheduler.time.TimeScheduler},
+ * {@link com.mogujie.jarvis.server.scheduler.DAG.DAGScheduler}, and
+ * {@link com.mogujie.jarvis.server.scheduler.task.TaskScheduler})
  *
  * @author guangming
  *
@@ -47,7 +47,6 @@ public class JobSchedulerActor extends UntypedActor {
         dagScheduler.run();
         taskScheduler.run();
     }
-
 
     @Override
     public void preRestart(Throwable reason, scala.Option<Object> message) throws Exception {

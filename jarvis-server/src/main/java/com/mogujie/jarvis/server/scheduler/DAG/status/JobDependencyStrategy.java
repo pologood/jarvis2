@@ -13,7 +13,7 @@ package com.mogujie.jarvis.server.scheduler.DAG.status;
  *
  */
 public enum JobDependencyStrategy {
-    ANYONE,     // 依赖任何一次成功
-    LASTONE,    // 依赖最后一次成功
-    ALL;        // 依赖全部成功
+    ANYONE, // 依赖任何一次成功
+    LASTONE, // 依赖最后一次成功
+    ALL; // 依赖全部成功
 }

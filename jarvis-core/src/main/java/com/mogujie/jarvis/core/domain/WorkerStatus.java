@@ -12,15 +12,15 @@ package com.mogujie.jarvis.core.domain;
  *
  */
 public enum WorkerStatus {
-  ON(1), OFF(0);
+    ON(1), OFF(0);
 
-  private int value;
+    private int value;
 
-  WorkerStatus(int value) {
-      this.value = value;
-  }
+    WorkerStatus(int value) {
+        this.value = value;
+    }
 
-  public int getValue() {
-      return value;
-  }
+    public int getValue() {
+        return value;
+    }
 }

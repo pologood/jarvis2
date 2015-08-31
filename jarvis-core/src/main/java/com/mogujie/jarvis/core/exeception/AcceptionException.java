@@ -12,29 +12,29 @@ package com.mogujie.jarvis.core.exeception;
  * @author wuya
  *
  */
-public class JobException extends Exception {
+public class AcceptionException extends Exception {
 
     private static final long serialVersionUID = 1L;
 
     private String message;
 
-    public JobException() {
+    public AcceptionException() {
         super();
     }
 
-    public JobException(final String message) {
+    public AcceptionException(final String message) {
         super(message);
     }
 
-    public JobException(final Exception e) {
+    public AcceptionException(final Exception e) {
         super(e);
     }
 
-    public JobException(Throwable cause) {
+    public AcceptionException(Throwable cause) {
         super(cause);
     }
 
-    public JobException(final String message, final Throwable cause) {
+    public AcceptionException(final String message, final Throwable cause) {
         super(message, cause);
     }
 

@@ -28,8 +28,7 @@ public class DAGJob implements IDAGJob {
     private List<Integer> parents;
     private List<Integer> children;
 
-    public DAGJob(Configuration conf, int jobid, JobDependencyStrategy dependStrategy,
-            List<Integer> parents, List<Integer> children) {
+    public DAGJob(Configuration conf, int jobid, JobDependencyStrategy dependStrategy, List<Integer> parents, List<Integer> children) {
         try {
             this.jobid = jobid;
             this.jobstatus = SchedulerUtil.getJobDependStatus(conf);
@@ -40,7 +39,6 @@ public class DAGJob implements IDAGJob {
             throw new RuntimeException(e);
         }
     }
-
 
     @Override
     public boolean dependCheck() {

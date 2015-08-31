@@ -14,9 +14,8 @@ import org.springframework.context.annotation.Scope;
 import akka.actor.UntypedActor;
 
 /**
- * Actor used to receive job metrics information (e.g. status, process)
- * 1. send job status to {@link com.mogujie.jarvis.server.actor.JobSchedulerActor }
- * 2. send process to restserver
+ * Actor used to receive job metrics information (e.g. status, process) 1. send job status to
+ * {@link com.mogujie.jarvis.server.actor.JobSchedulerActor } 2. send process to restserver
  *
  * @author guangming
  *

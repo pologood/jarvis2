@@ -43,11 +43,11 @@ public class WorkerInfo {
     }
 
     public String getClientKey() {
-      return clientKey;
+        return clientKey;
     }
 
     public void setClientKey(String clientKey) {
-      this.clientKey = clientKey;
+        this.clientKey = clientKey;
     }
 
     public String getAkkaPath() {
@@ -79,9 +79,7 @@ public class WorkerInfo {
         }
 
         WorkerInfo other = (WorkerInfo) obj;
-        return Objects.equals(ip, other.ip)
-            && Objects.equals(port, other.port)
-            && Objects.equals(clientKey, other.clientKey);
+        return Objects.equals(ip, other.ip) && Objects.equals(port, other.port) && Objects.equals(clientKey, other.clientKey);
     }
 
     @Override
