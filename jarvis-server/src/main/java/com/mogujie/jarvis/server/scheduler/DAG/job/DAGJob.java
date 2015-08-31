@@ -6,15 +6,13 @@
  * Create Date: 2015年8月31日 上午11:38:28
  */
 
-package com.mogujie.jarvis.server.scheduler.DAG.job;
+package com.mogujie.jarvis.server.scheduler.dag.job;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.configuration.Configuration;
-
-import com.mogujie.jarvis.server.scheduler.SchedulerUtil;
-import com.mogujie.jarvis.server.scheduler.DAG.status.IJobDependStatus;
-import com.mogujie.jarvis.server.scheduler.DAG.status.JobDependencyStrategy;
+import com.mogujie.jarvis.server.scheduler.dag.JobDependencyStrategy;
+import com.mogujie.jarvis.server.scheduler.dag.status.IJobDependStatus;
 
 /**
  * @author guangming
@@ -25,20 +23,26 @@ public class DAGJob implements IDAGJob {
     private int jobid;
     private IJobDependStatus jobstatus;
     private JobDependencyStrategy dependStrategy;
-    private List<Integer> parents;
-    private List<Integer> children;
+    private List<DAGJob> parents;
+    private List<DAGJob> children;
 
-    public DAGJob(Configuration conf, int jobid, JobDependencyStrategy dependStrategy, List<Integer> parents, List<Integer> children) {
+    public DAGJob() {
+        this.parents = new ArrayList<DAGJob>();
+        this.children = new ArrayList<DAGJob>();
+    }
+
+    public DAGJob(int jobid, IJobDependStatus jobstatus, JobDependencyStrategy dependStrategy) {
         try {
             this.jobid = jobid;
-            this.jobstatus = SchedulerUtil.getJobDependStatus(conf);
+            this.jobstatus = jobstatus;
             this.dependStrategy = dependStrategy;
-            this.parents = parents;
-            this.children = children;
+            this.parents = new ArrayList<DAGJob>();
+            this.children = new ArrayList<DAGJob>();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
+
 
     @Override
     public boolean dependCheck() {
@@ -62,19 +66,71 @@ public class DAGJob implements IDAGJob {
         this.jobstatus = jobstatus;
     }
 
-    public List<Integer> getParents() {
+    public JobDependencyStrategy getDependStrategy() {
+        return dependStrategy;
+    }
+
+    public void setDependStrategy(JobDependencyStrategy dependStrategy) {
+        this.dependStrategy = dependStrategy;
+    }
+
+    public List<DAGJob> getParents() {
         return parents;
     }
 
-    public void setParents(List<Integer> parents) {
+    public void setParents(List<DAGJob> parents) {
         this.parents = parents;
     }
 
-    public List<Integer> getChildren() {
+    public List<DAGJob> getChildren() {
         return children;
     }
 
-    public void setChildren(List<Integer> children) {
+    public void setChildren(List<DAGJob> children) {
         this.children = children;
+    }
+
+    public void addParent(DAGJob newParent) {
+        boolean isContain = false;
+        for (DAGJob parent : parents) {
+            if (parent.getJobid() == newParent.getJobid()) {
+                isContain = true;
+                break;
+            }
+        }
+
+        if (!isContain) {
+            parents.add(newParent);
+        }
+    }
+
+    public void addChild(DAGJob newChild) {
+        boolean isContain = false;
+        for (DAGJob child : children) {
+            if (child.getJobid() == newChild.getJobid()) {
+                isContain = true;
+                break;
+            }
+        }
+
+        if (!isContain) {
+            children.add(newChild);
+        }
+    }
+
+    public void removeParent(DAGJob oldParent) {
+        for (DAGJob parent : parents) {
+            if (parent.getJobid() == oldParent.getJobid()) {
+                parents.remove(parent);
+            }
+        }
+    }
+
+    public void removeChild(DAGJob oldChild) {
+        for (DAGJob child : children) {
+            if (child.getJobid() == oldChild.getJobid()) {
+                children.remove(children);
+            }
+        }
     }
 }

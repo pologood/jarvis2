@@ -6,7 +6,7 @@
  * Create Date: 2015年8月31日 上午11:49:39
  */
 
-package com.mogujie.jarvis.server.scheduler.DAG.status;
+package com.mogujie.jarvis.server.scheduler.dag.status;
 
 /**
  * @author guangming

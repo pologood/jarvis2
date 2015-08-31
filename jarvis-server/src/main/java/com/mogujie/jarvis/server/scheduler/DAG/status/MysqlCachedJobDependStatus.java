@@ -6,7 +6,7 @@
  * Create Date: 2015年8月31日 下午2:13:48
  */
 
-package com.mogujie.jarvis.server.scheduler.DAG.status;
+package com.mogujie.jarvis.server.scheduler.dag.status;
 
 /**
  * @author guangming
@@ -39,6 +39,6 @@ public class MysqlCachedJobDependStatus extends CachedJobDependStatus {
     }
 
     public void flush2DB() {
-        // TODO flush to mysql
+        //TODO flush to mysql
     }
 }

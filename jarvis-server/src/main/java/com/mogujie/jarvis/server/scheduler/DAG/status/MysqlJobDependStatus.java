@@ -6,7 +6,7 @@
  * Create Date: 2015年8月31日 下午1:29:59
  */
 
-package com.mogujie.jarvis.server.scheduler.DAG.status;
+package com.mogujie.jarvis.server.scheduler.dag.status;
 
 /**
  * The implementation of JobDependStatus with mysql mapping

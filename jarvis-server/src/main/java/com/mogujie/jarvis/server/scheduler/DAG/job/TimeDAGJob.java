@@ -6,13 +6,11 @@
  * Create Date: 2015年8月31日 上午11:38:56
  */
 
-package com.mogujie.jarvis.server.scheduler.DAG.job;
+package com.mogujie.jarvis.server.scheduler.dag.job;
 
-import java.util.List;
+import com.mogujie.jarvis.server.scheduler.dag.JobDependencyStrategy;
+import com.mogujie.jarvis.server.scheduler.dag.status.IJobDependStatus;
 
-import org.apache.commons.configuration.Configuration;
-
-import com.mogujie.jarvis.server.scheduler.DAG.status.JobDependencyStrategy;
 
 /**
  * @author guangming
@@ -21,16 +19,16 @@ import com.mogujie.jarvis.server.scheduler.DAG.status.JobDependencyStrategy;
 public class TimeDAGJob extends DAGJob {
 
     /**
-     * @param conf
      * @param jobid
+     * @param jobstatus
      * @param dependStrategy
-     * @param parents
-     * @param children
      */
-    public TimeDAGJob(Configuration conf, int jobid, JobDependencyStrategy dependStrategy, List<Integer> parents, List<Integer> children) {
-        super(conf, jobid, dependStrategy, parents, children);
+    public TimeDAGJob(int jobid, IJobDependStatus jobstatus, JobDependencyStrategy dependStrategy) {
+        super(jobid, jobstatus, dependStrategy);
         // TODO Auto-generated constructor stub
     }
+
+    private boolean timeReadyFlag = false;
 
     @Override
     public boolean dependCheck() {

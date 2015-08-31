@@ -14,14 +14,14 @@ import org.springframework.context.annotation.Scope;
 
 import akka.actor.UntypedActor;
 
-import com.mogujie.jarvis.server.scheduler.DAG.DAGScheduler;
+import com.mogujie.jarvis.server.scheduler.dag.DAGScheduler;
 import com.mogujie.jarvis.server.scheduler.task.TaskScheduler;
 import com.mogujie.jarvis.server.scheduler.time.TimeScheduler;
 
 /**
  * Actor used to schedule job with three schedulers (
  * {@link com.mogujie.jarvis.server.scheduler.time.TimeScheduler},
- * {@link com.mogujie.jarvis.server.scheduler.DAG.DAGScheduler}, and
+ * {@link com.mogujie.jarvis.server.scheduler.dag.DAGScheduler}, and
  * {@link com.mogujie.jarvis.server.scheduler.task.TaskScheduler})
  *
  * @author guangming
