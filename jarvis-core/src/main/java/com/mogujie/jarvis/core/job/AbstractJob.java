@@ -27,12 +27,12 @@ public abstract class AbstractJob {
         return jobContext;
     }
 
-    public void pre() throws JobException {
+    public void preExecute() throws JobException {
     }
 
     public abstract boolean execute() throws JobException;
 
-    public void post() throws JobException {
+    public void postExecute() throws JobException {
     }
 
     public abstract boolean kill() throws JobException;
