@@ -1,0 +1,11 @@
+option java_package = "com.mogujie.jarvis.protocol";
+option java_outer_classname = "QueryTaskProtos";
+
+
+message RestServerQueryTaskRequest {
+    required int64 job_id = 1;
+}
+
+message ServerQueryTaskResponse {
+    repeated int64 task_id = 1;
+}

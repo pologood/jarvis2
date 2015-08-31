@@ -1,0 +1,19 @@
+option java_package = "com.mogujie.jarvis.protocol";
+option java_outer_classname = "KillTaskProtos";
+
+
+message RestServerKillTaskRequest {
+    required int64 task_id = 1;
+}
+
+message ServerKillTaskResponse {
+    required bool success = 1;
+}
+
+message ServerKillTaskRequest {
+    required string full_id = 1;
+}
+
+message WorkerKillTaskResponse {
+    required bool success = 1;
+}

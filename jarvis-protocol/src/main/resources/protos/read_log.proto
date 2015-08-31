@@ -1,0 +1,16 @@
+option java_package = "com.mogujie.jarvis.protocol";
+option java_outer_classname = "ReadLogProtos";
+
+
+message RestServerReadLogRequest {
+    required int64 task_id = 1;
+    required int32 type = 2;
+    optional int64 offset = 3 [default = 0];
+    optional int32 lines = 4 [default = 100];
+}
+
+message LogServerReadLogResponse {
+    required bool is_end = 1;
+    required string log = 2;
+    required int64 offset = 3;
+}

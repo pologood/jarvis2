@@ -1,0 +1,12 @@
+option java_package = "com.mogujie.jarvis.protocol";
+option java_outer_classname = "ReportProgressProtos";
+
+
+message WorkerReportProgressRequest {
+    required string full_id = 1;
+    required double progress = 2;
+}
+
+message ServerReportProgressResponse {
+    required bool success = 1;
+}

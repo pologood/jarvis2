@@ -1,0 +1,11 @@
+option java_package = "com.mogujie.jarvis.protocol";
+option java_outer_classname = "QueryTaskStatusProtos";
+
+
+message RestServerQueryTaskStatusRequest {
+    required int64 task_id = 1;
+}
+
+message ServerQueryTaskStatusResponse {
+    required int32 status = 1;
+}

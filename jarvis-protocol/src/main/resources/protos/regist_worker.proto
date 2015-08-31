@@ -1,0 +1,12 @@
+option java_package = "com.mogujie.jarvis.protocol";
+option java_outer_classname = "RegistWorkerProtos";
+
+
+message WorkerRegistionRequest {
+    required string key = 1;
+    required int32 group_id = 2;
+}
+
+message ServerRegistionResponse {
+    required bool success = 1;
+}

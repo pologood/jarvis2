@@ -1,0 +1,11 @@
+option java_package = "com.mogujie.jarvis.protocol";
+option java_outer_classname = "DeleteJobProtos";
+
+
+message RestServerDeleteJobRequest {
+    required int64 job_id = 1;
+}
+
+message ServerDeleteJobResponse {
+    required bool success = 1;
+}

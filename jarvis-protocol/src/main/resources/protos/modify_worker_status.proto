@@ -1,0 +1,13 @@
+option java_package = "com.mogujie.jarvis.protocol";
+option java_outer_classname = "ModifyWorkerStatusProtos";
+
+
+message RestServerModifyWorkerStatusRequest {
+    required string ip = 1;
+    required int32 port = 2;
+    required bool offline = 3;
+}
+
+message ServerModifyWorkerStatusResponse {
+    required bool success = 1;
+}

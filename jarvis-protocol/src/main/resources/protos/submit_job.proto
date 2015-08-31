@@ -1,0 +1,49 @@
+import "map_entry.proto";
+
+option java_package = "com.mogujie.jarvis.protocol";
+option java_outer_classname = "SubmitJobProtos";
+
+
+message RestServerSubmitJobRequest {
+    required string job_name = 1;
+    required string cron_expression = 2;
+    repeated int64 dependency_jobids = 3 [packed=true];
+    required string app_name = 4;
+    required string app_key = 5;
+    required string user = 6;
+    required string job_type = 7;
+    required string command = 8;
+    required int32 group_id = 9;
+    optional int32 priority = 10 [default = 1];
+    optional int32 reject_retries = 11 [default = 0];
+    optional int32 reject_interval = 12 [default = 3];
+    optional int32 failed_retries = 13 [default = 0];
+    optional int32 failed_interval = 14 [default = 3];
+    required string start_time = 15;
+    required string end_time = 16;
+    repeated MapEntry parameters = 17;
+}
+
+
+message ServerSubmitJobResponse {
+    required int64 job_id = 1;
+    required bool success = 2;
+}
+
+
+message ServerSubmitJobRequest {
+    required string full_id = 1;
+    required string job_name = 2;
+    required string app_name = 3;
+    required string user = 4;
+    required string job_type = 5;
+    required string command = 6;
+    optional int32 priority = 7 [default = 1];
+    repeated MapEntry parameters = 8;
+}
+
+
+message WorkerSubmitJobResponse {
+    required bool accept = 1;
+    optional string message = 2 [default = ""];
+}
