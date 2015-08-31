@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+
+	<context id="context1">
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+			connectionURL="jdbc:mysql://10.11.128.49/jarvis2" userId="root"
+			password="mogujie" />
+		<javaModelGenerator targetPackage="com.mogujie.jarvis.dto"
+			targetProject="src/main/java" />
+		<sqlMapGenerator targetPackage="com.mogujie.jarvis.dao"
+			targetProject="src/main/resources/sqlMap" />
+		<javaClientGenerator targetPackage="com.mogujie.jarvis.dao"
+			targetProject="src/main/java" type="XMLMAPPER" />
+
+		<table schema="jarvis2" tableName="job">
+			<property name="useActualColumnNames" value="true" />
+		</table>
+
+		<table schema="jarvis2" tableName="job_depend">
+			<property name="useActualColumnNames" value="true" />
+		</table>
+
+        <table schema="jarvis2" tableName="crontab">
+            <property name="useActualColumnNames" value="true" />
+        </table>
+
+        <table schema="jarvis2" tableName="task">
+            <property name="useActualColumnNames" value="true" />
+        </table>
+
+        <table schema="jarvis2" tableName="worker">
+            <property name="useActualColumnNames" value="true" />
+        </table>
+
+        <table schema="jarvis2" tableName="worker_group">
+            <property name="useActualColumnNames" value="true" />
+        </table>
+
+        <table schema="jarvis2" tableName="worker_group_relation">
+            <property name="useActualColumnNames" value="true" />
+        </table>
+
+	</context>
+</generatorConfiguration>
