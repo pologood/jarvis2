@@ -20,9 +20,10 @@ import org.apache.commons.configuration.Configuration;
 
 import com.mogujie.jarvis.core.JobContext;
 import com.mogujie.jarvis.core.common.util.ConfigUtils;
-import com.mogujie.jarvis.core.common.util.HiveQLUtil;
 import com.mogujie.jarvis.core.exeception.JobException;
 import com.mogujie.jarvis.core.job.AbstractJob;
+import com.mogujie.jarvis.jobs.util.HiveQLUtil;
+
 
 /**
  * @author guangming

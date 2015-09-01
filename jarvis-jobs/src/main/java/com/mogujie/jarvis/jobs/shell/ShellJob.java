@@ -14,7 +14,7 @@ import com.mogujie.jarvis.core.job.AbstractJob;
 
 
 import com.mogujie.jarvis.core.common.util.ConfigUtils;
-import com.mogujie.jarvis.core.common.util.ShellUtils;
+import com.mogujie.jarvis.jobs.util.ShellUtils;
 
 import com.mogujie.jarvis.jobs.ShellStreamProcessor;
 import org.apache.logging.log4j.LogManager;
