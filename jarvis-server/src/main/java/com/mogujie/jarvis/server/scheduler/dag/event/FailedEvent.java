@@ -14,14 +14,34 @@ package com.mogujie.jarvis.server.scheduler.dag.event;
  *
  */
 public class FailedEvent extends DAGTaskEvent {
+    private int failedRetries;
+    private int failedInterval;
 
     /**
-     * @param jobid
-     * @param taskid
-     * @param jobContext
+     * @param long jobid
+     * @param long taskid
+     * @param int failedRetries
+     * @param int failedInterval
      */
-    public FailedEvent(long jobid, long taskid) {
+    public FailedEvent(long jobid, long taskid, int failedRetries, int failedInterval) {
         super(jobid, taskid);
+        this.failedRetries = failedRetries;
+        this.failedInterval = failedInterval;
     }
 
+    public int getFailedRetries() {
+        return failedRetries;
+    }
+
+    public void setFailedRetries(int failedRetries) {
+        this.failedRetries = failedRetries;
+    }
+
+    public int getFailedInterval() {
+        return failedInterval;
+    }
+
+    public void setFailedInterval(int failedInterval) {
+        this.failedInterval = failedInterval;
+    }
 }

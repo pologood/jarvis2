@@ -17,6 +17,12 @@ public class DAGTask {
     private long taskid;
     private int failedTimes;
 
+    public DAGTask(long jobid, long taskid, int failedTimes) {
+        this.jobid = jobid;
+        this.taskid = taskid;
+        this.failedTimes = failedTimes;
+    }
+
     public long getJobid() {
         return jobid;
     }

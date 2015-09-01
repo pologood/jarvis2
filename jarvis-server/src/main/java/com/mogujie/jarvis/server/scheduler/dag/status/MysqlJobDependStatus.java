@@ -8,6 +8,10 @@
 
 package com.mogujie.jarvis.server.scheduler.dag.status;
 
+import java.util.Set;
+
+import com.mogujie.jarvis.server.scheduler.dag.JobDependencyStrategy;
+
 /**
  * The implementation of JobDependStatus with mysql mapping
  *
@@ -32,6 +36,12 @@ public class MysqlJobDependStatus implements IJobDependStatus {
     public void removeDependency(long jobid) {
         // TODO Auto-generated method stub
 
+    }
+
+    @Override
+    public boolean isFinishAllJob(JobDependencyStrategy strategy, Set<Long> needJobs) {
+        // TODO Auto-generated method stub
+        return false;
     }
 
 }

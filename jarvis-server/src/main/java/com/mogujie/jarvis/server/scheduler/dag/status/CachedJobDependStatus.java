@@ -70,7 +70,7 @@ public abstract class CachedJobDependStatus implements IJobDependStatus {
     /**
      * return true if finished all jobs
      */
-    public boolean isFinishAllJob(JobDependencyStrategy strategy, Set<Integer> needJobs) {
+    public boolean isFinishAllJob(JobDependencyStrategy strategy, Set<Long> needJobs) {
         boolean finishDependencies = true;
         for (long jobid : needJobs) {
             if (!isFinishOneJob(strategy, jobid)) {

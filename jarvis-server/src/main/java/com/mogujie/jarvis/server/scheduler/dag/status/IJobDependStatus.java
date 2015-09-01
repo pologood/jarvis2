@@ -8,6 +8,10 @@
 
 package com.mogujie.jarvis.server.scheduler.dag.status;
 
+import java.util.Set;
+
+import com.mogujie.jarvis.server.scheduler.dag.JobDependencyStrategy;
+
 /**
  * @author guangming
  *
@@ -28,5 +32,10 @@ public interface IJobDependStatus {
      * remove job dependency
      */
     public void removeDependency(long jobid);
+
+    /**
+     * return true if finished all jobs
+     */
+    public boolean isFinishAllJob(JobDependencyStrategy strategy, Set<Long> needJobs);
 
 }

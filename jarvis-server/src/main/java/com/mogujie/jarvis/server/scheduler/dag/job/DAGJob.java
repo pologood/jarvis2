@@ -9,7 +9,9 @@
 package com.mogujie.jarvis.server.scheduler.dag.job;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.mogujie.jarvis.server.scheduler.dag.JobDependencyStrategy;
 import com.mogujie.jarvis.server.scheduler.dag.status.IJobDependStatus;
@@ -45,8 +47,11 @@ public class DAGJob implements IDAGJob {
 
     @Override
     public boolean dependCheck() {
-        // TODO Auto-generated method stub
-        return false;
+        Set<Long> needJobs = new HashSet<Long>();
+        for (DAGJob d : parents) {
+            needJobs.add(d.getJobid());
+        }
+        return jobstatus.isFinishAllJob(dependStrategy, needJobs);
     }
 
     public long getJobid() {
@@ -131,5 +136,9 @@ public class DAGJob implements IDAGJob {
                 children.remove(children);
             }
         }
+    }
+
+    public void addReadyDependency(long jobid, long taskid) {
+        jobstatus.addReadyDependency(jobid, taskid);
     }
 }

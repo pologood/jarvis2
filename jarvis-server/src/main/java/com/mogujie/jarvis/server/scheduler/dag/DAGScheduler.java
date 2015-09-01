@@ -36,7 +36,7 @@ import com.mogujie.jarvis.server.scheduler.task.TaskScheduler;
 public enum DAGScheduler {
     INSTANCE;
 
-    TaskScheduler taskScheduler = TaskScheduler.INSTANCE;
+    private TaskScheduler taskScheduler = TaskScheduler.INSTANCE;
     private Configuration conf = ConfigUtils.getServerConfig();
     private Map<Long, DAGJob> waitingTable = new ConcurrentHashMap<Long, DAGJob>();
 
@@ -187,25 +187,43 @@ public enum DAGScheduler {
         } else if (e instanceof SuccessEvent) {
             handleSuccessEvent((SuccessEvent)e);
         }
-
     }
 
     private void handleTimeReadyEvent(TimeReadyEvent e) throws DAGScheduleException {
         long jobid = e.getJobid();
         DAGJob dagJob = waitingTable.get(jobid);
-        if (!(dagJob instanceof TimeDAGJob)) {
-            throw new DAGScheduleException("Job schedule type error. jobid "
-                    + e.getJobid() +  " is not TimeDAGJob");
-        }
-        TimeDAGJob tDagJob = ((TimeDAGJob)dagJob);
-        tDagJob.timeReady();
+        if (dagJob != null) {
+            if (!(dagJob instanceof TimeDAGJob)) {
+                throw new DAGScheduleException("Job schedule type error. jobid "
+                        + e.getJobid() +  " is not TimeDAGJob");
+            }
+            // 更新时间标识
+            TimeDAGJob tDagJob = ((TimeDAGJob)dagJob);
+            tDagJob.timeReady();
 
-        if (tDagJob.dependCheck()) {
-            taskScheduler.submitJob(SchedulerUtil.getJobContext(jobid));
+            // 如果通过依赖检查，提交给taskScheduler
+            if (tDagJob.dependCheck()) {
+                taskScheduler.submitJob(jobid);
+            }
         }
     }
 
     private void handleSuccessEvent(SuccessEvent e) throws DAGScheduleException {
-
+        long jobid = e.getJobid();
+        long taskid = e.getTaskid();
+        DAGJob dagJob = waitingTable.get(jobid);
+        if (dagJob != null) {
+            List<DAGJob> children = dagJob.getChildren();
+            if (children != null) {
+                for (DAGJob c : children) {
+                    // 更新依赖状态
+                    c.addReadyDependency(jobid, taskid);
+                    // 如果通过依赖检查，提交给taskScheduler
+                    if (c.dependCheck()) {
+                        taskScheduler.submitJob(jobid);
+                    }
+                }
+            }
+        }
     }
 }
