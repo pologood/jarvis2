@@ -22,7 +22,7 @@ public abstract class AbstractLogCollector {
         collectStderr(line, false);
     }
 
-    public abstract void collectStdout(String line, boolean finished);
+    public abstract void collectStdout(String line, boolean isEnd);
 
-    public abstract void collectStderr(String line, boolean finished);
+    public abstract void collectStderr(String line, boolean isEnd);
 }

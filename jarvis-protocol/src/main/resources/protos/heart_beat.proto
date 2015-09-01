@@ -1,0 +1,6 @@
+option java_package = "com.mogujie.jarvis.protocol";
+option java_outer_classname = "HeartBeatProtos";
+
+message HeartBeatRequest {
+    required int32 job_num = 1;
+}

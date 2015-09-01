@@ -44,7 +44,7 @@ public abstract class JdbcJob extends AbstractJob {
 
     @Override
     public boolean execute() throws JobException {
-        Configuration config = ConfigUtils.getClientConfig();
+        Configuration config = ConfigUtils.getWorkerConfig();
         // LogCollector collector = getJobContext().getLogCollector();
 
         try {

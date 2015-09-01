@@ -11,6 +11,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import org.joda.time.DateTime;
@@ -363,34 +364,17 @@ public class CronExpression {
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((cronExp == null) ? 0 : cronExp.hashCode());
-        return result;
+        return Objects.hash(cronExp);
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
+        if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
 
         CronExpression other = (CronExpression) obj;
-        if (cronExp == null) {
-            if (other.cronExp != null) {
-                return false;
-            }
-        } else if (!cronExp.equals(other.cronExp)) {
-            return false;
-        }
-
-        return true;
+        return Objects.equals(cronExp, other.cronExp);
     }
 
     @Override

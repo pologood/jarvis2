@@ -28,7 +28,7 @@ public class ConfigUtils {
     private static PropertiesConfiguration workerConfig;
     private static PropertiesConfiguration serverConfig;
 
-    public synchronized static Configuration getClientConfig() {
+    public synchronized static Configuration getWorkerConfig() {
         if (workerConfig == null) {
             try {
                 workerConfig = new PropertiesConfiguration("worker.properties");
