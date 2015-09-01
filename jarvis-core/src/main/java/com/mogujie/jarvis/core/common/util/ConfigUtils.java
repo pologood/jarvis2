@@ -7,16 +7,17 @@
  */
 package com.mogujie.jarvis.core.common.util;
 
-import com.google.common.base.Throwables;
-import com.typesafe.config.Config;
-import com.typesafe.config.ConfigFactory;
+import java.net.Inet4Address;
+import java.net.UnknownHostException;
+
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.configuration.reloading.FileChangedReloadingStrategy;
 
-import java.net.Inet4Address;
-import java.net.UnknownHostException;
+import com.google.common.base.Throwables;
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
 
 /**
  * @author wuya
@@ -24,20 +25,20 @@ import java.net.UnknownHostException;
  */
 public class ConfigUtils {
 
-    private static PropertiesConfiguration clientConfig;
+    private static PropertiesConfiguration workerConfig;
     private static PropertiesConfiguration serverConfig;
 
     public synchronized static Configuration getClientConfig() {
-        if (clientConfig == null) {
+        if (workerConfig == null) {
             try {
-                clientConfig = new PropertiesConfiguration("client.properties");
-                clientConfig.setReloadingStrategy(new FileChangedReloadingStrategy());
+                workerConfig = new PropertiesConfiguration("worker.properties");
+                workerConfig.setReloadingStrategy(new FileChangedReloadingStrategy());
             } catch (ConfigurationException e) {
                 Throwables.propagate(e);
             }
         }
 
-        return clientConfig;
+        return workerConfig;
     }
 
     public synchronized static Configuration getServerConfig() {

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+	<context:annotation-config />
+	<context:component-scan base-package="com.mogujie.jarvis" />
+
+	<tx:annotation-driven proxy-target-class="true"
+		transaction-manager="transactionManager" />
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="hikariDataSource" />
+	</bean>
+
+	<!-- HikariCP -->
+	<bean id="hikariDataSource" class="com.zaxxer.hikari.HikariDataSource"
+		destroy-method="shutdown">
+		<constructor-arg>
+			<bean class="com.zaxxer.hikari.HikariConfig">
+				<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+				<property name="jdbcUrl" value="jdbc:mysql://10.11.128.49/jarvis2" />
+				<property name="username" value="data" />
+				<property name="password" value="data" />
+				<property name="connectionTestQuery" value="SELECT 1" />
+				<property name="connectionTimeout" value="30000" />
+				<property name="idleTimeout" value="600000" />
+				<property name="maxLifetime" value="1800000" />
+				<property name="maximumPoolSize" value="10" />
+				<property name="minimumIdle" value="5" />
+			</bean>
+		</constructor-arg>
+	</bean>
+
+	<!-- MyBatis -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="hikariDataSource" />
+		<property name="typeAliasesPackage" value="com.mogujie.jarvis.dto" />
+		<property name="mapperLocations" value="classpath:mappers/*.xml" />
+	</bean>
+
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.mogujie.jarvis.dao" />
+	</bean>
+
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlSessionFactory" />
+	</bean>
+
+</beans>
