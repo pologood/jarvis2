@@ -8,7 +8,6 @@
 
 package com.mogujie.jarvis.server.scheduler.time;
 
-import com.mogujie.jarvis.server.scheduler.AbstractScheduler;
 
 /**
  * Scheduler used to handle time based job.
@@ -16,21 +15,19 @@ import com.mogujie.jarvis.server.scheduler.AbstractScheduler;
  * @author guangming
  *
  */
-public class TimeScheduler extends AbstractScheduler {
+public enum TimeScheduler {
+    INSTANCE;
 
-    @Override
     public void init() {
         // TODO Auto-generated method stub
 
     }
 
-    @Override
     public void run() {
         // TODO Auto-generated method stub
 
     }
 
-    @Override
     public void stop() {
         // TODO Auto-generated method stub
 

@@ -18,7 +18,7 @@ import com.mogujie.jarvis.server.scheduler.dag.status.IJobDependStatus;
  *
  */
 public class DAGJobFactory {
-    public static DAGJob createDAGJob(JobScheduleType jobType, int jobid,
+    public static DAGJob createDAGJob(JobScheduleType jobType, long jobid,
             IJobDependStatus jobstatus, JobDependencyStrategy dependStrategy) throws ClassNotFoundException {
         String className = jobType.getValue();
         DAGJob dagJob = ReflectionUtils.getClassByName(className);

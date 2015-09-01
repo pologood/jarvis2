@@ -11,7 +11,7 @@ package com.mogujie.jarvis.server.scheduler.task;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.mogujie.jarvis.server.scheduler.AbstractScheduler;
+import com.mogujie.jarvis.core.JobContext;
 
 /**
  * Scheduler used to handle running tasks.
@@ -19,26 +19,28 @@ import com.mogujie.jarvis.server.scheduler.AbstractScheduler;
  * @author guangming
  *
  */
-public class TaskScheduler extends AbstractScheduler {
+public enum TaskScheduler {
+    INSTANCE;
 
     private Map<Integer, DAGTask> runningTable = new ConcurrentHashMap<Integer, DAGTask>();
 
-    @Override
     public void init() {
         // TODO Auto-generated method stub
 
     }
 
-    @Override
     public void run() {
         // TODO Auto-generated method stub
 
     }
 
-    @Override
     public void stop() {
         // TODO Auto-generated method stub
 
+    }
+
+    public boolean submitJob(JobContext jobContext) {
+        return false;
     }
 
 }

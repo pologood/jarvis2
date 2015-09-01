@@ -32,7 +32,18 @@ public class TimeDAGJob extends DAGJob {
 
     @Override
     public boolean dependCheck() {
-        // TODO Auto-generated method stub
+        if (super.dependCheck() && timeReadyFlag) {
+            return true;
+        }
+
         return false;
+    }
+
+    public void timeReady() {
+        timeReadyFlag = true;
+    }
+
+    public void resetTimeFlag() {
+        timeReadyFlag = false;
     }
 }

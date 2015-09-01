@@ -22,27 +22,27 @@ import com.mogujie.jarvis.server.scheduler.dag.JobDependencyStrategy;
  */
 public abstract class CachedJobDependStatus implements IJobDependStatus {
     // Map<jobid, Map<taskid, status>>
-    protected Map<Integer, Map<Integer, Boolean>> jobStatusMap =
-            new ConcurrentHashMap<Integer, Map<Integer, Boolean>>();
+    protected Map<Long, Map<Long, Boolean>> jobStatusMap =
+            new ConcurrentHashMap<Long, Map<Long, Boolean>>();
 
     @Override
-    public void addReadyDependency(int jobid, int taskid) {
+    public void addReadyDependency(long jobid, long taskid) {
         boolean status = true;
         if (!jobStatusMap.containsKey(jobid)) {
-            Map<Integer, Boolean> taskStatusMap = new ConcurrentHashMap<Integer, Boolean>();
+            Map<Long, Boolean> taskStatusMap = new ConcurrentHashMap<Long, Boolean>();
             taskStatusMap.put(taskid, status);
             jobStatusMap.put(jobid, taskStatusMap);
         } else {
-            Map<Integer, Boolean> planStatusMap = jobStatusMap.get(jobid);
+            Map<Long, Boolean> planStatusMap = jobStatusMap.get(jobid);
             planStatusMap.put(taskid, status);
         }
     }
 
     @Override
-    public void removeReadyDependency(int jobid, int taskid) {
+    public void removeReadyDependency(long jobid, long taskid) {
         boolean status = false;
         if (jobStatusMap.containsKey(jobid)) {
-            Map<Integer, Boolean> taskStatusMap = jobStatusMap.get(jobid);
+            Map<Long, Boolean> taskStatusMap = jobStatusMap.get(jobid);
             if (taskStatusMap != null && taskStatusMap.containsKey(taskid)) {
                 taskStatusMap.put(taskid, status);
             }
@@ -50,9 +50,9 @@ public abstract class CachedJobDependStatus implements IJobDependStatus {
     }
 
     @Override
-    public void removeDependency(int jobid) {
+    public void removeDependency(long jobid) {
         if (jobStatusMap.containsKey(jobid)) {
-            Map<Integer, Boolean> taskStatusMap = jobStatusMap.get(jobid);
+            Map<Long, Boolean> taskStatusMap = jobStatusMap.get(jobid);
             if (taskStatusMap != null) {
                 taskStatusMap.clear();
             }
@@ -72,7 +72,7 @@ public abstract class CachedJobDependStatus implements IJobDependStatus {
      */
     public boolean isFinishAllJob(JobDependencyStrategy strategy, Set<Integer> needJobs) {
         boolean finishDependencies = true;
-        for (int jobid : needJobs) {
+        for (long jobid : needJobs) {
             if (!isFinishOneJob(strategy, jobid)) {
                 finishDependencies = false;
                 break;
@@ -81,12 +81,12 @@ public abstract class CachedJobDependStatus implements IJobDependStatus {
         return finishDependencies;
     }
 
-    private boolean isFinishOneJob(JobDependencyStrategy strategy, int jobid) {
+    private boolean isFinishOneJob(JobDependencyStrategy strategy, Long jobid) {
         boolean finishDependency = false;
-        Map<Integer, Boolean> taskStatusMap = jobStatusMap.get(jobid);
+        Map<Long, Boolean> taskStatusMap = jobStatusMap.get(jobid);
         // 多个执行计划中任意一次成功即算成功
         if (strategy.equals(JobDependencyStrategy.ANYONE)) {
-            for (Map.Entry<Integer, Boolean> entry : taskStatusMap.entrySet()) {
+            for (Map.Entry<Long, Boolean> entry : taskStatusMap.entrySet()) {
                 if (entry.getValue() == true) {
                     finishDependency = true;
                     break;
@@ -94,8 +94,8 @@ public abstract class CachedJobDependStatus implements IJobDependStatus {
             }
         } else if (strategy.equals(JobDependencyStrategy.LASTONE)) {
             // 多个执行计划中最后一次成功算成功
-            Iterator<Entry<Integer, Boolean>> it = taskStatusMap.entrySet().iterator();
-            Map.Entry<Integer, Boolean> entry = null;
+            Iterator<Entry<Long, Boolean>> it = taskStatusMap.entrySet().iterator();
+            Map.Entry<Long, Boolean> entry = null;
             while (it.hasNext()) {
                 entry = it.next();
             }
@@ -104,7 +104,7 @@ public abstract class CachedJobDependStatus implements IJobDependStatus {
             }
         } else if (strategy.equals(JobDependencyStrategy.ALL)) {
             // 多个执行计划中所有都成功才算成功
-            for (Map.Entry<Integer, Boolean> entry : taskStatusMap.entrySet()) {
+            for (Map.Entry<Long, Boolean> entry : taskStatusMap.entrySet()) {
                 if (entry.getValue() == false) {
                     finishDependency = false;
                     break;

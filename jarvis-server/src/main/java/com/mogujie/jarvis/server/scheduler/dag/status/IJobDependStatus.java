@@ -17,16 +17,16 @@ public interface IJobDependStatus {
     /**
      * update ready dependency job status to true
      */
-    public void addReadyDependency(int jobid, int taskid);
+    public void addReadyDependency(long jobid, long taskid);
 
     /**
      * update ready dependency job status to false
      */
-    public void removeReadyDependency(int jobid, int taskid);
+    public void removeReadyDependency(long jobid, long taskid);
 
     /**
      * remove job dependency
      */
-    public void removeDependency(int jobid);
+    public void removeDependency(long jobid);
 
 }

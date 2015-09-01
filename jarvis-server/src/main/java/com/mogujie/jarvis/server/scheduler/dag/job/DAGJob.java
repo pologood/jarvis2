@@ -20,7 +20,7 @@ import com.mogujie.jarvis.server.scheduler.dag.status.IJobDependStatus;
  */
 public class DAGJob implements IDAGJob {
 
-    private int jobid;
+    private long jobid;
     private IJobDependStatus jobstatus;
     private JobDependencyStrategy dependStrategy;
     private List<DAGJob> parents;
@@ -31,7 +31,7 @@ public class DAGJob implements IDAGJob {
         this.children = new ArrayList<DAGJob>();
     }
 
-    public DAGJob(int jobid, IJobDependStatus jobstatus, JobDependencyStrategy dependStrategy) {
+    public DAGJob(long jobid, IJobDependStatus jobstatus, JobDependencyStrategy dependStrategy) {
         try {
             this.jobid = jobid;
             this.jobstatus = jobstatus;
@@ -43,18 +43,17 @@ public class DAGJob implements IDAGJob {
         }
     }
 
-
     @Override
     public boolean dependCheck() {
         // TODO Auto-generated method stub
         return false;
     }
 
-    public int getJobid() {
+    public long getJobid() {
         return jobid;
     }
 
-    public void setJobid(int jobid) {
+    public void setJobid(long jobid) {
         this.jobid = jobid;
     }
 

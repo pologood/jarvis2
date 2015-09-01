@@ -31,9 +31,9 @@ import com.mogujie.jarvis.server.scheduler.time.TimeScheduler;
 @Scope("prototype")
 public class JobSchedulerActor extends UntypedActor {
 
-    private TimeScheduler timeScheduler = new TimeScheduler();
-    private DAGScheduler dagScheduler = new DAGScheduler();
-    private TaskScheduler taskScheduler = new TaskScheduler();
+    private TimeScheduler timeScheduler = TimeScheduler.INSTANCE;
+    private DAGScheduler dagScheduler = DAGScheduler.INSTANCE;
+    private TaskScheduler taskScheduler = TaskScheduler.INSTANCE;
 
     @Override
     public void preStart() throws Exception {

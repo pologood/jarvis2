@@ -17,19 +17,19 @@ package com.mogujie.jarvis.server.scheduler.dag.status;
 public class MysqlJobDependStatus implements IJobDependStatus {
 
     @Override
-    public void addReadyDependency(int jobid, int taskid) {
+    public void addReadyDependency(long jobid, long taskid) {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public void removeReadyDependency(int jobid, int taskid) {
+    public void removeReadyDependency(long jobid, long taskid) {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public void removeDependency(int jobid) {
+    public void removeDependency(long jobid) {
         // TODO Auto-generated method stub
 
     }

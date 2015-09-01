@@ -10,6 +10,7 @@ package com.mogujie.jarvis.server.scheduler;
 
 import org.apache.commons.configuration.Configuration;
 
+import com.mogujie.jarvis.core.JobContext;
 import com.mogujie.jarvis.core.common.util.ReflectionUtils;
 import com.mogujie.jarvis.server.scheduler.dag.status.IJobDependStatus;
 import com.mogujie.jarvis.server.scheduler.dag.status.MysqlCachedJobDependStatus;
@@ -22,9 +23,15 @@ public class SchedulerUtil {
     public static String JOB_DEPEND_STATUS_KEY = "job.depend.status";
     public static String DEFAULT_JOB_DEPEND_STATUS = MysqlCachedJobDependStatus.class.getName();
 
-    public static IJobDependStatus getJobDependStatus(Configuration conf) throws
-        InstantiationException, IllegalAccessException, ClassNotFoundException {
+    public static IJobDependStatus getJobDependStatus(Configuration conf) throws InstantiationException, IllegalAccessException,
+            ClassNotFoundException {
         String className = conf.getString(JOB_DEPEND_STATUS_KEY, DEFAULT_JOB_DEPEND_STATUS);
-    return ReflectionUtils.getClassByName(className);
-  }
+        return ReflectionUtils.getClassByName(className);
+    }
+
+    public static JobContext getJobContext(long jobid) {
+        // TODO
+        return null;
+    }
+
 }
