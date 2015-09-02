@@ -20,9 +20,9 @@ import com.mogujie.jarvis.server.observer.Observer;
 public class TimeScheduler implements Observer {
 
     private static TimeScheduler instance = new TimeScheduler();
-    private TimeScheduler (){}
+    private TimeScheduler() {}
     public static TimeScheduler getInstance() {
-            return instance;
+        return instance;
     }
 
     public void init() {

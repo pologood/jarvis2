@@ -39,9 +39,9 @@ import com.mogujie.jarvis.server.scheduler.task.TaskScheduler;
 public class DAGScheduler implements Observer {
 
     private static DAGScheduler instance = new DAGScheduler();
-    private DAGScheduler (){}
+    private DAGScheduler() {}
     public static DAGScheduler getInstance() {
-            return instance;
+        return instance;
     }
 
     private TaskScheduler taskScheduler = TaskScheduler.getInstance();

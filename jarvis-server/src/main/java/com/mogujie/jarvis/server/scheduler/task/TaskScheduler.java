@@ -28,9 +28,9 @@ import com.mogujie.jarvis.server.scheduler.dag.event.SuccessEvent;
 public class TaskScheduler implements Observer {
 
     private static TaskScheduler instance = new TaskScheduler();
-    private TaskScheduler (){}
+    private TaskScheduler() {}
     public static TaskScheduler getInstance() {
-            return instance;
+        return instance;
     }
 
     // TODO 优化：按照任务优先级排序，使用优先级队列或者堆？
