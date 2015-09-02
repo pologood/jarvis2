@@ -8,6 +8,8 @@
 
 package com.mogujie.jarvis.server.scheduler.time;
 
+import com.mogujie.jarvis.server.observer.Observer;
+
 
 /**
  * Scheduler used to handle time based job.
@@ -15,8 +17,13 @@ package com.mogujie.jarvis.server.scheduler.time;
  * @author guangming
  *
  */
-public enum TimeScheduler {
-    INSTANCE;
+public class TimeScheduler implements Observer {
+
+    private static TimeScheduler instance = new TimeScheduler();
+    private TimeScheduler (){}
+    public static TimeScheduler getInstance() {
+            return instance;
+    }
 
     public void init() {
         // TODO Auto-generated method stub

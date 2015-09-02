@@ -8,12 +8,14 @@
 
 package com.mogujie.jarvis.server.scheduler.dag.event;
 
+import com.mogujie.jarvis.server.observer.Event;
+
 
 /**
  * @author guangming
  *
  */
-public abstract class DAGJobEvent implements DAGEvent {
+public abstract class DAGJobEvent implements Event {
     private long jobid;
 
     public DAGJobEvent(long jobid) {

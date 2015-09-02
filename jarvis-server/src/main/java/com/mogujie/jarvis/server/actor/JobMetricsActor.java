@@ -13,6 +13,9 @@ import org.springframework.context.annotation.Scope;
 
 import akka.actor.UntypedActor;
 
+import com.mogujie.jarvis.protocol.ReportProgressProtos.WorkerReportProgressRequest;
+import com.mogujie.jarvis.protocol.ReportStatusProtos.WorkerReportStatusRequest;
+
 /**
  * Actor used to receive job metrics information (e.g. status, process) 1. send job status to
  * {@link com.mogujie.jarvis.server.actor.JobSchedulerActor } 2. send process to restserver
@@ -25,9 +28,14 @@ import akka.actor.UntypedActor;
 public class JobMetricsActor extends UntypedActor {
 
     @Override
-    public void onReceive(Object arg0) throws Exception {
-        // TODO Auto-generated method stub
-
+    public void onReceive(Object obj) throws Exception {
+        if (obj instanceof WorkerReportStatusRequest) {
+            // TODO tell JobSchedulerActor
+        } else if (obj instanceof WorkerReportProgressRequest) {
+            // TODO
+        } else {
+            unhandled(obj);
+        }
     }
 
 }

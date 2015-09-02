@@ -20,7 +20,7 @@ import com.mogujie.jarvis.server.scheduler.dag.JobDependencyStrategy;
  * @author guangming
  *
  */
-public abstract class CachedJobDependStatus implements IJobDependStatus {
+public abstract class CachedJobDependStatus extends IJobDependStatus {
     // Map<jobid, Map<taskid, status>>
     protected Map<Long, Map<Long, Boolean>> jobStatusMap =
             new ConcurrentHashMap<Long, Map<Long, Boolean>>();
@@ -60,16 +60,11 @@ public abstract class CachedJobDependStatus implements IJobDependStatus {
         }
     }
 
-    /**
-     * clear cache of jobStatusMap
-     */
-    public void clear() {
+    @Override
+    public void reset() {
         jobStatusMap.clear();
     }
 
-    /**
-     * return true if finished all jobs
-     */
     public boolean isFinishAllJob(JobDependencyStrategy strategy, Set<Long> needJobs) {
         boolean finishDependencies = true;
         for (long jobid : needJobs) {

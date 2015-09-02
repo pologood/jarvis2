@@ -18,7 +18,7 @@ import com.mogujie.jarvis.server.scheduler.dag.JobDependencyStrategy;
  * @author guangming
  *
  */
-public class MysqlJobDependStatus implements IJobDependStatus {
+public class MysqlJobDependStatus extends IJobDependStatus {
 
     @Override
     public void addReadyDependency(long jobid, long taskid) {
@@ -42,6 +42,12 @@ public class MysqlJobDependStatus implements IJobDependStatus {
     public boolean isFinishAllJob(JobDependencyStrategy strategy, Set<Long> needJobs) {
         // TODO Auto-generated method stub
         return false;
+    }
+
+    @Override
+    public void reset() {
+        // TODO Auto-generated method stub
+
     }
 
 }

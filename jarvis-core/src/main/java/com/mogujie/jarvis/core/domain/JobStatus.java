@@ -23,4 +23,17 @@ public enum JobStatus {
     public int getValue() {
         return value;
     }
+
+    public static JobStatus getInstance(int value) {
+        JobStatus[] statusList = JobStatus.values();
+        JobStatus status = JobStatus.UNKONW;
+        for (JobStatus s : statusList) {
+            if (s.getValue() == value) {
+                status = s;
+                break;
+            }
+        }
+
+        return status;
+    }
 }

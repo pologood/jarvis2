@@ -15,10 +15,13 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.configuration.Configuration;
 
+import com.google.common.eventbus.Subscribe;
 import com.mogujie.jarvis.core.common.util.ConfigUtils;
+import com.mogujie.jarvis.server.observer.Observer;
 import com.mogujie.jarvis.server.scheduler.JobDescriptor;
 import com.mogujie.jarvis.server.scheduler.SchedulerUtil;
-import com.mogujie.jarvis.server.scheduler.dag.event.DAGEvent;
+import com.mogujie.jarvis.server.scheduler.dag.event.AddJobEvent;
+import com.mogujie.jarvis.server.scheduler.dag.event.RemoveJobEvent;
 import com.mogujie.jarvis.server.scheduler.dag.event.SuccessEvent;
 import com.mogujie.jarvis.server.scheduler.dag.event.TimeReadyEvent;
 import com.mogujie.jarvis.server.scheduler.dag.job.DAGJob;
@@ -33,10 +36,15 @@ import com.mogujie.jarvis.server.scheduler.task.TaskScheduler;
  * @author guangming
  *
  */
-public enum DAGScheduler {
-    INSTANCE;
+public class DAGScheduler implements Observer {
 
-    private TaskScheduler taskScheduler = TaskScheduler.INSTANCE;
+    private static DAGScheduler instance = new DAGScheduler();
+    private DAGScheduler (){}
+    public static DAGScheduler getInstance() {
+            return instance;
+    }
+
+    private TaskScheduler taskScheduler = TaskScheduler.getInstance();
     private Configuration conf = ConfigUtils.getServerConfig();
     private Map<Long, DAGJob> waitingTable = new ConcurrentHashMap<Long, DAGJob>();
 
@@ -60,10 +68,13 @@ public enum DAGScheduler {
      *
      * @param JobDescriptor jobDesc
      */
-    public void addJob(JobDescriptor jobDesc) throws Exception {
+    @Subscribe
+    public void handleAddJobEvent(AddJobEvent event) throws Exception {
+        JobDescriptor jobDesc = event.getJobDesc();
         long jobid = jobDesc.getJobContext().getJobId();
         if (waitingTable.get(jobid) == null) {
             IJobDependStatus jobDependStatus = SchedulerUtil.getJobDependStatus(conf);
+            jobDependStatus.setMyjobid(jobid);
             if (jobDependStatus != null) {
                 DAGJob dagJob = DAGJobFactory.createDAGJob(jobDesc.getScheduleType(),
                         jobid, jobDependStatus, JobDependencyStrategy.ALL);
@@ -84,10 +95,11 @@ public enum DAGScheduler {
     /**
      * remove job
      *
-     * @param JobDescriptor jobDesc
+     * @param long jobid
      */
-    public void removeJob(JobDescriptor jobDesc) {
-        long jobid = jobDesc.getJobContext().getJobId();
+    @Subscribe
+    public void handleRemoveJobEvent(RemoveJobEvent event) {
+        long jobid = event.getJobid();
         DAGJob dagJob = waitingTable.get(jobid);
         if (dagJob != null) {
             // 1. remove job from waiting table
@@ -181,15 +193,8 @@ public enum DAGScheduler {
         return childIds;
     }
 
-    public void handleEvent(DAGEvent e) throws DAGScheduleException {
-        if (e instanceof TimeReadyEvent) {
-            handleTimeReadyEvent((TimeReadyEvent)e);
-        } else if (e instanceof SuccessEvent) {
-            handleSuccessEvent((SuccessEvent)e);
-        }
-    }
-
-    private void handleTimeReadyEvent(TimeReadyEvent e) throws DAGScheduleException {
+    @Subscribe
+    public void handleTimeReadyEvent(TimeReadyEvent e) throws DAGScheduleException {
         long jobid = e.getJobid();
         DAGJob dagJob = waitingTable.get(jobid);
         if (dagJob != null) {
@@ -208,19 +213,21 @@ public enum DAGScheduler {
         }
     }
 
-    private void handleSuccessEvent(SuccessEvent e) throws DAGScheduleException {
+    @Subscribe
+    public void handleSuccessEvent(SuccessEvent e) throws DAGScheduleException {
         long jobid = e.getJobid();
         long taskid = e.getTaskid();
         DAGJob dagJob = waitingTable.get(jobid);
         if (dagJob != null) {
             List<DAGJob> children = dagJob.getChildren();
             if (children != null) {
-                for (DAGJob c : children) {
+                for (DAGJob child : children) {
                     // 更新依赖状态
-                    c.addReadyDependency(jobid, taskid);
-                    // 如果通过依赖检查，提交给taskScheduler
-                    if (c.dependCheck()) {
+                    child.addReadyDependency(jobid, taskid);
+                    // 如果通过依赖检查，提交给taskScheduler，并重置自己的依赖状态
+                    if (child.dependCheck()) {
                         taskScheduler.submitJob(jobid);
+                        child.resetDependStatus();
                     }
                 }
             }

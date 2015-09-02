@@ -33,8 +33,8 @@ public class MysqlCachedJobDependStatus extends CachedJobDependStatus {
     }
 
     @Override
-    public void clear() {
-        super.clear();
+    public void reset() {
+        super.reset();
         flush2DB();
     }
 

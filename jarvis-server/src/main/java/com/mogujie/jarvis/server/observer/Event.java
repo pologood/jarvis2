@@ -3,15 +3,15 @@
  * Copyright (c) 2010-2015 All Rights Reserved.
  *
  * Author: guangming
- * Create Date: 2015年9月1日 上午11:52:23
+ * Create Date: 2015年9月2日 上午10:42:01
  */
 
-package com.mogujie.jarvis.server.scheduler.dag.event;
+package com.mogujie.jarvis.server.observer;
 
 /**
  * @author guangming
  *
  */
-public interface DAGEvent {
+public interface Event {
 
 }

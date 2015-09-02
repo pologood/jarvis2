@@ -14,7 +14,18 @@ import org.springframework.context.annotation.Scope;
 
 import akka.actor.UntypedActor;
 
+import com.google.common.eventbus.EventBus;
+import com.mogujie.jarvis.core.domain.JobStatus;
+import com.mogujie.jarvis.protocol.DeleteJobProtos.RestServerDeleteJobRequest;
+import com.mogujie.jarvis.protocol.ReportStatusProtos.WorkerReportStatusRequest;
+import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitJobRequest;
+import com.mogujie.jarvis.server.observer.Event;
+import com.mogujie.jarvis.server.observer.Observable;
+import com.mogujie.jarvis.server.observer.Observer;
 import com.mogujie.jarvis.server.scheduler.dag.DAGScheduler;
+import com.mogujie.jarvis.server.scheduler.dag.event.FailedEvent;
+import com.mogujie.jarvis.server.scheduler.dag.event.SuccessEvent;
+import com.mogujie.jarvis.server.scheduler.dag.event.UnhandleEvent;
 import com.mogujie.jarvis.server.scheduler.task.TaskScheduler;
 import com.mogujie.jarvis.server.scheduler.time.TimeScheduler;
 
@@ -29,11 +40,12 @@ import com.mogujie.jarvis.server.scheduler.time.TimeScheduler;
  */
 @Named("JobSchedulerActor")
 @Scope("prototype")
-public class JobSchedulerActor extends UntypedActor {
+public class JobSchedulerActor extends UntypedActor implements Observable {
 
-    private TimeScheduler timeScheduler = TimeScheduler.INSTANCE;
-    private DAGScheduler dagScheduler = DAGScheduler.INSTANCE;
-    private TaskScheduler taskScheduler = TaskScheduler.INSTANCE;
+    private EventBus eventBus = new EventBus("JobSchedulerActor");
+    private TimeScheduler timeScheduler = TimeScheduler.getInstance();
+    private DAGScheduler dagScheduler = DAGScheduler.getInstance();
+    private TaskScheduler taskScheduler = TaskScheduler.getInstance();
 
     @Override
     public void preStart() throws Exception {
@@ -46,6 +58,10 @@ public class JobSchedulerActor extends UntypedActor {
         timeScheduler.run();
         dagScheduler.run();
         taskScheduler.run();
+
+        register(timeScheduler);
+        register(dagScheduler);
+        register(taskScheduler);
     }
 
     @Override
@@ -54,9 +70,32 @@ public class JobSchedulerActor extends UntypedActor {
     }
 
     @Override
-    public void onReceive(Object arg0) throws Exception {
-        // TODO Auto-generated method stub
+    public void onReceive(Object obj) throws Exception {
+        Event event = new UnhandleEvent();
+        if (obj instanceof WorkerReportStatusRequest) {
+            WorkerReportStatusRequest msg = (WorkerReportStatusRequest)obj;
+            String fullId = msg.getFullId();
+            String[] idList = fullId.split("_");
+            long jobid = Long.valueOf(idList[0]);
+            long taskid = Long.valueOf(idList[1]);
 
+            JobStatus status = JobStatus.getInstance(msg.getStatus());
+            if (status.equals(JobStatus.SUCCESS)) {
+                event = new SuccessEvent(jobid, taskid);
+            } else if (status.equals(JobStatus.FAILED)) {
+                event = new FailedEvent(jobid, taskid);
+            }
+        } else if (obj instanceof RestServerSubmitJobRequest) {
+            RestServerSubmitJobRequest msg = (RestServerSubmitJobRequest)obj;
+            // add job
+        } else if (obj instanceof RestServerDeleteJobRequest) {
+            RestServerDeleteJobRequest msg = (RestServerDeleteJobRequest)obj;
+            // remove job
+        } else {
+            unhandled(obj);
+        }
+
+        notify(event);
     }
 
     @Override
@@ -65,6 +104,25 @@ public class JobSchedulerActor extends UntypedActor {
         timeScheduler.stop();
         dagScheduler.stop();
         taskScheduler.stop();
+
+        eventBus.unregister(timeScheduler);
+        eventBus.unregister(dagScheduler);
+        eventBus.unregister(taskScheduler);
+    }
+
+    @Override
+    public void register(Observer o) {
+        eventBus.register(o);
+    }
+
+    @Override
+    public void unregister(Observer o) {
+        eventBus.unregister(o);
+    }
+
+    @Override
+    public void notify(Event event) {
+        eventBus.post(event);
     }
 
 }

@@ -16,26 +16,37 @@ import com.mogujie.jarvis.server.scheduler.dag.JobDependencyStrategy;
  * @author guangming
  *
  */
-public interface IJobDependStatus {
+public abstract class IJobDependStatus {
+
+    private long myjobid;
 
     /**
      * update ready dependency job status to true
      */
-    public void addReadyDependency(long jobid, long taskid);
+    public abstract void addReadyDependency(long jobid, long taskid);
 
     /**
      * update ready dependency job status to false
      */
-    public void removeReadyDependency(long jobid, long taskid);
+    public abstract void removeReadyDependency(long jobid, long taskid);
 
     /**
      * remove job dependency
      */
-    public void removeDependency(long jobid);
+    public abstract void removeDependency(long jobid);
 
     /**
      * return true if finished all jobs
      */
-    public boolean isFinishAllJob(JobDependencyStrategy strategy, Set<Long> needJobs);
+    public abstract boolean isFinishAllJob(JobDependencyStrategy strategy, Set<Long> needJobs);
+
+    /**
+     * reset dependency status
+     */
+    public abstract void reset();
+
+    public void setMyjobid(long jobid) {
+        this.myjobid = jobid;
+    }
 
 }

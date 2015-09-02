@@ -3,24 +3,22 @@
  * Copyright (c) 2010-2015 All Rights Reserved.
  *
  * Author: guangming
- * Create Date: 2015年9月1日 下午2:02:12
+ * Create Date: 2015年9月2日 上午11:56:46
  */
 
 package com.mogujie.jarvis.server.scheduler.dag.event;
-
 
 /**
  * @author guangming
  *
  */
-public class FailedEvent extends DAGTaskEvent {
+public class RemoveJobEvent extends DAGJobEvent {
 
     /**
      * @param long jobid
-     * @param long taskid
      */
-    public FailedEvent(long jobid, long taskid) {
-        super(jobid, taskid);
+    public RemoveJobEvent(long jobid) {
+        super(jobid);
     }
 
 }

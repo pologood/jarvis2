@@ -141,4 +141,8 @@ public class DAGJob implements IDAGJob {
     public void addReadyDependency(long jobid, long taskid) {
         jobstatus.addReadyDependency(jobid, taskid);
     }
+
+    public void resetDependStatus() {
+        jobstatus.reset();
+    }
 }

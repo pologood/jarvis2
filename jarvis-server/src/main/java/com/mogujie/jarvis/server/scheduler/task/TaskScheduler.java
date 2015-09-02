@@ -11,21 +11,27 @@ package com.mogujie.jarvis.server.scheduler.task;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.google.common.eventbus.Subscribe;
 import com.mogujie.jarvis.core.JobContext;
+import com.mogujie.jarvis.core.common.util.ThreadUtils;
+import com.mogujie.jarvis.server.observer.Observer;
 import com.mogujie.jarvis.server.scheduler.SchedulerUtil;
-import com.mogujie.jarvis.server.scheduler.dag.DAGScheduleException;
-import com.mogujie.jarvis.server.scheduler.dag.event.DAGEvent;
 import com.mogujie.jarvis.server.scheduler.dag.event.FailedEvent;
 import com.mogujie.jarvis.server.scheduler.dag.event.SuccessEvent;
 
 /**
- * Scheduler used to handle running tasks.
+ * Scheduler used to handle ready tasks.
  *
  * @author guangming
  *
  */
-public enum TaskScheduler {
-    INSTANCE;
+public class TaskScheduler implements Observer {
+
+    private static TaskScheduler instance = new TaskScheduler();
+    private TaskScheduler (){}
+    public static TaskScheduler getInstance() {
+            return instance;
+    }
 
     // TODO 优化：按照任务优先级排序，使用优先级队列或者堆？
     private Map<Long, DAGTask> readyTable = new ConcurrentHashMap<Long, DAGTask>();
@@ -63,33 +69,33 @@ public enum TaskScheduler {
         // TODO submitjob
     }
 
-    public void handleEvent(DAGEvent e) throws DAGScheduleException {
-        if (e instanceof SuccessEvent) {
-            handleSuccessEvent((SuccessEvent)e);
-        } else if (e instanceof FailedEvent) {
-            handleFailedEvent((FailedEvent)e);
-        }
-    }
-
-    private void handleSuccessEvent(SuccessEvent e) {
+    @Subscribe
+    public void handleSuccessEvent(SuccessEvent e) {
         // TODO 1. store success status to DB
 
         // 2. remove from ready table
         readyTable.remove(e.getTaskid());
     }
 
-    private void handleFailedEvent(FailedEvent e) {
+    @Subscribe
+    public void handleFailedEvent(FailedEvent e) {
+        long jobid = e.getJobid();
+        long taskid = e.getTaskid();
         DAGTask dagTask = readyTable.get(e.getTaskid());
-        int failedTimes = dagTask.getFailedTimes();
-        if (failedTimes < e.getFailedRetries()) {
-            failedTimes++;
-            dagTask.setFailedTimes(failedTimes);
-            submitJob(e.getJobid(), e.getTaskid());
-        } else {
-            // TODO 1. store success status to DB
+        if (dagTask != null) {
+            JobContext jobContext = SchedulerUtil.getJobContext(jobid);
+            int failedTimes = dagTask.getFailedTimes();
+            if (failedTimes < jobContext.getFailedRetries()) {
+                failedTimes++;
+                dagTask.setFailedTimes(failedTimes);
+                ThreadUtils.sleep(jobContext.getFailedInterval());
+                submitJob(jobid, taskid);
+            } else {
+                // TODO 1. store success status to DB
 
-            // 2. remove from ready table
-            readyTable.remove(e.getTaskid());
+                // 2. remove from ready table
+                readyTable.remove(taskid);
+            }
         }
     }
 
