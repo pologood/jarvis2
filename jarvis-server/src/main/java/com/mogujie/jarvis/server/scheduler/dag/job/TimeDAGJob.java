@@ -46,4 +46,10 @@ public class TimeDAGJob extends DAGJob {
     public void resetTimeFlag() {
         timeReadyFlag = false;
     }
+
+    @Override
+    public void resetDependStatus() {
+        super.resetDependStatus();
+        resetTimeFlag();
+    }
 }

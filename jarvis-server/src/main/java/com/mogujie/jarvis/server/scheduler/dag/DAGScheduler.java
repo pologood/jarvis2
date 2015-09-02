@@ -74,8 +74,8 @@ public class DAGScheduler implements Observer {
         long jobid = jobDesc.getJobContext().getJobId();
         if (waitingTable.get(jobid) == null) {
             IJobDependStatus jobDependStatus = SchedulerUtil.getJobDependStatus(conf);
-            jobDependStatus.setMyjobid(jobid);
             if (jobDependStatus != null) {
+                jobDependStatus.setMyjobid(jobid);
                 DAGJob dagJob = DAGJobFactory.createDAGJob(jobDesc.getScheduleType(),
                         jobid, jobDependStatus, JobDependencyStrategy.ALL);
                 waitingTable.put(jobid, dagJob);
@@ -114,9 +114,14 @@ public class DAGScheduler implements Observer {
 
             // 3. remove relation from children
             List<DAGJob> children = dagJob.getChildren();
-            for (DAGJob c : children) {
-               dagJob.removeChild(c);
-               c.removeParent(dagJob);
+            for (DAGJob child : children) {
+               dagJob.removeChild(child);
+               // 1. remove relation from parent
+               child.removeParent(dagJob);
+               // 2. remove dependency status with jobid
+               child.removeDenpendency(jobid);
+               // 3. submit job if pass dependency check
+               submitJobWithCheck(child);
             }
         }
     }
@@ -148,6 +153,8 @@ public class DAGScheduler implements Observer {
         if (parent != null && child != null) {
             parent.removeChild(child);
             child.removeParent(parent);
+            child.removeDenpendency(parent.getJobid());
+            submitJobWithCheck(child);
         }
     }
 
@@ -206,10 +213,8 @@ public class DAGScheduler implements Observer {
             TimeDAGJob tDagJob = ((TimeDAGJob)dagJob);
             tDagJob.timeReady();
 
-            // 如果通过依赖检查，提交给taskScheduler
-            if (tDagJob.dependCheck()) {
-                taskScheduler.submitJob(jobid);
-            }
+            // 如果通过依赖检查，提交给taskScheduler，并重置自己的依赖状态
+            submitJobWithCheck(tDagJob);
         }
     }
 
@@ -225,12 +230,21 @@ public class DAGScheduler implements Observer {
                     // 更新依赖状态
                     child.addReadyDependency(jobid, taskid);
                     // 如果通过依赖检查，提交给taskScheduler，并重置自己的依赖状态
-                    if (child.dependCheck()) {
-                        taskScheduler.submitJob(jobid);
-                        child.resetDependStatus();
-                    }
+                    submitJobWithCheck(child);
                 }
             }
+        }
+    }
+
+    /**
+     * submit job if pass the dependency check
+     *
+     * @param DAGJob dagJob
+     */
+    private void submitJobWithCheck(DAGJob dagJob) {
+        if (dagJob.dependCheck()) {
+            taskScheduler.submitJob(dagJob.getJobid());
+            dagJob.resetDependStatus();
         }
     }
 }

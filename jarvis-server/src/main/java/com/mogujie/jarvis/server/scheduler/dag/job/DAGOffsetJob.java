@@ -25,7 +25,6 @@ public class DAGOffsetJob extends DAGJob {
      */
     public DAGOffsetJob(int jobid, IJobDependStatus jobstatus, JobDependencyStrategy dependStrategy) {
         super(jobid, jobstatus, dependStrategy);
-        // TODO Auto-generated constructor stub
     }
 
     @Override

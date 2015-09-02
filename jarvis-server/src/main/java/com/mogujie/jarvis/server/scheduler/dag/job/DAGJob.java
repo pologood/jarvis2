@@ -142,6 +142,10 @@ public class DAGJob implements IDAGJob {
         jobstatus.addReadyDependency(jobid, taskid);
     }
 
+    public void removeDenpendency(long jobid) {
+        jobstatus.removeDependency(jobid);
+    }
+
     public void resetDependStatus() {
         jobstatus.reset();
     }
