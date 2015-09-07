@@ -24,19 +24,17 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 
 /**
- * @author wuya
+ * @author muming
  *
  */
 public class ShellJob extends AbstractJob {
 
-    private Process process;
+    private Process shellProcess = null;
     private static final String STATUS_PATH = ConfigUtils.getWorkerConfig().getString("worker.job.status.path");
     private static final Logger LOGGER = LogManager.getLogger();
 
-
-    public ShellJob(JobContext jobContext, Process process) {
+    public ShellJob(JobContext jobContext) {
         super(jobContext);
-        this.process = process;
     }
 
     public String getCommand() {
@@ -50,7 +48,7 @@ public class ShellJob extends AbstractJob {
                 getJobContext().getLogCollector().collectStdout(line);
             }
         } catch (IOException e) {
-            LOGGER.error("error process stdout stream", e);
+            LOGGER.error("error shellProcess stdout stream", e);
         }
     }
 
@@ -61,13 +59,14 @@ public class ShellJob extends AbstractJob {
                 getJobContext().getLogCollector().collectStderr(line);
             }
         } catch (IOException e) {
-            LOGGER.error("error process stderr stream", e);
+            LOGGER.error("error shellProcess stderr stream", e);
         }
     }
 
     @Override
     public boolean execute() {
         try {
+
             String statusFilePath = STATUS_PATH + "/" + getJobContext().getJobId() + ".status";
             StringBuilder sb = new StringBuilder();
             String cmd = getCommand();
@@ -76,20 +75,20 @@ public class ShellJob extends AbstractJob {
                 sb.append(";");
             }
 
-            sb.append("export SENTINEL_EXIT_CODE=$? && ");
-            sb.append("echo $SENTINEL_EXIT_CODE > ");
-            sb.append(statusFilePath);
-            sb.append(" && exit $SENTINEL_EXIT_CODE");
+            sb.append("export SENTINEL_EXIT_CODE=$? ")
+                .append("&& echo $SENTINEL_EXIT_CODE > ").append(statusFilePath)
+                .append(" && exit $SENTINEL_EXIT_CODE");
 
             ProcessBuilder processBuilder = ShellUtils.createProcessBuilder(sb.toString());
-            process = processBuilder.start();
+            shellProcess = processBuilder.start();
 
-            Thread stdoutStreamProcessor = new ShellStreamProcessor(this, process.getInputStream(), StreamType.STD_OUT);
+            Thread stdoutStreamProcessor = new ShellStreamProcessor(this, shellProcess.getInputStream(), StreamType.STD_OUT);
             stdoutStreamProcessor.start();
 
-            Thread stderrStreamProcessor = new ShellStreamProcessor(this, process.getErrorStream(), StreamType.STD_ERR);
+            Thread stderrStreamProcessor = new ShellStreamProcessor(this, shellProcess.getErrorStream(), StreamType.STD_ERR);
             stderrStreamProcessor.start();
-            boolean result = process.waitFor() == 0;
+
+            boolean result = (shellProcess.waitFor() == 0);
 
             // 删除状态文件
             File statusFile = new File(statusFilePath);
@@ -104,10 +103,11 @@ public class ShellJob extends AbstractJob {
         }
     }
 
+
     @Override
     public boolean kill() {
-        if (process != null) {
-            process.destroy();
+        if (shellProcess != null) {
+            shellProcess.destroy();
         }
 
         return true;

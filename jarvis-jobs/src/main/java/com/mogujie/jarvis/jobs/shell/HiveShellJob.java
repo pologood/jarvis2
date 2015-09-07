@@ -13,12 +13,10 @@ import com.github.stuxuhai.jpinyin.PinyinHelper;
 import com.mogujie.jarvis.core.JobContext;
 import com.mogujie.jarvis.core.common.util.ConfigUtils;
 
+import com.mogujie.jarvis.core.exeception.ShellException;
 import com.mogujie.jarvis.jobs.domain.HiveJobEntity;
 
-import com.mogujie.jarvis.jobs.util.HiveConfigUtils;
-import com.mogujie.jarvis.jobs.util.MoguAnnotationUtils;
-import com.mogujie.jarvis.jobs.util.MoguDateParamUtils;
-import com.mogujie.jarvis.jobs.util.ShellUtils;
+import com.mogujie.jarvis.jobs.util.*;
 
 import org.apache.commons.configuration.Configuration;
 import org.apache.logging.log4j.LogManager;
@@ -39,19 +37,21 @@ import java.util.regex.Pattern;
  */
 public class HiveShellJob extends ShellJob {
 
-    private Set<String> applicationIdSet = new HashSet<String>();
+    private Set<String> applicationIdSet = new HashSet<>();
     private static final Pattern APPLICATION_ID_PATTERN = Pattern.compile("application_\\d+_\\d+");
     private static final Pattern MAPPERS_NUMBER_PATTERN = Pattern
             .compile("number of mappers: (\\d+);");
+
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public HiveShellJob(JobContext jobContext, Process process, Set<String> applicationIdSet) {
-        super(jobContext, process);
+    public HiveShellJob(JobContext jobContext, Set<String> applicationIdSet) {
+        super(jobContext);
         this.applicationIdSet = applicationIdSet;
     }
 
     @Override
     public String getCommand() {
+
         String user = null;
         HiveJobEntity entity = HiveConfigUtils.getHiveJobEntry(getJobContext().getAppName());
         if (entity == null || (entity.isAdmin() && !getJobContext().getUser().trim().isEmpty())) {
@@ -60,18 +60,19 @@ public class HiveShellJob extends ShellJob {
             user = entity.getUser();
         }
 
-        Configuration clientConfig = ConfigUtils.getWorkerConfig();
-        boolean isHive2Enable = clientConfig.getBoolean("hive2.enable", false);
+        Configuration workerConfig = ConfigUtils.getWorkerConfig();
+        boolean isHive2Enable = workerConfig.getBoolean("hive2.enable", false);
 
         StringBuilder sb = new StringBuilder();
         sb.append("export HADOOP_USER_NAME="
                 + PinyinHelper.convertToPinyinString(user.trim(), "", PinyinFormat.WITHOUT_TONE) + ";");
         if (isHive2Enable) {
-            String hive2Host = clientConfig.getString("hive2.host");
+            String hive2Host = workerConfig.getString("hive2.host");
             sb.append("beeline --outputformat=tsv2 -u jdbc:hive2://" + hive2Host + " -n " + user);
         } else {
             sb.append("hive");
         }
+
         sb.append(" -e \"set hive.cli.print.header=true;");
         sb.append("set mapred.job.name=" + getJobContext().getJobName() + ";");
         // 打印列名的时候不打印表名，否则xray无法显示数据
@@ -80,10 +81,12 @@ public class HiveShellJob extends ShellJob {
                 .removeAnnotation(MoguDateParamUtils.parse(getJobContext().getCommand())));
         sb.append("\"");
         return sb.toString();
+
     }
 
     @Override
     public void processStdOutputStream(InputStream inputStream) {
+
         int currentResultRows = 0;
         int maxResultRows = 10000;
         String appName = getJobContext().getAppName();
@@ -110,6 +113,7 @@ public class HiveShellJob extends ShellJob {
 
     @Override
     public void processStdErrorStream(InputStream inputStream) {
+
         int maxMapperNum = 2000;
         String appName = getJobContext().getAppName();
         HiveJobEntity entry = HiveConfigUtils.getHiveJobEntry(appName);
@@ -120,6 +124,7 @@ public class HiveShellJob extends ShellJob {
         String line = null;
         try (BufferedReader br = new BufferedReader(
                 new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
+
             while ((line = br.readLine()) != null) {
                 getJobContext().getLogCollector().collectStderr(line);
 
@@ -149,15 +154,21 @@ public class HiveShellJob extends ShellJob {
 
     @Override
     public boolean kill() {
+
         boolean result = true;
+
         result &= super.kill();
+
         // kill掉yarn application
-        for (String applicationId : applicationIdSet) {
-            result &= ShellUtils.executeShell("yarn application -kill " + applicationId);
+        try {
+            YarnUtils.killApplicationByIds(applicationIdSet);
+        }catch (ShellException e){
+            result = false;
         }
 
         return result;
     }
+
 
     private String match(Pattern pattern, int group, String line) {
         Matcher m = pattern.matcher(line);
