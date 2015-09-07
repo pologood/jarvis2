@@ -8,6 +8,7 @@ message RestServerKillTaskRequest {
 
 message ServerKillTaskResponse {
     required bool success = 1;
+    optional string message = 2 [default = ""];
 }
 
 message ServerKillTaskRequest {
@@ -16,4 +17,5 @@ message ServerKillTaskRequest {
 
 message WorkerKillTaskResponse {
     required bool success = 1;
+    optional string message = 2 [default = ""];
 }

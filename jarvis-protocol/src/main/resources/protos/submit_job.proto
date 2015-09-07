@@ -31,7 +31,7 @@ message ServerSubmitJobResponse {
 }
 
 
-message ServerSubmitJobRequest {
+message ServerSubmitTaskRequest {
     required string full_id = 1;
     required string job_name = 2;
     required string app_name = 3;
@@ -43,7 +43,7 @@ message ServerSubmitJobRequest {
 }
 
 
-message WorkerSubmitJobResponse {
+message WorkerSubmitTaskResponse {
     required bool accept = 1;
     optional string message = 2 [default = ""];
 }

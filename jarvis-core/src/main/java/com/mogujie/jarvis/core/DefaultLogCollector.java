@@ -8,13 +8,11 @@
 
 package com.mogujie.jarvis.core;
 
-import com.mogujie.jarvis.core.common.util.ConfigUtils;
 import com.mogujie.jarvis.core.domain.StreamType;
 import com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSelection;
-import akka.actor.ActorSystem;
 
 /**
  * @author wuya
@@ -22,13 +20,11 @@ import akka.actor.ActorSystem;
  */
 public class DefaultLogCollector extends AbstractLogCollector {
 
-    private ActorSelection logActor;
+    private ActorSelection actor;
     private String fullId;
-    private static final String LOGSERVER_AKKA_PATH = ConfigUtils.getWorkerConfig().getString("logserver.akka.path") + "/user/"
-            + JarvisConstants.LOGSERVER_AKKA_PATH;
 
-    public DefaultLogCollector(ActorSystem system, String fullId) {
-        logActor = system.actorSelection(LOGSERVER_AKKA_PATH);
+    public DefaultLogCollector(ActorSelection actor, String fullId) {
+        this.actor = actor;
         this.fullId = fullId;
     }
 
@@ -36,14 +32,14 @@ public class DefaultLogCollector extends AbstractLogCollector {
     public void collectStdout(String line, boolean isEnd) {
         WorkerWriteLogRequest request = WorkerWriteLogRequest.newBuilder().setFullId(fullId).setType(StreamType.STD_OUT.getValue()).setLog(line)
                 .setIsEnd(isEnd).build();
-        logActor.tell(request, ActorRef.noSender());
+        actor.tell(request, ActorRef.noSender());
     }
 
     @Override
     public void collectStderr(String line, boolean isEnd) {
         WorkerWriteLogRequest request = WorkerWriteLogRequest.newBuilder().setFullId(fullId).setType(StreamType.STD_ERR.getValue()).setLog(line)
                 .setIsEnd(isEnd).build();
-        logActor.tell(request, ActorRef.noSender());
+        actor.tell(request, ActorRef.noSender());
     }
 
 }

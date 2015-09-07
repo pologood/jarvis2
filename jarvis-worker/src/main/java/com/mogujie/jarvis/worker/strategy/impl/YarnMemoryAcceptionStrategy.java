@@ -12,11 +12,13 @@ import java.text.DecimalFormat;
 import java.util.List;
 
 import org.apache.commons.configuration.Configuration;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import com.mogujie.jarvis.core.common.util.ConfigUtils;
 import com.mogujie.jarvis.core.exeception.AcceptionException;
 import com.mogujie.jarvis.worker.strategy.AcceptionResult;
@@ -52,7 +54,7 @@ public class YarnMemoryAcceptionStrategy implements AcceptionStrategy {
           return new AcceptionResult(false, "Yarn集群当前内存使用率"
               + decimalFormat.format(currentMemoryUsage) + ", 超过阈值" + MAX_YARN_MEMORY_USAGE);
         }
-      } catch (Exception e) {
+      } catch (UnirestException | JSONException e) {
         activeUriIndex = ++activeUriIndex % len;
       }
     }
