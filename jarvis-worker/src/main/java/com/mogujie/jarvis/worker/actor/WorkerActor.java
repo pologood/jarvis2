@@ -8,11 +8,16 @@
 
 package com.mogujie.jarvis.worker.actor;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import com.mogujie.jarvis.core.AbstractLogCollector;
 import com.mogujie.jarvis.core.DefaultLogCollector;
@@ -22,18 +27,26 @@ import com.mogujie.jarvis.core.JobContext;
 import com.mogujie.jarvis.core.JobContext.JobContextBuilder;
 import com.mogujie.jarvis.core.ProgressReporter;
 import com.mogujie.jarvis.core.common.util.ConfigUtils;
+import com.mogujie.jarvis.core.domain.JobStatus;
+import com.mogujie.jarvis.core.exeception.AcceptionException;
 import com.mogujie.jarvis.core.exeception.JobException;
 import com.mogujie.jarvis.core.job.AbstractJob;
 import com.mogujie.jarvis.protocol.KillTaskProtos.ServerKillTaskRequest;
 import com.mogujie.jarvis.protocol.KillTaskProtos.WorkerKillTaskResponse;
 import com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry;
+import com.mogujie.jarvis.protocol.ReportStatusProtos.WorkerReportStatusRequest;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse;
+import com.mogujie.jarvis.worker.JobCallable;
 import com.mogujie.jarvis.worker.JobPool;
+import com.mogujie.jarvis.worker.strategy.AcceptionResult;
+import com.mogujie.jarvis.worker.strategy.AcceptionStrategy;
+import com.mogujie.jarvis.worker.util.JobConfigUtils;
 
 import akka.actor.ActorSelection;
 import akka.actor.Props;
 import akka.actor.UntypedActor;
+import scala.Tuple2;
 
 public class WorkerActor extends UntypedActor {
 
@@ -51,7 +64,8 @@ public class WorkerActor extends UntypedActor {
   @Override
   public void onReceive(Object obj) throws Exception {
     if (obj instanceof ServerSubmitTaskRequest) {
-
+      ServerSubmitTaskRequest request = (ServerSubmitTaskRequest) obj;
+      submitJob(request);
     } else if (obj instanceof ServerKillTaskRequest) {
       ServerKillTaskRequest request = (ServerKillTaskRequest) obj;
       WorkerKillTaskResponse response = killJob(request);
@@ -61,15 +75,15 @@ public class WorkerActor extends UntypedActor {
     }
   }
 
-  private WorkerSubmitTaskResponse submitJob(ServerSubmitTaskRequest request) {
+  private void submitJob(ServerSubmitTaskRequest request) {
     String fullId = request.getFullId();
-
+    String jobType = request.getJobType();
     JobContextBuilder contextBuilder = JobContext.newBuilder();
     contextBuilder.setFullId(fullId);
     contextBuilder.setJobName(request.getJobName());
     contextBuilder.setAppName(request.getAppName());
     contextBuilder.setUser(request.getUser());
-    contextBuilder.setJobType(request.getJobType());
+    contextBuilder.setJobType(jobType);
     contextBuilder.setCommand(request.getCommand());
     contextBuilder.setPriority(request.getPriority());
 
@@ -79,18 +93,71 @@ public class WorkerActor extends UntypedActor {
       MapEntry entry = parameters.get(i);
       map.put(entry.getKey(), entry.getValue());
     }
-
     contextBuilder.setParameters(map);
 
     ActorSelection logActor = getContext().actorSelection(LOGSERVER_AKKA_PATH);
     AbstractLogCollector logCollector = new DefaultLogCollector(logActor, fullId);
     contextBuilder.setLogCollector(logCollector);
 
-    ActorSelection reportActor = getContext().actorSelection(SERVER_AKKA_PATH);
-    ProgressReporter reporter = new DefaultProgressReporter(reportActor, fullId);
+    ActorSelection serverActor = getContext().actorSelection(SERVER_AKKA_PATH);
+    ProgressReporter reporter = new DefaultProgressReporter(serverActor, fullId);
     contextBuilder.setProgressReporter(reporter);
 
-    return null;
+    Tuple2<Class<? extends AbstractJob>, List<AcceptionStrategy>> t2 = JobConfigUtils
+        .getRegisteredJobs().get(jobType);
+    List<AcceptionStrategy> strategies = t2._2;
+    for (AcceptionStrategy strategy : strategies) {
+      try {
+        AcceptionResult result = strategy.accept();
+        if (!result.isAccepted()) {
+          getSender().tell(WorkerSubmitTaskResponse.newBuilder().setAccept(false)
+              .setMessage(result.getMessage()).build(), getSelf());
+          return;
+        }
+      } catch (AcceptionException e) {
+        getSender().tell(WorkerSubmitTaskResponse.newBuilder().setAccept(false)
+            .setMessage(e.getMessage()).build(), getSelf());
+        return;
+      }
+    }
+
+    getSender().tell(WorkerSubmitTaskResponse.newBuilder().setAccept(true).build(), getSelf());
+    try {
+      Constructor<? extends AbstractJob> constructor = t2._1.getConstructor(JobContext.class);
+      AbstractJob job = constructor.newInstance(contextBuilder.build());
+      jobPool.add(fullId, job);
+      serverActor.tell(WorkerReportStatusRequest.newBuilder().setFullId(fullId)
+          .setStatus(JobStatus.RUNNING.getValue()).setTimestamp(System.currentTimeMillis() / 1000)
+          .build(), getSelf());
+      Callable<Boolean> task = new JobCallable(job);
+      Future<Boolean> future = executorService.submit(task);
+      boolean result = false;
+      try {
+        result = future.get();
+      } catch (InterruptedException | ExecutionException e) {
+        logCollector.collectStderr(e.getMessage(), true);
+      }
+
+      if (result) {
+        serverActor.tell(WorkerReportStatusRequest.newBuilder().setFullId(fullId)
+            .setStatus(JobStatus.SUCCESS.getValue()).setTimestamp(System.currentTimeMillis() / 1000)
+            .build(), getSelf());
+      } else {
+        serverActor.tell(WorkerReportStatusRequest.newBuilder().setFullId(fullId)
+            .setStatus(JobStatus.FAILED.getValue()).setTimestamp(System.currentTimeMillis() / 1000)
+            .build(), getSelf());
+      }
+
+      logCollector.collectStderr("", true);
+      logCollector.collectStdout("", true);
+
+      jobPool.remove(fullId);
+    } catch (NoSuchMethodException | SecurityException | InstantiationException
+        | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+      getSender().tell(
+          WorkerSubmitTaskResponse.newBuilder().setAccept(false).setMessage(e.getMessage()).build(),
+          getSelf());
+    }
   }
 
   private WorkerKillTaskResponse killJob(ServerKillTaskRequest request) {

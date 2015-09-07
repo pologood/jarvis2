@@ -22,7 +22,11 @@ public class JobCallable implements Callable<Boolean> {
 
   @Override
   public Boolean call() throws Exception {
-    return job.execute();
+    boolean result = false;
+    job.preExecute();
+    result = job.execute();
+    job.postExecute();
+    return result;
   }
 
 }
