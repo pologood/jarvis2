@@ -129,6 +129,7 @@ public class WorkerActor extends UntypedActor {
       serverActor.tell(WorkerReportStatusRequest.newBuilder().setFullId(fullId)
           .setStatus(JobStatus.RUNNING.getValue()).setTimestamp(System.currentTimeMillis() / 1000)
           .build(), getSelf());
+      reporter.report(0);
       Callable<Boolean> task = new JobCallable(job);
       Future<Boolean> future = executorService.submit(task);
       boolean result = false;
@@ -148,6 +149,7 @@ public class WorkerActor extends UntypedActor {
             .build(), getSelf());
       }
 
+      reporter.report(1);
       logCollector.collectStderr("", true);
       logCollector.collectStdout("", true);
 
