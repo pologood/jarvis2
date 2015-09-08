@@ -10,7 +10,7 @@ package com.mogujie.jarvis.server.scheduler;
 
 import java.util.Set;
 
-import com.mogujie.jarvis.core.JobContext;
+import com.mogujie.jarvis.dto.Job;
 import com.mogujie.jarvis.server.scheduler.dag.JobDependencyStrategy;
 
 /**
@@ -18,23 +18,33 @@ import com.mogujie.jarvis.server.scheduler.dag.JobDependencyStrategy;
  *
  */
 public class JobDescriptor {
-    private JobContext jobContext;
+    private Job job;
+    private Set<Long> needDependencies;
     private JobScheduleType scheduleType;
     private JobDependencyStrategy jobDepenStrategy;
 
-    JobDescriptor(JobContext jobContext, Set<Integer> needDependencies,
+    public JobDescriptor(Job job, Set<Long> needDependencies,
             JobScheduleType scheduleType, JobDependencyStrategy jobDepenStrategy) {
-        this.jobContext = jobContext;
+        this.job = job;
+        this.needDependencies = needDependencies;
         this.scheduleType = scheduleType;
         this.jobDepenStrategy = jobDepenStrategy;
     }
 
-    public JobContext getJobContext() {
-        return jobContext;
+    public Job getJob() {
+        return job;
     }
 
-    public void setJobContext(JobContext jobContext) {
-        this.jobContext = jobContext;
+    public void setJob(Job job) {
+        this.job = job;
+    }
+
+    public Set<Long> getNeedDependencies() {
+        return needDependencies;
+    }
+
+    public void setNeedDependencies(Set<Long> needDependencies) {
+        this.needDependencies = needDependencies;
     }
 
     public JobScheduleType getScheduleType() {

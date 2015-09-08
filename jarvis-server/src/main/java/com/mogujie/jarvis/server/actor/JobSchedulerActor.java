@@ -24,8 +24,12 @@ import com.mogujie.jarvis.server.observer.InitEvent;
 import com.mogujie.jarvis.server.observer.Observable;
 import com.mogujie.jarvis.server.observer.Observer;
 import com.mogujie.jarvis.server.observer.StopEvent;
+import com.mogujie.jarvis.server.scheduler.JobDescriptor;
+import com.mogujie.jarvis.server.scheduler.SchedulerUtil;
 import com.mogujie.jarvis.server.scheduler.dag.DAGScheduler;
+import com.mogujie.jarvis.server.scheduler.dag.event.AddJobEvent;
 import com.mogujie.jarvis.server.scheduler.dag.event.FailedEvent;
+import com.mogujie.jarvis.server.scheduler.dag.event.RemoveJobEvent;
 import com.mogujie.jarvis.server.scheduler.dag.event.SuccessEvent;
 import com.mogujie.jarvis.server.scheduler.dag.event.UnhandleEvent;
 import com.mogujie.jarvis.server.scheduler.task.TaskScheduler;
@@ -81,10 +85,12 @@ public class JobSchedulerActor extends UntypedActor implements Observable {
             }
         } else if (obj instanceof RestServerSubmitJobRequest) {
             RestServerSubmitJobRequest msg = (RestServerSubmitJobRequest)obj;
-            // add job
+            JobDescriptor jobDesc = SchedulerUtil.convert2JobDesc(msg);
+            event = new AddJobEvent(-1, jobDesc);
         } else if (obj instanceof RestServerDeleteJobRequest) {
             RestServerDeleteJobRequest msg = (RestServerDeleteJobRequest)obj;
-            // remove job
+            long jobid = msg.getJobId();
+            event = new RemoveJobEvent(jobid);
         } else {
             unhandled(obj);
         }

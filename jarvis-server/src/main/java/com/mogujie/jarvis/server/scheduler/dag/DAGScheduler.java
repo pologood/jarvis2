@@ -11,12 +11,16 @@ package com.mogujie.jarvis.server.scheduler.dag;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.configuration.Configuration;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.eventbus.Subscribe;
 import com.mogujie.jarvis.core.common.util.ConfigUtils;
+import com.mogujie.jarvis.dao.JobMapper;
+import com.mogujie.jarvis.dto.Job;
 import com.mogujie.jarvis.server.observer.InitEvent;
 import com.mogujie.jarvis.server.observer.StopEvent;
 import com.mogujie.jarvis.server.scheduler.JobDescriptor;
@@ -39,6 +43,9 @@ import com.mogujie.jarvis.server.scheduler.task.TaskScheduler;
  *
  */
 public class DAGScheduler implements Scheduler {
+
+    @Autowired
+    JobMapper jobMapper;
 
     private static DAGScheduler instance = new DAGScheduler();
     private DAGScheduler() {}
@@ -70,7 +77,12 @@ public class DAGScheduler implements Scheduler {
     @Subscribe
     public void handleAddJobEvent(AddJobEvent event) throws Exception {
         JobDescriptor jobDesc = event.getJobDesc();
-        long jobid = jobDesc.getJobContext().getJobId();
+        Job job = jobDesc.getJob();
+        // insert job to DB
+        jobMapper.insert(job);
+        long jobid = job.getJobId();
+        Set<Long> dependencies = jobDesc.getNeedDependencies();
+        // TODO insert jobDepend to DB
         if (waitingTable.get(jobid) == null) {
             IJobDependStatus jobDependStatus = SchedulerUtil.getJobDependStatus(conf);
             if (jobDependStatus != null) {
@@ -79,7 +91,6 @@ public class DAGScheduler implements Scheduler {
                         jobid, jobDependStatus, JobDependencyStrategy.ALL);
                 waitingTable.put(jobid, dagJob);
 
-                long[] dependencies = jobDesc.getJobContext().getDependencyJobids();
                 for (long d: dependencies) {
                     DAGJob parent = waitingTable.get(d);
                     if (parent != null) {
