@@ -8,8 +8,6 @@
 
 package com.mogujie.jarvis.server.scheduler;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.configuration.Configuration;
@@ -65,12 +63,6 @@ public class SchedulerUtil {
         JobDependencyStrategy strategy = JobDependencyStrategy.ALL;
 
         return new JobDescriptor(job, needDependencies, type, strategy);
-    }
-
-    public static List<Long> getDependencyIds(long jobid) {
-        List<Long> dependencies = new ArrayList<Long>();
-        // TODO
-        return dependencies;
     }
 
 }

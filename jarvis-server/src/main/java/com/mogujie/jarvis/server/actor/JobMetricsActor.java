@@ -11,6 +11,7 @@ import javax.inject.Named;
 
 import org.springframework.context.annotation.Scope;
 
+import akka.actor.ActorSelection;
 import akka.actor.UntypedActor;
 
 import com.mogujie.jarvis.protocol.ReportProgressProtos.WorkerReportProgressRequest;
@@ -30,12 +31,16 @@ public class JobMetricsActor extends UntypedActor {
     @Override
     public void onReceive(Object obj) throws Exception {
         if (obj instanceof WorkerReportStatusRequest) {
-            // TODO tell JobSchedulerActor
+            getSchedulerActor().forward(obj, getContext());
         } else if (obj instanceof WorkerReportProgressRequest) {
             // TODO
         } else {
             unhandled(obj);
         }
+    }
+
+    private ActorSelection getSchedulerActor() {
+        return getContext().actorSelection("/path/to/JobSchedulerActor");
     }
 
 }
