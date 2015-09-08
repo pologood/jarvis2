@@ -12,12 +12,14 @@ package com.mogujie.jarvis.core.domain;
  *
  */
 public enum JobStatus {
-    UNKONW(-1),
-    WAITING(1),
-    RUNNING(3),
-    SUCCESS(0),
-    KILLED(4),
-    FAILED(5);
+
+    UNKNOWN(0), //未知
+    WAITING(1), //等待（条件未满足）
+    READY(2),   //准备（分发中）
+    RUNNING(3), //执行中
+    SUCCESS(4), //成功
+    FAILED(5),  //失败
+    KILLED(4);  //killed
 
     private int value;
 
@@ -31,7 +33,7 @@ public enum JobStatus {
 
     public static JobStatus getInstance(int value) {
         JobStatus[] statusList = JobStatus.values();
-        JobStatus status = JobStatus.UNKONW;
+        JobStatus status = JobStatus.UNKNOWN;
         for (JobStatus s : statusList) {
             if (s.getValue() == value) {
                 status = s;

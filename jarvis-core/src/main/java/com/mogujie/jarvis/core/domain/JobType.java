@@ -12,7 +12,9 @@ package com.mogujie.jarvis.core.domain;
  *
  */
 public enum JobType {
-    SHELL("shell"), HIVE("hive"), PRESTO("presto");
+    SHELL("shell"),
+    HIVE("hive"),
+    PRESTO("presto");
 
     private String value;
 
