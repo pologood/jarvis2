@@ -13,7 +13,6 @@ import java.util.Set;
 import org.apache.commons.configuration.Configuration;
 
 import com.google.common.collect.Sets;
-import com.mogujie.jarvis.core.JobContext;
 import com.mogujie.jarvis.core.common.util.ReflectionUtils;
 import com.mogujie.jarvis.dto.Job;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitJobRequest;
@@ -33,11 +32,6 @@ public class SchedulerUtil {
             ClassNotFoundException {
         String className = conf.getString(JOB_DEPEND_STATUS_KEY, DEFAULT_JOB_DEPEND_STATUS);
         return ReflectionUtils.getClassByName(className);
-    }
-
-    public static JobContext getJobContext(long jobid) {
-        // TODO
-        return null;
     }
 
     public static JobDescriptor convert2JobDesc(RestServerSubmitJobRequest msg) {

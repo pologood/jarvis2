@@ -11,13 +11,15 @@ package com.mogujie.jarvis.server.scheduler.task;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.google.common.eventbus.Subscribe;
-import com.mogujie.jarvis.core.JobContext;
 import com.mogujie.jarvis.core.common.util.ThreadUtils;
+import com.mogujie.jarvis.dao.JobMapper;
+import com.mogujie.jarvis.dto.Job;
 import com.mogujie.jarvis.server.observer.InitEvent;
 import com.mogujie.jarvis.server.observer.StopEvent;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
-import com.mogujie.jarvis.server.scheduler.SchedulerUtil;
 import com.mogujie.jarvis.server.scheduler.dag.event.FailedEvent;
 import com.mogujie.jarvis.server.scheduler.dag.event.SuccessEvent;
 
@@ -28,6 +30,9 @@ import com.mogujie.jarvis.server.scheduler.dag.event.SuccessEvent;
  *
  */
 public class TaskScheduler implements Scheduler {
+
+    @Autowired
+    JobMapper jobMapper;
 
     private static TaskScheduler instance = new TaskScheduler();
     private TaskScheduler() {}
@@ -58,7 +63,7 @@ public class TaskScheduler implements Scheduler {
         readyTable.put(taskid, new DAGTask(jobid, taskid, 0));
 
         // 2. submit job
-        JobContext jobContext = SchedulerUtil.getJobContext(jobid);
+        Job job = jobMapper.selectByPrimaryKey((int)jobid);
         // submit jobcontext
 
         return taskid;
@@ -82,12 +87,12 @@ public class TaskScheduler implements Scheduler {
         long taskid = e.getTaskid();
         DAGTask dagTask = readyTable.get(e.getTaskid());
         if (dagTask != null) {
-            JobContext jobContext = SchedulerUtil.getJobContext(jobid);
+            Job job = jobMapper.selectByPrimaryKey((int)jobid);
             int failedTimes = dagTask.getFailedTimes();
-            if (failedTimes < jobContext.getFailedRetries()) {
+            if (failedTimes < job.getFailedAttempts()) {
                 failedTimes++;
                 dagTask.setFailedTimes(failedTimes);
-                ThreadUtils.sleep(jobContext.getFailedInterval());
+                ThreadUtils.sleep(job.getFailedInterval());
                 submitJob(jobid, taskid);
             } else {
                 // TODO 1. store success status to DB
