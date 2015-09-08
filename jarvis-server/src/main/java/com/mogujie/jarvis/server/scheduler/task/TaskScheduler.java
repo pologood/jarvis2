@@ -14,7 +14,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.google.common.eventbus.Subscribe;
 import com.mogujie.jarvis.core.JobContext;
 import com.mogujie.jarvis.core.common.util.ThreadUtils;
-import com.mogujie.jarvis.server.observer.Observer;
+import com.mogujie.jarvis.server.observer.InitEvent;
+import com.mogujie.jarvis.server.observer.StopEvent;
+import com.mogujie.jarvis.server.scheduler.Scheduler;
 import com.mogujie.jarvis.server.scheduler.SchedulerUtil;
 import com.mogujie.jarvis.server.scheduler.dag.event.FailedEvent;
 import com.mogujie.jarvis.server.scheduler.dag.event.SuccessEvent;
@@ -25,7 +27,7 @@ import com.mogujie.jarvis.server.scheduler.dag.event.SuccessEvent;
  * @author guangming
  *
  */
-public class TaskScheduler implements Observer {
+public class TaskScheduler implements Scheduler {
 
     private static TaskScheduler instance = new TaskScheduler();
     private TaskScheduler() {}
@@ -37,17 +39,14 @@ public class TaskScheduler implements Observer {
     private Map<Long, DAGTask> readyTable = new ConcurrentHashMap<Long, DAGTask>();
     private long maxid = 1;
 
-    public void init() {
+    @Override
+    public void handleInitEvent(InitEvent event) {
         // TODO Auto-generated method stub
 
     }
 
-    public void run() {
-        // TODO Auto-generated method stub
-
-    }
-
-    public void stop() {
+    @Override
+    public void handleStopEvent(StopEvent event) {
         // TODO Auto-generated method stub
 
     }

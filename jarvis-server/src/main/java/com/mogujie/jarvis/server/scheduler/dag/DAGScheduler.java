@@ -17,8 +17,10 @@ import org.apache.commons.configuration.Configuration;
 
 import com.google.common.eventbus.Subscribe;
 import com.mogujie.jarvis.core.common.util.ConfigUtils;
-import com.mogujie.jarvis.server.observer.Observer;
+import com.mogujie.jarvis.server.observer.InitEvent;
+import com.mogujie.jarvis.server.observer.StopEvent;
 import com.mogujie.jarvis.server.scheduler.JobDescriptor;
+import com.mogujie.jarvis.server.scheduler.Scheduler;
 import com.mogujie.jarvis.server.scheduler.SchedulerUtil;
 import com.mogujie.jarvis.server.scheduler.dag.event.AddJobEvent;
 import com.mogujie.jarvis.server.scheduler.dag.event.RemoveJobEvent;
@@ -36,7 +38,7 @@ import com.mogujie.jarvis.server.scheduler.task.TaskScheduler;
  * @author guangming
  *
  */
-public class DAGScheduler implements Observer {
+public class DAGScheduler implements Scheduler {
 
     private static DAGScheduler instance = new DAGScheduler();
     private DAGScheduler() {}
@@ -48,17 +50,14 @@ public class DAGScheduler implements Observer {
     private Configuration conf = ConfigUtils.getServerConfig();
     private Map<Long, DAGJob> waitingTable = new ConcurrentHashMap<Long, DAGJob>();
 
-    public void init() {
-        // TODO Auto-generated method stub
-        // 1. load all job
-    }
-
-    public void run() {
+    @Override
+    public void handleInitEvent(InitEvent event) {
         // TODO Auto-generated method stub
 
     }
 
-    public void stop() {
+    @Override
+    public void handleStopEvent(StopEvent event) {
         // TODO Auto-generated method stub
 
     }

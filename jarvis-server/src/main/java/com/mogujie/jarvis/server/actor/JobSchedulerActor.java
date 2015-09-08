@@ -20,8 +20,10 @@ import com.mogujie.jarvis.protocol.DeleteJobProtos.RestServerDeleteJobRequest;
 import com.mogujie.jarvis.protocol.ReportStatusProtos.WorkerReportStatusRequest;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitJobRequest;
 import com.mogujie.jarvis.server.observer.Event;
+import com.mogujie.jarvis.server.observer.InitEvent;
 import com.mogujie.jarvis.server.observer.Observable;
 import com.mogujie.jarvis.server.observer.Observer;
+import com.mogujie.jarvis.server.observer.StopEvent;
 import com.mogujie.jarvis.server.scheduler.dag.DAGScheduler;
 import com.mogujie.jarvis.server.scheduler.dag.event.FailedEvent;
 import com.mogujie.jarvis.server.scheduler.dag.event.SuccessEvent;
@@ -49,19 +51,11 @@ public class JobSchedulerActor extends UntypedActor implements Observable {
 
     @Override
     public void preStart() throws Exception {
-        // init scheduler
-        timeScheduler.init();
-        dagScheduler.init();
-        taskScheduler.init();
-
-        // run scheduler
-        timeScheduler.run();
-        dagScheduler.run();
-        taskScheduler.run();
-
         register(timeScheduler);
         register(dagScheduler);
         register(taskScheduler);
+
+        notify(new InitEvent());
     }
 
     @Override
@@ -100,10 +94,7 @@ public class JobSchedulerActor extends UntypedActor implements Observable {
 
     @Override
     public void postStop() throws Exception {
-        // stop scheduler
-        timeScheduler.stop();
-        dagScheduler.stop();
-        taskScheduler.stop();
+        notify(new StopEvent());
 
         eventBus.unregister(timeScheduler);
         eventBus.unregister(dagScheduler);

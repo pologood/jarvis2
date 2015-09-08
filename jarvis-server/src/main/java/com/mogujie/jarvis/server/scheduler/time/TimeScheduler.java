@@ -8,7 +8,9 @@
 
 package com.mogujie.jarvis.server.scheduler.time;
 
-import com.mogujie.jarvis.server.observer.Observer;
+import com.mogujie.jarvis.server.observer.InitEvent;
+import com.mogujie.jarvis.server.observer.StopEvent;
+import com.mogujie.jarvis.server.scheduler.Scheduler;
 
 
 /**
@@ -17,7 +19,7 @@ import com.mogujie.jarvis.server.observer.Observer;
  * @author guangming
  *
  */
-public class TimeScheduler implements Observer {
+public class TimeScheduler implements Scheduler {
 
     private static TimeScheduler instance = new TimeScheduler();
     private TimeScheduler() {}
@@ -25,17 +27,14 @@ public class TimeScheduler implements Observer {
         return instance;
     }
 
-    public void init() {
+    @Override
+    public void handleInitEvent(InitEvent event) {
         // TODO Auto-generated method stub
 
     }
 
-    public void run() {
-        // TODO Auto-generated method stub
-
-    }
-
-    public void stop() {
+    @Override
+    public void handleStopEvent(StopEvent event) {
         // TODO Auto-generated method stub
 
     }
