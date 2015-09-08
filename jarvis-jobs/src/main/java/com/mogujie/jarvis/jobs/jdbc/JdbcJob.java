@@ -18,6 +18,9 @@ import java.util.List;
 
 import org.apache.commons.configuration.Configuration;
 
+import com.google.common.base.Joiner;
+import com.google.common.base.Throwables;
+import com.mogujie.jarvis.core.AbstractLogCollector;
 import com.mogujie.jarvis.core.JobContext;
 import com.mogujie.jarvis.core.common.util.ConfigUtils;
 import com.mogujie.jarvis.core.exeception.JobException;
@@ -46,7 +49,7 @@ public abstract class JdbcJob extends AbstractJob {
     @Override
     public boolean execute() throws JobException {
         Configuration config = ConfigUtils.getWorkerConfig();
-        // LogCollector collector = getJobContext().getLogCollector();
+        AbstractLogCollector collector = getJobContext().getLogCollector();
 
         try {
             Class.forName(getDriverName());
@@ -56,7 +59,7 @@ public abstract class JdbcJob extends AbstractJob {
             connection = DriverManager.getConnection(getJdbcUrl(config), user, passwd);
             Statement statement = connection.createStatement();
             final long startTime = System.currentTimeMillis();
-            // collector.collectStderr("Querying " + getJobType() + "...");
+            collector.collectStderr("Querying " + getJobType() + "...");
 
             String hql = getJobContext().getCommand().trim();
             String[] cmds = HiveQLUtil.splitHiveScript(hql);
@@ -73,25 +76,25 @@ public abstract class JdbcJob extends AbstractJob {
                         columns.add(metaData.getColumnName(i));
                     }
 
-                    // collector.collectStdout(Joiner.on(COLUMNS_SEPARATOR).join(columns));
+                    collector.collectStdout(Joiner.on(COLUMNS_SEPARATOR).join(columns));
                     for (int i = 0; i < getMaxQueryRows(config) && rs.next(); i++) {
                         columns.clear();
                         for (int j = 1; j <= columnCount; j++) {
                             columns.add(rs.getString(j));
                         }
-                        // collector.collectStdout(Joiner.on(COLUMNS_SEPARATOR)
-                        // .useForNull("NULL").join(columns));
+                        collector.collectStdout(Joiner.on(COLUMNS_SEPARATOR)
+                                .useForNull("NULL").join(columns));
                     }
                 }
             }
 
             final long endTime = System.currentTimeMillis();
-            // collector.collectStderr("Finished, time taken: " + (endTime - startTime)
-            // / 1000F + " seconds");
+            collector.collectStderr("Finished, time taken: " + (endTime - startTime)
+                    / 1000F + " seconds");
 
             return true;
         } catch (Exception e) {
-            // collector.collectStderr(Throwables.getStackTraceAsString(e));
+            collector.collectStderr(Throwables.getStackTraceAsString(e));
             return false;
         } finally {
             try {
