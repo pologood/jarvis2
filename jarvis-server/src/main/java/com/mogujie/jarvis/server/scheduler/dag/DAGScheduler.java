@@ -19,8 +19,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.eventbus.Subscribe;
 import com.mogujie.jarvis.core.common.util.ConfigUtils;
+import com.mogujie.jarvis.dao.JobDependMapper;
 import com.mogujie.jarvis.dao.JobMapper;
 import com.mogujie.jarvis.dto.Job;
+import com.mogujie.jarvis.dto.JobDepend;
 import com.mogujie.jarvis.server.observer.InitEvent;
 import com.mogujie.jarvis.server.observer.StopEvent;
 import com.mogujie.jarvis.server.scheduler.JobDescriptor;
@@ -46,6 +48,9 @@ public class DAGScheduler implements Scheduler {
 
     @Autowired
     JobMapper jobMapper;
+
+    @Autowired
+    JobDependMapper jobDependMapper;
 
     private static DAGScheduler instance = new DAGScheduler();
     private DAGScheduler() {}
@@ -82,7 +87,14 @@ public class DAGScheduler implements Scheduler {
         jobMapper.insert(job);
         long jobid = job.getJobId();
         Set<Long> dependencies = jobDesc.getNeedDependencies();
-        // TODO insert jobDepend to DB
+        // insert jobDepend to DB
+        for (long d : dependencies) {
+            JobDepend jobDepend = new JobDepend();
+            jobDepend.setJobId((int)jobid);
+            jobDepend.setPreJobId((int)d);
+            jobDependMapper.insert(jobDepend);
+        }
+
         if (waitingTable.get(jobid) == null) {
             IJobDependStatus jobDependStatus = SchedulerUtil.getJobDependStatus(conf);
             if (jobDependStatus != null) {
