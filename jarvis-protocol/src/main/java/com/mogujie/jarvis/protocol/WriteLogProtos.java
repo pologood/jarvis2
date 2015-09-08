@@ -4,1295 +4,1286 @@
 package com.mogujie.jarvis.protocol;
 
 public final class WriteLogProtos {
-    private WriteLogProtos() {
+  private WriteLogProtos() {}
+  public static void registerAllExtensions(
+      com.google.protobuf.ExtensionRegistry registry) {
+  }
+  public interface WorkerWriteLogRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:WorkerWriteLogRequest)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required string full_id = 1;</code>
+     */
+    boolean hasFullId();
+    /**
+     * <code>required string full_id = 1;</code>
+     */
+    java.lang.String getFullId();
+    /**
+     * <code>required string full_id = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getFullIdBytes();
+
+    /**
+     * <code>required string log = 2;</code>
+     */
+    boolean hasLog();
+    /**
+     * <code>required string log = 2;</code>
+     */
+    java.lang.String getLog();
+    /**
+     * <code>required string log = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getLogBytes();
+
+    /**
+     * <code>required int32 type = 3;</code>
+     */
+    boolean hasType();
+    /**
+     * <code>required int32 type = 3;</code>
+     */
+    int getType();
+
+    /**
+     * <code>required bool is_end = 4;</code>
+     */
+    boolean hasIsEnd();
+    /**
+     * <code>required bool is_end = 4;</code>
+     */
+    boolean getIsEnd();
+  }
+  /**
+   * Protobuf type {@code WorkerWriteLogRequest}
+   */
+  public static final class WorkerWriteLogRequest extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:WorkerWriteLogRequest)
+      WorkerWriteLogRequestOrBuilder {
+    // Use WorkerWriteLogRequest.newBuilder() to construct.
+    private WorkerWriteLogRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private WorkerWriteLogRequest(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final WorkerWriteLogRequest defaultInstance;
+    public static WorkerWriteLogRequest getDefaultInstance() {
+      return defaultInstance;
     }
 
-    public static void registerAllExtensions(com.google.protobuf.ExtensionRegistry registry) {
+    public WorkerWriteLogRequest getDefaultInstanceForType() {
+      return defaultInstance;
     }
 
-    public interface WorkerWriteLogRequestOrBuilder extends
-            // @@protoc_insertion_point(interface_extends:WorkerWriteLogRequest)
-            com.google.protobuf.MessageOrBuilder {
-
-        /**
-         * <code>required string full_id = 1;</code>
-         */
-        boolean hasFullId();
-
-        /**
-         * <code>required string full_id = 1;</code>
-         */
-        java.lang.String getFullId();
-
-        /**
-         * <code>required string full_id = 1;</code>
-         */
-        com.google.protobuf.ByteString getFullIdBytes();
-
-        /**
-         * <code>required string log = 2;</code>
-         */
-        boolean hasLog();
-
-        /**
-         * <code>required string log = 2;</code>
-         */
-        java.lang.String getLog();
-
-        /**
-         * <code>required string log = 2;</code>
-         */
-        com.google.protobuf.ByteString getLogBytes();
-
-        /**
-         * <code>required int32 type = 3;</code>
-         */
-        boolean hasType();
-
-        /**
-         * <code>required int32 type = 3;</code>
-         */
-        int getType();
-
-        /**
-         * <code>required bool is_end = 4;</code>
-         */
-        boolean hasIsEnd();
-
-        /**
-         * <code>required bool is_end = 4;</code>
-         */
-        boolean getIsEnd();
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private WorkerWriteLogRequest(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000001;
+              fullId_ = bs;
+              break;
+            }
+            case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000002;
+              log_ = bs;
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              type_ = input.readInt32();
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000008;
+              isEnd_ = input.readBool();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.mogujie.jarvis.protocol.WriteLogProtos.internal_static_WorkerWriteLogRequest_descriptor;
     }
 
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.mogujie.jarvis.protocol.WriteLogProtos.internal_static_WorkerWriteLogRequest_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest.class, com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<WorkerWriteLogRequest> PARSER =
+        new com.google.protobuf.AbstractParser<WorkerWriteLogRequest>() {
+      public WorkerWriteLogRequest parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new WorkerWriteLogRequest(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<WorkerWriteLogRequest> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int FULL_ID_FIELD_NUMBER = 1;
+    private java.lang.Object fullId_;
+    /**
+     * <code>required string full_id = 1;</code>
+     */
+    public boolean hasFullId() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required string full_id = 1;</code>
+     */
+    public java.lang.String getFullId() {
+      java.lang.Object ref = fullId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          fullId_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string full_id = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getFullIdBytes() {
+      java.lang.Object ref = fullId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        fullId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int LOG_FIELD_NUMBER = 2;
+    private java.lang.Object log_;
+    /**
+     * <code>required string log = 2;</code>
+     */
+    public boolean hasLog() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required string log = 2;</code>
+     */
+    public java.lang.String getLog() {
+      java.lang.Object ref = log_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          log_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string log = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getLogBytes() {
+      java.lang.Object ref = log_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        log_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int TYPE_FIELD_NUMBER = 3;
+    private int type_;
+    /**
+     * <code>required int32 type = 3;</code>
+     */
+    public boolean hasType() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>required int32 type = 3;</code>
+     */
+    public int getType() {
+      return type_;
+    }
+
+    public static final int IS_END_FIELD_NUMBER = 4;
+    private boolean isEnd_;
+    /**
+     * <code>required bool is_end = 4;</code>
+     */
+    public boolean hasIsEnd() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>required bool is_end = 4;</code>
+     */
+    public boolean getIsEnd() {
+      return isEnd_;
+    }
+
+    private void initFields() {
+      fullId_ = "";
+      log_ = "";
+      type_ = 0;
+      isEnd_ = false;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasFullId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasLog()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasType()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasIsEnd()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeBytes(1, getFullIdBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, getLogBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeInt32(3, type_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeBool(4, isEnd_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(1, getFullIdBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, getLogBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(3, type_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(4, isEnd_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
     /**
      * Protobuf type {@code WorkerWriteLogRequest}
      */
-    public static final class WorkerWriteLogRequest extends com.google.protobuf.GeneratedMessage implements
-            // @@protoc_insertion_point(message_implements:WorkerWriteLogRequest)
-            WorkerWriteLogRequestOrBuilder {
-        // Use WorkerWriteLogRequest.newBuilder() to construct.
-        private WorkerWriteLogRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
-            super(builder);
-            this.unknownFields = builder.getUnknownFields();
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:WorkerWriteLogRequest)
+        com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequestOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.mogujie.jarvis.protocol.WriteLogProtos.internal_static_WorkerWriteLogRequest_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.mogujie.jarvis.protocol.WriteLogProtos.internal_static_WorkerWriteLogRequest_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest.class, com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest.Builder.class);
+      }
+
+      // Construct using com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
         }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
 
-        private WorkerWriteLogRequest(boolean noInit) {
-            this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      public Builder clear() {
+        super.clear();
+        fullId_ = "";
+        bitField0_ = (bitField0_ & ~0x00000001);
+        log_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        type_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        isEnd_ = false;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.mogujie.jarvis.protocol.WriteLogProtos.internal_static_WorkerWriteLogRequest_descriptor;
+      }
+
+      public com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest getDefaultInstanceForType() {
+        return com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest.getDefaultInstance();
+      }
+
+      public com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest build() {
+        com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
         }
+        return result;
+      }
 
-        private static final WorkerWriteLogRequest defaultInstance;
-
-        public static WorkerWriteLogRequest getDefaultInstance() {
-            return defaultInstance;
+      public com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest buildPartial() {
+        com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest result = new com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
         }
-
-        public WorkerWriteLogRequest getDefaultInstanceForType() {
-            return defaultInstance;
+        result.fullId_ = fullId_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
         }
-
-        private final com.google.protobuf.UnknownFieldSet unknownFields;
-
-        @java.lang.Override
-        public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
-            return this.unknownFields;
+        result.log_ = log_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
         }
-
-        private WorkerWriteLogRequest(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-                throws com.google.protobuf.InvalidProtocolBufferException {
-            initFields();
-            com.google.protobuf.UnknownFieldSet.Builder unknownFields = com.google.protobuf.UnknownFieldSet.newBuilder();
-            try {
-                boolean done = false;
-                while (!done) {
-                    int tag = input.readTag();
-                    switch (tag) {
-                        case 0:
-                            done = true;
-                            break;
-                        default: {
-                            if (!parseUnknownField(input, unknownFields, extensionRegistry, tag)) {
-                                done = true;
-                            }
-                            break;
-                        }
-                        case 10: {
-                            com.google.protobuf.ByteString bs = input.readBytes();
-                            bitField0_ |= 0x00000001;
-                            fullId_ = bs;
-                            break;
-                        }
-                        case 18: {
-                            com.google.protobuf.ByteString bs = input.readBytes();
-                            bitField0_ |= 0x00000002;
-                            log_ = bs;
-                            break;
-                        }
-                        case 24: {
-                            bitField0_ |= 0x00000004;
-                            type_ = input.readInt32();
-                            break;
-                        }
-                        case 32: {
-                            bitField0_ |= 0x00000008;
-                            isEnd_ = input.readBool();
-                            break;
-                        }
-                    }
-                }
-            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-                throw e.setUnfinishedMessage(this);
-            } catch (java.io.IOException e) {
-                throw new com.google.protobuf.InvalidProtocolBufferException(e.getMessage()).setUnfinishedMessage(this);
-            } finally {
-                this.unknownFields = unknownFields.build();
-                makeExtensionsImmutable();
-            }
+        result.type_ = type_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
         }
+        result.isEnd_ = isEnd_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
 
-        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-            return com.mogujie.jarvis.protocol.WriteLogProtos.internal_static_WorkerWriteLogRequest_descriptor;
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest) {
+          return mergeFrom((com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
         }
+      }
 
-        protected com.google.protobuf.GeneratedMessage.FieldAccessorTable internalGetFieldAccessorTable() {
-            return com.mogujie.jarvis.protocol.WriteLogProtos.internal_static_WorkerWriteLogRequest_fieldAccessorTable
-                    .ensureFieldAccessorsInitialized(com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest.class,
-                            com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest.Builder.class);
+      public Builder mergeFrom(com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest other) {
+        if (other == com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest.getDefaultInstance()) return this;
+        if (other.hasFullId()) {
+          bitField0_ |= 0x00000001;
+          fullId_ = other.fullId_;
+          onChanged();
         }
-
-        public static com.google.protobuf.Parser<WorkerWriteLogRequest> PARSER = new com.google.protobuf.AbstractParser<WorkerWriteLogRequest>() {
-            public WorkerWriteLogRequest parsePartialFrom(com.google.protobuf.CodedInputStream input,
-                    com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-                return new WorkerWriteLogRequest(input, extensionRegistry);
-            }
-        };
-
-        @java.lang.Override
-        public com.google.protobuf.Parser<WorkerWriteLogRequest> getParserForType() {
-            return PARSER;
+        if (other.hasLog()) {
+          bitField0_ |= 0x00000002;
+          log_ = other.log_;
+          onChanged();
         }
-
-        private int bitField0_;
-        public static final int FULL_ID_FIELD_NUMBER = 1;
-        private java.lang.Object fullId_;
-
-        /**
-         * <code>required string full_id = 1;</code>
-         */
-        public boolean hasFullId() {
-            return ((bitField0_ & 0x00000001) == 0x00000001);
+        if (other.hasType()) {
+          setType(other.getType());
         }
-
-        /**
-         * <code>required string full_id = 1;</code>
-         */
-        public java.lang.String getFullId() {
-            java.lang.Object ref = fullId_;
-            if (ref instanceof java.lang.String) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                if (bs.isValidUtf8()) {
-                    fullId_ = s;
-                }
-                return s;
-            }
+        if (other.hasIsEnd()) {
+          setIsEnd(other.getIsEnd());
         }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
 
-        /**
-         * <code>required string full_id = 1;</code>
-         */
-        public com.google.protobuf.ByteString getFullIdBytes() {
-            java.lang.Object ref = fullId_;
-            if (ref instanceof java.lang.String) {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                fullId_ = b;
-                return b;
-            } else {
-                return (com.google.protobuf.ByteString) ref;
-            }
+      public final boolean isInitialized() {
+        if (!hasFullId()) {
+          
+          return false;
         }
-
-        public static final int LOG_FIELD_NUMBER = 2;
-        private java.lang.Object log_;
-
-        /**
-         * <code>required string log = 2;</code>
-         */
-        public boolean hasLog() {
-            return ((bitField0_ & 0x00000002) == 0x00000002);
+        if (!hasLog()) {
+          
+          return false;
         }
-
-        /**
-         * <code>required string log = 2;</code>
-         */
-        public java.lang.String getLog() {
-            java.lang.Object ref = log_;
-            if (ref instanceof java.lang.String) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                if (bs.isValidUtf8()) {
-                    log_ = s;
-                }
-                return s;
-            }
+        if (!hasType()) {
+          
+          return false;
         }
-
-        /**
-         * <code>required string log = 2;</code>
-         */
-        public com.google.protobuf.ByteString getLogBytes() {
-            java.lang.Object ref = log_;
-            if (ref instanceof java.lang.String) {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                log_ = b;
-                return b;
-            } else {
-                return (com.google.protobuf.ByteString) ref;
-            }
+        if (!hasIsEnd()) {
+          
+          return false;
         }
+        return true;
+      }
 
-        public static final int TYPE_FIELD_NUMBER = 3;
-        private int type_;
-
-        /**
-         * <code>required int32 type = 3;</code>
-         */
-        public boolean hasType() {
-            return ((bitField0_ & 0x00000004) == 0x00000004);
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
         }
+        return this;
+      }
+      private int bitField0_;
 
-        /**
-         * <code>required int32 type = 3;</code>
-         */
-        public int getType() {
-            return type_;
+      private java.lang.Object fullId_ = "";
+      /**
+       * <code>required string full_id = 1;</code>
+       */
+      public boolean hasFullId() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required string full_id = 1;</code>
+       */
+      public java.lang.String getFullId() {
+        java.lang.Object ref = fullId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            fullId_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
         }
-
-        public static final int IS_END_FIELD_NUMBER = 4;
-        private boolean isEnd_;
-
-        /**
-         * <code>required bool is_end = 4;</code>
-         */
-        public boolean hasIsEnd() {
-            return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>required string full_id = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getFullIdBytes() {
+        java.lang.Object ref = fullId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          fullId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
         }
+      }
+      /**
+       * <code>required string full_id = 1;</code>
+       */
+      public Builder setFullId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        fullId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string full_id = 1;</code>
+       */
+      public Builder clearFullId() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        fullId_ = getDefaultInstance().getFullId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string full_id = 1;</code>
+       */
+      public Builder setFullIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        fullId_ = value;
+        onChanged();
+        return this;
+      }
 
-        /**
-         * <code>required bool is_end = 4;</code>
-         */
-        public boolean getIsEnd() {
-            return isEnd_;
+      private java.lang.Object log_ = "";
+      /**
+       * <code>required string log = 2;</code>
+       */
+      public boolean hasLog() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required string log = 2;</code>
+       */
+      public java.lang.String getLog() {
+        java.lang.Object ref = log_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            log_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
         }
-
-        private void initFields() {
-            fullId_ = "";
-            log_ = "";
-            type_ = 0;
-            isEnd_ = false;
+      }
+      /**
+       * <code>required string log = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getLogBytes() {
+        java.lang.Object ref = log_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          log_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
         }
-
-        private byte memoizedIsInitialized = -1;
-
-        public final boolean isInitialized() {
-            byte isInitialized = memoizedIsInitialized;
-            if (isInitialized == 1)
-                return true;
-            if (isInitialized == 0)
-                return false;
-
-            if (!hasFullId()) {
-                memoizedIsInitialized = 0;
-                return false;
-            }
-            if (!hasLog()) {
-                memoizedIsInitialized = 0;
-                return false;
-            }
-            if (!hasType()) {
-                memoizedIsInitialized = 0;
-                return false;
-            }
-            if (!hasIsEnd()) {
-                memoizedIsInitialized = 0;
-                return false;
-            }
-            memoizedIsInitialized = 1;
-            return true;
-        }
-
-        public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
-            getSerializedSize();
-            if (((bitField0_ & 0x00000001) == 0x00000001)) {
-                output.writeBytes(1, getFullIdBytes());
-            }
-            if (((bitField0_ & 0x00000002) == 0x00000002)) {
-                output.writeBytes(2, getLogBytes());
-            }
-            if (((bitField0_ & 0x00000004) == 0x00000004)) {
-                output.writeInt32(3, type_);
-            }
-            if (((bitField0_ & 0x00000008) == 0x00000008)) {
-                output.writeBool(4, isEnd_);
-            }
-            getUnknownFields().writeTo(output);
-        }
-
-        private int memoizedSerializedSize = -1;
-
-        public int getSerializedSize() {
-            int size = memoizedSerializedSize;
-            if (size != -1)
-                return size;
-
-            size = 0;
-            if (((bitField0_ & 0x00000001) == 0x00000001)) {
-                size += com.google.protobuf.CodedOutputStream.computeBytesSize(1, getFullIdBytes());
-            }
-            if (((bitField0_ & 0x00000002) == 0x00000002)) {
-                size += com.google.protobuf.CodedOutputStream.computeBytesSize(2, getLogBytes());
-            }
-            if (((bitField0_ & 0x00000004) == 0x00000004)) {
-                size += com.google.protobuf.CodedOutputStream.computeInt32Size(3, type_);
-            }
-            if (((bitField0_ & 0x00000008) == 0x00000008)) {
-                size += com.google.protobuf.CodedOutputStream.computeBoolSize(4, isEnd_);
-            }
-            size += getUnknownFields().getSerializedSize();
-            memoizedSerializedSize = size;
-            return size;
-        }
-
-        private static final long serialVersionUID = 0L;
-
-        @java.lang.Override
-        protected java.lang.Object writeReplace() throws java.io.ObjectStreamException {
-            return super.writeReplace();
-        }
-
-        public static com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest parseFrom(com.google.protobuf.ByteString data)
-                throws com.google.protobuf.InvalidProtocolBufferException {
-            return PARSER.parseFrom(data);
-        }
-
-        public static com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest parseFrom(com.google.protobuf.ByteString data,
-                com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-            return PARSER.parseFrom(data, extensionRegistry);
-        }
-
-        public static com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest parseFrom(byte[] data)
-                throws com.google.protobuf.InvalidProtocolBufferException {
-            return PARSER.parseFrom(data);
-        }
-
-        public static com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest parseFrom(byte[] data,
-                com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-            return PARSER.parseFrom(data, extensionRegistry);
-        }
-
-        public static com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest parseFrom(java.io.InputStream input)
-                throws java.io.IOException {
-            return PARSER.parseFrom(input);
-        }
-
-        public static com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest parseFrom(java.io.InputStream input,
-                com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-            return PARSER.parseFrom(input, extensionRegistry);
-        }
-
-        public static com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest parseDelimitedFrom(java.io.InputStream input)
-                throws java.io.IOException {
-            return PARSER.parseDelimitedFrom(input);
-        }
-
-        public static com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest parseDelimitedFrom(java.io.InputStream input,
-                com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-            return PARSER.parseDelimitedFrom(input, extensionRegistry);
-        }
-
-        public static com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest parseFrom(com.google.protobuf.CodedInputStream input)
-                throws java.io.IOException {
-            return PARSER.parseFrom(input);
-        }
-
-        public static com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest parseFrom(com.google.protobuf.CodedInputStream input,
-                com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-            return PARSER.parseFrom(input, extensionRegistry);
-        }
-
-        public static Builder newBuilder() {
-            return Builder.create();
-        }
-
-        public Builder newBuilderForType() {
-            return newBuilder();
-        }
-
-        public static Builder newBuilder(com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest prototype) {
-            return newBuilder().mergeFrom(prototype);
-        }
-
-        public Builder toBuilder() {
-            return newBuilder(this);
-        }
-
-        @java.lang.Override
-        protected Builder newBuilderForType(com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-            Builder builder = new Builder(parent);
-            return builder;
-        }
-
-        /**
-         * Protobuf type {@code WorkerWriteLogRequest}
-         */
-        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder>implements
-                // @@protoc_insertion_point(builder_implements:WorkerWriteLogRequest)
-                com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequestOrBuilder {
-            public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-                return com.mogujie.jarvis.protocol.WriteLogProtos.internal_static_WorkerWriteLogRequest_descriptor;
-            }
-
-            protected com.google.protobuf.GeneratedMessage.FieldAccessorTable internalGetFieldAccessorTable() {
-                return com.mogujie.jarvis.protocol.WriteLogProtos.internal_static_WorkerWriteLogRequest_fieldAccessorTable
-                        .ensureFieldAccessorsInitialized(com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest.class,
-                                com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest.Builder.class);
-            }
-
-            // Construct using
-            // com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest.newBuilder()
-            private Builder() {
-                maybeForceBuilderInitialization();
-            }
-
-            private Builder(com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-                super(parent);
-                maybeForceBuilderInitialization();
-            }
-
-            private void maybeForceBuilderInitialization() {
-                if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-                }
-            }
-
-            private static Builder create() {
-                return new Builder();
-            }
-
-            public Builder clear() {
-                super.clear();
-                fullId_ = "";
-                bitField0_ = (bitField0_ & ~0x00000001);
-                log_ = "";
-                bitField0_ = (bitField0_ & ~0x00000002);
-                type_ = 0;
-                bitField0_ = (bitField0_ & ~0x00000004);
-                isEnd_ = false;
-                bitField0_ = (bitField0_ & ~0x00000008);
-                return this;
-            }
-
-            public Builder clone() {
-                return create().mergeFrom(buildPartial());
-            }
-
-            public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
-                return com.mogujie.jarvis.protocol.WriteLogProtos.internal_static_WorkerWriteLogRequest_descriptor;
-            }
-
-            public com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest getDefaultInstanceForType() {
-                return com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest.getDefaultInstance();
-            }
-
-            public com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest build() {
-                com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest result = buildPartial();
-                if (!result.isInitialized()) {
-                    throw newUninitializedMessageException(result);
-                }
-                return result;
-            }
-
-            public com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest buildPartial() {
-                com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest result = new com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest(
-                        this);
-                int from_bitField0_ = bitField0_;
-                int to_bitField0_ = 0;
-                if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-                    to_bitField0_ |= 0x00000001;
-                }
-                result.fullId_ = fullId_;
-                if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-                    to_bitField0_ |= 0x00000002;
-                }
-                result.log_ = log_;
-                if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
-                    to_bitField0_ |= 0x00000004;
-                }
-                result.type_ = type_;
-                if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
-                    to_bitField0_ |= 0x00000008;
-                }
-                result.isEnd_ = isEnd_;
-                result.bitField0_ = to_bitField0_;
-                onBuilt();
-                return result;
-            }
-
-            public Builder mergeFrom(com.google.protobuf.Message other) {
-                if (other instanceof com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest) {
-                    return mergeFrom((com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest) other);
-                } else {
-                    super.mergeFrom(other);
-                    return this;
-                }
-            }
-
-            public Builder mergeFrom(com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest other) {
-                if (other == com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest.getDefaultInstance())
-                    return this;
-                if (other.hasFullId()) {
-                    bitField0_ |= 0x00000001;
-                    fullId_ = other.fullId_;
-                    onChanged();
-                }
-                if (other.hasLog()) {
-                    bitField0_ |= 0x00000002;
-                    log_ = other.log_;
-                    onChanged();
-                }
-                if (other.hasType()) {
-                    setType(other.getType());
-                }
-                if (other.hasIsEnd()) {
-                    setIsEnd(other.getIsEnd());
-                }
-                this.mergeUnknownFields(other.getUnknownFields());
-                return this;
-            }
-
-            public final boolean isInitialized() {
-                if (!hasFullId()) {
-
-                    return false;
-                }
-                if (!hasLog()) {
-
-                    return false;
-                }
-                if (!hasType()) {
-
-                    return false;
-                }
-                if (!hasIsEnd()) {
-
-                    return false;
-                }
-                return true;
-            }
-
-            public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-                    throws java.io.IOException {
-                com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest parsedMessage = null;
-                try {
-                    parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-                } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-                    parsedMessage = (com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest) e.getUnfinishedMessage();
-                    throw e;
-                } finally {
-                    if (parsedMessage != null) {
-                        mergeFrom(parsedMessage);
-                    }
-                }
-                return this;
-            }
-
-            private int bitField0_;
-
-            private java.lang.Object fullId_ = "";
-
-            /**
-             * <code>required string full_id = 1;</code>
-             */
-            public boolean hasFullId() {
-                return ((bitField0_ & 0x00000001) == 0x00000001);
-            }
-
-            /**
-             * <code>required string full_id = 1;</code>
-             */
-            public java.lang.String getFullId() {
-                java.lang.Object ref = fullId_;
-                if (!(ref instanceof java.lang.String)) {
-                    com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                    java.lang.String s = bs.toStringUtf8();
-                    if (bs.isValidUtf8()) {
-                        fullId_ = s;
-                    }
-                    return s;
-                } else {
-                    return (java.lang.String) ref;
-                }
-            }
-
-            /**
-             * <code>required string full_id = 1;</code>
-             */
-            public com.google.protobuf.ByteString getFullIdBytes() {
-                java.lang.Object ref = fullId_;
-                if (ref instanceof String) {
-                    com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                    fullId_ = b;
-                    return b;
-                } else {
-                    return (com.google.protobuf.ByteString) ref;
-                }
-            }
-
-            /**
-             * <code>required string full_id = 1;</code>
-             */
-            public Builder setFullId(java.lang.String value) {
-                if (value == null) {
-                    throw new NullPointerException();
-                }
-                bitField0_ |= 0x00000001;
-                fullId_ = value;
-                onChanged();
-                return this;
-            }
-
-            /**
-             * <code>required string full_id = 1;</code>
-             */
-            public Builder clearFullId() {
-                bitField0_ = (bitField0_ & ~0x00000001);
-                fullId_ = getDefaultInstance().getFullId();
-                onChanged();
-                return this;
-            }
-
-            /**
-             * <code>required string full_id = 1;</code>
-             */
-            public Builder setFullIdBytes(com.google.protobuf.ByteString value) {
-                if (value == null) {
-                    throw new NullPointerException();
-                }
-                bitField0_ |= 0x00000001;
-                fullId_ = value;
-                onChanged();
-                return this;
-            }
-
-            private java.lang.Object log_ = "";
-
-            /**
-             * <code>required string log = 2;</code>
-             */
-            public boolean hasLog() {
-                return ((bitField0_ & 0x00000002) == 0x00000002);
-            }
-
-            /**
-             * <code>required string log = 2;</code>
-             */
-            public java.lang.String getLog() {
-                java.lang.Object ref = log_;
-                if (!(ref instanceof java.lang.String)) {
-                    com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                    java.lang.String s = bs.toStringUtf8();
-                    if (bs.isValidUtf8()) {
-                        log_ = s;
-                    }
-                    return s;
-                } else {
-                    return (java.lang.String) ref;
-                }
-            }
-
-            /**
-             * <code>required string log = 2;</code>
-             */
-            public com.google.protobuf.ByteString getLogBytes() {
-                java.lang.Object ref = log_;
-                if (ref instanceof String) {
-                    com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                    log_ = b;
-                    return b;
-                } else {
-                    return (com.google.protobuf.ByteString) ref;
-                }
-            }
-
-            /**
-             * <code>required string log = 2;</code>
-             */
-            public Builder setLog(java.lang.String value) {
-                if (value == null) {
-                    throw new NullPointerException();
-                }
-                bitField0_ |= 0x00000002;
-                log_ = value;
-                onChanged();
-                return this;
-            }
-
-            /**
-             * <code>required string log = 2;</code>
-             */
-            public Builder clearLog() {
-                bitField0_ = (bitField0_ & ~0x00000002);
-                log_ = getDefaultInstance().getLog();
-                onChanged();
-                return this;
-            }
-
-            /**
-             * <code>required string log = 2;</code>
-             */
-            public Builder setLogBytes(com.google.protobuf.ByteString value) {
-                if (value == null) {
-                    throw new NullPointerException();
-                }
-                bitField0_ |= 0x00000002;
-                log_ = value;
-                onChanged();
-                return this;
-            }
-
-            private int type_;
-
-            /**
-             * <code>required int32 type = 3;</code>
-             */
-            public boolean hasType() {
-                return ((bitField0_ & 0x00000004) == 0x00000004);
-            }
-
-            /**
-             * <code>required int32 type = 3;</code>
-             */
-            public int getType() {
-                return type_;
-            }
-
-            /**
-             * <code>required int32 type = 3;</code>
-             */
-            public Builder setType(int value) {
-                bitField0_ |= 0x00000004;
-                type_ = value;
-                onChanged();
-                return this;
-            }
-
-            /**
-             * <code>required int32 type = 3;</code>
-             */
-            public Builder clearType() {
-                bitField0_ = (bitField0_ & ~0x00000004);
-                type_ = 0;
-                onChanged();
-                return this;
-            }
-
-            private boolean isEnd_;
-
-            /**
-             * <code>required bool is_end = 4;</code>
-             */
-            public boolean hasIsEnd() {
-                return ((bitField0_ & 0x00000008) == 0x00000008);
-            }
-
-            /**
-             * <code>required bool is_end = 4;</code>
-             */
-            public boolean getIsEnd() {
-                return isEnd_;
-            }
-
-            /**
-             * <code>required bool is_end = 4;</code>
-             */
-            public Builder setIsEnd(boolean value) {
-                bitField0_ |= 0x00000008;
-                isEnd_ = value;
-                onChanged();
-                return this;
-            }
-
-            /**
-             * <code>required bool is_end = 4;</code>
-             */
-            public Builder clearIsEnd() {
-                bitField0_ = (bitField0_ & ~0x00000008);
-                isEnd_ = false;
-                onChanged();
-                return this;
-            }
-
-            // @@protoc_insertion_point(builder_scope:WorkerWriteLogRequest)
-        }
-
-        static {
-            defaultInstance = new WorkerWriteLogRequest(true);
-            defaultInstance.initFields();
-        }
-
-        // @@protoc_insertion_point(class_scope:WorkerWriteLogRequest)
+      }
+      /**
+       * <code>required string log = 2;</code>
+       */
+      public Builder setLog(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        log_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string log = 2;</code>
+       */
+      public Builder clearLog() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        log_ = getDefaultInstance().getLog();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string log = 2;</code>
+       */
+      public Builder setLogBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        log_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int type_ ;
+      /**
+       * <code>required int32 type = 3;</code>
+       */
+      public boolean hasType() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>required int32 type = 3;</code>
+       */
+      public int getType() {
+        return type_;
+      }
+      /**
+       * <code>required int32 type = 3;</code>
+       */
+      public Builder setType(int value) {
+        bitField0_ |= 0x00000004;
+        type_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int32 type = 3;</code>
+       */
+      public Builder clearType() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        type_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private boolean isEnd_ ;
+      /**
+       * <code>required bool is_end = 4;</code>
+       */
+      public boolean hasIsEnd() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>required bool is_end = 4;</code>
+       */
+      public boolean getIsEnd() {
+        return isEnd_;
+      }
+      /**
+       * <code>required bool is_end = 4;</code>
+       */
+      public Builder setIsEnd(boolean value) {
+        bitField0_ |= 0x00000008;
+        isEnd_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required bool is_end = 4;</code>
+       */
+      public Builder clearIsEnd() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        isEnd_ = false;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:WorkerWriteLogRequest)
     }
 
-    public interface LogServerWriteLogResponseOrBuilder extends
-            // @@protoc_insertion_point(interface_extends:LogServerWriteLogResponse)
-            com.google.protobuf.MessageOrBuilder {
-
-        /**
-         * <code>required bool success = 1;</code>
-         */
-        boolean hasSuccess();
-
-        /**
-         * <code>required bool success = 1;</code>
-         */
-        boolean getSuccess();
+    static {
+      defaultInstance = new WorkerWriteLogRequest(true);
+      defaultInstance.initFields();
     }
 
+    // @@protoc_insertion_point(class_scope:WorkerWriteLogRequest)
+  }
+
+  public interface LogServerWriteLogResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:LogServerWriteLogResponse)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required bool success = 1;</code>
+     */
+    boolean hasSuccess();
+    /**
+     * <code>required bool success = 1;</code>
+     */
+    boolean getSuccess();
+  }
+  /**
+   * Protobuf type {@code LogServerWriteLogResponse}
+   */
+  public static final class LogServerWriteLogResponse extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:LogServerWriteLogResponse)
+      LogServerWriteLogResponseOrBuilder {
+    // Use LogServerWriteLogResponse.newBuilder() to construct.
+    private LogServerWriteLogResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private LogServerWriteLogResponse(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final LogServerWriteLogResponse defaultInstance;
+    public static LogServerWriteLogResponse getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public LogServerWriteLogResponse getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private LogServerWriteLogResponse(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              success_ = input.readBool();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.mogujie.jarvis.protocol.WriteLogProtos.internal_static_LogServerWriteLogResponse_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.mogujie.jarvis.protocol.WriteLogProtos.internal_static_LogServerWriteLogResponse_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse.class, com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<LogServerWriteLogResponse> PARSER =
+        new com.google.protobuf.AbstractParser<LogServerWriteLogResponse>() {
+      public LogServerWriteLogResponse parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new LogServerWriteLogResponse(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<LogServerWriteLogResponse> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int SUCCESS_FIELD_NUMBER = 1;
+    private boolean success_;
+    /**
+     * <code>required bool success = 1;</code>
+     */
+    public boolean hasSuccess() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required bool success = 1;</code>
+     */
+    public boolean getSuccess() {
+      return success_;
+    }
+
+    private void initFields() {
+      success_ = false;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasSuccess()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeBool(1, success_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(1, success_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
     /**
      * Protobuf type {@code LogServerWriteLogResponse}
      */
-    public static final class LogServerWriteLogResponse extends com.google.protobuf.GeneratedMessage implements
-            // @@protoc_insertion_point(message_implements:LogServerWriteLogResponse)
-            LogServerWriteLogResponseOrBuilder {
-        // Use LogServerWriteLogResponse.newBuilder() to construct.
-        private LogServerWriteLogResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
-            super(builder);
-            this.unknownFields = builder.getUnknownFields();
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:LogServerWriteLogResponse)
+        com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponseOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.mogujie.jarvis.protocol.WriteLogProtos.internal_static_LogServerWriteLogResponse_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.mogujie.jarvis.protocol.WriteLogProtos.internal_static_LogServerWriteLogResponse_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse.class, com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse.Builder.class);
+      }
+
+      // Construct using com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
         }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
 
-        private LogServerWriteLogResponse(boolean noInit) {
-            this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      public Builder clear() {
+        super.clear();
+        success_ = false;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.mogujie.jarvis.protocol.WriteLogProtos.internal_static_LogServerWriteLogResponse_descriptor;
+      }
+
+      public com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse getDefaultInstanceForType() {
+        return com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse.getDefaultInstance();
+      }
+
+      public com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse build() {
+        com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
         }
+        return result;
+      }
 
-        private static final LogServerWriteLogResponse defaultInstance;
-
-        public static LogServerWriteLogResponse getDefaultInstance() {
-            return defaultInstance;
+      public com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse buildPartial() {
+        com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse result = new com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
         }
+        result.success_ = success_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
 
-        public LogServerWriteLogResponse getDefaultInstanceForType() {
-            return defaultInstance;
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse) {
+          return mergeFrom((com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
         }
+      }
 
-        private final com.google.protobuf.UnknownFieldSet unknownFields;
-
-        @java.lang.Override
-        public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
-            return this.unknownFields;
+      public Builder mergeFrom(com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse other) {
+        if (other == com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse.getDefaultInstance()) return this;
+        if (other.hasSuccess()) {
+          setSuccess(other.getSuccess());
         }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
 
-        private LogServerWriteLogResponse(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-                throws com.google.protobuf.InvalidProtocolBufferException {
-            initFields();
-            com.google.protobuf.UnknownFieldSet.Builder unknownFields = com.google.protobuf.UnknownFieldSet.newBuilder();
-            try {
-                boolean done = false;
-                while (!done) {
-                    int tag = input.readTag();
-                    switch (tag) {
-                        case 0:
-                            done = true;
-                            break;
-                        default: {
-                            if (!parseUnknownField(input, unknownFields, extensionRegistry, tag)) {
-                                done = true;
-                            }
-                            break;
-                        }
-                        case 8: {
-                            bitField0_ |= 0x00000001;
-                            success_ = input.readBool();
-                            break;
-                        }
-                    }
-                }
-            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-                throw e.setUnfinishedMessage(this);
-            } catch (java.io.IOException e) {
-                throw new com.google.protobuf.InvalidProtocolBufferException(e.getMessage()).setUnfinishedMessage(this);
-            } finally {
-                this.unknownFields = unknownFields.build();
-                makeExtensionsImmutable();
-            }
+      public final boolean isInitialized() {
+        if (!hasSuccess()) {
+          
+          return false;
         }
+        return true;
+      }
 
-        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-            return com.mogujie.jarvis.protocol.WriteLogProtos.internal_static_LogServerWriteLogResponse_descriptor;
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
         }
+        return this;
+      }
+      private int bitField0_;
 
-        protected com.google.protobuf.GeneratedMessage.FieldAccessorTable internalGetFieldAccessorTable() {
-            return com.mogujie.jarvis.protocol.WriteLogProtos.internal_static_LogServerWriteLogResponse_fieldAccessorTable
-                    .ensureFieldAccessorsInitialized(com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse.class,
-                            com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse.Builder.class);
-        }
+      private boolean success_ ;
+      /**
+       * <code>required bool success = 1;</code>
+       */
+      public boolean hasSuccess() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required bool success = 1;</code>
+       */
+      public boolean getSuccess() {
+        return success_;
+      }
+      /**
+       * <code>required bool success = 1;</code>
+       */
+      public Builder setSuccess(boolean value) {
+        bitField0_ |= 0x00000001;
+        success_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required bool success = 1;</code>
+       */
+      public Builder clearSuccess() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        success_ = false;
+        onChanged();
+        return this;
+      }
 
-        public static com.google.protobuf.Parser<LogServerWriteLogResponse> PARSER = new com.google.protobuf.AbstractParser<LogServerWriteLogResponse>() {
-            public LogServerWriteLogResponse parsePartialFrom(com.google.protobuf.CodedInputStream input,
-                    com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-                return new LogServerWriteLogResponse(input, extensionRegistry);
-            }
-        };
-
-        @java.lang.Override
-        public com.google.protobuf.Parser<LogServerWriteLogResponse> getParserForType() {
-            return PARSER;
-        }
-
-        private int bitField0_;
-        public static final int SUCCESS_FIELD_NUMBER = 1;
-        private boolean success_;
-
-        /**
-         * <code>required bool success = 1;</code>
-         */
-        public boolean hasSuccess() {
-            return ((bitField0_ & 0x00000001) == 0x00000001);
-        }
-
-        /**
-         * <code>required bool success = 1;</code>
-         */
-        public boolean getSuccess() {
-            return success_;
-        }
-
-        private void initFields() {
-            success_ = false;
-        }
-
-        private byte memoizedIsInitialized = -1;
-
-        public final boolean isInitialized() {
-            byte isInitialized = memoizedIsInitialized;
-            if (isInitialized == 1)
-                return true;
-            if (isInitialized == 0)
-                return false;
-
-            if (!hasSuccess()) {
-                memoizedIsInitialized = 0;
-                return false;
-            }
-            memoizedIsInitialized = 1;
-            return true;
-        }
-
-        public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
-            getSerializedSize();
-            if (((bitField0_ & 0x00000001) == 0x00000001)) {
-                output.writeBool(1, success_);
-            }
-            getUnknownFields().writeTo(output);
-        }
-
-        private int memoizedSerializedSize = -1;
-
-        public int getSerializedSize() {
-            int size = memoizedSerializedSize;
-            if (size != -1)
-                return size;
-
-            size = 0;
-            if (((bitField0_ & 0x00000001) == 0x00000001)) {
-                size += com.google.protobuf.CodedOutputStream.computeBoolSize(1, success_);
-            }
-            size += getUnknownFields().getSerializedSize();
-            memoizedSerializedSize = size;
-            return size;
-        }
-
-        private static final long serialVersionUID = 0L;
-
-        @java.lang.Override
-        protected java.lang.Object writeReplace() throws java.io.ObjectStreamException {
-            return super.writeReplace();
-        }
-
-        public static com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse parseFrom(com.google.protobuf.ByteString data)
-                throws com.google.protobuf.InvalidProtocolBufferException {
-            return PARSER.parseFrom(data);
-        }
-
-        public static com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse parseFrom(com.google.protobuf.ByteString data,
-                com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-            return PARSER.parseFrom(data, extensionRegistry);
-        }
-
-        public static com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse parseFrom(byte[] data)
-                throws com.google.protobuf.InvalidProtocolBufferException {
-            return PARSER.parseFrom(data);
-        }
-
-        public static com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse parseFrom(byte[] data,
-                com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
-            return PARSER.parseFrom(data, extensionRegistry);
-        }
-
-        public static com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse parseFrom(java.io.InputStream input)
-                throws java.io.IOException {
-            return PARSER.parseFrom(input);
-        }
-
-        public static com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse parseFrom(java.io.InputStream input,
-                com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-            return PARSER.parseFrom(input, extensionRegistry);
-        }
-
-        public static com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse parseDelimitedFrom(java.io.InputStream input)
-                throws java.io.IOException {
-            return PARSER.parseDelimitedFrom(input);
-        }
-
-        public static com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse parseDelimitedFrom(java.io.InputStream input,
-                com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-            return PARSER.parseDelimitedFrom(input, extensionRegistry);
-        }
-
-        public static com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse parseFrom(com.google.protobuf.CodedInputStream input)
-                throws java.io.IOException {
-            return PARSER.parseFrom(input);
-        }
-
-        public static com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse parseFrom(com.google.protobuf.CodedInputStream input,
-                com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
-            return PARSER.parseFrom(input, extensionRegistry);
-        }
-
-        public static Builder newBuilder() {
-            return Builder.create();
-        }
-
-        public Builder newBuilderForType() {
-            return newBuilder();
-        }
-
-        public static Builder newBuilder(com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse prototype) {
-            return newBuilder().mergeFrom(prototype);
-        }
-
-        public Builder toBuilder() {
-            return newBuilder(this);
-        }
-
-        @java.lang.Override
-        protected Builder newBuilderForType(com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-            Builder builder = new Builder(parent);
-            return builder;
-        }
-
-        /**
-         * Protobuf type {@code LogServerWriteLogResponse}
-         */
-        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder>implements
-                // @@protoc_insertion_point(builder_implements:LogServerWriteLogResponse)
-                com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponseOrBuilder {
-            public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
-                return com.mogujie.jarvis.protocol.WriteLogProtos.internal_static_LogServerWriteLogResponse_descriptor;
-            }
-
-            protected com.google.protobuf.GeneratedMessage.FieldAccessorTable internalGetFieldAccessorTable() {
-                return com.mogujie.jarvis.protocol.WriteLogProtos.internal_static_LogServerWriteLogResponse_fieldAccessorTable
-                        .ensureFieldAccessorsInitialized(com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse.class,
-                                com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse.Builder.class);
-            }
-
-            // Construct using
-            // com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse.newBuilder()
-            private Builder() {
-                maybeForceBuilderInitialization();
-            }
-
-            private Builder(com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-                super(parent);
-                maybeForceBuilderInitialization();
-            }
-
-            private void maybeForceBuilderInitialization() {
-                if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-                }
-            }
-
-            private static Builder create() {
-                return new Builder();
-            }
-
-            public Builder clear() {
-                super.clear();
-                success_ = false;
-                bitField0_ = (bitField0_ & ~0x00000001);
-                return this;
-            }
-
-            public Builder clone() {
-                return create().mergeFrom(buildPartial());
-            }
-
-            public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
-                return com.mogujie.jarvis.protocol.WriteLogProtos.internal_static_LogServerWriteLogResponse_descriptor;
-            }
-
-            public com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse getDefaultInstanceForType() {
-                return com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse.getDefaultInstance();
-            }
-
-            public com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse build() {
-                com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse result = buildPartial();
-                if (!result.isInitialized()) {
-                    throw newUninitializedMessageException(result);
-                }
-                return result;
-            }
-
-            public com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse buildPartial() {
-                com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse result = new com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse(
-                        this);
-                int from_bitField0_ = bitField0_;
-                int to_bitField0_ = 0;
-                if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-                    to_bitField0_ |= 0x00000001;
-                }
-                result.success_ = success_;
-                result.bitField0_ = to_bitField0_;
-                onBuilt();
-                return result;
-            }
-
-            public Builder mergeFrom(com.google.protobuf.Message other) {
-                if (other instanceof com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse) {
-                    return mergeFrom((com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse) other);
-                } else {
-                    super.mergeFrom(other);
-                    return this;
-                }
-            }
-
-            public Builder mergeFrom(com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse other) {
-                if (other == com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse.getDefaultInstance())
-                    return this;
-                if (other.hasSuccess()) {
-                    setSuccess(other.getSuccess());
-                }
-                this.mergeUnknownFields(other.getUnknownFields());
-                return this;
-            }
-
-            public final boolean isInitialized() {
-                if (!hasSuccess()) {
-
-                    return false;
-                }
-                return true;
-            }
-
-            public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-                    throws java.io.IOException {
-                com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse parsedMessage = null;
-                try {
-                    parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-                } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-                    parsedMessage = (com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse) e.getUnfinishedMessage();
-                    throw e;
-                } finally {
-                    if (parsedMessage != null) {
-                        mergeFrom(parsedMessage);
-                    }
-                }
-                return this;
-            }
-
-            private int bitField0_;
-
-            private boolean success_;
-
-            /**
-             * <code>required bool success = 1;</code>
-             */
-            public boolean hasSuccess() {
-                return ((bitField0_ & 0x00000001) == 0x00000001);
-            }
-
-            /**
-             * <code>required bool success = 1;</code>
-             */
-            public boolean getSuccess() {
-                return success_;
-            }
-
-            /**
-             * <code>required bool success = 1;</code>
-             */
-            public Builder setSuccess(boolean value) {
-                bitField0_ |= 0x00000001;
-                success_ = value;
-                onChanged();
-                return this;
-            }
-
-            /**
-             * <code>required bool success = 1;</code>
-             */
-            public Builder clearSuccess() {
-                bitField0_ = (bitField0_ & ~0x00000001);
-                success_ = false;
-                onChanged();
-                return this;
-            }
-
-            // @@protoc_insertion_point(builder_scope:LogServerWriteLogResponse)
-        }
-
-        static {
-            defaultInstance = new LogServerWriteLogResponse(true);
-            defaultInstance.initFields();
-        }
-
-        // @@protoc_insertion_point(class_scope:LogServerWriteLogResponse)
+      // @@protoc_insertion_point(builder_scope:LogServerWriteLogResponse)
     }
-
-    private static final com.google.protobuf.Descriptors.Descriptor internal_static_WorkerWriteLogRequest_descriptor;
-    private static com.google.protobuf.GeneratedMessage.FieldAccessorTable internal_static_WorkerWriteLogRequest_fieldAccessorTable;
-    private static final com.google.protobuf.Descriptors.Descriptor internal_static_LogServerWriteLogResponse_descriptor;
-    private static com.google.protobuf.GeneratedMessage.FieldAccessorTable internal_static_LogServerWriteLogResponse_fieldAccessorTable;
-
-    public static com.google.protobuf.Descriptors.FileDescriptor getDescriptor() {
-        return descriptor;
-    }
-
-    private static com.google.protobuf.Descriptors.FileDescriptor descriptor;
 
     static {
-        java.lang.String[] descriptorData = { "\n\017write_log.proto\"S\n\025WorkerWriteLogReque"
-                + "st\022\017\n\007full_id\030\001 \002(\t\022\013\n\003log\030\002 \002(\t\022\014\n\004type"
-                + "\030\003 \002(\005\022\016\n\006is_end\030\004 \002(\010\",\n\031LogServerWrite"
-                + "LogResponse\022\017\n\007success\030\001 \002(\010B-\n\033com.mogu" + "jie.jarvis.protocolB\016WriteLogProtos" };
-        com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner = new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
-            public com.google.protobuf.ExtensionRegistry assignDescriptors(com.google.protobuf.Descriptors.FileDescriptor root) {
-                descriptor = root;
-                return null;
-            }
-        };
-        com.google.protobuf.Descriptors.FileDescriptor.internalBuildGeneratedFileFrom(descriptorData,
-                new com.google.protobuf.Descriptors.FileDescriptor[] {}, assigner);
-        internal_static_WorkerWriteLogRequest_descriptor = getDescriptor().getMessageTypes().get(0);
-        internal_static_WorkerWriteLogRequest_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-                internal_static_WorkerWriteLogRequest_descriptor, new java.lang.String[] { "FullId", "Log", "Type", "IsEnd", });
-        internal_static_LogServerWriteLogResponse_descriptor = getDescriptor().getMessageTypes().get(1);
-        internal_static_LogServerWriteLogResponse_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-                internal_static_LogServerWriteLogResponse_descriptor, new java.lang.String[] { "Success", });
+      defaultInstance = new LogServerWriteLogResponse(true);
+      defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(outer_class_scope)
+    // @@protoc_insertion_point(class_scope:LogServerWriteLogResponse)
+  }
+
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_WorkerWriteLogRequest_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_WorkerWriteLogRequest_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_LogServerWriteLogResponse_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_LogServerWriteLogResponse_fieldAccessorTable;
+
+  public static com.google.protobuf.Descriptors.FileDescriptor
+      getDescriptor() {
+    return descriptor;
+  }
+  private static com.google.protobuf.Descriptors.FileDescriptor
+      descriptor;
+  static {
+    java.lang.String[] descriptorData = {
+      "\n\017write_log.proto\"S\n\025WorkerWriteLogReque" +
+      "st\022\017\n\007full_id\030\001 \002(\t\022\013\n\003log\030\002 \002(\t\022\014\n\004type" +
+      "\030\003 \002(\005\022\016\n\006is_end\030\004 \002(\010\",\n\031LogServerWrite" +
+      "LogResponse\022\017\n\007success\030\001 \002(\010B-\n\033com.mogu" +
+      "jie.jarvis.protocolB\016WriteLogProtos"
+    };
+    com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
+        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
+          public com.google.protobuf.ExtensionRegistry assignDescriptors(
+              com.google.protobuf.Descriptors.FileDescriptor root) {
+            descriptor = root;
+            return null;
+          }
+        };
+    com.google.protobuf.Descriptors.FileDescriptor
+      .internalBuildGeneratedFileFrom(descriptorData,
+        new com.google.protobuf.Descriptors.FileDescriptor[] {
+        }, assigner);
+    internal_static_WorkerWriteLogRequest_descriptor =
+      getDescriptor().getMessageTypes().get(0);
+    internal_static_WorkerWriteLogRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_WorkerWriteLogRequest_descriptor,
+        new java.lang.String[] { "FullId", "Log", "Type", "IsEnd", });
+    internal_static_LogServerWriteLogResponse_descriptor =
+      getDescriptor().getMessageTypes().get(1);
+    internal_static_LogServerWriteLogResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_LogServerWriteLogResponse_descriptor,
+        new java.lang.String[] { "Success", });
+  }
+
+  // @@protoc_insertion_point(outer_class_scope)
 }

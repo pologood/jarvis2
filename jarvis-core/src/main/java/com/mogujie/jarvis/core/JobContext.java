@@ -10,15 +10,12 @@ package com.mogujie.jarvis.core;
 
 import java.util.Map;
 
-import com.mogujie.jarvis.core.AbstractLogCollector;
-
 /**
  * @author wuya
  *
  */
 public class JobContext {
 
-    private long jobId;
     private String fullId;
     private String jobName;
     private String cronExpression;
@@ -46,10 +43,6 @@ public class JobContext {
 
     public static JobContextBuilder newBuilder() {
         return new JobContextBuilder();
-    }
-
-    public long getJobId() {
-        return jobId;
     }
 
     public String getFullId() {
@@ -137,11 +130,6 @@ public class JobContext {
         private JobContext jobContext;
 
         private JobContextBuilder() {
-        }
-
-        public JobContextBuilder setJobId(long jobId) {
-            this.jobContext.jobId = jobId;
-            return this;
         }
 
         public JobContextBuilder setFullId(String fullId) {

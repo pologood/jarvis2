@@ -4,3 +4,8 @@ option java_outer_classname = "HeartBeatProtos";
 message HeartBeatRequest {
     required int32 job_num = 1;
 }
+
+
+message HeartBeatResponse {
+    required bool success = 1;
+}

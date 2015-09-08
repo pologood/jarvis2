@@ -9,7 +9,7 @@
 	
 	<jobs>
 	    <job type="hive" class="com.mogujie.jarvis.jobs.impl.HiveJob">
-	    	<strategies>
+	    		<strategies>
 				<strategy>com.mogujie.jarvis.worker.strategy.impl.YarnMemoryAcceptionStrategy</strategy>
 			</strategies>
 	    </job>

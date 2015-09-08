@@ -8,20 +8,22 @@
 
 package com.mogujie.jarvis.jobs.shell;
 
-import com.mogujie.jarvis.core.JobContext;
-import com.mogujie.jarvis.core.domain.StreamType;
-import com.mogujie.jarvis.core.job.AbstractJob;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 
-
-import com.mogujie.jarvis.core.common.util.ConfigUtils;
-import com.mogujie.jarvis.jobs.util.ShellUtils;
-
-import com.mogujie.jarvis.jobs.ShellStreamProcessor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.*;
-import java.nio.charset.StandardCharsets;
+import com.mogujie.jarvis.core.JobContext;
+import com.mogujie.jarvis.core.common.util.ConfigUtils;
+import com.mogujie.jarvis.core.domain.StreamType;
+import com.mogujie.jarvis.core.job.AbstractJob;
+import com.mogujie.jarvis.jobs.ShellStreamProcessor;
+import com.mogujie.jarvis.jobs.util.ShellUtils;
 
 /**
  * @author muming
@@ -67,7 +69,7 @@ public class ShellJob extends AbstractJob {
     public boolean execute() {
         try {
 
-            String statusFilePath = STATUS_PATH + "/" + getJobContext().getJobId() + ".status";
+            String statusFilePath = STATUS_PATH + "/" + getJobContext().getFullId() + ".status";
             StringBuilder sb = new StringBuilder();
             String cmd = getCommand();
             sb.append(cmd);
@@ -75,9 +77,8 @@ public class ShellJob extends AbstractJob {
                 sb.append(";");
             }
 
-            sb.append("export SENTINEL_EXIT_CODE=$? ")
-                .append("&& echo $SENTINEL_EXIT_CODE > ").append(statusFilePath)
-                .append(" && exit $SENTINEL_EXIT_CODE");
+            sb.append("export SENTINEL_EXIT_CODE=$? ").append("&& echo $SENTINEL_EXIT_CODE > ").append(statusFilePath)
+                    .append(" && exit $SENTINEL_EXIT_CODE");
 
             ProcessBuilder processBuilder = ShellUtils.createProcessBuilder(sb.toString());
             shellProcess = processBuilder.start();
@@ -102,7 +103,6 @@ public class ShellJob extends AbstractJob {
             return false;
         }
     }
-
 
     @Override
     public boolean kill() {
