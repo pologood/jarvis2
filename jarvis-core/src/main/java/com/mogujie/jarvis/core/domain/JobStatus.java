@@ -12,7 +12,12 @@ package com.mogujie.jarvis.core.domain;
  *
  */
 public enum JobStatus {
-    UNKONW(-1), WAITING(1), RUNNING(3), SUCCESS(0), FAILED(5);
+    UNKONW(-1),
+    WAITING(1),
+    RUNNING(3),
+    SUCCESS(0),
+    KILLED(4),
+    FAILED(5);
 
     private int value;
 
