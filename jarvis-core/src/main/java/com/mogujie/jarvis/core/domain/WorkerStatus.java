@@ -12,7 +12,7 @@ package com.mogujie.jarvis.core.domain;
  *
  */
 public enum WorkerStatus {
-    ON(1), OFF(0);
+    ONLINE(1), OFFLINE(0);
 
     private int value;
 
