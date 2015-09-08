@@ -70,7 +70,7 @@ public class JobConfigUtils {
             .configurationsAt(".strategies.strategy");
         for (HierarchicalConfiguration strategyConf : strategies) {
           String strategyName = strategyConf.getRootNode().getValue().toString();
-          if (!commonAcceptStrategies.contains(strategyName)) {
+          if (!commonStrategyNames.contains(strategyName)) {
             AcceptionStrategy acceptStrategy = ReflectionUtils.getClassByName(strategyName);
             acceptStrategies.add(acceptStrategy);
           }
