@@ -8,7 +8,7 @@
 
 package com.mogujie.jarvis.server;
 
-import com.mogujie.jarvis.server.domain.WorkerInfo;
+import com.mogujie.jarvis.core.domain.WorkerInfo;
 
 /**
  * @author wuya
