@@ -14,18 +14,18 @@ package com.mogujie.jarvis.server.scheduler.dag.event;
  *
  */
 public abstract class DAGTaskEvent extends DAGJobEvent {
-    private long taskid;
+    private long taskId;
 
-    public DAGTaskEvent(long jobid, long taskid) {
-        super(jobid);
-        this.taskid = taskid;
+    public DAGTaskEvent(long jobId, long taskId) {
+        super(jobId);
+        this.taskId = taskId;
     }
 
-    public long getTaskid() {
-        return taskid;
+    public long getTaskId() {
+        return taskId;
     }
 
-    public void setTaskid(long taskid) {
-        this.taskid = taskid;
+    public void setTaskId(long taskId) {
+        this.taskId = taskId;
     }
 }

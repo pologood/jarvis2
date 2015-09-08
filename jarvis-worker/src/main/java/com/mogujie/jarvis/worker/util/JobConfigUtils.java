@@ -19,12 +19,12 @@ import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.HierarchicalConfiguration;
 import org.apache.commons.configuration.XMLConfiguration;
 
+import scala.Tuple2;
+
 import com.google.common.base.Throwables;
 import com.mogujie.jarvis.core.common.util.ReflectionUtils;
 import com.mogujie.jarvis.core.job.AbstractJob;
 import com.mogujie.jarvis.worker.strategy.AcceptionStrategy;
-
-import scala.Tuple2;
 
 public class JobConfigUtils {
 
@@ -55,7 +55,7 @@ public class JobConfigUtils {
       Set<String> commonStrategyNames = getJobStrategies();
       List<AcceptionStrategy> commonAcceptStrategies = new ArrayList<AcceptionStrategy>();
       for (String commonStrategyName : commonStrategyNames) {
-        AcceptionStrategy acceptStrategy = ReflectionUtils.getClassByName(commonStrategyName);
+        AcceptionStrategy acceptStrategy = ReflectionUtils.getInstanceByClassName(commonStrategyName);
         commonAcceptStrategies.add(acceptStrategy);
       }
 
@@ -71,7 +71,7 @@ public class JobConfigUtils {
         for (HierarchicalConfiguration strategyConf : strategies) {
           String strategyName = strategyConf.getRootNode().getValue().toString();
           if (!commonStrategyNames.contains(strategyName)) {
-            AcceptionStrategy acceptStrategy = ReflectionUtils.getClassByName(strategyName);
+            AcceptionStrategy acceptStrategy = ReflectionUtils.getInstanceByClassName(strategyName);
             acceptStrategies.add(acceptStrategy);
           }
         }

@@ -42,7 +42,7 @@ public class ReflectionUtils {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> T getClassByName(String className) throws ClassNotFoundException {
+    public static <T> T getInstanceByClassName(String className) throws ClassNotFoundException {
         Class<?> clazz = CLASS_CACHE.get(className);
         if (clazz == null) {
             clazz = Class.forName(className);
@@ -66,7 +66,7 @@ public class ReflectionUtils {
 
         String[] classes = classString.split(",");
         for (String className : classes) {
-            T theClass = getClassByName(className);
+            T theClass = getInstanceByClassName(className);
             instances.add(theClass);
         }
 

@@ -15,11 +15,11 @@ package com.mogujie.jarvis.server.scheduler.dag.event;
 public class SuccessEvent extends DAGTaskEvent {
 
     /**
-     * @param jobid
-     * @param taskid
+     * @param jobId
+     * @param taskId
      */
-    public SuccessEvent(long jobid, long taskid) {
-        super(jobid, taskid);
+    public SuccessEvent(long jobId, long taskId) {
+        super(jobId, taskId);
     }
 
 }

@@ -16,17 +16,17 @@ import com.mogujie.jarvis.server.observer.Event;
  *
  */
 public abstract class DAGJobEvent implements Event {
-    private long jobid;
+    private long jobId;
 
-    public DAGJobEvent(long jobid) {
-        this.jobid = jobid;
+    public DAGJobEvent(long jobId) {
+        this.jobId = jobId;
     }
 
-    public long getJobid() {
-        return jobid;
+    public long getJobId() {
+        return jobId;
     }
 
-    public void setJobid(long jobid) {
-        this.jobid = jobid;
+    public void setJobId(long jobId) {
+        this.jobId = jobId;
     }
 }

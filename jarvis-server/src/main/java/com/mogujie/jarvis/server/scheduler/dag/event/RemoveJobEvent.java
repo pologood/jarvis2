@@ -15,10 +15,10 @@ package com.mogujie.jarvis.server.scheduler.dag.event;
 public class RemoveJobEvent extends DAGJobEvent {
 
     /**
-     * @param long jobid
+     * @param long jobId
      */
-    public RemoveJobEvent(long jobid) {
-        super(jobid);
+    public RemoveJobEvent(long jobId) {
+        super(jobId);
     }
 
 }

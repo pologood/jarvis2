@@ -18,11 +18,11 @@ public class AddJobEvent extends DAGJobEvent{
     private JobDescriptor jobDesc;
 
     /**
-     * @param long jobid
+     * @param long jobId
      * @param JobDescriptor jobDesc
      */
-    public AddJobEvent(long jobid, JobDescriptor jobDesc) {
-        super(jobid);
+    public AddJobEvent(long jobId, JobDescriptor jobDesc) {
+        super(jobId);
     }
 
     public JobDescriptor getJobDesc() {

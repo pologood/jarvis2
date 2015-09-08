@@ -10,6 +10,7 @@ package com.mogujie.jarvis.server.scheduler.task;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -17,9 +18,9 @@ import com.google.common.eventbus.Subscribe;
 import com.mogujie.jarvis.core.common.util.ThreadUtils;
 import com.mogujie.jarvis.dao.JobMapper;
 import com.mogujie.jarvis.dto.Job;
-import com.mogujie.jarvis.server.observer.InitEvent;
-import com.mogujie.jarvis.server.observer.StopEvent;
+import com.mogujie.jarvis.server.scheduler.InitEvent;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
+import com.mogujie.jarvis.server.scheduler.StopEvent;
 import com.mogujie.jarvis.server.scheduler.dag.event.FailedEvent;
 import com.mogujie.jarvis.server.scheduler.dag.event.SuccessEvent;
 
@@ -42,7 +43,7 @@ public class TaskScheduler implements Scheduler {
 
     // TODO 优化：按照任务优先级排序，使用优先级队列或者堆？
     private Map<Long, DAGTask> readyTable = new ConcurrentHashMap<Long, DAGTask>();
-    private long maxid = 1;
+    private AtomicLong maxid = new AtomicLong(1);
 
     @Override
     public void handleInitEvent(InitEvent event) {
@@ -56,20 +57,20 @@ public class TaskScheduler implements Scheduler {
 
     }
 
-    public long submitJob(long jobid) {
+    public long submitJob(long jobId) {
         // TODO
-        // 1. generate a new taskid
-        long taskid = generateTaskId();
-        readyTable.put(taskid, new DAGTask(jobid, taskid, 0));
+        // 1. generate a new taskId
+        long taskId = generateTaskId();
+        readyTable.put(taskId, new DAGTask(jobId, taskId, 0));
 
         // 2. submit job
-        Job job = jobMapper.selectByPrimaryKey((int)jobid);
+        Job job = jobMapper.selectByPrimaryKey(jobId);
         // submit jobcontext
 
-        return taskid;
+        return taskId;
     }
 
-    public void submitJob(long jobid, long taskid) {
+    public void submitJob(long jobId, long taskId) {
         // TODO submitjob
     }
 
@@ -78,33 +79,33 @@ public class TaskScheduler implements Scheduler {
         // TODO 1. store success status to DB
 
         // 2. remove from ready table
-        readyTable.remove(e.getTaskid());
+        readyTable.remove(e.getTaskId());
     }
 
     @Subscribe
     public void handleFailedEvent(FailedEvent e) {
-        long jobid = e.getJobid();
-        long taskid = e.getTaskid();
-        DAGTask dagTask = readyTable.get(e.getTaskid());
+        long jobId = e.getJobId();
+        long taskId = e.getTaskId();
+        DAGTask dagTask = readyTable.get(e.getTaskId());
         if (dagTask != null) {
-            Job job = jobMapper.selectByPrimaryKey((int)jobid);
+            Job job = jobMapper.selectByPrimaryKey(jobId);
             int failedTimes = dagTask.getFailedTimes();
             if (failedTimes < job.getFailedAttempts()) {
                 failedTimes++;
                 dagTask.setFailedTimes(failedTimes);
                 ThreadUtils.sleep(job.getFailedInterval());
-                submitJob(jobid, taskid);
+                submitJob(jobId, taskId);
             } else {
                 // TODO 1. store success status to DB
 
                 // 2. remove from ready table
-                readyTable.remove(taskid);
+                readyTable.remove(taskId);
             }
         }
     }
 
     private long generateTaskId() {
-        return ++maxid;
+        return maxid.incrementAndGet();
     }
 
 }

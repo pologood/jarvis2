@@ -17,8 +17,8 @@ import com.mogujie.jarvis.core.common.util.ReflectionUtils;
 import com.mogujie.jarvis.dto.Job;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitJobRequest;
 import com.mogujie.jarvis.server.scheduler.dag.JobDependencyStrategy;
-import com.mogujie.jarvis.server.scheduler.dag.status.IJobDependStatus;
-import com.mogujie.jarvis.server.scheduler.dag.status.MysqlCachedJobDependStatus;
+import com.mogujie.jarvis.server.scheduler.dag.status.AbstractDependStatus;
+import com.mogujie.jarvis.server.scheduler.dag.status.MysqlCachedDependStatus;
 
 /**
  * @author guangming
@@ -26,12 +26,12 @@ import com.mogujie.jarvis.server.scheduler.dag.status.MysqlCachedJobDependStatus
  */
 public class SchedulerUtil {
     public static String JOB_DEPEND_STATUS_KEY = "job.depend.status";
-    public static String DEFAULT_JOB_DEPEND_STATUS = MysqlCachedJobDependStatus.class.getName();
+    public static String DEFAULT_JOB_DEPEND_STATUS = MysqlCachedDependStatus.class.getName();
 
-    public static IJobDependStatus getJobDependStatus(Configuration conf) throws InstantiationException, IllegalAccessException,
+    public static AbstractDependStatus getJobDependStatus(Configuration conf) throws InstantiationException, IllegalAccessException,
             ClassNotFoundException {
         String className = conf.getString(JOB_DEPEND_STATUS_KEY, DEFAULT_JOB_DEPEND_STATUS);
-        return ReflectionUtils.getClassByName(className);
+        return ReflectionUtils.getInstanceByClassName(className);
     }
 
     public static JobDescriptor convert2JobDesc(RestServerSubmitJobRequest msg) {

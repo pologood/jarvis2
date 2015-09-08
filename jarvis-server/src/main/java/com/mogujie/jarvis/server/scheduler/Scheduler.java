@@ -9,9 +9,7 @@
 package com.mogujie.jarvis.server.scheduler;
 
 import com.google.common.eventbus.Subscribe;
-import com.mogujie.jarvis.server.observer.InitEvent;
 import com.mogujie.jarvis.server.observer.Observer;
-import com.mogujie.jarvis.server.observer.StopEvent;
 
 /**
  * @author guangming

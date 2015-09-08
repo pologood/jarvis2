@@ -13,30 +13,30 @@ package com.mogujie.jarvis.server.scheduler.task;
  *
  */
 public class DAGTask {
-    private long jobid;
-    private long taskid;
+    private long jobId;
+    private long taskId;
     private int failedTimes;
 
-    public DAGTask(long jobid, long taskid, int failedTimes) {
-        this.jobid = jobid;
-        this.taskid = taskid;
+    public DAGTask(long jobId, long taskId, int failedTimes) {
+        this.jobId = jobId;
+        this.taskId = taskId;
         this.failedTimes = failedTimes;
     }
 
-    public long getJobid() {
-        return jobid;
+    public long getJobId() {
+        return jobId;
     }
 
-    public void setJobid(long jobid) {
-        this.jobid = jobid;
+    public void setJobId(long jobId) {
+        this.jobId = jobId;
     }
 
-    public long getTaskid() {
-        return taskid;
+    public long getTaskId() {
+        return taskId;
     }
 
-    public void setTaskid(long taskid) {
-        this.taskid = taskid;
+    public void setTaskId(long taskId) {
+        this.taskId = taskId;
     }
 
     public int getFailedTimes() {

@@ -20,12 +20,12 @@ import com.mogujie.jarvis.protocol.DeleteJobProtos.RestServerDeleteJobRequest;
 import com.mogujie.jarvis.protocol.ReportStatusProtos.WorkerReportStatusRequest;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitJobRequest;
 import com.mogujie.jarvis.server.observer.Event;
-import com.mogujie.jarvis.server.observer.InitEvent;
 import com.mogujie.jarvis.server.observer.Observable;
 import com.mogujie.jarvis.server.observer.Observer;
-import com.mogujie.jarvis.server.observer.StopEvent;
+import com.mogujie.jarvis.server.scheduler.InitEvent;
 import com.mogujie.jarvis.server.scheduler.JobDescriptor;
 import com.mogujie.jarvis.server.scheduler.SchedulerUtil;
+import com.mogujie.jarvis.server.scheduler.StopEvent;
 import com.mogujie.jarvis.server.scheduler.dag.DAGScheduler;
 import com.mogujie.jarvis.server.scheduler.dag.event.AddJobEvent;
 import com.mogujie.jarvis.server.scheduler.dag.event.FailedEvent;
@@ -74,14 +74,14 @@ public class JobSchedulerActor extends UntypedActor implements Observable {
             WorkerReportStatusRequest msg = (WorkerReportStatusRequest)obj;
             String fullId = msg.getFullId();
             String[] idList = fullId.split("_");
-            long jobid = Long.valueOf(idList[0]);
-            long taskid = Long.valueOf(idList[1]);
+            long jobId = Long.valueOf(idList[0]);
+            long taskId = Long.valueOf(idList[1]);
 
             JobStatus status = JobStatus.getInstance(msg.getStatus());
             if (status.equals(JobStatus.SUCCESS)) {
-                event = new SuccessEvent(jobid, taskid);
+                event = new SuccessEvent(jobId, taskId);
             } else if (status.equals(JobStatus.FAILED)) {
-                event = new FailedEvent(jobid, taskid);
+                event = new FailedEvent(jobId, taskId);
             }
         } else if (obj instanceof RestServerSubmitJobRequest) {
             RestServerSubmitJobRequest msg = (RestServerSubmitJobRequest)obj;
@@ -89,8 +89,8 @@ public class JobSchedulerActor extends UntypedActor implements Observable {
             event = new AddJobEvent(-1, jobDesc);
         } else if (obj instanceof RestServerDeleteJobRequest) {
             RestServerDeleteJobRequest msg = (RestServerDeleteJobRequest)obj;
-            long jobid = msg.getJobId();
-            event = new RemoveJobEvent(jobid);
+            long jobId = msg.getJobId();
+            event = new RemoveJobEvent(jobId);
         } else {
             unhandled(obj);
         }

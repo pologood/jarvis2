@@ -13,27 +13,27 @@ import java.util.Set;
 import com.mogujie.jarvis.server.scheduler.dag.JobDependencyStrategy;
 
 /**
- * The implementation of JobDependStatus with mysql mapping
+ * The implementation of AbstractDependStatus with mysql mapping
  *
  * @author guangming
  *
  */
-public class MysqlJobDependStatus extends IJobDependStatus {
+public class MysqlDependStatus extends AbstractDependStatus {
 
     @Override
-    public void addReadyDependency(long jobid, long taskid) {
+    public void addReadyDependency(long jobId, long taskId) {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public void removeReadyDependency(long jobid, long taskid) {
+    public void removeReadyDependency(long jobId, long taskId) {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public void removeDependency(long jobid) {
+    public void removeDependency(long jobId) {
         // TODO Auto-generated method stub
 
     }

@@ -8,9 +8,9 @@
 
 package com.mogujie.jarvis.server.scheduler.time;
 
-import com.mogujie.jarvis.server.observer.InitEvent;
-import com.mogujie.jarvis.server.observer.StopEvent;
+import com.mogujie.jarvis.server.scheduler.InitEvent;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
+import com.mogujie.jarvis.server.scheduler.StopEvent;
 
 
 /**

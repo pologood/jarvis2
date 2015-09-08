@@ -16,11 +16,11 @@ package com.mogujie.jarvis.server.scheduler.dag.event;
 public class FailedEvent extends DAGTaskEvent {
 
     /**
-     * @param long jobid
-     * @param long taskid
+     * @param long jobId
+     * @param long taskId
      */
-    public FailedEvent(long jobid, long taskid) {
-        super(jobid, taskid);
+    public FailedEvent(long jobId, long taskId) {
+        super(jobId, taskId);
     }
 
 }

@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.mogujie.jarvis.server.scheduler.dag.JobDependencyStrategy;
-import com.mogujie.jarvis.server.scheduler.dag.status.IJobDependStatus;
+import com.mogujie.jarvis.server.scheduler.dag.status.AbstractDependStatus;
 
 /**
  * @author guangming
@@ -22,8 +22,8 @@ import com.mogujie.jarvis.server.scheduler.dag.status.IJobDependStatus;
  */
 public class DAGJob implements IDAGJob {
 
-    private long jobid;
-    private IJobDependStatus jobstatus;
+    private long jobId;
+    private AbstractDependStatus dependStatus;
     private JobDependencyStrategy dependStrategy;
     private List<DAGJob> parents;
     private List<DAGJob> children;
@@ -33,10 +33,10 @@ public class DAGJob implements IDAGJob {
         this.children = new ArrayList<DAGJob>();
     }
 
-    public DAGJob(long jobid, IJobDependStatus jobstatus, JobDependencyStrategy dependStrategy) {
+    public DAGJob(long jobId, AbstractDependStatus dependStatus, JobDependencyStrategy dependStrategy) {
         try {
-            this.jobid = jobid;
-            this.jobstatus = jobstatus;
+            this.jobId = jobId;
+            this.dependStatus = dependStatus;
             this.dependStrategy = dependStrategy;
             this.parents = new ArrayList<DAGJob>();
             this.children = new ArrayList<DAGJob>();
@@ -49,25 +49,25 @@ public class DAGJob implements IDAGJob {
     public boolean dependCheck() {
         Set<Long> needJobs = new HashSet<Long>();
         for (DAGJob d : parents) {
-            needJobs.add(d.getJobid());
+            needJobs.add(d.getJobId());
         }
-        return jobstatus.isFinishAllJob(dependStrategy, needJobs);
+        return dependStatus.isFinishAllJob(dependStrategy, needJobs);
     }
 
-    public long getJobid() {
-        return jobid;
+    public long getJobId() {
+        return jobId;
     }
 
-    public void setJobid(long jobid) {
-        this.jobid = jobid;
+    public void setJobId(long jobId) {
+        this.jobId = jobId;
     }
 
-    public IJobDependStatus getJobstatus() {
-        return jobstatus;
+    public AbstractDependStatus getDependStatus() {
+        return dependStatus;
     }
 
-    public void setJobstatus(IJobDependStatus jobstatus) {
-        this.jobstatus = jobstatus;
+    public void setDependStatus(AbstractDependStatus dependStatus) {
+        this.dependStatus = dependStatus;
     }
 
     public JobDependencyStrategy getDependStrategy() {
@@ -97,7 +97,7 @@ public class DAGJob implements IDAGJob {
     public void addParent(DAGJob newParent) {
         boolean isContain = false;
         for (DAGJob parent : parents) {
-            if (parent.getJobid() == newParent.getJobid()) {
+            if (parent.getJobId() == newParent.getJobId()) {
                 isContain = true;
                 break;
             }
@@ -111,7 +111,7 @@ public class DAGJob implements IDAGJob {
     public void addChild(DAGJob newChild) {
         boolean isContain = false;
         for (DAGJob child : children) {
-            if (child.getJobid() == newChild.getJobid()) {
+            if (child.getJobId() == newChild.getJobId()) {
                 isContain = true;
                 break;
             }
@@ -124,7 +124,7 @@ public class DAGJob implements IDAGJob {
 
     public void removeParent(DAGJob oldParent) {
         for (DAGJob parent : parents) {
-            if (parent.getJobid() == oldParent.getJobid()) {
+            if (parent.getJobId() == oldParent.getJobId()) {
                 parents.remove(parent);
             }
         }
@@ -132,21 +132,21 @@ public class DAGJob implements IDAGJob {
 
     public void removeChild(DAGJob oldChild) {
         for (DAGJob child : children) {
-            if (child.getJobid() == oldChild.getJobid()) {
+            if (child.getJobId() == oldChild.getJobId()) {
                 children.remove(children);
             }
         }
     }
 
-    public void addReadyDependency(long jobid, long taskid) {
-        jobstatus.addReadyDependency(jobid, taskid);
+    public void addReadyDependency(long jobId, long taskId) {
+        dependStatus.addReadyDependency(jobId, taskId);
     }
 
-    public void removeDenpendency(long jobid) {
-        jobstatus.removeDependency(jobid);
+    public void removeDenpendency(long jobId) {
+        dependStatus.removeDependency(jobId);
     }
 
     public void resetDependStatus() {
-        jobstatus.reset();
+        dependStatus.reset();
     }
 }

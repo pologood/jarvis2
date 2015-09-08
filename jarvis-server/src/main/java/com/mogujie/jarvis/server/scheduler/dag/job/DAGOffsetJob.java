@@ -9,7 +9,7 @@
 package com.mogujie.jarvis.server.scheduler.dag.job;
 
 import com.mogujie.jarvis.server.scheduler.dag.JobDependencyStrategy;
-import com.mogujie.jarvis.server.scheduler.dag.status.IJobDependStatus;
+import com.mogujie.jarvis.server.scheduler.dag.status.AbstractDependStatus;
 
 
 /**
@@ -19,12 +19,12 @@ import com.mogujie.jarvis.server.scheduler.dag.status.IJobDependStatus;
 public class DAGOffsetJob extends DAGJob {
 
     /**
-     * @param jobid
+     * @param jobId
      * @param jobstatus
      * @param dependStrategy
      */
-    public DAGOffsetJob(int jobid, IJobDependStatus jobstatus, JobDependencyStrategy dependStrategy) {
-        super(jobid, jobstatus, dependStrategy);
+    public DAGOffsetJob(long jobId, AbstractDependStatus jobstatus, JobDependencyStrategy dependStrategy) {
+        super(jobId, jobstatus, dependStrategy);
     }
 
     @Override
