@@ -10,7 +10,6 @@ package com.mogujie.jarvis.server.scheduler;
 
 import com.mogujie.jarvis.server.scheduler.dag.job.DAGJob;
 import com.mogujie.jarvis.server.scheduler.dag.job.DAGOffsetJob;
-import com.mogujie.jarvis.server.scheduler.dag.job.TimeDAGJob;
 
 /**
  * @author guangming
@@ -18,13 +17,13 @@ import com.mogujie.jarvis.server.scheduler.dag.job.TimeDAGJob;
  */
 public enum JobScheduleType {
     //time based schedule job
-    CRONTAB(""),
+    CRONTAB(DAGJob.class.getName()),
 
     //dependency based schedule job
     DEPENDENCY(DAGJob.class.getName()),
 
     //time based + dependency based schedule job
-    CRON_DEPEND(TimeDAGJob.class.getName()),
+    CRON_DEPEND(DAGJob.class.getName()),
 
     //dependency based + offset
     DEPEND_OFFSET(DAGOffsetJob.class.getName()),

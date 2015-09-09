@@ -22,7 +22,7 @@ import com.mogujie.jarvis.server.scheduler.dag.JobDependencyStrategy;
  * @author guangming
  *
  */
-public abstract class CachedDependStatus extends AbstractDependStatus {
+public class CachedDependStatus extends AbstractDependStatus {
     // Map<jobId, Map<taskId, status>>
     protected Map<Long, Map<Long, Boolean>> jobStatusMap =
             new ConcurrentHashMap<Long, Map<Long, Boolean>>();

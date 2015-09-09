@@ -17,6 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.apache.commons.configuration.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.eventbus.Subscribe;
 import com.mogujie.jarvis.core.common.util.ConfigUtils;
 import com.mogujie.jarvis.dao.JobDependMapper;
@@ -25,16 +26,17 @@ import com.mogujie.jarvis.dto.Job;
 import com.mogujie.jarvis.dto.JobDepend;
 import com.mogujie.jarvis.server.scheduler.InitEvent;
 import com.mogujie.jarvis.server.scheduler.JobDescriptor;
+import com.mogujie.jarvis.server.scheduler.JobScheduleType;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
 import com.mogujie.jarvis.server.scheduler.SchedulerUtil;
 import com.mogujie.jarvis.server.scheduler.StopEvent;
 import com.mogujie.jarvis.server.scheduler.dag.event.AddJobEvent;
+import com.mogujie.jarvis.server.scheduler.dag.event.ModifyDependencyEvent;
 import com.mogujie.jarvis.server.scheduler.dag.event.RemoveJobEvent;
 import com.mogujie.jarvis.server.scheduler.dag.event.SuccessEvent;
 import com.mogujie.jarvis.server.scheduler.dag.event.TimeReadyEvent;
 import com.mogujie.jarvis.server.scheduler.dag.job.DAGJob;
 import com.mogujie.jarvis.server.scheduler.dag.job.DAGJobFactory;
-import com.mogujie.jarvis.server.scheduler.dag.job.TimeDAGJob;
 import com.mogujie.jarvis.server.scheduler.dag.status.AbstractDependStatus;
 import com.mogujie.jarvis.server.scheduler.task.TaskScheduler;
 
@@ -99,19 +101,36 @@ public class DAGScheduler implements Scheduler {
             AbstractDependStatus jobDependStatus = SchedulerUtil.getJobDependStatus(conf);
             if (jobDependStatus != null) {
                 jobDependStatus.setMyjobId(jobId);
-                DAGJob dagJob = DAGJobFactory.createDAGJob(jobDesc.getScheduleType(),
-                        jobId, jobDependStatus, JobDependencyStrategy.ALL);
-                waitingTable.put(jobId, dagJob);
+                JobScheduleType scheduleType = jobDesc.getScheduleType();
+                DAGJob dagJob = DAGJobFactory.createDAGJob(scheduleType, jobId,
+                        jobDependStatus, JobDependencyStrategy.ALL);
+                if (scheduleType.equals(JobScheduleType.CRONTAB) ||
+                        scheduleType.equals(JobScheduleType.CRON_DEPEND)) {
+                    dagJob.setHasTimeFlag(true);
+                }
+                addJob(jobId, dagJob, dependencies);
+            }
+        }
+    }
 
-                for (long d: dependencies) {
-                    DAGJob parent = waitingTable.get(d);
-                    if (parent != null) {
-                        dagJob.addParent(parent);
-                        parent.addChild(dagJob);
-                    }
+    @VisibleForTesting
+    protected void addJob(long jobId, DAGJob dagJob, Set<Long> dependencies) {
+        waitingTable.put(jobId, dagJob);
+
+        if (dependencies != null) {
+            for (long d: dependencies) {
+                DAGJob parent = waitingTable.get(d);
+                if (parent != null) {
+                    dagJob.addParent(parent);
+                    parent.addChild(dagJob);
                 }
             }
         }
+    }
+
+    @VisibleForTesting
+    protected void clear() {
+        waitingTable.clear();
     }
 
     /**
@@ -122,38 +141,47 @@ public class DAGScheduler implements Scheduler {
     @Subscribe
     public void handleRemoveJobEvent(RemoveJobEvent event) {
         long jobId = event.getJobId();
+        removeJob(jobId);
         DAGJob dagJob = waitingTable.get(jobId);
         if (dagJob != null) {
-            // 1. remove job from waiting table
-            waitingTable.remove(dagJob);
-
-            // 2. remove relation from parents
-            List<DAGJob> parents = dagJob.getParents();
-            for (DAGJob p : parents) {
-                p.removeChild(dagJob);
-                dagJob.removeParent(p);
-            }
-
-            // 3. remove relation from children
+            // submit job if pass dependency check
             List<DAGJob> children = dagJob.getChildren();
             for (DAGJob child : children) {
-               dagJob.removeChild(child);
-               // 1. remove relation from parent
-               child.removeParent(dagJob);
-               // 2. remove dependency status with jobId
-               child.removeDenpendency(jobId);
-               // 3. submit job if pass dependency check
                submitJobWithCheck(child);
             }
         }
     }
 
-    /**
-     * add dependency
-     *
-     * @param long parentId
-     * @param long childId
-     */
+    @VisibleForTesting
+    protected void removeJob(long jobId) {
+        DAGJob dagJob = waitingTable.get(jobId);
+        if (dagJob != null) {
+            // 1. remove job from waiting table
+            waitingTable.remove(dagJob);
+            // 2. remove relation from parents
+            dagJob.removeParents();
+            // 3. remove relation from children
+            dagJob.removeChildren();
+        }
+    }
+
+    @Subscribe
+    public void handleModifyDependency(ModifyDependencyEvent event) {
+        boolean isAddDependency = event.isAddDepend();
+        long parentId = event.getParentId();
+        long childId = event.getChildId();
+        if (isAddDependency) {
+            addDependency(parentId, childId);
+        } else {
+            removeDependency(parentId, childId);
+            DAGJob child = waitingTable.get(childId);
+            if (child != null) {
+                submitJobWithCheck(child);
+            }
+        }
+    }
+
+    @VisibleForTesting
     public void addDependency(long parentId, long childId) {
         DAGJob parent = waitingTable.get(parentId);
         DAGJob child = waitingTable.get(childId);
@@ -163,20 +191,14 @@ public class DAGScheduler implements Scheduler {
         }
     }
 
-    /**
-     * remove dependency
-     *
-     * @param long parentId
-     * @param long childId
-     */
-    public void removeDependency(long parentId, long childId) {
+    @VisibleForTesting
+    protected void removeDependency(long parentId, long childId) {
         DAGJob parent = waitingTable.get(parentId);
         DAGJob child = waitingTable.get(childId);
         if (parent != null && child != null) {
-            parent.removeChild(child);
-            child.removeParent(parent);
-            child.removeDenpendency(parent.getJobId());
-            submitJobWithCheck(child);
+            parent.removeChild(childId);
+            child.removeParent(parentId);
+            child.removeDependStatus(parent.getJobId());
         }
     }
 
@@ -227,16 +249,14 @@ public class DAGScheduler implements Scheduler {
         long jobId = e.getJobId();
         DAGJob dagJob = waitingTable.get(jobId);
         if (dagJob != null) {
-            if (!(dagJob instanceof TimeDAGJob)) {
-                throw new DAGScheduleException("Job schedule type error. jobId "
-                        + e.getJobId() +  " is not TimeDAGJob");
+            if (!dagJob.isHasTimeFlag()) {
+                throw new DAGScheduleException("No time ready flag. jobId is " + e.getJobId());
             }
             // 更新时间标识
-            TimeDAGJob tDagJob = ((TimeDAGJob)dagJob);
-            tDagJob.setTimeFlag();
+            dagJob.setTimeReadyFlag();
 
             // 如果通过依赖检查，提交给taskScheduler，并重置自己的依赖状态
-            submitJobWithCheck(tDagJob);
+            submitJobWithCheck(dagJob);
         }
     }
 

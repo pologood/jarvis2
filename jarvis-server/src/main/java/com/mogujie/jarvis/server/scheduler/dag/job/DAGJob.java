@@ -8,8 +8,9 @@
 
 package com.mogujie.jarvis.server.scheduler.dag.job;
 
-import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -27,31 +28,36 @@ public class DAGJob implements IDAGJob {
     private JobDependencyStrategy dependStrategy;
     private List<DAGJob> parents;
     private List<DAGJob> children;
+    private boolean hasTimeFlag = false;
+    private boolean timeReadyFlag = false;
 
     public DAGJob() {
-        this.parents = new ArrayList<DAGJob>();
-        this.children = new ArrayList<DAGJob>();
+        this.parents = new LinkedList<DAGJob>();
+        this.children = new LinkedList<DAGJob>();
     }
 
     public DAGJob(long jobId, AbstractDependStatus dependStatus, JobDependencyStrategy dependStrategy) {
-        try {
-            this.jobId = jobId;
-            this.dependStatus = dependStatus;
-            this.dependStrategy = dependStrategy;
-            this.parents = new ArrayList<DAGJob>();
-            this.children = new ArrayList<DAGJob>();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        this.jobId = jobId;
+        this.dependStatus = dependStatus;
+        this.dependStrategy = dependStrategy;
+        this.parents = new LinkedList<DAGJob>();
+        this.children = new LinkedList<DAGJob>();
     }
 
     @Override
     public boolean dependCheck() {
+        boolean passCheck = false;
         Set<Long> needJobs = new HashSet<Long>();
         for (DAGJob d : parents) {
             needJobs.add(d.getJobId());
         }
-        return dependStatus.isFinishAllJob(dependStrategy, needJobs);
+        passCheck = dependStatus.isFinishAllJob(dependStrategy, needJobs);
+
+        if (hasTimeFlag) {
+            passCheck = passCheck && timeReadyFlag;
+        }
+
+        return passCheck;
     }
 
     public long getJobId() {
@@ -122,19 +128,44 @@ public class DAGJob implements IDAGJob {
         }
     }
 
-    public void removeParent(DAGJob oldParent) {
-        for (DAGJob parent : parents) {
-            if (parent.getJobId() == oldParent.getJobId()) {
-                parents.remove(parent);
+    public void removeParent(long jobId) {
+        Iterator<DAGJob> it = parents.iterator();
+        while (it.hasNext()) {
+            DAGJob parent = it.next();
+            if (parent.getJobId() == jobId) {
+                it.remove();
             }
         }
     }
 
-    public void removeChild(DAGJob oldChild) {
-        for (DAGJob child : children) {
-            if (child.getJobId() == oldChild.getJobId()) {
-                children.remove(children);
+    public void removeChild(long jobId) {
+        Iterator<DAGJob> it = children.iterator();
+        while (it.hasNext()) {
+            DAGJob child = it.next();
+            if (child.getJobId() == jobId) {
+                it.remove();
             }
+        }
+    }
+
+    public void removeParents() {
+        List<DAGJob> parents = getParents();
+        Iterator<DAGJob> it = parents.iterator();
+        while (it.hasNext()) {
+            DAGJob parent = it.next();
+            it.remove();
+            parent.removeChild(getJobId());
+        }
+    }
+
+    public void removeChildren() {
+        List<DAGJob> children = getChildren();
+        Iterator<DAGJob> it = children.iterator();
+        while (it.hasNext()) {
+            DAGJob child = it.next();
+            it.remove();
+            child.removeParent(getJobId());
+            child.removeDependStatus(getJobId());
         }
     }
 
@@ -142,11 +173,30 @@ public class DAGJob implements IDAGJob {
         dependStatus.addReadyDependency(jobId, taskId);
     }
 
-    public void removeDenpendency(long jobId) {
+    public void removeDependStatus(long jobId) {
         dependStatus.removeDependency(jobId);
     }
 
     public void resetDependStatus() {
         dependStatus.reset();
+        if (hasTimeFlag) {
+            resetTimeReadyFlag();
+        }
+    }
+
+    public boolean isHasTimeFlag() {
+        return hasTimeFlag;
+    }
+
+    public void setHasTimeFlag(boolean hasTimeFlag) {
+        this.hasTimeFlag = hasTimeFlag;
+    }
+
+    public void setTimeReadyFlag() {
+        timeReadyFlag = true;
+    }
+
+    public void resetTimeReadyFlag() {
+        timeReadyFlag = false;
     }
 }

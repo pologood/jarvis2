@@ -8,15 +8,11 @@
 
 package com.mogujie.jarvis.server.scheduler;
 
-import java.util.Set;
-
 import org.apache.commons.configuration.Configuration;
 
-import com.google.common.collect.Sets;
 import com.mogujie.jarvis.core.common.util.ReflectionUtils;
 import com.mogujie.jarvis.dto.Job;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitJobRequest;
-import com.mogujie.jarvis.server.scheduler.dag.JobDependencyStrategy;
 import com.mogujie.jarvis.server.scheduler.dag.status.AbstractDependStatus;
 import com.mogujie.jarvis.server.scheduler.dag.status.MysqlCachedDependStatus;
 
@@ -34,29 +30,10 @@ public class SchedulerUtil {
         return ReflectionUtils.getInstanceByClassName(className);
     }
 
-    public static JobDescriptor convert2JobDesc(RestServerSubmitJobRequest msg) {
+    public static Job convert2Job(RestServerSubmitJobRequest msg) {
         Job job = new Job();
         // TODO
-        Set<Long> needDependencies = Sets.newHashSet();
-        needDependencies.addAll(msg.getDependencyJobidsList());
-        // TODO
-        JobScheduleType type = JobScheduleType.CRONTAB;
-        if (job.getContent() != null) {
-            if (needDependencies.isEmpty()) {
-                type = JobScheduleType.CRONTAB;
-            } else {
-                type = JobScheduleType.CRON_DEPEND;
-            }
-        } else {
-            if (!needDependencies.isEmpty()) {
-                type = JobScheduleType.DEPENDENCY;
-            } else {
-                type = JobScheduleType.OTHER;
-            }
-        }
-        JobDependencyStrategy strategy = JobDependencyStrategy.ALL;
-
-        return new JobDescriptor(job, needDependencies, type, strategy);
+        return job;
     }
 
 }

@@ -8,14 +8,18 @@
 
 package com.mogujie.jarvis.server.actor;
 
+import java.util.Set;
+
 import javax.inject.Named;
 
 import org.springframework.context.annotation.Scope;
 
 import akka.actor.UntypedActor;
 
+import com.google.common.collect.Sets;
 import com.google.common.eventbus.EventBus;
 import com.mogujie.jarvis.core.domain.JobStatus;
+import com.mogujie.jarvis.dto.Job;
 import com.mogujie.jarvis.protocol.DeleteJobProtos.RestServerDeleteJobRequest;
 import com.mogujie.jarvis.protocol.ReportStatusProtos.WorkerReportStatusRequest;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitJobRequest;
@@ -24,9 +28,11 @@ import com.mogujie.jarvis.server.observer.Observable;
 import com.mogujie.jarvis.server.observer.Observer;
 import com.mogujie.jarvis.server.scheduler.InitEvent;
 import com.mogujie.jarvis.server.scheduler.JobDescriptor;
+import com.mogujie.jarvis.server.scheduler.JobScheduleType;
 import com.mogujie.jarvis.server.scheduler.SchedulerUtil;
 import com.mogujie.jarvis.server.scheduler.StopEvent;
 import com.mogujie.jarvis.server.scheduler.dag.DAGScheduler;
+import com.mogujie.jarvis.server.scheduler.dag.JobDependencyStrategy;
 import com.mogujie.jarvis.server.scheduler.dag.event.AddJobEvent;
 import com.mogujie.jarvis.server.scheduler.dag.event.FailedEvent;
 import com.mogujie.jarvis.server.scheduler.dag.event.RemoveJobEvent;
@@ -85,7 +91,13 @@ public class JobSchedulerActor extends UntypedActor implements Observable {
             }
         } else if (obj instanceof RestServerSubmitJobRequest) {
             RestServerSubmitJobRequest msg = (RestServerSubmitJobRequest)obj;
-            JobDescriptor jobDesc = SchedulerUtil.convert2JobDesc(msg);
+            Job job = SchedulerUtil.convert2Job(msg);
+            Set<Long> needDependencies = Sets.newHashSet();
+            needDependencies.addAll(msg.getDependencyJobidsList());
+            // TODO get scheduler type from DB.contab
+            JobScheduleType type = JobScheduleType.CRONTAB;
+            JobDependencyStrategy strategy = JobDependencyStrategy.ALL;
+            JobDescriptor jobDesc = new JobDescriptor(job, needDependencies, type, strategy);
             event = new AddJobEvent(-1, jobDesc);
         } else if (obj instanceof RestServerDeleteJobRequest) {
             RestServerDeleteJobRequest msg = (RestServerDeleteJobRequest)obj;
