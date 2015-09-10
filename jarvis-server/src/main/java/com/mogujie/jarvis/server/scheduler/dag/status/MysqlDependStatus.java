@@ -21,13 +21,13 @@ import com.mogujie.jarvis.server.scheduler.dag.JobDependencyStrategy;
 public class MysqlDependStatus extends AbstractDependStatus {
 
     @Override
-    public void addReadyDependency(long jobId, long taskId) {
+    public void setDependStatus(long jobId, long taskId) {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public void removeReadyDependency(long jobId, long taskId) {
+    public void resetDependStatus(long jobId, long taskId) {
         // TODO Auto-generated method stub
 
     }

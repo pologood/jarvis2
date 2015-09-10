@@ -31,6 +31,7 @@ import com.mogujie.jarvis.server.scheduler.Scheduler;
 import com.mogujie.jarvis.server.scheduler.SchedulerUtil;
 import com.mogujie.jarvis.server.scheduler.StopEvent;
 import com.mogujie.jarvis.server.scheduler.dag.event.AddJobEvent;
+import com.mogujie.jarvis.server.scheduler.dag.event.FailedEvent;
 import com.mogujie.jarvis.server.scheduler.dag.event.ModifyDependencyEvent;
 import com.mogujie.jarvis.server.scheduler.dag.event.RemoveJobEvent;
 import com.mogujie.jarvis.server.scheduler.dag.event.SuccessEvent;
@@ -198,7 +199,6 @@ public class DAGScheduler implements Scheduler {
         if (parent != null && child != null) {
             parent.removeChild(childId);
             child.removeParent(parentId);
-            child.removeDependStatus(parent.getJobId());
         }
     }
 
@@ -254,7 +254,6 @@ public class DAGScheduler implements Scheduler {
             }
             // 更新时间标识
             dagJob.setTimeReadyFlag();
-
             // 如果通过依赖检查，提交给taskScheduler，并重置自己的依赖状态
             submitJobWithCheck(dagJob);
         }
@@ -269,10 +268,26 @@ public class DAGScheduler implements Scheduler {
             List<DAGJob> children = dagJob.getChildren();
             if (children != null) {
                 for (DAGJob child : children) {
-                    // 更新依赖状态
-                    child.addReadyDependency(jobId, taskId);
+                    // 更新依赖状态为true
+                    child.setDependStatus(jobId, taskId);
                     // 如果通过依赖检查，提交给taskScheduler，并重置自己的依赖状态
                     submitJobWithCheck(child);
+                }
+            }
+        }
+    }
+
+    @Subscribe
+    public void handleFailedEvent(FailedEvent e) throws DAGScheduleException {
+        long jobId = e.getJobId();
+        long taskId = e.getTaskId();
+        DAGJob dagJob = waitingTable.get(jobId);
+        if (dagJob != null) {
+            List<DAGJob> children = dagJob.getChildren();
+            if (children != null) {
+                for (DAGJob child : children) {
+                    // 更新依赖状态为false
+                    child.resetDependStatus(jobId, taskId);
                 }
             }
         }

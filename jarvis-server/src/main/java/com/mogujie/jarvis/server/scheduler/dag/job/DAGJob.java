@@ -136,6 +136,7 @@ public class DAGJob implements IDAGJob {
                 it.remove();
             }
         }
+        dependStatus.removeDependency(jobId);
     }
 
     public void removeChild(long jobId) {
@@ -152,8 +153,11 @@ public class DAGJob implements IDAGJob {
         List<DAGJob> parents = getParents();
         Iterator<DAGJob> it = parents.iterator();
         while (it.hasNext()) {
+            // 1. remove parent from myself
             DAGJob parent = it.next();
             it.remove();
+            dependStatus.removeDependency(parent.getJobId());
+            // 2. remove myself from parent
             parent.removeChild(getJobId());
         }
     }
@@ -162,19 +166,20 @@ public class DAGJob implements IDAGJob {
         List<DAGJob> children = getChildren();
         Iterator<DAGJob> it = children.iterator();
         while (it.hasNext()) {
+            // 1. remove child from myself
             DAGJob child = it.next();
             it.remove();
+            // 2. remove myself from child
             child.removeParent(getJobId());
-            child.removeDependStatus(getJobId());
         }
     }
 
-    public void addReadyDependency(long jobId, long taskId) {
-        dependStatus.addReadyDependency(jobId, taskId);
+    public void setDependStatus(long jobId, long taskId) {
+        dependStatus.setDependStatus(jobId, taskId);
     }
 
-    public void removeDependStatus(long jobId) {
-        dependStatus.removeDependency(jobId);
+    public void resetDependStatus(long jobId, long taskId) {
+        dependStatus.resetDependStatus(jobId, taskId);
     }
 
     public void resetDependStatus() {

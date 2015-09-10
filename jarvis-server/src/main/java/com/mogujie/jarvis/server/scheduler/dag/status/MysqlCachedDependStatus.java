@@ -15,14 +15,14 @@ package com.mogujie.jarvis.server.scheduler.dag.status;
 public class MysqlCachedDependStatus extends CachedDependStatus {
 
     @Override
-    public void addReadyDependency(long jobId, long taskId) {
-        super.addReadyDependency(jobId, taskId);
+    public void setDependStatus(long jobId, long taskId) {
+        super.setDependStatus(jobId, taskId);
         flush2DB();
     }
 
     @Override
-    public void removeReadyDependency(long jobId, long taskId) {
-        super.removeReadyDependency(jobId, taskId);
+    public void resetDependStatus(long jobId, long taskId) {
+        super.resetDependStatus(jobId, taskId);
         flush2DB();
     }
 

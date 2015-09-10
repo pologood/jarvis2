@@ -23,12 +23,12 @@ public abstract class AbstractDependStatus {
     /**
      * update ready dependency job status to true
      */
-    public abstract void addReadyDependency(long jobId, long taskId);
+    public abstract void setDependStatus(long jobId, long taskId);
 
     /**
      * update ready dependency job status to false
      */
-    public abstract void removeReadyDependency(long jobId, long taskId);
+    public abstract void resetDependStatus(long jobId, long taskId);
 
     /**
      * remove job dependency
