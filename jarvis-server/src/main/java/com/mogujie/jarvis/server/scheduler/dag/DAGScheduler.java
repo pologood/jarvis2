@@ -51,9 +51,6 @@ import com.mogujie.jarvis.server.scheduler.task.TaskScheduler;
 @Service
 public class DAGScheduler implements Scheduler {
     @Autowired
-    private TaskScheduler taskScheduler;
-
-    @Autowired
     JobMapper jobMapper;
 
     @Autowired
@@ -66,6 +63,7 @@ public class DAGScheduler implements Scheduler {
         return instance;
     }
 
+    private TaskScheduler taskScheduler = TaskScheduler.getInstance();
     private Configuration conf = ConfigUtils.getServerConfig();
     private Map<Long, DAGJob> waitingTable = new ConcurrentHashMap<Long, DAGJob>();
 
@@ -109,10 +107,6 @@ public class DAGScheduler implements Scheduler {
                 JobScheduleType scheduleType = jobDesc.getScheduleType();
                 DAGJob dagJob = DAGJobFactory.createDAGJob(scheduleType, jobId,
                         jobDependStatus, JobDependencyStrategy.ALL);
-                if (scheduleType.equals(JobScheduleType.CRONTAB) ||
-                        scheduleType.equals(JobScheduleType.CRON_DEPEND)) {
-                    dagJob.setHasTimeFlag(true);
-                }
                 addJob(jobId, dagJob, dependencies);
             }
         }

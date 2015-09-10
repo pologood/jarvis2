@@ -26,6 +26,10 @@ public class DAGJobFactory {
             dagJob.setJobId(jobId);
             dagJob.setDependStatus(dependStatus);
             dagJob.setDependStrategy(dependStrategy);
+            if (jobType.equals(JobScheduleType.CRONTAB) ||
+                    jobType.equals(JobScheduleType.CRON_DEPEND)) {
+                dagJob.setHasTimeFlag(true);
+            }
         }
 
         return dagJob;

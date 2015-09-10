@@ -58,30 +58,33 @@ public abstract class AbstractDependStatus {
             JobDependencyStrategy strategy, Long jobId) {
         boolean finishDependency = false;
         Map<Long, Boolean> taskStatusMap = jobStatusMap.get(jobId);
-        // 多个执行计划中任意一次成功即算成功
-        if (strategy.equals(JobDependencyStrategy.ANYONE)) {
-            for (Map.Entry<Long, Boolean> entry : taskStatusMap.entrySet()) {
-                if (entry.getValue() == true) {
-                    finishDependency = true;
-                    break;
+        if (taskStatusMap != null) {
+            // 多个执行计划中任意一次成功即算成功
+            if (strategy.equals(JobDependencyStrategy.ANYONE)) {
+                for (Map.Entry<Long, Boolean> entry : taskStatusMap.entrySet()) {
+                    if (entry.getValue() == true) {
+                        finishDependency = true;
+                        break;
+                    }
                 }
-            }
-        } else if (strategy.equals(JobDependencyStrategy.LASTONE)) {
-            // 多个执行计划中最后一次成功算成功
-            Iterator<Entry<Long, Boolean>> it = taskStatusMap.entrySet().iterator();
-            Map.Entry<Long, Boolean> entry = null;
-            while (it.hasNext()) {
-                entry = it.next();
-            }
-            if (entry != null && entry.getValue() == true) {
+            } else if (strategy.equals(JobDependencyStrategy.LASTONE)) {
+                // 多个执行计划中最后一次成功算成功
+                Iterator<Entry<Long, Boolean>> it = taskStatusMap.entrySet().iterator();
+                Map.Entry<Long, Boolean> entry = null;
+                while (it.hasNext()) {
+                    entry = it.next();
+                }
+                if (entry != null && entry.getValue() == true) {
+                    finishDependency = true;
+                }
+            } else if (strategy.equals(JobDependencyStrategy.ALL)) {
+                // 多个执行计划中所有都成功才算成功
                 finishDependency = true;
-            }
-        } else if (strategy.equals(JobDependencyStrategy.ALL)) {
-            // 多个执行计划中所有都成功才算成功
-            for (Map.Entry<Long, Boolean> entry : taskStatusMap.entrySet()) {
-                if (entry.getValue() == false) {
-                    finishDependency = false;
-                    break;
+                for (Map.Entry<Long, Boolean> entry : taskStatusMap.entrySet()) {
+                    if (entry.getValue() == false) {
+                        finishDependency = false;
+                        break;
+                    }
                 }
             }
         }

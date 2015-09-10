@@ -16,6 +16,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.eventbus.Subscribe;
 import com.mogujie.jarvis.core.common.util.ThreadUtils;
 import com.mogujie.jarvis.core.domain.JobStatus;
@@ -47,11 +48,19 @@ public class TaskScheduler implements Scheduler {
     @Autowired
     TaskService taskService;
 
+    // for testing
+    private static TaskScheduler instance = new TaskScheduler();
+    private TaskScheduler() {}
+    public static TaskScheduler getInstance() {
+        return instance;
+    }
+
     // TODO 优化：按照任务优先级排序，使用优先级队列或者堆？
     private Map<Long, DAGTask> readyTable = new ConcurrentHashMap<Long, DAGTask>();
     private AtomicLong maxid = new AtomicLong(1);
     // 在这里做并发度控制？
     private int concurrentNum = 70;
+    boolean enableTest = false;
 
     @Override
     public void handleInitEvent(InitEvent event) {
@@ -100,6 +109,17 @@ public class TaskScheduler implements Scheduler {
         }
     }
 
+    @VisibleForTesting
+    public void clear() {
+        readyTable.clear();
+        maxid.set(1);
+    }
+
+    @VisibleForTesting
+    public Map<Long, DAGTask> getReadyTable() {
+        return readyTable;
+    }
+
     public long submitJob(long jobId) {
         long taskId = generateTaskId();
         submitTask(jobId, taskId);
@@ -107,10 +127,17 @@ public class TaskScheduler implements Scheduler {
         return taskId;
     }
 
+    @VisibleForTesting
+    public void setEnableTest() {
+        enableTest = true;
+    }
+
     private void submitTask(long jobId, long taskId) {
         // 1. insert new task to DB
-        Task task = createNewTask(jobId, taskId);
-        taskMapper.insert(task);
+        if (!enableTest) {
+            Task task = createNewTask(jobId, taskId);
+            taskMapper.insert(task);
+        }
 
         // 2. add to readyTable
         readyTable.put(taskId, new DAGTask(jobId, taskId, 1));

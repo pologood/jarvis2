@@ -3,8 +3,9 @@
  * Copyright (c) 2010-2015 All Rights Reserved.
  *
  * Author: guangming
- * Create Date: 2015年9月8日 下午8:03:32
+ * Create Date: 2015年9月10日 下午5:59:07
  */
+
 package com.mogujie.jarvis.server.scheduler.dag;
 
 import org.junit.After;
@@ -14,27 +15,30 @@ import org.junit.Test;
 
 import com.google.common.collect.Sets;
 import com.mogujie.jarvis.server.scheduler.JobScheduleType;
+import com.mogujie.jarvis.server.scheduler.dag.event.SuccessEvent;
+import com.mogujie.jarvis.server.scheduler.dag.event.TimeReadyEvent;
 import com.mogujie.jarvis.server.scheduler.dag.job.DAGJob;
 import com.mogujie.jarvis.server.scheduler.dag.job.DAGJobFactory;
 import com.mogujie.jarvis.server.scheduler.dag.status.CachedDependStatus;
-
+import com.mogujie.jarvis.server.scheduler.task.TaskScheduler;
 
 /**
  * @author guangming
  *
  */
 public class TestDAGScheduler {
-
     private DAGJob jobA;
     private DAGJob jobB;
     private DAGJob jobC;
-    private DAGScheduler scheduler = DAGScheduler.getInstance();
+    private DAGScheduler dagScheduler = DAGScheduler.getInstance();
+    private TaskScheduler taskScheduler = TaskScheduler.getInstance();
 
     @Before
     public void setup() throws Exception {
+        taskScheduler.setEnableTest();
         jobA = DAGJobFactory.createDAGJob(JobScheduleType.CRONTAB, 1,
                 new CachedDependStatus(), JobDependencyStrategy.ALL);
-        jobB = DAGJobFactory.createDAGJob(JobScheduleType.DEPENDENCY, 2,
+        jobB = DAGJobFactory.createDAGJob(JobScheduleType.CRONTAB, 2,
                 new CachedDependStatus(), JobDependencyStrategy.ALL);
         jobC = DAGJobFactory.createDAGJob(JobScheduleType.DEPENDENCY, 3,
                 new CachedDependStatus(), JobDependencyStrategy.ALL);
@@ -42,7 +46,8 @@ public class TestDAGScheduler {
 
     @After
     public void tearDown() throws Exception {
-        scheduler.clear();
+        dagScheduler.clear();
+        taskScheduler.clear();
     }
 
     /**
@@ -51,126 +56,26 @@ public class TestDAGScheduler {
      *     C
      */
     @Test
-    public void testAddJob1() {
-        scheduler.addJob(jobA.getJobId(), jobA, null);
-        scheduler.addJob(jobB.getJobId(), jobB, null);
-        scheduler.addJob(jobC.getJobId(), jobC, Sets.newHashSet(jobA.getJobId(),jobB.getJobId()));
-        Assert.assertEquals(1, jobA.getChildren().size());
-        Assert.assertEquals(3, jobA.getChildren().get(0).getJobId());
-        Assert.assertEquals(1, jobB.getChildren().size());
-        Assert.assertEquals(3, jobB.getChildren().get(0).getJobId());
-        Assert.assertEquals(2, jobC.getParents().size());
+    public void testHandleSuccessEvent() throws Exception {
+        dagScheduler.addJob(jobA.getJobId(), jobA, null);
+        dagScheduler.addJob(jobB.getJobId(), jobB, null);
+        dagScheduler.addJob(jobC.getJobId(), jobC, Sets.newHashSet(jobA.getJobId(),jobB.getJobId()));
+        // jobA time ready
+        TimeReadyEvent timeEventA = new TimeReadyEvent(jobA.getJobId());
+        dagScheduler.handleTimeReadyEvent(timeEventA);
+        Assert.assertEquals(1, taskScheduler.getReadyTable().size());
+        // jobB time ready
+        TimeReadyEvent timeEventB = new TimeReadyEvent(jobB.getJobId());
+        dagScheduler.handleTimeReadyEvent(timeEventB);
+        Assert.assertEquals(2, taskScheduler.getReadyTable().size());
+        // jobA success
+        SuccessEvent eventA = new SuccessEvent(jobA.getJobId(), 1);
+        dagScheduler.handleSuccessEvent(eventA);
+        // jobB success
+        SuccessEvent eventB = new SuccessEvent(jobB.getJobId(), 2);
+        dagScheduler.handleSuccessEvent(eventB);
+        // jobC run
+        Assert.assertEquals(3, taskScheduler.getReadyTable().size());
+
     }
-
-    /**
-     *     A
-     *    / \
-     *   B   C
-     */
-    @Test
-    public void testAddJob2() {
-        scheduler.addJob(jobA.getJobId(), jobA, null);
-        scheduler.addJob(jobB.getJobId(), jobB, Sets.newHashSet(jobA.getJobId()));
-        scheduler.addJob(jobC.getJobId(), jobC, Sets.newHashSet(jobA.getJobId()));
-        Assert.assertEquals(2, jobA.getChildren().size());
-        Assert.assertEquals(1, jobB.getParents().size());
-        Assert.assertEquals(1, jobB.getParents().get(0).getJobId());
-        Assert.assertEquals(1, jobC.getParents().size());
-        Assert.assertEquals(1, jobC.getParents().get(0).getJobId());
-    }
-
-    /**
-     *   A   B        A
-     *    \ /   -->   |
-     *     C          C
-     */
-    @Test
-    public void testRemoveJob1() {
-        scheduler.addJob(jobA.getJobId(), jobA, null);
-        scheduler.addJob(jobB.getJobId(), jobB, null);
-        scheduler.addJob(jobC.getJobId(), jobC, Sets.newHashSet(jobA.getJobId(),jobB.getJobId()));
-        Assert.assertEquals(1, jobA.getChildren().size());
-        Assert.assertEquals(3, jobA.getChildren().get(0).getJobId());
-        Assert.assertEquals(1, jobB.getChildren().size());
-        Assert.assertEquals(3, jobB.getChildren().get(0).getJobId());
-        Assert.assertEquals(2, jobC.getParents().size());
-
-        scheduler.removeJob(jobB.getJobId());
-        Assert.assertEquals(1, jobA.getChildren().size());
-        Assert.assertEquals(3, jobA.getChildren().get(0).getJobId());
-        Assert.assertEquals(1, jobC.getParents().size());
-        Assert.assertEquals(1, jobC.getParents().get(0).getJobId());
-    }
-
-    /**
-     *   A   B
-     *    \ /   -->  A  B
-     *     C
-     */
-    @Test
-    public void testRemoveJob2() {
-        scheduler.addJob(jobA.getJobId(), jobA, null);
-        scheduler.addJob(jobB.getJobId(), jobB, null);
-        scheduler.addJob(jobC.getJobId(), jobC, Sets.newHashSet(jobA.getJobId(),jobB.getJobId()));
-        Assert.assertEquals(1, jobA.getChildren().size());
-        Assert.assertEquals(3, jobA.getChildren().get(0).getJobId());
-        Assert.assertEquals(1, jobB.getChildren().size());
-        Assert.assertEquals(3, jobB.getChildren().get(0).getJobId());
-        Assert.assertEquals(2, jobC.getParents().size());
-
-        scheduler.removeJob(jobC.getJobId());
-        Assert.assertEquals(0, jobA.getChildren().size());
-        Assert.assertEquals(0, jobB.getChildren().size());
-        Assert.assertEquals(0, jobC.getParents().size());
-    }
-
-    /**
-     *     A
-     *    / \   -->  B  C
-     *   B   C
-     */
-    @Test
-    public void testRemoveJob3() {
-        scheduler.addJob(jobA.getJobId(), jobA, null);
-        scheduler.addJob(jobB.getJobId(), jobB, Sets.newHashSet(jobA.getJobId()));
-        scheduler.addJob(jobC.getJobId(), jobC, Sets.newHashSet(jobA.getJobId()));
-        Assert.assertEquals(2, jobA.getChildren().size());
-        Assert.assertEquals(1, jobB.getParents().size());
-        Assert.assertEquals(1, jobB.getParents().get(0).getJobId());
-        Assert.assertEquals(1, jobC.getParents().size());
-        Assert.assertEquals(1, jobC.getParents().get(0).getJobId());
-
-        scheduler.removeJob(jobA.getJobId());
-        Assert.assertEquals(0, jobA.getChildren().size());
-        Assert.assertEquals(0, jobB.getParents().size());
-        Assert.assertEquals(0, jobC.getParents().size());
-    }
-
-    /**
-     *     A
-     *     |           A
-     *     B   -->    / \
-     *     |         B   C
-     *     C
-     */
-    @Test
-    public void testModifyDependency() {
-        scheduler.addJob(jobA.getJobId(), jobA, null);
-        scheduler.addJob(jobB.getJobId(), jobB, null);
-        scheduler.addJob(jobC.getJobId(), jobC, null);
-
-        scheduler.addDependency(jobA.getJobId(), jobB.getJobId());
-        scheduler.addDependency(jobB.getJobId(), jobC.getJobId());
-        Assert.assertEquals(1, jobA.getChildren().size());
-        Assert.assertEquals(jobB.getJobId(), jobA.getChildren().get(0).getJobId());
-        Assert.assertEquals(1, jobB.getParents().size());
-        Assert.assertEquals(jobA.getJobId(), jobB.getParents().get(0).getJobId());
-        Assert.assertEquals(1, jobB.getChildren().size());
-        Assert.assertEquals(jobC.getJobId(), jobB.getChildren().get(0).getJobId());
-
-        scheduler.removeDependency(jobB.getJobId(), jobC.getJobId());
-        scheduler.addDependency(jobA.getJobId(), jobC.getJobId());
-        Assert.assertEquals(2, jobA.getChildren().size());
-    }
-
 }
