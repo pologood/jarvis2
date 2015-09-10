@@ -8,6 +8,9 @@
 
 package com.mogujie.jarvis.server.actor;
 
+import com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest;
+
+import akka.actor.Props;
 import akka.actor.UntypedActor;
 
 /**
@@ -16,10 +19,18 @@ import akka.actor.UntypedActor;
  */
 public class LogWriteActor extends UntypedActor {
 
-    @Override
-    public void onReceive(Object arg0) throws Exception {
-        // TODO Auto-generated method stub
+    public static Props props() {
+        return Props.create(LogWriteActor.class);
+    }
 
+    @Override
+    public void onReceive(Object obj) throws Exception {
+        // TODO Auto-generated method stub
+        if (obj instanceof WorkerWriteLogRequest) {
+
+        } else {
+            unhandled(obj);
+        }
     }
 
 }

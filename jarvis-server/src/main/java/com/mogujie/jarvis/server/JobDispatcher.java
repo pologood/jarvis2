@@ -19,4 +19,8 @@ public enum JobDispatcher {
         return INSTANCE;
     }
 
+    public void submit() {
+
+    }
+
 }

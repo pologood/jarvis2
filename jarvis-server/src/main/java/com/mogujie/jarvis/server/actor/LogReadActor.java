@@ -8,6 +8,9 @@
 
 package com.mogujie.jarvis.server.actor;
 
+import com.mogujie.jarvis.protocol.ReadLogProtos.RestServerReadLogRequest;
+
+import akka.actor.Props;
 import akka.actor.UntypedActor;
 
 /**
@@ -16,10 +19,18 @@ import akka.actor.UntypedActor;
  */
 public class LogReadActor extends UntypedActor {
 
-    @Override
-    public void onReceive(Object arg0) throws Exception {
-        // TODO Auto-generated method stub
+    public static Props props() {
+        return Props.create(LogReadActor.class);
+    }
 
+    @Override
+    public void onReceive(Object obj) throws Exception {
+        // TODO Auto-generated method stub
+        if (obj instanceof RestServerReadLogRequest) {
+
+        } else {
+            unhandled(obj);
+        }
     }
 
 }
