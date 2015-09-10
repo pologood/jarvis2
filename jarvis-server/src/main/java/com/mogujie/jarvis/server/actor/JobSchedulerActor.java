@@ -8,10 +8,12 @@
 
 package com.mogujie.jarvis.server.actor;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.inject.Named;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 
 import akka.actor.UntypedActor;
@@ -40,6 +42,7 @@ import com.mogujie.jarvis.server.scheduler.dag.event.SuccessEvent;
 import com.mogujie.jarvis.server.scheduler.dag.event.UnhandleEvent;
 import com.mogujie.jarvis.server.scheduler.task.TaskScheduler;
 import com.mogujie.jarvis.server.scheduler.time.TimeScheduler;
+import com.mogujie.jarvis.server.service.CrontabService;
 
 /**
  * Actor used to schedule job with three schedulers (
@@ -53,11 +56,16 @@ import com.mogujie.jarvis.server.scheduler.time.TimeScheduler;
 @Named("JobSchedulerActor")
 @Scope("prototype")
 public class JobSchedulerActor extends UntypedActor implements Observable {
+    @Autowired
+    private TimeScheduler timeScheduler;
+    @Autowired
+    private DAGScheduler dagScheduler;
+    @Autowired
+    private TaskScheduler taskScheduler;
+    @Autowired
+    private CrontabService cronService;
 
     private EventBus eventBus = new EventBus("JobSchedulerActor");
-    private TimeScheduler timeScheduler = TimeScheduler.getInstance();
-    private DAGScheduler dagScheduler = DAGScheduler.getInstance();
-    private TaskScheduler taskScheduler = TaskScheduler.getInstance();
 
     @Override
     public void preStart() throws Exception {
@@ -93,9 +101,24 @@ public class JobSchedulerActor extends UntypedActor implements Observable {
             RestServerSubmitJobRequest msg = (RestServerSubmitJobRequest)obj;
             Job job = SchedulerUtil.convert2Job(msg);
             Set<Long> needDependencies = Sets.newHashSet();
-            needDependencies.addAll(msg.getDependencyJobidsList());
-            // TODO get scheduler type from DB.contab
-            JobScheduleType type = JobScheduleType.CRONTAB;
+            if (msg.getDependencyJobidsList() != null) {
+                needDependencies.addAll(msg.getDependencyJobidsList());
+            }
+            JobScheduleType type;
+            List<Long> cronIds = cronService.getCronIds(job.getJobId());
+            if (cronIds != null && !cronIds.isEmpty()) {
+                if (!needDependencies.isEmpty()) {
+                    type = JobScheduleType.CRON_DEPEND;
+                } else {
+                    type = JobScheduleType.CRONTAB;
+                }
+            } else {
+                if (!needDependencies.isEmpty()) {
+                    type = JobScheduleType.DEPENDENCY;
+                } else {
+                    type = JobScheduleType.OTHER;
+                }
+            }
             JobDependencyStrategy strategy = JobDependencyStrategy.ALL;
             JobDescriptor jobDesc = new JobDescriptor(job, needDependencies, type, strategy);
             event = new AddJobEvent(-1, jobDesc);

@@ -16,6 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.configuration.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.eventbus.Subscribe;
@@ -47,11 +48,12 @@ import com.mogujie.jarvis.server.scheduler.task.TaskScheduler;
  * @author guangming
  *
  */
+@Service
 public class DAGScheduler implements Scheduler {
-
+    @Autowired
+    private TaskScheduler taskScheduler;
     @Autowired
     JobMapper jobMapper;
-
     @Autowired
     JobDependMapper jobDependMapper;
 
@@ -61,7 +63,6 @@ public class DAGScheduler implements Scheduler {
         return instance;
     }
 
-    private TaskScheduler taskScheduler = TaskScheduler.getInstance();
     private Configuration conf = ConfigUtils.getServerConfig();
     private Map<Long, DAGJob> waitingTable = new ConcurrentHashMap<Long, DAGJob>();
 

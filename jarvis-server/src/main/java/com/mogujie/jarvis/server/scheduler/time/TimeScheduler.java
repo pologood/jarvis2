@@ -8,6 +8,8 @@
 
 package com.mogujie.jarvis.server.scheduler.time;
 
+import org.springframework.stereotype.Service;
+
 import com.mogujie.jarvis.server.scheduler.InitEvent;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
 import com.mogujie.jarvis.server.scheduler.StopEvent;
@@ -19,13 +21,8 @@ import com.mogujie.jarvis.server.scheduler.StopEvent;
  * @author guangming
  *
  */
+@Service
 public class TimeScheduler implements Scheduler {
-
-    private static TimeScheduler instance = new TimeScheduler();
-    private TimeScheduler() {}
-    public static TimeScheduler getInstance() {
-        return instance;
-    }
 
     @Override
     public void handleInitEvent(InitEvent event) {
