@@ -52,16 +52,12 @@ import com.mogujie.jarvis.server.scheduler.task.TaskScheduler;
 public class DAGScheduler implements Scheduler {
     @Autowired
     private TaskScheduler taskScheduler;
+
     @Autowired
     JobMapper jobMapper;
+
     @Autowired
     JobDependMapper jobDependMapper;
-
-    private static DAGScheduler instance = new DAGScheduler();
-    private DAGScheduler() {}
-    public static DAGScheduler getInstance() {
-        return instance;
-    }
 
     private Configuration conf = ConfigUtils.getServerConfig();
     private Map<Long, DAGJob> waitingTable = new ConcurrentHashMap<Long, DAGJob>();

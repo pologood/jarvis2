@@ -8,6 +8,9 @@
 
 package com.mogujie.jarvis.server.scheduler.dag.status;
 
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import com.mogujie.jarvis.server.scheduler.dag.JobDependencyStrategy;
@@ -38,15 +41,64 @@ public abstract class AbstractDependStatus {
     /**
      * return true if finished all jobs
      */
-    public abstract boolean isFinishAllJob(JobDependencyStrategy strategy, Set<Long> needJobs);
+    public boolean isFinishAllJob(JobDependencyStrategy strategy, Set<Long> needJobs) {
+        boolean finishDependencies = true;
+        for (long jobId : needJobs) {
+            if (!isFinishOneJob(getJobStatusMap(), strategy, jobId)) {
+                finishDependencies = false;
+                break;
+            }
+        }
+        return finishDependencies;
+    }
+
+    protected abstract Map<Long, Map<Long, Boolean>> getJobStatusMap();
+
+    protected boolean isFinishOneJob(Map<Long, Map<Long, Boolean>> jobStatusMap,
+            JobDependencyStrategy strategy, Long jobId) {
+        boolean finishDependency = false;
+        Map<Long, Boolean> taskStatusMap = jobStatusMap.get(jobId);
+        // 多个执行计划中任意一次成功即算成功
+        if (strategy.equals(JobDependencyStrategy.ANYONE)) {
+            for (Map.Entry<Long, Boolean> entry : taskStatusMap.entrySet()) {
+                if (entry.getValue() == true) {
+                    finishDependency = true;
+                    break;
+                }
+            }
+        } else if (strategy.equals(JobDependencyStrategy.LASTONE)) {
+            // 多个执行计划中最后一次成功算成功
+            Iterator<Entry<Long, Boolean>> it = taskStatusMap.entrySet().iterator();
+            Map.Entry<Long, Boolean> entry = null;
+            while (it.hasNext()) {
+                entry = it.next();
+            }
+            if (entry != null && entry.getValue() == true) {
+                finishDependency = true;
+            }
+        } else if (strategy.equals(JobDependencyStrategy.ALL)) {
+            // 多个执行计划中所有都成功才算成功
+            for (Map.Entry<Long, Boolean> entry : taskStatusMap.entrySet()) {
+                if (entry.getValue() == false) {
+                    finishDependency = false;
+                    break;
+                }
+            }
+        }
+
+        return finishDependency;
+    }
 
     /**
      * reset dependency status
      */
     public abstract void reset();
 
+    public long getMyJobId() {
+        return myjobId;
+    }
+
     public void setMyjobId(long jobId) {
         this.myjobId = jobId;
     }
-
 }

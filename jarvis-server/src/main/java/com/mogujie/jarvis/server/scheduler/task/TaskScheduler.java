@@ -40,8 +40,10 @@ import com.mogujie.jarvis.server.service.TaskService;
 public class TaskScheduler implements Scheduler {
     @Autowired
     JobMapper jobMapper;
+
     @Autowired
     TaskMapper taskMapper;
+
     @Autowired
     TaskService taskService;
 

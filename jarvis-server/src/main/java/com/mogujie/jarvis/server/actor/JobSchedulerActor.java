@@ -58,10 +58,13 @@ import com.mogujie.jarvis.server.service.CrontabService;
 public class JobSchedulerActor extends UntypedActor implements Observable {
     @Autowired
     private TimeScheduler timeScheduler;
+
     @Autowired
     private DAGScheduler dagScheduler;
+
     @Autowired
     private TaskScheduler taskScheduler;
+
     @Autowired
     private CrontabService cronService;
 
