@@ -21,6 +21,10 @@
 			<property name="useActualColumnNames" value="true" />
 		</table>
 
+        <table schema="jarvis2" tableName="job_depend_status">
+            <property name="useActualColumnNames" value="true" />
+        </table>
+
         <table schema="jarvis2" tableName="crontab">
             <property name="useActualColumnNames" value="true" />
         </table>
