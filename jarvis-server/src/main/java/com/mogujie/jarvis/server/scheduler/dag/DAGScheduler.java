@@ -59,6 +59,13 @@ public class DAGScheduler implements Scheduler {
     @Autowired
     JobDependMapper jobDependMapper;
 
+    // for testing
+    private static DAGScheduler instance = new DAGScheduler();
+    private DAGScheduler() {}
+    public static DAGScheduler getInstance() {
+        return instance;
+    }
+
     private Configuration conf = ConfigUtils.getServerConfig();
     private Map<Long, DAGJob> waitingTable = new ConcurrentHashMap<Long, DAGJob>();
 
