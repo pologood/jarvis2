@@ -12,8 +12,10 @@ package com.mogujie.jarvis.core.domain;
  *
  */
 public enum JobType {
+
+    HIVE_SQL("hive_sql"),
+    HIVE_SCRIPT("hive_script"),
     SHELL("shell"),
-    HIVE("hive"),
     PRESTO("presto");
 
     private String value;
