@@ -16,11 +16,19 @@ public class DAGTask {
     private long jobId;
     private long taskId;
     private int failedTimes;
+    private int maxFailedAttempts;
+    private int failedInterval;
+
+    public DAGTask(long jobId, long taskId) {
+        this(jobId, taskId, 0);
+    }
 
     public DAGTask(long jobId, long taskId, int failedTimes) {
         this.jobId = jobId;
         this.taskId = taskId;
         this.failedTimes = failedTimes;
+        this.maxFailedAttempts = 3;
+        this.failedInterval = 1000;
     }
 
     public long getJobId() {
@@ -45,5 +53,21 @@ public class DAGTask {
 
     public void setFailedTimes(int failedTimes) {
         this.failedTimes = failedTimes;
+    }
+
+    public int getMaxFailedAttempts() {
+        return maxFailedAttempts;
+    }
+
+    public void setMaxFailedAttempts(int maxFailedAttempts) {
+        this.maxFailedAttempts = maxFailedAttempts;
+    }
+
+    public int getFailedInterval() {
+        return failedInterval;
+    }
+
+    public void setFailedInterval(int failedInterval) {
+        this.failedInterval = failedInterval;
     }
 }

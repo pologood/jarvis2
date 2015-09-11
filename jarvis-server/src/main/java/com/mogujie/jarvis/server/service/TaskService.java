@@ -10,9 +10,11 @@ package com.mogujie.jarvis.server.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mogujie.jarvis.core.domain.JobStatus;
+import com.mogujie.jarvis.dao.TaskMapper;
 import com.mogujie.jarvis.dto.Task;
 
 /**
@@ -21,8 +23,17 @@ import com.mogujie.jarvis.dto.Task;
  */
 @Service
 public class TaskService {
+    @Autowired
+    TaskMapper taskMapper;
+
     public List<Task> getTasksByStatus(JobStatus status) {
         // TODO
         return null;
+    }
+
+    public void updateStatus(long taskId, JobStatus status) {
+        Task task = taskMapper.selectByPrimaryKey(taskId);
+        task.setStatus((byte)status.getValue());
+        taskMapper.updateByPrimaryKey(task);
     }
 }

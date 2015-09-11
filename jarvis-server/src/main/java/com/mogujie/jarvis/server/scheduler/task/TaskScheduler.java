@@ -60,7 +60,6 @@ public class TaskScheduler implements Scheduler {
     private AtomicLong maxid = new AtomicLong(1);
     // 在这里做并发度控制？
     private int concurrentNum = 70;
-    boolean enableTest = false;
 
     @Override
     public void handleInitEvent(InitEvent event) {
@@ -71,7 +70,6 @@ public class TaskScheduler implements Scheduler {
                 readyTable.put(task.getTaskId(), dagTask);
             }
         }
-
     }
 
     @Override
@@ -81,28 +79,29 @@ public class TaskScheduler implements Scheduler {
 
     @Subscribe
     public void handleSuccessEvent(SuccessEvent e) {
-        // TODO 1. store success status to DB
-
+        long taskId = e.getTaskId();
+        // 1. store success status to DB
+        taskService.updateStatus(taskId, JobStatus.SUCCESS);
         // 2. remove from ready table
-        readyTable.remove(e.getTaskId());
+        readyTable.remove(taskId);
     }
 
     @Subscribe
     public void handleFailedEvent(FailedEvent e) {
-        long jobId = e.getJobId();
         long taskId = e.getTaskId();
         DAGTask dagTask = readyTable.get(e.getTaskId());
         if (dagTask != null) {
-            Job job = jobMapper.selectByPrimaryKey(jobId);
             int failedTimes = dagTask.getFailedTimes();
-            if (failedTimes < job.getFailedAttempts()) {
-                failedTimes++;
+            failedTimes++;
+            if (failedTimes <= dagTask.getMaxFailedAttempts()) {
                 dagTask.setFailedTimes(failedTimes);
-                ThreadUtils.sleep(job.getFailedInterval());
-                submitTask(jobId, taskId);
+                ThreadUtils.sleep(dagTask.getFailedInterval());
+                submitTask(dagTask);
             } else {
-                // TODO 1. store success status to DB
-
+                // 1. store failed status to DB
+                if (taskService != null) {
+                    taskService.updateStatus(taskId, JobStatus.FAILED);
+                }
                 // 2. remove from ready table
                 readyTable.remove(taskId);
             }
@@ -122,43 +121,41 @@ public class TaskScheduler implements Scheduler {
 
     public long submitJob(long jobId) {
         long taskId = generateTaskId();
-        submitTask(jobId, taskId);
-
+        submitTask(new DAGTask(jobId, taskId));
         return taskId;
     }
 
-    @VisibleForTesting
-    public void setEnableTest() {
-        enableTest = true;
-    }
-
-    private void submitTask(long jobId, long taskId) {
+    private void submitTask(DAGTask dagTask) {
         // 1. insert new task to DB
-        if (!enableTest) {
-            Task task = createNewTask(jobId, taskId);
+        if (jobMapper != null && taskMapper != null) {
+            Task task = createNewTask(dagTask.getJobId(), dagTask.getTaskId(), dagTask.getFailedTimes());
             taskMapper.insert(task);
         }
 
         // 2. add to readyTable
-        readyTable.put(taskId, new DAGTask(jobId, taskId, 1));
+        if (!readyTable.containsKey(dagTask.getTaskId())) {
+            readyTable.put(dagTask.getTaskId(), dagTask);
+            if (jobMapper != null) {
+                Job job = jobMapper.selectByPrimaryKey(dagTask.getJobId());
+                dagTask.setMaxFailedAttempts(job.getFailedAttempts());
+                dagTask.setFailedInterval(job.getFailedInterval());
+            }
+        }
     }
 
-    private Task createNewTask(long jobId, long taskId) {
-        Job job = jobMapper.selectByPrimaryKey(jobId);
+    private Task createNewTask(long jobId, long taskId, int attemptId) {
         Task task = new Task();
         task.setJobId(jobId);
         task.setTaskId(taskId);
-        task.setAttemptId(readyTable.get(taskId).getFailedTimes());
+        task.setAttemptId(attemptId);
         task.setAttemptInfo("init task");
-        task.setExecutUser(job.getExecutUser());
-        // TODO other set
-//        task.setStatus(JobStatus.READY.getValue());
+        task.setExecutUser(jobMapper.selectByPrimaryKey(jobId).getExecutUser());
+        task.setStatus((byte)JobStatus.READY.getValue());
 
         return task;
     }
 
     private long generateTaskId() {
-        return maxid.incrementAndGet();
+        return maxid.getAndIncrement();
     }
-
 }

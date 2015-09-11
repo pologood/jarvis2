@@ -15,6 +15,7 @@ import org.junit.Test;
 
 import com.google.common.collect.Sets;
 import com.mogujie.jarvis.server.scheduler.JobScheduleType;
+import com.mogujie.jarvis.server.scheduler.dag.event.FailedEvent;
 import com.mogujie.jarvis.server.scheduler.dag.event.SuccessEvent;
 import com.mogujie.jarvis.server.scheduler.dag.event.TimeReadyEvent;
 import com.mogujie.jarvis.server.scheduler.dag.job.DAGJob;
@@ -35,7 +36,6 @@ public class TestDAGScheduler {
 
     @Before
     public void setup() throws Exception {
-        taskScheduler.setEnableTest();
         jobA = DAGJobFactory.createDAGJob(JobScheduleType.CRONTAB, 1,
                 new CachedDependStatus(), JobDependencyStrategy.ALL);
         jobB = DAGJobFactory.createDAGJob(JobScheduleType.CRONTAB, 2,
@@ -56,7 +56,7 @@ public class TestDAGScheduler {
      *     C
      */
     @Test
-    public void testHandleSuccessEvent() throws Exception {
+    public void testHandleSuccessEvent1() throws Exception {
         dagScheduler.addJob(jobA.getJobId(), jobA, null);
         dagScheduler.addJob(jobB.getJobId(), jobB, null);
         dagScheduler.addJob(jobC.getJobId(), jobC, Sets.newHashSet(jobA.getJobId(),jobB.getJobId()));
@@ -76,6 +76,53 @@ public class TestDAGScheduler {
         dagScheduler.handleSuccessEvent(eventB);
         // jobC run
         Assert.assertEquals(3, taskScheduler.getReadyTable().size());
+    }
 
+    /**
+     *     A
+     *    / \
+     *   B   C
+     */
+    @Test
+    public void testHandleSuccessEvent2() throws Exception {
+        jobB = DAGJobFactory.createDAGJob(JobScheduleType.DEPENDENCY, 2,
+                new CachedDependStatus(), JobDependencyStrategy.ALL);
+        dagScheduler.addJob(jobA.getJobId(), jobA, null);
+        dagScheduler.addJob(jobB.getJobId(), jobB, Sets.newHashSet(jobA.getJobId()));
+        dagScheduler.addJob(jobC.getJobId(), jobC, Sets.newHashSet(jobA.getJobId()));
+        // jobA time ready
+        TimeReadyEvent timeEventA = new TimeReadyEvent(jobA.getJobId());
+        dagScheduler.handleTimeReadyEvent(timeEventA);
+        Assert.assertEquals(1, taskScheduler.getReadyTable().size());
+        // jobA success
+        SuccessEvent eventA = new SuccessEvent(jobA.getJobId(), 1);
+        dagScheduler.handleSuccessEvent(eventA);
+        // jobC and jobC run
+        Assert.assertEquals(3, taskScheduler.getReadyTable().size());
+    }
+
+    /**
+     *     A
+     */
+    @Test
+    public void testHandleFailedEvent() throws Exception {
+        dagScheduler.addJob(jobA.getJobId(), jobA, null);
+        // jobA time ready
+        TimeReadyEvent timeEventA = new TimeReadyEvent(jobA.getJobId());
+        dagScheduler.handleTimeReadyEvent(timeEventA);
+        Assert.assertEquals(1, taskScheduler.getReadyTable().size());
+        // failed 1
+        FailedEvent eventA = new FailedEvent(jobA.getJobId(), 1);
+        taskScheduler.handleFailedEvent(eventA);
+        Assert.assertEquals(1, taskScheduler.getReadyTable().size());
+        // failed 2
+        taskScheduler.handleFailedEvent(eventA);
+        Assert.assertEquals(1, taskScheduler.getReadyTable().size());
+        // failed 3
+        taskScheduler.handleFailedEvent(eventA);
+        Assert.assertEquals(1, taskScheduler.getReadyTable().size());
+        // failed 4
+        taskScheduler.handleFailedEvent(eventA);
+        Assert.assertEquals(0, taskScheduler.getReadyTable().size());
     }
 }
