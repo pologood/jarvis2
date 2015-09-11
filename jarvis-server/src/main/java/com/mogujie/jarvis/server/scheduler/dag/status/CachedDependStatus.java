@@ -23,16 +23,7 @@ public class CachedDependStatus extends AbstractDependStatus {
             new ConcurrentHashMap<Long, Map<Long, Boolean>>();
 
     @Override
-    public void setDependStatus(long jobId, long taskId) {
-        modifyDependStatus(jobId, taskId, true);
-    }
-
-    @Override
-    public void resetDependStatus(long jobId, long taskId) {
-        modifyDependStatus(jobId, taskId, false);
-    }
-
-    private void modifyDependStatus(long jobId, long taskId, boolean status) {
+    protected void modifyDependStatus(long jobId, long taskId, boolean status) {
         if (!jobStatusMap.containsKey(jobId)) {
             Map<Long, Boolean> taskStatusMap = new ConcurrentHashMap<Long, Boolean>();
             taskStatusMap.put(taskId, status);
@@ -55,12 +46,21 @@ public class CachedDependStatus extends AbstractDependStatus {
     }
 
     @Override
+    public void init() {
+        this.jobStatusMap = loadJobDependStatus();
+    }
+
+    @Override
     public void reset() {
         jobStatusMap.clear();
     }
 
+    @Override
     protected Map<Long, Map<Long, Boolean>> getJobStatusMap() {
         return this.jobStatusMap;
     }
 
+    protected Map<Long, Map<Long, Boolean>> loadJobDependStatus() {
+        return new ConcurrentHashMap<Long, Map<Long, Boolean>>();
+    }
 }

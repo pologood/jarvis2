@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import com.mogujie.jarvis.dao.JobDependStatusMapper;
 import com.mogujie.jarvis.dto.JobDependStatus;
+import com.mogujie.jarvis.dto.JobDependStatusKey;
 
 /**
  * @author guangming
@@ -25,8 +26,16 @@ public class DependStatusService {
     @Autowired
     private JobDependStatusMapper dependStatusMapper;
 
+    public JobDependStatus getByKey(JobDependStatusKey key) {
+        return dependStatusMapper.selectByPrimaryKey(key);
+    }
+
     public void insert(JobDependStatus record) {
         dependStatusMapper.insert(record);
+    }
+
+    public void update(JobDependStatus record) {
+        dependStatusMapper.updateByPrimaryKey(record);
     }
 
     public void delDependencyByJobId(Long myJobId, long preJobId) {

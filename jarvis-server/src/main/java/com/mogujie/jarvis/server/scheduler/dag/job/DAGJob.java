@@ -42,6 +42,7 @@ public class DAGJob implements IDAGJob {
         this.dependStrategy = dependStrategy;
         this.parents = new LinkedList<DAGJob>();
         this.children = new LinkedList<DAGJob>();
+        dependStatus.init();
     }
 
     @Override

@@ -24,14 +24,23 @@ public abstract class AbstractDependStatus {
     private long myjobId;
 
     /**
+     * init
+     */
+    public abstract void init();
+
+    /**
      * update ready dependency job status to true
      */
-    public abstract void setDependStatus(long jobId, long taskId);
+    public void setDependStatus(long jobId, long taskId) {
+        modifyDependStatus(jobId, taskId, true);
+    }
 
     /**
      * update ready dependency job status to false
      */
-    public abstract void resetDependStatus(long jobId, long taskId);
+    public void resetDependStatus(long jobId, long taskId) {
+        modifyDependStatus(jobId, taskId, false);
+    }
 
     /**
      * remove job dependency
@@ -51,6 +60,8 @@ public abstract class AbstractDependStatus {
         }
         return finishDependencies;
     }
+
+    protected abstract void modifyDependStatus(long jobId, long taskId, boolean status);
 
     protected abstract Map<Long, Map<Long, Boolean>> getJobStatusMap();
 
