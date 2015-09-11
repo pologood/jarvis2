@@ -5,7 +5,7 @@ option java_outer_classname = "ModifyWorkerStatusProtos";
 message RestServerModifyWorkerStatusRequest {
     required string ip = 1;
     required int32 port = 2;
-    required bool offline = 3;
+    required int32 status = 3;
 }
 
 message ServerModifyWorkerStatusResponse {

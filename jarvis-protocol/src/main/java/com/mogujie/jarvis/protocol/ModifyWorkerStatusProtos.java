@@ -40,14 +40,14 @@ public final class ModifyWorkerStatusProtos {
         int getPort();
 
         /**
-         * <code>required bool offline = 3;</code>
+         * <code>required int32 status = 3;</code>
          */
-        boolean hasOffline();
+        boolean hasStatus();
 
         /**
-         * <code>required bool offline = 3;</code>
+         * <code>required int32 status = 3;</code>
          */
-        boolean getOffline();
+        int getStatus();
     }
 
     /**
@@ -114,7 +114,7 @@ public final class ModifyWorkerStatusProtos {
                         }
                         case 24: {
                             bitField0_ |= 0x00000004;
-                            offline_ = input.readBool();
+                            status_ = input.readInt32();
                             break;
                         }
                     }
@@ -210,27 +210,27 @@ public final class ModifyWorkerStatusProtos {
             return port_;
         }
 
-        public static final int OFFLINE_FIELD_NUMBER = 3;
-        private boolean offline_;
+        public static final int STATUS_FIELD_NUMBER = 3;
+        private int status_;
 
         /**
-         * <code>required bool offline = 3;</code>
+         * <code>required int32 status = 3;</code>
          */
-        public boolean hasOffline() {
+        public boolean hasStatus() {
             return ((bitField0_ & 0x00000004) == 0x00000004);
         }
 
         /**
-         * <code>required bool offline = 3;</code>
+         * <code>required int32 status = 3;</code>
          */
-        public boolean getOffline() {
-            return offline_;
+        public int getStatus() {
+            return status_;
         }
 
         private void initFields() {
             ip_ = "";
             port_ = 0;
-            offline_ = false;
+            status_ = 0;
         }
 
         private byte memoizedIsInitialized = -1;
@@ -250,7 +250,7 @@ public final class ModifyWorkerStatusProtos {
                 memoizedIsInitialized = 0;
                 return false;
             }
-            if (!hasOffline()) {
+            if (!hasStatus()) {
                 memoizedIsInitialized = 0;
                 return false;
             }
@@ -267,7 +267,7 @@ public final class ModifyWorkerStatusProtos {
                 output.writeInt32(2, port_);
             }
             if (((bitField0_ & 0x00000004) == 0x00000004)) {
-                output.writeBool(3, offline_);
+                output.writeInt32(3, status_);
             }
             getUnknownFields().writeTo(output);
         }
@@ -287,7 +287,7 @@ public final class ModifyWorkerStatusProtos {
                 size += com.google.protobuf.CodedOutputStream.computeInt32Size(2, port_);
             }
             if (((bitField0_ & 0x00000004) == 0x00000004)) {
-                size += com.google.protobuf.CodedOutputStream.computeBoolSize(3, offline_);
+                size += com.google.protobuf.CodedOutputStream.computeInt32Size(3, status_);
             }
             size += getUnknownFields().getSerializedSize();
             memoizedSerializedSize = size;
@@ -417,7 +417,7 @@ public final class ModifyWorkerStatusProtos {
                 bitField0_ = (bitField0_ & ~0x00000001);
                 port_ = 0;
                 bitField0_ = (bitField0_ & ~0x00000002);
-                offline_ = false;
+                status_ = 0;
                 bitField0_ = (bitField0_ & ~0x00000004);
                 return this;
             }
@@ -458,7 +458,7 @@ public final class ModifyWorkerStatusProtos {
                 if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
                     to_bitField0_ |= 0x00000004;
                 }
-                result.offline_ = offline_;
+                result.status_ = status_;
                 result.bitField0_ = to_bitField0_;
                 onBuilt();
                 return result;
@@ -484,8 +484,8 @@ public final class ModifyWorkerStatusProtos {
                 if (other.hasPort()) {
                     setPort(other.getPort());
                 }
-                if (other.hasOffline()) {
-                    setOffline(other.getOffline());
+                if (other.hasStatus()) {
+                    setStatus(other.getStatus());
                 }
                 this.mergeUnknownFields(other.getUnknownFields());
                 return this;
@@ -500,7 +500,7 @@ public final class ModifyWorkerStatusProtos {
 
                     return false;
                 }
-                if (!hasOffline()) {
+                if (!hasStatus()) {
 
                     return false;
                 }
@@ -638,38 +638,38 @@ public final class ModifyWorkerStatusProtos {
                 return this;
             }
 
-            private boolean offline_;
+            private int status_;
 
             /**
-             * <code>required bool offline = 3;</code>
+             * <code>required int32 status = 3;</code>
              */
-            public boolean hasOffline() {
+            public boolean hasStatus() {
                 return ((bitField0_ & 0x00000004) == 0x00000004);
             }
 
             /**
-             * <code>required bool offline = 3;</code>
+             * <code>required int32 status = 3;</code>
              */
-            public boolean getOffline() {
-                return offline_;
+            public int getStatus() {
+                return status_;
             }
 
             /**
-             * <code>required bool offline = 3;</code>
+             * <code>required int32 status = 3;</code>
              */
-            public Builder setOffline(boolean value) {
+            public Builder setStatus(int value) {
                 bitField0_ |= 0x00000004;
-                offline_ = value;
+                status_ = value;
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>required bool offline = 3;</code>
+             * <code>required int32 status = 3;</code>
              */
-            public Builder clearOffline() {
+            public Builder clearStatus() {
                 bitField0_ = (bitField0_ & ~0x00000004);
-                offline_ = false;
+                status_ = 0;
                 onChanged();
                 return this;
             }
@@ -1115,10 +1115,10 @@ public final class ModifyWorkerStatusProtos {
 
     static {
         java.lang.String[] descriptorData = {
-                "\n\032modify_worker_status.proto\"P\n#RestServ" + "erModifyWorkerStatusRequest\022\n\n\002ip\030\001 \002(\t\022"
-                        + "\014\n\004port\030\002 \002(\005\022\017\n\007offline\030\003 \002(\010\"3\n Server"
-                        + "ModifyWorkerStatusResponse\022\017\n\007success\030\001 " + "\002(\010B7\n\033com.mogujie.jarvis.protocolB\030Modi"
-                        + "fyWorkerStatusProtos" };
+                "\n\032modify_worker_status.proto\"O\n#RestServ" + "erModifyWorkerStatusRequest\022\n\n\002ip\030\001 \002(\t\022"
+                        + "\014\n\004port\030\002 \002(\005\022\016\n\006status\030\003 \002(\005\"3\n ServerM"
+                        + "odifyWorkerStatusResponse\022\017\n\007success\030\001 \002" + "(\010B7\n\033com.mogujie.jarvis.protocolB\030Modif"
+                        + "yWorkerStatusProtos" };
         com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner = new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
             public com.google.protobuf.ExtensionRegistry assignDescriptors(com.google.protobuf.Descriptors.FileDescriptor root) {
                 descriptor = root;
@@ -1129,7 +1129,7 @@ public final class ModifyWorkerStatusProtos {
                 new com.google.protobuf.Descriptors.FileDescriptor[] {}, assigner);
         internal_static_RestServerModifyWorkerStatusRequest_descriptor = getDescriptor().getMessageTypes().get(0);
         internal_static_RestServerModifyWorkerStatusRequest_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-                internal_static_RestServerModifyWorkerStatusRequest_descriptor, new java.lang.String[] { "Ip", "Port", "Offline", });
+                internal_static_RestServerModifyWorkerStatusRequest_descriptor, new java.lang.String[] { "Ip", "Port", "Status", });
         internal_static_ServerModifyWorkerStatusResponse_descriptor = getDescriptor().getMessageTypes().get(1);
         internal_static_ServerModifyWorkerStatusResponse_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
                 internal_static_ServerModifyWorkerStatusResponse_descriptor, new java.lang.String[] { "Success", });

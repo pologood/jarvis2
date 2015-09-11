@@ -20,8 +20,8 @@ message RestServerModifyJobRequest {
     optional int32 reject_interval = 13 [default = 3];
     optional int32 failed_retries = 14 [default = 0];
     optional int32 failed_interval = 15 [default = 3];
-    optional string start_time = 16;
-    optional string end_time = 17;
+    optional int64 start_time = 16;
+    optional int64 end_time = 17;
     repeated MapEntry parameters = 18;
 }
 
