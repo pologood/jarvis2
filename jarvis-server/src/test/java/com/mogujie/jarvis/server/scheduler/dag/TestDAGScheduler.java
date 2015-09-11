@@ -111,17 +111,17 @@ public class TestDAGScheduler {
         TimeReadyEvent timeEventA = new TimeReadyEvent(jobA.getJobId());
         dagScheduler.handleTimeReadyEvent(timeEventA);
         Assert.assertEquals(1, taskScheduler.getReadyTable().size());
-        // failed 1
+        // failed 1, retry
         FailedEvent eventA = new FailedEvent(jobA.getJobId(), 1);
         taskScheduler.handleFailedEvent(eventA);
         Assert.assertEquals(1, taskScheduler.getReadyTable().size());
-        // failed 2
+        // failed 2, retry
         taskScheduler.handleFailedEvent(eventA);
         Assert.assertEquals(1, taskScheduler.getReadyTable().size());
-        // failed 3
+        // failed 3, retry
         taskScheduler.handleFailedEvent(eventA);
         Assert.assertEquals(1, taskScheduler.getReadyTable().size());
-        // failed 4
+        // failed 4, remove
         taskScheduler.handleFailedEvent(eventA);
         Assert.assertEquals(0, taskScheduler.getReadyTable().size());
     }

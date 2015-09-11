@@ -15,18 +15,18 @@ package com.mogujie.jarvis.server.scheduler.task;
 public class DAGTask {
     private long jobId;
     private long taskId;
-    private int failedTimes;
+    private int attemptId;
     private int maxFailedAttempts;
     private int failedInterval;
 
     public DAGTask(long jobId, long taskId) {
-        this(jobId, taskId, 0);
+        this(jobId, taskId, 1);
     }
 
-    public DAGTask(long jobId, long taskId, int failedTimes) {
+    public DAGTask(long jobId, long taskId, int attemptId) {
         this.jobId = jobId;
         this.taskId = taskId;
-        this.failedTimes = failedTimes;
+        this.attemptId = attemptId;
         this.maxFailedAttempts = 3;
         this.failedInterval = 1000;
     }
@@ -47,12 +47,12 @@ public class DAGTask {
         this.taskId = taskId;
     }
 
-    public int getFailedTimes() {
-        return failedTimes;
+    public int getAttempId() {
+        return attemptId;
     }
 
-    public void setFailedTimes(int failedTimes) {
-        this.failedTimes = failedTimes;
+    public void setAttemptId(int attemptId) {
+        this.attemptId = attemptId;
     }
 
     public int getMaxFailedAttempts() {

@@ -8,6 +8,8 @@
 
 package com.mogujie.jarvis.server.scheduler.task;
 
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -91,10 +93,10 @@ public class TaskScheduler implements Scheduler {
         long taskId = e.getTaskId();
         DAGTask dagTask = readyTable.get(e.getTaskId());
         if (dagTask != null) {
-            int failedTimes = dagTask.getFailedTimes();
-            failedTimes++;
-            if (failedTimes <= dagTask.getMaxFailedAttempts()) {
-                dagTask.setFailedTimes(failedTimes);
+            int attemptId = dagTask.getAttempId();
+            if (attemptId <= dagTask.getMaxFailedAttempts()) {
+                attemptId++;
+                dagTask.setAttemptId(attemptId);
                 ThreadUtils.sleep(dagTask.getFailedInterval());
                 submitTask(dagTask);
             } else {
@@ -128,7 +130,7 @@ public class TaskScheduler implements Scheduler {
     private void submitTask(DAGTask dagTask) {
         // 1. insert new task to DB
         if (jobMapper != null && taskMapper != null) {
-            Task task = createNewTask(dagTask.getJobId(), dagTask.getTaskId(), dagTask.getFailedTimes());
+            Task task = createNewTask(dagTask.getJobId(), dagTask.getTaskId(), dagTask.getAttempId());
             taskMapper.insert(task);
         }
 
@@ -148,9 +150,13 @@ public class TaskScheduler implements Scheduler {
         task.setJobId(jobId);
         task.setTaskId(taskId);
         task.setAttemptId(attemptId);
-        task.setAttemptInfo("init task");
-        task.setExecutUser(jobMapper.selectByPrimaryKey(jobId).getExecutUser());
+        task.setExecuteUser(jobMapper.selectByPrimaryKey(jobId).getSubmitUser());
         task.setStatus((byte)JobStatus.READY.getValue());
+        Date currentTime = new Date();
+        DateFormat dateTimeFormat = DateFormat.getDateTimeInstance();
+        dateTimeFormat.format(currentTime);
+        task.setCreateTime(currentTime);
+        task.setUpdateTime(currentTime);
 
         return task;
     }
