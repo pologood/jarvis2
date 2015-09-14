@@ -12,6 +12,7 @@ import org.apache.commons.configuration.Configuration;
 
 import com.mogujie.jarvis.core.common.util.ReflectionUtils;
 import com.mogujie.jarvis.dto.Job;
+import com.mogujie.jarvis.protocol.ModifyJobProtos.RestServerModifyJobRequest;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitJobRequest;
 import com.mogujie.jarvis.server.scheduler.dag.status.AbstractDependStatus;
 import com.mogujie.jarvis.server.scheduler.dag.status.MysqlCachedDependStatus;
@@ -31,6 +32,12 @@ public class SchedulerUtil {
     }
 
     public static Job convert2Job(RestServerSubmitJobRequest msg) {
+        Job job = new Job();
+        // TODO
+        return job;
+    }
+
+    public static Job convert2Job(RestServerModifyJobRequest msg) {
         Job job = new Job();
         // TODO
         return job;

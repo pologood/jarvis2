@@ -8,44 +8,41 @@
 
 package com.mogujie.jarvis.server.scheduler.dag.event;
 
-import com.mogujie.jarvis.server.observer.Event;
+import java.util.Set;
+
 
 /**
  * @author guangming
  *
  */
-public class ModifyDependencyEvent implements Event {
-    long parentId;
-    long childId;
-    boolean isAddDepend;
-
-    public ModifyDependencyEvent(long parentId, long childId, boolean isAddDepend) {
-        this.parentId = parentId;
-        this.childId = childId;
-        this.isAddDepend = isAddDepend;
+public class ModifyDependencyEvent extends DAGJobEvent {
+    private Set<Long> dependencies;
+    private MODIFY_TYPE modifyType;
+    public enum MODIFY_TYPE {
+        ADD,
+        DEL,
+        MODIFY
     }
 
-    public long getParentId() {
-        return parentId;
+    public ModifyDependencyEvent(long jobId, Set<Long> dependencies, MODIFY_TYPE type) {
+       super(jobId);
+       this.dependencies = dependencies;
+       this.modifyType = type;
     }
 
-    public void setParentId(long parentId) {
-        this.parentId = parentId;
+    public Set<Long> getDependencies() {
+        return dependencies;
     }
 
-    public long getChildId() {
-        return childId;
+    public void setDependencies(Set<Long> dependencies) {
+        this.dependencies = dependencies;
     }
 
-    public void setChildId(long childId) {
-        this.childId = childId;
+    public MODIFY_TYPE getModifyType() {
+        return modifyType;
     }
 
-    public boolean isAddDepend() {
-        return isAddDepend;
-    }
-
-    public void setAddDepend(boolean isAddDepend) {
-        this.isAddDepend = isAddDepend;
+    public void setModifyType(MODIFY_TYPE modifyType) {
+        this.modifyType = modifyType;
     }
 }

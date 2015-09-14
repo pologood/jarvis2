@@ -164,6 +164,7 @@ public class TaskScheduler implements Scheduler {
         return task;
     }
 
+    // TODO 重启的时候maxid会重置
     private long generateTaskId() {
         return maxid.getAndIncrement();
     }

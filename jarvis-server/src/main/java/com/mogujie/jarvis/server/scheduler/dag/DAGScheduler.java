@@ -23,10 +23,7 @@ import com.google.common.eventbus.Subscribe;
 import com.mogujie.jarvis.core.common.util.ConfigUtils;
 import com.mogujie.jarvis.dao.JobDependMapper;
 import com.mogujie.jarvis.dao.JobMapper;
-import com.mogujie.jarvis.dto.Job;
-import com.mogujie.jarvis.dto.JobDepend;
 import com.mogujie.jarvis.server.scheduler.InitEvent;
-import com.mogujie.jarvis.server.scheduler.JobDescriptor;
 import com.mogujie.jarvis.server.scheduler.JobScheduleType;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
 import com.mogujie.jarvis.server.scheduler.SchedulerUtil;
@@ -34,6 +31,7 @@ import com.mogujie.jarvis.server.scheduler.StopEvent;
 import com.mogujie.jarvis.server.scheduler.dag.event.AddJobEvent;
 import com.mogujie.jarvis.server.scheduler.dag.event.FailedEvent;
 import com.mogujie.jarvis.server.scheduler.dag.event.ModifyDependencyEvent;
+import com.mogujie.jarvis.server.scheduler.dag.event.ModifyDependencyEvent.MODIFY_TYPE;
 import com.mogujie.jarvis.server.scheduler.dag.event.RemoveJobEvent;
 import com.mogujie.jarvis.server.scheduler.dag.event.SuccessEvent;
 import com.mogujie.jarvis.server.scheduler.dag.event.TimeReadyEvent;
@@ -86,28 +84,15 @@ public class DAGScheduler implements Scheduler {
      */
     @Subscribe
     public void handleAddJobEvent(AddJobEvent event) throws Exception {
-        JobDescriptor jobDesc = event.getJobDesc();
-        Job job = jobDesc.getJob();
-        // insert job to DB
-        jobMapper.insert(job);
-        long jobId = job.getJobId();
-        Set<Long> dependencies = jobDesc.getNeedDependencies();
-        // insert jobDepend to DB
-        for (long d : dependencies) {
-            JobDepend jobDepend = new JobDepend();
-            jobDepend.setJobId(jobId);
-            jobDepend.setPreJobId(d);
-            jobDependMapper.insert(jobDepend);
-        }
-
+        long jobId = event.getJobId();
         if (waitingTable.get(jobId) == null) {
             AbstractDependStatus jobDependStatus = SchedulerUtil.getJobDependStatus(conf);
             if (jobDependStatus != null) {
                 jobDependStatus.setMyjobId(jobId);
-                JobScheduleType scheduleType = jobDesc.getScheduleType();
+                JobScheduleType scheduleType = event.getScheduleType();
                 DAGJob dagJob = DAGJobFactory.createDAGJob(scheduleType, jobId,
                         jobDependStatus, JobDependencyStrategy.ALL);
-                addJob(jobId, dagJob, dependencies);
+                addJob(jobId, dagJob, event.getDependencies());
             }
         }
     }
@@ -166,16 +151,26 @@ public class DAGScheduler implements Scheduler {
 
     @Subscribe
     public void handleModifyDependency(ModifyDependencyEvent event) {
-        boolean isAddDependency = event.isAddDepend();
-        long parentId = event.getParentId();
-        long childId = event.getChildId();
-        if (isAddDependency) {
-            addDependency(parentId, childId);
-        } else {
-            removeDependency(parentId, childId);
-            DAGJob child = waitingTable.get(childId);
-            if (child != null) {
-                submitJobWithCheck(child);
+        MODIFY_TYPE modifyType = event.getModifyType();
+        long jobId = event.getJobId();
+        Set<Long> dependencies = event.getDependencies();
+        if (modifyType.equals(MODIFY_TYPE.ADD)) {
+            for (long d : dependencies) {
+                addDependency(d, jobId);
+            }
+        } else if (modifyType.equals(MODIFY_TYPE.DEL)) {
+            for (long d : dependencies) {
+                removeDependency(d, jobId);
+            }
+            DAGJob dagJob = waitingTable.get(jobId);
+            if (dagJob != null) {
+                submitJobWithCheck(dagJob);
+            }
+        } else if (modifyType.equals(MODIFY_TYPE.MODIFY)) {
+            DAGJob dagJob = waitingTable.get(jobId);
+            dagJob.removeParents();
+            for (long d : dependencies) {
+                addDependency(d, jobId);
             }
         }
     }
@@ -231,7 +226,7 @@ public class DAGScheduler implements Scheduler {
         List<Long> childIds = new ArrayList<Long>();
         DAGJob dagJob = waitingTable.get(jobId);
         if (dagJob != null) {
-            List<DAGJob> childJobs = dagJob.getParents();
+            List<DAGJob> childJobs = dagJob.getChildren();
             if (childJobs != null) {
                 for (DAGJob c : childJobs) {
                     childIds.add(c.getJobId());
