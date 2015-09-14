@@ -6,11 +6,12 @@
 		<artifactId>jarvis-parent</artifactId>
 		<version>2.0</version>
 	</parent>
-	<artifactId>jarvis-worker</artifactId>
-	<name>jarvis-worker</name>
+	<artifactId>jarvis-rest</artifactId>
+	<name>jarvis-rest</name>
 
 	<properties>
-		<build.finalname>jarvis-worker</build.finalname>
+		<build.finalname>jarvis-rest</build.finalname>
+		<jersey.version>2.19</jersey.version>
 	</properties>
 
 	<dependencies>
@@ -24,15 +25,17 @@
 			<artifactId>jarvis-protocol</artifactId>
 			<version>2.0</version>
 		</dependency>
+
+		<!-- Jersey -->
 		<dependency>
-			<groupId>org.fusesource</groupId>
-			<artifactId>sigar</artifactId>
-			<version>1.6.4</version>
+			<groupId>org.glassfish.jersey.containers</groupId>
+			<artifactId>jersey-container-grizzly2-http</artifactId>
+			<version>${jersey.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.mashape.unirest</groupId>
-			<artifactId>unirest-java</artifactId>
-			<version>1.4.6</version>
+			<groupId>org.glassfish.jersey.media</groupId>
+			<artifactId>jersey-media-json-jackson</artifactId>
+			<version>${jersey.version}</version>
 		</dependency>
 	</dependencies>
 

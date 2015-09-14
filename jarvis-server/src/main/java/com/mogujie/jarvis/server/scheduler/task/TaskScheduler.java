@@ -52,7 +52,10 @@ public class TaskScheduler implements Scheduler {
 
     // for testing
     private static TaskScheduler instance = new TaskScheduler();
-    private TaskScheduler() {}
+
+    private TaskScheduler() {
+    }
+
     public static TaskScheduler getInstance() {
         return instance;
     }
@@ -151,7 +154,7 @@ public class TaskScheduler implements Scheduler {
         task.setTaskId(taskId);
         task.setAttemptId(attemptId);
         task.setExecuteUser(jobMapper.selectByPrimaryKey(jobId).getSubmitUser());
-        task.setStatus((byte)JobStatus.READY.getValue());
+        task.setStatus(JobStatus.READY.getValue());
         Date currentTime = new Date();
         DateFormat dateTimeFormat = DateFormat.getDateTimeInstance();
         dateTimeFormat.format(currentTime);

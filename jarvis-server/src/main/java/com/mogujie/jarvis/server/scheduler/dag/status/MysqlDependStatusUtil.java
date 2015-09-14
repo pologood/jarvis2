@@ -22,8 +22,7 @@ import com.mogujie.jarvis.server.service.DependStatusService;
  */
 public class MysqlDependStatusUtil {
     public static Map<Long, Map<Long, Boolean>> getJobStatusMapFromDb(DependStatusService statusService, long myJobId) {
-        Map<Long, Map<Long, Boolean>> jobStatusMap =
-                new ConcurrentHashMap<Long, Map<Long, Boolean>>();
+        Map<Long, Map<Long, Boolean>> jobStatusMap = new ConcurrentHashMap<Long, Map<Long, Boolean>>();
         List<JobDependStatus> jobDependStatusList = statusService.getRecordsByMyJobId(myJobId);
         for (JobDependStatus dependStatus : jobDependStatusList) {
             long jobId = dependStatus.getPreJobId();
@@ -47,7 +46,7 @@ public class MysqlDependStatusUtil {
         jobDependStatus.setJobId(myJobId);
         jobDependStatus.setPreJobId(jobId);
         jobDependStatus.setPreTaskId(taskId);
-        jobDependStatus.setPreTaskStatus((byte)jobStatus.getValue());
+        jobDependStatus.setPreTaskStatus(jobStatus.getValue());
 
         return jobDependStatus;
     }
