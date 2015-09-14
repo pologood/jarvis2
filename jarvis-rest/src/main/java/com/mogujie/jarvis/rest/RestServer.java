@@ -14,6 +14,7 @@ import java.net.URI;
 
 import javax.ws.rs.core.UriBuilder;
 
+import com.mogujie.jarvis.rest.control.RestResource;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.glassfish.grizzly.http.server.HttpServer;
@@ -38,7 +39,7 @@ public class RestServer {
     public static void main(String[] args) throws IOException {
         LOGGER.info("Starting rest server...");
 
-        int port = ConfigUtils.getServerConfig().getInt("rest.server.http.port", 8080);
+        int port = ConfigUtils.getServerConfig().getInt("rest.http.port", 8080);
         Config config = ConfigFactory.load("akka-rest.conf");
         Config restfulConfig = ConfigUtils.getAkkaConfig().withFallback(config.getConfig("rest"));
 
@@ -53,7 +54,7 @@ public class RestServer {
         HttpServer server = GrizzlyHttpServerFactory.createHttpServer(baseUri, resourceConfig);
         server.start();
 
-        LOGGER.info("Restful server started.");
+        LOGGER.info("Rest server started.");
     }
 
 }
