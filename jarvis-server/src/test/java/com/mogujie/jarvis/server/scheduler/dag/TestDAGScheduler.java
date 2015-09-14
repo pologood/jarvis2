@@ -154,7 +154,7 @@ public class TestDAGScheduler {
      *              C
      */
     @Test
-    public void testhandleModifyJobEvent1() throws Exception {
+    public void testHandleModifyJobEvent1() throws Exception {
         AddJobEvent addEventA = new AddJobEvent(jobAId, null,
                 JobScheduleType.CRONTAB, JobDependencyStrategy.ALL);
         AddJobEvent addEventB = new AddJobEvent(jobBId, Sets.newHashSet(jobAId),
@@ -183,7 +183,7 @@ public class TestDAGScheduler {
      *     B (CRON_DEPEND)       B (DEPENDENCY)
      */
     @Test
-    public void testhandleModifyJobEvent2() throws Exception {
+    public void testHandleModifyJobEvent2() throws Exception {
         AddJobEvent addEventA = new AddJobEvent(jobAId, null,
                 JobScheduleType.CRONTAB, JobDependencyStrategy.ALL);
         AddJobEvent addEventB = new AddJobEvent(jobBId, Sets.newHashSet(jobAId),

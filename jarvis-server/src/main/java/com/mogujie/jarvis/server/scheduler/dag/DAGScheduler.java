@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.eventbus.Subscribe;
 import com.mogujie.jarvis.core.common.util.ConfigUtils;
+import com.mogujie.jarvis.dao.JobMapper;
 import com.mogujie.jarvis.dto.Job;
 import com.mogujie.jarvis.server.scheduler.InitEvent;
 import com.mogujie.jarvis.server.scheduler.JobScheduleType;
@@ -59,6 +60,9 @@ public class DAGScheduler implements Scheduler {
     @Autowired
     CrontabService cronService;
 
+    @Autowired
+    JobMapper jobMapper;
+
     // for testing
     private static DAGScheduler instance = new DAGScheduler();
     private DAGScheduler() {}
@@ -69,6 +73,7 @@ public class DAGScheduler implements Scheduler {
     private TaskScheduler taskScheduler = TaskScheduler.getInstance();
     private Configuration conf = ConfigUtils.getServerConfig();
     private Map<Long, DAGJob> waitingTable = new ConcurrentHashMap<Long, DAGJob>();
+    private static int PRIORITY_DEFAULT = 3;
 
     @Override
     public void handleInitEvent(InitEvent event) {
@@ -323,7 +328,12 @@ public class DAGScheduler implements Scheduler {
      */
     private void submitJobWithCheck(DAGJob dagJob) {
         if (dagJob.dependCheck()) {
-            taskScheduler.submitJob(dagJob.getJobId());
+            int priority = PRIORITY_DEFAULT;
+            if (jobMapper != null) {
+                Job job = jobMapper.selectByPrimaryKey(dagJob.getJobId());
+                priority = job.getPriority();
+            }
+            taskScheduler.submitJob(dagJob.getJobId(), priority);
             dagJob.resetDependStatus();
         }
     }
