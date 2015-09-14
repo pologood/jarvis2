@@ -33,7 +33,7 @@ public class TaskService {
 
     public void updateStatus(long taskId, JobStatus status) {
         Task task = taskMapper.selectByPrimaryKey(taskId);
-        task.setStatus((byte)status.getValue());
+        task.setStatus(status.getValue());
         taskMapper.updateByPrimaryKey(task);
     }
 }

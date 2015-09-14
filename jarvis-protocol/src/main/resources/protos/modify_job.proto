@@ -8,7 +8,7 @@ message RestServerModifyJobRequest {
     required int64 job_id = 1;
     optional string job_name = 2;
     optional string cron_expression = 3;
-    repeated int32 dependency_jobids = 4 [packed=true];
+    repeated int64 dependency_jobids = 4 [packed=true];
     optional string app_name = 5;
     optional string app_key = 6;
     optional string user = 7;

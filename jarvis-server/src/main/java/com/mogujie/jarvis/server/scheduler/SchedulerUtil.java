@@ -12,6 +12,7 @@ import org.apache.commons.configuration.Configuration;
 
 import com.mogujie.jarvis.core.common.util.ReflectionUtils;
 import com.mogujie.jarvis.dto.Job;
+import com.mogujie.jarvis.protocol.ModifyJobProtos.RestServerModifyJobRequest;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitJobRequest;
 import com.mogujie.jarvis.server.scheduler.dag.status.AbstractDependStatus;
 import com.mogujie.jarvis.server.scheduler.dag.status.MysqlCachedDependStatus;
@@ -30,7 +31,31 @@ public class SchedulerUtil {
         return ReflectionUtils.getInstanceByClassName(className);
     }
 
+    public static JobScheduleType getJobScheduleType(boolean hasCron, boolean hasDepend) {
+        JobScheduleType type;
+        if (hasCron) {
+            if (hasDepend) {
+                type = JobScheduleType.CRON_DEPEND;
+            } else {
+                type = JobScheduleType.CRONTAB;
+            }
+        } else {
+            if (hasDepend) {
+                type = JobScheduleType.DEPENDENCY;
+            } else {
+                type = JobScheduleType.OTHER;
+            }
+        }
+        return type;
+    }
+
     public static Job convert2Job(RestServerSubmitJobRequest msg) {
+        Job job = new Job();
+        // TODO
+        return job;
+    }
+
+    public static Job convert2Job(RestServerModifyJobRequest msg) {
         Job job = new Job();
         // TODO
         return job;

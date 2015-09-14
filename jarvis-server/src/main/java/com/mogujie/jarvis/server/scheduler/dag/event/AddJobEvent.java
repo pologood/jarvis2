@@ -8,28 +8,53 @@
 
 package com.mogujie.jarvis.server.scheduler.dag.event;
 
-import com.mogujie.jarvis.server.scheduler.JobDescriptor;
+import java.util.Set;
+
+import com.mogujie.jarvis.server.scheduler.JobScheduleType;
+import com.mogujie.jarvis.server.scheduler.dag.JobDependencyStrategy;
 
 /**
  * @author guangming
  *
  */
 public class AddJobEvent extends DAGJobEvent{
-    private JobDescriptor jobDesc;
+    private Set<Long> dependencies;
+    private JobScheduleType scheduleType;
+    private JobDependencyStrategy jobDepenStrategy;
 
     /**
      * @param long jobId
      * @param JobDescriptor jobDesc
      */
-    public AddJobEvent(long jobId, JobDescriptor jobDesc) {
+    public AddJobEvent(long jobId, Set<Long> dependencies,
+            JobScheduleType type, JobDependencyStrategy strategy) {
         super(jobId);
+        this.dependencies = dependencies;
+        this.scheduleType = type;
+        this.jobDepenStrategy = strategy;
     }
 
-    public JobDescriptor getJobDesc() {
-        return jobDesc;
+    public Set<Long> getDependencies() {
+        return dependencies;
     }
 
-    public void setJobDesc(JobDescriptor jobDesc) {
-        this.jobDesc = jobDesc;
+    public void setDependencies(Set<Long> dependencies) {
+        this.dependencies = dependencies;
+    }
+
+    public JobScheduleType getScheduleType() {
+        return scheduleType;
+    }
+
+    public void setScheduleType(JobScheduleType scheduleType) {
+        this.scheduleType = scheduleType;
+    }
+
+    public JobDependencyStrategy getJobDepenStrategy() {
+        return jobDepenStrategy;
+    }
+
+    public void setJobDepenStrategy(JobDependencyStrategy jobDepenStrategy) {
+        this.jobDepenStrategy = jobDepenStrategy;
     }
 }

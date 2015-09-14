@@ -18,15 +18,17 @@ public class DAGTask {
     private int attemptId;
     private int maxFailedAttempts;
     private int failedInterval;
+    private int priority;
 
-    public DAGTask(long jobId, long taskId) {
-        this(jobId, taskId, 1);
+    public DAGTask(long jobId, long taskId, int priority) {
+        this(jobId, taskId, 1, priority);
     }
 
-    public DAGTask(long jobId, long taskId, int attemptId) {
+    public DAGTask(long jobId, long taskId, int attemptId, int priority) {
         this.jobId = jobId;
         this.taskId = taskId;
         this.attemptId = attemptId;
+        this.priority = priority;
         this.maxFailedAttempts = 3;
         this.failedInterval = 1000;
     }
@@ -69,5 +71,13 @@ public class DAGTask {
 
     public void setFailedInterval(int failedInterval) {
         this.failedInterval = failedInterval;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
     }
 }
