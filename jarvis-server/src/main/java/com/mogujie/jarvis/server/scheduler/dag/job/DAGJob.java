@@ -151,13 +151,19 @@ public class DAGJob implements IDAGJob {
     }
 
     public void removeParents() {
+        removeParents(true);
+    }
+
+    public void removeParents(boolean removeDependStatus) {
         List<DAGJob> parents = getParents();
         Iterator<DAGJob> it = parents.iterator();
         while (it.hasNext()) {
             // 1. remove parent from myself
             DAGJob parent = it.next();
             it.remove();
-            dependStatus.removeDependency(parent.getJobId());
+            if (removeDependStatus) {
+                dependStatus.removeDependency(parent.getJobId());
+            }
             // 2. remove myself from parent
             parent.removeChild(getJobId());
         }

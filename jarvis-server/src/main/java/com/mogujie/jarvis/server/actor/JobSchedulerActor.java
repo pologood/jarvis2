@@ -39,8 +39,8 @@ import com.mogujie.jarvis.server.scheduler.dag.DAGScheduler;
 import com.mogujie.jarvis.server.scheduler.dag.JobDependencyStrategy;
 import com.mogujie.jarvis.server.scheduler.dag.event.AddJobEvent;
 import com.mogujie.jarvis.server.scheduler.dag.event.FailedEvent;
-import com.mogujie.jarvis.server.scheduler.dag.event.ModifyDependencyEvent;
-import com.mogujie.jarvis.server.scheduler.dag.event.ModifyDependencyEvent.MODIFY_TYPE;
+import com.mogujie.jarvis.server.scheduler.dag.event.ModifyJobEvent;
+import com.mogujie.jarvis.server.scheduler.dag.event.ModifyJobEvent.MODIFY_TYPE;
 import com.mogujie.jarvis.server.scheduler.dag.event.RemoveJobEvent;
 import com.mogujie.jarvis.server.scheduler.dag.event.SuccessEvent;
 import com.mogujie.jarvis.server.scheduler.dag.event.UnhandleEvent;
@@ -132,21 +132,9 @@ public class JobSchedulerActor extends UntypedActor implements Observable {
                 jobDependMapper.insert(jobDepend);
             }
             // 3. get jobScheduleType
-            JobScheduleType type;
-            String crontab = msg.getCronExpression();
-            if (crontab != null) {
-                if (!needDependencies.isEmpty()) {
-                    type = JobScheduleType.CRON_DEPEND;
-                } else {
-                    type = JobScheduleType.CRONTAB;
-                }
-            } else {
-                if (!needDependencies.isEmpty()) {
-                    type = JobScheduleType.DEPENDENCY;
-                } else {
-                    type = JobScheduleType.OTHER;
-                }
-            }
+            boolean hasCron = (msg.getCronExpression() != null);
+            boolean hasDepend = (!needDependencies.isEmpty());
+            JobScheduleType type = SchedulerUtil.getJobScheduleType(hasCron, hasDepend);
             // 4. get JobDependencyStrategy
             JobDependencyStrategy strategy = JobDependencyStrategy.ALL;
             event = new AddJobEvent(jobId, needDependencies, type, strategy);
@@ -168,7 +156,8 @@ public class JobSchedulerActor extends UntypedActor implements Observable {
                 jobDepend.setPreJobId(d);
                 jobDependMapper.insert(jobDepend);
             }
-            event = new ModifyDependencyEvent(jobId, needDependencies, MODIFY_TYPE.MODIFY);
+            boolean hasCron = (msg.getCronExpression() != null);
+            event = new ModifyJobEvent(jobId, needDependencies, MODIFY_TYPE.MODIFY, hasCron);
         } else if (obj instanceof RestServerDeleteJobRequest) {
             RestServerDeleteJobRequest msg = (RestServerDeleteJobRequest)obj;
             long jobId = msg.getJobId();

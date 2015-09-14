@@ -15,19 +15,22 @@ import java.util.Set;
  * @author guangming
  *
  */
-public class ModifyDependencyEvent extends DAGJobEvent {
-    private Set<Long> dependencies;
-    private MODIFY_TYPE modifyType;
+public class ModifyJobEvent extends DAGJobEvent {
     public enum MODIFY_TYPE {
         ADD,
         DEL,
         MODIFY
     }
 
-    public ModifyDependencyEvent(long jobId, Set<Long> dependencies, MODIFY_TYPE type) {
+    private Set<Long> dependencies;
+    private MODIFY_TYPE modifyType;
+    private boolean hasCron;
+
+    public ModifyJobEvent(long jobId, Set<Long> dependencies, MODIFY_TYPE type, boolean hasCron) {
        super(jobId);
        this.dependencies = dependencies;
        this.modifyType = type;
+       this.hasCron = hasCron;
     }
 
     public Set<Long> getDependencies() {
@@ -44,5 +47,13 @@ public class ModifyDependencyEvent extends DAGJobEvent {
 
     public void setModifyType(MODIFY_TYPE modifyType) {
         this.modifyType = modifyType;
+    }
+
+    public boolean isHasCron() {
+        return hasCron;
+    }
+
+    public void setHasCron(boolean hasCron) {
+        this.hasCron = hasCron;
     }
 }

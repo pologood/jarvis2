@@ -7,7 +7,11 @@
  */
 package com.mogujie.jarvis.server.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
+
+import com.mogujie.jarvis.dto.Job;
 
 /**
  * @author wuya
@@ -19,6 +23,10 @@ public class JobService {
     public int updateJobStatus(long jobId, int status) {
         // TODO
         return 0;
+    }
+
+    public List<Job> loadJobs() {
+        return null;
     }
 
 }

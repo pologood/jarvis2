@@ -31,6 +31,24 @@ public class SchedulerUtil {
         return ReflectionUtils.getInstanceByClassName(className);
     }
 
+    public static JobScheduleType getJobScheduleType(boolean hasCron, boolean hasDepend) {
+        JobScheduleType type;
+        if (hasCron) {
+            if (hasDepend) {
+                type = JobScheduleType.CRON_DEPEND;
+            } else {
+                type = JobScheduleType.CRONTAB;
+            }
+        } else {
+            if (hasDepend) {
+                type = JobScheduleType.DEPENDENCY;
+            } else {
+                type = JobScheduleType.OTHER;
+            }
+        }
+        return type;
+    }
+
     public static Job convert2Job(RestServerSubmitJobRequest msg) {
         Job job = new Job();
         // TODO

@@ -8,6 +8,8 @@
 
 package com.mogujie.jarvis.server.service;
 
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,5 +26,9 @@ public class JobDependService {
 
     public void deleteByJobId(long jobId) {
 
+    }
+
+    public Set<Long> getDependIds(long jobId) {
+        return null;
     }
 }

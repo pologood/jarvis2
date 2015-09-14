@@ -21,8 +21,7 @@ import org.springframework.stereotype.Service;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.eventbus.Subscribe;
 import com.mogujie.jarvis.core.common.util.ConfigUtils;
-import com.mogujie.jarvis.dao.JobDependMapper;
-import com.mogujie.jarvis.dao.JobMapper;
+import com.mogujie.jarvis.dto.Job;
 import com.mogujie.jarvis.server.scheduler.InitEvent;
 import com.mogujie.jarvis.server.scheduler.JobScheduleType;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
@@ -30,8 +29,8 @@ import com.mogujie.jarvis.server.scheduler.SchedulerUtil;
 import com.mogujie.jarvis.server.scheduler.StopEvent;
 import com.mogujie.jarvis.server.scheduler.dag.event.AddJobEvent;
 import com.mogujie.jarvis.server.scheduler.dag.event.FailedEvent;
-import com.mogujie.jarvis.server.scheduler.dag.event.ModifyDependencyEvent;
-import com.mogujie.jarvis.server.scheduler.dag.event.ModifyDependencyEvent.MODIFY_TYPE;
+import com.mogujie.jarvis.server.scheduler.dag.event.ModifyJobEvent;
+import com.mogujie.jarvis.server.scheduler.dag.event.ModifyJobEvent.MODIFY_TYPE;
 import com.mogujie.jarvis.server.scheduler.dag.event.RemoveJobEvent;
 import com.mogujie.jarvis.server.scheduler.dag.event.SuccessEvent;
 import com.mogujie.jarvis.server.scheduler.dag.event.TimeReadyEvent;
@@ -39,6 +38,9 @@ import com.mogujie.jarvis.server.scheduler.dag.job.DAGJob;
 import com.mogujie.jarvis.server.scheduler.dag.job.DAGJobFactory;
 import com.mogujie.jarvis.server.scheduler.dag.status.AbstractDependStatus;
 import com.mogujie.jarvis.server.scheduler.task.TaskScheduler;
+import com.mogujie.jarvis.server.service.CrontabService;
+import com.mogujie.jarvis.server.service.JobDependService;
+import com.mogujie.jarvis.server.service.JobService;
 
 /**
  * Scheduler used to handle dependency based job.
@@ -49,10 +51,13 @@ import com.mogujie.jarvis.server.scheduler.task.TaskScheduler;
 @Service
 public class DAGScheduler implements Scheduler {
     @Autowired
-    JobMapper jobMapper;
+    JobService jobService;
 
     @Autowired
-    JobDependMapper jobDependMapper;
+    JobDependService jobDependService;
+
+    @Autowired
+    CrontabService cronService;
 
     // for testing
     private static DAGScheduler instance = new DAGScheduler();
@@ -67,8 +72,22 @@ public class DAGScheduler implements Scheduler {
 
     @Override
     public void handleInitEvent(InitEvent event) {
-        // TODO Auto-generated method stub
-
+        // load job from DB
+        List<Job> jobs = jobService.loadJobs();
+        for (Job job : jobs) {
+            long jobId = job.getJobId();
+            Set<Long> dependencies = jobDependService.getDependIds(jobId);
+            boolean hasCron = (!cronService.getCronIds(jobId).isEmpty());
+            boolean hasDepend = (!dependencies.isEmpty());
+            JobScheduleType type = SchedulerUtil.getJobScheduleType(hasCron, hasDepend);
+            JobDependencyStrategy strategy = JobDependencyStrategy.ALL;
+            AddJobEvent addJobEvent = new AddJobEvent(jobId, dependencies, type, strategy);
+            try {
+                handleAddJobEvent(addJobEvent);
+            } catch (Exception e) {
+                throw new RuntimeException(e.getMessage());
+            }
+        }
     }
 
     @Override
@@ -150,10 +169,11 @@ public class DAGScheduler implements Scheduler {
     }
 
     @Subscribe
-    public void handleModifyDependency(ModifyDependencyEvent event) {
+    public void handleModifyJobEvent(ModifyJobEvent event) {
         MODIFY_TYPE modifyType = event.getModifyType();
         long jobId = event.getJobId();
         Set<Long> dependencies = event.getDependencies();
+        // modify dependency
         if (modifyType.equals(MODIFY_TYPE.ADD)) {
             for (long d : dependencies) {
                 addDependency(d, jobId);
@@ -168,10 +188,20 @@ public class DAGScheduler implements Scheduler {
             }
         } else if (modifyType.equals(MODIFY_TYPE.MODIFY)) {
             DAGJob dagJob = waitingTable.get(jobId);
-            dagJob.removeParents();
-            for (long d : dependencies) {
-                addDependency(d, jobId);
+            if (dagJob != null) {
+                dagJob.removeParents(false);
+                for (long d : dependencies) {
+                    addDependency(d, jobId);
+                }
             }
+        }
+
+        // modify time ready flag
+        boolean hasCron = event.isHasCron();
+        DAGJob dagJob = waitingTable.get(jobId);
+        if (dagJob != null) {
+            dagJob.setHasTimeFlag(hasCron);
+            submitJobWithCheck(dagJob);
         }
     }
 

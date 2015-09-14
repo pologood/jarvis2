@@ -20,6 +20,8 @@ import com.mogujie.jarvis.server.scheduler.JobScheduleType;
 import com.mogujie.jarvis.server.scheduler.SchedulerUtil;
 import com.mogujie.jarvis.server.scheduler.dag.event.AddJobEvent;
 import com.mogujie.jarvis.server.scheduler.dag.event.FailedEvent;
+import com.mogujie.jarvis.server.scheduler.dag.event.ModifyJobEvent;
+import com.mogujie.jarvis.server.scheduler.dag.event.ModifyJobEvent.MODIFY_TYPE;
 import com.mogujie.jarvis.server.scheduler.dag.event.SuccessEvent;
 import com.mogujie.jarvis.server.scheduler.dag.event.TimeReadyEvent;
 import com.mogujie.jarvis.server.scheduler.dag.status.CachedDependStatus;
@@ -142,5 +144,67 @@ public class TestDAGScheduler {
         // failed 4, remove
         taskScheduler.handleFailedEvent(eventA);
         Assert.assertEquals(0, taskScheduler.getReadyTable().size());
+    }
+
+    /**
+     *              A
+     *     A        |
+     *    / \  -->  B
+     *   B   C      |
+     *              C
+     */
+    @Test
+    public void testhandleModifyJobEvent1() throws Exception {
+        AddJobEvent addEventA = new AddJobEvent(jobAId, null,
+                JobScheduleType.CRONTAB, JobDependencyStrategy.ALL);
+        AddJobEvent addEventB = new AddJobEvent(jobBId, Sets.newHashSet(jobAId),
+                JobScheduleType.DEPENDENCY, JobDependencyStrategy.ALL);
+        AddJobEvent addEventC = new AddJobEvent(jobCId, Sets.newHashSet(jobAId),
+                JobScheduleType.DEPENDENCY, JobDependencyStrategy.ALL);
+        dagScheduler.handleAddJobEvent(addEventA);
+        dagScheduler.handleAddJobEvent(addEventB);
+        dagScheduler.handleAddJobEvent(addEventC);
+        Assert.assertEquals(2, dagScheduler.getChildren(jobAId).size());
+        Assert.assertEquals(1, dagScheduler.getParents(jobBId).size());
+        Assert.assertEquals(1, dagScheduler.getParents(jobCId).size());
+        ModifyJobEvent modifyEventC = new ModifyJobEvent(jobCId, Sets.newHashSet(jobBId),
+                MODIFY_TYPE.MODIFY, false);
+        dagScheduler.handleModifyJobEvent(modifyEventC);
+        Assert.assertEquals(1, dagScheduler.getChildren(jobAId).size());
+        Assert.assertEquals(1, dagScheduler.getParents(jobBId).size());
+        Assert.assertEquals(1, dagScheduler.getChildren(jobBId).size());
+        Assert.assertEquals(1, dagScheduler.getParents(jobCId).size());
+        Assert.assertEquals(jobBId, (long)dagScheduler.getParents(jobCId).get(0));
+    }
+
+    /**
+     *     A (CRONTAB)           A (CRONTAB)
+     *     |                -->  |
+     *     B (CRON_DEPEND)       B (DEPENDENCY)
+     */
+    @Test
+    public void testhandleModifyJobEvent2() throws Exception {
+        AddJobEvent addEventA = new AddJobEvent(jobAId, null,
+                JobScheduleType.CRONTAB, JobDependencyStrategy.ALL);
+        AddJobEvent addEventB = new AddJobEvent(jobBId, Sets.newHashSet(jobAId),
+                JobScheduleType.CRON_DEPEND, JobDependencyStrategy.ALL);
+        dagScheduler.handleAddJobEvent(addEventA);
+        dagScheduler.handleAddJobEvent(addEventB);
+        Assert.assertEquals(1, dagScheduler.getChildren(jobAId).size());
+        Assert.assertEquals(1, dagScheduler.getParents(jobBId).size());
+        // jobA time ready
+        TimeReadyEvent timeEventA = new TimeReadyEvent(jobAId);
+        dagScheduler.handleTimeReadyEvent(timeEventA);
+        Assert.assertEquals(1, taskScheduler.getReadyTable().size());
+        // jobA success, jobB need time ready falg, so running task=1
+        SuccessEvent successEventA = new SuccessEvent(jobAId, 1);
+        dagScheduler.handleSuccessEvent(successEventA);
+        Assert.assertEquals(1, taskScheduler.getReadyTable().size());
+        // modify jobB from CRON_DEPEND to DEPENDENCY, so don't need time ready flag
+        ModifyJobEvent modifyEventB = new ModifyJobEvent(jobBId, Sets.newHashSet(jobAId),
+                MODIFY_TYPE.MODIFY, false);
+        dagScheduler.handleModifyJobEvent(modifyEventB);
+        Assert.assertEquals(2, taskScheduler.getReadyTable().size());
+
     }
 }
