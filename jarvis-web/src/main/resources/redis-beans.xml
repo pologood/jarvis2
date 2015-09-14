@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+       <bean id="propertyConfigurer4Redis" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" >
+              <property name="order" value="1" />
+              <property name="ignoreUnresolvablePlaceholders" value="true" />
+              <property name="locations">
+                     <list>
+                            <value>classpath:redis.properties</value>
+                     </list>
+              </property>
+       </bean>
+
+    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <property name="maxTotal" value="${redis.pool.maxTotal}" />
+        <property name="maxIdle" value="${redis.pool.maxIdle}" />
+        <property name="minIdle" value="${redis.pool.minIdle}"/>
+        <property name="maxWaitMillis" value="${redis.pool.maxWaitMillis}" />
+        <property name="testOnBorrow" value="${redis.pool.testOnBorrow}"/>
+        <property name="testOnReturn" value="${redis.pool.testOnReturn}"/>
+        <property name="testWhileIdle" value="${redis.pool.testWhileIdle}"/>
+    </bean>
+
+    <bean id="jedisSentinelPool" class="redis.clients.jedis.JedisSentinelPool">
+        <constructor-arg index="0" name="masterName" value="${redis.sentinels.masterName}"/>
+        <constructor-arg index="1" name="sentinels">
+            <set>
+                <value>${redis.sentinels.one}</value>
+                <value>${redis.sentinels.two}</value>
+                <value>${redis.sentinels.three}</value>
+            </set>
+        </constructor-arg>
+        <constructor-arg index="2" name="poolConfig" ref="jedisPoolConfig"/>
+        <constructor-arg index="3" name="timeout" value="${redis.timeout}"/>
+    </bean>
+
+    <bean id="redisDataSource" class="com.mogu.bigdata.admin.common.redis.RedisDataSourceImpl">
+        <constructor-arg ref="jedisSentinelPool"/>
+    </bean>
+
+    <bean id="redisClientTemplate" class="com.mogu.bigdata.admin.common.redis.RedisClientTemplate">
+        <constructor-arg ref="redisDataSource"/>
+    </bean>
+
+    <bean id="sessionHelper" class="com.mogu.bigdata.admin.common.passport.session.SessionHelper">
+        <constructor-arg ref="redisClientTemplate"/>
+    </bean>
+
+</beans>
