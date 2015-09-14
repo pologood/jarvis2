@@ -55,19 +55,19 @@ public final class ModifyJobProtos {
         com.google.protobuf.ByteString getCronExpressionBytes();
 
         /**
-         * <code>repeated int32 dependency_jobids = 4 [packed = true];</code>
+         * <code>repeated int64 dependency_jobids = 4 [packed = true];</code>
          */
-        java.util.List<java.lang.Integer> getDependencyJobidsList();
+        java.util.List<java.lang.Long> getDependencyJobidsList();
 
         /**
-         * <code>repeated int32 dependency_jobids = 4 [packed = true];</code>
+         * <code>repeated int64 dependency_jobids = 4 [packed = true];</code>
          */
         int getDependencyJobidsCount();
 
         /**
-         * <code>repeated int32 dependency_jobids = 4 [packed = true];</code>
+         * <code>repeated int64 dependency_jobids = 4 [packed = true];</code>
          */
-        int getDependencyJobids(int index);
+        long getDependencyJobids(int index);
 
         /**
          * <code>optional string app_name = 5;</code>
@@ -321,21 +321,21 @@ public final class ModifyJobProtos {
                         }
                         case 32: {
                             if (!((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
-                                dependencyJobids_ = new java.util.ArrayList<java.lang.Integer>();
+                                dependencyJobids_ = new java.util.ArrayList<java.lang.Long>();
                                 mutable_bitField0_ |= 0x00000008;
                             }
-                            dependencyJobids_.add(input.readInt32());
+                            dependencyJobids_.add(input.readInt64());
                             break;
                         }
                         case 34: {
                             int length = input.readRawVarint32();
                             int limit = input.pushLimit(length);
                             if (!((mutable_bitField0_ & 0x00000008) == 0x00000008) && input.getBytesUntilLimit() > 0) {
-                                dependencyJobids_ = new java.util.ArrayList<java.lang.Integer>();
+                                dependencyJobids_ = new java.util.ArrayList<java.lang.Long>();
                                 mutable_bitField0_ |= 0x00000008;
                             }
                             while (input.getBytesUntilLimit() > 0) {
-                                dependencyJobids_.add(input.readInt32());
+                                dependencyJobids_.add(input.readInt64());
                             }
                             input.popLimit(limit);
                             break;
@@ -559,26 +559,26 @@ public final class ModifyJobProtos {
         }
 
         public static final int DEPENDENCY_JOBIDS_FIELD_NUMBER = 4;
-        private java.util.List<java.lang.Integer> dependencyJobids_;
+        private java.util.List<java.lang.Long> dependencyJobids_;
 
         /**
-         * <code>repeated int32 dependency_jobids = 4 [packed = true];</code>
+         * <code>repeated int64 dependency_jobids = 4 [packed = true];</code>
          */
-        public java.util.List<java.lang.Integer> getDependencyJobidsList() {
+        public java.util.List<java.lang.Long> getDependencyJobidsList() {
             return dependencyJobids_;
         }
 
         /**
-         * <code>repeated int32 dependency_jobids = 4 [packed = true];</code>
+         * <code>repeated int64 dependency_jobids = 4 [packed = true];</code>
          */
         public int getDependencyJobidsCount() {
             return dependencyJobids_.size();
         }
 
         /**
-         * <code>repeated int32 dependency_jobids = 4 [packed = true];</code>
+         * <code>repeated int64 dependency_jobids = 4 [packed = true];</code>
          */
-        public int getDependencyJobids(int index) {
+        public long getDependencyJobids(int index) {
             return dependencyJobids_.get(index);
         }
 
@@ -1023,7 +1023,7 @@ public final class ModifyJobProtos {
                 output.writeRawVarint32(dependencyJobidsMemoizedSerializedSize);
             }
             for (int i = 0; i < dependencyJobids_.size(); i++) {
-                output.writeInt32NoTag(dependencyJobids_.get(i));
+                output.writeInt64NoTag(dependencyJobids_.get(i));
             }
             if (((bitField0_ & 0x00000008) == 0x00000008)) {
                 output.writeBytes(5, getAppNameBytes());
@@ -1090,7 +1090,7 @@ public final class ModifyJobProtos {
             {
                 int dataSize = 0;
                 for (int i = 0; i < dependencyJobids_.size(); i++) {
-                    dataSize += com.google.protobuf.CodedOutputStream.computeInt32SizeNoTag(dependencyJobids_.get(i));
+                    dataSize += com.google.protobuf.CodedOutputStream.computeInt64SizeNoTag(dependencyJobids_.get(i));
                 }
                 size += dataSize;
                 if (!getDependencyJobidsList().isEmpty()) {
@@ -1747,40 +1747,40 @@ public final class ModifyJobProtos {
                 return this;
             }
 
-            private java.util.List<java.lang.Integer> dependencyJobids_ = java.util.Collections.emptyList();
+            private java.util.List<java.lang.Long> dependencyJobids_ = java.util.Collections.emptyList();
 
             private void ensureDependencyJobidsIsMutable() {
                 if (!((bitField0_ & 0x00000008) == 0x00000008)) {
-                    dependencyJobids_ = new java.util.ArrayList<java.lang.Integer>(dependencyJobids_);
+                    dependencyJobids_ = new java.util.ArrayList<java.lang.Long>(dependencyJobids_);
                     bitField0_ |= 0x00000008;
                 }
             }
 
             /**
-             * <code>repeated int32 dependency_jobids = 4 [packed = true];</code>
+             * <code>repeated int64 dependency_jobids = 4 [packed = true];</code>
              */
-            public java.util.List<java.lang.Integer> getDependencyJobidsList() {
+            public java.util.List<java.lang.Long> getDependencyJobidsList() {
                 return java.util.Collections.unmodifiableList(dependencyJobids_);
             }
 
             /**
-             * <code>repeated int32 dependency_jobids = 4 [packed = true];</code>
+             * <code>repeated int64 dependency_jobids = 4 [packed = true];</code>
              */
             public int getDependencyJobidsCount() {
                 return dependencyJobids_.size();
             }
 
             /**
-             * <code>repeated int32 dependency_jobids = 4 [packed = true];</code>
+             * <code>repeated int64 dependency_jobids = 4 [packed = true];</code>
              */
-            public int getDependencyJobids(int index) {
+            public long getDependencyJobids(int index) {
                 return dependencyJobids_.get(index);
             }
 
             /**
-             * <code>repeated int32 dependency_jobids = 4 [packed = true];</code>
+             * <code>repeated int64 dependency_jobids = 4 [packed = true];</code>
              */
-            public Builder setDependencyJobids(int index, int value) {
+            public Builder setDependencyJobids(int index, long value) {
                 ensureDependencyJobidsIsMutable();
                 dependencyJobids_.set(index, value);
                 onChanged();
@@ -1788,9 +1788,9 @@ public final class ModifyJobProtos {
             }
 
             /**
-             * <code>repeated int32 dependency_jobids = 4 [packed = true];</code>
+             * <code>repeated int64 dependency_jobids = 4 [packed = true];</code>
              */
-            public Builder addDependencyJobids(int value) {
+            public Builder addDependencyJobids(long value) {
                 ensureDependencyJobidsIsMutable();
                 dependencyJobids_.add(value);
                 onChanged();
@@ -1798,9 +1798,9 @@ public final class ModifyJobProtos {
             }
 
             /**
-             * <code>repeated int32 dependency_jobids = 4 [packed = true];</code>
+             * <code>repeated int64 dependency_jobids = 4 [packed = true];</code>
              */
-            public Builder addAllDependencyJobids(java.lang.Iterable<? extends java.lang.Integer> values) {
+            public Builder addAllDependencyJobids(java.lang.Iterable<? extends java.lang.Long> values) {
                 ensureDependencyJobidsIsMutable();
                 com.google.protobuf.AbstractMessageLite.Builder.addAll(values, dependencyJobids_);
                 onChanged();
@@ -1808,7 +1808,7 @@ public final class ModifyJobProtos {
             }
 
             /**
-             * <code>repeated int32 dependency_jobids = 4 [packed = true];</code>
+             * <code>repeated int64 dependency_jobids = 4 [packed = true];</code>
              */
             public Builder clearDependencyJobids() {
                 dependencyJobids_ = java.util.Collections.emptyList();
@@ -3257,7 +3257,7 @@ public final class ModifyJobProtos {
         java.lang.String[] descriptorData = {
                 "\n\020modify_job.proto\032\017map_entry.proto\"\244\003\n\032" + "RestServerModifyJobRequest\022\016\n\006job_id\030\001 \002"
                         + "(\003\022\020\n\010job_name\030\002 \001(\t\022\027\n\017cron_expression\030"
-                        + "\003 \001(\t\022\035\n\021dependency_jobids\030\004 \003(\005B\002\020\001\022\020\n\010"
+                        + "\003 \001(\t\022\035\n\021dependency_jobids\030\004 \003(\003B\002\020\001\022\020\n\010"
                         + "app_name\030\005 \001(\t\022\017\n\007app_key\030\006 \001(\t\022\014\n\004user\030"
                         + "\007 \001(\t\022\020\n\010job_type\030\010 \001(\t\022\017\n\007command\030\t \001(\t"
                         + "\022\020\n\010group_id\030\n \001(\005\022\023\n\010priority\030\013 \001(\005:\0011\022"
