@@ -23,8 +23,11 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.StreamingOutput;
 
 
+import com.mogujie.jarvis.core.JarvisConstants;
+import com.mogujie.jarvis.core.domain.WorkerStatus;
 import com.mogujie.jarvis.protocol.ModifyWorkerStatusProtos.*;
 
+import com.mogujie.jarvis.rest.domain.RestResponse;
 import org.glassfish.jersey.client.ClientResponse;
 import scala.concurrent.Await;
 import scala.concurrent.Future;
@@ -42,7 +45,7 @@ import org.apache.logging.log4j.Logger;
  * @author wuya
  *
  */
-@Path("server")
+@Path("rest")
 public class RestResource {
 
     private ActorSystem system;
@@ -62,17 +65,20 @@ public class RestResource {
     @POST
     @Path("onlineclient")
     @Produces(MediaType.APPLICATION_JSON)
-    public Map<String, Object> onlineClient(@QueryParam("appKey") String appKey,
+    public Map<String, Object> onlineClient(@FormParam("appKey") String appKey,
                                             @FormParam("appName") String appName,
                                             @FormParam("ip") String ip,
-                                            @FormParam("port") int port
+                                            @FormParam("port") int port,
+                                            @FormParam("status") int status
     )
     {
+
+        WorkerStatus ws = (status == 1 ) ? WorkerStatus.ONLINE : WorkerStatus.OFFLINE;
 
         RestResponse restResponse = RestResponse.create();
         ActorSelection actor = system.actorSelection(serverAkkaPath + "/user/server");
         RestServerModifyWorkerStatusRequest request = RestServerModifyWorkerStatusRequest.newBuilder()
-                .setIp(ip).setPort(port).setStatus(true).build();
+                .setIp(ip).setPort(port).setStatus(ws.getValue()).build();
         Future<Object> future = Patterns.ask(actor, request, TIMEOUT);
         try {
             ClientResponse response = (ClientResponse) Await.result(future, TIMEOUT.duration());
