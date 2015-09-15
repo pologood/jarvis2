@@ -23,25 +23,25 @@ import com.mogujie.jarvis.core.AbstractLogCollector;
 import com.mogujie.jarvis.core.DefaultLogCollector;
 import com.mogujie.jarvis.core.DefaultProgressReporter;
 import com.mogujie.jarvis.core.JarvisConstants;
-import com.mogujie.jarvis.core.JobContext;
-import com.mogujie.jarvis.core.JobContext.JobContextBuilder;
 import com.mogujie.jarvis.core.ProgressReporter;
+import com.mogujie.jarvis.core.TaskContext;
+import com.mogujie.jarvis.core.TaskContext.TaskContextBuilder;
 import com.mogujie.jarvis.core.common.util.ConfigUtils;
 import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.core.exeception.AcceptionException;
-import com.mogujie.jarvis.core.exeception.JobException;
-import com.mogujie.jarvis.core.job.AbstractJob;
+import com.mogujie.jarvis.core.exeception.TaskException;
+import com.mogujie.jarvis.core.task.AbstractTask;
 import com.mogujie.jarvis.protocol.KillTaskProtos.ServerKillTaskRequest;
 import com.mogujie.jarvis.protocol.KillTaskProtos.WorkerKillTaskResponse;
 import com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry;
 import com.mogujie.jarvis.protocol.ReportStatusProtos.WorkerReportStatusRequest;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse;
-import com.mogujie.jarvis.worker.JobCallable;
-import com.mogujie.jarvis.worker.JobPool;
+import com.mogujie.jarvis.worker.TaskCallable;
+import com.mogujie.jarvis.worker.TaskPool;
 import com.mogujie.jarvis.worker.strategy.AcceptionResult;
 import com.mogujie.jarvis.worker.strategy.AcceptionStrategy;
-import com.mogujie.jarvis.worker.util.JobConfigUtils;
+import com.mogujie.jarvis.worker.util.TaskConfigUtils;
 
 import akka.actor.ActorSelection;
 import akka.actor.Props;
@@ -51,7 +51,7 @@ import scala.Tuple2;
 public class WorkerActor extends UntypedActor {
 
   private static ExecutorService executorService = Executors.newCachedThreadPool();
-  private static JobPool jobPool = JobPool.getInstance();
+  private static TaskPool jobPool = TaskPool.getInstance();
   private static final String SERVER_AKKA_PATH = ConfigUtils.getWorkerConfig()
       .getString("server.akka.path") + "/user/" + JarvisConstants.SERVER_AKKA_PATH;
   private static final String LOGSERVER_AKKA_PATH = ConfigUtils.getWorkerConfig()
@@ -77,13 +77,13 @@ public class WorkerActor extends UntypedActor {
 
   private void submitJob(ServerSubmitTaskRequest request) {
     String fullId = request.getFullId();
-    String jobType = request.getJobType();
-    JobContextBuilder contextBuilder = JobContext.newBuilder();
+    String taskType = request.getTaskType();
+    TaskContextBuilder contextBuilder = TaskContext.newBuilder();
     contextBuilder.setFullId(fullId);
-    contextBuilder.setJobName(request.getJobName());
+    contextBuilder.setTaskName(request.getTaskName());
     contextBuilder.setAppName(request.getAppName());
     contextBuilder.setUser(request.getUser());
-    contextBuilder.setJobType(jobType);
+    contextBuilder.setTaskType(taskType);
     contextBuilder.setCommand(request.getCommand());
     contextBuilder.setPriority(request.getPriority());
 
@@ -103,8 +103,8 @@ public class WorkerActor extends UntypedActor {
     ProgressReporter reporter = new DefaultProgressReporter(serverActor, fullId);
     contextBuilder.setProgressReporter(reporter);
 
-    Tuple2<Class<? extends AbstractJob>, List<AcceptionStrategy>> t2 = JobConfigUtils
-        .getRegisteredJobs().get(jobType);
+    Tuple2<Class<? extends AbstractTask>, List<AcceptionStrategy>> t2 = TaskConfigUtils
+        .getRegisteredJobs().get(taskType);
     List<AcceptionStrategy> strategies = t2._2;
     for (AcceptionStrategy strategy : strategies) {
       try {
@@ -123,14 +123,14 @@ public class WorkerActor extends UntypedActor {
 
     getSender().tell(WorkerSubmitTaskResponse.newBuilder().setAccept(true).build(), getSelf());
     try {
-      Constructor<? extends AbstractJob> constructor = t2._1.getConstructor(JobContext.class);
-      AbstractJob job = constructor.newInstance(contextBuilder.build());
+      Constructor<? extends AbstractTask> constructor = t2._1.getConstructor(TaskContext.class);
+      AbstractTask job = constructor.newInstance(contextBuilder.build());
       jobPool.add(fullId, job);
       serverActor.tell(WorkerReportStatusRequest.newBuilder().setFullId(fullId)
           .setStatus(JobStatus.RUNNING.getValue()).setTimestamp(System.currentTimeMillis() / 1000)
           .build(), getSelf());
       reporter.report(0);
-      Callable<Boolean> task = new JobCallable(job);
+      Callable<Boolean> task = new TaskCallable(job);
       Future<Boolean> future = executorService.submit(task);
       boolean result = false;
       try {
@@ -164,12 +164,12 @@ public class WorkerActor extends UntypedActor {
 
   private WorkerKillTaskResponse killJob(ServerKillTaskRequest request) {
     String fullId = request.getFullId();
-    AbstractJob job = jobPool.get(fullId);
+    AbstractTask job = jobPool.get(fullId);
     if (job != null) {
       jobPool.remove(fullId);
       try {
         return WorkerKillTaskResponse.newBuilder().setSuccess(job.kill()).build();
-      } catch (JobException e) {
+      } catch (TaskException e) {
         return WorkerKillTaskResponse.newBuilder().setSuccess(false).setMessage(e.getMessage())
             .build();
       }

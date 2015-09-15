@@ -6,7 +6,7 @@
  * Version    :1.0
  * Create Date:2013年9月22日
  */
-package com.mogujie.jarvis.jobs.util;
+package com.mogujie.jarvis.tasks.util;
 
 /**
  * HiveQL注释去除工具

@@ -6,7 +6,7 @@
  * Create Date: 2015年6月9日 下午4:34:01
  */
 
-package com.mogujie.jarvis.jobs.shell;
+package com.mogujie.jarvis.tasks.shell;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -18,36 +18,36 @@ import java.nio.charset.StandardCharsets;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.mogujie.jarvis.core.JobContext;
+import com.mogujie.jarvis.core.TaskContext;
 import com.mogujie.jarvis.core.common.util.ConfigUtils;
 import com.mogujie.jarvis.core.domain.StreamType;
-import com.mogujie.jarvis.core.job.AbstractJob;
-import com.mogujie.jarvis.jobs.ShellStreamProcessor;
-import com.mogujie.jarvis.jobs.util.ShellUtils;
+import com.mogujie.jarvis.core.task.AbstractTask;
+import com.mogujie.jarvis.tasks.ShellStreamProcessor;
+import com.mogujie.jarvis.tasks.util.ShellUtils;
 
 /**
  * @author muming
  *
  */
-public class ShellJob extends AbstractJob {
+public class ShellTask extends AbstractTask {
 
     private Process shellProcess = null;
     private static final String STATUS_PATH = ConfigUtils.getWorkerConfig().getString("worker.job.status.path");
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public ShellJob(JobContext jobContext) {
-        super(jobContext);
+    public ShellTask(TaskContext taskContext) {
+        super(taskContext);
     }
 
     public String getCommand() {
-        return getJobContext().getCommand();
+        return getTaskContext().getCommand();
     }
 
     public void processStdOutputStream(InputStream inputStream) {
         String line = null;
         try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
             while ((line = br.readLine()) != null) {
-                getJobContext().getLogCollector().collectStdout(line);
+                getTaskContext().getLogCollector().collectStdout(line);
             }
         } catch (IOException e) {
             LOGGER.error("error shellProcess stdout stream", e);
@@ -58,7 +58,7 @@ public class ShellJob extends AbstractJob {
         String line = null;
         try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
             while ((line = br.readLine()) != null) {
-                getJobContext().getLogCollector().collectStderr(line);
+                getTaskContext().getLogCollector().collectStderr(line);
             }
         } catch (IOException e) {
             LOGGER.error("error shellProcess stderr stream", e);
@@ -69,7 +69,7 @@ public class ShellJob extends AbstractJob {
     public boolean execute() {
         try {
 
-            String statusFilePath = STATUS_PATH + "/" + getJobContext().getFullId() + ".status";
+            String statusFilePath = STATUS_PATH + "/" + getTaskContext().getFullId() + ".status";
             StringBuilder sb = new StringBuilder();
             String cmd = getCommand();
             sb.append(cmd);
@@ -99,7 +99,7 @@ public class ShellJob extends AbstractJob {
 
             return result;
         } catch (Exception e) {
-            getJobContext().getLogCollector().collectStderr(e.getMessage());
+            getTaskContext().getLogCollector().collectStderr(e.getMessage());
             return false;
         }
     }

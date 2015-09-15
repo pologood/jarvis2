@@ -23,10 +23,10 @@ import scala.Tuple2;
 
 import com.google.common.base.Throwables;
 import com.mogujie.jarvis.core.common.util.ReflectionUtils;
-import com.mogujie.jarvis.core.job.AbstractJob;
+import com.mogujie.jarvis.core.task.AbstractTask;
 import com.mogujie.jarvis.worker.strategy.AcceptionStrategy;
 
-public class JobConfigUtils {
+public class TaskConfigUtils {
 
   private static XMLConfiguration config;
 
@@ -48,8 +48,8 @@ public class JobConfigUtils {
   }
 
   @SuppressWarnings("unchecked")
-  public static Map<String, Tuple2<Class<? extends AbstractJob>, List<AcceptionStrategy>>> getRegisteredJobs() {
-    Map<String, Tuple2<Class<? extends AbstractJob>, List<AcceptionStrategy>>> map = new HashMap<String, Tuple2<Class<? extends AbstractJob>, List<AcceptionStrategy>>>();
+  public static Map<String, Tuple2<Class<? extends AbstractTask>, List<AcceptionStrategy>>> getRegisteredJobs() {
+    Map<String, Tuple2<Class<? extends AbstractTask>, List<AcceptionStrategy>>> map = new HashMap<String, Tuple2<Class<? extends AbstractTask>, List<AcceptionStrategy>>>();
 
     try {
       Set<String> commonStrategyNames = getJobStrategies();
@@ -76,8 +76,8 @@ public class JobConfigUtils {
           }
         }
 
-        Class<? extends AbstractJob> jobClass = (Class<? extends AbstractJob>) Class.forName(clazz);
-        Tuple2<Class<? extends AbstractJob>, List<AcceptionStrategy>> t2 = new Tuple2<Class<? extends AbstractJob>, List<AcceptionStrategy>>(
+        Class<? extends AbstractTask> jobClass = (Class<? extends AbstractTask>) Class.forName(clazz);
+        Tuple2<Class<? extends AbstractTask>, List<AcceptionStrategy>> t2 = new Tuple2<Class<? extends AbstractTask>, List<AcceptionStrategy>>(
             jobClass, acceptStrategies);
         map.put(type, t2);
       }

@@ -11,11 +11,11 @@ package com.mogujie.jarvis.server;
 import org.springframework.stereotype.Service;
 
 @Service
-public enum JobDispatcher {
+public enum TaskDispatcher {
 
     INSTANCE;
 
-    public static JobDispatcher getInstance() {
+    public static TaskDispatcher getInstance() {
         return INSTANCE;
     }
 

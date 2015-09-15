@@ -5,7 +5,7 @@
  * Author: guangming
  * Create Date: 2015年8月31日 下午9:55:32
  */
-package com.mogujie.jarvis.jobs.jdbc;
+package com.mogujie.jarvis.tasks.jdbc;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -21,47 +21,46 @@ import org.apache.commons.configuration.Configuration;
 import com.google.common.base.Joiner;
 import com.google.common.base.Throwables;
 import com.mogujie.jarvis.core.AbstractLogCollector;
-import com.mogujie.jarvis.core.JobContext;
+import com.mogujie.jarvis.core.TaskContext;
 import com.mogujie.jarvis.core.common.util.ConfigUtils;
-import com.mogujie.jarvis.core.exeception.JobException;
-import com.mogujie.jarvis.core.job.AbstractJob;
-import com.mogujie.jarvis.jobs.util.HiveQLUtil;
-
+import com.mogujie.jarvis.core.exeception.TaskException;
+import com.mogujie.jarvis.core.task.AbstractTask;
+import com.mogujie.jarvis.tasks.util.HiveQLUtil;
 
 /**
  * @author guangming
  *
  */
-public abstract class JdbcJob extends AbstractJob {
+public abstract class JdbcTask extends AbstractTask {
     protected static final String COLUMNS_SEPARATOR = "\001";
     protected static int DEFAULT_MAX_QUERY_ROWS = 10000;
     private Connection connection;
     private Statement statement;
 
     /**
-     * @param jobContext
+     * @param taskContext
      */
-    public JdbcJob(JobContext jobContext) {
-        super(jobContext);
+    public JdbcTask(TaskContext taskContext) {
+        super(taskContext);
         // TODO Auto-generated constructor stub
     }
 
     @Override
-    public boolean execute() throws JobException {
+    public boolean execute() throws TaskException {
         Configuration config = ConfigUtils.getWorkerConfig();
-        AbstractLogCollector collector = getJobContext().getLogCollector();
+        AbstractLogCollector collector = getTaskContext().getLogCollector();
 
         try {
             Class.forName(getDriverName());
-            String user = getJobContext().getUser();
+            String user = getTaskContext().getUser();
             String passwd = user;
 
             connection = DriverManager.getConnection(getJdbcUrl(config), user, passwd);
             Statement statement = connection.createStatement();
             final long startTime = System.currentTimeMillis();
-            collector.collectStderr("Querying " + getJobType() + "...");
+            collector.collectStderr("Querying " + getTaskType() + "...");
 
-            String hql = getJobContext().getCommand().trim();
+            String hql = getTaskContext().getCommand().trim();
             String[] cmds = HiveQLUtil.splitHiveScript(hql);
             for (String sql : cmds) {
                 boolean hasResults = statement.execute(sql.trim());
@@ -82,15 +81,13 @@ public abstract class JdbcJob extends AbstractJob {
                         for (int j = 1; j <= columnCount; j++) {
                             columns.add(rs.getString(j));
                         }
-                        collector.collectStdout(Joiner.on(COLUMNS_SEPARATOR)
-                                .useForNull("NULL").join(columns));
+                        collector.collectStdout(Joiner.on(COLUMNS_SEPARATOR).useForNull("NULL").join(columns));
                     }
                 }
             }
 
             final long endTime = System.currentTimeMillis();
-            collector.collectStderr("Finished, time taken: " + (endTime - startTime)
-                    / 1000F + " seconds");
+            collector.collectStderr("Finished, time taken: " + (endTime - startTime) / 1000F + " seconds");
 
             return true;
         } catch (Exception e) {
@@ -113,12 +110,12 @@ public abstract class JdbcJob extends AbstractJob {
     }
 
     @Override
-    public boolean kill() throws JobException {
+    public boolean kill() throws TaskException {
         // TODO Auto-generated method stub
         return false;
     }
 
-    protected abstract String getJobType();
+    protected abstract String getTaskType();
 
     protected abstract String getDriverName();
 

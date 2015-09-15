@@ -23,13 +23,13 @@ import org.iq80.leveldb.Options;
 import com.google.common.base.Throwables;
 import com.mogujie.jarvis.core.common.util.ConfigUtils;
 import com.mogujie.jarvis.core.common.util.KryoUtils;
-import com.mogujie.jarvis.core.job.AbstractJob;
+import com.mogujie.jarvis.core.task.AbstractTask;
 
 /**
  * @author wuya
  *
  */
-public enum JobPool {
+public enum TaskPool {
 
   INSTANCE;
 
@@ -47,11 +47,11 @@ public enum JobPool {
     }
   }
 
-  public static final JobPool getInstance() {
+  public static final TaskPool getInstance() {
     return INSTANCE;
   }
 
-  public void add(String fullId, AbstractJob job) {
+  public void add(String fullId, AbstractTask job) {
     db.put(bytes(fullId), KryoUtils.writeClassAndObject(job));
   }
 
@@ -59,8 +59,8 @@ public enum JobPool {
     db.delete(bytes(fullId));
   }
 
-  public AbstractJob get(String fullId) {
-    return (AbstractJob) KryoUtils.readClassAndObject(db.get(bytes(fullId)));
+  public AbstractTask get(String fullId) {
+    return (AbstractTask) KryoUtils.readClassAndObject(db.get(bytes(fullId)));
   }
 
   public int size() {

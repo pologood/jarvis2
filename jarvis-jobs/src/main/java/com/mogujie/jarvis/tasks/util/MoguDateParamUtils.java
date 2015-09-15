@@ -6,7 +6,7 @@
  * Version    :1.0
  * Create Date:2013-7-4
  */
-package com.mogujie.jarvis.jobs.util;
+package com.mogujie.jarvis.tasks.util;
 
 import org.apache.commons.lang.StringUtils;
 

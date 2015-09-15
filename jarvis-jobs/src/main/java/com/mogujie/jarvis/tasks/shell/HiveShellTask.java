@@ -6,21 +6,7 @@
  * Create Date: 2015年6月10日 上午9:21:13
  */
 
-package com.mogujie.jarvis.jobs.shell;
-
-import com.github.stuxuhai.jpinyin.PinyinFormat;
-import com.github.stuxuhai.jpinyin.PinyinHelper;
-import com.mogujie.jarvis.core.JobContext;
-import com.mogujie.jarvis.core.common.util.ConfigUtils;
-
-import com.mogujie.jarvis.core.exeception.ShellException;
-import com.mogujie.jarvis.jobs.domain.HiveJobEntity;
-
-import com.mogujie.jarvis.jobs.util.*;
-
-import org.apache.commons.configuration.Configuration;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+package com.mogujie.jarvis.tasks.shell;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -32,19 +18,33 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.configuration.Configuration;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.github.stuxuhai.jpinyin.PinyinFormat;
+import com.github.stuxuhai.jpinyin.PinyinHelper;
+import com.mogujie.jarvis.core.TaskContext;
+import com.mogujie.jarvis.core.common.util.ConfigUtils;
+import com.mogujie.jarvis.core.exeception.ShellException;
+import com.mogujie.jarvis.tasks.domain.HiveTaskEntity;
+import com.mogujie.jarvis.tasks.util.HiveConfigUtils;
+import com.mogujie.jarvis.tasks.util.MoguAnnotationUtils;
+import com.mogujie.jarvis.tasks.util.MoguDateParamUtils;
+import com.mogujie.jarvis.tasks.util.YarnUtils;
+
 /**
  * @author wuya
  */
-public class HiveShellJob extends ShellJob {
+public class HiveShellTask extends ShellTask {
 
     private Set<String> applicationIdSet = new HashSet<>();
     private static final Pattern APPLICATION_ID_PATTERN = Pattern.compile("application_\\d+_\\d+");
-    private static final Pattern MAPPERS_NUMBER_PATTERN = Pattern
-            .compile("number of mappers: (\\d+);");
+    private static final Pattern MAPPERS_NUMBER_PATTERN = Pattern.compile("number of mappers: (\\d+);");
 
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public HiveShellJob(JobContext jobContext, Set<String> applicationIdSet) {
+    public HiveShellTask(TaskContext jobContext, Set<String> applicationIdSet) {
         super(jobContext);
         this.applicationIdSet = applicationIdSet;
     }
@@ -53,9 +53,9 @@ public class HiveShellJob extends ShellJob {
     public String getCommand() {
 
         String user = null;
-        HiveJobEntity entity = HiveConfigUtils.getHiveJobEntry(getJobContext().getAppName());
-        if (entity == null || (entity.isAdmin() && !getJobContext().getUser().trim().isEmpty())) {
-            user = getJobContext().getUser();
+        HiveTaskEntity entity = HiveConfigUtils.getHiveJobEntry(getTaskContext().getAppName());
+        if (entity == null || (entity.isAdmin() && !getTaskContext().getUser().trim().isEmpty())) {
+            user = getTaskContext().getUser();
         } else {
             user = entity.getUser();
         }
@@ -64,8 +64,7 @@ public class HiveShellJob extends ShellJob {
         boolean isHive2Enable = workerConfig.getBoolean("hive2.enable", false);
 
         StringBuilder sb = new StringBuilder();
-        sb.append("export HADOOP_USER_NAME="
-                + PinyinHelper.convertToPinyinString(user.trim(), "", PinyinFormat.WITHOUT_TONE) + ";");
+        sb.append("export HADOOP_USER_NAME=" + PinyinHelper.convertToPinyinString(user.trim(), "", PinyinFormat.WITHOUT_TONE) + ";");
         if (isHive2Enable) {
             String hive2Host = workerConfig.getString("hive2.host");
             sb.append("beeline --outputformat=tsv2 -u jdbc:hive2://" + hive2Host + " -n " + user);
@@ -74,11 +73,10 @@ public class HiveShellJob extends ShellJob {
         }
 
         sb.append(" -e \"set hive.cli.print.header=true;");
-        sb.append("set mapred.job.name=" + getJobContext().getJobName() + ";");
+        sb.append("set mapred.job.name=" + getTaskContext().getTaskName() + ";");
         // 打印列名的时候不打印表名，否则xray无法显示数据
         sb.append("set hive.resultset.use.unique.column.names=false;");
-        sb.append(MoguAnnotationUtils
-                .removeAnnotation(MoguDateParamUtils.parse(getJobContext().getCommand())));
+        sb.append(MoguAnnotationUtils.removeAnnotation(MoguDateParamUtils.parse(getTaskContext().getCommand())));
         sb.append("\"");
         return sb.toString();
 
@@ -89,23 +87,22 @@ public class HiveShellJob extends ShellJob {
 
         int currentResultRows = 0;
         int maxResultRows = 10000;
-        String appName = getJobContext().getAppName();
-        HiveJobEntity entry = HiveConfigUtils.getHiveJobEntry(appName);
+        String appName = getTaskContext().getAppName();
+        HiveTaskEntity entry = HiveConfigUtils.getHiveJobEntry(appName);
         if (entry != null) {
             maxResultRows = entry.getMaxResultRows();
         }
 
         String line = null;
-        try (BufferedReader br = new BufferedReader(
-                new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
             while ((line = br.readLine()) != null) {
                 currentResultRows++;
                 if (maxResultRows >= 0 && currentResultRows > maxResultRows) {
                     break;
                 }
-                getJobContext().getLogCollector().collectStdout(line);
+                getTaskContext().getLogCollector().collectStdout(line);
             }
-            getJobContext().getLogCollector().collectStdout("");
+            getTaskContext().getLogCollector().collectStdout("");
         } catch (IOException e) {
             LOGGER.error("error process stdouput stream", e);
         }
@@ -115,18 +112,17 @@ public class HiveShellJob extends ShellJob {
     public void processStdErrorStream(InputStream inputStream) {
 
         int maxMapperNum = 2000;
-        String appName = getJobContext().getAppName();
-        HiveJobEntity entry = HiveConfigUtils.getHiveJobEntry(appName);
+        String appName = getTaskContext().getAppName();
+        HiveTaskEntity entry = HiveConfigUtils.getHiveJobEntry(appName);
         if (entry != null) {
             maxMapperNum = entry.getMaxMapperNum();
         }
 
         String line = null;
-        try (BufferedReader br = new BufferedReader(
-                new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
 
             while ((line = br.readLine()) != null) {
-                getJobContext().getLogCollector().collectStderr(line);
+                getTaskContext().getLogCollector().collectStderr(line);
 
                 // 从输出日志中提取application id
                 String applicationId = match(APPLICATION_ID_PATTERN, 0, line);
@@ -140,13 +136,12 @@ public class HiveShellJob extends ShellJob {
                     int num = Integer.parseInt(mappersNum);
                     if (maxMapperNum >= 0 && num > maxMapperNum) {
                         kill();
-                        getJobContext().getLogCollector()
-                                .collectStderr("Job已被Kill，Map数量(" + num + ")超过(" + maxMapperNum + ")限制");
+                        getTaskContext().getLogCollector().collectStderr("Job已被Kill，Map数量(" + num + ")超过(" + maxMapperNum + ")限制");
                         break;
                     }
                 }
             }
-            getJobContext().getLogCollector().collectStderr("");
+            getTaskContext().getLogCollector().collectStderr("");
         } catch (IOException e) {
             LOGGER.error("error process stderr stream", e);
         }
@@ -162,13 +157,12 @@ public class HiveShellJob extends ShellJob {
         // kill掉yarn application
         try {
             YarnUtils.killApplicationByIds(applicationIdSet);
-        }catch (ShellException e){
+        } catch (ShellException e) {
             result = false;
         }
 
         return result;
     }
-
 
     private String match(Pattern pattern, int group, String line) {
         Matcher m = pattern.matcher(line);

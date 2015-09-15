@@ -3550,19 +3550,19 @@ public final class SubmitJobProtos {
         com.google.protobuf.ByteString getFullIdBytes();
 
         /**
-         * <code>required string job_name = 2;</code>
+         * <code>required string task_name = 2;</code>
          */
-        boolean hasJobName();
+        boolean hasTaskName();
 
         /**
-         * <code>required string job_name = 2;</code>
+         * <code>required string task_name = 2;</code>
          */
-        java.lang.String getJobName();
+        java.lang.String getTaskName();
 
         /**
-         * <code>required string job_name = 2;</code>
+         * <code>required string task_name = 2;</code>
          */
-        com.google.protobuf.ByteString getJobNameBytes();
+        com.google.protobuf.ByteString getTaskNameBytes();
 
         /**
          * <code>required string app_name = 3;</code>
@@ -3595,19 +3595,19 @@ public final class SubmitJobProtos {
         com.google.protobuf.ByteString getUserBytes();
 
         /**
-         * <code>required string job_type = 5;</code>
+         * <code>required string task_type = 5;</code>
          */
-        boolean hasJobType();
+        boolean hasTaskType();
 
         /**
-         * <code>required string job_type = 5;</code>
+         * <code>required string task_type = 5;</code>
          */
-        java.lang.String getJobType();
+        java.lang.String getTaskType();
 
         /**
-         * <code>required string job_type = 5;</code>
+         * <code>required string task_type = 5;</code>
          */
-        com.google.protobuf.ByteString getJobTypeBytes();
+        com.google.protobuf.ByteString getTaskTypeBytes();
 
         /**
          * <code>required string command = 6;</code>
@@ -3721,7 +3721,7 @@ public final class SubmitJobProtos {
                         case 18: {
                             com.google.protobuf.ByteString bs = input.readBytes();
                             bitField0_ |= 0x00000002;
-                            jobName_ = bs;
+                            taskName_ = bs;
                             break;
                         }
                         case 26: {
@@ -3739,7 +3739,7 @@ public final class SubmitJobProtos {
                         case 42: {
                             com.google.protobuf.ByteString bs = input.readBytes();
                             bitField0_ |= 0x00000010;
-                            jobType_ = bs;
+                            taskType_ = bs;
                             break;
                         }
                         case 50: {
@@ -3840,41 +3840,41 @@ public final class SubmitJobProtos {
             }
         }
 
-        public static final int JOB_NAME_FIELD_NUMBER = 2;
-        private java.lang.Object jobName_;
+        public static final int TASK_NAME_FIELD_NUMBER = 2;
+        private java.lang.Object taskName_;
 
         /**
-         * <code>required string job_name = 2;</code>
+         * <code>required string task_name = 2;</code>
          */
-        public boolean hasJobName() {
+        public boolean hasTaskName() {
             return ((bitField0_ & 0x00000002) == 0x00000002);
         }
 
         /**
-         * <code>required string job_name = 2;</code>
+         * <code>required string task_name = 2;</code>
          */
-        public java.lang.String getJobName() {
-            java.lang.Object ref = jobName_;
+        public java.lang.String getTaskName() {
+            java.lang.Object ref = taskName_;
             if (ref instanceof java.lang.String) {
                 return (java.lang.String) ref;
             } else {
                 com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
                 java.lang.String s = bs.toStringUtf8();
                 if (bs.isValidUtf8()) {
-                    jobName_ = s;
+                    taskName_ = s;
                 }
                 return s;
             }
         }
 
         /**
-         * <code>required string job_name = 2;</code>
+         * <code>required string task_name = 2;</code>
          */
-        public com.google.protobuf.ByteString getJobNameBytes() {
-            java.lang.Object ref = jobName_;
+        public com.google.protobuf.ByteString getTaskNameBytes() {
+            java.lang.Object ref = taskName_;
             if (ref instanceof java.lang.String) {
                 com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                jobName_ = b;
+                taskName_ = b;
                 return b;
             } else {
                 return (com.google.protobuf.ByteString) ref;
@@ -3963,41 +3963,41 @@ public final class SubmitJobProtos {
             }
         }
 
-        public static final int JOB_TYPE_FIELD_NUMBER = 5;
-        private java.lang.Object jobType_;
+        public static final int TASK_TYPE_FIELD_NUMBER = 5;
+        private java.lang.Object taskType_;
 
         /**
-         * <code>required string job_type = 5;</code>
+         * <code>required string task_type = 5;</code>
          */
-        public boolean hasJobType() {
+        public boolean hasTaskType() {
             return ((bitField0_ & 0x00000010) == 0x00000010);
         }
 
         /**
-         * <code>required string job_type = 5;</code>
+         * <code>required string task_type = 5;</code>
          */
-        public java.lang.String getJobType() {
-            java.lang.Object ref = jobType_;
+        public java.lang.String getTaskType() {
+            java.lang.Object ref = taskType_;
             if (ref instanceof java.lang.String) {
                 return (java.lang.String) ref;
             } else {
                 com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
                 java.lang.String s = bs.toStringUtf8();
                 if (bs.isValidUtf8()) {
-                    jobType_ = s;
+                    taskType_ = s;
                 }
                 return s;
             }
         }
 
         /**
-         * <code>required string job_type = 5;</code>
+         * <code>required string task_type = 5;</code>
          */
-        public com.google.protobuf.ByteString getJobTypeBytes() {
-            java.lang.Object ref = jobType_;
+        public com.google.protobuf.ByteString getTaskTypeBytes() {
+            java.lang.Object ref = taskType_;
             if (ref instanceof java.lang.String) {
                 com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                jobType_ = b;
+                taskType_ = b;
                 return b;
             } else {
                 return (com.google.protobuf.ByteString) ref;
@@ -4102,10 +4102,10 @@ public final class SubmitJobProtos {
 
         private void initFields() {
             fullId_ = "";
-            jobName_ = "";
+            taskName_ = "";
             appName_ = "";
             user_ = "";
-            jobType_ = "";
+            taskType_ = "";
             command_ = "";
             priority_ = 1;
             parameters_ = java.util.Collections.emptyList();
@@ -4124,7 +4124,7 @@ public final class SubmitJobProtos {
                 memoizedIsInitialized = 0;
                 return false;
             }
-            if (!hasJobName()) {
+            if (!hasTaskName()) {
                 memoizedIsInitialized = 0;
                 return false;
             }
@@ -4136,7 +4136,7 @@ public final class SubmitJobProtos {
                 memoizedIsInitialized = 0;
                 return false;
             }
-            if (!hasJobType()) {
+            if (!hasTaskType()) {
                 memoizedIsInitialized = 0;
                 return false;
             }
@@ -4160,7 +4160,7 @@ public final class SubmitJobProtos {
                 output.writeBytes(1, getFullIdBytes());
             }
             if (((bitField0_ & 0x00000002) == 0x00000002)) {
-                output.writeBytes(2, getJobNameBytes());
+                output.writeBytes(2, getTaskNameBytes());
             }
             if (((bitField0_ & 0x00000004) == 0x00000004)) {
                 output.writeBytes(3, getAppNameBytes());
@@ -4169,7 +4169,7 @@ public final class SubmitJobProtos {
                 output.writeBytes(4, getUserBytes());
             }
             if (((bitField0_ & 0x00000010) == 0x00000010)) {
-                output.writeBytes(5, getJobTypeBytes());
+                output.writeBytes(5, getTaskTypeBytes());
             }
             if (((bitField0_ & 0x00000020) == 0x00000020)) {
                 output.writeBytes(6, getCommandBytes());
@@ -4195,7 +4195,7 @@ public final class SubmitJobProtos {
                 size += com.google.protobuf.CodedOutputStream.computeBytesSize(1, getFullIdBytes());
             }
             if (((bitField0_ & 0x00000002) == 0x00000002)) {
-                size += com.google.protobuf.CodedOutputStream.computeBytesSize(2, getJobNameBytes());
+                size += com.google.protobuf.CodedOutputStream.computeBytesSize(2, getTaskNameBytes());
             }
             if (((bitField0_ & 0x00000004) == 0x00000004)) {
                 size += com.google.protobuf.CodedOutputStream.computeBytesSize(3, getAppNameBytes());
@@ -4204,7 +4204,7 @@ public final class SubmitJobProtos {
                 size += com.google.protobuf.CodedOutputStream.computeBytesSize(4, getUserBytes());
             }
             if (((bitField0_ & 0x00000010) == 0x00000010)) {
-                size += com.google.protobuf.CodedOutputStream.computeBytesSize(5, getJobTypeBytes());
+                size += com.google.protobuf.CodedOutputStream.computeBytesSize(5, getTaskTypeBytes());
             }
             if (((bitField0_ & 0x00000020) == 0x00000020)) {
                 size += com.google.protobuf.CodedOutputStream.computeBytesSize(6, getCommandBytes());
@@ -4340,13 +4340,13 @@ public final class SubmitJobProtos {
                 super.clear();
                 fullId_ = "";
                 bitField0_ = (bitField0_ & ~0x00000001);
-                jobName_ = "";
+                taskName_ = "";
                 bitField0_ = (bitField0_ & ~0x00000002);
                 appName_ = "";
                 bitField0_ = (bitField0_ & ~0x00000004);
                 user_ = "";
                 bitField0_ = (bitField0_ & ~0x00000008);
-                jobType_ = "";
+                taskType_ = "";
                 bitField0_ = (bitField0_ & ~0x00000010);
                 command_ = "";
                 bitField0_ = (bitField0_ & ~0x00000020);
@@ -4393,7 +4393,7 @@ public final class SubmitJobProtos {
                 if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
                     to_bitField0_ |= 0x00000002;
                 }
-                result.jobName_ = jobName_;
+                result.taskName_ = taskName_;
                 if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
                     to_bitField0_ |= 0x00000004;
                 }
@@ -4405,7 +4405,7 @@ public final class SubmitJobProtos {
                 if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
                     to_bitField0_ |= 0x00000010;
                 }
-                result.jobType_ = jobType_;
+                result.taskType_ = taskType_;
                 if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
                     to_bitField0_ |= 0x00000020;
                 }
@@ -4445,9 +4445,9 @@ public final class SubmitJobProtos {
                     fullId_ = other.fullId_;
                     onChanged();
                 }
-                if (other.hasJobName()) {
+                if (other.hasTaskName()) {
                     bitField0_ |= 0x00000002;
-                    jobName_ = other.jobName_;
+                    taskName_ = other.taskName_;
                     onChanged();
                 }
                 if (other.hasAppName()) {
@@ -4460,9 +4460,9 @@ public final class SubmitJobProtos {
                     user_ = other.user_;
                     onChanged();
                 }
-                if (other.hasJobType()) {
+                if (other.hasTaskType()) {
                     bitField0_ |= 0x00000010;
-                    jobType_ = other.jobType_;
+                    taskType_ = other.taskType_;
                     onChanged();
                 }
                 if (other.hasCommand()) {
@@ -4506,7 +4506,7 @@ public final class SubmitJobProtos {
 
                     return false;
                 }
-                if (!hasJobName()) {
+                if (!hasTaskName()) {
 
                     return false;
                 }
@@ -4518,7 +4518,7 @@ public final class SubmitJobProtos {
 
                     return false;
                 }
-                if (!hasJobType()) {
+                if (!hasTaskType()) {
 
                     return false;
                 }
@@ -4629,25 +4629,25 @@ public final class SubmitJobProtos {
                 return this;
             }
 
-            private java.lang.Object jobName_ = "";
+            private java.lang.Object taskName_ = "";
 
             /**
-             * <code>required string job_name = 2;</code>
+             * <code>required string task_name = 2;</code>
              */
-            public boolean hasJobName() {
+            public boolean hasTaskName() {
                 return ((bitField0_ & 0x00000002) == 0x00000002);
             }
 
             /**
-             * <code>required string job_name = 2;</code>
+             * <code>required string task_name = 2;</code>
              */
-            public java.lang.String getJobName() {
-                java.lang.Object ref = jobName_;
+            public java.lang.String getTaskName() {
+                java.lang.Object ref = taskName_;
                 if (!(ref instanceof java.lang.String)) {
                     com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
                     java.lang.String s = bs.toStringUtf8();
                     if (bs.isValidUtf8()) {
-                        jobName_ = s;
+                        taskName_ = s;
                     }
                     return s;
                 } else {
@@ -4656,13 +4656,13 @@ public final class SubmitJobProtos {
             }
 
             /**
-             * <code>required string job_name = 2;</code>
+             * <code>required string task_name = 2;</code>
              */
-            public com.google.protobuf.ByteString getJobNameBytes() {
-                java.lang.Object ref = jobName_;
+            public com.google.protobuf.ByteString getTaskNameBytes() {
+                java.lang.Object ref = taskName_;
                 if (ref instanceof String) {
                     com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                    jobName_ = b;
+                    taskName_ = b;
                     return b;
                 } else {
                     return (com.google.protobuf.ByteString) ref;
@@ -4670,37 +4670,37 @@ public final class SubmitJobProtos {
             }
 
             /**
-             * <code>required string job_name = 2;</code>
+             * <code>required string task_name = 2;</code>
              */
-            public Builder setJobName(java.lang.String value) {
+            public Builder setTaskName(java.lang.String value) {
                 if (value == null) {
                     throw new NullPointerException();
                 }
                 bitField0_ |= 0x00000002;
-                jobName_ = value;
+                taskName_ = value;
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>required string job_name = 2;</code>
+             * <code>required string task_name = 2;</code>
              */
-            public Builder clearJobName() {
+            public Builder clearTaskName() {
                 bitField0_ = (bitField0_ & ~0x00000002);
-                jobName_ = getDefaultInstance().getJobName();
+                taskName_ = getDefaultInstance().getTaskName();
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>required string job_name = 2;</code>
+             * <code>required string task_name = 2;</code>
              */
-            public Builder setJobNameBytes(com.google.protobuf.ByteString value) {
+            public Builder setTaskNameBytes(com.google.protobuf.ByteString value) {
                 if (value == null) {
                     throw new NullPointerException();
                 }
                 bitField0_ |= 0x00000002;
-                jobName_ = value;
+                taskName_ = value;
                 onChanged();
                 return this;
             }
@@ -4857,25 +4857,25 @@ public final class SubmitJobProtos {
                 return this;
             }
 
-            private java.lang.Object jobType_ = "";
+            private java.lang.Object taskType_ = "";
 
             /**
-             * <code>required string job_type = 5;</code>
+             * <code>required string task_type = 5;</code>
              */
-            public boolean hasJobType() {
+            public boolean hasTaskType() {
                 return ((bitField0_ & 0x00000010) == 0x00000010);
             }
 
             /**
-             * <code>required string job_type = 5;</code>
+             * <code>required string task_type = 5;</code>
              */
-            public java.lang.String getJobType() {
-                java.lang.Object ref = jobType_;
+            public java.lang.String getTaskType() {
+                java.lang.Object ref = taskType_;
                 if (!(ref instanceof java.lang.String)) {
                     com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
                     java.lang.String s = bs.toStringUtf8();
                     if (bs.isValidUtf8()) {
-                        jobType_ = s;
+                        taskType_ = s;
                     }
                     return s;
                 } else {
@@ -4884,13 +4884,13 @@ public final class SubmitJobProtos {
             }
 
             /**
-             * <code>required string job_type = 5;</code>
+             * <code>required string task_type = 5;</code>
              */
-            public com.google.protobuf.ByteString getJobTypeBytes() {
-                java.lang.Object ref = jobType_;
+            public com.google.protobuf.ByteString getTaskTypeBytes() {
+                java.lang.Object ref = taskType_;
                 if (ref instanceof String) {
                     com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                    jobType_ = b;
+                    taskType_ = b;
                     return b;
                 } else {
                     return (com.google.protobuf.ByteString) ref;
@@ -4898,37 +4898,37 @@ public final class SubmitJobProtos {
             }
 
             /**
-             * <code>required string job_type = 5;</code>
+             * <code>required string task_type = 5;</code>
              */
-            public Builder setJobType(java.lang.String value) {
+            public Builder setTaskType(java.lang.String value) {
                 if (value == null) {
                     throw new NullPointerException();
                 }
                 bitField0_ |= 0x00000010;
-                jobType_ = value;
+                taskType_ = value;
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>required string job_type = 5;</code>
+             * <code>required string task_type = 5;</code>
              */
-            public Builder clearJobType() {
+            public Builder clearTaskType() {
                 bitField0_ = (bitField0_ & ~0x00000010);
-                jobType_ = getDefaultInstance().getJobType();
+                taskType_ = getDefaultInstance().getTaskType();
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>required string job_type = 5;</code>
+             * <code>required string task_type = 5;</code>
              */
-            public Builder setJobTypeBytes(com.google.protobuf.ByteString value) {
+            public Builder setTaskTypeBytes(com.google.protobuf.ByteString value) {
                 if (value == null) {
                     throw new NullPointerException();
                 }
                 bitField0_ |= 0x00000010;
-                jobType_ = value;
+                taskType_ = value;
                 onChanged();
                 return this;
             }
@@ -5895,14 +5895,14 @@ public final class SubmitJobProtos {
                 "_time\030\020 \002(\t\022\035\n\nparameters\030\021 \003(\0132\t.MapEnt"
                         + "ry\"M\n\027ServerSubmitJobResponse\022\016\n\006job_id\030"
                         + "\001 \002(\003\022\017\n\007success\030\002 \002(\010\022\021\n\007message\030\003 \001(\t:"
-                        + "\000\"\263\001\n\027ServerSubmitTaskRequest\022\017\n\007full_id"
-                        + "\030\001 \002(\t\022\020\n\010job_name\030\002 \002(\t\022\020\n\010app_name\030\003 \002"
-                        + "(\t\022\014\n\004user\030\004 \002(\t\022\020\n\010job_type\030\005 \002(\t\022\017\n\007co"
-                        + "mmand\030\006 \002(\t\022\023\n\010priority\030\007 \001(\005:\0011\022\035\n\npara"
-                        + "meters\030\010 \003(\0132\t.MapEntry\"=\n\030WorkerSubmitT"
-                        + "askResponse\022\016\n\006accept\030\001 \002(\010\022\021\n\007message\030\002"
-                        + " \001(\t:\000B.\n\033com.mogujie.jarvis.protocolB\017S",
-                "ubmitJobProtos" };
+                        + "\000\"\265\001\n\027ServerSubmitTaskRequest\022\017\n\007full_id"
+                        + "\030\001 \002(\t\022\021\n\ttask_name\030\002 \002(\t\022\020\n\010app_name\030\003 "
+                        + "\002(\t\022\014\n\004user\030\004 \002(\t\022\021\n\ttask_type\030\005 \002(\t\022\017\n\007"
+                        + "command\030\006 \002(\t\022\023\n\010priority\030\007 \001(\005:\0011\022\035\n\npa"
+                        + "rameters\030\010 \003(\0132\t.MapEntry\"=\n\030WorkerSubmi"
+                        + "tTaskResponse\022\016\n\006accept\030\001 \002(\010\022\021\n\007message"
+                        + "\030\002 \001(\t:\000B.\n\033com.mogujie.jarvis.protocolB",
+                "\017SubmitJobProtos" };
         com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner = new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
             public com.google.protobuf.ExtensionRegistry assignDescriptors(com.google.protobuf.Descriptors.FileDescriptor root) {
                 descriptor = root;
@@ -5923,7 +5923,7 @@ public final class SubmitJobProtos {
         internal_static_ServerSubmitTaskRequest_descriptor = getDescriptor().getMessageTypes().get(2);
         internal_static_ServerSubmitTaskRequest_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
                 internal_static_ServerSubmitTaskRequest_descriptor,
-                new java.lang.String[] { "FullId", "JobName", "AppName", "User", "JobType", "Command", "Priority", "Parameters", });
+                new java.lang.String[] { "FullId", "TaskName", "AppName", "User", "TaskType", "Command", "Priority", "Parameters", });
         internal_static_WorkerSubmitTaskResponse_descriptor = getDescriptor().getMessageTypes().get(3);
         internal_static_WorkerSubmitTaskResponse_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
                 internal_static_WorkerSubmitTaskResponse_descriptor, new java.lang.String[] { "Accept", "Message", });

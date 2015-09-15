@@ -6,10 +6,10 @@
  * Create Date: 2015年6月9日 下午1:30:43
  */
 
-package com.mogujie.jarvis.jobs;
+package com.mogujie.jarvis.tasks;
 
 import com.mogujie.jarvis.core.domain.StreamType;
-import com.mogujie.jarvis.jobs.shell.ShellJob;
+import com.mogujie.jarvis.tasks.shell.ShellTask;
 
 import java.io.InputStream;
 
@@ -19,11 +19,11 @@ import java.io.InputStream;
  */
 public class ShellStreamProcessor extends Thread {
 
-    private ShellJob shellJob;
+    private ShellTask shellJob;
     private InputStream inputStream;
     private StreamType type;
 
-    public ShellStreamProcessor(ShellJob job, InputStream inputStream, StreamType type) {
+    public ShellStreamProcessor(ShellTask job, InputStream inputStream, StreamType type) {
         this.shellJob = job;
         this.inputStream = inputStream;
         this.type = type;

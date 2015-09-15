@@ -5,19 +5,17 @@
  * Author: wuya
  * Create Date: 2015年6月9日 下午1:18:35
  */
-package com.mogujie.jarvis.jobs.util;
+package com.mogujie.jarvis.tasks.util;
 
-import com.mogujie.jarvis.core.exeception.ShellException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import java.io.*;
-import java.nio.charset.StandardCharsets;
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.security.InvalidParameterException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import com.mogujie.jarvis.core.exeception.ShellException;
 
 /**
  * @author wuya
@@ -28,29 +26,27 @@ public class YarnUtils {
      * APP状态
      */
     public enum AppStatus {
-        ACTIVE, //活跃（除了运行结束的与删除以外）
-        ALL     //全部
+        ACTIVE, // 活跃（除了运行结束的与删除以外）
+        ALL // 全部
     }
-
-    private static final Logger LOGGER = LogManager.getLogger();
 
     /**
      * 删除APP_通过APP名称
      *
-     * @param applicationName   ：APP名称
+     * @param applicationName
+     *            ：APP名称
      * @throws InvalidParameterException
      * @throws ShellException
      */
-    public static void killApplicationByName(String applicationName)
-            throws InvalidParameterException, ShellException {
+    public static void killApplicationByName(String applicationName) throws InvalidParameterException, ShellException {
 
-        //获取appIDs
+        // 获取appIDs
         Set<String> applicationIdSet = getApplicationIds(applicationName, AppStatus.ACTIVE);
         if (applicationIdSet == null) {
             return;
         }
 
-        //删除apps
+        // 删除apps
         killApplicationByIds(applicationIdSet);
 
     }
@@ -58,11 +54,11 @@ public class YarnUtils {
     /**
      * 删除APP_通过AppIDs
      *
-     * @param ids   : appIDs
+     * @param ids
+     *            : appIDs
      * @throws ShellException
      */
-    public static void killApplicationByIds(Set<String> ids)
-            throws ShellException {
+    public static void killApplicationByIds(Set<String> ids) throws ShellException {
 
         if (ids == null || ids.isEmpty()) {
             return;
@@ -78,16 +74,16 @@ public class YarnUtils {
 
     }
 
-
     /**
      * 根据app名称获取appIDs
      *
-     * @param applicationName ：app名称
-     * @param appStatus       ：app状态
+     * @param applicationName
+     *            ：app名称
+     * @param appStatus
+     *            ：app状态
      * @return appIds
      */
-    public static  Set<String> getApplicationIds(String applicationName, AppStatus appStatus)
-            throws InvalidParameterException, ShellException {
+    public static Set<String> getApplicationIds(String applicationName, AppStatus appStatus) throws InvalidParameterException, ShellException {
 
         final String cmd = "yarn application -list -appStates NEW,NEW_SAVING,SUBMITTED,ACCEPTED,RUNNING";
 
@@ -117,6 +113,5 @@ public class YarnUtils {
         return applicationIdSet;
 
     }
-
 
 }

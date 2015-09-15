@@ -6,28 +6,28 @@
  * Create Date: 2015年8月31日 下午10:06:30
  */
 
-package com.mogujie.jarvis.jobs.jdbc;
+package com.mogujie.jarvis.tasks.jdbc;
 
 import org.apache.commons.configuration.Configuration;
 
-import com.mogujie.jarvis.core.JobContext;
+import com.mogujie.jarvis.core.TaskContext;
 
 /**
  * @author guangming
  *
  */
-public class PrestoJdbcJob extends JdbcJob {
+public class PrestoJdbcTask extends JdbcTask {
 
     /**
-     * @param jobContext
+     * @param taskContext
      */
-    public PrestoJdbcJob(JobContext jobContext) {
-        super(jobContext);
+    public PrestoJdbcTask(TaskContext taskContext) {
+        super(taskContext);
         // TODO Auto-generated constructor stub
     }
 
     @Override
-    protected String getJobType() {
+    protected String getTaskType() {
         return "presto";
     }
 

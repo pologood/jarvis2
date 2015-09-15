@@ -6,9 +6,7 @@
  * Create Date: 2015年6月17日 下午1:07:46
  */
 
-package com.mogujie.jarvis.jobs.util;
-
-import com.mogujie.jarvis.jobs.domain.HiveJobEntity;
+package com.mogujie.jarvis.tasks.util;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.HierarchicalConfiguration;
@@ -16,6 +14,8 @@ import org.apache.commons.configuration.XMLConfiguration;
 import org.apache.commons.configuration.reloading.FileChangedReloadingStrategy;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import com.mogujie.jarvis.tasks.domain.HiveTaskEntity;
 
 import java.util.List;
 import java.util.Map;
@@ -28,7 +28,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class HiveConfigUtils {
 
   private static XMLConfiguration config;
-  private static Map<String, HiveJobEntity> map = new ConcurrentHashMap<String, HiveJobEntity>();
+  private static Map<String, HiveTaskEntity> map = new ConcurrentHashMap<String, HiveTaskEntity>();
   private static final Logger LOGGER = LogManager.getLogger();
 
   static {
@@ -40,7 +40,7 @@ public class HiveConfigUtils {
     }
   }
 
-  public synchronized static HiveJobEntity getHiveJobEntry(String name) {
+  public synchronized static HiveTaskEntity getHiveJobEntry(String name) {
     map.clear();
     List<HierarchicalConfiguration> list = config.configurationsAt(".App");
     for (HierarchicalConfiguration conf : list) {
@@ -49,7 +49,7 @@ public class HiveConfigUtils {
       boolean isAdmin = conf.getInt("[@isAdmin]") == 1;
       int maxResultRows = conf.getInt("[@maxResultRows]");
       int maxMapperNum = conf.getInt("[@maxMapperNum]");
-      HiveJobEntity entity = new HiveJobEntity(appName, user, isAdmin, maxResultRows, maxMapperNum);
+      HiveTaskEntity entity = new HiveTaskEntity(appName, user, isAdmin, maxResultRows, maxMapperNum);
       map.put(appName, entity);
     }
 

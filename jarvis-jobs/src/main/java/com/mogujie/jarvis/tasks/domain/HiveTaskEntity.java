@@ -6,13 +6,13 @@
  * Create Date: 2015年6月17日 下午1:05:45
  */
 
-package com.mogujie.jarvis.jobs.domain;
+package com.mogujie.jarvis.tasks.domain;
 
 /**
  * @author wuya
  *
  */
-public class HiveJobEntity {
+public class HiveTaskEntity {
 
   private String name;
   private String user;
@@ -20,7 +20,7 @@ public class HiveJobEntity {
   private int maxResultRows;
   private int maxMapperNum;
 
-  public HiveJobEntity(String name, String user, boolean isAdmin, int maxResultRows, int maxMapperNum) {
+  public HiveTaskEntity(String name, String user, boolean isAdmin, int maxResultRows, int maxMapperNum) {
     this.name = name;
     this.user = user;
     this.isAdmin = isAdmin;

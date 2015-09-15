@@ -6,7 +6,7 @@
  * Create Date: 2015年8月31日 下午10:00:11
  */
 
-package com.mogujie.jarvis.jobs.util;
+package com.mogujie.jarvis.tasks.util;
 
 import java.util.ArrayList;
 import java.util.List;

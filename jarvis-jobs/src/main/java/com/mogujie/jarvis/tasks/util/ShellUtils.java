@@ -5,7 +5,7 @@
  * Author: wuya
  * Create Date: 2015年6月9日 下午1:18:35
  */
-package com.mogujie.jarvis.jobs.util;
+package com.mogujie.jarvis.tasks.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;

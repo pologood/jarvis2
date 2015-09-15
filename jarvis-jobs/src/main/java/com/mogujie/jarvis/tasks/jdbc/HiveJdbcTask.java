@@ -6,28 +6,28 @@
  * Create Date: 2015年8月31日 下午10:05:41
  */
 
-package com.mogujie.jarvis.jobs.jdbc;
+package com.mogujie.jarvis.tasks.jdbc;
 
 import org.apache.commons.configuration.Configuration;
 
-import com.mogujie.jarvis.core.JobContext;
+import com.mogujie.jarvis.core.TaskContext;
 
 /**
  * @author guangming
  *
  */
-public class HiveJdbcJob extends JdbcJob {
+public class HiveJdbcTask extends JdbcTask {
 
     /**
      * @param jobContext
      */
-    public HiveJdbcJob(JobContext jobContext) {
+    public HiveJdbcTask(TaskContext jobContext) {
         super(jobContext);
         // TODO Auto-generated constructor stub
     }
 
     @Override
-    protected String getJobType() {
+    protected String getTaskType() {
         return "hiveserver2";
     }
 
