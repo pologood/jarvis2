@@ -444,6 +444,31 @@ public final class QueryTaskProtos {
          * <code>repeated int64 task_id = 1;</code>
          */
         long getTaskId(int index);
+
+        /**
+         * <code>required bool success = 2;</code>
+         */
+        boolean hasSuccess();
+
+        /**
+         * <code>required bool success = 2;</code>
+         */
+        boolean getSuccess();
+
+        /**
+         * <code>optional string message = 3 [default = ""];</code>
+         */
+        boolean hasMessage();
+
+        /**
+         * <code>optional string message = 3 [default = ""];</code>
+         */
+        java.lang.String getMessage();
+
+        /**
+         * <code>optional string message = 3 [default = ""];</code>
+         */
+        com.google.protobuf.ByteString getMessageBytes();
     }
 
     /**
@@ -519,6 +544,17 @@ public final class QueryTaskProtos {
                             input.popLimit(limit);
                             break;
                         }
+                        case 16: {
+                            bitField0_ |= 0x00000001;
+                            success_ = input.readBool();
+                            break;
+                        }
+                        case 26: {
+                            com.google.protobuf.ByteString bs = input.readBytes();
+                            bitField0_ |= 0x00000002;
+                            message_ = bs;
+                            break;
+                        }
                     }
                 }
             } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -556,6 +592,7 @@ public final class QueryTaskProtos {
             return PARSER;
         }
 
+        private int bitField0_;
         public static final int TASK_ID_FIELD_NUMBER = 1;
         private java.util.List<java.lang.Long> taskId_;
 
@@ -580,8 +617,68 @@ public final class QueryTaskProtos {
             return taskId_.get(index);
         }
 
+        public static final int SUCCESS_FIELD_NUMBER = 2;
+        private boolean success_;
+
+        /**
+         * <code>required bool success = 2;</code>
+         */
+        public boolean hasSuccess() {
+            return ((bitField0_ & 0x00000001) == 0x00000001);
+        }
+
+        /**
+         * <code>required bool success = 2;</code>
+         */
+        public boolean getSuccess() {
+            return success_;
+        }
+
+        public static final int MESSAGE_FIELD_NUMBER = 3;
+        private java.lang.Object message_;
+
+        /**
+         * <code>optional string message = 3 [default = ""];</code>
+         */
+        public boolean hasMessage() {
+            return ((bitField0_ & 0x00000002) == 0x00000002);
+        }
+
+        /**
+         * <code>optional string message = 3 [default = ""];</code>
+         */
+        public java.lang.String getMessage() {
+            java.lang.Object ref = message_;
+            if (ref instanceof java.lang.String) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                if (bs.isValidUtf8()) {
+                    message_ = s;
+                }
+                return s;
+            }
+        }
+
+        /**
+         * <code>optional string message = 3 [default = ""];</code>
+         */
+        public com.google.protobuf.ByteString getMessageBytes() {
+            java.lang.Object ref = message_;
+            if (ref instanceof java.lang.String) {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                message_ = b;
+                return b;
+            } else {
+                return (com.google.protobuf.ByteString) ref;
+            }
+        }
+
         private void initFields() {
             taskId_ = java.util.Collections.emptyList();
+            success_ = false;
+            message_ = "";
         }
 
         private byte memoizedIsInitialized = -1;
@@ -593,6 +690,10 @@ public final class QueryTaskProtos {
             if (isInitialized == 0)
                 return false;
 
+            if (!hasSuccess()) {
+                memoizedIsInitialized = 0;
+                return false;
+            }
             memoizedIsInitialized = 1;
             return true;
         }
@@ -601,6 +702,12 @@ public final class QueryTaskProtos {
             getSerializedSize();
             for (int i = 0; i < taskId_.size(); i++) {
                 output.writeInt64(1, taskId_.get(i));
+            }
+            if (((bitField0_ & 0x00000001) == 0x00000001)) {
+                output.writeBool(2, success_);
+            }
+            if (((bitField0_ & 0x00000002) == 0x00000002)) {
+                output.writeBytes(3, getMessageBytes());
             }
             getUnknownFields().writeTo(output);
         }
@@ -620,6 +727,12 @@ public final class QueryTaskProtos {
                 }
                 size += dataSize;
                 size += 1 * getTaskIdList().size();
+            }
+            if (((bitField0_ & 0x00000001) == 0x00000001)) {
+                size += com.google.protobuf.CodedOutputStream.computeBoolSize(2, success_);
+            }
+            if (((bitField0_ & 0x00000002) == 0x00000002)) {
+                size += com.google.protobuf.CodedOutputStream.computeBytesSize(3, getMessageBytes());
             }
             size += getUnknownFields().getSerializedSize();
             memoizedSerializedSize = size;
@@ -745,6 +858,10 @@ public final class QueryTaskProtos {
                 super.clear();
                 taskId_ = java.util.Collections.emptyList();
                 bitField0_ = (bitField0_ & ~0x00000001);
+                success_ = false;
+                bitField0_ = (bitField0_ & ~0x00000002);
+                message_ = "";
+                bitField0_ = (bitField0_ & ~0x00000004);
                 return this;
             }
 
@@ -771,11 +888,22 @@ public final class QueryTaskProtos {
             public com.mogujie.jarvis.protocol.QueryTaskProtos.ServerQueryTaskResponse buildPartial() {
                 com.mogujie.jarvis.protocol.QueryTaskProtos.ServerQueryTaskResponse result = new com.mogujie.jarvis.protocol.QueryTaskProtos.ServerQueryTaskResponse(
                         this);
+                int from_bitField0_ = bitField0_;
+                int to_bitField0_ = 0;
                 if (((bitField0_ & 0x00000001) == 0x00000001)) {
                     taskId_ = java.util.Collections.unmodifiableList(taskId_);
                     bitField0_ = (bitField0_ & ~0x00000001);
                 }
                 result.taskId_ = taskId_;
+                if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+                    to_bitField0_ |= 0x00000001;
+                }
+                result.success_ = success_;
+                if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+                    to_bitField0_ |= 0x00000002;
+                }
+                result.message_ = message_;
+                result.bitField0_ = to_bitField0_;
                 onBuilt();
                 return result;
             }
@@ -802,11 +930,23 @@ public final class QueryTaskProtos {
                     }
                     onChanged();
                 }
+                if (other.hasSuccess()) {
+                    setSuccess(other.getSuccess());
+                }
+                if (other.hasMessage()) {
+                    bitField0_ |= 0x00000004;
+                    message_ = other.message_;
+                    onChanged();
+                }
                 this.mergeUnknownFields(other.getUnknownFields());
                 return this;
             }
 
             public final boolean isInitialized() {
+                if (!hasSuccess()) {
+
+                    return false;
+                }
                 return true;
             }
 
@@ -898,6 +1038,118 @@ public final class QueryTaskProtos {
                 return this;
             }
 
+            private boolean success_;
+
+            /**
+             * <code>required bool success = 2;</code>
+             */
+            public boolean hasSuccess() {
+                return ((bitField0_ & 0x00000002) == 0x00000002);
+            }
+
+            /**
+             * <code>required bool success = 2;</code>
+             */
+            public boolean getSuccess() {
+                return success_;
+            }
+
+            /**
+             * <code>required bool success = 2;</code>
+             */
+            public Builder setSuccess(boolean value) {
+                bitField0_ |= 0x00000002;
+                success_ = value;
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>required bool success = 2;</code>
+             */
+            public Builder clearSuccess() {
+                bitField0_ = (bitField0_ & ~0x00000002);
+                success_ = false;
+                onChanged();
+                return this;
+            }
+
+            private java.lang.Object message_ = "";
+
+            /**
+             * <code>optional string message = 3 [default = ""];</code>
+             */
+            public boolean hasMessage() {
+                return ((bitField0_ & 0x00000004) == 0x00000004);
+            }
+
+            /**
+             * <code>optional string message = 3 [default = ""];</code>
+             */
+            public java.lang.String getMessage() {
+                java.lang.Object ref = message_;
+                if (!(ref instanceof java.lang.String)) {
+                    com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                    java.lang.String s = bs.toStringUtf8();
+                    if (bs.isValidUtf8()) {
+                        message_ = s;
+                    }
+                    return s;
+                } else {
+                    return (java.lang.String) ref;
+                }
+            }
+
+            /**
+             * <code>optional string message = 3 [default = ""];</code>
+             */
+            public com.google.protobuf.ByteString getMessageBytes() {
+                java.lang.Object ref = message_;
+                if (ref instanceof String) {
+                    com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                    message_ = b;
+                    return b;
+                } else {
+                    return (com.google.protobuf.ByteString) ref;
+                }
+            }
+
+            /**
+             * <code>optional string message = 3 [default = ""];</code>
+             */
+            public Builder setMessage(java.lang.String value) {
+                if (value == null) {
+                    throw new NullPointerException();
+                }
+                bitField0_ |= 0x00000004;
+                message_ = value;
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>optional string message = 3 [default = ""];</code>
+             */
+            public Builder clearMessage() {
+                bitField0_ = (bitField0_ & ~0x00000004);
+                message_ = getDefaultInstance().getMessage();
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>optional string message = 3 [default = ""];</code>
+             */
+            public Builder setMessageBytes(com.google.protobuf.ByteString value) {
+                if (value == null) {
+                    throw new NullPointerException();
+                }
+                bitField0_ |= 0x00000004;
+                message_ = value;
+                onChanged();
+                return this;
+            }
+
             // @@protoc_insertion_point(builder_scope:ServerQueryTaskResponse)
         }
 
@@ -922,8 +1174,9 @@ public final class QueryTaskProtos {
 
     static {
         java.lang.String[] descriptorData = {
-                "\n\020query_task.proto\",\n\032RestServerQueryTas" + "kRequest\022\016\n\006job_id\030\001 \002(\003\"*\n\027ServerQueryT"
-                        + "askResponse\022\017\n\007task_id\030\001 \003(\003B.\n\033com.mogu" + "jie.jarvis.protocolB\017QueryTaskProtos" };
+                "\n\020query_task.proto\",\n\032RestServerQueryTas" + "kRequest\022\016\n\006job_id\030\001 \002(\003\"N\n\027ServerQueryT"
+                        + "askResponse\022\017\n\007task_id\030\001 \003(\003\022\017\n\007success\030"
+                        + "\002 \002(\010\022\021\n\007message\030\003 \001(\t:\000B.\n\033com.mogujie." + "jarvis.protocolB\017QueryTaskProtos" };
         com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner = new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
             public com.google.protobuf.ExtensionRegistry assignDescriptors(com.google.protobuf.Descriptors.FileDescriptor root) {
                 descriptor = root;
@@ -937,7 +1190,7 @@ public final class QueryTaskProtos {
                 internal_static_RestServerQueryTaskRequest_descriptor, new java.lang.String[] { "JobId", });
         internal_static_ServerQueryTaskResponse_descriptor = getDescriptor().getMessageTypes().get(1);
         internal_static_ServerQueryTaskResponse_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-                internal_static_ServerQueryTaskResponse_descriptor, new java.lang.String[] { "TaskId", });
+                internal_static_ServerQueryTaskResponse_descriptor, new java.lang.String[] { "TaskId", "Success", "Message", });
     }
 
     // @@protoc_insertion_point(outer_class_scope)

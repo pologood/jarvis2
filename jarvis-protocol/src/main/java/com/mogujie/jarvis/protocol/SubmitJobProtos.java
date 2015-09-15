@@ -5309,17 +5309,27 @@ public final class SubmitJobProtos {
         boolean getAccept();
 
         /**
-         * <code>optional string message = 2 [default = ""];</code>
+         * <code>required bool success = 2;</code>
+         */
+        boolean hasSuccess();
+
+        /**
+         * <code>required bool success = 2;</code>
+         */
+        boolean getSuccess();
+
+        /**
+         * <code>optional string message = 3 [default = ""];</code>
          */
         boolean hasMessage();
 
         /**
-         * <code>optional string message = 2 [default = ""];</code>
+         * <code>optional string message = 3 [default = ""];</code>
          */
         java.lang.String getMessage();
 
         /**
-         * <code>optional string message = 2 [default = ""];</code>
+         * <code>optional string message = 3 [default = ""];</code>
          */
         com.google.protobuf.ByteString getMessageBytes();
     }
@@ -5380,9 +5390,14 @@ public final class SubmitJobProtos {
                             accept_ = input.readBool();
                             break;
                         }
-                        case 18: {
-                            com.google.protobuf.ByteString bs = input.readBytes();
+                        case 16: {
                             bitField0_ |= 0x00000002;
+                            success_ = input.readBool();
+                            break;
+                        }
+                        case 26: {
+                            com.google.protobuf.ByteString bs = input.readBytes();
+                            bitField0_ |= 0x00000004;
                             message_ = bs;
                             break;
                         }
@@ -5438,18 +5453,35 @@ public final class SubmitJobProtos {
             return accept_;
         }
 
-        public static final int MESSAGE_FIELD_NUMBER = 2;
-        private java.lang.Object message_;
+        public static final int SUCCESS_FIELD_NUMBER = 2;
+        private boolean success_;
 
         /**
-         * <code>optional string message = 2 [default = ""];</code>
+         * <code>required bool success = 2;</code>
          */
-        public boolean hasMessage() {
+        public boolean hasSuccess() {
             return ((bitField0_ & 0x00000002) == 0x00000002);
         }
 
         /**
-         * <code>optional string message = 2 [default = ""];</code>
+         * <code>required bool success = 2;</code>
+         */
+        public boolean getSuccess() {
+            return success_;
+        }
+
+        public static final int MESSAGE_FIELD_NUMBER = 3;
+        private java.lang.Object message_;
+
+        /**
+         * <code>optional string message = 3 [default = ""];</code>
+         */
+        public boolean hasMessage() {
+            return ((bitField0_ & 0x00000004) == 0x00000004);
+        }
+
+        /**
+         * <code>optional string message = 3 [default = ""];</code>
          */
         public java.lang.String getMessage() {
             java.lang.Object ref = message_;
@@ -5466,7 +5498,7 @@ public final class SubmitJobProtos {
         }
 
         /**
-         * <code>optional string message = 2 [default = ""];</code>
+         * <code>optional string message = 3 [default = ""];</code>
          */
         public com.google.protobuf.ByteString getMessageBytes() {
             java.lang.Object ref = message_;
@@ -5481,6 +5513,7 @@ public final class SubmitJobProtos {
 
         private void initFields() {
             accept_ = false;
+            success_ = false;
             message_ = "";
         }
 
@@ -5497,6 +5530,10 @@ public final class SubmitJobProtos {
                 memoizedIsInitialized = 0;
                 return false;
             }
+            if (!hasSuccess()) {
+                memoizedIsInitialized = 0;
+                return false;
+            }
             memoizedIsInitialized = 1;
             return true;
         }
@@ -5507,7 +5544,10 @@ public final class SubmitJobProtos {
                 output.writeBool(1, accept_);
             }
             if (((bitField0_ & 0x00000002) == 0x00000002)) {
-                output.writeBytes(2, getMessageBytes());
+                output.writeBool(2, success_);
+            }
+            if (((bitField0_ & 0x00000004) == 0x00000004)) {
+                output.writeBytes(3, getMessageBytes());
             }
             getUnknownFields().writeTo(output);
         }
@@ -5524,7 +5564,10 @@ public final class SubmitJobProtos {
                 size += com.google.protobuf.CodedOutputStream.computeBoolSize(1, accept_);
             }
             if (((bitField0_ & 0x00000002) == 0x00000002)) {
-                size += com.google.protobuf.CodedOutputStream.computeBytesSize(2, getMessageBytes());
+                size += com.google.protobuf.CodedOutputStream.computeBoolSize(2, success_);
+            }
+            if (((bitField0_ & 0x00000004) == 0x00000004)) {
+                size += com.google.protobuf.CodedOutputStream.computeBytesSize(3, getMessageBytes());
             }
             size += getUnknownFields().getSerializedSize();
             memoizedSerializedSize = size;
@@ -5650,8 +5693,10 @@ public final class SubmitJobProtos {
                 super.clear();
                 accept_ = false;
                 bitField0_ = (bitField0_ & ~0x00000001);
-                message_ = "";
+                success_ = false;
                 bitField0_ = (bitField0_ & ~0x00000002);
+                message_ = "";
+                bitField0_ = (bitField0_ & ~0x00000004);
                 return this;
             }
 
@@ -5687,6 +5732,10 @@ public final class SubmitJobProtos {
                 if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
                     to_bitField0_ |= 0x00000002;
                 }
+                result.success_ = success_;
+                if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+                    to_bitField0_ |= 0x00000004;
+                }
                 result.message_ = message_;
                 result.bitField0_ = to_bitField0_;
                 onBuilt();
@@ -5708,8 +5757,11 @@ public final class SubmitJobProtos {
                 if (other.hasAccept()) {
                     setAccept(other.getAccept());
                 }
+                if (other.hasSuccess()) {
+                    setSuccess(other.getSuccess());
+                }
                 if (other.hasMessage()) {
-                    bitField0_ |= 0x00000002;
+                    bitField0_ |= 0x00000004;
                     message_ = other.message_;
                     onChanged();
                 }
@@ -5719,6 +5771,10 @@ public final class SubmitJobProtos {
 
             public final boolean isInitialized() {
                 if (!hasAccept()) {
+
+                    return false;
+                }
+                if (!hasSuccess()) {
 
                     return false;
                 }
@@ -5779,17 +5835,53 @@ public final class SubmitJobProtos {
                 return this;
             }
 
-            private java.lang.Object message_ = "";
+            private boolean success_;
 
             /**
-             * <code>optional string message = 2 [default = ""];</code>
+             * <code>required bool success = 2;</code>
              */
-            public boolean hasMessage() {
+            public boolean hasSuccess() {
                 return ((bitField0_ & 0x00000002) == 0x00000002);
             }
 
             /**
-             * <code>optional string message = 2 [default = ""];</code>
+             * <code>required bool success = 2;</code>
+             */
+            public boolean getSuccess() {
+                return success_;
+            }
+
+            /**
+             * <code>required bool success = 2;</code>
+             */
+            public Builder setSuccess(boolean value) {
+                bitField0_ |= 0x00000002;
+                success_ = value;
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>required bool success = 2;</code>
+             */
+            public Builder clearSuccess() {
+                bitField0_ = (bitField0_ & ~0x00000002);
+                success_ = false;
+                onChanged();
+                return this;
+            }
+
+            private java.lang.Object message_ = "";
+
+            /**
+             * <code>optional string message = 3 [default = ""];</code>
+             */
+            public boolean hasMessage() {
+                return ((bitField0_ & 0x00000004) == 0x00000004);
+            }
+
+            /**
+             * <code>optional string message = 3 [default = ""];</code>
              */
             public java.lang.String getMessage() {
                 java.lang.Object ref = message_;
@@ -5806,7 +5898,7 @@ public final class SubmitJobProtos {
             }
 
             /**
-             * <code>optional string message = 2 [default = ""];</code>
+             * <code>optional string message = 3 [default = ""];</code>
              */
             public com.google.protobuf.ByteString getMessageBytes() {
                 java.lang.Object ref = message_;
@@ -5820,36 +5912,36 @@ public final class SubmitJobProtos {
             }
 
             /**
-             * <code>optional string message = 2 [default = ""];</code>
+             * <code>optional string message = 3 [default = ""];</code>
              */
             public Builder setMessage(java.lang.String value) {
                 if (value == null) {
                     throw new NullPointerException();
                 }
-                bitField0_ |= 0x00000002;
+                bitField0_ |= 0x00000004;
                 message_ = value;
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>optional string message = 2 [default = ""];</code>
+             * <code>optional string message = 3 [default = ""];</code>
              */
             public Builder clearMessage() {
-                bitField0_ = (bitField0_ & ~0x00000002);
+                bitField0_ = (bitField0_ & ~0x00000004);
                 message_ = getDefaultInstance().getMessage();
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>optional string message = 2 [default = ""];</code>
+             * <code>optional string message = 3 [default = ""];</code>
              */
             public Builder setMessageBytes(com.google.protobuf.ByteString value) {
                 if (value == null) {
                     throw new NullPointerException();
                 }
-                bitField0_ |= 0x00000002;
+                bitField0_ |= 0x00000004;
                 message_ = value;
                 onChanged();
                 return this;
@@ -5899,10 +5991,10 @@ public final class SubmitJobProtos {
                         + "\030\001 \002(\t\022\021\n\ttask_name\030\002 \002(\t\022\020\n\010app_name\030\003 "
                         + "\002(\t\022\014\n\004user\030\004 \002(\t\022\021\n\ttask_type\030\005 \002(\t\022\017\n\007"
                         + "command\030\006 \002(\t\022\023\n\010priority\030\007 \001(\005:\0011\022\035\n\npa"
-                        + "rameters\030\010 \003(\0132\t.MapEntry\"=\n\030WorkerSubmi"
-                        + "tTaskResponse\022\016\n\006accept\030\001 \002(\010\022\021\n\007message"
-                        + "\030\002 \001(\t:\000B.\n\033com.mogujie.jarvis.protocolB",
-                "\017SubmitJobProtos" };
+                        + "rameters\030\010 \003(\0132\t.MapEntry\"N\n\030WorkerSubmi"
+                        + "tTaskResponse\022\016\n\006accept\030\001 \002(\010\022\017\n\007success"
+                        + "\030\002 \002(\010\022\021\n\007message\030\003 \001(\t:\000B.\n\033com.mogujie",
+                ".jarvis.protocolB\017SubmitJobProtos" };
         com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner = new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
             public com.google.protobuf.ExtensionRegistry assignDescriptors(com.google.protobuf.Descriptors.FileDescriptor root) {
                 descriptor = root;
@@ -5926,7 +6018,7 @@ public final class SubmitJobProtos {
                 new java.lang.String[] { "FullId", "TaskName", "AppName", "User", "TaskType", "Command", "Priority", "Parameters", });
         internal_static_WorkerSubmitTaskResponse_descriptor = getDescriptor().getMessageTypes().get(3);
         internal_static_WorkerSubmitTaskResponse_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-                internal_static_WorkerSubmitTaskResponse_descriptor, new java.lang.String[] { "Accept", "Message", });
+                internal_static_WorkerSubmitTaskResponse_descriptor, new java.lang.String[] { "Accept", "Success", "Message", });
         com.mogujie.jarvis.protocol.MapEntryProtos.getDescriptor();
     }
 

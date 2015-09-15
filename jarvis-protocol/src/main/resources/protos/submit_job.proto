@@ -46,5 +46,6 @@ message ServerSubmitTaskRequest {
 
 message WorkerSubmitTaskResponse {
     required bool accept = 1;
-    optional string message = 2 [default = ""];
+    required bool success = 2;
+    optional string message = 3 [default = ""];
 }
