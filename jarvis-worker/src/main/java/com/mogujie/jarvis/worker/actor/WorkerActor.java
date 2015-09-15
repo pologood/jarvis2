@@ -24,6 +24,8 @@ import com.mogujie.jarvis.core.DefaultLogCollector;
 import com.mogujie.jarvis.core.DefaultProgressReporter;
 import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.ProgressReporter;
+import com.mogujie.jarvis.core.Task;
+import com.mogujie.jarvis.core.Task.TaskBuilder;
 import com.mogujie.jarvis.core.TaskContext;
 import com.mogujie.jarvis.core.TaskContext.TaskContextBuilder;
 import com.mogujie.jarvis.core.common.util.ConfigUtils;
@@ -78,14 +80,14 @@ public class WorkerActor extends UntypedActor {
   private void submitJob(ServerSubmitTaskRequest request) {
     String fullId = request.getFullId();
     String taskType = request.getTaskType();
-    TaskContextBuilder contextBuilder = TaskContext.newBuilder();
-    contextBuilder.setFullId(fullId);
-    contextBuilder.setTaskName(request.getTaskName());
-    contextBuilder.setAppName(request.getAppName());
-    contextBuilder.setUser(request.getUser());
-    contextBuilder.setTaskType(taskType);
-    contextBuilder.setCommand(request.getCommand());
-    contextBuilder.setPriority(request.getPriority());
+    TaskBuilder taskBuilder = Task.newTaskBuilder();
+    taskBuilder.setFullId(fullId);
+    taskBuilder.setTaskName(request.getTaskName());
+    taskBuilder.setAppName(request.getAppName());
+    taskBuilder.setUser(request.getUser());
+    taskBuilder.setTaskType(taskType);
+    taskBuilder.setCommand(request.getCommand());
+    taskBuilder.setPriority(request.getPriority());
 
     Map<String, Object> map = new HashMap<>();
     List<MapEntry> parameters = request.getParametersList();
@@ -93,7 +95,10 @@ public class WorkerActor extends UntypedActor {
       MapEntry entry = parameters.get(i);
       map.put(entry.getKey(), entry.getValue());
     }
-    contextBuilder.setParameters(map);
+    taskBuilder.setParameters(map);
+
+    TaskContextBuilder contextBuilder = TaskContext.newBuilder();
+    contextBuilder.setTask(taskBuilder.build());
 
     ActorSelection logActor = getContext().actorSelection(LOGSERVER_AKKA_PATH);
     AbstractLogCollector logCollector = new DefaultLogCollector(logActor, fullId);

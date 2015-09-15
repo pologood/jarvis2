@@ -21,6 +21,7 @@ import org.apache.commons.configuration.Configuration;
 import com.google.common.base.Joiner;
 import com.google.common.base.Throwables;
 import com.mogujie.jarvis.core.AbstractLogCollector;
+import com.mogujie.jarvis.core.Task;
 import com.mogujie.jarvis.core.TaskContext;
 import com.mogujie.jarvis.core.common.util.ConfigUtils;
 import com.mogujie.jarvis.core.exeception.TaskException;
@@ -47,12 +48,13 @@ public abstract class JdbcTask extends AbstractTask {
 
     @Override
     public boolean execute() throws TaskException {
+        Task task = getTaskContext().getTask();
         Configuration config = ConfigUtils.getWorkerConfig();
         AbstractLogCollector collector = getTaskContext().getLogCollector();
 
         try {
             Class.forName(getDriverName());
-            String user = getTaskContext().getUser();
+            String user = task.getUser();
             String passwd = user;
 
             connection = DriverManager.getConnection(getJdbcUrl(config), user, passwd);
@@ -60,7 +62,7 @@ public abstract class JdbcTask extends AbstractTask {
             final long startTime = System.currentTimeMillis();
             collector.collectStderr("Querying " + getTaskType() + "...");
 
-            String hql = getTaskContext().getCommand().trim();
+            String hql = task.getCommand().trim();
             String[] cmds = HiveQLUtil.splitHiveScript(hql);
             for (String sql : cmds) {
                 boolean hasResults = statement.execute(sql.trim());

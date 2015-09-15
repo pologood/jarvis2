@@ -8,23 +8,13 @@
 
 package com.mogujie.jarvis.core;
 
-import java.util.Map;
-
 /**
  * @author wuya
  *
  */
 public class TaskContext {
 
-    private String fullId;
-    private String taskName;
-    private String appName;
-    private String user;
-    private String taskType;
-    private String command;
-    private int priority;
-    private Map<String, Object> parameters;
-
+    private Task task;
     private AbstractLogCollector logCollector;
     private ProgressReporter progressReporter;
 
@@ -35,36 +25,8 @@ public class TaskContext {
         return new TaskContextBuilder();
     }
 
-    public String getFullId() {
-        return fullId;
-    }
-
-    public String getTaskName() {
-        return taskName;
-    }
-
-    public String getAppName() {
-        return appName;
-    }
-
-    public String getUser() {
-        return user;
-    }
-
-    public String getTaskType() {
-        return taskType;
-    }
-
-    public String getCommand() {
-        return command;
-    }
-
-    public int getPriority() {
-        return priority;
-    }
-
-    public Map<String, Object> getParameters() {
-        return parameters;
+    public Task getTask() {
+        return task;
     }
 
     public AbstractLogCollector getLogCollector() {
@@ -82,43 +44,8 @@ public class TaskContext {
         private TaskContextBuilder() {
         }
 
-        public TaskContextBuilder setFullId(String fullId) {
-            this.taskContext.fullId = fullId;
-            return this;
-        }
-
-        public TaskContextBuilder setTaskName(String taskName) {
-            this.taskContext.taskName = taskName;
-            return this;
-        }
-
-        public TaskContextBuilder setAppName(String appName) {
-            this.taskContext.appName = appName;
-            return this;
-        }
-
-        public TaskContextBuilder setUser(String user) {
-            this.taskContext.user = user;
-            return this;
-        }
-
-        public TaskContextBuilder setTaskType(String taskType) {
-            this.taskContext.taskType = taskType;
-            return this;
-        }
-
-        public TaskContextBuilder setCommand(String command) {
-            this.taskContext.command = command;
-            return this;
-        }
-
-        public TaskContextBuilder setPriority(int priority) {
-            this.taskContext.priority = priority;
-            return this;
-        }
-
-        public TaskContextBuilder setParameters(Map<String, Object> parameters) {
-            this.taskContext.parameters = parameters;
+        public TaskContextBuilder setTask(Task task) {
+            this.taskContext.task = task;
             return this;
         }
 
