@@ -26,16 +26,16 @@ import akka.actor.ActorSystem;
  * @author muming
  *
  */
-@Path("worker")
-public class SysControl extends AbstractControl {
+@Path("sys")
+public class SystemControl extends AbstractControl {
 
-    public SysControl(ActorSystem system, String serverAkkaPath, String workerAkkaPath) {
+    public SystemControl(ActorSystem system, String serverAkkaPath, String workerAkkaPath) {
         super(system, serverAkkaPath, workerAkkaPath);
     }
 
 
     @POST
-    @Path("onlineWorker")
+    @Path("setWorkerStatus")
     @Produces(MediaType.APPLICATION_JSON)
     public RestResult onlineClient(@FormParam("appKey") String appKey,
                                    @FormParam("appName") String appName,
@@ -43,7 +43,6 @@ public class SysControl extends AbstractControl {
                                    @FormParam("port") int port,
                                    @FormParam("status") int status) throws Exception
     {
-
         WorkerStatus ws = (status == 1 ) ? WorkerStatus.ONLINE : WorkerStatus.OFFLINE;
 
         RestServerModifyWorkerStatusRequest request = RestServerModifyWorkerStatusRequest.newBuilder()
@@ -52,7 +51,7 @@ public class SysControl extends AbstractControl {
                 .setStatus(ws.getValue())
                 .build();
 
-        ServerModifyWorkerStatusResponse response = (ServerModifyWorkerStatusResponse) callServerActor(request);
+        ServerModifyWorkerStatusResponse response = (ServerModifyWorkerStatusResponse) callActor(serverActor, request);
 
         if(response.getSuccess()){
             return successResult();
@@ -61,7 +60,6 @@ public class SysControl extends AbstractControl {
         }
 
     }
-
 
 
 
