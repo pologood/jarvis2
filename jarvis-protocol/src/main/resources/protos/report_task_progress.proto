@@ -9,4 +9,5 @@ message WorkerReportProgressRequest {
 
 message ServerReportProgressResponse {
     required bool success = 1;
+    optional string message = 2 [default = ""];
 }

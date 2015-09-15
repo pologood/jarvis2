@@ -859,6 +859,21 @@ public final class WriteLogProtos {
          * <code>required bool success = 1;</code>
          */
         boolean getSuccess();
+
+        /**
+         * <code>optional string message = 2 [default = ""];</code>
+         */
+        boolean hasMessage();
+
+        /**
+         * <code>optional string message = 2 [default = ""];</code>
+         */
+        java.lang.String getMessage();
+
+        /**
+         * <code>optional string message = 2 [default = ""];</code>
+         */
+        com.google.protobuf.ByteString getMessageBytes();
     }
 
     /**
@@ -917,6 +932,12 @@ public final class WriteLogProtos {
                             success_ = input.readBool();
                             break;
                         }
+                        case 18: {
+                            com.google.protobuf.ByteString bs = input.readBytes();
+                            bitField0_ |= 0x00000002;
+                            message_ = bs;
+                            break;
+                        }
                     }
                 }
             } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -969,8 +990,50 @@ public final class WriteLogProtos {
             return success_;
         }
 
+        public static final int MESSAGE_FIELD_NUMBER = 2;
+        private java.lang.Object message_;
+
+        /**
+         * <code>optional string message = 2 [default = ""];</code>
+         */
+        public boolean hasMessage() {
+            return ((bitField0_ & 0x00000002) == 0x00000002);
+        }
+
+        /**
+         * <code>optional string message = 2 [default = ""];</code>
+         */
+        public java.lang.String getMessage() {
+            java.lang.Object ref = message_;
+            if (ref instanceof java.lang.String) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                if (bs.isValidUtf8()) {
+                    message_ = s;
+                }
+                return s;
+            }
+        }
+
+        /**
+         * <code>optional string message = 2 [default = ""];</code>
+         */
+        public com.google.protobuf.ByteString getMessageBytes() {
+            java.lang.Object ref = message_;
+            if (ref instanceof java.lang.String) {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                message_ = b;
+                return b;
+            } else {
+                return (com.google.protobuf.ByteString) ref;
+            }
+        }
+
         private void initFields() {
             success_ = false;
+            message_ = "";
         }
 
         private byte memoizedIsInitialized = -1;
@@ -995,6 +1058,9 @@ public final class WriteLogProtos {
             if (((bitField0_ & 0x00000001) == 0x00000001)) {
                 output.writeBool(1, success_);
             }
+            if (((bitField0_ & 0x00000002) == 0x00000002)) {
+                output.writeBytes(2, getMessageBytes());
+            }
             getUnknownFields().writeTo(output);
         }
 
@@ -1008,6 +1074,9 @@ public final class WriteLogProtos {
             size = 0;
             if (((bitField0_ & 0x00000001) == 0x00000001)) {
                 size += com.google.protobuf.CodedOutputStream.computeBoolSize(1, success_);
+            }
+            if (((bitField0_ & 0x00000002) == 0x00000002)) {
+                size += com.google.protobuf.CodedOutputStream.computeBytesSize(2, getMessageBytes());
             }
             size += getUnknownFields().getSerializedSize();
             memoizedSerializedSize = size;
@@ -1133,6 +1202,8 @@ public final class WriteLogProtos {
                 super.clear();
                 success_ = false;
                 bitField0_ = (bitField0_ & ~0x00000001);
+                message_ = "";
+                bitField0_ = (bitField0_ & ~0x00000002);
                 return this;
             }
 
@@ -1165,6 +1236,10 @@ public final class WriteLogProtos {
                     to_bitField0_ |= 0x00000001;
                 }
                 result.success_ = success_;
+                if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+                    to_bitField0_ |= 0x00000002;
+                }
+                result.message_ = message_;
                 result.bitField0_ = to_bitField0_;
                 onBuilt();
                 return result;
@@ -1184,6 +1259,11 @@ public final class WriteLogProtos {
                     return this;
                 if (other.hasSuccess()) {
                     setSuccess(other.getSuccess());
+                }
+                if (other.hasMessage()) {
+                    bitField0_ |= 0x00000002;
+                    message_ = other.message_;
+                    onChanged();
                 }
                 this.mergeUnknownFields(other.getUnknownFields());
                 return this;
@@ -1251,6 +1331,82 @@ public final class WriteLogProtos {
                 return this;
             }
 
+            private java.lang.Object message_ = "";
+
+            /**
+             * <code>optional string message = 2 [default = ""];</code>
+             */
+            public boolean hasMessage() {
+                return ((bitField0_ & 0x00000002) == 0x00000002);
+            }
+
+            /**
+             * <code>optional string message = 2 [default = ""];</code>
+             */
+            public java.lang.String getMessage() {
+                java.lang.Object ref = message_;
+                if (!(ref instanceof java.lang.String)) {
+                    com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                    java.lang.String s = bs.toStringUtf8();
+                    if (bs.isValidUtf8()) {
+                        message_ = s;
+                    }
+                    return s;
+                } else {
+                    return (java.lang.String) ref;
+                }
+            }
+
+            /**
+             * <code>optional string message = 2 [default = ""];</code>
+             */
+            public com.google.protobuf.ByteString getMessageBytes() {
+                java.lang.Object ref = message_;
+                if (ref instanceof String) {
+                    com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                    message_ = b;
+                    return b;
+                } else {
+                    return (com.google.protobuf.ByteString) ref;
+                }
+            }
+
+            /**
+             * <code>optional string message = 2 [default = ""];</code>
+             */
+            public Builder setMessage(java.lang.String value) {
+                if (value == null) {
+                    throw new NullPointerException();
+                }
+                bitField0_ |= 0x00000002;
+                message_ = value;
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>optional string message = 2 [default = ""];</code>
+             */
+            public Builder clearMessage() {
+                bitField0_ = (bitField0_ & ~0x00000002);
+                message_ = getDefaultInstance().getMessage();
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>optional string message = 2 [default = ""];</code>
+             */
+            public Builder setMessageBytes(com.google.protobuf.ByteString value) {
+                if (value == null) {
+                    throw new NullPointerException();
+                }
+                bitField0_ |= 0x00000002;
+                message_ = value;
+                onChanged();
+                return this;
+            }
+
             // @@protoc_insertion_point(builder_scope:LogServerWriteLogResponse)
         }
 
@@ -1276,8 +1432,9 @@ public final class WriteLogProtos {
     static {
         java.lang.String[] descriptorData = { "\n\017write_log.proto\"S\n\025WorkerWriteLogReque"
                 + "st\022\017\n\007full_id\030\001 \002(\t\022\013\n\003log\030\002 \002(\t\022\014\n\004type"
-                + "\030\003 \002(\005\022\016\n\006is_end\030\004 \002(\010\",\n\031LogServerWrite"
-                + "LogResponse\022\017\n\007success\030\001 \002(\010B-\n\033com.mogu" + "jie.jarvis.protocolB\016WriteLogProtos" };
+                + "\030\003 \002(\005\022\016\n\006is_end\030\004 \002(\010\"?\n\031LogServerWrite"
+                + "LogResponse\022\017\n\007success\030\001 \002(\010\022\021\n\007message\030"
+                + "\002 \001(\t:\000B-\n\033com.mogujie.jarvis.protocolB\016" + "WriteLogProtos" };
         com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner = new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
             public com.google.protobuf.ExtensionRegistry assignDescriptors(com.google.protobuf.Descriptors.FileDescriptor root) {
                 descriptor = root;
@@ -1291,7 +1448,7 @@ public final class WriteLogProtos {
                 internal_static_WorkerWriteLogRequest_descriptor, new java.lang.String[] { "FullId", "Log", "Type", "IsEnd", });
         internal_static_LogServerWriteLogResponse_descriptor = getDescriptor().getMessageTypes().get(1);
         internal_static_LogServerWriteLogResponse_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-                internal_static_LogServerWriteLogResponse_descriptor, new java.lang.String[] { "Success", });
+                internal_static_LogServerWriteLogResponse_descriptor, new java.lang.String[] { "Success", "Message", });
     }
 
     // @@protoc_insertion_point(outer_class_scope)

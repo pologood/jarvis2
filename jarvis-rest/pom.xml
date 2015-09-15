@@ -11,7 +11,7 @@
 
 	<properties>
 		<build.finalname>jarvis-rest</build.finalname>
-		<jersey.version>2.19</jersey.version>
+		<jersey.version>2.21</jersey.version>
 	</properties>
 
 	<dependencies>
