@@ -13,7 +13,6 @@ import java.util.Map;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.mogujie.jarvis.dto.JobDependStatus;
 import com.mogujie.jarvis.server.service.DependStatusService;
 
 /**
@@ -29,49 +28,26 @@ public class MysqlCachedDependStatus extends CachedDependStatus {
     }
 
     @Override
-    public void setDependStatus(long jobId, long taskId) {
-        super.setDependStatus(jobId, taskId);
-        flush2DB();
-    }
-
-    @Override
-    public void resetDependStatus(long jobId, long taskId) {
-        super.resetDependStatus(jobId, taskId);
-        flush2DB();
+    protected void modifyDependStatus(long jobId, long taskId, boolean status) {
+        super.modifyDependStatus(jobId, taskId, status);
+        MysqlDependStatusUtil.modifyDependStatus(getMyJobId(), jobId, taskId,
+                status, statusService);
     }
 
     @Override
     public void removeDependency(long jobId) {
         super.removeDependency(jobId);
-        flush2DB();
+        statusService.deleteDependencyByPreJobId(getMyJobId(), jobId);
     }
 
     @Override
     public void reset() {
         super.reset();
-        flush2DB();
+        statusService.clearMyStatus(getMyJobId());
     }
 
     @Override
     protected Map<Long, Map<Long, Boolean>> loadJobDependStatus() {
         return MysqlDependStatusUtil.getJobStatusMapFromDb(statusService, getMyJobId());
-    }
-
-    private void flush2DB() {
-        // 1. first clear
-        statusService.clearMyStatus(getMyJobId());
-
-        // 2. add all
-        for (Map.Entry<Long, Map<Long, Boolean>> jobEntry : jobStatusMap.entrySet()) {
-            long jobId = jobEntry.getKey();
-            Map<Long, Boolean> taskStatusMap = jobEntry.getValue();
-            for (Map.Entry<Long, Boolean> taskEntry : taskStatusMap.entrySet()) {
-                long taskId = taskEntry.getKey();
-                boolean status = taskEntry.getValue();
-                JobDependStatus jobDependStatus = MysqlDependStatusUtil.createDependStatus(
-                        getMyJobId(), jobId, taskId, status);
-                statusService.insert(jobDependStatus);
-            }
-        }
     }
 }

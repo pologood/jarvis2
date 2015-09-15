@@ -101,6 +101,10 @@ public class DAGJob implements IDAGJob {
         this.children = children;
     }
 
+    /**
+     * Just add parent to this
+     *
+     */
     public void addParent(DAGJob newParent) {
         boolean isContain = false;
         for (DAGJob parent : parents) {
@@ -115,6 +119,10 @@ public class DAGJob implements IDAGJob {
         }
     }
 
+    /**
+     * Just add child to this
+     *
+     */
     public void addChild(DAGJob newChild) {
         boolean isContain = false;
         for (DAGJob child : children) {
@@ -129,7 +137,12 @@ public class DAGJob implements IDAGJob {
         }
     }
 
-    public void removeParent(long jobId) {
+    /**
+     * Just remove parent from this
+     *
+     */
+    public void removeParent(DAGJob oldParent) {
+        long jobId = oldParent.getJobId();
         Iterator<DAGJob> it = parents.iterator();
         while (it.hasNext()) {
             DAGJob parent = it.next();
@@ -140,7 +153,12 @@ public class DAGJob implements IDAGJob {
         dependStatus.removeDependency(jobId);
     }
 
-    public void removeChild(long jobId) {
+    /**
+     * Just remove child from this
+     *
+     */
+    public void removeChild(DAGJob oldChild) {
+        long jobId = oldChild.getJobId();
         Iterator<DAGJob> it = children.iterator();
         while (it.hasNext()) {
             DAGJob child = it.next();
@@ -154,6 +172,11 @@ public class DAGJob implements IDAGJob {
         removeParents(true);
     }
 
+    /**
+     * This method will also remove this from parents
+     * If removeDependStatus is true, will also remove depend status
+     *
+     */
     public void removeParents(boolean removeDependStatus) {
         List<DAGJob> parents = getParents();
         Iterator<DAGJob> it = parents.iterator();
@@ -165,10 +188,14 @@ public class DAGJob implements IDAGJob {
                 dependStatus.removeDependency(parent.getJobId());
             }
             // 2. remove myself from parent
-            parent.removeChild(getJobId());
+            parent.removeChild(this);
         }
     }
 
+    /**
+     * This method will also remove this from children
+     *
+     */
     public void removeChildren() {
         List<DAGJob> children = getChildren();
         Iterator<DAGJob> it = children.iterator();
@@ -177,7 +204,7 @@ public class DAGJob implements IDAGJob {
             DAGJob child = it.next();
             it.remove();
             // 2. remove myself from child
-            child.removeParent(getJobId());
+            child.removeParent(this);
         }
     }
 

@@ -225,8 +225,8 @@ public class DAGScheduler implements Scheduler {
         DAGJob parent = waitingTable.get(parentId);
         DAGJob child = waitingTable.get(childId);
         if (parent != null && child != null) {
-            parent.removeChild(childId);
-            child.removeParent(parentId);
+            parent.removeChild(child);
+            child.removeParent(parent);
         }
     }
 
