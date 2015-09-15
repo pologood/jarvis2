@@ -21,5 +21,8 @@ public interface Scheduler extends Observer {
     public void handleInitEvent(InitEvent event);
 
     @Subscribe
+    public void handleStartEvent(StartEvent event);
+
+    @Subscribe
     public void handleStopEvent(StopEvent event);
 }

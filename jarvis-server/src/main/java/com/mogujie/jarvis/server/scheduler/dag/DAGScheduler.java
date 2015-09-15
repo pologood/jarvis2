@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.eventbus.AllowConcurrentEvents;
 import com.google.common.eventbus.Subscribe;
 import com.mogujie.jarvis.core.common.util.ConfigUtils;
 import com.mogujie.jarvis.dao.JobMapper;
@@ -27,6 +28,7 @@ import com.mogujie.jarvis.server.scheduler.InitEvent;
 import com.mogujie.jarvis.server.scheduler.JobScheduleType;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
 import com.mogujie.jarvis.server.scheduler.SchedulerUtil;
+import com.mogujie.jarvis.server.scheduler.StartEvent;
 import com.mogujie.jarvis.server.scheduler.StopEvent;
 import com.mogujie.jarvis.server.scheduler.dag.event.AddJobEvent;
 import com.mogujie.jarvis.server.scheduler.dag.event.FailedEvent;
@@ -96,8 +98,12 @@ public class DAGScheduler implements Scheduler {
     }
 
     @Override
+    public void handleStartEvent(StartEvent event) {
+
+    }
+
+    @Override
     public void handleStopEvent(StopEvent event) {
-        // TODO Auto-generated method stub
 
     }
 
@@ -288,6 +294,7 @@ public class DAGScheduler implements Scheduler {
     }
 
     @Subscribe
+    @AllowConcurrentEvents
     public void handleSuccessEvent(SuccessEvent e) throws DAGScheduleException {
         long jobId = e.getJobId();
         long taskId = e.getTaskId();
@@ -306,6 +313,7 @@ public class DAGScheduler implements Scheduler {
     }
 
     @Subscribe
+    @AllowConcurrentEvents
     public void handleFailedEvent(FailedEvent e) throws DAGScheduleException {
         long jobId = e.getJobId();
         long taskId = e.getTaskId();
@@ -328,11 +336,6 @@ public class DAGScheduler implements Scheduler {
      */
     private void submitJobWithCheck(DAGJob dagJob) {
         if (dagJob.dependCheck()) {
-            int priority = PRIORITY_DEFAULT;
-            if (jobMapper != null) {
-                Job job = jobMapper.selectByPrimaryKey(dagJob.getJobId());
-                priority = job.getPriority();
-            }
             taskScheduler.submitJob(dagJob.getJobId());
             dagJob.resetDependStatus();
         }

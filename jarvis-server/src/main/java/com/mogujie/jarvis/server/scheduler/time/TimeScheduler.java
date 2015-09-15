@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.mogujie.jarvis.server.scheduler.InitEvent;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
+import com.mogujie.jarvis.server.scheduler.StartEvent;
 import com.mogujie.jarvis.server.scheduler.StopEvent;
 
 
@@ -32,6 +33,12 @@ public class TimeScheduler implements Scheduler {
 
     @Override
     public void handleStopEvent(StopEvent event) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void handleStartEvent(StartEvent event) {
         // TODO Auto-generated method stub
 
     }

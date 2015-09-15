@@ -8,6 +8,7 @@
 
 package com.mogujie.jarvis.server.scheduler.task;
 
+import java.lang.Thread.State;
 import java.text.DateFormat;
 import java.util.Comparator;
 import java.util.Date;
@@ -23,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.eventbus.AllowConcurrentEvents;
 import com.google.common.eventbus.Subscribe;
 import com.mogujie.jarvis.core.common.util.ThreadUtils;
 import com.mogujie.jarvis.core.domain.JobStatus;
@@ -32,6 +34,7 @@ import com.mogujie.jarvis.dto.Job;
 import com.mogujie.jarvis.dto.Task;
 import com.mogujie.jarvis.server.scheduler.InitEvent;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
+import com.mogujie.jarvis.server.scheduler.StartEvent;
 import com.mogujie.jarvis.server.scheduler.StopEvent;
 import com.mogujie.jarvis.server.scheduler.dag.event.FailedEvent;
 import com.mogujie.jarvis.server.scheduler.dag.event.SuccessEvent;
@@ -116,14 +119,22 @@ public class TaskScheduler implements Scheduler {
     }
 
     @Override
+    public void handleStartEvent(StartEvent event) {
+        if (scanThread != null && !scanThread.getState().equals(State.RUNNABLE)) {
+            scanThread.start();
+        }
+    }
+
+    @Override
     public void handleStopEvent(StopEvent event) {
-        maxConcurrentNum = 0;
-        if (scanThread != null && scanThread.isAlive()) {
+        if (scanThread != null && scanThread.isAlive()
+                && scanThread.getState().equals(State.RUNNABLE)) {
             scanThread.stop();
         }
     }
 
     @Subscribe
+    @AllowConcurrentEvents
     public void handleSuccessEvent(SuccessEvent e) {
         long taskId = e.getTaskId();
         // 1. store success status to DB
@@ -137,6 +148,7 @@ public class TaskScheduler implements Scheduler {
     }
 
     @Subscribe
+    @AllowConcurrentEvents
     public void handleFailedEvent(FailedEvent e) {
         long taskId = e.getTaskId();
         DAGTask dagTask = readyTable.get(e.getTaskId());
