@@ -158,7 +158,7 @@ public class TaskScheduler implements Scheduler {
                 attemptId++;
                 dagTask.setAttemptId(attemptId);
                 ThreadUtils.sleep(dagTask.getFailedInterval());
-                submitTask(dagTask);
+                retryTask(dagTask);
             } else {
                 // 1. store failed status to DB
                 if (taskService != null) {
@@ -184,18 +184,29 @@ public class TaskScheduler implements Scheduler {
     }
 
     public long submitJob(long jobId) {
-        long taskId = generateTaskId();
+        long taskId;
+        if (jobMapper != null && taskMapper != null) {
+            Task task = createNewTask(jobId);
+            taskMapper.insert(task);
+            taskId = task.getTaskId();
+        } else {
+            taskId = generateTaskId();
+        }
+
         submitTask(new DAGTask(jobId, taskId));
         return taskId;
     }
 
-    private void submitTask(DAGTask dagTask) {
-        // insert new task to DB
+    private void retryTask(DAGTask dagTask) {
         if (jobMapper != null && taskMapper != null) {
-            Task task = createNewTask(dagTask.getJobId(), dagTask.getTaskId(), dagTask.getAttemptId());
-            taskMapper.insert(task);
+            Task task = updateTask(dagTask);
+            taskMapper.updateByPrimaryKey(task);
         }
 
+        submitTask(dagTask);
+    }
+
+    private void submitTask(DAGTask dagTask) {
         if (!readyTable.containsKey(dagTask.getTaskId())) {
             // add to readyTable and runnableQueue
             readyTable.put(dagTask.getTaskId(), dagTask);
@@ -212,11 +223,10 @@ public class TaskScheduler implements Scheduler {
         }
     }
 
-    private Task createNewTask(long jobId, long taskId, int attemptId) {
+    private Task createNewTask(long jobId) {
         Task task = new Task();
         task.setJobId(jobId);
-        task.setTaskId(taskId);
-        task.setAttemptId(attemptId);
+        task.setAttemptId(1);
         task.setExecuteUser(jobMapper.selectByPrimaryKey(jobId).getSubmitUser());
         task.setStatus(JobStatus.READY.getValue());
         Date currentTime = new Date();
@@ -228,7 +238,19 @@ public class TaskScheduler implements Scheduler {
         return task;
     }
 
-    // TODO 重启的时候maxid会重置
+    private Task updateTask(DAGTask dagTask) {
+        Task task = new Task();
+        task.setTaskId(dagTask.getTaskId());
+        task.setAttemptId(dagTask.getAttemptId());
+        Date currentTime = new Date();
+        DateFormat dateTimeFormat = DateFormat.getDateTimeInstance();
+        dateTimeFormat.format(currentTime);
+        task.setUpdateTime(currentTime);
+
+        return task;
+    }
+
+    // 重启的时候maxid会重置, for testing
     private long generateTaskId() {
         return maxid.getAndIncrement();
     }
