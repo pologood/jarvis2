@@ -333,7 +333,7 @@ public class DAGScheduler implements Scheduler {
                 Job job = jobMapper.selectByPrimaryKey(dagJob.getJobId());
                 priority = job.getPriority();
             }
-            taskScheduler.submitJob(dagJob.getJobId(), priority);
+            taskScheduler.submitJob(dagJob.getJobId());
             dagJob.resetDependStatus();
         }
     }

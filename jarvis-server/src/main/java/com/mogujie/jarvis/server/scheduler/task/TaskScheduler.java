@@ -66,19 +66,18 @@ public class TaskScheduler implements Scheduler {
 
     class ScanThread extends Thread {
         private String name;
+
         public ScanThread(String name) {
             this.name = name;
         }
+
         @Override
         public void run() {
             while (true) {
-                for (DAGTask priorityTask : readyQueue) {
-                    if (runningTasks.get() < maxConcurrentNum) {
-                        // TODO submit priorityTask
-                        runningTasks.incrementAndGet();
-                    } else {
-                        break;
-                    }
+                while (!runnableQueue.isEmpty() && runningTasks.get() < maxConcurrentNum) {
+                    DAGTask priorityTask = runnableQueue.poll();
+                    //TODO submit priorityTask
+                    runningTasks.incrementAndGet();
                 }
                 ThreadUtils.sleep(5000);
             }
@@ -87,7 +86,8 @@ public class TaskScheduler implements Scheduler {
 
     private Map<Long, DAGTask> readyTable = new ConcurrentHashMap<Long, DAGTask>();
     private final int INIT_PRIORITY_QUEUE_SIZE = 100;
-    private Queue<DAGTask> readyQueue =  new PriorityQueue<DAGTask>(INIT_PRIORITY_QUEUE_SIZE,
+    private Queue<DAGTask> runnableQueue =  new PriorityQueue<DAGTask>(
+            INIT_PRIORITY_QUEUE_SIZE,
             new Comparator<DAGTask>() {
               @Override
               public int compare(DAGTask task1, DAGTask task2) {
@@ -110,7 +110,7 @@ public class TaskScheduler implements Scheduler {
             for (Task task : tasks) {
                 DAGTask dagTask = new DAGTask(task.getJobId(), task.getTaskId(), task.getAttemptId());
                 readyTable.put(task.getTaskId(), dagTask);
-                readyQueue.add(dagTask);
+                runnableQueue.offer(dagTask);
             }
         }
     }
@@ -128,10 +128,9 @@ public class TaskScheduler implements Scheduler {
         long taskId = e.getTaskId();
         // 1. store success status to DB
         taskService.updateStatus(taskId, JobStatus.SUCCESS);
-        // 2. remove from readQueue and readyTable
+        // 2. remove from readyTable
         DAGTask dagTask = readyTable.get(taskId);
         if (dagTask != null) {
-            readyQueue.remove(dagTask);
             readyTable.remove(taskId);
             runningTasks.decrementAndGet();
         }
@@ -142,7 +141,7 @@ public class TaskScheduler implements Scheduler {
         long taskId = e.getTaskId();
         DAGTask dagTask = readyTable.get(e.getTaskId());
         if (dagTask != null) {
-            int attemptId = dagTask.getAttempId();
+            int attemptId = dagTask.getAttemptId();
             if (attemptId <= dagTask.getMaxFailedAttempts()) {
                 attemptId++;
                 dagTask.setAttemptId(attemptId);
@@ -153,8 +152,7 @@ public class TaskScheduler implements Scheduler {
                 if (taskService != null) {
                     taskService.updateStatus(taskId, JobStatus.FAILED);
                 }
-                // 2. remove from readyQueue and readyTable
-                readyQueue.remove(dagTask);
+                // 2. remove from readyTable
                 readyTable.remove(taskId);
                 runningTasks.decrementAndGet();
             }
@@ -164,7 +162,7 @@ public class TaskScheduler implements Scheduler {
     @VisibleForTesting
     public void clear() {
         readyTable.clear();
-        readyQueue.clear();
+        runnableQueue.clear();
         maxid.set(1);
     }
 
@@ -173,28 +171,32 @@ public class TaskScheduler implements Scheduler {
         return readyTable;
     }
 
-    public long submitJob(long jobId, int priority) {
+    public long submitJob(long jobId) {
         long taskId = generateTaskId();
-        submitTask(new DAGTask(jobId, taskId, priority));
+        submitTask(new DAGTask(jobId, taskId));
         return taskId;
     }
 
     private void submitTask(DAGTask dagTask) {
-        // 1. insert new task to DB
+        // insert new task to DB
         if (jobMapper != null && taskMapper != null) {
-            Task task = createNewTask(dagTask.getJobId(), dagTask.getTaskId(), dagTask.getAttempId());
+            Task task = createNewTask(dagTask.getJobId(), dagTask.getTaskId(), dagTask.getAttemptId());
             taskMapper.insert(task);
         }
 
-        // 2. add to readyTable
         if (!readyTable.containsKey(dagTask.getTaskId())) {
+            // add to readyTable and runnableQueue
             readyTable.put(dagTask.getTaskId(), dagTask);
-            readyQueue.add(dagTask);
+            runnableQueue.offer(dagTask);
             if (jobMapper != null) {
                 Job job = jobMapper.selectByPrimaryKey(dagTask.getJobId());
+                dagTask.setPriority(job.getPriority());
                 dagTask.setMaxFailedAttempts(job.getFailedAttempts());
                 dagTask.setFailedInterval(job.getFailedInterval());
             }
+        } else {
+            // add to runnableQueue
+            runnableQueue.offer(dagTask);
         }
     }
 

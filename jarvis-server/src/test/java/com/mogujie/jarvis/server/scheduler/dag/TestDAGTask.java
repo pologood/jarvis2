@@ -47,9 +47,15 @@ public class TestDAGTask {
         DAGTask task1 = new DAGTask(1, 1, 3);
         DAGTask task2 = new DAGTask(2, 2, 4);
         DAGTask task3 = new DAGTask(3, 3, 2);
-        priorityQueue.add(task1);
-        priorityQueue.add(task2);
-        priorityQueue.add(task3);
-        Assert.assertEquals(2, priorityQueue.poll().getJobId());
+        priorityQueue.offer(task1);
+        priorityQueue.offer(task2);
+        priorityQueue.offer(task3);
+        Assert.assertEquals(3, priorityQueue.size());
+        Assert.assertEquals(2, priorityQueue.peek().getJobId());
+        while (!priorityQueue.isEmpty()) {
+            DAGTask task = priorityQueue.poll();
+            System.out.println(task.toString());
+        }
+        Assert.assertEquals(0, priorityQueue.size());
     }
 }
