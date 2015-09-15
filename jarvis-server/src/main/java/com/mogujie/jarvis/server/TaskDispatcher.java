@@ -10,6 +10,12 @@ package com.mogujie.jarvis.server;
 
 import org.springframework.stereotype.Service;
 
+import com.mogujie.jarvis.core.domain.WorkerInfo;
+import com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest;
+import com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse;
+
+import akka.actor.ActorSelection;
+
 @Service
 public enum TaskDispatcher {
 
@@ -19,8 +25,8 @@ public enum TaskDispatcher {
         return INSTANCE;
     }
 
-    public void submit() {
-
+    public WorkerSubmitTaskResponse submit(ActorSelection actorSelection, ServerSubmitTaskRequest request, WorkerInfo workerInfo) {
+        return null;
     }
 
 }
