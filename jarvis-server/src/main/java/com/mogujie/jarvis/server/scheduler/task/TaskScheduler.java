@@ -34,12 +34,14 @@ import com.mogujie.jarvis.dao.TaskMapper;
 import com.mogujie.jarvis.dto.Job;
 import com.mogujie.jarvis.dto.Task;
 import com.mogujie.jarvis.server.TaskQueue;
-import com.mogujie.jarvis.server.scheduler.InitEvent;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
-import com.mogujie.jarvis.server.scheduler.StartEvent;
-import com.mogujie.jarvis.server.scheduler.StopEvent;
-import com.mogujie.jarvis.server.scheduler.dag.event.FailedEvent;
-import com.mogujie.jarvis.server.scheduler.dag.event.SuccessEvent;
+import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
+import com.mogujie.jarvis.server.scheduler.event.InitEvent;
+import com.mogujie.jarvis.server.scheduler.event.KilledEvent;
+import com.mogujie.jarvis.server.scheduler.event.RunningEvent;
+import com.mogujie.jarvis.server.scheduler.event.StartEvent;
+import com.mogujie.jarvis.server.scheduler.event.StopEvent;
+import com.mogujie.jarvis.server.scheduler.event.SuccessEvent;
 import com.mogujie.jarvis.server.service.TaskService;
 
 /**
@@ -137,21 +139,24 @@ public class TaskScheduler implements Scheduler {
     @Subscribe
     @AllowConcurrentEvents
     public void handleSuccessEvent(SuccessEvent e) {
-        long taskId = e.getTaskId();
-        // 1. store success status to DB
-        taskService.updateStatus(taskId, JobStatus.SUCCESS);
-        // 2. remove from readyTable
-        DAGTask dagTask = readyTable.get(taskId);
-        if (dagTask != null) {
-            readyTable.remove(taskId);
-            runningTasks.decrementAndGet();
-        }
+        updateJobStatus(e.getTaskId(), JobStatus.SUCCESS);
+    }
+
+    @Subscribe
+    @AllowConcurrentEvents
+    public void handleRunningEvent(RunningEvent e) {
+        updateJobStatus(e.getTaskId(), JobStatus.RUNNING);
+    }
+
+    @Subscribe
+    @AllowConcurrentEvents
+    public void handleKilledEvent(KilledEvent e) {
+        updateJobStatus(e.getTaskId(), JobStatus.KILLED);
     }
 
     @Subscribe
     @AllowConcurrentEvents
     public void handleFailedEvent(FailedEvent e) {
-        long taskId = e.getTaskId();
         DAGTask dagTask = readyTable.get(e.getTaskId());
         if (dagTask != null) {
             int attemptId = dagTask.getAttemptId();
@@ -161,14 +166,28 @@ public class TaskScheduler implements Scheduler {
                 ThreadUtils.sleep(dagTask.getFailedInterval());
                 retryTask(dagTask);
             } else {
-                // 1. store failed status to DB
-                if (taskService != null) {
-                    taskService.updateStatus(taskId, JobStatus.FAILED);
-                }
-                // 2. remove from readyTable
-                readyTable.remove(taskId);
-                runningTasks.decrementAndGet();
+                updateJobStatus(e.getTaskId(), JobStatus.FAILED);
             }
+        }
+    }
+
+    private void updateJobStatus(long taskId, JobStatus status) {
+        // 1. store status to DB
+        if (taskService != null) {
+            if (status.equals(JobStatus.RUNNING)) {
+                // TODO 把回传的task执行内容写到DB？
+                taskService.updateStatusWithStart(taskId, status);
+            } else if (status.getValue() >= JobStatus.SUCCESS.getValue() &&
+                    status.getValue() <= JobStatus.KILLED.getValue()) {
+                taskService.updateStatusWithEnd(taskId, status);
+            }
+            taskService.updateStatusWithEnd(taskId, status);
+        }
+        // 2. remove from readyTable
+        DAGTask dagTask = readyTable.get(taskId);
+        if (dagTask != null) {
+            readyTable.remove(taskId);
+            runningTasks.decrementAndGet();
         }
     }
 
@@ -271,6 +290,5 @@ public class TaskScheduler implements Scheduler {
                 .build();
 
         return task;
-
     }
 }

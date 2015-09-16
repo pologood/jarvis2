@@ -18,8 +18,9 @@ import com.mogujie.jarvis.protocol.ReportProgressProtos.WorkerReportProgressRequ
 import com.mogujie.jarvis.protocol.ReportStatusProtos.WorkerReportStatusRequest;
 
 /**
- * Actor used to receive job metrics information (e.g. status, process) 1. send job status to
- * {@link com.mogujie.jarvis.server.actor.JobSchedulerActor } 2. send process to restserver
+ * Actor used to receive job metrics information (e.g. status, process)
+ * 1. send job status to {@link com.mogujie.jarvis.server.actor.JobSchedulerActor }
+ * 2. send process to restserver
  *
  * @author guangming
  *

@@ -6,7 +6,7 @@
  * Create Date: 2015年9月9日 下午2:43:18
  */
 
-package com.mogujie.jarvis.server.scheduler.dag.event;
+package com.mogujie.jarvis.server.scheduler.event;
 
 import java.util.Set;
 

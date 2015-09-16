@@ -31,19 +31,19 @@ import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitJobRequest;
 import com.mogujie.jarvis.server.observer.Event;
 import com.mogujie.jarvis.server.observer.Observable;
 import com.mogujie.jarvis.server.observer.Observer;
-import com.mogujie.jarvis.server.scheduler.InitEvent;
 import com.mogujie.jarvis.server.scheduler.JobScheduleType;
 import com.mogujie.jarvis.server.scheduler.SchedulerUtil;
-import com.mogujie.jarvis.server.scheduler.StopEvent;
 import com.mogujie.jarvis.server.scheduler.dag.DAGScheduler;
 import com.mogujie.jarvis.server.scheduler.dag.JobDependencyStrategy;
-import com.mogujie.jarvis.server.scheduler.dag.event.AddJobEvent;
-import com.mogujie.jarvis.server.scheduler.dag.event.FailedEvent;
-import com.mogujie.jarvis.server.scheduler.dag.event.ModifyJobEvent;
-import com.mogujie.jarvis.server.scheduler.dag.event.ModifyJobEvent.MODIFY_TYPE;
-import com.mogujie.jarvis.server.scheduler.dag.event.RemoveJobEvent;
-import com.mogujie.jarvis.server.scheduler.dag.event.SuccessEvent;
-import com.mogujie.jarvis.server.scheduler.dag.event.UnhandleEvent;
+import com.mogujie.jarvis.server.scheduler.event.AddJobEvent;
+import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
+import com.mogujie.jarvis.server.scheduler.event.InitEvent;
+import com.mogujie.jarvis.server.scheduler.event.ModifyJobEvent;
+import com.mogujie.jarvis.server.scheduler.event.RemoveJobEvent;
+import com.mogujie.jarvis.server.scheduler.event.StopEvent;
+import com.mogujie.jarvis.server.scheduler.event.SuccessEvent;
+import com.mogujie.jarvis.server.scheduler.event.UnhandleEvent;
+import com.mogujie.jarvis.server.scheduler.event.ModifyJobEvent.MODIFY_TYPE;
 import com.mogujie.jarvis.server.scheduler.task.TaskScheduler;
 import com.mogujie.jarvis.server.scheduler.time.TimeScheduler;
 import com.mogujie.jarvis.server.service.CrontabService;
@@ -113,6 +113,10 @@ public class JobSchedulerActor extends UntypedActor implements Observable {
                 event = new SuccessEvent(jobId, taskId);
             } else if (status.equals(JobStatus.FAILED)) {
                 event = new FailedEvent(jobId, taskId);
+            } else if (status.equals(JobStatus.RUNNING)) {
+
+            } else if (status.equals(JobStatus.KILLED)) {
+
             }
         } else if (obj instanceof RestServerSubmitJobRequest) {
             RestServerSubmitJobRequest msg = (RestServerSubmitJobRequest)obj;

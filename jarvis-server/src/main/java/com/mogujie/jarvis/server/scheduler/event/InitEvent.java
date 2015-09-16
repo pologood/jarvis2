@@ -3,10 +3,10 @@
  * Copyright (c) 2010-2015 All Rights Reserved.
  *
  * Author: guangming
- * Create Date: 2015年9月8日 上午10:56:51
+ * Create Date: 2015年9月8日 上午10:56:38
  */
 
-package com.mogujie.jarvis.server.scheduler;
+package com.mogujie.jarvis.server.scheduler.event;
 
 import com.mogujie.jarvis.server.observer.Event;
 
@@ -14,6 +14,6 @@ import com.mogujie.jarvis.server.observer.Event;
  * @author guangming
  *
  */
-public class StopEvent implements Event {
+public class InitEvent implements Event {
 
 }

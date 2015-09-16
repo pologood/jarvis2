@@ -8,6 +8,8 @@
 
 package com.mogujie.jarvis.server.service;
 
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +33,23 @@ public class TaskService {
         return null;
     }
 
-    public void updateStatus(long taskId, JobStatus status) {
+    public void updateStatusWithStart(long taskId, JobStatus status) {
         Task task = taskMapper.selectByPrimaryKey(taskId);
         task.setStatus(status.getValue());
+        Date currentTime = new Date();
+        DateFormat dateTimeFormat = DateFormat.getDateTimeInstance();
+        dateTimeFormat.format(currentTime);
+        task.setExecuteStartTime(currentTime);
+        taskMapper.updateByPrimaryKey(task);
+    }
+
+    public void updateStatusWithEnd(long taskId, JobStatus status) {
+        Task task = taskMapper.selectByPrimaryKey(taskId);
+        task.setStatus(status.getValue());
+        Date currentTime = new Date();
+        DateFormat dateTimeFormat = DateFormat.getDateTimeInstance();
+        dateTimeFormat.format(currentTime);
+        task.setExecuteEndTime(currentTime);
         taskMapper.updateByPrimaryKey(task);
     }
 }

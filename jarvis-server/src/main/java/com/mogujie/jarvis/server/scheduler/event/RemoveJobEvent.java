@@ -6,7 +6,7 @@
  * Create Date: 2015年9月2日 上午11:56:46
  */
 
-package com.mogujie.jarvis.server.scheduler.dag.event;
+package com.mogujie.jarvis.server.scheduler.event;
 
 /**
  * @author guangming
