@@ -104,7 +104,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>DruidStatView</servlet-name>
-        <url-pattern>/druid/report/*</url-pattern>
+        <url-pattern>/druid/jarvis/*</url-pattern>
     </servlet-mapping>
 
     <!-- druid end-->

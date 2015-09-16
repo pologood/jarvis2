@@ -1,0 +1,9 @@
+[
+  {"id":"all","text":"全部"},
+  {"id":"month","text":"月"},
+  {"id":"week","text":"周"},
+  {"id":"day","text":"日"},
+  {"id":"hour","text":"时"},
+  {"id":"minute","text":"分"},
+  {"id":"second","text":"秒"}
+]

@@ -6,9 +6,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="/assets/img/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="/assets/report/plugin/bootstrap/css/bootstrap.min.css" type="text/css" charset="utf-8">
-    <link rel="stylesheet" href="/assets/report/plugin/bootstrap/css/bootstrap-theme.min.css" type="text/css" charset="utf-8">
-    <link rel="stylesheet" href="/assets/report/plugin/font-awesome/css/font-awesome.min.css" type="text/css" charset="utf-8">
+    <link rel="stylesheet" href="/assets/jarvis/plugins/bootstrap-3.3.5/css/bootstrap.min.css" type="text/css" charset="utf-8">
+    <link rel="stylesheet" href="/assets/jarvis/plugins/bootstrap-3.3.5/css/bootstrap-theme.min.css" type="text/css" charset="utf-8">
+    <link rel="stylesheet" href="/assets/jarvis/plugins/font-awesome/css/font-awesome.min.css" type="text/css" charset="utf-8">
 
     <title>蘑菇街 - 大数据平台</title>
     <style>
@@ -36,7 +36,7 @@
             Take Me Home
           </a>
             <a href="mailto:liangxiao@mogujie.com" class="btn btn-default btn-lg">
-                <span class="glyphicon glyphicon-envelope"></span>联系@秦风@和剑@梁萧
+                <span class="glyphicon glyphicon-envelope"></span>联系@牧名@和剑
             </a>
         </div>
       </div>

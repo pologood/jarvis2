@@ -5,29 +5,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" href="/assets/report/img/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="/assets/report/css/reset.css" type="text/css" charset="utf-8">
-    <link rel="stylesheet" href="/assets/report/css/style.css" type="text/css" charset="utf-8">
-    <link rel="stylesheet" href="/assets/report/plugin/bootstrap/css/bootstrap.min.css" type="text/css" charset="utf-8">
-    <link rel="stylesheet" href="/assets/report/plugin/bootstrap/css/bootstrap-theme.min.css" type="text/css" charset="utf-8">
-    <link rel="stylesheet" href="/assets/report/plugin/font-awesome/css/font-awesome.min.css" type="text/css" charset="utf-8">
-    <link rel="stylesheet" href="/assets/report/css/login.css" type="text/css" charset="utf-8">
-    <link rel="stylesheet" href="/assets/report/plugin/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" type="text/css" charset="utf-8">
-    <link rel="stylesheet" href="/assets/report/plugin/bootstrap-switch/css/bootstrap3/bootstrap-switch.min.css" type="text/css" charset="utf-8">
-    <link rel="stylesheet" href="/assets/report/plugin/back-to-top/css/style.css" type="text/css" charset="utf-8">
-    <link rel="stylesheet" href="/assets/report/css/cart.css" type="text/css" charset="utf-8">
-    <link rel="stylesheet" href="/assets/report/plugin/animated-page/style.css" type="text/css" charset="utf-8">
-    <link rel="stylesheet" href="/assets/report/plugin/breadcrumbs/css/style.css" type="text/css" charset="utf-8">
-    <link rel="stylesheet" href="/assets/report/css/main.css" type="text/css" charset="utf-8">
-    <link rel="stylesheet" href="/assets/report/css/report.css" type="text/css" charset="utf-8">
-    <link rel="stylesheet" href="/assets/report/css/calculator.css" type="text/css" charset="utf-8">
-    <link rel="stylesheet" href="/assets/report/plugin/jstree/dist/themes/default/style.min.css" type="text/css" charset="utf-8">
-    <link rel="stylesheet" href="/assets/report/plugin/select2-4.0.0/css/select2.min.css" type="text/css" charset="utf-8">
-    <link rel="stylesheet" href="/assets/report/plugin/select2-4.0.0/css/select2-bootstrap.min.css" type="text/css" charset="utf-8">
-    <link type="text/css" rel="stylesheet" href="/assets/report/plugin/qtip/jquery.qtip.min.css" />
-    <link type="text/css" rel="stylesheet" href="/assets/report/plugin/pnotify/pnotify.custom.min.css" />
-    <script src="/assets/report/js/modernizr.js" type="application/javascript" charset="utf-8"></script>
-    <script src="/assets/report/js/jquery-2.1.4.min.js" type="application/javascript" charset="utf-8"></script>
+    <link rel="icon" href="/assets/jarvis/img/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="/assets/jarvis/css/reset.css" type="text/css" charset="utf-8">
+    <link rel="stylesheet" href="/assets/jarvis/css/style.css" type="text/css" charset="utf-8">
+    <link rel="stylesheet" href="/assets/jarvis/plugins/bootstrap-3.3.5/css/bootstrap.min.css" type="text/css" charset="utf-8">
+    <link rel="stylesheet" href="/assets/jarvis/plugins/bootstrap-3.3.5/css/bootstrap-theme.min.css" type="text/css" charset="utf-8">
+    <link rel="stylesheet" href="/assets/jarvis/plugins/font-awesome/css/font-awesome.min.css" type="text/css" charset="utf-8">
+    <link rel="stylesheet" href="/assets/jarvis/css/login.css" type="text/css" charset="utf-8">
+    <link rel="stylesheet" href="/assets/jarvis/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" type="text/css" charset="utf-8">
+    <link rel="stylesheet" href="/assets/jarvis/plugins/bootstrap-switch/css/bootstrap3/bootstrap-switch.min.css" type="text/css" charset="utf-8">
+    <link rel="stylesheet" href="/assets/jarvis/plugins/back-to-top/css/style.css" type="text/css" charset="utf-8">
+    <link rel="stylesheet" href="/assets/jarvis/css/cart.css" type="text/css" charset="utf-8">
+    <link rel="stylesheet" href="/assets/jarvis/plugins/breadcrumbs/css/style.css" type="text/css" charset="utf-8">
+    <link rel="stylesheet" href="/assets/jarvis/css/main.css" type="text/css" charset="utf-8">
+    <link rel="stylesheet" href="/assets/jarvis/plugins/select2-4.0.0/css/select2.min.css" type="text/css" charset="utf-8">
+    <link rel="stylesheet" href="/assets/jarvis/plugins/select2-4.0.0/css/select2-bootstrap3.css" type="text/css" charset="utf-8">
+    <link type="text/css" rel="stylesheet" href="/assets/jarvis/plugins/qtip2/jquery.qtip.min.css" />
+    <link type="text/css" rel="stylesheet" href="/assets/jarvis/plugins/pnotify/pnotify.custom.min.css" />
+    <link type="text/css" rel="stylesheet" href="/assets/jarvis/plugins/bootstrap-table/bootstrap-table.min.css" />
+    <link type="text/css" rel="stylesheet" href="/assets/jarvis/css/select2_special.css" />
+
+
+    <script src="/assets/jarvis/plugins/modernizr/modernizr.js" type="application/javascript" charset="utf-8"></script>
+    <script src="/assets/jarvis/plugins/jquery/jquery-2.1.4.min.js" type="application/javascript" charset="utf-8"></script>
+
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
