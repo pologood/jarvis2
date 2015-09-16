@@ -75,7 +75,6 @@ public class DAGScheduler implements Scheduler {
     private TaskScheduler taskScheduler = TaskScheduler.getInstance();
     private Configuration conf = ConfigUtils.getServerConfig();
     private Map<Long, DAGJob> waitingTable = new ConcurrentHashMap<Long, DAGJob>();
-    private static int PRIORITY_DEFAULT = 3;
 
     @Override
     public void handleInitEvent(InitEvent event) {

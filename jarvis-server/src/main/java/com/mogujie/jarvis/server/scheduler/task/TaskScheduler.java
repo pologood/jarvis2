@@ -26,12 +26,14 @@ import org.springframework.stereotype.Service;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.eventbus.AllowConcurrentEvents;
 import com.google.common.eventbus.Subscribe;
+import com.mogujie.jarvis.core.common.util.ParametersMapUtil;
 import com.mogujie.jarvis.core.common.util.ThreadUtils;
 import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.dao.JobMapper;
 import com.mogujie.jarvis.dao.TaskMapper;
 import com.mogujie.jarvis.dto.Job;
 import com.mogujie.jarvis.dto.Task;
+import com.mogujie.jarvis.server.TaskQueue;
 import com.mogujie.jarvis.server.scheduler.InitEvent;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
 import com.mogujie.jarvis.server.scheduler.StartEvent;
@@ -68,18 +70,15 @@ public class TaskScheduler implements Scheduler {
     private ScanThread scanThread;
 
     class ScanThread extends Thread {
-        private String name;
-
-        public ScanThread(String name) {
-            this.name = name;
-        }
+        private TaskQueue taskQueue = TaskQueue.getInstance();
 
         @Override
         public void run() {
             while (true) {
                 while (!runnableQueue.isEmpty() && runningTasks.get() < maxConcurrentNum) {
                     DAGTask priorityTask = runnableQueue.poll();
-                    //TODO submit priorityTask
+                    com.mogujie.jarvis.core.Task taskInfo = getTaskInfo(priorityTask);
+                    taskQueue.put(taskInfo);
                     runningTasks.incrementAndGet();
                 }
                 ThreadUtils.sleep(5000);
@@ -105,7 +104,8 @@ public class TaskScheduler implements Scheduler {
 
     @Override
     public void handleInitEvent(InitEvent event) {
-        scanThread = new ScanThread("ScanPriorityQueueThread");
+        scanThread = new ScanThread();
+        scanThread.setName("ScanPriorityQueueThread");
         scanThread.start();
 
         List<Task> tasks = taskService.getTasksByStatus(JobStatus.READY);
@@ -125,6 +125,7 @@ public class TaskScheduler implements Scheduler {
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void handleStopEvent(StopEvent event) {
         if (scanThread != null && scanThread.isAlive()
@@ -253,5 +254,23 @@ public class TaskScheduler implements Scheduler {
     // 重启的时候maxid会重置, for testing
     private long generateTaskId() {
         return maxid.getAndIncrement();
+    }
+
+    private com.mogujie.jarvis.core.Task getTaskInfo(DAGTask dagTask) {
+        String fullId = dagTask.getJobId() + "_" + dagTask.getTaskId() + "_" + dagTask.getAttemptId();
+        Job job = jobMapper.selectByPrimaryKey(dagTask.getJobId());
+        com.mogujie.jarvis.core.Task task = com.mogujie.jarvis.core.Task.newTaskBuilder()
+                .setFullId(fullId)
+                .setTaskName(job.getJobName())
+                .setAppName(job.getAppName())
+                .setUser(job.getSubmitUser())
+                .setPriority(dagTask.getPriority())
+                .setCommand(job.getContent())
+                .setTaskType(job.getJobType())
+                .setParameters(ParametersMapUtil.convert2Map(job.getParams()))
+                .build();
+
+        return task;
+
     }
 }
