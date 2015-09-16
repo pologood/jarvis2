@@ -248,6 +248,21 @@ public final class ModifyJobProtos {
          * <code>repeated .MapEntry parameters = 18;</code>
          */
         com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder getParametersOrBuilder(int index);
+
+        /**
+         * <code>repeated bool job_flag = 19;</code>
+         */
+        java.util.List<java.lang.Boolean> getJobFlagList();
+
+        /**
+         * <code>repeated bool job_flag = 19;</code>
+         */
+        int getJobFlagCount();
+
+        /**
+         * <code>repeated bool job_flag = 19;</code>
+         */
+        boolean getJobFlag(int index);
     }
 
     /**
@@ -418,6 +433,27 @@ public final class ModifyJobProtos {
                             parameters_.add(input.readMessage(com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.PARSER, extensionRegistry));
                             break;
                         }
+                        case 152: {
+                            if (!((mutable_bitField0_ & 0x00040000) == 0x00040000)) {
+                                jobFlag_ = new java.util.ArrayList<java.lang.Boolean>();
+                                mutable_bitField0_ |= 0x00040000;
+                            }
+                            jobFlag_.add(input.readBool());
+                            break;
+                        }
+                        case 154: {
+                            int length = input.readRawVarint32();
+                            int limit = input.pushLimit(length);
+                            if (!((mutable_bitField0_ & 0x00040000) == 0x00040000) && input.getBytesUntilLimit() > 0) {
+                                jobFlag_ = new java.util.ArrayList<java.lang.Boolean>();
+                                mutable_bitField0_ |= 0x00040000;
+                            }
+                            while (input.getBytesUntilLimit() > 0) {
+                                jobFlag_.add(input.readBool());
+                            }
+                            input.popLimit(limit);
+                            break;
+                        }
                     }
                 }
             } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -430,6 +466,9 @@ public final class ModifyJobProtos {
                 }
                 if (((mutable_bitField0_ & 0x00020000) == 0x00020000)) {
                     parameters_ = java.util.Collections.unmodifiableList(parameters_);
+                }
+                if (((mutable_bitField0_ & 0x00040000) == 0x00040000)) {
+                    jobFlag_ = java.util.Collections.unmodifiableList(jobFlag_);
                 }
                 this.unknownFields = unknownFields.build();
                 makeExtensionsImmutable();
@@ -963,6 +1002,30 @@ public final class ModifyJobProtos {
             return parameters_.get(index);
         }
 
+        public static final int JOB_FLAG_FIELD_NUMBER = 19;
+        private java.util.List<java.lang.Boolean> jobFlag_;
+
+        /**
+         * <code>repeated bool job_flag = 19;</code>
+         */
+        public java.util.List<java.lang.Boolean> getJobFlagList() {
+            return jobFlag_;
+        }
+
+        /**
+         * <code>repeated bool job_flag = 19;</code>
+         */
+        public int getJobFlagCount() {
+            return jobFlag_.size();
+        }
+
+        /**
+         * <code>repeated bool job_flag = 19;</code>
+         */
+        public boolean getJobFlag(int index) {
+            return jobFlag_.get(index);
+        }
+
         private void initFields() {
             jobId_ = 0L;
             jobName_ = "";
@@ -982,6 +1045,7 @@ public final class ModifyJobProtos {
             startTime_ = 0L;
             endTime_ = 0L;
             parameters_ = java.util.Collections.emptyList();
+            jobFlag_ = java.util.Collections.emptyList();
         }
 
         private byte memoizedIsInitialized = -1;
@@ -1067,6 +1131,9 @@ public final class ModifyJobProtos {
             for (int i = 0; i < parameters_.size(); i++) {
                 output.writeMessage(18, parameters_.get(i));
             }
+            for (int i = 0; i < jobFlag_.size(); i++) {
+                output.writeBool(19, jobFlag_.get(i));
+            }
             getUnknownFields().writeTo(output);
         }
 
@@ -1140,6 +1207,12 @@ public final class ModifyJobProtos {
             }
             for (int i = 0; i < parameters_.size(); i++) {
                 size += com.google.protobuf.CodedOutputStream.computeMessageSize(18, parameters_.get(i));
+            }
+            {
+                int dataSize = 0;
+                dataSize = 1 * getJobFlagList().size();
+                size += dataSize;
+                size += 2 * getJobFlagList().size();
             }
             size += getUnknownFields().getSerializedSize();
             memoizedSerializedSize = size;
@@ -1304,6 +1377,8 @@ public final class ModifyJobProtos {
                 } else {
                     parametersBuilder_.clear();
                 }
+                jobFlag_ = java.util.Collections.emptyList();
+                bitField0_ = (bitField0_ & ~0x00040000);
                 return this;
             }
 
@@ -1410,6 +1485,11 @@ public final class ModifyJobProtos {
                 } else {
                     result.parameters_ = parametersBuilder_.build();
                 }
+                if (((bitField0_ & 0x00040000) == 0x00040000)) {
+                    jobFlag_ = java.util.Collections.unmodifiableList(jobFlag_);
+                    bitField0_ = (bitField0_ & ~0x00040000);
+                }
+                result.jobFlag_ = jobFlag_;
                 result.bitField0_ = to_bitField0_;
                 onBuilt();
                 return result;
@@ -1522,6 +1602,16 @@ public final class ModifyJobProtos {
                             parametersBuilder_.addAllMessages(other.parameters_);
                         }
                     }
+                }
+                if (!other.jobFlag_.isEmpty()) {
+                    if (jobFlag_.isEmpty()) {
+                        jobFlag_ = other.jobFlag_;
+                        bitField0_ = (bitField0_ & ~0x00040000);
+                    } else {
+                        ensureJobFlagIsMutable();
+                        jobFlag_.addAll(other.jobFlag_);
+                    }
+                    onChanged();
                 }
                 this.mergeUnknownFields(other.getUnknownFields());
                 return this;
@@ -2723,6 +2813,76 @@ public final class ModifyJobProtos {
                 return parametersBuilder_;
             }
 
+            private java.util.List<java.lang.Boolean> jobFlag_ = java.util.Collections.emptyList();
+
+            private void ensureJobFlagIsMutable() {
+                if (!((bitField0_ & 0x00040000) == 0x00040000)) {
+                    jobFlag_ = new java.util.ArrayList<java.lang.Boolean>(jobFlag_);
+                    bitField0_ |= 0x00040000;
+                }
+            }
+
+            /**
+             * <code>repeated bool job_flag = 19;</code>
+             */
+            public java.util.List<java.lang.Boolean> getJobFlagList() {
+                return java.util.Collections.unmodifiableList(jobFlag_);
+            }
+
+            /**
+             * <code>repeated bool job_flag = 19;</code>
+             */
+            public int getJobFlagCount() {
+                return jobFlag_.size();
+            }
+
+            /**
+             * <code>repeated bool job_flag = 19;</code>
+             */
+            public boolean getJobFlag(int index) {
+                return jobFlag_.get(index);
+            }
+
+            /**
+             * <code>repeated bool job_flag = 19;</code>
+             */
+            public Builder setJobFlag(int index, boolean value) {
+                ensureJobFlagIsMutable();
+                jobFlag_.set(index, value);
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>repeated bool job_flag = 19;</code>
+             */
+            public Builder addJobFlag(boolean value) {
+                ensureJobFlagIsMutable();
+                jobFlag_.add(value);
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>repeated bool job_flag = 19;</code>
+             */
+            public Builder addAllJobFlag(java.lang.Iterable<? extends java.lang.Boolean> values) {
+                ensureJobFlagIsMutable();
+                com.google.protobuf.AbstractMessageLite.Builder.addAll(values, jobFlag_);
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>repeated bool job_flag = 19;</code>
+             */
+            public Builder clearJobFlag() {
+                jobFlag_ = java.util.Collections.emptyList();
+                bitField0_ = (bitField0_ & ~0x00040000);
+                onChanged();
+                return this;
+            }
+
             // @@protoc_insertion_point(builder_scope:RestServerModifyJobRequest)
         }
 
@@ -3411,7 +3571,7 @@ public final class ModifyJobProtos {
 
     static {
         java.lang.String[] descriptorData = {
-                "\n\020modify_job.proto\032\017map_entry.proto\"\244\003\n\032" + "RestServerModifyJobRequest\022\016\n\006job_id\030\001 \002"
+                "\n\020modify_job.proto\032\017map_entry.proto\"\266\003\n\032" + "RestServerModifyJobRequest\022\016\n\006job_id\030\001 \002"
                         + "(\003\022\020\n\010job_name\030\002 \001(\t\022\027\n\017cron_expression\030"
                         + "\003 \001(\t\022\035\n\021dependency_jobids\030\004 \003(\003B\002\020\001\022\020\n\010"
                         + "app_name\030\005 \001(\t\022\017\n\007app_key\030\006 \001(\t\022\014\n\004user\030"
@@ -3421,9 +3581,10 @@ public final class ModifyJobProtos {
                         + "erval\030\r \001(\005:\0013\022\031\n\016failed_retries\030\016 \001(\005:\001"
                         + "0\022\032\n\017failed_interval\030\017 \001(\005:\0013\022\022\n\nstart_t",
                 "ime\030\020 \001(\003\022\020\n\010end_time\030\021 \001(\003\022\035\n\nparameter"
-                        + "s\030\022 \003(\0132\t.MapEntry\"M\n\027ServerModifyJobRes"
-                        + "ponse\022\016\n\006job_id\030\001 \002(\003\022\017\n\007success\030\002 \002(\010\022\021"
-                        + "\n\007message\030\003 \001(\t:\000B.\n\033com.mogujie.jarvis." + "protocolB\017ModifyJobProtos" };
+                        + "s\030\022 \003(\0132\t.MapEntry\022\020\n\010job_flag\030\023 \003(\010\"M\n\027"
+                        + "ServerModifyJobResponse\022\016\n\006job_id\030\001 \002(\003\022"
+                        + "\017\n\007success\030\002 \002(\010\022\021\n\007message\030\003 \001(\t:\000B.\n\033c"
+                        + "om.mogujie.jarvis.protocolB\017ModifyJobPro" + "tos" };
         com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner = new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
             public com.google.protobuf.ExtensionRegistry assignDescriptors(com.google.protobuf.Descriptors.FileDescriptor root) {
                 descriptor = root;
@@ -3437,7 +3598,7 @@ public final class ModifyJobProtos {
                 internal_static_RestServerModifyJobRequest_descriptor,
                 new java.lang.String[] { "JobId", "JobName", "CronExpression", "DependencyJobids", "AppName", "AppKey", "User", "JobType", "Command",
                         "GroupId", "Priority", "RejectRetries", "RejectInterval", "FailedRetries", "FailedInterval", "StartTime", "EndTime",
-                        "Parameters", });
+                        "Parameters", "JobFlag", });
         internal_static_ServerModifyJobResponse_descriptor = getDescriptor().getMessageTypes().get(1);
         internal_static_ServerModifyJobResponse_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
                 internal_static_ServerModifyJobResponse_descriptor, new java.lang.String[] { "JobId", "Success", "Message", });
