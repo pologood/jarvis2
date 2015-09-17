@@ -5,6 +5,5 @@ import com.mogujie.jarvis.dto.Task;
 /**
  * Created by hejian on 15/9/17.
  */
-public class TaskVo {
-    Task task
+public class TaskVo extends Task {
 }
