@@ -6,7 +6,7 @@
  * Create Date: 2015年8月31日 下午4:10:33
  */
 
-package com.mogujie.jarvis.server.actor;
+package com.mogujie.jarvis.logcenter.actor;
 
 import com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest;
 

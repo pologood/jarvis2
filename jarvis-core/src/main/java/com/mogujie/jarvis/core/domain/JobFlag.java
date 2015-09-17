@@ -15,7 +15,8 @@ public enum JobFlag {
 
     ENABLE(1), //启用（有效）
     DISABLE(2), //禁用（失效）
-    DELETED(3);   //垃圾箱
+    DELETED(3),   //垃圾箱
+    EXPIRED(4); //过期
 
     private int value;
 
