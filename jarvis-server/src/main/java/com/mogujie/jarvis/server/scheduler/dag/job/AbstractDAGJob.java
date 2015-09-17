@@ -8,16 +8,27 @@
 
 package com.mogujie.jarvis.server.scheduler.dag.job;
 
+import com.mogujie.jarvis.core.domain.JobFlag;
+
 
 /**
  * @author guangming
  *
  */
-public interface IDAGJob {
+public abstract class AbstractDAGJob {
+
+    private JobFlag jobFlag = JobFlag.ENABLE;
 
     /**
      * return true if dependency check passed. Otherwise return false.
      */
     public abstract boolean dependCheck();
 
+    public JobFlag getJobFlag() {
+        return jobFlag;
+    }
+
+    public void setJobFlag(JobFlag jobFlag) {
+        this.jobFlag = jobFlag;
+    }
 }

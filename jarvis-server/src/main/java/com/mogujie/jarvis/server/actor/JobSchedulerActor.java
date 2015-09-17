@@ -8,6 +8,8 @@
 
 package com.mogujie.jarvis.server.actor;
 
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.Set;
 
 import javax.inject.Named;
@@ -19,6 +21,7 @@ import akka.actor.UntypedActor;
 
 import com.google.common.collect.Sets;
 import com.google.common.eventbus.EventBus;
+import com.mogujie.jarvis.core.domain.JobFlag;
 import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.dao.JobDependMapper;
 import com.mogujie.jarvis.dao.JobMapper;
@@ -38,12 +41,14 @@ import com.mogujie.jarvis.server.scheduler.dag.JobDependencyStrategy;
 import com.mogujie.jarvis.server.scheduler.event.AddJobEvent;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
 import com.mogujie.jarvis.server.scheduler.event.InitEvent;
+import com.mogujie.jarvis.server.scheduler.event.KilledEvent;
 import com.mogujie.jarvis.server.scheduler.event.ModifyJobEvent;
-import com.mogujie.jarvis.server.scheduler.event.RemoveJobEvent;
+import com.mogujie.jarvis.server.scheduler.event.ModifyJobEvent.MODIFY_TYPE;
+import com.mogujie.jarvis.server.scheduler.event.ModifyJobFlagEvent;
+import com.mogujie.jarvis.server.scheduler.event.RunningEvent;
 import com.mogujie.jarvis.server.scheduler.event.StopEvent;
 import com.mogujie.jarvis.server.scheduler.event.SuccessEvent;
 import com.mogujie.jarvis.server.scheduler.event.UnhandleEvent;
-import com.mogujie.jarvis.server.scheduler.event.ModifyJobEvent.MODIFY_TYPE;
 import com.mogujie.jarvis.server.scheduler.task.TaskScheduler;
 import com.mogujie.jarvis.server.scheduler.time.TimeScheduler;
 import com.mogujie.jarvis.server.service.CrontabService;
@@ -114,9 +119,9 @@ public class JobSchedulerActor extends UntypedActor implements Observable {
             } else if (status.equals(JobStatus.FAILED)) {
                 event = new FailedEvent(jobId, taskId);
             } else if (status.equals(JobStatus.RUNNING)) {
-
+                event = new RunningEvent(jobId, taskId);
             } else if (status.equals(JobStatus.KILLED)) {
-
+                event = new KilledEvent(jobId, taskId);
             }
         } else if (obj instanceof RestServerSubmitJobRequest) {
             RestServerSubmitJobRequest msg = (RestServerSubmitJobRequest)obj;
@@ -133,6 +138,12 @@ public class JobSchedulerActor extends UntypedActor implements Observable {
                 JobDepend jobDepend = new JobDepend();
                 jobDepend.setJobId(jobId);
                 jobDepend.setPreJobId(d);
+                Date currentTime = new Date();
+                DateFormat dateTimeFormat = DateFormat.getDateTimeInstance();
+                dateTimeFormat.format(currentTime);
+                jobDepend.setCreateTime(currentTime);
+                jobDepend.setUpdateTime(currentTime);
+                jobDepend.setUpdateUser(msg.getUser());
                 jobDependMapper.insert(jobDepend);
             }
             // 3. get jobScheduleType
@@ -158,6 +169,11 @@ public class JobSchedulerActor extends UntypedActor implements Observable {
                 JobDepend jobDepend = new JobDepend();
                 jobDepend.setJobId(jobId);
                 jobDepend.setPreJobId(d);
+                Date currentTime = new Date();
+                DateFormat dateTimeFormat = DateFormat.getDateTimeInstance();
+                dateTimeFormat.format(currentTime);
+                jobDepend.setUpdateTime(currentTime);
+                jobDepend.setUpdateUser(msg.getUser());
                 jobDependMapper.insert(jobDepend);
             }
             boolean hasCron = (msg.getCronExpression() != null);
@@ -165,7 +181,7 @@ public class JobSchedulerActor extends UntypedActor implements Observable {
         } else if (obj instanceof RestServerDeleteJobRequest) {
             RestServerDeleteJobRequest msg = (RestServerDeleteJobRequest)obj;
             long jobId = msg.getJobId();
-            event = new RemoveJobEvent(jobId);
+            event = new ModifyJobFlagEvent(jobId, JobFlag.DELETED);
         } else {
             unhandled(obj);
         }

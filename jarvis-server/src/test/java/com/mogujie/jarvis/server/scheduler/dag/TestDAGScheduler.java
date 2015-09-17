@@ -95,7 +95,7 @@ public class TestDAGScheduler {
         Assert.assertEquals(3, jobB.getChildren().get(0).getJobId());
         Assert.assertEquals(2, jobC.getParents().size());
 
-        scheduler.removeJob(jobB.getJobId());
+        scheduler.removeJob(jobB);
         Assert.assertEquals(1, jobA.getChildren().size());
         Assert.assertEquals(3, jobA.getChildren().get(0).getJobId());
         Assert.assertEquals(1, jobC.getParents().size());
@@ -118,7 +118,7 @@ public class TestDAGScheduler {
         Assert.assertEquals(3, jobB.getChildren().get(0).getJobId());
         Assert.assertEquals(2, jobC.getParents().size());
 
-        scheduler.removeJob(jobC.getJobId());
+        scheduler.removeJob(jobC);
         Assert.assertEquals(0, jobA.getChildren().size());
         Assert.assertEquals(0, jobB.getChildren().size());
         Assert.assertEquals(0, jobC.getParents().size());
@@ -140,7 +140,7 @@ public class TestDAGScheduler {
         Assert.assertEquals(1, jobC.getParents().size());
         Assert.assertEquals(1, jobC.getParents().get(0).getJobId());
 
-        scheduler.removeJob(jobA.getJobId());
+        scheduler.removeJob(jobA);
         Assert.assertEquals(0, jobA.getChildren().size());
         Assert.assertEquals(0, jobB.getParents().size());
         Assert.assertEquals(0, jobC.getParents().size());

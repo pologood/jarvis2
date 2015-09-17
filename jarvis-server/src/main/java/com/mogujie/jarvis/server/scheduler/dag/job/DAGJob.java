@@ -14,6 +14,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import com.mogujie.jarvis.core.domain.JobFlag;
 import com.mogujie.jarvis.server.scheduler.dag.JobDependencyStrategy;
 import com.mogujie.jarvis.server.scheduler.dag.status.AbstractDependStatus;
 
@@ -21,7 +22,7 @@ import com.mogujie.jarvis.server.scheduler.dag.status.AbstractDependStatus;
  * @author guangming
  *
  */
-public class DAGJob implements IDAGJob {
+public class DAGJob extends AbstractDAGJob {
 
     private long jobId;
     private AbstractDependStatus dependStatus;
@@ -50,7 +51,9 @@ public class DAGJob implements IDAGJob {
         boolean passCheck = false;
         Set<Long> needJobs = new HashSet<Long>();
         for (DAGJob d : parents) {
-            needJobs.add(d.getJobId());
+            if (d.getJobFlag().equals(JobFlag.ENABLE)) {
+                needJobs.add(d.getJobId());
+            }
         }
         passCheck = dependStatus.isFinishAllJob(dependStrategy, needJobs);
 
@@ -192,11 +195,15 @@ public class DAGJob implements IDAGJob {
         }
     }
 
+    public void removeChildren() {
+        removeChildren(true);
+    }
+
     /**
      * This method will also remove this from children
      *
      */
-    public void removeChildren() {
+    public void removeChildren(boolean removeDependStatus) {
         List<DAGJob> children = getChildren();
         Iterator<DAGJob> it = children.iterator();
         while (it.hasNext()) {
@@ -205,6 +212,9 @@ public class DAGJob implements IDAGJob {
             it.remove();
             // 2. remove myself from child
             child.removeParent(this);
+            if (removeDependStatus) {
+                child.getDependStatus().removeDependency(getJobId());
+            }
         }
     }
 
