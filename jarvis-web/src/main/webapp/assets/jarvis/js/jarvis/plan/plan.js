@@ -41,7 +41,7 @@ $(function(){
         });
     });
 
-    //初始化任务类型内容
+    //初始化任务状态
     $.getJSON("/assets/jarvis/json/taskStatus.json",function(data){
         $(data).each(function(index,content){
             var value=content.id;

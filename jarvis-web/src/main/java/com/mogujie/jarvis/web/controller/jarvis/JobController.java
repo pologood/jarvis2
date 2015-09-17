@@ -1,5 +1,6 @@
 package com.mogujie.jarvis.web.controller.jarvis;
 
+import com.mogujie.jarvis.web.entity.vo.JobVo;
 import com.mogujie.jarvis.web.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,7 +34,11 @@ public class JobController extends BaseController{
     }
 
     @RequestMapping(value = "addOrEdit")
-    public String addOrEdit(ModelMap modelMap,@RequestParam(defaultValue = "add") String operation){
+    public String addOrEdit(ModelMap modelMap,Long jobId){
+        if(jobId!=null){
+            JobVo jobVo=jobService.getJobById(jobId);
+            modelMap.put("jobVo",jobVo);
+        }
 
         return "job/addOrEdit";
     }

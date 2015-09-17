@@ -7,6 +7,7 @@ import com.mogujie.jarvis.dto.Job;
  */
 public class JobVo extends Job {
     private String jobStatus;
+    private String jobPriority;
 
     public String getJobStatus() {
         return jobStatus;
@@ -14,5 +15,13 @@ public class JobVo extends Job {
 
     public void setJobStatus(String jobStatus) {
         this.jobStatus = jobStatus;
+    }
+
+    public String getJobPriority() {
+        return jobPriority;
+    }
+
+    public void setJobPriority(String jobPriority) {
+        this.jobPriority = jobPriority;
     }
 }

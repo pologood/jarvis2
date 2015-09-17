@@ -38,6 +38,7 @@
 <script type="text/javascript" src="/assets/jarvis/js/cart.js" charset="UTF-8"></script>
 <script type="text/javascript" src="/assets/jarvis/js/pager.js" charset="UTF-8"></script>
 <script type="text/javascript" src="/assets/jarvis/plugins/select2-4.0.0/js/select2.full.min.js"></script>
+<script type="text/javascript" src="/assets/jarvis/plugins/select2-4.0.0/js/i18n/zh-CN.js"></script>
 <script type="text/javascript" src="/assets/jarvis/plugins/form/jquery.form.min.js" charset="UTF-8"></script>
 <script type="text/javascript" src="/assets/jarvis/plugins/qtip2/jquery.qtip.min.js"></script>
 <script type="text/javascript" src="/assets/jarvis/plugins/pnotify/pnotify.custom.min.js" charset="UTF-8"></script>

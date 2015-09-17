@@ -33,6 +33,7 @@ public class JobService {
         logger.info("flagMap:"+Constants.jobFlagMap);
         for(JobVo jobVo:jobList){
             jobVo.setJobStatus(Constants.jobFlagMap.get(jobVo.getJobFlag()));
+            jobVo.setJobPriority(Constants.priorityMap.get(jobVo.getPriority()));
         }
 
         jsonObject.put("total",count);
@@ -41,7 +42,9 @@ public class JobService {
         return jsonObject;
     }
 
-
+    public JobVo getJobById(Long jobId){
+        return jobMapper.getJobById(jobId);
+    }
     public List<Long> getJobIds(){
         return jobMapper.getJobIds();
     }

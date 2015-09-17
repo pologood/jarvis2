@@ -2,5 +2,73 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.mogujie.jarvis.web.mapper.TaskMapper">
 
+    <sql id="condition">
+        <where>
+            <if test="jobId!=null">
+              job.jobId=#{jobId}
+            </if>
+            <if test="jobName!=null and jobName!=''">
+              AND job.jobName=#{jobName}
+            </if>
+            <if test="jobType!=null and jobType!=''">
+              AND job.jobType=#{jobType}
+            </if>
+            <if test="submitUser!=null and submitUser!=''">
+              AND job.submitUser=#{submitUser}
+            </if>
+            <if test="startTime!=null and startTime!=''">
+              AND task.executeStartTime>=#{startTime}
+            </if>
+            <if test="endTime!=null and endTime!=''">
+                <![CDATA[
+                  AND task.executeEndTime<=#{endTime}
+                ]]>
+            </if>
+            <if test="dataDate!=null and dataDate!=''">
+                AND task.dataYmd=#{dataDate}
+            </if>
+            <if test="executeDate!=null and executeDate!=''">
+                <![CDATA[
+                  AND task.executeStartTime>=executeDate AND task.executeStartTime<=DATE_ADD(#{executeDate},INTERVAL 1 DAY)
+                ]]>
+
+            </if>
+            <if test="taskStatus!=null">
+                AND
+                <foreach collection="taskStatus" item="status" index="index" open="(" close=")" separator="OR">
+                    (task.status=#{status})
+                </foreach>
+            </if>
+
+
+
+        </where>
+    </sql>
+    <sql id="pager">
+        <if test="offset!=null and limit!=null">
+            limit #{offset},#{limit}
+        </if>
+    </sql>
+
+
+
+    
+    <select id="getCountByCondition" parameterType="TaskSearchVo" resultType="Integer">
+      SELECT COUNT(1) FROM task
+      <include refid="condition" />
+    </select>
+
+    <select id="getTasksByCondition" parameterType="TaskSearchVo" resultType="TaskVo">
+        SELECT * FROM task LEFT JOIN job ON task.jobId=job.jobId
+        <include refid="condition" />
+        <if test="order!=null">
+            order by #{order}
+        </if>
+        <include refid="pager" />
+    </select>
+
+    <select id="getTaskById" parameterType="Long" resultType="TaskVo">
+        SELECT * FROM task WHERE taskId=#{taskId} limit 0,1
+    </select>
 
 </mapper>

@@ -7,16 +7,19 @@
           <if test="jobId!=null">
               jobId=#{jobId}
           </if>
-          <if test="jobName!=null">
+          <if test="originJobId!=null">
+              AND originJobId=#{originJobId}
+          </if>
+          <if test="jobName!=null and jobName!='' and jobName!='all'">
               AND jobName=#{jobName}
           </if>
-          <if test="jobType!=null">
+          <if test="jobType!=null and jobType!='' and jobType!='all'">
               AND jobType=#{jobType}
           </if>
           <if test="jobFlag!=null">
               AND jobFlag=#{jobFlag}
           </if>
-          <if test="submitUser!=null">
+          <if test="submitUser!=null and submitUser!='' and submitUser!='all' ">
               AND submitUser=#{submitUser}
           </if>
           <if test="content!=null">
@@ -55,6 +58,10 @@
           ORDER BY #{order}
       </if>
       <include refid="pager" />
+    </select>
+
+    <select id="getJobById" parameterType="Long" resultType="JobVo">
+        SELECT * FROM job WHERE jobId=#{jobId} limit 0,1
     </select>
 
     <select id="getJobIds" resultType="Long">

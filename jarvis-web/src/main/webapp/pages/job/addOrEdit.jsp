@@ -17,7 +17,14 @@
                 <ol class="cd-breadcrumb triangle">
                     <li><a href="/jarvis/">Home</a></li>
                     <li ><a href="/jarvis/job">任务管理</a></li>
-                    <li class="current"><em>新增任务</em></li>
+                    <c:choose>
+                        <c:when test="${jobVo!=null}">
+                            <li class="current"><em>编辑任务</em></li>
+                        </c:when>
+                        <c:otherwise>
+                            <li class="current"><em>新增任务</em></li>
+                        </c:otherwise>
+                    </c:choose>
                 </ol>
             </nav>
         </div>

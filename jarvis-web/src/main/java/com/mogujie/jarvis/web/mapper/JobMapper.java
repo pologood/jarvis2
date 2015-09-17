@@ -10,6 +10,7 @@ import java.util.List;
  * Created by hejian on 15/9/17.
  */
 public interface JobMapper {
+    public JobVo getJobById(Long jobId);
     public Integer getCountByCondition(JobSearchVo jobSearchVo);
     public List<JobVo> getJobsByCondition(JobSearchVo jobSearchVo);
 

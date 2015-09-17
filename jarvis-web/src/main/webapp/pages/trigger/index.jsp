@@ -16,7 +16,7 @@
             <nav>
                 <ol class="cd-breadcrumb triangle">
                     <li><a href="/jarvis/">Home</a></li>
-                    <li class="current"><em>作业触发</em></li>
+                    <li class="current"><em>任务触发</em></li>
                 </ol>
             </nav>
         </div>
@@ -26,7 +26,7 @@
         <div class="col-md-12">
 
             <div class="row top-buffer">
-                <div class="col-md-4 col-md-offset-4">
+                <div class="col-md-6 col-md-offset-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">选择脚本</span>
                         <select id="content"  ></select>
@@ -35,28 +35,31 @@
             </div>
 
             <div class="row top-buffer">
-                <div class="col-md-4 col-md-offset-4">
+                <div class="col-md-6 col-md-offset-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">开始日期</span>
-                        <select id="jobStart" ></select>
+                        <input id="jobStart"  class="form-control"/>
                     </div>
                 </div>
             </div>
 
             <div class="row top-buffer">
-                <div class="col-md-4 col-md-offset-4">
+                <div class="col-md-6 col-md-offset-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">结束日期</span>
-                        <select id="jobEnd" ></select>
+                        <input id="jobEnd"  class="form-control" />
                     </div>
                 </div>
             </div>
 
             <div class="row top-buffer">
-                <div class="col-md-4 col-md-offset-4">
+                <div class="col-md-6 col-md-offset-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">重跑后续依赖任务</span>
-                        <input id="" />
+                        <div class="form-control">
+                            <input id="reRunNext" type="checkbox"/>
+                        </div>
+
                     </div>
                 </div>
             </div>

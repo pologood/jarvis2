@@ -5,16 +5,17 @@ $(function(){
             width:'100%'
         });
     });
-
+    /*
     $.getJSON("/assets/jarvis/json/executeCycle.json",function(data){
         $("#executeCycle").select2({
             data:data,
             width:'100%'
         });
     });
+    */
 
-    $.getJSON("/assets/jarvis/json/jobSource.json",function(data){
-        $("#jobSource").select2({
+    $.getJSON("/assets/jarvis/json/jobFlag.json",function(data){
+        $("#jobFlag").select2({
             data:data,
             width:'100%'
         });
@@ -39,6 +40,7 @@ $(function(){
 
 //查找
 function search(){
+    $("#content").bootstrapTable('destroy','');
     initData();
 }
 //重置参数
@@ -47,8 +49,8 @@ function reset(){
     $("#jobName").val("all").trigger("change");
     $("#jobType").val("all").trigger("change");
     $("#submitUser").val("all").trigger("change");
-    $("#executeCycle").val("all").trigger("change");
-    $("#jobSource").val("all").trigger("change");
+    //$("#executeCycle").val("all").trigger("change");
+    $("#jobFlag").val("all").trigger("change");
     $("#jobPriority").val("all").trigger("change");
 }
 
@@ -60,18 +62,27 @@ function getQueryPara(){
     var jobId=$("#jobId").val();
     var jobName=$("#jobName").val();
     var jobType=$("#jobType").val();
-    var jobSource=$("#jobSource").val();
+    var jobFlag=$("#jobFlag").val();
     var jobPriority=$("#jobPriority").val();
     var submitUser=$("#submitUser").val();
-    var executeCycle=$("#executeCycle").val();
+    //var executeCycle=$("#executeCycle").val();
+
+
+    jobId=jobId=='all'?'':jobId;
+    jobName=jobName=='all'?'':jobName;
+    jobType=jobType=='all'?'':jobType;
+    jobFlag=jobFlag=='all'?'':jobFlag;
+    jobPriority=jobPriority=='all'?'':jobPriority;
+    submitUser=submitUser=='all'?'':submitUser;
+    //executeCycle=executeCycle=='all'?'':executeCycle;
 
     queryPara["jobId"]=jobId;
     queryPara["jobName"]=jobName;
     queryPara["jobType"]=jobType;
-    queryPara["jobSource"]=jobSource;
-    queryPara["jobPriority"]=jobPriority;
+    queryPara["jobFlag"]=jobFlag;
+    queryPara["priority"]=jobPriority;
     queryPara["submitUser"]=submitUser;
-    queryPara["executeCycle"]=executeCycle;
+    //queryPara["executeCycle"]=executeCycle;
 
     return queryPara;
 }
@@ -108,7 +119,20 @@ function initData(){
 
 
 
+function operateFormatter(value, row, index) {
+    //console.log(row);
+    var jobId=row["jobId"];
+    //console.log(jobId);
+    var result= [
+        '<a class="edit" href="/jarvis/job/addOrEdit?jobId='+jobId+'" title="编辑任务信息" target="_blank">',
+        '<i class="glyphicon glyphicon-edit"></i>',
+        '</a>  '
+    ].join('');
 
+    //console.log(result);
+
+    return result;
+}
 
 
 
@@ -147,7 +171,7 @@ var columns=[{
     title: '提交人',
     switchable:true
 }, {
-    field: 'priority',
+    field: 'jobPriority',
     title: '优先级',
     switchable:true
 }, {
@@ -161,22 +185,29 @@ var columns=[{
     visible:false
 }, {
     field: 'rejectAttempts',
-    title: '任务被Worker拒绝时的重试次数',
+    title: '被Worker拒绝时重试次数',
     switchable:true,
     visible:false
 }, {
     field: 'rejectInterval',
-    title: '任务被Worker拒绝时重试的间隔(秒)',
+    title: '被Worker拒绝时重试间隔(秒)',
     switchable:true,
     visible:false
 }, {
     field: 'failedAttempts',
-    title: '任务运行失败时的重试次数',
+    title: '运行失败时重试次数',
     switchable:true,
     visible:false
 }, {
     field: 'failedInterval',
-    title: '任务运行失败时重试的间隔(秒)',
+    title: '运行失败时重试间隔(秒)',
     switchable:true,
     visible:false
+}, {
+    field: 'operation',
+    title: '操作',
+    switchable:true,
+    formatter: operateFormatter
 }];
+
+

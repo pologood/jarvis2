@@ -30,7 +30,7 @@
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">任务ID</span>
                         <select id="jobId" >
-                            <option value="">全部</option>
+                            <option value="all">全部</option>
                             <c:forEach items="${jobIds}" var="jobId" varStatus="status">
                                 <option value="${jobId}">${jobId}</option>
                             </c:forEach>
@@ -41,7 +41,7 @@
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">任务名称</span>
                         <select id="jobName"  >
-                            <option value="">全部</option>
+                            <option value="all">全部</option>
                             <c:forEach items="${jobNames}" var="jobName" varStatus="status">
                                 <option value="${jobName}">${jobName}</option>
                             </c:forEach>
@@ -59,7 +59,7 @@
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">发布者</span>
                         <select id="submitUser" >
-                            <option value="">全部</option>
+                            <option value="all">全部</option>
                             <c:forEach items="${submitUsers}" var="submitUser" varStatus="status">
                                 <option value="${submitUser}">${submitUser}</option>
                             </c:forEach>
@@ -69,16 +69,19 @@
             </div>
 
             <div class="row top-buffer">
+                <!--
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">执行周期</span>
                         <select id="executeCycle" ></select>
                     </div>
                 </div>
+                -->
+
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">来源</span>
-                        <select id="jobSource" ></select>
+                        <span class="input-group-addon" style="width:35%">状态</span>
+                        <select id="jobFlag" ></select>
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -88,9 +91,9 @@
                     </div>
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-md-3 pull-right">
                     <div class="row">
-                        <div class="col-md-6 col-md-offset-6">
+                        <div class="col-md-6 col-lg-offset-6">
                             <div class="input-group">
                                 <button type="button" class="btn btn-primary" onclick="search()">查询</button>
                                 <button type="button" class="btn btn-primary" onclick="reset()" style="margin-left: 3px">重置</button>
@@ -108,7 +111,6 @@
     <div class="row top-buffer">
         <div class="col-md-12">
             <div id="add">
-                <a class="btn btn-primary" href="/jarvis/job/trash" target="_blank">回收站</a>
                 <a class="btn btn-primary" href="/jarvis/job/addOrEdit" target="_blank">新增任务</a>
             </div>
             <table id="content" >

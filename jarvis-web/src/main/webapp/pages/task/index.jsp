@@ -40,14 +40,15 @@
                 </div>
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">用时</span>
-                        <select id="useTime" ></select>
+                        <span class="input-group-addon" style="width:35%">执行开始日期>=</span>
+                        <input id="executeStartTime"  class="form-control" />
                     </div>
                 </div>
+
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">发布者</span>
-                        <select id="submitUser" ></select>
+                        <span class="input-group-addon" style="width:35%">执行结束日期<=</span>
+                        <input id="executeEndTime"  class="form-control" />
                     </div>
                 </div>
             </div>
@@ -56,13 +57,23 @@
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">任务ID</span>
-                        <select id="jobId" ></select>
+                        <select id="jobId" >
+                            <option value="all">全部</option>
+                            <c:forEach items="${jobIds}" var="jobId" varStatus="status">
+                                <option value="${jobId}">${jobId}</option>
+                            </c:forEach>
+                        </select>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">任务名称</span>
-                        <select id="jobName" ></select>
+                        <select id="jobName" >
+                            <option value="all">全部</option>
+                            <c:forEach items="${jobNames}" var="jobName" varStatus="status">
+                                <option value="${jobName}">${jobName}</option>
+                            </c:forEach>
+                        </select>
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -73,8 +84,13 @@
                 </div>
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">来源</span>
-                        <select id="jobSpurce" ></select>
+                        <span class="input-group-addon" style="width:35%">发布者</span>
+                        <select id="submitUser" >
+                            <option value="all">全部</option>
+                            <c:forEach items="${submitUsers}" var="submitUser" varStatus="status">
+                                <option value="${submitUser}">${submitUser}</option>
+                            </c:forEach>
+                        </select>
                     </div>
                 </div>
 
@@ -82,18 +98,15 @@
 
             <div class="row top-buffer">
 
-                <div class="col-md-3">
+                <div class="col-md-6">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">状态</span>
-                        <div class="form-control">
-                            <input type="radio" name="jobStatus" />成功
-                            <input type="radio" name="jobStatus" />失败
-                            <input type="radio" name="jobStatus" />执行中
+                        <span class="input-group-addon" style="width:16.5%">状态</span>
+                        <div class="form-control" id="taskStatus">
                         </div>
                     </div>
                 </div>
 
-                <div class="col-md-3 col-md-offset-6">
+                <div class="col-md-3 col-md-offset-3">
                     <div class="row">
                         <div class="col-md-6 col-md-offset-6">
                             <div class="input-group pull-right">
