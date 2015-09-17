@@ -28,22 +28,22 @@ public class LogRoutingActor extends UntypedActor {
 
     public LogRoutingActor(int size) {
         this.size = size;
-        for (int i = 0; i < size; i++) {
-            writeActors.add(getContext().actorOf(LogWriteActor.props()));
-        }
+//        for (int i = 0; i < size; i++) {
+//            writeActors.add(getContext().actorOf(LogWriteActor.props()));
+//        }
     }
 
     @Override
     public void onReceive(Object obj) throws Exception {
-        if (obj instanceof WorkerWriteLogRequest) {
-            WorkerWriteLogRequest msg = (WorkerWriteLogRequest) obj;
-            writeActors.get(msg.getFullId().hashCode() % size).tell(msg, getSelf());
-        } else if (obj instanceof RestServerReadLogRequest) {
-            ActorRef ref = getContext().actorOf(LogReadActor.props());
-            ref.forward(obj, getContext());
-        } else {
-            unhandled(obj);
-        }
+//        if (obj instanceof WorkerWriteLogRequest) {
+//            WorkerWriteLogRequest msg = (WorkerWriteLogRequest) obj;
+//            writeActors.get(msg.getFullId().hashCode() % size).tell(msg, getSelf());
+//        } else if (obj instanceof RestServerReadLogRequest) {
+//            ActorRef ref = getContext().actorOf(LogReadActor.props());
+//            ref.forward(obj, getContext());
+//        } else {
+//            unhandled(obj);
+//        }
     }
 
 }
