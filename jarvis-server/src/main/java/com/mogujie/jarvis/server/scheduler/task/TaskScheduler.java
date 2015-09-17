@@ -175,13 +175,11 @@ public class TaskScheduler implements Scheduler {
         // 1. store status to DB
         if (taskService != null) {
             if (status.equals(JobStatus.RUNNING)) {
-                // TODO 把回传的task执行内容写到DB？
                 taskService.updateStatusWithStart(taskId, status);
             } else if (status.getValue() >= JobStatus.SUCCESS.getValue() &&
                     status.getValue() <= JobStatus.KILLED.getValue()) {
                 taskService.updateStatusWithEnd(taskId, status);
             }
-            taskService.updateStatusWithEnd(taskId, status);
         }
         // 2. remove from readyTable
         DAGTask dagTask = readyTable.get(taskId);

@@ -10,7 +10,10 @@ package com.mogujie.jarvis.core.common.util;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+
+import com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry;
 
 /**
  * @author guangming
@@ -47,5 +50,24 @@ public class ParametersMapUtil {
             parameterMap.put(key, value);
         }
         return parameterMap;
+    }
+
+    public static String convert2String(List<MapEntry> entryList) {
+        String parameters = "";
+        Iterator<MapEntry> it = entryList.iterator();
+        if (it.hasNext()) {
+            MapEntry entry = it.next();
+            String key = entry.getKey();
+            String value = entry.getValue();
+            parameters = key + "=" + value;
+        }
+        while (it.hasNext()) {
+            MapEntry entry = it.next();
+            String key = entry.getKey();
+            String value = entry.getValue();
+            parameters = parameters + "," + key + "=" + value;
+        }
+
+        return parameters;
     }
 }
