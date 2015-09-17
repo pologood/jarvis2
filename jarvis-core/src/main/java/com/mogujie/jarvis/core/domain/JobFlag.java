@@ -13,10 +13,10 @@ package com.mogujie.jarvis.core.domain;
  */
 public enum JobFlag {
 
-    ENABLE(1), //启用（有效）
-    DISABLE(2), //禁用（失效）
-    DELETED(3),   //垃圾箱
-    EXPIRED(4); //过期
+    ENABLE(1),      //启用（有效）
+    DISABLE(2),     //禁用（失效）
+    EXPIRED(3),     //过期
+    DELETED(4);     //删除（垃圾箱）
 
     private int value;
 
