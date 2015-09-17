@@ -10,4 +10,5 @@ message RestServerModifyWorkerStatusRequest {
 
 message ServerModifyWorkerStatusResponse {
     required bool success = 1;
+    optional string message = 2 [default = ""];
 }

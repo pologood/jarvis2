@@ -19,25 +19,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.eventbus.AllowConcurrentEvents;
 import com.google.common.eventbus.Subscribe;
 import com.mogujie.jarvis.core.common.util.ConfigUtils;
+import com.mogujie.jarvis.core.domain.JobFlag;
+import com.mogujie.jarvis.core.domain.Pair;
 import com.mogujie.jarvis.dao.JobMapper;
 import com.mogujie.jarvis.dto.Job;
-import com.mogujie.jarvis.server.scheduler.InitEvent;
 import com.mogujie.jarvis.server.scheduler.JobScheduleType;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
 import com.mogujie.jarvis.server.scheduler.SchedulerUtil;
-import com.mogujie.jarvis.server.scheduler.StopEvent;
-import com.mogujie.jarvis.server.scheduler.dag.event.AddJobEvent;
-import com.mogujie.jarvis.server.scheduler.dag.event.FailedEvent;
-import com.mogujie.jarvis.server.scheduler.dag.event.ModifyJobEvent;
-import com.mogujie.jarvis.server.scheduler.dag.event.ModifyJobEvent.MODIFY_TYPE;
-import com.mogujie.jarvis.server.scheduler.dag.event.RemoveJobEvent;
-import com.mogujie.jarvis.server.scheduler.dag.event.SuccessEvent;
-import com.mogujie.jarvis.server.scheduler.dag.event.TimeReadyEvent;
 import com.mogujie.jarvis.server.scheduler.dag.job.DAGJob;
 import com.mogujie.jarvis.server.scheduler.dag.job.DAGJobFactory;
 import com.mogujie.jarvis.server.scheduler.dag.status.AbstractDependStatus;
+import com.mogujie.jarvis.server.scheduler.event.AddJobEvent;
+import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
+import com.mogujie.jarvis.server.scheduler.event.InitEvent;
+import com.mogujie.jarvis.server.scheduler.event.ModifyJobEvent;
+import com.mogujie.jarvis.server.scheduler.event.ModifyJobEvent.MODIFY_TYPE;
+import com.mogujie.jarvis.server.scheduler.event.ModifyJobFlagEvent;
+import com.mogujie.jarvis.server.scheduler.event.StartEvent;
+import com.mogujie.jarvis.server.scheduler.event.StopEvent;
+import com.mogujie.jarvis.server.scheduler.event.SuccessEvent;
+import com.mogujie.jarvis.server.scheduler.event.TimeReadyEvent;
 import com.mogujie.jarvis.server.scheduler.task.TaskScheduler;
 import com.mogujie.jarvis.server.service.CrontabService;
 import com.mogujie.jarvis.server.service.JobDependService;
@@ -73,7 +77,6 @@ public class DAGScheduler implements Scheduler {
     private TaskScheduler taskScheduler = TaskScheduler.getInstance();
     private Configuration conf = ConfigUtils.getServerConfig();
     private Map<Long, DAGJob> waitingTable = new ConcurrentHashMap<Long, DAGJob>();
-    private static int PRIORITY_DEFAULT = 3;
 
     @Override
     public void handleInitEvent(InitEvent event) {
@@ -96,8 +99,12 @@ public class DAGScheduler implements Scheduler {
     }
 
     @Override
+    public void handleStartEvent(StartEvent event) {
+
+    }
+
+    @Override
     public void handleStopEvent(StopEvent event) {
-        // TODO Auto-generated method stub
 
     }
 
@@ -142,18 +149,32 @@ public class DAGScheduler implements Scheduler {
     }
 
     /**
-     * remove job
+     * modify job flag
      *
      * @param long jobId
      */
     @Subscribe
-    public void handleRemoveJobEvent(RemoveJobEvent event) {
+    public void handleModifyJobFlagEvent(ModifyJobFlagEvent event) {
         long jobId = event.getJobId();
-        removeJob(jobId);
+        JobFlag jobFlag = event.getJobFlag();
         DAGJob dagJob = waitingTable.get(jobId);
+        List<DAGJob> children = new ArrayList<DAGJob>();
         if (dagJob != null) {
+            children.addAll(dagJob.getChildren());
+        }
+
+        if (jobFlag.equals(JobFlag.DELETED)) {
+            if (dagJob != null) {
+                removeJob(dagJob);
+            }
+        } else {
+            if (dagJob != null) {
+                dagJob.setJobFlag(jobFlag);
+            }
+        }
+
+        if (children != null) {
             // submit job if pass dependency check
-            List<DAGJob> children = dagJob.getChildren();
             for (DAGJob child : children) {
                submitJobWithCheck(child);
             }
@@ -161,8 +182,7 @@ public class DAGScheduler implements Scheduler {
     }
 
     @VisibleForTesting
-    protected void removeJob(long jobId) {
-        DAGJob dagJob = waitingTable.get(jobId);
+    protected void removeJob(DAGJob dagJob) {
         if (dagJob != null) {
             // 1. remove job from waiting table
             waitingTable.remove(dagJob);
@@ -225,8 +245,8 @@ public class DAGScheduler implements Scheduler {
         DAGJob parent = waitingTable.get(parentId);
         DAGJob child = waitingTable.get(childId);
         if (parent != null && child != null) {
-            parent.removeChild(childId);
-            child.removeParent(parentId);
+            parent.removeChild(child);
+            child.removeParent(parent);
         }
     }
 
@@ -234,42 +254,46 @@ public class DAGScheduler implements Scheduler {
      * get dependent parent
      *
      * @param long jobId
-     * @return parent jobId list
+     * @return parent job pair<jobid, jobFlag> list
      */
-    public List<Long> getParents(long jobId) {
-        List<Long> parentIds = new ArrayList<Long>();
+    public List<Pair<Long, JobFlag>> getParents(long jobId) {
+        List<Pair<Long, JobFlag>> parentJobPairs = new ArrayList<Pair<Long, JobFlag>>();
         DAGJob dagJob = waitingTable.get(jobId);
         if (dagJob != null) {
             List<DAGJob> parentJobs = dagJob.getParents();
             if (parentJobs != null) {
                 for (DAGJob p : parentJobs) {
-                    parentIds.add(p.getJobId());
+                    Pair<Long, JobFlag> jobPair = new Pair<Long, JobFlag>(
+                            p.getJobId(), p.getJobFlag());
+                    parentJobPairs.add(jobPair);
                 }
             }
         }
 
-        return parentIds;
+        return parentJobPairs;
     }
 
     /**
      * get subsequent child
      *
      * @param long jobId
-     * @return children jobId list
+     * @return children job pair<jobid, jobFlag> list
      */
-    public List<Long> getChildren(long jobId) {
-        List<Long> childIds = new ArrayList<Long>();
+    public List<Pair<Long, JobFlag>> getChildren(long jobId) {
+        List<Pair<Long, JobFlag>> childJobPairs = new ArrayList<Pair<Long, JobFlag>>();
         DAGJob dagJob = waitingTable.get(jobId);
         if (dagJob != null) {
             List<DAGJob> childJobs = dagJob.getChildren();
             if (childJobs != null) {
                 for (DAGJob c : childJobs) {
-                    childIds.add(c.getJobId());
+                    Pair<Long, JobFlag> jobPair = new Pair<Long, JobFlag>(
+                            c.getJobId(), c.getJobFlag());
+                    childJobPairs.add(jobPair);
                 }
             }
         }
 
-        return childIds;
+        return childJobPairs;
     }
 
     @Subscribe
@@ -288,6 +312,7 @@ public class DAGScheduler implements Scheduler {
     }
 
     @Subscribe
+    @AllowConcurrentEvents
     public void handleSuccessEvent(SuccessEvent e) throws DAGScheduleException {
         long jobId = e.getJobId();
         long taskId = e.getTaskId();
@@ -306,6 +331,7 @@ public class DAGScheduler implements Scheduler {
     }
 
     @Subscribe
+    @AllowConcurrentEvents
     public void handleFailedEvent(FailedEvent e) throws DAGScheduleException {
         long jobId = e.getJobId();
         long taskId = e.getTaskId();
@@ -328,12 +354,7 @@ public class DAGScheduler implements Scheduler {
      */
     private void submitJobWithCheck(DAGJob dagJob) {
         if (dagJob.dependCheck()) {
-            int priority = PRIORITY_DEFAULT;
-            if (jobMapper != null) {
-                Job job = jobMapper.selectByPrimaryKey(dagJob.getJobId());
-                priority = job.getPriority();
-            }
-            taskScheduler.submitJob(dagJob.getJobId(), priority);
+            taskScheduler.submitJob(dagJob.getJobId());
             dagJob.resetDependStatus();
         }
     }

@@ -8,4 +8,5 @@ message RestServerDeleteJobRequest {
 
 message ServerDeleteJobResponse {
     required bool success = 1;
+    optional string message = 2 [default = ""];
 }

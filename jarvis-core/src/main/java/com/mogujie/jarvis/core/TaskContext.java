@@ -1,0 +1,68 @@
+/*
+ * 蘑菇街 Inc.
+ * Copyright (c) 2010-2015 All Rights Reserved.
+ *
+ * Author: wuya
+ * Create Date: 2015年8月31日 下午2:54:51
+ */
+
+package com.mogujie.jarvis.core;
+
+/**
+ * @author wuya
+ *
+ */
+public class TaskContext {
+
+    private Task task;
+    private AbstractLogCollector logCollector;
+    private ProgressReporter progressReporter;
+
+    private TaskContext() {
+    }
+
+    public static TaskContextBuilder newBuilder() {
+        return new TaskContextBuilder();
+    }
+
+    public Task getTask() {
+        return task;
+    }
+
+    public AbstractLogCollector getLogCollector() {
+        return logCollector;
+    }
+
+    public ProgressReporter getProgressReporter() {
+        return progressReporter;
+    }
+
+    public static class TaskContextBuilder {
+
+        private TaskContext taskContext;
+
+        private TaskContextBuilder() {
+        }
+
+        public TaskContextBuilder setTask(Task task) {
+            this.taskContext.task = task;
+            return this;
+        }
+
+        public TaskContextBuilder setLogCollector(AbstractLogCollector logCollector) {
+            this.taskContext.logCollector = logCollector;
+            return this;
+        }
+
+        public TaskContextBuilder setProgressReporter(ProgressReporter progressReporter) {
+            this.taskContext.progressReporter = progressReporter;
+            return this;
+        }
+
+        public TaskContext build() {
+            return this.taskContext;
+        }
+
+    }
+
+}

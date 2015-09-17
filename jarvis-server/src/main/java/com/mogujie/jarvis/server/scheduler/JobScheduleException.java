@@ -8,13 +8,13 @@
 
 package com.mogujie.jarvis.server.scheduler;
 
-import com.mogujie.jarvis.core.exeception.JobException;
+import com.mogujie.jarvis.core.exeception.TaskException;
 
 /**
  * @author guangming
  *
  */
-public class JobScheduleException extends JobException {
+public class JobScheduleException extends TaskException {
 
     private static final long serialVersionUID = 1L;
 

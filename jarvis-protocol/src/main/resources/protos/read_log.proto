@@ -13,4 +13,6 @@ message LogServerReadLogResponse {
     required bool is_end = 1;
     required string log = 2;
     required int64 offset = 3;
+    required bool success = 4;
+    optional string message = 5 [default = ""];
 }

@@ -9,4 +9,5 @@ message WorkerRegistionRequest {
 
 message ServerRegistionResponse {
     required bool success = 1;
+    optional string message = 2 [default = ""];
 }

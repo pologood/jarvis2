@@ -14,6 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.dto.JobDependStatus;
+import com.mogujie.jarvis.dto.JobDependStatusKey;
 import com.mogujie.jarvis.server.service.DependStatusService;
 
 /**
@@ -49,5 +50,19 @@ public class MysqlDependStatusUtil {
         jobDependStatus.setPreTaskStatus(jobStatus.getValue());
 
         return jobDependStatus;
+    }
+
+    public static void modifyDependStatus(long myJobId, long preJobId, long preTaskId,
+            boolean status, DependStatusService statusService) {
+        JobDependStatus record = createDependStatus(myJobId, preJobId, preTaskId, status);
+        JobDependStatusKey key = new JobDependStatusKey();
+        key.setJobId(myJobId);
+        key.setPreJobId(preJobId);
+        key.setPreTaskId(preTaskId);
+        if (statusService.getByKey(key) != null) {
+            statusService.update(record);
+        } else {
+            statusService.insert(record);
+        }
     }
 }

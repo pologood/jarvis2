@@ -29,7 +29,7 @@ public class HeartBeatThread extends Thread {
 
   @Override
   public void run() {
-    int jobNum = JobPool.getInstance().size();
+    int jobNum = TaskPool.getInstance().size();
     HeartBeatRequest request = HeartBeatRequest.newBuilder().setJobNum(jobNum).build();
     heartBeatActor.tell(request, sender);
   }

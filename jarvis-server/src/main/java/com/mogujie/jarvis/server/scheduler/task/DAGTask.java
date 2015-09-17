@@ -19,6 +19,11 @@ public class DAGTask {
     private int maxFailedAttempts;
     private int failedInterval;
     private int priority;
+    private final static int DEFAULT_PRIORITY = 3;
+
+    public DAGTask(long jobId, long taskId) {
+        this(jobId, taskId, DEFAULT_PRIORITY);
+    }
 
     public DAGTask(long jobId, long taskId, int priority) {
         this(jobId, taskId, 1, priority);
@@ -49,7 +54,7 @@ public class DAGTask {
         this.taskId = taskId;
     }
 
-    public int getAttempId() {
+    public int getAttemptId() {
         return attemptId;
     }
 
@@ -79,5 +84,15 @@ public class DAGTask {
 
     public void setPriority(int priority) {
         this.priority = priority;
+    }
+
+    @Override
+    public String toString() {
+        return "[jobId=" + jobId +
+                ", taskId=" + taskId +
+                ", attemptId=" + attemptId +
+                ", priority=" + priority +
+                ", maxFailedAttempts=" + maxFailedAttempts +
+                ", failedInterval=" + failedInterval + "ms]";
     }
 }

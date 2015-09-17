@@ -13,8 +13,6 @@ import java.util.Map;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.mogujie.jarvis.dto.JobDependStatus;
-import com.mogujie.jarvis.dto.JobDependStatusKey;
 import com.mogujie.jarvis.server.service.DependStatusService;
 
 /**
@@ -33,7 +31,7 @@ public class MysqlDependStatus extends AbstractDependStatus {
 
     @Override
     public void removeDependency(long jobId) {
-        statusService.delDependencyByJobId(getMyJobId(), jobId);
+        statusService.deleteDependencyByPreJobId(getMyJobId(), jobId);
     }
 
     @Override
@@ -47,17 +45,8 @@ public class MysqlDependStatus extends AbstractDependStatus {
 
     @Override
     protected void modifyDependStatus(long jobId, long taskId, boolean status) {
-        JobDependStatus record = MysqlDependStatusUtil.createDependStatus(
-                getMyJobId(), jobId, taskId, status);
-        JobDependStatusKey key = new JobDependStatusKey();
-        key.setJobId(getMyJobId());
-        key.setPreJobId(jobId);
-        key.setPreTaskId(taskId);
-        if (statusService.getByKey(key) != null) {
-            statusService.update(record);
-        } else {
-            statusService.insert(record);
-        }
+        MysqlDependStatusUtil.modifyDependStatus(getMyJobId(), jobId, taskId,
+                status, statusService);
     }
 
     @Override

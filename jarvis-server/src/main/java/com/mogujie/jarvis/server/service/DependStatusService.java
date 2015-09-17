@@ -38,7 +38,7 @@ public class DependStatusService {
         dependStatusMapper.updateByPrimaryKey(record);
     }
 
-    public void delDependencyByJobId(Long myJobId, long preJobId) {
+    public void deleteDependencyByPreJobId(Long myJobId, long preJobId) {
         // TODO
     }
 

@@ -19,7 +19,7 @@ public enum JobStatus {
     RUNNING(3), //执行中
     SUCCESS(4), //成功
     FAILED(5),  //失败
-    KILLED(4);  //killed
+    KILLED(6);  //killed
 
     private int value;
 

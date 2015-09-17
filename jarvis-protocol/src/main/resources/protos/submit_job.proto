@@ -28,15 +28,16 @@ message RestServerSubmitJobRequest {
 message ServerSubmitJobResponse {
     required int64 job_id = 1;
     required bool success = 2;
+    optional string message = 3 [default = ""];
 }
 
 
 message ServerSubmitTaskRequest {
     required string full_id = 1;
-    required string job_name = 2;
+    required string task_name = 2;
     required string app_name = 3;
     required string user = 4;
-    required string job_type = 5;
+    required string task_type = 5;
     required string command = 6;
     optional int32 priority = 7 [default = 1];
     repeated MapEntry parameters = 8;
@@ -45,5 +46,6 @@ message ServerSubmitTaskRequest {
 
 message WorkerSubmitTaskResponse {
     required bool accept = 1;
-    optional string message = 2 [default = ""];
+    required bool success = 2;
+    optional string message = 3 [default = ""];
 }

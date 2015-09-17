@@ -8,4 +8,6 @@ message RestServerQueryTaskRequest {
 
 message ServerQueryTaskResponse {
     repeated int64 task_id = 1;
+    required bool success = 2;
+    optional string message = 3 [default = ""];
 }

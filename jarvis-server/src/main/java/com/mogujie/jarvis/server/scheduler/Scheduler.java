@@ -10,6 +10,9 @@ package com.mogujie.jarvis.server.scheduler;
 
 import com.google.common.eventbus.Subscribe;
 import com.mogujie.jarvis.server.observer.Observer;
+import com.mogujie.jarvis.server.scheduler.event.InitEvent;
+import com.mogujie.jarvis.server.scheduler.event.StartEvent;
+import com.mogujie.jarvis.server.scheduler.event.StopEvent;
 
 /**
  * @author guangming
@@ -19,6 +22,9 @@ public interface Scheduler extends Observer {
 
     @Subscribe
     public void handleInitEvent(InitEvent event);
+
+    @Subscribe
+    public void handleStartEvent(StartEvent event);
 
     @Subscribe
     public void handleStopEvent(StopEvent event);

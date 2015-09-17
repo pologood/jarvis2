@@ -11,4 +11,5 @@ message WorkerWriteLogRequest {
 
 message LogServerWriteLogResponse {
     required bool success = 1;
+    optional string message = 2 [default = ""];
 }
