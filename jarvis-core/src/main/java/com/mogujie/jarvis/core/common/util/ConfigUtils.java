@@ -54,6 +54,21 @@ public class ConfigUtils {
         return serverConfig;
     }
 
+    public synchronized static Configuration getLogstorageConfig() {
+        if (serverConfig == null) {
+            try {
+                serverConfig = new PropertiesConfiguration("logstorage.properties");
+                serverConfig.setReloadingStrategy(new FileChangedReloadingStrategy());
+            } catch (ConfigurationException e) {
+                Throwables.propagate(e);
+            }
+        }
+
+        return serverConfig;
+    }
+
+
+
     public static Config getAkkaConfig() {
         try {
             String ipv4 = Inet4Address.getLocalHost().getHostAddress();

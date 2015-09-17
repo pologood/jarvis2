@@ -129,11 +129,18 @@ public class JobSchedulerActor extends UntypedActor implements Observable {
             Job job = SchedulerUtil.convert2Job(msg);
             jobMapper.insert(job);
             long jobId = job.getJobId();
+            // 如果是新增任务（不是手动触发），则originId=jobId
+            if (job.getOriginJobId() == null) {
+                job.setOriginJobId(jobId);
+                jobMapper.updateByPrimaryKey(job);
+            }
             Set<Long> needDependencies = Sets.newHashSet();
             if (msg.getDependencyJobidsList() != null) {
                 needDependencies.addAll(msg.getDependencyJobidsList());
             }
-            // 2. insert jobDepend to DB
+            // 2. insert cron to DB
+            cronService.insert(jobId, msg.getCronExpression());
+            // 3. insert jobDepend to DB
             for (long d : needDependencies) {
                 JobDepend jobDepend = new JobDepend();
                 jobDepend.setJobId(jobId);
@@ -146,11 +153,11 @@ public class JobSchedulerActor extends UntypedActor implements Observable {
                 jobDepend.setUpdateUser(msg.getUser());
                 jobDependMapper.insert(jobDepend);
             }
-            // 3. get jobScheduleType
+            // 4. get jobScheduleType
             boolean hasCron = (msg.getCronExpression() != null);
             boolean hasDepend = (!needDependencies.isEmpty());
             JobScheduleType type = SchedulerUtil.getJobScheduleType(hasCron, hasDepend);
-            // 4. get JobDependencyStrategy
+            // 5. get JobDependencyStrategy
             JobDependencyStrategy strategy = JobDependencyStrategy.ALL;
             event = new AddJobEvent(jobId, needDependencies, type, strategy);
         } else if (obj instanceof RestServerModifyJobRequest) {
@@ -159,7 +166,9 @@ public class JobSchedulerActor extends UntypedActor implements Observable {
             // 1. update job to DB
             Job job = SchedulerUtil.convert2Job(msg);
             jobMapper.updateByPrimaryKey(job);
-            // 2. update jobDepend to DB
+            // 2. update cron to DB
+            cronService.update(jobId, msg.getCronExpression());
+            // 3. update jobDepend to DB
             Set<Long> needDependencies = Sets.newHashSet();
             if (msg.getDependencyJobidsList() != null) {
                 needDependencies.addAll(msg.getDependencyJobidsList());

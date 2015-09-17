@@ -99,7 +99,7 @@
 		<module>jarvis-protocol</module>
 		<module>jarvis-jobs</module>
 		<module>jarvis-rest</module>
-		<module>jarvis-logserver</module>
+		<module>jarvis-logstorage</module>
 		<module>jarvis-web</module>
 	</modules>
 </project>
