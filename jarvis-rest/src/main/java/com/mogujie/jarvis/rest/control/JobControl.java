@@ -7,26 +7,27 @@
  */
 package com.mogujie.jarvis.rest.control;
 
+import akka.actor.ActorSystem;
+import com.mogujie.jarvis.protocol.MapEntryProtos;
+import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitJobRequest;
+import com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitJobResponse;
+import com.mogujie.jarvis.rest.RestResult;
+import com.mogujie.jarvis.rest.vo.JobVo;
+
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-
-
-import com.mogujie.jarvis.core.domain.WorkerStatus;
-import com.mogujie.jarvis.protocol.ModifyWorkerStatusProtos.*;
-
-import com.mogujie.jarvis.rest.RestResult;
-
-import akka.actor.ActorSystem;
+import java.util.HashMap;
+import java.util.List;
 
 
 /**
  * @author muming
  *
  */
-@Path("rest")
+@Path("job")
 public class JobControl extends AbstractControl {
 
     public JobControl(ActorSystem system, String serverAkkaPath, String workerAkkaPath) {
@@ -34,33 +35,71 @@ public class JobControl extends AbstractControl {
     }
 
 
+    /**
+     * 提交job任务
+     *
+     * @throws Exception
+     */
     @POST
-    @Path("onlineWorker")
+    @Path("submitJob")
     @Produces(MediaType.APPLICATION_JSON)
     public RestResult onlineClient(@FormParam("appKey") String appKey,
                                    @FormParam("appName") String appName,
-                                   @FormParam("ip") String ip,
-                                   @FormParam("port") int port,
-                                   @FormParam("status") int status) throws Exception
+                                   @FormParam("user") String user,
+                                   @FormParam("jobName") String jobName,
+                                   @FormParam("jobType") String jobType,
+                                   @FormParam("dependJobIds") String dependJobIds,
+                                   @FormParam("cronExp") String cronExp,
+                                   @FormParam("jobContent") String jobContent,
+                                   @FormParam("groupId") int groupId,
+                                   @FormParam("priority") int priority,
+                                   @FormParam("startTime") String startTime,
+                                   @FormParam("endTime") String endTime,
+                                   @FormParam("rejectRetries") int rejectRetries,
+                                   @FormParam("rejectInterval") int rejectInterval,
+                                   @FormParam("failedRetries") int failedRetries,
+                                   @FormParam("failedInterval") int failedInterval,
+                                   @FormParam("parameters") String parameters) throws Exception
     {
 
-        WorkerStatus ws = (status == 1 ) ? WorkerStatus.ONLINE : WorkerStatus.OFFLINE;
+        //todo , 转换为 list
+        List<Long> dependJobIdsList= null;
 
-        RestServerModifyWorkerStatusRequest request = RestServerModifyWorkerStatusRequest.newBuilder()
-                .setIp(ip)
-                .setPort(port)
-                .setStatus(ws.getValue())
+        //todo parameters 从json转化为 list
+        List<MapEntryProtos.MapEntry> paraList = null;
+
+        RestServerSubmitJobRequest request = RestServerSubmitJobRequest.newBuilder()
+                .setAppName(appName)
+                .setJobName(jobName)
+                .setCronExpression(cronExp)
+                .addAllDependencyJobids(dependJobIdsList)
+                .setUser(user)
+                .setJobType(jobType)
+                .setCommand(jobContent)
+                .setGroupId(groupId)
+                .setPriority(priority)
+                .setFailedRetries(failedRetries)
+                .setFailedInterval(failedInterval)
+                .setRejectRetries(rejectRetries)
+                .setRejectInterval(rejectInterval)
+                .setStartTime(startTime)
+                .setEndTime(endTime)
+                .addAllParameters(paraList)
                 .build();
 
-        ServerModifyWorkerStatusResponse response = (ServerModifyWorkerStatusResponse) callServerActor(request);
+        ServerSubmitJobResponse response = (ServerSubmitJobResponse) callActor(serverActor, request);
 
         if(response.getSuccess()){
-            return successResult();
+
+            JobVo vo = new JobVo();
+            vo.setJobId(response.getJobId());
+            return successResult(vo);
         }else{
-            return errorResult("msg");
+            return errorResult(response.getMessage());
         }
 
     }
+
 
 
 

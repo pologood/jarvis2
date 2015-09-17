@@ -26,7 +26,7 @@ import akka.actor.ActorSystem;
  * @author muming
  *
  */
-@Path("sys")
+@Path("system")
 public class SystemControl extends AbstractControl {
 
     public SystemControl(ActorSystem system, String serverAkkaPath, String workerAkkaPath) {
@@ -56,7 +56,7 @@ public class SystemControl extends AbstractControl {
         if(response.getSuccess()){
             return successResult();
         }else{
-            return errorResult("msg");
+            return errorResult(response.getMessage());
         }
 
     }
