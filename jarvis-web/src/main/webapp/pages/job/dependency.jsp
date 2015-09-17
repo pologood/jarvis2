@@ -16,8 +16,8 @@
             <nav>
                 <ol class="cd-breadcrumb triangle">
                     <li><a href="/jarvis/">Home</a></li>
-                    <li ><a href="/jarvis/job">作业管理</a></li>
-                    <li class="current"><em>作业依赖</em></li>
+                    <li ><a href="/jarvis/job">任务管理</a></li>
+                    <li class="current"><em>任务依赖</em></li>
                 </ol>
             </nav>
         </div>
@@ -29,19 +29,19 @@
             <div class="row">
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">作业ID</span>
+                        <span class="input-group-addon" style="width:35%">任务ID</span>
                         <select id="jobId" class="form-control" ></select>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">作业名称</span>
+                        <span class="input-group-addon" style="width:35%">任务名称</span>
                         <select id="jobName" class="form-control" ></select>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">作业类型</span>
+                        <span class="input-group-addon" style="width:35%">任务类型</span>
                         <select id="jobType" class="form-control"></select>
                     </div>
                 </div>
@@ -93,7 +93,7 @@
     <div class="row top-buffer">
         <div class="col-md-12">
             <div id="add">
-                <a class="btn btn-primary" href="#" target="_blank">新增作业</a>
+                <a class="btn btn-primary" href="#" target="_blank">新增任务</a>
             </div>
             <table id="content" >
 

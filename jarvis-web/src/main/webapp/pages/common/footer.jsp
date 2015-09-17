@@ -22,6 +22,9 @@
     <a href="/logout" class="checkout-btn">Logout</a>
 </div>
 
+<a href="mailto:hejian@mogujie.com" class="btn btn-default btn-lg" style="width:100%;border-radius: 0px;">
+    <span class="glyphicon glyphicon-envelope"></span>联系@和剑
+</a>
 
 <a href="javascript:void(0);" class="cd-top">Top</a>
 

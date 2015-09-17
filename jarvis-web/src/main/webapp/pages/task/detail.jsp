@@ -16,7 +16,7 @@
             <nav>
                 <ol class="cd-breadcrumb triangle">
                     <li><a href="/jarvis/">Home</a></li>
-                    <li><a href="/jarvis/log">执行流水</a></li>
+                    <li><a href="/jarvis/task">执行流水</a></li>
                     <li class="current"><em>执行详情</em></li>
                 </ol>
             </nav>

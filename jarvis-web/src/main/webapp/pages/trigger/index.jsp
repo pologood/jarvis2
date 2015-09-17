@@ -24,7 +24,56 @@
 
     <div class="row top-buffer">
         <div class="col-md-12">
-            index
+
+            <div class="row top-buffer">
+                <div class="col-md-4 col-md-offset-4">
+                    <div class="input-group" style="width:100%">
+                        <span class="input-group-addon" style="width:35%">选择脚本</span>
+                        <select id="content"  ></select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row top-buffer">
+                <div class="col-md-4 col-md-offset-4">
+                    <div class="input-group" style="width:100%">
+                        <span class="input-group-addon" style="width:35%">开始日期</span>
+                        <select id="jobStart" ></select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row top-buffer">
+                <div class="col-md-4 col-md-offset-4">
+                    <div class="input-group" style="width:100%">
+                        <span class="input-group-addon" style="width:35%">结束日期</span>
+                        <select id="jobEnd" ></select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row top-buffer">
+                <div class="col-md-4 col-md-offset-4">
+                    <div class="input-group" style="width:100%">
+                        <span class="input-group-addon" style="width:35%">重跑后续依赖任务</span>
+                        <input id="" />
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
+            <div class="row top-buffer">
+                <div class="col-md-4 col-md-offset-4 text-center">
+                    <button type="button" class="btn btn-primary">提交</button>
+                    <button type="button" class="btn btn-primary" onclick="reset()">重置</button>
+                </div>
+
+            </div>
+
         </div>
     </div>
 </div>

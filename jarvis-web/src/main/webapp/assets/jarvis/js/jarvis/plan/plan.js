@@ -1,5 +1,79 @@
 $(function(){
+    $('#taskDate').datetimepicker({
+        language:'zh-CN',
+        minView:'month',
+        format: 'yyyy-mm-dd',
+        autoclose:true
+    });
+    $('#dataDate').datetimepicker({
+        language:'zh-CN',
+        minView:'month',
+        format: 'yyyy-mm-dd',
+        autoclose:true
+    });
+    $('#executeDate').datetimepicker({
+        language:'zh-CN',
+        minView:'month',
+        format: 'yyyy-mm-dd',
+        autoclose:true
+    });
 
+    //初始化执行周期内容
+    $.getJSON("/assets/jarvis/json/executeCycle.json",function(data){
+        $("#executeCycle").select2({
+            data:data,
+            width:'100%'
+        });
+    });
+    //初始化作业类型内容
+    $.getJSON("/assets/jarvis/json/jobType.json",function(data){
+        $("#jobType").select2({
+            data:data,
+            width:'100%'
+        });
+    });
+
+    //初始化作业来源内容
+    $.getJSON("/assets/jarvis/json/jobSource.json",function(data){
+        $("#jobSource").select2({
+            data:data,
+            width:'100%'
+        });
+    });
+
+    //初始化任务类型内容
+    $.getJSON("/assets/jarvis/json/taskStatus.json",function(data){
+        $(data).each(function(index,content){
+            var value=content.id;
+            var text=content.text;
+            var input =$("<input type='checkbox' name='taskStatus'/>");
+            $(input).attr("value",value);
+
+            if(value=='all'){
+                $(input).click(function(){
+                    if(this.checked){
+                        $($("#taskStatus input")).each(function(){
+                            this.checked=true;
+                        });
+                    }
+                    else{
+                        $($("#taskStatus input")).each(function(){
+                            this.checked=false;
+                        });
+                    }
+                });
+            }
+
+            $("#taskStatus").append(input);
+            $("#taskStatus").append(text);
+            $("#taskStatus").append('  ');
+        });
+    });
+
+    //select采用select2 实现
+    $(".input-group select").select2({width:'100%'});
+
+    initData();
 });
 
 var columns=[{

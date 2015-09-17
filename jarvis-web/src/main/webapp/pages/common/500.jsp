@@ -35,8 +35,8 @@
             <span class="glyphicon glyphicon-home"></span>
             Take Me Home
           </a>
-          <a href="mailto:liangxiao@mogujie.com" class="btn btn-default btn-lg">
-            <span class="glyphicon glyphicon-envelope"></span>联系@牧名@和剑
+          <a href="mailto:hejian@mogujie.com" class="btn btn-default btn-lg">
+            <span class="glyphicon glyphicon-envelope"></span>联系@和剑
           </a>
         </div>
       </div>

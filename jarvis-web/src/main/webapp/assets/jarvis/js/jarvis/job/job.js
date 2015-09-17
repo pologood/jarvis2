@@ -78,17 +78,26 @@ function getQueryPara(){
 
 //初始化数据及分页
 function initData(){
-    var queryPara=getQueryPara();
+    var queryParams=getQueryPara();
     $("#content").bootstrapTable({
         columns:columns,
-        data:data,
         pagination:true,
-        sidePagination:'client',
+        sidePagination:'server',
         search:true,
-        searchText:'',
+        url:'/jarvis/api/job/getJobs',
+        queryParams:function(params) {
+            for(var key in queryParams){
+                var value = queryParams[key];
+                params[key]=value;
+            }
+            return params;
+        },
         showColumns:true,
         showHeader:true,
         showToggle:true,
+        pageSize:1,
+        pageSize:10,
+        pageList:[5,10,25,50,100,200,500],
         paginationFirstText:'首页',
         paginationPreText:'上一页',
         paginationNextText:'下一页',
@@ -104,126 +113,70 @@ function initData(){
 
 
 var columns=[{
-    field: 'id',
-    title: 'Item ID',
-
+    field: 'jobId',
+    title: '任务id',
     switchable:true
 }, {
-    field: 'name',
-    title: 'Item Name',
-
+    field: 'originJobId',
+    title: '原始任务id',
+    switchable:true,
+    visible:false
+}, {
+    field: 'jobName',
+    title: '任务名',
     switchable:true
 }, {
-    field: 'price',
-    title: 'Item Price',
-
+    field: 'jobType',
+    title: '任务类型',
     switchable:true
+}, {
+    field: 'jobStatus',
+    title: '任务状态',
+    switchable:true
+}, {
+    field: 'content',
+    title: '任务内容',
+    switchable:true
+}, {
+    field: 'params',
+    title: '参数',
+    switchable:true,
+    visible:false
+}, {
+    field: 'submitUser',
+    title: '提交人',
+    switchable:true
+}, {
+    field: 'priority',
+    title: '优先级',
+    switchable:true
+}, {
+    field: 'appName',
+    title: '应用名',
+    switchable:true
+}, {
+    field: 'workerGroupId',
+    title: 'worker组ID',
+    switchable:true,
+    visible:false
+}, {
+    field: 'rejectAttempts',
+    title: '任务被Worker拒绝时的重试次数',
+    switchable:true,
+    visible:false
+}, {
+    field: 'rejectInterval',
+    title: '任务被Worker拒绝时重试的间隔(秒)',
+    switchable:true,
+    visible:false
+}, {
+    field: 'failedAttempts',
+    title: '任务运行失败时的重试次数',
+    switchable:true,
+    visible:false
+}, {
+    field: 'failedInterval',
+    title: '任务运行失败时重试的间隔(秒)',
+    switchable:true,
+    visible:false
 }];
-
-var data=[
-    {
-        "id": 0,
-        "name": "Item 0",
-        "price": "$0"
-    },
-    {
-        "id": 1,
-        "name": "Item 1",
-        "price": "$1"
-    },
-    {
-        "id": 2,
-        "name": "Item 2",
-        "price": "$2"
-    },
-    {
-        "id": 3,
-        "name": "Item 3",
-        "price": "$3"
-    },
-    {
-        "id": 4,
-        "name": "Item 4",
-        "price": "$4"
-    },
-    {
-        "id": 5,
-        "name": "Item 5",
-        "price": "$5"
-    },
-    {
-        "id": 6,
-        "name": "Item 6",
-        "price": "$6"
-    },
-    {
-        "id": 7,
-        "name": "Item 7",
-        "price": "$7"
-    },
-    {
-        "id": 8,
-        "name": "Item 8",
-        "price": "$8"
-    },
-    {
-        "id": 9,
-        "name": "Item 9",
-        "price": "$9"
-    },
-    {
-        "id": 10,
-        "name": "Item 10",
-        "price": "$10"
-    },
-    {
-        "id": 11,
-        "name": "Item 11",
-        "price": "$11"
-    },
-    {
-        "id": 12,
-        "name": "Item 12",
-        "price": "$12"
-    },
-    {
-        "id": 13,
-        "name": "Item 13",
-        "price": "$13"
-    },
-    {
-        "id": 14,
-        "name": "Item 14",
-        "price": "$14"
-    },
-    {
-        "id": 15,
-        "name": "Item 15",
-        "price": "$15"
-    },
-    {
-        "id": 16,
-        "name": "Item 16",
-        "price": "$16"
-    },
-    {
-        "id": 17,
-        "name": "Item 17",
-        "price": "$17"
-    },
-    {
-        "id": 18,
-        "name": "Item 18",
-        "price": "$18"
-    },
-    {
-        "id": 19,
-        "name": "Item 19",
-        "price": "$19"
-    },
-    {
-        "id": 20,
-        "name": "Item 20",
-        "price": "$20"
-    }
-];

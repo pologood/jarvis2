@@ -16,8 +16,8 @@
             <nav>
                 <ol class="cd-breadcrumb triangle">
                     <li><a href="/jarvis/">Home</a></li>
-                    <li ><a href="/jarvis/job">作业管理</a></li>
-                    <li class="current"><em>新增作业</em></li>
+                    <li ><a href="/jarvis/job">任务管理</a></li>
+                    <li class="current"><em>新增任务</em></li>
                 </ol>
             </nav>
         </div>
@@ -29,7 +29,7 @@
             <div class="row">
                 <div class="col-md-4 col-md-offset-4">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">作业名称</span>
+                        <span class="input-group-addon" style="width:35%">任务名称</span>
                         <input id="jobName" class="form-control" />
                     </div>
                 </div>
@@ -56,7 +56,7 @@
             <div class="row top-buffer">
                 <div class="col-md-4 col-md-offset-4">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">作业参数</span>
+                        <span class="input-group-addon" style="width:35%">任务参数</span>
                         <input id="params" class="form-control" />
                     </div>
                 </div>
@@ -76,7 +76,7 @@
             <div class="row top-buffer">
                 <div class="col-md-4 col-md-offset-4">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">作业类型</span>
+                        <span class="input-group-addon" style="width:35%">任务类型</span>
                         <select id="jobType"  ></select>
                     </div>
                 </div>
@@ -85,7 +85,7 @@
             <div class="row top-buffer">
                 <div class="col-md-4 col-md-offset-4">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">作业状态</span>
+                        <span class="input-group-addon" style="width:35%">任务状态</span>
                         <select id="jobFlag"  ></select>
                     </div>
                 </div>
@@ -105,7 +105,7 @@
             <div class="row top-buffer">
                 <div class="col-md-4 col-md-offset-4">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">依赖作业</span>
+                        <span class="input-group-addon" style="width:35%">依赖任务</span>
                         <select id="jobDependency" multiple></select>
                     </div>
                 </div>

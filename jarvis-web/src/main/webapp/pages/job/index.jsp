@@ -16,7 +16,7 @@
             <nav>
                 <ol class="cd-breadcrumb triangle">
                     <li><a href="/jarvis/">Home</a></li>
-                    <li class="current"><em>作业管理</em></li>
+                    <li class="current"><em>任务管理</em></li>
                 </ol>
             </nav>
         </div>
@@ -28,26 +28,42 @@
             <div class="row">
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">作业ID</span>
-                        <select id="jobId" ></select>
+                        <span class="input-group-addon" style="width:35%">任务ID</span>
+                        <select id="jobId" >
+                            <option value="">全部</option>
+                            <c:forEach items="${jobIds}" var="jobId" varStatus="status">
+                                <option value="${jobId}">${jobId}</option>
+                            </c:forEach>
+                        </select>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">作业名称</span>
-                        <select id="jobName"  ></select>
+                        <span class="input-group-addon" style="width:35%">任务名称</span>
+                        <select id="jobName"  >
+                            <option value="">全部</option>
+                            <c:forEach items="${jobNames}" var="jobName" varStatus="status">
+                                <option value="${jobName}">${jobName}</option>
+                            </c:forEach>
+                        </select>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">作业类型</span>
-                        <select id="jobType" ></select>
+                        <span class="input-group-addon" style="width:35%">任务类型</span>
+                        <select id="jobType" >
+                        </select>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">发布者</span>
-                        <select id="submitUser" ></select>
+                        <select id="submitUser" >
+                            <option value="">全部</option>
+                            <c:forEach items="${submitUsers}" var="submitUser" varStatus="status">
+                                <option value="${submitUser}">${submitUser}</option>
+                            </c:forEach>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -93,7 +109,7 @@
         <div class="col-md-12">
             <div id="add">
                 <a class="btn btn-primary" href="/jarvis/job/trash" target="_blank">回收站</a>
-                <a class="btn btn-primary" href="/jarvis/job/addOrEdit" target="_blank">新增作业</a>
+                <a class="btn btn-primary" href="/jarvis/job/addOrEdit" target="_blank">新增任务</a>
             </div>
             <table id="content" >
 

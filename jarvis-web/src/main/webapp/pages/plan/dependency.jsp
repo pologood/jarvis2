@@ -16,8 +16,8 @@
             <nav>
                 <ol class="cd-breadcrumb triangle">
                     <li><a href="/jarvis/">Home</a></li>
-                    <li ><a href="/jarvis/job">作业管理</a></li>
-                    <li class="current"><em>作业依赖</em></li>
+                    <li ><a href="/jarvis/job">任务管理</a></li>
+                    <li class="current"><em>任务依赖</em></li>
                 </ol>
             </nav>
         </div>
@@ -45,4 +45,4 @@
     <jsp:param name="menuMap" value="${menuMap}"/>
 </jsp:include>
 
-<script type="text/javascript" src="/assets/jarvis/js/jarvis/task/dependency.js"></script>
+<script type="text/javascript" src="/assets/jarvis/js/jarvis/plan/dependency.js"></script>

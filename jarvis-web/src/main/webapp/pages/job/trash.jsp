@@ -16,8 +16,8 @@
             <nav>
                 <ol class="cd-breadcrumb triangle">
                     <li><a href="/jarvis/">Home</a></li>
-                    <li ><a href="/jarvis/job">作业管理</a></li>
-                    <li class="current"><em>作业回收站</em></li>
+                    <li ><a href="/jarvis/job">任务管理</a></li>
+                    <li class="current"><em>任务回收站</em></li>
                 </ol>
             </nav>
         </div>
@@ -29,13 +29,13 @@
             <div class="row">
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">作业ID</span>
+                        <span class="input-group-addon" style="width:35%">任务ID</span>
                         <select id="jobId" class="form-control" ></select>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">作业名称</span>
+                        <span class="input-group-addon" style="width:35%">任务名称</span>
                         <select id="jobName" class="form-control" ></select>
                     </div>
                 </div>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mogujie.jarvis.web.mapper.JobMapper">
+
+    <sql id="condition">
+      <where>
+          <if test="jobId!=null">
+              jobId=#{jobId}
+          </if>
+          <if test="jobName!=null">
+              AND jobName=#{jobName}
+          </if>
+          <if test="jobType!=null">
+              AND jobType=#{jobType}
+          </if>
+          <if test="jobFlag!=null">
+              AND jobFlag=#{jobFlag}
+          </if>
+          <if test="submitUser!=null">
+              AND submitUser=#{submitUser}
+          </if>
+          <if test="content!=null">
+              AND content=#{content}
+          </if>
+          <if test="priority!=null">
+              AND priority=#{priority}
+          </if>
+          <if test="appName!=null">
+              AND appName=#{appName}
+          </if>
+          <if test="workerGroupId!=null">
+              AND workerGroupId=#{workerGroupId}
+          </if>
+          <if test="updateUser!=null">
+              AND updateUser=#{updateUser}
+          </if>
+
+      </where>
+    </sql>
+    <sql id="pager">
+        <if test="offset!=null and limit!=null">
+          limit #{offset},#{limit}
+        </if>
+    </sql>
+    
+    <select id="getCountByCondition" parameterType="JobSearchVo" resultType="Integer">
+      SELECT COUNT(1) FROM job
+      <include refid="condition" />
+    </select>
+
+    <select id="getJobsByCondition" parameterType="JobSearchVo" resultType="JobVo">
+      SELECT * FROM job
+      <include refid="condition" />
+      <if test="order!=null">
+          ORDER BY #{order}
+      </if>
+      <include refid="pager" />
+    </select>
+
+    <select id="getJobIds" resultType="Long">
+      SELECT DISTINCT jobId FROM job;
+    </select>
+    
+    <select id="getJobNames" resultType="String">
+      SELECT DISTINCT jobName FROM job;
+    </select>
+
+    <select id="getSubmitUsers" resultType="String">
+      SELECT DISTINCT submitUser FROM job;
+    </select>
+</mapper>

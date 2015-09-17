@@ -16,7 +16,7 @@
             <nav>
                 <ol class="cd-breadcrumb triangle">
                     <li><a href="/jarvis/">Home</a></li>
-                    <li class="current"><em>执行流水</em></li>
+                    <li class="current"><em>执行计划</em></li>
                 </ol>
             </nav>
         </div>
@@ -28,83 +28,89 @@
             <div class="row">
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">执行日期</span>
-                        <select id="jobId" class="form-control" ></select>
+                        <span class="input-group-addon" style="width:35%">任务日期</span>
+                        <input type="text" id="taskDate" class="form-control" />
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">数据日期</span>
-                        <select id="jobName" class="form-control" ></select>
+                        <input type="text" id="dataDate" class="form-control" />
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">用时</span>
-                        <select id="jobType" class="form-control"></select>
+                        <span class="input-group-addon" style="width:35%">执行日期</span>
+                        <input type="text" id="executeDate" class="form-control" />
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">发布者</span>
-                        <select id="submitUser" class="form-control"></select>
+                        <span class="input-group-addon" style="width:35%">执行周期</span>
+                        <select id="executeCycle"></select>
                     </div>
                 </div>
+
             </div>
 
             <div class="row top-buffer">
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">作业ID</span>
-                        <select id="" class="form-control"></select>
+                        <span class="input-group-addon" style="width:35%">任务ID</span>
+                        <select id="jobId" ></select>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">作业名称</span>
-                        <select id="" class="form-control"></select>
+                        <span class="input-group-addon" style="width:35%">任务名称</span>
+                        <select id="jobName" ></select>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">作业类型</span>
-                        <select id="" class="form-control"></select>
+                        <span class="input-group-addon" style="width:35%">任务类型</span>
+                        <select id="jobType" ></select>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">来源</span>
-                        <select id="" class="form-control"></select>
+                        <select id="jobSource" ></select>
                     </div>
                 </div>
 
             </div>
 
             <div class="row top-buffer">
-
                 <div class="col-md-6">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">状态</span>
-                        <div class="form-control">
-                            <input type="radio" name="jobStatus" />成功
-                            <input type="radio" name="jobStatus" />失败
-                            <input type="radio" name="jobStatus" />执行中
+                        <span class="input-group-addon" style="width:16.5%">任务状态</span>
+                        <div class="form-control" id="taskStatus">
+
                         </div>
                     </div>
                 </div>
-
-                <div class="col-md-3 col-md-offset-3">
+                <div class="col-md-3">
+                    <div class="input-group" style="width:100%">
+                        <span class="input-group-addon" style="width:35%">发布者</span>
+                        <select id="submitUser" ></select>
+                    </div>
+                </div>
+                <div class="col-md-3">
                     <div class="row">
                         <div class="col-md-6 col-md-offset-6">
-                            <div class="input-group">
-                                <button type="button" class="btn btn-primary" onclick="">查询</button>
-                                <button type="button" class="btn btn-primary" onclick="">重置</button>
+                            <div class="input-group pull-right">
+                                <button type="button" class="btn btn-primary " onclick="search()" style="margin-right: 3px">查询</button>
+                                <button type="button" class="btn btn-primary " onclick="reset()">重置</button>
                             </div>
                         </div>
                     </div>
 
                 </div>
+
+
             </div>
+
 
         </div>
     </div>
@@ -134,4 +140,4 @@
     <jsp:param name="menuMap" value="${menuMap}"/>
 </jsp:include>
 
-<script type="text/javascript" src="/assets/jarvis/js/jarvis/log/log.js"></script>
+<script type="text/javascript" src="/assets/jarvis/js/jarvis/plan/plan.js"></script>
