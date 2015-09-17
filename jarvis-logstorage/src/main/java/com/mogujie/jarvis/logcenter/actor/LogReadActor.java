@@ -25,12 +25,21 @@ public class LogReadActor extends UntypedActor {
 
     @Override
     public void onReceive(Object obj) throws Exception {
-        // TODO Auto-generated method stub
-        if (obj instanceof RestServerReadLogRequest) {
 
-        } else {
+        if (!(obj instanceof RestServerReadLogRequest)) {
             unhandled(obj);
+            return;
         }
+
+
+
+
+
+
+
+
+
+
     }
 
 }
