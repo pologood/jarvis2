@@ -23,4 +23,20 @@ public enum StreamType {
     public int getValue() {
         return value;
     }
+
+
+    public static JobPriority getInstance(int value) {
+
+        JobPriority[] all = JobPriority.values();
+        JobPriority select = JobPriority.NORMAL;
+        for (JobPriority s : all) {
+            if (s.getValue() == value) {
+                select = s;
+                break;
+            }
+        }
+
+        return select;
+    }
+
 }

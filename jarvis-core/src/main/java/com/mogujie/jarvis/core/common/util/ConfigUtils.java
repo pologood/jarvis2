@@ -27,20 +27,14 @@ public class ConfigUtils {
 
     private static PropertiesConfiguration workerConfig;
     private static PropertiesConfiguration serverConfig;
+    private static PropertiesConfiguration logstorageConfig;
 
-    public synchronized static Configuration getWorkerConfig() {
-        if (workerConfig == null) {
-            try {
-                workerConfig = new PropertiesConfiguration("worker.properties");
-                workerConfig.setReloadingStrategy(new FileChangedReloadingStrategy());
-            } catch (ConfigurationException e) {
-                Throwables.propagate(e);
-            }
-        }
 
-        return workerConfig;
-    }
-
+    /**
+     * 读取Server配置
+     *
+     * @return
+     */
     public synchronized static Configuration getServerConfig() {
         if (serverConfig == null) {
             try {
@@ -54,17 +48,37 @@ public class ConfigUtils {
         return serverConfig;
     }
 
-    public synchronized static Configuration getLogstorageConfig() {
-        if (serverConfig == null) {
+
+    /**
+     *  读取worker配置
+     * @return
+     */
+    public synchronized static Configuration getWorkerConfig() {
+        if (workerConfig == null) {
             try {
-                serverConfig = new PropertiesConfiguration("logstorage.properties");
-                serverConfig.setReloadingStrategy(new FileChangedReloadingStrategy());
+                workerConfig = new PropertiesConfiguration("worker.properties");
+                workerConfig.setReloadingStrategy(new FileChangedReloadingStrategy());
             } catch (ConfigurationException e) {
                 Throwables.propagate(e);
             }
         }
 
-        return serverConfig;
+        return workerConfig;
+    }
+
+
+
+    public synchronized static Configuration getLogstorageConfig() {
+        if (logstorageConfig == null) {
+            try {
+                logstorageConfig = new PropertiesConfiguration("logstorage.properties");
+                logstorageConfig.setReloadingStrategy(new FileChangedReloadingStrategy());
+            } catch (ConfigurationException e) {
+                Throwables.propagate(e);
+            }
+        }
+
+        return logstorageConfig;
     }
 
 
