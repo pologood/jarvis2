@@ -26,7 +26,7 @@ import org.springframework.stereotype.Service;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.eventbus.AllowConcurrentEvents;
 import com.google.common.eventbus.Subscribe;
-import com.mogujie.jarvis.core.common.util.ParametersMapUtil;
+import com.mogujie.jarvis.core.common.util.JsonHelper;
 import com.mogujie.jarvis.core.common.util.ThreadUtils;
 import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.dao.JobMapper;
@@ -284,7 +284,7 @@ public class TaskScheduler implements Scheduler {
                 .setPriority(dagTask.getPriority())
                 .setCommand(job.getContent())
                 .setTaskType(job.getJobType())
-                .setParameters(ParametersMapUtil.convert2Map(job.getParams()))
+                .setParameters(JsonHelper.parseJSON2Map(job.getParams()))
                 .build();
 
         return task;

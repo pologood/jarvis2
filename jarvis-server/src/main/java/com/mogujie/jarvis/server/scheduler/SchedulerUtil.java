@@ -13,7 +13,7 @@ import java.util.Date;
 
 import org.apache.commons.configuration.Configuration;
 
-import com.mogujie.jarvis.core.common.util.ParametersMapUtil;
+import com.mogujie.jarvis.core.common.util.JsonHelper;
 import com.mogujie.jarvis.core.common.util.ReflectionUtils;
 import com.mogujie.jarvis.core.domain.JobFlag;
 import com.mogujie.jarvis.dto.Job;
@@ -76,7 +76,7 @@ public class SchedulerUtil {
         dateTimeFormat.format(currentTime);
         job.setCreateTime(currentTime);
         job.setUpdateTime(currentTime);
-        job.setParams(ParametersMapUtil.convert2String(msg.getParametersList()));
+        job.setParams(JsonHelper.parseMapEntryList2JSON(msg.getParametersList()));
         //TODO job.setOriginJobId(originJobId);
         return job;
     }
@@ -98,7 +98,7 @@ public class SchedulerUtil {
         DateFormat dateTimeFormat = DateFormat.getDateTimeInstance();
         dateTimeFormat.format(currentTime);
         job.setUpdateTime(currentTime);
-        job.setParams(ParametersMapUtil.convert2String(msg.getParametersList()));
+        job.setParams(JsonHelper.parseMapEntryList2JSON(msg.getParametersList()));
         return job;
     }
 
