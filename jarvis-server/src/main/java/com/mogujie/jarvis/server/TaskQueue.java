@@ -12,6 +12,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import com.lmax.disruptor.BlockingWaitStrategy;
+import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
 import com.mogujie.jarvis.core.Task;
@@ -27,13 +28,38 @@ public enum TaskQueue {
     private ExecutorService es = Executors.newCachedThreadPool();
     private Disruptor<TaskEvent> disruptor = new Disruptor<TaskEvent>(TaskEvent.EVENT_FACTORY, (int) Math.pow(2, 10), es, ProducerType.SINGLE,
             new BlockingWaitStrategy());
+    private RingBuffer<TaskEvent> ringBuffer;
+
+    private TaskQueue() {
+        LoggerExceptionHandler exceptionHandler = new LoggerExceptionHandler();
+        disruptor.handleExceptionsWith(exceptionHandler);
+
+        TaskEventHandler[] taskEventHandlers = new TaskEventHandler[10];
+        for (int i = 0, len = taskEventHandlers.length; i < len; i++) {
+            taskEventHandlers[i] = new TaskEventHandler();
+        }
+        disruptor.handleEventsWithWorkerPool(taskEventHandlers);
+        ringBuffer = disruptor.start();
+    }
 
     public static TaskQueue getInstance() {
         return INSTANCE;
     }
 
     public void put(Task task) {
+        disruptor.publishEvent(TaskEvent.TRANSLATOR, task);
+    }
 
+    public int getBufferSize() {
+        return ringBuffer.getBufferSize();
+    }
+
+    public long getRemainingCapacity() {
+        return ringBuffer.remainingCapacity();
+    }
+
+    public void close() {
+        disruptor.shutdown();
     }
 
 }
