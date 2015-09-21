@@ -27,7 +27,7 @@ public class JsonHelper {
         return jsonObject.toString();
     }
 
-    public static Map<String, Object> parseJSON2Map(String jsonStr){
+    public static Map<String, Object> parseJSON2Map(String jsonStr) {
         Map<String, Object> jsonMap = new HashMap<String, Object>();
         JSONObject jsonObject = new JSONObject(jsonStr);
         Iterator<String> it = jsonObject.keys();

@@ -195,34 +195,24 @@ public final class SubmitJobProtos {
         int getFailedInterval();
 
         /**
-         * <code>required string start_time = 15;</code>
+         * <code>required int64 start_time = 15;</code>
          */
         boolean hasStartTime();
 
         /**
-         * <code>required string start_time = 15;</code>
+         * <code>required int64 start_time = 15;</code>
          */
-        java.lang.String getStartTime();
+        long getStartTime();
 
         /**
-         * <code>required string start_time = 15;</code>
-         */
-        com.google.protobuf.ByteString getStartTimeBytes();
-
-        /**
-         * <code>required string end_time = 16;</code>
+         * <code>required int64 end_time = 16;</code>
          */
         boolean hasEndTime();
 
         /**
-         * <code>required string end_time = 16;</code>
+         * <code>required int64 end_time = 16;</code>
          */
-        java.lang.String getEndTime();
-
-        /**
-         * <code>required string end_time = 16;</code>
-         */
-        com.google.protobuf.ByteString getEndTimeBytes();
+        long getEndTime();
 
         /**
          * <code>repeated .MapEntry parameters = 17;</code>
@@ -395,16 +385,14 @@ public final class SubmitJobProtos {
                             failedInterval_ = input.readInt32();
                             break;
                         }
-                        case 122: {
-                            com.google.protobuf.ByteString bs = input.readBytes();
+                        case 120: {
                             bitField0_ |= 0x00002000;
-                            startTime_ = bs;
+                            startTime_ = input.readInt64();
                             break;
                         }
-                        case 130: {
-                            com.google.protobuf.ByteString bs = input.readBytes();
+                        case 128: {
                             bitField0_ |= 0x00004000;
-                            endTime_ = bs;
+                            endTime_ = input.readInt64();
                             break;
                         }
                         case 138: {
@@ -872,85 +860,37 @@ public final class SubmitJobProtos {
         }
 
         public static final int START_TIME_FIELD_NUMBER = 15;
-        private java.lang.Object startTime_;
+        private long startTime_;
 
         /**
-         * <code>required string start_time = 15;</code>
+         * <code>required int64 start_time = 15;</code>
          */
         public boolean hasStartTime() {
             return ((bitField0_ & 0x00002000) == 0x00002000);
         }
 
         /**
-         * <code>required string start_time = 15;</code>
+         * <code>required int64 start_time = 15;</code>
          */
-        public java.lang.String getStartTime() {
-            java.lang.Object ref = startTime_;
-            if (ref instanceof java.lang.String) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                if (bs.isValidUtf8()) {
-                    startTime_ = s;
-                }
-                return s;
-            }
-        }
-
-        /**
-         * <code>required string start_time = 15;</code>
-         */
-        public com.google.protobuf.ByteString getStartTimeBytes() {
-            java.lang.Object ref = startTime_;
-            if (ref instanceof java.lang.String) {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                startTime_ = b;
-                return b;
-            } else {
-                return (com.google.protobuf.ByteString) ref;
-            }
+        public long getStartTime() {
+            return startTime_;
         }
 
         public static final int END_TIME_FIELD_NUMBER = 16;
-        private java.lang.Object endTime_;
+        private long endTime_;
 
         /**
-         * <code>required string end_time = 16;</code>
+         * <code>required int64 end_time = 16;</code>
          */
         public boolean hasEndTime() {
             return ((bitField0_ & 0x00004000) == 0x00004000);
         }
 
         /**
-         * <code>required string end_time = 16;</code>
+         * <code>required int64 end_time = 16;</code>
          */
-        public java.lang.String getEndTime() {
-            java.lang.Object ref = endTime_;
-            if (ref instanceof java.lang.String) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                if (bs.isValidUtf8()) {
-                    endTime_ = s;
-                }
-                return s;
-            }
-        }
-
-        /**
-         * <code>required string end_time = 16;</code>
-         */
-        public com.google.protobuf.ByteString getEndTimeBytes() {
-            java.lang.Object ref = endTime_;
-            if (ref instanceof java.lang.String) {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                endTime_ = b;
-                return b;
-            } else {
-                return (com.google.protobuf.ByteString) ref;
-            }
+        public long getEndTime() {
+            return endTime_;
         }
 
         public static final int PARAMETERS_FIELD_NUMBER = 17;
@@ -1006,8 +946,8 @@ public final class SubmitJobProtos {
             rejectInterval_ = 3;
             failedRetries_ = 0;
             failedInterval_ = 3;
-            startTime_ = "";
-            endTime_ = "";
+            startTime_ = 0L;
+            endTime_ = 0L;
             parameters_ = java.util.Collections.emptyList();
         }
 
@@ -1119,10 +1059,10 @@ public final class SubmitJobProtos {
                 output.writeInt32(14, failedInterval_);
             }
             if (((bitField0_ & 0x00002000) == 0x00002000)) {
-                output.writeBytes(15, getStartTimeBytes());
+                output.writeInt64(15, startTime_);
             }
             if (((bitField0_ & 0x00004000) == 0x00004000)) {
-                output.writeBytes(16, getEndTimeBytes());
+                output.writeInt64(16, endTime_);
             }
             for (int i = 0; i < parameters_.size(); i++) {
                 output.writeMessage(17, parameters_.get(i));
@@ -1190,10 +1130,10 @@ public final class SubmitJobProtos {
                 size += com.google.protobuf.CodedOutputStream.computeInt32Size(14, failedInterval_);
             }
             if (((bitField0_ & 0x00002000) == 0x00002000)) {
-                size += com.google.protobuf.CodedOutputStream.computeBytesSize(15, getStartTimeBytes());
+                size += com.google.protobuf.CodedOutputStream.computeInt64Size(15, startTime_);
             }
             if (((bitField0_ & 0x00004000) == 0x00004000)) {
-                size += com.google.protobuf.CodedOutputStream.computeBytesSize(16, getEndTimeBytes());
+                size += com.google.protobuf.CodedOutputStream.computeInt64Size(16, endTime_);
             }
             for (int i = 0; i < parameters_.size(); i++) {
                 size += com.google.protobuf.CodedOutputStream.computeMessageSize(17, parameters_.get(i));
@@ -1349,9 +1289,9 @@ public final class SubmitJobProtos {
                 bitField0_ = (bitField0_ & ~0x00001000);
                 failedInterval_ = 3;
                 bitField0_ = (bitField0_ & ~0x00002000);
-                startTime_ = "";
+                startTime_ = 0L;
                 bitField0_ = (bitField0_ & ~0x00004000);
-                endTime_ = "";
+                endTime_ = 0L;
                 bitField0_ = (bitField0_ & ~0x00008000);
                 if (parametersBuilder_ == null) {
                     parameters_ = java.util.Collections.emptyList();
@@ -1542,14 +1482,10 @@ public final class SubmitJobProtos {
                     setFailedInterval(other.getFailedInterval());
                 }
                 if (other.hasStartTime()) {
-                    bitField0_ |= 0x00004000;
-                    startTime_ = other.startTime_;
-                    onChanged();
+                    setStartTime(other.getStartTime());
                 }
                 if (other.hasEndTime()) {
-                    bitField0_ |= 0x00008000;
-                    endTime_ = other.endTime_;
-                    onChanged();
+                    setEndTime(other.getEndTime());
                 }
                 if (parametersBuilder_ == null) {
                     if (!other.parameters_.isEmpty()) {
@@ -2465,53 +2401,26 @@ public final class SubmitJobProtos {
                 return this;
             }
 
-            private java.lang.Object startTime_ = "";
+            private long startTime_;
 
             /**
-             * <code>required string start_time = 15;</code>
+             * <code>required int64 start_time = 15;</code>
              */
             public boolean hasStartTime() {
                 return ((bitField0_ & 0x00004000) == 0x00004000);
             }
 
             /**
-             * <code>required string start_time = 15;</code>
+             * <code>required int64 start_time = 15;</code>
              */
-            public java.lang.String getStartTime() {
-                java.lang.Object ref = startTime_;
-                if (!(ref instanceof java.lang.String)) {
-                    com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                    java.lang.String s = bs.toStringUtf8();
-                    if (bs.isValidUtf8()) {
-                        startTime_ = s;
-                    }
-                    return s;
-                } else {
-                    return (java.lang.String) ref;
-                }
+            public long getStartTime() {
+                return startTime_;
             }
 
             /**
-             * <code>required string start_time = 15;</code>
+             * <code>required int64 start_time = 15;</code>
              */
-            public com.google.protobuf.ByteString getStartTimeBytes() {
-                java.lang.Object ref = startTime_;
-                if (ref instanceof String) {
-                    com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                    startTime_ = b;
-                    return b;
-                } else {
-                    return (com.google.protobuf.ByteString) ref;
-                }
-            }
-
-            /**
-             * <code>required string start_time = 15;</code>
-             */
-            public Builder setStartTime(java.lang.String value) {
-                if (value == null) {
-                    throw new NullPointerException();
-                }
+            public Builder setStartTime(long value) {
                 bitField0_ |= 0x00004000;
                 startTime_ = value;
                 onChanged();
@@ -2519,75 +2428,35 @@ public final class SubmitJobProtos {
             }
 
             /**
-             * <code>required string start_time = 15;</code>
+             * <code>required int64 start_time = 15;</code>
              */
             public Builder clearStartTime() {
                 bitField0_ = (bitField0_ & ~0x00004000);
-                startTime_ = getDefaultInstance().getStartTime();
+                startTime_ = 0L;
                 onChanged();
                 return this;
             }
 
-            /**
-             * <code>required string start_time = 15;</code>
-             */
-            public Builder setStartTimeBytes(com.google.protobuf.ByteString value) {
-                if (value == null) {
-                    throw new NullPointerException();
-                }
-                bitField0_ |= 0x00004000;
-                startTime_ = value;
-                onChanged();
-                return this;
-            }
-
-            private java.lang.Object endTime_ = "";
+            private long endTime_;
 
             /**
-             * <code>required string end_time = 16;</code>
+             * <code>required int64 end_time = 16;</code>
              */
             public boolean hasEndTime() {
                 return ((bitField0_ & 0x00008000) == 0x00008000);
             }
 
             /**
-             * <code>required string end_time = 16;</code>
+             * <code>required int64 end_time = 16;</code>
              */
-            public java.lang.String getEndTime() {
-                java.lang.Object ref = endTime_;
-                if (!(ref instanceof java.lang.String)) {
-                    com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                    java.lang.String s = bs.toStringUtf8();
-                    if (bs.isValidUtf8()) {
-                        endTime_ = s;
-                    }
-                    return s;
-                } else {
-                    return (java.lang.String) ref;
-                }
+            public long getEndTime() {
+                return endTime_;
             }
 
             /**
-             * <code>required string end_time = 16;</code>
+             * <code>required int64 end_time = 16;</code>
              */
-            public com.google.protobuf.ByteString getEndTimeBytes() {
-                java.lang.Object ref = endTime_;
-                if (ref instanceof String) {
-                    com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                    endTime_ = b;
-                    return b;
-                } else {
-                    return (com.google.protobuf.ByteString) ref;
-                }
-            }
-
-            /**
-             * <code>required string end_time = 16;</code>
-             */
-            public Builder setEndTime(java.lang.String value) {
-                if (value == null) {
-                    throw new NullPointerException();
-                }
+            public Builder setEndTime(long value) {
                 bitField0_ |= 0x00008000;
                 endTime_ = value;
                 onChanged();
@@ -2595,24 +2464,11 @@ public final class SubmitJobProtos {
             }
 
             /**
-             * <code>required string end_time = 16;</code>
+             * <code>required int64 end_time = 16;</code>
              */
             public Builder clearEndTime() {
                 bitField0_ = (bitField0_ & ~0x00008000);
-                endTime_ = getDefaultInstance().getEndTime();
-                onChanged();
-                return this;
-            }
-
-            /**
-             * <code>required string end_time = 16;</code>
-             */
-            public Builder setEndTimeBytes(com.google.protobuf.ByteString value) {
-                if (value == null) {
-                    throw new NullPointerException();
-                }
-                bitField0_ |= 0x00008000;
-                endTime_ = value;
+                endTime_ = 0L;
                 onChanged();
                 return this;
             }
@@ -5983,8 +5839,8 @@ public final class SubmitJobProtos {
                         + "(\005\022\023\n\010priority\030\n \001(\005:\0011\022\031\n\016reject_retrie"
                         + "s\030\013 \001(\005:\0010\022\032\n\017reject_interval\030\014 \001(\005:\0013\022\031"
                         + "\n\016failed_retries\030\r \001(\005:\0010\022\032\n\017failed_inte"
-                        + "rval\030\016 \001(\005:\0013\022\022\n\nstart_time\030\017 \002(\t\022\020\n\010end",
-                "_time\030\020 \002(\t\022\035\n\nparameters\030\021 \003(\0132\t.MapEnt"
+                        + "rval\030\016 \001(\005:\0013\022\022\n\nstart_time\030\017 \002(\003\022\020\n\010end",
+                "_time\030\020 \002(\003\022\035\n\nparameters\030\021 \003(\0132\t.MapEnt"
                         + "ry\"M\n\027ServerSubmitJobResponse\022\016\n\006job_id\030"
                         + "\001 \002(\003\022\017\n\007success\030\002 \002(\010\022\021\n\007message\030\003 \001(\t:"
                         + "\000\"\265\001\n\027ServerSubmitTaskRequest\022\017\n\007full_id"

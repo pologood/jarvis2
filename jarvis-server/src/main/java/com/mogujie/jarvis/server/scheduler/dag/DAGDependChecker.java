@@ -12,12 +12,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-
 import com.mogujie.jarvis.server.scheduler.dag.status.AbstractDependStatus;
 import com.mogujie.jarvis.server.scheduler.dag.status.DependStatusFactory;
 import com.mogujie.jarvis.server.service.JobDependService;
+import com.mogujie.jarvis.server.util.SpringContext;
 
 /**
  * @author guangming
@@ -26,14 +24,12 @@ import com.mogujie.jarvis.server.service.JobDependService;
 public class DAGDependChecker {
     private long myJobId;
 
-    protected Map<Long, AbstractDependStatus> jobStatusMap =
-            new ConcurrentHashMap<Long, AbstractDependStatus>();
+    protected Map<Long, AbstractDependStatus> jobStatusMap = new ConcurrentHashMap<Long, AbstractDependStatus>();
 
     private JobDependService jobDependService;
 
     public DAGDependChecker() {
-        ApplicationContext ac = new ClassPathXmlApplicationContext("context.xml");
-        jobDependService = ac.getBean(JobDependService.class);
+        jobDependService = SpringContext.getBean(JobDependService.class);
     }
 
     public DAGDependChecker(long jobId) {
@@ -54,8 +50,7 @@ public class DAGDependChecker {
             AbstractDependStatus taskDependStatus = jobStatusMap.get(jobId);
             if (taskDependStatus == null) {
                 try {
-                    taskDependStatus = DependStatusFactory.createDependStatus(
-                            jobDependService, myJobId, jobId);
+                    taskDependStatus = DependStatusFactory.createDependStatus(jobDependService, myJobId, jobId);
                 } catch (ClassNotFoundException e) {
                     throw new RuntimeException(e.getMessage());
                 }

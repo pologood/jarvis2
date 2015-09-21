@@ -10,10 +10,8 @@ package com.mogujie.jarvis.server.scheduler.dag.status;
 
 import java.util.Map;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-
 import com.mogujie.jarvis.server.service.DependStatusService;
+import com.mogujie.jarvis.server.util.SpringContext;
 
 /**
  * @author guangming
@@ -23,15 +21,13 @@ public class MysqlCachedDependStatus extends CachedDependStatus {
     private DependStatusService statusService;
 
     public MysqlCachedDependStatus() {
-        ApplicationContext ac = new ClassPathXmlApplicationContext("context.xml");
-        statusService = ac.getBean(DependStatusService.class);
+        statusService = SpringContext.getBean(DependStatusService.class);
     }
 
     @Override
     protected void modifyDependStatus(long taskId, boolean status) {
         super.modifyDependStatus(taskId, status);
-        MysqlDependStatusUtil.modifyDependStatus(getMyJobId(), getPreJobId(),
-                taskId, status, statusService);
+        MysqlDependStatusUtil.modifyDependStatus(getMyJobId(), getPreJobId(), taskId, status, statusService);
     }
 
     @Override
@@ -48,7 +44,6 @@ public class MysqlCachedDependStatus extends CachedDependStatus {
 
     @Override
     protected Map<Long, Boolean> loadTaskDependStatus() {
-        return MysqlDependStatusUtil.getTaskStatusMapFromDb(
-                statusService, getMyJobId(), getPreJobId());
+        return MysqlDependStatusUtil.getTaskStatusMapFromDb(statusService, getMyJobId(), getPreJobId());
     }
 }
