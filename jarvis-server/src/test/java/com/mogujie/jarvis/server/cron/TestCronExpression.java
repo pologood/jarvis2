@@ -31,20 +31,20 @@ public class TestCronExpression {
     }
 
     @Test
-    public void check_all() throws ParseException {
+    public void checkAll() throws ParseException {
         assertEquals(new CronExpression("* * * * * ?").getTimeAfter(new DateTime(2012, 4, 10, 13, 00, 01)), new DateTime(2012, 4, 10, 13, 00, 02));
         assertEquals(new CronExpression("* * * * * ?").getTimeAfter(new DateTime(2012, 4, 10, 13, 02)), new DateTime(2012, 4, 10, 13, 02, 01));
         assertEquals(new CronExpression("* * * * * ?").getTimeAfter(new DateTime(2012, 4, 10, 13, 59, 59)), new DateTime(2012, 4, 10, 14, 00));
     }
 
     @Test
-    public void check_minute_number() throws ParseException {
+    public void checkMinuteNumber() throws ParseException {
         assertEquals(new CronExpression("0 3 * * * ?").getTimeAfter(new DateTime(2012, 4, 10, 13, 01)), new DateTime(2012, 4, 10, 13, 03));
         assertEquals(new CronExpression("0 3 * * * ?").getTimeAfter(new DateTime(2012, 4, 10, 13, 03)), new DateTime(2012, 4, 10, 14, 03));
     }
 
     @Test
-    public void check_minute_increment() throws ParseException {
+    public void checkMinuteIncrement() throws ParseException {
         assertEquals(new CronExpression("0 0/15 * * * ?").getTimeAfter(new DateTime(2012, 4, 10, 13, 00)), new DateTime(2012, 4, 10, 13, 15));
         assertEquals(new CronExpression("0 0/15 * * * ?").getTimeAfter(new DateTime(2012, 4, 10, 13, 15)), new DateTime(2012, 4, 10, 13, 30));
         assertEquals(new CronExpression("0 0/15 * * * ?").getTimeAfter(new DateTime(2012, 4, 10, 13, 30)), new DateTime(2012, 4, 10, 13, 45));
@@ -52,20 +52,20 @@ public class TestCronExpression {
     }
 
     @Test
-    public void check_minute_list() throws ParseException {
+    public void checkMinuteList() throws ParseException {
         assertEquals(new CronExpression("0, 7,19 * * * ?").getTimeAfter(new DateTime(2012, 4, 10, 13, 00)), new DateTime(2012, 4, 10, 13, 07));
         assertEquals(new CronExpression("0, 7,19 * * * ?").getTimeAfter(new DateTime(2012, 4, 10, 13, 07)), new DateTime(2012, 4, 10, 13, 19));
     }
 
     @Test
-    public void check_hour_number() throws ParseException {
+    public void checkHourNumber() throws ParseException {
         assertEquals(new CronExpression("0 * 3 * * ?").getTimeAfter(new DateTime(2012, 4, 10, 13, 01)), new DateTime(2012, 4, 11, 03, 00));
         assertEquals(new CronExpression("0 * 3 * * ?").getTimeAfter(new DateTime(2012, 4, 11, 03, 00)), new DateTime(2012, 4, 11, 03, 01));
         assertEquals(new CronExpression("0 * 3 * * ?").getTimeAfter(new DateTime(2012, 4, 11, 03, 59)), new DateTime(2012, 4, 12, 03, 00));
     }
 
     @Test
-    public void check_hour_increment() throws ParseException {
+    public void checkHourIncrement() throws ParseException {
         assertEquals(new CronExpression("0 * 0/15 * * ?").getTimeAfter(new DateTime(2012, 4, 10, 13, 00)), new DateTime(2012, 4, 10, 15, 00));
         assertEquals(new CronExpression("0 * 0/15 * * ?").getTimeAfter(new DateTime(2012, 4, 10, 15, 00)), new DateTime(2012, 4, 10, 15, 01));
         assertEquals(new CronExpression("0 * 0/15 * * ?").getTimeAfter(new DateTime(2012, 4, 10, 15, 59)), new DateTime(2012, 4, 11, 00, 00));
@@ -74,14 +74,14 @@ public class TestCronExpression {
     }
 
     @Test
-    public void check_hour_list() throws ParseException {
+    public void checkHourList() throws ParseException {
         assertEquals(new CronExpression("0 * 7,19 * * ?").getTimeAfter(new DateTime(2012, 4, 10, 13, 00)), new DateTime(2012, 4, 10, 19, 00));
         assertEquals(new CronExpression("0 * 7,19 * * ?").getTimeAfter(new DateTime(2012, 4, 10, 19, 00)), new DateTime(2012, 4, 10, 19, 01));
         assertEquals(new CronExpression("0 * 7,19 * * ?").getTimeAfter(new DateTime(2012, 4, 10, 19, 59)), new DateTime(2012, 4, 11, 07, 00));
     }
 
     @Test
-    public void check_dayOfMonth_number() throws ParseException {
+    public void checkDayOfMonthNumber() throws ParseException {
         assertEquals(new CronExpression("0 * * 3 * ?").getTimeAfter(new DateTime(2012, 4, 10, 13, 00)), new DateTime(2012, 5, 03, 00, 00));
         assertEquals(new CronExpression("0 * * 3 * ?").getTimeAfter(new DateTime(2012, 5, 03, 00, 00)), new DateTime(2012, 5, 03, 00, 01));
         assertEquals(new CronExpression("0 * * 3 * ?").getTimeAfter(new DateTime(2012, 5, 03, 00, 59)), new DateTime(2012, 5, 03, 01, 00));
@@ -89,7 +89,7 @@ public class TestCronExpression {
     }
 
     @Test
-    public void check_dayOfMonth_increment() throws ParseException {
+    public void checkDayOfMonthIncrement() throws ParseException {
         assertEquals(new CronExpression("0 0 0 1/15 * ?").getTimeAfter(new DateTime(2012, 4, 10, 13, 00)), new DateTime(2012, 4, 16, 00, 00));
         assertEquals(new CronExpression("0 0 0 1/15 * ?").getTimeAfter(new DateTime(2012, 4, 16, 00, 00)), new DateTime(2012, 5, 01, 00, 00));
         assertEquals(new CronExpression("0 0 0 1/15 * ?").getTimeAfter(new DateTime(2012, 4, 30, 00, 00)), new DateTime(2012, 5, 01, 00, 00));
@@ -97,7 +97,7 @@ public class TestCronExpression {
     }
 
     @Test
-    public void check_dayOfMonth_list() throws ParseException {
+    public void checkDayOfMonthList() throws ParseException {
         assertEquals(new CronExpression("0 0 0 7,19 * ?").getTimeAfter(new DateTime(2012, 4, 10, 13, 00)), new DateTime(2012, 4, 19, 00, 00));
         assertEquals(new CronExpression("0 0 0 7,19 * ?").getTimeAfter(new DateTime(2012, 4, 19, 00, 00)), new DateTime(2012, 5, 07, 00, 00));
         assertEquals(new CronExpression("0 0 0 7,19 * ?").getTimeAfter(new DateTime(2012, 5, 07, 00, 00)), new DateTime(2012, 5, 19, 00, 00));
@@ -105,19 +105,19 @@ public class TestCronExpression {
     }
 
     @Test
-    public void check_dayOfMonth_last() throws ParseException {
+    public void checkDayOfMonthLast() throws ParseException {
         assertEquals(new CronExpression("0 0 0 L * ?").getTimeAfter(new DateTime(2012, 4, 10, 13, 00)), new DateTime(2012, 4, 30, 00, 00));
         assertEquals(new CronExpression("0 0 0 L * ?").getTimeAfter(new DateTime(2012, 2, 12, 00, 00)), new DateTime(2012, 2, 29, 00, 00));
     }
 
     @Test
-    public void check_dayOfMonth_number_last_L() throws ParseException {
+    public void checkDayOfMonthNumberLastL() throws ParseException {
         assertEquals(new CronExpression("0 0 0 3L * ?").getTimeAfter(new DateTime(2012, 4, 10, 13, 00)), new DateTime(2012, 4, 30 - 2, 00, 00));
         assertEquals(new CronExpression("0 0 0 3L * ?").getTimeAfter(new DateTime(2012, 2, 12, 00, 00)), new DateTime(2012, 2, 29 - 2, 00, 00));
     }
 
     @Test
-    public void check_dayOfMonth_closest_weekday_W() throws ParseException {
+    public void checkDayOfMonthClosestWeekdayW() throws ParseException {
         // 9 - is weekday in may
         assertEquals(new CronExpression("0 0 0 9W * ?").getTimeAfter(new DateTime(2012, 5, 2, 00, 00)), new DateTime(2012, 5, 9, 00, 00));
 
@@ -132,41 +132,41 @@ public class TestCronExpression {
     }
 
     @Test(expected = ParseException.class)
-    public void check_dayOfMonth_invalid_modifier() throws ParseException {
+    public void checkDayOfMonthInvalidModifier() throws ParseException {
         new CronExpression("0 0 0 9X * ?").getTimeAfter(new DateTime());
     }
 
     @Test(expected = ParseException.class)
-    public void check_dayOfMonth_invalid_increment_modifier() throws ParseException {
+    public void checkDayOfMonthInvalidIncrementModifier() throws ParseException {
         new CronExpression("0 0 0 9#2 * ?").getTimeAfter(new DateTime());
     }
 
     @Test
-    public void check_month_number() throws ParseException {
+    public void checkMonthNumber() throws ParseException {
         assertEquals(new CronExpression("0 0 0 1 5 ?").getTimeAfter(new DateTime(2012, 2, 12, 00, 00)), new DateTime(2012, 5, 1, 00, 00));
     }
 
     @Test
-    public void check_month_increment() throws ParseException {
+    public void checkMonthIncrement() throws ParseException {
         assertEquals(new CronExpression("0 0 0 1 5/2 ?").getTimeAfter(new DateTime(2012, 2, 12, 00, 00)), new DateTime(2012, 5, 1, 00, 00));
         assertEquals(new CronExpression("0 0 0 1 5/2 ?").getTimeAfter(new DateTime(2012, 5, 1, 00, 00)), new DateTime(2012, 7, 1, 00, 00));
         assertEquals(new CronExpression("0 0 0 1 5/10 ?").getTimeAfter(new DateTime(2012, 5, 1, 00, 00)), new DateTime(2013, 5, 1, 00, 00));
     }
 
     @Test
-    public void check_month_list() throws ParseException {
+    public void checkMonthList() throws ParseException {
         assertEquals(new CronExpression("0 0 0 1 3,7,12 ?").getTimeAfter(new DateTime(2012, 2, 12, 00, 00)), new DateTime(2012, 3, 1, 00, 00));
         assertEquals(new CronExpression("0 0 0 1 3,7,12 ?").getTimeAfter(new DateTime(2012, 3, 1, 00, 00)), new DateTime(2012, 7, 1, 00, 00));
         assertEquals(new CronExpression("0 0 0 1 3,7,12 ?").getTimeAfter(new DateTime(2012, 7, 1, 00, 00)), new DateTime(2012, 12, 1, 00, 00));
     }
 
     @Test(expected = ParseException.class)
-    public void check_month_invalid_modifier() throws ParseException {
+    public void checkMonthInvalidModifier() throws ParseException {
         new CronExpression("0 0 1 ? ?").getTimeAfter(new DateTime());
     }
 
     @Test
-    public void check_dayOfWeek_number() throws ParseException {
+    public void checkDayOfWeekNumber() throws ParseException {
         assertEquals(new CronExpression("0 0 0 ? * 3").getTimeAfter(new DateTime(2012, 4, 1, 00, 00)), new DateTime(2012, 4, 4, 00, 00));
         assertEquals(new CronExpression("0 0 0 ? * 3").getTimeAfter(new DateTime(2012, 4, 4, 00, 00)), new DateTime(2012, 4, 11, 00, 00));
         assertEquals(new CronExpression("0 0 0 ? * 3").getTimeAfter(new DateTime(2012, 4, 12, 00, 00)), new DateTime(2012, 4, 18, 00, 00));
@@ -174,7 +174,7 @@ public class TestCronExpression {
     }
 
     @Test
-    public void check_dayOfWeek_increment() throws ParseException {
+    public void checkDayOfWeekIncrement() throws ParseException {
         assertEquals(new CronExpression("0 0 0 ? * 3/2").getTimeAfter(new DateTime(2012, 4, 1, 00, 00)), new DateTime(2012, 4, 4, 00, 00));
         assertEquals(new CronExpression("0 0 0 ? * 3/2").getTimeAfter(new DateTime(2012, 4, 4, 00, 00)), new DateTime(2012, 4, 6, 00, 00));
         assertEquals(new CronExpression("0 0 0 ? * 3/2").getTimeAfter(new DateTime(2012, 4, 6, 00, 00)), new DateTime(2012, 4, 8, 00, 00));
@@ -182,38 +182,38 @@ public class TestCronExpression {
     }
 
     @Test
-    public void check_dayOfWeek_list() throws ParseException {
+    public void checkDayOfWeekList() throws ParseException {
         assertEquals(new CronExpression("0 0 0 ? * 1,5,7").getTimeAfter(new DateTime(2012, 4, 1, 00, 00)), new DateTime(2012, 4, 2, 00, 00));
         assertEquals(new CronExpression("0 0 0 ? * 1,5,7").getTimeAfter(new DateTime(2012, 4, 2, 00, 00)), new DateTime(2012, 4, 6, 00, 00));
         assertEquals(new CronExpression("0 0 0 ? * 1,5,7").getTimeAfter(new DateTime(2012, 4, 6, 00, 00)), new DateTime(2012, 4, 8, 00, 00));
     }
 
     @Test
-    public void check_dayOfWeek_last_friday_in_month() throws ParseException {
+    public void checkDayOfWeekLastFridayInMonth() throws ParseException {
         assertEquals(new CronExpression("0 0 0 ? * 5L").getTimeAfter(new DateTime(2012, 4, 1, 00, 00)), new DateTime(2012, 4, 27, 00, 00));
         assertEquals(new CronExpression("0 0 0 ? * 5L").getTimeAfter(new DateTime(2012, 4, 27, 00, 00)), new DateTime(2012, 5, 25, 00, 00));
         assertEquals(new CronExpression("0 0 0 ? * 5L").getTimeAfter(new DateTime(2012, 2, 6, 00, 00)), new DateTime(2012, 2, 24, 00, 00));
     }
 
     @Test(expected = ParseException.class)
-    public void check_dayOfWeek_invalid_modifier() throws ParseException {
+    public void checkDayOfWeekInvalidModifier() throws ParseException {
         new CronExpression("0 0 0 * * 5W").getTimeAfter(new DateTime());
     }
 
     @Test(expected = ParseException.class)
-    public void check_dayOfWeek_invalid_increment_modifier() throws ParseException {
+    public void checkDayOfWeekInvalidIncrementModifier() throws ParseException {
         new CronExpression("0 0 0 * * 5?3").getTimeAfter(new DateTime());
     }
 
     @Test
-    public void check_dayOfWeek_shall_interpret_7_as_sunday() throws ParseException {
+    public void checkDayOfWeekShallInterpret7asSunday() throws ParseException {
         assertEquals(new CronExpression("0 0 0 ? * 7").getTimeAfter(new DateTime(2012, 4, 1, 00, 00)), new DateTime(2012, 4, 8, 00, 00));
         assertEquals(new CronExpression("0 0 0 ? * 7L").getTimeAfter(new DateTime(2012, 4, 1, 00, 00)), new DateTime(2012, 4, 29, 00, 00));
         assertEquals(new CronExpression("0 0 0 ? * 7#2").getTimeAfter(new DateTime(2012, 4, 1, 00, 00)), new DateTime(2012, 4, 8, 00, 00));
     }
 
     @Test
-    public void check_dayOfWeek_nth_friday_in_month() throws ParseException {
+    public void checkDayOfWeekNthFridayInMonth() throws ParseException {
         assertEquals(new CronExpression("0 0 0 ? * 5#3").getTimeAfter(new DateTime(2012, 4, 1, 00, 00)), new DateTime(2012, 4, 20, 00, 00));
         assertEquals(new CronExpression("0 0 0 ? * 5#3").getTimeAfter(new DateTime(2012, 4, 20, 00, 00)), new DateTime(2012, 5, 18, 00, 00));
         assertEquals(new CronExpression("0 0 0 ? * 7#1").getTimeAfter(new DateTime(2012, 3, 30, 00, 00)), new DateTime(2012, 4, 1, 00, 00));
@@ -222,7 +222,7 @@ public class TestCronExpression {
     }
 
     @Test(expected = ParseException.class)
-    public void shall_not_not_support_rolling_period() throws ParseException {
+    public void shallNotNotSupportRollingPeriod() throws ParseException {
         new CronExpression("* * 5-1 * * ?").getTimeAfter(new DateTime());
     }
 }
