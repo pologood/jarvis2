@@ -17,8 +17,6 @@ import javax.inject.Named;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 
-import akka.actor.UntypedActor;
-
 import com.google.common.collect.Sets;
 import com.google.common.eventbus.EventBus;
 import com.mogujie.jarvis.core.domain.JobFlag;
@@ -27,7 +25,7 @@ import com.mogujie.jarvis.dao.JobDependMapper;
 import com.mogujie.jarvis.dao.JobMapper;
 import com.mogujie.jarvis.dto.Job;
 import com.mogujie.jarvis.dto.JobDepend;
-import com.mogujie.jarvis.protocol.DeleteJobProtos.RestServerDeleteJobRequest;
+import com.mogujie.jarvis.protocol.ModifyJobFlagProtos.RestServerModifyJobFlagRequest;
 import com.mogujie.jarvis.protocol.ModifyJobProtos.RestServerModifyJobRequest;
 import com.mogujie.jarvis.protocol.ReportStatusProtos.WorkerReportStatusRequest;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitJobRequest;
@@ -53,6 +51,8 @@ import com.mogujie.jarvis.server.scheduler.task.TaskScheduler;
 import com.mogujie.jarvis.server.scheduler.time.TimeScheduler;
 import com.mogujie.jarvis.server.service.CrontabService;
 import com.mogujie.jarvis.server.service.JobDependService;
+
+import akka.actor.UntypedActor;
 
 /**
  * Actor used to schedule job with three schedulers (
@@ -107,7 +107,7 @@ public class JobSchedulerActor extends UntypedActor implements Observable {
     public void onReceive(Object obj) throws Exception {
         Event event = new UnhandleEvent();
         if (obj instanceof WorkerReportStatusRequest) {
-            WorkerReportStatusRequest msg = (WorkerReportStatusRequest)obj;
+            WorkerReportStatusRequest msg = (WorkerReportStatusRequest) obj;
             String fullId = msg.getFullId();
             String[] idList = fullId.split("_");
             long jobId = Long.valueOf(idList[0]);
@@ -124,7 +124,7 @@ public class JobSchedulerActor extends UntypedActor implements Observable {
                 event = new KilledEvent(jobId, taskId);
             }
         } else if (obj instanceof RestServerSubmitJobRequest) {
-            RestServerSubmitJobRequest msg = (RestServerSubmitJobRequest)obj;
+            RestServerSubmitJobRequest msg = (RestServerSubmitJobRequest) obj;
             // 1. insert job to DB
             Job job = SchedulerUtil.convert2Job(msg);
             jobMapper.insert(job);
@@ -161,7 +161,7 @@ public class JobSchedulerActor extends UntypedActor implements Observable {
             JobDependencyStrategy strategy = JobDependencyStrategy.ALL;
             event = new AddJobEvent(jobId, needDependencies, type, strategy);
         } else if (obj instanceof RestServerModifyJobRequest) {
-            RestServerModifyJobRequest msg = (RestServerModifyJobRequest)obj;
+            RestServerModifyJobRequest msg = (RestServerModifyJobRequest) obj;
             long jobId = msg.getJobId();
             // 1. update job to DB
             Job job = SchedulerUtil.convert2Job(msg);
@@ -187,8 +187,8 @@ public class JobSchedulerActor extends UntypedActor implements Observable {
             }
             boolean hasCron = (msg.getCronExpression() != null);
             event = new ModifyJobEvent(jobId, needDependencies, MODIFY_TYPE.MODIFY, hasCron);
-        } else if (obj instanceof RestServerDeleteJobRequest) {
-            RestServerDeleteJobRequest msg = (RestServerDeleteJobRequest)obj;
+        } else if (obj instanceof RestServerModifyJobFlagRequest) {
+            RestServerModifyJobFlagRequest msg = (RestServerModifyJobFlagRequest) obj;
             long jobId = msg.getJobId();
             event = new ModifyJobFlagEvent(jobId, JobFlag.DELETED);
         } else {
