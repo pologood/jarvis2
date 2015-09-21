@@ -21,7 +21,7 @@ import com.mogujie.jarvis.server.service.HeartBeatService;
 import akka.actor.Props;
 import akka.actor.UntypedActor;
 
-@Named("HeartBeatActor")
+@Named("heartBeatActor")
 @Scope("prototype")
 public class HeartBeatActor extends UntypedActor {
 

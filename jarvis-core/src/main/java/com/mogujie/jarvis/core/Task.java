@@ -23,6 +23,7 @@ public class Task {
     private String taskType;
     private String command;
     private int priority;
+    private int groupId;
     private Map<String, Object> parameters;
 
     private Task() {
@@ -54,6 +55,10 @@ public class Task {
 
     public int getPriority() {
         return priority;
+    }
+
+    public int getGroupId() {
+        return groupId;
     }
 
     public Map<String, Object> getParameters() {
@@ -103,6 +108,11 @@ public class Task {
 
         public TaskBuilder setPriority(int priority) {
             this.task.priority = priority;
+            return this;
+        }
+
+        public TaskBuilder setGroupId(int groupId) {
+            this.task.groupId = groupId;
             return this;
         }
 

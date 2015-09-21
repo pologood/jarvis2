@@ -17,6 +17,7 @@ import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
 import com.mogujie.jarvis.core.Task;
 import com.mogujie.jarvis.server.domain.TaskEvent;
+import com.mogujie.jarvis.server.util.SpringContext;
 
 /**
  * 
@@ -36,7 +37,7 @@ public enum TaskQueue {
 
         TaskEventHandler[] taskEventHandlers = new TaskEventHandler[10];
         for (int i = 0, len = taskEventHandlers.length; i < len; i++) {
-            taskEventHandlers[i] = new TaskEventHandler();
+            taskEventHandlers[i] = SpringContext.getBean(TaskEventHandler.class);
         }
         disruptor.handleEventsWithWorkerPool(taskEventHandlers);
         ringBuffer = disruptor.start();
