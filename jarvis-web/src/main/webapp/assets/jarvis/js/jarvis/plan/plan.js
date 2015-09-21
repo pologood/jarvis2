@@ -214,5 +214,8 @@ $("#content").bootstrapTable({
     paginationFirstText:'首页',
     paginationPreText:'上一页',
     paginationNextText:'下一页',
-    paginationLastText:'末页'
+    paginationLastText:'末页',
+    showExport:true,
+    exportTypes:['json', 'xml', 'csv', 'txt', 'sql', 'doc', 'excel'],
+    exportDataType:'all'
 });

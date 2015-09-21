@@ -27,6 +27,6 @@
 
        <bean id="jarvisAuthTypeAdapter" class="com.mogujie.jarvis.web.auth.adapter.JarvisAuthTypeAdapter" />
        <!-- 声明需要暴露的服务接口 -->
-       <dubbo:service interface="com.mogu.bigdata.admin.common.service.AuthTypeAdapter" group="report" ref="jarvisAuthTypeAdapter" timeout="1000"/>
+       <dubbo:service interface="com.mogu.bigdata.admin.common.service.AuthTypeAdapter" group="jarvis" ref="jarvisAuthTypeAdapter" timeout="1000"/>
 
 </beans>

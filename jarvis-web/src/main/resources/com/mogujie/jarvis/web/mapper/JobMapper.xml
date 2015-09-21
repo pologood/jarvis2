@@ -54,9 +54,7 @@
     <select id="getJobsByCondition" parameterType="JobSearchVo" resultType="JobVo">
       SELECT * FROM job
       <include refid="condition" />
-      <if test="order!=null">
-          ORDER BY #{order}
-      </if>
+
       <include refid="pager" />
     </select>
 

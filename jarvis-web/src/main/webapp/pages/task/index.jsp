@@ -47,7 +47,7 @@
 
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">执行结束日期<=</span>
+                        <span class="input-group-addon" style="width:35%">执行结束日期<</span>
                         <input id="executeEndTime"  class="form-control" />
                     </div>
                 </div>

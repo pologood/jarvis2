@@ -3,6 +3,7 @@ package com.mogujie.jarvis.web.service;
 import com.alibaba.fastjson.JSONObject;
 import com.mogujie.jarvis.dto.Job;
 import com.mogujie.jarvis.web.common.Constants;
+import com.mogujie.jarvis.web.common.TimeTools;
 import com.mogujie.jarvis.web.entity.vo.JobSearchVo;
 import com.mogujie.jarvis.web.entity.vo.JobVo;
 import com.mogujie.jarvis.web.mapper.JobMapper;
@@ -33,7 +34,11 @@ public class JobService {
         logger.info("flagMap:"+Constants.jobFlagMap);
         for(JobVo jobVo:jobList){
             jobVo.setJobStatus(Constants.jobFlagMap.get(jobVo.getJobFlag()));
-            jobVo.setJobPriority(Constants.priorityMap.get(jobVo.getPriority()));
+            jobVo.setJobPriority(Constants.jobPriorityMap.get(jobVo.getPriority()));
+            jobVo.setCreateTimeStr(TimeTools.formatDateTime(jobVo.getCreateTime()));
+            jobVo.setUpdateTimeStr(TimeTools.formatDateTime(jobVo.getUpdateTime()));
+            jobVo.setActiveStartDateStr(TimeTools.formatDate(jobVo.getActiveStartDate()));
+            jobVo.setActiveEndDateStr(TimeTools.formatDate(jobVo.getActiveEndDate()));
         }
 
         jsonObject.put("total",count);

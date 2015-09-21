@@ -56,18 +56,17 @@ function search(){
 }
 //重置参数
 function reset(){
-    $("#taskDate").val("");
-    $("#dataDate").val("");
     $("#executeDate").val("");
-    $("#executeCycle").val("all").trigger("change");
+    $("#dataDate").val("");
+    $("#executeStartTime").val("");
+    $("#executeEndTime").val("");
     $("#jobId").val("all").trigger("change");
     $("#jobName").val("all").trigger("change");
     $("#jobType").val("all").trigger("change");
-    $("#jobSource").val("all").trigger("change");
+    $("#submitUser").val("all").trigger("change");
     $("#taskStatus input").each(function(i,c){
         this.checked=false;
     });
-    $("#submitUser").val("all").trigger("change");
 }
 
 
@@ -108,7 +107,6 @@ function getQueryPara(){
     queryPara["submitUser"]=submitUser;
     queryPara["taskStatusArrStr"]=JSON.stringify(taskStatus);
 
-
     return queryPara;
 }
 
@@ -133,11 +131,14 @@ function initData(){
         showToggle:true,
         pageSize:1,
         pageSize:10,
-        pageList:[5,10,25,50,100,200,500],
+        pageList:[5,10,25,50,100,200,500,1000],
         paginationFirstText:'首页',
         paginationPreText:'上一页',
         paginationNextText:'下一页',
-        paginationLastText:'末页'
+        paginationLastText:'末页',
+        showExport:true,
+        exportTypes:['json', 'xml', 'csv', 'txt', 'sql', 'doc', 'excel'],
+        exportDataType:'all'
     });
 }
 
@@ -163,6 +164,10 @@ var columns=[{
     switchable:true,
     visible:false
 }, {
+    field: 'jobName',
+    title: '任务名',
+    switchable:true
+},{
     field: 'jobContent',
     title: '任务内容',
     switchable:true
@@ -172,11 +177,11 @@ var columns=[{
     switchable:true,
     visible:false
 }, {
-    field: 'dataYmd',
+    field: 'dataYmdStr',
     title: '数据日期',
     switchable:true
 }, {
-    field: 'status',
+    field: 'taskStatus',
     title: '执行状态',
     switchable:true
 }, {
@@ -184,14 +189,78 @@ var columns=[{
     title: '执行用户',
     switchable:true
 }, {
-    field: 'executeStartTime',
+    field: 'executeStartTimeStr',
     title: '开始执行时间',
     switchable:true
 }, {
-    field: 'executeEndTime',
+    field: 'executeEndTimeStr',
     title: '执行结束时间',
     switchable:true
+}, {
+    field: 'createTimeStr',
+    title: '执行创建时间',
+    switchable:true
+}, {
+    field: 'updateTimeStr',
+    title: '执行更新时间',
+    switchable:true,
+    visible:false
+}, {
+    field: 'activeStartDateStr',
+    title: '任务有效期起始',
+    switchable:true,
+    visible:false
+}, {
+    field: 'activeEndDateStr',
+    title: '任务有效期截止',
+    switchable:true,
+    visible:false
+}, {
+    field: 'jobType',
+    title: '任务类型',
+    switchable:true,
+    visible:false
+}, {
+    field: 'submitUser',
+    title: '任务创建者',
+    switchable:true,
+    visible:false
+}, {
+    field: 'appName',
+    title: '应用名',
+    switchable:true,
+    visible:false
+}, {
+    field: 'jobPriority',
+    title: '任务优先级',
+    switchable:true,
+    visible:false
+}, {
+    field: 'workerGroupId',
+    title: '任务workerGroupId',
+    switchable:true,
+    visible:false
+}, {
+    field: 'operation',
+    title: '操作',
+    switchable:true,
+    formatter: operateFormatter
 }];
+
+function operateFormatter(value, row, index) {
+    //console.log(row);
+    var taskId=row["taskId"];
+    //console.log(jobId);
+    var result= [
+        '<a class="edit" href="/jarvis/task/detail?taskId='+taskId+'" title="查看执行详情" target="_blank">',
+        '<i class="glyphicon glyphicon-eye-open"></i>',
+        '</a>  '
+    ].join('');
+
+    //console.log(result);
+
+    return result;
+}
 
 
 

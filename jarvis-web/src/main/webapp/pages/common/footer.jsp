@@ -42,8 +42,13 @@
 <script type="text/javascript" src="/assets/jarvis/plugins/form/jquery.form.min.js" charset="UTF-8"></script>
 <script type="text/javascript" src="/assets/jarvis/plugins/qtip2/jquery.qtip.min.js"></script>
 <script type="text/javascript" src="/assets/jarvis/plugins/pnotify/pnotify.custom.min.js" charset="UTF-8"></script>
+<script type="text/javascript" src="/assets/jarvis/plugins/echarts-2.2.7/echarts-all.js" charset="UTF-8"></script>
 <script type="text/javascript" src="/assets/jarvis/plugins/bootstrap-table/bootstrap-table.min.js" charset="UTF-8"></script>
 <script type="text/javascript" src="/assets/jarvis/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js" charset="UTF-8"></script>
+<script type="text/javascript" src="/assets/jarvis/plugins/bootstrap-table/extensions/export/bootstrap-table-export.min.js" charset="UTF-8"></script>
+<script type="text/javascript" src="/assets/jarvis/plugins/tableExport.jquery.plugin/tableExport.js" charset="UTF-8"></script>
+
+
 
 <script type="text/javascript" src="/assets/jarvis/js/jarvis.js" charset="UTF-8"></script>
 

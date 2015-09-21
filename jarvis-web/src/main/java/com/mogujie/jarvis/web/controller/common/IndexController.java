@@ -25,7 +25,7 @@ public class IndexController extends com.mogujie.jarvis.web.controller.common.Ba
     @RequestMapping("/")
     public String index(ModelMap model){
         if (null == user || null == user.get().getUname() || StringUtils.isBlank(user.get().getUname())) {
-            model.addAttribute("platform", PlatformConf.report);
+            model.addAttribute("platform", PlatformConf.jarvis);
             return "index";
         } else {
             return "redirect:/jarvis";
@@ -35,7 +35,7 @@ public class IndexController extends com.mogujie.jarvis.web.controller.common.Ba
     @RequestMapping(value = "/jarvis", method = RequestMethod.GET)
     public void jarvis(HttpServletRequest request, HttpServletResponse response){
         try {
-            request.getRequestDispatcher("/jarvis/task").forward(request, response);
+            request.getRequestDispatcher("/jarvis/plan").forward(request, response);
         } catch (Exception e){
             log.error(e);
         }

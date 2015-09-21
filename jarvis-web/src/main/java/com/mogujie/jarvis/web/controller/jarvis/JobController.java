@@ -1,5 +1,9 @@
 package com.mogujie.jarvis.web.controller.jarvis;
 
+import com.alibaba.dubbo.common.json.JSONObject;
+import com.alibaba.fastjson.JSON;
+import com.mogujie.jarvis.web.auth.annotation.JarvisPassport;
+import com.mogujie.jarvis.web.auth.conf.JarvisAuthType;
 import com.mogujie.jarvis.web.entity.vo.JobVo;
 import com.mogujie.jarvis.web.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +25,7 @@ public class JobController extends BaseController{
     JobService jobService;
 
     @RequestMapping
+    @JarvisPassport(authTypes = JarvisAuthType.job)
     public String index(ModelMap modelMap){
         List<Long> jobIds= jobService.getJobIds();
         List<String> jobNames= jobService.getJobNames();
@@ -44,8 +49,14 @@ public class JobController extends BaseController{
     }
 
     @RequestMapping(value = "dependency")
-    public String dependency(ModelMap modelMap){
+    public String dependency(ModelMap modelMap,Long jobId){
+        JobVo jobVo=jobService.getJobById(jobId);
 
+        if(jobVo==null){
+            jobVo=new JobVo();
+        }
+
+        modelMap.put("jobVo", JSON.toJSONString(jobVo));
         return "job/dependency";
     }
 
