@@ -17,50 +17,37 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author guangming
  *
  */
-public class CachedDependStatus extends AbstractDependStatus {
-    // Map<jobId, Map<taskId, status>>
-    protected Map<Long, Map<Long, Boolean>> jobStatusMap =
-            new ConcurrentHashMap<Long, Map<Long, Boolean>>();
+public class CachedDependStatus extends RuntimeDependStatus {
+    // Map<taskId, status>
+    protected Map<Long, Boolean> taskStatusMap =
+            new ConcurrentHashMap<Long, Boolean>();
 
     @Override
-    protected void modifyDependStatus(long jobId, long taskId, boolean status) {
-        if (!jobStatusMap.containsKey(jobId)) {
-            Map<Long, Boolean> taskStatusMap = new ConcurrentHashMap<Long, Boolean>();
-            taskStatusMap.put(taskId, status);
-            jobStatusMap.put(jobId, taskStatusMap);
-        } else {
-            Map<Long, Boolean> taskStatusMap = jobStatusMap.get(jobId);
-            taskStatusMap.put(taskId, status);
-        }
+    protected void modifyDependStatus(long taskId, boolean status) {
+        taskStatusMap.put(taskId, status);
     }
 
     @Override
-    public void removeDependency(long jobId) {
-        if (jobStatusMap.containsKey(jobId)) {
-            Map<Long, Boolean> taskStatusMap = jobStatusMap.get(jobId);
-            if (taskStatusMap != null) {
-                taskStatusMap.clear();
-            }
-            jobStatusMap.remove(jobId);
-        }
+    public void removeDependency() {
+        taskStatusMap.clear();
     }
 
     @Override
     public void init() {
-        this.jobStatusMap = loadJobDependStatus();
+        this.taskStatusMap = loadTaskDependStatus();
     }
 
     @Override
     public void reset() {
-        jobStatusMap.clear();
+        taskStatusMap.clear();
     }
 
     @Override
-    protected Map<Long, Map<Long, Boolean>> getJobStatusMap() {
-        return this.jobStatusMap;
+    protected Map<Long, Boolean> getTaskStatusMap() {
+        return this.taskStatusMap;
     }
 
-    protected Map<Long, Map<Long, Boolean>> loadJobDependStatus() {
-        return new ConcurrentHashMap<Long, Map<Long, Boolean>>();
+    protected Map<Long, Boolean> loadTaskDependStatus() {
+        return new ConcurrentHashMap<Long, Boolean>();
     }
 }

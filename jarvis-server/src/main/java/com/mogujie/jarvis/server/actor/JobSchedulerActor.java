@@ -17,6 +17,8 @@ import javax.inject.Named;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 
+import akka.actor.UntypedActor;
+
 import com.google.common.collect.Sets;
 import com.google.common.eventbus.EventBus;
 import com.mogujie.jarvis.core.domain.JobFlag;
@@ -35,7 +37,6 @@ import com.mogujie.jarvis.server.observer.Observer;
 import com.mogujie.jarvis.server.scheduler.JobScheduleType;
 import com.mogujie.jarvis.server.scheduler.SchedulerUtil;
 import com.mogujie.jarvis.server.scheduler.dag.DAGScheduler;
-import com.mogujie.jarvis.server.scheduler.dag.JobDependencyStrategy;
 import com.mogujie.jarvis.server.scheduler.event.AddJobEvent;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
 import com.mogujie.jarvis.server.scheduler.event.InitEvent;
@@ -51,8 +52,6 @@ import com.mogujie.jarvis.server.scheduler.task.TaskScheduler;
 import com.mogujie.jarvis.server.scheduler.time.TimeScheduler;
 import com.mogujie.jarvis.server.service.CrontabService;
 import com.mogujie.jarvis.server.service.JobDependService;
-
-import akka.actor.UntypedActor;
 
 /**
  * Actor used to schedule job with three schedulers (
@@ -157,9 +156,7 @@ public class JobSchedulerActor extends UntypedActor implements Observable {
             boolean hasCron = (msg.getCronExpression() != null);
             boolean hasDepend = (!needDependencies.isEmpty());
             JobScheduleType type = SchedulerUtil.getJobScheduleType(hasCron, hasDepend);
-            // 5. get JobDependencyStrategy
-            JobDependencyStrategy strategy = JobDependencyStrategy.ALL;
-            event = new AddJobEvent(jobId, needDependencies, type, strategy);
+            event = new AddJobEvent(jobId, needDependencies, type);
         } else if (obj instanceof RestServerModifyJobRequest) {
             RestServerModifyJobRequest msg = (RestServerModifyJobRequest) obj;
             long jobId = msg.getJobId();
