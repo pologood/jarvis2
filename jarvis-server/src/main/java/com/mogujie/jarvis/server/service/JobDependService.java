@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mogujie.jarvis.dao.JobDependMapper;
+import com.mogujie.jarvis.server.scheduler.dag.strategy.CommonStrategy;
+import com.mogujie.jarvis.server.scheduler.dag.strategy.OffsetStrategyEnum;
 
 /**
  * @author guangming
@@ -23,6 +25,18 @@ import com.mogujie.jarvis.dao.JobDependMapper;
 public class JobDependService {
     @Autowired
     private JobDependMapper jobDependMapper;
+
+    public CommonStrategy getCommonStrategy(long myJobId, long preJobId) {
+        return CommonStrategy.ALL;
+    }
+
+    public OffsetStrategyEnum getOffsetStrategyEnum(long myJobId, long preJobId) {
+        return null;
+    }
+
+    public int getOffsetValue(long myJobId, long preJobId) {
+        return 0;
+    }
 
     public void deleteByJobId(long jobId) {
 

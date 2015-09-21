@@ -31,7 +31,6 @@ import com.mogujie.jarvis.server.scheduler.Scheduler;
 import com.mogujie.jarvis.server.scheduler.SchedulerUtil;
 import com.mogujie.jarvis.server.scheduler.dag.job.DAGJob;
 import com.mogujie.jarvis.server.scheduler.dag.job.DAGJobFactory;
-import com.mogujie.jarvis.server.scheduler.dag.status.AbstractDependStatus;
 import com.mogujie.jarvis.server.scheduler.event.AddJobEvent;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
 import com.mogujie.jarvis.server.scheduler.event.InitEvent;
@@ -88,8 +87,7 @@ public class DAGScheduler implements Scheduler {
             boolean hasCron = (!cronService.getCronIds(jobId).isEmpty());
             boolean hasDepend = (!dependencies.isEmpty());
             JobScheduleType type = SchedulerUtil.getJobScheduleType(hasCron, hasDepend);
-            JobDependencyStrategy strategy = JobDependencyStrategy.ALL;
-            AddJobEvent addJobEvent = new AddJobEvent(jobId, dependencies, type, strategy);
+            AddJobEvent addJobEvent = new AddJobEvent(jobId, dependencies, type);
             try {
                 handleAddJobEvent(addJobEvent);
             } catch (Exception e) {
@@ -117,14 +115,9 @@ public class DAGScheduler implements Scheduler {
     public void handleAddJobEvent(AddJobEvent event) throws Exception {
         long jobId = event.getJobId();
         if (waitingTable.get(jobId) == null) {
-            AbstractDependStatus jobDependStatus = SchedulerUtil.getJobDependStatus(conf);
-            if (jobDependStatus != null) {
-                jobDependStatus.setMyjobId(jobId);
-                JobScheduleType scheduleType = event.getScheduleType();
-                DAGJob dagJob = DAGJobFactory.createDAGJob(scheduleType, jobId,
-                        jobDependStatus, JobDependencyStrategy.ALL);
-                addJob(jobId, dagJob, event.getDependencies());
-            }
+            JobScheduleType scheduleType = event.getScheduleType();
+            DAGJob dagJob = DAGJobFactory.createDAGJob(scheduleType, jobId);
+            addJob(jobId, dagJob, event.getDependencies());
         }
     }
 

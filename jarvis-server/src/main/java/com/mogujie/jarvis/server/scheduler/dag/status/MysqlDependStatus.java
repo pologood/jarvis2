@@ -21,7 +21,7 @@ import com.mogujie.jarvis.server.service.DependStatusService;
  * @author guangming
  *
  */
-public class MysqlDependStatus extends AbstractDependStatus {
+public class MysqlDependStatus extends RuntimeDependStatus {
     private DependStatusService statusService;
 
     public MysqlDependStatus() {
@@ -30,8 +30,8 @@ public class MysqlDependStatus extends AbstractDependStatus {
     }
 
     @Override
-    public void removeDependency(long jobId) {
-        statusService.deleteDependencyByPreJobId(getMyJobId(), jobId);
+    public void removeDependency() {
+        statusService.deleteDependencyByPreJobId(getMyJobId(), getPreJobId());
     }
 
     @Override
@@ -40,17 +40,18 @@ public class MysqlDependStatus extends AbstractDependStatus {
 
     @Override
     public void reset() {
-        statusService.clearMyStatus(getMyJobId());
+        statusService.clearPreStatus(getMyJobId(), getPreJobId());
     }
 
     @Override
-    protected void modifyDependStatus(long jobId, long taskId, boolean status) {
-        MysqlDependStatusUtil.modifyDependStatus(getMyJobId(), jobId, taskId,
+    protected void modifyDependStatus(long taskId, boolean status) {
+        MysqlDependStatusUtil.modifyDependStatus(getMyJobId(), getPreJobId(), taskId,
                 status, statusService);
     }
 
     @Override
-    protected Map<Long, Map<Long, Boolean>> getJobStatusMap() {
-        return MysqlDependStatusUtil.getJobStatusMapFromDb(statusService, getMyJobId());
+    protected Map<Long, Boolean> getTaskStatusMap() {
+        return MysqlDependStatusUtil.getTaskStatusMapFromDb(statusService,
+                getMyJobId(), getPreJobId());
     }
 }

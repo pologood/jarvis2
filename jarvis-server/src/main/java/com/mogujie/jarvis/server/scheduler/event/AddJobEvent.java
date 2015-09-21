@@ -11,7 +11,6 @@ package com.mogujie.jarvis.server.scheduler.event;
 import java.util.Set;
 
 import com.mogujie.jarvis.server.scheduler.JobScheduleType;
-import com.mogujie.jarvis.server.scheduler.dag.JobDependencyStrategy;
 
 /**
  * @author guangming
@@ -20,18 +19,16 @@ import com.mogujie.jarvis.server.scheduler.dag.JobDependencyStrategy;
 public class AddJobEvent extends DAGJobEvent{
     private Set<Long> dependencies;
     private JobScheduleType scheduleType;
-    private JobDependencyStrategy jobDepenStrategy;
 
     /**
      * @param long jobId
      * @param JobDescriptor jobDesc
      */
     public AddJobEvent(long jobId, Set<Long> dependencies,
-            JobScheduleType type, JobDependencyStrategy strategy) {
+            JobScheduleType type) {
         super(jobId);
         this.dependencies = dependencies;
         this.scheduleType = type;
-        this.jobDepenStrategy = strategy;
     }
 
     public Set<Long> getDependencies() {
@@ -48,13 +45,5 @@ public class AddJobEvent extends DAGJobEvent{
 
     public void setScheduleType(JobScheduleType scheduleType) {
         this.scheduleType = scheduleType;
-    }
-
-    public JobDependencyStrategy getJobDepenStrategy() {
-        return jobDepenStrategy;
-    }
-
-    public void setJobDepenStrategy(JobDependencyStrategy jobDepenStrategy) {
-        this.jobDepenStrategy = jobDepenStrategy;
     }
 }
