@@ -16,8 +16,8 @@ import org.apache.logging.log4j.Logger;
 
 import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.common.util.ConfigUtils;
-import com.mogujie.jarvis.protocol.RegistWorkerProtos.ServerRegistionResponse;
-import com.mogujie.jarvis.protocol.RegistWorkerProtos.WorkerRegistionRequest;
+import com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse;
+import com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest;
 import com.mogujie.jarvis.worker.actor.DeadLetterActor;
 import com.mogujie.jarvis.worker.actor.WorkerActor;
 import com.typesafe.config.Config;
@@ -50,14 +50,14 @@ public class JarvisWorker {
         + JarvisConstants.SERVER_AKKA_PATH;
     int workerGroupId = workerConfig.getInt("worker.group.id", 0);
     String workerKey = workerConfig.getString("worker.key");
-    WorkerRegistionRequest request = WorkerRegistionRequest.newBuilder().setGroupId(workerGroupId)
+    WorkerRegistryRequest request = WorkerRegistryRequest.newBuilder().setGroupId(workerGroupId)
         .setKey(workerKey).build();
 
     // 注册Worker
     ActorSelection serverActor = system.actorSelection(serverAkkaPath);
     Future<Object> future = Patterns.ask(serverActor, request, TIMEOUT);
     try {
-      ServerRegistionResponse response = (ServerRegistionResponse) Await.result(future,
+      ServerRegistryResponse response = (ServerRegistryResponse) Await.result(future,
           TIMEOUT.duration());
       if (!response.getSuccess()) {
         LOGGER.error("Worker regist failed with group.id={}, worker.key={}", workerGroupId,

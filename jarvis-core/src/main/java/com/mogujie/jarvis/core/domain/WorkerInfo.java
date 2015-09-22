@@ -17,13 +17,11 @@ public class WorkerInfo {
 
     private String ip;
     private int port;
-    private String clientKey;
     private String akkaPath;
 
-    public WorkerInfo(String ip, int port, String clientKey) {
+    public WorkerInfo(String ip, int port) {
         this.ip = ip;
         this.port = port;
-        this.clientKey = clientKey;
     }
 
     public String getIp() {
@@ -40,14 +38,6 @@ public class WorkerInfo {
 
     public void setPort(int port) {
         this.port = port;
-    }
-
-    public String getClientKey() {
-        return clientKey;
-    }
-
-    public void setClientKey(String clientKey) {
-        this.clientKey = clientKey;
     }
 
     public String getAkkaPath() {
@@ -79,7 +69,7 @@ public class WorkerInfo {
         }
 
         WorkerInfo other = (WorkerInfo) obj;
-        return Objects.equals(ip, other.ip) && Objects.equals(port, other.port) && Objects.equals(clientKey, other.clientKey);
+        return Objects.equals(ip, other.ip) && Objects.equals(port, other.port);
     }
 
     @Override

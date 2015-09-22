@@ -10,10 +10,7 @@ package com.mogujie.jarvis.server.service;
 
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,9 +32,7 @@ public class HeartBeatService {
 
     private static final int MAX_HEART_BEAT_TIMEOUT_SECONDS = 30;
     private static final Map<Integer, LoadingCache<WorkerInfo, Integer>> HEART_BEAT_CACHE = Maps.newConcurrentMap();
-    private static final Logger LOGGER = LogManager.getLogger("heartbeat");
-
-    private static final Ordering<WorkerInfo> CLIENT_ORDERING = new Ordering<WorkerInfo>() {
+    private static final Ordering<WorkerInfo> WORKER_ORDERING = new Ordering<WorkerInfo>() {
 
         @Override
         public int compare(WorkerInfo left, WorkerInfo right) {
@@ -45,7 +40,7 @@ public class HeartBeatService {
         }
     };
 
-    public synchronized void put(int groupId, WorkerInfo workerInfo, final Integer jobNum) throws ExecutionException {
+    public synchronized void put(int groupId, WorkerInfo workerInfo, final Integer jobNum) {
         // TODO
     }
 
@@ -61,7 +56,7 @@ public class HeartBeatService {
             return null;
         }
 
-        return CLIENT_ORDERING.sortedCopy(HEART_BEAT_CACHE.get(groupId).asMap().keySet());
+        return WORKER_ORDERING.sortedCopy(HEART_BEAT_CACHE.get(groupId).asMap().keySet());
     }
 
 }
