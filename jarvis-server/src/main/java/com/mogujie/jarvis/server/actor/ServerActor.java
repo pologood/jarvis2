@@ -8,6 +8,13 @@
 
 package com.mogujie.jarvis.server.actor;
 
+import com.mogujie.jarvis.protocol.HeartBeatProtos.HeartBeatRequest;
+import com.mogujie.jarvis.protocol.ModifyJobFlagProtos.RestServerModifyJobFlagRequest;
+import com.mogujie.jarvis.protocol.ModifyJobProtos.RestServerModifyJobRequest;
+import com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest;
+import com.mogujie.jarvis.protocol.ReportProgressProtos.WorkerReportProgressRequest;
+import com.mogujie.jarvis.protocol.ReportStatusProtos.WorkerReportStatusRequest;
+import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitJobRequest;
 import com.mogujie.jarvis.server.util.SpringExtension;
 
 import akka.actor.ActorRef;
@@ -16,7 +23,7 @@ import akka.actor.UntypedActor;
 import akka.routing.SmallestMailboxPool;
 
 /**
- * 
+ * ServerActor forward any message to other actors
  *
  */
 public class ServerActor extends UntypedActor {
@@ -24,7 +31,8 @@ public class ServerActor extends UntypedActor {
     private ActorRef taskMetricsActor = getContext()
             .actorOf(SpringExtension.SPRING_EXT_PROVIDER.get(getContext().system()).props("taskMetricsActor"));
     private ActorRef heartBeatActor = getContext().actorOf(SpringExtension.SPRING_EXT_PROVIDER.get(getContext().system()).props("heartBeatActor"));
-
+    private ActorRef workerRegistryActor = getContext()
+            .actorOf(SpringExtension.SPRING_EXT_PROVIDER.get(getContext().system()).props("workerRegistryActor"));
     private ActorRef jobSchedulerActor = getContext()
             .actorOf(SpringExtension.SPRING_EXT_PROVIDER.get(getContext().system()).props("ServerActor").withRouter(new SmallestMailboxPool(10)));
 
@@ -34,7 +42,21 @@ public class ServerActor extends UntypedActor {
 
     @Override
     public void onReceive(Object obj) throws Exception {
-
+        if (obj instanceof HeartBeatRequest) {
+            heartBeatActor.forward(obj, getContext());
+        } else if (obj instanceof RestServerSubmitJobRequest || obj instanceof RestServerModifyJobRequest
+                || obj instanceof RestServerModifyJobFlagRequest) {
+            jobSchedulerActor.forward(obj, getContext());
+        } else if (obj instanceof WorkerReportStatusRequest) {
+            jobSchedulerActor.forward(obj, getContext());
+            taskMetricsActor.forward(obj, getContext());
+        } else if (obj instanceof WorkerReportProgressRequest) {
+            taskMetricsActor.forward(obj, getContext());
+        } else if (obj instanceof WorkerRegistryRequest) {
+            workerRegistryActor.forward(obj, getContext());
+        } else {
+            unhandled(obj);
+        }
     }
 
 }
