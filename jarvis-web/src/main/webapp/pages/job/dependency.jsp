@@ -23,85 +23,17 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-12">
-
-            <div class="row">
-                <div class="col-md-3">
-                    <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">任务ID</span>
-                        <select id="jobId" class="form-control" ></select>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">任务名称</span>
-                        <select id="jobName" class="form-control" ></select>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">任务类型</span>
-                        <select id="jobType" class="form-control"></select>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">发布者</span>
-                        <select id="submitUser" class="form-control"></select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row top-buffer">
-                <div class="col-md-3">
-                    <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">执行周期</span>
-                        <select id="" class="form-control"></select>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">来源</span>
-                        <select id="" class="form-control"></select>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">优先级</span>
-                        <select id="priority" class="form-control"></select>
-                    </div>
-                </div>
-
-                <div class="col-md-3">
-                    <div class="row">
-                        <div class="col-md-6 col-md-offset-6">
-                            <div class="input-group">
-                                <button type="button" class="btn btn-primary" onclick="">查询</button>
-                                <button type="button" class="btn btn-primary" onclick="">重置</button>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
-
     <hr>
 
-    <div class="row top-buffer">
+    <div class="row">
         <div class="col-md-12">
-            <div id="add">
-                <a class="btn btn-primary" href="#" target="_blank">新增任务</a>
-            </div>
-            <table id="content" >
-
-            </table>
+            <div id="dependTree" style="width:100%;min-height:400px"></div>
 
         </div>
-
     </div>
+
+
+
 
 
 </div>
@@ -115,5 +47,8 @@
 <jsp:include page="../common/footer.jsp">
     <jsp:param name="menuMap" value="${menuMap}"/>
 </jsp:include>
+<script type="text/javascript">
+    var jobVo=${jobVo};
 
+</script>
 <script type="text/javascript" src="/assets/jarvis/js/jarvis/job/dependency.js"></script>

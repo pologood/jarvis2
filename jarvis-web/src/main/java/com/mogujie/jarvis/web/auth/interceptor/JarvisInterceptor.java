@@ -68,7 +68,7 @@ public class JarvisInterceptor extends HandlerInterceptorAdapter {
 
         for(JarvisAuthType a: passport.authTypes()) {
             Integer permissionId = a.getCode();
-            if (!rbacService.checkPermissionByUser(sessionUser.getUname(), permissionId, PlatformConf.report.getCode())) {
+            if (!rbacService.checkPermissionByUser(sessionUser.getUname(), permissionId, PlatformConf.jarvis.getCode())) {
                 if (passport.resultType() == ResultType.page) {
                     request.getRequestDispatcher("/report/error?message=没有权限").forward(request, response);
                 } else if (passport.resultType() == ResultType.json) {

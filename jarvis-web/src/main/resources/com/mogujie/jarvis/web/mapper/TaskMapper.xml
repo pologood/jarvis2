@@ -21,7 +21,7 @@
             </if>
             <if test="endTime!=null and endTime!=''">
                 <![CDATA[
-                  AND task.executeEndTime<=#{endTime}
+                  AND task.executeEndTime<#{endTime}
                 ]]>
             </if>
             <if test="dataDate!=null and dataDate!=''">
@@ -39,36 +39,47 @@
                     (task.status=#{status})
                 </foreach>
             </if>
-
-
-
         </where>
     </sql>
+
     <sql id="pager">
         <if test="offset!=null and limit!=null">
             limit #{offset},#{limit}
         </if>
     </sql>
 
+    <sql id="order">
+        <if test="orderField!=null">
+            <choose>
+                <when test="order!=null and order=='ASC'">
+                    ORDER  BY #{orderField} ASC
+                </when>
+                <when test="order!=null and order=='DESC'">
+                    ORDER  BY #{orderField} DESC
+                </when>
+                <otherwise>
+                    ORDER  BY #{orderField}
+                </otherwise>
+            </choose>
 
+        </if>
+    </sql>
 
     
     <select id="getCountByCondition" parameterType="TaskSearchVo" resultType="Integer">
-      SELECT COUNT(1) FROM task
+      SELECT COUNT(1) FROM task LEFT JOIN job ON task.jobId=job.jobId
       <include refid="condition" />
     </select>
 
     <select id="getTasksByCondition" parameterType="TaskSearchVo" resultType="TaskVo">
-        SELECT * FROM task LEFT JOIN job ON task.jobId=job.jobId
+        SELECT *,time_to_sec(TIMEDIFF(task.executeEndTime,task.executeStartTime)) AS executeTime FROM task LEFT JOIN job ON task.jobId=job.jobId
         <include refid="condition" />
-        <if test="order!=null">
-            order by #{order}
-        </if>
+        <include refid="order" />
         <include refid="pager" />
     </select>
 
     <select id="getTaskById" parameterType="Long" resultType="TaskVo">
-        SELECT * FROM task WHERE taskId=#{taskId} limit 0,1
+        SELECT *,time_to_sec(TIMEDIFF(task.executeEndTime,task.executeStartTime)) AS executeTime FROM task WHERE taskId=#{taskId} limit 0,1
     </select>
 
 </mapper>

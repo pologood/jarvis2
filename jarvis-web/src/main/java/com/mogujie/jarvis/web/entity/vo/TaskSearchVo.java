@@ -20,6 +20,7 @@ public class TaskSearchVo extends Task {
     private String order;
     private Integer offset;
     private Integer limit;
+    private String orderField;
 
     public String getExecuteDate() {
         return executeDate;
@@ -117,4 +118,11 @@ public class TaskSearchVo extends Task {
         this.taskStatus = taskStatus;
     }
 
+    public String getOrderField() {
+        return orderField;
+    }
+
+    public void setOrderField(String orderField) {
+        this.orderField = orderField;
+    }
 }

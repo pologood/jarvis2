@@ -62,8 +62,8 @@ public class BaseController {
             this.user.set(new User());
         }
         HashMap<Integer, String> urlMap = getUrlMap();
-        LinkedHashMap<Long, Menu> menuMap = rbacService.getMenuByPlatformAndUser(urlMap, PlatformConf.report.getCode(), user.get().getUname(),jarvisAuthTypeAdapter.getAll());
-        mp.put("platform", PlatformConf.report);
+        LinkedHashMap<Long, Menu> menuMap = rbacService.getMenuByPlatformAndUser(urlMap, PlatformConf.jarvis.getCode(), user.get().getUname(),jarvisAuthTypeAdapter.getAll());
+        mp.put("platform", PlatformConf.jarvis);
         mp.put("menuMap", menuMap);
         String currentUri = request.getRequestURI();
         Integer permissionId = (Integer) request.getAttribute("permissionId");

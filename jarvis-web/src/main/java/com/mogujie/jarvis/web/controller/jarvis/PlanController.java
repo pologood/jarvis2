@@ -1,5 +1,7 @@
 package com.mogujie.jarvis.web.controller.jarvis;
 
+import com.mogujie.jarvis.web.auth.annotation.JarvisPassport;
+import com.mogujie.jarvis.web.auth.conf.JarvisAuthType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,14 +14,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class PlanController extends BaseController{
 
     @RequestMapping
+    @JarvisPassport(authTypes = JarvisAuthType.plan)
     public String index(){
 
         return "plan/index";
     }
 
-    @RequestMapping(value = "detail")
+    @RequestMapping(value = "dependency")
     public String detail(ModelMap modelMap,Long jobId){
 
-        return "task/detail";
+        return "plan/dependency";
     }
 }

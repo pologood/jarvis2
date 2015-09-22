@@ -94,7 +94,7 @@ function initData(){
         columns:columns,
         pagination:true,
         sidePagination:'server',
-        search:true,
+        search:false,
         url:'/jarvis/api/job/getJobs',
         queryParams:function(params) {
             for(var key in queryParams){
@@ -112,7 +112,10 @@ function initData(){
         paginationFirstText:'首页',
         paginationPreText:'上一页',
         paginationNextText:'下一页',
-        paginationLastText:'末页'
+        paginationLastText:'末页',
+        showExport:true,
+        exportTypes:['json', 'xml', 'csv', 'txt', 'sql', 'doc', 'excel'],
+        exportDataType:'all'
     });
 }
 
@@ -126,6 +129,9 @@ function operateFormatter(value, row, index) {
     var result= [
         '<a class="edit" href="/jarvis/job/addOrEdit?jobId='+jobId+'" title="编辑任务信息" target="_blank">',
         '<i class="glyphicon glyphicon-edit"></i>',
+        '</a>  ',
+        '<a class="edit" href="/jarvis/job/dependency?jobId='+jobId+'" title="查看任务依赖" target="_blank">',
+        '<i class="glyphicon glyphicon-eye-open"></i>',
         '</a>  '
     ].join('');
 
@@ -177,6 +183,23 @@ var columns=[{
 }, {
     field: 'appName',
     title: '应用名',
+    switchable:true
+}, {
+    field: 'createTimeStr',
+    title: '创建时间',
+    switchable:true
+},{
+    field: 'updateTimeStr',
+    title: '更新时间',
+    switchable:true,
+    visible:false
+},{
+    field: 'activeStartDateStr',
+    title: '开始日期',
+    switchable:true
+},{
+    field: 'activeEndDateStr',
+    title: '结束日期',
     switchable:true
 }, {
     field: 'workerGroupId',

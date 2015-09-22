@@ -8,7 +8,8 @@ import java.util.Map;
  */
 public class Constants {
     public static Map<Integer,String> jobFlagMap=new HashMap<Integer,String>();
-    public static Map<Integer,String> priorityMap=new HashMap<Integer,String>();
+    public static Map<Integer,String> jobPriorityMap=new HashMap<Integer,String>();
+    public static Map<Integer,String> taskStatusMap=new HashMap<Integer,String>();
 
     static {
         jobFlagMap.put(1,"启用");
@@ -16,10 +17,17 @@ public class Constants {
         jobFlagMap.put(3,"过期");
         jobFlagMap.put(4,"回收站");
 
-        priorityMap.put(1,"低");
-        priorityMap.put(2,"普通");
-        priorityMap.put(3,"高");
-        priorityMap.put(4,"很高");
+        jobPriorityMap.put(1,"低");
+        jobPriorityMap.put(2,"普通");
+        jobPriorityMap.put(3,"高");
+        jobPriorityMap.put(4,"很高");
+
+        taskStatusMap.put(1,"等待");
+        taskStatusMap.put(2,"准备好");
+        taskStatusMap.put(3,"运行中");
+        taskStatusMap.put(4,"成功");
+        taskStatusMap.put(5,"失败");
+        taskStatusMap.put(6,"强制终止");
 
     }
 }
