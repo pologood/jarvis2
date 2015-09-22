@@ -28,8 +28,13 @@
             <div class="row top-buffer">
                 <div class="col-md-6 col-md-offset-3">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">选择脚本</span>
-                        <select id="content"  ></select>
+                        <span class="input-group-addon" style="width:35%">选择任务</span>
+                        <select id="content">
+                            <option value="">无</option>
+                            <c:forEach items="${jobVoList}" var="job" varStatus="status">
+                                <option value="${job.jobId}">${job.jobName}</option>
+                            </c:forEach>
+                        </select>
                     </div>
                 </div>
             </div>

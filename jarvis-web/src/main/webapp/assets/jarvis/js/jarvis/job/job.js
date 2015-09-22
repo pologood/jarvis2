@@ -94,7 +94,7 @@ function initData(){
         columns:columns,
         pagination:true,
         sidePagination:'server',
-        search:true,
+        search:false,
         url:'/jarvis/api/job/getJobs',
         queryParams:function(params) {
             for(var key in queryParams){

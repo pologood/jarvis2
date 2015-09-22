@@ -24,6 +24,12 @@ public class JobService {
 
     Logger logger = Logger.getLogger(this.getClass());
 
+    public List<JobVo> getAllJobs(){
+        JobSearchVo jobSearchVo=new JobSearchVo();
+        List<JobVo> jobVoList=jobMapper.getJobsByCondition(jobSearchVo);
+        return jobVoList;
+    }
+
     public JSONObject getJobs(JobSearchVo jobSearchVo){
         JSONObject jsonObject=new JSONObject();
         Integer count=jobMapper.getCountByCondition(jobSearchVo);

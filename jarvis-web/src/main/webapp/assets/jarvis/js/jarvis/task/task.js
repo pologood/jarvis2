@@ -117,7 +117,7 @@ function initData(){
         columns:columns,
         pagination:true,
         sidePagination:'server',
-        search:true,
+        search:false,
         url:'/jarvis/api/task/getTasks',
         queryParams:function(params) {
             for(var key in queryParams){

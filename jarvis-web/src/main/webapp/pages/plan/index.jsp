@@ -92,8 +92,8 @@
                 </div>
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">发布者</span>
-                        <select id="submitUser" ></select>
+                        <span class="input-group-addon" style="width:35%">执行用户</span>
+                        <select id="executeUser" ></select>
                     </div>
                 </div>
                 <div class="col-md-3">

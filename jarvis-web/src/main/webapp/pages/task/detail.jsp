@@ -54,34 +54,33 @@
                     </tr>
                     <tr>
                         <td colspan="6">
-                            <div class="tabbable" id="tabs-877877">
-                                <ul id="descriptionTab" class="nav nav-tabs">
-                                    <li class="active">
-                                        <a href="#panel-1581" data-toggle="tab">执行内容</a>
+                            <div>
+                                <ul class="nav nav-tabs">
+                                    <li role="presentation" class="active">
+                                        <a href="#executeContent" data-toggle="tab">执行内容</a>
                                     </li>
-                                    <li class="">
-                                        <a href="#panel-765105" data-toggle="tab">资源使用</a>
-                                    </li>
-                                    <li class="">
-                                        <a href="#panel-765106" data-toggle="tab">错误日志</a>
+                                    <li role="presentation">
+                                        <a href="#errorLog" data-toggle="tab">错误日志</a>
                                     </li>
                                 </ul>
-                                <div class="tab-content">
-                                    <div class="tab-pane active" id="panel-1581">
-							            <pre>
-                                            python /data/pyramid/pyramid/index.py output_data 'feed_pv_stat' Y 2015-09-15
-                                        </pre>
-                                    </div>
-                                    <div class="tab-pane" id="panel-765105">
-							            <pre>
 
+                                <div class="tab-content">
+                                    <div id="executeContent" class="tab-pane active" >
+                                        <pre>
+                                            ${taskVo.jobContent}
                                         </pre>
                                     </div>
-                                    <div class="tab-pane" id="panel-765106">
-                                        <pre></pre>
+
+                                    <div id="errorLog" class="tab-pane">
+
                                     </div>
                                 </div>
+
+
+
                             </div>
+
+
                         </td>
                     </tr>
                     </tbody></table>
