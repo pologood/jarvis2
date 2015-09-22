@@ -47,7 +47,7 @@ public class RestServer {
         String serverAkkaPath = restfulConfig.getString("jarvis.server.akka.path");
         String logServerAkkaPath = restfulConfig.getString("jarvis.logserver.akka.path");
 
-        ActorSystem system = ActorSystem.create(JarvisConstants.REST_SERVER_AKKA_PATH, restfulConfig);
+        ActorSystem system = ActorSystem.create(JarvisConstants.REST_SERVER_AKKA_SYSTEM_NAME, restfulConfig);
         URI baseUri = UriBuilder.fromUri("http://" + Inet4Address.getLocalHost().getHostAddress() + "/").port(port).build();
         ResourceConfig resourceConfig = new ResourceConfig();
 
