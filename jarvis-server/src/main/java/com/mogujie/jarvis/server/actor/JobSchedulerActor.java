@@ -17,8 +17,6 @@ import javax.inject.Named;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 
-import akka.actor.UntypedActor;
-
 import com.google.common.collect.Sets;
 import com.google.common.eventbus.EventBus;
 import com.mogujie.jarvis.core.domain.JobFlag;
@@ -53,6 +51,8 @@ import com.mogujie.jarvis.server.scheduler.time.TimeScheduler;
 import com.mogujie.jarvis.server.service.CrontabService;
 import com.mogujie.jarvis.server.service.JobDependService;
 
+import akka.actor.UntypedActor;
+
 /**
  * Actor used to schedule job with three schedulers (
  * {@link com.mogujie.jarvis.server.scheduler.time.TimeScheduler},
@@ -62,7 +62,7 @@ import com.mogujie.jarvis.server.service.JobDependService;
  * @author guangming
  *
  */
-@Named("JobSchedulerActor")
+@Named("jobSchedulerActor")
 @Scope("prototype")
 public class JobSchedulerActor extends UntypedActor implements Observable {
     @Autowired

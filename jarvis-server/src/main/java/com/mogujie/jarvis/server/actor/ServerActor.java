@@ -9,8 +9,10 @@
 package com.mogujie.jarvis.server.actor;
 
 import com.mogujie.jarvis.protocol.HeartBeatProtos.HeartBeatRequest;
+import com.mogujie.jarvis.protocol.KillTaskProtos.RestServerKillTaskRequest;
 import com.mogujie.jarvis.protocol.ModifyJobFlagProtos.RestServerModifyJobFlagRequest;
 import com.mogujie.jarvis.protocol.ModifyJobProtos.RestServerModifyJobRequest;
+import com.mogujie.jarvis.protocol.ModifyWorkerStatusProtos.RestServerModifyWorkerStatusRequest;
 import com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest;
 import com.mogujie.jarvis.protocol.ReportProgressProtos.WorkerReportProgressRequest;
 import com.mogujie.jarvis.protocol.ReportStatusProtos.WorkerReportStatusRequest;
@@ -33,8 +35,16 @@ public class ServerActor extends UntypedActor {
     private ActorRef heartBeatActor = getContext().actorOf(SpringExtension.SPRING_EXT_PROVIDER.get(getContext().system()).props("heartBeatActor"));
     private ActorRef workerRegistryActor = getContext()
             .actorOf(SpringExtension.SPRING_EXT_PROVIDER.get(getContext().system()).props("workerRegistryActor"));
-    private ActorRef jobSchedulerActor = getContext()
-            .actorOf(SpringExtension.SPRING_EXT_PROVIDER.get(getContext().system()).props("ServerActor").withRouter(new SmallestMailboxPool(10)));
+    private ActorRef jobSchedulerActor = getContext().actorOf(
+            SpringExtension.SPRING_EXT_PROVIDER.get(getContext().system()).props("jobSchedulerActor").withRouter(new SmallestMailboxPool(10)));
+
+    private ActorRef killTaskActor = getContext()
+            .actorOf(SpringExtension.SPRING_EXT_PROVIDER.get(getContext().system()).props("killTaskActor").withRouter(new SmallestMailboxPool(10)));
+    private ActorRef modifyJobFlagActor = getContext()
+            .actorOf(SpringExtension.SPRING_EXT_PROVIDER.get(getContext().system()).props("modifyJobFlagActor"));
+    private ActorRef modifyJobActor = getContext().actorOf(SpringExtension.SPRING_EXT_PROVIDER.get(getContext().system()).props("modifyJobActor"));
+    private ActorRef modifyWorkerStatusActor = getContext()
+            .actorOf(SpringExtension.SPRING_EXT_PROVIDER.get(getContext().system()).props("modifyWorkerStatusActor"));
 
     public static Props props() {
         return Props.create(ServerActor.class);
@@ -54,6 +64,14 @@ public class ServerActor extends UntypedActor {
             taskMetricsActor.forward(obj, getContext());
         } else if (obj instanceof WorkerRegistryRequest) {
             workerRegistryActor.forward(obj, getContext());
+        } else if (obj instanceof RestServerKillTaskRequest) {
+            killTaskActor.forward(obj, getContext());
+        } else if (obj instanceof RestServerModifyJobFlagRequest) {
+            modifyJobFlagActor.forward(obj, getContext());
+        } else if (obj instanceof RestServerModifyJobRequest) {
+            modifyJobActor.forward(obj, getContext());
+        } else if (obj instanceof RestServerModifyWorkerStatusRequest) {
+            modifyWorkerStatusActor.forward(obj, getContext());
         } else {
             unhandled(obj);
         }
