@@ -8,7 +8,9 @@
 
 package com.mogujie.jarvis.server.actor;
 
-import org.springframework.stereotype.Service;
+import javax.inject.Named;
+
+import org.springframework.context.annotation.Scope;
 
 import com.mogujie.jarvis.core.domain.WorkerInfo;
 import com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse;
@@ -22,7 +24,8 @@ import akka.actor.UntypedActor;
  * Worker authentication
  *
  */
-@Service
+@Named("workerRegistryActor")
+@Scope("prototype")
 public class WorkerRegistryActor extends UntypedActor {
 
     @Override
