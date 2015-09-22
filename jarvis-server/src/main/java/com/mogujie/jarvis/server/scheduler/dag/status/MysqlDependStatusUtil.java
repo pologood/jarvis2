@@ -41,6 +41,17 @@ public class MysqlDependStatusUtil {
         return jobStatusMap;
     }
 
+    public static Map<Long, Boolean> getTaskStatusMapFromDb(DependStatusService statusService,
+            long myJobId, long preJobId) {
+        Map<Long, Boolean> taskStatusMap = new ConcurrentHashMap<Long, Boolean>();
+        List<JobDependStatus> taskDependStatusList = statusService.getRecordsByPreJobId(myJobId, preJobId);
+        for (JobDependStatus dependStatus : taskDependStatusList) {
+            boolean status = (dependStatus.getPreTaskStatus() == JobStatus.SUCCESS.getValue()) ? true : false;
+            taskStatusMap.put(dependStatus.getPreTaskId(), status);
+        }
+        return taskStatusMap;
+    }
+
     public static JobDependStatus createDependStatus(Long myJobId, long jobId, long taskId, boolean status) {
         JobStatus jobStatus = status ? JobStatus.SUCCESS : JobStatus.FAILED;
         JobDependStatus jobDependStatus = new JobDependStatus();

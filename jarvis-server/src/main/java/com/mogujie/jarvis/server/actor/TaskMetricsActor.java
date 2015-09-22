@@ -11,23 +11,22 @@ import javax.inject.Named;
 
 import org.springframework.context.annotation.Scope;
 
-import akka.actor.ActorSelection;
-import akka.actor.UntypedActor;
-
 import com.mogujie.jarvis.protocol.ReportProgressProtos.WorkerReportProgressRequest;
 import com.mogujie.jarvis.protocol.ReportStatusProtos.WorkerReportStatusRequest;
 
+import akka.actor.ActorSelection;
+import akka.actor.UntypedActor;
+
 /**
- * Actor used to receive job metrics information (e.g. status, process)
- * 1. send job status to {@link com.mogujie.jarvis.server.actor.JobSchedulerActor }
- * 2. send process to restserver
+ * Actor used to receive task metrics information (e.g. status, process) 1. send task status to
+ * {@link com.mogujie.jarvis.server.actor.JobSchedulerActor } 2. send process to restserver
  *
  * @author guangming
  *
  */
-@Named("JobMetricsActor")
+@Named("taskMetricsActor")
 @Scope("prototype")
-public class JobMetricsActor extends UntypedActor {
+public class TaskMetricsActor extends UntypedActor {
 
     @Override
     public void onReceive(Object obj) throws Exception {

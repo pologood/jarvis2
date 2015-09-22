@@ -19,9 +19,12 @@ message RestServerSubmitJobRequest {
     optional int32 reject_interval = 12 [default = 3];
     optional int32 failed_retries = 13 [default = 0];
     optional int32 failed_interval = 14 [default = 3];
-    required string start_time = 15;
-    required string end_time = 16;
-    repeated MapEntry parameters = 17;
+    required int64 start_time = 15;
+    required int64 end_time = 16;
+    required int64 origin_job_id = 17;
+    required string common_depend_strategy = 18;
+    required string last_depend_strategy = 19;
+    repeated MapEntry parameters = 20;
 }
 
 

@@ -11,6 +11,8 @@ package com.mogujie.jarvis.server;
 import java.util.List;
 import java.util.Random;
 
+import javax.inject.Named;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,7 @@ import com.mogujie.jarvis.server.service.HeartBeatService;
  *
  */
 @Service
+@Named("randomWorkerSelector")
 public class RandomWorkerSelector implements WorkerSelector {
 
     @Autowired

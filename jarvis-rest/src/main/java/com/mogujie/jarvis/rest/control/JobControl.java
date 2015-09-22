@@ -7,21 +7,21 @@
  */
 package com.mogujie.jarvis.rest.control;
 
-import akka.actor.ActorSystem;
-import com.mogujie.jarvis.protocol.MapEntryProtos;
-import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitJobRequest;
-import com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitJobResponse;
-import com.mogujie.jarvis.rest.RestResult;
-import com.mogujie.jarvis.rest.vo.JobVo;
+import java.util.List;
 
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import java.util.HashMap;
-import java.util.List;
 
+import com.mogujie.jarvis.protocol.MapEntryProtos;
+import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitJobRequest;
+import com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitJobResponse;
+import com.mogujie.jarvis.rest.RestResult;
+import com.mogujie.jarvis.rest.vo.JobVo;
+
+import akka.actor.ActorSystem;
 
 /**
  * @author muming
@@ -34,7 +34,6 @@ public class JobControl extends AbstractControl {
         super(system, serverAkkaPath, workerAkkaPath);
     }
 
-
     /**
      * 提交job任务
      *
@@ -43,65 +42,37 @@ public class JobControl extends AbstractControl {
     @POST
     @Path("submitJob")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult onlineClient(@FormParam("appKey") String appKey,
-                                   @FormParam("appName") String appName,
-                                   @FormParam("user") String user,
-                                   @FormParam("jobName") String jobName,
-                                   @FormParam("jobType") String jobType,
-                                   @FormParam("dependJobIds") String dependJobIds,
-                                   @FormParam("cronExp") String cronExp,
-                                   @FormParam("jobContent") String jobContent,
-                                   @FormParam("groupId") int groupId,
-                                   @FormParam("priority") int priority,
-                                   @FormParam("startTime") String startTime,
-                                   @FormParam("endTime") String endTime,
-                                   @FormParam("rejectRetries") int rejectRetries,
-                                   @FormParam("rejectInterval") int rejectInterval,
-                                   @FormParam("failedRetries") int failedRetries,
-                                   @FormParam("failedInterval") int failedInterval,
-                                   @FormParam("parameters") String parameters) throws Exception
-    {
+    public RestResult onlineClient(@FormParam("appKey") String appKey, @FormParam("appName") String appName, @FormParam("user") String user,
+            @FormParam("jobName") String jobName, @FormParam("jobType") String jobType, @FormParam("dependJobIds") String dependJobIds,
+            @FormParam("cronExp") String cronExp, @FormParam("jobContent") String jobContent, @FormParam("groupId") int groupId,
+            @FormParam("priority") int priority, @FormParam("startTime") long startTime, @FormParam("endTime") long endTime,
+            @FormParam("rejectRetries") int rejectRetries, @FormParam("rejectInterval") int rejectInterval,
+            @FormParam("failedRetries") int failedRetries, @FormParam("failedInterval") int failedInterval,
+            @FormParam("parameters") String parameters) throws Exception {
 
-        //todo , 转换为 list
-        List<Long> dependJobIdsList= null;
+        // todo , 转换为 list
+        List<Long> dependJobIdsList = null;
 
-        //todo parameters 从json转化为 list
+        // todo parameters 从json转化为 list
         List<MapEntryProtos.MapEntry> paraList = null;
 
-        RestServerSubmitJobRequest request = RestServerSubmitJobRequest.newBuilder()
-                .setAppName(appName)
-                .setJobName(jobName)
-                .setCronExpression(cronExp)
-                .addAllDependencyJobids(dependJobIdsList)
-                .setUser(user)
-                .setJobType(jobType)
-                .setCommand(jobContent)
-                .setGroupId(groupId)
-                .setPriority(priority)
-                .setFailedRetries(failedRetries)
-                .setFailedInterval(failedInterval)
-                .setRejectRetries(rejectRetries)
-                .setRejectInterval(rejectInterval)
-                .setStartTime(startTime)
-                .setEndTime(endTime)
-                .addAllParameters(paraList)
-                .build();
+        RestServerSubmitJobRequest request = RestServerSubmitJobRequest.newBuilder().setAppName(appName).setJobName(jobName)
+                .setCronExpression(cronExp).addAllDependencyJobids(dependJobIdsList).setUser(user).setJobType(jobType).setCommand(jobContent)
+                .setGroupId(groupId).setPriority(priority).setFailedRetries(failedRetries).setFailedInterval(failedInterval)
+                .setRejectRetries(rejectRetries).setRejectInterval(rejectInterval).setStartTime(startTime).setEndTime(endTime)
+                .addAllParameters(paraList).build();
 
         ServerSubmitJobResponse response = (ServerSubmitJobResponse) callActor(serverActor, request);
 
-        if(response.getSuccess()){
+        if (response.getSuccess()) {
 
             JobVo vo = new JobVo();
             vo.setJobId(response.getJobId());
             return successResult(vo);
-        }else{
+        } else {
             return errorResult(response.getMessage());
         }
 
     }
-
-
-
-
 
 }

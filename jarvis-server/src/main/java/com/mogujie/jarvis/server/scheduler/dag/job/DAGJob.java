@@ -15,8 +15,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.mogujie.jarvis.core.domain.JobFlag;
-import com.mogujie.jarvis.server.scheduler.dag.JobDependencyStrategy;
-import com.mogujie.jarvis.server.scheduler.dag.status.AbstractDependStatus;
+import com.mogujie.jarvis.server.scheduler.dag.DAGDependChecker;
 
 /**
  * @author guangming
@@ -25,8 +24,7 @@ import com.mogujie.jarvis.server.scheduler.dag.status.AbstractDependStatus;
 public class DAGJob extends AbstractDAGJob {
 
     private long jobId;
-    private AbstractDependStatus dependStatus;
-    private JobDependencyStrategy dependStrategy;
+    private DAGDependChecker dependChecker;
     private List<DAGJob> parents;
     private List<DAGJob> children;
     private boolean hasTimeFlag = false;
@@ -35,15 +33,14 @@ public class DAGJob extends AbstractDAGJob {
     public DAGJob() {
         this.parents = new LinkedList<DAGJob>();
         this.children = new LinkedList<DAGJob>();
+        this.dependChecker = new DAGDependChecker();
     }
 
-    public DAGJob(long jobId, AbstractDependStatus dependStatus, JobDependencyStrategy dependStrategy) {
+    public DAGJob(long jobId) {
         this.jobId = jobId;
-        this.dependStatus = dependStatus;
-        this.dependStrategy = dependStrategy;
+        this.dependChecker = new DAGDependChecker(jobId);
         this.parents = new LinkedList<DAGJob>();
         this.children = new LinkedList<DAGJob>();
-        dependStatus.init();
     }
 
     @Override
@@ -55,7 +52,7 @@ public class DAGJob extends AbstractDAGJob {
                 needJobs.add(d.getJobId());
             }
         }
-        passCheck = dependStatus.isFinishAllJob(dependStrategy, needJobs);
+        passCheck = dependChecker.check(needJobs);
 
         if (hasTimeFlag) {
             passCheck = passCheck && timeReadyFlag;
@@ -70,22 +67,7 @@ public class DAGJob extends AbstractDAGJob {
 
     public void setJobId(long jobId) {
         this.jobId = jobId;
-    }
-
-    public AbstractDependStatus getDependStatus() {
-        return dependStatus;
-    }
-
-    public void setDependStatus(AbstractDependStatus dependStatus) {
-        this.dependStatus = dependStatus;
-    }
-
-    public JobDependencyStrategy getDependStrategy() {
-        return dependStrategy;
-    }
-
-    public void setDependStrategy(JobDependencyStrategy dependStrategy) {
-        this.dependStrategy = dependStrategy;
+        this.dependChecker.setMyJobId(jobId);
     }
 
     public List<DAGJob> getParents() {
@@ -153,7 +135,7 @@ public class DAGJob extends AbstractDAGJob {
                 it.remove();
             }
         }
-        dependStatus.removeDependency(jobId);
+        dependChecker.removeDependency(jobId);
     }
 
     /**
@@ -188,7 +170,7 @@ public class DAGJob extends AbstractDAGJob {
             DAGJob parent = it.next();
             it.remove();
             if (removeDependStatus) {
-                dependStatus.removeDependency(parent.getJobId());
+                dependChecker.removeDependency(parent.getJobId());
             }
             // 2. remove myself from parent
             parent.removeChild(this);
@@ -213,21 +195,21 @@ public class DAGJob extends AbstractDAGJob {
             // 2. remove myself from child
             child.removeParent(this);
             if (removeDependStatus) {
-                child.getDependStatus().removeDependency(getJobId());
+                child.getDependChecker().removeDependency(getJobId());
             }
         }
     }
 
     public void setDependStatus(long jobId, long taskId) {
-        dependStatus.setDependStatus(jobId, taskId);
+        dependChecker.setDependStatus(jobId, taskId);
     }
 
     public void resetDependStatus(long jobId, long taskId) {
-        dependStatus.resetDependStatus(jobId, taskId);
+        dependChecker.resetDependStatus(jobId, taskId);
     }
 
     public void resetDependStatus() {
-        dependStatus.reset();
+        dependChecker.resetAllStatus();
         if (hasTimeFlag) {
             resetTimeReadyFlag();
         }
@@ -247,5 +229,13 @@ public class DAGJob extends AbstractDAGJob {
 
     public void resetTimeReadyFlag() {
         timeReadyFlag = false;
+    }
+
+    public DAGDependChecker getDependChecker() {
+        return dependChecker;
+    }
+
+    public void setDependChecker(DAGDependChecker dependChecker) {
+        this.dependChecker = dependChecker;
     }
 }

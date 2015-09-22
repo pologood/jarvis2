@@ -10,10 +10,8 @@ package com.mogujie.jarvis.server.scheduler.dag.status;
 
 import java.util.Map;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-
 import com.mogujie.jarvis.server.service.DependStatusService;
+import com.mogujie.jarvis.server.util.SpringContext;
 
 /**
  * @author guangming
@@ -23,21 +21,19 @@ public class MysqlCachedDependStatus extends CachedDependStatus {
     private DependStatusService statusService;
 
     public MysqlCachedDependStatus() {
-        ApplicationContext ac = new ClassPathXmlApplicationContext("context.xml");
-        statusService = ac.getBean(DependStatusService.class);
+        statusService = SpringContext.getBean(DependStatusService.class);
     }
 
     @Override
-    protected void modifyDependStatus(long jobId, long taskId, boolean status) {
-        super.modifyDependStatus(jobId, taskId, status);
-        MysqlDependStatusUtil.modifyDependStatus(getMyJobId(), jobId, taskId,
-                status, statusService);
+    protected void modifyDependStatus(long taskId, boolean status) {
+        super.modifyDependStatus(taskId, status);
+        MysqlDependStatusUtil.modifyDependStatus(getMyJobId(), getPreJobId(), taskId, status, statusService);
     }
 
     @Override
-    public void removeDependency(long jobId) {
-        super.removeDependency(jobId);
-        statusService.deleteDependencyByPreJobId(getMyJobId(), jobId);
+    public void removeDependency() {
+        super.removeDependency();
+        statusService.deleteDependencyByPreJobId(getMyJobId(), getPreJobId());
     }
 
     @Override
@@ -47,7 +43,7 @@ public class MysqlCachedDependStatus extends CachedDependStatus {
     }
 
     @Override
-    protected Map<Long, Map<Long, Boolean>> loadJobDependStatus() {
-        return MysqlDependStatusUtil.getJobStatusMapFromDb(statusService, getMyJobId());
+    protected Map<Long, Boolean> loadTaskDependStatus() {
+        return MysqlDependStatusUtil.getTaskStatusMapFromDb(statusService, getMyJobId(), getPreJobId());
     }
 }

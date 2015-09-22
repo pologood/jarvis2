@@ -46,7 +46,16 @@ public class DependStatusService {
         // TODO
     }
 
+    public void clearPreStatus(long myJobId, long preJobId) {
+        // TODO
+    }
+
     public List<JobDependStatus> getRecordsByMyJobId(long myJobId) {
+        // TODO
+        return null;
+    }
+
+    public List<JobDependStatus> getRecordsByPreJobId(long myJobId, long preJobId) {
         // TODO
         return null;
     }

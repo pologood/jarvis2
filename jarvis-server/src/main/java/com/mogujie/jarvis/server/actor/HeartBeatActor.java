@@ -15,13 +15,17 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 
+import com.mogujie.jarvis.core.domain.WorkerInfo;
 import com.mogujie.jarvis.protocol.HeartBeatProtos.HeartBeatRequest;
+import com.mogujie.jarvis.protocol.HeartBeatProtos.HeartBeatResponse;
+import com.mogujie.jarvis.server.WorkerRegistry;
 import com.mogujie.jarvis.server.service.HeartBeatService;
 
+import akka.actor.Address;
 import akka.actor.Props;
 import akka.actor.UntypedActor;
 
-@Named("HeartBeatActor")
+@Named("heartBeatActor")
 @Scope("prototype")
 public class HeartBeatActor extends UntypedActor {
 
@@ -37,7 +41,22 @@ public class HeartBeatActor extends UntypedActor {
     @Override
     public void onReceive(Object obj) throws Exception {
         if (obj instanceof HeartBeatRequest) {
-
+            HeartBeatRequest request = (HeartBeatRequest) obj;
+            Address address = getSender().path().address();
+            String ip = address.host().get();
+            int port = Integer.parseInt(address.port().get().toString());
+            int jobNum = request.getJobNum();
+            WorkerInfo workerInfo = new WorkerInfo(ip, port);
+            int groupId = WorkerRegistry.getInstance().getWorkerGroupId(workerInfo);
+            HeartBeatResponse response = null;
+            if (groupId < 0) {
+                response = HeartBeatResponse.newBuilder().setSuccess(false).setMessage("groupId is not valid: " + groupId).build();
+            } else {
+                LOGGER.debug("heartbeat[ip={}, port={}, groupId={}, jobNum={}]", ip, port, groupId, jobNum);
+                heartBeatService.put(groupId, workerInfo, jobNum);
+                response = HeartBeatResponse.newBuilder().setSuccess(true).build();
+            }
+            getSender().tell(response, getSelf());
         } else {
             unhandled(obj);
         }
