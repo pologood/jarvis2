@@ -12,10 +12,11 @@ import org.apache.commons.configuration.Configuration;
 
 import com.mogujie.jarvis.core.common.util.ConfigUtils;
 import com.mogujie.jarvis.core.common.util.ReflectionUtils;
+import com.mogujie.jarvis.core.domain.Pair;
 import com.mogujie.jarvis.dto.JobDepend;
 import com.mogujie.jarvis.server.scheduler.dag.strategy.AbstractOffsetDependStrategy;
 import com.mogujie.jarvis.server.scheduler.dag.strategy.CommonStrategy;
-import com.mogujie.jarvis.server.scheduler.dag.strategy.OffsetStrategyEnum;
+import com.mogujie.jarvis.server.scheduler.dag.strategy.OffsetStrategyFactory;
 import com.mogujie.jarvis.server.service.JobDependService;
 import com.mogujie.jarvis.server.util.SpringContext;
 
@@ -34,18 +35,10 @@ public class DependStatusFactory {
             JobDepend jobDepend = jobDependService.getRecord(myJobId, preJobId);
             if (jobDepend != null) {
                 CommonStrategy commonStrategy = CommonStrategy.getInstance(jobDepend.getCommonStrategy());
-                String offsetStrategyStr = jobDepend.getOffsetStrategy();
-                if (offsetStrategyStr != null && !offsetStrategyStr.isEmpty()) {
-                    String offsetStrategyMap[] = offsetStrategyStr.split(":");
-                    String offsetStrategyKey = offsetStrategyMap[0].trim();
-                    int offsetValue = Integer.valueOf(offsetStrategyMap[1].trim());
-                    OffsetStrategyEnum offsetStrategyEnum = OffsetStrategyEnum.getInstance(offsetStrategyKey);
-                    if (offsetStrategyEnum != null) {
-                        String className = offsetStrategyEnum.getValue();
-                        AbstractOffsetDependStrategy offsetDependStrategy = ReflectionUtils.getInstanceByClassName(className);
-                        dependStatus = new OffsetDependStatus(myJobId, preJobId, commonStrategy,
-                                offsetDependStrategy, offsetValue);
-                    }
+                Pair<AbstractOffsetDependStrategy, Integer> offsetStrategyPair = OffsetStrategyFactory.create(jobDepend.getOffsetStrategy());
+                if (offsetStrategyPair != null) {
+                    dependStatus = new OffsetDependStatus(myJobId, preJobId, commonStrategy,
+                            offsetStrategyPair.getFirst(), offsetStrategyPair.getSecond());
                 } else {
                     Configuration conf = ConfigUtils.getServerConfig();
                     String className = conf.getString(JOB_DEPEND_STATUS_KEY, DEFAULT_JOB_DEPEND_STATUS);

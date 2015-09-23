@@ -20,14 +20,9 @@ import com.mogujie.jarvis.server.util.SpringContext;
  */
 public class OffsetMonthDependStrategy extends AbstractOffsetDependStrategy {
 
-    private TaskService taskService;
-
-    public OffsetMonthDependStrategy() {
-        taskService = SpringContext.getBean(TaskService.class);
-    }
-
     @Override
     protected List<Task> getOffsetTasks(long jobId, int offset) {
+        TaskService taskService = SpringContext.getBean(TaskService.class);
         return taskService.getTasksByOffsetMonth(jobId, offset);
     }
 
