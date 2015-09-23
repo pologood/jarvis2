@@ -1,4 +1,4 @@
-package com.mogujie.jarvis.rest.control;
+package com.mogujie.jarvis.rest.controller;
 
 import akka.actor.ActorSelection;
 import akka.actor.ActorSystem;
@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * 控制器父类
  */
-public abstract class AbstractControl {
+public abstract class AbstractController {
 
 
 //    private ActorSystem system;
@@ -37,7 +37,7 @@ public abstract class AbstractControl {
     protected static final Logger LOGGER = LogManager.getLogger();
 
 
-    public AbstractControl(ActorSystem system, String serverAkkaPath, String logCenterAkkaPath) {
+    public AbstractController(ActorSystem system, String serverAkkaPath, String logCenterAkkaPath) {
 
 //        this.system = system;
 //        this.serverAkkaPath = serverAkkaPath;

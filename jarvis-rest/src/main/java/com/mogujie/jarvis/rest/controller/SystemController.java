@@ -5,7 +5,7 @@
  * Author: wuya
  * Create Date: 2015年6月18日 下午3:19:28
  */
-package com.mogujie.jarvis.rest.control;
+package com.mogujie.jarvis.rest.controller;
 
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
@@ -27,9 +27,9 @@ import akka.actor.ActorSystem;
  *
  */
 @Path("system")
-public class SystemControl extends AbstractControl {
+public class SystemController extends AbstractController {
 
-    public SystemControl(ActorSystem system, String serverAkkaPath, String workerAkkaPath) {
+    public SystemController(ActorSystem system, String serverAkkaPath, String workerAkkaPath) {
         super(system, serverAkkaPath, workerAkkaPath);
     }
 

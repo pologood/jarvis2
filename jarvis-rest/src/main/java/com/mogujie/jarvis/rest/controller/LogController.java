@@ -5,7 +5,7 @@
  * Author: wuya
  * Create Date: 2015年6月18日 下午3:19:28
  */
-package com.mogujie.jarvis.rest.control;
+package com.mogujie.jarvis.rest.controller;
 
 import akka.actor.ActorSystem;
 import com.mogujie.jarvis.core.domain.StreamType;
@@ -24,9 +24,9 @@ import javax.ws.rs.core.MediaType;
  *
  */
 @Path("log")
-public class LogControl extends AbstractControl {
+public class LogController extends AbstractController {
 
-    public LogControl(ActorSystem system, String serverAkkaPath, String workerAkkaPath) {
+    public LogController(ActorSystem system, String serverAkkaPath, String workerAkkaPath) {
         super(system, serverAkkaPath, workerAkkaPath);
     }
 

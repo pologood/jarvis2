@@ -14,8 +14,8 @@ import java.net.URI;
 
 import javax.ws.rs.core.UriBuilder;
 
-import com.mogujie.jarvis.rest.control.JobControl;
-import com.mogujie.jarvis.rest.control.SystemControl;
+import com.mogujie.jarvis.rest.controller.JobController;
+import com.mogujie.jarvis.rest.controller.SystemController;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.glassfish.grizzly.http.server.HttpServer;
@@ -51,8 +51,8 @@ public class RestServer {
         URI baseUri = UriBuilder.fromUri("http://" + Inet4Address.getLocalHost().getHostAddress() + "/").port(port).build();
         ResourceConfig resourceConfig = new ResourceConfig();
 
-        resourceConfig.register(new SystemControl(system, serverAkkaPath, logServerAkkaPath));
-        resourceConfig.register(new JobControl(system, serverAkkaPath, logServerAkkaPath));
+        resourceConfig.register(new SystemController(system, serverAkkaPath, logServerAkkaPath));
+        resourceConfig.register(new JobController(system, serverAkkaPath, logServerAkkaPath));
 
 
         HttpServer server = GrizzlyHttpServerFactory.createHttpServer(baseUri, resourceConfig);

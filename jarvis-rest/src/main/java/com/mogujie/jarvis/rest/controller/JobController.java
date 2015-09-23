@@ -5,7 +5,7 @@
  * Author: wuya
  * Create Date: 2015年6月18日 下午3:19:28
  */
-package com.mogujie.jarvis.rest.control;
+package com.mogujie.jarvis.rest.controller;
 
 import java.util.List;
 
@@ -28,9 +28,9 @@ import akka.actor.ActorSystem;
  *
  */
 @Path("job")
-public class JobControl extends AbstractControl {
+public class JobController extends AbstractController {
 
-    public JobControl(ActorSystem system, String serverAkkaPath, String workerAkkaPath) {
+    public JobController(ActorSystem system, String serverAkkaPath, String workerAkkaPath) {
         super(system, serverAkkaPath, workerAkkaPath);
     }
 
