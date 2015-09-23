@@ -13,8 +13,8 @@ import org.apache.commons.configuration.Configuration;
 import com.mogujie.jarvis.core.common.util.ConfigUtils;
 import com.mogujie.jarvis.core.common.util.ReflectionUtils;
 import com.mogujie.jarvis.dto.JobDepend;
+import com.mogujie.jarvis.server.scheduler.dag.strategy.AbstractOffsetDependStrategy;
 import com.mogujie.jarvis.server.scheduler.dag.strategy.CommonStrategy;
-import com.mogujie.jarvis.server.scheduler.dag.strategy.IOffsetDependStrategy;
 import com.mogujie.jarvis.server.scheduler.dag.strategy.OffsetStrategyEnum;
 import com.mogujie.jarvis.server.service.JobDependService;
 import com.mogujie.jarvis.server.util.SpringContext;
@@ -37,12 +37,12 @@ public class DependStatusFactory {
                 String offsetStrategyStr = jobDepend.getOffsetStrategy();
                 if (offsetStrategyStr != null && !offsetStrategyStr.isEmpty()) {
                     String offsetStrategyMap[] = offsetStrategyStr.split(":");
-                    String offsetStrategyKey = offsetStrategyMap[0];
-                    int offsetValue = Integer.valueOf(offsetStrategyMap[1]);
+                    String offsetStrategyKey = offsetStrategyMap[0].trim();
+                    int offsetValue = Integer.valueOf(offsetStrategyMap[1].trim());
                     OffsetStrategyEnum offsetStrategyEnum = OffsetStrategyEnum.getInstance(offsetStrategyKey);
                     if (offsetStrategyEnum != null) {
                         String className = offsetStrategyEnum.getValue();
-                        IOffsetDependStrategy offsetDependStrategy = ReflectionUtils.getInstanceByClassName(className);
+                        AbstractOffsetDependStrategy offsetDependStrategy = ReflectionUtils.getInstanceByClassName(className);
                         dependStatus = new OffsetDependStatus(myJobId, preJobId, commonStrategy,
                                 offsetDependStrategy, offsetValue);
                     }

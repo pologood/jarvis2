@@ -91,7 +91,7 @@ public abstract class DAGDependChecker {
         }
 
         if (taskDependStatus != null) {
-            taskDependStatus.setDependStatus(taskId);
+            taskDependStatus.resetDependStatus(taskId);
         }
     }
 

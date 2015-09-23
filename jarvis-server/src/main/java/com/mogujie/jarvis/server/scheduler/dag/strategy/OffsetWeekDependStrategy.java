@@ -8,16 +8,27 @@
 
 package com.mogujie.jarvis.server.scheduler.dag.strategy;
 
+import java.util.List;
+
+import com.mogujie.jarvis.dto.Task;
+import com.mogujie.jarvis.server.service.TaskService;
+import com.mogujie.jarvis.server.util.SpringContext;
+
 /**
  * @author guangming
  *
  */
-public class OffsetWeekDependStrategy implements IOffsetDependStrategy {
+public class OffsetWeekDependStrategy extends AbstractOffsetDependStrategy {
+
+    private TaskService taskService;
+
+    public OffsetWeekDependStrategy() {
+        taskService = SpringContext.getBean(TaskService.class);
+    }
 
     @Override
-    public boolean check(long jobId, int offset, CommonStrategy commonStrategy) {
-        // TODO Auto-generated method stub
-        return false;
+    protected List<Task> getOffsetTasks(long jobId, int offset) {
+        return taskService.getTasksByOffsetWeek(jobId, offset);
     }
 
 }

@@ -32,10 +32,6 @@ public class MysqlDependStatus extends RuntimeDependStatus {
     }
 
     @Override
-    public void init() {
-    }
-
-    @Override
     public void reset() {
         statusService.clearPreStatus(getMyJobId(), getPreJobId());
     }

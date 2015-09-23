@@ -56,7 +56,7 @@ public abstract class AbstractDependStatus {
     /**
      * init
      */
-    public abstract void init();
+    public void init() {}
 
     /**
      * reset

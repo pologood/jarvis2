@@ -22,25 +22,6 @@ import com.mogujie.jarvis.server.service.DependStatusService;
  *
  */
 public class MysqlDependStatusUtil {
-    public static Map<Long, Map<Long, Boolean>> getJobStatusMapFromDb(DependStatusService statusService, long myJobId) {
-        Map<Long, Map<Long, Boolean>> jobStatusMap = new ConcurrentHashMap<Long, Map<Long, Boolean>>();
-        List<JobDependStatus> jobDependStatusList = statusService.getRecordsByMyJobId(myJobId);
-        for (JobDependStatus dependStatus : jobDependStatusList) {
-            long jobId = dependStatus.getPreJobId();
-            long taskId = dependStatus.getPreTaskId();
-            boolean status = (dependStatus.getPreTaskStatus() == JobStatus.SUCCESS.getValue()) ? true : false;
-            if (!jobStatusMap.containsKey(jobId)) {
-                Map<Long, Boolean> taskStatusMap = new ConcurrentHashMap<Long, Boolean>();
-                taskStatusMap.put(taskId, status);
-                jobStatusMap.put(jobId, taskStatusMap);
-            } else {
-                Map<Long, Boolean> taskStatusMap = jobStatusMap.get(jobId);
-                taskStatusMap.put(taskId, status);
-            }
-        }
-        return jobStatusMap;
-    }
-
     public static Map<Long, Boolean> getTaskStatusMapFromDb(DependStatusService statusService,
             long myJobId, long preJobId) {
         Map<Long, Boolean> taskStatusMap = new ConcurrentHashMap<Long, Boolean>();

@@ -29,7 +29,7 @@ public enum OffsetStrategyEnum {
         OffsetStrategyEnum[] strategyList = OffsetStrategyEnum.values();
         OffsetStrategyEnum strategy = OffsetStrategyEnum.LASTDAY;
         for (OffsetStrategyEnum os : strategyList) {
-            if (os.getKey().equals(key)) {
+            if (os.getKey().equalsIgnoreCase(key)) {
                 strategy = os;
                 break;
             }

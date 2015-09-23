@@ -26,6 +26,10 @@ public class DefaultDAGDependChecker extends DAGDependChecker {
             throw new RuntimeException(e.getMessage());
         }
 
+        if (dependStatus != null) {
+            dependStatus.init();
+        }
+
         return dependStatus;
     }
 }
