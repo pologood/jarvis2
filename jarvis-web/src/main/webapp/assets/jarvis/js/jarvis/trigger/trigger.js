@@ -15,10 +15,37 @@ $(function(){
 
     //select采用select2 实现
     $(".input-group select").select2({width:'100%'});
+    $("#content").on("change", function (e) {
+        $("#reRunNext").jstree('destroy');
+        var id=$(e.target).val();
+        if(id!=null&&id!=''){
+            buildTree(id);
+        }
+    });
+
+
 });
 
+function buildTree(jobId){
 
-function submit(){
+    $.ajax({
+        url:'/jarvis/api/job/getTreeDependedONJob',
+        data:{jobId:jobId},
+        success:function(data){
+            $("#reRunNext").jstree({
+                'core':{
+                    data:data
+                },
+                "types": {
+                    "default": {"icon": "fa fa-users icon-green", "valid_children": []}
+                },
+                plugins : [
+                    'checkbox','types'
+                ]
+            });
+        }
+    });
+
 
 }
 
@@ -27,4 +54,9 @@ function reset(){
     $("#jobStart").val('');
     $("#jobEnd").val('');
     $("#reRunNext").removeAttr("checked");
+}
+
+
+function submit(){
+    var checked=$("#reRunNext").jstree().get_checked();
 }

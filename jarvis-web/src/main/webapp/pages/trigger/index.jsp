@@ -8,6 +8,9 @@
     <jsp:param name="platforms" value="${platforms}"/>
 </jsp:include>
 
+<style>
+    *.icon-green {color: #2ca02c}
+</style>
 
 <div class="container">
 
@@ -59,15 +62,16 @@
 
             <div class="row top-buffer">
                 <div class="col-md-6 col-md-offset-3">
-                    <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">重跑后续依赖任务</span>
-                        <div class="form-control">
-                            <input id="reRunNext" type="checkbox"/>
-                        </div>
+                    <div class="input-group" >
+                        <span class="input-group-addon">选择重跑后续任务</span>
+                    </div>
 
+                    <div class="center">
+                        <div id="reRunNext"></div>
                     </div>
                 </div>
             </div>
+
 
 
 
@@ -95,5 +99,4 @@
 <jsp:include page="../common/footer.jsp">
     <jsp:param name="menuMap" value="${menuMap}"/>
 </jsp:include>
-
 <script type="text/javascript" src="/assets/jarvis/js/jarvis/trigger/trigger.js"></script>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mogujie.jarvis.web.mapper.JobDependMapper">
+
+    <select id="getJobById" parameterType="Long" resultType="JobDependVo">
+        SELECT jobId AS id,jobName AS text FROM job WHERE jobId=#{jobId}
+    </select>
+    
+    <select id="getChildrenById" parameterType="Long" resultType="JobDependVo">
+        SELECT job_depend.jobId as id,job.jobName AS text FROM job_depend LEFT JOIN job ON job_depend.jobId=job.jobId
+        WHERE job_depend.preJobId=#{jobId}
+    </select>
+
+</mapper>

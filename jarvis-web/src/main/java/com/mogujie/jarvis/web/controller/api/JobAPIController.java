@@ -2,6 +2,7 @@ package com.mogujie.jarvis.web.controller.api;
 
 import com.alibaba.fastjson.JSONObject;
 import com.mogujie.jarvis.web.entity.vo.JobSearchVo;
+import com.mogujie.jarvis.web.service.JobDependService;
 import com.mogujie.jarvis.web.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,12 +22,23 @@ public class JobAPIController {
 
     @Autowired
     private JobService jobService;
+    @Autowired
+    private JobDependService jobDependService;
 
     @RequestMapping("/getJobs")
     @ResponseBody
     public JSONObject getJobs(JobSearchVo jobSearchVo){
 
         JSONObject jobJson=jobService.getJobs(jobSearchVo);
+
+        return jobJson;
+    }
+
+    @RequestMapping("/getTreeDependedONJob")
+    @ResponseBody
+    public JSONObject getTreeDependedONJob(JobSearchVo jobSearchVo){
+
+        JSONObject jobJson=jobDependService.getTreeDependedONJob(jobSearchVo);
 
         return jobJson;
     }

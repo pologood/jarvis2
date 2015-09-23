@@ -24,6 +24,8 @@
     <link type="text/css" rel="stylesheet" href="/assets/jarvis/plugins/pnotify/pnotify.custom.min.css" />
     <link type="text/css" rel="stylesheet" href="/assets/jarvis/plugins/bootstrap-table/bootstrap-table.min.css" />
     <link type="text/css" rel="stylesheet" href="/assets/jarvis/css/select2_special.css" />
+    <link type="text/css" rel="stylesheet" href="/assets/jarvis/plugins/jstree/3.2.1/themes/default/style.min.css" />
+
 
 
     <script src="/assets/jarvis/plugins/modernizr/modernizr.js" type="application/javascript" charset="utf-8"></script>
