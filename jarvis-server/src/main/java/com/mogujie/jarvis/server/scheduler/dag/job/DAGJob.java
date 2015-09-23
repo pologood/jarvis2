@@ -15,7 +15,8 @@ import java.util.List;
 import java.util.Set;
 
 import com.mogujie.jarvis.core.domain.JobFlag;
-import com.mogujie.jarvis.server.scheduler.dag.DAGDependChecker;
+import com.mogujie.jarvis.server.scheduler.dag.checker.DAGDependChecker;
+import com.mogujie.jarvis.server.scheduler.dag.checker.DAGDependCheckerFactory;
 
 /**
  * @author guangming
@@ -33,12 +34,12 @@ public class DAGJob extends AbstractDAGJob {
     public DAGJob() {
         this.parents = new LinkedList<DAGJob>();
         this.children = new LinkedList<DAGJob>();
-        this.dependChecker = new DAGDependChecker();
+        this.dependChecker = DAGDependCheckerFactory.create();
     }
 
     public DAGJob(long jobId) {
         this.jobId = jobId;
-        this.dependChecker = new DAGDependChecker(jobId);
+        this.dependChecker = DAGDependCheckerFactory.create();
         this.parents = new LinkedList<DAGJob>();
         this.children = new LinkedList<DAGJob>();
     }

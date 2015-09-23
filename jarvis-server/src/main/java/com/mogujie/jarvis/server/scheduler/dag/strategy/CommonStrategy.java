@@ -14,9 +14,9 @@ package com.mogujie.jarvis.server.scheduler.dag.strategy;
  *
  */
 public enum CommonStrategy {
-    ANYONE(0),     // 依赖任何一次成功
+    ALL(0),        // 依赖全部成功
     LASTONE(1),    // 依赖最后一次成功
-    ALL(2);        // 依赖全部成功
+    ANYONE(2);     // 依赖任何一次成功
 
     private int value;
 

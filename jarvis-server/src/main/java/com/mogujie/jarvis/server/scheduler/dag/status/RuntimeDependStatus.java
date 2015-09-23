@@ -25,6 +25,7 @@ public abstract class RuntimeDependStatus extends AbstractDependStatus {
     /**
      * @param myJobId
      * @param preJobId
+     * @param commonStrategy
      */
     public RuntimeDependStatus(long myJobId, long preJobId, CommonStrategy commonStrategy) {
         super(myJobId, preJobId, commonStrategy);
@@ -66,11 +67,13 @@ public abstract class RuntimeDependStatus extends AbstractDependStatus {
                 }
             } else if (strategy.equals(CommonStrategy.ALL)) {
                 // 多个执行计划中所有都成功才算成功
-                finishDependency = true;
-                for (Map.Entry<Long, Boolean> entry : taskStatusMap.entrySet()) {
-                    if (entry.getValue() == false) {
-                        finishDependency = false;
-                        break;
+                if (!taskStatusMap.isEmpty()) {
+                    finishDependency = true;
+                    for (Map.Entry<Long, Boolean> entry : taskStatusMap.entrySet()) {
+                        if (entry.getValue() == false) {
+                            finishDependency = false;
+                            break;
+                        }
                     }
                 }
             }

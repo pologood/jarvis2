@@ -6,31 +6,25 @@
  * Create Date: 2015年9月21日 上午10:50:41
  */
 
-package com.mogujie.jarvis.server.scheduler.dag;
+package com.mogujie.jarvis.server.scheduler.dag.checker;
 
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.mogujie.jarvis.server.scheduler.dag.status.AbstractDependStatus;
-import com.mogujie.jarvis.server.scheduler.dag.status.DependStatusFactory;
-import com.mogujie.jarvis.server.service.JobDependService;
-import com.mogujie.jarvis.server.util.SpringContext;
 
 /**
  * @author guangming
  *
  */
-public class DAGDependChecker {
+public abstract class DAGDependChecker {
     private long myJobId;
 
-    protected Map<Long, AbstractDependStatus> jobStatusMap = new ConcurrentHashMap<Long, AbstractDependStatus>();
+    protected Map<Long, AbstractDependStatus> jobStatusMap =
+            new ConcurrentHashMap<Long, AbstractDependStatus>();
 
-    private JobDependService jobDependService;
-
-    public DAGDependChecker() {
-        jobDependService = SpringContext.getBean(JobDependService.class);
-    }
+    public DAGDependChecker() {}
 
     public DAGDependChecker(long jobId) {
         this.myJobId = jobId;
@@ -49,13 +43,12 @@ public class DAGDependChecker {
         for (long jobId : needJobs) {
             AbstractDependStatus taskDependStatus = jobStatusMap.get(jobId);
             if (taskDependStatus == null) {
-                try {
-                    taskDependStatus = DependStatusFactory.createDependStatus(jobDependService, myJobId, jobId);
-                } catch (ClassNotFoundException e) {
-                    throw new RuntimeException(e.getMessage());
+                taskDependStatus = getDependStatus(myJobId, jobId);
+                if (taskDependStatus != null) {
+                    jobStatusMap.put(jobId, taskDependStatus);
                 }
             }
-            if (!taskDependStatus.check()) {
+            if (taskDependStatus == null || !taskDependStatus.check()) {
                 finishDependencies = false;
                 break;
             }
@@ -76,6 +69,13 @@ public class DAGDependChecker {
 
     public void setDependStatus(long jobId, long taskId) {
         AbstractDependStatus taskDependStatus = jobStatusMap.get(jobId);
+        if (taskDependStatus == null) {
+            taskDependStatus = getDependStatus(myJobId, jobId);
+            if (taskDependStatus != null) {
+                jobStatusMap.put(jobId, taskDependStatus);
+            }
+        }
+
         if (taskDependStatus != null) {
             taskDependStatus.setDependStatus(taskId);
         }
@@ -83,8 +83,15 @@ public class DAGDependChecker {
 
     public void resetDependStatus(long jobId, long taskId) {
         AbstractDependStatus taskDependStatus = jobStatusMap.get(jobId);
+        if (taskDependStatus == null) {
+            taskDependStatus = getDependStatus(myJobId, jobId);
+            if (taskDependStatus != null) {
+                jobStatusMap.put(jobId, taskDependStatus);
+            }
+        }
+
         if (taskDependStatus != null) {
-            taskDependStatus.resetDependStatus(taskId);
+            taskDependStatus.setDependStatus(taskId);
         }
     }
 
@@ -105,4 +112,5 @@ public class DAGDependChecker {
         }
     }
 
+    protected abstract AbstractDependStatus getDependStatus(long myJobId, long preJobId);
 }

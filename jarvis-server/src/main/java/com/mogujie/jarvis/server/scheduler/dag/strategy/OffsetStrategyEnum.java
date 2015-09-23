@@ -13,17 +13,36 @@ package com.mogujie.jarvis.server.scheduler.dag.strategy;
  *
  */
 public enum OffsetStrategyEnum {
-    LASTDAY(OffsetDayDependStrategy.class.getName()),
-    LASTWEEK(OffsetWeekDependStrategy.class.getName()),
-    LASKMONTH(OffsetMonthDependStrategy.class.getName());
+    LASTDAY("lastday", OffsetDayDependStrategy.class.getName()),
+    LASTWEEK("lastweek", OffsetWeekDependStrategy.class.getName()),
+    LASKMONTH("lastmonth", OffsetMonthDependStrategy.class.getName());
 
+    String key;
     String value;
 
-    OffsetStrategyEnum(String value) {
+    OffsetStrategyEnum(String key, String value) {
+        this.key = key;
         this.value = value;
+    }
+
+    public static OffsetStrategyEnum getInstance(String key) {
+        OffsetStrategyEnum[] strategyList = OffsetStrategyEnum.values();
+        OffsetStrategyEnum strategy = OffsetStrategyEnum.LASTDAY;
+        for (OffsetStrategyEnum os : strategyList) {
+            if (os.getKey().equals(key)) {
+                strategy = os;
+                break;
+            }
+        }
+        return strategy;
+    }
+
+    public String getKey() {
+        return key;
     }
 
     public String getValue() {
         return value;
     }
+
 }

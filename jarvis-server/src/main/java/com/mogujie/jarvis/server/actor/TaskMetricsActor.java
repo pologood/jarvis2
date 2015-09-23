@@ -12,7 +12,6 @@ import javax.inject.Named;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 
-import akka.actor.ActorSelection;
 import akka.actor.UntypedActor;
 
 import com.mogujie.jarvis.core.domain.JobStatus;
@@ -38,7 +37,7 @@ import com.mogujie.jarvis.server.scheduler.event.UnhandleEvent;
 @Scope("prototype")
 public class TaskMetricsActor extends UntypedActor {
     @Autowired
-    JobSchedulerController schedulerController;
+    private JobSchedulerController schedulerController;
 
     @Override
     public void onReceive(Object obj) throws Exception {
@@ -67,9 +66,4 @@ public class TaskMetricsActor extends UntypedActor {
             unhandled(obj);
         }
     }
-
-    private ActorSelection getSchedulerActor() {
-        return getContext().actorSelection("/path/to/JobSchedulerActor");
-    }
-
 }
