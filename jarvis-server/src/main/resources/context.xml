@@ -23,8 +23,8 @@
 			<bean class="com.zaxxer.hikari.HikariConfig">
 				<property name="driverClassName" value="com.mysql.jdbc.Driver" />
 				<property name="jdbcUrl" value="jdbc:mysql://10.11.128.49/jarvis2" />
-				<property name="username" value="data" />
-				<property name="password" value="data" />
+				<property name="username" value="root" />
+				<property name="password" value="mogujie" />
 				<property name="connectionTestQuery" value="SELECT 1" />
 				<property name="connectionTimeout" value="30000" />
 				<property name="idleTimeout" value="600000" />
@@ -39,7 +39,7 @@
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="hikariDataSource" />
 		<property name="typeAliasesPackage" value="com.mogujie.jarvis.dto" />
-		<property name="mapperLocations" value="classpath:mappers/*.xml" />
+		<property name="mapperLocations" value="classpath:sqlMap/**/*.xml" />
 	</bean>
 
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
