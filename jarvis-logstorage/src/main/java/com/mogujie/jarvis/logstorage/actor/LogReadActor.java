@@ -8,14 +8,17 @@
 
 package com.mogujie.jarvis.logstorage.actor;
 
+import com.mogujie.jarvis.core.domain.StreamType;
+import com.mogujie.jarvis.logstorage.domain.LogReadResult;
+import com.mogujie.jarvis.logstorage.util.LogUtil;
+import com.mogujie.jarvis.protocol.ReadLogProtos.LogServerReadLogResponse;
 import com.mogujie.jarvis.protocol.ReadLogProtos.RestServerReadLogRequest;
 
 import akka.actor.Props;
 import akka.actor.UntypedActor;
 
 /**
- * @author wuya
- *
+ * @author 牧名
  */
 public class LogReadActor extends UntypedActor {
 
@@ -30,8 +33,31 @@ public class LogReadActor extends UntypedActor {
             unhandled(obj);
         }
 
+        RestServerReadLogRequest msg = (RestServerReadLogRequest) obj;
 
+
+        //fullID
+        String fullId = msg.getFullId();
+
+        //获取文件路径（本地）
+        String filePath = LogUtil.getLogPath4Local(fullId, StreamType.getInstance(msg.getType()));
+
+        //读取日志（本地）
+        LogReadResult readResult = LogUtil.readLines4locale(filePath, msg.getOffset(), msg.getLines());
+
+        //响应值_做成
+        LogServerReadLogResponse response;
+        response = LogServerReadLogResponse.newBuilder()
+                .setIsEnd(readResult.isEnd())
+                .setLog(readResult.getLog())
+                .setOffset(readResult.getOffset())
+                .setSuccess(true)
+                .build();
+
+        //响应值_返回
+        getSender().tell(response, getSelf());
 
     }
+
 
 }
