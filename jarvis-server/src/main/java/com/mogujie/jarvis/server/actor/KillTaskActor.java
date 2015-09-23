@@ -45,8 +45,7 @@ public class KillTaskActor extends UntypedActor {
             String fullId = "";
             WorkerInfo workerInfo = taskManager.getWorkerInfo(fullId);
             if (workerInfo != null) {
-                ActorSelection actorSelection = getContext()
-                        .actorSelection(workerInfo.getAkkaPath() + "/user/" + JarvisConstants.WORKER_AKKA_SYSTEM_NAME);
+                ActorSelection actorSelection = getContext().actorSelection(workerInfo.getAkkaRootPath() + JarvisConstants.WORKER_AKKA_USER_PATH);
                 ServerKillTaskRequest serverRequest = ServerKillTaskRequest.newBuilder().setFullId(fullId).build();
                 WorkerKillTaskResponse workerResponse = (WorkerKillTaskResponse) FutureUtils.awaitResult(actorSelection, serverRequest, 30);
                 serverResponse = ServerKillTaskResponse.newBuilder().setSuccess(workerResponse.getSuccess()).setMessage(workerResponse.getMessage())

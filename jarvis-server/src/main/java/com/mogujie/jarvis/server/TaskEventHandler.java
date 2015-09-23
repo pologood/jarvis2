@@ -67,7 +67,7 @@ public class TaskEventHandler implements WorkHandler<TaskEvent> {
 
         WorkerInfo workerInfo = workerSelector.select(task.getGroupId());
         if (workerInfo != null) {
-            ActorSelection actorSelection = system.actorSelection(workerInfo.getAkkaPath());
+            ActorSelection actorSelection = system.actorSelection(workerInfo.getAkkaRootPath());
             try {
                 WorkerSubmitTaskResponse response = (WorkerSubmitTaskResponse) FutureUtils.awaitResult(actorSelection, request, 30);
                 if (response.getSuccess()) {
