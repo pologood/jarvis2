@@ -8,7 +8,7 @@
 package com.mogujie.jarvis.core.domain;
 
 /**
- * 任务的频次依赖策略
+ * 任务的次数依赖策略
  *
  * @author muming
  *

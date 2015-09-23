@@ -25,11 +25,11 @@ public enum StreamType {
     }
 
 
-    public static JobPriority getInstance(int value) {
+    public static StreamType getInstance(int value) {
 
-        JobPriority[] all = JobPriority.values();
-        JobPriority select = JobPriority.NORMAL;
-        for (JobPriority s : all) {
+        StreamType[] all = StreamType.values();
+        StreamType select = StreamType.STD_OUT;
+        for (StreamType s : all) {
             if (s.getValue() == value) {
                 select = s;
                 break;
