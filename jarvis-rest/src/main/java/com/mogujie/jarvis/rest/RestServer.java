@@ -30,7 +30,7 @@ import com.typesafe.config.ConfigFactory;
 import akka.actor.ActorSystem;
 
 /**
- * 
+ * 启动RestServer
  *
  */
 public class RestServer {

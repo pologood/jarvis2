@@ -7,7 +7,6 @@ import com.mogujie.jarvis.logstorage.domain.LogReadResult;
 
 import org.apache.commons.io.FileUtils;
 
-
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -65,7 +64,7 @@ public class LogUtil {
 
         //写文件
         FileUtils.writeStringToFile(new File(filePathName),
-                log,
+                log + JarvisConstants.LINE_SEPARATOR,
                 StandardCharsets.UTF_8,
                 true);
 
@@ -147,8 +146,11 @@ public class LogUtil {
     }
 
 
+    //--------------------------------- HDFS  预留方法 ----------------------------
 
-
+    /**
+     * 写入日志_HDFS
+     */
     public static void writeLine4Hdfs(String file, String log) {
 
 
