@@ -9,7 +9,6 @@
 package com.mogujie.jarvis.server;
 
 import java.util.Map.Entry;
-import java.util.concurrent.TimeUnit;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,14 +23,10 @@ import com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse;
 import com.mogujie.jarvis.server.domain.TaskEvent;
+import com.mogujie.jarvis.server.util.FutureUtils;
 
 import akka.actor.ActorSelection;
 import akka.actor.ActorSystem;
-import akka.pattern.Patterns;
-import akka.util.Timeout;
-import scala.concurrent.Await;
-import scala.concurrent.Future;
-import scala.concurrent.duration.Duration;
 
 /**
  * 
@@ -44,9 +39,11 @@ public class TaskEventHandler implements WorkHandler<TaskEvent> {
     @Qualifier("roundRobinWorkerSelector")
     private WorkerSelector workerSelector;
 
+    @Autowired
+    private TaskManager taskManager;
+
     private ActorSystem system = JarvisServerActorSystem.getInstance();
 
-    private static final Timeout TIMEOUT = new Timeout(Duration.create(30, TimeUnit.SECONDS));
     private static final Logger LOGGER = LogManager.getLogger();
 
     @Override
@@ -70,12 +67,12 @@ public class TaskEventHandler implements WorkHandler<TaskEvent> {
 
         WorkerInfo workerInfo = workerSelector.select(task.getGroupId());
         if (workerInfo != null) {
-            ActorSelection actorSelection = system.actorSelection(workerInfo.getAkkaPath());
-            Future<Object> future = Patterns.ask(actorSelection, request, TIMEOUT);
+            ActorSelection actorSelection = system.actorSelection(workerInfo.getAkkaRootPath());
             try {
-                WorkerSubmitTaskResponse response = (WorkerSubmitTaskResponse) Await.result(future, TIMEOUT.duration());
+                WorkerSubmitTaskResponse response = (WorkerSubmitTaskResponse) FutureUtils.awaitResult(actorSelection, request, 30);
                 if (response.getSuccess()) {
                     if (response.getAccept()) {
+                        taskManager.add(task.getFullId(), workerInfo, task.getAppName());
                         LOGGER.debug("Task[{}] was accepted by worker[{}:{}]", task.getFullId(), workerInfo.getIp(), workerInfo.getPort());
                     } else {
                         LOGGER.warn("Task[{}] was rejected by worker[{}:{}]", task.getFullId(), workerInfo.getIp(), workerInfo.getPort());

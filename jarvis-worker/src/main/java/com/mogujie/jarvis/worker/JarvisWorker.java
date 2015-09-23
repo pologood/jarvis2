@@ -47,7 +47,7 @@ public class JarvisWorker {
         ConfigUtils.getAkkaConfig().withFallback(akkaConfig));
 
     String serverAkkaPath = workerConfig.getString("server.akka.path") + "/user/"
-        + JarvisConstants.SERVER_AKKA_PATH;
+        + JarvisConstants.SERVER_AKKA_SYSTEM_NAME;
     int workerGroupId = workerConfig.getInt("worker.group.id", 0);
     String workerKey = workerConfig.getString("worker.key");
     WorkerRegistryRequest request = WorkerRegistryRequest.newBuilder().setGroupId(workerGroupId)
@@ -78,7 +78,7 @@ public class JarvisWorker {
     int actorNum = workerConfig.getInt("worker.actors.num", 100);
     ActorRef workerActor = system.actorOf(
         new SmallestMailboxPool(actorNum).props(WorkerActor.props()),
-        JarvisConstants.WORKER_AKKA_PATH);
+        JarvisConstants.WORKER_AKKA_SYSTEM_NAME);
 
     ActorSelection heartBeatActor = system.actorSelection(serverAkkaPath);
 

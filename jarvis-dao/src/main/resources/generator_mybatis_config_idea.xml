@@ -13,6 +13,11 @@
 		<javaClientGenerator targetPackage="com.mogujie.jarvis.dao"
 			targetProject="src/main/java" type="XMLMAPPER" />
 
+        <table schema="jarvis2" tableName="app">
+            <property name="useActualColumnNames" value="true" />
+            <generatedKey column="appId" sqlStatement="MySql" identity="true" />
+        </table>
+
 		<table schema="jarvis2" tableName="job">
 			<property name="useActualColumnNames" value="true" />
             <generatedKey column="jobId" sqlStatement="MySql" identity="true" />

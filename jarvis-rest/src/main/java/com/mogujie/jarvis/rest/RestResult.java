@@ -3,9 +3,9 @@ package com.mogujie.jarvis.rest;
 import com.mogujie.jarvis.rest.vo.AbstractVo;
 
 /**
- * 返回前端的结果
+ * REST结果
  * 
- * @author sanshou
+ * @author 牧名
  */
 public class RestResult {
 

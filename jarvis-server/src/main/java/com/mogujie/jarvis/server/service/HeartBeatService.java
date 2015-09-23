@@ -36,7 +36,7 @@ public class HeartBeatService {
 
         @Override
         public int compare(WorkerInfo left, WorkerInfo right) {
-            return left.getAkkaPath().compareTo(right.getAkkaPath());
+            return left.getAkkaRootPath().compareTo(right.getAkkaRootPath());
         }
     };
 

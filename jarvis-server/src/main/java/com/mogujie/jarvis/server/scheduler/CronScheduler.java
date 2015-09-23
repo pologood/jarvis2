@@ -23,12 +23,20 @@ import java.util.concurrent.Executors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.mogujie.jarvis.core.domain.Pair;
 import com.mogujie.jarvis.dto.Crontab;
+import com.mogujie.jarvis.server.JobSchedulerController;
 import com.mogujie.jarvis.server.cron.CronExpression;
+import com.mogujie.jarvis.server.scheduler.event.TimeReadyEvent;
 
+@Repository
 public class CronScheduler {
+
+    @Autowired
+    private JobSchedulerController jobSchedulerController;
 
     private ExecutorService executor = Executors.newSingleThreadExecutor();
     private SchedulerThread schedulerThread;
@@ -105,7 +113,9 @@ public class CronScheduler {
                     Pair<Long, DateTime> pair = nextScheduleTimeList.get(0);
                     while (DateTime.now().compareTo(pair.getSecond()) >= 0) {
                         Crontab crontab = crontabs.get(pair.getFirst());
-                        // TODO
+
+                        TimeReadyEvent event = new TimeReadyEvent(crontab.getJobId());
+                        jobSchedulerController.notify(event);
 
                         nextScheduleTimeList.remove(0);
                         try {

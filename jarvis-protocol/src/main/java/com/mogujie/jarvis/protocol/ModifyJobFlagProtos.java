@@ -23,6 +23,16 @@ public final class ModifyJobFlagProtos {
          * <code>required int64 job_id = 1;</code>
          */
         long getJobId();
+
+        /**
+         * <code>required int32 job_flag = 2;</code>
+         */
+        boolean hasJobFlag();
+
+        /**
+         * <code>required int32 job_flag = 2;</code>
+         */
+        int getJobFlag();
     }
 
     /**
@@ -81,6 +91,11 @@ public final class ModifyJobFlagProtos {
                             jobId_ = input.readInt64();
                             break;
                         }
+                        case 16: {
+                            bitField0_ |= 0x00000002;
+                            jobFlag_ = input.readInt32();
+                            break;
+                        }
                     }
                 }
             } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -133,8 +148,26 @@ public final class ModifyJobFlagProtos {
             return jobId_;
         }
 
+        public static final int JOB_FLAG_FIELD_NUMBER = 2;
+        private int jobFlag_;
+
+        /**
+         * <code>required int32 job_flag = 2;</code>
+         */
+        public boolean hasJobFlag() {
+            return ((bitField0_ & 0x00000002) == 0x00000002);
+        }
+
+        /**
+         * <code>required int32 job_flag = 2;</code>
+         */
+        public int getJobFlag() {
+            return jobFlag_;
+        }
+
         private void initFields() {
             jobId_ = 0L;
+            jobFlag_ = 0;
         }
 
         private byte memoizedIsInitialized = -1;
@@ -150,6 +183,10 @@ public final class ModifyJobFlagProtos {
                 memoizedIsInitialized = 0;
                 return false;
             }
+            if (!hasJobFlag()) {
+                memoizedIsInitialized = 0;
+                return false;
+            }
             memoizedIsInitialized = 1;
             return true;
         }
@@ -158,6 +195,9 @@ public final class ModifyJobFlagProtos {
             getSerializedSize();
             if (((bitField0_ & 0x00000001) == 0x00000001)) {
                 output.writeInt64(1, jobId_);
+            }
+            if (((bitField0_ & 0x00000002) == 0x00000002)) {
+                output.writeInt32(2, jobFlag_);
             }
             getUnknownFields().writeTo(output);
         }
@@ -172,6 +212,9 @@ public final class ModifyJobFlagProtos {
             size = 0;
             if (((bitField0_ & 0x00000001) == 0x00000001)) {
                 size += com.google.protobuf.CodedOutputStream.computeInt64Size(1, jobId_);
+            }
+            if (((bitField0_ & 0x00000002) == 0x00000002)) {
+                size += com.google.protobuf.CodedOutputStream.computeInt32Size(2, jobFlag_);
             }
             size += getUnknownFields().getSerializedSize();
             memoizedSerializedSize = size;
@@ -297,6 +340,8 @@ public final class ModifyJobFlagProtos {
                 super.clear();
                 jobId_ = 0L;
                 bitField0_ = (bitField0_ & ~0x00000001);
+                jobFlag_ = 0;
+                bitField0_ = (bitField0_ & ~0x00000002);
                 return this;
             }
 
@@ -329,6 +374,10 @@ public final class ModifyJobFlagProtos {
                     to_bitField0_ |= 0x00000001;
                 }
                 result.jobId_ = jobId_;
+                if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+                    to_bitField0_ |= 0x00000002;
+                }
+                result.jobFlag_ = jobFlag_;
                 result.bitField0_ = to_bitField0_;
                 onBuilt();
                 return result;
@@ -349,12 +398,19 @@ public final class ModifyJobFlagProtos {
                 if (other.hasJobId()) {
                     setJobId(other.getJobId());
                 }
+                if (other.hasJobFlag()) {
+                    setJobFlag(other.getJobFlag());
+                }
                 this.mergeUnknownFields(other.getUnknownFields());
                 return this;
             }
 
             public final boolean isInitialized() {
                 if (!hasJobId()) {
+
+                    return false;
+                }
+                if (!hasJobFlag()) {
 
                     return false;
                 }
@@ -411,6 +467,42 @@ public final class ModifyJobFlagProtos {
             public Builder clearJobId() {
                 bitField0_ = (bitField0_ & ~0x00000001);
                 jobId_ = 0L;
+                onChanged();
+                return this;
+            }
+
+            private int jobFlag_;
+
+            /**
+             * <code>required int32 job_flag = 2;</code>
+             */
+            public boolean hasJobFlag() {
+                return ((bitField0_ & 0x00000002) == 0x00000002);
+            }
+
+            /**
+             * <code>required int32 job_flag = 2;</code>
+             */
+            public int getJobFlag() {
+                return jobFlag_;
+            }
+
+            /**
+             * <code>required int32 job_flag = 2;</code>
+             */
+            public Builder setJobFlag(int value) {
+                bitField0_ |= 0x00000002;
+                jobFlag_ = value;
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>required int32 job_flag = 2;</code>
+             */
+            public Builder clearJobFlag() {
+                bitField0_ = (bitField0_ & ~0x00000002);
+                jobFlag_ = 0;
                 onChanged();
                 return this;
             }
@@ -1011,9 +1103,10 @@ public final class ModifyJobFlagProtos {
 
     static {
         java.lang.String[] descriptorData = {
-                "\n\025modify_job_flag.proto\"0\n\036RestServerMod" + "ifyJobFlagRequest\022\016\n\006job_id\030\001 \002(\003\"A\n\033Ser"
-                        + "verModifyJobFlagResponse\022\017\n\007success\030\001 \002("
-                        + "\010\022\021\n\007message\030\002 \001(\t:\000B2\n\033com.mogujie.jarv" + "is.protocolB\023ModifyJobFlagProtos" };
+                "\n\025modify_job_flag.proto\"B\n\036RestServerMod" + "ifyJobFlagRequest\022\016\n\006job_id\030\001 \002(\003\022\020\n\010job"
+                        + "_flag\030\002 \002(\005\"A\n\033ServerModifyJobFlagRespon"
+                        + "se\022\017\n\007success\030\001 \002(\010\022\021\n\007message\030\002 \001(\t:\000B2"
+                        + "\n\033com.mogujie.jarvis.protocolB\023ModifyJob" + "FlagProtos" };
         com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner = new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
             public com.google.protobuf.ExtensionRegistry assignDescriptors(com.google.protobuf.Descriptors.FileDescriptor root) {
                 descriptor = root;
@@ -1024,7 +1117,7 @@ public final class ModifyJobFlagProtos {
                 new com.google.protobuf.Descriptors.FileDescriptor[] {}, assigner);
         internal_static_RestServerModifyJobFlagRequest_descriptor = getDescriptor().getMessageTypes().get(0);
         internal_static_RestServerModifyJobFlagRequest_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-                internal_static_RestServerModifyJobFlagRequest_descriptor, new java.lang.String[] { "JobId", });
+                internal_static_RestServerModifyJobFlagRequest_descriptor, new java.lang.String[] { "JobId", "JobFlag", });
         internal_static_ServerModifyJobFlagResponse_descriptor = getDescriptor().getMessageTypes().get(1);
         internal_static_ServerModifyJobFlagResponse_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
                 internal_static_ServerModifyJobFlagResponse_descriptor, new java.lang.String[] { "Success", "Message", });

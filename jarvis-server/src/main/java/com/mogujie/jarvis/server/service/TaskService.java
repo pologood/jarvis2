@@ -52,4 +52,19 @@ public class TaskService {
         task.setExecuteEndTime(currentTime);
         taskMapper.updateByPrimaryKey(task);
     }
+
+    public List<Task> getTasksByOffsetDay(long jobId, int offset) {
+        // TODO
+        return null;
+    }
+
+    public List<Task> getTasksByOffsetWeek(long jobId, int offset) {
+        // TODO
+        return null;
+    }
+
+    public List<Task> getTasksByOffsetMonth(long jobId, int offset) {
+        // TODO
+        return null;
+    }
 }

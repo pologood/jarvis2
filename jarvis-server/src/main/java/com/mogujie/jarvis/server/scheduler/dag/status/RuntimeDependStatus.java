@@ -25,27 +25,18 @@ public abstract class RuntimeDependStatus extends AbstractDependStatus {
     /**
      * @param myJobId
      * @param preJobId
+     * @param commonStrategy
      */
     public RuntimeDependStatus(long myJobId, long preJobId, CommonStrategy commonStrategy) {
         super(myJobId, preJobId, commonStrategy);
     }
 
     @Override
-    public void init() {
-        // TODO Auto-generated method stub
-    }
-
-    /**
-     * reset dependency status
-     */
-    public abstract void reset();
-
-    @Override
     public boolean check() {
         boolean finishDependency = false;
         Map<Long, Boolean> taskStatusMap = getTaskStatusMap();
         CommonStrategy strategy = getCommonStrategy();
-        if (taskStatusMap != null) {
+        if (taskStatusMap != null && !taskStatusMap.isEmpty()) {
             // 多个执行计划中任意一次成功即算成功
             if (strategy.equals(CommonStrategy.ANYONE)) {
                 for (Map.Entry<Long, Boolean> entry : taskStatusMap.entrySet()) {

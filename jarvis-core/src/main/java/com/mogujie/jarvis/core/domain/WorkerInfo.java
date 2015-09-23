@@ -9,6 +9,8 @@ package com.mogujie.jarvis.core.domain;
 
 import java.util.Objects;
 
+import com.mogujie.jarvis.core.JarvisConstants;
+
 /**
  * @author wuya
  *
@@ -40,10 +42,12 @@ public class WorkerInfo {
         this.port = port;
     }
 
-    public String getAkkaPath() {
+    public String getAkkaRootPath() {
         if (akkaPath == null) {
             StringBuilder sb = new StringBuilder();
-            sb.append("akka.tcp://client@");
+            sb.append("akka.tcp://");
+            sb.append(JarvisConstants.WORKER_AKKA_SYSTEM_NAME);
+            sb.append("@");
             sb.append(ip);
             sb.append(":");
             sb.append(port);
@@ -74,7 +78,7 @@ public class WorkerInfo {
 
     @Override
     public String toString() {
-        return getAkkaPath();
+        return getAkkaRootPath();
     }
 
 }
