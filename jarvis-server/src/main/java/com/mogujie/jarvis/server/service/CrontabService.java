@@ -9,6 +9,7 @@
 package com.mogujie.jarvis.server.service;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import com.mogujie.jarvis.core.domain.CrontabType;
 import com.mogujie.jarvis.dao.CrontabMapper;
 import com.mogujie.jarvis.dto.Crontab;
+import com.mogujie.jarvis.dto.CrontabExample;
 
 /**
  * @author guangming
@@ -26,10 +28,16 @@ import com.mogujie.jarvis.dto.Crontab;
 @Service
 public class CrontabService {
     @Autowired
-    CrontabMapper crontabMapper;
+    private CrontabMapper crontabMapper;
 
-    public List<Long> getCronIds(long jobId) {
-        return null;
+    public List<Crontab> getCronsByJobId(long jobId) {
+        CrontabExample example = new CrontabExample();
+        example.createCriteria().andJobIdEqualTo(jobId);
+        List<Crontab> crontabs = crontabMapper.selectByExample(example);
+        if (crontabs == null) {
+            return new ArrayList<Crontab>();
+        }
+        return crontabs;
     }
 
     public void insert(long jobId, String expression) {

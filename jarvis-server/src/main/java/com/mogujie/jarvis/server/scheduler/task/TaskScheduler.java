@@ -8,16 +8,11 @@
 
 package com.mogujie.jarvis.server.scheduler.task;
 
-import java.lang.Thread.State;
 import java.text.DateFormat;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.PriorityQueue;
-import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,13 +48,13 @@ import com.mogujie.jarvis.server.service.TaskService;
 @Service
 public class TaskScheduler implements Scheduler {
     @Autowired
-    JobMapper jobMapper;
+    private JobMapper jobMapper;
 
     @Autowired
-    TaskMapper taskMapper;
+    private TaskMapper taskMapper;
 
     @Autowired
-    TaskService taskService;
+    private TaskService taskService;
 
     // for testing
     private static TaskScheduler instance = new TaskScheduler();
@@ -69,71 +64,29 @@ public class TaskScheduler implements Scheduler {
         return instance;
     }
 
-    private ScanThread scanThread;
-
-    class ScanThread extends Thread {
-        private TaskQueue taskQueue = TaskQueue.getInstance();
-
-        @Override
-        public void run() {
-            while (true) {
-                while (!runnableQueue.isEmpty() && runningTasks.get() < maxConcurrentNum) {
-                    DAGTask priorityTask = runnableQueue.poll();
-                    com.mogujie.jarvis.core.Task taskInfo = getTaskInfo(priorityTask);
-                    taskQueue.put(taskInfo);
-                    runningTasks.incrementAndGet();
-                }
-                ThreadUtils.sleep(5000);
-            }
-        }
-    }
-
     private Map<Long, DAGTask> readyTable = new ConcurrentHashMap<Long, DAGTask>();
-    private final int INIT_PRIORITY_QUEUE_SIZE = 100;
-    private Queue<DAGTask> runnableQueue =  new PriorityQueue<DAGTask>(
-            INIT_PRIORITY_QUEUE_SIZE,
-            new Comparator<DAGTask>() {
-              @Override
-              public int compare(DAGTask task1, DAGTask task2) {
-                  return task2.getPriority() - task1.getPriority();
-              }
-          });
-    private AtomicInteger runningTasks = new AtomicInteger(0);
-    private int maxConcurrentNum = 70;
+    private TaskQueue taskQueue = TaskQueue.getInstance();
 
     // unique taskid
     private AtomicLong maxid = new AtomicLong(1);
 
     @Override
     public void handleInitEvent(InitEvent event) {
-        scanThread = new ScanThread();
-        scanThread.setName("ScanPriorityQueueThread");
-        scanThread.start();
-
         List<Task> tasks = taskService.getTasksByStatus(JobStatus.READY);
         if (tasks != null) {
             for (Task task : tasks) {
                 DAGTask dagTask = new DAGTask(task.getJobId(), task.getTaskId(), task.getAttemptId());
                 readyTable.put(task.getTaskId(), dagTask);
-                runnableQueue.offer(dagTask);
             }
         }
     }
 
     @Override
     public void handleStartEvent(StartEvent event) {
-        if (scanThread != null && !scanThread.getState().equals(State.RUNNABLE)) {
-            scanThread.start();
-        }
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void handleStopEvent(StopEvent event) {
-        if (scanThread != null && scanThread.isAlive()
-                && scanThread.getState().equals(State.RUNNABLE)) {
-            scanThread.stop();
-        }
     }
 
     @Subscribe
@@ -176,8 +129,9 @@ public class TaskScheduler implements Scheduler {
         if (taskService != null) {
             if (status.equals(JobStatus.RUNNING)) {
                 taskService.updateStatusWithStart(taskId, status);
-            } else if (status.getValue() >= JobStatus.SUCCESS.getValue() &&
-                    status.getValue() <= JobStatus.KILLED.getValue()) {
+            } else if (status.getValue() == JobStatus.SUCCESS.getValue() ||
+                    status.getValue() == JobStatus.FAILED.getValue() ||
+                    status.getValue() == JobStatus.KILLED.getValue()) {
                 taskService.updateStatusWithEnd(taskId, status);
             }
         }
@@ -185,14 +139,12 @@ public class TaskScheduler implements Scheduler {
         DAGTask dagTask = readyTable.get(taskId);
         if (dagTask != null) {
             readyTable.remove(taskId);
-            runningTasks.decrementAndGet();
         }
     }
 
     @VisibleForTesting
     public void clear() {
         readyTable.clear();
-        runnableQueue.clear();
         maxid.set(1);
     }
 
@@ -226,19 +178,18 @@ public class TaskScheduler implements Scheduler {
 
     private void submitTask(DAGTask dagTask) {
         if (!readyTable.containsKey(dagTask.getTaskId())) {
-            // add to readyTable and runnableQueue
+            // add to readyTable
             readyTable.put(dagTask.getTaskId(), dagTask);
-            runnableQueue.offer(dagTask);
             if (jobMapper != null) {
                 Job job = jobMapper.selectByPrimaryKey(dagTask.getJobId());
                 dagTask.setPriority(job.getPriority());
                 dagTask.setMaxFailedAttempts(job.getFailedAttempts());
                 dagTask.setFailedInterval(job.getFailedInterval());
             }
-        } else {
-            // add to runnableQueue
-            runnableQueue.offer(dagTask);
         }
+
+        // submit to TaskQueue
+        taskQueue.put(getTaskInfo(dagTask));
     }
 
     private Task createNewTask(long jobId) {

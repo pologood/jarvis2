@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import com.mogujie.jarvis.dao.JobDependStatusMapper;
 import com.mogujie.jarvis.dto.JobDependStatus;
+import com.mogujie.jarvis.dto.JobDependStatusExample;
 import com.mogujie.jarvis.dto.JobDependStatusKey;
 
 /**
@@ -38,25 +39,27 @@ public class DependStatusService {
         dependStatusMapper.updateByPrimaryKey(record);
     }
 
-    public void deleteDependencyByPreJobId(Long myJobId, long preJobId) {
-        // TODO
-    }
-
     public void clearMyStatus(long myJobId) {
-        // TODO
+        JobDependStatusExample example = new JobDependStatusExample();
+        example.createCriteria().andJobIdEqualTo(myJobId);
+        dependStatusMapper.deleteByExample(example);
     }
 
     public void clearPreStatus(long myJobId, long preJobId) {
-        // TODO
+        JobDependStatusExample example = new JobDependStatusExample();
+        example.createCriteria().andJobIdEqualTo(myJobId).andPreJobIdEqualTo(preJobId);
+        dependStatusMapper.deleteByExample(example);
     }
 
     public List<JobDependStatus> getRecordsByMyJobId(long myJobId) {
-        // TODO
-        return null;
+        JobDependStatusExample example = new JobDependStatusExample();
+        example.createCriteria().andJobIdEqualTo(myJobId);
+        return dependStatusMapper.selectByExample(example);
     }
 
     public List<JobDependStatus> getRecordsByPreJobId(long myJobId, long preJobId) {
-        // TODO
-        return null;
+        JobDependStatusExample example = new JobDependStatusExample();
+        example.createCriteria().andJobIdEqualTo(myJobId).andPreJobIdEqualTo(preJobId);
+        return dependStatusMapper.selectByExample(example);
     }
 }

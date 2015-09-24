@@ -8,6 +8,9 @@
 
 package com.mogujie.jarvis.server;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +20,6 @@ import com.mogujie.jarvis.server.observer.Observable;
 import com.mogujie.jarvis.server.observer.Observer;
 import com.mogujie.jarvis.server.scheduler.dag.DAGScheduler;
 import com.mogujie.jarvis.server.scheduler.event.InitEvent;
-import com.mogujie.jarvis.server.scheduler.event.StopEvent;
 import com.mogujie.jarvis.server.scheduler.task.TaskScheduler;
 import com.mogujie.jarvis.server.scheduler.time.TimeScheduler;
 
@@ -41,8 +43,9 @@ public class JobSchedulerController implements Observable {
     @Autowired
     private TaskScheduler taskScheduler;
 
-    private EventBus eventBus = new EventBus("JobSchedulerActor");
+    private EventBus eventBus = new EventBus("JobSchedulerController");
 
+    @PostConstruct
     public void init() throws Exception {
         register(timeScheduler);
         register(dagScheduler);
@@ -51,12 +54,11 @@ public class JobSchedulerController implements Observable {
         notify(new InitEvent());
     }
 
-    public void stop() throws Exception {
-        notify(new StopEvent());
-
-        eventBus.unregister(timeScheduler);
-        eventBus.unregister(dagScheduler);
-        eventBus.unregister(taskScheduler);
+    @PreDestroy
+    public void destroy() {
+        unregister(timeScheduler);
+        unregister(timeScheduler);
+        unregister(timeScheduler);
     }
 
     @Override

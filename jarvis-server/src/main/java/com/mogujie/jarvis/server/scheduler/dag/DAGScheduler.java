@@ -14,17 +14,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.apache.commons.configuration.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.eventbus.AllowConcurrentEvents;
 import com.google.common.eventbus.Subscribe;
-import com.mogujie.jarvis.core.common.util.ConfigUtils;
 import com.mogujie.jarvis.core.domain.JobFlag;
 import com.mogujie.jarvis.core.domain.Pair;
-import com.mogujie.jarvis.dao.JobMapper;
 import com.mogujie.jarvis.dto.Job;
 import com.mogujie.jarvis.server.scheduler.JobScheduleType;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
@@ -52,21 +48,16 @@ import com.mogujie.jarvis.server.service.JobService;
  * @author guangming
  *
  */
-@Service
 public class DAGScheduler implements Scheduler {
     @Autowired
-    JobService jobService;
+    private JobService jobService;
 
     @Autowired
-    JobDependService jobDependService;
+    private JobDependService jobDependService;
 
     @Autowired
-    CrontabService cronService;
+    private CrontabService cronService;
 
-    @Autowired
-    JobMapper jobMapper;
-
-    // for testing
     private static DAGScheduler instance = new DAGScheduler();
     private DAGScheduler() {}
     public static DAGScheduler getInstance() {
@@ -74,7 +65,6 @@ public class DAGScheduler implements Scheduler {
     }
 
     private TaskScheduler taskScheduler = TaskScheduler.getInstance();
-    private Configuration conf = ConfigUtils.getServerConfig();
     private Map<Long, DAGJob> waitingTable = new ConcurrentHashMap<Long, DAGJob>();
 
     @Override
@@ -84,7 +74,7 @@ public class DAGScheduler implements Scheduler {
         for (Job job : jobs) {
             long jobId = job.getJobId();
             Set<Long> dependencies = jobDependService.getDependIds(jobId);
-            boolean hasCron = (!cronService.getCronIds(jobId).isEmpty());
+            boolean hasCron = (!cronService.getCronsByJobId(jobId).isEmpty());
             boolean hasDepend = (!dependencies.isEmpty());
             JobScheduleType type = SchedulerUtil.getJobScheduleType(hasCron, hasDepend);
             AddJobEvent addJobEvent = new AddJobEvent(jobId, dependencies, type);
