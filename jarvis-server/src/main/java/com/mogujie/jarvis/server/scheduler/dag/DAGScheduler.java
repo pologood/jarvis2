@@ -69,19 +69,21 @@ public class DAGScheduler implements Scheduler {
 
     @Override
     public void handleInitEvent(InitEvent event) {
-        // load job from DB
-        List<Job> jobs = jobService.loadJobs();
+        // load not deleted jobs from DB
+        List<Job> jobs = jobService.getJobsNotDeleted();
         for (Job job : jobs) {
-            long jobId = job.getJobId();
-            Set<Long> dependencies = jobDependService.getDependIds(jobId);
-            boolean hasCron = (!cronService.getCronsByJobId(jobId).isEmpty());
-            boolean hasDepend = (!dependencies.isEmpty());
-            JobScheduleType type = SchedulerUtil.getJobScheduleType(hasCron, hasDepend);
-            AddJobEvent addJobEvent = new AddJobEvent(jobId, dependencies, type);
-            try {
-                handleAddJobEvent(addJobEvent);
-            } catch (Exception e) {
-                throw new RuntimeException(e.getMessage());
+            if (job.getJobFlag() != JobFlag.DELETED.getValue()) {
+                long jobId = job.getJobId();
+                Set<Long> dependencies = jobDependService.getDependIds(jobId);
+                boolean hasCron = (!cronService.getCronsByJobId(jobId).isEmpty());
+                boolean hasDepend = (!dependencies.isEmpty());
+                JobScheduleType type = SchedulerUtil.getJobScheduleType(hasCron, hasDepend);
+                AddJobEvent addJobEvent = new AddJobEvent(jobId, dependencies, type);
+                try {
+                    handleAddJobEvent(addJobEvent);
+                } catch (Exception e) {
+                    throw new RuntimeException(e.getMessage());
+                }
             }
         }
     }

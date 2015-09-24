@@ -12,6 +12,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.mogujie.jarvis.core.domain.JobFlag;
 import com.mogujie.jarvis.dao.JobMapper;
 import com.mogujie.jarvis.dto.Job;
 import com.mogujie.jarvis.dto.JobExample;
@@ -31,9 +32,10 @@ public class JobService {
         return 0;
     }
 
-    public List<Job> loadJobs() {
-        JobExample jobExample = new JobExample();
-        return jobMapper.selectByExample(jobExample);
+    public List<Job> getJobsNotDeleted() {
+        JobExample example = new JobExample();
+        example.createCriteria().andJobFlagNotEqualTo(JobFlag.DELETED.getValue());
+        return jobMapper.selectByExample(example);
     }
 
 }
