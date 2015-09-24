@@ -31,6 +31,7 @@ public class LogWriteActor extends UntypedActor {
 
         if (!(obj instanceof WorkerWriteLogRequest)) {
             unhandled(obj);
+            return;
         }
 
         WorkerWriteLogRequest msg = (WorkerWriteLogRequest) obj;
@@ -59,7 +60,6 @@ public class LogWriteActor extends UntypedActor {
 
         //响应值_返回
         getSender().tell(response, getSelf());
-
 
     }
 

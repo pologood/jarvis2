@@ -31,6 +31,7 @@ public class LogReadActor extends UntypedActor {
 
         if (!(obj instanceof RestServerReadLogRequest)) {
             unhandled(obj);
+            return;
         }
 
         RestServerReadLogRequest msg = (RestServerReadLogRequest) obj;
