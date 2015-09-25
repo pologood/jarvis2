@@ -24,9 +24,9 @@ import org.apache.logging.log4j.Logger;
 
 import com.github.stuxuhai.jpinyin.PinyinFormat;
 import com.github.stuxuhai.jpinyin.PinyinHelper;
-import com.mogujie.jarvis.core.Task;
 import com.mogujie.jarvis.core.TaskContext;
 import com.mogujie.jarvis.core.common.util.ConfigUtils;
+import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.exeception.ShellException;
 import com.mogujie.jarvis.tasks.domain.HiveTaskEntity;
 import com.mogujie.jarvis.tasks.util.HiveConfigUtils;
@@ -52,7 +52,7 @@ public class HiveShellTask extends ShellTask {
 
     @Override
     public String getCommand() {
-        Task task = getTaskContext().getTask();
+        TaskDetail task = getTaskContext().getTask();
         String user = null;
         HiveTaskEntity entity = HiveConfigUtils.getHiveJobEntry(task.getAppName());
         if (entity == null || (entity.isAdmin() && !task.getUser().trim().isEmpty())) {
@@ -85,7 +85,7 @@ public class HiveShellTask extends ShellTask {
 
     @Override
     public void processStdOutputStream(InputStream inputStream) {
-        Task task = getTaskContext().getTask();
+        TaskDetail task = getTaskContext().getTask();
         int currentResultRows = 0;
         int maxResultRows = 10000;
         String appName = task.getAppName();
@@ -111,7 +111,7 @@ public class HiveShellTask extends ShellTask {
 
     @Override
     public void processStdErrorStream(InputStream inputStream) {
-        Task task = getTaskContext().getTask();
+        TaskDetail task = getTaskContext().getTask();
         int maxMapperNum = 2000;
         String appName = task.getAppName();
         HiveTaskEntity entry = HiveConfigUtils.getHiveJobEntry(appName);

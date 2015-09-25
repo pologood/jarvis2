@@ -24,12 +24,12 @@ import com.mogujie.jarvis.core.DefaultLogCollector;
 import com.mogujie.jarvis.core.DefaultProgressReporter;
 import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.ProgressReporter;
-import com.mogujie.jarvis.core.Task;
-import com.mogujie.jarvis.core.Task.TaskBuilder;
 import com.mogujie.jarvis.core.TaskContext;
 import com.mogujie.jarvis.core.TaskContext.TaskContextBuilder;
 import com.mogujie.jarvis.core.common.util.ConfigUtils;
 import com.mogujie.jarvis.core.domain.JobStatus;
+import com.mogujie.jarvis.core.domain.TaskDetail;
+import com.mogujie.jarvis.core.domain.TaskDetail.TaskBuilder;
 import com.mogujie.jarvis.core.exeception.AcceptionException;
 import com.mogujie.jarvis.core.exeception.TaskException;
 import com.mogujie.jarvis.core.task.AbstractTask;
@@ -80,7 +80,7 @@ public class WorkerActor extends UntypedActor {
   private void submitJob(ServerSubmitTaskRequest request) {
     String fullId = request.getFullId();
     String taskType = request.getTaskType();
-    TaskBuilder taskBuilder = Task.newTaskBuilder();
+    TaskBuilder taskBuilder = TaskDetail.newTaskBuilder();
     taskBuilder.setFullId(fullId);
     taskBuilder.setTaskName(request.getTaskName());
     taskBuilder.setAppName(request.getAppName());

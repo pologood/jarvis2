@@ -21,9 +21,9 @@ import org.apache.commons.configuration.Configuration;
 import com.google.common.base.Joiner;
 import com.google.common.base.Throwables;
 import com.mogujie.jarvis.core.AbstractLogCollector;
-import com.mogujie.jarvis.core.Task;
 import com.mogujie.jarvis.core.TaskContext;
 import com.mogujie.jarvis.core.common.util.ConfigUtils;
+import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.exeception.TaskException;
 import com.mogujie.jarvis.core.task.AbstractTask;
 import com.mogujie.jarvis.tasks.util.HiveQLUtil;
@@ -48,7 +48,7 @@ public abstract class JdbcTask extends AbstractTask {
 
     @Override
     public boolean execute() throws TaskException {
-        Task task = getTaskContext().getTask();
+        TaskDetail task = getTaskContext().getTask();
         Configuration config = ConfigUtils.getWorkerConfig();
         AbstractLogCollector collector = getTaskContext().getLogCollector();
 

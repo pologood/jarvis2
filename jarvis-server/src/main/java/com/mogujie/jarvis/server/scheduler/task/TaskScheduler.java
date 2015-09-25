@@ -225,10 +225,10 @@ public class TaskScheduler implements Scheduler {
         return maxid.getAndIncrement();
     }
 
-    private com.mogujie.jarvis.core.Task getTaskInfo(DAGTask dagTask) {
+    private com.mogujie.jarvis.core.domain.TaskDetail getTaskInfo(DAGTask dagTask) {
         String fullId = dagTask.getJobId() + "_" + dagTask.getTaskId() + "_" + dagTask.getAttemptId();
         Job job = jobMapper.selectByPrimaryKey(dagTask.getJobId());
-        com.mogujie.jarvis.core.Task task = com.mogujie.jarvis.core.Task.newTaskBuilder().setFullId(fullId).setTaskName(job.getJobName())
+        com.mogujie.jarvis.core.domain.TaskDetail task = com.mogujie.jarvis.core.domain.TaskDetail.newTaskBuilder().setFullId(fullId).setTaskName(job.getJobName())
                 .setAppName(job.getAppName()).setUser(job.getSubmitUser()).setPriority(dagTask.getPriority()).setContent(job.getContent())
                 .setTaskType(job.getJobType()).setParameters(JsonHelper.parseJSON2Map(job.getParams())).build();
 

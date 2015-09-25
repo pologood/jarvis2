@@ -6,7 +6,7 @@
  * Create Date: 2015年9月15日 下午4:46:47
  */
 
-package com.mogujie.jarvis.core;
+package com.mogujie.jarvis.core.domain;
 
 import java.util.Map;
 
@@ -14,7 +14,7 @@ import java.util.Map;
  * 
  *
  */
-public class Task {
+public class TaskDetail {
 
     private String fullId;
     private String taskName;
@@ -26,7 +26,7 @@ public class Task {
     private int groupId;
     private Map<String, Object> parameters;
 
-    private Task() {
+    private TaskDetail() {
     }
 
     public String getFullId() {
@@ -71,7 +71,7 @@ public class Task {
 
     public static class TaskBuilder {
 
-        private Task task;
+        private TaskDetail task;
 
         private TaskBuilder() {
         }
@@ -121,7 +121,7 @@ public class Task {
             return this;
         }
 
-        public Task build() {
+        public TaskDetail build() {
             return task;
         }
     }
