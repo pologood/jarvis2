@@ -12,10 +12,10 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
 
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.mogujie.jarvis.core.common.util.CalendarUtil;
 import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.dao.TaskMapper;
 import com.mogujie.jarvis.dto.Task;
@@ -57,26 +57,26 @@ public class TaskService {
     }
 
     public List<Task> getTasksByOffsetDay(long jobId, int offset) {
-        Date now = new Date();
-        Date offsetDay = CalendarUtil.getDayBefore(now, offset);
+        DateTime now = new DateTime();
+        Date offsetDay = now.plus(-offset).toDate();
         TaskExample example = new TaskExample();
-        example.createCriteria().andDataYmdBetween(offsetDay, now);
+        example.createCriteria().andDataYmdBetween(offsetDay, now.toDate());
         return taskMapper.selectByExample(example);
     }
 
     public List<Task> getTasksByOffsetWeek(long jobId, int offset) {
-        Date now = new Date();
-        Date firstDay = CalendarUtil.getFirstDayOfWeekBefore(now, offset);
-        Date lastDay = CalendarUtil.getLastDayOfWeekBefore(now, offset);
+        DateTime now = new DateTime();
+        Date firstDay = now.plusWeeks(-offset).withDayOfWeek(1).toDate();
+        Date lastDay = now.plusWeeks(-offset).withDayOfWeek(7).toDate();
         TaskExample example = new TaskExample();
         example.createCriteria().andDataYmdBetween(firstDay, lastDay);
         return taskMapper.selectByExample(example);
     }
 
     public List<Task> getTasksByOffsetMonth(long jobId, int offset) {
-        Date now = new Date();
-        Date firstDay = CalendarUtil.getFirstDayOfMonthBefore(now, offset);
-        Date lastDay = CalendarUtil.getLastDayOfMonthBefore(now, offset);
+        DateTime now = new DateTime();
+        Date firstDay = now.plusMonths(-offset).dayOfMonth().withMinimumValue().toDate();
+        Date lastDay = now.plusMonths(-offset).dayOfMonth().withMaximumValue().toDate();
         TaskExample example = new TaskExample();
         example.createCriteria().andDataYmdBetween(firstDay, lastDay);
         return taskMapper.selectByExample(example);

@@ -8,9 +8,12 @@
 
 package com.mogujie.jarvis.server.scheduler.dag;
 
+import org.apache.commons.configuration.Configuration;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.mogujie.jarvis.core.common.util.ConfigUtils;
 import com.mogujie.jarvis.core.domain.Pair;
 import com.mogujie.jarvis.server.scheduler.dag.strategy.AbstractOffsetDependStrategy;
 import com.mogujie.jarvis.server.scheduler.dag.strategy.OffsetDayDependStrategy;
@@ -23,6 +26,18 @@ import com.mogujie.jarvis.server.scheduler.dag.strategy.OffsetWeekDependStrategy
  *
  */
 public class TestOffsetStrategy {
+    private static Configuration conf = ConfigUtils.getServerConfig();
+
+    @BeforeClass
+    public static void setup() {
+        conf.setProperty(OffsetStrategyFactory.DAG_OFFSET_STRATEGY_KEY_PREFIX + "lastday",
+                OffsetDayDependStrategy.class.getName());
+        conf.setProperty(OffsetStrategyFactory.DAG_OFFSET_STRATEGY_KEY_PREFIX + "lastweek",
+                OffsetWeekDependStrategy.class.getName());
+        conf.setProperty(OffsetStrategyFactory.DAG_OFFSET_STRATEGY_KEY_PREFIX + "lastmonth",
+                OffsetMonthDependStrategy.class.getName());
+    }
+
     @Test
     public void testOffsetDayStrategy() {
         String offsetStrategyStr = "lastday:3";

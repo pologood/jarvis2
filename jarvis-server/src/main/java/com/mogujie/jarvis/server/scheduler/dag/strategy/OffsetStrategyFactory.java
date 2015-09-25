@@ -8,6 +8,9 @@
 
 package com.mogujie.jarvis.server.scheduler.dag.strategy;
 
+import org.apache.commons.configuration.Configuration;
+
+import com.mogujie.jarvis.core.common.util.ConfigUtils;
 import com.mogujie.jarvis.core.common.util.ReflectionUtils;
 import com.mogujie.jarvis.core.domain.Pair;
 
@@ -16,14 +19,16 @@ import com.mogujie.jarvis.core.domain.Pair;
  *
  */
 public class OffsetStrategyFactory {
+    public static String DAG_OFFSET_STRATEGY_KEY_PREFIX = "dag.offset.strategy.";
+
     public static Pair<AbstractOffsetDependStrategy, Integer> create(String offsetStrategyStr) {
         Pair<AbstractOffsetDependStrategy, Integer> strategyPair = null;
         if (offsetStrategyStr != null && !offsetStrategyStr.isEmpty()) {
             String offsetStrategyMap[] = offsetStrategyStr.split(":");
-            OffsetStrategyEnum offsetStrategyEnum = OffsetStrategyEnum.getInstance(
-                    offsetStrategyMap[0].trim());
-            if (offsetStrategyEnum != null) {
-                String className = offsetStrategyEnum.getValue();
+            String offsetStrategyKey = DAG_OFFSET_STRATEGY_KEY_PREFIX + offsetStrategyMap[0].trim().toLowerCase();
+            Configuration conf = ConfigUtils.getServerConfig();
+            String className = conf.getString(offsetStrategyKey);
+            if (className != null) {
                 int offsetValue = Integer.valueOf(offsetStrategyMap[1].trim());
                 try {
                     AbstractOffsetDependStrategy offsetStrategy = ReflectionUtils.getInstanceByClassName(className);
