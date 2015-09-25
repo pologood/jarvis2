@@ -29,9 +29,20 @@ import com.mogujie.jarvis.server.scheduler.Scheduler;
 public class JobSchedulerController implements Observable {
     private EventBus eventBus = new EventBus("JobSchedulerController");
 
+    private static JobSchedulerController instance = new JobSchedulerController();
+    private JobSchedulerController() {
+    }
+    public static JobSchedulerController getInstance() {
+        return instance;
+    }
+
     @Override
     public void register(Observer o) {
         if (o instanceof Scheduler) {
+            Scheduler scheduler = (Scheduler) o;
+            if (scheduler.getSchedulerController() == null) {
+                scheduler.setSchedulerController(this);
+            }
             eventBus.register(o);
         }
     }

@@ -23,7 +23,6 @@ import com.mogujie.jarvis.dto.Crontab;
 import com.mogujie.jarvis.dto.CrontabExample;
 import com.mogujie.jarvis.dto.Job;
 import com.mogujie.jarvis.dto.JobExample;
-import com.mogujie.jarvis.server.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.CronScheduler;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
 import com.mogujie.jarvis.server.scheduler.event.AddJobEvent;
@@ -39,10 +38,7 @@ import com.mogujie.jarvis.server.scheduler.event.StopEvent;
  *
  */
 @Repository
-public class TimeScheduler implements Scheduler {
-    @Autowired
-    private JobSchedulerController schedulerController;
-
+public class TimeScheduler extends Scheduler {
     @Autowired
     private CrontabMapper crontabMapper;
 
@@ -52,9 +48,16 @@ public class TimeScheduler implements Scheduler {
     @Autowired
     private CronScheduler cronScheduler;
 
+    private static TimeScheduler instance = new TimeScheduler();
+    private TimeScheduler() {
+    }
+    public static TimeScheduler getInstance() {
+        return instance;
+    }
+
     @Override
     public void init() {
-        schedulerController.register(this);
+        getSchedulerController().register(this);
 
         cronScheduler.start();
         CrontabExample crontabExample = new CrontabExample();
@@ -76,7 +79,7 @@ public class TimeScheduler implements Scheduler {
 
     @Override
     public void destroy() {
-        schedulerController.unregister(this);
+        getSchedulerController().unregister(this);
     }
 
     @Override

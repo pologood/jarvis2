@@ -11,8 +11,12 @@ package com.mogujie.jarvis.server.scheduler;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
 import com.google.common.eventbus.Subscribe;
 import com.mogujie.jarvis.core.observer.Observer;
+import com.mogujie.jarvis.server.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.event.StartEvent;
 import com.mogujie.jarvis.server.scheduler.event.StopEvent;
 
@@ -20,17 +24,28 @@ import com.mogujie.jarvis.server.scheduler.event.StopEvent;
  * @author guangming
  *
  */
-public interface Scheduler extends Observer {
+@Repository
+public abstract class Scheduler implements Observer {
+    @Autowired
+    private JobSchedulerController schedulerController;
+
+    public void setSchedulerController(JobSchedulerController schedulerController) {
+        this.schedulerController = schedulerController;
+    }
+
+    public JobSchedulerController getSchedulerController() {
+        return schedulerController;
+    }
 
     @PostConstruct
-    public void init();
+    public abstract void init();
 
     @PreDestroy
-    public void destroy();
+    public abstract void destroy();
 
     @Subscribe
-    public void handleStartEvent(StartEvent event);
+    public abstract void handleStartEvent(StartEvent event);
 
     @Subscribe
-    public void handleStopEvent(StopEvent event);
+    public abstract void handleStopEvent(StopEvent event);
 }

@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.eventbus.AllowConcurrentEvents;
@@ -29,7 +29,6 @@ import com.mogujie.jarvis.dao.JobMapper;
 import com.mogujie.jarvis.dao.TaskMapper;
 import com.mogujie.jarvis.dto.Job;
 import com.mogujie.jarvis.dto.Task;
-import com.mogujie.jarvis.server.JobSchedulerController;
 import com.mogujie.jarvis.server.TaskQueue;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
@@ -46,11 +45,8 @@ import com.mogujie.jarvis.server.service.TaskService;
  * @author guangming
  *
  */
-@Service
-public class TaskScheduler implements Scheduler {
-    @Autowired
-    private JobSchedulerController schedulerController;
-
+@Repository
+public class TaskScheduler extends Scheduler {
     @Autowired
     private JobMapper jobMapper;
 
@@ -62,10 +58,8 @@ public class TaskScheduler implements Scheduler {
 
     // for testing
     private static TaskScheduler instance = new TaskScheduler();
-
     private TaskScheduler() {
     }
-
     public static TaskScheduler getInstance() {
         return instance;
     }
@@ -80,7 +74,7 @@ public class TaskScheduler implements Scheduler {
 
     @Override
     public void init() {
-        schedulerController.register(this);
+        getSchedulerController().register(this);
         // load all READY tasks from DB
         List<Task> tasks = taskService.getTasksByStatus(JobStatus.READY);
         if (tasks != null) {
@@ -94,7 +88,7 @@ public class TaskScheduler implements Scheduler {
     @Override
     public void destroy() {
         clear();
-        schedulerController.unregister(this);
+        getSchedulerController().unregister(this);
     }
 
     @Override
