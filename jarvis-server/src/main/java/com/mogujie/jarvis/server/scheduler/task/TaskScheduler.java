@@ -228,7 +228,7 @@ public class TaskScheduler implements Scheduler {
     private com.mogujie.jarvis.core.domain.TaskDetail getTaskInfo(DAGTask dagTask) {
         String fullId = dagTask.getJobId() + "_" + dagTask.getTaskId() + "_" + dagTask.getAttemptId();
         Job job = jobMapper.selectByPrimaryKey(dagTask.getJobId());
-        com.mogujie.jarvis.core.domain.TaskDetail task = com.mogujie.jarvis.core.domain.TaskDetail.newTaskBuilder().setFullId(fullId).setTaskName(job.getJobName())
+        com.mogujie.jarvis.core.domain.TaskDetail task = com.mogujie.jarvis.core.domain.TaskDetail.newTaskDetailBuilder().setFullId(fullId).setTaskName(job.getJobName())
                 .setAppName(job.getAppName()).setUser(job.getSubmitUser()).setPriority(dagTask.getPriority()).setContent(job.getContent())
                 .setTaskType(job.getJobType()).setParameters(JsonHelper.parseJSON2Map(job.getParams())).build();
 

@@ -10,8 +10,12 @@ package com.mogujie.jarvis.server.actor;
 
 import javax.inject.Named;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 
+import com.mogujie.jarvis.dao.WorkerMapper;
+import com.mogujie.jarvis.dto.Worker;
+import com.mogujie.jarvis.dto.WorkerExample;
 import com.mogujie.jarvis.protocol.ModifyWorkerStatusProtos.RestServerModifyWorkerStatusRequest;
 import com.mogujie.jarvis.protocol.ModifyWorkerStatusProtos.ServerModifyWorkerStatusResponse;
 
@@ -25,6 +29,9 @@ import akka.actor.UntypedActor;
 @Scope("prototype")
 public class ModifyWorkerStatusActor extends UntypedActor {
 
+    @Autowired
+    private WorkerMapper workerMapper;
+
     @Override
     public void onReceive(Object obj) throws Exception {
         if (obj instanceof RestServerModifyWorkerStatusRequest) {
@@ -33,10 +40,15 @@ public class ModifyWorkerStatusActor extends UntypedActor {
             int port = request.getPort();
             int status = request.getStatus();
 
-            // TODO 修改Worker状态
-
             ServerModifyWorkerStatusResponse response = ServerModifyWorkerStatusResponse.newBuilder().setSuccess(true).setMessage("").build();
             getSender().tell(response, getSelf());
+
+            Worker worker = new Worker();
+            worker.setStatus(status);
+
+            WorkerExample example = new WorkerExample();
+            example.createCriteria().andIpEqualTo(ip).andPortEqualTo(port);
+            workerMapper.updateByExample(worker, example);
         } else {
             unhandled(obj);
         }

@@ -29,7 +29,7 @@ import com.mogujie.jarvis.core.TaskContext.TaskContextBuilder;
 import com.mogujie.jarvis.core.common.util.ConfigUtils;
 import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.core.domain.TaskDetail;
-import com.mogujie.jarvis.core.domain.TaskDetail.TaskBuilder;
+import com.mogujie.jarvis.core.domain.TaskDetail.TaskDetailBuilder;
 import com.mogujie.jarvis.core.exeception.AcceptionException;
 import com.mogujie.jarvis.core.exeception.TaskException;
 import com.mogujie.jarvis.core.task.AbstractTask;
@@ -80,7 +80,7 @@ public class WorkerActor extends UntypedActor {
   private void submitJob(ServerSubmitTaskRequest request) {
     String fullId = request.getFullId();
     String taskType = request.getTaskType();
-    TaskBuilder taskBuilder = TaskDetail.newTaskBuilder();
+    TaskDetailBuilder taskBuilder = TaskDetail.newTaskDetailBuilder();
     taskBuilder.setFullId(fullId);
     taskBuilder.setTaskName(request.getTaskName());
     taskBuilder.setAppName(request.getAppName());

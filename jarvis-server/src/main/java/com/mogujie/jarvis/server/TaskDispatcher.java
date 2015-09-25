@@ -40,55 +40,71 @@ public class TaskDispatcher extends Thread {
     @Autowired
     private TaskManager taskManager;
 
+    private volatile boolean running = true;
+
     private ActorSystem system = JarvisServerActorSystem.getInstance();
 
     private static final Logger LOGGER = LogManager.getLogger();
 
+    public void pause() {
+        running = false;
+    }
+
+    public void restart() {
+        running = true;
+    }
+
     @Override
     public void run() {
         while (true) {
-            try {
-                TaskDetail task = queue.take();
-                ServerSubmitTaskRequest.Builder builder = ServerSubmitTaskRequest.newBuilder();
-                builder = builder.setFullId(task.getFullId());
-                builder = builder.setTaskName(task.getTaskName());
-                builder = builder.setAppName(task.getAppName());
-                builder = builder.setUser(task.getUser());
-                builder = builder.setTaskType(task.getTaskType());
-                builder = builder.setContent(task.getContent());
-                builder = builder.setPriority(task.getPriority());
+            if (running) {
+                try {
+                    TaskDetail task = queue.take();
+                    ServerSubmitTaskRequest.Builder builder = ServerSubmitTaskRequest.newBuilder();
+                    builder = builder.setFullId(task.getFullId());
+                    builder = builder.setTaskName(task.getTaskName());
+                    builder = builder.setAppName(task.getAppName());
+                    builder = builder.setUser(task.getUser());
+                    builder = builder.setTaskType(task.getTaskType());
+                    builder = builder.setContent(task.getContent());
+                    builder = builder.setPriority(task.getPriority());
 
-                int i = 0;
-                for (Entry<String, Object> entry : task.getParameters().entrySet()) {
-                    MapEntry mapEntry = MapEntry.newBuilder().setKey(entry.getKey()).setValue(entry.getValue().toString()).build();
-                    builder.setParameters(i++, mapEntry);
-                }
-                ServerSubmitTaskRequest request = builder.build();
-
-                WorkerInfo workerInfo = workerSelector.select(task.getGroupId());
-                if (workerInfo != null) {
-                    ActorSelection actorSelection = system.actorSelection(workerInfo.getAkkaRootPath());
-                    try {
-                        WorkerSubmitTaskResponse response = (WorkerSubmitTaskResponse) FutureUtils.awaitResult(actorSelection, request, 30);
-                        if (response.getSuccess()) {
-                            if (response.getAccept()) {
-                                taskManager.add(task.getFullId(), workerInfo, task.getAppName());
-                                LOGGER.debug("Task[{}] was accepted by worker[{}:{}]", task.getFullId(), workerInfo.getIp(), workerInfo.getPort());
-                            } else {
-                                LOGGER.warn("Task[{}] was rejected by worker[{}:{}]", task.getFullId(), workerInfo.getIp(), workerInfo.getPort());
-                            }
-                        } else {
-                            LOGGER.error("Send ServerSubmitTaskRequest error: " + response.getMessage());
-                        }
-                    } catch (Exception e) {
-                        LOGGER.error("Send ServerSubmitTaskRequest error", e);
+                    int i = 0;
+                    for (Entry<String, Object> entry : task.getParameters().entrySet()) {
+                        MapEntry mapEntry = MapEntry.newBuilder().setKey(entry.getKey()).setValue(entry.getValue().toString()).build();
+                        builder.setParameters(i++, mapEntry);
                     }
-                } else {
-                    LOGGER.warn("Can not select workerinfo for task: " + task.getFullId());
+                    ServerSubmitTaskRequest request = builder.build();
+
+                    WorkerInfo workerInfo = workerSelector.select(task.getGroupId());
+                    if (workerInfo != null) {
+                        ActorSelection actorSelection = system.actorSelection(workerInfo.getAkkaRootPath());
+                        try {
+                            WorkerSubmitTaskResponse response = (WorkerSubmitTaskResponse) FutureUtils.awaitResult(actorSelection, request, 30);
+                            if (response.getSuccess()) {
+                                if (response.getAccept()) {
+                                    taskManager.add(task.getFullId(), workerInfo, task.getAppName());
+                                    LOGGER.debug("Task[{}] was accepted by worker[{}:{}]", task.getFullId(), workerInfo.getIp(),
+                                            workerInfo.getPort());
+                                } else {
+                                    LOGGER.warn("Task[{}] was rejected by worker[{}:{}]", task.getFullId(), workerInfo.getIp(), workerInfo.getPort());
+                                }
+                            } else {
+                                LOGGER.error("Send ServerSubmitTaskRequest error: " + response.getMessage());
+                            }
+                        } catch (Exception e) {
+                            LOGGER.error("Send ServerSubmitTaskRequest error", e);
+                        }
+                    } else {
+                        LOGGER.warn("Can not select workerinfo for task: " + task.getFullId());
+                    }
+                } catch (InterruptedException e) {
+                    LOGGER.error("Take taskDetail error from taskQueue", e);
                 }
-            } catch (InterruptedException e) {
-                LOGGER.error("Take taskDetail error from taskQueue", e);
+            } else {
+                yield();
             }
         }
+
     }
 }

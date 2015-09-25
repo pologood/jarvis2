@@ -65,58 +65,58 @@ public class TaskDetail {
         return parameters;
     }
 
-    public static TaskBuilder newTaskBuilder() {
-        return new TaskBuilder();
+    public static TaskDetailBuilder newTaskDetailBuilder() {
+        return new TaskDetailBuilder();
     }
 
-    public static class TaskBuilder {
+    public static class TaskDetailBuilder {
 
         private TaskDetail task;
 
-        private TaskBuilder() {
+        private TaskDetailBuilder() {
         }
 
-        public TaskBuilder setFullId(String fullId) {
+        public TaskDetailBuilder setFullId(String fullId) {
             this.task.fullId = fullId;
             return this;
         }
 
-        public TaskBuilder setTaskName(String taskName) {
+        public TaskDetailBuilder setTaskName(String taskName) {
             this.task.taskName = taskName;
             return this;
         }
 
-        public TaskBuilder setAppName(String appName) {
+        public TaskDetailBuilder setAppName(String appName) {
             this.task.appName = appName;
             return this;
         }
 
-        public TaskBuilder setUser(String user) {
+        public TaskDetailBuilder setUser(String user) {
             this.task.user = user;
             return this;
         }
 
-        public TaskBuilder setTaskType(String taskType) {
+        public TaskDetailBuilder setTaskType(String taskType) {
             this.task.taskType = taskType;
             return this;
         }
 
-        public TaskBuilder setContent(String content) {
+        public TaskDetailBuilder setContent(String content) {
             this.task.content = content;
             return this;
         }
 
-        public TaskBuilder setPriority(int priority) {
+        public TaskDetailBuilder setPriority(int priority) {
             this.task.priority = priority;
             return this;
         }
 
-        public TaskBuilder setGroupId(int groupId) {
+        public TaskDetailBuilder setGroupId(int groupId) {
             this.task.groupId = groupId;
             return this;
         }
 
-        public TaskBuilder setParameters(Map<String, Object> parameters) {
+        public TaskDetailBuilder setParameters(Map<String, Object> parameters) {
             this.task.parameters = parameters;
             return this;
         }

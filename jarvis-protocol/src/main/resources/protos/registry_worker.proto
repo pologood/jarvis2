@@ -4,7 +4,6 @@ option java_outer_classname = "RegistryWorkerProtos";
 
 message WorkerRegistryRequest {
     required string key = 1;
-    required int32 group_id = 2;
 }
 
 message ServerRegistryResponse {
