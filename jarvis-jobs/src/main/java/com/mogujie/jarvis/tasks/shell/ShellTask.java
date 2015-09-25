@@ -41,7 +41,7 @@ public class ShellTask extends AbstractTask {
     }
 
     public String getCommand() {
-        return getTaskContext().getTask().getCommand();
+        return getTaskContext().getTask().getContent();
     }
 
     public void processStdOutputStream(InputStream inputStream) {

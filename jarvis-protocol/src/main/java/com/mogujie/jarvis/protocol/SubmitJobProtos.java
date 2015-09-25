@@ -30,17 +30,17 @@ public final class SubmitJobProtos {
         com.google.protobuf.ByteString getJobNameBytes();
 
         /**
-         * <code>required string cron_expression = 2;</code>
+         * <code>optional string cron_expression = 2;</code>
          */
         boolean hasCronExpression();
 
         /**
-         * <code>required string cron_expression = 2;</code>
+         * <code>optional string cron_expression = 2;</code>
          */
         java.lang.String getCronExpression();
 
         /**
-         * <code>required string cron_expression = 2;</code>
+         * <code>optional string cron_expression = 2;</code>
          */
         com.google.protobuf.ByteString getCronExpressionBytes();
 
@@ -120,19 +120,19 @@ public final class SubmitJobProtos {
         com.google.protobuf.ByteString getJobTypeBytes();
 
         /**
-         * <code>required string command = 8;</code>
+         * <code>required string content = 8;</code>
          */
-        boolean hasCommand();
+        boolean hasContent();
 
         /**
-         * <code>required string command = 8;</code>
+         * <code>required string content = 8;</code>
          */
-        java.lang.String getCommand();
+        java.lang.String getContent();
 
         /**
-         * <code>required string command = 8;</code>
+         * <code>required string content = 8;</code>
          */
-        com.google.protobuf.ByteString getCommandBytes();
+        com.google.protobuf.ByteString getContentBytes();
 
         /**
          * <code>required int32 group_id = 9;</code>
@@ -278,6 +278,16 @@ public final class SubmitJobProtos {
          * <code>repeated .MapEntry parameters = 20;</code>
          */
         com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder getParametersOrBuilder(int index);
+
+        /**
+         * <code>optional int32 fixed_delay = 21;</code>
+         */
+        boolean hasFixedDelay();
+
+        /**
+         * <code>optional int32 fixed_delay = 21;</code>
+         */
+        int getFixedDelay();
     }
 
     /**
@@ -392,7 +402,7 @@ public final class SubmitJobProtos {
                         case 66: {
                             com.google.protobuf.ByteString bs = input.readBytes();
                             bitField0_ |= 0x00000040;
-                            command_ = bs;
+                            content_ = bs;
                             break;
                         }
                         case 72: {
@@ -458,6 +468,11 @@ public final class SubmitJobProtos {
                                 mutable_bitField0_ |= 0x00080000;
                             }
                             parameters_.add(input.readMessage(com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.PARSER, extensionRegistry));
+                            break;
+                        }
+                        case 168: {
+                            bitField0_ |= 0x00040000;
+                            fixedDelay_ = input.readInt32();
                             break;
                         }
                     }
@@ -546,14 +561,14 @@ public final class SubmitJobProtos {
         private java.lang.Object cronExpression_;
 
         /**
-         * <code>required string cron_expression = 2;</code>
+         * <code>optional string cron_expression = 2;</code>
          */
         public boolean hasCronExpression() {
             return ((bitField0_ & 0x00000002) == 0x00000002);
         }
 
         /**
-         * <code>required string cron_expression = 2;</code>
+         * <code>optional string cron_expression = 2;</code>
          */
         public java.lang.String getCronExpression() {
             java.lang.Object ref = cronExpression_;
@@ -570,7 +585,7 @@ public final class SubmitJobProtos {
         }
 
         /**
-         * <code>required string cron_expression = 2;</code>
+         * <code>optional string cron_expression = 2;</code>
          */
         public com.google.protobuf.ByteString getCronExpressionBytes() {
             java.lang.Object ref = cronExpression_;
@@ -773,41 +788,41 @@ public final class SubmitJobProtos {
             }
         }
 
-        public static final int COMMAND_FIELD_NUMBER = 8;
-        private java.lang.Object command_;
+        public static final int CONTENT_FIELD_NUMBER = 8;
+        private java.lang.Object content_;
 
         /**
-         * <code>required string command = 8;</code>
+         * <code>required string content = 8;</code>
          */
-        public boolean hasCommand() {
+        public boolean hasContent() {
             return ((bitField0_ & 0x00000040) == 0x00000040);
         }
 
         /**
-         * <code>required string command = 8;</code>
+         * <code>required string content = 8;</code>
          */
-        public java.lang.String getCommand() {
-            java.lang.Object ref = command_;
+        public java.lang.String getContent() {
+            java.lang.Object ref = content_;
             if (ref instanceof java.lang.String) {
                 return (java.lang.String) ref;
             } else {
                 com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
                 java.lang.String s = bs.toStringUtf8();
                 if (bs.isValidUtf8()) {
-                    command_ = s;
+                    content_ = s;
                 }
                 return s;
             }
         }
 
         /**
-         * <code>required string command = 8;</code>
+         * <code>required string content = 8;</code>
          */
-        public com.google.protobuf.ByteString getCommandBytes() {
-            java.lang.Object ref = command_;
+        public com.google.protobuf.ByteString getContentBytes() {
+            java.lang.Object ref = content_;
             if (ref instanceof java.lang.String) {
                 com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                command_ = b;
+                content_ = b;
                 return b;
             } else {
                 return (com.google.protobuf.ByteString) ref;
@@ -1087,6 +1102,23 @@ public final class SubmitJobProtos {
             return parameters_.get(index);
         }
 
+        public static final int FIXED_DELAY_FIELD_NUMBER = 21;
+        private int fixedDelay_;
+
+        /**
+         * <code>optional int32 fixed_delay = 21;</code>
+         */
+        public boolean hasFixedDelay() {
+            return ((bitField0_ & 0x00040000) == 0x00040000);
+        }
+
+        /**
+         * <code>optional int32 fixed_delay = 21;</code>
+         */
+        public int getFixedDelay() {
+            return fixedDelay_;
+        }
+
         private void initFields() {
             jobName_ = "";
             cronExpression_ = "";
@@ -1095,7 +1127,7 @@ public final class SubmitJobProtos {
             appKey_ = "";
             user_ = "";
             jobType_ = "";
-            command_ = "";
+            content_ = "";
             groupId_ = 0;
             priority_ = 1;
             rejectRetries_ = 0;
@@ -1108,6 +1140,7 @@ public final class SubmitJobProtos {
             commonDependStrategy_ = "";
             lastDependStrategy_ = "";
             parameters_ = java.util.Collections.emptyList();
+            fixedDelay_ = 0;
         }
 
         private byte memoizedIsInitialized = -1;
@@ -1120,10 +1153,6 @@ public final class SubmitJobProtos {
                 return false;
 
             if (!hasJobName()) {
-                memoizedIsInitialized = 0;
-                return false;
-            }
-            if (!hasCronExpression()) {
                 memoizedIsInitialized = 0;
                 return false;
             }
@@ -1143,7 +1172,7 @@ public final class SubmitJobProtos {
                 memoizedIsInitialized = 0;
                 return false;
             }
-            if (!hasCommand()) {
+            if (!hasContent()) {
                 memoizedIsInitialized = 0;
                 return false;
             }
@@ -1209,7 +1238,7 @@ public final class SubmitJobProtos {
                 output.writeBytes(7, getJobTypeBytes());
             }
             if (((bitField0_ & 0x00000040) == 0x00000040)) {
-                output.writeBytes(8, getCommandBytes());
+                output.writeBytes(8, getContentBytes());
             }
             if (((bitField0_ & 0x00000080) == 0x00000080)) {
                 output.writeInt32(9, groupId_);
@@ -1246,6 +1275,9 @@ public final class SubmitJobProtos {
             }
             for (int i = 0; i < parameters_.size(); i++) {
                 output.writeMessage(20, parameters_.get(i));
+            }
+            if (((bitField0_ & 0x00040000) == 0x00040000)) {
+                output.writeInt32(21, fixedDelay_);
             }
             getUnknownFields().writeTo(output);
         }
@@ -1289,7 +1321,7 @@ public final class SubmitJobProtos {
                 size += com.google.protobuf.CodedOutputStream.computeBytesSize(7, getJobTypeBytes());
             }
             if (((bitField0_ & 0x00000040) == 0x00000040)) {
-                size += com.google.protobuf.CodedOutputStream.computeBytesSize(8, getCommandBytes());
+                size += com.google.protobuf.CodedOutputStream.computeBytesSize(8, getContentBytes());
             }
             if (((bitField0_ & 0x00000080) == 0x00000080)) {
                 size += com.google.protobuf.CodedOutputStream.computeInt32Size(9, groupId_);
@@ -1326,6 +1358,9 @@ public final class SubmitJobProtos {
             }
             for (int i = 0; i < parameters_.size(); i++) {
                 size += com.google.protobuf.CodedOutputStream.computeMessageSize(20, parameters_.get(i));
+            }
+            if (((bitField0_ & 0x00040000) == 0x00040000)) {
+                size += com.google.protobuf.CodedOutputStream.computeInt32Size(21, fixedDelay_);
             }
             size += getUnknownFields().getSerializedSize();
             memoizedSerializedSize = size;
@@ -1464,7 +1499,7 @@ public final class SubmitJobProtos {
                 bitField0_ = (bitField0_ & ~0x00000020);
                 jobType_ = "";
                 bitField0_ = (bitField0_ & ~0x00000040);
-                command_ = "";
+                content_ = "";
                 bitField0_ = (bitField0_ & ~0x00000080);
                 groupId_ = 0;
                 bitField0_ = (bitField0_ & ~0x00000100);
@@ -1494,6 +1529,8 @@ public final class SubmitJobProtos {
                 } else {
                     parametersBuilder_.clear();
                 }
+                fixedDelay_ = 0;
+                bitField0_ = (bitField0_ & ~0x00100000);
                 return this;
             }
 
@@ -1554,7 +1591,7 @@ public final class SubmitJobProtos {
                 if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
                     to_bitField0_ |= 0x00000040;
                 }
-                result.command_ = command_;
+                result.content_ = content_;
                 if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
                     to_bitField0_ |= 0x00000080;
                 }
@@ -1608,6 +1645,10 @@ public final class SubmitJobProtos {
                 } else {
                     result.parameters_ = parametersBuilder_.build();
                 }
+                if (((from_bitField0_ & 0x00100000) == 0x00100000)) {
+                    to_bitField0_ |= 0x00040000;
+                }
+                result.fixedDelay_ = fixedDelay_;
                 result.bitField0_ = to_bitField0_;
                 onBuilt();
                 return result;
@@ -1665,9 +1706,9 @@ public final class SubmitJobProtos {
                     jobType_ = other.jobType_;
                     onChanged();
                 }
-                if (other.hasCommand()) {
+                if (other.hasContent()) {
                     bitField0_ |= 0x00000080;
-                    command_ = other.command_;
+                    content_ = other.content_;
                     onChanged();
                 }
                 if (other.hasGroupId()) {
@@ -1731,16 +1772,15 @@ public final class SubmitJobProtos {
                         }
                     }
                 }
+                if (other.hasFixedDelay()) {
+                    setFixedDelay(other.getFixedDelay());
+                }
                 this.mergeUnknownFields(other.getUnknownFields());
                 return this;
             }
 
             public final boolean isInitialized() {
                 if (!hasJobName()) {
-
-                    return false;
-                }
-                if (!hasCronExpression()) {
 
                     return false;
                 }
@@ -1760,7 +1800,7 @@ public final class SubmitJobProtos {
 
                     return false;
                 }
-                if (!hasCommand()) {
+                if (!hasContent()) {
 
                     return false;
                 }
@@ -1894,14 +1934,14 @@ public final class SubmitJobProtos {
             private java.lang.Object cronExpression_ = "";
 
             /**
-             * <code>required string cron_expression = 2;</code>
+             * <code>optional string cron_expression = 2;</code>
              */
             public boolean hasCronExpression() {
                 return ((bitField0_ & 0x00000002) == 0x00000002);
             }
 
             /**
-             * <code>required string cron_expression = 2;</code>
+             * <code>optional string cron_expression = 2;</code>
              */
             public java.lang.String getCronExpression() {
                 java.lang.Object ref = cronExpression_;
@@ -1918,7 +1958,7 @@ public final class SubmitJobProtos {
             }
 
             /**
-             * <code>required string cron_expression = 2;</code>
+             * <code>optional string cron_expression = 2;</code>
              */
             public com.google.protobuf.ByteString getCronExpressionBytes() {
                 java.lang.Object ref = cronExpression_;
@@ -1932,7 +1972,7 @@ public final class SubmitJobProtos {
             }
 
             /**
-             * <code>required string cron_expression = 2;</code>
+             * <code>optional string cron_expression = 2;</code>
              */
             public Builder setCronExpression(java.lang.String value) {
                 if (value == null) {
@@ -1945,7 +1985,7 @@ public final class SubmitJobProtos {
             }
 
             /**
-             * <code>required string cron_expression = 2;</code>
+             * <code>optional string cron_expression = 2;</code>
              */
             public Builder clearCronExpression() {
                 bitField0_ = (bitField0_ & ~0x00000002);
@@ -1955,7 +1995,7 @@ public final class SubmitJobProtos {
             }
 
             /**
-             * <code>required string cron_expression = 2;</code>
+             * <code>optional string cron_expression = 2;</code>
              */
             public Builder setCronExpressionBytes(com.google.protobuf.ByteString value) {
                 if (value == null) {
@@ -2341,25 +2381,25 @@ public final class SubmitJobProtos {
                 return this;
             }
 
-            private java.lang.Object command_ = "";
+            private java.lang.Object content_ = "";
 
             /**
-             * <code>required string command = 8;</code>
+             * <code>required string content = 8;</code>
              */
-            public boolean hasCommand() {
+            public boolean hasContent() {
                 return ((bitField0_ & 0x00000080) == 0x00000080);
             }
 
             /**
-             * <code>required string command = 8;</code>
+             * <code>required string content = 8;</code>
              */
-            public java.lang.String getCommand() {
-                java.lang.Object ref = command_;
+            public java.lang.String getContent() {
+                java.lang.Object ref = content_;
                 if (!(ref instanceof java.lang.String)) {
                     com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
                     java.lang.String s = bs.toStringUtf8();
                     if (bs.isValidUtf8()) {
-                        command_ = s;
+                        content_ = s;
                     }
                     return s;
                 } else {
@@ -2368,13 +2408,13 @@ public final class SubmitJobProtos {
             }
 
             /**
-             * <code>required string command = 8;</code>
+             * <code>required string content = 8;</code>
              */
-            public com.google.protobuf.ByteString getCommandBytes() {
-                java.lang.Object ref = command_;
+            public com.google.protobuf.ByteString getContentBytes() {
+                java.lang.Object ref = content_;
                 if (ref instanceof String) {
                     com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                    command_ = b;
+                    content_ = b;
                     return b;
                 } else {
                     return (com.google.protobuf.ByteString) ref;
@@ -2382,37 +2422,37 @@ public final class SubmitJobProtos {
             }
 
             /**
-             * <code>required string command = 8;</code>
+             * <code>required string content = 8;</code>
              */
-            public Builder setCommand(java.lang.String value) {
+            public Builder setContent(java.lang.String value) {
                 if (value == null) {
                     throw new NullPointerException();
                 }
                 bitField0_ |= 0x00000080;
-                command_ = value;
+                content_ = value;
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>required string command = 8;</code>
+             * <code>required string content = 8;</code>
              */
-            public Builder clearCommand() {
+            public Builder clearContent() {
                 bitField0_ = (bitField0_ & ~0x00000080);
-                command_ = getDefaultInstance().getCommand();
+                content_ = getDefaultInstance().getContent();
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>required string command = 8;</code>
+             * <code>required string content = 8;</code>
              */
-            public Builder setCommandBytes(com.google.protobuf.ByteString value) {
+            public Builder setContentBytes(com.google.protobuf.ByteString value) {
                 if (value == null) {
                     throw new NullPointerException();
                 }
                 bitField0_ |= 0x00000080;
-                command_ = value;
+                content_ = value;
                 onChanged();
                 return this;
             }
@@ -3129,6 +3169,42 @@ public final class SubmitJobProtos {
                     parameters_ = null;
                 }
                 return parametersBuilder_;
+            }
+
+            private int fixedDelay_;
+
+            /**
+             * <code>optional int32 fixed_delay = 21;</code>
+             */
+            public boolean hasFixedDelay() {
+                return ((bitField0_ & 0x00100000) == 0x00100000);
+            }
+
+            /**
+             * <code>optional int32 fixed_delay = 21;</code>
+             */
+            public int getFixedDelay() {
+                return fixedDelay_;
+            }
+
+            /**
+             * <code>optional int32 fixed_delay = 21;</code>
+             */
+            public Builder setFixedDelay(int value) {
+                bitField0_ |= 0x00100000;
+                fixedDelay_ = value;
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>optional int32 fixed_delay = 21;</code>
+             */
+            public Builder clearFixedDelay() {
+                bitField0_ = (bitField0_ & ~0x00100000);
+                fixedDelay_ = 0;
+                onChanged();
+                return this;
             }
 
             // @@protoc_insertion_point(builder_scope:RestServerSubmitJobRequest)
@@ -3886,19 +3962,19 @@ public final class SubmitJobProtos {
         com.google.protobuf.ByteString getTaskTypeBytes();
 
         /**
-         * <code>required string command = 6;</code>
+         * <code>required string content = 6;</code>
          */
-        boolean hasCommand();
+        boolean hasContent();
 
         /**
-         * <code>required string command = 6;</code>
+         * <code>required string content = 6;</code>
          */
-        java.lang.String getCommand();
+        java.lang.String getContent();
 
         /**
-         * <code>required string command = 6;</code>
+         * <code>required string content = 6;</code>
          */
-        com.google.protobuf.ByteString getCommandBytes();
+        com.google.protobuf.ByteString getContentBytes();
 
         /**
          * <code>optional int32 priority = 7 [default = 1];</code>
@@ -4021,7 +4097,7 @@ public final class SubmitJobProtos {
                         case 50: {
                             com.google.protobuf.ByteString bs = input.readBytes();
                             bitField0_ |= 0x00000020;
-                            command_ = bs;
+                            content_ = bs;
                             break;
                         }
                         case 56: {
@@ -4280,41 +4356,41 @@ public final class SubmitJobProtos {
             }
         }
 
-        public static final int COMMAND_FIELD_NUMBER = 6;
-        private java.lang.Object command_;
+        public static final int CONTENT_FIELD_NUMBER = 6;
+        private java.lang.Object content_;
 
         /**
-         * <code>required string command = 6;</code>
+         * <code>required string content = 6;</code>
          */
-        public boolean hasCommand() {
+        public boolean hasContent() {
             return ((bitField0_ & 0x00000020) == 0x00000020);
         }
 
         /**
-         * <code>required string command = 6;</code>
+         * <code>required string content = 6;</code>
          */
-        public java.lang.String getCommand() {
-            java.lang.Object ref = command_;
+        public java.lang.String getContent() {
+            java.lang.Object ref = content_;
             if (ref instanceof java.lang.String) {
                 return (java.lang.String) ref;
             } else {
                 com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
                 java.lang.String s = bs.toStringUtf8();
                 if (bs.isValidUtf8()) {
-                    command_ = s;
+                    content_ = s;
                 }
                 return s;
             }
         }
 
         /**
-         * <code>required string command = 6;</code>
+         * <code>required string content = 6;</code>
          */
-        public com.google.protobuf.ByteString getCommandBytes() {
-            java.lang.Object ref = command_;
+        public com.google.protobuf.ByteString getContentBytes() {
+            java.lang.Object ref = content_;
             if (ref instanceof java.lang.String) {
                 com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                command_ = b;
+                content_ = b;
                 return b;
             } else {
                 return (com.google.protobuf.ByteString) ref;
@@ -4382,7 +4458,7 @@ public final class SubmitJobProtos {
             appName_ = "";
             user_ = "";
             taskType_ = "";
-            command_ = "";
+            content_ = "";
             priority_ = 1;
             parameters_ = java.util.Collections.emptyList();
         }
@@ -4416,7 +4492,7 @@ public final class SubmitJobProtos {
                 memoizedIsInitialized = 0;
                 return false;
             }
-            if (!hasCommand()) {
+            if (!hasContent()) {
                 memoizedIsInitialized = 0;
                 return false;
             }
@@ -4448,7 +4524,7 @@ public final class SubmitJobProtos {
                 output.writeBytes(5, getTaskTypeBytes());
             }
             if (((bitField0_ & 0x00000020) == 0x00000020)) {
-                output.writeBytes(6, getCommandBytes());
+                output.writeBytes(6, getContentBytes());
             }
             if (((bitField0_ & 0x00000040) == 0x00000040)) {
                 output.writeInt32(7, priority_);
@@ -4483,7 +4559,7 @@ public final class SubmitJobProtos {
                 size += com.google.protobuf.CodedOutputStream.computeBytesSize(5, getTaskTypeBytes());
             }
             if (((bitField0_ & 0x00000020) == 0x00000020)) {
-                size += com.google.protobuf.CodedOutputStream.computeBytesSize(6, getCommandBytes());
+                size += com.google.protobuf.CodedOutputStream.computeBytesSize(6, getContentBytes());
             }
             if (((bitField0_ & 0x00000040) == 0x00000040)) {
                 size += com.google.protobuf.CodedOutputStream.computeInt32Size(7, priority_);
@@ -4624,7 +4700,7 @@ public final class SubmitJobProtos {
                 bitField0_ = (bitField0_ & ~0x00000008);
                 taskType_ = "";
                 bitField0_ = (bitField0_ & ~0x00000010);
-                command_ = "";
+                content_ = "";
                 bitField0_ = (bitField0_ & ~0x00000020);
                 priority_ = 1;
                 bitField0_ = (bitField0_ & ~0x00000040);
@@ -4685,7 +4761,7 @@ public final class SubmitJobProtos {
                 if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
                     to_bitField0_ |= 0x00000020;
                 }
-                result.command_ = command_;
+                result.content_ = content_;
                 if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
                     to_bitField0_ |= 0x00000040;
                 }
@@ -4741,9 +4817,9 @@ public final class SubmitJobProtos {
                     taskType_ = other.taskType_;
                     onChanged();
                 }
-                if (other.hasCommand()) {
+                if (other.hasContent()) {
                     bitField0_ |= 0x00000020;
-                    command_ = other.command_;
+                    content_ = other.content_;
                     onChanged();
                 }
                 if (other.hasPriority()) {
@@ -4798,7 +4874,7 @@ public final class SubmitJobProtos {
 
                     return false;
                 }
-                if (!hasCommand()) {
+                if (!hasContent()) {
 
                     return false;
                 }
@@ -5209,25 +5285,25 @@ public final class SubmitJobProtos {
                 return this;
             }
 
-            private java.lang.Object command_ = "";
+            private java.lang.Object content_ = "";
 
             /**
-             * <code>required string command = 6;</code>
+             * <code>required string content = 6;</code>
              */
-            public boolean hasCommand() {
+            public boolean hasContent() {
                 return ((bitField0_ & 0x00000020) == 0x00000020);
             }
 
             /**
-             * <code>required string command = 6;</code>
+             * <code>required string content = 6;</code>
              */
-            public java.lang.String getCommand() {
-                java.lang.Object ref = command_;
+            public java.lang.String getContent() {
+                java.lang.Object ref = content_;
                 if (!(ref instanceof java.lang.String)) {
                     com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
                     java.lang.String s = bs.toStringUtf8();
                     if (bs.isValidUtf8()) {
-                        command_ = s;
+                        content_ = s;
                     }
                     return s;
                 } else {
@@ -5236,13 +5312,13 @@ public final class SubmitJobProtos {
             }
 
             /**
-             * <code>required string command = 6;</code>
+             * <code>required string content = 6;</code>
              */
-            public com.google.protobuf.ByteString getCommandBytes() {
-                java.lang.Object ref = command_;
+            public com.google.protobuf.ByteString getContentBytes() {
+                java.lang.Object ref = content_;
                 if (ref instanceof String) {
                     com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                    command_ = b;
+                    content_ = b;
                     return b;
                 } else {
                     return (com.google.protobuf.ByteString) ref;
@@ -5250,37 +5326,37 @@ public final class SubmitJobProtos {
             }
 
             /**
-             * <code>required string command = 6;</code>
+             * <code>required string content = 6;</code>
              */
-            public Builder setCommand(java.lang.String value) {
+            public Builder setContent(java.lang.String value) {
                 if (value == null) {
                     throw new NullPointerException();
                 }
                 bitField0_ |= 0x00000020;
-                command_ = value;
+                content_ = value;
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>required string command = 6;</code>
+             * <code>required string content = 6;</code>
              */
-            public Builder clearCommand() {
+            public Builder clearContent() {
                 bitField0_ = (bitField0_ & ~0x00000020);
-                command_ = getDefaultInstance().getCommand();
+                content_ = getDefaultInstance().getContent();
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>required string command = 6;</code>
+             * <code>required string content = 6;</code>
              */
-            public Builder setCommandBytes(com.google.protobuf.ByteString value) {
+            public Builder setContentBytes(com.google.protobuf.ByteString value) {
                 if (value == null) {
                     throw new NullPointerException();
                 }
                 bitField0_ |= 0x00000020;
-                command_ = value;
+                content_ = value;
                 onChanged();
                 return this;
             }
@@ -6251,11 +6327,11 @@ public final class SubmitJobProtos {
 
     static {
         java.lang.String[] descriptorData = {
-                "\n\020submit_job.proto\032\017map_entry.proto\"\351\003\n\032" + "RestServerSubmitJobRequest\022\020\n\010job_name\030\001"
-                        + " \002(\t\022\027\n\017cron_expression\030\002 \002(\t\022\035\n\021depende"
+                "\n\020submit_job.proto\032\017map_entry.proto\"\376\003\n\032" + "RestServerSubmitJobRequest\022\020\n\010job_name\030\001"
+                        + " \002(\t\022\027\n\017cron_expression\030\002 \001(\t\022\035\n\021depende"
                         + "ncy_jobids\030\003 \003(\003B\002\020\001\022\020\n\010app_name\030\004 \002(\t\022\017"
                         + "\n\007app_key\030\005 \002(\t\022\014\n\004user\030\006 \002(\t\022\020\n\010job_typ"
-                        + "e\030\007 \002(\t\022\017\n\007command\030\010 \002(\t\022\020\n\010group_id\030\t \002"
+                        + "e\030\007 \002(\t\022\017\n\007content\030\010 \002(\t\022\020\n\010group_id\030\t \002"
                         + "(\005\022\023\n\010priority\030\n \001(\005:\0011\022\031\n\016reject_retrie"
                         + "s\030\013 \001(\005:\0010\022\032\n\017reject_interval\030\014 \001(\005:\0013\022\031"
                         + "\n\016failed_retries\030\r \001(\005:\0010\022\032\n\017failed_inte"
@@ -6263,16 +6339,16 @@ public final class SubmitJobProtos {
                 "_time\030\020 \002(\003\022\025\n\rorigin_job_id\030\021 \002(\003\022\036\n\026co"
                         + "mmon_depend_strategy\030\022 \002(\t\022\034\n\024last_depen"
                         + "d_strategy\030\023 \002(\t\022\035\n\nparameters\030\024 \003(\0132\t.M"
-                        + "apEntry\"M\n\027ServerSubmitJobResponse\022\016\n\006jo"
-                        + "b_id\030\001 \002(\003\022\017\n\007success\030\002 \002(\010\022\021\n\007message\030\003"
-                        + " \001(\t:\000\"\265\001\n\027ServerSubmitTaskRequest\022\017\n\007fu"
-                        + "ll_id\030\001 \002(\t\022\021\n\ttask_name\030\002 \002(\t\022\020\n\010app_na"
-                        + "me\030\003 \002(\t\022\014\n\004user\030\004 \002(\t\022\021\n\ttask_type\030\005 \002("
-                        + "\t\022\017\n\007command\030\006 \002(\t\022\023\n\010priority\030\007 \001(\005:\0011\022"
-                        + "\035\n\nparameters\030\010 \003(\0132\t.MapEntry\"N\n\030Worker",
-                "SubmitTaskResponse\022\016\n\006accept\030\001 \002(\010\022\017\n\007su"
-                        + "ccess\030\002 \002(\010\022\021\n\007message\030\003 \001(\t:\000B.\n\033com.mo"
-                        + "gujie.jarvis.protocolB\017SubmitJobProtos" };
+                        + "apEntry\022\023\n\013fixed_delay\030\025 \001(\005\"M\n\027ServerSu"
+                        + "bmitJobResponse\022\016\n\006job_id\030\001 \002(\003\022\017\n\007succe"
+                        + "ss\030\002 \002(\010\022\021\n\007message\030\003 \001(\t:\000\"\265\001\n\027ServerSu"
+                        + "bmitTaskRequest\022\017\n\007full_id\030\001 \002(\t\022\021\n\ttask"
+                        + "_name\030\002 \002(\t\022\020\n\010app_name\030\003 \002(\t\022\014\n\004user\030\004 "
+                        + "\002(\t\022\021\n\ttask_type\030\005 \002(\t\022\017\n\007content\030\006 \002(\t\022"
+                        + "\023\n\010priority\030\007 \001(\005:\0011\022\035\n\nparameters\030\010 \003(\013",
+                "2\t.MapEntry\"N\n\030WorkerSubmitTaskResponse\022"
+                        + "\016\n\006accept\030\001 \002(\010\022\017\n\007success\030\002 \002(\010\022\021\n\007mess"
+                        + "age\030\003 \001(\t:\000B.\n\033com.mogujie.jarvis.protoc" + "olB\017SubmitJobProtos" };
         com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner = new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
             public com.google.protobuf.ExtensionRegistry assignDescriptors(com.google.protobuf.Descriptors.FileDescriptor root) {
                 descriptor = root;
@@ -6284,16 +6360,16 @@ public final class SubmitJobProtos {
         internal_static_RestServerSubmitJobRequest_descriptor = getDescriptor().getMessageTypes().get(0);
         internal_static_RestServerSubmitJobRequest_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
                 internal_static_RestServerSubmitJobRequest_descriptor,
-                new java.lang.String[] { "JobName", "CronExpression", "DependencyJobids", "AppName", "AppKey", "User", "JobType", "Command",
+                new java.lang.String[] { "JobName", "CronExpression", "DependencyJobids", "AppName", "AppKey", "User", "JobType", "Content",
                         "GroupId", "Priority", "RejectRetries", "RejectInterval", "FailedRetries", "FailedInterval", "StartTime", "EndTime",
-                        "OriginJobId", "CommonDependStrategy", "LastDependStrategy", "Parameters", });
+                        "OriginJobId", "CommonDependStrategy", "LastDependStrategy", "Parameters", "FixedDelay", });
         internal_static_ServerSubmitJobResponse_descriptor = getDescriptor().getMessageTypes().get(1);
         internal_static_ServerSubmitJobResponse_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
                 internal_static_ServerSubmitJobResponse_descriptor, new java.lang.String[] { "JobId", "Success", "Message", });
         internal_static_ServerSubmitTaskRequest_descriptor = getDescriptor().getMessageTypes().get(2);
         internal_static_ServerSubmitTaskRequest_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
                 internal_static_ServerSubmitTaskRequest_descriptor,
-                new java.lang.String[] { "FullId", "TaskName", "AppName", "User", "TaskType", "Command", "Priority", "Parameters", });
+                new java.lang.String[] { "FullId", "TaskName", "AppName", "User", "TaskType", "Content", "Priority", "Parameters", });
         internal_static_WorkerSubmitTaskResponse_descriptor = getDescriptor().getMessageTypes().get(3);
         internal_static_WorkerSubmitTaskResponse_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
                 internal_static_WorkerSubmitTaskResponse_descriptor, new java.lang.String[] { "Accept", "Success", "Message", });

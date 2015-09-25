@@ -62,7 +62,7 @@ public abstract class JdbcTask extends AbstractTask {
             final long startTime = System.currentTimeMillis();
             collector.collectStderr("Querying " + getTaskType() + "...");
 
-            String hql = task.getCommand().trim();
+            String hql = task.getContent().trim();
             String[] cmds = HiveQLUtil.splitHiveScript(hql);
             for (String sql : cmds) {
                 boolean hasResults = statement.execute(sql.trim());

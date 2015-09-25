@@ -57,7 +57,7 @@ public class JobController extends AbstractController {
         List<MapEntryProtos.MapEntry> paraList = null;
 
         RestServerSubmitJobRequest request = RestServerSubmitJobRequest.newBuilder().setAppName(appName).setJobName(jobName)
-                .setCronExpression(cronExp).addAllDependencyJobids(dependJobIdsList).setUser(user).setJobType(jobType).setCommand(jobContent)
+                .setCronExpression(cronExp).addAllDependencyJobids(dependJobIdsList).setUser(user).setJobType(jobType).setContent(jobContent)
                 .setGroupId(groupId).setPriority(priority).setFailedRetries(failedRetries).setFailedInterval(failedInterval)
                 .setRejectRetries(rejectRetries).setRejectInterval(rejectInterval).setStartTime(startTime).setEndTime(endTime)
                 .addAllParameters(paraList).build();

@@ -30,8 +30,8 @@ public class SchedulerUtil {
     public static String JOB_DEPEND_STATUS_KEY = "job.depend.status";
     public static String DEFAULT_JOB_DEPEND_STATUS = MysqlCachedDependStatus.class.getName();
 
-    public static AbstractDependStatus getJobDependStatus(Configuration conf) throws InstantiationException, IllegalAccessException,
-            ClassNotFoundException {
+    public static AbstractDependStatus getJobDependStatus(Configuration conf)
+            throws InstantiationException, IllegalAccessException, ClassNotFoundException {
         String className = conf.getString(JOB_DEPEND_STATUS_KEY, DEFAULT_JOB_DEPEND_STATUS);
         return ReflectionUtils.getInstanceByClassName(className);
     }
@@ -58,7 +58,7 @@ public class SchedulerUtil {
         Job job = new Job();
         job.setAppName(msg.getAppName());
         job.setJobName(msg.getJobName());
-        job.setContent(msg.getCommand());
+        job.setContent(msg.getContent());
         job.setPriority(msg.getPriority());
         job.setJobFlag(JobFlag.ENABLE.getValue());
         job.setJobType(msg.getJobType());
@@ -77,7 +77,7 @@ public class SchedulerUtil {
         job.setCreateTime(currentTime);
         job.setUpdateTime(currentTime);
         job.setParams(JsonHelper.parseMapEntryList2JSON(msg.getParametersList()));
-        //TODO job.setOriginJobId(originJobId);
+        // TODO job.setOriginJobId(originJobId);
         return job;
     }
 

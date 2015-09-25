@@ -86,7 +86,7 @@ public class WorkerActor extends UntypedActor {
     taskBuilder.setAppName(request.getAppName());
     taskBuilder.setUser(request.getUser());
     taskBuilder.setTaskType(taskType);
-    taskBuilder.setCommand(request.getCommand());
+    taskBuilder.setContent(request.getContent());
     taskBuilder.setPriority(request.getPriority());
 
     Map<String, Object> map = new HashMap<>();

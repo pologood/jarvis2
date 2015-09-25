@@ -58,8 +58,10 @@ public class TaskScheduler implements Scheduler {
 
     // for testing
     private static TaskScheduler instance = new TaskScheduler();
+
     private TaskScheduler() {
     }
+
     public static TaskScheduler getInstance() {
         return instance;
     }
@@ -129,9 +131,8 @@ public class TaskScheduler implements Scheduler {
         if (taskService != null) {
             if (status.equals(JobStatus.RUNNING)) {
                 taskService.updateStatusWithStart(taskId, status);
-            } else if (status.getValue() == JobStatus.SUCCESS.getValue() ||
-                    status.getValue() == JobStatus.FAILED.getValue() ||
-                    status.getValue() == JobStatus.KILLED.getValue()) {
+            } else if (status.getValue() == JobStatus.SUCCESS.getValue() || status.getValue() == JobStatus.FAILED.getValue()
+                    || status.getValue() == JobStatus.KILLED.getValue()) {
                 taskService.updateStatusWithEnd(taskId, status);
             }
         }
@@ -227,16 +228,9 @@ public class TaskScheduler implements Scheduler {
     private com.mogujie.jarvis.core.Task getTaskInfo(DAGTask dagTask) {
         String fullId = dagTask.getJobId() + "_" + dagTask.getTaskId() + "_" + dagTask.getAttemptId();
         Job job = jobMapper.selectByPrimaryKey(dagTask.getJobId());
-        com.mogujie.jarvis.core.Task task = com.mogujie.jarvis.core.Task.newTaskBuilder()
-                .setFullId(fullId)
-                .setTaskName(job.getJobName())
-                .setAppName(job.getAppName())
-                .setUser(job.getSubmitUser())
-                .setPriority(dagTask.getPriority())
-                .setCommand(job.getContent())
-                .setTaskType(job.getJobType())
-                .setParameters(JsonHelper.parseJSON2Map(job.getParams()))
-                .build();
+        com.mogujie.jarvis.core.Task task = com.mogujie.jarvis.core.Task.newTaskBuilder().setFullId(fullId).setTaskName(job.getJobName())
+                .setAppName(job.getAppName()).setUser(job.getSubmitUser()).setPriority(dagTask.getPriority()).setContent(job.getContent())
+                .setTaskType(job.getJobType()).setParameters(JsonHelper.parseJSON2Map(job.getParams())).build();
 
         return task;
     }

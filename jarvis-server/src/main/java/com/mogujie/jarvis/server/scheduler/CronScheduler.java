@@ -60,7 +60,7 @@ public class CronScheduler {
         crontabs.put(crontab.getJobId(), crontab);
 
         try {
-            CronExpression expression = new CronExpression(crontab.getExp());
+            CronExpression expression = new CronExpression(crontab.getCronExpression());
             Pair<Long, DateTime> pair = new Pair<Long, DateTime>(crontab.getJobId(), expression.getTimeAfter(DateTime.now()));
             nextScheduleTimeList.add(pair);
         } catch (ParseException e) {
@@ -119,7 +119,7 @@ public class CronScheduler {
 
                         nextScheduleTimeList.remove(0);
                         try {
-                            DateTime nextTime = new CronExpression(crontab.getExp()).getTimeAfter(DateTime.now());
+                            DateTime nextTime = new CronExpression(crontab.getCronExpression()).getTimeAfter(DateTime.now());
                             nextScheduleTimeList.add(new Pair<Long, DateTime>(pair.getFirst(), nextTime));
                         } catch (ParseException e) {
                             LOGGER.error(e);

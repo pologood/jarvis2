@@ -24,6 +24,7 @@ import com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse;
 import com.mogujie.jarvis.server.domain.TaskEvent;
 import com.mogujie.jarvis.server.util.FutureUtils;
+import com.mogujie.jarvis.server.workerselector.WorkerSelector;
 
 import akka.actor.ActorSelection;
 import akka.actor.ActorSystem;
@@ -55,7 +56,7 @@ public class TaskEventHandler implements WorkHandler<TaskEvent> {
         builder = builder.setAppName(task.getAppName());
         builder = builder.setUser(task.getUser());
         builder = builder.setTaskType(task.getTaskType());
-        builder = builder.setCommand(task.getCommand());
+        builder = builder.setContent(task.getContent());
         builder = builder.setPriority(task.getPriority());
 
         int i = 0;

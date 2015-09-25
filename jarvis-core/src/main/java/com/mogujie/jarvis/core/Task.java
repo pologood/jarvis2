@@ -21,7 +21,7 @@ public class Task {
     private String appName;
     private String user;
     private String taskType;
-    private String command;
+    private String content;
     private int priority;
     private int groupId;
     private Map<String, Object> parameters;
@@ -49,8 +49,8 @@ public class Task {
         return taskType;
     }
 
-    public String getCommand() {
-        return command;
+    public String getContent() {
+        return content;
     }
 
     public int getPriority() {
@@ -101,8 +101,8 @@ public class Task {
             return this;
         }
 
-        public TaskBuilder setCommand(String command) {
-            this.task.command = command;
+        public TaskBuilder setContent(String content) {
+            this.task.content = content;
             return this;
         }
 
