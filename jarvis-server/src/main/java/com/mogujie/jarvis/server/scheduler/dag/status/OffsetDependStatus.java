@@ -8,7 +8,7 @@
 
 package com.mogujie.jarvis.server.scheduler.dag.status;
 
-import com.mogujie.jarvis.server.scheduler.dag.strategy.AbstractOffsetDependStrategy;
+import com.mogujie.jarvis.server.scheduler.dag.strategy.AbstractOffsetStrategy;
 import com.mogujie.jarvis.server.scheduler.dag.strategy.CommonStrategy;
 
 /**
@@ -17,11 +17,11 @@ import com.mogujie.jarvis.server.scheduler.dag.strategy.CommonStrategy;
  */
 public class OffsetDependStatus extends AbstractDependStatus {
 
-    private AbstractOffsetDependStrategy offsetDependStrategy;
+    private AbstractOffsetStrategy offsetDependStrategy;
     private int offset;
 
     public OffsetDependStatus(long myJobId, long preJobId, CommonStrategy commonStrategy,
-            AbstractOffsetDependStrategy offsetDependStrategy, int offset) {
+            AbstractOffsetStrategy offsetDependStrategy, int offset) {
         super(myJobId, preJobId, commonStrategy);
         this.offsetDependStrategy = offsetDependStrategy;
         this.offset = offset;

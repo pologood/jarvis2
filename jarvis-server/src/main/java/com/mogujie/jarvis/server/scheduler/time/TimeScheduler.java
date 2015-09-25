@@ -23,10 +23,10 @@ import com.mogujie.jarvis.dto.Crontab;
 import com.mogujie.jarvis.dto.CrontabExample;
 import com.mogujie.jarvis.dto.Job;
 import com.mogujie.jarvis.dto.JobExample;
+import com.mogujie.jarvis.server.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.CronScheduler;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
 import com.mogujie.jarvis.server.scheduler.event.AddJobEvent;
-import com.mogujie.jarvis.server.scheduler.event.InitEvent;
 import com.mogujie.jarvis.server.scheduler.event.ModifyJobEvent;
 import com.mogujie.jarvis.server.scheduler.event.ModifyJobFlagEvent;
 import com.mogujie.jarvis.server.scheduler.event.StartEvent;
@@ -40,6 +40,8 @@ import com.mogujie.jarvis.server.scheduler.event.StopEvent;
  */
 @Repository
 public class TimeScheduler implements Scheduler {
+    @Autowired
+    private JobSchedulerController schedulerController;
 
     @Autowired
     private CrontabMapper crontabMapper;
@@ -51,7 +53,9 @@ public class TimeScheduler implements Scheduler {
     private CronScheduler cronScheduler;
 
     @Override
-    public void handleInitEvent(InitEvent event) {
+    public void init() {
+        schedulerController.register(this);
+
         cronScheduler.start();
         CrontabExample crontabExample = new CrontabExample();
         List<Crontab> crontabs = crontabMapper.selectByExample(crontabExample);
@@ -68,6 +72,11 @@ public class TimeScheduler implements Scheduler {
                 cronScheduler.schedule(crontab);
             }
         }
+    }
+
+    @Override
+    public void destroy() {
+        schedulerController.unregister(this);
     }
 
     @Override

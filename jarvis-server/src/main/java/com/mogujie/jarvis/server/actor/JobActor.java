@@ -21,6 +21,7 @@ import akka.actor.UntypedActor;
 
 import com.google.common.collect.Sets;
 import com.mogujie.jarvis.core.domain.JobFlag;
+import com.mogujie.jarvis.core.observer.Event;
 import com.mogujie.jarvis.dao.JobDependMapper;
 import com.mogujie.jarvis.dao.JobMapper;
 import com.mogujie.jarvis.dto.Job;
@@ -29,7 +30,6 @@ import com.mogujie.jarvis.protocol.ModifyJobFlagProtos.RestServerModifyJobFlagRe
 import com.mogujie.jarvis.protocol.ModifyJobProtos.RestServerModifyJobRequest;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitJobRequest;
 import com.mogujie.jarvis.server.JobSchedulerController;
-import com.mogujie.jarvis.server.observer.Event;
 import com.mogujie.jarvis.server.scheduler.JobScheduleType;
 import com.mogujie.jarvis.server.scheduler.SchedulerUtil;
 import com.mogujie.jarvis.server.scheduler.event.AddJobEvent;

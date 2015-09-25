@@ -15,10 +15,10 @@ import org.springframework.context.annotation.Scope;
 import akka.actor.UntypedActor;
 
 import com.mogujie.jarvis.core.domain.JobStatus;
+import com.mogujie.jarvis.core.observer.Event;
 import com.mogujie.jarvis.protocol.ReportProgressProtos.WorkerReportProgressRequest;
 import com.mogujie.jarvis.protocol.ReportStatusProtos.WorkerReportStatusRequest;
 import com.mogujie.jarvis.server.JobSchedulerController;
-import com.mogujie.jarvis.server.observer.Event;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
 import com.mogujie.jarvis.server.scheduler.event.KilledEvent;
 import com.mogujie.jarvis.server.scheduler.event.RunningEvent;

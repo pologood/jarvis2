@@ -6,7 +6,7 @@
  * Create Date: 2015年9月2日 上午10:42:01
  */
 
-package com.mogujie.jarvis.server.observer;
+package com.mogujie.jarvis.core.observer;
 
 /**
  * @author guangming

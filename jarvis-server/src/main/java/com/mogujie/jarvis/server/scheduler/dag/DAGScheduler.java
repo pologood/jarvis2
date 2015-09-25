@@ -22,6 +22,7 @@ import com.google.common.eventbus.Subscribe;
 import com.mogujie.jarvis.core.domain.JobFlag;
 import com.mogujie.jarvis.core.domain.Pair;
 import com.mogujie.jarvis.dto.Job;
+import com.mogujie.jarvis.server.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.JobScheduleType;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
 import com.mogujie.jarvis.server.scheduler.SchedulerUtil;
@@ -29,7 +30,6 @@ import com.mogujie.jarvis.server.scheduler.dag.job.DAGJob;
 import com.mogujie.jarvis.server.scheduler.dag.job.DAGJobFactory;
 import com.mogujie.jarvis.server.scheduler.event.AddJobEvent;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
-import com.mogujie.jarvis.server.scheduler.event.InitEvent;
 import com.mogujie.jarvis.server.scheduler.event.ModifyJobEvent;
 import com.mogujie.jarvis.server.scheduler.event.ModifyJobEvent.MODIFY_TYPE;
 import com.mogujie.jarvis.server.scheduler.event.ModifyJobFlagEvent;
@@ -50,6 +50,9 @@ import com.mogujie.jarvis.server.service.JobService;
  */
 public class DAGScheduler implements Scheduler {
     @Autowired
+    private JobSchedulerController schedulerController;
+
+    @Autowired
     private JobService jobService;
 
     @Autowired
@@ -68,7 +71,8 @@ public class DAGScheduler implements Scheduler {
     private Map<Long, DAGJob> waitingTable = new ConcurrentHashMap<Long, DAGJob>();
 
     @Override
-    public void handleInitEvent(InitEvent event) {
+    public void init() {
+        schedulerController.register(this);
         // load not deleted jobs from DB
         List<Job> jobs = jobService.getJobsNotDeleted();
         for (Job job : jobs) {
@@ -86,6 +90,12 @@ public class DAGScheduler implements Scheduler {
                 }
             }
         }
+    }
+
+    @Override
+    public void destroy() {
+        clear();
+        schedulerController.unregister(this);
     }
 
     @Override

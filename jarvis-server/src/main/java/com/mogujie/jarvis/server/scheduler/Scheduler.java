@@ -8,9 +8,11 @@
 
 package com.mogujie.jarvis.server.scheduler;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+
 import com.google.common.eventbus.Subscribe;
-import com.mogujie.jarvis.server.observer.Observer;
-import com.mogujie.jarvis.server.scheduler.event.InitEvent;
+import com.mogujie.jarvis.core.observer.Observer;
 import com.mogujie.jarvis.server.scheduler.event.StartEvent;
 import com.mogujie.jarvis.server.scheduler.event.StopEvent;
 
@@ -20,8 +22,11 @@ import com.mogujie.jarvis.server.scheduler.event.StopEvent;
  */
 public interface Scheduler extends Observer {
 
-    @Subscribe
-    public void handleInitEvent(InitEvent event);
+    @PostConstruct
+    public void init();
+
+    @PreDestroy
+    public void destroy();
 
     @Subscribe
     public void handleStartEvent(StartEvent event);
