@@ -43,7 +43,8 @@ public class TestDAGSchedulerWithEvent {
 
     @Before
     public void setup() throws Exception {
-        conf.setProperty(DAGDependCheckerFactory.DAG_DEPEND_CHECKER_KEY, DummyDAGDependChecker.class.getName());
+        conf.setProperty(DAGDependCheckerFactory.DAG_DEPEND_CHECKER_KEY,
+                DummyDAGDependChecker.class.getName());
     }
 
     @After
@@ -117,7 +118,7 @@ public class TestDAGSchedulerWithEvent {
         // jobA success
         SuccessEvent eventA = new SuccessEvent(jobAId, 1);
         dagScheduler.handleSuccessEvent(eventA);
-        // jobC and jobC run
+        // jobB and jobC run
         Assert.assertEquals(3, taskScheduler.getReadyTable().size());
     }
 

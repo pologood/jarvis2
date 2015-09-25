@@ -15,6 +15,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.eventbus.AllowConcurrentEvents;
@@ -29,7 +30,6 @@ import com.mogujie.jarvis.server.scheduler.dag.job.DAGJob;
 import com.mogujie.jarvis.server.scheduler.dag.job.DAGJobFactory;
 import com.mogujie.jarvis.server.scheduler.event.AddJobEvent;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
-import com.mogujie.jarvis.server.scheduler.event.InitEvent;
 import com.mogujie.jarvis.server.scheduler.event.ModifyJobEvent;
 import com.mogujie.jarvis.server.scheduler.event.ModifyJobEvent.MODIFY_TYPE;
 import com.mogujie.jarvis.server.scheduler.event.ModifyJobFlagEvent;
@@ -48,7 +48,8 @@ import com.mogujie.jarvis.server.service.JobService;
  * @author guangming
  *
  */
-public class DAGScheduler implements Scheduler {
+@Repository
+public class DAGScheduler extends Scheduler {
     @Autowired
     private JobService jobService;
 
@@ -68,7 +69,8 @@ public class DAGScheduler implements Scheduler {
     private Map<Long, DAGJob> waitingTable = new ConcurrentHashMap<Long, DAGJob>();
 
     @Override
-    public void handleInitEvent(InitEvent event) {
+    public void init() {
+        getSchedulerController().register(this);
         // load not deleted jobs from DB
         List<Job> jobs = jobService.getJobsNotDeleted();
         for (Job job : jobs) {
@@ -86,6 +88,12 @@ public class DAGScheduler implements Scheduler {
                 }
             }
         }
+    }
+
+    @Override
+    public void destroy() {
+        clear();
+        getSchedulerController().unregister(this);
     }
 
     @Override

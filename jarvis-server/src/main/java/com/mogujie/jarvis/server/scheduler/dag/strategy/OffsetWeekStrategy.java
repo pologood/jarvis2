@@ -18,7 +18,7 @@ import com.mogujie.jarvis.server.util.SpringContext;
  * @author guangming
  *
  */
-public class OffsetWeekDependStrategy extends AbstractOffsetDependStrategy {
+public class OffsetWeekStrategy extends AbstractOffsetStrategy {
 
     @Override
     protected List<Task> getOffsetTasks(long jobId, int offset) {

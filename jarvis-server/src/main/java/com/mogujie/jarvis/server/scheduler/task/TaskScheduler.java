@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.eventbus.AllowConcurrentEvents;
@@ -24,6 +24,7 @@ import com.google.common.eventbus.Subscribe;
 import com.mogujie.jarvis.core.common.util.JsonHelper;
 import com.mogujie.jarvis.core.common.util.ThreadUtils;
 import com.mogujie.jarvis.core.domain.JobStatus;
+import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.dao.JobMapper;
 import com.mogujie.jarvis.dao.TaskMapper;
 import com.mogujie.jarvis.dto.Job;
@@ -31,7 +32,6 @@ import com.mogujie.jarvis.dto.Task;
 import com.mogujie.jarvis.server.TaskQueue;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
-import com.mogujie.jarvis.server.scheduler.event.InitEvent;
 import com.mogujie.jarvis.server.scheduler.event.KilledEvent;
 import com.mogujie.jarvis.server.scheduler.event.RunningEvent;
 import com.mogujie.jarvis.server.scheduler.event.StartEvent;
@@ -45,8 +45,8 @@ import com.mogujie.jarvis.server.service.TaskService;
  * @author guangming
  *
  */
-@Service
-public class TaskScheduler implements Scheduler {
+@Repository
+public class TaskScheduler extends Scheduler {
     @Autowired
     private JobMapper jobMapper;
 
@@ -71,9 +71,13 @@ public class TaskScheduler implements Scheduler {
 
     // unique taskid
     private AtomicLong maxid = new AtomicLong(1);
+    private static final int DAFAULT_MAX_FAILED_ATTEMPTS = 3;
+    private static final int DAFAULT_FAILED_INTERVAL = 1000;
 
     @Override
-    public void handleInitEvent(InitEvent event) {
+    public void init() {
+        getSchedulerController().register(this);
+        // load all READY tasks from DB
         List<Task> tasks = taskService.getTasksByStatus(JobStatus.READY);
         if (tasks != null) {
             for (Task task : tasks) {
@@ -81,6 +85,12 @@ public class TaskScheduler implements Scheduler {
                 readyTable.put(task.getTaskId(), dagTask);
             }
         }
+    }
+
+    @Override
+    public void destroy() {
+        clear();
+        getSchedulerController().unregister(this);
     }
 
     @Override
@@ -115,10 +125,17 @@ public class TaskScheduler implements Scheduler {
         DAGTask dagTask = readyTable.get(e.getTaskId());
         if (dagTask != null) {
             int attemptId = dagTask.getAttemptId();
-            if (attemptId <= dagTask.getMaxFailedAttempts()) {
+            int maxFailedAttempts = DAFAULT_MAX_FAILED_ATTEMPTS;
+            int failedInterval = DAFAULT_FAILED_INTERVAL;
+            if (jobMapper != null) {
+                Job job = jobMapper.selectByPrimaryKey(dagTask.getJobId());
+                maxFailedAttempts = job.getFailedAttempts();
+                failedInterval = job.getFailedInterval();
+            }
+            if (attemptId <= maxFailedAttempts) {
                 attemptId++;
                 dagTask.setAttemptId(attemptId);
-                ThreadUtils.sleep(dagTask.getFailedInterval());
+                ThreadUtils.sleep(failedInterval);
                 retryTask(dagTask);
             } else {
                 updateJobStatus(e.getTaskId(), JobStatus.FAILED);
@@ -178,19 +195,16 @@ public class TaskScheduler implements Scheduler {
     }
 
     private void submitTask(DAGTask dagTask) {
+        // add to readyTable
         if (!readyTable.containsKey(dagTask.getTaskId())) {
-            // add to readyTable
             readyTable.put(dagTask.getTaskId(), dagTask);
-            if (jobMapper != null) {
-                Job job = jobMapper.selectByPrimaryKey(dagTask.getJobId());
-                dagTask.setPriority(job.getPriority());
-                dagTask.setMaxFailedAttempts(job.getFailedAttempts());
-                dagTask.setFailedInterval(job.getFailedInterval());
-            }
         }
 
         // submit to TaskQueue
-        taskQueue.put(getTaskInfo(dagTask));
+        TaskDetail taskDetail = getTaskInfo(dagTask);
+        if (taskDetail != null) {
+            taskQueue.put(taskDetail);
+        }
     }
 
     private Task createNewTask(long jobId) {
@@ -225,13 +239,16 @@ public class TaskScheduler implements Scheduler {
         return maxid.getAndIncrement();
     }
 
-    private com.mogujie.jarvis.core.domain.TaskDetail getTaskInfo(DAGTask dagTask) {
+    private TaskDetail getTaskInfo(DAGTask dagTask) {
         String fullId = dagTask.getJobId() + "_" + dagTask.getTaskId() + "_" + dagTask.getAttemptId();
-        Job job = jobMapper.selectByPrimaryKey(dagTask.getJobId());
-        com.mogujie.jarvis.core.domain.TaskDetail task = com.mogujie.jarvis.core.domain.TaskDetail.newTaskDetailBuilder().setFullId(fullId).setTaskName(job.getJobName())
-                .setAppName(job.getAppName()).setUser(job.getSubmitUser()).setPriority(dagTask.getPriority()).setContent(job.getContent())
-                .setTaskType(job.getJobType()).setParameters(JsonHelper.parseJSON2Map(job.getParams())).build();
+        TaskDetail taskDetail = null;
+        if (jobMapper != null) {
+            Job job = jobMapper.selectByPrimaryKey(dagTask.getJobId());
+            taskDetail = TaskDetail.newTaskDetailBuilder().setFullId(fullId).setTaskName(job.getJobName()).setAppName(job.getAppName())
+                    .setUser(job.getSubmitUser()).setPriority(job.getPriority()).setContent(job.getContent()).setTaskType(job.getJobType())
+                    .setParameters(JsonHelper.parseJSON2Map(job.getParams())).build();
+        }
 
-        return task;
+        return taskDetail;
     }
 }
