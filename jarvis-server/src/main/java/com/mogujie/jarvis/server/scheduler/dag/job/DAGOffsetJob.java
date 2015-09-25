@@ -8,6 +8,8 @@
 
 package com.mogujie.jarvis.server.scheduler.dag.job;
 
+import java.util.Set;
+
 
 
 /**
@@ -26,7 +28,7 @@ public class DAGOffsetJob extends DAGJob {
     }
 
     @Override
-    public boolean dependCheck() {
+    public boolean dependCheck(Set<Long> needJobs) {
         // TODO Auto-generated method stub
         return false;
     }

@@ -55,7 +55,7 @@ public class TestJgrapht {
      *     v4
      */
     @Test
-    public void testGraph1() throws CycleFoundException {
+    public void testAddVertex() throws CycleFoundException {
         DirectedAcyclicGraph<MyVertex, DefaultEdge> g1 = new DirectedAcyclicGraph<MyVertex, DefaultEdge>(DefaultEdge.class);
         MyVertex v1 = new MyVertex(1, "v1");
         MyVertex v2 = new MyVertex(2, "v2");
@@ -93,6 +93,38 @@ public class TestJgrapht {
         for (DefaultEdge ege : v4in) {
             System.out.println(g1.getEdgeSource(ege).toString());
         }
+    }
+
+    /**
+     *     v1
+     *    / \    -->
+     *   v2  v3       v2  v3
+     */
+    @Test
+    public void testRemoveVertex() throws CycleFoundException {
+        DirectedAcyclicGraph<MyVertex, DefaultEdge> g1 = new DirectedAcyclicGraph<MyVertex, DefaultEdge>(DefaultEdge.class);
+        MyVertex v1 = new MyVertex(1, "v1");
+        MyVertex v2 = new MyVertex(2, "v2");
+        MyVertex v3 = new MyVertex(3, "v3");
+        g1.addVertex(v1);
+        g1.addVertex(v2);
+        g1.addVertex(v3);
+        g1.addDagEdge(v1, v2);
+        g1.addDagEdge(v1, v3);
+
+        Set<DefaultEdge> v1out = g1.outgoingEdgesOf(v1);
+        Assert.assertEquals(2, v1out.size());
+        Set<DefaultEdge> v2in = g1.incomingEdgesOf(v2);
+        Assert.assertEquals(1, v2in.size());
+        Set<DefaultEdge> v3in = g1.incomingEdgesOf(v3);
+        Assert.assertEquals(1, v3in.size());
+
+        g1.removeVertex(v1);
+        v2in = g1.incomingEdgesOf(v2);
+        Assert.assertEquals(0, v2in.size());
+        v3in = g1.incomingEdgesOf(v3);
+        Assert.assertEquals(0, v3in.size());
+
     }
 
     /**

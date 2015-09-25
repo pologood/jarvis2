@@ -14,10 +14,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.jgrapht.experimental.dag.DirectedAcyclicGraph;
+import org.jgrapht.experimental.dag.DirectedAcyclicGraph.CycleFoundException;
+import org.jgrapht.graph.DefaultEdge;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.Sets;
 import com.google.common.eventbus.AllowConcurrentEvents;
 import com.google.common.eventbus.Subscribe;
 import com.mogujie.jarvis.core.domain.JobFlag;
@@ -67,6 +71,8 @@ public class DAGScheduler extends Scheduler {
 
     private TaskScheduler taskScheduler = TaskScheduler.getInstance();
     private Map<Long, DAGJob> waitingTable = new ConcurrentHashMap<Long, DAGJob>();
+    private DirectedAcyclicGraph<DAGJob, DefaultEdge> dagGraph =
+            new DirectedAcyclicGraph<DAGJob, DefaultEdge>(DefaultEdge.class);
 
     @Override
     public void init() {
@@ -122,15 +128,15 @@ public class DAGScheduler extends Scheduler {
     }
 
     @VisibleForTesting
-    protected void addJob(long jobId, DAGJob dagJob, Set<Long> dependencies) {
+    protected void addJob(long jobId, DAGJob dagJob, Set<Long> dependencies) throws CycleFoundException {
         waitingTable.put(jobId, dagJob);
+        dagGraph.addVertex(dagJob);
 
         if (dependencies != null) {
             for (long d: dependencies) {
                 DAGJob parent = waitingTable.get(d);
                 if (parent != null) {
-                    dagJob.addParent(parent);
-                    parent.addChild(dagJob);
+                    dagGraph.addDagEdge(parent, dagJob);
                 }
             }
         }
@@ -139,6 +145,13 @@ public class DAGScheduler extends Scheduler {
     @VisibleForTesting
     protected void clear() {
         waitingTable.clear();
+
+        Set<DAGJob> allJobs = dagGraph.vertexSet();
+        if (allJobs != null) {
+            List<DAGJob> tmpJobs = new ArrayList<DAGJob>();
+            tmpJobs.addAll(dagGraph.vertexSet());
+            dagGraph.removeAllVertices(tmpJobs);
+        }
     }
 
     /**
@@ -153,7 +166,7 @@ public class DAGScheduler extends Scheduler {
         DAGJob dagJob = waitingTable.get(jobId);
         List<DAGJob> children = new ArrayList<DAGJob>();
         if (dagJob != null) {
-            children.addAll(dagJob.getChildren());
+            children = getChildren(dagJob);
         }
 
         if (jobFlag.equals(JobFlag.DELETED)) {
@@ -177,27 +190,23 @@ public class DAGScheduler extends Scheduler {
     @VisibleForTesting
     protected void removeJob(DAGJob dagJob) {
         if (dagJob != null) {
-            // 1. remove job from waiting table
-            waitingTable.remove(dagJob);
-            // 2. remove relation from parents
-            dagJob.removeParents();
-            // 3. remove relation from children
-            dagJob.removeChildren();
+            waitingTable.remove(dagJob.getJobId());
+            dagGraph.removeVertex(dagJob);
         }
     }
 
     @Subscribe
-    public void handleModifyJobEvent(ModifyJobEvent event) {
+    public void handleModifyJobEvent(ModifyJobEvent event) throws Exception {
         MODIFY_TYPE modifyType = event.getModifyType();
         long jobId = event.getJobId();
-        Set<Long> dependencies = event.getDependencies();
+        Set<Long> newDependencies = event.getDependencies();
         // modify dependency
         if (modifyType.equals(MODIFY_TYPE.ADD)) {
-            for (long d : dependencies) {
+            for (long d : newDependencies) {
                 addDependency(d, jobId);
             }
         } else if (modifyType.equals(MODIFY_TYPE.DEL)) {
-            for (long d : dependencies) {
+            for (long d : newDependencies) {
                 removeDependency(d, jobId);
             }
             DAGJob dagJob = waitingTable.get(jobId);
@@ -207,10 +216,7 @@ public class DAGScheduler extends Scheduler {
         } else if (modifyType.equals(MODIFY_TYPE.MODIFY)) {
             DAGJob dagJob = waitingTable.get(jobId);
             if (dagJob != null) {
-                dagJob.removeParents(false);
-                for (long d : dependencies) {
-                    addDependency(d, jobId);
-                }
+                modifyDependency(dagJob, newDependencies);
             }
         }
 
@@ -224,12 +230,11 @@ public class DAGScheduler extends Scheduler {
     }
 
     @VisibleForTesting
-    public void addDependency(long parentId, long childId) {
+    public void addDependency(long parentId, long childId) throws CycleFoundException {
         DAGJob parent = waitingTable.get(parentId);
         DAGJob child = waitingTable.get(childId);
         if (parent != null && child != null) {
-            parent.addChild(child);
-            child.addParent(parent);
+            dagGraph.addDagEdge(parent, child);
         }
     }
 
@@ -238,8 +243,20 @@ public class DAGScheduler extends Scheduler {
         DAGJob parent = waitingTable.get(parentId);
         DAGJob child = waitingTable.get(childId);
         if (parent != null && child != null) {
-            parent.removeChild(child);
-            child.removeParent(parent);
+            dagGraph.removeEdge(parent, child);
+        }
+    }
+
+    @VisibleForTesting
+    protected void modifyDependency(DAGJob dagJob, Set<Long> newDependencies) throws CycleFoundException {
+        Set<DefaultEdge> oldEdges = dagGraph.incomingEdgesOf(dagJob);
+        List<DefaultEdge> tmpEdges = new ArrayList<DefaultEdge>();
+        tmpEdges.addAll(oldEdges);
+        if (tmpEdges != null && !tmpEdges.isEmpty()) {
+            dagGraph.removeAllEdges(tmpEdges);
+        }
+        for (long d : newDependencies) {
+            addDependency(d, dagJob.getJobId());
         }
     }
 
@@ -253,11 +270,11 @@ public class DAGScheduler extends Scheduler {
         List<Pair<Long, JobFlag>> parentJobPairs = new ArrayList<Pair<Long, JobFlag>>();
         DAGJob dagJob = waitingTable.get(jobId);
         if (dagJob != null) {
-            List<DAGJob> parentJobs = dagJob.getParents();
-            if (parentJobs != null) {
-                for (DAGJob p : parentJobs) {
+            List<DAGJob> parents = getParents(dagJob);
+            if (parents != null) {
+                for (DAGJob parent : parents) {
                     Pair<Long, JobFlag> jobPair = new Pair<Long, JobFlag>(
-                            p.getJobId(), p.getJobFlag());
+                            parent.getJobId(), parent.getJobFlag());
                     parentJobPairs.add(jobPair);
                 }
             }
@@ -276,11 +293,11 @@ public class DAGScheduler extends Scheduler {
         List<Pair<Long, JobFlag>> childJobPairs = new ArrayList<Pair<Long, JobFlag>>();
         DAGJob dagJob = waitingTable.get(jobId);
         if (dagJob != null) {
-            List<DAGJob> childJobs = dagJob.getChildren();
-            if (childJobs != null) {
-                for (DAGJob c : childJobs) {
+            List<DAGJob> children = getChildren(dagJob);
+            if (children != null) {
+                for (DAGJob child : children) {
                     Pair<Long, JobFlag> jobPair = new Pair<Long, JobFlag>(
-                            c.getJobId(), c.getJobFlag());
+                            child.getJobId(), child.getJobFlag());
                     childJobPairs.add(jobPair);
                 }
             }
@@ -311,7 +328,7 @@ public class DAGScheduler extends Scheduler {
         long taskId = e.getTaskId();
         DAGJob dagJob = waitingTable.get(jobId);
         if (dagJob != null) {
-            List<DAGJob> children = dagJob.getChildren();
+            List<DAGJob> children = getChildren(dagJob);
             if (children != null) {
                 for (DAGJob child : children) {
                     // 更新依赖状态为true
@@ -330,7 +347,7 @@ public class DAGScheduler extends Scheduler {
         long taskId = e.getTaskId();
         DAGJob dagJob = waitingTable.get(jobId);
         if (dagJob != null) {
-            List<DAGJob> children = dagJob.getChildren();
+            List<DAGJob> children = getChildren(dagJob);
             if (children != null) {
                 for (DAGJob child : children) {
                     // 更新依赖状态为false
@@ -346,9 +363,41 @@ public class DAGScheduler extends Scheduler {
      * @param DAGJob dagJob
      */
     private void submitJobWithCheck(DAGJob dagJob) {
-        if (dagJob.dependCheck()) {
+        List<DAGJob> parents = getParents(dagJob);
+        Set<Long> needJobs = Sets.newHashSet();
+        // get enabled parents
+        if (parents != null) {
+            for (DAGJob parent : parents) {
+                if (parent.getJobFlag().equals(JobFlag.ENABLE)) {
+                    needJobs.add(parent.getJobId());
+                }
+            }
+        }
+        if (dagJob.dependCheck(needJobs)) {
             taskScheduler.submitJob(dagJob.getJobId());
             dagJob.resetDependStatus();
         }
+    }
+
+    private List<DAGJob> getParents(DAGJob dagJob) {
+        List<DAGJob> parents = new ArrayList<DAGJob>();
+        Set<DefaultEdge> inEdges = dagGraph.incomingEdgesOf(dagJob);
+        if (inEdges != null) {
+            for (DefaultEdge edge : inEdges) {
+                parents.add(dagGraph.getEdgeSource(edge));
+            }
+        }
+        return parents;
+    }
+
+    private List<DAGJob> getChildren(DAGJob dagJob) {
+        List<DAGJob> children = new ArrayList<DAGJob>();
+        Set<DefaultEdge> outEdges = dagGraph.outgoingEdgesOf(dagJob);
+        if (outEdges != null) {
+            for (DefaultEdge edge : outEdges) {
+                children.add(dagGraph.getEdgeTarget(edge));
+            }
+        }
+        return children;
     }
 }
