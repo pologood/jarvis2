@@ -41,11 +41,6 @@ public class CachedDependStatus extends RuntimeDependStatus {
     }
 
     @Override
-    public void removeDependency() {
-        taskStatusMap.clear();
-    }
-
-    @Override
     public void init() {
         this.taskStatusMap = loadTaskDependStatus();
     }

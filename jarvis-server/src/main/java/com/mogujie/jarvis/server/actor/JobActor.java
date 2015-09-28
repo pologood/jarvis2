@@ -10,6 +10,7 @@ package com.mogujie.jarvis.server.actor;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.inject.Named;
@@ -17,10 +18,9 @@ import javax.inject.Named;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 
-import akka.actor.UntypedActor;
-
 import com.google.common.collect.Sets;
 import com.mogujie.jarvis.core.domain.JobFlag;
+import com.mogujie.jarvis.core.observer.Event;
 import com.mogujie.jarvis.dao.JobDependMapper;
 import com.mogujie.jarvis.dao.JobMapper;
 import com.mogujie.jarvis.dto.Job;
@@ -29,7 +29,6 @@ import com.mogujie.jarvis.protocol.ModifyJobFlagProtos.RestServerModifyJobFlagRe
 import com.mogujie.jarvis.protocol.ModifyJobProtos.RestServerModifyJobRequest;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitJobRequest;
 import com.mogujie.jarvis.server.JobSchedulerController;
-import com.mogujie.jarvis.server.observer.Event;
 import com.mogujie.jarvis.server.scheduler.JobScheduleType;
 import com.mogujie.jarvis.server.scheduler.SchedulerUtil;
 import com.mogujie.jarvis.server.scheduler.event.AddJobEvent;
@@ -39,6 +38,8 @@ import com.mogujie.jarvis.server.scheduler.event.ModifyJobFlagEvent;
 import com.mogujie.jarvis.server.scheduler.event.UnhandleEvent;
 import com.mogujie.jarvis.server.service.CrontabService;
 import com.mogujie.jarvis.server.service.JobDependService;
+
+import akka.actor.UntypedActor;
 
 /**
  * @author guangming
@@ -66,7 +67,7 @@ public class JobActor extends UntypedActor {
     @Override
     public void onReceive(Object obj) throws Exception {
         Event event = new UnhandleEvent();
-        //TODO
+        // TODO
         if (obj instanceof RestServerSubmitJobRequest) {
             RestServerSubmitJobRequest msg = (RestServerSubmitJobRequest) obj;
             // 1. insert job to DB
@@ -74,7 +75,7 @@ public class JobActor extends UntypedActor {
             jobMapper.insert(job);
             long jobId = job.getJobId();
             // 如果是新增任务（不是手动触发），则originId=jobId
-            if (job.getOriginJobId() == null) {
+            if (job.getOriginJobId() == null || job.getOriginJobId() == 0) {
                 job.setOriginJobId(jobId);
                 jobMapper.updateByPrimaryKey(job);
             }
@@ -139,5 +140,13 @@ public class JobActor extends UntypedActor {
         }
 
         schedulerController.notify(event);
+    }
+
+    public static Set<Class<?>> handledMessages() {
+        Set<Class<?>> set = new HashSet<>();
+        set.add(RestServerSubmitJobRequest.class);
+        set.add(RestServerModifyJobRequest.class);
+        set.add(RestServerModifyJobFlagRequest.class);
+        return set;
     }
 }

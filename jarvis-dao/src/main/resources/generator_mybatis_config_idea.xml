@@ -43,16 +43,12 @@
 
         <table schema="jarvis2" tableName="worker">
             <property name="useActualColumnNames" value="true" />
-            <generatedKey column="workerId" sqlStatement="MySql" identity="true" />
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
         </table>
 
         <table schema="jarvis2" tableName="worker_group">
             <property name="useActualColumnNames" value="true" />
-            <generatedKey column="wgroupId" sqlStatement="MySql" identity="true" />
-        </table>
-
-        <table schema="jarvis2" tableName="worker_group_relation">
-            <property name="useActualColumnNames" value="true" />
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
         </table>
 
 	</context>

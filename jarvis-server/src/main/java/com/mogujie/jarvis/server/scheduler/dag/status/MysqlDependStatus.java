@@ -27,11 +27,6 @@ public class MysqlDependStatus extends RuntimeDependStatus {
     }
 
     @Override
-    public void removeDependency() {
-        statusService.deleteDependencyByPreJobId(getMyJobId(), getPreJobId());
-    }
-
-    @Override
     public void reset() {
         statusService.clearPreStatus(getMyJobId(), getPreJobId());
     }

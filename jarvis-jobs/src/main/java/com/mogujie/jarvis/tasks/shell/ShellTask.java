@@ -18,10 +18,10 @@ import java.nio.charset.StandardCharsets;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.mogujie.jarvis.core.Task;
 import com.mogujie.jarvis.core.TaskContext;
 import com.mogujie.jarvis.core.common.util.ConfigUtils;
 import com.mogujie.jarvis.core.domain.StreamType;
+import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.task.AbstractTask;
 import com.mogujie.jarvis.tasks.ShellStreamProcessor;
 import com.mogujie.jarvis.tasks.util.ShellUtils;
@@ -41,7 +41,7 @@ public class ShellTask extends AbstractTask {
     }
 
     public String getCommand() {
-        return getTaskContext().getTask().getCommand();
+        return getTaskContext().getTaskDetail().getContent();
     }
 
     public void processStdOutputStream(InputStream inputStream) {
@@ -68,7 +68,7 @@ public class ShellTask extends AbstractTask {
 
     @Override
     public boolean execute() {
-        Task task = getTaskContext().getTask();
+        TaskDetail task = getTaskContext().getTaskDetail();
         try {
             String statusFilePath = STATUS_PATH + "/" + task.getFullId() + ".status";
             StringBuilder sb = new StringBuilder();

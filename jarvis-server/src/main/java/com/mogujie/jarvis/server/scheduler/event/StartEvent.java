@@ -8,7 +8,7 @@
 
 package com.mogujie.jarvis.server.scheduler.event;
 
-import com.mogujie.jarvis.server.observer.Event;
+import com.mogujie.jarvis.core.observer.Event;
 
 /**
  * @author guangming

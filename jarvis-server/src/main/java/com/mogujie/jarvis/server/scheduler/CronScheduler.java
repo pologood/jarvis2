@@ -11,10 +11,8 @@ package com.mogujie.jarvis.server.scheduler;
 import java.text.ParseException;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
@@ -60,7 +58,7 @@ public class CronScheduler {
         crontabs.put(crontab.getJobId(), crontab);
 
         try {
-            CronExpression expression = new CronExpression(crontab.getExp());
+            CronExpression expression = new CronExpression(crontab.getCronExpression());
             Pair<Long, DateTime> pair = new Pair<Long, DateTime>(crontab.getJobId(), expression.getTimeAfter(DateTime.now()));
             nextScheduleTimeList.add(pair);
         } catch (ParseException e) {
@@ -68,15 +66,14 @@ public class CronScheduler {
         }
     }
 
+    public void scheduleOnce(long jobId, int delaySeconds) {
+        DateTime dateTime = DateTime.now().plusSeconds(delaySeconds);
+        Pair<Long, DateTime> pair = new Pair<Long, DateTime>(jobId, dateTime);
+        nextScheduleTimeList.add(pair);
+    }
+
     public void remove(Crontab crontab) {
-        Iterator<Entry<Long, Crontab>> it = crontabs.entrySet().iterator();
-        while (it.hasNext()) {
-            Entry<Long, Crontab> entry = it.next();
-            if (entry.getKey().equals(crontab.getJobId())) {
-                it.remove();
-                break;
-            }
-        }
+        crontabs.remove(crontab.getJobId());
 
         for (int i = 0, len = nextScheduleTimeList.size(); i < len; i++) {
             Pair<Long, DateTime> pair = nextScheduleTimeList.get(i);
@@ -112,17 +109,19 @@ public class CronScheduler {
 
                     Pair<Long, DateTime> pair = nextScheduleTimeList.get(0);
                     while (DateTime.now().compareTo(pair.getSecond()) >= 0) {
-                        Crontab crontab = crontabs.get(pair.getFirst());
-
-                        TimeReadyEvent event = new TimeReadyEvent(crontab.getJobId());
+                        long jobId = pair.getFirst();
+                        TimeReadyEvent event = new TimeReadyEvent(jobId);
                         jobSchedulerController.notify(event);
 
-                        nextScheduleTimeList.remove(0);
-                        try {
-                            DateTime nextTime = new CronExpression(crontab.getExp()).getTimeAfter(DateTime.now());
-                            nextScheduleTimeList.add(new Pair<Long, DateTime>(pair.getFirst(), nextTime));
-                        } catch (ParseException e) {
-                            LOGGER.error(e);
+                        Crontab crontab = crontabs.get(jobId);
+                        if (crontab != null) {
+                            nextScheduleTimeList.remove(0);
+                            try {
+                                DateTime nextTime = new CronExpression(crontab.getCronExpression()).getTimeAfter(DateTime.now());
+                                nextScheduleTimeList.add(new Pair<Long, DateTime>(pair.getFirst(), nextTime));
+                            } catch (ParseException e) {
+                                LOGGER.error(e);
+                            }
                         }
 
                         if (nextScheduleTimeList.size() == 0) {

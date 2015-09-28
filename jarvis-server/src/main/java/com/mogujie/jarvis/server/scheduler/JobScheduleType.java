@@ -8,8 +8,8 @@
 
 package com.mogujie.jarvis.server.scheduler;
 
-import com.mogujie.jarvis.server.scheduler.dag.job.DAGJob;
-import com.mogujie.jarvis.server.scheduler.dag.job.DAGOffsetJob;
+import com.mogujie.jarvis.server.scheduler.dag.DAGJob;
+import com.mogujie.jarvis.server.scheduler.dag.DAGOffsetJob;
 
 /**
  * @author guangming

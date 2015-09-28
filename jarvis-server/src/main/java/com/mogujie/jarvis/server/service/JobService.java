@@ -9,9 +9,13 @@ package com.mogujie.jarvis.server.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.mogujie.jarvis.core.domain.JobFlag;
+import com.mogujie.jarvis.dao.JobMapper;
 import com.mogujie.jarvis.dto.Job;
+import com.mogujie.jarvis.dto.JobExample;
 
 /**
  * @author wuya
@@ -20,13 +24,18 @@ import com.mogujie.jarvis.dto.Job;
 @Service
 public class JobService {
 
+    @Autowired
+    private JobMapper jobMapper;
+
     public int updateJobStatus(long jobId, int status) {
         // TODO
         return 0;
     }
 
-    public List<Job> loadJobs() {
-        return null;
+    public List<Job> getJobsNotDeleted() {
+        JobExample example = new JobExample();
+        example.createCriteria().andJobFlagNotEqualTo(JobFlag.DELETED.getValue());
+        return jobMapper.selectByExample(example);
     }
 
 }

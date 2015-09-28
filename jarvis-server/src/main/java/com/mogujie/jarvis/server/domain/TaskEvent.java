@@ -10,7 +10,7 @@ package com.mogujie.jarvis.server.domain;
 
 import com.lmax.disruptor.EventFactory;
 import com.lmax.disruptor.EventTranslatorOneArg;
-import com.mogujie.jarvis.core.Task;
+import com.mogujie.jarvis.core.domain.TaskDetail;
 
 /**
  * 
@@ -18,19 +18,19 @@ import com.mogujie.jarvis.core.Task;
  */
 public class TaskEvent {
 
-    private Task task;
+    private TaskDetail task;
 
-    public Task getTask() {
+    public TaskDetail getTask() {
         return task;
     }
 
-    public void setTask(Task task) {
+    public void setTask(TaskDetail task) {
         this.task = task;
     }
 
-    public static final EventTranslatorOneArg<TaskEvent, Task> TRANSLATOR = new EventTranslatorOneArg<TaskEvent, Task>() {
+    public static final EventTranslatorOneArg<TaskEvent, TaskDetail> TRANSLATOR = new EventTranslatorOneArg<TaskEvent, TaskDetail>() {
 
-        public void translateTo(TaskEvent event, long sequence, Task task) {
+        public void translateTo(TaskEvent event, long sequence, TaskDetail task) {
             event.setTask(task);
         }
     };

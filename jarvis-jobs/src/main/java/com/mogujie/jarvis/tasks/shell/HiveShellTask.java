@@ -24,9 +24,9 @@ import org.apache.logging.log4j.Logger;
 
 import com.github.stuxuhai.jpinyin.PinyinFormat;
 import com.github.stuxuhai.jpinyin.PinyinHelper;
-import com.mogujie.jarvis.core.Task;
 import com.mogujie.jarvis.core.TaskContext;
 import com.mogujie.jarvis.core.common.util.ConfigUtils;
+import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.exeception.ShellException;
 import com.mogujie.jarvis.tasks.domain.HiveTaskEntity;
 import com.mogujie.jarvis.tasks.util.HiveConfigUtils;
@@ -37,7 +37,7 @@ import com.mogujie.jarvis.tasks.util.YarnUtils;
 /**
  * @author wuya
  */
-public class HiveShellTask extends ShellTask {
+public abstract class HiveShellTask extends ShellTask {
 
     private Set<String> applicationIdSet = new HashSet<>();
     private static final Pattern APPLICATION_ID_PATTERN = Pattern.compile("application_\\d+_\\d+");
@@ -52,7 +52,7 @@ public class HiveShellTask extends ShellTask {
 
     @Override
     public String getCommand() {
-        Task task = getTaskContext().getTask();
+        TaskDetail task = getTaskContext().getTaskDetail();
         String user = null;
         HiveTaskEntity entity = HiveConfigUtils.getHiveJobEntry(task.getAppName());
         if (entity == null || (entity.isAdmin() && !task.getUser().trim().isEmpty())) {
@@ -77,7 +77,7 @@ public class HiveShellTask extends ShellTask {
         sb.append("set mapred.job.name=" + task.getTaskName() + ";");
         // 打印列名的时候不打印表名，否则xray无法显示数据
         sb.append("set hive.resultset.use.unique.column.names=false;");
-        sb.append(MoguAnnotationUtils.removeAnnotation(MoguDateParamUtils.parse(task.getCommand())));
+        sb.append(MoguAnnotationUtils.removeAnnotation(MoguDateParamUtils.parse(getContent(task))));
         sb.append("\"");
         return sb.toString();
 
@@ -85,7 +85,7 @@ public class HiveShellTask extends ShellTask {
 
     @Override
     public void processStdOutputStream(InputStream inputStream) {
-        Task task = getTaskContext().getTask();
+        TaskDetail task = getTaskContext().getTaskDetail();
         int currentResultRows = 0;
         int maxResultRows = 10000;
         String appName = task.getAppName();
@@ -111,7 +111,7 @@ public class HiveShellTask extends ShellTask {
 
     @Override
     public void processStdErrorStream(InputStream inputStream) {
-        Task task = getTaskContext().getTask();
+        TaskDetail task = getTaskContext().getTaskDetail();
         int maxMapperNum = 2000;
         String appName = task.getAppName();
         HiveTaskEntity entry = HiveConfigUtils.getHiveJobEntry(appName);
@@ -173,5 +173,7 @@ public class HiveShellTask extends ShellTask {
 
         return null;
     }
+
+    protected abstract String getContent(TaskDetail task);
 
 }

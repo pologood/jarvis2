@@ -14,7 +14,7 @@ import com.mogujie.jarvis.core.common.util.ConfigUtils;
 import com.mogujie.jarvis.core.common.util.ReflectionUtils;
 import com.mogujie.jarvis.core.domain.Pair;
 import com.mogujie.jarvis.dto.JobDepend;
-import com.mogujie.jarvis.server.scheduler.dag.strategy.AbstractOffsetDependStrategy;
+import com.mogujie.jarvis.server.scheduler.dag.strategy.AbstractOffsetStrategy;
 import com.mogujie.jarvis.server.scheduler.dag.strategy.CommonStrategy;
 import com.mogujie.jarvis.server.scheduler.dag.strategy.OffsetStrategyFactory;
 import com.mogujie.jarvis.server.service.JobDependService;
@@ -35,7 +35,7 @@ public class DependStatusFactory {
             JobDepend jobDepend = jobDependService.getRecord(myJobId, preJobId);
             if (jobDepend != null) {
                 CommonStrategy commonStrategy = CommonStrategy.getInstance(jobDepend.getCommonStrategy());
-                Pair<AbstractOffsetDependStrategy, Integer> offsetStrategyPair = OffsetStrategyFactory.create(jobDepend.getOffsetStrategy());
+                Pair<AbstractOffsetStrategy, Integer> offsetStrategyPair = OffsetStrategyFactory.create(jobDepend.getOffsetStrategy());
                 if (offsetStrategyPair != null) {
                     dependStatus = new OffsetDependStatus(myJobId, preJobId, commonStrategy,
                             offsetStrategyPair.getFirst(), offsetStrategyPair.getSecond());

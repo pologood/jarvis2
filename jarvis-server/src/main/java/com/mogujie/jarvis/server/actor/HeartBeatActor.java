@@ -8,6 +8,9 @@
 
 package com.mogujie.jarvis.server.actor;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.inject.Named;
 
 import org.apache.logging.log4j.LogManager;
@@ -22,7 +25,6 @@ import com.mogujie.jarvis.server.WorkerRegistry;
 import com.mogujie.jarvis.server.service.HeartBeatService;
 
 import akka.actor.Address;
-import akka.actor.Props;
 import akka.actor.UntypedActor;
 
 @Named("heartBeatActor")
@@ -33,10 +35,6 @@ public class HeartBeatActor extends UntypedActor {
     private HeartBeatService heartBeatService;
 
     private static final Logger LOGGER = LogManager.getLogger("heartbeat");
-
-    public static Props props() {
-        return Props.create(HeartBeatActor.class);
-    }
 
     @Override
     public void onReceive(Object obj) throws Exception {
@@ -61,6 +59,12 @@ public class HeartBeatActor extends UntypedActor {
         } else {
             unhandled(obj);
         }
+    }
+
+    public static Set<Class<?>> handledMessages() {
+        Set<Class<?>> set = new HashSet<>();
+        set.add(HeartBeatRequest.class);
+        return set;
     }
 
 }

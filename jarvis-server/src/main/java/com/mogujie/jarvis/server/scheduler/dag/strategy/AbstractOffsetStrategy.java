@@ -17,7 +17,7 @@ import com.mogujie.jarvis.dto.Task;
  * @author guangming
  *
  */
-public abstract class AbstractOffsetDependStrategy {
+public abstract class AbstractOffsetStrategy {
 
     public boolean check(long jobId, int offset, CommonStrategy commonStrategy) {
         boolean finishDependency = false;

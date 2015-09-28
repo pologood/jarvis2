@@ -3,7 +3,7 @@
  * Copyright (c) 2010-2015 All Rights Reserved.
  *
  * Author: guangming
- * Create Date: 2015年9月21日 上午11:24:36
+ * Create Date: 2015年9月21日 上午11:23:43
  */
 
 package com.mogujie.jarvis.server.scheduler.dag.strategy;
@@ -18,12 +18,11 @@ import com.mogujie.jarvis.server.util.SpringContext;
  * @author guangming
  *
  */
-public class OffsetMonthDependStrategy extends AbstractOffsetDependStrategy {
+public class OffsetDayStrategy extends AbstractOffsetStrategy {
 
     @Override
     protected List<Task> getOffsetTasks(long jobId, int offset) {
         TaskService taskService = SpringContext.getBean(TaskService.class);
-        return taskService.getTasksByOffsetMonth(jobId, offset);
+        return taskService.getTasksByOffsetDay(jobId, offset);
     }
-
 }

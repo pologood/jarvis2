@@ -8,13 +8,15 @@
 
 package com.mogujie.jarvis.core;
 
+import com.mogujie.jarvis.core.domain.TaskDetail;
+
 /**
  * @author wuya
  *
  */
 public class TaskContext {
 
-    private Task task;
+    private TaskDetail taskDetail;
     private AbstractLogCollector logCollector;
     private ProgressReporter progressReporter;
 
@@ -25,8 +27,8 @@ public class TaskContext {
         return new TaskContextBuilder();
     }
 
-    public Task getTask() {
-        return task;
+    public TaskDetail getTaskDetail() {
+        return taskDetail;
     }
 
     public AbstractLogCollector getLogCollector() {
@@ -44,8 +46,8 @@ public class TaskContext {
         private TaskContextBuilder() {
         }
 
-        public TaskContextBuilder setTask(Task task) {
-            this.taskContext.task = task;
+        public TaskContextBuilder setTaskDetail(TaskDetail task) {
+            this.taskContext.taskDetail = task;
             return this;
         }
 

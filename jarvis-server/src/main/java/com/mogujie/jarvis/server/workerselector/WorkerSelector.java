@@ -6,7 +6,7 @@
  * Create Date: 2015年8月31日 下午3:50:15
  */
 
-package com.mogujie.jarvis.server;
+package com.mogujie.jarvis.server.workerselector;
 
 import com.mogujie.jarvis.core.domain.WorkerInfo;
 

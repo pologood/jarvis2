@@ -62,7 +62,7 @@ public abstract class DAGDependChecker {
     public void removeDependency(long jobId) {
         AbstractDependStatus taskDependStatus = jobStatusMap.get(jobId);
         if (taskDependStatus != null) {
-            taskDependStatus.removeDependency();
+            taskDependStatus.reset();
             jobStatusMap.remove(jobId);
         }
     }

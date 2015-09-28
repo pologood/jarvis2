@@ -56,6 +56,11 @@
 			<artifactId>javax.inject</artifactId>
 			<version>1</version>
 		</dependency>
+     	<dependency>
+     		<groupId>org.javabits.jgrapht</groupId>
+      		<artifactId>jgrapht-core</artifactId>
+      		<version>0.9.1</version>
+    	</dependency>
 	</dependencies>
 
 	<build>

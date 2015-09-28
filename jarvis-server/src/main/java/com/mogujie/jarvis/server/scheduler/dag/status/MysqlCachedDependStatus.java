@@ -31,12 +31,6 @@ public class MysqlCachedDependStatus extends CachedDependStatus {
     }
 
     @Override
-    public void removeDependency() {
-        super.removeDependency();
-        statusService.deleteDependencyByPreJobId(getMyJobId(), getPreJobId());
-    }
-
-    @Override
     public void reset() {
         super.reset();
         statusService.clearMyStatus(getMyJobId());

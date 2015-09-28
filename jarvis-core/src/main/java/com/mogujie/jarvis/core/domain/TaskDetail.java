@@ -6,7 +6,7 @@
  * Create Date: 2015年9月15日 下午4:46:47
  */
 
-package com.mogujie.jarvis.core;
+package com.mogujie.jarvis.core.domain;
 
 import java.util.Map;
 
@@ -14,19 +14,19 @@ import java.util.Map;
  * 
  *
  */
-public class Task {
+public class TaskDetail {
 
     private String fullId;
     private String taskName;
     private String appName;
     private String user;
     private String taskType;
-    private String command;
+    private String content;
     private int priority;
     private int groupId;
     private Map<String, Object> parameters;
 
-    private Task() {
+    private TaskDetail() {
     }
 
     public String getFullId() {
@@ -49,8 +49,8 @@ public class Task {
         return taskType;
     }
 
-    public String getCommand() {
-        return command;
+    public String getContent() {
+        return content;
     }
 
     public int getPriority() {
@@ -65,63 +65,63 @@ public class Task {
         return parameters;
     }
 
-    public static TaskBuilder newTaskBuilder() {
-        return new TaskBuilder();
+    public static TaskDetailBuilder newTaskDetailBuilder() {
+        return new TaskDetailBuilder();
     }
 
-    public static class TaskBuilder {
+    public static class TaskDetailBuilder {
 
-        private Task task;
+        private TaskDetail task;
 
-        private TaskBuilder() {
+        private TaskDetailBuilder() {
         }
 
-        public TaskBuilder setFullId(String fullId) {
+        public TaskDetailBuilder setFullId(String fullId) {
             this.task.fullId = fullId;
             return this;
         }
 
-        public TaskBuilder setTaskName(String taskName) {
+        public TaskDetailBuilder setTaskName(String taskName) {
             this.task.taskName = taskName;
             return this;
         }
 
-        public TaskBuilder setAppName(String appName) {
+        public TaskDetailBuilder setAppName(String appName) {
             this.task.appName = appName;
             return this;
         }
 
-        public TaskBuilder setUser(String user) {
+        public TaskDetailBuilder setUser(String user) {
             this.task.user = user;
             return this;
         }
 
-        public TaskBuilder setTaskType(String taskType) {
+        public TaskDetailBuilder setTaskType(String taskType) {
             this.task.taskType = taskType;
             return this;
         }
 
-        public TaskBuilder setCommand(String command) {
-            this.task.command = command;
+        public TaskDetailBuilder setContent(String content) {
+            this.task.content = content;
             return this;
         }
 
-        public TaskBuilder setPriority(int priority) {
+        public TaskDetailBuilder setPriority(int priority) {
             this.task.priority = priority;
             return this;
         }
 
-        public TaskBuilder setGroupId(int groupId) {
+        public TaskDetailBuilder setGroupId(int groupId) {
             this.task.groupId = groupId;
             return this;
         }
 
-        public TaskBuilder setParameters(Map<String, Object> parameters) {
+        public TaskDetailBuilder setParameters(Map<String, Object> parameters) {
             this.task.parameters = parameters;
             return this;
         }
 
-        public Task build() {
+        public TaskDetail build() {
             return task;
         }
     }

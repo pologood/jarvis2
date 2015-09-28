@@ -6,7 +6,7 @@
  * Create Date: 2015年8月31日 下午9:02:36
  */
 
-package com.mogujie.jarvis.server.scheduler.dag.job;
+package com.mogujie.jarvis.server.scheduler.dag;
 
 import com.mogujie.jarvis.core.common.util.ReflectionUtils;
 import com.mogujie.jarvis.server.scheduler.JobScheduleType;

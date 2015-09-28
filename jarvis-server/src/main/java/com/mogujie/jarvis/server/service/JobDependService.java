@@ -8,13 +8,16 @@
 
 package com.mogujie.jarvis.server.service;
 
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.common.collect.Sets;
 import com.mogujie.jarvis.dao.JobDependMapper;
 import com.mogujie.jarvis.dto.JobDepend;
+import com.mogujie.jarvis.dto.JobDependExample;
 import com.mogujie.jarvis.dto.JobDependKey;
 
 /**
@@ -33,15 +36,22 @@ public class JobDependService {
         return jobDependMapper.selectByPrimaryKey(key);
     }
 
-    public int getOffsetValue(long myJobId, long preJobId) {
-        return 0;
-    }
-
     public void deleteByJobId(long jobId) {
-
+        JobDependExample example = new JobDependExample();
+        example.createCriteria().andJobIdEqualTo(jobId);
+        jobDependMapper.deleteByExample(example);
     }
 
     public Set<Long> getDependIds(long jobId) {
-        return null;
+        JobDependExample example = new JobDependExample();
+        example.createCriteria().andJobIdEqualTo(jobId);
+        List<JobDepend> jobDepends = jobDependMapper.selectByExample(example);
+        Set<Long> dependIds = Sets.newHashSet();
+        if (jobDepends != null) {
+            for (JobDepend jobDepend : jobDepends) {
+                dependIds.add(jobDepend.getPreJobId());
+            }
+        }
+        return dependIds;
     }
 }

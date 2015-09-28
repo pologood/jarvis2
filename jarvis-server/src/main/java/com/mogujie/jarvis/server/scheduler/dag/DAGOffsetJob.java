@@ -6,7 +6,9 @@
  * Create Date: 2015年8月31日 上午11:40:31
  */
 
-package com.mogujie.jarvis.server.scheduler.dag.job;
+package com.mogujie.jarvis.server.scheduler.dag;
+
+import java.util.Set;
 
 
 
@@ -26,7 +28,7 @@ public class DAGOffsetJob extends DAGJob {
     }
 
     @Override
-    public boolean dependCheck() {
+    public boolean dependCheck(Set<Long> needJobs) {
         // TODO Auto-generated method stub
         return false;
     }

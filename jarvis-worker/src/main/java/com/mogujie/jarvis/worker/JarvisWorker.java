@@ -50,8 +50,7 @@ public class JarvisWorker {
         + JarvisConstants.SERVER_AKKA_SYSTEM_NAME;
     int workerGroupId = workerConfig.getInt("worker.group.id", 0);
     String workerKey = workerConfig.getString("worker.key");
-    WorkerRegistryRequest request = WorkerRegistryRequest.newBuilder().setGroupId(workerGroupId)
-        .setKey(workerKey).build();
+    WorkerRegistryRequest request = WorkerRegistryRequest.newBuilder().setKey(workerKey).build();
 
     // 注册Worker
     ActorSelection serverActor = system.actorSelection(serverAkkaPath);

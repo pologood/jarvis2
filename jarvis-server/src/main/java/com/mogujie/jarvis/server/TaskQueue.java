@@ -8,59 +8,54 @@
 
 package com.mogujie.jarvis.server;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.concurrent.PriorityBlockingQueue;
 
-import com.lmax.disruptor.BlockingWaitStrategy;
-import com.lmax.disruptor.RingBuffer;
-import com.lmax.disruptor.dsl.Disruptor;
-import com.lmax.disruptor.dsl.ProducerType;
-import com.mogujie.jarvis.core.Task;
-import com.mogujie.jarvis.server.domain.TaskEvent;
-import com.mogujie.jarvis.server.util.SpringContext;
+import org.springframework.stereotype.Repository;
+
+import com.mogujie.jarvis.core.domain.TaskDetail;
 
 /**
  * 
  *
  */
+@Repository
 public enum TaskQueue {
     INSTANCE;
 
-    private ExecutorService es = Executors.newCachedThreadPool();
-    private Disruptor<TaskEvent> disruptor = new Disruptor<TaskEvent>(TaskEvent.EVENT_FACTORY, (int) Math.pow(2, 10), es, ProducerType.SINGLE,
-            new BlockingWaitStrategy());
-    private RingBuffer<TaskEvent> ringBuffer;
+    private Comparator<TaskDetail> comparator = new Comparator<TaskDetail>() {
 
-    private TaskQueue() {
-        LoggerExceptionHandler exceptionHandler = new LoggerExceptionHandler();
-        disruptor.handleExceptionsWith(exceptionHandler);
-
-        TaskEventHandler[] taskEventHandlers = new TaskEventHandler[10];
-        for (int i = 0, len = taskEventHandlers.length; i < len; i++) {
-            taskEventHandlers[i] = SpringContext.getBean(TaskEventHandler.class);
+        @Override
+        public int compare(TaskDetail t1, TaskDetail t2) {
+            return t2.getPriority() - t1.getPriority();
         }
-        disruptor.handleEventsWithWorkerPool(taskEventHandlers);
-        ringBuffer = disruptor.start();
-    }
+    };
+
+    private PriorityBlockingQueue<TaskDetail> queue = new PriorityBlockingQueue<>(100, comparator);
 
     public static TaskQueue getInstance() {
         return INSTANCE;
     }
 
-    public void put(Task task) {
-        disruptor.publishEvent(TaskEvent.TRANSLATOR, task);
+    public void put(TaskDetail taskDetail) {
+        queue.put(taskDetail);
     }
 
-    public int getBufferSize() {
-        return ringBuffer.getBufferSize();
+    public TaskDetail take() throws InterruptedException {
+        return queue.take();
     }
 
-    public long getRemainingCapacity() {
-        return ringBuffer.remainingCapacity();
+    public int size() {
+        return queue.size();
     }
 
-    public void close() {
-        disruptor.shutdown();
+    public boolean isEmpty() {
+        return queue.isEmpty();
+    }
+
+    public Iterator<TaskDetail> iterator() {
+        return queue.iterator();
     }
 
 }

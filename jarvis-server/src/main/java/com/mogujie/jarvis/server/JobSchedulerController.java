@@ -8,18 +8,17 @@
 
 package com.mogujie.jarvis.server;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import org.springframework.stereotype.Service;
 
+import com.google.common.eventbus.AsyncEventBus;
 import com.google.common.eventbus.EventBus;
-import com.mogujie.jarvis.server.observer.Event;
-import com.mogujie.jarvis.server.observer.Observable;
-import com.mogujie.jarvis.server.observer.Observer;
-import com.mogujie.jarvis.server.scheduler.dag.DAGScheduler;
-import com.mogujie.jarvis.server.scheduler.event.InitEvent;
-import com.mogujie.jarvis.server.scheduler.event.StopEvent;
-import com.mogujie.jarvis.server.scheduler.task.TaskScheduler;
-import com.mogujie.jarvis.server.scheduler.time.TimeScheduler;
+import com.mogujie.jarvis.core.observer.Event;
+import com.mogujie.jarvis.core.observer.Observable;
+import com.mogujie.jarvis.core.observer.Observer;
+import com.mogujie.jarvis.server.scheduler.Scheduler;
 
 /**
  * Actor used to schedule job with three schedulers (
@@ -32,41 +31,32 @@ import com.mogujie.jarvis.server.scheduler.time.TimeScheduler;
  */
 @Service
 public class JobSchedulerController implements Observable {
-    @Autowired
-    private TimeScheduler timeScheduler;
+    private ExecutorService threadPool = Executors.newCachedThreadPool();
+    private EventBus eventBus = new AsyncEventBus(threadPool);
 
-    @Autowired
-    private DAGScheduler dagScheduler;
-
-    @Autowired
-    private TaskScheduler taskScheduler;
-
-    private EventBus eventBus = new EventBus("JobSchedulerActor");
-
-    public void init() throws Exception {
-        register(timeScheduler);
-        register(dagScheduler);
-        register(taskScheduler);
-
-        notify(new InitEvent());
+    private static JobSchedulerController instance = new JobSchedulerController();
+    private JobSchedulerController() {
     }
-
-    public void stop() throws Exception {
-        notify(new StopEvent());
-
-        eventBus.unregister(timeScheduler);
-        eventBus.unregister(dagScheduler);
-        eventBus.unregister(taskScheduler);
+    public static JobSchedulerController getInstance() {
+        return instance;
     }
 
     @Override
     public void register(Observer o) {
-        eventBus.register(o);
+        if (o instanceof Scheduler) {
+            Scheduler scheduler = (Scheduler) o;
+            if (scheduler.getSchedulerController() == null) {
+                scheduler.setSchedulerController(this);
+            }
+            eventBus.register(o);
+        }
     }
 
     @Override
     public void unregister(Observer o) {
-        eventBus.unregister(o);
+        if (o instanceof Scheduler) {
+            eventBus.unregister(o);
+        }
     }
 
     @Override

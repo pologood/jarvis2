@@ -78,8 +78,4 @@ public abstract class AbstractDependStatus {
      */
     public void resetDependStatus(long taskId) {}
 
-    /**
-     * remove job dependency
-     */
-    public void removeDependency() {}
 }

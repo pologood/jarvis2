@@ -6,7 +6,7 @@
  * Create Date: 2015年8月31日 下午4:00:33
  */
 
-package com.mogujie.jarvis.server;
+package com.mogujie.jarvis.server.workerselector;
 
 import java.util.List;
 import java.util.Map;

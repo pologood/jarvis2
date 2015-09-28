@@ -28,16 +28,6 @@ public final class RegistryWorkerProtos {
          * <code>required string key = 1;</code>
          */
         com.google.protobuf.ByteString getKeyBytes();
-
-        /**
-         * <code>required int32 group_id = 2;</code>
-         */
-        boolean hasGroupId();
-
-        /**
-         * <code>required int32 group_id = 2;</code>
-         */
-        int getGroupId();
     }
 
     /**
@@ -95,11 +85,6 @@ public final class RegistryWorkerProtos {
                             com.google.protobuf.ByteString bs = input.readBytes();
                             bitField0_ |= 0x00000001;
                             key_ = bs;
-                            break;
-                        }
-                        case 16: {
-                            bitField0_ |= 0x00000002;
-                            groupId_ = input.readInt32();
                             break;
                         }
                     }
@@ -178,26 +163,8 @@ public final class RegistryWorkerProtos {
             }
         }
 
-        public static final int GROUP_ID_FIELD_NUMBER = 2;
-        private int groupId_;
-
-        /**
-         * <code>required int32 group_id = 2;</code>
-         */
-        public boolean hasGroupId() {
-            return ((bitField0_ & 0x00000002) == 0x00000002);
-        }
-
-        /**
-         * <code>required int32 group_id = 2;</code>
-         */
-        public int getGroupId() {
-            return groupId_;
-        }
-
         private void initFields() {
             key_ = "";
-            groupId_ = 0;
         }
 
         private byte memoizedIsInitialized = -1;
@@ -213,10 +180,6 @@ public final class RegistryWorkerProtos {
                 memoizedIsInitialized = 0;
                 return false;
             }
-            if (!hasGroupId()) {
-                memoizedIsInitialized = 0;
-                return false;
-            }
             memoizedIsInitialized = 1;
             return true;
         }
@@ -225,9 +188,6 @@ public final class RegistryWorkerProtos {
             getSerializedSize();
             if (((bitField0_ & 0x00000001) == 0x00000001)) {
                 output.writeBytes(1, getKeyBytes());
-            }
-            if (((bitField0_ & 0x00000002) == 0x00000002)) {
-                output.writeInt32(2, groupId_);
             }
             getUnknownFields().writeTo(output);
         }
@@ -242,9 +202,6 @@ public final class RegistryWorkerProtos {
             size = 0;
             if (((bitField0_ & 0x00000001) == 0x00000001)) {
                 size += com.google.protobuf.CodedOutputStream.computeBytesSize(1, getKeyBytes());
-            }
-            if (((bitField0_ & 0x00000002) == 0x00000002)) {
-                size += com.google.protobuf.CodedOutputStream.computeInt32Size(2, groupId_);
             }
             size += getUnknownFields().getSerializedSize();
             memoizedSerializedSize = size;
@@ -370,8 +327,6 @@ public final class RegistryWorkerProtos {
                 super.clear();
                 key_ = "";
                 bitField0_ = (bitField0_ & ~0x00000001);
-                groupId_ = 0;
-                bitField0_ = (bitField0_ & ~0x00000002);
                 return this;
             }
 
@@ -404,10 +359,6 @@ public final class RegistryWorkerProtos {
                     to_bitField0_ |= 0x00000001;
                 }
                 result.key_ = key_;
-                if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-                    to_bitField0_ |= 0x00000002;
-                }
-                result.groupId_ = groupId_;
                 result.bitField0_ = to_bitField0_;
                 onBuilt();
                 return result;
@@ -430,19 +381,12 @@ public final class RegistryWorkerProtos {
                     key_ = other.key_;
                     onChanged();
                 }
-                if (other.hasGroupId()) {
-                    setGroupId(other.getGroupId());
-                }
                 this.mergeUnknownFields(other.getUnknownFields());
                 return this;
             }
 
             public final boolean isInitialized() {
                 if (!hasKey()) {
-
-                    return false;
-                }
-                if (!hasGroupId()) {
 
                     return false;
                 }
@@ -539,42 +483,6 @@ public final class RegistryWorkerProtos {
                 }
                 bitField0_ |= 0x00000001;
                 key_ = value;
-                onChanged();
-                return this;
-            }
-
-            private int groupId_;
-
-            /**
-             * <code>required int32 group_id = 2;</code>
-             */
-            public boolean hasGroupId() {
-                return ((bitField0_ & 0x00000002) == 0x00000002);
-            }
-
-            /**
-             * <code>required int32 group_id = 2;</code>
-             */
-            public int getGroupId() {
-                return groupId_;
-            }
-
-            /**
-             * <code>required int32 group_id = 2;</code>
-             */
-            public Builder setGroupId(int value) {
-                bitField0_ |= 0x00000002;
-                groupId_ = value;
-                onChanged();
-                return this;
-            }
-
-            /**
-             * <code>required int32 group_id = 2;</code>
-             */
-            public Builder clearGroupId() {
-                bitField0_ = (bitField0_ & ~0x00000002);
-                groupId_ = 0;
                 onChanged();
                 return this;
             }
@@ -1174,10 +1082,10 @@ public final class RegistryWorkerProtos {
     private static com.google.protobuf.Descriptors.FileDescriptor descriptor;
 
     static {
-        java.lang.String[] descriptorData = { "\n\025registry_worker.proto\"6\n\025WorkerRegistr"
-                + "yRequest\022\013\n\003key\030\001 \002(\t\022\020\n\010group_id\030\002 \002(\005\""
-                + "<\n\026ServerRegistryResponse\022\017\n\007success\030\001 \002"
-                + "(\010\022\021\n\007message\030\002 \001(\t:\000B3\n\033com.mogujie.jar" + "vis.protocolB\024RegistryWorkerProtos" };
+        java.lang.String[] descriptorData = {
+                "\n\025registry_worker.proto\"$\n\025WorkerRegistr" + "yRequest\022\013\n\003key\030\001 \002(\t\"<\n\026ServerRegistryR"
+                        + "esponse\022\017\n\007success\030\001 \002(\010\022\021\n\007message\030\002 \001("
+                        + "\t:\000B3\n\033com.mogujie.jarvis.protocolB\024Regi" + "stryWorkerProtos" };
         com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner = new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
             public com.google.protobuf.ExtensionRegistry assignDescriptors(com.google.protobuf.Descriptors.FileDescriptor root) {
                 descriptor = root;
@@ -1188,7 +1096,7 @@ public final class RegistryWorkerProtos {
                 new com.google.protobuf.Descriptors.FileDescriptor[] {}, assigner);
         internal_static_WorkerRegistryRequest_descriptor = getDescriptor().getMessageTypes().get(0);
         internal_static_WorkerRegistryRequest_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-                internal_static_WorkerRegistryRequest_descriptor, new java.lang.String[] { "Key", "GroupId", });
+                internal_static_WorkerRegistryRequest_descriptor, new java.lang.String[] { "Key", });
         internal_static_ServerRegistryResponse_descriptor = getDescriptor().getMessageTypes().get(1);
         internal_static_ServerRegistryResponse_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
                 internal_static_ServerRegistryResponse_descriptor, new java.lang.String[] { "Success", "Message", });

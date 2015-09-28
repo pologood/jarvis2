@@ -24,12 +24,12 @@ import com.mogujie.jarvis.core.DefaultLogCollector;
 import com.mogujie.jarvis.core.DefaultProgressReporter;
 import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.ProgressReporter;
-import com.mogujie.jarvis.core.Task;
-import com.mogujie.jarvis.core.Task.TaskBuilder;
 import com.mogujie.jarvis.core.TaskContext;
 import com.mogujie.jarvis.core.TaskContext.TaskContextBuilder;
 import com.mogujie.jarvis.core.common.util.ConfigUtils;
 import com.mogujie.jarvis.core.domain.JobStatus;
+import com.mogujie.jarvis.core.domain.TaskDetail;
+import com.mogujie.jarvis.core.domain.TaskDetail.TaskDetailBuilder;
 import com.mogujie.jarvis.core.exeception.AcceptionException;
 import com.mogujie.jarvis.core.exeception.TaskException;
 import com.mogujie.jarvis.core.task.AbstractTask;
@@ -80,13 +80,13 @@ public class WorkerActor extends UntypedActor {
   private void submitJob(ServerSubmitTaskRequest request) {
     String fullId = request.getFullId();
     String taskType = request.getTaskType();
-    TaskBuilder taskBuilder = Task.newTaskBuilder();
+    TaskDetailBuilder taskBuilder = TaskDetail.newTaskDetailBuilder();
     taskBuilder.setFullId(fullId);
     taskBuilder.setTaskName(request.getTaskName());
     taskBuilder.setAppName(request.getAppName());
     taskBuilder.setUser(request.getUser());
     taskBuilder.setTaskType(taskType);
-    taskBuilder.setCommand(request.getCommand());
+    taskBuilder.setContent(request.getContent());
     taskBuilder.setPriority(request.getPriority());
 
     Map<String, Object> map = new HashMap<>();
@@ -98,7 +98,7 @@ public class WorkerActor extends UntypedActor {
     taskBuilder.setParameters(map);
 
     TaskContextBuilder contextBuilder = TaskContext.newBuilder();
-    contextBuilder.setTask(taskBuilder.build());
+    contextBuilder.setTaskDetail(taskBuilder.build());
 
     ActorSelection logActor = getContext().actorSelection(LOGSERVER_AKKA_PATH);
     AbstractLogCollector logCollector = new DefaultLogCollector(logActor, fullId);
