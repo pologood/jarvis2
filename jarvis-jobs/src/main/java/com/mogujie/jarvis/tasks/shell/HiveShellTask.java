@@ -52,7 +52,7 @@ public abstract class HiveShellTask extends ShellTask {
 
     @Override
     public String getCommand() {
-        TaskDetail task = getTaskContext().getTask();
+        TaskDetail task = getTaskContext().getTaskDetail();
         String user = null;
         HiveTaskEntity entity = HiveConfigUtils.getHiveJobEntry(task.getAppName());
         if (entity == null || (entity.isAdmin() && !task.getUser().trim().isEmpty())) {
@@ -85,7 +85,7 @@ public abstract class HiveShellTask extends ShellTask {
 
     @Override
     public void processStdOutputStream(InputStream inputStream) {
-        TaskDetail task = getTaskContext().getTask();
+        TaskDetail task = getTaskContext().getTaskDetail();
         int currentResultRows = 0;
         int maxResultRows = 10000;
         String appName = task.getAppName();
@@ -111,7 +111,7 @@ public abstract class HiveShellTask extends ShellTask {
 
     @Override
     public void processStdErrorStream(InputStream inputStream) {
-        TaskDetail task = getTaskContext().getTask();
+        TaskDetail task = getTaskContext().getTaskDetail();
         int maxMapperNum = 2000;
         String appName = task.getAppName();
         HiveTaskEntity entry = HiveConfigUtils.getHiveJobEntry(appName);

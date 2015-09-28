@@ -41,7 +41,7 @@ public class ShellTask extends AbstractTask {
     }
 
     public String getCommand() {
-        return getTaskContext().getTask().getContent();
+        return getTaskContext().getTaskDetail().getContent();
     }
 
     public void processStdOutputStream(InputStream inputStream) {
@@ -68,7 +68,7 @@ public class ShellTask extends AbstractTask {
 
     @Override
     public boolean execute() {
-        TaskDetail task = getTaskContext().getTask();
+        TaskDetail task = getTaskContext().getTaskDetail();
         try {
             String statusFilePath = STATUS_PATH + "/" + task.getFullId() + ".status";
             StringBuilder sb = new StringBuilder();

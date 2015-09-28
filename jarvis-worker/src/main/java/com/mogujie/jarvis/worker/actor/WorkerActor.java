@@ -98,7 +98,7 @@ public class WorkerActor extends UntypedActor {
     taskBuilder.setParameters(map);
 
     TaskContextBuilder contextBuilder = TaskContext.newBuilder();
-    contextBuilder.setTask(taskBuilder.build());
+    contextBuilder.setTaskDetail(taskBuilder.build());
 
     ActorSelection logActor = getContext().actorSelection(LOGSERVER_AKKA_PATH);
     AbstractLogCollector logCollector = new DefaultLogCollector(logActor, fullId);

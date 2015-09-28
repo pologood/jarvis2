@@ -10,6 +10,7 @@
 
 	<properties>
 		<build.finalname>jarvis-jobs</build.finalname>
+		<hadoop.version>2.7.1</hadoop.version>
 	</properties>
 
 	<dependencies>
@@ -27,6 +28,16 @@
 			<groupId>com.github.stuxuhai</groupId>
 			<artifactId>jpinyin</artifactId>
 			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.hadoop</groupId>
+			<artifactId>hadoop-common</artifactId>
+			<version>${hadoop.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.hadoop</groupId>
+			<artifactId>hadoop-hdfs</artifactId>
+			<version>${hadoop.version}</version>
 		</dependency>
 	</dependencies>
 

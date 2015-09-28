@@ -16,7 +16,7 @@ import com.mogujie.jarvis.core.domain.TaskDetail;
  */
 public class TaskContext {
 
-    private TaskDetail task;
+    private TaskDetail taskDetail;
     private AbstractLogCollector logCollector;
     private ProgressReporter progressReporter;
 
@@ -27,8 +27,8 @@ public class TaskContext {
         return new TaskContextBuilder();
     }
 
-    public TaskDetail getTask() {
-        return task;
+    public TaskDetail getTaskDetail() {
+        return taskDetail;
     }
 
     public AbstractLogCollector getLogCollector() {
@@ -46,8 +46,8 @@ public class TaskContext {
         private TaskContextBuilder() {
         }
 
-        public TaskContextBuilder setTask(TaskDetail task) {
-            this.taskContext.task = task;
+        public TaskContextBuilder setTaskDetail(TaskDetail task) {
+            this.taskContext.taskDetail = task;
             return this;
         }
 

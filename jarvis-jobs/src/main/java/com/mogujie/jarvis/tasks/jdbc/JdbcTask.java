@@ -48,7 +48,7 @@ public abstract class JdbcTask extends AbstractTask {
 
     @Override
     public boolean execute() throws TaskException {
-        TaskDetail task = getTaskContext().getTask();
+        TaskDetail task = getTaskContext().getTaskDetail();
         Configuration config = ConfigUtils.getWorkerConfig();
         AbstractLogCollector collector = getTaskContext().getLogCollector();
 
