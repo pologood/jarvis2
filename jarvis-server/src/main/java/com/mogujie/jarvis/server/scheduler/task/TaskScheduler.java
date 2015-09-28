@@ -29,6 +29,7 @@ import com.mogujie.jarvis.dao.JobMapper;
 import com.mogujie.jarvis.dao.TaskMapper;
 import com.mogujie.jarvis.dto.Job;
 import com.mogujie.jarvis.dto.Task;
+import com.mogujie.jarvis.server.TaskManager;
 import com.mogujie.jarvis.server.TaskQueue;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
@@ -55,6 +56,9 @@ public class TaskScheduler extends Scheduler {
 
     @Autowired
     private TaskService taskService;
+
+    @Autowired
+    private TaskManager taskManager;
 
     // for testing
     private static TaskScheduler instance = new TaskScheduler();
@@ -105,6 +109,8 @@ public class TaskScheduler extends Scheduler {
     @AllowConcurrentEvents
     public void handleSuccessEvent(SuccessEvent e) {
         updateJobStatus(e.getTaskId(), JobStatus.SUCCESS);
+        Job job = jobMapper.selectByPrimaryKey(e.getJobId());
+        taskManager.appCounterDecrement(job.getAppName());
     }
 
     @Subscribe
@@ -117,6 +123,8 @@ public class TaskScheduler extends Scheduler {
     @AllowConcurrentEvents
     public void handleKilledEvent(KilledEvent e) {
         updateJobStatus(e.getTaskId(), JobStatus.KILLED);
+        Job job = jobMapper.selectByPrimaryKey(e.getJobId());
+        taskManager.appCounterDecrement(job.getAppName());
     }
 
     @Subscribe
@@ -141,6 +149,9 @@ public class TaskScheduler extends Scheduler {
                 updateJobStatus(e.getTaskId(), JobStatus.FAILED);
             }
         }
+
+        Job job = jobMapper.selectByPrimaryKey(e.getJobId());
+        taskManager.appCounterDecrement(job.getAppName());
     }
 
     private void updateJobStatus(long taskId, JobStatus status) {

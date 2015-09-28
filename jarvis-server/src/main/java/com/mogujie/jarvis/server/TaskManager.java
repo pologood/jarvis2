@@ -8,18 +8,21 @@
 
 package com.mogujie.jarvis.server;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableMap.Builder;
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.AtomicLongMap;
 import com.mogujie.jarvis.core.domain.Pair;
 import com.mogujie.jarvis.core.domain.WorkerInfo;
+import com.mogujie.jarvis.dao.AppMapper;
+import com.mogujie.jarvis.dto.App;
+import com.mogujie.jarvis.dto.AppExample;
 
 /**
  * 
@@ -28,21 +31,25 @@ import com.mogujie.jarvis.core.domain.WorkerInfo;
 @Repository
 public class TaskManager {
 
+    @Autowired
+    private AppMapper appMapper;
+
     private Map<String, Pair<WorkerInfo, String>> taskMap = Maps.newHashMap();
-    private ImmutableMap<String, Integer> maxParallelism = null;
+    private Map<String, Integer> maxParallelismMap = null;
     private AtomicLongMap<String> parallelismCounter = AtomicLongMap.create();
 
     @PostConstruct
     private void init() {
-        Builder<String, Integer> builder = ImmutableMap.<String, Integer> builder();
-        // TODO 应用最大并行度初始化
-
-        maxParallelism = builder.build();
+        AppExample example = new AppExample();
+        List<App> list = appMapper.selectByExample(example);
+        for (App app : list) {
+            maxParallelismMap.put(app.getAppName(), app.getMaxConcurrency());
+        }
     }
 
     public synchronized boolean add(String fullId, WorkerInfo workerInfo, String appName) {
         taskMap.put(fullId, new Pair<>(workerInfo, appName));
-        if (parallelismCounter.get(appName) >= maxParallelism.get(appName)) {
+        if (parallelismCounter.get(appName) >= maxParallelismMap.get(appName)) {
             return false;
         }
 
@@ -62,5 +69,11 @@ public class TaskManager {
 
     public synchronized boolean contains(String fullId) {
         return taskMap.containsKey(fullId);
+    }
+
+    public void appCounterDecrement(String appName) {
+        if (parallelismCounter.get(appName) > 0) {
+            parallelismCounter.getAndDecrement(appName);
+        }
     }
 }
