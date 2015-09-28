@@ -15,8 +15,6 @@ import org.junit.Test;
 
 import com.google.common.collect.Sets;
 import com.mogujie.jarvis.server.scheduler.JobScheduleType;
-import com.mogujie.jarvis.server.scheduler.dag.job.DAGJob;
-import com.mogujie.jarvis.server.scheduler.dag.job.DAGJobFactory;
 
 
 /**
