@@ -14,6 +14,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jgrapht.experimental.dag.DirectedAcyclicGraph;
 import org.jgrapht.experimental.dag.DirectedAcyclicGraph.CycleFoundException;
 import org.jgrapht.graph.DefaultEdge;
@@ -30,8 +32,6 @@ import com.mogujie.jarvis.dto.Job;
 import com.mogujie.jarvis.server.scheduler.JobScheduleType;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
 import com.mogujie.jarvis.server.scheduler.SchedulerUtil;
-import com.mogujie.jarvis.server.scheduler.dag.job.DAGJob;
-import com.mogujie.jarvis.server.scheduler.dag.job.DAGJobFactory;
 import com.mogujie.jarvis.server.scheduler.event.AddJobEvent;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
 import com.mogujie.jarvis.server.scheduler.event.ModifyJobEvent;
@@ -71,8 +71,10 @@ public class DAGScheduler extends Scheduler {
 
     private TaskScheduler taskScheduler = TaskScheduler.getInstance();
     private Map<Long, DAGJob> waitingTable = new ConcurrentHashMap<Long, DAGJob>();
-    private DirectedAcyclicGraph<DAGJob, DefaultEdge> dagGraph =
+    private DirectedAcyclicGraph<DAGJob, DefaultEdge> dag =
             new DirectedAcyclicGraph<DAGJob, DefaultEdge>(DefaultEdge.class);
+
+    private static final Logger LOGGER = LogManager.getLogger("server");
 
     @Override
     public void init() {
@@ -130,13 +132,13 @@ public class DAGScheduler extends Scheduler {
     @VisibleForTesting
     protected void addJob(long jobId, DAGJob dagJob, Set<Long> dependencies) throws CycleFoundException {
         waitingTable.put(jobId, dagJob);
-        dagGraph.addVertex(dagJob);
+        dag.addVertex(dagJob);
 
         if (dependencies != null) {
             for (long d: dependencies) {
                 DAGJob parent = waitingTable.get(d);
                 if (parent != null) {
-                    dagGraph.addDagEdge(parent, dagJob);
+                    dag.addDagEdge(parent, dagJob);
                 }
             }
         }
@@ -146,11 +148,11 @@ public class DAGScheduler extends Scheduler {
     protected void clear() {
         waitingTable.clear();
 
-        Set<DAGJob> allJobs = dagGraph.vertexSet();
+        Set<DAGJob> allJobs = dag.vertexSet();
         if (allJobs != null) {
             List<DAGJob> tmpJobs = new ArrayList<DAGJob>();
-            tmpJobs.addAll(dagGraph.vertexSet());
-            dagGraph.removeAllVertices(tmpJobs);
+            tmpJobs.addAll(dag.vertexSet());
+            dag.removeAllVertices(tmpJobs);
         }
     }
 
@@ -191,7 +193,7 @@ public class DAGScheduler extends Scheduler {
     protected void removeJob(DAGJob dagJob) {
         if (dagJob != null) {
             waitingTable.remove(dagJob.getJobId());
-            dagGraph.removeVertex(dagJob);
+            dag.removeVertex(dagJob);
         }
     }
 
@@ -234,7 +236,7 @@ public class DAGScheduler extends Scheduler {
         DAGJob parent = waitingTable.get(parentId);
         DAGJob child = waitingTable.get(childId);
         if (parent != null && child != null) {
-            dagGraph.addDagEdge(parent, child);
+            dag.addDagEdge(parent, child);
         }
     }
 
@@ -243,17 +245,17 @@ public class DAGScheduler extends Scheduler {
         DAGJob parent = waitingTable.get(parentId);
         DAGJob child = waitingTable.get(childId);
         if (parent != null && child != null) {
-            dagGraph.removeEdge(parent, child);
+            dag.removeEdge(parent, child);
         }
     }
 
     @VisibleForTesting
     protected void modifyDependency(DAGJob dagJob, Set<Long> newDependencies) throws CycleFoundException {
-        Set<DefaultEdge> oldEdges = dagGraph.incomingEdgesOf(dagJob);
+        Set<DefaultEdge> oldEdges = dag.incomingEdgesOf(dagJob);
         List<DefaultEdge> tmpEdges = new ArrayList<DefaultEdge>();
         tmpEdges.addAll(oldEdges);
         if (tmpEdges != null && !tmpEdges.isEmpty()) {
-            dagGraph.removeAllEdges(tmpEdges);
+            dag.removeAllEdges(tmpEdges);
         }
         for (long d : newDependencies) {
             addDependency(d, dagJob.getJobId());
@@ -307,12 +309,13 @@ public class DAGScheduler extends Scheduler {
     }
 
     @Subscribe
-    public void handleTimeReadyEvent(TimeReadyEvent e) throws DAGScheduleException {
+    public void handleTimeReadyEvent(TimeReadyEvent e) {
         long jobId = e.getJobId();
         DAGJob dagJob = waitingTable.get(jobId);
         if (dagJob != null) {
             if (!dagJob.isHasTimeFlag()) {
-                throw new DAGScheduleException("No time ready flag. jobId is " + e.getJobId());
+                LOGGER.warn("JobId {}, has no time ready flag, auto fix to has time flag.", e.getJobId());
+                dagJob.setHasTimeFlag(true);
             }
             // 更新时间标识
             dagJob.setTimeReadyFlag();
@@ -323,7 +326,7 @@ public class DAGScheduler extends Scheduler {
 
     @Subscribe
     @AllowConcurrentEvents
-    public void handleSuccessEvent(SuccessEvent e) throws DAGScheduleException {
+    public void handleSuccessEvent(SuccessEvent e) {
         long jobId = e.getJobId();
         long taskId = e.getTaskId();
         DAGJob dagJob = waitingTable.get(jobId);
@@ -342,7 +345,7 @@ public class DAGScheduler extends Scheduler {
 
     @Subscribe
     @AllowConcurrentEvents
-    public void handleFailedEvent(FailedEvent e) throws DAGScheduleException {
+    public void handleFailedEvent(FailedEvent e) {
         long jobId = e.getJobId();
         long taskId = e.getTaskId();
         DAGJob dagJob = waitingTable.get(jobId);
@@ -381,10 +384,10 @@ public class DAGScheduler extends Scheduler {
 
     private List<DAGJob> getParents(DAGJob dagJob) {
         List<DAGJob> parents = new ArrayList<DAGJob>();
-        Set<DefaultEdge> inEdges = dagGraph.incomingEdgesOf(dagJob);
+        Set<DefaultEdge> inEdges = dag.incomingEdgesOf(dagJob);
         if (inEdges != null) {
             for (DefaultEdge edge : inEdges) {
-                parents.add(dagGraph.getEdgeSource(edge));
+                parents.add(dag.getEdgeSource(edge));
             }
         }
         return parents;
@@ -392,10 +395,10 @@ public class DAGScheduler extends Scheduler {
 
     private List<DAGJob> getChildren(DAGJob dagJob) {
         List<DAGJob> children = new ArrayList<DAGJob>();
-        Set<DefaultEdge> outEdges = dagGraph.outgoingEdgesOf(dagJob);
+        Set<DefaultEdge> outEdges = dag.outgoingEdgesOf(dagJob);
         if (outEdges != null) {
             for (DefaultEdge edge : outEdges) {
-                children.add(dagGraph.getEdgeTarget(edge));
+                children.add(dag.getEdgeTarget(edge));
             }
         }
         return children;

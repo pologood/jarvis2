@@ -27,7 +27,6 @@ import com.mogujie.jarvis.dto.Job;
 import com.mogujie.jarvis.dto.JobExample;
 import com.mogujie.jarvis.server.scheduler.CronScheduler;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
-import com.mogujie.jarvis.server.scheduler.dag.DAGScheduleException;
 import com.mogujie.jarvis.server.scheduler.event.AddJobEvent;
 import com.mogujie.jarvis.server.scheduler.event.ModifyJobEvent;
 import com.mogujie.jarvis.server.scheduler.event.ModifyJobFlagEvent;
@@ -117,7 +116,7 @@ public class TimeScheduler extends Scheduler {
 
     @Subscribe
     @AllowConcurrentEvents
-    public void handleSuccessEvent(SuccessEvent event) throws DAGScheduleException {
+    public void handleSuccessEvent(SuccessEvent event) {
     }
 
     @Subscribe

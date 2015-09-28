@@ -37,7 +37,7 @@ import com.mogujie.jarvis.tasks.util.YarnUtils;
 /**
  * @author wuya
  */
-public class HiveShellTask extends ShellTask {
+public abstract class HiveShellTask extends ShellTask {
 
     private Set<String> applicationIdSet = new HashSet<>();
     private static final Pattern APPLICATION_ID_PATTERN = Pattern.compile("application_\\d+_\\d+");
@@ -77,7 +77,7 @@ public class HiveShellTask extends ShellTask {
         sb.append("set mapred.job.name=" + task.getTaskName() + ";");
         // 打印列名的时候不打印表名，否则xray无法显示数据
         sb.append("set hive.resultset.use.unique.column.names=false;");
-        sb.append(MoguAnnotationUtils.removeAnnotation(MoguDateParamUtils.parse(task.getContent())));
+        sb.append(MoguAnnotationUtils.removeAnnotation(MoguDateParamUtils.parse(getContent(task))));
         sb.append("\"");
         return sb.toString();
 
@@ -173,5 +173,7 @@ public class HiveShellTask extends ShellTask {
 
         return null;
     }
+
+    protected abstract String getContent(TaskDetail task);
 
 }

@@ -11,31 +11,17 @@ package com.mogujie.jarvis.server.scheduler;
 import java.text.DateFormat;
 import java.util.Date;
 
-import org.apache.commons.configuration.Configuration;
-
 import com.mogujie.jarvis.core.common.util.JsonHelper;
-import com.mogujie.jarvis.core.common.util.ReflectionUtils;
 import com.mogujie.jarvis.core.domain.JobFlag;
 import com.mogujie.jarvis.dto.Job;
 import com.mogujie.jarvis.protocol.ModifyJobProtos.RestServerModifyJobRequest;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitJobRequest;
-import com.mogujie.jarvis.server.scheduler.dag.status.AbstractDependStatus;
-import com.mogujie.jarvis.server.scheduler.dag.status.MysqlCachedDependStatus;
 
 /**
  * @author guangming
  *
  */
 public class SchedulerUtil {
-    public static String JOB_DEPEND_STATUS_KEY = "job.depend.status";
-    public static String DEFAULT_JOB_DEPEND_STATUS = MysqlCachedDependStatus.class.getName();
-
-    public static AbstractDependStatus getJobDependStatus(Configuration conf)
-            throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-        String className = conf.getString(JOB_DEPEND_STATUS_KEY, DEFAULT_JOB_DEPEND_STATUS);
-        return ReflectionUtils.getInstanceByClassName(className);
-    }
-
     public static JobScheduleType getJobScheduleType(boolean hasCron, boolean hasDepend) {
         JobScheduleType type;
         if (hasCron) {
@@ -77,7 +63,7 @@ public class SchedulerUtil {
         job.setCreateTime(currentTime);
         job.setUpdateTime(currentTime);
         job.setParams(JsonHelper.parseMapEntryList2JSON(msg.getParametersList()));
-        // TODO job.setOriginJobId(originJobId);
+        job.setOriginJobId(msg.getOriginJobId());
         return job;
     }
 

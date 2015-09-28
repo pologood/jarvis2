@@ -75,7 +75,7 @@ public class JobActor extends UntypedActor {
             jobMapper.insert(job);
             long jobId = job.getJobId();
             // 如果是新增任务（不是手动触发），则originId=jobId
-            if (job.getOriginJobId() == null) {
+            if (job.getOriginJobId() == null || job.getOriginJobId() == 0) {
                 job.setOriginJobId(jobId);
                 jobMapper.updateByPrimaryKey(job);
             }
