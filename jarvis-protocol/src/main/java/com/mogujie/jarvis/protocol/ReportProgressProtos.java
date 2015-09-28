@@ -30,14 +30,14 @@ public final class ReportProgressProtos {
         com.google.protobuf.ByteString getFullIdBytes();
 
         /**
-         * <code>required double progress = 2;</code>
+         * <code>required float progress = 2;</code>
          */
         boolean hasProgress();
 
         /**
-         * <code>required double progress = 2;</code>
+         * <code>required float progress = 2;</code>
          */
-        double getProgress();
+        float getProgress();
     }
 
     /**
@@ -97,9 +97,9 @@ public final class ReportProgressProtos {
                             fullId_ = bs;
                             break;
                         }
-                        case 17: {
+                        case 21: {
                             bitField0_ |= 0x00000002;
-                            progress_ = input.readDouble();
+                            progress_ = input.readFloat();
                             break;
                         }
                     }
@@ -179,25 +179,25 @@ public final class ReportProgressProtos {
         }
 
         public static final int PROGRESS_FIELD_NUMBER = 2;
-        private double progress_;
+        private float progress_;
 
         /**
-         * <code>required double progress = 2;</code>
+         * <code>required float progress = 2;</code>
          */
         public boolean hasProgress() {
             return ((bitField0_ & 0x00000002) == 0x00000002);
         }
 
         /**
-         * <code>required double progress = 2;</code>
+         * <code>required float progress = 2;</code>
          */
-        public double getProgress() {
+        public float getProgress() {
             return progress_;
         }
 
         private void initFields() {
             fullId_ = "";
-            progress_ = 0D;
+            progress_ = 0F;
         }
 
         private byte memoizedIsInitialized = -1;
@@ -227,7 +227,7 @@ public final class ReportProgressProtos {
                 output.writeBytes(1, getFullIdBytes());
             }
             if (((bitField0_ & 0x00000002) == 0x00000002)) {
-                output.writeDouble(2, progress_);
+                output.writeFloat(2, progress_);
             }
             getUnknownFields().writeTo(output);
         }
@@ -244,7 +244,7 @@ public final class ReportProgressProtos {
                 size += com.google.protobuf.CodedOutputStream.computeBytesSize(1, getFullIdBytes());
             }
             if (((bitField0_ & 0x00000002) == 0x00000002)) {
-                size += com.google.protobuf.CodedOutputStream.computeDoubleSize(2, progress_);
+                size += com.google.protobuf.CodedOutputStream.computeFloatSize(2, progress_);
             }
             size += getUnknownFields().getSerializedSize();
             memoizedSerializedSize = size;
@@ -370,7 +370,7 @@ public final class ReportProgressProtos {
                 super.clear();
                 fullId_ = "";
                 bitField0_ = (bitField0_ & ~0x00000001);
-                progress_ = 0D;
+                progress_ = 0F;
                 bitField0_ = (bitField0_ & ~0x00000002);
                 return this;
             }
@@ -543,26 +543,26 @@ public final class ReportProgressProtos {
                 return this;
             }
 
-            private double progress_;
+            private float progress_;
 
             /**
-             * <code>required double progress = 2;</code>
+             * <code>required float progress = 2;</code>
              */
             public boolean hasProgress() {
                 return ((bitField0_ & 0x00000002) == 0x00000002);
             }
 
             /**
-             * <code>required double progress = 2;</code>
+             * <code>required float progress = 2;</code>
              */
-            public double getProgress() {
+            public float getProgress() {
                 return progress_;
             }
 
             /**
-             * <code>required double progress = 2;</code>
+             * <code>required float progress = 2;</code>
              */
-            public Builder setProgress(double value) {
+            public Builder setProgress(float value) {
                 bitField0_ |= 0x00000002;
                 progress_ = value;
                 onChanged();
@@ -570,11 +570,11 @@ public final class ReportProgressProtos {
             }
 
             /**
-             * <code>required double progress = 2;</code>
+             * <code>required float progress = 2;</code>
              */
             public Builder clearProgress() {
                 bitField0_ = (bitField0_ & ~0x00000002);
-                progress_ = 0D;
+                progress_ = 0F;
                 onChanged();
                 return this;
             }
@@ -1176,7 +1176,7 @@ public final class ReportProgressProtos {
     static {
         java.lang.String[] descriptorData = {
                 "\n\032report_task_progress.proto\"@\n\033WorkerRe" + "portProgressRequest\022\017\n\007full_id\030\001 \002(\t\022\020\n\010"
-                        + "progress\030\002 \002(\001\"B\n\034ServerReportProgressRe"
+                        + "progress\030\002 \002(\002\"B\n\034ServerReportProgressRe"
                         + "sponse\022\017\n\007success\030\001 \002(\010\022\021\n\007message\030\002 \001(\t"
                         + ":\000B3\n\033com.mogujie.jarvis.protocolB\024Repor" + "tProgressProtos" };
         com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner = new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {

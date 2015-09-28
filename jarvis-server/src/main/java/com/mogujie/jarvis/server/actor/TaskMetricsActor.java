@@ -17,6 +17,8 @@ import org.springframework.context.annotation.Scope;
 
 import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.core.observer.Event;
+import com.mogujie.jarvis.dao.TaskMapper;
+import com.mogujie.jarvis.dto.Task;
 import com.mogujie.jarvis.protocol.ReportProgressProtos.WorkerReportProgressRequest;
 import com.mogujie.jarvis.protocol.ReportStatusProtos.WorkerReportStatusRequest;
 import com.mogujie.jarvis.server.JobSchedulerController;
@@ -41,6 +43,9 @@ public class TaskMetricsActor extends UntypedActor {
     @Autowired
     private JobSchedulerController schedulerController;
 
+    @Autowired
+    private TaskMapper taskMapper;
+
     @Override
     public void onReceive(Object obj) throws Exception {
         if (obj instanceof WorkerReportStatusRequest) {
@@ -63,7 +68,16 @@ public class TaskMetricsActor extends UntypedActor {
             }
             schedulerController.notify(event);
         } else if (obj instanceof WorkerReportProgressRequest) {
-            // TODO
+            WorkerReportProgressRequest request = (WorkerReportProgressRequest) obj;
+            String fullId = request.getFullId();
+            long taskId = Long.parseLong(fullId.split("_")[1]);
+            float progress = request.getProgress();
+
+            Task task = new Task();
+            task.setTaskId(taskId);
+            task.setProgress(progress);
+
+            taskMapper.updateByPrimaryKey(task);
         } else {
             unhandled(obj);
         }
