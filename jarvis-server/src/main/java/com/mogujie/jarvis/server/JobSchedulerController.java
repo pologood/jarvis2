@@ -8,8 +8,12 @@
 
 package com.mogujie.jarvis.server;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import org.springframework.stereotype.Service;
 
+import com.google.common.eventbus.AsyncEventBus;
 import com.google.common.eventbus.EventBus;
 import com.mogujie.jarvis.core.observer.Event;
 import com.mogujie.jarvis.core.observer.Observable;
@@ -27,7 +31,8 @@ import com.mogujie.jarvis.server.scheduler.Scheduler;
  */
 @Service
 public class JobSchedulerController implements Observable {
-    private EventBus eventBus = new EventBus("JobSchedulerController");
+    private ExecutorService threadPool = Executors.newCachedThreadPool();
+    private EventBus eventBus = new AsyncEventBus(threadPool);
 
     private static JobSchedulerController instance = new JobSchedulerController();
     private JobSchedulerController() {
