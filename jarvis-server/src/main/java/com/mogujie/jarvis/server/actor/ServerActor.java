@@ -8,21 +8,20 @@
 
 package com.mogujie.jarvis.server.actor;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
+import com.mogujie.jarvis.core.domain.Pair;
+import com.mogujie.jarvis.server.util.SpringExtension;
+
 import akka.actor.ActorRef;
 import akka.actor.Props;
 import akka.actor.UntypedActor;
+import akka.routing.RouterConfig;
 import akka.routing.SmallestMailboxPool;
-
-import com.mogujie.jarvis.protocol.HeartBeatProtos.HeartBeatRequest;
-import com.mogujie.jarvis.protocol.KillTaskProtos.RestServerKillTaskRequest;
-import com.mogujie.jarvis.protocol.ModifyJobFlagProtos.RestServerModifyJobFlagRequest;
-import com.mogujie.jarvis.protocol.ModifyJobProtos.RestServerModifyJobRequest;
-import com.mogujie.jarvis.protocol.ModifyWorkerStatusProtos.RestServerModifyWorkerStatusRequest;
-import com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest;
-import com.mogujie.jarvis.protocol.ReportProgressProtos.WorkerReportProgressRequest;
-import com.mogujie.jarvis.protocol.ReportStatusProtos.WorkerReportStatusRequest;
-import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitJobRequest;
-import com.mogujie.jarvis.server.util.SpringExtension;
 
 /**
  * ServerActor forward any messages to other actors
@@ -30,41 +29,51 @@ import com.mogujie.jarvis.server.util.SpringExtension;
  */
 public class ServerActor extends UntypedActor {
 
-    private ActorRef taskMetricsActor = getContext()
-            .actorOf(SpringExtension.SPRING_EXT_PROVIDER.get(getContext().system()).props("taskMetricsActor"));
-    private ActorRef heartBeatActor = getContext().actorOf(SpringExtension.SPRING_EXT_PROVIDER.get(getContext().system()).props("heartBeatActor"));
-    private ActorRef workerRegistryActor = getContext()
-            .actorOf(SpringExtension.SPRING_EXT_PROVIDER.get(getContext().system()).props("workerRegistryActor"));
-
-    private ActorRef killTaskActor = getContext()
-            .actorOf(SpringExtension.SPRING_EXT_PROVIDER.get(getContext().system()).props("killTaskActor").withRouter(new SmallestMailboxPool(10)));
-    private ActorRef jobActor = getContext().actorOf(SpringExtension.SPRING_EXT_PROVIDER.get(getContext().system()).props("jobActor"));
-    private ActorRef modifyWorkerStatusActor = getContext()
-            .actorOf(SpringExtension.SPRING_EXT_PROVIDER.get(getContext().system()).props("modifyWorkerStatusActor"));
+    private Multimap<Class<?>, ActorRef> multimap = ArrayListMultimap.create();
+    private List<Pair<ActorRef, Set<Class<?>>>> actorRefs = new ArrayList<>();
 
     public static Props props() {
         return Props.create(ServerActor.class);
     }
 
+    private void addActor(String actorName, Set<Class<?>> handledMessages) {
+        ActorRef actorRef = getContext().actorOf(SpringExtension.SPRING_EXT_PROVIDER.get(getContext().system()).props(actorName));
+        actorRefs.add(new Pair<>(actorRef, handledMessages));
+    }
+
+    private void addActor(String actorName, RouterConfig routerConfig, Set<Class<?>> handledMessages) {
+        ActorRef actorRef = getContext()
+                .actorOf(SpringExtension.SPRING_EXT_PROVIDER.get(getContext().system()).props(actorName).withRouter(routerConfig));
+        actorRefs.add(new Pair<>(actorRef, handledMessages));
+    }
+
+    private void addActors() {
+        addActor("taskMetricsActor", TaskMetricsActor.handledMessages());
+        addActor("heartBeatActor", HeartBeatActor.handledMessages());
+        addActor("workerRegistryActor", WorkerRegistryActor.handledMessages());
+        addActor("killTaskActor", new SmallestMailboxPool(10), KillTaskActor.handledMessages());
+        addActor("jobActor", JobActor.handledMessages());
+        addActor("modifyWorkerStatusActor", ModifyWorkerStatusActor.handledMessages());
+    }
+
+    @Override
+    public void preStart() throws Exception {
+        addActors();
+        for (Pair<ActorRef, Set<Class<?>>> pair : actorRefs) {
+            ActorRef actorRef = pair.getFirst();
+            for (Class<?> handledMessage : pair.getSecond()) {
+                multimap.put(handledMessage, actorRef);
+            }
+        }
+    }
+
     @Override
     public void onReceive(Object obj) throws Exception {
-        if (obj instanceof HeartBeatRequest) {
-            heartBeatActor.forward(obj, getContext());
-        } else if (obj instanceof RestServerSubmitJobRequest ||
-                obj instanceof RestServerModifyJobRequest ||
-                obj instanceof RestServerModifyJobFlagRequest) {
-            // job related
-            jobActor.forward(obj, getContext());
-        } else if (obj instanceof WorkerReportStatusRequest) {
-            taskMetricsActor.forward(obj, getContext());
-        } else if (obj instanceof WorkerReportProgressRequest) {
-            taskMetricsActor.forward(obj, getContext());
-        } else if (obj instanceof WorkerRegistryRequest) {
-            workerRegistryActor.forward(obj, getContext());
-        } else if (obj instanceof RestServerKillTaskRequest) {
-            killTaskActor.forward(obj, getContext());
-        } else if (obj instanceof RestServerModifyWorkerStatusRequest) {
-            modifyWorkerStatusActor.forward(obj, getContext());
+        Class<?> clazz = obj.getClass();
+        if (multimap.containsKey(clazz)) {
+            for (ActorRef actorRef : multimap.get(clazz)) {
+                actorRef.forward(obj, getContext());
+            }
         } else {
             unhandled(obj);
         }

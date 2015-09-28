@@ -8,6 +8,9 @@
 
 package com.mogujie.jarvis.server.actor;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.inject.Named;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +55,12 @@ public class ModifyWorkerStatusActor extends UntypedActor {
         } else {
             unhandled(obj);
         }
+    }
+
+    public static Set<Class<?>> handledMessages() {
+        Set<Class<?>> set = new HashSet<>();
+        set.add(RestServerModifyWorkerStatusRequest.class);
+        return set;
     }
 
 }

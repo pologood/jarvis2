@@ -8,6 +8,9 @@
 
 package com.mogujie.jarvis.server.actor;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.inject.Named;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +60,12 @@ public class KillTaskActor extends UntypedActor {
         } else {
             unhandled(obj);
         }
+    }
+
+    public static Set<Class<?>> handledMessages() {
+        Set<Class<?>> set = new HashSet<>();
+        set.add(RestServerKillTaskRequest.class);
+        return set;
     }
 
 }

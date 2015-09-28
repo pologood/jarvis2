@@ -10,14 +10,13 @@ package com.mogujie.jarvis.server.actor;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.inject.Named;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-
-import akka.actor.UntypedActor;
 
 import com.google.common.collect.Sets;
 import com.mogujie.jarvis.core.domain.JobFlag;
@@ -39,6 +38,8 @@ import com.mogujie.jarvis.server.scheduler.event.ModifyJobFlagEvent;
 import com.mogujie.jarvis.server.scheduler.event.UnhandleEvent;
 import com.mogujie.jarvis.server.service.CrontabService;
 import com.mogujie.jarvis.server.service.JobDependService;
+
+import akka.actor.UntypedActor;
 
 /**
  * @author guangming
@@ -66,7 +67,7 @@ public class JobActor extends UntypedActor {
     @Override
     public void onReceive(Object obj) throws Exception {
         Event event = new UnhandleEvent();
-        //TODO
+        // TODO
         if (obj instanceof RestServerSubmitJobRequest) {
             RestServerSubmitJobRequest msg = (RestServerSubmitJobRequest) obj;
             // 1. insert job to DB
@@ -139,5 +140,13 @@ public class JobActor extends UntypedActor {
         }
 
         schedulerController.notify(event);
+    }
+
+    public static Set<Class<?>> handledMessages() {
+        Set<Class<?>> set = new HashSet<>();
+        set.add(RestServerSubmitJobRequest.class);
+        set.add(RestServerModifyJobRequest.class);
+        set.add(RestServerModifyJobFlagRequest.class);
+        return set;
     }
 }

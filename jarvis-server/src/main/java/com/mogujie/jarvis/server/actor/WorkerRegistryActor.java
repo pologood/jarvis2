@@ -9,7 +9,9 @@
 package com.mogujie.jarvis.server.actor;
 
 import java.sql.Timestamp;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Named;
 
@@ -89,6 +91,12 @@ public class WorkerRegistryActor extends UntypedActor {
         } else {
             unhandled(obj);
         }
+    }
+
+    public static Set<Class<?>> handledMessages() {
+        Set<Class<?>> set = new HashSet<>();
+        set.add(WorkerRegistryRequest.class);
+        return set;
     }
 
 }

@@ -14,7 +14,9 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.eventbus.AllowConcurrentEvents;
 import com.google.common.eventbus.Subscribe;
 import com.mogujie.jarvis.core.domain.JobFlag;
 import com.mogujie.jarvis.dao.CrontabMapper;
@@ -25,11 +27,13 @@ import com.mogujie.jarvis.dto.Job;
 import com.mogujie.jarvis.dto.JobExample;
 import com.mogujie.jarvis.server.scheduler.CronScheduler;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
+import com.mogujie.jarvis.server.scheduler.dag.DAGScheduleException;
 import com.mogujie.jarvis.server.scheduler.event.AddJobEvent;
 import com.mogujie.jarvis.server.scheduler.event.ModifyJobEvent;
 import com.mogujie.jarvis.server.scheduler.event.ModifyJobFlagEvent;
 import com.mogujie.jarvis.server.scheduler.event.StartEvent;
 import com.mogujie.jarvis.server.scheduler.event.StopEvent;
+import com.mogujie.jarvis.server.scheduler.event.SuccessEvent;
 
 /**
  * Scheduler used to handle time based job.
@@ -49,13 +53,16 @@ public class TimeScheduler extends Scheduler {
     private CronScheduler cronScheduler;
 
     private static TimeScheduler instance = new TimeScheduler();
+
     private TimeScheduler() {
     }
+
     public static TimeScheduler getInstance() {
         return instance;
     }
 
     @Override
+    @Transactional
     public void init() {
         getSchedulerController().register(this);
 
@@ -67,7 +74,11 @@ public class TimeScheduler extends Scheduler {
         List<Job> enableJobs = jobMapper.selectByExample(jobExample);
         Set<Long> jobIds = new HashSet<>();
         for (Job job : enableJobs) {
-            jobIds.add(job.getJobId());
+            if (job.getFixedDelay() != null) {
+                cronScheduler.scheduleOnce(job.getJobId(), job.getFixedDelay());
+            } else {
+                jobIds.add(job.getJobId());
+            }
         }
 
         for (Crontab crontab : crontabs) {
@@ -75,6 +86,7 @@ public class TimeScheduler extends Scheduler {
                 cronScheduler.schedule(crontab);
             }
         }
+
     }
 
     @Override
@@ -101,6 +113,11 @@ public class TimeScheduler extends Scheduler {
         for (Crontab crontab : crontabs) {
             cronScheduler.schedule(crontab);
         }
+    }
+
+    @Subscribe
+    @AllowConcurrentEvents
+    public void handleSuccessEvent(SuccessEvent event) throws DAGScheduleException {
     }
 
     @Subscribe

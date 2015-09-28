@@ -7,12 +7,13 @@
  */
 package com.mogujie.jarvis.server.actor;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.inject.Named;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-
-import akka.actor.UntypedActor;
 
 import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.core.observer.Event;
@@ -25,10 +26,11 @@ import com.mogujie.jarvis.server.scheduler.event.RunningEvent;
 import com.mogujie.jarvis.server.scheduler.event.SuccessEvent;
 import com.mogujie.jarvis.server.scheduler.event.UnhandleEvent;
 
+import akka.actor.UntypedActor;
+
 /**
- * Actor used to receive task metrics information (e.g. status, process)
- * 1. send task status to {@link com.mogujie.jarvis.server.actor.JobSchedulerActor }
- * 2. send process to restserver
+ * Actor used to receive task metrics information (e.g. status, process) 1. send task status to
+ * {@link com.mogujie.jarvis.server.actor.JobSchedulerActor } 2. send process to restserver
  *
  * @author guangming
  *
@@ -65,5 +67,12 @@ public class TaskMetricsActor extends UntypedActor {
         } else {
             unhandled(obj);
         }
+    }
+
+    public static Set<Class<?>> handledMessages() {
+        Set<Class<?>> set = new HashSet<>();
+        set.add(WorkerReportStatusRequest.class);
+        set.add(WorkerReportProgressRequest.class);
+        return set;
     }
 }
