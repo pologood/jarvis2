@@ -16,7 +16,7 @@
             <nav>
                 <ol class="cd-breadcrumb triangle">
                     <li><a href="/jarvis/">Home</a></li>
-                    <li class="current"><em>权限管理</em></li>
+                    <li class="current"><em>管理</em></li>
                 </ol>
             </nav>
         </div>

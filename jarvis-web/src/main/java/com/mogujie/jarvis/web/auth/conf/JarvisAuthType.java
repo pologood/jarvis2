@@ -10,7 +10,10 @@ public enum JarvisAuthType implements AuthType {
     plan(1001,"执行计划"),
     task(2001,"执行流水"),
     job(3001,"任务管理"),
-    trigger(4001,"重跑任务")
+    trigger(4001,"重跑任务"),
+    manage(5000,"调度系统管理"),
+    app(5001,"应用管理"),
+    worker(5002,"worker管理")
 
     ;
     private Integer code;

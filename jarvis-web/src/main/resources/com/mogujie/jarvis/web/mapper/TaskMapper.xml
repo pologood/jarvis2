@@ -2,22 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.mogujie.jarvis.web.mapper.TaskMapper">
 
+
+
     <sql id="condition">
         <where>
             <if test="jobId!=null">
-              job.jobId=#{jobId}
+                job.jobId=#{jobId}
             </if>
             <if test="jobName!=null and jobName!=''">
-              AND job.jobName=#{jobName}
+                AND job.jobName=#{jobName}
             </if>
             <if test="jobType!=null and jobType!=''">
-              AND job.jobType=#{jobType}
+                AND job.jobType=#{jobType}
             </if>
             <if test="submitUser!=null and submitUser!=''">
-              AND job.submitUser=#{submitUser}
+                AND job.submitUser=#{submitUser}
             </if>
             <if test="startTime!=null and startTime!=''">
-              AND task.executeStartTime>=#{startTime}
+                AND task.executeStartTime>=#{startTime}
             </if>
             <if test="endTime!=null and endTime!=''">
                 <![CDATA[
@@ -65,10 +67,10 @@
         </if>
     </sql>
 
-    
+
     <select id="getCountByCondition" parameterType="TaskSearchVo" resultType="Integer">
-      SELECT COUNT(1) FROM task LEFT JOIN job ON task.jobId=job.jobId
-      <include refid="condition" />
+        SELECT COUNT(1) FROM task LEFT JOIN job ON task.jobId=job.jobId
+        <include refid="condition" />
     </select>
 
     <select id="getTasksByCondition" parameterType="TaskSearchVo" resultType="TaskVo">
@@ -81,5 +83,7 @@
     <select id="getTaskById" parameterType="Long" resultType="TaskVo">
         SELECT *,time_to_sec(TIMEDIFF(task.executeEndTime,task.executeStartTime)) AS executeTime FROM task WHERE taskId=#{taskId} limit 0,1
     </select>
+
+
 
 </mapper>
