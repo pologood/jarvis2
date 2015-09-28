@@ -14,7 +14,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.google.common.collect.Sets;
-import com.mogujie.jarvis.server.scheduler.JobScheduleType;
 
 
 /**
@@ -30,9 +29,9 @@ public class TestDAGScheduler {
 
     @Before
     public void setup() throws Exception {
-        jobA = DAGJobFactory.createDAGJob(JobScheduleType.CRONTAB, 1);
-        jobB = DAGJobFactory.createDAGJob(JobScheduleType.DEPENDENCY, 2);
-        jobC = DAGJobFactory.createDAGJob(JobScheduleType.DEPENDENCY, 3);
+        jobA = new DAGJob(1, DAGJobType.TIME);
+        jobB = new DAGJob(2, DAGJobType.DEPEND);
+        jobC = new DAGJob(3, DAGJobType.DEPEND);
     }
 
     @After

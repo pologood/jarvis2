@@ -25,12 +25,15 @@ public class ModifyJobEvent extends DAGJobEvent {
     private Set<Long> dependencies;
     private MODIFY_TYPE modifyType;
     private boolean hasCron;
+    private boolean hasCycle;
 
-    public ModifyJobEvent(long jobId, Set<Long> dependencies, MODIFY_TYPE type, boolean hasCron) {
+    public ModifyJobEvent(long jobId, Set<Long> dependencies, MODIFY_TYPE type,
+            boolean hasCron, boolean hasCycle) {
        super(jobId);
        this.dependencies = dependencies;
        this.modifyType = type;
        this.hasCron = hasCron;
+       this.hasCycle = hasCycle;
     }
 
     public Set<Long> getDependencies() {
@@ -55,5 +58,13 @@ public class ModifyJobEvent extends DAGJobEvent {
 
     public void setHasCron(boolean hasCron) {
         this.hasCron = hasCron;
+    }
+
+    public boolean isHasCycle() {
+        return hasCycle;
+    }
+
+    public void setHasCycle(boolean hasCycle) {
+        this.hasCycle = hasCycle;
     }
 }

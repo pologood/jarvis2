@@ -16,6 +16,7 @@ import com.mogujie.jarvis.core.domain.JobFlag;
 import com.mogujie.jarvis.dto.Job;
 import com.mogujie.jarvis.protocol.ModifyJobProtos.RestServerModifyJobRequest;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitJobRequest;
+import com.mogujie.jarvis.server.scheduler.dag.DAGJobType;
 
 /**
  * @author guangming
@@ -38,6 +39,11 @@ public class SchedulerUtil {
             }
         }
         return type;
+    }
+
+    public static DAGJobType getDAGJobType(int cycleFlag, int dependFlag, int timeFlag) {
+        DAGJobType[] values = DAGJobType.values();
+        return values[(cycleFlag << 2) + (dependFlag << 1) + timeFlag];
     }
 
     public static Job convert2Job(RestServerSubmitJobRequest msg) {
@@ -64,6 +70,7 @@ public class SchedulerUtil {
         job.setUpdateTime(currentTime);
         job.setParams(JsonHelper.parseMapEntryList2JSON(msg.getParametersList()));
         job.setOriginJobId(msg.getOriginJobId());
+        job.setFixedDelay(msg.getFixedDelay());
         return job;
     }
 

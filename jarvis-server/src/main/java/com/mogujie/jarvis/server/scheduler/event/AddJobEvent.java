@@ -10,7 +10,7 @@ package com.mogujie.jarvis.server.scheduler.event;
 
 import java.util.Set;
 
-import com.mogujie.jarvis.server.scheduler.JobScheduleType;
+import com.mogujie.jarvis.server.scheduler.dag.DAGJobType;
 
 /**
  * @author guangming
@@ -18,17 +18,17 @@ import com.mogujie.jarvis.server.scheduler.JobScheduleType;
  */
 public class AddJobEvent extends DAGJobEvent{
     private Set<Long> dependencies;
-    private JobScheduleType scheduleType;
+    private DAGJobType type;
 
     /**
      * @param long jobId
      * @param JobDescriptor jobDesc
      */
     public AddJobEvent(long jobId, Set<Long> dependencies,
-            JobScheduleType type) {
+            DAGJobType type) {
         super(jobId);
         this.dependencies = dependencies;
-        this.scheduleType = type;
+        this.type = type;
     }
 
     public Set<Long> getDependencies() {
@@ -39,11 +39,11 @@ public class AddJobEvent extends DAGJobEvent{
         this.dependencies = dependencies;
     }
 
-    public JobScheduleType getScheduleType() {
-        return scheduleType;
+    public DAGJobType getDAGJobType() {
+        return type;
     }
 
-    public void setScheduleType(JobScheduleType scheduleType) {
-        this.scheduleType = scheduleType;
+    public void setDAGJobType(DAGJobType type) {
+        this.type = type;
     }
 }

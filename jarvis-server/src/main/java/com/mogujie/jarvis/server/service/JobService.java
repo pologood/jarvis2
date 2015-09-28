@@ -37,5 +37,4 @@ public class JobService {
         example.createCriteria().andJobFlagNotEqualTo(JobFlag.DELETED.getValue());
         return jobMapper.selectByExample(example);
     }
-
 }
