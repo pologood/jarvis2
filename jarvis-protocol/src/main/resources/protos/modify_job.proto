@@ -22,7 +22,11 @@ message RestServerModifyJobRequest {
     optional int32 failed_interval = 15 [default = 3];
     optional int64 start_time = 16;
     optional int64 end_time = 17;
-    repeated MapEntry parameters = 18;
+    required int64 origin_job_id = 18;
+    required string common_depend_strategy = 19;
+    required string last_depend_strategy = 20;
+    repeated MapEntry parameters = 21;
+    optional int32 fixed_delay = 22;
 }
 
 
