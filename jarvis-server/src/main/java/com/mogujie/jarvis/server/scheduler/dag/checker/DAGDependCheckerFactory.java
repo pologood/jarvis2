@@ -10,8 +10,8 @@ package com.mogujie.jarvis.server.scheduler.dag.checker;
 
 import org.apache.commons.configuration.Configuration;
 
-import com.mogujie.jarvis.core.common.util.ConfigUtils;
-import com.mogujie.jarvis.core.common.util.ReflectionUtils;
+import com.mogujie.jarvis.core.util.ConfigUtils;
+import com.mogujie.jarvis.core.util.ReflectionUtils;
 
 
 /**

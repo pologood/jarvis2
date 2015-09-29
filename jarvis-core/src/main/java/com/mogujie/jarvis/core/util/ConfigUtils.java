@@ -5,7 +5,7 @@
  * Author: wuya
  * Create Date: 2015年6月17日 上午10:30:12
  */
-package com.mogujie.jarvis.core.common.util;
+package com.mogujie.jarvis.core.util;
 
 import java.net.Inet4Address;
 import java.net.UnknownHostException;

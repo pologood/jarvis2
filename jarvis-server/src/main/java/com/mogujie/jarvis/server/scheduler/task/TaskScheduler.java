@@ -17,14 +17,15 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.eventbus.AllowConcurrentEvents;
 import com.google.common.eventbus.Subscribe;
-import com.mogujie.jarvis.core.common.util.JsonHelper;
-import com.mogujie.jarvis.core.common.util.ThreadUtils;
 import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.core.domain.TaskDetail;
+import com.mogujie.jarvis.core.util.JsonHelper;
+import com.mogujie.jarvis.core.util.ThreadUtils;
 import com.mogujie.jarvis.dao.JobMapper;
 import com.mogujie.jarvis.dao.TaskMapper;
 import com.mogujie.jarvis.dto.Job;
@@ -79,6 +80,7 @@ public class TaskScheduler extends Scheduler {
     private static final int DAFAULT_FAILED_INTERVAL = 1000;
 
     @Override
+    @Transactional
     public void init() {
         getSchedulerController().register(this);
         // load all READY tasks from DB
@@ -107,10 +109,10 @@ public class TaskScheduler extends Scheduler {
 
     @Subscribe
     @AllowConcurrentEvents
+    @Transactional
     public void handleSuccessEvent(SuccessEvent e) {
         updateJobStatus(e.getTaskId(), JobStatus.SUCCESS);
-        Job job = jobMapper.selectByPrimaryKey(e.getJobId());
-        taskManager.appCounterDecrement(job.getAppName());
+        reduceTaskNum(e.getJobId());
     }
 
     @Subscribe
@@ -121,14 +123,15 @@ public class TaskScheduler extends Scheduler {
 
     @Subscribe
     @AllowConcurrentEvents
+    @Transactional
     public void handleKilledEvent(KilledEvent e) {
         updateJobStatus(e.getTaskId(), JobStatus.KILLED);
-        Job job = jobMapper.selectByPrimaryKey(e.getJobId());
-        taskManager.appCounterDecrement(job.getAppName());
+        reduceTaskNum(e.getJobId());
     }
 
     @Subscribe
     @AllowConcurrentEvents
+    @Transactional
     public void handleFailedEvent(FailedEvent e) {
         DAGTask dagTask = readyTable.get(e.getTaskId());
         if (dagTask != null) {
@@ -150,8 +153,7 @@ public class TaskScheduler extends Scheduler {
             }
         }
 
-        Job job = jobMapper.selectByPrimaryKey(e.getJobId());
-        taskManager.appCounterDecrement(job.getAppName());
+        reduceTaskNum(e.getJobId());
     }
 
     private void updateJobStatus(long taskId, JobStatus status) {
@@ -159,7 +161,8 @@ public class TaskScheduler extends Scheduler {
         if (taskService != null) {
             if (status.equals(JobStatus.RUNNING)) {
                 taskService.updateStatusWithStart(taskId, status);
-            } else if (status.getValue() == JobStatus.SUCCESS.getValue() || status.getValue() == JobStatus.FAILED.getValue()
+            } else if (status.getValue() == JobStatus.SUCCESS.getValue()
+                    || status.getValue() == JobStatus.FAILED.getValue()
                     || status.getValue() == JobStatus.KILLED.getValue()) {
                 taskService.updateStatusWithEnd(taskId, status);
             }
@@ -261,5 +264,12 @@ public class TaskScheduler extends Scheduler {
         }
 
         return taskDetail;
+    }
+
+    private void reduceTaskNum(long jobId) {
+        if (jobMapper != null) {
+            Job job = jobMapper.selectByPrimaryKey(jobId);
+            taskManager.appCounterDecrement(job.getAppName());
+        }
     }
 }

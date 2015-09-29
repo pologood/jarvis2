@@ -18,12 +18,8 @@ import com.mogujie.jarvis.core.TaskContext;
  */
 public class MysqlJdbcTask extends JdbcTask {
 
-    /**
-     * @param taskContext
-     */
     public MysqlJdbcTask(TaskContext taskContext) {
         super(taskContext);
-        // TODO Auto-generated constructor stub
     }
 
     @Override

@@ -19,10 +19,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.mogujie.jarvis.core.TaskContext;
-import com.mogujie.jarvis.core.common.util.ConfigUtils;
 import com.mogujie.jarvis.core.domain.StreamType;
 import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.task.AbstractTask;
+import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.tasks.ShellStreamProcessor;
 import com.mogujie.jarvis.tasks.util.ShellUtils;
 

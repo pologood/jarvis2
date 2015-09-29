@@ -15,9 +15,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.google.common.collect.Sets;
-import com.mogujie.jarvis.core.common.util.ConfigUtils;
 import com.mogujie.jarvis.core.domain.JobFlag;
-import com.mogujie.jarvis.server.scheduler.JobScheduleType;
+import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.server.scheduler.dag.checker.DAGDependCheckerFactory;
 import com.mogujie.jarvis.server.scheduler.dag.checker.DummyDAGDependChecker;
 import com.mogujie.jarvis.server.scheduler.event.AddJobEvent;
@@ -61,11 +60,11 @@ public class TestDAGSchedulerWithEvent {
     @Test
     public void testHandleSuccessEvent1() throws Exception {
         AddJobEvent addEventA = new AddJobEvent(jobAId, null,
-                JobScheduleType.CRONTAB);
+                DAGJobType.TIME);
         AddJobEvent addEventB = new AddJobEvent(jobBId, null,
-                JobScheduleType.CRONTAB);
+                DAGJobType.TIME);
         AddJobEvent addEventC = new AddJobEvent(jobCId, Sets.newHashSet(jobAId, jobBId),
-                JobScheduleType.DEPENDENCY);
+                DAGJobType.DEPEND);
         dagScheduler.handleAddJobEvent(addEventA);
         dagScheduler.handleAddJobEvent(addEventB);
         dagScheduler.handleAddJobEvent(addEventC);
@@ -100,11 +99,11 @@ public class TestDAGSchedulerWithEvent {
     @Test
     public void testHandleSuccessEvent2() throws Exception {
         AddJobEvent addEventA = new AddJobEvent(jobAId, null,
-                JobScheduleType.CRONTAB);
+                DAGJobType.TIME);
         AddJobEvent addEventB = new AddJobEvent(jobBId, Sets.newHashSet(jobAId),
-                JobScheduleType.DEPENDENCY);
+                DAGJobType.DEPEND);
         AddJobEvent addEventC = new AddJobEvent(jobCId, Sets.newHashSet(jobAId),
-                JobScheduleType.DEPENDENCY);
+                DAGJobType.DEPEND);
         dagScheduler.handleAddJobEvent(addEventA);
         dagScheduler.handleAddJobEvent(addEventB);
         dagScheduler.handleAddJobEvent(addEventC);
@@ -127,8 +126,7 @@ public class TestDAGSchedulerWithEvent {
      */
     @Test
     public void testHandleFailedEvent() throws Exception {
-        AddJobEvent addEventA = new AddJobEvent(jobAId, null,
-                JobScheduleType.CRONTAB);
+        AddJobEvent addEventA = new AddJobEvent(jobAId, null, DAGJobType.TIME);
         dagScheduler.handleAddJobEvent(addEventA);
         // jobA time ready
         TimeReadyEvent timeEventA = new TimeReadyEvent(jobAId);
@@ -159,11 +157,11 @@ public class TestDAGSchedulerWithEvent {
     @Test
     public void testHandleModifyJobEvent1() throws Exception {
         AddJobEvent addEventA = new AddJobEvent(jobAId, null,
-                JobScheduleType.CRONTAB);
+                DAGJobType.TIME);
         AddJobEvent addEventB = new AddJobEvent(jobBId, Sets.newHashSet(jobAId),
-                JobScheduleType.DEPENDENCY);
+                DAGJobType.DEPEND);
         AddJobEvent addEventC = new AddJobEvent(jobCId, Sets.newHashSet(jobAId),
-                JobScheduleType.DEPENDENCY);
+                DAGJobType.DEPEND);
         dagScheduler.handleAddJobEvent(addEventA);
         dagScheduler.handleAddJobEvent(addEventB);
         dagScheduler.handleAddJobEvent(addEventC);
@@ -171,7 +169,7 @@ public class TestDAGSchedulerWithEvent {
         Assert.assertEquals(1, dagScheduler.getParents(jobBId).size());
         Assert.assertEquals(1, dagScheduler.getParents(jobCId).size());
         ModifyJobEvent modifyEventC = new ModifyJobEvent(jobCId, Sets.newHashSet(jobBId),
-                MODIFY_TYPE.MODIFY, false);
+                MODIFY_TYPE.MODIFY, false, false);
         dagScheduler.handleModifyJobEvent(modifyEventC);
         Assert.assertEquals(1, dagScheduler.getChildren(jobAId).size());
         Assert.assertEquals(1, dagScheduler.getParents(jobBId).size());
@@ -181,16 +179,16 @@ public class TestDAGSchedulerWithEvent {
     }
 
     /**
-     *     A (CRONTAB)           A (CRONTAB)
+     *     A (TIME)              A (TIME)
      *     |                -->  |
-     *     B (CRON_DEPEND)       B (DEPENDENCY)
+     *     B (DEPEND_TIME)       B (DEPEND)
      */
     @Test
     public void testHandleModifyJobEvent2() throws Exception {
         AddJobEvent addEventA = new AddJobEvent(jobAId, null,
-                JobScheduleType.CRONTAB);
+                DAGJobType.TIME);
         AddJobEvent addEventB = new AddJobEvent(jobBId, Sets.newHashSet(jobAId),
-                JobScheduleType.CRON_DEPEND);
+                DAGJobType.DEPEND_TIME);
         dagScheduler.handleAddJobEvent(addEventA);
         dagScheduler.handleAddJobEvent(addEventB);
         Assert.assertEquals(1, dagScheduler.getChildren(jobAId).size());
@@ -203,9 +201,9 @@ public class TestDAGSchedulerWithEvent {
         SuccessEvent successEventA = new SuccessEvent(jobAId, 1);
         dagScheduler.handleSuccessEvent(successEventA);
         Assert.assertEquals(1, taskScheduler.getReadyTable().size());
-        // modify jobB from CRON_DEPEND to DEPENDENCY, so don't need time ready flag
+        // modify jobB from DEPEND_TIME to DEPENDENCY, so don't need time ready flag
         ModifyJobEvent modifyEventB = new ModifyJobEvent(jobBId, Sets.newHashSet(jobAId),
-                MODIFY_TYPE.MODIFY, false);
+                MODIFY_TYPE.MODIFY, false, false);
         dagScheduler.handleModifyJobEvent(modifyEventB);
         Assert.assertEquals(2, taskScheduler.getReadyTable().size());
     }
@@ -218,11 +216,11 @@ public class TestDAGSchedulerWithEvent {
     @Test
     public void testModifyJobFlag1() throws Exception {
         AddJobEvent addEventA = new AddJobEvent(jobAId, null,
-                JobScheduleType.CRONTAB);
+                DAGJobType.TIME);
         AddJobEvent addEventB = new AddJobEvent(jobBId, null,
-                JobScheduleType.CRONTAB);
+                DAGJobType.TIME);
         AddJobEvent addEventC = new AddJobEvent(jobCId, Sets.newHashSet(jobAId, jobBId),
-                JobScheduleType.DEPENDENCY);
+                DAGJobType.DEPEND);
         dagScheduler.handleAddJobEvent(addEventA);
         dagScheduler.handleAddJobEvent(addEventB);
         dagScheduler.handleAddJobEvent(addEventC);
@@ -254,12 +252,10 @@ public class TestDAGSchedulerWithEvent {
      */
     @Test
     public void testModifyJobFlag2() throws Exception {
-        AddJobEvent addEventA = new AddJobEvent(jobAId, null,
-                JobScheduleType.CRONTAB);
-        AddJobEvent addEventB = new AddJobEvent(jobBId, null,
-                JobScheduleType.CRONTAB);
+        AddJobEvent addEventA = new AddJobEvent(jobAId, null, DAGJobType.TIME);
+        AddJobEvent addEventB = new AddJobEvent(jobBId, null, DAGJobType.TIME);
         AddJobEvent addEventC = new AddJobEvent(jobCId, Sets.newHashSet(jobAId, jobBId),
-                JobScheduleType.DEPENDENCY);
+                DAGJobType.DEPEND);
         dagScheduler.handleAddJobEvent(addEventA);
         dagScheduler.handleAddJobEvent(addEventB);
         dagScheduler.handleAddJobEvent(addEventC);

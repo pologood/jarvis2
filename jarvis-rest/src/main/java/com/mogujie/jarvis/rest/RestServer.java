@@ -23,7 +23,7 @@ import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 
 import com.mogujie.jarvis.core.JarvisConstants;
-import com.mogujie.jarvis.core.common.util.ConfigUtils;
+import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 

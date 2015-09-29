@@ -15,9 +15,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.google.common.collect.Sets;
-import com.mogujie.jarvis.core.common.util.ConfigUtils;
-import com.mogujie.jarvis.server.JobSchedulerController;
-import com.mogujie.jarvis.server.scheduler.JobScheduleType;
+import com.mogujie.jarvis.core.util.ConfigUtils;
+import com.mogujie.jarvis.server.scheduler.controller.JobSchedulerController;
+import com.mogujie.jarvis.server.scheduler.controller.SyncSchedulerController;
 import com.mogujie.jarvis.server.scheduler.dag.checker.DAGDependCheckerFactory;
 import com.mogujie.jarvis.server.scheduler.dag.checker.DummyDAGDependChecker;
 import com.mogujie.jarvis.server.scheduler.event.AddJobEvent;
@@ -31,7 +31,7 @@ import com.mogujie.jarvis.server.scheduler.time.TimeScheduler;
  *
  */
 public class TestJobSchedulerController {
-    private JobSchedulerController controller = JobSchedulerController.getInstance();
+    private static JobSchedulerController controller = new SyncSchedulerController();
     private DAGScheduler dagScheduler = DAGScheduler.getInstance();
     private TimeScheduler timeScheduler = TimeScheduler.getInstance();
     private TaskScheduler taskScheduler = TaskScheduler.getInstance();
@@ -64,11 +64,11 @@ public class TestJobSchedulerController {
     @Test
     public void testHandleSuccessEvent1() throws Exception {
         AddJobEvent addEventA = new AddJobEvent(jobAId, null,
-                JobScheduleType.CRONTAB);
+                DAGJobType.TIME);
         AddJobEvent addEventB = new AddJobEvent(jobBId, null,
-                JobScheduleType.CRONTAB);
+                DAGJobType.TIME);
         AddJobEvent addEventC = new AddJobEvent(jobCId, Sets.newHashSet(jobAId, jobBId),
-                JobScheduleType.DEPENDENCY);
+                DAGJobType.DEPEND);
         controller.notify(addEventA);
         controller.notify(addEventB);
         controller.notify(addEventC);
@@ -107,11 +107,11 @@ public class TestJobSchedulerController {
     @Test
     public void testHandleSuccessEvent2() throws Exception {
         AddJobEvent addEventA = new AddJobEvent(jobAId, null,
-                JobScheduleType.CRONTAB);
+                DAGJobType.TIME);
         AddJobEvent addEventB = new AddJobEvent(jobBId, Sets.newHashSet(jobAId),
-                JobScheduleType.DEPENDENCY);
+                DAGJobType.DEPEND);
         AddJobEvent addEventC = new AddJobEvent(jobCId, Sets.newHashSet(jobAId),
-                JobScheduleType.DEPENDENCY);
+                DAGJobType.DEPEND);
         controller.notify(addEventA);
         controller.notify(addEventB);
         controller.notify(addEventC);

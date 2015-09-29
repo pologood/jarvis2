@@ -21,9 +21,9 @@ import org.iq80.leveldb.DBIterator;
 import org.iq80.leveldb.Options;
 
 import com.google.common.base.Throwables;
-import com.mogujie.jarvis.core.common.util.ConfigUtils;
-import com.mogujie.jarvis.core.common.util.KryoUtils;
 import com.mogujie.jarvis.core.task.AbstractTask;
+import com.mogujie.jarvis.core.util.ConfigUtils;
+import com.mogujie.jarvis.core.util.KryoUtils;
 
 /**
  * @author wuya

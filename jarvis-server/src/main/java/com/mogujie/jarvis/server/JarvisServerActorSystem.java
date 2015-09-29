@@ -8,7 +8,7 @@
 
 package com.mogujie.jarvis.server;
 
-import com.mogujie.jarvis.core.common.util.ConfigUtils;
+import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 

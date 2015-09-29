@@ -29,7 +29,6 @@ import com.google.common.eventbus.Subscribe;
 import com.mogujie.jarvis.core.domain.JobFlag;
 import com.mogujie.jarvis.core.domain.Pair;
 import com.mogujie.jarvis.dto.Job;
-import com.mogujie.jarvis.server.scheduler.JobScheduleType;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
 import com.mogujie.jarvis.server.scheduler.SchedulerUtil;
 import com.mogujie.jarvis.server.scheduler.event.AddJobEvent;
@@ -85,9 +84,10 @@ public class DAGScheduler extends Scheduler {
             if (job.getJobFlag() != JobFlag.DELETED.getValue()) {
                 long jobId = job.getJobId();
                 Set<Long> dependencies = jobDependService.getDependIds(jobId);
-                boolean hasCron = (!cronService.getCronsByJobId(jobId).isEmpty());
-                boolean hasDepend = (!dependencies.isEmpty());
-                JobScheduleType type = SchedulerUtil.getJobScheduleType(hasCron, hasDepend);
+                int cycleFlag = job.getFixedDelay() > 0 ? 1 : 0;
+                int dependFlag = cronService.getCronsByJobId(jobId).isEmpty() ? 0 : 1;
+                int timeFlag = dependencies.isEmpty() ? 0 : 1;
+                DAGJobType type = SchedulerUtil.getDAGJobType(cycleFlag, dependFlag, timeFlag);
                 AddJobEvent addJobEvent = new AddJobEvent(jobId, dependencies, type);
                 try {
                     handleAddJobEvent(addJobEvent);
@@ -123,9 +123,8 @@ public class DAGScheduler extends Scheduler {
     public void handleAddJobEvent(AddJobEvent event) throws Exception {
         long jobId = event.getJobId();
         if (waitingTable.get(jobId) == null) {
-            JobScheduleType scheduleType = event.getScheduleType();
-            DAGJob dagJob = DAGJobFactory.createDAGJob(scheduleType, jobId);
-            addJob(jobId, dagJob, event.getDependencies());
+            DAGJobType type = event.getDAGJobType();
+            addJob(jobId, new DAGJob(jobId, type), event.getDependencies());
         }
     }
 
@@ -211,10 +210,6 @@ public class DAGScheduler extends Scheduler {
             for (long d : newDependencies) {
                 removeDependency(d, jobId);
             }
-            DAGJob dagJob = waitingTable.get(jobId);
-            if (dagJob != null) {
-                submitJobWithCheck(dagJob);
-            }
         } else if (modifyType.equals(MODIFY_TYPE.MODIFY)) {
             DAGJob dagJob = waitingTable.get(jobId);
             if (dagJob != null) {
@@ -222,11 +217,15 @@ public class DAGScheduler extends Scheduler {
             }
         }
 
-        // modify time ready flag
-        boolean hasCron = event.isHasCron();
+        // update dag job type
         DAGJob dagJob = waitingTable.get(jobId);
         if (dagJob != null) {
-            dagJob.setHasTimeFlag(hasCron);
+            boolean hasDepend = (!newDependencies.isEmpty());
+            boolean hasCron = event.isHasCron();
+            boolean hasCycle = event.isHasCycle();
+            dagJob.updateJobTypeByTimeFlag(hasCron);
+            dagJob.updateJobTypeByDependFlag(hasDepend);
+            dagJob.updateJobTypeByCycleFlag(hasCycle);
             submitJobWithCheck(dagJob);
         }
     }
@@ -313,9 +312,9 @@ public class DAGScheduler extends Scheduler {
         long jobId = e.getJobId();
         DAGJob dagJob = waitingTable.get(jobId);
         if (dagJob != null) {
-            if (!dagJob.isHasTimeFlag()) {
-                LOGGER.warn("JobId {}, has no time ready flag, auto fix to has time flag.", e.getJobId());
-                dagJob.setHasTimeFlag(true);
+            if (!(dagJob.getType().implies(DAGJobType.TIME))) {
+                LOGGER.warn("Job {} doesn't imply TIME type , auto fix to add TIME type.", e.getJobId());
+                dagJob.updateJobTypeByTimeFlag(true);
             }
             // 更新时间标识
             dagJob.setTimeReadyFlag();

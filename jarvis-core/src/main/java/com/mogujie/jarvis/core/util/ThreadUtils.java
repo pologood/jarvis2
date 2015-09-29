@@ -5,7 +5,7 @@
  * Author: wuya
  * Create Date: 2015年6月12日 下午7:14:18
  */
-package com.mogujie.jarvis.core.common.util;
+package com.mogujie.jarvis.core.util;
 
 import com.google.common.base.Throwables;
 

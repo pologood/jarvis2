@@ -6,7 +6,7 @@
  * Create Date: 2015年7月13日 下午10:39:57
  */
 
-package com.mogujie.jarvis.core.common.util;
+package com.mogujie.jarvis.core.util;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;

@@ -14,5 +14,5 @@ package com.mogujie.jarvis.core;
  */
 public interface ProgressReporter {
 
-    void report(double progress);
+    void report(float progress);
 }

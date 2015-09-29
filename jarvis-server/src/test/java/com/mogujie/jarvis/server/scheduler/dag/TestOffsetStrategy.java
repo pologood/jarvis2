@@ -13,8 +13,8 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.mogujie.jarvis.core.common.util.ConfigUtils;
 import com.mogujie.jarvis.core.domain.Pair;
+import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.server.scheduler.dag.strategy.AbstractOffsetStrategy;
 import com.mogujie.jarvis.server.scheduler.dag.strategy.OffsetDayStrategy;
 import com.mogujie.jarvis.server.scheduler.dag.strategy.OffsetMonthStrategy;

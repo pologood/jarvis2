@@ -15,7 +15,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.mogujie.jarvis.core.JarvisConstants;
-import com.mogujie.jarvis.core.common.util.ConfigUtils;
+import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse;
 import com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest;
 import com.mogujie.jarvis.worker.actor.DeadLetterActor;

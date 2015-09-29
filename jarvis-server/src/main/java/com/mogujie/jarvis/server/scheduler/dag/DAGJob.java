@@ -21,24 +21,27 @@ public class DAGJob extends AbstractDAGJob {
 
     private long jobId;
     private DAGDependChecker dependChecker;
-    private boolean hasTimeFlag = false;
+    private DAGJobType type;
     private boolean timeReadyFlag = false;
 
     public DAGJob() {
         this.dependChecker = DAGDependCheckerFactory.create();
     }
 
-    public DAGJob(long jobId) {
+    public DAGJob(long jobId, DAGJobType type) {
         this.jobId = jobId;
+        this.type = type;
         this.dependChecker = DAGDependCheckerFactory.create();
     }
 
     @Override
     public boolean dependCheck(Set<Long> needJobs) {
-        boolean passCheck = false;
-        passCheck = dependChecker.check(needJobs);
+        boolean passCheck = true;
+        if (type.implies(DAGJobType.DEPEND)) {
+            passCheck = passCheck && dependChecker.check(needJobs);
+        }
 
-        if (hasTimeFlag) {
+        if (type.implies(DAGJobType.TIME)) {
             passCheck = passCheck && timeReadyFlag;
         }
 
@@ -64,17 +67,9 @@ public class DAGJob extends AbstractDAGJob {
 
     public void resetDependStatus() {
         dependChecker.resetAllStatus();
-        if (hasTimeFlag) {
+        if (type.implies(DAGJobType.TIME)) {
             resetTimeReadyFlag();
         }
-    }
-
-    public boolean isHasTimeFlag() {
-        return hasTimeFlag;
-    }
-
-    public void setHasTimeFlag(boolean hasTimeFlag) {
-        this.hasTimeFlag = hasTimeFlag;
     }
 
     public void setTimeReadyFlag() {
@@ -91,5 +86,33 @@ public class DAGJob extends AbstractDAGJob {
 
     public void setDependChecker(DAGDependChecker dependChecker) {
         this.dependChecker = dependChecker;
+    }
+
+    public DAGJobType getType() {
+        return type;
+    }
+
+    public void setType(DAGJobType type) {
+        this.type = type;
+    }
+
+    public void updateJobTypeByTimeFlag(boolean timeFlag) {
+        updateJobType(timeFlag, DAGJobType.TIME);
+    }
+
+    public void updateJobTypeByDependFlag(boolean dependFlag) {
+        updateJobType(dependFlag, DAGJobType.DEPEND);
+    }
+
+    public void updateJobTypeByCycleFlag(boolean cycleFlag) {
+        updateJobType(cycleFlag, DAGJobType.CYCLE);
+    }
+
+    private void updateJobType(boolean isAdd, DAGJobType that) {
+        if (isAdd) {
+            type = type.or(that);
+        } else {
+            type = type.remove(that);
+        }
     }
 }

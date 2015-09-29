@@ -6,7 +6,7 @@
  * Create Date: 2015年9月17日 下午8:01:45
  */
 
-package com.mogujie.jarvis.core.common.util;
+package com.mogujie.jarvis.core.util;
 
 import java.util.HashMap;
 import java.util.Iterator;

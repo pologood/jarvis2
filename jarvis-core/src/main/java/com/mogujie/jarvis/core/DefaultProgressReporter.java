@@ -24,7 +24,7 @@ public class DefaultProgressReporter implements ProgressReporter {
     }
 
     @Override
-    public void report(double progress) {
+    public void report(float progress) {
         WorkerReportProgressRequest request = WorkerReportProgressRequest.newBuilder().setFullId(fullId).setProgress(progress).build();
         actor.tell(request, ActorRef.noSender());
     }

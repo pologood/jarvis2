@@ -18,12 +18,8 @@ import com.mogujie.jarvis.core.TaskContext;
  */
 public class HiveJdbcTask extends JdbcTask {
 
-    /**
-     * @param jobContext
-     */
     public HiveJdbcTask(TaskContext jobContext) {
         super(jobContext);
-        // TODO Auto-generated constructor stub
     }
 
     @Override

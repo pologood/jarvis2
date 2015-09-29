@@ -9,7 +9,6 @@
 package com.mogujie.jarvis.server.scheduler;
 
 import com.mogujie.jarvis.server.scheduler.dag.DAGJob;
-import com.mogujie.jarvis.server.scheduler.dag.DAGOffsetJob;
 
 /**
  * @author guangming
@@ -25,11 +24,8 @@ public enum JobScheduleType {
     //time based + dependency based schedule job
     CRON_DEPEND(DAGJob.class.getName()),
 
-    //dependency based + offset
-    DEPEND_OFFSET(DAGOffsetJob.class.getName()),
-
-    //cycle based schedule job
-    CYCLE(""),
+    //fixed deploy job
+    CYCLE(DAGJob.class.getName()),
 
     OTHER("");
 

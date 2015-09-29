@@ -4,7 +4,7 @@ option java_outer_classname = "ReportProgressProtos";
 
 message WorkerReportProgressRequest {
     required string full_id = 1;
-    required double progress = 2;
+    required float progress = 2;
 }
 
 message ServerReportProgressResponse {

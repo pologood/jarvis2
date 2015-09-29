@@ -16,7 +16,10 @@ import java.util.Set;
 import javax.inject.Named;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
+
+import akka.actor.UntypedActor;
 
 import com.google.common.collect.Sets;
 import com.mogujie.jarvis.core.domain.JobFlag;
@@ -28,9 +31,9 @@ import com.mogujie.jarvis.dto.JobDepend;
 import com.mogujie.jarvis.protocol.ModifyJobFlagProtos.RestServerModifyJobFlagRequest;
 import com.mogujie.jarvis.protocol.ModifyJobProtos.RestServerModifyJobRequest;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitJobRequest;
-import com.mogujie.jarvis.server.JobSchedulerController;
-import com.mogujie.jarvis.server.scheduler.JobScheduleType;
 import com.mogujie.jarvis.server.scheduler.SchedulerUtil;
+import com.mogujie.jarvis.server.scheduler.controller.JobSchedulerController;
+import com.mogujie.jarvis.server.scheduler.dag.DAGJobType;
 import com.mogujie.jarvis.server.scheduler.event.AddJobEvent;
 import com.mogujie.jarvis.server.scheduler.event.ModifyJobEvent;
 import com.mogujie.jarvis.server.scheduler.event.ModifyJobEvent.MODIFY_TYPE;
@@ -38,8 +41,6 @@ import com.mogujie.jarvis.server.scheduler.event.ModifyJobFlagEvent;
 import com.mogujie.jarvis.server.scheduler.event.UnhandleEvent;
 import com.mogujie.jarvis.server.service.CrontabService;
 import com.mogujie.jarvis.server.service.JobDependService;
-
-import akka.actor.UntypedActor;
 
 /**
  * @author guangming
@@ -50,6 +51,7 @@ import akka.actor.UntypedActor;
 public class JobActor extends UntypedActor {
 
     @Autowired
+    @Qualifier("AsyncSchedulerController")
     private JobSchedulerController schedulerController;
 
     @Autowired
@@ -99,9 +101,10 @@ public class JobActor extends UntypedActor {
                 jobDependMapper.insert(jobDepend);
             }
             // 4. get jobScheduleType
-            boolean hasCron = (msg.getCronExpression() != null);
-            boolean hasDepend = (!needDependencies.isEmpty());
-            JobScheduleType type = SchedulerUtil.getJobScheduleType(hasCron, hasDepend);
+            int cycleFlag = job.getFixedDelay() > 0 ? 1 : 0;
+            int dependFlag = needDependencies.isEmpty() ? 0 : 1;
+            int timeFlag = msg.getCronExpression() != null ? 1 : 0;
+            DAGJobType type = SchedulerUtil.getDAGJobType(cycleFlag, dependFlag, timeFlag);
             event = new AddJobEvent(jobId, needDependencies, type);
         } else if (obj instanceof RestServerModifyJobRequest) {
             RestServerModifyJobRequest msg = (RestServerModifyJobRequest) obj;
@@ -129,7 +132,9 @@ public class JobActor extends UntypedActor {
                 jobDependMapper.insert(jobDepend);
             }
             boolean hasCron = (msg.getCronExpression() != null);
-            event = new ModifyJobEvent(jobId, needDependencies, MODIFY_TYPE.MODIFY, hasCron);
+            // TODO
+            boolean hasCycle = false;
+            event = new ModifyJobEvent(jobId, needDependencies, MODIFY_TYPE.MODIFY, hasCron, hasCycle);
         } else if (obj instanceof RestServerModifyJobFlagRequest) {
             RestServerModifyJobFlagRequest msg = (RestServerModifyJobFlagRequest) obj;
             long jobId = msg.getJobId();
