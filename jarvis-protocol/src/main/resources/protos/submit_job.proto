@@ -3,11 +3,17 @@ import "map_entry.proto";
 option java_package = "com.mogujie.jarvis.protocol";
 option java_outer_classname = "SubmitJobProtos";
 
+message DependencyEntry {
+  required int64 job_id = 1;
+  optional int32 common_depend_strategy = 2 [default = 0];
+  optional string last_depend_strategy = 3 [default = ""];
+}
+
 
 message RestServerSubmitJobRequest {
     required string job_name = 1;
     optional string cron_expression = 2;
-    repeated int64 dependency_job_id = 3 [packed=true];
+    repeated DependencyEntry dependency_entry = 3;
     required string app_name = 4;
     required string app_key = 5;
     required string user = 6;
@@ -22,10 +28,8 @@ message RestServerSubmitJobRequest {
     required int64 start_time = 15;
     required int64 end_time = 16;
     required int64 origin_job_id = 17;
-    required string common_depend_strategy = 18;
-    required string last_depend_strategy = 19;
-    repeated MapEntry parameters = 20;
-    optional int32 fixed_delay = 21;
+    repeated MapEntry parameters = 18;
+    optional int32 fixed_delay = 19;
 }
 
 

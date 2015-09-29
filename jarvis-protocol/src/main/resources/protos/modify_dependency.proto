@@ -10,8 +10,8 @@ message DependencyEntry {
 
   required DependencyOperator operator = 1;
   required int64 job_id = 2;
-  required string common_depend_strategy = 3;
-  required string last_depend_strategy = 4;
+  optional int32 common_depend_strategy = 3 [default = 0];
+  optional string last_depend_strategy = 4 [default = ""];
 }
 
 message RestServerModifyDependencyRequest {
