@@ -55,19 +55,19 @@ public final class ModifyJobProtos {
         com.google.protobuf.ByteString getCronExpressionBytes();
 
         /**
-         * <code>repeated int64 dependency_jobids = 4 [packed = true];</code>
+         * <code>repeated int64 dependency_job_id = 4 [packed = true];</code>
          */
-        java.util.List<java.lang.Long> getDependencyJobidsList();
+        java.util.List<java.lang.Long> getDependencyJobIdList();
 
         /**
-         * <code>repeated int64 dependency_jobids = 4 [packed = true];</code>
+         * <code>repeated int64 dependency_job_id = 4 [packed = true];</code>
          */
-        int getDependencyJobidsCount();
+        int getDependencyJobIdCount();
 
         /**
-         * <code>repeated int64 dependency_jobids = 4 [packed = true];</code>
+         * <code>repeated int64 dependency_job_id = 4 [packed = true];</code>
          */
-        long getDependencyJobids(int index);
+        long getDependencyJobId(int index);
 
         /**
          * <code>optional string app_name = 5;</code>
@@ -225,69 +225,59 @@ public final class ModifyJobProtos {
         long getEndTime();
 
         /**
-         * <code>required int64 origin_job_id = 18;</code>
+         * <code>optional int64 origin_job_id = 18;</code>
          */
         boolean hasOriginJobId();
 
         /**
-         * <code>required int64 origin_job_id = 18;</code>
+         * <code>optional int64 origin_job_id = 18;</code>
          */
         long getOriginJobId();
 
         /**
-         * <code>required string common_depend_strategy = 19;</code>
+         * <code>optional string common_depend_strategy = 19;</code>
          */
         boolean hasCommonDependStrategy();
 
         /**
-         * <code>required string common_depend_strategy = 19;</code>
+         * <code>optional string common_depend_strategy = 19;</code>
          */
         java.lang.String getCommonDependStrategy();
 
         /**
-         * <code>required string common_depend_strategy = 19;</code>
+         * <code>optional string common_depend_strategy = 19;</code>
          */
         com.google.protobuf.ByteString getCommonDependStrategyBytes();
 
         /**
-         * <code>required string last_depend_strategy = 20;</code>
+         * <code>optional string last_depend_strategy = 20;</code>
          */
         boolean hasLastDependStrategy();
 
         /**
-         * <code>required string last_depend_strategy = 20;</code>
+         * <code>optional string last_depend_strategy = 20;</code>
          */
         java.lang.String getLastDependStrategy();
 
         /**
-         * <code>required string last_depend_strategy = 20;</code>
+         * <code>optional string last_depend_strategy = 20;</code>
          */
         com.google.protobuf.ByteString getLastDependStrategyBytes();
 
         /**
-         * <code>repeated .MapEntry parameters = 21;</code>
+         * <code>optional .MapEntry parameters = 21;</code>
          */
-        java.util.List<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry> getParametersList();
+        boolean hasParameters();
 
         /**
-         * <code>repeated .MapEntry parameters = 21;</code>
+         * <code>optional .MapEntry parameters = 21;</code>
          */
-        com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry getParameters(int index);
+        com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry getParameters();
 
         /**
-         * <code>repeated .MapEntry parameters = 21;</code>
+         * <code>optional .MapEntry parameters = 21;</code>
          */
-        int getParametersCount();
-
-        /**
-         * <code>repeated .MapEntry parameters = 21;</code>
-         */
-        java.util.List<? extends com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder> getParametersOrBuilderList();
-
-        /**
-         * <code>repeated .MapEntry parameters = 21;</code>
-         */
-        com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder getParametersOrBuilder(int index);
+        com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder getParametersOrBuilder();
 
         /**
          * <code>optional int32 fixed_delay = 22;</code>
@@ -371,21 +361,21 @@ public final class ModifyJobProtos {
                         }
                         case 32: {
                             if (!((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
-                                dependencyJobids_ = new java.util.ArrayList<java.lang.Long>();
+                                dependencyJobId_ = new java.util.ArrayList<java.lang.Long>();
                                 mutable_bitField0_ |= 0x00000008;
                             }
-                            dependencyJobids_.add(input.readInt64());
+                            dependencyJobId_.add(input.readInt64());
                             break;
                         }
                         case 34: {
                             int length = input.readRawVarint32();
                             int limit = input.pushLimit(length);
                             if (!((mutable_bitField0_ & 0x00000008) == 0x00000008) && input.getBytesUntilLimit() > 0) {
-                                dependencyJobids_ = new java.util.ArrayList<java.lang.Long>();
+                                dependencyJobId_ = new java.util.ArrayList<java.lang.Long>();
                                 mutable_bitField0_ |= 0x00000008;
                             }
                             while (input.getBytesUntilLimit() > 0) {
-                                dependencyJobids_.add(input.readInt64());
+                                dependencyJobId_.add(input.readInt64());
                             }
                             input.popLimit(limit);
                             break;
@@ -478,15 +468,20 @@ public final class ModifyJobProtos {
                             break;
                         }
                         case 170: {
-                            if (!((mutable_bitField0_ & 0x00100000) == 0x00100000)) {
-                                parameters_ = new java.util.ArrayList<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry>();
-                                mutable_bitField0_ |= 0x00100000;
+                            com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder subBuilder = null;
+                            if (((bitField0_ & 0x00080000) == 0x00080000)) {
+                                subBuilder = parameters_.toBuilder();
                             }
-                            parameters_.add(input.readMessage(com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.PARSER, extensionRegistry));
+                            parameters_ = input.readMessage(com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.PARSER, extensionRegistry);
+                            if (subBuilder != null) {
+                                subBuilder.mergeFrom(parameters_);
+                                parameters_ = subBuilder.buildPartial();
+                            }
+                            bitField0_ |= 0x00080000;
                             break;
                         }
                         case 176: {
-                            bitField0_ |= 0x00080000;
+                            bitField0_ |= 0x00100000;
                             fixedDelay_ = input.readInt32();
                             break;
                         }
@@ -498,10 +493,7 @@ public final class ModifyJobProtos {
                 throw new com.google.protobuf.InvalidProtocolBufferException(e.getMessage()).setUnfinishedMessage(this);
             } finally {
                 if (((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
-                    dependencyJobids_ = java.util.Collections.unmodifiableList(dependencyJobids_);
-                }
-                if (((mutable_bitField0_ & 0x00100000) == 0x00100000)) {
-                    parameters_ = java.util.Collections.unmodifiableList(parameters_);
+                    dependencyJobId_ = java.util.Collections.unmodifiableList(dependencyJobId_);
                 }
                 this.unknownFields = unknownFields.build();
                 makeExtensionsImmutable();
@@ -630,31 +622,31 @@ public final class ModifyJobProtos {
             }
         }
 
-        public static final int DEPENDENCY_JOBIDS_FIELD_NUMBER = 4;
-        private java.util.List<java.lang.Long> dependencyJobids_;
+        public static final int DEPENDENCY_JOB_ID_FIELD_NUMBER = 4;
+        private java.util.List<java.lang.Long> dependencyJobId_;
 
         /**
-         * <code>repeated int64 dependency_jobids = 4 [packed = true];</code>
+         * <code>repeated int64 dependency_job_id = 4 [packed = true];</code>
          */
-        public java.util.List<java.lang.Long> getDependencyJobidsList() {
-            return dependencyJobids_;
+        public java.util.List<java.lang.Long> getDependencyJobIdList() {
+            return dependencyJobId_;
         }
 
         /**
-         * <code>repeated int64 dependency_jobids = 4 [packed = true];</code>
+         * <code>repeated int64 dependency_job_id = 4 [packed = true];</code>
          */
-        public int getDependencyJobidsCount() {
-            return dependencyJobids_.size();
+        public int getDependencyJobIdCount() {
+            return dependencyJobId_.size();
         }
 
         /**
-         * <code>repeated int64 dependency_jobids = 4 [packed = true];</code>
+         * <code>repeated int64 dependency_job_id = 4 [packed = true];</code>
          */
-        public long getDependencyJobids(int index) {
-            return dependencyJobids_.get(index);
+        public long getDependencyJobId(int index) {
+            return dependencyJobId_.get(index);
         }
 
-        private int dependencyJobidsMemoizedSerializedSize = -1;
+        private int dependencyJobIdMemoizedSerializedSize = -1;
 
         public static final int APP_NAME_FIELD_NUMBER = 5;
         private java.lang.Object appName_;
@@ -1001,14 +993,14 @@ public final class ModifyJobProtos {
         private long originJobId_;
 
         /**
-         * <code>required int64 origin_job_id = 18;</code>
+         * <code>optional int64 origin_job_id = 18;</code>
          */
         public boolean hasOriginJobId() {
             return ((bitField0_ & 0x00010000) == 0x00010000);
         }
 
         /**
-         * <code>required int64 origin_job_id = 18;</code>
+         * <code>optional int64 origin_job_id = 18;</code>
          */
         public long getOriginJobId() {
             return originJobId_;
@@ -1018,14 +1010,14 @@ public final class ModifyJobProtos {
         private java.lang.Object commonDependStrategy_;
 
         /**
-         * <code>required string common_depend_strategy = 19;</code>
+         * <code>optional string common_depend_strategy = 19;</code>
          */
         public boolean hasCommonDependStrategy() {
             return ((bitField0_ & 0x00020000) == 0x00020000);
         }
 
         /**
-         * <code>required string common_depend_strategy = 19;</code>
+         * <code>optional string common_depend_strategy = 19;</code>
          */
         public java.lang.String getCommonDependStrategy() {
             java.lang.Object ref = commonDependStrategy_;
@@ -1042,7 +1034,7 @@ public final class ModifyJobProtos {
         }
 
         /**
-         * <code>required string common_depend_strategy = 19;</code>
+         * <code>optional string common_depend_strategy = 19;</code>
          */
         public com.google.protobuf.ByteString getCommonDependStrategyBytes() {
             java.lang.Object ref = commonDependStrategy_;
@@ -1059,14 +1051,14 @@ public final class ModifyJobProtos {
         private java.lang.Object lastDependStrategy_;
 
         /**
-         * <code>required string last_depend_strategy = 20;</code>
+         * <code>optional string last_depend_strategy = 20;</code>
          */
         public boolean hasLastDependStrategy() {
             return ((bitField0_ & 0x00040000) == 0x00040000);
         }
 
         /**
-         * <code>required string last_depend_strategy = 20;</code>
+         * <code>optional string last_depend_strategy = 20;</code>
          */
         public java.lang.String getLastDependStrategy() {
             java.lang.Object ref = lastDependStrategy_;
@@ -1083,7 +1075,7 @@ public final class ModifyJobProtos {
         }
 
         /**
-         * <code>required string last_depend_strategy = 20;</code>
+         * <code>optional string last_depend_strategy = 20;</code>
          */
         public com.google.protobuf.ByteString getLastDependStrategyBytes() {
             java.lang.Object ref = lastDependStrategy_;
@@ -1097,41 +1089,27 @@ public final class ModifyJobProtos {
         }
 
         public static final int PARAMETERS_FIELD_NUMBER = 21;
-        private java.util.List<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry> parameters_;
+        private com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry parameters_;
 
         /**
-         * <code>repeated .MapEntry parameters = 21;</code>
+         * <code>optional .MapEntry parameters = 21;</code>
          */
-        public java.util.List<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry> getParametersList() {
+        public boolean hasParameters() {
+            return ((bitField0_ & 0x00080000) == 0x00080000);
+        }
+
+        /**
+         * <code>optional .MapEntry parameters = 21;</code>
+         */
+        public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry getParameters() {
             return parameters_;
         }
 
         /**
-         * <code>repeated .MapEntry parameters = 21;</code>
+         * <code>optional .MapEntry parameters = 21;</code>
          */
-        public java.util.List<? extends com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder> getParametersOrBuilderList() {
+        public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder getParametersOrBuilder() {
             return parameters_;
-        }
-
-        /**
-         * <code>repeated .MapEntry parameters = 21;</code>
-         */
-        public int getParametersCount() {
-            return parameters_.size();
-        }
-
-        /**
-         * <code>repeated .MapEntry parameters = 21;</code>
-         */
-        public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry getParameters(int index) {
-            return parameters_.get(index);
-        }
-
-        /**
-         * <code>repeated .MapEntry parameters = 21;</code>
-         */
-        public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder getParametersOrBuilder(int index) {
-            return parameters_.get(index);
         }
 
         public static final int FIXED_DELAY_FIELD_NUMBER = 22;
@@ -1141,7 +1119,7 @@ public final class ModifyJobProtos {
          * <code>optional int32 fixed_delay = 22;</code>
          */
         public boolean hasFixedDelay() {
-            return ((bitField0_ & 0x00080000) == 0x00080000);
+            return ((bitField0_ & 0x00100000) == 0x00100000);
         }
 
         /**
@@ -1155,7 +1133,7 @@ public final class ModifyJobProtos {
             jobId_ = 0L;
             jobName_ = "";
             cronExpression_ = "";
-            dependencyJobids_ = java.util.Collections.emptyList();
+            dependencyJobId_ = java.util.Collections.emptyList();
             appName_ = "";
             appKey_ = "";
             user_ = "";
@@ -1172,7 +1150,7 @@ public final class ModifyJobProtos {
             originJobId_ = 0L;
             commonDependStrategy_ = "";
             lastDependStrategy_ = "";
-            parameters_ = java.util.Collections.emptyList();
+            parameters_ = com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.getDefaultInstance();
             fixedDelay_ = 0;
         }
 
@@ -1189,20 +1167,8 @@ public final class ModifyJobProtos {
                 memoizedIsInitialized = 0;
                 return false;
             }
-            if (!hasOriginJobId()) {
-                memoizedIsInitialized = 0;
-                return false;
-            }
-            if (!hasCommonDependStrategy()) {
-                memoizedIsInitialized = 0;
-                return false;
-            }
-            if (!hasLastDependStrategy()) {
-                memoizedIsInitialized = 0;
-                return false;
-            }
-            for (int i = 0; i < getParametersCount(); i++) {
-                if (!getParameters(i).isInitialized()) {
+            if (hasParameters()) {
+                if (!getParameters().isInitialized()) {
                     memoizedIsInitialized = 0;
                     return false;
                 }
@@ -1222,12 +1188,12 @@ public final class ModifyJobProtos {
             if (((bitField0_ & 0x00000004) == 0x00000004)) {
                 output.writeBytes(3, getCronExpressionBytes());
             }
-            if (getDependencyJobidsList().size() > 0) {
+            if (getDependencyJobIdList().size() > 0) {
                 output.writeRawVarint32(34);
-                output.writeRawVarint32(dependencyJobidsMemoizedSerializedSize);
+                output.writeRawVarint32(dependencyJobIdMemoizedSerializedSize);
             }
-            for (int i = 0; i < dependencyJobids_.size(); i++) {
-                output.writeInt64NoTag(dependencyJobids_.get(i));
+            for (int i = 0; i < dependencyJobId_.size(); i++) {
+                output.writeInt64NoTag(dependencyJobId_.get(i));
             }
             if (((bitField0_ & 0x00000008) == 0x00000008)) {
                 output.writeBytes(5, getAppNameBytes());
@@ -1277,10 +1243,10 @@ public final class ModifyJobProtos {
             if (((bitField0_ & 0x00040000) == 0x00040000)) {
                 output.writeBytes(20, getLastDependStrategyBytes());
             }
-            for (int i = 0; i < parameters_.size(); i++) {
-                output.writeMessage(21, parameters_.get(i));
-            }
             if (((bitField0_ & 0x00080000) == 0x00080000)) {
+                output.writeMessage(21, parameters_);
+            }
+            if (((bitField0_ & 0x00100000) == 0x00100000)) {
                 output.writeInt32(22, fixedDelay_);
             }
             getUnknownFields().writeTo(output);
@@ -1305,15 +1271,15 @@ public final class ModifyJobProtos {
             }
             {
                 int dataSize = 0;
-                for (int i = 0; i < dependencyJobids_.size(); i++) {
-                    dataSize += com.google.protobuf.CodedOutputStream.computeInt64SizeNoTag(dependencyJobids_.get(i));
+                for (int i = 0; i < dependencyJobId_.size(); i++) {
+                    dataSize += com.google.protobuf.CodedOutputStream.computeInt64SizeNoTag(dependencyJobId_.get(i));
                 }
                 size += dataSize;
-                if (!getDependencyJobidsList().isEmpty()) {
+                if (!getDependencyJobIdList().isEmpty()) {
                     size += 1;
                     size += com.google.protobuf.CodedOutputStream.computeInt32SizeNoTag(dataSize);
                 }
-                dependencyJobidsMemoizedSerializedSize = dataSize;
+                dependencyJobIdMemoizedSerializedSize = dataSize;
             }
             if (((bitField0_ & 0x00000008) == 0x00000008)) {
                 size += com.google.protobuf.CodedOutputStream.computeBytesSize(5, getAppNameBytes());
@@ -1363,10 +1329,10 @@ public final class ModifyJobProtos {
             if (((bitField0_ & 0x00040000) == 0x00040000)) {
                 size += com.google.protobuf.CodedOutputStream.computeBytesSize(20, getLastDependStrategyBytes());
             }
-            for (int i = 0; i < parameters_.size(); i++) {
-                size += com.google.protobuf.CodedOutputStream.computeMessageSize(21, parameters_.get(i));
-            }
             if (((bitField0_ & 0x00080000) == 0x00080000)) {
+                size += com.google.protobuf.CodedOutputStream.computeMessageSize(21, parameters_);
+            }
+            if (((bitField0_ & 0x00100000) == 0x00100000)) {
                 size += com.google.protobuf.CodedOutputStream.computeInt32Size(22, fixedDelay_);
             }
             size += getUnknownFields().getSerializedSize();
@@ -1498,7 +1464,7 @@ public final class ModifyJobProtos {
                 bitField0_ = (bitField0_ & ~0x00000002);
                 cronExpression_ = "";
                 bitField0_ = (bitField0_ & ~0x00000004);
-                dependencyJobids_ = java.util.Collections.emptyList();
+                dependencyJobId_ = java.util.Collections.emptyList();
                 bitField0_ = (bitField0_ & ~0x00000008);
                 appName_ = "";
                 bitField0_ = (bitField0_ & ~0x00000010);
@@ -1533,11 +1499,11 @@ public final class ModifyJobProtos {
                 lastDependStrategy_ = "";
                 bitField0_ = (bitField0_ & ~0x00080000);
                 if (parametersBuilder_ == null) {
-                    parameters_ = java.util.Collections.emptyList();
-                    bitField0_ = (bitField0_ & ~0x00100000);
+                    parameters_ = com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.getDefaultInstance();
                 } else {
                     parametersBuilder_.clear();
                 }
+                bitField0_ = (bitField0_ & ~0x00100000);
                 fixedDelay_ = 0;
                 bitField0_ = (bitField0_ & ~0x00200000);
                 return this;
@@ -1581,10 +1547,10 @@ public final class ModifyJobProtos {
                 }
                 result.cronExpression_ = cronExpression_;
                 if (((bitField0_ & 0x00000008) == 0x00000008)) {
-                    dependencyJobids_ = java.util.Collections.unmodifiableList(dependencyJobids_);
+                    dependencyJobId_ = java.util.Collections.unmodifiableList(dependencyJobId_);
                     bitField0_ = (bitField0_ & ~0x00000008);
                 }
-                result.dependencyJobids_ = dependencyJobids_;
+                result.dependencyJobId_ = dependencyJobId_;
                 if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
                     to_bitField0_ |= 0x00000008;
                 }
@@ -1649,17 +1615,16 @@ public final class ModifyJobProtos {
                     to_bitField0_ |= 0x00040000;
                 }
                 result.lastDependStrategy_ = lastDependStrategy_;
+                if (((from_bitField0_ & 0x00100000) == 0x00100000)) {
+                    to_bitField0_ |= 0x00080000;
+                }
                 if (parametersBuilder_ == null) {
-                    if (((bitField0_ & 0x00100000) == 0x00100000)) {
-                        parameters_ = java.util.Collections.unmodifiableList(parameters_);
-                        bitField0_ = (bitField0_ & ~0x00100000);
-                    }
                     result.parameters_ = parameters_;
                 } else {
                     result.parameters_ = parametersBuilder_.build();
                 }
                 if (((from_bitField0_ & 0x00200000) == 0x00200000)) {
-                    to_bitField0_ |= 0x00080000;
+                    to_bitField0_ |= 0x00100000;
                 }
                 result.fixedDelay_ = fixedDelay_;
                 result.bitField0_ = to_bitField0_;
@@ -1692,13 +1657,13 @@ public final class ModifyJobProtos {
                     cronExpression_ = other.cronExpression_;
                     onChanged();
                 }
-                if (!other.dependencyJobids_.isEmpty()) {
-                    if (dependencyJobids_.isEmpty()) {
-                        dependencyJobids_ = other.dependencyJobids_;
+                if (!other.dependencyJobId_.isEmpty()) {
+                    if (dependencyJobId_.isEmpty()) {
+                        dependencyJobId_ = other.dependencyJobId_;
                         bitField0_ = (bitField0_ & ~0x00000008);
                     } else {
-                        ensureDependencyJobidsIsMutable();
-                        dependencyJobids_.addAll(other.dependencyJobids_);
+                        ensureDependencyJobIdIsMutable();
+                        dependencyJobId_.addAll(other.dependencyJobId_);
                     }
                     onChanged();
                 }
@@ -1764,29 +1729,8 @@ public final class ModifyJobProtos {
                     lastDependStrategy_ = other.lastDependStrategy_;
                     onChanged();
                 }
-                if (parametersBuilder_ == null) {
-                    if (!other.parameters_.isEmpty()) {
-                        if (parameters_.isEmpty()) {
-                            parameters_ = other.parameters_;
-                            bitField0_ = (bitField0_ & ~0x00100000);
-                        } else {
-                            ensureParametersIsMutable();
-                            parameters_.addAll(other.parameters_);
-                        }
-                        onChanged();
-                    }
-                } else {
-                    if (!other.parameters_.isEmpty()) {
-                        if (parametersBuilder_.isEmpty()) {
-                            parametersBuilder_.dispose();
-                            parametersBuilder_ = null;
-                            parameters_ = other.parameters_;
-                            bitField0_ = (bitField0_ & ~0x00100000);
-                            parametersBuilder_ = com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ? getParametersFieldBuilder() : null;
-                        } else {
-                            parametersBuilder_.addAllMessages(other.parameters_);
-                        }
-                    }
+                if (other.hasParameters()) {
+                    mergeParameters(other.getParameters());
                 }
                 if (other.hasFixedDelay()) {
                     setFixedDelay(other.getFixedDelay());
@@ -1800,20 +1744,8 @@ public final class ModifyJobProtos {
 
                     return false;
                 }
-                if (!hasOriginJobId()) {
-
-                    return false;
-                }
-                if (!hasCommonDependStrategy()) {
-
-                    return false;
-                }
-                if (!hasLastDependStrategy()) {
-
-                    return false;
-                }
-                for (int i = 0; i < getParametersCount(); i++) {
-                    if (!getParameters(i).isInitialized()) {
+                if (hasParameters()) {
+                    if (!getParameters().isInitialized()) {
 
                         return false;
                     }
@@ -2027,71 +1959,71 @@ public final class ModifyJobProtos {
                 return this;
             }
 
-            private java.util.List<java.lang.Long> dependencyJobids_ = java.util.Collections.emptyList();
+            private java.util.List<java.lang.Long> dependencyJobId_ = java.util.Collections.emptyList();
 
-            private void ensureDependencyJobidsIsMutable() {
+            private void ensureDependencyJobIdIsMutable() {
                 if (!((bitField0_ & 0x00000008) == 0x00000008)) {
-                    dependencyJobids_ = new java.util.ArrayList<java.lang.Long>(dependencyJobids_);
+                    dependencyJobId_ = new java.util.ArrayList<java.lang.Long>(dependencyJobId_);
                     bitField0_ |= 0x00000008;
                 }
             }
 
             /**
-             * <code>repeated int64 dependency_jobids = 4 [packed = true];</code>
+             * <code>repeated int64 dependency_job_id = 4 [packed = true];</code>
              */
-            public java.util.List<java.lang.Long> getDependencyJobidsList() {
-                return java.util.Collections.unmodifiableList(dependencyJobids_);
+            public java.util.List<java.lang.Long> getDependencyJobIdList() {
+                return java.util.Collections.unmodifiableList(dependencyJobId_);
             }
 
             /**
-             * <code>repeated int64 dependency_jobids = 4 [packed = true];</code>
+             * <code>repeated int64 dependency_job_id = 4 [packed = true];</code>
              */
-            public int getDependencyJobidsCount() {
-                return dependencyJobids_.size();
+            public int getDependencyJobIdCount() {
+                return dependencyJobId_.size();
             }
 
             /**
-             * <code>repeated int64 dependency_jobids = 4 [packed = true];</code>
+             * <code>repeated int64 dependency_job_id = 4 [packed = true];</code>
              */
-            public long getDependencyJobids(int index) {
-                return dependencyJobids_.get(index);
+            public long getDependencyJobId(int index) {
+                return dependencyJobId_.get(index);
             }
 
             /**
-             * <code>repeated int64 dependency_jobids = 4 [packed = true];</code>
+             * <code>repeated int64 dependency_job_id = 4 [packed = true];</code>
              */
-            public Builder setDependencyJobids(int index, long value) {
-                ensureDependencyJobidsIsMutable();
-                dependencyJobids_.set(index, value);
+            public Builder setDependencyJobId(int index, long value) {
+                ensureDependencyJobIdIsMutable();
+                dependencyJobId_.set(index, value);
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>repeated int64 dependency_jobids = 4 [packed = true];</code>
+             * <code>repeated int64 dependency_job_id = 4 [packed = true];</code>
              */
-            public Builder addDependencyJobids(long value) {
-                ensureDependencyJobidsIsMutable();
-                dependencyJobids_.add(value);
+            public Builder addDependencyJobId(long value) {
+                ensureDependencyJobIdIsMutable();
+                dependencyJobId_.add(value);
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>repeated int64 dependency_jobids = 4 [packed = true];</code>
+             * <code>repeated int64 dependency_job_id = 4 [packed = true];</code>
              */
-            public Builder addAllDependencyJobids(java.lang.Iterable<? extends java.lang.Long> values) {
-                ensureDependencyJobidsIsMutable();
-                com.google.protobuf.AbstractMessageLite.Builder.addAll(values, dependencyJobids_);
+            public Builder addAllDependencyJobId(java.lang.Iterable<? extends java.lang.Long> values) {
+                ensureDependencyJobIdIsMutable();
+                com.google.protobuf.AbstractMessageLite.Builder.addAll(values, dependencyJobId_);
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>repeated int64 dependency_jobids = 4 [packed = true];</code>
+             * <code>repeated int64 dependency_job_id = 4 [packed = true];</code>
              */
-            public Builder clearDependencyJobids() {
-                dependencyJobids_ = java.util.Collections.emptyList();
+            public Builder clearDependencyJobId() {
+                dependencyJobId_ = java.util.Collections.emptyList();
                 bitField0_ = (bitField0_ & ~0x00000008);
                 onChanged();
                 return this;
@@ -2768,21 +2700,21 @@ public final class ModifyJobProtos {
             private long originJobId_;
 
             /**
-             * <code>required int64 origin_job_id = 18;</code>
+             * <code>optional int64 origin_job_id = 18;</code>
              */
             public boolean hasOriginJobId() {
                 return ((bitField0_ & 0x00020000) == 0x00020000);
             }
 
             /**
-             * <code>required int64 origin_job_id = 18;</code>
+             * <code>optional int64 origin_job_id = 18;</code>
              */
             public long getOriginJobId() {
                 return originJobId_;
             }
 
             /**
-             * <code>required int64 origin_job_id = 18;</code>
+             * <code>optional int64 origin_job_id = 18;</code>
              */
             public Builder setOriginJobId(long value) {
                 bitField0_ |= 0x00020000;
@@ -2792,7 +2724,7 @@ public final class ModifyJobProtos {
             }
 
             /**
-             * <code>required int64 origin_job_id = 18;</code>
+             * <code>optional int64 origin_job_id = 18;</code>
              */
             public Builder clearOriginJobId() {
                 bitField0_ = (bitField0_ & ~0x00020000);
@@ -2804,14 +2736,14 @@ public final class ModifyJobProtos {
             private java.lang.Object commonDependStrategy_ = "";
 
             /**
-             * <code>required string common_depend_strategy = 19;</code>
+             * <code>optional string common_depend_strategy = 19;</code>
              */
             public boolean hasCommonDependStrategy() {
                 return ((bitField0_ & 0x00040000) == 0x00040000);
             }
 
             /**
-             * <code>required string common_depend_strategy = 19;</code>
+             * <code>optional string common_depend_strategy = 19;</code>
              */
             public java.lang.String getCommonDependStrategy() {
                 java.lang.Object ref = commonDependStrategy_;
@@ -2828,7 +2760,7 @@ public final class ModifyJobProtos {
             }
 
             /**
-             * <code>required string common_depend_strategy = 19;</code>
+             * <code>optional string common_depend_strategy = 19;</code>
              */
             public com.google.protobuf.ByteString getCommonDependStrategyBytes() {
                 java.lang.Object ref = commonDependStrategy_;
@@ -2842,7 +2774,7 @@ public final class ModifyJobProtos {
             }
 
             /**
-             * <code>required string common_depend_strategy = 19;</code>
+             * <code>optional string common_depend_strategy = 19;</code>
              */
             public Builder setCommonDependStrategy(java.lang.String value) {
                 if (value == null) {
@@ -2855,7 +2787,7 @@ public final class ModifyJobProtos {
             }
 
             /**
-             * <code>required string common_depend_strategy = 19;</code>
+             * <code>optional string common_depend_strategy = 19;</code>
              */
             public Builder clearCommonDependStrategy() {
                 bitField0_ = (bitField0_ & ~0x00040000);
@@ -2865,7 +2797,7 @@ public final class ModifyJobProtos {
             }
 
             /**
-             * <code>required string common_depend_strategy = 19;</code>
+             * <code>optional string common_depend_strategy = 19;</code>
              */
             public Builder setCommonDependStrategyBytes(com.google.protobuf.ByteString value) {
                 if (value == null) {
@@ -2880,14 +2812,14 @@ public final class ModifyJobProtos {
             private java.lang.Object lastDependStrategy_ = "";
 
             /**
-             * <code>required string last_depend_strategy = 20;</code>
+             * <code>optional string last_depend_strategy = 20;</code>
              */
             public boolean hasLastDependStrategy() {
                 return ((bitField0_ & 0x00080000) == 0x00080000);
             }
 
             /**
-             * <code>required string last_depend_strategy = 20;</code>
+             * <code>optional string last_depend_strategy = 20;</code>
              */
             public java.lang.String getLastDependStrategy() {
                 java.lang.Object ref = lastDependStrategy_;
@@ -2904,7 +2836,7 @@ public final class ModifyJobProtos {
             }
 
             /**
-             * <code>required string last_depend_strategy = 20;</code>
+             * <code>optional string last_depend_strategy = 20;</code>
              */
             public com.google.protobuf.ByteString getLastDependStrategyBytes() {
                 java.lang.Object ref = lastDependStrategy_;
@@ -2918,7 +2850,7 @@ public final class ModifyJobProtos {
             }
 
             /**
-             * <code>required string last_depend_strategy = 20;</code>
+             * <code>optional string last_depend_strategy = 20;</code>
              */
             public Builder setLastDependStrategy(java.lang.String value) {
                 if (value == null) {
@@ -2931,7 +2863,7 @@ public final class ModifyJobProtos {
             }
 
             /**
-             * <code>required string last_depend_strategy = 20;</code>
+             * <code>optional string last_depend_strategy = 20;</code>
              */
             public Builder clearLastDependStrategy() {
                 bitField0_ = (bitField0_ & ~0x00080000);
@@ -2941,7 +2873,7 @@ public final class ModifyJobProtos {
             }
 
             /**
-             * <code>required string last_depend_strategy = 20;</code>
+             * <code>optional string last_depend_strategy = 20;</code>
              */
             public Builder setLastDependStrategyBytes(com.google.protobuf.ByteString value) {
                 if (value == null) {
@@ -2953,239 +2885,119 @@ public final class ModifyJobProtos {
                 return this;
             }
 
-            private java.util.List<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry> parameters_ = java.util.Collections.emptyList();
-
-            private void ensureParametersIsMutable() {
-                if (!((bitField0_ & 0x00100000) == 0x00100000)) {
-                    parameters_ = new java.util.ArrayList<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry>(parameters_);
-                    bitField0_ |= 0x00100000;
-                }
-            }
-
-            private com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder> parametersBuilder_;
+            private com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry parameters_ = com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry
+                    .getDefaultInstance();
+            private com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder> parametersBuilder_;
 
             /**
-             * <code>repeated .MapEntry parameters = 21;</code>
+             * <code>optional .MapEntry parameters = 21;</code>
              */
-            public java.util.List<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry> getParametersList() {
+            public boolean hasParameters() {
+                return ((bitField0_ & 0x00100000) == 0x00100000);
+            }
+
+            /**
+             * <code>optional .MapEntry parameters = 21;</code>
+             */
+            public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry getParameters() {
                 if (parametersBuilder_ == null) {
-                    return java.util.Collections.unmodifiableList(parameters_);
+                    return parameters_;
                 } else {
-                    return parametersBuilder_.getMessageList();
+                    return parametersBuilder_.getMessage();
                 }
             }
 
             /**
-             * <code>repeated .MapEntry parameters = 21;</code>
+             * <code>optional .MapEntry parameters = 21;</code>
              */
-            public int getParametersCount() {
-                if (parametersBuilder_ == null) {
-                    return parameters_.size();
-                } else {
-                    return parametersBuilder_.getCount();
-                }
-            }
-
-            /**
-             * <code>repeated .MapEntry parameters = 21;</code>
-             */
-            public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry getParameters(int index) {
-                if (parametersBuilder_ == null) {
-                    return parameters_.get(index);
-                } else {
-                    return parametersBuilder_.getMessage(index);
-                }
-            }
-
-            /**
-             * <code>repeated .MapEntry parameters = 21;</code>
-             */
-            public Builder setParameters(int index, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry value) {
+            public Builder setParameters(com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry value) {
                 if (parametersBuilder_ == null) {
                     if (value == null) {
                         throw new NullPointerException();
                     }
-                    ensureParametersIsMutable();
-                    parameters_.set(index, value);
+                    parameters_ = value;
                     onChanged();
                 } else {
-                    parametersBuilder_.setMessage(index, value);
+                    parametersBuilder_.setMessage(value);
                 }
+                bitField0_ |= 0x00100000;
                 return this;
             }
 
             /**
-             * <code>repeated .MapEntry parameters = 21;</code>
+             * <code>optional .MapEntry parameters = 21;</code>
              */
-            public Builder setParameters(int index, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder builderForValue) {
+            public Builder setParameters(com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder builderForValue) {
                 if (parametersBuilder_ == null) {
-                    ensureParametersIsMutable();
-                    parameters_.set(index, builderForValue.build());
+                    parameters_ = builderForValue.build();
                     onChanged();
                 } else {
-                    parametersBuilder_.setMessage(index, builderForValue.build());
+                    parametersBuilder_.setMessage(builderForValue.build());
                 }
+                bitField0_ |= 0x00100000;
                 return this;
             }
 
             /**
-             * <code>repeated .MapEntry parameters = 21;</code>
+             * <code>optional .MapEntry parameters = 21;</code>
              */
-            public Builder addParameters(com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry value) {
+            public Builder mergeParameters(com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry value) {
                 if (parametersBuilder_ == null) {
-                    if (value == null) {
-                        throw new NullPointerException();
+                    if (((bitField0_ & 0x00100000) == 0x00100000)
+                            && parameters_ != com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.getDefaultInstance()) {
+                        parameters_ = com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.newBuilder(parameters_).mergeFrom(value).buildPartial();
+                    } else {
+                        parameters_ = value;
                     }
-                    ensureParametersIsMutable();
-                    parameters_.add(value);
                     onChanged();
                 } else {
-                    parametersBuilder_.addMessage(value);
+                    parametersBuilder_.mergeFrom(value);
                 }
+                bitField0_ |= 0x00100000;
                 return this;
             }
 
             /**
-             * <code>repeated .MapEntry parameters = 21;</code>
-             */
-            public Builder addParameters(int index, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry value) {
-                if (parametersBuilder_ == null) {
-                    if (value == null) {
-                        throw new NullPointerException();
-                    }
-                    ensureParametersIsMutable();
-                    parameters_.add(index, value);
-                    onChanged();
-                } else {
-                    parametersBuilder_.addMessage(index, value);
-                }
-                return this;
-            }
-
-            /**
-             * <code>repeated .MapEntry parameters = 21;</code>
-             */
-            public Builder addParameters(com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder builderForValue) {
-                if (parametersBuilder_ == null) {
-                    ensureParametersIsMutable();
-                    parameters_.add(builderForValue.build());
-                    onChanged();
-                } else {
-                    parametersBuilder_.addMessage(builderForValue.build());
-                }
-                return this;
-            }
-
-            /**
-             * <code>repeated .MapEntry parameters = 21;</code>
-             */
-            public Builder addParameters(int index, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder builderForValue) {
-                if (parametersBuilder_ == null) {
-                    ensureParametersIsMutable();
-                    parameters_.add(index, builderForValue.build());
-                    onChanged();
-                } else {
-                    parametersBuilder_.addMessage(index, builderForValue.build());
-                }
-                return this;
-            }
-
-            /**
-             * <code>repeated .MapEntry parameters = 21;</code>
-             */
-            public Builder addAllParameters(java.lang.Iterable<? extends com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry> values) {
-                if (parametersBuilder_ == null) {
-                    ensureParametersIsMutable();
-                    com.google.protobuf.AbstractMessageLite.Builder.addAll(values, parameters_);
-                    onChanged();
-                } else {
-                    parametersBuilder_.addAllMessages(values);
-                }
-                return this;
-            }
-
-            /**
-             * <code>repeated .MapEntry parameters = 21;</code>
+             * <code>optional .MapEntry parameters = 21;</code>
              */
             public Builder clearParameters() {
                 if (parametersBuilder_ == null) {
-                    parameters_ = java.util.Collections.emptyList();
-                    bitField0_ = (bitField0_ & ~0x00100000);
+                    parameters_ = com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.getDefaultInstance();
                     onChanged();
                 } else {
                     parametersBuilder_.clear();
                 }
+                bitField0_ = (bitField0_ & ~0x00100000);
                 return this;
             }
 
             /**
-             * <code>repeated .MapEntry parameters = 21;</code>
+             * <code>optional .MapEntry parameters = 21;</code>
              */
-            public Builder removeParameters(int index) {
-                if (parametersBuilder_ == null) {
-                    ensureParametersIsMutable();
-                    parameters_.remove(index);
-                    onChanged();
-                } else {
-                    parametersBuilder_.remove(index);
-                }
-                return this;
+            public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder getParametersBuilder() {
+                bitField0_ |= 0x00100000;
+                onChanged();
+                return getParametersFieldBuilder().getBuilder();
             }
 
             /**
-             * <code>repeated .MapEntry parameters = 21;</code>
+             * <code>optional .MapEntry parameters = 21;</code>
              */
-            public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder getParametersBuilder(int index) {
-                return getParametersFieldBuilder().getBuilder(index);
-            }
-
-            /**
-             * <code>repeated .MapEntry parameters = 21;</code>
-             */
-            public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder getParametersOrBuilder(int index) {
-                if (parametersBuilder_ == null) {
-                    return parameters_.get(index);
-                } else {
-                    return parametersBuilder_.getMessageOrBuilder(index);
-                }
-            }
-
-            /**
-             * <code>repeated .MapEntry parameters = 21;</code>
-             */
-            public java.util.List<? extends com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder> getParametersOrBuilderList() {
+            public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder getParametersOrBuilder() {
                 if (parametersBuilder_ != null) {
-                    return parametersBuilder_.getMessageOrBuilderList();
+                    return parametersBuilder_.getMessageOrBuilder();
                 } else {
-                    return java.util.Collections.unmodifiableList(parameters_);
+                    return parameters_;
                 }
             }
 
             /**
-             * <code>repeated .MapEntry parameters = 21;</code>
+             * <code>optional .MapEntry parameters = 21;</code>
              */
-            public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder addParametersBuilder() {
-                return getParametersFieldBuilder().addBuilder(com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.getDefaultInstance());
-            }
-
-            /**
-             * <code>repeated .MapEntry parameters = 21;</code>
-             */
-            public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder addParametersBuilder(int index) {
-                return getParametersFieldBuilder().addBuilder(index, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.getDefaultInstance());
-            }
-
-            /**
-             * <code>repeated .MapEntry parameters = 21;</code>
-             */
-            public java.util.List<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder> getParametersBuilderList() {
-                return getParametersFieldBuilder().getBuilderList();
-            }
-
-            private com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder> getParametersFieldBuilder() {
+            private com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder> getParametersFieldBuilder() {
                 if (parametersBuilder_ == null) {
-                    parametersBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder>(
-                            parameters_, ((bitField0_ & 0x00100000) == 0x00100000), getParentForChildren(), isClean());
+                    parametersBuilder_ = new com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder>(
+                            getParameters(), getParentForChildren(), isClean());
                     parameters_ = null;
                 }
                 return parametersBuilder_;
@@ -3917,7 +3729,7 @@ public final class ModifyJobProtos {
         java.lang.String[] descriptorData = {
                 "\n\020modify_job.proto\032\017map_entry.proto\"\216\004\n\032" + "RestServerModifyJobRequest\022\016\n\006job_id\030\001 \002"
                         + "(\003\022\020\n\010job_name\030\002 \001(\t\022\027\n\017cron_expression\030"
-                        + "\003 \001(\t\022\035\n\021dependency_jobids\030\004 \003(\003B\002\020\001\022\020\n\010"
+                        + "\003 \001(\t\022\035\n\021dependency_job_id\030\004 \003(\003B\002\020\001\022\020\n\010"
                         + "app_name\030\005 \001(\t\022\017\n\007app_key\030\006 \001(\t\022\014\n\004user\030"
                         + "\007 \001(\t\022\020\n\010job_type\030\010 \001(\t\022\017\n\007command\030\t \001(\t"
                         + "\022\020\n\010group_id\030\n \001(\005\022\023\n\010priority\030\013 \001(\005:\0011\022"
@@ -3925,9 +3737,9 @@ public final class ModifyJobProtos {
                         + "erval\030\r \001(\005:\0013\022\031\n\016failed_retries\030\016 \001(\005:\001"
                         + "0\022\032\n\017failed_interval\030\017 \001(\005:\0013\022\022\n\nstart_t",
                 "ime\030\020 \001(\003\022\020\n\010end_time\030\021 \001(\003\022\025\n\rorigin_jo"
-                        + "b_id\030\022 \002(\003\022\036\n\026common_depend_strategy\030\023 \002"
-                        + "(\t\022\034\n\024last_depend_strategy\030\024 \002(\t\022\035\n\npara"
-                        + "meters\030\025 \003(\0132\t.MapEntry\022\023\n\013fixed_delay\030\026"
+                        + "b_id\030\022 \001(\003\022\036\n\026common_depend_strategy\030\023 \001"
+                        + "(\t\022\034\n\024last_depend_strategy\030\024 \001(\t\022\035\n\npara"
+                        + "meters\030\025 \001(\0132\t.MapEntry\022\023\n\013fixed_delay\030\026"
                         + " \001(\005\"M\n\027ServerModifyJobResponse\022\016\n\006job_i"
                         + "d\030\001 \002(\003\022\017\n\007success\030\002 \002(\010\022\021\n\007message\030\003 \001("
                         + "\t:\000B.\n\033com.mogujie.jarvis.protocolB\017Modi" + "fyJobProtos" };
@@ -3942,7 +3754,7 @@ public final class ModifyJobProtos {
         internal_static_RestServerModifyJobRequest_descriptor = getDescriptor().getMessageTypes().get(0);
         internal_static_RestServerModifyJobRequest_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
                 internal_static_RestServerModifyJobRequest_descriptor,
-                new java.lang.String[] { "JobId", "JobName", "CronExpression", "DependencyJobids", "AppName", "AppKey", "User", "JobType", "Command",
+                new java.lang.String[] { "JobId", "JobName", "CronExpression", "DependencyJobId", "AppName", "AppKey", "User", "JobType", "Command",
                         "GroupId", "Priority", "RejectRetries", "RejectInterval", "FailedRetries", "FailedInterval", "StartTime", "EndTime",
                         "OriginJobId", "CommonDependStrategy", "LastDependStrategy", "Parameters", "FixedDelay", });
         internal_static_ServerModifyJobResponse_descriptor = getDescriptor().getMessageTypes().get(1);

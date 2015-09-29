@@ -1,0 +1,25 @@
+option java_package = "com.mogujie.jarvis.protocol";
+option java_outer_classname = "ModifyDependencyProtos";
+
+
+message DependencyEntry {
+  enum DependencyOperator {
+    ADD = 0;
+    REMOVE = 1;
+  }
+
+  required DependencyOperator operator = 1;
+  required int64 job_id = 2;
+}
+
+message RestServerModifyDependencyRequest {
+    required int64 job_id = 1;
+    repeated DependencyEntry dependency_entry = 2;
+}
+
+
+message ServerModifyDependencyResponse {
+    required int64 job_id = 1;
+    required bool success = 2;
+    optional string message = 3 [default = ""];
+}

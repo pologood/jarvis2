@@ -8,25 +8,24 @@ message RestServerModifyJobRequest {
     required int64 job_id = 1;
     optional string job_name = 2;
     optional string cron_expression = 3;
-    repeated int64 dependency_jobids = 4 [packed=true];
-    optional string app_name = 5;
-    optional string app_key = 6;
-    optional string user = 7;
-    optional string job_type = 8;
-    optional string command = 9;
-    optional int32 group_id = 10;
-    optional int32 priority = 11 [default = 1];
-    optional int32 reject_retries = 12 [default = 0];
-    optional int32 reject_interval = 13 [default = 3];
-    optional int32 failed_retries = 14 [default = 0];
-    optional int32 failed_interval = 15 [default = 3];
-    optional int64 start_time = 16;
-    optional int64 end_time = 17;
-    required int64 origin_job_id = 18;
-    required string common_depend_strategy = 19;
-    required string last_depend_strategy = 20;
-    repeated MapEntry parameters = 21;
-    optional int32 fixed_delay = 22;
+    optional string app_name = 4;
+    optional string app_key = 5;
+    optional string user = 6;
+    optional string job_type = 7;
+    optional string command = 8;
+    optional int32 group_id = 9;
+    optional int32 priority = 10 [default = 1];
+    optional int32 reject_retries = 11 [default = 0];
+    optional int32 reject_interval = 12 [default = 3];
+    optional int32 failed_retries = 13 [default = 0];
+    optional int32 failed_interval = 14 [default = 3];
+    optional int64 start_time = 15;
+    optional int64 end_time = 16;
+    optional int64 origin_job_id = 17;
+    optional string common_depend_strategy = 18;
+    optional string last_depend_strategy = 19;
+    optional MapEntry parameters = 20;
+    optional int32 fixed_delay = 21;
 }
 
 
