@@ -8,19 +8,20 @@
 
 package com.mogujie.jarvis.server.scheduler.dag;
 
+
 /**
  * @author guangming
  *
  */
 public enum DAGJobType {
-    NONE("---"),
+    NONE("---"),          // 立即执行任务？
     TIME("--t"),          // 定时任务
     DEPEND("-d-"),        // 依赖任务
-    DEPEND_TIME("-dt"),
-    CYCLE("c--"),         // 固定延迟任务
-    CYCLE_TIME("c-t"),
-    CYCLE_DEPEND("cd-"),
-    ALL("cdt");
+    DEPEND_TIME("-dt"),   // 定时+依赖任务
+    CYCLE("c--"),         // 循环任务（固定延时）
+    CYCLE_TIME("c-t"),    // not supported
+    CYCLE_DEPEND("cd-"),  // 循环依赖任务
+    ALL("cdt");           // not supported
 
     private static final DAGJobType[] VALS = values();
 
@@ -28,6 +29,16 @@ public enum DAGJobType {
 
     private DAGJobType(String value) {
         this.value = value;
+    }
+
+    public static DAGJobType getInstance(String s) {
+        for (DAGJobType type : VALS) {
+            if (type.value.equals(s)) {
+                return type;
+            }
+        }
+
+        return null;
     }
 
     /**

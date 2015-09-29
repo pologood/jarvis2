@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.configuration.Configuration;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Throwables;
@@ -37,13 +39,13 @@ public abstract class JdbcTask extends AbstractTask {
     protected static int DEFAULT_MAX_QUERY_ROWS = 10000;
     private Connection connection;
     private Statement statement;
+    private static final Logger LOGGER = LogManager.getLogger("worker");
 
     /**
      * @param taskContext
      */
     public JdbcTask(TaskContext taskContext) {
         super(taskContext);
-        // TODO Auto-generated constructor stub
     }
 
     @Override
@@ -106,15 +108,28 @@ public abstract class JdbcTask extends AbstractTask {
                     connection = null;
                 }
             } catch (SQLException e) {
-                // Do nothing
+                LOGGER.warn("Error when close jdbc connection, caused by {}", e.getMessage());
             }
         }
     }
 
     @Override
-    public boolean kill() throws TaskException {
-        // TODO Auto-generated method stub
-        return false;
+    public boolean kill() {
+        try {
+            if (statement != null) {
+                statement.close();
+                statement = null;
+            }
+            if (connection != null) {
+                connection.close();
+                connection = null;
+            }
+        } catch (SQLException e) {
+            LOGGER.warn("Error when close jdbc connection, caused by {}", e.getMessage());
+            return false;
+        }
+
+        return true;
     }
 
     protected abstract String getTaskType();
