@@ -22,7 +22,7 @@ message RestServerModifyJobRequest {
     optional int64 start_time = 15;
     optional int64 end_time = 16;
     optional int64 origin_job_id = 17;
-    optional MapEntry parameters = 18;
+    repeated MapEntry parameters = 18;
     optional int32 fixed_delay = 19;
 }
 

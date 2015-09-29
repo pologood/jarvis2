@@ -220,19 +220,29 @@ public final class ModifyJobProtos {
         long getOriginJobId();
 
         /**
-         * <code>optional .MapEntry parameters = 18;</code>
+         * <code>repeated .MapEntry parameters = 18;</code>
          */
-        boolean hasParameters();
+        java.util.List<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry> getParametersList();
 
         /**
-         * <code>optional .MapEntry parameters = 18;</code>
+         * <code>repeated .MapEntry parameters = 18;</code>
          */
-        com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry getParameters();
+        com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry getParameters(int index);
 
         /**
-         * <code>optional .MapEntry parameters = 18;</code>
+         * <code>repeated .MapEntry parameters = 18;</code>
          */
-        com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder getParametersOrBuilder();
+        int getParametersCount();
+
+        /**
+         * <code>repeated .MapEntry parameters = 18;</code>
+         */
+        java.util.List<? extends com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder> getParametersOrBuilderList();
+
+        /**
+         * <code>repeated .MapEntry parameters = 18;</code>
+         */
+        com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder getParametersOrBuilder(int index);
 
         /**
          * <code>optional int32 fixed_delay = 19;</code>
@@ -281,6 +291,7 @@ public final class ModifyJobProtos {
         private RestServerModifyJobRequest(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
                 throws com.google.protobuf.InvalidProtocolBufferException {
             initFields();
+            int mutable_bitField0_ = 0;
             com.google.protobuf.UnknownFieldSet.Builder unknownFields = com.google.protobuf.UnknownFieldSet.newBuilder();
             try {
                 boolean done = false;
@@ -389,20 +400,15 @@ public final class ModifyJobProtos {
                             break;
                         }
                         case 146: {
-                            com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder subBuilder = null;
-                            if (((bitField0_ & 0x00020000) == 0x00020000)) {
-                                subBuilder = parameters_.toBuilder();
+                            if (!((mutable_bitField0_ & 0x00020000) == 0x00020000)) {
+                                parameters_ = new java.util.ArrayList<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry>();
+                                mutable_bitField0_ |= 0x00020000;
                             }
-                            parameters_ = input.readMessage(com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.PARSER, extensionRegistry);
-                            if (subBuilder != null) {
-                                subBuilder.mergeFrom(parameters_);
-                                parameters_ = subBuilder.buildPartial();
-                            }
-                            bitField0_ |= 0x00020000;
+                            parameters_.add(input.readMessage(com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.PARSER, extensionRegistry));
                             break;
                         }
                         case 152: {
-                            bitField0_ |= 0x00040000;
+                            bitField0_ |= 0x00020000;
                             fixedDelay_ = input.readInt32();
                             break;
                         }
@@ -413,6 +419,9 @@ public final class ModifyJobProtos {
             } catch (java.io.IOException e) {
                 throw new com.google.protobuf.InvalidProtocolBufferException(e.getMessage()).setUnfinishedMessage(this);
             } finally {
+                if (((mutable_bitField0_ & 0x00020000) == 0x00020000)) {
+                    parameters_ = java.util.Collections.unmodifiableList(parameters_);
+                }
                 this.unknownFields = unknownFields.build();
                 makeExtensionsImmutable();
             }
@@ -899,27 +908,41 @@ public final class ModifyJobProtos {
         }
 
         public static final int PARAMETERS_FIELD_NUMBER = 18;
-        private com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry parameters_;
+        private java.util.List<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry> parameters_;
 
         /**
-         * <code>optional .MapEntry parameters = 18;</code>
+         * <code>repeated .MapEntry parameters = 18;</code>
          */
-        public boolean hasParameters() {
-            return ((bitField0_ & 0x00020000) == 0x00020000);
-        }
-
-        /**
-         * <code>optional .MapEntry parameters = 18;</code>
-         */
-        public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry getParameters() {
+        public java.util.List<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry> getParametersList() {
             return parameters_;
         }
 
         /**
-         * <code>optional .MapEntry parameters = 18;</code>
+         * <code>repeated .MapEntry parameters = 18;</code>
          */
-        public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder getParametersOrBuilder() {
+        public java.util.List<? extends com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder> getParametersOrBuilderList() {
             return parameters_;
+        }
+
+        /**
+         * <code>repeated .MapEntry parameters = 18;</code>
+         */
+        public int getParametersCount() {
+            return parameters_.size();
+        }
+
+        /**
+         * <code>repeated .MapEntry parameters = 18;</code>
+         */
+        public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry getParameters(int index) {
+            return parameters_.get(index);
+        }
+
+        /**
+         * <code>repeated .MapEntry parameters = 18;</code>
+         */
+        public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder getParametersOrBuilder(int index) {
+            return parameters_.get(index);
         }
 
         public static final int FIXED_DELAY_FIELD_NUMBER = 19;
@@ -929,7 +952,7 @@ public final class ModifyJobProtos {
          * <code>optional int32 fixed_delay = 19;</code>
          */
         public boolean hasFixedDelay() {
-            return ((bitField0_ & 0x00040000) == 0x00040000);
+            return ((bitField0_ & 0x00020000) == 0x00020000);
         }
 
         /**
@@ -957,7 +980,7 @@ public final class ModifyJobProtos {
             startTime_ = 0L;
             endTime_ = 0L;
             originJobId_ = 0L;
-            parameters_ = com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.getDefaultInstance();
+            parameters_ = java.util.Collections.emptyList();
             fixedDelay_ = 0;
         }
 
@@ -974,8 +997,8 @@ public final class ModifyJobProtos {
                 memoizedIsInitialized = 0;
                 return false;
             }
-            if (hasParameters()) {
-                if (!getParameters().isInitialized()) {
+            for (int i = 0; i < getParametersCount(); i++) {
+                if (!getParameters(i).isInitialized()) {
                     memoizedIsInitialized = 0;
                     return false;
                 }
@@ -1037,10 +1060,10 @@ public final class ModifyJobProtos {
             if (((bitField0_ & 0x00010000) == 0x00010000)) {
                 output.writeInt64(17, originJobId_);
             }
-            if (((bitField0_ & 0x00020000) == 0x00020000)) {
-                output.writeMessage(18, parameters_);
+            for (int i = 0; i < parameters_.size(); i++) {
+                output.writeMessage(18, parameters_.get(i));
             }
-            if (((bitField0_ & 0x00040000) == 0x00040000)) {
+            if (((bitField0_ & 0x00020000) == 0x00020000)) {
                 output.writeInt32(19, fixedDelay_);
             }
             getUnknownFields().writeTo(output);
@@ -1105,10 +1128,10 @@ public final class ModifyJobProtos {
             if (((bitField0_ & 0x00010000) == 0x00010000)) {
                 size += com.google.protobuf.CodedOutputStream.computeInt64Size(17, originJobId_);
             }
-            if (((bitField0_ & 0x00020000) == 0x00020000)) {
-                size += com.google.protobuf.CodedOutputStream.computeMessageSize(18, parameters_);
+            for (int i = 0; i < parameters_.size(); i++) {
+                size += com.google.protobuf.CodedOutputStream.computeMessageSize(18, parameters_.get(i));
             }
-            if (((bitField0_ & 0x00040000) == 0x00040000)) {
+            if (((bitField0_ & 0x00020000) == 0x00020000)) {
                 size += com.google.protobuf.CodedOutputStream.computeInt32Size(19, fixedDelay_);
             }
             size += getUnknownFields().getSerializedSize();
@@ -1269,11 +1292,11 @@ public final class ModifyJobProtos {
                 originJobId_ = 0L;
                 bitField0_ = (bitField0_ & ~0x00010000);
                 if (parametersBuilder_ == null) {
-                    parameters_ = com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.getDefaultInstance();
+                    parameters_ = java.util.Collections.emptyList();
+                    bitField0_ = (bitField0_ & ~0x00020000);
                 } else {
                     parametersBuilder_.clear();
                 }
-                bitField0_ = (bitField0_ & ~0x00020000);
                 fixedDelay_ = 0;
                 bitField0_ = (bitField0_ & ~0x00040000);
                 return this;
@@ -1372,16 +1395,17 @@ public final class ModifyJobProtos {
                     to_bitField0_ |= 0x00010000;
                 }
                 result.originJobId_ = originJobId_;
-                if (((from_bitField0_ & 0x00020000) == 0x00020000)) {
-                    to_bitField0_ |= 0x00020000;
-                }
                 if (parametersBuilder_ == null) {
+                    if (((bitField0_ & 0x00020000) == 0x00020000)) {
+                        parameters_ = java.util.Collections.unmodifiableList(parameters_);
+                        bitField0_ = (bitField0_ & ~0x00020000);
+                    }
                     result.parameters_ = parameters_;
                 } else {
                     result.parameters_ = parametersBuilder_.build();
                 }
                 if (((from_bitField0_ & 0x00040000) == 0x00040000)) {
-                    to_bitField0_ |= 0x00040000;
+                    to_bitField0_ |= 0x00020000;
                 }
                 result.fixedDelay_ = fixedDelay_;
                 result.bitField0_ = to_bitField0_;
@@ -1466,8 +1490,29 @@ public final class ModifyJobProtos {
                 if (other.hasOriginJobId()) {
                     setOriginJobId(other.getOriginJobId());
                 }
-                if (other.hasParameters()) {
-                    mergeParameters(other.getParameters());
+                if (parametersBuilder_ == null) {
+                    if (!other.parameters_.isEmpty()) {
+                        if (parameters_.isEmpty()) {
+                            parameters_ = other.parameters_;
+                            bitField0_ = (bitField0_ & ~0x00020000);
+                        } else {
+                            ensureParametersIsMutable();
+                            parameters_.addAll(other.parameters_);
+                        }
+                        onChanged();
+                    }
+                } else {
+                    if (!other.parameters_.isEmpty()) {
+                        if (parametersBuilder_.isEmpty()) {
+                            parametersBuilder_.dispose();
+                            parametersBuilder_ = null;
+                            parameters_ = other.parameters_;
+                            bitField0_ = (bitField0_ & ~0x00020000);
+                            parametersBuilder_ = com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ? getParametersFieldBuilder() : null;
+                        } else {
+                            parametersBuilder_.addAllMessages(other.parameters_);
+                        }
+                    }
                 }
                 if (other.hasFixedDelay()) {
                     setFixedDelay(other.getFixedDelay());
@@ -1481,8 +1526,8 @@ public final class ModifyJobProtos {
 
                     return false;
                 }
-                if (hasParameters()) {
-                    if (!getParameters().isInitialized()) {
+                for (int i = 0; i < getParametersCount(); i++) {
+                    if (!getParameters(i).isInitialized()) {
 
                         return false;
                     }
@@ -2400,119 +2445,239 @@ public final class ModifyJobProtos {
                 return this;
             }
 
-            private com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry parameters_ = com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry
-                    .getDefaultInstance();
-            private com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder> parametersBuilder_;
+            private java.util.List<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry> parameters_ = java.util.Collections.emptyList();
 
-            /**
-             * <code>optional .MapEntry parameters = 18;</code>
-             */
-            public boolean hasParameters() {
-                return ((bitField0_ & 0x00020000) == 0x00020000);
+            private void ensureParametersIsMutable() {
+                if (!((bitField0_ & 0x00020000) == 0x00020000)) {
+                    parameters_ = new java.util.ArrayList<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry>(parameters_);
+                    bitField0_ |= 0x00020000;
+                }
             }
 
+            private com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder> parametersBuilder_;
+
             /**
-             * <code>optional .MapEntry parameters = 18;</code>
+             * <code>repeated .MapEntry parameters = 18;</code>
              */
-            public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry getParameters() {
+            public java.util.List<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry> getParametersList() {
                 if (parametersBuilder_ == null) {
-                    return parameters_;
+                    return java.util.Collections.unmodifiableList(parameters_);
                 } else {
-                    return parametersBuilder_.getMessage();
+                    return parametersBuilder_.getMessageList();
                 }
             }
 
             /**
-             * <code>optional .MapEntry parameters = 18;</code>
+             * <code>repeated .MapEntry parameters = 18;</code>
              */
-            public Builder setParameters(com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry value) {
+            public int getParametersCount() {
+                if (parametersBuilder_ == null) {
+                    return parameters_.size();
+                } else {
+                    return parametersBuilder_.getCount();
+                }
+            }
+
+            /**
+             * <code>repeated .MapEntry parameters = 18;</code>
+             */
+            public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry getParameters(int index) {
+                if (parametersBuilder_ == null) {
+                    return parameters_.get(index);
+                } else {
+                    return parametersBuilder_.getMessage(index);
+                }
+            }
+
+            /**
+             * <code>repeated .MapEntry parameters = 18;</code>
+             */
+            public Builder setParameters(int index, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry value) {
                 if (parametersBuilder_ == null) {
                     if (value == null) {
                         throw new NullPointerException();
                     }
-                    parameters_ = value;
+                    ensureParametersIsMutable();
+                    parameters_.set(index, value);
                     onChanged();
                 } else {
-                    parametersBuilder_.setMessage(value);
+                    parametersBuilder_.setMessage(index, value);
                 }
-                bitField0_ |= 0x00020000;
                 return this;
             }
 
             /**
-             * <code>optional .MapEntry parameters = 18;</code>
+             * <code>repeated .MapEntry parameters = 18;</code>
              */
-            public Builder setParameters(com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder builderForValue) {
+            public Builder setParameters(int index, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder builderForValue) {
                 if (parametersBuilder_ == null) {
-                    parameters_ = builderForValue.build();
+                    ensureParametersIsMutable();
+                    parameters_.set(index, builderForValue.build());
                     onChanged();
                 } else {
-                    parametersBuilder_.setMessage(builderForValue.build());
+                    parametersBuilder_.setMessage(index, builderForValue.build());
                 }
-                bitField0_ |= 0x00020000;
                 return this;
             }
 
             /**
-             * <code>optional .MapEntry parameters = 18;</code>
+             * <code>repeated .MapEntry parameters = 18;</code>
              */
-            public Builder mergeParameters(com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry value) {
+            public Builder addParameters(com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry value) {
                 if (parametersBuilder_ == null) {
-                    if (((bitField0_ & 0x00020000) == 0x00020000)
-                            && parameters_ != com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.getDefaultInstance()) {
-                        parameters_ = com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.newBuilder(parameters_).mergeFrom(value).buildPartial();
-                    } else {
-                        parameters_ = value;
+                    if (value == null) {
+                        throw new NullPointerException();
                     }
+                    ensureParametersIsMutable();
+                    parameters_.add(value);
                     onChanged();
                 } else {
-                    parametersBuilder_.mergeFrom(value);
+                    parametersBuilder_.addMessage(value);
                 }
-                bitField0_ |= 0x00020000;
                 return this;
             }
 
             /**
-             * <code>optional .MapEntry parameters = 18;</code>
+             * <code>repeated .MapEntry parameters = 18;</code>
+             */
+            public Builder addParameters(int index, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry value) {
+                if (parametersBuilder_ == null) {
+                    if (value == null) {
+                        throw new NullPointerException();
+                    }
+                    ensureParametersIsMutable();
+                    parameters_.add(index, value);
+                    onChanged();
+                } else {
+                    parametersBuilder_.addMessage(index, value);
+                }
+                return this;
+            }
+
+            /**
+             * <code>repeated .MapEntry parameters = 18;</code>
+             */
+            public Builder addParameters(com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder builderForValue) {
+                if (parametersBuilder_ == null) {
+                    ensureParametersIsMutable();
+                    parameters_.add(builderForValue.build());
+                    onChanged();
+                } else {
+                    parametersBuilder_.addMessage(builderForValue.build());
+                }
+                return this;
+            }
+
+            /**
+             * <code>repeated .MapEntry parameters = 18;</code>
+             */
+            public Builder addParameters(int index, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder builderForValue) {
+                if (parametersBuilder_ == null) {
+                    ensureParametersIsMutable();
+                    parameters_.add(index, builderForValue.build());
+                    onChanged();
+                } else {
+                    parametersBuilder_.addMessage(index, builderForValue.build());
+                }
+                return this;
+            }
+
+            /**
+             * <code>repeated .MapEntry parameters = 18;</code>
+             */
+            public Builder addAllParameters(java.lang.Iterable<? extends com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry> values) {
+                if (parametersBuilder_ == null) {
+                    ensureParametersIsMutable();
+                    com.google.protobuf.AbstractMessageLite.Builder.addAll(values, parameters_);
+                    onChanged();
+                } else {
+                    parametersBuilder_.addAllMessages(values);
+                }
+                return this;
+            }
+
+            /**
+             * <code>repeated .MapEntry parameters = 18;</code>
              */
             public Builder clearParameters() {
                 if (parametersBuilder_ == null) {
-                    parameters_ = com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.getDefaultInstance();
+                    parameters_ = java.util.Collections.emptyList();
+                    bitField0_ = (bitField0_ & ~0x00020000);
                     onChanged();
                 } else {
                     parametersBuilder_.clear();
                 }
-                bitField0_ = (bitField0_ & ~0x00020000);
                 return this;
             }
 
             /**
-             * <code>optional .MapEntry parameters = 18;</code>
+             * <code>repeated .MapEntry parameters = 18;</code>
              */
-            public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder getParametersBuilder() {
-                bitField0_ |= 0x00020000;
-                onChanged();
-                return getParametersFieldBuilder().getBuilder();
+            public Builder removeParameters(int index) {
+                if (parametersBuilder_ == null) {
+                    ensureParametersIsMutable();
+                    parameters_.remove(index);
+                    onChanged();
+                } else {
+                    parametersBuilder_.remove(index);
+                }
+                return this;
             }
 
             /**
-             * <code>optional .MapEntry parameters = 18;</code>
+             * <code>repeated .MapEntry parameters = 18;</code>
              */
-            public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder getParametersOrBuilder() {
-                if (parametersBuilder_ != null) {
-                    return parametersBuilder_.getMessageOrBuilder();
+            public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder getParametersBuilder(int index) {
+                return getParametersFieldBuilder().getBuilder(index);
+            }
+
+            /**
+             * <code>repeated .MapEntry parameters = 18;</code>
+             */
+            public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder getParametersOrBuilder(int index) {
+                if (parametersBuilder_ == null) {
+                    return parameters_.get(index);
                 } else {
-                    return parameters_;
+                    return parametersBuilder_.getMessageOrBuilder(index);
                 }
             }
 
             /**
-             * <code>optional .MapEntry parameters = 18;</code>
+             * <code>repeated .MapEntry parameters = 18;</code>
              */
-            private com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder> getParametersFieldBuilder() {
+            public java.util.List<? extends com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder> getParametersOrBuilderList() {
+                if (parametersBuilder_ != null) {
+                    return parametersBuilder_.getMessageOrBuilderList();
+                } else {
+                    return java.util.Collections.unmodifiableList(parameters_);
+                }
+            }
+
+            /**
+             * <code>repeated .MapEntry parameters = 18;</code>
+             */
+            public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder addParametersBuilder() {
+                return getParametersFieldBuilder().addBuilder(com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.getDefaultInstance());
+            }
+
+            /**
+             * <code>repeated .MapEntry parameters = 18;</code>
+             */
+            public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder addParametersBuilder(int index) {
+                return getParametersFieldBuilder().addBuilder(index, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.getDefaultInstance());
+            }
+
+            /**
+             * <code>repeated .MapEntry parameters = 18;</code>
+             */
+            public java.util.List<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder> getParametersBuilderList() {
+                return getParametersFieldBuilder().getBuilderList();
+            }
+
+            private com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder> getParametersFieldBuilder() {
                 if (parametersBuilder_ == null) {
-                    parametersBuilder_ = new com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder>(
-                            getParameters(), getParentForChildren(), isClean());
+                    parametersBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder>(
+                            parameters_, ((bitField0_ & 0x00020000) == 0x00020000), getParentForChildren(), isClean());
                     parameters_ = null;
                 }
                 return parametersBuilder_;
@@ -3251,7 +3416,7 @@ public final class ModifyJobProtos {
                         + "eject_interval\030\014 \001(\005:\0013\022\031\n\016failed_retrie"
                         + "s\030\r \001(\005:\0010\022\032\n\017failed_interval\030\016 \001(\005:\0013\022\022"
                         + "\n\nstart_time\030\017 \001(\003\022\020\n\010end_time\030\020 \001(\003\022\025\n\r",
-                "origin_job_id\030\021 \001(\003\022\035\n\nparameters\030\022 \001(\0132"
+                "origin_job_id\030\021 \001(\003\022\035\n\nparameters\030\022 \003(\0132"
                         + "\t.MapEntry\022\023\n\013fixed_delay\030\023 \001(\005\"M\n\027Serve"
                         + "rModifyJobResponse\022\016\n\006job_id\030\001 \002(\003\022\017\n\007su"
                         + "ccess\030\002 \002(\010\022\021\n\007message\030\003 \001(\t:\000B.\n\033com.mo"
