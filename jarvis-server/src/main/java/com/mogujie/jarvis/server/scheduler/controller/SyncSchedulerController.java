@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import com.google.common.eventbus.EventBus;
 
 /**
+ * Sync job scheduler controller
+ *
  * @author guangming
  *
  */
