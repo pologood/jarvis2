@@ -55,237 +55,192 @@ public final class ModifyJobProtos {
         com.google.protobuf.ByteString getCronExpressionBytes();
 
         /**
-         * <code>repeated int64 dependency_job_id = 4 [packed = true];</code>
-         */
-        java.util.List<java.lang.Long> getDependencyJobIdList();
-
-        /**
-         * <code>repeated int64 dependency_job_id = 4 [packed = true];</code>
-         */
-        int getDependencyJobIdCount();
-
-        /**
-         * <code>repeated int64 dependency_job_id = 4 [packed = true];</code>
-         */
-        long getDependencyJobId(int index);
-
-        /**
-         * <code>optional string app_name = 5;</code>
+         * <code>optional string app_name = 4;</code>
          */
         boolean hasAppName();
 
         /**
-         * <code>optional string app_name = 5;</code>
+         * <code>optional string app_name = 4;</code>
          */
         java.lang.String getAppName();
 
         /**
-         * <code>optional string app_name = 5;</code>
+         * <code>optional string app_name = 4;</code>
          */
         com.google.protobuf.ByteString getAppNameBytes();
 
         /**
-         * <code>optional string app_key = 6;</code>
+         * <code>optional string app_key = 5;</code>
          */
         boolean hasAppKey();
 
         /**
-         * <code>optional string app_key = 6;</code>
+         * <code>optional string app_key = 5;</code>
          */
         java.lang.String getAppKey();
 
         /**
-         * <code>optional string app_key = 6;</code>
+         * <code>optional string app_key = 5;</code>
          */
         com.google.protobuf.ByteString getAppKeyBytes();
 
         /**
-         * <code>optional string user = 7;</code>
+         * <code>optional string user = 6;</code>
          */
         boolean hasUser();
 
         /**
-         * <code>optional string user = 7;</code>
+         * <code>optional string user = 6;</code>
          */
         java.lang.String getUser();
 
         /**
-         * <code>optional string user = 7;</code>
+         * <code>optional string user = 6;</code>
          */
         com.google.protobuf.ByteString getUserBytes();
 
         /**
-         * <code>optional string job_type = 8;</code>
+         * <code>optional string job_type = 7;</code>
          */
         boolean hasJobType();
 
         /**
-         * <code>optional string job_type = 8;</code>
+         * <code>optional string job_type = 7;</code>
          */
         java.lang.String getJobType();
 
         /**
-         * <code>optional string job_type = 8;</code>
+         * <code>optional string job_type = 7;</code>
          */
         com.google.protobuf.ByteString getJobTypeBytes();
 
         /**
-         * <code>optional string command = 9;</code>
+         * <code>optional string command = 8;</code>
          */
         boolean hasCommand();
 
         /**
-         * <code>optional string command = 9;</code>
+         * <code>optional string command = 8;</code>
          */
         java.lang.String getCommand();
 
         /**
-         * <code>optional string command = 9;</code>
+         * <code>optional string command = 8;</code>
          */
         com.google.protobuf.ByteString getCommandBytes();
 
         /**
-         * <code>optional int32 group_id = 10;</code>
+         * <code>optional int32 group_id = 9;</code>
          */
         boolean hasGroupId();
 
         /**
-         * <code>optional int32 group_id = 10;</code>
+         * <code>optional int32 group_id = 9;</code>
          */
         int getGroupId();
 
         /**
-         * <code>optional int32 priority = 11 [default = 1];</code>
+         * <code>optional int32 priority = 10 [default = 1];</code>
          */
         boolean hasPriority();
 
         /**
-         * <code>optional int32 priority = 11 [default = 1];</code>
+         * <code>optional int32 priority = 10 [default = 1];</code>
          */
         int getPriority();
 
         /**
-         * <code>optional int32 reject_retries = 12 [default = 0];</code>
+         * <code>optional int32 reject_retries = 11 [default = 0];</code>
          */
         boolean hasRejectRetries();
 
         /**
-         * <code>optional int32 reject_retries = 12 [default = 0];</code>
+         * <code>optional int32 reject_retries = 11 [default = 0];</code>
          */
         int getRejectRetries();
 
         /**
-         * <code>optional int32 reject_interval = 13 [default = 3];</code>
+         * <code>optional int32 reject_interval = 12 [default = 3];</code>
          */
         boolean hasRejectInterval();
 
         /**
-         * <code>optional int32 reject_interval = 13 [default = 3];</code>
+         * <code>optional int32 reject_interval = 12 [default = 3];</code>
          */
         int getRejectInterval();
 
         /**
-         * <code>optional int32 failed_retries = 14 [default = 0];</code>
+         * <code>optional int32 failed_retries = 13 [default = 0];</code>
          */
         boolean hasFailedRetries();
 
         /**
-         * <code>optional int32 failed_retries = 14 [default = 0];</code>
+         * <code>optional int32 failed_retries = 13 [default = 0];</code>
          */
         int getFailedRetries();
 
         /**
-         * <code>optional int32 failed_interval = 15 [default = 3];</code>
+         * <code>optional int32 failed_interval = 14 [default = 3];</code>
          */
         boolean hasFailedInterval();
 
         /**
-         * <code>optional int32 failed_interval = 15 [default = 3];</code>
+         * <code>optional int32 failed_interval = 14 [default = 3];</code>
          */
         int getFailedInterval();
 
         /**
-         * <code>optional int64 start_time = 16;</code>
+         * <code>optional int64 start_time = 15;</code>
          */
         boolean hasStartTime();
 
         /**
-         * <code>optional int64 start_time = 16;</code>
+         * <code>optional int64 start_time = 15;</code>
          */
         long getStartTime();
 
         /**
-         * <code>optional int64 end_time = 17;</code>
+         * <code>optional int64 end_time = 16;</code>
          */
         boolean hasEndTime();
 
         /**
-         * <code>optional int64 end_time = 17;</code>
+         * <code>optional int64 end_time = 16;</code>
          */
         long getEndTime();
 
         /**
-         * <code>optional int64 origin_job_id = 18;</code>
+         * <code>optional int64 origin_job_id = 17;</code>
          */
         boolean hasOriginJobId();
 
         /**
-         * <code>optional int64 origin_job_id = 18;</code>
+         * <code>optional int64 origin_job_id = 17;</code>
          */
         long getOriginJobId();
 
         /**
-         * <code>optional string common_depend_strategy = 19;</code>
-         */
-        boolean hasCommonDependStrategy();
-
-        /**
-         * <code>optional string common_depend_strategy = 19;</code>
-         */
-        java.lang.String getCommonDependStrategy();
-
-        /**
-         * <code>optional string common_depend_strategy = 19;</code>
-         */
-        com.google.protobuf.ByteString getCommonDependStrategyBytes();
-
-        /**
-         * <code>optional string last_depend_strategy = 20;</code>
-         */
-        boolean hasLastDependStrategy();
-
-        /**
-         * <code>optional string last_depend_strategy = 20;</code>
-         */
-        java.lang.String getLastDependStrategy();
-
-        /**
-         * <code>optional string last_depend_strategy = 20;</code>
-         */
-        com.google.protobuf.ByteString getLastDependStrategyBytes();
-
-        /**
-         * <code>optional .MapEntry parameters = 21;</code>
+         * <code>optional .MapEntry parameters = 18;</code>
          */
         boolean hasParameters();
 
         /**
-         * <code>optional .MapEntry parameters = 21;</code>
+         * <code>optional .MapEntry parameters = 18;</code>
          */
         com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry getParameters();
 
         /**
-         * <code>optional .MapEntry parameters = 21;</code>
+         * <code>optional .MapEntry parameters = 18;</code>
          */
         com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder getParametersOrBuilder();
 
         /**
-         * <code>optional int32 fixed_delay = 22;</code>
+         * <code>optional int32 fixed_delay = 19;</code>
          */
         boolean hasFixedDelay();
 
         /**
-         * <code>optional int32 fixed_delay = 22;</code>
+         * <code>optional int32 fixed_delay = 19;</code>
          */
         int getFixedDelay();
     }
@@ -326,7 +281,6 @@ public final class ModifyJobProtos {
         private RestServerModifyJobRequest(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
                 throws com.google.protobuf.InvalidProtocolBufferException {
             initFields();
-            int mutable_bitField0_ = 0;
             com.google.protobuf.UnknownFieldSet.Builder unknownFields = com.google.protobuf.UnknownFieldSet.newBuilder();
             try {
                 boolean done = false;
@@ -359,117 +313,84 @@ public final class ModifyJobProtos {
                             cronExpression_ = bs;
                             break;
                         }
-                        case 32: {
-                            if (!((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
-                                dependencyJobId_ = new java.util.ArrayList<java.lang.Long>();
-                                mutable_bitField0_ |= 0x00000008;
-                            }
-                            dependencyJobId_.add(input.readInt64());
-                            break;
-                        }
                         case 34: {
-                            int length = input.readRawVarint32();
-                            int limit = input.pushLimit(length);
-                            if (!((mutable_bitField0_ & 0x00000008) == 0x00000008) && input.getBytesUntilLimit() > 0) {
-                                dependencyJobId_ = new java.util.ArrayList<java.lang.Long>();
-                                mutable_bitField0_ |= 0x00000008;
-                            }
-                            while (input.getBytesUntilLimit() > 0) {
-                                dependencyJobId_.add(input.readInt64());
-                            }
-                            input.popLimit(limit);
-                            break;
-                        }
-                        case 42: {
                             com.google.protobuf.ByteString bs = input.readBytes();
                             bitField0_ |= 0x00000008;
                             appName_ = bs;
                             break;
                         }
-                        case 50: {
+                        case 42: {
                             com.google.protobuf.ByteString bs = input.readBytes();
                             bitField0_ |= 0x00000010;
                             appKey_ = bs;
                             break;
                         }
-                        case 58: {
+                        case 50: {
                             com.google.protobuf.ByteString bs = input.readBytes();
                             bitField0_ |= 0x00000020;
                             user_ = bs;
                             break;
                         }
-                        case 66: {
+                        case 58: {
                             com.google.protobuf.ByteString bs = input.readBytes();
                             bitField0_ |= 0x00000040;
                             jobType_ = bs;
                             break;
                         }
-                        case 74: {
+                        case 66: {
                             com.google.protobuf.ByteString bs = input.readBytes();
                             bitField0_ |= 0x00000080;
                             command_ = bs;
                             break;
                         }
-                        case 80: {
+                        case 72: {
                             bitField0_ |= 0x00000100;
                             groupId_ = input.readInt32();
                             break;
                         }
-                        case 88: {
+                        case 80: {
                             bitField0_ |= 0x00000200;
                             priority_ = input.readInt32();
                             break;
                         }
-                        case 96: {
+                        case 88: {
                             bitField0_ |= 0x00000400;
                             rejectRetries_ = input.readInt32();
                             break;
                         }
-                        case 104: {
+                        case 96: {
                             bitField0_ |= 0x00000800;
                             rejectInterval_ = input.readInt32();
                             break;
                         }
-                        case 112: {
+                        case 104: {
                             bitField0_ |= 0x00001000;
                             failedRetries_ = input.readInt32();
                             break;
                         }
-                        case 120: {
+                        case 112: {
                             bitField0_ |= 0x00002000;
                             failedInterval_ = input.readInt32();
                             break;
                         }
-                        case 128: {
+                        case 120: {
                             bitField0_ |= 0x00004000;
                             startTime_ = input.readInt64();
                             break;
                         }
-                        case 136: {
+                        case 128: {
                             bitField0_ |= 0x00008000;
                             endTime_ = input.readInt64();
                             break;
                         }
-                        case 144: {
+                        case 136: {
                             bitField0_ |= 0x00010000;
                             originJobId_ = input.readInt64();
                             break;
                         }
-                        case 154: {
-                            com.google.protobuf.ByteString bs = input.readBytes();
-                            bitField0_ |= 0x00020000;
-                            commonDependStrategy_ = bs;
-                            break;
-                        }
-                        case 162: {
-                            com.google.protobuf.ByteString bs = input.readBytes();
-                            bitField0_ |= 0x00040000;
-                            lastDependStrategy_ = bs;
-                            break;
-                        }
-                        case 170: {
+                        case 146: {
                             com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder subBuilder = null;
-                            if (((bitField0_ & 0x00080000) == 0x00080000)) {
+                            if (((bitField0_ & 0x00020000) == 0x00020000)) {
                                 subBuilder = parameters_.toBuilder();
                             }
                             parameters_ = input.readMessage(com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.PARSER, extensionRegistry);
@@ -477,11 +398,11 @@ public final class ModifyJobProtos {
                                 subBuilder.mergeFrom(parameters_);
                                 parameters_ = subBuilder.buildPartial();
                             }
-                            bitField0_ |= 0x00080000;
+                            bitField0_ |= 0x00020000;
                             break;
                         }
-                        case 176: {
-                            bitField0_ |= 0x00100000;
+                        case 152: {
+                            bitField0_ |= 0x00040000;
                             fixedDelay_ = input.readInt32();
                             break;
                         }
@@ -492,9 +413,6 @@ public final class ModifyJobProtos {
             } catch (java.io.IOException e) {
                 throw new com.google.protobuf.InvalidProtocolBufferException(e.getMessage()).setUnfinishedMessage(this);
             } finally {
-                if (((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
-                    dependencyJobId_ = java.util.Collections.unmodifiableList(dependencyJobId_);
-                }
                 this.unknownFields = unknownFields.build();
                 makeExtensionsImmutable();
             }
@@ -622,44 +540,18 @@ public final class ModifyJobProtos {
             }
         }
 
-        public static final int DEPENDENCY_JOB_ID_FIELD_NUMBER = 4;
-        private java.util.List<java.lang.Long> dependencyJobId_;
-
-        /**
-         * <code>repeated int64 dependency_job_id = 4 [packed = true];</code>
-         */
-        public java.util.List<java.lang.Long> getDependencyJobIdList() {
-            return dependencyJobId_;
-        }
-
-        /**
-         * <code>repeated int64 dependency_job_id = 4 [packed = true];</code>
-         */
-        public int getDependencyJobIdCount() {
-            return dependencyJobId_.size();
-        }
-
-        /**
-         * <code>repeated int64 dependency_job_id = 4 [packed = true];</code>
-         */
-        public long getDependencyJobId(int index) {
-            return dependencyJobId_.get(index);
-        }
-
-        private int dependencyJobIdMemoizedSerializedSize = -1;
-
-        public static final int APP_NAME_FIELD_NUMBER = 5;
+        public static final int APP_NAME_FIELD_NUMBER = 4;
         private java.lang.Object appName_;
 
         /**
-         * <code>optional string app_name = 5;</code>
+         * <code>optional string app_name = 4;</code>
          */
         public boolean hasAppName() {
             return ((bitField0_ & 0x00000008) == 0x00000008);
         }
 
         /**
-         * <code>optional string app_name = 5;</code>
+         * <code>optional string app_name = 4;</code>
          */
         public java.lang.String getAppName() {
             java.lang.Object ref = appName_;
@@ -676,7 +568,7 @@ public final class ModifyJobProtos {
         }
 
         /**
-         * <code>optional string app_name = 5;</code>
+         * <code>optional string app_name = 4;</code>
          */
         public com.google.protobuf.ByteString getAppNameBytes() {
             java.lang.Object ref = appName_;
@@ -689,18 +581,18 @@ public final class ModifyJobProtos {
             }
         }
 
-        public static final int APP_KEY_FIELD_NUMBER = 6;
+        public static final int APP_KEY_FIELD_NUMBER = 5;
         private java.lang.Object appKey_;
 
         /**
-         * <code>optional string app_key = 6;</code>
+         * <code>optional string app_key = 5;</code>
          */
         public boolean hasAppKey() {
             return ((bitField0_ & 0x00000010) == 0x00000010);
         }
 
         /**
-         * <code>optional string app_key = 6;</code>
+         * <code>optional string app_key = 5;</code>
          */
         public java.lang.String getAppKey() {
             java.lang.Object ref = appKey_;
@@ -717,7 +609,7 @@ public final class ModifyJobProtos {
         }
 
         /**
-         * <code>optional string app_key = 6;</code>
+         * <code>optional string app_key = 5;</code>
          */
         public com.google.protobuf.ByteString getAppKeyBytes() {
             java.lang.Object ref = appKey_;
@@ -730,18 +622,18 @@ public final class ModifyJobProtos {
             }
         }
 
-        public static final int USER_FIELD_NUMBER = 7;
+        public static final int USER_FIELD_NUMBER = 6;
         private java.lang.Object user_;
 
         /**
-         * <code>optional string user = 7;</code>
+         * <code>optional string user = 6;</code>
          */
         public boolean hasUser() {
             return ((bitField0_ & 0x00000020) == 0x00000020);
         }
 
         /**
-         * <code>optional string user = 7;</code>
+         * <code>optional string user = 6;</code>
          */
         public java.lang.String getUser() {
             java.lang.Object ref = user_;
@@ -758,7 +650,7 @@ public final class ModifyJobProtos {
         }
 
         /**
-         * <code>optional string user = 7;</code>
+         * <code>optional string user = 6;</code>
          */
         public com.google.protobuf.ByteString getUserBytes() {
             java.lang.Object ref = user_;
@@ -771,18 +663,18 @@ public final class ModifyJobProtos {
             }
         }
 
-        public static final int JOB_TYPE_FIELD_NUMBER = 8;
+        public static final int JOB_TYPE_FIELD_NUMBER = 7;
         private java.lang.Object jobType_;
 
         /**
-         * <code>optional string job_type = 8;</code>
+         * <code>optional string job_type = 7;</code>
          */
         public boolean hasJobType() {
             return ((bitField0_ & 0x00000040) == 0x00000040);
         }
 
         /**
-         * <code>optional string job_type = 8;</code>
+         * <code>optional string job_type = 7;</code>
          */
         public java.lang.String getJobType() {
             java.lang.Object ref = jobType_;
@@ -799,7 +691,7 @@ public final class ModifyJobProtos {
         }
 
         /**
-         * <code>optional string job_type = 8;</code>
+         * <code>optional string job_type = 7;</code>
          */
         public com.google.protobuf.ByteString getJobTypeBytes() {
             java.lang.Object ref = jobType_;
@@ -812,18 +704,18 @@ public final class ModifyJobProtos {
             }
         }
 
-        public static final int COMMAND_FIELD_NUMBER = 9;
+        public static final int COMMAND_FIELD_NUMBER = 8;
         private java.lang.Object command_;
 
         /**
-         * <code>optional string command = 9;</code>
+         * <code>optional string command = 8;</code>
          */
         public boolean hasCommand() {
             return ((bitField0_ & 0x00000080) == 0x00000080);
         }
 
         /**
-         * <code>optional string command = 9;</code>
+         * <code>optional string command = 8;</code>
          */
         public java.lang.String getCommand() {
             java.lang.Object ref = command_;
@@ -840,7 +732,7 @@ public final class ModifyJobProtos {
         }
 
         /**
-         * <code>optional string command = 9;</code>
+         * <code>optional string command = 8;</code>
          */
         public com.google.protobuf.ByteString getCommandBytes() {
             java.lang.Object ref = command_;
@@ -853,277 +745,195 @@ public final class ModifyJobProtos {
             }
         }
 
-        public static final int GROUP_ID_FIELD_NUMBER = 10;
+        public static final int GROUP_ID_FIELD_NUMBER = 9;
         private int groupId_;
 
         /**
-         * <code>optional int32 group_id = 10;</code>
+         * <code>optional int32 group_id = 9;</code>
          */
         public boolean hasGroupId() {
             return ((bitField0_ & 0x00000100) == 0x00000100);
         }
 
         /**
-         * <code>optional int32 group_id = 10;</code>
+         * <code>optional int32 group_id = 9;</code>
          */
         public int getGroupId() {
             return groupId_;
         }
 
-        public static final int PRIORITY_FIELD_NUMBER = 11;
+        public static final int PRIORITY_FIELD_NUMBER = 10;
         private int priority_;
 
         /**
-         * <code>optional int32 priority = 11 [default = 1];</code>
+         * <code>optional int32 priority = 10 [default = 1];</code>
          */
         public boolean hasPriority() {
             return ((bitField0_ & 0x00000200) == 0x00000200);
         }
 
         /**
-         * <code>optional int32 priority = 11 [default = 1];</code>
+         * <code>optional int32 priority = 10 [default = 1];</code>
          */
         public int getPriority() {
             return priority_;
         }
 
-        public static final int REJECT_RETRIES_FIELD_NUMBER = 12;
+        public static final int REJECT_RETRIES_FIELD_NUMBER = 11;
         private int rejectRetries_;
 
         /**
-         * <code>optional int32 reject_retries = 12 [default = 0];</code>
+         * <code>optional int32 reject_retries = 11 [default = 0];</code>
          */
         public boolean hasRejectRetries() {
             return ((bitField0_ & 0x00000400) == 0x00000400);
         }
 
         /**
-         * <code>optional int32 reject_retries = 12 [default = 0];</code>
+         * <code>optional int32 reject_retries = 11 [default = 0];</code>
          */
         public int getRejectRetries() {
             return rejectRetries_;
         }
 
-        public static final int REJECT_INTERVAL_FIELD_NUMBER = 13;
+        public static final int REJECT_INTERVAL_FIELD_NUMBER = 12;
         private int rejectInterval_;
 
         /**
-         * <code>optional int32 reject_interval = 13 [default = 3];</code>
+         * <code>optional int32 reject_interval = 12 [default = 3];</code>
          */
         public boolean hasRejectInterval() {
             return ((bitField0_ & 0x00000800) == 0x00000800);
         }
 
         /**
-         * <code>optional int32 reject_interval = 13 [default = 3];</code>
+         * <code>optional int32 reject_interval = 12 [default = 3];</code>
          */
         public int getRejectInterval() {
             return rejectInterval_;
         }
 
-        public static final int FAILED_RETRIES_FIELD_NUMBER = 14;
+        public static final int FAILED_RETRIES_FIELD_NUMBER = 13;
         private int failedRetries_;
 
         /**
-         * <code>optional int32 failed_retries = 14 [default = 0];</code>
+         * <code>optional int32 failed_retries = 13 [default = 0];</code>
          */
         public boolean hasFailedRetries() {
             return ((bitField0_ & 0x00001000) == 0x00001000);
         }
 
         /**
-         * <code>optional int32 failed_retries = 14 [default = 0];</code>
+         * <code>optional int32 failed_retries = 13 [default = 0];</code>
          */
         public int getFailedRetries() {
             return failedRetries_;
         }
 
-        public static final int FAILED_INTERVAL_FIELD_NUMBER = 15;
+        public static final int FAILED_INTERVAL_FIELD_NUMBER = 14;
         private int failedInterval_;
 
         /**
-         * <code>optional int32 failed_interval = 15 [default = 3];</code>
+         * <code>optional int32 failed_interval = 14 [default = 3];</code>
          */
         public boolean hasFailedInterval() {
             return ((bitField0_ & 0x00002000) == 0x00002000);
         }
 
         /**
-         * <code>optional int32 failed_interval = 15 [default = 3];</code>
+         * <code>optional int32 failed_interval = 14 [default = 3];</code>
          */
         public int getFailedInterval() {
             return failedInterval_;
         }
 
-        public static final int START_TIME_FIELD_NUMBER = 16;
+        public static final int START_TIME_FIELD_NUMBER = 15;
         private long startTime_;
 
         /**
-         * <code>optional int64 start_time = 16;</code>
+         * <code>optional int64 start_time = 15;</code>
          */
         public boolean hasStartTime() {
             return ((bitField0_ & 0x00004000) == 0x00004000);
         }
 
         /**
-         * <code>optional int64 start_time = 16;</code>
+         * <code>optional int64 start_time = 15;</code>
          */
         public long getStartTime() {
             return startTime_;
         }
 
-        public static final int END_TIME_FIELD_NUMBER = 17;
+        public static final int END_TIME_FIELD_NUMBER = 16;
         private long endTime_;
 
         /**
-         * <code>optional int64 end_time = 17;</code>
+         * <code>optional int64 end_time = 16;</code>
          */
         public boolean hasEndTime() {
             return ((bitField0_ & 0x00008000) == 0x00008000);
         }
 
         /**
-         * <code>optional int64 end_time = 17;</code>
+         * <code>optional int64 end_time = 16;</code>
          */
         public long getEndTime() {
             return endTime_;
         }
 
-        public static final int ORIGIN_JOB_ID_FIELD_NUMBER = 18;
+        public static final int ORIGIN_JOB_ID_FIELD_NUMBER = 17;
         private long originJobId_;
 
         /**
-         * <code>optional int64 origin_job_id = 18;</code>
+         * <code>optional int64 origin_job_id = 17;</code>
          */
         public boolean hasOriginJobId() {
             return ((bitField0_ & 0x00010000) == 0x00010000);
         }
 
         /**
-         * <code>optional int64 origin_job_id = 18;</code>
+         * <code>optional int64 origin_job_id = 17;</code>
          */
         public long getOriginJobId() {
             return originJobId_;
         }
 
-        public static final int COMMON_DEPEND_STRATEGY_FIELD_NUMBER = 19;
-        private java.lang.Object commonDependStrategy_;
+        public static final int PARAMETERS_FIELD_NUMBER = 18;
+        private com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry parameters_;
 
         /**
-         * <code>optional string common_depend_strategy = 19;</code>
+         * <code>optional .MapEntry parameters = 18;</code>
          */
-        public boolean hasCommonDependStrategy() {
+        public boolean hasParameters() {
             return ((bitField0_ & 0x00020000) == 0x00020000);
         }
 
         /**
-         * <code>optional string common_depend_strategy = 19;</code>
-         */
-        public java.lang.String getCommonDependStrategy() {
-            java.lang.Object ref = commonDependStrategy_;
-            if (ref instanceof java.lang.String) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                if (bs.isValidUtf8()) {
-                    commonDependStrategy_ = s;
-                }
-                return s;
-            }
-        }
-
-        /**
-         * <code>optional string common_depend_strategy = 19;</code>
-         */
-        public com.google.protobuf.ByteString getCommonDependStrategyBytes() {
-            java.lang.Object ref = commonDependStrategy_;
-            if (ref instanceof java.lang.String) {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                commonDependStrategy_ = b;
-                return b;
-            } else {
-                return (com.google.protobuf.ByteString) ref;
-            }
-        }
-
-        public static final int LAST_DEPEND_STRATEGY_FIELD_NUMBER = 20;
-        private java.lang.Object lastDependStrategy_;
-
-        /**
-         * <code>optional string last_depend_strategy = 20;</code>
-         */
-        public boolean hasLastDependStrategy() {
-            return ((bitField0_ & 0x00040000) == 0x00040000);
-        }
-
-        /**
-         * <code>optional string last_depend_strategy = 20;</code>
-         */
-        public java.lang.String getLastDependStrategy() {
-            java.lang.Object ref = lastDependStrategy_;
-            if (ref instanceof java.lang.String) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                if (bs.isValidUtf8()) {
-                    lastDependStrategy_ = s;
-                }
-                return s;
-            }
-        }
-
-        /**
-         * <code>optional string last_depend_strategy = 20;</code>
-         */
-        public com.google.protobuf.ByteString getLastDependStrategyBytes() {
-            java.lang.Object ref = lastDependStrategy_;
-            if (ref instanceof java.lang.String) {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                lastDependStrategy_ = b;
-                return b;
-            } else {
-                return (com.google.protobuf.ByteString) ref;
-            }
-        }
-
-        public static final int PARAMETERS_FIELD_NUMBER = 21;
-        private com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry parameters_;
-
-        /**
-         * <code>optional .MapEntry parameters = 21;</code>
-         */
-        public boolean hasParameters() {
-            return ((bitField0_ & 0x00080000) == 0x00080000);
-        }
-
-        /**
-         * <code>optional .MapEntry parameters = 21;</code>
+         * <code>optional .MapEntry parameters = 18;</code>
          */
         public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry getParameters() {
             return parameters_;
         }
 
         /**
-         * <code>optional .MapEntry parameters = 21;</code>
+         * <code>optional .MapEntry parameters = 18;</code>
          */
         public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder getParametersOrBuilder() {
             return parameters_;
         }
 
-        public static final int FIXED_DELAY_FIELD_NUMBER = 22;
+        public static final int FIXED_DELAY_FIELD_NUMBER = 19;
         private int fixedDelay_;
 
         /**
-         * <code>optional int32 fixed_delay = 22;</code>
+         * <code>optional int32 fixed_delay = 19;</code>
          */
         public boolean hasFixedDelay() {
-            return ((bitField0_ & 0x00100000) == 0x00100000);
+            return ((bitField0_ & 0x00040000) == 0x00040000);
         }
 
         /**
-         * <code>optional int32 fixed_delay = 22;</code>
+         * <code>optional int32 fixed_delay = 19;</code>
          */
         public int getFixedDelay() {
             return fixedDelay_;
@@ -1133,7 +943,6 @@ public final class ModifyJobProtos {
             jobId_ = 0L;
             jobName_ = "";
             cronExpression_ = "";
-            dependencyJobId_ = java.util.Collections.emptyList();
             appName_ = "";
             appKey_ = "";
             user_ = "";
@@ -1148,8 +957,6 @@ public final class ModifyJobProtos {
             startTime_ = 0L;
             endTime_ = 0L;
             originJobId_ = 0L;
-            commonDependStrategy_ = "";
-            lastDependStrategy_ = "";
             parameters_ = com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.getDefaultInstance();
             fixedDelay_ = 0;
         }
@@ -1188,66 +995,53 @@ public final class ModifyJobProtos {
             if (((bitField0_ & 0x00000004) == 0x00000004)) {
                 output.writeBytes(3, getCronExpressionBytes());
             }
-            if (getDependencyJobIdList().size() > 0) {
-                output.writeRawVarint32(34);
-                output.writeRawVarint32(dependencyJobIdMemoizedSerializedSize);
-            }
-            for (int i = 0; i < dependencyJobId_.size(); i++) {
-                output.writeInt64NoTag(dependencyJobId_.get(i));
-            }
             if (((bitField0_ & 0x00000008) == 0x00000008)) {
-                output.writeBytes(5, getAppNameBytes());
+                output.writeBytes(4, getAppNameBytes());
             }
             if (((bitField0_ & 0x00000010) == 0x00000010)) {
-                output.writeBytes(6, getAppKeyBytes());
+                output.writeBytes(5, getAppKeyBytes());
             }
             if (((bitField0_ & 0x00000020) == 0x00000020)) {
-                output.writeBytes(7, getUserBytes());
+                output.writeBytes(6, getUserBytes());
             }
             if (((bitField0_ & 0x00000040) == 0x00000040)) {
-                output.writeBytes(8, getJobTypeBytes());
+                output.writeBytes(7, getJobTypeBytes());
             }
             if (((bitField0_ & 0x00000080) == 0x00000080)) {
-                output.writeBytes(9, getCommandBytes());
+                output.writeBytes(8, getCommandBytes());
             }
             if (((bitField0_ & 0x00000100) == 0x00000100)) {
-                output.writeInt32(10, groupId_);
+                output.writeInt32(9, groupId_);
             }
             if (((bitField0_ & 0x00000200) == 0x00000200)) {
-                output.writeInt32(11, priority_);
+                output.writeInt32(10, priority_);
             }
             if (((bitField0_ & 0x00000400) == 0x00000400)) {
-                output.writeInt32(12, rejectRetries_);
+                output.writeInt32(11, rejectRetries_);
             }
             if (((bitField0_ & 0x00000800) == 0x00000800)) {
-                output.writeInt32(13, rejectInterval_);
+                output.writeInt32(12, rejectInterval_);
             }
             if (((bitField0_ & 0x00001000) == 0x00001000)) {
-                output.writeInt32(14, failedRetries_);
+                output.writeInt32(13, failedRetries_);
             }
             if (((bitField0_ & 0x00002000) == 0x00002000)) {
-                output.writeInt32(15, failedInterval_);
+                output.writeInt32(14, failedInterval_);
             }
             if (((bitField0_ & 0x00004000) == 0x00004000)) {
-                output.writeInt64(16, startTime_);
+                output.writeInt64(15, startTime_);
             }
             if (((bitField0_ & 0x00008000) == 0x00008000)) {
-                output.writeInt64(17, endTime_);
+                output.writeInt64(16, endTime_);
             }
             if (((bitField0_ & 0x00010000) == 0x00010000)) {
-                output.writeInt64(18, originJobId_);
+                output.writeInt64(17, originJobId_);
             }
             if (((bitField0_ & 0x00020000) == 0x00020000)) {
-                output.writeBytes(19, getCommonDependStrategyBytes());
+                output.writeMessage(18, parameters_);
             }
             if (((bitField0_ & 0x00040000) == 0x00040000)) {
-                output.writeBytes(20, getLastDependStrategyBytes());
-            }
-            if (((bitField0_ & 0x00080000) == 0x00080000)) {
-                output.writeMessage(21, parameters_);
-            }
-            if (((bitField0_ & 0x00100000) == 0x00100000)) {
-                output.writeInt32(22, fixedDelay_);
+                output.writeInt32(19, fixedDelay_);
             }
             getUnknownFields().writeTo(output);
         }
@@ -1269,71 +1063,53 @@ public final class ModifyJobProtos {
             if (((bitField0_ & 0x00000004) == 0x00000004)) {
                 size += com.google.protobuf.CodedOutputStream.computeBytesSize(3, getCronExpressionBytes());
             }
-            {
-                int dataSize = 0;
-                for (int i = 0; i < dependencyJobId_.size(); i++) {
-                    dataSize += com.google.protobuf.CodedOutputStream.computeInt64SizeNoTag(dependencyJobId_.get(i));
-                }
-                size += dataSize;
-                if (!getDependencyJobIdList().isEmpty()) {
-                    size += 1;
-                    size += com.google.protobuf.CodedOutputStream.computeInt32SizeNoTag(dataSize);
-                }
-                dependencyJobIdMemoizedSerializedSize = dataSize;
-            }
             if (((bitField0_ & 0x00000008) == 0x00000008)) {
-                size += com.google.protobuf.CodedOutputStream.computeBytesSize(5, getAppNameBytes());
+                size += com.google.protobuf.CodedOutputStream.computeBytesSize(4, getAppNameBytes());
             }
             if (((bitField0_ & 0x00000010) == 0x00000010)) {
-                size += com.google.protobuf.CodedOutputStream.computeBytesSize(6, getAppKeyBytes());
+                size += com.google.protobuf.CodedOutputStream.computeBytesSize(5, getAppKeyBytes());
             }
             if (((bitField0_ & 0x00000020) == 0x00000020)) {
-                size += com.google.protobuf.CodedOutputStream.computeBytesSize(7, getUserBytes());
+                size += com.google.protobuf.CodedOutputStream.computeBytesSize(6, getUserBytes());
             }
             if (((bitField0_ & 0x00000040) == 0x00000040)) {
-                size += com.google.protobuf.CodedOutputStream.computeBytesSize(8, getJobTypeBytes());
+                size += com.google.protobuf.CodedOutputStream.computeBytesSize(7, getJobTypeBytes());
             }
             if (((bitField0_ & 0x00000080) == 0x00000080)) {
-                size += com.google.protobuf.CodedOutputStream.computeBytesSize(9, getCommandBytes());
+                size += com.google.protobuf.CodedOutputStream.computeBytesSize(8, getCommandBytes());
             }
             if (((bitField0_ & 0x00000100) == 0x00000100)) {
-                size += com.google.protobuf.CodedOutputStream.computeInt32Size(10, groupId_);
+                size += com.google.protobuf.CodedOutputStream.computeInt32Size(9, groupId_);
             }
             if (((bitField0_ & 0x00000200) == 0x00000200)) {
-                size += com.google.protobuf.CodedOutputStream.computeInt32Size(11, priority_);
+                size += com.google.protobuf.CodedOutputStream.computeInt32Size(10, priority_);
             }
             if (((bitField0_ & 0x00000400) == 0x00000400)) {
-                size += com.google.protobuf.CodedOutputStream.computeInt32Size(12, rejectRetries_);
+                size += com.google.protobuf.CodedOutputStream.computeInt32Size(11, rejectRetries_);
             }
             if (((bitField0_ & 0x00000800) == 0x00000800)) {
-                size += com.google.protobuf.CodedOutputStream.computeInt32Size(13, rejectInterval_);
+                size += com.google.protobuf.CodedOutputStream.computeInt32Size(12, rejectInterval_);
             }
             if (((bitField0_ & 0x00001000) == 0x00001000)) {
-                size += com.google.protobuf.CodedOutputStream.computeInt32Size(14, failedRetries_);
+                size += com.google.protobuf.CodedOutputStream.computeInt32Size(13, failedRetries_);
             }
             if (((bitField0_ & 0x00002000) == 0x00002000)) {
-                size += com.google.protobuf.CodedOutputStream.computeInt32Size(15, failedInterval_);
+                size += com.google.protobuf.CodedOutputStream.computeInt32Size(14, failedInterval_);
             }
             if (((bitField0_ & 0x00004000) == 0x00004000)) {
-                size += com.google.protobuf.CodedOutputStream.computeInt64Size(16, startTime_);
+                size += com.google.protobuf.CodedOutputStream.computeInt64Size(15, startTime_);
             }
             if (((bitField0_ & 0x00008000) == 0x00008000)) {
-                size += com.google.protobuf.CodedOutputStream.computeInt64Size(17, endTime_);
+                size += com.google.protobuf.CodedOutputStream.computeInt64Size(16, endTime_);
             }
             if (((bitField0_ & 0x00010000) == 0x00010000)) {
-                size += com.google.protobuf.CodedOutputStream.computeInt64Size(18, originJobId_);
+                size += com.google.protobuf.CodedOutputStream.computeInt64Size(17, originJobId_);
             }
             if (((bitField0_ & 0x00020000) == 0x00020000)) {
-                size += com.google.protobuf.CodedOutputStream.computeBytesSize(19, getCommonDependStrategyBytes());
+                size += com.google.protobuf.CodedOutputStream.computeMessageSize(18, parameters_);
             }
             if (((bitField0_ & 0x00040000) == 0x00040000)) {
-                size += com.google.protobuf.CodedOutputStream.computeBytesSize(20, getLastDependStrategyBytes());
-            }
-            if (((bitField0_ & 0x00080000) == 0x00080000)) {
-                size += com.google.protobuf.CodedOutputStream.computeMessageSize(21, parameters_);
-            }
-            if (((bitField0_ & 0x00100000) == 0x00100000)) {
-                size += com.google.protobuf.CodedOutputStream.computeInt32Size(22, fixedDelay_);
+                size += com.google.protobuf.CodedOutputStream.computeInt32Size(19, fixedDelay_);
             }
             size += getUnknownFields().getSerializedSize();
             memoizedSerializedSize = size;
@@ -1464,48 +1240,42 @@ public final class ModifyJobProtos {
                 bitField0_ = (bitField0_ & ~0x00000002);
                 cronExpression_ = "";
                 bitField0_ = (bitField0_ & ~0x00000004);
-                dependencyJobId_ = java.util.Collections.emptyList();
-                bitField0_ = (bitField0_ & ~0x00000008);
                 appName_ = "";
-                bitField0_ = (bitField0_ & ~0x00000010);
+                bitField0_ = (bitField0_ & ~0x00000008);
                 appKey_ = "";
-                bitField0_ = (bitField0_ & ~0x00000020);
+                bitField0_ = (bitField0_ & ~0x00000010);
                 user_ = "";
-                bitField0_ = (bitField0_ & ~0x00000040);
+                bitField0_ = (bitField0_ & ~0x00000020);
                 jobType_ = "";
-                bitField0_ = (bitField0_ & ~0x00000080);
+                bitField0_ = (bitField0_ & ~0x00000040);
                 command_ = "";
-                bitField0_ = (bitField0_ & ~0x00000100);
+                bitField0_ = (bitField0_ & ~0x00000080);
                 groupId_ = 0;
-                bitField0_ = (bitField0_ & ~0x00000200);
+                bitField0_ = (bitField0_ & ~0x00000100);
                 priority_ = 1;
-                bitField0_ = (bitField0_ & ~0x00000400);
+                bitField0_ = (bitField0_ & ~0x00000200);
                 rejectRetries_ = 0;
-                bitField0_ = (bitField0_ & ~0x00000800);
+                bitField0_ = (bitField0_ & ~0x00000400);
                 rejectInterval_ = 3;
-                bitField0_ = (bitField0_ & ~0x00001000);
+                bitField0_ = (bitField0_ & ~0x00000800);
                 failedRetries_ = 0;
-                bitField0_ = (bitField0_ & ~0x00002000);
+                bitField0_ = (bitField0_ & ~0x00001000);
                 failedInterval_ = 3;
-                bitField0_ = (bitField0_ & ~0x00004000);
+                bitField0_ = (bitField0_ & ~0x00002000);
                 startTime_ = 0L;
-                bitField0_ = (bitField0_ & ~0x00008000);
+                bitField0_ = (bitField0_ & ~0x00004000);
                 endTime_ = 0L;
-                bitField0_ = (bitField0_ & ~0x00010000);
+                bitField0_ = (bitField0_ & ~0x00008000);
                 originJobId_ = 0L;
-                bitField0_ = (bitField0_ & ~0x00020000);
-                commonDependStrategy_ = "";
-                bitField0_ = (bitField0_ & ~0x00040000);
-                lastDependStrategy_ = "";
-                bitField0_ = (bitField0_ & ~0x00080000);
+                bitField0_ = (bitField0_ & ~0x00010000);
                 if (parametersBuilder_ == null) {
                     parameters_ = com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.getDefaultInstance();
                 } else {
                     parametersBuilder_.clear();
                 }
-                bitField0_ = (bitField0_ & ~0x00100000);
+                bitField0_ = (bitField0_ & ~0x00020000);
                 fixedDelay_ = 0;
-                bitField0_ = (bitField0_ & ~0x00200000);
+                bitField0_ = (bitField0_ & ~0x00040000);
                 return this;
             }
 
@@ -1546,85 +1316,72 @@ public final class ModifyJobProtos {
                     to_bitField0_ |= 0x00000004;
                 }
                 result.cronExpression_ = cronExpression_;
-                if (((bitField0_ & 0x00000008) == 0x00000008)) {
-                    dependencyJobId_ = java.util.Collections.unmodifiableList(dependencyJobId_);
-                    bitField0_ = (bitField0_ & ~0x00000008);
-                }
-                result.dependencyJobId_ = dependencyJobId_;
-                if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+                if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
                     to_bitField0_ |= 0x00000008;
                 }
                 result.appName_ = appName_;
-                if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+                if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
                     to_bitField0_ |= 0x00000010;
                 }
                 result.appKey_ = appKey_;
-                if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+                if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
                     to_bitField0_ |= 0x00000020;
                 }
                 result.user_ = user_;
-                if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
+                if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
                     to_bitField0_ |= 0x00000040;
                 }
                 result.jobType_ = jobType_;
-                if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
+                if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
                     to_bitField0_ |= 0x00000080;
                 }
                 result.command_ = command_;
-                if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
+                if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
                     to_bitField0_ |= 0x00000100;
                 }
                 result.groupId_ = groupId_;
-                if (((from_bitField0_ & 0x00000400) == 0x00000400)) {
+                if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
                     to_bitField0_ |= 0x00000200;
                 }
                 result.priority_ = priority_;
-                if (((from_bitField0_ & 0x00000800) == 0x00000800)) {
+                if (((from_bitField0_ & 0x00000400) == 0x00000400)) {
                     to_bitField0_ |= 0x00000400;
                 }
                 result.rejectRetries_ = rejectRetries_;
-                if (((from_bitField0_ & 0x00001000) == 0x00001000)) {
+                if (((from_bitField0_ & 0x00000800) == 0x00000800)) {
                     to_bitField0_ |= 0x00000800;
                 }
                 result.rejectInterval_ = rejectInterval_;
-                if (((from_bitField0_ & 0x00002000) == 0x00002000)) {
+                if (((from_bitField0_ & 0x00001000) == 0x00001000)) {
                     to_bitField0_ |= 0x00001000;
                 }
                 result.failedRetries_ = failedRetries_;
-                if (((from_bitField0_ & 0x00004000) == 0x00004000)) {
+                if (((from_bitField0_ & 0x00002000) == 0x00002000)) {
                     to_bitField0_ |= 0x00002000;
                 }
                 result.failedInterval_ = failedInterval_;
-                if (((from_bitField0_ & 0x00008000) == 0x00008000)) {
+                if (((from_bitField0_ & 0x00004000) == 0x00004000)) {
                     to_bitField0_ |= 0x00004000;
                 }
                 result.startTime_ = startTime_;
-                if (((from_bitField0_ & 0x00010000) == 0x00010000)) {
+                if (((from_bitField0_ & 0x00008000) == 0x00008000)) {
                     to_bitField0_ |= 0x00008000;
                 }
                 result.endTime_ = endTime_;
-                if (((from_bitField0_ & 0x00020000) == 0x00020000)) {
+                if (((from_bitField0_ & 0x00010000) == 0x00010000)) {
                     to_bitField0_ |= 0x00010000;
                 }
                 result.originJobId_ = originJobId_;
-                if (((from_bitField0_ & 0x00040000) == 0x00040000)) {
+                if (((from_bitField0_ & 0x00020000) == 0x00020000)) {
                     to_bitField0_ |= 0x00020000;
-                }
-                result.commonDependStrategy_ = commonDependStrategy_;
-                if (((from_bitField0_ & 0x00080000) == 0x00080000)) {
-                    to_bitField0_ |= 0x00040000;
-                }
-                result.lastDependStrategy_ = lastDependStrategy_;
-                if (((from_bitField0_ & 0x00100000) == 0x00100000)) {
-                    to_bitField0_ |= 0x00080000;
                 }
                 if (parametersBuilder_ == null) {
                     result.parameters_ = parameters_;
                 } else {
                     result.parameters_ = parametersBuilder_.build();
                 }
-                if (((from_bitField0_ & 0x00200000) == 0x00200000)) {
-                    to_bitField0_ |= 0x00100000;
+                if (((from_bitField0_ & 0x00040000) == 0x00040000)) {
+                    to_bitField0_ |= 0x00040000;
                 }
                 result.fixedDelay_ = fixedDelay_;
                 result.bitField0_ = to_bitField0_;
@@ -1657,38 +1414,28 @@ public final class ModifyJobProtos {
                     cronExpression_ = other.cronExpression_;
                     onChanged();
                 }
-                if (!other.dependencyJobId_.isEmpty()) {
-                    if (dependencyJobId_.isEmpty()) {
-                        dependencyJobId_ = other.dependencyJobId_;
-                        bitField0_ = (bitField0_ & ~0x00000008);
-                    } else {
-                        ensureDependencyJobIdIsMutable();
-                        dependencyJobId_.addAll(other.dependencyJobId_);
-                    }
-                    onChanged();
-                }
                 if (other.hasAppName()) {
-                    bitField0_ |= 0x00000010;
+                    bitField0_ |= 0x00000008;
                     appName_ = other.appName_;
                     onChanged();
                 }
                 if (other.hasAppKey()) {
-                    bitField0_ |= 0x00000020;
+                    bitField0_ |= 0x00000010;
                     appKey_ = other.appKey_;
                     onChanged();
                 }
                 if (other.hasUser()) {
-                    bitField0_ |= 0x00000040;
+                    bitField0_ |= 0x00000020;
                     user_ = other.user_;
                     onChanged();
                 }
                 if (other.hasJobType()) {
-                    bitField0_ |= 0x00000080;
+                    bitField0_ |= 0x00000040;
                     jobType_ = other.jobType_;
                     onChanged();
                 }
                 if (other.hasCommand()) {
-                    bitField0_ |= 0x00000100;
+                    bitField0_ |= 0x00000080;
                     command_ = other.command_;
                     onChanged();
                 }
@@ -1718,16 +1465,6 @@ public final class ModifyJobProtos {
                 }
                 if (other.hasOriginJobId()) {
                     setOriginJobId(other.getOriginJobId());
-                }
-                if (other.hasCommonDependStrategy()) {
-                    bitField0_ |= 0x00040000;
-                    commonDependStrategy_ = other.commonDependStrategy_;
-                    onChanged();
-                }
-                if (other.hasLastDependStrategy()) {
-                    bitField0_ |= 0x00080000;
-                    lastDependStrategy_ = other.lastDependStrategy_;
-                    onChanged();
                 }
                 if (other.hasParameters()) {
                     mergeParameters(other.getParameters());
@@ -1959,87 +1696,17 @@ public final class ModifyJobProtos {
                 return this;
             }
 
-            private java.util.List<java.lang.Long> dependencyJobId_ = java.util.Collections.emptyList();
-
-            private void ensureDependencyJobIdIsMutable() {
-                if (!((bitField0_ & 0x00000008) == 0x00000008)) {
-                    dependencyJobId_ = new java.util.ArrayList<java.lang.Long>(dependencyJobId_);
-                    bitField0_ |= 0x00000008;
-                }
-            }
-
-            /**
-             * <code>repeated int64 dependency_job_id = 4 [packed = true];</code>
-             */
-            public java.util.List<java.lang.Long> getDependencyJobIdList() {
-                return java.util.Collections.unmodifiableList(dependencyJobId_);
-            }
-
-            /**
-             * <code>repeated int64 dependency_job_id = 4 [packed = true];</code>
-             */
-            public int getDependencyJobIdCount() {
-                return dependencyJobId_.size();
-            }
-
-            /**
-             * <code>repeated int64 dependency_job_id = 4 [packed = true];</code>
-             */
-            public long getDependencyJobId(int index) {
-                return dependencyJobId_.get(index);
-            }
-
-            /**
-             * <code>repeated int64 dependency_job_id = 4 [packed = true];</code>
-             */
-            public Builder setDependencyJobId(int index, long value) {
-                ensureDependencyJobIdIsMutable();
-                dependencyJobId_.set(index, value);
-                onChanged();
-                return this;
-            }
-
-            /**
-             * <code>repeated int64 dependency_job_id = 4 [packed = true];</code>
-             */
-            public Builder addDependencyJobId(long value) {
-                ensureDependencyJobIdIsMutable();
-                dependencyJobId_.add(value);
-                onChanged();
-                return this;
-            }
-
-            /**
-             * <code>repeated int64 dependency_job_id = 4 [packed = true];</code>
-             */
-            public Builder addAllDependencyJobId(java.lang.Iterable<? extends java.lang.Long> values) {
-                ensureDependencyJobIdIsMutable();
-                com.google.protobuf.AbstractMessageLite.Builder.addAll(values, dependencyJobId_);
-                onChanged();
-                return this;
-            }
-
-            /**
-             * <code>repeated int64 dependency_job_id = 4 [packed = true];</code>
-             */
-            public Builder clearDependencyJobId() {
-                dependencyJobId_ = java.util.Collections.emptyList();
-                bitField0_ = (bitField0_ & ~0x00000008);
-                onChanged();
-                return this;
-            }
-
             private java.lang.Object appName_ = "";
 
             /**
-             * <code>optional string app_name = 5;</code>
+             * <code>optional string app_name = 4;</code>
              */
             public boolean hasAppName() {
-                return ((bitField0_ & 0x00000010) == 0x00000010);
+                return ((bitField0_ & 0x00000008) == 0x00000008);
             }
 
             /**
-             * <code>optional string app_name = 5;</code>
+             * <code>optional string app_name = 4;</code>
              */
             public java.lang.String getAppName() {
                 java.lang.Object ref = appName_;
@@ -2056,7 +1723,7 @@ public final class ModifyJobProtos {
             }
 
             /**
-             * <code>optional string app_name = 5;</code>
+             * <code>optional string app_name = 4;</code>
              */
             public com.google.protobuf.ByteString getAppNameBytes() {
                 java.lang.Object ref = appName_;
@@ -2070,36 +1737,36 @@ public final class ModifyJobProtos {
             }
 
             /**
-             * <code>optional string app_name = 5;</code>
+             * <code>optional string app_name = 4;</code>
              */
             public Builder setAppName(java.lang.String value) {
                 if (value == null) {
                     throw new NullPointerException();
                 }
-                bitField0_ |= 0x00000010;
+                bitField0_ |= 0x00000008;
                 appName_ = value;
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>optional string app_name = 5;</code>
+             * <code>optional string app_name = 4;</code>
              */
             public Builder clearAppName() {
-                bitField0_ = (bitField0_ & ~0x00000010);
+                bitField0_ = (bitField0_ & ~0x00000008);
                 appName_ = getDefaultInstance().getAppName();
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>optional string app_name = 5;</code>
+             * <code>optional string app_name = 4;</code>
              */
             public Builder setAppNameBytes(com.google.protobuf.ByteString value) {
                 if (value == null) {
                     throw new NullPointerException();
                 }
-                bitField0_ |= 0x00000010;
+                bitField0_ |= 0x00000008;
                 appName_ = value;
                 onChanged();
                 return this;
@@ -2108,14 +1775,14 @@ public final class ModifyJobProtos {
             private java.lang.Object appKey_ = "";
 
             /**
-             * <code>optional string app_key = 6;</code>
+             * <code>optional string app_key = 5;</code>
              */
             public boolean hasAppKey() {
-                return ((bitField0_ & 0x00000020) == 0x00000020);
+                return ((bitField0_ & 0x00000010) == 0x00000010);
             }
 
             /**
-             * <code>optional string app_key = 6;</code>
+             * <code>optional string app_key = 5;</code>
              */
             public java.lang.String getAppKey() {
                 java.lang.Object ref = appKey_;
@@ -2132,7 +1799,7 @@ public final class ModifyJobProtos {
             }
 
             /**
-             * <code>optional string app_key = 6;</code>
+             * <code>optional string app_key = 5;</code>
              */
             public com.google.protobuf.ByteString getAppKeyBytes() {
                 java.lang.Object ref = appKey_;
@@ -2146,36 +1813,36 @@ public final class ModifyJobProtos {
             }
 
             /**
-             * <code>optional string app_key = 6;</code>
+             * <code>optional string app_key = 5;</code>
              */
             public Builder setAppKey(java.lang.String value) {
                 if (value == null) {
                     throw new NullPointerException();
                 }
-                bitField0_ |= 0x00000020;
+                bitField0_ |= 0x00000010;
                 appKey_ = value;
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>optional string app_key = 6;</code>
+             * <code>optional string app_key = 5;</code>
              */
             public Builder clearAppKey() {
-                bitField0_ = (bitField0_ & ~0x00000020);
+                bitField0_ = (bitField0_ & ~0x00000010);
                 appKey_ = getDefaultInstance().getAppKey();
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>optional string app_key = 6;</code>
+             * <code>optional string app_key = 5;</code>
              */
             public Builder setAppKeyBytes(com.google.protobuf.ByteString value) {
                 if (value == null) {
                     throw new NullPointerException();
                 }
-                bitField0_ |= 0x00000020;
+                bitField0_ |= 0x00000010;
                 appKey_ = value;
                 onChanged();
                 return this;
@@ -2184,14 +1851,14 @@ public final class ModifyJobProtos {
             private java.lang.Object user_ = "";
 
             /**
-             * <code>optional string user = 7;</code>
+             * <code>optional string user = 6;</code>
              */
             public boolean hasUser() {
-                return ((bitField0_ & 0x00000040) == 0x00000040);
+                return ((bitField0_ & 0x00000020) == 0x00000020);
             }
 
             /**
-             * <code>optional string user = 7;</code>
+             * <code>optional string user = 6;</code>
              */
             public java.lang.String getUser() {
                 java.lang.Object ref = user_;
@@ -2208,7 +1875,7 @@ public final class ModifyJobProtos {
             }
 
             /**
-             * <code>optional string user = 7;</code>
+             * <code>optional string user = 6;</code>
              */
             public com.google.protobuf.ByteString getUserBytes() {
                 java.lang.Object ref = user_;
@@ -2222,36 +1889,36 @@ public final class ModifyJobProtos {
             }
 
             /**
-             * <code>optional string user = 7;</code>
+             * <code>optional string user = 6;</code>
              */
             public Builder setUser(java.lang.String value) {
                 if (value == null) {
                     throw new NullPointerException();
                 }
-                bitField0_ |= 0x00000040;
+                bitField0_ |= 0x00000020;
                 user_ = value;
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>optional string user = 7;</code>
+             * <code>optional string user = 6;</code>
              */
             public Builder clearUser() {
-                bitField0_ = (bitField0_ & ~0x00000040);
+                bitField0_ = (bitField0_ & ~0x00000020);
                 user_ = getDefaultInstance().getUser();
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>optional string user = 7;</code>
+             * <code>optional string user = 6;</code>
              */
             public Builder setUserBytes(com.google.protobuf.ByteString value) {
                 if (value == null) {
                     throw new NullPointerException();
                 }
-                bitField0_ |= 0x00000040;
+                bitField0_ |= 0x00000020;
                 user_ = value;
                 onChanged();
                 return this;
@@ -2260,14 +1927,14 @@ public final class ModifyJobProtos {
             private java.lang.Object jobType_ = "";
 
             /**
-             * <code>optional string job_type = 8;</code>
+             * <code>optional string job_type = 7;</code>
              */
             public boolean hasJobType() {
-                return ((bitField0_ & 0x00000080) == 0x00000080);
+                return ((bitField0_ & 0x00000040) == 0x00000040);
             }
 
             /**
-             * <code>optional string job_type = 8;</code>
+             * <code>optional string job_type = 7;</code>
              */
             public java.lang.String getJobType() {
                 java.lang.Object ref = jobType_;
@@ -2284,7 +1951,7 @@ public final class ModifyJobProtos {
             }
 
             /**
-             * <code>optional string job_type = 8;</code>
+             * <code>optional string job_type = 7;</code>
              */
             public com.google.protobuf.ByteString getJobTypeBytes() {
                 java.lang.Object ref = jobType_;
@@ -2298,36 +1965,36 @@ public final class ModifyJobProtos {
             }
 
             /**
-             * <code>optional string job_type = 8;</code>
+             * <code>optional string job_type = 7;</code>
              */
             public Builder setJobType(java.lang.String value) {
                 if (value == null) {
                     throw new NullPointerException();
                 }
-                bitField0_ |= 0x00000080;
+                bitField0_ |= 0x00000040;
                 jobType_ = value;
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>optional string job_type = 8;</code>
+             * <code>optional string job_type = 7;</code>
              */
             public Builder clearJobType() {
-                bitField0_ = (bitField0_ & ~0x00000080);
+                bitField0_ = (bitField0_ & ~0x00000040);
                 jobType_ = getDefaultInstance().getJobType();
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>optional string job_type = 8;</code>
+             * <code>optional string job_type = 7;</code>
              */
             public Builder setJobTypeBytes(com.google.protobuf.ByteString value) {
                 if (value == null) {
                     throw new NullPointerException();
                 }
-                bitField0_ |= 0x00000080;
+                bitField0_ |= 0x00000040;
                 jobType_ = value;
                 onChanged();
                 return this;
@@ -2336,14 +2003,14 @@ public final class ModifyJobProtos {
             private java.lang.Object command_ = "";
 
             /**
-             * <code>optional string command = 9;</code>
+             * <code>optional string command = 8;</code>
              */
             public boolean hasCommand() {
-                return ((bitField0_ & 0x00000100) == 0x00000100);
+                return ((bitField0_ & 0x00000080) == 0x00000080);
             }
 
             /**
-             * <code>optional string command = 9;</code>
+             * <code>optional string command = 8;</code>
              */
             public java.lang.String getCommand() {
                 java.lang.Object ref = command_;
@@ -2360,7 +2027,7 @@ public final class ModifyJobProtos {
             }
 
             /**
-             * <code>optional string command = 9;</code>
+             * <code>optional string command = 8;</code>
              */
             public com.google.protobuf.ByteString getCommandBytes() {
                 java.lang.Object ref = command_;
@@ -2374,36 +2041,36 @@ public final class ModifyJobProtos {
             }
 
             /**
-             * <code>optional string command = 9;</code>
+             * <code>optional string command = 8;</code>
              */
             public Builder setCommand(java.lang.String value) {
                 if (value == null) {
                     throw new NullPointerException();
                 }
-                bitField0_ |= 0x00000100;
+                bitField0_ |= 0x00000080;
                 command_ = value;
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>optional string command = 9;</code>
+             * <code>optional string command = 8;</code>
              */
             public Builder clearCommand() {
-                bitField0_ = (bitField0_ & ~0x00000100);
+                bitField0_ = (bitField0_ & ~0x00000080);
                 command_ = getDefaultInstance().getCommand();
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>optional string command = 9;</code>
+             * <code>optional string command = 8;</code>
              */
             public Builder setCommandBytes(com.google.protobuf.ByteString value) {
                 if (value == null) {
                     throw new NullPointerException();
                 }
-                bitField0_ |= 0x00000100;
+                bitField0_ |= 0x00000080;
                 command_ = value;
                 onChanged();
                 return this;
@@ -2412,34 +2079,34 @@ public final class ModifyJobProtos {
             private int groupId_;
 
             /**
-             * <code>optional int32 group_id = 10;</code>
+             * <code>optional int32 group_id = 9;</code>
              */
             public boolean hasGroupId() {
-                return ((bitField0_ & 0x00000200) == 0x00000200);
+                return ((bitField0_ & 0x00000100) == 0x00000100);
             }
 
             /**
-             * <code>optional int32 group_id = 10;</code>
+             * <code>optional int32 group_id = 9;</code>
              */
             public int getGroupId() {
                 return groupId_;
             }
 
             /**
-             * <code>optional int32 group_id = 10;</code>
+             * <code>optional int32 group_id = 9;</code>
              */
             public Builder setGroupId(int value) {
-                bitField0_ |= 0x00000200;
+                bitField0_ |= 0x00000100;
                 groupId_ = value;
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>optional int32 group_id = 10;</code>
+             * <code>optional int32 group_id = 9;</code>
              */
             public Builder clearGroupId() {
-                bitField0_ = (bitField0_ & ~0x00000200);
+                bitField0_ = (bitField0_ & ~0x00000100);
                 groupId_ = 0;
                 onChanged();
                 return this;
@@ -2448,34 +2115,34 @@ public final class ModifyJobProtos {
             private int priority_ = 1;
 
             /**
-             * <code>optional int32 priority = 11 [default = 1];</code>
+             * <code>optional int32 priority = 10 [default = 1];</code>
              */
             public boolean hasPriority() {
-                return ((bitField0_ & 0x00000400) == 0x00000400);
+                return ((bitField0_ & 0x00000200) == 0x00000200);
             }
 
             /**
-             * <code>optional int32 priority = 11 [default = 1];</code>
+             * <code>optional int32 priority = 10 [default = 1];</code>
              */
             public int getPriority() {
                 return priority_;
             }
 
             /**
-             * <code>optional int32 priority = 11 [default = 1];</code>
+             * <code>optional int32 priority = 10 [default = 1];</code>
              */
             public Builder setPriority(int value) {
-                bitField0_ |= 0x00000400;
+                bitField0_ |= 0x00000200;
                 priority_ = value;
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>optional int32 priority = 11 [default = 1];</code>
+             * <code>optional int32 priority = 10 [default = 1];</code>
              */
             public Builder clearPriority() {
-                bitField0_ = (bitField0_ & ~0x00000400);
+                bitField0_ = (bitField0_ & ~0x00000200);
                 priority_ = 1;
                 onChanged();
                 return this;
@@ -2484,34 +2151,34 @@ public final class ModifyJobProtos {
             private int rejectRetries_;
 
             /**
-             * <code>optional int32 reject_retries = 12 [default = 0];</code>
+             * <code>optional int32 reject_retries = 11 [default = 0];</code>
              */
             public boolean hasRejectRetries() {
-                return ((bitField0_ & 0x00000800) == 0x00000800);
+                return ((bitField0_ & 0x00000400) == 0x00000400);
             }
 
             /**
-             * <code>optional int32 reject_retries = 12 [default = 0];</code>
+             * <code>optional int32 reject_retries = 11 [default = 0];</code>
              */
             public int getRejectRetries() {
                 return rejectRetries_;
             }
 
             /**
-             * <code>optional int32 reject_retries = 12 [default = 0];</code>
+             * <code>optional int32 reject_retries = 11 [default = 0];</code>
              */
             public Builder setRejectRetries(int value) {
-                bitField0_ |= 0x00000800;
+                bitField0_ |= 0x00000400;
                 rejectRetries_ = value;
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>optional int32 reject_retries = 12 [default = 0];</code>
+             * <code>optional int32 reject_retries = 11 [default = 0];</code>
              */
             public Builder clearRejectRetries() {
-                bitField0_ = (bitField0_ & ~0x00000800);
+                bitField0_ = (bitField0_ & ~0x00000400);
                 rejectRetries_ = 0;
                 onChanged();
                 return this;
@@ -2520,34 +2187,34 @@ public final class ModifyJobProtos {
             private int rejectInterval_ = 3;
 
             /**
-             * <code>optional int32 reject_interval = 13 [default = 3];</code>
+             * <code>optional int32 reject_interval = 12 [default = 3];</code>
              */
             public boolean hasRejectInterval() {
-                return ((bitField0_ & 0x00001000) == 0x00001000);
+                return ((bitField0_ & 0x00000800) == 0x00000800);
             }
 
             /**
-             * <code>optional int32 reject_interval = 13 [default = 3];</code>
+             * <code>optional int32 reject_interval = 12 [default = 3];</code>
              */
             public int getRejectInterval() {
                 return rejectInterval_;
             }
 
             /**
-             * <code>optional int32 reject_interval = 13 [default = 3];</code>
+             * <code>optional int32 reject_interval = 12 [default = 3];</code>
              */
             public Builder setRejectInterval(int value) {
-                bitField0_ |= 0x00001000;
+                bitField0_ |= 0x00000800;
                 rejectInterval_ = value;
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>optional int32 reject_interval = 13 [default = 3];</code>
+             * <code>optional int32 reject_interval = 12 [default = 3];</code>
              */
             public Builder clearRejectInterval() {
-                bitField0_ = (bitField0_ & ~0x00001000);
+                bitField0_ = (bitField0_ & ~0x00000800);
                 rejectInterval_ = 3;
                 onChanged();
                 return this;
@@ -2556,34 +2223,34 @@ public final class ModifyJobProtos {
             private int failedRetries_;
 
             /**
-             * <code>optional int32 failed_retries = 14 [default = 0];</code>
+             * <code>optional int32 failed_retries = 13 [default = 0];</code>
              */
             public boolean hasFailedRetries() {
-                return ((bitField0_ & 0x00002000) == 0x00002000);
+                return ((bitField0_ & 0x00001000) == 0x00001000);
             }
 
             /**
-             * <code>optional int32 failed_retries = 14 [default = 0];</code>
+             * <code>optional int32 failed_retries = 13 [default = 0];</code>
              */
             public int getFailedRetries() {
                 return failedRetries_;
             }
 
             /**
-             * <code>optional int32 failed_retries = 14 [default = 0];</code>
+             * <code>optional int32 failed_retries = 13 [default = 0];</code>
              */
             public Builder setFailedRetries(int value) {
-                bitField0_ |= 0x00002000;
+                bitField0_ |= 0x00001000;
                 failedRetries_ = value;
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>optional int32 failed_retries = 14 [default = 0];</code>
+             * <code>optional int32 failed_retries = 13 [default = 0];</code>
              */
             public Builder clearFailedRetries() {
-                bitField0_ = (bitField0_ & ~0x00002000);
+                bitField0_ = (bitField0_ & ~0x00001000);
                 failedRetries_ = 0;
                 onChanged();
                 return this;
@@ -2592,34 +2259,34 @@ public final class ModifyJobProtos {
             private int failedInterval_ = 3;
 
             /**
-             * <code>optional int32 failed_interval = 15 [default = 3];</code>
+             * <code>optional int32 failed_interval = 14 [default = 3];</code>
              */
             public boolean hasFailedInterval() {
-                return ((bitField0_ & 0x00004000) == 0x00004000);
+                return ((bitField0_ & 0x00002000) == 0x00002000);
             }
 
             /**
-             * <code>optional int32 failed_interval = 15 [default = 3];</code>
+             * <code>optional int32 failed_interval = 14 [default = 3];</code>
              */
             public int getFailedInterval() {
                 return failedInterval_;
             }
 
             /**
-             * <code>optional int32 failed_interval = 15 [default = 3];</code>
+             * <code>optional int32 failed_interval = 14 [default = 3];</code>
              */
             public Builder setFailedInterval(int value) {
-                bitField0_ |= 0x00004000;
+                bitField0_ |= 0x00002000;
                 failedInterval_ = value;
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>optional int32 failed_interval = 15 [default = 3];</code>
+             * <code>optional int32 failed_interval = 14 [default = 3];</code>
              */
             public Builder clearFailedInterval() {
-                bitField0_ = (bitField0_ & ~0x00004000);
+                bitField0_ = (bitField0_ & ~0x00002000);
                 failedInterval_ = 3;
                 onChanged();
                 return this;
@@ -2628,34 +2295,34 @@ public final class ModifyJobProtos {
             private long startTime_;
 
             /**
-             * <code>optional int64 start_time = 16;</code>
+             * <code>optional int64 start_time = 15;</code>
              */
             public boolean hasStartTime() {
-                return ((bitField0_ & 0x00008000) == 0x00008000);
+                return ((bitField0_ & 0x00004000) == 0x00004000);
             }
 
             /**
-             * <code>optional int64 start_time = 16;</code>
+             * <code>optional int64 start_time = 15;</code>
              */
             public long getStartTime() {
                 return startTime_;
             }
 
             /**
-             * <code>optional int64 start_time = 16;</code>
+             * <code>optional int64 start_time = 15;</code>
              */
             public Builder setStartTime(long value) {
-                bitField0_ |= 0x00008000;
+                bitField0_ |= 0x00004000;
                 startTime_ = value;
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>optional int64 start_time = 16;</code>
+             * <code>optional int64 start_time = 15;</code>
              */
             public Builder clearStartTime() {
-                bitField0_ = (bitField0_ & ~0x00008000);
+                bitField0_ = (bitField0_ & ~0x00004000);
                 startTime_ = 0L;
                 onChanged();
                 return this;
@@ -2664,34 +2331,34 @@ public final class ModifyJobProtos {
             private long endTime_;
 
             /**
-             * <code>optional int64 end_time = 17;</code>
+             * <code>optional int64 end_time = 16;</code>
              */
             public boolean hasEndTime() {
-                return ((bitField0_ & 0x00010000) == 0x00010000);
+                return ((bitField0_ & 0x00008000) == 0x00008000);
             }
 
             /**
-             * <code>optional int64 end_time = 17;</code>
+             * <code>optional int64 end_time = 16;</code>
              */
             public long getEndTime() {
                 return endTime_;
             }
 
             /**
-             * <code>optional int64 end_time = 17;</code>
+             * <code>optional int64 end_time = 16;</code>
              */
             public Builder setEndTime(long value) {
-                bitField0_ |= 0x00010000;
+                bitField0_ |= 0x00008000;
                 endTime_ = value;
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>optional int64 end_time = 17;</code>
+             * <code>optional int64 end_time = 16;</code>
              */
             public Builder clearEndTime() {
-                bitField0_ = (bitField0_ & ~0x00010000);
+                bitField0_ = (bitField0_ & ~0x00008000);
                 endTime_ = 0L;
                 onChanged();
                 return this;
@@ -2700,187 +2367,35 @@ public final class ModifyJobProtos {
             private long originJobId_;
 
             /**
-             * <code>optional int64 origin_job_id = 18;</code>
+             * <code>optional int64 origin_job_id = 17;</code>
              */
             public boolean hasOriginJobId() {
-                return ((bitField0_ & 0x00020000) == 0x00020000);
+                return ((bitField0_ & 0x00010000) == 0x00010000);
             }
 
             /**
-             * <code>optional int64 origin_job_id = 18;</code>
+             * <code>optional int64 origin_job_id = 17;</code>
              */
             public long getOriginJobId() {
                 return originJobId_;
             }
 
             /**
-             * <code>optional int64 origin_job_id = 18;</code>
+             * <code>optional int64 origin_job_id = 17;</code>
              */
             public Builder setOriginJobId(long value) {
-                bitField0_ |= 0x00020000;
+                bitField0_ |= 0x00010000;
                 originJobId_ = value;
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>optional int64 origin_job_id = 18;</code>
+             * <code>optional int64 origin_job_id = 17;</code>
              */
             public Builder clearOriginJobId() {
-                bitField0_ = (bitField0_ & ~0x00020000);
+                bitField0_ = (bitField0_ & ~0x00010000);
                 originJobId_ = 0L;
-                onChanged();
-                return this;
-            }
-
-            private java.lang.Object commonDependStrategy_ = "";
-
-            /**
-             * <code>optional string common_depend_strategy = 19;</code>
-             */
-            public boolean hasCommonDependStrategy() {
-                return ((bitField0_ & 0x00040000) == 0x00040000);
-            }
-
-            /**
-             * <code>optional string common_depend_strategy = 19;</code>
-             */
-            public java.lang.String getCommonDependStrategy() {
-                java.lang.Object ref = commonDependStrategy_;
-                if (!(ref instanceof java.lang.String)) {
-                    com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                    java.lang.String s = bs.toStringUtf8();
-                    if (bs.isValidUtf8()) {
-                        commonDependStrategy_ = s;
-                    }
-                    return s;
-                } else {
-                    return (java.lang.String) ref;
-                }
-            }
-
-            /**
-             * <code>optional string common_depend_strategy = 19;</code>
-             */
-            public com.google.protobuf.ByteString getCommonDependStrategyBytes() {
-                java.lang.Object ref = commonDependStrategy_;
-                if (ref instanceof String) {
-                    com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                    commonDependStrategy_ = b;
-                    return b;
-                } else {
-                    return (com.google.protobuf.ByteString) ref;
-                }
-            }
-
-            /**
-             * <code>optional string common_depend_strategy = 19;</code>
-             */
-            public Builder setCommonDependStrategy(java.lang.String value) {
-                if (value == null) {
-                    throw new NullPointerException();
-                }
-                bitField0_ |= 0x00040000;
-                commonDependStrategy_ = value;
-                onChanged();
-                return this;
-            }
-
-            /**
-             * <code>optional string common_depend_strategy = 19;</code>
-             */
-            public Builder clearCommonDependStrategy() {
-                bitField0_ = (bitField0_ & ~0x00040000);
-                commonDependStrategy_ = getDefaultInstance().getCommonDependStrategy();
-                onChanged();
-                return this;
-            }
-
-            /**
-             * <code>optional string common_depend_strategy = 19;</code>
-             */
-            public Builder setCommonDependStrategyBytes(com.google.protobuf.ByteString value) {
-                if (value == null) {
-                    throw new NullPointerException();
-                }
-                bitField0_ |= 0x00040000;
-                commonDependStrategy_ = value;
-                onChanged();
-                return this;
-            }
-
-            private java.lang.Object lastDependStrategy_ = "";
-
-            /**
-             * <code>optional string last_depend_strategy = 20;</code>
-             */
-            public boolean hasLastDependStrategy() {
-                return ((bitField0_ & 0x00080000) == 0x00080000);
-            }
-
-            /**
-             * <code>optional string last_depend_strategy = 20;</code>
-             */
-            public java.lang.String getLastDependStrategy() {
-                java.lang.Object ref = lastDependStrategy_;
-                if (!(ref instanceof java.lang.String)) {
-                    com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                    java.lang.String s = bs.toStringUtf8();
-                    if (bs.isValidUtf8()) {
-                        lastDependStrategy_ = s;
-                    }
-                    return s;
-                } else {
-                    return (java.lang.String) ref;
-                }
-            }
-
-            /**
-             * <code>optional string last_depend_strategy = 20;</code>
-             */
-            public com.google.protobuf.ByteString getLastDependStrategyBytes() {
-                java.lang.Object ref = lastDependStrategy_;
-                if (ref instanceof String) {
-                    com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                    lastDependStrategy_ = b;
-                    return b;
-                } else {
-                    return (com.google.protobuf.ByteString) ref;
-                }
-            }
-
-            /**
-             * <code>optional string last_depend_strategy = 20;</code>
-             */
-            public Builder setLastDependStrategy(java.lang.String value) {
-                if (value == null) {
-                    throw new NullPointerException();
-                }
-                bitField0_ |= 0x00080000;
-                lastDependStrategy_ = value;
-                onChanged();
-                return this;
-            }
-
-            /**
-             * <code>optional string last_depend_strategy = 20;</code>
-             */
-            public Builder clearLastDependStrategy() {
-                bitField0_ = (bitField0_ & ~0x00080000);
-                lastDependStrategy_ = getDefaultInstance().getLastDependStrategy();
-                onChanged();
-                return this;
-            }
-
-            /**
-             * <code>optional string last_depend_strategy = 20;</code>
-             */
-            public Builder setLastDependStrategyBytes(com.google.protobuf.ByteString value) {
-                if (value == null) {
-                    throw new NullPointerException();
-                }
-                bitField0_ |= 0x00080000;
-                lastDependStrategy_ = value;
                 onChanged();
                 return this;
             }
@@ -2890,14 +2405,14 @@ public final class ModifyJobProtos {
             private com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder> parametersBuilder_;
 
             /**
-             * <code>optional .MapEntry parameters = 21;</code>
+             * <code>optional .MapEntry parameters = 18;</code>
              */
             public boolean hasParameters() {
-                return ((bitField0_ & 0x00100000) == 0x00100000);
+                return ((bitField0_ & 0x00020000) == 0x00020000);
             }
 
             /**
-             * <code>optional .MapEntry parameters = 21;</code>
+             * <code>optional .MapEntry parameters = 18;</code>
              */
             public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry getParameters() {
                 if (parametersBuilder_ == null) {
@@ -2908,7 +2423,7 @@ public final class ModifyJobProtos {
             }
 
             /**
-             * <code>optional .MapEntry parameters = 21;</code>
+             * <code>optional .MapEntry parameters = 18;</code>
              */
             public Builder setParameters(com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry value) {
                 if (parametersBuilder_ == null) {
@@ -2920,12 +2435,12 @@ public final class ModifyJobProtos {
                 } else {
                     parametersBuilder_.setMessage(value);
                 }
-                bitField0_ |= 0x00100000;
+                bitField0_ |= 0x00020000;
                 return this;
             }
 
             /**
-             * <code>optional .MapEntry parameters = 21;</code>
+             * <code>optional .MapEntry parameters = 18;</code>
              */
             public Builder setParameters(com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder builderForValue) {
                 if (parametersBuilder_ == null) {
@@ -2934,16 +2449,16 @@ public final class ModifyJobProtos {
                 } else {
                     parametersBuilder_.setMessage(builderForValue.build());
                 }
-                bitField0_ |= 0x00100000;
+                bitField0_ |= 0x00020000;
                 return this;
             }
 
             /**
-             * <code>optional .MapEntry parameters = 21;</code>
+             * <code>optional .MapEntry parameters = 18;</code>
              */
             public Builder mergeParameters(com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry value) {
                 if (parametersBuilder_ == null) {
-                    if (((bitField0_ & 0x00100000) == 0x00100000)
+                    if (((bitField0_ & 0x00020000) == 0x00020000)
                             && parameters_ != com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.getDefaultInstance()) {
                         parameters_ = com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.newBuilder(parameters_).mergeFrom(value).buildPartial();
                     } else {
@@ -2953,12 +2468,12 @@ public final class ModifyJobProtos {
                 } else {
                     parametersBuilder_.mergeFrom(value);
                 }
-                bitField0_ |= 0x00100000;
+                bitField0_ |= 0x00020000;
                 return this;
             }
 
             /**
-             * <code>optional .MapEntry parameters = 21;</code>
+             * <code>optional .MapEntry parameters = 18;</code>
              */
             public Builder clearParameters() {
                 if (parametersBuilder_ == null) {
@@ -2967,21 +2482,21 @@ public final class ModifyJobProtos {
                 } else {
                     parametersBuilder_.clear();
                 }
-                bitField0_ = (bitField0_ & ~0x00100000);
+                bitField0_ = (bitField0_ & ~0x00020000);
                 return this;
             }
 
             /**
-             * <code>optional .MapEntry parameters = 21;</code>
+             * <code>optional .MapEntry parameters = 18;</code>
              */
             public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder getParametersBuilder() {
-                bitField0_ |= 0x00100000;
+                bitField0_ |= 0x00020000;
                 onChanged();
                 return getParametersFieldBuilder().getBuilder();
             }
 
             /**
-             * <code>optional .MapEntry parameters = 21;</code>
+             * <code>optional .MapEntry parameters = 18;</code>
              */
             public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder getParametersOrBuilder() {
                 if (parametersBuilder_ != null) {
@@ -2992,7 +2507,7 @@ public final class ModifyJobProtos {
             }
 
             /**
-             * <code>optional .MapEntry parameters = 21;</code>
+             * <code>optional .MapEntry parameters = 18;</code>
              */
             private com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder> getParametersFieldBuilder() {
                 if (parametersBuilder_ == null) {
@@ -3006,34 +2521,34 @@ public final class ModifyJobProtos {
             private int fixedDelay_;
 
             /**
-             * <code>optional int32 fixed_delay = 22;</code>
+             * <code>optional int32 fixed_delay = 19;</code>
              */
             public boolean hasFixedDelay() {
-                return ((bitField0_ & 0x00200000) == 0x00200000);
+                return ((bitField0_ & 0x00040000) == 0x00040000);
             }
 
             /**
-             * <code>optional int32 fixed_delay = 22;</code>
+             * <code>optional int32 fixed_delay = 19;</code>
              */
             public int getFixedDelay() {
                 return fixedDelay_;
             }
 
             /**
-             * <code>optional int32 fixed_delay = 22;</code>
+             * <code>optional int32 fixed_delay = 19;</code>
              */
             public Builder setFixedDelay(int value) {
-                bitField0_ |= 0x00200000;
+                bitField0_ |= 0x00040000;
                 fixedDelay_ = value;
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>optional int32 fixed_delay = 22;</code>
+             * <code>optional int32 fixed_delay = 19;</code>
              */
             public Builder clearFixedDelay() {
-                bitField0_ = (bitField0_ & ~0x00200000);
+                bitField0_ = (bitField0_ & ~0x00040000);
                 fixedDelay_ = 0;
                 onChanged();
                 return this;
@@ -3727,22 +3242,20 @@ public final class ModifyJobProtos {
 
     static {
         java.lang.String[] descriptorData = {
-                "\n\020modify_job.proto\032\017map_entry.proto\"\216\004\n\032" + "RestServerModifyJobRequest\022\016\n\006job_id\030\001 \002"
+                "\n\020modify_job.proto\032\017map_entry.proto\"\261\003\n\032" + "RestServerModifyJobRequest\022\016\n\006job_id\030\001 \002"
                         + "(\003\022\020\n\010job_name\030\002 \001(\t\022\027\n\017cron_expression\030"
-                        + "\003 \001(\t\022\035\n\021dependency_job_id\030\004 \003(\003B\002\020\001\022\020\n\010"
-                        + "app_name\030\005 \001(\t\022\017\n\007app_key\030\006 \001(\t\022\014\n\004user\030"
-                        + "\007 \001(\t\022\020\n\010job_type\030\010 \001(\t\022\017\n\007command\030\t \001(\t"
-                        + "\022\020\n\010group_id\030\n \001(\005\022\023\n\010priority\030\013 \001(\005:\0011\022"
-                        + "\031\n\016reject_retries\030\014 \001(\005:\0010\022\032\n\017reject_int"
-                        + "erval\030\r \001(\005:\0013\022\031\n\016failed_retries\030\016 \001(\005:\001"
-                        + "0\022\032\n\017failed_interval\030\017 \001(\005:\0013\022\022\n\nstart_t",
-                "ime\030\020 \001(\003\022\020\n\010end_time\030\021 \001(\003\022\025\n\rorigin_jo"
-                        + "b_id\030\022 \001(\003\022\036\n\026common_depend_strategy\030\023 \001"
-                        + "(\t\022\034\n\024last_depend_strategy\030\024 \001(\t\022\035\n\npara"
-                        + "meters\030\025 \001(\0132\t.MapEntry\022\023\n\013fixed_delay\030\026"
-                        + " \001(\005\"M\n\027ServerModifyJobResponse\022\016\n\006job_i"
-                        + "d\030\001 \002(\003\022\017\n\007success\030\002 \002(\010\022\021\n\007message\030\003 \001("
-                        + "\t:\000B.\n\033com.mogujie.jarvis.protocolB\017Modi" + "fyJobProtos" };
+                        + "\003 \001(\t\022\020\n\010app_name\030\004 \001(\t\022\017\n\007app_key\030\005 \001(\t"
+                        + "\022\014\n\004user\030\006 \001(\t\022\020\n\010job_type\030\007 \001(\t\022\017\n\007comm"
+                        + "and\030\010 \001(\t\022\020\n\010group_id\030\t \001(\005\022\023\n\010priority\030"
+                        + "\n \001(\005:\0011\022\031\n\016reject_retries\030\013 \001(\005:\0010\022\032\n\017r"
+                        + "eject_interval\030\014 \001(\005:\0013\022\031\n\016failed_retrie"
+                        + "s\030\r \001(\005:\0010\022\032\n\017failed_interval\030\016 \001(\005:\0013\022\022"
+                        + "\n\nstart_time\030\017 \001(\003\022\020\n\010end_time\030\020 \001(\003\022\025\n\r",
+                "origin_job_id\030\021 \001(\003\022\035\n\nparameters\030\022 \001(\0132"
+                        + "\t.MapEntry\022\023\n\013fixed_delay\030\023 \001(\005\"M\n\027Serve"
+                        + "rModifyJobResponse\022\016\n\006job_id\030\001 \002(\003\022\017\n\007su"
+                        + "ccess\030\002 \002(\010\022\021\n\007message\030\003 \001(\t:\000B.\n\033com.mo"
+                        + "gujie.jarvis.protocolB\017ModifyJobProtos" };
         com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner = new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
             public com.google.protobuf.ExtensionRegistry assignDescriptors(com.google.protobuf.Descriptors.FileDescriptor root) {
                 descriptor = root;
@@ -3754,9 +3267,9 @@ public final class ModifyJobProtos {
         internal_static_RestServerModifyJobRequest_descriptor = getDescriptor().getMessageTypes().get(0);
         internal_static_RestServerModifyJobRequest_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
                 internal_static_RestServerModifyJobRequest_descriptor,
-                new java.lang.String[] { "JobId", "JobName", "CronExpression", "DependencyJobId", "AppName", "AppKey", "User", "JobType", "Command",
-                        "GroupId", "Priority", "RejectRetries", "RejectInterval", "FailedRetries", "FailedInterval", "StartTime", "EndTime",
-                        "OriginJobId", "CommonDependStrategy", "LastDependStrategy", "Parameters", "FixedDelay", });
+                new java.lang.String[] { "JobId", "JobName", "CronExpression", "AppName", "AppKey", "User", "JobType", "Command", "GroupId",
+                        "Priority", "RejectRetries", "RejectInterval", "FailedRetries", "FailedInterval", "StartTime", "EndTime", "OriginJobId",
+                        "Parameters", "FixedDelay", });
         internal_static_ServerModifyJobResponse_descriptor = getDescriptor().getMessageTypes().get(1);
         internal_static_ServerModifyJobResponse_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
                 internal_static_ServerModifyJobResponse_descriptor, new java.lang.String[] { "JobId", "Success", "Message", });
