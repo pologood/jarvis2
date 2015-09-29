@@ -5,7 +5,7 @@
  * Author: guangming
  * Create Date: 2015年8月31日 下午2:30:51
  */
-package com.mogujie.jarvis.core.common.util;
+package com.mogujie.jarvis.core.util;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;

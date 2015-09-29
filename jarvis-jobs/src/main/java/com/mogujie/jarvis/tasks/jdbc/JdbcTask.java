@@ -22,10 +22,10 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Throwables;
 import com.mogujie.jarvis.core.AbstractLogCollector;
 import com.mogujie.jarvis.core.TaskContext;
-import com.mogujie.jarvis.core.common.util.ConfigUtils;
 import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.exeception.TaskException;
 import com.mogujie.jarvis.core.task.AbstractTask;
+import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.tasks.util.HiveQLUtil;
 
 /**
@@ -38,12 +38,8 @@ public abstract class JdbcTask extends AbstractTask {
     private Connection connection;
     private Statement statement;
 
-    /**
-     * @param taskContext
-     */
     public JdbcTask(TaskContext taskContext) {
         super(taskContext);
-        // TODO Auto-generated constructor stub
     }
 
     @Override
@@ -113,7 +109,6 @@ public abstract class JdbcTask extends AbstractTask {
 
     @Override
     public boolean kill() throws TaskException {
-        // TODO Auto-generated method stub
         return false;
     }
 

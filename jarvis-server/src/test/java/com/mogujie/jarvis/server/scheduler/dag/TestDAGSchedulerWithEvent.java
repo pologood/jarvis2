@@ -15,8 +15,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.google.common.collect.Sets;
-import com.mogujie.jarvis.core.common.util.ConfigUtils;
 import com.mogujie.jarvis.core.domain.JobFlag;
+import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.server.scheduler.dag.checker.DAGDependCheckerFactory;
 import com.mogujie.jarvis.server.scheduler.dag.checker.DummyDAGDependChecker;
 import com.mogujie.jarvis.server.scheduler.event.AddJobEvent;

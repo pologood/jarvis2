@@ -11,8 +11,8 @@ package com.mogujie.jarvis.server.scheduler;
 import java.text.DateFormat;
 import java.util.Date;
 
-import com.mogujie.jarvis.core.common.util.JsonHelper;
 import com.mogujie.jarvis.core.domain.JobFlag;
+import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.dto.Job;
 import com.mogujie.jarvis.protocol.ModifyJobProtos.RestServerModifyJobRequest;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitJobRequest;

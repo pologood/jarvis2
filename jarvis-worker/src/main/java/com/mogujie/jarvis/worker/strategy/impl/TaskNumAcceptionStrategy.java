@@ -8,8 +8,8 @@
 
 package com.mogujie.jarvis.worker.strategy.impl;
 
-import com.mogujie.jarvis.core.common.util.ConfigUtils;
 import com.mogujie.jarvis.core.exeception.AcceptionException;
+import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.worker.TaskPool;
 import com.mogujie.jarvis.worker.strategy.AcceptionResult;
 import com.mogujie.jarvis.worker.strategy.AcceptionStrategy;

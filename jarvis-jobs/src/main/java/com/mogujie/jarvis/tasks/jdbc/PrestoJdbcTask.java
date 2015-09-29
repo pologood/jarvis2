@@ -18,12 +18,8 @@ import com.mogujie.jarvis.core.TaskContext;
  */
 public class PrestoJdbcTask extends JdbcTask {
 
-    /**
-     * @param taskContext
-     */
     public PrestoJdbcTask(TaskContext taskContext) {
         super(taskContext);
-        // TODO Auto-generated constructor stub
     }
 
     @Override

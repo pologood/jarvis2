@@ -16,6 +16,7 @@ import java.util.Map;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.protocol.MapEntryProtos;
 import com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry;
 

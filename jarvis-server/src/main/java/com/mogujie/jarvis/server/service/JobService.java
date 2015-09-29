@@ -27,11 +27,6 @@ public class JobService {
     @Autowired
     private JobMapper jobMapper;
 
-    public int updateJobStatus(long jobId, int status) {
-        // TODO
-        return 0;
-    }
-
     public List<Job> getJobsNotDeleted() {
         JobExample example = new JobExample();
         example.createCriteria().andJobFlagNotEqualTo(JobFlag.DELETED.getValue());

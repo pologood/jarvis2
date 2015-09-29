@@ -1,8 +1,8 @@
 package com.mogujie.jarvis.logstorage.util;
 
 import com.mogujie.jarvis.core.JarvisConstants;
-import com.mogujie.jarvis.core.common.util.ConfigUtils;
 import com.mogujie.jarvis.core.domain.StreamType;
+import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.logstorage.domain.LogReadResult;
 
 import org.apache.commons.io.FileUtils;

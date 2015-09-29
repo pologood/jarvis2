@@ -15,7 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.google.common.collect.Sets;
-import com.mogujie.jarvis.core.common.util.ConfigUtils;
+import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.server.scheduler.controller.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.controller.SyncSchedulerController;
 import com.mogujie.jarvis.server.scheduler.dag.checker.DAGDependCheckerFactory;

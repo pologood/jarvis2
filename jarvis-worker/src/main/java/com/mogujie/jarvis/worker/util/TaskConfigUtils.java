@@ -22,8 +22,8 @@ import org.apache.commons.configuration.XMLConfiguration;
 import scala.Tuple2;
 
 import com.google.common.base.Throwables;
-import com.mogujie.jarvis.core.common.util.ReflectionUtils;
 import com.mogujie.jarvis.core.task.AbstractTask;
+import com.mogujie.jarvis.core.util.ReflectionUtils;
 import com.mogujie.jarvis.worker.strategy.AcceptionStrategy;
 
 public class TaskConfigUtils {

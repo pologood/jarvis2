@@ -17,9 +17,9 @@ import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 
 import com.mogujie.jarvis.core.TaskContext;
-import com.mogujie.jarvis.core.common.util.ConfigUtils;
 import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.exeception.TaskException;
+import com.mogujie.jarvis.core.util.ConfigUtils;
 
 /**
  * 

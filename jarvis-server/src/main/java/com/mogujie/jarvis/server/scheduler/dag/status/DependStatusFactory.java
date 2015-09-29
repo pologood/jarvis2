@@ -10,9 +10,9 @@ package com.mogujie.jarvis.server.scheduler.dag.status;
 
 import org.apache.commons.configuration.Configuration;
 
-import com.mogujie.jarvis.core.common.util.ConfigUtils;
-import com.mogujie.jarvis.core.common.util.ReflectionUtils;
 import com.mogujie.jarvis.core.domain.Pair;
+import com.mogujie.jarvis.core.util.ConfigUtils;
+import com.mogujie.jarvis.core.util.ReflectionUtils;
 import com.mogujie.jarvis.dto.JobDepend;
 import com.mogujie.jarvis.server.scheduler.dag.strategy.AbstractOffsetStrategy;
 import com.mogujie.jarvis.server.scheduler.dag.strategy.CommonStrategy;
