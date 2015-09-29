@@ -16,7 +16,6 @@
             <nav>
                 <ol class="cd-breadcrumb triangle">
                     <li><a href="/jarvis/">Home</a></li>
-                    <li><a href="/jarvis/manage">管理</a></li>
                     <li class="current"><em>应用管理</em></li>
                 </ol>
             </nav>

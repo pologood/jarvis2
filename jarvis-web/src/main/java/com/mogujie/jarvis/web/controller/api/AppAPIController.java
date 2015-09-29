@@ -17,7 +17,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping(value = "/jarvis/api/app")
-public class AppController {
+public class AppAPIController {
     @Autowired
     AppService appService;
 

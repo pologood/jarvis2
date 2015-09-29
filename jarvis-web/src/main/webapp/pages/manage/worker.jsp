@@ -73,7 +73,7 @@
                         <div class="col-md-2">
                             <div class="input-group" style="width:100%">
                                 <span class="input-group-addon" style="width:35%">状态</span>
-                                <select id="workertSatus" >
+                                <select id="workerStatus" >
                                     <option value="all">全部</option>
                                     <option value="0">下线</option>
                                     <option value="1">上线</option>
@@ -87,8 +87,8 @@
                             <div class="row">
                                 <div class="col-md-10 col-lg-offset-2">
                                     <div class="input-group">
-                                        <button type="button" class="btn btn-primary" onclick="search()">查询</button>
-                                        <button type="button" class="btn btn-primary" onclick="reset()" style="margin-left: 3px">重置</button>
+                                        <button type="button" class="btn btn-primary" onclick="searchWorker()">查询</button>
+                                        <button type="button" class="btn btn-primary" onclick="resetWorker()" style="margin-left: 3px">重置</button>
                                     </div>
                                 </div>
                             </div>
@@ -119,10 +119,12 @@
                     <div class="row">
                         <div class="col-md-3">
                             <div class="input-group" style="width:100%">
-                                <span class="input-group-addon" style="width:35%">应用名称</span>
-                                <select id="appName" >
+                                <span class="input-group-addon" style="width:35%">Worker Group名称</span>
+                                <select id="name" >
                                     <option value="all">全部</option>
-
+                                    <c:forEach items="${workerGroupVoList}" var="workerGroupVo">
+                                        <option value="${workerGroupVo.name}">${workerGroupVo.name}</option>
+                                    </c:forEach>
                                 </select>
                             </div>
                         </div>
@@ -133,7 +135,9 @@
                                 <span class="input-group-addon" style="width:35%">创建者</span>
                                 <select id="creator" >
                                     <option value="all">全部</option>
-
+                                    <c:forEach items="${workerGroupVoList}" var="workerGroupVo">
+                                        <option value="${workerGroupVo.creator}">${workerGroupVo.creator}</option>
+                                    </c:forEach>
                                 </select>
                             </div>
                         </div>
@@ -142,8 +146,8 @@
                             <div class="row">
                                 <div class="col-md-6 col-lg-offset-6">
                                     <div class="input-group">
-                                        <button type="button" class="btn btn-primary" onclick="search()">查询</button>
-                                        <button type="button" class="btn btn-primary" onclick="reset()" style="margin-left: 3px">重置</button>
+                                        <button type="button" class="btn btn-primary" onclick="searchWorkerGroup()">查询</button>
+                                        <button type="button" class="btn btn-primary" onclick="resetWorkerGroup()" style="margin-left: 3px">重置</button>
                                     </div>
                                 </div>
                             </div>
@@ -155,9 +159,9 @@
                     <div class="row top-buffer">
                         <div class="col-md-12">
                             <div id="add">
-                                <a class="btn btn-primary" href="/jarvis/manage/appAddOrEdit" target="_blank">新增应用</a>
+                                <a class="btn btn-primary" href="/jarvis/manage/workerGroupAddOrEdit" target="_blank">新增Worker Group</a>
                             </div>
-                            <table id="content" >
+                            <table id="workerGroupContent" >
 
                             </table>
 

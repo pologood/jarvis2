@@ -1,7 +1,8 @@
 $(function(){
 
 
-    initData();
+    initWorkerData();
+    initWorkerGroupData();
 
     $(".input-group select").select2({width:'100%'});
 });
@@ -9,30 +10,84 @@ $(function(){
 
 
 //获取查询参数
-function getQueryPara(){
+function getWorkerQueryPara(){
     var queryPara={};
 
-    var appName=$("#appName").val();
-    var status=$("#status").val();
+    var workerGroupId=$("#workerGroupId").val();
+    var ip=$("#ip").val();
+    var port=$("#port").val();
+    var workerStatus=$("#workerStatus").val();
 
-    appName=appName=='all'?'':appName;
-    status=status=='all'?'':status;
+    workerGroupId=workerGroupId=='all'?'':workerGroupId;
+    ip=ip=='all'?'':ip;
+    port=port=='all'?'':port;
+    workerStatus=workerStatus=='all'?'':workerStatus;
 
-    queryPara["appName"]=appName;
-    queryPara["status"]=status;
+    queryPara["workerGroupId"]=workerGroupId;
+    queryPara["ip"]=ip;
+    queryPara["port"]=port;
+    queryPara["workerStatus"]=workerStatus;
+
+    return queryPara;
+}
+
+//获取查询参数
+function getWorkerGroupQueryPara(){
+    var queryPara={};
+
+    var name=$("#name").val();
+    var creator=$("#creator").val();
+
+    name=name=='all'?'':name;
+    creator=creator=='all'?'':creator;
+
+    queryPara["name"]=name;
+    queryPara["creator"]=creator;
 
     return queryPara;
 }
 
 //初始化数据及分页
-function initData(){
-    var queryParams=getQueryPara();
+function initWorkerData(){
+    var queryParams=getWorkerQueryPara();
     $("#workerContent").bootstrapTable({
-        columns:columns,
+        columns:workerColumns,
         pagination:true,
         sidePagination:'server',
         search:false,
-        url:'/jarvis/api/app/getApps',
+        url:'/jarvis/api/worker/getWorkers',
+        queryParams:function(params) {
+            for(var key in queryParams){
+                var value = queryParams[key];
+                params[key]=value;
+            }
+            return params;
+        },
+        showColumns:true,
+        showHeader:true,
+        showToggle:true,
+        pageSize:1,
+        pageSize:10,
+        pageList:[5,10,25,50,100,200,500],
+        paginationFirstText:'首页',
+        paginationPreText:'上一页',
+        paginationNextText:'下一页',
+        paginationLastText:'末页',
+        showExport:true,
+        exportTypes:['json', 'xml', 'csv', 'txt', 'sql', 'doc', 'excel'],
+        exportDataType:'all'
+    });
+}
+
+//初始化数据及分页
+function initWorkerGroupData(){
+    var queryParams=getWorkerGroupQueryPara();
+    $("#workerGroupContent").bootstrapTable({
+        columns:workerGroupColumns,
+        pagination:true,
+        sidePagination:'server',
+        search:false,
+        url:'/jarvis/api/worker/getWorkerGroups',
         queryParams:function(params) {
             for(var key in queryParams){
                 var value = queryParams[key];
@@ -57,14 +112,26 @@ function initData(){
 }
 
 
-
-
-function operateFormatter(value, row, index) {
+function operateWorkerFormatter(value, row, index) {
     //console.log(row);
-    var appId=row["appId"];
+    var appId=row["id"];
     //console.log(jobId);
     var result= [
-        '<a class="edit" href="/jarvis/manage/appAddOrEdit?appId='+appId+'" title="编辑应用信息" target="_blank">',
+        '<a class="edit" href="/jarvis/manage/workerAddOrEdit?id='+appId+'" title="编辑Worker信息" target="_blank">',
+        '<i class="glyphicon glyphicon-edit"></i>',
+        '</a>  '
+    ].join('');
+
+    //console.log(result);
+
+    return result;
+}
+function operateWorkerGroupFormatter(value, row, index) {
+    //console.log(row);
+    var appId=row["id"];
+    //console.log(jobId);
+    var result= [
+        '<a class="edit" href="/jarvis/manage/workerGroupAddOrEdit?id='+appId+'" title="编辑WorkerGroup信息" target="_blank">',
         '<i class="glyphicon glyphicon-edit"></i>',
         '</a>  '
     ].join('');
@@ -76,45 +143,93 @@ function operateFormatter(value, row, index) {
 
 
 
-var columns=[{
-    field: 'appId',
-    title: '应用id',
+var workerColumns=[{
+    field: 'id',
+    title: 'Worker Id',
     switchable:true
 }, {
-    field: 'appName',
-    title: '应用名称',
-    switchable:true,
-    visible:false
-}, {
-    field: 'appKey',
-    title: 'appkey',
+    field: 'workerGroupId',
+    title: 'Worker Group Id',
     switchable:true
 }, {
-    field: 'statusStr',
-    title: '应用状态',
+    field: 'ip',
+    title: 'IP',
     switchable:true
 }, {
-    field: 'createTimeStr',
+    field: 'port',
+    title: 'PORT',
+    switchable:true
+}, {
+    field: 'status',
+    title: '状态',
+    switchable:true
+}, {
+    field: 'createTime',
     title: '创建时间',
     switchable:true
 }, {
-    field: 'updateTimeStr',
+    field: 'updateTime',
     title: '更新时间',
     switchable:true
 },  {
     field: 'operation',
     title: '操作',
     switchable:true,
-    formatter: operateFormatter
+    formatter: operateWorkerFormatter
 }];
 
 
-function search(){
+var workerGroupColumns=[{
+    field: 'id',
+    title: 'Worker Group id',
+    switchable:true
+}, {
+    field: 'name',
+    title: '名称',
+    switchable:true
+}, {
+    field: 'key',
+    title: 'key',
+    switchable:true
+}, {
+    field: 'createTime',
+    title: '创建时间',
+    switchable:true
+}, {
+    field: 'updateTime',
+    title: '更新时间',
+    switchable:true
+}, {
+    field: 'creator',
+    title: '创建者',
+    switchable:true
+},  {
+    field: 'operation',
+    title: '操作',
+    switchable:true,
+    formatter: operateWorkerGroupFormatter
+}];
+
+
+function searchWorker(){
     $("#workerContent").bootstrapTable('destroy','');
-    initData();
+    initWorkerData();
 }
 
-function reset(){
-    $("#appName").val("all").trigger("change");
-    $("#status").val("all").trigger("change");
+function resetWorker(){
+    $("#workerGroupId").val("all").trigger("change");
+    $("#ip").val("all").trigger("change");
+    $("#port").val("all").trigger("change");
+    $("#workerStatus").val("all").trigger("change");
 }
+
+function searchWorkerGroup(){
+    $("#workerGroupContent").bootstrapTable('destroy','');
+    initWorkerGroupData();
+}
+
+function resetWorkerGroup(){
+    $("#name").val("all").trigger("change");
+    $("#creator").val("all").trigger("change");
+}
+

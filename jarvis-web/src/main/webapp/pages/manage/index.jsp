@@ -16,7 +16,7 @@
             <nav>
                 <ol class="cd-breadcrumb triangle">
                     <li><a href="/jarvis/">Home</a></li>
-                    <li class="current"><em>管理</em></li>
+                    <li class="current"><em>调度系统管理</em></li>
                 </ol>
             </nav>
         </div>
@@ -24,7 +24,22 @@
 
     <div class="row top-buffer">
         <div class="col-md-12">
-            index
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 top-buffer">
+                    <div class="input-group" style="width:100%">
+                        <span class="input-group-addon" style="width:35%">设置并行度</span>
+                        <input class="form-control" id="" value="" />
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-md-offset-3">
+                    <div class="input-group" style="width:100%">
+                        <button type="button" class="btn btn-default">并行度</button>
+                        <button type="button" class="btn btn-default">启动</button>
+                        <button type="button" class="btn btn-default">暂停</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

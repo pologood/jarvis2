@@ -4,6 +4,7 @@ import com.mogujie.jarvis.web.auth.annotation.JarvisPassport;
 import com.mogujie.jarvis.web.auth.conf.JarvisAuthType;
 import com.mogujie.jarvis.web.entity.vo.AppVo;
 import com.mogujie.jarvis.web.entity.vo.WorkerGroupVo;
+import com.mogujie.jarvis.web.entity.vo.WorkerVo;
 import com.mogujie.jarvis.web.service.AppService;
 import com.mogujie.jarvis.web.service.WorkerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,17 +67,21 @@ public class ManageController extends BaseController {
     }
 
     @RequestMapping(value = "workerAddOrEdit")
-    public String workerAddOrEdit(ModelMap modelMap,Integer appId){
-        if(appId!=null){
-
+    public String workerAddOrEdit(ModelMap modelMap,Integer id){
+        if(id!=null){
+            WorkerVo workerVo = workerService.getWorkerById(id);
+            modelMap.put("workerVo",workerVo);
         }
+        List<WorkerGroupVo> workerGroupVoList=workerService.getAllWorkerGroup();
+        modelMap.put("workerGroupVoList",workerGroupVoList);
         return "manage/workerAddOrEdit";
     }
 
     @RequestMapping(value = "workerGroupAddOrEdit")
-    public String workerGroupAddOrEdit(ModelMap modelMap,Integer appId){
-        if(appId!=null){
-
+    public String workerGroupAddOrEdit(ModelMap modelMap,Integer id){
+        if(id!=null){
+            WorkerGroupVo workerGroupVo=workerService.getWorkerGroupById(id);
+            modelMap.put("workerGroupVo",workerGroupVo);
         }
         return "manage/workerGroupAddOrEdit";
     }
