@@ -2,7 +2,7 @@
  * 蘑菇街 Inc.
  * Copyright (c) 2010-2015 All Rights Reserved.
  *
- * Author: guangming
+ * Author: wuya
  * Create Date: 2015年8月31日 上午10:42:32
  */
 
@@ -37,7 +37,7 @@ import com.mogujie.jarvis.server.scheduler.event.SuccessEvent;
 /**
  * Scheduler used to handle time based job.
  *
- * @author guangming
+ * @author wuya
  *
  */
 @Repository

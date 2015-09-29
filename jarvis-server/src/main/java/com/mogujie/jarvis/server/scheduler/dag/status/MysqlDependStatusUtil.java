@@ -8,6 +8,8 @@
 
 package com.mogujie.jarvis.server.scheduler.dag.status;
 
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -52,8 +54,17 @@ public class MysqlDependStatusUtil {
         key.setPreJobId(preJobId);
         key.setPreTaskId(preTaskId);
         if (statusService.getByKey(key) != null) {
+            Date currentTime = new Date();
+            DateFormat dateTimeFormat = DateFormat.getDateTimeInstance();
+            dateTimeFormat.format(currentTime);
+            record.setUpdateTime(currentTime);
             statusService.update(record);
         } else {
+            Date currentTime = new Date();
+            DateFormat dateTimeFormat = DateFormat.getDateTimeInstance();
+            dateTimeFormat.format(currentTime);
+            record.setCreateTime(currentTime);
+            record.setUpdateTime(currentTime);
             statusService.insert(record);
         }
     }

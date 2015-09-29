@@ -26,9 +26,9 @@ import com.google.common.eventbus.AsyncEventBus;
 @Service
 @Named("AsyncSchedulerController")
 public class AsyncSchedulerController extends JobSchedulerController {
+    private ExecutorService executorService = Executors.newCachedThreadPool();
 
     public AsyncSchedulerController() {
-        ExecutorService executorService = Executors.newCachedThreadPool();
         eventBus = new AsyncEventBus(executorService);
     }
 }

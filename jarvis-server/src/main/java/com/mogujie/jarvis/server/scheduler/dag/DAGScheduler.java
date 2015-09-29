@@ -29,12 +29,14 @@ import com.google.common.eventbus.Subscribe;
 import com.mogujie.jarvis.core.domain.JobFlag;
 import com.mogujie.jarvis.core.domain.Pair;
 import com.mogujie.jarvis.dto.Job;
+import com.mogujie.jarvis.server.domain.ModifyDependEntry;
+import com.mogujie.jarvis.server.domain.ModifyDependEntry.MODIFY_OPERATION;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
 import com.mogujie.jarvis.server.scheduler.SchedulerUtil;
 import com.mogujie.jarvis.server.scheduler.event.AddJobEvent;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
+import com.mogujie.jarvis.server.scheduler.event.ModifyDependencyEvent;
 import com.mogujie.jarvis.server.scheduler.event.ModifyJobEvent;
-import com.mogujie.jarvis.server.scheduler.event.ModifyJobEvent.MODIFY_TYPE;
 import com.mogujie.jarvis.server.scheduler.event.ModifyJobFlagEvent;
 import com.mogujie.jarvis.server.scheduler.event.StartEvent;
 import com.mogujie.jarvis.server.scheduler.event.StopEvent;
@@ -84,9 +86,9 @@ public class DAGScheduler extends Scheduler {
             if (job.getJobFlag() != JobFlag.DELETED.getValue()) {
                 long jobId = job.getJobId();
                 Set<Long> dependencies = jobDependService.getDependIds(jobId);
-                int cycleFlag = job.getFixedDelay() > 0 ? 1 : 0;
-                int dependFlag = cronService.getCronsByJobId(jobId).isEmpty() ? 0 : 1;
-                int timeFlag = dependencies.isEmpty() ? 0 : 1;
+                int cycleFlag = (job.getFixedDelay() > 0) ? 1 : 0;
+                int dependFlag = (cronService.getPositiveCrontab(jobId) != null) ? 1 : 0;
+                int timeFlag = (!dependencies.isEmpty()) ? 1 : 0;
                 DAGJobType type = SchedulerUtil.getDAGJobType(cycleFlag, dependFlag, timeFlag);
                 AddJobEvent addJobEvent = new AddJobEvent(jobId, dependencies, type);
                 try {
@@ -198,34 +200,36 @@ public class DAGScheduler extends Scheduler {
 
     @Subscribe
     public void handleModifyJobEvent(ModifyJobEvent event) throws Exception {
-        MODIFY_TYPE modifyType = event.getModifyType();
         long jobId = event.getJobId();
-        Set<Long> newDependencies = event.getDependencies();
-        // modify dependency
-        if (modifyType.equals(MODIFY_TYPE.ADD)) {
-            for (long d : newDependencies) {
-                addDependency(d, jobId);
-            }
-        } else if (modifyType.equals(MODIFY_TYPE.DEL)) {
-            for (long d : newDependencies) {
-                removeDependency(d, jobId);
-            }
-        } else if (modifyType.equals(MODIFY_TYPE.MODIFY)) {
-            DAGJob dagJob = waitingTable.get(jobId);
-            if (dagJob != null) {
-                modifyDependency(dagJob, newDependencies);
+        // update dag job type
+        DAGJob dagJob = waitingTable.get(jobId);
+        if (dagJob != null) {
+            boolean hasCron = event.isHasCron();
+            boolean hasCycle = event.isHasCycle();
+            dagJob.updateJobTypeByTimeFlag(hasCron);
+            dagJob.updateJobTypeByCycleFlag(hasCycle);
+            submitJobWithCheck(dagJob);
+        }
+    }
+
+    @Subscribe
+    public void handleModifyDependency(ModifyDependencyEvent event) throws CycleFoundException {
+        long jobId = event.getJobId();
+        List<ModifyDependEntry> dependEntries = event.getDependEntries();
+        for (ModifyDependEntry entry : dependEntries) {
+            long preJobId = entry.getPreJobId();
+            if (entry.getOperation().equals(MODIFY_OPERATION.ADD)) {
+                addDependency(preJobId, jobId);
+            } else {
+                removeDependency(preJobId, jobId);
             }
         }
 
         // update dag job type
         DAGJob dagJob = waitingTable.get(jobId);
         if (dagJob != null) {
-            boolean hasDepend = (!newDependencies.isEmpty());
-            boolean hasCron = event.isHasCron();
-            boolean hasCycle = event.isHasCycle();
-            dagJob.updateJobTypeByTimeFlag(hasCron);
+            boolean hasDepend = (!getParents(dagJob).isEmpty());
             dagJob.updateJobTypeByDependFlag(hasDepend);
-            dagJob.updateJobTypeByCycleFlag(hasCycle);
             submitJobWithCheck(dagJob);
         }
     }
@@ -245,19 +249,6 @@ public class DAGScheduler extends Scheduler {
         DAGJob child = waitingTable.get(childId);
         if (parent != null && child != null) {
             dag.removeEdge(parent, child);
-        }
-    }
-
-    @VisibleForTesting
-    protected void modifyDependency(DAGJob dagJob, Set<Long> newDependencies) throws CycleFoundException {
-        Set<DefaultEdge> oldEdges = dag.incomingEdgesOf(dagJob);
-        List<DefaultEdge> tmpEdges = new ArrayList<DefaultEdge>();
-        tmpEdges.addAll(oldEdges);
-        if (tmpEdges != null && !tmpEdges.isEmpty()) {
-            dag.removeAllEdges(tmpEdges);
-        }
-        for (long d : newDependencies) {
-            addDependency(d, dagJob.getJobId());
         }
     }
 

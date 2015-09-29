@@ -8,7 +8,6 @@
 
 package com.mogujie.jarvis.server.scheduler.event;
 
-import java.util.Set;
 
 
 /**
@@ -22,34 +21,13 @@ public class ModifyJobEvent extends DAGJobEvent {
         MODIFY
     }
 
-    private Set<Long> dependencies;
-    private MODIFY_TYPE modifyType;
     private boolean hasCron;
     private boolean hasCycle;
 
-    public ModifyJobEvent(long jobId, Set<Long> dependencies, MODIFY_TYPE type,
-            boolean hasCron, boolean hasCycle) {
+    public ModifyJobEvent(long jobId, boolean hasCron, boolean hasCycle) {
        super(jobId);
-       this.dependencies = dependencies;
-       this.modifyType = type;
        this.hasCron = hasCron;
        this.hasCycle = hasCycle;
-    }
-
-    public Set<Long> getDependencies() {
-        return dependencies;
-    }
-
-    public void setDependencies(Set<Long> dependencies) {
-        this.dependencies = dependencies;
-    }
-
-    public MODIFY_TYPE getModifyType() {
-        return modifyType;
-    }
-
-    public void setModifyType(MODIFY_TYPE modifyType) {
-        this.modifyType = modifyType;
     }
 
     public boolean isHasCron() {

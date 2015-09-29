@@ -21,8 +21,7 @@ import com.mogujie.jarvis.server.scheduler.dag.strategy.CommonStrategy;
  */
 public class CachedDependStatus extends RuntimeDependStatus {
     // Map<taskId, status>
-    protected Map<Long, Boolean> taskStatusMap =
-            new ConcurrentHashMap<Long, Boolean>();
+    protected Map<Long, Boolean> taskStatusMap = new ConcurrentHashMap<Long, Boolean>();
 
     public CachedDependStatus() {}
 

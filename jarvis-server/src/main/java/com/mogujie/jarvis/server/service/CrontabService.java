@@ -41,29 +41,45 @@ public class CrontabService {
     }
 
     public void insert(long jobId, String expression) {
-        Crontab crontab = new Crontab();
-        crontab.setJobId(jobId);
-        crontab.setCronExpression(expression);
+        Crontab record = new Crontab();
+        record.setJobId(jobId);
+        record.setCronExpression(expression);
         Date currentTime = new Date();
         DateFormat dateTimeFormat = DateFormat.getDateTimeInstance();
         dateTimeFormat.format(currentTime);
-        crontab.setCreateTime(currentTime);
-        crontab.setUpdateTime(currentTime);
+        record.setCreateTime(currentTime);
+        record.setUpdateTime(currentTime);
         // TODO set crontype
-        crontab.setCronType(CrontabType.POSITIVE.getValue());
+        record.setCronType(CrontabType.POSITIVE.getValue());
+        crontabMapper.insert(record);
     }
 
-    public void update(long jobId, String expression) {
-        Crontab crontab = getUniqueCrontab(jobId);
-        crontab.setCronExpression(expression);
-        Date currentTime = new Date();
-        DateFormat dateTimeFormat = DateFormat.getDateTimeInstance();
-        dateTimeFormat.format(currentTime);
-        crontab.setUpdateTime(currentTime);
+    public void updateOrDelete(long jobId, String expression) {
+        Crontab record = getPositiveCrontab(jobId);
+        if (record != null) {
+            if (expression == null || expression.isEmpty()) {
+                crontabMapper.deleteByPrimaryKey(record.getCronId());
+            } else {
+                record.setCronExpression(expression);
+                Date currentTime = new Date();
+                DateFormat dateTimeFormat = DateFormat.getDateTimeInstance();
+                dateTimeFormat.format(currentTime);
+                record.setUpdateTime(currentTime);
+                crontabMapper.updateByPrimaryKey(record);
+            }
+        } else {
+            insert(jobId, expression);
+        }
     }
 
-    private Crontab getUniqueCrontab(long jobId) {
-        // TODO jobID为正向的cron只能有唯一的一个
+    // 属于一个jobId的正向crontab只能有一个
+    public Crontab getPositiveCrontab(long jobId) {
+        CrontabExample example = new CrontabExample();
+        example.createCriteria().andJobIdEqualTo(jobId).andCronTypeEqualTo(CrontabType.POSITIVE.getValue());
+        List<Crontab> crontabs = crontabMapper.selectByExample(example);
+        if (crontabs.size() > 0) {
+            return crontabs.get(0);
+        }
         return null;
     }
 }

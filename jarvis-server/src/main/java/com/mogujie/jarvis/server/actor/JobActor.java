@@ -8,9 +8,9 @@
 
 package com.mogujie.jarvis.server.actor;
 
-import java.text.DateFormat;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.inject.Named;
@@ -28,19 +28,24 @@ import com.mogujie.jarvis.dao.JobDependMapper;
 import com.mogujie.jarvis.dao.JobMapper;
 import com.mogujie.jarvis.dto.Job;
 import com.mogujie.jarvis.dto.JobDepend;
+import com.mogujie.jarvis.protocol.ModifyDependencyProtos.DependencyEntry.DependencyOperator;
+import com.mogujie.jarvis.protocol.ModifyDependencyProtos.RestServerModifyDependencyRequest;
 import com.mogujie.jarvis.protocol.ModifyJobFlagProtos.RestServerModifyJobFlagRequest;
 import com.mogujie.jarvis.protocol.ModifyJobProtos.RestServerModifyJobRequest;
+import com.mogujie.jarvis.protocol.SubmitJobProtos.DependencyEntry;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitJobRequest;
+import com.mogujie.jarvis.server.domain.ModifyDependEntry;
 import com.mogujie.jarvis.server.scheduler.SchedulerUtil;
 import com.mogujie.jarvis.server.scheduler.controller.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.dag.DAGJobType;
 import com.mogujie.jarvis.server.scheduler.event.AddJobEvent;
+import com.mogujie.jarvis.server.scheduler.event.ModifyDependencyEvent;
 import com.mogujie.jarvis.server.scheduler.event.ModifyJobEvent;
-import com.mogujie.jarvis.server.scheduler.event.ModifyJobEvent.MODIFY_TYPE;
 import com.mogujie.jarvis.server.scheduler.event.ModifyJobFlagEvent;
 import com.mogujie.jarvis.server.scheduler.event.UnhandleEvent;
 import com.mogujie.jarvis.server.service.CrontabService;
 import com.mogujie.jarvis.server.service.JobDependService;
+import com.mogujie.jarvis.server.util.MessageUtil;
 
 /**
  * @author guangming
@@ -72,8 +77,9 @@ public class JobActor extends UntypedActor {
         // TODO
         if (obj instanceof RestServerSubmitJobRequest) {
             RestServerSubmitJobRequest msg = (RestServerSubmitJobRequest) obj;
+            Set<Long> needDependencies = Sets.newHashSet();
             // 1. insert job to DB
-            Job job = SchedulerUtil.convert2Job(msg);
+            Job job = MessageUtil.convert2Job(msg);
             jobMapper.insert(job);
             long jobId = job.getJobId();
             // 如果是新增任务（不是手动触发），则originId=jobId
@@ -81,60 +87,53 @@ public class JobActor extends UntypedActor {
                 job.setOriginJobId(jobId);
                 jobMapper.updateByPrimaryKey(job);
             }
-            Set<Long> needDependencies = Sets.newHashSet();
-            if (msg.getDependencyJobidsList() != null) {
-                needDependencies.addAll(msg.getDependencyJobidsList());
-            }
+
             // 2. insert cron to DB
             cronService.insert(jobId, msg.getCronExpression());
+
             // 3. insert jobDepend to DB
-            for (long d : needDependencies) {
-                JobDepend jobDepend = new JobDepend();
-                jobDepend.setJobId(jobId);
-                jobDepend.setPreJobId(d);
-                Date currentTime = new Date();
-                DateFormat dateTimeFormat = DateFormat.getDateTimeInstance();
-                dateTimeFormat.format(currentTime);
-                jobDepend.setCreateTime(currentTime);
-                jobDepend.setUpdateTime(currentTime);
-                jobDepend.setUpdateUser(msg.getUser());
+            for (DependencyEntry entry : msg.getDependencyEntryList()) {
+                needDependencies.add(entry.getJobId());
+                JobDepend jobDepend = MessageUtil.convert2JobDepend(jobId, entry, msg.getUser());
                 jobDependMapper.insert(jobDepend);
             }
-            // 4. get jobScheduleType
-            int cycleFlag = job.getFixedDelay() > 0 ? 1 : 0;
-            int dependFlag = needDependencies.isEmpty() ? 0 : 1;
-            int timeFlag = msg.getCronExpression() != null ? 1 : 0;
+
+            // 4. construct AddJobEvent
+            int cycleFlag = msg.hasFixedDelay() ? 1 : 0;
+            int dependFlag = (!needDependencies.isEmpty()) ? 1 : 0;
+            int timeFlag = msg.hasCronExpression() ? 1 : 0;
             DAGJobType type = SchedulerUtil.getDAGJobType(cycleFlag, dependFlag, timeFlag);
             event = new AddJobEvent(jobId, needDependencies, type);
         } else if (obj instanceof RestServerModifyJobRequest) {
             RestServerModifyJobRequest msg = (RestServerModifyJobRequest) obj;
             long jobId = msg.getJobId();
             // 1. update job to DB
-            Job job = SchedulerUtil.convert2Job(msg);
+            Job job = MessageUtil.convert2Job(jobMapper, msg);
             jobMapper.updateByPrimaryKey(job);
+
             // 2. update cron to DB
-            cronService.update(jobId, msg.getCronExpression());
-            // 3. update jobDepend to DB
-            Set<Long> needDependencies = Sets.newHashSet();
-            if (msg.getDependencyJobidsList() != null) {
-                needDependencies.addAll(msg.getDependencyJobidsList());
+            if (msg.hasCronExpression()) {
+                cronService.updateOrDelete(jobId, msg.getCronExpression());
             }
-            jobDependService.deleteByJobId(jobId);
-            for (long d : needDependencies) {
-                JobDepend jobDepend = new JobDepend();
-                jobDepend.setJobId(jobId);
-                jobDepend.setPreJobId(d);
-                Date currentTime = new Date();
-                DateFormat dateTimeFormat = DateFormat.getDateTimeInstance();
-                dateTimeFormat.format(currentTime);
-                jobDepend.setUpdateTime(currentTime);
-                jobDepend.setUpdateUser(msg.getUser());
-                jobDependMapper.insert(jobDepend);
+
+            // 3. construct ModifyJobEvent
+            boolean hasCron = (cronService.getPositiveCrontab(jobId) != null);
+            boolean hasCycle = (job.getFixedDelay() > 0);
+            event = new ModifyJobEvent(jobId, hasCron, hasCycle);
+        } else if (obj instanceof RestServerModifyDependencyRequest) {
+            RestServerModifyDependencyRequest msg = (RestServerModifyDependencyRequest) obj;
+            long jobId = msg.getJobId();
+            List<ModifyDependEntry> dependEntries =  new ArrayList<ModifyDependEntry>();
+            for (com.mogujie.jarvis.protocol.ModifyDependencyProtos.DependencyEntry entry
+                    : msg.getDependencyEntryList()) {
+                ModifyDependEntry.MODIFY_OPERATION operation =
+                        entry.getOperator().equals(DependencyOperator.ADD) ?
+                        ModifyDependEntry.MODIFY_OPERATION.ADD :
+                        ModifyDependEntry.MODIFY_OPERATION.DEL;
+                ModifyDependEntry dependEntry = new ModifyDependEntry(operation, entry.getJobId());
+                dependEntries.add(dependEntry);
             }
-            boolean hasCron = (msg.getCronExpression() != null);
-            // TODO
-            boolean hasCycle = false;
-            event = new ModifyJobEvent(jobId, needDependencies, MODIFY_TYPE.MODIFY, hasCron, hasCycle);
+            event = new ModifyDependencyEvent(jobId, dependEntries);
         } else if (obj instanceof RestServerModifyJobFlagRequest) {
             RestServerModifyJobFlagRequest msg = (RestServerModifyJobFlagRequest) obj;
             long jobId = msg.getJobId();

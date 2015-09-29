@@ -15,13 +15,14 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import akka.actor.ActorSystem;
+
 import com.mogujie.jarvis.protocol.MapEntryProtos;
+import com.mogujie.jarvis.protocol.SubmitJobProtos.DependencyEntry;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitJobRequest;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitJobResponse;
 import com.mogujie.jarvis.rest.RestResult;
 import com.mogujie.jarvis.rest.vo.JobVo;
-
-import akka.actor.ActorSystem;
 
 /**
  * @author muming
@@ -51,13 +52,13 @@ public class JobController extends AbstractController {
             @FormParam("parameters") String parameters) throws Exception {
 
         // todo , 转换为 list
-        List<Long> dependJobIdsList = null;
+        List<DependencyEntry> dependEntryList = null;
 
         // todo parameters 从json转化为 list
         List<MapEntryProtos.MapEntry> paraList = null;
 
         RestServerSubmitJobRequest request = RestServerSubmitJobRequest.newBuilder().setAppName(appName).setJobName(jobName)
-                .setCronExpression(cronExp).addAllDependencyJobids(dependJobIdsList).setUser(user).setJobType(jobType).setContent(jobContent)
+                .setCronExpression(cronExp).addAllDependencyEntry(dependEntryList).setUser(user).setJobType(jobType).setContent(jobContent)
                 .setGroupId(groupId).setPriority(priority).setFailedRetries(failedRetries).setFailedInterval(failedInterval)
                 .setRejectRetries(rejectRetries).setRejectInterval(rejectInterval).setStartTime(startTime).setEndTime(endTime)
                 .addAllParameters(paraList).build();
