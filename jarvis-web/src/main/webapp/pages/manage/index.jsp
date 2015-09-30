@@ -27,16 +27,17 @@
             <div class="row">
                 <div class="col-md-6 col-md-offset-3 top-buffer">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">设置并行度</span>
+                        <span class="input-group-addon" style="width:35%">并行度</span>
                         <input class="form-control" id="" value="" />
+                        <span class="input-group-addon"><a href="javascript:void(0)" onclick="">设置并行度</a></span>
                     </div>
+
                 </div>
 
-                <div class="col-md-6 col-md-offset-3">
+                <div class="col-md-6 col-md-offset-3 text-center top-buffer">
                     <div class="input-group" style="width:100%">
-                        <button type="button" class="btn btn-default">并行度</button>
-                        <button type="button" class="btn btn-default">启动</button>
-                        <button type="button" class="btn btn-default">暂停</button>
+                        <button type="button" class="btn btn-default">启动调度系统</button>
+                        <button type="button" class="btn btn-default" style="margin-left: 5px">暂停调度系统</button>
                     </div>
                 </div>
             </div>

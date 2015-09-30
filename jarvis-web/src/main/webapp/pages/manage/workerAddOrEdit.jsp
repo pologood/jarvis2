@@ -85,4 +85,4 @@
     <jsp:param name="menuMap" value="${menuMap}"/>
 </jsp:include>
 
-<script type="text/javascript" src="/assets/jarvis/js/jarvis/manage/app.js"></script>
+<script type="text/javascript" src="/assets/jarvis/js/jarvis/manage/workerAddOrEdit.js"></script>
