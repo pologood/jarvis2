@@ -29,8 +29,10 @@ import com.google.common.eventbus.Subscribe;
 import com.mogujie.jarvis.core.domain.JobFlag;
 import com.mogujie.jarvis.core.domain.Pair;
 import com.mogujie.jarvis.dto.Job;
+import com.mogujie.jarvis.server.domain.MODIFY_JOB_TYPE;
+import com.mogujie.jarvis.server.domain.MODIFY_OPERATION;
 import com.mogujie.jarvis.server.domain.ModifyDependEntry;
-import com.mogujie.jarvis.server.domain.ModifyDependEntry.MODIFY_OPERATION;
+import com.mogujie.jarvis.server.domain.ModifyJobEntry;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
 import com.mogujie.jarvis.server.scheduler.SchedulerUtil;
 import com.mogujie.jarvis.server.scheduler.event.AddJobEvent;
@@ -203,11 +205,26 @@ public class DAGScheduler extends Scheduler {
         long jobId = event.getJobId();
         // update dag job type
         DAGJob dagJob = waitingTable.get(jobId);
+        Map<MODIFY_JOB_TYPE, ModifyJobEntry> modifyJobMap = event.getModifyJobMap();
         if (dagJob != null) {
-            boolean hasCron = event.isHasCron();
-            boolean hasCycle = event.isHasCycle();
-            dagJob.updateJobTypeByTimeFlag(hasCron);
-            dagJob.updateJobTypeByCycleFlag(hasCycle);
+            if (modifyJobMap.containsKey(MODIFY_JOB_TYPE.CRON)) {
+                ModifyJobEntry entry = modifyJobMap.get(MODIFY_JOB_TYPE.CRON);
+                MODIFY_OPERATION operation = entry.getOperation();
+                if (operation.equals(MODIFY_OPERATION.DEL)) {
+                    dagJob.updateJobTypeByTimeFlag(false);
+                } else if (operation.equals(MODIFY_OPERATION.ADD)) {
+                    dagJob.updateJobTypeByTimeFlag(true);
+                }
+            }
+            if (modifyJobMap.containsKey(MODIFY_JOB_TYPE.CYCLE)) {
+                ModifyJobEntry entry = modifyJobMap.get(MODIFY_JOB_TYPE.CYCLE);
+                MODIFY_OPERATION operation = entry.getOperation();
+                if (operation.equals(MODIFY_OPERATION.DEL)) {
+                    dagJob.updateJobTypeByCycleFlag(false);
+                } else if (operation.equals(MODIFY_OPERATION.ADD)) {
+                    dagJob.updateJobTypeByCycleFlag(true);
+                }
+            }
             submitJobWithCheck(dagJob);
         }
     }

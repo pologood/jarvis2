@@ -3,24 +3,22 @@
  * Copyright (c) 2010-2015 All Rights Reserved.
  *
  * Author: guangming
- * Create Date: 2015年9月29日 下午5:04:00
+ * Create Date: 2015年9月30日 上午11:35:47
  */
 
 package com.mogujie.jarvis.server.domain;
-
 
 /**
  * @author guangming
  *
  */
-public class ModifyDependEntry {
-
+public class ModifyJobEntry {
     private MODIFY_OPERATION operation;
-    private long preJobId;
+    private Object value;
 
-    public ModifyDependEntry(MODIFY_OPERATION operation, long preJobId) {
+    public ModifyJobEntry(MODIFY_OPERATION operation, Object newValue) {
         this.operation = operation;
-        this.preJobId = preJobId;
+        this.value = newValue;
     }
 
     public MODIFY_OPERATION getOperation() {
@@ -31,11 +29,11 @@ public class ModifyDependEntry {
         this.operation = operation;
     }
 
-    public long getPreJobId() {
-        return preJobId;
+    public Object getValue() {
+        return value;
     }
 
-    public void setPreJobId(long preJobId) {
-        this.preJobId = preJobId;
+    public void setValue(String value) {
+        this.value = value;
     }
 }
