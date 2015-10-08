@@ -75,11 +75,14 @@ public class CronScheduler {
     }
 
     public void remove(Crontab crontab) {
-        crontabs.remove(crontab.getJobId());
+        remove(crontab.getJobId());
+    }
 
+    public void remove(long jobId) {
+        crontabs.remove(jobId);
         for (int i = 0, len = nextScheduleTimeList.size(); i < len; i++) {
             Pair<Long, DateTime> pair = nextScheduleTimeList.get(i);
-            if (pair.getFirst().equals(crontab.getJobId())) {
+            if (pair.getFirst().equals(jobId)) {
                 nextScheduleTimeList.remove(i);
                 break;
             }

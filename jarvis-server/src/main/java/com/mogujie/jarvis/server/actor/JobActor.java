@@ -22,8 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 
-import akka.actor.UntypedActor;
-
 import com.google.common.collect.Sets;
 import com.mogujie.jarvis.core.domain.JobFlag;
 import com.mogujie.jarvis.dao.JobDependMapper;
@@ -51,6 +49,8 @@ import com.mogujie.jarvis.server.service.CrontabService;
 import com.mogujie.jarvis.server.service.JobDependService;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.util.MessageUtil;
+
+import akka.actor.UntypedActor;
 
 /**
  * @author guangming
@@ -107,8 +107,8 @@ public class JobActor extends UntypedActor {
             // 3. insert jobDepend to DB
             for (DependencyEntry entry : msg.getDependencyEntryList()) {
                 needDependencies.add(entry.getJobId());
-                JobDepend jobDepend = MessageUtil.convert2JobDepend(jobId, entry.getJobId(),
-                        entry.getCommonDependStrategy(), entry.getLastDependStrategy(), msg.getUser());
+                JobDepend jobDepend = MessageUtil.convert2JobDepend(jobId, entry.getJobId(), entry.getCommonDependStrategy(),
+                        entry.getLastDependStrategy(), msg.getUser());
                 jobDependMapper.insert(jobDepend);
             }
 
@@ -137,11 +137,10 @@ public class JobActor extends UntypedActor {
             }
 
             // 3. construct ModifyJobEvent
-            Map<MODIFY_JOB_TYPE, ModifyJobEntry> modifyMap =
-                    MessageUtil.convert2ModifyJobMap(msg, jobService, cronService);
+            Map<MODIFY_JOB_TYPE, ModifyJobEntry> modifyMap = MessageUtil.convert2ModifyJobMap(msg, jobService, cronService);
             try {
                 dagScheduler.modifyDAGJobType(jobId, modifyMap);
-                timeScheduler.modifyJob();
+                timeScheduler.modifyJob(jobId);
                 getSender().tell("sucess", getSelf());
             } catch (Exception e) {
                 getSender().tell(e.getMessage(), getSelf());
@@ -149,19 +148,18 @@ public class JobActor extends UntypedActor {
         } else if (obj instanceof RestServerModifyDependencyRequest) {
             RestServerModifyDependencyRequest msg = (RestServerModifyDependencyRequest) obj;
             long jobId = msg.getJobId();
-            List<ModifyDependEntry> dependEntries =  new ArrayList<ModifyDependEntry>();
-            for (com.mogujie.jarvis.protocol.ModifyDependencyProtos.DependencyEntry entry
-                    : msg.getDependencyEntryList()) {
+            List<ModifyDependEntry> dependEntries = new ArrayList<ModifyDependEntry>();
+            for (com.mogujie.jarvis.protocol.ModifyDependencyProtos.DependencyEntry entry : msg.getDependencyEntryList()) {
                 long preJobId = entry.getJobId();
                 int commonStrategyValue = entry.getCommonDependStrategy();
                 String offsetStrategyValue = entry.getLastDependStrategy();
-                //TODO
+                // TODO
                 String user = null;
                 MODIFY_OPERATION operation;
                 if (entry.getOperator().equals(DependencyOperator.ADD)) {
                     operation = MODIFY_OPERATION.ADD;
-                    JobDepend jobDepend = MessageUtil.convert2JobDepend(jobId, preJobId,
-                            entry.getCommonDependStrategy(), entry.getLastDependStrategy(), user);
+                    JobDepend jobDepend = MessageUtil.convert2JobDepend(jobId, preJobId, entry.getCommonDependStrategy(),
+                            entry.getLastDependStrategy(), user);
                     jobDependMapper.insert(jobDepend);
                 } else if (entry.getOperator().equals(DependencyOperator.REMOVE)) {
                     operation = MODIFY_OPERATION.DEL;
@@ -186,15 +184,14 @@ public class JobActor extends UntypedActor {
                         jobDependMapper.updateByPrimaryKey(record);
                     }
                 }
-                ModifyDependEntry dependEntry = new ModifyDependEntry(operation, preJobId,
-                        commonStrategyValue, offsetStrategyValue);
+                ModifyDependEntry dependEntry = new ModifyDependEntry(operation, preJobId, commonStrategyValue, offsetStrategyValue);
                 dependEntries.add(dependEntry);
             }
             try {
                 dagScheduler.modifyDependency(jobId, dependEntries);
                 getSender().tell("sucess", getSelf());
             } catch (Exception e) {
-               getSender().tell(e.getMessage(), getSelf());
+                getSender().tell(e.getMessage(), getSelf());
             }
         } else if (obj instanceof RestServerModifyJobFlagRequest) {
             RestServerModifyJobFlagRequest msg = (RestServerModifyJobFlagRequest) obj;
