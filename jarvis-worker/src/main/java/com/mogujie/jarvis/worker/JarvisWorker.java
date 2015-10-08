@@ -61,12 +61,12 @@ public class JarvisWorker {
       if (!response.getSuccess()) {
         LOGGER.error("Worker regist failed with group.id={}, worker.key={}", workerGroupId,
             workerKey);
-        system.shutdown();
+        system.terminate();
         return;
       }
     } catch (Exception e) {
       LOGGER.error("Worker regist failed", e);
-      system.shutdown();
+      system.terminate();
       return;
     }
 

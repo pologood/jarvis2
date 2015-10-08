@@ -9,7 +9,9 @@
 package com.mogujie.jarvis.server.scheduler.dag;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.configuration.Configuration;
 import org.junit.After;
@@ -20,8 +22,10 @@ import org.junit.Test;
 import com.google.common.collect.Sets;
 import com.mogujie.jarvis.core.domain.JobFlag;
 import com.mogujie.jarvis.core.util.ConfigUtils;
+import com.mogujie.jarvis.server.domain.MODIFY_JOB_TYPE;
+import com.mogujie.jarvis.server.domain.MODIFY_OPERATION;
 import com.mogujie.jarvis.server.domain.ModifyDependEntry;
-import com.mogujie.jarvis.server.domain.ModifyDependEntry.MODIFY_OPERATION;
+import com.mogujie.jarvis.server.domain.ModifyJobEntry;
 import com.mogujie.jarvis.server.scheduler.dag.checker.DAGDependCheckerFactory;
 import com.mogujie.jarvis.server.scheduler.dag.checker.DummyDAGDependChecker;
 import com.mogujie.jarvis.server.scheduler.event.AddJobEvent;
@@ -208,8 +212,11 @@ public class TestDAGSchedulerWithEvent {
         SuccessEvent successEventA = new SuccessEvent(jobAId, 1);
         dagScheduler.handleSuccessEvent(successEventA);
         Assert.assertEquals(1, taskScheduler.getReadyTable().size());
-        // modify jobB from DEPEND_TIME to DEPENDENCY, so don't need time ready flag
-        ModifyJobEvent modifyEventB = new ModifyJobEvent(jobBId, false, false);
+        // modify jobB from DEPEND_TIME to DEPENDENCY
+        ModifyJobEntry modifyTimeEntry = new ModifyJobEntry(MODIFY_OPERATION.DEL, null);
+        Map<MODIFY_JOB_TYPE, ModifyJobEntry> modifyMap = new HashMap<MODIFY_JOB_TYPE, ModifyJobEntry>();
+        modifyMap.put(MODIFY_JOB_TYPE.CRON, modifyTimeEntry);
+        ModifyJobEvent modifyEventB = new ModifyJobEvent(jobBId, modifyMap);
         dagScheduler.handleModifyJobEvent(modifyEventB);
         Assert.assertEquals(2, taskScheduler.getReadyTable().size());
     }

@@ -11,6 +11,7 @@ package com.mogujie.jarvis.server.actor;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.inject.Named;
@@ -34,7 +35,10 @@ import com.mogujie.jarvis.protocol.ModifyJobFlagProtos.RestServerModifyJobFlagRe
 import com.mogujie.jarvis.protocol.ModifyJobProtos.RestServerModifyJobRequest;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.DependencyEntry;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitJobRequest;
+import com.mogujie.jarvis.server.domain.MODIFY_JOB_TYPE;
+import com.mogujie.jarvis.server.domain.MODIFY_OPERATION;
 import com.mogujie.jarvis.server.domain.ModifyDependEntry;
+import com.mogujie.jarvis.server.domain.ModifyJobEntry;
 import com.mogujie.jarvis.server.scheduler.SchedulerUtil;
 import com.mogujie.jarvis.server.scheduler.controller.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.dag.DAGJobType;
@@ -45,6 +49,7 @@ import com.mogujie.jarvis.server.scheduler.event.ModifyJobFlagEvent;
 import com.mogujie.jarvis.server.scheduler.event.UnhandleEvent;
 import com.mogujie.jarvis.server.service.CrontabService;
 import com.mogujie.jarvis.server.service.JobDependService;
+import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.util.MessageUtil;
 
 /**
@@ -64,6 +69,9 @@ public class JobActor extends UntypedActor {
 
     @Autowired
     private JobDependService jobDependService;
+
+    @Autowired
+    private JobService jobService;
 
     @Autowired
     JobMapper jobMapper;
@@ -117,19 +125,17 @@ public class JobActor extends UntypedActor {
             }
 
             // 3. construct ModifyJobEvent
-            boolean hasCron = (cronService.getPositiveCrontab(jobId) != null);
-            boolean hasCycle = (job.getFixedDelay() > 0);
-            event = new ModifyJobEvent(jobId, hasCron, hasCycle);
+            Map<MODIFY_JOB_TYPE, ModifyJobEntry> modifyMap =
+                    MessageUtil.convert2ModifyJobMap(msg, jobService, cronService);
+            event = new ModifyJobEvent(jobId, modifyMap);
         } else if (obj instanceof RestServerModifyDependencyRequest) {
             RestServerModifyDependencyRequest msg = (RestServerModifyDependencyRequest) obj;
             long jobId = msg.getJobId();
             List<ModifyDependEntry> dependEntries =  new ArrayList<ModifyDependEntry>();
             for (com.mogujie.jarvis.protocol.ModifyDependencyProtos.DependencyEntry entry
                     : msg.getDependencyEntryList()) {
-                ModifyDependEntry.MODIFY_OPERATION operation =
-                        entry.getOperator().equals(DependencyOperator.ADD) ?
-                        ModifyDependEntry.MODIFY_OPERATION.ADD :
-                        ModifyDependEntry.MODIFY_OPERATION.DEL;
+                MODIFY_OPERATION operation = entry.getOperator().equals(DependencyOperator.ADD) ?
+                        MODIFY_OPERATION.ADD : MODIFY_OPERATION.DEL;
                 ModifyDependEntry dependEntry = new ModifyDependEntry(operation, entry.getJobId());
                 dependEntries.add(dependEntry);
             }

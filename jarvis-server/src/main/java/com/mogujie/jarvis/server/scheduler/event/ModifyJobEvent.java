@@ -8,6 +8,12 @@
 
 package com.mogujie.jarvis.server.scheduler.event;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import com.mogujie.jarvis.server.domain.MODIFY_JOB_TYPE;
+import com.mogujie.jarvis.server.domain.ModifyJobEntry;
+
 
 
 /**
@@ -15,34 +21,26 @@ package com.mogujie.jarvis.server.scheduler.event;
  *
  */
 public class ModifyJobEvent extends DAGJobEvent {
-    public enum MODIFY_TYPE {
-        ADD,
-        DEL,
-        MODIFY
-    }
+    private Map<MODIFY_JOB_TYPE, ModifyJobEntry> modifyJobMap =
+            new HashMap<MODIFY_JOB_TYPE, ModifyJobEntry>();
 
-    private boolean hasCron;
-    private boolean hasCycle;
-
-    public ModifyJobEvent(long jobId, boolean hasCron, boolean hasCycle) {
+    public ModifyJobEvent(long jobId, Map<MODIFY_JOB_TYPE, ModifyJobEntry> newMap) {
        super(jobId);
-       this.hasCron = hasCron;
-       this.hasCycle = hasCycle;
+       this.modifyJobMap = newMap;
     }
 
-    public boolean isHasCron() {
-        return hasCron;
+    public Map<MODIFY_JOB_TYPE, ModifyJobEntry> getModifyJobMap() {
+        return modifyJobMap;
     }
 
-    public void setHasCron(boolean hasCron) {
-        this.hasCron = hasCron;
+    public void setModifyJobMap(Map<MODIFY_JOB_TYPE, ModifyJobEntry> modifyJobMap) {
+        this.modifyJobMap = modifyJobMap;
     }
 
-    public boolean isHasCycle() {
-        return hasCycle;
+    public void addModifyJobEntry(MODIFY_JOB_TYPE modifyJobType, ModifyJobEntry entry) {
+        if (!modifyJobMap.containsKey(modifyJobType)) {
+            modifyJobMap.put(modifyJobType, entry);
+        }
     }
 
-    public void setHasCycle(boolean hasCycle) {
-        this.hasCycle = hasCycle;
-    }
 }

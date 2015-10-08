@@ -32,4 +32,14 @@ public class JobService {
         example.createCriteria().andJobFlagNotEqualTo(JobFlag.DELETED.getValue());
         return jobMapper.selectByExample(example);
     }
+
+    public boolean hasFixedDelay(long jobId) {
+        Job job = jobMapper.selectByPrimaryKey(jobId);
+        if (job != null) {
+            if (job.getFixedDelay() != null && job.getFixedDelay() > 0) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
