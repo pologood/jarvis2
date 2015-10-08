@@ -1,4 +1,4 @@
-package com.mogujie.jarvis.web.controller.common;
+package com.mogujie.jarvis.web.controller.jarvis;
 
 import com.atlassian.crowd.model.user.User;
 import com.mogu.bigdata.admin.common.passport.conf.PlatformConf;
@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
  * Created by hejian on 15/9/14.
  */
 @Controller
-public class IndexController extends com.mogujie.jarvis.web.controller.common.BaseController{
+public class IndexController extends BaseController{
 
     @RequestMapping("/")
     public String index(ModelMap model){

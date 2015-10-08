@@ -1,5 +1,6 @@
 package com.mogujie.jarvis.web.controller.jarvis;
 
+import com.atlassian.crowd.integration.http.CrowdHttpAuthenticator;
 import com.mogu.bigdata.admin.common.entity.Menu;
 import com.mogu.bigdata.admin.common.entity.User;
 import com.mogu.bigdata.admin.common.exception.BigdataException;
@@ -44,6 +45,8 @@ public class BaseController {
     protected JarvisAuthTypeAdapter jarvisAuthTypeAdapter;
     @Autowired
     UserService userService;
+    @Autowired
+    protected CrowdHttpAuthenticator crowdHttpAuthenticator;
 
     static final Logger log = Logger.getLogger(BaseController.class);
 

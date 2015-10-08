@@ -19,7 +19,7 @@
             <nav>
                 <ol class="cd-breadcrumb triangle">
                     <li><a href="/jarvis/">Home</a></li>
-                    <li class="current"><em>任务触发</em></li>
+                    <li class="current"><em>重跑任务</em></li>
                 </ol>
             </nav>
         </div>

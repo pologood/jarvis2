@@ -5,7 +5,10 @@ import com.alibaba.fastjson.JSON;
 import com.mogujie.jarvis.web.auth.annotation.JarvisPassport;
 import com.mogujie.jarvis.web.auth.conf.JarvisAuthType;
 import com.mogujie.jarvis.web.entity.vo.JobVo;
+import com.mogujie.jarvis.web.entity.vo.WorkerGroupVo;
+import com.mogujie.jarvis.web.entity.vo.WorkerVo;
 import com.mogujie.jarvis.web.service.JobService;
+import com.mogujie.jarvis.web.service.WorkerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -23,6 +26,8 @@ public class JobController extends BaseController{
 
     @Autowired
     JobService jobService;
+    @Autowired
+    WorkerService workerService;
 
     @RequestMapping
     @JarvisPassport(authTypes = JarvisAuthType.job)
@@ -44,6 +49,10 @@ public class JobController extends BaseController{
             JobVo jobVo=jobService.getJobById(jobId);
             modelMap.put("jobVo",jobVo);
         }
+
+        List<WorkerGroupVo> WorkerGroupVoList=workerService.getAllWorkerGroup();
+
+        modelMap.put("WorkerGroupVoList",WorkerGroupVoList);
 
         return "job/addOrEdit";
     }

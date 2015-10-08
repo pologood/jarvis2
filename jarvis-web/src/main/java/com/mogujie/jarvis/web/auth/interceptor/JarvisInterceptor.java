@@ -70,7 +70,7 @@ public class JarvisInterceptor extends HandlerInterceptorAdapter {
             Integer permissionId = a.getCode();
             if (!rbacService.checkPermissionByUser(sessionUser.getUname(), permissionId, PlatformConf.jarvis.getCode())) {
                 if (passport.resultType() == ResultType.page) {
-                    request.getRequestDispatcher("/report/error?message=没有权限").forward(request, response);
+                    request.getRequestDispatcher("/jarvis/error?message=没有权限").forward(request, response);
                 } else if (passport.resultType() == ResultType.json) {
                     //ajax页面的登录
                     response.setCharacterEncoding("utf-8");

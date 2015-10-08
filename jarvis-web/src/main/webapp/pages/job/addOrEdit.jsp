@@ -45,11 +45,34 @@
             <div class="row top-buffer">
                 <div class="col-md-4 col-md-offset-4">
                     <div class="input-group" style="width:100%">
+                        <span class="input-group-addon" style="width:35%">任务类型</span>
+                        <select id="jobType"  ></select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row top-buffer">
+                <div class="col-md-4 col-md-offset-4">
+                    <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">选择脚本</span>
                         <select id="content"  ></select>
                     </div>
                 </div>
             </div>
+
+            <div class="row top-buffer">
+                <div class="col-md-4 col-md-offset-4">
+                    <div class="input-group" style="width:100%">
+                        <span class="input-group-addon" style="width:35%">Worker Group</span>
+                        <select id="worker"  >
+                            <c:forEach items="${WorkerGroupVoList}" var="workerGroup" varStatus="status">
+                                <option value="${workerGroup.id}">${workerGroup.name}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
 
             <div class="row top-buffer">
                 <div class="col-md-4 col-md-offset-4">
@@ -79,15 +102,6 @@
                 </div>
             </div>
 
-
-            <div class="row top-buffer">
-                <div class="col-md-4 col-md-offset-4">
-                    <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">任务类型</span>
-                        <select id="jobType"  ></select>
-                    </div>
-                </div>
-            </div>
 
             <div class="row top-buffer">
                 <div class="col-md-4 col-md-offset-4">
