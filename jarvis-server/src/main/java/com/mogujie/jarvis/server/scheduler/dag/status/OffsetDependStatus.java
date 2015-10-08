@@ -39,4 +39,12 @@ public class OffsetDependStatus extends AbstractDependStatus {
     public void setOffset(int offset) {
         this.offset = offset;
     }
+
+    public AbstractOffsetStrategy getOffsetDependStrategy() {
+        return offsetDependStrategy;
+    }
+
+    public void setOffsetDependStrategy(AbstractOffsetStrategy offsetDependStrategy) {
+        this.offsetDependStrategy = offsetDependStrategy;
+    }
 }

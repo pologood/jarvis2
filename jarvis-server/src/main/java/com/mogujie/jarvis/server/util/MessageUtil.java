@@ -20,7 +20,6 @@ import com.mogujie.jarvis.dto.Crontab;
 import com.mogujie.jarvis.dto.Job;
 import com.mogujie.jarvis.dto.JobDepend;
 import com.mogujie.jarvis.protocol.ModifyJobProtos.RestServerModifyJobRequest;
-import com.mogujie.jarvis.protocol.SubmitJobProtos.DependencyEntry;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitJobRequest;
 import com.mogujie.jarvis.server.domain.MODIFY_JOB_TYPE;
 import com.mogujie.jarvis.server.domain.MODIFY_OPERATION;
@@ -103,18 +102,19 @@ public class MessageUtil {
         return job;
     }
 
-    public static JobDepend convert2JobDepend(Long jobId, DependencyEntry entry, String user) {
+    public static JobDepend convert2JobDepend(Long jobId, long preJobId, int commonStrategyValue,
+            String offsetStrategyValue, String user) {
         JobDepend jobDepend = new JobDepend();
         jobDepend.setJobId(jobId);
-        jobDepend.setPreJobId(entry.getJobId());
+        jobDepend.setPreJobId(preJobId);
         Date currentTime = new Date();
         DateFormat dateTimeFormat = DateFormat.getDateTimeInstance();
         dateTimeFormat.format(currentTime);
         jobDepend.setCreateTime(currentTime);
         jobDepend.setUpdateTime(currentTime);
         jobDepend.setUpdateUser(user);
-        jobDepend.setCommonStrategy(entry.getCommonDependStrategy());
-        jobDepend.setOffsetStrategy(entry.getLastDependStrategy());
+        jobDepend.setCommonStrategy(commonStrategyValue);
+        jobDepend.setOffsetStrategy(offsetStrategyValue);
         return jobDepend;
     }
 

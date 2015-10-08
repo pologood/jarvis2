@@ -26,10 +26,8 @@ import com.mogujie.jarvis.dto.CrontabExample;
 import com.mogujie.jarvis.dto.Job;
 import com.mogujie.jarvis.dto.JobExample;
 import com.mogujie.jarvis.server.scheduler.CronScheduler;
+import com.mogujie.jarvis.server.scheduler.JobScheduleException;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
-import com.mogujie.jarvis.server.scheduler.event.AddJobEvent;
-import com.mogujie.jarvis.server.scheduler.event.ModifyJobEvent;
-import com.mogujie.jarvis.server.scheduler.event.ModifyJobFlagEvent;
 import com.mogujie.jarvis.server.scheduler.event.StartEvent;
 import com.mogujie.jarvis.server.scheduler.event.StopEvent;
 import com.mogujie.jarvis.server.scheduler.event.SuccessEvent;
@@ -102,9 +100,19 @@ public class TimeScheduler extends Scheduler {
     public void handleStartEvent(StartEvent event) {
     }
 
-    @Subscribe
-    public void handleAddJobEvent(AddJobEvent event) {
-        long jobId = event.getJobId();
+//    @Subscribe
+//    public void handleAddJobEvent(AddJobEvent event) {
+//        long jobId = event.getJobId();
+//        CrontabExample crontabExample = new CrontabExample();
+//        crontabExample.createCriteria().andJobIdEqualTo(jobId);
+//
+//        List<Crontab> crontabs = crontabMapper.selectByExample(crontabExample);
+//        for (Crontab crontab : crontabs) {
+//            cronScheduler.schedule(crontab);
+//        }
+//    }
+
+    public void addJob(long jobId) throws JobScheduleException {
         CrontabExample crontabExample = new CrontabExample();
         crontabExample.createCriteria().andJobIdEqualTo(jobId);
 
@@ -119,14 +127,21 @@ public class TimeScheduler extends Scheduler {
     public void handleSuccessEvent(SuccessEvent event) {
     }
 
-    @Subscribe
-    public void handleModifyJobEvent(ModifyJobEvent event) {
-        // TODO handleModifyJobEvent
+//    @Subscribe
+//    public void handleModifyJobEvent(ModifyJobEvent event) {
+//        // TODO handleModifyJobEvent
+//    }
+    public void modifyJob() throws JobScheduleException {
+        // TODO
     }
 
-    @Subscribe
-    public void handleModifyJobFlagEvent(ModifyJobFlagEvent event) {
-        // TODO handleModifyJobFlagEvent
+//    @Subscribe
+//    public void handleModifyJobFlagEvent(ModifyJobFlagEvent event) {
+//        // TODO handleModifyJobFlagEvent
+//    }
+
+    public void modifyJobFlag(long jobId, JobFlag jobFlag) throws JobScheduleException {
+        // TODO
     }
 
 }

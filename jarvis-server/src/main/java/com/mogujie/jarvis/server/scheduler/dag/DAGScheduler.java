@@ -33,12 +33,15 @@ import com.mogujie.jarvis.server.domain.MODIFY_JOB_TYPE;
 import com.mogujie.jarvis.server.domain.MODIFY_OPERATION;
 import com.mogujie.jarvis.server.domain.ModifyDependEntry;
 import com.mogujie.jarvis.server.domain.ModifyJobEntry;
+import com.mogujie.jarvis.server.scheduler.JobScheduleException;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
 import com.mogujie.jarvis.server.scheduler.SchedulerUtil;
+import com.mogujie.jarvis.server.scheduler.dag.checker.DAGDependChecker;
+import com.mogujie.jarvis.server.scheduler.dag.strategy.AbstractOffsetStrategy;
+import com.mogujie.jarvis.server.scheduler.dag.strategy.CommonStrategy;
+import com.mogujie.jarvis.server.scheduler.dag.strategy.OffsetStrategyFactory;
 import com.mogujie.jarvis.server.scheduler.event.AddJobEvent;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
-import com.mogujie.jarvis.server.scheduler.event.ModifyDependencyEvent;
-import com.mogujie.jarvis.server.scheduler.event.ModifyJobEvent;
 import com.mogujie.jarvis.server.scheduler.event.ModifyJobFlagEvent;
 import com.mogujie.jarvis.server.scheduler.event.StartEvent;
 import com.mogujie.jarvis.server.scheduler.event.StopEvent;
@@ -132,16 +135,17 @@ public class DAGScheduler extends Scheduler {
         }
     }
 
-    @VisibleForTesting
-    protected void addJob(long jobId, DAGJob dagJob, Set<Long> dependencies) throws CycleFoundException {
-        waitingTable.put(jobId, dagJob);
-        dag.addVertex(dagJob);
+    public void addJob(long jobId, DAGJob dagJob, Set<Long> dependencies) throws CycleFoundException {
+        if (waitingTable.get(jobId) == null) {
+            waitingTable.put(jobId, dagJob);
+            dag.addVertex(dagJob);
 
-        if (dependencies != null) {
-            for (long d: dependencies) {
-                DAGJob parent = waitingTable.get(d);
-                if (parent != null) {
-                    dag.addDagEdge(parent, dagJob);
+            if (dependencies != null) {
+                for (long d: dependencies) {
+                    DAGJob parent = waitingTable.get(d);
+                    if (parent != null) {
+                        dag.addDagEdge(parent, dagJob);
+                    }
                 }
             }
         }
@@ -192,6 +196,31 @@ public class DAGScheduler extends Scheduler {
         }
     }
 
+    public void modifyJobFlag(long jobId, JobFlag jobFlag) throws JobScheduleException {
+        DAGJob dagJob = waitingTable.get(jobId);
+        List<DAGJob> children = new ArrayList<DAGJob>();
+        if (dagJob != null) {
+            children = getChildren(dagJob);
+        }
+
+        if (jobFlag.equals(JobFlag.DELETED)) {
+            if (dagJob != null) {
+                removeJob(dagJob);
+            }
+        } else {
+            if (dagJob != null) {
+                dagJob.setJobFlag(jobFlag);
+            }
+        }
+
+        if (children != null) {
+            // submit job if pass dependency check
+            for (DAGJob child : children) {
+               submitJobWithCheck(child);
+            }
+        }
+    }
+
     @VisibleForTesting
     protected void removeJob(DAGJob dagJob) {
         if (dagJob != null) {
@@ -200,12 +229,39 @@ public class DAGScheduler extends Scheduler {
         }
     }
 
-    @Subscribe
-    public void handleModifyJobEvent(ModifyJobEvent event) throws Exception {
-        long jobId = event.getJobId();
+//    @Subscribe
+//    public void handleModifyJobEvent(ModifyJobEvent event) throws Exception {
+//        long jobId = event.getJobId();
+//        // update dag job type
+//        DAGJob dagJob = waitingTable.get(jobId);
+//        Map<MODIFY_JOB_TYPE, ModifyJobEntry> modifyJobMap = event.getModifyJobMap();
+//        if (dagJob != null) {
+//            if (modifyJobMap.containsKey(MODIFY_JOB_TYPE.CRON)) {
+//                ModifyJobEntry entry = modifyJobMap.get(MODIFY_JOB_TYPE.CRON);
+//                MODIFY_OPERATION operation = entry.getOperation();
+//                if (operation.equals(MODIFY_OPERATION.DEL)) {
+//                    dagJob.updateJobTypeByTimeFlag(false);
+//                } else if (operation.equals(MODIFY_OPERATION.ADD)) {
+//                    dagJob.updateJobTypeByTimeFlag(true);
+//                }
+//            }
+//            if (modifyJobMap.containsKey(MODIFY_JOB_TYPE.CYCLE)) {
+//                ModifyJobEntry entry = modifyJobMap.get(MODIFY_JOB_TYPE.CYCLE);
+//                MODIFY_OPERATION operation = entry.getOperation();
+//                if (operation.equals(MODIFY_OPERATION.DEL)) {
+//                    dagJob.updateJobTypeByCycleFlag(false);
+//                } else if (operation.equals(MODIFY_OPERATION.ADD)) {
+//                    dagJob.updateJobTypeByCycleFlag(true);
+//                }
+//            }
+//            submitJobWithCheck(dagJob);
+//        }
+//    }
+
+    public void modifyDAGJobType(long jobId, Map<MODIFY_JOB_TYPE, ModifyJobEntry> modifyJobMap)
+            throws JobScheduleException {
         // update dag job type
         DAGJob dagJob = waitingTable.get(jobId);
-        Map<MODIFY_JOB_TYPE, ModifyJobEntry> modifyJobMap = event.getModifyJobMap();
         if (dagJob != null) {
             if (modifyJobMap.containsKey(MODIFY_JOB_TYPE.CRON)) {
                 ModifyJobEntry entry = modifyJobMap.get(MODIFY_JOB_TYPE.CRON);
@@ -229,16 +285,15 @@ public class DAGScheduler extends Scheduler {
         }
     }
 
-    @Subscribe
-    public void handleModifyDependency(ModifyDependencyEvent event) throws CycleFoundException {
-        long jobId = event.getJobId();
-        List<ModifyDependEntry> dependEntries = event.getDependEntries();
+    public void modifyDependency(long jobId, List<ModifyDependEntry> dependEntries) throws CycleFoundException {
         for (ModifyDependEntry entry : dependEntries) {
             long preJobId = entry.getPreJobId();
             if (entry.getOperation().equals(MODIFY_OPERATION.ADD)) {
                 addDependency(preJobId, jobId);
-            } else {
+            } else if (entry.getOperation().equals(MODIFY_OPERATION.DEL)) {
                 removeDependency(preJobId, jobId);
+            } else if (entry.getOperation().equals(MODIFY_OPERATION.MODIFY)) {
+                modifyDependency(preJobId, jobId, entry.getCommonStrategy(), entry.getOffsetStrategy());
             }
         }
 
@@ -250,6 +305,30 @@ public class DAGScheduler extends Scheduler {
             submitJobWithCheck(dagJob);
         }
     }
+
+//    @Subscribe
+//    public void handleModifyDependency(ModifyDependencyEvent event) throws CycleFoundException {
+//        long jobId = event.getJobId();
+//        List<ModifyDependEntry> dependEntries = event.getDependEntries();
+//        for (ModifyDependEntry entry : dependEntries) {
+//            long preJobId = entry.getPreJobId();
+//            if (entry.getOperation().equals(MODIFY_OPERATION.ADD)) {
+//                addDependency(preJobId, jobId);
+//            } else if (entry.getOperation().equals(MODIFY_OPERATION.DEL)) {
+//                removeDependency(preJobId, jobId);
+//            } else if (entry.getOperation().equals(MODIFY_OPERATION.MODIFY)) {
+//                modifyDependency(preJobId, jobId, entry.getCommonStrategy(), entry.getOffsetStrategy());
+//            }
+//        }
+//
+//        // update dag job type
+//        DAGJob dagJob = waitingTable.get(jobId);
+//        if (dagJob != null) {
+//            boolean hasDepend = (!getParents(dagJob).isEmpty());
+//            dagJob.updateJobTypeByDependFlag(hasDepend);
+//            submitJobWithCheck(dagJob);
+//        }
+//    }
 
     @VisibleForTesting
     public void addDependency(long parentId, long childId) throws CycleFoundException {
@@ -266,6 +345,22 @@ public class DAGScheduler extends Scheduler {
         DAGJob child = waitingTable.get(childId);
         if (parent != null && child != null) {
             dag.removeEdge(parent, child);
+        }
+    }
+
+    protected void modifyDependency(long parentId, long childId, int commonStrategyValue, String offsetStrategyValue) {
+        DAGJob parent = waitingTable.get(parentId);
+        DAGJob child = waitingTable.get(childId);
+        if (parent != null && child != null) {
+            DAGDependChecker checker = child.getDependChecker();
+            CommonStrategy commonStrategy = CommonStrategy.getInstance(commonStrategyValue);
+            checker.updateCommonStrategy(parentId, commonStrategy);
+            Pair<AbstractOffsetStrategy, Integer> offsetStrategyPair =
+                    OffsetStrategyFactory.create(offsetStrategyValue);
+            if (offsetStrategyPair != null) {
+                AbstractOffsetStrategy offsetStrategy = offsetStrategyPair.getFirst();
+                checker.updateOffsetStrategy(parentId, offsetStrategy);
+            }
         }
     }
 
