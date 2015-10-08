@@ -30,8 +30,6 @@ import com.mogujie.jarvis.server.scheduler.dag.checker.DAGDependCheckerFactory;
 import com.mogujie.jarvis.server.scheduler.dag.checker.DummyDAGDependChecker;
 import com.mogujie.jarvis.server.scheduler.event.AddJobEvent;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
-import com.mogujie.jarvis.server.scheduler.event.ModifyDependencyEvent;
-import com.mogujie.jarvis.server.scheduler.event.ModifyJobEvent;
 import com.mogujie.jarvis.server.scheduler.event.ModifyJobFlagEvent;
 import com.mogujie.jarvis.server.scheduler.event.SuccessEvent;
 import com.mogujie.jarvis.server.scheduler.event.TimeReadyEvent;
@@ -180,8 +178,7 @@ public class TestDAGSchedulerWithEvent {
         List<ModifyDependEntry> dependEntries = new ArrayList<ModifyDependEntry>();
         dependEntries.add(new ModifyDependEntry(MODIFY_OPERATION.DEL, jobAId));
         dependEntries.add(new ModifyDependEntry(MODIFY_OPERATION.ADD, jobBId));
-        ModifyDependencyEvent modifyEventC = new ModifyDependencyEvent(jobCId, dependEntries);
-        dagScheduler.handleModifyDependency(modifyEventC);
+        dagScheduler.modifyDependency(jobCId, dependEntries);
         Assert.assertEquals(1, dagScheduler.getChildren(jobAId).size());
         Assert.assertEquals(1, dagScheduler.getParents(jobBId).size());
         Assert.assertEquals(1, dagScheduler.getChildren(jobBId).size());
@@ -216,8 +213,7 @@ public class TestDAGSchedulerWithEvent {
         ModifyJobEntry modifyTimeEntry = new ModifyJobEntry(MODIFY_OPERATION.DEL, null);
         Map<MODIFY_JOB_TYPE, ModifyJobEntry> modifyMap = new HashMap<MODIFY_JOB_TYPE, ModifyJobEntry>();
         modifyMap.put(MODIFY_JOB_TYPE.CRON, modifyTimeEntry);
-        ModifyJobEvent modifyEventB = new ModifyJobEvent(jobBId, modifyMap);
-        dagScheduler.handleModifyJobEvent(modifyEventB);
+        dagScheduler.modifyDAGJobType(jobBId, modifyMap);
         Assert.assertEquals(2, taskScheduler.getReadyTable().size());
     }
 
