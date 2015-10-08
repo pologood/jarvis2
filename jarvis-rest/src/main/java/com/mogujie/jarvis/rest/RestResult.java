@@ -9,13 +9,10 @@ import com.mogujie.jarvis.rest.vo.AbstractVo;
  */
 public class RestResult {
 
-    /** 处理是否成功：true成功，false失败 */
-    private boolean success;
-
     /** 错误码 */
     private int code;
 
-    /** 其它错误信息 */
+    /** 错误信息 */
 
     private String msg;
 
@@ -31,31 +28,14 @@ public class RestResult {
     public RestResult() {
     }
 
+
     /**
      * 构造
      */
-    public RestResult(boolean isSuccess) {
-        this.success = isSuccess;
+    public RestResult(int code) {
+        this.code = code;
     }
 
-    /**
-     * 是否成功
-     * 
-     * @return the success
-     */
-    public boolean isSuccess() {
-        return success;
-    }
-
-    /**
-     * 设置是否成功
-     * 
-     * @param success
-     *            the success to set
-     */
-    public void setSuccess(boolean success) {
-        this.success = success;
-    }
 
     /**
      * @return the code

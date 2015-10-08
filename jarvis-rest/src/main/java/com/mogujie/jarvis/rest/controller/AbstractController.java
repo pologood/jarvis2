@@ -70,7 +70,7 @@ public abstract class AbstractController {
      * @return
      */
     protected RestResult errorResult(String msg) {
-        return errorResult(MsgCode.UNKNOWN,msg);
+        return errorResult(MsgCode.UNDEFINE_ERROR,msg);
     }
 
 	/**
@@ -79,7 +79,7 @@ public abstract class AbstractController {
 	 * @return
 	 */
 	protected RestResult errorResult(int code, String msg) {
-        RestResult result = new RestResult(false);
+        RestResult result = new RestResult();
         result.setCode(code);
 		result.setMsg(msg);
 		return result;
@@ -90,7 +90,7 @@ public abstract class AbstractController {
 	 * @return
 	 */
 	protected RestResult successResult() {
-		return new RestResult(true);
+		return new RestResult(MsgCode.SUCCESS);
 	}
 
 	/**
@@ -99,7 +99,7 @@ public abstract class AbstractController {
 	 * @return
 	 */
 	protected RestResult successResult(AbstractVo data) {
-        RestResult result = new RestResult(true);
+        RestResult result = new RestResult(MsgCode.SUCCESS);
 		result.setData(data);
 		return result;
 	}
