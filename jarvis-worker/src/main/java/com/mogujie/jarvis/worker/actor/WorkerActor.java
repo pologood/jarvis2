@@ -57,7 +57,7 @@ public class WorkerActor extends UntypedActor {
   private static final String SERVER_AKKA_PATH = ConfigUtils.getWorkerConfig()
       .getString("server.akka.path") + "/user/" + JarvisConstants.SERVER_AKKA_SYSTEM_NAME;
   private static final String LOGSERVER_AKKA_PATH = ConfigUtils.getWorkerConfig()
-      .getString("logserver.akka.path") + "/user/" + JarvisConstants.LOGSERVER_AKKA_SYSTEM_NAME;
+      .getString("logserver.akka.path") + "/user/" + JarvisConstants.LOGSTORAGE_AKKA_SYSTEM_NAME;
 
   public static Props props() {
     return Props.create(WorkerActor.class);
