@@ -2,8 +2,8 @@
  * 蘑菇街 Inc.
  * Copyright (c) 2010-2015 All Rights Reserved.
  *
- * Author: wuya
- * Create Date: 2015年6月18日 下午3:19:28
+ * Author: muming
+ * Create Date: 2015年10月08日 下午3:19:28
  */
 package com.mogujie.jarvis.rest.controller;
 
@@ -99,7 +99,7 @@ public class LogController extends AbstractController {
                 .setLines(lines)
                 .build();
 
-        LogServerReadLogResponse response = (LogServerReadLogResponse) callActor(AkkaType.logstorage,request);
+        LogServerReadLogResponse response = (LogServerReadLogResponse) callActor(AkkaType.logstorage, request);
 
         if(response.getSuccess()){
             return successResult();

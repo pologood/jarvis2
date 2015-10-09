@@ -41,9 +41,9 @@ public class RestServer {
     public static void main(String[] args) throws IOException {
         LOGGER.info("Starting rest server...");
 
-        int port = ConfigUtils.getServerConfig().getInt("rest.http.port", 8080);
+        int port = ConfigUtils.getRestConfig().getInt("rest.http.port", 8080);
 
-        //控制前注册
+        //控制器注册
         ResourceConfig resourceConfig = new ResourceConfig();
         resourceConfig.register(new SystemController());
         resourceConfig.register(new JobController());

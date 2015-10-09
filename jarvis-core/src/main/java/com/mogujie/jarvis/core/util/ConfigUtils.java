@@ -67,11 +67,31 @@ public class ConfigUtils {
     }
 
 
-
+    /**
+     * 读取logstorage配置
+     * @return
+     */
     public synchronized static Configuration getLogstorageConfig() {
         if (logstorageConfig == null) {
             try {
                 logstorageConfig = new PropertiesConfiguration("logstorage.properties");
+                logstorageConfig.setReloadingStrategy(new FileChangedReloadingStrategy());
+            } catch (ConfigurationException e) {
+                Throwables.propagate(e);
+            }
+        }
+
+        return logstorageConfig;
+    }
+
+    /**
+     * 读取rest配置
+     * @return
+     */
+    public synchronized static Configuration getRestConfig() {
+        if (logstorageConfig == null) {
+            try {
+                logstorageConfig = new PropertiesConfiguration("rest.properties");
                 logstorageConfig.setReloadingStrategy(new FileChangedReloadingStrategy());
             } catch (ConfigurationException e) {
                 Throwables.propagate(e);
