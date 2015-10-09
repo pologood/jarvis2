@@ -2,12 +2,13 @@
  * 蘑菇街 Inc.
  * Copyright (c) 2010-2015 All Rights Reserved.
  *
- * Author: wuya
- * Create Date: 2015年6月18日 下午3:19:28
+ * Author: muming
+ * Create Date: 2015年10月08日 下午3:19:28
  */
 package com.mogujie.jarvis.rest.controller;
 
 import akka.actor.ActorSystem;
+import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.core.domain.StreamType;
 import com.mogujie.jarvis.protocol.ReadLogProtos.*;
 import com.mogujie.jarvis.rest.RestResult;
@@ -25,10 +26,6 @@ import javax.ws.rs.core.MediaType;
  */
 @Path("log")
 public class LogController extends AbstractController {
-
-    public LogController(ActorSystem system, String serverAkkaPath, String workerAkkaPath) {
-        super(system, serverAkkaPath, workerAkkaPath);
-    }
 
 
     /**
@@ -61,7 +58,7 @@ public class LogController extends AbstractController {
                 .setLines(lines)
                 .build();
 
-        LogServerReadLogResponse response = (LogServerReadLogResponse) callActor(logCenterActor, request);
+        LogServerReadLogResponse response = (LogServerReadLogResponse) callActor(AkkaType.logstorage,request);
 
         if(response.getSuccess()){
             return successResult();
@@ -102,7 +99,7 @@ public class LogController extends AbstractController {
                 .setLines(lines)
                 .build();
 
-        LogServerReadLogResponse response = (LogServerReadLogResponse) callActor(logCenterActor, request);
+        LogServerReadLogResponse response = (LogServerReadLogResponse) callActor(AkkaType.logstorage, request);
 
         if(response.getSuccess()){
             return successResult();

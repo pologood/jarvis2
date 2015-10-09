@@ -90,19 +90,19 @@ public final class ReportTaskProtos {
         com.google.protobuf.ByteString getTaskTypeBytes();
 
         /**
-         * <code>required string command = 6;</code>
+         * <code>required string content = 6;</code>
          */
-        boolean hasCommand();
+        boolean hasContent();
 
         /**
-         * <code>required string command = 6;</code>
+         * <code>required string content = 6;</code>
          */
-        java.lang.String getCommand();
+        java.lang.String getContent();
 
         /**
-         * <code>required string command = 6;</code>
+         * <code>required string content = 6;</code>
          */
-        com.google.protobuf.ByteString getCommandBytes();
+        com.google.protobuf.ByteString getContentBytes();
 
         /**
          * <code>optional int32 priority = 7 [default = 1];</code>
@@ -225,7 +225,7 @@ public final class ReportTaskProtos {
                         case 50: {
                             com.google.protobuf.ByteString bs = input.readBytes();
                             bitField0_ |= 0x00000020;
-                            command_ = bs;
+                            content_ = bs;
                             break;
                         }
                         case 56: {
@@ -484,41 +484,41 @@ public final class ReportTaskProtos {
             }
         }
 
-        public static final int COMMAND_FIELD_NUMBER = 6;
-        private java.lang.Object command_;
+        public static final int CONTENT_FIELD_NUMBER = 6;
+        private java.lang.Object content_;
 
         /**
-         * <code>required string command = 6;</code>
+         * <code>required string content = 6;</code>
          */
-        public boolean hasCommand() {
+        public boolean hasContent() {
             return ((bitField0_ & 0x00000020) == 0x00000020);
         }
 
         /**
-         * <code>required string command = 6;</code>
+         * <code>required string content = 6;</code>
          */
-        public java.lang.String getCommand() {
-            java.lang.Object ref = command_;
+        public java.lang.String getContent() {
+            java.lang.Object ref = content_;
             if (ref instanceof java.lang.String) {
                 return (java.lang.String) ref;
             } else {
                 com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
                 java.lang.String s = bs.toStringUtf8();
                 if (bs.isValidUtf8()) {
-                    command_ = s;
+                    content_ = s;
                 }
                 return s;
             }
         }
 
         /**
-         * <code>required string command = 6;</code>
+         * <code>required string content = 6;</code>
          */
-        public com.google.protobuf.ByteString getCommandBytes() {
-            java.lang.Object ref = command_;
+        public com.google.protobuf.ByteString getContentBytes() {
+            java.lang.Object ref = content_;
             if (ref instanceof java.lang.String) {
                 com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                command_ = b;
+                content_ = b;
                 return b;
             } else {
                 return (com.google.protobuf.ByteString) ref;
@@ -586,7 +586,7 @@ public final class ReportTaskProtos {
             appName_ = "";
             user_ = "";
             taskType_ = "";
-            command_ = "";
+            content_ = "";
             priority_ = 1;
             parameters_ = java.util.Collections.emptyList();
         }
@@ -620,7 +620,7 @@ public final class ReportTaskProtos {
                 memoizedIsInitialized = 0;
                 return false;
             }
-            if (!hasCommand()) {
+            if (!hasContent()) {
                 memoizedIsInitialized = 0;
                 return false;
             }
@@ -652,7 +652,7 @@ public final class ReportTaskProtos {
                 output.writeBytes(5, getTaskTypeBytes());
             }
             if (((bitField0_ & 0x00000020) == 0x00000020)) {
-                output.writeBytes(6, getCommandBytes());
+                output.writeBytes(6, getContentBytes());
             }
             if (((bitField0_ & 0x00000040) == 0x00000040)) {
                 output.writeInt32(7, priority_);
@@ -687,7 +687,7 @@ public final class ReportTaskProtos {
                 size += com.google.protobuf.CodedOutputStream.computeBytesSize(5, getTaskTypeBytes());
             }
             if (((bitField0_ & 0x00000020) == 0x00000020)) {
-                size += com.google.protobuf.CodedOutputStream.computeBytesSize(6, getCommandBytes());
+                size += com.google.protobuf.CodedOutputStream.computeBytesSize(6, getContentBytes());
             }
             if (((bitField0_ & 0x00000040) == 0x00000040)) {
                 size += com.google.protobuf.CodedOutputStream.computeInt32Size(7, priority_);
@@ -782,7 +782,7 @@ public final class ReportTaskProtos {
         /**
          * Protobuf type {@code WorkerReportTaskRequest}
          */
-        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder>implements
+        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder> implements
                 // @@protoc_insertion_point(builder_implements:WorkerReportTaskRequest)
                 com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskRequestOrBuilder {
             public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
@@ -828,7 +828,7 @@ public final class ReportTaskProtos {
                 bitField0_ = (bitField0_ & ~0x00000008);
                 taskType_ = "";
                 bitField0_ = (bitField0_ & ~0x00000010);
-                command_ = "";
+                content_ = "";
                 bitField0_ = (bitField0_ & ~0x00000020);
                 priority_ = 1;
                 bitField0_ = (bitField0_ & ~0x00000040);
@@ -889,7 +889,7 @@ public final class ReportTaskProtos {
                 if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
                     to_bitField0_ |= 0x00000020;
                 }
-                result.command_ = command_;
+                result.content_ = content_;
                 if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
                     to_bitField0_ |= 0x00000040;
                 }
@@ -945,9 +945,9 @@ public final class ReportTaskProtos {
                     taskType_ = other.taskType_;
                     onChanged();
                 }
-                if (other.hasCommand()) {
+                if (other.hasContent()) {
                     bitField0_ |= 0x00000020;
-                    command_ = other.command_;
+                    content_ = other.content_;
                     onChanged();
                 }
                 if (other.hasPriority()) {
@@ -1002,7 +1002,7 @@ public final class ReportTaskProtos {
 
                     return false;
                 }
-                if (!hasCommand()) {
+                if (!hasContent()) {
 
                     return false;
                 }
@@ -1413,25 +1413,25 @@ public final class ReportTaskProtos {
                 return this;
             }
 
-            private java.lang.Object command_ = "";
+            private java.lang.Object content_ = "";
 
             /**
-             * <code>required string command = 6;</code>
+             * <code>required string content = 6;</code>
              */
-            public boolean hasCommand() {
+            public boolean hasContent() {
                 return ((bitField0_ & 0x00000020) == 0x00000020);
             }
 
             /**
-             * <code>required string command = 6;</code>
+             * <code>required string content = 6;</code>
              */
-            public java.lang.String getCommand() {
-                java.lang.Object ref = command_;
+            public java.lang.String getContent() {
+                java.lang.Object ref = content_;
                 if (!(ref instanceof java.lang.String)) {
                     com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
                     java.lang.String s = bs.toStringUtf8();
                     if (bs.isValidUtf8()) {
-                        command_ = s;
+                        content_ = s;
                     }
                     return s;
                 } else {
@@ -1440,13 +1440,13 @@ public final class ReportTaskProtos {
             }
 
             /**
-             * <code>required string command = 6;</code>
+             * <code>required string content = 6;</code>
              */
-            public com.google.protobuf.ByteString getCommandBytes() {
-                java.lang.Object ref = command_;
+            public com.google.protobuf.ByteString getContentBytes() {
+                java.lang.Object ref = content_;
                 if (ref instanceof String) {
                     com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                    command_ = b;
+                    content_ = b;
                     return b;
                 } else {
                     return (com.google.protobuf.ByteString) ref;
@@ -1454,37 +1454,37 @@ public final class ReportTaskProtos {
             }
 
             /**
-             * <code>required string command = 6;</code>
+             * <code>required string content = 6;</code>
              */
-            public Builder setCommand(java.lang.String value) {
+            public Builder setContent(java.lang.String value) {
                 if (value == null) {
                     throw new NullPointerException();
                 }
                 bitField0_ |= 0x00000020;
-                command_ = value;
+                content_ = value;
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>required string command = 6;</code>
+             * <code>required string content = 6;</code>
              */
-            public Builder clearCommand() {
+            public Builder clearContent() {
                 bitField0_ = (bitField0_ & ~0x00000020);
-                command_ = getDefaultInstance().getCommand();
+                content_ = getDefaultInstance().getContent();
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>required string command = 6;</code>
+             * <code>required string content = 6;</code>
              */
-            public Builder setCommandBytes(com.google.protobuf.ByteString value) {
+            public Builder setContentBytes(com.google.protobuf.ByteString value) {
                 if (value == null) {
                     throw new NullPointerException();
                 }
                 bitField0_ |= 0x00000020;
-                command_ = value;
+                content_ = value;
                 onChanged();
                 return this;
             }
@@ -2093,7 +2093,7 @@ public final class ReportTaskProtos {
         /**
          * Protobuf type {@code ServerReportTaskResponse}
          */
-        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder>implements
+        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder> implements
                 // @@protoc_insertion_point(builder_implements:ServerReportTaskResponse)
                 com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskResponseOrBuilder {
             public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
@@ -2361,8 +2361,8 @@ public final class ReportTaskProtos {
         java.lang.String[] descriptorData = {
                 "\n\021report_task.proto\032\017map_entry.proto\"\265\001\n" + "\027WorkerReportTaskRequest\022\017\n\007full_id\030\001 \002("
                         + "\t\022\021\n\ttask_name\030\002 \002(\t\022\020\n\010app_name\030\003 \002(\t\022\014"
-                        + "\n\004user\030\004 \002(\t\022\021\n\ttask_type\030\005 \002(\t\022\017\n\007comma"
-                        + "nd\030\006 \002(\t\022\023\n\010priority\030\007 \001(\005:\0011\022\035\n\nparamet"
+                        + "\n\004user\030\004 \002(\t\022\021\n\ttask_type\030\005 \002(\t\022\017\n\007conte"
+                        + "nt\030\006 \002(\t\022\023\n\010priority\030\007 \001(\005:\0011\022\035\n\nparamet"
                         + "ers\030\010 \003(\0132\t.MapEntry\">\n\030ServerReportTask"
                         + "Response\022\017\n\007success\030\001 \002(\010\022\021\n\007message\030\002 \001"
                         + "(\t:\000B/\n\033com.mogujie.jarvis.protocolB\020Rep" + "ortTaskProtos" };
@@ -2377,7 +2377,7 @@ public final class ReportTaskProtos {
         internal_static_WorkerReportTaskRequest_descriptor = getDescriptor().getMessageTypes().get(0);
         internal_static_WorkerReportTaskRequest_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
                 internal_static_WorkerReportTaskRequest_descriptor,
-                new java.lang.String[] { "FullId", "TaskName", "AppName", "User", "TaskType", "Command", "Priority", "Parameters", });
+                new java.lang.String[] { "FullId", "TaskName", "AppName", "User", "TaskType", "Content", "Priority", "Parameters", });
         internal_static_ServerReportTaskResponse_descriptor = getDescriptor().getMessageTypes().get(1);
         internal_static_ServerReportTaskResponse_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
                 internal_static_ServerReportTaskResponse_descriptor, new java.lang.String[] { "Success", "Message", });

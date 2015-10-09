@@ -8,7 +8,9 @@
 
 package com.mogujie.jarvis.server.actor;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -17,18 +19,17 @@ import java.util.Set;
 import javax.inject.Named;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 
 import akka.actor.UntypedActor;
 
 import com.google.common.collect.Sets;
 import com.mogujie.jarvis.core.domain.JobFlag;
-import com.mogujie.jarvis.core.observer.Event;
 import com.mogujie.jarvis.dao.JobDependMapper;
 import com.mogujie.jarvis.dao.JobMapper;
 import com.mogujie.jarvis.dto.Job;
 import com.mogujie.jarvis.dto.JobDepend;
+import com.mogujie.jarvis.dto.JobDependKey;
 import com.mogujie.jarvis.protocol.ModifyDependencyProtos.DependencyEntry.DependencyOperator;
 import com.mogujie.jarvis.protocol.ModifyDependencyProtos.RestServerModifyDependencyRequest;
 import com.mogujie.jarvis.protocol.ModifyJobFlagProtos.RestServerModifyJobFlagRequest;
@@ -40,13 +41,10 @@ import com.mogujie.jarvis.server.domain.MODIFY_OPERATION;
 import com.mogujie.jarvis.server.domain.ModifyDependEntry;
 import com.mogujie.jarvis.server.domain.ModifyJobEntry;
 import com.mogujie.jarvis.server.scheduler.SchedulerUtil;
-import com.mogujie.jarvis.server.scheduler.controller.JobSchedulerController;
+import com.mogujie.jarvis.server.scheduler.dag.DAGJob;
 import com.mogujie.jarvis.server.scheduler.dag.DAGJobType;
-import com.mogujie.jarvis.server.scheduler.event.AddJobEvent;
-import com.mogujie.jarvis.server.scheduler.event.ModifyDependencyEvent;
-import com.mogujie.jarvis.server.scheduler.event.ModifyJobEvent;
-import com.mogujie.jarvis.server.scheduler.event.ModifyJobFlagEvent;
-import com.mogujie.jarvis.server.scheduler.event.UnhandleEvent;
+import com.mogujie.jarvis.server.scheduler.dag.DAGScheduler;
+import com.mogujie.jarvis.server.scheduler.time.TimeScheduler;
 import com.mogujie.jarvis.server.service.CrontabService;
 import com.mogujie.jarvis.server.service.JobDependService;
 import com.mogujie.jarvis.server.service.JobService;
@@ -61,8 +59,10 @@ import com.mogujie.jarvis.server.util.MessageUtil;
 public class JobActor extends UntypedActor {
 
     @Autowired
-    @Qualifier("AsyncSchedulerController")
-    private JobSchedulerController schedulerController;
+    private DAGScheduler dagScheduler;
+
+    @Autowired
+    private TimeScheduler timeScheduler;
 
     @Autowired
     private CrontabService cronService;
@@ -74,14 +74,13 @@ public class JobActor extends UntypedActor {
     private JobService jobService;
 
     @Autowired
-    JobMapper jobMapper;
+    private JobMapper jobMapper;
 
     @Autowired
-    JobDependMapper jobDependMapper;
+    private JobDependMapper jobDependMapper;
 
     @Override
     public void onReceive(Object obj) throws Exception {
-        Event event = new UnhandleEvent();
         // TODO
         if (obj instanceof RestServerSubmitJobRequest) {
             RestServerSubmitJobRequest msg = (RestServerSubmitJobRequest) obj;
@@ -102,7 +101,8 @@ public class JobActor extends UntypedActor {
             // 3. insert jobDepend to DB
             for (DependencyEntry entry : msg.getDependencyEntryList()) {
                 needDependencies.add(entry.getJobId());
-                JobDepend jobDepend = MessageUtil.convert2JobDepend(jobId, entry, msg.getUser());
+                JobDepend jobDepend = MessageUtil.convert2JobDepend(jobId, entry.getJobId(), entry.getCommonDependStrategy(),
+                        entry.getLastDependStrategy(), msg.getUser());
                 jobDependMapper.insert(jobDepend);
             }
 
@@ -111,7 +111,13 @@ public class JobActor extends UntypedActor {
             int dependFlag = (!needDependencies.isEmpty()) ? 1 : 0;
             int timeFlag = msg.hasCronExpression() ? 1 : 0;
             DAGJobType type = SchedulerUtil.getDAGJobType(cycleFlag, dependFlag, timeFlag);
-            event = new AddJobEvent(jobId, needDependencies, type);
+            try {
+                dagScheduler.addJob(jobId, new DAGJob(jobId, type), needDependencies);
+                timeScheduler.addJob(jobId);
+                getSender().tell("sucess", getSelf());
+            } catch (Exception e) {
+                getSender().tell(e.getMessage(), getSelf());
+            }
         } else if (obj instanceof RestServerModifyJobRequest) {
             RestServerModifyJobRequest msg = (RestServerModifyJobRequest) obj;
             long jobId = msg.getJobId();
@@ -125,31 +131,76 @@ public class JobActor extends UntypedActor {
             }
 
             // 3. construct ModifyJobEvent
-            Map<MODIFY_JOB_TYPE, ModifyJobEntry> modifyMap =
-                    MessageUtil.convert2ModifyJobMap(msg, jobService, cronService);
-            event = new ModifyJobEvent(jobId, modifyMap);
+            Map<MODIFY_JOB_TYPE, ModifyJobEntry> modifyMap = MessageUtil.convert2ModifyJobMap(msg, jobService, cronService);
+            try {
+                dagScheduler.modifyDAGJobType(jobId, modifyMap);
+                timeScheduler.modifyJob(jobId);
+                getSender().tell("sucess", getSelf());
+            } catch (Exception e) {
+                getSender().tell(e.getMessage(), getSelf());
+            }
         } else if (obj instanceof RestServerModifyDependencyRequest) {
             RestServerModifyDependencyRequest msg = (RestServerModifyDependencyRequest) obj;
             long jobId = msg.getJobId();
-            List<ModifyDependEntry> dependEntries =  new ArrayList<ModifyDependEntry>();
-            for (com.mogujie.jarvis.protocol.ModifyDependencyProtos.DependencyEntry entry
-                    : msg.getDependencyEntryList()) {
-                MODIFY_OPERATION operation = entry.getOperator().equals(DependencyOperator.ADD) ?
-                        MODIFY_OPERATION.ADD : MODIFY_OPERATION.DEL;
-                ModifyDependEntry dependEntry = new ModifyDependEntry(operation, entry.getJobId());
+            List<ModifyDependEntry> dependEntries = new ArrayList<ModifyDependEntry>();
+            for (com.mogujie.jarvis.protocol.ModifyDependencyProtos.DependencyEntry entry : msg.getDependencyEntryList()) {
+                long preJobId = entry.getJobId();
+                int commonStrategyValue = entry.getCommonDependStrategy();
+                String offsetStrategyValue = entry.getLastDependStrategy();
+                // TODO
+                String user = null;
+                MODIFY_OPERATION operation;
+                if (entry.getOperator().equals(DependencyOperator.ADD)) {
+                    operation = MODIFY_OPERATION.ADD;
+                    JobDepend jobDepend = MessageUtil.convert2JobDepend(jobId, preJobId, entry.getCommonDependStrategy(),
+                            entry.getLastDependStrategy(), user);
+                    jobDependMapper.insert(jobDepend);
+                } else if (entry.getOperator().equals(DependencyOperator.REMOVE)) {
+                    operation = MODIFY_OPERATION.DEL;
+                    JobDependKey key = new JobDependKey();
+                    key.setJobId(jobId);
+                    key.setPreJobId(preJobId);
+                    jobDependMapper.deleteByPrimaryKey(key);
+                } else {
+                    operation = MODIFY_OPERATION.MODIFY;
+                    JobDependKey key = new JobDependKey();
+                    key.setJobId(jobId);
+                    key.setPreJobId(preJobId);
+                    JobDepend record = jobDependMapper.selectByPrimaryKey(key);
+                    if (record != null) {
+                        record.setCommonStrategy(commonStrategyValue);
+                        record.setOffsetStrategy(offsetStrategyValue);
+                        record.setUpdateUser(user);
+                        Date currentTime = new Date();
+                        DateFormat dateTimeFormat = DateFormat.getDateTimeInstance();
+                        dateTimeFormat.format(currentTime);
+                        record.setUpdateTime(currentTime);
+                        jobDependMapper.updateByPrimaryKey(record);
+                    }
+                }
+                ModifyDependEntry dependEntry = new ModifyDependEntry(operation, preJobId, commonStrategyValue, offsetStrategyValue);
                 dependEntries.add(dependEntry);
             }
-            event = new ModifyDependencyEvent(jobId, dependEntries);
+            try {
+                dagScheduler.modifyDependency(jobId, dependEntries);
+                getSender().tell("sucess", getSelf());
+            } catch (Exception e) {
+                getSender().tell(e.getMessage(), getSelf());
+            }
         } else if (obj instanceof RestServerModifyJobFlagRequest) {
             RestServerModifyJobFlagRequest msg = (RestServerModifyJobFlagRequest) obj;
             long jobId = msg.getJobId();
             JobFlag flag = JobFlag.getInstance(msg.getJobFlag());
-            event = new ModifyJobFlagEvent(jobId, flag);
+            try {
+                dagScheduler.modifyJobFlag(jobId, flag);
+                timeScheduler.modifyJobFlag(jobId, flag);
+                getSender().tell("sucess", getSelf());
+            } catch (Exception e) {
+                getSender().tell(e.getMessage(), getSelf());
+            }
         } else {
             unhandled(obj);
         }
-
-        schedulerController.notify(event);
     }
 
     public static Set<Class<?>> handledMessages() {

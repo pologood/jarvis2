@@ -54,6 +54,7 @@ public class ServerActor extends UntypedActor {
         addActor("killTaskActor", new SmallestMailboxPool(10), KillTaskActor.handledMessages());
         addActor("jobActor", JobActor.handledMessages());
         addActor("modifyWorkerStatusActor", ModifyWorkerStatusActor.handledMessages());
+        addActor("appActor", AppActor.handledMessages());
     }
 
     @Override

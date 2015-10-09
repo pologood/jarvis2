@@ -19,6 +19,7 @@ public class TaskContext {
     private TaskDetail taskDetail;
     private AbstractLogCollector logCollector;
     private ProgressReporter progressReporter;
+    private TaskReporter taskReporter;
 
     private TaskContext() {
     }
@@ -37,6 +38,10 @@ public class TaskContext {
 
     public ProgressReporter getProgressReporter() {
         return progressReporter;
+    }
+
+    public TaskReporter getTaskReporter() {
+        return taskReporter;
     }
 
     public static class TaskContextBuilder {
@@ -58,6 +63,11 @@ public class TaskContext {
 
         public TaskContextBuilder setProgressReporter(ProgressReporter progressReporter) {
             this.taskContext.progressReporter = progressReporter;
+            return this;
+        }
+
+        public TaskContextBuilder setTaskReporter(TaskReporter taskReporter) {
+            this.taskContext.taskReporter = taskReporter;
             return this;
         }
 

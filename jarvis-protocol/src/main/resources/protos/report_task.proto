@@ -10,7 +10,7 @@ message WorkerReportTaskRequest {
     required string app_name = 3;
     required string user = 4;
     required string task_type = 5;
-    required string command = 6;
+    required string content = 6;
     optional int32 priority = 7 [default = 1];
     repeated MapEntry parameters = 8;
 }

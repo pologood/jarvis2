@@ -8,6 +8,9 @@
 
 package com.mogujie.jarvis.tasks.shell;
 
+import java.util.List;
+
+import com.google.common.base.Joiner;
 import com.mogujie.jarvis.core.TaskContext;
 
 /**
@@ -21,8 +24,8 @@ public class MapReduceTask extends JavaTask {
     }
 
     @Override
-    protected String getCmd(String localFilePath) {
-        return "yarn jar " + localFilePath;
+    protected String getCmd(String jar, List<String> classpath, String mainClass, String args) {
+        return "yarn jar " + jar + " -libjars " + Joiner.on(",").join(classpath) + " " + mainClass + " " + args;
     }
 
 }

@@ -76,4 +76,8 @@ public class TaskManager {
             parallelismCounter.getAndDecrement(appName);
         }
     }
+
+    public void updateAppMaxParallelism(String appName, int maxParallelis) {
+        maxParallelismMap.put(appName, maxParallelis);
+    }
 }

@@ -20,7 +20,6 @@ import com.mogujie.jarvis.server.scheduler.controller.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.controller.SyncSchedulerController;
 import com.mogujie.jarvis.server.scheduler.dag.checker.DAGDependCheckerFactory;
 import com.mogujie.jarvis.server.scheduler.dag.checker.DummyDAGDependChecker;
-import com.mogujie.jarvis.server.scheduler.event.AddJobEvent;
 import com.mogujie.jarvis.server.scheduler.event.SuccessEvent;
 import com.mogujie.jarvis.server.scheduler.event.TimeReadyEvent;
 import com.mogujie.jarvis.server.scheduler.task.TaskScheduler;
@@ -63,15 +62,10 @@ public class TestJobSchedulerController {
      */
     @Test
     public void testHandleSuccessEvent1() throws Exception {
-        AddJobEvent addEventA = new AddJobEvent(jobAId, null,
-                DAGJobType.TIME);
-        AddJobEvent addEventB = new AddJobEvent(jobBId, null,
-                DAGJobType.TIME);
-        AddJobEvent addEventC = new AddJobEvent(jobCId, Sets.newHashSet(jobAId, jobBId),
-                DAGJobType.DEPEND);
-        controller.notify(addEventA);
-        controller.notify(addEventB);
-        controller.notify(addEventC);
+        dagScheduler.addJob(jobAId, new DAGJob(jobAId, DAGJobType.TIME), null);
+        dagScheduler.addJob(jobBId, new DAGJob(jobBId, DAGJobType.TIME), null);
+        dagScheduler.addJob(jobCId, new DAGJob(jobCId, DAGJobType.DEPEND),
+                Sets.newHashSet(jobAId, jobBId));
         Assert.assertEquals(1, dagScheduler.getChildren(jobAId).size());
         Assert.assertEquals(jobCId, (long)dagScheduler.getChildren(jobAId).get(0).getFirst());
         Assert.assertEquals(1, dagScheduler.getChildren(jobBId).size());
@@ -106,15 +100,9 @@ public class TestJobSchedulerController {
      */
     @Test
     public void testHandleSuccessEvent2() throws Exception {
-        AddJobEvent addEventA = new AddJobEvent(jobAId, null,
-                DAGJobType.TIME);
-        AddJobEvent addEventB = new AddJobEvent(jobBId, Sets.newHashSet(jobAId),
-                DAGJobType.DEPEND);
-        AddJobEvent addEventC = new AddJobEvent(jobCId, Sets.newHashSet(jobAId),
-                DAGJobType.DEPEND);
-        controller.notify(addEventA);
-        controller.notify(addEventB);
-        controller.notify(addEventC);
+        dagScheduler.addJob(jobAId, new DAGJob(jobAId, DAGJobType.TIME), null);
+        dagScheduler.addJob(jobBId, new DAGJob(jobBId, DAGJobType.DEPEND), Sets.newHashSet(jobAId));
+        dagScheduler.addJob(jobCId, new DAGJob(jobBId, DAGJobType.DEPEND), Sets.newHashSet(jobAId));
         Assert.assertEquals(2, dagScheduler.getChildren(jobAId).size());
         Assert.assertEquals(1, dagScheduler.getParents(jobBId).size());
         Assert.assertEquals(1, dagScheduler.getParents(jobCId).size());

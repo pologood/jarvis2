@@ -13,6 +13,9 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.mogujie.jarvis.server.scheduler.dag.status.AbstractDependStatus;
+import com.mogujie.jarvis.server.scheduler.dag.status.OffsetDependStatus;
+import com.mogujie.jarvis.server.scheduler.dag.strategy.AbstractOffsetStrategy;
+import com.mogujie.jarvis.server.scheduler.dag.strategy.CommonStrategy;
 
 /**
  * @author guangming
@@ -98,6 +101,20 @@ public abstract class DAGDependChecker {
     public void resetAllStatus() {
         for (AbstractDependStatus taskDependStatus : jobStatusMap.values()) {
             taskDependStatus.reset();
+        }
+    }
+
+    public void updateCommonStrategy(long parentId, CommonStrategy newStrategy) {
+        AbstractDependStatus status = jobStatusMap.get(parentId);
+        if (status != null) {
+            status.setCommonStrategy(newStrategy);
+        }
+    }
+
+    public void updateOffsetStrategy(long parentId, AbstractOffsetStrategy newStrategy) {
+        AbstractDependStatus status = jobStatusMap.get(parentId);
+        if (status != null && status instanceof OffsetDependStatus) {
+            ((OffsetDependStatus)status).setOffsetDependStrategy(newStrategy);
         }
     }
 

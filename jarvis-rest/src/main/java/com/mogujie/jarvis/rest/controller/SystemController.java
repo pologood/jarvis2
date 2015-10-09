@@ -14,6 +14,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 
+import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.core.domain.WorkerStatus;
 import com.mogujie.jarvis.protocol.ModifyWorkerStatusProtos.*;
 
@@ -28,10 +29,6 @@ import akka.actor.ActorSystem;
  */
 @Path("system")
 public class SystemController extends AbstractController {
-
-    public SystemController(ActorSystem system, String serverAkkaPath, String workerAkkaPath) {
-        super(system, serverAkkaPath, workerAkkaPath);
-    }
 
 
     @POST
@@ -51,7 +48,7 @@ public class SystemController extends AbstractController {
                 .setStatus(ws.getValue())
                 .build();
 
-        ServerModifyWorkerStatusResponse response = (ServerModifyWorkerStatusResponse) callActor(serverActor, request);
+        ServerModifyWorkerStatusResponse response = (ServerModifyWorkerStatusResponse) callActor(AkkaType.server, request);
 
         if(response.getSuccess()){
             return successResult();

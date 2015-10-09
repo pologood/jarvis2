@@ -2,8 +2,8 @@
  * 蘑菇街 Inc.
  * Copyright (c) 2010-2015 All Rights Reserved.
  *
- * Author: wuya
- * Create Date: 2015年6月18日 下午3:19:28
+ * Author: muming
+ * Create Date: 2015年10月08日 下午3:19:28
  */
 package com.mogujie.jarvis.rest.controller;
 
@@ -15,8 +15,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import akka.actor.ActorSystem;
-
+import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.protocol.MapEntryProtos;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.DependencyEntry;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitJobRequest;
@@ -26,14 +25,9 @@ import com.mogujie.jarvis.rest.vo.JobVo;
 
 /**
  * @author muming
- *
  */
 @Path("job")
 public class JobController extends AbstractController {
-
-    public JobController(ActorSystem system, String serverAkkaPath, String workerAkkaPath) {
-        super(system, serverAkkaPath, workerAkkaPath);
-    }
 
     /**
      * 提交job任务
@@ -43,13 +37,23 @@ public class JobController extends AbstractController {
     @POST
     @Path("submitJob")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult onlineClient(@FormParam("appKey") String appKey, @FormParam("appName") String appName, @FormParam("user") String user,
-            @FormParam("jobName") String jobName, @FormParam("jobType") String jobType, @FormParam("dependJobIds") String dependJobIds,
-            @FormParam("cronExp") String cronExp, @FormParam("jobContent") String jobContent, @FormParam("groupId") int groupId,
-            @FormParam("priority") int priority, @FormParam("startTime") long startTime, @FormParam("endTime") long endTime,
-            @FormParam("rejectRetries") int rejectRetries, @FormParam("rejectInterval") int rejectInterval,
-            @FormParam("failedRetries") int failedRetries, @FormParam("failedInterval") int failedInterval,
-            @FormParam("parameters") String parameters) throws Exception {
+    public RestResult onlineClient(@FormParam("appKey") String appKey,
+                                   @FormParam("appName") String appName,
+                                   @FormParam("user") String user,
+                                   @FormParam("jobName") String jobName,
+                                   @FormParam("jobType") String jobType,
+                                   @FormParam("dependJobIds") String dependJobIds,
+                                   @FormParam("cronExp") String cronExp,
+                                   @FormParam("jobContent") String jobContent,
+                                   @FormParam("groupId") int groupId,
+                                   @FormParam("priority") int priority,
+                                   @FormParam("startTime") long startTime,
+                                   @FormParam("endTime") long endTime,
+                                   @FormParam("rejectRetries") int rejectRetries,
+                                   @FormParam("rejectInterval") int rejectInterval,
+                                   @FormParam("failedRetries") int failedRetries,
+                                   @FormParam("failedInterval") int failedInterval,
+                                   @FormParam("parameters") String parameters) throws Exception {
 
         // todo , 转换为 list
         List<DependencyEntry> dependEntryList = null;
@@ -63,7 +67,7 @@ public class JobController extends AbstractController {
                 .setRejectRetries(rejectRetries).setRejectInterval(rejectInterval).setStartTime(startTime).setEndTime(endTime)
                 .addAllParameters(paraList).build();
 
-        ServerSubmitJobResponse response = (ServerSubmitJobResponse) callActor(serverActor, request);
+        ServerSubmitJobResponse response = (ServerSubmitJobResponse) callActor(AkkaType.server, request);
 
         if (response.getSuccess()) {
 
@@ -75,5 +79,27 @@ public class JobController extends AbstractController {
         }
 
     }
+
+
+    /**
+     * 提交job任务
+     *
+     * @throws Exception
+     */
+    @POST
+    @Path("test")
+    @Produces(MediaType.APPLICATION_JSON)
+    public RestResult test(@FormParam("appKey") String appKey,
+                           @FormParam("appName") String appName,
+                           @FormParam("user") String user
+                           ) throws Exception {
+
+
+            JobVo vo = new JobVo();
+            vo.setJobId(123456);
+            return successResult(vo);
+
+    }
+
 
 }
