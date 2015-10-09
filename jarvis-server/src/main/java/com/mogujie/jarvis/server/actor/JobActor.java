@@ -19,8 +19,9 @@ import java.util.Set;
 import javax.inject.Named;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
+
+import akka.actor.UntypedActor;
 
 import com.google.common.collect.Sets;
 import com.mogujie.jarvis.core.domain.JobFlag;
@@ -40,7 +41,6 @@ import com.mogujie.jarvis.server.domain.MODIFY_OPERATION;
 import com.mogujie.jarvis.server.domain.ModifyDependEntry;
 import com.mogujie.jarvis.server.domain.ModifyJobEntry;
 import com.mogujie.jarvis.server.scheduler.SchedulerUtil;
-import com.mogujie.jarvis.server.scheduler.controller.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.dag.DAGJob;
 import com.mogujie.jarvis.server.scheduler.dag.DAGJobType;
 import com.mogujie.jarvis.server.scheduler.dag.DAGScheduler;
@@ -50,8 +50,6 @@ import com.mogujie.jarvis.server.service.JobDependService;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.util.MessageUtil;
 
-import akka.actor.UntypedActor;
-
 /**
  * @author guangming
  *
@@ -59,10 +57,6 @@ import akka.actor.UntypedActor;
 @Named("jobActor")
 @Scope("prototype")
 public class JobActor extends UntypedActor {
-
-    @Autowired
-    @Qualifier("AsyncSchedulerController")
-    private JobSchedulerController schedulerController;
 
     @Autowired
     private DAGScheduler dagScheduler;
