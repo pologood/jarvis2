@@ -17,6 +17,7 @@ import javax.ws.rs.core.MediaType;
 
 import akka.actor.ActorSystem;
 
+import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.protocol.MapEntryProtos;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.DependencyEntry;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitJobRequest;
@@ -30,10 +31,6 @@ import com.mogujie.jarvis.rest.vo.JobVo;
  */
 @Path("job")
 public class JobController extends AbstractController {
-
-    public JobController(ActorSystem system, String serverAkkaPath, String workerAkkaPath) {
-        super(system, serverAkkaPath, workerAkkaPath);
-    }
 
     /**
      * 提交job任务
@@ -63,7 +60,7 @@ public class JobController extends AbstractController {
                 .setRejectRetries(rejectRetries).setRejectInterval(rejectInterval).setStartTime(startTime).setEndTime(endTime)
                 .addAllParameters(paraList).build();
 
-        ServerSubmitJobResponse response = (ServerSubmitJobResponse) callActor(serverActor, request);
+        ServerSubmitJobResponse response = (ServerSubmitJobResponse) callActor(AkkaType.server,request);
 
         if (response.getSuccess()) {
 
@@ -75,5 +72,15 @@ public class JobController extends AbstractController {
         }
 
     }
+
+
+
+
+
+
+
+
+
+
 
 }

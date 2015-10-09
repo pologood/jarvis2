@@ -6,10 +6,15 @@ import akka.pattern.Patterns;
 import akka.util.Timeout;
 import com.google.protobuf.GeneratedMessage;
 
+import com.mogujie.jarvis.core.JarvisConstants;
+import com.mogujie.jarvis.core.domain.AkkaType;
+import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.rest.MsgCode;
 import com.mogujie.jarvis.rest.RestResult;
 import com.mogujie.jarvis.rest.vo.AbstractVo;
 
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -26,36 +31,66 @@ import java.util.concurrent.TimeUnit;
 public abstract class AbstractController {
 
 
-//    private ActorSystem system;
-//    private String serverAkkaPath;
-//    private String workerAkkaPath;
+    private ActorSystem system;
 
-    protected ActorSelection logCenterActor;
-    protected ActorSelection serverActor;
+    private String serverAkkaUserPath;
+    private String workerAkkaUserPath;
+    private String logstorageAkkaUserPath;
+
+    private ActorSelection workerActor;
+    private ActorSelection serverActor;
+    private ActorSelection logstorageActor;
 
     protected static final Timeout TIMEOUT = new Timeout(Duration.create(30, TimeUnit.SECONDS));
     protected static final Logger LOGGER = LogManager.getLogger();
 
 
-    public AbstractController(ActorSystem system, String serverAkkaPath, String logCenterAkkaPath) {
+    public AbstractController() {
 
-//        this.system = system;
-//        this.serverAkkaPath = serverAkkaPath;
-//        this.workerAkkaPath = workerAkkaPath;
+        Config config = ConfigFactory.load("akka-rest.conf");
+        serverAkkaUserPath = config.getString("server.akka.path") + JarvisConstants.SERVER_AKKA_USER_PATH;
+        workerAkkaUserPath = config.getString("worker.akka.path") + JarvisConstants.WORKER_AKKA_USER_PATH;
+        logstorageAkkaUserPath = config.getString("logstorage.akka.path") + JarvisConstants.LOGSTORAGE_AKKA_USER_PATH;
 
-        serverActor = system.actorSelection(serverAkkaPath + "/user/server");
-        logCenterActor = system.actorSelection(logCenterAkkaPath + "/user/logCenter");
-
-    }
-
-
-    protected GeneratedMessage callActor(ActorSelection actor,GeneratedMessage request) throws java.lang.Exception{
-
-        return callActor(actor,request, TIMEOUT);
+        Config restfulConfig = ConfigUtils.getAkkaConfig().withFallback(config.getConfig("rest"));
+        system = ActorSystem.create(JarvisConstants.REST_AKKA_SYSTEM_NAME, restfulConfig);
 
     }
 
-    protected  GeneratedMessage callActor(ActorSelection actor,GeneratedMessage request,Timeout timeout) throws java.lang.Exception{
+
+    /**
+     * 调用Actor
+     *
+     * @param request
+     * @param timeout
+     * @return
+     * @throws java.lang.Exception
+     */
+    protected GeneratedMessage callActor(AkkaType akkaType, GeneratedMessage request, Timeout timeout) throws java.lang.Exception {
+
+        ActorSelection actor;
+
+        if (akkaType == AkkaType.server) {
+            if (serverActor == null) {
+                serverActor = system.actorSelection(serverAkkaUserPath);
+            }
+            actor = serverActor;
+
+        }else if (akkaType == AkkaType.worker) {
+            if (workerActor == null) {
+                workerActor = system.actorSelection(workerAkkaUserPath);
+            }
+            actor = workerActor;
+
+        }else if(akkaType == AkkaType.logstorage) {
+            if (logstorageActor == null) {
+                logstorageActor = system.actorSelection(logstorageAkkaUserPath);
+            }
+
+            actor = logstorageActor;
+        }else{
+            return null;
+        }
 
         Future<Object> future = Patterns.ask(actor, request, timeout);
         GeneratedMessage response = (GeneratedMessage) Await.result(future, timeout.duration());
@@ -63,47 +98,56 @@ public abstract class AbstractController {
 
     }
 
+    protected GeneratedMessage callActor(AkkaType akkaType, GeneratedMessage request) throws java.lang.Exception {
+
+        return callActor(akkaType, request, TIMEOUT);
+
+    }
+
 
     /**
      * 返回错误结果
+     *
      * @param msg
      * @return
      */
     protected RestResult errorResult(String msg) {
-        return errorResult(MsgCode.UNDEFINE_ERROR,msg);
+        return errorResult(MsgCode.UNDEFINE_ERROR, msg);
     }
 
-	/**
-	 * 返回错误结果
-	 * @param msg
-	 * @return
-	 */
-	protected RestResult errorResult(int code, String msg) {
+    /**
+     * 返回错误结果
+     *
+     * @param msg
+     * @return
+     */
+    protected RestResult errorResult(int code, String msg) {
         RestResult result = new RestResult();
         result.setCode(code);
-		result.setMsg(msg);
-		return result;
-	}
+        result.setMsg(msg);
+        return result;
+    }
 
-	/**
-	 * 成功结果
-	 * @return
-	 */
-	protected RestResult successResult() {
-		return new RestResult(MsgCode.SUCCESS);
-	}
+    /**
+     * 成功结果
+     *
+     * @return
+     */
+    protected RestResult successResult() {
+        return new RestResult(MsgCode.SUCCESS);
+    }
 
-	/**
-	 * 成功结果
-	 * @param data
-	 * @return
-	 */
-	protected RestResult successResult(AbstractVo data) {
+    /**
+     * 成功结果
+     *
+     * @param data
+     * @return
+     */
+    protected RestResult successResult(AbstractVo data) {
         RestResult result = new RestResult(MsgCode.SUCCESS);
-		result.setData(data);
-		return result;
-	}
-
+        result.setData(data);
+        return result;
+    }
 
 
 }

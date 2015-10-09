@@ -15,6 +15,7 @@ import java.net.URI;
 import javax.ws.rs.core.UriBuilder;
 
 import com.mogujie.jarvis.rest.controller.JobController;
+import com.mogujie.jarvis.rest.controller.LogController;
 import com.mogujie.jarvis.rest.controller.SystemController;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -41,20 +42,15 @@ public class RestServer {
         LOGGER.info("Starting rest server...");
 
         int port = ConfigUtils.getServerConfig().getInt("rest.http.port", 8080);
-        Config config = ConfigFactory.load("akka-rest.conf");
-        Config restfulConfig = ConfigUtils.getAkkaConfig().withFallback(config.getConfig("rest"));
 
-        String serverAkkaPath = restfulConfig.getString("jarvis.server.akka.path");
-        String logServerAkkaPath = restfulConfig.getString("jarvis.logserver.akka.path");
-
-        ActorSystem system = ActorSystem.create(JarvisConstants.REST_SERVER_AKKA_SYSTEM_NAME, restfulConfig);
-        URI baseUri = UriBuilder.fromUri("http://" + Inet4Address.getLocalHost().getHostAddress() + "/").port(port).build();
+        //控制前注册
         ResourceConfig resourceConfig = new ResourceConfig();
+        resourceConfig.register(new SystemController());
+        resourceConfig.register(new JobController());
+        resourceConfig.register(new LogController());
 
-        resourceConfig.register(new SystemController(system, serverAkkaPath, logServerAkkaPath));
-        resourceConfig.register(new JobController(system, serverAkkaPath, logServerAkkaPath));
 
-
+        URI baseUri = UriBuilder.fromUri("http://" + Inet4Address.getLocalHost().getHostAddress() + "/").port(port).build();
         HttpServer server = GrizzlyHttpServerFactory.createHttpServer(baseUri, resourceConfig);
         server.start();
 
