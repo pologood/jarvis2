@@ -41,6 +41,8 @@
         SELECT * FROM app WHERE appId=#{appId};
     </select>
 
-
+    <select id="getAppByName" parameterType="String" resultType="AppVo">
+        SELECT * FROM app WHERE appName=#{_parameter} limit 0,1;
+    </select>
 
 </mapper>

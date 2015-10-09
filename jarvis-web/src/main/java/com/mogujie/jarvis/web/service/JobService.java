@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.mogujie.jarvis.dto.Job;
 import com.mogujie.jarvis.web.common.Constants;
 import com.mogujie.jarvis.web.common.TimeTools;
+import com.mogujie.jarvis.web.entity.vo.CronTabVo;
 import com.mogujie.jarvis.web.entity.vo.JobSearchVo;
 import com.mogujie.jarvis.web.entity.vo.JobVo;
 import com.mogujie.jarvis.web.mapper.JobMapper;
@@ -24,8 +25,9 @@ public class JobService {
 
     Logger logger = Logger.getLogger(this.getClass());
 
-    public List<JobVo> getAllJobs(){
+    public List<JobVo> getAllJobs(Integer jobFlag){
         JobSearchVo jobSearchVo=new JobSearchVo();
+        jobSearchVo.setJobFlag(jobFlag);
         List<JobVo> jobVoList=jobMapper.getJobsByCondition(jobSearchVo);
         return jobVoList;
     }
@@ -48,13 +50,16 @@ public class JobService {
         }
 
         jsonObject.put("total",count);
-        jsonObject.put("rows",jobList);
+        jsonObject.put("rows", jobList);
 
         return jsonObject;
     }
 
     public JobVo getJobById(Long jobId){
         return jobMapper.getJobById(jobId);
+    }
+    public JobVo getJobByName(String jobName){
+        return jobMapper.getJobByName(jobName);
     }
     public List<Long> getJobIds(){
         return jobMapper.getJobIds();
@@ -64,5 +69,9 @@ public class JobService {
     }
     public List<String> getSubmitUsers(){
         return jobMapper.getSubmitUsers();
+    }
+
+    public CronTabVo getCronTabByJobId(Long jobId){
+        return jobMapper.getCronTabByJobId(jobId);
     }
 }

@@ -62,6 +62,10 @@
         SELECT * FROM job WHERE jobId=#{jobId} limit 0,1
     </select>
 
+    <select id="getJobByName" parameterType="String" resultType="JobVo">
+        SELECT * FROM job WHERE jobName=#{_parameter} limit 0,1
+    </select>
+
     <select id="getJobIds" resultType="Long">
       SELECT DISTINCT jobId FROM job;
     </select>
@@ -72,5 +76,9 @@
 
     <select id="getSubmitUsers" resultType="String">
       SELECT DISTINCT submitUser FROM job;
+    </select>
+
+    <select id="getCronTabByJobId" parameterType="Long" resultType="CronTabVo">
+        SELECT * FROM crontab WHERE jobId=${_parameter}
     </select>
 </mapper>

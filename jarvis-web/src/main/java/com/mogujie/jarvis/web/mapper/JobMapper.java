@@ -1,6 +1,7 @@
 package com.mogujie.jarvis.web.mapper;
 
 import com.mogujie.jarvis.dto.Job;
+import com.mogujie.jarvis.web.entity.vo.CronTabVo;
 import com.mogujie.jarvis.web.entity.vo.JobSearchVo;
 import com.mogujie.jarvis.web.entity.vo.JobVo;
 
@@ -11,10 +12,13 @@ import java.util.List;
  */
 public interface JobMapper {
     public JobVo getJobById(Long jobId);
+    public JobVo getJobByName(String jobName);
     public Integer getCountByCondition(JobSearchVo jobSearchVo);
     public List<JobVo> getJobsByCondition(JobSearchVo jobSearchVo);
 
     public List<Long> getJobIds();
     public List<String> getJobNames();
     public List<String> getSubmitUsers();
+
+    public CronTabVo getCronTabByJobId(Long jobId);
 }
