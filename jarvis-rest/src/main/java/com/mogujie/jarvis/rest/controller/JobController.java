@@ -9,10 +9,7 @@ package com.mogujie.jarvis.rest.controller;
 
 import java.util.List;
 
-import javax.ws.rs.FormParam;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 import com.mogujie.jarvis.core.domain.AkkaType;
@@ -82,24 +79,19 @@ public class JobController extends AbstractController {
 
 
     /**
-     * 提交job任务
-     *
+     * 测试脚本
+     * http://127.0.0.1:8080/job/test
      * @throws Exception
      */
-    @POST
+    @GET
     @Path("test")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult test(@FormParam("appKey") String appKey,
-                           @FormParam("appName") String appName,
-                           @FormParam("user") String user
-                           ) throws Exception {
-
+    public RestResult test() throws Exception {
 
             JobVo vo = new JobVo();
             vo.setJobId(123456);
             return successResult(vo);
 
     }
-
 
 }
