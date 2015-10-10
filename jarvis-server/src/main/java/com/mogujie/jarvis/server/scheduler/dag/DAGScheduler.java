@@ -124,20 +124,25 @@ public class DAGScheduler extends Scheduler {
      * @param long jobId
      * @param DAGJob dagJob
      * @param Set<Long> dependencies
+     * @throws JobScheduleException
      */
-    public void addJob(long jobId, DAGJob dagJob, Set<Long> dependencies) throws CycleFoundException {
+    public void addJob(long jobId, DAGJob dagJob, Set<Long> dependencies) throws JobScheduleException  {
         if (waitingTable.get(jobId) == null) {
-            waitingTable.put(jobId, dagJob);
             dag.addVertex(dagJob);
-
             if (dependencies != null) {
                 for (long d: dependencies) {
                     DAGJob parent = waitingTable.get(d);
                     if (parent != null) {
-                        dag.addDagEdge(parent, dagJob);
+                        try {
+                            dag.addDagEdge(parent, dagJob);
+                        } catch (CycleFoundException e) {
+                            dag.removeVertex(dagJob);
+                            throw new JobScheduleException(e.getMessage());
+                        }
                     }
                 }
             }
+            waitingTable.put(jobId, dagJob);
         }
     }
 
