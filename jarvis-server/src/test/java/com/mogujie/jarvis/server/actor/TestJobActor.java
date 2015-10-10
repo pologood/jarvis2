@@ -5,7 +5,7 @@
  * Author: guangming
  * Create Date: 2015年10月10日 上午9:58:29
  */
-package com.mogujie.jarvis.server.akka;
+package com.mogujie.jarvis.server.actor;
 
 import org.junit.Test;
 

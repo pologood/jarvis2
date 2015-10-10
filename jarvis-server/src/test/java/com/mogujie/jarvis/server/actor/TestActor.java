@@ -6,7 +6,7 @@
  * Create Date: 2015年10月10日 上午11:14:55
  */
 
-package com.mogujie.jarvis.server.akka;
+package com.mogujie.jarvis.server.actor;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
