@@ -15,6 +15,7 @@ import com.mogujie.jarvis.rest.vo.AbstractVo;
 
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
+import org.apache.commons.configuration.Configuration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -31,7 +32,7 @@ import java.util.concurrent.TimeUnit;
 public abstract class AbstractController {
 
 
-    private ActorSystem system;
+    private static ActorSystem system;
 
     private String serverAkkaUserPath;
     private String workerAkkaUserPath;
@@ -47,13 +48,17 @@ public abstract class AbstractController {
 
     public AbstractController() {
 
-        Config config = ConfigFactory.load("akka-rest.conf");
-        serverAkkaUserPath = config.getString("server.akka.path") + JarvisConstants.SERVER_AKKA_USER_PATH;
-        workerAkkaUserPath = config.getString("worker.akka.path") + JarvisConstants.WORKER_AKKA_USER_PATH;
-        logstorageAkkaUserPath = config.getString("logstorage.akka.path") + JarvisConstants.LOGSTORAGE_AKKA_USER_PATH;
+        Configuration restConfig = ConfigUtils.getRestConfig();
+        serverAkkaUserPath = restConfig.getString("server.akka.path") + JarvisConstants.SERVER_AKKA_USER_PATH;
+        workerAkkaUserPath = restConfig.getString("worker.akka.path") + JarvisConstants.WORKER_AKKA_USER_PATH;
+        logstorageAkkaUserPath = restConfig.getString("logstorage.akka.path") + JarvisConstants.LOGSTORAGE_AKKA_USER_PATH;
 
-        Config restfulConfig = ConfigUtils.getAkkaConfig().withFallback(config.getConfig("rest"));
-        system = ActorSystem.create(JarvisConstants.REST_AKKA_SYSTEM_NAME, restfulConfig);
+        if(system == null) {
+            Config akkaConfig = ConfigFactory.load("akka-rest.conf");
+            Config restAkkaConfig = ConfigUtils.getAkkaConfig().withFallback(akkaConfig.getConfig("rest"));
+
+            system = ActorSystem.create(JarvisConstants.REST_AKKA_SYSTEM_NAME, restAkkaConfig);
+        }
 
     }
 
