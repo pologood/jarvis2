@@ -35,7 +35,7 @@ public class TaskManager {
     private AppMapper appMapper;
 
     private Map<String, Pair<WorkerInfo, Integer>> taskMap = Maps.newHashMap();
-    private Map<Integer, Integer> maxParallelismMap = null;
+    private Map<Integer, Integer> maxParallelismMap = Maps.newHashMap();
     private AtomicLongMap<Integer> parallelismCounter = AtomicLongMap.create();
 
     @PostConstruct
