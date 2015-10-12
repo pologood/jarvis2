@@ -21,8 +21,7 @@ import com.mogujie.jarvis.core.domain.TaskDetail;
  *
  */
 @Repository
-public enum TaskQueue {
-    INSTANCE;
+public class TaskQueue {
 
     private Comparator<TaskDetail> comparator = new Comparator<TaskDetail>() {
 
@@ -33,10 +32,6 @@ public enum TaskQueue {
     };
 
     private PriorityBlockingQueue<TaskDetail> queue = new PriorityBlockingQueue<>(100, comparator);
-
-    public static TaskQueue getInstance() {
-        return INSTANCE;
-    }
 
     public void put(TaskDetail taskDetail) {
         queue.put(taskDetail);

@@ -84,7 +84,8 @@ public class DAGScheduler extends Scheduler {
             if (job.getJobFlag() != JobFlag.DELETED.getValue()) {
                 long jobId = job.getJobId();
                 Set<Long> dependencies = jobDependService.getDependIds(jobId);
-                int cycleFlag = (job.getFixedDelay() > 0) ? 1 : 0;
+                Integer fixedDelay = job.getFixedDelay();
+                int cycleFlag = (fixedDelay != null && fixedDelay > 0) ? 1 : 0;
                 int dependFlag = (cronService.getPositiveCrontab(jobId) != null) ? 1 : 0;
                 int timeFlag = (!dependencies.isEmpty()) ? 1 : 0;
                 DAGJobType type = SchedulerUtil.getDAGJobType(cycleFlag, dependFlag, timeFlag);
