@@ -61,16 +61,6 @@ public class TaskScheduler extends Scheduler {
     @Autowired
     private TaskManager taskManager;
 
-    // for testing
-    private static TaskScheduler instance = new TaskScheduler();
-
-    private TaskScheduler() {
-    }
-
-    public static TaskScheduler getInstance() {
-        return instance;
-    }
-
     private Map<Long, DAGTask> readyTable = new ConcurrentHashMap<Long, DAGTask>();
     private TaskQueue taskQueue = TaskQueue.getInstance();
 

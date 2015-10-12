@@ -51,15 +51,6 @@ public class TimeScheduler extends Scheduler {
     @Autowired
     private CronScheduler cronScheduler;
 
-    private static TimeScheduler instance = new TimeScheduler();
-
-    private TimeScheduler() {
-    }
-
-    public static TimeScheduler getInstance() {
-        return instance;
-    }
-
     @Override
     @Transactional
     public void init() {
@@ -85,7 +76,6 @@ public class TimeScheduler extends Scheduler {
                 cronScheduler.schedule(crontab);
             }
         }
-
     }
 
     @Override

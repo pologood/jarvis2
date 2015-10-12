@@ -67,16 +67,9 @@ public class DAGScheduler extends Scheduler {
     @Autowired
     private CrontabService cronService;
 
-    private static DAGScheduler instance = new DAGScheduler();
+    @Autowired
+    private TaskScheduler taskScheduler;
 
-    private DAGScheduler() {
-    }
-
-    public static DAGScheduler getInstance() {
-        return instance;
-    }
-
-    private TaskScheduler taskScheduler = TaskScheduler.getInstance();
     private Map<Long, DAGJob> waitingTable = new ConcurrentHashMap<Long, DAGJob>();
     private DirectedAcyclicGraph<DAGJob, DefaultEdge> dag = new DirectedAcyclicGraph<DAGJob, DefaultEdge>(DefaultEdge.class);
 
@@ -91,7 +84,7 @@ public class DAGScheduler extends Scheduler {
             if (job.getJobFlag() != JobFlag.DELETED.getValue()) {
                 long jobId = job.getJobId();
                 Set<Long> dependencies = jobDependService.getDependIds(jobId);
-                int cycleFlag = (job.getFixedDelay() != null && job.getFixedDelay() > 0) ? 1 : 0;
+                int cycleFlag = (job.getFixedDelay() > 0) ? 1 : 0;
                 int dependFlag = (cronService.getPositiveCrontab(jobId) != null) ? 1 : 0;
                 int timeFlag = (!dependencies.isEmpty()) ? 1 : 0;
                 DAGJobType type = SchedulerUtil.getDAGJobType(cycleFlag, dependFlag, timeFlag);
