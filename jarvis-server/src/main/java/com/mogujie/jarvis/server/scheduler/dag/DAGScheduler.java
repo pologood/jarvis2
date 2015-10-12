@@ -134,7 +134,10 @@ public class DAGScheduler extends Scheduler {
                     DAGJob parent = waitingTable.get(d);
                     if (parent != null) {
                         try {
-                            dag.addDagEdge(parent, dagJob);
+                            //过滤自依赖
+                            if (parent.getJobId() != jobId) {
+                                dag.addDagEdge(parent, dagJob);
+                            }
                         } catch (CycleFoundException e) {
                             dag.removeVertex(dagJob);
                             throw new JobScheduleException(e.getMessage());
