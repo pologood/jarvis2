@@ -7,6 +7,7 @@
  */
 package com.mogujie.jarvis.rest.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.FormParam;
@@ -17,11 +18,25 @@ import javax.ws.rs.core.MediaType;
 
 import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.protocol.MapEntryProtos;
+import com.mogujie.jarvis.protocol.ModifyJobProtos;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.DependencyEntry;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitJobRequest;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitJobResponse;
+import com.mogujie.jarvis.protocol.ModifyJobProtos.RestServerModifyJobRequest;
+import com.mogujie.jarvis.protocol.ModifyJobProtos.ServerModifyJobResponse;
+import com.mogujie.jarvis.protocol.ModifyDependencyProtos;
+import com.mogujie.jarvis.protocol.ModifyDependencyProtos.RestServerModifyDependencyRequest;
+import com.mogujie.jarvis.protocol.ModifyDependencyProtos.ServerModifyDependencyResponse;
+import com.mogujie.jarvis.protocol.ModifyJobFlagProtos;
+import com.mogujie.jarvis.protocol.ModifyJobFlagProtos.RestServerModifyJobFlagRequest;
+import com.mogujie.jarvis.protocol.ModifyJobFlagProtos.ServerModifyJobFlagResponse;
+
+
+import com.mogujie.jarvis.rest.MsgCode;
 import com.mogujie.jarvis.rest.RestResult;
 import com.mogujie.jarvis.rest.vo.JobVo;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  * @author muming
@@ -37,40 +52,58 @@ public class JobController extends AbstractController {
     @POST
     @Path("submitJob")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult onlineClient(@FormParam("appKey") String appKey,
-                                   @FormParam("appName") String appName,
-                                   @FormParam("user") String user,
+    public RestResult onlineClient(@FormParam("appName") String appName,
+                                   @FormParam("appKey") String appKey,
                                    @FormParam("jobName") String jobName,
-                                   @FormParam("jobType") String jobType,
+                                   @FormParam("cronExpression") String cronExp,
                                    @FormParam("dependJobIds") String dependJobIds,
-                                   @FormParam("cronExp") String cronExp,
-                                   @FormParam("jobContent") String jobContent,
+                                   @FormParam("user") String user,
+                                   @FormParam("jobType") String jobType,
+                                   @FormParam("jobCommand") String jobCommand,
+                                   //@FormParam("jobContent") String jobContent,
                                    @FormParam("groupId") int groupId,
-                                   @FormParam("priority") int priority,
-                                   @FormParam("startTime") long startTime,
-                                   @FormParam("endTime") long endTime,
                                    @FormParam("rejectRetries") int rejectRetries,
                                    @FormParam("rejectInterval") int rejectInterval,
                                    @FormParam("failedRetries") int failedRetries,
                                    @FormParam("failedInterval") int failedInterval,
+                                   @FormParam("startTime") long startTime,
+                                   @FormParam("endTime") long endTime,
+                                   @FormParam("priority") int priority,
                                    @FormParam("parameters") String parameters) throws Exception {
 
         // todo , 转换为 list
-        List<DependencyEntry> dependEntryList = null;
+        List<DependencyEntry> dependEntryList = new ArrayList<DependencyEntry>();
+        //不为null且不为空字符串才处理
+        if(dependJobIds!=null&&!dependJobIds.equals("")){
+            JSONArray dependIdsArr = new JSONArray(dependJobIds);
+            for(int i=0;i<dependIdsArr.length();i++){
+                DependencyEntry entry = DependencyEntry.newBuilder().setJobId(dependIdsArr.getLong(i)).build();
+                dependEntryList.add(entry);
+            }
+        }
 
         // todo parameters 从json转化为 list
-        List<MapEntryProtos.MapEntry> paraList = null;
-
+        List<MapEntryProtos.MapEntry> paraList = new ArrayList<MapEntryProtos.MapEntry>();
+        //不为null且不为空字符串才处理
+        if(parameters!=null&&!parameters.equals("")){
+            JSONObject parameterJson = new JSONObject(parameters);
+            for(Object key:parameterJson.keySet()){
+                String value=parameterJson.getString((String)key);
+                MapEntryProtos.MapEntry entry=MapEntryProtos.MapEntry.newBuilder().setKey((String)key).setValue(value).build();
+                paraList.add(entry);
+            }
+        }
+        //构造新增任务请求
         RestServerSubmitJobRequest request = RestServerSubmitJobRequest.newBuilder().setAppName(appName).setJobName(jobName)
-                .setCronExpression(cronExp).addAllDependencyEntry(dependEntryList).setUser(user).setJobType(jobType).setContent(jobContent)
+                .setCronExpression(cronExp).addAllDependencyEntry(dependEntryList).setUser(user).setJobType(jobType).setContent(jobCommand)
                 .setGroupId(groupId).setPriority(priority).setFailedRetries(failedRetries).setFailedInterval(failedInterval)
                 .setRejectRetries(rejectRetries).setRejectInterval(rejectInterval).setStartTime(startTime).setEndTime(endTime)
                 .addAllParameters(paraList).build();
-
+        //发送请求到server尝试新增
         ServerSubmitJobResponse response = (ServerSubmitJobResponse) callActor(AkkaType.server, request);
 
+        //判断是否新增成功
         if (response.getSuccess()) {
-
             JobVo vo = new JobVo();
             vo.setJobId(response.getJobId());
             return successResult(vo);
@@ -80,6 +113,172 @@ public class JobController extends AbstractController {
 
     }
 
+
+    /**
+     * 修改job任务
+     *
+     * @throws Exception
+     */
+    @POST
+    @Path("edit")
+    @Produces(MediaType.APPLICATION_JSON)
+    public RestResult edit(@FormParam("appName") String appName,
+                           @FormParam("appKey") String appKey,
+                           @FormParam("jobName") String jobName,
+                           @FormParam("jobId") Long jobId,
+                           @FormParam("cronExpression") String cronExp,
+                           @FormParam("dependJobIds") String dependJobIds,
+                           @FormParam("user") String user,
+                           @FormParam("jobType") String jobType,
+                           @FormParam("jobCommand") String jobCommand,
+                           //@FormParam("jobContent") String jobContent,
+                           @FormParam("groupId") int groupId,
+                           @FormParam("rejectRetries") int rejectRetries,
+                           @FormParam("rejectInterval") int rejectInterval,
+                           @FormParam("failedRetries") int failedRetries,
+                           @FormParam("failedInterval") int failedInterval,
+                           @FormParam("startTime") long startTime,
+                           @FormParam("endTime") long endTime,
+                           @FormParam("priority") int priority,
+                           @FormParam("parameters") String parameters) throws Exception {
+
+        // todo , 转换为 list
+        List<ModifyDependencyProtos.DependencyEntry> dependEntryList = new ArrayList<ModifyDependencyProtos.DependencyEntry>();
+        // 不为null且不为空字符串才处理
+        if(dependJobIds!=null&&!dependJobIds.equals("")){
+            JSONArray dependIdsArr = new JSONArray(dependJobIds);
+            for(int i=0;i<dependIdsArr.length();i++){
+                ModifyDependencyProtos.DependencyEntry entry = ModifyDependencyProtos.DependencyEntry.newBuilder().setJobId(dependIdsArr.getLong(i)).build();
+                dependEntryList.add(entry);
+            }
+        }
+
+        // todo parameters 从json转化为 list
+        List<MapEntryProtos.MapEntry> paraList = new ArrayList<MapEntryProtos.MapEntry>();
+        // 不为null且不为空字符串才处理
+        if(parameters!=null&&!parameters.equals("")){
+            JSONObject parameterJson = new JSONObject(parameters);
+            for(Object key:parameterJson.keySet()){
+                String value=parameterJson.getString((String)key);
+                MapEntryProtos.MapEntry entry=MapEntryProtos.MapEntry.newBuilder().setKey((String)key).setValue(value).build();
+                paraList.add(entry);
+            }
+        }
+
+        //构造修改job基本信息请求
+        RestServerModifyJobRequest request = RestServerModifyJobRequest.newBuilder().setAppName(appName).setJobName(jobName).setJobId(jobId)
+                .setCronExpression(cronExp).setUser(user).setJobType(jobType).setCommand(jobCommand)
+                .setGroupId(groupId).setPriority(priority).setFailedRetries(failedRetries).setFailedInterval(failedInterval)
+                .setRejectRetries(rejectRetries).setRejectInterval(rejectInterval).setStartTime(startTime).setEndTime(endTime)
+                .addAllParameters(paraList).build();
+
+        //发送信息到server修改job基本信息
+        ServerModifyJobResponse response = (ServerModifyJobResponse) callActor(AkkaType.server, request);
+
+        //判断修改基本信息是否成功，修改基本信息成功后才尝试修改依赖
+        if (response.getSuccess()) {
+            //构造修改job依赖请求
+            RestServerModifyDependencyRequest modifyDependencyRequest=RestServerModifyDependencyRequest.newBuilder().setJobId(jobId)
+                    .addAllDependencyEntry(dependEntryList).build();
+            //发送信息到server修改依赖
+            ServerModifyDependencyResponse dependencyResponse = (ServerModifyDependencyResponse)callActor(AkkaType.server, modifyDependencyRequest);
+            //修改依赖是否成功
+            if(dependencyResponse.getSuccess()){
+                JobVo vo = new JobVo();
+                vo.setJobId(dependencyResponse.getJobId());
+                return successResult(vo);
+            }
+            else {
+                return errorResult(dependencyResponse.getMessage());
+            }
+        }
+        //修改基本信息出错
+        else {
+            return errorResult(response.getMessage());
+        }
+    }
+
+
+    /**
+     * 删除job任务
+     *
+     * @throws Exception
+     */
+    @POST
+    @Path("delete")
+    @Produces(MediaType.APPLICATION_JSON)
+    public RestResult delete(@FormParam("appKey") String appKey,
+                            @FormParam("appName") String appName,
+                            @FormParam("jobId") Long jobId
+                            ) throws Exception {
+        //构造删除job请求request，状态4代表垃圾箱
+        RestServerModifyJobFlagRequest request=RestServerModifyJobFlagRequest.newBuilder().setJobId(jobId)
+                .setJobFlag(4).build();
+        //发送请求到server尝试常熟
+        ServerModifyJobFlagResponse response=(ServerModifyJobFlagResponse) callActor(AkkaType.server,request);
+
+        //判断删除是否成功
+        if(response.getSuccess()){
+            JobVo vo = new JobVo();
+            vo.setJobId(jobId);
+            return successResult(vo);
+        }
+        else{
+            return errorResult(response.getMessage());
+        }
+    }
+
+    /**
+     * 删除job任务
+     *
+     * @throws Exception
+     */
+    @POST
+    @Path("rerun")
+    @Produces(MediaType.APPLICATION_JSON)
+    public RestResult rerun(@FormParam("originJobId") Long originJobId,
+                             @FormParam("startTime") String startTime,
+                             @FormParam("endTime") String endTime,
+                             @FormParam("reRunJobs") String reRunJobs
+    ) throws Exception {
+        JSONArray reRunJobArr= new JSONArray(reRunJobs);
+        boolean hasSelf=false;
+        for(int i=0;i<reRunJobArr.length();i++){
+            if(originJobId.equals(reRunJobArr.getLong(i))){
+                hasSelf=true;
+                break;
+            }
+        }
+        if(hasSelf==false){
+            reRunJobArr.put(originJobId);
+        }
+
+        boolean flag=true;
+        JSONObject msg= new JSONObject();
+        for(int i=0;i<reRunJobArr.length();i++){
+            Long singleOriginId=reRunJobArr.getLong(i);
+            //构造新增任务请求
+            RestServerSubmitJobRequest request = RestServerSubmitJobRequest.newBuilder().setOriginJobId(singleOriginId).build();
+            ServerSubmitJobResponse response = (ServerSubmitJobResponse) callActor(AkkaType.server, request);
+
+            //保存整理而言是否成功，如果某个job重跑失败，则算失败
+            flag=flag&&response.getSuccess();
+            //判断是否重跑成功
+            if (response.getSuccess()) {
+                msg.put(singleOriginId.toString(),"success,"+response.getMessage());
+            } else {
+                msg.put(singleOriginId.toString(),"failed,"+response.getMessage());
+            }
+        }
+
+        //判断删除是否成功
+        if(flag){
+            return new RestResult(MsgCode.SUCCESS);
+        }
+        else{
+            return errorResult(msg.toString());
+        }
+    }
 
     /**
      * 提交job任务

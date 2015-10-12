@@ -62,7 +62,7 @@ public class JobController extends BaseController{
 
             String appName=jobVo.getAppName();
             AppVo appVo=appService.getAppByName(appName);
-            if(appVo.getStatus()==0){
+            if(appVo!=null&&appVo.getStatus()==0){
                 appVoList.add(appVo);
             }
 

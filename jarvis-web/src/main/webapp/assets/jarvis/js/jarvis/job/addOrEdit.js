@@ -5,34 +5,34 @@ $(function(){
 
     //初始化作业类型内容
     $.getJSON("/assets/jarvis/json/jobType.json",function(data){
-        var new_data=new Array();
+        var newData=new Array();
         $(data).each(function(i,c){
             if(this.id!='all'){
-                new_data.push(this);
+                newData.push(this);
             }
         });
 
-        $("#job_type").select2({
-            data:new_data,
+        $("#jobType").select2({
+            data:newData,
             width:'100%'
         });
         if(jobType!=undefined){
-            $("#job_type").val(jobType).trigger("change");
+            $("#jobType").val(jobType).trigger("change");
         }
     });
 
 
 
     $.getJSON("/assets/jarvis/json/jobPriority.json",function(data){
-        var new_data=new Array();
+        var newData=new Array();
         $(data).each(function(i,c){
             if(this.id!='all'){
-                new_data.push(this);
+                newData.push(this);
             }
         });
 
         $("#priority").select2({
-            data:new_data,
+            data:newData,
             width:'100%'
         });
         if(jobPriority!=undefined){
@@ -45,17 +45,17 @@ $(function(){
     $(".input-group select").select2({width:'100%'});
 
     if(dependIds!=undefined&&dependIds!='[]'){
-        $("#dependency_jobids").val(JSON.parse(dependIds)).trigger("change");
+        $("#dependencyJobids").val(JSON.parse(dependIds)).trigger("change");
     }
 
-    $('#start_time').datetimepicker({
+    $('#startTime').datetimepicker({
         language:'zh-CN',
         minView:'month',
         format: 'yyyy-mm-dd',
         autoclose:true
     });
 
-    $('#end_time').datetimepicker({
+    $('#endTime').datetimepicker({
         language:'zh-CN',
         minView:'month',
         format: 'yyyy-mm-dd',
@@ -133,21 +133,21 @@ function getData(){
 
     var user=$("#user").val();
     result["user"]=user;
-    var app_key=$("#app_name").find("option:selected").attr("app_key");
-    result["app_key"]=app_key;
+    var appKey=$("#appName").find("option:selected").attr("appKey");
+    result["appKey"]=appKey;
 
     return result;
 }
 
 //提交任务
 function submit(){
-    var ids=["user","app_name","job_name","job_type","command","group_id"];
+    var ids=["user","appName","jobName","jobType","jobCommand","groupId"];
     var flag=checkEmpty(ids);
     if(flag==false){
         return ;
     }
 
-    flag=checkJobName($("#job_name"));
+    flag=checkJobName($("#jobName"));
     if(flag==false){
         return;
     }
@@ -162,7 +162,24 @@ function submit(){
         type:'POST',
         data:data,
         success:function(data){
-
+            if(data.code!=0){
+                new PNotify({
+                    title: '提交任务',
+                    text: data.msg,
+                    type: 'warning',
+                    icon: true,
+                    styling: 'bootstrap3'
+                });
+            }
+            else{
+                new PNotify({
+                    title: '提交任务',
+                    text: "提交成功",
+                    type: 'success',
+                    icon: true,
+                    styling: 'bootstrap3'
+                });
+            }
         }
     });
 
@@ -170,13 +187,13 @@ function submit(){
 
 //编辑任务
 function edit(){
-    var ids=["user","job_id","app_name","job_name","job_type","command","group_id"];
+    var ids=["user","jobId","appName","jobName","jobType","jobCommand","groupId"];
     var flag=checkEmpty(ids);
     if(flag==false){
         return ;
     }
 
-    flag=checkJobName($("#job_name"));
+    flag=checkJobName($("#jobName"));
     if(flag==false){
         return;
     }
@@ -187,23 +204,40 @@ function edit(){
 
     var data=getData();
 
-    var job_id=$("#job_id").val();
-    data["job_id"]=job_id;
+    var jobId=$("#jobId").val();
+    data["jobId"]=jobId;
 
     $.ajax({
         url:'/api/job/edit',
         type:'POST',
         data:data,
         success:function(data){
-
+            if(data.code!=0){
+                new PNotify({
+                    title: '编辑任务',
+                    text: data.msg,
+                    type: 'warning',
+                    icon: true,
+                    styling: 'bootstrap3'
+                });
+            }
+            else{
+                new PNotify({
+                    title: '编辑任务',
+                    text: "编辑成功",
+                    type: 'success',
+                    icon: true,
+                    styling: 'bootstrap3'
+                });
+            }
         }
     });
 }
 
 //检查任务名是否重复
 function checkJobName(thisTag){
-    var jobId=$("#job_id").val();
-    var jobName=$("#job_name").val();
+    var jobId=$("#jobId").val();
+    var jobName=$("#jobName").val();
     var flag=true;
     if(jobName==''){
         new PNotify({
@@ -260,13 +294,13 @@ function checkNum(thisTag){
 }
 //检查结束日期是否小于开始日期
 function checkActiveDate(){
-    var start_time=$("#start_time").val();
-    var end_time=$("#end_time").val();
+    var startTime=$("#startTime").val();
+    var endTime=$("#endTime").val();
 
     var flag=true;
-    if(start_time!=''&&end_time!=''){
-        var start=new Date(start_time);
-        var end=new Date(end_time);
+    if(startTime!=''&&endTime!=''){
+        var start=new Date(startTime);
+        var end=new Date(endTime);
         if(end<=start){
             new PNotify({
                 title: '提交任务',
@@ -280,3 +314,74 @@ function checkActiveDate(){
     }
     return flag;
 }
+
+function showParaModel(){
+    $("#paras tbody").empty();
+    var parameters=$("#parameters").val();
+    if(parameters!=null&&parameters!=''&&parameters.indexOf("}")>0){
+        var existParas=JSON.parse(parameters);
+        for(var key in existParas){
+            var value=existParas[key];
+            var tr=$("#pattern tr").clone();
+            $($(tr).find("input[name=key]").first()).val(key);
+            $($(tr).find("input[name=value]").first()).val(value);
+            $("#paras tbody").append(tr);
+        }
+    }
+
+    $("#paraModal").modal("show");
+}
+
+
+var testChinese=/[\u4E00-\u9FA5]/;
+
+function ensurePara(){
+    var trs =$("#paras tbody tr");
+    var paras={};
+    var flag=true;
+    $(trs).each(function(i,c){
+        var key=$($(c).find("input[name=key]").first()).val();
+        var value=$($(c).find("input[name=value]").first()).val();
+        if(key==''){
+            flag=false;
+            return false;
+        }
+        if(testChinese.test(key)){
+            flag=false;
+            return false;
+        }
+
+        paras[key]=value;
+    });
+
+    if(flag==false){
+        new PNotify({
+            title: '修改参数',
+            text: "key不能为空,且不能为中文,请修改",
+            type: 'warning',
+            icon: true,
+            styling: 'bootstrap3'
+        });
+
+        return ;
+    }
+
+
+    $("#parameters").val(JSON.stringify(paras));
+    $("#paraModal").modal("hide");
+}
+
+function addPara(thisTag){
+    var tr=$("#pattern tr").clone();
+    if(thisTag==null){
+        $("#paras tbody").append(tr);
+    }
+    else{
+        $(thisTag).parent().parent().after(tr);
+    }
+}
+function deletePara(thisTag){
+    $(thisTag).parent().parent().remove();
+}
+
+

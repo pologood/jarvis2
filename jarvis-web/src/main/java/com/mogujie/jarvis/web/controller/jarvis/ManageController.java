@@ -1,5 +1,6 @@
 package com.mogujie.jarvis.web.controller.jarvis;
 
+import com.alibaba.fastjson.JSONObject;
 import com.mogujie.jarvis.web.auth.annotation.JarvisPassport;
 import com.mogujie.jarvis.web.auth.conf.JarvisAuthType;
 import com.mogujie.jarvis.web.entity.vo.AppVo;
@@ -11,8 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by hejian on 15/9/15.
@@ -49,6 +53,37 @@ public class ManageController extends BaseController {
         return "manage/appAddOrEdit";
     }
 
+    @RequestMapping(value = "checkAppName")
+    @ResponseBody
+    public JSONObject checkAppName(ModelMap modelMap,Integer appId,String appName){
+        JSONObject jsonObject = new JSONObject();
+
+        AppVo appVo=appService.getAppByName(appName);
+        if(appVo==null){
+            jsonObject.put("code",0);
+            jsonObject.put("msg","此应用名不存在");
+        }
+        else{
+            if(appId==null){
+                jsonObject.put("code",1);
+                jsonObject.put("msg","已经存在此名字应用:"+appName);
+            }
+            else{
+                if(appVo.getAppId().equals(appId)){
+                    jsonObject.put("code",0);
+                    jsonObject.put("msg","自身,可以保存");
+                }
+                else{
+                    jsonObject.put("code",1);
+                    jsonObject.put("msg","已经存在此名字其他应用:"+appName);
+                }
+            }
+        }
+
+        return jsonObject;
+    }
+
+
 
     @RequestMapping(value = "worker")
     @JarvisPassport(authTypes = JarvisAuthType.worker)
@@ -77,6 +112,43 @@ public class ManageController extends BaseController {
         return "manage/workerAddOrEdit";
     }
 
+    @RequestMapping(value = "checkWorkerExist")
+    @ResponseBody
+    public JSONObject checkWorkerExist(ModelMap modelMap,Integer id,String ip,Integer port){
+        JSONObject result = new JSONObject();
+
+        Map<String,Object> para= new HashMap<String,Object>();
+        para.put("ip",ip);
+        para.put("port",port);
+        WorkerVo workerVo=workerService.getWorkerByIpAndPort(para);
+
+        if(workerVo==null){
+            result.put("code",0);
+            result.put("msg","不存在，可保存");
+        }
+        else{
+            if(id!=null){
+                if(workerVo.getId().equals(id)){
+                    result.put("code",0);
+                    result.put("msg","自身,可保存");
+                }
+                else{
+                    result.put("code",1);
+                    result.put("msg","已存在IP为"+ip+",端口为"+port+"的worker,不能更新");
+                }
+            }
+            else{
+                result.put("code",1);
+                result.put("msg","已存在IP为"+ip+",端口为"+port+"的worker,不能新增");
+            }
+        }
+
+
+        return result;
+    }
+
+
+
     @RequestMapping(value = "workerGroupAddOrEdit")
     public String workerGroupAddOrEdit(ModelMap modelMap,Integer id){
         if(id!=null){
@@ -84,5 +156,36 @@ public class ManageController extends BaseController {
             modelMap.put("workerGroupVo",workerGroupVo);
         }
         return "manage/workerGroupAddOrEdit";
+    }
+
+    @RequestMapping(value = "checkWorkerGroupName")
+    @ResponseBody
+    public JSONObject checkWorkerGroupName(ModelMap modelMap,Integer id,String name){
+        JSONObject result = new JSONObject();
+
+        WorkerGroupVo workerGroupVo=workerService.getWorkerGroupByName(name);
+        if(workerGroupVo==null){
+            result.put("code",0);
+            result.put("msg","不存在，可保存");
+        }
+        else{
+            if(id!=null){
+                if(workerGroupVo.getId().equals(id)){
+                    result.put("code",0);
+                    result.put("msg","自身,可保存");
+                }
+                else{
+                    result.put("code",1);
+                    result.put("msg","已存在名为"+name+"的worker group,不能更新");
+                }
+            }
+            else{
+                result.put("code",1);
+                result.put("msg","已存在名为"+name+"的worker group,不能新增");
+            }
+        }
+
+
+        return result;
     }
 }

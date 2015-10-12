@@ -17,19 +17,28 @@
                 <ol class="cd-breadcrumb triangle">
                     <li><a href="/jarvis/">Home</a></li>
                     <li><a href="/jarvis/manage/worker">worker管理</a></li>
-                    <li class="current"><em>workerGroup编辑或新增</em></li>
+                    <li class="current"><em>
+                        <c:choose>
+                            <c:when test="${workerGroupVo==null}">
+                                新增worker group
+                            </c:when>
+                            <c:otherwise>
+                                编辑worker group
+                            </c:otherwise>
+                        </c:choose>
+                    </em></li>
                 </ol>
             </nav>
         </div>
     </div>
 
 
-    <input id="appId" type="hidden" value="${workerGroupVo.id}">
+    <input id="workerGroupId" type="hidden" value="${workerGroupVo.id}">
     <div class="row top-buffer">
         <div class="col-md-6 col-md-offset-3">
             <div class="input-group" style="width:100%">
                 <span class="input-group-addon" style="width:35%">workerGroup名称</span>
-                <input class="form-control" id="name" value="${workerGroupVo.name}" />
+                <input class="form-control" id="name" value="${workerGroupVo.name}" onblur="checkWorkerGroupName()" />
             </div>
         </div>
 
@@ -38,10 +47,10 @@
             <div class="input-group" style="width:100%">
                 <c:choose>
                     <c:when test="${workerGroupVo!=null}">
-                        <button type="button" class="btn btn-default">更新</button>
+                        <button type="button" class="btn btn-default" onclick="updateWorkerGroup()">更新</button>
                     </c:when>
                     <c:otherwise>
-                        <button type="button" class="btn btn-default">新增</button>
+                        <button type="button" class="btn btn-default" onclick="addWorkerGroup()">新增</button>
                     </c:otherwise>
                 </c:choose>
             </div>

@@ -35,16 +35,16 @@
         <div class="col-md-12">
             <!-- 用户名必须 -->
             <input type="hidden" id="user" desc="用户名" value="${user.uname}" />
-            <input type="hidden" id="job_id" desc="任务id" value="${jobVo.jobId}" />
+            <input type="hidden" id="jobId" desc="任务id" value="${jobVo.jobId}" />
 
 
             <div class="row top-buffer">
                 <div class="col-md-6 col-md-offset-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">应用名称<span class="text-danger" style="vertical-align: middle" >*</span></span>
-                        <select id="app_name" desc="应用名称" >
+                        <select id="appName" desc="应用名称" >
                             <c:forEach items="${appVoList}" var="app" varStatus="status">
-                                <option value="${app.appName}" app_key="${app.appKey}" <c:choose><c:when test="${app.appName==jobVo.appName}">selected</c:when></c:choose> >${app.appName}</option>
+                                <option value="${app.appName}" appKey="${app.appKey}" <c:choose><c:when test="${app.appName==jobVo.appName}">selected</c:when></c:choose> >${app.appName}</option>
                             </c:forEach>
                         </select>
                     </div>
@@ -55,7 +55,7 @@
                 <div class="col-md-6 col-md-offset-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">任务名称<span class="text-danger" style="vertical-align: middle" >*</span></span>
-                        <input id="job_name" class="form-control" desc="任务名称" value="${jobVo.jobName}" onblur="checkJobName(this)" />
+                        <input id="jobName" class="form-control" desc="任务名称" value="${jobVo.jobName}" onblur="checkJobName(this)" />
                     </div>
                 </div>
             </div>
@@ -65,7 +65,7 @@
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">起始时间</span>
 
-                        <input id="start_time" class="form-control" value="<fmt:formatDate value="${jobVo.activeStartDate}" pattern="yyyy-MM-dd"></fmt:formatDate>" />
+                        <input id="startTime" class="form-control" value="<fmt:formatDate value="${jobVo.activeStartDate}" pattern="yyyy-MM-dd"></fmt:formatDate>" />
 
                     </div>
                 </div>
@@ -75,7 +75,7 @@
                 <div class="col-md-6 col-md-offset-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">结束时间</span>
-                        <input id="end_time" class="form-control" value="<fmt:formatDate value="${jobVo.activeEndDate}" pattern="yyyy-MM-dd"></fmt:formatDate>" />
+                        <input id="endTime" class="form-control" value="<fmt:formatDate value="${jobVo.activeEndDate}" pattern="yyyy-MM-dd"></fmt:formatDate>" />
                     </div>
                 </div>
             </div>
@@ -84,7 +84,7 @@
                 <div class="col-md-6 col-md-offset-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">任务类型<span class="text-danger" style="vertical-align: middle" >*</span></span>
-                        <select id="job_type"  desc="任务类型">
+                        <select id="jobType"  desc="任务类型">
 
                         </select>
                     </div>
@@ -95,7 +95,7 @@
                 <div class="col-md-6 col-md-offset-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">执行命令<span class="text-danger" style="vertical-align: middle" >*</span></span>
-                        <textarea id="command" class="form-control" desc="执行命令" rows="4" onclick="changeTextArea(this,15,10)" onblur="changeTextArea(this,4,10)">${jobVo.content}</textarea>
+                        <textarea id="jobCommand" class="form-control" desc="执行命令" rows="4" onclick="changeTextArea(this,15,10)" onblur="changeTextArea(this,4,10)">${jobVo.content}</textarea>
                     </div>
                 </div>
             </div>
@@ -104,16 +104,65 @@
                 <div class="col-md-6 col-md-offset-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">任务参数</span>
-                        <input id="parameters" class="form-control" value="${jobVo.params}" />
+                        <input id="parameters" class="form-control" value='${jobVo.params}' onclick="showParaModel()"/>
                     </div>
                 </div>
+
+                <div id="paraModal" class="modal fade">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title">任务参数</h4>
+                            </div>
+                            <div class="modal-body">
+                                <table id="pattern" style="display: none">
+                                    <tr>
+                                        <td>
+                                            <input name="key" class="form-control" placeholder="请输入属性的key">
+                                        </td>
+                                        <td>
+                                            <input name="value" class="form-control" placeholder="请输入属性的value">
+                                        </td>
+                                        <td>
+                                            <a class="glyphicon glyphicon-plus" href="javascript:void(0)" onclick="addPara(this)"></a>
+                                            <a class="glyphicon glyphicon-minus" href="javascript:void(0)" onclick="deletePara(this)"></a>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                                <table id="paras" class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>key</th>
+                                            <th>value</th>
+                                            <th>操作</th>
+                                        </tr>
+
+                                    </thead>
+                                    <tbody>
+
+                                    </tbody>
+                                </table>
+                                <a class="glyphicon glyphicon-plus" href="javascript:void(0)" onclick="addPara(null)"></a>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                <button type="button" class="btn btn-primary" onclick="ensurePara()">确定</button>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
             </div>
+
+
+
 
             <div class="row top-buffer">
                 <div class="col-md-6 col-md-offset-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">Worker Group<span class="text-danger" style="vertical-align: middle" >*</span></span>
-                        <select id="group_id" desc="Worker Group" >
+                        <select id="groupId" desc="Worker Group" >
                             <c:forEach items="${WorkerGroupVoList}" var="workerGroup" varStatus="status">
                                 <option value="${workerGroup.id}" <c:choose><c:when test="${jobVo.workerGroupId==workerGroup.id}">selected</c:when></c:choose>  >${workerGroup.name}</option>
                             </c:forEach>
@@ -127,7 +176,7 @@
                 <div class="col-md-6 col-md-offset-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">Cron表达式</span>
-                        <input id="cron_expression" class="form-control" value="${cronTabVo.cronExpression}" />
+                        <input id="cronExpression" class="form-control" value="${cronTabVo.cronExpression}" />
                     </div>
                 </div>
             </div>
@@ -137,7 +186,7 @@
                 <div class="col-md-6 col-md-offset-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">拒绝重试数</span>
-                        <input id="reject_retries" class="form-control" value="${jobVo.rejectAttempts}" desc="拒绝重试数" placeholder="0" onblur="checkNum(this)"/>
+                        <input id="rejectRetries" class="form-control" value="${jobVo.rejectAttempts}" desc="拒绝重试数" placeholder="0" onblur="checkNum(this)"/>
                     </div>
                 </div>
             </div>
@@ -146,7 +195,7 @@
                 <div class="col-md-6 col-md-offset-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">拒绝重试间隔(秒)</span>
-                        <input id="reject_interval" class="form-control" value="${jobVo.rejectInterval}" desc="拒绝重试间隔(秒)" placeholder="3" onblur="checkNum(this)" />
+                        <input id="rejectInterval" class="form-control" value="${jobVo.rejectInterval}" desc="拒绝重试间隔(秒)" placeholder="3" onblur="checkNum(this)" />
                     </div>
                 </div>
             </div>
@@ -155,7 +204,7 @@
                 <div class="col-md-6 col-md-offset-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">失败重试数</span>
-                        <input id="failed_retries" class="form-control" value="${jobVo.failedAttempts}" desc="失败重试数" placeholder="0" onblur="checkNum(this)" />
+                        <input id="failedRetries" class="form-control" value="${jobVo.failedAttempts}" desc="失败重试数" placeholder="0" onblur="checkNum(this)" />
                     </div>
                 </div>
             </div>
@@ -164,7 +213,7 @@
                 <div class="col-md-6 col-md-offset-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">失败重试间隔(秒)</span>
-                        <input id="failed_interval" class="form-control" value="${jobVo.failedInterval}" desc="失败重试间隔(秒)" placeholder="3" onblur="checkNum(this)" />
+                        <input id="failedInterval" class="form-control" value="${jobVo.failedInterval}" desc="失败重试间隔(秒)" placeholder="3" onblur="checkNum(this)" />
                     </div>
                 </div>
             </div>
@@ -184,7 +233,7 @@
                 <div class="col-md-6 col-md-offset-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">依赖任务</span>
-                        <select id="dependency_jobids" multiple>
+                        <select id="dependencyJobids" multiple>
                             <c:forEach items="${jobVoList}" var="job" varStatus="status">
                                 <option value="${job.jobId}">${job.jobName}</option>
                             </c:forEach>
