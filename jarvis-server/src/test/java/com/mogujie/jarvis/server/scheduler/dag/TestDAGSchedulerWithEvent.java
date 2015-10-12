@@ -22,16 +22,17 @@ import org.junit.Test;
 import com.google.common.collect.Sets;
 import com.mogujie.jarvis.core.domain.JobFlag;
 import com.mogujie.jarvis.core.util.ConfigUtils;
-import com.mogujie.jarvis.server.domain.ModifyJobType;
-import com.mogujie.jarvis.server.domain.ModifyOperation;
 import com.mogujie.jarvis.server.domain.ModifyDependEntry;
 import com.mogujie.jarvis.server.domain.ModifyJobEntry;
+import com.mogujie.jarvis.server.domain.ModifyJobType;
+import com.mogujie.jarvis.server.domain.ModifyOperation;
 import com.mogujie.jarvis.server.scheduler.dag.checker.DAGDependCheckerFactory;
 import com.mogujie.jarvis.server.scheduler.dag.checker.DummyDAGDependChecker;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
 import com.mogujie.jarvis.server.scheduler.event.SuccessEvent;
 import com.mogujie.jarvis.server.scheduler.event.TimeReadyEvent;
 import com.mogujie.jarvis.server.scheduler.task.TaskScheduler;
+import com.mogujie.jarvis.server.util.SpringContext;
 
 /**
  * @author guangming
@@ -41,8 +42,8 @@ public class TestDAGSchedulerWithEvent {
     private long jobAId = 1;
     private long jobBId = 2;
     private long jobCId = 3;
-    private DAGScheduler dagScheduler = DAGScheduler.getInstance();
-    private TaskScheduler taskScheduler = TaskScheduler.getInstance();
+    private DAGScheduler dagScheduler = SpringContext.getBean(DAGScheduler.class);
+    private TaskScheduler taskScheduler = SpringContext.getBean(TaskScheduler.class);
     private Configuration conf = ConfigUtils.getServerConfig();
 
     @Before

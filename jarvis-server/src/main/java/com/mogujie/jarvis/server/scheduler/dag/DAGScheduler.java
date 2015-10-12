@@ -29,10 +29,10 @@ import com.google.common.eventbus.Subscribe;
 import com.mogujie.jarvis.core.domain.JobFlag;
 import com.mogujie.jarvis.core.domain.Pair;
 import com.mogujie.jarvis.dto.Job;
-import com.mogujie.jarvis.server.domain.ModifyJobType;
-import com.mogujie.jarvis.server.domain.ModifyOperation;
 import com.mogujie.jarvis.server.domain.ModifyDependEntry;
 import com.mogujie.jarvis.server.domain.ModifyJobEntry;
+import com.mogujie.jarvis.server.domain.ModifyJobType;
+import com.mogujie.jarvis.server.domain.ModifyOperation;
 import com.mogujie.jarvis.server.scheduler.JobScheduleException;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
 import com.mogujie.jarvis.server.scheduler.SchedulerUtil;
@@ -67,13 +67,9 @@ public class DAGScheduler extends Scheduler {
     @Autowired
     private CrontabService cronService;
 
-    private static DAGScheduler instance = new DAGScheduler();
-    private DAGScheduler() {}
-    public static DAGScheduler getInstance() {
-        return instance;
-    }
+    @Autowired
+    private TaskScheduler taskScheduler;
 
-    private TaskScheduler taskScheduler = TaskScheduler.getInstance();
     private Map<Long, DAGJob> waitingTable = new ConcurrentHashMap<Long, DAGJob>();
     private DirectedAcyclicGraph<DAGJob, DefaultEdge> dag =
             new DirectedAcyclicGraph<DAGJob, DefaultEdge>(DefaultEdge.class);
