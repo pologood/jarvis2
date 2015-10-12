@@ -29,8 +29,8 @@ import com.google.common.eventbus.Subscribe;
 import com.mogujie.jarvis.core.domain.JobFlag;
 import com.mogujie.jarvis.core.domain.Pair;
 import com.mogujie.jarvis.dto.Job;
-import com.mogujie.jarvis.server.domain.MODIFY_JOB_TYPE;
-import com.mogujie.jarvis.server.domain.MODIFY_OPERATION;
+import com.mogujie.jarvis.server.domain.ModifyJobType;
+import com.mogujie.jarvis.server.domain.ModifyOperation;
 import com.mogujie.jarvis.server.domain.ModifyDependEntry;
 import com.mogujie.jarvis.server.domain.ModifyJobEntry;
 import com.mogujie.jarvis.server.scheduler.JobScheduleException;
@@ -206,26 +206,26 @@ public class DAGScheduler extends Scheduler {
      * @param long jobId
      * @param Map<MODIFY_JOB_TYPE, ModifyJobEntry> modifyJobMap
      */
-    public void modifyDAGJobType(long jobId, Map<MODIFY_JOB_TYPE, ModifyJobEntry> modifyJobMap)
+    public void modifyDAGJobType(long jobId, Map<ModifyJobType, ModifyJobEntry> modifyJobMap)
             throws JobScheduleException {
         // update dag job type
         DAGJob dagJob = waitingTable.get(jobId);
         if (dagJob != null) {
-            if (modifyJobMap.containsKey(MODIFY_JOB_TYPE.CRON)) {
-                ModifyJobEntry entry = modifyJobMap.get(MODIFY_JOB_TYPE.CRON);
-                MODIFY_OPERATION operation = entry.getOperation();
-                if (operation.equals(MODIFY_OPERATION.DEL)) {
+            if (modifyJobMap.containsKey(ModifyJobType.CRON)) {
+                ModifyJobEntry entry = modifyJobMap.get(ModifyJobType.CRON);
+                ModifyOperation operation = entry.getOperation();
+                if (operation.equals(ModifyOperation.DEL)) {
                     dagJob.updateJobTypeByTimeFlag(false);
-                } else if (operation.equals(MODIFY_OPERATION.ADD)) {
+                } else if (operation.equals(ModifyOperation.ADD)) {
                     dagJob.updateJobTypeByTimeFlag(true);
                 }
             }
-            if (modifyJobMap.containsKey(MODIFY_JOB_TYPE.CYCLE)) {
-                ModifyJobEntry entry = modifyJobMap.get(MODIFY_JOB_TYPE.CYCLE);
-                MODIFY_OPERATION operation = entry.getOperation();
-                if (operation.equals(MODIFY_OPERATION.DEL)) {
+            if (modifyJobMap.containsKey(ModifyJobType.CYCLE)) {
+                ModifyJobEntry entry = modifyJobMap.get(ModifyJobType.CYCLE);
+                ModifyOperation operation = entry.getOperation();
+                if (operation.equals(ModifyOperation.DEL)) {
                     dagJob.updateJobTypeByCycleFlag(false);
-                } else if (operation.equals(MODIFY_OPERATION.ADD)) {
+                } else if (operation.equals(ModifyOperation.ADD)) {
                     dagJob.updateJobTypeByCycleFlag(true);
                 }
             }
@@ -242,11 +242,11 @@ public class DAGScheduler extends Scheduler {
     public void modifyDependency(long jobId, List<ModifyDependEntry> dependEntries) throws CycleFoundException {
         for (ModifyDependEntry entry : dependEntries) {
             long preJobId = entry.getPreJobId();
-            if (entry.getOperation().equals(MODIFY_OPERATION.ADD)) {
+            if (entry.getOperation().equals(ModifyOperation.ADD)) {
                 addDependency(preJobId, jobId);
-            } else if (entry.getOperation().equals(MODIFY_OPERATION.DEL)) {
+            } else if (entry.getOperation().equals(ModifyOperation.DEL)) {
                 removeDependency(preJobId, jobId);
-            } else if (entry.getOperation().equals(MODIFY_OPERATION.MODIFY)) {
+            } else if (entry.getOperation().equals(ModifyOperation.MODIFY)) {
                 modifyDependency(preJobId, jobId, entry.getCommonStrategy(), entry.getOffsetStrategy());
             }
         }

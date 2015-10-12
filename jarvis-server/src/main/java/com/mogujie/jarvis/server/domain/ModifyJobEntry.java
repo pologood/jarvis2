@@ -13,19 +13,19 @@ package com.mogujie.jarvis.server.domain;
  *
  */
 public class ModifyJobEntry {
-    private MODIFY_OPERATION operation;
+    private ModifyOperation operation;
     private Object value;
 
-    public ModifyJobEntry(MODIFY_OPERATION operation, Object newValue) {
+    public ModifyJobEntry(ModifyOperation operation, Object newValue) {
         this.operation = operation;
         this.value = newValue;
     }
 
-    public MODIFY_OPERATION getOperation() {
+    public ModifyOperation getOperation() {
         return operation;
     }
 
-    public void setOperation(MODIFY_OPERATION operation) {
+    public void setOperation(ModifyOperation operation) {
         this.operation = operation;
     }
 

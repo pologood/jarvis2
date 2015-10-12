@@ -22,8 +22,8 @@ import org.junit.Test;
 import com.google.common.collect.Sets;
 import com.mogujie.jarvis.core.domain.JobFlag;
 import com.mogujie.jarvis.core.util.ConfigUtils;
-import com.mogujie.jarvis.server.domain.MODIFY_JOB_TYPE;
-import com.mogujie.jarvis.server.domain.MODIFY_OPERATION;
+import com.mogujie.jarvis.server.domain.ModifyJobType;
+import com.mogujie.jarvis.server.domain.ModifyOperation;
 import com.mogujie.jarvis.server.domain.ModifyDependEntry;
 import com.mogujie.jarvis.server.domain.ModifyJobEntry;
 import com.mogujie.jarvis.server.scheduler.dag.checker.DAGDependCheckerFactory;
@@ -156,8 +156,8 @@ public class TestDAGSchedulerWithEvent {
         Assert.assertEquals(1, dagScheduler.getParents(jobBId).size());
         Assert.assertEquals(1, dagScheduler.getParents(jobCId).size());
         List<ModifyDependEntry> dependEntries = new ArrayList<ModifyDependEntry>();
-        dependEntries.add(new ModifyDependEntry(MODIFY_OPERATION.DEL, jobAId));
-        dependEntries.add(new ModifyDependEntry(MODIFY_OPERATION.ADD, jobBId));
+        dependEntries.add(new ModifyDependEntry(ModifyOperation.DEL, jobAId));
+        dependEntries.add(new ModifyDependEntry(ModifyOperation.ADD, jobBId));
         dagScheduler.modifyDependency(jobCId, dependEntries);
         Assert.assertEquals(1, dagScheduler.getChildren(jobAId).size());
         Assert.assertEquals(1, dagScheduler.getParents(jobBId).size());
@@ -186,9 +186,9 @@ public class TestDAGSchedulerWithEvent {
         dagScheduler.handleSuccessEvent(successEventA);
         Assert.assertEquals(1, taskScheduler.getReadyTable().size());
         // modify jobB from DEPEND_TIME to DEPENDENCY
-        ModifyJobEntry modifyTimeEntry = new ModifyJobEntry(MODIFY_OPERATION.DEL, null);
-        Map<MODIFY_JOB_TYPE, ModifyJobEntry> modifyMap = new HashMap<MODIFY_JOB_TYPE, ModifyJobEntry>();
-        modifyMap.put(MODIFY_JOB_TYPE.CRON, modifyTimeEntry);
+        ModifyJobEntry modifyTimeEntry = new ModifyJobEntry(ModifyOperation.DEL, null);
+        Map<ModifyJobType, ModifyJobEntry> modifyMap = new HashMap<ModifyJobType, ModifyJobEntry>();
+        modifyMap.put(ModifyJobType.CRON, modifyTimeEntry);
         dagScheduler.modifyDAGJobType(jobBId, modifyMap);
         Assert.assertEquals(2, taskScheduler.getReadyTable().size());
     }

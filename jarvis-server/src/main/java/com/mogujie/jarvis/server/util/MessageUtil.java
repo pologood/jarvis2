@@ -21,8 +21,8 @@ import com.mogujie.jarvis.dto.Job;
 import com.mogujie.jarvis.dto.JobDepend;
 import com.mogujie.jarvis.protocol.ModifyJobProtos.RestServerModifyJobRequest;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitJobRequest;
-import com.mogujie.jarvis.server.domain.MODIFY_JOB_TYPE;
-import com.mogujie.jarvis.server.domain.MODIFY_OPERATION;
+import com.mogujie.jarvis.server.domain.ModifyJobType;
+import com.mogujie.jarvis.server.domain.ModifyOperation;
 import com.mogujie.jarvis.server.domain.ModifyJobEntry;
 import com.mogujie.jarvis.server.service.CrontabService;
 import com.mogujie.jarvis.server.service.JobService;
@@ -117,41 +117,41 @@ public class MessageUtil {
         return jobDepend;
     }
 
-    public static Map<MODIFY_JOB_TYPE, ModifyJobEntry> convert2ModifyJobMap(RestServerModifyJobRequest msg, JobService jobService,
+    public static Map<ModifyJobType, ModifyJobEntry> convert2ModifyJobMap(RestServerModifyJobRequest msg, JobService jobService,
             CrontabService cronService) {
-        Map<MODIFY_JOB_TYPE, ModifyJobEntry> modifyMap = new HashMap<MODIFY_JOB_TYPE, ModifyJobEntry>();
+        Map<ModifyJobType, ModifyJobEntry> modifyMap = new HashMap<ModifyJobType, ModifyJobEntry>();
         long jobId = msg.getJobId();
         if (msg.hasCronExpression()) {
             String newCronExpression = msg.getCronExpression();
-            MODIFY_OPERATION operation;
+            ModifyOperation operation;
             if (newCronExpression == null || newCronExpression.isEmpty()) {
-                operation = MODIFY_OPERATION.DEL;
+                operation = ModifyOperation.DEL;
             } else {
                 Crontab oldCron = cronService.getPositiveCrontab(jobId);
                 if (oldCron == null) {
-                    operation = MODIFY_OPERATION.ADD;
+                    operation = ModifyOperation.ADD;
                 } else {
-                    operation = MODIFY_OPERATION.MODIFY;
+                    operation = ModifyOperation.MODIFY;
                 }
             }
             ModifyJobEntry entry = new ModifyJobEntry(operation, newCronExpression);
-            modifyMap.put(MODIFY_JOB_TYPE.CRON, entry);
+            modifyMap.put(ModifyJobType.CRON, entry);
         }
         if (msg.hasFixedDelay()) {
             int newFixedDelay = msg.getFixedDelay();
-            MODIFY_OPERATION operation;
+            ModifyOperation operation;
             if (newFixedDelay <= 0) {
-                operation = MODIFY_OPERATION.DEL;
+                operation = ModifyOperation.DEL;
             } else {
                 boolean hasFixedDelay = jobService.hasFixedDelay(jobId);
                 if (!hasFixedDelay) {
-                    operation = MODIFY_OPERATION.ADD;
+                    operation = ModifyOperation.ADD;
                 } else {
-                    operation = MODIFY_OPERATION.MODIFY;
+                    operation = ModifyOperation.MODIFY;
                 }
             }
             ModifyJobEntry entry = new ModifyJobEntry(operation, newFixedDelay);
-            modifyMap.put(MODIFY_JOB_TYPE.CYCLE, entry);
+            modifyMap.put(ModifyJobType.CYCLE, entry);
         }
 
         return modifyMap;

@@ -12,6 +12,6 @@ package com.mogujie.jarvis.server.domain;
  * @author guangming
  *
  */
-public enum MODIFY_OPERATION {
+public enum ModifyOperation {
     ADD, DEL, MODIFY
 }
