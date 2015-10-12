@@ -2,20 +2,19 @@ $(function(){
     $(".input-group select").select2({width:'100%'});
 });
 
-//同一id与端口只能存在一个worker
-function checkWorkerExist(){
-    var workerId=$("#workerId").val();
-    var ip=$("#ip").val();
-    var port=$("#port").val();
+//检查worker group名称
+function checkWorkerGroupName(){
+    var workerGroupId=$("#workerGroupId").val();
+    var name=$("#name").val();
     var flag=true;
     $.ajax({
-        url:'/jarvis/manage/checkWorkerExist',
+        url:'/jarvis/manage/checkWorkerGroupName',
         type:'POST',
-        data:{id:workerId,ip:ip,port:port},
+        data:{id:workerGroupId,name:name},
         success:function(data){
             if(data.code==1){
                 new PNotify({
-                    title: '保存worker',
+                    title: '保存worker group',
                     text: data.msg,
                     type: 'warning',
                     icon: true,
@@ -29,35 +28,35 @@ function checkWorkerExist(){
     return flag;
 }
 
-function addWorker(){
-    var ip=$("#ip").val();
-    var port=$("#port").val();
-    var flag=checkWorkerExist();
+function updateWorkerGroup(){
+    var workerGroupId=$("#workerGroupId").val();
+    var name=$("#name").val();
+    var flag=checkWorkerGroupName();
     if(flag==false){
-        return ;
+        return;
     }
     $.ajax({
         url:'',
         type:'POST',
-        data:{},
+        data:{id:workerGroupId,name:name},
         success:function(data){
 
         }
     });
 }
 
-function updateWorker(){
-    var workerId=$("#workerId").val();
-    var ip=$("#ip").val();
-    var port=$("#port").val();
-    var flag=checkWorkerExist();
+function addWorkerGroup(){
+    var workerGroupId=$("#workerGroupId").val();
+    var name=$("#name").val();
+    var flag=checkWorkerGroupName();
     if(flag==false){
-        return ;
+        return;
     }
+
     $.ajax({
         url:'',
         type:'POST',
-        data:{},
+        data:{name:name},
         success:function(data){
 
         }

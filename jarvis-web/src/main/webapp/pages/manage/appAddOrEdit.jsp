@@ -16,21 +16,30 @@
             <nav>
                 <ol class="cd-breadcrumb triangle">
                     <li><a href="/jarvis/">Home</a></li>
-                    <li><a href="/jarvis/manage">管理</a></li>
                     <li><a href="/jarvis/manage/app">应用管理</a></li>
-                    <li class="current"><em>应用编辑或新增</em></li>
+                    <li class="current"><em>
+                        <c:choose>
+                            <c:when test="${appVo==null}">
+                                新增应用
+                            </c:when>
+                            <c:otherwise>
+                                编辑应用
+                            </c:otherwise>
+                        </c:choose>
+                    </em></li>
                 </ol>
             </nav>
         </div>
     </div>
 
-
+    <!-- 应用id -->
     <input id="appId" type="hidden" value="${appVo.appId}">
+
     <div class="row top-buffer">
         <div class="col-md-6 col-md-offset-3">
             <div class="input-group" style="width:100%">
                 <span class="input-group-addon" style="width:35%">应用名称</span>
-                <input class="form-control" id="appName" value="${appVo.appName}"/>
+                <input class="form-control" id="appName" value="${appVo.appName}" onblur="checkAppName()"/>
             </div>
         </div>
 
@@ -48,10 +57,10 @@
             <div class="input-group" style="width:100%">
                 <c:choose>
                     <c:when test="${appVo!=null}">
-                        <button type="button" class="btn btn-default">更新</button>
+                        <button type="button" class="btn btn-default" onclick="updateApp()">更新</button>
                     </c:when>
                     <c:otherwise>
-                        <button type="button" class="btn btn-default">新增</button>
+                        <button type="button" class="btn btn-default" onclick="addApp()">新增</button>
                     </c:otherwise>
                 </c:choose>
             </div>

@@ -160,15 +160,15 @@ var workerColumns=[{
     title: 'PORT',
     switchable:true
 }, {
-    field: 'status',
+    field: 'statusStr',
     title: '状态',
     switchable:true
 }, {
-    field: 'createTime',
+    field: 'createTimeStr',
     title: '创建时间',
     switchable:true
 }, {
-    field: 'updateTime',
+    field: 'updateTimeStr',
     title: '更新时间',
     switchable:true
 },  {
@@ -192,11 +192,11 @@ var workerGroupColumns=[{
     title: 'key',
     switchable:true
 }, {
-    field: 'createTime',
+    field: 'createTimeStr',
     title: '创建时间',
     switchable:true
 }, {
-    field: 'updateTime',
+    field: 'updateTimeStr',
     title: '更新时间',
     switchable:true
 }, {

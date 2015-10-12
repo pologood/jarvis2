@@ -11,4 +11,8 @@
         WHERE job_depend.preJobId=#{jobId}
     </select>
 
+    <select id="getParentById" parameterType="Long" resultType="JobDependVo">
+        SELECT job_depend.preJobId as id FROM job_depend WHERE jobId=#{_parameter}
+    </select>
+
 </mapper>

@@ -177,7 +177,7 @@ var columns=[{
     title: '提交人',
     switchable:true
 }, {
-    field: 'jobPriority',
+    field: 'priority',
     title: '优先级',
     switchable:true
 }, {

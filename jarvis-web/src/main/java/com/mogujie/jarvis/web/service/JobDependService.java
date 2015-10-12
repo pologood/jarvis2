@@ -50,4 +50,8 @@ public class JobDependService {
 
         return jobChildren;
     }
+
+    public List<JobDependVo> getParentById(Long jobId){
+        return jobDependMapper.getParentById(jobId);
+    }
 }

@@ -13,4 +13,5 @@ public interface AppMapper {
     public List<String> getAllAppName();
     public Integer getAppCount(AppSearchVo appSearchVo);
     public List<AppVo> getAppList(AppSearchVo appSearchVo);
+    public AppVo getAppByName(String appName);
 }

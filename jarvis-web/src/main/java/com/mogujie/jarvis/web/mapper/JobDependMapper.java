@@ -10,4 +10,5 @@ import java.util.List;
 public interface JobDependMapper {
     public JobDependVo getJobById(Long jobId);
     public List<JobDependVo> getChildrenById(Long jobId);
+    public List<JobDependVo> getParentById(Long jobId);
 }

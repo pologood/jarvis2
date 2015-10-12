@@ -83,8 +83,7 @@ var columns=[{
 }, {
     field: 'appName',
     title: '应用名称',
-    switchable:true,
-    visible:false
+    switchable:true
 }, {
     field: 'appKey',
     title: 'appkey',

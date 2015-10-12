@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.mogujie.jarvis.web.entity.vo.AppSearchVo;
 import com.mogujie.jarvis.web.entity.vo.AppVo;
+import com.mogujie.jarvis.web.entity.vo.CronTabVo;
 import com.mogujie.jarvis.web.mapper.AppMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,6 +52,10 @@ public class AppService {
 
         return jsonObject;
     }
+    public List<AppVo> getAppList(AppSearchVo appSearchVo){
+        List<AppVo> appVoList=appMapper.getAppList(appSearchVo);
+        return appVoList;
+    }
 
     public List<String> getAllAppName(){
         return appMapper.getAllAppName();
@@ -58,4 +63,8 @@ public class AppService {
     public AppVo getAppById(Integer appId){
         return appMapper.getAppById(appId);
     }
+    public AppVo getAppByName(String appName){
+        return appMapper.getAppByName(appName);
+    }
+
 }

@@ -111,21 +111,26 @@ public class TaskScheduler extends Scheduler {
     @AllowConcurrentEvents
     @Transactional
     public void handleSuccessEvent(SuccessEvent e) {
-        updateJobStatus(e.getTaskId(), JobStatus.SUCCESS);
+        long taskId = e.getTaskId();
+        updateJobStatus(taskId, JobStatus.SUCCESS);
+        readyTable.remove(taskId);
         reduceTaskNum(e.getJobId());
     }
 
     @Subscribe
     @AllowConcurrentEvents
     public void handleRunningEvent(RunningEvent e) {
-        updateJobStatus(e.getTaskId(), JobStatus.RUNNING);
+        long taskId = e.getTaskId();
+        updateJobStatus(taskId, JobStatus.RUNNING);
     }
 
     @Subscribe
     @AllowConcurrentEvents
     @Transactional
     public void handleKilledEvent(KilledEvent e) {
-        updateJobStatus(e.getTaskId(), JobStatus.KILLED);
+        long taskId = e.getTaskId();
+        updateJobStatus(taskId, JobStatus.KILLED);
+        readyTable.remove(taskId);
         reduceTaskNum(e.getJobId());
     }
 
@@ -134,8 +139,8 @@ public class TaskScheduler extends Scheduler {
     @Transactional
     public void handleFailedEvent(FailedEvent e) {
         DAGTask dagTask = readyTable.get(e.getTaskId());
+        long taskId = e.getTaskId();
         if (dagTask != null) {
-            int attemptId = dagTask.getAttemptId();
             int maxFailedAttempts = DAFAULT_MAX_FAILED_ATTEMPTS;
             int failedInterval = DAFAULT_FAILED_INTERVAL;
             if (jobMapper != null) {
@@ -143,13 +148,12 @@ public class TaskScheduler extends Scheduler {
                 maxFailedAttempts = job.getFailedAttempts();
                 failedInterval = job.getFailedInterval();
             }
-            if (attemptId <= maxFailedAttempts) {
-                attemptId++;
-                dagTask.setAttemptId(attemptId);
+            if (dagTask.getAttemptId() <= maxFailedAttempts) {
                 ThreadUtils.sleep(failedInterval);
-                retryTask(dagTask);
+                retryTask(taskId);
             } else {
                 updateJobStatus(e.getTaskId(), JobStatus.FAILED);
+                readyTable.remove(taskId);
             }
         }
 
@@ -157,7 +161,6 @@ public class TaskScheduler extends Scheduler {
     }
 
     private void updateJobStatus(long taskId, JobStatus status) {
-        // 1. store status to DB
         if (taskService != null) {
             if (status.equals(JobStatus.RUNNING)) {
                 taskService.updateStatusWithStart(taskId, status);
@@ -166,11 +169,6 @@ public class TaskScheduler extends Scheduler {
                     || status.getValue() == JobStatus.KILLED.getValue()) {
                 taskService.updateStatusWithEnd(taskId, status);
             }
-        }
-        // 2. remove from readyTable
-        DAGTask dagTask = readyTable.get(taskId);
-        if (dagTask != null) {
-            readyTable.remove(taskId);
         }
     }
 
@@ -199,13 +197,24 @@ public class TaskScheduler extends Scheduler {
         return taskId;
     }
 
-    private void retryTask(DAGTask dagTask) {
-        if (jobMapper != null && taskMapper != null) {
-            Task task = updateTask(dagTask);
-            taskMapper.updateByPrimaryKey(task);
-        }
+    public void retryTask(long taskId) {
+        DAGTask dagTask = readyTable.get(taskId);
+        if (dagTask != null) {
+            int attemptId = dagTask.getAttemptId();
+            attemptId++;
+            dagTask.setAttemptId(attemptId);
+            if (taskMapper != null) {
+                Task task = taskMapper.selectByPrimaryKey(dagTask.getTaskId());
+                task.setAttemptId(attemptId);
+                Date currentTime = new Date();
+                DateFormat dateTimeFormat = DateFormat.getDateTimeInstance();
+                dateTimeFormat.format(currentTime);
+                task.setUpdateTime(currentTime);
+                taskMapper.updateByPrimaryKey(task);
+            }
 
-        submitTask(dagTask);
+            submitTask(dagTask);
+        }
     }
 
     private void submitTask(DAGTask dagTask) {
@@ -231,18 +240,6 @@ public class TaskScheduler extends Scheduler {
         DateFormat dateTimeFormat = DateFormat.getDateTimeInstance();
         dateTimeFormat.format(currentTime);
         task.setCreateTime(currentTime);
-        task.setUpdateTime(currentTime);
-
-        return task;
-    }
-
-    private Task updateTask(DAGTask dagTask) {
-        Task task = new Task();
-        task.setTaskId(dagTask.getTaskId());
-        task.setAttemptId(dagTask.getAttemptId());
-        Date currentTime = new Date();
-        DateFormat dateTimeFormat = DateFormat.getDateTimeInstance();
-        dateTimeFormat.format(currentTime);
         task.setUpdateTime(currentTime);
 
         return task;

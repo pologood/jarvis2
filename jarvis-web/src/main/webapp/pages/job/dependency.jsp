@@ -27,7 +27,7 @@
 
     <div class="row">
         <div class="col-md-12">
-            <div id="dependTree" style="width:100%;min-height:400px"></div>
+            <div id="dependTree" style="width:100%;min-height:500px"></div>
 
         </div>
     </div>
@@ -51,4 +51,6 @@
     var jobVo=${jobVo};
 
 </script>
+
 <script type="text/javascript" src="/assets/jarvis/js/jarvis/job/dependency.js"></script>
+

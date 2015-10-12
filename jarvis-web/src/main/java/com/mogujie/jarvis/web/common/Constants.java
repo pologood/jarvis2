@@ -10,6 +10,9 @@ public class Constants {
     public static Map<Integer,String> jobFlagMap=new HashMap<Integer,String>();
     public static Map<Integer,String> jobPriorityMap=new HashMap<Integer,String>();
     public static Map<Integer,String> taskStatusMap=new HashMap<Integer,String>();
+    public static Map<Integer,String> workerStatusMap=new HashMap<Integer,String>();
+    public static Map<Integer,String> workerGroupStatusMap=new HashMap<Integer,String>();
+
 
     static {
         jobFlagMap.put(1,"启用");
@@ -28,6 +31,11 @@ public class Constants {
         taskStatusMap.put(4,"成功");
         taskStatusMap.put(5,"失败");
         taskStatusMap.put(6,"强制终止");
+
+        workerStatusMap.put(0,"下线");
+        workerStatusMap.put(1,"上线");
+
+
 
     }
 }

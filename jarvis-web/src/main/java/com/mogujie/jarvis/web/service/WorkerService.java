@@ -1,6 +1,8 @@
 package com.mogujie.jarvis.web.service;
 
 import com.alibaba.fastjson.JSONObject;
+import com.mogujie.jarvis.web.common.Constants;
+import com.mogujie.jarvis.web.common.TimeTools;
 import com.mogujie.jarvis.web.entity.vo.WorkerGroupSearchVo;
 import com.mogujie.jarvis.web.entity.vo.WorkerGroupVo;
 import com.mogujie.jarvis.web.entity.vo.WorkerSearchVo;
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by hejian on 15/9/28.
@@ -26,6 +29,9 @@ public class WorkerService {
     public WorkerVo getWorkerById(Integer id){
         return workerMapper.getWorkerById(id);
     }
+    public WorkerVo getWorkerByIpAndPort(Map<String,Object> para){
+        return workerMapper.getWorkerByIpAndPort(para);
+    }
     /*
     * 根据条件获取worker数
     * */
@@ -38,6 +44,18 @@ public class WorkerService {
     public JSONObject getWorkers(WorkerSearchVo workerSearchVo){
         Integer total=workerMapper.getWorkerCount(workerSearchVo);
         List<WorkerVo> workerVoList = workerMapper.getWorkerList(workerSearchVo);
+
+        for(WorkerVo workerVo:workerVoList){
+            String statusStr= Constants.workerStatusMap.get(workerVo.getStatus());
+            String createTimeStr= TimeTools.formatDateTime(workerVo.getCreateTime());
+            String updateTimeStr=TimeTools.formatDateTime(workerVo.getUpdateTime());
+            workerVo.setStatusStr(statusStr);
+            workerVo.setCreateTimeStr(createTimeStr);
+            workerVo.setUpdateTimeStr(updateTimeStr);
+        }
+
+
+
         JSONObject result=new JSONObject();
         result.put("total",total);
         result.put("rows",workerVoList);
@@ -71,6 +89,9 @@ public class WorkerService {
     public WorkerGroupVo getWorkerGroupById(Integer id){
         return workerMapper.getWorkerGroupById(id);
     }
+    public WorkerGroupVo getWorkerGroupByName(String name){
+        return workerMapper.getWorkerGroupByName(name);
+    }
     /*
     * 根据条件获取workerGroup数量
     * */
@@ -83,6 +104,15 @@ public class WorkerService {
     public JSONObject getWorkerGroups(WorkerGroupSearchVo workerGroupSearchVo){
         Integer total=workerMapper.getWorkerGroupCount(workerGroupSearchVo);
         List<WorkerGroupVo> workerGroupVoList=workerMapper.getWorkerGroupList(workerGroupSearchVo);
+
+        for(WorkerGroupVo workerGroupVo:workerGroupVoList){
+            String createTimeStr=TimeTools.formatDateTime(workerGroupVo.getCreateTime());
+            String updateTime=TimeTools.formatDateTime(workerGroupVo.getUpdateTime());
+
+            workerGroupVo.setCreateTimeStr(createTimeStr);
+            workerGroupVo.setUpdateTimeStr(createTimeStr);
+        }
+
         JSONObject result=new JSONObject();
         result.put("total",total);
         result.put("rows",workerGroupVoList);

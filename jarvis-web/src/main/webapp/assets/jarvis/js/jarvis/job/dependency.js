@@ -1,6 +1,5 @@
 $(function(){
 
-
     var option = {
         title : {
             text: '任务依赖关系图',
@@ -132,13 +131,12 @@ $(function(){
     };
 
     var dependTree=echarts.init(document.getElementById('dependTree'));
-
     dependTree.setOption(option);
-
     dependTree.on('click', toDependency);
 });
 
 var dependencyUrl="/jarvis/job/dependency?jobId=";
+
 function toDependency(e){
     console.log(e);
     alert("已经点击了"+ e.name);
