@@ -64,8 +64,8 @@ public class MessageUtil {
         long jobId = msg.getJobId();
         Job job = jobMapper.selectByPrimaryKey(jobId);
         job.setJobId(msg.getJobId());
-        if (msg.hasCommand()) {
-            job.setContent(msg.getCommand());
+        if (msg.hasContent()) {
+            job.setContent(msg.getContent());
         }
         if (msg.hasPriority()) {
             job.setPriority(msg.getPriority());
@@ -102,8 +102,7 @@ public class MessageUtil {
         return job;
     }
 
-    public static JobDepend convert2JobDepend(Long jobId, long preJobId, int commonStrategyValue,
-            String offsetStrategyValue, String user) {
+    public static JobDepend convert2JobDepend(Long jobId, long preJobId, int commonStrategyValue, String offsetStrategyValue, String user) {
         JobDepend jobDepend = new JobDepend();
         jobDepend.setJobId(jobId);
         jobDepend.setPreJobId(preJobId);
@@ -118,8 +117,8 @@ public class MessageUtil {
         return jobDepend;
     }
 
-    public static Map<MODIFY_JOB_TYPE, ModifyJobEntry> convert2ModifyJobMap(RestServerModifyJobRequest msg,
-            JobService jobService, CrontabService cronService) {
+    public static Map<MODIFY_JOB_TYPE, ModifyJobEntry> convert2ModifyJobMap(RestServerModifyJobRequest msg, JobService jobService,
+            CrontabService cronService) {
         Map<MODIFY_JOB_TYPE, ModifyJobEntry> modifyMap = new HashMap<MODIFY_JOB_TYPE, ModifyJobEntry>();
         long jobId = msg.getJobId();
         if (msg.hasCronExpression()) {
@@ -141,7 +140,7 @@ public class MessageUtil {
         if (msg.hasFixedDelay()) {
             int newFixedDelay = msg.getFixedDelay();
             MODIFY_OPERATION operation;
-            if (newFixedDelay <=0) {
+            if (newFixedDelay <= 0) {
                 operation = MODIFY_OPERATION.DEL;
             } else {
                 boolean hasFixedDelay = jobService.hasFixedDelay(jobId);

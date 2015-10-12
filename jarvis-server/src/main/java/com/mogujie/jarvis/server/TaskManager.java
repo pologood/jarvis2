@@ -34,26 +34,37 @@ public class TaskManager {
     @Autowired
     private AppMapper appMapper;
 
-    private Map<String, Pair<WorkerInfo, String>> taskMap = Maps.newHashMap();
-    private Map<String, Integer> maxParallelismMap = null;
-    private AtomicLongMap<String> parallelismCounter = AtomicLongMap.create();
+    private Map<String, Pair<WorkerInfo, Integer>> taskMap = Maps.newHashMap();
+    private Map<Integer, Integer> maxParallelismMap = null;
+    private AtomicLongMap<Integer> parallelismCounter = AtomicLongMap.create();
 
     @PostConstruct
     private void init() {
         AppExample example = new AppExample();
         List<App> list = appMapper.selectByExample(example);
         for (App app : list) {
-            maxParallelismMap.put(app.getAppName(), app.getMaxConcurrency());
+            maxParallelismMap.put(app.getAppId(), app.getMaxConcurrency());
         }
     }
 
-    public synchronized boolean add(String fullId, WorkerInfo workerInfo, String appName) {
-        taskMap.put(fullId, new Pair<>(workerInfo, appName));
-        if (parallelismCounter.get(appName) >= maxParallelismMap.get(appName)) {
+    private Integer queryAppIdByName(String appName) {
+        AppExample example = new AppExample();
+        example.createCriteria().andAppNameEqualTo(appName);
+        List<App> list = appMapper.selectByExample(example);
+        if (list.size() > 0) {
+            return list.get(0).getAppId();
+        } else {
+            return null;
+        }
+    }
+
+    public synchronized boolean add(String fullId, WorkerInfo workerInfo, int appId) {
+        taskMap.put(fullId, new Pair<>(workerInfo, appId));
+        if (parallelismCounter.get(appId) >= maxParallelismMap.get(appId)) {
             return false;
         }
 
-        parallelismCounter.getAndIncrement(appName);
+        parallelismCounter.getAndIncrement(appId);
         return true;
     }
 
@@ -62,8 +73,8 @@ public class TaskManager {
     }
 
     public synchronized void remove(String fullId) {
-        String appName = taskMap.get(fullId).getSecond();
-        parallelismCounter.getAndDecrement(appName);
+        int appId = taskMap.get(fullId).getSecond();
+        parallelismCounter.getAndDecrement(appId);
         taskMap.remove(fullId);
     }
 
@@ -71,13 +82,20 @@ public class TaskManager {
         return taskMap.containsKey(fullId);
     }
 
-    public void appCounterDecrement(String appName) {
-        if (parallelismCounter.get(appName) > 0) {
-            parallelismCounter.getAndDecrement(appName);
+    public void appCounterDecrement(int appId) {
+        if (parallelismCounter.get(appId) > 0) {
+            parallelismCounter.getAndDecrement(appId);
         }
     }
 
-    public void updateAppMaxParallelism(String appName, int maxParallelis) {
-        maxParallelismMap.put(appName, maxParallelis);
+    public void appCounterDecrement(String appName) {
+        Integer appId = queryAppIdByName(appName);
+        if (appId != null) {
+            appCounterDecrement(appId);
+        }
+    }
+
+    public void updateAppMaxParallelism(int appId, int maxParallelis) {
+        maxParallelismMap.put(appId, maxParallelis);
     }
 }

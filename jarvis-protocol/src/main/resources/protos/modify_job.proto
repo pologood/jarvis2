@@ -12,7 +12,7 @@ message RestServerModifyJobRequest {
     optional string app_key = 5;
     optional string user = 6;
     optional string job_type = 7;
-    optional string command = 8;
+    optional string content = 8;
     optional int32 group_id = 9;
     optional int32 priority = 10 [default = 1];
     optional int32 reject_retries = 11 [default = 0];

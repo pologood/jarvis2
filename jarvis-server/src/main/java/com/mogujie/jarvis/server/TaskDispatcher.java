@@ -8,6 +8,7 @@
 
 package com.mogujie.jarvis.server;
 
+import java.util.List;
 import java.util.Map.Entry;
 
 import org.apache.logging.log4j.LogManager;
@@ -18,6 +19,9 @@ import org.springframework.stereotype.Repository;
 
 import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.domain.WorkerInfo;
+import com.mogujie.jarvis.dao.AppMapper;
+import com.mogujie.jarvis.dto.App;
+import com.mogujie.jarvis.dto.AppExample;
 import com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse;
@@ -32,6 +36,9 @@ public class TaskDispatcher extends Thread {
 
     @Autowired
     private TaskQueue queue;
+
+    @Autowired
+    private AppMapper appMapper;
 
     @Autowired
     @Qualifier("roundRobinWorkerSelector")
@@ -54,12 +61,30 @@ public class TaskDispatcher extends Thread {
         running = true;
     }
 
+    private Integer queryAppIdByName(String appName) {
+        AppExample example = new AppExample();
+        example.createCriteria().andAppNameEqualTo(appName);
+        List<App> list = appMapper.selectByExample(example);
+        if (list.size() > 0) {
+            return list.get(0).getAppId();
+        } else {
+            return null;
+        }
+    }
+
     @Override
     public void run() {
         while (true) {
             if (running) {
                 try {
                     TaskDetail task = queue.take();
+                    String appName = task.getAppName();
+                    Integer appId = queryAppIdByName(appName);
+                    if (appId == null) {
+                        LOGGER.warn("Application[{}] not exist", appName);
+                        continue;
+                    }
+
                     ServerSubmitTaskRequest.Builder builder = ServerSubmitTaskRequest.newBuilder();
                     builder = builder.setFullId(task.getFullId());
                     builder = builder.setTaskName(task.getTaskName());
@@ -83,7 +108,7 @@ public class TaskDispatcher extends Thread {
                             WorkerSubmitTaskResponse response = (WorkerSubmitTaskResponse) FutureUtils.awaitResult(actorSelection, request, 30);
                             if (response.getSuccess()) {
                                 if (response.getAccept()) {
-                                    taskManager.add(task.getFullId(), workerInfo, task.getAppName());
+                                    taskManager.add(task.getFullId(), workerInfo, appId);
                                     LOGGER.debug("Task[{}] was accepted by worker[{}:{}]", task.getFullId(), workerInfo.getIp(),
                                             workerInfo.getPort());
                                 } else {

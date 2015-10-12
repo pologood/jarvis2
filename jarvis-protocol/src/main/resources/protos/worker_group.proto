@@ -1,0 +1,28 @@
+option java_package = "com.mogujie.jarvis.protocol";
+option java_outer_classname = "WorkerGroupProtos";
+
+
+message RestServerCreateWorkerGroupRequest {
+    required string worker_group_name = 1;
+    required string user = 2;
+}
+
+
+message ServerCreateWorkerGroupResponse {
+    required bool success = 1;
+    optional string message = 2 [default = ""];
+    required string worker_group_key = 3;
+}
+
+
+message RestServerModifyWorkerGroupRequest {
+    required int32 worker_group_id = 1;
+    required string worker_group_name = 2;
+    required string user = 3;
+}
+
+
+message ServerModifyWorkerGroupResponse {
+    required bool success = 1;
+    optional string message = 2 [default = ""];
+}

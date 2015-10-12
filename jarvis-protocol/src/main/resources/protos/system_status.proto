@@ -1,0 +1,13 @@
+option java_package = "com.mogujie.jarvis.protocol";
+option java_outer_classname = "SystemStatusProtos";
+
+
+message RestServerUpdateSystemStatusRequest {
+    required int32 status = 1;
+}
+
+
+message ServerUpdateSystemStatusResponse {
+    required bool success = 1;
+    optional string message = 2 [default = ""];
+}
