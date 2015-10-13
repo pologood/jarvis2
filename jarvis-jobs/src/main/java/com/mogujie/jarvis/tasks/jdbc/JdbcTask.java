@@ -36,7 +36,7 @@ import com.mogujie.jarvis.tasks.util.HiveQLUtil;
  */
 public abstract class JdbcTask extends AbstractTask {
     protected static final String COLUMNS_SEPARATOR = "\001";
-    protected static int DEFAULT_MAX_QUERY_ROWS = 10000;
+    protected static final int DEFAULT_MAX_QUERY_ROWS = 10000;
     private Connection connection;
     private Statement statement;
     private static final Logger LOGGER = LogManager.getLogger("worker");
@@ -57,7 +57,7 @@ public abstract class JdbcTask extends AbstractTask {
             String passwd = user;
 
             connection = DriverManager.getConnection(getJdbcUrl(config), user, passwd);
-            Statement statement = connection.createStatement();
+            statement = connection.createStatement();
             final long startTime = System.currentTimeMillis();
             collector.collectStderr("Querying " + getTaskType() + "...");
 
@@ -91,6 +91,8 @@ public abstract class JdbcTask extends AbstractTask {
             collector.collectStderr("Finished, time taken: " + (endTime - startTime) / 1000F + " seconds");
 
             return true;
+        } catch (RuntimeException e) {
+            throw e;
         } catch (Exception e) {
             collector.collectStderr(Throwables.getStackTraceAsString(e));
             return false;

@@ -18,6 +18,8 @@ import java.util.List;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.google.common.base.Joiner;
 import com.mogujie.jarvis.core.TaskContext;
@@ -35,6 +37,7 @@ public class JavaTask extends ShellTask {
 
     private static final String HDFS_ROOT_PATH = ConfigUtils.getWorkerConfig().getString("hdfs.jar.root.path");
     private static final String LOCAL_ROOT_PATH = ConfigUtils.getWorkerConfig().getString("local.jar.root.path");
+    private static final Logger LOGGER = LogManager.getLogger();
 
     private TaskDetail taskDetail;
     private String hdfsDir;
@@ -72,12 +75,18 @@ public class JavaTask extends ShellTask {
         File localFile = new File(localDir);
         File parentFile = new File(localFile.getParent());
         if (!parentFile.exists()) {
-            parentFile.mkdirs();
+            boolean result = parentFile.mkdirs();
+            if (!result) {
+                throw new IOException("mkdirs failed: " + parentFile.getPath());
+            }
         }
 
         if (!localFile.exists() || hdfsJarModificationTime > localFile.lastModified()) {
             fs.copyToLocalFile(p1, p2);
-            localFile.setLastModified(hdfsJarModificationTime);
+            boolean result = localFile.setLastModified(hdfsJarModificationTime);
+            if (!result) {
+                LOGGER.error("File [{}] modified failed", localFile.getPath());
+            }
             fs.close();
         }
     }
@@ -92,9 +101,16 @@ public class JavaTask extends ShellTask {
             }
 
             File file = new File(localDir);
-            for (String f : file.list()) {
-                if (!f.equals(jar) && !cps.contains(f)) {
-                    new File(localDir + "/" + f).delete();
+            File[] files = file.listFiles();
+            if (files != null) {
+                for (File f : files) {
+                    String filename = f.getName();
+                    if (!filename.equals(jar) && !cps.contains(filename)) {
+                        boolean deleted = new File(localDir + "/" + filename).delete();
+                        if (!deleted) {
+                            throw new TaskException("File[" + f.getPath() + "] delete failed");
+                        }
+                    }
                 }
             }
         } catch (IOException e) {

@@ -95,7 +95,10 @@ public class ShellTask extends AbstractTask {
             // 删除状态文件
             File statusFile = new File(statusFilePath);
             if (statusFile.exists()) {
-                statusFile.delete();
+                boolean deleted = statusFile.delete();
+                if (!deleted) {
+                    LOGGER.error("File [" + statusFilePath + "] delete failed");
+                }
             }
 
             return result;

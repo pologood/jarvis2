@@ -8,13 +8,13 @@
 
 package com.mogujie.jarvis.server.scheduler.task;
 
-import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -201,9 +201,8 @@ public class TaskScheduler extends Scheduler {
             if (!isTestMode) {
                 Task task = taskMapper.selectByPrimaryKey(dagTask.getTaskId());
                 task.setAttemptId(attemptId);
-                Date currentTime = new Date();
-                DateFormat dateTimeFormat = DateFormat.getDateTimeInstance();
-                dateTimeFormat.format(currentTime);
+                DateTime dt = DateTime.now();
+                Date currentTime = dt.toDate();
                 task.setUpdateTime(currentTime);
                 taskMapper.updateByPrimaryKey(task);
             }
@@ -233,9 +232,8 @@ public class TaskScheduler extends Scheduler {
         task.setExecuteUser(job.getSubmitUser());
         task.setJobContent(job.getContent());
         task.setStatus(JobStatus.READY.getValue());
-        Date currentTime = new Date();
-        DateFormat dateTimeFormat = DateFormat.getDateTimeInstance();
-        dateTimeFormat.format(currentTime);
+        DateTime dt = DateTime.now();
+        Date currentTime = dt.toDate();
         task.setCreateTime(currentTime);
         task.setUpdateTime(currentTime);
 

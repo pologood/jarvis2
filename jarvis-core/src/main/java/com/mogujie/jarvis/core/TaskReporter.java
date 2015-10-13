@@ -41,7 +41,7 @@ public class TaskReporter {
         int i = 0;
         for (Entry<String, Object> entry : taskDetail.getParameters().entrySet()) {
             MapEntry mapEntry = MapEntry.newBuilder().setKey(entry.getKey()).setValue(entry.getValue().toString()).build();
-            builder.setParameters(i++, mapEntry);
+            builder.addParameters(i++, mapEntry);
         }
 
         actor.tell(builder.build(), ActorRef.noSender());

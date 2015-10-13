@@ -8,11 +8,11 @@
 
 package com.mogujie.jarvis.server.service;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,9 +44,8 @@ public class CrontabService {
         Crontab record = new Crontab();
         record.setJobId(jobId);
         record.setCronExpression(expression);
-        Date currentTime = new Date();
-        DateFormat dateTimeFormat = DateFormat.getDateTimeInstance();
-        dateTimeFormat.format(currentTime);
+        DateTime dt = DateTime.now();
+        Date currentTime = dt.toDate();
         record.setCreateTime(currentTime);
         record.setUpdateTime(currentTime);
         // TODO set crontype
@@ -61,9 +60,8 @@ public class CrontabService {
                 crontabMapper.deleteByPrimaryKey(record.getCronId());
             } else {
                 record.setCronExpression(expression);
-                Date currentTime = new Date();
-                DateFormat dateTimeFormat = DateFormat.getDateTimeInstance();
-                dateTimeFormat.format(currentTime);
+                DateTime dt = DateTime.now();
+                Date currentTime = dt.toDate();
                 record.setUpdateTime(currentTime);
                 crontabMapper.updateByPrimaryKey(record);
             }

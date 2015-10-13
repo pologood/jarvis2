@@ -8,7 +8,6 @@
 
 package com.mogujie.jarvis.server.service;
 
-import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -39,9 +38,8 @@ public class TaskService {
     public void updateStatusWithStart(long taskId, JobStatus status) {
         Task task = taskMapper.selectByPrimaryKey(taskId);
         task.setStatus(status.getValue());
-        Date currentTime = new Date();
-        DateFormat dateTimeFormat = DateFormat.getDateTimeInstance();
-        dateTimeFormat.format(currentTime);
+        DateTime dt = DateTime.now();
+        Date currentTime = dt.toDate();
         task.setExecuteStartTime(currentTime);
         taskMapper.updateByPrimaryKey(task);
     }
@@ -49,9 +47,8 @@ public class TaskService {
     public void updateStatusWithEnd(long taskId, JobStatus status) {
         Task task = taskMapper.selectByPrimaryKey(taskId);
         task.setStatus(status.getValue());
-        Date currentTime = new Date();
-        DateFormat dateTimeFormat = DateFormat.getDateTimeInstance();
-        dateTimeFormat.format(currentTime);
+        DateTime dt = DateTime.now();
+        Date currentTime = dt.toDate();
         task.setExecuteEndTime(currentTime);
         taskMapper.updateByPrimaryKey(task);
     }

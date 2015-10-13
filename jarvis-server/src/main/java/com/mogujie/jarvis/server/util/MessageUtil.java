@@ -8,10 +8,11 @@
 
 package com.mogujie.jarvis.server.util;
 
-import java.text.DateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.joda.time.DateTime;
 
 import com.mogujie.jarvis.core.domain.JobFlag;
 import com.mogujie.jarvis.core.util.JsonHelper;
@@ -21,9 +22,9 @@ import com.mogujie.jarvis.dto.Job;
 import com.mogujie.jarvis.dto.JobDepend;
 import com.mogujie.jarvis.protocol.ModifyJobProtos.RestServerModifyJobRequest;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitJobRequest;
+import com.mogujie.jarvis.server.domain.ModifyJobEntry;
 import com.mogujie.jarvis.server.domain.ModifyJobType;
 import com.mogujie.jarvis.server.domain.ModifyOperation;
-import com.mogujie.jarvis.server.domain.ModifyJobEntry;
 import com.mogujie.jarvis.server.service.CrontabService;
 import com.mogujie.jarvis.server.service.JobService;
 
@@ -49,14 +50,15 @@ public class MessageUtil {
         job.setSubmitUser(msg.getUser());
         job.setUpdateUser(msg.getUser());
         job.setWorkerGroupId(msg.getGroupId());
-        Date currentTime = new Date();
-        DateFormat dateTimeFormat = DateFormat.getDateTimeInstance();
-        dateTimeFormat.format(currentTime);
-        job.setCreateTime(currentTime);
-        job.setUpdateTime(currentTime);
-        job.setParams(JsonHelper.parseMapEntryList2JSON(msg.getParametersList()));
         job.setOriginJobId(msg.getOriginJobId());
         job.setFixedDelay(msg.getFixedDelay());
+        if (msg.getParametersList() != null) {
+            job.setParams(JsonHelper.parseMapEntryList2JSON(msg.getParametersList()));
+        }
+        DateTime dt = DateTime.now();
+        Date currentTime = dt.toDate();
+        job.setCreateTime(currentTime);
+        job.setUpdateTime(currentTime);
         return job;
     }
 
@@ -94,9 +96,8 @@ public class MessageUtil {
         if (msg.hasGroupId()) {
             job.setWorkerGroupId(msg.getGroupId());
         }
-        Date currentTime = new Date();
-        DateFormat dateTimeFormat = DateFormat.getDateTimeInstance();
-        dateTimeFormat.format(currentTime);
+        DateTime dt = DateTime.now();
+        Date currentTime = dt.toDate();
         job.setUpdateTime(currentTime);
         // TODO job.setParams(JsonHelper.parseMapEntryList2JSON(msg.getParametersList()));
         return job;
@@ -106,9 +107,8 @@ public class MessageUtil {
         JobDepend jobDepend = new JobDepend();
         jobDepend.setJobId(jobId);
         jobDepend.setPreJobId(preJobId);
-        Date currentTime = new Date();
-        DateFormat dateTimeFormat = DateFormat.getDateTimeInstance();
-        dateTimeFormat.format(currentTime);
+        DateTime dt = DateTime.now();
+        Date currentTime = dt.toDate();
         jobDepend.setCreateTime(currentTime);
         jobDepend.setUpdateTime(currentTime);
         jobDepend.setUpdateUser(user);
