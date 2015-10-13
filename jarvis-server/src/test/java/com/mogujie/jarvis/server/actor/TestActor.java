@@ -33,7 +33,7 @@ public class TestActor {
         }
     }
 
-    protected static ActorSystem system;
+    private static ActorSystem system;
 
     @BeforeClass
     public static void setup() {

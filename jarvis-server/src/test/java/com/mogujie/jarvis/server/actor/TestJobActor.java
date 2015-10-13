@@ -7,17 +7,26 @@
  */
 package com.mogujie.jarvis.server.actor;
 
+import java.util.concurrent.TimeUnit;
+
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 
+import scala.concurrent.Await;
+import scala.concurrent.Future;
+import scala.concurrent.duration.Duration;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
+import akka.pattern.Patterns;
 import akka.testkit.JavaTestKit;
+import akka.util.Timeout;
 
 import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitJobRequest;
+import com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitJobResponse;
 import com.mogujie.jarvis.server.JarvisServerActorSystem;
 import com.mogujie.jarvis.server.util.SpringContext;
 import com.mogujie.jarvis.server.util.SpringExtension;
@@ -27,7 +36,9 @@ import com.mogujie.jarvis.server.util.SpringExtension;
  *
  */
 public class TestJobActor {
-    protected static ActorSystem system;
+    private static ActorSystem system;
+
+    private static final Timeout TIMEOUT = new Timeout(Duration.create(5, TimeUnit.SECONDS));
 
     @BeforeClass
     public static void setup() {
@@ -43,21 +54,25 @@ public class TestJobActor {
 
     @Test
     public void testSubmitJob1() {
-        new JavaTestKit(system) {{
-            Props props = SpringExtension.SPRING_EXT_PROVIDER.get(system).props("jobActor");
-            ActorRef actorRef = system.actorOf(props);
-            RestServerSubmitJobRequest msg = RestServerSubmitJobRequest.newBuilder()
-                    .setJobName("testJob1")
-                    .setCronExpression("4 1 * * ?")
-                    .setAppName("testApp1")
-                    .setAppKey("appKey1")
-                    .setUser("testUser1")
-                    .setJobType("hive_sql")
-                    .setContent("select * from test1")
-                    .setGroupId(1)
-                    .build();
-            actorRef.tell(msg, getRef());
-            expectMsgEquals("success");
-        }};
+        Props props = SpringExtension.SPRING_EXT_PROVIDER.get(system).props("jobActor");
+        ActorRef actorRef = system.actorOf(props);
+        RestServerSubmitJobRequest request = RestServerSubmitJobRequest.newBuilder()
+                .setJobName("testJob1")
+                .setCronExpression("4 1 * * ?")
+                .setAppName("testApp1")
+                .setAppKey("appKey1")
+                .setUser("testUser1")
+                .setJobType("hive_sql")
+                .setContent("select * from test1")
+                .setGroupId(1)
+                .build();
+
+        Future<Object> future = Patterns.ask(actorRef, request, TIMEOUT);
+        try {
+            ServerSubmitJobResponse response = (ServerSubmitJobResponse) Await.result(future, TIMEOUT.duration());
+            Assert.assertTrue(response.getSuccess());
+        } catch (Exception e) {
+            Assert.assertTrue(false);
+        }
     }
 }
