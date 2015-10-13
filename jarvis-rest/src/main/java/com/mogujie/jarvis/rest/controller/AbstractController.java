@@ -1,38 +1,35 @@
 package com.mogujie.jarvis.rest.controller;
 
-import akka.actor.ActorSelection;
-import akka.actor.ActorSystem;
-import akka.pattern.Patterns;
-import akka.util.Timeout;
-import com.google.protobuf.GeneratedMessage;
+import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.configuration.Configuration;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.google.protobuf.GeneratedMessage;
 import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.rest.MsgCode;
 import com.mogujie.jarvis.rest.RestResult;
 import com.mogujie.jarvis.rest.vo.AbstractVo;
-
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
-import org.apache.commons.configuration.Configuration;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
+import akka.actor.ActorSelection;
+import akka.actor.ActorSystem;
+import akka.pattern.Patterns;
+import akka.util.Timeout;
 import scala.concurrent.Await;
 import scala.concurrent.Future;
 import scala.concurrent.duration.Duration;
-
-import java.util.concurrent.TimeUnit;
-
 
 /**
  * 控制器父类
  */
 public abstract class AbstractController {
 
-
-    private static ActorSystem system;
+    private ActorSystem system;
 
     private String serverAkkaUserPath;
     private String workerAkkaUserPath;
@@ -45,7 +42,6 @@ public abstract class AbstractController {
     protected static final Timeout TIMEOUT = new Timeout(Duration.create(30, TimeUnit.SECONDS));
     protected static final Logger LOGGER = LogManager.getLogger();
 
-
     public AbstractController() {
 
         Configuration restConfig = ConfigUtils.getRestConfig();
@@ -53,7 +49,7 @@ public abstract class AbstractController {
         workerAkkaUserPath = restConfig.getString("worker.akka.path") + JarvisConstants.WORKER_AKKA_USER_PATH;
         logstorageAkkaUserPath = restConfig.getString("logstorage.akka.path") + JarvisConstants.LOGSTORAGE_AKKA_USER_PATH;
 
-        if(system == null) {
+        if (system == null) {
             Config akkaConfig = ConfigFactory.load("akka-rest.conf");
             Config restAkkaConfig = ConfigUtils.getAkkaConfig().withFallback(akkaConfig.getConfig("rest"));
 
@@ -62,6 +58,9 @@ public abstract class AbstractController {
 
     }
 
+    public ActorSystem getActorSystem() {
+        return system;
+    }
 
     /**
      * 调用Actor
@@ -81,19 +80,19 @@ public abstract class AbstractController {
             }
             actor = serverActor;
 
-        }else if (akkaType == AkkaType.worker) {
+        } else if (akkaType == AkkaType.worker) {
             if (workerActor == null) {
                 workerActor = system.actorSelection(workerAkkaUserPath);
             }
             actor = workerActor;
 
-        }else if(akkaType == AkkaType.logstorage) {
+        } else if (akkaType == AkkaType.logstorage) {
             if (logstorageActor == null) {
                 logstorageActor = system.actorSelection(logstorageAkkaUserPath);
             }
 
             actor = logstorageActor;
-        }else{
+        } else {
             return null;
         }
 
@@ -108,7 +107,6 @@ public abstract class AbstractController {
         return callActor(akkaType, request, TIMEOUT);
 
     }
-
 
     /**
      * 返回错误结果
@@ -153,6 +151,5 @@ public abstract class AbstractController {
         result.setData(data);
         return result;
     }
-
 
 }

@@ -7,10 +7,8 @@
  */
 package com.mogujie.jarvis.rest.controller;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -20,6 +18,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.log4j.Logger;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -44,7 +44,7 @@ import com.mogujie.jarvis.rest.vo.JobVo;
  */
 @Path("job")
 public class JobController extends AbstractController {
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+    private DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd");
     Logger logger = Logger.getLogger(this.getClass());
 
     /**
@@ -55,35 +55,23 @@ public class JobController extends AbstractController {
     @POST
     @Path("submitJob")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult submitJob(@FormParam("appName") String appName,
-                                @FormParam("appKey") String appKey,
-                                @FormParam("jobName") String jobName,
-                                @FormParam("jobId") Long jobId,
-                                @FormParam("cronExpression") String cronExp,
-                                @FormParam("dependJobIds") String dependJobIds,
-                                @FormParam("user") String user,
-                                @FormParam("jobType") String jobType,
-                                @FormParam("content") String content,
-                                //@FormParam("jobContent") String jobContent,
-                                @FormParam("groupId") int groupId,
-                                @FormParam("rejectRetries") int rejectRetries,
-                                @FormParam("rejectInterval") int rejectInterval,
-                                @FormParam("failedRetries") int failedRetries,
-                                @FormParam("failedInterval") int failedInterval,
-                                @FormParam("startTime") String startTime,
-                                @FormParam("endTime") String endTime,
-                                @FormParam("priority") int priority,
-                                @FormParam("parameters") String parameters){
+    public RestResult submitJob(@FormParam("appName") String appName, @FormParam("appKey") String appKey, @FormParam("jobName") String jobName,
+            @FormParam("jobId") Long jobId, @FormParam("cronExpression") String cronExp, @FormParam("dependJobIds") String dependJobIds,
+            @FormParam("user") String user, @FormParam("jobType") String jobType, @FormParam("content") String content,
+            // @FormParam("jobContent") String jobContent,
+            @FormParam("groupId") int groupId, @FormParam("rejectRetries") int rejectRetries, @FormParam("rejectInterval") int rejectInterval,
+            @FormParam("failedRetries") int failedRetries, @FormParam("failedInterval") int failedInterval, @FormParam("startTime") String startTime,
+            @FormParam("endTime") String endTime, @FormParam("priority") int priority, @FormParam("parameters") String parameters) {
         logger.info("提交job任务");
         try {
             // todo , 转换为 list
             List<DependencyEntry> dependEntryList = new ArrayList<DependencyEntry>();
 
-            //不为null且不为空字符串才处理
-            if(dependJobIds!=null&&!dependJobIds.equals("")&&!dependJobIds.equals("null")) {
+            // 不为null且不为空字符串才处理
+            if (dependJobIds != null && !dependJobIds.equals("") && !dependJobIds.equals("null")) {
                 JSONObject dependIdsJson = new JSONObject(dependJobIds);
-                for(Object key:dependIdsJson.keySet()) {
-                    //String value = dependIdsJson.getString((String) key);
+                for (Object key : dependIdsJson.keySet()) {
+                    // String value = dependIdsJson.getString((String) key);
                     DependencyEntry entry = DependencyEntry.newBuilder().setJobId(Integer.parseInt((String) key)).build();
                 }
             }
@@ -102,22 +90,21 @@ public class JobController extends AbstractController {
             Long startTimeLong = null;
             Long endTimeLong = null;
             if (startTime != null && !startTime.equals("")) {
-                startTimeLong = sdf.parse(startTime).getTime();
+                startTimeLong = dateTimeFormatter.parseDateTime(startTime).getMillis();
             }
             if (endTime != null && !endTime.equals("")) {
-                endTimeLong = sdf.parse(endTime).getTime();
+                endTimeLong = dateTimeFormatter.parseDateTime(endTime).getMillis();
             }
 
-            //构造新增任务请求
-            RestServerSubmitJobRequest.Builder builder =RestServerSubmitJobRequest.newBuilder().setAppName(appName).setJobName(jobName).setAppKey(appKey)
-                    .setCronExpression(cronExp).addAllDependencyEntry(dependEntryList).setUser(user).setJobType(jobType).setContent(content)
-                    .setGroupId(groupId).setPriority(priority).setFailedRetries(failedRetries).setFailedInterval(failedInterval)
-                    .setRejectRetries(rejectRetries).setRejectInterval(rejectInterval)
-                    .addAllParameters(paraList);
-            if(startTimeLong!=null){
+            // 构造新增任务请求
+            RestServerSubmitJobRequest.Builder builder = RestServerSubmitJobRequest.newBuilder().setAppName(appName).setJobName(jobName)
+                    .setAppKey(appKey).setCronExpression(cronExp).addAllDependencyEntry(dependEntryList).setUser(user).setJobType(jobType)
+                    .setContent(content).setGroupId(groupId).setPriority(priority).setFailedRetries(failedRetries).setFailedInterval(failedInterval)
+                    .setRejectRetries(rejectRetries).setRejectInterval(rejectInterval).addAllParameters(paraList);
+            if (startTimeLong != null) {
                 builder.setStartTime(startTimeLong);
             }
-            if(endTimeLong!=null){
+            if (endTimeLong != null) {
                 builder.setEndTime(endTimeLong);
             }
             RestServerSubmitJobRequest request = builder.build();
@@ -149,25 +136,13 @@ public class JobController extends AbstractController {
     @POST
     @Path("edit")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult edit(@FormParam("appName") String appName,
-                           @FormParam("appKey") String appKey,
-                           @FormParam("jobName") String jobName,
-                           @FormParam("jobId") Long jobId,
-                           @FormParam("cronExpression") String cronExp,
-                           @FormParam("dependJobIds") String dependJobIds,
-                           @FormParam("user") String user,
-                           @FormParam("jobType") String jobType,
-                           @FormParam("content") String content,
-                           //@FormParam("jobContent") String jobContent,
-                           @FormParam("groupId") int groupId,
-                           @FormParam("rejectRetries") int rejectRetries,
-                           @FormParam("rejectInterval") int rejectInterval,
-                           @FormParam("failedRetries") int failedRetries,
-                           @FormParam("failedInterval") int failedInterval,
-                           @FormParam("startTime") String startTime,
-                           @FormParam("endTime") String endTime,
-                           @FormParam("priority") int priority,
-                           @FormParam("parameters") String parameters){
+    public RestResult edit(@FormParam("appName") String appName, @FormParam("appKey") String appKey, @FormParam("jobName") String jobName,
+            @FormParam("jobId") Long jobId, @FormParam("cronExpression") String cronExp, @FormParam("dependJobIds") String dependJobIds,
+            @FormParam("user") String user, @FormParam("jobType") String jobType, @FormParam("content") String content,
+            // @FormParam("jobContent") String jobContent,
+            @FormParam("groupId") int groupId, @FormParam("rejectRetries") int rejectRetries, @FormParam("rejectInterval") int rejectInterval,
+            @FormParam("failedRetries") int failedRetries, @FormParam("failedInterval") int failedInterval, @FormParam("startTime") String startTime,
+            @FormParam("endTime") String endTime, @FormParam("priority") int priority, @FormParam("parameters") String parameters) {
 
         try {
             logger.info("更新job任务");
@@ -176,16 +151,20 @@ public class JobController extends AbstractController {
             List<ModifyDependencyProtos.DependencyEntry> dependEntryList = new ArrayList<ModifyDependencyProtos.DependencyEntry>();
             // 不为null且不为空字符串才处理
 
-            if(dependJobIds!=null&&!dependJobIds.equals("")) {
+            if (dependJobIds != null && !dependJobIds.equals("")) {
                 JSONObject dependIdsJson = new JSONObject(dependJobIds);
-                for(Object key:dependIdsJson.keySet()) {
+                for (Object key : dependIdsJson.keySet()) {
                     String value = dependIdsJson.getString((String) key);
                     if (value.equalsIgnoreCase("add")) {
-                        ModifyDependencyProtos.DependencyEntry entry = ModifyDependencyProtos.DependencyEntry.newBuilder().setJobId(Integer.parseInt((String) key)).setOperator(ModifyDependencyProtos.DependencyEntry.DependencyOperator.ADD).build();
+                        ModifyDependencyProtos.DependencyEntry entry = ModifyDependencyProtos.DependencyEntry.newBuilder()
+                                .setJobId(Integer.parseInt((String) key)).setOperator(ModifyDependencyProtos.DependencyEntry.DependencyOperator.ADD)
+                                .build();
                         dependEntryList.add(entry);
                     }
                     if (value.equalsIgnoreCase("delete")) {
-                        ModifyDependencyProtos.DependencyEntry entry = ModifyDependencyProtos.DependencyEntry.newBuilder().setJobId(Integer.parseInt((String) key)).setOperator(ModifyDependencyProtos.DependencyEntry.DependencyOperator.REMOVE).build();
+                        ModifyDependencyProtos.DependencyEntry entry = ModifyDependencyProtos.DependencyEntry.newBuilder()
+                                .setJobId(Integer.parseInt((String) key))
+                                .setOperator(ModifyDependencyProtos.DependencyEntry.DependencyOperator.REMOVE).build();
                         dependEntryList.add(entry);
                     }
                 }
@@ -202,16 +181,14 @@ public class JobController extends AbstractController {
                     paraList.add(entry);
                 }
             }
-            Long startTimeLong = sdf.parse(startTime).getTime();
-            Long endTimeLong = sdf.parse(endTime).getTime();
+            Long startTimeLong = dateTimeFormatter.parseDateTime(startTime).getMillis();
+            Long endTimeLong = dateTimeFormatter.parseDateTime(endTime).getMillis();
 
             // 构造修改job基本信息请求
             RestServerModifyJobRequest request = RestServerModifyJobRequest.newBuilder().setAppName(appName).setJobName(jobName).setJobId(jobId)
-                    .setCronExpression(cronExp).setUser(user).setJobType(jobType).setContent(content)
-                    .setGroupId(groupId).setPriority(priority).setFailedRetries(failedRetries).setFailedInterval(failedInterval)
-                    .setRejectRetries(rejectRetries).setRejectInterval(rejectInterval).setStartTime(startTimeLong).setEndTime(endTimeLong)
-                    .addAllParameters(paraList).build();
-
+                    .setCronExpression(cronExp).setUser(user).setJobType(jobType).setContent(content).setGroupId(groupId).setPriority(priority)
+                    .setFailedRetries(failedRetries).setFailedInterval(failedInterval).setRejectRetries(rejectRetries)
+                    .setRejectInterval(rejectInterval).setStartTime(startTimeLong).setEndTime(endTimeLong).addAllParameters(paraList).build();
 
             // 发送信息到server修改job基本信息
             ServerModifyJobResponse response = (ServerModifyJobResponse) callActor(AkkaType.server, request);

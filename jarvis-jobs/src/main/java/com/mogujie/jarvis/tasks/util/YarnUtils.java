@@ -42,9 +42,6 @@ public class YarnUtils {
 
         // 获取appIDs
         Set<String> applicationIdSet = getApplicationIds(applicationName, AppStatus.ACTIVE);
-        if (applicationIdSet == null) {
-            return;
-        }
 
         // 删除apps
         killApplicationByIds(applicationIdSet);
