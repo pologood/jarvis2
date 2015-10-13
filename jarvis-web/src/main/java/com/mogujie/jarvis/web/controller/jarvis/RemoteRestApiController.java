@@ -68,7 +68,7 @@ public class RemoteRestApiController extends BaseController {
         String newPara="";
         for(Map.Entry entry:paraJson.entrySet()){
             String key=(String)entry.getKey();
-            String value=(String)entry.getValue();
+            String value=String.valueOf(entry.getValue());
             //key为空字符串的情况过滤掉
             if(key.equals("")){
                 continue;
@@ -93,6 +93,7 @@ public class RemoteRestApiController extends BaseController {
                                     .data(rawData)
                                     .postDataCharset("UTF-8")
                                     .ignoreContentType(true)
+                                    .timeout(12000)
                                     .method(Connection.Method.POST);
             Connection.Response response=connection.execute();
 

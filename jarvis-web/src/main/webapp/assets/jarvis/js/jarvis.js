@@ -28,8 +28,7 @@ function requestRemoteRestApi(url,title,para){
         url:'/jarvis/remote/request',
         type:'POST',
         async:false,
-        data:{url:url,para:JSON.stringify(data
-        )},
+        data:{url:url,para:JSON.stringify(data)},
         success:function(data){
             if(data.code==0){
                 flag=true;

@@ -20,6 +20,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -44,7 +45,7 @@ import com.mogujie.jarvis.rest.vo.JobVo;
  */
 @Path("job")
 public class JobController extends AbstractController {
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+
     Logger logger = Logger.getLogger(this.getClass());
 
     /**
@@ -102,10 +103,12 @@ public class JobController extends AbstractController {
             Long startTimeLong = null;
             Long endTimeLong = null;
             if (startTime != null && !startTime.equals("")) {
-                startTimeLong = sdf.parse(startTime).getTime();
+                DateTime jodaStartTime = new DateTime(startTime);
+                startTimeLong = jodaStartTime.getMillis();
             }
             if (endTime != null && !endTime.equals("")) {
-                endTimeLong = sdf.parse(endTime).getTime();
+                DateTime jodaEndTime = new DateTime(endTime);
+                endTimeLong = jodaEndTime.getMillis();
             }
 
             //构造新增任务请求
@@ -202,16 +205,32 @@ public class JobController extends AbstractController {
                     paraList.add(entry);
                 }
             }
-            Long startTimeLong = sdf.parse(startTime).getTime();
-            Long endTimeLong = sdf.parse(endTime).getTime();
+            Long startTimeLong = null;
+            Long endTimeLong = null;
+            if (startTime != null && !startTime.equals("")) {
+                DateTime jodaStartTime = new DateTime(startTime);
+                startTimeLong = jodaStartTime.getMillis();
+            }
+            if (endTime != null && !endTime.equals("")) {
+                DateTime jodaEndTime = new DateTime(endTime);
+                endTimeLong = jodaEndTime.getMillis();
+            }
 
             // 构造修改job基本信息请求
-            RestServerModifyJobRequest request = RestServerModifyJobRequest.newBuilder().setAppName(appName).setJobName(jobName).setJobId(jobId)
+            RestServerModifyJobRequest request = null;
+            RestServerModifyJobRequest.Builder builder= RestServerModifyJobRequest.newBuilder().setAppName(appName).setJobName(jobName).setJobId(jobId)
                     .setCronExpression(cronExp).setUser(user).setJobType(jobType).setContent(content)
                     .setGroupId(groupId).setPriority(priority).setFailedRetries(failedRetries).setFailedInterval(failedInterval)
-                    .setRejectRetries(rejectRetries).setRejectInterval(rejectInterval).setStartTime(startTimeLong).setEndTime(endTimeLong)
-                    .addAllParameters(paraList).build();
+                    .setRejectRetries(rejectRetries).setRejectInterval(rejectInterval)
+                    .addAllParameters(paraList);
 
+            if(startTimeLong!=null){
+                builder.setStartTime(startTimeLong);
+            }
+            if(endTimeLong!=null){
+                builder.setEndTime(endTimeLong);
+            }
+            request=builder.build();
 
             // 发送信息到server修改job基本信息
             ServerModifyJobResponse response = (ServerModifyJobResponse) callActor(AkkaType.server, request);
@@ -245,27 +264,33 @@ public class JobController extends AbstractController {
     }
 
     /**
-     * 删除job任务
+     * 修改job任务状态
      *
      * @throws Exception
      */
     @POST
-    @Path("delete")
+    @Path("flag")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult delete(@FormParam("appKey") String appKey, @FormParam("appName") String appName, @FormParam("jobId") Long jobId)
+    public RestResult delete(@FormParam("appKey") String appKey, @FormParam("appName") String appName, @FormParam("jobId") Long jobId,@FormParam("jobFlag") Integer jobFlag)
             throws Exception {
-        // 构造删除job请求request，状态4代表垃圾箱
-        RestServerModifyJobFlagRequest request = RestServerModifyJobFlagRequest.newBuilder().setJobId(jobId).setJobFlag(4).build();
-        // 发送请求到server尝试常熟
-        ServerModifyJobFlagResponse response = (ServerModifyJobFlagResponse) callActor(AkkaType.server, request);
+        try {
+            // 构造删除job请求request，状态4代表垃圾箱
+            RestServerModifyJobFlagRequest request = RestServerModifyJobFlagRequest.newBuilder().setJobId(jobId).setJobFlag(jobFlag).build();
+            // 发送请求到server尝试常熟
+            ServerModifyJobFlagResponse response = (ServerModifyJobFlagResponse) callActor(AkkaType.server, request);
 
-        // 判断删除是否成功
-        if (response.getSuccess()) {
-            JobVo vo = new JobVo();
-            vo.setJobId(jobId);
-            return successResult(vo);
-        } else {
-            return errorResult(response.getMessage());
+            // 判断删除是否成功
+            if (response.getSuccess()) {
+                JobVo vo = new JobVo();
+                vo.setJobId(jobId);
+                return successResult(vo);
+            } else {
+                return errorResult(response.getMessage());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.info(e.getStackTrace());
+            return errorResult(e.getMessage());
         }
     }
 
