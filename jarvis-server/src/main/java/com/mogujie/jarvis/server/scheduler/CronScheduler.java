@@ -21,25 +21,27 @@ import java.util.concurrent.Executors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
-import org.springframework.stereotype.Repository;
 
 import com.mogujie.jarvis.core.domain.Pair;
 import com.mogujie.jarvis.dto.Crontab;
 import com.mogujie.jarvis.server.cron.CronExpression;
 import com.mogujie.jarvis.server.scheduler.controller.JobSchedulerController;
-import com.mogujie.jarvis.server.scheduler.controller.SchedulerControllerFactory;
 import com.mogujie.jarvis.server.scheduler.event.TimeReadyEvent;
 
-@Repository
 public class CronScheduler {
 
-    private JobSchedulerController jobSchedulerController = SchedulerControllerFactory.getController();
-
+    private JobSchedulerController jobSchedulerController;
     private ExecutorService executor = Executors.newSingleThreadExecutor();
     private SchedulerThread schedulerThread;
     private Map<Long, Crontab> crontabs = new ConcurrentHashMap<Long, Crontab>(10);
     private List<Pair<Long, DateTime>> nextScheduleTimeList = new Vector<Pair<Long, DateTime>>(10);
     private static final Logger LOGGER = LogManager.getLogger();
+
+
+    public CronScheduler(JobSchedulerController jobSchedulerController){
+        this.jobSchedulerController = jobSchedulerController;
+    }
+
 
     public void start() {
         schedulerThread = new SchedulerThread(crontabs, nextScheduleTimeList);
