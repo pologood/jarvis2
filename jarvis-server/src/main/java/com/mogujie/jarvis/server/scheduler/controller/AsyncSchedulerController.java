@@ -20,9 +20,9 @@ import com.google.common.eventbus.AsyncEventBus;
  *
  */
 public class AsyncSchedulerController extends JobSchedulerController {
-    private ExecutorService executorService = Executors.newCachedThreadPool();
 
     private AsyncSchedulerController() {
+        ExecutorService executorService = Executors.newCachedThreadPool();
         eventBus = new AsyncEventBus(executorService);
     }
 
