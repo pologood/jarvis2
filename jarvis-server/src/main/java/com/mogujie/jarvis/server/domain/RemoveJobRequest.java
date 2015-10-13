@@ -6,7 +6,7 @@
  * Create Date: 2015年10月13日 下午7:35:20
  */
 
-package com.mogujie.jarvis.server.actor;
+package com.mogujie.jarvis.server.domain;
 
 /**
  * Rollback for testing

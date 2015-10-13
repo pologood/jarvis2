@@ -46,6 +46,7 @@ import com.mogujie.jarvis.server.domain.ModifyDependEntry;
 import com.mogujie.jarvis.server.domain.ModifyJobEntry;
 import com.mogujie.jarvis.server.domain.ModifyJobType;
 import com.mogujie.jarvis.server.domain.ModifyOperation;
+import com.mogujie.jarvis.server.domain.RemoveJobRequest;
 import com.mogujie.jarvis.server.scheduler.SchedulerUtil;
 import com.mogujie.jarvis.server.scheduler.dag.DAGJob;
 import com.mogujie.jarvis.server.scheduler.dag.DAGJobType;

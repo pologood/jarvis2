@@ -28,6 +28,7 @@ import akka.util.Timeout;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitJobRequest;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitJobResponse;
 import com.mogujie.jarvis.server.JarvisServerActorSystem;
+import com.mogujie.jarvis.server.domain.RemoveJobRequest;
 import com.mogujie.jarvis.server.util.SpringContext;
 import com.mogujie.jarvis.server.util.SpringExtension;
 
