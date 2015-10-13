@@ -6,17 +6,19 @@ message DependencyEntry {
   enum DependencyOperator {
     ADD = 0;
     REMOVE = 1;
+    UPDATE = 2;
   }
 
   required DependencyOperator operator = 1;
   required int64 job_id = 2;
   optional int32 common_depend_strategy = 3 [default = 0];
-  optional string last_depend_strategy = 4 [default = ""];
+  optional string offset_depend_strategy = 4 [default = ""];
 }
 
 message RestServerModifyDependencyRequest {
     required int64 job_id = 1;
     repeated DependencyEntry dependency_entry = 2;
+    required string user = 3;
 }
 
 

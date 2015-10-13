@@ -98,7 +98,7 @@ public class JobActor extends UntypedActor {
             for (DependencyEntry entry : msg.getDependencyEntryList()) {
                 needDependencies.add(entry.getJobId());
                 JobDepend jobDepend = MessageUtil.convert2JobDepend(jobId, entry.getJobId(), entry.getCommonDependStrategy(),
-                        entry.getLastDependStrategy(), msg.getUser());
+                        entry.getOffsetDependStrategy(), msg.getUser());
                 jobDependMapper.insert(jobDepend);
             }
 
@@ -142,14 +142,14 @@ public class JobActor extends UntypedActor {
             for (com.mogujie.jarvis.protocol.ModifyDependencyProtos.DependencyEntry entry : msg.getDependencyEntryList()) {
                 long preJobId = entry.getJobId();
                 int commonStrategyValue = entry.getCommonDependStrategy();
-                String offsetStrategyValue = entry.getLastDependStrategy();
+                String offsetStrategyValue = entry.getOffsetDependStrategy();
                 // TODO
                 String user = null;
                 ModifyOperation operation;
                 if (entry.getOperator().equals(DependencyOperator.ADD)) {
                     operation = ModifyOperation.ADD;
                     JobDepend jobDepend = MessageUtil.convert2JobDepend(jobId, preJobId, entry.getCommonDependStrategy(),
-                            entry.getLastDependStrategy(), user);
+                            entry.getOffsetDependStrategy(), user);
                     jobDependMapper.insert(jobDepend);
                 } else if (entry.getOperator().equals(DependencyOperator.REMOVE)) {
                     operation = ModifyOperation.DEL;
