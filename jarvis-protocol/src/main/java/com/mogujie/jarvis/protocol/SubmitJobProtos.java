@@ -35,19 +35,19 @@ public final class SubmitJobProtos {
         int getCommonDependStrategy();
 
         /**
-         * <code>optional string last_depend_strategy = 3 [default = ""];</code>
+         * <code>optional string offset_depend_strategy = 3 [default = ""];</code>
          */
-        boolean hasLastDependStrategy();
+        boolean hasOffsetDependStrategy();
 
         /**
-         * <code>optional string last_depend_strategy = 3 [default = ""];</code>
+         * <code>optional string offset_depend_strategy = 3 [default = ""];</code>
          */
-        java.lang.String getLastDependStrategy();
+        java.lang.String getOffsetDependStrategy();
 
         /**
-         * <code>optional string last_depend_strategy = 3 [default = ""];</code>
+         * <code>optional string offset_depend_strategy = 3 [default = ""];</code>
          */
-        com.google.protobuf.ByteString getLastDependStrategyBytes();
+        com.google.protobuf.ByteString getOffsetDependStrategyBytes();
     }
 
     /**
@@ -114,7 +114,7 @@ public final class SubmitJobProtos {
                         case 26: {
                             com.google.protobuf.ByteString bs = input.readBytes();
                             bitField0_ |= 0x00000004;
-                            lastDependStrategy_ = bs;
+                            offsetDependStrategy_ = bs;
                             break;
                         }
                     }
@@ -186,41 +186,41 @@ public final class SubmitJobProtos {
             return commonDependStrategy_;
         }
 
-        public static final int LAST_DEPEND_STRATEGY_FIELD_NUMBER = 3;
-        private java.lang.Object lastDependStrategy_;
+        public static final int OFFSET_DEPEND_STRATEGY_FIELD_NUMBER = 3;
+        private java.lang.Object offsetDependStrategy_;
 
         /**
-         * <code>optional string last_depend_strategy = 3 [default = ""];</code>
+         * <code>optional string offset_depend_strategy = 3 [default = ""];</code>
          */
-        public boolean hasLastDependStrategy() {
+        public boolean hasOffsetDependStrategy() {
             return ((bitField0_ & 0x00000004) == 0x00000004);
         }
 
         /**
-         * <code>optional string last_depend_strategy = 3 [default = ""];</code>
+         * <code>optional string offset_depend_strategy = 3 [default = ""];</code>
          */
-        public java.lang.String getLastDependStrategy() {
-            java.lang.Object ref = lastDependStrategy_;
+        public java.lang.String getOffsetDependStrategy() {
+            java.lang.Object ref = offsetDependStrategy_;
             if (ref instanceof java.lang.String) {
                 return (java.lang.String) ref;
             } else {
                 com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
                 java.lang.String s = bs.toStringUtf8();
                 if (bs.isValidUtf8()) {
-                    lastDependStrategy_ = s;
+                    offsetDependStrategy_ = s;
                 }
                 return s;
             }
         }
 
         /**
-         * <code>optional string last_depend_strategy = 3 [default = ""];</code>
+         * <code>optional string offset_depend_strategy = 3 [default = ""];</code>
          */
-        public com.google.protobuf.ByteString getLastDependStrategyBytes() {
-            java.lang.Object ref = lastDependStrategy_;
+        public com.google.protobuf.ByteString getOffsetDependStrategyBytes() {
+            java.lang.Object ref = offsetDependStrategy_;
             if (ref instanceof java.lang.String) {
                 com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                lastDependStrategy_ = b;
+                offsetDependStrategy_ = b;
                 return b;
             } else {
                 return (com.google.protobuf.ByteString) ref;
@@ -230,7 +230,7 @@ public final class SubmitJobProtos {
         private void initFields() {
             jobId_ = 0L;
             commonDependStrategy_ = 0;
-            lastDependStrategy_ = "";
+            offsetDependStrategy_ = "";
         }
 
         private byte memoizedIsInitialized = -1;
@@ -259,7 +259,7 @@ public final class SubmitJobProtos {
                 output.writeInt32(2, commonDependStrategy_);
             }
             if (((bitField0_ & 0x00000004) == 0x00000004)) {
-                output.writeBytes(3, getLastDependStrategyBytes());
+                output.writeBytes(3, getOffsetDependStrategyBytes());
             }
             getUnknownFields().writeTo(output);
         }
@@ -279,7 +279,7 @@ public final class SubmitJobProtos {
                 size += com.google.protobuf.CodedOutputStream.computeInt32Size(2, commonDependStrategy_);
             }
             if (((bitField0_ & 0x00000004) == 0x00000004)) {
-                size += com.google.protobuf.CodedOutputStream.computeBytesSize(3, getLastDependStrategyBytes());
+                size += com.google.protobuf.CodedOutputStream.computeBytesSize(3, getOffsetDependStrategyBytes());
             }
             size += getUnknownFields().getSerializedSize();
             memoizedSerializedSize = size;
@@ -406,7 +406,7 @@ public final class SubmitJobProtos {
                 bitField0_ = (bitField0_ & ~0x00000001);
                 commonDependStrategy_ = 0;
                 bitField0_ = (bitField0_ & ~0x00000002);
-                lastDependStrategy_ = "";
+                offsetDependStrategy_ = "";
                 bitField0_ = (bitField0_ & ~0x00000004);
                 return this;
             }
@@ -447,7 +447,7 @@ public final class SubmitJobProtos {
                 if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
                     to_bitField0_ |= 0x00000004;
                 }
-                result.lastDependStrategy_ = lastDependStrategy_;
+                result.offsetDependStrategy_ = offsetDependStrategy_;
                 result.bitField0_ = to_bitField0_;
                 onBuilt();
                 return result;
@@ -471,9 +471,9 @@ public final class SubmitJobProtos {
                 if (other.hasCommonDependStrategy()) {
                     setCommonDependStrategy(other.getCommonDependStrategy());
                 }
-                if (other.hasLastDependStrategy()) {
+                if (other.hasOffsetDependStrategy()) {
                     bitField0_ |= 0x00000004;
-                    lastDependStrategy_ = other.lastDependStrategy_;
+                    offsetDependStrategy_ = other.offsetDependStrategy_;
                     onChanged();
                 }
                 this.mergeUnknownFields(other.getUnknownFields());
@@ -578,25 +578,25 @@ public final class SubmitJobProtos {
                 return this;
             }
 
-            private java.lang.Object lastDependStrategy_ = "";
+            private java.lang.Object offsetDependStrategy_ = "";
 
             /**
-             * <code>optional string last_depend_strategy = 3 [default = ""];</code>
+             * <code>optional string offset_depend_strategy = 3 [default = ""];</code>
              */
-            public boolean hasLastDependStrategy() {
+            public boolean hasOffsetDependStrategy() {
                 return ((bitField0_ & 0x00000004) == 0x00000004);
             }
 
             /**
-             * <code>optional string last_depend_strategy = 3 [default = ""];</code>
+             * <code>optional string offset_depend_strategy = 3 [default = ""];</code>
              */
-            public java.lang.String getLastDependStrategy() {
-                java.lang.Object ref = lastDependStrategy_;
+            public java.lang.String getOffsetDependStrategy() {
+                java.lang.Object ref = offsetDependStrategy_;
                 if (!(ref instanceof java.lang.String)) {
                     com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
                     java.lang.String s = bs.toStringUtf8();
                     if (bs.isValidUtf8()) {
-                        lastDependStrategy_ = s;
+                        offsetDependStrategy_ = s;
                     }
                     return s;
                 } else {
@@ -605,13 +605,13 @@ public final class SubmitJobProtos {
             }
 
             /**
-             * <code>optional string last_depend_strategy = 3 [default = ""];</code>
+             * <code>optional string offset_depend_strategy = 3 [default = ""];</code>
              */
-            public com.google.protobuf.ByteString getLastDependStrategyBytes() {
-                java.lang.Object ref = lastDependStrategy_;
+            public com.google.protobuf.ByteString getOffsetDependStrategyBytes() {
+                java.lang.Object ref = offsetDependStrategy_;
                 if (ref instanceof String) {
                     com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                    lastDependStrategy_ = b;
+                    offsetDependStrategy_ = b;
                     return b;
                 } else {
                     return (com.google.protobuf.ByteString) ref;
@@ -619,37 +619,37 @@ public final class SubmitJobProtos {
             }
 
             /**
-             * <code>optional string last_depend_strategy = 3 [default = ""];</code>
+             * <code>optional string offset_depend_strategy = 3 [default = ""];</code>
              */
-            public Builder setLastDependStrategy(java.lang.String value) {
+            public Builder setOffsetDependStrategy(java.lang.String value) {
                 if (value == null) {
                     throw new NullPointerException();
                 }
                 bitField0_ |= 0x00000004;
-                lastDependStrategy_ = value;
+                offsetDependStrategy_ = value;
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>optional string last_depend_strategy = 3 [default = ""];</code>
+             * <code>optional string offset_depend_strategy = 3 [default = ""];</code>
              */
-            public Builder clearLastDependStrategy() {
+            public Builder clearOffsetDependStrategy() {
                 bitField0_ = (bitField0_ & ~0x00000004);
-                lastDependStrategy_ = getDefaultInstance().getLastDependStrategy();
+                offsetDependStrategy_ = getDefaultInstance().getOffsetDependStrategy();
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>optional string last_depend_strategy = 3 [default = ""];</code>
+             * <code>optional string offset_depend_strategy = 3 [default = ""];</code>
              */
-            public Builder setLastDependStrategyBytes(com.google.protobuf.ByteString value) {
+            public Builder setOffsetDependStrategyBytes(com.google.protobuf.ByteString value) {
                 if (value == null) {
                     throw new NullPointerException();
                 }
                 bitField0_ |= 0x00000004;
-                lastDependStrategy_ = value;
+                offsetDependStrategy_ = value;
                 onChanged();
                 return this;
             }
@@ -6834,29 +6834,30 @@ public final class SubmitJobProtos {
 
     static {
         java.lang.String[] descriptorData = {
-                "\n\020submit_job.proto\032\017map_entry.proto\"d\n\017D" + "ependencyEntry\022\016\n\006job_id\030\001 \002(\003\022!\n\026common"
-                        + "_depend_strategy\030\002 \001(\005:\0010\022\036\n\024last_depend"
-                        + "_strategy\030\003 \001(\t:\000\"\315\003\n\032RestServerSubmitJo"
-                        + "bRequest\022\020\n\010job_name\030\001 \002(\t\022\027\n\017cron_expre"
-                        + "ssion\030\002 \001(\t\022*\n\020dependency_entry\030\003 \003(\0132\020."
-                        + "DependencyEntry\022\020\n\010app_name\030\004 \002(\t\022\017\n\007app"
-                        + "_key\030\005 \002(\t\022\014\n\004user\030\006 \002(\t\022\020\n\010job_type\030\007 \002"
-                        + "(\t\022\017\n\007content\030\010 \002(\t\022\020\n\010group_id\030\t \002(\005\022\023\n"
-                        + "\010priority\030\n \001(\005:\0011\022\031\n\016reject_retries\030\013 \001",
-                "(\005:\0010\022\032\n\017reject_interval\030\014 \001(\005:\0013\022\031\n\016fai"
-                        + "led_retries\030\r \001(\005:\0010\022\032\n\017failed_interval\030"
-                        + "\016 \001(\005:\0013\022\022\n\nstart_time\030\017 \001(\003\022\020\n\010end_time"
-                        + "\030\020 \001(\003\022\025\n\rorigin_job_id\030\021 \001(\003\022\035\n\nparamet"
-                        + "ers\030\022 \003(\0132\t.MapEntry\022\023\n\013fixed_delay\030\023 \001("
-                        + "\005\"M\n\027ServerSubmitJobResponse\022\016\n\006job_id\030\001"
-                        + " \002(\003\022\017\n\007success\030\002 \002(\010\022\021\n\007message\030\003 \001(\t:\000"
-                        + "\"\265\001\n\027ServerSubmitTaskRequest\022\017\n\007full_id\030"
-                        + "\001 \002(\t\022\021\n\ttask_name\030\002 \002(\t\022\020\n\010app_name\030\003 \002"
-                        + "(\t\022\014\n\004user\030\004 \002(\t\022\021\n\ttask_type\030\005 \002(\t\022\017\n\007c",
-                "ontent\030\006 \002(\t\022\023\n\010priority\030\007 \001(\005:\0011\022\035\n\npar"
-                        + "ameters\030\010 \003(\0132\t.MapEntry\"N\n\030WorkerSubmit"
-                        + "TaskResponse\022\016\n\006accept\030\001 \002(\010\022\017\n\007success\030"
-                        + "\002 \002(\010\022\021\n\007message\030\003 \001(\t:\000B.\n\033com.mogujie." + "jarvis.protocolB\017SubmitJobProtos" };
+                "\n\020submit_job.proto\032\017map_entry.proto\"f\n\017D" + "ependencyEntry\022\016\n\006job_id\030\001 \002(\003\022!\n\026common"
+                        + "_depend_strategy\030\002 \001(\005:\0010\022 \n\026offset_depe"
+                        + "nd_strategy\030\003 \001(\t:\000\"\315\003\n\032RestServerSubmit"
+                        + "JobRequest\022\020\n\010job_name\030\001 \002(\t\022\027\n\017cron_exp"
+                        + "ression\030\002 \001(\t\022*\n\020dependency_entry\030\003 \003(\0132"
+                        + "\020.DependencyEntry\022\020\n\010app_name\030\004 \002(\t\022\017\n\007a"
+                        + "pp_key\030\005 \002(\t\022\014\n\004user\030\006 \002(\t\022\020\n\010job_type\030\007"
+                        + " \002(\t\022\017\n\007content\030\010 \002(\t\022\020\n\010group_id\030\t \002(\005\022"
+                        + "\023\n\010priority\030\n \001(\005:\0011\022\031\n\016reject_retries\030\013",
+                " \001(\005:\0010\022\032\n\017reject_interval\030\014 \001(\005:\0013\022\031\n\016f"
+                        + "ailed_retries\030\r \001(\005:\0010\022\032\n\017failed_interva"
+                        + "l\030\016 \001(\005:\0013\022\022\n\nstart_time\030\017 \001(\003\022\020\n\010end_ti"
+                        + "me\030\020 \001(\003\022\025\n\rorigin_job_id\030\021 \001(\003\022\035\n\nparam"
+                        + "eters\030\022 \003(\0132\t.MapEntry\022\023\n\013fixed_delay\030\023 "
+                        + "\001(\005\"M\n\027ServerSubmitJobResponse\022\016\n\006job_id"
+                        + "\030\001 \002(\003\022\017\n\007success\030\002 \002(\010\022\021\n\007message\030\003 \001(\t"
+                        + ":\000\"\265\001\n\027ServerSubmitTaskRequest\022\017\n\007full_i"
+                        + "d\030\001 \002(\t\022\021\n\ttask_name\030\002 \002(\t\022\020\n\010app_name\030\003"
+                        + " \002(\t\022\014\n\004user\030\004 \002(\t\022\021\n\ttask_type\030\005 \002(\t\022\017\n",
+                "\007content\030\006 \002(\t\022\023\n\010priority\030\007 \001(\005:\0011\022\035\n\np"
+                        + "arameters\030\010 \003(\0132\t.MapEntry\"N\n\030WorkerSubm"
+                        + "itTaskResponse\022\016\n\006accept\030\001 \002(\010\022\017\n\007succes"
+                        + "s\030\002 \002(\010\022\021\n\007message\030\003 \001(\t:\000B.\n\033com.moguji"
+                        + "e.jarvis.protocolB\017SubmitJobProtos" };
         com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner = new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
             public com.google.protobuf.ExtensionRegistry assignDescriptors(com.google.protobuf.Descriptors.FileDescriptor root) {
                 descriptor = root;
@@ -6867,7 +6868,7 @@ public final class SubmitJobProtos {
                 new com.google.protobuf.Descriptors.FileDescriptor[] { com.mogujie.jarvis.protocol.MapEntryProtos.getDescriptor(), }, assigner);
         internal_static_DependencyEntry_descriptor = getDescriptor().getMessageTypes().get(0);
         internal_static_DependencyEntry_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-                internal_static_DependencyEntry_descriptor, new java.lang.String[] { "JobId", "CommonDependStrategy", "LastDependStrategy", });
+                internal_static_DependencyEntry_descriptor, new java.lang.String[] { "JobId", "CommonDependStrategy", "OffsetDependStrategy", });
         internal_static_RestServerSubmitJobRequest_descriptor = getDescriptor().getMessageTypes().get(1);
         internal_static_RestServerSubmitJobRequest_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
                 internal_static_RestServerSubmitJobRequest_descriptor,

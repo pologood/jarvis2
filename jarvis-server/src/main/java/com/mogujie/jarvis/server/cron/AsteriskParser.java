@@ -24,8 +24,8 @@ import com.google.common.collect.Range;
  */
 public class AsteriskParser extends AbstractParser {
 
-    private Set<int[]> set;
-    private Set<Integer> resultSet;
+    private Set<int[]> set = new HashSet<>();
+    private Set<Integer> resultSet = new HashSet<>();
     private Range<Integer> range;
     private DurationField type;
     private static final Pattern ASTERISK_PATTERN = Pattern.compile("(\\d+)#(\\d+)");
@@ -43,10 +43,6 @@ public class AsteriskParser extends AbstractParser {
             int dayOfWeek = Integer.parseInt(m.group(1));
             int sequence = Integer.parseInt(m.group(2));
             if (range.contains(dayOfWeek) && Range.closed(1, 5).contains(sequence)) {
-                if (set == null) {
-                    set = new HashSet<int[]>();
-                }
-
                 int[] value = { dayOfWeek, sequence };
                 set.add(value);
                 return true;
@@ -66,9 +62,6 @@ public class AsteriskParser extends AbstractParser {
         int firstDayOfWeek = mdt.getDayOfWeek();
 
         if (set != null) {
-            if (resultSet == null) {
-                resultSet = new HashSet<Integer>();
-            }
             resultSet.clear();
 
             for (int[] value : set) {

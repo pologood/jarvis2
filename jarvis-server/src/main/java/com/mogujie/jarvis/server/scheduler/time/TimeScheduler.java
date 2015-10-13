@@ -33,6 +33,7 @@ import com.mogujie.jarvis.server.scheduler.Scheduler;
 import com.mogujie.jarvis.server.scheduler.event.StartEvent;
 import com.mogujie.jarvis.server.scheduler.event.StopEvent;
 import com.mogujie.jarvis.server.scheduler.event.SuccessEvent;
+import com.mogujie.jarvis.server.service.CrontabService;
 
 /**
  * Scheduler used to handle time based job.
@@ -46,14 +47,16 @@ public class TimeScheduler extends Scheduler {
     private CrontabMapper crontabMapper;
 
     @Autowired
-    private JobMapper jobMapper;
+    private CrontabService cronService;
 
     @Autowired
-    private CronScheduler cronScheduler;
+    private JobMapper jobMapper;
+
+    private CronScheduler cronScheduler = new CronScheduler(getSchedulerController());
 
     @Override
     @Transactional
-    public void init() {
+    protected void init() {
         getSchedulerController().register(this);
 
         cronScheduler.start();
@@ -79,7 +82,7 @@ public class TimeScheduler extends Scheduler {
     }
 
     @Override
-    public void destroy() {
+    protected void destroy() {
         getSchedulerController().unregister(this);
     }
 
@@ -93,10 +96,7 @@ public class TimeScheduler extends Scheduler {
     }
 
     public void addJob(long jobId) throws JobScheduleException {
-        CrontabExample crontabExample = new CrontabExample();
-        crontabExample.createCriteria().andJobIdEqualTo(jobId);
-
-        List<Crontab> crontabs = crontabMapper.selectByExample(crontabExample);
+        List<Crontab> crontabs = cronService.getCronsByJobId(jobId);
         for (Crontab crontab : crontabs) {
             cronScheduler.schedule(crontab);
         }
@@ -130,10 +130,7 @@ public class TimeScheduler extends Scheduler {
     public void modifyJob(long jobId) throws JobScheduleException {
         cronScheduler.remove(jobId);
 
-        CrontabExample crontabExample = new CrontabExample();
-        crontabExample.createCriteria().andJobIdEqualTo(jobId);
-
-        List<Crontab> crontabs = crontabMapper.selectByExample(crontabExample);
+        List<Crontab> crontabs = cronService.getCronsByJobId(jobId);
         for (Crontab crontab : crontabs) {
             cronScheduler.schedule(crontab);
         }
@@ -142,9 +139,7 @@ public class TimeScheduler extends Scheduler {
     public void modifyJobFlag(long jobId, JobFlag jobFlag) throws JobScheduleException {
         switch (jobFlag) {
             case ENABLE:
-                CrontabExample crontabExample = new CrontabExample();
-                crontabExample.createCriteria().andJobIdEqualTo(jobId);
-                List<Crontab> crontabs = crontabMapper.selectByExample(crontabExample);
+                List<Crontab> crontabs = cronService.getCronsByJobId(jobId);
                 for (Crontab crontab : crontabs) {
                     cronScheduler.schedule(crontab);
                 }

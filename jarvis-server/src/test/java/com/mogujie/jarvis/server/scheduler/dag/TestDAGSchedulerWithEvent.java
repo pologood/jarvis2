@@ -16,7 +16,7 @@ import java.util.Map;
 import org.apache.commons.configuration.Configuration;
 import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.google.common.collect.Sets;
@@ -26,6 +26,7 @@ import com.mogujie.jarvis.server.domain.ModifyDependEntry;
 import com.mogujie.jarvis.server.domain.ModifyJobEntry;
 import com.mogujie.jarvis.server.domain.ModifyJobType;
 import com.mogujie.jarvis.server.domain.ModifyOperation;
+import com.mogujie.jarvis.server.scheduler.SchedulerUtil;
 import com.mogujie.jarvis.server.scheduler.dag.checker.DAGDependCheckerFactory;
 import com.mogujie.jarvis.server.scheduler.dag.checker.DummyDAGDependChecker;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
@@ -42,14 +43,18 @@ public class TestDAGSchedulerWithEvent {
     private long jobAId = 1;
     private long jobBId = 2;
     private long jobCId = 3;
-    private DAGScheduler dagScheduler = SpringContext.getBean(DAGScheduler.class);
-    private TaskScheduler taskScheduler = SpringContext.getBean(TaskScheduler.class);
-    private Configuration conf = ConfigUtils.getServerConfig();
+    private static DAGScheduler dagScheduler;
+    private static TaskScheduler taskScheduler;
+    private static Configuration conf = ConfigUtils.getServerConfig();
 
-    @Before
-    public void setup() throws Exception {
+    @BeforeClass
+    public static void setup() throws Exception {
+        conf.clear();
         conf.setProperty(DAGDependCheckerFactory.DAG_DEPEND_CHECKER_KEY,
                 DummyDAGDependChecker.class.getName());
+        conf.setProperty(SchedulerUtil.ENABLE_TEST_MODE, true);
+        dagScheduler = SpringContext.getBean(DAGScheduler.class);
+        taskScheduler = SpringContext.getBean(TaskScheduler.class);
     }
 
     @After

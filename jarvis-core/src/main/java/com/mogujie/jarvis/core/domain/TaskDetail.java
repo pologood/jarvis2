@@ -71,7 +71,7 @@ public class TaskDetail {
 
     public static class TaskDetailBuilder {
 
-        private TaskDetail task;
+        private TaskDetail task = new TaskDetail();;
 
         private TaskDetailBuilder() {
         }

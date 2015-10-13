@@ -24,8 +24,8 @@ import com.google.common.collect.Range;
  */
 public class NearestWeekdayOfMonthParser extends AbstractParser {
 
-    private Set<Integer> set;
-    private Set<Integer> resultSet;
+    private Set<Integer> set = new HashSet<>();
+    private Set<Integer> resultSet = new HashSet<>();
     private Range<Integer> range;
     private DurationField type;
     private static final Pattern NEAREST_WEEKDAY_OF_MONTH_PATTERN = Pattern.compile("(\\d+)W");
@@ -42,9 +42,6 @@ public class NearestWeekdayOfMonthParser extends AbstractParser {
         if (m.matches()) {
             int value = Integer.parseInt(m.group(1));
             if (range.contains(value)) {
-                if (set == null) {
-                    set = new HashSet<Integer>();
-                }
                 set.add(value);
                 return true;
             } else {
@@ -62,9 +59,6 @@ public class NearestWeekdayOfMonthParser extends AbstractParser {
         int maxDayOfMonth = mdt.getDayOfMonth();
 
         if (set != null) {
-            if (resultSet == null) {
-                resultSet = new HashSet<Integer>();
-            }
             resultSet.clear();
 
             for (Integer value : set) {

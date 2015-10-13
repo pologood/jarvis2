@@ -23,8 +23,8 @@ import com.google.common.collect.Range;
  */
 public class SingleParser extends AbstractParser {
 
-    private Set<Integer> set;
-    private Set<Integer> result;
+    private Set<Integer> set = new HashSet<>();
+    private Set<Integer> result = new HashSet<>();
     private Range<Integer> range;
     private DurationField type;
 
@@ -39,9 +39,6 @@ public class SingleParser extends AbstractParser {
         if (CharMatcher.DIGIT.matchesAllOf(cronFieldExp)) {
             int value = Integer.parseInt(cronFieldExp);
             if (range.contains(value)) {
-                if (set == null) {
-                    set = new HashSet<Integer>();
-                }
                 set.add(value);
                 return true;
             } else {
@@ -57,10 +54,6 @@ public class SingleParser extends AbstractParser {
     protected Set<Integer> parse(DateTime dateTime) {
         if (type.equals(DurationField.DAY_OF_WEEK)) {
             if (set != null) {
-                if (result == null) {
-                    result = new HashSet<Integer>();
-                }
-
                 result.clear();
 
                 MutableDateTime mdt = dateTime.dayOfMonth().withMaximumValue().toMutableDateTime();

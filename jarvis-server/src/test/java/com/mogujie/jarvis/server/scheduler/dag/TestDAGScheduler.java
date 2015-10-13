@@ -7,13 +7,16 @@
  */
 package com.mogujie.jarvis.server.scheduler.dag;
 
+import org.apache.commons.configuration.Configuration;
 import org.jgrapht.experimental.dag.DirectedAcyclicGraph.CycleFoundException;
 import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.google.common.collect.Sets;
+import com.mogujie.jarvis.core.util.ConfigUtils;
+import com.mogujie.jarvis.server.scheduler.SchedulerUtil;
 import com.mogujie.jarvis.server.util.SpringContext;
 
 
@@ -22,17 +25,17 @@ import com.mogujie.jarvis.server.util.SpringContext;
  *
  */
 public class TestDAGScheduler {
-
     private DAGJob jobA;
     private DAGJob jobB;
     private DAGJob jobC;
-    private DAGScheduler scheduler = SpringContext.getBean(DAGScheduler.class);
+    private static DAGScheduler scheduler;
+    private static Configuration conf = ConfigUtils.getServerConfig();
 
-    @Before
-    public void setup() throws Exception {
-        jobA = new DAGJob(1, DAGJobType.TIME);
-        jobB = new DAGJob(2, DAGJobType.DEPEND);
-        jobC = new DAGJob(3, DAGJobType.DEPEND);
+    @BeforeClass
+    public static void setup() throws Exception {
+        conf.clear();
+        conf.setProperty(SchedulerUtil.ENABLE_TEST_MODE, true);
+        scheduler = SpringContext.getBean(DAGScheduler.class);
     }
 
     @After
@@ -48,6 +51,9 @@ public class TestDAGScheduler {
      */
     @Test
     public void testAddJob1() throws Exception {
+        jobA = new DAGJob(1, DAGJobType.TIME);
+        jobB = new DAGJob(2, DAGJobType.TIME);
+        jobC = new DAGJob(3, DAGJobType.DEPEND);
         scheduler.addJob(jobA.getJobId(), jobA, null);
         scheduler.addJob(jobB.getJobId(), jobB, null);
         scheduler.addJob(jobC.getJobId(), jobC, Sets.newHashSet(jobA.getJobId(),jobB.getJobId()));
@@ -66,6 +72,9 @@ public class TestDAGScheduler {
      */
     @Test
     public void testAddJob2() throws Exception {
+        jobA = new DAGJob(1, DAGJobType.TIME);
+        jobB = new DAGJob(2, DAGJobType.DEPEND);
+        jobC = new DAGJob(3, DAGJobType.DEPEND);
         scheduler.addJob(jobA.getJobId(), jobA, null);
         scheduler.addJob(jobB.getJobId(), jobB, Sets.newHashSet(jobA.getJobId()));
         scheduler.addJob(jobC.getJobId(), jobC, Sets.newHashSet(jobA.getJobId()));
@@ -84,6 +93,9 @@ public class TestDAGScheduler {
      */
     @Test
     public void testRemoveJob1() throws Exception {
+        jobA = new DAGJob(1, DAGJobType.TIME);
+        jobB = new DAGJob(2, DAGJobType.TIME);
+        jobC = new DAGJob(3, DAGJobType.DEPEND);
         scheduler.addJob(jobA.getJobId(), jobA, null);
         scheduler.addJob(jobB.getJobId(), jobB, null);
         scheduler.addJob(jobC.getJobId(), jobC, Sets.newHashSet(jobA.getJobId(),jobB.getJobId()));
@@ -108,6 +120,9 @@ public class TestDAGScheduler {
      */
     @Test
     public void testRemoveJob2() throws Exception {
+        jobA = new DAGJob(1, DAGJobType.TIME);
+        jobB = new DAGJob(2, DAGJobType.TIME);
+        jobC = new DAGJob(3, DAGJobType.DEPEND);
         scheduler.addJob(jobA.getJobId(), jobA, null);
         scheduler.addJob(jobB.getJobId(), jobB, null);
         scheduler.addJob(jobC.getJobId(), jobC, Sets.newHashSet(jobA.getJobId(),jobB.getJobId()));
@@ -131,6 +146,9 @@ public class TestDAGScheduler {
      */
     @Test
     public void testRemoveJob3() throws Exception {
+        jobA = new DAGJob(1, DAGJobType.TIME);
+        jobB = new DAGJob(2, DAGJobType.DEPEND);
+        jobC = new DAGJob(3, DAGJobType.DEPEND);
         scheduler.addJob(jobA.getJobId(), jobA, null);
         scheduler.addJob(jobB.getJobId(), jobB, Sets.newHashSet(jobA.getJobId()));
         scheduler.addJob(jobC.getJobId(), jobC, Sets.newHashSet(jobA.getJobId()));
@@ -156,6 +174,9 @@ public class TestDAGScheduler {
      */
     @Test
     public void testModifyDependency() throws Exception {
+        jobA = new DAGJob(1, DAGJobType.TIME);
+        jobB = new DAGJob(2, DAGJobType.DEPEND);
+        jobC = new DAGJob(3, DAGJobType.DEPEND);
         scheduler.addJob(jobA.getJobId(), jobA, null);
         scheduler.addJob(jobB.getJobId(), jobB, null);
         scheduler.addJob(jobC.getJobId(), jobC, null);

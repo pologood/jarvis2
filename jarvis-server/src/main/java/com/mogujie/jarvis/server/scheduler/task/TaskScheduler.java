@@ -33,6 +33,7 @@ import com.mogujie.jarvis.dto.Task;
 import com.mogujie.jarvis.server.TaskManager;
 import com.mogujie.jarvis.server.TaskQueue;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
+import com.mogujie.jarvis.server.scheduler.SchedulerUtil;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
 import com.mogujie.jarvis.server.scheduler.event.KilledEvent;
 import com.mogujie.jarvis.server.scheduler.event.RunningEvent;
@@ -66,6 +67,8 @@ public class TaskScheduler extends Scheduler {
 
     private Map<Long, DAGTask> readyTable = new ConcurrentHashMap<Long, DAGTask>();
 
+    private boolean isTestMode = SchedulerUtil.isTestMode();
+
     // unique taskid
     private AtomicLong maxid = new AtomicLong(1);
     private static final int DAFAULT_MAX_FAILED_ATTEMPTS = 3;
@@ -73,8 +76,9 @@ public class TaskScheduler extends Scheduler {
 
     @Override
     @Transactional
-    public void init() {
+    protected void init() {
         getSchedulerController().register(this);
+
         // load all READY tasks from DB
         List<Task> tasks = taskService.getTasksByStatus(JobStatus.READY);
         if (tasks != null) {
@@ -86,7 +90,7 @@ public class TaskScheduler extends Scheduler {
     }
 
     @Override
-    public void destroy() {
+    protected void destroy() {
         clear();
         getSchedulerController().unregister(this);
     }
@@ -135,7 +139,7 @@ public class TaskScheduler extends Scheduler {
         if (dagTask != null) {
             int maxFailedAttempts = DAFAULT_MAX_FAILED_ATTEMPTS;
             int failedInterval = DAFAULT_FAILED_INTERVAL;
-            if (jobMapper != null) {
+            if (!isTestMode) {
                 Job job = jobMapper.selectByPrimaryKey(dagTask.getJobId());
                 maxFailedAttempts = job.getFailedAttempts();
                 failedInterval = job.getFailedInterval();
@@ -153,7 +157,7 @@ public class TaskScheduler extends Scheduler {
     }
 
     private void updateJobStatus(long taskId, JobStatus status) {
-        if (taskService != null) {
+        if (!isTestMode) {
             if (status.equals(JobStatus.RUNNING)) {
                 taskService.updateStatusWithStart(taskId, status);
             } else if (status.getValue() == JobStatus.SUCCESS.getValue() || status.getValue() == JobStatus.FAILED.getValue()
@@ -176,7 +180,7 @@ public class TaskScheduler extends Scheduler {
 
     public long submitJob(long jobId) {
         long taskId;
-        if (jobMapper != null && taskMapper != null) {
+        if (!isTestMode) {
             Task task = createNewTask(jobId);
             taskMapper.insert(task);
             taskId = task.getTaskId();
@@ -194,7 +198,7 @@ public class TaskScheduler extends Scheduler {
             int attemptId = dagTask.getAttemptId();
             attemptId++;
             dagTask.setAttemptId(attemptId);
-            if (taskMapper != null) {
+            if (!isTestMode) {
                 Task task = taskMapper.selectByPrimaryKey(dagTask.getTaskId());
                 task.setAttemptId(attemptId);
                 Date currentTime = new Date();
@@ -222,10 +226,12 @@ public class TaskScheduler extends Scheduler {
     }
 
     private Task createNewTask(long jobId) {
+        Job job = jobMapper.selectByPrimaryKey(jobId);
         Task task = new Task();
         task.setJobId(jobId);
         task.setAttemptId(1);
-        task.setExecuteUser(jobMapper.selectByPrimaryKey(jobId).getSubmitUser());
+        task.setExecuteUser(job.getSubmitUser());
+        task.setJobContent(job.getContent());
         task.setStatus(JobStatus.READY.getValue());
         Date currentTime = new Date();
         DateFormat dateTimeFormat = DateFormat.getDateTimeInstance();
@@ -244,7 +250,7 @@ public class TaskScheduler extends Scheduler {
     private TaskDetail getTaskInfo(DAGTask dagTask) {
         String fullId = dagTask.getJobId() + "_" + dagTask.getTaskId() + "_" + dagTask.getAttemptId();
         TaskDetail taskDetail = null;
-        if (jobMapper != null) {
+        if (!isTestMode) {
             Job job = jobMapper.selectByPrimaryKey(dagTask.getJobId());
             taskDetail = TaskDetail.newTaskDetailBuilder().setFullId(fullId).setTaskName(job.getJobName()).setAppName(job.getAppName())
                     .setUser(job.getSubmitUser()).setPriority(job.getPriority()).setContent(job.getContent()).setTaskType(job.getJobType())
@@ -255,7 +261,7 @@ public class TaskScheduler extends Scheduler {
     }
 
     private void reduceTaskNum(long jobId) {
-        if (jobMapper != null) {
+        if (!isTestMode) {
             Job job = jobMapper.selectByPrimaryKey(jobId);
             taskManager.appCounterDecrement(job.getAppName());
         }

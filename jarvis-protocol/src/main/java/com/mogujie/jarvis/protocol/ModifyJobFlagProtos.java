@@ -33,6 +33,21 @@ public final class ModifyJobFlagProtos {
          * <code>required int32 job_flag = 2;</code>
          */
         int getJobFlag();
+
+        /**
+         * <code>required string user = 3;</code>
+         */
+        boolean hasUser();
+
+        /**
+         * <code>required string user = 3;</code>
+         */
+        java.lang.String getUser();
+
+        /**
+         * <code>required string user = 3;</code>
+         */
+        com.google.protobuf.ByteString getUserBytes();
     }
 
     /**
@@ -94,6 +109,12 @@ public final class ModifyJobFlagProtos {
                         case 16: {
                             bitField0_ |= 0x00000002;
                             jobFlag_ = input.readInt32();
+                            break;
+                        }
+                        case 26: {
+                            com.google.protobuf.ByteString bs = input.readBytes();
+                            bitField0_ |= 0x00000004;
+                            user_ = bs;
                             break;
                         }
                     }
@@ -165,9 +186,51 @@ public final class ModifyJobFlagProtos {
             return jobFlag_;
         }
 
+        public static final int USER_FIELD_NUMBER = 3;
+        private java.lang.Object user_;
+
+        /**
+         * <code>required string user = 3;</code>
+         */
+        public boolean hasUser() {
+            return ((bitField0_ & 0x00000004) == 0x00000004);
+        }
+
+        /**
+         * <code>required string user = 3;</code>
+         */
+        public java.lang.String getUser() {
+            java.lang.Object ref = user_;
+            if (ref instanceof java.lang.String) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                if (bs.isValidUtf8()) {
+                    user_ = s;
+                }
+                return s;
+            }
+        }
+
+        /**
+         * <code>required string user = 3;</code>
+         */
+        public com.google.protobuf.ByteString getUserBytes() {
+            java.lang.Object ref = user_;
+            if (ref instanceof java.lang.String) {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                user_ = b;
+                return b;
+            } else {
+                return (com.google.protobuf.ByteString) ref;
+            }
+        }
+
         private void initFields() {
             jobId_ = 0L;
             jobFlag_ = 0;
+            user_ = "";
         }
 
         private byte memoizedIsInitialized = -1;
@@ -187,6 +250,10 @@ public final class ModifyJobFlagProtos {
                 memoizedIsInitialized = 0;
                 return false;
             }
+            if (!hasUser()) {
+                memoizedIsInitialized = 0;
+                return false;
+            }
             memoizedIsInitialized = 1;
             return true;
         }
@@ -198,6 +265,9 @@ public final class ModifyJobFlagProtos {
             }
             if (((bitField0_ & 0x00000002) == 0x00000002)) {
                 output.writeInt32(2, jobFlag_);
+            }
+            if (((bitField0_ & 0x00000004) == 0x00000004)) {
+                output.writeBytes(3, getUserBytes());
             }
             getUnknownFields().writeTo(output);
         }
@@ -215,6 +285,9 @@ public final class ModifyJobFlagProtos {
             }
             if (((bitField0_ & 0x00000002) == 0x00000002)) {
                 size += com.google.protobuf.CodedOutputStream.computeInt32Size(2, jobFlag_);
+            }
+            if (((bitField0_ & 0x00000004) == 0x00000004)) {
+                size += com.google.protobuf.CodedOutputStream.computeBytesSize(3, getUserBytes());
             }
             size += getUnknownFields().getSerializedSize();
             memoizedSerializedSize = size;
@@ -303,7 +376,7 @@ public final class ModifyJobFlagProtos {
         /**
          * Protobuf type {@code RestServerModifyJobFlagRequest}
          */
-        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder>implements
+        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder> implements
                 // @@protoc_insertion_point(builder_implements:RestServerModifyJobFlagRequest)
                 com.mogujie.jarvis.protocol.ModifyJobFlagProtos.RestServerModifyJobFlagRequestOrBuilder {
             public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
@@ -342,6 +415,8 @@ public final class ModifyJobFlagProtos {
                 bitField0_ = (bitField0_ & ~0x00000001);
                 jobFlag_ = 0;
                 bitField0_ = (bitField0_ & ~0x00000002);
+                user_ = "";
+                bitField0_ = (bitField0_ & ~0x00000004);
                 return this;
             }
 
@@ -378,6 +453,10 @@ public final class ModifyJobFlagProtos {
                     to_bitField0_ |= 0x00000002;
                 }
                 result.jobFlag_ = jobFlag_;
+                if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+                    to_bitField0_ |= 0x00000004;
+                }
+                result.user_ = user_;
                 result.bitField0_ = to_bitField0_;
                 onBuilt();
                 return result;
@@ -401,6 +480,11 @@ public final class ModifyJobFlagProtos {
                 if (other.hasJobFlag()) {
                     setJobFlag(other.getJobFlag());
                 }
+                if (other.hasUser()) {
+                    bitField0_ |= 0x00000004;
+                    user_ = other.user_;
+                    onChanged();
+                }
                 this.mergeUnknownFields(other.getUnknownFields());
                 return this;
             }
@@ -411,6 +495,10 @@ public final class ModifyJobFlagProtos {
                     return false;
                 }
                 if (!hasJobFlag()) {
+
+                    return false;
+                }
+                if (!hasUser()) {
 
                     return false;
                 }
@@ -503,6 +591,82 @@ public final class ModifyJobFlagProtos {
             public Builder clearJobFlag() {
                 bitField0_ = (bitField0_ & ~0x00000002);
                 jobFlag_ = 0;
+                onChanged();
+                return this;
+            }
+
+            private java.lang.Object user_ = "";
+
+            /**
+             * <code>required string user = 3;</code>
+             */
+            public boolean hasUser() {
+                return ((bitField0_ & 0x00000004) == 0x00000004);
+            }
+
+            /**
+             * <code>required string user = 3;</code>
+             */
+            public java.lang.String getUser() {
+                java.lang.Object ref = user_;
+                if (!(ref instanceof java.lang.String)) {
+                    com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                    java.lang.String s = bs.toStringUtf8();
+                    if (bs.isValidUtf8()) {
+                        user_ = s;
+                    }
+                    return s;
+                } else {
+                    return (java.lang.String) ref;
+                }
+            }
+
+            /**
+             * <code>required string user = 3;</code>
+             */
+            public com.google.protobuf.ByteString getUserBytes() {
+                java.lang.Object ref = user_;
+                if (ref instanceof String) {
+                    com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                    user_ = b;
+                    return b;
+                } else {
+                    return (com.google.protobuf.ByteString) ref;
+                }
+            }
+
+            /**
+             * <code>required string user = 3;</code>
+             */
+            public Builder setUser(java.lang.String value) {
+                if (value == null) {
+                    throw new NullPointerException();
+                }
+                bitField0_ |= 0x00000004;
+                user_ = value;
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>required string user = 3;</code>
+             */
+            public Builder clearUser() {
+                bitField0_ = (bitField0_ & ~0x00000004);
+                user_ = getDefaultInstance().getUser();
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>required string user = 3;</code>
+             */
+            public Builder setUserBytes(com.google.protobuf.ByteString value) {
+                if (value == null) {
+                    throw new NullPointerException();
+                }
+                bitField0_ |= 0x00000004;
+                user_ = value;
                 onChanged();
                 return this;
             }
@@ -837,7 +1001,7 @@ public final class ModifyJobFlagProtos {
         /**
          * Protobuf type {@code ServerModifyJobFlagResponse}
          */
-        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder>implements
+        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder> implements
                 // @@protoc_insertion_point(builder_implements:ServerModifyJobFlagResponse)
                 com.mogujie.jarvis.protocol.ModifyJobFlagProtos.ServerModifyJobFlagResponseOrBuilder {
             public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
@@ -1103,10 +1267,10 @@ public final class ModifyJobFlagProtos {
 
     static {
         java.lang.String[] descriptorData = {
-                "\n\025modify_job_flag.proto\"B\n\036RestServerMod" + "ifyJobFlagRequest\022\016\n\006job_id\030\001 \002(\003\022\020\n\010job"
-                        + "_flag\030\002 \002(\005\"A\n\033ServerModifyJobFlagRespon"
-                        + "se\022\017\n\007success\030\001 \002(\010\022\021\n\007message\030\002 \001(\t:\000B2"
-                        + "\n\033com.mogujie.jarvis.protocolB\023ModifyJob" + "FlagProtos" };
+                "\n\025modify_job_flag.proto\"P\n\036RestServerMod" + "ifyJobFlagRequest\022\016\n\006job_id\030\001 \002(\003\022\020\n\010job"
+                        + "_flag\030\002 \002(\005\022\014\n\004user\030\003 \002(\t\"A\n\033ServerModif"
+                        + "yJobFlagResponse\022\017\n\007success\030\001 \002(\010\022\021\n\007mes"
+                        + "sage\030\002 \001(\t:\000B2\n\033com.mogujie.jarvis.proto" + "colB\023ModifyJobFlagProtos" };
         com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner = new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
             public com.google.protobuf.ExtensionRegistry assignDescriptors(com.google.protobuf.Descriptors.FileDescriptor root) {
                 descriptor = root;
@@ -1117,7 +1281,7 @@ public final class ModifyJobFlagProtos {
                 new com.google.protobuf.Descriptors.FileDescriptor[] {}, assigner);
         internal_static_RestServerModifyJobFlagRequest_descriptor = getDescriptor().getMessageTypes().get(0);
         internal_static_RestServerModifyJobFlagRequest_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-                internal_static_RestServerModifyJobFlagRequest_descriptor, new java.lang.String[] { "JobId", "JobFlag", });
+                internal_static_RestServerModifyJobFlagRequest_descriptor, new java.lang.String[] { "JobId", "JobFlag", "User", });
         internal_static_ServerModifyJobFlagResponse_descriptor = getDescriptor().getMessageTypes().get(1);
         internal_static_ServerModifyJobFlagResponse_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
                 internal_static_ServerModifyJobFlagResponse_descriptor, new java.lang.String[] { "Success", "Message", });

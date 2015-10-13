@@ -46,13 +46,13 @@ public class TaskContext {
 
     public static class TaskContextBuilder {
 
-        private TaskContext taskContext;
+        private TaskContext taskContext = new TaskContext();
 
         private TaskContextBuilder() {
         }
 
-        public TaskContextBuilder setTaskDetail(TaskDetail task) {
-            this.taskContext.taskDetail = task;
+        public TaskContextBuilder setTaskDetail(TaskDetail taskDetail) {
+            this.taskContext.taskDetail = taskDetail;
             return this;
         }
 

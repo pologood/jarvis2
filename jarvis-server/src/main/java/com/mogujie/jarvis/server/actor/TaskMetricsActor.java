@@ -13,7 +13,6 @@ import java.util.Set;
 import javax.inject.Named;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 
 import akka.actor.UntypedActor;
@@ -25,6 +24,7 @@ import com.mogujie.jarvis.dto.Task;
 import com.mogujie.jarvis.protocol.ReportProgressProtos.WorkerReportProgressRequest;
 import com.mogujie.jarvis.protocol.ReportStatusProtos.WorkerReportStatusRequest;
 import com.mogujie.jarvis.server.scheduler.controller.JobSchedulerController;
+import com.mogujie.jarvis.server.scheduler.controller.SchedulerControllerFactory;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
 import com.mogujie.jarvis.server.scheduler.event.KilledEvent;
 import com.mogujie.jarvis.server.scheduler.event.RunningEvent;
@@ -41,9 +41,8 @@ import com.mogujie.jarvis.server.scheduler.event.UnhandleEvent;
 @Named("taskMetricsActor")
 @Scope("prototype")
 public class TaskMetricsActor extends UntypedActor {
-    @Autowired
-    @Qualifier("AsyncSchedulerController")
-    private JobSchedulerController schedulerController;
+
+    private JobSchedulerController schedulerController = SchedulerControllerFactory.getController();
 
     @Autowired
     private TaskMapper taskMapper;
@@ -54,8 +53,8 @@ public class TaskMetricsActor extends UntypedActor {
             WorkerReportStatusRequest msg = (WorkerReportStatusRequest) obj;
             String fullId = msg.getFullId();
             String[] idList = fullId.split("_");
-            long jobId = Long.valueOf(idList[0]);
-            long taskId = Long.valueOf(idList[1]);
+            long jobId = Long.parseLong(idList[0]);
+            long taskId = Long.parseLong(idList[1]);
 
             JobStatus status = JobStatus.getInstance(msg.getStatus());
             Event event = new UnhandleEvent();

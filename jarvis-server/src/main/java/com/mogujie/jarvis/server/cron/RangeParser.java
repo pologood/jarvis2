@@ -24,8 +24,8 @@ import com.google.common.collect.Range;
  */
 public class RangeParser extends AbstractParser {
 
-    private Set<Integer> set;
-    private Set<Integer> result;
+    private Set<Integer> set = new HashSet<>();
+    private Set<Integer> result = new HashSet<>();
     private Range<Integer> range;
     private DurationField type;
     private static final Pattern RANGE_PATTERN = Pattern.compile("(\\d+)-(\\d+)");
@@ -43,10 +43,6 @@ public class RangeParser extends AbstractParser {
             int from = Integer.parseInt(m.group(1));
             int to = Integer.parseInt(m.group(2));
             if (from <= to && range.contains(from) && range.contains(to)) {
-                if (set == null) {
-                    set = new HashSet<Integer>();
-                }
-
                 for (int i = from; i <= to; i++) {
                     set.add(i);
                 }
@@ -65,10 +61,6 @@ public class RangeParser extends AbstractParser {
     protected Set<Integer> parse(DateTime dateTime) {
         if (type.equals(DurationField.DAY_OF_WEEK)) {
             if (set != null) {
-                if (result == null) {
-                    result = new HashSet<Integer>();
-                }
-
                 result.clear();
 
                 MutableDateTime mdt = dateTime.dayOfMonth().withMaximumValue().toMutableDateTime();

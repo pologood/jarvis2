@@ -45,19 +45,19 @@ public final class ModifyDependencyProtos {
         int getCommonDependStrategy();
 
         /**
-         * <code>optional string last_depend_strategy = 4 [default = ""];</code>
+         * <code>optional string offset_depend_strategy = 4 [default = ""];</code>
          */
-        boolean hasLastDependStrategy();
+        boolean hasOffsetDependStrategy();
 
         /**
-         * <code>optional string last_depend_strategy = 4 [default = ""];</code>
+         * <code>optional string offset_depend_strategy = 4 [default = ""];</code>
          */
-        java.lang.String getLastDependStrategy();
+        java.lang.String getOffsetDependStrategy();
 
         /**
-         * <code>optional string last_depend_strategy = 4 [default = ""];</code>
+         * <code>optional string offset_depend_strategy = 4 [default = ""];</code>
          */
-        com.google.protobuf.ByteString getLastDependStrategyBytes();
+        com.google.protobuf.ByteString getOffsetDependStrategyBytes();
     }
 
     /**
@@ -136,7 +136,7 @@ public final class ModifyDependencyProtos {
                         case 34: {
                             com.google.protobuf.ByteString bs = input.readBytes();
                             bitField0_ |= 0x00000008;
-                            lastDependStrategy_ = bs;
+                            offsetDependStrategy_ = bs;
                             break;
                         }
                     }
@@ -180,10 +180,15 @@ public final class ModifyDependencyProtos {
             /**
              * <code>ADD = 0;</code>
              */
-            ADD(0, 0), /**
-                        * <code>REMOVE = 1;</code>
-                        */
-            REMOVE(1, 1),;
+            ADD(0, 0),
+            /**
+             * <code>REMOVE = 1;</code>
+             */
+            REMOVE(1, 1),
+            /**
+             * <code>UPDATE = 2;</code>
+             */
+            UPDATE(2, 2),;
 
             /**
              * <code>ADD = 0;</code>
@@ -193,6 +198,10 @@ public final class ModifyDependencyProtos {
              * <code>REMOVE = 1;</code>
              */
             public static final int REMOVE_VALUE = 1;
+            /**
+             * <code>UPDATE = 2;</code>
+             */
+            public static final int UPDATE_VALUE = 2;
 
             public final int getNumber() {
                 return value;
@@ -204,6 +213,8 @@ public final class ModifyDependencyProtos {
                         return ADD;
                     case 1:
                         return REMOVE;
+                    case 2:
+                        return UPDATE;
                     default:
                         return null;
                 }
@@ -303,41 +314,41 @@ public final class ModifyDependencyProtos {
             return commonDependStrategy_;
         }
 
-        public static final int LAST_DEPEND_STRATEGY_FIELD_NUMBER = 4;
-        private java.lang.Object lastDependStrategy_;
+        public static final int OFFSET_DEPEND_STRATEGY_FIELD_NUMBER = 4;
+        private java.lang.Object offsetDependStrategy_;
 
         /**
-         * <code>optional string last_depend_strategy = 4 [default = ""];</code>
+         * <code>optional string offset_depend_strategy = 4 [default = ""];</code>
          */
-        public boolean hasLastDependStrategy() {
+        public boolean hasOffsetDependStrategy() {
             return ((bitField0_ & 0x00000008) == 0x00000008);
         }
 
         /**
-         * <code>optional string last_depend_strategy = 4 [default = ""];</code>
+         * <code>optional string offset_depend_strategy = 4 [default = ""];</code>
          */
-        public java.lang.String getLastDependStrategy() {
-            java.lang.Object ref = lastDependStrategy_;
+        public java.lang.String getOffsetDependStrategy() {
+            java.lang.Object ref = offsetDependStrategy_;
             if (ref instanceof java.lang.String) {
                 return (java.lang.String) ref;
             } else {
                 com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
                 java.lang.String s = bs.toStringUtf8();
                 if (bs.isValidUtf8()) {
-                    lastDependStrategy_ = s;
+                    offsetDependStrategy_ = s;
                 }
                 return s;
             }
         }
 
         /**
-         * <code>optional string last_depend_strategy = 4 [default = ""];</code>
+         * <code>optional string offset_depend_strategy = 4 [default = ""];</code>
          */
-        public com.google.protobuf.ByteString getLastDependStrategyBytes() {
-            java.lang.Object ref = lastDependStrategy_;
+        public com.google.protobuf.ByteString getOffsetDependStrategyBytes() {
+            java.lang.Object ref = offsetDependStrategy_;
             if (ref instanceof java.lang.String) {
                 com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                lastDependStrategy_ = b;
+                offsetDependStrategy_ = b;
                 return b;
             } else {
                 return (com.google.protobuf.ByteString) ref;
@@ -348,7 +359,7 @@ public final class ModifyDependencyProtos {
             operator_ = com.mogujie.jarvis.protocol.ModifyDependencyProtos.DependencyEntry.DependencyOperator.ADD;
             jobId_ = 0L;
             commonDependStrategy_ = 0;
-            lastDependStrategy_ = "";
+            offsetDependStrategy_ = "";
         }
 
         private byte memoizedIsInitialized = -1;
@@ -384,7 +395,7 @@ public final class ModifyDependencyProtos {
                 output.writeInt32(3, commonDependStrategy_);
             }
             if (((bitField0_ & 0x00000008) == 0x00000008)) {
-                output.writeBytes(4, getLastDependStrategyBytes());
+                output.writeBytes(4, getOffsetDependStrategyBytes());
             }
             getUnknownFields().writeTo(output);
         }
@@ -407,7 +418,7 @@ public final class ModifyDependencyProtos {
                 size += com.google.protobuf.CodedOutputStream.computeInt32Size(3, commonDependStrategy_);
             }
             if (((bitField0_ & 0x00000008) == 0x00000008)) {
-                size += com.google.protobuf.CodedOutputStream.computeBytesSize(4, getLastDependStrategyBytes());
+                size += com.google.protobuf.CodedOutputStream.computeBytesSize(4, getOffsetDependStrategyBytes());
             }
             size += getUnknownFields().getSerializedSize();
             memoizedSerializedSize = size;
@@ -496,7 +507,7 @@ public final class ModifyDependencyProtos {
         /**
          * Protobuf type {@code DependencyEntry}
          */
-        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder>implements
+        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder> implements
                 // @@protoc_insertion_point(builder_implements:DependencyEntry)
                 com.mogujie.jarvis.protocol.ModifyDependencyProtos.DependencyEntryOrBuilder {
             public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
@@ -537,7 +548,7 @@ public final class ModifyDependencyProtos {
                 bitField0_ = (bitField0_ & ~0x00000002);
                 commonDependStrategy_ = 0;
                 bitField0_ = (bitField0_ & ~0x00000004);
-                lastDependStrategy_ = "";
+                offsetDependStrategy_ = "";
                 bitField0_ = (bitField0_ & ~0x00000008);
                 return this;
             }
@@ -582,7 +593,7 @@ public final class ModifyDependencyProtos {
                 if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
                     to_bitField0_ |= 0x00000008;
                 }
-                result.lastDependStrategy_ = lastDependStrategy_;
+                result.offsetDependStrategy_ = offsetDependStrategy_;
                 result.bitField0_ = to_bitField0_;
                 onBuilt();
                 return result;
@@ -609,9 +620,9 @@ public final class ModifyDependencyProtos {
                 if (other.hasCommonDependStrategy()) {
                     setCommonDependStrategy(other.getCommonDependStrategy());
                 }
-                if (other.hasLastDependStrategy()) {
+                if (other.hasOffsetDependStrategy()) {
                     bitField0_ |= 0x00000008;
-                    lastDependStrategy_ = other.lastDependStrategy_;
+                    offsetDependStrategy_ = other.offsetDependStrategy_;
                     onChanged();
                 }
                 this.mergeUnknownFields(other.getUnknownFields());
@@ -759,25 +770,25 @@ public final class ModifyDependencyProtos {
                 return this;
             }
 
-            private java.lang.Object lastDependStrategy_ = "";
+            private java.lang.Object offsetDependStrategy_ = "";
 
             /**
-             * <code>optional string last_depend_strategy = 4 [default = ""];</code>
+             * <code>optional string offset_depend_strategy = 4 [default = ""];</code>
              */
-            public boolean hasLastDependStrategy() {
+            public boolean hasOffsetDependStrategy() {
                 return ((bitField0_ & 0x00000008) == 0x00000008);
             }
 
             /**
-             * <code>optional string last_depend_strategy = 4 [default = ""];</code>
+             * <code>optional string offset_depend_strategy = 4 [default = ""];</code>
              */
-            public java.lang.String getLastDependStrategy() {
-                java.lang.Object ref = lastDependStrategy_;
+            public java.lang.String getOffsetDependStrategy() {
+                java.lang.Object ref = offsetDependStrategy_;
                 if (!(ref instanceof java.lang.String)) {
                     com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
                     java.lang.String s = bs.toStringUtf8();
                     if (bs.isValidUtf8()) {
-                        lastDependStrategy_ = s;
+                        offsetDependStrategy_ = s;
                     }
                     return s;
                 } else {
@@ -786,13 +797,13 @@ public final class ModifyDependencyProtos {
             }
 
             /**
-             * <code>optional string last_depend_strategy = 4 [default = ""];</code>
+             * <code>optional string offset_depend_strategy = 4 [default = ""];</code>
              */
-            public com.google.protobuf.ByteString getLastDependStrategyBytes() {
-                java.lang.Object ref = lastDependStrategy_;
+            public com.google.protobuf.ByteString getOffsetDependStrategyBytes() {
+                java.lang.Object ref = offsetDependStrategy_;
                 if (ref instanceof String) {
                     com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                    lastDependStrategy_ = b;
+                    offsetDependStrategy_ = b;
                     return b;
                 } else {
                     return (com.google.protobuf.ByteString) ref;
@@ -800,37 +811,37 @@ public final class ModifyDependencyProtos {
             }
 
             /**
-             * <code>optional string last_depend_strategy = 4 [default = ""];</code>
+             * <code>optional string offset_depend_strategy = 4 [default = ""];</code>
              */
-            public Builder setLastDependStrategy(java.lang.String value) {
+            public Builder setOffsetDependStrategy(java.lang.String value) {
                 if (value == null) {
                     throw new NullPointerException();
                 }
                 bitField0_ |= 0x00000008;
-                lastDependStrategy_ = value;
+                offsetDependStrategy_ = value;
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>optional string last_depend_strategy = 4 [default = ""];</code>
+             * <code>optional string offset_depend_strategy = 4 [default = ""];</code>
              */
-            public Builder clearLastDependStrategy() {
+            public Builder clearOffsetDependStrategy() {
                 bitField0_ = (bitField0_ & ~0x00000008);
-                lastDependStrategy_ = getDefaultInstance().getLastDependStrategy();
+                offsetDependStrategy_ = getDefaultInstance().getOffsetDependStrategy();
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>optional string last_depend_strategy = 4 [default = ""];</code>
+             * <code>optional string offset_depend_strategy = 4 [default = ""];</code>
              */
-            public Builder setLastDependStrategyBytes(com.google.protobuf.ByteString value) {
+            public Builder setOffsetDependStrategyBytes(com.google.protobuf.ByteString value) {
                 if (value == null) {
                     throw new NullPointerException();
                 }
                 bitField0_ |= 0x00000008;
-                lastDependStrategy_ = value;
+                offsetDependStrategy_ = value;
                 onChanged();
                 return this;
             }
@@ -884,6 +895,21 @@ public final class ModifyDependencyProtos {
          * <code>repeated .DependencyEntry dependency_entry = 2;</code>
          */
         com.mogujie.jarvis.protocol.ModifyDependencyProtos.DependencyEntryOrBuilder getDependencyEntryOrBuilder(int index);
+
+        /**
+         * <code>required string user = 3;</code>
+         */
+        boolean hasUser();
+
+        /**
+         * <code>required string user = 3;</code>
+         */
+        java.lang.String getUser();
+
+        /**
+         * <code>required string user = 3;</code>
+         */
+        com.google.protobuf.ByteString getUserBytes();
     }
 
     /**
@@ -950,6 +976,12 @@ public final class ModifyDependencyProtos {
                             }
                             dependencyEntry_.add(
                                     input.readMessage(com.mogujie.jarvis.protocol.ModifyDependencyProtos.DependencyEntry.PARSER, extensionRegistry));
+                            break;
+                        }
+                        case 26: {
+                            com.google.protobuf.ByteString bs = input.readBytes();
+                            bitField0_ |= 0x00000002;
+                            user_ = bs;
                             break;
                         }
                     }
@@ -1045,9 +1077,51 @@ public final class ModifyDependencyProtos {
             return dependencyEntry_.get(index);
         }
 
+        public static final int USER_FIELD_NUMBER = 3;
+        private java.lang.Object user_;
+
+        /**
+         * <code>required string user = 3;</code>
+         */
+        public boolean hasUser() {
+            return ((bitField0_ & 0x00000002) == 0x00000002);
+        }
+
+        /**
+         * <code>required string user = 3;</code>
+         */
+        public java.lang.String getUser() {
+            java.lang.Object ref = user_;
+            if (ref instanceof java.lang.String) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                if (bs.isValidUtf8()) {
+                    user_ = s;
+                }
+                return s;
+            }
+        }
+
+        /**
+         * <code>required string user = 3;</code>
+         */
+        public com.google.protobuf.ByteString getUserBytes() {
+            java.lang.Object ref = user_;
+            if (ref instanceof java.lang.String) {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                user_ = b;
+                return b;
+            } else {
+                return (com.google.protobuf.ByteString) ref;
+            }
+        }
+
         private void initFields() {
             jobId_ = 0L;
             dependencyEntry_ = java.util.Collections.emptyList();
+            user_ = "";
         }
 
         private byte memoizedIsInitialized = -1;
@@ -1060,6 +1134,10 @@ public final class ModifyDependencyProtos {
                 return false;
 
             if (!hasJobId()) {
+                memoizedIsInitialized = 0;
+                return false;
+            }
+            if (!hasUser()) {
                 memoizedIsInitialized = 0;
                 return false;
             }
@@ -1081,6 +1159,9 @@ public final class ModifyDependencyProtos {
             for (int i = 0; i < dependencyEntry_.size(); i++) {
                 output.writeMessage(2, dependencyEntry_.get(i));
             }
+            if (((bitField0_ & 0x00000002) == 0x00000002)) {
+                output.writeBytes(3, getUserBytes());
+            }
             getUnknownFields().writeTo(output);
         }
 
@@ -1097,6 +1178,9 @@ public final class ModifyDependencyProtos {
             }
             for (int i = 0; i < dependencyEntry_.size(); i++) {
                 size += com.google.protobuf.CodedOutputStream.computeMessageSize(2, dependencyEntry_.get(i));
+            }
+            if (((bitField0_ & 0x00000002) == 0x00000002)) {
+                size += com.google.protobuf.CodedOutputStream.computeBytesSize(3, getUserBytes());
             }
             size += getUnknownFields().getSerializedSize();
             memoizedSerializedSize = size;
@@ -1186,7 +1270,7 @@ public final class ModifyDependencyProtos {
         /**
          * Protobuf type {@code RestServerModifyDependencyRequest}
          */
-        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder>implements
+        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder> implements
                 // @@protoc_insertion_point(builder_implements:RestServerModifyDependencyRequest)
                 com.mogujie.jarvis.protocol.ModifyDependencyProtos.RestServerModifyDependencyRequestOrBuilder {
             public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
@@ -1230,6 +1314,8 @@ public final class ModifyDependencyProtos {
                 } else {
                     dependencyEntryBuilder_.clear();
                 }
+                user_ = "";
+                bitField0_ = (bitField0_ & ~0x00000004);
                 return this;
             }
 
@@ -1271,6 +1357,10 @@ public final class ModifyDependencyProtos {
                 } else {
                     result.dependencyEntry_ = dependencyEntryBuilder_.build();
                 }
+                if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+                    to_bitField0_ |= 0x00000002;
+                }
+                result.user_ = user_;
                 result.bitField0_ = to_bitField0_;
                 onBuilt();
                 return result;
@@ -1316,12 +1406,21 @@ public final class ModifyDependencyProtos {
                         }
                     }
                 }
+                if (other.hasUser()) {
+                    bitField0_ |= 0x00000004;
+                    user_ = other.user_;
+                    onChanged();
+                }
                 this.mergeUnknownFields(other.getUnknownFields());
                 return this;
             }
 
             public final boolean isInitialized() {
                 if (!hasJobId()) {
+
+                    return false;
+                }
+                if (!hasUser()) {
 
                     return false;
                 }
@@ -1628,6 +1727,82 @@ public final class ModifyDependencyProtos {
                     dependencyEntry_ = null;
                 }
                 return dependencyEntryBuilder_;
+            }
+
+            private java.lang.Object user_ = "";
+
+            /**
+             * <code>required string user = 3;</code>
+             */
+            public boolean hasUser() {
+                return ((bitField0_ & 0x00000004) == 0x00000004);
+            }
+
+            /**
+             * <code>required string user = 3;</code>
+             */
+            public java.lang.String getUser() {
+                java.lang.Object ref = user_;
+                if (!(ref instanceof java.lang.String)) {
+                    com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                    java.lang.String s = bs.toStringUtf8();
+                    if (bs.isValidUtf8()) {
+                        user_ = s;
+                    }
+                    return s;
+                } else {
+                    return (java.lang.String) ref;
+                }
+            }
+
+            /**
+             * <code>required string user = 3;</code>
+             */
+            public com.google.protobuf.ByteString getUserBytes() {
+                java.lang.Object ref = user_;
+                if (ref instanceof String) {
+                    com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                    user_ = b;
+                    return b;
+                } else {
+                    return (com.google.protobuf.ByteString) ref;
+                }
+            }
+
+            /**
+             * <code>required string user = 3;</code>
+             */
+            public Builder setUser(java.lang.String value) {
+                if (value == null) {
+                    throw new NullPointerException();
+                }
+                bitField0_ |= 0x00000004;
+                user_ = value;
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>required string user = 3;</code>
+             */
+            public Builder clearUser() {
+                bitField0_ = (bitField0_ & ~0x00000004);
+                user_ = getDefaultInstance().getUser();
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>required string user = 3;</code>
+             */
+            public Builder setUserBytes(com.google.protobuf.ByteString value) {
+                if (value == null) {
+                    throw new NullPointerException();
+                }
+                bitField0_ |= 0x00000004;
+                user_ = value;
+                onChanged();
+                return this;
             }
 
             // @@protoc_insertion_point(builder_scope:RestServerModifyDependencyRequest)
@@ -2003,7 +2178,7 @@ public final class ModifyDependencyProtos {
         /**
          * Protobuf type {@code ServerModifyDependencyResponse}
          */
-        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder>implements
+        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder> implements
                 // @@protoc_insertion_point(builder_implements:ServerModifyDependencyResponse)
                 com.mogujie.jarvis.protocol.ModifyDependencyProtos.ServerModifyDependencyResponseOrBuilder {
             public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
@@ -2319,16 +2494,16 @@ public final class ModifyDependencyProtos {
     private static com.google.protobuf.Descriptors.FileDescriptor descriptor;
 
     static {
-        java.lang.String[] descriptorData = {
-                "\n\027modify_dependency.proto\"\306\001\n\017Dependency" + "Entry\0225\n\010operator\030\001 \002(\0162#.DependencyEntr"
-                        + "y.DependencyOperator\022\016\n\006job_id\030\002 \002(\003\022!\n\026"
-                        + "common_depend_strategy\030\003 \001(\005:\0010\022\036\n\024last_"
-                        + "depend_strategy\030\004 \001(\t:\000\")\n\022DependencyOpe"
-                        + "rator\022\007\n\003ADD\020\000\022\n\n\006REMOVE\020\001\"_\n!RestServer"
-                        + "ModifyDependencyRequest\022\016\n\006job_id\030\001 \002(\003\022"
-                        + "*\n\020dependency_entry\030\002 \003(\0132\020.DependencyEn" + "try\"T\n\036ServerModifyDependencyResponse\022\016\n"
-                        + "\006job_id\030\001 \002(\003\022\017\n\007success\030\002 \002(\010\022\021\n\007messag",
-                "e\030\003 \001(\t:\000B5\n\033com.mogujie.jarvis.protocol" + "B\026ModifyDependencyProtos" };
+        java.lang.String[] descriptorData = { "\n\027modify_dependency.proto\"\324\001\n\017Dependency"
+                + "Entry\0225\n\010operator\030\001 \002(\0162#.DependencyEntr"
+                + "y.DependencyOperator\022\016\n\006job_id\030\002 \002(\003\022!\n\026"
+                + "common_depend_strategy\030\003 \001(\005:\0010\022 \n\026offse" + "t_depend_strategy\030\004 \001(\t:\000\"5\n\022DependencyO"
+                + "perator\022\007\n\003ADD\020\000\022\n\n\006REMOVE\020\001\022\n\n\006UPDATE\020\002"
+                + "\"m\n!RestServerModifyDependencyRequest\022\016\n" + "\006job_id\030\001 \002(\003\022*\n\020dependency_entry\030\002 \003(\0132"
+                + "\020.DependencyEntry\022\014\n\004user\030\003 \002(\t\"T\n\036Serve"
+                + "rModifyDependencyResponse\022\016\n\006job_id\030\001 \002(",
+                "\003\022\017\n\007success\030\002 \002(\010\022\021\n\007message\030\003 \001(\t:\000B5\n"
+                        + "\033com.mogujie.jarvis.protocolB\026ModifyDepe" + "ndencyProtos" };
         com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner = new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
             public com.google.protobuf.ExtensionRegistry assignDescriptors(com.google.protobuf.Descriptors.FileDescriptor root) {
                 descriptor = root;
@@ -2340,10 +2515,10 @@ public final class ModifyDependencyProtos {
         internal_static_DependencyEntry_descriptor = getDescriptor().getMessageTypes().get(0);
         internal_static_DependencyEntry_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
                 internal_static_DependencyEntry_descriptor,
-                new java.lang.String[] { "Operator", "JobId", "CommonDependStrategy", "LastDependStrategy", });
+                new java.lang.String[] { "Operator", "JobId", "CommonDependStrategy", "OffsetDependStrategy", });
         internal_static_RestServerModifyDependencyRequest_descriptor = getDescriptor().getMessageTypes().get(1);
         internal_static_RestServerModifyDependencyRequest_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-                internal_static_RestServerModifyDependencyRequest_descriptor, new java.lang.String[] { "JobId", "DependencyEntry", });
+                internal_static_RestServerModifyDependencyRequest_descriptor, new java.lang.String[] { "JobId", "DependencyEntry", "User", });
         internal_static_ServerModifyDependencyResponse_descriptor = getDescriptor().getMessageTypes().get(2);
         internal_static_ServerModifyDependencyResponse_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
                 internal_static_ServerModifyDependencyResponse_descriptor, new java.lang.String[] { "JobId", "Success", "Message", });

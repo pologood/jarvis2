@@ -6,7 +6,7 @@ option java_outer_classname = "SubmitJobProtos";
 message DependencyEntry {
   required int64 job_id = 1;
   optional int32 common_depend_strategy = 2 [default = 0];
-  optional string last_depend_strategy = 3 [default = ""];
+  optional string offset_depend_strategy = 3 [default = ""];
 }
 
 
