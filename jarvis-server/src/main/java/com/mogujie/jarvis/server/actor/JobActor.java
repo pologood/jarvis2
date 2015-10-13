@@ -8,7 +8,7 @@
 
 package com.mogujie.jarvis.server.actor;
 
-import java.text.DateFormat;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -18,8 +18,10 @@ import java.util.Set;
 
 import javax.inject.Named;
 
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.transaction.annotation.Transactional;
 
 import akka.actor.UntypedActor;
 
@@ -76,6 +78,7 @@ public class JobActor extends UntypedActor {
     private JobDependMapper jobDependMapper;
 
     @Override
+    @Transactional
     public void onReceive(Object obj) throws Exception {
         // TODO
         if (obj instanceof RestServerSubmitJobRequest) {
@@ -113,6 +116,7 @@ public class JobActor extends UntypedActor {
                 getSender().tell("sucess", getSelf());
             } catch (Exception e) {
                 getSender().tell(e.getMessage(), getSelf());
+                throw new IOException(e);
             }
         } else if (obj instanceof RestServerModifyJobRequest) {
             RestServerModifyJobRequest msg = (RestServerModifyJobRequest) obj;
@@ -134,6 +138,7 @@ public class JobActor extends UntypedActor {
                 getSender().tell("sucess", getSelf());
             } catch (Exception e) {
                 getSender().tell(e.getMessage(), getSelf());
+                throw new IOException(e);
             }
         } else if (obj instanceof RestServerModifyDependencyRequest) {
             RestServerModifyDependencyRequest msg = (RestServerModifyDependencyRequest) obj;
@@ -167,9 +172,8 @@ public class JobActor extends UntypedActor {
                         record.setCommonStrategy(commonStrategyValue);
                         record.setOffsetStrategy(offsetStrategyValue);
                         record.setUpdateUser(user);
-                        Date currentTime = new Date();
-                        DateFormat dateTimeFormat = DateFormat.getDateTimeInstance();
-                        dateTimeFormat.format(currentTime);
+                        DateTime dt = DateTime.now();
+                        Date currentTime = dt.toDate();
                         record.setUpdateTime(currentTime);
                         jobDependMapper.updateByPrimaryKey(record);
                     }
@@ -182,6 +186,7 @@ public class JobActor extends UntypedActor {
                 getSender().tell("sucess", getSelf());
             } catch (Exception e) {
                 getSender().tell(e.getMessage(), getSelf());
+                throw new IOException(e);
             }
         } else if (obj instanceof RestServerModifyJobFlagRequest) {
             RestServerModifyJobFlagRequest msg = (RestServerModifyJobFlagRequest) obj;
@@ -189,18 +194,18 @@ public class JobActor extends UntypedActor {
             Job record = jobMapper.selectByPrimaryKey(jobId);
             record.setJobFlag(msg.getJobFlag());
             record.setUpdateUser(msg.getUser());
-            Date currentTime = new Date();
-            DateFormat dateTimeFormat = DateFormat.getDateTimeInstance();
-            dateTimeFormat.format(currentTime);
+            DateTime dt = DateTime.now();
+            Date currentTime = dt.toDate();
             record.setUpdateTime(currentTime);
             jobMapper.updateByPrimaryKey(record);
             JobFlag flag = JobFlag.getInstance(msg.getJobFlag());
             try {
-                dagScheduler.modifyJobFlag(jobId, flag);
                 timeScheduler.modifyJobFlag(jobId, flag);
+                dagScheduler.modifyJobFlag(jobId, flag);
                 getSender().tell("sucess", getSelf());
             } catch (Exception e) {
                 getSender().tell(e.getMessage(), getSelf());
+                throw new IOException(e);
             }
         } else {
             unhandled(obj);
