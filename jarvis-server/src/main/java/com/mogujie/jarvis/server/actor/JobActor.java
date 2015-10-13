@@ -113,7 +113,7 @@ public class JobActor extends UntypedActor {
             try {
                 dagScheduler.addJob(jobId, new DAGJob(jobId, type), needDependencies);
                 timeScheduler.addJob(jobId);
-                getSender().tell("sucess", getSelf());
+                getSender().tell("success", getSelf());
             } catch (Exception e) {
                 getSender().tell(e.getMessage(), getSelf());
                 throw new IOException(e);
@@ -135,7 +135,7 @@ public class JobActor extends UntypedActor {
             try {
                 dagScheduler.modifyDAGJobType(jobId, modifyMap);
                 timeScheduler.modifyJob(jobId);
-                getSender().tell("sucess", getSelf());
+                getSender().tell("success", getSelf());
             } catch (Exception e) {
                 getSender().tell(e.getMessage(), getSelf());
                 throw new IOException(e);
@@ -183,7 +183,7 @@ public class JobActor extends UntypedActor {
             }
             try {
                 dagScheduler.modifyDependency(jobId, dependEntries);
-                getSender().tell("sucess", getSelf());
+                getSender().tell("success", getSelf());
             } catch (Exception e) {
                 getSender().tell(e.getMessage(), getSelf());
                 throw new IOException(e);
@@ -202,7 +202,7 @@ public class JobActor extends UntypedActor {
             try {
                 timeScheduler.modifyJobFlag(jobId, flag);
                 dagScheduler.modifyJobFlag(jobId, flag);
-                getSender().tell("sucess", getSelf());
+                getSender().tell("success", getSelf());
             } catch (Exception e) {
                 getSender().tell(e.getMessage(), getSelf());
                 throw new IOException(e);

@@ -50,13 +50,15 @@ public class MessageUtil {
         job.setSubmitUser(msg.getUser());
         job.setUpdateUser(msg.getUser());
         job.setWorkerGroupId(msg.getGroupId());
+        job.setOriginJobId(msg.getOriginJobId());
+        job.setFixedDelay(msg.getFixedDelay());
+        if (msg.getParametersList() != null) {
+            job.setParams(JsonHelper.parseMapEntryList2JSON(msg.getParametersList()));
+        }
         DateTime dt = DateTime.now();
         Date currentTime = dt.toDate();
         job.setCreateTime(currentTime);
         job.setUpdateTime(currentTime);
-        job.setParams(JsonHelper.parseMapEntryList2JSON(msg.getParametersList()));
-        job.setOriginJobId(msg.getOriginJobId());
-        job.setFixedDelay(msg.getFixedDelay());
         return job;
     }
 

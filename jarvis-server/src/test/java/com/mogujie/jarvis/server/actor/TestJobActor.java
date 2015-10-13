@@ -10,6 +10,7 @@ package com.mogujie.jarvis.server.actor;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.springframework.context.ApplicationContext;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
@@ -17,6 +18,8 @@ import akka.actor.Props;
 import akka.testkit.JavaTestKit;
 
 import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitJobRequest;
+import com.mogujie.jarvis.server.JarvisServerActorSystem;
+import com.mogujie.jarvis.server.util.SpringContext;
 import com.mogujie.jarvis.server.util.SpringExtension;
 
 /**
@@ -28,7 +31,9 @@ public class TestJobActor {
 
     @BeforeClass
     public static void setup() {
-        system = ActorSystem.create("mytest");
+        ApplicationContext context = SpringContext.getApplicationContext();
+        system = JarvisServerActorSystem.getInstance();
+        SpringExtension.SPRING_EXT_PROVIDER.get(system).initialize(context);
     }
 
     @AfterClass
