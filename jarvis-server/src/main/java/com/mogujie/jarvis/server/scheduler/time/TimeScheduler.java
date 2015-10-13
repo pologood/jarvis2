@@ -53,7 +53,7 @@ public class TimeScheduler extends Scheduler {
 
     @Override
     @Transactional
-    public void init() {
+    protected void init() {
         getSchedulerController().register(this);
 
         cronScheduler.start();
@@ -79,7 +79,7 @@ public class TimeScheduler extends Scheduler {
     }
 
     @Override
-    public void destroy() {
+    protected void destroy() {
         getSchedulerController().unregister(this);
     }
 

@@ -7,6 +7,7 @@
  */
 package com.mogujie.jarvis.server.scheduler.dag;
 
+import org.apache.commons.configuration.Configuration;
 import org.jgrapht.experimental.dag.DirectedAcyclicGraph.CycleFoundException;
 import org.junit.After;
 import org.junit.Assert;
@@ -14,6 +15,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.google.common.collect.Sets;
+import com.mogujie.jarvis.core.util.ConfigUtils;
+import com.mogujie.jarvis.server.scheduler.SchedulerUtil;
 import com.mogujie.jarvis.server.util.SpringContext;
 
 
@@ -22,16 +25,17 @@ import com.mogujie.jarvis.server.util.SpringContext;
  *
  */
 public class TestDAGScheduler {
-
     private DAGJob jobA;
     private DAGJob jobB;
     private DAGJob jobC;
     private static DAGScheduler scheduler;
+    private static Configuration conf = ConfigUtils.getServerConfig();
 
     @BeforeClass
     public static void setup() throws Exception {
+        conf.clear();
+        conf.setProperty(SchedulerUtil.ENABLE_TEST_MODE, true);
         scheduler = SpringContext.getBean(DAGScheduler.class);
-        scheduler.clear();
     }
 
     @After

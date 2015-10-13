@@ -40,10 +40,22 @@ public abstract class Scheduler implements Observer {
     }
 
     @PostConstruct
-    public abstract void init();
+    public void postConstruct() {
+        if (!SchedulerUtil.isTestMode()) {
+            init();
+        }
+    }
 
     @PreDestroy
-    public abstract void destroy();
+    public void preDestroy() {
+        if (!SchedulerUtil.isTestMode()) {
+            destroy();
+        }
+    }
+
+    protected abstract void init();
+
+    protected abstract void destroy();
 
     @Subscribe
     public abstract void handleStartEvent(StartEvent event);

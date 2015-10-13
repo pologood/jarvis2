@@ -10,12 +10,14 @@ package com.mogujie.jarvis.server.scheduler.dag;
 
 import org.apache.commons.configuration.Configuration;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.google.common.collect.Sets;
 import com.mogujie.jarvis.core.util.ConfigUtils;
+import com.mogujie.jarvis.server.scheduler.SchedulerUtil;
 import com.mogujie.jarvis.server.scheduler.controller.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.controller.SchedulerControllerFactory;
 import com.mogujie.jarvis.server.scheduler.controller.SyncSchedulerController;
@@ -24,7 +26,6 @@ import com.mogujie.jarvis.server.scheduler.dag.checker.DummyDAGDependChecker;
 import com.mogujie.jarvis.server.scheduler.event.SuccessEvent;
 import com.mogujie.jarvis.server.scheduler.event.TimeReadyEvent;
 import com.mogujie.jarvis.server.scheduler.task.TaskScheduler;
-import com.mogujie.jarvis.server.scheduler.time.TimeScheduler;
 import com.mogujie.jarvis.server.util.SpringContext;
 
 /**
@@ -34,7 +35,6 @@ import com.mogujie.jarvis.server.util.SpringContext;
 public class TestJobSchedulerController {
     private static JobSchedulerController controller;
     private static DAGScheduler dagScheduler;
-    private static TimeScheduler timeScheduler;
     private static TaskScheduler taskScheduler;
     private long jobAId = 1;
     private long jobBId = 2;
@@ -42,22 +42,30 @@ public class TestJobSchedulerController {
     private static Configuration conf = ConfigUtils.getServerConfig();
 
     @BeforeClass
-    public static void setup() {
+    public static void beforeClass() {
+        conf.clear();
         conf.setProperty(DAGDependCheckerFactory.DAG_DEPEND_CHECKER_KEY,
                 DummyDAGDependChecker.class.getName());
         conf.setProperty(SchedulerControllerFactory.SCHEDULER_CONTROLLER_KEY,
                 SyncSchedulerController.class.getName());
+        conf.setProperty(SchedulerUtil.ENABLE_TEST_MODE, true);
         controller = SchedulerControllerFactory.getController();
         dagScheduler = SpringContext.getBean(DAGScheduler.class);
-        timeScheduler = SpringContext.getBean(TimeScheduler.class);
         taskScheduler = SpringContext.getBean(TaskScheduler.class);
+        controller.register(dagScheduler);
+        controller.register(taskScheduler);
+    }
+
+    @AfterClass
+    public static void afterClass() {
+        controller.unregister(dagScheduler);
+        controller.unregister(taskScheduler);
     }
 
     @After
     public void tearDown() {
-        dagScheduler.destroy();
-        timeScheduler.destroy();
-        taskScheduler.destroy();
+        dagScheduler.clear();
+        taskScheduler.clear();
     }
 
     /**

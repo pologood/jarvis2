@@ -26,6 +26,7 @@ import com.mogujie.jarvis.server.domain.ModifyDependEntry;
 import com.mogujie.jarvis.server.domain.ModifyJobEntry;
 import com.mogujie.jarvis.server.domain.ModifyJobType;
 import com.mogujie.jarvis.server.domain.ModifyOperation;
+import com.mogujie.jarvis.server.scheduler.SchedulerUtil;
 import com.mogujie.jarvis.server.scheduler.dag.checker.DAGDependCheckerFactory;
 import com.mogujie.jarvis.server.scheduler.dag.checker.DummyDAGDependChecker;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
@@ -48,12 +49,12 @@ public class TestDAGSchedulerWithEvent {
 
     @BeforeClass
     public static void setup() throws Exception {
+        conf.clear();
         conf.setProperty(DAGDependCheckerFactory.DAG_DEPEND_CHECKER_KEY,
                 DummyDAGDependChecker.class.getName());
+        conf.setProperty(SchedulerUtil.ENABLE_TEST_MODE, true);
         dagScheduler = SpringContext.getBean(DAGScheduler.class);
         taskScheduler = SpringContext.getBean(TaskScheduler.class);
-        dagScheduler.clear();
-        taskScheduler.clear();
     }
 
     @After

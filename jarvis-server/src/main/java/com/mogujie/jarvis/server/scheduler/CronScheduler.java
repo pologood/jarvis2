@@ -27,12 +27,13 @@ import com.mogujie.jarvis.core.domain.Pair;
 import com.mogujie.jarvis.dto.Crontab;
 import com.mogujie.jarvis.server.cron.CronExpression;
 import com.mogujie.jarvis.server.scheduler.controller.JobSchedulerController;
+import com.mogujie.jarvis.server.scheduler.controller.SchedulerControllerFactory;
 import com.mogujie.jarvis.server.scheduler.event.TimeReadyEvent;
 
 @Repository
 public class CronScheduler {
 
-    private JobSchedulerController jobSchedulerController;
+    private JobSchedulerController jobSchedulerController = SchedulerControllerFactory.getController();
 
     private ExecutorService executor = Executors.newSingleThreadExecutor();
     private SchedulerThread schedulerThread;

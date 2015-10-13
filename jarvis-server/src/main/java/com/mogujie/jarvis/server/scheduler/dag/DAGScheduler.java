@@ -21,6 +21,7 @@ import org.jgrapht.experimental.dag.DirectedAcyclicGraph.CycleFoundException;
 import org.jgrapht.graph.DefaultEdge;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Sets;
@@ -76,8 +77,10 @@ public class DAGScheduler extends Scheduler {
     private static final Logger LOGGER = LogManager.getLogger("server");
 
     @Override
-    public void init() {
+    @Transactional
+    protected void init() {
         getSchedulerController().register(this);
+
         // load not deleted jobs from DB
         List<Job> jobs = jobService.getJobsNotDeleted();
         for (Job job : jobs) {
@@ -99,7 +102,7 @@ public class DAGScheduler extends Scheduler {
     }
 
     @Override
-    public void destroy() {
+    protected void destroy() {
         clear();
         getSchedulerController().unregister(this);
     }
