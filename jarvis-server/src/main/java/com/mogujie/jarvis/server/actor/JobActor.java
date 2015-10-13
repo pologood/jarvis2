@@ -21,6 +21,8 @@ import javax.inject.Named;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 
+import akka.actor.UntypedActor;
+
 import com.google.common.collect.Sets;
 import com.mogujie.jarvis.core.domain.JobFlag;
 import com.mogujie.jarvis.dao.JobDependMapper;
@@ -46,8 +48,6 @@ import com.mogujie.jarvis.server.scheduler.time.TimeScheduler;
 import com.mogujie.jarvis.server.service.CrontabService;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.util.MessageUtil;
-
-import akka.actor.UntypedActor;
 
 /**
  * @author guangming
@@ -102,7 +102,7 @@ public class JobActor extends UntypedActor {
                 jobDependMapper.insert(jobDepend);
             }
 
-            // 4. construct AddJobEvent
+            // 4. add job to scheduler
             int cycleFlag = msg.hasFixedDelay() ? 1 : 0;
             int dependFlag = (!needDependencies.isEmpty()) ? 1 : 0;
             int timeFlag = msg.hasCronExpression() ? 1 : 0;
@@ -126,7 +126,7 @@ public class JobActor extends UntypedActor {
                 cronService.updateOrDelete(jobId, msg.getCronExpression());
             }
 
-            // 3. construct ModifyJobEvent
+            // 3. scheduler modify job
             Map<ModifyJobType, ModifyJobEntry> modifyMap = MessageUtil.convert2ModifyJobMap(msg, jobService, cronService);
             try {
                 dagScheduler.modifyDAGJobType(jobId, modifyMap);
@@ -143,8 +143,8 @@ public class JobActor extends UntypedActor {
                 long preJobId = entry.getJobId();
                 int commonStrategyValue = entry.getCommonDependStrategy();
                 String offsetStrategyValue = entry.getOffsetDependStrategy();
-                // TODO
-                String user = null;
+                String user = msg.getUser();
+
                 ModifyOperation operation;
                 if (entry.getOperator().equals(DependencyOperator.ADD)) {
                     operation = ModifyOperation.ADD;
@@ -186,6 +186,14 @@ public class JobActor extends UntypedActor {
         } else if (obj instanceof RestServerModifyJobFlagRequest) {
             RestServerModifyJobFlagRequest msg = (RestServerModifyJobFlagRequest) obj;
             long jobId = msg.getJobId();
+            Job record = jobMapper.selectByPrimaryKey(jobId);
+            record.setJobFlag(msg.getJobFlag());
+            record.setUpdateUser(msg.getUser());
+            Date currentTime = new Date();
+            DateFormat dateTimeFormat = DateFormat.getDateTimeInstance();
+            dateTimeFormat.format(currentTime);
+            record.setUpdateTime(currentTime);
+            jobMapper.updateByPrimaryKey(record);
             JobFlag flag = JobFlag.getInstance(msg.getJobFlag());
             try {
                 dagScheduler.modifyJobFlag(jobId, flag);
