@@ -367,7 +367,7 @@ public final class SubmitJobProtos {
         /**
          * Protobuf type {@code DependencyEntry}
          */
-        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder>implements
+        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder> implements
                 // @@protoc_insertion_point(builder_implements:DependencyEntry)
                 com.mogujie.jarvis.protocol.SubmitJobProtos.DependencyEntryOrBuilder {
             public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
@@ -860,32 +860,32 @@ public final class SubmitJobProtos {
         int getFailedInterval();
 
         /**
-         * <code>required int64 start_time = 15;</code>
+         * <code>optional int64 start_time = 15;</code>
          */
         boolean hasStartTime();
 
         /**
-         * <code>required int64 start_time = 15;</code>
+         * <code>optional int64 start_time = 15;</code>
          */
         long getStartTime();
 
         /**
-         * <code>required int64 end_time = 16;</code>
+         * <code>optional int64 end_time = 16;</code>
          */
         boolean hasEndTime();
 
         /**
-         * <code>required int64 end_time = 16;</code>
+         * <code>optional int64 end_time = 16;</code>
          */
         long getEndTime();
 
         /**
-         * <code>required int64 origin_job_id = 17;</code>
+         * <code>optional int64 origin_job_id = 17;</code>
          */
         boolean hasOriginJobId();
 
         /**
-         * <code>required int64 origin_job_id = 17;</code>
+         * <code>optional int64 origin_job_id = 17;</code>
          */
         long getOriginJobId();
 
@@ -1558,14 +1558,14 @@ public final class SubmitJobProtos {
         private long startTime_;
 
         /**
-         * <code>required int64 start_time = 15;</code>
+         * <code>optional int64 start_time = 15;</code>
          */
         public boolean hasStartTime() {
             return ((bitField0_ & 0x00002000) == 0x00002000);
         }
 
         /**
-         * <code>required int64 start_time = 15;</code>
+         * <code>optional int64 start_time = 15;</code>
          */
         public long getStartTime() {
             return startTime_;
@@ -1575,14 +1575,14 @@ public final class SubmitJobProtos {
         private long endTime_;
 
         /**
-         * <code>required int64 end_time = 16;</code>
+         * <code>optional int64 end_time = 16;</code>
          */
         public boolean hasEndTime() {
             return ((bitField0_ & 0x00004000) == 0x00004000);
         }
 
         /**
-         * <code>required int64 end_time = 16;</code>
+         * <code>optional int64 end_time = 16;</code>
          */
         public long getEndTime() {
             return endTime_;
@@ -1592,14 +1592,14 @@ public final class SubmitJobProtos {
         private long originJobId_;
 
         /**
-         * <code>required int64 origin_job_id = 17;</code>
+         * <code>optional int64 origin_job_id = 17;</code>
          */
         public boolean hasOriginJobId() {
             return ((bitField0_ & 0x00008000) == 0x00008000);
         }
 
         /**
-         * <code>required int64 origin_job_id = 17;</code>
+         * <code>optional int64 origin_job_id = 17;</code>
          */
         public long getOriginJobId() {
             return originJobId_;
@@ -1716,18 +1716,6 @@ public final class SubmitJobProtos {
                 return false;
             }
             if (!hasGroupId()) {
-                memoizedIsInitialized = 0;
-                return false;
-            }
-            if (!hasStartTime()) {
-                memoizedIsInitialized = 0;
-                return false;
-            }
-            if (!hasEndTime()) {
-                memoizedIsInitialized = 0;
-                return false;
-            }
-            if (!hasOriginJobId()) {
                 memoizedIsInitialized = 0;
                 return false;
             }
@@ -1961,7 +1949,7 @@ public final class SubmitJobProtos {
         /**
          * Protobuf type {@code RestServerSubmitJobRequest}
          */
-        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder>implements
+        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder> implements
                 // @@protoc_insertion_point(builder_implements:RestServerSubmitJobRequest)
                 com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitJobRequestOrBuilder {
             public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
@@ -2319,18 +2307,6 @@ public final class SubmitJobProtos {
                     return false;
                 }
                 if (!hasGroupId()) {
-
-                    return false;
-                }
-                if (!hasStartTime()) {
-
-                    return false;
-                }
-                if (!hasEndTime()) {
-
-                    return false;
-                }
-                if (!hasOriginJobId()) {
 
                     return false;
                 }
@@ -3357,21 +3333,21 @@ public final class SubmitJobProtos {
             private long startTime_;
 
             /**
-             * <code>required int64 start_time = 15;</code>
+             * <code>optional int64 start_time = 15;</code>
              */
             public boolean hasStartTime() {
                 return ((bitField0_ & 0x00004000) == 0x00004000);
             }
 
             /**
-             * <code>required int64 start_time = 15;</code>
+             * <code>optional int64 start_time = 15;</code>
              */
             public long getStartTime() {
                 return startTime_;
             }
 
             /**
-             * <code>required int64 start_time = 15;</code>
+             * <code>optional int64 start_time = 15;</code>
              */
             public Builder setStartTime(long value) {
                 bitField0_ |= 0x00004000;
@@ -3381,7 +3357,7 @@ public final class SubmitJobProtos {
             }
 
             /**
-             * <code>required int64 start_time = 15;</code>
+             * <code>optional int64 start_time = 15;</code>
              */
             public Builder clearStartTime() {
                 bitField0_ = (bitField0_ & ~0x00004000);
@@ -3393,21 +3369,21 @@ public final class SubmitJobProtos {
             private long endTime_;
 
             /**
-             * <code>required int64 end_time = 16;</code>
+             * <code>optional int64 end_time = 16;</code>
              */
             public boolean hasEndTime() {
                 return ((bitField0_ & 0x00008000) == 0x00008000);
             }
 
             /**
-             * <code>required int64 end_time = 16;</code>
+             * <code>optional int64 end_time = 16;</code>
              */
             public long getEndTime() {
                 return endTime_;
             }
 
             /**
-             * <code>required int64 end_time = 16;</code>
+             * <code>optional int64 end_time = 16;</code>
              */
             public Builder setEndTime(long value) {
                 bitField0_ |= 0x00008000;
@@ -3417,7 +3393,7 @@ public final class SubmitJobProtos {
             }
 
             /**
-             * <code>required int64 end_time = 16;</code>
+             * <code>optional int64 end_time = 16;</code>
              */
             public Builder clearEndTime() {
                 bitField0_ = (bitField0_ & ~0x00008000);
@@ -3429,21 +3405,21 @@ public final class SubmitJobProtos {
             private long originJobId_;
 
             /**
-             * <code>required int64 origin_job_id = 17;</code>
+             * <code>optional int64 origin_job_id = 17;</code>
              */
             public boolean hasOriginJobId() {
                 return ((bitField0_ & 0x00010000) == 0x00010000);
             }
 
             /**
-             * <code>required int64 origin_job_id = 17;</code>
+             * <code>optional int64 origin_job_id = 17;</code>
              */
             public long getOriginJobId() {
                 return originJobId_;
             }
 
             /**
-             * <code>required int64 origin_job_id = 17;</code>
+             * <code>optional int64 origin_job_id = 17;</code>
              */
             public Builder setOriginJobId(long value) {
                 bitField0_ |= 0x00010000;
@@ -3453,7 +3429,7 @@ public final class SubmitJobProtos {
             }
 
             /**
-             * <code>required int64 origin_job_id = 17;</code>
+             * <code>optional int64 origin_job_id = 17;</code>
              */
             public Builder clearOriginJobId() {
                 bitField0_ = (bitField0_ & ~0x00010000);
@@ -4109,7 +4085,7 @@ public final class SubmitJobProtos {
         /**
          * Protobuf type {@code ServerSubmitJobResponse}
          */
-        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder>implements
+        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder> implements
                 // @@protoc_insertion_point(builder_implements:ServerSubmitJobResponse)
                 com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitJobResponseOrBuilder {
             public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
@@ -5183,7 +5159,7 @@ public final class SubmitJobProtos {
         /**
          * Protobuf type {@code ServerSubmitTaskRequest}
          */
-        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder>implements
+        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder> implements
                 // @@protoc_insertion_point(builder_implements:ServerSubmitTaskRequest)
                 com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequestOrBuilder {
             public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
@@ -6537,7 +6513,7 @@ public final class SubmitJobProtos {
         /**
          * Protobuf type {@code WorkerSubmitTaskResponse}
          */
-        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder>implements
+        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder> implements
                 // @@protoc_insertion_point(builder_implements:WorkerSubmitTaskResponse)
                 com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponseOrBuilder {
             public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
@@ -6869,8 +6845,8 @@ public final class SubmitJobProtos {
                         + "\010priority\030\n \001(\005:\0011\022\031\n\016reject_retries\030\013 \001",
                 "(\005:\0010\022\032\n\017reject_interval\030\014 \001(\005:\0013\022\031\n\016fai"
                         + "led_retries\030\r \001(\005:\0010\022\032\n\017failed_interval\030"
-                        + "\016 \001(\005:\0013\022\022\n\nstart_time\030\017 \002(\003\022\020\n\010end_time"
-                        + "\030\020 \002(\003\022\025\n\rorigin_job_id\030\021 \002(\003\022\035\n\nparamet"
+                        + "\016 \001(\005:\0013\022\022\n\nstart_time\030\017 \001(\003\022\020\n\010end_time"
+                        + "\030\020 \001(\003\022\025\n\rorigin_job_id\030\021 \001(\003\022\035\n\nparamet"
                         + "ers\030\022 \003(\0132\t.MapEntry\022\023\n\013fixed_delay\030\023 \001("
                         + "\005\"M\n\027ServerSubmitJobResponse\022\016\n\006job_id\030\001"
                         + " \002(\003\022\017\n\007success\030\002 \002(\010\022\021\n\007message\030\003 \001(\t:\000"
