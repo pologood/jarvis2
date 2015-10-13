@@ -222,10 +222,12 @@ public class TaskScheduler extends Scheduler {
     }
 
     private Task createNewTask(long jobId) {
+        Job job = jobMapper.selectByPrimaryKey(jobId);
         Task task = new Task();
         task.setJobId(jobId);
         task.setAttemptId(1);
-        task.setExecuteUser(jobMapper.selectByPrimaryKey(jobId).getSubmitUser());
+        task.setExecuteUser(job.getSubmitUser());
+        task.setJobContent(job.getContent());
         task.setStatus(JobStatus.READY.getValue());
         Date currentTime = new Date();
         DateFormat dateTimeFormat = DateFormat.getDateTimeInstance();

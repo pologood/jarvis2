@@ -11,10 +11,6 @@ package com.mogujie.jarvis.server.scheduler.controller;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import javax.inject.Named;
-
-import org.springframework.stereotype.Service;
-
 import com.google.common.eventbus.AsyncEventBus;
 
 /**
@@ -23,12 +19,16 @@ import com.google.common.eventbus.AsyncEventBus;
  * @author guangming
  *
  */
-@Service
-@Named("AsyncSchedulerController")
 public class AsyncSchedulerController extends JobSchedulerController {
     private ExecutorService executorService = Executors.newCachedThreadPool();
 
-    public AsyncSchedulerController() {
+    private AsyncSchedulerController() {
         eventBus = new AsyncEventBus(executorService);
+    }
+
+    private static final AsyncSchedulerController single = new AsyncSchedulerController();
+
+    public static AsyncSchedulerController getInstance() {
+        return single;
     }
 }

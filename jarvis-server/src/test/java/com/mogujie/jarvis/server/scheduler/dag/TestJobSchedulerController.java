@@ -11,12 +11,13 @@ package com.mogujie.jarvis.server.scheduler.dag;
 import org.apache.commons.configuration.Configuration;
 import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.google.common.collect.Sets;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.server.scheduler.controller.JobSchedulerController;
+import com.mogujie.jarvis.server.scheduler.controller.SchedulerControllerFactory;
 import com.mogujie.jarvis.server.scheduler.controller.SyncSchedulerController;
 import com.mogujie.jarvis.server.scheduler.dag.checker.DAGDependCheckerFactory;
 import com.mogujie.jarvis.server.scheduler.dag.checker.DummyDAGDependChecker;
@@ -31,22 +32,25 @@ import com.mogujie.jarvis.server.util.SpringContext;
  *
  */
 public class TestJobSchedulerController {
-    private static JobSchedulerController controller = new SyncSchedulerController();
-    private DAGScheduler dagScheduler = SpringContext.getBean(DAGScheduler.class);
-    private TimeScheduler timeScheduler = SpringContext.getBean(TimeScheduler.class);
-    private TaskScheduler taskScheduler = SpringContext.getBean(TaskScheduler.class);
+    private static JobSchedulerController controller;
+    private static DAGScheduler dagScheduler;
+    private static TimeScheduler timeScheduler;
+    private static TaskScheduler taskScheduler;
     private long jobAId = 1;
     private long jobBId = 2;
     private long jobCId = 3;
     private static Configuration conf = ConfigUtils.getServerConfig();
 
-    @Before
-    public void setup() {
-        controller.register(dagScheduler);
-        controller.register(timeScheduler);
-        controller.register(taskScheduler);
+    @BeforeClass
+    public static void setup() {
         conf.setProperty(DAGDependCheckerFactory.DAG_DEPEND_CHECKER_KEY,
                 DummyDAGDependChecker.class.getName());
+        conf.setProperty(SchedulerControllerFactory.SCHEDULER_CONTROLLER_KEY,
+                SyncSchedulerController.class.getName());
+        controller = SchedulerControllerFactory.getController();
+        dagScheduler = SpringContext.getBean(DAGScheduler.class);
+        timeScheduler = SpringContext.getBean(TimeScheduler.class);
+        taskScheduler = SpringContext.getBean(TaskScheduler.class);
     }
 
     @After

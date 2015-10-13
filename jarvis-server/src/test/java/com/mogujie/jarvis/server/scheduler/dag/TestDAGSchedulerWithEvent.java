@@ -16,7 +16,7 @@ import java.util.Map;
 import org.apache.commons.configuration.Configuration;
 import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.google.common.collect.Sets;
@@ -42,14 +42,18 @@ public class TestDAGSchedulerWithEvent {
     private long jobAId = 1;
     private long jobBId = 2;
     private long jobCId = 3;
-    private DAGScheduler dagScheduler = SpringContext.getBean(DAGScheduler.class);
-    private TaskScheduler taskScheduler = SpringContext.getBean(TaskScheduler.class);
-    private Configuration conf = ConfigUtils.getServerConfig();
+    private static DAGScheduler dagScheduler;
+    private static TaskScheduler taskScheduler;
+    private static Configuration conf = ConfigUtils.getServerConfig();
 
-    @Before
-    public void setup() throws Exception {
+    @BeforeClass
+    public static void setup() throws Exception {
         conf.setProperty(DAGDependCheckerFactory.DAG_DEPEND_CHECKER_KEY,
                 DummyDAGDependChecker.class.getName());
+        dagScheduler = SpringContext.getBean(DAGScheduler.class);
+        taskScheduler = SpringContext.getBean(TaskScheduler.class);
+        dagScheduler.clear();
+        taskScheduler.clear();
     }
 
     @After

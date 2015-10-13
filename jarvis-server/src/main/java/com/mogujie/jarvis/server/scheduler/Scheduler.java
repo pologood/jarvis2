@@ -11,13 +11,12 @@ package com.mogujie.jarvis.server.scheduler;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import com.google.common.eventbus.Subscribe;
 import com.mogujie.jarvis.core.observer.Observer;
 import com.mogujie.jarvis.server.scheduler.controller.JobSchedulerController;
+import com.mogujie.jarvis.server.scheduler.controller.SchedulerControllerFactory;
 import com.mogujie.jarvis.server.scheduler.event.StartEvent;
 import com.mogujie.jarvis.server.scheduler.event.StopEvent;
 
@@ -27,8 +26,6 @@ import com.mogujie.jarvis.server.scheduler.event.StopEvent;
  */
 @Repository
 public abstract class Scheduler implements Observer {
-    @Autowired
-    @Qualifier("AsyncSchedulerController")
     private JobSchedulerController schedulerController;
 
     public void setSchedulerController(JobSchedulerController schedulerController) {
@@ -36,6 +33,9 @@ public abstract class Scheduler implements Observer {
     }
 
     public JobSchedulerController getSchedulerController() {
+        if (schedulerController == null) {
+            schedulerController = SchedulerControllerFactory.getController();
+        }
         return schedulerController;
     }
 

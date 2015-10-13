@@ -8,10 +8,6 @@
 
 package com.mogujie.jarvis.server.scheduler.controller;
 
-import javax.inject.Named;
-
-import org.springframework.stereotype.Service;
-
 import com.google.common.eventbus.EventBus;
 
 /**
@@ -20,11 +16,15 @@ import com.google.common.eventbus.EventBus;
  * @author guangming
  *
  */
-@Service
-@Named("SyncSchedulerController")
 public class SyncSchedulerController extends JobSchedulerController {
 
-    public SyncSchedulerController() {
+    private SyncSchedulerController() {
         eventBus = new EventBus("SyncJobSchedulerController");
+    }
+
+    private static final SyncSchedulerController single = new SyncSchedulerController();
+
+    public static SyncSchedulerController getInstance() {
+        return single;
     }
 }
