@@ -12,6 +12,6 @@ package com.mogujie.jarvis.server.domain;
  * @author guangming
  *
  */
-public enum MODIFY_JOB_TYPE {
+public enum ModifyJobType {
     CRON, CYCLE
 }

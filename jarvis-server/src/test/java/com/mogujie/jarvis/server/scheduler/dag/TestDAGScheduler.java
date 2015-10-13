@@ -14,6 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.google.common.collect.Sets;
+import com.mogujie.jarvis.server.util.SpringContext;
 
 
 /**
@@ -25,7 +26,7 @@ public class TestDAGScheduler {
     private DAGJob jobA;
     private DAGJob jobB;
     private DAGJob jobC;
-    private DAGScheduler scheduler = DAGScheduler.getInstance();
+    private DAGScheduler scheduler = SpringContext.getBean(DAGScheduler.class);
 
     @Before
     public void setup() throws Exception {

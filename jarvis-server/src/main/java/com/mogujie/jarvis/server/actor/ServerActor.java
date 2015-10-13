@@ -55,6 +55,8 @@ public class ServerActor extends UntypedActor {
         addActor("jobActor", JobActor.handledMessages());
         addActor("modifyWorkerStatusActor", ModifyWorkerStatusActor.handledMessages());
         addActor("appActor", AppActor.handledMessages());
+        addActor("workerGroupActor", WorkerGroupActor.handledMessages());
+        addActor("systemActor", SystemActor.handledMessages());
     }
 
     @Override

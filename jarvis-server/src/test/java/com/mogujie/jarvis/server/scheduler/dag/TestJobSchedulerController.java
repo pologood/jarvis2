@@ -24,6 +24,7 @@ import com.mogujie.jarvis.server.scheduler.event.SuccessEvent;
 import com.mogujie.jarvis.server.scheduler.event.TimeReadyEvent;
 import com.mogujie.jarvis.server.scheduler.task.TaskScheduler;
 import com.mogujie.jarvis.server.scheduler.time.TimeScheduler;
+import com.mogujie.jarvis.server.util.SpringContext;
 
 /**
  * @author guangming
@@ -31,9 +32,9 @@ import com.mogujie.jarvis.server.scheduler.time.TimeScheduler;
  */
 public class TestJobSchedulerController {
     private static JobSchedulerController controller = new SyncSchedulerController();
-    private DAGScheduler dagScheduler = DAGScheduler.getInstance();
-    private TimeScheduler timeScheduler = TimeScheduler.getInstance();
-    private TaskScheduler taskScheduler = TaskScheduler.getInstance();
+    private DAGScheduler dagScheduler = SpringContext.getBean(DAGScheduler.class);
+    private TimeScheduler timeScheduler = SpringContext.getBean(TimeScheduler.class);
+    private TaskScheduler taskScheduler = SpringContext.getBean(TaskScheduler.class);
     private long jobAId = 1;
     private long jobBId = 2;
     private long jobCId = 3;

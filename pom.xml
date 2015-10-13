@@ -92,7 +92,6 @@
 	</build>
 
 	<modules>
-		<module>jarvis-dao</module>
 		<module>jarvis-core</module>
 		<module>jarvis-server</module>
 		<module>jarvis-worker</module>
@@ -101,5 +100,6 @@
 		<module>jarvis-rest</module>
 		<module>jarvis-logstorage</module>
 		<module>jarvis-web</module>
+		<module>jarvis-dao</module>
 	</modules>
 </project>

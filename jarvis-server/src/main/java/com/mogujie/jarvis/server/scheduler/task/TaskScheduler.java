@@ -61,18 +61,10 @@ public class TaskScheduler extends Scheduler {
     @Autowired
     private TaskManager taskManager;
 
-    // for testing
-    private static TaskScheduler instance = new TaskScheduler();
-
-    private TaskScheduler() {
-    }
-
-    public static TaskScheduler getInstance() {
-        return instance;
-    }
+    @Autowired
+    private TaskQueue taskQueue;
 
     private Map<Long, DAGTask> readyTable = new ConcurrentHashMap<Long, DAGTask>();
-    private TaskQueue taskQueue = TaskQueue.getInstance();
 
     // unique taskid
     private AtomicLong maxid = new AtomicLong(1);
@@ -164,8 +156,7 @@ public class TaskScheduler extends Scheduler {
         if (taskService != null) {
             if (status.equals(JobStatus.RUNNING)) {
                 taskService.updateStatusWithStart(taskId, status);
-            } else if (status.getValue() == JobStatus.SUCCESS.getValue()
-                    || status.getValue() == JobStatus.FAILED.getValue()
+            } else if (status.getValue() == JobStatus.SUCCESS.getValue() || status.getValue() == JobStatus.FAILED.getValue()
                     || status.getValue() == JobStatus.KILLED.getValue()) {
                 taskService.updateStatusWithEnd(taskId, status);
             }

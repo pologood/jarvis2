@@ -8,15 +8,22 @@
 
 package com.mogujie.jarvis.server.actor;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.inject.Named;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 
-import com.mogujie.jarvis.protocol.ModifyAppParallelismProtos.RestServerModifyAppParallelismRequest;
-import com.mogujie.jarvis.protocol.ModifyAppParallelismProtos.ServerModifyAppParallelismResponse;
+import com.mogujie.jarvis.dao.AppMapper;
+import com.mogujie.jarvis.dto.App;
+import com.mogujie.jarvis.protocol.ApplicationProtos.RestServerCreateApplicationRequest;
+import com.mogujie.jarvis.protocol.ApplicationProtos.RestServerModifyApplicationRequest;
+import com.mogujie.jarvis.protocol.ApplicationProtos.ServerCreateApplicationResponse;
+import com.mogujie.jarvis.protocol.ApplicationProtos.ServerModifyApplicationResponse;
 import com.mogujie.jarvis.server.TaskManager;
 
 import akka.actor.UntypedActor;
@@ -26,18 +33,53 @@ import akka.actor.UntypedActor;
  *
  */
 @Named("appActor")
+@Scope("prototype")
 public class AppActor extends UntypedActor {
 
     @Autowired
     private TaskManager taskManager;
 
+    @Autowired
+    private AppMapper appMapper;
+
     @Override
     public void onReceive(Object obj) throws Exception {
-        if (obj instanceof RestServerModifyAppParallelismRequest) {
-            RestServerModifyAppParallelismRequest request = (RestServerModifyAppParallelismRequest) obj;
-            taskManager.updateAppMaxParallelism(request.getAppName(), request.getParallelism());
+        if (obj instanceof RestServerCreateApplicationRequest) {
+            RestServerCreateApplicationRequest request = (RestServerCreateApplicationRequest) obj;
+            Date date = new Date();
+            String key = UUID.randomUUID().toString().replace("-", "");
+            App app = new App();
+            app.setAppKey(key);
+            app.setAppName(request.getAppName());
+            app.setStatus(request.getStatus());
+            app.setCreateTime(date);
+            app.setUpdateTime(date);
+            app.setCreator(request.getUser());
+            app.setMaxConcurrency(request.getMaxConcurrency());
 
-            ServerModifyAppParallelismResponse response = ServerModifyAppParallelismResponse.newBuilder().setSuccess(true).build();
+            appMapper.insertSelective(app);
+
+            ServerCreateApplicationResponse response = ServerCreateApplicationResponse.newBuilder().setSuccess(true).setAppKey(key).build();
+            getSender().tell(response, getSelf());
+        } else if (obj instanceof RestServerModifyApplicationRequest) {
+            RestServerModifyApplicationRequest request = (RestServerModifyApplicationRequest) obj;
+            App app = new App();
+            app.setAppId(request.getAppId());
+            if (request.hasAppName()) {
+                app.setAppName(request.getAppName());
+            }
+
+            if (request.hasStatus()) {
+                app.setStatus(request.getStatus());
+            }
+
+            if (request.hasMaxConcurrency()) {
+                app.setMaxConcurrency(request.getMaxConcurrency());
+                taskManager.updateAppMaxParallelism(request.getAppId(), request.getMaxConcurrency());
+            }
+            appMapper.updateByPrimaryKey(app);
+
+            ServerModifyApplicationResponse response = ServerModifyApplicationResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());
         } else {
             unhandled(obj);
@@ -46,7 +88,8 @@ public class AppActor extends UntypedActor {
 
     public static Set<Class<?>> handledMessages() {
         Set<Class<?>> set = new HashSet<>();
-        set.add(RestServerModifyAppParallelismRequest.class);
+        set.add(RestServerCreateApplicationRequest.class);
+        set.add(RestServerModifyApplicationRequest.class);
         return set;
     }
 

@@ -115,19 +115,19 @@ public final class ModifyJobProtos {
         com.google.protobuf.ByteString getJobTypeBytes();
 
         /**
-         * <code>optional string command = 8;</code>
+         * <code>optional string content = 8;</code>
          */
-        boolean hasCommand();
+        boolean hasContent();
 
         /**
-         * <code>optional string command = 8;</code>
+         * <code>optional string content = 8;</code>
          */
-        java.lang.String getCommand();
+        java.lang.String getContent();
 
         /**
-         * <code>optional string command = 8;</code>
+         * <code>optional string content = 8;</code>
          */
-        com.google.protobuf.ByteString getCommandBytes();
+        com.google.protobuf.ByteString getContentBytes();
 
         /**
          * <code>optional int32 group_id = 9;</code>
@@ -351,7 +351,7 @@ public final class ModifyJobProtos {
                         case 66: {
                             com.google.protobuf.ByteString bs = input.readBytes();
                             bitField0_ |= 0x00000080;
-                            command_ = bs;
+                            content_ = bs;
                             break;
                         }
                         case 72: {
@@ -713,41 +713,41 @@ public final class ModifyJobProtos {
             }
         }
 
-        public static final int COMMAND_FIELD_NUMBER = 8;
-        private java.lang.Object command_;
+        public static final int CONTENT_FIELD_NUMBER = 8;
+        private java.lang.Object content_;
 
         /**
-         * <code>optional string command = 8;</code>
+         * <code>optional string content = 8;</code>
          */
-        public boolean hasCommand() {
+        public boolean hasContent() {
             return ((bitField0_ & 0x00000080) == 0x00000080);
         }
 
         /**
-         * <code>optional string command = 8;</code>
+         * <code>optional string content = 8;</code>
          */
-        public java.lang.String getCommand() {
-            java.lang.Object ref = command_;
+        public java.lang.String getContent() {
+            java.lang.Object ref = content_;
             if (ref instanceof java.lang.String) {
                 return (java.lang.String) ref;
             } else {
                 com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
                 java.lang.String s = bs.toStringUtf8();
                 if (bs.isValidUtf8()) {
-                    command_ = s;
+                    content_ = s;
                 }
                 return s;
             }
         }
 
         /**
-         * <code>optional string command = 8;</code>
+         * <code>optional string content = 8;</code>
          */
-        public com.google.protobuf.ByteString getCommandBytes() {
-            java.lang.Object ref = command_;
+        public com.google.protobuf.ByteString getContentBytes() {
+            java.lang.Object ref = content_;
             if (ref instanceof java.lang.String) {
                 com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                command_ = b;
+                content_ = b;
                 return b;
             } else {
                 return (com.google.protobuf.ByteString) ref;
@@ -970,7 +970,7 @@ public final class ModifyJobProtos {
             appKey_ = "";
             user_ = "";
             jobType_ = "";
-            command_ = "";
+            content_ = "";
             groupId_ = 0;
             priority_ = 1;
             rejectRetries_ = 0;
@@ -1031,7 +1031,7 @@ public final class ModifyJobProtos {
                 output.writeBytes(7, getJobTypeBytes());
             }
             if (((bitField0_ & 0x00000080) == 0x00000080)) {
-                output.writeBytes(8, getCommandBytes());
+                output.writeBytes(8, getContentBytes());
             }
             if (((bitField0_ & 0x00000100) == 0x00000100)) {
                 output.writeInt32(9, groupId_);
@@ -1099,7 +1099,7 @@ public final class ModifyJobProtos {
                 size += com.google.protobuf.CodedOutputStream.computeBytesSize(7, getJobTypeBytes());
             }
             if (((bitField0_ & 0x00000080) == 0x00000080)) {
-                size += com.google.protobuf.CodedOutputStream.computeBytesSize(8, getCommandBytes());
+                size += com.google.protobuf.CodedOutputStream.computeBytesSize(8, getContentBytes());
             }
             if (((bitField0_ & 0x00000100) == 0x00000100)) {
                 size += com.google.protobuf.CodedOutputStream.computeInt32Size(9, groupId_);
@@ -1221,7 +1221,7 @@ public final class ModifyJobProtos {
         /**
          * Protobuf type {@code RestServerModifyJobRequest}
          */
-        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder>implements
+        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder> implements
                 // @@protoc_insertion_point(builder_implements:RestServerModifyJobRequest)
                 com.mogujie.jarvis.protocol.ModifyJobProtos.RestServerModifyJobRequestOrBuilder {
             public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
@@ -1271,7 +1271,7 @@ public final class ModifyJobProtos {
                 bitField0_ = (bitField0_ & ~0x00000020);
                 jobType_ = "";
                 bitField0_ = (bitField0_ & ~0x00000040);
-                command_ = "";
+                content_ = "";
                 bitField0_ = (bitField0_ & ~0x00000080);
                 groupId_ = 0;
                 bitField0_ = (bitField0_ & ~0x00000100);
@@ -1358,7 +1358,7 @@ public final class ModifyJobProtos {
                 if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
                     to_bitField0_ |= 0x00000080;
                 }
-                result.command_ = command_;
+                result.content_ = content_;
                 if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
                     to_bitField0_ |= 0x00000100;
                 }
@@ -1458,9 +1458,9 @@ public final class ModifyJobProtos {
                     jobType_ = other.jobType_;
                     onChanged();
                 }
-                if (other.hasCommand()) {
+                if (other.hasContent()) {
                     bitField0_ |= 0x00000080;
-                    command_ = other.command_;
+                    content_ = other.content_;
                     onChanged();
                 }
                 if (other.hasGroupId()) {
@@ -2045,25 +2045,25 @@ public final class ModifyJobProtos {
                 return this;
             }
 
-            private java.lang.Object command_ = "";
+            private java.lang.Object content_ = "";
 
             /**
-             * <code>optional string command = 8;</code>
+             * <code>optional string content = 8;</code>
              */
-            public boolean hasCommand() {
+            public boolean hasContent() {
                 return ((bitField0_ & 0x00000080) == 0x00000080);
             }
 
             /**
-             * <code>optional string command = 8;</code>
+             * <code>optional string content = 8;</code>
              */
-            public java.lang.String getCommand() {
-                java.lang.Object ref = command_;
+            public java.lang.String getContent() {
+                java.lang.Object ref = content_;
                 if (!(ref instanceof java.lang.String)) {
                     com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
                     java.lang.String s = bs.toStringUtf8();
                     if (bs.isValidUtf8()) {
-                        command_ = s;
+                        content_ = s;
                     }
                     return s;
                 } else {
@@ -2072,13 +2072,13 @@ public final class ModifyJobProtos {
             }
 
             /**
-             * <code>optional string command = 8;</code>
+             * <code>optional string content = 8;</code>
              */
-            public com.google.protobuf.ByteString getCommandBytes() {
-                java.lang.Object ref = command_;
+            public com.google.protobuf.ByteString getContentBytes() {
+                java.lang.Object ref = content_;
                 if (ref instanceof String) {
                     com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                    command_ = b;
+                    content_ = b;
                     return b;
                 } else {
                     return (com.google.protobuf.ByteString) ref;
@@ -2086,37 +2086,37 @@ public final class ModifyJobProtos {
             }
 
             /**
-             * <code>optional string command = 8;</code>
+             * <code>optional string content = 8;</code>
              */
-            public Builder setCommand(java.lang.String value) {
+            public Builder setContent(java.lang.String value) {
                 if (value == null) {
                     throw new NullPointerException();
                 }
                 bitField0_ |= 0x00000080;
-                command_ = value;
+                content_ = value;
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>optional string command = 8;</code>
+             * <code>optional string content = 8;</code>
              */
-            public Builder clearCommand() {
+            public Builder clearContent() {
                 bitField0_ = (bitField0_ & ~0x00000080);
-                command_ = getDefaultInstance().getCommand();
+                content_ = getDefaultInstance().getContent();
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>optional string command = 8;</code>
+             * <code>optional string content = 8;</code>
              */
-            public Builder setCommandBytes(com.google.protobuf.ByteString value) {
+            public Builder setContentBytes(com.google.protobuf.ByteString value) {
                 if (value == null) {
                     throw new NullPointerException();
                 }
                 bitField0_ |= 0x00000080;
-                command_ = value;
+                content_ = value;
                 onChanged();
                 return this;
             }
@@ -3092,7 +3092,7 @@ public final class ModifyJobProtos {
         /**
          * Protobuf type {@code ServerModifyJobResponse}
          */
-        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder>implements
+        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder> implements
                 // @@protoc_insertion_point(builder_implements:ServerModifyJobResponse)
                 com.mogujie.jarvis.protocol.ModifyJobProtos.ServerModifyJobResponseOrBuilder {
             public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
@@ -3410,8 +3410,8 @@ public final class ModifyJobProtos {
                 "\n\020modify_job.proto\032\017map_entry.proto\"\261\003\n\032" + "RestServerModifyJobRequest\022\016\n\006job_id\030\001 \002"
                         + "(\003\022\020\n\010job_name\030\002 \001(\t\022\027\n\017cron_expression\030"
                         + "\003 \001(\t\022\020\n\010app_name\030\004 \001(\t\022\017\n\007app_key\030\005 \001(\t"
-                        + "\022\014\n\004user\030\006 \001(\t\022\020\n\010job_type\030\007 \001(\t\022\017\n\007comm"
-                        + "and\030\010 \001(\t\022\020\n\010group_id\030\t \001(\005\022\023\n\010priority\030"
+                        + "\022\014\n\004user\030\006 \001(\t\022\020\n\010job_type\030\007 \001(\t\022\017\n\007cont"
+                        + "ent\030\010 \001(\t\022\020\n\010group_id\030\t \001(\005\022\023\n\010priority\030"
                         + "\n \001(\005:\0011\022\031\n\016reject_retries\030\013 \001(\005:\0010\022\032\n\017r"
                         + "eject_interval\030\014 \001(\005:\0013\022\031\n\016failed_retrie"
                         + "s\030\r \001(\005:\0010\022\032\n\017failed_interval\030\016 \001(\005:\0013\022\022"
@@ -3432,7 +3432,7 @@ public final class ModifyJobProtos {
         internal_static_RestServerModifyJobRequest_descriptor = getDescriptor().getMessageTypes().get(0);
         internal_static_RestServerModifyJobRequest_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
                 internal_static_RestServerModifyJobRequest_descriptor,
-                new java.lang.String[] { "JobId", "JobName", "CronExpression", "AppName", "AppKey", "User", "JobType", "Command", "GroupId",
+                new java.lang.String[] { "JobId", "JobName", "CronExpression", "AppName", "AppKey", "User", "JobType", "Content", "GroupId",
                         "Priority", "RejectRetries", "RejectInterval", "FailedRetries", "FailedInterval", "StartTime", "EndTime", "OriginJobId",
                         "Parameters", "FixedDelay", });
         internal_static_ServerModifyJobResponse_descriptor = getDescriptor().getMessageTypes().get(1);

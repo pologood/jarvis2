@@ -36,8 +36,8 @@ import com.mogujie.jarvis.protocol.ModifyJobFlagProtos.RestServerModifyJobFlagRe
 import com.mogujie.jarvis.protocol.ModifyJobProtos.RestServerModifyJobRequest;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.DependencyEntry;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitJobRequest;
-import com.mogujie.jarvis.server.domain.MODIFY_JOB_TYPE;
-import com.mogujie.jarvis.server.domain.MODIFY_OPERATION;
+import com.mogujie.jarvis.server.domain.ModifyJobType;
+import com.mogujie.jarvis.server.domain.ModifyOperation;
 import com.mogujie.jarvis.server.domain.ModifyDependEntry;
 import com.mogujie.jarvis.server.domain.ModifyJobEntry;
 import com.mogujie.jarvis.server.scheduler.SchedulerUtil;
@@ -131,7 +131,7 @@ public class JobActor extends UntypedActor {
             }
 
             // 3. construct ModifyJobEvent
-            Map<MODIFY_JOB_TYPE, ModifyJobEntry> modifyMap = MessageUtil.convert2ModifyJobMap(msg, jobService, cronService);
+            Map<ModifyJobType, ModifyJobEntry> modifyMap = MessageUtil.convert2ModifyJobMap(msg, jobService, cronService);
             try {
                 dagScheduler.modifyDAGJobType(jobId, modifyMap);
                 timeScheduler.modifyJob(jobId);
@@ -149,20 +149,20 @@ public class JobActor extends UntypedActor {
                 String offsetStrategyValue = entry.getLastDependStrategy();
                 // TODO
                 String user = null;
-                MODIFY_OPERATION operation;
+                ModifyOperation operation;
                 if (entry.getOperator().equals(DependencyOperator.ADD)) {
-                    operation = MODIFY_OPERATION.ADD;
+                    operation = ModifyOperation.ADD;
                     JobDepend jobDepend = MessageUtil.convert2JobDepend(jobId, preJobId, entry.getCommonDependStrategy(),
                             entry.getLastDependStrategy(), user);
                     jobDependMapper.insert(jobDepend);
                 } else if (entry.getOperator().equals(DependencyOperator.REMOVE)) {
-                    operation = MODIFY_OPERATION.DEL;
+                    operation = ModifyOperation.DEL;
                     JobDependKey key = new JobDependKey();
                     key.setJobId(jobId);
                     key.setPreJobId(preJobId);
                     jobDependMapper.deleteByPrimaryKey(key);
                 } else {
-                    operation = MODIFY_OPERATION.MODIFY;
+                    operation = ModifyOperation.MODIFY;
                     JobDependKey key = new JobDependKey();
                     key.setJobId(jobId);
                     key.setPreJobId(preJobId);

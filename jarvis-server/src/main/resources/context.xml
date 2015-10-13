@@ -38,8 +38,9 @@
 	<!-- MyBatis -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="hikariDataSource" />
-		<property name="typeAliasesPackage" value="com.mogujie.jarvis.dto" />
-		<property name="mapperLocations" value="classpath:sqlMap/**/*.xml" />
+<!-- 		<property name="typeAliasesPackage" value="com.mogujie.jarvis.dto" /> -->
+<!-- 		<property name="mapperLocations" value="classpath*:sqlMap/**/*.xml" /> -->
+		<property name="mapperLocations" value="classpath*:sqlMap/**/*.xml" />
 	</bean>
 
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
