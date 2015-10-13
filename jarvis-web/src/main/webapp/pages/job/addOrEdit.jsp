@@ -233,7 +233,7 @@
                 <div class="col-md-6 col-md-offset-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">依赖任务</span>
-                        <select id="dependencyJobids" multiple>
+                        <select id="dependJobIds" multiple>
                             <c:forEach items="${jobVoList}" var="job" varStatus="status">
                                 <option value="${job.jobId}">${job.jobName}</option>
                             </c:forEach>
