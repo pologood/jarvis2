@@ -45,7 +45,7 @@ $(function(){
     $(".input-group select").select2({width:'100%'});
 
     if(dependIds!=undefined&&dependIds!='[]'){
-        $("#dependencyJobids").val(JSON.parse(dependIds)).trigger("change");
+        $("#dependJobIds").val(JSON.parse(dependIds)).trigger("change");
     }
 
     $('#startTime').datetimepicker({
@@ -157,31 +157,7 @@ function submit(){
     }
 
     var data=getData();
-    $.ajax({
-        url:'/api/job/submit',
-        type:'POST',
-        data:data,
-        success:function(data){
-            if(data.code!=0){
-                new PNotify({
-                    title: '提交任务',
-                    text: data.msg,
-                    type: 'warning',
-                    icon: true,
-                    styling: 'bootstrap3'
-                });
-            }
-            else{
-                new PNotify({
-                    title: '提交任务',
-                    text: "提交成功",
-                    type: 'success',
-                    icon: true,
-                    styling: 'bootstrap3'
-                });
-            }
-        }
-    });
+    var resultFlag=requestRemoteRestApi("/job/submitJob","新增任务",data);
 
 }
 
@@ -207,31 +183,7 @@ function edit(){
     var jobId=$("#jobId").val();
     data["jobId"]=jobId;
 
-    $.ajax({
-        url:'/api/job/edit',
-        type:'POST',
-        data:data,
-        success:function(data){
-            if(data.code!=0){
-                new PNotify({
-                    title: '编辑任务',
-                    text: data.msg,
-                    type: 'warning',
-                    icon: true,
-                    styling: 'bootstrap3'
-                });
-            }
-            else{
-                new PNotify({
-                    title: '编辑任务',
-                    text: "编辑成功",
-                    type: 'success',
-                    icon: true,
-                    styling: 'bootstrap3'
-                });
-            }
-        }
-    });
+    var resultFlag=requestRemoteRestApi('/job/edit',"编辑任务",data);
 }
 
 //检查任务名是否重复
@@ -383,5 +335,4 @@ function addPara(thisTag){
 function deletePara(thisTag){
     $(thisTag).parent().parent().remove();
 }
-
 

@@ -36,6 +36,10 @@ public class JobController extends BaseController{
     @Autowired
     JobDependService jobDependService;
 
+    /*
+    * job任务管理首页
+    * @author hejian
+    * */
     @RequestMapping
     @JarvisPassport(authTypes = JarvisAuthType.job)
     public String index(ModelMap modelMap){
@@ -50,6 +54,10 @@ public class JobController extends BaseController{
         return "job/index";
     }
 
+    /*
+    * job任务新增或编辑页
+    * @author hejian
+    * */
     @RequestMapping(value = "addOrEdit")
     public String addOrEdit(ModelMap modelMap,Long jobId){
         AppSearchVo appSearchVo = new AppSearchVo();
@@ -89,6 +97,10 @@ public class JobController extends BaseController{
         return "job/addOrEdit";
     }
 
+    /*
+    * 检查job名字是否重复
+    * @author hejian
+    * */
     @RequestMapping("checkJobName")
     @ResponseBody
     public com.alibaba.fastjson.JSONObject checkJobName(Long jobId,String jobName){
@@ -128,6 +140,10 @@ public class JobController extends BaseController{
         return result;
     }
 
+    /*
+    * job任务依赖页面
+    * @author hejian
+    * */
     @RequestMapping(value = "dependency")
     public String dependency(ModelMap modelMap,Long jobId){
         JobVo jobVo=jobService.getJobById(jobId);
@@ -140,9 +156,8 @@ public class JobController extends BaseController{
         return "job/dependency";
     }
 
-    @RequestMapping(value = "trash")
-    public String trash(ModelMap modelMap){
 
-        return "job/trash";
-    }
+
+
+
 }
