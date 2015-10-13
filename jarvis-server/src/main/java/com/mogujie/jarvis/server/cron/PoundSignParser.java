@@ -21,7 +21,7 @@ import com.google.common.collect.Range;
  */
 public class PoundSignParser extends AbstractParser {
 
-    private Set<Integer> set;
+    private Set<Integer> set = new HashSet<>();
     private Range<Integer> range;
     private DurationField type;
 
@@ -34,10 +34,6 @@ public class PoundSignParser extends AbstractParser {
     @Override
     protected boolean matches(String cronFieldExp) {
         if ("*".equals(cronFieldExp)) {
-            if (set == null) {
-                set = new HashSet<Integer>();
-            }
-
             if (!type.equals(DurationField.DAY_OF_WEEK)) {
                 int start = range.lowerEndpoint();
                 int end = range.upperEndpoint();

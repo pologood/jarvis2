@@ -19,7 +19,7 @@ import com.mogujie.jarvis.core.util.ReflectionUtils;
  *
  */
 public class OffsetStrategyFactory {
-    public static String DAG_OFFSET_STRATEGY_KEY_PREFIX = "dag.offset.strategy.";
+    public static final String DAG_OFFSET_STRATEGY_KEY_PREFIX = "dag.offset.strategy.";
 
     public static Pair<AbstractOffsetStrategy, Integer> create(String offsetStrategyStr) {
         Pair<AbstractOffsetStrategy, Integer> strategyPair = null;
@@ -29,7 +29,7 @@ public class OffsetStrategyFactory {
             Configuration conf = ConfigUtils.getServerConfig();
             String className = conf.getString(offsetStrategyKey);
             if (className != null) {
-                int offsetValue = Integer.valueOf(offsetStrategyMap[1].trim());
+                int offsetValue = Integer.parseInt(offsetStrategyMap[1].trim());
                 try {
                     AbstractOffsetStrategy offsetStrategy = ReflectionUtils.getInstanceByClassName(className);
                     strategyPair = new Pair<AbstractOffsetStrategy, Integer>(offsetStrategy, offsetValue);

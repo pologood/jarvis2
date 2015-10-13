@@ -24,8 +24,8 @@ import com.google.common.collect.Range;
  */
 public class LastDayOfMonthParser extends AbstractParser {
 
-    private Set<Integer> set;
-    private Set<Integer> result;
+    private Set<Integer> set = new HashSet<>();
+    private Set<Integer> result = new HashSet<>();
     private Range<Integer> range;
     private DurationField type;
     private static final Pattern LAST_DAY_OF_MONTH_PATTERN = Pattern.compile("(\\d+)?L");
@@ -40,10 +40,6 @@ public class LastDayOfMonthParser extends AbstractParser {
     protected boolean matches(String cronFieldExp) throws ParseException {
         Matcher m = LAST_DAY_OF_MONTH_PATTERN.matcher(cronFieldExp);
         if (m.matches()) {
-            if (set == null) {
-                set = new HashSet<Integer>();
-            }
-
             if ("L".equals(cronFieldExp)) {
                 if (type.equals(DurationField.DAY_OF_MONTH)) {
                     set.add(1);
@@ -68,9 +64,6 @@ public class LastDayOfMonthParser extends AbstractParser {
     @Override
     protected Set<Integer> parse(DateTime dateTime) {
         if (set != null) {
-            if (result == null) {
-                result = new HashSet<Integer>();
-            }
             result.clear();
 
             MutableDateTime mdt = dateTime.dayOfMonth().withMaximumValue().toMutableDateTime();

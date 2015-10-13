@@ -7,6 +7,7 @@
  */
 package com.mogujie.jarvis.server.cron;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.joda.time.DateTime;
@@ -20,7 +21,7 @@ import com.google.common.collect.Range;
  */
 public class LastWeekdayOfMonthParser extends AbstractParser {
 
-    private Set<Integer> set;
+    private Set<Integer> set = new HashSet<>();
 
     protected LastWeekdayOfMonthParser(Range<Integer> range, DurationField type) {
         super(range, type);

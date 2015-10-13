@@ -25,8 +25,8 @@ import com.mogujie.jarvis.server.util.SpringContext;
  *
  */
 public class DependStatusFactory {
-    public static String JOB_DEPEND_STATUS_KEY = "job.depend.status";
-    public static String DEFAULT_JOB_DEPEND_STATUS = MysqlCachedDependStatus.class.getName();
+    public static final String JOB_DEPEND_STATUS_KEY = "job.depend.status";
+    public static final String DEFAULT_JOB_DEPEND_STATUS = MysqlCachedDependStatus.class.getName();
 
     public static AbstractDependStatus create(long myJobId, long preJobId) throws ClassNotFoundException {
         AbstractDependStatus dependStatus = null;
@@ -37,8 +37,8 @@ public class DependStatusFactory {
                 CommonStrategy commonStrategy = CommonStrategy.getInstance(jobDepend.getCommonStrategy());
                 Pair<AbstractOffsetStrategy, Integer> offsetStrategyPair = OffsetStrategyFactory.create(jobDepend.getOffsetStrategy());
                 if (offsetStrategyPair != null) {
-                    dependStatus = new OffsetDependStatus(myJobId, preJobId, commonStrategy,
-                            offsetStrategyPair.getFirst(), offsetStrategyPair.getSecond());
+                    dependStatus = new OffsetDependStatus(myJobId, preJobId, commonStrategy, offsetStrategyPair.getFirst(),
+                            offsetStrategyPair.getSecond());
                 } else {
                     Configuration conf = ConfigUtils.getServerConfig();
                     String className = conf.getString(JOB_DEPEND_STATUS_KEY, DEFAULT_JOB_DEPEND_STATUS);

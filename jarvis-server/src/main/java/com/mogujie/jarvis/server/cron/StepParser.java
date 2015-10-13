@@ -24,8 +24,8 @@ import com.google.common.collect.Range;
  */
 public class StepParser extends AbstractParser {
 
-    private Set<Integer> set;
-    private Set<Integer> result;
+    private Set<Integer> set = new HashSet<>();
+    private Set<Integer> result = new HashSet<>();
     private Range<Integer> range;
     private DurationField type;
     private static final Pattern STEP_PATTERN = Pattern.compile("(\\d+)/(\\d+)");
@@ -43,10 +43,6 @@ public class StepParser extends AbstractParser {
             int start = Integer.parseInt(m.group(1));
             int step = Integer.parseInt(m.group(2));
             if (step > 0 && range.contains(step) && range.contains(start)) {
-                if (set == null) {
-                    set = new HashSet<Integer>();
-                }
-
                 for (int i = start; range.contains(i); i += step) {
                     set.add(i);
                 }
@@ -65,10 +61,6 @@ public class StepParser extends AbstractParser {
     protected Set<Integer> parse(DateTime dateTime) {
         if (type == DurationField.DAY_OF_WEEK) {
             if (set != null) {
-                if (result == null) {
-                    result = new HashSet<Integer>();
-                }
-
                 result.clear();
 
                 MutableDateTime mdt = dateTime.dayOfMonth().withMaximumValue().toMutableDateTime();

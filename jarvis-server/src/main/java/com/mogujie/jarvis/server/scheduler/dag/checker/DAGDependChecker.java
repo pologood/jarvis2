@@ -8,7 +8,9 @@
 
 package com.mogujie.jarvis.server.scheduler.dag.checker;
 
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -24,10 +26,10 @@ import com.mogujie.jarvis.server.scheduler.dag.strategy.CommonStrategy;
 public abstract class DAGDependChecker {
     private long myJobId;
 
-    protected Map<Long, AbstractDependStatus> jobStatusMap =
-            new ConcurrentHashMap<Long, AbstractDependStatus>();
+    protected Map<Long, AbstractDependStatus> jobStatusMap = new ConcurrentHashMap<Long, AbstractDependStatus>();
 
-    public DAGDependChecker() {}
+    public DAGDependChecker() {
+    }
 
     public DAGDependChecker(long jobId) {
         this.myJobId = jobId;
@@ -114,17 +116,18 @@ public abstract class DAGDependChecker {
     public void updateOffsetStrategy(long parentId, AbstractOffsetStrategy newStrategy) {
         AbstractDependStatus status = jobStatusMap.get(parentId);
         if (status != null && status instanceof OffsetDependStatus) {
-            ((OffsetDependStatus)status).setOffsetDependStrategy(newStrategy);
+            ((OffsetDependStatus) status).setOffsetDependStrategy(newStrategy);
         }
     }
 
     private void autoFix(Set<Long> needJobs) {
-        Set<Long> haveJobs = jobStatusMap.keySet();
-        for (long jobId : haveJobs) {
+        Iterator<Entry<Long, AbstractDependStatus>> it = jobStatusMap.entrySet().iterator();
+        while (it.hasNext()) {
+            Entry<Long, AbstractDependStatus> entry = it.next();
+            long jobId = entry.getKey();
             if (!needJobs.contains(jobId)) {
-                AbstractDependStatus taskDependStatus = jobStatusMap.get(jobId);
-                taskDependStatus.reset();
-                jobStatusMap.remove(jobId);
+                entry.getValue().reset();
+                it.remove();
             }
         }
     }

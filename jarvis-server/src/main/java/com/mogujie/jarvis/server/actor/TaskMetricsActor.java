@@ -16,8 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 
-import akka.actor.UntypedActor;
-
 import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.core.observer.Event;
 import com.mogujie.jarvis.dao.TaskMapper;
@@ -30,6 +28,8 @@ import com.mogujie.jarvis.server.scheduler.event.KilledEvent;
 import com.mogujie.jarvis.server.scheduler.event.RunningEvent;
 import com.mogujie.jarvis.server.scheduler.event.SuccessEvent;
 import com.mogujie.jarvis.server.scheduler.event.UnhandleEvent;
+
+import akka.actor.UntypedActor;
 
 /**
  * Actor used to receive task metrics information (e.g. status, process) 1. send task status to
@@ -54,8 +54,8 @@ public class TaskMetricsActor extends UntypedActor {
             WorkerReportStatusRequest msg = (WorkerReportStatusRequest) obj;
             String fullId = msg.getFullId();
             String[] idList = fullId.split("_");
-            long jobId = Long.valueOf(idList[0]);
-            long taskId = Long.valueOf(idList[1]);
+            long jobId = Long.parseLong(idList[0]);
+            long taskId = Long.parseLong(idList[1]);
 
             JobStatus status = JobStatus.getInstance(msg.getStatus());
             Event event = new UnhandleEvent();
