@@ -95,6 +95,9 @@ public class JobActor extends UntypedActor {
         } else if (obj instanceof RestServerModifyJobFlagRequest) {
             RestServerModifyJobFlagRequest msg = (RestServerModifyJobFlagRequest) obj;
             modifyJobFlag(msg);
+        } else if (obj instanceof RemoveJobRequest) {
+            RemoveJobRequest msg = (RemoveJobRequest) obj;
+            removeJob(msg);
         } else {
             unhandled(obj);
         }
@@ -265,6 +268,21 @@ public class JobActor extends UntypedActor {
             getSender().tell(response, getSelf());
             throw new IOException(e);
         }
+    }
+
+    @Transactional
+    public void removeJob(RemoveJobRequest msg) throws IOException {
+        long jobId = msg.getJobId();
+        try {
+            jobMapper.deleteByPrimaryKey(jobId);
+            timeScheduler.removeJob(jobId);
+            dagScheduler.removeJob(jobId);
+            getSender().tell("remove success", getSelf());
+        } catch (Exception e) {
+            getSender().tell("remove failed", getSelf());
+            throw new IOException(e);
+        }
+
     }
 
     public static Set<Class<?>> handledMessages() {

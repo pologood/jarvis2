@@ -54,25 +54,33 @@ public class TestJobActor {
 
     @Test
     public void testSubmitJob1() {
-        Props props = SpringExtension.SPRING_EXT_PROVIDER.get(system).props("jobActor");
-        ActorRef actorRef = system.actorOf(props);
-        RestServerSubmitJobRequest request = RestServerSubmitJobRequest.newBuilder()
-                .setJobName("testJob1")
-                .setCronExpression("4 1 * * ?")
-                .setAppName("testApp1")
-                .setAppKey("appKey1")
-                .setUser("testUser1")
-                .setJobType("hive_sql")
-                .setContent("select * from test1")
-                .setGroupId(1)
-                .build();
+        new JavaTestKit(system) {{
+            Props props = SpringExtension.SPRING_EXT_PROVIDER.get(system).props("jobActor");
+            ActorRef actorRef = system.actorOf(props);
+            RestServerSubmitJobRequest request = RestServerSubmitJobRequest.newBuilder()
+                    .setJobName("testJob1")
+                    .setCronExpression("4 1 * * ?")
+                    .setAppName("testApp1")
+                    .setAppKey("appKey1")
+                    .setUser("testUser1")
+                    .setJobType("hive_sql")
+                    .setContent("select * from test1")
+                    .setGroupId(1)
+                    .build();
 
-        Future<Object> future = Patterns.ask(actorRef, request, TIMEOUT);
-        try {
-            ServerSubmitJobResponse response = (ServerSubmitJobResponse) Await.result(future, TIMEOUT.duration());
-            Assert.assertTrue(response.getSuccess());
-        } catch (Exception e) {
-            Assert.assertTrue(false);
-        }
+            Future<Object> future = Patterns.ask(actorRef, request, TIMEOUT);
+            long jobId = 0;
+            try {
+                ServerSubmitJobResponse response = (ServerSubmitJobResponse) Await.result(future, TIMEOUT.duration());
+                Assert.assertTrue(response.getSuccess());
+                jobId = response.getJobId();
+                Assert.assertTrue(jobId > 0);
+            } catch (Exception e) {
+                Assert.assertTrue(false);
+            }
+
+            actorRef.tell(new RemoveJobRequest(jobId), getRef());
+            expectMsgEquals("remove success");
+        }};
     }
 }

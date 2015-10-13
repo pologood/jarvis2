@@ -95,13 +95,6 @@ public class TimeScheduler extends Scheduler {
     public void handleStartEvent(StartEvent event) {
     }
 
-    public void addJob(long jobId) throws JobScheduleException {
-        List<Crontab> crontabs = cronService.getCronsByJobId(jobId);
-        for (Crontab crontab : crontabs) {
-            cronScheduler.schedule(crontab);
-        }
-    }
-
     @Subscribe
     @AllowConcurrentEvents
     public void handleSuccessEvent(SuccessEvent event) {
@@ -127,6 +120,17 @@ public class TimeScheduler extends Scheduler {
         }
     }
 
+    public void addJob(long jobId) throws JobScheduleException {
+        List<Crontab> crontabs = cronService.getCronsByJobId(jobId);
+        for (Crontab crontab : crontabs) {
+            cronScheduler.schedule(crontab);
+        }
+    }
+
+    public void removeJob(long jobId) throws JobScheduleException {
+        cronScheduler.remove(jobId);
+    }
+
     public void modifyJob(long jobId) throws JobScheduleException {
         cronScheduler.remove(jobId);
 
@@ -149,5 +153,4 @@ public class TimeScheduler extends Scheduler {
                 break;
         }
     }
-
 }

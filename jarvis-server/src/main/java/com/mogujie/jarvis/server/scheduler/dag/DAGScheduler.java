@@ -151,6 +151,15 @@ public class DAGScheduler extends Scheduler {
         }
     }
 
+    public void removeJob(long jobId) throws JobScheduleException {
+        if (waitingTable.containsKey(jobId)) {
+            DAGJob dagJob = waitingTable.get(jobId);
+            dagJob.resetDependStatus();
+            dag.removeVertex(dagJob);
+            waitingTable.remove(jobId);
+        }
+    }
+
     @VisibleForTesting
     protected void clear() {
         waitingTable.clear();
