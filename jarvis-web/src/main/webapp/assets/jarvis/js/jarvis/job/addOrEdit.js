@@ -96,7 +96,7 @@ function checkEmpty(ids){
             var desc=$("#"+c).attr("desc");
             new PNotify({
                 title: '提交任务',
-                text: desc+'不能为空',
+                text: desc+'不能为空:'+c,
                 type: 'warning',
                 icon: true,
                 styling: 'bootstrap3'
@@ -136,12 +136,83 @@ function getData(){
     var appKey=$("#appName").find("option:selected").attr("appKey");
     result["appKey"]=appKey;
 
+    var newDependIds =calculateOperator(dependIds,result["dependJobIds"]);
+    result["dependJobIds"]=JSON.stringify(newDependIds);
+
     return result;
+}
+
+//根据原始依赖与新依赖确定操作类型
+function calculateOperator(sourceStr,afterChangeStr){
+    var myDependIds = {};
+    if(sourceStr!=null){
+        //console.log("sourceStr:"+sourceStr);
+        var source=JSON.parse(sourceStr);
+        var afterChange=JSON.parse(afterChangeStr);
+
+
+        if(afterChange==null){
+            for(var i=0;i<source.length;i++){
+                myDependIds[source[i]]="delete";
+            }
+        }
+        else{
+            for(var i=0;i<source.length;i++){
+                myDependIds[source[i]]="";
+            }
+            for(var i=0;i<afterChange.length;i++){
+                myDependIds[afterChange[i]]="";
+            }
+
+            for(var key in myDependIds){
+                var operator="no";
+                var source_flag=false;
+                var afterChange_flag=false;
+                for(var i=0;i<source.length;i++){
+                    if(source[i]==key){
+                        source_flag=true;
+                        break;
+                    }
+                }
+                for(var i=0;i<afterChange.length;i++){
+                    if(afterChange[i]==key){
+                        afterChange_flag=true;
+                        break;
+                    }
+                }
+                if(source_flag==true&&afterChange_flag==true){
+                    operator="no";
+                }
+                if(source_flag==true&&afterChange_flag==false){
+                    operator="delete";
+                }
+                if(source_flag==false&&afterChange_flag==true){
+                    operator="add";
+                }
+                //不可能
+                if(source_flag==false&&afterChange_flag==false){
+                    operator="no possible";
+                }
+                myDependIds[key]=operator;
+            }
+        }
+    }
+    else{
+        var afterChange=JSON.parse(afterChangeStr);
+        if(afterChange!=null){
+            for(var i=0;i<afterChange.length;i++){
+                myDependIds[afterChange[i]]="add";
+            }
+        }
+    }
+
+    //console.log("result:"+JSON.stringify(myDependIds));
+    return myDependIds;
 }
 
 //提交任务
 function submit(){
-    var ids=["user","appName","jobName","jobType","jobCommand","groupId"];
+    var ids=["user","appName","jobName","jobType","content","groupId"];
     var flag=checkEmpty(ids);
     if(flag==false){
         return ;
@@ -163,7 +234,7 @@ function submit(){
 
 //编辑任务
 function edit(){
-    var ids=["user","jobId","appName","jobName","jobType","jobCommand","groupId"];
+    var ids=["user","jobId","appName","jobName","jobType","content","groupId"];
     var flag=checkEmpty(ids);
     if(flag==false){
         return ;

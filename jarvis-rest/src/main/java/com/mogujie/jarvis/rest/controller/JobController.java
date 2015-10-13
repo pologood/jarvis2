@@ -10,6 +10,7 @@ package com.mogujie.jarvis.rest.controller;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -62,7 +63,7 @@ public class JobController extends AbstractController {
                                 @FormParam("dependJobIds") String dependJobIds,
                                 @FormParam("user") String user,
                                 @FormParam("jobType") String jobType,
-                                @FormParam("jobCommand") String jobCommand,
+                                @FormParam("content") String content,
                                 //@FormParam("jobContent") String jobContent,
                                 @FormParam("groupId") int groupId,
                                 @FormParam("rejectRetries") int rejectRetries,
@@ -79,10 +80,10 @@ public class JobController extends AbstractController {
             List<DependencyEntry> dependEntryList = new ArrayList<DependencyEntry>();
             //不为null且不为空字符串才处理
             if(dependJobIds!=null&&!dependJobIds.equals("")&&!dependJobIds.equals("null")) {
-                JSONArray dependIdsArr = new JSONArray(dependJobIds);
-
-                for (int i = 0; i < dependIdsArr.length(); i++) {
-                    DependencyEntry entry = DependencyEntry.newBuilder().setJobId(dependIdsArr.getLong(i)).build();
+                JSONObject dependIdsJson = new JSONObject(dependJobIds);
+                for(Object key:dependIdsJson.keySet()) {
+                    //String value = dependIdsJson.getString((String) key);
+                    DependencyEntry entry = DependencyEntry.newBuilder().setJobId(Integer.parseInt((String)key)).build();
                     dependEntryList.add(entry);
                 }
             }
@@ -109,7 +110,7 @@ public class JobController extends AbstractController {
 
                 //构造新增任务请求
                 RestServerSubmitJobRequest.Builder builder =RestServerSubmitJobRequest.newBuilder().setAppName(appName).setJobName(jobName).setAppKey(appKey)
-                        .setCronExpression(cronExp).addAllDependencyEntry(dependEntryList).setUser(user).setJobType(jobType).setContent(jobCommand)
+                        .setCronExpression(cronExp).addAllDependencyEntry(dependEntryList).setUser(user).setJobType(jobType).setContent(content)
                         .setGroupId(groupId).setPriority(priority).setFailedRetries(failedRetries).setFailedInterval(failedInterval)
                         .setRejectRetries(rejectRetries).setRejectInterval(rejectInterval)
                         .addAllParameters(paraList);
@@ -156,7 +157,7 @@ public class JobController extends AbstractController {
                            @FormParam("dependJobIds") String dependJobIds,
                            @FormParam("user") String user,
                            @FormParam("jobType") String jobType,
-                           @FormParam("jobCommand") String jobCommand,
+                           @FormParam("content") String content,
                            //@FormParam("jobContent") String jobContent,
                            @FormParam("groupId") int groupId,
                            @FormParam("rejectRetries") int rejectRetries,
@@ -174,10 +175,17 @@ public class JobController extends AbstractController {
             List<ModifyDependencyProtos.DependencyEntry> dependEntryList = new ArrayList<ModifyDependencyProtos.DependencyEntry>();
             // 不为null且不为空字符串才处理
             if(dependJobIds!=null&&!dependJobIds.equals("")) {
-                JSONArray dependIdsArr = new JSONArray(dependJobIds);
-                for (int i = 0; i < dependIdsArr.length(); i++) {
-                    ModifyDependencyProtos.DependencyEntry entry = ModifyDependencyProtos.DependencyEntry.newBuilder().setJobId(dependIdsArr.getLong(i)).build();
-                    dependEntryList.add(entry);
+                JSONObject dependIdsJson = new JSONObject(dependJobIds);
+                for(Object key:dependIdsJson.keySet()){
+                    String value = dependIdsJson.getString((String)key);
+                    if(value.equalsIgnoreCase("add")){
+                        ModifyDependencyProtos.DependencyEntry entry = ModifyDependencyProtos.DependencyEntry.newBuilder().setJobId(Integer.parseInt((String)key)).setOperator(ModifyDependencyProtos.DependencyEntry.DependencyOperator.ADD).build();
+                        dependEntryList.add(entry);
+                    }
+                    if(value.equalsIgnoreCase("delete")){
+                        ModifyDependencyProtos.DependencyEntry entry = ModifyDependencyProtos.DependencyEntry.newBuilder().setJobId(Integer.parseInt((String)key)).setOperator(ModifyDependencyProtos.DependencyEntry.DependencyOperator.REMOVE).build();
+                        dependEntryList.add(entry);
+                    }
                 }
             }
 
@@ -197,7 +205,7 @@ public class JobController extends AbstractController {
 
             //构造修改job基本信息请求
             RestServerModifyJobRequest request = RestServerModifyJobRequest.newBuilder().setAppName(appName).setJobName(jobName).setJobId(jobId)
-                    .setCronExpression(cronExp).setUser(user).setJobType(jobType).setContent(jobCommand)
+                    .setCronExpression(cronExp).setUser(user).setJobType(jobType).setContent(content)
                     .setGroupId(groupId).setPriority(priority).setFailedRetries(failedRetries).setFailedInterval(failedInterval)
                     .setRejectRetries(rejectRetries).setRejectInterval(rejectInterval).setStartTime(startTimeLong).setEndTime(endTimeLong)
                     .addAllParameters(paraList).build();

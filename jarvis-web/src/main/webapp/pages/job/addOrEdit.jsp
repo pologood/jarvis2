@@ -95,7 +95,7 @@
                 <div class="col-md-6 col-md-offset-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">执行命令<span class="text-danger" style="vertical-align: middle" >*</span></span>
-                        <textarea id="jobCommand" class="form-control" desc="执行命令" rows="4" onclick="changeTextArea(this,15,10)" onblur="changeTextArea(this,4,10)">${jobVo.content}</textarea>
+                        <textarea id="content" class="form-control" desc="执行命令" rows="4" onclick="changeTextArea(this,15,10)" onblur="changeTextArea(this,4,10)">${jobVo.content}</textarea>
                     </div>
                 </div>
             </div>

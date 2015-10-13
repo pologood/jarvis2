@@ -66,7 +66,6 @@ public class RemoteRestApiController extends BaseController {
         Map<String,String> rawData = new HashMap<String,String>();
         Map<String,String> data = new HashMap<String,String>();
         String newPara="";
-
         for(Map.Entry entry:paraJson.entrySet()){
             String key=(String)entry.getKey();
             String value=(String)entry.getValue();
