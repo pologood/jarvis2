@@ -25,8 +25,10 @@ import akka.pattern.Patterns;
 import akka.testkit.JavaTestKit;
 import akka.util.Timeout;
 
-import com.mogujie.jarvis.protocol.ModifyDependencyProtos.DependencyEntry;
-import com.mogujie.jarvis.protocol.ModifyDependencyProtos.DependencyEntry.DependencyOperator;
+import com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry;
+import com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.DependencyOperator;
+import com.mogujie.jarvis.protocol.ModifyJobProtos.RestServerModifyJobRequest;
+import com.mogujie.jarvis.protocol.ModifyJobProtos.ServerModifyJobResponse;
 import com.mogujie.jarvis.protocol.QueryJobRelationProtos.RestServerQueryJobRelationRequest;
 import com.mogujie.jarvis.protocol.QueryJobRelationProtos.RestServerQueryJobRelationRequest.RelationType;
 import com.mogujie.jarvis.protocol.QueryJobRelationProtos.ServerQueryJobRelationResponse;
@@ -317,6 +319,51 @@ public class TestJobActor {
             actorRef.tell(new RemoveJobRequest(jobBId), getRef());
             expectMsgEquals("remove success");
             actorRef.tell(new RemoveJobRequest(jobCId), getRef());
+            expectMsgEquals("remove success");
+        }};
+    }
+
+    @Test
+    public void testModifyJob() {
+        new JavaTestKit(system) {{
+            Props props = SpringExtension.SPRING_EXT_PROVIDER.get(system).props("jobActor");
+            ActorRef actorRef = system.actorOf(props);
+            RestServerSubmitJobRequest submitJobRequest = RestServerSubmitJobRequest.newBuilder()
+                    .setJobName("testJob1")
+                    .setCronExpression("4 1 * * ?")
+                    .setAppName("testApp1")
+                    .setAppKey("appKey1")
+                    .setUser("testUser1")
+                    .setJobType("hive_sql")
+                    .setContent("select * from test1")
+                    .setGroupId(1)
+                    .build();
+
+            Future<Object> future = Patterns.ask(actorRef, submitJobRequest, TIMEOUT);
+            long jobId = 0;
+            try {
+                ServerSubmitJobResponse response = (ServerSubmitJobResponse) Await.result(future, TIMEOUT.duration());
+                Assert.assertTrue(response.getSuccess());
+                jobId = response.getJobId();
+                Assert.assertTrue(jobId > 0);
+            } catch (Exception e) {
+                Assert.assertTrue(false);
+            }
+
+            RestServerModifyJobRequest modifyJobRequest = RestServerModifyJobRequest.newBuilder()
+                    .setJobId(jobId)
+                    .setCronExpression("4 2 * * ?")
+                    .setUser("testUser2")
+                    .build();
+            future = Patterns.ask(actorRef, modifyJobRequest, TIMEOUT);
+            try {
+                ServerModifyJobResponse response = (ServerModifyJobResponse) Await.result(future, TIMEOUT.duration());
+                Assert.assertTrue(response.getSuccess());
+            } catch (Exception e) {
+                Assert.assertTrue(false);
+            }
+
+            actorRef.tell(new RemoveJobRequest(jobId), getRef());
             expectMsgEquals("remove success");
         }};
     }

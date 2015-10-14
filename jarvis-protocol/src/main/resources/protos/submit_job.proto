@@ -1,5 +1,5 @@
 import "map_entry.proto";
-import "modify_dependency.proto";
+import "dependency_entry.proto";
 
 option java_package = "com.mogujie.jarvis.protocol";
 option java_outer_classname = "SubmitJobProtos";

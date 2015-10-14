@@ -28,7 +28,6 @@ message RestServerModifyJobRequest {
 
 
 message ServerModifyJobResponse {
-    required int64 job_id = 1;
-    required bool success = 2;
-    optional string message = 3 [default = ""];
+    required bool success = 1;
+    optional string message = 2 [default = ""];
 }
