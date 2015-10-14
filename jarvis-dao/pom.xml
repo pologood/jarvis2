@@ -5,6 +5,7 @@
 		<groupId>com.mogujie.jarvis</groupId>
 		<artifactId>jarvis-parent</artifactId>
 		<version>2.0</version>
+		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<artifactId>jarvis-dao</artifactId>
 	<name>jarvis-dao</name>
@@ -45,8 +46,6 @@
 
 	<build>
 		<plugins>
-
-			<!--使用mvn mybatis generator:dao,dto生成src -->
 			<plugin>
 				<groupId>org.mybatis.generator</groupId>
 				<artifactId>mybatis-generator-maven-plugin</artifactId>
@@ -82,7 +81,6 @@
 					</dependency>
 				</dependencies>
 			</plugin>
-
 		</plugins>
 
 		<pluginManagement>

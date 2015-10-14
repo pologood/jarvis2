@@ -30,7 +30,6 @@ public class JsonHelper {
     public static Map<String, Object> parseJSON2Map(String jsonStr) {
         Map<String, Object> jsonMap = new HashMap<String, Object>();
         JSONObject jsonObject = new JSONObject(jsonStr);
-        @SuppressWarnings("unchecked")
         Iterator<String> it = jsonObject.keys();
         while (it.hasNext()) {
             String key = String.valueOf(it.next());

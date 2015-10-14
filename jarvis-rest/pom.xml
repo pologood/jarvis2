@@ -1,58 +1,59 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>com.mogujie.jarvis</groupId>
-        <artifactId>jarvis-parent</artifactId>
-        <version>2.0</version>
-    </parent>
-    <artifactId>jarvis-rest</artifactId>
-    <name>jarvis-rest</name>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.mogujie.jarvis</groupId>
+		<artifactId>jarvis-parent</artifactId>
+		<version>2.0</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+	<artifactId>jarvis-rest</artifactId>
+	<name>jarvis-rest</name>
 
-    <properties>
-        <build.finalname>jarvis-rest</build.finalname>
-        <jersey.version>2.19</jersey.version>
-    </properties>
+	<properties>
+		<build.finalname>jarvis-rest</build.finalname>
+		<jersey.version>2.19</jersey.version>
+	</properties>
 
-    <dependencies>
-        <dependency>
-            <groupId>com.mogujie.jarvis</groupId>
-            <artifactId>jarvis-core</artifactId>
-            <version>2.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.mogujie.jarvis</groupId>
-            <artifactId>jarvis-protocol</artifactId>
-            <version>2.0</version>
-        </dependency>
+	<dependencies>
+		<dependency>
+			<groupId>com.mogujie.jarvis</groupId>
+			<artifactId>jarvis-core</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.mogujie.jarvis</groupId>
+			<artifactId>jarvis-protocol</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 
-        <!-- Jersey -->
-        <dependency>
-            <groupId>org.glassfish.jersey.containers</groupId>
-            <artifactId>jersey-container-grizzly2-http</artifactId>
-            <version>${jersey.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.glassfish.jersey.media</groupId>
-            <artifactId>jersey-media-json-jackson</artifactId>
-            <version>${jersey.version}</version>
-        </dependency>
+		<!-- Jersey -->
+		<dependency>
+			<groupId>org.glassfish.jersey.containers</groupId>
+			<artifactId>jersey-container-grizzly2-http</artifactId>
+			<version>${jersey.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.media</groupId>
+			<artifactId>jersey-media-json-jackson</artifactId>
+			<version>${jersey.version}</version>
+		</dependency>
 
-        <dependency>
-            <groupId>com.fasterxml.jackson.jaxrs</groupId>
-            <artifactId>jackson-jaxrs-json-provider</artifactId>
-            <version>2.4.0</version>
-        </dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.jaxrs</groupId>
+			<artifactId>jackson-jaxrs-json-provider</artifactId>
+			<version>2.4.0</version>
+		</dependency>
 
-        <dependency>
-            <groupId>org.glassfish.jersey.ext</groupId>
-            <artifactId>jersey-entity-filtering</artifactId>
-            <version>2.22</version>
-        </dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.ext</groupId>
+			<artifactId>jersey-entity-filtering</artifactId>
+			<version>2.22</version>
+		</dependency>
 
-    </dependencies>
+	</dependencies>
 
-    <build>
-        <finalName>${build.finalname}</finalName>
-    </build>
+	<build>
+		<finalName>${build.finalname}</finalName>
+	</build>
 </project>

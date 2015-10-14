@@ -1,38 +1,35 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>com.mogujie.jarvis</groupId>
-    <artifactId>jarvis-parent</artifactId>
-    <version>2.0</version>
-  </parent>
-  <artifactId>jarvis-logstorage</artifactId>
-  <name>jarvis-logstorage</name>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.mogujie.jarvis</groupId>
+		<artifactId>jarvis-parent</artifactId>
+		<version>2.0</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+	<artifactId>jarvis-logstorage</artifactId>
+	<name>jarvis-logstorage</name>
 
-    <dependencies>
-        <dependency>
-            <groupId>com.mogujie.jarvis</groupId>
-            <artifactId>jarvis-core</artifactId>
-            <version>2.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.mogujie.jarvis</groupId>
-            <artifactId>jarvis-protocol</artifactId>
-            <version>2.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.mashape.unirest</groupId>
-            <artifactId>unirest-java</artifactId>
-            <version>1.4.6</version>
-        </dependency>
-
-        <dependency>
-            <groupId>javax.inject</groupId>
-            <artifactId>javax.inject</artifactId>
-            <version>1</version>
-        </dependency>
-
-    </dependencies>
-
-
+	<dependencies>
+		<dependency>
+			<groupId>com.mogujie.jarvis</groupId>
+			<artifactId>jarvis-core</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.mogujie.jarvis</groupId>
+			<artifactId>jarvis-protocol</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.mashape.unirest</groupId>
+			<artifactId>unirest-java</artifactId>
+			<version>1.4.7</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.inject</groupId>
+			<artifactId>javax.inject</artifactId>
+			<version>1</version>
+		</dependency>
+	</dependencies>
 </project>
