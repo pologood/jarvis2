@@ -36,7 +36,7 @@ public class SystemController extends AbstractController {
         RestServerModifyWorkerStatusRequest request = RestServerModifyWorkerStatusRequest.newBuilder().setIp(ip).setPort(port)
                 .setStatus(ws.getValue()).build();
 
-        ServerModifyWorkerStatusResponse response = (ServerModifyWorkerStatusResponse) callActor(AkkaType.server, request);
+        ServerModifyWorkerStatusResponse response = (ServerModifyWorkerStatusResponse) callActor(AkkaType.SERVER, request);
 
         if (response.getSuccess()) {
             return successResult();
