@@ -11,7 +11,6 @@ package com.mogujie.jarvis.server;
 import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.typesafe.config.Config;
-import com.typesafe.config.ConfigFactory;
 
 import akka.actor.ActorSystem;
 
@@ -21,7 +20,7 @@ import akka.actor.ActorSystem;
  */
 public class JarvisServerActorSystem {
 
-    private static Config config = ConfigUtils.getAkkaConfigWithCommon("akka-server.conf");
+    private static Config config = ConfigUtils.getAkkaConfig("akka-server.conf");
     private static ActorSystem system = ActorSystem.create(JarvisConstants.SERVER_AKKA_SYSTEM_NAME, config);
 
     private JarvisServerActorSystem() {

@@ -102,15 +102,13 @@ public class ConfigUtils {
     }
 
     /**
-     * 获取Akka的配置，并追加通用默认配置
+     * 获取Akka的配置
      *
      * @param fileName
      * @return
      */
-    public static Config getAkkaConfigWithCommon(String fileName) {
-
-        Config akkaConfig = ConfigUtils.getAkkaConfig(fileName);
-
+    public static Config getAkkaConfig(String fileName) {
+        Config akkaConfig = ConfigFactory.load(fileName);
         try {
             String ipv4 = Inet4Address.getLocalHost().getHostAddress();
             return ConfigFactory.parseString("akka.remote.netty.tcp.hostname=" + ipv4).withFallback(akkaConfig);
@@ -120,17 +118,4 @@ public class ConfigUtils {
 
         return akkaConfig;
     }
-
-    /**
-     * 获取Akka的配置
-     *
-     * @param fileName
-     * @return
-     */
-    public static Config getAkkaConfig(String fileName) {
-
-        return  ConfigFactory.load(fileName);
-    }
-
-
 }

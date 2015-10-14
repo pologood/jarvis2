@@ -122,8 +122,7 @@ public class JobController extends AbstractController {
                 return errorResult(response.getMessage());
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            logger.info(e.getStackTrace());
+            logger.error("", e);
             return errorResult(e.getMessage());
         }
     }
@@ -155,14 +154,12 @@ public class JobController extends AbstractController {
                 for (Object key : dependIdsJson.keySet()) {
                     String value = dependIdsJson.getString((String) key);
                     if (value.equalsIgnoreCase("add")) {
-                        DependencyEntry entry = DependencyEntry.newBuilder()
-                                .setJobId(Integer.parseInt((String) key)).setOperator(DependencyEntry.DependencyOperator.ADD)
-                                .build();
+                        DependencyEntry entry = DependencyEntry.newBuilder().setJobId(Integer.parseInt((String) key))
+                                .setOperator(DependencyEntry.DependencyOperator.ADD).build();
                         dependEntryList.add(entry);
                     }
                     if (value.equalsIgnoreCase("delete")) {
-                        DependencyEntry entry = DependencyEntry.newBuilder()
-                                .setJobId(Integer.parseInt((String) key))
+                        DependencyEntry entry = DependencyEntry.newBuilder().setJobId(Integer.parseInt((String) key))
                                 .setOperator(DependencyEntry.DependencyOperator.REMOVE).build();
                         dependEntryList.add(entry);
                     }
@@ -192,19 +189,18 @@ public class JobController extends AbstractController {
 
             // 构造修改job基本信息请求
             RestServerModifyJobRequest request = null;
-            RestServerModifyJobRequest.Builder builder= RestServerModifyJobRequest.newBuilder().setAppName(appName).setJobName(jobName).setJobId(jobId)
-                    .setCronExpression(cronExp).setUser(user).setJobType(jobType).setContent(content)
-                    .setGroupId(groupId).setPriority(priority).setFailedRetries(failedRetries).setFailedInterval(failedInterval)
-                    .setRejectRetries(rejectRetries).setRejectInterval(rejectInterval)
-                    .addAllParameters(paraList);
+            RestServerModifyJobRequest.Builder builder = RestServerModifyJobRequest.newBuilder().setAppName(appName).setJobName(jobName)
+                    .setJobId(jobId).setCronExpression(cronExp).setUser(user).setJobType(jobType).setContent(content).setGroupId(groupId)
+                    .setPriority(priority).setFailedRetries(failedRetries).setFailedInterval(failedInterval).setRejectRetries(rejectRetries)
+                    .setRejectInterval(rejectInterval).addAllParameters(paraList);
 
-            if(startTimeLong!=null){
+            if (startTimeLong != null) {
                 builder.setStartTime(startTimeLong);
             }
-            if(endTimeLong!=null){
+            if (endTimeLong != null) {
                 builder.setEndTime(endTimeLong);
             }
-            request=builder.build();
+            request = builder.build();
 
             // 发送信息到server修改job基本信息
             ServerModifyJobResponse response = (ServerModifyJobResponse) callActor(AkkaType.server, request);
@@ -243,8 +239,8 @@ public class JobController extends AbstractController {
     @POST
     @Path("flag")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult flag(@FormParam("jobId") Long jobId,@FormParam("appKey") String appKey, @FormParam("appName") String appName,@FormParam("jobFlag") Integer jobFlag)
-            throws Exception {
+    public RestResult flag(@FormParam("jobId") Long jobId, @FormParam("appKey") String appKey, @FormParam("appName") String appName,
+            @FormParam("jobFlag") Integer jobFlag) throws Exception {
         try {
             // 构造删除job请求request，1.启用2.禁用3.过期4.垃圾箱
             RestServerModifyJobFlagRequest request = RestServerModifyJobFlagRequest.newBuilder().setJobId(jobId).setJobFlag(jobFlag).build();

@@ -14,7 +14,6 @@ import com.mogujie.jarvis.rest.MsgCode;
 import com.mogujie.jarvis.rest.RestResult;
 import com.mogujie.jarvis.rest.vo.AbstractVo;
 import com.typesafe.config.Config;
-import com.typesafe.config.ConfigFactory;
 
 import akka.actor.ActorSelection;
 import akka.actor.ActorSystem;
@@ -50,7 +49,7 @@ public abstract class AbstractController {
         logstorageAkkaUserPath = restConfig.getString("logstorage.akka.path") + JarvisConstants.LOGSTORAGE_AKKA_USER_PATH;
 
         if (system == null) {
-            Config akkaConfig = ConfigUtils.getAkkaConfigWithCommon("akka-rest.conf");
+            Config akkaConfig = ConfigUtils.getAkkaConfig("akka-rest.conf");
             system = ActorSystem.create(JarvisConstants.REST_AKKA_SYSTEM_NAME, akkaConfig);
         }
 
