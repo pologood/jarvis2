@@ -32,6 +32,7 @@ import com.mogujie.jarvis.dao.JobMapper;
 import com.mogujie.jarvis.dto.Job;
 import com.mogujie.jarvis.dto.JobDepend;
 import com.mogujie.jarvis.dto.JobDependKey;
+import com.mogujie.jarvis.protocol.ModifyDependencyProtos.DependencyEntry;
 import com.mogujie.jarvis.protocol.ModifyDependencyProtos.DependencyEntry.DependencyOperator;
 import com.mogujie.jarvis.protocol.ModifyDependencyProtos.RestServerModifyDependencyRequest;
 import com.mogujie.jarvis.protocol.ModifyDependencyProtos.ServerModifyDependencyResponse;
@@ -39,7 +40,6 @@ import com.mogujie.jarvis.protocol.ModifyJobFlagProtos.RestServerModifyJobFlagRe
 import com.mogujie.jarvis.protocol.ModifyJobFlagProtos.ServerModifyJobFlagResponse;
 import com.mogujie.jarvis.protocol.ModifyJobProtos.RestServerModifyJobRequest;
 import com.mogujie.jarvis.protocol.ModifyJobProtos.ServerModifyJobResponse;
-import com.mogujie.jarvis.protocol.SubmitJobProtos.DependencyEntry;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitJobRequest;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitJobResponse;
 import com.mogujie.jarvis.server.domain.ModifyDependEntry;
@@ -188,7 +188,7 @@ public class JobActor extends UntypedActor {
     private void modifyDependency(RestServerModifyDependencyRequest msg) throws IOException {
         long jobId = msg.getJobId();
         List<ModifyDependEntry> dependEntries = new ArrayList<ModifyDependEntry>();
-        for (com.mogujie.jarvis.protocol.ModifyDependencyProtos.DependencyEntry entry : msg.getDependencyEntryList()) {
+        for (DependencyEntry entry : msg.getDependencyEntryList()) {
             long preJobId = entry.getJobId();
             int commonStrategyValue = entry.getCommonDependStrategy();
             String offsetStrategyValue = entry.getOffsetDependStrategy();
