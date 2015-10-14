@@ -36,61 +36,58 @@ import scala.concurrent.duration.Duration;
 
 public class JarvisWorker {
 
-  private static final Timeout TIMEOUT = new Timeout(Duration.create(30, TimeUnit.SECONDS));
-  private static final Logger LOGGER = LogManager.getLogger();
+    private static final Timeout TIMEOUT = new Timeout(Duration.create(30, TimeUnit.SECONDS));
+    private static final Logger LOGGER = LogManager.getLogger();
 
-  public static void main(String[] args) {
-    LOGGER.info("Starting jarvis worker...");
-    Configuration workerConfig = ConfigUtils.getWorkerConfig();
-    Config akkaConfig = ConfigFactory.load("akka-worker.conf");
+    public static void main(String[] args) {
+        LOGGER.info("Starting jarvis worker...");
 
-    System.out.println(akkaConfig.getInt("a.b.c"));
+        Config akkaConfig = ConfigUtils.getAkkaConfigWithCommon("akka-worker.conf");
+        System.out.println(akkaConfig.getInt("a.b.c"));
+        ActorSystem system = ActorSystem.create(JarvisConstants.WORKER_AKKA_SYSTEM_NAME, akkaConfig);
 
-    ActorSystem system = ActorSystem.create("worker",
-        ConfigUtils.getCommonAkkaConfig().withFallback(akkaConfig));
+        Configuration workerConfig = ConfigUtils.getWorkerConfig();
+        String serverAkkaPath = workerConfig.getString("server.akka.path") + JarvisConstants.SERVER_AKKA_USER_PATH;
+        int workerGroupId = workerConfig.getInt("worker.group.id", 0);
+        String workerKey = workerConfig.getString("worker.key");
+        WorkerRegistryRequest request = WorkerRegistryRequest.newBuilder().setKey(workerKey).build();
 
-    String serverAkkaPath = workerConfig.getString("server.akka.path") + "/user/"
-        + JarvisConstants.SERVER_AKKA_SYSTEM_NAME;
-    int workerGroupId = workerConfig.getInt("worker.group.id", 0);
-    String workerKey = workerConfig.getString("worker.key");
-    WorkerRegistryRequest request = WorkerRegistryRequest.newBuilder().setKey(workerKey).build();
+        // 注册Worker
+        ActorSelection serverActor = system.actorSelection(serverAkkaPath);
+        Future<Object> future = Patterns.ask(serverActor, request, TIMEOUT);
+        try {
+            ServerRegistryResponse response = (ServerRegistryResponse) Await.result(future,
+                    TIMEOUT.duration());
+            if (!response.getSuccess()) {
+                LOGGER.error("Worker regist failed with group.id={}, worker.key={}", workerGroupId,
+                        workerKey);
+                system.terminate();
+                return;
+            }
+        } catch (Exception e) {
+            LOGGER.error("Worker regist failed", e);
+            system.terminate();
+            return;
+        }
 
-    // 注册Worker
-    ActorSelection serverActor = system.actorSelection(serverAkkaPath);
-    Future<Object> future = Patterns.ask(serverActor, request, TIMEOUT);
-    try {
-      ServerRegistryResponse response = (ServerRegistryResponse) Await.result(future,
-          TIMEOUT.duration());
-      if (!response.getSuccess()) {
-        LOGGER.error("Worker regist failed with group.id={}, worker.key={}", workerGroupId,
-            workerKey);
-        system.terminate();
-        return;
-      }
-    } catch (Exception e) {
-      LOGGER.error("Worker regist failed", e);
-      system.terminate();
-      return;
+        ActorRef deadLetterActor = system
+                .actorOf(new SmallestMailboxPool(10).props(DeadLetterActor.props()));
+        system.eventStream().subscribe(deadLetterActor, DeadLetter.class);
+
+        int actorNum = workerConfig.getInt("worker.actors.num", 100);
+        ActorRef workerActor = system.actorOf(
+                new SmallestMailboxPool(actorNum).props(WorkerActor.props()),
+                JarvisConstants.WORKER_AKKA_SYSTEM_NAME);
+
+        ActorSelection heartBeatActor = system.actorSelection(serverAkkaPath);
+
+        int heartBeatInterval = workerConfig.getInt("worker.heart.beat.interval.seconds", 5);
+
+        // 心跳汇报
+        system.scheduler().schedule(Duration.Zero(),
+                Duration.create(heartBeatInterval, TimeUnit.SECONDS),
+                new HeartBeatThread(heartBeatActor, workerActor), system.dispatcher());
+
     }
-
-    ActorRef deadLetterActor = system
-        .actorOf(new SmallestMailboxPool(10).props(DeadLetterActor.props()));
-    system.eventStream().subscribe(deadLetterActor, DeadLetter.class);
-
-    int actorNum = workerConfig.getInt("worker.actors.num", 100);
-    ActorRef workerActor = system.actorOf(
-        new SmallestMailboxPool(actorNum).props(WorkerActor.props()),
-        JarvisConstants.WORKER_AKKA_SYSTEM_NAME);
-
-    ActorSelection heartBeatActor = system.actorSelection(serverAkkaPath);
-
-    int heartBeatInterval = workerConfig.getInt("worker.heart.beat.interval.seconds", 5);
-
-    // 心跳汇报
-    system.scheduler().schedule(Duration.Zero(),
-        Duration.create(heartBeatInterval, TimeUnit.SECONDS),
-        new HeartBeatThread(heartBeatActor, workerActor), system.dispatcher());
-
-  }
 
 }

@@ -101,15 +101,36 @@ public class ConfigUtils {
         return logstorageConfig;
     }
 
-    public static Config getCommonAkkaConfig() {
+    /**
+     * 获取Akka的配置，并追加通用默认配置
+     *
+     * @param fileName
+     * @return
+     */
+    public static Config getAkkaConfigWithCommon(String fileName) {
+
+        Config akkaConfig = ConfigUtils.getAkkaConfig(fileName);
+
         try {
             String ipv4 = Inet4Address.getLocalHost().getHostAddress();
-            return ConfigFactory.parseString("akka.remote.netty.tcp.hostname=" + ipv4);
+            return ConfigFactory.parseString("akka.remote.netty.tcp.hostname=" + ipv4).withFallback(akkaConfig);
         } catch (UnknownHostException e) {
             Throwables.propagate(e);
         }
 
-        return null;
+        return akkaConfig;
     }
+
+    /**
+     * 获取Akka的配置
+     *
+     * @param fileName
+     * @return
+     */
+    public static Config getAkkaConfig(String fileName) {
+
+        return  ConfigFactory.load(fileName);
+    }
+
 
 }

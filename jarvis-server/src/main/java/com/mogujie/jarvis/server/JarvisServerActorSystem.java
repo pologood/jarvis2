@@ -21,8 +21,8 @@ import akka.actor.ActorSystem;
  */
 public class JarvisServerActorSystem {
 
-    private static Config config = ConfigFactory.load("akka-server.conf");
-    private static ActorSystem system = ActorSystem.create(JarvisConstants.SERVER_AKKA_SYSTEM_NAME, ConfigUtils.getCommonAkkaConfig().withFallback(config));
+    private static Config config = ConfigUtils.getAkkaConfigWithCommon("akka-server.conf");
+    private static ActorSystem system = ActorSystem.create(JarvisConstants.SERVER_AKKA_SYSTEM_NAME, config);
 
     private JarvisServerActorSystem() {
     }

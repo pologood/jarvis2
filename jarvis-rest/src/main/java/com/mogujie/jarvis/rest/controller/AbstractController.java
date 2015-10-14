@@ -50,9 +50,8 @@ public abstract class AbstractController {
         logstorageAkkaUserPath = restConfig.getString("logstorage.akka.path") + JarvisConstants.LOGSTORAGE_AKKA_USER_PATH;
 
         if (system == null) {
-            Config akkaConfig = ConfigFactory.load("akka-rest.conf");
-            Config restAkkaConfig = ConfigUtils.getCommonAkkaConfig().withFallback(akkaConfig);
-            system = ActorSystem.create(JarvisConstants.REST_AKKA_SYSTEM_NAME, restAkkaConfig);
+            Config akkaConfig = ConfigUtils.getAkkaConfigWithCommon("akka-rest.conf");
+            system = ActorSystem.create(JarvisConstants.REST_AKKA_SYSTEM_NAME, akkaConfig);
         }
 
     }
