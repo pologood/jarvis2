@@ -41,8 +41,14 @@ public class MessageUtil {
         job.setPriority(msg.getPriority());
         job.setJobFlag(JobFlag.ENABLE.getValue());
         job.setJobType(msg.getJobType());
-        job.setActiveStartDate(new Date(msg.getStartTime()));
-        job.setActiveEndDate(new Date(msg.getEndTime()));
+
+        if(msg.getStartTime() != 0){
+            job.setActiveStartDate(new Date(msg.getStartTime()));
+        }
+        if(msg.getEndTime() != 0){
+            job.setActiveEndDate(new Date(msg.getEndTime()));
+        }
+
         job.setFailedAttempts(msg.getFailedRetries());
         job.setFailedInterval(msg.getFailedInterval());
         job.setRejectAttempts(msg.getRejectRetries());
@@ -52,7 +58,7 @@ public class MessageUtil {
         job.setWorkerGroupId(msg.getGroupId());
         job.setOriginJobId(msg.getOriginJobId());
         job.setFixedDelay(msg.getFixedDelay());
-        if (msg.getParametersList() != null) {
+        if (msg.getParametersList() != null && msg.getParametersList().size() != 0) {
             job.setParams(JsonHelper.parseMapEntryList2JSON(msg.getParametersList()));
         }
         DateTime dt = DateTime.now();
