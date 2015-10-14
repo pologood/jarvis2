@@ -13,8 +13,8 @@ package com.mogujie.jarvis.core.domain;
  *
  */
 public enum AkkaType {
-    server,
-    worker,
-    logstorage,
-    rest
+    SERVER,
+    WORKER,
+    LOGSTORAGE,
+    REST
 }

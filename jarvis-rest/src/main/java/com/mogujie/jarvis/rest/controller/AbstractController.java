@@ -72,19 +72,19 @@ public abstract class AbstractController {
 
         ActorSelection actor;
 
-        if (akkaType == AkkaType.server) {
+        if (akkaType == AkkaType.SERVER) {
             if (serverActor == null) {
                 serverActor = system.actorSelection(serverAkkaUserPath);
             }
             actor = serverActor;
 
-        } else if (akkaType == AkkaType.worker) {
+        } else if (akkaType == AkkaType.WORKER) {
             if (workerActor == null) {
                 workerActor = system.actorSelection(workerAkkaUserPath);
             }
             actor = workerActor;
 
-        } else if (akkaType == AkkaType.logstorage) {
+        } else if (akkaType == AkkaType.LOGSTORAGE) {
             if (logstorageActor == null) {
                 logstorageActor = system.actorSelection(logstorageAkkaUserPath);
             }

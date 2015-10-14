@@ -111,7 +111,7 @@ public class JobController extends AbstractController {
 
             // 发送请求到server尝试新增
 
-            ServerSubmitJobResponse response = (ServerSubmitJobResponse) callActor(AkkaType.server, request);
+            ServerSubmitJobResponse response = (ServerSubmitJobResponse) callActor(AkkaType.SERVER, request);
 
             // 判断是否新增成功
             if (response.getSuccess()) {
@@ -207,7 +207,7 @@ public class JobController extends AbstractController {
             request=builder.build();
 
             // 发送信息到server修改job基本信息
-            ServerModifyJobResponse response = (ServerModifyJobResponse) callActor(AkkaType.server, request);
+            ServerModifyJobResponse response = (ServerModifyJobResponse) callActor(AkkaType.SERVER, request);
 
             // 判断修改基本信息是否成功，修改基本信息成功后才尝试修改依赖
             if (response.getSuccess()) {
@@ -215,7 +215,7 @@ public class JobController extends AbstractController {
                 RestServerModifyDependencyRequest modifyDependencyRequest = RestServerModifyDependencyRequest.newBuilder().setJobId(jobId)
                         .addAllDependencyEntry(dependEntryList).build();
                 // 发送信息到server修改依赖
-                ServerModifyDependencyResponse dependencyResponse = (ServerModifyDependencyResponse) callActor(AkkaType.server,
+                ServerModifyDependencyResponse dependencyResponse = (ServerModifyDependencyResponse) callActor(AkkaType.SERVER,
                         modifyDependencyRequest);
                 // 修改依赖是否成功
                 if (dependencyResponse.getSuccess()) {
@@ -249,7 +249,7 @@ public class JobController extends AbstractController {
             // 构造删除job请求request，1.启用2.禁用3.过期4.垃圾箱
             RestServerModifyJobFlagRequest request = RestServerModifyJobFlagRequest.newBuilder().setJobId(jobId).setJobFlag(jobFlag).build();
             // 发送请求到server尝试常熟
-            ServerModifyJobFlagResponse response = (ServerModifyJobFlagResponse) callActor(AkkaType.server, request);
+            ServerModifyJobFlagResponse response = (ServerModifyJobFlagResponse) callActor(AkkaType.SERVER, request);
 
             // 判断删除是否成功
             if (response.getSuccess()) {
@@ -294,7 +294,7 @@ public class JobController extends AbstractController {
             Long singleOriginId = reRunJobArr.getLong(i);
             // 构造新增任务请求
             RestServerSubmitJobRequest request = RestServerSubmitJobRequest.newBuilder().setOriginJobId(singleOriginId).build();
-            ServerSubmitJobResponse response = (ServerSubmitJobResponse) callActor(AkkaType.server, request);
+            ServerSubmitJobResponse response = (ServerSubmitJobResponse) callActor(AkkaType.SERVER, request);
 
             // 保存整理而言是否成功，如果某个job重跑失败，则算失败
             flag = flag && response.getSuccess();
