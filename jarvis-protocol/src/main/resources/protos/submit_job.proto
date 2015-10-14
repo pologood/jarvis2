@@ -44,6 +44,7 @@ message ServerSubmitTaskRequest {
     required string content = 6;
     optional int32 priority = 7 [default = 1];
     repeated MapEntry parameters = 8;
+    required int64 scheduling_time = 9;
 }
 
 

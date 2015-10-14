@@ -25,6 +25,7 @@ public class TaskDetail {
     private int priority;
     private int groupId;
     private Map<String, Object> parameters;
+    private long schedulingTime;
 
     private TaskDetail() {
     }
@@ -63,6 +64,10 @@ public class TaskDetail {
 
     public Map<String, Object> getParameters() {
         return parameters;
+    }
+
+    public long getSchedulingTime() {
+        return schedulingTime;
     }
 
     public static TaskDetailBuilder newTaskDetailBuilder() {
@@ -118,6 +123,11 @@ public class TaskDetail {
 
         public TaskDetailBuilder setParameters(Map<String, Object> parameters) {
             this.task.parameters = parameters;
+            return this;
+        }
+
+        public TaskDetailBuilder setSchedulingTime(long schedulingTime) {
+            this.task.schedulingTime = schedulingTime;
             return this;
         }
 
