@@ -32,6 +32,7 @@ import com.mogujie.jarvis.server.scheduler.dag.DAGScheduler;
 import com.mogujie.jarvis.server.scheduler.dag.checker.DAGDependCheckerFactory;
 import com.mogujie.jarvis.server.scheduler.dag.checker.DummyDAGDependChecker;
 import com.mogujie.jarvis.server.scheduler.task.TaskScheduler;
+import com.mogujie.jarvis.server.scheduler.time.TimeScheduler;
 import com.mogujie.jarvis.server.util.SpringContext;
 import com.mogujie.jarvis.server.util.SpringExtension;
 
@@ -47,6 +48,7 @@ public class TestBaseActor extends AbstractTransactionalJUnit4SpringContextTests
     private static JobSchedulerController controller;
     private static DAGScheduler dagScheduler;
     private static TaskScheduler taskScheduler;
+    private static TimeScheduler timeScheduler;
 
     @BeforeClass
     public static void setup() {
@@ -61,8 +63,10 @@ public class TestBaseActor extends AbstractTransactionalJUnit4SpringContextTests
         controller = SchedulerControllerFactory.getController();
         dagScheduler = SpringContext.getBean(DAGScheduler.class);
         taskScheduler = SpringContext.getBean(TaskScheduler.class);
+        timeScheduler = SpringContext.getBean(TimeScheduler.class);
         controller.register(dagScheduler);
         controller.register(taskScheduler);
+        controller.register(timeScheduler);
     }
 
     @AfterClass
@@ -70,6 +74,7 @@ public class TestBaseActor extends AbstractTransactionalJUnit4SpringContextTests
         JavaTestKit.shutdownActorSystem(system);
         controller.unregister(dagScheduler);
         controller.unregister(taskScheduler);
+        controller.unregister(timeScheduler);
         conf.clear();
     }
 }
