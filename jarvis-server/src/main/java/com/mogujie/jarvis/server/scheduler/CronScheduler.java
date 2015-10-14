@@ -37,11 +37,9 @@ public class CronScheduler {
     private List<Pair<Long, DateTime>> nextScheduleTimeList = new Vector<Pair<Long, DateTime>>(10);
     private static final Logger LOGGER = LogManager.getLogger();
 
-
-    public CronScheduler(JobSchedulerController jobSchedulerController){
+    public CronScheduler(JobSchedulerController jobSchedulerController) {
         this.jobSchedulerController = jobSchedulerController;
     }
-
 
     public void start() {
         schedulerThread = new SchedulerThread(crontabs, nextScheduleTimeList);
@@ -68,9 +66,11 @@ public class CronScheduler {
     }
 
     public void scheduleOnce(long jobId, int delaySeconds) {
-        DateTime dateTime = DateTime.now().plusSeconds(delaySeconds);
-        Pair<Long, DateTime> pair = new Pair<Long, DateTime>(jobId, dateTime);
-        nextScheduleTimeList.add(pair);
+        if (delaySeconds > 0) {
+            DateTime dateTime = DateTime.now().plusSeconds(delaySeconds);
+            Pair<Long, DateTime> pair = new Pair<Long, DateTime>(jobId, dateTime);
+            nextScheduleTimeList.add(pair);
+        }
     }
 
     public void remove(Crontab crontab) {
@@ -116,10 +116,10 @@ public class CronScheduler {
                         long jobId = pair.getFirst();
                         TimeReadyEvent event = new TimeReadyEvent(jobId);
                         jobSchedulerController.notify(event);
+                        nextScheduleTimeList.remove(0);
 
                         Crontab crontab = crontabs.get(jobId);
                         if (crontab != null) {
-                            nextScheduleTimeList.remove(0);
                             try {
                                 DateTime nextTime = new CronExpression(crontab.getCronExpression()).getTimeAfter(DateTime.now());
                                 nextScheduleTimeList.add(new Pair<Long, DateTime>(pair.getFirst(), nextTime));

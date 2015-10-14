@@ -59,15 +59,16 @@ public class TimeScheduler extends Scheduler {
     protected void init() {
         getSchedulerController().register(this);
 
-        cronScheduler.start();
         CrontabExample crontabExample = new CrontabExample();
         List<Crontab> crontabs = crontabMapper.selectByExample(crontabExample);
+
         JobExample jobExample = new JobExample();
         jobExample.createCriteria().andJobFlagEqualTo(JobFlag.ENABLE.getValue());
         List<Job> enableJobs = jobMapper.selectByExample(jobExample);
         Set<Long> jobIds = new HashSet<>();
         for (Job job : enableJobs) {
-            if (job.getFixedDelay() != null) {
+            Integer fixedDelay = job.getFixedDelay();
+            if (fixedDelay != null) {
                 cronScheduler.scheduleOnce(job.getJobId(), job.getFixedDelay());
             } else {
                 jobIds.add(job.getJobId());
@@ -79,6 +80,8 @@ public class TimeScheduler extends Scheduler {
                 cronScheduler.schedule(crontab);
             }
         }
+
+        cronScheduler.start();
     }
 
     @Override
