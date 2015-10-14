@@ -27,10 +27,12 @@ import akka.actor.UntypedActor;
 
 import com.google.common.collect.Sets;
 import com.mogujie.jarvis.core.domain.JobFlag;
+import com.mogujie.jarvis.core.domain.Pair;
 import com.mogujie.jarvis.dao.JobDependMapper;
 import com.mogujie.jarvis.dao.JobMapper;
 import com.mogujie.jarvis.dto.Job;
 import com.mogujie.jarvis.dto.JobDepend;
+import com.mogujie.jarvis.dto.JobDependExample;
 import com.mogujie.jarvis.dto.JobDependKey;
 import com.mogujie.jarvis.protocol.ModifyDependencyProtos.DependencyEntry;
 import com.mogujie.jarvis.protocol.ModifyDependencyProtos.DependencyEntry.DependencyOperator;
@@ -40,6 +42,10 @@ import com.mogujie.jarvis.protocol.ModifyJobFlagProtos.RestServerModifyJobFlagRe
 import com.mogujie.jarvis.protocol.ModifyJobFlagProtos.ServerModifyJobFlagResponse;
 import com.mogujie.jarvis.protocol.ModifyJobProtos.RestServerModifyJobRequest;
 import com.mogujie.jarvis.protocol.ModifyJobProtos.ServerModifyJobResponse;
+import com.mogujie.jarvis.protocol.QueryJobRelationProtos.JobFlagEntry;
+import com.mogujie.jarvis.protocol.QueryJobRelationProtos.RestServerQueryJobRelationRequest;
+import com.mogujie.jarvis.protocol.QueryJobRelationProtos.RestServerQueryJobRelationRequest.RelationType;
+import com.mogujie.jarvis.protocol.QueryJobRelationProtos.ServerQueryJobRelationResponse;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitJobRequest;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitJobResponse;
 import com.mogujie.jarvis.server.domain.ModifyDependEntry;
@@ -99,6 +105,9 @@ public class JobActor extends UntypedActor {
         } else if (obj instanceof RemoveJobRequest) {
             RemoveJobRequest msg = (RemoveJobRequest) obj;
             removeJob(msg);
+        } else if (obj instanceof RestServerQueryJobRelationRequest) {
+            RestServerQueryJobRelationRequest msg = (RestServerQueryJobRelationRequest) obj;
+            queryJobRelation(msg);
         } else {
             unhandled(obj);
         }
@@ -272,10 +281,16 @@ public class JobActor extends UntypedActor {
     }
 
     @Transactional
-    public void removeJob(RemoveJobRequest msg) throws IOException {
+    private void removeJob(RemoveJobRequest msg) throws IOException {
         long jobId = msg.getJobId();
         try {
+            // remove job
             jobMapper.deleteByPrimaryKey(jobId);
+            // remove job depend where preJobId=jobId
+            JobDependExample example = new JobDependExample();
+            example.createCriteria().andPreJobIdEqualTo(jobId);
+            jobDependMapper.deleteByExample(example);
+            // scheduler remove job
             timeScheduler.removeJob(jobId);
             dagScheduler.removeJob(jobId);
             getSender().tell("remove success", getSelf());
@@ -283,7 +298,55 @@ public class JobActor extends UntypedActor {
             getSender().tell("remove failed", getSelf());
             throw new IOException(e);
         }
+    }
 
+    private void queryJobRelation(RestServerQueryJobRelationRequest msg) throws IOException {
+        long jobId = msg.getJobId();
+        ServerQueryJobRelationResponse.Builder builder;
+        ServerQueryJobRelationResponse response;
+        if (msg.getRelationType().equals(RelationType.PARENTS)) {
+            try {
+                builder = ServerQueryJobRelationResponse.newBuilder();
+                List<Pair<Long, JobFlag>> parents = dagScheduler.getParents(jobId);
+                for (Pair<Long, JobFlag> parent : parents) {
+                    JobFlagEntry entry = JobFlagEntry.newBuilder()
+                            .setJobId(parent.getFirst())
+                            .setJobFlag(parent.getSecond().getValue())
+                            .build();
+                    builder.addJobFlagEntry(entry);
+                }
+                response = builder.setSuccess(true).build();
+                getSender().tell(response, getSelf());
+            } catch (Exception e) {
+                response = ServerQueryJobRelationResponse.newBuilder()
+                        .setSuccess(false)
+                        .setMessage(e.getMessage())
+                        .build();
+                getSender().tell(response, getSelf());
+                throw new IOException(e);
+            }
+        } else if (msg.getRelationType().equals(RelationType.CHILDREN)) {
+            try {
+                builder = ServerQueryJobRelationResponse.newBuilder();
+                List<Pair<Long, JobFlag>> children = dagScheduler.getChildren(jobId);
+                for (Pair<Long, JobFlag> child : children) {
+                    JobFlagEntry entry = JobFlagEntry.newBuilder()
+                            .setJobId(child.getFirst())
+                            .setJobFlag(child.getSecond().getValue())
+                            .build();
+                    builder.addJobFlagEntry(entry);
+                }
+                response = builder.setSuccess(true).build();
+                getSender().tell(response, getSelf());
+            } catch (Exception e) {
+                response = ServerQueryJobRelationResponse.newBuilder()
+                        .setSuccess(false)
+                        .setMessage(e.getMessage())
+                        .build();
+                getSender().tell(response, getSelf());
+                throw new IOException(e);
+            }
+        }
     }
 
     public static Set<Class<?>> handledMessages() {
