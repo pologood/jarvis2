@@ -34,8 +34,8 @@ import com.mogujie.jarvis.dto.Job;
 import com.mogujie.jarvis.dto.JobDepend;
 import com.mogujie.jarvis.dto.JobDependExample;
 import com.mogujie.jarvis.dto.JobDependKey;
-import com.mogujie.jarvis.protocol.ModifyDependencyProtos.DependencyEntry;
-import com.mogujie.jarvis.protocol.ModifyDependencyProtos.DependencyEntry.DependencyOperator;
+import com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry;
+import com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.DependencyOperator;
 import com.mogujie.jarvis.protocol.ModifyDependencyProtos.RestServerModifyDependencyRequest;
 import com.mogujie.jarvis.protocol.ModifyDependencyProtos.ServerModifyDependencyResponse;
 import com.mogujie.jarvis.protocol.ModifyJobFlagProtos.RestServerModifyJobFlagRequest;
@@ -287,9 +287,11 @@ public class JobActor extends UntypedActor {
             // remove job
             jobMapper.deleteByPrimaryKey(jobId);
             // remove job depend where preJobId=jobId
-            JobDependExample example = new JobDependExample();
-            example.createCriteria().andPreJobIdEqualTo(jobId);
-            jobDependMapper.deleteByExample(example);
+            JobDependExample jobDependExample = new JobDependExample();
+            jobDependExample.createCriteria().andPreJobIdEqualTo(jobId);
+            jobDependMapper.deleteByExample(jobDependExample);
+            // remove crontab where jobId=jobId
+            cronService.deleteByJobId(jobId);
             // scheduler remove job
             timeScheduler.removeJob(jobId);
             dagScheduler.removeJob(jobId);

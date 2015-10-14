@@ -70,6 +70,12 @@ public class CrontabService {
         }
     }
 
+    public void deleteByJobId(long jobId) {
+        CrontabExample example = new CrontabExample();
+        example.createCriteria().andJobIdEqualTo(jobId);
+        crontabMapper.deleteByExample(example);
+    }
+
     // 属于一个jobId的正向crontab只能有一个
     public Crontab getPositiveCrontab(long jobId) {
         CrontabExample example = new CrontabExample();

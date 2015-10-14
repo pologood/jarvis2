@@ -24,9 +24,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.mogujie.jarvis.core.domain.AkkaType;
+import com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry;
 import com.mogujie.jarvis.protocol.MapEntryProtos;
-import com.mogujie.jarvis.protocol.ModifyDependencyProtos;
-import com.mogujie.jarvis.protocol.ModifyDependencyProtos.DependencyEntry;
 import com.mogujie.jarvis.protocol.ModifyDependencyProtos.RestServerModifyDependencyRequest;
 import com.mogujie.jarvis.protocol.ModifyDependencyProtos.ServerModifyDependencyResponse;
 import com.mogujie.jarvis.protocol.ModifyJobFlagProtos.RestServerModifyJobFlagRequest;
@@ -149,7 +148,7 @@ public class JobController extends AbstractController {
             logger.info("更新job任务");
 
             // todo , 转换为 list
-            List<ModifyDependencyProtos.DependencyEntry> dependEntryList = new ArrayList<ModifyDependencyProtos.DependencyEntry>();
+            List<DependencyEntry> dependEntryList = new ArrayList<DependencyEntry>();
             // 不为null且不为空字符串才处理
 
             if (dependJobIds != null && !dependJobIds.equals("")) {
@@ -157,15 +156,15 @@ public class JobController extends AbstractController {
                 for (Object key : dependIdsJson.keySet()) {
                     String value = dependIdsJson.getString((String) key);
                     if (value.equalsIgnoreCase("add")) {
-                        ModifyDependencyProtos.DependencyEntry entry = ModifyDependencyProtos.DependencyEntry.newBuilder()
-                                .setJobId(Integer.parseInt((String) key)).setOperator(ModifyDependencyProtos.DependencyEntry.DependencyOperator.ADD)
+                        DependencyEntry entry = DependencyEntry.newBuilder()
+                                .setJobId(Integer.parseInt((String) key)).setOperator(DependencyEntry.DependencyOperator.ADD)
                                 .build();
                         dependEntryList.add(entry);
                     }
                     if (value.equalsIgnoreCase("delete")) {
-                        ModifyDependencyProtos.DependencyEntry entry = ModifyDependencyProtos.DependencyEntry.newBuilder()
+                        DependencyEntry entry = DependencyEntry.newBuilder()
                                 .setJobId(Integer.parseInt((String) key))
-                                .setOperator(ModifyDependencyProtos.DependencyEntry.DependencyOperator.REMOVE).build();
+                                .setOperator(DependencyEntry.DependencyOperator.REMOVE).build();
                         dependEntryList.add(entry);
                     }
                 }
@@ -221,9 +220,7 @@ public class JobController extends AbstractController {
                         modifyDependencyRequest);
                 // 修改依赖是否成功
                 if (dependencyResponse.getSuccess()) {
-                    JobVo vo = new JobVo();
-                    vo.setJobId(dependencyResponse.getJobId());
-                    return successResult(vo);
+                    return successResult();
                 } else {
                     return errorResult(dependencyResponse.getMessage());
                 }
