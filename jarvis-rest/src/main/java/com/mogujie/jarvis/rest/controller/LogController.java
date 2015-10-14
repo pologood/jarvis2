@@ -51,7 +51,7 @@ public class LogController extends AbstractController {
         RestServerReadLogRequest request = RestServerReadLogRequest.newBuilder().setTaskId(taskId).setType(StreamType.STD_ERR.getValue())
                 .setOffset(offset).setLines(lines).build();
 
-        LogServerReadLogResponse response = (LogServerReadLogResponse) callActor(AkkaType.logstorage, request);
+        LogServerReadLogResponse response = (LogServerReadLogResponse) callActor(AkkaType.LOGSTORAGE, request);
 
         if (response.getSuccess()) {
             return successResult();
@@ -86,7 +86,7 @@ public class LogController extends AbstractController {
         RestServerReadLogRequest request = RestServerReadLogRequest.newBuilder().setTaskId(taskId).setType(StreamType.STD_OUT.getValue())
                 .setOffset(offset).setLines(lines).build();
 
-        LogServerReadLogResponse response = (LogServerReadLogResponse) callActor(AkkaType.logstorage, request);
+        LogServerReadLogResponse response = (LogServerReadLogResponse) callActor(AkkaType.LOGSTORAGE, request);
 
         if (response.getSuccess()) {
             return successResult();
