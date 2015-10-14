@@ -139,7 +139,6 @@ public class JobController extends AbstractController {
     public RestResult edit(@FormParam("appName") String appName, @FormParam("appKey") String appKey, @FormParam("jobName") String jobName,
             @FormParam("jobId") Long jobId, @FormParam("cronExpression") String cronExp, @FormParam("dependJobIds") String dependJobIds,
             @FormParam("user") String user, @FormParam("jobType") String jobType, @FormParam("content") String content,
-            // @FormParam("jobContent") String jobContent,
             @FormParam("groupId") int groupId, @FormParam("rejectRetries") int rejectRetries, @FormParam("rejectInterval") int rejectInterval,
             @FormParam("failedRetries") int failedRetries, @FormParam("failedInterval") int failedInterval, @FormParam("startTime") String startTime,
             @FormParam("endTime") String endTime, @FormParam("priority") int priority, @FormParam("parameters") String parameters) {
@@ -188,7 +187,7 @@ public class JobController extends AbstractController {
                 startTimeLong = dateTimeFormatter.parseDateTime(startTime).getMillis();
             }
             if (endTime != null && !endTime.equals("")) {
-                startTimeLong = dateTimeFormatter.parseDateTime(endTime).getMillis();
+                endTimeLong = dateTimeFormatter.parseDateTime(endTime).getMillis();
             }
 
             // 构造修改job基本信息请求
@@ -244,7 +243,7 @@ public class JobController extends AbstractController {
     @POST
     @Path("flag")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult delete(@FormParam("jobId") Long jobId,@FormParam("appKey") String appKey, @FormParam("appName") String appName,@FormParam("jobFlag") Integer jobFlag)
+    public RestResult flag(@FormParam("jobId") Long jobId,@FormParam("appKey") String appKey, @FormParam("appName") String appName,@FormParam("jobFlag") Integer jobFlag)
             throws Exception {
         try {
             // 构造删除job请求request，1.启用2.禁用3.过期4.垃圾箱
@@ -268,7 +267,7 @@ public class JobController extends AbstractController {
     }
 
     /**
-     * 删除job任务
+     * 重跑任务
      *
      * @throws Exception
      */
@@ -285,7 +284,7 @@ public class JobController extends AbstractController {
                 break;
             }
         }
-        if (hasSelf == false) {
+        if (!hasSelf) {
             reRunJobArr.put(originJobId);
         }
 
@@ -316,7 +315,7 @@ public class JobController extends AbstractController {
     }
 
     /**
-     * 提交job任务
+     * 测试
      *
      * @throws Exception
      */

@@ -29,13 +29,23 @@ public class LogReadActor extends UntypedActor {
     @Override
     public void onReceive(Object obj) throws Exception {
 
-        if (!(obj instanceof RestServerReadLogRequest)) {
+        if (obj instanceof RestServerReadLogRequest) {
+
+            dealRestServerReadLogRequest((RestServerReadLogRequest) obj);
+
+        }else{
             unhandled(obj);
-            return;
         }
 
-        RestServerReadLogRequest msg = (RestServerReadLogRequest) obj;
+    }
 
+    /**
+     * 处理消息——读取日志
+     *
+     * @param msg
+     * @throws Exception
+     */
+    private void dealRestServerReadLogRequest(RestServerReadLogRequest msg) throws Exception{
 
         //fullID
         String fullId = msg.getFullId();
@@ -59,6 +69,7 @@ public class LogReadActor extends UntypedActor {
         getSender().tell(response, getSelf());
 
     }
+
 
 
 }

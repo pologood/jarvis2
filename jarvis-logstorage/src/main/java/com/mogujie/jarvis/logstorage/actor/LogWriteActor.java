@@ -29,12 +29,22 @@ public class LogWriteActor extends UntypedActor {
     @Override
     public void onReceive(Object obj) throws Exception {
 
-        if (!(obj instanceof WorkerWriteLogRequest)) {
-            unhandled(obj);
-            return;
-        }
+        if (obj instanceof WorkerWriteLogRequest) {
+            dealWorkerWriteLogRequest((WorkerWriteLogRequest) obj);
 
-        WorkerWriteLogRequest msg = (WorkerWriteLogRequest) obj;
+        }else{
+            unhandled(obj);
+        }
+    }
+
+
+    /**
+     * 消息处理——写日志
+     *
+     * @param msg
+     * @throws Exception
+     */
+    private void dealWorkerWriteLogRequest(WorkerWriteLogRequest msg)throws Exception{
 
         String fullId = msg.getFullId();
         StreamType streamType = StreamType.getInstance(msg.getType());
@@ -62,6 +72,5 @@ public class LogWriteActor extends UntypedActor {
         getSender().tell(response, getSelf());
 
     }
-
 
 }
