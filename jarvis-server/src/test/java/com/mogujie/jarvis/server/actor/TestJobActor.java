@@ -66,7 +66,7 @@ public class TestJobActor {
             ActorRef actorRef = system.actorOf(props);
             RestServerSubmitJobRequest request = RestServerSubmitJobRequest.newBuilder()
                     .setJobName("testJob1")
-                    .setCronExpression("4 1 * * ?")
+                    .setCronExpression("4 1 * * * ?")
                     .setAppName("testApp1")
                     .setAppKey("appKey1")
                     .setUser("testUser1")
