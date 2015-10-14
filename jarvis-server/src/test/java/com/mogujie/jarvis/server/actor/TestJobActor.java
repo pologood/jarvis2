@@ -42,7 +42,7 @@ public class TestJobActor extends TestBaseActor {
             ActorRef actorRef = system.actorOf(props);
             RestServerSubmitJobRequest request = RestServerSubmitJobRequest.newBuilder()
                     .setJobName("testJob1")
-                    .setCronExpression("4 1 * * * ?")
+                    .setCronExpression("0 0 1 * * ?")
                     .setAppName("testApp1")
                     .setAppKey("appKey1")
                     .setUser("testUser1")
@@ -81,7 +81,7 @@ public class TestJobActor extends TestBaseActor {
             // submit jobA
             RestServerSubmitJobRequest request = RestServerSubmitJobRequest.newBuilder()
                     .setJobName("testJob1")
-                    .setCronExpression("4 1 * * ?")
+                    .setCronExpression("0 0 1 * * ?")
                     .setAppName("testApp1")
                     .setAppKey("appKey1")
                     .setUser("testUser")
@@ -104,7 +104,7 @@ public class TestJobActor extends TestBaseActor {
             // submit jobB
             request = RestServerSubmitJobRequest.newBuilder()
                     .setJobName("testJob2")
-                    .setCronExpression("4 2 * * ?")
+                    .setCronExpression("0 0 2 * * ?")
                     .setAppName("testApp2")
                     .setAppKey("appKey2")
                     .setUser("testUser")
@@ -197,7 +197,7 @@ public class TestJobActor extends TestBaseActor {
             // submit jobA
             RestServerSubmitJobRequest request = RestServerSubmitJobRequest.newBuilder()
                     .setJobName("testJob1")
-                    .setCronExpression("4 1 * * ?")
+                    .setCronExpression("0 0 1 * * ?")
                     .setAppName("testApp1")
                     .setAppKey("appKey1")
                     .setUser("testUser")
@@ -304,7 +304,7 @@ public class TestJobActor extends TestBaseActor {
             ActorRef actorRef = system.actorOf(props);
             RestServerSubmitJobRequest submitJobRequest = RestServerSubmitJobRequest.newBuilder()
                     .setJobName("testJob1")
-                    .setCronExpression("4 1 * * ?")
+                    .setCronExpression("0 0 1 * * ?")
                     .setAppName("testApp1")
                     .setAppKey("appKey1")
                     .setUser("testUser1")
@@ -326,7 +326,7 @@ public class TestJobActor extends TestBaseActor {
 
             RestServerModifyJobRequest modifyJobRequest = RestServerModifyJobRequest.newBuilder()
                     .setJobId(jobId)
-                    .setCronExpression("4 2 * * ?")
+                    .setCronExpression("0 0 2 * * ?")
                     .setUser("testUser2")
                     .build();
             future = Patterns.ask(actorRef, modifyJobRequest, TIMEOUT);
