@@ -42,9 +42,12 @@ public class JarvisWorker {
   public static void main(String[] args) {
     LOGGER.info("Starting jarvis worker...");
     Configuration workerConfig = ConfigUtils.getWorkerConfig();
-    Config akkaConfig = ConfigFactory.load("akka-worker.conf").getConfig("worker");
+    Config akkaConfig = ConfigFactory.load("akka-worker.conf");
+
+    System.out.println(akkaConfig.getInt("a.b.c"));
+
     ActorSystem system = ActorSystem.create("worker",
-        ConfigUtils.getAkkaConfig().withFallback(akkaConfig));
+        ConfigUtils.getCommonAkkaConfig().withFallback(akkaConfig));
 
     String serverAkkaPath = workerConfig.getString("server.akka.path") + "/user/"
         + JarvisConstants.SERVER_AKKA_SYSTEM_NAME;

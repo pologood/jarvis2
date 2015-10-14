@@ -51,8 +51,7 @@ public abstract class AbstractController {
 
         if (system == null) {
             Config akkaConfig = ConfigFactory.load("akka-rest.conf");
-            Config restAkkaConfig = ConfigUtils.getAkkaConfig().withFallback(akkaConfig.getConfig("rest"));
-
+            Config restAkkaConfig = ConfigUtils.getCommonAkkaConfig().withFallback(akkaConfig);
             system = ActorSystem.create(JarvisConstants.REST_AKKA_SYSTEM_NAME, restAkkaConfig);
         }
 

@@ -29,7 +29,6 @@ public class ConfigUtils {
     private static PropertiesConfiguration serverConfig;
     private static PropertiesConfiguration logstorageConfig;
 
-
     /**
      * 读取Server配置
      *
@@ -48,9 +47,9 @@ public class ConfigUtils {
         return serverConfig;
     }
 
-
     /**
-     *  读取worker配置
+     * 读取worker配置
+     * 
      * @return
      */
     public synchronized static Configuration getWorkerConfig() {
@@ -66,9 +65,9 @@ public class ConfigUtils {
         return workerConfig;
     }
 
-
     /**
      * 读取logstorage配置
+     * 
      * @return
      */
     public synchronized static Configuration getLogstorageConfig() {
@@ -86,6 +85,7 @@ public class ConfigUtils {
 
     /**
      * 读取rest配置
+     * 
      * @return
      */
     public synchronized static Configuration getRestConfig() {
@@ -101,9 +101,7 @@ public class ConfigUtils {
         return logstorageConfig;
     }
 
-
-
-    public static Config getAkkaConfig() {
+    public static Config getCommonAkkaConfig() {
         try {
             String ipv4 = Inet4Address.getLocalHost().getHostAddress();
             return ConfigFactory.parseString("akka.remote.netty.tcp.hostname=" + ipv4);
