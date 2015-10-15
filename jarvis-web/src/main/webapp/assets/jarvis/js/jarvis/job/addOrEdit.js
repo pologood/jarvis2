@@ -228,7 +228,7 @@ function submit(){
     }
 
     var data=getData();
-    var resultFlag=requestRemoteRestApi("/job/submitJob","新增任务",data);
+    var resultFlag=requestRemoteRestApi("/job/submit","新增任务",data);
 
 }
 

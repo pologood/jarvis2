@@ -16,7 +16,7 @@ $(function(){
     //select采用select2 实现
     $(".input-group select").select2({width:'100%'});
     $("#originJobId").on("change", function (e) {
-        $("#reRunNext").jstree('destroy');
+        $("#reRunJobs").jstree('destroy');
         var id=$(e.target).val();
         if(id!=null&&id!=''){
             buildTree(id);
@@ -32,7 +32,7 @@ function buildTree(jobId){
         url:'/jarvis/api/job/getTreeDependedONJob',
         data:{jobId:jobId},
         success:function(data){
-            $("#reRunNext").jstree({
+            $("#reRunJobs").jstree({
                 'core':{
                     data:data
                 },
@@ -53,12 +53,14 @@ function reset(){
     $("#content").val(null).trigger("change");
     $("#jobStart").val('');
     $("#jobEnd").val('');
-    $("#reRunNext").removeAttr("checked");
+    $("#reRunJobs").removeAttr("checked");
 }
 
 
 function submit(){
     var originJobId=$("#originJobId").val();
+    var appName=$("#originJobId option:selected").attr("appName");
+    var appKey=$("#originJobId option:selected").attr("appKey");
     var startTime=$("#startTime").val();
     var endTime=$("#endTime").val();
     if(originJobId==null||originJobId==''){
@@ -83,9 +85,26 @@ function submit(){
         return ;
     }
     
-    var reRunJobs=$("#reRunNext").jstree().get_checked();
+    var reRunJobs=$("#reRunJobs").jstree().get_checked();
 
-    var data={originJobId:originJobId,startTime:startTime,endTime:endTime,reRunJobs:JSON.stringify(reRunJobs)};
+    if(reRunJobs.length<=0){
+        reRunJobs.push(originJobId);
+    }
+    else{
+        var flag = false;
+        for(var i=0;i<reRunJobs.length;i++){
+            if(reRunJobs[i]==originJobId){
+                flag=true;
+                break;
+            }
+        }
+        //重跑的任务里没有选择的原始任务，则加进去统一处理
+        if(!flag){
+            reRunJobs.push(originJobId);
+        }
+    }
+    //console.log(reRunJobs);
+    var data={originJobId:originJobId,appName:appName,appKey:appKey,startTime:startTime,endTime:endTime,reRunJobs:JSON.stringify(reRunJobs)};
     requestRemoteRestApi("/job/rerun","重跑任务",data);
 
 }

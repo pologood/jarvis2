@@ -12,14 +12,9 @@ function updateApp(){
     if(flag==false){
         return;
     }
-    $.ajax({
-        url:'/jarvis/aa',
-        type:'POST',
-        data:{appId:appId,appName:appName,status:status},
-        success:function(data){
 
-        }
-    });
+    var data={appId:appId,appName:appName,status:status};
+    requestRemoteRestApi("/app/update","修改应用",data);
 }
 
 function addApp(){
@@ -29,14 +24,8 @@ function addApp(){
     if(flag==false){
         return;
     }
-    $.ajax({
-        url:'/jarvis/aa',
-        type:'POST',
-        data:{appName:appName,status:status},
-        success:function(data){
-
-        }
-    });
+    var data={appName:appName,status:status};
+    requestRemoteRestApi("/app/add","新增应用",data);
 }
 
 

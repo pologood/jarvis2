@@ -27,9 +27,9 @@ import com.mogujie.jarvis.rest.RestResult;
 public class SystemController extends AbstractController {
 
     @POST
-    @Path("setWorkerStatus")
+    @Path("status")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult onlineClient(@FormParam("appKey") String appKey, @FormParam("appName") String appName, @FormParam("ip") String ip,
+    public RestResult status(@FormParam("appKey") String appKey, @FormParam("appName") String appName, @FormParam("ip") String ip,
             @FormParam("port") int port, @FormParam("status") int status) throws Exception {
         WorkerStatus ws = (status == 1) ? WorkerStatus.ONLINE : WorkerStatus.OFFLINE;
 

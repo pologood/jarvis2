@@ -2,6 +2,7 @@ package com.mogujie.jarvis.web.controller.jarvis;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.mogu.bigdata.admin.common.entity.User;
 import com.sun.org.apache.xerces.internal.util.URI;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.jsoup.Connection;
@@ -33,7 +34,7 @@ public class RemoteRestApiController extends BaseController {
     * */
     @RequestMapping("/request")
     @ResponseBody
-    public JSONObject restApi(String url,String para){
+    public JSONObject restApi(ModelMap modelMap,String url,String para){
         JSONObject jsonObject=new JSONObject();
         url = domain + url;
         log.info("remote url:"+url+",para:"+para);
@@ -75,25 +76,32 @@ public class RemoteRestApiController extends BaseController {
             }
             try {
                 rawData.put(key,value);
-                data.put(key,URLEncoder.encode(value,"UTF-8"));
-                newPara=newPara+"&"+key+"="+URLEncoder.encode(value,"UTF-8");
+                //data.put(key,URLEncoder.encode(value,"UTF-8"));
+                //newPara=newPara+"&"+key+"="+URLEncoder.encode(value,"UTF-8");
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
         }
+        try {
+            User user=(User)modelMap.get("user");
+            String uname=user.getUname();
+            rawData.put("user",uname);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
 
         //请求远程REST服务器。
         try {
             log.info(rawData);
-            log.info(data);
-            log.info(newPara);
+            //log.info(data);
+            //log.info(newPara);
             Connection connection=Jsoup.connect(url)
                                     .data(rawData)
                                     .postDataCharset("UTF-8")
                                     .ignoreContentType(true)
-                                    .timeout(8000)
+                                    .timeout(15000)
                                     .method(Connection.Method.POST);
             Connection.Response response=connection.execute();
 
