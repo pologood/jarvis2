@@ -1,3 +1,5 @@
+import "app_auth.proto";
+
 option java_package = "com.mogujie.jarvis.protocol";
 option java_outer_classname = "QueryJobRelationProtos";
 
@@ -13,8 +15,9 @@ message RestServerQueryJobRelationRequest {
 	    CHILDREN = 1;
     }
     
-    required int64 job_id = 1;
-    required RelationType relation_type = 2;
+    required AppAuth app_auth = 1;
+    required int64 job_id = 2;
+    required RelationType relation_type = 3;
 }
 
 message ServerQueryJobRelationResponse {

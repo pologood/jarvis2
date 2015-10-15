@@ -15,12 +15,27 @@ public final class KillTaskProtos {
             com.google.protobuf.MessageOrBuilder {
 
         /**
-         * <code>required int64 task_id = 1;</code>
+         * <code>required .AppAuth app_auth = 1;</code>
+         */
+        boolean hasAppAuth();
+
+        /**
+         * <code>required .AppAuth app_auth = 1;</code>
+         */
+        com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth getAppAuth();
+
+        /**
+         * <code>required .AppAuth app_auth = 1;</code>
+         */
+        com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder();
+
+        /**
+         * <code>required int64 task_id = 2;</code>
          */
         boolean hasTaskId();
 
         /**
-         * <code>required int64 task_id = 1;</code>
+         * <code>required int64 task_id = 2;</code>
          */
         long getTaskId();
     }
@@ -76,8 +91,21 @@ public final class KillTaskProtos {
                             }
                             break;
                         }
-                        case 8: {
+                        case 10: {
+                            com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder subBuilder = null;
+                            if (((bitField0_ & 0x00000001) == 0x00000001)) {
+                                subBuilder = appAuth_.toBuilder();
+                            }
+                            appAuth_ = input.readMessage(com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.PARSER, extensionRegistry);
+                            if (subBuilder != null) {
+                                subBuilder.mergeFrom(appAuth_);
+                                appAuth_ = subBuilder.buildPartial();
+                            }
                             bitField0_ |= 0x00000001;
+                            break;
+                        }
+                        case 16: {
+                            bitField0_ |= 0x00000002;
                             taskId_ = input.readInt64();
                             break;
                         }
@@ -116,24 +144,49 @@ public final class KillTaskProtos {
         }
 
         private int bitField0_;
-        public static final int TASK_ID_FIELD_NUMBER = 1;
-        private long taskId_;
+        public static final int APP_AUTH_FIELD_NUMBER = 1;
+        private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_;
 
         /**
-         * <code>required int64 task_id = 1;</code>
+         * <code>required .AppAuth app_auth = 1;</code>
          */
-        public boolean hasTaskId() {
+        public boolean hasAppAuth() {
             return ((bitField0_ & 0x00000001) == 0x00000001);
         }
 
         /**
-         * <code>required int64 task_id = 1;</code>
+         * <code>required .AppAuth app_auth = 1;</code>
+         */
+        public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth getAppAuth() {
+            return appAuth_;
+        }
+
+        /**
+         * <code>required .AppAuth app_auth = 1;</code>
+         */
+        public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder() {
+            return appAuth_;
+        }
+
+        public static final int TASK_ID_FIELD_NUMBER = 2;
+        private long taskId_;
+
+        /**
+         * <code>required int64 task_id = 2;</code>
+         */
+        public boolean hasTaskId() {
+            return ((bitField0_ & 0x00000002) == 0x00000002);
+        }
+
+        /**
+         * <code>required int64 task_id = 2;</code>
          */
         public long getTaskId() {
             return taskId_;
         }
 
         private void initFields() {
+            appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
             taskId_ = 0L;
         }
 
@@ -146,7 +199,15 @@ public final class KillTaskProtos {
             if (isInitialized == 0)
                 return false;
 
+            if (!hasAppAuth()) {
+                memoizedIsInitialized = 0;
+                return false;
+            }
             if (!hasTaskId()) {
+                memoizedIsInitialized = 0;
+                return false;
+            }
+            if (!getAppAuth().isInitialized()) {
                 memoizedIsInitialized = 0;
                 return false;
             }
@@ -157,7 +218,10 @@ public final class KillTaskProtos {
         public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
             getSerializedSize();
             if (((bitField0_ & 0x00000001) == 0x00000001)) {
-                output.writeInt64(1, taskId_);
+                output.writeMessage(1, appAuth_);
+            }
+            if (((bitField0_ & 0x00000002) == 0x00000002)) {
+                output.writeInt64(2, taskId_);
             }
             getUnknownFields().writeTo(output);
         }
@@ -171,7 +235,10 @@ public final class KillTaskProtos {
 
             size = 0;
             if (((bitField0_ & 0x00000001) == 0x00000001)) {
-                size += com.google.protobuf.CodedOutputStream.computeInt64Size(1, taskId_);
+                size += com.google.protobuf.CodedOutputStream.computeMessageSize(1, appAuth_);
+            }
+            if (((bitField0_ & 0x00000002) == 0x00000002)) {
+                size += com.google.protobuf.CodedOutputStream.computeInt64Size(2, taskId_);
             }
             size += getUnknownFields().getSerializedSize();
             memoizedSerializedSize = size;
@@ -260,7 +327,7 @@ public final class KillTaskProtos {
         /**
          * Protobuf type {@code RestServerKillTaskRequest}
          */
-        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder>implements
+        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder> implements
                 // @@protoc_insertion_point(builder_implements:RestServerKillTaskRequest)
                 com.mogujie.jarvis.protocol.KillTaskProtos.RestServerKillTaskRequestOrBuilder {
             public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
@@ -286,6 +353,7 @@ public final class KillTaskProtos {
 
             private void maybeForceBuilderInitialization() {
                 if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+                    getAppAuthFieldBuilder();
                 }
             }
 
@@ -295,8 +363,14 @@ public final class KillTaskProtos {
 
             public Builder clear() {
                 super.clear();
-                taskId_ = 0L;
+                if (appAuthBuilder_ == null) {
+                    appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
+                } else {
+                    appAuthBuilder_.clear();
+                }
                 bitField0_ = (bitField0_ & ~0x00000001);
+                taskId_ = 0L;
+                bitField0_ = (bitField0_ & ~0x00000002);
                 return this;
             }
 
@@ -328,6 +402,14 @@ public final class KillTaskProtos {
                 if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
                     to_bitField0_ |= 0x00000001;
                 }
+                if (appAuthBuilder_ == null) {
+                    result.appAuth_ = appAuth_;
+                } else {
+                    result.appAuth_ = appAuthBuilder_.build();
+                }
+                if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+                    to_bitField0_ |= 0x00000002;
+                }
                 result.taskId_ = taskId_;
                 result.bitField0_ = to_bitField0_;
                 onBuilt();
@@ -346,6 +428,9 @@ public final class KillTaskProtos {
             public Builder mergeFrom(com.mogujie.jarvis.protocol.KillTaskProtos.RestServerKillTaskRequest other) {
                 if (other == com.mogujie.jarvis.protocol.KillTaskProtos.RestServerKillTaskRequest.getDefaultInstance())
                     return this;
+                if (other.hasAppAuth()) {
+                    mergeAppAuth(other.getAppAuth());
+                }
                 if (other.hasTaskId()) {
                     setTaskId(other.getTaskId());
                 }
@@ -354,7 +439,15 @@ public final class KillTaskProtos {
             }
 
             public final boolean isInitialized() {
+                if (!hasAppAuth()) {
+
+                    return false;
+                }
                 if (!hasTaskId()) {
+
+                    return false;
+                }
+                if (!getAppAuth().isInitialized()) {
 
                     return false;
                 }
@@ -379,37 +472,155 @@ public final class KillTaskProtos {
 
             private int bitField0_;
 
-            private long taskId_;
+            private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth
+                    .getDefaultInstance();
+            private com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> appAuthBuilder_;
 
             /**
-             * <code>required int64 task_id = 1;</code>
+             * <code>required .AppAuth app_auth = 1;</code>
              */
-            public boolean hasTaskId() {
+            public boolean hasAppAuth() {
                 return ((bitField0_ & 0x00000001) == 0x00000001);
             }
 
             /**
-             * <code>required int64 task_id = 1;</code>
+             * <code>required .AppAuth app_auth = 1;</code>
+             */
+            public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth getAppAuth() {
+                if (appAuthBuilder_ == null) {
+                    return appAuth_;
+                } else {
+                    return appAuthBuilder_.getMessage();
+                }
+            }
+
+            /**
+             * <code>required .AppAuth app_auth = 1;</code>
+             */
+            public Builder setAppAuth(com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth value) {
+                if (appAuthBuilder_ == null) {
+                    if (value == null) {
+                        throw new NullPointerException();
+                    }
+                    appAuth_ = value;
+                    onChanged();
+                } else {
+                    appAuthBuilder_.setMessage(value);
+                }
+                bitField0_ |= 0x00000001;
+                return this;
+            }
+
+            /**
+             * <code>required .AppAuth app_auth = 1;</code>
+             */
+            public Builder setAppAuth(com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder builderForValue) {
+                if (appAuthBuilder_ == null) {
+                    appAuth_ = builderForValue.build();
+                    onChanged();
+                } else {
+                    appAuthBuilder_.setMessage(builderForValue.build());
+                }
+                bitField0_ |= 0x00000001;
+                return this;
+            }
+
+            /**
+             * <code>required .AppAuth app_auth = 1;</code>
+             */
+            public Builder mergeAppAuth(com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth value) {
+                if (appAuthBuilder_ == null) {
+                    if (((bitField0_ & 0x00000001) == 0x00000001)
+                            && appAuth_ != com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance()) {
+                        appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.newBuilder(appAuth_).mergeFrom(value).buildPartial();
+                    } else {
+                        appAuth_ = value;
+                    }
+                    onChanged();
+                } else {
+                    appAuthBuilder_.mergeFrom(value);
+                }
+                bitField0_ |= 0x00000001;
+                return this;
+            }
+
+            /**
+             * <code>required .AppAuth app_auth = 1;</code>
+             */
+            public Builder clearAppAuth() {
+                if (appAuthBuilder_ == null) {
+                    appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
+                    onChanged();
+                } else {
+                    appAuthBuilder_.clear();
+                }
+                bitField0_ = (bitField0_ & ~0x00000001);
+                return this;
+            }
+
+            /**
+             * <code>required .AppAuth app_auth = 1;</code>
+             */
+            public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder getAppAuthBuilder() {
+                bitField0_ |= 0x00000001;
+                onChanged();
+                return getAppAuthFieldBuilder().getBuilder();
+            }
+
+            /**
+             * <code>required .AppAuth app_auth = 1;</code>
+             */
+            public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder() {
+                if (appAuthBuilder_ != null) {
+                    return appAuthBuilder_.getMessageOrBuilder();
+                } else {
+                    return appAuth_;
+                }
+            }
+
+            /**
+             * <code>required .AppAuth app_auth = 1;</code>
+             */
+            private com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> getAppAuthFieldBuilder() {
+                if (appAuthBuilder_ == null) {
+                    appAuthBuilder_ = new com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder>(
+                            getAppAuth(), getParentForChildren(), isClean());
+                    appAuth_ = null;
+                }
+                return appAuthBuilder_;
+            }
+
+            private long taskId_;
+
+            /**
+             * <code>required int64 task_id = 2;</code>
+             */
+            public boolean hasTaskId() {
+                return ((bitField0_ & 0x00000002) == 0x00000002);
+            }
+
+            /**
+             * <code>required int64 task_id = 2;</code>
              */
             public long getTaskId() {
                 return taskId_;
             }
 
             /**
-             * <code>required int64 task_id = 1;</code>
+             * <code>required int64 task_id = 2;</code>
              */
             public Builder setTaskId(long value) {
-                bitField0_ |= 0x00000001;
+                bitField0_ |= 0x00000002;
                 taskId_ = value;
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>required int64 task_id = 1;</code>
+             * <code>required int64 task_id = 2;</code>
              */
             public Builder clearTaskId() {
-                bitField0_ = (bitField0_ & ~0x00000001);
+                bitField0_ = (bitField0_ & ~0x00000002);
                 taskId_ = 0L;
                 onChanged();
                 return this;
@@ -745,7 +956,7 @@ public final class KillTaskProtos {
         /**
          * Protobuf type {@code ServerKillTaskResponse}
          */
-        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder>implements
+        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder> implements
                 // @@protoc_insertion_point(builder_implements:ServerKillTaskResponse)
                 com.mogujie.jarvis.protocol.KillTaskProtos.ServerKillTaskResponseOrBuilder {
             public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
@@ -1278,7 +1489,7 @@ public final class KillTaskProtos {
         /**
          * Protobuf type {@code ServerKillTaskRequest}
          */
-        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder>implements
+        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder> implements
                 // @@protoc_insertion_point(builder_implements:ServerKillTaskRequest)
                 com.mogujie.jarvis.protocol.KillTaskProtos.ServerKillTaskRequestOrBuilder {
             public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
@@ -1805,7 +2016,7 @@ public final class KillTaskProtos {
         /**
          * Protobuf type {@code WorkerKillTaskResponse}
          */
-        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder>implements
+        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder> implements
                 // @@protoc_insertion_point(builder_implements:WorkerKillTaskResponse)
                 com.mogujie.jarvis.protocol.KillTaskProtos.WorkerKillTaskResponseOrBuilder {
             public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
@@ -2074,12 +2285,14 @@ public final class KillTaskProtos {
     private static com.google.protobuf.Descriptors.FileDescriptor descriptor;
 
     static {
-        java.lang.String[] descriptorData = { "\n\017kill_task.proto\",\n\031RestServerKillTaskR"
-                + "equest\022\017\n\007task_id\030\001 \002(\003\"<\n\026ServerKillTas"
-                + "kResponse\022\017\n\007success\030\001 \002(\010\022\021\n\007message\030\002 "
-                + "\001(\t:\000\"(\n\025ServerKillTaskRequest\022\017\n\007full_i"
-                + "d\030\001 \002(\t\"<\n\026WorkerKillTaskResponse\022\017\n\007suc"
-                + "cess\030\001 \002(\010\022\021\n\007message\030\002 \001(\t:\000B-\n\033com.mog" + "ujie.jarvis.protocolB\016KillTaskProtos" };
+        java.lang.String[] descriptorData = {
+                "\n\017kill_task.proto\032\016app_auth.proto\"H\n\031Res" + "tServerKillTaskRequest\022\032\n\010app_auth\030\001 \002(\013"
+                        + "2\010.AppAuth\022\017\n\007task_id\030\002 \002(\003\"<\n\026ServerKil"
+                        + "lTaskResponse\022\017\n\007success\030\001 \002(\010\022\021\n\007messag"
+                        + "e\030\002 \001(\t:\000\"(\n\025ServerKillTaskRequest\022\017\n\007fu"
+                        + "ll_id\030\001 \002(\t\"<\n\026WorkerKillTaskResponse\022\017\n"
+                        + "\007success\030\001 \002(\010\022\021\n\007message\030\002 \001(\t:\000B-\n\033com"
+                        + ".mogujie.jarvis.protocolB\016KillTaskProtos" };
         com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner = new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
             public com.google.protobuf.ExtensionRegistry assignDescriptors(com.google.protobuf.Descriptors.FileDescriptor root) {
                 descriptor = root;
@@ -2087,10 +2300,10 @@ public final class KillTaskProtos {
             }
         };
         com.google.protobuf.Descriptors.FileDescriptor.internalBuildGeneratedFileFrom(descriptorData,
-                new com.google.protobuf.Descriptors.FileDescriptor[] {}, assigner);
+                new com.google.protobuf.Descriptors.FileDescriptor[] { com.mogujie.jarvis.protocol.AppAuthProtos.getDescriptor(), }, assigner);
         internal_static_RestServerKillTaskRequest_descriptor = getDescriptor().getMessageTypes().get(0);
         internal_static_RestServerKillTaskRequest_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-                internal_static_RestServerKillTaskRequest_descriptor, new java.lang.String[] { "TaskId", });
+                internal_static_RestServerKillTaskRequest_descriptor, new java.lang.String[] { "AppAuth", "TaskId", });
         internal_static_ServerKillTaskResponse_descriptor = getDescriptor().getMessageTypes().get(1);
         internal_static_ServerKillTaskResponse_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
                 internal_static_ServerKillTaskResponse_descriptor, new java.lang.String[] { "Success", "Message", });
@@ -2100,6 +2313,7 @@ public final class KillTaskProtos {
         internal_static_WorkerKillTaskResponse_descriptor = getDescriptor().getMessageTypes().get(3);
         internal_static_WorkerKillTaskResponse_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
                 internal_static_WorkerKillTaskResponse_descriptor, new java.lang.String[] { "Success", "Message", });
+        com.mogujie.jarvis.protocol.AppAuthProtos.getDescriptor();
     }
 
     // @@protoc_insertion_point(outer_class_scope)

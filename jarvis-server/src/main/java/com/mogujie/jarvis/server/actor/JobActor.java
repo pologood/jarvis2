@@ -23,11 +23,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.transaction.annotation.Transactional;
 
-import akka.actor.UntypedActor;
-
 import com.google.common.collect.Sets;
 import com.mogujie.jarvis.core.domain.JobFlag;
 import com.mogujie.jarvis.core.domain.Pair;
+import com.mogujie.jarvis.dao.AppMapper;
 import com.mogujie.jarvis.dao.JobDependMapper;
 import com.mogujie.jarvis.dao.JobMapper;
 import com.mogujie.jarvis.dto.Job;
@@ -62,6 +61,8 @@ import com.mogujie.jarvis.server.service.CrontabService;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.util.MessageUtil;
 
+import akka.actor.UntypedActor;
+
 /**
  * @author guangming
  *
@@ -87,6 +88,9 @@ public class JobActor extends UntypedActor {
 
     @Autowired
     private JobDependMapper jobDependMapper;
+
+    @Autowired
+    private AppMapper appMapper;
 
     @Override
     public void onReceive(Object obj) throws Exception {
@@ -117,7 +121,7 @@ public class JobActor extends UntypedActor {
     private void submitJob(RestServerSubmitJobRequest msg) throws IOException {
         Set<Long> needDependencies = Sets.newHashSet();
         // 1. insert job to DB
-        Job job = MessageUtil.convert2Job(msg);
+        Job job = MessageUtil.convert2Job(appMapper, msg);
         jobMapper.insert(job);
         long jobId = job.getJobId();
         // 如果是新增任务（不是手动触发），则originId=jobId
@@ -146,16 +150,10 @@ public class JobActor extends UntypedActor {
         try {
             dagScheduler.addJob(jobId, new DAGJob(jobId, type), needDependencies);
             timeScheduler.addJob(jobId);
-            response = ServerSubmitJobResponse.newBuilder()
-                    .setSuccess(true)
-                    .setJobId(jobId)
-                    .build();
+            response = ServerSubmitJobResponse.newBuilder().setSuccess(true).setJobId(jobId).build();
             getSender().tell(response, getSelf());
         } catch (Exception e) {
-            response = ServerSubmitJobResponse.newBuilder()
-                    .setSuccess(false)
-                    .setMessage(e.getMessage())
-                    .build();
+            response = ServerSubmitJobResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
             getSender().tell(response, getSelf());
             throw new IOException(e);
         }
@@ -165,7 +163,7 @@ public class JobActor extends UntypedActor {
     private void modifyJob(RestServerModifyJobRequest msg) throws IOException {
         long jobId = msg.getJobId();
         // 1. update job to DB
-        Job job = MessageUtil.convert2Job(jobMapper, msg);
+        Job job = MessageUtil.convert2Job(jobMapper, appMapper, msg);
         jobMapper.updateByPrimaryKey(job);
 
         // 2. update cron to DB
@@ -179,15 +177,10 @@ public class JobActor extends UntypedActor {
         try {
             dagScheduler.modifyDAGJobType(jobId, modifyMap);
             timeScheduler.modifyJob(jobId);
-            response = ServerModifyJobResponse.newBuilder()
-                    .setSuccess(true)
-                    .build();
+            response = ServerModifyJobResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());
         } catch (Exception e) {
-            response = ServerModifyJobResponse.newBuilder()
-                    .setSuccess(false)
-                    .setMessage(e.getMessage())
-                    .build();
+            response = ServerModifyJobResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
             getSender().tell(response, getSelf());
             throw new IOException(e);
         }
@@ -206,8 +199,8 @@ public class JobActor extends UntypedActor {
             ModifyOperation operation;
             if (entry.getOperator().equals(DependencyOperator.ADD)) {
                 operation = ModifyOperation.ADD;
-                JobDepend jobDepend = MessageUtil.convert2JobDepend(jobId, preJobId, entry.getCommonDependStrategy(),
-                        entry.getOffsetDependStrategy(), user);
+                JobDepend jobDepend = MessageUtil.convert2JobDepend(jobId, preJobId, entry.getCommonDependStrategy(), entry.getOffsetDependStrategy(),
+                        user);
                 jobDependMapper.insert(jobDepend);
             } else if (entry.getOperator().equals(DependencyOperator.REMOVE)) {
                 operation = ModifyOperation.DEL;
@@ -237,15 +230,10 @@ public class JobActor extends UntypedActor {
         ServerModifyDependencyResponse response;
         try {
             dagScheduler.modifyDependency(jobId, dependEntries);
-            response = ServerModifyDependencyResponse.newBuilder()
-                    .setSuccess(true)
-                    .build();
+            response = ServerModifyDependencyResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());
         } catch (Exception e) {
-            response = ServerModifyDependencyResponse.newBuilder()
-                    .setSuccess(false)
-                    .setMessage(e.getMessage())
-                    .build();
+            response = ServerModifyDependencyResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
             getSender().tell(response, getSelf());
             throw new IOException(e);
         }
@@ -266,15 +254,10 @@ public class JobActor extends UntypedActor {
         try {
             timeScheduler.modifyJobFlag(jobId, flag);
             dagScheduler.modifyJobFlag(jobId, flag);
-            response = ServerModifyJobFlagResponse.newBuilder()
-                    .setSuccess(true)
-                    .build();
+            response = ServerModifyJobFlagResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());
         } catch (Exception e) {
-            response = ServerModifyJobFlagResponse.newBuilder()
-                    .setSuccess(false)
-                    .setMessage(e.getMessage())
-                    .build();
+            response = ServerModifyJobFlagResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
             getSender().tell(response, getSelf());
             throw new IOException(e);
         }
@@ -311,19 +294,13 @@ public class JobActor extends UntypedActor {
                 builder = ServerQueryJobRelationResponse.newBuilder();
                 List<Pair<Long, JobFlag>> parents = dagScheduler.getParents(jobId);
                 for (Pair<Long, JobFlag> parent : parents) {
-                    JobFlagEntry entry = JobFlagEntry.newBuilder()
-                            .setJobId(parent.getFirst())
-                            .setJobFlag(parent.getSecond().getValue())
-                            .build();
+                    JobFlagEntry entry = JobFlagEntry.newBuilder().setJobId(parent.getFirst()).setJobFlag(parent.getSecond().getValue()).build();
                     builder.addJobFlagEntry(entry);
                 }
                 response = builder.setSuccess(true).build();
                 getSender().tell(response, getSelf());
             } catch (Exception e) {
-                response = ServerQueryJobRelationResponse.newBuilder()
-                        .setSuccess(false)
-                        .setMessage(e.getMessage())
-                        .build();
+                response = ServerQueryJobRelationResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
                 getSender().tell(response, getSelf());
                 throw new IOException(e);
             }
@@ -332,19 +309,13 @@ public class JobActor extends UntypedActor {
                 builder = ServerQueryJobRelationResponse.newBuilder();
                 List<Pair<Long, JobFlag>> children = dagScheduler.getChildren(jobId);
                 for (Pair<Long, JobFlag> child : children) {
-                    JobFlagEntry entry = JobFlagEntry.newBuilder()
-                            .setJobId(child.getFirst())
-                            .setJobFlag(child.getSecond().getValue())
-                            .build();
+                    JobFlagEntry entry = JobFlagEntry.newBuilder().setJobId(child.getFirst()).setJobFlag(child.getSecond().getValue()).build();
                     builder.addJobFlagEntry(entry);
                 }
                 response = builder.setSuccess(true).build();
                 getSender().tell(response, getSelf());
             } catch (Exception e) {
-                response = ServerQueryJobRelationResponse.newBuilder()
-                        .setSuccess(false)
-                        .setMessage(e.getMessage())
-                        .build();
+                response = ServerQueryJobRelationResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
                 getSender().tell(response, getSelf());
                 throw new IOException(e);
             }

@@ -15,37 +15,52 @@ public final class ModifyWorkerStatusProtos {
             com.google.protobuf.MessageOrBuilder {
 
         /**
-         * <code>required string ip = 1;</code>
+         * <code>required .AppAuth app_auth = 1;</code>
+         */
+        boolean hasAppAuth();
+
+        /**
+         * <code>required .AppAuth app_auth = 1;</code>
+         */
+        com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth getAppAuth();
+
+        /**
+         * <code>required .AppAuth app_auth = 1;</code>
+         */
+        com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder();
+
+        /**
+         * <code>required string ip = 2;</code>
          */
         boolean hasIp();
 
         /**
-         * <code>required string ip = 1;</code>
+         * <code>required string ip = 2;</code>
          */
         java.lang.String getIp();
 
         /**
-         * <code>required string ip = 1;</code>
+         * <code>required string ip = 2;</code>
          */
         com.google.protobuf.ByteString getIpBytes();
 
         /**
-         * <code>required int32 port = 2;</code>
+         * <code>required int32 port = 3;</code>
          */
         boolean hasPort();
 
         /**
-         * <code>required int32 port = 2;</code>
+         * <code>required int32 port = 3;</code>
          */
         int getPort();
 
         /**
-         * <code>required int32 status = 3;</code>
+         * <code>required int32 status = 4;</code>
          */
         boolean hasStatus();
 
         /**
-         * <code>required int32 status = 3;</code>
+         * <code>required int32 status = 4;</code>
          */
         int getStatus();
     }
@@ -102,18 +117,31 @@ public final class ModifyWorkerStatusProtos {
                             break;
                         }
                         case 10: {
-                            com.google.protobuf.ByteString bs = input.readBytes();
+                            com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder subBuilder = null;
+                            if (((bitField0_ & 0x00000001) == 0x00000001)) {
+                                subBuilder = appAuth_.toBuilder();
+                            }
+                            appAuth_ = input.readMessage(com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.PARSER, extensionRegistry);
+                            if (subBuilder != null) {
+                                subBuilder.mergeFrom(appAuth_);
+                                appAuth_ = subBuilder.buildPartial();
+                            }
                             bitField0_ |= 0x00000001;
-                            ip_ = bs;
                             break;
                         }
-                        case 16: {
+                        case 18: {
+                            com.google.protobuf.ByteString bs = input.readBytes();
                             bitField0_ |= 0x00000002;
-                            port_ = input.readInt32();
+                            ip_ = bs;
                             break;
                         }
                         case 24: {
                             bitField0_ |= 0x00000004;
+                            port_ = input.readInt32();
+                            break;
+                        }
+                        case 32: {
+                            bitField0_ |= 0x00000008;
                             status_ = input.readInt32();
                             break;
                         }
@@ -152,18 +180,42 @@ public final class ModifyWorkerStatusProtos {
         }
 
         private int bitField0_;
-        public static final int IP_FIELD_NUMBER = 1;
-        private java.lang.Object ip_;
+        public static final int APP_AUTH_FIELD_NUMBER = 1;
+        private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_;
 
         /**
-         * <code>required string ip = 1;</code>
+         * <code>required .AppAuth app_auth = 1;</code>
          */
-        public boolean hasIp() {
+        public boolean hasAppAuth() {
             return ((bitField0_ & 0x00000001) == 0x00000001);
         }
 
         /**
-         * <code>required string ip = 1;</code>
+         * <code>required .AppAuth app_auth = 1;</code>
+         */
+        public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth getAppAuth() {
+            return appAuth_;
+        }
+
+        /**
+         * <code>required .AppAuth app_auth = 1;</code>
+         */
+        public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder() {
+            return appAuth_;
+        }
+
+        public static final int IP_FIELD_NUMBER = 2;
+        private java.lang.Object ip_;
+
+        /**
+         * <code>required string ip = 2;</code>
+         */
+        public boolean hasIp() {
+            return ((bitField0_ & 0x00000002) == 0x00000002);
+        }
+
+        /**
+         * <code>required string ip = 2;</code>
          */
         public java.lang.String getIp() {
             java.lang.Object ref = ip_;
@@ -180,7 +232,7 @@ public final class ModifyWorkerStatusProtos {
         }
 
         /**
-         * <code>required string ip = 1;</code>
+         * <code>required string ip = 2;</code>
          */
         public com.google.protobuf.ByteString getIpBytes() {
             java.lang.Object ref = ip_;
@@ -193,41 +245,42 @@ public final class ModifyWorkerStatusProtos {
             }
         }
 
-        public static final int PORT_FIELD_NUMBER = 2;
+        public static final int PORT_FIELD_NUMBER = 3;
         private int port_;
 
         /**
-         * <code>required int32 port = 2;</code>
+         * <code>required int32 port = 3;</code>
          */
         public boolean hasPort() {
-            return ((bitField0_ & 0x00000002) == 0x00000002);
+            return ((bitField0_ & 0x00000004) == 0x00000004);
         }
 
         /**
-         * <code>required int32 port = 2;</code>
+         * <code>required int32 port = 3;</code>
          */
         public int getPort() {
             return port_;
         }
 
-        public static final int STATUS_FIELD_NUMBER = 3;
+        public static final int STATUS_FIELD_NUMBER = 4;
         private int status_;
 
         /**
-         * <code>required int32 status = 3;</code>
+         * <code>required int32 status = 4;</code>
          */
         public boolean hasStatus() {
-            return ((bitField0_ & 0x00000004) == 0x00000004);
+            return ((bitField0_ & 0x00000008) == 0x00000008);
         }
 
         /**
-         * <code>required int32 status = 3;</code>
+         * <code>required int32 status = 4;</code>
          */
         public int getStatus() {
             return status_;
         }
 
         private void initFields() {
+            appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
             ip_ = "";
             port_ = 0;
             status_ = 0;
@@ -242,6 +295,10 @@ public final class ModifyWorkerStatusProtos {
             if (isInitialized == 0)
                 return false;
 
+            if (!hasAppAuth()) {
+                memoizedIsInitialized = 0;
+                return false;
+            }
             if (!hasIp()) {
                 memoizedIsInitialized = 0;
                 return false;
@@ -254,6 +311,10 @@ public final class ModifyWorkerStatusProtos {
                 memoizedIsInitialized = 0;
                 return false;
             }
+            if (!getAppAuth().isInitialized()) {
+                memoizedIsInitialized = 0;
+                return false;
+            }
             memoizedIsInitialized = 1;
             return true;
         }
@@ -261,13 +322,16 @@ public final class ModifyWorkerStatusProtos {
         public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
             getSerializedSize();
             if (((bitField0_ & 0x00000001) == 0x00000001)) {
-                output.writeBytes(1, getIpBytes());
+                output.writeMessage(1, appAuth_);
             }
             if (((bitField0_ & 0x00000002) == 0x00000002)) {
-                output.writeInt32(2, port_);
+                output.writeBytes(2, getIpBytes());
             }
             if (((bitField0_ & 0x00000004) == 0x00000004)) {
-                output.writeInt32(3, status_);
+                output.writeInt32(3, port_);
+            }
+            if (((bitField0_ & 0x00000008) == 0x00000008)) {
+                output.writeInt32(4, status_);
             }
             getUnknownFields().writeTo(output);
         }
@@ -281,13 +345,16 @@ public final class ModifyWorkerStatusProtos {
 
             size = 0;
             if (((bitField0_ & 0x00000001) == 0x00000001)) {
-                size += com.google.protobuf.CodedOutputStream.computeBytesSize(1, getIpBytes());
+                size += com.google.protobuf.CodedOutputStream.computeMessageSize(1, appAuth_);
             }
             if (((bitField0_ & 0x00000002) == 0x00000002)) {
-                size += com.google.protobuf.CodedOutputStream.computeInt32Size(2, port_);
+                size += com.google.protobuf.CodedOutputStream.computeBytesSize(2, getIpBytes());
             }
             if (((bitField0_ & 0x00000004) == 0x00000004)) {
-                size += com.google.protobuf.CodedOutputStream.computeInt32Size(3, status_);
+                size += com.google.protobuf.CodedOutputStream.computeInt32Size(3, port_);
+            }
+            if (((bitField0_ & 0x00000008) == 0x00000008)) {
+                size += com.google.protobuf.CodedOutputStream.computeInt32Size(4, status_);
             }
             size += getUnknownFields().getSerializedSize();
             memoizedSerializedSize = size;
@@ -377,7 +444,7 @@ public final class ModifyWorkerStatusProtos {
         /**
          * Protobuf type {@code RestServerModifyWorkerStatusRequest}
          */
-        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder>implements
+        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder> implements
                 // @@protoc_insertion_point(builder_implements:RestServerModifyWorkerStatusRequest)
                 com.mogujie.jarvis.protocol.ModifyWorkerStatusProtos.RestServerModifyWorkerStatusRequestOrBuilder {
             public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
@@ -404,6 +471,7 @@ public final class ModifyWorkerStatusProtos {
 
             private void maybeForceBuilderInitialization() {
                 if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+                    getAppAuthFieldBuilder();
                 }
             }
 
@@ -413,12 +481,18 @@ public final class ModifyWorkerStatusProtos {
 
             public Builder clear() {
                 super.clear();
-                ip_ = "";
+                if (appAuthBuilder_ == null) {
+                    appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
+                } else {
+                    appAuthBuilder_.clear();
+                }
                 bitField0_ = (bitField0_ & ~0x00000001);
-                port_ = 0;
+                ip_ = "";
                 bitField0_ = (bitField0_ & ~0x00000002);
-                status_ = 0;
+                port_ = 0;
                 bitField0_ = (bitField0_ & ~0x00000004);
+                status_ = 0;
+                bitField0_ = (bitField0_ & ~0x00000008);
                 return this;
             }
 
@@ -450,13 +524,21 @@ public final class ModifyWorkerStatusProtos {
                 if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
                     to_bitField0_ |= 0x00000001;
                 }
-                result.ip_ = ip_;
+                if (appAuthBuilder_ == null) {
+                    result.appAuth_ = appAuth_;
+                } else {
+                    result.appAuth_ = appAuthBuilder_.build();
+                }
                 if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
                     to_bitField0_ |= 0x00000002;
                 }
-                result.port_ = port_;
+                result.ip_ = ip_;
                 if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
                     to_bitField0_ |= 0x00000004;
+                }
+                result.port_ = port_;
+                if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+                    to_bitField0_ |= 0x00000008;
                 }
                 result.status_ = status_;
                 result.bitField0_ = to_bitField0_;
@@ -476,8 +558,11 @@ public final class ModifyWorkerStatusProtos {
             public Builder mergeFrom(com.mogujie.jarvis.protocol.ModifyWorkerStatusProtos.RestServerModifyWorkerStatusRequest other) {
                 if (other == com.mogujie.jarvis.protocol.ModifyWorkerStatusProtos.RestServerModifyWorkerStatusRequest.getDefaultInstance())
                     return this;
+                if (other.hasAppAuth()) {
+                    mergeAppAuth(other.getAppAuth());
+                }
                 if (other.hasIp()) {
-                    bitField0_ |= 0x00000001;
+                    bitField0_ |= 0x00000002;
                     ip_ = other.ip_;
                     onChanged();
                 }
@@ -492,6 +577,10 @@ public final class ModifyWorkerStatusProtos {
             }
 
             public final boolean isInitialized() {
+                if (!hasAppAuth()) {
+
+                    return false;
+                }
                 if (!hasIp()) {
 
                     return false;
@@ -501,6 +590,10 @@ public final class ModifyWorkerStatusProtos {
                     return false;
                 }
                 if (!hasStatus()) {
+
+                    return false;
+                }
+                if (!getAppAuth().isInitialized()) {
 
                     return false;
                 }
@@ -526,17 +619,135 @@ public final class ModifyWorkerStatusProtos {
 
             private int bitField0_;
 
-            private java.lang.Object ip_ = "";
+            private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth
+                    .getDefaultInstance();
+            private com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> appAuthBuilder_;
 
             /**
-             * <code>required string ip = 1;</code>
+             * <code>required .AppAuth app_auth = 1;</code>
              */
-            public boolean hasIp() {
+            public boolean hasAppAuth() {
                 return ((bitField0_ & 0x00000001) == 0x00000001);
             }
 
             /**
-             * <code>required string ip = 1;</code>
+             * <code>required .AppAuth app_auth = 1;</code>
+             */
+            public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth getAppAuth() {
+                if (appAuthBuilder_ == null) {
+                    return appAuth_;
+                } else {
+                    return appAuthBuilder_.getMessage();
+                }
+            }
+
+            /**
+             * <code>required .AppAuth app_auth = 1;</code>
+             */
+            public Builder setAppAuth(com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth value) {
+                if (appAuthBuilder_ == null) {
+                    if (value == null) {
+                        throw new NullPointerException();
+                    }
+                    appAuth_ = value;
+                    onChanged();
+                } else {
+                    appAuthBuilder_.setMessage(value);
+                }
+                bitField0_ |= 0x00000001;
+                return this;
+            }
+
+            /**
+             * <code>required .AppAuth app_auth = 1;</code>
+             */
+            public Builder setAppAuth(com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder builderForValue) {
+                if (appAuthBuilder_ == null) {
+                    appAuth_ = builderForValue.build();
+                    onChanged();
+                } else {
+                    appAuthBuilder_.setMessage(builderForValue.build());
+                }
+                bitField0_ |= 0x00000001;
+                return this;
+            }
+
+            /**
+             * <code>required .AppAuth app_auth = 1;</code>
+             */
+            public Builder mergeAppAuth(com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth value) {
+                if (appAuthBuilder_ == null) {
+                    if (((bitField0_ & 0x00000001) == 0x00000001)
+                            && appAuth_ != com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance()) {
+                        appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.newBuilder(appAuth_).mergeFrom(value).buildPartial();
+                    } else {
+                        appAuth_ = value;
+                    }
+                    onChanged();
+                } else {
+                    appAuthBuilder_.mergeFrom(value);
+                }
+                bitField0_ |= 0x00000001;
+                return this;
+            }
+
+            /**
+             * <code>required .AppAuth app_auth = 1;</code>
+             */
+            public Builder clearAppAuth() {
+                if (appAuthBuilder_ == null) {
+                    appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
+                    onChanged();
+                } else {
+                    appAuthBuilder_.clear();
+                }
+                bitField0_ = (bitField0_ & ~0x00000001);
+                return this;
+            }
+
+            /**
+             * <code>required .AppAuth app_auth = 1;</code>
+             */
+            public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder getAppAuthBuilder() {
+                bitField0_ |= 0x00000001;
+                onChanged();
+                return getAppAuthFieldBuilder().getBuilder();
+            }
+
+            /**
+             * <code>required .AppAuth app_auth = 1;</code>
+             */
+            public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder() {
+                if (appAuthBuilder_ != null) {
+                    return appAuthBuilder_.getMessageOrBuilder();
+                } else {
+                    return appAuth_;
+                }
+            }
+
+            /**
+             * <code>required .AppAuth app_auth = 1;</code>
+             */
+            private com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> getAppAuthFieldBuilder() {
+                if (appAuthBuilder_ == null) {
+                    appAuthBuilder_ = new com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder>(
+                            getAppAuth(), getParentForChildren(), isClean());
+                    appAuth_ = null;
+                }
+                return appAuthBuilder_;
+            }
+
+            private java.lang.Object ip_ = "";
+
+            /**
+             * <code>required string ip = 2;</code>
+             */
+            public boolean hasIp() {
+                return ((bitField0_ & 0x00000002) == 0x00000002);
+            }
+
+            /**
+             * <code>required string ip = 2;</code>
              */
             public java.lang.String getIp() {
                 java.lang.Object ref = ip_;
@@ -553,7 +764,7 @@ public final class ModifyWorkerStatusProtos {
             }
 
             /**
-             * <code>required string ip = 1;</code>
+             * <code>required string ip = 2;</code>
              */
             public com.google.protobuf.ByteString getIpBytes() {
                 java.lang.Object ref = ip_;
@@ -567,36 +778,36 @@ public final class ModifyWorkerStatusProtos {
             }
 
             /**
-             * <code>required string ip = 1;</code>
+             * <code>required string ip = 2;</code>
              */
             public Builder setIp(java.lang.String value) {
                 if (value == null) {
                     throw new NullPointerException();
                 }
-                bitField0_ |= 0x00000001;
+                bitField0_ |= 0x00000002;
                 ip_ = value;
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>required string ip = 1;</code>
+             * <code>required string ip = 2;</code>
              */
             public Builder clearIp() {
-                bitField0_ = (bitField0_ & ~0x00000001);
+                bitField0_ = (bitField0_ & ~0x00000002);
                 ip_ = getDefaultInstance().getIp();
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>required string ip = 1;</code>
+             * <code>required string ip = 2;</code>
              */
             public Builder setIpBytes(com.google.protobuf.ByteString value) {
                 if (value == null) {
                     throw new NullPointerException();
                 }
-                bitField0_ |= 0x00000001;
+                bitField0_ |= 0x00000002;
                 ip_ = value;
                 onChanged();
                 return this;
@@ -605,34 +816,34 @@ public final class ModifyWorkerStatusProtos {
             private int port_;
 
             /**
-             * <code>required int32 port = 2;</code>
+             * <code>required int32 port = 3;</code>
              */
             public boolean hasPort() {
-                return ((bitField0_ & 0x00000002) == 0x00000002);
+                return ((bitField0_ & 0x00000004) == 0x00000004);
             }
 
             /**
-             * <code>required int32 port = 2;</code>
+             * <code>required int32 port = 3;</code>
              */
             public int getPort() {
                 return port_;
             }
 
             /**
-             * <code>required int32 port = 2;</code>
+             * <code>required int32 port = 3;</code>
              */
             public Builder setPort(int value) {
-                bitField0_ |= 0x00000002;
+                bitField0_ |= 0x00000004;
                 port_ = value;
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>required int32 port = 2;</code>
+             * <code>required int32 port = 3;</code>
              */
             public Builder clearPort() {
-                bitField0_ = (bitField0_ & ~0x00000002);
+                bitField0_ = (bitField0_ & ~0x00000004);
                 port_ = 0;
                 onChanged();
                 return this;
@@ -641,34 +852,34 @@ public final class ModifyWorkerStatusProtos {
             private int status_;
 
             /**
-             * <code>required int32 status = 3;</code>
+             * <code>required int32 status = 4;</code>
              */
             public boolean hasStatus() {
-                return ((bitField0_ & 0x00000004) == 0x00000004);
+                return ((bitField0_ & 0x00000008) == 0x00000008);
             }
 
             /**
-             * <code>required int32 status = 3;</code>
+             * <code>required int32 status = 4;</code>
              */
             public int getStatus() {
                 return status_;
             }
 
             /**
-             * <code>required int32 status = 3;</code>
+             * <code>required int32 status = 4;</code>
              */
             public Builder setStatus(int value) {
-                bitField0_ |= 0x00000004;
+                bitField0_ |= 0x00000008;
                 status_ = value;
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>required int32 status = 3;</code>
+             * <code>required int32 status = 4;</code>
              */
             public Builder clearStatus() {
-                bitField0_ = (bitField0_ & ~0x00000004);
+                bitField0_ = (bitField0_ & ~0x00000008);
                 status_ = 0;
                 onChanged();
                 return this;
@@ -1005,7 +1216,7 @@ public final class ModifyWorkerStatusProtos {
         /**
          * Protobuf type {@code ServerModifyWorkerStatusResponse}
          */
-        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder>implements
+        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder> implements
                 // @@protoc_insertion_point(builder_implements:ServerModifyWorkerStatusResponse)
                 com.mogujie.jarvis.protocol.ModifyWorkerStatusProtos.ServerModifyWorkerStatusResponseOrBuilder {
             public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
@@ -1270,11 +1481,12 @@ public final class ModifyWorkerStatusProtos {
     private static com.google.protobuf.Descriptors.FileDescriptor descriptor;
 
     static {
-        java.lang.String[] descriptorData = {
-                "\n\032modify_worker_status.proto\"O\n#RestServ" + "erModifyWorkerStatusRequest\022\n\n\002ip\030\001 \002(\t\022"
-                        + "\014\n\004port\030\002 \002(\005\022\016\n\006status\030\003 \002(\005\"F\n ServerM"
-                        + "odifyWorkerStatusResponse\022\017\n\007success\030\001 \002"
-                        + "(\010\022\021\n\007message\030\002 \001(\t:\000B7\n\033com.mogujie.jar" + "vis.protocolB\030ModifyWorkerStatusProtos" };
+        java.lang.String[] descriptorData = { "\n\032modify_worker_status.proto\032\016app_auth.p" + "roto\"k\n#RestServerModifyWorkerStatusRequ"
+                + "est\022\032\n\010app_auth\030\001 \002(\0132\010.AppAuth\022\n\n\002ip\030\002 "
+                + "\002(\t\022\014\n\004port\030\003 \002(\005\022\016\n\006status\030\004 \002(\005\"F\n Ser"
+                + "verModifyWorkerStatusResponse\022\017\n\007success"
+                + "\030\001 \002(\010\022\021\n\007message\030\002 \001(\t:\000B7\n\033com.mogujie" + ".jarvis.protocolB\030ModifyWorkerStatusProt"
+                + "os" };
         com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner = new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
             public com.google.protobuf.ExtensionRegistry assignDescriptors(com.google.protobuf.Descriptors.FileDescriptor root) {
                 descriptor = root;
@@ -1282,13 +1494,14 @@ public final class ModifyWorkerStatusProtos {
             }
         };
         com.google.protobuf.Descriptors.FileDescriptor.internalBuildGeneratedFileFrom(descriptorData,
-                new com.google.protobuf.Descriptors.FileDescriptor[] {}, assigner);
+                new com.google.protobuf.Descriptors.FileDescriptor[] { com.mogujie.jarvis.protocol.AppAuthProtos.getDescriptor(), }, assigner);
         internal_static_RestServerModifyWorkerStatusRequest_descriptor = getDescriptor().getMessageTypes().get(0);
         internal_static_RestServerModifyWorkerStatusRequest_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-                internal_static_RestServerModifyWorkerStatusRequest_descriptor, new java.lang.String[] { "Ip", "Port", "Status", });
+                internal_static_RestServerModifyWorkerStatusRequest_descriptor, new java.lang.String[] { "AppAuth", "Ip", "Port", "Status", });
         internal_static_ServerModifyWorkerStatusResponse_descriptor = getDescriptor().getMessageTypes().get(1);
         internal_static_ServerModifyWorkerStatusResponse_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
                 internal_static_ServerModifyWorkerStatusResponse_descriptor, new java.lang.String[] { "Success", "Message", });
+        com.mogujie.jarvis.protocol.AppAuthProtos.getDescriptor();
     }
 
     // @@protoc_insertion_point(outer_class_scope)

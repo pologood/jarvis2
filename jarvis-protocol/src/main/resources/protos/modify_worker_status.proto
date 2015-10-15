@@ -1,11 +1,14 @@
+import "app_auth.proto";
+
 option java_package = "com.mogujie.jarvis.protocol";
 option java_outer_classname = "ModifyWorkerStatusProtos";
 
 
 message RestServerModifyWorkerStatusRequest {
-    required string ip = 1;
-    required int32 port = 2;
-    required int32 status = 3;
+    required AppAuth app_auth = 1;
+    required string ip = 2;
+    required int32 port = 3;
+    required int32 status = 4;
 }
 
 message ServerModifyWorkerStatusResponse {

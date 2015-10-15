@@ -18,6 +18,7 @@ import com.mogujie.jarvis.server.util.SpringContext;
 import com.mogujie.jarvis.server.util.SpringExtension;
 
 import akka.actor.ActorSystem;
+import akka.routing.SmallestMailboxPool;
 
 /**
  * 
@@ -34,7 +35,7 @@ public class JarvisServer {
         ActorSystem system = JarvisServerActorSystem.getInstance();
         SpringExtension.SPRING_EXT_PROVIDER.get(system).initialize(context);
 
-        system.actorOf(ServerActor.props(), JarvisConstants.SERVER_AKKA_SYSTEM_NAME);
+        system.actorOf(new SmallestMailboxPool(10).props(ServerActor.props()), JarvisConstants.SERVER_AKKA_SYSTEM_NAME);
 
         LOGGER.info("Jarvis server started.");
     }

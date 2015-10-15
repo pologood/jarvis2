@@ -376,7 +376,7 @@ public final class ReportStatusProtos {
         /**
          * Protobuf type {@code WorkerReportStatusRequest}
          */
-        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder>implements
+        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder> implements
                 // @@protoc_insertion_point(builder_implements:WorkerReportStatusRequest)
                 com.mogujie.jarvis.protocol.ReportStatusProtos.WorkerReportStatusRequestOrBuilder {
             public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
@@ -1001,7 +1001,7 @@ public final class ReportStatusProtos {
         /**
          * Protobuf type {@code ServerReportStatusResponse}
          */
-        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder>implements
+        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder> implements
                 // @@protoc_insertion_point(builder_implements:ServerReportStatusResponse)
                 com.mogujie.jarvis.protocol.ReportStatusProtos.ServerReportStatusResponseOrBuilder {
             public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {

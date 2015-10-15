@@ -15,37 +15,52 @@ public final class ModifyJobFlagProtos {
             com.google.protobuf.MessageOrBuilder {
 
         /**
-         * <code>required int64 job_id = 1;</code>
+         * <code>required .AppAuth app_auth = 1;</code>
+         */
+        boolean hasAppAuth();
+
+        /**
+         * <code>required .AppAuth app_auth = 1;</code>
+         */
+        com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth getAppAuth();
+
+        /**
+         * <code>required .AppAuth app_auth = 1;</code>
+         */
+        com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder();
+
+        /**
+         * <code>required int64 job_id = 2;</code>
          */
         boolean hasJobId();
 
         /**
-         * <code>required int64 job_id = 1;</code>
+         * <code>required int64 job_id = 2;</code>
          */
         long getJobId();
 
         /**
-         * <code>required int32 job_flag = 2;</code>
+         * <code>required int32 job_flag = 3;</code>
          */
         boolean hasJobFlag();
 
         /**
-         * <code>required int32 job_flag = 2;</code>
+         * <code>required int32 job_flag = 3;</code>
          */
         int getJobFlag();
 
         /**
-         * <code>required string user = 3;</code>
+         * <code>required string user = 4;</code>
          */
         boolean hasUser();
 
         /**
-         * <code>required string user = 3;</code>
+         * <code>required string user = 4;</code>
          */
         java.lang.String getUser();
 
         /**
-         * <code>required string user = 3;</code>
+         * <code>required string user = 4;</code>
          */
         com.google.protobuf.ByteString getUserBytes();
     }
@@ -101,19 +116,32 @@ public final class ModifyJobFlagProtos {
                             }
                             break;
                         }
-                        case 8: {
+                        case 10: {
+                            com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder subBuilder = null;
+                            if (((bitField0_ & 0x00000001) == 0x00000001)) {
+                                subBuilder = appAuth_.toBuilder();
+                            }
+                            appAuth_ = input.readMessage(com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.PARSER, extensionRegistry);
+                            if (subBuilder != null) {
+                                subBuilder.mergeFrom(appAuth_);
+                                appAuth_ = subBuilder.buildPartial();
+                            }
                             bitField0_ |= 0x00000001;
-                            jobId_ = input.readInt64();
                             break;
                         }
                         case 16: {
                             bitField0_ |= 0x00000002;
+                            jobId_ = input.readInt64();
+                            break;
+                        }
+                        case 24: {
+                            bitField0_ |= 0x00000004;
                             jobFlag_ = input.readInt32();
                             break;
                         }
-                        case 26: {
+                        case 34: {
                             com.google.protobuf.ByteString bs = input.readBytes();
-                            bitField0_ |= 0x00000004;
+                            bitField0_ |= 0x00000008;
                             user_ = bs;
                             break;
                         }
@@ -152,52 +180,76 @@ public final class ModifyJobFlagProtos {
         }
 
         private int bitField0_;
-        public static final int JOB_ID_FIELD_NUMBER = 1;
-        private long jobId_;
+        public static final int APP_AUTH_FIELD_NUMBER = 1;
+        private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_;
 
         /**
-         * <code>required int64 job_id = 1;</code>
+         * <code>required .AppAuth app_auth = 1;</code>
          */
-        public boolean hasJobId() {
+        public boolean hasAppAuth() {
             return ((bitField0_ & 0x00000001) == 0x00000001);
         }
 
         /**
-         * <code>required int64 job_id = 1;</code>
+         * <code>required .AppAuth app_auth = 1;</code>
+         */
+        public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth getAppAuth() {
+            return appAuth_;
+        }
+
+        /**
+         * <code>required .AppAuth app_auth = 1;</code>
+         */
+        public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder() {
+            return appAuth_;
+        }
+
+        public static final int JOB_ID_FIELD_NUMBER = 2;
+        private long jobId_;
+
+        /**
+         * <code>required int64 job_id = 2;</code>
+         */
+        public boolean hasJobId() {
+            return ((bitField0_ & 0x00000002) == 0x00000002);
+        }
+
+        /**
+         * <code>required int64 job_id = 2;</code>
          */
         public long getJobId() {
             return jobId_;
         }
 
-        public static final int JOB_FLAG_FIELD_NUMBER = 2;
+        public static final int JOB_FLAG_FIELD_NUMBER = 3;
         private int jobFlag_;
 
         /**
-         * <code>required int32 job_flag = 2;</code>
+         * <code>required int32 job_flag = 3;</code>
          */
         public boolean hasJobFlag() {
-            return ((bitField0_ & 0x00000002) == 0x00000002);
+            return ((bitField0_ & 0x00000004) == 0x00000004);
         }
 
         /**
-         * <code>required int32 job_flag = 2;</code>
+         * <code>required int32 job_flag = 3;</code>
          */
         public int getJobFlag() {
             return jobFlag_;
         }
 
-        public static final int USER_FIELD_NUMBER = 3;
+        public static final int USER_FIELD_NUMBER = 4;
         private java.lang.Object user_;
 
         /**
-         * <code>required string user = 3;</code>
+         * <code>required string user = 4;</code>
          */
         public boolean hasUser() {
-            return ((bitField0_ & 0x00000004) == 0x00000004);
+            return ((bitField0_ & 0x00000008) == 0x00000008);
         }
 
         /**
-         * <code>required string user = 3;</code>
+         * <code>required string user = 4;</code>
          */
         public java.lang.String getUser() {
             java.lang.Object ref = user_;
@@ -214,7 +266,7 @@ public final class ModifyJobFlagProtos {
         }
 
         /**
-         * <code>required string user = 3;</code>
+         * <code>required string user = 4;</code>
          */
         public com.google.protobuf.ByteString getUserBytes() {
             java.lang.Object ref = user_;
@@ -228,6 +280,7 @@ public final class ModifyJobFlagProtos {
         }
 
         private void initFields() {
+            appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
             jobId_ = 0L;
             jobFlag_ = 0;
             user_ = "";
@@ -242,6 +295,10 @@ public final class ModifyJobFlagProtos {
             if (isInitialized == 0)
                 return false;
 
+            if (!hasAppAuth()) {
+                memoizedIsInitialized = 0;
+                return false;
+            }
             if (!hasJobId()) {
                 memoizedIsInitialized = 0;
                 return false;
@@ -254,6 +311,10 @@ public final class ModifyJobFlagProtos {
                 memoizedIsInitialized = 0;
                 return false;
             }
+            if (!getAppAuth().isInitialized()) {
+                memoizedIsInitialized = 0;
+                return false;
+            }
             memoizedIsInitialized = 1;
             return true;
         }
@@ -261,13 +322,16 @@ public final class ModifyJobFlagProtos {
         public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
             getSerializedSize();
             if (((bitField0_ & 0x00000001) == 0x00000001)) {
-                output.writeInt64(1, jobId_);
+                output.writeMessage(1, appAuth_);
             }
             if (((bitField0_ & 0x00000002) == 0x00000002)) {
-                output.writeInt32(2, jobFlag_);
+                output.writeInt64(2, jobId_);
             }
             if (((bitField0_ & 0x00000004) == 0x00000004)) {
-                output.writeBytes(3, getUserBytes());
+                output.writeInt32(3, jobFlag_);
+            }
+            if (((bitField0_ & 0x00000008) == 0x00000008)) {
+                output.writeBytes(4, getUserBytes());
             }
             getUnknownFields().writeTo(output);
         }
@@ -281,13 +345,16 @@ public final class ModifyJobFlagProtos {
 
             size = 0;
             if (((bitField0_ & 0x00000001) == 0x00000001)) {
-                size += com.google.protobuf.CodedOutputStream.computeInt64Size(1, jobId_);
+                size += com.google.protobuf.CodedOutputStream.computeMessageSize(1, appAuth_);
             }
             if (((bitField0_ & 0x00000002) == 0x00000002)) {
-                size += com.google.protobuf.CodedOutputStream.computeInt32Size(2, jobFlag_);
+                size += com.google.protobuf.CodedOutputStream.computeInt64Size(2, jobId_);
             }
             if (((bitField0_ & 0x00000004) == 0x00000004)) {
-                size += com.google.protobuf.CodedOutputStream.computeBytesSize(3, getUserBytes());
+                size += com.google.protobuf.CodedOutputStream.computeInt32Size(3, jobFlag_);
+            }
+            if (((bitField0_ & 0x00000008) == 0x00000008)) {
+                size += com.google.protobuf.CodedOutputStream.computeBytesSize(4, getUserBytes());
             }
             size += getUnknownFields().getSerializedSize();
             memoizedSerializedSize = size;
@@ -402,6 +469,7 @@ public final class ModifyJobFlagProtos {
 
             private void maybeForceBuilderInitialization() {
                 if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+                    getAppAuthFieldBuilder();
                 }
             }
 
@@ -411,12 +479,18 @@ public final class ModifyJobFlagProtos {
 
             public Builder clear() {
                 super.clear();
-                jobId_ = 0L;
+                if (appAuthBuilder_ == null) {
+                    appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
+                } else {
+                    appAuthBuilder_.clear();
+                }
                 bitField0_ = (bitField0_ & ~0x00000001);
-                jobFlag_ = 0;
+                jobId_ = 0L;
                 bitField0_ = (bitField0_ & ~0x00000002);
-                user_ = "";
+                jobFlag_ = 0;
                 bitField0_ = (bitField0_ & ~0x00000004);
+                user_ = "";
+                bitField0_ = (bitField0_ & ~0x00000008);
                 return this;
             }
 
@@ -448,13 +522,21 @@ public final class ModifyJobFlagProtos {
                 if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
                     to_bitField0_ |= 0x00000001;
                 }
-                result.jobId_ = jobId_;
+                if (appAuthBuilder_ == null) {
+                    result.appAuth_ = appAuth_;
+                } else {
+                    result.appAuth_ = appAuthBuilder_.build();
+                }
                 if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
                     to_bitField0_ |= 0x00000002;
                 }
-                result.jobFlag_ = jobFlag_;
+                result.jobId_ = jobId_;
                 if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
                     to_bitField0_ |= 0x00000004;
+                }
+                result.jobFlag_ = jobFlag_;
+                if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+                    to_bitField0_ |= 0x00000008;
                 }
                 result.user_ = user_;
                 result.bitField0_ = to_bitField0_;
@@ -474,6 +556,9 @@ public final class ModifyJobFlagProtos {
             public Builder mergeFrom(com.mogujie.jarvis.protocol.ModifyJobFlagProtos.RestServerModifyJobFlagRequest other) {
                 if (other == com.mogujie.jarvis.protocol.ModifyJobFlagProtos.RestServerModifyJobFlagRequest.getDefaultInstance())
                     return this;
+                if (other.hasAppAuth()) {
+                    mergeAppAuth(other.getAppAuth());
+                }
                 if (other.hasJobId()) {
                     setJobId(other.getJobId());
                 }
@@ -481,7 +566,7 @@ public final class ModifyJobFlagProtos {
                     setJobFlag(other.getJobFlag());
                 }
                 if (other.hasUser()) {
-                    bitField0_ |= 0x00000004;
+                    bitField0_ |= 0x00000008;
                     user_ = other.user_;
                     onChanged();
                 }
@@ -490,6 +575,10 @@ public final class ModifyJobFlagProtos {
             }
 
             public final boolean isInitialized() {
+                if (!hasAppAuth()) {
+
+                    return false;
+                }
                 if (!hasJobId()) {
 
                     return false;
@@ -499,6 +588,10 @@ public final class ModifyJobFlagProtos {
                     return false;
                 }
                 if (!hasUser()) {
+
+                    return false;
+                }
+                if (!getAppAuth().isInitialized()) {
 
                     return false;
                 }
@@ -523,37 +616,155 @@ public final class ModifyJobFlagProtos {
 
             private int bitField0_;
 
-            private long jobId_;
+            private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth
+                    .getDefaultInstance();
+            private com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> appAuthBuilder_;
 
             /**
-             * <code>required int64 job_id = 1;</code>
+             * <code>required .AppAuth app_auth = 1;</code>
              */
-            public boolean hasJobId() {
+            public boolean hasAppAuth() {
                 return ((bitField0_ & 0x00000001) == 0x00000001);
             }
 
             /**
-             * <code>required int64 job_id = 1;</code>
+             * <code>required .AppAuth app_auth = 1;</code>
+             */
+            public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth getAppAuth() {
+                if (appAuthBuilder_ == null) {
+                    return appAuth_;
+                } else {
+                    return appAuthBuilder_.getMessage();
+                }
+            }
+
+            /**
+             * <code>required .AppAuth app_auth = 1;</code>
+             */
+            public Builder setAppAuth(com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth value) {
+                if (appAuthBuilder_ == null) {
+                    if (value == null) {
+                        throw new NullPointerException();
+                    }
+                    appAuth_ = value;
+                    onChanged();
+                } else {
+                    appAuthBuilder_.setMessage(value);
+                }
+                bitField0_ |= 0x00000001;
+                return this;
+            }
+
+            /**
+             * <code>required .AppAuth app_auth = 1;</code>
+             */
+            public Builder setAppAuth(com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder builderForValue) {
+                if (appAuthBuilder_ == null) {
+                    appAuth_ = builderForValue.build();
+                    onChanged();
+                } else {
+                    appAuthBuilder_.setMessage(builderForValue.build());
+                }
+                bitField0_ |= 0x00000001;
+                return this;
+            }
+
+            /**
+             * <code>required .AppAuth app_auth = 1;</code>
+             */
+            public Builder mergeAppAuth(com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth value) {
+                if (appAuthBuilder_ == null) {
+                    if (((bitField0_ & 0x00000001) == 0x00000001)
+                            && appAuth_ != com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance()) {
+                        appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.newBuilder(appAuth_).mergeFrom(value).buildPartial();
+                    } else {
+                        appAuth_ = value;
+                    }
+                    onChanged();
+                } else {
+                    appAuthBuilder_.mergeFrom(value);
+                }
+                bitField0_ |= 0x00000001;
+                return this;
+            }
+
+            /**
+             * <code>required .AppAuth app_auth = 1;</code>
+             */
+            public Builder clearAppAuth() {
+                if (appAuthBuilder_ == null) {
+                    appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
+                    onChanged();
+                } else {
+                    appAuthBuilder_.clear();
+                }
+                bitField0_ = (bitField0_ & ~0x00000001);
+                return this;
+            }
+
+            /**
+             * <code>required .AppAuth app_auth = 1;</code>
+             */
+            public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder getAppAuthBuilder() {
+                bitField0_ |= 0x00000001;
+                onChanged();
+                return getAppAuthFieldBuilder().getBuilder();
+            }
+
+            /**
+             * <code>required .AppAuth app_auth = 1;</code>
+             */
+            public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder() {
+                if (appAuthBuilder_ != null) {
+                    return appAuthBuilder_.getMessageOrBuilder();
+                } else {
+                    return appAuth_;
+                }
+            }
+
+            /**
+             * <code>required .AppAuth app_auth = 1;</code>
+             */
+            private com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> getAppAuthFieldBuilder() {
+                if (appAuthBuilder_ == null) {
+                    appAuthBuilder_ = new com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder>(
+                            getAppAuth(), getParentForChildren(), isClean());
+                    appAuth_ = null;
+                }
+                return appAuthBuilder_;
+            }
+
+            private long jobId_;
+
+            /**
+             * <code>required int64 job_id = 2;</code>
+             */
+            public boolean hasJobId() {
+                return ((bitField0_ & 0x00000002) == 0x00000002);
+            }
+
+            /**
+             * <code>required int64 job_id = 2;</code>
              */
             public long getJobId() {
                 return jobId_;
             }
 
             /**
-             * <code>required int64 job_id = 1;</code>
+             * <code>required int64 job_id = 2;</code>
              */
             public Builder setJobId(long value) {
-                bitField0_ |= 0x00000001;
+                bitField0_ |= 0x00000002;
                 jobId_ = value;
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>required int64 job_id = 1;</code>
+             * <code>required int64 job_id = 2;</code>
              */
             public Builder clearJobId() {
-                bitField0_ = (bitField0_ & ~0x00000001);
+                bitField0_ = (bitField0_ & ~0x00000002);
                 jobId_ = 0L;
                 onChanged();
                 return this;
@@ -562,34 +773,34 @@ public final class ModifyJobFlagProtos {
             private int jobFlag_;
 
             /**
-             * <code>required int32 job_flag = 2;</code>
+             * <code>required int32 job_flag = 3;</code>
              */
             public boolean hasJobFlag() {
-                return ((bitField0_ & 0x00000002) == 0x00000002);
+                return ((bitField0_ & 0x00000004) == 0x00000004);
             }
 
             /**
-             * <code>required int32 job_flag = 2;</code>
+             * <code>required int32 job_flag = 3;</code>
              */
             public int getJobFlag() {
                 return jobFlag_;
             }
 
             /**
-             * <code>required int32 job_flag = 2;</code>
+             * <code>required int32 job_flag = 3;</code>
              */
             public Builder setJobFlag(int value) {
-                bitField0_ |= 0x00000002;
+                bitField0_ |= 0x00000004;
                 jobFlag_ = value;
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>required int32 job_flag = 2;</code>
+             * <code>required int32 job_flag = 3;</code>
              */
             public Builder clearJobFlag() {
-                bitField0_ = (bitField0_ & ~0x00000002);
+                bitField0_ = (bitField0_ & ~0x00000004);
                 jobFlag_ = 0;
                 onChanged();
                 return this;
@@ -598,14 +809,14 @@ public final class ModifyJobFlagProtos {
             private java.lang.Object user_ = "";
 
             /**
-             * <code>required string user = 3;</code>
+             * <code>required string user = 4;</code>
              */
             public boolean hasUser() {
-                return ((bitField0_ & 0x00000004) == 0x00000004);
+                return ((bitField0_ & 0x00000008) == 0x00000008);
             }
 
             /**
-             * <code>required string user = 3;</code>
+             * <code>required string user = 4;</code>
              */
             public java.lang.String getUser() {
                 java.lang.Object ref = user_;
@@ -622,7 +833,7 @@ public final class ModifyJobFlagProtos {
             }
 
             /**
-             * <code>required string user = 3;</code>
+             * <code>required string user = 4;</code>
              */
             public com.google.protobuf.ByteString getUserBytes() {
                 java.lang.Object ref = user_;
@@ -636,36 +847,36 @@ public final class ModifyJobFlagProtos {
             }
 
             /**
-             * <code>required string user = 3;</code>
+             * <code>required string user = 4;</code>
              */
             public Builder setUser(java.lang.String value) {
                 if (value == null) {
                     throw new NullPointerException();
                 }
-                bitField0_ |= 0x00000004;
+                bitField0_ |= 0x00000008;
                 user_ = value;
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>required string user = 3;</code>
+             * <code>required string user = 4;</code>
              */
             public Builder clearUser() {
-                bitField0_ = (bitField0_ & ~0x00000004);
+                bitField0_ = (bitField0_ & ~0x00000008);
                 user_ = getDefaultInstance().getUser();
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>required string user = 3;</code>
+             * <code>required string user = 4;</code>
              */
             public Builder setUserBytes(com.google.protobuf.ByteString value) {
                 if (value == null) {
                     throw new NullPointerException();
                 }
-                bitField0_ |= 0x00000004;
+                bitField0_ |= 0x00000008;
                 user_ = value;
                 onChanged();
                 return this;
@@ -1267,10 +1478,11 @@ public final class ModifyJobFlagProtos {
 
     static {
         java.lang.String[] descriptorData = {
-                "\n\025modify_job_flag.proto\"P\n\036RestServerMod" + "ifyJobFlagRequest\022\016\n\006job_id\030\001 \002(\003\022\020\n\010job"
-                        + "_flag\030\002 \002(\005\022\014\n\004user\030\003 \002(\t\"A\n\033ServerModif"
-                        + "yJobFlagResponse\022\017\n\007success\030\001 \002(\010\022\021\n\007mes"
-                        + "sage\030\002 \001(\t:\000B2\n\033com.mogujie.jarvis.proto" + "colB\023ModifyJobFlagProtos" };
+                "\n\025modify_job_flag.proto\032\016app_auth.proto\"" + "l\n\036RestServerModifyJobFlagRequest\022\032\n\010app"
+                        + "_auth\030\001 \002(\0132\010.AppAuth\022\016\n\006job_id\030\002 \002(\003\022\020\n"
+                        + "\010job_flag\030\003 \002(\005\022\014\n\004user\030\004 \002(\t\"A\n\033ServerM"
+                        + "odifyJobFlagResponse\022\017\n\007success\030\001 \002(\010\022\021\n"
+                        + "\007message\030\002 \001(\t:\000B2\n\033com.mogujie.jarvis.p" + "rotocolB\023ModifyJobFlagProtos" };
         com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner = new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
             public com.google.protobuf.ExtensionRegistry assignDescriptors(com.google.protobuf.Descriptors.FileDescriptor root) {
                 descriptor = root;
@@ -1278,13 +1490,14 @@ public final class ModifyJobFlagProtos {
             }
         };
         com.google.protobuf.Descriptors.FileDescriptor.internalBuildGeneratedFileFrom(descriptorData,
-                new com.google.protobuf.Descriptors.FileDescriptor[] {}, assigner);
+                new com.google.protobuf.Descriptors.FileDescriptor[] { com.mogujie.jarvis.protocol.AppAuthProtos.getDescriptor(), }, assigner);
         internal_static_RestServerModifyJobFlagRequest_descriptor = getDescriptor().getMessageTypes().get(0);
         internal_static_RestServerModifyJobFlagRequest_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-                internal_static_RestServerModifyJobFlagRequest_descriptor, new java.lang.String[] { "JobId", "JobFlag", "User", });
+                internal_static_RestServerModifyJobFlagRequest_descriptor, new java.lang.String[] { "AppAuth", "JobId", "JobFlag", "User", });
         internal_static_ServerModifyJobFlagResponse_descriptor = getDescriptor().getMessageTypes().get(1);
         internal_static_ServerModifyJobFlagResponse_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
                 internal_static_ServerModifyJobFlagResponse_descriptor, new java.lang.String[] { "Success", "Message", });
+        com.mogujie.jarvis.protocol.AppAuthProtos.getDescriptor();
     }
 
     // @@protoc_insertion_point(outer_class_scope)

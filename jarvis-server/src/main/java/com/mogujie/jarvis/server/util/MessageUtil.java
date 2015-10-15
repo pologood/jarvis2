@@ -10,13 +10,17 @@ package com.mogujie.jarvis.server.util;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.joda.time.DateTime;
 
 import com.mogujie.jarvis.core.domain.JobFlag;
 import com.mogujie.jarvis.core.util.JsonHelper;
+import com.mogujie.jarvis.dao.AppMapper;
 import com.mogujie.jarvis.dao.JobMapper;
+import com.mogujie.jarvis.dto.App;
+import com.mogujie.jarvis.dto.AppExample;
 import com.mogujie.jarvis.dto.Crontab;
 import com.mogujie.jarvis.dto.Job;
 import com.mogujie.jarvis.dto.JobDepend;
@@ -33,19 +37,32 @@ import com.mogujie.jarvis.server.service.JobService;
  *
  */
 public class MessageUtil {
-    public static Job convert2Job(RestServerSubmitJobRequest msg) {
+
+    private static Integer queryAppId(AppMapper appMapper, String appName) {
+        AppExample example = new AppExample();
+        example.createCriteria().andAppNameEqualTo(appName);
+        List<App> list = appMapper.selectByExample(example);
+        if (list != null && list.size() > 0) {
+            return list.get(0).getAppId();
+        }
+
+        return null;
+    }
+
+    public static Job convert2Job(AppMapper appMapper, RestServerSubmitJobRequest msg) {
+        String appName = msg.getAppAuth().getName();
         Job job = new Job();
-        job.setAppId(msg.getAppId());
+        job.setAppId(queryAppId(appMapper, appName));
         job.setJobName(msg.getJobName());
         job.setContent(msg.getContent());
         job.setPriority(msg.getPriority());
         job.setJobFlag(JobFlag.ENABLE.getValue());
         job.setJobType(msg.getJobType());
 
-        if(msg.getStartTime() != 0){
+        if (msg.getStartTime() != 0) {
             job.setActiveStartDate(new Date(msg.getStartTime()));
         }
-        if(msg.getEndTime() != 0){
+        if (msg.getEndTime() != 0) {
             job.setActiveEndDate(new Date(msg.getEndTime()));
         }
 
@@ -68,13 +85,11 @@ public class MessageUtil {
         return job;
     }
 
-    public static Job convert2Job(JobMapper jobMapper, RestServerModifyJobRequest msg) {
+    public static Job convert2Job(JobMapper jobMapper, AppMapper appMapper, RestServerModifyJobRequest msg) {
         long jobId = msg.getJobId();
         Job job = jobMapper.selectByPrimaryKey(jobId);
         job.setJobId(msg.getJobId());
-        if (msg.hasAppId()) {
-            job.setAppId(msg.getAppId());
-        }
+        job.setAppId(queryAppId(appMapper, msg.getAppAuth().getName()));
         if (msg.hasContent()) {
             job.setContent(msg.getContent());
         }

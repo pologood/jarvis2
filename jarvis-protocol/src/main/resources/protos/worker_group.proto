@@ -1,10 +1,13 @@
+import "app_auth.proto";
+
 option java_package = "com.mogujie.jarvis.protocol";
 option java_outer_classname = "WorkerGroupProtos";
 
 
 message RestServerCreateWorkerGroupRequest {
-    required string worker_group_name = 1;
-    required string user = 2;
+    required AppAuth app_auth = 1;
+    required string worker_group_name = 2;
+    required string user = 3;
 }
 
 
@@ -16,9 +19,10 @@ message ServerCreateWorkerGroupResponse {
 
 
 message RestServerModifyWorkerGroupRequest {
-    required int32 worker_group_id = 1;
-    required string worker_group_name = 2;
-    required string user = 3;
+    required AppAuth app_auth = 1;
+    required int32 worker_group_id = 2;
+    required string worker_group_name = 3;
+    required string user = 4;
 }
 
 
