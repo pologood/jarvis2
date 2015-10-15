@@ -66,15 +66,20 @@ public final class SubmitJobProtos {
     com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntryOrBuilder getDependencyEntryOrBuilder(
         int index);
 
-    // required int32 app_id = 4;
+    // required string app_name = 4;
     /**
-     * <code>required int32 app_id = 4;</code>
+     * <code>required string app_name = 4;</code>
      */
-    boolean hasAppId();
+    boolean hasAppName();
     /**
-     * <code>required int32 app_id = 4;</code>
+     * <code>required string app_name = 4;</code>
      */
-    int getAppId();
+    java.lang.String getAppName();
+    /**
+     * <code>required string app_name = 4;</code>
+     */
+    com.google.protobuf.ByteString
+        getAppNameBytes();
 
     // required string app_key = 5;
     /**
@@ -330,9 +335,9 @@ public final class SubmitJobProtos {
               dependencyEntry_.add(input.readMessage(com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.PARSER, extensionRegistry));
               break;
             }
-            case 32: {
+            case 34: {
               bitField0_ |= 0x00000004;
-              appId_ = input.readInt32();
+              appName_ = input.readBytes();
               break;
             }
             case 42: {
@@ -581,20 +586,47 @@ public final class SubmitJobProtos {
       return dependencyEntry_.get(index);
     }
 
-    // required int32 app_id = 4;
-    public static final int APP_ID_FIELD_NUMBER = 4;
-    private int appId_;
+    // required string app_name = 4;
+    public static final int APP_NAME_FIELD_NUMBER = 4;
+    private java.lang.Object appName_;
     /**
-     * <code>required int32 app_id = 4;</code>
+     * <code>required string app_name = 4;</code>
      */
-    public boolean hasAppId() {
+    public boolean hasAppName() {
       return ((bitField0_ & 0x00000004) == 0x00000004);
     }
     /**
-     * <code>required int32 app_id = 4;</code>
+     * <code>required string app_name = 4;</code>
      */
-    public int getAppId() {
-      return appId_;
+    public java.lang.String getAppName() {
+      java.lang.Object ref = appName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          appName_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string app_name = 4;</code>
+     */
+    public com.google.protobuf.ByteString
+        getAppNameBytes() {
+      java.lang.Object ref = appName_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        appName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
 
     // required string app_key = 5;
@@ -969,7 +1001,7 @@ public final class SubmitJobProtos {
       jobName_ = "";
       cronExpression_ = "";
       dependencyEntry_ = java.util.Collections.emptyList();
-      appId_ = 0;
+      appName_ = "";
       appKey_ = "";
       user_ = "";
       jobType_ = "";
@@ -995,7 +1027,7 @@ public final class SubmitJobProtos {
         memoizedIsInitialized = 0;
         return false;
       }
-      if (!hasAppId()) {
+      if (!hasAppName()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -1048,7 +1080,7 @@ public final class SubmitJobProtos {
         output.writeMessage(3, dependencyEntry_.get(i));
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeInt32(4, appId_);
+        output.writeBytes(4, getAppNameBytes());
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         output.writeBytes(5, getAppKeyBytes());
@@ -1118,7 +1150,7 @@ public final class SubmitJobProtos {
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(4, appId_);
+          .computeBytesSize(4, getAppNameBytes());
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         size += com.google.protobuf.CodedOutputStream
@@ -1308,7 +1340,7 @@ public final class SubmitJobProtos {
         } else {
           dependencyEntryBuilder_.clear();
         }
-        appId_ = 0;
+        appName_ = "";
         bitField0_ = (bitField0_ & ~0x00000008);
         appKey_ = "";
         bitField0_ = (bitField0_ & ~0x00000010);
@@ -1392,7 +1424,7 @@ public final class SubmitJobProtos {
         if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
           to_bitField0_ |= 0x00000004;
         }
-        result.appId_ = appId_;
+        result.appName_ = appName_;
         if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
           to_bitField0_ |= 0x00000008;
         }
@@ -1510,8 +1542,10 @@ public final class SubmitJobProtos {
             }
           }
         }
-        if (other.hasAppId()) {
-          setAppId(other.getAppId());
+        if (other.hasAppName()) {
+          bitField0_ |= 0x00000008;
+          appName_ = other.appName_;
+          onChanged();
         }
         if (other.hasAppKey()) {
           bitField0_ |= 0x00000010;
@@ -1598,7 +1632,7 @@ public final class SubmitJobProtos {
           
           return false;
         }
-        if (!hasAppId()) {
+        if (!hasAppName()) {
           
           return false;
         }
@@ -2044,35 +2078,76 @@ public final class SubmitJobProtos {
         return dependencyEntryBuilder_;
       }
 
-      // required int32 app_id = 4;
-      private int appId_ ;
+      // required string app_name = 4;
+      private java.lang.Object appName_ = "";
       /**
-       * <code>required int32 app_id = 4;</code>
+       * <code>required string app_name = 4;</code>
        */
-      public boolean hasAppId() {
+      public boolean hasAppName() {
         return ((bitField0_ & 0x00000008) == 0x00000008);
       }
       /**
-       * <code>required int32 app_id = 4;</code>
+       * <code>required string app_name = 4;</code>
        */
-      public int getAppId() {
-        return appId_;
+      public java.lang.String getAppName() {
+        java.lang.Object ref = appName_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          appName_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
       }
       /**
-       * <code>required int32 app_id = 4;</code>
+       * <code>required string app_name = 4;</code>
        */
-      public Builder setAppId(int value) {
-        bitField0_ |= 0x00000008;
-        appId_ = value;
+      public com.google.protobuf.ByteString
+          getAppNameBytes() {
+        java.lang.Object ref = appName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          appName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string app_name = 4;</code>
+       */
+      public Builder setAppName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        appName_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required int32 app_id = 4;</code>
+       * <code>required string app_name = 4;</code>
        */
-      public Builder clearAppId() {
+      public Builder clearAppName() {
         bitField0_ = (bitField0_ & ~0x00000008);
-        appId_ = 0;
+        appName_ = getDefaultInstance().getAppName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string app_name = 4;</code>
+       */
+      public Builder setAppNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        appName_ = value;
         onChanged();
         return this;
       }
@@ -6125,29 +6200,29 @@ public final class SubmitJobProtos {
   static {
     java.lang.String[] descriptorData = {
       "\n\020submit_job.proto\032\017map_entry.proto\032\026dep" +
-      "endency_entry.proto\"\313\003\n\032RestServerSubmit" +
+      "endency_entry.proto\"\315\003\n\032RestServerSubmit" +
       "JobRequest\022\020\n\010job_name\030\001 \002(\t\022\027\n\017cron_exp" +
       "ression\030\002 \001(\t\022*\n\020dependency_entry\030\003 \003(\0132" +
-      "\020.DependencyEntry\022\016\n\006app_id\030\004 \002(\005\022\017\n\007app" +
-      "_key\030\005 \002(\t\022\014\n\004user\030\006 \002(\t\022\020\n\010job_type\030\007 \002" +
-      "(\t\022\017\n\007content\030\010 \002(\t\022\020\n\010group_id\030\t \002(\005\022\023\n" +
-      "\010priority\030\n \001(\005:\0011\022\031\n\016reject_retries\030\013 \001" +
-      "(\005:\0010\022\032\n\017reject_interval\030\014 \001(\005:\0013\022\031\n\016fai" +
-      "led_retries\030\r \001(\005:\0010\022\032\n\017failed_interval\030",
-      "\016 \001(\005:\0013\022\022\n\nstart_time\030\017 \001(\003\022\020\n\010end_time" +
-      "\030\020 \001(\003\022\025\n\rorigin_job_id\030\021 \001(\003\022\035\n\nparamet" +
-      "ers\030\022 \003(\0132\t.MapEntry\022\023\n\013fixed_delay\030\023 \001(" +
-      "\005\"M\n\027ServerSubmitJobResponse\022\016\n\006job_id\030\001" +
-      " \002(\003\022\017\n\007success\030\002 \002(\010\022\021\n\007message\030\003 \001(\t:\000" +
-      "\"\316\001\n\027ServerSubmitTaskRequest\022\017\n\007full_id\030" +
-      "\001 \002(\t\022\021\n\ttask_name\030\002 \002(\t\022\020\n\010app_name\030\003 \002" +
-      "(\t\022\014\n\004user\030\004 \002(\t\022\021\n\ttask_type\030\005 \002(\t\022\017\n\007c" +
-      "ontent\030\006 \002(\t\022\023\n\010priority\030\007 \001(\005:\0011\022\035\n\npar" +
-      "ameters\030\010 \003(\0132\t.MapEntry\022\027\n\017scheduling_t",
-      "ime\030\t \002(\003\"N\n\030WorkerSubmitTaskResponse\022\016\n" +
-      "\006accept\030\001 \002(\010\022\017\n\007success\030\002 \002(\010\022\021\n\007messag" +
-      "e\030\003 \001(\t:\000B.\n\033com.mogujie.jarvis.protocol" +
-      "B\017SubmitJobProtos"
+      "\020.DependencyEntry\022\020\n\010app_name\030\004 \002(\t\022\017\n\007a" +
+      "pp_key\030\005 \002(\t\022\014\n\004user\030\006 \002(\t\022\020\n\010job_type\030\007" +
+      " \002(\t\022\017\n\007content\030\010 \002(\t\022\020\n\010group_id\030\t \002(\005\022" +
+      "\023\n\010priority\030\n \001(\005:\0011\022\031\n\016reject_retries\030\013" +
+      " \001(\005:\0010\022\032\n\017reject_interval\030\014 \001(\005:\0013\022\031\n\016f" +
+      "ailed_retries\030\r \001(\005:\0010\022\032\n\017failed_interva",
+      "l\030\016 \001(\005:\0013\022\022\n\nstart_time\030\017 \001(\003\022\020\n\010end_ti" +
+      "me\030\020 \001(\003\022\025\n\rorigin_job_id\030\021 \001(\003\022\035\n\nparam" +
+      "eters\030\022 \003(\0132\t.MapEntry\022\023\n\013fixed_delay\030\023 " +
+      "\001(\005\"M\n\027ServerSubmitJobResponse\022\016\n\006job_id" +
+      "\030\001 \002(\003\022\017\n\007success\030\002 \002(\010\022\021\n\007message\030\003 \001(\t" +
+      ":\000\"\316\001\n\027ServerSubmitTaskRequest\022\017\n\007full_i" +
+      "d\030\001 \002(\t\022\021\n\ttask_name\030\002 \002(\t\022\020\n\010app_name\030\003" +
+      " \002(\t\022\014\n\004user\030\004 \002(\t\022\021\n\ttask_type\030\005 \002(\t\022\017\n" +
+      "\007content\030\006 \002(\t\022\023\n\010priority\030\007 \001(\005:\0011\022\035\n\np" +
+      "arameters\030\010 \003(\0132\t.MapEntry\022\027\n\017scheduling",
+      "_time\030\t \002(\003\"N\n\030WorkerSubmitTaskResponse\022" +
+      "\016\n\006accept\030\001 \002(\010\022\017\n\007success\030\002 \002(\010\022\021\n\007mess" +
+      "age\030\003 \001(\t:\000B.\n\033com.mogujie.jarvis.protoc" +
+      "olB\017SubmitJobProtos"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -6159,7 +6234,7 @@ public final class SubmitJobProtos {
           internal_static_RestServerSubmitJobRequest_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_RestServerSubmitJobRequest_descriptor,
-              new java.lang.String[] { "JobName", "CronExpression", "DependencyEntry", "AppId", "AppKey", "User", "JobType", "Content", "GroupId", "Priority", "RejectRetries", "RejectInterval", "FailedRetries", "FailedInterval", "StartTime", "EndTime", "OriginJobId", "Parameters", "FixedDelay", });
+              new java.lang.String[] { "JobName", "CronExpression", "DependencyEntry", "AppName", "AppKey", "User", "JobType", "Content", "GroupId", "Priority", "RejectRetries", "RejectInterval", "FailedRetries", "FailedInterval", "StartTime", "EndTime", "OriginJobId", "Parameters", "FixedDelay", });
           internal_static_ServerSubmitJobResponse_descriptor =
             getDescriptor().getMessageTypes().get(1);
           internal_static_ServerSubmitJobResponse_fieldAccessorTable = new

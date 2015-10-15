@@ -51,15 +51,20 @@ public final class ModifyJobProtos {
     com.google.protobuf.ByteString
         getCronExpressionBytes();
 
-    // optional int32 app_id = 4;
+    // optional string app_name = 4;
     /**
-     * <code>optional int32 app_id = 4;</code>
+     * <code>optional string app_name = 4;</code>
      */
-    boolean hasAppId();
+    boolean hasAppName();
     /**
-     * <code>optional int32 app_id = 4;</code>
+     * <code>optional string app_name = 4;</code>
      */
-    int getAppId();
+    java.lang.String getAppName();
+    /**
+     * <code>optional string app_name = 4;</code>
+     */
+    com.google.protobuf.ByteString
+        getAppNameBytes();
 
     // optional string app_key = 5;
     /**
@@ -312,9 +317,9 @@ public final class ModifyJobProtos {
               cronExpression_ = input.readBytes();
               break;
             }
-            case 32: {
+            case 34: {
               bitField0_ |= 0x00000008;
-              appId_ = input.readInt32();
+              appName_ = input.readBytes();
               break;
             }
             case 42: {
@@ -540,20 +545,47 @@ public final class ModifyJobProtos {
       }
     }
 
-    // optional int32 app_id = 4;
-    public static final int APP_ID_FIELD_NUMBER = 4;
-    private int appId_;
+    // optional string app_name = 4;
+    public static final int APP_NAME_FIELD_NUMBER = 4;
+    private java.lang.Object appName_;
     /**
-     * <code>optional int32 app_id = 4;</code>
+     * <code>optional string app_name = 4;</code>
      */
-    public boolean hasAppId() {
+    public boolean hasAppName() {
       return ((bitField0_ & 0x00000008) == 0x00000008);
     }
     /**
-     * <code>optional int32 app_id = 4;</code>
+     * <code>optional string app_name = 4;</code>
      */
-    public int getAppId() {
-      return appId_;
+    public java.lang.String getAppName() {
+      java.lang.Object ref = appName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          appName_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string app_name = 4;</code>
+     */
+    public com.google.protobuf.ByteString
+        getAppNameBytes() {
+      java.lang.Object ref = appName_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        appName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
 
     // optional string app_key = 5;
@@ -928,7 +960,7 @@ public final class ModifyJobProtos {
       jobId_ = 0L;
       jobName_ = "";
       cronExpression_ = "";
-      appId_ = 0;
+      appName_ = "";
       appKey_ = "";
       user_ = "";
       jobType_ = "";
@@ -977,7 +1009,7 @@ public final class ModifyJobProtos {
         output.writeBytes(3, getCronExpressionBytes());
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        output.writeInt32(4, appId_);
+        output.writeBytes(4, getAppNameBytes());
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         output.writeBytes(5, getAppKeyBytes());
@@ -1047,7 +1079,7 @@ public final class ModifyJobProtos {
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(4, appId_);
+          .computeBytesSize(4, getAppNameBytes());
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         size += com.google.protobuf.CodedOutputStream
@@ -1232,7 +1264,7 @@ public final class ModifyJobProtos {
         bitField0_ = (bitField0_ & ~0x00000002);
         cronExpression_ = "";
         bitField0_ = (bitField0_ & ~0x00000004);
-        appId_ = 0;
+        appName_ = "";
         bitField0_ = (bitField0_ & ~0x00000008);
         appKey_ = "";
         bitField0_ = (bitField0_ & ~0x00000010);
@@ -1311,7 +1343,7 @@ public final class ModifyJobProtos {
         if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
           to_bitField0_ |= 0x00000008;
         }
-        result.appId_ = appId_;
+        result.appName_ = appName_;
         if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
           to_bitField0_ |= 0x00000010;
         }
@@ -1406,8 +1438,10 @@ public final class ModifyJobProtos {
           cronExpression_ = other.cronExpression_;
           onChanged();
         }
-        if (other.hasAppId()) {
-          setAppId(other.getAppId());
+        if (other.hasAppName()) {
+          bitField0_ |= 0x00000008;
+          appName_ = other.appName_;
+          onChanged();
         }
         if (other.hasAppKey()) {
           bitField0_ |= 0x00000010;
@@ -1703,35 +1737,76 @@ public final class ModifyJobProtos {
         return this;
       }
 
-      // optional int32 app_id = 4;
-      private int appId_ ;
+      // optional string app_name = 4;
+      private java.lang.Object appName_ = "";
       /**
-       * <code>optional int32 app_id = 4;</code>
+       * <code>optional string app_name = 4;</code>
        */
-      public boolean hasAppId() {
+      public boolean hasAppName() {
         return ((bitField0_ & 0x00000008) == 0x00000008);
       }
       /**
-       * <code>optional int32 app_id = 4;</code>
+       * <code>optional string app_name = 4;</code>
        */
-      public int getAppId() {
-        return appId_;
+      public java.lang.String getAppName() {
+        java.lang.Object ref = appName_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          appName_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
       }
       /**
-       * <code>optional int32 app_id = 4;</code>
+       * <code>optional string app_name = 4;</code>
        */
-      public Builder setAppId(int value) {
-        bitField0_ |= 0x00000008;
-        appId_ = value;
+      public com.google.protobuf.ByteString
+          getAppNameBytes() {
+        java.lang.Object ref = appName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          appName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string app_name = 4;</code>
+       */
+      public Builder setAppName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        appName_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int32 app_id = 4;</code>
+       * <code>optional string app_name = 4;</code>
        */
-      public Builder clearAppId() {
+      public Builder clearAppName() {
         bitField0_ = (bitField0_ & ~0x00000008);
-        appId_ = 0;
+        appName_ = getDefaultInstance().getAppName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string app_name = 4;</code>
+       */
+      public Builder setAppNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        appName_ = value;
         onChanged();
         return this;
       }
@@ -3192,21 +3267,21 @@ public final class ModifyJobProtos {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\020modify_job.proto\032\017map_entry.proto\"\257\003\n\032" +
+      "\n\020modify_job.proto\032\017map_entry.proto\"\261\003\n\032" +
       "RestServerModifyJobRequest\022\016\n\006job_id\030\001 \002" +
       "(\003\022\020\n\010job_name\030\002 \001(\t\022\027\n\017cron_expression\030" +
-      "\003 \001(\t\022\016\n\006app_id\030\004 \001(\005\022\017\n\007app_key\030\005 \001(\t\022\014" +
-      "\n\004user\030\006 \001(\t\022\020\n\010job_type\030\007 \001(\t\022\017\n\007conten" +
-      "t\030\010 \001(\t\022\020\n\010group_id\030\t \001(\005\022\023\n\010priority\030\n " +
-      "\001(\005:\0011\022\031\n\016reject_retries\030\013 \001(\005:\0010\022\032\n\017rej" +
-      "ect_interval\030\014 \001(\005:\0013\022\031\n\016failed_retries\030" +
-      "\r \001(\005:\0010\022\032\n\017failed_interval\030\016 \001(\005:\0013\022\022\n\n" +
-      "start_time\030\017 \001(\003\022\020\n\010end_time\030\020 \001(\003\022\025\n\ror",
-      "igin_job_id\030\021 \001(\003\022\035\n\nparameters\030\022 \003(\0132\t." +
-      "MapEntry\022\023\n\013fixed_delay\030\023 \001(\005\"=\n\027ServerM" +
-      "odifyJobResponse\022\017\n\007success\030\001 \002(\010\022\021\n\007mes" +
-      "sage\030\002 \001(\t:\000B.\n\033com.mogujie.jarvis.proto" +
-      "colB\017ModifyJobProtos"
+      "\003 \001(\t\022\020\n\010app_name\030\004 \001(\t\022\017\n\007app_key\030\005 \001(\t" +
+      "\022\014\n\004user\030\006 \001(\t\022\020\n\010job_type\030\007 \001(\t\022\017\n\007cont" +
+      "ent\030\010 \001(\t\022\020\n\010group_id\030\t \001(\005\022\023\n\010priority\030" +
+      "\n \001(\005:\0011\022\031\n\016reject_retries\030\013 \001(\005:\0010\022\032\n\017r" +
+      "eject_interval\030\014 \001(\005:\0013\022\031\n\016failed_retrie" +
+      "s\030\r \001(\005:\0010\022\032\n\017failed_interval\030\016 \001(\005:\0013\022\022" +
+      "\n\nstart_time\030\017 \001(\003\022\020\n\010end_time\030\020 \001(\003\022\025\n\r",
+      "origin_job_id\030\021 \001(\003\022\035\n\nparameters\030\022 \003(\0132" +
+      "\t.MapEntry\022\023\n\013fixed_delay\030\023 \001(\005\"=\n\027Serve" +
+      "rModifyJobResponse\022\017\n\007success\030\001 \002(\010\022\021\n\007m" +
+      "essage\030\002 \001(\t:\000B.\n\033com.mogujie.jarvis.pro" +
+      "tocolB\017ModifyJobProtos"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -3218,7 +3293,7 @@ public final class ModifyJobProtos {
           internal_static_RestServerModifyJobRequest_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_RestServerModifyJobRequest_descriptor,
-              new java.lang.String[] { "JobId", "JobName", "CronExpression", "AppId", "AppKey", "User", "JobType", "Content", "GroupId", "Priority", "RejectRetries", "RejectInterval", "FailedRetries", "FailedInterval", "StartTime", "EndTime", "OriginJobId", "Parameters", "FixedDelay", });
+              new java.lang.String[] { "JobId", "JobName", "CronExpression", "AppName", "AppKey", "User", "JobType", "Content", "GroupId", "Priority", "RejectRetries", "RejectInterval", "FailedRetries", "FailedInterval", "StartTime", "EndTime", "OriginJobId", "Parameters", "FixedDelay", });
           internal_static_ServerModifyJobResponse_descriptor =
             getDescriptor().getMessageTypes().get(1);
           internal_static_ServerModifyJobResponse_fieldAccessorTable = new

@@ -58,6 +58,7 @@ import com.mogujie.jarvis.server.scheduler.dag.DAGJob;
 import com.mogujie.jarvis.server.scheduler.dag.DAGJobType;
 import com.mogujie.jarvis.server.scheduler.dag.DAGScheduler;
 import com.mogujie.jarvis.server.scheduler.time.TimeScheduler;
+import com.mogujie.jarvis.server.service.AppService;
 import com.mogujie.jarvis.server.service.CrontabService;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.util.MessageUtil;
@@ -84,6 +85,9 @@ public class JobActor extends UntypedActor {
 
     @Autowired
     private JobMapper jobMapper;
+
+    @Autowired
+    private AppService appService;
 
     @Autowired
     private JobDependMapper jobDependMapper;
@@ -117,7 +121,7 @@ public class JobActor extends UntypedActor {
     private void submitJob(RestServerSubmitJobRequest msg) throws IOException {
         Set<Long> needDependencies = Sets.newHashSet();
         // 1. insert job to DB
-        Job job = MessageUtil.convert2Job(msg);
+        Job job = MessageUtil.convert2Job(appService, msg);
         jobMapper.insert(job);
         long jobId = job.getJobId();
         // 如果是新增任务（不是手动触发），则originId=jobId
@@ -165,7 +169,7 @@ public class JobActor extends UntypedActor {
     private void modifyJob(RestServerModifyJobRequest msg) throws IOException {
         long jobId = msg.getJobId();
         // 1. update job to DB
-        Job job = MessageUtil.convert2Job(jobMapper, msg);
+        Job job = MessageUtil.convert2Job(jobMapper, appService, msg);
         jobMapper.updateByPrimaryKey(job);
 
         // 2. update cron to DB

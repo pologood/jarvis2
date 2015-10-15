@@ -25,6 +25,7 @@ import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitJobRequest;
 import com.mogujie.jarvis.server.domain.ModifyJobEntry;
 import com.mogujie.jarvis.server.domain.ModifyJobType;
 import com.mogujie.jarvis.server.domain.ModifyOperation;
+import com.mogujie.jarvis.server.service.AppService;
 import com.mogujie.jarvis.server.service.CrontabService;
 import com.mogujie.jarvis.server.service.JobService;
 
@@ -33,9 +34,9 @@ import com.mogujie.jarvis.server.service.JobService;
  *
  */
 public class MessageUtil {
-    public static Job convert2Job(RestServerSubmitJobRequest msg) {
+    public static Job convert2Job(AppService appService, RestServerSubmitJobRequest msg) {
         Job job = new Job();
-        job.setAppId(msg.getAppId());
+        job.setAppId(appService.getAppIdByName(msg.getAppName()));
         job.setJobName(msg.getJobName());
         job.setContent(msg.getContent());
         job.setPriority(msg.getPriority());
@@ -68,12 +69,13 @@ public class MessageUtil {
         return job;
     }
 
-    public static Job convert2Job(JobMapper jobMapper, RestServerModifyJobRequest msg) {
+    public static Job convert2Job(JobMapper jobMapper, AppService appService,
+            RestServerModifyJobRequest msg) {
         long jobId = msg.getJobId();
         Job job = jobMapper.selectByPrimaryKey(jobId);
         job.setJobId(msg.getJobId());
-        if (msg.hasAppId()) {
-            job.setAppId(msg.getAppId());
+        if (msg.hasAppName()) {
+            job.setAppId(appService.getAppIdByName(msg.getAppName()));
         }
         if (msg.hasContent()) {
             job.setContent(msg.getContent());
