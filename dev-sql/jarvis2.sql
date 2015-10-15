@@ -4,10 +4,10 @@ CREATE TABLE `app` (
   `appName` varchar(64) NOT NULL DEFAULT '' COMMENT 'app名称',
   `appKey` varchar(32) NOT NULL DEFAULT '' COMMENT 'appKey',
   `status` int(3) unsigned DEFAULT '0' COMMENT '状态：0：停用；1：启用；',
+  `maxConcurrency` int(11) unsigned NOT NULL DEFAULT '10' COMMENT '最大任务并行度',
   `createTime` datetime NOT NULL COMMENT '创建时间',
   `updateTime` datetime NOT NULL COMMENT '最后更新时间',
-  `creator` varchar(32) NOT NULL DEFAULT '' COMMENT '创建者',
-  `maxConcurrency` int(11) NOT NULL DEFAULT '10' COMMENT '最大任务并行度',
+  `updateUser` varchar(32) NOT NULL DEFAULT '' COMMENT '最后更新用户',
   PRIMARY KEY (`appId`),
   UNIQUE KEY `index_appName` (`appName`)
 ) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8 COMMENT='app表';
@@ -22,7 +22,7 @@ CREATE TABLE `crontab` (
   `updateTime` datetime NOT NULL COMMENT '最后更新时间',
   PRIMARY KEY (`cronId`),
   KEY `index_jobId` (`jobId`)
-) ENGINE=InnoDB AUTO_INCREMENT=98 DEFAULT CHARSET=utf8 COMMENT='crontab表';
+) ENGINE=InnoDB AUTO_INCREMENT=116 DEFAULT CHARSET=utf8 COMMENT='crontab表';
 
 -- Create syntax for TABLE 'job'
 CREATE TABLE `job` (
@@ -51,7 +51,7 @@ CREATE TABLE `job` (
   KEY `index_originJobId` (`originJobId`),
   KEY `index_submitUser` (`submitUser`),
   KEY `index_createTime` (`createTime`)
-) ENGINE=InnoDB AUTO_INCREMENT=114 DEFAULT CHARSET=utf8 COMMENT='job表';
+) ENGINE=InnoDB AUTO_INCREMENT=132 DEFAULT CHARSET=utf8 COMMENT='job表';
 
 -- Create syntax for TABLE 'job_depend'
 CREATE TABLE `job_depend` (
@@ -84,6 +84,7 @@ CREATE TABLE `task` (
   `jobContent` varchar(10000) NOT NULL DEFAULT '' COMMENT '任务内容',
   `jobParams` varchar(2048) DEFAULT '' COMMENT '任务参数',
   `dataYmd` date DEFAULT NULL COMMENT '数据日期',
+  `progress` float NOT NULL DEFAULT '0' COMMENT '执行进度',
   `status` int(3) unsigned NOT NULL DEFAULT '1' COMMENT 'task状态： 1:waiting；2:ready；3:running；4:success；5:failed；6:killed',
   `executeUser` varchar(32) NOT NULL DEFAULT '' COMMENT '执行用户',
   `executeStartTime` datetime DEFAULT NULL COMMENT '执行开始时间',
@@ -91,7 +92,6 @@ CREATE TABLE `task` (
   `attemptExtra` varchar(1024) DEFAULT '' COMMENT '尝试扩展信息,json格式',
   `createTime` datetime NOT NULL COMMENT '创建时间',
   `updateTime` datetime NOT NULL COMMENT '最后更新时间',
-  `progress` float DEFAULT '0' COMMENT '执行进度',
   PRIMARY KEY (`taskId`),
   KEY `index_jobId` (`jobId`),
   KEY `index_dataYmd` (`dataYmd`),
@@ -115,9 +115,10 @@ CREATE TABLE `worker` (
 CREATE TABLE `worker_group` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'workerGroupID',
   `name` varchar(64) NOT NULL DEFAULT '' COMMENT 'workerGroup名称',
-  `key` varchar(32) NOT NULL DEFAULT '' COMMENT '认证key',
+  `authKey` varchar(32) NOT NULL DEFAULT '' COMMENT '认证key',
+  `status` int(3) unsigned NOT NULL DEFAULT '1' COMMENT '状态：0：无效；1：有效',
   `createTime` datetime NOT NULL COMMENT '创建时间',
   `updateTime` datetime NOT NULL COMMENT '最后更新时间',
-  `creator` varchar(32) NOT NULL DEFAULT '' COMMENT '创建者',
+  `updateUser` varchar(32) NOT NULL DEFAULT '' COMMENT '最后更新用户',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='workerGroup表';
