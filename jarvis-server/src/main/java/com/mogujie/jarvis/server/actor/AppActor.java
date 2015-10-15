@@ -10,6 +10,7 @@ package com.mogujie.jarvis.server.actor;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -20,6 +21,7 @@ import org.springframework.context.annotation.Scope;
 
 import com.mogujie.jarvis.dao.AppMapper;
 import com.mogujie.jarvis.dto.App;
+import com.mogujie.jarvis.dto.AppExample;
 import com.mogujie.jarvis.protocol.ApplicationProtos.RestServerCreateApplicationRequest;
 import com.mogujie.jarvis.protocol.ApplicationProtos.RestServerModifyApplicationRequest;
 import com.mogujie.jarvis.protocol.ApplicationProtos.ServerCreateApplicationResponse;
@@ -42,6 +44,17 @@ public class AppActor extends UntypedActor {
     @Autowired
     private AppMapper appMapper;
 
+    private Integer queryAppId(String appName) {
+        AppExample example = new AppExample();
+        example.createCriteria().andAppNameEqualTo(appName);
+        List<App> list = appMapper.selectByExample(example);
+        if (list != null && list.size() > 0) {
+            return list.get(0).getAppId();
+        }
+
+        return null;
+    }
+
     @Override
     public void onReceive(Object obj) throws Exception {
         if (obj instanceof RestServerCreateApplicationRequest) {
@@ -54,7 +67,7 @@ public class AppActor extends UntypedActor {
             app.setStatus(request.getStatus());
             app.setCreateTime(date);
             app.setUpdateTime(date);
-            app.setCreator(request.getUser());
+            app.setUpdateUser(request.getUser());
             app.setMaxConcurrency(request.getMaxConcurrency());
 
             appMapper.insertSelective(app);
@@ -63,8 +76,9 @@ public class AppActor extends UntypedActor {
             getSender().tell(response, getSelf());
         } else if (obj instanceof RestServerModifyApplicationRequest) {
             RestServerModifyApplicationRequest request = (RestServerModifyApplicationRequest) obj;
+            Integer appId = queryAppId(request.getAppAuth().getName());
             App app = new App();
-            app.setAppId(request.getAppId());
+            app.setAppId(appId);
             if (request.hasAppName()) {
                 app.setAppName(request.getAppName());
             }
@@ -75,7 +89,7 @@ public class AppActor extends UntypedActor {
 
             if (request.hasMaxConcurrency()) {
                 app.setMaxConcurrency(request.getMaxConcurrency());
-                taskManager.updateAppMaxParallelism(request.getAppId(), request.getMaxConcurrency());
+                taskManager.updateAppMaxParallelism(appId, request.getMaxConcurrency());
             }
             appMapper.updateByPrimaryKey(app);
 

@@ -26,8 +26,10 @@ import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.core.util.ThreadUtils;
+import com.mogujie.jarvis.dao.AppMapper;
 import com.mogujie.jarvis.dao.JobMapper;
 import com.mogujie.jarvis.dao.TaskMapper;
+import com.mogujie.jarvis.dto.App;
 import com.mogujie.jarvis.dto.Job;
 import com.mogujie.jarvis.dto.Task;
 import com.mogujie.jarvis.server.TaskManager;
@@ -52,6 +54,9 @@ import com.mogujie.jarvis.server.service.TaskService;
 public class TaskScheduler extends Scheduler {
     @Autowired
     private JobMapper jobMapper;
+
+    @Autowired
+    private AppMapper appMapper;
 
     @Autowired
     private TaskMapper taskMapper;
@@ -250,9 +255,17 @@ public class TaskScheduler extends Scheduler {
         TaskDetail taskDetail = null;
         if (!isTestMode) {
             Job job = jobMapper.selectByPrimaryKey(dagTask.getJobId());
-            taskDetail = TaskDetail.newTaskDetailBuilder().setFullId(fullId).setTaskName(job.getJobName()).setAppName(job.getAppName())
-                    .setUser(job.getSubmitUser()).setPriority(job.getPriority()).setContent(job.getContent()).setTaskType(job.getJobType())
-                    .setParameters(JsonHelper.parseJSON2Map(job.getParams())).build();
+            App app = appMapper.selectByPrimaryKey(job.getAppId());
+            taskDetail = TaskDetail.newTaskDetailBuilder()
+                    .setFullId(fullId)
+                    .setTaskName(job.getJobName())
+                    .setAppName(app.getAppName())
+                    .setUser(job.getSubmitUser())
+                    .setPriority(job.getPriority())
+                    .setContent(job.getContent())
+                    .setTaskType(job.getJobType())
+                    .setParameters(JsonHelper.parseJSON2Map(job.getParams()))
+                    .build();
         }
 
         return taskDetail;
@@ -261,7 +274,7 @@ public class TaskScheduler extends Scheduler {
     private void reduceTaskNum(long jobId) {
         if (!isTestMode) {
             Job job = jobMapper.selectByPrimaryKey(jobId);
-            taskManager.appCounterDecrement(job.getAppName());
+            taskManager.appCounterDecrement(job.getAppId());
         }
     }
 }

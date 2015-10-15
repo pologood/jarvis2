@@ -2,7 +2,7 @@ package com.mogujie.jarvis.rest.controller;
 
 import java.util.concurrent.TimeUnit;
 
-import org.apache.commons.configuration.Configuration;
+import com.mogujie.jarvis.rest.RestAkka;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -13,7 +13,6 @@ import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.rest.MsgCode;
 import com.mogujie.jarvis.rest.RestResult;
 import com.mogujie.jarvis.rest.vo.AbstractVo;
-import com.typesafe.config.Config;
 
 import akka.actor.ActorSelection;
 import akka.actor.ActorSystem;
@@ -28,12 +27,6 @@ import scala.concurrent.duration.Duration;
  */
 public abstract class AbstractController {
 
-    private static ActorSystem system;
-
-    private String serverAkkaUserPath;
-    private String workerAkkaUserPath;
-    private String logstorageAkkaUserPath;
-
     private ActorSelection workerActor;
     private ActorSelection serverActor;
     private ActorSelection logstorageActor;
@@ -43,20 +36,6 @@ public abstract class AbstractController {
 
     public AbstractController() {
 
-        Configuration restConfig = ConfigUtils.getRestConfig();
-        serverAkkaUserPath = restConfig.getString("server.akka.path") + JarvisConstants.SERVER_AKKA_USER_PATH;
-        workerAkkaUserPath = restConfig.getString("worker.akka.path") + JarvisConstants.WORKER_AKKA_USER_PATH;
-        logstorageAkkaUserPath = restConfig.getString("logstorage.akka.path") + JarvisConstants.LOGSTORAGE_AKKA_USER_PATH;
-
-        if (system == null) {
-            Config akkaConfig = ConfigUtils.getAkkaConfig("akka-rest.conf");
-            system = ActorSystem.create(JarvisConstants.REST_AKKA_SYSTEM_NAME, akkaConfig);
-        }
-
-    }
-
-    public ActorSystem getActorSystem() {
-        return system;
     }
 
     /**
@@ -73,19 +52,19 @@ public abstract class AbstractController {
 
         if (akkaType == AkkaType.SERVER) {
             if (serverActor == null) {
-                serverActor = system.actorSelection(serverAkkaUserPath);
+                serverActor = RestAkka.getActor(akkaType);
             }
             actor = serverActor;
 
         } else if (akkaType == AkkaType.WORKER) {
             if (workerActor == null) {
-                workerActor = system.actorSelection(workerAkkaUserPath);
+                workerActor = RestAkka.getActor(akkaType);
             }
             actor = workerActor;
 
         } else if (akkaType == AkkaType.LOGSTORAGE) {
             if (logstorageActor == null) {
-                logstorageActor = system.actorSelection(logstorageAkkaUserPath);
+                logstorageActor = RestAkka.getActor(akkaType);
             }
 
             actor = logstorageActor;

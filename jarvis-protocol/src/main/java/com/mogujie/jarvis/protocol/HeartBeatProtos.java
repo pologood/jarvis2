@@ -259,7 +259,7 @@ public final class HeartBeatProtos {
         /**
          * Protobuf type {@code HeartBeatRequest}
          */
-        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder>implements
+        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder> implements
                 // @@protoc_insertion_point(builder_implements:HeartBeatRequest)
                 com.mogujie.jarvis.protocol.HeartBeatProtos.HeartBeatRequestOrBuilder {
             public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
@@ -743,7 +743,7 @@ public final class HeartBeatProtos {
         /**
          * Protobuf type {@code HeartBeatResponse}
          */
-        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder>implements
+        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder> implements
                 // @@protoc_insertion_point(builder_implements:HeartBeatResponse)
                 com.mogujie.jarvis.protocol.HeartBeatProtos.HeartBeatResponseOrBuilder {
             public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {

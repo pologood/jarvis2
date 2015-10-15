@@ -1,29 +1,29 @@
 import "map_entry.proto";
+import "app_auth.proto";
 
 option java_package = "com.mogujie.jarvis.protocol";
 option java_outer_classname = "ModifyJobProtos";
 
 
 message RestServerModifyJobRequest {
-    required int64 job_id = 1;
-    optional string job_name = 2;
-    optional string cron_expression = 3;
-    optional string app_name = 4;
-    optional string app_key = 5;
-    optional string user = 6;
-    optional string job_type = 7;
-    optional string content = 8;
-    optional int32 group_id = 9;
-    optional int32 priority = 10 [default = 1];
-    optional int32 reject_retries = 11 [default = 0];
-    optional int32 reject_interval = 12 [default = 3];
-    optional int32 failed_retries = 13 [default = 0];
-    optional int32 failed_interval = 14 [default = 3];
-    optional int64 start_time = 15;
-    optional int64 end_time = 16;
-    optional int64 origin_job_id = 17;
-    repeated MapEntry parameters = 18;
-    optional int32 fixed_delay = 19;
+    required AppAuth app_auth = 1;
+    required int64 job_id = 2;
+    optional string job_name = 3;
+    optional string cron_expression = 4;
+    optional string user = 5;
+    optional string job_type = 6;
+    optional string content = 7;
+    optional int32 group_id = 8;
+    optional int32 priority = 9 [default = 1];
+    optional int32 reject_retries = 10 [default = 0];
+    optional int32 reject_interval = 11 [default = 3];
+    optional int32 failed_retries = 12 [default = 0];
+    optional int32 failed_interval = 13 [default = 3];
+    optional int64 start_time = 14;
+    optional int64 end_time = 15;
+    optional int64 origin_job_id = 16;
+    repeated MapEntry parameters = 17;
+    optional int32 fixed_delay = 18;
 }
 
 

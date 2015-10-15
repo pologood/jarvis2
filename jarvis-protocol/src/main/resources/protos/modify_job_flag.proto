@@ -1,11 +1,14 @@
+import "app_auth.proto";
+
 option java_package = "com.mogujie.jarvis.protocol";
 option java_outer_classname = "ModifyJobFlagProtos";
 
 
 message RestServerModifyJobFlagRequest {
-    required int64 job_id = 1;
-    required int32 job_flag = 2;
-    required string user = 3;
+    required AppAuth app_auth = 1;
+    required int64 job_id = 2;
+    required int32 job_flag = 3;
+    required string user = 4;
 }
 
 message ServerModifyJobFlagResponse {

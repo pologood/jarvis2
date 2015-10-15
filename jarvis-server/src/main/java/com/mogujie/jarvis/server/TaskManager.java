@@ -25,7 +25,7 @@ import com.mogujie.jarvis.dto.App;
 import com.mogujie.jarvis.dto.AppExample;
 
 /**
- * 
+ *
  *
  */
 @Repository
@@ -44,17 +44,6 @@ public class TaskManager {
         List<App> list = appMapper.selectByExample(example);
         for (App app : list) {
             maxParallelismMap.put(app.getAppId(), app.getMaxConcurrency());
-        }
-    }
-
-    private Integer queryAppIdByName(String appName) {
-        AppExample example = new AppExample();
-        example.createCriteria().andAppNameEqualTo(appName);
-        List<App> list = appMapper.selectByExample(example);
-        if (list.size() > 0) {
-            return list.get(0).getAppId();
-        } else {
-            return null;
         }
     }
 
@@ -85,13 +74,6 @@ public class TaskManager {
     public void appCounterDecrement(int appId) {
         if (parallelismCounter.get(appId) > 0) {
             parallelismCounter.getAndDecrement(appId);
-        }
-    }
-
-    public void appCounterDecrement(String appName) {
-        Integer appId = queryAppIdByName(appName);
-        if (appId != null) {
-            appCounterDecrement(appId);
         }
     }
 

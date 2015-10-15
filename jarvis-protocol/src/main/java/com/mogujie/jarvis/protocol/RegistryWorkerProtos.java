@@ -290,7 +290,7 @@ public final class RegistryWorkerProtos {
         /**
          * Protobuf type {@code WorkerRegistryRequest}
          */
-        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder>implements
+        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder> implements
                 // @@protoc_insertion_point(builder_implements:WorkerRegistryRequest)
                 com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequestOrBuilder {
             public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
@@ -817,7 +817,7 @@ public final class RegistryWorkerProtos {
         /**
          * Protobuf type {@code ServerRegistryResponse}
          */
-        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder>implements
+        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder> implements
                 // @@protoc_insertion_point(builder_implements:ServerRegistryResponse)
                 com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponseOrBuilder {
             public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {

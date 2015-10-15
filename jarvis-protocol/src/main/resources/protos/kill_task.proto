@@ -1,9 +1,12 @@
+import "app_auth.proto";
+
 option java_package = "com.mogujie.jarvis.protocol";
 option java_outer_classname = "KillTaskProtos";
 
 
 message RestServerKillTaskRequest {
-    required int64 task_id = 1;
+    required AppAuth app_auth = 1;
+    required int64 task_id = 2;
 }
 
 message ServerKillTaskResponse {

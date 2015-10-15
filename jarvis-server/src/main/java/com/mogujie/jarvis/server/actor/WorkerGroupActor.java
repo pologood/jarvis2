@@ -44,12 +44,12 @@ public class WorkerGroupActor extends UntypedActor {
             RestServerCreateWorkerGroupRequest request = (RestServerCreateWorkerGroupRequest) obj;
             WorkerGroup workerGroup = new WorkerGroup();
             String key = UUID.randomUUID().toString().replace("-", "");
-            workerGroup.setKey(key);
+            workerGroup.setAuthKey(key);
             workerGroup.setName(request.getWorkerGroupName());
             Date date = new Date();
             workerGroup.setCreateTime(date);
             workerGroup.setUpdateTime(date);
-            workerGroup.setCreator(request.getUser());
+            workerGroup.setUpdateUser(request.getUser());
             workerGroupMapper.insertSelective(workerGroup);
 
             ServerCreateWorkerGroupResponse response = ServerCreateWorkerGroupResponse.newBuilder().setSuccess(true).setWorkerGroupKey(key).build();

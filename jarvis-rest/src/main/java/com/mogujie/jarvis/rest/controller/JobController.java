@@ -24,6 +24,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.mogujie.jarvis.core.domain.AkkaType;
+import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
 import com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry;
 import com.mogujie.jarvis.protocol.MapEntryProtos;
 import com.mogujie.jarvis.protocol.ModifyDependencyProtos.RestServerModifyDependencyRequest;
@@ -96,10 +97,12 @@ public class JobController extends AbstractController {
                 endTimeLong = dateTimeFormatter.parseDateTime(endTime).getMillis();
             }
 
+            AppAuth appAuth = AppAuth.newBuilder().setName(appName).setKey(appKey).build();
+
             // 构造新增任务请求
-            RestServerSubmitJobRequest.Builder builder = RestServerSubmitJobRequest.newBuilder().setAppName(appName).setJobName(jobName)
-                    .setAppKey(appKey).setCronExpression(cronExp).addAllDependencyEntry(dependEntryList).setUser(user).setJobType(jobType)
-                    .setContent(content).setGroupId(groupId).setPriority(priority).setFailedRetries(failedRetries).setFailedInterval(failedInterval)
+            RestServerSubmitJobRequest.Builder builder = RestServerSubmitJobRequest.newBuilder().setAppAuth(appAuth).setJobName(jobName)
+                    .setCronExpression(cronExp).addAllDependencyEntry(dependEntryList).setUser(user).setJobType(jobType).setContent(content)
+                    .setGroupId(groupId).setPriority(priority).setFailedRetries(failedRetries).setFailedInterval(failedInterval)
                     .setRejectRetries(rejectRetries).setRejectInterval(rejectInterval).addAllParameters(paraList);
             if (startTimeLong != null) {
                 builder.setStartTime(startTimeLong);
@@ -188,9 +191,11 @@ public class JobController extends AbstractController {
                 endTimeLong = dateTimeFormatter.parseDateTime(endTime).getMillis();
             }
 
+            AppAuth appAuth = AppAuth.newBuilder().setName(appName).setKey(appKey).build();
+
             // 构造修改job基本信息请求
             RestServerModifyJobRequest request = null;
-            RestServerModifyJobRequest.Builder builder = RestServerModifyJobRequest.newBuilder().setAppName(appName).setJobName(jobName)
+            RestServerModifyJobRequest.Builder builder = RestServerModifyJobRequest.newBuilder().setAppAuth(appAuth).setJobName(jobName)
                     .setJobId(jobId).setCronExpression(cronExp).setUser(user).setJobType(jobType).setContent(content).setGroupId(groupId)
                     .setPriority(priority).setFailedRetries(failedRetries).setFailedInterval(failedInterval).setRejectRetries(rejectRetries)
                     .setRejectInterval(rejectInterval).addAllParameters(paraList);
@@ -241,11 +246,11 @@ public class JobController extends AbstractController {
     @Path("flag")
     @Produces(MediaType.APPLICATION_JSON)
     public RestResult flag(@FormParam("jobId") Long jobId, @FormParam("appKey") String appKey, @FormParam("appName") String appName,
-            @FormParam("jobFlag") Integer jobFlag,@FormParam("user") String user) throws Exception {
+            @FormParam("jobFlag") Integer jobFlag, @FormParam("user") String user) throws Exception {
         try {
             // 构造删除job请求request，1.启用2.禁用3.过期4.垃圾箱
-            RestServerModifyJobFlagRequest request = RestServerModifyJobFlagRequest.newBuilder()
-                                            .setJobId(jobId).setUser(user).setJobFlag(jobFlag).build();
+            RestServerModifyJobFlagRequest request = RestServerModifyJobFlagRequest.newBuilder().setJobId(jobId).setUser(user).setJobFlag(jobFlag)
+                    .build();
             // 发送请求到server尝试常熟
             ServerModifyJobFlagResponse response = (ServerModifyJobFlagResponse) callActor(AkkaType.SERVER, request);
 
@@ -295,7 +300,6 @@ public class JobController extends AbstractController {
             for (int i = 0; i < reRunJobArr.length(); i++) {
                 Long singleOriginId = reRunJobArr.getLong(i);
                 // 构造新增任务请求
-
                 RestServerSubmitJobRequest.Builder builder=RestServerSubmitJobRequest.newBuilder()
                         .setOriginJobId(singleOriginId);
                 if (startTimeLong != null) {
@@ -305,7 +309,6 @@ public class JobController extends AbstractController {
                     builder.setEndTime(endTimeLong);
                 }
                 RestServerSubmitJobRequest request = builder.build();
-
                 ServerSubmitJobResponse response = (ServerSubmitJobResponse) callActor(AkkaType.SERVER, request);
 
                 // 保存整理而言是否成功，如果某个job重跑失败，则算失败

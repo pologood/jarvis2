@@ -449,7 +449,7 @@ public final class WriteLogProtos {
         /**
          * Protobuf type {@code WorkerWriteLogRequest}
          */
-        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder>implements
+        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder> implements
                 // @@protoc_insertion_point(builder_implements:WorkerWriteLogRequest)
                 com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequestOrBuilder {
             public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
@@ -1165,7 +1165,7 @@ public final class WriteLogProtos {
         /**
          * Protobuf type {@code LogServerWriteLogResponse}
          */
-        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder>implements
+        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder> implements
                 // @@protoc_insertion_point(builder_implements:LogServerWriteLogResponse)
                 com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponseOrBuilder {
             public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {

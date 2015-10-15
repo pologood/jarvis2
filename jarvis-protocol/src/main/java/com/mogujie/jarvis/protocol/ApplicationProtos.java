@@ -15,52 +15,67 @@ public final class ApplicationProtos {
             com.google.protobuf.MessageOrBuilder {
 
         /**
-         * <code>required string app_name = 1;</code>
+         * <code>required .AppAuth app_auth = 1;</code>
+         */
+        boolean hasAppAuth();
+
+        /**
+         * <code>required .AppAuth app_auth = 1;</code>
+         */
+        com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth getAppAuth();
+
+        /**
+         * <code>required .AppAuth app_auth = 1;</code>
+         */
+        com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder();
+
+        /**
+         * <code>required string app_name = 2;</code>
          */
         boolean hasAppName();
 
         /**
-         * <code>required string app_name = 1;</code>
+         * <code>required string app_name = 2;</code>
          */
         java.lang.String getAppName();
 
         /**
-         * <code>required string app_name = 1;</code>
+         * <code>required string app_name = 2;</code>
          */
         com.google.protobuf.ByteString getAppNameBytes();
 
         /**
-         * <code>optional int32 status = 2 [default = 1];</code>
+         * <code>optional int32 status = 3 [default = 1];</code>
          */
         boolean hasStatus();
 
         /**
-         * <code>optional int32 status = 2 [default = 1];</code>
+         * <code>optional int32 status = 3 [default = 1];</code>
          */
         int getStatus();
 
         /**
-         * <code>required string user = 3;</code>
+         * <code>required string user = 4;</code>
          */
         boolean hasUser();
 
         /**
-         * <code>required string user = 3;</code>
+         * <code>required string user = 4;</code>
          */
         java.lang.String getUser();
 
         /**
-         * <code>required string user = 3;</code>
+         * <code>required string user = 4;</code>
          */
         com.google.protobuf.ByteString getUserBytes();
 
         /**
-         * <code>optional int32 max_concurrency = 4 [default = 10];</code>
+         * <code>optional int32 max_concurrency = 5 [default = 10];</code>
          */
         boolean hasMaxConcurrency();
 
         /**
-         * <code>optional int32 max_concurrency = 4 [default = 10];</code>
+         * <code>optional int32 max_concurrency = 5 [default = 10];</code>
          */
         int getMaxConcurrency();
     }
@@ -117,24 +132,37 @@ public final class ApplicationProtos {
                             break;
                         }
                         case 10: {
-                            com.google.protobuf.ByteString bs = input.readBytes();
+                            com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder subBuilder = null;
+                            if (((bitField0_ & 0x00000001) == 0x00000001)) {
+                                subBuilder = appAuth_.toBuilder();
+                            }
+                            appAuth_ = input.readMessage(com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.PARSER, extensionRegistry);
+                            if (subBuilder != null) {
+                                subBuilder.mergeFrom(appAuth_);
+                                appAuth_ = subBuilder.buildPartial();
+                            }
                             bitField0_ |= 0x00000001;
+                            break;
+                        }
+                        case 18: {
+                            com.google.protobuf.ByteString bs = input.readBytes();
+                            bitField0_ |= 0x00000002;
                             appName_ = bs;
                             break;
                         }
-                        case 16: {
-                            bitField0_ |= 0x00000002;
+                        case 24: {
+                            bitField0_ |= 0x00000004;
                             status_ = input.readInt32();
                             break;
                         }
-                        case 26: {
+                        case 34: {
                             com.google.protobuf.ByteString bs = input.readBytes();
-                            bitField0_ |= 0x00000004;
+                            bitField0_ |= 0x00000008;
                             user_ = bs;
                             break;
                         }
-                        case 32: {
-                            bitField0_ |= 0x00000008;
+                        case 40: {
+                            bitField0_ |= 0x00000010;
                             maxConcurrency_ = input.readInt32();
                             break;
                         }
@@ -173,18 +201,42 @@ public final class ApplicationProtos {
         }
 
         private int bitField0_;
-        public static final int APP_NAME_FIELD_NUMBER = 1;
-        private java.lang.Object appName_;
+        public static final int APP_AUTH_FIELD_NUMBER = 1;
+        private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_;
 
         /**
-         * <code>required string app_name = 1;</code>
+         * <code>required .AppAuth app_auth = 1;</code>
          */
-        public boolean hasAppName() {
+        public boolean hasAppAuth() {
             return ((bitField0_ & 0x00000001) == 0x00000001);
         }
 
         /**
-         * <code>required string app_name = 1;</code>
+         * <code>required .AppAuth app_auth = 1;</code>
+         */
+        public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth getAppAuth() {
+            return appAuth_;
+        }
+
+        /**
+         * <code>required .AppAuth app_auth = 1;</code>
+         */
+        public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder() {
+            return appAuth_;
+        }
+
+        public static final int APP_NAME_FIELD_NUMBER = 2;
+        private java.lang.Object appName_;
+
+        /**
+         * <code>required string app_name = 2;</code>
+         */
+        public boolean hasAppName() {
+            return ((bitField0_ & 0x00000002) == 0x00000002);
+        }
+
+        /**
+         * <code>required string app_name = 2;</code>
          */
         public java.lang.String getAppName() {
             java.lang.Object ref = appName_;
@@ -201,7 +253,7 @@ public final class ApplicationProtos {
         }
 
         /**
-         * <code>required string app_name = 1;</code>
+         * <code>required string app_name = 2;</code>
          */
         public com.google.protobuf.ByteString getAppNameBytes() {
             java.lang.Object ref = appName_;
@@ -214,35 +266,35 @@ public final class ApplicationProtos {
             }
         }
 
-        public static final int STATUS_FIELD_NUMBER = 2;
+        public static final int STATUS_FIELD_NUMBER = 3;
         private int status_;
 
         /**
-         * <code>optional int32 status = 2 [default = 1];</code>
+         * <code>optional int32 status = 3 [default = 1];</code>
          */
         public boolean hasStatus() {
-            return ((bitField0_ & 0x00000002) == 0x00000002);
+            return ((bitField0_ & 0x00000004) == 0x00000004);
         }
 
         /**
-         * <code>optional int32 status = 2 [default = 1];</code>
+         * <code>optional int32 status = 3 [default = 1];</code>
          */
         public int getStatus() {
             return status_;
         }
 
-        public static final int USER_FIELD_NUMBER = 3;
+        public static final int USER_FIELD_NUMBER = 4;
         private java.lang.Object user_;
 
         /**
-         * <code>required string user = 3;</code>
+         * <code>required string user = 4;</code>
          */
         public boolean hasUser() {
-            return ((bitField0_ & 0x00000004) == 0x00000004);
+            return ((bitField0_ & 0x00000008) == 0x00000008);
         }
 
         /**
-         * <code>required string user = 3;</code>
+         * <code>required string user = 4;</code>
          */
         public java.lang.String getUser() {
             java.lang.Object ref = user_;
@@ -259,7 +311,7 @@ public final class ApplicationProtos {
         }
 
         /**
-         * <code>required string user = 3;</code>
+         * <code>required string user = 4;</code>
          */
         public com.google.protobuf.ByteString getUserBytes() {
             java.lang.Object ref = user_;
@@ -272,24 +324,25 @@ public final class ApplicationProtos {
             }
         }
 
-        public static final int MAX_CONCURRENCY_FIELD_NUMBER = 4;
+        public static final int MAX_CONCURRENCY_FIELD_NUMBER = 5;
         private int maxConcurrency_;
 
         /**
-         * <code>optional int32 max_concurrency = 4 [default = 10];</code>
+         * <code>optional int32 max_concurrency = 5 [default = 10];</code>
          */
         public boolean hasMaxConcurrency() {
-            return ((bitField0_ & 0x00000008) == 0x00000008);
+            return ((bitField0_ & 0x00000010) == 0x00000010);
         }
 
         /**
-         * <code>optional int32 max_concurrency = 4 [default = 10];</code>
+         * <code>optional int32 max_concurrency = 5 [default = 10];</code>
          */
         public int getMaxConcurrency() {
             return maxConcurrency_;
         }
 
         private void initFields() {
+            appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
             appName_ = "";
             status_ = 1;
             user_ = "";
@@ -305,11 +358,19 @@ public final class ApplicationProtos {
             if (isInitialized == 0)
                 return false;
 
+            if (!hasAppAuth()) {
+                memoizedIsInitialized = 0;
+                return false;
+            }
             if (!hasAppName()) {
                 memoizedIsInitialized = 0;
                 return false;
             }
             if (!hasUser()) {
+                memoizedIsInitialized = 0;
+                return false;
+            }
+            if (!getAppAuth().isInitialized()) {
                 memoizedIsInitialized = 0;
                 return false;
             }
@@ -320,16 +381,19 @@ public final class ApplicationProtos {
         public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
             getSerializedSize();
             if (((bitField0_ & 0x00000001) == 0x00000001)) {
-                output.writeBytes(1, getAppNameBytes());
+                output.writeMessage(1, appAuth_);
             }
             if (((bitField0_ & 0x00000002) == 0x00000002)) {
-                output.writeInt32(2, status_);
+                output.writeBytes(2, getAppNameBytes());
             }
             if (((bitField0_ & 0x00000004) == 0x00000004)) {
-                output.writeBytes(3, getUserBytes());
+                output.writeInt32(3, status_);
             }
             if (((bitField0_ & 0x00000008) == 0x00000008)) {
-                output.writeInt32(4, maxConcurrency_);
+                output.writeBytes(4, getUserBytes());
+            }
+            if (((bitField0_ & 0x00000010) == 0x00000010)) {
+                output.writeInt32(5, maxConcurrency_);
             }
             getUnknownFields().writeTo(output);
         }
@@ -343,16 +407,19 @@ public final class ApplicationProtos {
 
             size = 0;
             if (((bitField0_ & 0x00000001) == 0x00000001)) {
-                size += com.google.protobuf.CodedOutputStream.computeBytesSize(1, getAppNameBytes());
+                size += com.google.protobuf.CodedOutputStream.computeMessageSize(1, appAuth_);
             }
             if (((bitField0_ & 0x00000002) == 0x00000002)) {
-                size += com.google.protobuf.CodedOutputStream.computeInt32Size(2, status_);
+                size += com.google.protobuf.CodedOutputStream.computeBytesSize(2, getAppNameBytes());
             }
             if (((bitField0_ & 0x00000004) == 0x00000004)) {
-                size += com.google.protobuf.CodedOutputStream.computeBytesSize(3, getUserBytes());
+                size += com.google.protobuf.CodedOutputStream.computeInt32Size(3, status_);
             }
             if (((bitField0_ & 0x00000008) == 0x00000008)) {
-                size += com.google.protobuf.CodedOutputStream.computeInt32Size(4, maxConcurrency_);
+                size += com.google.protobuf.CodedOutputStream.computeBytesSize(4, getUserBytes());
+            }
+            if (((bitField0_ & 0x00000010) == 0x00000010)) {
+                size += com.google.protobuf.CodedOutputStream.computeInt32Size(5, maxConcurrency_);
             }
             size += getUnknownFields().getSerializedSize();
             memoizedSerializedSize = size;
@@ -467,6 +534,7 @@ public final class ApplicationProtos {
 
             private void maybeForceBuilderInitialization() {
                 if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+                    getAppAuthFieldBuilder();
                 }
             }
 
@@ -476,14 +544,20 @@ public final class ApplicationProtos {
 
             public Builder clear() {
                 super.clear();
-                appName_ = "";
+                if (appAuthBuilder_ == null) {
+                    appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
+                } else {
+                    appAuthBuilder_.clear();
+                }
                 bitField0_ = (bitField0_ & ~0x00000001);
-                status_ = 1;
+                appName_ = "";
                 bitField0_ = (bitField0_ & ~0x00000002);
-                user_ = "";
+                status_ = 1;
                 bitField0_ = (bitField0_ & ~0x00000004);
-                maxConcurrency_ = 10;
+                user_ = "";
                 bitField0_ = (bitField0_ & ~0x00000008);
+                maxConcurrency_ = 10;
+                bitField0_ = (bitField0_ & ~0x00000010);
                 return this;
             }
 
@@ -515,17 +589,25 @@ public final class ApplicationProtos {
                 if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
                     to_bitField0_ |= 0x00000001;
                 }
-                result.appName_ = appName_;
+                if (appAuthBuilder_ == null) {
+                    result.appAuth_ = appAuth_;
+                } else {
+                    result.appAuth_ = appAuthBuilder_.build();
+                }
                 if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
                     to_bitField0_ |= 0x00000002;
                 }
-                result.status_ = status_;
+                result.appName_ = appName_;
                 if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
                     to_bitField0_ |= 0x00000004;
                 }
-                result.user_ = user_;
+                result.status_ = status_;
                 if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
                     to_bitField0_ |= 0x00000008;
+                }
+                result.user_ = user_;
+                if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+                    to_bitField0_ |= 0x00000010;
                 }
                 result.maxConcurrency_ = maxConcurrency_;
                 result.bitField0_ = to_bitField0_;
@@ -545,8 +627,11 @@ public final class ApplicationProtos {
             public Builder mergeFrom(com.mogujie.jarvis.protocol.ApplicationProtos.RestServerCreateApplicationRequest other) {
                 if (other == com.mogujie.jarvis.protocol.ApplicationProtos.RestServerCreateApplicationRequest.getDefaultInstance())
                     return this;
+                if (other.hasAppAuth()) {
+                    mergeAppAuth(other.getAppAuth());
+                }
                 if (other.hasAppName()) {
-                    bitField0_ |= 0x00000001;
+                    bitField0_ |= 0x00000002;
                     appName_ = other.appName_;
                     onChanged();
                 }
@@ -554,7 +639,7 @@ public final class ApplicationProtos {
                     setStatus(other.getStatus());
                 }
                 if (other.hasUser()) {
-                    bitField0_ |= 0x00000004;
+                    bitField0_ |= 0x00000008;
                     user_ = other.user_;
                     onChanged();
                 }
@@ -566,11 +651,19 @@ public final class ApplicationProtos {
             }
 
             public final boolean isInitialized() {
+                if (!hasAppAuth()) {
+
+                    return false;
+                }
                 if (!hasAppName()) {
 
                     return false;
                 }
                 if (!hasUser()) {
+
+                    return false;
+                }
+                if (!getAppAuth().isInitialized()) {
 
                     return false;
                 }
@@ -595,17 +688,135 @@ public final class ApplicationProtos {
 
             private int bitField0_;
 
-            private java.lang.Object appName_ = "";
+            private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth
+                    .getDefaultInstance();
+            private com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> appAuthBuilder_;
 
             /**
-             * <code>required string app_name = 1;</code>
+             * <code>required .AppAuth app_auth = 1;</code>
              */
-            public boolean hasAppName() {
+            public boolean hasAppAuth() {
                 return ((bitField0_ & 0x00000001) == 0x00000001);
             }
 
             /**
-             * <code>required string app_name = 1;</code>
+             * <code>required .AppAuth app_auth = 1;</code>
+             */
+            public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth getAppAuth() {
+                if (appAuthBuilder_ == null) {
+                    return appAuth_;
+                } else {
+                    return appAuthBuilder_.getMessage();
+                }
+            }
+
+            /**
+             * <code>required .AppAuth app_auth = 1;</code>
+             */
+            public Builder setAppAuth(com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth value) {
+                if (appAuthBuilder_ == null) {
+                    if (value == null) {
+                        throw new NullPointerException();
+                    }
+                    appAuth_ = value;
+                    onChanged();
+                } else {
+                    appAuthBuilder_.setMessage(value);
+                }
+                bitField0_ |= 0x00000001;
+                return this;
+            }
+
+            /**
+             * <code>required .AppAuth app_auth = 1;</code>
+             */
+            public Builder setAppAuth(com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder builderForValue) {
+                if (appAuthBuilder_ == null) {
+                    appAuth_ = builderForValue.build();
+                    onChanged();
+                } else {
+                    appAuthBuilder_.setMessage(builderForValue.build());
+                }
+                bitField0_ |= 0x00000001;
+                return this;
+            }
+
+            /**
+             * <code>required .AppAuth app_auth = 1;</code>
+             */
+            public Builder mergeAppAuth(com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth value) {
+                if (appAuthBuilder_ == null) {
+                    if (((bitField0_ & 0x00000001) == 0x00000001)
+                            && appAuth_ != com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance()) {
+                        appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.newBuilder(appAuth_).mergeFrom(value).buildPartial();
+                    } else {
+                        appAuth_ = value;
+                    }
+                    onChanged();
+                } else {
+                    appAuthBuilder_.mergeFrom(value);
+                }
+                bitField0_ |= 0x00000001;
+                return this;
+            }
+
+            /**
+             * <code>required .AppAuth app_auth = 1;</code>
+             */
+            public Builder clearAppAuth() {
+                if (appAuthBuilder_ == null) {
+                    appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
+                    onChanged();
+                } else {
+                    appAuthBuilder_.clear();
+                }
+                bitField0_ = (bitField0_ & ~0x00000001);
+                return this;
+            }
+
+            /**
+             * <code>required .AppAuth app_auth = 1;</code>
+             */
+            public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder getAppAuthBuilder() {
+                bitField0_ |= 0x00000001;
+                onChanged();
+                return getAppAuthFieldBuilder().getBuilder();
+            }
+
+            /**
+             * <code>required .AppAuth app_auth = 1;</code>
+             */
+            public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder() {
+                if (appAuthBuilder_ != null) {
+                    return appAuthBuilder_.getMessageOrBuilder();
+                } else {
+                    return appAuth_;
+                }
+            }
+
+            /**
+             * <code>required .AppAuth app_auth = 1;</code>
+             */
+            private com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> getAppAuthFieldBuilder() {
+                if (appAuthBuilder_ == null) {
+                    appAuthBuilder_ = new com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder>(
+                            getAppAuth(), getParentForChildren(), isClean());
+                    appAuth_ = null;
+                }
+                return appAuthBuilder_;
+            }
+
+            private java.lang.Object appName_ = "";
+
+            /**
+             * <code>required string app_name = 2;</code>
+             */
+            public boolean hasAppName() {
+                return ((bitField0_ & 0x00000002) == 0x00000002);
+            }
+
+            /**
+             * <code>required string app_name = 2;</code>
              */
             public java.lang.String getAppName() {
                 java.lang.Object ref = appName_;
@@ -622,7 +833,7 @@ public final class ApplicationProtos {
             }
 
             /**
-             * <code>required string app_name = 1;</code>
+             * <code>required string app_name = 2;</code>
              */
             public com.google.protobuf.ByteString getAppNameBytes() {
                 java.lang.Object ref = appName_;
@@ -636,36 +847,36 @@ public final class ApplicationProtos {
             }
 
             /**
-             * <code>required string app_name = 1;</code>
+             * <code>required string app_name = 2;</code>
              */
             public Builder setAppName(java.lang.String value) {
                 if (value == null) {
                     throw new NullPointerException();
                 }
-                bitField0_ |= 0x00000001;
+                bitField0_ |= 0x00000002;
                 appName_ = value;
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>required string app_name = 1;</code>
+             * <code>required string app_name = 2;</code>
              */
             public Builder clearAppName() {
-                bitField0_ = (bitField0_ & ~0x00000001);
+                bitField0_ = (bitField0_ & ~0x00000002);
                 appName_ = getDefaultInstance().getAppName();
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>required string app_name = 1;</code>
+             * <code>required string app_name = 2;</code>
              */
             public Builder setAppNameBytes(com.google.protobuf.ByteString value) {
                 if (value == null) {
                     throw new NullPointerException();
                 }
-                bitField0_ |= 0x00000001;
+                bitField0_ |= 0x00000002;
                 appName_ = value;
                 onChanged();
                 return this;
@@ -674,34 +885,34 @@ public final class ApplicationProtos {
             private int status_ = 1;
 
             /**
-             * <code>optional int32 status = 2 [default = 1];</code>
+             * <code>optional int32 status = 3 [default = 1];</code>
              */
             public boolean hasStatus() {
-                return ((bitField0_ & 0x00000002) == 0x00000002);
+                return ((bitField0_ & 0x00000004) == 0x00000004);
             }
 
             /**
-             * <code>optional int32 status = 2 [default = 1];</code>
+             * <code>optional int32 status = 3 [default = 1];</code>
              */
             public int getStatus() {
                 return status_;
             }
 
             /**
-             * <code>optional int32 status = 2 [default = 1];</code>
+             * <code>optional int32 status = 3 [default = 1];</code>
              */
             public Builder setStatus(int value) {
-                bitField0_ |= 0x00000002;
+                bitField0_ |= 0x00000004;
                 status_ = value;
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>optional int32 status = 2 [default = 1];</code>
+             * <code>optional int32 status = 3 [default = 1];</code>
              */
             public Builder clearStatus() {
-                bitField0_ = (bitField0_ & ~0x00000002);
+                bitField0_ = (bitField0_ & ~0x00000004);
                 status_ = 1;
                 onChanged();
                 return this;
@@ -710,14 +921,14 @@ public final class ApplicationProtos {
             private java.lang.Object user_ = "";
 
             /**
-             * <code>required string user = 3;</code>
+             * <code>required string user = 4;</code>
              */
             public boolean hasUser() {
-                return ((bitField0_ & 0x00000004) == 0x00000004);
+                return ((bitField0_ & 0x00000008) == 0x00000008);
             }
 
             /**
-             * <code>required string user = 3;</code>
+             * <code>required string user = 4;</code>
              */
             public java.lang.String getUser() {
                 java.lang.Object ref = user_;
@@ -734,7 +945,7 @@ public final class ApplicationProtos {
             }
 
             /**
-             * <code>required string user = 3;</code>
+             * <code>required string user = 4;</code>
              */
             public com.google.protobuf.ByteString getUserBytes() {
                 java.lang.Object ref = user_;
@@ -748,36 +959,36 @@ public final class ApplicationProtos {
             }
 
             /**
-             * <code>required string user = 3;</code>
+             * <code>required string user = 4;</code>
              */
             public Builder setUser(java.lang.String value) {
                 if (value == null) {
                     throw new NullPointerException();
                 }
-                bitField0_ |= 0x00000004;
+                bitField0_ |= 0x00000008;
                 user_ = value;
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>required string user = 3;</code>
+             * <code>required string user = 4;</code>
              */
             public Builder clearUser() {
-                bitField0_ = (bitField0_ & ~0x00000004);
+                bitField0_ = (bitField0_ & ~0x00000008);
                 user_ = getDefaultInstance().getUser();
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>required string user = 3;</code>
+             * <code>required string user = 4;</code>
              */
             public Builder setUserBytes(com.google.protobuf.ByteString value) {
                 if (value == null) {
                     throw new NullPointerException();
                 }
-                bitField0_ |= 0x00000004;
+                bitField0_ |= 0x00000008;
                 user_ = value;
                 onChanged();
                 return this;
@@ -786,34 +997,34 @@ public final class ApplicationProtos {
             private int maxConcurrency_ = 10;
 
             /**
-             * <code>optional int32 max_concurrency = 4 [default = 10];</code>
+             * <code>optional int32 max_concurrency = 5 [default = 10];</code>
              */
             public boolean hasMaxConcurrency() {
-                return ((bitField0_ & 0x00000008) == 0x00000008);
+                return ((bitField0_ & 0x00000010) == 0x00000010);
             }
 
             /**
-             * <code>optional int32 max_concurrency = 4 [default = 10];</code>
+             * <code>optional int32 max_concurrency = 5 [default = 10];</code>
              */
             public int getMaxConcurrency() {
                 return maxConcurrency_;
             }
 
             /**
-             * <code>optional int32 max_concurrency = 4 [default = 10];</code>
+             * <code>optional int32 max_concurrency = 5 [default = 10];</code>
              */
             public Builder setMaxConcurrency(int value) {
-                bitField0_ |= 0x00000008;
+                bitField0_ |= 0x00000010;
                 maxConcurrency_ = value;
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>optional int32 max_concurrency = 4 [default = 10];</code>
+             * <code>optional int32 max_concurrency = 5 [default = 10];</code>
              */
             public Builder clearMaxConcurrency() {
-                bitField0_ = (bitField0_ & ~0x00000008);
+                bitField0_ = (bitField0_ & ~0x00000010);
                 maxConcurrency_ = 10;
                 onChanged();
                 return this;
@@ -860,19 +1071,34 @@ public final class ApplicationProtos {
         com.google.protobuf.ByteString getMessageBytes();
 
         /**
-         * <code>required string app_key = 3;</code>
+         * <code>optional string app_key = 3;</code>
          */
         boolean hasAppKey();
 
         /**
-         * <code>required string app_key = 3;</code>
+         * <code>optional string app_key = 3;</code>
          */
         java.lang.String getAppKey();
 
         /**
-         * <code>required string app_key = 3;</code>
+         * <code>optional string app_key = 3;</code>
          */
         com.google.protobuf.ByteString getAppKeyBytes();
+
+        /**
+         * <code>required string app_name = 4;</code>
+         */
+        boolean hasAppName();
+
+        /**
+         * <code>required string app_name = 4;</code>
+         */
+        java.lang.String getAppName();
+
+        /**
+         * <code>required string app_name = 4;</code>
+         */
+        com.google.protobuf.ByteString getAppNameBytes();
     }
 
     /**
@@ -941,6 +1167,12 @@ public final class ApplicationProtos {
                             com.google.protobuf.ByteString bs = input.readBytes();
                             bitField0_ |= 0x00000004;
                             appKey_ = bs;
+                            break;
+                        }
+                        case 34: {
+                            com.google.protobuf.ByteString bs = input.readBytes();
+                            bitField0_ |= 0x00000008;
+                            appName_ = bs;
                             break;
                         }
                     }
@@ -1040,14 +1272,14 @@ public final class ApplicationProtos {
         private java.lang.Object appKey_;
 
         /**
-         * <code>required string app_key = 3;</code>
+         * <code>optional string app_key = 3;</code>
          */
         public boolean hasAppKey() {
             return ((bitField0_ & 0x00000004) == 0x00000004);
         }
 
         /**
-         * <code>required string app_key = 3;</code>
+         * <code>optional string app_key = 3;</code>
          */
         public java.lang.String getAppKey() {
             java.lang.Object ref = appKey_;
@@ -1064,7 +1296,7 @@ public final class ApplicationProtos {
         }
 
         /**
-         * <code>required string app_key = 3;</code>
+         * <code>optional string app_key = 3;</code>
          */
         public com.google.protobuf.ByteString getAppKeyBytes() {
             java.lang.Object ref = appKey_;
@@ -1077,10 +1309,52 @@ public final class ApplicationProtos {
             }
         }
 
+        public static final int APP_NAME_FIELD_NUMBER = 4;
+        private java.lang.Object appName_;
+
+        /**
+         * <code>required string app_name = 4;</code>
+         */
+        public boolean hasAppName() {
+            return ((bitField0_ & 0x00000008) == 0x00000008);
+        }
+
+        /**
+         * <code>required string app_name = 4;</code>
+         */
+        public java.lang.String getAppName() {
+            java.lang.Object ref = appName_;
+            if (ref instanceof java.lang.String) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                if (bs.isValidUtf8()) {
+                    appName_ = s;
+                }
+                return s;
+            }
+        }
+
+        /**
+         * <code>required string app_name = 4;</code>
+         */
+        public com.google.protobuf.ByteString getAppNameBytes() {
+            java.lang.Object ref = appName_;
+            if (ref instanceof java.lang.String) {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                appName_ = b;
+                return b;
+            } else {
+                return (com.google.protobuf.ByteString) ref;
+            }
+        }
+
         private void initFields() {
             success_ = false;
             message_ = "";
             appKey_ = "";
+            appName_ = "";
         }
 
         private byte memoizedIsInitialized = -1;
@@ -1096,7 +1370,7 @@ public final class ApplicationProtos {
                 memoizedIsInitialized = 0;
                 return false;
             }
-            if (!hasAppKey()) {
+            if (!hasAppName()) {
                 memoizedIsInitialized = 0;
                 return false;
             }
@@ -1114,6 +1388,9 @@ public final class ApplicationProtos {
             }
             if (((bitField0_ & 0x00000004) == 0x00000004)) {
                 output.writeBytes(3, getAppKeyBytes());
+            }
+            if (((bitField0_ & 0x00000008) == 0x00000008)) {
+                output.writeBytes(4, getAppNameBytes());
             }
             getUnknownFields().writeTo(output);
         }
@@ -1134,6 +1411,9 @@ public final class ApplicationProtos {
             }
             if (((bitField0_ & 0x00000004) == 0x00000004)) {
                 size += com.google.protobuf.CodedOutputStream.computeBytesSize(3, getAppKeyBytes());
+            }
+            if (((bitField0_ & 0x00000008) == 0x00000008)) {
+                size += com.google.protobuf.CodedOutputStream.computeBytesSize(4, getAppNameBytes());
             }
             size += getUnknownFields().getSerializedSize();
             memoizedSerializedSize = size;
@@ -1263,6 +1543,8 @@ public final class ApplicationProtos {
                 bitField0_ = (bitField0_ & ~0x00000002);
                 appKey_ = "";
                 bitField0_ = (bitField0_ & ~0x00000004);
+                appName_ = "";
+                bitField0_ = (bitField0_ & ~0x00000008);
                 return this;
             }
 
@@ -1303,6 +1585,10 @@ public final class ApplicationProtos {
                     to_bitField0_ |= 0x00000004;
                 }
                 result.appKey_ = appKey_;
+                if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+                    to_bitField0_ |= 0x00000008;
+                }
+                result.appName_ = appName_;
                 result.bitField0_ = to_bitField0_;
                 onBuilt();
                 return result;
@@ -1333,6 +1619,11 @@ public final class ApplicationProtos {
                     appKey_ = other.appKey_;
                     onChanged();
                 }
+                if (other.hasAppName()) {
+                    bitField0_ |= 0x00000008;
+                    appName_ = other.appName_;
+                    onChanged();
+                }
                 this.mergeUnknownFields(other.getUnknownFields());
                 return this;
             }
@@ -1342,7 +1633,7 @@ public final class ApplicationProtos {
 
                     return false;
                 }
-                if (!hasAppKey()) {
+                if (!hasAppName()) {
 
                     return false;
                 }
@@ -1482,14 +1773,14 @@ public final class ApplicationProtos {
             private java.lang.Object appKey_ = "";
 
             /**
-             * <code>required string app_key = 3;</code>
+             * <code>optional string app_key = 3;</code>
              */
             public boolean hasAppKey() {
                 return ((bitField0_ & 0x00000004) == 0x00000004);
             }
 
             /**
-             * <code>required string app_key = 3;</code>
+             * <code>optional string app_key = 3;</code>
              */
             public java.lang.String getAppKey() {
                 java.lang.Object ref = appKey_;
@@ -1506,7 +1797,7 @@ public final class ApplicationProtos {
             }
 
             /**
-             * <code>required string app_key = 3;</code>
+             * <code>optional string app_key = 3;</code>
              */
             public com.google.protobuf.ByteString getAppKeyBytes() {
                 java.lang.Object ref = appKey_;
@@ -1520,7 +1811,7 @@ public final class ApplicationProtos {
             }
 
             /**
-             * <code>required string app_key = 3;</code>
+             * <code>optional string app_key = 3;</code>
              */
             public Builder setAppKey(java.lang.String value) {
                 if (value == null) {
@@ -1533,7 +1824,7 @@ public final class ApplicationProtos {
             }
 
             /**
-             * <code>required string app_key = 3;</code>
+             * <code>optional string app_key = 3;</code>
              */
             public Builder clearAppKey() {
                 bitField0_ = (bitField0_ & ~0x00000004);
@@ -1543,7 +1834,7 @@ public final class ApplicationProtos {
             }
 
             /**
-             * <code>required string app_key = 3;</code>
+             * <code>optional string app_key = 3;</code>
              */
             public Builder setAppKeyBytes(com.google.protobuf.ByteString value) {
                 if (value == null) {
@@ -1551,6 +1842,82 @@ public final class ApplicationProtos {
                 }
                 bitField0_ |= 0x00000004;
                 appKey_ = value;
+                onChanged();
+                return this;
+            }
+
+            private java.lang.Object appName_ = "";
+
+            /**
+             * <code>required string app_name = 4;</code>
+             */
+            public boolean hasAppName() {
+                return ((bitField0_ & 0x00000008) == 0x00000008);
+            }
+
+            /**
+             * <code>required string app_name = 4;</code>
+             */
+            public java.lang.String getAppName() {
+                java.lang.Object ref = appName_;
+                if (!(ref instanceof java.lang.String)) {
+                    com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                    java.lang.String s = bs.toStringUtf8();
+                    if (bs.isValidUtf8()) {
+                        appName_ = s;
+                    }
+                    return s;
+                } else {
+                    return (java.lang.String) ref;
+                }
+            }
+
+            /**
+             * <code>required string app_name = 4;</code>
+             */
+            public com.google.protobuf.ByteString getAppNameBytes() {
+                java.lang.Object ref = appName_;
+                if (ref instanceof String) {
+                    com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                    appName_ = b;
+                    return b;
+                } else {
+                    return (com.google.protobuf.ByteString) ref;
+                }
+            }
+
+            /**
+             * <code>required string app_name = 4;</code>
+             */
+            public Builder setAppName(java.lang.String value) {
+                if (value == null) {
+                    throw new NullPointerException();
+                }
+                bitField0_ |= 0x00000008;
+                appName_ = value;
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>required string app_name = 4;</code>
+             */
+            public Builder clearAppName() {
+                bitField0_ = (bitField0_ & ~0x00000008);
+                appName_ = getDefaultInstance().getAppName();
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>required string app_name = 4;</code>
+             */
+            public Builder setAppNameBytes(com.google.protobuf.ByteString value) {
+                if (value == null) {
+                    throw new NullPointerException();
+                }
+                bitField0_ |= 0x00000008;
+                appName_ = value;
                 onChanged();
                 return this;
             }
@@ -1571,14 +1938,19 @@ public final class ApplicationProtos {
             com.google.protobuf.MessageOrBuilder {
 
         /**
-         * <code>required int32 app_id = 1;</code>
+         * <code>required .AppAuth app_auth = 1;</code>
          */
-        boolean hasAppId();
+        boolean hasAppAuth();
 
         /**
-         * <code>required int32 app_id = 1;</code>
+         * <code>required .AppAuth app_auth = 1;</code>
          */
-        int getAppId();
+        com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth getAppAuth();
+
+        /**
+         * <code>required .AppAuth app_auth = 1;</code>
+         */
+        com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder();
 
         /**
          * <code>optional string app_name = 2;</code>
@@ -1682,9 +2054,17 @@ public final class ApplicationProtos {
                             }
                             break;
                         }
-                        case 8: {
+                        case 10: {
+                            com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder subBuilder = null;
+                            if (((bitField0_ & 0x00000001) == 0x00000001)) {
+                                subBuilder = appAuth_.toBuilder();
+                            }
+                            appAuth_ = input.readMessage(com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.PARSER, extensionRegistry);
+                            if (subBuilder != null) {
+                                subBuilder.mergeFrom(appAuth_);
+                                appAuth_ = subBuilder.buildPartial();
+                            }
                             bitField0_ |= 0x00000001;
-                            appId_ = input.readInt32();
                             break;
                         }
                         case 18: {
@@ -1744,21 +2124,28 @@ public final class ApplicationProtos {
         }
 
         private int bitField0_;
-        public static final int APP_ID_FIELD_NUMBER = 1;
-        private int appId_;
+        public static final int APP_AUTH_FIELD_NUMBER = 1;
+        private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_;
 
         /**
-         * <code>required int32 app_id = 1;</code>
+         * <code>required .AppAuth app_auth = 1;</code>
          */
-        public boolean hasAppId() {
+        public boolean hasAppAuth() {
             return ((bitField0_ & 0x00000001) == 0x00000001);
         }
 
         /**
-         * <code>required int32 app_id = 1;</code>
+         * <code>required .AppAuth app_auth = 1;</code>
          */
-        public int getAppId() {
-            return appId_;
+        public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth getAppAuth() {
+            return appAuth_;
+        }
+
+        /**
+         * <code>required .AppAuth app_auth = 1;</code>
+         */
+        public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder() {
+            return appAuth_;
         }
 
         public static final int APP_NAME_FIELD_NUMBER = 2;
@@ -1878,7 +2265,7 @@ public final class ApplicationProtos {
         }
 
         private void initFields() {
-            appId_ = 0;
+            appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
             appName_ = "";
             status_ = 0;
             maxConcurrency_ = 0;
@@ -1894,11 +2281,15 @@ public final class ApplicationProtos {
             if (isInitialized == 0)
                 return false;
 
-            if (!hasAppId()) {
+            if (!hasAppAuth()) {
                 memoizedIsInitialized = 0;
                 return false;
             }
             if (!hasUser()) {
+                memoizedIsInitialized = 0;
+                return false;
+            }
+            if (!getAppAuth().isInitialized()) {
                 memoizedIsInitialized = 0;
                 return false;
             }
@@ -1909,7 +2300,7 @@ public final class ApplicationProtos {
         public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
             getSerializedSize();
             if (((bitField0_ & 0x00000001) == 0x00000001)) {
-                output.writeInt32(1, appId_);
+                output.writeMessage(1, appAuth_);
             }
             if (((bitField0_ & 0x00000002) == 0x00000002)) {
                 output.writeBytes(2, getAppNameBytes());
@@ -1935,7 +2326,7 @@ public final class ApplicationProtos {
 
             size = 0;
             if (((bitField0_ & 0x00000001) == 0x00000001)) {
-                size += com.google.protobuf.CodedOutputStream.computeInt32Size(1, appId_);
+                size += com.google.protobuf.CodedOutputStream.computeMessageSize(1, appAuth_);
             }
             if (((bitField0_ & 0x00000002) == 0x00000002)) {
                 size += com.google.protobuf.CodedOutputStream.computeBytesSize(2, getAppNameBytes());
@@ -2062,6 +2453,7 @@ public final class ApplicationProtos {
 
             private void maybeForceBuilderInitialization() {
                 if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+                    getAppAuthFieldBuilder();
                 }
             }
 
@@ -2071,7 +2463,11 @@ public final class ApplicationProtos {
 
             public Builder clear() {
                 super.clear();
-                appId_ = 0;
+                if (appAuthBuilder_ == null) {
+                    appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
+                } else {
+                    appAuthBuilder_.clear();
+                }
                 bitField0_ = (bitField0_ & ~0x00000001);
                 appName_ = "";
                 bitField0_ = (bitField0_ & ~0x00000002);
@@ -2112,7 +2508,11 @@ public final class ApplicationProtos {
                 if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
                     to_bitField0_ |= 0x00000001;
                 }
-                result.appId_ = appId_;
+                if (appAuthBuilder_ == null) {
+                    result.appAuth_ = appAuth_;
+                } else {
+                    result.appAuth_ = appAuthBuilder_.build();
+                }
                 if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
                     to_bitField0_ |= 0x00000002;
                 }
@@ -2146,8 +2546,8 @@ public final class ApplicationProtos {
             public Builder mergeFrom(com.mogujie.jarvis.protocol.ApplicationProtos.RestServerModifyApplicationRequest other) {
                 if (other == com.mogujie.jarvis.protocol.ApplicationProtos.RestServerModifyApplicationRequest.getDefaultInstance())
                     return this;
-                if (other.hasAppId()) {
-                    setAppId(other.getAppId());
+                if (other.hasAppAuth()) {
+                    mergeAppAuth(other.getAppAuth());
                 }
                 if (other.hasAppName()) {
                     bitField0_ |= 0x00000002;
@@ -2170,11 +2570,15 @@ public final class ApplicationProtos {
             }
 
             public final boolean isInitialized() {
-                if (!hasAppId()) {
+                if (!hasAppAuth()) {
 
                     return false;
                 }
                 if (!hasUser()) {
+
+                    return false;
+                }
+                if (!getAppAuth().isInitialized()) {
 
                     return false;
                 }
@@ -2199,40 +2603,122 @@ public final class ApplicationProtos {
 
             private int bitField0_;
 
-            private int appId_;
+            private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth
+                    .getDefaultInstance();
+            private com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> appAuthBuilder_;
 
             /**
-             * <code>required int32 app_id = 1;</code>
+             * <code>required .AppAuth app_auth = 1;</code>
              */
-            public boolean hasAppId() {
+            public boolean hasAppAuth() {
                 return ((bitField0_ & 0x00000001) == 0x00000001);
             }
 
             /**
-             * <code>required int32 app_id = 1;</code>
+             * <code>required .AppAuth app_auth = 1;</code>
              */
-            public int getAppId() {
-                return appId_;
+            public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth getAppAuth() {
+                if (appAuthBuilder_ == null) {
+                    return appAuth_;
+                } else {
+                    return appAuthBuilder_.getMessage();
+                }
             }
 
             /**
-             * <code>required int32 app_id = 1;</code>
+             * <code>required .AppAuth app_auth = 1;</code>
              */
-            public Builder setAppId(int value) {
+            public Builder setAppAuth(com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth value) {
+                if (appAuthBuilder_ == null) {
+                    if (value == null) {
+                        throw new NullPointerException();
+                    }
+                    appAuth_ = value;
+                    onChanged();
+                } else {
+                    appAuthBuilder_.setMessage(value);
+                }
                 bitField0_ |= 0x00000001;
-                appId_ = value;
-                onChanged();
                 return this;
             }
 
             /**
-             * <code>required int32 app_id = 1;</code>
+             * <code>required .AppAuth app_auth = 1;</code>
              */
-            public Builder clearAppId() {
-                bitField0_ = (bitField0_ & ~0x00000001);
-                appId_ = 0;
-                onChanged();
+            public Builder setAppAuth(com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder builderForValue) {
+                if (appAuthBuilder_ == null) {
+                    appAuth_ = builderForValue.build();
+                    onChanged();
+                } else {
+                    appAuthBuilder_.setMessage(builderForValue.build());
+                }
+                bitField0_ |= 0x00000001;
                 return this;
+            }
+
+            /**
+             * <code>required .AppAuth app_auth = 1;</code>
+             */
+            public Builder mergeAppAuth(com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth value) {
+                if (appAuthBuilder_ == null) {
+                    if (((bitField0_ & 0x00000001) == 0x00000001)
+                            && appAuth_ != com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance()) {
+                        appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.newBuilder(appAuth_).mergeFrom(value).buildPartial();
+                    } else {
+                        appAuth_ = value;
+                    }
+                    onChanged();
+                } else {
+                    appAuthBuilder_.mergeFrom(value);
+                }
+                bitField0_ |= 0x00000001;
+                return this;
+            }
+
+            /**
+             * <code>required .AppAuth app_auth = 1;</code>
+             */
+            public Builder clearAppAuth() {
+                if (appAuthBuilder_ == null) {
+                    appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
+                    onChanged();
+                } else {
+                    appAuthBuilder_.clear();
+                }
+                bitField0_ = (bitField0_ & ~0x00000001);
+                return this;
+            }
+
+            /**
+             * <code>required .AppAuth app_auth = 1;</code>
+             */
+            public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder getAppAuthBuilder() {
+                bitField0_ |= 0x00000001;
+                onChanged();
+                return getAppAuthFieldBuilder().getBuilder();
+            }
+
+            /**
+             * <code>required .AppAuth app_auth = 1;</code>
+             */
+            public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder() {
+                if (appAuthBuilder_ != null) {
+                    return appAuthBuilder_.getMessageOrBuilder();
+                } else {
+                    return appAuth_;
+                }
+            }
+
+            /**
+             * <code>required .AppAuth app_auth = 1;</code>
+             */
+            private com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> getAppAuthFieldBuilder() {
+                if (appAuthBuilder_ == null) {
+                    appAuthBuilder_ = new com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder>(
+                            getAppAuth(), getParentForChildren(), isClean());
+                    appAuth_ = null;
+                }
+                return appAuthBuilder_;
             }
 
             private java.lang.Object appName_ = "";
@@ -3059,16 +3545,18 @@ public final class ApplicationProtos {
 
     static {
         java.lang.String[] descriptorData = {
-                "\n\021application.proto\"t\n\"RestServerCreateA" + "pplicationRequest\022\020\n\010app_name\030\001 \002(\t\022\021\n\006s"
-                        + "tatus\030\002 \001(\005:\0011\022\014\n\004user\030\003 \002(\t\022\033\n\017max_conc"
-                        + "urrency\030\004 \001(\005:\00210\"V\n\037ServerCreateApplica"
-                        + "tionResponse\022\017\n\007success\030\001 \002(\010\022\021\n\007message"
-                        + "\030\002 \001(\t:\000\022\017\n\007app_key\030\003 \002(\t\"}\n\"RestServerM"
-                        + "odifyApplicationRequest\022\016\n\006app_id\030\001 \002(\005\022"
-                        + "\020\n\010app_name\030\002 \001(\t\022\016\n\006status\030\003 \001(\005\022\027\n\017max"
-                        + "_concurrency\030\004 \001(\005\022\014\n\004user\030\005 \002(\t\"E\n\037Serv"
-                        + "erModifyApplicationResponse\022\017\n\007success\030\001",
-                " \002(\010\022\021\n\007message\030\002 \001(\t:\000B0\n\033com.mogujie.j" + "arvis.protocolB\021ApplicationProtos" };
+                "\n\021application.proto\032\016app_auth.proto\"\220\001\n\"" + "RestServerCreateApplicationRequest\022\032\n\010ap"
+                        + "p_auth\030\001 \002(\0132\010.AppAuth\022\020\n\010app_name\030\002 \002(\t"
+                        + "\022\021\n\006status\030\003 \001(\005:\0011\022\014\n\004user\030\004 \002(\t\022\033\n\017max"
+                        + "_concurrency\030\005 \001(\005:\00210\"h\n\037ServerCreateAp"
+                        + "plicationResponse\022\017\n\007success\030\001 \002(\010\022\021\n\007me"
+                        + "ssage\030\002 \001(\t:\000\022\017\n\007app_key\030\003 \001(\t\022\020\n\010app_na"
+                        + "me\030\004 \002(\t\"\211\001\n\"RestServerModifyApplication"
+                        + "Request\022\032\n\010app_auth\030\001 \002(\0132\010.AppAuth\022\020\n\010a"
+                        + "pp_name\030\002 \001(\t\022\016\n\006status\030\003 \001(\005\022\027\n\017max_con",
+                "currency\030\004 \001(\005\022\014\n\004user\030\005 \002(\t\"E\n\037ServerMo"
+                        + "difyApplicationResponse\022\017\n\007success\030\001 \002(\010"
+                        + "\022\021\n\007message\030\002 \001(\t:\000B0\n\033com.mogujie.jarvi" + "s.protocolB\021ApplicationProtos" };
         com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner = new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
             public com.google.protobuf.ExtensionRegistry assignDescriptors(com.google.protobuf.Descriptors.FileDescriptor root) {
                 descriptor = root;
@@ -3076,21 +3564,22 @@ public final class ApplicationProtos {
             }
         };
         com.google.protobuf.Descriptors.FileDescriptor.internalBuildGeneratedFileFrom(descriptorData,
-                new com.google.protobuf.Descriptors.FileDescriptor[] {}, assigner);
+                new com.google.protobuf.Descriptors.FileDescriptor[] { com.mogujie.jarvis.protocol.AppAuthProtos.getDescriptor(), }, assigner);
         internal_static_RestServerCreateApplicationRequest_descriptor = getDescriptor().getMessageTypes().get(0);
         internal_static_RestServerCreateApplicationRequest_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
                 internal_static_RestServerCreateApplicationRequest_descriptor,
-                new java.lang.String[] { "AppName", "Status", "User", "MaxConcurrency", });
+                new java.lang.String[] { "AppAuth", "AppName", "Status", "User", "MaxConcurrency", });
         internal_static_ServerCreateApplicationResponse_descriptor = getDescriptor().getMessageTypes().get(1);
         internal_static_ServerCreateApplicationResponse_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-                internal_static_ServerCreateApplicationResponse_descriptor, new java.lang.String[] { "Success", "Message", "AppKey", });
+                internal_static_ServerCreateApplicationResponse_descriptor, new java.lang.String[] { "Success", "Message", "AppKey", "AppName", });
         internal_static_RestServerModifyApplicationRequest_descriptor = getDescriptor().getMessageTypes().get(2);
         internal_static_RestServerModifyApplicationRequest_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
                 internal_static_RestServerModifyApplicationRequest_descriptor,
-                new java.lang.String[] { "AppId", "AppName", "Status", "MaxConcurrency", "User", });
+                new java.lang.String[] { "AppAuth", "AppName", "Status", "MaxConcurrency", "User", });
         internal_static_ServerModifyApplicationResponse_descriptor = getDescriptor().getMessageTypes().get(3);
         internal_static_ServerModifyApplicationResponse_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
                 internal_static_ServerModifyApplicationResponse_descriptor, new java.lang.String[] { "Success", "Message", });
+        com.mogujie.jarvis.protocol.AppAuthProtos.getDescriptor();
     }
 
     // @@protoc_insertion_point(outer_class_scope)
