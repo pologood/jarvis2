@@ -29,7 +29,7 @@ import com.mogujie.jarvis.rest.controller.SystemController;
  * 启动RestServer
  *
  */
-public class RestServer {
+public class JarvisRest {
 
     private static final Logger LOGGER = LogManager.getLogger();
 
