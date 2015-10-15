@@ -67,7 +67,7 @@
                     </div>
 
                     <div class="center">
-                        <div id="reRunNext"></div>
+                        <div id="reRunJobs"></div>
                     </div>
                 </div>
             </div>

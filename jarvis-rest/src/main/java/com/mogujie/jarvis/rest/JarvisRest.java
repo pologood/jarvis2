@@ -14,6 +14,7 @@ import java.net.URI;
 
 import javax.ws.rs.core.UriBuilder;
 
+import com.mogujie.jarvis.rest.controller.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.glassfish.grizzly.http.server.HttpServer;
@@ -21,9 +22,6 @@ import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 
 import com.mogujie.jarvis.core.util.ConfigUtils;
-import com.mogujie.jarvis.rest.controller.JobController;
-import com.mogujie.jarvis.rest.controller.LogController;
-import com.mogujie.jarvis.rest.controller.SystemController;
 
 /**
  * 启动RestServer
@@ -43,6 +41,9 @@ public class JarvisRest {
         resourceConfig.register(new SystemController());
         resourceConfig.register(new JobController());
         resourceConfig.register(new LogController());
+        resourceConfig.register(new AppController());
+        resourceConfig.register(new WorkerController());
+        resourceConfig.register(new WorkerGroupController());
 
         URI baseUri = UriBuilder.fromUri("http://" + Inet4Address.getLocalHost().getHostAddress() + "/").port(port).build();
         HttpServer server = GrizzlyHttpServerFactory.createHttpServer(baseUri, resourceConfig);

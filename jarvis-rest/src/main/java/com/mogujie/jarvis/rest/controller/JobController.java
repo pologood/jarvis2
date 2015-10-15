@@ -48,13 +48,13 @@ public class JobController extends AbstractController {
 
     /**
      * 提交job任务
-     *
+     * @author hejian
      * @throws Exception
      */
     @POST
-    @Path("submitJob")
+    @Path("submit")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult submitJob(@FormParam("appName") String appName, @FormParam("appKey") String appKey, @FormParam("jobName") String jobName,
+    public RestResult submit(@FormParam("appName") String appName, @FormParam("appKey") String appKey, @FormParam("jobName") String jobName,
             @FormParam("jobId") Long jobId, @FormParam("cronExpression") String cronExp, @FormParam("dependJobIds") String dependJobIds,
             @FormParam("user") String user, @FormParam("jobType") String jobType, @FormParam("content") String content,
             // @FormParam("jobContent") String jobContent,
@@ -122,6 +122,7 @@ public class JobController extends AbstractController {
                 return errorResult(response.getMessage());
             }
         } catch (Exception e) {
+            e.printStackTrace();
             logger.error("", e);
             return errorResult(e.getMessage());
         }
@@ -129,7 +130,7 @@ public class JobController extends AbstractController {
 
     /**
      * 修改job任务
-     *
+     * @author hejian
      * @throws Exception
      */
     @POST
@@ -233,7 +234,7 @@ public class JobController extends AbstractController {
 
     /**
      * 修改job任务状态
-     *
+     * @author hejian
      * @throws Exception
      */
     @POST
@@ -265,28 +266,20 @@ public class JobController extends AbstractController {
 
     /**
      * 重跑任务
-     *
+     * @author hejian
      * @throws Exception
      */
     @POST
     @Path("rerun")
     @Produces(MediaType.APPLICATION_JSON)
     public RestResult rerun(@FormParam("originJobId") Long originJobId,
+                            @FormParam("appName") String appName,
+                            @FormParam("appKey") String appKey,
                             @FormParam("startTime") String startTime,
                             @FormParam("endTime") String endTime,
                             @FormParam("reRunJobs") String reRunJobs){
         try {
             JSONArray reRunJobArr = new JSONArray(reRunJobs);
-            boolean hasSelf = false;
-            for (int i = 0; i < reRunJobArr.length(); i++) {
-                if (originJobId.equals(reRunJobArr.getLong(i))) {
-                    hasSelf = true;
-                    break;
-                }
-            }
-            if (!hasSelf) {
-                reRunJobArr.put(originJobId);
-            }
 
             Long startTimeLong = null;
             Long endTimeLong = null;
@@ -302,8 +295,17 @@ public class JobController extends AbstractController {
             for (int i = 0; i < reRunJobArr.length(); i++) {
                 Long singleOriginId = reRunJobArr.getLong(i);
                 // 构造新增任务请求
-                RestServerSubmitJobRequest request = RestServerSubmitJobRequest.newBuilder()
-                        .setOriginJobId(singleOriginId).setStartTime(startTimeLong).setEndTime(endTimeLong).build();
+
+                RestServerSubmitJobRequest.Builder builder=RestServerSubmitJobRequest.newBuilder()
+                        .setOriginJobId(singleOriginId);
+                if (startTimeLong != null) {
+                    builder.setStartTime(startTimeLong);
+                }
+                if (endTimeLong != null) {
+                    builder.setEndTime(endTimeLong);
+                }
+                RestServerSubmitJobRequest request = builder.build();
+
                 ServerSubmitJobResponse response = (ServerSubmitJobResponse) callActor(AkkaType.SERVER, request);
 
                 // 保存整理而言是否成功，如果某个job重跑失败，则算失败
