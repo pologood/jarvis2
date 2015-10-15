@@ -111,7 +111,7 @@ public class WorkerActor extends UntypedActor {
 
     Tuple2<Class<? extends AbstractTask>, List<AcceptionStrategy>> t2 = TaskConfigUtils
         .getRegisteredJobs().get(taskType);
-    List<AcceptionStrategy> strategies = t2._2;
+    List<AcceptionStrategy> strategies = t2._2();
     for (AcceptionStrategy strategy : strategies) {
       try {
         AcceptionResult result = strategy.accept();
@@ -129,7 +129,7 @@ public class WorkerActor extends UntypedActor {
 
     getSender().tell(WorkerSubmitTaskResponse.newBuilder().setAccept(true).build(), getSelf());
     try {
-      Constructor<? extends AbstractTask> constructor = t2._1.getConstructor(TaskContext.class);
+      Constructor<? extends AbstractTask> constructor = t2._1().getConstructor(TaskContext.class);
       AbstractTask job = constructor.newInstance(contextBuilder.build());
       jobPool.add(fullId, job);
       serverActor.tell(WorkerReportStatusRequest.newBuilder().setFullId(fullId)
