@@ -54,7 +54,7 @@ public class WorkerRegistryActor extends UntypedActor {
             String key = request.getKey();
 
             WorkerGroupExample example = new WorkerGroupExample();
-            example.createCriteria().andKeyEqualTo(key);
+            example.createCriteria().andAuthKeyEqualTo(key);
             List<WorkerGroup> list = workerGroupMapper.selectByExample(example);
 
             boolean valid = false;

@@ -10,6 +10,7 @@ package com.mogujie.jarvis.server.actor;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
 import com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry;
 import com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.DependencyOperator;
 import com.mogujie.jarvis.protocol.ModifyJobProtos.RestServerModifyJobRequest;
@@ -35,14 +36,18 @@ import scala.concurrent.Future;
  *
  */
 public class TestJobActor extends TestBaseActor {
+
+    private AppAuth appAuth = AppAuth.newBuilder().setName("testApp1").setKey("gsdgadfasdg").build();
+
     @Test
     public void testSubmitJob1() {
         new JavaTestKit(system) {
             {
                 Props props = SpringExtension.SPRING_EXT_PROVIDER.get(system).props("jobActor");
                 ActorRef actorRef = system.actorOf(props);
+
                 RestServerSubmitJobRequest request = RestServerSubmitJobRequest.newBuilder().setJobName("testJob1").setCronExpression("0 0 1 * * ?")
-                        .setUser("testUser1").setJobType("hive_sql").setContent("select * from test1").setGroupId(1).build();
+                        .setAppAuth(appAuth).setUser("testUser1").setJobType("hive_sql").setContent("select * from test1").setGroupId(1).build();
 
                 Future<Object> future = Patterns.ask(actorRef, request, TIMEOUT);
                 long jobId = 0;
@@ -73,7 +78,7 @@ public class TestJobActor extends TestBaseActor {
 
                 // submit jobA
                 RestServerSubmitJobRequest request = RestServerSubmitJobRequest.newBuilder().setJobName("testJob1").setCronExpression("0 0 1 * * ?")
-                        .setUser("testUser").setJobType("hive_sql").setContent("select * from test1").setGroupId(1).build();
+                        .setAppAuth(appAuth).setUser("testUser").setJobType("hive_sql").setContent("select * from test1").setGroupId(1).build();
 
                 Future<Object> future = Patterns.ask(actorRef, request, TIMEOUT);
                 long jobAId = 0;
@@ -87,8 +92,8 @@ public class TestJobActor extends TestBaseActor {
                 }
 
                 // submit jobB
-                request = RestServerSubmitJobRequest.newBuilder().setJobName("testJob2").setCronExpression("0 0 2 * * ?").setUser("testUser")
-                        .setJobType("hive_sql").setContent("select * from test2").setGroupId(1).build();
+                request = RestServerSubmitJobRequest.newBuilder().setJobName("testJob2").setCronExpression("0 0 2 * * ?").setAppAuth(appAuth)
+                        .setUser("testUser").setJobType("hive_sql").setContent("select * from test2").setGroupId(1).build();
 
                 future = Patterns.ask(actorRef, request, TIMEOUT);
                 long jobBId = 0;
@@ -108,7 +113,7 @@ public class TestJobActor extends TestBaseActor {
                         .setCommonDependStrategy(CommonStrategy.ALL.getValue()).setOffsetDependStrategy("lastday").build();
 
                 request = RestServerSubmitJobRequest.newBuilder().setJobName("testJob3").addDependencyEntry(entryA).addDependencyEntry(entryB)
-                        .setUser("testUser").setJobType("hive_sql").setContent("select * from test3").setGroupId(1).build();
+                        .setAppAuth(appAuth).setUser("testUser").setJobType("hive_sql").setContent("select * from test3").setGroupId(1).build();
 
                 future = Patterns.ask(actorRef, request, TIMEOUT);
                 long jobCId = 0;
@@ -155,7 +160,7 @@ public class TestJobActor extends TestBaseActor {
 
                 // submit jobA
                 RestServerSubmitJobRequest request = RestServerSubmitJobRequest.newBuilder().setJobName("testJob1").setCronExpression("0 0 1 * * ?")
-                        .setUser("testUser").setJobType("hive_sql").setContent("select * from test1").setGroupId(1).build();
+                        .setAppAuth(appAuth).setUser("testUser").setJobType("hive_sql").setContent("select * from test1").setGroupId(1).build();
 
                 Future<Object> future = Patterns.ask(actorRef, request, TIMEOUT);
                 long jobAId = 0;
@@ -171,8 +176,8 @@ public class TestJobActor extends TestBaseActor {
                 // submit jobB
                 DependencyEntry entryB = DependencyEntry.newBuilder().setJobId(jobAId).setOperator(DependencyOperator.ADD)
                         .setCommonDependStrategy(CommonStrategy.ALL.getValue()).build();
-                request = RestServerSubmitJobRequest.newBuilder().setJobName("testJob2").addDependencyEntry(entryB).setUser("testUser")
-                        .setJobType("hive_sql").setContent("select * from test2").setGroupId(1).build();
+                request = RestServerSubmitJobRequest.newBuilder().setJobName("testJob2").addDependencyEntry(entryB).setAppAuth(appAuth)
+                        .setUser("testUser").setJobType("hive_sql").setContent("select * from test2").setGroupId(1).build();
 
                 future = Patterns.ask(actorRef, request, TIMEOUT);
                 long jobBId = 0;
@@ -188,8 +193,8 @@ public class TestJobActor extends TestBaseActor {
                 // submit jobC
                 DependencyEntry entryC = DependencyEntry.newBuilder().setJobId(jobAId).setOperator(DependencyOperator.ADD)
                         .setCommonDependStrategy(CommonStrategy.ALL.getValue()).setOffsetDependStrategy("lastday").build();
-                request = RestServerSubmitJobRequest.newBuilder().setJobName("testJob3").addDependencyEntry(entryC).setUser("testUser")
-                        .setJobType("hive_sql").setContent("select * from test3").setGroupId(1).build();
+                request = RestServerSubmitJobRequest.newBuilder().setJobName("testJob3").addDependencyEntry(entryC).setAppAuth(appAuth)
+                        .setUser("testUser").setJobType("hive_sql").setContent("select * from test3").setGroupId(1).build();
 
                 future = Patterns.ask(actorRef, request, TIMEOUT);
                 long jobCId = 0;
@@ -231,8 +236,8 @@ public class TestJobActor extends TestBaseActor {
                 Props props = SpringExtension.SPRING_EXT_PROVIDER.get(system).props("jobActor");
                 ActorRef actorRef = system.actorOf(props);
                 RestServerSubmitJobRequest submitJobRequest = RestServerSubmitJobRequest.newBuilder().setJobName("testJob1")
-                        .setCronExpression("0 0 1 * * ?").setUser("testUser1").setJobType("hive_sql").setContent("select * from test1").setGroupId(1)
-                        .build();
+                        .setCronExpression("0 0 1 * * ?").setAppAuth(appAuth).setUser("testUser1").setJobType("hive_sql")
+                        .setContent("select * from test1").setGroupId(1).build();
 
                 Future<Object> future = Patterns.ask(actorRef, submitJobRequest, TIMEOUT);
                 long jobId = 0;

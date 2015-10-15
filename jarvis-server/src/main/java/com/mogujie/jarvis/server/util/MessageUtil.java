@@ -10,17 +10,13 @@ package com.mogujie.jarvis.server.util;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.joda.time.DateTime;
 
 import com.mogujie.jarvis.core.domain.JobFlag;
 import com.mogujie.jarvis.core.util.JsonHelper;
-import com.mogujie.jarvis.dao.AppMapper;
 import com.mogujie.jarvis.dao.JobMapper;
-import com.mogujie.jarvis.dto.App;
-import com.mogujie.jarvis.dto.AppExample;
 import com.mogujie.jarvis.dto.Crontab;
 import com.mogujie.jarvis.dto.Job;
 import com.mogujie.jarvis.dto.JobDepend;
@@ -29,6 +25,7 @@ import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitJobRequest;
 import com.mogujie.jarvis.server.domain.ModifyJobEntry;
 import com.mogujie.jarvis.server.domain.ModifyJobType;
 import com.mogujie.jarvis.server.domain.ModifyOperation;
+import com.mogujie.jarvis.server.service.AppService;
 import com.mogujie.jarvis.server.service.CrontabService;
 import com.mogujie.jarvis.server.service.JobService;
 
@@ -38,21 +35,9 @@ import com.mogujie.jarvis.server.service.JobService;
  */
 public class MessageUtil {
 
-    private static Integer queryAppId(AppMapper appMapper, String appName) {
-        AppExample example = new AppExample();
-        example.createCriteria().andAppNameEqualTo(appName);
-        List<App> list = appMapper.selectByExample(example);
-        if (list != null && list.size() > 0) {
-            return list.get(0).getAppId();
-        }
-
-        return null;
-    }
-
-    public static Job convert2Job(AppMapper appMapper, RestServerSubmitJobRequest msg) {
-        String appName = msg.getAppAuth().getName();
+    public static Job convert2Job(AppService appService, RestServerSubmitJobRequest msg) {
         Job job = new Job();
-        job.setAppId(queryAppId(appMapper, appName));
+        job.setAppId(appService.getAppIdByName(msg.getAppAuth().getName()));
         job.setJobName(msg.getJobName());
         job.setContent(msg.getContent());
         job.setPriority(msg.getPriority());
@@ -85,11 +70,11 @@ public class MessageUtil {
         return job;
     }
 
-    public static Job convert2Job(JobMapper jobMapper, AppMapper appMapper, RestServerModifyJobRequest msg) {
+    public static Job convert2Job(JobMapper jobMapper, AppService appService, RestServerModifyJobRequest msg) {
         long jobId = msg.getJobId();
         Job job = jobMapper.selectByPrimaryKey(jobId);
         job.setJobId(msg.getJobId());
-        job.setAppId(queryAppId(appMapper, msg.getAppAuth().getName()));
+        job.setAppId(appService.getAppIdByName(msg.getAppAuth().getName()));
         if (msg.hasContent()) {
             job.setContent(msg.getContent());
         }
