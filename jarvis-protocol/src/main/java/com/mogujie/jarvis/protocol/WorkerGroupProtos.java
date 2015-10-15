@@ -1639,34 +1639,44 @@ public final class WorkerGroupProtos {
         int getWorkerGroupId();
 
         /**
-         * <code>required string worker_group_name = 3;</code>
+         * <code>optional string worker_group_name = 3;</code>
          */
         boolean hasWorkerGroupName();
 
         /**
-         * <code>required string worker_group_name = 3;</code>
+         * <code>optional string worker_group_name = 3;</code>
          */
         java.lang.String getWorkerGroupName();
 
         /**
-         * <code>required string worker_group_name = 3;</code>
+         * <code>optional string worker_group_name = 3;</code>
          */
         com.google.protobuf.ByteString getWorkerGroupNameBytes();
 
         /**
-         * <code>required string user = 4;</code>
+         * <code>optional string user = 4;</code>
          */
         boolean hasUser();
 
         /**
-         * <code>required string user = 4;</code>
+         * <code>optional string user = 4;</code>
          */
         java.lang.String getUser();
 
         /**
-         * <code>required string user = 4;</code>
+         * <code>optional string user = 4;</code>
          */
         com.google.protobuf.ByteString getUserBytes();
+
+        /**
+         * <code>optional int32 status = 5;</code>
+         */
+        boolean hasStatus();
+
+        /**
+         * <code>optional int32 status = 5;</code>
+         */
+        int getStatus();
     }
 
     /**
@@ -1750,6 +1760,11 @@ public final class WorkerGroupProtos {
                             user_ = bs;
                             break;
                         }
+                        case 40: {
+                            bitField0_ |= 0x00000010;
+                            status_ = input.readInt32();
+                            break;
+                        }
                     }
                 }
             } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -1830,14 +1845,14 @@ public final class WorkerGroupProtos {
         private java.lang.Object workerGroupName_;
 
         /**
-         * <code>required string worker_group_name = 3;</code>
+         * <code>optional string worker_group_name = 3;</code>
          */
         public boolean hasWorkerGroupName() {
             return ((bitField0_ & 0x00000004) == 0x00000004);
         }
 
         /**
-         * <code>required string worker_group_name = 3;</code>
+         * <code>optional string worker_group_name = 3;</code>
          */
         public java.lang.String getWorkerGroupName() {
             java.lang.Object ref = workerGroupName_;
@@ -1854,7 +1869,7 @@ public final class WorkerGroupProtos {
         }
 
         /**
-         * <code>required string worker_group_name = 3;</code>
+         * <code>optional string worker_group_name = 3;</code>
          */
         public com.google.protobuf.ByteString getWorkerGroupNameBytes() {
             java.lang.Object ref = workerGroupName_;
@@ -1871,14 +1886,14 @@ public final class WorkerGroupProtos {
         private java.lang.Object user_;
 
         /**
-         * <code>required string user = 4;</code>
+         * <code>optional string user = 4;</code>
          */
         public boolean hasUser() {
             return ((bitField0_ & 0x00000008) == 0x00000008);
         }
 
         /**
-         * <code>required string user = 4;</code>
+         * <code>optional string user = 4;</code>
          */
         public java.lang.String getUser() {
             java.lang.Object ref = user_;
@@ -1895,7 +1910,7 @@ public final class WorkerGroupProtos {
         }
 
         /**
-         * <code>required string user = 4;</code>
+         * <code>optional string user = 4;</code>
          */
         public com.google.protobuf.ByteString getUserBytes() {
             java.lang.Object ref = user_;
@@ -1908,11 +1923,29 @@ public final class WorkerGroupProtos {
             }
         }
 
+        public static final int STATUS_FIELD_NUMBER = 5;
+        private int status_;
+
+        /**
+         * <code>optional int32 status = 5;</code>
+         */
+        public boolean hasStatus() {
+            return ((bitField0_ & 0x00000010) == 0x00000010);
+        }
+
+        /**
+         * <code>optional int32 status = 5;</code>
+         */
+        public int getStatus() {
+            return status_;
+        }
+
         private void initFields() {
             appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
             workerGroupId_ = 0;
             workerGroupName_ = "";
             user_ = "";
+            status_ = 0;
         }
 
         private byte memoizedIsInitialized = -1;
@@ -1929,14 +1962,6 @@ public final class WorkerGroupProtos {
                 return false;
             }
             if (!hasWorkerGroupId()) {
-                memoizedIsInitialized = 0;
-                return false;
-            }
-            if (!hasWorkerGroupName()) {
-                memoizedIsInitialized = 0;
-                return false;
-            }
-            if (!hasUser()) {
                 memoizedIsInitialized = 0;
                 return false;
             }
@@ -1962,6 +1987,9 @@ public final class WorkerGroupProtos {
             if (((bitField0_ & 0x00000008) == 0x00000008)) {
                 output.writeBytes(4, getUserBytes());
             }
+            if (((bitField0_ & 0x00000010) == 0x00000010)) {
+                output.writeInt32(5, status_);
+            }
             getUnknownFields().writeTo(output);
         }
 
@@ -1984,6 +2012,9 @@ public final class WorkerGroupProtos {
             }
             if (((bitField0_ & 0x00000008) == 0x00000008)) {
                 size += com.google.protobuf.CodedOutputStream.computeBytesSize(4, getUserBytes());
+            }
+            if (((bitField0_ & 0x00000010) == 0x00000010)) {
+                size += com.google.protobuf.CodedOutputStream.computeInt32Size(5, status_);
             }
             size += getUnknownFields().getSerializedSize();
             memoizedSerializedSize = size;
@@ -2120,6 +2151,8 @@ public final class WorkerGroupProtos {
                 bitField0_ = (bitField0_ & ~0x00000004);
                 user_ = "";
                 bitField0_ = (bitField0_ & ~0x00000008);
+                status_ = 0;
+                bitField0_ = (bitField0_ & ~0x00000010);
                 return this;
             }
 
@@ -2168,6 +2201,10 @@ public final class WorkerGroupProtos {
                     to_bitField0_ |= 0x00000008;
                 }
                 result.user_ = user_;
+                if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+                    to_bitField0_ |= 0x00000010;
+                }
+                result.status_ = status_;
                 result.bitField0_ = to_bitField0_;
                 onBuilt();
                 return result;
@@ -2201,6 +2238,9 @@ public final class WorkerGroupProtos {
                     user_ = other.user_;
                     onChanged();
                 }
+                if (other.hasStatus()) {
+                    setStatus(other.getStatus());
+                }
                 this.mergeUnknownFields(other.getUnknownFields());
                 return this;
             }
@@ -2211,14 +2251,6 @@ public final class WorkerGroupProtos {
                     return false;
                 }
                 if (!hasWorkerGroupId()) {
-
-                    return false;
-                }
-                if (!hasWorkerGroupName()) {
-
-                    return false;
-                }
-                if (!hasUser()) {
 
                     return false;
                 }
@@ -2404,14 +2436,14 @@ public final class WorkerGroupProtos {
             private java.lang.Object workerGroupName_ = "";
 
             /**
-             * <code>required string worker_group_name = 3;</code>
+             * <code>optional string worker_group_name = 3;</code>
              */
             public boolean hasWorkerGroupName() {
                 return ((bitField0_ & 0x00000004) == 0x00000004);
             }
 
             /**
-             * <code>required string worker_group_name = 3;</code>
+             * <code>optional string worker_group_name = 3;</code>
              */
             public java.lang.String getWorkerGroupName() {
                 java.lang.Object ref = workerGroupName_;
@@ -2428,7 +2460,7 @@ public final class WorkerGroupProtos {
             }
 
             /**
-             * <code>required string worker_group_name = 3;</code>
+             * <code>optional string worker_group_name = 3;</code>
              */
             public com.google.protobuf.ByteString getWorkerGroupNameBytes() {
                 java.lang.Object ref = workerGroupName_;
@@ -2442,7 +2474,7 @@ public final class WorkerGroupProtos {
             }
 
             /**
-             * <code>required string worker_group_name = 3;</code>
+             * <code>optional string worker_group_name = 3;</code>
              */
             public Builder setWorkerGroupName(java.lang.String value) {
                 if (value == null) {
@@ -2455,7 +2487,7 @@ public final class WorkerGroupProtos {
             }
 
             /**
-             * <code>required string worker_group_name = 3;</code>
+             * <code>optional string worker_group_name = 3;</code>
              */
             public Builder clearWorkerGroupName() {
                 bitField0_ = (bitField0_ & ~0x00000004);
@@ -2465,7 +2497,7 @@ public final class WorkerGroupProtos {
             }
 
             /**
-             * <code>required string worker_group_name = 3;</code>
+             * <code>optional string worker_group_name = 3;</code>
              */
             public Builder setWorkerGroupNameBytes(com.google.protobuf.ByteString value) {
                 if (value == null) {
@@ -2480,14 +2512,14 @@ public final class WorkerGroupProtos {
             private java.lang.Object user_ = "";
 
             /**
-             * <code>required string user = 4;</code>
+             * <code>optional string user = 4;</code>
              */
             public boolean hasUser() {
                 return ((bitField0_ & 0x00000008) == 0x00000008);
             }
 
             /**
-             * <code>required string user = 4;</code>
+             * <code>optional string user = 4;</code>
              */
             public java.lang.String getUser() {
                 java.lang.Object ref = user_;
@@ -2504,7 +2536,7 @@ public final class WorkerGroupProtos {
             }
 
             /**
-             * <code>required string user = 4;</code>
+             * <code>optional string user = 4;</code>
              */
             public com.google.protobuf.ByteString getUserBytes() {
                 java.lang.Object ref = user_;
@@ -2518,7 +2550,7 @@ public final class WorkerGroupProtos {
             }
 
             /**
-             * <code>required string user = 4;</code>
+             * <code>optional string user = 4;</code>
              */
             public Builder setUser(java.lang.String value) {
                 if (value == null) {
@@ -2531,7 +2563,7 @@ public final class WorkerGroupProtos {
             }
 
             /**
-             * <code>required string user = 4;</code>
+             * <code>optional string user = 4;</code>
              */
             public Builder clearUser() {
                 bitField0_ = (bitField0_ & ~0x00000008);
@@ -2541,7 +2573,7 @@ public final class WorkerGroupProtos {
             }
 
             /**
-             * <code>required string user = 4;</code>
+             * <code>optional string user = 4;</code>
              */
             public Builder setUserBytes(com.google.protobuf.ByteString value) {
                 if (value == null) {
@@ -2549,6 +2581,42 @@ public final class WorkerGroupProtos {
                 }
                 bitField0_ |= 0x00000008;
                 user_ = value;
+                onChanged();
+                return this;
+            }
+
+            private int status_;
+
+            /**
+             * <code>optional int32 status = 5;</code>
+             */
+            public boolean hasStatus() {
+                return ((bitField0_ & 0x00000010) == 0x00000010);
+            }
+
+            /**
+             * <code>optional int32 status = 5;</code>
+             */
+            public int getStatus() {
+                return status_;
+            }
+
+            /**
+             * <code>optional int32 status = 5;</code>
+             */
+            public Builder setStatus(int value) {
+                bitField0_ |= 0x00000010;
+                status_ = value;
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>optional int32 status = 5;</code>
+             */
+            public Builder clearStatus() {
+                bitField0_ = (bitField0_ & ~0x00000010);
+                status_ = 0;
                 onChanged();
                 return this;
             }
@@ -3156,12 +3224,12 @@ public final class WorkerGroupProtos {
                 + "RestServerCreateWorkerGroupRequest\022\032\n\010ap" + "p_auth\030\001 \002(\0132\010.AppAuth\022\031\n\021worker_group_n"
                 + "ame\030\002 \002(\t\022\014\n\004user\030\003 \002(\t\"_\n\037ServerCreateW"
                 + "orkerGroupResponse\022\017\n\007success\030\001 \002(\010\022\021\n\007m"
-                + "essage\030\002 \001(\t:\000\022\030\n\020worker_group_key\030\003 \002(\t" + "\"\202\001\n\"RestServerModifyWorkerGroupRequest\022"
+                + "essage\030\002 \001(\t:\000\022\030\n\020worker_group_key\030\003 \002(\t" + "\"\222\001\n\"RestServerModifyWorkerGroupRequest\022"
                 + "\032\n\010app_auth\030\001 \002(\0132\010.AppAuth\022\027\n\017worker_gr"
-                + "oup_id\030\002 \002(\005\022\031\n\021worker_group_name\030\003 \002(\t\022"
-                + "\014\n\004user\030\004 \002(\t\"E\n\037ServerModifyWorkerGroup",
-                "Response\022\017\n\007success\030\001 \002(\010\022\021\n\007message\030\002 \001"
-                        + "(\t:\000B0\n\033com.mogujie.jarvis.protocolB\021Wor" + "kerGroupProtos" };
+                + "oup_id\030\002 \002(\005\022\031\n\021worker_group_name\030\003 \001(\t\022"
+                + "\014\n\004user\030\004 \001(\t\022\016\n\006status\030\005 \001(\005\"E\n\037ServerM",
+                "odifyWorkerGroupResponse\022\017\n\007success\030\001 \002("
+                        + "\010\022\021\n\007message\030\002 \001(\t:\000B0\n\033com.mogujie.jarv" + "is.protocolB\021WorkerGroupProtos" };
         com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner = new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
             public com.google.protobuf.ExtensionRegistry assignDescriptors(com.google.protobuf.Descriptors.FileDescriptor root) {
                 descriptor = root;
@@ -3179,7 +3247,7 @@ public final class WorkerGroupProtos {
         internal_static_RestServerModifyWorkerGroupRequest_descriptor = getDescriptor().getMessageTypes().get(2);
         internal_static_RestServerModifyWorkerGroupRequest_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
                 internal_static_RestServerModifyWorkerGroupRequest_descriptor,
-                new java.lang.String[] { "AppAuth", "WorkerGroupId", "WorkerGroupName", "User", });
+                new java.lang.String[] { "AppAuth", "WorkerGroupId", "WorkerGroupName", "User", "Status", });
         internal_static_ServerModifyWorkerGroupResponse_descriptor = getDescriptor().getMessageTypes().get(3);
         internal_static_ServerModifyWorkerGroupResponse_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
                 internal_static_ServerModifyWorkerGroupResponse_descriptor, new java.lang.String[] { "Success", "Message", });

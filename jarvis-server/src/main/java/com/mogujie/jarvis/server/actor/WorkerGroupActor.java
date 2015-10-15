@@ -58,7 +58,18 @@ public class WorkerGroupActor extends UntypedActor {
             RestServerModifyWorkerGroupRequest request = (RestServerModifyWorkerGroupRequest) obj;
             WorkerGroup workerGroup = new WorkerGroup();
             workerGroup.setId(request.getWorkerGroupId());
-            workerGroup.setName(request.getWorkerGroupName());
+            if (request.hasWorkerGroupName()) {
+                workerGroup.setName(request.getWorkerGroupName());
+            }
+
+            if (request.hasUser()) {
+                workerGroup.setUpdateUser(request.getUser());
+            }
+
+            if (request.hasStatus()) {
+                workerGroup.setStatus(request.getStatus());
+            }
+
             workerGroup.setUpdateTime(new Date());
             workerGroupMapper.updateByPrimaryKey(workerGroup);
 

@@ -21,8 +21,9 @@ message ServerCreateWorkerGroupResponse {
 message RestServerModifyWorkerGroupRequest {
     required AppAuth app_auth = 1;
     required int32 worker_group_id = 2;
-    required string worker_group_name = 3;
-    required string user = 4;
+    optional string worker_group_name = 3;
+    optional string user = 4;
+    optional int32 status = 5;
 }
 
 
