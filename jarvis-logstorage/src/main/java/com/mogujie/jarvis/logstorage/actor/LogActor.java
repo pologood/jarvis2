@@ -10,7 +10,8 @@ package com.mogujie.jarvis.logstorage.actor;
 
 import com.mogujie.jarvis.core.domain.StreamType;
 import com.mogujie.jarvis.logstorage.domain.LogReadResult;
-import com.mogujie.jarvis.logstorage.util.LogUtil;
+import com.mogujie.jarvis.logstorage.logStream.LocalLogStream;
+import com.mogujie.jarvis.logstorage.logStream.LogStream;
 import com.mogujie.jarvis.protocol.ReadLogProtos.LogServerReadLogResponse;
 import com.mogujie.jarvis.protocol.ReadLogProtos.RestServerReadLogRequest;
 import com.mogujie.jarvis.protocol.WriteLogProtos.LogServerWriteLogResponse;
@@ -53,12 +54,12 @@ public class LogActor extends UntypedActor {
 
         //fullID
         String fullId = msg.getFullId();
+        StreamType streamType = StreamType.getInstance(msg.getType());
 
-        //获取文件路径（本地）
-        String filePath = LogUtil.getLogPath4Local(fullId, StreamType.getInstance(msg.getType()));
+        LogStream logStream = new LocalLogStream(fullId,streamType);
 
         //读取日志（本地）
-        LogReadResult readResult = LogUtil.readLines4locale(filePath, msg.getOffset(), msg.getLines());
+        LogReadResult readResult = logStream.readLines(msg.getOffset(), msg.getLines());
 
         //响应值_做成
         LogServerReadLogResponse response;
@@ -88,15 +89,15 @@ public class LogActor extends UntypedActor {
         String log = msg.getLog();
         Boolean isEnd = msg.getIsEnd();
 
-        //获取文件路径
-        String filePath = LogUtil.getLogPath4Local(fullId, streamType);
+        LogStream logStream = new LocalLogStream(fullId,streamType);
+
 
         //写log到本地文件
-        LogUtil.writeLine4Local(filePath, log);
+        logStream.writeLine(log);
 
         //log是否结束
         if (isEnd) {
-            LogUtil.writeEndFlag2Local(filePath);
+            logStream.writeEndFlag();
         }
 
         //响应值_做成
