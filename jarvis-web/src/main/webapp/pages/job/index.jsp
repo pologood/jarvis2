@@ -133,5 +133,8 @@
 <jsp:include page="../common/footer.jsp">
     <jsp:param name="menuMap" value="${menuMap}"/>
 </jsp:include>
+<script type="text/javascript">
+    var user='${user.uname}';
+</script>
 
 <script type="text/javascript" src="/assets/jarvis/js/jarvis/job/job.js"></script>

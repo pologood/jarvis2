@@ -34,7 +34,7 @@ public class JobAPIController {
     @ResponseBody
     public JSONObject getTreeDependedONJob(JobSearchVo jobSearchVo){
 
-        JSONObject jobJson=jobDependService.getTreeDependedONJob(jobSearchVo);
+        JSONObject jobJson=jobDependService.getTreeDependedOnJob(jobSearchVo);
 
         return jobJson;
     }

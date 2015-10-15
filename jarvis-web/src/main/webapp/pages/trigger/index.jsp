@@ -32,10 +32,10 @@
                 <div class="col-md-6 col-md-offset-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">选择任务</span>
-                        <select id="originJobId">
+                        <select id="originJobId">Key
                             <option value="">无</option>
                             <c:forEach items="${jobVoList}" var="job" varStatus="status">
-                                <option value="${job.jobId}">${job.jobName}</option>
+                                <option value="${job.jobId}" appKey="${appKey}" appName="${appName}">${job.jobName}</option>
                             </c:forEach>
                         </select>
                     </div>
@@ -72,15 +72,9 @@
                 </div>
             </div>
 
-
-
-
-
-
-
             <div class="row top-buffer">
                 <div class="col-md-4 col-md-offset-4 text-center">
-                    <button type="button" class="btn btn-primary">提交</button>
+                    <button type="button" class="btn btn-primary" onclick="submit()">提交</button>
                     <button type="button" class="btn btn-primary" onclick="reset()">重置</button>
                 </div>
 

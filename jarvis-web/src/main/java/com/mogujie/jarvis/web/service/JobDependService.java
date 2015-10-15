@@ -18,7 +18,7 @@ public class JobDependService {
     @Autowired
     JobDependMapper jobDependMapper;
 
-    public JSONObject getTreeDependedONJob(JobSearchVo jobSearchVo){
+    public JSONObject getTreeDependedOnJob(JobSearchVo jobSearchVo){
         JSONObject jsonObject=new JSONObject();
         JobDependVo jobDependVo=jobDependMapper.getJobById(jobSearchVo.getJobId());
 

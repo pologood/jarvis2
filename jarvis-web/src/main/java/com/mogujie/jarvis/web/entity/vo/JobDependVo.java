@@ -11,6 +11,8 @@ import java.util.List;
 public class JobDependVo {
     private Long id;
     private String text;
+    private String appName;
+    private String appKey;
     private List<JobDependVo> children;
     private JSONObject state;
 
@@ -44,5 +46,21 @@ public class JobDependVo {
 
     public void setState(JSONObject state) {
         this.state = state;
+    }
+
+    public String getAppName() {
+        return appName;
+    }
+
+    public void setAppName(String appName) {
+        this.appName = appName;
+    }
+
+    public String getAppKey() {
+        return appKey;
+    }
+
+    public void setAppKey(String appKey) {
+        this.appKey = appKey;
     }
 }

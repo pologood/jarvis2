@@ -240,10 +240,11 @@ public class JobController extends AbstractController {
     @Path("flag")
     @Produces(MediaType.APPLICATION_JSON)
     public RestResult flag(@FormParam("jobId") Long jobId, @FormParam("appKey") String appKey, @FormParam("appName") String appName,
-            @FormParam("jobFlag") Integer jobFlag) throws Exception {
+            @FormParam("jobFlag") Integer jobFlag,@FormParam("user") String user) throws Exception {
         try {
             // 构造删除job请求request，1.启用2.禁用3.过期4.垃圾箱
-            RestServerModifyJobFlagRequest request = RestServerModifyJobFlagRequest.newBuilder().setJobId(jobId).setJobFlag(jobFlag).build();
+            RestServerModifyJobFlagRequest request = RestServerModifyJobFlagRequest.newBuilder()
+                                            .setJobId(jobId).setUser(user).setJobFlag(jobFlag).build();
             // 发送请求到server尝试常熟
             ServerModifyJobFlagResponse response = (ServerModifyJobFlagResponse) callActor(AkkaType.SERVER, request);
 
@@ -270,43 +271,61 @@ public class JobController extends AbstractController {
     @POST
     @Path("rerun")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult rerun(@FormParam("originJobId") Long originJobId, @FormParam("startTime") String startTime,
-            @FormParam("endTime") String endTime, @FormParam("reRunJobs") String reRunJobs) throws Exception {
-        JSONArray reRunJobArr = new JSONArray(reRunJobs);
-        boolean hasSelf = false;
-        for (int i = 0; i < reRunJobArr.length(); i++) {
-            if (originJobId.equals(reRunJobArr.getLong(i))) {
-                hasSelf = true;
-                break;
+    public RestResult rerun(@FormParam("originJobId") Long originJobId,
+                            @FormParam("startTime") String startTime,
+                            @FormParam("endTime") String endTime,
+                            @FormParam("reRunJobs") String reRunJobs){
+        try {
+            JSONArray reRunJobArr = new JSONArray(reRunJobs);
+            boolean hasSelf = false;
+            for (int i = 0; i < reRunJobArr.length(); i++) {
+                if (originJobId.equals(reRunJobArr.getLong(i))) {
+                    hasSelf = true;
+                    break;
+                }
             }
-        }
-        if (!hasSelf) {
-            reRunJobArr.put(originJobId);
-        }
+            if (!hasSelf) {
+                reRunJobArr.put(originJobId);
+            }
 
-        boolean flag = true;
-        JSONObject msg = new JSONObject();
-        for (int i = 0; i < reRunJobArr.length(); i++) {
-            Long singleOriginId = reRunJobArr.getLong(i);
-            // 构造新增任务请求
-            RestServerSubmitJobRequest request = RestServerSubmitJobRequest.newBuilder().setOriginJobId(singleOriginId).build();
-            ServerSubmitJobResponse response = (ServerSubmitJobResponse) callActor(AkkaType.SERVER, request);
+            Long startTimeLong = null;
+            Long endTimeLong = null;
+            if (startTime != null && !startTime.equals("")) {
+                startTimeLong = dateTimeFormatter.parseDateTime(startTime).getMillis();
+            }
+            if (endTime != null && !endTime.equals("")) {
+                endTimeLong = dateTimeFormatter.parseDateTime(endTime).getMillis();
+            }
 
-            // 保存整理而言是否成功，如果某个job重跑失败，则算失败
-            flag = flag && response.getSuccess();
-            // 判断是否重跑成功
-            if (response.getSuccess()) {
-                msg.put(singleOriginId.toString(), "success," + response.getMessage());
+            boolean flag = true;
+            JSONObject msg = new JSONObject();
+            for (int i = 0; i < reRunJobArr.length(); i++) {
+                Long singleOriginId = reRunJobArr.getLong(i);
+                // 构造新增任务请求
+                RestServerSubmitJobRequest request = RestServerSubmitJobRequest.newBuilder()
+                        .setOriginJobId(singleOriginId).setStartTime(startTimeLong).setEndTime(endTimeLong).build();
+                ServerSubmitJobResponse response = (ServerSubmitJobResponse) callActor(AkkaType.SERVER, request);
+
+                // 保存整理而言是否成功，如果某个job重跑失败，则算失败
+                flag = flag && response.getSuccess();
+                // 判断是否重跑成功
+                if (response.getSuccess()) {
+                    msg.put(singleOriginId.toString(), "success," + response.getMessage());
+                } else {
+                    msg.put(singleOriginId.toString(), "failed," + response.getMessage());
+                }
+            }
+
+            // 判断删除是否成功
+            if (flag) {
+                return new RestResult(MsgCode.SUCCESS);
             } else {
-                msg.put(singleOriginId.toString(), "failed," + response.getMessage());
+                return errorResult(msg.toString());
             }
-        }
-
-        // 判断删除是否成功
-        if (flag) {
-            return new RestResult(MsgCode.SUCCESS);
-        } else {
-            return errorResult(msg.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.info(e.getStackTrace());
+            return errorResult(e.getMessage());
         }
     }
 
