@@ -51,20 +51,15 @@ public final class ModifyJobProtos {
     com.google.protobuf.ByteString
         getCronExpressionBytes();
 
-    // optional string app_name = 4;
+    // optional int32 app_id = 4;
     /**
-     * <code>optional string app_name = 4;</code>
+     * <code>optional int32 app_id = 4;</code>
      */
-    boolean hasAppName();
+    boolean hasAppId();
     /**
-     * <code>optional string app_name = 4;</code>
+     * <code>optional int32 app_id = 4;</code>
      */
-    java.lang.String getAppName();
-    /**
-     * <code>optional string app_name = 4;</code>
-     */
-    com.google.protobuf.ByteString
-        getAppNameBytes();
+    int getAppId();
 
     // optional string app_key = 5;
     /**
@@ -220,7 +215,7 @@ public final class ModifyJobProtos {
     /**
      * <code>repeated .MapEntry parameters = 18;</code>
      */
-    java.util.List<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry>
+    java.util.List<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry> 
         getParametersList();
     /**
      * <code>repeated .MapEntry parameters = 18;</code>
@@ -233,7 +228,7 @@ public final class ModifyJobProtos {
     /**
      * <code>repeated .MapEntry parameters = 18;</code>
      */
-    java.util.List<? extends com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder>
+    java.util.List<? extends com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder> 
         getParametersOrBuilderList();
     /**
      * <code>repeated .MapEntry parameters = 18;</code>
@@ -317,9 +312,9 @@ public final class ModifyJobProtos {
               cronExpression_ = input.readBytes();
               break;
             }
-            case 34: {
+            case 32: {
               bitField0_ |= 0x00000008;
-              appName_ = input.readBytes();
+              appId_ = input.readInt32();
               break;
             }
             case 42: {
@@ -476,7 +471,7 @@ public final class ModifyJobProtos {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs =
+        com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
@@ -492,7 +487,7 @@ public final class ModifyJobProtos {
         getJobNameBytes() {
       java.lang.Object ref = jobName_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b =
+        com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         jobName_ = b;
@@ -519,7 +514,7 @@ public final class ModifyJobProtos {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs =
+        com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
@@ -535,7 +530,7 @@ public final class ModifyJobProtos {
         getCronExpressionBytes() {
       java.lang.Object ref = cronExpression_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b =
+        com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         cronExpression_ = b;
@@ -545,47 +540,20 @@ public final class ModifyJobProtos {
       }
     }
 
-    // optional string app_name = 4;
-    public static final int APP_NAME_FIELD_NUMBER = 4;
-    private java.lang.Object appName_;
+    // optional int32 app_id = 4;
+    public static final int APP_ID_FIELD_NUMBER = 4;
+    private int appId_;
     /**
-     * <code>optional string app_name = 4;</code>
+     * <code>optional int32 app_id = 4;</code>
      */
-    public boolean hasAppName() {
+    public boolean hasAppId() {
       return ((bitField0_ & 0x00000008) == 0x00000008);
     }
     /**
-     * <code>optional string app_name = 4;</code>
+     * <code>optional int32 app_id = 4;</code>
      */
-    public java.lang.String getAppName() {
-      java.lang.Object ref = appName_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          appName_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string app_name = 4;</code>
-     */
-    public com.google.protobuf.ByteString
-        getAppNameBytes() {
-      java.lang.Object ref = appName_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b =
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        appName_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+    public int getAppId() {
+      return appId_;
     }
 
     // optional string app_key = 5;
@@ -605,7 +573,7 @@ public final class ModifyJobProtos {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs =
+        com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
@@ -621,7 +589,7 @@ public final class ModifyJobProtos {
         getAppKeyBytes() {
       java.lang.Object ref = appKey_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b =
+        com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         appKey_ = b;
@@ -648,7 +616,7 @@ public final class ModifyJobProtos {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs =
+        com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
@@ -664,7 +632,7 @@ public final class ModifyJobProtos {
         getUserBytes() {
       java.lang.Object ref = user_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b =
+        com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         user_ = b;
@@ -691,7 +659,7 @@ public final class ModifyJobProtos {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs =
+        com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
@@ -707,7 +675,7 @@ public final class ModifyJobProtos {
         getJobTypeBytes() {
       java.lang.Object ref = jobType_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b =
+        com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         jobType_ = b;
@@ -734,7 +702,7 @@ public final class ModifyJobProtos {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs =
+        com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
@@ -750,7 +718,7 @@ public final class ModifyJobProtos {
         getContentBytes() {
       java.lang.Object ref = content_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b =
+        com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         content_ = b;
@@ -916,7 +884,7 @@ public final class ModifyJobProtos {
     /**
      * <code>repeated .MapEntry parameters = 18;</code>
      */
-    public java.util.List<? extends com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder>
+    public java.util.List<? extends com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder> 
         getParametersOrBuilderList() {
       return parameters_;
     }
@@ -960,7 +928,7 @@ public final class ModifyJobProtos {
       jobId_ = 0L;
       jobName_ = "";
       cronExpression_ = "";
-      appName_ = "";
+      appId_ = 0;
       appKey_ = "";
       user_ = "";
       jobType_ = "";
@@ -1009,7 +977,7 @@ public final class ModifyJobProtos {
         output.writeBytes(3, getCronExpressionBytes());
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        output.writeBytes(4, getAppNameBytes());
+        output.writeInt32(4, appId_);
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         output.writeBytes(5, getAppKeyBytes());
@@ -1079,7 +1047,7 @@ public final class ModifyJobProtos {
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(4, getAppNameBytes());
+          .computeInt32Size(4, appId_);
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         size += com.google.protobuf.CodedOutputStream
@@ -1264,7 +1232,7 @@ public final class ModifyJobProtos {
         bitField0_ = (bitField0_ & ~0x00000002);
         cronExpression_ = "";
         bitField0_ = (bitField0_ & ~0x00000004);
-        appName_ = "";
+        appId_ = 0;
         bitField0_ = (bitField0_ & ~0x00000008);
         appKey_ = "";
         bitField0_ = (bitField0_ & ~0x00000010);
@@ -1343,7 +1311,7 @@ public final class ModifyJobProtos {
         if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
           to_bitField0_ |= 0x00000008;
         }
-        result.appName_ = appName_;
+        result.appId_ = appId_;
         if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
           to_bitField0_ |= 0x00000010;
         }
@@ -1438,10 +1406,8 @@ public final class ModifyJobProtos {
           cronExpression_ = other.cronExpression_;
           onChanged();
         }
-        if (other.hasAppName()) {
-          bitField0_ |= 0x00000008;
-          appName_ = other.appName_;
-          onChanged();
+        if (other.hasAppId()) {
+          setAppId(other.getAppId());
         }
         if (other.hasAppKey()) {
           bitField0_ |= 0x00000010;
@@ -1508,7 +1474,7 @@ public final class ModifyJobProtos {
               parametersBuilder_ = null;
               parameters_ = other.parameters_;
               bitField0_ = (bitField0_ & ~0x00020000);
-              parametersBuilder_ =
+              parametersBuilder_ = 
                 com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
                    getParametersFieldBuilder() : null;
             } else {
@@ -1525,12 +1491,12 @@ public final class ModifyJobProtos {
 
       public final boolean isInitialized() {
         if (!hasJobId()) {
-
+          
           return false;
         }
         for (int i = 0; i < getParametersCount(); i++) {
           if (!getParameters(i).isInitialized()) {
-
+            
             return false;
           }
         }
@@ -1618,7 +1584,7 @@ public final class ModifyJobProtos {
           getJobNameBytes() {
         java.lang.Object ref = jobName_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b =
+          com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
           jobName_ = b;
@@ -1692,7 +1658,7 @@ public final class ModifyJobProtos {
           getCronExpressionBytes() {
         java.lang.Object ref = cronExpression_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b =
+          com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
           cronExpression_ = b;
@@ -1737,76 +1703,35 @@ public final class ModifyJobProtos {
         return this;
       }
 
-      // optional string app_name = 4;
-      private java.lang.Object appName_ = "";
+      // optional int32 app_id = 4;
+      private int appId_ ;
       /**
-       * <code>optional string app_name = 4;</code>
+       * <code>optional int32 app_id = 4;</code>
        */
-      public boolean hasAppName() {
+      public boolean hasAppId() {
         return ((bitField0_ & 0x00000008) == 0x00000008);
       }
       /**
-       * <code>optional string app_name = 4;</code>
+       * <code>optional int32 app_id = 4;</code>
        */
-      public java.lang.String getAppName() {
-        java.lang.Object ref = appName_;
-        if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          appName_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
+      public int getAppId() {
+        return appId_;
       }
       /**
-       * <code>optional string app_name = 4;</code>
+       * <code>optional int32 app_id = 4;</code>
        */
-      public com.google.protobuf.ByteString
-          getAppNameBytes() {
-        java.lang.Object ref = appName_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b =
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          appName_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string app_name = 4;</code>
-       */
-      public Builder setAppName(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
-        appName_ = value;
+      public Builder setAppId(int value) {
+        bitField0_ |= 0x00000008;
+        appId_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional string app_name = 4;</code>
+       * <code>optional int32 app_id = 4;</code>
        */
-      public Builder clearAppName() {
+      public Builder clearAppId() {
         bitField0_ = (bitField0_ & ~0x00000008);
-        appName_ = getDefaultInstance().getAppName();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string app_name = 4;</code>
-       */
-      public Builder setAppNameBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
-        appName_ = value;
+        appId_ = 0;
         onChanged();
         return this;
       }
@@ -1840,7 +1765,7 @@ public final class ModifyJobProtos {
           getAppKeyBytes() {
         java.lang.Object ref = appKey_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b =
+          com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
           appKey_ = b;
@@ -1914,7 +1839,7 @@ public final class ModifyJobProtos {
           getUserBytes() {
         java.lang.Object ref = user_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b =
+          com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
           user_ = b;
@@ -1988,7 +1913,7 @@ public final class ModifyJobProtos {
           getJobTypeBytes() {
         java.lang.Object ref = jobType_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b =
+          com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
           jobType_ = b;
@@ -2062,7 +1987,7 @@ public final class ModifyJobProtos {
           getContentBytes() {
         java.lang.Object ref = content_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b =
+          com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
           content_ = b;
@@ -2599,7 +2524,7 @@ public final class ModifyJobProtos {
       /**
        * <code>repeated .MapEntry parameters = 18;</code>
        */
-      public java.util.List<? extends com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder>
+      public java.util.List<? extends com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder> 
            getParametersOrBuilderList() {
         if (parametersBuilder_ != null) {
           return parametersBuilder_.getMessageOrBuilderList();
@@ -2625,12 +2550,12 @@ public final class ModifyJobProtos {
       /**
        * <code>repeated .MapEntry parameters = 18;</code>
        */
-      public java.util.List<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder>
+      public java.util.List<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder> 
            getParametersBuilderList() {
         return getParametersFieldBuilder().getBuilderList();
       }
       private com.google.protobuf.RepeatedFieldBuilder<
-          com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder>
+          com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder> 
           getParametersFieldBuilder() {
         if (parametersBuilder_ == null) {
           parametersBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
@@ -2749,6 +2674,7 @@ public final class ModifyJobProtos {
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       initFields();
+      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -2849,7 +2775,7 @@ public final class ModifyJobProtos {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs =
+        com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
@@ -2865,7 +2791,7 @@ public final class ModifyJobProtos {
         getMessageBytes() {
       java.lang.Object ref = message_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b =
+        com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         message_ = b;
@@ -3104,7 +3030,7 @@ public final class ModifyJobProtos {
 
       public final boolean isInitialized() {
         if (!hasSuccess()) {
-
+          
           return false;
         }
         return true;
@@ -3191,7 +3117,7 @@ public final class ModifyJobProtos {
           getMessageBytes() {
         java.lang.Object ref = message_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b =
+          com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
           message_ = b;
@@ -3266,21 +3192,21 @@ public final class ModifyJobProtos {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\020modify_job.proto\032\017map_entry.proto\"\261\003\n\032" +
+      "\n\020modify_job.proto\032\017map_entry.proto\"\257\003\n\032" +
       "RestServerModifyJobRequest\022\016\n\006job_id\030\001 \002" +
       "(\003\022\020\n\010job_name\030\002 \001(\t\022\027\n\017cron_expression\030" +
-      "\003 \001(\t\022\020\n\010app_name\030\004 \001(\t\022\017\n\007app_key\030\005 \001(\t" +
-      "\022\014\n\004user\030\006 \001(\t\022\020\n\010job_type\030\007 \001(\t\022\017\n\007cont" +
-      "ent\030\010 \001(\t\022\020\n\010group_id\030\t \001(\005\022\023\n\010priority\030" +
-      "\n \001(\005:\0011\022\031\n\016reject_retries\030\013 \001(\005:\0010\022\032\n\017r" +
-      "eject_interval\030\014 \001(\005:\0013\022\031\n\016failed_retrie" +
-      "s\030\r \001(\005:\0010\022\032\n\017failed_interval\030\016 \001(\005:\0013\022\022" +
-      "\n\nstart_time\030\017 \001(\003\022\020\n\010end_time\030\020 \001(\003\022\025\n\r",
-      "origin_job_id\030\021 \001(\003\022\035\n\nparameters\030\022 \003(\0132" +
-      "\t.MapEntry\022\023\n\013fixed_delay\030\023 \001(\005\"=\n\027Serve" +
-      "rModifyJobResponse\022\017\n\007success\030\001 \002(\010\022\021\n\007m" +
-      "essage\030\002 \001(\t:\000B.\n\033com.mogujie.jarvis.pro" +
-      "tocolB\017ModifyJobProtos"
+      "\003 \001(\t\022\016\n\006app_id\030\004 \001(\005\022\017\n\007app_key\030\005 \001(\t\022\014" +
+      "\n\004user\030\006 \001(\t\022\020\n\010job_type\030\007 \001(\t\022\017\n\007conten" +
+      "t\030\010 \001(\t\022\020\n\010group_id\030\t \001(\005\022\023\n\010priority\030\n " +
+      "\001(\005:\0011\022\031\n\016reject_retries\030\013 \001(\005:\0010\022\032\n\017rej" +
+      "ect_interval\030\014 \001(\005:\0013\022\031\n\016failed_retries\030" +
+      "\r \001(\005:\0010\022\032\n\017failed_interval\030\016 \001(\005:\0013\022\022\n\n" +
+      "start_time\030\017 \001(\003\022\020\n\010end_time\030\020 \001(\003\022\025\n\ror",
+      "igin_job_id\030\021 \001(\003\022\035\n\nparameters\030\022 \003(\0132\t." +
+      "MapEntry\022\023\n\013fixed_delay\030\023 \001(\005\"=\n\027ServerM" +
+      "odifyJobResponse\022\017\n\007success\030\001 \002(\010\022\021\n\007mes" +
+      "sage\030\002 \001(\t:\000B.\n\033com.mogujie.jarvis.proto" +
+      "colB\017ModifyJobProtos"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -3292,7 +3218,7 @@ public final class ModifyJobProtos {
           internal_static_RestServerModifyJobRequest_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_RestServerModifyJobRequest_descriptor,
-              new java.lang.String[] { "JobId", "JobName", "CronExpression", "AppName", "AppKey", "User", "JobType", "Content", "GroupId", "Priority", "RejectRetries", "RejectInterval", "FailedRetries", "FailedInterval", "StartTime", "EndTime", "OriginJobId", "Parameters", "FixedDelay", });
+              new java.lang.String[] { "JobId", "JobName", "CronExpression", "AppId", "AppKey", "User", "JobType", "Content", "GroupId", "Priority", "RejectRetries", "RejectInterval", "FailedRetries", "FailedInterval", "StartTime", "EndTime", "OriginJobId", "Parameters", "FixedDelay", });
           internal_static_ServerModifyJobResponse_descriptor =
             getDescriptor().getMessageTypes().get(1);
           internal_static_ServerModifyJobResponse_fieldAccessorTable = new

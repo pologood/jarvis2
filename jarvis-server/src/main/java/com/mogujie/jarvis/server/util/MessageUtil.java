@@ -35,7 +35,7 @@ import com.mogujie.jarvis.server.service.JobService;
 public class MessageUtil {
     public static Job convert2Job(RestServerSubmitJobRequest msg) {
         Job job = new Job();
-        job.setAppName(msg.getAppName());
+        job.setAppId(msg.getAppId());
         job.setJobName(msg.getJobName());
         job.setContent(msg.getContent());
         job.setPriority(msg.getPriority());
@@ -72,6 +72,9 @@ public class MessageUtil {
         long jobId = msg.getJobId();
         Job job = jobMapper.selectByPrimaryKey(jobId);
         job.setJobId(msg.getJobId());
+        if (msg.hasAppId()) {
+            job.setAppId(msg.getAppId());
+        }
         if (msg.hasContent()) {
             job.setContent(msg.getContent());
         }
