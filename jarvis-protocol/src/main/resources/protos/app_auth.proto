@@ -6,3 +6,9 @@ message AppAuth {
   required string name = 1;
   required string key = 2;
 }
+
+
+message AppAuthResponse {
+  required bool success = 1;
+  optional string message = 2 [default = ""];
+}

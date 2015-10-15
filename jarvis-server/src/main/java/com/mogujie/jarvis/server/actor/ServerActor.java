@@ -8,13 +8,24 @@
 
 package com.mogujie.jarvis.server.actor;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import javax.inject.Named;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.mogujie.jarvis.core.domain.Pair;
+import com.mogujie.jarvis.dao.AppMapper;
+import com.mogujie.jarvis.dto.App;
+import com.mogujie.jarvis.dto.AppExample;
+import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
+import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthResponse;
 import com.mogujie.jarvis.server.util.SpringExtension;
 
 import akka.actor.ActorRef;
@@ -27,13 +38,29 @@ import akka.routing.SmallestMailboxPool;
  * ServerActor forward any messages to other actors
  *
  */
+@Named("serverActor")
+@Scope("prototype")
 public class ServerActor extends UntypedActor {
+
+    @Autowired
+    private AppMapper appMapper;
 
     private Multimap<Class<?>, ActorRef> multimap = ArrayListMultimap.create();
     private List<Pair<ActorRef, Set<Class<?>>>> actorRefs = new ArrayList<>();
 
     public static Props props() {
         return Props.create(ServerActor.class);
+    }
+
+    private boolean verifyApp(String appName, String appKey) {
+        AppExample example = new AppExample();
+        example.createCriteria().andAppNameEqualTo(appName).andAppKeyEqualTo(appKey);
+        List<App> list = appMapper.selectByExample(example);
+        if (list != null && list.size() > 0) {
+            return true;
+        }
+
+        return false;
     }
 
     private void addActor(String actorName, Set<Class<?>> handledMessages) {
@@ -72,6 +99,20 @@ public class ServerActor extends UntypedActor {
 
     @Override
     public void onReceive(Object obj) throws Exception {
+        Field[] fields = obj.getClass().getDeclaredFields();
+        for (Field field : fields) {
+            if (field.getType() == AppAuth.class) {
+                field.setAccessible(true);
+                AppAuth appAuth = (AppAuth) field.get(obj);
+                boolean vaild = verifyApp(appAuth.getName(), appAuth.getKey());
+                if (!vaild) {
+                    AppAuthResponse response = AppAuthResponse.newBuilder().setSuccess(false).setMessage("App验证失败").build();
+                    getSender().tell(response, getSelf());
+                    return;
+                }
+            }
+        }
+
         Class<?> clazz = obj.getClass();
         if (multimap.containsKey(clazz)) {
             for (ActorRef actorRef : multimap.get(clazz)) {
