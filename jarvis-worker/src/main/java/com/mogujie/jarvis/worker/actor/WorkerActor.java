@@ -88,6 +88,7 @@ public class WorkerActor extends UntypedActor {
     taskBuilder.setTaskType(taskType);
     taskBuilder.setContent(request.getContent());
     taskBuilder.setPriority(request.getPriority());
+    taskBuilder.setSchedulingTime(request.getSchedulingTime());
 
     Map<String, Object> map = new HashMap<>();
     List<MapEntry> parameters = request.getParametersList();

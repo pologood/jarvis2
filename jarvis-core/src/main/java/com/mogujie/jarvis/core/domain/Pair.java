@@ -1,3 +1,10 @@
+/*
+ * 蘑菇街 Inc.
+ * Copyright (c) 2010-2015 All Rights Reserved.
+ *
+ * Author: wuya
+ * Create Date: 2015年8月31日 下午2:54:51
+ */
 package com.mogujie.jarvis.core.domain;
 
 import java.util.Objects;

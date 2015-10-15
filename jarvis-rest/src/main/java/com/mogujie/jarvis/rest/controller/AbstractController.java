@@ -14,7 +14,6 @@ import com.mogujie.jarvis.rest.MsgCode;
 import com.mogujie.jarvis.rest.RestResult;
 import com.mogujie.jarvis.rest.vo.AbstractVo;
 import com.typesafe.config.Config;
-import com.typesafe.config.ConfigFactory;
 
 import akka.actor.ActorSelection;
 import akka.actor.ActorSystem;
@@ -50,10 +49,8 @@ public abstract class AbstractController {
         logstorageAkkaUserPath = restConfig.getString("logstorage.akka.path") + JarvisConstants.LOGSTORAGE_AKKA_USER_PATH;
 
         if (system == null) {
-            Config akkaConfig = ConfigFactory.load("akka-rest.conf");
-            Config restAkkaConfig = ConfigUtils.getAkkaConfig().withFallback(akkaConfig.getConfig("rest"));
-
-            system = ActorSystem.create(JarvisConstants.REST_AKKA_SYSTEM_NAME, restAkkaConfig);
+            Config akkaConfig = ConfigUtils.getAkkaConfig("akka-rest.conf");
+            system = ActorSystem.create(JarvisConstants.REST_AKKA_SYSTEM_NAME, akkaConfig);
         }
 
     }
@@ -74,19 +71,19 @@ public abstract class AbstractController {
 
         ActorSelection actor;
 
-        if (akkaType == AkkaType.server) {
+        if (akkaType == AkkaType.SERVER) {
             if (serverActor == null) {
                 serverActor = system.actorSelection(serverAkkaUserPath);
             }
             actor = serverActor;
 
-        } else if (akkaType == AkkaType.worker) {
+        } else if (akkaType == AkkaType.WORKER) {
             if (workerActor == null) {
                 workerActor = system.actorSelection(workerAkkaUserPath);
             }
             actor = workerActor;
 
-        } else if (akkaType == AkkaType.logstorage) {
+        } else if (akkaType == AkkaType.LOGSTORAGE) {
             if (logstorageActor == null) {
                 logstorageActor = system.actorSelection(logstorageAkkaUserPath);
             }

@@ -21,7 +21,6 @@ import com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest;
 import com.mogujie.jarvis.worker.actor.DeadLetterActor;
 import com.mogujie.jarvis.worker.actor.WorkerActor;
 import com.typesafe.config.Config;
-import com.typesafe.config.ConfigFactory;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSelection;
@@ -41,13 +40,13 @@ public class JarvisWorker {
 
   public static void main(String[] args) {
     LOGGER.info("Starting jarvis worker...");
-    Configuration workerConfig = ConfigUtils.getWorkerConfig();
-    Config akkaConfig = ConfigFactory.load("akka-worker.conf").getConfig("worker");
-    ActorSystem system = ActorSystem.create("worker",
-        ConfigUtils.getAkkaConfig().withFallback(akkaConfig));
 
-    String serverAkkaPath = workerConfig.getString("server.akka.path") + "/user/"
-        + JarvisConstants.SERVER_AKKA_SYSTEM_NAME;
+    Config akkaConfig = ConfigUtils.getAkkaConfig("akka-worker.conf");
+    ActorSystem system = ActorSystem.create(JarvisConstants.WORKER_AKKA_SYSTEM_NAME, akkaConfig);
+
+    Configuration workerConfig = ConfigUtils.getWorkerConfig();
+    String serverAkkaPath = workerConfig.getString("server.akka.path")
+        + JarvisConstants.SERVER_AKKA_USER_PATH;
     int workerGroupId = workerConfig.getInt("worker.group.id", 0);
     String workerKey = workerConfig.getString("worker.key");
     WorkerRegistryRequest request = WorkerRegistryRequest.newBuilder().setKey(workerKey).build();

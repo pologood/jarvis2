@@ -24,15 +24,14 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.mogujie.jarvis.core.domain.AkkaType;
+import com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry;
 import com.mogujie.jarvis.protocol.MapEntryProtos;
-import com.mogujie.jarvis.protocol.ModifyDependencyProtos;
 import com.mogujie.jarvis.protocol.ModifyDependencyProtos.RestServerModifyDependencyRequest;
 import com.mogujie.jarvis.protocol.ModifyDependencyProtos.ServerModifyDependencyResponse;
 import com.mogujie.jarvis.protocol.ModifyJobFlagProtos.RestServerModifyJobFlagRequest;
 import com.mogujie.jarvis.protocol.ModifyJobFlagProtos.ServerModifyJobFlagResponse;
 import com.mogujie.jarvis.protocol.ModifyJobProtos.RestServerModifyJobRequest;
 import com.mogujie.jarvis.protocol.ModifyJobProtos.ServerModifyJobResponse;
-import com.mogujie.jarvis.protocol.SubmitJobProtos.DependencyEntry;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitJobRequest;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitJobResponse;
 import com.mogujie.jarvis.rest.MsgCode;
@@ -112,7 +111,7 @@ public class JobController extends AbstractController {
 
             // 发送请求到server尝试新增
 
-            ServerSubmitJobResponse response = (ServerSubmitJobResponse) callActor(AkkaType.server, request);
+            ServerSubmitJobResponse response = (ServerSubmitJobResponse) callActor(AkkaType.SERVER, request);
 
             // 判断是否新增成功
             if (response.getSuccess()) {
@@ -123,8 +122,7 @@ public class JobController extends AbstractController {
                 return errorResult(response.getMessage());
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            logger.info(e.getStackTrace());
+            logger.error("", e);
             return errorResult(e.getMessage());
         }
     }
@@ -140,7 +138,6 @@ public class JobController extends AbstractController {
     public RestResult edit(@FormParam("appName") String appName, @FormParam("appKey") String appKey, @FormParam("jobName") String jobName,
             @FormParam("jobId") Long jobId, @FormParam("cronExpression") String cronExp, @FormParam("dependJobIds") String dependJobIds,
             @FormParam("user") String user, @FormParam("jobType") String jobType, @FormParam("content") String content,
-            // @FormParam("jobContent") String jobContent,
             @FormParam("groupId") int groupId, @FormParam("rejectRetries") int rejectRetries, @FormParam("rejectInterval") int rejectInterval,
             @FormParam("failedRetries") int failedRetries, @FormParam("failedInterval") int failedInterval, @FormParam("startTime") String startTime,
             @FormParam("endTime") String endTime, @FormParam("priority") int priority, @FormParam("parameters") String parameters) {
@@ -149,7 +146,7 @@ public class JobController extends AbstractController {
             logger.info("更新job任务");
 
             // todo , 转换为 list
-            List<ModifyDependencyProtos.DependencyEntry> dependEntryList = new ArrayList<ModifyDependencyProtos.DependencyEntry>();
+            List<DependencyEntry> dependEntryList = new ArrayList<DependencyEntry>();
             // 不为null且不为空字符串才处理
 
             if (dependJobIds != null && !dependJobIds.equals("")) {
@@ -157,15 +154,13 @@ public class JobController extends AbstractController {
                 for (Object key : dependIdsJson.keySet()) {
                     String value = dependIdsJson.getString((String) key);
                     if (value.equalsIgnoreCase("add")) {
-                        ModifyDependencyProtos.DependencyEntry entry = ModifyDependencyProtos.DependencyEntry.newBuilder()
-                                .setJobId(Integer.parseInt((String) key)).setOperator(ModifyDependencyProtos.DependencyEntry.DependencyOperator.ADD)
-                                .build();
+                        DependencyEntry entry = DependencyEntry.newBuilder().setJobId(Integer.parseInt((String) key))
+                                .setOperator(DependencyEntry.DependencyOperator.ADD).build();
                         dependEntryList.add(entry);
                     }
                     if (value.equalsIgnoreCase("delete")) {
-                        ModifyDependencyProtos.DependencyEntry entry = ModifyDependencyProtos.DependencyEntry.newBuilder()
-                                .setJobId(Integer.parseInt((String) key))
-                                .setOperator(ModifyDependencyProtos.DependencyEntry.DependencyOperator.REMOVE).build();
+                        DependencyEntry entry = DependencyEntry.newBuilder().setJobId(Integer.parseInt((String) key))
+                                .setOperator(DependencyEntry.DependencyOperator.REMOVE).build();
                         dependEntryList.add(entry);
                     }
                 }
@@ -189,27 +184,26 @@ public class JobController extends AbstractController {
                 startTimeLong = dateTimeFormatter.parseDateTime(startTime).getMillis();
             }
             if (endTime != null && !endTime.equals("")) {
-                startTimeLong = dateTimeFormatter.parseDateTime(endTime).getMillis();
+                endTimeLong = dateTimeFormatter.parseDateTime(endTime).getMillis();
             }
 
             // 构造修改job基本信息请求
             RestServerModifyJobRequest request = null;
-            RestServerModifyJobRequest.Builder builder= RestServerModifyJobRequest.newBuilder().setAppName(appName).setJobName(jobName).setJobId(jobId)
-                    .setCronExpression(cronExp).setUser(user).setJobType(jobType).setContent(content)
-                    .setGroupId(groupId).setPriority(priority).setFailedRetries(failedRetries).setFailedInterval(failedInterval)
-                    .setRejectRetries(rejectRetries).setRejectInterval(rejectInterval)
-                    .addAllParameters(paraList);
+            RestServerModifyJobRequest.Builder builder = RestServerModifyJobRequest.newBuilder().setAppName(appName).setJobName(jobName)
+                    .setJobId(jobId).setCronExpression(cronExp).setUser(user).setJobType(jobType).setContent(content).setGroupId(groupId)
+                    .setPriority(priority).setFailedRetries(failedRetries).setFailedInterval(failedInterval).setRejectRetries(rejectRetries)
+                    .setRejectInterval(rejectInterval).addAllParameters(paraList);
 
-            if(startTimeLong!=null){
+            if (startTimeLong != null) {
                 builder.setStartTime(startTimeLong);
             }
-            if(endTimeLong!=null){
+            if (endTimeLong != null) {
                 builder.setEndTime(endTimeLong);
             }
-            request=builder.build();
+            request = builder.build();
 
             // 发送信息到server修改job基本信息
-            ServerModifyJobResponse response = (ServerModifyJobResponse) callActor(AkkaType.server, request);
+            ServerModifyJobResponse response = (ServerModifyJobResponse) callActor(AkkaType.SERVER, request);
 
             // 判断修改基本信息是否成功，修改基本信息成功后才尝试修改依赖
             if (response.getSuccess()) {
@@ -217,13 +211,11 @@ public class JobController extends AbstractController {
                 RestServerModifyDependencyRequest modifyDependencyRequest = RestServerModifyDependencyRequest.newBuilder().setJobId(jobId)
                         .addAllDependencyEntry(dependEntryList).build();
                 // 发送信息到server修改依赖
-                ServerModifyDependencyResponse dependencyResponse = (ServerModifyDependencyResponse) callActor(AkkaType.server,
+                ServerModifyDependencyResponse dependencyResponse = (ServerModifyDependencyResponse) callActor(AkkaType.SERVER,
                         modifyDependencyRequest);
                 // 修改依赖是否成功
                 if (dependencyResponse.getSuccess()) {
-                    JobVo vo = new JobVo();
-                    vo.setJobId(dependencyResponse.getJobId());
-                    return successResult(vo);
+                    return successResult();
                 } else {
                     return errorResult(dependencyResponse.getMessage());
                 }
@@ -247,13 +239,13 @@ public class JobController extends AbstractController {
     @POST
     @Path("flag")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult delete(@FormParam("jobId") Long jobId,@FormParam("appKey") String appKey, @FormParam("appName") String appName,@FormParam("jobFlag") Integer jobFlag)
-            throws Exception {
+    public RestResult flag(@FormParam("jobId") Long jobId, @FormParam("appKey") String appKey, @FormParam("appName") String appName,
+            @FormParam("jobFlag") Integer jobFlag) throws Exception {
         try {
             // 构造删除job请求request，1.启用2.禁用3.过期4.垃圾箱
             RestServerModifyJobFlagRequest request = RestServerModifyJobFlagRequest.newBuilder().setJobId(jobId).setJobFlag(jobFlag).build();
             // 发送请求到server尝试常熟
-            ServerModifyJobFlagResponse response = (ServerModifyJobFlagResponse) callActor(AkkaType.server, request);
+            ServerModifyJobFlagResponse response = (ServerModifyJobFlagResponse) callActor(AkkaType.SERVER, request);
 
             // 判断删除是否成功
             if (response.getSuccess()) {
@@ -271,7 +263,7 @@ public class JobController extends AbstractController {
     }
 
     /**
-     * 删除job任务
+     * 重跑任务
      *
      * @throws Exception
      */
@@ -288,7 +280,7 @@ public class JobController extends AbstractController {
                 break;
             }
         }
-        if (hasSelf == false) {
+        if (!hasSelf) {
             reRunJobArr.put(originJobId);
         }
 
@@ -298,7 +290,7 @@ public class JobController extends AbstractController {
             Long singleOriginId = reRunJobArr.getLong(i);
             // 构造新增任务请求
             RestServerSubmitJobRequest request = RestServerSubmitJobRequest.newBuilder().setOriginJobId(singleOriginId).build();
-            ServerSubmitJobResponse response = (ServerSubmitJobResponse) callActor(AkkaType.server, request);
+            ServerSubmitJobResponse response = (ServerSubmitJobResponse) callActor(AkkaType.SERVER, request);
 
             // 保存整理而言是否成功，如果某个job重跑失败，则算失败
             flag = flag && response.getSuccess();
@@ -319,7 +311,7 @@ public class JobController extends AbstractController {
     }
 
     /**
-     * 提交job任务
+     * 测试
      *
      * @throws Exception
      */

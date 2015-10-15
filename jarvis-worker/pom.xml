@@ -5,6 +5,7 @@
 		<groupId>com.mogujie.jarvis</groupId>
 		<artifactId>jarvis-parent</artifactId>
 		<version>2.0</version>
+		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<artifactId>jarvis-worker</artifactId>
 	<name>jarvis-worker</name>
@@ -17,12 +18,12 @@
 		<dependency>
 			<groupId>com.mogujie.jarvis</groupId>
 			<artifactId>jarvis-core</artifactId>
-			<version>2.0</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.mogujie.jarvis</groupId>
 			<artifactId>jarvis-protocol</artifactId>
-			<version>2.0</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.fusesource</groupId>
@@ -32,7 +33,7 @@
 		<dependency>
 			<groupId>com.mashape.unirest</groupId>
 			<artifactId>unirest-java</artifactId>
-			<version>1.4.6</version>
+			<version>1.4.7</version>
 		</dependency>
 	</dependencies>
 

@@ -1,0 +1,24 @@
+option java_package = "com.mogujie.jarvis.protocol";
+option java_outer_classname = "QueryJobRelationProtos";
+
+
+message JobFlagEntry {
+	required int64 job_id = 1;
+	required int32 job_flag = 2; 
+}
+
+message RestServerQueryJobRelationRequest {
+	enum RelationType {
+	    PARENTS = 0;
+	    CHILDREN = 1;
+    }
+    
+    required int64 job_id = 1;
+    required RelationType relation_type = 2;
+}
+
+message ServerQueryJobRelationResponse {
+    repeated JobFlagEntry job_flag_entry = 1;
+    required bool success = 2;
+    optional string message = 3 [default = ""];
+}

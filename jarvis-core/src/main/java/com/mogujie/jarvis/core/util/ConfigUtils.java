@@ -29,7 +29,6 @@ public class ConfigUtils {
     private static PropertiesConfiguration serverConfig;
     private static PropertiesConfiguration logstorageConfig;
 
-
     /**
      * 读取Server配置
      *
@@ -48,9 +47,9 @@ public class ConfigUtils {
         return serverConfig;
     }
 
-
     /**
-     *  读取worker配置
+     * 读取worker配置
+     * 
      * @return
      */
     public synchronized static Configuration getWorkerConfig() {
@@ -66,9 +65,9 @@ public class ConfigUtils {
         return workerConfig;
     }
 
-
     /**
      * 读取logstorage配置
+     * 
      * @return
      */
     public synchronized static Configuration getLogstorageConfig() {
@@ -86,6 +85,7 @@ public class ConfigUtils {
 
     /**
      * 读取rest配置
+     * 
      * @return
      */
     public synchronized static Configuration getRestConfig() {
@@ -101,17 +101,21 @@ public class ConfigUtils {
         return logstorageConfig;
     }
 
-
-
-    public static Config getAkkaConfig() {
+    /**
+     * 获取Akka的配置
+     *
+     * @param fileName
+     * @return
+     */
+    public static Config getAkkaConfig(String fileName) {
+        Config akkaConfig = ConfigFactory.load(fileName);
         try {
             String ipv4 = Inet4Address.getLocalHost().getHostAddress();
-            return ConfigFactory.parseString("akka.remote.netty.tcp.hostname=" + ipv4);
+            return ConfigFactory.parseString("akka.remote.netty.tcp.hostname=" + ipv4).withFallback(akkaConfig);
         } catch (UnknownHostException e) {
             Throwables.propagate(e);
         }
 
-        return null;
+        return akkaConfig;
     }
-
 }
