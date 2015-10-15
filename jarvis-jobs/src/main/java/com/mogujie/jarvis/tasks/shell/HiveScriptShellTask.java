@@ -30,7 +30,6 @@ public class HiveScriptShellTask extends HiveShellTask {
     @Override
     protected String getContent(TaskDetail task) {
         String scriptId = task.getContent();
-        // TODO
         return null;
     }
 
