@@ -71,17 +71,8 @@ function submit(){
         });
         return ;
     }
-    if(startTime==null||startTime==''||endTime==null||endTime==''){
-        new PNotify({
-            title: '重跑任务',
-            text: "开始日期与结束日期必须选择",
-            type: 'warning',
-            icon: true,
-            styling: 'bootstrap3'
-        });
-        return ;
-    }
-    if((new Date(startTime))>(new Date(endTime))){
+
+    if(startTime!=''&&endTime!=''&&((new Date(startTime))>(new Date(endTime)))){
         new PNotify({
             title: '重跑任务',
             text: "开始日期必须小于结束日期",
@@ -91,10 +82,8 @@ function submit(){
         });
         return ;
     }
-
-
+    
     var reRunJobs=$("#reRunNext").jstree().get_checked();
-
 
     var data={originJobId:originJobId,startTime:startTime,endTime:endTime,reRunJobs:JSON.stringify(reRunJobs)};
     requestRemoteRestApi("/job/rerun","重跑任务",data);

@@ -28,8 +28,8 @@
           <if test="priority!=null">
               AND priority=#{priority}
           </if>
-          <if test="appName!=null">
-              AND appName=#{appName}
+          <if test="appId!=null">
+              AND appId=#{appId}
           </if>
           <if test="workerGroupId!=null">
               AND workerGroupId=#{workerGroupId}
@@ -52,7 +52,7 @@
     </select>
 
     <select id="getJobsByCondition" parameterType="JobSearchVo" resultType="JobVo">
-      SELECT * FROM job
+      SELECT job.*,app.appName,app.appKey FROM job LEFT JOIN app ON job.appId=app.appId
       <include refid="condition" />
 
       <include refid="pager" />

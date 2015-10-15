@@ -35,7 +35,7 @@
                         <select id="originJobId">Key
                             <option value="">无</option>
                             <c:forEach items="${jobVoList}" var="job" varStatus="status">
-                                <option value="${job.jobId}" appKey="${appKey}" appName="${appName}">${job.jobName}</option>
+                                <option value="${job.jobId}" appName="${job.appName}" appKey="${job.appKey}" >${job.jobName}</option>
                             </c:forEach>
                         </select>
                     </div>

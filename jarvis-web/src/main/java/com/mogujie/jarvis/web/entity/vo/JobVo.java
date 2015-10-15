@@ -8,8 +8,8 @@ import com.mogujie.jarvis.dto.Job;
 public class JobVo extends Job {
     private String jobStatus;
     private String jobPriority;
-
-
+    private String appName;
+    private String appKey;
     private String createTimeStr;
     private String updateTimeStr;
     private String activeStartDateStr;
@@ -62,4 +62,21 @@ public class JobVo extends Job {
     public void setActiveEndDateStr(String activeEndDateStr) {
         this.activeEndDateStr = activeEndDateStr;
     }
+
+    public String getAppName() {
+        return appName;
+    }
+
+    public void setAppName(String appName) {
+        this.appName = appName;
+    }
+
+    public String getAppKey() {
+        return appKey;
+    }
+
+    public void setAppKey(String appKey) {
+        this.appKey = appKey;
+    }
+
 }
