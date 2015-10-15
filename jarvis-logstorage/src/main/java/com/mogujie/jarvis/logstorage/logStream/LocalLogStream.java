@@ -76,6 +76,7 @@ public class LocalLogStream implements LogStream {
      * @return              ：读取内容返回
      * @throws java.io.IOException
      */
+    @Override
     public LogReadResult readLines(long offset, int lines) throws IOException {
 
         if (offset < 0) {
