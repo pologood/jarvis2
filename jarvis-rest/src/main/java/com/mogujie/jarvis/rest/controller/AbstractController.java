@@ -28,7 +28,7 @@ import scala.concurrent.duration.Duration;
  */
 public abstract class AbstractController {
 
-    private ActorSystem system;
+    private static ActorSystem system;
 
     private String serverAkkaUserPath;
     private String workerAkkaUserPath;
