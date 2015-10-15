@@ -8,10 +8,12 @@
 
 package com.mogujie.jarvis.server.scheduler.task;
 
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.joda.time.DateTime;
@@ -20,6 +22,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.Preconditions;
 import com.google.common.eventbus.AllowConcurrentEvents;
 import com.google.common.eventbus.Subscribe;
 import com.mogujie.jarvis.core.domain.JobStatus;
@@ -72,6 +75,38 @@ public class TaskScheduler extends Scheduler {
 
     private Map<Long, DAGTask> readyTable = new ConcurrentHashMap<Long, DAGTask>();
 
+    private PriorityBlockingQueue<FailedTask> failedQueue = new PriorityBlockingQueue<>(10,
+            new Comparator<FailedTask>() {
+        @Override
+        public int compare(FailedTask t1, FailedTask t2) {
+            return (int)(t1.getNextStartTime() - t2.getNextStartTime());
+        }
+    });
+
+    class FailedScanThread extends Thread {
+        public FailedScanThread(String name) {
+            super(name);
+        }
+
+        @Override
+        public void run() {
+            while (true) {
+                while (!failedQueue.isEmpty()) {
+                    FailedTask failedTask = failedQueue.peek();
+                    long currentTime = System.currentTimeMillis();
+                    if (failedTask.getNextStartTime() <= currentTime) {
+                        retryTask(failedTask.getTask());
+                        failedQueue.poll();
+                    } else {
+                        break;
+                    }
+                }
+                ThreadUtils.sleep(1000);
+            }
+        }
+    }
+    private FailedScanThread scanThread;
+
     private boolean isTestMode = SchedulerUtil.isTestMode();
 
     // unique taskid
@@ -92,12 +127,17 @@ public class TaskScheduler extends Scheduler {
                 readyTable.put(task.getTaskId(), dagTask);
             }
         }
+
+        scanThread = new FailedScanThread("FailedScanThread");
+        scanThread.start();
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     protected void destroy() {
         clear();
         getSchedulerController().unregister(this);
+        scanThread.stop();
     }
 
     @Override
@@ -150,8 +190,12 @@ public class TaskScheduler extends Scheduler {
                 failedInterval = job.getFailedInterval();
             }
             if (dagTask.getAttemptId() <= maxFailedAttempts) {
-                ThreadUtils.sleep(failedInterval);
-                retryTask(taskId);
+                long currentTime = System.currentTimeMillis();
+                long nextStartTime = (currentTime / 1000 + failedInterval) * 1000;
+                Task task = taskMapper.selectByPrimaryKey(taskId);
+                if (task != null) {
+                    failedQueue.put(new FailedTask(task, nextStartTime));
+                }
             } else {
                 updateJobStatus(e.getTaskId(), JobStatus.FAILED);
                 readyTable.remove(taskId);
@@ -198,13 +242,19 @@ public class TaskScheduler extends Scheduler {
     }
 
     public void retryTask(long taskId) {
+        Task task = taskMapper.selectByPrimaryKey(taskId);
+        retryTask(task);
+    }
+
+    private void retryTask(Task task) {
+        Preconditions.checkNotNull(task, "task is null!");
+        long taskId = task.getTaskId();
         DAGTask dagTask = readyTable.get(taskId);
         if (dagTask != null) {
             int attemptId = dagTask.getAttemptId();
             attemptId++;
             dagTask.setAttemptId(attemptId);
             if (!isTestMode) {
-                Task task = taskMapper.selectByPrimaryKey(dagTask.getTaskId());
                 task.setAttemptId(attemptId);
                 DateTime dt = DateTime.now();
                 Date currentTime = dt.toDate();
