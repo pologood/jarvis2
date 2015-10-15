@@ -93,7 +93,7 @@ public class RemoteRestApiController extends BaseController {
                                     .data(rawData)
                                     .postDataCharset("UTF-8")
                                     .ignoreContentType(true)
-                                    .timeout(12000)
+                                    .timeout(8000)
                                     .method(Connection.Method.POST);
             Connection.Response response=connection.execute();
 

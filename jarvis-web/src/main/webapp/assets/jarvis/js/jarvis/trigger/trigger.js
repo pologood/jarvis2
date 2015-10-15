@@ -61,7 +61,7 @@ function submit(){
     var originJobId=$("#originJobId").val();
     var startTime=$("#startTime").val();
     var endTime=$("#endTime").val();
-    if(jobId==null||jobId==''){
+    if(originJobId==null||originJobId==''){
         new PNotify({
             title: '重跑任务',
             text: "必须选择Job",
@@ -81,15 +81,22 @@ function submit(){
         });
         return ;
     }
+    if((new Date(startTime))>(new Date(endTime))){
+        new PNotify({
+            title: '重跑任务',
+            text: "开始日期必须小于结束日期",
+            type: 'warning',
+            icon: true,
+            styling: 'bootstrap3'
+        });
+        return ;
+    }
+
 
     var reRunJobs=$("#reRunNext").jstree().get_checked();
 
-    $.ajax({
-        url:'',
-        type:'POST',
-        data:{originJobId:originJobId,startTime:startTime,endTime:endTime,reRunJobs:JSON.stringify(reRunJobs)},
-        success:function(data){
 
-        }
-    });
+    var data={originJobId:originJobId,startTime:startTime,endTime:endTime,reRunJobs:JSON.stringify(reRunJobs)};
+    requestRemoteRestApi("/job/rerun","重跑任务",data);
+
 }
