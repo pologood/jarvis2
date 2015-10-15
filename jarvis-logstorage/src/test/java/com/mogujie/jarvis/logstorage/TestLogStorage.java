@@ -10,11 +10,11 @@ package com.mogujie.jarvis.logstorage;
 import java.io.IOException;
 import java.text.ParseException;
 
+import com.mogujie.jarvis.logstorage.logStream.LocalLogStream;
 import org.junit.Test;
 
 import com.mogujie.jarvis.core.domain.StreamType;
 import com.mogujie.jarvis.logstorage.domain.LogReadResult;
-import com.mogujie.jarvis.logstorage.util.LogUtil;
 
 /**
  * @author 牧名
@@ -25,30 +25,35 @@ public class TestLogStorage {
     @Test
     public void testLogWrite() throws ParseException, IOException {
 
-        String fileName = LogUtil.getLogPath4Local("fullid_test001", StreamType.STD_OUT);
+
+        LocalLogStream localLogStream = new LocalLogStream("fullid_test001",StreamType.STD_OUT);
+
 
         String log;
         for (Integer i = 1; i < 100; i++) {
             log = "hello " + i.toString();
-            LogUtil.writeLine4Local(fileName, log);
+            localLogStream.writeLine(log);
 
         }
 
-        LogUtil.writeEndFlag2Local(fileName);
+        localLogStream.writeEndFlag();
 
     }
 
     @Test
     public void testLogRead() throws ParseException, IOException {
 
-        String fileName = LogUtil.getLogPath4Local("fullid_test001", StreamType.STD_OUT);
+
+        LocalLogStream localLogStream = new LocalLogStream("fullid_test001",StreamType.STD_OUT);
+
 
         long offset = 0;
         int i = 0;
         while (true) {
             i++;
 
-            LogReadResult result = LogUtil.readLines4locale(fileName, offset, 60);
+            LogReadResult result = localLogStream.readLines(offset, 60);
+
 
             String log = result.getLog();
             if (log.length() > 0) {
