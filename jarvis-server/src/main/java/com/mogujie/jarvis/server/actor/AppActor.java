@@ -54,7 +54,7 @@ public class AppActor extends UntypedActor {
             app.setStatus(request.getStatus());
             app.setCreateTime(date);
             app.setUpdateTime(date);
-            app.setCreator(request.getUser());
+            app.setUpdateUser(request.getUser());
             app.setMaxConcurrency(request.getMaxConcurrency());
 
             appMapper.insertSelective(app);
