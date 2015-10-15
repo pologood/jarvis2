@@ -68,8 +68,8 @@ public class JobController extends BaseController{
             JobVo jobVo=jobService.getJobById(jobId);
             modelMap.put("jobVo",jobVo);
 
-            String appName=jobVo.getAppName();
-            AppVo appVo=appService.getAppByName(appName);
+            Integer appId=jobVo.getAppId();
+            AppVo appVo=appService.getAppById(appId);
             if(appVo!=null&&appVo.getStatus()==0){
                 appVoList.add(appVo);
             }
