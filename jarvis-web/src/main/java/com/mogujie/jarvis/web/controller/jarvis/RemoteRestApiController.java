@@ -3,6 +3,7 @@ package com.mogujie.jarvis.web.controller.jarvis;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.mogu.bigdata.admin.common.entity.User;
+import com.mogujie.jarvis.web.common.Constants;
 import com.sun.org.apache.xerces.internal.util.URI;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.jsoup.Connection;
@@ -89,6 +90,8 @@ public class RemoteRestApiController extends BaseController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        rawData.put("appName", Constants.appName);
+        rawData.put("appKey",Constants.appKey);
 
 
 

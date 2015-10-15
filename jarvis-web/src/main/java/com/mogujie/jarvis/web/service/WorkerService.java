@@ -107,10 +107,11 @@ public class WorkerService {
 
         for(WorkerGroupVo workerGroupVo:workerGroupVoList){
             String createTimeStr=TimeTools.formatDateTime(workerGroupVo.getCreateTime());
-            String updateTime=TimeTools.formatDateTime(workerGroupVo.getUpdateTime());
+            String updateTimeStr=TimeTools.formatDateTime(workerGroupVo.getUpdateTime());
 
+            workerGroupVo.setStatusStr(Constants.workerGroupStatusMap.get(workerGroupVo.getStatus()));
             workerGroupVo.setCreateTimeStr(createTimeStr);
-            workerGroupVo.setUpdateTimeStr(createTimeStr);
+            workerGroupVo.setUpdateTimeStr(updateTimeStr);
         }
 
         JSONObject result=new JSONObject();

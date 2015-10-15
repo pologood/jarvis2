@@ -26,8 +26,8 @@
             <if test="name!=null and name!=''">
                 `name`=#{name}
             </if>
-            <if test="creator!=null and creator!=''">
-                AND creator=#{creator}
+            <if test="updateUser!=null and updateUser!=''">
+                AND updateUser=#{updateUser}
             </if>
         </where>
     </sql>
@@ -81,7 +81,7 @@
         <include refid="pager" />
     </select>
     <select id="getAllWorkerGroupCreator" resultType="String">
-        SELECT DISTINCT `creator` FROM worker_group;
+        SELECT DISTINCT `updateUser` FROM worker_group;
     </select>
     
 

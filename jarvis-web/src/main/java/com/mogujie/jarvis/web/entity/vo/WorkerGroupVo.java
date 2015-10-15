@@ -8,6 +8,7 @@ import com.mogujie.jarvis.dto.WorkerGroup;
 public class WorkerGroupVo extends WorkerGroup {
     private String createTimeStr;
     private String updateTimeStr;
+    private String statusStr;
 
     public String getCreateTimeStr() {
         return createTimeStr;
@@ -23,5 +24,13 @@ public class WorkerGroupVo extends WorkerGroup {
 
     public void setUpdateTimeStr(String updateTimeStr) {
         this.updateTimeStr = updateTimeStr;
+    }
+
+    public String getStatusStr() {
+        return statusStr;
+    }
+
+    public void setStatusStr(String statusStr) {
+        this.statusStr = statusStr;
     }
 }

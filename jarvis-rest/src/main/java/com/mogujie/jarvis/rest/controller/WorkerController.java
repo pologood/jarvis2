@@ -1,5 +1,9 @@
 package com.mogujie.jarvis.rest.controller;
 
+import com.mogujie.jarvis.core.domain.AkkaType;
+import com.mogujie.jarvis.protocol.AppAuthProtos;
+import com.mogujie.jarvis.protocol.ApplicationProtos;
+import com.mogujie.jarvis.protocol.ModifyWorkerStatusProtos;
 import com.mogujie.jarvis.rest.RestResult;
 import org.apache.log4j.Logger;
 
@@ -8,7 +12,8 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-
+import com.mogujie.jarvis.protocol.ModifyWorkerStatusProtos.*;
+import com.mogujie.jarvis.protocol.AppAuthProtos.*;
 /**
  * Created by hejian on 15/10/15.
  */
@@ -46,11 +51,29 @@ public class WorkerController extends AbstractController  {
     }
 
     @POST
-    @Path("delete")
+    @Path("status")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult delete(@FormParam("appId")String appId){
+    public RestResult delete(@FormParam("workerId")String workerId,
+                             @FormParam("ip")String ip,
+                             @FormParam("appName")String appName,
+                             @FormParam("appKey")String appKey,
+                             @FormParam("port")Integer port,
+                             @FormParam("status")Integer status){
         try {
-            return null;
+            AppAuth appAuth=AppAuth.newBuilder().setName(appName).setKey(appKey).build();
+
+            
+
+            RestServerModifyWorkerStatusRequest request = RestServerModifyWorkerStatusRequest.newBuilder()
+                    .setIp(ip).setPort(port).setStatus(status).setAppAuth(appAuth).build();
+
+            ServerModifyWorkerStatusResponse response=(ServerModifyWorkerStatusResponse) callActor(AkkaType.SERVER,request);
+            if(response.getSuccess()){
+                return successResult();
+            }
+            else{
+                return errorResult(response.getMessage());
+            }
         } catch (Exception e) {
             e.printStackTrace();
             logger.error("", e);

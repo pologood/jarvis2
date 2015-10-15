@@ -1,5 +1,6 @@
 package com.mogujie.jarvis.rest.controller;
 
+import com.google.protobuf.GeneratedMessage;
 import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.protocol.ModifyWorkerStatusProtos;
 import com.mogujie.jarvis.protocol.WorkerGroupProtos;
@@ -77,7 +78,18 @@ public class WorkerGroupController extends AbstractController {
                              @FormParam("status")Integer status,
                              @FormParam("user")String user){
         try {
-            return null;
+            RestServerModifyWorkerGroupRequest request=RestServerModifyWorkerGroupRequest.newBuilder()
+                    .setWorkerGroupId(workerGroupId).setStatus(status).build();
+
+            ServerModifyWorkerGroupResponse response=(ServerModifyWorkerGroupResponse)callActor(AkkaType.SERVER,request);
+
+
+            if(response.getSuccess()){
+                return successResult();
+            }
+            else{
+                return errorResult(response.getMessage());
+            }
         } catch (Exception e) {
             e.printStackTrace();
             //logger.error("", e);

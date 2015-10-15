@@ -7,6 +7,9 @@ import java.util.Map;
  * Created by hejian on 15/9/17.
  */
 public class Constants {
+    public final static String appName="jarvis-web";
+    public final static String appKey="11111";
+
     public static Map<Integer,String> jobFlagMap=new HashMap<Integer,String>();
     public static Map<Integer,String> jobPriorityMap=new HashMap<Integer,String>();
     public static Map<Integer,String> taskStatusMap=new HashMap<Integer,String>();
@@ -35,7 +38,7 @@ public class Constants {
         workerStatusMap.put(0,"下线");
         workerStatusMap.put(1,"上线");
 
-
-
+        workerGroupStatusMap.put(0,"无效");
+        workerGroupStatusMap.put(1,"有效");
     }
 }

@@ -36,14 +36,7 @@ function addWorker(){
     if(flag==false){
         return ;
     }
-    $.ajax({
-        url:'',
-        type:'POST',
-        data:{},
-        success:function(data){
-
-        }
-    });
+    requestRemoteRestApi("/worker/add","增加Worker",data);
 }
 
 function updateWorker(){
@@ -54,12 +47,11 @@ function updateWorker(){
     if(flag==false){
         return ;
     }
-    $.ajax({
-        url:'',
-        type:'POST',
-        data:{},
-        success:function(data){
+    requestRemoteRestApi("/worker/update","更新Worker",data);
+}
 
-        }
-    });
+function modifyWorkerStatus(workerGroupId,status){
+    var data={workerGroupId:workerGroupId,status:status}
+    requestRemoteRestApi("/worker/status","修改worker group 状态",data);
+
 }

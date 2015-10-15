@@ -1,6 +1,6 @@
+
+
 $(function(){
-
-
     initWorkerData();
     initWorkerGroupData();
 
@@ -110,35 +110,61 @@ function initWorkerGroupData(){
         exportDataType:'all'
     });
 }
-
-
+//worker操作状态
 function operateWorkerFormatter(value, row, index) {
     //console.log(row);
-    var appId=row["id"];
+    var workerStatus=[{"id":"0","text":"下线"},{"id":"1","text":"上线"}];
+    var id=row["id"];
+    var ip=row["ip"];
+    var port=row["port"];
+    var operateFlag=row["status"];
     //console.log(jobId);
     var result= [
-        '<a class="edit" href="/jarvis/manage/workerAddOrEdit?id='+appId+'" title="编辑Worker信息" target="_blank">',
-        '<i class="glyphicon glyphicon-edit"></i>',
-        '</a>  '
+        ''
     ].join('');
+
+    var operation='<div class="btn-group"> <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">修改状态 <span class="caret"></span> </button>';
+    operation=operation+'<ul class="dropdown-menu">';
+    $(workerStatus).each(function(i,c){
+        if(c["id"]!='all'&&c["id"]!=operateFlag){
+            var li='<li><a href="javascript:void(0)" onclick="modifyWorkerStatus('+id+','+c["id"]+',\''+ip+'\','+port+')" >'+c["text"]+'</a></li>';
+            operation=operation+li;
+        }
+    });
+    operation=operation+'</ul></div>';
 
     //console.log(result);
 
-    return result;
+    return result+operation;
 }
+//worker group操作状态
 function operateWorkerGroupFormatter(value, row, index) {
+    var workerGroupStatus=[{"id":"0","text":"无效"},{"id":"1","text":"有效"}];
     //console.log(row);
-    var appId=row["id"];
+    var id=row["id"];
+    var operateFlag=row["status"];
+    var authKey=row["authKey"];
     //console.log(jobId);
     var result= [
-        '<a class="edit" href="/jarvis/manage/workerGroupAddOrEdit?id='+appId+'" title="编辑WorkerGroup信息" target="_blank">',
+        '<a class="edit" href="/jarvis/manage/workerGroupAddOrEdit?id='+id+'" title="编辑WorkerGroup信息" target="_blank">',
         '<i class="glyphicon glyphicon-edit"></i>',
         '</a>  '
+
     ].join('');
+
+    var operation='<div class="btn-group"> <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">修改状态 <span class="caret"></span> </button>';
+    operation=operation+'<ul class="dropdown-menu">';
+    $(workerGroupStatus).each(function(i,c){
+        if(c["id"]!='all'&&c["id"]!=operateFlag){
+            var li='<li><a href="javascript:void(0)" onclick="modifyWorkerGroupStatus('+id+',\''+authKey+'\','+c["id"]+')" >'+c["text"]+'</a></li>';
+            operation=operation+li;
+        }
+    });
+    operation=operation+'</ul></div>';
 
     //console.log(result);
 
-    return result;
+    return result+operation;
 }
 
 
@@ -184,14 +210,18 @@ var workerGroupColumns=[{
     title: 'Worker Group id',
     switchable:true
 }, {
+    field: 'statusStr',
+    title: '状态',
+    switchable:true
+},{
     field: 'name',
     title: '名称',
     switchable:true
 }, {
-    field: 'key',
-    title: 'key',
+    field: 'authKey',
+    title: 'authKey',
     switchable:true
-}, {
+},  {
     field: 'createTimeStr',
     title: '创建时间',
     switchable:true
@@ -200,8 +230,8 @@ var workerGroupColumns=[{
     title: '更新时间',
     switchable:true
 }, {
-    field: 'creator',
-    title: '创建者',
+    field: 'updateUser',
+    title: '更新人',
     switchable:true
 },  {
     field: 'operation',
@@ -231,5 +261,19 @@ function searchWorkerGroup(){
 function resetWorkerGroup(){
     $("#name").val("all").trigger("change");
     $("#creator").val("all").trigger("change");
+}
+
+
+
+//修改worker
+function modifyWorkerStatus(workerId,status,ip,port){
+    var data={workerId:workerId,status:status,ip:ip,port:port};
+    requestRemoteRestApi("/worker/status","修改Worker Group状态",data);
+}
+
+//修改worker group状态
+function modifyWorkerGroupStatus(workerGroupId,authKey,status){
+    var data={workerGroupId:workerGroupId,authKey:authKey,status:status};
+    requestRemoteRestApi("/workerGroup/status","修改Worker Group状态",data);
 }
 

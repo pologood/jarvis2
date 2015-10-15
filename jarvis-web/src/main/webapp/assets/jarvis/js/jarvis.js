@@ -32,7 +32,6 @@ function requestRemoteRestApi(url,title,para){
         success:function(data){
             if(data.code==0){
                 flag=true;
-
                 new PNotify({
                     title: title,
                     text: data.msg,

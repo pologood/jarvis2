@@ -101,9 +101,7 @@
 
                     <div class="row top-buffer">
                         <div class="col-md-12">
-                            <div id="addWorker">
-                                <a class="btn btn-primary" href="/jarvis/manage/workerAddOrEdit" target="_blank">新增Worker</a>
-                            </div>
+
                             <table id="workerContent" >
 
                             </table>
@@ -134,11 +132,11 @@
 
                         <div class="col-md-3">
                             <div class="input-group" style="width:100%">
-                                <span class="input-group-addon" style="width:35%">创建者</span>
+                                <span class="input-group-addon" style="width:35%">最后更新者</span>
                                 <select id="creator" >
                                     <option value="all">全部</option>
                                     <c:forEach items="${workerGroupVoList}" var="workerGroupVo">
-                                        <option value="${workerGroupVo.creator}">${workerGroupVo.creator}</option>
+                                        <option value="${workerGroupVo.updateUser}">${workerGroupVo.updateUser}</option>
                                     </c:forEach>
                                 </select>
                             </div>

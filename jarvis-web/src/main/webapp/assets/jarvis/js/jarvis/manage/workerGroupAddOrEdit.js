@@ -62,8 +62,4 @@ function updateWorkerGroup(){
     requestRemoteRestApi("/workerGroup/update","更新Worker Group",data);
 }
 
-//删除worker group
-function deleteWorkerGroup(workerGroupId,status){
-    var data={workerGroupId:workerGroupId,status:status};
-    requestRemoteRestApi("/workerGroup/status","删除Worker Group",data);
-}
+
