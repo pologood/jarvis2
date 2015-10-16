@@ -21,11 +21,13 @@ import org.springframework.context.annotation.Scope;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.mogujie.jarvis.core.domain.Pair;
+import com.mogujie.jarvis.core.exeception.AppTokenInvalidException;
 import com.mogujie.jarvis.dao.AppMapper;
 import com.mogujie.jarvis.dto.App;
 import com.mogujie.jarvis.dto.AppExample;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthResponse;
+import com.mogujie.jarvis.server.util.AppTokenUtils;
 import com.mogujie.jarvis.server.util.SpringExtension;
 
 import akka.actor.ActorRef;
@@ -52,15 +54,15 @@ public class ServerActor extends UntypedActor {
         return Props.create(ServerActor.class);
     }
 
-    private boolean verifyApp(String appName, String appKey) {
+    private String queryAppKeyByName(String appName) {
         AppExample example = new AppExample();
-        example.createCriteria().andAppNameEqualTo(appName).andAppKeyEqualTo(appKey);
+        example.createCriteria().andAppNameEqualTo(appName);
         List<App> list = appMapper.selectByExample(example);
         if (list != null && list.size() > 0) {
-            return true;
+            return list.get(0).getAppKey();
         }
 
-        return false;
+        return null;
     }
 
     private void addActor(String actorName, Set<Class<?>> handledMessages) {
@@ -104,9 +106,11 @@ public class ServerActor extends UntypedActor {
             if (field.getType() == AppAuth.class) {
                 field.setAccessible(true);
                 AppAuth appAuth = (AppAuth) field.get(obj);
-                boolean vaild = verifyApp(appAuth.getName(), appAuth.getKey());
-                if (!vaild) {
-                    AppAuthResponse response = AppAuthResponse.newBuilder().setSuccess(false).setMessage("App验证失败").build();
+                String appKey = queryAppKeyByName(appAuth.getName());
+                try {
+                    AppTokenUtils.verifyToken(appKey, appAuth.getToken());
+                } catch (AppTokenInvalidException e) {
+                    AppAuthResponse response = AppAuthResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
                     getSender().tell(response, getSelf());
                     return;
                 }

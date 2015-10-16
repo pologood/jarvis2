@@ -37,7 +37,7 @@ import scala.concurrent.Future;
  */
 public class TestJobActor extends TestBaseActor {
 
-    private AppAuth appAuth = AppAuth.newBuilder().setName("testApp1").setKey("gsdgadfasdg").build();
+    private AppAuth appAuth = AppAuth.newBuilder().setName("testApp1").setToken("").build();
 
     @Test
     public void testSubmitJob1() {

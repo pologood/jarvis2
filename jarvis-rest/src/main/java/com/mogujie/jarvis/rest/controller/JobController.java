@@ -49,13 +49,14 @@ public class JobController extends AbstractController {
 
     /**
      * 提交job任务
+     * 
      * @author hejian
      * @throws Exception
      */
     @POST
     @Path("submit")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult submit(@FormParam("appName") String appName, @FormParam("appKey") String appKey, @FormParam("jobName") String jobName,
+    public RestResult submit(@FormParam("appName") String appName, @FormParam("appToken") String appToken, @FormParam("jobName") String jobName,
             @FormParam("jobId") Long jobId, @FormParam("cronExpression") String cronExp, @FormParam("dependJobIds") String dependJobIds,
             @FormParam("user") String user, @FormParam("jobType") String jobType, @FormParam("content") String content,
             // @FormParam("jobContent") String jobContent,
@@ -97,7 +98,7 @@ public class JobController extends AbstractController {
                 endTimeLong = dateTimeFormatter.parseDateTime(endTime).getMillis();
             }
 
-            AppAuth appAuth = AppAuth.newBuilder().setName(appName).setKey(appKey).build();
+            AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
             // 构造新增任务请求
             RestServerSubmitJobRequest.Builder builder = RestServerSubmitJobRequest.newBuilder().setAppAuth(appAuth).setJobName(jobName)
@@ -133,13 +134,14 @@ public class JobController extends AbstractController {
 
     /**
      * 修改job任务
+     * 
      * @author hejian
      * @throws Exception
      */
     @POST
     @Path("edit")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult edit(@FormParam("appName") String appName, @FormParam("appKey") String appKey, @FormParam("jobName") String jobName,
+    public RestResult edit(@FormParam("appName") String appName, @FormParam("appToken") String appToken, @FormParam("jobName") String jobName,
             @FormParam("jobId") Long jobId, @FormParam("cronExpression") String cronExp, @FormParam("dependJobIds") String dependJobIds,
             @FormParam("user") String user, @FormParam("jobType") String jobType, @FormParam("content") String content,
             @FormParam("groupId") int groupId, @FormParam("rejectRetries") int rejectRetries, @FormParam("rejectInterval") int rejectInterval,
@@ -191,7 +193,7 @@ public class JobController extends AbstractController {
                 endTimeLong = dateTimeFormatter.parseDateTime(endTime).getMillis();
             }
 
-            AppAuth appAuth = AppAuth.newBuilder().setName(appName).setKey(appKey).build();
+            AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
             // 构造修改job基本信息请求
             RestServerModifyJobRequest request = null;
@@ -239,6 +241,7 @@ public class JobController extends AbstractController {
 
     /**
      * 修改job任务状态
+     * 
      * @author hejian
      * @throws Exception
      */
@@ -271,18 +274,15 @@ public class JobController extends AbstractController {
 
     /**
      * 重跑任务
+     * 
      * @author hejian
      * @throws Exception
      */
     @POST
     @Path("rerun")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult rerun(@FormParam("originJobId") Long originJobId,
-                            @FormParam("appName") String appName,
-                            @FormParam("appKey") String appKey,
-                            @FormParam("startTime") String startTime,
-                            @FormParam("endTime") String endTime,
-                            @FormParam("reRunJobs") String reRunJobs){
+    public RestResult rerun(@FormParam("originJobId") Long originJobId, @FormParam("appName") String appName, @FormParam("appKey") String appKey,
+            @FormParam("startTime") String startTime, @FormParam("endTime") String endTime, @FormParam("reRunJobs") String reRunJobs) {
         try {
             JSONArray reRunJobArr = new JSONArray(reRunJobs);
 
@@ -300,8 +300,7 @@ public class JobController extends AbstractController {
             for (int i = 0; i < reRunJobArr.length(); i++) {
                 Long singleOriginId = reRunJobArr.getLong(i);
                 // 构造新增任务请求
-                RestServerSubmitJobRequest.Builder builder=RestServerSubmitJobRequest.newBuilder()
-                        .setOriginJobId(singleOriginId);
+                RestServerSubmitJobRequest.Builder builder = RestServerSubmitJobRequest.newBuilder().setOriginJobId(singleOriginId);
                 if (startTimeLong != null) {
                     builder.setStartTime(startTimeLong);
                 }

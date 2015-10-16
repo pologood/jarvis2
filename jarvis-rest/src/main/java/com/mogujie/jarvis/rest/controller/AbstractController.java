@@ -2,20 +2,17 @@ package com.mogujie.jarvis.rest.controller;
 
 import java.util.concurrent.TimeUnit;
 
-import com.mogujie.jarvis.rest.RestAkka;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.google.protobuf.GeneratedMessage;
-import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.domain.AkkaType;
-import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.rest.MsgCode;
+import com.mogujie.jarvis.rest.RestAkka;
 import com.mogujie.jarvis.rest.RestResult;
 import com.mogujie.jarvis.rest.vo.AbstractVo;
 
 import akka.actor.ActorSelection;
-import akka.actor.ActorSystem;
 import akka.pattern.Patterns;
 import akka.util.Timeout;
 import scala.concurrent.Await;
