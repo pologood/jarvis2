@@ -21,8 +21,10 @@ public class AddJobEvent extends DAGJobEvent{
     private DAGJobType type;
 
     /**
-     * @param long jobId
-     * @param JobDescriptor jobDesc
+     *
+     * @param jobId
+     * @param dependencies
+     * @param type
      */
     public AddJobEvent(long jobId, Set<Long> dependencies,
             DAGJobType type) {

@@ -15,7 +15,7 @@ package com.mogujie.jarvis.server.scheduler.event;
 public class TimeReadyEvent extends DAGJobEvent {
 
     /**
-     * @param long jobId
+     * @param jobId
      */
     public TimeReadyEvent(long jobId) {
         super(jobId);

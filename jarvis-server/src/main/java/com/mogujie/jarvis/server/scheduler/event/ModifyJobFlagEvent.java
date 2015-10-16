@@ -18,7 +18,7 @@ public class ModifyJobFlagEvent extends DAGJobEvent {
     private JobFlag jobFlag;
 
     /**
-     * @param long jobId
+     * @param jobId
      */
     public ModifyJobFlagEvent(long jobId, JobFlag jobFlag) {
         super(jobId);
