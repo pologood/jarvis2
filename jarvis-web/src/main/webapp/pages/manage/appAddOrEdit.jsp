@@ -42,7 +42,7 @@
                 <input class="form-control" id="appName" value="${appVo.appName}" onblur="checkAppName()"/>
             </div>
         </div>
-
+        <!--
         <div class="col-md-6 col-md-offset-3 top-buffer">
             <div class="input-group" style="width:100%">
                 <span class="input-group-addon" style="width:35%">状态</span>
@@ -52,6 +52,7 @@
                 </select>
             </div>
         </div>
+        -->
 
         <div class="col-md-6 col-md-offset-3 top-buffer text-center">
             <div class="input-group" style="width:100%">

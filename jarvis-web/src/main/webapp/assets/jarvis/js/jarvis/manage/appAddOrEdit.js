@@ -7,13 +7,13 @@ $(function(){
 function updateApp(){
     var appId=$("#appId").val();
     var appName=$("#appName").val();
-    var status=$("#status").val();
+    //var status=$("#status").val();
     var flag=checkAppName();
     if(flag==false){
         return;
     }
 
-    var data={appId:appId,appName:appName,status:status};
+    var data={appId:appId,appName:appName};
     requestRemoteRestApi("/app/update","修改应用",data);
 }
 
@@ -24,7 +24,7 @@ function addApp(){
     if(flag==false){
         return;
     }
-    var data={appName:appName,status:status};
+    var data={appName:appName};
     requestRemoteRestApi("/app/add","新增应用",data);
 }
 

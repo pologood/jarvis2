@@ -1,5 +1,7 @@
 package com.mogujie.jarvis.rest.controller;
 
+import com.mogujie.jarvis.core.domain.AkkaType;
+import com.mogujie.jarvis.protocol.AppAuthProtos;
 import com.mogujie.jarvis.rest.RestResult;
 import org.apache.log4j.Logger;
 
@@ -8,7 +10,8 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-
+import com.mogujie.jarvis.protocol.ApplicationProtos.*;
+import com.mogujie.jarvis.protocol.AppAuthProtos.*;
 /**
  * Created by hejian on 15/10/15.
  */
@@ -20,9 +23,21 @@ public class AppController extends AbstractController {
     @Path("add")
     @Produces(MediaType.APPLICATION_JSON)
     public RestResult add(@FormParam("appName")String appName,
-                          @FormParam("status")String status){
+                          @FormParam("appKey")String appKey,
+                          @FormParam("applicationName")String applicationName){
         try {
-            return null;
+            AppAuthProtos.AppAuth appAuth= AppAuthProtos.AppAuth.newBuilder().setName(appName).setKey(appKey).build();
+
+            RestServerCreateApplicationRequest request=RestServerCreateApplicationRequest.newBuilder()
+                                                        .setAppName(applicationName).setAppAuth(appAuth).build();
+
+            ServerCreateApplicationResponse response=(ServerCreateApplicationResponse)callActor(AkkaType.SERVER,request);
+            if(response.getSuccess()){
+                return successResult();
+            }
+            else{
+                return errorResult(response.getMessage());
+            }
         } catch (Exception e) {
             e.printStackTrace();
             logger.error("", e);
@@ -35,9 +50,20 @@ public class AppController extends AbstractController {
     @Produces(MediaType.APPLICATION_JSON)
     public RestResult update(@FormParam("appId")String appId,
                              @FormParam("appName")String appName,
-                             @FormParam("status")String status){
+                             @FormParam("appKey")String appKey,
+                             @FormParam("applicationName")String applicationName,
+                             @FormParam("status")int status){
         try {
-            return null;
+            AppAuthProtos.AppAuth appAuth= AppAuthProtos.AppAuth.newBuilder().setName(appName).setKey(appKey).build();
+            RestServerModifyApplicationRequest request=RestServerModifyApplicationRequest.newBuilder()
+                                                        .setAppAuth(appAuth).setAppName(applicationName).build();
+            ServerModifyApplicationResponse response=(ServerModifyApplicationResponse)callActor(AkkaType.SERVER,request);
+            if(response.getSuccess()){
+                return successResult();
+            }
+            else{
+                return errorResult(response.getMessage());
+            }
         } catch (Exception e) {
             e.printStackTrace();
             logger.error("", e);
@@ -46,11 +72,24 @@ public class AppController extends AbstractController {
     }
 
     @POST
-    @Path("delete")
+    @Path("status")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult delete(@FormParam("appId")String appId){
+    public RestResult delete(@FormParam("appId")String appId,
+                             @FormParam("appName")String appName,
+                             @FormParam("appKey")String appKey,
+                             @FormParam("status")int status){
         try {
-            return null;
+            AppAuth appAuth= AppAuth.newBuilder().setName(appName).setKey(appKey).build();
+
+            RestServerModifyApplicationRequest request=RestServerModifyApplicationRequest.newBuilder().setAppAuth(appAuth)
+                                                        .setStatus(status).build();
+            ServerModifyApplicationResponse response=(ServerModifyApplicationResponse)callActor(AkkaType.SERVER,request);
+            if(response.getSuccess()){
+                return successResult();
+            }
+            else{
+                return errorResult(response.getMessage());
+            }
         } catch (Exception e) {
             e.printStackTrace();
             logger.error("", e);

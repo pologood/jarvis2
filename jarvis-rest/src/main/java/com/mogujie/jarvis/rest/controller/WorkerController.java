@@ -62,8 +62,6 @@ public class WorkerController extends AbstractController  {
         try {
             AppAuth appAuth=AppAuth.newBuilder().setName(appName).setKey(appKey).build();
 
-            
-
             RestServerModifyWorkerStatusRequest request = RestServerModifyWorkerStatusRequest.newBuilder()
                     .setIp(ip).setPort(port).setStatus(status).setAppAuth(appAuth).build();
 

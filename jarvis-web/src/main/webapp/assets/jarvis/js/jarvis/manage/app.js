@@ -56,22 +56,34 @@ function initData(){
     });
 }
 
+function modifyAppStatus(){
 
+}
 
 
 function operateFormatter(value, row, index) {
-    //console.log(row);
+    var appStatus=[{"id":"0","text":"停用"},{"id":"1","text":"启用"}];
     var appId=row["appId"];
-    //console.log(jobId);
+    var status=row["status"];
     var result= [
         '<a class="edit" href="/jarvis/manage/appAddOrEdit?appId='+appId+'" title="编辑应用信息" target="_blank">',
         '<i class="glyphicon glyphicon-edit"></i>',
         '</a>  '
     ].join('');
 
+    var operation='<div class="btn-group"> <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">修改状态 <span class="caret"></span> </button>';
+    operation=operation+'<ul class="dropdown-menu">';
+    $(appStatus).each(function(i,c){
+        if(c["id"]!='all'&&c["id"]!=status){
+            var li='<li><a href="javascript:void(0)" onclick="modifyAppStatus('+appId+'\','+c["id"]+')" >'+c["text"]+'</a></li>';
+            operation=operation+li;
+        }
+    });
+    operation=operation+'</ul></div>';
+
     //console.log(result);
 
-    return result;
+    return result+operation;
 }
 
 

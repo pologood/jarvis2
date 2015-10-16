@@ -2,6 +2,7 @@ package com.mogujie.jarvis.rest.controller;
 
 import com.google.protobuf.GeneratedMessage;
 import com.mogujie.jarvis.core.domain.AkkaType;
+import com.mogujie.jarvis.protocol.AppAuthProtos;
 import com.mogujie.jarvis.protocol.ModifyWorkerStatusProtos;
 import com.mogujie.jarvis.protocol.WorkerGroupProtos;
 import com.mogujie.jarvis.rest.RestResult;
@@ -14,7 +15,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import com.mogujie.jarvis.protocol.WorkerGroupProtos.*;
-
+import com.mogujie.jarvis.protocol.AppAuthProtos.*;
 
 /**
  * Created by hejian on 15/10/15.
@@ -26,10 +27,15 @@ public class WorkerGroupController extends AbstractController {
     @POST
     @Path("add")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult add(@FormParam("name")String name,@FormParam("user")String user){
+    public RestResult add(@FormParam("name")String name,
+                          @FormParam("user")String user,
+                          @FormParam("appName")String appName,
+                          @FormParam("appKey")String appKey){
         try {
+            AppAuthProtos.AppAuth appAuth= AppAuthProtos.AppAuth.newBuilder().setName(appName).setKey(appKey).build();
+
             RestServerCreateWorkerGroupRequest request=RestServerCreateWorkerGroupRequest.newBuilder()
-                    .setWorkerGroupName(name).setUser(user).build();
+                    .setWorkerGroupName(name).setUser(user).setAppAuth(appAuth).build();
 
             ServerCreateWorkerGroupResponse response=(ServerCreateWorkerGroupResponse) callActor(AkkaType.SERVER,request);
 
@@ -51,10 +57,15 @@ public class WorkerGroupController extends AbstractController {
     @Produces(MediaType.APPLICATION_JSON)
     public RestResult update(@FormParam("workerGroupId")Integer workerGroupId,
                              @FormParam("name")String name,
-                             @FormParam("user")String user){
+                             @FormParam("user")String user,
+                             @FormParam("appName")String appName,
+                             @FormParam("appKey")String appKey){
         try {
+            AppAuthProtos.AppAuth appAuth= AppAuthProtos.AppAuth.newBuilder().setName(appName).setKey(appKey).build();
+
+
             RestServerModifyWorkerGroupRequest request=RestServerModifyWorkerGroupRequest.newBuilder()
-                    .setWorkerGroupId(workerGroupId).setWorkerGroupName(name)
+                    .setWorkerGroupId(workerGroupId).setAppAuth(appAuth).setWorkerGroupName(name)
                     .setUser(user).build();
 
             ServerModifyWorkerGroupResponse response=(ServerModifyWorkerGroupResponse)callActor(AkkaType.SERVER,request);
@@ -76,10 +87,15 @@ public class WorkerGroupController extends AbstractController {
     @Produces(MediaType.APPLICATION_JSON)
     public RestResult delete(@FormParam("workerGroupId")Integer workerGroupId,
                              @FormParam("status")Integer status,
-                             @FormParam("user")String user){
+                             @FormParam("user")String user,
+                             @FormParam("appName")String appName,
+                             @FormParam("appKey")String appKey){
         try {
+            AppAuthProtos.AppAuth appAuth= AppAuthProtos.AppAuth.newBuilder().setName(appName).setKey(appKey).build();
+
+
             RestServerModifyWorkerGroupRequest request=RestServerModifyWorkerGroupRequest.newBuilder()
-                    .setWorkerGroupId(workerGroupId).setStatus(status).build();
+                    .setWorkerGroupId(workerGroupId).setAppAuth(appAuth).setStatus(status).build();
 
             ServerModifyWorkerGroupResponse response=(ServerModifyWorkerGroupResponse)callActor(AkkaType.SERVER,request);
 

@@ -15,6 +15,7 @@ import javax.ws.rs.core.MediaType;
 
 import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.core.domain.WorkerStatus;
+import com.mogujie.jarvis.protocol.AppAuthProtos.*;
 import com.mogujie.jarvis.protocol.ModifyWorkerStatusProtos.RestServerModifyWorkerStatusRequest;
 import com.mogujie.jarvis.protocol.ModifyWorkerStatusProtos.ServerModifyWorkerStatusResponse;
 import com.mogujie.jarvis.rest.RestResult;
@@ -29,21 +30,27 @@ public class SystemController extends AbstractController {
     @POST
     @Path("status")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult status(@FormParam("appKey") String appKey, @FormParam("appName") String appName, @FormParam("ip") String ip,
-            @FormParam("port") int port, @FormParam("status") int status) throws Exception {
-        WorkerStatus ws = (status == 1) ? WorkerStatus.ONLINE : WorkerStatus.OFFLINE;
+    public RestResult status(@FormParam("appKey") String appKey,
+                             @FormParam("appName") String appName,
+                             @FormParam("status") int status){
+        try {
+            WorkerStatus ws = (status == 1) ? WorkerStatus.ONLINE : WorkerStatus.OFFLINE;
+            AppAuth appAuth= AppAuth.newBuilder().setName(appName).setKey(appKey).build();
 
-        RestServerModifyWorkerStatusRequest request = RestServerModifyWorkerStatusRequest.newBuilder().setIp(ip).setPort(port)
-                .setStatus(ws.getValue()).build();
+            RestServerModifyWorkerStatusRequest request = RestServerModifyWorkerStatusRequest.newBuilder()
+                    .setStatus(ws.getValue()).setAppAuth(appAuth).build();
 
-        ServerModifyWorkerStatusResponse response = (ServerModifyWorkerStatusResponse) callActor(AkkaType.SERVER, request);
+            ServerModifyWorkerStatusResponse response = (ServerModifyWorkerStatusResponse) callActor(AkkaType.SERVER, request);
 
-        if (response.getSuccess()) {
-            return successResult();
-        } else {
-            return errorResult(response.getMessage());
+            if (response.getSuccess()) {
+                return successResult();
+            } else {
+                return errorResult(response.getMessage());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return errorResult(e.getMessage());
         }
-
     }
 
 }
