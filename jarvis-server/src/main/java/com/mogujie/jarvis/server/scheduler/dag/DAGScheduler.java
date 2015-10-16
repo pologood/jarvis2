@@ -74,7 +74,7 @@ public class DAGScheduler extends Scheduler {
     private Map<Long, DAGJob> waitingTable = new ConcurrentHashMap<Long, DAGJob>();
     private DirectedAcyclicGraph<DAGJob, DefaultEdge> dag = new DirectedAcyclicGraph<DAGJob, DefaultEdge>(DefaultEdge.class);
 
-    private static final Logger LOGGER = LogManager.getLogger("server");
+    private static final Logger LOGGER = LogManager.getLogger();
 
     @Override
     @Transactional
@@ -84,19 +84,17 @@ public class DAGScheduler extends Scheduler {
         // load not deleted jobs from DB
         List<Job> jobs = jobService.getJobsNotDeleted();
         for (Job job : jobs) {
-            if (job.getJobFlag() != JobFlag.DELETED.getValue()) {
-                long jobId = job.getJobId();
-                Set<Long> dependencies = jobDependService.getDependIds(jobId);
-                Integer fixedDelay = job.getFixedDelay();
-                int cycleFlag = (fixedDelay != null && fixedDelay > 0) ? 1 : 0;
-                int dependFlag = (cronService.getPositiveCrontab(jobId) != null) ? 1 : 0;
-                int timeFlag = (!dependencies.isEmpty()) ? 1 : 0;
-                DAGJobType type = SchedulerUtil.getDAGJobType(cycleFlag, dependFlag, timeFlag);
-                try {
-                    addJob(jobId, new DAGJob(jobId, type), dependencies);
-                } catch (Exception e) {
-                    throw new RuntimeException(e.getMessage());
-                }
+            long jobId = job.getJobId();
+            Set<Long> dependencies = jobDependService.getDependIds(jobId);
+            Integer fixedDelay = job.getFixedDelay();
+            int cycleFlag = (fixedDelay != null && fixedDelay > 0) ? 1 : 0;
+            int dependFlag = (cronService.getPositiveCrontab(jobId) != null) ? 1 : 0;
+            int timeFlag = (!dependencies.isEmpty()) ? 1 : 0;
+            DAGJobType type = SchedulerUtil.getDAGJobType(cycleFlag, dependFlag, timeFlag);
+            try {
+                addJob(jobId, new DAGJob(jobId, type), dependencies);
+            } catch (Exception e) {
+                throw new RuntimeException(e.getMessage());
             }
         }
     }
@@ -131,6 +129,7 @@ public class DAGScheduler extends Scheduler {
     public void addJob(long jobId, DAGJob dagJob, Set<Long> dependencies) throws JobScheduleException {
         if (waitingTable.get(jobId) == null) {
             dag.addVertex(dagJob);
+            LOGGER.debug("add DAGJob {} to graph successfully.", dagJob.toString());
             if (dependencies != null) {
                 for (long d : dependencies) {
                     DAGJob parent = waitingTable.get(d);
@@ -139,15 +138,20 @@ public class DAGScheduler extends Scheduler {
                             // 过滤自依赖
                             if (parent.getJobId() != jobId) {
                                 dag.addDagEdge(parent, dagJob);
+                                LOGGER.debug("add dependency successfully, parent is {}, child is {}",
+                                        parent.getJobId(), dagJob.getJobId());
                             }
                         } catch (CycleFoundException e) {
+                            LOGGER.error(e);
                             dag.removeVertex(dagJob);
-                            throw new JobScheduleException(e.getMessage());
+                            LOGGER.debug("rollback successfully, remove DAGJob {} from graph", dagJob.toString());
+                            throw new JobScheduleException(e);
                         }
                     }
                 }
             }
             waitingTable.put(jobId, dagJob);
+            LOGGER.info("add DAGJob {} to DAGScheduler successfully.", dagJob.toString());
         }
     }
 
@@ -157,6 +161,7 @@ public class DAGScheduler extends Scheduler {
             dagJob.resetDependStatus();
             dag.removeVertex(dagJob);
             waitingTable.remove(jobId);
+            LOGGER.info("remove DAGJob {} from DAGScheduler successfully.", jobId);
         }
     }
 
@@ -190,10 +195,13 @@ public class DAGScheduler extends Scheduler {
         if (jobFlag.equals(JobFlag.DELETED)) {
             if (dagJob != null) {
                 removeJob(dagJob);
+                LOGGER.info("remove DAGJob {} from DAGScheduler successfully.", dagJob.getJobId());
             }
         } else {
             if (dagJob != null) {
+                JobFlag oldFlag = dagJob.getJobFlag();
                 dagJob.setJobFlag(jobFlag);
+                LOGGER.info("moidfy job flag from {} to {}.", oldFlag, jobFlag);
             }
         }
 
@@ -225,13 +233,18 @@ public class DAGScheduler extends Scheduler {
         // update dag job type
         DAGJob dagJob = waitingTable.get(jobId);
         if (dagJob != null) {
+            DAGJobType oldType = dagJob.getType();
             if (modifyJobMap.containsKey(ModifyJobType.CRON)) {
                 ModifyJobEntry entry = modifyJobMap.get(ModifyJobType.CRON);
                 ModifyOperation operation = entry.getOperation();
                 if (operation.equals(ModifyOperation.DEL)) {
                     dagJob.updateJobTypeByTimeFlag(false);
+                    LOGGER.info("DAGJob {} remove time flag, type from {} to {}",
+                            dagJob.getJobId(), oldType, dagJob.getType());
                 } else if (operation.equals(ModifyOperation.ADD)) {
                     dagJob.updateJobTypeByTimeFlag(true);
+                    LOGGER.info("DAGJob {} add time flag, type from {} to {}",
+                            dagJob.getJobId(), oldType, dagJob.getType());
                 }
             }
             if (modifyJobMap.containsKey(ModifyJobType.CYCLE)) {
@@ -239,8 +252,12 @@ public class DAGScheduler extends Scheduler {
                 ModifyOperation operation = entry.getOperation();
                 if (operation.equals(ModifyOperation.DEL)) {
                     dagJob.updateJobTypeByCycleFlag(false);
+                    LOGGER.info("DAGJob {} remove cycle flag, type from {} to {}",
+                            dagJob.getJobId(), oldType, dagJob.getType());
                 } else if (operation.equals(ModifyOperation.ADD)) {
                     dagJob.updateJobTypeByCycleFlag(true);
+                    LOGGER.info("DAGJob {} add cycle flag, type from {} to {}",
+                            dagJob.getJobId(), oldType, dagJob.getType());
                 }
             }
             submitJobWithCheck(dagJob);
@@ -260,18 +277,26 @@ public class DAGScheduler extends Scheduler {
             long preJobId = entry.getPreJobId();
             if (entry.getOperation().equals(ModifyOperation.ADD)) {
                 addDependency(preJobId, jobId);
+                LOGGER.info("add dependency successfully, parent {}, child {}", preJobId, jobId);
             } else if (entry.getOperation().equals(ModifyOperation.DEL)) {
                 removeDependency(preJobId, jobId);
+                LOGGER.info("remove dependency successfully, parent {}, child {}", preJobId, jobId);
             } else if (entry.getOperation().equals(ModifyOperation.MODIFY)) {
                 modifyDependency(preJobId, jobId, entry.getCommonStrategy(), entry.getOffsetStrategy());
+                LOGGER.info("modify dependency strategy, new common strategy is {}, new offset Strategy is {}",
+                        entry.getCommonStrategy(), entry.getOffsetStrategy());
             }
         }
 
         // update dag job type
         DAGJob dagJob = waitingTable.get(jobId);
         if (dagJob != null) {
+            DAGJobType oldType = dagJob.getType();
             boolean hasDepend = (!getParents(dagJob).isEmpty());
             dagJob.updateJobTypeByDependFlag(hasDepend);
+            if (!oldType.equals(dagJob.getType())) {
+                LOGGER.info("moidfy DAGJob type from {} to {}", oldType, dagJob.getType());
+            }
             submitJobWithCheck(dagJob);
         }
     }
@@ -361,11 +386,12 @@ public class DAGScheduler extends Scheduler {
         DAGJob dagJob = waitingTable.get(jobId);
         if (dagJob != null) {
             if (!(dagJob.getType().implies(DAGJobType.TIME))) {
-                LOGGER.warn("Job {} doesn't imply TIME type , auto fix to add TIME type.", e.getJobId());
+                LOGGER.warn("DAGJob {} doesn't imply TIME type , auto fix to add TIME type.", e.getJobId());
                 dagJob.updateJobTypeByTimeFlag(true);
             }
             // 更新时间标识
             dagJob.setTimeReadyFlag();
+            LOGGER.debug("DAGJob {} time ready", dagJob.getJobId());
             // 如果通过依赖检查，提交给taskScheduler，并重置自己的依赖状态
             submitJobWithCheck(dagJob);
         }
@@ -382,9 +408,13 @@ public class DAGScheduler extends Scheduler {
             if (children != null) {
                 for (DAGJob child : children) {
                     // 更新依赖状态为true
-                    child.setDependStatus(jobId, taskId);
-                    // 如果通过依赖检查，提交给taskScheduler，并重置自己的依赖状态
-                    submitJobWithCheck(child);
+                    if (child.getJobFlag().equals(JobFlag.ENABLE)) {
+                        child.setDependStatus(jobId, taskId);
+                        LOGGER.debug("Receive SuccessEvent, set depend status of {} to true.",
+                                "jobId="+child.getJobId()+",preJobId="+jobId+",preTaskId="+taskId);
+                        // 如果通过依赖检查，提交给taskScheduler，并重置自己的依赖状态
+                        submitJobWithCheck(child);
+                    }
                 }
             }
         }
@@ -402,6 +432,8 @@ public class DAGScheduler extends Scheduler {
                 for (DAGJob child : children) {
                     // 更新依赖状态为false
                     child.resetDependStatus(jobId, taskId);
+                    LOGGER.debug("Receive FailedEvent, reset depend status of {} to false.",
+                            "jobId="+child.getJobId()+",preJobId="+jobId+",preTaskId="+taskId);
                 }
             }
         }
@@ -425,7 +457,9 @@ public class DAGScheduler extends Scheduler {
             }
         }
         if (dagJob.dependCheck(needJobs)) {
+            LOGGER.debug("DAGJob {} pass the depend check", dagJob.getJobId());
             taskScheduler.submitJob(dagJob.getJobId());
+            // reset depend status
             dagJob.resetDependStatus();
         }
     }

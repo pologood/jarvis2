@@ -10,6 +10,9 @@ package com.mogujie.jarvis.server.scheduler.dag;
 
 import java.util.Set;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.mogujie.jarvis.server.scheduler.dag.checker.DAGDependChecker;
 import com.mogujie.jarvis.server.scheduler.dag.checker.DAGDependCheckerFactory;
 
@@ -23,6 +26,7 @@ public class DAGJob extends AbstractDAGJob {
     private DAGDependChecker dependChecker;
     private DAGJobType type;
     private boolean timeReadyFlag = false;
+    private static final Logger LOGGER = LogManager.getLogger();
 
     public DAGJob() {
         this.dependChecker = DAGDependCheckerFactory.create();
@@ -38,14 +42,28 @@ public class DAGJob extends AbstractDAGJob {
     public boolean dependCheck(Set<Long> needJobs) {
         boolean passCheck = true;
         if (type.implies(DAGJobType.DEPEND)) {
+            boolean dependCheck = dependChecker.check(needJobs);
+            if (!dependCheck) {
+                LOGGER.debug("dependChecker failed, job {}, needJobs {}", jobId, needJobs);
+            }
             passCheck = passCheck && dependChecker.check(needJobs);
         }
 
         if (type.implies(DAGJobType.TIME)) {
+            if (!timeReadyFlag) {
+                LOGGER.debug("Job {} is not time ready", jobId);
+            }
             passCheck = passCheck && timeReadyFlag;
         }
 
         return passCheck;
+    }
+
+    @Override
+    public String toString() {
+        return "{[jobid is" + jobId + "]," +
+                "[DAG type is" + type + "]," +
+                "[depend check instance is" + dependChecker.getClass().getSimpleName() + "]}";
     }
 
     public long getJobId() {

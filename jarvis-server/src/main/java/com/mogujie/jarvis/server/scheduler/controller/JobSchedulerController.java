@@ -8,6 +8,9 @@
 
 package com.mogujie.jarvis.server.scheduler.controller;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.google.common.eventbus.EventBus;
 import com.mogujie.jarvis.core.observer.Event;
 import com.mogujie.jarvis.core.observer.Observable;
@@ -24,6 +27,7 @@ import com.mogujie.jarvis.server.scheduler.Scheduler;
  *
  */
 public abstract class JobSchedulerController implements Observable {
+    protected static final Logger LOGGER = LogManager.getLogger();
     protected EventBus eventBus;
 
     public JobSchedulerController() {
@@ -37,6 +41,7 @@ public abstract class JobSchedulerController implements Observable {
                 scheduler.setSchedulerController(this);
             }
             eventBus.register(o);
+            LOGGER.info("{} register {}", getClass().getSimpleName(), o.getClass().getSimpleName());
         }
     }
 
@@ -44,6 +49,7 @@ public abstract class JobSchedulerController implements Observable {
     public void unregister(Observer o) {
         if (o instanceof Scheduler) {
             eventBus.unregister(o);
+            LOGGER.info("{} unregister {}", getClass().getSimpleName(), o.getClass().getSimpleName());
         }
     }
 
