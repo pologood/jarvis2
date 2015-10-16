@@ -8,8 +8,7 @@
 
 package com.mogujie.jarvis.server.scheduler;
 
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doAnswer;
 
 import java.util.Date;
 
@@ -24,9 +23,10 @@ import org.mockito.stubbing.Answer;
 
 import com.mogujie.jarvis.dto.Crontab;
 import com.mogujie.jarvis.server.scheduler.controller.JobSchedulerController;
+import com.mogujie.jarvis.server.scheduler.event.UnhandleEvent;
 
 /**
- * 
+ *
  *
  */
 @RunWith(MockitoJUnitRunner.class)
@@ -51,7 +51,7 @@ public class TestCronScheduler {
                 System.out.println(new Date());
                 return null;
             }
-        }).when(controller).notify(any());
+        }).when(controller).notify(new UnhandleEvent());
 
         Crontab crontab = new Crontab();
         crontab.setCronExpression("0/3 * * ? * *");
