@@ -6,25 +6,25 @@ $(function(){
 
 function updateApp(){
     var appId=$("#appId").val();
-    var appName=$("#appName").val();
+    var applicationName=$("#appName").val();
     //var status=$("#status").val();
     var flag=checkAppName();
     if(flag==false){
         return;
     }
 
-    var data={appId:appId,appName:appName};
+    var data={appId:appId,applicationName:applicationName};
     requestRemoteRestApi("/app/update","修改应用",data);
 }
 
 function addApp(){
-    var appName=$("#appName").val();
-    var status=$("#status").val();
+    var applicationName=$("#appName").val();
+    //var status=$("#status").val();
     var flag=checkAppName();
     if(flag==false){
         return;
     }
-    var data={appName:appName};
+    var data={applicationName:applicationName};
     requestRemoteRestApi("/app/add","新增应用",data);
 }
 
