@@ -23,6 +23,7 @@ import akka.testkit.JavaTestKit;
 import akka.util.Timeout;
 
 import com.mogujie.jarvis.core.util.ConfigUtils;
+import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
 import com.mogujie.jarvis.server.JarvisServerActorSystem;
 import com.mogujie.jarvis.server.scheduler.SchedulerUtil;
 import com.mogujie.jarvis.server.scheduler.controller.JobSchedulerController;
@@ -45,10 +46,12 @@ public class TestBaseActor extends AbstractTransactionalJUnit4SpringContextTests
     protected static ActorSystem system;
     protected static final Timeout TIMEOUT = new Timeout(Duration.create(5, TimeUnit.SECONDS));
     protected static Configuration conf = ConfigUtils.getServerConfig();
+    protected AppAuth appAuth = AppAuth.newBuilder().setName("testApp1").setKey("gsdgadfasdg").build();
     private static JobSchedulerController controller;
     private static DAGScheduler dagScheduler;
     private static TaskScheduler taskScheduler;
     private static TimeScheduler timeScheduler;
+
 
     @BeforeClass
     public static void setup() {

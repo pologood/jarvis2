@@ -22,7 +22,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.Preconditions;
 import com.google.common.eventbus.AllowConcurrentEvents;
 import com.google.common.eventbus.Subscribe;
 import com.mogujie.jarvis.core.domain.JobStatus;
@@ -190,11 +189,16 @@ public class TaskScheduler extends Scheduler {
                 failedInterval = job.getFailedInterval();
             }
             if (dagTask.getAttemptId() <= maxFailedAttempts) {
+                int attemptId = dagTask.getAttemptId();
+                attemptId++;
+                dagTask.setAttemptId(attemptId);
                 long currentTime = System.currentTimeMillis();
                 long nextStartTime = (currentTime / 1000 + failedInterval) * 1000;
-                Task task = taskMapper.selectByPrimaryKey(taskId);
-                if (task != null) {
-                    failedQueue.put(new FailedTask(task, nextStartTime));
+                if (!isTestMode) {
+                    Task task = taskMapper.selectByPrimaryKey(taskId);
+                    if (task != null) {
+                        failedQueue.put(new FailedTask(task, nextStartTime));
+                    }
                 }
             } else {
                 updateJobStatus(e.getTaskId(), JobStatus.FAILED);
@@ -243,19 +247,21 @@ public class TaskScheduler extends Scheduler {
 
     public void retryTask(long taskId) {
         Task task = taskMapper.selectByPrimaryKey(taskId);
-        retryTask(task);
-    }
-
-    private void retryTask(Task task) {
-        Preconditions.checkNotNull(task, "task is null!");
-        long taskId = task.getTaskId();
         DAGTask dagTask = readyTable.get(taskId);
-        if (dagTask != null) {
+        if (task != null && dagTask != null) {
             int attemptId = dagTask.getAttemptId();
             attemptId++;
             dagTask.setAttemptId(attemptId);
+            retryTask(task);
+        }
+    }
+
+    private void retryTask(Task task) {
+        long taskId = task.getTaskId();
+        DAGTask dagTask = readyTable.get(taskId);
+        if (dagTask != null) {
             if (!isTestMode) {
-                task.setAttemptId(attemptId);
+                task.setAttemptId(dagTask.getAttemptId());
                 DateTime dt = DateTime.now();
                 Date currentTime = dt.toDate();
                 task.setUpdateTime(currentTime);
