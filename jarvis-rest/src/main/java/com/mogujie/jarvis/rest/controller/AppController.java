@@ -1,43 +1,45 @@
 package com.mogujie.jarvis.rest.controller;
 
-import com.mogujie.jarvis.core.domain.AkkaType;
-import com.mogujie.jarvis.protocol.AppAuthProtos;
-import com.mogujie.jarvis.rest.RestResult;
-
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import com.mogujie.jarvis.protocol.ApplicationProtos.*;
-import com.mogujie.jarvis.protocol.AppAuthProtos.*;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import com.mogujie.jarvis.core.domain.AkkaType;
+import com.mogujie.jarvis.protocol.AppAuthProtos;
+import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
+import com.mogujie.jarvis.protocol.ApplicationProtos.RestServerCreateApplicationRequest;
+import com.mogujie.jarvis.protocol.ApplicationProtos.RestServerModifyApplicationRequest;
+import com.mogujie.jarvis.protocol.ApplicationProtos.ServerCreateApplicationResponse;
+import com.mogujie.jarvis.protocol.ApplicationProtos.ServerModifyApplicationResponse;
+import com.mogujie.jarvis.rest.RestResult;
 
 /**
  * Created by hejian on 15/10/15.
  */
 @Path("app")
 public class AppController extends AbstractController {
-    Logger LOGGER = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
 
     @POST
     @Path("add")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult add(@FormParam("appName")String appName,
-                          @FormParam("appKey")String appKey,
-                          @FormParam("applicationName")String applicationName){
+    public RestResult add(@FormParam("appName") String appName, @FormParam("appToken") String appToken,
+            @FormParam("applicationName") String applicationName) {
         try {
-            AppAuthProtos.AppAuth appAuth= AppAuthProtos.AppAuth.newBuilder().setName(appName).setKey(appKey).build();
+            AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
-            RestServerCreateApplicationRequest request=RestServerCreateApplicationRequest.newBuilder()
-                                                        .setAppName(applicationName).setAppAuth(appAuth).build();
+            RestServerCreateApplicationRequest request = RestServerCreateApplicationRequest.newBuilder().setAppName(applicationName)
+                    .setAppAuth(appAuth).build();
 
-            ServerCreateApplicationResponse response=(ServerCreateApplicationResponse)callActor(AkkaType.SERVER,request);
-            if(response.getSuccess()){
+            ServerCreateApplicationResponse response = (ServerCreateApplicationResponse) callActor(AkkaType.SERVER, request);
+            if (response.getSuccess()) {
                 return successResult();
-            }
-            else{
+            } else {
                 return errorResult(response.getMessage());
             }
         } catch (Exception e) {
@@ -50,20 +52,16 @@ public class AppController extends AbstractController {
     @POST
     @Path("update")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult update(@FormParam("appId")String appId,
-                             @FormParam("appName")String appName,
-                             @FormParam("appKey")String appKey,
-                             @FormParam("applicationName")String applicationName,
-                             @FormParam("status")int status){
+    public RestResult update(@FormParam("appId") String appId, @FormParam("appName") String appName, @FormParam("appToken") String appToken,
+            @FormParam("applicationName") String applicationName, @FormParam("status") int status) {
         try {
-            AppAuthProtos.AppAuth appAuth= AppAuthProtos.AppAuth.newBuilder().setName(appName).setKey(appKey).build();
-            RestServerModifyApplicationRequest request=RestServerModifyApplicationRequest.newBuilder()
-                                                        .setAppAuth(appAuth).setAppName(applicationName).build();
-            ServerModifyApplicationResponse response=(ServerModifyApplicationResponse)callActor(AkkaType.SERVER,request);
-            if(response.getSuccess()){
+            AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
+            RestServerModifyApplicationRequest request = RestServerModifyApplicationRequest.newBuilder().setAppAuth(appAuth)
+                    .setAppName(applicationName).build();
+            ServerModifyApplicationResponse response = (ServerModifyApplicationResponse) callActor(AkkaType.SERVER, request);
+            if (response.getSuccess()) {
                 return successResult();
-            }
-            else{
+            } else {
                 return errorResult(response.getMessage());
             }
         } catch (Exception e) {
@@ -76,20 +74,17 @@ public class AppController extends AbstractController {
     @POST
     @Path("status")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult delete(@FormParam("appId")String appId,
-                             @FormParam("appName")String appName,
-                             @FormParam("appKey")String appKey,
-                             @FormParam("status")int status){
+    public RestResult delete(@FormParam("appId") String appId, @FormParam("appName") String appName, @FormParam("appToken") String appToken,
+            @FormParam("status") int status) {
         try {
-            AppAuth appAuth= AppAuth.newBuilder().setName(appName).setKey(appKey).build();
+            AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
-            RestServerModifyApplicationRequest request=RestServerModifyApplicationRequest.newBuilder().setAppAuth(appAuth)
-                                                        .setStatus(status).build();
-            ServerModifyApplicationResponse response=(ServerModifyApplicationResponse)callActor(AkkaType.SERVER,request);
-            if(response.getSuccess()){
+            RestServerModifyApplicationRequest request = RestServerModifyApplicationRequest.newBuilder().setAppAuth(appAuth).setStatus(status)
+                    .build();
+            ServerModifyApplicationResponse response = (ServerModifyApplicationResponse) callActor(AkkaType.SERVER, request);
+            if (response.getSuccess()) {
                 return successResult();
-            }
-            else{
+            } else {
                 return errorResult(response.getMessage());
             }
         } catch (Exception e) {

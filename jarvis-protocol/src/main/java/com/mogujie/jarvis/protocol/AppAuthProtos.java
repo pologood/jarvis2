@@ -30,19 +30,19 @@ public final class AppAuthProtos {
         com.google.protobuf.ByteString getNameBytes();
 
         /**
-         * <code>required string key = 2;</code>
+         * <code>required string token = 2;</code>
          */
-        boolean hasKey();
+        boolean hasToken();
 
         /**
-         * <code>required string key = 2;</code>
+         * <code>required string token = 2;</code>
          */
-        java.lang.String getKey();
+        java.lang.String getToken();
 
         /**
-         * <code>required string key = 2;</code>
+         * <code>required string token = 2;</code>
          */
-        com.google.protobuf.ByteString getKeyBytes();
+        com.google.protobuf.ByteString getTokenBytes();
     }
 
     /**
@@ -105,7 +105,7 @@ public final class AppAuthProtos {
                         case 18: {
                             com.google.protobuf.ByteString bs = input.readBytes();
                             bitField0_ |= 0x00000002;
-                            key_ = bs;
+                            token_ = bs;
                             break;
                         }
                     }
@@ -183,41 +183,41 @@ public final class AppAuthProtos {
             }
         }
 
-        public static final int KEY_FIELD_NUMBER = 2;
-        private java.lang.Object key_;
+        public static final int TOKEN_FIELD_NUMBER = 2;
+        private java.lang.Object token_;
 
         /**
-         * <code>required string key = 2;</code>
+         * <code>required string token = 2;</code>
          */
-        public boolean hasKey() {
+        public boolean hasToken() {
             return ((bitField0_ & 0x00000002) == 0x00000002);
         }
 
         /**
-         * <code>required string key = 2;</code>
+         * <code>required string token = 2;</code>
          */
-        public java.lang.String getKey() {
-            java.lang.Object ref = key_;
+        public java.lang.String getToken() {
+            java.lang.Object ref = token_;
             if (ref instanceof java.lang.String) {
                 return (java.lang.String) ref;
             } else {
                 com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
                 java.lang.String s = bs.toStringUtf8();
                 if (bs.isValidUtf8()) {
-                    key_ = s;
+                    token_ = s;
                 }
                 return s;
             }
         }
 
         /**
-         * <code>required string key = 2;</code>
+         * <code>required string token = 2;</code>
          */
-        public com.google.protobuf.ByteString getKeyBytes() {
-            java.lang.Object ref = key_;
+        public com.google.protobuf.ByteString getTokenBytes() {
+            java.lang.Object ref = token_;
             if (ref instanceof java.lang.String) {
                 com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                key_ = b;
+                token_ = b;
                 return b;
             } else {
                 return (com.google.protobuf.ByteString) ref;
@@ -226,7 +226,7 @@ public final class AppAuthProtos {
 
         private void initFields() {
             name_ = "";
-            key_ = "";
+            token_ = "";
         }
 
         private byte memoizedIsInitialized = -1;
@@ -242,7 +242,7 @@ public final class AppAuthProtos {
                 memoizedIsInitialized = 0;
                 return false;
             }
-            if (!hasKey()) {
+            if (!hasToken()) {
                 memoizedIsInitialized = 0;
                 return false;
             }
@@ -256,7 +256,7 @@ public final class AppAuthProtos {
                 output.writeBytes(1, getNameBytes());
             }
             if (((bitField0_ & 0x00000002) == 0x00000002)) {
-                output.writeBytes(2, getKeyBytes());
+                output.writeBytes(2, getTokenBytes());
             }
             getUnknownFields().writeTo(output);
         }
@@ -273,7 +273,7 @@ public final class AppAuthProtos {
                 size += com.google.protobuf.CodedOutputStream.computeBytesSize(1, getNameBytes());
             }
             if (((bitField0_ & 0x00000002) == 0x00000002)) {
-                size += com.google.protobuf.CodedOutputStream.computeBytesSize(2, getKeyBytes());
+                size += com.google.protobuf.CodedOutputStream.computeBytesSize(2, getTokenBytes());
             }
             size += getUnknownFields().getSerializedSize();
             memoizedSerializedSize = size;
@@ -395,7 +395,7 @@ public final class AppAuthProtos {
                 super.clear();
                 name_ = "";
                 bitField0_ = (bitField0_ & ~0x00000001);
-                key_ = "";
+                token_ = "";
                 bitField0_ = (bitField0_ & ~0x00000002);
                 return this;
             }
@@ -431,7 +431,7 @@ public final class AppAuthProtos {
                 if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
                     to_bitField0_ |= 0x00000002;
                 }
-                result.key_ = key_;
+                result.token_ = token_;
                 result.bitField0_ = to_bitField0_;
                 onBuilt();
                 return result;
@@ -454,9 +454,9 @@ public final class AppAuthProtos {
                     name_ = other.name_;
                     onChanged();
                 }
-                if (other.hasKey()) {
+                if (other.hasToken()) {
                     bitField0_ |= 0x00000002;
-                    key_ = other.key_;
+                    token_ = other.token_;
                     onChanged();
                 }
                 this.mergeUnknownFields(other.getUnknownFields());
@@ -468,7 +468,7 @@ public final class AppAuthProtos {
 
                     return false;
                 }
-                if (!hasKey()) {
+                if (!hasToken()) {
 
                     return false;
                 }
@@ -569,25 +569,25 @@ public final class AppAuthProtos {
                 return this;
             }
 
-            private java.lang.Object key_ = "";
+            private java.lang.Object token_ = "";
 
             /**
-             * <code>required string key = 2;</code>
+             * <code>required string token = 2;</code>
              */
-            public boolean hasKey() {
+            public boolean hasToken() {
                 return ((bitField0_ & 0x00000002) == 0x00000002);
             }
 
             /**
-             * <code>required string key = 2;</code>
+             * <code>required string token = 2;</code>
              */
-            public java.lang.String getKey() {
-                java.lang.Object ref = key_;
+            public java.lang.String getToken() {
+                java.lang.Object ref = token_;
                 if (!(ref instanceof java.lang.String)) {
                     com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
                     java.lang.String s = bs.toStringUtf8();
                     if (bs.isValidUtf8()) {
-                        key_ = s;
+                        token_ = s;
                     }
                     return s;
                 } else {
@@ -596,13 +596,13 @@ public final class AppAuthProtos {
             }
 
             /**
-             * <code>required string key = 2;</code>
+             * <code>required string token = 2;</code>
              */
-            public com.google.protobuf.ByteString getKeyBytes() {
-                java.lang.Object ref = key_;
+            public com.google.protobuf.ByteString getTokenBytes() {
+                java.lang.Object ref = token_;
                 if (ref instanceof String) {
                     com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                    key_ = b;
+                    token_ = b;
                     return b;
                 } else {
                     return (com.google.protobuf.ByteString) ref;
@@ -610,37 +610,37 @@ public final class AppAuthProtos {
             }
 
             /**
-             * <code>required string key = 2;</code>
+             * <code>required string token = 2;</code>
              */
-            public Builder setKey(java.lang.String value) {
+            public Builder setToken(java.lang.String value) {
                 if (value == null) {
                     throw new NullPointerException();
                 }
                 bitField0_ |= 0x00000002;
-                key_ = value;
+                token_ = value;
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>required string key = 2;</code>
+             * <code>required string token = 2;</code>
              */
-            public Builder clearKey() {
+            public Builder clearToken() {
                 bitField0_ = (bitField0_ & ~0x00000002);
-                key_ = getDefaultInstance().getKey();
+                token_ = getDefaultInstance().getToken();
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>required string key = 2;</code>
+             * <code>required string token = 2;</code>
              */
-            public Builder setKeyBytes(com.google.protobuf.ByteString value) {
+            public Builder setTokenBytes(com.google.protobuf.ByteString value) {
                 if (value == null) {
                     throw new NullPointerException();
                 }
                 bitField0_ |= 0x00000002;
-                key_ = value;
+                token_ = value;
                 onChanged();
                 return this;
             }
@@ -1239,9 +1239,9 @@ public final class AppAuthProtos {
     private static com.google.protobuf.Descriptors.FileDescriptor descriptor;
 
     static {
-        java.lang.String[] descriptorData = { "\n\016app_auth.proto\"$\n\007AppAuth\022\014\n\004name\030\001 \002("
-                + "\t\022\013\n\003key\030\002 \002(\t\"5\n\017AppAuthResponse\022\017\n\007suc"
-                + "cess\030\001 \002(\010\022\021\n\007message\030\002 \001(\t:\000B,\n\033com.mog" + "ujie.jarvis.protocolB\rAppAuthProtos" };
+        java.lang.String[] descriptorData = { "\n\016app_auth.proto\"&\n\007AppAuth\022\014\n\004name\030\001 \002("
+                + "\t\022\r\n\005token\030\002 \002(\t\"5\n\017AppAuthResponse\022\017\n\007s"
+                + "uccess\030\001 \002(\010\022\021\n\007message\030\002 \001(\t:\000B,\n\033com.m" + "ogujie.jarvis.protocolB\rAppAuthProtos" };
         com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner = new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
             public com.google.protobuf.ExtensionRegistry assignDescriptors(com.google.protobuf.Descriptors.FileDescriptor root) {
                 descriptor = root;
@@ -1252,7 +1252,7 @@ public final class AppAuthProtos {
                 new com.google.protobuf.Descriptors.FileDescriptor[] {}, assigner);
         internal_static_AppAuth_descriptor = getDescriptor().getMessageTypes().get(0);
         internal_static_AppAuth_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(internal_static_AppAuth_descriptor,
-                new java.lang.String[] { "Name", "Key", });
+                new java.lang.String[] { "Name", "Token", });
         internal_static_AppAuthResponse_descriptor = getDescriptor().getMessageTypes().get(1);
         internal_static_AppAuthResponse_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
                 internal_static_AppAuthResponse_descriptor, new java.lang.String[] { "Success", "Message", });

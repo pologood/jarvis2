@@ -17,12 +17,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 
-import scala.concurrent.duration.Duration;
-import akka.actor.ActorSystem;
-import akka.testkit.JavaTestKit;
-import akka.util.Timeout;
-
 import com.mogujie.jarvis.core.util.ConfigUtils;
+import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
 import com.mogujie.jarvis.server.JarvisServerActorSystem;
 import com.mogujie.jarvis.server.scheduler.SchedulerUtil;
 import com.mogujie.jarvis.server.scheduler.controller.JobSchedulerController;
@@ -36,15 +32,21 @@ import com.mogujie.jarvis.server.scheduler.time.TimeScheduler;
 import com.mogujie.jarvis.server.util.SpringContext;
 import com.mogujie.jarvis.server.util.SpringExtension;
 
+import akka.actor.ActorSystem;
+import akka.testkit.JavaTestKit;
+import akka.util.Timeout;
+import scala.concurrent.duration.Duration;
+
 /**
  * @author guangming
  *
  */
 @ContextConfiguration(locations = "classpath:context.xml")
-public class TestBaseActor extends AbstractTransactionalJUnit4SpringContextTests{
+public class TestBaseActor extends AbstractTransactionalJUnit4SpringContextTests {
     protected static ActorSystem system;
     protected static final Timeout TIMEOUT = new Timeout(Duration.create(5, TimeUnit.SECONDS));
     protected static Configuration conf = ConfigUtils.getServerConfig();
+    protected AppAuth appAuth = AppAuth.newBuilder().setName("testApp1").setToken("").build();
     private static JobSchedulerController controller;
     private static DAGScheduler dagScheduler;
     private static TaskScheduler taskScheduler;
@@ -52,10 +54,8 @@ public class TestBaseActor extends AbstractTransactionalJUnit4SpringContextTests
 
     @BeforeClass
     public static void setup() {
-        conf.setProperty(DAGDependCheckerFactory.DAG_DEPEND_CHECKER_KEY,
-                DummyDAGDependChecker.class.getName());
-        conf.setProperty(SchedulerControllerFactory.SCHEDULER_CONTROLLER_KEY,
-                SyncSchedulerController.class.getName());
+        conf.setProperty(DAGDependCheckerFactory.DAG_DEPEND_CHECKER_KEY, DummyDAGDependChecker.class.getName());
+        conf.setProperty(SchedulerControllerFactory.SCHEDULER_CONTROLLER_KEY, SyncSchedulerController.class.getName());
         conf.setProperty(SchedulerUtil.ENABLE_TEST_MODE, true);
         ApplicationContext context = SpringContext.getApplicationContext();
         system = JarvisServerActorSystem.getInstance();

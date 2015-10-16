@@ -4,7 +4,7 @@ option java_outer_classname = "AppAuthProtos";
 
 message AppAuth {
   required string name = 1;
-  required string key = 2;
+  required string token = 2;
 }
 
 

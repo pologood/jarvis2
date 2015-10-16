@@ -37,7 +37,7 @@ import scala.concurrent.Future;
  */
 public class TestJobActor extends TestBaseActor {
 
-    private AppAuth appAuth = AppAuth.newBuilder().setName("testApp1").setKey("gsdgadfasdg").build();
+    private AppAuth appAuth = AppAuth.newBuilder().setName("testApp1").setToken("").build();
 
     @Test
     public void testSubmitJob1() {
@@ -128,7 +128,7 @@ public class TestJobActor extends TestBaseActor {
 
                 // get parents of jobC, should return jobA and jobB
                 RestServerQueryJobRelationRequest queryParentRequest = RestServerQueryJobRelationRequest.newBuilder().setJobId(jobCId)
-                        .setRelationType(RelationType.PARENTS).build();
+                        .setAppAuth(appAuth).setRelationType(RelationType.PARENTS).build();
                 future = Patterns.ask(actorRef, queryParentRequest, TIMEOUT);
                 try {
                     ServerQueryJobRelationResponse response = (ServerQueryJobRelationResponse) Await.result(future, TIMEOUT.duration());
@@ -209,7 +209,7 @@ public class TestJobActor extends TestBaseActor {
 
                 // get children of jobA, should return jobB and jobC
                 RestServerQueryJobRelationRequest queryParentRequest = RestServerQueryJobRelationRequest.newBuilder().setJobId(jobAId)
-                        .setRelationType(RelationType.CHILDREN).build();
+                        .setAppAuth(appAuth).setRelationType(RelationType.CHILDREN).build();
                 future = Patterns.ask(actorRef, queryParentRequest, TIMEOUT);
                 try {
                     ServerQueryJobRelationResponse response = (ServerQueryJobRelationResponse) Await.result(future, TIMEOUT.duration());
@@ -250,8 +250,8 @@ public class TestJobActor extends TestBaseActor {
                     Assert.assertTrue(false);
                 }
 
-                RestServerModifyJobRequest modifyJobRequest = RestServerModifyJobRequest.newBuilder().setJobId(jobId).setCronExpression("0 0 2 * * ?")
-                        .setUser("testUser2").build();
+                RestServerModifyJobRequest modifyJobRequest = RestServerModifyJobRequest.newBuilder().setJobId(jobId).setAppAuth(appAuth)
+                        .setCronExpression("0 0 2 * * ?").setUser("testUser2").build();
                 future = Patterns.ask(actorRef, modifyJobRequest, TIMEOUT);
                 try {
                     ServerModifyJobResponse response = (ServerModifyJobResponse) Await.result(future, TIMEOUT.duration());

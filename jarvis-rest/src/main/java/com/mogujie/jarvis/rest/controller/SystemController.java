@@ -15,11 +15,10 @@ import javax.ws.rs.core.MediaType;
 
 import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.core.domain.WorkerStatus;
-import com.mogujie.jarvis.protocol.AppAuthProtos.*;
-import com.mogujie.jarvis.protocol.SystemStatusProtos.*;
+import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
+import com.mogujie.jarvis.protocol.SystemStatusProtos.RestServerUpdateSystemStatusRequest;
+import com.mogujie.jarvis.protocol.SystemStatusProtos.ServerUpdateSystemStatusResponse;
 import com.mogujie.jarvis.rest.RestResult;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * @author muming
@@ -27,20 +26,17 @@ import org.apache.logging.log4j.Logger;
  */
 @Path("system")
 public class SystemController extends AbstractController {
-    Logger LOGGER = LogManager.getLogger();
+
     @POST
     @Path("status")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult status(@FormParam("appKey") String appKey,
-                             @FormParam("appName") String appName,
-                             @FormParam("status") int status){
+    public RestResult status(@FormParam("appToken") String appToken, @FormParam("appName") String appName, @FormParam("status") int status) {
         try {
             WorkerStatus ws = (status == 1) ? WorkerStatus.ONLINE : WorkerStatus.OFFLINE;
-            AppAuth appAuth= AppAuth.newBuilder().setName(appName).setKey(appKey).build();
+            AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
-            RestServerUpdateSystemStatusRequest request=RestServerUpdateSystemStatusRequest.newBuilder()
-                                                    .setAppAuth(appAuth).setStatus(status).build();
-
+            RestServerUpdateSystemStatusRequest request = RestServerUpdateSystemStatusRequest.newBuilder().setAppAuth(appAuth).setStatus(status)
+                    .build();
             ServerUpdateSystemStatusResponse response = (ServerUpdateSystemStatusResponse) callActor(AkkaType.SERVER, request);
 
             if (response.getSuccess()) {
