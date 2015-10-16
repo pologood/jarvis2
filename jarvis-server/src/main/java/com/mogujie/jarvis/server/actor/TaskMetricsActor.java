@@ -7,21 +7,23 @@
  */
 package com.mogujie.jarvis.server.actor;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Named;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 
-import akka.actor.UntypedActor;
-
+import com.mogujie.jarvis.core.domain.ActorEntry;
 import com.mogujie.jarvis.core.domain.JobStatus;
+import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.core.observer.Event;
 import com.mogujie.jarvis.dao.TaskMapper;
 import com.mogujie.jarvis.dto.Task;
+import com.mogujie.jarvis.protocol.ReportProgressProtos.ServerReportProgressResponse;
 import com.mogujie.jarvis.protocol.ReportProgressProtos.WorkerReportProgressRequest;
+import com.mogujie.jarvis.protocol.ReportStatusProtos.ServerReportStatusResponse;
 import com.mogujie.jarvis.protocol.ReportStatusProtos.WorkerReportStatusRequest;
 import com.mogujie.jarvis.server.scheduler.controller.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.controller.SchedulerControllerFactory;
@@ -30,6 +32,8 @@ import com.mogujie.jarvis.server.scheduler.event.KilledEvent;
 import com.mogujie.jarvis.server.scheduler.event.RunningEvent;
 import com.mogujie.jarvis.server.scheduler.event.SuccessEvent;
 import com.mogujie.jarvis.server.scheduler.event.UnhandleEvent;
+
+import akka.actor.UntypedActor;
 
 /**
  * Actor used to receive task metrics information (e.g. status, process) 1. send task status to
@@ -68,6 +72,9 @@ public class TaskMetricsActor extends UntypedActor {
                 event = new KilledEvent(jobId, taskId);
             }
             schedulerController.notify(event);
+
+            ServerReportStatusResponse response = ServerReportStatusResponse.newBuilder().setSuccess(true).build();
+            getSender().tell(response, getSelf());
         } else if (obj instanceof WorkerReportProgressRequest) {
             WorkerReportProgressRequest request = (WorkerReportProgressRequest) obj;
             String fullId = request.getFullId();
@@ -79,15 +86,17 @@ public class TaskMetricsActor extends UntypedActor {
             task.setProgress(progress);
 
             taskMapper.updateByPrimaryKey(task);
+            ServerReportProgressResponse response = ServerReportProgressResponse.newBuilder().setSuccess(true).build();
+            getSender().tell(response, getSelf());
         } else {
             unhandled(obj);
         }
     }
 
-    public static Set<Class<?>> handledMessages() {
-        Set<Class<?>> set = new HashSet<>();
-        set.add(WorkerReportStatusRequest.class);
-        set.add(WorkerReportProgressRequest.class);
-        return set;
+    public static List<ActorEntry> handledMessages() {
+        List<ActorEntry> list = new ArrayList<>();
+        list.add(new ActorEntry(WorkerReportStatusRequest.class, ServerReportStatusResponse.class, MessageType.SYSTEM));
+        list.add(new ActorEntry(WorkerReportProgressRequest.class, ServerReportProgressResponse.class, MessageType.SYSTEM));
+        return list;
     }
 }

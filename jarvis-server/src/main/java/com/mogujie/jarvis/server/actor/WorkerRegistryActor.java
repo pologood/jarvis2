@@ -9,9 +9,8 @@
 package com.mogujie.jarvis.server.actor;
 
 import java.sql.Timestamp;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import javax.inject.Named;
 
@@ -19,6 +18,8 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 
+import com.mogujie.jarvis.core.domain.ActorEntry;
+import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.core.domain.WorkerInfo;
 import com.mogujie.jarvis.core.domain.WorkerStatus;
 import com.mogujie.jarvis.dao.WorkerGroupMapper;
@@ -93,10 +94,10 @@ public class WorkerRegistryActor extends UntypedActor {
         }
     }
 
-    public static Set<Class<?>> handledMessages() {
-        Set<Class<?>> set = new HashSet<>();
-        set.add(WorkerRegistryRequest.class);
-        return set;
+    public static List<ActorEntry> handledMessages() {
+        List<ActorEntry> list = new ArrayList<>();
+        list.add(new ActorEntry(WorkerRegistryRequest.class, ServerRegistryResponse.class, MessageType.SYSTEM));
+        return list;
     }
 
 }

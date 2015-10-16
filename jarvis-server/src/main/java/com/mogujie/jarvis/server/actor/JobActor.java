@@ -11,7 +11,6 @@ package com.mogujie.jarvis.server.actor;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -24,7 +23,9 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.collect.Sets;
+import com.mogujie.jarvis.core.domain.ActorEntry;
 import com.mogujie.jarvis.core.domain.JobFlag;
+import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.core.domain.Pair;
 import com.mogujie.jarvis.dao.JobDependMapper;
 import com.mogujie.jarvis.dao.JobMapper;
@@ -119,6 +120,16 @@ public class JobActor extends UntypedActor {
 
     @Transactional
     private void submitJob(RestServerSubmitJobRequest msg) throws IOException {
+        ServerSubmitJobResponse response;
+        String appName = msg.getAppAuth().getName();
+        int workerGroupId = msg.getGroupId();
+        if (!appService.canAccessWorkerGroup(appName, workerGroupId)) {
+            response = ServerSubmitJobResponse.newBuilder().setSuccess(false).setMessage(appName + " can not access worker group: " + workerGroupId)
+                    .build();
+            getSender().tell(response, getSelf());
+            return;
+        }
+
         Set<Long> needDependencies = Sets.newHashSet();
         // 1. insert job to DB
         Job job = MessageUtil.convert2Job(appService, msg);
@@ -146,7 +157,7 @@ public class JobActor extends UntypedActor {
         int dependFlag = (!needDependencies.isEmpty()) ? 1 : 0;
         int timeFlag = msg.hasCronExpression() ? 1 : 0;
         DAGJobType type = SchedulerUtil.getDAGJobType(cycleFlag, dependFlag, timeFlag);
-        ServerSubmitJobResponse response;
+
         try {
             dagScheduler.addJob(jobId, new DAGJob(jobId, type), needDependencies);
             timeScheduler.addJob(jobId);
@@ -322,11 +333,11 @@ public class JobActor extends UntypedActor {
         }
     }
 
-    public static Set<Class<?>> handledMessages() {
-        Set<Class<?>> set = new HashSet<>();
-        set.add(RestServerSubmitJobRequest.class);
-        set.add(RestServerModifyJobRequest.class);
-        set.add(RestServerModifyJobFlagRequest.class);
-        return set;
+    public static List<ActorEntry> handledMessages() {
+        List<ActorEntry> list = new ArrayList<>();
+        list.add(new ActorEntry(RestServerSubmitJobRequest.class, ServerSubmitJobResponse.class, MessageType.GENERAL));
+        list.add(new ActorEntry(RestServerModifyJobRequest.class, ServerModifyJobResponse.class, MessageType.GENERAL));
+        list.add(new ActorEntry(RestServerModifyJobFlagRequest.class, ServerModifyJobFlagResponse.class, MessageType.GENERAL));
+        return list;
     }
 }

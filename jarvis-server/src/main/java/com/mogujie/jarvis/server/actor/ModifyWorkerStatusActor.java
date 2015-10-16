@@ -8,14 +8,16 @@
 
 package com.mogujie.jarvis.server.actor;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Named;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 
+import com.mogujie.jarvis.core.domain.ActorEntry;
+import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.dao.WorkerMapper;
 import com.mogujie.jarvis.dto.Worker;
 import com.mogujie.jarvis.dto.WorkerExample;
@@ -57,10 +59,10 @@ public class ModifyWorkerStatusActor extends UntypedActor {
         }
     }
 
-    public static Set<Class<?>> handledMessages() {
-        Set<Class<?>> set = new HashSet<>();
-        set.add(RestServerModifyWorkerStatusRequest.class);
-        return set;
+    public static List<ActorEntry> handledMessages() {
+        List<ActorEntry> list = new ArrayList<>();
+        list.add(new ActorEntry(RestServerModifyWorkerStatusRequest.class, ServerModifyWorkerStatusResponse.class, MessageType.SYSTEM));
+        return list;
     }
 
 }

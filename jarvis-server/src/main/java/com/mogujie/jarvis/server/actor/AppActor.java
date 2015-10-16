@@ -8,10 +8,9 @@
 
 package com.mogujie.jarvis.server.actor;
 
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 import javax.inject.Named;
@@ -19,6 +18,8 @@ import javax.inject.Named;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 
+import com.mogujie.jarvis.core.domain.ActorEntry;
+import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.dao.AppMapper;
 import com.mogujie.jarvis.dto.App;
 import com.mogujie.jarvis.dto.AppExample;
@@ -100,11 +101,11 @@ public class AppActor extends UntypedActor {
         }
     }
 
-    public static Set<Class<?>> handledMessages() {
-        Set<Class<?>> set = new HashSet<>();
-        set.add(RestServerCreateApplicationRequest.class);
-        set.add(RestServerModifyApplicationRequest.class);
-        return set;
+    public static List<ActorEntry> handledMessages() {
+        List<ActorEntry> list = new ArrayList<>();
+        list.add(new ActorEntry(RestServerCreateApplicationRequest.class, ServerCreateApplicationResponse.class, MessageType.SYSTEM));
+        list.add(new ActorEntry(RestServerModifyApplicationRequest.class, ServerModifyApplicationResponse.class, MessageType.SYSTEM));
+        return list;
     }
 
 }

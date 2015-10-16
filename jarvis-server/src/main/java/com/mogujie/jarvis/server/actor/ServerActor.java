@@ -9,24 +9,28 @@
 package com.mogujie.jarvis.server.actor;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 import javax.inject.Named;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
+import com.google.common.base.Throwables;
+import com.google.protobuf.GeneratedMessage;
+import com.mogujie.jarvis.core.domain.ActorEntry;
+import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.core.domain.Pair;
 import com.mogujie.jarvis.core.exeception.AppTokenInvalidException;
 import com.mogujie.jarvis.dao.AppMapper;
 import com.mogujie.jarvis.dto.App;
 import com.mogujie.jarvis.dto.AppExample;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
-import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthResponse;
 import com.mogujie.jarvis.server.util.AppTokenUtils;
 import com.mogujie.jarvis.server.util.SpringExtension;
 
@@ -36,10 +40,6 @@ import akka.actor.UntypedActor;
 import akka.routing.RouterConfig;
 import akka.routing.SmallestMailboxPool;
 
-/**
- * ServerActor forward any messages to other actors
- *
- */
 @Named("serverActor")
 @Scope("prototype")
 public class ServerActor extends UntypedActor {
@@ -47,30 +47,30 @@ public class ServerActor extends UntypedActor {
     @Autowired
     private AppMapper appMapper;
 
-    private Multimap<Class<?>, ActorRef> multimap = ArrayListMultimap.create();
-    private List<Pair<ActorRef, Set<Class<?>>>> actorRefs = new ArrayList<>();
+    private Map<Class<?>, Pair<ActorRef, ActorEntry>> map = new HashMap<>();
+    private List<Pair<ActorRef, List<ActorEntry>>> actorRefs = new ArrayList<>();
 
     public static Props props() {
         return Props.create(ServerActor.class);
     }
 
-    private String queryAppKeyByName(String appName) {
+    private App queryAppByName(String appName) {
         AppExample example = new AppExample();
         example.createCriteria().andAppNameEqualTo(appName);
         List<App> list = appMapper.selectByExample(example);
         if (list != null && list.size() > 0) {
-            return list.get(0).getAppKey();
+            return list.get(0);
         }
 
         return null;
     }
 
-    private void addActor(String actorName, Set<Class<?>> handledMessages) {
+    private void addActor(String actorName, List<ActorEntry> handledMessages) {
         ActorRef actorRef = getContext().actorOf(SpringExtension.SPRING_EXT_PROVIDER.get(getContext().system()).props(actorName));
         actorRefs.add(new Pair<>(actorRef, handledMessages));
     }
 
-    private void addActor(String actorName, RouterConfig routerConfig, Set<Class<?>> handledMessages) {
+    private void addActor(String actorName, RouterConfig routerConfig, List<ActorEntry> handledMessages) {
         ActorRef actorRef = getContext()
                 .actorOf(SpringExtension.SPRING_EXT_PROVIDER.get(getContext().system()).props(actorName).withRouter(routerConfig));
         actorRefs.add(new Pair<>(actorRef, handledMessages));
@@ -88,43 +88,82 @@ public class ServerActor extends UntypedActor {
         addActor("systemActor", SystemActor.handledMessages());
     }
 
+    private Object generateResponse(Class<? extends GeneratedMessage> clazz, boolean success, String msg) {
+        try {
+            Method method = clazz.getMethod("getDefaultInstance", new Class[] {});
+            Object object = method.invoke(null, new Object[] {});
+            for (Field field : object.getClass().getDeclaredFields()) {
+                if ("success_".equals(field.getName())) {
+                    field.setAccessible(true);
+                    field.set(object, success);
+                }
+
+                if ("message_".equals(field.getName())) {
+                    field.setAccessible(true);
+                    field.set(object, msg);
+                }
+            }
+
+            return object;
+        } catch (NoSuchMethodException | SecurityException | IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
+            Throwables.propagate(e);
+        }
+
+        return null;
+    }
+
     @Override
     public void preStart() throws Exception {
         addActors();
-        for (Pair<ActorRef, Set<Class<?>>> pair : actorRefs) {
+        for (Pair<ActorRef, List<ActorEntry>> pair : actorRefs) {
             ActorRef actorRef = pair.getFirst();
-            for (Class<?> handledMessage : pair.getSecond()) {
-                multimap.put(handledMessage, actorRef);
+            for (ActorEntry handledMessage : pair.getSecond()) {
+                map.put(handledMessage.getRequestClass(), new Pair<ActorRef, ActorEntry>(actorRef, handledMessage));
             }
         }
     }
 
     @Override
     public void onReceive(Object obj) throws Exception {
-        Field[] fields = obj.getClass().getDeclaredFields();
+        Class<?> clazz = obj.getClass();
+        Pair<ActorRef, ActorEntry> pair = map.get(clazz);
+        if (pair == null) {
+            unhandled(obj);
+            return;
+        }
+
+        ActorEntry actorEntry = pair.getSecond();
+        Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
             if (field.getType() == AppAuth.class) {
                 field.setAccessible(true);
                 AppAuth appAuth = (AppAuth) field.get(obj);
-                String appKey = queryAppKeyByName(appAuth.getName());
-                try {
-                    AppTokenUtils.verifyToken(appKey, appAuth.getToken());
-                } catch (AppTokenInvalidException e) {
-                    AppAuthResponse response = AppAuthResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
-                    getSender().tell(response, getSelf());
+                String appName = appAuth.getName();
+                App app = queryAppByName(appName);
+                if (app == null) {
+                    Object msg = generateResponse(actorEntry.getResponseClass(), false, "App[" + appName + "] not found");
+                    getSender().tell(msg, getSelf());
                     return;
+                } else {
+                    try {
+                        // 验证token
+                        AppTokenUtils.verifyToken(app.getAppKey(), appAuth.getToken());
+                        // 验证授权
+                        if (actorEntry.getMessageType() == MessageType.SYSTEM && app.getAppType() != MessageType.SYSTEM.getValue()) {
+                            Object msg = generateResponse(actorEntry.getResponseClass(), false, "request is rejected");
+                            getSender().tell(msg, getSelf());
+                            return;
+                        }
+                    } catch (AppTokenInvalidException e) {
+                        Object msg = generateResponse(actorEntry.getResponseClass(), false, e.getMessage());
+                        getSender().tell(msg, getSelf());
+                        return;
+                    }
                 }
             }
         }
 
-        Class<?> clazz = obj.getClass();
-        if (multimap.containsKey(clazz)) {
-            for (ActorRef actorRef : multimap.get(clazz)) {
-                actorRef.forward(obj, getContext());
-            }
-        } else {
-            unhandled(obj);
-        }
+        pair.getFirst().forward(obj, getContext());
     }
 
 }

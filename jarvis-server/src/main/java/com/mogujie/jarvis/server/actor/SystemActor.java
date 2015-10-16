@@ -8,15 +8,18 @@
 
 package com.mogujie.jarvis.server.actor;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Named;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 
+import com.mogujie.jarvis.core.domain.ActorEntry;
+import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.protocol.SystemStatusProtos.RestServerUpdateSystemStatusRequest;
+import com.mogujie.jarvis.protocol.SystemStatusProtos.ServerUpdateSystemStatusResponse;
 import com.mogujie.jarvis.server.TaskDispatcher;
 
 import akka.actor.UntypedActor;
@@ -41,15 +44,18 @@ public class SystemActor extends UntypedActor {
             } else {
                 taskDispatcher.pause();
             }
+
+            ServerUpdateSystemStatusResponse response = ServerUpdateSystemStatusResponse.newBuilder().setSuccess(true).build();
+            getSender().tell(response, getSelf());
         } else {
             unhandled(obj);
         }
     }
 
-    public static Set<Class<?>> handledMessages() {
-        Set<Class<?>> set = new HashSet<>();
-        set.add(RestServerUpdateSystemStatusRequest.class);
-        return set;
+    public static List<ActorEntry> handledMessages() {
+        List<ActorEntry> list = new ArrayList<>();
+        list.add(new ActorEntry(RestServerUpdateSystemStatusRequest.class, ServerUpdateSystemStatusResponse.class, MessageType.SYSTEM));
+        return list;
     }
 
 }
