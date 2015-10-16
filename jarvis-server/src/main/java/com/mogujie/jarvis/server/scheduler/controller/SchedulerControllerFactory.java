@@ -21,13 +21,15 @@ public class SchedulerControllerFactory {
     public static final String DEFAULT_SCHEDULER_CONTROLLER = AsyncSchedulerController.class.getName();
 
     public static JobSchedulerController getController() {
-        JobSchedulerController controller = null;
+
+        JobSchedulerController controller;
         Configuration conf = ConfigUtils.getServerConfig();
         String className = conf.getString(SCHEDULER_CONTROLLER_KEY, DEFAULT_SCHEDULER_CONTROLLER);
-        if (className.equalsIgnoreCase(AsyncSchedulerController.class.getName())) {
-            controller = AsyncSchedulerController.getInstance();
-        } else if (className.equalsIgnoreCase(SyncSchedulerController.class.getName())) {
+
+        if (className.equalsIgnoreCase(SyncSchedulerController.class.getName())) {
             controller = SyncSchedulerController.getInstance();
+        }else{
+            controller = AsyncSchedulerController.getInstance(); //非“同步”场合，都是“异步”。
         }
 
         return controller;
