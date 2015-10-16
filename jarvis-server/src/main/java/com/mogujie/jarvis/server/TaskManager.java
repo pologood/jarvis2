@@ -13,6 +13,7 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
+import com.mogujie.jarvis.server.service.AppService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -32,7 +33,7 @@ import com.mogujie.jarvis.dto.AppExample;
 public class TaskManager {
 
     @Autowired
-    private AppMapper appMapper;
+    private AppService appService;
 
     private Map<String, Pair<WorkerInfo, Integer>> taskMap = Maps.newHashMap();
     private Map<Integer, Integer> maxParallelismMap = Maps.newHashMap();
@@ -40,8 +41,7 @@ public class TaskManager {
 
     @PostConstruct
     private void init() {
-        AppExample example = new AppExample();
-        List<App> list = appMapper.selectByExample(example);
+        List<App> list = appService.getAppList();
         for (App app : list) {
             maxParallelismMap.put(app.getAppId(), app.getMaxConcurrency());
         }
@@ -77,7 +77,7 @@ public class TaskManager {
         }
     }
 
-    public void updateAppMaxParallelism(int appId, int maxParallelis) {
-        maxParallelismMap.put(appId, maxParallelis);
+    public void updateAppMaxParallelism(int appId, int maxParallelism) {
+        maxParallelismMap.put(appId, maxParallelism);
     }
 }
