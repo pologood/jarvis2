@@ -248,8 +248,10 @@ public class JobController extends AbstractController {
     public RestResult flag(@FormParam("jobId") Long jobId, @FormParam("appKey") String appKey, @FormParam("appName") String appName,
             @FormParam("jobFlag") Integer jobFlag, @FormParam("user") String user) throws Exception {
         try {
+            AppAuth appAuth= AppAuth.newBuilder().setName(appName).setKey(appKey).build();
             // 构造删除job请求request，1.启用2.禁用3.过期4.垃圾箱
-            RestServerModifyJobFlagRequest request = RestServerModifyJobFlagRequest.newBuilder().setJobId(jobId).setUser(user).setJobFlag(jobFlag)
+            RestServerModifyJobFlagRequest request = RestServerModifyJobFlagRequest.newBuilder()
+                    .setJobId(jobId).setUser(user).setJobFlag(jobFlag).setAppAuth(appAuth)
                     .build();
             // 发送请求到server尝试常熟
             ServerModifyJobFlagResponse response = (ServerModifyJobFlagResponse) callActor(AkkaType.SERVER, request);
@@ -282,8 +284,10 @@ public class JobController extends AbstractController {
                             @FormParam("appKey") String appKey,
                             @FormParam("startTime") String startTime,
                             @FormParam("endTime") String endTime,
-                            @FormParam("reRunJobs") String reRunJobs){
+                            @FormParam("reRunJobs") String reRunJobs,
+                            @FormParam("user") String user){
         try {
+            AppAuth appAuth= AppAuth.newBuilder().setName(appName).setKey(appKey).build();
             JSONArray reRunJobArr = new JSONArray(reRunJobs);
 
             Long startTimeLong = null;
@@ -301,7 +305,7 @@ public class JobController extends AbstractController {
                 Long singleOriginId = reRunJobArr.getLong(i);
                 // 构造新增任务请求
                 RestServerSubmitJobRequest.Builder builder=RestServerSubmitJobRequest.newBuilder()
-                        .setOriginJobId(singleOriginId);
+                        .setOriginJobId(singleOriginId).setAppAuth(appAuth).setUser(user);
                 if (startTimeLong != null) {
                     builder.setStartTime(startTimeLong);
                 }
