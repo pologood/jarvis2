@@ -6,8 +6,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import org.apache.log4j.Logger;
-
 import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
 import com.mogujie.jarvis.protocol.ModifyWorkerStatusProtos.RestServerModifyWorkerStatusRequest;
@@ -19,7 +17,6 @@ import com.mogujie.jarvis.rest.RestResult;
  */
 @Path("worker")
 public class WorkerController extends AbstractController {
-    Logger logger = Logger.getLogger(this.getClass());
 
     @POST
     @Path("add")
@@ -29,7 +26,7 @@ public class WorkerController extends AbstractController {
             return null;
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error("", e);
+            LOGGER.error("", e);
             return errorResult(e.getMessage());
         }
     }
@@ -42,7 +39,7 @@ public class WorkerController extends AbstractController {
             return null;
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error("", e);
+            LOGGER.error("", e);
             return errorResult(e.getMessage());
         }
     }
@@ -66,7 +63,7 @@ public class WorkerController extends AbstractController {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error("", e);
+            LOGGER.error("", e);
             return errorResult(e.getMessage());
         }
     }

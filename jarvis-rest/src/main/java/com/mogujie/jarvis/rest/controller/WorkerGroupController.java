@@ -6,8 +6,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import org.apache.log4j.Logger;
-
 import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.protocol.AppAuthProtos;
 import com.mogujie.jarvis.protocol.WorkerGroupProtos.RestServerCreateWorkerGroupRequest;
@@ -21,7 +19,6 @@ import com.mogujie.jarvis.rest.RestResult;
  */
 @Path("workerGroup")
 public class WorkerGroupController extends AbstractController {
-    Logger logger = Logger.getLogger(this.getClass());
 
     @POST
     @Path("add")

@@ -6,7 +6,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.protocol.AppAuthProtos;
@@ -22,7 +23,7 @@ import com.mogujie.jarvis.rest.RestResult;
  */
 @Path("app")
 public class AppController extends AbstractController {
-    Logger logger = Logger.getLogger(this.getClass());
+    private static final Logger LOGGER = LogManager.getLogger();
 
     @POST
     @Path("add")
@@ -43,7 +44,7 @@ public class AppController extends AbstractController {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error("", e);
+            LOGGER.error("", e);
             return errorResult(e.getMessage());
         }
     }
@@ -65,7 +66,7 @@ public class AppController extends AbstractController {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error("", e);
+            LOGGER.error("", e);
             return errorResult(e.getMessage());
         }
     }
@@ -88,7 +89,7 @@ public class AppController extends AbstractController {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error("", e);
+            LOGGER.error("", e);
             return errorResult(e.getMessage());
         }
     }

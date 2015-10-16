@@ -17,7 +17,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONArray;
@@ -45,7 +45,7 @@ import com.mogujie.jarvis.rest.vo.JobVo;
 @Path("job")
 public class JobController extends AbstractController {
     private DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd");
-    Logger logger = Logger.getLogger(this.getClass());
+    org.apache.logging.log4j.Logger LOGGER = LogManager.getLogger();
 
     /**
      * 提交job任务
@@ -63,7 +63,7 @@ public class JobController extends AbstractController {
             @FormParam("groupId") int groupId, @FormParam("rejectRetries") int rejectRetries, @FormParam("rejectInterval") int rejectInterval,
             @FormParam("failedRetries") int failedRetries, @FormParam("failedInterval") int failedInterval, @FormParam("startTime") String startTime,
             @FormParam("endTime") String endTime, @FormParam("priority") int priority, @FormParam("parameters") String parameters) {
-        logger.info("提交job任务");
+        LOGGER.info("提交job任务");
         try {
             // todo , 转换为 list
             List<DependencyEntry> dependEntryList = new ArrayList<DependencyEntry>();
@@ -127,7 +127,7 @@ public class JobController extends AbstractController {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error("", e);
+            LOGGER.error("", e);
             return errorResult(e.getMessage());
         }
     }
@@ -149,7 +149,7 @@ public class JobController extends AbstractController {
             @FormParam("endTime") String endTime, @FormParam("priority") int priority, @FormParam("parameters") String parameters) {
 
         try {
-            logger.info("更新job任务");
+            LOGGER.info("更新job任务");
 
             // todo , 转换为 list
             List<DependencyEntry> dependEntryList = new ArrayList<DependencyEntry>();
@@ -234,7 +234,7 @@ public class JobController extends AbstractController {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            logger.info(e.getStackTrace());
+            LOGGER.info(e.getStackTrace());
             return errorResult(e.getMessage());
         }
     }
@@ -248,12 +248,13 @@ public class JobController extends AbstractController {
     @POST
     @Path("flag")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult flag(@FormParam("jobId") Long jobId, @FormParam("appKey") String appKey, @FormParam("appName") String appName,
+    public RestResult flag(@FormParam("jobId") Long jobId, @FormParam("appToken") String appToken, @FormParam("appName") String appName,
             @FormParam("jobFlag") Integer jobFlag, @FormParam("user") String user) throws Exception {
         try {
+            AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
             // 构造删除job请求request，1.启用2.禁用3.过期4.垃圾箱
             RestServerModifyJobFlagRequest request = RestServerModifyJobFlagRequest.newBuilder().setJobId(jobId).setUser(user).setJobFlag(jobFlag)
-                    .build();
+                    .setAppAuth(appAuth).build();
             // 发送请求到server尝试常熟
             ServerModifyJobFlagResponse response = (ServerModifyJobFlagResponse) callActor(AkkaType.SERVER, request);
 
@@ -267,7 +268,7 @@ public class JobController extends AbstractController {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            logger.info(e.getStackTrace());
+            LOGGER.info(e.getStackTrace());
             return errorResult(e.getMessage());
         }
     }
@@ -278,12 +279,15 @@ public class JobController extends AbstractController {
      * @author hejian
      * @throws Exception
      */
+
     @POST
     @Path("rerun")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult rerun(@FormParam("originJobId") Long originJobId, @FormParam("appName") String appName, @FormParam("appKey") String appKey,
-            @FormParam("startTime") String startTime, @FormParam("endTime") String endTime, @FormParam("reRunJobs") String reRunJobs) {
+    public RestResult rerun(@FormParam("originJobId") Long originJobId, @FormParam("appName") String appName, @FormParam("appToken") String appToken,
+            @FormParam("startTime") String startTime, @FormParam("endTime") String endTime, @FormParam("reRunJobs") String reRunJobs,
+            @FormParam("user") String user) {
         try {
+            AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
             JSONArray reRunJobArr = new JSONArray(reRunJobs);
 
             Long startTimeLong = null;
@@ -300,7 +304,8 @@ public class JobController extends AbstractController {
             for (int i = 0; i < reRunJobArr.length(); i++) {
                 Long singleOriginId = reRunJobArr.getLong(i);
                 // 构造新增任务请求
-                RestServerSubmitJobRequest.Builder builder = RestServerSubmitJobRequest.newBuilder().setOriginJobId(singleOriginId);
+                RestServerSubmitJobRequest.Builder builder = RestServerSubmitJobRequest.newBuilder().setOriginJobId(singleOriginId)
+                        .setAppAuth(appAuth).setUser(user);
                 if (startTimeLong != null) {
                     builder.setStartTime(startTimeLong);
                 }
@@ -328,7 +333,7 @@ public class JobController extends AbstractController {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            logger.info(e.getStackTrace());
+            LOGGER.info(e.getStackTrace());
             return errorResult(e.getMessage());
         }
     }

@@ -18,6 +18,8 @@ import com.mogujie.jarvis.core.domain.StreamType;
 import com.mogujie.jarvis.protocol.ReadLogProtos.LogServerReadLogResponse;
 import com.mogujie.jarvis.protocol.ReadLogProtos.RestServerReadLogRequest;
 import com.mogujie.jarvis.rest.RestResult;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * @author muming
@@ -25,7 +27,7 @@ import com.mogujie.jarvis.rest.RestResult;
  */
 @Path("log")
 public class LogController extends AbstractController {
-
+    Logger LOGGER = LogManager.getLogger();
     /**
      * 获取执行日志
      *
