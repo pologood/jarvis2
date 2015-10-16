@@ -18,6 +18,8 @@ import com.mogujie.jarvis.core.domain.WorkerStatus;
 import com.mogujie.jarvis.protocol.AppAuthProtos.*;
 import com.mogujie.jarvis.protocol.SystemStatusProtos.*;
 import com.mogujie.jarvis.rest.RestResult;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * @author muming
@@ -25,7 +27,7 @@ import com.mogujie.jarvis.rest.RestResult;
  */
 @Path("system")
 public class SystemController extends AbstractController {
-
+    Logger LOGGER = LogManager.getLogger();
     @POST
     @Path("status")
     @Produces(MediaType.APPLICATION_JSON)

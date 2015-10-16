@@ -18,6 +18,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONArray;
@@ -45,7 +46,7 @@ import com.mogujie.jarvis.rest.vo.JobVo;
 @Path("job")
 public class JobController extends AbstractController {
     private DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd");
-    Logger logger = Logger.getLogger(this.getClass());
+    org.apache.logging.log4j.Logger LOGGER = LogManager.getLogger();
 
     /**
      * 提交job任务
@@ -62,7 +63,7 @@ public class JobController extends AbstractController {
             @FormParam("groupId") int groupId, @FormParam("rejectRetries") int rejectRetries, @FormParam("rejectInterval") int rejectInterval,
             @FormParam("failedRetries") int failedRetries, @FormParam("failedInterval") int failedInterval, @FormParam("startTime") String startTime,
             @FormParam("endTime") String endTime, @FormParam("priority") int priority, @FormParam("parameters") String parameters) {
-        logger.info("提交job任务");
+        LOGGER.info("提交job任务");
         try {
             // todo , 转换为 list
             List<DependencyEntry> dependEntryList = new ArrayList<DependencyEntry>();
@@ -126,7 +127,7 @@ public class JobController extends AbstractController {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error("", e);
+            LOGGER.error("", e);
             return errorResult(e.getMessage());
         }
     }
@@ -147,7 +148,7 @@ public class JobController extends AbstractController {
             @FormParam("endTime") String endTime, @FormParam("priority") int priority, @FormParam("parameters") String parameters) {
 
         try {
-            logger.info("更新job任务");
+            LOGGER.info("更新job任务");
 
             // todo , 转换为 list
             List<DependencyEntry> dependEntryList = new ArrayList<DependencyEntry>();
@@ -232,7 +233,7 @@ public class JobController extends AbstractController {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            logger.info(e.getStackTrace());
+            LOGGER.info(e.getStackTrace());
             return errorResult(e.getMessage());
         }
     }
@@ -266,7 +267,7 @@ public class JobController extends AbstractController {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            logger.info(e.getStackTrace());
+            LOGGER.info(e.getStackTrace());
             return errorResult(e.getMessage());
         }
     }
@@ -333,7 +334,7 @@ public class JobController extends AbstractController {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            logger.info(e.getStackTrace());
+            LOGGER.info(e.getStackTrace());
             return errorResult(e.getMessage());
         }
     }

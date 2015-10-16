@@ -3,7 +3,6 @@ package com.mogujie.jarvis.rest.controller;
 import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.protocol.AppAuthProtos;
 import com.mogujie.jarvis.rest.RestResult;
-import org.apache.log4j.Logger;
 
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
@@ -12,12 +11,15 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import com.mogujie.jarvis.protocol.ApplicationProtos.*;
 import com.mogujie.jarvis.protocol.AppAuthProtos.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 /**
  * Created by hejian on 15/10/15.
  */
 @Path("app")
 public class AppController extends AbstractController {
-    Logger logger = Logger.getLogger(this.getClass());
+    Logger LOGGER = LogManager.getLogger();
 
     @POST
     @Path("add")
@@ -40,7 +42,7 @@ public class AppController extends AbstractController {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error("", e);
+            LOGGER.error("", e);
             return errorResult(e.getMessage());
         }
     }
@@ -66,7 +68,7 @@ public class AppController extends AbstractController {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error("", e);
+            LOGGER.error("", e);
             return errorResult(e.getMessage());
         }
     }
@@ -92,7 +94,7 @@ public class AppController extends AbstractController {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error("", e);
+            LOGGER.error("", e);
             return errorResult(e.getMessage());
         }
     }

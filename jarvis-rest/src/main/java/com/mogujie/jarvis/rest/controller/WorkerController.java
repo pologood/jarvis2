@@ -14,12 +14,14 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import com.mogujie.jarvis.protocol.ModifyWorkerStatusProtos.*;
 import com.mogujie.jarvis.protocol.AppAuthProtos.*;
+import org.apache.logging.log4j.LogManager;
+
 /**
  * Created by hejian on 15/10/15.
  */
 @Path("worker")
 public class WorkerController extends AbstractController  {
-    Logger logger = Logger.getLogger(this.getClass());
+    org.apache.logging.log4j.Logger LOGGER = LogManager.getLogger();
 
     @POST
     @Path("add")
@@ -30,7 +32,7 @@ public class WorkerController extends AbstractController  {
             return null;
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error("", e);
+            LOGGER.error("", e);
             return errorResult(e.getMessage());
         }
     }
@@ -45,7 +47,7 @@ public class WorkerController extends AbstractController  {
             return null;
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error("", e);
+            LOGGER.error("", e);
             return errorResult(e.getMessage());
         }
     }
@@ -74,7 +76,7 @@ public class WorkerController extends AbstractController  {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error("", e);
+            LOGGER.error("", e);
             return errorResult(e.getMessage());
         }
     }

@@ -16,13 +16,14 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import com.mogujie.jarvis.protocol.WorkerGroupProtos.*;
 import com.mogujie.jarvis.protocol.AppAuthProtos.*;
+import org.apache.logging.log4j.LogManager;
 
 /**
  * Created by hejian on 15/10/15.
  */
 @Path("workerGroup")
 public class WorkerGroupController extends AbstractController {
-    Logger logger = Logger.getLogger(this.getClass());
+    org.apache.logging.log4j.Logger LOGGER = LogManager.getLogger();
 
     @POST
     @Path("add")
