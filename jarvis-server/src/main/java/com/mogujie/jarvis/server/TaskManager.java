@@ -13,7 +13,6 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
-import com.mogujie.jarvis.server.service.AppService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -21,9 +20,8 @@ import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.AtomicLongMap;
 import com.mogujie.jarvis.core.domain.Pair;
 import com.mogujie.jarvis.core.domain.WorkerInfo;
-import com.mogujie.jarvis.dao.AppMapper;
 import com.mogujie.jarvis.dto.App;
-import com.mogujie.jarvis.dto.AppExample;
+import com.mogujie.jarvis.server.service.AppService;
 
 /**
  *
