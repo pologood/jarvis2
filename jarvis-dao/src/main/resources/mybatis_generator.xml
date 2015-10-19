@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+
+	<context id="context1" targetRuntime="MyBatis3">
+		<plugin type="org.mybatis.generator.plugins.CachePlugin" />
+		<plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
+
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+			connectionURL="jdbc:mysql://10.11.128.49/jarvis2" userId="root"
+			password="mogujie" />
+		<javaModelGenerator targetPackage="com.mogujie.jarvis.dto"
+			targetProject="src/main/java" />
+		<sqlMapGenerator targetPackage="com.mogujie.jarvis.dao"
+			targetProject="src/main/resources/sqlMap" />
+		<javaClientGenerator targetPackage="com.mogujie.jarvis.dao"
+			targetProject="src/main/java" type="XMLMAPPER" />
+
+		<table schema="jarvis2" tableName="app">
+			<property name="useActualColumnNames" value="true" />
+			<generatedKey column="appId" sqlStatement="MySql"
+				identity="true" />
+		</table>
+
+		<table schema="jarvis2" tableName="job">
+			<property name="useActualColumnNames" value="true" />
+			<generatedKey column="jobId" sqlStatement="MySql"
+				identity="true" />
+		</table>
+
+		<table schema="jarvis2" tableName="job_depend">
+			<property name="useActualColumnNames" value="true" />
+		</table>
+
+		<table schema="jarvis2" tableName="job_depend_status">
+			<property name="useActualColumnNames" value="true" />
+		</table>
+
+		<table schema="jarvis2" tableName="crontab">
+			<property name="useActualColumnNames" value="true" />
+			<generatedKey column="cronId" sqlStatement="MySql"
+				identity="true" />
+		</table>
+
+		<table schema="jarvis2" tableName="task">
+			<property name="useActualColumnNames" value="true" />
+			<generatedKey column="taskId" sqlStatement="MySql"
+				identity="true" />
+		</table>
+
+		<table schema="jarvis2" tableName="worker">
+			<property name="useActualColumnNames" value="true" />
+			<generatedKey column="id" sqlStatement="MySql" identity="true" />
+		</table>
+
+		<table schema="jarvis2" tableName="worker_group">
+			<property name="useActualColumnNames" value="true" />
+			<generatedKey column="id" sqlStatement="MySql" identity="true" />
+		</table>
+
+		<table schema="jarvis2" tableName="app_worker_group">
+			<property name="useActualColumnNames" value="true" />
+			<generatedKey column="id" sqlStatement="MySql" identity="true" />
+		</table>
+
+	</context>
+</generatorConfiguration>

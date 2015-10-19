@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:cache="http://www.springframework.org/schema/cache"
+	xmlns:p="http://www.springframework.org/schema/p"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/cache
+    http://www.springframework.org/schema/cache/spring-cache.xsd">
 
 	<context:annotation-config />
 	<context:component-scan base-package="com.mogujie.jarvis" />
 
-    <!-- 事务 -->
+	<!-- 事务 -->
 	<tx:annotation-driven proxy-target-class="true"
 		transaction-manager="transactionManager" />
+
 	<bean id="transactionManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="hikariDataSource" />
@@ -42,7 +45,7 @@
 		<property name="mapperLocations" value="classpath*:sqlMap/**/*.xml" />
 	</bean>
 
-    <!-- 注册Maper -->
+	<!-- 注册Maper -->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		<property name="basePackage" value="com.mogujie.jarvis.dao" />
 	</bean>
@@ -51,4 +54,11 @@
 		<constructor-arg index="0" ref="sqlSessionFactory" />
 	</bean>
 
+	<!-- 使用ehcache缓存 -->
+	<bean id="ehcacheManager"
+		class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"
+		p:config-location="classpath:ehcache.xml" p:shared="true" />
+
+	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager"
+		p:cache-manager-ref="ehcacheManager" />
 </beans>

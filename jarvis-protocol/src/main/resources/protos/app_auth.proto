@@ -6,9 +6,3 @@ message AppAuth {
   required string name = 1;
   required string token = 2;
 }
-
-
-message AppAuthResponse {
-  required bool success = 1;
-  optional string message = 2 [default = ""];
-}

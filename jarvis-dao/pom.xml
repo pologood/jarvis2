@@ -58,7 +58,7 @@
 					</execution>
 				</executions>
 				<configuration>
-					<configurationFile>src/main/resources/generator_mybatis_config_idea.xml</configurationFile>
+					<configurationFile>src/main/resources/mybatis_generator.xml</configurationFile>
 					<verbose>true</verbose>
 					<overwrite>true</overwrite>
 				</configuration>

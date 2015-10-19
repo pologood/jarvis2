@@ -14,7 +14,7 @@ message RestServerCreateWorkerGroupRequest {
 message ServerCreateWorkerGroupResponse {
     required bool success = 1;
     optional string message = 2 [default = ""];
-    required string worker_group_key = 3;
+    optional string worker_group_key = 3;
 }
 
 

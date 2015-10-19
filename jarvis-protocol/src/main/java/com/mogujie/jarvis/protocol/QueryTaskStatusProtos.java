@@ -643,12 +643,12 @@ public final class QueryTaskStatusProtos {
             com.google.protobuf.MessageOrBuilder {
 
         /**
-         * <code>required int32 status = 1;</code>
+         * <code>optional int32 status = 1;</code>
          */
         boolean hasStatus();
 
         /**
-         * <code>required int32 status = 1;</code>
+         * <code>optional int32 status = 1;</code>
          */
         int getStatus();
 
@@ -784,14 +784,14 @@ public final class QueryTaskStatusProtos {
         private int status_;
 
         /**
-         * <code>required int32 status = 1;</code>
+         * <code>optional int32 status = 1;</code>
          */
         public boolean hasStatus() {
             return ((bitField0_ & 0x00000001) == 0x00000001);
         }
 
         /**
-         * <code>required int32 status = 1;</code>
+         * <code>optional int32 status = 1;</code>
          */
         public int getStatus() {
             return status_;
@@ -870,10 +870,6 @@ public final class QueryTaskStatusProtos {
             if (isInitialized == 0)
                 return false;
 
-            if (!hasStatus()) {
-                memoizedIsInitialized = 0;
-                return false;
-            }
             if (!hasSuccess()) {
                 memoizedIsInitialized = 0;
                 return false;
@@ -1114,10 +1110,6 @@ public final class QueryTaskStatusProtos {
             }
 
             public final boolean isInitialized() {
-                if (!hasStatus()) {
-
-                    return false;
-                }
                 if (!hasSuccess()) {
 
                     return false;
@@ -1146,21 +1138,21 @@ public final class QueryTaskStatusProtos {
             private int status_;
 
             /**
-             * <code>required int32 status = 1;</code>
+             * <code>optional int32 status = 1;</code>
              */
             public boolean hasStatus() {
                 return ((bitField0_ & 0x00000001) == 0x00000001);
             }
 
             /**
-             * <code>required int32 status = 1;</code>
+             * <code>optional int32 status = 1;</code>
              */
             public int getStatus() {
                 return status_;
             }
 
             /**
-             * <code>required int32 status = 1;</code>
+             * <code>optional int32 status = 1;</code>
              */
             public Builder setStatus(int value) {
                 bitField0_ |= 0x00000001;
@@ -1170,7 +1162,7 @@ public final class QueryTaskStatusProtos {
             }
 
             /**
-             * <code>required int32 status = 1;</code>
+             * <code>optional int32 status = 1;</code>
              */
             public Builder clearStatus() {
                 bitField0_ = (bitField0_ & ~0x00000001);
@@ -1318,7 +1310,7 @@ public final class QueryTaskStatusProtos {
                 "\n\027query_task_status.proto\032\016app_auth.prot" + "o\"O\n RestServerQueryTaskStatusRequest\022\032\n"
                         + "\010app_auth\030\001 \002(\0132\010.AppAuth\022\017\n\007task_id\030\002 \002"
                         + "(\003\"S\n\035ServerQueryTaskStatusResponse\022\016\n\006s"
-                        + "tatus\030\001 \002(\005\022\017\n\007success\030\002 \002(\010\022\021\n\007message\030"
+                        + "tatus\030\001 \001(\005\022\017\n\007success\030\002 \002(\010\022\021\n\007message\030"
                         + "\003 \001(\t:\000B4\n\033com.mogujie.jarvis.protocolB\025" + "QueryTaskStatusProtos" };
         com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner = new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
             public com.google.protobuf.ExtensionRegistry assignDescriptors(com.google.protobuf.Descriptors.FileDescriptor root) {

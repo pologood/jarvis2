@@ -72,6 +72,7 @@ public class AppActor extends UntypedActor {
             app.setMaxConcurrency(request.getMaxConcurrency());
 
             appMapper.insertSelective(app);
+            taskManager.addApp(app.getAppId(), request.getMaxConcurrency());
 
             ServerCreateApplicationResponse response = ServerCreateApplicationResponse.newBuilder().setSuccess(true).setAppKey(key).build();
             getSender().tell(response, getSelf());
