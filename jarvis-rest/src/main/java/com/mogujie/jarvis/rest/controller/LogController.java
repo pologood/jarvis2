@@ -20,6 +20,7 @@ import com.mogujie.jarvis.protocol.ReadLogProtos.RestServerReadLogRequest;
 import com.mogujie.jarvis.rest.RestResult;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.json.JSONObject;
 
 /**
  * @author muming
@@ -51,21 +52,28 @@ public class LogController extends AbstractController {
                                       @FormParam("appToken") String appToken,
                                       @FormParam("appName") String appName,
                                       @FormParam("user") String user,
-                                      @FormParam("taskId") long taskId,
-                                        @FormParam("offset") long offset,
-                                      @FormParam("lines") int lines) throws Exception {
+                                      @FormParam("parameters") String parameters){
 
-        RestServerReadLogRequest request = RestServerReadLogRequest.newBuilder().setTaskId(taskId).setType(StreamType.STD_ERR.getValue())
-                .setOffset(offset).setLines(lines).build();
+        try {
+            JSONObject para=new JSONObject(parameters);
+            Long taskId=para.getLong("taskId");
+            Long offset=para.getLong("offset");
+            Integer lines=para.getInt("lines");
 
-        LogServerReadLogResponse response = (LogServerReadLogResponse) callActor(AkkaType.LOGSTORAGE, request);
+            RestServerReadLogRequest request = RestServerReadLogRequest.newBuilder().setTaskId(taskId).setType(StreamType.STD_ERR.getValue())
+                    .setOffset(offset).setLines(lines).build();
 
-        if (response.getSuccess()) {
-            return successResult();
-        } else {
-            return errorResult("msg");
+            LogServerReadLogResponse response = (LogServerReadLogResponse) callActor(AkkaType.LOGSTORAGE, request);
+
+            if (response.getSuccess()) {
+                return successResult();
+            } else {
+                return errorResult("msg");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return errorResult(e.getMessage());
         }
-
     }
 
     /**
@@ -87,20 +95,31 @@ public class LogController extends AbstractController {
     @POST
     @Path("queryResult")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult queryResult(@FormParam("appKey") String appKey, @FormParam("appName") String appName, @FormParam("taskId") long taskId,
-            @FormParam("offset") long offset, @FormParam("lines") int lines) throws Exception {
+    public RestResult queryResult(@FormParam("appKey") String appKey,
+                                  @FormParam("appToken") String appToken,
+                                  @FormParam("appName") String appName,
+                                  @FormParam("user") String user,
+                                  @FormParam("parameters") String parameters) throws Exception {
+        try {
+            JSONObject para=new JSONObject(parameters);
+            Long taskId=para.getLong("taskId");
+            Long offset=para.getLong("offset");
+            Integer lines=para.getInt("lines");
 
-        RestServerReadLogRequest request = RestServerReadLogRequest.newBuilder().setTaskId(taskId).setType(StreamType.STD_OUT.getValue())
-                .setOffset(offset).setLines(lines).build();
+            RestServerReadLogRequest request = RestServerReadLogRequest.newBuilder().setTaskId(taskId).setType(StreamType.STD_OUT.getValue())
+                    .setOffset(offset).setLines(lines).build();
 
-        LogServerReadLogResponse response = (LogServerReadLogResponse) callActor(AkkaType.LOGSTORAGE, request);
+            LogServerReadLogResponse response = (LogServerReadLogResponse) callActor(AkkaType.LOGSTORAGE, request);
 
-        if (response.getSuccess()) {
-            return successResult();
-        } else {
-            return errorResult(response.getMessage());
+            if (response.getSuccess()) {
+                return successResult();
+            } else {
+                return errorResult(response.getMessage());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return  errorResult(e.getMessage());
         }
-
     }
 
 }
