@@ -42,7 +42,7 @@ import com.mogujie.jarvis.server.scheduler.dag.strategy.AbstractOffsetStrategy;
 import com.mogujie.jarvis.server.scheduler.dag.strategy.CommonStrategy;
 import com.mogujie.jarvis.server.scheduler.dag.strategy.OffsetStrategyFactory;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
-import com.mogujie.jarvis.server.scheduler.event.RemoveDeletedJobsEvent;
+import com.mogujie.jarvis.server.scheduler.event.ModifyJobFlagsEvent;
 import com.mogujie.jarvis.server.scheduler.event.StartEvent;
 import com.mogujie.jarvis.server.scheduler.event.StopEvent;
 import com.mogujie.jarvis.server.scheduler.event.SuccessEvent;
@@ -397,12 +397,17 @@ public class DAGScheduler extends Scheduler {
     }
 
     @Subscribe
-    public void handleRmoveDeletedJobsEvent(RemoveDeletedJobsEvent e) {
-        List<Long> jobIds = e.getDeletedJobIds();
+    public void handleModifyJobFlagsEvent(ModifyJobFlagsEvent e) {
+        List<Long> jobIds = e.getJobIds();
+        JobFlag newFlag = e.getNewFlag();
         for (long jobId : jobIds) {
             DAGJob dagJob = waitingTable.get(jobId);
             if (dagJob != null) {
-                removeJob(dagJob);
+                if (newFlag.equals(JobFlag.DELETED)) {
+                    removeJob(dagJob);
+                } else {
+                    dagJob.setJobFlag(newFlag);
+                }
             }
         }
     }
