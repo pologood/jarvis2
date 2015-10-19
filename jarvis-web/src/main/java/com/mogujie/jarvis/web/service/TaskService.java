@@ -62,7 +62,7 @@ public class TaskService {
     private void changeFormat(TaskVo taskVo){
         taskVo.setJobPriority(Constants.jobPriorityMap.get(taskVo.getPriority()));
         taskVo.setTaskStatus(Constants.taskStatusMap.get(taskVo.getStatus()));
-        taskVo.setDataYmdStr(TimeTools.formatDate(taskVo.getDataYmd()));
+        taskVo.setScheduleTimeStr(TimeTools.formatDate(taskVo.getScheduleTime()));
         taskVo.setActiveStartDateStr(TimeTools.formatDate(taskVo.getActiveStartDate()));
         taskVo.setActiveEndDateStr(TimeTools.formatDate(taskVo.getActiveEndDate()));
         taskVo.setCreateTimeStr(TimeTools.formatDateTime(taskVo.getCreateTime()));
