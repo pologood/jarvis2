@@ -15,7 +15,7 @@
         <div class="col-md-6">
             <nav>
                 <ol class="cd-breadcrumb triangle">
-                    <li><a href="/jarvis/">Home</a></li>
+                    <li><a href="/jarvis/">首页</a></li>
                     <li class="current"><em>执行计划</em></li>
                 </ol>
             </nav>

@@ -15,7 +15,7 @@
     <div class="col-md-6">
       <nav>
         <ol class="cd-breadcrumb triangle">
-          <li><a href="/admin/">Home</a></li>
+          <li><a href="/admin/">首页</a></li>
           <li class="current"><em>平台管理</em></li>
         </ol>
       </nav>
