@@ -28,8 +28,11 @@ public class AppController extends AbstractController {
     @POST
     @Path("add")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult add(@FormParam("appName") String appName, @FormParam("appToken") String appToken,
-            @FormParam("applicationName") String applicationName) {
+    public RestResult add(@FormParam("user") String user,
+                          @FormParam("appToken") String appToken,
+                          @FormParam("appName") String appName,
+                          @FormParam("appKey") String appKey,
+                          @FormParam("applicationName") String applicationName) {
         try {
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
@@ -52,8 +55,13 @@ public class AppController extends AbstractController {
     @POST
     @Path("update")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult update(@FormParam("appId") String appId, @FormParam("appName") String appName, @FormParam("appToken") String appToken,
-            @FormParam("applicationName") String applicationName, @FormParam("status") int status) {
+    public RestResult update(@FormParam("appId") String appId,
+                             @FormParam("user") String user,
+                             @FormParam("appName") String appName,
+                             @FormParam("appToken") String appToken,
+                             @FormParam("appKey") String appKey,
+                             @FormParam("applicationName") String applicationName,
+                             @FormParam("status") int status) {
         try {
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
             RestServerModifyApplicationRequest request = RestServerModifyApplicationRequest.newBuilder().setAppAuth(appAuth)
@@ -74,8 +82,12 @@ public class AppController extends AbstractController {
     @POST
     @Path("status")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult delete(@FormParam("appId") String appId, @FormParam("appName") String appName, @FormParam("appToken") String appToken,
-            @FormParam("status") int status) {
+    public RestResult delete(@FormParam("appId") String appId,
+                             @FormParam("appName") String appName,
+                             @FormParam("appToken") String appToken,
+                             @FormParam("appKey") String appKey,
+                             @FormParam("user") String user,
+                             @FormParam("status") int status) {
         try {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 

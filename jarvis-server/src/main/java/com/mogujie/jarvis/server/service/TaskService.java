@@ -22,7 +22,6 @@ import com.mogujie.jarvis.dto.TaskExample;
 
 /**
  * @author guangming
- *
  */
 @Service
 public class TaskService {
@@ -54,28 +53,32 @@ public class TaskService {
     }
 
     public List<Task> getTasksByOffsetDay(long jobId, int offset) {
-        DateTime now = new DateTime();
+        DateTime now = DateTime.now();
         Date offsetDay = now.plus(-offset).toDate();
         TaskExample example = new TaskExample();
-        example.createCriteria().andDataYmdBetween(offsetDay, now.toDate());
+        example.createCriteria().andJobIdEqualTo(jobId)
+                .andScheduleTimeBetween(offsetDay, now.toDate());
+
         return taskMapper.selectByExample(example);
     }
 
     public List<Task> getTasksByOffsetWeek(long jobId, int offset) {
-        DateTime now = new DateTime();
+        DateTime now = DateTime.now();
         Date firstDay = now.plusWeeks(-offset).withDayOfWeek(1).toDate();
         Date lastDay = now.plusWeeks(-offset).withDayOfWeek(7).toDate();
         TaskExample example = new TaskExample();
-        example.createCriteria().andDataYmdBetween(firstDay, lastDay);
+        example.createCriteria().andJobIdEqualTo(jobId)
+                .andScheduleTimeBetween(firstDay, lastDay);
         return taskMapper.selectByExample(example);
     }
 
     public List<Task> getTasksByOffsetMonth(long jobId, int offset) {
-        DateTime now = new DateTime();
+        DateTime now = DateTime.now();
         Date firstDay = now.plusMonths(-offset).dayOfMonth().withMinimumValue().toDate();
         Date lastDay = now.plusMonths(-offset).dayOfMonth().withMaximumValue().toDate();
         TaskExample example = new TaskExample();
-        example.createCriteria().andDataYmdBetween(firstDay, lastDay);
+        example.createCriteria().andJobIdEqualTo(jobId)
+                .andScheduleTimeBetween(firstDay, lastDay);
         return taskMapper.selectByExample(example);
     }
 }

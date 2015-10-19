@@ -2,10 +2,12 @@ package com.mogujie.jarvis.web.controller.jarvis;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.hash.Hashing;
 import com.mogu.bigdata.admin.common.entity.User;
 import com.mogujie.jarvis.web.common.Constants;
 import com.sun.org.apache.xerces.internal.util.URI;
 import org.apache.http.client.utils.URLEncodedUtils;
+import org.joda.time.DateTime;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.helper.HttpConnection;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.beans.Encoder;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
@@ -87,13 +90,17 @@ public class RemoteRestApiController extends BaseController {
             User user=(User)modelMap.get("user");
             String uname=user.getUname();
             rawData.put("user",uname);
+
+            DateTime dateTime= new DateTime();
+            Long timeStamp=dateTime.getMillis()/1000;
+            String token= generateToken(timeStamp, Constants.appKey);
+            log.info("timeStamp:" + timeStamp + ",token:" + token);
+            rawData.put("appToken", token);
         } catch (Exception e) {
             e.printStackTrace();
         }
         rawData.put("appName", Constants.appName);
-        rawData.put("appKey",Constants.appKey);
-
-
+        rawData.put("appKey", Constants.appKey);
 
         //请求远程REST服务器。
         try {
@@ -120,6 +127,10 @@ public class RemoteRestApiController extends BaseController {
         }
 
         return jsonObject;
+    }
+
+    public static String generateToken(long timestamp, String appKey) {
+        return timestamp + Hashing.md5().hashString(appKey + timestamp, StandardCharsets.UTF_8).toString();
     }
 
 }

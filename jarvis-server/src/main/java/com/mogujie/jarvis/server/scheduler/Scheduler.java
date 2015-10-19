@@ -11,8 +11,6 @@ package com.mogujie.jarvis.server.scheduler;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
-import org.springframework.stereotype.Repository;
-
 import com.google.common.eventbus.Subscribe;
 import com.mogujie.jarvis.core.observer.Observer;
 import com.mogujie.jarvis.server.scheduler.controller.JobSchedulerController;
@@ -24,7 +22,6 @@ import com.mogujie.jarvis.server.scheduler.event.StopEvent;
  * @author guangming
  *
  */
-@Repository
 public abstract class Scheduler implements Observer {
     private JobSchedulerController schedulerController;
 

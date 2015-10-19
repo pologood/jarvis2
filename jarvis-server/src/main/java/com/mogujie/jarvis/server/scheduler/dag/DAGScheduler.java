@@ -118,12 +118,9 @@ public class DAGScheduler extends Scheduler {
     /**
      * Add job
      *
-     * @param long
-     *            jobId
-     * @param DAGJob
-     *            dagJob
-     * @param Set<Long>
-     *            dependencies
+     * @param jobId
+     * @param dagJob
+     * @param dependencies set of dependency jobId
      * @throws JobScheduleException
      */
     public void addJob(long jobId, DAGJob dagJob, Set<Long> dependencies) throws JobScheduleException {
@@ -155,6 +152,12 @@ public class DAGScheduler extends Scheduler {
         }
     }
 
+    /**
+     * Remove job
+     *
+     * @param jobId
+     * @throws JobScheduleException
+     */
     public void removeJob(long jobId) throws JobScheduleException {
         if (waitingTable.containsKey(jobId)) {
             DAGJob dagJob = waitingTable.get(jobId);
@@ -180,10 +183,9 @@ public class DAGScheduler extends Scheduler {
     /**
      * modify job flag
      *
-     * @param long
-     *            jobId
-     * @param JobFlag
-     *            jobFlag
+     * @param jobId
+     * @param jobFlag
+     * @throws JobScheduleException
      */
     public void modifyJobFlag(long jobId, JobFlag jobFlag) throws JobScheduleException {
         DAGJob dagJob = waitingTable.get(jobId);
@@ -224,12 +226,12 @@ public class DAGScheduler extends Scheduler {
     /**
      * modify DAG job type
      *
-     * @param long
-     *            jobId
-     * @param Map<MODIFY_JOB_TYPE,
-     *            ModifyJobEntry> modifyJobMap
+     * @param jobId
+     * @param modifyJobMap Map of ModifyJobType(key) and ModifyJobEntry(value)
+     * @throws JobScheduleException
      */
-    public void modifyDAGJobType(long jobId, Map<ModifyJobType, ModifyJobEntry> modifyJobMap) throws JobScheduleException {
+    public void modifyDAGJobType(long jobId, Map<ModifyJobType, ModifyJobEntry> modifyJobMap)
+            throws JobScheduleException {
         // update dag job type
         DAGJob dagJob = waitingTable.get(jobId);
         if (dagJob != null) {
@@ -267,10 +269,8 @@ public class DAGScheduler extends Scheduler {
     /**
      * modify DAG job dependency
      *
-     * @param long
-     *            jobId
-     * @param List<ModifyDependEntry>
-     *            dependEntries
+     * @param jobId
+     * @param dependEntries List of ModifyDependEntry
      */
     public void modifyDependency(long jobId, List<ModifyDependEntry> dependEntries) throws CycleFoundException {
         for (ModifyDependEntry entry : dependEntries) {
@@ -337,9 +337,8 @@ public class DAGScheduler extends Scheduler {
     /**
      * get dependent parent
      *
-     * @param long
-     *            jobId
-     * @return parent job pair<jobid, jobFlag> list
+     * @param jobId
+     * @return List of parents'pair with jobid and JobFlag
      */
     public List<Pair<Long, JobFlag>> getParents(long jobId) {
         List<Pair<Long, JobFlag>> parentJobPairs = new ArrayList<Pair<Long, JobFlag>>();
@@ -360,9 +359,8 @@ public class DAGScheduler extends Scheduler {
     /**
      * get subsequent child
      *
-     * @param long
-     *            jobId
-     * @return children job pair<jobid, jobFlag> list
+     * @param jobId
+     * @return List of children'pair with jobid and JobFlag
      */
     public List<Pair<Long, JobFlag>> getChildren(long jobId) {
         List<Pair<Long, JobFlag>> childJobPairs = new ArrayList<Pair<Long, JobFlag>>();
@@ -442,8 +440,7 @@ public class DAGScheduler extends Scheduler {
     /**
      * submit job if pass the dependency check
      *
-     * @param DAGJob
-     *            dagJob
+     * @param dagJob
      */
     private void submitJobWithCheck(DAGJob dagJob) {
         List<DAGJob> parents = getParents(dagJob);

@@ -42,7 +42,7 @@ import scala.concurrent.duration.Duration;
  *
  */
 @ContextConfiguration(locations = "classpath:context.xml")
-public class TestBaseActor extends AbstractTransactionalJUnit4SpringContextTests {
+public abstract class TestBaseActor extends AbstractTransactionalJUnit4SpringContextTests {
     protected static ActorSystem system;
     protected static final Timeout TIMEOUT = new Timeout(Duration.create(5, TimeUnit.SECONDS));
     protected static Configuration conf = ConfigUtils.getServerConfig();

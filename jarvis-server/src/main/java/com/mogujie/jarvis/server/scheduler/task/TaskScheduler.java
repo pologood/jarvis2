@@ -72,7 +72,7 @@ public class TaskScheduler extends Scheduler {
     @Autowired
     private TaskQueue taskQueue;
 
-    private Map<Long, DAGTask> readyTable = new ConcurrentHashMap<Long, DAGTask>();
+    private Map<Long, DAGTask> readyTable = new ConcurrentHashMap<>();
 
     private PriorityBlockingQueue<FailedTask> failedQueue = new PriorityBlockingQueue<>(10,
             new Comparator<FailedTask>() {
@@ -108,10 +108,10 @@ public class TaskScheduler extends Scheduler {
 
     private boolean isTestMode = SchedulerUtil.isTestMode();
 
-    // unique taskid
+    // unique taskId
     private AtomicLong maxid = new AtomicLong(1);
-    private static final int DAFAULT_MAX_FAILED_ATTEMPTS = 3;
-    private static final int DAFAULT_FAILED_INTERVAL = 1000;
+    private static final int DEFAULT_MAX_FAILED_ATTEMPTS = 3;
+    private static final int DEFAULT_FAILED_INTERVAL = 1000;
 
     @Override
     @Transactional
@@ -119,9 +119,19 @@ public class TaskScheduler extends Scheduler {
         getSchedulerController().register(this);
 
         // load all READY tasks from DB
-        List<Task> tasks = taskService.getTasksByStatus(JobStatus.READY);
-        if (tasks != null) {
-            for (Task task : tasks) {
+        List<Task> readyTasks = taskService.getTasksByStatus(JobStatus.READY);
+        if (readyTasks != null) {
+            for (Task task : readyTasks) {
+                DAGTask dagTask = new DAGTask(task.getJobId(), task.getTaskId(), task.getAttemptId());
+                readyTable.put(task.getTaskId(), dagTask);
+                retryTask(task);
+            }
+        }
+
+        // load all RUNNING tasks from DB
+        List<Task> runningTasks = taskService.getTasksByStatus(JobStatus.RUNNING);
+        if (runningTasks != null) {
+            for (Task task : runningTasks) {
                 DAGTask dagTask = new DAGTask(task.getJobId(), task.getTaskId(), task.getAttemptId());
                 readyTable.put(task.getTaskId(), dagTask);
             }
@@ -181,13 +191,15 @@ public class TaskScheduler extends Scheduler {
         DAGTask dagTask = readyTable.get(e.getTaskId());
         long taskId = e.getTaskId();
         if (dagTask != null) {
-            int maxFailedAttempts = DAFAULT_MAX_FAILED_ATTEMPTS;
-            int failedInterval = DAFAULT_FAILED_INTERVAL;
+
+            int maxFailedAttempts = DEFAULT_MAX_FAILED_ATTEMPTS;
+            int failedInterval = DEFAULT_FAILED_INTERVAL;
             if (!isTestMode) {
                 Job job = jobMapper.selectByPrimaryKey(dagTask.getJobId());
                 maxFailedAttempts = job.getFailedAttempts();
                 failedInterval = job.getFailedInterval();
             }
+
             if (dagTask.getAttemptId() <= maxFailedAttempts) {
                 int attemptId = dagTask.getAttemptId();
                 attemptId++;
@@ -262,9 +274,7 @@ public class TaskScheduler extends Scheduler {
         if (dagTask != null) {
             if (!isTestMode) {
                 task.setAttemptId(dagTask.getAttemptId());
-                DateTime dt = DateTime.now();
-                Date currentTime = dt.toDate();
-                task.setUpdateTime(currentTime);
+                task.setUpdateTime(DateTime.now().toDate());
                 taskMapper.updateByPrimaryKey(task);
             }
 

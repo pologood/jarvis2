@@ -56,7 +56,7 @@ public class JobController extends AbstractController {
     @POST
     @Path("submit")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult submit(@FormParam("appName") String appName, @FormParam("appToken") String appToken, @FormParam("jobName") String jobName,
+    public RestResult submit(@FormParam("appName") String appName, @FormParam("appToken") String appToken,@FormParam("appKey") String appKey, @FormParam("jobName") String jobName,
             @FormParam("jobId") Long jobId, @FormParam("cronExpression") String cronExp, @FormParam("dependJobIds") String dependJobIds,
             @FormParam("user") String user, @FormParam("jobType") String jobType, @FormParam("content") String content,
             // @FormParam("jobContent") String jobContent,
@@ -141,7 +141,7 @@ public class JobController extends AbstractController {
     @POST
     @Path("edit")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult edit(@FormParam("appName") String appName, @FormParam("appToken") String appToken, @FormParam("jobName") String jobName,
+    public RestResult edit(@FormParam("appName") String appName, @FormParam("appToken") String appToken, @FormParam("appKey") String appKey,@FormParam("jobName") String jobName,
             @FormParam("jobId") Long jobId, @FormParam("cronExpression") String cronExp, @FormParam("dependJobIds") String dependJobIds,
             @FormParam("user") String user, @FormParam("jobType") String jobType, @FormParam("content") String content,
             @FormParam("groupId") int groupId, @FormParam("rejectRetries") int rejectRetries, @FormParam("rejectInterval") int rejectInterval,
@@ -248,7 +248,7 @@ public class JobController extends AbstractController {
     @POST
     @Path("flag")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult flag(@FormParam("jobId") Long jobId, @FormParam("appToken") String appToken, @FormParam("appName") String appName,
+    public RestResult flag(@FormParam("jobId") Long jobId, @FormParam("appToken") String appToken,@FormParam("appKey") String appKey, @FormParam("appName") String appName,
             @FormParam("jobFlag") Integer jobFlag, @FormParam("user") String user) throws Exception {
         try {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
@@ -283,9 +283,12 @@ public class JobController extends AbstractController {
     @POST
     @Path("rerun")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult rerun(@FormParam("originJobId") Long originJobId, @FormParam("appName") String appName, @FormParam("appToken") String appToken,
-            @FormParam("startTime") String startTime, @FormParam("endTime") String endTime, @FormParam("reRunJobs") String reRunJobs,
-            @FormParam("user") String user) {
+    public RestResult rerun(@FormParam("originJobId") Long originJobId,
+                            @FormParam("appName") String appName,
+                            @FormParam("appToken") String appToken,
+                            @FormParam("appKey") String appKey,
+                            @FormParam("user") String user,
+            @FormParam("startTime") String startTime, @FormParam("endTime") String endTime, @FormParam("reRunJobs") String reRunJobs) {
         try {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
             JSONArray reRunJobArr = new JSONArray(reRunJobs);
