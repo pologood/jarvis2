@@ -68,8 +68,8 @@ public class TimeScheduler extends Scheduler {
         Set<Long> jobIds = new HashSet<>();
         for (Job job : enableJobs) {
             Integer fixedDelay = job.getFixedDelay();
-            if (fixedDelay != null) {
-                cronScheduler.scheduleOnce(job.getJobId(), job.getFixedDelay());
+            if (fixedDelay != null ) {
+                cronScheduler.scheduleOnce(job.getJobId(), fixedDelay);
             } else {
                 jobIds.add(job.getJobId());
             }
