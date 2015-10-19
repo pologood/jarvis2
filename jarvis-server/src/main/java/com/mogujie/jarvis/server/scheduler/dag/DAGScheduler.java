@@ -42,6 +42,7 @@ import com.mogujie.jarvis.server.scheduler.dag.strategy.AbstractOffsetStrategy;
 import com.mogujie.jarvis.server.scheduler.dag.strategy.CommonStrategy;
 import com.mogujie.jarvis.server.scheduler.dag.strategy.OffsetStrategyFactory;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
+import com.mogujie.jarvis.server.scheduler.event.RemoveDeletedJobsEvent;
 import com.mogujie.jarvis.server.scheduler.event.StartEvent;
 import com.mogujie.jarvis.server.scheduler.event.StopEvent;
 import com.mogujie.jarvis.server.scheduler.event.SuccessEvent;
@@ -82,7 +83,7 @@ public class DAGScheduler extends Scheduler {
         getSchedulerController().register(this);
 
         // load not deleted jobs from DB
-        List<Job> jobs = jobService.getJobsNotDeleted();
+        List<Job> jobs = jobService.getNotDeletedJobs();
         for (Job job : jobs) {
             long jobId = job.getJobId();
             Set<Long> dependencies = jobDependService.getDependIds(jobId);
@@ -392,6 +393,17 @@ public class DAGScheduler extends Scheduler {
             LOGGER.debug("DAGJob {} time ready", dagJob.getJobId());
             // 如果通过依赖检查，提交给taskScheduler，并重置自己的依赖状态
             submitJobWithCheck(dagJob);
+        }
+    }
+
+    @Subscribe
+    public void handleRmoveDeletedJobsEvent(RemoveDeletedJobsEvent e) {
+        List<Long> jobIds = e.getDeletedJobIds();
+        for (long jobId : jobIds) {
+            DAGJob dagJob = waitingTable.get(jobId);
+            if (dagJob != null) {
+                removeJob(dagJob);
+            }
         }
     }
 
