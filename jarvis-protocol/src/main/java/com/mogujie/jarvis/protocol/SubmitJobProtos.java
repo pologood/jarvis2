@@ -2959,12 +2959,12 @@ public final class SubmitJobProtos {
             com.google.protobuf.MessageOrBuilder {
 
         /**
-         * <code>required int64 job_id = 1;</code>
+         * <code>optional int64 job_id = 1;</code>
          */
         boolean hasJobId();
 
         /**
-         * <code>required int64 job_id = 1;</code>
+         * <code>optional int64 job_id = 1;</code>
          */
         long getJobId();
 
@@ -3100,14 +3100,14 @@ public final class SubmitJobProtos {
         private long jobId_;
 
         /**
-         * <code>required int64 job_id = 1;</code>
+         * <code>optional int64 job_id = 1;</code>
          */
         public boolean hasJobId() {
             return ((bitField0_ & 0x00000001) == 0x00000001);
         }
 
         /**
-         * <code>required int64 job_id = 1;</code>
+         * <code>optional int64 job_id = 1;</code>
          */
         public long getJobId() {
             return jobId_;
@@ -3186,10 +3186,6 @@ public final class SubmitJobProtos {
             if (isInitialized == 0)
                 return false;
 
-            if (!hasJobId()) {
-                memoizedIsInitialized = 0;
-                return false;
-            }
             if (!hasSuccess()) {
                 memoizedIsInitialized = 0;
                 return false;
@@ -3430,10 +3426,6 @@ public final class SubmitJobProtos {
             }
 
             public final boolean isInitialized() {
-                if (!hasJobId()) {
-
-                    return false;
-                }
                 if (!hasSuccess()) {
 
                     return false;
@@ -3462,21 +3454,21 @@ public final class SubmitJobProtos {
             private long jobId_;
 
             /**
-             * <code>required int64 job_id = 1;</code>
+             * <code>optional int64 job_id = 1;</code>
              */
             public boolean hasJobId() {
                 return ((bitField0_ & 0x00000001) == 0x00000001);
             }
 
             /**
-             * <code>required int64 job_id = 1;</code>
+             * <code>optional int64 job_id = 1;</code>
              */
             public long getJobId() {
                 return jobId_;
             }
 
             /**
-             * <code>required int64 job_id = 1;</code>
+             * <code>optional int64 job_id = 1;</code>
              */
             public Builder setJobId(long value) {
                 bitField0_ |= 0x00000001;
@@ -3486,7 +3478,7 @@ public final class SubmitJobProtos {
             }
 
             /**
-             * <code>required int64 job_id = 1;</code>
+             * <code>optional int64 job_id = 1;</code>
              */
             public Builder clearJobId() {
                 bitField0_ = (bitField0_ & ~0x00000001);
@@ -5479,12 +5471,12 @@ public final class SubmitJobProtos {
             com.google.protobuf.MessageOrBuilder {
 
         /**
-         * <code>required bool accept = 1;</code>
+         * <code>optional bool accept = 1;</code>
          */
         boolean hasAccept();
 
         /**
-         * <code>required bool accept = 1;</code>
+         * <code>optional bool accept = 1;</code>
          */
         boolean getAccept();
 
@@ -5620,14 +5612,14 @@ public final class SubmitJobProtos {
         private boolean accept_;
 
         /**
-         * <code>required bool accept = 1;</code>
+         * <code>optional bool accept = 1;</code>
          */
         public boolean hasAccept() {
             return ((bitField0_ & 0x00000001) == 0x00000001);
         }
 
         /**
-         * <code>required bool accept = 1;</code>
+         * <code>optional bool accept = 1;</code>
          */
         public boolean getAccept() {
             return accept_;
@@ -5706,10 +5698,6 @@ public final class SubmitJobProtos {
             if (isInitialized == 0)
                 return false;
 
-            if (!hasAccept()) {
-                memoizedIsInitialized = 0;
-                return false;
-            }
             if (!hasSuccess()) {
                 memoizedIsInitialized = 0;
                 return false;
@@ -5950,10 +5938,6 @@ public final class SubmitJobProtos {
             }
 
             public final boolean isInitialized() {
-                if (!hasAccept()) {
-
-                    return false;
-                }
                 if (!hasSuccess()) {
 
                     return false;
@@ -5982,21 +5966,21 @@ public final class SubmitJobProtos {
             private boolean accept_;
 
             /**
-             * <code>required bool accept = 1;</code>
+             * <code>optional bool accept = 1;</code>
              */
             public boolean hasAccept() {
                 return ((bitField0_ & 0x00000001) == 0x00000001);
             }
 
             /**
-             * <code>required bool accept = 1;</code>
+             * <code>optional bool accept = 1;</code>
              */
             public boolean getAccept() {
                 return accept_;
             }
 
             /**
-             * <code>required bool accept = 1;</code>
+             * <code>optional bool accept = 1;</code>
              */
             public Builder setAccept(boolean value) {
                 bitField0_ |= 0x00000001;
@@ -6006,7 +5990,7 @@ public final class SubmitJobProtos {
             }
 
             /**
-             * <code>required bool accept = 1;</code>
+             * <code>optional bool accept = 1;</code>
              */
             public Builder clearAccept() {
                 bitField0_ = (bitField0_ & ~0x00000001);
@@ -6168,14 +6152,14 @@ public final class SubmitJobProtos {
                         + "\020\n\010end_time\030\017 \001(\003\022\025\n\rorigin_job_id\030\020 \001(\003"
                         + "\022\035\n\nparameters\030\021 \003(\0132\t.MapEntry\022\023\n\013fixed"
                         + "_delay\030\022 \001(\005\"M\n\027ServerSubmitJobResponse\022"
-                        + "\016\n\006job_id\030\001 \002(\003\022\017\n\007success\030\002 \002(\010\022\021\n\007mess"
+                        + "\016\n\006job_id\030\001 \001(\003\022\017\n\007success\030\002 \002(\010\022\021\n\007mess"
                         + "age\030\003 \001(\t:\000\"\316\001\n\027ServerSubmitTaskRequest\022"
                         + "\017\n\007full_id\030\001 \002(\t\022\021\n\ttask_name\030\002 \002(\t\022\020\n\010a"
                         + "pp_name\030\003 \002(\t\022\014\n\004user\030\004 \002(\t\022\021\n\ttask_type"
                         + "\030\005 \002(\t\022\017\n\007content\030\006 \002(\t\022\023\n\010priority\030\007 \001("
                         + "\005:\0011\022\035\n\nparameters\030\010 \003(\0132\t.MapEntry\022\027\n\017s",
                 "cheduling_time\030\t \002(\003\"N\n\030WorkerSubmitTask"
-                        + "Response\022\016\n\006accept\030\001 \002(\010\022\017\n\007success\030\002 \002("
+                        + "Response\022\016\n\006accept\030\001 \001(\010\022\017\n\007success\030\002 \002("
                         + "\010\022\021\n\007message\030\003 \001(\t:\000B.\n\033com.mogujie.jarv" + "is.protocolB\017SubmitJobProtos" };
         com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner = new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
             public com.google.protobuf.ExtensionRegistry assignDescriptors(com.google.protobuf.Descriptors.FileDescriptor root) {

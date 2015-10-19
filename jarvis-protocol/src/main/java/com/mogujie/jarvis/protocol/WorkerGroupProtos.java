@@ -903,17 +903,17 @@ public final class WorkerGroupProtos {
         com.google.protobuf.ByteString getMessageBytes();
 
         /**
-         * <code>required string worker_group_key = 3;</code>
+         * <code>optional string worker_group_key = 3;</code>
          */
         boolean hasWorkerGroupKey();
 
         /**
-         * <code>required string worker_group_key = 3;</code>
+         * <code>optional string worker_group_key = 3;</code>
          */
         java.lang.String getWorkerGroupKey();
 
         /**
-         * <code>required string worker_group_key = 3;</code>
+         * <code>optional string worker_group_key = 3;</code>
          */
         com.google.protobuf.ByteString getWorkerGroupKeyBytes();
     }
@@ -1083,14 +1083,14 @@ public final class WorkerGroupProtos {
         private java.lang.Object workerGroupKey_;
 
         /**
-         * <code>required string worker_group_key = 3;</code>
+         * <code>optional string worker_group_key = 3;</code>
          */
         public boolean hasWorkerGroupKey() {
             return ((bitField0_ & 0x00000004) == 0x00000004);
         }
 
         /**
-         * <code>required string worker_group_key = 3;</code>
+         * <code>optional string worker_group_key = 3;</code>
          */
         public java.lang.String getWorkerGroupKey() {
             java.lang.Object ref = workerGroupKey_;
@@ -1107,7 +1107,7 @@ public final class WorkerGroupProtos {
         }
 
         /**
-         * <code>required string worker_group_key = 3;</code>
+         * <code>optional string worker_group_key = 3;</code>
          */
         public com.google.protobuf.ByteString getWorkerGroupKeyBytes() {
             java.lang.Object ref = workerGroupKey_;
@@ -1136,10 +1136,6 @@ public final class WorkerGroupProtos {
                 return false;
 
             if (!hasSuccess()) {
-                memoizedIsInitialized = 0;
-                return false;
-            }
-            if (!hasWorkerGroupKey()) {
                 memoizedIsInitialized = 0;
                 return false;
             }
@@ -1385,10 +1381,6 @@ public final class WorkerGroupProtos {
 
                     return false;
                 }
-                if (!hasWorkerGroupKey()) {
-
-                    return false;
-                }
                 return true;
             }
 
@@ -1525,14 +1517,14 @@ public final class WorkerGroupProtos {
             private java.lang.Object workerGroupKey_ = "";
 
             /**
-             * <code>required string worker_group_key = 3;</code>
+             * <code>optional string worker_group_key = 3;</code>
              */
             public boolean hasWorkerGroupKey() {
                 return ((bitField0_ & 0x00000004) == 0x00000004);
             }
 
             /**
-             * <code>required string worker_group_key = 3;</code>
+             * <code>optional string worker_group_key = 3;</code>
              */
             public java.lang.String getWorkerGroupKey() {
                 java.lang.Object ref = workerGroupKey_;
@@ -1549,7 +1541,7 @@ public final class WorkerGroupProtos {
             }
 
             /**
-             * <code>required string worker_group_key = 3;</code>
+             * <code>optional string worker_group_key = 3;</code>
              */
             public com.google.protobuf.ByteString getWorkerGroupKeyBytes() {
                 java.lang.Object ref = workerGroupKey_;
@@ -1563,7 +1555,7 @@ public final class WorkerGroupProtos {
             }
 
             /**
-             * <code>required string worker_group_key = 3;</code>
+             * <code>optional string worker_group_key = 3;</code>
              */
             public Builder setWorkerGroupKey(java.lang.String value) {
                 if (value == null) {
@@ -1576,7 +1568,7 @@ public final class WorkerGroupProtos {
             }
 
             /**
-             * <code>required string worker_group_key = 3;</code>
+             * <code>optional string worker_group_key = 3;</code>
              */
             public Builder clearWorkerGroupKey() {
                 bitField0_ = (bitField0_ & ~0x00000004);
@@ -1586,7 +1578,7 @@ public final class WorkerGroupProtos {
             }
 
             /**
-             * <code>required string worker_group_key = 3;</code>
+             * <code>optional string worker_group_key = 3;</code>
              */
             public Builder setWorkerGroupKeyBytes(com.google.protobuf.ByteString value) {
                 if (value == null) {
@@ -3224,7 +3216,7 @@ public final class WorkerGroupProtos {
                 + "RestServerCreateWorkerGroupRequest\022\032\n\010ap" + "p_auth\030\001 \002(\0132\010.AppAuth\022\031\n\021worker_group_n"
                 + "ame\030\002 \002(\t\022\014\n\004user\030\003 \002(\t\"_\n\037ServerCreateW"
                 + "orkerGroupResponse\022\017\n\007success\030\001 \002(\010\022\021\n\007m"
-                + "essage\030\002 \001(\t:\000\022\030\n\020worker_group_key\030\003 \002(\t" + "\"\222\001\n\"RestServerModifyWorkerGroupRequest\022"
+                + "essage\030\002 \001(\t:\000\022\030\n\020worker_group_key\030\003 \001(\t" + "\"\222\001\n\"RestServerModifyWorkerGroupRequest\022"
                 + "\032\n\010app_auth\030\001 \002(\0132\010.AppAuth\022\027\n\017worker_gr"
                 + "oup_id\030\002 \002(\005\022\031\n\021worker_group_name\030\003 \001(\t\022"
                 + "\014\n\004user\030\004 \001(\t\022\016\n\006status\030\005 \001(\005\"E\n\037ServerM",

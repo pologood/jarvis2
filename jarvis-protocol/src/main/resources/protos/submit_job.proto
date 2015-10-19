@@ -29,7 +29,7 @@ message RestServerSubmitJobRequest {
 
 
 message ServerSubmitJobResponse {
-    required int64 job_id = 1;
+    optional int64 job_id = 1;
     required bool success = 2;
     optional string message = 3 [default = ""];
 }
@@ -49,7 +49,7 @@ message ServerSubmitTaskRequest {
 
 
 message WorkerSubmitTaskResponse {
-    required bool accept = 1;
+    optional bool accept = 1;
     required bool success = 2;
     optional string message = 3 [default = ""];
 }
