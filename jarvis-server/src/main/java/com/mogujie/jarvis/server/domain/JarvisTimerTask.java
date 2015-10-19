@@ -12,25 +12,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TimerTask;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.mogujie.jarvis.core.domain.JobFlag;
 import com.mogujie.jarvis.dto.Job;
 import com.mogujie.jarvis.server.scheduler.controller.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.controller.SchedulerControllerFactory;
 import com.mogujie.jarvis.server.scheduler.event.RemoveDeletedJobsEvent;
 import com.mogujie.jarvis.server.service.JobService;
+import com.mogujie.jarvis.server.util.SpringContext;
 
 /**
  * @author guangming
  *
  */
-@Service
 public class JarvisTimerTask extends TimerTask {
-    @Autowired
-    private JobService jobService;
-
+    private JobService jobService = SpringContext.getBean(JobService.class);
     private JobSchedulerController schedulerController = SchedulerControllerFactory.getController();
 
     @Override
