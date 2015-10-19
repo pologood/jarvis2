@@ -55,3 +55,32 @@ function requestRemoteRestApi(url,title,para){
 
     return flag;
 }
+
+
+//时间戳转化成日期
+function formatDate(date){
+    var theDate=new Date(date);
+    var result=moment(theDate).format("YYYY-MM-DD");
+    return result;
+}
+//时间戳转化成日期时间
+function formatDateTime(dateTime){
+    var theDate=new Date(dateTime);
+    var result=moment(theDate).format("YYYY-MM-DD HH:mm:ss");
+    return result;
+}
+//格式化状态
+function formatStatus(dataArr,status){
+    if(dataArr==undefined||dataArr==null||status==undefined||status==null){
+        return "";
+    }
+    var statusStr="";
+    $(dataArr).each(function(i,c){
+        var id=c["id"];
+        if(id==status){
+            statusStr=c["text"];
+            return false;
+        }
+    });
+    return statusStr;
+}

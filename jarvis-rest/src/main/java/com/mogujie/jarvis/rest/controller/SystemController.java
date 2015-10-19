@@ -18,7 +18,10 @@ import com.mogujie.jarvis.core.domain.WorkerStatus;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
 import com.mogujie.jarvis.protocol.SystemStatusProtos.RestServerUpdateSystemStatusRequest;
 import com.mogujie.jarvis.protocol.SystemStatusProtos.ServerUpdateSystemStatusResponse;
+import com.mogujie.jarvis.rest.MsgCode;
 import com.mogujie.jarvis.rest.RestResult;
+import com.mogujie.jarvis.rest.utils.RequestUtils;
+import org.json.JSONObject;
 
 /**
  * @author muming
@@ -34,8 +37,12 @@ public class SystemController extends AbstractController {
                              @FormParam("appToken") String appToken,
                              @FormParam("appName") String appName,
                              @FormParam("appKey") String appKey,
-                             @FormParam("status") int status) {
+                             @FormParam("parameters") String parameters) {
         try {
+            JSONObject para=new JSONObject(parameters);
+
+            Integer status=para.getInt("status");
+
             //WorkerStatus ws = (status == 1) ? WorkerStatus.ONLINE : WorkerStatus.OFFLINE;
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
             RestServerUpdateSystemStatusRequest request = RestServerUpdateSystemStatusRequest.newBuilder()

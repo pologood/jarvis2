@@ -27,7 +27,7 @@ import org.apache.logging.log4j.Logger;
  */
 @Path("log")
 public class LogController extends AbstractController {
-    Logger LOGGER = LogManager.getLogger();
+
     /**
      * 获取执行日志
      *

@@ -43,17 +43,6 @@ public class RemoteRestApiController extends BaseController {
         url = domain + url;
         log.info("remote url:"+url+",para:"+para);
 
-
-        //检查url是否合法
-        /*
-        boolean url_flag=URI.isWellFormedAddress(url);
-        if(!url_flag){
-            jsonObject.put("code",1);
-            jsonObject.put("msg","url格式不符");
-            return jsonObject;
-        }
-        */
-
         //检查参数是否合法，如果抛出异常，则不进行下一步解析
         boolean para_flag=true;
         JSONObject paraJson=new JSONObject();
@@ -86,29 +75,30 @@ public class RemoteRestApiController extends BaseController {
                 e.printStackTrace();
             }
         }
+        data.put("parameters",JSON.toJSONString(rawData));
         try {
             User user=(User)modelMap.get("user");
             String uname=user.getUname();
-            rawData.put("user",uname);
+            data.put("user",uname);
 
             DateTime dateTime= new DateTime();
             Long timeStamp=dateTime.getMillis()/1000;
             String token= generateToken(timeStamp, Constants.appKey);
-            log.info("timeStamp:" + timeStamp + ",token:" + token);
-            rawData.put("appToken", token);
+
+            data.put("appToken", token);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        rawData.put("appName", Constants.appName);
-        rawData.put("appKey", Constants.appKey);
+        data.put("appName", Constants.appName);
+        data.put("appKey", Constants.appKey);
 
         //请求远程REST服务器。
         try {
-            log.info(rawData);
+            log.info(data);
             //log.info(data);
             //log.info(newPara);
             Connection connection=Jsoup.connect(url)
-                                    .data(rawData)
+                                    .data(data)
                                     .postDataCharset("UTF-8")
                                     .ignoreContentType(true)
                                     .timeout(15000)

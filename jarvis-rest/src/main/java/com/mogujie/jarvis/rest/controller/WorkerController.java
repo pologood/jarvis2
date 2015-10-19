@@ -10,7 +10,10 @@ import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
 import com.mogujie.jarvis.protocol.ModifyWorkerStatusProtos.RestServerModifyWorkerStatusRequest;
 import com.mogujie.jarvis.protocol.ModifyWorkerStatusProtos.ServerModifyWorkerStatusResponse;
+import com.mogujie.jarvis.rest.MsgCode;
 import com.mogujie.jarvis.rest.RestResult;
+import com.mogujie.jarvis.rest.utils.RequestUtils;
+import org.json.JSONObject;
 
 /**
  * Created by hejian on 15/10/15.
@@ -21,9 +24,19 @@ public class WorkerController extends AbstractController {
     @POST
     @Path("status")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult delete(@FormParam("workerId") String workerId, @FormParam("ip") String ip, @FormParam("appName") String appName,
-            @FormParam("appToken") String appToken, @FormParam("appKey") String appKey,@FormParam("user") String user,@FormParam("port") Integer port, @FormParam("status") Integer status) {
+    public RestResult delete(@FormParam("appKey") String appKey,
+                             @FormParam("appName") String appName,
+                             @FormParam("appToken") String appToken,
+                             @FormParam("user") String user,
+                             @FormParam("parameters") String parameters) {
         try {
+            JSONObject para=new JSONObject(parameters);
+
+            Integer workerId=para.getInt("workerId");
+            String ip=para.getString("ip");
+            Integer port=para.getInt("port");
+            Integer status=para.getInt("status");
+
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
             RestServerModifyWorkerStatusRequest request = RestServerModifyWorkerStatusRequest.newBuilder().setIp(ip).setPort(port).setStatus(status)
