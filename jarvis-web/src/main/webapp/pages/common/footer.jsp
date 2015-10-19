@@ -48,7 +48,7 @@
 <script type="text/javascript" src="/assets/jarvis/plugins/bootstrap-table/extensions/export/bootstrap-table-export.min.js" charset="UTF-8"></script>
 <script type="text/javascript" src="/assets/jarvis/plugins/tableExport.jquery.plugin/tableExport.js" charset="UTF-8"></script>
 <script type="text/javascript" src="/assets/jarvis/plugins/jstree/3.2.1/jstree.min.js" charset="UTF-8"></script>
-
+<script type="text/javascript" src="/assets/jarvis/plugins/momentjs/moment.js" charset="UTF-8"></script>
 
 
 <script type="text/javascript" src="/assets/jarvis/js/jarvis.js" charset="UTF-8"></script>

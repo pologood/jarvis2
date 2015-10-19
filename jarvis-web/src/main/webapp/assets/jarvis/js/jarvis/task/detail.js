@@ -4,7 +4,9 @@ $(function(){
     var data = new Array();
     for(var i=0;i<taskVoList.length;i++){
         var task=taskVoList[i];
-        xAxis.push(task["executeStartTimeStr"]);
+        var theDate=new Date(task["executeStartTime"]);
+        var result=moment(theDate).format("YYYY-MM-DD HH:mm:ss");
+        xAxis.push(result);
         data.push(task["executeTime"]);
     }
 

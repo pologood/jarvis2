@@ -40,6 +40,7 @@ public class JarvisRest {
         ResourceConfig resourceConfig = new ResourceConfig();
         resourceConfig.register(new SystemController());
         resourceConfig.register(new JobController());
+        resourceConfig.register(new TaskController());
         resourceConfig.register(new LogController());
         resourceConfig.register(new AppController());
         resourceConfig.register(new WorkerController());

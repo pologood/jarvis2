@@ -12,7 +12,10 @@ import com.mogujie.jarvis.protocol.WorkerGroupProtos.RestServerCreateWorkerGroup
 import com.mogujie.jarvis.protocol.WorkerGroupProtos.RestServerModifyWorkerGroupRequest;
 import com.mogujie.jarvis.protocol.WorkerGroupProtos.ServerCreateWorkerGroupResponse;
 import com.mogujie.jarvis.protocol.WorkerGroupProtos.ServerModifyWorkerGroupResponse;
+import com.mogujie.jarvis.rest.MsgCode;
 import com.mogujie.jarvis.rest.RestResult;
+import com.mogujie.jarvis.rest.utils.RequestUtils;
+import org.json.JSONObject;
 
 /**
  * Created by hejian on 15/10/15.
@@ -23,12 +26,16 @@ public class WorkerGroupController extends AbstractController {
     @POST
     @Path("add")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult add(@FormParam("name") String name,
-                          @FormParam("appName") String appName,
+    public RestResult add(@FormParam("appName") String appName,
                           @FormParam("appKey") String appKey,
                           @FormParam("user") String user,
-                          @FormParam("appToken") String appToken) {
+                          @FormParam("appToken") String appToken,
+                          @FormParam("parameters") String parameters) {
         try {
+            JSONObject para=new JSONObject(parameters);
+
+
+            String name=para.getString("name");
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
             RestServerCreateWorkerGroupRequest request = RestServerCreateWorkerGroupRequest.newBuilder().setWorkerGroupName(name).setUser(user)
@@ -51,10 +58,17 @@ public class WorkerGroupController extends AbstractController {
     @POST
     @Path("update")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult update(@FormParam("workerGroupId") Integer workerGroupId, @FormParam("name") String name,
-                            @FormParam("appName") String appName, @FormParam("appToken") String appToken,
-                             @FormParam("appKey") String appKey,@FormParam("user") String user) {
+    public RestResult update(@FormParam("appName") String appName,
+                             @FormParam("appToken") String appToken,
+                             @FormParam("appKey") String appKey,
+                             @FormParam("user") String user,
+                             @FormParam("parameters") String parameters) {
         try {
+            JSONObject para=new JSONObject(parameters);
+            Integer workerGroupId=para.getInt("workerGroupId");
+            String name=para.getString("name");
+
+
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
             RestServerModifyWorkerGroupRequest request = RestServerModifyWorkerGroupRequest.newBuilder().setWorkerGroupId(workerGroupId)
@@ -76,9 +90,17 @@ public class WorkerGroupController extends AbstractController {
     @POST
     @Path("status")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult delete(@FormParam("workerGroupId") Integer workerGroupId, @FormParam("status") Integer status, @FormParam("user") String user,
-            @FormParam("appName") String appName, @FormParam("appToken") String appToken,@FormParam("appKey") String appKey) {
+    public RestResult delete(@FormParam("user") String user,
+                             @FormParam("appName") String appName,
+                             @FormParam("appToken") String appToken,
+                             @FormParam("appKey") String appKey,
+                             @FormParam("parameters") String parameters) {
         try {
+            JSONObject para=new JSONObject(parameters);
+            Integer workerGroupId=para.getInt("workerGroupId");
+            Integer status=para.getInt("status");
+
+
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
             RestServerModifyWorkerGroupRequest request = RestServerModifyWorkerGroupRequest.newBuilder().setWorkerGroupId(workerGroupId)

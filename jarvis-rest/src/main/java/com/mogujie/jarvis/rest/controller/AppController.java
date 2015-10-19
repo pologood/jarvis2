@@ -6,6 +6,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import com.mogujie.jarvis.rest.MsgCode;
+import com.mogujie.jarvis.rest.utils.RequestUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -17,13 +19,13 @@ import com.mogujie.jarvis.protocol.ApplicationProtos.RestServerModifyApplication
 import com.mogujie.jarvis.protocol.ApplicationProtos.ServerCreateApplicationResponse;
 import com.mogujie.jarvis.protocol.ApplicationProtos.ServerModifyApplicationResponse;
 import com.mogujie.jarvis.rest.RestResult;
+import org.json.JSONObject;
 
 /**
  * Created by hejian on 15/10/15.
  */
 @Path("app")
 public class AppController extends AbstractController {
-    private static final Logger LOGGER = LogManager.getLogger();
 
     @POST
     @Path("add")
@@ -32,8 +34,13 @@ public class AppController extends AbstractController {
                           @FormParam("appToken") String appToken,
                           @FormParam("appName") String appName,
                           @FormParam("appKey") String appKey,
-                          @FormParam("applicationName") String applicationName) {
+                          @FormParam("parameters") String parameters) {
         try {
+            JSONObject para=new JSONObject(parameters);
+
+            String applicationName=para.getString("applicationName");
+
+
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
             RestServerCreateApplicationRequest request = RestServerCreateApplicationRequest.newBuilder().setAppName(applicationName)
@@ -55,17 +62,22 @@ public class AppController extends AbstractController {
     @POST
     @Path("update")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult update(@FormParam("appId") String appId,
-                             @FormParam("user") String user,
+    public RestResult update(@FormParam("user") String user,
                              @FormParam("appName") String appName,
                              @FormParam("appToken") String appToken,
                              @FormParam("appKey") String appKey,
-                             @FormParam("applicationName") String applicationName,
-                             @FormParam("status") int status) {
+                             @FormParam("parameters") String parameters) {
         try {
+            JSONObject para=new JSONObject(parameters);
+
+            String applicationName=para.getString("applicationName");
+            Integer appId=para.getInt("appId");
+            Integer status=para.getInt("status");
+
+
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
             RestServerModifyApplicationRequest request = RestServerModifyApplicationRequest.newBuilder().setAppAuth(appAuth)
-                    .setAppName(applicationName).build();
+                    .setAppName(applicationName).setStatus(status).build();
             ServerModifyApplicationResponse response = (ServerModifyApplicationResponse) callActor(AkkaType.SERVER, request);
             if (response.getSuccess()) {
                 return successResult();
@@ -82,17 +94,21 @@ public class AppController extends AbstractController {
     @POST
     @Path("status")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult delete(@FormParam("appId") String appId,
+    public RestResult delete(@FormParam("user") String user,
                              @FormParam("appName") String appName,
                              @FormParam("appToken") String appToken,
                              @FormParam("appKey") String appKey,
-                             @FormParam("user") String user,
-                             @FormParam("status") int status) {
+                             @FormParam("parameters") String parameters) {
         try {
-            AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
+            JSONObject para=new JSONObject(parameters);
 
-            RestServerModifyApplicationRequest request = RestServerModifyApplicationRequest.newBuilder().setAppAuth(appAuth).setStatus(status)
-                    .build();
+            String applicationName=para.getString("applicationName");
+            Integer appId=para.getInt("appId");
+            Integer status=para.getInt("status");
+            AppAuth appAuth = AppAuth.newBuilder().setName(applicationName).setToken(appToken).build();
+
+            RestServerModifyApplicationRequest request = RestServerModifyApplicationRequest.newBuilder()
+                    .setAppAuth(appAuth).setStatus(status).build();
             ServerModifyApplicationResponse response = (ServerModifyApplicationResponse) callActor(AkkaType.SERVER, request);
             if (response.getSuccess()) {
                 return successResult();

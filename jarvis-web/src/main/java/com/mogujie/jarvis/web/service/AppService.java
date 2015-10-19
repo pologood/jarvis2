@@ -27,26 +27,6 @@ public class AppService {
         Integer count = appMapper.getAppCount(appSearchVo);
         List<AppVo> appVoList=appMapper.getAppList(appSearchVo);
 
-        SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        for(AppVo appVo:appVoList){
-            String statusStr="";
-            String createTimeStr="";
-            String updateTimeStr="";
-            if(appVo.getStatus()==0){
-                statusStr="禁用";
-            }
-            else if(appVo.getStatus()==1){
-                statusStr="启用";
-            }
-            createTimeStr=sdf.format(appVo.getCreateTime());
-            updateTimeStr=sdf.format(appVo.getUpdateTime());
-
-            appVo.setStatusStr(statusStr);
-            appVo.setCreateTimeStr(createTimeStr);
-            appVo.setUpdateTimeStr(updateTimeStr);
-        }
-
-
         jsonObject.put("total",count);
         jsonObject.put("rows",appVoList);
 

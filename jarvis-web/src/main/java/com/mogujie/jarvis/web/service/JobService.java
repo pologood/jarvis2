@@ -39,16 +39,6 @@ public class JobService {
 
         List<JobVo> jobList=jobMapper.getJobsByCondition(jobSearchVo);
 
-        logger.info("flagMap:"+Constants.jobFlagMap);
-        for(JobVo jobVo:jobList){
-            jobVo.setJobStatus(Constants.jobFlagMap.get(jobVo.getJobFlag()));
-            //jobVo.setJobPriority(Constants.jobPriorityMap.get(jobVo.getPriority()));
-            jobVo.setCreateTimeStr(TimeTools.formatDateTime(jobVo.getCreateTime()));
-            jobVo.setUpdateTimeStr(TimeTools.formatDateTime(jobVo.getUpdateTime()));
-            jobVo.setActiveStartDateStr(TimeTools.formatDate(jobVo.getActiveStartDate()));
-            jobVo.setActiveEndDateStr(TimeTools.formatDate(jobVo.getActiveEndDate()));
-        }
-
         jsonObject.put("total",count);
         jsonObject.put("rows", jobList);
 

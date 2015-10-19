@@ -1,6 +1,8 @@
+var taskStatusJson=null;
+
 $(function(){
     createDatetimePickerById("executeDate");
-    createDatetimePickerById("dataDate");
+    createDatetimePickerById("scheduleTime");
     createDatetimePickerById("executeStartTime");
     createDatetimePickerById("executeEndTime");
 
@@ -12,9 +14,10 @@ $(function(){
             width:'100%'
         });
     });
-
+    $.ajaxSettings.async = false;
     //初始化任务状态
     $.getJSON("/assets/jarvis/json/taskStatus.json",function(data){
+        taskStatusJson=data;
         $(data).each(function(index,content){
             var value=content.id;
             var text=content.text;
@@ -41,6 +44,7 @@ $(function(){
             $("#taskStatus").append('  ');
         });
     });
+    $.ajaxSettings.async = true;
 
     //select采用select2 实现
     $(".input-group select").select2({width:'100%'});
@@ -177,43 +181,51 @@ var columns=[{
     switchable:true,
     visible:false
 }, {
-    field: 'dataYmdStr',
-    title: '数据日期',
-    switchable:true
+    field: 'scheduleTime',
+    title: '调度时间',
+    switchable:true,
+    formatter:formatDateTime
 }, {
-    field: 'taskStatus',
+    field: 'status',
     title: '执行状态',
-    switchable:true
+    switchable:true,
+    formatter:taskStatusFormatter
 }, {
     field: 'executeUser',
     title: '执行用户',
     switchable:true
 }, {
-    field: 'executeStartTimeStr',
+    field: 'executeStartTime',
     title: '开始执行时间',
-    switchable:true
+    switchable:true,
+    formatter:formatDateTime
 }, {
-    field: 'executeEndTimeStr',
+    field: 'executeEndTime',
     title: '执行结束时间',
-    switchable:true
+    switchable:true,
+    formatter:formatDateTime
 }, {
-    field: 'createTimeStr',
+    field: 'createTime',
     title: '执行创建时间',
-    switchable:true
+    switchable:true,
+    formatter:formatDateTime
 }, {
-    field: 'updateTimeStr',
+    field: 'updateTime',
     title: '执行更新时间',
     switchable:true,
-    visible:false
+    visible:false,
+    formatter:formatDateTime
 }, {
-    field: 'activeStartDateStr',
+    field: 'activeStartDate',
     title: '任务有效期起始',
     switchable:true,
+    formatter:formatDate,
     visible:false
 }, {
-    field: 'activeEndDateStr',
+    field: 'activeEndDate',
     title: '任务有效期截止',
     switchable:true,
+    formatter:formatDate,
     visible:false
 }, {
     field: 'jobType',
@@ -231,7 +243,7 @@ var columns=[{
     switchable:true,
     visible:false
 }, {
-    field: 'jobPriority',
+    field: 'priority',
     title: '任务优先级',
     switchable:true,
     visible:false
@@ -260,6 +272,10 @@ function operateFormatter(value, row, index) {
     //console.log(result);
 
     return result;
+}
+
+function taskStatusFormatter(value,row,index){
+    return formatStatus(taskStatusJson,value);
 }
 
 

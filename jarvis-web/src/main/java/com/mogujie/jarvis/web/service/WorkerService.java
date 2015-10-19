@@ -44,18 +44,6 @@ public class WorkerService {
     public JSONObject getWorkers(WorkerSearchVo workerSearchVo){
         Integer total=workerMapper.getWorkerCount(workerSearchVo);
         List<WorkerVo> workerVoList = workerMapper.getWorkerList(workerSearchVo);
-
-        for(WorkerVo workerVo:workerVoList){
-            String statusStr= Constants.workerStatusMap.get(workerVo.getStatus());
-            String createTimeStr= TimeTools.formatDateTime(workerVo.getCreateTime());
-            String updateTimeStr=TimeTools.formatDateTime(workerVo.getUpdateTime());
-            workerVo.setStatusStr(statusStr);
-            workerVo.setCreateTimeStr(createTimeStr);
-            workerVo.setUpdateTimeStr(updateTimeStr);
-        }
-
-
-
         JSONObject result=new JSONObject();
         result.put("total",total);
         result.put("rows",workerVoList);
@@ -104,15 +92,6 @@ public class WorkerService {
     public JSONObject getWorkerGroups(WorkerGroupSearchVo workerGroupSearchVo){
         Integer total=workerMapper.getWorkerGroupCount(workerGroupSearchVo);
         List<WorkerGroupVo> workerGroupVoList=workerMapper.getWorkerGroupList(workerGroupSearchVo);
-
-        for(WorkerGroupVo workerGroupVo:workerGroupVoList){
-            String createTimeStr=TimeTools.formatDateTime(workerGroupVo.getCreateTime());
-            String updateTimeStr=TimeTools.formatDateTime(workerGroupVo.getUpdateTime());
-
-            workerGroupVo.setStatusStr(Constants.workerGroupStatusMap.get(workerGroupVo.getStatus()));
-            workerGroupVo.setCreateTimeStr(createTimeStr);
-            workerGroupVo.setUpdateTimeStr(updateTimeStr);
-        }
 
         JSONObject result=new JSONObject();
         result.put("total",total);

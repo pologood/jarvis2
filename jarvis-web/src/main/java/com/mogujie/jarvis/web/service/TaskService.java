@@ -25,7 +25,6 @@ public class TaskService {
 
     public TaskVo getTaskById(Long taskId){
         TaskVo taskVo=taskMapper.getTaskById(taskId);
-        changeFormat(taskVo);
         return taskVo;
     }
 
@@ -47,27 +46,9 @@ public class TaskService {
         Integer count = taskMapper.getCountByCondition(taskSearchVo);
         count=count==null?0:count;
         List<TaskVo> taskVoList=taskMapper.getTasksByCondition(taskSearchVo);
-
-        for(TaskVo taskVo:taskVoList){
-            changeFormat(taskVo);
-        }
-
         jsonObject.put("total",count);
         jsonObject.put("rows",taskVoList);
 
         return jsonObject;
-    }
-
-
-    private void changeFormat(TaskVo taskVo){
-        taskVo.setJobPriority(Constants.jobPriorityMap.get(taskVo.getPriority()));
-        taskVo.setTaskStatus(Constants.taskStatusMap.get(taskVo.getStatus()));
-        taskVo.setScheduleTimeStr(TimeTools.formatDate(taskVo.getScheduleTime()));
-        taskVo.setActiveStartDateStr(TimeTools.formatDate(taskVo.getActiveStartDate()));
-        taskVo.setActiveEndDateStr(TimeTools.formatDate(taskVo.getActiveEndDate()));
-        taskVo.setCreateTimeStr(TimeTools.formatDateTime(taskVo.getCreateTime()));
-        taskVo.setUpdateTimeStr(TimeTools.formatDateTime(taskVo.getUpdateTime()));
-        taskVo.setExecuteStartTimeStr(TimeTools.formatDateTime(taskVo.getExecuteStartTime()));
-        taskVo.setExecuteEndTimeStr(TimeTools.formatDateTime(taskVo.getExecuteEndTime()));
     }
 }

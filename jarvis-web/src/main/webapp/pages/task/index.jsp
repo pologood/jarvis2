@@ -28,14 +28,14 @@
             <div class="row">
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">执行日期</span>
-                        <input id="executeDate" class="form-control" />
+                        <span class="input-group-addon" style="width:35%">调度日期</span>
+                        <input id="scheduleTime" class="form-control" />
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">数据日期</span>
-                        <input id="dataDate" class="form-control" />
+                        <span class="input-group-addon" style="width:35%">执行日期</span>
+                        <input id="executeDate" class="form-control" />
                     </div>
                 </div>
                 <div class="col-md-3">

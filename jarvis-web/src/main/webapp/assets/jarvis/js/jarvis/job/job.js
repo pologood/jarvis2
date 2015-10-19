@@ -1,34 +1,32 @@
-var jobFlags=null;
+var jobTypeJson=null;
+var jobFlagJson=null;
+var jobPriorityJson=null;
 $(function(){
+    $.ajaxSettings.async = false;
     $.getJSON("/assets/jarvis/json/jobType.json",function(data){
+        jobTypeJson=data;
         $("#jobType").select2({
             data:data,
             width:'100%'
         });
     });
-    /*
-    $.getJSON("/assets/jarvis/json/executeCycle.json",function(data){
-        $("#executeCycle").select2({
-            data:data,
-            width:'100%'
-        });
-    });
-    */
-    $.ajaxSettings.async = false;
+
     $.getJSON("/assets/jarvis/json/jobFlag.json",function(data){
-        jobFlags=data;
+        jobFlagJson=data;
         $("#jobFlag").select2({
             data:data,
             width:'100%'
         });
     });
-    $.ajaxSettings.async = true;
+
     $.getJSON("/assets/jarvis/json/jobPriority.json",function(data){
+        jobPriorityJson=data;
         $("#jobPriority").select2({
             data:data,
             width:'100%'
         });
     });
+    $.ajaxSettings.async = true;
 
 
     //select采用select2 实现
@@ -128,39 +126,6 @@ function updateJobFlag(jobId,appKey,appName,jobFlag){
     requestRemoteRestApi("/job/flag","删除任务",data);
 }
 
-function operateFormatter(value, row, index) {
-    //console.log(row);
-    var jobId=row["jobId"];
-    var appKey=row["appKey"];
-    var appName=row["appName"];
-    var operateFlag=row["jobFlag"];
-    //console.log(jobId);
-    var result= [
-        '<a  href="/jarvis/job/addOrEdit?jobId='+jobId+'" title="编辑任务信息" target="_blank">',
-        '<i class="glyphicon glyphicon-edit"></i>',
-        '</a>  ',
-        '<a  href="/jarvis/job/dependency?jobId='+jobId+'" title="查看任务依赖" target="_blank">',
-        '<i class="glyphicon glyphicon-eye-open"></i>',
-        '</a>  '
-    ].join('');
-
-
-    var operation='<div class="btn-group"> <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">修改状态 <span class="caret"></span> </button>';
-    operation=operation+'<ul class="dropdown-menu">';
-    $(jobFlags).each(function(i,c){
-        if(c["id"]!='all'&&c["id"]!=operateFlag&&c["id"]!='3'){
-            var li='<li><a href="javascript:void(0)" onclick="updateJobFlag('+jobId+',\''+appKey+'\',\''+appName+'\','+c["id"]+')" >'+c["text"]+'</a></li>';
-            operation=operation+li;
-        }
-    });
-    operation=operation+'</ul></div>';
-
-    //console.log(result);
-
-    return result+operation;
-}
-
-
 
 var columns=[{
     field: 'jobId',
@@ -180,9 +145,10 @@ var columns=[{
     title: '任务类型',
     switchable:true
 }, {
-    field: 'jobStatus',
+    field: 'jobFlag',
     title: '任务状态',
-    switchable:true
+    switchable:true,
+    formatter:jobFlagFormatter
 }, {
     field: 'content',
     title: '任务内容',
@@ -205,22 +171,26 @@ var columns=[{
     title: '应用名',
     switchable:true
 }, {
-    field: 'createTimeStr',
+    field: 'createTime',
     title: '创建时间',
-    switchable:true
+    switchable:true,
+    formatter:formatDateTime
 },{
-    field: 'updateTimeStr',
+    field: 'updateTime',
     title: '更新时间',
     switchable:true,
-    visible:false
+    visible:false,
+    formatter:formatDateTime
 },{
-    field: 'activeStartDateStr',
+    field: 'activeStartDate',
     title: '开始日期',
-    switchable:true
+    switchable:true,
+    formatter:formatDate
 },{
-    field: 'activeEndDateStr',
+    field: 'activeEndDate',
     title: '结束日期',
-    switchable:true
+    switchable:true,
+    formatter:formatDate
 }, {
     field: 'workerGroupId',
     title: 'worker组ID',
@@ -254,3 +224,38 @@ var columns=[{
 }];
 
 
+function operateFormatter(value, row, index) {
+    //console.log(row);
+    var jobId=row["jobId"];
+    var appKey=row["appKey"];
+    var appName=row["appName"];
+    var operateFlag=row["jobFlag"];
+    //console.log(jobId);
+    var result= [
+        '<a  href="/jarvis/job/addOrEdit?jobId='+jobId+'" title="编辑任务信息" target="_blank">',
+        '<i class="glyphicon glyphicon-edit"></i>',
+        '</a>  ',
+        '<a  href="/jarvis/job/dependency?jobId='+jobId+'" title="查看任务依赖" target="_blank">',
+        '<i class="glyphicon glyphicon-eye-open"></i>',
+        '</a>  '
+    ].join('');
+
+
+    var operation='<div class="btn-group"> <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">修改状态 <span class="caret"></span> </button>';
+    operation=operation+'<ul class="dropdown-menu">';
+    $(jobFlagJson).each(function(i,c){
+        if(c["id"]!='all'&&c["id"]!=operateFlag&&c["id"]!='3'){
+            var li='<li><a href="javascript:void(0)" onclick="updateJobFlag('+jobId+',\''+appKey+'\',\''+appName+'\','+c["id"]+')" >'+c["text"]+'</a></li>';
+            operation=operation+li;
+        }
+    });
+    operation=operation+'</ul></div>';
+
+    //console.log(result);
+
+    return result+operation;
+}
+
+function jobFlagFormatter(value, row, index){
+    return formatStatus(jobFlagJson,value);
+}
