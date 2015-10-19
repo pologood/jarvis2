@@ -8,6 +8,7 @@ import java.util.Date;
  * Created by hejian on 15/9/17.
  */
 public class TaskVo extends Task {
+
     private String jobType;
     private String jobName;
     private String submitUser;
@@ -15,6 +16,9 @@ public class TaskVo extends Task {
     private String params;
     private Integer priority;
     private String appName;
+
+
+
     private Date activeStartDate;
     private Date activeEndDate;
     private Integer workerGroupId;
@@ -22,7 +26,7 @@ public class TaskVo extends Task {
     private Long executeTime;   //执行所用时间
     private Long avgExecuteTime;
 
-    private String dataYmdStr;
+    private String scheduleTimeStr;
     private String activeStartDateStr;
     private String activeEndDateStr;
     private String createTimeStr;
@@ -164,12 +168,12 @@ public class TaskVo extends Task {
         this.executeEndTimeStr = executeEndTimeStr;
     }
 
-    public String getDataYmdStr() {
-        return dataYmdStr;
+    public String getScheduleTimeStr() {
+        return scheduleTimeStr;
     }
 
-    public void setDataYmdStr(String dataYmdStr) {
-        this.dataYmdStr = dataYmdStr;
+    public void setScheduleTimeStr(String scheduleTimeStr) {
+        this.scheduleTimeStr = scheduleTimeStr;
     }
 
     public String getTaskStatus() {
