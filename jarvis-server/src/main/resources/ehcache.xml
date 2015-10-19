@@ -2,8 +2,7 @@
 <ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:noNamespaceSchemaLocation="ehcache.xsd">
 
-	<diskStore path="java.io.tmpdir" />
-	<cache name="serviceCache" eternal="false" maxElementsInMemory="10000"
+	<cache name="jarvisCache" eternal="false" maxElementsInMemory="10000"
 		overflowToDisk="false" diskPersistent="false" timeToIdleSeconds="0"
 		timeToLiveSeconds="300" memoryStoreEvictionPolicy="LRU" />
 </ehcache> 

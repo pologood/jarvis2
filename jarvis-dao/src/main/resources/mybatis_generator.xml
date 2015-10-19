@@ -3,10 +3,8 @@
 <generatorConfiguration>
 
 	<context id="context1" targetRuntime="MyBatis3">
-		<plugin type="org.mybatis.generator.plugins.CachePlugin">
-			<property name="cache_type"
-				value="org.mybatis.caches.ehcache.LoggingEhcache" />
-		</plugin>
+		<plugin type="org.mybatis.generator.plugins.CachePlugin" />
+		<plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
 
 		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
 			connectionURL="jdbc:mysql://10.11.128.49/jarvis2" userId="root"
