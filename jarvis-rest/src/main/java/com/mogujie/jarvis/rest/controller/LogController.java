@@ -47,8 +47,13 @@ public class LogController extends AbstractController {
     @POST
     @Path("queryExecuteLog")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult queryExecuteLog(@FormParam("appKey") String appKey, @FormParam("appName") String appName, @FormParam("taskId") long taskId,
-            @FormParam("offset") long offset, @FormParam("lines") int lines) throws Exception {
+    public RestResult queryExecuteLog(@FormParam("appKey") String appKey,
+                                      @FormParam("appToken") String appToken,
+                                      @FormParam("appName") String appName,
+                                      @FormParam("user") String user,
+                                      @FormParam("taskId") long taskId,
+                                        @FormParam("offset") long offset,
+                                      @FormParam("lines") int lines) throws Exception {
 
         RestServerReadLogRequest request = RestServerReadLogRequest.newBuilder().setTaskId(taskId).setType(StreamType.STD_ERR.getValue())
                 .setOffset(offset).setLines(lines).build();

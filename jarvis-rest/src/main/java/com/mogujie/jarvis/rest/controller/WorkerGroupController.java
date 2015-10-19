@@ -23,8 +23,11 @@ public class WorkerGroupController extends AbstractController {
     @POST
     @Path("add")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult add(@FormParam("name") String name, @FormParam("user") String user, @FormParam("appName") String appName,
-            @FormParam("appToken") String appToken) {
+    public RestResult add(@FormParam("name") String name,
+                          @FormParam("appName") String appName,
+                          @FormParam("appKey") String appKey,
+                          @FormParam("user") String user,
+                          @FormParam("appToken") String appToken) {
         try {
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
@@ -48,8 +51,9 @@ public class WorkerGroupController extends AbstractController {
     @POST
     @Path("update")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult update(@FormParam("workerGroupId") Integer workerGroupId, @FormParam("name") String name, @FormParam("user") String user,
-            @FormParam("appName") String appName, @FormParam("appToken") String appToken) {
+    public RestResult update(@FormParam("workerGroupId") Integer workerGroupId, @FormParam("name") String name,
+                            @FormParam("appName") String appName, @FormParam("appToken") String appToken,
+                             @FormParam("appKey") String appKey,@FormParam("user") String user) {
         try {
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
@@ -73,7 +77,7 @@ public class WorkerGroupController extends AbstractController {
     @Path("status")
     @Produces(MediaType.APPLICATION_JSON)
     public RestResult delete(@FormParam("workerGroupId") Integer workerGroupId, @FormParam("status") Integer status, @FormParam("user") String user,
-            @FormParam("appName") String appName, @FormParam("appToken") String appToken) {
+            @FormParam("appName") String appName, @FormParam("appToken") String appToken,@FormParam("appKey") String appKey) {
         try {
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 

@@ -30,13 +30,16 @@ public class SystemController extends AbstractController {
     @POST
     @Path("status")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult status(@FormParam("appToken") String appToken, @FormParam("appName") String appName, @FormParam("status") int status) {
+    public RestResult status(@FormParam("user") String user,
+                             @FormParam("appToken") String appToken,
+                             @FormParam("appName") String appName,
+                             @FormParam("appKey") String appKey,
+                             @FormParam("status") int status) {
         try {
-            WorkerStatus ws = (status == 1) ? WorkerStatus.ONLINE : WorkerStatus.OFFLINE;
+            //WorkerStatus ws = (status == 1) ? WorkerStatus.ONLINE : WorkerStatus.OFFLINE;
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
-
-            RestServerUpdateSystemStatusRequest request = RestServerUpdateSystemStatusRequest.newBuilder().setAppAuth(appAuth).setStatus(status)
-                    .build();
+            RestServerUpdateSystemStatusRequest request = RestServerUpdateSystemStatusRequest.newBuilder()
+                                                .setAppAuth(appAuth).setStatus(status).build();
             ServerUpdateSystemStatusResponse response = (ServerUpdateSystemStatusResponse) callActor(AkkaType.SERVER, request);
 
             if (response.getSuccess()) {

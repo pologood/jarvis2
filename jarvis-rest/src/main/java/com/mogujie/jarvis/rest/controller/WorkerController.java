@@ -19,36 +19,10 @@ import com.mogujie.jarvis.rest.RestResult;
 public class WorkerController extends AbstractController {
 
     @POST
-    @Path("add")
-    @Produces(MediaType.APPLICATION_JSON)
-    public RestResult add(@FormParam("appName") String appName, @FormParam("status") String status) {
-        try {
-            return null;
-        } catch (Exception e) {
-            e.printStackTrace();
-            LOGGER.error("", e);
-            return errorResult(e.getMessage());
-        }
-    }
-
-    @POST
-    @Path("update")
-    @Produces(MediaType.APPLICATION_JSON)
-    public RestResult update(@FormParam("appId") String appId, @FormParam("appName") String appName, @FormParam("status") String status) {
-        try {
-            return null;
-        } catch (Exception e) {
-            e.printStackTrace();
-            LOGGER.error("", e);
-            return errorResult(e.getMessage());
-        }
-    }
-
-    @POST
     @Path("status")
     @Produces(MediaType.APPLICATION_JSON)
     public RestResult delete(@FormParam("workerId") String workerId, @FormParam("ip") String ip, @FormParam("appName") String appName,
-            @FormParam("appToken") String appToken, @FormParam("port") Integer port, @FormParam("status") Integer status) {
+            @FormParam("appToken") String appToken, @FormParam("appKey") String appKey,@FormParam("user") String user,@FormParam("port") Integer port, @FormParam("status") Integer status) {
         try {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
