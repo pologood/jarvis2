@@ -12,6 +12,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.common.base.Preconditions;
 import com.mogujie.jarvis.core.domain.JobFlag;
 import com.mogujie.jarvis.dao.JobMapper;
 import com.mogujie.jarvis.dto.Job;
@@ -35,10 +36,9 @@ public class JobService {
 
     public boolean hasFixedDelay(long jobId) {
         Job job = jobMapper.selectByPrimaryKey(jobId);
-        if (job != null) {
-            if (job.getFixedDelay() != null && job.getFixedDelay() > 0) {
-                return true;
-            }
+        Preconditions.checkNotNull(job, "Job " + jobId +" not found!");
+        if (job.getFixedDelay() != null && job.getFixedDelay() > 0) {
+            return true;
         }
         return false;
     }

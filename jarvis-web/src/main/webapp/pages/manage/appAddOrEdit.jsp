@@ -15,7 +15,7 @@
         <div class="col-md-6">
             <nav>
                 <ol class="cd-breadcrumb triangle">
-                    <li><a href="/jarvis/">Home</a></li>
+                    <li><a href="/jarvis/">首页</a></li>
                     <li><a href="/jarvis/manage/app">应用管理</a></li>
                     <li class="current"><em>
                         <c:choose>

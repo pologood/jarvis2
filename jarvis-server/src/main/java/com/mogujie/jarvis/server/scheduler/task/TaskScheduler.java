@@ -119,9 +119,19 @@ public class TaskScheduler extends Scheduler {
         getSchedulerController().register(this);
 
         // load all READY tasks from DB
-        List<Task> tasks = taskService.getTasksByStatus(JobStatus.READY);
-        if (tasks != null) {
-            for (Task task : tasks) {
+        List<Task> readyTasks = taskService.getTasksByStatus(JobStatus.READY);
+        if (readyTasks != null) {
+            for (Task task : readyTasks) {
+                DAGTask dagTask = new DAGTask(task.getJobId(), task.getTaskId(), task.getAttemptId());
+                readyTable.put(task.getTaskId(), dagTask);
+                retryTask(task);
+            }
+        }
+
+        // load all RUNNING tasks from DB
+        List<Task> runningTasks = taskService.getTasksByStatus(JobStatus.RUNNING);
+        if (runningTasks != null) {
+            for (Task task : runningTasks) {
                 DAGTask dagTask = new DAGTask(task.getJobId(), task.getTaskId(), task.getAttemptId());
                 readyTable.put(task.getTaskId(), dagTask);
             }
