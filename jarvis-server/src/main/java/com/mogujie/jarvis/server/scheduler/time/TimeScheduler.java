@@ -30,6 +30,7 @@ import com.mogujie.jarvis.dto.JobExample;
 import com.mogujie.jarvis.server.scheduler.CronScheduler;
 import com.mogujie.jarvis.server.scheduler.JobScheduleException;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
+import com.mogujie.jarvis.server.scheduler.event.RemoveDeletedJobsEvent;
 import com.mogujie.jarvis.server.scheduler.event.StartEvent;
 import com.mogujie.jarvis.server.scheduler.event.StopEvent;
 import com.mogujie.jarvis.server.scheduler.event.SuccessEvent;
@@ -121,6 +122,11 @@ public class TimeScheduler extends Scheduler {
             crontab.setCronExpression(Joiner.on(" ").join(tokens));
             cronScheduler.schedule(crontab);
         }
+    }
+
+    @Subscribe
+    public void handleRemoveDeletedJobsEvent(RemoveDeletedJobsEvent e) {
+        //TODO
     }
 
     public void addJob(long jobId) throws JobScheduleException {
