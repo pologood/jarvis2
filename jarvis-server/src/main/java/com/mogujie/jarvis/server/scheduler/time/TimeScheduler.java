@@ -30,7 +30,7 @@ import com.mogujie.jarvis.dto.JobExample;
 import com.mogujie.jarvis.server.scheduler.CronScheduler;
 import com.mogujie.jarvis.server.scheduler.JobScheduleException;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
-import com.mogujie.jarvis.server.scheduler.event.RemoveDeletedJobsEvent;
+import com.mogujie.jarvis.server.scheduler.event.ModifyJobFlagsEvent;
 import com.mogujie.jarvis.server.scheduler.event.StartEvent;
 import com.mogujie.jarvis.server.scheduler.event.StopEvent;
 import com.mogujie.jarvis.server.scheduler.event.SuccessEvent;
@@ -125,7 +125,7 @@ public class TimeScheduler extends Scheduler {
     }
 
     @Subscribe
-    public void handleRemoveDeletedJobsEvent(RemoveDeletedJobsEvent e) {
+    public void handleModifyJobFlagsEvent(ModifyJobFlagsEvent e) {
         //TODO
     }
 
