@@ -17,7 +17,7 @@ message ServerCreateApplicationResponse {
     required bool success = 1;
     optional string message = 2 [default = ""];
     optional string app_key = 3;
-    required string app_name = 4;
+    optional string app_name = 4;
 }
 
 

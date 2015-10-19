@@ -23,10 +23,6 @@ import com.mogujie.jarvis.core.domain.WorkerInfo;
 import com.mogujie.jarvis.dto.App;
 import com.mogujie.jarvis.server.service.AppService;
 
-/**
- *
- *
- */
 @Repository
 public class TaskManager {
 
@@ -45,7 +41,11 @@ public class TaskManager {
         }
     }
 
-    public synchronized boolean add(String fullId, WorkerInfo workerInfo, int appId) {
+    public void addApp(int appId, int maxParallelism) {
+        maxParallelismMap.put(appId, maxParallelism);
+    }
+
+    public synchronized boolean addTask(String fullId, WorkerInfo workerInfo, int appId) {
         taskMap.put(fullId, new Pair<>(workerInfo, appId));
         if (parallelismCounter.get(appId) >= maxParallelismMap.get(appId)) {
             return false;

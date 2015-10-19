@@ -22,6 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.transaction.annotation.Transactional;
 
+import akka.actor.UntypedActor;
+
 import com.google.common.collect.Sets;
 import com.mogujie.jarvis.core.domain.ActorEntry;
 import com.mogujie.jarvis.core.domain.JobFlag;
@@ -61,8 +63,6 @@ import com.mogujie.jarvis.server.service.AppService;
 import com.mogujie.jarvis.server.service.CrontabService;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.util.MessageUtil;
-
-import akka.actor.UntypedActor;
 
 /**
  * @author guangming
@@ -254,12 +254,7 @@ public class JobActor extends UntypedActor {
     private void modifyJobFlag(RestServerModifyJobFlagRequest msg) throws IOException {
         long jobId = msg.getJobId();
         Job record = jobMapper.selectByPrimaryKey(jobId);
-        record.setJobFlag(msg.getJobFlag());
-        record.setUpdateUser(msg.getUser());
-        DateTime dt = DateTime.now();
-        Date currentTime = dt.toDate();
-        record.setUpdateTime(currentTime);
-        jobMapper.updateByPrimaryKey(record);
+        jobService.updateJobFlag(record, msg.getUser(), msg.getJobFlag());
         JobFlag flag = JobFlag.getInstance(msg.getJobFlag());
         ServerModifyJobFlagResponse response;
         try {

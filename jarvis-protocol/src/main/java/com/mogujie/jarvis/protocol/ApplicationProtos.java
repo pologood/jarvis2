@@ -1086,17 +1086,17 @@ public final class ApplicationProtos {
         com.google.protobuf.ByteString getAppKeyBytes();
 
         /**
-         * <code>required string app_name = 4;</code>
+         * <code>optional string app_name = 4;</code>
          */
         boolean hasAppName();
 
         /**
-         * <code>required string app_name = 4;</code>
+         * <code>optional string app_name = 4;</code>
          */
         java.lang.String getAppName();
 
         /**
-         * <code>required string app_name = 4;</code>
+         * <code>optional string app_name = 4;</code>
          */
         com.google.protobuf.ByteString getAppNameBytes();
     }
@@ -1313,14 +1313,14 @@ public final class ApplicationProtos {
         private java.lang.Object appName_;
 
         /**
-         * <code>required string app_name = 4;</code>
+         * <code>optional string app_name = 4;</code>
          */
         public boolean hasAppName() {
             return ((bitField0_ & 0x00000008) == 0x00000008);
         }
 
         /**
-         * <code>required string app_name = 4;</code>
+         * <code>optional string app_name = 4;</code>
          */
         public java.lang.String getAppName() {
             java.lang.Object ref = appName_;
@@ -1337,7 +1337,7 @@ public final class ApplicationProtos {
         }
 
         /**
-         * <code>required string app_name = 4;</code>
+         * <code>optional string app_name = 4;</code>
          */
         public com.google.protobuf.ByteString getAppNameBytes() {
             java.lang.Object ref = appName_;
@@ -1367,10 +1367,6 @@ public final class ApplicationProtos {
                 return false;
 
             if (!hasSuccess()) {
-                memoizedIsInitialized = 0;
-                return false;
-            }
-            if (!hasAppName()) {
                 memoizedIsInitialized = 0;
                 return false;
             }
@@ -1633,10 +1629,6 @@ public final class ApplicationProtos {
 
                     return false;
                 }
-                if (!hasAppName()) {
-
-                    return false;
-                }
                 return true;
             }
 
@@ -1849,14 +1841,14 @@ public final class ApplicationProtos {
             private java.lang.Object appName_ = "";
 
             /**
-             * <code>required string app_name = 4;</code>
+             * <code>optional string app_name = 4;</code>
              */
             public boolean hasAppName() {
                 return ((bitField0_ & 0x00000008) == 0x00000008);
             }
 
             /**
-             * <code>required string app_name = 4;</code>
+             * <code>optional string app_name = 4;</code>
              */
             public java.lang.String getAppName() {
                 java.lang.Object ref = appName_;
@@ -1873,7 +1865,7 @@ public final class ApplicationProtos {
             }
 
             /**
-             * <code>required string app_name = 4;</code>
+             * <code>optional string app_name = 4;</code>
              */
             public com.google.protobuf.ByteString getAppNameBytes() {
                 java.lang.Object ref = appName_;
@@ -1887,7 +1879,7 @@ public final class ApplicationProtos {
             }
 
             /**
-             * <code>required string app_name = 4;</code>
+             * <code>optional string app_name = 4;</code>
              */
             public Builder setAppName(java.lang.String value) {
                 if (value == null) {
@@ -1900,7 +1892,7 @@ public final class ApplicationProtos {
             }
 
             /**
-             * <code>required string app_name = 4;</code>
+             * <code>optional string app_name = 4;</code>
              */
             public Builder clearAppName() {
                 bitField0_ = (bitField0_ & ~0x00000008);
@@ -1910,7 +1902,7 @@ public final class ApplicationProtos {
             }
 
             /**
-             * <code>required string app_name = 4;</code>
+             * <code>optional string app_name = 4;</code>
              */
             public Builder setAppNameBytes(com.google.protobuf.ByteString value) {
                 if (value == null) {
@@ -3551,7 +3543,7 @@ public final class ApplicationProtos {
                         + "_concurrency\030\005 \001(\005:\00210\"h\n\037ServerCreateAp"
                         + "plicationResponse\022\017\n\007success\030\001 \002(\010\022\021\n\007me"
                         + "ssage\030\002 \001(\t:\000\022\017\n\007app_key\030\003 \001(\t\022\020\n\010app_na"
-                        + "me\030\004 \002(\t\"\211\001\n\"RestServerModifyApplication"
+                        + "me\030\004 \001(\t\"\211\001\n\"RestServerModifyApplication"
                         + "Request\022\032\n\010app_auth\030\001 \002(\0132\010.AppAuth\022\020\n\010a"
                         + "pp_name\030\002 \001(\t\022\016\n\006status\030\003 \001(\005\022\027\n\017max_con",
                 "currency\030\004 \001(\005\022\014\n\004user\030\005 \002(\t\"E\n\037ServerMo"
