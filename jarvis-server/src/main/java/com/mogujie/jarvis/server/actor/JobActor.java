@@ -17,6 +17,7 @@ import java.util.Set;
 
 import javax.inject.Named;
 
+import com.mogujie.jarvis.server.cron.CronExpression;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -93,6 +94,20 @@ public class JobActor extends UntypedActor {
     @Autowired
     private JobDependMapper jobDependMapper;
 
+
+    /**
+     * 处理消息
+     * @return
+     */
+    public static List<ActorEntry> handledMessages() {
+        List<ActorEntry> list = new ArrayList<>();
+        list.add(new ActorEntry(RestServerSubmitJobRequest.class, ServerSubmitJobResponse.class, MessageType.GENERAL));
+        list.add(new ActorEntry(RestServerModifyJobRequest.class, ServerModifyJobResponse.class, MessageType.GENERAL));
+        list.add(new ActorEntry(RestServerModifyJobFlagRequest.class, ServerModifyJobFlagResponse.class, MessageType.GENERAL));
+        return list;
+    }
+
+
     @Override
     public void onReceive(Object obj) throws Exception {
         if (obj instanceof RestServerSubmitJobRequest) {
@@ -118,8 +133,15 @@ public class JobActor extends UntypedActor {
         }
     }
 
+
+    /**
+     * 提交任务
+     * @param msg
+     * @throws IOException
+     */
     @Transactional
     private void submitJob(RestServerSubmitJobRequest msg) throws IOException {
+
         ServerSubmitJobResponse response;
         String appName = msg.getAppAuth().getName();
         int workerGroupId = msg.getGroupId();
@@ -143,6 +165,7 @@ public class JobActor extends UntypedActor {
 
         // 2. insert cron to DB
         cronService.insert(jobId, msg.getCronExpression());
+
 
         // 3. insert jobDepend to DB
         for (DependencyEntry entry : msg.getDependencyEntryList()) {
@@ -333,11 +356,4 @@ public class JobActor extends UntypedActor {
         }
     }
 
-    public static List<ActorEntry> handledMessages() {
-        List<ActorEntry> list = new ArrayList<>();
-        list.add(new ActorEntry(RestServerSubmitJobRequest.class, ServerSubmitJobResponse.class, MessageType.GENERAL));
-        list.add(new ActorEntry(RestServerModifyJobRequest.class, ServerModifyJobResponse.class, MessageType.GENERAL));
-        list.add(new ActorEntry(RestServerModifyJobFlagRequest.class, ServerModifyJobFlagResponse.class, MessageType.GENERAL));
-        return list;
-    }
 }
