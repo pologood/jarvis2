@@ -1,4 +1,4 @@
-package com.mogujie.jarvis.core.util;
+package com.mogujie.jarvis.core;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
