@@ -166,7 +166,7 @@ public class CronExpression {
     }
 
     private List<Integer> parseDayValueList(String[] fixedCronExp, DateTime dateTime) throws ParseException {
-        List<Integer> dayValues = null;
+        List<Integer> dayValues;
         if ("?".equals(fixedCronExp[DurationField.DAY_OF_MONTH.index])) {
             dayValues = parse(dayOfWeekParsers, fixedCronExp[DurationField.DAY_OF_WEEK.index], dateTime, DurationField.DAY_OF_WEEK);
         } else {
@@ -317,7 +317,7 @@ public class CronExpression {
             DateTime value = getTimeAfter(mdt.toDateTime());
             if (value != null) {
                 if (list == null) {
-                    list = new ArrayList<DateTime>();
+                    list = new ArrayList<>();
                 }
                 list.add(value);
                 mdt.setMillis(value.getMillis());

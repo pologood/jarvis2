@@ -94,7 +94,6 @@ public class JobActor extends UntypedActor {
     @Autowired
     private JobDependMapper jobDependMapper;
 
-
     /**
      * 处理消息
      *
@@ -109,7 +108,6 @@ public class JobActor extends UntypedActor {
         list.add(new ActorEntry(RestServerQueryJobRelationRequest.class, ServerQueryJobRelationResponse.class, MessageType.GENERAL));
         return list;
     }
-
 
     @Override
     public void onReceive(Object obj) throws Exception {
@@ -136,7 +134,6 @@ public class JobActor extends UntypedActor {
         }
     }
 
-
     /**
      * 提交任务
      *
@@ -147,24 +144,18 @@ public class JobActor extends UntypedActor {
     private void submitJob(RestServerSubmitJobRequest msg) throws Exception {
 
         ServerSubmitJobResponse response;
-
         try {
-
             //参数检查
             Job job = MessageUtil.convert2Job(appService, msg);
             Preconditions.checkArgument(job.getJobName() !=null && !job.getJobName().isEmpty(), "jobName不能为空");
             Preconditions.checkArgument(job.getWorkerGroupId() != null && job.getWorkerGroupId() > 0
                     , "workGroupId不能为空");
             Preconditions.checkArgument(job.getContent() !=null && !job.getContent().isEmpty(),"job内容不能为空");
-
             Preconditions.checkArgument(appService.canAccessWorkerGroup(job.getAppId(), job.getWorkerGroupId())
-                    , "该App不能访问该workerGroupId.");
-
+                    , "该App不能访问指定的workerGroupId.");
             Preconditions.checkArgument(msg.getCronExpression() == null || msg.getCronExpression().isEmpty()
                     || new CronExpression(msg.getCronExpression()).isValid()
                     , "Crontab表达式错误");
-
-            //有效开始日语有效结束日
             if(job.getActiveStartDate() != null && job.getActiveEndDate() != null){
                 Preconditions.checkArgument(job.getActiveStartDate().getTime() <= job.getActiveEndDate().getTime(),
                         "有效开始日不能大于有效结束日");
@@ -178,12 +169,8 @@ public class JobActor extends UntypedActor {
                 job.setOriginJobId(jobId);
                 jobMapper.updateByPrimaryKey(job);
             }
-
-
             // 2. insert cron to DB
             cronService.insert(jobId, msg.getCronExpression());
-
-
             // 3. insert jobDepend to DB
             Set<Long> needDependencies = Sets.newHashSet();
             for (DependencyEntry entry : msg.getDependencyEntryList()) {
@@ -209,8 +196,6 @@ public class JobActor extends UntypedActor {
             getSender().tell(response, getSelf());
             throw e;
         }
-
-
     }
 
     @Transactional
@@ -245,7 +230,7 @@ public class JobActor extends UntypedActor {
     private void modifyDependency(RestServerModifyDependencyRequest msg) throws IOException {
 
         long jobId = msg.getJobId();
-        List<ModifyDependEntry> dependEntries = new ArrayList<ModifyDependEntry>();
+        List<ModifyDependEntry> dependEntries = new ArrayList<>();
         for (DependencyEntry entry : msg.getDependencyEntryList()) {
             long preJobId = entry.getJobId();
             int commonStrategyValue = entry.getCommonDependStrategy();
@@ -313,8 +298,6 @@ public class JobActor extends UntypedActor {
             throw new IOException(e);
         }
     }
-
-
 
     private void queryJobRelation(RestServerQueryJobRelationRequest msg) throws IOException {
         long jobId = msg.getJobId();
