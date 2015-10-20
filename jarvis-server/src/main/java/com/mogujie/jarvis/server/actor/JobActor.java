@@ -17,6 +17,7 @@ import java.util.Set;
 
 import javax.inject.Named;
 
+import com.google.common.base.Preconditions;
 import com.mogujie.jarvis.server.cron.CronExpression;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +68,6 @@ import com.mogujie.jarvis.server.util.MessageUtil;
 
 /**
  * @author guangming
- *
  */
 @Named("jobActor")
 @Scope("prototype")
@@ -97,13 +97,16 @@ public class JobActor extends UntypedActor {
 
     /**
      * 处理消息
+     *
      * @return
      */
     public static List<ActorEntry> handledMessages() {
         List<ActorEntry> list = new ArrayList<>();
         list.add(new ActorEntry(RestServerSubmitJobRequest.class, ServerSubmitJobResponse.class, MessageType.GENERAL));
         list.add(new ActorEntry(RestServerModifyJobRequest.class, ServerModifyJobResponse.class, MessageType.GENERAL));
+        list.add(new ActorEntry(RestServerModifyDependencyRequest.class, ServerModifyDependencyResponse.class, MessageType.GENERAL));
         list.add(new ActorEntry(RestServerModifyJobFlagRequest.class, ServerModifyJobFlagResponse.class, MessageType.GENERAL));
+        list.add(new ActorEntry(RestServerQueryJobRelationRequest.class, ServerQueryJobRelationResponse.class, MessageType.GENERAL));
         return list;
     }
 
@@ -122,12 +125,12 @@ public class JobActor extends UntypedActor {
         } else if (obj instanceof RestServerModifyJobFlagRequest) {
             RestServerModifyJobFlagRequest msg = (RestServerModifyJobFlagRequest) obj;
             modifyJobFlag(msg);
-        } else if (obj instanceof RemoveJobRequest) {
-            RemoveJobRequest msg = (RemoveJobRequest) obj;
-            removeJob(msg);
         } else if (obj instanceof RestServerQueryJobRelationRequest) {
             RestServerQueryJobRelationRequest msg = (RestServerQueryJobRelationRequest) obj;
             queryJobRelation(msg);
+        } else if (obj instanceof RemoveJobRequest) {   //测试用，无须加入handleMessage
+            RemoveJobRequest msg = (RemoveJobRequest) obj;
+            removeJob(msg);
         } else {
             unhandled(obj);
         }
@@ -136,65 +139,83 @@ public class JobActor extends UntypedActor {
 
     /**
      * 提交任务
+     *
      * @param msg
      * @throws IOException
      */
     @Transactional
-    private void submitJob(RestServerSubmitJobRequest msg) throws IOException {
+    private void submitJob(RestServerSubmitJobRequest msg) throws Exception {
 
         ServerSubmitJobResponse response;
-        String appName = msg.getAppAuth().getName();
-        int workerGroupId = msg.getGroupId();
-        if (!appService.canAccessWorkerGroup(appName, workerGroupId)) {
-            response = ServerSubmitJobResponse.newBuilder().setSuccess(false).setMessage(appName + " can not access worker group: " + workerGroupId)
-                    .build();
-            getSender().tell(response, getSelf());
-            return;
-        }
-
-        Set<Long> needDependencies = Sets.newHashSet();
-        // 1. insert job to DB
-        Job job = MessageUtil.convert2Job(appService, msg);
-        jobMapper.insert(job);
-        long jobId = job.getJobId();
-        // 如果是新增任务（不是手动触发），则originId=jobId
-        if (job.getOriginJobId() == null || job.getOriginJobId() == 0) {
-            job.setOriginJobId(jobId);
-            jobMapper.updateByPrimaryKey(job);
-        }
-
-        // 2. insert cron to DB
-        cronService.insert(jobId, msg.getCronExpression());
-
-
-        // 3. insert jobDepend to DB
-        for (DependencyEntry entry : msg.getDependencyEntryList()) {
-            needDependencies.add(entry.getJobId());
-            JobDepend jobDepend = MessageUtil.convert2JobDepend(jobId, entry.getJobId(), entry.getCommonDependStrategy(),
-                    entry.getOffsetDependStrategy(), msg.getUser());
-            jobDependMapper.insert(jobDepend);
-        }
-
-        // 4. add job to scheduler
-        int cycleFlag = msg.hasFixedDelay() ? 1 : 0;
-        int dependFlag = (!needDependencies.isEmpty()) ? 1 : 0;
-        int timeFlag = msg.hasCronExpression() ? 1 : 0;
-        DAGJobType type = SchedulerUtil.getDAGJobType(cycleFlag, dependFlag, timeFlag);
 
         try {
+
+            //参数检查
+            Job job = MessageUtil.convert2Job(appService, msg);
+            Preconditions.checkArgument(job.getJobName() !=null && !job.getJobName().isEmpty(), "jobName不能为空");
+            Preconditions.checkArgument(job.getWorkerGroupId() != null && job.getWorkerGroupId() > 0
+                    , "workGroupId不能为空");
+            Preconditions.checkArgument(job.getContent() !=null && !job.getContent().isEmpty(),"job内容不能为空");
+
+            Preconditions.checkArgument(appService.canAccessWorkerGroup(job.getAppId(), job.getWorkerGroupId())
+                    , "该App不能访问该workerGroupId.");
+
+            Preconditions.checkArgument(msg.getCronExpression() == null || msg.getCronExpression().isEmpty()
+                    || new CronExpression(msg.getCronExpression()).isValid()
+                    , "Crontab表达式错误");
+
+            //有效开始日语有效结束日
+            if(job.getActiveStartDate() != null && job.getActiveEndDate() != null){
+                Preconditions.checkArgument(job.getActiveStartDate().getTime() <= job.getActiveEndDate().getTime(),
+                        "有效开始日不能大于有效结束日");
+            }
+
+            // 1. insert job to DB
+            jobMapper.insert(job);
+            long jobId = job.getJobId();
+            // 如果是新增任务（不是手动触发），则originId=jobId
+            if (job.getOriginJobId() == null || job.getOriginJobId() == 0) {
+                job.setOriginJobId(jobId);
+                jobMapper.updateByPrimaryKey(job);
+            }
+
+
+            // 2. insert cron to DB
+            cronService.insert(jobId, msg.getCronExpression());
+
+
+            // 3. insert jobDepend to DB
+            Set<Long> needDependencies = Sets.newHashSet();
+            for (DependencyEntry entry : msg.getDependencyEntryList()) {
+                needDependencies.add(entry.getJobId());
+                JobDepend jobDepend = MessageUtil.convert2JobDepend(jobId, entry.getJobId(), entry.getCommonDependStrategy(),
+                        entry.getOffsetDependStrategy(), msg.getUser());
+                jobDependMapper.insert(jobDepend);
+            }
+
+            // 4. add job to scheduler
+            int cycleFlag = msg.hasFixedDelay() ? 1 : 0;
+            int dependFlag = (!needDependencies.isEmpty()) ? 1 : 0;
+            int timeFlag = msg.hasCronExpression() ? 1 : 0;
+            DAGJobType type = SchedulerUtil.getDAGJobType(cycleFlag, dependFlag, timeFlag);
+
             dagScheduler.addJob(jobId, new DAGJob(jobId, type), needDependencies);
             timeScheduler.addJob(jobId);
             response = ServerSubmitJobResponse.newBuilder().setSuccess(true).setJobId(jobId).build();
             getSender().tell(response, getSelf());
+
         } catch (Exception e) {
             response = ServerSubmitJobResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
             getSender().tell(response, getSelf());
-            throw new IOException(e);
+            throw e;
         }
+
+
     }
 
     @Transactional
     private void modifyJob(RestServerModifyJobRequest msg) throws IOException {
+
         long jobId = msg.getJobId();
         // 1. update job to DB
         Job job = MessageUtil.convert2Job(jobMapper, appService, msg);
@@ -222,6 +243,7 @@ public class JobActor extends UntypedActor {
 
     @Transactional
     private void modifyDependency(RestServerModifyDependencyRequest msg) throws IOException {
+
         long jobId = msg.getJobId();
         List<ModifyDependEntry> dependEntries = new ArrayList<ModifyDependEntry>();
         for (DependencyEntry entry : msg.getDependencyEntryList()) {
@@ -292,27 +314,7 @@ public class JobActor extends UntypedActor {
         }
     }
 
-    @Transactional
-    private void removeJob(RemoveJobRequest msg) throws IOException {
-        long jobId = msg.getJobId();
-        try {
-            // remove job
-            jobMapper.deleteByPrimaryKey(jobId);
-            // remove job depend where preJobId=jobId
-            JobDependExample jobDependExample = new JobDependExample();
-            jobDependExample.createCriteria().andPreJobIdEqualTo(jobId);
-            jobDependMapper.deleteByExample(jobDependExample);
-            // remove crontab where jobId=jobId
-            cronService.deleteByJobId(jobId);
-            // scheduler remove job
-            timeScheduler.removeJob(jobId);
-            dagScheduler.removeJob(jobId);
-            getSender().tell("remove success", getSelf());
-        } catch (Exception e) {
-            getSender().tell("remove failed", getSelf());
-            throw new IOException(e);
-        }
-    }
+
 
     private void queryJobRelation(RestServerQueryJobRelationRequest msg) throws IOException {
         long jobId = msg.getJobId();
@@ -350,5 +352,33 @@ public class JobActor extends UntypedActor {
             }
         }
     }
+
+    /**
+     * 测试用
+     * @param msg
+     * @throws IOException
+     */
+    @Transactional
+    private void removeJob(RemoveJobRequest msg) throws IOException {
+        long jobId = msg.getJobId();
+        try {
+            // remove job
+            jobMapper.deleteByPrimaryKey(jobId);
+            // remove job depend where preJobId=jobId
+            JobDependExample jobDependExample = new JobDependExample();
+            jobDependExample.createCriteria().andPreJobIdEqualTo(jobId);
+            jobDependMapper.deleteByExample(jobDependExample);
+            // remove crontab where jobId=jobId
+            cronService.deleteByJobId(jobId);
+            // scheduler remove job
+            timeScheduler.removeJob(jobId);
+            dagScheduler.removeJob(jobId);
+            getSender().tell("remove success", getSelf());
+        } catch (Exception e) {
+            getSender().tell("remove failed", getSelf());
+            throw new IOException(e);
+        }
+    }
+
 
 }
