@@ -1,8 +1,19 @@
-
+var workerStatusJson=null;
+var workerGroupStatusJson=null;
 
 $(function(){
     initWorkerData();
     initWorkerGroupData();
+
+    $.ajaxSettings.async = false;
+    $.getJSON("/assets/jarvis/json/workerStatus.json",function(data){
+        workerStatusJson=data;
+    });
+
+    $.getJSON("/assets/jarvis/json/workerGroupStatus.json",function(data){
+        workerGroupStatusJson=data;
+    });
+    $.ajaxSettings.async = true;
 
     $(".input-group select").select2({width:'100%'});
 });
@@ -186,17 +197,20 @@ var workerColumns=[{
     title: 'PORT',
     switchable:true
 }, {
-    field: 'statusStr',
+    field: 'status',
     title: '状态',
-    switchable:true
+    switchable:true,
+    formatter:workerStatusFormatter
 }, {
-    field: 'createTimeStr',
+    field: 'createTime',
     title: '创建时间',
-    switchable:true
+    switchable:true,
+    formatter:formatDateTime
 }, {
-    field: 'updateTimeStr',
+    field: 'updateTime',
     title: '更新时间',
-    switchable:true
+    switchable:true,
+    formatter:formatDateTime
 },  {
     field: 'operation',
     title: '操作',
@@ -210,9 +224,10 @@ var workerGroupColumns=[{
     title: 'Worker Group id',
     switchable:true
 }, {
-    field: 'statusStr',
+    field: 'status',
     title: '状态',
-    switchable:true
+    switchable:true,
+    formatter:workerGroupStatusFormatter
 },{
     field: 'name',
     title: '名称',
@@ -222,13 +237,15 @@ var workerGroupColumns=[{
     title: 'authKey',
     switchable:true
 },  {
-    field: 'createTimeStr',
+    field: 'createTime',
     title: '创建时间',
-    switchable:true
+    switchable:true,
+    formatter:formatDateTime
 }, {
-    field: 'updateTimeStr',
+    field: 'updateTime',
     title: '更新时间',
-    switchable:true
+    switchable:true,
+    formatter:formatDateTime
 }, {
     field: 'updateUser',
     title: '更新人',
@@ -240,6 +257,12 @@ var workerGroupColumns=[{
     formatter: operateWorkerGroupFormatter
 }];
 
+function workerStatusFormatter(value,row,index){
+    return formatStatus(workerStatusJson,value);
+}
+function workerGroupStatusFormatter(value,row,index){
+    return formatStatus(workerGroupStatusJson,value);
+}
 
 function searchWorker(){
     $("#workerContent").bootstrapTable('destroy','');

@@ -27,13 +27,15 @@ import org.json.JSONObject;
 @Path("app")
 public class AppController extends AbstractController {
 
+    /**
+    * 新增app
+    */
     @POST
     @Path("add")
     @Produces(MediaType.APPLICATION_JSON)
     public RestResult add(@FormParam("user") String user,
                           @FormParam("appToken") String appToken,
                           @FormParam("appName") String appName,
-                          @FormParam("appKey") String appKey,
                           @FormParam("parameters") String parameters) {
         try {
             JSONObject para=new JSONObject(parameters);
@@ -59,13 +61,15 @@ public class AppController extends AbstractController {
         }
     }
 
+    /**
+     * 更新app
+     */
     @POST
     @Path("update")
     @Produces(MediaType.APPLICATION_JSON)
     public RestResult update(@FormParam("user") String user,
                              @FormParam("appName") String appName,
                              @FormParam("appToken") String appToken,
-                             @FormParam("appKey") String appKey,
                              @FormParam("parameters") String parameters) {
         try {
             JSONObject para=new JSONObject(parameters);
@@ -91,13 +95,15 @@ public class AppController extends AbstractController {
         }
     }
 
+    /**
+     * 修改app状态
+     */
     @POST
     @Path("status")
     @Produces(MediaType.APPLICATION_JSON)
     public RestResult delete(@FormParam("user") String user,
                              @FormParam("appName") String appName,
                              @FormParam("appToken") String appToken,
-                             @FormParam("appKey") String appKey,
                              @FormParam("parameters") String parameters) {
         try {
             JSONObject para=new JSONObject(parameters);

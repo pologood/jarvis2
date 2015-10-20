@@ -30,13 +30,16 @@ import org.json.JSONObject;
 @Path("system")
 public class SystemController extends AbstractController {
 
+    /**
+     * 修改系统状态
+     * @author hejian
+     */
     @POST
     @Path("status")
     @Produces(MediaType.APPLICATION_JSON)
     public RestResult status(@FormParam("user") String user,
                              @FormParam("appToken") String appToken,
                              @FormParam("appName") String appName,
-                             @FormParam("appKey") String appKey,
                              @FormParam("parameters") String parameters) {
         try {
             JSONObject para=new JSONObject(parameters);

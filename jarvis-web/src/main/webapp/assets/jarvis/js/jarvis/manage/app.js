@@ -1,5 +1,15 @@
+var appStatusJson=null;
+var appTypeJson=null;
 $(function(){
+    $.ajaxSettings.async = false;
+    $.getJSON("/assets/jarvis/json/appStatus.json",function(data){
+        appStatusJson=data;
+    });
 
+    $.getJSON("/assets/jarvis/json/appType.json",function(data){
+        appTypeJson=data;
+    });
+    $.ajaxSettings.async = true;
 
     initData();
 
@@ -101,24 +111,29 @@ var columns=[{
     title: 'appkey',
     switchable:true
 }, {
-    field: 'statusStr',
+    field: 'status',
     title: '应用状态',
-    switchable:true
+    switchable:true,
+    formatter:appStatusFormatter
 }, {
-    field: 'createTimeStr',
+    field: 'createTime',
     title: '创建时间',
-    switchable:true
+    switchable:true,
+    formatter:formatDate
 }, {
-    field: 'updateTimeStr',
+    field: 'updateTime',
     title: '更新时间',
-    switchable:true
+    switchable:true,
+    formatter:formatDate
 },  {
     field: 'operation',
     title: '操作',
     switchable:true,
     formatter: operateFormatter
 }];
-
+function appStatusFormatter(value,row,index){
+    return formatStatus(appStatusJson,value);
+}
 
 function search(){
     $("#content").bootstrapTable('destroy','');

@@ -10,9 +10,6 @@ $(function(){
         data.push(task["executeTime"]);
     }
 
-    console.log(xAxis);
-    console.log(data);
-
     var myChart = echarts.init(document.getElementById('container'));
 
     var option = {
@@ -78,4 +75,9 @@ $(function(){
 
 });
 
+
+function initLog(){
+
+    requestRemoteRestApi('/log/edit',"日志",data);
+}
 
