@@ -20,6 +20,8 @@ import akka.testkit.JavaTestKit;
 import com.mogujie.jarvis.core.domain.JobFlag;
 import com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry;
 import com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.DependencyOperator;
+import com.mogujie.jarvis.protocol.ModifyDependencyProtos.RestServerModifyDependencyRequest;
+import com.mogujie.jarvis.protocol.ModifyDependencyProtos.ServerModifyDependencyResponse;
 import com.mogujie.jarvis.protocol.ModifyJobFlagProtos.RestServerModifyJobFlagRequest;
 import com.mogujie.jarvis.protocol.ModifyJobFlagProtos.ServerModifyJobFlagResponse;
 import com.mogujie.jarvis.protocol.ModifyJobProtos.RestServerModifyJobRequest;
@@ -378,6 +380,135 @@ public class TestJobActor extends TestBaseActor {
                 actorRef.tell(new RemoveJobRequest(jobAId), getRef());
                 expectMsgEquals("remove success");
                 actorRef.tell(new RemoveJobRequest(jobBId), getRef());
+                expectMsgEquals("remove success");
+            }
+        };
+    }
+
+    /**
+     *              A
+     *     A        |
+     *    / \   --> B
+     *   B   C      |
+     *              C
+     */
+    @Test
+    public void testModifyDependency() {
+        new JavaTestKit(system) {
+            {
+                Props props = SpringExtension.SPRING_EXT_PROVIDER.get(system).props("jobActor");
+                ActorRef actorRef = system.actorOf(props);
+
+                // submit jobA
+                RestServerSubmitJobRequest request = RestServerSubmitJobRequest.newBuilder().setJobName("testJob1").setCronExpression("0 0 1 * * ?")
+                        .setAppAuth(appAuth).setUser("testUser").setJobType("hive_sql").setContent("select * from test1").setGroupId(1).build();
+
+                Future<Object> future = Patterns.ask(actorRef, request, TIMEOUT);
+                long jobAId = 0;
+                try {
+                    ServerSubmitJobResponse response = (ServerSubmitJobResponse) Await.result(future, TIMEOUT.duration());
+                    Assert.assertTrue(response.getSuccess());
+                    jobAId = response.getJobId();
+                    Assert.assertTrue(jobAId > 0);
+                } catch (Exception e) {
+                    Assert.assertTrue(false);
+                }
+
+                // submit jobB
+                DependencyEntry entryB = DependencyEntry.newBuilder().setJobId(jobAId).setOperator(DependencyOperator.ADD)
+                        .setCommonDependStrategy(CommonStrategy.ALL.getValue()).build();
+                request = RestServerSubmitJobRequest.newBuilder().setJobName("testJob2").addDependencyEntry(entryB).setAppAuth(appAuth)
+                        .setUser("testUser").setJobType("hive_sql").setContent("select * from test2").setGroupId(1).build();
+
+                future = Patterns.ask(actorRef, request, TIMEOUT);
+                long jobBId = 0;
+                try {
+                    ServerSubmitJobResponse response = (ServerSubmitJobResponse) Await.result(future, TIMEOUT.duration());
+                    Assert.assertTrue(response.getSuccess());
+                    jobBId = response.getJobId();
+                    Assert.assertTrue(jobBId > 0);
+                } catch (Exception e) {
+                    Assert.assertTrue(false);
+                }
+
+                // submit jobC
+                DependencyEntry entryC = DependencyEntry.newBuilder().setJobId(jobAId).setOperator(DependencyOperator.ADD)
+                        .setCommonDependStrategy(CommonStrategy.ALL.getValue()).setOffsetDependStrategy("lastday").build();
+                request = RestServerSubmitJobRequest.newBuilder().setJobName("testJob3").addDependencyEntry(entryC).setAppAuth(appAuth)
+                        .setUser("testUser").setJobType("hive_sql").setContent("select * from test3").setGroupId(1).build();
+
+                future = Patterns.ask(actorRef, request, TIMEOUT);
+                long jobCId = 0;
+                try {
+                    ServerSubmitJobResponse response = (ServerSubmitJobResponse) Await.result(future, TIMEOUT.duration());
+                    Assert.assertTrue(response.getSuccess());
+                    jobCId = response.getJobId();
+                    Assert.assertTrue(jobCId > 0);
+                } catch (Exception e) {
+                    Assert.assertTrue(false);
+                }
+
+                // get children of jobA, should return jobB and jobC
+                RestServerQueryJobRelationRequest queryChildrenRequest = RestServerQueryJobRelationRequest.newBuilder().setJobId(jobAId)
+                        .setAppAuth(appAuth).setRelationType(RelationType.CHILDREN).build();
+                future = Patterns.ask(actorRef, queryChildrenRequest, TIMEOUT);
+                try {
+                    ServerQueryJobRelationResponse response = (ServerQueryJobRelationResponse) Await.result(future, TIMEOUT.duration());
+                    Assert.assertTrue(response.getSuccess());
+                    Assert.assertEquals(2, response.getJobFlagEntryList().size());
+                } catch (Exception e) {
+                    Assert.assertTrue(false);
+                }
+
+                // modify dependency of jobC, remove A<--C, add B<--C
+                DependencyEntry entryAC = DependencyEntry.newBuilder().setOperator(DependencyOperator.REMOVE).setJobId(jobAId).build();
+                DependencyEntry entryBC = DependencyEntry.newBuilder().setOperator(DependencyOperator.ADD).setJobId(jobBId).build();
+                RestServerModifyDependencyRequest modifyDependencyRequest = RestServerModifyDependencyRequest.newBuilder()
+                        .setAppAuth(appAuth)
+                        .addDependencyEntry(entryAC)
+                        .addDependencyEntry(entryBC)
+                        .setJobId(jobCId)
+                        .setUser("testUser")
+                        .build();
+                future = Patterns.ask(actorRef, modifyDependencyRequest, TIMEOUT);
+                try {
+                    ServerModifyDependencyResponse response = (ServerModifyDependencyResponse) Await.result(future, TIMEOUT.duration());
+                    Assert.assertTrue(response.getSuccess());
+                } catch (Exception e) {
+                    Assert.assertTrue(false);
+                }
+
+                // get children of jobA, should return jobB
+                queryChildrenRequest = RestServerQueryJobRelationRequest.newBuilder().setJobId(jobAId)
+                        .setAppAuth(appAuth).setRelationType(RelationType.CHILDREN).build();
+                future = Patterns.ask(actorRef, queryChildrenRequest, TIMEOUT);
+                try {
+                    ServerQueryJobRelationResponse response = (ServerQueryJobRelationResponse) Await.result(future, TIMEOUT.duration());
+                    Assert.assertTrue(response.getSuccess());
+                    Assert.assertEquals(1, response.getJobFlagEntryList().size());
+                    Assert.assertEquals(jobBId, response.getJobFlagEntryList().get(0).getJobId());
+                } catch (Exception e) {
+                    Assert.assertTrue(false);
+                }
+
+                // get children of jobB, should return jobC
+                queryChildrenRequest = RestServerQueryJobRelationRequest.newBuilder().setJobId(jobBId)
+                        .setAppAuth(appAuth).setRelationType(RelationType.CHILDREN).build();
+                future = Patterns.ask(actorRef, queryChildrenRequest, TIMEOUT);
+                try {
+                    ServerQueryJobRelationResponse response = (ServerQueryJobRelationResponse) Await.result(future, TIMEOUT.duration());
+                    Assert.assertTrue(response.getSuccess());
+                    Assert.assertEquals(1, response.getJobFlagEntryList().size());
+                    Assert.assertEquals(jobCId, response.getJobFlagEntryList().get(0).getJobId());
+                } catch (Exception e) {
+                    Assert.assertTrue(false);
+                }
+
+                actorRef.tell(new RemoveJobRequest(jobAId), getRef());
+                expectMsgEquals("remove success");
+                actorRef.tell(new RemoveJobRequest(jobBId), getRef());
+                expectMsgEquals("remove success");
+                actorRef.tell(new RemoveJobRequest(jobCId), getRef());
                 expectMsgEquals("remove success");
             }
         };
