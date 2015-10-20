@@ -32,16 +32,14 @@ public class LogController extends AbstractController {
     /**
      * 获取执行日志
      *
-     * @param appKey
-     *            appKey
      * @param appName
      *            appName
-     * @param taskId
+     * @param appToken
      *            taskId
-     * @param offset
-     *            日志内容的字节偏移量
-     * @param lines
-     *            日志读取的行数
+     * @param user
+     *
+     * @param parameters (taskId、offset：日志内容的字节偏移量、lines：日志读取的行数)
+     *
      * @return
      * @throws Exception
      */
@@ -78,16 +76,14 @@ public class LogController extends AbstractController {
     /**
      * 获取结果数据
      *
-     * @param appKey
-     *            appKey
      * @param appName
      *            appName
-     * @param taskId
-     *            taskId
-     * @param offset
-     *            日志内容的字节偏移量
-     * @param lines
-     *            日志读取的行数
+     * @param appToken
+     *
+     * @param user
+     *
+     * @param parameters (taskId、offset：日志内容的字节偏移量、lines：日志读取的行数)
+     *
      * @return
      * @throws Exception
      */
