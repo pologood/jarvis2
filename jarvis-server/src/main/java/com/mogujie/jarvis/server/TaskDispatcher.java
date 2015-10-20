@@ -14,7 +14,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import com.mogujie.jarvis.core.domain.IdType;
@@ -45,7 +44,6 @@ public class TaskDispatcher extends Thread {
     private AppService appService;
 
     @Autowired
-    @Qualifier("roundRobinWorkerSelector")
     private WorkerSelector workerSelector;
 
     @Autowired

@@ -11,24 +11,16 @@ package com.mogujie.jarvis.server.workerselector;
 import java.util.List;
 import java.util.Random;
 
-import javax.inject.Named;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.mogujie.jarvis.core.domain.WorkerInfo;
 import com.mogujie.jarvis.server.service.HeartBeatService;
 
-/**
- * @author wuya
- *
- */
-@Service
-@Named("randomWorkerSelector")
 public class RandomWorkerSelector implements WorkerSelector {
 
-    @Autowired
     private HeartBeatService heartBeatService;
+
+    public RandomWorkerSelector(HeartBeatService heartBeatService) {
+        this.heartBeatService = heartBeatService;
+    }
 
     @Override
     public WorkerInfo select(int workerGroupId) {
