@@ -48,8 +48,7 @@ public class LogController extends AbstractController {
     @POST
     @Path("queryExecuteLog")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult queryExecuteLog(@FormParam("appKey") String appKey,
-                                      @FormParam("appToken") String appToken,
+    public RestResult queryExecuteLog(@FormParam("appToken") String appToken,
                                       @FormParam("appName") String appName,
                                       @FormParam("user") String user,
                                       @FormParam("parameters") String parameters){
@@ -95,8 +94,7 @@ public class LogController extends AbstractController {
     @POST
     @Path("queryResult")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult queryResult(@FormParam("appKey") String appKey,
-                                  @FormParam("appToken") String appToken,
+    public RestResult queryResult(@FormParam("appToken") String appToken,
                                   @FormParam("appName") String appName,
                                   @FormParam("user") String user,
                                   @FormParam("parameters") String parameters) throws Exception {

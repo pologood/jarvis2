@@ -58,7 +58,6 @@ public class JobController extends AbstractController {
     @Produces(MediaType.APPLICATION_JSON)
     public RestResult submit(@FormParam("appName") String appName,
                              @FormParam("appToken") String appToken,
-                             @FormParam("appKey") String appKey,
                              @FormParam("user") String user,
                              @FormParam("parameters") String parameters) {
         LOGGER.info("提交job任务");
@@ -159,7 +158,6 @@ public class JobController extends AbstractController {
     @Produces(MediaType.APPLICATION_JSON)
     public RestResult edit(@FormParam("appName") String appName,
                            @FormParam("appToken") String appToken,
-                           @FormParam("appKey") String appKey,
                            @FormParam("user") String user,
                            @FormParam("parameters") String parameters) {
 
@@ -282,7 +280,6 @@ public class JobController extends AbstractController {
     @Path("flag")
     @Produces(MediaType.APPLICATION_JSON)
     public RestResult flag(@FormParam("appToken") String appToken,
-                           @FormParam("appKey") String appKey,
                            @FormParam("appName") String appName,
                            @FormParam("user") String user,
                            @FormParam("parameters") String parameters){
@@ -327,7 +324,6 @@ public class JobController extends AbstractController {
     @Produces(MediaType.APPLICATION_JSON)
     public RestResult rerun(@FormParam("appName") String appName,
                             @FormParam("appToken") String appToken,
-                            @FormParam("appKey") String appKey,
                             @FormParam("user") String user,
                             @FormParam("parameters") String parameters) {
         try {

@@ -21,11 +21,14 @@ import org.json.JSONObject;
 @Path("worker")
 public class WorkerController extends AbstractController {
 
+    /**
+     * 修改worker状态
+     * @author hejian
+     * */
     @POST
     @Path("status")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult delete(@FormParam("appKey") String appKey,
-                             @FormParam("appName") String appName,
+    public RestResult delete(@FormParam("appName") String appName,
                              @FormParam("appToken") String appToken,
                              @FormParam("user") String user,
                              @FormParam("parameters") String parameters) {

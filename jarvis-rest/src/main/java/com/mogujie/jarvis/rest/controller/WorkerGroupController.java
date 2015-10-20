@@ -23,11 +23,15 @@ import org.json.JSONObject;
 @Path("workerGroup")
 public class WorkerGroupController extends AbstractController {
 
+
+    /**
+     * 新增worker group
+     * @author hejian
+     * */
     @POST
     @Path("add")
     @Produces(MediaType.APPLICATION_JSON)
     public RestResult add(@FormParam("appName") String appName,
-                          @FormParam("appKey") String appKey,
                           @FormParam("user") String user,
                           @FormParam("appToken") String appToken,
                           @FormParam("parameters") String parameters) {
@@ -55,12 +59,15 @@ public class WorkerGroupController extends AbstractController {
         }
     }
 
+    /**
+     * 更新worker group
+     * @author hejian
+     * */
     @POST
     @Path("update")
     @Produces(MediaType.APPLICATION_JSON)
     public RestResult update(@FormParam("appName") String appName,
                              @FormParam("appToken") String appToken,
-                             @FormParam("appKey") String appKey,
                              @FormParam("user") String user,
                              @FormParam("parameters") String parameters) {
         try {
@@ -87,13 +94,16 @@ public class WorkerGroupController extends AbstractController {
         }
     }
 
+    /**
+     * 更新worker group状态
+     * @author hejian
+     * */
     @POST
     @Path("status")
     @Produces(MediaType.APPLICATION_JSON)
     public RestResult delete(@FormParam("user") String user,
                              @FormParam("appName") String appName,
                              @FormParam("appToken") String appToken,
-                             @FormParam("appKey") String appKey,
                              @FormParam("parameters") String parameters) {
         try {
             JSONObject para=new JSONObject(parameters);

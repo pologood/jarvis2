@@ -22,7 +22,6 @@ public class TaskController extends AbstractController {
     public RestResult taskList(@FormParam("user") String user,
                           @FormParam("appToken") String appToken,
                           @FormParam("appName") String appName,
-                          @FormParam("appKey") String appKey,
                           @FormParam("parameters") String parameters){
 
         try {
@@ -40,7 +39,6 @@ public class TaskController extends AbstractController {
     public RestResult status(@FormParam("user") String user,
                              @FormParam("appToken") String appToken,
                              @FormParam("appName") String appName,
-                             @FormParam("appKey") String appKey,
                              @FormParam("parameters") String parameters) {
         try {
             JSONObject para=new JSONObject(parameters);
@@ -57,7 +55,6 @@ public class TaskController extends AbstractController {
     public RestResult kill(@FormParam("user") String user,
                            @FormParam("appToken") String appToken,
                            @FormParam("appName") String appName,
-                           @FormParam("appKey") String appKey,
                            @FormParam("parameters") String parameters) {
         try {
             JSONObject para=new JSONObject(parameters);
