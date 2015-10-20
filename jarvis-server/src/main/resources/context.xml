@@ -61,4 +61,10 @@
 
 	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager"
 		p:cache-manager-ref="ehcacheManager" />
+
+	<!-- WorkerSelector -->
+	<bean id="heartBeatService" class="com.mogujie.jarvis.server.service.HeartBeatService" />
+	<bean id="workerSelector" class="com.mogujie.jarvis.server.workerselector.RoundRobinWorkerSelector">
+		<constructor-arg index="0" ref="heartBeatService" />
+	</bean>
 </beans>

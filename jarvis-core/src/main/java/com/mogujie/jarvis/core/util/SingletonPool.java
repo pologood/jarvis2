@@ -3,7 +3,7 @@ package com.mogujie.jarvis.core.util;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class SingletonPool {
+public final class SingletonPool {
 
     private static final Map<Class<?>, Object> POOL = new ConcurrentHashMap<Class<?>, Object>();
 
@@ -14,8 +14,7 @@ public class SingletonPool {
         POOL.putIfAbsent(instance.getClass(), instance);
     }
 
-    @SuppressWarnings("unchecked")
     public static <T> T get(Class<T> clazz) {
-        return (T) POOL.get(clazz);
+        return clazz.cast(POOL.get(clazz));
     }
 }
