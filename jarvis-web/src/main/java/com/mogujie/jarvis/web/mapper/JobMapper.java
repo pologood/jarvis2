@@ -20,5 +20,8 @@ public interface JobMapper {
     public List<String> getJobNames();
     public List<String> getSubmitUsers();
 
+    public List<Integer> getSimilarJobIds(JobSearchVo jobSearchVo);
+    public List<String> getSimilarJobNames(JobSearchVo jobSearchVo);
+
     public CronTabVo getCronTabByJobId(Long jobId);
 }

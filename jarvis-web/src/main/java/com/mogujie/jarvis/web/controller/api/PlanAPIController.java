@@ -1,27 +1,26 @@
 package com.mogujie.jarvis.web.controller.api;
 
 import com.alibaba.fastjson.JSONObject;
-import com.mogujie.jarvis.web.entity.vo.TaskSearchVo;
-import com.mogujie.jarvis.web.service.TaskService;
+import com.mogujie.jarvis.web.entity.vo.PlanSearchVo;
+import com.mogujie.jarvis.web.service.PlanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
- * Created by hejian on 15/9/17.
+ * Created by hejian on 15/10/21.
  */
 @Controller
-@RequestMapping(value = "/jarvis/api/task")
-public class TaskAPIController {
+@RequestMapping(value = "/jarvis/api/plan")
+public class PlanAPIController {
     @Autowired
-    TaskService taskService;
+    PlanService planService;
 
-    @RequestMapping(value = "/getTasks")
+    @RequestMapping(value = "getPlans")
     @ResponseBody
-    public JSONObject getTasks(TaskSearchVo taskSearchVo){
-        JSONObject jsonObject = taskService.getTasks(taskSearchVo);
-
+    public JSONObject getPlans(PlanSearchVo planSearchVo){
+        JSONObject jsonObject=planService.getPlans(planSearchVo);
         return jsonObject;
     }
 }

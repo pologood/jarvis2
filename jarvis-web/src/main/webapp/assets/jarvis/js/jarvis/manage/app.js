@@ -55,7 +55,7 @@ function initData(){
         showToggle:true,
         pageSize:1,
         pageSize:10,
-        pageList:[5,10,25,50,100,200,500],
+        pageList:[5,10,20,50,100,200,500],
         paginationFirstText:'首页',
         paginationPreText:'上一页',
         paginationNextText:'下一页',

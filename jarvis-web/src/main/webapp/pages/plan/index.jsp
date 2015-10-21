@@ -25,33 +25,6 @@
     <div class="row">
         <div class="col-md-12">
 
-            <div class="row">
-                <div class="col-md-3">
-                    <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">任务日期</span>
-                        <input type="text" id="taskDate" class="form-control" />
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">数据日期</span>
-                        <input type="text" id="dataDate" class="form-control" />
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">执行日期</span>
-                        <input type="text" id="executeDate" class="form-control" />
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">执行周期</span>
-                        <select id="executeCycle"></select>
-                    </div>
-                </div>
-
-            </div>
 
             <div class="row top-buffer">
                 <div class="col-md-3">
@@ -72,31 +45,62 @@
                         <select id="jobType" ></select>
                     </div>
                 </div>
+
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">来源</span>
-                        <select id="jobSource" ></select>
+                        <span class="input-group-addon" style="width:35%">优先级</span>
+                        <select id="priority" ></select>
                     </div>
                 </div>
+
 
             </div>
 
             <div class="row top-buffer">
-                <div class="col-md-6">
+                <div class="col-md-3">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:16.5%">任务状态</span>
-                        <div class="form-control" id="taskStatus">
+                        <span class="input-group-addon" style="width:35%">计划日期</span>
+                        <input type="text" id="planDate" class="form-control" />
+                    </div>
+                </div>
+                <!--
+                <div class="col-md-3">
+                    <div class="input-group" style="width:100%">
+                        <span class="input-group-addon" style="width:35%">数据日期</span>
+                        <input type="text" id="dataDate" class="form-control" />
+                    </div>
+                </div>
+                -->
+                <!--
+                <div class="col-md-3">
+                    <div class="input-group" style="width:100%">
+                        <span class="input-group-addon" style="width:35%">执行日期</span>
+                        <input type="text" id="executeDate" class="form-control" />
+                    </div>
+                </div>
+                -->
+                <!--
+                <div class="col-md-3">
+                    <div class="input-group" style="width:100%">
+                        <span class="input-group-addon" style="width:35%">执行周期</span>
+                        <select id="executeCycle"></select>
+                    </div>
+                </div>
+                -->
 
-                        </div>
-                    </div>
-                </div>
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">执行用户</span>
-                        <select id="executeUser" ></select>
+                        <span class="input-group-addon" style="width:35%">提交用户</span>
+                        <select id="submitUser" >
+                            <option value="all">全部</option>
+                            <c:forEach items="${submitUserList}" var="submitUser" varStatus="status">
+                                <option value="${submitUser}">${submitUser}</option>
+                            </c:forEach>
+                        </select>
                     </div>
                 </div>
-                <div class="col-md-3">
+
+                <div class="col-md-3 pull-right">
                     <div class="row">
                         <div class="col-md-6 col-md-offset-6">
                             <div class="input-group pull-right">
@@ -107,10 +111,7 @@
                     </div>
 
                 </div>
-
-
             </div>
-
 
         </div>
     </div>

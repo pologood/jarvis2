@@ -54,5 +54,29 @@ public class JobAPIController {
         return jobJson;
     }
 
+    /**
+     * 相似jobId
+     *
+     * */
+    @RequestMapping("/getSimilarJobIds")
+    @ResponseBody
+    public JSONObject getSimilarJobIds(JobSearchVo jobSearchVo,Long q){
+        jobSearchVo.setJobId(q);
+        JSONObject jobJson=jobService.getSimilarJobIds(jobSearchVo);
 
+        return jobJson;
+    }
+
+    /**
+     * 相似jobId
+     *
+     * */
+    @RequestMapping("/getSimilarJobNames")
+    @ResponseBody
+    public JSONObject getSimilarJobNames(JobSearchVo jobSearchVo,String q){
+        jobSearchVo.setJobName(q);
+        JSONObject jobJson=jobService.getSimilarJobNames(jobSearchVo);
+
+        return jobJson;
+    }
 }

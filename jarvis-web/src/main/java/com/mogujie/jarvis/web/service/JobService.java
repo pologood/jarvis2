@@ -1,5 +1,6 @@
 package com.mogujie.jarvis.web.service;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.mogujie.jarvis.dto.Job;
 import com.mogujie.jarvis.web.common.Constants;
@@ -44,6 +45,45 @@ public class JobService {
 
         return jsonObject;
     }
+
+    public JSONObject getSimilarJobIds(JobSearchVo jobSearchVo){
+        JSONObject jsonObject=new JSONObject();
+
+        List<Integer> jobList=jobMapper.getSimilarJobIds(jobSearchVo);
+        JSONArray jsonArray = new JSONArray();
+        for(int i=0;i<jobList.size();i++){
+            JSONObject singleJson = new JSONObject();
+            singleJson.put("id",jobList.get(i));
+            singleJson.put("text",jobList.get(i));
+            jsonArray.add(singleJson);
+        }
+
+        jsonObject.put("total",jobList.size());
+        jsonObject.put("items", jsonArray);
+
+        return jsonObject;
+    }
+
+    public JSONObject getSimilarJobNames(JobSearchVo jobSearchVo){
+        JSONObject jsonObject=new JSONObject();
+
+        List<String> jobList=jobMapper.getSimilarJobNames(jobSearchVo);
+
+        JSONArray jsonArray = new JSONArray();
+        for(int i=0;i<jobList.size();i++){
+            JSONObject singleJson= new JSONObject();
+            singleJson.put("id",jobList.get(i));
+            singleJson.put("text",jobList.get(i));
+            jsonArray.add(singleJson);
+        }
+
+        jsonObject.put("total",jobList.size());
+        jsonObject.put("items", jsonArray);
+
+        return jsonObject;
+    }
+
+
 
     public JobVo getJobById(Long jobId){
         return jobMapper.getJobById(jobId);

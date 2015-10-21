@@ -72,12 +72,15 @@ $(function(){
 
     // 为echarts对象加载数据
     myChart.setOption(option);
-
+    initLog();
 });
 
 
 function initLog(){
-
-    requestRemoteRestApi('/log/edit',"日志",data);
+    var data={};
+    data["taskId"]=taskId;
+    data["offset"]=0;
+    data["lines"]=20;
+    requestRemoteRestApi('/log/result',"日志",data);
 }
 

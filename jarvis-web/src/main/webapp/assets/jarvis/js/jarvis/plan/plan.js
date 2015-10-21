@@ -1,30 +1,12 @@
 $(function(){
-    $('#taskDate').datetimepicker({
-        language:'zh-CN',
-        minView:'month',
-        format: 'yyyy-mm-dd',
-        autoclose:true
-    });
-    $('#dataDate').datetimepicker({
-        language:'zh-CN',
-        minView:'month',
-        format: 'yyyy-mm-dd',
-        autoclose:true
-    });
-    $('#executeDate').datetimepicker({
+
+    $('#planDate').datetimepicker({
         language:'zh-CN',
         minView:'month',
         format: 'yyyy-mm-dd',
         autoclose:true
     });
 
-    //初始化执行周期内容
-    $.getJSON("/assets/jarvis/json/executeCycle.json",function(data){
-        $("#executeCycle").select2({
-            data:data,
-            width:'100%'
-        });
-    });
     //初始化作业类型内容
     $.getJSON("/assets/jarvis/json/jobType.json",function(data){
         $("#jobType").select2({
@@ -34,84 +16,118 @@ $(function(){
     });
 
     //初始化作业来源内容
-    $.getJSON("/assets/jarvis/json/jobSource.json",function(data){
-        $("#jobSource").select2({
+    $.getJSON("/assets/jarvis/json/jobPriority.json",function(data){
+        $("#priority").select2({
             data:data,
             width:'100%'
         });
     });
 
-    //初始化任务状态
-    $.getJSON("/assets/jarvis/json/taskStatus.json",function(data){
-        $(data).each(function(index,content){
-            var value=content.id;
-            var text=content.text;
-            var input =$("<input type='checkbox' name='taskStatus'/>");
-            $(input).attr("value",value);
-
-            if(value=='all'){
-                $(input).click(function(){
-                    if(this.checked){
-                        $($("#taskStatus input")).each(function(){
-                            this.checked=true;
-                        });
-                    }
-                    else{
-                        $($("#taskStatus input")).each(function(){
-                            this.checked=false;
-                        });
-                    }
-                });
-            }
-
-            $("#taskStatus").append(input);
-            $("#taskStatus").append(text);
-            $("#taskStatus").append('  ');
-        });
-    });
 
     //select采用select2 实现
     $(".input-group select").select2({width:'100%'});
 
+    $("#jobId").select2({
+        ajax: {
+            url: "/jarvis/api/job/getSimilarJobIds",
+            dataType: 'json',
+            delay: 250,
+            data: function (params) {
+                return {
+                    q: params.term, // search term
+                    page: params.page
+                };
+            },
+            processResults: function (data, page) {
+                return {
+                    results: data.items
+                };
+            },
+            cache: true
+        },
+        escapeMarkup: function (markup) { return markup; },
+        minimumInputLength: 1,
+        templateResult: formatResult,
+        templateSelection: formatResultSelection,
+
+        width:'100%'
+    });
+    $("#jobName").select2({
+        ajax: {
+            url: "/jarvis/api/job/getSimilarJobNames",
+            dataType: 'json',
+            delay: 250,
+            data: function (params) {
+                return {
+                    q: params.term, // search term
+                    page: params.page
+                };
+            },
+            processResults: function (data, page) {
+                return {
+                    results: data.items
+                };
+            },
+            cache: true
+        },
+        escapeMarkup: function (markup) { return markup; },
+        minimumInputLength: 1,
+        templateResult: formatResult,
+        templateSelection: formatResultSelection,
+        width:'100%'
+    })
+
+
     initData();
 });
+
+
+function formatResult(result){
+    return result.text;
+}
+function formatResultSelection(result){
+    return result.id;
+}
+
+function search(){
+    $("#content").bootstrapTable('destroy','');
+    initData();
+}
+
+function reset(){
+    $("#jobId").val("").trigger("change");
+    $("#jobName").val("").trigger("change");
+    $("#jobType").val("all").trigger("change");
+    $("#priority").val("all").trigger("change");
+    $("#submitUser").val("all").trigger("change");
+    $("#planDate").val("");
+}
+
 
 //获取查询参数
 function getQueryPara(){
     var queryPara={};
 
-    var executeDate=$("#executeDate").val();
-    var dataDate=$("#dataDate").val();
-    var executeStartTime=$("#executeStartTime").val();
-    var executeEndTime=$("#executeEndTime").val();
     var jobId=$("#jobId").val();
     var jobName=$("#jobName").val();
     var jobType=$("#jobType").val();
+    var priority=$("#priority").val();
     var submitUser=$("#submitUser").val();
-
-    var taskStatus=new Array();
-    var inputs=$("#taskStatus").find("input:checked");
-    $(inputs).each(function(i,c){
-        var value=$(c).val();
-        if(value!='all'&&value!=''){
-            taskStatus.push(value);
-        }
-    });
+    var planDate=$("#planDate").val();
 
     jobId=jobId=="all"?'':jobId;
     jobName=jobName=='all'?'':jobName;
     jobType=jobType=='all'?'':jobType;
     submitUser=submitUser=="all"?'':submitUser;
+    priority=priority=="all"?'':priority;
+    planDate=planDate==''?undefined:planDate;
 
-    queryPara["executeDate"]=executeDate;
-    queryPara["dataDate"]=dataDate;
-    queryPara["startTime"]=executeStartTime;
-    queryPara["endTime"]=executeEndTime;
     queryPara["jobId"]=jobId;
     queryPara["jobName"]=jobName;
     queryPara["jobType"]=jobType;
     queryPara["submitUser"]=submitUser;
-    queryPara["taskStatusArrStr"]=JSON.stringify(taskStatus);
+    queryPara["priority"]=priority;
+    queryPara["planDate"]=planDate;
 
     return queryPara;
 }
@@ -124,7 +140,7 @@ function initData(){
         pagination:true,
         sidePagination:'server',
         search:false,
-        url:'/jarvis/api/task/getTasks',
+        url:'/jarvis/api/plan/getPlans',
         queryParams:function(params) {
             for(var key in queryParams){
                 var value = queryParams[key];
@@ -137,7 +153,7 @@ function initData(){
         showToggle:true,
         pageNumber:1,
         pageSize:10,
-        pageList:[5,10,25,50,100,200,500,1000],
+        pageList:[5,10,20,50,100,200,500,1000],
         paginationFirstText:'首页',
         paginationPreText:'上一页',
         paginationNextText:'下一页',
@@ -156,14 +172,9 @@ function initData(){
 
 
 var columns=[{
-    field: 'taskId',
-    title: '执行ID',
+    field: 'planId',
+    title: '计划ID',
     switchable:true
-}, {
-    field: 'attemptId',
-    title: '最后尝试ID',
-    switchable:true,
-    visible:false
 }, {
     field: 'jobId',
     title: '任务ID',
@@ -174,74 +185,55 @@ var columns=[{
     title: '任务名',
     switchable:true
 },{
-    field: 'jobContent',
-    title: '任务内容',
-    switchable:true
-}, {
-    field: 'jobParams',
-    title: '任务参数',
+    field: 'appId',
+    title: 'APP ID',
     switchable:true,
     visible:false
-}, {
-    field: 'dataYmdStr',
-    title: '数据日期',
-    switchable:true
-}, {
-    field: 'taskStatus',
-    title: '执行状态',
-    switchable:true
-}, {
-    field: 'executeUser',
-    title: '执行用户',
-    switchable:true
-}, {
-    field: 'executeStartTimeStr',
-    title: '开始执行时间',
-    switchable:true
-}, {
-    field: 'executeEndTimeStr',
-    title: '执行结束时间',
-    switchable:true
-}, {
-    field: 'createTimeStr',
-    title: '执行创建时间',
-    switchable:true
-}, {
-    field: 'updateTimeStr',
-    title: '执行更新时间',
-    switchable:true,
-    visible:false
-}, {
-    field: 'activeStartDateStr',
-    title: '任务有效期起始',
-    switchable:true,
-    visible:false
-}, {
-    field: 'activeEndDateStr',
-    title: '任务有效期截止',
-    switchable:true,
-    visible:false
-}, {
+},{
     field: 'jobType',
     title: '任务类型',
-    switchable:true,
-    visible:false
+    switchable:true
 }, {
+    field: 'content',
+    title: '任务内容',
+    switchable:true,
+    formatter:StringFormatter
+},  {
+    field: 'priority',
+    title: '任务优先级',
+    switchable:true
+}, {
+    field: 'params',
+    title: '任务参数',
+    switchable:true,
+    formatter:StringFormatter
+}, {
+    field: 'planDate',
+    title: '计划日期',
+    switchable:true,
+    formatter:formatDate
+},{
+    field: 'planDate',
+    title: '计划日期',
+    switchable:true
+},{
+    field: 'createTime',
+    title: '创建时间',
+    switchable:true,
+    visible:false,
+    formatter:formatDateTime
+}, {
+    field: 'updateTime',
+    title: '执行更新时间',
+    switchable:true,
+    visible:false,
+    formatter:formatDateTime
+},  {
     field: 'submitUser',
     title: '任务创建者',
     switchable:true,
     visible:false
-}, {
-    field: 'appName',
-    title: '应用名',
-    switchable:true,
-    visible:false
-}, {
-    field: 'jobPriority',
-    title: '任务优先级',
-    switchable:true,
-    visible:false
-}, {
+},{
     field: 'workerGroupId',
     title: '任务workerGroupId',
     switchable:true,
@@ -255,10 +247,10 @@ var columns=[{
 
 function operateFormatter(value, row, index) {
     //console.log(row);
-    var taskId=row["taskId"];
+    var planId=row["planId"];
     //console.log(jobId);
     var result= [
-        '<a class="edit" href="/jarvis/task/detail?taskId='+taskId+'" title="查看执行详情" target="_blank">',
+        '<a class="edit" href="/jarvis/plan/dependency?planId='+planId+'" title="查看执行详情" target="_blank">',
         '<i class="glyphicon glyphicon-eye-open"></i>',
         '</a>  '
     ].join('');
@@ -266,4 +258,8 @@ function operateFormatter(value, row, index) {
     //console.log(result);
 
     return result;
+}
+
+function StringFormatter(value,row,index){
+    return value;
 }

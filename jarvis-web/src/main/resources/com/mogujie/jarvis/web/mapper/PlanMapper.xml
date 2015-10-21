@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mogujie.jarvis.web.mapper.PlanMapper">
+
+    <sql id="condition">
+        <where>
+            <if test="jobId!=null">
+                plan.jobId=#{jobId}
+            </if>
+            <if test="planDate!=null">
+                AND plan.planDate=#{planDate}
+            </if>
+            <if test="jobName!=null and jobName!=''">
+                AND job.jobName=#{jobName}
+            </if>
+            <if test="jobType!=null and jobType!=''">
+                AND job.jobType=#{jobType}
+            </if>
+            <if test="priority!=null">
+                AND job.priority=#{priority}
+            </if>
+            <if test="submitUser!=null and submitUser!=''">
+                AND job.submitUser=#{submitUser}
+            </if>
+        </where>
+    </sql>
+    <sql id="pager">
+        <if test="offset!=null and limit!=null">
+            limit #{offset},#{limit}
+        </if>
+    </sql>
+
+    <select id="getCountByCondition" parameterType="PlanSearchVo" resultType="Integer">
+        SELECT COUNT(1) FROM plan LEFT JOIN job ON plan.jobId=job.jobId
+        <include refid="condition" />
+    </select>
+
+    <select id="getPlansByCondition" parameterType="PlanSearchVo" resultType="PlanVo">
+        SELECT * FROM plan LEFT JOIN job ON plan.jobId=job.jobId
+        <include refid="condition" />
+        <include refid="pager" />
+    </select>
+
+
+
+</mapper>

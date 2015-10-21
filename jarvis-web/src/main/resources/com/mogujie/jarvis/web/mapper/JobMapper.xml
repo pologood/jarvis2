@@ -78,6 +78,24 @@
       SELECT DISTINCT submitUser FROM job;
     </select>
 
+    <select id="getSimilarJobIds" parameterType="JobSearchVo" resultType="Integer">
+      SELECT DISTINCT jobId FROM job
+      <where>
+          <if test="jobId!=null">
+              jobId LIKE '%${jobId}%'
+          </if>
+      </where>
+    </select>
+
+    <select id="getSimilarJobNames" parameterType="JobSearchVo" resultType="String">
+      SELECT DISTINCT jobName FROM job
+      <where>
+          <if test="jobName!=null and jobName!=''">
+              jobName LIKE '%${jobName}%'
+          </if>
+      </where>
+    </select>
+
     <select id="getCronTabByJobId" parameterType="Long" resultType="CronTabVo">
         SELECT * FROM crontab WHERE jobId=${_parameter}
     </select>

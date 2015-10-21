@@ -101,5 +101,6 @@
 </jsp:include>
 <script type="text/javascript">
     var taskVoList=${taskVoList};
+    var taskId='${taskVo.taskId}';
 </script>
 <script type="text/javascript" src="/assets/jarvis/js/jarvis/task/detail.js"></script>

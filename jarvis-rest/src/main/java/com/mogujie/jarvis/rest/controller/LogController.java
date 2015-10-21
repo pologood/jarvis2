@@ -44,9 +44,9 @@ public class LogController extends AbstractController {
      * @throws Exception
      */
     @POST
-    @Path("queryExecuteLog")
+    @Path("executeLog")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult queryExecuteLog(@FormParam("appToken") String appToken,
+    public RestResult executeLog(@FormParam("appToken") String appToken,
                                       @FormParam("appName") String appName,
                                       @FormParam("user") String user,
                                       @FormParam("parameters") String parameters){
@@ -88,9 +88,9 @@ public class LogController extends AbstractController {
      * @throws Exception
      */
     @POST
-    @Path("queryResult")
+    @Path("result")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult queryResult(@FormParam("appToken") String appToken,
+    public RestResult result(@FormParam("appToken") String appToken,
                                   @FormParam("appName") String appName,
                                   @FormParam("user") String user,
                                   @FormParam("parameters") String parameters) throws Exception {
@@ -106,6 +106,7 @@ public class LogController extends AbstractController {
             LogServerReadLogResponse response = (LogServerReadLogResponse) callActor(AkkaType.LOGSTORAGE, request);
 
             if (response.getSuccess()) {
+
                 return successResult();
             } else {
                 return errorResult(response.getMessage());
