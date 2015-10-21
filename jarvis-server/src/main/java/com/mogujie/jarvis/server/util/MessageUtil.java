@@ -116,8 +116,7 @@ public class MessageUtil {
         JobDepend jobDepend = new JobDepend();
         jobDepend.setJobId(jobId);
         jobDepend.setPreJobId(preJobId);
-        DateTime dt = DateTime.now();
-        Date currentTime = dt.toDate();
+        Date currentTime = DateTime.now().toDate();
         jobDepend.setCreateTime(currentTime);
         jobDepend.setUpdateTime(currentTime);
         jobDepend.setUpdateUser(user);

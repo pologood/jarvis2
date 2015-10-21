@@ -50,10 +50,17 @@ public class AppService {
         return appMapper.selectByExample(example);
     }
 
-    public boolean canAccessWorkerGroup(String appName, int workerGroupId) {
-        int appId = getAppIdByName(appName);
+    /**
+     * app能否访问workerGroup
+     * @param appId         ：appId
+     * @param workerGroupId ：workerGroupId
+     * @return              ：
+     */
+    public boolean canAccessWorkerGroup(int appId, int workerGroupId) {
+
         AppWorkerGroupExample example = new AppWorkerGroupExample();
         example.createCriteria().andAppIdEqualTo(appId);
+
         List<AppWorkerGroup> list = appWorkerGroupMapper.selectByExample(example);
         for (AppWorkerGroup appWorkerGroup : list) {
             if (workerGroupId == appWorkerGroup.getWorkerGroupId()) {

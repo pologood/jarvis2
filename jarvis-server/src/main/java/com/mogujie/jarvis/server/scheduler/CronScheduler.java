@@ -33,8 +33,8 @@ public class CronScheduler {
     private JobSchedulerController jobSchedulerController;
     private ExecutorService executor = Executors.newSingleThreadExecutor();
     private SchedulerThread schedulerThread;
-    private Map<Long, Crontab> crontabs = new ConcurrentHashMap<Long, Crontab>(10);
-    private List<Pair<Long, DateTime>> nextScheduleTimeList = new Vector<Pair<Long, DateTime>>(10);
+    private Map<Long, Crontab> crontabs = new ConcurrentHashMap<>(10);
+    private List<Pair<Long, DateTime>> nextScheduleTimeList = new Vector<>(10);
     private static final Logger LOGGER = LogManager.getLogger();
 
     public CronScheduler(JobSchedulerController jobSchedulerController) {
@@ -58,7 +58,7 @@ public class CronScheduler {
 
         try {
             CronExpression expression = new CronExpression(crontab.getCronExpression());
-            Pair<Long, DateTime> pair = new Pair<Long, DateTime>(crontab.getJobId(), expression.getTimeAfter(DateTime.now()));
+            Pair<Long, DateTime> pair = new Pair<>(crontab.getJobId(), expression.getTimeAfter(DateTime.now()));
             nextScheduleTimeList.add(pair);
         } catch (ParseException e) {
             LOGGER.error(e);

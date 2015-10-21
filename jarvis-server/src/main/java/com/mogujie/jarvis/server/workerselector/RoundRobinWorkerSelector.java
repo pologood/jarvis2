@@ -11,23 +11,19 @@ package com.mogujie.jarvis.server.workerselector;
 import java.util.List;
 import java.util.Map;
 
-import javax.inject.Named;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.google.common.collect.Maps;
 import com.mogujie.jarvis.core.domain.WorkerInfo;
 import com.mogujie.jarvis.server.service.HeartBeatService;
 
-@Service
-@Named("roundRobinWorkerSelector")
 public class RoundRobinWorkerSelector implements WorkerSelector {
 
-    @Autowired
     private HeartBeatService heartBeatService;
 
     private Map<Integer, Integer> map = Maps.newConcurrentMap();
+
+    public RoundRobinWorkerSelector(HeartBeatService heartBeatService) {
+        this.heartBeatService = heartBeatService;
+    }
 
     @Override
     public synchronized WorkerInfo select(int workerGroupId) {

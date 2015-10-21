@@ -30,13 +30,13 @@ import com.mogujie.jarvis.server.cron.AbstractParser.DurationField;
 public class CronExpression {
 
     private String cronExp;
-    private List<AbstractParser> secondPasers;
-    private List<AbstractParser> minutePasers;
-    private List<AbstractParser> hourPasers;
-    private List<AbstractParser> dayOfMonthPasers;
-    private List<AbstractParser> monthPasers;
-    private List<AbstractParser> dayOfWeekPasers;
-    private List<AbstractParser> yearPasers;
+    private List<AbstractParser> secondParsers;
+    private List<AbstractParser> minuteParsers;
+    private List<AbstractParser> hourParsers;
+    private List<AbstractParser> dayOfMonthParsers;
+    private List<AbstractParser> monthParsers;
+    private List<AbstractParser> dayOfWeekParsers;
+    private List<AbstractParser> yearParsers;
 
     private static final Range<Integer> SECOND_RANGE = Range.closed(0, 59);
     private static final Range<Integer> MINUTE_RANGE = Range.closed(0, 59);
@@ -49,51 +49,51 @@ public class CronExpression {
     public CronExpression(String cronExp) {
         this.cronExp = cronExp;
 
-        secondPasers = new ArrayList<AbstractParser>();
-        secondPasers.add(new PoundSignParser(SECOND_RANGE, DurationField.MINUTE));
-        secondPasers.add(new RangeParser(SECOND_RANGE, DurationField.MINUTE));
-        secondPasers.add(new StepParser(SECOND_RANGE, DurationField.MINUTE));
-        secondPasers.add(new SingleParser(SECOND_RANGE, DurationField.MINUTE));
+        secondParsers = new ArrayList<>();
+        secondParsers.add(new PoundSignParser(SECOND_RANGE, DurationField.MINUTE));
+        secondParsers.add(new RangeParser(SECOND_RANGE, DurationField.MINUTE));
+        secondParsers.add(new StepParser(SECOND_RANGE, DurationField.MINUTE));
+        secondParsers.add(new SingleParser(SECOND_RANGE, DurationField.MINUTE));
 
-        minutePasers = new ArrayList<AbstractParser>();
-        minutePasers.add(new PoundSignParser(MINUTE_RANGE, DurationField.MINUTE));
-        minutePasers.add(new RangeParser(MINUTE_RANGE, DurationField.MINUTE));
-        minutePasers.add(new StepParser(MINUTE_RANGE, DurationField.MINUTE));
-        minutePasers.add(new SingleParser(MINUTE_RANGE, DurationField.MINUTE));
+        minuteParsers = new ArrayList<>();
+        minuteParsers.add(new PoundSignParser(MINUTE_RANGE, DurationField.MINUTE));
+        minuteParsers.add(new RangeParser(MINUTE_RANGE, DurationField.MINUTE));
+        minuteParsers.add(new StepParser(MINUTE_RANGE, DurationField.MINUTE));
+        minuteParsers.add(new SingleParser(MINUTE_RANGE, DurationField.MINUTE));
 
-        hourPasers = new ArrayList<AbstractParser>();
-        hourPasers.add(new PoundSignParser(HOUR_RANGE, DurationField.HOUR));
-        hourPasers.add(new RangeParser(HOUR_RANGE, DurationField.HOUR));
-        hourPasers.add(new StepParser(HOUR_RANGE, DurationField.HOUR));
-        hourPasers.add(new SingleParser(HOUR_RANGE, DurationField.HOUR));
+        hourParsers = new ArrayList<>();
+        hourParsers.add(new PoundSignParser(HOUR_RANGE, DurationField.HOUR));
+        hourParsers.add(new RangeParser(HOUR_RANGE, DurationField.HOUR));
+        hourParsers.add(new StepParser(HOUR_RANGE, DurationField.HOUR));
+        hourParsers.add(new SingleParser(HOUR_RANGE, DurationField.HOUR));
 
-        dayOfMonthPasers = new ArrayList<AbstractParser>();
-        dayOfMonthPasers.add(new PoundSignParser(DAY_OF_MONTH_RANGE, DurationField.DAY_OF_MONTH));
-        dayOfMonthPasers.add(new RangeParser(DAY_OF_MONTH_RANGE, DurationField.DAY_OF_MONTH));
-        dayOfMonthPasers.add(new StepParser(DAY_OF_MONTH_RANGE, DurationField.DAY_OF_MONTH));
-        dayOfMonthPasers.add(new LastDayOfMonthParser(DAY_OF_MONTH_RANGE, DurationField.DAY_OF_MONTH));
-        dayOfMonthPasers.add(new NearestWeekdayOfMonthParser(DAY_OF_MONTH_RANGE, DurationField.DAY_OF_MONTH));
-        dayOfMonthPasers.add(new SingleParser(DAY_OF_MONTH_RANGE, DurationField.DAY_OF_MONTH));
+        dayOfMonthParsers = new ArrayList<>();
+        dayOfMonthParsers.add(new PoundSignParser(DAY_OF_MONTH_RANGE, DurationField.DAY_OF_MONTH));
+        dayOfMonthParsers.add(new RangeParser(DAY_OF_MONTH_RANGE, DurationField.DAY_OF_MONTH));
+        dayOfMonthParsers.add(new StepParser(DAY_OF_MONTH_RANGE, DurationField.DAY_OF_MONTH));
+        dayOfMonthParsers.add(new LastDayOfMonthParser(DAY_OF_MONTH_RANGE, DurationField.DAY_OF_MONTH));
+        dayOfMonthParsers.add(new NearestWeekdayOfMonthParser(DAY_OF_MONTH_RANGE, DurationField.DAY_OF_MONTH));
+        dayOfMonthParsers.add(new SingleParser(DAY_OF_MONTH_RANGE, DurationField.DAY_OF_MONTH));
 
-        monthPasers = new ArrayList<AbstractParser>();
-        monthPasers.add(new PoundSignParser(MONTH_RANGE, DurationField.MONTH));
-        monthPasers.add(new RangeParser(MONTH_RANGE, DurationField.MONTH));
-        monthPasers.add(new StepParser(MONTH_RANGE, DurationField.MONTH));
-        monthPasers.add(new SingleParser(MONTH_RANGE, DurationField.MONTH));
+        monthParsers = new ArrayList<>();
+        monthParsers.add(new PoundSignParser(MONTH_RANGE, DurationField.MONTH));
+        monthParsers.add(new RangeParser(MONTH_RANGE, DurationField.MONTH));
+        monthParsers.add(new StepParser(MONTH_RANGE, DurationField.MONTH));
+        monthParsers.add(new SingleParser(MONTH_RANGE, DurationField.MONTH));
 
-        dayOfWeekPasers = new ArrayList<AbstractParser>();
-        dayOfWeekPasers.add(new PoundSignParser(DAY_OF_WEEK_RANGE, DurationField.DAY_OF_WEEK));
-        dayOfWeekPasers.add(new RangeParser(DAY_OF_WEEK_RANGE, DurationField.DAY_OF_WEEK));
-        dayOfWeekPasers.add(new StepParser(DAY_OF_WEEK_RANGE, DurationField.DAY_OF_WEEK));
-        dayOfWeekPasers.add(new LastDayOfMonthParser(DAY_OF_WEEK_RANGE, DurationField.DAY_OF_WEEK));
-        dayOfWeekPasers.add(new AsteriskParser(DAY_OF_WEEK_RANGE, DurationField.DAY_OF_WEEK));
-        dayOfWeekPasers.add(new SingleParser(DAY_OF_WEEK_RANGE, DurationField.DAY_OF_WEEK));
+        dayOfWeekParsers = new ArrayList<>();
+        dayOfWeekParsers.add(new PoundSignParser(DAY_OF_WEEK_RANGE, DurationField.DAY_OF_WEEK));
+        dayOfWeekParsers.add(new RangeParser(DAY_OF_WEEK_RANGE, DurationField.DAY_OF_WEEK));
+        dayOfWeekParsers.add(new StepParser(DAY_OF_WEEK_RANGE, DurationField.DAY_OF_WEEK));
+        dayOfWeekParsers.add(new LastDayOfMonthParser(DAY_OF_WEEK_RANGE, DurationField.DAY_OF_WEEK));
+        dayOfWeekParsers.add(new AsteriskParser(DAY_OF_WEEK_RANGE, DurationField.DAY_OF_WEEK));
+        dayOfWeekParsers.add(new SingleParser(DAY_OF_WEEK_RANGE, DurationField.DAY_OF_WEEK));
 
-        yearPasers = new ArrayList<AbstractParser>();
-        yearPasers.add(new PoundSignParser(YEAR_RANGE, DurationField.YEAR));
-        yearPasers.add(new RangeParser(YEAR_RANGE, DurationField.YEAR));
-        yearPasers.add(new StepParser(YEAR_RANGE, DurationField.YEAR));
-        yearPasers.add(new SingleParser(YEAR_RANGE, DurationField.YEAR));
+        yearParsers = new ArrayList<>();
+        yearParsers.add(new PoundSignParser(YEAR_RANGE, DurationField.YEAR));
+        yearParsers.add(new RangeParser(YEAR_RANGE, DurationField.YEAR));
+        yearParsers.add(new StepParser(YEAR_RANGE, DurationField.YEAR));
+        yearParsers.add(new SingleParser(YEAR_RANGE, DurationField.YEAR));
     }
 
     private void validate(String[] exp) throws ParseException {
@@ -143,7 +143,7 @@ public class CronExpression {
     }
 
     private List<Integer> parse(List<AbstractParser> pasers, String partCronExp, DateTime dateTime, DurationField type) throws ParseException {
-        Set<Integer> result = new HashSet<Integer>();
+        Set<Integer> result = new HashSet<>();
         for (String str : Splitter.on(",").omitEmptyStrings().split(partCronExp)) {
             boolean isMatch = false;
             for (AbstractParser paser : pasers) {
@@ -166,11 +166,11 @@ public class CronExpression {
     }
 
     private List<Integer> parseDayValueList(String[] fixedCronExp, DateTime dateTime) throws ParseException {
-        List<Integer> dayValues = null;
+        List<Integer> dayValues;
         if ("?".equals(fixedCronExp[DurationField.DAY_OF_MONTH.index])) {
-            dayValues = parse(dayOfWeekPasers, fixedCronExp[DurationField.DAY_OF_WEEK.index], dateTime, DurationField.DAY_OF_WEEK);
+            dayValues = parse(dayOfWeekParsers, fixedCronExp[DurationField.DAY_OF_WEEK.index], dateTime, DurationField.DAY_OF_WEEK);
         } else {
-            dayValues = parse(dayOfMonthPasers, fixedCronExp[DurationField.DAY_OF_MONTH.index], dateTime, DurationField.DAY_OF_MONTH);
+            dayValues = parse(dayOfMonthParsers, fixedCronExp[DurationField.DAY_OF_MONTH.index], dateTime, DurationField.DAY_OF_MONTH);
         }
 
         return dayValues;
@@ -183,11 +183,11 @@ public class CronExpression {
         MutableDateTime mdt = dateTime.toMutableDateTime();
         mdt.setMillisOfSecond(0);
 
-        List<Integer> secondValues = parse(secondPasers, fixedCronExp[DurationField.SECOND.index], dateTime, DurationField.SECOND);
-        List<Integer> minuteValues = parse(minutePasers, fixedCronExp[DurationField.MINUTE.index], dateTime, DurationField.MINUTE);
-        List<Integer> hourValues = parse(hourPasers, fixedCronExp[DurationField.HOUR.index], dateTime, DurationField.HOUR);
-        List<Integer> monthValues = parse(monthPasers, fixedCronExp[DurationField.MONTH.index], dateTime, DurationField.MONTH);
-        List<Integer> yearValues = parse(yearPasers, fixedCronExp[DurationField.YEAR.index], dateTime, DurationField.YEAR);
+        List<Integer> secondValues = parse(secondParsers, fixedCronExp[DurationField.SECOND.index], dateTime, DurationField.SECOND);
+        List<Integer> minuteValues = parse(minuteParsers, fixedCronExp[DurationField.MINUTE.index], dateTime, DurationField.MINUTE);
+        List<Integer> hourValues = parse(hourParsers, fixedCronExp[DurationField.HOUR.index], dateTime, DurationField.HOUR);
+        List<Integer> monthValues = parse(monthParsers, fixedCronExp[DurationField.MONTH.index], dateTime, DurationField.MONTH);
+        List<Integer> yearValues = parse(yearParsers, fixedCronExp[DurationField.YEAR.index], dateTime, DurationField.YEAR);
 
         int yearStartIndex = searchNotLessThanIndex(yearValues, mdt.getYear());
         for (int yearIndex = yearStartIndex, yearLen = yearValues.size(); yearIndex < yearLen; yearIndex++) {
@@ -246,11 +246,11 @@ public class CronExpression {
         MutableDateTime mdt = dateTime.toMutableDateTime();
         mdt.setMillisOfSecond(0);
 
-        List<Integer> secondValues = parse(secondPasers, fixedCronExp[DurationField.SECOND.index], dateTime, DurationField.SECOND);
-        List<Integer> minuteValues = parse(minutePasers, fixedCronExp[DurationField.MINUTE.index], dateTime, DurationField.MINUTE);
-        List<Integer> hourValues = parse(hourPasers, fixedCronExp[DurationField.HOUR.index], dateTime, DurationField.HOUR);
-        List<Integer> monthValues = parse(monthPasers, fixedCronExp[DurationField.MONTH.index], dateTime, DurationField.MONTH);
-        List<Integer> yearValues = parse(yearPasers, fixedCronExp[DurationField.YEAR.index], dateTime, DurationField.YEAR);
+        List<Integer> secondValues = parse(secondParsers, fixedCronExp[DurationField.SECOND.index], dateTime, DurationField.SECOND);
+        List<Integer> minuteValues = parse(minuteParsers, fixedCronExp[DurationField.MINUTE.index], dateTime, DurationField.MINUTE);
+        List<Integer> hourValues = parse(hourParsers, fixedCronExp[DurationField.HOUR.index], dateTime, DurationField.HOUR);
+        List<Integer> monthValues = parse(monthParsers, fixedCronExp[DurationField.MONTH.index], dateTime, DurationField.MONTH);
+        List<Integer> yearValues = parse(yearParsers, fixedCronExp[DurationField.YEAR.index], dateTime, DurationField.YEAR);
 
         int yearStartIndex = searchNotGreaterThanIndex(yearValues, mdt.getYear());
         for (int yearIndex = yearStartIndex; yearIndex >= 0; yearIndex--) {
@@ -317,7 +317,7 @@ public class CronExpression {
             DateTime value = getTimeAfter(mdt.toDateTime());
             if (value != null) {
                 if (list == null) {
-                    list = new ArrayList<DateTime>();
+                    list = new ArrayList<>();
                 }
                 list.add(value);
                 mdt.setMillis(value.getMillis());
@@ -340,7 +340,7 @@ public class CronExpression {
             DateTime value = getTimeBefore(mdt.toDateTime());
             if (value != null) {
                 if (list == null) {
-                    list = new ArrayList<DateTime>();
+                    list = new ArrayList<>();
                 }
                 list.add(value);
                 mdt.setMillis(value.getMillis());

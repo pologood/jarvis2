@@ -3,14 +3,25 @@ CREATE TABLE `app` (
   `appId` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'appId',
   `appName` varchar(64) NOT NULL DEFAULT '' COMMENT 'app名称',
   `appKey` varchar(32) NOT NULL DEFAULT '' COMMENT 'appKey',
-  `status` int(3) unsigned DEFAULT '0' COMMENT '状态：0：停用；1：启用；',
+  `appType` int(3) unsigned NOT NULL DEFAULT '1' COMMENT '类型：1：普通；2：管理',
+  `status` int(3) unsigned DEFAULT '1' COMMENT '状态：0：停用；1：启用；',
   `maxConcurrency` int(11) unsigned NOT NULL DEFAULT '10' COMMENT '最大任务并行度',
   `createTime` datetime NOT NULL COMMENT '创建时间',
   `updateTime` datetime NOT NULL COMMENT '最后更新时间',
   `updateUser` varchar(32) NOT NULL DEFAULT '' COMMENT '最后更新用户',
   PRIMARY KEY (`appId`),
   UNIQUE KEY `index_appName` (`appName`)
-) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8 COMMENT='app表';
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8 COMMENT='app表';
+
+-- Create syntax for TABLE 'app_worker_group'
+CREATE TABLE `app_worker_group` (
+  `appId` int(11) unsigned NOT NULL DEFAULT '0' COMMENT 'appId',
+  `workerGroupId` int(11) unsigned NOT NULL DEFAULT '0' COMMENT 'workerGroupID',
+  `createTime` datetime NOT NULL COMMENT '创建时间',
+  `updateTime` datetime NOT NULL COMMENT '最后更新时间',
+  `updateUser` varchar(32) NOT NULL DEFAULT '' COMMENT '最后更新用户',
+  PRIMARY KEY (`appId`,`workerGroupId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='app_workgroup表';
 
 -- Create syntax for TABLE 'crontab'
 CREATE TABLE `crontab` (
@@ -22,7 +33,7 @@ CREATE TABLE `crontab` (
   `updateTime` datetime NOT NULL COMMENT '最后更新时间',
   PRIMARY KEY (`cronId`),
   KEY `index_jobId` (`jobId`)
-) ENGINE=InnoDB AUTO_INCREMENT=116 DEFAULT CHARSET=utf8 COMMENT='crontab表';
+) ENGINE=InnoDB AUTO_INCREMENT=207 DEFAULT CHARSET=utf8 COMMENT='crontab表';
 
 -- Create syntax for TABLE 'job'
 CREATE TABLE `job` (
@@ -51,7 +62,7 @@ CREATE TABLE `job` (
   KEY `index_originJobId` (`originJobId`),
   KEY `index_submitUser` (`submitUser`),
   KEY `index_createTime` (`createTime`)
-) ENGINE=InnoDB AUTO_INCREMENT=132 DEFAULT CHARSET=utf8 COMMENT='job表';
+) ENGINE=InnoDB AUTO_INCREMENT=223 DEFAULT CHARSET=utf8 COMMENT='job表';
 
 -- Create syntax for TABLE 'job_depend'
 CREATE TABLE `job_depend` (
@@ -76,6 +87,28 @@ CREATE TABLE `job_depend_status` (
   PRIMARY KEY (`jobId`,`preJobId`,`preTaskId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='job依赖状态表';
 
+-- Create syntax for TABLE 'plan'
+CREATE TABLE `plan` (
+  `planId` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '计划ID',
+  `planDate` date NOT NULL COMMENT '计划日期',
+  `jobId` int(11) unsigned NOT NULL COMMENT 'jobId',
+  `createTime` datetime NOT NULL COMMENT '创建时间',
+  `updateTime` datetime NOT NULL COMMENT '最后更新时间',
+  PRIMARY KEY (`planId`),
+  KEY `index_createTime` (`createTime`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='计划表';
+
+-- Create syntax for TABLE 'plan_depend_status'
+CREATE TABLE `plan_depend_status` (
+  `planId` bigint(11) unsigned NOT NULL DEFAULT '0' COMMENT 'planId',
+  `prePlanId` bigint(11) unsigned NOT NULL DEFAULT '0' COMMENT '前置planId',
+  `preTaskId` bigint(11) unsigned NOT NULL DEFAULT '0' COMMENT '前置TaskId',
+  `preTaskStatus` int(3) unsigned NOT NULL DEFAULT '1' COMMENT '前置Task状态：0无效；1有效',
+  `createTime` datetime NOT NULL COMMENT '创建时间',
+  `updateTime` datetime NOT NULL COMMENT '最后更新时间',
+  PRIMARY KEY (`planId`,`prePlanId`,`preTaskId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='plan依赖状态表';
+
 -- Create syntax for TABLE 'task'
 CREATE TABLE `task` (
   `taskId` bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'taskId',
@@ -83,9 +116,10 @@ CREATE TABLE `task` (
   `jobId` bigint(11) unsigned NOT NULL DEFAULT '0' COMMENT '所属JobID',
   `jobContent` varchar(10000) NOT NULL DEFAULT '' COMMENT '任务内容',
   `jobParams` varchar(2048) DEFAULT '' COMMENT '任务参数',
-  `dataYmd` date DEFAULT NULL COMMENT '数据日期',
+  `scheduleTime` datetime DEFAULT NULL COMMENT '调度时间',
   `progress` float NOT NULL DEFAULT '0' COMMENT '执行进度',
   `status` int(3) unsigned NOT NULL DEFAULT '1' COMMENT 'task状态： 1:waiting；2:ready；3:running；4:success；5:failed；6:killed',
+  `workerId` int(11) DEFAULT NULL COMMENT 'workerId',
   `executeUser` varchar(32) NOT NULL DEFAULT '' COMMENT '执行用户',
   `executeStartTime` datetime DEFAULT NULL COMMENT '执行开始时间',
   `executeEndTime` datetime DEFAULT NULL COMMENT '执行结束时间',
@@ -94,7 +128,7 @@ CREATE TABLE `task` (
   `updateTime` datetime NOT NULL COMMENT '最后更新时间',
   PRIMARY KEY (`taskId`),
   KEY `index_jobId` (`jobId`),
-  KEY `index_dataYmd` (`dataYmd`),
+  KEY `index_dataYmd` (`scheduleTime`),
   KEY `index_executeStartTime` (`executeStartTime`),
   KEY `index_executeUser` (`executeUser`) KEY_BLOCK_SIZE=4
 ) ENGINE=InnoDB AUTO_INCREMENT=288 DEFAULT CHARSET=utf8 COMMENT='task表';
