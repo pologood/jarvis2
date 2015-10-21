@@ -12,15 +12,13 @@ import com.mogujie.jarvis.protocol.WorkerGroupProtos.RestServerCreateWorkerGroup
 import com.mogujie.jarvis.protocol.WorkerGroupProtos.RestServerModifyWorkerGroupRequest;
 import com.mogujie.jarvis.protocol.WorkerGroupProtos.ServerCreateWorkerGroupResponse;
 import com.mogujie.jarvis.protocol.WorkerGroupProtos.ServerModifyWorkerGroupResponse;
-import com.mogujie.jarvis.rest.MsgCode;
 import com.mogujie.jarvis.rest.RestResult;
-import com.mogujie.jarvis.rest.utils.RequestUtils;
 import org.json.JSONObject;
 
 /**
  * Created by hejian on 15/10/15.
  */
-@Path("workerGroup")
+@Path("api/workerGroup")
 public class WorkerGroupController extends AbstractController {
 
 

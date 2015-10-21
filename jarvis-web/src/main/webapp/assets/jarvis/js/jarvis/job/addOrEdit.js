@@ -228,7 +228,7 @@ function submit(){
     }
 
     var data=getData();
-    var resultFlag=requestRemoteRestApi("/job/submit","新增任务",data);
+    var resultFlag=requestRemoteRestApi("/api/job/submit","新增任务",data);
 
 }
 
@@ -254,7 +254,7 @@ function edit(){
     var jobId=$("#jobId").val();
     data["jobId"]=jobId;
 
-    var resultFlag=requestRemoteRestApi('/job/edit',"编辑任务",data);
+    var resultFlag=requestRemoteRestApi('/api/job/edit',"编辑任务",data);
 }
 
 //检查任务名是否重复

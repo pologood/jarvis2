@@ -10,15 +10,13 @@ import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
 import com.mogujie.jarvis.protocol.ModifyWorkerStatusProtos.RestServerModifyWorkerStatusRequest;
 import com.mogujie.jarvis.protocol.ModifyWorkerStatusProtos.ServerModifyWorkerStatusResponse;
-import com.mogujie.jarvis.rest.MsgCode;
 import com.mogujie.jarvis.rest.RestResult;
-import com.mogujie.jarvis.rest.utils.RequestUtils;
 import org.json.JSONObject;
 
 /**
  * Created by hejian on 15/10/15.
  */
-@Path("worker")
+@Path("api/worker")
 public class WorkerController extends AbstractController {
 
     /**

@@ -6,10 +6,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import com.mogujie.jarvis.rest.MsgCode;
-import com.mogujie.jarvis.rest.utils.RequestUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.protocol.AppAuthProtos;
@@ -24,7 +20,7 @@ import org.json.JSONObject;
 /**
  * Created by hejian on 15/10/15.
  */
-@Path("app")
+@Path("api/app")
 public class AppController extends AbstractController {
 
     /**

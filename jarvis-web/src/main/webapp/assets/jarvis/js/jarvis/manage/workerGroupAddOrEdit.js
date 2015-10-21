@@ -48,7 +48,7 @@ function addWorkerGroup(){
     }
 
     var data={name:name};
-    requestRemoteRestApi("/workerGroup/add","新增Worker Group",data);
+    requestRemoteRestApi("/api/workerGroup/add","新增Worker Group",data);
 }
 //更新worker group
 function updateWorkerGroup(){
@@ -59,7 +59,7 @@ function updateWorkerGroup(){
         return;
     }
     var data={workerGroupId:workerGroupId,name:name};
-    requestRemoteRestApi("/workerGroup/update","更新Worker Group",data);
+    requestRemoteRestApi("/api/workerGroup/update","更新Worker Group",data);
 }
 
 

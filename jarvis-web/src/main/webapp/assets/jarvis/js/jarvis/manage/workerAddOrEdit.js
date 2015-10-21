@@ -36,7 +36,7 @@ function addWorker(){
     if(flag==false){
         return ;
     }
-    requestRemoteRestApi("/worker/add","增加Worker",data);
+    requestRemoteRestApi("/api/worker/add","增加Worker",data);
 }
 
 function updateWorker(){
@@ -47,11 +47,11 @@ function updateWorker(){
     if(flag==false){
         return ;
     }
-    requestRemoteRestApi("/worker/update","更新Worker",data);
+    requestRemoteRestApi("/api/worker/update","更新Worker",data);
 }
 
 function modifyWorkerStatus(workerGroupId,status){
     var data={workerGroupId:workerGroupId,status:status}
-    requestRemoteRestApi("/worker/status","修改worker group 状态",data);
+    requestRemoteRestApi("/api/worker/status","修改worker group 状态",data);
 
 }

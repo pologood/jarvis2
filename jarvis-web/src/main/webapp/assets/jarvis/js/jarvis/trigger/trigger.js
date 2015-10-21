@@ -105,6 +105,6 @@ function submit(){
     }
     //console.log(reRunJobs);
     var data={originJobId:originJobId,appName:appName,appKey:appKey,startTime:startTime,endTime:endTime,reRunJobs:JSON.stringify(reRunJobs)};
-    requestRemoteRestApi("/job/rerun","重跑任务",data);
+    requestRemoteRestApi("/api/job/rerun","重跑任务",data);
 
 }

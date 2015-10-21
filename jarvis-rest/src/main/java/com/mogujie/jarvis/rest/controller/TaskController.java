@@ -13,7 +13,7 @@ import javax.ws.rs.core.MediaType;
 /**
  * Created by hejian on 15/10/19.
  */
-@Path("task")
+@Path("api/task")
 public class TaskController extends AbstractController {
 
 

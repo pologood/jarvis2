@@ -123,7 +123,7 @@ function initData(){
 
 function updateJobFlag(jobId,appKey,appName,jobFlag){
     var data={jobId:jobId,appKey:appKey,appName:appName,jobFlag:jobFlag,user:user};
-    requestRemoteRestApi("/job/flag","删除任务",data);
+    requestRemoteRestApi("/api/job/flag","删除任务",data);
 }
 
 

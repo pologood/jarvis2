@@ -14,7 +14,7 @@ function updateApp(){
     }
 
     var data={appId:appId,applicationName:applicationName};
-    requestRemoteRestApi("/app/update","修改应用",data);
+    requestRemoteRestApi("/api/app/update","修改应用",data);
 }
 
 function addApp(){
@@ -25,7 +25,7 @@ function addApp(){
         return;
     }
     var data={applicationName:applicationName};
-    requestRemoteRestApi("/app/add","新增应用",data);
+    requestRemoteRestApi("/api/app/add","新增应用",data);
 }
 
 

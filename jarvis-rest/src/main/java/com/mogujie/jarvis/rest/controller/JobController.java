@@ -17,8 +17,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import com.mogujie.jarvis.rest.utils.RequestUtils;
-import org.apache.logging.log4j.LogManager;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONArray;
@@ -43,7 +41,7 @@ import com.mogujie.jarvis.rest.vo.JobVo;
 /**
  * @author muming
  */
-@Path("job")
+@Path("api/job")
 public class JobController extends AbstractController {
     private DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd");
 
