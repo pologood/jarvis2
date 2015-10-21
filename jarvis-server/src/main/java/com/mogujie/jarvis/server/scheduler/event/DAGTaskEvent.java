@@ -8,6 +8,8 @@
 
 package com.mogujie.jarvis.server.scheduler.event;
 
+import com.mogujie.jarvis.server.domain.JobKey;
+
 
 /**
  * @author guangming
@@ -16,8 +18,8 @@ package com.mogujie.jarvis.server.scheduler.event;
 public abstract class DAGTaskEvent extends DAGJobEvent {
     private long taskId;
 
-    public DAGTaskEvent(long jobId, long taskId) {
-        super(jobId);
+    public DAGTaskEvent(JobKey jobKey, long taskId) {
+        super(jobKey);
         this.taskId = taskId;
     }
 

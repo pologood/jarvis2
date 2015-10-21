@@ -11,21 +11,23 @@ package com.mogujie.jarvis.core.util;
 import com.mogujie.jarvis.core.domain.IdType;
 
 /**
- * 
+ *
  *
  */
 public class IdUtils {
 
     public static long parse(String fullId, IdType type) {
-        String[] tokens = fullId.split("_", 3);
+        String[] tokens = fullId.split("_", 4);
         switch (type) {
             case JOB_ID:
                 return Long.parseLong(tokens[0]);
-            case TASK_ID:
+            case JOB_VERSION:
                 return Long.parseLong(tokens[1]);
+            case TASK_ID:
+                return Long.parseLong(tokens[2]);
             case ATTEMPT_ID:
             default:
-                return Long.parseLong(tokens[2]);
+                return Long.parseLong(tokens[3]);
         }
     }
 }

@@ -14,6 +14,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.mogujie.jarvis.server.domain.JobKey;
 import com.mogujie.jarvis.server.scheduler.dag.status.AbstractDependStatus;
 import com.mogujie.jarvis.server.scheduler.dag.status.OffsetDependStatus;
 import com.mogujie.jarvis.server.scheduler.dag.strategy.AbstractOffsetStrategy;
@@ -24,33 +25,33 @@ import com.mogujie.jarvis.server.scheduler.dag.strategy.CommonStrategy;
  *
  */
 public abstract class DAGDependChecker {
-    private long myJobId;
+    private JobKey myJobKey;
 
-    protected Map<Long, AbstractDependStatus> jobStatusMap = new ConcurrentHashMap<Long, AbstractDependStatus>();
+    protected Map<JobKey, AbstractDependStatus> jobStatusMap = new ConcurrentHashMap<JobKey, AbstractDependStatus>();
 
     public DAGDependChecker() {
     }
 
-    public DAGDependChecker(long jobId) {
-        this.myJobId = jobId;
+    public DAGDependChecker(JobKey jobKey) {
+        this.myJobKey = jobKey;
     }
 
-    public long getMyJobId() {
-        return myJobId;
+    public JobKey getMyJobKey() {
+        return myJobKey;
     }
 
-    public void setMyJobId(long myJobId) {
-        this.myJobId = myJobId;
+    public void setMyJobKey(JobKey jobKey) {
+        this.myJobKey = jobKey;
     }
 
-    public boolean check(Set<Long> needJobs) {
+    public boolean check(Set<JobKey> needJobs) {
         boolean finishDependencies = true;
-        for (long jobId : needJobs) {
-            AbstractDependStatus taskDependStatus = jobStatusMap.get(jobId);
+        for (JobKey key : needJobs) {
+            AbstractDependStatus taskDependStatus = jobStatusMap.get(key);
             if (taskDependStatus == null) {
-                taskDependStatus = getDependStatus(myJobId, jobId);
+                taskDependStatus = getDependStatus(myJobKey, key);
                 if (taskDependStatus != null) {
-                    jobStatusMap.put(jobId, taskDependStatus);
+                    jobStatusMap.put(key, taskDependStatus);
                 }
             }
             if (taskDependStatus == null || !taskDependStatus.check()) {
@@ -64,20 +65,20 @@ public abstract class DAGDependChecker {
         return finishDependencies;
     }
 
-    public void removeDependency(long jobId) {
-        AbstractDependStatus taskDependStatus = jobStatusMap.get(jobId);
+    public void removeDependency(JobKey jobKey) {
+        AbstractDependStatus taskDependStatus = jobStatusMap.get(jobKey);
         if (taskDependStatus != null) {
             taskDependStatus.reset();
-            jobStatusMap.remove(jobId);
+            jobStatusMap.remove(jobKey);
         }
     }
 
-    public void setDependStatus(long jobId, long taskId) {
-        AbstractDependStatus taskDependStatus = jobStatusMap.get(jobId);
+    public void setDependStatus(JobKey jobKey, long taskId) {
+        AbstractDependStatus taskDependStatus = jobStatusMap.get(jobKey);
         if (taskDependStatus == null) {
-            taskDependStatus = getDependStatus(myJobId, jobId);
+            taskDependStatus = getDependStatus(myJobKey, jobKey);
             if (taskDependStatus != null) {
-                jobStatusMap.put(jobId, taskDependStatus);
+                jobStatusMap.put(jobKey, taskDependStatus);
             }
         }
 
@@ -86,12 +87,12 @@ public abstract class DAGDependChecker {
         }
     }
 
-    public void resetDependStatus(long jobId, long taskId) {
-        AbstractDependStatus taskDependStatus = jobStatusMap.get(jobId);
+    public void resetDependStatus(JobKey jobKey, long taskId) {
+        AbstractDependStatus taskDependStatus = jobStatusMap.get(jobKey);
         if (taskDependStatus == null) {
-            taskDependStatus = getDependStatus(myJobId, jobId);
+            taskDependStatus = getDependStatus(myJobKey, jobKey);
             if (taskDependStatus != null) {
-                jobStatusMap.put(jobId, taskDependStatus);
+                jobStatusMap.put(jobKey, taskDependStatus);
             }
         }
 
@@ -106,31 +107,31 @@ public abstract class DAGDependChecker {
         }
     }
 
-    public void updateCommonStrategy(long parentId, CommonStrategy newStrategy) {
-        AbstractDependStatus status = jobStatusMap.get(parentId);
+    public void updateCommonStrategy(JobKey parentKey, CommonStrategy newStrategy) {
+        AbstractDependStatus status = jobStatusMap.get(parentKey);
         if (status != null) {
             status.setCommonStrategy(newStrategy);
         }
     }
 
-    public void updateOffsetStrategy(long parentId, AbstractOffsetStrategy newStrategy) {
-        AbstractDependStatus status = jobStatusMap.get(parentId);
+    public void updateOffsetStrategy(JobKey parentKey, AbstractOffsetStrategy newStrategy) {
+        AbstractDependStatus status = jobStatusMap.get(parentKey);
         if (status != null && status instanceof OffsetDependStatus) {
             ((OffsetDependStatus) status).setOffsetDependStrategy(newStrategy);
         }
     }
 
-    private void autoFix(Set<Long> needJobs) {
-        Iterator<Entry<Long, AbstractDependStatus>> it = jobStatusMap.entrySet().iterator();
+    private void autoFix(Set<JobKey> needJobs) {
+        Iterator<Entry<JobKey, AbstractDependStatus>> it = jobStatusMap.entrySet().iterator();
         while (it.hasNext()) {
-            Entry<Long, AbstractDependStatus> entry = it.next();
-            long jobId = entry.getKey();
-            if (!needJobs.contains(jobId)) {
+            Entry<JobKey, AbstractDependStatus> entry = it.next();
+            JobKey jobKey = entry.getKey();
+            if (!needJobs.contains(jobKey)) {
                 entry.getValue().reset();
                 it.remove();
             }
         }
     }
 
-    protected abstract AbstractDependStatus getDependStatus(long myJobId, long preJobId);
+    protected abstract AbstractDependStatus getDependStatus(JobKey myJobKey, JobKey preJobKey);
 }

@@ -12,6 +12,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.mogujie.jarvis.server.domain.JobKey;
 import com.mogujie.jarvis.server.scheduler.dag.strategy.CommonStrategy;
 
 /**
@@ -27,8 +28,8 @@ public abstract class RuntimeDependStatus extends AbstractDependStatus {
      * @param preJobId
      * @param commonStrategy
      */
-    public RuntimeDependStatus(long myJobId, long preJobId, CommonStrategy commonStrategy) {
-        super(myJobId, preJobId, commonStrategy);
+    public RuntimeDependStatus(JobKey myJobKey, JobKey preJobKey, CommonStrategy commonStrategy) {
+        super(myJobKey, preJobKey, commonStrategy);
     }
 
     @Override

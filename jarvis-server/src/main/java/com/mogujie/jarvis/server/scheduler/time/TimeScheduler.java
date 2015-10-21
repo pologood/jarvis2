@@ -12,7 +12,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.mogujie.jarvis.server.service.JobService;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -27,7 +26,7 @@ import com.mogujie.jarvis.dao.JobMapper;
 import com.mogujie.jarvis.dto.Crontab;
 import com.mogujie.jarvis.dto.CrontabExample;
 import com.mogujie.jarvis.dto.Job;
-import com.mogujie.jarvis.dto.JobExample;
+import com.mogujie.jarvis.server.domain.JobKey;
 import com.mogujie.jarvis.server.scheduler.CronScheduler;
 import com.mogujie.jarvis.server.scheduler.JobScheduleException;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
@@ -36,6 +35,7 @@ import com.mogujie.jarvis.server.scheduler.event.StartEvent;
 import com.mogujie.jarvis.server.scheduler.event.StopEvent;
 import com.mogujie.jarvis.server.scheduler.event.SuccessEvent;
 import com.mogujie.jarvis.server.service.CrontabService;
+import com.mogujie.jarvis.server.service.JobService;
 
 /**
  * Scheduler used to handle time based job.
@@ -130,18 +130,18 @@ public class TimeScheduler extends Scheduler {
         //TODO
     }
 
-    public void addJob(long jobId) throws JobScheduleException {
+    public void addJob(JobKey jobKey) throws JobScheduleException {
         List<Crontab> crontabs = cronService.getCronsByJobId(jobId);
         for (Crontab crontab : crontabs) {
             cronScheduler.schedule(crontab);
         }
     }
 
-    public void removeJob(long jobId) throws JobScheduleException {
+    public void removeJob(JobKey jobKey) throws JobScheduleException {
         cronScheduler.remove(jobId);
     }
 
-    public void modifyJob(long jobId) throws JobScheduleException {
+    public void modifyJob(JobKey jobKey) throws JobScheduleException {
         cronScheduler.remove(jobId);
 
         List<Crontab> crontabs = cronService.getCronsByJobId(jobId);
@@ -150,7 +150,7 @@ public class TimeScheduler extends Scheduler {
         }
     }
 
-    public void modifyJobFlag(long jobId, JobFlag jobFlag) throws JobScheduleException {
+    public void modifyJobFlag(JobKey jobKey, JobFlag jobFlag) throws JobScheduleException {
         switch (jobFlag) {
             case ENABLE:
                 List<Crontab> crontabs = cronService.getCronsByJobId(jobId);

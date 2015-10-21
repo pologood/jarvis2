@@ -8,6 +8,8 @@
 
 package com.mogujie.jarvis.server.scheduler.event;
 
+import com.mogujie.jarvis.server.domain.JobKey;
+
 /**
  * @author guangming
  *
@@ -18,8 +20,8 @@ public class RunningEvent extends DAGTaskEvent {
      * @param jobId
      * @param taskId
      */
-    public RunningEvent(long jobId, long taskId) {
-        super(jobId, taskId);
+    public RunningEvent(JobKey jobKey, long taskId) {
+        super(jobKey, taskId);
     }
 
 }

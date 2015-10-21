@@ -8,6 +8,7 @@
 
 package com.mogujie.jarvis.server.scheduler.dag.status;
 
+import com.mogujie.jarvis.server.domain.JobKey;
 import com.mogujie.jarvis.server.scheduler.dag.strategy.CommonStrategy;
 
 
@@ -17,32 +18,32 @@ import com.mogujie.jarvis.server.scheduler.dag.strategy.CommonStrategy;
  */
 public abstract class AbstractDependStatus {
 
-    private long myJobId;
-    private long preJobId;
+    private JobKey myJobKey;
+    private JobKey preJobKey;
     private CommonStrategy commonStrategy;
 
     public AbstractDependStatus() {}
 
-    public AbstractDependStatus(long myJobId, long preJobId, CommonStrategy commonStrategy) {
-        this.myJobId = myJobId;
-        this.preJobId = preJobId;
+    public AbstractDependStatus(JobKey myJobKey, JobKey preJobKey, CommonStrategy commonStrategy) {
+        this.myJobKey = myJobKey;
+        this.preJobKey = preJobKey;
         this.commonStrategy = commonStrategy;
     }
 
-    public long getMyJobId() {
-        return myJobId;
+    public JobKey getMyJobKey() {
+        return myJobKey;
     }
 
-    public void setMyjobId(long jobId) {
-        this.myJobId = jobId;
+    public void setMyJobKey(JobKey jobKey) {
+        this.myJobKey = jobKey;
     }
 
-    public long getPreJobId() {
-        return preJobId;
+    public JobKey getPreJobKey() {
+        return preJobKey;
     }
 
-    public void setPreJobId(long preJobId) {
-        this.preJobId = preJobId;
+    public void setPreJobKey(JobKey jobKey) {
+        this.preJobKey = preJobKey;
     }
 
     public CommonStrategy getCommonStrategy() {

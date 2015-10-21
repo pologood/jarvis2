@@ -8,6 +8,7 @@
 
 package com.mogujie.jarvis.server.scheduler.dag.checker;
 
+import com.mogujie.jarvis.server.domain.JobKey;
 import com.mogujie.jarvis.server.scheduler.dag.status.AbstractDependStatus;
 import com.mogujie.jarvis.server.scheduler.dag.status.DependStatusFactory;
 
@@ -18,10 +19,10 @@ import com.mogujie.jarvis.server.scheduler.dag.status.DependStatusFactory;
 public class DefaultDAGDependChecker extends DAGDependChecker {
 
     @Override
-    protected AbstractDependStatus getDependStatus(long myJobId, long preJobId) {
+    protected AbstractDependStatus getDependStatus(JobKey myJobKey, JobKey preJobKey) {
         AbstractDependStatus dependStatus = null;
         try {
-            dependStatus = DependStatusFactory.create(myJobId, preJobId);
+            dependStatus = DependStatusFactory.create(myJobKey, preJobKey);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e.getMessage());
         }

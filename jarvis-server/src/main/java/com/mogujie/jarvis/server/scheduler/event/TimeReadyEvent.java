@@ -8,6 +8,8 @@
 
 package com.mogujie.jarvis.server.scheduler.event;
 
+import com.mogujie.jarvis.server.domain.JobKey;
+
 /**
  * @author guangming
  *
@@ -17,8 +19,8 @@ public class TimeReadyEvent extends DAGJobEvent {
     /**
      * @param jobId
      */
-    public TimeReadyEvent(long jobId) {
-        super(jobId);
+    public TimeReadyEvent(JobKey jobKey) {
+        super(jobKey);
     }
 
 }

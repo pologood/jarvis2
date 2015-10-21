@@ -8,6 +8,7 @@
 
 package com.mogujie.jarvis.server.scheduler.dag.checker;
 
+import com.mogujie.jarvis.server.domain.JobKey;
 import com.mogujie.jarvis.server.scheduler.dag.status.AbstractDependStatus;
 import com.mogujie.jarvis.server.scheduler.dag.status.CachedDependStatus;
 import com.mogujie.jarvis.server.scheduler.dag.strategy.CommonStrategy;
@@ -21,7 +22,7 @@ import com.mogujie.jarvis.server.scheduler.dag.strategy.CommonStrategy;
 public class DummyDAGDependChecker extends DAGDependChecker {
 
     @Override
-    protected AbstractDependStatus getDependStatus(long myJobId, long preJobId) {
-        return new CachedDependStatus(myJobId, preJobId, CommonStrategy.ALL);
+    protected AbstractDependStatus getDependStatus(JobKey myJobKey, JobKey preJobKey) {
+        return new CachedDependStatus(myJobKey, preJobKey, CommonStrategy.ALL);
     }
 }

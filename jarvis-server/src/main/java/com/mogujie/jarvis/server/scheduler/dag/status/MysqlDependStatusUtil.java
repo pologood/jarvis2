@@ -14,9 +14,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.joda.time.DateTime;
+
 import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.dto.JobDependStatus;
 import com.mogujie.jarvis.dto.JobDependStatusKey;
+import com.mogujie.jarvis.server.domain.JobKey;
 import com.mogujie.jarvis.server.service.DependStatusService;
 
 /**
@@ -25,9 +28,9 @@ import com.mogujie.jarvis.server.service.DependStatusService;
  */
 public class MysqlDependStatusUtil {
     public static Map<Long, Boolean> getTaskStatusMapFromDb(DependStatusService statusService,
-            long myJobId, long preJobId) {
+            JobKey myJobKey, JobKey preJobKey) {
         Map<Long, Boolean> taskStatusMap = new ConcurrentHashMap<Long, Boolean>();
-        List<JobDependStatus> taskDependStatusList = statusService.getRecordsByPreJobId(myJobId, preJobId);
+        List<JobDependStatus> taskDependStatusList = statusService.getRecordsByPreJobKey(myJobKey, preJobKey);
         for (JobDependStatus dependStatus : taskDependStatusList) {
             boolean status = (dependStatus.getPreTaskStatus() == JobStatus.SUCCESS.getValue()) ? true : false;
             taskStatusMap.put(dependStatus.getPreTaskId(), status);
@@ -35,31 +38,29 @@ public class MysqlDependStatusUtil {
         return taskStatusMap;
     }
 
-    public static JobDependStatus createDependStatus(Long myJobId, long jobId, long taskId, boolean status) {
-        JobStatus jobStatus = status ? JobStatus.SUCCESS : JobStatus.FAILED;
-        JobDependStatus jobDependStatus = new JobDependStatus();
-        jobDependStatus.setJobId(myJobId);
-        jobDependStatus.setPreJobId(jobId);
-        jobDependStatus.setPreTaskId(taskId);
-        jobDependStatus.setPreTaskStatus(jobStatus.getValue());
-
-        return jobDependStatus;
-    }
-
-    public static void modifyDependStatus(long myJobId, long preJobId, long preTaskId,
+    public static void modifyDependStatus(JobKey myJobKey, JobKey preJobKey, long preTaskId,
             boolean status, DependStatusService statusService) {
-        JobDependStatus record = createDependStatus(myJobId, preJobId, preTaskId, status);
         JobDependStatusKey key = new JobDependStatusKey();
-        key.setJobId(myJobId);
-        key.setPreJobId(preJobId);
+        key.setJobId(myJobKey.getJobId());
+        key.setJobVersion(myJobKey.getVersion());
+        key.setPreJobId(preJobKey.getJobId());
+        key.setPreJobVersion(preJobKey.getVersion());
         key.setPreTaskId(preTaskId);
-        if (statusService.getByKey(key) != null) {
-            Date currentTime = new Date();
-            DateFormat dateTimeFormat = DateFormat.getDateTimeInstance();
-            dateTimeFormat.format(currentTime);
+        JobDependStatus record = statusService.getByKey(key);
+        if (record != null) {
+            DateTime dt = DateTime.now();
+            Date currentTime = dt.toDate();
             record.setUpdateTime(currentTime);
             statusService.update(record);
         } else {
+            JobStatus jobStatus = status ? JobStatus.SUCCESS : JobStatus.FAILED;
+            record = new JobDependStatus();
+            record.setJobId(myJobKey.getJobId());
+            record.setJobVersion(myJobKey.getVersion());
+            record.setPreJobId(preJobKey.getJobId());
+            record.setPreJobVersion(preJobKey.getVersion());
+            record.setPreTaskId(preTaskId);
+            record.setPreTaskStatus(jobStatus.getValue());
             Date currentTime = new Date();
             DateFormat dateTimeFormat = DateFormat.getDateTimeInstance();
             dateTimeFormat.format(currentTime);

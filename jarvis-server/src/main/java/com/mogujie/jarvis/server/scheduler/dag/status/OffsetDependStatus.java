@@ -8,6 +8,7 @@
 
 package com.mogujie.jarvis.server.scheduler.dag.status;
 
+import com.mogujie.jarvis.server.domain.JobKey;
 import com.mogujie.jarvis.server.scheduler.dag.strategy.AbstractOffsetStrategy;
 import com.mogujie.jarvis.server.scheduler.dag.strategy.CommonStrategy;
 
@@ -20,16 +21,16 @@ public class OffsetDependStatus extends AbstractDependStatus {
     private AbstractOffsetStrategy offsetDependStrategy;
     private int offset;
 
-    public OffsetDependStatus(long myJobId, long preJobId, CommonStrategy commonStrategy,
+    public OffsetDependStatus(JobKey myJobKey, JobKey preJobKey, CommonStrategy commonStrategy,
             AbstractOffsetStrategy offsetDependStrategy, int offset) {
-        super(myJobId, preJobId, commonStrategy);
+        super(myJobKey, preJobKey, commonStrategy);
         this.offsetDependStrategy = offsetDependStrategy;
         this.offset = offset;
     }
 
     @Override
     public boolean check() {
-        return offsetDependStrategy.check(getPreJobId(), offset, getCommonStrategy());
+        return offsetDependStrategy.check(getPreJobKey().getJobId(), offset, getCommonStrategy());
     }
 
     public int getOffset() {

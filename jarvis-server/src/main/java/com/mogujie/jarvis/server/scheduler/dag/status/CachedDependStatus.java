@@ -11,6 +11,7 @@ package com.mogujie.jarvis.server.scheduler.dag.status;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.mogujie.jarvis.server.domain.JobKey;
 import com.mogujie.jarvis.server.scheduler.dag.strategy.CommonStrategy;
 
 /**
@@ -30,8 +31,8 @@ public class CachedDependStatus extends RuntimeDependStatus {
      * @param preJobId
      * @param commonStrategy
      */
-    public CachedDependStatus(long myJobId, long preJobId, CommonStrategy commonStrategy) {
-        super(myJobId, preJobId, commonStrategy);
+    public CachedDependStatus(JobKey myJobKey, JobKey preJobKey, CommonStrategy commonStrategy) {
+        super(myJobKey, preJobKey, commonStrategy);
     }
 
     @Override

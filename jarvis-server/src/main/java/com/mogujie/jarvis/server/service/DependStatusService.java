@@ -17,6 +17,7 @@ import com.mogujie.jarvis.dao.JobDependStatusMapper;
 import com.mogujie.jarvis.dto.JobDependStatus;
 import com.mogujie.jarvis.dto.JobDependStatusExample;
 import com.mogujie.jarvis.dto.JobDependStatusKey;
+import com.mogujie.jarvis.server.domain.JobKey;
 
 /**
  * @author guangming
@@ -39,27 +40,39 @@ public class DependStatusService {
         dependStatusMapper.updateByPrimaryKey(record);
     }
 
-    public void clearMyStatus(long myJobId) {
+    public void clearMyStatusByJobId(long myJobId) {
         JobDependStatusExample example = new JobDependStatusExample();
         example.createCriteria().andJobIdEqualTo(myJobId);
         dependStatusMapper.deleteByExample(example);
     }
 
-    public void clearPreStatus(long myJobId, long preJobId) {
+    public void clearMyStatusByJobKey(JobKey myJobKey) {
         JobDependStatusExample example = new JobDependStatusExample();
-        example.createCriteria().andJobIdEqualTo(myJobId).andPreJobIdEqualTo(preJobId);
+        example.createCriteria().andJobIdEqualTo(myJobKey.getJobId()).andJobVersionEqualTo(myJobKey.getVersion());
         dependStatusMapper.deleteByExample(example);
     }
 
-    public List<JobDependStatus> getRecordsByMyJobId(long myJobId) {
+    public void clearPreStatus(JobKey myJobKey, JobKey preJobKey) {
         JobDependStatusExample example = new JobDependStatusExample();
-        example.createCriteria().andJobIdEqualTo(myJobId);
+        example.createCriteria().andJobIdEqualTo(myJobKey.getJobId())
+            .andJobVersionEqualTo(myJobKey.getVersion())
+            .andPreJobIdEqualTo(preJobKey.getJobId())
+            .andPreJobVersionEqualTo(preJobKey.getVersion());
+        dependStatusMapper.deleteByExample(example);
+    }
+
+    public List<JobDependStatus> getRecordsByMyJobKey(JobKey myJobKey) {
+        JobDependStatusExample example = new JobDependStatusExample();
+        example.createCriteria().andJobIdEqualTo(myJobKey.getJobId()).andJobVersionEqualTo(myJobKey.getVersion());
         return dependStatusMapper.selectByExample(example);
     }
 
-    public List<JobDependStatus> getRecordsByPreJobId(long myJobId, long preJobId) {
+    public List<JobDependStatus> getRecordsByPreJobKey(JobKey myJobKey, JobKey preJobKey) {
         JobDependStatusExample example = new JobDependStatusExample();
-        example.createCriteria().andJobIdEqualTo(myJobId).andPreJobIdEqualTo(preJobId);
+        example.createCriteria().andJobIdEqualTo(myJobKey.getJobId())
+            .andJobVersionEqualTo(myJobKey.getVersion())
+            .andPreJobIdEqualTo(preJobKey.getJobId())
+            .andPreJobVersionEqualTo(preJobKey.getVersion());
         return dependStatusMapper.selectByExample(example);
     }
 }
