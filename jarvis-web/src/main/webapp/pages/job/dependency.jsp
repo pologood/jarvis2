@@ -7,7 +7,7 @@
     <jsp:param name="platform" value="${platform}"/>
     <jsp:param name="platforms" value="${platforms}"/>
 </jsp:include>
-
+<link type="text/css" rel="stylesheet" href="/assets/jarvis/plugins/d3/d3-collapsible-tree.css" />
 
 <div class="container">
 
@@ -25,17 +25,7 @@
 
     <hr>
 
-    <div class="row">
-        <div class="col-md-12">
-            <div id="dependTree" style="width:100%;min-height:500px"></div>
-
-        </div>
-    </div>
-
-
-
-
-
+    <div id="dependTree"></div>
 </div>
 
 
@@ -47,10 +37,11 @@
 <jsp:include page="../common/footer.jsp">
     <jsp:param name="menuMap" value="${menuMap}"/>
 </jsp:include>
+
 <script type="text/javascript">
     var jobVo=${jobVo};
-
 </script>
+<script type="text/javascript" src="/assets/jarvis/plugins/d3/concept-graph.js" charset="UTF-8"></script>
 
 <script type="text/javascript" src="/assets/jarvis/js/jarvis/job/dependency.js"></script>
 

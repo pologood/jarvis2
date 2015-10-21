@@ -30,6 +30,9 @@ public class JobAPIController {
         return jobJson;
     }
 
+    /**
+     * 单向依赖树
+     * */
     @RequestMapping("/getTreeDependedONJob")
     @ResponseBody
     public JSONObject getTreeDependedONJob(JobSearchVo jobSearchVo){
@@ -38,4 +41,18 @@ public class JobAPIController {
 
         return jobJson;
     }
+
+    /**
+     * 两向树
+     * */
+    @RequestMapping("/getTwoDirectionTree")
+    @ResponseBody
+    public JSONObject getTwoDirectionTree(JobSearchVo jobSearchVo){
+
+        JSONObject jobJson=jobDependService.getTwoDirectionTreeDependedOnJob(jobSearchVo);
+
+        return jobJson;
+    }
+
+
 }

@@ -11,9 +11,13 @@ import java.util.List;
 public class JobDependVo {
     private Long id;
     private String text;
+    private String name;
+    private Long value;
     private String appName;
     private String appKey;
     private List<JobDependVo> children;
+    private List<JobDependVo> parents;
+    private boolean parentFlag=false;
     private JSONObject state;
 
     public List<JobDependVo> getChildren() {
@@ -62,5 +66,37 @@ public class JobDependVo {
 
     public void setAppKey(String appKey) {
         this.appKey = appKey;
+    }
+
+    public List<JobDependVo> getParents() {
+        return parents;
+    }
+
+    public void setParents(List<JobDependVo> parents) {
+        this.parents = parents;
+    }
+
+    public boolean isParentFlag() {
+        return parentFlag;
+    }
+
+    public void setParentFlag(boolean parentFlag) {
+        this.parentFlag = parentFlag;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Long getValue() {
+        return value;
+    }
+
+    public void setValue(Long value) {
+        this.value = value;
     }
 }
