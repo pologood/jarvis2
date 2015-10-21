@@ -62,6 +62,8 @@ public class JobController extends AbstractController {
                              @FormParam("parameters") String parameters) {
         LOGGER.info("提交job任务");
         try {
+            AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
+
             JSONObject para=new JSONObject(parameters);
 
             Long jobId = para.getLong("jobId");
@@ -89,6 +91,7 @@ public class JobController extends AbstractController {
                 for (Object key : dependIdsJson.keySet()) {
                     // String value = dependIdsJson.getString((String) key);
                     DependencyEntry entry = DependencyEntry.newBuilder().setJobId(Integer.parseInt((String) key)).build();
+                    dependEntryList.add(entry);
                 }
             }
 
@@ -112,8 +115,6 @@ public class JobController extends AbstractController {
             if (endTime != null && !endTime.equals("")) {
                 endTimeLong = dateTimeFormatter.parseDateTime(endTime).getMillis();
             }
-
-            AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
             // 构造新增任务请求
             RestServerSubmitJobRequest.Builder builder = RestServerSubmitJobRequest.newBuilder().setAppAuth(appAuth).setJobName(jobName)
@@ -162,6 +163,8 @@ public class JobController extends AbstractController {
                            @FormParam("parameters") String parameters) {
 
         try {
+            AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
+
             LOGGER.info("更新job任务");
 
             JSONObject para=new JSONObject(parameters);
@@ -224,8 +227,6 @@ public class JobController extends AbstractController {
                 endTimeLong = dateTimeFormatter.parseDateTime(endTime).getMillis();
             }
 
-            AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
-
             // 构造修改job基本信息请求
             RestServerModifyJobRequest request = null;
             RestServerModifyJobRequest.Builder builder = RestServerModifyJobRequest.newBuilder().setAppAuth(appAuth).setJobName(jobName)
@@ -284,13 +285,14 @@ public class JobController extends AbstractController {
                            @FormParam("user") String user,
                            @FormParam("parameters") String parameters){
         try {
+            AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
+
+
             JSONObject para=new JSONObject(parameters);
 
             Long jobId=para.getLong("jobId");
             Integer jobFlag=para.getInt("jobFlag");
 
-
-            AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
             // 构造删除job请求request，1.启用2.禁用3.过期4.垃圾箱
             RestServerModifyJobFlagRequest request = RestServerModifyJobFlagRequest.newBuilder().setJobId(jobId).setUser(user).setJobFlag(jobFlag)
                     .setAppAuth(appAuth).build();
@@ -327,6 +329,9 @@ public class JobController extends AbstractController {
                             @FormParam("user") String user,
                             @FormParam("parameters") String parameters) {
         try {
+            AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
+
+
             JSONObject para=new JSONObject(parameters);
 
             Long originJobId=para.getLong("originJobId");
@@ -334,7 +339,6 @@ public class JobController extends AbstractController {
             String endTime=para.getString("endTime");
             String reRunJobs=para.getString("reRunJobs");
 
-            AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
             JSONArray reRunJobArr = new JSONArray(reRunJobs);
 
             Long startTimeLong = null;

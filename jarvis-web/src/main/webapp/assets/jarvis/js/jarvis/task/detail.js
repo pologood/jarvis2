@@ -81,6 +81,10 @@ function initLog(){
     data["taskId"]=taskId;
     data["offset"]=0;
     data["lines"]=20;
-    requestRemoteRestApi('/log/result',"日志",data);
+    var result=requestRemoteRestApi('/log/result',"日志",data);
+
+    if(result.flag==true){
+        $("#errorLog").text("");
+    }
 }
 

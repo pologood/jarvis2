@@ -38,12 +38,10 @@ public class AppController extends AbstractController {
                           @FormParam("appName") String appName,
                           @FormParam("parameters") String parameters) {
         try {
-            JSONObject para=new JSONObject(parameters);
-
-            String applicationName=para.getString("applicationName");
-
-
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
+
+            JSONObject para=new JSONObject(parameters);
+            String applicationName=para.getString("applicationName");
 
             RestServerCreateApplicationRequest request = RestServerCreateApplicationRequest.newBuilder().setAppName(applicationName)
                     .setAppAuth(appAuth).build();
@@ -72,14 +70,14 @@ public class AppController extends AbstractController {
                              @FormParam("appToken") String appToken,
                              @FormParam("parameters") String parameters) {
         try {
+            AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
+
             JSONObject para=new JSONObject(parameters);
 
             String applicationName=para.getString("applicationName");
             Integer appId=para.getInt("appId");
             Integer status=para.getInt("status");
 
-
-            AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
             RestServerModifyApplicationRequest request = RestServerModifyApplicationRequest.newBuilder().setAppAuth(appAuth)
                     .setAppName(applicationName).setStatus(status).build();
             ServerModifyApplicationResponse response = (ServerModifyApplicationResponse) callActor(AkkaType.SERVER, request);
@@ -106,12 +104,15 @@ public class AppController extends AbstractController {
                              @FormParam("appToken") String appToken,
                              @FormParam("parameters") String parameters) {
         try {
+            AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
+
             JSONObject para=new JSONObject(parameters);
 
             String applicationName=para.getString("applicationName");
             Integer appId=para.getInt("appId");
             Integer status=para.getInt("status");
-            AppAuth appAuth = AppAuth.newBuilder().setName(applicationName).setToken(appToken).build();
+
+
 
             RestServerModifyApplicationRequest request = RestServerModifyApplicationRequest.newBuilder()
                     .setAppAuth(appAuth).setStatus(status).build();

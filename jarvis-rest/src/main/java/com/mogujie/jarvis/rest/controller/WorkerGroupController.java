@@ -36,11 +36,10 @@ public class WorkerGroupController extends AbstractController {
                           @FormParam("appToken") String appToken,
                           @FormParam("parameters") String parameters) {
         try {
-            JSONObject para=new JSONObject(parameters);
-
-
-            String name=para.getString("name");
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
+
+            JSONObject para=new JSONObject(parameters);
+            String name=para.getString("name");
 
             RestServerCreateWorkerGroupRequest request = RestServerCreateWorkerGroupRequest.newBuilder().setWorkerGroupName(name).setUser(user)
                     .setAppAuth(appAuth).build();
@@ -71,12 +70,11 @@ public class WorkerGroupController extends AbstractController {
                              @FormParam("user") String user,
                              @FormParam("parameters") String parameters) {
         try {
+            AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
+
             JSONObject para=new JSONObject(parameters);
             Integer workerGroupId=para.getInt("workerGroupId");
             String name=para.getString("name");
-
-
-            AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
             RestServerModifyWorkerGroupRequest request = RestServerModifyWorkerGroupRequest.newBuilder().setWorkerGroupId(workerGroupId)
                     .setAppAuth(appAuth).setWorkerGroupName(name).setUser(user).build();
@@ -106,12 +104,13 @@ public class WorkerGroupController extends AbstractController {
                              @FormParam("appToken") String appToken,
                              @FormParam("parameters") String parameters) {
         try {
+            AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
+
+
             JSONObject para=new JSONObject(parameters);
             Integer workerGroupId=para.getInt("workerGroupId");
             Integer status=para.getInt("status");
 
-
-            AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
             RestServerModifyWorkerGroupRequest request = RestServerModifyWorkerGroupRequest.newBuilder().setWorkerGroupId(workerGroupId)
                     .setAppAuth(appAuth).setStatus(status).build();

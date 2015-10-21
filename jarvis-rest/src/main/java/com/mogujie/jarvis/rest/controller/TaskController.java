@@ -1,5 +1,6 @@
 package com.mogujie.jarvis.rest.controller;
 
+import com.mogujie.jarvis.protocol.AppAuthProtos;
 import com.mogujie.jarvis.rest.RestResult;
 import org.json.JSONObject;
 
@@ -23,8 +24,10 @@ public class TaskController extends AbstractController {
                           @FormParam("appToken") String appToken,
                           @FormParam("appName") String appName,
                           @FormParam("parameters") String parameters){
-
         try {
+            AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
+
+
             JSONObject para=new JSONObject(parameters);
             Long jobId=para.getLong("jobId");
         } catch (Exception e) {
@@ -41,6 +44,9 @@ public class TaskController extends AbstractController {
                              @FormParam("appName") String appName,
                              @FormParam("parameters") String parameters) {
         try {
+            AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
+
+
             JSONObject para=new JSONObject(parameters);
             Long taskId=para.getLong("taskId");
         } catch (Exception e) {
@@ -57,6 +63,9 @@ public class TaskController extends AbstractController {
                            @FormParam("appName") String appName,
                            @FormParam("parameters") String parameters) {
         try {
+            AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
+
+
             JSONObject para=new JSONObject(parameters);
             Long taskId=para.getLong("taskId");
         } catch (Exception e) {

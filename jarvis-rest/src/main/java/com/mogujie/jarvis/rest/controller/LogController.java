@@ -15,9 +15,11 @@ import javax.ws.rs.core.MediaType;
 
 import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.core.domain.StreamType;
+import com.mogujie.jarvis.protocol.AppAuthProtos;
 import com.mogujie.jarvis.protocol.ReadLogProtos.LogServerReadLogResponse;
 import com.mogujie.jarvis.protocol.ReadLogProtos.RestServerReadLogRequest;
 import com.mogujie.jarvis.rest.RestResult;
+import com.mogujie.jarvis.rest.vo.LogVo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
@@ -52,6 +54,9 @@ public class LogController extends AbstractController {
                                       @FormParam("parameters") String parameters){
 
         try {
+            AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
+
+
             JSONObject para=new JSONObject(parameters);
             Long taskId=para.getLong("taskId");
             Long offset=para.getLong("offset");
@@ -95,19 +100,25 @@ public class LogController extends AbstractController {
                                   @FormParam("user") String user,
                                   @FormParam("parameters") String parameters) throws Exception {
         try {
+            AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
+
             JSONObject para=new JSONObject(parameters);
             Long taskId=para.getLong("taskId");
             Long offset=para.getLong("offset");
             Integer lines=para.getInt("lines");
+            Integer type=para.getInt("type");
 
             RestServerReadLogRequest request = RestServerReadLogRequest.newBuilder().setTaskId(taskId).setType(StreamType.STD_OUT.getValue())
-                    .setOffset(offset).setLines(lines).build();
+                    .setOffset(offset).setType(type).setAppAuth(appAuth).setLines(lines).build();
 
             LogServerReadLogResponse response = (LogServerReadLogResponse) callActor(AkkaType.LOGSTORAGE, request);
 
             if (response.getSuccess()) {
-
-                return successResult();
+                LogVo logVo=new LogVo();
+                logVo.setOffset(response.getOffset());
+                logVo.setLog(response.getLog());
+                logVo.setIsEnd(response.getIsEnd());
+                return successResult(logVo);
             } else {
                 return errorResult(response.getMessage());
             }

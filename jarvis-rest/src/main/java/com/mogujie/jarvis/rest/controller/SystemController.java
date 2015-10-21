@@ -42,12 +42,12 @@ public class SystemController extends AbstractController {
                              @FormParam("appName") String appName,
                              @FormParam("parameters") String parameters) {
         try {
-            JSONObject para=new JSONObject(parameters);
+            AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
+            JSONObject para=new JSONObject(parameters);
             Integer status=para.getInt("status");
 
             //WorkerStatus ws = (status == 1) ? WorkerStatus.ONLINE : WorkerStatus.OFFLINE;
-            AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
             RestServerUpdateSystemStatusRequest request = RestServerUpdateSystemStatusRequest.newBuilder()
                                                 .setAppAuth(appAuth).setStatus(status).build();
             ServerUpdateSystemStatusResponse response = (ServerUpdateSystemStatusResponse) callActor(AkkaType.SERVER, request);

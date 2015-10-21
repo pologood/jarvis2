@@ -15,6 +15,7 @@ function createDatetimePickerById(tagId){
 function requestRemoteRestApi(url,title,para){
     var flag=true;
     var data={};
+    var result={};
     for(var key in para){
         //var value=encodeURIComponent(para[key]);
         var value=para[key];
@@ -50,10 +51,12 @@ function requestRemoteRestApi(url,title,para){
                     styling: 'bootstrap3'
                 });
             }
+            result["data"]=data;
         }
     });
 
-    return flag;
+    result["flag"]=flag;
+    return result;
 }
 
 
