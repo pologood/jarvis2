@@ -11,7 +11,6 @@ package com.mogujie.jarvis.server.scheduler.dag;
 import java.util.Set;
 
 import com.mogujie.jarvis.core.domain.JobFlag;
-import com.mogujie.jarvis.server.domain.JobKey;
 
 
 /**
@@ -25,7 +24,7 @@ public abstract class AbstractDAGJob {
     /**
      * return true if dependency check passed. Otherwise return false.
      */
-    public abstract boolean dependCheck(Set<JobKey> needJobs);
+    public abstract boolean dependCheck(Set<Long> needJobs);
 
     public JobFlag getJobFlag() {
         return jobFlag;

@@ -28,16 +28,16 @@ public class MysqlDependStatus extends RuntimeDependStatus {
 
     @Override
     public void reset() {
-        statusService.clearPreStatus(getMyJobKey(), getPreJobKey());
+        statusService.clearPreStatus(getMyJobId(), getPreJobId());
     }
 
     @Override
     protected void modifyDependStatus(long taskId, boolean status) {
-        MysqlDependStatusUtil.modifyDependStatus(getMyJobKey(), getPreJobKey(), taskId, status, statusService);
+        MysqlDependStatusUtil.modifyDependStatus(getMyJobId(), getPreJobId(), taskId, status, statusService);
     }
 
     @Override
     protected Map<Long, Boolean> getTaskStatusMap() {
-        return MysqlDependStatusUtil.getTaskStatusMapFromDb(statusService, getMyJobKey(), getPreJobKey());
+        return MysqlDependStatusUtil.getTaskStatusMapFromDb(statusService, getMyJobId(), getPreJobId());
     }
 }

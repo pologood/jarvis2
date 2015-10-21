@@ -36,7 +36,6 @@ import com.mogujie.jarvis.dto.Job;
 import com.mogujie.jarvis.dto.Task;
 import com.mogujie.jarvis.server.TaskManager;
 import com.mogujie.jarvis.server.TaskQueue;
-import com.mogujie.jarvis.server.domain.JobKey;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
 import com.mogujie.jarvis.server.scheduler.SchedulerUtil;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
@@ -123,10 +122,7 @@ public class TaskScheduler extends Scheduler {
         List<Task> readyTasks = taskService.getTasksByStatus(JobStatus.READY);
         if (readyTasks != null) {
             for (Task task : readyTasks) {
-                DateTime dt = new DateTime(task.getScheduleTime());
-                long version = Long.parseLong(dt.toString("yyyyMMdd"));
-                JobKey jobKey = new JobKey(task.getJobId(), version);
-                DAGTask dagTask = new DAGTask(jobKey, task.getTaskId(), task.getAttemptId());
+                DAGTask dagTask = new DAGTask(task.getJobId(), task.getTaskId(), task.getAttemptId());
                 readyTable.put(task.getTaskId(), dagTask);
                 retryTask(task);
             }
@@ -136,10 +132,7 @@ public class TaskScheduler extends Scheduler {
         List<Task> runningTasks = taskService.getTasksByStatus(JobStatus.RUNNING);
         if (runningTasks != null) {
             for (Task task : runningTasks) {
-                DateTime dt = new DateTime(task.getScheduleTime());
-                long version = Long.parseLong(dt.toString("yyyyMMdd"));
-                JobKey jobKey = new JobKey(task.getJobId(), version);
-                DAGTask dagTask = new DAGTask(jobKey, task.getTaskId(), task.getAttemptId());
+                DAGTask dagTask = new DAGTask(task.getJobId(), task.getTaskId(), task.getAttemptId());
                 readyTable.put(task.getTaskId(), dagTask);
             }
         }
@@ -171,7 +164,7 @@ public class TaskScheduler extends Scheduler {
         long taskId = e.getTaskId();
         updateJobStatus(taskId, JobStatus.SUCCESS);
         readyTable.remove(taskId);
-        reduceTaskNum(e.getJobKey().getJobId());
+        reduceTaskNum(e.getJobId());
     }
 
     @Subscribe
@@ -188,7 +181,7 @@ public class TaskScheduler extends Scheduler {
         long taskId = e.getTaskId();
         updateJobStatus(taskId, JobStatus.KILLED);
         readyTable.remove(taskId);
-        reduceTaskNum(e.getJobKey().getJobId());
+        reduceTaskNum(e.getJobId());
     }
 
     @Subscribe
@@ -202,7 +195,7 @@ public class TaskScheduler extends Scheduler {
             int maxFailedAttempts = DEFAULT_MAX_FAILED_ATTEMPTS;
             int failedInterval = DEFAULT_FAILED_INTERVAL;
             if (!isTestMode) {
-                Job job = jobMapper.selectByPrimaryKey(dagTask.getJobKey().getJobId());
+                Job job = jobMapper.selectByPrimaryKey(dagTask.getJobId());
                 maxFailedAttempts = job.getFailedAttempts();
                 failedInterval = job.getFailedInterval();
             }
@@ -225,7 +218,7 @@ public class TaskScheduler extends Scheduler {
             }
         }
 
-        reduceTaskNum(e.getJobKey().getJobId());
+        reduceTaskNum(e.getJobId());
     }
 
     private void updateJobStatus(long taskId, JobStatus status) {
@@ -250,8 +243,7 @@ public class TaskScheduler extends Scheduler {
         return readyTable;
     }
 
-    public long submitJob(JobKey jobKey) {
-        long jobId = jobKey.getJobId();
+    public long submitJob(long jobId) {
         long taskId;
         if (!isTestMode) {
             Task task = createNewTask(jobId);
@@ -261,7 +253,7 @@ public class TaskScheduler extends Scheduler {
             taskId = generateTaskId();
         }
 
-        submitTask(new DAGTask(jobKey, taskId));
+        submitTask(new DAGTask(jobId, taskId));
         return taskId;
     }
 
@@ -325,10 +317,10 @@ public class TaskScheduler extends Scheduler {
     }
 
     private TaskDetail getTaskInfo(DAGTask dagTask) {
-        String fullId = dagTask.getJobKey() + "_" + dagTask.getTaskId() + "_" + dagTask.getAttemptId();
+        String fullId = dagTask.getJobId() + "_" + dagTask.getTaskId() + "_" + dagTask.getAttemptId();
         TaskDetail taskDetail = null;
         if (!isTestMode) {
-            Job job = jobMapper.selectByPrimaryKey(dagTask.getJobKey().getJobId());
+            Job job = jobMapper.selectByPrimaryKey(dagTask.getJobId());
             App app = appMapper.selectByPrimaryKey(job.getAppId());
             taskDetail = TaskDetail.newTaskDetailBuilder()
                     .setFullId(fullId)

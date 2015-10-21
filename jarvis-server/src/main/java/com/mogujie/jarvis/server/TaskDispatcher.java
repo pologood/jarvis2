@@ -16,9 +16,6 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import akka.actor.ActorSelection;
-import akka.actor.ActorSystem;
-
 import com.mogujie.jarvis.core.domain.IdType;
 import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.domain.WorkerInfo;
@@ -27,13 +24,15 @@ import com.mogujie.jarvis.core.util.IdUtils;
 import com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse;
-import com.mogujie.jarvis.server.domain.JobKey;
 import com.mogujie.jarvis.server.scheduler.controller.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.controller.SchedulerControllerFactory;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
 import com.mogujie.jarvis.server.service.AppService;
 import com.mogujie.jarvis.server.util.FutureUtils;
 import com.mogujie.jarvis.server.workerselector.WorkerSelector;
+
+import akka.actor.ActorSelection;
+import akka.actor.ActorSystem;
 
 @Repository
 public class TaskDispatcher extends Thread {
@@ -113,11 +112,9 @@ public class TaskDispatcher extends Thread {
                                                 workerInfo.getPort());
                                         int alreadyRetries = task.getAlreadyRetries();
                                         if (alreadyRetries > task.getRejectRetries()) {
-                                            String fullId = task.getFullId();
-                                            long jobId = IdUtils.parse(fullId, IdType.JOB_ID);
-                                            long jobVersion = IdUtils.parse(fullId, IdType.JOB_VERSION);
-                                            long taskId = IdUtils.parse(fullId, IdType.TASK_ID);
-                                            Event event = new FailedEvent(new JobKey(jobId, jobVersion), taskId);
+                                            long jobId = IdUtils.parse(task.getFullId(), IdType.JOB_ID);
+                                            long taskId = IdUtils.parse(task.getFullId(), IdType.TASK_ID);
+                                            Event event = new FailedEvent(jobId, taskId);
                                             schedulerController.notify(event);
                                             continue;
                                         }

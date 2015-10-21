@@ -27,17 +27,17 @@ public class MysqlCachedDependStatus extends CachedDependStatus {
     @Override
     protected void modifyDependStatus(long taskId, boolean status) {
         super.modifyDependStatus(taskId, status);
-        MysqlDependStatusUtil.modifyDependStatus(getMyJobKey(), getPreJobKey(), taskId, status, statusService);
+        MysqlDependStatusUtil.modifyDependStatus(getMyJobId(), getPreJobId(), taskId, status, statusService);
     }
 
     @Override
     public void reset() {
         super.reset();
-        statusService.clearMyStatusByJobKey(getMyJobKey());
+        statusService.clearMyStatus(getMyJobId());
     }
 
     @Override
     protected Map<Long, Boolean> loadTaskDependStatus() {
-        return MysqlDependStatusUtil.getTaskStatusMapFromDb(statusService, getMyJobKey(), getPreJobKey());
+        return MysqlDependStatusUtil.getTaskStatusMapFromDb(statusService, getMyJobId(), getPreJobId());
     }
 }

@@ -9,7 +9,6 @@
 package com.mogujie.jarvis.server.scheduler.event;
 
 import com.mogujie.jarvis.core.observer.Event;
-import com.mogujie.jarvis.server.domain.JobKey;
 
 
 /**
@@ -17,17 +16,17 @@ import com.mogujie.jarvis.server.domain.JobKey;
  *
  */
 public abstract class DAGJobEvent implements Event {
-    private JobKey jobKey;
+    private long jobId;
 
-    public DAGJobEvent(JobKey jobKey) {
-        this.jobKey = jobKey;
+    public DAGJobEvent(long jobId) {
+        this.jobId = jobId;
     }
 
-    public JobKey getJobKey() {
-        return jobKey;
+    public long getJobId() {
+        return jobId;
     }
 
-    public void setJobKey(JobKey jobKey) {
-        this.jobKey = jobKey;
+    public void setJobId(long jobId) {
+        this.jobId = jobId;
     }
 }

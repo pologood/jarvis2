@@ -8,33 +8,31 @@
 
 package com.mogujie.jarvis.server.scheduler.task;
 
-import com.mogujie.jarvis.server.domain.JobKey;
-
 /**
  * @author guangming
  *
  */
 public class DAGTask {
-    private JobKey jobKey;
+    private long jobId;
     private long taskId;
     private int attemptId;
 
-    public DAGTask(JobKey jobKey, long taskId) {
-        this(jobKey, taskId, 1);
+    public DAGTask(long jobId, long taskId) {
+        this(jobId, taskId, 1);
     }
 
-    public DAGTask(JobKey jobKey, long taskId, int attemptId) {
-        this.jobKey = jobKey;
+    public DAGTask(long jobId, long taskId, int attemptId) {
+        this.jobId = jobId;
         this.taskId = taskId;
         this.attemptId = attemptId;
     }
 
-    public JobKey getJobKey() {
-        return jobKey;
+    public long getJobId() {
+        return jobId;
     }
 
-    public void setJobKey(JobKey jobKey) {
-        this.jobKey = jobKey;
+    public void setJobId(long jobId) {
+        this.jobId = jobId;
     }
 
     public long getTaskId() {
@@ -56,7 +54,7 @@ public class DAGTask {
 
     @Override
     public String toString() {
-        return "[jobKey=" + jobKey +
+        return "[jobId=" + jobId +
                 ", taskId=" + taskId +
                 ", attemptId=" + attemptId + "]";
     }

@@ -15,21 +15,16 @@ import javax.inject.Named;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 
-import akka.actor.UntypedActor;
-
 import com.mogujie.jarvis.core.domain.ActorEntry;
-import com.mogujie.jarvis.core.domain.IdType;
 import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.core.observer.Event;
-import com.mogujie.jarvis.core.util.IdUtils;
 import com.mogujie.jarvis.dao.TaskMapper;
 import com.mogujie.jarvis.dto.Task;
 import com.mogujie.jarvis.protocol.ReportProgressProtos.ServerReportProgressResponse;
 import com.mogujie.jarvis.protocol.ReportProgressProtos.WorkerReportProgressRequest;
 import com.mogujie.jarvis.protocol.ReportStatusProtos.ServerReportStatusResponse;
 import com.mogujie.jarvis.protocol.ReportStatusProtos.WorkerReportStatusRequest;
-import com.mogujie.jarvis.server.domain.JobKey;
 import com.mogujie.jarvis.server.scheduler.controller.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.controller.SchedulerControllerFactory;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
@@ -37,6 +32,8 @@ import com.mogujie.jarvis.server.scheduler.event.KilledEvent;
 import com.mogujie.jarvis.server.scheduler.event.RunningEvent;
 import com.mogujie.jarvis.server.scheduler.event.SuccessEvent;
 import com.mogujie.jarvis.server.scheduler.event.UnhandleEvent;
+
+import akka.actor.UntypedActor;
 
 /**
  * Actor used to receive task metrics information (e.g. status, process) 1. send task status to
@@ -58,23 +55,21 @@ public class TaskMetricsActor extends UntypedActor {
     public void onReceive(Object obj) throws Exception {
         if (obj instanceof WorkerReportStatusRequest) {
             WorkerReportStatusRequest msg = (WorkerReportStatusRequest) obj;
-            // fullId = jobId_jobVersion_taskId_attemptId
             String fullId = msg.getFullId();
-            long jobId = IdUtils.parse(fullId, IdType.JOB_ID);
-            long version = IdUtils.parse(fullId, IdType.JOB_VERSION);
-            long taskId = IdUtils.parse(fullId, IdType.TASK_ID);
-            JobKey jobKey = new JobKey(jobId, version);
+            String[] idList = fullId.split("_");
+            long jobId = Long.parseLong(idList[0]);
+            long taskId = Long.parseLong(idList[1]);
 
             JobStatus status = JobStatus.getInstance(msg.getStatus());
             Event event = new UnhandleEvent();
             if (status.equals(JobStatus.SUCCESS)) {
-                event = new SuccessEvent(jobKey, taskId);
+                event = new SuccessEvent(jobId, taskId);
             } else if (status.equals(JobStatus.FAILED)) {
-                event = new FailedEvent(jobKey, taskId);
+                event = new FailedEvent(jobId, taskId);
             } else if (status.equals(JobStatus.RUNNING)) {
-                event = new RunningEvent(jobKey, taskId);
+                event = new RunningEvent(jobId, taskId);
             } else if (status.equals(JobStatus.KILLED)) {
-                event = new KilledEvent(jobKey, taskId);
+                event = new KilledEvent(jobId, taskId);
             }
             schedulerController.notify(event);
 
@@ -83,7 +78,7 @@ public class TaskMetricsActor extends UntypedActor {
         } else if (obj instanceof WorkerReportProgressRequest) {
             WorkerReportProgressRequest request = (WorkerReportProgressRequest) obj;
             String fullId = request.getFullId();
-            long taskId = Long.parseLong(fullId.split("_")[2]);
+            long taskId = Long.parseLong(fullId.split("_")[1]);
             float progress = request.getProgress();
 
             Task task = new Task();

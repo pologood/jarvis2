@@ -9,10 +9,10 @@
 package com.mogujie.jarvis.core.domain;
 
 /**
- *
+ * 
  *
  */
 public enum IdType {
 
-    JOB_ID, JOB_VERSION, TASK_ID, ATTEMPT_ID;
+    JOB_ID, TASK_ID, ATTEMPT_ID;
 }

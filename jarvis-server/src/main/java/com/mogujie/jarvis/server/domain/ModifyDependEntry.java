@@ -18,20 +18,20 @@ import com.mogujie.jarvis.server.scheduler.dag.strategy.CommonStrategy;
 public class ModifyDependEntry {
 
     private ModifyOperation operation;
-    private JobKey preJobKey;
+    private long preJobId;
     private int commonStrategy;
     private String offsetStrategy;
 
-    public ModifyDependEntry(ModifyOperation operation, JobKey preJobKey) {
+    public ModifyDependEntry(ModifyOperation operation, long preJobId) {
         this.operation = operation;
-        this.preJobKey = preJobKey;
+        this.preJobId = preJobId;
         this.commonStrategy = CommonStrategy.ALL.getValue();
     }
 
-    public ModifyDependEntry(ModifyOperation operation, JobKey preJobKey,
+    public ModifyDependEntry(ModifyOperation operation, long preJobId,
             int commonStrategy, String offsetStrategy) {
         this.operation = operation;
-        this.preJobKey = preJobKey;
+        this.preJobId = preJobId;
         this.commonStrategy = commonStrategy;
         this.offsetStrategy = offsetStrategy;
     }
@@ -44,12 +44,12 @@ public class ModifyDependEntry {
         this.operation = operation;
     }
 
-    public JobKey getPreJobKey() {
-        return preJobKey;
+    public long getPreJobId() {
+        return preJobId;
     }
 
-    public void setPreJobKey(JobKey preJobKey) {
-        this.preJobKey = preJobKey;
+    public void setPreJobId(long preJobId) {
+        this.preJobId = preJobId;
     }
 
     public int getCommonStrategy() {
