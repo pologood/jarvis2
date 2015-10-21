@@ -8,6 +8,7 @@
 package com.mogujie.jarvis.server.service;
 
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import org.joda.time.DateTime;
@@ -30,6 +31,35 @@ public class JobService {
 
     @Autowired
     private JobMapper jobMapper;
+
+    /**
+     * 获取活跃的job（状态为enable，并且不是过期的）
+     * @return
+     */
+    public List<Job> getActiveJobs() {
+
+        JobExample example = new JobExample();
+        example.createCriteria().andJobFlagEqualTo(JobFlag.ENABLE.getValue());
+        List<Job> jobs = jobMapper.selectByExample(example);
+        if(jobs == null || jobs.isEmpty()){
+            return jobs;
+        }
+
+        //移除 不在有效期的job
+        Date  now = DateTime.now().toDate();
+        Iterator<Job> iterator = jobs.iterator();
+        while(iterator.hasNext()){
+            Job job = iterator.next();
+            if((job.getActiveEndDate() != null && job.getActiveEndDate().getTime() < now.getTime())
+               || (job.getActiveStartDate() != null && job.getActiveStartDate().getTime() > now.getTime())    ){
+                iterator.remove();
+            }
+        }
+
+        return jobs;
+    }
+
+
 
     public List<Job> getNotDeletedJobs() {
         JobExample example = new JobExample();
