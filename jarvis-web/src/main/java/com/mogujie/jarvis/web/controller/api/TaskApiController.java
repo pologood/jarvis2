@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 @RequestMapping(value = "/jarvis/api/task")
-public class TaskApiController {
+public class TaskAPIController {
     @Autowired
     TaskService taskService;
 
