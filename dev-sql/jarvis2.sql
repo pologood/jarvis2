@@ -79,7 +79,9 @@ CREATE TABLE `job_depend` (
 -- Create syntax for TABLE 'job_depend_status'
 CREATE TABLE `job_depend_status` (
   `jobId` bigint(11) unsigned NOT NULL DEFAULT '0' COMMENT 'jobId',
+  `jobVersion` char(8) NOT NULL DEFAULT '' COMMENT 'jobVersion',
   `preJobId` bigint(11) unsigned NOT NULL DEFAULT '0' COMMENT '前置JobId',
+  `preJobVersion` char(8) NOT NULL DEFAULT '' COMMENT '前置jobVersion',
   `preTaskId` bigint(11) unsigned NOT NULL DEFAULT '0' COMMENT '前置TaskId',
   `preTaskStatus` int(3) unsigned NOT NULL DEFAULT '1' COMMENT '前置Task状态：0无效；1有效',
   `createTime` datetime NOT NULL COMMENT '创建时间',
@@ -89,9 +91,9 @@ CREATE TABLE `job_depend_status` (
 
 -- Create syntax for TABLE 'plan'
 CREATE TABLE `plan` (
-  `planId` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '计划ID',
-  `planDate` date NOT NULL COMMENT '计划日期',
-  `jobId` int(11) unsigned NOT NULL COMMENT 'jobId',
+  `planId` bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '计划ID',
+  `planDate` varchar(32) NOT NULL DEFAULT '' COMMENT '计划日期',
+  `jobId` bigint(11) unsigned NOT NULL COMMENT 'jobId',
   `createTime` datetime NOT NULL COMMENT '创建时间',
   `updateTime` datetime NOT NULL COMMENT '最后更新时间',
   PRIMARY KEY (`planId`),
