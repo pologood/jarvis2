@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.mogujie.jarvis.server.service.JobService;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -53,6 +54,9 @@ public class TimeScheduler extends Scheduler {
     @Autowired
     private JobMapper jobMapper;
 
+    @Autowired
+    private JobService jobService;
+
     private CronScheduler cronScheduler = new CronScheduler(getSchedulerController());
 
     @Override
@@ -60,14 +64,9 @@ public class TimeScheduler extends Scheduler {
     protected void init() {
         getSchedulerController().register(this);
 
-        CrontabExample crontabExample = new CrontabExample();
-        List<Crontab> crontabs = crontabMapper.selectByExample(crontabExample);
-
-        JobExample jobExample = new JobExample();
-        jobExample.createCriteria().andJobFlagEqualTo(JobFlag.ENABLE.getValue());
-        List<Job> enableJobs = jobMapper.selectByExample(jobExample);
+        List<Job> activeJobs = jobService.getActiveJobs();
         Set<Long> jobIds = new HashSet<>();
-        for (Job job : enableJobs) {
+        for (Job job : activeJobs) {
             Integer fixedDelay = job.getFixedDelay();
             if (fixedDelay != null ) {
                 cronScheduler.scheduleOnce(job.getJobId(), fixedDelay);
@@ -76,6 +75,8 @@ public class TimeScheduler extends Scheduler {
             }
         }
 
+        CrontabExample crontabExample = new CrontabExample();
+        List<Crontab> crontabs = crontabMapper.selectByExample(crontabExample);
         for (Crontab crontab : crontabs) {
             if (jobIds.contains(crontab.getJobId())) {
                 cronScheduler.schedule(crontab);
@@ -104,10 +105,10 @@ public class TimeScheduler extends Scheduler {
     public void handleSuccessEvent(SuccessEvent event) {
         long jobId = event.getJobId();
         Job job = jobMapper.selectByPrimaryKey(jobId);
-        Integer fiexedDelay = job.getFixedDelay();
-        if (fiexedDelay != null) {
+        Integer fixedDelay = job.getFixedDelay();
+        if (fixedDelay != null) {
             cronScheduler.remove(jobId);
-            DateTime nextScheduleTime = DateTime.now().plusSeconds(fiexedDelay);
+            DateTime nextScheduleTime = DateTime.now().plusSeconds(fixedDelay);
             int second = nextScheduleTime.getSecondOfMinute();
             int minute = nextScheduleTime.getMinuteOfHour();
             int hour = nextScheduleTime.getHourOfDay();
