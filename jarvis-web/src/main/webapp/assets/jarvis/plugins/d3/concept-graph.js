@@ -3,10 +3,12 @@ var CollapsibleTree = function(elt,w,h) {
     //属性
     var m = [20, 120, 20, 120],
         w=1140,
-        h=1000,
+        h=500,
         i = 0,
         root,
-        root2;
+        root2,
+        childrenDepth= 0,
+        parentsDepth=0;
     //初始化树
     var tree = d3.layout.tree()
         //.size([h, w]);
@@ -47,19 +49,27 @@ var CollapsibleTree = function(elt,w,h) {
                 // that.toggle(root.children[9]);
                 // that.toggle(root.children[9].children[0]);
 
-                // that.updateParents(root);
-                // that.updateChildren(root);
                 that.updateBoth(root);
+                //that.updateParents(root);
+                //that.updateChildren(root);
+
             });
         },
         updateBoth: function(source) {
-            var duration = d3.event && d3.event.altKey ? 5000 : 500;
+            var duration = d3.event && d3.event.altKey ? 5000 : 150;
 
             // Compute the new tree layout.
+
             var nodes = tree.nodes(root).reverse();
 
             // Normalize for fixed-depth.
-            nodes.forEach(function(d) { d.y = d.depth * 120; });
+            //根据树的深度设置y轴的值，即进行分层，每层固定
+            nodes.forEach(function(d) {
+                var y=d.depth * 120;
+                if(d.y==undefined|| d.y==null|| d.y>y){
+                    d.y=y;
+                }
+            });
 
             // Update the nodes…
             var node = vis.selectAll("g.node")
@@ -69,7 +79,11 @@ var CollapsibleTree = function(elt,w,h) {
             var nodeEnter = node.enter().append("svg:g")
                 .attr("class", "node")
                 .attr("transform", function(d) { return "translate(" + source.x0 + "," + source.y0 + ")"; })
-                .on("click", function(d) { that.toggle(d); that.updateBoth(d); });
+                .on("click", function(d) {
+                    console.log(d);
+                    window.location.href="/jarvis/job/dependency?jobId="+ d.id;
+                    //that.toggle(d); that.updateBoth(d);
+                });
 
             nodeEnter.append("svg:circle")
                 .attr("r", 1e-6)
@@ -96,9 +110,9 @@ var CollapsibleTree = function(elt,w,h) {
                 .attr("transform",function(d) {
                     if( d != root ) {
                         if( that.isParent(d) ) {
-                            return "rotate(45)";
+                            return "rotate(0)";
                         } else {
-                            return "rotate(45)";
+                            return "rotate(0)";
                         }
                     }
                 })
@@ -115,10 +129,18 @@ var CollapsibleTree = function(elt,w,h) {
                         return "translate(" + d.x + "," + d.y + ")";
                     }
                 });
-
+            //设置圆圈设置半径与颜色
             nodeUpdate.select("circle")
-                .attr("r", 4.5)
-                .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
+                .attr("r", 9)
+                .style("fill", function(d) {
+                    //return d._children ? "lightsteelblue" : "#4682B4";
+                    if(d.rootFlag==true){
+                        return "#EC1C1C";
+                    }
+                    else{
+                        return d.parentFlag ? "lightsteelblue" : "#4682B4";
+                    }
+                });
 
             nodeUpdate.select("text")
                 .style("fill-opacity", 1);
@@ -138,8 +160,9 @@ var CollapsibleTree = function(elt,w,h) {
 
             // Update the links…
             var link = vis.selectAll("path.link")
-                .data(tree.links_parents(nodes).concat(tree.links(nodes)), function(d) { return d.target.id; });
-
+                .data(tree.links_parents(nodes).concat(tree.links(nodes)), function(d) {
+                    return d.target.id; });
+            //console.log(link);
             // Enter any new links at the parent's previous position.
             link.enter().insert("svg:path", "g")
                 .attr("class", "link")
@@ -214,7 +237,9 @@ var CollapsibleTree = function(elt,w,h) {
                 .attr("class", "node")
                 // .attr("transform", function(d) { return "translate(" + source.y0 + "," + source.x0 + ")"; })
                 .attr("transform", function(d) { return "translate(" + source.x0 + "," + source.y0 + ")"; })
-                .on("click", function(d) { that.toggle(d); that.updateParents(d); });
+                .on("click", function(d) {
+
+                    that.toggle(d); that.updateParents(d); });
 
             nodeEnter.append("svg:circle")
                 .attr("r", 1e-6)
@@ -392,7 +417,7 @@ var CollapsibleTree = function(elt,w,h) {
             }
         },
 
-        // Toggle children.
+        // Toggle children.展开或关闭
         toggle: function(d) {
             if (d.children) {
                 d._children = d.children;
@@ -409,6 +434,7 @@ var CollapsibleTree = function(elt,w,h) {
                 d._parents = null;
             }
         },
+        //递归触发展开所有
         toggleAll: function(d) {
             if (d.children) {
                 d.children.forEach(that.toggleAll);
@@ -417,6 +443,7 @@ var CollapsibleTree = function(elt,w,h) {
             if (d.parents) {
                 d.parents.forEach(that.toggleAll);
                 that.toggle(d);
+
             }
         }
     }

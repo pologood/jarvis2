@@ -18,6 +18,7 @@ public class JobDependVo {
     private List<JobDependVo> children;
     private List<JobDependVo> parents;
     private boolean parentFlag=false;
+    private boolean rootFlag=false;
     private JSONObject state;
 
     public List<JobDependVo> getChildren() {
@@ -98,5 +99,13 @@ public class JobDependVo {
 
     public void setValue(Long value) {
         this.value = value;
+    }
+
+    public boolean isRootFlag() {
+        return rootFlag;
+    }
+
+    public void setRootFlag(boolean rootFlag) {
+        this.rootFlag = rootFlag;
     }
 }

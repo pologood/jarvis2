@@ -7,7 +7,9 @@
     <jsp:param name="platform" value="${platform}"/>
     <jsp:param name="platforms" value="${platforms}"/>
 </jsp:include>
+
 <link type="text/css" rel="stylesheet" href="/assets/jarvis/plugins/d3/d3-collapsible-tree.css" />
+
 
 <div class="container">
 
@@ -32,6 +34,7 @@
 <jsp:include page="../common/login.jsp">
     <jsp:param name="uname" value="${user.uname}"/>
 </jsp:include>
+
 
 
 <jsp:include page="../common/footer.jsp">
