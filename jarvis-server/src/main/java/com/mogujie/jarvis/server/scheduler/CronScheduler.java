@@ -42,9 +42,11 @@ public class CronScheduler {
     }
 
     public void start() {
-        schedulerThread = new SchedulerThread(crontabs, nextScheduleTimeList);
-        executor.execute(schedulerThread);
-        executor.shutdown();
+        if (schedulerThread == null) {
+            schedulerThread = new SchedulerThread(crontabs, nextScheduleTimeList);
+            executor.execute(schedulerThread);
+            executor.shutdown();
+        }
     }
 
     public void shutdown() {
@@ -68,7 +70,7 @@ public class CronScheduler {
     public void scheduleOnce(long jobId, int delaySeconds) {
         if (delaySeconds > 0) {
             DateTime dateTime = DateTime.now().plusSeconds(delaySeconds);
-            Pair<Long, DateTime> pair = new Pair<Long, DateTime>(jobId, dateTime);
+            Pair<Long, DateTime> pair = new Pair<>(jobId, dateTime);
             nextScheduleTimeList.add(pair);
         }
     }
@@ -122,7 +124,9 @@ public class CronScheduler {
                         if (crontab != null) {
                             try {
                                 DateTime nextTime = new CronExpression(crontab.getCronExpression()).getTimeAfter(DateTime.now());
-                                nextScheduleTimeList.add(new Pair<Long, DateTime>(pair.getFirst(), nextTime));
+                                if (nextTime != null) {
+                                    nextScheduleTimeList.add(new Pair<>(pair.getFirst(), nextTime));
+                                }
                             } catch (ParseException e) {
                                 LOGGER.error(e);
                             }
