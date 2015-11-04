@@ -22,6 +22,11 @@
 				identity="true" />
 		</table>
 
+        <table schema="jarvis2" tableName="app_worker_group">
+            <property name="useActualColumnNames" value="true" />
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>
+
 		<table schema="jarvis2" tableName="job">
 			<property name="useActualColumnNames" value="true" />
 			<generatedKey column="jobId" sqlStatement="MySql"
@@ -29,10 +34,6 @@
 		</table>
 
 		<table schema="jarvis2" tableName="job_depend">
-			<property name="useActualColumnNames" value="true" />
-		</table>
-
-		<table schema="jarvis2" tableName="job_depend_status">
 			<property name="useActualColumnNames" value="true" />
 		</table>
 
@@ -48,7 +49,15 @@
 				identity="true" />
 		</table>
 
-		<table schema="jarvis2" tableName="worker">
+        <table schema="jarvis2" tableName="task_depend">
+            <property name="useActualColumnNames" value="true" />
+        </table>
+
+        <table schema="jarvis2" tableName="task_schedule">
+            <property name="useActualColumnNames" value="true" />
+        </table>
+
+        <table schema="jarvis2" tableName="worker">
 			<property name="useActualColumnNames" value="true" />
 			<generatedKey column="id" sqlStatement="MySql" identity="true" />
 		</table>
@@ -56,21 +65,6 @@
 		<table schema="jarvis2" tableName="worker_group">
 			<property name="useActualColumnNames" value="true" />
 			<generatedKey column="id" sqlStatement="MySql" identity="true" />
-		</table>
-
-		<table schema="jarvis2" tableName="app_worker_group">
-			<property name="useActualColumnNames" value="true" />
-			<generatedKey column="id" sqlStatement="MySql" identity="true" />
-		</table>
-		
-		<table schema="jarvis2" tableName="plan">
-			<property name="useActualColumnNames" value="true" />
-			<generatedKey column="planId" sqlStatement="MySql" identity="true" />
-		</table>
-		
-		<table schema="jarvis2" tableName="plan_depend_status">
-			<property name="useActualColumnNames" value="true" />
-			<generatedKey column="planId" sqlStatement="MySql" identity="true" />
 		</table>
 
 	</context>

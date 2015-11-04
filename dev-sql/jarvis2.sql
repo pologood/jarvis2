@@ -33,7 +33,7 @@ CREATE TABLE `crontab` (
   `updateTime` datetime NOT NULL COMMENT '最后更新时间',
   PRIMARY KEY (`cronId`),
   KEY `index_jobId` (`jobId`)
-) ENGINE=InnoDB AUTO_INCREMENT=207 DEFAULT CHARSET=utf8 COMMENT='crontab表';
+) ENGINE=InnoDB AUTO_INCREMENT=220 DEFAULT CHARSET=utf8 COMMENT='crontab表';
 
 -- Create syntax for TABLE 'job'
 CREATE TABLE `job` (
@@ -62,7 +62,7 @@ CREATE TABLE `job` (
   KEY `index_originJobId` (`originJobId`),
   KEY `index_submitUser` (`submitUser`),
   KEY `index_createTime` (`createTime`)
-) ENGINE=InnoDB AUTO_INCREMENT=223 DEFAULT CHARSET=utf8 COMMENT='job表';
+) ENGINE=InnoDB AUTO_INCREMENT=236 DEFAULT CHARSET=utf8 COMMENT='job表';
 
 -- Create syntax for TABLE 'job_depend'
 CREATE TABLE `job_depend` (
@@ -75,41 +75,6 @@ CREATE TABLE `job_depend` (
   `updateUser` varchar(32) NOT NULL DEFAULT '' COMMENT '更新用户',
   PRIMARY KEY (`jobId`,`preJobId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='job依赖表';
-
--- Create syntax for TABLE 'job_depend_status'
-CREATE TABLE `job_depend_status` (
-  `jobId` bigint(11) unsigned NOT NULL DEFAULT '0' COMMENT 'jobId',
-  `jobVersion` char(8) NOT NULL DEFAULT '' COMMENT 'jobVersion',
-  `preJobId` bigint(11) unsigned NOT NULL DEFAULT '0' COMMENT '前置JobId',
-  `preJobVersion` char(8) NOT NULL DEFAULT '' COMMENT '前置jobVersion',
-  `preTaskId` bigint(11) unsigned NOT NULL DEFAULT '0' COMMENT '前置TaskId',
-  `preTaskStatus` int(3) unsigned NOT NULL DEFAULT '1' COMMENT '前置Task状态：0无效；1有效',
-  `createTime` datetime NOT NULL COMMENT '创建时间',
-  `updateTime` datetime NOT NULL COMMENT '最后更新时间',
-  PRIMARY KEY (`jobId`,`preJobId`,`preTaskId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='job依赖状态表';
-
--- Create syntax for TABLE 'plan'
-CREATE TABLE `plan` (
-  `planId` bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '计划ID',
-  `planDate` varchar(32) NOT NULL DEFAULT '' COMMENT '计划日期',
-  `jobId` bigint(11) unsigned NOT NULL COMMENT 'jobId',
-  `createTime` datetime NOT NULL COMMENT '创建时间',
-  `updateTime` datetime NOT NULL COMMENT '最后更新时间',
-  PRIMARY KEY (`planId`),
-  KEY `index_createTime` (`createTime`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='计划表';
-
--- Create syntax for TABLE 'plan_depend_status'
-CREATE TABLE `plan_depend_status` (
-  `planId` bigint(11) unsigned NOT NULL DEFAULT '0' COMMENT 'planId',
-  `prePlanId` bigint(11) unsigned NOT NULL DEFAULT '0' COMMENT '前置planId',
-  `preTaskId` bigint(11) unsigned NOT NULL DEFAULT '0' COMMENT '前置TaskId',
-  `preTaskStatus` int(3) unsigned NOT NULL DEFAULT '1' COMMENT '前置Task状态：0无效；1有效',
-  `createTime` datetime NOT NULL COMMENT '创建时间',
-  `updateTime` datetime NOT NULL COMMENT '最后更新时间',
-  PRIMARY KEY (`planId`,`prePlanId`,`preTaskId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='plan依赖状态表';
 
 -- Create syntax for TABLE 'task'
 CREATE TABLE `task` (
@@ -134,6 +99,24 @@ CREATE TABLE `task` (
   KEY `index_executeStartTime` (`executeStartTime`),
   KEY `index_executeUser` (`executeUser`) KEY_BLOCK_SIZE=4
 ) ENGINE=InnoDB AUTO_INCREMENT=288 DEFAULT CHARSET=utf8 COMMENT='task表';
+
+-- Create syntax for TABLE 'task_depend'
+CREATE TABLE `task_depend` (
+  `taskId` bigint(11) unsigned NOT NULL DEFAULT '0' COMMENT 'taskId',
+  `preTaskId` bigint(11) unsigned NOT NULL DEFAULT '0' COMMENT '前置taskId',
+  `createTime` datetime NOT NULL COMMENT '创建时间',
+  PRIMARY KEY (`taskId`,`preTaskId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='task依赖表';
+
+-- Create syntax for TABLE 'task_schedule'
+CREATE TABLE `task_schedule` (
+  `jobId` bigint(11) unsigned NOT NULL DEFAULT '0' COMMENT 'jobId',
+  `preJobId` bigint(11) unsigned NOT NULL DEFAULT '0' COMMENT '前置JobId',
+  `preTaskId` bigint(11) unsigned NOT NULL DEFAULT '0' COMMENT '前置TaskId',
+  `scheduleTime` bigint(11) unsigned NOT NULL DEFAULT '0' COMMENT '前置Task调度时间',
+  `createTime` datetime NOT NULL COMMENT '创建时间',
+  PRIMARY KEY (`jobId`,`preJobId`,`preTaskId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='task调度依赖表';
 
 -- Create syntax for TABLE 'worker'
 CREATE TABLE `worker` (
