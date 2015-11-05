@@ -8,11 +8,13 @@
 
 package com.mogujie.jarvis.server.scheduler.dag;
 
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.google.common.collect.Sets;
 import com.mogujie.jarvis.server.scheduler.dag.checker.DAGDependChecker;
 import com.mogujie.jarvis.server.scheduler.dag.checker.DAGDependCheckerFactory;
 
@@ -26,6 +28,7 @@ public class DAGJob extends AbstractDAGJob {
     private DAGDependChecker dependChecker;
     private DAGJobType type;
     private boolean timeReadyFlag = false;
+    private Set<Long> parents;
     private static final Logger LOGGER = LogManager.getLogger();
 
     public DAGJob() {
@@ -35,6 +38,7 @@ public class DAGJob extends AbstractDAGJob {
     public DAGJob(long jobId, DAGJobType type) {
         this.jobId = jobId;
         this.type = type;
+        this.parents = Sets.newConcurrentHashSet();
         this.dependChecker = DAGDependCheckerFactory.create();
     }
 
@@ -42,11 +46,11 @@ public class DAGJob extends AbstractDAGJob {
     public boolean dependCheck(Set<Long> needJobs) {
         boolean passCheck = true;
         if (type.implies(DAGJobType.DEPEND)) {
-            boolean dependCheck = dependChecker.check(needJobs);
+            boolean dependCheck = dependChecker.checkDependency(needJobs);
             if (!dependCheck) {
                 LOGGER.debug("dependChecker failed, job {}, needJobs {}", jobId, needJobs);
             }
-            passCheck = passCheck && dependChecker.check(needJobs);
+            passCheck = passCheck && dependCheck;
         }
 
         if (type.implies(DAGJobType.TIME)) {
@@ -59,9 +63,37 @@ public class DAGJob extends AbstractDAGJob {
         return passCheck;
     }
 
+    public boolean checkDependency(Set<Long> needJobs) {
+        boolean passCheck = true;
+        if (type.implies(DAGJobType.DEPEND)) {
+            boolean dependCheck = dependChecker.checkDependency(needJobs);
+            if (!dependCheck) {
+                LOGGER.debug("dependChecker failed, job {}, needJobs {}", jobId, needJobs);
+            }
+            passCheck = passCheck && dependCheck;
+        }
+
+        if (type.implies(DAGJobType.TIME)) {
+            if (!timeReadyFlag) {
+                LOGGER.debug("Job {} is not time ready", jobId);
+            }
+            passCheck = passCheck && timeReadyFlag;
+        }
+
+        return passCheck;
+    }
+
+    public void scheduleTask(long jobId, long taskId, long scheduleTime) {
+        dependChecker.scheduleTask(jobId, taskId, scheduleTime);
+    }
+
+    public Map<Long, Set<Long>> getDependTaskIdMap() {
+        return dependChecker.getDependTaskIdMap();
+    }
+
     @Override
     public String toString() {
-        return "{[jobid is" + jobId + "]," +
+        return "{[jobId is" + jobId + "]," +
                 "[DAG type is" + type + "]," +
                 "[depend check instance is" + dependChecker.getClass().getSimpleName() + "]}";
     }
@@ -75,16 +107,8 @@ public class DAGJob extends AbstractDAGJob {
         this.dependChecker.setMyJobId(jobId);
     }
 
-    public void setDependStatus(long jobId, long taskId) {
-        dependChecker.setDependStatus(jobId, taskId);
-    }
-
-    public void resetDependStatus(long jobId, long taskId) {
-        dependChecker.resetDependStatus(jobId, taskId);
-    }
-
-    public void resetDependStatus() {
-        dependChecker.resetAllStatus();
+    public void resetTaskSchedule() {
+        dependChecker.resetAllSchedule();
         if (type.implies(DAGJobType.TIME)) {
             resetTimeReadyFlag();
         }
@@ -96,6 +120,14 @@ public class DAGJob extends AbstractDAGJob {
 
     public void resetTimeReadyFlag() {
         timeReadyFlag = false;
+    }
+
+    public void addParent(long jobId) {
+        parents.add(jobId);
+    }
+
+    public void removeParent(long jobId) {
+        parents.remove(jobId);
     }
 
     public DAGDependChecker getDependChecker() {

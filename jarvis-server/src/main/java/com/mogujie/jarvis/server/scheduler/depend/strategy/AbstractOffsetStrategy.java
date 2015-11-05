@@ -6,7 +6,7 @@
  * Create Date: 2015年9月21日 上午11:22:11
  */
 
-package com.mogujie.jarvis.server.scheduler.dag.strategy;
+package com.mogujie.jarvis.server.scheduler.depend.strategy;
 
 import java.util.List;
 
@@ -49,5 +49,5 @@ public abstract class AbstractOffsetStrategy {
         return finishDependency;
     }
 
-    protected abstract List<Task> getOffsetTasks(long jobId, int offset);
+    public abstract List<Task> getOffsetTasks(long jobId, int offset);
 }

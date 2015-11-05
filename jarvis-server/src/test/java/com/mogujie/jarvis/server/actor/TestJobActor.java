@@ -32,7 +32,7 @@ import com.mogujie.jarvis.protocol.QueryJobRelationProtos.ServerQueryJobRelation
 import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitJobRequest;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitJobResponse;
 import com.mogujie.jarvis.server.domain.RemoveJobRequest;
-import com.mogujie.jarvis.server.scheduler.dag.strategy.CommonStrategy;
+import com.mogujie.jarvis.server.scheduler.depend.strategy.CommonStrategy;
 import com.mogujie.jarvis.server.util.SpringExtension;
 
 /**

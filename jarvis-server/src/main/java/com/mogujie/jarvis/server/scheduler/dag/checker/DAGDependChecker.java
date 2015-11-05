@@ -8,16 +8,14 @@
 
 package com.mogujie.jarvis.server.scheduler.dag.checker;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.mogujie.jarvis.server.scheduler.dag.status.AbstractDependStatus;
-import com.mogujie.jarvis.server.scheduler.dag.status.OffsetDependStatus;
-import com.mogujie.jarvis.server.scheduler.dag.strategy.AbstractOffsetStrategy;
-import com.mogujie.jarvis.server.scheduler.dag.strategy.CommonStrategy;
+import com.mogujie.jarvis.server.scheduler.depend.strategy.CommonStrategy;
 
 /**
  * @author guangming
@@ -26,7 +24,8 @@ import com.mogujie.jarvis.server.scheduler.dag.strategy.CommonStrategy;
 public abstract class DAGDependChecker {
     private long myJobId;
 
-    protected Map<Long, AbstractDependStatus> jobStatusMap = new ConcurrentHashMap<Long, AbstractDependStatus>();
+    protected Map<Long, AbstractTaskSchedule> jobScheduleMap =
+            new ConcurrentHashMap<Long, AbstractTaskSchedule>();
 
     public DAGDependChecker() {
     }
@@ -43,17 +42,40 @@ public abstract class DAGDependChecker {
         this.myJobId = myJobId;
     }
 
-    public boolean check(Set<Long> needJobs) {
+    public void removeDependency(long jobId) {
+        AbstractTaskSchedule taskSchedule = jobScheduleMap.get(jobId);
+        if (taskSchedule != null) {
+            taskSchedule.resetSchedule();
+            jobScheduleMap.remove(jobId);
+        }
+    }
+
+    public void scheduleTask(long jobId, long taskId, long scheduleTime) {
+        AbstractTaskSchedule taskSchedule = jobScheduleMap.get(jobId);
+
+        if (taskSchedule == null) {
+            taskSchedule = getDependStatus(myJobId, jobId);
+            if (taskSchedule != null) {
+                jobScheduleMap.put(jobId, taskSchedule);
+            }
+        }
+
+        if (taskSchedule != null) {
+            taskSchedule.scheduleTask(taskId, scheduleTime);
+        }
+    }
+
+    public boolean checkDependency(Set<Long> needJobs) {
         boolean finishDependencies = true;
         for (long jobId : needJobs) {
-            AbstractDependStatus taskDependStatus = jobStatusMap.get(jobId);
-            if (taskDependStatus == null) {
-                taskDependStatus = getDependStatus(myJobId, jobId);
-                if (taskDependStatus != null) {
-                    jobStatusMap.put(jobId, taskDependStatus);
+            AbstractTaskSchedule taskSchedule = jobScheduleMap.get(jobId);
+            if (taskSchedule == null) {
+                taskSchedule = getDependStatus(myJobId, jobId);
+                if (taskSchedule != null) {
+                    jobScheduleMap.put(jobId, taskSchedule);
                 }
             }
-            if (taskDependStatus == null || !taskDependStatus.check()) {
+            if (taskSchedule == null || !taskSchedule.check()) {
                 finishDependencies = false;
                 break;
             }
@@ -64,73 +86,38 @@ public abstract class DAGDependChecker {
         return finishDependencies;
     }
 
-    public void removeDependency(long jobId) {
-        AbstractDependStatus taskDependStatus = jobStatusMap.get(jobId);
-        if (taskDependStatus != null) {
-            taskDependStatus.reset();
-            jobStatusMap.remove(jobId);
+    public Map<Long, Set<Long>> getDependTaskIdMap() {
+        Map<Long, Set<Long>> dependTaskMap = new HashMap<Long, Set<Long>>();
+        for (Entry<Long, AbstractTaskSchedule> entry : jobScheduleMap.entrySet()) {
+            dependTaskMap.put(entry.getKey(), entry.getValue().getSchedulingTaskIds());
         }
+        return dependTaskMap;
     }
 
-    public void setDependStatus(long jobId, long taskId) {
-        AbstractDependStatus taskDependStatus = jobStatusMap.get(jobId);
-        if (taskDependStatus == null) {
-            taskDependStatus = getDependStatus(myJobId, jobId);
-            if (taskDependStatus != null) {
-                jobStatusMap.put(jobId, taskDependStatus);
-            }
-        }
-
-        if (taskDependStatus != null) {
-            taskDependStatus.setDependStatus(taskId);
-        }
-    }
-
-    public void resetDependStatus(long jobId, long taskId) {
-        AbstractDependStatus taskDependStatus = jobStatusMap.get(jobId);
-        if (taskDependStatus == null) {
-            taskDependStatus = getDependStatus(myJobId, jobId);
-            if (taskDependStatus != null) {
-                jobStatusMap.put(jobId, taskDependStatus);
-            }
-        }
-
-        if (taskDependStatus != null) {
-            taskDependStatus.resetDependStatus(taskId);
-        }
-    }
-
-    public void resetAllStatus() {
-        for (AbstractDependStatus taskDependStatus : jobStatusMap.values()) {
-            taskDependStatus.reset();
+    public void resetAllSchedule() {
+        for (AbstractTaskSchedule taskSchedule : jobScheduleMap.values()) {
+            taskSchedule.resetSchedule();
         }
     }
 
     public void updateCommonStrategy(long parentId, CommonStrategy newStrategy) {
-        AbstractDependStatus status = jobStatusMap.get(parentId);
+        AbstractTaskSchedule status = jobScheduleMap.get(parentId);
         if (status != null) {
             status.setCommonStrategy(newStrategy);
         }
     }
 
-    public void updateOffsetStrategy(long parentId, AbstractOffsetStrategy newStrategy) {
-        AbstractDependStatus status = jobStatusMap.get(parentId);
-        if (status != null && status instanceof OffsetDependStatus) {
-            ((OffsetDependStatus) status).setOffsetDependStrategy(newStrategy);
-        }
-    }
-
     private void autoFix(Set<Long> needJobs) {
-        Iterator<Entry<Long, AbstractDependStatus>> it = jobStatusMap.entrySet().iterator();
+        Iterator<Entry<Long, AbstractTaskSchedule>> it = jobScheduleMap.entrySet().iterator();
         while (it.hasNext()) {
-            Entry<Long, AbstractDependStatus> entry = it.next();
+            Entry<Long, AbstractTaskSchedule> entry = it.next();
             long jobId = entry.getKey();
             if (!needJobs.contains(jobId)) {
-                entry.getValue().reset();
+                entry.getValue().resetSchedule();
                 it.remove();
             }
         }
     }
 
-    protected abstract AbstractDependStatus getDependStatus(long myJobId, long preJobId);
+    protected abstract AbstractTaskSchedule getDependStatus(long myJobId, long preJobId);
 }

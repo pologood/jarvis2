@@ -3,27 +3,25 @@
  * Copyright (c) 2010-2015 All Rights Reserved.
  *
  * Author: guangming
- * Create Date: 2015年8月31日 上午11:49:39
+ * Create Date: 2015年11月4日 下午8:33:17
  */
 
-package com.mogujie.jarvis.server.scheduler.dag.status;
+package com.mogujie.jarvis.server.scheduler.task.checker;
 
-import com.mogujie.jarvis.server.scheduler.dag.strategy.CommonStrategy;
+import com.mogujie.jarvis.server.scheduler.depend.strategy.CommonStrategy;
+
 
 
 /**
  * @author guangming
  *
  */
-public abstract class AbstractDependStatus {
-
+public abstract class AbstractTaskStatus {
     private long myJobId;
     private long preJobId;
     private CommonStrategy commonStrategy;
 
-    public AbstractDependStatus() {}
-
-    public AbstractDependStatus(long myJobId, long preJobId, CommonStrategy commonStrategy) {
+    public AbstractTaskStatus(long myJobId, long preJobId, CommonStrategy commonStrategy) {
         this.myJobId = myJobId;
         this.preJobId = preJobId;
         this.commonStrategy = commonStrategy;
@@ -33,8 +31,8 @@ public abstract class AbstractDependStatus {
         return myJobId;
     }
 
-    public void setMyjobId(long jobId) {
-        this.myJobId = jobId;
+    public void setMyJobId(long myJobId) {
+        this.myJobId = myJobId;
     }
 
     public long getPreJobId() {
@@ -53,29 +51,5 @@ public abstract class AbstractDependStatus {
         this.commonStrategy = commonStrategy;
     }
 
-    /**
-     * init
-     */
-    public void init() {}
-
-    /**
-     * reset
-     */
-    public void reset() {}
-
-    /**
-     * check
-     */
     public abstract boolean check();
-
-    /**
-     * update ready dependency job status to true
-     */
-    public void setDependStatus(long taskId) {}
-
-    /**
-     * update ready dependency job status to false
-     */
-    public void resetDependStatus(long taskId) {}
-
 }

@@ -30,6 +30,7 @@ import com.google.common.eventbus.Subscribe;
 import com.mogujie.jarvis.core.domain.JobFlag;
 import com.mogujie.jarvis.core.domain.Pair;
 import com.mogujie.jarvis.dto.Job;
+import com.mogujie.jarvis.dto.Task;
 import com.mogujie.jarvis.server.domain.ModifyDependEntry;
 import com.mogujie.jarvis.server.domain.ModifyJobEntry;
 import com.mogujie.jarvis.server.domain.ModifyJobType;
@@ -38,19 +39,18 @@ import com.mogujie.jarvis.server.scheduler.JobScheduleException;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
 import com.mogujie.jarvis.server.scheduler.SchedulerUtil;
 import com.mogujie.jarvis.server.scheduler.dag.checker.DAGDependChecker;
-import com.mogujie.jarvis.server.scheduler.dag.strategy.AbstractOffsetStrategy;
-import com.mogujie.jarvis.server.scheduler.dag.strategy.CommonStrategy;
-import com.mogujie.jarvis.server.scheduler.dag.strategy.OffsetStrategyFactory;
-import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
+import com.mogujie.jarvis.server.scheduler.depend.strategy.CommonStrategy;
+import com.mogujie.jarvis.server.scheduler.event.AddTaskEvent;
 import com.mogujie.jarvis.server.scheduler.event.ModifyJobFlagsEvent;
+import com.mogujie.jarvis.server.scheduler.event.ScheduleEvent;
 import com.mogujie.jarvis.server.scheduler.event.StartEvent;
 import com.mogujie.jarvis.server.scheduler.event.StopEvent;
-import com.mogujie.jarvis.server.scheduler.event.SuccessEvent;
 import com.mogujie.jarvis.server.scheduler.event.TimeReadyEvent;
-import com.mogujie.jarvis.server.scheduler.task.TaskScheduler;
 import com.mogujie.jarvis.server.service.CrontabService;
 import com.mogujie.jarvis.server.service.JobDependService;
 import com.mogujie.jarvis.server.service.JobService;
+import com.mogujie.jarvis.server.service.TaskDependService;
+import com.mogujie.jarvis.server.service.TaskService;
 
 /**
  * Scheduler used to handle dependency based job.
@@ -64,13 +64,16 @@ public class DAGScheduler extends Scheduler {
     private JobService jobService;
 
     @Autowired
+    private TaskService taskService;
+
+    @Autowired
     private JobDependService jobDependService;
 
     @Autowired
     private CrontabService cronService;
 
     @Autowired
-    private TaskScheduler taskScheduler;
+    private TaskDependService taskDependService;
 
     private Map<Long, DAGJob> waitingTable = new ConcurrentHashMap<Long, DAGJob>();
     private DirectedAcyclicGraph<DAGJob, DefaultEdge> dag = new DirectedAcyclicGraph<DAGJob, DefaultEdge>(DefaultEdge.class);
@@ -162,7 +165,7 @@ public class DAGScheduler extends Scheduler {
     public void removeJob(long jobId) throws JobScheduleException {
         if (waitingTable.containsKey(jobId)) {
             DAGJob dagJob = waitingTable.get(jobId);
-            dagJob.resetDependStatus();
+            dagJob.resetTaskSchedule();
             dag.removeVertex(dagJob);
             waitingTable.remove(jobId);
             LOGGER.info("remove DAGJob {} from DAGScheduler successfully.", jobId);
@@ -308,6 +311,7 @@ public class DAGScheduler extends Scheduler {
         DAGJob child = waitingTable.get(childId);
         if (parent != null && child != null) {
             dag.addDagEdge(parent, child);
+            child.addParent(parentId);
         }
     }
 
@@ -317,6 +321,7 @@ public class DAGScheduler extends Scheduler {
         DAGJob child = waitingTable.get(childId);
         if (parent != null && child != null) {
             dag.removeEdge(parent, child);
+            child.removeParent(parentId);
         }
     }
 
@@ -327,11 +332,6 @@ public class DAGScheduler extends Scheduler {
             DAGDependChecker checker = child.getDependChecker();
             CommonStrategy commonStrategy = CommonStrategy.getInstance(commonStrategyValue);
             checker.updateCommonStrategy(parentId, commonStrategy);
-            Pair<AbstractOffsetStrategy, Integer> offsetStrategyPair = OffsetStrategyFactory.create(offsetStrategyValue);
-            if (offsetStrategyPair != null) {
-                AbstractOffsetStrategy offsetStrategy = offsetStrategyPair.getFirst();
-                checker.updateOffsetStrategy(parentId, offsetStrategy);
-            }
         }
     }
 
@@ -414,20 +414,17 @@ public class DAGScheduler extends Scheduler {
 
     @Subscribe
     @AllowConcurrentEvents
-    public void handleSuccessEvent(SuccessEvent e) {
+    public void handleScheduleEvent(ScheduleEvent e) {
         long jobId = e.getJobId();
         long taskId = e.getTaskId();
+        long scheduleTime = e.getScheduleTime();
         DAGJob dagJob = waitingTable.get(jobId);
         if (dagJob != null) {
             List<DAGJob> children = getChildren(dagJob);
             if (children != null) {
                 for (DAGJob child : children) {
-                    // 更新依赖状态为true
                     if (child.getJobFlag().equals(JobFlag.ENABLE)) {
-                        child.setDependStatus(jobId, taskId);
-                        LOGGER.debug("Receive SuccessEvent, set depend status of {} to true.",
-                                "jobId="+child.getJobId()+",preJobId="+jobId+",preTaskId="+taskId);
-                        // 如果通过依赖检查，提交给taskScheduler，并重置自己的依赖状态
+                        child.scheduleTask(jobId, taskId, scheduleTime);
                         submitJobWithCheck(child);
                     }
                 }
@@ -435,24 +432,47 @@ public class DAGScheduler extends Scheduler {
         }
     }
 
-    @Subscribe
-    @AllowConcurrentEvents
-    public void handleFailedEvent(FailedEvent e) {
-        long jobId = e.getJobId();
-        long taskId = e.getTaskId();
-        DAGJob dagJob = waitingTable.get(jobId);
-        if (dagJob != null) {
-            List<DAGJob> children = getChildren(dagJob);
-            if (children != null) {
-                for (DAGJob child : children) {
-                    // 更新依赖状态为false
-                    child.resetDependStatus(jobId, taskId);
-                    LOGGER.debug("Receive FailedEvent, reset depend status of {} to false.",
-                            "jobId="+child.getJobId()+",preJobId="+jobId+",preTaskId="+taskId);
-                }
-            }
-        }
-    }
+//    @Subscribe
+//    @AllowConcurrentEvents
+//    public void handleSuccessEvent(SuccessEvent e) {
+//        long jobId = e.getJobId();
+//        long taskId = e.getTaskId();
+//        DAGJob dagJob = waitingTable.get(jobId);
+//        if (dagJob != null) {
+//            List<DAGJob> children = getChildren(dagJob);
+//            if (children != null) {
+//                for (DAGJob child : children) {
+//                    // 更新依赖状态为true
+//                    if (child.getJobFlag().equals(JobFlag.ENABLE)) {
+//                        child.setDependStatus(jobId, taskId);
+//                        LOGGER.debug("Receive SuccessEvent, set depend status of {} to true.",
+//                                "jobId="+child.getJobId()+",preJobId="+jobId+",preTaskId="+taskId);
+//                        // 如果通过依赖检查，提交给taskScheduler，并重置自己的依赖状态
+//                        submitJobWithCheck(child);
+//                    }
+//                }
+//            }
+//        }
+//    }
+//
+//    @Subscribe
+//    @AllowConcurrentEvents
+//    public void handleFailedEvent(FailedEvent e) {
+//        long jobId = e.getJobId();
+//        long taskId = e.getTaskId();
+//        DAGJob dagJob = waitingTable.get(jobId);
+//        if (dagJob != null) {
+//            List<DAGJob> children = getChildren(dagJob);
+//            if (children != null) {
+//                for (DAGJob child : children) {
+//                    // 更新依赖状态为false
+//                    child.resetDependStatus(jobId, taskId);
+//                    LOGGER.debug("Receive FailedEvent, reset depend status of {} to false.",
+//                            "jobId="+child.getJobId()+",preJobId="+jobId+",preTaskId="+taskId);
+//                }
+//            }
+//        }
+//    }
 
     /**
      * submit job if pass the dependency check
@@ -460,22 +480,39 @@ public class DAGScheduler extends Scheduler {
      * @param dagJob
      */
     private void submitJobWithCheck(DAGJob dagJob) {
+        Set<Long> needJobs = getParentJobIds(dagJob);
+        if (dagJob.dependCheck(needJobs)) {
+            long jobId = dagJob.getJobId();
+            LOGGER.debug("DAGJob {} pass the dependency check", dagJob.getJobId());
+            // create new task
+            Task task = taskService.createTaskByJobId(jobId);
+            long taskId = task.getTaskId();
+            // create task dependency
+            Map<Long, Set<Long>> dependTaskIdMap = dagJob.getDependTaskIdMap();
+            if (dependTaskIdMap != null && !dependTaskIdMap.isEmpty()) {
+                taskDependService.createTaskDependenices(taskId, dependTaskIdMap);
+            }
+            // reset task schedule
+            dagJob.resetTaskSchedule();
+
+            // submit task to task scheduler
+            AddTaskEvent event = new AddTaskEvent(jobId, taskId, task.getScheduleTime().getTime());
+            getSchedulerController().notify(event);
+        }
+    }
+
+    private Set<Long> getParentJobIds(DAGJob dagJob) {
         List<DAGJob> parents = getParents(dagJob);
-        Set<Long> needJobs = Sets.newHashSet();
+        Set<Long> jobIds = Sets.newHashSet();
         // get enabled parents
         if (parents != null) {
             for (DAGJob parent : parents) {
                 if (parent.getJobFlag().equals(JobFlag.ENABLE)) {
-                    needJobs.add(parent.getJobId());
+                    jobIds.add(parent.getJobId());
                 }
             }
         }
-        if (dagJob.dependCheck(needJobs)) {
-            LOGGER.debug("DAGJob {} pass the depend check", dagJob.getJobId());
-            taskScheduler.submitJob(dagJob.getJobId());
-            // reset depend status
-            dagJob.resetDependStatus();
-        }
+        return jobIds;
     }
 
     private List<DAGJob> getParents(DAGJob dagJob) {

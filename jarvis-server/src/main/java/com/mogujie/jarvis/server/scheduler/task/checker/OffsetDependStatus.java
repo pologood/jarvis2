@@ -5,17 +5,16 @@
  * Author: guangming
  * Create Date: 2015年9月21日 上午11:10:47
  */
+package com.mogujie.jarvis.server.scheduler.task.checker;
 
-package com.mogujie.jarvis.server.scheduler.dag.status;
-
-import com.mogujie.jarvis.server.scheduler.dag.strategy.AbstractOffsetStrategy;
-import com.mogujie.jarvis.server.scheduler.dag.strategy.CommonStrategy;
+import com.mogujie.jarvis.server.scheduler.depend.strategy.AbstractOffsetStrategy;
+import com.mogujie.jarvis.server.scheduler.depend.strategy.CommonStrategy;
 
 /**
  * @author guangming
  *
  */
-public class OffsetDependStatus extends AbstractDependStatus {
+public class OffsetDependStatus extends AbstractTaskStatus {
 
     private AbstractOffsetStrategy offsetDependStrategy;
     private int offset;
@@ -25,11 +24,6 @@ public class OffsetDependStatus extends AbstractDependStatus {
         super(myJobId, preJobId, commonStrategy);
         this.offsetDependStrategy = offsetDependStrategy;
         this.offset = offset;
-    }
-
-    @Override
-    public boolean check() {
-        return offsetDependStrategy.check(getPreJobId(), offset, getCommonStrategy());
     }
 
     public int getOffset() {
@@ -46,5 +40,10 @@ public class OffsetDependStatus extends AbstractDependStatus {
 
     public void setOffsetDependStrategy(AbstractOffsetStrategy offsetDependStrategy) {
         this.offsetDependStrategy = offsetDependStrategy;
+    }
+
+    @Override
+    public boolean check() {
+        return offsetDependStrategy.check(getPreJobId(), offset, getCommonStrategy());
     }
 }

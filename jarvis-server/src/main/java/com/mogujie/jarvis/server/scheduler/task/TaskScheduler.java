@@ -9,13 +9,13 @@
 package com.mogujie.jarvis.server.scheduler.task;
 
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.PriorityBlockingQueue;
-import java.util.concurrent.atomic.AtomicLong;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -38,12 +38,15 @@ import com.mogujie.jarvis.server.TaskManager;
 import com.mogujie.jarvis.server.TaskQueue;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
 import com.mogujie.jarvis.server.scheduler.SchedulerUtil;
+import com.mogujie.jarvis.server.scheduler.event.AddTaskEvent;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
 import com.mogujie.jarvis.server.scheduler.event.KilledEvent;
 import com.mogujie.jarvis.server.scheduler.event.RunningEvent;
+import com.mogujie.jarvis.server.scheduler.event.ScheduleEvent;
 import com.mogujie.jarvis.server.scheduler.event.StartEvent;
 import com.mogujie.jarvis.server.scheduler.event.StopEvent;
 import com.mogujie.jarvis.server.scheduler.event.SuccessEvent;
+import com.mogujie.jarvis.server.service.TaskDependService;
 import com.mogujie.jarvis.server.service.TaskService;
 
 /**
@@ -67,12 +70,16 @@ public class TaskScheduler extends Scheduler {
     private TaskService taskService;
 
     @Autowired
+    private TaskDependService taskDependService;
+
+    @Autowired
     private TaskManager taskManager;
 
     @Autowired
     private TaskQueue taskQueue;
 
     private Map<Long, DAGTask> readyTable = new ConcurrentHashMap<>();
+    private static final Logger LOGGER = LogManager.getLogger();
 
     private PriorityBlockingQueue<FailedTask> failedQueue = new PriorityBlockingQueue<>(10,
             new Comparator<FailedTask>() {
@@ -108,8 +115,6 @@ public class TaskScheduler extends Scheduler {
 
     private boolean isTestMode = SchedulerUtil.isTestMode();
 
-    // unique taskId
-    private AtomicLong maxid = new AtomicLong(1);
     private static final int DEFAULT_MAX_FAILED_ATTEMPTS = 3;
     private static final int DEFAULT_FAILED_INTERVAL = 1000;
 
@@ -162,8 +167,21 @@ public class TaskScheduler extends Scheduler {
     @Transactional
     public void handleSuccessEvent(SuccessEvent e) {
         long taskId = e.getTaskId();
-        updateJobStatus(taskId, JobStatus.SUCCESS);
+        // update task status and remove from readyTable
+        updateTaskStatus(taskId, JobStatus.SUCCESS);
         readyTable.remove(taskId);
+
+        // notify child tasks
+        List<Long> childTasks = taskDependService.getChildTaskIds(taskId);
+        for (Long childId : childTasks) {
+            DAGTask dagTask = readyTable.get(childId);
+            if (dagTask != null && dagTask.checkStatus()) {
+                LOGGER.debug("DAGTask {} pass the status check when handle SuccessEvent", dagTask.getTaskId());
+                submitTask(dagTask);
+            }
+        }
+
+        // reduce task num
         reduceTaskNum(e.getJobId());
     }
 
@@ -171,7 +189,7 @@ public class TaskScheduler extends Scheduler {
     @AllowConcurrentEvents
     public void handleRunningEvent(RunningEvent e) {
         long taskId = e.getTaskId();
-        updateJobStatus(taskId, JobStatus.RUNNING);
+        updateTaskStatus(taskId, JobStatus.RUNNING);
     }
 
     @Subscribe
@@ -179,7 +197,7 @@ public class TaskScheduler extends Scheduler {
     @Transactional
     public void handleKilledEvent(KilledEvent e) {
         long taskId = e.getTaskId();
-        updateJobStatus(taskId, JobStatus.KILLED);
+        updateTaskStatus(taskId, JobStatus.KILLED);
         readyTable.remove(taskId);
         reduceTaskNum(e.getJobId());
     }
@@ -213,7 +231,7 @@ public class TaskScheduler extends Scheduler {
                     }
                 }
             } else {
-                updateJobStatus(e.getTaskId(), JobStatus.FAILED);
+                updateTaskStatus(e.getTaskId(), JobStatus.FAILED);
                 readyTable.remove(taskId);
             }
         }
@@ -221,7 +239,25 @@ public class TaskScheduler extends Scheduler {
         reduceTaskNum(e.getJobId());
     }
 
-    private void updateJobStatus(long taskId, JobStatus status) {
+    @Subscribe
+    public void handleAddTaskEvent(AddTaskEvent e) {
+        long jobId = e.getJobId();
+        long taskId = e.getTaskId();
+        long scheduleTime = e.getScheduleTime();
+
+        // add to readyTable
+        DAGTask dagTask = new DAGTask(jobId, taskId, scheduleTime);
+        if (!readyTable.containsKey(taskId)) {
+            readyTable.put(taskId, dagTask);
+
+            if (dagTask.checkStatus()) {
+                LOGGER.debug("DAGTask {} pass the status check when handle AddTaskEvent", dagTask.getTaskId());
+                submitTask(dagTask);
+            }
+        }
+    }
+
+    private void updateTaskStatus(long taskId, JobStatus status) {
         if (!isTestMode) {
             if (status.equals(JobStatus.RUNNING)) {
                 taskService.updateStatusWithStart(taskId, status);
@@ -235,26 +271,11 @@ public class TaskScheduler extends Scheduler {
     @VisibleForTesting
     public void clear() {
         readyTable.clear();
-        maxid.set(1);
     }
 
     @VisibleForTesting
     public Map<Long, DAGTask> getReadyTable() {
         return readyTable;
-    }
-
-    public long submitJob(long jobId) {
-        long taskId;
-        if (!isTestMode) {
-            Task task = createNewTask(jobId);
-            taskMapper.insert(task);
-            taskId = task.getTaskId();
-        } else {
-            taskId = generateTaskId();
-        }
-
-        submitTask(new DAGTask(jobId, taskId));
-        return taskId;
     }
 
     public void retryTask(long taskId) {
@@ -283,37 +304,23 @@ public class TaskScheduler extends Scheduler {
     }
 
     private void submitTask(DAGTask dagTask) {
-        // add to readyTable
-        if (!readyTable.containsKey(dagTask.getTaskId())) {
-            readyTable.put(dagTask.getTaskId(), dagTask);
-        }
-
         // submit to TaskQueue
         TaskDetail taskDetail = getTaskInfo(dagTask);
         if (taskDetail != null) {
             taskQueue.put(taskDetail);
         }
+
+        // send ScheduleEvent
+        ScheduleEvent event = new ScheduleEvent(dagTask.getJobId(), dagTask.getTaskId(),
+                dagTask.getScheduleTime());
+        getSchedulerController().notify(event);
     }
 
-    private Task createNewTask(long jobId) {
-        Job job = jobMapper.selectByPrimaryKey(jobId);
-        Task task = new Task();
-        task.setJobId(jobId);
-        task.setAttemptId(1);
-        task.setExecuteUser(job.getSubmitUser());
-        task.setJobContent(job.getContent());
-        task.setStatus(JobStatus.READY.getValue());
-        DateTime dt = DateTime.now();
-        Date currentTime = dt.toDate();
-        task.setCreateTime(currentTime);
-        task.setUpdateTime(currentTime);
-
-        return task;
-    }
-
-    // 重启的时候maxid会重置, for testing
-    private long generateTaskId() {
-        return maxid.getAndIncrement();
+    public void submitTask(long taskId) {
+        DAGTask dagTask = readyTable.get(taskId);
+        if (dagTask != null) {
+            submitTask(dagTask);
+        }
     }
 
     private TaskDetail getTaskInfo(DAGTask dagTask) {

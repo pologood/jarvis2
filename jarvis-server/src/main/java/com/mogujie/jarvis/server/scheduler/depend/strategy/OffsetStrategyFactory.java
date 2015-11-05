@@ -6,7 +6,7 @@
  * Create Date: 2015年9月23日 下午4:41:12
  */
 
-package com.mogujie.jarvis.server.scheduler.dag.strategy;
+package com.mogujie.jarvis.server.scheduler.depend.strategy;
 
 import org.apache.commons.configuration.Configuration;
 

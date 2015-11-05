@@ -15,11 +15,11 @@ import org.junit.Test;
 
 import com.mogujie.jarvis.core.domain.Pair;
 import com.mogujie.jarvis.core.util.ConfigUtils;
-import com.mogujie.jarvis.server.scheduler.dag.strategy.AbstractOffsetStrategy;
-import com.mogujie.jarvis.server.scheduler.dag.strategy.OffsetDayStrategy;
-import com.mogujie.jarvis.server.scheduler.dag.strategy.OffsetMonthStrategy;
-import com.mogujie.jarvis.server.scheduler.dag.strategy.OffsetStrategyFactory;
-import com.mogujie.jarvis.server.scheduler.dag.strategy.OffsetWeekStrategy;
+import com.mogujie.jarvis.server.scheduler.depend.strategy.AbstractOffsetStrategy;
+import com.mogujie.jarvis.server.scheduler.depend.strategy.OffsetDayStrategy;
+import com.mogujie.jarvis.server.scheduler.depend.strategy.OffsetMonthStrategy;
+import com.mogujie.jarvis.server.scheduler.depend.strategy.OffsetStrategyFactory;
+import com.mogujie.jarvis.server.scheduler.depend.strategy.OffsetWeekStrategy;
 
 /**
  * @author guangming

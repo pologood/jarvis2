@@ -6,7 +6,7 @@
  * Create Date: 2015年9月21日 上午11:23:59
  */
 
-package com.mogujie.jarvis.server.scheduler.dag.strategy;
+package com.mogujie.jarvis.server.scheduler.depend.strategy;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ import com.mogujie.jarvis.server.util.SpringContext;
 public class OffsetWeekStrategy extends AbstractOffsetStrategy {
 
     @Override
-    protected List<Task> getOffsetTasks(long jobId, int offset) {
+    public List<Task> getOffsetTasks(long jobId, int offset) {
         TaskService taskService = SpringContext.getBean(TaskService.class);
         return taskService.getTasksByOffsetWeek(jobId, offset);
     }

@@ -16,7 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mogujie.jarvis.core.domain.JobStatus;
+import com.mogujie.jarvis.dao.JobMapper;
 import com.mogujie.jarvis.dao.TaskMapper;
+import com.mogujie.jarvis.dto.Job;
 import com.mogujie.jarvis.dto.Task;
 import com.mogujie.jarvis.dto.TaskExample;
 
@@ -27,6 +29,42 @@ import com.mogujie.jarvis.dto.TaskExample;
 public class TaskService {
     @Autowired
     private TaskMapper taskMapper;
+
+    @Autowired
+    private JobMapper jobMapper;
+
+    public Task get(long taskId) {
+        return taskMapper.selectByPrimaryKey(taskId);
+    }
+
+    public List<Task> getTasks(List<Long> taskIds) {
+        TaskExample example = new TaskExample();
+        example.createCriteria().andTaskIdIn(taskIds);
+        return taskMapper.selectByExample(example);
+    }
+
+    public Task getLastTask(List<Long> taskIds) {
+        TaskExample example = new TaskExample();
+        example.createCriteria().andTaskIdIn(taskIds);
+        example.setOrderByClause("scheduleTime desc");
+        return taskMapper.selectByExample(example).get(0);
+    }
+
+    public Task createTaskByJobId(long jobId) {
+        Job job = jobMapper.selectByPrimaryKey(jobId);
+        Task record = new Task();
+        record.setJobId(jobId);
+        record.setAttemptId(1);
+        record.setExecuteUser(job.getSubmitUser());
+        record.setContent(job.getContent());
+        record.setStatus(JobStatus.READY.getValue());
+        DateTime dt = DateTime.now();
+        Date currentTime = dt.toDate();
+        record.setCreateTime(currentTime);
+        record.setUpdateTime(currentTime);
+        taskMapper.insert(record);
+        return record;
+    }
 
     public List<Task> getTasksByStatus(JobStatus status) {
         TaskExample example = new TaskExample();
