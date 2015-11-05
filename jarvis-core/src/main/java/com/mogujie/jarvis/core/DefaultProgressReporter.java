@@ -8,7 +8,7 @@
 
 package com.mogujie.jarvis.core;
 
-import com.mogujie.jarvis.protocol.ReportProgressProtos.WorkerReportProgressRequest;
+import com.mogujie.jarvis.protocol.ReportTaskProgressProtos.WorkerReportTaskProgressRequest;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSelection;
@@ -25,7 +25,7 @@ public class DefaultProgressReporter implements ProgressReporter {
 
     @Override
     public void report(float progress) {
-        WorkerReportProgressRequest request = WorkerReportProgressRequest.newBuilder().setFullId(fullId).setProgress(progress).build();
+        WorkerReportTaskProgressRequest request = WorkerReportTaskProgressRequest.newBuilder().setFullId(fullId).setProgress(progress).build();
         actor.tell(request, ActorRef.noSender());
     }
 

@@ -1,13 +1,13 @@
 option java_package = "com.mogujie.jarvis.protocol";
-option java_outer_classname = "ReportProgressProtos";
+option java_outer_classname = "ReportTaskProgressProtos";
 
 
-message WorkerReportProgressRequest {
+message WorkerReportTaskProgressRequest {
     required string full_id = 1;
     required float progress = 2;
 }
 
-message ServerReportProgressResponse {
+message ServerReportTaskProgressResponse {
     required bool success = 1;
     optional string message = 2 [default = ""];
 }

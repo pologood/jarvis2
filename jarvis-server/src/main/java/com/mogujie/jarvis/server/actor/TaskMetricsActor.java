@@ -21,10 +21,10 @@ import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.core.observer.Event;
 import com.mogujie.jarvis.dao.TaskMapper;
 import com.mogujie.jarvis.dto.Task;
-import com.mogujie.jarvis.protocol.ReportProgressProtos.ServerReportProgressResponse;
-import com.mogujie.jarvis.protocol.ReportProgressProtos.WorkerReportProgressRequest;
-import com.mogujie.jarvis.protocol.ReportStatusProtos.ServerReportStatusResponse;
-import com.mogujie.jarvis.protocol.ReportStatusProtos.WorkerReportStatusRequest;
+import com.mogujie.jarvis.protocol.ReportTaskProgressProtos.ServerReportTaskProgressResponse;
+import com.mogujie.jarvis.protocol.ReportTaskProgressProtos.WorkerReportTaskProgressRequest;
+import com.mogujie.jarvis.protocol.ReportTaskStatusProtos.ServerReportTaskStatusResponse;
+import com.mogujie.jarvis.protocol.ReportTaskStatusProtos.WorkerReportTaskStatusRequest;
 import com.mogujie.jarvis.server.scheduler.controller.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.controller.SchedulerControllerFactory;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
@@ -53,8 +53,8 @@ public class TaskMetricsActor extends UntypedActor {
 
     @Override
     public void onReceive(Object obj) throws Exception {
-        if (obj instanceof WorkerReportStatusRequest) {
-            WorkerReportStatusRequest msg = (WorkerReportStatusRequest) obj;
+        if (obj instanceof WorkerReportTaskStatusRequest) {
+            WorkerReportTaskStatusRequest msg = (WorkerReportTaskStatusRequest) obj;
             String fullId = msg.getFullId();
             String[] idList = fullId.split("_");
             long jobId = Long.parseLong(idList[0]);
@@ -73,10 +73,10 @@ public class TaskMetricsActor extends UntypedActor {
             }
             schedulerController.notify(event);
 
-            ServerReportStatusResponse response = ServerReportStatusResponse.newBuilder().setSuccess(true).build();
+            ServerReportTaskStatusResponse response = ServerReportTaskStatusResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());
-        } else if (obj instanceof WorkerReportProgressRequest) {
-            WorkerReportProgressRequest request = (WorkerReportProgressRequest) obj;
+        } else if (obj instanceof WorkerReportTaskProgressRequest) {
+            WorkerReportTaskProgressRequest request = (WorkerReportTaskProgressRequest) obj;
             String fullId = request.getFullId();
             long taskId = Long.parseLong(fullId.split("_")[1]);
             float progress = request.getProgress();
@@ -86,7 +86,7 @@ public class TaskMetricsActor extends UntypedActor {
             task.setProgress(progress);
 
             taskMapper.updateByPrimaryKey(task);
-            ServerReportProgressResponse response = ServerReportProgressResponse.newBuilder().setSuccess(true).build();
+            ServerReportTaskProgressResponse response = ServerReportTaskProgressResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());
         } else {
             unhandled(obj);
@@ -95,8 +95,8 @@ public class TaskMetricsActor extends UntypedActor {
 
     public static List<ActorEntry> handledMessages() {
         List<ActorEntry> list = new ArrayList<>();
-        list.add(new ActorEntry(WorkerReportStatusRequest.class, ServerReportStatusResponse.class, MessageType.SYSTEM));
-        list.add(new ActorEntry(WorkerReportProgressRequest.class, ServerReportProgressResponse.class, MessageType.SYSTEM));
+        list.add(new ActorEntry(WorkerReportTaskStatusRequest.class, ServerReportTaskStatusResponse.class, MessageType.SYSTEM));
+        list.add(new ActorEntry(WorkerReportTaskProgressRequest.class, ServerReportTaskProgressResponse.class, MessageType.SYSTEM));
         return list;
     }
 }

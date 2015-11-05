@@ -58,13 +58,13 @@ public class JarvisWorker {
       ServerRegistryResponse response = (ServerRegistryResponse) Await.result(future,
           TIMEOUT.duration());
       if (!response.getSuccess()) {
-        LOGGER.error("Worker regist failed with group.id={}, worker.key={}", workerGroupId,
+        LOGGER.error("Worker register failed with group.id={}, worker.key={}", workerGroupId,
             workerKey);
         system.terminate();
         return;
       }
     } catch (Exception e) {
-      LOGGER.error("Worker regist failed", e);
+      LOGGER.error("Worker register failed", e);
       system.terminate();
       return;
     }

@@ -36,7 +36,7 @@ import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.protocol.KillTaskProtos.ServerKillTaskRequest;
 import com.mogujie.jarvis.protocol.KillTaskProtos.WorkerKillTaskResponse;
 import com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry;
-import com.mogujie.jarvis.protocol.ReportStatusProtos.WorkerReportStatusRequest;
+import com.mogujie.jarvis.protocol.ReportTaskStatusProtos.WorkerReportTaskStatusRequest;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse;
 import com.mogujie.jarvis.worker.TaskCallable;
@@ -134,7 +134,7 @@ public class WorkerActor extends UntypedActor {
             Constructor<? extends AbstractTask> constructor = t2._1().getConstructor(TaskContext.class);
             AbstractTask job = constructor.newInstance(contextBuilder.build());
             jobPool.add(fullId, job);
-            serverActor.tell(WorkerReportStatusRequest.newBuilder().setFullId(fullId)
+            serverActor.tell(WorkerReportTaskStatusRequest.newBuilder().setFullId(fullId)
                     .setStatus(JobStatus.RUNNING.getValue()).setTimestamp(System.currentTimeMillis() / 1000)
                     .build(), getSelf());
             reporter.report(0);
@@ -148,11 +148,11 @@ public class WorkerActor extends UntypedActor {
             }
 
             if (result) {
-                serverActor.tell(WorkerReportStatusRequest.newBuilder().setFullId(fullId)
+                serverActor.tell(WorkerReportTaskStatusRequest.newBuilder().setFullId(fullId)
                         .setStatus(JobStatus.SUCCESS.getValue()).setTimestamp(System.currentTimeMillis() / 1000)
                         .build(), getSelf());
             } else {
-                serverActor.tell(WorkerReportStatusRequest.newBuilder().setFullId(fullId)
+                serverActor.tell(WorkerReportTaskStatusRequest.newBuilder().setFullId(fullId)
                         .setStatus(JobStatus.FAILED.getValue()).setTimestamp(System.currentTimeMillis() / 1000)
                         .build(), getSelf());
             }
