@@ -481,7 +481,7 @@ public class DAGScheduler extends Scheduler {
      */
     private void submitJobWithCheck(DAGJob dagJob) {
         Set<Long> needJobs = getParentJobIds(dagJob);
-        if (dagJob.dependCheck(needJobs)) {
+        if (dagJob.checkDependency(needJobs)) {
             long jobId = dagJob.getJobId();
             LOGGER.debug("DAGJob {} pass the dependency check", dagJob.getJobId());
             // create new task

@@ -54,7 +54,7 @@ public abstract class DAGDependChecker {
         AbstractTaskSchedule taskSchedule = jobScheduleMap.get(jobId);
 
         if (taskSchedule == null) {
-            taskSchedule = getDependStatus(myJobId, jobId);
+            taskSchedule = getSchedule(myJobId, jobId);
             if (taskSchedule != null) {
                 jobScheduleMap.put(jobId, taskSchedule);
             }
@@ -70,7 +70,7 @@ public abstract class DAGDependChecker {
         for (long jobId : needJobs) {
             AbstractTaskSchedule taskSchedule = jobScheduleMap.get(jobId);
             if (taskSchedule == null) {
-                taskSchedule = getDependStatus(myJobId, jobId);
+                taskSchedule = getSchedule(myJobId, jobId);
                 if (taskSchedule != null) {
                     jobScheduleMap.put(jobId, taskSchedule);
                 }
@@ -119,5 +119,5 @@ public abstract class DAGDependChecker {
         }
     }
 
-    protected abstract AbstractTaskSchedule getDependStatus(long myJobId, long preJobId);
+    protected abstract AbstractTaskSchedule getSchedule(long myJobId, long preJobId);
 }

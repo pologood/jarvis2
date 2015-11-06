@@ -245,15 +245,14 @@ public class TaskScheduler extends Scheduler {
         long taskId = e.getTaskId();
         long scheduleTime = e.getScheduleTime();
 
-        // add to readyTable
         DAGTask dagTask = new DAGTask(jobId, taskId, scheduleTime);
         if (!readyTable.containsKey(taskId)) {
+            // add to readyTable
             readyTable.put(taskId, dagTask);
 
-            if (dagTask.checkStatus()) {
-                LOGGER.debug("DAGTask {} pass the status check when handle AddTaskEvent", dagTask.getTaskId());
-                submitTask(dagTask);
-            }
+            // send ScheduleEvent
+            ScheduleEvent event = new ScheduleEvent(jobId, taskId, scheduleTime);
+            getSchedulerController().notify(event);
         }
     }
 
@@ -280,12 +279,21 @@ public class TaskScheduler extends Scheduler {
 
     public void retryTask(long taskId) {
         Task task = taskMapper.selectByPrimaryKey(taskId);
-        DAGTask dagTask = readyTable.get(taskId);
-        if (task != null && dagTask != null) {
-            int attemptId = dagTask.getAttemptId();
-            attemptId++;
-            dagTask.setAttemptId(attemptId);
-            retryTask(task);
+        if (task != null) {
+            DAGTask dagTask;
+            if (!readyTable.containsKey(taskId)) {
+                dagTask = new DAGTask(task.getJobId(), taskId, task.getAttemptId(),
+                        task.getScheduleTime().getTime());
+                readyTable.put(taskId, dagTask);
+            } else {
+                dagTask = readyTable.get(taskId);
+            }
+            if (dagTask != null) {
+                int attemptId = dagTask.getAttemptId();
+                attemptId++;
+                dagTask.setAttemptId(attemptId);
+                retryTask(task);
+            }
         }
     }
 
@@ -309,11 +317,6 @@ public class TaskScheduler extends Scheduler {
         if (taskDetail != null) {
             taskQueue.put(taskDetail);
         }
-
-        // send ScheduleEvent
-        ScheduleEvent event = new ScheduleEvent(dagTask.getJobId(), dagTask.getTaskId(),
-                dagTask.getScheduleTime());
-        getSchedulerController().notify(event);
     }
 
     public void submitTask(long taskId) {

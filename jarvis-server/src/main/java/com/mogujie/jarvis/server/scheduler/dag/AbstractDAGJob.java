@@ -24,7 +24,7 @@ public abstract class AbstractDAGJob {
     /**
      * return true if dependency check passed. Otherwise return false.
      */
-    public abstract boolean dependCheck(Set<Long> needJobs);
+    public abstract boolean checkDependency(Set<Long> needJobs);
 
     public JobFlag getJobFlag() {
         return jobFlag;

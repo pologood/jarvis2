@@ -16,7 +16,7 @@ package com.mogujie.jarvis.server.scheduler.dag.checker;
 public class DefaultDAGDependChecker extends DAGDependChecker {
 
     @Override
-    protected AbstractTaskSchedule getDependStatus(long myJobId, long preJobId) {
+    protected AbstractTaskSchedule getSchedule(long myJobId, long preJobId) {
         AbstractTaskSchedule dependStatus = null;
         try {
             dependStatus = TaskScheduleFactory.create(myJobId, preJobId);

@@ -43,26 +43,6 @@ public class DAGJob extends AbstractDAGJob {
     }
 
     @Override
-    public boolean dependCheck(Set<Long> needJobs) {
-        boolean passCheck = true;
-        if (type.implies(DAGJobType.DEPEND)) {
-            boolean dependCheck = dependChecker.checkDependency(needJobs);
-            if (!dependCheck) {
-                LOGGER.debug("dependChecker failed, job {}, needJobs {}", jobId, needJobs);
-            }
-            passCheck = passCheck && dependCheck;
-        }
-
-        if (type.implies(DAGJobType.TIME)) {
-            if (!timeReadyFlag) {
-                LOGGER.debug("Job {} is not time ready", jobId);
-            }
-            passCheck = passCheck && timeReadyFlag;
-        }
-
-        return passCheck;
-    }
-
     public boolean checkDependency(Set<Long> needJobs) {
         boolean passCheck = true;
         if (type.implies(DAGJobType.DEPEND)) {

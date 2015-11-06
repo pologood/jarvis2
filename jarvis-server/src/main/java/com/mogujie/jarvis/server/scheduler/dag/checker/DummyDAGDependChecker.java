@@ -19,7 +19,7 @@ import com.mogujie.jarvis.server.scheduler.depend.strategy.CommonStrategy;
 public class DummyDAGDependChecker extends DAGDependChecker {
 
     @Override
-    protected AbstractTaskSchedule getDependStatus(long myJobId, long preJobId) {
+    protected AbstractTaskSchedule getSchedule(long myJobId, long preJobId) {
         return new CachedTaskSchedule(myJobId, preJobId, CommonStrategy.ALL);
     }
 }
