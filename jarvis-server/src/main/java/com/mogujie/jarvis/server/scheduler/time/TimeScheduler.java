@@ -12,7 +12,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.mogujie.jarvis.server.service.JobService;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -27,7 +26,6 @@ import com.mogujie.jarvis.dao.JobMapper;
 import com.mogujie.jarvis.dto.Crontab;
 import com.mogujie.jarvis.dto.CrontabExample;
 import com.mogujie.jarvis.dto.Job;
-import com.mogujie.jarvis.dto.JobExample;
 import com.mogujie.jarvis.server.scheduler.CronScheduler;
 import com.mogujie.jarvis.server.scheduler.JobScheduleException;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
@@ -36,6 +34,7 @@ import com.mogujie.jarvis.server.scheduler.event.StartEvent;
 import com.mogujie.jarvis.server.scheduler.event.StopEvent;
 import com.mogujie.jarvis.server.scheduler.event.SuccessEvent;
 import com.mogujie.jarvis.server.service.CrontabService;
+import com.mogujie.jarvis.server.service.JobService;
 
 /**
  * Scheduler used to handle time based job.
@@ -61,9 +60,7 @@ public class TimeScheduler extends Scheduler {
 
     @Override
     @Transactional
-    protected void init() {
-        getSchedulerController().register(this);
-
+    public void init() {
         List<Job> activeJobs = jobService.getActiveJobs();
         Set<Long> jobIds = new HashSet<>();
         for (Job job : activeJobs) {
@@ -87,8 +84,7 @@ public class TimeScheduler extends Scheduler {
     }
 
     @Override
-    protected void destroy() {
-        getSchedulerController().unregister(this);
+    public void destroy() {
     }
 
     @Override

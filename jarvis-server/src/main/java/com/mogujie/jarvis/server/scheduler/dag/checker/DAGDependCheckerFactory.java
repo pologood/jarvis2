@@ -21,16 +21,17 @@ public class DAGDependCheckerFactory {
     public static final String DAG_DEPEND_CHECKER_KEY = "dag.depend.checker";
     public static final String DEFAULT_DAG_DEPEND_CHECKER = DefaultDAGDependChecker.class.getName();
 
-    public static DAGDependChecker create() {
+    public static DAGDependChecker create(long myJobId) {
         Configuration conf = ConfigUtils.getServerConfig();
         String className = conf.getString(DAG_DEPEND_CHECKER_KEY, DEFAULT_DAG_DEPEND_CHECKER);
-        DAGDependChecker dependStatus = null;
+        DAGDependChecker dependChecker = null;
         try {
-            dependStatus = ReflectionUtils.getInstanceByClassName(className);
+            dependChecker = ReflectionUtils.getInstanceByClassName(className);
+            dependChecker.setMyJobId(myJobId);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e.getMessage());
         }
 
-        return dependStatus;
+        return dependChecker;
     }
 }

@@ -31,15 +31,11 @@ public class DAGJob extends AbstractDAGJob {
     private Set<Long> parents;
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public DAGJob() {
-        this.dependChecker = DAGDependCheckerFactory.create();
-    }
-
     public DAGJob(long jobId, DAGJobType type) {
         this.jobId = jobId;
         this.type = type;
         this.parents = Sets.newConcurrentHashSet();
-        this.dependChecker = DAGDependCheckerFactory.create();
+        this.dependChecker = DAGDependCheckerFactory.create(jobId);
     }
 
     @Override
@@ -73,9 +69,9 @@ public class DAGJob extends AbstractDAGJob {
 
     @Override
     public String toString() {
-        return "{[jobId is" + jobId + "]," +
-                "[DAG type is" + type + "]," +
-                "[depend check instance is" + dependChecker.getClass().getSimpleName() + "]}";
+        return "{[jobId is " + jobId + "]," +
+                "[DAG type is " + type + "]," +
+                "[depend check instance is " + dependChecker.getClass().getSimpleName() + "]}";
     }
 
     public long getJobId() {

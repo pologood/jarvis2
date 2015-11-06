@@ -11,6 +11,7 @@ package com.mogujie.jarvis.server.scheduler.task;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.PriorityBlockingQueue;
 
@@ -120,9 +121,7 @@ public class TaskScheduler extends Scheduler {
 
     @Override
     @Transactional
-    protected void init() {
-        getSchedulerController().register(this);
-
+    public void init() {
         // load all READY tasks from DB
         List<Task> readyTasks = taskService.getTasksByStatus(JobStatus.READY);
         if (readyTasks != null) {
@@ -148,9 +147,8 @@ public class TaskScheduler extends Scheduler {
 
     @SuppressWarnings("deprecation")
     @Override
-    protected void destroy() {
+    public void destroy() {
         clear();
-        getSchedulerController().unregister(this);
         scanThread.stop();
     }
 
@@ -181,7 +179,7 @@ public class TaskScheduler extends Scheduler {
             }
         }
 
-        // reduce task num
+        // reduce task number
         reduceTaskNum(e.getJobId());
     }
 
@@ -240,12 +238,17 @@ public class TaskScheduler extends Scheduler {
     }
 
     @Subscribe
+    @AllowConcurrentEvents
+    @Transactional
     public void handleAddTaskEvent(AddTaskEvent e) {
         long jobId = e.getJobId();
-        long taskId = e.getTaskId();
-        long scheduleTime = e.getScheduleTime();
+        Map<Long, Set<Long>> dependTaskIdMap = e.getDependTaskIdMap();
+        // create new task
+        Task task = taskService.createTaskByJobId(jobId);
+        long taskId = task.getTaskId();
+        long scheduleTime = task.getScheduleTime().getTime();
 
-        DAGTask dagTask = new DAGTask(jobId, taskId, scheduleTime);
+        DAGTask dagTask = new DAGTask(jobId, taskId, scheduleTime, dependTaskIdMap);
         if (!readyTable.containsKey(taskId)) {
             // add to readyTable
             readyTable.put(taskId, dagTask);
@@ -316,13 +319,6 @@ public class TaskScheduler extends Scheduler {
         TaskDetail taskDetail = getTaskInfo(dagTask);
         if (taskDetail != null) {
             taskQueue.put(taskDetail);
-        }
-    }
-
-    public void submitTask(long taskId) {
-        DAGTask dagTask = readyTable.get(taskId);
-        if (dagTask != null) {
-            submitTask(dagTask);
         }
     }
 

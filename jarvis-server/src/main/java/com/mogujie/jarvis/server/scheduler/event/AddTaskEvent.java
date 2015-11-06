@@ -8,29 +8,31 @@
 
 package com.mogujie.jarvis.server.scheduler.event;
 
+import java.util.Map;
+import java.util.Set;
+
 /**
  * @author guangming
  *
  */
-public class AddTaskEvent extends DAGTaskEvent {
-    private long scheduleTime;
+public class AddTaskEvent extends DAGJobEvent {
+    private Map<Long, Set<Long>> dependTaskIdMap;
 
     /**
      * @param jobId
-     * @param taskId
-     * @param scheduleTime
+     * @param dependTaskIdMap
      */
-    public AddTaskEvent(long jobId, long taskId, long scheduleTime) {
-        super(jobId, taskId);
-        this.scheduleTime = scheduleTime;
+    public AddTaskEvent(long jobId, Map<Long, Set<Long>> dependTaskIdMap) {
+        super(jobId);
+        this.dependTaskIdMap = dependTaskIdMap;
     }
 
-    public long getScheduleTime() {
-        return scheduleTime;
+    public Map<Long, Set<Long>> getDependTaskIdMap() {
+        return dependTaskIdMap;
     }
 
-    public void setScheduleTime(long scheduleTime) {
-        this.scheduleTime = scheduleTime;
+    public void setDependTaskIdMap(Map<Long, Set<Long>> dependTaskIdMap) {
+        this.dependTaskIdMap = dependTaskIdMap;
     }
 
 }

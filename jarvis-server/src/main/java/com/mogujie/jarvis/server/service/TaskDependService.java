@@ -18,7 +18,9 @@ import java.util.Set;
 
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import com.google.common.collect.Sets;
 import com.mogujie.jarvis.dao.TaskDependMapper;
 import com.mogujie.jarvis.dto.TaskDepend;
 import com.mogujie.jarvis.dto.TaskDependExample;
@@ -27,6 +29,7 @@ import com.mogujie.jarvis.dto.TaskDependExample;
  * @author guangming
  *
  */
+@Service
 public class TaskDependService {
     @Autowired
     private TaskDependMapper taskDependMapper;
@@ -53,18 +56,18 @@ public class TaskDependService {
         return taskIds;
     }
 
-    public Map<Long, List<Long>> getDependTaskIdMap(long taskId) {
+    public Map<Long, Set<Long>> getDependTaskIdMap(long taskId) {
         TaskDependExample example = new TaskDependExample();
         example.createCriteria().andTaskIdEqualTo(taskId);
         List<TaskDepend> records = taskDependMapper.selectByExample(example);
-        Map<Long, List<Long>> dependTaskIdMap = new HashMap<Long, List<Long>>();
+        Map<Long, Set<Long>> dependTaskIdMap = new HashMap<Long, Set<Long>>();
         for (TaskDepend record : records) {
             long preJobId = record.getPreJobId();
             if (dependTaskIdMap.containsKey(preJobId)) {
-                List<Long> dependTasks = dependTaskIdMap.get(preJobId);
+                Set<Long> dependTasks = dependTaskIdMap.get(preJobId);
                 dependTasks.add(record.getPreTaskId());
             } else {
-                List<Long> dependTasks = new ArrayList<Long>();
+                Set<Long> dependTasks = Sets.newHashSet();
                 dependTasks.add(record.getPreTaskId());
                 dependTaskIdMap.put(preJobId, dependTasks);
             }

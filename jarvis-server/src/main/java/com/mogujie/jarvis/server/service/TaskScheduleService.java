@@ -12,6 +12,7 @@ import java.util.List;
 
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.mogujie.jarvis.dao.TaskScheduleMapper;
 import com.mogujie.jarvis.dto.TaskSchedule;
@@ -21,6 +22,7 @@ import com.mogujie.jarvis.dto.TaskScheduleExample;
  * @author guangming
  *
  */
+@Service
 public class TaskScheduleService {
     @Autowired
     private TaskScheduleMapper taskScheduleMapper;

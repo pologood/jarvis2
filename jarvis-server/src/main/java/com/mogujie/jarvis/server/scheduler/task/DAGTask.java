@@ -8,9 +8,11 @@
 
 package com.mogujie.jarvis.server.scheduler.task;
 
-import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import com.mogujie.jarvis.server.scheduler.task.checker.TaskStatusChecker;
+import com.mogujie.jarvis.server.scheduler.task.checker.TaskStatusCheckerFactory;
 
 /**
  * @author guangming
@@ -22,20 +24,25 @@ public class DAGTask {
     private int attemptId;
     private long scheduleTime;
     private TaskStatusChecker statusChecker;
-    //TODO
-    private List<Long> parents;
-    private List<Long> children;
 
     public DAGTask(long jobId, long taskId, long scheduleTime) {
         this(jobId, taskId, 1, scheduleTime);
     }
 
+    public DAGTask(long jobId, long taskId, long scheduleTime, Map<Long, Set<Long>> dependTaskIdMap) {
+        this(jobId, taskId, 1, scheduleTime, dependTaskIdMap);
+    }
+
     public DAGTask(long jobId, long taskId, int attemptId, long scheduleTime) {
+        this(jobId, taskId, attemptId, scheduleTime, null);
+    }
+
+    public DAGTask(long jobId, long taskId, int attemptId, long scheduleTime, Map<Long, Set<Long>> dependTaskIdMap) {
         this.jobId = jobId;
         this.taskId = taskId;
         this.attemptId = attemptId;
         this.scheduleTime = scheduleTime;
-        this.statusChecker = new TaskStatusChecker(jobId, taskId);
+        this.statusChecker = TaskStatusCheckerFactory.create(jobId, taskId, dependTaskIdMap);
     }
 
     public long getJobId() {

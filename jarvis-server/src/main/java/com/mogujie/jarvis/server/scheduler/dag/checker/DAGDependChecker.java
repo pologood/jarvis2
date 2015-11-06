@@ -24,6 +24,7 @@ import com.mogujie.jarvis.server.scheduler.depend.strategy.CommonStrategy;
 public abstract class DAGDependChecker {
     private long myJobId;
 
+    // Map<JobId, AbstractTaskSchedule>
     protected Map<Long, AbstractTaskSchedule> jobScheduleMap =
             new ConcurrentHashMap<Long, AbstractTaskSchedule>();
 
@@ -86,6 +87,10 @@ public abstract class DAGDependChecker {
         return finishDependencies;
     }
 
+    /**
+     * return Map<JobId, Set<preTaskId>>
+     *
+     */
     public Map<Long, Set<Long>> getDependTaskIdMap() {
         Map<Long, Set<Long>> dependTaskMap = new HashMap<Long, Set<Long>>();
         for (Entry<Long, AbstractTaskSchedule> entry : jobScheduleMap.entrySet()) {

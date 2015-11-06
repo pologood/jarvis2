@@ -30,7 +30,6 @@ import com.google.common.eventbus.Subscribe;
 import com.mogujie.jarvis.core.domain.JobFlag;
 import com.mogujie.jarvis.core.domain.Pair;
 import com.mogujie.jarvis.dto.Job;
-import com.mogujie.jarvis.dto.Task;
 import com.mogujie.jarvis.server.domain.ModifyDependEntry;
 import com.mogujie.jarvis.server.domain.ModifyJobEntry;
 import com.mogujie.jarvis.server.domain.ModifyJobType;
@@ -82,9 +81,7 @@ public class DAGScheduler extends Scheduler {
 
     @Override
     @Transactional
-    protected void init() {
-        getSchedulerController().register(this);
-
+    public void init() {
         // load not deleted jobs from DB
         List<Job> jobs = jobService.getNotDeletedJobs();
         for (Job job : jobs) {
@@ -104,9 +101,8 @@ public class DAGScheduler extends Scheduler {
     }
 
     @Override
-    protected void destroy() {
+    public void destroy() {
         clear();
-        getSchedulerController().unregister(this);
     }
 
     @Override
@@ -484,20 +480,14 @@ public class DAGScheduler extends Scheduler {
         if (dagJob.checkDependency(needJobs)) {
             long jobId = dagJob.getJobId();
             LOGGER.debug("DAGJob {} pass the dependency check", dagJob.getJobId());
-            // create new task
-            Task task = taskService.createTaskByJobId(jobId);
-            long taskId = task.getTaskId();
-            // create task dependency
-            Map<Long, Set<Long>> dependTaskIdMap = dagJob.getDependTaskIdMap();
-            if (dependTaskIdMap != null && !dependTaskIdMap.isEmpty()) {
-                taskDependService.createTaskDependenices(taskId, dependTaskIdMap);
-            }
-            // reset task schedule
-            dagJob.resetTaskSchedule();
 
             // submit task to task scheduler
-            AddTaskEvent event = new AddTaskEvent(jobId, taskId, task.getScheduleTime().getTime());
+            Map<Long, Set<Long>> dependTaskIdMap = dagJob.getDependTaskIdMap();
+            AddTaskEvent event = new AddTaskEvent(jobId, dependTaskIdMap);
             getSchedulerController().notify(event);
+
+            // reset task schedule
+            dagJob.resetTaskSchedule();
         }
     }
 
