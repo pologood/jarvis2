@@ -13,12 +13,30 @@ package com.mogujie.jarvis.server.scheduler.event;
  *
  */
 public class TimeReadyEvent extends DAGJobEvent {
+    private long scheduleTime;
 
     /**
      * @param jobId
      */
     public TimeReadyEvent(long jobId) {
         super(jobId);
+    }
+
+    /**
+     * @param jobId
+     * @param scheduleTime
+     */
+    public TimeReadyEvent(long jobId, long scheduleTime) {
+        super(jobId);
+        this.scheduleTime = scheduleTime;
+    }
+
+    public long getScheduleTime() {
+        return scheduleTime;
+    }
+
+    public void setScheduleTime(long scheduleTime) {
+        this.scheduleTime = scheduleTime;
     }
 
 }

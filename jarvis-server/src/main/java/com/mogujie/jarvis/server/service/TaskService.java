@@ -50,7 +50,7 @@ public class TaskService {
         return taskMapper.selectByExample(example).get(0);
     }
 
-    public Task createTaskByJobId(long jobId) {
+    public Task createTaskByJobId(long jobId, long scheduleTime) {
         Task record = new Task();
         record.setJobId(jobId);
         record.setAttemptId(1);
@@ -58,7 +58,7 @@ public class TaskService {
         Date currentTime = dt.toDate();
         record.setCreateTime(currentTime);
         record.setUpdateTime(currentTime);
-        record.setScheduleTime(currentTime);
+        record.setScheduleTime(new Date(scheduleTime));
         record.setStatus(JobStatus.READY.getValue());
         record.setProgress((float) 0);
         Job job = jobMapper.selectByPrimaryKey(jobId);

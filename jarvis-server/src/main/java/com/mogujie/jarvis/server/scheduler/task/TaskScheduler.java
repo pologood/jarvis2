@@ -244,11 +244,31 @@ public class TaskScheduler extends Scheduler {
     @Transactional
     public void handleAddTaskEvent(AddTaskEvent e) {
         long jobId = e.getJobId();
+        long eventTime = e.getScheduleTime();
         Map<Long, Set<Long>> dependTaskIdMap = e.getDependTaskIdMap();
+
+        // get schedule time
+        long lastScheduleTime = 0;
+        if (eventTime == 0) {
+            for (Set<Long> taskSet : dependTaskIdMap.values()) {
+                for (long taskId : taskSet) {
+                    if (taskId > 0) {
+                        Task task = taskService.get(taskId);
+                        long scheduleTime = task.getScheduleTime().getTime();
+                        if (scheduleTime > lastScheduleTime) {
+                            lastScheduleTime = scheduleTime;
+                        }
+                    }
+                }
+            }
+        } else {
+            lastScheduleTime = eventTime;
+        }
+
         // create new task
-        Task task = taskService.createTaskByJobId(jobId);
-        long taskId = task.getTaskId();
-        long scheduleTime = task.getScheduleTime().getTime();
+        Task newTask = taskService.createTaskByJobId(jobId, lastScheduleTime);
+        long taskId = newTask.getTaskId();
+        long scheduleTime = newTask.getScheduleTime().getTime();
 
         DAGTask dagTask = new DAGTask(jobId, taskId, scheduleTime, dependTaskIdMap);
         if (!readyTable.containsKey(taskId)) {

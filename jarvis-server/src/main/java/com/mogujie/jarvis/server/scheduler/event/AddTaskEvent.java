@@ -17,14 +17,22 @@ import java.util.Set;
  */
 public class AddTaskEvent extends DAGJobEvent {
     private Map<Long, Set<Long>> dependTaskIdMap;
+    private long scheduleTime;
 
     /**
      * @param jobId
      * @param dependTaskIdMap
      */
+    public AddTaskEvent(long jobId, Map<Long, Set<Long>> dependTaskIdMap, long scheduleTime) {
+        super(jobId);
+        this.dependTaskIdMap = dependTaskIdMap;
+        this.scheduleTime = scheduleTime;
+    }
+
     public AddTaskEvent(long jobId, Map<Long, Set<Long>> dependTaskIdMap) {
         super(jobId);
         this.dependTaskIdMap = dependTaskIdMap;
+        this.scheduleTime = 0;
     }
 
     public Map<Long, Set<Long>> getDependTaskIdMap() {
@@ -33,6 +41,14 @@ public class AddTaskEvent extends DAGJobEvent {
 
     public void setDependTaskIdMap(Map<Long, Set<Long>> dependTaskIdMap) {
         this.dependTaskIdMap = dependTaskIdMap;
+    }
+
+    public long getScheduleTime() {
+        return scheduleTime;
+    }
+
+    public void setScheduleTime(long scheduleTime) {
+        this.scheduleTime = scheduleTime;
     }
 
 }

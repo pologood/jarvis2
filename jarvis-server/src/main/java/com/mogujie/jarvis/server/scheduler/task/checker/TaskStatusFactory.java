@@ -28,6 +28,8 @@ public class TaskStatusFactory {
 
     public static AbstractTaskStatus create(long myJobId, long preJobId)  {
         AbstractTaskStatus dependStatus = null;
+        //TODO jobDependService保留的是最新的依赖关系，如果修改过依赖关系，重跑历史任务时可能会无法找到对应的依赖关系
+        // 可以考虑把依赖策略也保存在TaskDepend表中
         if (jobDependService != null) {
             JobDepend jobDepend = jobDependService.getRecord(myJobId, preJobId);
             if (jobDepend != null) {

@@ -48,8 +48,6 @@ import com.mogujie.jarvis.server.scheduler.event.TimeReadyEvent;
 import com.mogujie.jarvis.server.service.CrontabService;
 import com.mogujie.jarvis.server.service.JobDependService;
 import com.mogujie.jarvis.server.service.JobService;
-import com.mogujie.jarvis.server.service.TaskDependService;
-import com.mogujie.jarvis.server.service.TaskService;
 
 /**
  * Scheduler used to handle dependency based job.
@@ -63,16 +61,10 @@ public class DAGScheduler extends Scheduler {
     private JobService jobService;
 
     @Autowired
-    private TaskService taskService;
-
-    @Autowired
     private JobDependService jobDependService;
 
     @Autowired
     private CrontabService cronService;
-
-    @Autowired
-    private TaskDependService taskDependService;
 
     private Map<Long, DAGJob> waitingTable = new ConcurrentHashMap<Long, DAGJob>();
     private DirectedAcyclicGraph<DAGJob, DefaultEdge> dag = new DirectedAcyclicGraph<DAGJob, DefaultEdge>(DefaultEdge.class);
@@ -388,7 +380,7 @@ public class DAGScheduler extends Scheduler {
             dagJob.setTimeReadyFlag();
             LOGGER.debug("DAGJob {} time ready", dagJob.getJobId());
             // 如果通过依赖检查，提交给taskScheduler，并重置自己的依赖状态
-            submitJobWithCheck(dagJob);
+            submitJobWithCheck(dagJob, e.getScheduleTime());
         }
     }
 
@@ -428,48 +420,6 @@ public class DAGScheduler extends Scheduler {
         }
     }
 
-//    @Subscribe
-//    @AllowConcurrentEvents
-//    public void handleSuccessEvent(SuccessEvent e) {
-//        long jobId = e.getJobId();
-//        long taskId = e.getTaskId();
-//        DAGJob dagJob = waitingTable.get(jobId);
-//        if (dagJob != null) {
-//            List<DAGJob> children = getChildren(dagJob);
-//            if (children != null) {
-//                for (DAGJob child : children) {
-//                    // 更新依赖状态为true
-//                    if (child.getJobFlag().equals(JobFlag.ENABLE)) {
-//                        child.setDependStatus(jobId, taskId);
-//                        LOGGER.debug("Receive SuccessEvent, set depend status of {} to true.",
-//                                "jobId="+child.getJobId()+",preJobId="+jobId+",preTaskId="+taskId);
-//                        // 如果通过依赖检查，提交给taskScheduler，并重置自己的依赖状态
-//                        submitJobWithCheck(child);
-//                    }
-//                }
-//            }
-//        }
-//    }
-//
-//    @Subscribe
-//    @AllowConcurrentEvents
-//    public void handleFailedEvent(FailedEvent e) {
-//        long jobId = e.getJobId();
-//        long taskId = e.getTaskId();
-//        DAGJob dagJob = waitingTable.get(jobId);
-//        if (dagJob != null) {
-//            List<DAGJob> children = getChildren(dagJob);
-//            if (children != null) {
-//                for (DAGJob child : children) {
-//                    // 更新依赖状态为false
-//                    child.resetDependStatus(jobId, taskId);
-//                    LOGGER.debug("Receive FailedEvent, reset depend status of {} to false.",
-//                            "jobId="+child.getJobId()+",preJobId="+jobId+",preTaskId="+taskId);
-//                }
-//            }
-//        }
-//    }
-
     /**
      * submit job if pass the dependency check
      *
@@ -484,6 +434,22 @@ public class DAGScheduler extends Scheduler {
             // submit task to task scheduler
             Map<Long, Set<Long>> dependTaskIdMap = dagJob.getDependTaskIdMap();
             AddTaskEvent event = new AddTaskEvent(jobId, dependTaskIdMap);
+            getSchedulerController().notify(event);
+
+            // reset task schedule
+            dagJob.resetTaskSchedule();
+        }
+    }
+
+    private void submitJobWithCheck(DAGJob dagJob, long scheduleTime) {
+        Set<Long> needJobs = getParentJobIds(dagJob);
+        if (dagJob.checkDependency(needJobs)) {
+            long jobId = dagJob.getJobId();
+            LOGGER.debug("DAGJob {} pass the dependency check", dagJob.getJobId());
+
+            // submit task to task scheduler
+            Map<Long, Set<Long>> dependTaskIdMap = dagJob.getDependTaskIdMap();
+            AddTaskEvent event = new AddTaskEvent(jobId, dependTaskIdMap, scheduleTime);
             getSchedulerController().notify(event);
 
             // reset task schedule
