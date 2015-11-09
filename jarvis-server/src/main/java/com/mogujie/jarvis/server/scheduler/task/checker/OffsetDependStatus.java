@@ -7,6 +7,9 @@
  */
 package com.mogujie.jarvis.server.scheduler.task.checker;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.mogujie.jarvis.server.scheduler.depend.strategy.AbstractOffsetStrategy;
 import com.mogujie.jarvis.server.scheduler.depend.strategy.CommonStrategy;
 
@@ -45,5 +48,14 @@ public class OffsetDependStatus extends AbstractTaskStatus {
     @Override
     public boolean check() {
         return offsetDependStrategy.check(getPreJobId(), offset, getCommonStrategy());
+    }
+
+    @Override
+    public List<Long> getDependTaskIds() {
+        return new ArrayList<Long>();
+    }
+
+    @Override
+    public void setDependTaskIds(List<Long> dependTaskIds) {
     }
 }

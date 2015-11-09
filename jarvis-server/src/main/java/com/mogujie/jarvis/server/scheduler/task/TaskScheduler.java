@@ -167,15 +167,17 @@ public class TaskScheduler extends Scheduler {
         long taskId = e.getTaskId();
         // update task status and remove from readyTable
         updateTaskStatus(taskId, JobStatus.SUCCESS);
-        readyTable.remove(taskId);
+        DAGTask dagTask = readyTable.remove(taskId);
 
         // notify child tasks
-        List<Long> childTasks = taskDependService.getChildTaskIds(taskId);
-        for (Long childId : childTasks) {
-            DAGTask dagTask = readyTable.get(childId);
-            if (dagTask != null && dagTask.checkStatus()) {
-                LOGGER.debug("DAGTask {} pass the status check when handle SuccessEvent", dagTask.getTaskId());
-                submitTask(dagTask);
+        if (dagTask != null) {
+            List<Long> childTasks = dagTask.getChildTaskIds();
+            for (Long childId : childTasks) {
+                DAGTask childTask = readyTable.get(childId);
+                if (childTask != null && childTask.checkStatus()) {
+                    LOGGER.debug("DAGTask {} pass the status check when handle SuccessEvent", childTask.getTaskId());
+                    submitTask(childTask);
+                }
             }
         }
 
@@ -260,13 +262,11 @@ public class TaskScheduler extends Scheduler {
     }
 
     private void updateTaskStatus(long taskId, JobStatus status) {
-        if (!isTestMode) {
-            if (status.equals(JobStatus.RUNNING)) {
-                taskService.updateStatusWithStart(taskId, status);
-            } else if (status.getValue() == JobStatus.SUCCESS.getValue() || status.getValue() == JobStatus.FAILED.getValue()
-                    || status.getValue() == JobStatus.KILLED.getValue()) {
-                taskService.updateStatusWithEnd(taskId, status);
-            }
+        if (status.equals(JobStatus.RUNNING)) {
+            taskService.updateStatusWithStart(taskId, status);
+        } else if (status.equals(JobStatus.SUCCESS) || status.equals(JobStatus.FAILED)
+                || status.equals(JobStatus.KILLED)) {
+            taskService.updateStatusWithEnd(taskId, status);
         }
     }
 
@@ -325,7 +325,7 @@ public class TaskScheduler extends Scheduler {
     private TaskDetail getTaskInfo(DAGTask dagTask) {
         String fullId = dagTask.getJobId() + "_" + dagTask.getTaskId() + "_" + dagTask.getAttemptId();
         TaskDetail taskDetail = null;
-        if (!isTestMode) {
+//        if (!isTestMode) {
             Job job = jobMapper.selectByPrimaryKey(dagTask.getJobId());
             App app = appMapper.selectByPrimaryKey(job.getAppId());
             taskDetail = TaskDetail.newTaskDetailBuilder()
@@ -338,7 +338,7 @@ public class TaskScheduler extends Scheduler {
                     .setTaskType(job.getJobType())
                     .setParameters(JsonHelper.parseJSON2Map(job.getParams()))
                     .build();
-        }
+//        }
 
         return taskDetail;
     }

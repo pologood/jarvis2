@@ -76,4 +76,5 @@ public class RuntimeDependStatus extends AbstractTaskStatus {
     public void setDependTaskIds(List<Long> dependTaskIds) {
         this.dependTaskIds = dependTaskIds;
     }
+
 }

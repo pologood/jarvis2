@@ -22,9 +22,12 @@ import com.mogujie.jarvis.server.util.SpringContext;
  */
 public class TaskStatusFactory {
 
-    public static AbstractTaskStatus create(long myJobId, long preJobId) {
+    public static final String TASK_DEPEND_STATUS_KEY = "task.depend.status";
+    public static final String DEFAULT_TASK_DEPEND_STATUS = RuntimeDependStatus.class.getName();
+    private static final JobDependService jobDependService = SpringContext.getBean(JobDependService.class);
+
+    public static AbstractTaskStatus create(long myJobId, long preJobId)  {
         AbstractTaskStatus dependStatus = null;
-        JobDependService jobDependService = SpringContext.getBean(JobDependService.class);
         if (jobDependService != null) {
             JobDepend jobDepend = jobDependService.getRecord(myJobId, preJobId);
             if (jobDepend != null) {

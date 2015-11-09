@@ -10,7 +10,6 @@ package com.mogujie.jarvis.server.service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,6 @@ import com.mogujie.jarvis.dao.TaskMapper;
 import com.mogujie.jarvis.dto.Job;
 import com.mogujie.jarvis.dto.Task;
 import com.mogujie.jarvis.dto.TaskExample;
-import com.mogujie.jarvis.server.scheduler.SchedulerUtil;
 
 /**
  * @author guangming
@@ -34,14 +32,6 @@ public class TaskService {
 
     @Autowired
     private JobMapper jobMapper;
-
-    // unique taskId for testing
-    private boolean isTestMode = SchedulerUtil.isTestMode();
-    private AtomicLong maxid = new AtomicLong(1);
-
-    private long generateTaskId() {
-        return maxid.getAndIncrement();
-    }
 
     public Task get(long taskId) {
         return taskMapper.selectByPrimaryKey(taskId);
@@ -70,14 +60,11 @@ public class TaskService {
         record.setUpdateTime(currentTime);
         record.setScheduleTime(currentTime);
         record.setStatus(JobStatus.READY.getValue());
-        if (isTestMode) {
-            record.setTaskId(generateTaskId());
-        } else {
-            Job job = jobMapper.selectByPrimaryKey(jobId);
-            record.setExecuteUser(job.getSubmitUser());
-            record.setContent(job.getContent());
-            taskMapper.insert(record);
-        }
+        record.setProgress((float) 0);
+        Job job = jobMapper.selectByPrimaryKey(jobId);
+        record.setExecuteUser(job.getSubmitUser());
+        record.setContent(job.getContent());
+        taskMapper.insert(record);
         return record;
     }
 

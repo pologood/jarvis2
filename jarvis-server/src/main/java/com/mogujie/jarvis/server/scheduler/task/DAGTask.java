@@ -8,11 +8,11 @@
 
 package com.mogujie.jarvis.server.scheduler.task;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import com.mogujie.jarvis.server.scheduler.task.checker.TaskStatusChecker;
-import com.mogujie.jarvis.server.scheduler.task.checker.TaskStatusCheckerFactory;
 
 /**
  * @author guangming
@@ -34,7 +34,11 @@ public class DAGTask {
     }
 
     public DAGTask(long jobId, long taskId, int attemptId, long scheduleTime) {
-        this(jobId, taskId, attemptId, scheduleTime, null);
+        this.jobId = jobId;
+        this.taskId = taskId;
+        this.attemptId = attemptId;
+        this.scheduleTime = scheduleTime;
+        this.statusChecker = new TaskStatusChecker(jobId, taskId);
     }
 
     public DAGTask(long jobId, long taskId, int attemptId, long scheduleTime, Map<Long, Set<Long>> dependTaskIdMap) {
@@ -42,7 +46,7 @@ public class DAGTask {
         this.taskId = taskId;
         this.attemptId = attemptId;
         this.scheduleTime = scheduleTime;
-        this.statusChecker = TaskStatusCheckerFactory.create(jobId, taskId, dependTaskIdMap);
+        this.statusChecker = new TaskStatusChecker(jobId, taskId, dependTaskIdMap);
     }
 
     public long getJobId() {
@@ -87,6 +91,10 @@ public class DAGTask {
 
     public boolean checkStatus() {
         return statusChecker.checkStatus();
+    }
+
+    public List<Long> getChildTaskIds() {
+        return statusChecker.getChildTaskIds();
     }
 
     @Override

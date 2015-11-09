@@ -8,31 +8,18 @@
 
 package com.mogujie.jarvis.server.scheduler.dag;
 
-import org.apache.commons.configuration.Configuration;
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.google.common.collect.Sets;
-import com.mogujie.jarvis.core.util.ConfigUtils;
-import com.mogujie.jarvis.server.scheduler.SchedulerUtil;
-import com.mogujie.jarvis.server.scheduler.controller.JobSchedulerController;
-import com.mogujie.jarvis.server.scheduler.controller.SyncSchedulerController;
-import com.mogujie.jarvis.server.scheduler.dag.checker.DAGDependCheckerFactory;
-import com.mogujie.jarvis.server.scheduler.dag.checker.DummyDAGDependChecker;
 import com.mogujie.jarvis.server.scheduler.event.ScheduleEvent;
 import com.mogujie.jarvis.server.scheduler.event.TimeReadyEvent;
-import com.mogujie.jarvis.server.scheduler.task.TaskScheduler;
-import com.mogujie.jarvis.server.scheduler.task.checker.DummyTaskStatusChecker;
-import com.mogujie.jarvis.server.scheduler.task.checker.TaskStatusCheckerFactory;
-import com.mogujie.jarvis.server.util.SpringContext;
 
 /**
  * @author guangming
  *
  */
-public class TestDAGSchedulerWithEvent {
+public class TestDAGSchedulerWithEvent extends TestSchedulerBase {
     private long jobAId = 1;
     private long jobBId = 2;
     private long jobCId = 3;
@@ -42,31 +29,6 @@ public class TestDAGSchedulerWithEvent {
     private long t1 = 1000;
     private long t2 = 2000;
     private long t3 = 3000;
-    private static DAGScheduler dagScheduler;
-    private static TaskScheduler taskScheduler;
-    private static JobSchedulerController controller;
-    private static Configuration conf = ConfigUtils.getServerConfig();
-
-    @BeforeClass
-    public static void setup() throws Exception {
-        conf.clear();
-        conf.setProperty(DAGDependCheckerFactory.DAG_DEPEND_CHECKER_KEY,
-                DummyDAGDependChecker.class.getName());
-        conf.setProperty(TaskStatusCheckerFactory.TASK_STATUS_CHECKER_KEY,
-                DummyTaskStatusChecker.class.getName());
-        conf.setProperty(SchedulerUtil.ENABLE_TEST_MODE, true);
-        controller = SyncSchedulerController.getInstance();
-        dagScheduler = SpringContext.getBean(DAGScheduler.class);
-        taskScheduler = SpringContext.getBean(TaskScheduler.class);
-        controller.register(dagScheduler);
-        controller.register(taskScheduler);
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        dagScheduler.clear();
-        taskScheduler.clear();
-    }
 
     /**
      *   A   B

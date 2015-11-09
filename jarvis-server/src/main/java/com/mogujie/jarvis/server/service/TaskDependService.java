@@ -51,7 +51,7 @@ public class TaskDependService {
         List<TaskDepend> records = taskDependMapper.selectByExample(example);
         List<Long> taskIds = new ArrayList<Long>();
         for (TaskDepend record : records) {
-            taskIds.add(record.getPreTaskId());
+            taskIds.add(record.getTaskId());
         }
         return taskIds;
     }

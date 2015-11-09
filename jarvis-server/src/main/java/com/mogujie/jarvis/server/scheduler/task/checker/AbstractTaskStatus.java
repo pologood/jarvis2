@@ -8,6 +8,8 @@
 
 package com.mogujie.jarvis.server.scheduler.task.checker;
 
+import java.util.List;
+
 import com.mogujie.jarvis.server.scheduler.depend.strategy.CommonStrategy;
 
 
@@ -52,4 +54,8 @@ public abstract class AbstractTaskStatus {
     }
 
     public abstract boolean check();
+
+    public abstract List<Long> getDependTaskIds();
+
+    public abstract void setDependTaskIds(List<Long> dependTaskIds);
 }
