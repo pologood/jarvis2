@@ -10,6 +10,7 @@ package com.mogujie.jarvis.server.scheduler.dag.checker;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -91,10 +92,10 @@ public abstract class DAGDependChecker {
      * return Map<JobId, Set<preTaskId>>
      *
      */
-    public Map<Long, Set<Long>> getDependTaskIdMap() {
-        Map<Long, Set<Long>> dependTaskMap = new HashMap<Long, Set<Long>>();
+    public Map<Long, List<ScheduleTask>> getDependTaskIdMap() {
+        Map<Long, List<ScheduleTask>> dependTaskMap = new HashMap<Long, List<ScheduleTask>>();
         for (Entry<Long, AbstractTaskSchedule> entry : jobScheduleMap.entrySet()) {
-            dependTaskMap.put(entry.getKey(), entry.getValue().getSchedulingTaskIds());
+            dependTaskMap.put(entry.getKey(), entry.getValue().getSchedulingTasks());
         }
         return dependTaskMap;
     }

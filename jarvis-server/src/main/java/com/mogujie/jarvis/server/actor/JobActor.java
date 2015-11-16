@@ -17,8 +17,6 @@ import java.util.Set;
 
 import javax.inject.Named;
 
-import com.google.common.base.Preconditions;
-import com.mogujie.jarvis.server.cron.CronExpression;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -26,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import akka.actor.UntypedActor;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Sets;
 import com.mogujie.jarvis.core.domain.ActorEntry;
 import com.mogujie.jarvis.core.domain.JobFlag;
@@ -51,6 +50,7 @@ import com.mogujie.jarvis.protocol.QueryJobRelationProtos.RestServerQueryJobRela
 import com.mogujie.jarvis.protocol.QueryJobRelationProtos.ServerQueryJobRelationResponse;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitJobRequest;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitJobResponse;
+import com.mogujie.jarvis.server.cron.CronExpression;
 import com.mogujie.jarvis.server.domain.ModifyDependEntry;
 import com.mogujie.jarvis.server.domain.ModifyJobEntry;
 import com.mogujie.jarvis.server.domain.ModifyJobType;
@@ -186,7 +186,7 @@ public class JobActor extends UntypedActor {
             int timeFlag = msg.hasCronExpression() ? 1 : 0;
             DAGJobType type = SchedulerUtil.getDAGJobType(cycleFlag, dependFlag, timeFlag);
 
-            dagScheduler.addJob(jobId, new DAGJob(jobId, type), needDependencies);
+            dagScheduler.getJobGraph().addJob(jobId, new DAGJob(jobId, type), needDependencies);
             timeScheduler.addJob(jobId);
             response = ServerSubmitJobResponse.newBuilder().setSuccess(true).setJobId(jobId).build();
             getSender().tell(response, getSelf());
@@ -215,7 +215,7 @@ public class JobActor extends UntypedActor {
         Map<ModifyJobType, ModifyJobEntry> modifyMap = MessageUtil.convert2ModifyJobMap(msg, jobService, cronService);
         ServerModifyJobResponse response;
         try {
-            dagScheduler.modifyDAGJobType(jobId, modifyMap);
+            dagScheduler.getJobGraph().modifyDAGJobType(jobId, modifyMap);
             timeScheduler.modifyJob(jobId);
             response = ServerModifyJobResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());
@@ -270,7 +270,7 @@ public class JobActor extends UntypedActor {
         }
         ServerModifyDependencyResponse response;
         try {
-            dagScheduler.modifyDependency(jobId, dependEntries);
+            dagScheduler.getJobGraph().modifyDependency(jobId, dependEntries);
             response = ServerModifyDependencyResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());
         } catch (Exception e) {
@@ -283,13 +283,12 @@ public class JobActor extends UntypedActor {
     @Transactional
     private void modifyJobFlag(RestServerModifyJobFlagRequest msg) throws IOException {
         long jobId = msg.getJobId();
-        Job record = jobMapper.selectByPrimaryKey(jobId);
-        jobService.updateJobFlag(record, msg.getUser(), msg.getJobFlag());
+        jobService.updateJobFlag(jobId, msg.getUser(), msg.getJobFlag());
         JobFlag flag = JobFlag.getInstance(msg.getJobFlag());
         ServerModifyJobFlagResponse response;
         try {
             timeScheduler.modifyJobFlag(jobId, flag);
-            dagScheduler.modifyJobFlag(jobId, flag);
+            dagScheduler.getJobGraph().modifyJobFlag(jobId, flag);
             response = ServerModifyJobFlagResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());
         } catch (Exception e) {
@@ -306,7 +305,7 @@ public class JobActor extends UntypedActor {
         if (msg.getRelationType().equals(RelationType.PARENTS)) {
             try {
                 builder = ServerQueryJobRelationResponse.newBuilder();
-                List<Pair<Long, JobFlag>> parents = dagScheduler.getParents(jobId);
+                List<Pair<Long, JobFlag>> parents = dagScheduler.getJobGraph().getParents(jobId);
                 for (Pair<Long, JobFlag> parent : parents) {
                     JobFlagEntry entry = JobFlagEntry.newBuilder().setJobId(parent.getFirst()).setJobFlag(parent.getSecond().getValue()).build();
                     builder.addJobFlagEntry(entry);
@@ -321,7 +320,7 @@ public class JobActor extends UntypedActor {
         } else if (msg.getRelationType().equals(RelationType.CHILDREN)) {
             try {
                 builder = ServerQueryJobRelationResponse.newBuilder();
-                List<Pair<Long, JobFlag>> children = dagScheduler.getChildren(jobId);
+                List<Pair<Long, JobFlag>> children = dagScheduler.getJobGraph().getChildren(jobId);
                 for (Pair<Long, JobFlag> child : children) {
                     JobFlagEntry entry = JobFlagEntry.newBuilder().setJobId(child.getFirst()).setJobFlag(child.getSecond().getValue()).build();
                     builder.addJobFlagEntry(entry);
@@ -355,13 +354,11 @@ public class JobActor extends UntypedActor {
             cronService.deleteByJobId(jobId);
             // scheduler remove job
             timeScheduler.removeJob(jobId);
-            dagScheduler.removeJob(jobId);
+            dagScheduler.getJobGraph().removeJob(jobId);
             getSender().tell("remove success", getSelf());
         } catch (Exception e) {
             getSender().tell("remove failed", getSelf());
             throw new IOException(e);
         }
     }
-
-
 }

@@ -9,9 +9,7 @@
 package com.mogujie.jarvis.server.scheduler.dag.checker;
 
 import java.util.List;
-import java.util.Set;
 
-import com.google.common.collect.Sets;
 import com.mogujie.jarvis.server.service.TaskScheduleService;
 import com.mogujie.jarvis.server.util.SpringContext;
 
@@ -37,17 +35,6 @@ public class PersistentTaskSchedule extends RuntimeTaskSchedule {
     public void scheduleTask(long taskId, long scheduleTime) {
         PersistentTaskScheduleUtil.scheduleTask(getMyJobId(), getPreJobId(),
                 taskId, scheduleTime, scheduleService);
-    }
-
-    @Override
-    public Set<Long> getSchedulingTaskIds() {
-        List<ScheduleTask> schedulingTasks = getSchedulingTasks();
-        Set<Long> schedulingTaskIds = Sets.newHashSet();
-        for (ScheduleTask task : schedulingTasks) {
-            schedulingTaskIds.add(task.getTaskId());
-        }
-
-        return schedulingTaskIds;
     }
 
     @Override

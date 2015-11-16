@@ -148,8 +148,10 @@ public class TaskScheduler extends Scheduler {
     @SuppressWarnings("deprecation")
     @Override
     public void destroy() {
-        clear();
-        scanThread.stop();
+        readyTable.clear();
+        if (scanThread != null && scanThread.isAlive()) {
+            scanThread.stop();
+        }
     }
 
     @Override
@@ -240,7 +242,6 @@ public class TaskScheduler extends Scheduler {
     }
 
     @Subscribe
-    @AllowConcurrentEvents
     @Transactional
     public void handleAddTaskEvent(AddTaskEvent e) {
         long jobId = e.getJobId();
@@ -288,11 +289,6 @@ public class TaskScheduler extends Scheduler {
                 || status.equals(JobStatus.KILLED)) {
             taskService.updateStatusWithEnd(taskId, status);
         }
-    }
-
-    @VisibleForTesting
-    public void clear() {
-        readyTable.clear();
     }
 
     @VisibleForTesting
@@ -345,20 +341,18 @@ public class TaskScheduler extends Scheduler {
     private TaskDetail getTaskInfo(DAGTask dagTask) {
         String fullId = dagTask.getJobId() + "_" + dagTask.getTaskId() + "_" + dagTask.getAttemptId();
         TaskDetail taskDetail = null;
-//        if (!isTestMode) {
-            Job job = jobMapper.selectByPrimaryKey(dagTask.getJobId());
-            App app = appMapper.selectByPrimaryKey(job.getAppId());
-            taskDetail = TaskDetail.newTaskDetailBuilder()
-                    .setFullId(fullId)
-                    .setTaskName(job.getJobName())
-                    .setAppName(app.getAppName())
-                    .setUser(job.getSubmitUser())
-                    .setPriority(job.getPriority())
-                    .setContent(job.getContent())
-                    .setTaskType(job.getJobType())
-                    .setParameters(JsonHelper.parseJSON2Map(job.getParams()))
-                    .build();
-//        }
+        Job job = jobMapper.selectByPrimaryKey(dagTask.getJobId());
+        App app = appMapper.selectByPrimaryKey(job.getAppId());
+        taskDetail = TaskDetail.newTaskDetailBuilder()
+                .setFullId(fullId)
+                .setTaskName(job.getJobName())
+                .setAppName(app.getAppName())
+                .setUser(job.getSubmitUser())
+                .setPriority(job.getPriority())
+                .setContent(job.getContent())
+                .setTaskType(job.getJobType())
+                .setParameters(JsonHelper.parseJSON2Map(job.getParams()))
+                .build();
 
         return taskDetail;
     }

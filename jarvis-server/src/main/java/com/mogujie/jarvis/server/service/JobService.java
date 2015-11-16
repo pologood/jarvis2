@@ -85,7 +85,8 @@ public class JobService {
         return jobMapper.selectByExample(example);
     }
 
-    public void updateJobFlag(Job record, String user, int newFlag) {
+    public void updateJobFlag(long jobId, String user, int newFlag) {
+        Job record = jobMapper.selectByPrimaryKey(jobId);
         record.setJobFlag(newFlag);
         record.setUpdateUser(user);
         DateTime dt = DateTime.now();

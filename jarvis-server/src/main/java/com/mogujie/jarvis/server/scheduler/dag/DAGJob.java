@@ -8,6 +8,7 @@
 
 package com.mogujie.jarvis.server.scheduler.dag;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -17,6 +18,7 @@ import org.apache.logging.log4j.Logger;
 import com.google.common.collect.Sets;
 import com.mogujie.jarvis.server.scheduler.dag.checker.DAGDependChecker;
 import com.mogujie.jarvis.server.scheduler.dag.checker.DAGDependCheckerFactory;
+import com.mogujie.jarvis.server.scheduler.dag.checker.ScheduleTask;
 
 /**
  * @author guangming
@@ -63,7 +65,7 @@ public class DAGJob extends AbstractDAGJob {
         dependChecker.scheduleTask(jobId, taskId, scheduleTime);
     }
 
-    public Map<Long, Set<Long>> getDependTaskIdMap() {
+    public Map<Long, List<ScheduleTask>> getDependTaskMap() {
         return dependChecker.getDependTaskIdMap();
     }
 

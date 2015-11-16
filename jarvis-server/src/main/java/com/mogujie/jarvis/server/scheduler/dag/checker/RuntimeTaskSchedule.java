@@ -39,5 +39,4 @@ public abstract class RuntimeTaskSchedule extends AbstractTaskSchedule {
         return false;
     }
 
-    protected abstract List<ScheduleTask> getSchedulingTasks();
 }

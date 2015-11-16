@@ -10,9 +10,7 @@ package com.mogujie.jarvis.server.scheduler.dag.checker;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
-import com.google.common.collect.Sets;
 import com.mogujie.jarvis.server.scheduler.depend.strategy.CommonStrategy;
 
 /**
@@ -51,15 +49,6 @@ public class CachedTaskSchedule extends RuntimeTaskSchedule {
     public void scheduleTask(long taskId, long scheduleTime) {
         ScheduleTask task = new ScheduleTask(taskId, scheduleTime);
         schedulingTasks.add(task);
-    }
-
-    @Override
-    public Set<Long> getSchedulingTaskIds() {
-        Set<Long> scheduingTaskIds = Sets.newHashSet();
-        for (ScheduleTask task : schedulingTasks) {
-            scheduingTaskIds.add(task.getTaskId());
-        }
-        return scheduingTaskIds;
     }
 
     @Override

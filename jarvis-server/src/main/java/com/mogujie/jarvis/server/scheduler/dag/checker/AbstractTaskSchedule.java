@@ -8,7 +8,7 @@
 
 package com.mogujie.jarvis.server.scheduler.dag.checker;
 
-import java.util.Set;
+import java.util.List;
 
 import com.mogujie.jarvis.server.scheduler.depend.strategy.CommonStrategy;
 
@@ -78,6 +78,6 @@ public abstract class AbstractTaskSchedule {
     /**
      * get scheduling tasks
      */
-    public abstract Set<Long> getSchedulingTaskIds();
+    public abstract List<ScheduleTask> getSchedulingTasks();
 
 }

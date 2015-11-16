@@ -31,15 +31,15 @@ public class TestJobSchedulerController extends TestSchedulerBase {
      */
     @Test
     public void testHandleSuccessEvent1() throws Exception {
-        dagScheduler.addJob(jobAId, new DAGJob(jobAId, DAGJobType.TIME), null);
-        dagScheduler.addJob(jobBId, new DAGJob(jobBId, DAGJobType.TIME), null);
-        dagScheduler.addJob(jobCId, new DAGJob(jobCId, DAGJobType.DEPEND),
+        jobGraph.addJob(jobAId, new DAGJob(jobAId, DAGJobType.TIME), null);
+        jobGraph.addJob(jobBId, new DAGJob(jobBId, DAGJobType.TIME), null);
+        jobGraph.addJob(jobCId, new DAGJob(jobCId, DAGJobType.DEPEND),
                 Sets.newHashSet(jobAId, jobBId));
-        Assert.assertEquals(1, dagScheduler.getChildren(jobAId).size());
-        Assert.assertEquals(jobCId, (long)dagScheduler.getChildren(jobAId).get(0).getFirst());
-        Assert.assertEquals(1, dagScheduler.getChildren(jobBId).size());
-        Assert.assertEquals(jobCId, (long)dagScheduler.getChildren(jobBId).get(0).getFirst());
-        Assert.assertEquals(2, dagScheduler.getParents(jobCId).size());
+        Assert.assertEquals(1, jobGraph.getChildren(jobAId).size());
+        Assert.assertEquals(jobCId, (long)jobGraph.getChildren(jobAId).get(0).getFirst());
+        Assert.assertEquals(1, jobGraph.getChildren(jobBId).size());
+        Assert.assertEquals(jobCId, (long)jobGraph.getChildren(jobBId).get(0).getFirst());
+        Assert.assertEquals(2, jobGraph.getParents(jobCId).size());
         // jobA time ready
         TimeReadyEvent timeEventA = new TimeReadyEvent(jobAId);
         controller.notify(timeEventA);
@@ -69,12 +69,12 @@ public class TestJobSchedulerController extends TestSchedulerBase {
      */
     @Test
     public void testHandleSuccessEvent2() throws Exception {
-        dagScheduler.addJob(jobAId, new DAGJob(jobAId, DAGJobType.TIME), null);
-        dagScheduler.addJob(jobBId, new DAGJob(jobBId, DAGJobType.DEPEND), Sets.newHashSet(jobAId));
-        dagScheduler.addJob(jobCId, new DAGJob(jobBId, DAGJobType.DEPEND), Sets.newHashSet(jobAId));
-        Assert.assertEquals(2, dagScheduler.getChildren(jobAId).size());
-        Assert.assertEquals(1, dagScheduler.getParents(jobBId).size());
-        Assert.assertEquals(1, dagScheduler.getParents(jobCId).size());
+        jobGraph.addJob(jobAId, new DAGJob(jobAId, DAGJobType.TIME), null);
+        jobGraph.addJob(jobBId, new DAGJob(jobBId, DAGJobType.DEPEND), Sets.newHashSet(jobAId));
+        jobGraph.addJob(jobCId, new DAGJob(jobBId, DAGJobType.DEPEND), Sets.newHashSet(jobAId));
+        Assert.assertEquals(2, jobGraph.getChildren(jobAId).size());
+        Assert.assertEquals(1, jobGraph.getParents(jobBId).size());
+        Assert.assertEquals(1, jobGraph.getParents(jobCId).size());
         // jobA time ready
         TimeReadyEvent timeEventA = new TimeReadyEvent(jobAId);
         controller.notify(timeEventA);

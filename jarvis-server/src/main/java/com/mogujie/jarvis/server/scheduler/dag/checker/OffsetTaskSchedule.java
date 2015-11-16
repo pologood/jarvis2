@@ -8,9 +8,8 @@
 
 package com.mogujie.jarvis.server.scheduler.dag.checker;
 
-import java.util.Set;
+import java.util.List;
 
-import com.google.common.collect.Sets;
 
 
 /**
@@ -25,9 +24,7 @@ public class OffsetTaskSchedule extends AbstractTaskSchedule {
     }
 
     @Override
-    public Set<Long> getSchedulingTaskIds() {
-        Set<Long> dependTasks = Sets.newHashSet();
-        dependTasks.add((long) 0);
-        return dependTasks;
+    public List<ScheduleTask> getSchedulingTasks() {
+        return null;
     }
 }

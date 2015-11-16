@@ -30,6 +30,7 @@ public class TestSchedulerBase {
     protected static DAGScheduler dagScheduler;
     protected static TaskScheduler taskScheduler;
     protected static JobSchedulerController controller;
+    protected static JobGraph jobGraph;
     protected static Configuration conf = ConfigUtils.getServerConfig();
 
     @BeforeClass
@@ -43,6 +44,7 @@ public class TestSchedulerBase {
         taskScheduler = SpringContext.getBean(TaskScheduler.class);
         controller.register(dagScheduler);
         controller.register(taskScheduler);
+        jobGraph = dagScheduler.getJobGraph();
     }
 
     @AfterClass
@@ -53,7 +55,7 @@ public class TestSchedulerBase {
 
     @After
     public void tearDown() throws Exception {
-        dagScheduler.clear();
-        taskScheduler.clear();
+        dagScheduler.destroy();
+        taskScheduler.destroy();
     }
 }
