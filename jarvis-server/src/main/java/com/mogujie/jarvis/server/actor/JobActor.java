@@ -22,8 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.transaction.annotation.Transactional;
 
-import akka.actor.UntypedActor;
-
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Sets;
 import com.mogujie.jarvis.core.domain.ActorEntry;
@@ -65,6 +63,8 @@ import com.mogujie.jarvis.server.service.AppService;
 import com.mogujie.jarvis.server.service.CrontabService;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.util.MessageUtil;
+
+import akka.actor.UntypedActor;
 
 /**
  * @author guangming
@@ -126,7 +126,7 @@ public class JobActor extends UntypedActor {
         } else if (obj instanceof RestServerQueryJobRelationRequest) {
             RestServerQueryJobRelationRequest msg = (RestServerQueryJobRelationRequest) obj;
             queryJobRelation(msg);
-        } else if (obj instanceof RemoveJobRequest) {   //测试用，无须加入handleMessage
+        } else if (obj instanceof RemoveJobRequest) { // 测试用，无须加入handleMessage
             RemoveJobRequest msg = (RemoveJobRequest) obj;
             removeJob(msg);
         } else {
@@ -145,20 +145,17 @@ public class JobActor extends UntypedActor {
 
         ServerSubmitJobResponse response;
         try {
-            //参数检查
+            // 参数检查
             Job job = MessageUtil.convert2Job(appService, msg);
-            Preconditions.checkArgument(job.getJobName() !=null && !job.getJobName().isEmpty(), "jobName不能为空");
-            Preconditions.checkArgument(job.getWorkerGroupId() != null && job.getWorkerGroupId() > 0
-                    , "workGroupId不能为空");
-            Preconditions.checkArgument(job.getContent() !=null && !job.getContent().isEmpty(),"job内容不能为空");
-            Preconditions.checkArgument(appService.canAccessWorkerGroup(job.getAppId(), job.getWorkerGroupId())
-                    , "该App不能访问指定的workerGroupId.");
-            Preconditions.checkArgument(msg.getCronExpression() == null || msg.getCronExpression().isEmpty()
-                    || new CronExpression(msg.getCronExpression()).isValid()
-                    , "Crontab表达式错误");
-            if(job.getActiveStartDate() != null && job.getActiveEndDate() != null){
-                Preconditions.checkArgument(job.getActiveStartDate().getTime() <= job.getActiveEndDate().getTime(),
-                        "有效开始日不能大于有效结束日");
+            Preconditions.checkArgument(job.getJobName() != null && !job.getJobName().isEmpty(), "jobName不能为空");
+            Preconditions.checkArgument(job.getWorkerGroupId() != null && job.getWorkerGroupId() > 0, "workGroupId不能为空");
+            Preconditions.checkArgument(job.getContent() != null && !job.getContent().isEmpty(), "job内容不能为空");
+            Preconditions.checkArgument(appService.canAccessWorkerGroup(job.getAppId(), job.getWorkerGroupId()), "该App不能访问指定的workerGroupId.");
+            Preconditions.checkArgument(
+                    msg.getCronExpression() == null || msg.getCronExpression().isEmpty() || new CronExpression(msg.getCronExpression()).isValid(),
+                    "Crontab表达式错误");
+            if (job.getActiveStartDate() != null && job.getActiveEndDate() != null) {
+                Preconditions.checkArgument(job.getActiveStartDate().getTime() <= job.getActiveEndDate().getTime(), "有效开始日不能大于有效结束日");
             }
 
             // 1. insert job to DB
@@ -187,7 +184,7 @@ public class JobActor extends UntypedActor {
             DAGJobType type = SchedulerUtil.getDAGJobType(cycleFlag, dependFlag, timeFlag);
 
             dagScheduler.getJobGraph().addJob(jobId, new DAGJob(jobId, type), needDependencies);
-            timeScheduler.addJob(jobId);
+            // timeScheduler.addJob(jobId);
             response = ServerSubmitJobResponse.newBuilder().setSuccess(true).setJobId(jobId).build();
             getSender().tell(response, getSelf());
 
@@ -216,7 +213,7 @@ public class JobActor extends UntypedActor {
         ServerModifyJobResponse response;
         try {
             dagScheduler.getJobGraph().modifyDAGJobType(jobId, modifyMap);
-            timeScheduler.modifyJob(jobId);
+            // timeScheduler.modifyJob(jobId);
             response = ServerModifyJobResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());
         } catch (Exception e) {
@@ -287,7 +284,7 @@ public class JobActor extends UntypedActor {
         JobFlag flag = JobFlag.getInstance(msg.getJobFlag());
         ServerModifyJobFlagResponse response;
         try {
-            timeScheduler.modifyJobFlag(jobId, flag);
+            // timeScheduler.modifyJobFlag(jobId, flag);
             dagScheduler.getJobGraph().modifyJobFlag(jobId, flag);
             response = ServerModifyJobFlagResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());
@@ -337,6 +334,7 @@ public class JobActor extends UntypedActor {
 
     /**
      * 测试用
+     * 
      * @param msg
      * @throws IOException
      */
@@ -353,7 +351,7 @@ public class JobActor extends UntypedActor {
             // remove crontab where jobId=jobId
             cronService.deleteByJobId(jobId);
             // scheduler remove job
-            timeScheduler.removeJob(jobId);
+            // timeScheduler.removeJob(jobId);
             dagScheduler.getJobGraph().removeJob(jobId);
             getSender().tell("remove success", getSelf());
         } catch (Exception e) {
