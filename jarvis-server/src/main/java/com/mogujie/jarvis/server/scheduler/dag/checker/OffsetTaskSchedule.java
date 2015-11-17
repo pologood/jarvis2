@@ -19,12 +19,18 @@ import java.util.List;
 public class OffsetTaskSchedule extends AbstractTaskSchedule {
 
     @Override
-    public boolean check() {
+    public boolean check(long scheduleTime) {
         return true;
     }
 
     @Override
-    public List<ScheduleTask> getSchedulingTasks() {
+    public List<ScheduleTask> getSelectedTasks() {
         return null;
+    }
+
+    @Override
+    public long getMinScheduleTime() {
+        // TODO Auto-generated method stub
+        return 0;
     }
 }

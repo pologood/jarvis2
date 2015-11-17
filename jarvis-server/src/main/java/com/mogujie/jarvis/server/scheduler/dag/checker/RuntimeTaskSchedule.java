@@ -9,7 +9,10 @@
 package com.mogujie.jarvis.server.scheduler.dag.checker;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.SortedSet;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 import org.joda.time.DateTime;
 
@@ -26,9 +29,18 @@ import com.mogujie.jarvis.server.util.SpringContext;
  */
 public class RuntimeTaskSchedule extends AbstractTaskSchedule {
 
+    // SortedSet<ScheduleTask>
+    private SortedSet<ScheduleTask> schedulingTasks = new ConcurrentSkipListSet<>(
+            new Comparator<ScheduleTask>() {
+        @Override
+        public int compare(ScheduleTask task1, ScheduleTask task2) {
+            return (int)(task1.getScheduleTime() - task2.getScheduleTime());
+        }
+    });
+
     // List<ScheduleTask>
-    protected List<ScheduleTask> schedulingTasks = new ArrayList<ScheduleTask>();
-    protected String expression = "cd"; //TODO
+    private List<ScheduleTask> selectedTasks = new ArrayList<ScheduleTask>();
+    protected String expression;
 
     public RuntimeTaskSchedule() {}
 
@@ -41,14 +53,22 @@ public class RuntimeTaskSchedule extends AbstractTaskSchedule {
         super(myJobId, preJobId, commonStrategy);
     }
 
+    public RuntimeTaskSchedule(long myJobId, long preJobId, CommonStrategy commonStrategy, String expression) {
+        this(myJobId, preJobId, commonStrategy);
+        this.expression = expression;
+    }
+
     @Override
     public void init() {
-        this.schedulingTasks = loadSchedulingTasks();
+        loadSchedulingTasks();
     }
 
     @Override
     public void resetSchedule() {
-        schedulingTasks.clear();
+        for (ScheduleTask task : selectedTasks) {
+            schedulingTasks.remove(task);
+        }
+        selectedTasks.clear();
     }
 
     @Override
@@ -58,16 +78,15 @@ public class RuntimeTaskSchedule extends AbstractTaskSchedule {
     }
 
     @Override
-    public List<ScheduleTask> getSchedulingTasks() {
-        return schedulingTasks;
+    public List<ScheduleTask> getSelectedTasks() {
+        return selectedTasks;
     }
 
-    protected List<ScheduleTask> loadSchedulingTasks() {
+    protected void loadSchedulingTasks() {
         TaskService taskService = SpringContext.getBean(TaskService.class);
         DateTime now = DateTime.now();
 
         List<Task> tasks = null;
-        List<ScheduleTask> scheduleTasks = new ArrayList<ScheduleTask>();
         if (expression.equals("cd")) {
             // current day
             tasks = taskService.getTasksOfCurrentDay(getMyJobId(), now);
@@ -78,33 +97,45 @@ public class RuntimeTaskSchedule extends AbstractTaskSchedule {
 
         if (tasks != null) {
             for (Task task : tasks) {
-                scheduleTasks.add(new ScheduleTask(task.getTaskId(), task.getScheduleTime().getTime()));
+                schedulingTasks.add(new ScheduleTask(task.getTaskId(), task.getScheduleTime().getTime()));
             }
         }
-        return scheduleTasks;
      }
 
     @Override
-    public boolean check() {
-        List<ScheduleTask> schedulingTasks = getSchedulingTasks();
+    public boolean check(long scheduleTime) {
         if (expression != null) {
             TimeOffsetExpression dependExpression = new TimeOffsetExpression(expression);
-            DateTime now = DateTime.now();
-            Range<DateTime> range = dependExpression.getRange(now);
+            DateTime scheduleDate = new DateTime(scheduleTime);
+            Range<DateTime> range = dependExpression.getRange(scheduleDate);
             for (ScheduleTask task : schedulingTasks) {
-                long scheduleTime = task.getScheduleTime();
-                DateTime scheduleDate = new DateTime(scheduleTime);
-                if (range.contains(scheduleDate)) {
-                    return true;
+                long theTaskScheduleTime = task.getScheduleTime();
+                DateTime theScheduleDate = new DateTime(theTaskScheduleTime);
+                if (range.contains(theScheduleDate)) {
+                    selectedTasks.add(task);
+                } else {
+                    break;
                 }
+            }
+            if (selectedTasks.size() > 0) {
+                return true;
             }
         } else {
             // 默认实现至少有一个就通过依赖检查
             if (schedulingTasks.size() > 0) {
+                selectedTasks.addAll(schedulingTasks);
                 return true;
             }
         }
         return false;
+    }
+
+    @Override
+    public long getMinScheduleTime() {
+        if (schedulingTasks.size() > 0) {
+            return schedulingTasks.first().getScheduleTime();
+        }
+        return 0;
     }
 
 }
