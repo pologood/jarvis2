@@ -30,6 +30,8 @@ import com.mogujie.jarvis.dao.JobMapper;
 import com.mogujie.jarvis.server.domain.JobDependencyEntry;
 import com.mogujie.jarvis.server.domain.JobEntry;
 
+import javax.annotation.PostConstruct;
+
 /**
  * @author wuya
  *
@@ -38,6 +40,7 @@ import com.mogujie.jarvis.server.domain.JobEntry;
 public class JobService {
 
     private static final Logger LOGGER = LogManager.getLogger();
+    private Map<Long, JobEntry> metaStore = Maps.newConcurrentMap();
 
     @Autowired
     private JobMapper jobMapper;
@@ -46,11 +49,10 @@ public class JobService {
     @Autowired
     private JobDependMapper jobDependMapper;
 
-    private Map<Long, JobEntry> metaStore = Maps.newConcurrentMap();
-
-
-    public JobService() {
-        LoadMetaDataFromDB();
+    @PostConstruct
+    private void init(){
+        loadMetaDataFromDB();
+        LOGGER.info("jobService loadMetaDataFromDB finished.");
     }
 
     public JobEntry get(long jobId) {
@@ -61,7 +63,6 @@ public class JobService {
         return metaStore;
     }
 
-
 //    public void addJob(Job job, List<ScheduleExpression> scheduleExpressions, Map<Long, JobDependencyEntry> dependencies) {
 //        metaStore.put(job.getJobId(), new JobEntry(job, scheduleExpressions, dependencies));
 //    }
@@ -70,21 +71,17 @@ public class JobService {
 //        metaStore.remove(jobId);
 //    }
 
-
-
     /**
      * 获取活跃的job（状态为enable，并且不是过期的）
      * @return
      */
     public List<Job> getActiveJobs() {
-
         JobExample example = new JobExample();
         example.createCriteria().andJobFlagEqualTo(JobFlag.ENABLE.getValue());
         List<Job> jobs = jobMapper.selectByExample(example);
         if(jobs == null || jobs.isEmpty()){
             return jobs;
         }
-
         //移除 不在有效期的job
         Date  now = DateTime.now().toDate();
         Iterator<Job> iterator = jobs.iterator();
@@ -95,7 +92,6 @@ public class JobService {
                 iterator.remove();
             }
         }
-
         return jobs;
     }
 
@@ -139,7 +135,7 @@ public class JobService {
     /**
      * 读取metaData
      */
-    private void LoadMetaDataFromDB(){
+    private void loadMetaDataFromDB(){
 
         JobExample jobExample = new JobExample();
         jobExample.createCriteria().andJobFlagEqualTo(JobFlag.ENABLE.getValue());
@@ -243,10 +239,5 @@ public class JobService {
 //
 //            jobGraph.addJob(jobId, jobScheduleExpressions, dependencyJobIdList);
         }
-
-
     }
-
-
-
 }
