@@ -11,7 +11,6 @@ package com.mogujie.jarvis.server.domain;
 import java.util.TimerTask;
 
 import com.mogujie.jarvis.server.scheduler.controller.JobSchedulerController;
-import com.mogujie.jarvis.server.scheduler.controller.SchedulerControllerFactory;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.util.SpringContext;
 
@@ -21,7 +20,7 @@ import com.mogujie.jarvis.server.util.SpringContext;
  */
 public class JarvisTimerTask extends TimerTask {
     private JobService jobService = SpringContext.getBean(JobService.class);
-    private JobSchedulerController schedulerController = SchedulerControllerFactory.getController();
+    private JobSchedulerController schedulerController = JobSchedulerController.getInstance();
 
     @Override
     public void run() {

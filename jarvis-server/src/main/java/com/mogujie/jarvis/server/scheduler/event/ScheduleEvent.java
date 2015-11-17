@@ -14,10 +14,18 @@ package com.mogujie.jarvis.server.scheduler.event;
  */
 public class ScheduleEvent extends DAGTaskEvent {
     private long scheduleTime;
+    private long childJobId;
 
     public ScheduleEvent(long jobId, long taskId, long scheduleTime) {
         super(jobId, taskId);
         this.scheduleTime = scheduleTime;
+        this.childJobId = 0;
+    }
+
+    public ScheduleEvent(long jobId, long taskId, long scheduleTime, long childJobId) {
+        super(jobId, taskId);
+        this.scheduleTime = scheduleTime;
+        this.childJobId = childJobId;
     }
 
     public long getScheduleTime() {
@@ -26,6 +34,14 @@ public class ScheduleEvent extends DAGTaskEvent {
 
     public void setScheduleTime(long scheduleTime) {
         this.scheduleTime = scheduleTime;
+    }
+
+    public long getChildJobId() {
+        return childJobId;
+    }
+
+    public void setChildJobId(long childJobId) {
+        this.childJobId = childJobId;
     }
 
 }

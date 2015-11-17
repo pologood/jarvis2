@@ -8,13 +8,19 @@
 
 package com.mogujie.jarvis.server.scheduler.controller;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import org.apache.commons.configuration.Configuration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.google.common.eventbus.AsyncEventBus;
 import com.google.common.eventbus.EventBus;
 import com.mogujie.jarvis.core.observer.Event;
 import com.mogujie.jarvis.core.observer.Observable;
 import com.mogujie.jarvis.core.observer.Observer;
+import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
 
 /**
@@ -26,11 +32,28 @@ import com.mogujie.jarvis.server.scheduler.Scheduler;
  * @author guangming
  *
  */
-public abstract class JobSchedulerController implements Observable {
+public class JobSchedulerController implements Observable {
+    public static final String SCHEDULER_CONTROLLER_TYPE = "scheduler.controller.type";
+    public static final String SCHEDULER_CONTROLLER_TYPE_SYNC = "sync";
+    public static final String SCHEDULER_CONTROLLER_TYPE_ASYNC = "async";
     protected static final Logger LOGGER = LogManager.getLogger();
     protected EventBus eventBus;
 
-    public JobSchedulerController() {
+    private JobSchedulerController() {
+        Configuration conf = ConfigUtils.getServerConfig();
+        String type = conf.getString(SCHEDULER_CONTROLLER_TYPE, SCHEDULER_CONTROLLER_TYPE_ASYNC);
+        if (type.equalsIgnoreCase(SCHEDULER_CONTROLLER_TYPE_SYNC)) {
+            eventBus = new EventBus("SyncJobSchedulerController");
+        } else {
+            ExecutorService executorService = Executors.newCachedThreadPool();
+            eventBus = new AsyncEventBus(executorService);
+        }
+    }
+
+    private static final JobSchedulerController single = new JobSchedulerController();
+
+    public static JobSchedulerController getInstance() {
+        return single;
     }
 
     @Override

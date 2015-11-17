@@ -36,4 +36,20 @@ public class ScheduleTask {
     public void setScheduleTime(long scheduleTime) {
         this.scheduleTime = scheduleTime;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        ScheduleTask other = (ScheduleTask) obj;
+        if (this.taskId == other.getTaskId()) {
+            return true;
+        } else {
+            return true;
+        }
+    }
 }

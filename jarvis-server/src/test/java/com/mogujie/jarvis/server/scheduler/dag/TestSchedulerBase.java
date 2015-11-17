@@ -16,7 +16,6 @@ import org.junit.BeforeClass;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.server.scheduler.SchedulerUtil;
 import com.mogujie.jarvis.server.scheduler.controller.JobSchedulerController;
-import com.mogujie.jarvis.server.scheduler.controller.SyncSchedulerController;
 import com.mogujie.jarvis.server.scheduler.dag.checker.DAGDependCheckerFactory;
 import com.mogujie.jarvis.server.scheduler.dag.checker.DummyDAGDependChecker;
 import com.mogujie.jarvis.server.scheduler.task.TaskScheduler;
@@ -39,7 +38,8 @@ public class TestSchedulerBase {
         conf.setProperty(DAGDependCheckerFactory.DAG_DEPEND_CHECKER_KEY,
                 DummyDAGDependChecker.class.getName());
         conf.setProperty(SchedulerUtil.ENABLE_TEST_MODE, true);
-        controller = SyncSchedulerController.getInstance();
+        conf.setProperty(JobSchedulerController.SCHEDULER_CONTROLLER_TYPE, JobSchedulerController.SCHEDULER_CONTROLLER_TYPE_SYNC);
+        controller = JobSchedulerController.getInstance();
         dagScheduler = SpringContext.getBean(DAGScheduler.class);
         taskScheduler = SpringContext.getBean(TaskScheduler.class);
         controller.register(dagScheduler);

@@ -21,9 +21,6 @@ import com.mogujie.jarvis.server.scheduler.depend.strategy.CommonStrategy;
  */
 public class CachedTaskSchedule extends RuntimeTaskSchedule {
 
-    // List<ScheduleTask>
-    protected List<ScheduleTask> schedulingTasks = new ArrayList<ScheduleTask>();
-
     public CachedTaskSchedule() {}
 
     /**
@@ -33,27 +30,6 @@ public class CachedTaskSchedule extends RuntimeTaskSchedule {
      */
     public CachedTaskSchedule(long myJobId, long preJobId, CommonStrategy commonStrategy) {
         super(myJobId, preJobId, commonStrategy);
-    }
-
-    @Override
-    public void init() {
-        this.schedulingTasks = loadSchedulingTasks();
-    }
-
-    @Override
-    public void resetSchedule() {
-        schedulingTasks.clear();
-    }
-
-    @Override
-    public void scheduleTask(long taskId, long scheduleTime) {
-        ScheduleTask task = new ScheduleTask(taskId, scheduleTime);
-        schedulingTasks.add(task);
-    }
-
-    @Override
-    public List<ScheduleTask> getSchedulingTasks() {
-        return schedulingTasks;
     }
 
     protected List<ScheduleTask> loadSchedulingTasks() {

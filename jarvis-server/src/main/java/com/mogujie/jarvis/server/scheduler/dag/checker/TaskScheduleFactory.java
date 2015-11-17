@@ -8,11 +8,8 @@
 
 package com.mogujie.jarvis.server.scheduler.dag.checker;
 
-import org.apache.commons.configuration.Configuration;
-
-import com.mogujie.jarvis.core.util.ConfigUtils;
-import com.mogujie.jarvis.core.util.ReflectionUtils;
 import com.mogujie.jarvis.dto.JobDepend;
+import com.mogujie.jarvis.server.scheduler.depend.strategy.CommonStrategy;
 import com.mogujie.jarvis.server.service.JobDependService;
 import com.mogujie.jarvis.server.util.SpringContext;
 
@@ -21,8 +18,8 @@ import com.mogujie.jarvis.server.util.SpringContext;
  *
  */
 public class TaskScheduleFactory {
-    public static final String TASK_DEPEND_SCHEDULE_KEY = "task.schedule";
-    public static final String DEFAULT_TASK_DEPEND_SCHEDULE = CachedPersistentTaskSchedule.class.getName();
+//    public static final String TASK_DEPEND_SCHEDULE_KEY = "task.schedule";
+//    public static final String DEFAULT_TASK_DEPEND_SCHEDULE = RuntimeTaskSchedule.class.getName();
 
     public static AbstractTaskSchedule create(long myJobId, long preJobId) throws ClassNotFoundException {
         AbstractTaskSchedule dependSchedule = null;
@@ -32,11 +29,8 @@ public class TaskScheduleFactory {
             if (jobDepend != null && jobDepend.getOffsetStrategy() != null && jobDepend.getOffsetStrategy() != "") {
                 dependSchedule = new OffsetTaskSchedule();
             } else {
-                Configuration conf = ConfigUtils.getServerConfig();
-                String className = conf.getString(TASK_DEPEND_SCHEDULE_KEY, DEFAULT_TASK_DEPEND_SCHEDULE);
-                dependSchedule = ReflectionUtils.getInstanceByClassName(className);
-                dependSchedule.setMyjobId(myJobId);
-                dependSchedule.setPreJobId(preJobId);
+                CommonStrategy commonStrategy = CommonStrategy.getInstance(jobDepend.getCommonStrategy());
+                dependSchedule =  new RuntimeTaskSchedule(myJobId, preJobId, commonStrategy);
             }
         }
 

@@ -15,6 +15,8 @@ import javax.inject.Named;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 
+import akka.actor.UntypedActor;
+
 import com.mogujie.jarvis.core.domain.ActorEntry;
 import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.core.domain.MessageType;
@@ -26,14 +28,11 @@ import com.mogujie.jarvis.protocol.ReportTaskProgressProtos.WorkerReportTaskProg
 import com.mogujie.jarvis.protocol.ReportTaskStatusProtos.ServerReportTaskStatusResponse;
 import com.mogujie.jarvis.protocol.ReportTaskStatusProtos.WorkerReportTaskStatusRequest;
 import com.mogujie.jarvis.server.scheduler.controller.JobSchedulerController;
-import com.mogujie.jarvis.server.scheduler.controller.SchedulerControllerFactory;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
 import com.mogujie.jarvis.server.scheduler.event.KilledEvent;
 import com.mogujie.jarvis.server.scheduler.event.RunningEvent;
 import com.mogujie.jarvis.server.scheduler.event.SuccessEvent;
 import com.mogujie.jarvis.server.scheduler.event.UnhandleEvent;
-
-import akka.actor.UntypedActor;
 
 /**
  * Actor used to receive task metrics information (e.g. status, process) 1. send task status to
@@ -46,7 +45,7 @@ import akka.actor.UntypedActor;
 @Scope("prototype")
 public class TaskMetricsActor extends UntypedActor {
 
-    private JobSchedulerController schedulerController = SchedulerControllerFactory.getController();
+    private JobSchedulerController schedulerController = JobSchedulerController.getInstance();
 
     @Autowired
     private TaskMapper taskMapper;

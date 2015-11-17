@@ -16,6 +16,9 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import akka.actor.ActorSelection;
+import akka.actor.ActorSystem;
+
 import com.mogujie.jarvis.core.domain.IdType;
 import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.domain.WorkerInfo;
@@ -25,14 +28,10 @@ import com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse;
 import com.mogujie.jarvis.server.scheduler.controller.JobSchedulerController;
-import com.mogujie.jarvis.server.scheduler.controller.SchedulerControllerFactory;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
 import com.mogujie.jarvis.server.service.AppService;
 import com.mogujie.jarvis.server.util.FutureUtils;
 import com.mogujie.jarvis.server.workerselector.WorkerSelector;
-
-import akka.actor.ActorSelection;
-import akka.actor.ActorSystem;
 
 @Repository
 public class TaskDispatcher extends Thread {
@@ -52,7 +51,7 @@ public class TaskDispatcher extends Thread {
     private volatile boolean running = true;
 
     private ActorSystem system = JarvisServerActorSystem.getInstance();
-    private JobSchedulerController schedulerController = SchedulerControllerFactory.getController();
+    private JobSchedulerController schedulerController = JobSchedulerController.getInstance();
 
     private static final Logger LOGGER = LogManager.getLogger();
 

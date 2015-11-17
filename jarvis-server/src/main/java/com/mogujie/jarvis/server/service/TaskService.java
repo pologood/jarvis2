@@ -121,4 +121,14 @@ public class TaskService {
                 .andScheduleTimeBetween(firstDay, lastDay);
         return taskMapper.selectByExample(example);
     }
+
+    public List<Task> getTasksOfCurrentDay(long jobId, DateTime dt) {
+        //TODO
+        return null;
+    }
+
+    public List<Task> getTasksOfCurrentHour(long jobId, DateTime dt) {
+        //TODO
+        return null;
+    }
 }

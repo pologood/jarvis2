@@ -52,6 +52,10 @@ public abstract class DAGDependChecker {
         }
     }
 
+    public void addDependency(long jobId) {
+
+    }
+
     public void scheduleTask(long jobId, long taskId, long scheduleTime) {
         AbstractTaskSchedule taskSchedule = jobScheduleMap.get(jobId);
 

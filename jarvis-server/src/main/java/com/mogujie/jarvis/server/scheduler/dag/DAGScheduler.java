@@ -61,8 +61,8 @@ public class DAGScheduler extends Scheduler {
             Set<Long> dependencies = jobDependService.getDependIds(jobId);
             Integer fixedDelay = job.getFixedDelay();
             int cycleFlag = (fixedDelay != null && fixedDelay > 0) ? 1 : 0;
-            int dependFlag = (cronService.getPositiveCrontab(jobId) != null) ? 1 : 0;
-            int timeFlag = (!dependencies.isEmpty()) ? 1 : 0;
+            int timeFlag = (cronService.getPositiveCrontab(jobId) != null) ? 1 : 0;
+            int dependFlag = (!dependencies.isEmpty()) ? 1 : 0;
             DAGJobType type = SchedulerUtil.getDAGJobType(cycleFlag, dependFlag, timeFlag);
             try {
                 jobGraph.addJob(jobId, new DAGJob(jobId, type), dependencies);
@@ -109,11 +109,22 @@ public class DAGScheduler extends Scheduler {
         long jobId = e.getJobId();
         long taskId = e.getTaskId();
         long scheduleTime = e.getScheduleTime();
+        long childJobId = e.getChildJobId();
         DAGJob dagJob = getDAGJob(jobId);
         if (dagJob != null) {
-            List<DAGJob> children = jobGraph.getChildren(dagJob);
-            if (children != null) {
-                for (DAGJob child : children) {
+            if (childJobId == 0) {
+                List<DAGJob> children = jobGraph.getChildren(dagJob);
+                if (children != null) {
+                    for (DAGJob child : children) {
+                        if (child.getJobFlag().equals(JobFlag.ENABLE)) {
+                            child.scheduleTask(jobId, taskId, scheduleTime);
+                            jobGraph.submitJobWithCheck(child);
+                        }
+                    }
+                }
+            } else {
+                DAGJob child = getDAGJob(childJobId);
+                if (child != null) {
                     if (child.getJobFlag().equals(JobFlag.ENABLE)) {
                         child.scheduleTask(jobId, taskId, scheduleTime);
                         jobGraph.submitJobWithCheck(child);

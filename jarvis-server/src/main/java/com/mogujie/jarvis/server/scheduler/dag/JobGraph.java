@@ -52,7 +52,7 @@ public class JobGraph {
         this.controller = controller;
     }
 
-    public void clear() {
+    public synchronized void clear() {
         Set<DAGJob> allJobs = dag.vertexSet();
         if (allJobs != null) {
             List<DAGJob> tmpJobs = new ArrayList<DAGJob>();
@@ -118,7 +118,7 @@ public class JobGraph {
      * @param dependencies set of dependency jobId
      * @throws JobScheduleException
      */
-    public void addJob(long jobId, DAGJob dagJob, Set<Long> dependencies) throws JobScheduleException {
+    public synchronized void addJob(long jobId, DAGJob dagJob, Set<Long> dependencies) throws JobScheduleException {
         if (waitingTable.get(jobId) == null) {
             dag.addVertex(dagJob);
             LOGGER.debug("add DAGJob {} to graph successfully.", dagJob.toString());
@@ -151,7 +151,7 @@ public class JobGraph {
      * @param jobId
      * @throws JobScheduleException
      */
-    public void removeJob(long jobId) throws JobScheduleException {
+    public synchronized void removeJob(long jobId) throws JobScheduleException {
         if (waitingTable.containsKey(jobId)) {
             DAGJob dagJob = waitingTable.get(jobId);
             dagJob.resetTaskSchedule();
@@ -161,7 +161,7 @@ public class JobGraph {
         }
     }
 
-    public void removeJob(DAGJob dagJob) {
+    public synchronized void removeJob(DAGJob dagJob) {
         if (dagJob != null) {
             waitingTable.remove(dagJob.getJobId());
             dag.removeVertex(dagJob);
@@ -281,7 +281,7 @@ public class JobGraph {
         }
     }
 
-    public List<DAGJob> getParents(DAGJob dagJob) {
+    public synchronized List<DAGJob> getParents(DAGJob dagJob) {
         List<DAGJob> parents = new ArrayList<DAGJob>();
         Set<DefaultEdge> inEdges = dag.incomingEdgesOf(dagJob);
         if (inEdges != null) {
@@ -292,7 +292,7 @@ public class JobGraph {
         return parents;
     }
 
-    public List<DAGJob> getChildren(DAGJob dagJob) {
+    public synchronized List<DAGJob> getChildren(DAGJob dagJob) {
         List<DAGJob> children = new ArrayList<DAGJob>();
         Set<DefaultEdge> outEdges = dag.outgoingEdgesOf(dagJob);
         if (outEdges != null) {
@@ -344,7 +344,7 @@ public class JobGraph {
     }
 
     @VisibleForTesting
-    protected void addDependency(long parentId, long childId) throws CycleFoundException {
+    protected synchronized void addDependency(long parentId, long childId) throws CycleFoundException {
         DAGJob parent = waitingTable.get(parentId);
         DAGJob child = waitingTable.get(childId);
         if (parent != null && child != null) {
@@ -354,7 +354,7 @@ public class JobGraph {
     }
 
     @VisibleForTesting
-    protected void removeDependency(long parentId, long childId) {
+    protected synchronized void removeDependency(long parentId, long childId) {
         DAGJob parent = waitingTable.get(parentId);
         DAGJob child = waitingTable.get(childId);
         if (parent != null && child != null) {
