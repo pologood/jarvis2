@@ -18,19 +18,23 @@ import com.mogujie.jarvis.server.util.SpringContext;
  *
  */
 public class TaskScheduleFactory {
-//    public static final String TASK_DEPEND_SCHEDULE_KEY = "task.schedule";
-//    public static final String DEFAULT_TASK_DEPEND_SCHEDULE = RuntimeTaskSchedule.class.getName();
 
     public static AbstractTaskSchedule create(long myJobId, long preJobId) throws ClassNotFoundException {
         AbstractTaskSchedule dependSchedule = null;
         JobDependService jobDependService = SpringContext.getBean(JobDependService.class);
         if (jobDependService != null) {
             JobDepend jobDepend = jobDependService.getRecord(myJobId, preJobId);
-            if (jobDepend != null && jobDepend.getOffsetStrategy() != null && jobDepend.getOffsetStrategy() != "") {
-                dependSchedule = new OffsetTaskSchedule();
-            } else {
+            if (jobDepend != null) {
+                String offsetStrategy = jobDepend.getOffsetStrategy();
                 CommonStrategy commonStrategy = CommonStrategy.getInstance(jobDepend.getCommonStrategy());
-                dependSchedule =  new RuntimeTaskSchedule(myJobId, preJobId, commonStrategy);
+
+                if (offsetStrategy == null) {
+                    dependSchedule = new RuntimeTaskSchedule(myJobId, preJobId, commonStrategy);
+                } else if (offsetStrategy.startsWith("c")) {
+                    dependSchedule = new RuntimeTaskSchedule(myJobId, preJobId, commonStrategy, offsetStrategy);
+                } else {
+                    dependSchedule = new OffsetTaskSchedule();
+                }
             }
         }
 

@@ -8,9 +8,6 @@
 
 package com.mogujie.jarvis.server.scheduler.dag.checker;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.mogujie.jarvis.server.scheduler.depend.strategy.CommonStrategy;
 
 /**
@@ -32,7 +29,7 @@ public class CachedTaskSchedule extends RuntimeTaskSchedule {
         super(myJobId, preJobId, commonStrategy);
     }
 
-    protected List<ScheduleTask> loadSchedulingTasks() {
-        return new ArrayList<ScheduleTask>();
+    @Override
+    protected void loadSchedulingTasks() {
     }
 }

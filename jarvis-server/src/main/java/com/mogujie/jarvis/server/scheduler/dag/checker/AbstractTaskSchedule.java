@@ -68,7 +68,7 @@ public abstract class AbstractTaskSchedule {
     /**
      * check dependency
      */
-    public abstract boolean check();
+    public abstract boolean check(long scheduleTime);
 
     /**
      * start schedule task
@@ -78,6 +78,11 @@ public abstract class AbstractTaskSchedule {
     /**
      * get scheduling tasks
      */
-    public abstract List<ScheduleTask> getSchedulingTasks();
+    public abstract List<ScheduleTask> getSelectedTasks();
+
+    /**
+     * get minimum schedule time
+     */
+    public abstract long getMinScheduleTime();
 
 }

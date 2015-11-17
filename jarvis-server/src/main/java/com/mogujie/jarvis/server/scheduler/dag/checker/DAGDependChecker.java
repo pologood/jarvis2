@@ -73,19 +73,33 @@ public abstract class DAGDependChecker {
 
     public boolean checkDependency(Set<Long> needJobs) {
         boolean finishDependencies = true;
+        long scheduleTime = Long.MAX_VALUE;
         for (long jobId : needJobs) {
             AbstractTaskSchedule taskSchedule = jobScheduleMap.get(jobId);
             if (taskSchedule == null) {
                 taskSchedule = getSchedule(myJobId, jobId);
                 if (taskSchedule != null) {
                     jobScheduleMap.put(jobId, taskSchedule);
+                } else {
+                    return false;
                 }
             }
-            if (taskSchedule == null || !taskSchedule.check()) {
+
+            if (taskSchedule != null) {
+                long min = taskSchedule.getMinScheduleTime();
+                if (min != 0 && min < scheduleTime) {
+                    scheduleTime = min;
+                }
+            }
+        }
+
+        for (AbstractTaskSchedule taskSchedule : jobScheduleMap.values()) {
+            if (!taskSchedule.check(scheduleTime)) {
                 finishDependencies = false;
                 break;
             }
         }
+
 
         autoFix(needJobs);
 
@@ -99,7 +113,7 @@ public abstract class DAGDependChecker {
     public Map<Long, List<ScheduleTask>> getDependTaskIdMap() {
         Map<Long, List<ScheduleTask>> dependTaskMap = new HashMap<Long, List<ScheduleTask>>();
         for (Entry<Long, AbstractTaskSchedule> entry : jobScheduleMap.entrySet()) {
-            dependTaskMap.put(entry.getKey(), entry.getValue().getSchedulingTasks());
+            dependTaskMap.put(entry.getKey(), entry.getValue().getSelectedTasks());
         }
         return dependTaskMap;
     }
