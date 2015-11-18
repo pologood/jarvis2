@@ -65,6 +65,11 @@ public class RuntimeTaskSchedule extends AbstractTaskSchedule {
 
     @Override
     public void resetSchedule() {
+        selectedTasks.clear();
+    }
+
+    @Override
+    public void finishSchedule() {
         for (ScheduleTask task : selectedTasks) {
             schedulingTasks.remove(task);
         }
@@ -75,6 +80,11 @@ public class RuntimeTaskSchedule extends AbstractTaskSchedule {
     public void scheduleTask(long taskId, long scheduleTime) {
         ScheduleTask task = new ScheduleTask(taskId, scheduleTime);
         schedulingTasks.add(task);
+    }
+
+    @Override
+    public List<ScheduleTask> getSchedulingTasks() {
+        return new ArrayList<ScheduleTask>(schedulingTasks);
     }
 
     @Override
@@ -128,14 +138,6 @@ public class RuntimeTaskSchedule extends AbstractTaskSchedule {
             }
         }
         return false;
-    }
-
-    @Override
-    public long getMinScheduleTime() {
-        if (schedulingTasks.size() > 0) {
-            return schedulingTasks.first().getScheduleTime();
-        }
-        return 0;
     }
 
 }

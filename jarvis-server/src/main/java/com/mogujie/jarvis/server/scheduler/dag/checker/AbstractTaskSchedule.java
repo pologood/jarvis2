@@ -61,9 +61,14 @@ public abstract class AbstractTaskSchedule {
     public void init() {}
 
     /**
-     * reset dependency
+     * reset selected
      */
     public void resetSchedule() {}
+
+    /**
+     * finish schedule
+     */
+    public void finishSchedule() {}
 
     /**
      * check dependency
@@ -78,11 +83,11 @@ public abstract class AbstractTaskSchedule {
     /**
      * get scheduling tasks
      */
-    public abstract List<ScheduleTask> getSelectedTasks();
+    public abstract List<ScheduleTask> getSchedulingTasks();
 
     /**
-     * get minimum schedule time
+     * get selected tasks
      */
-    public abstract long getMinScheduleTime();
+    public abstract List<ScheduleTask> getSelectedTasks();
 
 }

@@ -24,13 +24,13 @@ public class OffsetTaskSchedule extends AbstractTaskSchedule {
     }
 
     @Override
-    public List<ScheduleTask> getSelectedTasks() {
+    public List<ScheduleTask> getSchedulingTasks() {
         return null;
     }
 
     @Override
-    public long getMinScheduleTime() {
-        // TODO Auto-generated method stub
-        return 0;
+    public List<ScheduleTask> getSelectedTasks() {
+        return null;
     }
+
 }

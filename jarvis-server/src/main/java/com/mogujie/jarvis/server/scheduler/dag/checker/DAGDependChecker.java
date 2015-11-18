@@ -73,7 +73,6 @@ public abstract class DAGDependChecker {
 
     public boolean checkDependency(Set<Long> needJobs) {
         boolean finishDependencies = true;
-        long scheduleTime = Long.MAX_VALUE;
         for (long jobId : needJobs) {
             AbstractTaskSchedule taskSchedule = jobScheduleMap.get(jobId);
             if (taskSchedule == null) {
@@ -84,22 +83,29 @@ public abstract class DAGDependChecker {
                     return false;
                 }
             }
-
-            if (taskSchedule != null) {
-                long min = taskSchedule.getMinScheduleTime();
-                if (min != 0 && min < scheduleTime) {
-                    scheduleTime = min;
-                }
-            }
         }
 
+        List<ScheduleTask> schedulingTasks = null;
         for (AbstractTaskSchedule taskSchedule : jobScheduleMap.values()) {
-            if (!taskSchedule.check(scheduleTime)) {
-                finishDependencies = false;
+            if (taskSchedule instanceof RuntimeTaskSchedule) {
+                schedulingTasks = taskSchedule.getSchedulingTasks();
                 break;
             }
         }
-
+        if (schedulingTasks.size() > 0) {
+            for (ScheduleTask task : schedulingTasks) {
+                long scheduleTime = task.getScheduleTime();
+                for (AbstractTaskSchedule taskSchedule : jobScheduleMap.values()) {
+                    if (!taskSchedule.check(scheduleTime)) {
+                        finishDependencies = false;
+                        resetAllSchedule();
+                        break;
+                    }
+                }
+            }
+        } else {
+            finishDependencies = false;
+        }
 
         autoFix(needJobs);
 
@@ -121,6 +127,12 @@ public abstract class DAGDependChecker {
     public void resetAllSchedule() {
         for (AbstractTaskSchedule taskSchedule : jobScheduleMap.values()) {
             taskSchedule.resetSchedule();
+        }
+    }
+
+    public void finishAllSchedule() {
+        for (AbstractTaskSchedule taskSchedule : jobScheduleMap.values()) {
+            taskSchedule.finishSchedule();
         }
     }
 

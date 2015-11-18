@@ -31,6 +31,7 @@ public class TaskScheduleFactory {
                 if (offsetStrategy == null) {
                     dependSchedule = new RuntimeTaskSchedule(myJobId, preJobId, commonStrategy);
                 } else if (offsetStrategy.startsWith("c")) {
+                    // current day/hour/...
                     dependSchedule = new RuntimeTaskSchedule(myJobId, preJobId, commonStrategy, offsetStrategy);
                 } else {
                     dependSchedule = new OffsetTaskSchedule();

@@ -86,7 +86,7 @@ public class DAGJob extends AbstractDAGJob {
     }
 
     public void resetTaskSchedule() {
-        dependChecker.resetAllSchedule();
+        dependChecker.finishAllSchedule();
         if (type.implies(DAGJobType.TIME)) {
             resetTimeReadyFlag();
         }
