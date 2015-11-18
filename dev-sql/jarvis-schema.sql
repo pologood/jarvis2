@@ -47,8 +47,8 @@ CREATE TABLE `job` (
   `submitUser` varchar(32) NOT NULL DEFAULT '' COMMENT '提交用户',
   `priority` int(3) unsigned NOT NULL DEFAULT '0' COMMENT '优先级,1:low,2:normal,3:high,4:verg high',
   `appId` int(11) NOT NULL COMMENT '应用ID',
-  `activeStartDate` date DEFAULT NULL COMMENT '有效开始日期',
-  `activeEndDate` date DEFAULT NULL COMMENT '有效结束日期',
+  `activeStartDate` datetime DEFAULT NULL COMMENT '有效开始日期',
+  `activeEndDate` datetime DEFAULT NULL COMMENT '有效结束日期',
   `workerGroupId` int(11) unsigned NOT NULL DEFAULT '0' COMMENT 'worker组ID',
   `rejectAttempts` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '任务被Worker拒绝时的重试次数',
   `rejectInterval` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '任务被Worker拒绝时重试的间隔(秒)',
@@ -57,7 +57,7 @@ CREATE TABLE `job` (
   `createTime` datetime NOT NULL COMMENT '创建时间',
   `updateTime` datetime NOT NULL COMMENT '最后更新时间',
   `updateUser` varchar(32) NOT NULL DEFAULT '' COMMENT '更新用户',
-  `fixedDelay` int(11) unsigned DEFAULT NULL COMMENT '固定延迟时间，单位:秒',
+  `fixedDelay` int(3) unsigned NOT NULL,
   PRIMARY KEY (`jobId`),
   KEY `index_originJobId` (`originJobId`),
   KEY `index_submitUser` (`submitUser`),
@@ -76,13 +76,25 @@ CREATE TABLE `job_depend` (
   PRIMARY KEY (`jobId`,`preJobId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='job依赖表';
 
+-- Create syntax for TABLE 'job_schedule_expression'
+CREATE TABLE `job_schedule_expression` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `jobId` bigint(11) unsigned NOT NULL DEFAULT '0' COMMENT 'JobId',
+  `expressionType` int(3) unsigned NOT NULL DEFAULT '1' COMMENT '1:cron; 2:rate; 3:delay; 4:ISO8601',
+  `expression` varchar(64) NOT NULL,
+  `createTime` datetime NOT NULL COMMENT '创建时间',
+  `updateTime` datetime NOT NULL COMMENT '最后更新时间',
+  PRIMARY KEY (`id`),
+  KEY `index_jobId` (`jobId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 -- Create syntax for TABLE 'task'
 CREATE TABLE `task` (
   `taskId` bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'taskId',
   `attemptId` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '最后的尝试ID',
   `jobId` bigint(11) unsigned NOT NULL DEFAULT '0' COMMENT '所属JobID',
-  `jobContent` varchar(10000) NOT NULL DEFAULT '' COMMENT '任务内容',
-  `jobParams` varchar(2048) DEFAULT '' COMMENT '任务参数',
+  `content` varchar(10000) NOT NULL DEFAULT '' COMMENT '任务内容',
+  `params` varchar(2048) DEFAULT '' COMMENT '任务参数',
   `scheduleTime` datetime DEFAULT NULL COMMENT '调度时间',
   `progress` float NOT NULL DEFAULT '0' COMMENT '执行进度',
   `status` int(3) unsigned NOT NULL DEFAULT '1' COMMENT 'task状态： 1:waiting；2:ready；3:running；4:success；5:failed；6:killed',
@@ -98,14 +110,15 @@ CREATE TABLE `task` (
   KEY `index_dataYmd` (`scheduleTime`),
   KEY `index_executeStartTime` (`executeStartTime`),
   KEY `index_executeUser` (`executeUser`) KEY_BLOCK_SIZE=4
-) ENGINE=InnoDB AUTO_INCREMENT=288 DEFAULT CHARSET=utf8 COMMENT='task表';
+) ENGINE=InnoDB AUTO_INCREMENT=322 DEFAULT CHARSET=utf8 COMMENT='task表';
 
 -- Create syntax for TABLE 'task_depend'
 CREATE TABLE `task_depend` (
   `taskId` bigint(11) unsigned NOT NULL DEFAULT '0' COMMENT 'taskId',
+  `preJobId` bigint(11) unsigned NOT NULL DEFAULT '0' COMMENT '前置jobId',
   `preTaskId` bigint(11) unsigned NOT NULL DEFAULT '0' COMMENT '前置taskId',
   `createTime` datetime NOT NULL COMMENT '创建时间',
-  PRIMARY KEY (`taskId`,`preTaskId`)
+  PRIMARY KEY (`taskId`,`preJobId`,`preTaskId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='task依赖表';
 
 -- Create syntax for TABLE 'task_schedule'
