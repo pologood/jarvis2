@@ -30,7 +30,7 @@ public class TaskDependSchedule {
     private long myJobId;
     private long preJobId;
     private String expression;
-    private JobDependType dependType;
+    protected JobDependType dependType;
 
     // SortedSet<ScheduleTask>
     private SortedSet<ScheduleTask> schedulingTasks = new ConcurrentSkipListSet<>(

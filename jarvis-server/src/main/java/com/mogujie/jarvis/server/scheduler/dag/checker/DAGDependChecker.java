@@ -16,9 +16,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.mogujie.jarvis.server.service.JobService;
-import com.mogujie.jarvis.server.util.SpringContext;
-
 /**
  * @author guangming
  *
@@ -158,12 +155,6 @@ public class DAGDependChecker {
     }
 
     private TaskDependSchedule getSchedule(long myJobId, long preJobId) {
-        JobService jobService = SpringContext.getBean(JobService.class);
-        String offsetStrategy = jobService.get(myJobId).getDependencies().get(preJobId).getDependencyExpression().getExpression();
-
-        TaskDependSchedule dependSchedule = new TaskDependSchedule(myJobId, preJobId, offsetStrategy);
-        dependSchedule.init();
-
-        return dependSchedule;
+        return TaskScheduleFactory.create(myJobId, preJobId);
     }
 }
