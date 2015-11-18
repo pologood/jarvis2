@@ -1364,66 +1364,6 @@ public class JobExample {
             addCriterion("updateUser not between", value1, value2, "updateUser");
             return (Criteria) this;
         }
-
-        public Criteria andFixedDelayIsNull() {
-            addCriterion("fixedDelay is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andFixedDelayIsNotNull() {
-            addCriterion("fixedDelay is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andFixedDelayEqualTo(Integer value) {
-            addCriterion("fixedDelay =", value, "fixedDelay");
-            return (Criteria) this;
-        }
-
-        public Criteria andFixedDelayNotEqualTo(Integer value) {
-            addCriterion("fixedDelay <>", value, "fixedDelay");
-            return (Criteria) this;
-        }
-
-        public Criteria andFixedDelayGreaterThan(Integer value) {
-            addCriterion("fixedDelay >", value, "fixedDelay");
-            return (Criteria) this;
-        }
-
-        public Criteria andFixedDelayGreaterThanOrEqualTo(Integer value) {
-            addCriterion("fixedDelay >=", value, "fixedDelay");
-            return (Criteria) this;
-        }
-
-        public Criteria andFixedDelayLessThan(Integer value) {
-            addCriterion("fixedDelay <", value, "fixedDelay");
-            return (Criteria) this;
-        }
-
-        public Criteria andFixedDelayLessThanOrEqualTo(Integer value) {
-            addCriterion("fixedDelay <=", value, "fixedDelay");
-            return (Criteria) this;
-        }
-
-        public Criteria andFixedDelayIn(List<Integer> values) {
-            addCriterion("fixedDelay in", values, "fixedDelay");
-            return (Criteria) this;
-        }
-
-        public Criteria andFixedDelayNotIn(List<Integer> values) {
-            addCriterion("fixedDelay not in", values, "fixedDelay");
-            return (Criteria) this;
-        }
-
-        public Criteria andFixedDelayBetween(Integer value1, Integer value2) {
-            addCriterion("fixedDelay between", value1, value2, "fixedDelay");
-            return (Criteria) this;
-        }
-
-        public Criteria andFixedDelayNotBetween(Integer value1, Integer value2) {
-            addCriterion("fixedDelay not between", value1, value2, "fixedDelay");
-            return (Criteria) this;
-        }
     }
 
     public static class Criteria extends GeneratedCriteria {

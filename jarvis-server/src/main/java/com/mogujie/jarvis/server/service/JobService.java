@@ -103,15 +103,6 @@ public class JobService {
         return jobMapper.selectByExample(example);
     }
 
-    public boolean hasFixedDelay(long jobId) {
-        Job job = jobMapper.selectByPrimaryKey(jobId);
-        Preconditions.checkNotNull(job, "Job " + jobId +" not found!");
-        if (job.getFixedDelay() != null && job.getFixedDelay() > 0) {
-            return true;
-        }
-        return false;
-    }
-
     public List<Job> getActiveExpiredJobs() {
         JobExample example = new JobExample();
         DateTime dt = DateTime.now();

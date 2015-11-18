@@ -59,7 +59,6 @@ public class MessageUtil {
         job.setUpdateUser(msg.getUser());
         job.setWorkerGroupId(msg.getGroupId());
         job.setOriginJobId(msg.getOriginJobId());
-        job.setFixedDelay(msg.getFixedDelay());
         if (msg.getParametersList() != null && msg.getParametersList().size() != 0) {
             job.setParams(JsonHelper.parseMapEntryList2JSON(msg.getParametersList()));
         }
@@ -125,8 +124,11 @@ public class MessageUtil {
         return jobDepend;
     }
 
-    public static Map<ModifyJobType, ModifyJobEntry> convert2ModifyJobMap(RestServerModifyJobRequest msg, JobService jobService,
+    public static Map<ModifyJobType, ModifyJobEntry> convert2ModifyJobMap(
+            RestServerModifyJobRequest msg,
+            JobService jobService,
             CrontabService cronService) {
+
         Map<ModifyJobType, ModifyJobEntry> modifyMap = new HashMap<ModifyJobType, ModifyJobEntry>();
         long jobId = msg.getJobId();
         if (msg.hasCronExpression()) {
@@ -144,22 +146,6 @@ public class MessageUtil {
             }
             ModifyJobEntry entry = new ModifyJobEntry(operation, newCronExpression);
             modifyMap.put(ModifyJobType.CRON, entry);
-        }
-        if (msg.hasFixedDelay()) {
-            int newFixedDelay = msg.getFixedDelay();
-            ModifyOperation operation;
-            if (newFixedDelay <= 0) {
-                operation = ModifyOperation.DEL;
-            } else {
-                boolean hasFixedDelay = jobService.hasFixedDelay(jobId);
-                if (!hasFixedDelay) {
-                    operation = ModifyOperation.ADD;
-                } else {
-                    operation = ModifyOperation.MODIFY;
-                }
-            }
-            ModifyJobEntry entry = new ModifyJobEntry(operation, newFixedDelay);
-            modifyMap.put(ModifyJobType.CYCLE, entry);
         }
 
         return modifyMap;

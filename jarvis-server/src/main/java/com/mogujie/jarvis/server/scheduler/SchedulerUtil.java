@@ -20,9 +20,13 @@ import com.mogujie.jarvis.server.scheduler.dag.DAGJobType;
 public class SchedulerUtil {
     public static final String ENABLE_TEST_MODE = "enable.test.mode";
 
-    public static DAGJobType getDAGJobType(int cycleFlag, int dependFlag, int timeFlag) {
+    public static DAGJobType getDAGJobType(int timeFlag,  int dependFlag, int cycleFlag) {
         DAGJobType[] values = DAGJobType.values();
         return values[(cycleFlag << 2) + (dependFlag << 1) + timeFlag];
+    }
+
+    public static DAGJobType getDAGJobType(int timeFlag,  int dependFlag) {
+        return getDAGJobType(timeFlag,dependFlag,0);
     }
 
     public static boolean isTestMode() {

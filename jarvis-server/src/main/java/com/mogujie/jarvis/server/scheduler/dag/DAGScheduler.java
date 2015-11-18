@@ -59,11 +59,9 @@ public class DAGScheduler extends Scheduler {
         for (Job job : jobs) {
             long jobId = job.getJobId();
             Set<Long> dependencies = jobDependService.getDependIds(jobId);
-            Integer fixedDelay = job.getFixedDelay();
-            int cycleFlag = (fixedDelay != null && fixedDelay > 0) ? 1 : 0;
             int timeFlag = (cronService.getPositiveCrontab(jobId) != null) ? 1 : 0;
             int dependFlag = (!dependencies.isEmpty()) ? 1 : 0;
-            DAGJobType type = SchedulerUtil.getDAGJobType(cycleFlag, dependFlag, timeFlag);
+            DAGJobType type = SchedulerUtil.getDAGJobType(timeFlag,dependFlag);
             try {
                 jobGraph.addJob(jobId, new DAGJob(jobId, type), dependencies);
             } catch (Exception e) {

@@ -44,8 +44,6 @@ public class Job implements Serializable {
 
     private String updateUser;
 
-    private Integer fixedDelay;
-
     private static final long serialVersionUID = 1L;
 
     public Long getJobId() {
@@ -206,13 +204,5 @@ public class Job implements Serializable {
 
     public void setUpdateUser(String updateUser) {
         this.updateUser = updateUser;
-    }
-
-    public Integer getFixedDelay() {
-        return fixedDelay;
-    }
-
-    public void setFixedDelay(Integer fixedDelay) {
-        this.fixedDelay = fixedDelay;
     }
 }

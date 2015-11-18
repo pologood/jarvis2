@@ -22,7 +22,6 @@
     <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
     <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
     <result column="updateUser" property="updateUser" jdbcType="VARCHAR" />
-    <result column="fixedDelay" property="fixedDelay" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -85,7 +84,7 @@
   <sql id="Base_Column_List" >
     jobId, originJobId, jobName, jobType, jobFlag, content, params, submitUser, priority, 
     appId, activeStartDate, activeEndDate, workerGroupId, rejectAttempts, rejectInterval, 
-    failedAttempts, failedInterval, createTime, updateTime, updateUser, fixedDelay
+    failedAttempts, failedInterval, createTime, updateTime, updateUser
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.mogujie.jarvis.dto.JobExample" >
     select
@@ -127,14 +126,14 @@
       activeStartDate, activeEndDate, workerGroupId, 
       rejectAttempts, rejectInterval, failedAttempts, 
       failedInterval, createTime, updateTime, 
-      updateUser, fixedDelay)
+      updateUser)
     values (#{originJobId,jdbcType=BIGINT}, #{jobName,jdbcType=VARCHAR}, #{jobType,jdbcType=VARCHAR}, 
       #{jobFlag,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, #{params,jdbcType=VARCHAR}, 
       #{submitUser,jdbcType=VARCHAR}, #{priority,jdbcType=INTEGER}, #{appId,jdbcType=INTEGER}, 
       #{activeStartDate,jdbcType=TIMESTAMP}, #{activeEndDate,jdbcType=TIMESTAMP}, #{workerGroupId,jdbcType=INTEGER}, 
       #{rejectAttempts,jdbcType=INTEGER}, #{rejectInterval,jdbcType=INTEGER}, #{failedAttempts,jdbcType=INTEGER}, 
       #{failedInterval,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{updateUser,jdbcType=VARCHAR}, #{fixedDelay,jdbcType=INTEGER})
+      #{updateUser,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.mogujie.jarvis.dto.Job" >
     <selectKey resultType="java.lang.Long" keyProperty="jobId" order="AFTER" >
@@ -199,9 +198,6 @@
       <if test="updateUser != null" >
         updateUser,
       </if>
-      <if test="fixedDelay != null" >
-        fixedDelay,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="originJobId != null" >
@@ -260,9 +256,6 @@
       </if>
       <if test="updateUser != null" >
         #{updateUser,jdbcType=VARCHAR},
-      </if>
-      <if test="fixedDelay != null" >
-        #{fixedDelay,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -335,9 +328,6 @@
       <if test="record.updateUser != null" >
         updateUser = #{record.updateUser,jdbcType=VARCHAR},
       </if>
-      <if test="record.fixedDelay != null" >
-        fixedDelay = #{record.fixedDelay,jdbcType=INTEGER},
-      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -364,8 +354,7 @@
       failedInterval = #{record.failedInterval,jdbcType=INTEGER},
       createTime = #{record.createTime,jdbcType=TIMESTAMP},
       updateTime = #{record.updateTime,jdbcType=TIMESTAMP},
-      updateUser = #{record.updateUser,jdbcType=VARCHAR},
-      fixedDelay = #{record.fixedDelay,jdbcType=INTEGER}
+      updateUser = #{record.updateUser,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -430,9 +419,6 @@
       <if test="updateUser != null" >
         updateUser = #{updateUser,jdbcType=VARCHAR},
       </if>
-      <if test="fixedDelay != null" >
-        fixedDelay = #{fixedDelay,jdbcType=INTEGER},
-      </if>
     </set>
     where jobId = #{jobId,jdbcType=BIGINT}
   </update>
@@ -456,8 +442,7 @@
       failedInterval = #{failedInterval,jdbcType=INTEGER},
       createTime = #{createTime,jdbcType=TIMESTAMP},
       updateTime = #{updateTime,jdbcType=TIMESTAMP},
-      updateUser = #{updateUser,jdbcType=VARCHAR},
-      fixedDelay = #{fixedDelay,jdbcType=INTEGER}
+      updateUser = #{updateUser,jdbcType=VARCHAR}
     where jobId = #{jobId,jdbcType=BIGINT}
   </update>
   <cache />
