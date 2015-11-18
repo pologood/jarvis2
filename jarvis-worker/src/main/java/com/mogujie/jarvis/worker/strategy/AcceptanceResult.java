@@ -12,12 +12,12 @@ package com.mogujie.jarvis.worker.strategy;
  * @author wuya
  *
  */
-public class AcceptionResult {
+public class AcceptanceResult {
 
   private boolean accepted;
   private String message;
 
-  public AcceptionResult(boolean accepted, String message) {
+  public AcceptanceResult(boolean accepted, String message) {
     this.accepted = accepted;
     this.message = message;
   }

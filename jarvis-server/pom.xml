@@ -78,6 +78,11 @@
 			<artifactId>ehcache-core</artifactId>
 			<version>2.6.11</version>
 		</dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.190</version>
+        </dependency>
 	</dependencies>
 
 	<build>

@@ -14,7 +14,7 @@ import com.mogujie.jarvis.core.exeception.AcceptanceException;
  * @author wuya
  *
  */
-public interface AcceptionStrategy {
+public interface AcceptanceStrategy {
 
-  AcceptionResult accept() throws AcceptanceException;
+  AcceptanceResult accept() throws AcceptanceException;
 }

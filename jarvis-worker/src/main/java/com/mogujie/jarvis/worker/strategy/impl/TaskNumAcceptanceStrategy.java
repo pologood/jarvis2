@@ -11,27 +11,27 @@ package com.mogujie.jarvis.worker.strategy.impl;
 import com.mogujie.jarvis.core.exeception.AcceptanceException;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.worker.TaskPool;
-import com.mogujie.jarvis.worker.strategy.AcceptionResult;
-import com.mogujie.jarvis.worker.strategy.AcceptionStrategy;
+import com.mogujie.jarvis.worker.strategy.AcceptanceResult;
+import com.mogujie.jarvis.worker.strategy.AcceptanceStrategy;
 
 /**
  * @author wuya
  *
  */
-public class TaskNumAcceptionStrategy implements AcceptionStrategy {
+public class TaskNumAcceptanceStrategy implements AcceptanceStrategy {
 
   public static final int JOB_MAX_THRESHOLD = ConfigUtils.getWorkerConfig()
       .getInt("worker.job.num.threshold", 100);
 
   @Override
-  public AcceptionResult accept() throws AcceptanceException {
+  public AcceptanceResult accept() throws AcceptanceException {
     int currentJobNum = TaskPool.getInstance().size();
     if (currentJobNum > JOB_MAX_THRESHOLD) {
-      return new AcceptionResult(false,
+      return new AcceptanceResult(false,
           "client当前运行任务数" + currentJobNum + ", 超过阈值" + JOB_MAX_THRESHOLD);
     }
 
-    return new AcceptionResult(true, "");
+    return new AcceptanceResult(true, "");
   }
 
 }

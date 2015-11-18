@@ -21,14 +21,14 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.mogujie.jarvis.core.exeception.AcceptanceException;
 import com.mogujie.jarvis.core.util.ConfigUtils;
-import com.mogujie.jarvis.worker.strategy.AcceptionResult;
-import com.mogujie.jarvis.worker.strategy.AcceptionStrategy;
+import com.mogujie.jarvis.worker.strategy.AcceptanceResult;
+import com.mogujie.jarvis.worker.strategy.AcceptanceStrategy;
 
 /**
  * @author wuya
  *
  */
-public class YarnMemoryAcceptionStrategy implements AcceptionStrategy {
+public class YarnMemoryAcceptanceStrategy implements AcceptanceStrategy {
 
   private int activeUriIndex = 0;
   private DecimalFormat decimalFormat = new DecimalFormat("#0.00");
@@ -39,7 +39,7 @@ public class YarnMemoryAcceptionStrategy implements AcceptionStrategy {
       .getList("yarn.resoucemanager.rest.api.uris");
 
   @Override
-  public AcceptionResult accept() throws AcceptanceException {
+  public AcceptanceResult accept() throws AcceptanceException {
     for (int i = 0, len = YARN_REST_API_URIS.size(); i < len; i++) {
       try {
         HttpResponse<JsonNode> response = Unirest
@@ -49,9 +49,9 @@ public class YarnMemoryAcceptionStrategy implements AcceptionStrategy {
         int totalMB = clusterMetrics.getInt("totalMB");
         double currentMemoryUsage = (double) allocatedMB / totalMB;
         if (currentMemoryUsage < MAX_YARN_MEMORY_USAGE) {
-          return new AcceptionResult(true, "");
+          return new AcceptanceResult(true, "");
         } else {
-          return new AcceptionResult(false, "Yarn集群当前内存使用率"
+          return new AcceptanceResult(false, "Yarn集群当前内存使用率"
               + decimalFormat.format(currentMemoryUsage) + ", 超过阈值" + MAX_YARN_MEMORY_USAGE);
         }
       } catch (UnirestException | JSONException e) {
@@ -59,7 +59,7 @@ public class YarnMemoryAcceptionStrategy implements AcceptionStrategy {
       }
     }
 
-    return new AcceptionResult(false, "Can not get yarn cluster metrics");
+    return new AcceptanceResult(false, "Can not get yarn cluster metrics");
   }
 
 }

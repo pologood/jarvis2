@@ -14,14 +14,14 @@ import java.text.DecimalFormat;
 
 import com.mogujie.jarvis.core.exeception.AcceptanceException;
 import com.mogujie.jarvis.core.util.ConfigUtils;
-import com.mogujie.jarvis.worker.strategy.AcceptionResult;
-import com.mogujie.jarvis.worker.strategy.AcceptionStrategy;
+import com.mogujie.jarvis.worker.strategy.AcceptanceResult;
+import com.mogujie.jarvis.worker.strategy.AcceptanceStrategy;
 
 /**
  * @author wuya
  *
  */
-public class LoadAcceptionStrategy implements AcceptionStrategy {
+public class LoadAcceptanceStrategy implements AcceptanceStrategy {
 
   private DecimalFormat decimalFormat = new DecimalFormat("#0.00");
   public static final int CPU_NUM = Runtime.getRuntime().availableProcessors();
@@ -29,16 +29,16 @@ public class LoadAcceptionStrategy implements AcceptionStrategy {
       .getDouble("worker.cpu.load.avg.threshold", CPU_NUM * 1.5);
 
   @Override
-  public AcceptionResult accept() throws AcceptanceException {
+  public AcceptanceResult accept() throws AcceptanceException {
     OperatingSystemMXBean bean = (OperatingSystemMXBean) ManagementFactory
         .getOperatingSystemMXBean();
     double currentLoad = bean.getSystemLoadAverage();
     if (currentLoad > LOAD_THRESHOLD) {
-      return new AcceptionResult(false,
+      return new AcceptanceResult(false,
           "client当前CPU Load " + decimalFormat.format(currentLoad) + ", 超过阈值" + LOAD_THRESHOLD);
     }
 
-    return new AcceptionResult(true, "");
+    return new AcceptanceResult(true, "");
   }
 
 }

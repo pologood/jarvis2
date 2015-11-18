@@ -41,8 +41,8 @@ import com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse;
 import com.mogujie.jarvis.worker.TaskCallable;
 import com.mogujie.jarvis.worker.TaskPool;
-import com.mogujie.jarvis.worker.strategy.AcceptionResult;
-import com.mogujie.jarvis.worker.strategy.AcceptionStrategy;
+import com.mogujie.jarvis.worker.strategy.AcceptanceResult;
+import com.mogujie.jarvis.worker.strategy.AcceptanceStrategy;
 import com.mogujie.jarvis.worker.util.TaskConfigUtils;
 
 import akka.actor.ActorSelection;
@@ -111,12 +111,12 @@ public class WorkerActor extends UntypedActor {
         ProgressReporter reporter = new DefaultProgressReporter(serverActor, fullId);
         contextBuilder.setProgressReporter(reporter);
 
-        Tuple2<Class<? extends AbstractTask>, List<AcceptionStrategy>> t2 = TaskConfigUtils
+        Tuple2<Class<? extends AbstractTask>, List<AcceptanceStrategy>> t2 = TaskConfigUtils
                 .getRegisteredJobs().get(taskType);
-        List<AcceptionStrategy> strategies = t2._2();
-        for (AcceptionStrategy strategy : strategies) {
+        List<AcceptanceStrategy> strategies = t2._2();
+        for (AcceptanceStrategy strategy : strategies) {
             try {
-                AcceptionResult result = strategy.accept();
+                AcceptanceResult result = strategy.accept();
                 if (!result.isAccepted()) {
                     getSender().tell(WorkerSubmitTaskResponse.newBuilder().setAccept(false)
                             .setMessage(result.getMessage()).build(), getSelf());

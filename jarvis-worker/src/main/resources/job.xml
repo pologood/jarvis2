@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <configuration>
 	<strategies>
-		<strategy>com.mogujie.jarvis.worker.strategy.impl.CpuAcceptionStrategy</strategy>
+		<strategy>com.mogujie.jarvis.worker.strategy.impl.CpuAcceptanceStrategy</strategy>
 		<strategy>com.mogujie.jarvis.worker.strategy.impl.JobNumAcceptionStrategy</strategy>
-		<strategy>com.mogujie.jarvis.worker.strategy.impl.LoadAcceptionStrategy</strategy>
-		<strategy>com.mogujie.jarvis.worker.strategy.impl.MemoryAcceptionStrategy</strategy>
+		<strategy>com.mogujie.jarvis.worker.strategy.impl.LoadAcceptanceStrategy</strategy>
+		<strategy>com.mogujie.jarvis.worker.strategy.impl.MemoryAcceptanceStrategy</strategy>
 	</strategies>
 	
 	<jobs>
 	    <job type="hive" class="com.mogujie.jarvis.jobs.impl.HiveJob">
 	    		<strategies>
-				<strategy>com.mogujie.jarvis.worker.strategy.impl.YarnMemoryAcceptionStrategy</strategy>
+				<strategy>com.mogujie.jarvis.worker.strategy.impl.YarnMemoryAcceptanceStrategy</strategy>
 			</strategies>
 	    </job>
 	    

@@ -16,34 +16,34 @@ import org.hyperic.sigar.SigarException;
 
 import com.mogujie.jarvis.core.exeception.AcceptanceException;
 import com.mogujie.jarvis.core.util.ConfigUtils;
-import com.mogujie.jarvis.worker.strategy.AcceptionResult;
-import com.mogujie.jarvis.worker.strategy.AcceptionStrategy;
+import com.mogujie.jarvis.worker.strategy.AcceptanceResult;
+import com.mogujie.jarvis.worker.strategy.AcceptanceStrategy;
 
 /**
  * @author wuya
  *
  */
-public class CpuAcceptionStrategy implements AcceptionStrategy {
+public class CpuAcceptanceStrategy implements AcceptanceStrategy {
 
   private DecimalFormat decimalFormat = new DecimalFormat("#0.00");
   public static final double MAX_CPU_USAGE = ConfigUtils.getWorkerConfig()
       .getDouble("worker.cpu.usage.threshold", 0.85);
 
   @Override
-  public AcceptionResult accept() throws AcceptanceException {
+  public AcceptanceResult accept() throws AcceptanceException {
     Sigar sigar = new Sigar();
     try {
       CpuPerc perc = sigar.getCpuPerc();
       double currentCpuUsage = perc.getCombined();
       if (currentCpuUsage > MAX_CPU_USAGE) {
-        return new AcceptionResult(false,
+        return new AcceptanceResult(false,
             "client当前CPU使用率" + decimalFormat.format(currentCpuUsage) + ", 超过阈值" + MAX_CPU_USAGE);
       }
     } catch (SigarException e) {
-      return new AcceptionResult(false, e.getMessage());
+      return new AcceptanceResult(false, e.getMessage());
     }
 
-    return new AcceptionResult(true, "");
+    return new AcceptanceResult(true, "");
   }
 
 }
