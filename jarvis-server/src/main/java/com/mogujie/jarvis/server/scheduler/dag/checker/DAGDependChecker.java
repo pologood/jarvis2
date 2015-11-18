@@ -16,18 +16,19 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.mogujie.jarvis.server.scheduler.depend.strategy.CommonStrategy;
+import com.mogujie.jarvis.server.service.JobService;
+import com.mogujie.jarvis.server.util.SpringContext;
 
 /**
  * @author guangming
  *
  */
-public abstract class DAGDependChecker {
+public class DAGDependChecker {
     private long myJobId;
 
-    // Map<JobId, AbstractTaskSchedule>
-    protected Map<Long, AbstractTaskSchedule> jobScheduleMap =
-            new ConcurrentHashMap<Long, AbstractTaskSchedule>();
+    // Map<JobId, TaskDependSchedule>
+    protected Map<Long, TaskDependSchedule> jobScheduleMap =
+            new ConcurrentHashMap<Long, TaskDependSchedule>();
 
     public DAGDependChecker() {
     }
@@ -45,9 +46,8 @@ public abstract class DAGDependChecker {
     }
 
     public void removeDependency(long jobId) {
-        AbstractTaskSchedule taskSchedule = jobScheduleMap.get(jobId);
+        TaskDependSchedule taskSchedule = jobScheduleMap.get(jobId);
         if (taskSchedule != null) {
-            taskSchedule.resetSchedule();
             jobScheduleMap.remove(jobId);
         }
     }
@@ -57,7 +57,7 @@ public abstract class DAGDependChecker {
     }
 
     public void scheduleTask(long jobId, long taskId, long scheduleTime) {
-        AbstractTaskSchedule taskSchedule = jobScheduleMap.get(jobId);
+        TaskDependSchedule taskSchedule = jobScheduleMap.get(jobId);
 
         if (taskSchedule == null) {
             taskSchedule = getSchedule(myJobId, jobId);
@@ -74,7 +74,7 @@ public abstract class DAGDependChecker {
     public boolean checkDependency(Set<Long> needJobs) {
         boolean finishDependencies = true;
         for (long jobId : needJobs) {
-            AbstractTaskSchedule taskSchedule = jobScheduleMap.get(jobId);
+            TaskDependSchedule taskSchedule = jobScheduleMap.get(jobId);
             if (taskSchedule == null) {
                 taskSchedule = getSchedule(myJobId, jobId);
                 if (taskSchedule != null) {
@@ -86,19 +86,21 @@ public abstract class DAGDependChecker {
         }
 
         List<ScheduleTask> schedulingTasks = null;
-        for (AbstractTaskSchedule taskSchedule : jobScheduleMap.values()) {
-            if (taskSchedule instanceof RuntimeTaskSchedule) {
+        for (TaskDependSchedule taskSchedule : jobScheduleMap.values()) {
+            // find one which not offset dependency
+            // and size of scheduling tasks > 0
+            if (taskSchedule.getSchedulingTasks().size() > 0) {
                 schedulingTasks = taskSchedule.getSchedulingTasks();
                 break;
             }
         }
-        if (schedulingTasks.size() > 0) {
+        if (schedulingTasks != null) {
             for (ScheduleTask task : schedulingTasks) {
                 long scheduleTime = task.getScheduleTime();
-                for (AbstractTaskSchedule taskSchedule : jobScheduleMap.values()) {
+                for (TaskDependSchedule taskSchedule : jobScheduleMap.values()) {
                     if (!taskSchedule.check(scheduleTime)) {
                         finishDependencies = false;
-                        resetAllSchedule();
+                        resetAllSelected();
                         break;
                     }
                 }
@@ -118,42 +120,50 @@ public abstract class DAGDependChecker {
      */
     public Map<Long, List<ScheduleTask>> getDependTaskIdMap() {
         Map<Long, List<ScheduleTask>> dependTaskMap = new HashMap<Long, List<ScheduleTask>>();
-        for (Entry<Long, AbstractTaskSchedule> entry : jobScheduleMap.entrySet()) {
+        for (Entry<Long, TaskDependSchedule> entry : jobScheduleMap.entrySet()) {
             dependTaskMap.put(entry.getKey(), entry.getValue().getSelectedTasks());
         }
         return dependTaskMap;
     }
 
-    public void resetAllSchedule() {
-        for (AbstractTaskSchedule taskSchedule : jobScheduleMap.values()) {
-            taskSchedule.resetSchedule();
+    public void resetAllSelected() {
+        for (TaskDependSchedule taskSchedule : jobScheduleMap.values()) {
+            taskSchedule.resetSelected();
         }
     }
 
     public void finishAllSchedule() {
-        for (AbstractTaskSchedule taskSchedule : jobScheduleMap.values()) {
+        for (TaskDependSchedule taskSchedule : jobScheduleMap.values()) {
             taskSchedule.finishSchedule();
         }
     }
 
-    public void updateCommonStrategy(long parentId, CommonStrategy newStrategy) {
-        AbstractTaskSchedule status = jobScheduleMap.get(parentId);
-        if (status != null) {
-            status.setCommonStrategy(newStrategy);
+    public void updateExpression(long parentId, String expression) {
+        TaskDependSchedule dependSchedule = jobScheduleMap.get(parentId);
+        if (dependSchedule != null) {
+            dependSchedule.setExpression(expression);
         }
     }
 
     private void autoFix(Set<Long> needJobs) {
-        Iterator<Entry<Long, AbstractTaskSchedule>> it = jobScheduleMap.entrySet().iterator();
+        Iterator<Entry<Long, TaskDependSchedule>> it = jobScheduleMap.entrySet().iterator();
         while (it.hasNext()) {
-            Entry<Long, AbstractTaskSchedule> entry = it.next();
+            Entry<Long, TaskDependSchedule> entry = it.next();
             long jobId = entry.getKey();
             if (!needJobs.contains(jobId)) {
-                entry.getValue().resetSchedule();
+                entry.getValue().resetSelected();
                 it.remove();
             }
         }
     }
 
-    protected abstract AbstractTaskSchedule getSchedule(long myJobId, long preJobId);
+    private TaskDependSchedule getSchedule(long myJobId, long preJobId) {
+        JobService jobService = SpringContext.getBean(JobService.class);
+        String offsetStrategy = jobService.get(myJobId).getDependencies().get(preJobId).getDependencyExpression().getExpression();
+
+        TaskDependSchedule dependSchedule = new TaskDependSchedule(myJobId, preJobId, offsetStrategy);
+        dependSchedule.init();
+
+        return dependSchedule;
+    }
 }

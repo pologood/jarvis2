@@ -128,7 +128,9 @@ public class TaskScheduler extends Scheduler {
             for (Task task : readyTasks) {
                 DAGTask dagTask = new DAGTask(task.getJobId(), task.getTaskId(), task.getAttemptId());
                 readyTable.put(task.getTaskId(), dagTask);
-                retryTask(task);
+                if (dagTask.checkStatus()) {
+                    retryTask(task);
+                }
             }
         }
 
@@ -189,6 +191,7 @@ public class TaskScheduler extends Scheduler {
 
     @Subscribe
     @AllowConcurrentEvents
+    @Transactional
     public void handleRunningEvent(RunningEvent e) {
         long taskId = e.getTaskId();
         updateTaskStatus(taskId, JobStatus.RUNNING);
@@ -211,7 +214,6 @@ public class TaskScheduler extends Scheduler {
         DAGTask dagTask = readyTable.get(e.getTaskId());
         long taskId = e.getTaskId();
         if (dagTask != null) {
-
             int maxFailedAttempts = DEFAULT_MAX_FAILED_ATTEMPTS;
             int failedInterval = DEFAULT_FAILED_INTERVAL;
             if (!isTestMode) {
@@ -256,6 +258,11 @@ public class TaskScheduler extends Scheduler {
         if (!readyTable.containsKey(taskId)) {
             // add to readyTable
             readyTable.put(taskId, dagTask);
+
+            // 如果通过依赖检查，提交给任务执行器
+            if (dagTask.checkStatus()) {
+                submitTask(dagTask);
+            }
 
             // send ScheduleEvent
             ScheduleEvent event = new ScheduleEvent(jobId, taskId, scheduleTime);

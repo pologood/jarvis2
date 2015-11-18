@@ -34,7 +34,6 @@ import com.mogujie.jarvis.server.scheduler.JobScheduleException;
 import com.mogujie.jarvis.server.scheduler.controller.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.dag.checker.DAGDependChecker;
 import com.mogujie.jarvis.server.scheduler.dag.checker.ScheduleTask;
-import com.mogujie.jarvis.server.scheduler.depend.strategy.CommonStrategy;
 import com.mogujie.jarvis.server.scheduler.event.AddTaskEvent;
 
 /**
@@ -184,7 +183,7 @@ public class JobGraph {
                 removeDependency(preJobId, jobId);
                 LOGGER.info("remove dependency successfully, parent {}, child {}", preJobId, jobId);
             } else if (entry.getOperation().equals(ModifyOperation.MODIFY)) {
-                modifyDependency(preJobId, jobId, entry.getCommonStrategy(), entry.getOffsetStrategy());
+                modifyDependency(preJobId, jobId, entry.getOffsetStrategy());
                 LOGGER.info("modify dependency strategy, new common strategy is {}, new offset Strategy is {}",
                         entry.getCommonStrategy(), entry.getOffsetStrategy());
             }
@@ -363,13 +362,12 @@ public class JobGraph {
         }
     }
 
-    protected void modifyDependency(long parentId, long childId, int commonStrategyValue, String offsetStrategyValue) {
+    protected void modifyDependency(long parentId, long childId, String offsetStrategy) {
         DAGJob parent = waitingTable.get(parentId);
         DAGJob child = waitingTable.get(childId);
         if (parent != null && child != null) {
             DAGDependChecker checker = child.getDependChecker();
-            CommonStrategy commonStrategy = CommonStrategy.getInstance(commonStrategyValue);
-            checker.updateCommonStrategy(parentId, commonStrategy);
+            checker.updateExpression(parentId, offsetStrategy);
         }
     }
 
@@ -406,7 +404,7 @@ public class JobGraph {
         for (Entry<Long, List<ScheduleTask>> entry : dependTaskMap.entrySet()) {
             long jobId = entry.getKey();
             List<ScheduleTask> dependTasks = entry.getValue();
-            if (dependTasks == null) {
+            if (dependTasks == null || dependTasks.isEmpty()) {
                 Set<Long> dependTaskIds = Sets.newHashSet((long)0);
                 dependTaskIdMap.put(jobId, dependTaskIds);
             } else {

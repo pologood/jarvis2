@@ -17,7 +17,6 @@ import org.apache.logging.log4j.Logger;
 
 import com.google.common.collect.Sets;
 import com.mogujie.jarvis.server.scheduler.dag.checker.DAGDependChecker;
-import com.mogujie.jarvis.server.scheduler.dag.checker.DAGDependCheckerFactory;
 import com.mogujie.jarvis.server.scheduler.dag.checker.ScheduleTask;
 
 /**
@@ -37,7 +36,7 @@ public class DAGJob extends AbstractDAGJob {
         this.jobId = jobId;
         this.type = type;
         this.parents = Sets.newConcurrentHashSet();
-        this.dependChecker = DAGDependCheckerFactory.create(jobId);
+        this.dependChecker = new DAGDependChecker(jobId);
     }
 
     @Override
