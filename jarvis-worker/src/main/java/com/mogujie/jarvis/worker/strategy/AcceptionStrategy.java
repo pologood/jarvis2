@@ -8,7 +8,7 @@
 
 package com.mogujie.jarvis.worker.strategy;
 
-import com.mogujie.jarvis.core.exeception.AcceptionException;
+import com.mogujie.jarvis.core.exeception.AcceptanceException;
 
 /**
  * @author wuya
@@ -16,5 +16,5 @@ import com.mogujie.jarvis.core.exeception.AcceptionException;
  */
 public interface AcceptionStrategy {
 
-  AcceptionResult accept() throws AcceptionException;
+  AcceptionResult accept() throws AcceptanceException;
 }

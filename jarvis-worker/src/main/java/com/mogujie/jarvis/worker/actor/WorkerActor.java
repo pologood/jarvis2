@@ -29,7 +29,7 @@ import com.mogujie.jarvis.core.TaskContext.TaskContextBuilder;
 import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.domain.TaskDetail.TaskDetailBuilder;
-import com.mogujie.jarvis.core.exeception.AcceptionException;
+import com.mogujie.jarvis.core.exeception.AcceptanceException;
 import com.mogujie.jarvis.core.exeception.TaskException;
 import com.mogujie.jarvis.core.task.AbstractTask;
 import com.mogujie.jarvis.core.util.ConfigUtils;
@@ -122,7 +122,7 @@ public class WorkerActor extends UntypedActor {
                             .setMessage(result.getMessage()).build(), getSelf());
                     return;
                 }
-            } catch (AcceptionException e) {
+            } catch (AcceptanceException e) {
                 getSender().tell(WorkerSubmitTaskResponse.newBuilder().setAccept(false)
                         .setMessage(e.getMessage()).build(), getSelf());
                 return;

@@ -19,7 +19,7 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import com.mogujie.jarvis.core.exeception.AcceptionException;
+import com.mogujie.jarvis.core.exeception.AcceptanceException;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.worker.strategy.AcceptionResult;
 import com.mogujie.jarvis.worker.strategy.AcceptionStrategy;
@@ -39,7 +39,7 @@ public class YarnMemoryAcceptionStrategy implements AcceptionStrategy {
       .getList("yarn.resoucemanager.rest.api.uris");
 
   @Override
-  public AcceptionResult accept() throws AcceptionException {
+  public AcceptionResult accept() throws AcceptanceException {
     for (int i = 0, len = YARN_REST_API_URIS.size(); i < len; i++) {
       try {
         HttpResponse<JsonNode> response = Unirest

@@ -14,7 +14,7 @@ import org.hyperic.sigar.CpuPerc;
 import org.hyperic.sigar.Sigar;
 import org.hyperic.sigar.SigarException;
 
-import com.mogujie.jarvis.core.exeception.AcceptionException;
+import com.mogujie.jarvis.core.exeception.AcceptanceException;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.worker.strategy.AcceptionResult;
 import com.mogujie.jarvis.worker.strategy.AcceptionStrategy;
@@ -30,7 +30,7 @@ public class CpuAcceptionStrategy implements AcceptionStrategy {
       .getDouble("worker.cpu.usage.threshold", 0.85);
 
   @Override
-  public AcceptionResult accept() throws AcceptionException {
+  public AcceptionResult accept() throws AcceptanceException {
     Sigar sigar = new Sigar();
     try {
       CpuPerc perc = sigar.getCpuPerc();

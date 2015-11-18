@@ -12,23 +12,23 @@ package com.mogujie.jarvis.core.exeception;
  * @author wuya
  *
  */
-public class TaskException extends JarvisException {
+public class AcceptanceException extends Exception {
 
     private static final long serialVersionUID = 1L;
 
-    public TaskException() {
+    public AcceptanceException() {
         super();
     }
 
-    public TaskException(final String message) {
+    public AcceptanceException(final String message) {
         super(message);
     }
 
-    public TaskException(Throwable cause) {
+    public AcceptanceException(Throwable cause) {
         super(cause);
     }
 
-    public TaskException(final String message, final Throwable cause) {
+    public AcceptanceException(final String message, final Throwable cause) {
         super(message, cause);
     }
 

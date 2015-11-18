@@ -12,11 +12,9 @@ package com.mogujie.jarvis.core.exeception;
  * @author muming
  *
  */
-public class ShellException extends Exception {
+public class ShellException extends JarvisException {
 
     private static final long serialVersionUID = 1L;
-
-    private String message;
 
     public ShellException() {
         super();
@@ -24,10 +22,6 @@ public class ShellException extends Exception {
 
     public ShellException(final String message) {
         super(message);
-    }
-
-    public ShellException(final Exception e) {
-        super(e);
     }
 
     public ShellException(Throwable cause) {
@@ -38,17 +32,4 @@ public class ShellException extends Exception {
         super(message, cause);
     }
 
-    @Override
-    public String getMessage() {
-        return this.message == null ? super.getMessage() : this.message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    @Override
-    public String toString() {
-        return this.message;
-    }
 }
