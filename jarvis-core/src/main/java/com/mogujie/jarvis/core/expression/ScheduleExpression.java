@@ -12,6 +12,16 @@ import org.joda.time.DateTime;
 
 public abstract class ScheduleExpression implements Expression {
 
+    protected String expression;
+
+    public ScheduleExpression(String expression) {
+        this.expression = expression;
+    }
+
+    public String getExpression() {
+        return expression;
+    }
+
     abstract public DateTime getTimeBefore(DateTime dateTime);
 
     abstract public DateTime getTimeAfter(DateTime dateTime);

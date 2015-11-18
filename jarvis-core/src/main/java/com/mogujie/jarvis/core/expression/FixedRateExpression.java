@@ -21,12 +21,11 @@ import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.util.DurationFieldTypes;
 
 /**
- * 
+ *
  *
  */
 public class FixedRateExpression extends ScheduleExpression {
 
-    private String expression;
     private int isValid;
     private DurationFieldType durationFieldType;
     private int value;
@@ -34,7 +33,7 @@ public class FixedRateExpression extends ScheduleExpression {
     private static final Pattern EXPRESSION_PATTERN = Pattern.compile("([smhdwMy])\\(('(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2})',)?(\\d+)\\)");
 
     public FixedRateExpression(String expression) {
-        this.expression = expression;
+        super(expression);
     }
 
     private DateTime calculateDateTime(DateTime dateTime, int value) {

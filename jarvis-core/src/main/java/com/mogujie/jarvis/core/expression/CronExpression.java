@@ -34,7 +34,6 @@ import com.mogujie.jarvis.core.expression.cron.StepParser;
 
 public class CronExpression extends ScheduleExpression {
 
-    private String cronExp;
     private List<AbstractParser> secondParsers;
     private List<AbstractParser> minuteParsers;
     private List<AbstractParser> hourParsers;
@@ -51,8 +50,8 @@ public class CronExpression extends ScheduleExpression {
     private static final Range<Integer> DAY_OF_WEEK_RANGE = Range.closed(1, 7);
     private static final Range<Integer> YEAR_RANGE = Range.closed(1970, 2099);
 
-    public CronExpression(String cronExp) {
-        this.cronExp = cronExp;
+    public CronExpression(String expression) {
+        super(expression);
 
         secondParsers = new ArrayList<>();
         secondParsers.add(new PoundSignParser(SECOND_RANGE, DurationField.MINUTE));
@@ -183,7 +182,7 @@ public class CronExpression extends ScheduleExpression {
 
     public DateTime getTimeAfter(DateTime dateTime) {
         try {
-            String[] fixedCronExp = appendYearField(cronExp.split("\\s+"));
+            String[] fixedCronExp = appendYearField(expression.split("\\s+"));
             validate(fixedCronExp);
 
             MutableDateTime mdt = dateTime.toMutableDateTime();
@@ -251,7 +250,7 @@ public class CronExpression extends ScheduleExpression {
 
     public DateTime getTimeBefore(DateTime dateTime) {
         try {
-            String[] fixedCronExp = appendYearField(cronExp.split("\\s+"));
+            String[] fixedCronExp = appendYearField(expression.split("\\s+"));
             validate(fixedCronExp);
 
             MutableDateTime mdt = dateTime.toMutableDateTime();
@@ -373,7 +372,7 @@ public class CronExpression extends ScheduleExpression {
 
     @Override
     public int hashCode() {
-        return Objects.hash(cronExp);
+        return Objects.hash(expression);
     }
 
     @Override
@@ -383,11 +382,11 @@ public class CronExpression extends ScheduleExpression {
         }
 
         CronExpression other = (CronExpression) obj;
-        return Objects.equals(cronExp, other.cronExp);
+        return Objects.equals(expression, other.expression);
     }
 
     @Override
     public String toString() {
-        return cronExp;
+        return expression;
     }
 }

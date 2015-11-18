@@ -19,12 +19,11 @@ import org.joda.time.Seconds;
 import org.joda.time.format.ISOPeriodFormat;
 
 /**
- * 
+ *
  *
  */
 public class ISO8601Expression extends ScheduleExpression {
 
-    private String expression;
     private int isValid;
     private int repeat = -1;
     private DateTime startDateTime;
@@ -32,7 +31,7 @@ public class ISO8601Expression extends ScheduleExpression {
     private static final Pattern ISO8601_PATTERN = Pattern.compile("(R\\d*)/(.*)/(P.+)");
 
     public ISO8601Expression(String expression) {
-        this.expression = expression;
+        super(expression);
     }
 
     @Override

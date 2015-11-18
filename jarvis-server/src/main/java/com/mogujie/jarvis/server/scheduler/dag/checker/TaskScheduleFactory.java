@@ -8,9 +8,10 @@
 
 package com.mogujie.jarvis.server.scheduler.dag.checker;
 
-import com.mogujie.jarvis.dto.JobDepend;
+import com.mogujie.jarvis.server.domain.JobDependencyEntry;
 import com.mogujie.jarvis.server.scheduler.depend.strategy.CommonStrategy;
 import com.mogujie.jarvis.server.service.JobDependService;
+import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.util.SpringContext;
 
 /**
@@ -22,20 +23,20 @@ public class TaskScheduleFactory {
     public static AbstractTaskSchedule create(long myJobId, long preJobId) throws ClassNotFoundException {
         AbstractTaskSchedule dependSchedule = null;
         JobDependService jobDependService = SpringContext.getBean(JobDependService.class);
-        if (jobDependService != null) {
-            JobDepend jobDepend = jobDependService.getRecord(myJobId, preJobId);
-            if (jobDepend != null) {
-                String offsetStrategy = jobDepend.getOffsetStrategy();
-                CommonStrategy commonStrategy = CommonStrategy.getInstance(jobDepend.getCommonStrategy());
+        JobService jobService = SpringContext.getBean(JobService.class);
 
-                if (offsetStrategy == null) {
-                    dependSchedule = new RuntimeTaskSchedule(myJobId, preJobId, commonStrategy);
-                } else if (offsetStrategy.startsWith("c")) {
-                    // current day/hour/...
-                    dependSchedule = new RuntimeTaskSchedule(myJobId, preJobId, commonStrategy, offsetStrategy);
-                } else {
-                    dependSchedule = new OffsetTaskSchedule();
-                }
+        if (jobService != null) {
+            JobDependencyEntry dependencyEntry = jobService.get(myJobId).getDependencies().get(preJobId);
+            String offsetStrategy = dependencyEntry.getDependencyExpression().getExpression();
+            CommonStrategy commonStrategy = CommonStrategy.getInstance(dependencyEntry.getDependencyStrategyExpression().getExpression());
+
+            if (offsetStrategy == null) {
+                dependSchedule = new RuntimeTaskSchedule(myJobId, preJobId, commonStrategy);
+            } else if (offsetStrategy.startsWith("c")) {
+                // current day/hour/...
+                dependSchedule = new RuntimeTaskSchedule(myJobId, preJobId, commonStrategy, offsetStrategy);
+            } else {
+                dependSchedule = new OffsetTaskSchedule();
             }
         }
 

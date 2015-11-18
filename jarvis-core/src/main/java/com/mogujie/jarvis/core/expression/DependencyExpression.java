@@ -13,10 +13,19 @@ import org.joda.time.DateTime;
 import com.google.common.collect.Range;
 
 /**
- * 
+ *
  *
  */
 public abstract class DependencyExpression implements Expression {
+    protected String expression;
+
+    public DependencyExpression(String expression) {
+        this.expression = expression;
+    }
+
+    public String getExpression() {
+        return expression;
+    }
 
     abstract public Range<DateTime> getRange(DateTime dateTime);
 }

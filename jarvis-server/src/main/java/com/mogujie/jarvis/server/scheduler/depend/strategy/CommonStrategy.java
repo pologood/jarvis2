@@ -14,18 +14,24 @@ package com.mogujie.jarvis.server.scheduler.depend.strategy;
  *
  */
 public enum CommonStrategy {
-    ALL(0),        // 依赖全部成功
-    LASTONE(1),    // 依赖最后一次成功
-    ANYONE(2);     // 依赖任何一次成功
+    ALL(0, "*"),        // 依赖全部成功
+    LASTONE(1, "L(1)"),    // 依赖最后一次成功
+    ANYONE(2, "+");     // 依赖任何一次成功
 
     private int value;
+    private String expression;
 
-    CommonStrategy(int value) {
+    CommonStrategy(int value, String expression) {
         this.value = value;
+        this.expression = expression;
     }
 
     public int getValue() {
         return value;
+    }
+
+    public String getExpression() {
+        return expression;
     }
 
     public static CommonStrategy getInstance(int value) {
@@ -33,6 +39,18 @@ public enum CommonStrategy {
         CommonStrategy strategy = CommonStrategy.ALL;
         for (CommonStrategy cs : strategyList) {
             if (cs.getValue() == value) {
+                strategy = cs;
+                break;
+            }
+        }
+        return strategy;
+    }
+
+    public static CommonStrategy getInstance(String expression) {
+        CommonStrategy[] strategyList = CommonStrategy.values();
+        CommonStrategy strategy = CommonStrategy.ALL;
+        for (CommonStrategy cs : strategyList) {
+            if (cs.getExpression() == expression) {
                 strategy = cs;
                 break;
             }

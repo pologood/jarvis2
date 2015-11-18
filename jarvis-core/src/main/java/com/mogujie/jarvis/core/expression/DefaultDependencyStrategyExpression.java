@@ -13,18 +13,17 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * 
+ *
  *
  */
 public class DefaultDependencyStrategyExpression extends DependencyStrategyExpression {
 
-    private String expression;
     private int isValid;
     private int lastValue;
     private static final Pattern EXPRESSION_PATTERN = Pattern.compile("\\*|\\+|L\\((\\d+)\\)");
 
     public DefaultDependencyStrategyExpression(String expression) {
-        this.expression = expression;
+        super(expression);
     }
 
     @Override

@@ -11,10 +11,20 @@ package com.mogujie.jarvis.core.expression;
 import java.util.List;
 
 /**
- * 
+ *
  *
  */
 public abstract class DependencyStrategyExpression implements Expression {
+
+    protected String expression;
+
+    public DependencyStrategyExpression(String expression) {
+        this.expression = expression;
+    }
+
+    public String getExpression() {
+        return expression;
+    }
 
     abstract public boolean check(List<Boolean> list);
 }

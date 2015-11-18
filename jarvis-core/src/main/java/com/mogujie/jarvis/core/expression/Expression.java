@@ -9,10 +9,12 @@
 package com.mogujie.jarvis.core.expression;
 
 /**
- * 
+ *
  *
  */
 public interface Expression {
 
-    boolean isValid();
+    public boolean isValid();
+
+    public String getExpression();
 }

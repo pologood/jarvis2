@@ -25,12 +25,11 @@ import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.util.DurationFieldTypes;
 
 /**
- * 
+ *
  *
  */
 public class TimeOffsetExpression extends DependencyExpression {
 
-    private String expression;
     private int isValid;
     private char rangeStartFlag;
     private String format;
@@ -70,7 +69,7 @@ public class TimeOffsetExpression extends DependencyExpression {
     }
 
     public TimeOffsetExpression(String expression) {
-        this.expression = expression;
+        super(expression);
     }
 
     public static String convertAbbrExp(String abbrExp) {
@@ -185,4 +184,5 @@ public class TimeOffsetExpression extends DependencyExpression {
     public String toString() {
         return expression;
     }
+
 }
