@@ -8,6 +8,9 @@
 
 package com.mogujie.jarvis.server.scheduler.dag;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -44,20 +47,31 @@ public class TestJobSchedulerController extends TestSchedulerBase {
         TimeReadyEvent timeEventA = new TimeReadyEvent(jobAId);
         controller.notify(timeEventA);
         Assert.assertEquals(1, taskScheduler.getReadyTable().size());
-        // jobB time ready
+        Assert.assertEquals(1, taskQueue.size());
+
+        // jobB time ready, start to schedule jobC
         TimeReadyEvent timeEventB = new TimeReadyEvent(jobBId);
         controller.notify(timeEventB);
         Assert.assertEquals(3, taskScheduler.getReadyTable().size());
+        Assert.assertEquals(2, taskQueue.size());
+
+        List<Long> taskIds = new ArrayList<Long>(taskScheduler.getReadyTable().keySet());
+        long taskAId = taskIds.get(0);
+        long taskBId = taskIds.get(1);
+        long taskCId = taskIds.get(2);
         // jobA success, taskScheduler remove jobA from readyTable
-        SuccessEvent successEventA = new SuccessEvent(jobAId, 1);
+        SuccessEvent successEventA = new SuccessEvent(jobAId, taskAId);
         controller.notify(successEventA);
         Assert.assertEquals(2, taskScheduler.getReadyTable().size());
+
         // jobB success, taskScheduler remove jobB from readyTable, and jobC run
-        SuccessEvent successEventB = new SuccessEvent(jobBId, 2);
+        SuccessEvent successEventB = new SuccessEvent(jobBId, taskBId);
         controller.notify(successEventB);
         Assert.assertEquals(1, taskScheduler.getReadyTable().size());
+        Assert.assertEquals(3, taskQueue.size());
+
         // jobC success, taskScheduler remove jobC from readyTable
-        SuccessEvent successEventC = new SuccessEvent(jobCId, 3);
+        SuccessEvent successEventC = new SuccessEvent(jobCId, taskCId);
         controller.notify(successEventC);
         Assert.assertEquals(0, taskScheduler.getReadyTable().size());
     }
@@ -75,14 +89,23 @@ public class TestJobSchedulerController extends TestSchedulerBase {
         Assert.assertEquals(2, jobGraph.getChildren(jobAId).size());
         Assert.assertEquals(1, jobGraph.getParents(jobBId).size());
         Assert.assertEquals(1, jobGraph.getParents(jobCId).size());
-        // jobA time ready
+
+        // jobA time ready, start to schedule jobB and jobC
         TimeReadyEvent timeEventA = new TimeReadyEvent(jobAId);
         controller.notify(timeEventA);
-        Assert.assertEquals(1, taskScheduler.getReadyTable().size());
+        Assert.assertEquals(3, taskScheduler.getReadyTable().size());
+        Assert.assertEquals(1, taskQueue.size());
+
+        List<Long> taskIds = new ArrayList<Long>(taskScheduler.getReadyTable().keySet());
+        long taskAId = taskIds.get(0);
+        long taskBId = taskIds.get(1);
+        long taskCId = taskIds.get(2);
+
         // jobA success
-        SuccessEvent eventA = new SuccessEvent(jobAId, 1);
+        SuccessEvent eventA = new SuccessEvent(jobAId, taskAId);
         controller.notify(eventA);
         // jobB and jobC run, taskScheduler remove jobA from readyTable
         Assert.assertEquals(2, taskScheduler.getReadyTable().size());
+        Assert.assertEquals(3, taskQueue.size());
     }
 }
