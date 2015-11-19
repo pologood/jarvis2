@@ -43,13 +43,9 @@ import com.mogujie.jarvis.server.scheduler.event.AddTaskEvent;
 public class JobGraph {
     private Map<Long, DAGJob> waitingTable = new ConcurrentHashMap<Long, DAGJob>();
     private DirectedAcyclicGraph<DAGJob, DefaultEdge> dag = new DirectedAcyclicGraph<DAGJob, DefaultEdge>(DefaultEdge.class);
-    private JobSchedulerController controller;
+    private JobSchedulerController controller = JobSchedulerController.getInstance();
 
     private static final Logger LOGGER = LogManager.getLogger();
-
-    public JobGraph(JobSchedulerController controller) {
-        this.controller = controller;
-    }
 
     public synchronized void clear() {
         Set<DAGJob> allJobs = dag.vertexSet();

@@ -25,6 +25,7 @@ import com.mogujie.jarvis.server.scheduler.depend.strategy.OffsetWeekStrategy;
  * @author guangming
  *
  */
+@Deprecated
 public class TestOffsetStrategy {
     private static Configuration conf = ConfigUtils.getServerConfig();
 

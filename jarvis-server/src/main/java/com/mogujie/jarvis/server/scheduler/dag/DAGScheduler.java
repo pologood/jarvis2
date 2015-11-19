@@ -47,7 +47,7 @@ public class DAGScheduler extends Scheduler {
     @Autowired
     private CrontabService cronService;
 
-    private JobGraph jobGraph = new JobGraph(getSchedulerController());
+    private JobGraph jobGraph = new JobGraph();
 
     private static final Logger LOGGER = LogManager.getLogger();
 

@@ -17,6 +17,7 @@ import com.mogujie.jarvis.dto.Task;
  * @author guangming
  *
  */
+@Deprecated
 public abstract class AbstractOffsetStrategy {
 
     public boolean check(long jobId, int offset, CommonStrategy commonStrategy) {
