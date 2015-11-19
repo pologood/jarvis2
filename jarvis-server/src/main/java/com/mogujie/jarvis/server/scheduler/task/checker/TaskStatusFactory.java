@@ -8,12 +8,12 @@
 
 package com.mogujie.jarvis.server.scheduler.task.checker;
 
-import com.mogujie.jarvis.core.domain.Pair;
-import com.mogujie.jarvis.dto.JobDepend;
-import com.mogujie.jarvis.server.scheduler.depend.strategy.AbstractOffsetStrategy;
-import com.mogujie.jarvis.server.scheduler.depend.strategy.CommonStrategy;
-import com.mogujie.jarvis.server.scheduler.depend.strategy.OffsetStrategyFactory;
-import com.mogujie.jarvis.server.service.JobDependService;
+import java.util.Map;
+
+import com.mogujie.jarvis.core.expression.DependencyExpression;
+import com.mogujie.jarvis.core.expression.DependencyStrategyExpression;
+import com.mogujie.jarvis.server.domain.JobDependencyEntry;
+import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.util.SpringContext;
 
 /**
@@ -24,20 +24,21 @@ public class TaskStatusFactory {
 
     public static final String TASK_DEPEND_STATUS_KEY = "task.depend.status";
     public static final String DEFAULT_TASK_DEPEND_STATUS = RuntimeDependStatus.class.getName();
-    private static final JobDependService jobDependService = SpringContext.getBean(JobDependService.class);
+    private static final JobService jobService = SpringContext.getBean(JobService.class);
 
     public static AbstractTaskStatus create(long myJobId, long preJobId)  {
         AbstractTaskStatus dependStatus = null;
         //TODO jobDependService保留的是最新的依赖关系，如果修改过依赖关系，重跑历史任务时可能会无法找到对应的依赖关系
         // 可以考虑把依赖策略也保存在TaskDepend表中
-        if (jobDependService != null) {
-            JobDepend jobDepend = jobDependService.getRecord(myJobId, preJobId);
-            if (jobDepend != null) {
-                CommonStrategy commonStrategy = CommonStrategy.getInstance(jobDepend.getCommonStrategy());
-                Pair<AbstractOffsetStrategy, Integer> offsetStrategyPair = OffsetStrategyFactory.create(jobDepend.getOffsetStrategy());
-                if (offsetStrategyPair != null) {
-                    dependStatus = new OffsetDependStatus(myJobId, preJobId, commonStrategy, offsetStrategyPair.getFirst(),
-                            offsetStrategyPair.getSecond());
+        if (jobService != null) {
+            Map<Long, JobDependencyEntry> dependencyMap = jobService.get(myJobId).getDependencies();
+            if (dependencyMap != null && dependencyMap.containsKey(preJobId)) {
+                JobDependencyEntry dependencyEntry = dependencyMap.get(preJobId);
+                DependencyStrategyExpression commonStrategy = dependencyEntry.getDependencyStrategyExpression();
+                DependencyExpression offsetExpression = dependencyEntry.getDependencyExpression();
+                String expression = offsetExpression.getExpression();
+                if (expression != null && !expression.startsWith("c")) {
+                    dependStatus = new OffsetDependStatus(myJobId, preJobId, commonStrategy, offsetExpression);
                 } else {
                     dependStatus = new RuntimeDependStatus(myJobId, preJobId, commonStrategy);
                 }

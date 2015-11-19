@@ -10,8 +10,8 @@ package com.mogujie.jarvis.server.scheduler.task.checker;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mogujie.jarvis.server.scheduler.depend.strategy.AbstractOffsetStrategy;
-import com.mogujie.jarvis.server.scheduler.depend.strategy.CommonStrategy;
+import com.mogujie.jarvis.core.expression.DependencyExpression;
+import com.mogujie.jarvis.core.expression.DependencyStrategyExpression;
 
 /**
  * @author guangming
@@ -19,35 +19,20 @@ import com.mogujie.jarvis.server.scheduler.depend.strategy.CommonStrategy;
  */
 public class OffsetDependStatus extends AbstractTaskStatus {
 
-    private AbstractOffsetStrategy offsetDependStrategy;
-    private int offset;
+    private DependencyExpression offsetStrategy;
 
-    public OffsetDependStatus(long myJobId, long preJobId, CommonStrategy commonStrategy,
-            AbstractOffsetStrategy offsetDependStrategy, int offset) {
+    public OffsetDependStatus(long myJobId, long preJobId, DependencyStrategyExpression commonStrategy,
+            DependencyExpression offsetStrategy) {
         super(myJobId, preJobId, commonStrategy);
-        this.offsetDependStrategy = offsetDependStrategy;
-        this.offset = offset;
+        this.offsetStrategy = offsetStrategy;
     }
 
-    public int getOffset() {
-        return offset;
+    public DependencyExpression getOffsetStrategy() {
+        return offsetStrategy;
     }
 
-    public void setOffset(int offset) {
-        this.offset = offset;
-    }
-
-    public AbstractOffsetStrategy getOffsetDependStrategy() {
-        return offsetDependStrategy;
-    }
-
-    public void setOffsetDependStrategy(AbstractOffsetStrategy offsetDependStrategy) {
-        this.offsetDependStrategy = offsetDependStrategy;
-    }
-
-    @Override
-    public boolean check() {
-        return offsetDependStrategy.check(getPreJobId(), offset, getCommonStrategy());
+    public void setOffsetStrategy(DependencyExpression offsetStrategy) {
+        this.offsetStrategy = offsetStrategy;
     }
 
     @Override
@@ -57,5 +42,11 @@ public class OffsetDependStatus extends AbstractTaskStatus {
 
     @Override
     public void setDependTaskIds(List<Long> dependTaskIds) {
+    }
+
+    @Override
+    protected List<Boolean> getStatusList() {
+        //TODO 根据偏移依赖表达式搜出需要哪些task
+        return null;
     }
 }

@@ -9,6 +9,7 @@
 package com.mogujie.jarvis.server.scheduler.dag;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.Assert;
@@ -56,6 +57,7 @@ public class TestJobSchedulerController extends TestSchedulerBase {
         Assert.assertEquals(2, taskQueue.size());
 
         List<Long> taskIds = new ArrayList<Long>(taskScheduler.getReadyTable().keySet());
+        Collections.sort(taskIds);
         long taskAId = taskIds.get(0);
         long taskBId = taskIds.get(1);
         long taskCId = taskIds.get(2);
@@ -97,6 +99,7 @@ public class TestJobSchedulerController extends TestSchedulerBase {
         Assert.assertEquals(1, taskQueue.size());
 
         List<Long> taskIds = new ArrayList<Long>(taskScheduler.getReadyTable().keySet());
+        Collections.sort(taskIds);
         long taskAId = taskIds.get(0);
         long taskBId = taskIds.get(1);
         long taskCId = taskIds.get(2);

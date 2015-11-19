@@ -58,5 +58,6 @@ public class TestSchedulerBase {
     public void tearDown() throws Exception {
         dagScheduler.destroy();
         taskScheduler.destroy();
+        taskQueue.clear();
     }
 }

@@ -8,11 +8,12 @@
 
 package com.mogujie.jarvis.server.scheduler.task.checker;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.mogujie.jarvis.core.domain.JobStatus;
+import com.mogujie.jarvis.core.expression.DependencyStrategyExpression;
 import com.mogujie.jarvis.dto.Task;
-import com.mogujie.jarvis.server.scheduler.depend.strategy.CommonStrategy;
 import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.SpringContext;
 
@@ -31,42 +32,9 @@ public class RuntimeDependStatus extends AbstractTaskStatus {
      * @param preJobId
      * @param commonStrategy
      */
-    public RuntimeDependStatus(long myJobId, long preJobId, CommonStrategy commonStrategy) {
+    public RuntimeDependStatus(long myJobId, long preJobId, DependencyStrategyExpression commonStrategy) {
         super(myJobId, preJobId, commonStrategy);
         this.taskService = SpringContext.getBean(TaskService.class);
-    }
-
-    @Override
-    public boolean check() {
-        boolean finishDependency = false;
-        CommonStrategy strategy = getCommonStrategy();
-        // 多个执行计划中任意一次成功即算成功
-        if (strategy.equals(CommonStrategy.ANYONE)) {
-            List<Task> dependTasks = taskService.getTasks(dependTaskIds);
-            for (Task task : dependTasks) {
-                if (task.getStatus() == JobStatus.SUCCESS.getValue()) {
-                    finishDependency = true;
-                    break;
-                }
-            }
-        } else if (strategy.equals(CommonStrategy.LASTONE)) {
-            // 多个执行计划中最后一次成功算成功
-            Task task = taskService.getLastTask(dependTaskIds);
-            if (task != null && task.getStatus() == JobStatus.SUCCESS.getValue()) {
-                finishDependency = true;
-            }
-        } else if (strategy.equals(CommonStrategy.ALL)) {
-            // 多个执行计划中所有都成功才算成功
-            finishDependency = true;
-            List<Task> dependTasks = taskService.getTasks(dependTaskIds);
-            for (Task task : dependTasks) {
-                if (task.getStatus() != JobStatus.SUCCESS.getValue()) {
-                    finishDependency = false;
-                    break;
-                }
-            }
-        }
-        return finishDependency;
     }
 
     public List<Long> getDependTaskIds() {
@@ -77,4 +45,15 @@ public class RuntimeDependStatus extends AbstractTaskStatus {
         this.dependTaskIds = dependTaskIds;
     }
 
+    @Override
+    protected List<Boolean> getStatusList() {
+        List<Task> dependTasks = taskService.getTasks(dependTaskIds);
+        List<Boolean> taskStatus = new ArrayList<Boolean>();
+        for (Task task : dependTasks) {
+            Boolean status = (task.getStatus() == JobStatus.SUCCESS.getValue()) ? true : false;
+            taskStatus.add(status);
+        }
+
+        return taskStatus;
+    }
 }

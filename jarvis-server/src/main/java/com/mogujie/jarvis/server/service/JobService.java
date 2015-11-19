@@ -7,30 +7,47 @@
  */
 package com.mogujie.jarvis.server.service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Multimap;
-import com.mogujie.jarvis.core.expression.*;
-import com.mogujie.jarvis.dao.JobDependMapper;
-import com.mogujie.jarvis.dao.JobScheduleExpressionMapper;
-import com.mogujie.jarvis.dto.*;
+import javax.annotation.PostConstruct;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.google.common.base.Preconditions;
+import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Multimap;
 import com.mogujie.jarvis.core.domain.JobFlag;
+import com.mogujie.jarvis.core.expression.CronExpression;
+import com.mogujie.jarvis.core.expression.DefaultDependencyStrategyExpression;
+import com.mogujie.jarvis.core.expression.DependencyExpression;
+import com.mogujie.jarvis.core.expression.DependencyStrategyExpression;
+import com.mogujie.jarvis.core.expression.FixedDelayExpression;
+import com.mogujie.jarvis.core.expression.FixedRateExpression;
+import com.mogujie.jarvis.core.expression.ISO8601Expression;
+import com.mogujie.jarvis.core.expression.ScheduleExpression;
+import com.mogujie.jarvis.core.expression.ScheduleExpressionType;
+import com.mogujie.jarvis.core.expression.TimeOffsetExpression;
+import com.mogujie.jarvis.dao.JobDependMapper;
 import com.mogujie.jarvis.dao.JobMapper;
-
+import com.mogujie.jarvis.dao.JobScheduleExpressionMapper;
+import com.mogujie.jarvis.dto.Job;
+import com.mogujie.jarvis.dto.JobDepend;
+import com.mogujie.jarvis.dto.JobDependExample;
+import com.mogujie.jarvis.dto.JobExample;
+import com.mogujie.jarvis.dto.JobScheduleExpression;
+import com.mogujie.jarvis.dto.JobScheduleExpressionExample;
 import com.mogujie.jarvis.server.domain.JobDependencyEntry;
 import com.mogujie.jarvis.server.domain.JobEntry;
-
-import javax.annotation.PostConstruct;
 
 /**
  * @author wuya
@@ -129,7 +146,7 @@ public class JobService {
     private void loadMetaDataFromDB(){
 
         JobExample jobExample = new JobExample();
-        jobExample.createCriteria().andJobFlagEqualTo(JobFlag.ENABLE.getValue());
+        jobExample.createCriteria().andJobFlagNotEqualTo(JobFlag.DELETED.getValue());
         List<Job> jobs = jobMapper.selectByExample(jobExample);
 
         List<JobScheduleExpression> scheduleExpressions = jobScheduleExpressionMapper.selectByExample(new JobScheduleExpressionExample());
@@ -175,8 +192,9 @@ public class JobService {
                 dependencies = Maps.newHashMap();
                 for (JobDepend jobDepend : jobDependsCollection) {
                     String offsetStrategy = jobDepend.getOffsetStrategy();
-                    if (offsetStrategy == null || offsetStrategy.isEmpty()) {
-                        offsetStrategy = "cd";
+                    // default is null
+                    if (offsetStrategy.isEmpty()) {
+                        offsetStrategy = null;
                     }
 
                     String commonStrategyStr = null;
@@ -199,7 +217,7 @@ public class JobService {
 
                     // 检查依赖表达式是否有效
                     DependencyExpression dependencyExpression = new TimeOffsetExpression(offsetStrategy);
-                    if (!dependencyExpression.isValid()) {
+                    if (offsetStrategy != null && !dependencyExpression.isValid()) {
                         LOGGER.warn("dependency expression is invalid. id={}; value={}",jobId,dependencyExpression.toString());
                         continue;
                     }

@@ -10,7 +10,7 @@ package com.mogujie.jarvis.server.scheduler.task.checker;
 
 import java.util.List;
 
-import com.mogujie.jarvis.server.scheduler.depend.strategy.CommonStrategy;
+import com.mogujie.jarvis.core.expression.DependencyStrategyExpression;
 
 
 
@@ -21,9 +21,9 @@ import com.mogujie.jarvis.server.scheduler.depend.strategy.CommonStrategy;
 public abstract class AbstractTaskStatus {
     private long myJobId;
     private long preJobId;
-    private CommonStrategy commonStrategy;
+    private DependencyStrategyExpression commonStrategy;
 
-    public AbstractTaskStatus(long myJobId, long preJobId, CommonStrategy commonStrategy) {
+    public AbstractTaskStatus(long myJobId, long preJobId, DependencyStrategyExpression commonStrategy) {
         this.myJobId = myJobId;
         this.preJobId = preJobId;
         this.commonStrategy = commonStrategy;
@@ -45,17 +45,21 @@ public abstract class AbstractTaskStatus {
         this.preJobId = preJobId;
     }
 
-    public CommonStrategy getCommonStrategy() {
+    public DependencyStrategyExpression getCommonStrategy() {
         return commonStrategy;
     }
 
-    public void setCommonStrategy(CommonStrategy commonStrategy) {
+    public void setCommonStrategy(DependencyStrategyExpression commonStrategy) {
         this.commonStrategy = commonStrategy;
     }
 
-    public abstract boolean check();
+    public boolean check() {
+        return commonStrategy.check(getStatusList());
+    }
 
     public abstract List<Long> getDependTaskIds();
 
     public abstract void setDependTaskIds(List<Long> dependTaskIds);
+
+    protected abstract List<Boolean> getStatusList();
 }

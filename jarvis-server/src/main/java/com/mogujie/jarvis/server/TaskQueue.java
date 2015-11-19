@@ -17,7 +17,7 @@ import org.springframework.stereotype.Repository;
 import com.mogujie.jarvis.core.domain.TaskDetail;
 
 /**
- * 
+ *
  *
  */
 @Repository
@@ -47,6 +47,10 @@ public class TaskQueue {
 
     public boolean isEmpty() {
         return queue.isEmpty();
+    }
+
+    public void clear() {
+        queue.clear();
     }
 
     public Iterator<TaskDetail> iterator() {
