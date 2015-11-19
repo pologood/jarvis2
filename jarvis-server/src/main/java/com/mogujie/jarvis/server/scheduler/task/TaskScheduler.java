@@ -311,6 +311,11 @@ public class TaskScheduler extends Scheduler {
         return readyTable;
     }
 
+    @VisibleForTesting
+    public TaskQueue getTaskQueue() {
+        return taskQueue;
+    }
+
     private void retryTask(Task task) {
         long taskId = task.getTaskId();
         DAGTask dagTask = readyTable.get(taskId);

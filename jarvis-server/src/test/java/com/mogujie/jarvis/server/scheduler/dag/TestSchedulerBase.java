@@ -14,6 +14,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
 import com.mogujie.jarvis.core.util.ConfigUtils;
+import com.mogujie.jarvis.server.TaskQueue;
 import com.mogujie.jarvis.server.scheduler.SchedulerUtil;
 import com.mogujie.jarvis.server.scheduler.controller.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.dag.checker.TaskScheduleFactory;
@@ -29,6 +30,7 @@ public class TestSchedulerBase {
     protected static TaskScheduler taskScheduler;
     protected static JobSchedulerController controller;
     protected static JobGraph jobGraph;
+    protected static TaskQueue taskQueue;
     protected static Configuration conf = ConfigUtils.getServerConfig();
 
     @BeforeClass
@@ -43,6 +45,7 @@ public class TestSchedulerBase {
         controller.register(dagScheduler);
         controller.register(taskScheduler);
         jobGraph = dagScheduler.getJobGraph();
+        taskQueue = taskScheduler.getTaskQueue();
     }
 
     @AfterClass
