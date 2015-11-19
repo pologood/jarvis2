@@ -73,4 +73,9 @@ public enum DAGJobType {
     public DAGJobType remove(DAGJobType that) {
         return and(that.not());
     }
+
+    public static DAGJobType getDAGJobType(int timeFlag,  int dependFlag, int cycleFlag) {
+        DAGJobType[] values = DAGJobType.values();
+        return values[(cycleFlag << 2) + (dependFlag << 1) + timeFlag];
+    }
 }

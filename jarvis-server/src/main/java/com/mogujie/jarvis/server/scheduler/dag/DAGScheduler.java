@@ -9,25 +9,20 @@
 package com.mogujie.jarvis.server.scheduler.dag;
 
 import java.util.List;
-import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.eventbus.Subscribe;
 import com.mogujie.jarvis.core.domain.JobFlag;
 import com.mogujie.jarvis.dto.Job;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
-import com.mogujie.jarvis.server.scheduler.SchedulerUtil;
 import com.mogujie.jarvis.server.scheduler.event.ScheduleEvent;
 import com.mogujie.jarvis.server.scheduler.event.StartEvent;
 import com.mogujie.jarvis.server.scheduler.event.StopEvent;
 import com.mogujie.jarvis.server.scheduler.event.TimeReadyEvent;
-import com.mogujie.jarvis.server.service.CrontabService;
-import com.mogujie.jarvis.server.service.JobDependService;
 import com.mogujie.jarvis.server.service.JobService;
 
 /**
@@ -41,29 +36,19 @@ public class DAGScheduler extends Scheduler {
     @Autowired
     private JobService jobService;
 
-    @Autowired
-    private JobDependService jobDependService;
-
-    @Autowired
-    private CrontabService cronService;
-
     private JobGraph jobGraph = new JobGraph();
 
     private static final Logger LOGGER = LogManager.getLogger();
 
     @Override
-    @Transactional
     public void init() {
         // load not deleted jobs from DB
         List<Job> jobs = jobService.getNotDeletedJobs();
         for (Job job : jobs) {
             long jobId = job.getJobId();
-            Set<Long> dependencies = jobDependService.getDependIds(jobId);
-            int timeFlag = (cronService.getPositiveCrontab(jobId) != null) ? 1 : 0;
-            int dependFlag = (!dependencies.isEmpty()) ? 1 : 0;
-            DAGJobType type = SchedulerUtil.getDAGJobType(timeFlag,dependFlag);
+            DAGJobType type = jobService.getDAGJobType(jobId);
             try {
-                jobGraph.addJob(jobId, new DAGJob(jobId, type), dependencies);
+                jobGraph.addJob(jobId, new DAGJob(jobId, type), jobService.get(jobId).getDependencies().keySet());
             } catch (Exception e) {
                 throw new RuntimeException(e.getMessage());
             }

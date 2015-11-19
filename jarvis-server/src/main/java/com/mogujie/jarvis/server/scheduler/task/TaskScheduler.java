@@ -30,16 +30,11 @@ import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.core.util.ThreadUtils;
-import com.mogujie.jarvis.dao.AppMapper;
-import com.mogujie.jarvis.dao.JobMapper;
-import com.mogujie.jarvis.dao.TaskMapper;
-import com.mogujie.jarvis.dto.App;
 import com.mogujie.jarvis.dto.Job;
 import com.mogujie.jarvis.dto.Task;
 import com.mogujie.jarvis.server.TaskManager;
 import com.mogujie.jarvis.server.TaskQueue;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
-import com.mogujie.jarvis.server.scheduler.SchedulerUtil;
 import com.mogujie.jarvis.server.scheduler.event.AddTaskEvent;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
 import com.mogujie.jarvis.server.scheduler.event.KilledEvent;
@@ -49,7 +44,7 @@ import com.mogujie.jarvis.server.scheduler.event.ScheduleEvent;
 import com.mogujie.jarvis.server.scheduler.event.StartEvent;
 import com.mogujie.jarvis.server.scheduler.event.StopEvent;
 import com.mogujie.jarvis.server.scheduler.event.SuccessEvent;
-import com.mogujie.jarvis.server.service.TaskDependService;
+import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.TaskService;
 
 /**
@@ -61,19 +56,10 @@ import com.mogujie.jarvis.server.service.TaskService;
 @Repository
 public class TaskScheduler extends Scheduler {
     @Autowired
-    private JobMapper jobMapper;
-
-    @Autowired
-    private AppMapper appMapper;
-
-    @Autowired
-    private TaskMapper taskMapper;
+    private JobService jobService;
 
     @Autowired
     private TaskService taskService;
-
-    @Autowired
-    private TaskDependService taskDependService;
 
     @Autowired
     private TaskManager taskManager;
@@ -116,13 +102,10 @@ public class TaskScheduler extends Scheduler {
     }
     private FailedScanThread scanThread;
 
-    private boolean isTestMode = SchedulerUtil.isTestMode();
-
     private static final int DEFAULT_MAX_FAILED_ATTEMPTS = 3;
     private static final int DEFAULT_FAILED_INTERVAL = 1000;
 
     @Override
-    @Transactional
     public void init() {
         // load all WAITING and READY tasks from DB
         List<Task> readyTasks = taskService.getTasksByStatus(Lists.newArrayList(JobStatus.WAITING.getValue(),
@@ -219,11 +202,9 @@ public class TaskScheduler extends Scheduler {
         if (dagTask != null) {
             int maxFailedAttempts = DEFAULT_MAX_FAILED_ATTEMPTS;
             int failedInterval = DEFAULT_FAILED_INTERVAL;
-            if (!isTestMode) {
-                Job job = jobMapper.selectByPrimaryKey(dagTask.getJobId());
-                maxFailedAttempts = job.getFailedAttempts();
-                failedInterval = job.getFailedInterval();
-            }
+            Job job = jobService.get(dagTask.getJobId()).getJob();
+            maxFailedAttempts = job.getFailedAttempts();
+            failedInterval = job.getFailedInterval();
 
             if (dagTask.getAttemptId() <= maxFailedAttempts) {
                 int attemptId = dagTask.getAttemptId();
@@ -231,11 +212,9 @@ public class TaskScheduler extends Scheduler {
                 dagTask.setAttemptId(attemptId);
                 long currentTime = System.currentTimeMillis();
                 long nextStartTime = (currentTime / 1000 + failedInterval) * 1000;
-                if (!isTestMode) {
-                    Task task = taskMapper.selectByPrimaryKey(taskId);
-                    if (task != null) {
-                        failedQueue.put(new FailedTask(task, nextStartTime));
-                    }
+                Task task = taskService.get(taskId);
+                if (task != null) {
+                    failedQueue.put(new FailedTask(task, nextStartTime));
                 }
             } else {
                 updateTaskStatus(e.getTaskId(), JobStatus.FAILED);
@@ -276,7 +255,7 @@ public class TaskScheduler extends Scheduler {
     @Subscribe
     public void handleRetryTaskEvent(RetryTaskEvent e) {
         long taskId = e.getTaskId();
-        Task task = taskMapper.selectByPrimaryKey(taskId);
+        Task task = taskService.get(taskId);
         if (task != null) {
             DAGTask dagTask;
             if (!readyTable.containsKey(taskId)) {
@@ -320,11 +299,9 @@ public class TaskScheduler extends Scheduler {
         long taskId = task.getTaskId();
         DAGTask dagTask = readyTable.get(taskId);
         if (dagTask != null) {
-            if (!isTestMode) {
-                task.setAttemptId(dagTask.getAttemptId());
-                task.setUpdateTime(DateTime.now().toDate());
-                taskMapper.updateByPrimaryKey(task);
-            }
+            task.setAttemptId(dagTask.getAttemptId());
+            task.setUpdateTime(DateTime.now().toDate());
+            taskService.update(task);
 
             submitTask(dagTask);
         }
@@ -344,12 +321,12 @@ public class TaskScheduler extends Scheduler {
     private TaskDetail getTaskInfo(DAGTask dagTask) {
         String fullId = dagTask.getJobId() + "_" + dagTask.getTaskId() + "_" + dagTask.getAttemptId();
         TaskDetail taskDetail = null;
-        Job job = jobMapper.selectByPrimaryKey(dagTask.getJobId());
-        App app = appMapper.selectByPrimaryKey(job.getAppId());
+        long jobId = dagTask.getJobId();
+        Job job = jobService.get(jobId).getJob();
         taskDetail = TaskDetail.newTaskDetailBuilder()
                 .setFullId(fullId)
                 .setTaskName(job.getJobName())
-                .setAppName(app.getAppName())
+                .setAppName(jobService.getAppName(jobId))
                 .setUser(job.getSubmitUser())
                 .setPriority(job.getPriority())
                 .setContent(job.getContent())
@@ -361,9 +338,7 @@ public class TaskScheduler extends Scheduler {
     }
 
     private void reduceTaskNum(long jobId) {
-        if (!isTestMode) {
-            Job job = jobMapper.selectByPrimaryKey(jobId);
-            taskManager.appCounterDecrement(job.getAppId());
-        }
+        Job job = jobService.get(jobId).getJob();
+        taskManager.appCounterDecrement(job.getAppId());
     }
 }

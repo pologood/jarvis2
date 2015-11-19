@@ -22,6 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.transaction.annotation.Transactional;
 
+import akka.actor.UntypedActor;
+
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Sets;
 import com.mogujie.jarvis.core.domain.ActorEntry;
@@ -54,7 +56,6 @@ import com.mogujie.jarvis.server.domain.ModifyJobEntry;
 import com.mogujie.jarvis.server.domain.ModifyJobType;
 import com.mogujie.jarvis.server.domain.ModifyOperation;
 import com.mogujie.jarvis.server.domain.RemoveJobRequest;
-import com.mogujie.jarvis.server.scheduler.SchedulerUtil;
 import com.mogujie.jarvis.server.scheduler.dag.DAGJob;
 import com.mogujie.jarvis.server.scheduler.dag.DAGJobType;
 import com.mogujie.jarvis.server.scheduler.dag.DAGScheduler;
@@ -63,8 +64,6 @@ import com.mogujie.jarvis.server.service.AppService;
 import com.mogujie.jarvis.server.service.CrontabService;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.util.MessageUtil;
-
-import akka.actor.UntypedActor;
 
 /**
  * @author guangming
@@ -181,7 +180,7 @@ public class JobActor extends UntypedActor {
             int cycleFlag = msg.hasFixedDelay() ? 1 : 0;
             int dependFlag = (!needDependencies.isEmpty()) ? 1 : 0;
             int timeFlag = msg.hasCronExpression() ? 1 : 0;
-            DAGJobType type = SchedulerUtil.getDAGJobType(cycleFlag, dependFlag, timeFlag);
+            DAGJobType type = DAGJobType.getDAGJobType(cycleFlag, dependFlag, timeFlag);
 
             dagScheduler.getJobGraph().addJob(jobId, new DAGJob(jobId, type), needDependencies);
             // timeScheduler.addJob(jobId);
@@ -334,7 +333,7 @@ public class JobActor extends UntypedActor {
 
     /**
      * 测试用
-     * 
+     *
      * @param msg
      * @throws IOException
      */

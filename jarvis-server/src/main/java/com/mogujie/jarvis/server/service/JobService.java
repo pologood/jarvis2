@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
@@ -21,6 +22,8 @@ import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import scala.math.Ordering.LongOrdering;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
@@ -37,9 +40,11 @@ import com.mogujie.jarvis.core.expression.ISO8601Expression;
 import com.mogujie.jarvis.core.expression.ScheduleExpression;
 import com.mogujie.jarvis.core.expression.ScheduleExpressionType;
 import com.mogujie.jarvis.core.expression.TimeOffsetExpression;
+import com.mogujie.jarvis.dao.AppMapper;
 import com.mogujie.jarvis.dao.JobDependMapper;
 import com.mogujie.jarvis.dao.JobMapper;
 import com.mogujie.jarvis.dao.JobScheduleExpressionMapper;
+import com.mogujie.jarvis.dto.App;
 import com.mogujie.jarvis.dto.Job;
 import com.mogujie.jarvis.dto.JobDepend;
 import com.mogujie.jarvis.dto.JobDependExample;
@@ -48,6 +53,7 @@ import com.mogujie.jarvis.dto.JobScheduleExpression;
 import com.mogujie.jarvis.dto.JobScheduleExpressionExample;
 import com.mogujie.jarvis.server.domain.JobDependencyEntry;
 import com.mogujie.jarvis.server.domain.JobEntry;
+import com.mogujie.jarvis.server.scheduler.dag.DAGJobType;
 
 /**
  * @author wuya
@@ -61,10 +67,15 @@ public class JobService {
 
     @Autowired
     private JobMapper jobMapper;
+
     @Autowired
     private JobScheduleExpressionMapper jobScheduleExpressionMapper;
+
     @Autowired
     private JobDependMapper jobDependMapper;
+
+    @Autowired
+    private AppMapper appMapper;
 
     @PostConstruct
     private void init(){
@@ -137,6 +148,32 @@ public class JobService {
         Date currentTime = dt.toDate();
         record.setUpdateTime(currentTime);
         jobMapper.updateByPrimaryKey(record);
+    }
+
+    public DAGJobType getDAGJobType(long jobId) {
+        JobEntry jobEntry = get(jobId);
+        Set<Long> dependencies = jobEntry.getDependencies().keySet();
+        int cycleFlag = 0;
+        int timeFlag = 0;
+        List<ScheduleExpression> timeExpressions = jobEntry.getScheduleExpressions();
+        if (!timeExpressions.isEmpty()) {
+            for (ScheduleExpression expression : timeExpressions) {
+                if (expression instanceof CronExpression || expression instanceof FixedRateExpression
+                        || expression instanceof ISO8601Expression) {
+                    timeFlag = 1;
+                } else if (expression instanceof FixedDelayExpression) {
+                    cycleFlag = 1;
+                }
+            }
+        }
+        int dependFlag = (!dependencies.isEmpty()) ? 1 : 0;
+
+        return DAGJobType.getDAGJobType(timeFlag, dependFlag, cycleFlag);
+    }
+
+    public String getAppName(long jobId) {
+        App app = appMapper.selectByPrimaryKey(get(jobId).getJob().getAppId());
+        return app.getAppName();
     }
 
 

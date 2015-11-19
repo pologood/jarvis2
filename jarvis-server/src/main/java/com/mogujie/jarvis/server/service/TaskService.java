@@ -37,6 +37,10 @@ public class TaskService {
         return taskMapper.selectByPrimaryKey(taskId);
     }
 
+    public void update(Task task) {
+        taskMapper.updateByPrimaryKey(task);
+    }
+
     public List<Task> getTasks(List<Long> taskIds) {
         TaskExample example = new TaskExample();
         example.createCriteria().andTaskIdIn(taskIds);

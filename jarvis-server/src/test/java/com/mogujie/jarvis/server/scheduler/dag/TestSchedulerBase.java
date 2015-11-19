@@ -15,7 +15,6 @@ import org.junit.BeforeClass;
 
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.server.TaskQueue;
-import com.mogujie.jarvis.server.scheduler.SchedulerUtil;
 import com.mogujie.jarvis.server.scheduler.controller.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.dag.checker.TaskScheduleFactory;
 import com.mogujie.jarvis.server.scheduler.task.TaskScheduler;
@@ -37,7 +36,6 @@ public class TestSchedulerBase {
     public static void setup() throws Exception {
         conf.clear();
         conf.setProperty(TaskScheduleFactory.TASK_SCHEDULE_KEY, TaskScheduleFactory.DUMMY_TASK_SCHEDULE);
-        conf.setProperty(SchedulerUtil.ENABLE_TEST_MODE, true);
         conf.setProperty(JobSchedulerController.SCHEDULER_CONTROLLER_TYPE, JobSchedulerController.SCHEDULER_CONTROLLER_TYPE_SYNC);
         controller = JobSchedulerController.getInstance();
         dagScheduler = SpringContext.getBean(DAGScheduler.class);
