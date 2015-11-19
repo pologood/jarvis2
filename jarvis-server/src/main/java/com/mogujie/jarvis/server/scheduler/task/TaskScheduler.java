@@ -23,6 +23,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.Lists;
 import com.google.common.eventbus.AllowConcurrentEvents;
 import com.google.common.eventbus.Subscribe;
 import com.mogujie.jarvis.core.domain.JobStatus;
@@ -42,6 +43,7 @@ import com.mogujie.jarvis.server.scheduler.SchedulerUtil;
 import com.mogujie.jarvis.server.scheduler.event.AddTaskEvent;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
 import com.mogujie.jarvis.server.scheduler.event.KilledEvent;
+import com.mogujie.jarvis.server.scheduler.event.RetryTaskEvent;
 import com.mogujie.jarvis.server.scheduler.event.RunningEvent;
 import com.mogujie.jarvis.server.scheduler.event.ScheduleEvent;
 import com.mogujie.jarvis.server.scheduler.event.StartEvent;
@@ -122,8 +124,9 @@ public class TaskScheduler extends Scheduler {
     @Override
     @Transactional
     public void init() {
-        // load all READY tasks from DB
-        List<Task> readyTasks = taskService.getTasksByStatus(JobStatus.READY);
+        // load all WAITING and READY tasks from DB
+        List<Task> readyTasks = taskService.getTasksByStatus(Lists.newArrayList(JobStatus.WAITING.getValue(),
+                JobStatus.READY.getValue()));
         if (readyTasks != null) {
             for (Task task : readyTasks) {
                 DAGTask dagTask = new DAGTask(task.getJobId(), task.getTaskId(), task.getAttemptId());
@@ -134,8 +137,8 @@ public class TaskScheduler extends Scheduler {
             }
         }
 
-        // load all RUNNING tasks from DB
-        List<Task> runningTasks = taskService.getTasksByStatus(JobStatus.RUNNING);
+        // load RUNNING tasks from DB
+        List<Task> runningTasks = taskService.getTasksByStatus(JobStatus.RUNNING.getValue());
         if (runningTasks != null) {
             for (Task task : runningTasks) {
                 DAGTask dagTask = new DAGTask(task.getJobId(), task.getTaskId(), task.getAttemptId());
@@ -270,21 +273,9 @@ public class TaskScheduler extends Scheduler {
         }
     }
 
-    private void updateTaskStatus(long taskId, JobStatus status) {
-        if (status.equals(JobStatus.RUNNING)) {
-            taskService.updateStatusWithStart(taskId, status);
-        } else if (status.equals(JobStatus.SUCCESS) || status.equals(JobStatus.FAILED)
-                || status.equals(JobStatus.KILLED)) {
-            taskService.updateStatusWithEnd(taskId, status);
-        }
-    }
-
-    @VisibleForTesting
-    public Map<Long, DAGTask> getReadyTable() {
-        return readyTable;
-    }
-
-    public void retryTask(long taskId) {
+    @Subscribe
+    public void handleRetryTaskEvent(RetryTaskEvent e) {
+        long taskId = e.getTaskId();
         Task task = taskMapper.selectByPrimaryKey(taskId);
         if (task != null) {
             DAGTask dagTask;
@@ -295,13 +286,29 @@ public class TaskScheduler extends Scheduler {
             } else {
                 dagTask = readyTable.get(taskId);
             }
-            if (dagTask != null) {
+            if (dagTask != null && dagTask.checkStatus()) {
                 int attemptId = dagTask.getAttemptId();
                 attemptId++;
                 dagTask.setAttemptId(attemptId);
                 retryTask(task);
             }
         }
+    }
+
+    private void updateTaskStatus(long taskId, JobStatus status) {
+        if (status.equals(JobStatus.RUNNING)) {
+            taskService.updateStatusWithStart(taskId, status);
+        } else if (status.equals(JobStatus.SUCCESS) || status.equals(JobStatus.FAILED)
+                || status.equals(JobStatus.KILLED)) {
+            taskService.updateStatusWithEnd(taskId, status);
+        } else {
+            taskService.updateStatus(taskId, status);
+        }
+    }
+
+    @VisibleForTesting
+    public Map<Long, DAGTask> getReadyTable() {
+        return readyTable;
     }
 
     private void retryTask(Task task) {
@@ -319,6 +326,9 @@ public class TaskScheduler extends Scheduler {
     }
 
     private void submitTask(DAGTask dagTask) {
+        // update status to ready
+        updateTaskStatus(dagTask.getTaskId(), JobStatus.READY);
+
         // submit to TaskQueue
         TaskDetail taskDetail = getTaskInfo(dagTask);
         if (taskDetail != null) {

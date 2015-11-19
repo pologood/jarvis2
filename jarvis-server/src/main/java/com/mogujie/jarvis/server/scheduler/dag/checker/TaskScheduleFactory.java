@@ -8,9 +8,12 @@
 
 package com.mogujie.jarvis.server.scheduler.dag.checker;
 
+import java.util.Map;
+
 import org.apache.commons.configuration.Configuration;
 
 import com.mogujie.jarvis.core.util.ConfigUtils;
+import com.mogujie.jarvis.server.domain.JobDependencyEntry;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.util.SpringContext;
 
@@ -27,11 +30,14 @@ public class TaskScheduleFactory {
         Configuration conf = ConfigUtils.getServerConfig();
         String className = conf.getString(TASK_SCHEDULE_KEY, DEFAULT_TASK_SCHEDULE);
 
-        JobService jobService = SpringContext.getBean(JobService.class);
-        String offsetStrategy = jobService.get(myJobId).getDependencies().get(preJobId).getDependencyExpression().getExpression();
-
         TaskDependSchedule dependSchedule = null;
+        String offsetStrategy = null;
         if (className.equalsIgnoreCase(DEFAULT_TASK_SCHEDULE)) {
+            JobService jobService = SpringContext.getBean(JobService.class);
+            Map<Long, JobDependencyEntry> dependencyMap = jobService.get(myJobId).getDependencies();
+            if (dependencyMap != null && dependencyMap.containsKey(preJobId)) {
+                offsetStrategy = dependencyMap.get(preJobId).getDependencyExpression().getExpression();
+            }
             dependSchedule = new TaskDependSchedule(myJobId, preJobId, offsetStrategy);
             dependSchedule.init();
         } else {

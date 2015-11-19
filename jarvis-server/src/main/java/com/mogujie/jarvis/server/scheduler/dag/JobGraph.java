@@ -348,7 +348,6 @@ public class JobGraph {
         DAGJob child = waitingTable.get(childId);
         if (parent != null && child != null) {
             dag.addDagEdge(parent, child);
-            child.addParent(parentId);
         }
     }
 
@@ -358,7 +357,6 @@ public class JobGraph {
         DAGJob child = waitingTable.get(childId);
         if (parent != null && child != null) {
             dag.removeEdge(parent, child);
-            child.removeParent(parentId);
         }
     }
 

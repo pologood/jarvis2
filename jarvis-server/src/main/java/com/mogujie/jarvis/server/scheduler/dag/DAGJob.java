@@ -15,7 +15,6 @@ import java.util.Set;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.google.common.collect.Sets;
 import com.mogujie.jarvis.server.scheduler.dag.checker.DAGDependChecker;
 import com.mogujie.jarvis.server.scheduler.dag.checker.ScheduleTask;
 
@@ -29,13 +28,11 @@ public class DAGJob extends AbstractDAGJob {
     private DAGDependChecker dependChecker;
     private DAGJobType type;
     private boolean timeReadyFlag = false;
-    private Set<Long> parents;
     private static final Logger LOGGER = LogManager.getLogger();
 
     public DAGJob(long jobId, DAGJobType type) {
         this.jobId = jobId;
         this.type = type;
-        this.parents = Sets.newConcurrentHashSet();
         this.dependChecker = new DAGDependChecker(jobId);
     }
 
@@ -97,14 +94,6 @@ public class DAGJob extends AbstractDAGJob {
 
     public void resetTimeReadyFlag() {
         timeReadyFlag = false;
-    }
-
-    public void addParent(long jobId) {
-        parents.add(jobId);
-    }
-
-    public void removeParent(long jobId) {
-        parents.remove(jobId);
     }
 
     public DAGDependChecker getDependChecker() {

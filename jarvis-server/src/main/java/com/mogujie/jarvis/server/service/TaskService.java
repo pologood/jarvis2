@@ -59,7 +59,7 @@ public class TaskService {
         record.setCreateTime(currentTime);
         record.setUpdateTime(currentTime);
         record.setScheduleTime(new Date(scheduleTime));
-        record.setStatus(JobStatus.READY.getValue());
+        record.setStatus(JobStatus.WAITING.getValue());
         record.setProgress((float) 0);
         Job job = jobMapper.selectByPrimaryKey(jobId);
         record.setExecuteUser(job.getSubmitUser());
@@ -68,9 +68,15 @@ public class TaskService {
         return record;
     }
 
-    public List<Task> getTasksByStatus(JobStatus status) {
+    public List<Task> getTasksByStatus(Integer status) {
         TaskExample example = new TaskExample();
-        example.createCriteria().andStatusEqualTo(status.getValue());
+        example.createCriteria().andStatusEqualTo(status);
+        return taskMapper.selectByExample(example);
+    }
+
+    public List<Task> getTasksByStatus(List<Integer> statusList) {
+        TaskExample example = new TaskExample();
+        example.createCriteria().andStatusIn(statusList);
         return taskMapper.selectByExample(example);
     }
 
@@ -89,6 +95,12 @@ public class TaskService {
         DateTime dt = DateTime.now();
         Date currentTime = dt.toDate();
         task.setExecuteEndTime(currentTime);
+        taskMapper.updateByPrimaryKey(task);
+    }
+
+    public void updateStatus(long taskId, JobStatus status) {
+        Task task = taskMapper.selectByPrimaryKey(taskId);
+        task.setStatus(status.getValue());
         taskMapper.updateByPrimaryKey(task);
     }
 
