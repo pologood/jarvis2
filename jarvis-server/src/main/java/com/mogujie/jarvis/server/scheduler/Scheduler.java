@@ -28,10 +28,6 @@ public abstract class Scheduler implements Observer {
         return schedulerController;
     }
 
-    public abstract void init();
-
-    public abstract void destroy();
-
     @Subscribe
     public abstract void handleStartEvent(StartEvent event);
 

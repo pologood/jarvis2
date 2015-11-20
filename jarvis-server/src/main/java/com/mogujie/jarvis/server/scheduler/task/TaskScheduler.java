@@ -23,7 +23,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.collect.Lists;
 import com.google.common.eventbus.AllowConcurrentEvents;
 import com.google.common.eventbus.Subscribe;
 import com.mogujie.jarvis.core.domain.JobStatus;
@@ -105,11 +104,7 @@ public class TaskScheduler extends Scheduler {
     private static final int DEFAULT_MAX_FAILED_ATTEMPTS = 3;
     private static final int DEFAULT_FAILED_INTERVAL = 1000;
 
-    @Override
-    public void init() {
-        // load all WAITING and READY tasks from DB
-        List<Task> readyTasks = taskService.getTasksByStatus(Lists.newArrayList(JobStatus.WAITING.getValue(),
-                JobStatus.READY.getValue()));
+    public void init(List<Task> readyTasks, List<Task> runningTasks) {
         if (readyTasks != null) {
             for (Task task : readyTasks) {
                 DAGTask dagTask = new DAGTask(task.getJobId(), task.getTaskId(), task.getAttemptId());
@@ -120,34 +115,29 @@ public class TaskScheduler extends Scheduler {
             }
         }
 
-        // load RUNNING tasks from DB
-        List<Task> runningTasks = taskService.getTasksByStatus(JobStatus.RUNNING.getValue());
         if (runningTasks != null) {
             for (Task task : runningTasks) {
                 DAGTask dagTask = new DAGTask(task.getJobId(), task.getTaskId(), task.getAttemptId());
                 readyTable.put(task.getTaskId(), dagTask);
             }
         }
-
-        scanThread = new FailedScanThread("FailedScanThread");
-        scanThread.start();
     }
 
-    @SuppressWarnings("deprecation")
-    @Override
     public void destroy() {
         readyTable.clear();
-        if (scanThread != null && scanThread.isAlive()) {
-            scanThread.stop();
-        }
     }
 
     @Override
     public void handleStartEvent(StartEvent event) {
+        scanThread = new FailedScanThread("FailedScanThread");
+        scanThread.start();
     }
 
     @Override
     public void handleStopEvent(StopEvent event) {
+        if (scanThread != null && scanThread.isAlive()) {
+            scanThread.stop();
+        }
     }
 
     @Subscribe

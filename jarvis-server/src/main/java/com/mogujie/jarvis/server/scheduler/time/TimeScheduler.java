@@ -13,60 +13,74 @@ import java.util.List;
 import java.util.SortedSet;
 
 import org.joda.time.DateTime;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.mogujie.jarvis.core.domain.JobFlag;
 import com.mogujie.jarvis.core.expression.ScheduleExpression;
 import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
+import com.mogujie.jarvis.server.scheduler.Scheduler;
+import com.mogujie.jarvis.server.scheduler.event.StartEvent;
+import com.mogujie.jarvis.server.scheduler.event.StopEvent;
 import com.mogujie.jarvis.server.scheduler.event.TimeReadyEvent;
 import com.mogujie.jarvis.server.scheduler.time.ExecutionPlan.ExecutionPlanEntry;
 import com.mogujie.jarvis.server.service.JobService;
-import com.mogujie.jarvis.server.util.SpringContext;
 
-public class TimeScheduler extends Thread {
+@Repository
+public class TimeScheduler extends Scheduler {
 
     private ExecutionPlan plan = ExecutionPlan.INSTANCE;
     private volatile boolean running = true;
     private JobSchedulerController controller = JobSchedulerController.getInstance();
-    private JobService jobService = SpringContext.getBean(JobService.class);
 
-    @Override
-    public void run() {
-        while (running) {
-            DateTime now = DateTime.now();
-            SortedSet<ExecutionPlanEntry> planSet = plan.getPlan();
-            Iterator<ExecutionPlanEntry> it = planSet.iterator();
-            while (it.hasNext()) {
-                ExecutionPlanEntry entry = it.next();
-                if (!entry.getDateTime().isAfter(now)) {
-                    // 1. start this time based job
-                    long jobId = entry.getJobId();
-                    long scheduleTime = entry.getDateTime().getMillis();
-                    controller.notify(new TimeReadyEvent(jobId, scheduleTime));
-                    // 2. remove this from plan
-                    it.remove();
-                    // 3. add next to plan
-                    DateTime nextTime = getScheduleTimeAfter(jobId, entry.getDateTime());
-                    plan.addPlan(jobId, nextTime);
-                } else {
-                    break;
+    @Autowired
+    private JobService jobService;
+
+    class TimeScanThread extends Thread {
+        public TimeScanThread(String name) {
+            super(name);
+        }
+
+        @Override
+        public void run() {
+            while (running) {
+                DateTime now = DateTime.now();
+                SortedSet<ExecutionPlanEntry> planSet = plan.getPlan();
+                Iterator<ExecutionPlanEntry> it = planSet.iterator();
+                while (it.hasNext()) {
+                    ExecutionPlanEntry entry = it.next();
+                    if (!entry.getDateTime().isAfter(now)) {
+                        // 1. start this time based job
+                        long jobId = entry.getJobId();
+                        long scheduleTime = entry.getDateTime().getMillis();
+                        controller.notify(new TimeReadyEvent(jobId, scheduleTime));
+                        // 2. remove this from plan
+                        it.remove();
+                        // 3. add next to plan
+                        DateTime nextTime = getScheduleTimeAfter(jobId, entry.getDateTime());
+                        if (nextTime != null) {
+                            plan.addPlan(jobId, nextTime);
+                        }
+                    } else {
+                        break;
+                    }
                 }
-            }
 
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
             }
         }
     }
-
-    public void shutdown() {
-        running = false;
-    }
+    private TimeScanThread scanThread;
 
     public void addJob(long jobId) {
         DateTime scheduleTime = getScheduleTimeAfter(jobId, DateTime.now());
-        plan.addPlan(jobId, scheduleTime);
+        if (scheduleTime != null) {
+            plan.addPlan(jobId, scheduleTime);
+        }
     }
 
     public void removeJob(long jobId) {
@@ -94,5 +108,19 @@ public class TimeScheduler extends Thread {
         }
 
         return scheduleTime;
+    }
+
+    @Override
+    public void handleStartEvent(StartEvent event) {
+        if (scanThread == null) {
+            scanThread = new TimeScanThread("TimeScanThread");
+            scanThread.start();
+        }
+        running = true;
+    }
+
+    @Override
+    public void handleStopEvent(StopEvent event) {
+        running = false;
     }
 }
