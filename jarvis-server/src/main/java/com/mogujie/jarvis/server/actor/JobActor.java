@@ -183,7 +183,9 @@ public class JobActor extends UntypedActor {
             DAGJobType type = DAGJobType.getDAGJobType(cycleFlag, dependFlag, timeFlag);
 
             dagScheduler.getJobGraph().addJob(jobId, new DAGJob(jobId, type), needDependencies);
-            // timeScheduler.addJob(jobId);
+            if (timeFlag > 0) {
+                timeScheduler.addJob(jobId);
+            }
             response = ServerSubmitJobResponse.newBuilder().setSuccess(true).setJobId(jobId).build();
             getSender().tell(response, getSelf());
 

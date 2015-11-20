@@ -35,6 +35,9 @@ import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.dag.checker.DAGDependChecker;
 import com.mogujie.jarvis.server.scheduler.dag.checker.ScheduleTask;
 import com.mogujie.jarvis.server.scheduler.event.AddTaskEvent;
+import com.mogujie.jarvis.server.scheduler.time.ExecutionPlan;
+import com.mogujie.jarvis.server.service.JobService;
+import com.mogujie.jarvis.server.util.SpringContext;
 
 /**
  * @author guangming
@@ -44,6 +47,8 @@ public class JobGraph {
     private Map<Long, DAGJob> waitingTable = new ConcurrentHashMap<Long, DAGJob>();
     private DirectedAcyclicGraph<DAGJob, DefaultEdge> dag = new DirectedAcyclicGraph<DAGJob, DefaultEdge>(DefaultEdge.class);
     private JobSchedulerController controller = JobSchedulerController.getInstance();
+    private JobService jobService = SpringContext.getBean(JobService.class);
+    private ExecutionPlan timeJobQueue = ExecutionPlan.INSTANCE;
 
     private static final Logger LOGGER = LogManager.getLogger();
 
@@ -411,4 +416,5 @@ public class JobGraph {
         }
         return dependTaskIdMap;
     }
+
 }

@@ -13,12 +13,18 @@ import java.util.SortedSet;
 
 import org.joda.time.DateTime;
 
+import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
+import com.mogujie.jarvis.server.scheduler.event.TimeReadyEvent;
 import com.mogujie.jarvis.server.scheduler.time.ExecutionPlan.ExecutionPlanEntry;
+import com.mogujie.jarvis.server.service.JobService;
+import com.mogujie.jarvis.server.util.SpringContext;
 
 public class TimeScheduler extends Thread {
 
     private ExecutionPlan plan = ExecutionPlan.INSTANCE;
     private volatile boolean running = true;
+    private JobSchedulerController controller = JobSchedulerController.getInstance();
+    private JobService jobService = SpringContext.getBean(JobService.class);
 
     @Override
     public void run() {
@@ -29,8 +35,15 @@ public class TimeScheduler extends Thread {
             while (it.hasNext()) {
                 ExecutionPlanEntry entry = it.next();
                 if (!entry.getDateTime().isAfter(now)) {
-                    // TODO 调度任务
+                    // 1. start this time based job
+                    long jobId = entry.getJobId();
+                    long scheduleTime = entry.getDateTime().getMillis();
+                    controller.notify(new TimeReadyEvent(jobId, scheduleTime));
+                    // 2. remove this from plan
                     it.remove();
+                    // 3. add next to plan
+                    DateTime nextTime = jobService.getScheduleTimeAfter(jobId, entry.getDateTime());
+                    plan.addPlan(jobId, nextTime);
                 } else {
                     break;
                 }
@@ -46,5 +59,14 @@ public class TimeScheduler extends Thread {
 
     public void shutdown() {
         running = false;
+    }
+
+    public void addJob(long jobId) {
+        DateTime scheduleTime = jobService.getScheduleTimeAfter(jobId, DateTime.now());
+        plan.addPlan(jobId, scheduleTime);
+    }
+
+    public void removeJob(long jobId) {
+        //TODO
     }
 }

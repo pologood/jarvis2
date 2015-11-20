@@ -174,6 +174,21 @@ public class JobService {
         return app.getAppName();
     }
 
+    public DateTime getScheduleTimeAfter(long jobId, DateTime dateTime) {
+        DateTime scheduleTime = null;
+        List<ScheduleExpression> expressions = get(jobId).getScheduleExpressions();
+        if (expressions != null && expressions.size() > 0) {
+            for (ScheduleExpression scheduleExpression : expressions) {
+                DateTime nextTime = scheduleExpression.getTimeAfter(dateTime);
+                if (scheduleTime == null || scheduleTime.isAfter(nextTime)) {
+                    scheduleTime = nextTime;
+                }
+            }
+        }
+
+        return scheduleTime;
+    }
+
 
     /**
      * 读取metaData
