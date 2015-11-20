@@ -9,6 +9,7 @@
 package com.mogujie.jarvis.server.scheduler.dag;
 
 import java.util.List;
+import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,7 +18,13 @@ import org.springframework.stereotype.Repository;
 
 import com.google.common.eventbus.Subscribe;
 import com.mogujie.jarvis.core.domain.JobFlag;
+import com.mogujie.jarvis.core.expression.CronExpression;
+import com.mogujie.jarvis.core.expression.FixedDelayExpression;
+import com.mogujie.jarvis.core.expression.FixedRateExpression;
+import com.mogujie.jarvis.core.expression.ISO8601Expression;
+import com.mogujie.jarvis.core.expression.ScheduleExpression;
 import com.mogujie.jarvis.dto.Job;
+import com.mogujie.jarvis.server.domain.JobEntry;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
 import com.mogujie.jarvis.server.scheduler.event.ScheduleEvent;
 import com.mogujie.jarvis.server.scheduler.event.StartEvent;
@@ -46,9 +53,26 @@ public class DAGScheduler extends Scheduler {
         List<Job> jobs = jobService.getNotDeletedJobs();
         for (Job job : jobs) {
             long jobId = job.getJobId();
-            DAGJobType type = jobService.getDAGJobType(jobId);
+            JobEntry jobEntry = jobService.get(jobId);
+            Set<Long> dependencies = jobEntry.getDependencies().keySet();
+            int cycleFlag = 0;
+            int timeFlag = 0;
+            List<ScheduleExpression> timeExpressions = jobEntry.getScheduleExpressions();
+            if (!timeExpressions.isEmpty()) {
+                for (ScheduleExpression expression : timeExpressions) {
+                    if (expression instanceof CronExpression || expression instanceof FixedRateExpression
+                            || expression instanceof ISO8601Expression) {
+                        timeFlag = 1;
+                    } else if (expression instanceof FixedDelayExpression) {
+                        cycleFlag = 1;
+                    }
+                }
+            }
+            int dependFlag = (!dependencies.isEmpty()) ? 1 : 0;
+
+            DAGJobType type = DAGJobType.getDAGJobType(timeFlag, dependFlag, cycleFlag);
             try {
-                jobGraph.addJob(jobId, new DAGJob(jobId, type), jobService.get(jobId).getDependencies().keySet());
+                jobGraph.addJob(jobId, new DAGJob(jobId, type), dependencies);
             } catch (Exception e) {
                 throw new RuntimeException(e.getMessage());
             }

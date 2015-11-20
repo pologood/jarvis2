@@ -285,7 +285,7 @@ public class JobActor extends UntypedActor {
         JobFlag flag = JobFlag.getInstance(msg.getJobFlag());
         ServerModifyJobFlagResponse response;
         try {
-            // timeScheduler.modifyJobFlag(jobId, flag);
+            timeScheduler.modifyJobFlag(jobId, flag);
             dagScheduler.getJobGraph().modifyJobFlag(jobId, flag);
             response = ServerModifyJobFlagResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());
@@ -352,7 +352,7 @@ public class JobActor extends UntypedActor {
             // remove crontab where jobId=jobId
             cronService.deleteByJobId(jobId);
             // scheduler remove job
-            // timeScheduler.removeJob(jobId);
+            timeScheduler.removeJob(jobId);
             dagScheduler.getJobGraph().removeJob(jobId);
             getSender().tell("remove success", getSelf());
         } catch (Exception e) {

@@ -9,10 +9,13 @@
 package com.mogujie.jarvis.server.scheduler.time;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.SortedSet;
 
 import org.joda.time.DateTime;
 
+import com.mogujie.jarvis.core.domain.JobFlag;
+import com.mogujie.jarvis.core.expression.ScheduleExpression;
 import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.event.TimeReadyEvent;
 import com.mogujie.jarvis.server.scheduler.time.ExecutionPlan.ExecutionPlanEntry;
@@ -42,7 +45,7 @@ public class TimeScheduler extends Thread {
                     // 2. remove this from plan
                     it.remove();
                     // 3. add next to plan
-                    DateTime nextTime = jobService.getScheduleTimeAfter(jobId, entry.getDateTime());
+                    DateTime nextTime = getScheduleTimeAfter(jobId, entry.getDateTime());
                     plan.addPlan(jobId, nextTime);
                 } else {
                     break;
@@ -62,11 +65,34 @@ public class TimeScheduler extends Thread {
     }
 
     public void addJob(long jobId) {
-        DateTime scheduleTime = jobService.getScheduleTimeAfter(jobId, DateTime.now());
+        DateTime scheduleTime = getScheduleTimeAfter(jobId, DateTime.now());
         plan.addPlan(jobId, scheduleTime);
     }
 
     public void removeJob(long jobId) {
-        //TODO
+        plan.removePlan(jobId);
+    }
+
+    public void modifyJobFlag(long jobId, JobFlag flag) {
+        if (flag.equals(JobFlag.DISABLE) || flag.equals(JobFlag.DELETED)) {
+            removeJob(jobId);
+        } else if (flag.equals(JobFlag.ENABLE)) {
+            addJob(jobId);
+        }
+    }
+
+    private DateTime getScheduleTimeAfter(long jobId, DateTime dateTime) {
+        DateTime scheduleTime = null;
+        List<ScheduleExpression> expressions = jobService.get(jobId).getScheduleExpressions();
+        if (expressions != null && expressions.size() > 0) {
+            for (ScheduleExpression scheduleExpression : expressions) {
+                DateTime nextTime = scheduleExpression.getTimeAfter(dateTime);
+                if (scheduleTime == null || scheduleTime.isAfter(nextTime)) {
+                    scheduleTime = nextTime;
+                }
+            }
+        }
+
+        return scheduleTime;
     }
 }
