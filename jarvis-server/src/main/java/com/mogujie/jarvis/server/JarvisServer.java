@@ -23,6 +23,9 @@ import akka.routing.SmallestMailboxPool;
 import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.server.actor.ServerActor;
 import com.mogujie.jarvis.server.domain.JarvisTimerTask;
+import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
+import com.mogujie.jarvis.server.scheduler.dag.DAGScheduler;
+import com.mogujie.jarvis.server.scheduler.task.TaskScheduler;
 import com.mogujie.jarvis.server.util.SpringContext;
 import com.mogujie.jarvis.server.util.SpringExtension;
 
@@ -49,6 +52,23 @@ public class JarvisServer {
     }
 
     public static void init() throws ParseException {
+        initScheduler();
+//        initTimerTask();
+    }
+
+    private static void initScheduler() {
+        JobSchedulerController controller = JobSchedulerController.getInstance();
+        DAGScheduler dagScheduler = SpringContext.getBean(DAGScheduler.class);
+        TaskScheduler taskScheduler = SpringContext.getBean(TaskScheduler.class);
+        controller.register(dagScheduler);
+        controller.register(taskScheduler);
+        dagScheduler.init();
+        taskScheduler.init();
+
+    }
+
+    @Deprecated
+    private static void initTimerTask() throws ParseException {
         //24 hours
         final long time24h = 24 * 60 * 60 * 1000;
         final String startTime = "00:00:00";

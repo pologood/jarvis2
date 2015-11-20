@@ -10,7 +10,6 @@ package com.mogujie.jarvis.server.scheduler;
 
 import com.google.common.eventbus.Subscribe;
 import com.mogujie.jarvis.core.observer.Observer;
-import com.mogujie.jarvis.server.scheduler.controller.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.event.StartEvent;
 import com.mogujie.jarvis.server.scheduler.event.StopEvent;
 

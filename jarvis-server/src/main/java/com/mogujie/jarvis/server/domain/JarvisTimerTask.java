@@ -10,7 +10,7 @@ package com.mogujie.jarvis.server.domain;
 
 import java.util.TimerTask;
 
-import com.mogujie.jarvis.server.scheduler.controller.JobSchedulerController;
+import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.util.SpringContext;
 

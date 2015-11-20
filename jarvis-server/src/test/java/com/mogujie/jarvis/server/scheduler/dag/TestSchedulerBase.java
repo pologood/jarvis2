@@ -15,7 +15,7 @@ import org.junit.BeforeClass;
 
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.server.TaskQueue;
-import com.mogujie.jarvis.server.scheduler.controller.JobSchedulerController;
+import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.dag.checker.TaskScheduleFactory;
 import com.mogujie.jarvis.server.scheduler.task.TaskScheduler;
 import com.mogujie.jarvis.server.util.SpringContext;

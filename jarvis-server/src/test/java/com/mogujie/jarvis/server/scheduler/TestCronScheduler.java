@@ -22,7 +22,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 
 import com.mogujie.jarvis.dto.Crontab;
-import com.mogujie.jarvis.server.scheduler.controller.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.event.UnhandleEvent;
 
 /**

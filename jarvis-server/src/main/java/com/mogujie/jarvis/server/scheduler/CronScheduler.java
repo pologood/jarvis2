@@ -25,9 +25,9 @@ import org.joda.time.DateTime;
 import com.mogujie.jarvis.core.domain.Pair;
 import com.mogujie.jarvis.dto.Crontab;
 import com.mogujie.jarvis.server.cron.CronExpression;
-import com.mogujie.jarvis.server.scheduler.controller.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.event.TimeReadyEvent;
 
+@Deprecated
 public class CronScheduler {
 
     private JobSchedulerController jobSchedulerController;

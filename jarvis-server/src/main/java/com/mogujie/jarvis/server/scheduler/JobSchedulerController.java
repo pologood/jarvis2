@@ -6,7 +6,7 @@
  * Create Date: 2015年8月31日 上午10:35:46
  */
 
-package com.mogujie.jarvis.server.scheduler.controller;
+package com.mogujie.jarvis.server.scheduler;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -21,7 +21,6 @@ import com.mogujie.jarvis.core.observer.Event;
 import com.mogujie.jarvis.core.observer.Observable;
 import com.mogujie.jarvis.core.observer.Observer;
 import com.mogujie.jarvis.core.util.ConfigUtils;
-import com.mogujie.jarvis.server.scheduler.Scheduler;
 
 /**
  * job scheduler controller used to schedule job with three schedulers (
