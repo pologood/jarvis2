@@ -7,12 +7,14 @@
  */
 package com.mogujie.jarvis.server.cron;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.text.ParseException;
 
 import org.joda.time.DateTime;
 import org.junit.Test;
+
+import com.mogujie.jarvis.core.expression.CronExpression;
 
 /**
  * @author wuya

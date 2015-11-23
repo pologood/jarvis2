@@ -106,7 +106,7 @@ public class TimeOffsetExpression extends DependencyExpression {
                 value = Integer.parseInt(mutableDateTime.toString(strValue));
             }
 
-            mutableDateTime.add(DurationFieldTypes.valueOf(unit), value);
+            mutableDateTime.add(DurationFieldTypes.valueOf(unit), -value);
         }
 
         return mutableDateTime;

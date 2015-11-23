@@ -8,7 +8,6 @@
 
 package com.mogujie.jarvis.server.scheduler;
 
-import java.text.ParseException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -23,8 +22,8 @@ import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 
 import com.mogujie.jarvis.core.domain.Pair;
+import com.mogujie.jarvis.core.expression.CronExpression;
 import com.mogujie.jarvis.dto.Crontab;
-import com.mogujie.jarvis.server.cron.CronExpression;
 import com.mogujie.jarvis.server.scheduler.event.TimeReadyEvent;
 
 @Deprecated
@@ -58,13 +57,9 @@ public class CronScheduler {
     public void schedule(Crontab crontab) {
         crontabs.put(crontab.getJobId(), crontab);
 
-        try {
-            CronExpression expression = new CronExpression(crontab.getCronExpression());
-            Pair<Long, DateTime> pair = new Pair<>(crontab.getJobId(), expression.getTimeAfter(DateTime.now()));
-            nextScheduleTimeList.add(pair);
-        } catch (ParseException e) {
-            LOGGER.error(e);
-        }
+        CronExpression expression = new CronExpression(crontab.getCronExpression());
+        Pair<Long, DateTime> pair = new Pair<>(crontab.getJobId(), expression.getTimeAfter(DateTime.now()));
+        nextScheduleTimeList.add(pair);
     }
 
     public void scheduleOnce(long jobId, int delaySeconds) {
@@ -122,13 +117,9 @@ public class CronScheduler {
 
                         Crontab crontab = crontabs.get(jobId);
                         if (crontab != null) {
-                            try {
-                                DateTime nextTime = new CronExpression(crontab.getCronExpression()).getTimeAfter(DateTime.now());
-                                if (nextTime != null) {
-                                    nextScheduleTimeList.add(new Pair<>(pair.getFirst(), nextTime));
-                                }
-                            } catch (ParseException e) {
-                                LOGGER.error(e);
+                            DateTime nextTime = new CronExpression(crontab.getCronExpression()).getTimeAfter(DateTime.now());
+                            if (nextTime != null) {
+                                nextScheduleTimeList.add(new Pair<>(pair.getFirst(), nextTime));
                             }
                         }
 
