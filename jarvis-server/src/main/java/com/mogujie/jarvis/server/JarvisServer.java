@@ -8,19 +8,12 @@
 
 package com.mogujie.jarvis.server;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
-import java.util.Timer;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.ApplicationContext;
-
-import akka.actor.ActorSystem;
-import akka.routing.SmallestMailboxPool;
 
 import com.google.common.collect.Lists;
 import com.mogujie.jarvis.core.JarvisConstants;
@@ -34,7 +27,6 @@ import com.mogujie.jarvis.core.expression.ScheduleExpression;
 import com.mogujie.jarvis.dto.Job;
 import com.mogujie.jarvis.dto.Task;
 import com.mogujie.jarvis.server.actor.ServerActor;
-import com.mogujie.jarvis.server.domain.JarvisTimerTask;
 import com.mogujie.jarvis.server.domain.JobEntry;
 import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.dag.DAGJob;
@@ -47,6 +39,9 @@ import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.SpringContext;
 import com.mogujie.jarvis.server.util.SpringExtension;
+
+import akka.actor.ActorSystem;
+import akka.routing.SmallestMailboxPool;
 
 /**
  *
@@ -72,7 +67,7 @@ public class JarvisServer {
 
     public static void init() throws Exception {
         initScheduler();
-//        initTimerTask();
+        // initTimerTask();
     }
 
     private static void initScheduler() throws JobScheduleException {
@@ -115,24 +110,11 @@ public class JarvisServer {
         }
 
         // 3. initialize TaskScheduler
-        List<Task> readyTasks = taskService.getTasksByStatus(Lists.newArrayList(JobStatus.WAITING.getValue(),
-                JobStatus.READY.getValue()));
+        List<Task> readyTasks = taskService.getTasksByStatus(Lists.newArrayList(JobStatus.WAITING.getValue(), JobStatus.READY.getValue()));
         List<Task> runningTasks = taskService.getTasksByStatus(JobStatus.RUNNING.getValue());
         taskScheduler.init(readyTasks, runningTasks);
 
         // 4. start schedulers
         controller.notify(new StartEvent());
     }
-
-    @Deprecated
-    private static void initTimerTask() throws ParseException {
-        //24 hours
-        final long time24h = 24 * 60 * 60 * 1000;
-        final String startTime = "00:00:00";
-        final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd " + startTime);
-        Date firstTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(sdf.format(new Date()));
-        Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new JarvisTimerTask(), firstTime, time24h);
-    }
-
 }
