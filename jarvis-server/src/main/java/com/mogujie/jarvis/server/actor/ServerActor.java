@@ -21,6 +21,12 @@ import javax.inject.Named;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 
+import akka.actor.ActorRef;
+import akka.actor.Props;
+import akka.actor.UntypedActor;
+import akka.routing.RouterConfig;
+import akka.routing.SmallestMailboxPool;
+
 import com.google.common.base.Throwables;
 import com.google.protobuf.GeneratedMessage;
 import com.mogujie.jarvis.core.domain.ActorEntry;
@@ -33,12 +39,6 @@ import com.mogujie.jarvis.dto.AppExample;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
 import com.mogujie.jarvis.server.util.AppTokenUtils;
 import com.mogujie.jarvis.server.util.SpringExtension;
-
-import akka.actor.ActorRef;
-import akka.actor.Props;
-import akka.actor.UntypedActor;
-import akka.routing.RouterConfig;
-import akka.routing.SmallestMailboxPool;
 
 @Named("serverActor")
 @Scope("prototype")
@@ -80,7 +80,7 @@ public class ServerActor extends UntypedActor {
         addActor("taskMetricsActor", TaskMetricsActor.handledMessages());
         addActor("heartBeatActor", HeartBeatActor.handledMessages());
         addActor("workerRegistryActor", WorkerRegistryActor.handledMessages());
-        addActor("killTaskActor", new SmallestMailboxPool(10), KillTaskActor.handledMessages());
+        addActor("taskActor", new SmallestMailboxPool(10), TaskActor.handledMessages());
         addActor("jobActor", JobActor.handledMessages());
         addActor("modifyWorkerStatusActor", ModifyWorkerStatusActor.handledMessages());
         addActor("appActor", AppActor.handledMessages());

@@ -8,6 +8,8 @@
 
 package com.mogujie.jarvis.server.scheduler.event;
 
+import org.joda.time.DateTime;
+
 /**
  * @author guangming
  *
@@ -20,6 +22,7 @@ public class TimeReadyEvent extends DAGJobEvent {
      */
     public TimeReadyEvent(long jobId) {
         super(jobId);
+        scheduleTime = DateTime.now().getMillis();
     }
 
     /**
