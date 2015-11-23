@@ -13,6 +13,7 @@ package com.mogujie.jarvis.server.scheduler.event;
  *
  */
 public class RetryTaskEvent extends DAGTaskEvent{
+    private boolean runChild;
 
     /**
      * @param jobId
@@ -22,4 +23,16 @@ public class RetryTaskEvent extends DAGTaskEvent{
         super(jobId, taskId);
     }
 
+    public RetryTaskEvent(long jobId, long taskId, boolean runChild) {
+        this(jobId, taskId);
+        this.runChild = runChild;
+    }
+
+    public boolean isRunChild() {
+        return runChild;
+    }
+
+    public void setRunChild(boolean runChild) {
+        this.runChild = runChild;
+    }
 }

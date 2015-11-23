@@ -243,14 +243,16 @@ public class TaskScheduler extends Scheduler {
     }
 
     @Subscribe
+    @Transactional
     public void handleRetryTaskEvent(RetryTaskEvent e) {
         long taskId = e.getTaskId();
+        boolean runChild = e.isRunChild();
         Task task = taskService.get(taskId);
         if (task != null) {
             DAGTask dagTask;
             if (!readyTable.containsKey(taskId)) {
                 dagTask = new DAGTask(task.getJobId(), taskId, task.getAttemptId(),
-                        task.getScheduleTime().getTime());
+                        task.getScheduleTime().getTime(), runChild);
                 readyTable.put(taskId, dagTask);
             } else {
                 dagTask = readyTable.get(taskId);
