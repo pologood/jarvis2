@@ -31,7 +31,7 @@ import com.mogujie.jarvis.server.scheduler.event.TimeReadyEvent;
 @Repository
 public class DAGScheduler extends Scheduler {
 
-    private JobGraph jobGraph = new JobGraph();
+    private JobGraph jobGraph = JobGraph.INSTANCE;
     private static final Logger LOGGER = LogManager.getLogger();
 
     public void destroy() {
@@ -49,6 +49,7 @@ public class DAGScheduler extends Scheduler {
     @Subscribe
     public void handleTimeReadyEvent(TimeReadyEvent e) {
         long jobId = e.getJobId();
+        long scheduleTime = e.getScheduleTime();
         DAGJob dagJob = getDAGJob(jobId);
         if (dagJob != null) {
             if (!(dagJob.getType().implies(DAGJobType.TIME))) {
@@ -59,7 +60,7 @@ public class DAGScheduler extends Scheduler {
             dagJob.setTimeReadyFlag();
             LOGGER.debug("DAGJob {} time ready", dagJob.getJobId());
             // 如果通过依赖检查，提交给taskScheduler，并重置自己的依赖状态
-            jobGraph.submitJobWithCheck(dagJob, e.getScheduleTime());
+            jobGraph.submitJobWithCheck(dagJob, scheduleTime);
         }
     }
 

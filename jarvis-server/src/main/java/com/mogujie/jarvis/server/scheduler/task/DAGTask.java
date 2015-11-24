@@ -104,7 +104,9 @@ public class DAGTask {
     }
 
     public boolean checkStatus() {
-        return statusChecker.checkStatus();
+        long timeStamp = System.currentTimeMillis();
+        long scheduleTime = getScheduleTime();
+        return (scheduleTime <= timeStamp) && statusChecker.checkStatus();
     }
 
     public List<Long> getChildTaskIds() {

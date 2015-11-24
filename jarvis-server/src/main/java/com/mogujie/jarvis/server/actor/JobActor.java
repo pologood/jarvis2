@@ -22,6 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.transaction.annotation.Transactional;
 
+import akka.actor.UntypedActor;
+
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Sets;
 import com.mogujie.jarvis.core.domain.ActorEntry;
@@ -58,12 +60,11 @@ import com.mogujie.jarvis.server.scheduler.dag.DAGJob;
 import com.mogujie.jarvis.server.scheduler.dag.DAGJobType;
 import com.mogujie.jarvis.server.scheduler.dag.DAGScheduler;
 import com.mogujie.jarvis.server.scheduler.time.TimeScheduler;
+import com.mogujie.jarvis.server.scheduler.time.TimeSchedulerFactory;
 import com.mogujie.jarvis.server.service.AppService;
 import com.mogujie.jarvis.server.service.CrontabService;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.util.MessageUtil;
-
-import akka.actor.UntypedActor;
 
 /**
  * @author guangming
@@ -75,8 +76,7 @@ public class JobActor extends UntypedActor {
     @Autowired
     private DAGScheduler dagScheduler;
 
-    @Autowired
-    private TimeScheduler timeScheduler;
+    private TimeScheduler timeScheduler = TimeSchedulerFactory.create();
 
     @Autowired
     private CrontabService cronService;

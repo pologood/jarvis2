@@ -147,4 +147,10 @@ public class TaskService {
         //TODO
         return null;
     }
+
+    public List<Task> getTasksBetween(Date start, Date end) {
+        TaskExample example = new TaskExample();
+        example.createCriteria().andScheduleTimeBetween(start, end);
+        return taskMapper.selectByExample(example);
+    }
 }

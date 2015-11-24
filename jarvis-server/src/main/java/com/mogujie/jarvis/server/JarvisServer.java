@@ -17,6 +17,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 
+import akka.actor.ActorSystem;
+import akka.routing.SmallestMailboxPool;
+
 import com.google.common.collect.Lists;
 import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.domain.JobStatus;
@@ -38,13 +41,11 @@ import com.mogujie.jarvis.server.scheduler.dag.DAGScheduler;
 import com.mogujie.jarvis.server.scheduler.event.StartEvent;
 import com.mogujie.jarvis.server.scheduler.task.TaskScheduler;
 import com.mogujie.jarvis.server.scheduler.time.TimeScheduler;
+import com.mogujie.jarvis.server.scheduler.time.TimeSchedulerFactory;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.SpringContext;
 import com.mogujie.jarvis.server.util.SpringExtension;
-
-import akka.actor.ActorSystem;
-import akka.routing.SmallestMailboxPool;
 
 /**
  *
@@ -88,7 +89,7 @@ public class JarvisServer {
         JobSchedulerController controller = JobSchedulerController.getInstance();
         DAGScheduler dagScheduler = SpringContext.getBean(DAGScheduler.class);
         TaskScheduler taskScheduler = SpringContext.getBean(TaskScheduler.class);
-        TimeScheduler timeScheduler = SpringContext.getBean(TimeScheduler.class);
+        TimeScheduler timeScheduler = TimeSchedulerFactory.create();
         controller.register(dagScheduler);
         controller.register(taskScheduler);
         controller.register(timeScheduler);

@@ -40,7 +40,9 @@ import com.mogujie.jarvis.server.scheduler.event.AddTaskEvent;
  * @author guangming
  *
  */
-public class JobGraph {
+public enum JobGraph {
+    INSTANCE;
+
     private Map<Long, DAGJob> waitingTable = new ConcurrentHashMap<Long, DAGJob>();
     private DirectedAcyclicGraph<DAGJob, DefaultEdge> dag = new DirectedAcyclicGraph<DAGJob, DefaultEdge>(DefaultEdge.class);
     private JobSchedulerController controller = JobSchedulerController.getInstance();
@@ -363,6 +365,15 @@ public class JobGraph {
             DAGDependChecker checker = child.getDependChecker();
             checker.updateExpression(parentId, offsetStrategy);
         }
+    }
+
+    public Set<Long> getParentJobIds(long jobId) {
+        DAGJob dagJob = waitingTable.get(jobId);
+        Set<Long> jobIds = Sets.newHashSet();
+        if (dagJob != null) {
+            jobIds = getParentJobIds(dagJob);
+        }
+        return jobIds;
     }
 
     private Set<Long> getParentJobIds(DAGJob dagJob) {

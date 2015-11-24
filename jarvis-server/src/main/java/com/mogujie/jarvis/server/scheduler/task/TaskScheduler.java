@@ -38,6 +38,7 @@ import com.mogujie.jarvis.server.scheduler.event.AddTaskEvent;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
 import com.mogujie.jarvis.server.scheduler.event.KilledEvent;
 import com.mogujie.jarvis.server.scheduler.event.RetryTaskEvent;
+import com.mogujie.jarvis.server.scheduler.event.RunTaskEvent;
 import com.mogujie.jarvis.server.scheduler.event.RunningEvent;
 import com.mogujie.jarvis.server.scheduler.event.ScheduleEvent;
 import com.mogujie.jarvis.server.scheduler.event.StartEvent;
@@ -266,6 +267,15 @@ public class TaskScheduler extends Scheduler {
         }
     }
 
+    @Subscribe
+    public void handleRunTaskEvent(RunTaskEvent e) {
+        long taskId = e.getTaskId();
+        DAGTask dagTask = readyTable.get(taskId);
+        if (dagTask != null && dagTask.checkStatus() ) {
+            submitTask(dagTask);
+        }
+    }
+
     private void updateTaskStatus(long taskId, JobStatus status) {
         if (status.equals(JobStatus.RUNNING)) {
             taskService.updateStatusWithStart(taskId, status);
@@ -324,6 +334,7 @@ public class TaskScheduler extends Scheduler {
                 .setContent(job.getContent())
                 .setTaskType(job.getJobType())
                 .setParameters(JsonHelper.parseJSON2Map(job.getParams()))
+                .setSchedulingTime(dagTask.getScheduleTime())
                 .build();
 
         return taskDetail;

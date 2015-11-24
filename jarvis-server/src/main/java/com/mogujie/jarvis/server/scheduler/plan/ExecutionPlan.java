@@ -6,28 +6,27 @@
  * Create Date: 2015年11月5日 下午3:47:31
  */
 
-package com.mogujie.jarvis.server.scheduler.time;
+package com.mogujie.jarvis.server.scheduler.plan;
 
 import java.util.Comparator;
 import java.util.Iterator;
-import java.util.Objects;
 import java.util.SortedSet;
 import java.util.concurrent.ConcurrentSkipListSet;
 
 import org.joda.time.DateTime;
 
 /**
- * 
+ *
  *
  */
 public enum ExecutionPlan {
     INSTANCE;
 
-    private Comparator<ExecutionPlanEntry> comparator = new Comparator<ExecutionPlan.ExecutionPlanEntry>() {
+    private Comparator<ExecutionPlanEntry> comparator = new Comparator<ExecutionPlanEntry>() {
 
         @Override
         public int compare(ExecutionPlanEntry o1, ExecutionPlanEntry o2) {
-            return o1.dateTime.compareTo(o2.dateTime);
+            return o1.getDateTime().compareTo(o2.getDateTime());
         }
     };
 
@@ -35,6 +34,10 @@ public enum ExecutionPlan {
 
     public boolean addPlan(long jobId, DateTime dateTime) {
         return plan.add(new ExecutionPlanEntry(jobId, dateTime));
+    }
+
+    public boolean addPlan(ExecutionPlanEntry entry) {
+        return plan.add(entry);
     }
 
     public boolean removePlan(long jobId, DateTime dateTime) {
@@ -55,42 +58,4 @@ public enum ExecutionPlan {
         return plan;
     }
 
-    public class ExecutionPlanEntry {
-
-        private final long jobId;
-        private final DateTime dateTime;
-
-        public ExecutionPlanEntry(long jobId, DateTime dateTime) {
-            this.jobId = jobId;
-            this.dateTime = dateTime;
-        }
-
-        public long getJobId() {
-            return jobId;
-        }
-
-        public DateTime getDateTime() {
-            return dateTime;
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(jobId, dateTime);
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (obj == this) {
-                return true;
-            }
-
-            if (!(obj instanceof ExecutionPlanEntry)) {
-                return false;
-            }
-
-            ExecutionPlanEntry other = (ExecutionPlanEntry) obj;
-            return Objects.equals(jobId, other.jobId) && Objects.equals(dateTime, other.dateTime);
-        }
-
-    }
 }
