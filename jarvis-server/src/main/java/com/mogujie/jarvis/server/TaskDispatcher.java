@@ -12,32 +12,29 @@ import java.util.Map.Entry;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
-import akka.actor.ActorSelection;
-import akka.actor.ActorSystem;
-
-import com.mogujie.jarvis.core.domain.IdType;
 import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.domain.WorkerInfo;
-import com.mogujie.jarvis.core.observer.Event;
-import com.mogujie.jarvis.core.util.IdUtils;
 import com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse;
-import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
-import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
+import com.mogujie.jarvis.server.scheduler.TaskRetryScheduler;
 import com.mogujie.jarvis.server.service.AppService;
 import com.mogujie.jarvis.server.util.FutureUtils;
 import com.mogujie.jarvis.server.workerselector.WorkerSelector;
 
+import akka.actor.ActorSelection;
+import akka.actor.ActorSystem;
+
 @Repository
+@Scope("prototype")
 public class TaskDispatcher extends Thread {
 
-    @Autowired
-    private TaskQueue queue;
+    private TaskQueue queue = TaskQueue.INSTANCE;
+    private TaskRetryScheduler taskRetryScheduler = TaskRetryScheduler.INSTANCE;
 
     @Autowired
     private AppService appService;
@@ -51,7 +48,6 @@ public class TaskDispatcher extends Thread {
     private volatile boolean running = true;
 
     private ActorSystem system = JarvisServerActorSystem.getInstance();
-    private JobSchedulerController schedulerController = JobSchedulerController.getInstance();
 
     private static final Logger LOGGER = LogManager.getLogger();
 
@@ -69,12 +65,6 @@ public class TaskDispatcher extends Thread {
             if (running) {
                 try {
                     TaskDetail task = queue.take();
-                    DateTime nextRetryTime = task.getNextRetryTime();
-                    if (nextRetryTime != null && nextRetryTime.isAfter(DateTime.now())) {
-                        queue.put(task);
-                        continue;
-                    }
-
                     String appName = task.getAppName();
                     int appId = appService.getAppIdByName(appName);
 
@@ -109,16 +99,7 @@ public class TaskDispatcher extends Thread {
                                     } else {
                                         LOGGER.warn("Task[{}] was rejected by worker[{}:{}]", task.getFullId(), workerInfo.getIp(),
                                                 workerInfo.getPort());
-                                        int alreadyRetries = task.getAlreadyRetries();
-                                        if (alreadyRetries > task.getRejectRetries()) {
-                                            long jobId = IdUtils.parse(task.getFullId(), IdType.JOB_ID);
-                                            long taskId = IdUtils.parse(task.getFullId(), IdType.TASK_ID);
-                                            Event event = new FailedEvent(jobId, taskId);
-                                            schedulerController.notify(event);
-                                            continue;
-                                        }
-                                        task.setNextRetryTime(DateTime.now().plusSeconds(task.getRejectInterval()));
-                                        task.setAlreadyRetries(alreadyRetries + 1);
+                                        taskRetryScheduler.addTask(task, task.getRejectRetries(), task.getRejectInterval());
                                     }
                                 } else {
                                     LOGGER.error("Send ServerSubmitTaskRequest error: " + response.getMessage());

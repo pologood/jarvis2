@@ -10,6 +10,8 @@ package com.mogujie.jarvis.server;
 
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -29,6 +31,7 @@ import com.mogujie.jarvis.dto.Task;
 import com.mogujie.jarvis.server.actor.ServerActor;
 import com.mogujie.jarvis.server.domain.JobEntry;
 import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
+import com.mogujie.jarvis.server.scheduler.TaskRetryScheduler;
 import com.mogujie.jarvis.server.scheduler.dag.DAGJob;
 import com.mogujie.jarvis.server.scheduler.dag.DAGJobType;
 import com.mogujie.jarvis.server.scheduler.dag.DAGScheduler;
@@ -59,6 +62,16 @@ public class JarvisServer {
         SpringExtension.SPRING_EXT_PROVIDER.get(system).initialize(context);
 
         system.actorOf(new SmallestMailboxPool(10).props(ServerActor.props()), JarvisConstants.SERVER_AKKA_SYSTEM_NAME);
+
+        int taskDispatcherThreads = 5;
+        ExecutorService executorService = Executors.newFixedThreadPool(taskDispatcherThreads);
+        for (int i = 0; i < taskDispatcherThreads; i++) {
+            executorService.submit(SpringContext.getBean(TaskDispatcher.class));
+        }
+        executorService.shutdown();
+
+        TaskRetryScheduler taskRetryScheduler = TaskRetryScheduler.INSTANCE;
+        taskRetryScheduler.start();
 
         init();
 

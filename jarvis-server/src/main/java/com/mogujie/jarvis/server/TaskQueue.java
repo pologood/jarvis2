@@ -12,16 +12,11 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.concurrent.PriorityBlockingQueue;
 
-import org.springframework.stereotype.Repository;
-
 import com.mogujie.jarvis.core.domain.TaskDetail;
 
-/**
- *
- *
- */
-@Repository
-public class TaskQueue {
+public enum TaskQueue {
+
+    INSTANCE;
 
     private Comparator<TaskDetail> comparator = new Comparator<TaskDetail>() {
 

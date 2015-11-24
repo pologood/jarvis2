@@ -10,8 +10,6 @@ package com.mogujie.jarvis.core.domain;
 
 import java.util.Map;
 
-import org.joda.time.DateTime;
-
 /**
  * 
  *
@@ -30,8 +28,8 @@ public class TaskDetail {
     private long schedulingTime;
     private int rejectInterval;
     private int rejectRetries;
-    private int alreadyRetries;
-    private DateTime nextRetryTime;
+    private int failedRetries;
+    private int failedInterval;
 
     private TaskDetail() {
     }
@@ -84,20 +82,12 @@ public class TaskDetail {
         return rejectRetries;
     }
 
-    public int getAlreadyRetries() {
-        return alreadyRetries;
+    public int getFailedRetries() {
+        return failedRetries;
     }
 
-    public void setAlreadyRetries(int alreadyRetries) {
-        this.alreadyRetries = alreadyRetries;
-    }
-
-    public DateTime getNextRetryTime() {
-        return nextRetryTime;
-    }
-
-    public void setNextRetryTime(DateTime nextRetryTime) {
-        this.nextRetryTime = nextRetryTime;
+    public int getFailedInterval() {
+        return failedInterval;
     }
 
     public static TaskDetailBuilder newTaskDetailBuilder() {
@@ -168,6 +158,16 @@ public class TaskDetail {
 
         public TaskDetailBuilder setRejectInterval(int rejectInterval) {
             this.task.rejectInterval = rejectInterval;
+            return this;
+        }
+
+        public TaskDetailBuilder setFailedRetries(int failedRetries) {
+            this.task.failedRetries = failedRetries;
+            return this;
+        }
+
+        public TaskDetailBuilder setFailedInterval(int failedInterval) {
+            this.task.failedInterval = failedInterval;
             return this;
         }
 
