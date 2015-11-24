@@ -58,7 +58,6 @@ public class MessageUtil {
         job.setSubmitUser(msg.getUser());
         job.setUpdateUser(msg.getUser());
         job.setWorkerGroupId(msg.getGroupId());
-        job.setOriginJobId(msg.getOriginJobId());
         if (msg.getParametersList() != null && msg.getParametersList().size() != 0) {
             job.setParams(JsonHelper.parseMapEntryList2JSON(msg.getParametersList()));
         }
@@ -124,9 +123,7 @@ public class MessageUtil {
         return jobDepend;
     }
 
-    public static Map<ModifyJobType, ModifyJobEntry> convert2ModifyJobMap(
-            RestServerModifyJobRequest msg,
-            JobService jobService,
+    public static Map<ModifyJobType, ModifyJobEntry> convert2ModifyJobMap(RestServerModifyJobRequest msg, JobService jobService,
             CrontabService cronService) {
 
         Map<ModifyJobType, ModifyJobEntry> modifyMap = new HashMap<ModifyJobType, ModifyJobEntry>();

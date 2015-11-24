@@ -54,31 +54,27 @@ public class JobController extends AbstractController {
     @POST
     @Path("submit")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult submit(@FormParam("appName") String appName,
-                             @FormParam("appToken") String appToken,
-                             @FormParam("user") String user,
-                             @FormParam("parameters") String parameters) {
+    public RestResult submit(@FormParam("appName") String appName, @FormParam("appToken") String appToken, @FormParam("user") String user,
+            @FormParam("parameters") String parameters) {
         LOGGER.info("提交job任务");
         try {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
-            JSONObject para=new JSONObject(parameters);
+            JSONObject para = new JSONObject(parameters);
 
-            Long jobId = para.getLong("jobId");
-            String jobName=para.getString("jobName");
-            String cronExpression=para.getString("cronExpression");
-            String dependJobIds=para.getString("dependJobIds");
-            String jobType=para.getString("jobType");
-            String content=para.getString("content");
-            Integer groupId=para.getInt("groupId");
-            Integer rejectRetries=para.getInt("rejectRetries");
-            Integer rejectInterval=para.getInt("rejectInterval");
-            Integer failedRetries=para.getInt("failedRetries");
-            Integer failedInterval=para.getInt("failedInterval");
-            String startTime=para.getString("startTime");
-            String endTime=para.getString("endTime");
-            Integer priority=para.getInt("priority");
-
+            String jobName = para.getString("jobName");
+            String cronExpression = para.getString("cronExpression");
+            String dependJobIds = para.getString("dependJobIds");
+            String jobType = para.getString("jobType");
+            String content = para.getString("content");
+            Integer groupId = para.getInt("groupId");
+            Integer rejectRetries = para.getInt("rejectRetries");
+            Integer rejectInterval = para.getInt("rejectInterval");
+            Integer failedRetries = para.getInt("failedRetries");
+            Integer failedInterval = para.getInt("failedInterval");
+            String startTime = para.getString("startTime");
+            String endTime = para.getString("endTime");
+            Integer priority = para.getInt("priority");
 
             // todo , 转换为 list
             List<DependencyEntry> dependEntryList = new ArrayList<DependencyEntry>();
@@ -155,33 +151,30 @@ public class JobController extends AbstractController {
     @POST
     @Path("edit")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult edit(@FormParam("appName") String appName,
-                           @FormParam("appToken") String appToken,
-                           @FormParam("user") String user,
-                           @FormParam("parameters") String parameters) {
+    public RestResult edit(@FormParam("appName") String appName, @FormParam("appToken") String appToken, @FormParam("user") String user,
+            @FormParam("parameters") String parameters) {
 
         try {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
             LOGGER.info("更新job任务");
 
-            JSONObject para=new JSONObject(parameters);
+            JSONObject para = new JSONObject(parameters);
 
             Long jobId = para.getLong("jobId");
-            String jobName=para.getString("jobName");
-            String cronExpression=para.getString("cronExpression");
-            String dependJobIds=para.getString("dependJobIds");
-            String jobType=para.getString("jobType");
-            String content=para.getString("content");
-            Integer groupId=para.getInt("groupId");
-            Integer rejectRetries=para.getInt("rejectRetries");
-            Integer rejectInterval=para.getInt("rejectInterval");
-            Integer failedRetries=para.getInt("failedRetries");
-            Integer failedInterval=para.getInt("failedInterval");
-            String startTime=para.getString("startTime");
-            String endTime=para.getString("endTime");
-            Integer priority=para.getInt("priority");
-
+            String jobName = para.getString("jobName");
+            String cronExpression = para.getString("cronExpression");
+            String dependJobIds = para.getString("dependJobIds");
+            String jobType = para.getString("jobType");
+            String content = para.getString("content");
+            Integer groupId = para.getInt("groupId");
+            Integer rejectRetries = para.getInt("rejectRetries");
+            Integer rejectInterval = para.getInt("rejectInterval");
+            Integer failedRetries = para.getInt("failedRetries");
+            Integer failedInterval = para.getInt("failedInterval");
+            String startTime = para.getString("startTime");
+            String endTime = para.getString("endTime");
+            Integer priority = para.getInt("priority");
 
             // todo , 转换为 list
             List<DependencyEntry> dependEntryList = new ArrayList<DependencyEntry>();
@@ -278,18 +271,15 @@ public class JobController extends AbstractController {
     @POST
     @Path("flag")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult flag(@FormParam("appToken") String appToken,
-                           @FormParam("appName") String appName,
-                           @FormParam("user") String user,
-                           @FormParam("parameters") String parameters){
+    public RestResult flag(@FormParam("appToken") String appToken, @FormParam("appName") String appName, @FormParam("user") String user,
+            @FormParam("parameters") String parameters) {
         try {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
+            JSONObject para = new JSONObject(parameters);
 
-            JSONObject para=new JSONObject(parameters);
-
-            Long jobId=para.getLong("jobId");
-            Integer jobFlag=para.getInt("jobFlag");
+            Long jobId = para.getLong("jobId");
+            Integer jobFlag = para.getInt("jobFlag");
 
             // 构造删除job请求request，1.启用2.禁用3.过期4.垃圾箱
             RestServerModifyJobFlagRequest request = RestServerModifyJobFlagRequest.newBuilder().setJobId(jobId).setUser(user).setJobFlag(jobFlag)
@@ -322,20 +312,16 @@ public class JobController extends AbstractController {
     @POST
     @Path("rerun")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult rerun(@FormParam("appName") String appName,
-                            @FormParam("appToken") String appToken,
-                            @FormParam("user") String user,
-                            @FormParam("parameters") String parameters) {
+    public RestResult rerun(@FormParam("appName") String appName, @FormParam("appToken") String appToken, @FormParam("user") String user,
+            @FormParam("parameters") String parameters) {
         try {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
+            JSONObject para = new JSONObject(parameters);
 
-            JSONObject para=new JSONObject(parameters);
-
-            Long originJobId=para.getLong("originJobId");
-            String startTime=para.getString("startTime");
-            String endTime=para.getString("endTime");
-            String reRunJobs=para.getString("reRunJobs");
+            String startTime = para.getString("startTime");
+            String endTime = para.getString("endTime");
+            String reRunJobs = para.getString("reRunJobs");
 
             JSONArray reRunJobArr = new JSONArray(reRunJobs);
 
@@ -353,8 +339,7 @@ public class JobController extends AbstractController {
             for (int i = 0; i < reRunJobArr.length(); i++) {
                 Long singleOriginId = reRunJobArr.getLong(i);
                 // 构造新增任务请求
-                RestServerSubmitJobRequest.Builder builder = RestServerSubmitJobRequest.newBuilder().setOriginJobId(singleOriginId)
-                        .setAppAuth(appAuth).setUser(user);
+                RestServerSubmitJobRequest.Builder builder = RestServerSubmitJobRequest.newBuilder().setAppAuth(appAuth).setUser(user);
                 if (startTimeLong != null) {
                     builder.setStartTime(startTimeLong);
                 }

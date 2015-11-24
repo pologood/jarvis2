@@ -86,19 +86,18 @@ public class TaskDispatcher extends Thread {
 
                     WorkerInfo workerInfo = workerSelector.select(task.getGroupId());
                     if (workerInfo != null) {
-                        boolean allowed = taskManager.addTask(task.getFullId(), workerInfo, appId);
+                        String fullId = task.getFullId();
+                        boolean allowed = taskManager.addTask(fullId, workerInfo, appId);
                         if (allowed) {
                             ActorSelection actorSelection = system.actorSelection(workerInfo.getAkkaRootPath());
                             try {
                                 WorkerSubmitTaskResponse response = (WorkerSubmitTaskResponse) FutureUtils.awaitResult(actorSelection, request, 30);
                                 if (response.getSuccess()) {
                                     if (response.getAccept()) {
-                                        LOGGER.debug("Task[{}] was accepted by worker[{}:{}]", task.getFullId(), workerInfo.getIp(),
-                                                workerInfo.getPort());
+                                        LOGGER.debug("Task[{}] was accepted by worker[{}:{}]", fullId, workerInfo.getIp(), workerInfo.getPort());
                                         continue;
                                     } else {
-                                        LOGGER.warn("Task[{}] was rejected by worker[{}:{}]", task.getFullId(), workerInfo.getIp(),
-                                                workerInfo.getPort());
+                                        LOGGER.warn("Task[{}] was rejected by worker[{}:{}]", fullId, workerInfo.getIp(), workerInfo.getPort());
                                         taskRetryScheduler.addTask(task, task.getRejectRetries(), task.getRejectInterval());
                                     }
                                 } else {
