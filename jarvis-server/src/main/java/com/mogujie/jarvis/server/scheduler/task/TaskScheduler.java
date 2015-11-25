@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.eventbus.AllowConcurrentEvents;
 import com.google.common.eventbus.Subscribe;
-import com.mogujie.jarvis.core.domain.JobStatus;
+import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.util.IdUtils;
 import com.mogujie.jarvis.core.util.JsonHelper;
@@ -104,7 +104,7 @@ public class TaskScheduler extends Scheduler {
     public void handleSuccessEvent(SuccessEvent e) {
         long taskId = e.getTaskId();
         // update task status and remove from readyTable
-        updateTaskStatus(taskId, JobStatus.SUCCESS);
+        updateTaskStatus(taskId, TaskStatus.SUCCESS);
         DAGTask dagTask = readyTable.remove(taskId);
 
         // notify child tasks
@@ -128,7 +128,7 @@ public class TaskScheduler extends Scheduler {
     @Transactional
     public void handleRunningEvent(RunningEvent e) {
         long taskId = e.getTaskId();
-        updateTaskStatus(taskId, JobStatus.RUNNING);
+        updateTaskStatus(taskId, TaskStatus.RUNNING);
     }
 
     @Subscribe
@@ -136,7 +136,7 @@ public class TaskScheduler extends Scheduler {
     @Transactional
     public void handleKilledEvent(KilledEvent e) {
         long taskId = e.getTaskId();
-        updateTaskStatus(taskId, JobStatus.KILLED);
+        updateTaskStatus(taskId, TaskStatus.KILLED);
         readyTable.remove(taskId);
         reduceTaskNum(e.getJobId());
     }
@@ -160,12 +160,12 @@ public class TaskScheduler extends Scheduler {
                 if (task != null) {
                     task.setAttemptId(attemptId);
                     task.setUpdateTime(DateTime.now().toDate());
-                    task.setStatus(JobStatus.READY.getValue());
+                    task.setStatus(TaskStatus.READY.getValue());
                     taskService.update(task);
                     retryScheduler.addTask(getTaskInfo(dagTask), failedRetries, failedInterval);
                 }
             } else {
-                updateTaskStatus(e.getTaskId(), JobStatus.FAILED);
+                updateTaskStatus(e.getTaskId(), TaskStatus.FAILED);
                 readyTable.remove(taskId);
             }
         }
@@ -208,7 +208,7 @@ public class TaskScheduler extends Scheduler {
         for (Long taskId : taskIdList) {
             Task task = taskService.get(taskId);
             if (task != null) {
-                updateTaskStatus(taskId, JobStatus.WAITING);
+                updateTaskStatus(taskId, TaskStatus.WAITING);
 
                 DAGTask dagTask;
                 if (!readyTable.containsKey(taskId)) {
@@ -237,11 +237,11 @@ public class TaskScheduler extends Scheduler {
         }
     }
 
-    private void updateTaskStatus(long taskId, JobStatus status) {
-        if (status.equals(JobStatus.RUNNING)) {
+    private void updateTaskStatus(long taskId, TaskStatus status) {
+        if (status.equals(TaskStatus.RUNNING)) {
             taskService.updateStatusWithStart(taskId, status);
-        } else if (status.equals(JobStatus.SUCCESS) || status.equals(JobStatus.FAILED)
-                || status.equals(JobStatus.KILLED)) {
+        } else if (status.equals(TaskStatus.SUCCESS) || status.equals(TaskStatus.FAILED)
+                || status.equals(TaskStatus.KILLED)) {
             taskService.updateStatusWithEnd(taskId, status);
         } else {
             taskService.updateStatus(taskId, status);
@@ -272,7 +272,7 @@ public class TaskScheduler extends Scheduler {
 
     private void submitTask(DAGTask dagTask) {
         // update status to ready
-        updateTaskStatus(dagTask.getTaskId(), JobStatus.READY);
+        updateTaskStatus(dagTask.getTaskId(), TaskStatus.READY);
 
         // submit to TaskQueue
         TaskDetail taskDetail = getTaskInfo(dagTask);

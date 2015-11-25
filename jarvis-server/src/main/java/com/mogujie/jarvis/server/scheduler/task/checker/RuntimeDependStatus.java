@@ -11,7 +11,7 @@ package com.mogujie.jarvis.server.scheduler.task.checker;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mogujie.jarvis.core.domain.JobStatus;
+import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.expression.DependencyStrategyExpression;
 import com.mogujie.jarvis.dto.Task;
 import com.mogujie.jarvis.server.service.TaskService;
@@ -50,7 +50,7 @@ public class RuntimeDependStatus extends AbstractTaskStatus {
         List<Task> dependTasks = taskService.getTasks(dependTaskIds);
         List<Boolean> taskStatus = new ArrayList<Boolean>();
         for (Task task : dependTasks) {
-            Boolean status = (task.getStatus() == JobStatus.SUCCESS.getValue()) ? true : false;
+            Boolean status = (task.getStatus() == TaskStatus.SUCCESS.getValue()) ? true : false;
             taskStatus.add(status);
         }
 

@@ -8,10 +8,10 @@
 package com.mogujie.jarvis.core.domain;
 
 /**
- * @author wuya
+ * @author muming
  *
  */
-public enum JobStatus {
+public enum TaskStatus {
 
     UNKNOWN(0), //未知
     WAITING(1), //等待（条件未满足）
@@ -23,7 +23,7 @@ public enum JobStatus {
 
     private int value;
 
-    JobStatus(int value) {
+    TaskStatus(int value) {
         this.value = value;
     }
 
@@ -31,10 +31,10 @@ public enum JobStatus {
         return value;
     }
 
-    public static JobStatus getInstance(int value) {
-        JobStatus[] statusList = JobStatus.values();
-        JobStatus status = JobStatus.UNKNOWN;
-        for (JobStatus s : statusList) {
+    public static TaskStatus getInstance(int value) {
+        TaskStatus[] statusList = TaskStatus.values();
+        TaskStatus status = TaskStatus.UNKNOWN;
+        for (TaskStatus s : statusList) {
             if (s.getValue() == value) {
                 status = s;
                 break;
