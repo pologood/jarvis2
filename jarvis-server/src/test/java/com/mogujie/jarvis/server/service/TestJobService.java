@@ -1,6 +1,7 @@
 package com.mogujie.jarvis.server.service;
 
-import org.joda.time.DateTime;
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.mogujie.jarvis.dto.generate.Task;
+import com.mogujie.jarvis.dto.generate.Job;
 
 /**
  * Created by muming on 15/11/17.
@@ -16,18 +17,19 @@ import com.mogujie.jarvis.dto.generate.Task;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath*:context.xml")
-public class TestTaskService {
+public class TestJobService {
 
     @Autowired
-    private  TaskService taskService;
+    private  JobService jobService;
 
     @Test
-    public void testCreateTaskByJobId(){
-        Integer jobId = 3;
-        Long scheduleTime = DateTime.now().getMillis()/1000;
-        Task task = taskService.createTaskByJobId(jobId,scheduleTime);
-        Assert.assertNotNull(task);
+    public void testGetActiveJobs(){
+
+        List<Job> jobs = jobService.getNotDeletedJobs();
+        Assert.assertTrue(!jobs.isEmpty());
 
     }
+
+
 
 }
