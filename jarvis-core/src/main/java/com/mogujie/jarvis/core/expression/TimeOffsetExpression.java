@@ -44,29 +44,29 @@ public class TimeOffsetExpression extends DependencyExpression {
     private static final Pattern SINGLE_OFFSET_PATTERN = Pattern.compile("([smhdwMy])\\(((-?\\d+)|[smhHdeMy])\\)");
 
     static {
-        MAP.put(Pattern.compile("cm"), "('yyyy-MM-dd HH:mm:00',m(-1),m(1)]");
+        MAP.put(Pattern.compile("cm"), "['yyyy-MM-dd HH:mm:00',m(-1),m(1))");
         MAP.put(Pattern.compile("m\\((-?\\d+)\\)"), "('yyyy-MM-dd HH:mm:00',m(a)]");
         MAP.put(Pattern.compile("m\\((-?\\d+),(-?\\d+)\\)"), "('yyyy-MM-dd HH:mm:00',m(a),m(b)]");
 
-        MAP.put(Pattern.compile("ch"), "('yyyy-MM-dd HH:00:00',h(-1),h(1)]");
-        MAP.put(Pattern.compile("h\\((-?\\d+)\\)"), "('yyyy-MM-dd HH:00:00',h(a)]");
-        MAP.put(Pattern.compile("h\\((-?\\d+),(-?\\d+)\\)"), "('yyyy-MM-dd HH:00:00',h(a),h(b)]");
+        MAP.put(Pattern.compile("ch"), "['yyyy-MM-dd HH:00:00',h(-1),h(1))");
+        MAP.put(Pattern.compile("h\\((-?\\d+)\\)"), "['yyyy-MM-dd HH:00:00',h(a))");
+        MAP.put(Pattern.compile("h\\((-?\\d+),(-?\\d+)\\)"), "['yyyy-MM-dd HH:00:00',h(a),h(b))");
 
-        MAP.put(Pattern.compile("cd"), "('yyyy-MM-dd 00:00:00',d(-1),d(1)]");
-        MAP.put(Pattern.compile("d\\((-?\\d+)\\)"), "('yyyy-MM-dd 00:00:00',d(a)]");
-        MAP.put(Pattern.compile("d\\((-?\\d+),(-?\\d+)\\)"), "('yyyy-MM-dd 00:00:00',d(a),d(b)]");
+        MAP.put(Pattern.compile("cd"), "['yyyy-MM-dd 00:00:00',d(-1),d(1))");
+        MAP.put(Pattern.compile("d\\((-?\\d+)\\)"), "['yyyy-MM-dd 00:00:00',d(a))");
+        MAP.put(Pattern.compile("d\\((-?\\d+),(-?\\d+)\\)"), "['yyyy-MM-dd 00:00:00',d(a),d(b))");
 
-        MAP.put(Pattern.compile("cM"), "('yyyy-MM-01 00:00:00',M(-1),M(1)]");
-        MAP.put(Pattern.compile("M\\((-?\\d+)\\)"), "('yyyy-MM-01 00:00:00',M(a)]");
-        MAP.put(Pattern.compile("M\\((-?\\d+),(-?\\d+)\\)"), "('yyyy-MM-01 00:00:00',M(a),M(b)]");
+        MAP.put(Pattern.compile("cM"), "['yyyy-MM-01 00:00:00',M(-1),M(1))");
+        MAP.put(Pattern.compile("M\\((-?\\d+)\\)"), "['yyyy-MM-01 00:00:00',M(a))");
+        MAP.put(Pattern.compile("M\\((-?\\d+),(-?\\d+)\\)"), "['yyyy-MM-01 00:00:00',M(a),M(b))");
 
-        MAP.put(Pattern.compile("cy"), "('yyyy-01-01 00:00:00',y(-1),y(1)]");
-        MAP.put(Pattern.compile("y\\((-?\\d+)\\)"), "('yyyy-01-01 00:00:00',y(a)]");
-        MAP.put(Pattern.compile("y\\((-?\\d+),(-?\\d+)\\)"), "('yyyy-01-01 00:00:00',y(a),y(b)]");
+        MAP.put(Pattern.compile("cy"), "['yyyy-01-01 00:00:00',y(-1),y(1))");
+        MAP.put(Pattern.compile("y\\((-?\\d+)\\)"), "['yyyy-01-01 00:00:00',y(a))");
+        MAP.put(Pattern.compile("y\\((-?\\d+),(-?\\d+)\\)"), "['yyyy-01-01 00:00:00',y(a),y(b))");
 
         MAP.put(Pattern.compile("cw"), "['yyyy-MM-dd 00:00:00',d(e),w(-1))");
-        MAP.put(Pattern.compile("w\\((-?\\d+)\\)"), "('yyyy-MM-dd 00:00:00',d(e),w(a)]");
-        MAP.put(Pattern.compile("w\\((-?\\d+),(-?\\d+)\\)"), "('yyyy-MM-dd 00:00:00',d(e)w(a),w(b)]");
+        MAP.put(Pattern.compile("w\\((-?\\d+)\\)"), "['yyyy-MM-dd 00:00:00',d(e),w(a))");
+        MAP.put(Pattern.compile("w\\((-?\\d+),(-?\\d+)\\)"), "['yyyy-MM-dd 00:00:00',d(e)w(a),w(b))");
     }
 
     public TimeOffsetExpression(String expression) {
