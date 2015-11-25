@@ -1,6 +1,6 @@
 package com.mogujie.jarvis.web.entity.vo;
 
-import com.mogujie.jarvis.dto.WorkerGroup;
+import com.mogujie.jarvis.dto.generate.WorkerGroup;
 
 /**
  * Created by hejian on 15/9/28.

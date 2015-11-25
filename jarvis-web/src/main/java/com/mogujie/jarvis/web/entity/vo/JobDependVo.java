@@ -1,7 +1,6 @@
 package com.mogujie.jarvis.web.entity.vo;
 
 import com.alibaba.fastjson.JSONObject;
-import com.mogujie.jarvis.dto.JobDepend;
 
 import java.util.List;
 

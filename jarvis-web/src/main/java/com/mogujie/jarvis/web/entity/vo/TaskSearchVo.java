@@ -1,6 +1,6 @@
 package com.mogujie.jarvis.web.entity.vo;
 
-import com.mogujie.jarvis.dto.Task;
+import com.mogujie.jarvis.dto.generate.Task;
 
 import java.util.List;
 
