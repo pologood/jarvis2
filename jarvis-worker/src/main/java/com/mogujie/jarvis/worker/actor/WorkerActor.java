@@ -26,7 +26,7 @@ import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.ProgressReporter;
 import com.mogujie.jarvis.core.TaskContext;
 import com.mogujie.jarvis.core.TaskContext.TaskContextBuilder;
-import com.mogujie.jarvis.core.domain.JobStatus;
+import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.domain.TaskDetail.TaskDetailBuilder;
 import com.mogujie.jarvis.core.exeception.AcceptanceException;
@@ -135,7 +135,7 @@ public class WorkerActor extends UntypedActor {
             AbstractTask job = constructor.newInstance(contextBuilder.build());
             jobPool.add(fullId, job);
             serverActor.tell(WorkerReportTaskStatusRequest.newBuilder().setFullId(fullId)
-                    .setStatus(JobStatus.RUNNING.getValue()).setTimestamp(System.currentTimeMillis() / 1000)
+                    .setStatus(TaskStatus.RUNNING.getValue()).setTimestamp(System.currentTimeMillis() / 1000)
                     .build(), getSelf());
             reporter.report(0);
             Callable<Boolean> task = new TaskCallable(job);
@@ -149,11 +149,11 @@ public class WorkerActor extends UntypedActor {
 
             if (result) {
                 serverActor.tell(WorkerReportTaskStatusRequest.newBuilder().setFullId(fullId)
-                        .setStatus(JobStatus.SUCCESS.getValue()).setTimestamp(System.currentTimeMillis() / 1000)
+                        .setStatus(TaskStatus.SUCCESS.getValue()).setTimestamp(System.currentTimeMillis() / 1000)
                         .build(), getSelf());
             } else {
                 serverActor.tell(WorkerReportTaskStatusRequest.newBuilder().setFullId(fullId)
-                        .setStatus(JobStatus.FAILED.getValue()).setTimestamp(System.currentTimeMillis() / 1000)
+                        .setStatus(TaskStatus.FAILED.getValue()).setTimestamp(System.currentTimeMillis() / 1000)
                         .build(), getSelf());
             }
 

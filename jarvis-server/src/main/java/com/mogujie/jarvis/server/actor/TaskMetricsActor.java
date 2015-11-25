@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Scope;
 import akka.actor.UntypedActor;
 
 import com.mogujie.jarvis.core.domain.ActorEntry;
-import com.mogujie.jarvis.core.domain.JobStatus;
+import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.core.observer.Event;
 import com.mogujie.jarvis.dao.generate.TaskMapper;
@@ -59,15 +59,15 @@ public class TaskMetricsActor extends UntypedActor {
             long jobId = Long.parseLong(idList[0]);
             long taskId = Long.parseLong(idList[1]);
 
-            JobStatus status = JobStatus.getInstance(msg.getStatus());
+            TaskStatus status = TaskStatus.getInstance(msg.getStatus());
             Event event = new UnhandleEvent();
-            if (status.equals(JobStatus.SUCCESS)) {
+            if (status.equals(TaskStatus.SUCCESS)) {
                 event = new SuccessEvent(jobId, taskId);
-            } else if (status.equals(JobStatus.FAILED)) {
+            } else if (status.equals(TaskStatus.FAILED)) {
                 event = new FailedEvent(jobId, taskId);
-            } else if (status.equals(JobStatus.RUNNING)) {
+            } else if (status.equals(TaskStatus.RUNNING)) {
                 event = new RunningEvent(jobId, taskId);
-            } else if (status.equals(JobStatus.KILLED)) {
+            } else if (status.equals(TaskStatus.KILLED)) {
                 event = new KilledEvent(jobId, taskId);
             }
             schedulerController.notify(event);

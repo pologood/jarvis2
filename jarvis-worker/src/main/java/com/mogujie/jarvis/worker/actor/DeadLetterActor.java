@@ -8,7 +8,7 @@
 
 package com.mogujie.jarvis.worker.actor;
 
-import com.mogujie.jarvis.core.domain.JobStatus;
+import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.protocol.ReportTaskStatusProtos.WorkerReportTaskStatusRequest;
 
 import akka.actor.DeadLetter;
@@ -34,8 +34,8 @@ public class DeadLetterActor extends UntypedActor {
         WorkerReportTaskStatusRequest status = (WorkerReportTaskStatusRequest) msg;
 
         // 只对成功或者失败的状态进行重发
-        if (status.getStatus() == JobStatus.SUCCESS.getValue()
-            || status.getStatus() == JobStatus.FAILED.getValue()) {
+        if (status.getStatus() == TaskStatus.SUCCESS.getValue()
+            || status.getStatus() == TaskStatus.FAILED.getValue()) {
           getSender().tell(status, getSelf());
           Thread.sleep(3000);
         }

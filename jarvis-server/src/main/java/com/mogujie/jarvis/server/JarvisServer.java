@@ -19,7 +19,7 @@ import org.springframework.context.ApplicationContext;
 
 import com.google.common.collect.Lists;
 import com.mogujie.jarvis.core.JarvisConstants;
-import com.mogujie.jarvis.core.domain.JobStatus;
+import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.exeception.JobScheduleException;
 import com.mogujie.jarvis.core.expression.CronExpression;
 import com.mogujie.jarvis.core.expression.FixedDelayExpression;
@@ -127,8 +127,8 @@ public class JarvisServer {
         }
 
         // 3. initialize TaskScheduler
-        List<Task> readyTasks = taskService.getTasksByStatus(Lists.newArrayList(JobStatus.WAITING.getValue(), JobStatus.READY.getValue()));
-        List<Task> runningTasks = taskService.getTasksByStatus(JobStatus.RUNNING.getValue());
+        List<Task> readyTasks = taskService.getTasksByStatus(Lists.newArrayList(TaskStatus.WAITING.getValue(), TaskStatus.READY.getValue()));
+        List<Task> runningTasks = taskService.getTasksByStatus(TaskStatus.RUNNING.getValue());
         taskScheduler.init(readyTasks, runningTasks);
 
         // 4. start schedulers

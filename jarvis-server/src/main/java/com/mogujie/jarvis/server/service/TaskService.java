@@ -12,12 +12,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.google.common.collect.Range;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.mogujie.jarvis.core.domain.JobStatus;
+import com.google.common.collect.Range;
+import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.dao.generate.JobMapper;
 import com.mogujie.jarvis.dao.generate.TaskMapper;
 import com.mogujie.jarvis.dto.generate.Job;
@@ -65,7 +65,7 @@ public class TaskService {
         record.setCreateTime(currentTime);
         record.setUpdateTime(currentTime);
         record.setScheduleTime(new Date(scheduleTime));
-        record.setStatus(JobStatus.WAITING.getValue());
+        record.setStatus(TaskStatus.WAITING.getValue());
         record.setProgress((float) 0);
         Job job = jobMapper.selectByPrimaryKey(jobId);
         record.setExecuteUser(job.getSubmitUser());
@@ -86,7 +86,7 @@ public class TaskService {
         return taskMapper.selectByExample(example);
     }
 
-    public void updateStatusWithStart(long taskId, JobStatus status) {
+    public void updateStatusWithStart(long taskId, TaskStatus status) {
         Task task = taskMapper.selectByPrimaryKey(taskId);
         task.setStatus(status.getValue());
         DateTime dt = DateTime.now();
@@ -96,7 +96,7 @@ public class TaskService {
         taskMapper.updateByPrimaryKey(task);
     }
 
-    public void updateStatusWithEnd(long taskId, JobStatus status) {
+    public void updateStatusWithEnd(long taskId, TaskStatus status) {
         Task task = taskMapper.selectByPrimaryKey(taskId);
         task.setStatus(status.getValue());
         DateTime dt = DateTime.now();
@@ -106,7 +106,7 @@ public class TaskService {
         taskMapper.updateByPrimaryKey(task);
     }
 
-    public void updateStatus(long taskId, JobStatus status) {
+    public void updateStatus(long taskId, TaskStatus status) {
         Task task = taskMapper.selectByPrimaryKey(taskId);
         task.setStatus(status.getValue());
         task.setUpdateTime(DateTime.now().toDate());
@@ -173,7 +173,7 @@ public class TaskService {
         }
         List<Boolean> status = new ArrayList<>();
         for(Task task : tasks){
-            status.add(task.getStatus() == JobStatus.SUCCESS.getValue());
+            status.add(task.getStatus() == TaskStatus.SUCCESS.getValue());
         }
         return status;
     }

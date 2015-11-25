@@ -23,14 +23,11 @@ public class TestTaskService {
 
     @Test
     public void testCreateTaskByJobId() {
-
         Integer jobId = 3;
         Long scheduleTime = DateTime.now().getMillis();
 
         Task task = taskService.createTaskByJobId(jobId, scheduleTime);
-
         Assert.assertNotNull(task);
-
     }
 
 }
