@@ -13,7 +13,7 @@ import java.util.List;
 
 import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.expression.DependencyStrategyExpression;
-import com.mogujie.jarvis.dto.Task;
+import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.SpringContext;
 

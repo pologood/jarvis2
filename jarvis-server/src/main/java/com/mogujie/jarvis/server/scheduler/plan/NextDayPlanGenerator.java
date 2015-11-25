@@ -16,8 +16,8 @@ import java.util.List;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.mogujie.jarvis.dto.Job;
-import com.mogujie.jarvis.dto.Task;
+import com.mogujie.jarvis.dto.generate.Job;
+import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.event.TimeReadyEvent;
 import com.mogujie.jarvis.server.service.TaskService;

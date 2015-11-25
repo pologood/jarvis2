@@ -14,9 +14,9 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.mogujie.jarvis.dao.TaskScheduleMapper;
-import com.mogujie.jarvis.dto.TaskSchedule;
-import com.mogujie.jarvis.dto.TaskScheduleExample;
+import com.mogujie.jarvis.dao.generate.TaskScheduleMapper;
+import com.mogujie.jarvis.dto.generate.TaskSchedule;
+import com.mogujie.jarvis.dto.generate.TaskScheduleExample;
 
 /**
  * @author guangming

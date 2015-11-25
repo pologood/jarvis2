@@ -18,7 +18,7 @@ import org.joda.time.DateTime;
 
 import com.google.common.collect.Range;
 import com.mogujie.jarvis.core.expression.TimeOffsetExpression;
-import com.mogujie.jarvis.dto.Task;
+import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.SpringContext;
 

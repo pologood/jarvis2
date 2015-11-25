@@ -16,11 +16,11 @@
             userId="root"
 			password="mogujie" />
 
-        <javaModelGenerator targetPackage="com.mogujie.jarvis.dto"
+        <javaModelGenerator targetPackage="com.mogujie.jarvis.dto.generate"
 			targetProject="src/main/java" />
-		<sqlMapGenerator targetPackage="com.mogujie.jarvis.dao"
+		<sqlMapGenerator targetPackage="com.mogujie.jarvis.dao.generate"
 			targetProject="src/main/resources/sqlMap" />
-		<javaClientGenerator targetPackage="com.mogujie.jarvis.dao"
+		<javaClientGenerator targetPackage="com.mogujie.jarvis.dao.generate"
 			targetProject="src/main/java" type="XMLMAPPER" />
 
         <table schema="jarvis2" tableName="app">
@@ -71,6 +71,11 @@
 		</table>
 
 		<table schema="jarvis2" tableName="worker_group">
+			<property name="useActualColumnNames" value="true" />
+			<generatedKey column="id" sqlStatement="MySql" identity="true" />
+		</table>
+		
+		<table schema="jarvis2" tableName="alarm">
 			<property name="useActualColumnNames" value="true" />
 			<generatedKey column="id" sqlStatement="MySql" identity="true" />
 		</table>

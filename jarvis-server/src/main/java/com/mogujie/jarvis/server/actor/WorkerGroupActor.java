@@ -20,8 +20,8 @@ import org.springframework.context.annotation.Scope;
 
 import com.mogujie.jarvis.core.domain.ActorEntry;
 import com.mogujie.jarvis.core.domain.MessageType;
-import com.mogujie.jarvis.dao.WorkerGroupMapper;
-import com.mogujie.jarvis.dto.WorkerGroup;
+import com.mogujie.jarvis.dao.generate.WorkerGroupMapper;
+import com.mogujie.jarvis.dto.generate.WorkerGroup;
 import com.mogujie.jarvis.protocol.WorkerGroupProtos.RestServerCreateWorkerGroupRequest;
 import com.mogujie.jarvis.protocol.WorkerGroupProtos.RestServerModifyWorkerGroupRequest;
 import com.mogujie.jarvis.protocol.WorkerGroupProtos.ServerCreateWorkerGroupResponse;

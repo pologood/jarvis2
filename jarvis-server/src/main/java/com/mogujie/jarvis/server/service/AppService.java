@@ -15,12 +15,12 @@ import org.springframework.stereotype.Service;
 
 import com.google.common.base.Preconditions;
 import com.mogujie.jarvis.core.domain.AppStatus;
-import com.mogujie.jarvis.dao.AppMapper;
-import com.mogujie.jarvis.dao.AppWorkerGroupMapper;
-import com.mogujie.jarvis.dto.App;
-import com.mogujie.jarvis.dto.AppExample;
-import com.mogujie.jarvis.dto.AppWorkerGroup;
-import com.mogujie.jarvis.dto.AppWorkerGroupExample;
+import com.mogujie.jarvis.dao.generate.AppMapper;
+import com.mogujie.jarvis.dao.generate.AppWorkerGroupMapper;
+import com.mogujie.jarvis.dto.generate.App;
+import com.mogujie.jarvis.dto.generate.AppExample;
+import com.mogujie.jarvis.dto.generate.AppWorkerGroup;
+import com.mogujie.jarvis.dto.generate.AppWorkerGroupExample;
 
 /**
  * @author guangming

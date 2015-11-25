@@ -25,8 +25,8 @@ import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.util.IdUtils;
 import com.mogujie.jarvis.core.util.JsonHelper;
-import com.mogujie.jarvis.dto.Job;
-import com.mogujie.jarvis.dto.Task;
+import com.mogujie.jarvis.dto.generate.Job;
+import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.server.TaskManager;
 import com.mogujie.jarvis.server.TaskQueue;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
@@ -53,7 +53,10 @@ import com.mogujie.jarvis.server.util.SpringContext;
  */
 public class TaskScheduler extends Scheduler {
     private static TaskScheduler instance = new TaskScheduler();
-    private TaskScheduler() {}
+
+    private TaskScheduler() {
+    }
+
     public static TaskScheduler getInstance() {
         return instance;
     }
@@ -212,8 +215,7 @@ public class TaskScheduler extends Scheduler {
 
                 DAGTask dagTask;
                 if (!readyTable.containsKey(taskId)) {
-                    dagTask = new DAGTask(task.getJobId(), taskId, task.getAttemptId(),
-                            task.getScheduleTime().getTime(), runChild);
+                    dagTask = new DAGTask(task.getJobId(), taskId, task.getAttemptId(), task.getScheduleTime().getTime(), runChild);
                     readyTable.put(taskId, dagTask);
                 } else {
                     dagTask = readyTable.get(taskId);
@@ -232,7 +234,7 @@ public class TaskScheduler extends Scheduler {
     public void handleRunTaskEvent(RunTaskEvent e) {
         long taskId = e.getTaskId();
         DAGTask dagTask = readyTable.get(taskId);
-        if (dagTask != null && dagTask.checkStatus() ) {
+        if (dagTask != null && dagTask.checkStatus()) {
             submitTask(dagTask);
         }
     }
@@ -240,8 +242,12 @@ public class TaskScheduler extends Scheduler {
     private void updateTaskStatus(long taskId, TaskStatus status) {
         if (status.equals(TaskStatus.RUNNING)) {
             taskService.updateStatusWithStart(taskId, status);
+<<<<<<< HEAD
         } else if (status.equals(TaskStatus.SUCCESS) || status.equals(TaskStatus.FAILED)
                 || status.equals(TaskStatus.KILLED)) {
+=======
+        } else if (status.equals(JobStatus.SUCCESS) || status.equals(JobStatus.FAILED) || status.equals(JobStatus.KILLED)) {
+>>>>>>> 767479d89851cbde20558f3e40b50ea0eceaa528
             taskService.updateStatusWithEnd(taskId, status);
         } else {
             taskService.updateStatus(taskId, status);
@@ -286,17 +292,9 @@ public class TaskScheduler extends Scheduler {
         TaskDetail taskDetail = null;
         long jobId = dagTask.getJobId();
         Job job = jobService.get(jobId).getJob();
-        taskDetail = TaskDetail.newTaskDetailBuilder()
-                .setFullId(fullId)
-                .setTaskName(job.getJobName())
-                .setAppName(jobService.getAppName(jobId))
-                .setUser(job.getSubmitUser())
-                .setPriority(job.getPriority())
-                .setContent(job.getContent())
-                .setTaskType(job.getJobType())
-                .setParameters(JsonHelper.parseJSON2Map(job.getParams()))
-                .setSchedulingTime(dagTask.getScheduleTime())
-                .build();
+        taskDetail = TaskDetail.newTaskDetailBuilder().setFullId(fullId).setTaskName(job.getJobName()).setAppName(jobService.getAppName(jobId))
+                .setUser(job.getSubmitUser()).setPriority(job.getPriority()).setContent(job.getContent()).setTaskType(job.getJobType())
+                .setParameters(JsonHelper.parseJSON2Map(job.getParams())).setSchedulingTime(dagTask.getScheduleTime()).build();
 
         return taskDetail;
     }

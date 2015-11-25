@@ -16,10 +16,10 @@ import org.joda.time.DateTime;
 
 import com.mogujie.jarvis.core.domain.JobFlag;
 import com.mogujie.jarvis.core.util.JsonHelper;
-import com.mogujie.jarvis.dao.JobMapper;
-import com.mogujie.jarvis.dto.Crontab;
-import com.mogujie.jarvis.dto.Job;
-import com.mogujie.jarvis.dto.JobDepend;
+import com.mogujie.jarvis.dao.generate.JobMapper;
+import com.mogujie.jarvis.dto.generate.Crontab;
+import com.mogujie.jarvis.dto.generate.Job;
+import com.mogujie.jarvis.dto.generate.JobDepend;
 import com.mogujie.jarvis.protocol.ModifyJobProtos.RestServerModifyJobRequest;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitJobRequest;
 import com.mogujie.jarvis.server.domain.ModifyJobEntry;

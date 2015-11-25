@@ -21,9 +21,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Sets;
-import com.mogujie.jarvis.dao.TaskDependMapper;
-import com.mogujie.jarvis.dto.TaskDepend;
-import com.mogujie.jarvis.dto.TaskDependExample;
+import com.mogujie.jarvis.dao.generate.TaskDependMapper;
+import com.mogujie.jarvis.dto.generate.TaskDepend;
+import com.mogujie.jarvis.dto.generate.TaskDependExample;
 
 /**
  * @author guangming

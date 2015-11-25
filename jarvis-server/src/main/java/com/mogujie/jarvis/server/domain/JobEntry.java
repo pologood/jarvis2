@@ -1,7 +1,7 @@
 package com.mogujie.jarvis.server.domain;
 
 import com.mogujie.jarvis.core.expression.ScheduleExpression;
-import com.mogujie.jarvis.dto.Job;
+import com.mogujie.jarvis.dto.generate.Job;
 
 import java.util.List;
 import java.util.Map;
