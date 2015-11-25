@@ -1,7 +1,5 @@
 package com.mogujie.jarvis.server.service;
 
-import com.mogujie.jarvis.dto.Job;
-import com.mogujie.jarvis.dto.Task;
 import org.joda.time.DateTime;
 import org.junit.Assert;
 import org.junit.Test;
@@ -10,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.List;
+import com.mogujie.jarvis.dto.generate.Task;
 
 /**
  * Created by muming on 15/11/17.
@@ -25,17 +23,10 @@ public class TestTaskService {
 
     @Test
     public void testCreateTaskByJobId(){
-
-
         Integer jobId = 3;
         Long scheduleTime = DateTime.now().getMillis();
-
         Task task = taskService.createTaskByJobId(jobId,scheduleTime);
-
         Assert.assertNotNull(task);
-
     }
-
-
 
 }

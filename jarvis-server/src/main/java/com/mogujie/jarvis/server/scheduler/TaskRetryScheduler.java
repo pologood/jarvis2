@@ -9,6 +9,7 @@
 package com.mogujie.jarvis.server.scheduler;
 
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.SortedSet;
 import java.util.concurrent.ConcurrentSkipListSet;
@@ -35,6 +36,11 @@ import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
 public enum TaskRetryScheduler {
     INSTANCE;
 
+    public enum RETRY_TYPE {
+        FAILED,
+        REJECT
+    }
+
     private TaskQueue taskQueue = TaskQueue.INSTANCE;
     private volatile boolean running;
     private Map<String, Pair<TaskDetail, Integer>> taskMap = Maps.newConcurrentMap();
@@ -57,10 +63,21 @@ public enum TaskRetryScheduler {
         executorService.shutdown();
     }
 
-    public void addTask(TaskDetail taskDetail, int retries, int interval) {
+    public void addTask(TaskDetail taskDetail, int retries, int interval, RETRY_TYPE type) {
         String fullId = taskDetail.getFullId();
-        taskMap.put(fullId, new Pair<TaskDetail, Integer>(taskDetail, retries));
-        taskSet.add(new Pair<String, DateTime>(fullId, DateTime.now().plusSeconds(interval)));
+        String key = fullId;
+        if (type.equals(RETRY_TYPE.FAILED)) {
+            long jobId = IdUtils.parse(fullId, IdType.JOB_ID);
+            long taskId = IdUtils.parse(fullId, IdType.TASK_ID);
+            key = jobId + "_" + taskId;
+        }
+        taskMap.put(key, new Pair<TaskDetail, Integer>(taskDetail, retries));
+        taskSet.add(new Pair<String, DateTime>(key, DateTime.now().plusSeconds(interval)));
+    }
+
+    public void removeTask(String fullId) {
+        taskMap.remove(fullId);
+        taskRetriedCounter.remove(fullId);
     }
 
     public void shutdown() {
@@ -73,7 +90,9 @@ public enum TaskRetryScheduler {
         public void run() {
             while (running) {
                 DateTime now = DateTime.now();
-                for (Pair<String, DateTime> pair : taskSet) {
+                Iterator<Pair<String, DateTime>> it = taskSet.iterator();
+                while (it.hasNext()) {
+                    Pair<String, DateTime> pair = it.next();
                     if (pair.getSecond().isBefore(now)) {
                         String fullId = pair.getFirst();
                         TaskDetail taskDetail = taskMap.get(fullId).getFirst();
@@ -92,6 +111,7 @@ public enum TaskRetryScheduler {
                                 taskRetriedCounter.getAndIncrement(fullId);
                             }
                         }
+                        it.remove();
                     } else {
                         break;
                     }

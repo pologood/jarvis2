@@ -21,8 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.eventbus.AllowConcurrentEvents;
 import com.google.common.eventbus.Subscribe;
-import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.domain.TaskDetail;
+import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.util.IdUtils;
 import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.dto.generate.Job;
@@ -31,6 +31,7 @@ import com.mogujie.jarvis.server.TaskManager;
 import com.mogujie.jarvis.server.TaskQueue;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
 import com.mogujie.jarvis.server.scheduler.TaskRetryScheduler;
+import com.mogujie.jarvis.server.scheduler.TaskRetryScheduler.RETRY_TYPE;
 import com.mogujie.jarvis.server.scheduler.event.AddTaskEvent;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
 import com.mogujie.jarvis.server.scheduler.event.KilledEvent;
@@ -148,8 +149,9 @@ public class TaskScheduler extends Scheduler {
     @AllowConcurrentEvents
     @Transactional
     public void handleFailedEvent(FailedEvent e) {
-        DAGTask dagTask = readyTable.get(e.getTaskId());
+        long jobId = e.getJobId();
         long taskId = e.getTaskId();
+        DAGTask dagTask = readyTable.get(taskId);
         if (dagTask != null) {
             Job job = jobService.get(dagTask.getJobId()).getJob();
             int failedRetries = job.getFailedAttempts();
@@ -165,9 +167,10 @@ public class TaskScheduler extends Scheduler {
                     task.setUpdateTime(DateTime.now().toDate());
                     task.setStatus(TaskStatus.READY.getValue());
                     taskService.update(task);
-                    retryScheduler.addTask(getTaskInfo(dagTask), failedRetries, failedInterval);
+                    retryScheduler.addTask(getTaskInfo(dagTask), failedRetries, failedInterval, RETRY_TYPE.FAILED);
                 }
             } else {
+                retryScheduler.removeTask(jobId + "_" + taskId);
                 updateTaskStatus(e.getTaskId(), TaskStatus.FAILED);
                 readyTable.remove(taskId);
             }
@@ -242,13 +245,8 @@ public class TaskScheduler extends Scheduler {
     private void updateTaskStatus(long taskId, TaskStatus status) {
         if (status.equals(TaskStatus.RUNNING)) {
             taskService.updateStatusWithStart(taskId, status);
-<<<<<<< HEAD
         } else if (status.equals(TaskStatus.SUCCESS) || status.equals(TaskStatus.FAILED)
                 || status.equals(TaskStatus.KILLED)) {
-=======
-        } else if (status.equals(JobStatus.SUCCESS) || status.equals(JobStatus.FAILED) || status.equals(JobStatus.KILLED)) {
->>>>>>> 767479d89851cbde20558f3e40b50ea0eceaa528
-            taskService.updateStatusWithEnd(taskId, status);
         } else {
             taskService.updateStatus(taskId, status);
         }

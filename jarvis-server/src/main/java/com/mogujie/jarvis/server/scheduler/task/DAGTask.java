@@ -48,10 +48,7 @@ public class DAGTask {
     }
 
     public DAGTask(long jobId, long taskId, int attemptId, long scheduleTime, Map<Long, Set<Long>> dependTaskIdMap) {
-        this.jobId = jobId;
-        this.taskId = taskId;
-        this.attemptId = attemptId;
-        this.scheduleTime = scheduleTime;
+        this(jobId, taskId, attemptId, scheduleTime);
         this.statusChecker = new TaskStatusChecker(jobId, taskId, dependTaskIdMap);
     }
 

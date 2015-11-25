@@ -17,7 +17,7 @@ import java.util.TimerTask;
 import com.mogujie.jarvis.core.domain.JobFlag;
 import com.mogujie.jarvis.server.scheduler.event.RunTaskEvent;
 import com.mogujie.jarvis.server.scheduler.plan.ExecutionPlanEntry;
-import com.mogujie.jarvis.server.scheduler.plan.PlanGenerator;
+import com.mogujie.jarvis.server.scheduler.plan.NextDayPlanGenerator;
 
 /**
  * Plan based TimeScheduler
@@ -30,7 +30,7 @@ public class PlanTimeScheduler extends TimeScheduler {
     private static PlanTimeScheduler instance = new PlanTimeScheduler();
 
     private PlanTimeScheduler() {
-        this.planGenerator = new PlanGenerator();
+        this.planGenerator = new NextDayPlanGenerator();
 
         long period = planGenerator.getPeriod();
         final String startTime = "23:30:00";
