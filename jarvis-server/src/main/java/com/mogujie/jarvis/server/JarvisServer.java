@@ -17,9 +17,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 
-import akka.actor.ActorSystem;
-import akka.routing.SmallestMailboxPool;
-
 import com.google.common.collect.Lists;
 import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.domain.JobStatus;
@@ -29,10 +26,11 @@ import com.mogujie.jarvis.core.expression.FixedDelayExpression;
 import com.mogujie.jarvis.core.expression.FixedRateExpression;
 import com.mogujie.jarvis.core.expression.ISO8601Expression;
 import com.mogujie.jarvis.core.expression.ScheduleExpression;
-import com.mogujie.jarvis.dto.Job;
-import com.mogujie.jarvis.dto.Task;
+import com.mogujie.jarvis.dto.generate.Job;
+import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.server.actor.ServerActor;
 import com.mogujie.jarvis.server.domain.JobEntry;
+import com.mogujie.jarvis.server.scheduler.AlarmScheduler;
 import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.TaskRetryScheduler;
 import com.mogujie.jarvis.server.scheduler.dag.DAGJob;
@@ -46,6 +44,9 @@ import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.SpringContext;
 import com.mogujie.jarvis.server.util.SpringExtension;
+
+import akka.actor.ActorSystem;
+import akka.routing.SmallestMailboxPool;
 
 /**
  *
@@ -89,10 +90,12 @@ public class JarvisServer {
         JobSchedulerController controller = JobSchedulerController.getInstance();
         DAGScheduler dagScheduler = SpringContext.getBean(DAGScheduler.class);
         TaskScheduler taskScheduler = SpringContext.getBean(TaskScheduler.class);
+        AlarmScheduler alarmScheduler = SpringContext.getBean(AlarmScheduler.class);
         TimeScheduler timeScheduler = TimeSchedulerFactory.create();
         controller.register(dagScheduler);
         controller.register(taskScheduler);
         controller.register(timeScheduler);
+        controller.register(alarmScheduler);
 
         // 2. initialize DAGScheduler and TimeScheduler
         JobService jobService = SpringContext.getBean(JobService.class);

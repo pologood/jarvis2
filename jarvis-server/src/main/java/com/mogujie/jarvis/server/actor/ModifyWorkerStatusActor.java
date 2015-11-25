@@ -18,9 +18,9 @@ import org.springframework.context.annotation.Scope;
 
 import com.mogujie.jarvis.core.domain.ActorEntry;
 import com.mogujie.jarvis.core.domain.MessageType;
-import com.mogujie.jarvis.dao.WorkerMapper;
-import com.mogujie.jarvis.dto.Worker;
-import com.mogujie.jarvis.dto.WorkerExample;
+import com.mogujie.jarvis.dao.generate.WorkerMapper;
+import com.mogujie.jarvis.dto.generate.Worker;
+import com.mogujie.jarvis.dto.generate.WorkerExample;
 import com.mogujie.jarvis.protocol.ModifyWorkerStatusProtos.RestServerModifyWorkerStatusRequest;
 import com.mogujie.jarvis.protocol.ModifyWorkerStatusProtos.ServerModifyWorkerStatusResponse;
 

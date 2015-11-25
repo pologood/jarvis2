@@ -17,9 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mogujie.jarvis.core.domain.CrontabType;
-import com.mogujie.jarvis.dao.CrontabMapper;
-import com.mogujie.jarvis.dto.Crontab;
-import com.mogujie.jarvis.dto.CrontabExample;
+import com.mogujie.jarvis.dao.generate.CrontabMapper;
+import com.mogujie.jarvis.dto.generate.Crontab;
+import com.mogujie.jarvis.dto.generate.CrontabExample;
 
 /**
  * @author guangming

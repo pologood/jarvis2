@@ -15,7 +15,7 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.mogujie.jarvis.dao.diy.IDMapper;
+import com.mogujie.jarvis.dao.IDMapper;
 
 /**
  * 

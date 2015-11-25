@@ -20,7 +20,7 @@ import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.AtomicLongMap;
 import com.mogujie.jarvis.core.domain.Pair;
 import com.mogujie.jarvis.core.domain.WorkerInfo;
-import com.mogujie.jarvis.dto.App;
+import com.mogujie.jarvis.dto.generate.App;
 import com.mogujie.jarvis.server.service.AppService;
 
 @Repository

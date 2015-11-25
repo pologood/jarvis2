@@ -16,11 +16,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mogujie.jarvis.core.domain.JobStatus;
-import com.mogujie.jarvis.dao.JobMapper;
-import com.mogujie.jarvis.dao.TaskMapper;
-import com.mogujie.jarvis.dto.Job;
-import com.mogujie.jarvis.dto.Task;
-import com.mogujie.jarvis.dto.TaskExample;
+import com.mogujie.jarvis.dao.generate.JobMapper;
+import com.mogujie.jarvis.dao.generate.TaskMapper;
+import com.mogujie.jarvis.dto.generate.Job;
+import com.mogujie.jarvis.dto.generate.Task;
+import com.mogujie.jarvis.dto.generate.TaskExample;
 
 /**
  * @author guangming

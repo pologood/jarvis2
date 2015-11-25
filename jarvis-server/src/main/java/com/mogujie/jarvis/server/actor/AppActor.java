@@ -20,9 +20,9 @@ import org.springframework.context.annotation.Scope;
 
 import com.mogujie.jarvis.core.domain.ActorEntry;
 import com.mogujie.jarvis.core.domain.MessageType;
-import com.mogujie.jarvis.dao.AppMapper;
-import com.mogujie.jarvis.dto.App;
-import com.mogujie.jarvis.dto.AppExample;
+import com.mogujie.jarvis.dao.generate.AppMapper;
+import com.mogujie.jarvis.dto.generate.App;
+import com.mogujie.jarvis.dto.generate.AppExample;
 import com.mogujie.jarvis.protocol.ApplicationProtos.RestServerCreateApplicationRequest;
 import com.mogujie.jarvis.protocol.ApplicationProtos.RestServerModifyApplicationRequest;
 import com.mogujie.jarvis.protocol.ApplicationProtos.ServerCreateApplicationResponse;

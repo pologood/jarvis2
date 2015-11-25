@@ -15,10 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Sets;
-import com.mogujie.jarvis.dao.JobDependMapper;
-import com.mogujie.jarvis.dto.JobDepend;
-import com.mogujie.jarvis.dto.JobDependExample;
-import com.mogujie.jarvis.dto.JobDependKey;
+import com.mogujie.jarvis.dao.generate.JobDependMapper;
+import com.mogujie.jarvis.dto.generate.JobDepend;
+import com.mogujie.jarvis.dto.generate.JobDependExample;
+import com.mogujie.jarvis.dto.generate.JobDependKey;
 
 /**
  * @author guangming

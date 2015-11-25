@@ -8,7 +8,7 @@
 
 package com.mogujie.jarvis.server.scheduler.task;
 
-import com.mogujie.jarvis.dto.Task;
+import com.mogujie.jarvis.dto.generate.Task;
 
 /**
  * @author guangming
