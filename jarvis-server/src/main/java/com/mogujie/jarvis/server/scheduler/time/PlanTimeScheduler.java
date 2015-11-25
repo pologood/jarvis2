@@ -33,22 +33,21 @@ public class PlanTimeScheduler extends TimeScheduler {
     class PlanTimerTask extends TimerTask {
         @Override
         public void run() {
-            ((NextDayPlanGenerator)planGenerator).generateNextDayPlan();
+            planGenerator.generateNextPlan();
         }
     }
 
     public PlanTimeScheduler() {
         this.planGenerator = new NextDayPlanGenerator();
 
-        //24 hours
-        final long time24h = 24 * 60 * 60 * 1000;
+        long period = planGenerator.getPeriod();
         final String startTime = "23:30:00";
         final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd " + startTime);
         Date firstTime;
         try {
             firstTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(sdf.format(new Date()));
             Timer timer = new Timer();
-            timer.scheduleAtFixedRate(new PlanTimerTask(), firstTime, time24h);
+            timer.scheduleAtFixedRate(new PlanTimerTask(), firstTime, period);
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }

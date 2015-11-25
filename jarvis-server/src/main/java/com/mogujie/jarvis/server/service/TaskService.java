@@ -90,6 +90,7 @@ public class TaskService {
         DateTime dt = DateTime.now();
         Date currentTime = dt.toDate();
         task.setExecuteStartTime(currentTime);
+        task.setUpdateTime(currentTime);
         taskMapper.updateByPrimaryKey(task);
     }
 
@@ -99,12 +100,14 @@ public class TaskService {
         DateTime dt = DateTime.now();
         Date currentTime = dt.toDate();
         task.setExecuteEndTime(currentTime);
+        task.setUpdateTime(currentTime);
         taskMapper.updateByPrimaryKey(task);
     }
 
     public void updateStatus(long taskId, JobStatus status) {
         Task task = taskMapper.selectByPrimaryKey(taskId);
         task.setStatus(status.getValue());
+        task.setUpdateTime(DateTime.now().toDate());
         taskMapper.updateByPrimaryKey(task);
     }
 

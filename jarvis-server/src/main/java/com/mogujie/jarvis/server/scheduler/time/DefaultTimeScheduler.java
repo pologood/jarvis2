@@ -34,10 +34,7 @@ public class DefaultTimeScheduler extends TimeScheduler {
         long jobId = entry.getJobId();
         DateTime dt = entry.getDateTime();
         controller.notify(new TimeReadyEvent(jobId, dt.getMillis()));
-        DateTime nextTime = planGenerator.getScheduleTimeAfter(jobId, dt);
-        if (nextTime != null) {
-            plan.addPlan(jobId, nextTime);
-        }
+        planGenerator.generateNextPlan(jobId, dt);
     }
 
     @Override
