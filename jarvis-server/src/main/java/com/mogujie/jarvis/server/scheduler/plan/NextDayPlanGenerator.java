@@ -11,6 +11,7 @@ package com.mogujie.jarvis.server.scheduler.plan;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import org.joda.time.DateTime;
@@ -35,19 +36,24 @@ public class NextDayPlanGenerator extends PlanGenerator {
 
     @Override
     public void generateNextPlan() {
-        DateTime startDateTime = DateTime.now().plusDays(1).withTimeAtStartOfDay();
-        DateTime endDateTime = DateTime.now().plusDays(2).withTimeAtStartOfDay();
+        final DateTime startDateTime = DateTime.now().plusDays(1).withTimeAtStartOfDay();
+        final DateTime endDateTime = DateTime.now().plusDays(2).withTimeAtStartOfDay();
         List<ExecutionPlanEntry> nextDayPlans = new ArrayList<ExecutionPlanEntry>();
 
         // generate next day time based plans
-        List<Job> timeBasedJobs = jobService.getActiveJobs();
-        for (Job job : timeBasedJobs) {
-            DateTime scheduleTime = startDateTime;
-            while (scheduleTime.isBefore(endDateTime)) {
-                long jobId = job.getJobId();
-                ExecutionPlanEntry entry = new ExecutionPlanEntry(jobId, scheduleTime);
-                nextDayPlans.add(entry);
-                scheduleTime = getScheduleTimeAfter(jobId, scheduleTime);
+        List<Long> timeBasedJobs = jobGraph.getTimeBasedJobs();
+        for (Long jobId : timeBasedJobs) {
+            Job job = jobService.get(jobId).getJob();
+            Date startDate = job.getActiveStartDate();
+            Date endDate = job.getActiveEndDate();
+            Date now = new Date();
+            if (now.after(startDate) && now.before(endDate)) {
+                DateTime scheduleTime = startDateTime;
+                while (scheduleTime.isBefore(endDateTime)) {
+                    ExecutionPlanEntry entry = new ExecutionPlanEntry(jobId, scheduleTime);
+                    nextDayPlans.add(entry);
+                    scheduleTime = getScheduleTimeAfter(jobId, scheduleTime);
+                }
             }
         }
 

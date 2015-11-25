@@ -172,6 +172,7 @@ public class TaskScheduler extends Scheduler {
             } else {
                 updateTaskStatus(e.getTaskId(), TaskStatus.FAILED);
                 readyTable.remove(taskId);
+                retryScheduler.remove(jobId + "_" + taskId, RetryType.FAILED_RETRY);
             }
         }
 

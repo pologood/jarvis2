@@ -10,7 +10,7 @@ package com.mogujie.jarvis.server.scheduler.dag.checker;
 
 import java.util.List;
 
-import com.mogujie.jarvis.server.scheduler.depend.strategy.CommonStrategy;
+import com.mogujie.jarvis.server.domain.CommonStrategy;
 
 
 /**

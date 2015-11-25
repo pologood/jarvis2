@@ -18,6 +18,8 @@ import java.util.concurrent.Executors;
 
 import org.joda.time.DateTime;
 
+import akka.japi.tuple.Tuple3;
+
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.AtomicLongMap;
 import com.mogujie.jarvis.core.domain.IdType;
@@ -29,8 +31,6 @@ import com.mogujie.jarvis.core.util.ThreadUtils;
 import com.mogujie.jarvis.server.TaskQueue;
 import com.mogujie.jarvis.server.domain.RetryType;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
-
-import akka.japi.tuple.Tuple3;
 
 /**
  * Task Retry Scheduler
@@ -67,6 +67,12 @@ public enum TaskRetryScheduler {
         taskSet.add(new Tuple3<String, RetryType, DateTime>(jobIdWithTaskId, retryType, DateTime.now().plusSeconds(interval)));
     }
 
+    public void remove(String jobIdWithTaskId, RetryType retryType) {
+        Pair<String, RetryType> taskKey = new Pair<String, RetryType>(jobIdWithTaskId, retryType);
+        taskMap.remove(taskKey);
+        taskRetriedCounter.remove(taskKey);
+    }
+
     public void shutdown() {
         running = false;
     }
@@ -81,22 +87,21 @@ public enum TaskRetryScheduler {
                 while (it.hasNext()) {
                     Tuple3<String, RetryType, DateTime> taskSetKey = it.next();
                     if (taskSetKey.t3().isBefore(now)) {
-                        String jobIdWithTaskId = taskSetKey.t1();
-                        Pair<TaskDetail, Integer> taskMapKey = taskMap.get(jobIdWithTaskId);
-                        TaskDetail taskDetail = taskMapKey.getFirst();
+                        Pair<String, RetryType> taskKey = new Pair<String, RetryType>(taskSetKey.t1(), taskSetKey.t2());
+                        Pair<TaskDetail, Integer> taskValue = taskMap.get(taskKey);
+                        TaskDetail taskDetail = taskValue.getFirst();
                         if (taskDetail != null) {
-                            int retries = taskMapKey.getSecond();
-                            Pair<String, RetryType> taskRetriedCounterKey = new Pair<String, RetryType>(jobIdWithTaskId, taskSetKey.t2());
-                            if (taskRetriedCounter.get(taskRetriedCounterKey) > retries) {
-                                taskMap.remove(taskMapKey);
-                                taskRetriedCounter.remove(taskRetriedCounterKey);
+                            int retries = taskValue.getSecond();
+                            if (taskRetriedCounter.get(taskKey) > retries) {
+                                taskMap.remove(taskKey);
+                                taskRetriedCounter.remove(taskKey);
                                 long jobId = IdUtils.parse(taskDetail.getFullId(), IdType.JOB_ID);
                                 long taskId = IdUtils.parse(taskDetail.getFullId(), IdType.TASK_ID);
                                 Event event = new FailedEvent(jobId, taskId);
                                 schedulerController.notify(event);
                             } else {
                                 taskQueue.put(taskDetail);
-                                taskRetriedCounter.getAndIncrement(taskRetriedCounterKey);
+                                taskRetriedCounter.getAndIncrement(taskKey);
                             }
                         }
                         it.remove();

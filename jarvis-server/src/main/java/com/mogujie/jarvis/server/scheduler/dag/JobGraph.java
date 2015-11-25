@@ -108,6 +108,20 @@ public enum JobGraph {
     }
 
     /**
+     * get time based job ids
+     *
+     */
+    public List<Long> getTimeBasedJobs() {
+        List<Long> jobs = new ArrayList<Long>();
+        for (DAGJob dagJob : waitingTable.values()) {
+            if (dagJob.getType().implies(DAGJobType.TIME)) {
+                jobs.add(dagJob.getJobId());
+            }
+        }
+        return jobs;
+    }
+
+    /**
      * Add job
      *
      * @param jobId

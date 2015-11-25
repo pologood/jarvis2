@@ -8,7 +8,6 @@
 
 package com.mogujie.jarvis.server.domain;
 
-import com.mogujie.jarvis.server.scheduler.depend.strategy.CommonStrategy;
 
 
 /**
