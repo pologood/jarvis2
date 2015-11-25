@@ -1,6 +1,6 @@
 package com.mogujie.jarvis.web.entity.vo;
 
-import com.mogujie.jarvis.dto.Job;
+import com.mogujie.jarvis.dto.generate.Job;
 
 /**
  * Created by hejian on 15/9/17.

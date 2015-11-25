@@ -1,6 +1,6 @@
 package com.mogujie.jarvis.web.mapper;
 
-import com.mogujie.jarvis.dto.Job;
+import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.web.entity.vo.CronTabVo;
 import com.mogujie.jarvis.web.entity.vo.JobSearchVo;
 import com.mogujie.jarvis.web.entity.vo.JobVo;

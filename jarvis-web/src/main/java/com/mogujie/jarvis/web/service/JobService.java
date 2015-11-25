@@ -2,9 +2,6 @@ package com.mogujie.jarvis.web.service;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.mogujie.jarvis.dto.Job;
-import com.mogujie.jarvis.web.common.Constants;
-import com.mogujie.jarvis.web.common.TimeTools;
 import com.mogujie.jarvis.web.entity.vo.CronTabVo;
 import com.mogujie.jarvis.web.entity.vo.JobSearchVo;
 import com.mogujie.jarvis.web.entity.vo.JobVo;
