@@ -129,4 +129,18 @@ public class PlanGenerator {
 
         return result.toDateTime();
     }
+
+    public void generateNextPlan(long jobId, DateTime dt) {
+        DateTime nextTime = getScheduleTimeAfter(jobId, dt);
+        if (nextTime != null) {
+            plan.addPlan(jobId, nextTime);
+        }
+    }
+
+    public void generateNextPlan() {}
+
+    public long getPeriod() {
+        return 0;
+    }
+
 }

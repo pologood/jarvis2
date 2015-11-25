@@ -2,7 +2,7 @@
  * 蘑菇街 Inc.
  * Copyright (c) 2010-2015 All Rights Reserved.
  *
- * Author: guangming
+ * Author: wuya
  * Create Date: 2015年11月23日 下午2:35:51
  */
 
@@ -13,7 +13,7 @@ import java.util.Objects;
 import org.joda.time.DateTime;
 
 /**
- * @author guangming
+ *
  *
  */
 public class ExecutionPlanEntry {

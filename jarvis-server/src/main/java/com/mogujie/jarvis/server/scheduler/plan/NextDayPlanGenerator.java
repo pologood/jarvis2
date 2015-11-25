@@ -31,10 +31,10 @@ public class NextDayPlanGenerator extends PlanGenerator {
     @Autowired
     private TaskService taskService;
 
-    private ExecutionPlan plan = ExecutionPlan.INSTANCE;
     private JobSchedulerController controller = JobSchedulerController.getInstance();
 
-    public void generateNextDayPlan() {
+    @Override
+    public void generateNextPlan() {
         DateTime startDateTime = DateTime.now().plusDays(1).withTimeAtStartOfDay();
         DateTime endDateTime = DateTime.now().plusDays(2).withTimeAtStartOfDay();
         List<ExecutionPlanEntry> nextDayPlans = new ArrayList<ExecutionPlanEntry>();
@@ -65,6 +65,12 @@ public class NextDayPlanGenerator extends PlanGenerator {
         for (Task task : nextDayTasks) {
             plan.addPlan(new ExecutionPlanEntry(task.getJobId(), new DateTime(task.getScheduleTime()), task.getTaskId()));
         }
+    }
+
+    @Override
+    public long getPeriod() {
+        final long time24h = 24 * 60 * 60 * 1000;
+        return time24h;
     }
 
 }

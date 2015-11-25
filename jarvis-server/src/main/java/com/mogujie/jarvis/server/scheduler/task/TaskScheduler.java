@@ -130,8 +130,12 @@ public class TaskScheduler extends Scheduler {
 
     @Override
     public void handleStartEvent(StartEvent event) {
-        scanThread = new FailedScanThread("FailedScanThread");
-        scanThread.start();
+        if (scanThread == null) {
+            scanThread = new FailedScanThread("FailedScanThread");
+        }
+        if (!scanThread.isAlive()) {
+            scanThread.start();
+        }
     }
 
     @Override
@@ -246,23 +250,27 @@ public class TaskScheduler extends Scheduler {
     @Subscribe
     @Transactional
     public void handleRetryTaskEvent(RetryTaskEvent e) {
-        long taskId = e.getTaskId();
+        List<Long> taskIdList = e.getTaskIdList();
         boolean runChild = e.isRunChild();
-        Task task = taskService.get(taskId);
-        if (task != null) {
-            DAGTask dagTask;
-            if (!readyTable.containsKey(taskId)) {
-                dagTask = new DAGTask(task.getJobId(), taskId, task.getAttemptId(),
-                        task.getScheduleTime().getTime(), runChild);
-                readyTable.put(taskId, dagTask);
-            } else {
-                dagTask = readyTable.get(taskId);
-            }
-            if (dagTask != null && dagTask.checkStatus()) {
-                int attemptId = dagTask.getAttemptId();
-                attemptId++;
-                dagTask.setAttemptId(attemptId);
-                retryTask(task);
+        for (Long taskId : taskIdList) {
+            Task task = taskService.get(taskId);
+            if (task != null) {
+                updateTaskStatus(taskId, JobStatus.WAITING);
+
+                DAGTask dagTask;
+                if (!readyTable.containsKey(taskId)) {
+                    dagTask = new DAGTask(task.getJobId(), taskId, task.getAttemptId(),
+                            task.getScheduleTime().getTime(), runChild);
+                    readyTable.put(taskId, dagTask);
+                } else {
+                    dagTask = readyTable.get(taskId);
+                }
+                if (dagTask != null && dagTask.checkStatus()) {
+                    int attemptId = dagTask.getAttemptId();
+                    attemptId++;
+                    dagTask.setAttemptId(attemptId);
+                    retryTask(task);
+                }
             }
         }
     }
