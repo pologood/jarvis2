@@ -145,34 +145,11 @@ public class TaskService {
         if(jobId == 0 || start == null || end == null){
             return null;
         }
-//        DateTime beginTime ,endTime;
-//        if(expression.equals("cw")) {
-//            beginTime = dt.withTime(0, 0, 0, 0).withDayOfWeek(1);
-//            endTime = beginTime.plusWeeks(1);
-//        }else if(expression.equals("cy")) {
-//            beginTime = dt.withTime(0, 0, 0, 0).withDayOfMonth(1).withMonthOfYear(1);
-//            endTime = beginTime.plusYears(1);
-//        }else if(expression.equals("cM")) {
-//            beginTime = dt.withTime(0, 0, 0, 0).withDayOfMonth(1);
-//            endTime = beginTime.plusMonths(1);
-//        }else if(expression.equals("cd")){
-//            beginTime = dt.withTime(0,0,0,0);
-//            endTime = beginTime.plusDays(1);
-//        }else if(expression.equals("ch")){
-//            beginTime = dt.withTime(dt.getHourOfDay(),0,0,0);
-//            endTime = beginTime.plusHours(1);
-//        }else if(expression.equals("cm")){
-//            beginTime = dt.withTime(dt.getHourOfDay(),dt.getMinuteOfDay(),0,0);
-//            endTime = beginTime.plusMinutes(1);
-//        }else{
-//            return null;
-//        }
         TaskExample example = new TaskExample();
         example.createCriteria().andJobIdEqualTo(jobId)
                 .andScheduleTimeBetween(start.toDate(),end.toDate());
         return taskMapper.selectByExample(example);
     }
-
 
     public List<Task> getTasksBetween(Date start, Date end) {
         TaskExample example = new TaskExample();
