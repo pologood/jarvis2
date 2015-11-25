@@ -171,13 +171,9 @@ public class TaskDependSchedule {
 
         List<Task> tasks = null;
         if (dependType.equals(JobDependType.CURRENT)) {
-            if (expression.equals("cd")) {
-                // current day
-                tasks = taskService.getTasksOfCurrentDay(preJobId, now);
-            } else if (expression.equals("ch")) {
-                // current hour
-                tasks = taskService.getTasksOfCurrentHour(preJobId, now);
-            }
+            TimeOffsetExpression timeOffsetExpression = new TimeOffsetExpression(expression);
+            Range<DateTime> range = timeOffsetExpression.getRange(now);
+            tasks = taskService.getTasksBetween(preJobId, range.lowerEndpoint(),range.upperEndpoint());
         }
 
         if (tasks != null) {
