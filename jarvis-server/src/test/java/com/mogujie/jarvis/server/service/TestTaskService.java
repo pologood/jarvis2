@@ -28,7 +28,7 @@ public class TestTaskService {
 
 
         Integer jobId = 3;
-        Long scheduleTime = DateTime.now().getMillis()/1000;
+        Long scheduleTime = DateTime.now().getMillis();
 
         Task task = taskService.createTaskByJobId(jobId,scheduleTime);
 

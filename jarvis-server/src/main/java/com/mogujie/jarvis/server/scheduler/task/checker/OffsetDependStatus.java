@@ -12,6 +12,9 @@ import java.util.List;
 
 import com.mogujie.jarvis.core.expression.DependencyExpression;
 import com.mogujie.jarvis.core.expression.DependencyStrategyExpression;
+import com.mogujie.jarvis.server.service.TaskService;
+import com.mogujie.jarvis.server.util.SpringContext;
+import org.joda.time.DateTime;
 
 /**
  * @author guangming
@@ -46,7 +49,7 @@ public class OffsetDependStatus extends AbstractTaskStatus {
 
     @Override
     protected List<Boolean> getStatusList() {
-        //TODO 根据偏移依赖表达式搜出需要哪些task
-        return null;
+        TaskService taskService = SpringContext.getBean(TaskService.class);
+        return taskService.getTaskSuccessStatusBetween(getMyJobId(),offsetStrategy.getRange(DateTime.now()));
     }
 }

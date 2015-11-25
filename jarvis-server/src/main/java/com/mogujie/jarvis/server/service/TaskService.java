@@ -8,9 +8,11 @@
 
 package com.mogujie.jarvis.server.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.google.common.collect.Range;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -141,13 +143,20 @@ public class TaskService {
         return taskMapper.selectByExample(example);
     }
 
-    public List<Task> getTasksBetween(long jobId,DateTime start, DateTime end) {
-        if(jobId == 0 || start == null || end == null){
+    public List<Task> getTasksBetween(long jobId, Range<DateTime> range) {
+        if (jobId == 0 || range == null) {
+            return null;
+        }
+        return getTasksBetween(jobId, range.lowerEndpoint(), range.upperEndpoint());
+    }
+
+    public List<Task> getTasksBetween(long jobId, DateTime start, DateTime end) {
+        if (jobId == 0 || start == null || end == null) {
             return null;
         }
         TaskExample example = new TaskExample();
         example.createCriteria().andJobIdEqualTo(jobId)
-                .andScheduleTimeBetween(start.toDate(),end.toDate());
+                .andScheduleTimeBetween(start.toDate(), end.toDate());
         return taskMapper.selectByExample(example);
     }
 
@@ -156,4 +165,18 @@ public class TaskService {
         example.createCriteria().andScheduleTimeBetween(start, end);
         return taskMapper.selectByExample(example);
     }
+
+    public List<Boolean> getTaskSuccessStatusBetween(long jobId, Range<DateTime> range) {
+        List<Task> tasks = getTasksBetween(jobId, range);
+        if (tasks == null) {
+            return null;
+        }
+        List<Boolean> status = new ArrayList<>();
+        for(Task task : tasks){
+            status.add(task.getStatus() == JobStatus.SUCCESS.getValue());
+        }
+        return status;
+    }
+
+
 }
