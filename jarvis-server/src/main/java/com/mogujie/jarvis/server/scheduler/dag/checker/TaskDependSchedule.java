@@ -173,7 +173,7 @@ public class TaskDependSchedule {
         if (dependType.equals(JobDependType.CURRENT)) {
             TimeOffsetExpression timeOffsetExpression = new TimeOffsetExpression(expression);
             Range<DateTime> range = timeOffsetExpression.getRange(now);
-            tasks = taskService.getTasksBetween(preJobId, range.lowerEndpoint(),range.upperEndpoint());
+            tasks = taskService.getTasksBetween(preJobId, range);
         }
 
         if (tasks != null) {
