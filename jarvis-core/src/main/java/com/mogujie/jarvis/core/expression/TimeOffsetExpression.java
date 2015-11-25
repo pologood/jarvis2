@@ -36,6 +36,7 @@ public class TimeOffsetExpression extends DependencyExpression {
     private String startTimeOffset;
     private String endTimeOffset;
     private char rangeEndFlag;
+    private String expressionFormula;
 
     private static final Map<Pattern, String> MAP = Maps.newHashMap();
     private static final Pattern EXPRESSION_PATTERN = Pattern.compile(
@@ -118,12 +119,14 @@ public class TimeOffsetExpression extends DependencyExpression {
             Pattern pattern = entry.getKey();
             Matcher m = pattern.matcher(expression);
             if (m.matches()) {
-                expression = convertAbbrExp(expression);
+                expressionFormula = convertAbbrExp(expression);
                 break;
             }
         }
-
-        Matcher m = EXPRESSION_PATTERN.matcher(expression);
+        if(expressionFormula == null){
+            return false;
+        }
+        Matcher m = EXPRESSION_PATTERN.matcher(expressionFormula);
         if (m.matches()) {
 
             rangeStartFlag = m.group(1).charAt(0);
@@ -185,4 +188,7 @@ public class TimeOffsetExpression extends DependencyExpression {
         return expression;
     }
 
+    public String getExpressionFormula() {
+        return expressionFormula;
+    }
 }
