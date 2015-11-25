@@ -13,14 +13,11 @@ import java.util.concurrent.atomic.AtomicLong;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.mogujie.jarvis.dao.IDMapper;
 
-/**
- *
- *
- */
-//@Service //测试有问题，先注释掉
+@Service
 public class IDService {
 
     @Autowired
