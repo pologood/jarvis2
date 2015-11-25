@@ -18,7 +18,6 @@ import com.mogujie.jarvis.server.TaskQueue;
 import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.dag.checker.TaskScheduleFactory;
 import com.mogujie.jarvis.server.scheduler.task.TaskScheduler;
-import com.mogujie.jarvis.server.util.SpringContext;
 
 /**
  * @author guangming
@@ -38,8 +37,8 @@ public class TestSchedulerBase {
         conf.setProperty(TaskScheduleFactory.TASK_SCHEDULE_KEY, TaskScheduleFactory.DUMMY_TASK_SCHEDULE);
         conf.setProperty(JobSchedulerController.SCHEDULER_CONTROLLER_TYPE, JobSchedulerController.SCHEDULER_CONTROLLER_TYPE_SYNC);
         controller = JobSchedulerController.getInstance();
-        dagScheduler = SpringContext.getBean(DAGScheduler.class);
-        taskScheduler = SpringContext.getBean(TaskScheduler.class);
+        dagScheduler = DAGScheduler.getInstance();
+        taskScheduler = TaskScheduler.getInstance();
         controller.register(dagScheduler);
         controller.register(taskScheduler);
         jobGraph = dagScheduler.getJobGraph();

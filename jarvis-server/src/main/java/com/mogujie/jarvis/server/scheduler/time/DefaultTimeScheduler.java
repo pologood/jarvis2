@@ -9,7 +9,6 @@
 package com.mogujie.jarvis.server.scheduler.time;
 
 import org.joda.time.DateTime;
-import org.springframework.stereotype.Repository;
 
 import com.mogujie.jarvis.core.domain.JobFlag;
 import com.mogujie.jarvis.server.scheduler.event.TimeReadyEvent;
@@ -22,11 +21,14 @@ import com.mogujie.jarvis.server.scheduler.plan.PlanGenerator;
  * @author guangming
  *
  */
-@Repository
 public class DefaultTimeScheduler extends TimeScheduler {
+    private static DefaultTimeScheduler instance = new DefaultTimeScheduler();
 
-    public DefaultTimeScheduler() {
+    private DefaultTimeScheduler() {
         this.planGenerator = new PlanGenerator();
+    }
+    public static DefaultTimeScheduler getInstance() {
+        return instance;
     }
 
     @Override

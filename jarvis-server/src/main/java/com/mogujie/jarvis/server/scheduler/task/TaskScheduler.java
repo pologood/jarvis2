@@ -8,18 +8,14 @@
 
 package com.mogujie.jarvis.server.scheduler.task;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.PriorityBlockingQueue;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.annotations.VisibleForTesting;
@@ -27,13 +23,14 @@ import com.google.common.eventbus.AllowConcurrentEvents;
 import com.google.common.eventbus.Subscribe;
 import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.core.domain.TaskDetail;
+import com.mogujie.jarvis.core.util.IdUtils;
 import com.mogujie.jarvis.core.util.JsonHelper;
-import com.mogujie.jarvis.core.util.ThreadUtils;
 import com.mogujie.jarvis.dto.Job;
 import com.mogujie.jarvis.dto.Task;
 import com.mogujie.jarvis.server.TaskManager;
 import com.mogujie.jarvis.server.TaskQueue;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
+import com.mogujie.jarvis.server.scheduler.TaskRetryScheduler;
 import com.mogujie.jarvis.server.scheduler.event.AddTaskEvent;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
 import com.mogujie.jarvis.server.scheduler.event.KilledEvent;
@@ -46,6 +43,7 @@ import com.mogujie.jarvis.server.scheduler.event.StopEvent;
 import com.mogujie.jarvis.server.scheduler.event.SuccessEvent;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.TaskService;
+import com.mogujie.jarvis.server.util.SpringContext;
 
 /**
  * Scheduler used to handle ready tasks.
@@ -53,57 +51,21 @@ import com.mogujie.jarvis.server.service.TaskService;
  * @author guangming
  *
  */
-@Repository
 public class TaskScheduler extends Scheduler {
-    @Autowired
-    private JobService jobService;
+    private static TaskScheduler instance = new TaskScheduler();
+    private TaskScheduler() {}
+    public static TaskScheduler getInstance() {
+        return instance;
+    }
 
-    @Autowired
-    private TaskService taskService;
-
-    @Autowired
-    private TaskManager taskManager;
-
-    @Autowired
-    private TaskQueue taskQueue;
+    private JobService jobService = SpringContext.getBean(JobService.class);
+    private TaskService taskService = SpringContext.getBean(TaskService.class);
+    private TaskManager taskManager = SpringContext.getBean(TaskManager.class);
+    private TaskQueue taskQueue = TaskQueue.INSTANCE;
+    private TaskRetryScheduler retryScheduler = TaskRetryScheduler.INSTANCE;
 
     private Map<Long, DAGTask> readyTable = new ConcurrentHashMap<>();
     private static final Logger LOGGER = LogManager.getLogger();
-
-    private PriorityBlockingQueue<FailedTask> failedQueue = new PriorityBlockingQueue<>(10,
-            new Comparator<FailedTask>() {
-        @Override
-        public int compare(FailedTask t1, FailedTask t2) {
-            return (int)(t1.getNextStartTime() - t2.getNextStartTime());
-        }
-    });
-
-    class FailedScanThread extends Thread {
-        public FailedScanThread(String name) {
-            super(name);
-        }
-
-        @Override
-        public void run() {
-            while (true) {
-                while (!failedQueue.isEmpty()) {
-                    FailedTask failedTask = failedQueue.peek();
-                    long currentTime = System.currentTimeMillis();
-                    if (failedTask.getNextStartTime() <= currentTime) {
-                        retryTask(failedTask.getTask());
-                        failedQueue.poll();
-                    } else {
-                        break;
-                    }
-                }
-                ThreadUtils.sleep(1000);
-            }
-        }
-    }
-    private FailedScanThread scanThread;
-
-    private static final int DEFAULT_MAX_FAILED_ATTEMPTS = 3;
-    private static final int DEFAULT_FAILED_INTERVAL = 1000;
 
     public void init(List<Task> readyTasks, List<Task> runningTasks) {
         if (readyTasks != null) {
@@ -130,19 +92,10 @@ public class TaskScheduler extends Scheduler {
 
     @Override
     public void handleStartEvent(StartEvent event) {
-        if (scanThread == null) {
-            scanThread = new FailedScanThread("FailedScanThread");
-        }
-        if (!scanThread.isAlive()) {
-            scanThread.start();
-        }
     }
 
     @Override
     public void handleStopEvent(StopEvent event) {
-        if (scanThread != null && scanThread.isAlive()) {
-            scanThread.stop();
-        }
     }
 
     @Subscribe
@@ -195,21 +148,21 @@ public class TaskScheduler extends Scheduler {
         DAGTask dagTask = readyTable.get(e.getTaskId());
         long taskId = e.getTaskId();
         if (dagTask != null) {
-            int maxFailedAttempts = DEFAULT_MAX_FAILED_ATTEMPTS;
-            int failedInterval = DEFAULT_FAILED_INTERVAL;
             Job job = jobService.get(dagTask.getJobId()).getJob();
-            maxFailedAttempts = job.getFailedAttempts();
-            failedInterval = job.getFailedInterval();
+            int failedRetries = job.getFailedAttempts();
+            int failedInterval = job.getFailedInterval();
 
-            if (dagTask.getAttemptId() <= maxFailedAttempts) {
+            if (dagTask.getAttemptId() <= failedRetries) {
                 int attemptId = dagTask.getAttemptId();
                 attemptId++;
                 dagTask.setAttemptId(attemptId);
-                long currentTime = System.currentTimeMillis();
-                long nextStartTime = (currentTime / 1000 + failedInterval) * 1000;
                 Task task = taskService.get(taskId);
                 if (task != null) {
-                    failedQueue.put(new FailedTask(task, nextStartTime));
+                    task.setAttemptId(attemptId);
+                    task.setUpdateTime(DateTime.now().toDate());
+                    task.setStatus(JobStatus.READY.getValue());
+                    taskService.update(task);
+                    retryScheduler.addTask(getTaskInfo(dagTask), failedRetries, failedInterval);
                 }
             } else {
                 updateTaskStatus(e.getTaskId(), JobStatus.FAILED);
@@ -329,7 +282,7 @@ public class TaskScheduler extends Scheduler {
     }
 
     private TaskDetail getTaskInfo(DAGTask dagTask) {
-        String fullId = dagTask.getJobId() + "_" + dagTask.getTaskId() + "_" + dagTask.getAttemptId();
+        String fullId = IdUtils.getFullId(dagTask.getJobId(), dagTask.getTaskId(), dagTask.getAttemptId());
         TaskDetail taskDetail = null;
         long jobId = dagTask.getJobId();
         Job job = jobService.get(jobId).getJob();

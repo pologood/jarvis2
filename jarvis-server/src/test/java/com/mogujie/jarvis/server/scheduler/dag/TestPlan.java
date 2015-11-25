@@ -23,12 +23,10 @@ public class TestPlan extends TestSchedulerBase {
     private long jobAId = 1;
     private long jobBId = 2;
     private long jobCId = 3;
-    private long taskAId = 1;
-    private long taskBId = 2;
-    private long taskCId = 3;
     private long t1 = 1000;
     private long t2 = 2000;
     private long t3 = 3000;
+    private long t4 = 3000;
 
     /**
      *     A
@@ -52,6 +50,38 @@ public class TestPlan extends TestSchedulerBase {
         Assert.assertEquals(3, taskScheduler.getReadyTable().size());
         // jobA time ready
         TimeReadyEvent timeReadyEventB = new TimeReadyEvent(jobAId, t2);
+        dagScheduler.handleTimeReadyEvent(timeReadyEventB);
+        Assert.assertEquals(6, taskScheduler.getReadyTable().size());
+    }
+
+    /**
+     *   A   B
+     *    \ /
+     *     C
+     */
+    @Test
+    public void testGeneratePlan2() throws JobScheduleException {
+        jobGraph.addJob(jobAId, new DAGJob(jobAId, DAGJobType.TIME), null);
+        jobGraph.addJob(jobBId, new DAGJob(jobBId, DAGJobType.TIME), null);
+        jobGraph.addJob(jobCId, new DAGJob(jobCId, DAGJobType.DEPEND), Sets.newHashSet(jobAId, jobBId));
+        Assert.assertEquals(1, jobGraph.getChildren(jobAId).size());
+        Assert.assertEquals(1, jobGraph.getChildren(jobBId).size());
+        Assert.assertEquals(2, jobGraph.getParents(jobCId).size());
+        // jobA time ready
+        TimeReadyEvent timeReadyEventA = new TimeReadyEvent(jobAId, t1);
+        dagScheduler.handleTimeReadyEvent(timeReadyEventA);
+        Assert.assertEquals(1, taskScheduler.getReadyTable().size());
+        // jobB time ready
+        TimeReadyEvent timeReadyEventB = new TimeReadyEvent(jobBId, t2);
+        dagScheduler.handleTimeReadyEvent(timeReadyEventB);
+        Assert.assertEquals(3, taskScheduler.getReadyTable().size());
+
+        // jobA time ready
+        timeReadyEventA = new TimeReadyEvent(jobAId, t3);
+        dagScheduler.handleTimeReadyEvent(timeReadyEventA);
+        Assert.assertEquals(4, taskScheduler.getReadyTable().size());
+        // jobB time ready
+        timeReadyEventB = new TimeReadyEvent(jobBId, t4);
         dagScheduler.handleTimeReadyEvent(timeReadyEventB);
         Assert.assertEquals(6, taskScheduler.getReadyTable().size());
     }

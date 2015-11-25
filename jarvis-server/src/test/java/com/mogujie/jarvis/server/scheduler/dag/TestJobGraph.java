@@ -17,8 +17,6 @@ import org.junit.Test;
 import com.google.common.collect.Sets;
 import com.mogujie.jarvis.core.domain.JobFlag;
 import com.mogujie.jarvis.core.util.ConfigUtils;
-import com.mogujie.jarvis.server.scheduler.dag.checker.TaskScheduleFactory;
-import com.mogujie.jarvis.server.util.SpringContext;
 
 
 /**
@@ -38,9 +36,7 @@ public class TestJobGraph {
     @BeforeClass
     public static void setup() throws Exception {
         conf.clear();
-        conf.setProperty(TaskScheduleFactory.TASK_SCHEDULE_KEY, TaskScheduleFactory.DUMMY_TASK_SCHEDULE);
-        DAGScheduler scheduler = SpringContext.getBean(DAGScheduler.class);
-        jobGraph = scheduler.getJobGraph();
+        jobGraph = JobGraph.INSTANCE;
     }
 
     @After

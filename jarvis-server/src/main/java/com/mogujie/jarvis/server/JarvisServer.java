@@ -87,9 +87,9 @@ public class JarvisServer {
     private static void initScheduler() throws JobScheduleException {
         // 1. register schedulers to controller
         JobSchedulerController controller = JobSchedulerController.getInstance();
-        DAGScheduler dagScheduler = SpringContext.getBean(DAGScheduler.class);
-        TaskScheduler taskScheduler = SpringContext.getBean(TaskScheduler.class);
-        TimeScheduler timeScheduler = TimeSchedulerFactory.create();
+        DAGScheduler dagScheduler = DAGScheduler.getInstance();
+        TaskScheduler taskScheduler = TaskScheduler.getInstance();
+        TimeScheduler timeScheduler = TimeSchedulerFactory.getInstance();
         controller.register(dagScheduler);
         controller.register(taskScheduler);
         controller.register(timeScheduler);

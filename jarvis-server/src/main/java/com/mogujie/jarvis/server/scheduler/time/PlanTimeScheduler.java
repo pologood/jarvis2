@@ -14,12 +14,10 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.springframework.stereotype.Repository;
-
 import com.mogujie.jarvis.core.domain.JobFlag;
 import com.mogujie.jarvis.server.scheduler.event.RunTaskEvent;
 import com.mogujie.jarvis.server.scheduler.plan.ExecutionPlanEntry;
-import com.mogujie.jarvis.server.scheduler.plan.NextDayPlanGenerator;
+import com.mogujie.jarvis.server.scheduler.plan.PlanGenerator;
 
 /**
  * Plan based TimeScheduler
@@ -27,18 +25,12 @@ import com.mogujie.jarvis.server.scheduler.plan.NextDayPlanGenerator;
  * @author guangming
  *
  */
-@Repository
 public class PlanTimeScheduler extends TimeScheduler {
 
-    class PlanTimerTask extends TimerTask {
-        @Override
-        public void run() {
-            planGenerator.generateNextPlan();
-        }
-    }
+    private static PlanTimeScheduler instance = new PlanTimeScheduler();
 
-    public PlanTimeScheduler() {
-        this.planGenerator = new NextDayPlanGenerator();
+    private PlanTimeScheduler() {
+        this.planGenerator = new PlanGenerator();
 
         long period = planGenerator.getPeriod();
         final String startTime = "23:30:00";
@@ -50,6 +42,17 @@ public class PlanTimeScheduler extends TimeScheduler {
             timer.scheduleAtFixedRate(new PlanTimerTask(), firstTime, period);
         } catch (ParseException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public static PlanTimeScheduler getInstance() {
+        return instance;
+    }
+
+    class PlanTimerTask extends TimerTask {
+        @Override
+        public void run() {
+            planGenerator.generateNextPlan();
         }
     }
 
