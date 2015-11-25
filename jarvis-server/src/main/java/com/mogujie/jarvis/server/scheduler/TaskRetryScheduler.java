@@ -9,6 +9,7 @@
 package com.mogujie.jarvis.server.scheduler;
 
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.SortedSet;
 import java.util.concurrent.ConcurrentSkipListSet;
@@ -26,7 +27,10 @@ import com.mogujie.jarvis.core.observer.Event;
 import com.mogujie.jarvis.core.util.IdUtils;
 import com.mogujie.jarvis.core.util.ThreadUtils;
 import com.mogujie.jarvis.server.TaskQueue;
+import com.mogujie.jarvis.server.domain.RetryType;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
+
+import akka.japi.tuple.Tuple3;
 
 /**
  * Task Retry Scheduler
@@ -37,17 +41,17 @@ public enum TaskRetryScheduler {
 
     private TaskQueue taskQueue = TaskQueue.INSTANCE;
     private volatile boolean running;
-    private Map<String, Pair<TaskDetail, Integer>> taskMap = Maps.newConcurrentMap();
-    private AtomicLongMap<String> taskRetriedCounter = AtomicLongMap.create();
-    private Comparator<Pair<String, DateTime>> comparator = new Comparator<Pair<String, DateTime>>() {
+    private Map<Pair<String, RetryType>, Pair<TaskDetail, Integer>> taskMap = Maps.newConcurrentMap();
+    private AtomicLongMap<Pair<String, RetryType>> taskRetriedCounter = AtomicLongMap.create();
+    private Comparator<Tuple3<String, RetryType, DateTime>> comparator = new Comparator<Tuple3<String, RetryType, DateTime>>() {
 
         @Override
-        public int compare(Pair<String, DateTime> o1, Pair<String, DateTime> o2) {
-            return o1.getSecond().compareTo(o2.getSecond());
+        public int compare(Tuple3<String, RetryType, DateTime> o1, Tuple3<String, RetryType, DateTime> o2) {
+            return o1.t3().compareTo(o2.t3());
         }
     };
 
-    private SortedSet<Pair<String, DateTime>> taskSet = new ConcurrentSkipListSet<>(comparator);
+    private SortedSet<Tuple3<String, RetryType, DateTime>> taskSet = new ConcurrentSkipListSet<>(comparator);
     private JobSchedulerController schedulerController = JobSchedulerController.getInstance();
 
     public void start() {
@@ -57,10 +61,10 @@ public enum TaskRetryScheduler {
         executorService.shutdown();
     }
 
-    public void addTask(TaskDetail taskDetail, int retries, int interval) {
-        String fullId = taskDetail.getFullId();
-        taskMap.put(fullId, new Pair<TaskDetail, Integer>(taskDetail, retries));
-        taskSet.add(new Pair<String, DateTime>(fullId, DateTime.now().plusSeconds(interval)));
+    public void addTask(TaskDetail taskDetail, int retries, int interval, RetryType retryType) {
+        String jobIdWithTaskId = taskDetail.getFullId().replaceAll("_\\d+$", "");
+        taskMap.put(new Pair<String, RetryType>(jobIdWithTaskId, retryType), new Pair<TaskDetail, Integer>(taskDetail, retries));
+        taskSet.add(new Tuple3<String, RetryType, DateTime>(jobIdWithTaskId, retryType, DateTime.now().plusSeconds(interval)));
     }
 
     public void shutdown() {
@@ -73,25 +77,29 @@ public enum TaskRetryScheduler {
         public void run() {
             while (running) {
                 DateTime now = DateTime.now();
-                for (Pair<String, DateTime> pair : taskSet) {
-                    if (pair.getSecond().isBefore(now)) {
-                        String fullId = pair.getFirst();
-                        TaskDetail taskDetail = taskMap.get(fullId).getFirst();
+                Iterator<Tuple3<String, RetryType, DateTime>> it = taskSet.iterator();
+                while (it.hasNext()) {
+                    Tuple3<String, RetryType, DateTime> taskSetKey = it.next();
+                    if (taskSetKey.t3().isBefore(now)) {
+                        String jobIdWithTaskId = taskSetKey.t1();
+                        Pair<TaskDetail, Integer> taskMapKey = taskMap.get(jobIdWithTaskId);
+                        TaskDetail taskDetail = taskMapKey.getFirst();
                         if (taskDetail != null) {
-                            int retries = taskMap.get(fullId).getSecond();
-                            if (taskRetriedCounter.get(fullId) > retries) {
-                                taskMap.remove(fullId);
-                                taskRetriedCounter.remove(fullId);
-
+                            int retries = taskMapKey.getSecond();
+                            Pair<String, RetryType> taskRetriedCounterKey = new Pair<String, RetryType>(jobIdWithTaskId, taskSetKey.t2());
+                            if (taskRetriedCounter.get(taskRetriedCounterKey) > retries) {
+                                taskMap.remove(taskMapKey);
+                                taskRetriedCounter.remove(taskRetriedCounterKey);
                                 long jobId = IdUtils.parse(taskDetail.getFullId(), IdType.JOB_ID);
                                 long taskId = IdUtils.parse(taskDetail.getFullId(), IdType.TASK_ID);
                                 Event event = new FailedEvent(jobId, taskId);
                                 schedulerController.notify(event);
                             } else {
                                 taskQueue.put(taskDetail);
-                                taskRetriedCounter.getAndIncrement(fullId);
+                                taskRetriedCounter.getAndIncrement(taskRetriedCounterKey);
                             }
                         }
+                        it.remove();
                     } else {
                         break;
                     }

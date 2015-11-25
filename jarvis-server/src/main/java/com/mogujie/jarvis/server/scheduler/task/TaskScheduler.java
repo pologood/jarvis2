@@ -29,6 +29,7 @@ import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.server.TaskManager;
 import com.mogujie.jarvis.server.TaskQueue;
+import com.mogujie.jarvis.server.domain.RetryType;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
 import com.mogujie.jarvis.server.scheduler.TaskRetryScheduler;
 import com.mogujie.jarvis.server.scheduler.event.AddTaskEvent;
@@ -165,7 +166,7 @@ public class TaskScheduler extends Scheduler {
                     task.setUpdateTime(DateTime.now().toDate());
                     task.setStatus(JobStatus.READY.getValue());
                     taskService.update(task);
-                    retryScheduler.addTask(getTaskInfo(dagTask), failedRetries, failedInterval);
+                    retryScheduler.addTask(getTaskInfo(dagTask), failedRetries, failedInterval, RetryType.FAILED_RETRY);
                 }
             } else {
                 updateTaskStatus(e.getTaskId(), JobStatus.FAILED);

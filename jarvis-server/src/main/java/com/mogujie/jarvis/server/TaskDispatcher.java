@@ -21,6 +21,7 @@ import com.mogujie.jarvis.core.domain.WorkerInfo;
 import com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse;
+import com.mogujie.jarvis.server.domain.RetryType;
 import com.mogujie.jarvis.server.scheduler.TaskRetryScheduler;
 import com.mogujie.jarvis.server.service.AppService;
 import com.mogujie.jarvis.server.util.FutureUtils;
@@ -98,7 +99,7 @@ public class TaskDispatcher extends Thread {
                                         continue;
                                     } else {
                                         LOGGER.warn("Task[{}] was rejected by worker[{}:{}]", fullId, workerInfo.getIp(), workerInfo.getPort());
-                                        taskRetryScheduler.addTask(task, task.getRejectRetries(), task.getRejectInterval());
+                                        taskRetryScheduler.addTask(task, task.getRejectRetries(), task.getRejectInterval(), RetryType.REJECT_RETRY);
                                     }
                                 } else {
                                     LOGGER.error("Send ServerSubmitTaskRequest error: " + response.getMessage());
