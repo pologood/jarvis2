@@ -91,7 +91,7 @@ public class JarvisServer {
         DAGScheduler dagScheduler = SpringContext.getBean(DAGScheduler.class);
         TaskScheduler taskScheduler = SpringContext.getBean(TaskScheduler.class);
         AlarmScheduler alarmScheduler = SpringContext.getBean(AlarmScheduler.class);
-        TimeScheduler timeScheduler = TimeSchedulerFactory.create();
+        TimeScheduler timeScheduler = TimeSchedulerFactory.getInstance();
         controller.register(dagScheduler);
         controller.register(taskScheduler);
         controller.register(timeScheduler);

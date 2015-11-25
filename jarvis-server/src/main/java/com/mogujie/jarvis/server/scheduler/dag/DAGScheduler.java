@@ -12,7 +12,6 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.stereotype.Repository;
 
 import com.google.common.eventbus.Subscribe;
 import com.mogujie.jarvis.core.domain.JobFlag;
@@ -28,8 +27,12 @@ import com.mogujie.jarvis.server.scheduler.event.TimeReadyEvent;
  * @author guangming
  *
  */
-@Repository
 public class DAGScheduler extends Scheduler {
+    private static DAGScheduler instance = new DAGScheduler();
+    private DAGScheduler() {}
+    public static DAGScheduler getInstance() {
+        return instance;
+    }
 
     private JobGraph jobGraph = JobGraph.INSTANCE;
     private static final Logger LOGGER = LogManager.getLogger();

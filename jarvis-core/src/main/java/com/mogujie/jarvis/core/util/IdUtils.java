@@ -11,7 +11,7 @@ package com.mogujie.jarvis.core.util;
 import com.mogujie.jarvis.core.domain.IdType;
 
 /**
- * 
+ *
  *
  */
 public class IdUtils {
@@ -27,5 +27,9 @@ public class IdUtils {
             default:
                 return Long.parseLong(tokens[2]);
         }
+    }
+
+    public static String getFullId(long jobId, long taskId, int attemptId) {
+        return jobId + "_" + taskId + "_" + attemptId;
     }
 }

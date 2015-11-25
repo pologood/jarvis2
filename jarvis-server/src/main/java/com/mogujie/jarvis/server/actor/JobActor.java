@@ -73,10 +73,8 @@ import com.mogujie.jarvis.server.util.MessageUtil;
 @Scope("prototype")
 public class JobActor extends UntypedActor {
 
-    @Autowired
-    private DAGScheduler dagScheduler;
-
-    private TimeScheduler timeScheduler = TimeSchedulerFactory.create();
+    private DAGScheduler dagScheduler = DAGScheduler.getInstance();
+    private TimeScheduler timeScheduler = TimeSchedulerFactory.getInstance();
 
     @Autowired
     private CrontabService cronService;

@@ -13,7 +13,6 @@ import java.util.SortedSet;
 
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 
 import com.mogujie.jarvis.core.domain.JobFlag;
 import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
@@ -25,7 +24,6 @@ import com.mogujie.jarvis.server.scheduler.plan.ExecutionPlanEntry;
 import com.mogujie.jarvis.server.scheduler.plan.PlanGenerator;
 import com.mogujie.jarvis.server.service.JobService;
 
-@Repository
 public abstract class TimeScheduler extends Scheduler {
 
     protected ExecutionPlan plan = ExecutionPlan.INSTANCE;
