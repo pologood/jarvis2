@@ -187,9 +187,11 @@ public class JobActor extends UntypedActor {
                 jobService.deleteScheduleExpression(jobId);
             } else {
                 JobScheduleExpression record = jobService.getScheduleExpressionByJobId(jobId);
-                if (record != null) {
+                if (record == null) {
+                    // 插入新的expression表
                     jobService.insertScheduleExpression(jobId, expressionEntry);
                 } else {
+                    // 更新旧的expression表
                     record.setExpressionType(expressionEntry.getExpressionType());
                     record.setExpression(newExpression);
                     record.setUpdateTime(new Date());
