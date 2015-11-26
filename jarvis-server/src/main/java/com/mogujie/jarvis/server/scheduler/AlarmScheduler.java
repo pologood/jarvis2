@@ -78,24 +78,26 @@ public class AlarmScheduler extends Scheduler {
             List<Alarm> alarms = alarmMapper.selectByExample(alarmExample);
             if (alarms != null && alarms.size() == 1) {
                 Alarm alarm = alarms.get(0);
-                String msg = null;
-                if (event instanceof FailedEvent) {
-                    msg = "任务[" + jobName + "]运行失败";
-                } else if (event instanceof KilledEvent) {
-                    msg = "任务[" + jobName + "]被Kill";
-                }
+                if (alarm.getStatus().intValue() == 1) {
+                    String msg = null;
+                    if (event instanceof FailedEvent) {
+                        msg = "任务[" + jobName + "]运行失败";
+                    } else if (event instanceof KilledEvent) {
+                        msg = "任务[" + jobName + "]被Kill";
+                    }
 
-                String[] tokens = alarm.getAlarmType().split(",");
-                List<AlarmType> alarmTypes = Lists.newArrayList();
-                for (String str : tokens) {
-                    int type = Integer.parseInt(str);
-                    alarmTypes.add(AlarmType.getInstance(type));
-                }
+                    String[] tokens = alarm.getAlarmType().split(",");
+                    List<AlarmType> alarmTypes = Lists.newArrayList();
+                    for (String str : tokens) {
+                        int type = Integer.parseInt(str);
+                        alarmTypes.add(AlarmType.getInstance(type));
+                    }
 
-                List<String> receiver = Lists.newArrayList(alarm.getReceiver().split(","));
-                boolean success = alarmer.alarm(alarmTypes, receiver, msg);
-                if (!success) {
-                    LOGGER.warn("Alarm Failed");
+                    List<String> receiver = Lists.newArrayList(alarm.getReceiver().split(","));
+                    boolean success = alarmer.alarm(alarmTypes, receiver, msg);
+                    if (!success) {
+                        LOGGER.warn("Alarm Failed");
+                    }
                 }
             }
         }
