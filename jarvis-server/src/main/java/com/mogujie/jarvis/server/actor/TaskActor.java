@@ -9,6 +9,7 @@
 package com.mogujie.jarvis.server.actor;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -34,6 +35,7 @@ import com.mogujie.jarvis.protocol.KillTaskProtos.RestServerKillTaskRequest;
 import com.mogujie.jarvis.protocol.KillTaskProtos.ServerKillTaskRequest;
 import com.mogujie.jarvis.protocol.KillTaskProtos.ServerKillTaskResponse;
 import com.mogujie.jarvis.protocol.KillTaskProtos.WorkerKillTaskResponse;
+import com.mogujie.jarvis.protocol.ManualRetryTaskProtos.RestServerManualRetryTaskRequest;
 import com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry;
 import com.mogujie.jarvis.protocol.RetryTaskProtos.RestServerRetryTaskRequest;
 import com.mogujie.jarvis.protocol.RetryTaskProtos.ServerRetryTaskResponse;
@@ -44,6 +46,7 @@ import com.mogujie.jarvis.server.TaskQueue;
 import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.event.RetryTaskEvent;
 import com.mogujie.jarvis.server.service.IDService;
+import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.FutureUtils;
 
 /**
@@ -55,6 +58,9 @@ import com.mogujie.jarvis.server.util.FutureUtils;
 public class TaskActor extends UntypedActor {
     @Autowired
     private TaskManager taskManager;
+
+    @Autowired
+    private TaskService taskService;
 
     @Autowired
     private IDService idService;
@@ -71,6 +77,9 @@ public class TaskActor extends UntypedActor {
         } else if (obj instanceof RestServerRetryTaskRequest) {
             RestServerRetryTaskRequest msg = (RestServerRetryTaskRequest) obj;
             retryTask(msg);
+        } else if (obj instanceof RestServerManualRetryTaskRequest ) {
+            RestServerManualRetryTaskRequest msg = (RestServerManualRetryTaskRequest) obj;
+            manualRetryTask(msg);
         } else if (obj instanceof RestServerSubmitTaskRequest) {
             RestServerSubmitTaskRequest msg = (RestServerSubmitTaskRequest) obj;
             submitTask(msg);
@@ -97,7 +106,7 @@ public class TaskActor extends UntypedActor {
     }
 
     /**
-     * 按照历史记录重跑task
+     * 按照taskId原地重跑
      *
      * @param msg
      */
@@ -105,6 +114,21 @@ public class TaskActor extends UntypedActor {
         List<Long> taskIdList = msg.getTaskIdList();
         boolean runChild = msg.getRunChild();
         controller.notify(new RetryTaskEvent(taskIdList, runChild));
+    }
+
+    private void manualRetryTask(RestServerManualRetryTaskRequest msg) {
+        List<Long> jobIdList = msg.getJobIdList();
+        Date startDate = new Date(msg.getStartTime());
+        Date endDate = new Date(msg.getEndTime());
+        List<Long> taskIdList = taskService.getTaskIdsByJobIdsBetween(jobIdList, startDate, endDate);
+        boolean runChild = msg.getRunChild();
+        boolean newDependency = msg.getNewDependency();
+        if (!newDependency) {
+            //按照历史依赖重跑
+            controller.notify(new RetryTaskEvent(taskIdList, runChild));
+        } else {
+            //TODO 按照新依赖关系重跑
+        }
     }
 
     private void submitTask(RestServerSubmitTaskRequest msg) {

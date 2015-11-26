@@ -86,6 +86,11 @@ public class TaskService {
         return taskMapper.selectByExample(example);
     }
 
+    public List<Long> getTaskIdsByJobIdsBetween(List<Long> jobIds, Date start, Date end) {
+        //TODO
+        return null;
+    }
+
     public void updateStatusWithStart(long taskId, TaskStatus status) {
         Task task = taskMapper.selectByPrimaryKey(taskId);
         task.setStatus(status.getValue());

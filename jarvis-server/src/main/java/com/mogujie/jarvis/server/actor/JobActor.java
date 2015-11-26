@@ -158,11 +158,6 @@ public class JobActor extends UntypedActor {
             // 1. insert job to DB
             jobMapper.insert(job);
             long jobId = job.getJobId();
-            // 如果是新增任务（不是手动触发），则originId=jobId
-            if (job.getOriginJobId() == null || job.getOriginJobId() == 0) {
-                job.setOriginJobId(jobId);
-                jobMapper.updateByPrimaryKey(job);
-            }
             // 2. insert cron to DB
             cronService.insert(jobId, msg.getCronExpression());
             // 3. insert jobDepend to DB
