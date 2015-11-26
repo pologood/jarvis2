@@ -45,9 +45,11 @@ import com.mogujie.jarvis.dto.generate.App;
 import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.dto.generate.JobDepend;
 import com.mogujie.jarvis.dto.generate.JobDependExample;
+import com.mogujie.jarvis.dto.generate.JobDependKey;
 import com.mogujie.jarvis.dto.generate.JobExample;
 import com.mogujie.jarvis.dto.generate.JobScheduleExpression;
 import com.mogujie.jarvis.dto.generate.JobScheduleExpressionExample;
+import com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry;
 import com.mogujie.jarvis.server.domain.JobDependencyEntry;
 import com.mogujie.jarvis.server.domain.JobEntry;
 
@@ -77,6 +79,77 @@ public class JobService {
     private void init(){
         loadMetaDataFromDB();
         LOGGER.info("jobService loadMetaDataFromDB finished.");
+    }
+
+    public long insertJob(Job record) {
+        jobMapper.insert(record);
+        return record.getJobId();
+    }
+
+    public void updateJob(Job record) {
+        jobMapper.updateByPrimaryKey(record);
+    }
+
+    public void deleteJob(long jobId) {
+        jobMapper.deleteByPrimaryKey(jobId);
+    }
+
+    public JobScheduleExpression getScheduleExpressionByJobId(long jobId) {
+        JobScheduleExpressionExample example = new JobScheduleExpressionExample();
+        example.createCriteria().andJobIdEqualTo(jobId);
+        List<JobScheduleExpression> records = jobScheduleExpressionMapper.selectByExample(example);
+        JobScheduleExpression record = null;
+        if (records != null && !records.isEmpty()) {
+            record = records.get(0);
+        }
+        return record;
+    }
+
+    public void insertScheduleExpression(long jobId, ScheduleExpressionEntry entry) {
+        JobScheduleExpression record = new JobScheduleExpression();
+        record.setJobId(jobId);
+        record.setExpressionType(entry.getExpressionType());
+        record.setExpression(entry.getScheduleExpression());
+        Date now = new Date();
+        record.setCreateTime(now);
+        record.setUpdateTime(now);
+        jobScheduleExpressionMapper.insert(record);
+    }
+
+    public void updateScheduleExpression(JobScheduleExpression record) {
+        jobScheduleExpressionMapper.updateByPrimaryKey(record);
+    }
+
+    public void deleteScheduleExpression(long jobId) {
+        JobScheduleExpressionExample example = new JobScheduleExpressionExample();
+        example.createCriteria().andJobIdEqualTo(jobId);
+        jobScheduleExpressionMapper.deleteByExample(example);
+    }
+
+    public void insertJobDepend(JobDepend record) {
+        jobDependMapper.insert(record);
+    }
+
+    public void deleteJobDepend(JobDependKey key) {
+        jobDependMapper.deleteByPrimaryKey(key);
+    }
+
+    /**
+     * remove job depend where preJobId=jobId
+     * @param jobId
+     */
+    public void deleteJobDependByPreJob(long jobId) {
+        JobDependExample jobDependExample = new JobDependExample();
+        jobDependExample.createCriteria().andPreJobIdEqualTo(jobId);
+        jobDependMapper.deleteByExample(jobDependExample);
+    }
+
+    public JobDepend getJobDepend(JobDependKey key) {
+        return jobDependMapper.selectByPrimaryKey(key);
+    }
+
+    public void updateJobDepend(JobDepend record) {
+        jobDependMapper.updateByPrimaryKey(record);
     }
 
     public JobEntry get(long jobId) {

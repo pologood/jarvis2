@@ -8,13 +8,18 @@
 
 package com.mogujie.jarvis.core.expression;
 
+
 /**
- * 
+ *
  *
  */
 public enum ScheduleExpressionType {
 
-    CRON(1), FIXED_RATE(2), FIXED_DELAY(3), ISO8601(4);
+    UNKOWN(0),
+    CRON(1),
+    FIXED_RATE(2),
+    FIXED_DELAY(3),
+    ISO8601(4);
 
     private int value;
 
@@ -24,6 +29,18 @@ public enum ScheduleExpressionType {
 
     public int getValue() {
         return value;
+    }
+
+    public static ScheduleExpressionType getInstance(int value) {
+        ScheduleExpressionType[] typeList = ScheduleExpressionType.values();
+        ScheduleExpressionType type = ScheduleExpressionType.CRON;
+        for (ScheduleExpressionType t : typeList) {
+            if (t.getValue() == value) {
+                type = t;
+                break;
+            }
+        }
+        return type;
     }
 
 }

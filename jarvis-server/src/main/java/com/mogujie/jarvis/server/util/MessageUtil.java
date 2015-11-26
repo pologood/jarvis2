@@ -9,24 +9,16 @@
 package com.mogujie.jarvis.server.util;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.joda.time.DateTime;
 
 import com.mogujie.jarvis.core.domain.JobFlag;
 import com.mogujie.jarvis.core.util.JsonHelper;
-import com.mogujie.jarvis.dao.generate.JobMapper;
-import com.mogujie.jarvis.dto.generate.Crontab;
 import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.dto.generate.JobDepend;
 import com.mogujie.jarvis.protocol.ModifyJobProtos.RestServerModifyJobRequest;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitJobRequest;
-import com.mogujie.jarvis.server.domain.ModifyJobEntry;
-import com.mogujie.jarvis.server.domain.ModifyJobType;
-import com.mogujie.jarvis.server.domain.ModifyOperation;
 import com.mogujie.jarvis.server.service.AppService;
-import com.mogujie.jarvis.server.service.CrontabService;
 import com.mogujie.jarvis.server.service.JobService;
 
 /**
@@ -68,9 +60,9 @@ public class MessageUtil {
         return job;
     }
 
-    public static Job convert2Job(JobMapper jobMapper, AppService appService, RestServerModifyJobRequest msg) {
+    public static Job convert2Job(JobService jobService, AppService appService, RestServerModifyJobRequest msg) {
         long jobId = msg.getJobId();
-        Job job = jobMapper.selectByPrimaryKey(jobId);
+        Job job = jobService.get(jobId).getJob();
         job.setJobId(msg.getJobId());
         job.setAppId(appService.getAppIdByName(msg.getAppAuth().getName()));
         if (msg.hasContent()) {
@@ -123,28 +115,32 @@ public class MessageUtil {
         return jobDepend;
     }
 
-    public static Map<ModifyJobType, ModifyJobEntry> convert2ModifyJobMap(RestServerModifyJobRequest msg, JobService jobService,
-            CrontabService cronService) {
-
-        Map<ModifyJobType, ModifyJobEntry> modifyMap = new HashMap<ModifyJobType, ModifyJobEntry>();
-        long jobId = msg.getJobId();
-        if (msg.hasCronExpression()) {
-            String newCronExpression = msg.getCronExpression();
-            ModifyOperation operation;
-            if (newCronExpression == null || newCronExpression.isEmpty()) {
-                operation = ModifyOperation.DEL;
-            } else {
-                Crontab oldCron = cronService.getPositiveCrontab(jobId);
-                if (oldCron == null) {
-                    operation = ModifyOperation.ADD;
-                } else {
-                    operation = ModifyOperation.MODIFY;
-                }
-            }
-            ModifyJobEntry entry = new ModifyJobEntry(operation, newCronExpression);
-            modifyMap.put(ModifyJobType.CRON, entry);
-        }
-
-        return modifyMap;
-    }
+//    public static Map<ModifyJobType, ModifyJobEntry> convert2ModifyJobMap(RestServerModifyJobRequest msg, JobService jobService) {
+//
+//        Map<ModifyJobType, ModifyJobEntry> modifyMap = new HashMap<ModifyJobType, ModifyJobEntry>();
+//        long jobId = msg.getJobId();
+//        if (msg.hasExpressionEntry()) {
+//            ScheduleExpressionEntry expressionEntry = msg.getExpressionEntry();
+//            ScheduleExpressionType expressionType = ScheduleExpressionType.getInstance(expressionEntry.getExpressionType());
+//            String newExpression = expressionEntry.getScheduleExpression();
+//            if (!expressionType.equals(ScheduleExpressionType.FIXED_DELAY)) {
+//
+//            }
+//            ModifyOperation operation;
+//            if (newExpression == null || newExpression.isEmpty()) {
+//                operation = ModifyOperation.DEL;
+//            } else {
+//                Crontab oldCron = cronService.getPositiveCrontab(jobId);
+//                if (oldCron == null) {
+//                    operation = ModifyOperation.ADD;
+//                } else {
+//                    operation = ModifyOperation.MODIFY;
+//                }
+//            }
+//            ModifyJobEntry entry = new ModifyJobEntry(operation, newCronExpression);
+//            modifyMap.put(ModifyJobType.CRON, entry);
+//        }
+//
+//        return modifyMap;
+//    }
 }

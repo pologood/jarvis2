@@ -1,0 +1,7 @@
+option java_package = "com.mogujie.jarvis.protocol";
+option java_outer_classname = "ScheduleExpressionEntryProtos";
+
+message ScheduleExpressionEntry {
+	required int32 expression_type = 1;
+	required string schedule_expression = 2;
+}

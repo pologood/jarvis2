@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javax.inject.Named;
@@ -30,13 +29,10 @@ import com.mogujie.jarvis.core.domain.ActorEntry;
 import com.mogujie.jarvis.core.domain.JobFlag;
 import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.core.domain.Pair;
-import com.mogujie.jarvis.core.expression.CronExpression;
-import com.mogujie.jarvis.dao.generate.JobDependMapper;
-import com.mogujie.jarvis.dao.generate.JobMapper;
 import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.dto.generate.JobDepend;
-import com.mogujie.jarvis.dto.generate.JobDependExample;
 import com.mogujie.jarvis.dto.generate.JobDependKey;
+import com.mogujie.jarvis.dto.generate.JobScheduleExpression;
 import com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry;
 import com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.DependencyOperator;
 import com.mogujie.jarvis.protocol.ModifyDependencyProtos.RestServerModifyDependencyRequest;
@@ -49,11 +45,10 @@ import com.mogujie.jarvis.protocol.QueryJobRelationProtos.JobFlagEntry;
 import com.mogujie.jarvis.protocol.QueryJobRelationProtos.RestServerQueryJobRelationRequest;
 import com.mogujie.jarvis.protocol.QueryJobRelationProtos.RestServerQueryJobRelationRequest.RelationType;
 import com.mogujie.jarvis.protocol.QueryJobRelationProtos.ServerQueryJobRelationResponse;
+import com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitJobRequest;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitJobResponse;
 import com.mogujie.jarvis.server.domain.ModifyDependEntry;
-import com.mogujie.jarvis.server.domain.ModifyJobEntry;
-import com.mogujie.jarvis.server.domain.ModifyJobType;
 import com.mogujie.jarvis.server.domain.ModifyOperation;
 import com.mogujie.jarvis.server.domain.RemoveJobRequest;
 import com.mogujie.jarvis.server.scheduler.dag.DAGJob;
@@ -62,7 +57,6 @@ import com.mogujie.jarvis.server.scheduler.dag.DAGScheduler;
 import com.mogujie.jarvis.server.scheduler.time.TimeScheduler;
 import com.mogujie.jarvis.server.scheduler.time.TimeSchedulerFactory;
 import com.mogujie.jarvis.server.service.AppService;
-import com.mogujie.jarvis.server.service.CrontabService;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.util.MessageUtil;
 
@@ -77,19 +71,10 @@ public class JobActor extends UntypedActor {
     private TimeScheduler timeScheduler = TimeSchedulerFactory.getInstance();
 
     @Autowired
-    private CrontabService cronService;
-
-    @Autowired
     private JobService jobService;
 
     @Autowired
-    private JobMapper jobMapper;
-
-    @Autowired
     private AppService appService;
-
-    @Autowired
-    private JobDependMapper jobDependMapper;
 
     /**
      * 处理消息
@@ -148,31 +133,27 @@ public class JobActor extends UntypedActor {
             Preconditions.checkArgument(job.getWorkerGroupId() != null && job.getWorkerGroupId() > 0, "workGroupId不能为空");
             Preconditions.checkArgument(job.getContent() != null && !job.getContent().isEmpty(), "job内容不能为空");
             Preconditions.checkArgument(appService.canAccessWorkerGroup(job.getAppId(), job.getWorkerGroupId()), "该App不能访问指定的workerGroupId.");
-            Preconditions.checkArgument(
-                    msg.getCronExpression() == null || msg.getCronExpression().isEmpty() || new CronExpression(msg.getCronExpression()).isValid(),
-                    "Crontab表达式错误");
             if (job.getActiveStartDate() != null && job.getActiveEndDate() != null) {
                 Preconditions.checkArgument(job.getActiveStartDate().getTime() <= job.getActiveEndDate().getTime(), "有效开始日不能大于有效结束日");
             }
 
             // 1. insert job to DB
-            jobMapper.insert(job);
-            long jobId = job.getJobId();
-            // 2. insert cron to DB
-            cronService.insert(jobId, msg.getCronExpression());
+            long jobId = jobService.insertJob(job);
+            // 2. insert crontab expression to DB
+            jobService.insertScheduleExpression(jobId, msg.getExpressionEntry());
             // 3. insert jobDepend to DB
             Set<Long> needDependencies = Sets.newHashSet();
             for (DependencyEntry entry : msg.getDependencyEntryList()) {
                 needDependencies.add(entry.getJobId());
                 JobDepend jobDepend = MessageUtil.convert2JobDepend(jobId, entry.getJobId(), entry.getCommonDependStrategy(),
                         entry.getOffsetDependStrategy(), msg.getUser());
-                jobDependMapper.insert(jobDepend);
+                jobService.insertJobDepend(jobDepend);
             }
 
             // 4. add job to scheduler
             int cycleFlag = msg.hasFixedDelay() ? 1 : 0;
             int dependFlag = (!needDependencies.isEmpty()) ? 1 : 0;
-            int timeFlag = msg.hasCronExpression() ? 1 : 0;
+            int timeFlag = msg.hasExpressionEntry() ? 1 : 0;
             DAGJobType type = DAGJobType.getDAGJobType(cycleFlag, dependFlag, timeFlag);
 
             dagScheduler.getJobGraph().addJob(jobId, new DAGJob(jobId, type), needDependencies);
@@ -194,19 +175,34 @@ public class JobActor extends UntypedActor {
 
         long jobId = msg.getJobId();
         // 1. update job to DB
-        Job job = MessageUtil.convert2Job(jobMapper, appService, msg);
-        jobMapper.updateByPrimaryKey(job);
+        Job job = MessageUtil.convert2Job(jobService, appService, msg);
+        jobService.updateJob(job);
 
-        // 2. update cron to DB
-        if (msg.hasCronExpression()) {
-            cronService.updateOrDelete(jobId, msg.getCronExpression());
+        // 2. update expression to DB
+        if (msg.hasExpressionEntry()) {
+            ScheduleExpressionEntry expressionEntry = msg.getExpressionEntry();
+            String newExpression = expressionEntry.getScheduleExpression();
+            // newExpression 为空表示删除调度表达式
+            if (newExpression == null || newExpression.isEmpty()) {
+                jobService.deleteScheduleExpression(jobId);
+            } else {
+                JobScheduleExpression record = jobService.getScheduleExpressionByJobId(jobId);
+                if (record != null) {
+                    jobService.insertScheduleExpression(jobId, expressionEntry);
+                } else {
+                    record.setExpressionType(expressionEntry.getExpressionType());
+                    record.setExpression(newExpression);
+                    record.setUpdateTime(new Date());
+                    jobService.updateScheduleExpression(record);
+                }
+            }
         }
 
         // 3. scheduler modify job
-        Map<ModifyJobType, ModifyJobEntry> modifyMap = MessageUtil.convert2ModifyJobMap(msg, jobService, cronService);
+//        Map<ModifyJobType, ModifyJobEntry> modifyMap = MessageUtil.convert2ModifyJobMap(msg, jobService);
         ServerModifyJobResponse response;
         try {
-            dagScheduler.getJobGraph().modifyDAGJobType(jobId, modifyMap);
+//            dagScheduler.getJobGraph().modifyDAGJobType(jobId, modifyMap);
             // timeScheduler.modifyJob(jobId);
             response = ServerModifyJobResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());
@@ -233,19 +229,19 @@ public class JobActor extends UntypedActor {
                 operation = ModifyOperation.ADD;
                 JobDepend jobDepend = MessageUtil.convert2JobDepend(jobId, preJobId, entry.getCommonDependStrategy(), entry.getOffsetDependStrategy(),
                         user);
-                jobDependMapper.insert(jobDepend);
+                jobService.insertJobDepend(jobDepend);
             } else if (entry.getOperator().equals(DependencyOperator.REMOVE)) {
                 operation = ModifyOperation.DEL;
                 JobDependKey key = new JobDependKey();
                 key.setJobId(jobId);
                 key.setPreJobId(preJobId);
-                jobDependMapper.deleteByPrimaryKey(key);
+                jobService.deleteJobDepend(key);
             } else {
                 operation = ModifyOperation.MODIFY;
                 JobDependKey key = new JobDependKey();
                 key.setJobId(jobId);
                 key.setPreJobId(preJobId);
-                JobDepend record = jobDependMapper.selectByPrimaryKey(key);
+                JobDepend record = jobService.getJobDepend(key);
                 if (record != null) {
                     record.setCommonStrategy(commonStrategyValue);
                     record.setOffsetStrategy(offsetStrategyValue);
@@ -253,7 +249,7 @@ public class JobActor extends UntypedActor {
                     DateTime dt = DateTime.now();
                     Date currentTime = dt.toDate();
                     record.setUpdateTime(currentTime);
-                    jobDependMapper.updateByPrimaryKey(record);
+                    jobService.updateJobDepend(record);
                 }
             }
             ModifyDependEntry dependEntry = new ModifyDependEntry(operation, preJobId, commonStrategyValue, offsetStrategyValue);
@@ -337,13 +333,11 @@ public class JobActor extends UntypedActor {
         long jobId = msg.getJobId();
         try {
             // remove job
-            jobMapper.deleteByPrimaryKey(jobId);
+            jobService.deleteJob(jobId);
             // remove job depend where preJobId=jobId
-            JobDependExample jobDependExample = new JobDependExample();
-            jobDependExample.createCriteria().andPreJobIdEqualTo(jobId);
-            jobDependMapper.deleteByExample(jobDependExample);
-            // remove crontab where jobId=jobId
-            cronService.deleteByJobId(jobId);
+            jobService.deleteJobDependByPreJob(jobId);
+            // remove expression where jobId=jobId
+            jobService.deleteScheduleExpression(jobId);
             // scheduler remove job
             timeScheduler.removeJob(jobId);
             dagScheduler.getJobGraph().removeJob(jobId);

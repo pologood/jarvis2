@@ -1,5 +1,6 @@
 import "map_entry.proto";
 import "app_auth.proto";
+import "schedule_expression_entry.proto";
 
 option java_package = "com.mogujie.jarvis.protocol";
 option java_outer_classname = "ModifyJobProtos";
@@ -9,7 +10,7 @@ message RestServerModifyJobRequest {
     required AppAuth app_auth = 1;
     required int64 job_id = 2;
     optional string job_name = 3;
-    optional string cron_expression = 4;
+    optional ScheduleExpressionEntry expression_entry = 4;
     optional string user = 5;
     optional string job_type = 6;
     optional string content = 7;

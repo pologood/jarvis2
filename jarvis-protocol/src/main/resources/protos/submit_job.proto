@@ -1,15 +1,15 @@
 import "map_entry.proto";
 import "dependency_entry.proto";
 import "app_auth.proto";
+import "schedule_expression_entry.proto";
 
 option java_package = "com.mogujie.jarvis.protocol";
 option java_outer_classname = "SubmitJobProtos";
 
-
 message RestServerSubmitJobRequest {
     required AppAuth app_auth = 1;
     required string job_name = 2;
-    optional string cron_expression = 3;
+    optional ScheduleExpressionEntry expression_entry = 3;
     repeated DependencyEntry dependency_entry = 4;
     required string user = 5;
     required string job_type = 6;
