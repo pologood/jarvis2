@@ -1,11 +1,9 @@
 package com.mogujie.jarvis.web.entity.vo;
 
-import com.mogujie.jarvis.dto.Plan;
-
 /**
  * Created by hejian on 15/10/21.
  */
-public class PlanVo extends Plan {
+public class PlanVo{
     private String jobName;
     private String jobType;
     private String submitUser;

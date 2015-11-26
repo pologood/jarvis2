@@ -1,11 +1,9 @@
 package com.mogujie.jarvis.web.entity.vo;
 
-import com.mogujie.jarvis.dto.generate.Plan;
-
 /**
  * Created by hejian on 15/10/21.
  */
-public class PlanSearchVo extends Plan {
+public class PlanSearchVo {
     private String jobName;
     private String jobType;
     private Integer priority;
