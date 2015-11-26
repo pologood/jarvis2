@@ -10,11 +10,12 @@ package com.mogujie.jarvis.server.scheduler.task.checker;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.joda.time.DateTime;
+
 import com.mogujie.jarvis.core.expression.DependencyExpression;
 import com.mogujie.jarvis.core.expression.DependencyStrategyExpression;
 import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.SpringContext;
-import org.joda.time.DateTime;
 
 /**
  * @author guangming
@@ -22,11 +23,13 @@ import org.joda.time.DateTime;
  */
 public class OffsetDependStatus extends AbstractTaskStatus {
 
+    private long scheduleTime;
     private DependencyExpression offsetStrategy;
 
-    public OffsetDependStatus(long myJobId, long preJobId, DependencyStrategyExpression commonStrategy,
+    public OffsetDependStatus(long myJobId, long preJobId, long scheduleTime, DependencyStrategyExpression commonStrategy,
             DependencyExpression offsetStrategy) {
         super(myJobId, preJobId, commonStrategy);
+        this.scheduleTime = scheduleTime;
         this.offsetStrategy = offsetStrategy;
     }
 
@@ -50,6 +53,6 @@ public class OffsetDependStatus extends AbstractTaskStatus {
     @Override
     protected List<Boolean> getStatusList() {
         TaskService taskService = SpringContext.getBean(TaskService.class);
-        return taskService.getTaskSuccessStatusBetween(getMyJobId(),offsetStrategy.getRange(DateTime.now()));
+        return taskService.getTaskSuccessStatusBetween(getPreJobId(), offsetStrategy.getRange(new DateTime(scheduleTime)));
     }
 }

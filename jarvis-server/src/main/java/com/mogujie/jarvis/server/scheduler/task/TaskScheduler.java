@@ -246,6 +246,7 @@ public class TaskScheduler extends Scheduler {
         if (status.equals(TaskStatus.RUNNING)) {
             taskService.updateStatusWithStart(taskId, status);
         } else if (status.equals(TaskStatus.SUCCESS) || status.equals(TaskStatus.FAILED) || status.equals(TaskStatus.KILLED)) {
+            taskService.updateStatusWithEnd(taskId, status);
         } else {
             taskService.updateStatus(taskId, status);
         }
