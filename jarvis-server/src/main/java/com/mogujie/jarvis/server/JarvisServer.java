@@ -17,8 +17,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 
+import akka.actor.ActorSystem;
+import akka.routing.SmallestMailboxPool;
+
 import com.google.common.collect.Lists;
 import com.mogujie.jarvis.core.JarvisConstants;
+import com.mogujie.jarvis.core.domain.JobFlag;
 import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.exeception.JobScheduleException;
 import com.mogujie.jarvis.core.expression.CronExpression;
@@ -44,9 +48,6 @@ import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.SpringContext;
 import com.mogujie.jarvis.server.util.SpringExtension;
-
-import akka.actor.ActorSystem;
-import akka.routing.SmallestMailboxPool;
 
 /**
  *
@@ -88,10 +89,10 @@ public class JarvisServer {
     private static void initScheduler() throws JobScheduleException {
         // 1. register schedulers to controller
         JobSchedulerController controller = JobSchedulerController.getInstance();
-        DAGScheduler dagScheduler = SpringContext.getBean(DAGScheduler.class);
-        TaskScheduler taskScheduler = SpringContext.getBean(TaskScheduler.class);
-        AlarmScheduler alarmScheduler = SpringContext.getBean(AlarmScheduler.class);
+        DAGScheduler dagScheduler = DAGScheduler.getInstance();
+        TaskScheduler taskScheduler = TaskScheduler.getInstance();
         TimeScheduler timeScheduler = TimeSchedulerFactory.getInstance();
+        AlarmScheduler alarmScheduler = SpringContext.getBean(AlarmScheduler.class);
         controller.register(dagScheduler);
         controller.register(taskScheduler);
         controller.register(timeScheduler);
@@ -120,8 +121,9 @@ public class JarvisServer {
             }
             int dependFlag = (!dependencies.isEmpty()) ? 1 : 0;
             DAGJobType type = DAGJobType.getDAGJobType(timeFlag, dependFlag, cycleFlag);
-            dagScheduler.getJobGraph().addJob(jobId, new DAGJob(jobId, type), dependencies);
-            if (type.implies(DAGJobType.TIME)) {
+            JobFlag flag = JobFlag.getInstance(job.getJobFlag());
+            dagScheduler.getJobGraph().addJob(jobId, new DAGJob(jobId, type, flag), dependencies);
+            if (type.implies(DAGJobType.TIME) && flag.equals(JobFlag.ENABLE) && jobService.isActive(jobId)) {
                 timeScheduler.addJob(jobId);
             }
         }

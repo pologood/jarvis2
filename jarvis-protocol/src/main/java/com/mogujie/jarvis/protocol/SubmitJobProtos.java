@@ -228,16 +228,6 @@ public final class SubmitJobProtos {
      */
     com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder getParametersOrBuilder(
         int index);
-
-    // optional int32 fixed_delay = 17;
-    /**
-     * <code>optional int32 fixed_delay = 17;</code>
-     */
-    boolean hasFixedDelay();
-    /**
-     * <code>optional int32 fixed_delay = 17;</code>
-     */
-    int getFixedDelay();
   }
   /**
    * Protobuf type {@code RestServerSubmitJobRequest}
@@ -390,11 +380,6 @@ public final class SubmitJobProtos {
                 mutable_bitField0_ |= 0x00008000;
               }
               parameters_.add(input.readMessage(com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.PARSER, extensionRegistry));
-              break;
-            }
-            case 136: {
-              bitField0_ |= 0x00004000;
-              fixedDelay_ = input.readInt32();
               break;
             }
           }
@@ -859,22 +844,6 @@ public final class SubmitJobProtos {
       return parameters_.get(index);
     }
 
-    // optional int32 fixed_delay = 17;
-    public static final int FIXED_DELAY_FIELD_NUMBER = 17;
-    private int fixedDelay_;
-    /**
-     * <code>optional int32 fixed_delay = 17;</code>
-     */
-    public boolean hasFixedDelay() {
-      return ((bitField0_ & 0x00004000) == 0x00004000);
-    }
-    /**
-     * <code>optional int32 fixed_delay = 17;</code>
-     */
-    public int getFixedDelay() {
-      return fixedDelay_;
-    }
-
     private void initFields() {
       appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
       jobName_ = "";
@@ -892,7 +861,6 @@ public final class SubmitJobProtos {
       startTime_ = 0L;
       endTime_ = 0L;
       parameters_ = java.util.Collections.emptyList();
-      fixedDelay_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -1000,9 +968,6 @@ public final class SubmitJobProtos {
       for (int i = 0; i < parameters_.size(); i++) {
         output.writeMessage(16, parameters_.get(i));
       }
-      if (((bitField0_ & 0x00004000) == 0x00004000)) {
-        output.writeInt32(17, fixedDelay_);
-      }
       getUnknownFields().writeTo(output);
     }
 
@@ -1075,10 +1040,6 @@ public final class SubmitJobProtos {
       for (int i = 0; i < parameters_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(16, parameters_.get(i));
-      }
-      if (((bitField0_ & 0x00004000) == 0x00004000)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(17, fixedDelay_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -1248,8 +1209,6 @@ public final class SubmitJobProtos {
         } else {
           parametersBuilder_.clear();
         }
-        fixedDelay_ = 0;
-        bitField0_ = (bitField0_ & ~0x00010000);
         return this;
       }
 
@@ -1360,10 +1319,6 @@ public final class SubmitJobProtos {
         } else {
           result.parameters_ = parametersBuilder_.build();
         }
-        if (((from_bitField0_ & 0x00010000) == 0x00010000)) {
-          to_bitField0_ |= 0x00004000;
-        }
-        result.fixedDelay_ = fixedDelay_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -1481,9 +1436,6 @@ public final class SubmitJobProtos {
               parametersBuilder_.addAllMessages(other.parameters_);
             }
           }
-        }
-        if (other.hasFixedDelay()) {
-          setFixedDelay(other.getFixedDelay());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -2830,39 +2782,6 @@ public final class SubmitJobProtos {
           parameters_ = null;
         }
         return parametersBuilder_;
-      }
-
-      // optional int32 fixed_delay = 17;
-      private int fixedDelay_ ;
-      /**
-       * <code>optional int32 fixed_delay = 17;</code>
-       */
-      public boolean hasFixedDelay() {
-        return ((bitField0_ & 0x00010000) == 0x00010000);
-      }
-      /**
-       * <code>optional int32 fixed_delay = 17;</code>
-       */
-      public int getFixedDelay() {
-        return fixedDelay_;
-      }
-      /**
-       * <code>optional int32 fixed_delay = 17;</code>
-       */
-      public Builder setFixedDelay(int value) {
-        bitField0_ |= 0x00010000;
-        fixedDelay_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional int32 fixed_delay = 17;</code>
-       */
-      public Builder clearFixedDelay() {
-        bitField0_ = (bitField0_ & ~0x00010000);
-        fixedDelay_ = 0;
-        onChanged();
-        return this;
       }
 
       // @@protoc_insertion_point(builder_scope:RestServerSubmitJobRequest)
@@ -8730,7 +8649,7 @@ public final class SubmitJobProtos {
     java.lang.String[] descriptorData = {
       "\n\020submit_job.proto\032\017map_entry.proto\032\026dep" +
       "endency_entry.proto\032\016app_auth.proto\032\037sch" +
-      "edule_expression_entry.proto\"\312\003\n\032RestSer" +
+      "edule_expression_entry.proto\"\265\003\n\032RestSer" +
       "verSubmitJobRequest\022\032\n\010app_auth\030\001 \002(\0132\010." +
       "AppAuth\022\020\n\010job_name\030\002 \002(\t\0222\n\020expression_" +
       "entry\030\003 \001(\0132\030.ScheduleExpressionEntry\022*\n" +
@@ -8741,28 +8660,27 @@ public final class SubmitJobProtos {
       "reject_interval\030\013 \001(\005:\0013\022\031\n\016failed_retri" +
       "es\030\014 \001(\005:\0010\022\032\n\017failed_interval\030\r \001(\005:\0013\022" +
       "\022\n\nstart_time\030\016 \001(\003\022\020\n\010end_time\030\017 \001(\003\022\035\n" +
-      "\nparameters\030\020 \003(\0132\t.MapEntry\022\023\n\013fixed_de" +
-      "lay\030\021 \001(\005\"M\n\027ServerSubmitJobResponse\022\016\n\006" +
-      "job_id\030\001 \001(\003\022\017\n\007success\030\002 \002(\010\022\021\n\007message" +
-      "\030\003 \001(\t:\000\"\316\001\n\027ServerSubmitTaskRequest\022\017\n\007" +
-      "full_id\030\001 \002(\t\022\021\n\ttask_name\030\002 \002(\t\022\020\n\010app_" +
-      "name\030\003 \002(\t\022\014\n\004user\030\004 \002(\t\022\021\n\ttask_type\030\005 " +
-      "\002(\t\022\017\n\007content\030\006 \002(\t\022\023\n\010priority\030\007 \001(\005:\001",
-      "1\022\035\n\nparameters\030\010 \003(\0132\t.MapEntry\022\027\n\017sche" +
-      "duling_time\030\t \002(\003\"N\n\030WorkerSubmitTaskRes" +
-      "ponse\022\016\n\006accept\030\001 \001(\010\022\017\n\007success\030\002 \002(\010\022\021" +
-      "\n\007message\030\003 \001(\t:\000\"\262\002\n\033RestServerSubmitTa" +
-      "skRequest\022\032\n\010app_auth\030\001 \002(\0132\010.AppAuth\022\021\n" +
-      "\ttask_name\030\002 \002(\t\022\014\n\004user\030\003 \002(\t\022\021\n\ttask_t" +
-      "ype\030\004 \002(\t\022\017\n\007content\030\005 \002(\t\022\020\n\010group_id\030\006" +
-      " \002(\005\022\023\n\010priority\030\007 \001(\005:\0011\022\031\n\016reject_retr" +
-      "ies\030\010 \001(\005:\0010\022\032\n\017reject_interval\030\t \001(\005:\0013" +
-      "\022\031\n\016failed_retries\030\n \001(\005:\0010\022\032\n\017failed_in",
-      "terval\030\013 \001(\005:\0013\022\035\n\nparameters\030\014 \003(\0132\t.Ma" +
-      "pEntry\"O\n\030ServerSubmitTaskResponse\022\017\n\007ta" +
-      "sk_id\030\001 \001(\003\022\017\n\007success\030\002 \002(\010\022\021\n\007message\030" +
-      "\003 \001(\t:\000B.\n\033com.mogujie.jarvis.protocolB\017" +
-      "SubmitJobProtos"
+      "\nparameters\030\020 \003(\0132\t.MapEntry\"M\n\027ServerSu" +
+      "bmitJobResponse\022\016\n\006job_id\030\001 \001(\003\022\017\n\007succe" +
+      "ss\030\002 \002(\010\022\021\n\007message\030\003 \001(\t:\000\"\316\001\n\027ServerSu" +
+      "bmitTaskRequest\022\017\n\007full_id\030\001 \002(\t\022\021\n\ttask" +
+      "_name\030\002 \002(\t\022\020\n\010app_name\030\003 \002(\t\022\014\n\004user\030\004 " +
+      "\002(\t\022\021\n\ttask_type\030\005 \002(\t\022\017\n\007content\030\006 \002(\t\022" +
+      "\023\n\010priority\030\007 \001(\005:\0011\022\035\n\nparameters\030\010 \003(\013",
+      "2\t.MapEntry\022\027\n\017scheduling_time\030\t \002(\003\"N\n\030" +
+      "WorkerSubmitTaskResponse\022\016\n\006accept\030\001 \001(\010" +
+      "\022\017\n\007success\030\002 \002(\010\022\021\n\007message\030\003 \001(\t:\000\"\262\002\n" +
+      "\033RestServerSubmitTaskRequest\022\032\n\010app_auth" +
+      "\030\001 \002(\0132\010.AppAuth\022\021\n\ttask_name\030\002 \002(\t\022\014\n\004u" +
+      "ser\030\003 \002(\t\022\021\n\ttask_type\030\004 \002(\t\022\017\n\007content\030" +
+      "\005 \002(\t\022\020\n\010group_id\030\006 \002(\005\022\023\n\010priority\030\007 \001(" +
+      "\005:\0011\022\031\n\016reject_retries\030\010 \001(\005:\0010\022\032\n\017rejec" +
+      "t_interval\030\t \001(\005:\0013\022\031\n\016failed_retries\030\n " +
+      "\001(\005:\0010\022\032\n\017failed_interval\030\013 \001(\005:\0013\022\035\n\npa",
+      "rameters\030\014 \003(\0132\t.MapEntry\"O\n\030ServerSubmi" +
+      "tTaskResponse\022\017\n\007task_id\030\001 \001(\003\022\017\n\007succes" +
+      "s\030\002 \002(\010\022\021\n\007message\030\003 \001(\t:\000B.\n\033com.moguji" +
+      "e.jarvis.protocolB\017SubmitJobProtos"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -8774,7 +8692,7 @@ public final class SubmitJobProtos {
           internal_static_RestServerSubmitJobRequest_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_RestServerSubmitJobRequest_descriptor,
-              new java.lang.String[] { "AppAuth", "JobName", "ExpressionEntry", "DependencyEntry", "User", "JobType", "Content", "GroupId", "Priority", "RejectRetries", "RejectInterval", "FailedRetries", "FailedInterval", "StartTime", "EndTime", "Parameters", "FixedDelay", });
+              new java.lang.String[] { "AppAuth", "JobName", "ExpressionEntry", "DependencyEntry", "User", "JobType", "Content", "GroupId", "Priority", "RejectRetries", "RejectInterval", "FailedRetries", "FailedInterval", "StartTime", "EndTime", "Parameters", });
           internal_static_ServerSubmitJobResponse_descriptor =
             getDescriptor().getMessageTypes().get(1);
           internal_static_ServerSubmitJobResponse_fieldAccessorTable = new

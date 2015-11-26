@@ -19,7 +19,7 @@ import com.mogujie.jarvis.core.domain.JobFlag;
  */
 public abstract class AbstractDAGJob {
 
-    private JobFlag jobFlag = JobFlag.ENABLE;
+    protected JobFlag jobFlag = JobFlag.ENABLE;
 
     /**
      * return true if dependency check passed. Otherwise return false.

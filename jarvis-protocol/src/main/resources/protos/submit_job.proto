@@ -23,7 +23,6 @@ message RestServerSubmitJobRequest {
     optional int64 start_time = 14;
     optional int64 end_time = 15;
     repeated MapEntry parameters = 16;
-    optional int32 fixed_delay = 17;
 }
 
 

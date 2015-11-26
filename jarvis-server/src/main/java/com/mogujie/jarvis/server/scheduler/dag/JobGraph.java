@@ -28,13 +28,13 @@ import com.mogujie.jarvis.core.domain.JobFlag;
 import com.mogujie.jarvis.core.domain.Pair;
 import com.mogujie.jarvis.core.exeception.JobScheduleException;
 import com.mogujie.jarvis.server.domain.ModifyDependEntry;
-import com.mogujie.jarvis.server.domain.ModifyJobEntry;
-import com.mogujie.jarvis.server.domain.ModifyJobType;
 import com.mogujie.jarvis.server.domain.ModifyOperation;
 import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.dag.checker.DAGDependChecker;
 import com.mogujie.jarvis.server.scheduler.dag.checker.ScheduleTask;
 import com.mogujie.jarvis.server.scheduler.event.AddTaskEvent;
+import com.mogujie.jarvis.server.service.JobService;
+import com.mogujie.jarvis.server.util.SpringContext;
 
 /**
  * @author guangming
@@ -46,6 +46,7 @@ public enum JobGraph {
     private Map<Long, DAGJob> waitingTable = new ConcurrentHashMap<Long, DAGJob>();
     private DirectedAcyclicGraph<DAGJob, DefaultEdge> dag = new DirectedAcyclicGraph<DAGJob, DefaultEdge>(DefaultEdge.class);
     private JobSchedulerController controller = JobSchedulerController.getInstance();
+    private JobService jobService = SpringContext.getBean(JobService.class);
 
     private static final Logger LOGGER = LogManager.getLogger();
 
@@ -76,7 +77,12 @@ public enum JobGraph {
             List<DAGJob> parents = getParents(dagJob);
             if (parents != null) {
                 for (DAGJob parent : parents) {
-                    Pair<Long, JobFlag> jobPair = new Pair<Long, JobFlag>(parent.getJobId(), parent.getJobFlag());
+                    long parentId = parent.getJobId();
+                    JobFlag flag = parent.getJobFlag();
+                    if (flag.equals(JobFlag.ENABLE) && !jobService.isActive(parentId)); {
+                        flag = JobFlag.EXPIRED;
+                    }
+                    Pair<Long, JobFlag> jobPair = new Pair<Long, JobFlag>(parentId, flag);
                     parentJobPairs.add(jobPair);
                 }
             }
@@ -98,7 +104,12 @@ public enum JobGraph {
             List<DAGJob> children = getChildren(dagJob);
             if (children != null) {
                 for (DAGJob child : children) {
-                    Pair<Long, JobFlag> jobPair = new Pair<Long, JobFlag>(child.getJobId(), child.getJobFlag());
+                    long childId = child.getJobId();
+                    JobFlag flag = child.getJobFlag();
+                    if (flag.equals(JobFlag.ENABLE) && !jobService.isActive(childId)); {
+                        flag = JobFlag.EXPIRED;
+                    }
+                    Pair<Long, JobFlag> jobPair = new Pair<Long, JobFlag>(childId, flag);
                     childJobPairs.add(jobPair);
                 }
             }
@@ -108,13 +119,15 @@ public enum JobGraph {
     }
 
     /**
-     * get time based job ids
+     * get active time based job ids
      *
      */
-    public List<Long> getTimeBasedJobs() {
+    public List<Long> getActiveTimeBasedJobs() {
         List<Long> jobs = new ArrayList<Long>();
         for (DAGJob dagJob : waitingTable.values()) {
-            if (dagJob.getType().implies(DAGJobType.TIME)) {
+            if (dagJob.getType().implies(DAGJobType.TIME) &&
+                    dagJob.getJobFlag().equals(JobFlag.ENABLE) &&
+                    jobService.isActive(dagJob.getJobId())) {
                 jobs.add(dagJob.getJobId());
             }
         }
@@ -253,41 +266,14 @@ public enum JobGraph {
      * modify DAG job type
      *
      * @param jobId
-     * @param modifyJobMap Map of ModifyJobType(key) and ModifyJobEntry(value)
+     * @param newType
      * @throws JobScheduleException
      */
-    public void modifyDAGJobType(long jobId, Map<ModifyJobType, ModifyJobEntry> modifyJobMap)
-            throws JobScheduleException {
+    public void modifyDAGJobType(long jobId, DAGJobType newType)  {
         // update dag job type
         DAGJob dagJob = getDAGJob(jobId);
         if (dagJob != null) {
-            DAGJobType oldType = dagJob.getType();
-            if (modifyJobMap.containsKey(ModifyJobType.CRON)) {
-                ModifyJobEntry entry = modifyJobMap.get(ModifyJobType.CRON);
-                ModifyOperation operation = entry.getOperation();
-                if (operation.equals(ModifyOperation.DEL)) {
-                    dagJob.updateJobTypeByTimeFlag(false);
-                    LOGGER.info("DAGJob {} remove time flag, type from {} to {}",
-                            dagJob.getJobId(), oldType, dagJob.getType());
-                } else if (operation.equals(ModifyOperation.ADD)) {
-                    dagJob.updateJobTypeByTimeFlag(true);
-                    LOGGER.info("DAGJob {} add time flag, type from {} to {}",
-                            dagJob.getJobId(), oldType, dagJob.getType());
-                }
-            }
-            if (modifyJobMap.containsKey(ModifyJobType.CYCLE)) {
-                ModifyJobEntry entry = modifyJobMap.get(ModifyJobType.CYCLE);
-                ModifyOperation operation = entry.getOperation();
-                if (operation.equals(ModifyOperation.DEL)) {
-                    dagJob.updateJobTypeByCycleFlag(false);
-                    LOGGER.info("DAGJob {} remove cycle flag, type from {} to {}",
-                            dagJob.getJobId(), oldType, dagJob.getType());
-                } else if (operation.equals(ModifyOperation.ADD)) {
-                    dagJob.updateJobTypeByCycleFlag(true);
-                    LOGGER.info("DAGJob {} add cycle flag, type from {} to {}",
-                            dagJob.getJobId(), oldType, dagJob.getType());
-                }
-            }
+            dagJob.setType(newType);
             submitJobWithCheck(dagJob);
         }
     }
@@ -314,13 +300,29 @@ public enum JobGraph {
         return children;
     }
 
+    public synchronized List<DAGJob> getActiveChildren(DAGJob dagJob) {
+        List<DAGJob> children = new ArrayList<DAGJob>();
+        Set<DefaultEdge> outEdges = dag.outgoingEdgesOf(dagJob);
+        if (outEdges != null) {
+            for (DefaultEdge edge : outEdges) {
+                DAGJob child = dag.getEdgeTarget(edge);
+                if (child.getJobFlag().equals(JobFlag.ENABLE) && jobService.isActive(child.getJobId())) {
+                    children.add(dag.getEdgeTarget(edge));
+                }
+            }
+        }
+        return children;
+    }
+
+
+
     /**
      * submit job if pass the dependency check
      *
      * @param dagJob
      */
     public void submitJobWithCheck(DAGJob dagJob) {
-        Set<Long> needJobs = getParentJobIds(dagJob);
+        Set<Long> needJobs = getEnableParentJobIds(dagJob);
         if (dagJob.checkDependency(needJobs)) {
             long jobId = dagJob.getJobId();
             LOGGER.debug("DAGJob {} pass the dependency check", dagJob.getJobId());
@@ -338,7 +340,7 @@ public enum JobGraph {
     }
 
     public void submitJobWithCheck(DAGJob dagJob, long scheduleTime) {
-        Set<Long> needJobs = getParentJobIds(dagJob);
+        Set<Long> needJobs = getEnableParentJobIds(dagJob);
         if (dagJob.checkDependency(needJobs)) {
             long jobId = dagJob.getJobId();
             LOGGER.debug("DAGJob {} pass the dependency check", dagJob.getJobId());
@@ -381,22 +383,21 @@ public enum JobGraph {
         }
     }
 
-    public Set<Long> getParentJobIds(long jobId) {
+    public Set<Long> getEnableParentJobIds(long jobId) {
         DAGJob dagJob = waitingTable.get(jobId);
         Set<Long> jobIds = Sets.newHashSet();
         if (dagJob != null) {
-            jobIds = getParentJobIds(dagJob);
+            jobIds = getEnableParentJobIds(dagJob);
         }
         return jobIds;
     }
 
-    private Set<Long> getParentJobIds(DAGJob dagJob) {
+    private Set<Long> getEnableParentJobIds(DAGJob dagJob) {
         List<DAGJob> parents = getParents(dagJob);
         Set<Long> jobIds = Sets.newHashSet();
-        // get enabled parents
         if (parents != null) {
             for (DAGJob parent : parents) {
-                if (parent.getJobFlag().equals(JobFlag.ENABLE)) {
+                if (dagJob.getJobFlag().equals(JobFlag.ENABLE)) {
                     jobIds.add(parent.getJobId());
                 }
             }

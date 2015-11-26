@@ -27,7 +27,5 @@ public class TestTaskService {
         Long scheduleTime = DateTime.now().getMillis()/1000;
         Task task = taskService.createTaskByJobId(jobId,scheduleTime);
         Assert.assertNotNull(task);
-
     }
-
 }

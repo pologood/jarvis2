@@ -18,6 +18,7 @@ import com.mogujie.jarvis.server.TaskQueue;
 import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.dag.checker.TaskScheduleFactory;
 import com.mogujie.jarvis.server.scheduler.task.TaskScheduler;
+import com.mogujie.jarvis.server.scheduler.task.checker.TaskStatusFactory;
 
 /**
  * @author guangming
@@ -36,6 +37,7 @@ public class TestSchedulerBase {
         conf.clear();
         conf.setProperty(TaskScheduleFactory.TASK_SCHEDULE_KEY, TaskScheduleFactory.DUMMY_TASK_SCHEDULE);
         conf.setProperty(JobSchedulerController.SCHEDULER_CONTROLLER_TYPE, JobSchedulerController.SCHEDULER_CONTROLLER_TYPE_SYNC);
+        conf.setProperty(TaskStatusFactory.TASK_DEPEND_STATUS_KEY, TaskStatusFactory.DUMMY_DEPEND_STATUS);
         controller = JobSchedulerController.getInstance();
         dagScheduler = DAGScheduler.getInstance();
         taskScheduler = TaskScheduler.getInstance();

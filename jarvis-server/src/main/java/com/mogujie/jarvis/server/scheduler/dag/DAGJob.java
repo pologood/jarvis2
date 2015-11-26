@@ -15,6 +15,7 @@ import java.util.Set;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.mogujie.jarvis.core.domain.JobFlag;
 import com.mogujie.jarvis.server.scheduler.dag.checker.DAGDependChecker;
 import com.mogujie.jarvis.server.scheduler.dag.checker.ScheduleTask;
 
@@ -33,6 +34,13 @@ public class DAGJob extends AbstractDAGJob {
     public DAGJob(long jobId, DAGJobType type) {
         this.jobId = jobId;
         this.type = type;
+        this.dependChecker = new DAGDependChecker(jobId);
+    }
+
+    public DAGJob(long jobId, DAGJobType type, JobFlag jobFlag) {
+        this.jobId = jobId;
+        this.type = type;
+        this.jobFlag = jobFlag;
         this.dependChecker = new DAGDependChecker(jobId);
     }
 

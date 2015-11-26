@@ -223,16 +223,6 @@ public final class ModifyJobProtos {
      */
     com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder getParametersOrBuilder(
         int index);
-
-    // optional int32 fixed_delay = 18;
-    /**
-     * <code>optional int32 fixed_delay = 18;</code>
-     */
-    boolean hasFixedDelay();
-    /**
-     * <code>optional int32 fixed_delay = 18;</code>
-     */
-    int getFixedDelay();
   }
   /**
    * Protobuf type {@code RestServerModifyJobRequest}
@@ -387,11 +377,6 @@ public final class ModifyJobProtos {
                 mutable_bitField0_ |= 0x00010000;
               }
               parameters_.add(input.readMessage(com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.PARSER, extensionRegistry));
-              break;
-            }
-            case 144: {
-              bitField0_ |= 0x00010000;
-              fixedDelay_ = input.readInt32();
               break;
             }
           }
@@ -849,22 +834,6 @@ public final class ModifyJobProtos {
       return parameters_.get(index);
     }
 
-    // optional int32 fixed_delay = 18;
-    public static final int FIXED_DELAY_FIELD_NUMBER = 18;
-    private int fixedDelay_;
-    /**
-     * <code>optional int32 fixed_delay = 18;</code>
-     */
-    public boolean hasFixedDelay() {
-      return ((bitField0_ & 0x00010000) == 0x00010000);
-    }
-    /**
-     * <code>optional int32 fixed_delay = 18;</code>
-     */
-    public int getFixedDelay() {
-      return fixedDelay_;
-    }
-
     private void initFields() {
       appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
       jobId_ = 0L;
@@ -883,7 +852,6 @@ public final class ModifyJobProtos {
       endTime_ = 0L;
       originJobId_ = 0L;
       parameters_ = java.util.Collections.emptyList();
-      fixedDelay_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -972,9 +940,6 @@ public final class ModifyJobProtos {
       for (int i = 0; i < parameters_.size(); i++) {
         output.writeMessage(17, parameters_.get(i));
       }
-      if (((bitField0_ & 0x00010000) == 0x00010000)) {
-        output.writeInt32(18, fixedDelay_);
-      }
       getUnknownFields().writeTo(output);
     }
 
@@ -1051,10 +1016,6 @@ public final class ModifyJobProtos {
       for (int i = 0; i < parameters_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(17, parameters_.get(i));
-      }
-      if (((bitField0_ & 0x00010000) == 0x00010000)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(18, fixedDelay_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -1221,8 +1182,6 @@ public final class ModifyJobProtos {
         } else {
           parametersBuilder_.clear();
         }
-        fixedDelay_ = 0;
-        bitField0_ = (bitField0_ & ~0x00020000);
         return this;
       }
 
@@ -1332,10 +1291,6 @@ public final class ModifyJobProtos {
         } else {
           result.parameters_ = parametersBuilder_.build();
         }
-        if (((from_bitField0_ & 0x00020000) == 0x00020000)) {
-          to_bitField0_ |= 0x00010000;
-        }
-        result.fixedDelay_ = fixedDelay_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -1433,9 +1388,6 @@ public final class ModifyJobProtos {
               parametersBuilder_.addAllMessages(other.parameters_);
             }
           }
-        }
-        if (other.hasFixedDelay()) {
-          setFixedDelay(other.getFixedDelay());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -2588,39 +2540,6 @@ public final class ModifyJobProtos {
         return parametersBuilder_;
       }
 
-      // optional int32 fixed_delay = 18;
-      private int fixedDelay_ ;
-      /**
-       * <code>optional int32 fixed_delay = 18;</code>
-       */
-      public boolean hasFixedDelay() {
-        return ((bitField0_ & 0x00020000) == 0x00020000);
-      }
-      /**
-       * <code>optional int32 fixed_delay = 18;</code>
-       */
-      public int getFixedDelay() {
-        return fixedDelay_;
-      }
-      /**
-       * <code>optional int32 fixed_delay = 18;</code>
-       */
-      public Builder setFixedDelay(int value) {
-        bitField0_ |= 0x00020000;
-        fixedDelay_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional int32 fixed_delay = 18;</code>
-       */
-      public Builder clearFixedDelay() {
-        bitField0_ = (bitField0_ & ~0x00020000);
-        fixedDelay_ = 0;
-        onChanged();
-        return this;
-      }
-
       // @@protoc_insertion_point(builder_scope:RestServerModifyJobRequest)
     }
 
@@ -3213,7 +3132,7 @@ public final class ModifyJobProtos {
     java.lang.String[] descriptorData = {
       "\n\020modify_job.proto\032\017map_entry.proto\032\016app" +
       "_auth.proto\032\037schedule_expression_entry.p" +
-      "roto\"\305\003\n\032RestServerModifyJobRequest\022\032\n\010a" +
+      "roto\"\260\003\n\032RestServerModifyJobRequest\022\032\n\010a" +
       "pp_auth\030\001 \002(\0132\010.AppAuth\022\016\n\006job_id\030\002 \002(\003\022" +
       "\020\n\010job_name\030\003 \001(\t\0222\n\020expression_entry\030\004 " +
       "\001(\0132\030.ScheduleExpressionEntry\022\014\n\004user\030\005 " +
@@ -3223,11 +3142,10 @@ public final class ModifyJobProtos {
       "val\030\013 \001(\005:\0013\022\031\n\016failed_retries\030\014 \001(\005:\0010\022",
       "\032\n\017failed_interval\030\r \001(\005:\0013\022\022\n\nstart_tim" +
       "e\030\016 \001(\003\022\020\n\010end_time\030\017 \001(\003\022\025\n\rorigin_job_" +
-      "id\030\020 \001(\003\022\035\n\nparameters\030\021 \003(\0132\t.MapEntry\022" +
-      "\023\n\013fixed_delay\030\022 \001(\005\"=\n\027ServerModifyJobR" +
-      "esponse\022\017\n\007success\030\001 \002(\010\022\021\n\007message\030\002 \001(" +
-      "\t:\000B.\n\033com.mogujie.jarvis.protocolB\017Modi" +
-      "fyJobProtos"
+      "id\030\020 \001(\003\022\035\n\nparameters\030\021 \003(\0132\t.MapEntry\"" +
+      "=\n\027ServerModifyJobResponse\022\017\n\007success\030\001 " +
+      "\002(\010\022\021\n\007message\030\002 \001(\t:\000B.\n\033com.mogujie.ja" +
+      "rvis.protocolB\017ModifyJobProtos"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -3239,7 +3157,7 @@ public final class ModifyJobProtos {
           internal_static_RestServerModifyJobRequest_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_RestServerModifyJobRequest_descriptor,
-              new java.lang.String[] { "AppAuth", "JobId", "JobName", "ExpressionEntry", "User", "JobType", "Content", "GroupId", "Priority", "RejectRetries", "RejectInterval", "FailedRetries", "FailedInterval", "StartTime", "EndTime", "OriginJobId", "Parameters", "FixedDelay", });
+              new java.lang.String[] { "AppAuth", "JobId", "JobName", "ExpressionEntry", "User", "JobType", "Content", "GroupId", "Priority", "RejectRetries", "RejectInterval", "FailedRetries", "FailedInterval", "StartTime", "EndTime", "OriginJobId", "Parameters", });
           internal_static_ServerModifyJobResponse_descriptor =
             getDescriptor().getMessageTypes().get(1);
           internal_static_ServerModifyJobResponse_fieldAccessorTable = new

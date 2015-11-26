@@ -29,6 +29,7 @@ import com.mogujie.jarvis.core.domain.ActorEntry;
 import com.mogujie.jarvis.core.domain.JobFlag;
 import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.core.domain.Pair;
+import com.mogujie.jarvis.core.expression.ScheduleExpressionType;
 import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.dto.generate.JobDepend;
 import com.mogujie.jarvis.dto.generate.JobDependKey;
@@ -140,7 +141,8 @@ public class JobActor extends UntypedActor {
             // 1. insert job to DB
             long jobId = jobService.insertJob(job);
             // 2. insert crontab expression to DB
-            jobService.insertScheduleExpression(jobId, msg.getExpressionEntry());
+            ScheduleExpressionEntry expressionEntry = msg.getExpressionEntry();
+            jobService.insertScheduleExpression(jobId, expressionEntry);
             // 3. insert jobDepend to DB
             Set<Long> needDependencies = Sets.newHashSet();
             for (DependencyEntry entry : msg.getDependencyEntryList()) {
@@ -151,11 +153,17 @@ public class JobActor extends UntypedActor {
             }
 
             // 4. add job to scheduler
-            int cycleFlag = msg.hasFixedDelay() ? 1 : 0;
             int dependFlag = (!needDependencies.isEmpty()) ? 1 : 0;
-            int timeFlag = msg.hasExpressionEntry() ? 1 : 0;
+            int timeFlag = 0;
+            int cycleFlag = 0;
+            ScheduleExpressionType expressionType = ScheduleExpressionType.getInstance(
+                    expressionEntry.getExpressionType());
+            if (expressionType.equals(ScheduleExpressionType.FIXED_DELAY)) {
+                cycleFlag = 1;
+            } else {
+                timeFlag = 1;
+            }
             DAGJobType type = DAGJobType.getDAGJobType(cycleFlag, dependFlag, timeFlag);
-
             dagScheduler.getJobGraph().addJob(jobId, new DAGJob(jobId, type), needDependencies);
             if (timeFlag > 0) {
                 timeScheduler.addJob(jobId);
@@ -172,7 +180,6 @@ public class JobActor extends UntypedActor {
 
     @Transactional
     private void modifyJob(RestServerModifyJobRequest msg) throws IOException {
-
         long jobId = msg.getJobId();
         // 1. update job to DB
         Job job = MessageUtil.convert2Job(jobService, appService, msg);
@@ -182,7 +189,7 @@ public class JobActor extends UntypedActor {
         if (msg.hasExpressionEntry()) {
             ScheduleExpressionEntry expressionEntry = msg.getExpressionEntry();
             String newExpression = expressionEntry.getScheduleExpression();
-            // newExpression 为空表示删除调度表达式
+            // newExpression为空表示删除调度表达式
             if (newExpression == null || newExpression.isEmpty()) {
                 jobService.deleteScheduleExpression(jobId);
             } else {
@@ -198,13 +205,24 @@ public class JobActor extends UntypedActor {
                     jobService.updateScheduleExpression(record);
                 }
             }
+
+            int dependFlag = dagScheduler.getJobGraph().getParents(jobId).isEmpty() ? 0 : 1;
+            int timeFlag = 0;
+            int cycleFlag = 0;
+            ScheduleExpressionType expressionType = ScheduleExpressionType.getInstance(
+                    expressionEntry.getExpressionType());
+            if (expressionType.equals(ScheduleExpressionType.FIXED_DELAY)) {
+                cycleFlag = 1;
+            } else {
+                timeFlag = 1;
+            }
+            DAGJobType type = DAGJobType.getDAGJobType(cycleFlag, dependFlag, timeFlag);
+            dagScheduler.getJobGraph().modifyDAGJobType(jobId, type);
         }
 
         // 3. scheduler modify job
-//        Map<ModifyJobType, ModifyJobEntry> modifyMap = MessageUtil.convert2ModifyJobMap(msg, jobService);
         ServerModifyJobResponse response;
         try {
-//            dagScheduler.getJobGraph().modifyDAGJobType(jobId, modifyMap);
             // timeScheduler.modifyJob(jobId);
             response = ServerModifyJobResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());

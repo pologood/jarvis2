@@ -11,13 +11,11 @@ package com.mogujie.jarvis.server.scheduler.plan;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.event.TimeReadyEvent;
@@ -41,19 +39,13 @@ public class NextDayPlanGenerator extends PlanGenerator {
         List<ExecutionPlanEntry> nextDayPlans = new ArrayList<ExecutionPlanEntry>();
 
         // generate next day time based plans
-        List<Long> timeBasedJobs = jobGraph.getTimeBasedJobs();
-        for (Long jobId : timeBasedJobs) {
-            Job job = jobService.get(jobId).getJob();
-            Date startDate = job.getActiveStartDate();
-            Date endDate = job.getActiveEndDate();
-            Date now = new Date();
-            if (now.after(startDate) && now.before(endDate)) {
-                DateTime scheduleTime = startDateTime;
-                while (scheduleTime.isBefore(endDateTime)) {
-                    ExecutionPlanEntry entry = new ExecutionPlanEntry(jobId, scheduleTime);
-                    nextDayPlans.add(entry);
-                    scheduleTime = getScheduleTimeAfter(jobId, scheduleTime);
-                }
+        List<Long> activeTimeBasedJobs = jobGraph.getActiveTimeBasedJobs();
+        for (Long jobId : activeTimeBasedJobs) {
+            DateTime scheduleTime = startDateTime;
+            while (scheduleTime.isBefore(endDateTime)) {
+                ExecutionPlanEntry entry = new ExecutionPlanEntry(jobId, scheduleTime);
+                nextDayPlans.add(entry);
+                scheduleTime = getScheduleTimeAfter(jobId, scheduleTime);
             }
         }
 

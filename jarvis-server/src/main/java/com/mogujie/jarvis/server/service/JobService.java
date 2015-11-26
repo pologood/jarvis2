@@ -10,7 +10,6 @@ package com.mogujie.jarvis.server.service;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.mogujie.jarvis.core.domain.JobFlag;
@@ -160,52 +158,24 @@ public class JobService {
         return metaStore;
     }
 
-//    public void addJob(Job job, List<ScheduleExpression> scheduleExpressions, Map<Long, JobDependencyEntry> dependencies) {
-//        metaStore.put(job.getJobId(), new JobEntry(job, scheduleExpressions, dependencies));
-//    }
-//
-//    public void remove(long jobId) {
-//        metaStore.remove(jobId);
-//    }
-
-    /**
-     * 获取活跃的job（状态为enable，并且不是过期的）
-     * @return
-     */
-    public List<Job> getActiveJobs() {
-        JobExample example = new JobExample();
-        example.createCriteria().andJobFlagEqualTo(JobFlag.ENABLE.getValue());
-        List<Job> jobs = jobMapper.selectByExample(example);
-        if(jobs == null || jobs.isEmpty()){
-            return jobs;
-        }
-        //移除 不在有效期的job
-        Date  now = DateTime.now().toDate();
-        Iterator<Job> iterator = jobs.iterator();
-        while(iterator.hasNext()){
-            Job job = iterator.next();
-            if((job.getActiveEndDate() != null && job.getActiveEndDate().getTime() < now.getTime())
-               || (job.getActiveStartDate() != null && job.getActiveStartDate().getTime() > now.getTime())    ){
-                iterator.remove();
-            }
-        }
-        return jobs;
-    }
-
     public List<Job> getNotDeletedJobs() {
         JobExample example = new JobExample();
         example.createCriteria().andJobFlagNotEqualTo(JobFlag.DELETED.getValue());
         return jobMapper.selectByExample(example);
     }
 
-    public List<Job> getActiveExpiredJobs() {
-        JobExample example = new JobExample();
-        DateTime dt = DateTime.now();
-        List<Integer> activeJobFlags = Lists.newArrayList(JobFlag.ENABLE.getValue(),
-                JobFlag.DISABLE.getValue());
-        example.createCriteria().andActiveEndDateLessThan(dt.toDate()).andJobFlagIn(activeJobFlags);
-        return jobMapper.selectByExample(example);
+    public boolean isActive(long jobId) {
+        Job job = get(jobId).getJob();
+        Date startDate = job.getActiveStartDate();
+        Date endDate = job.getActiveEndDate();
+        Date now = new Date();
+        if (now.after(startDate) && now.before(endDate)) {
+            return true;
+        } else {
+            return false;
+        }
     }
+
 
     public void updateJobFlag(long jobId, String user, int newFlag) {
         Job record = jobMapper.selectByPrimaryKey(jobId);
@@ -318,17 +288,6 @@ public class JobService {
 
             // 初始化 JobMetaStore
             metaStore.put(job.getJobId(), new JobEntry(job,jobScheduleExpressions, dependencies));
-
-//            // 初始化 JobGraph
-//            List<Long> dependencyJobIdList = null;
-//            if (dependencies != null && dependencies.size() > 0) {
-//                dependencyJobIdList = Lists.newArrayList();
-//                for (Map.Entry<Long, JobDependencyEntry> entry : dependencies.entrySet()) {
-//                    dependencyJobIdList.add(entry.getKey());
-//                }
-//            }
-//
-//            jobGraph.addJob(jobId, jobScheduleExpressions, dependencyJobIdList);
         }
     }
 }

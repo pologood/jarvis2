@@ -76,7 +76,7 @@ public class DAGScheduler extends Scheduler {
         DAGJob dagJob = getDAGJob(jobId);
         if (dagJob != null) {
             if (childJobId == 0) {
-                List<DAGJob> children = jobGraph.getChildren(dagJob);
+                List<DAGJob> children = jobGraph.getActiveChildren(dagJob);
                 if (children != null) {
                     for (DAGJob child : children) {
                         if (child.getJobFlag().equals(JobFlag.ENABLE)) {

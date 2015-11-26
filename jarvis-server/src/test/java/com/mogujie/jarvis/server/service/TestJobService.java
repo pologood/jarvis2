@@ -18,18 +18,13 @@ import com.mogujie.jarvis.dto.generate.Job;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath*:context.xml")
 public class TestJobService {
-
     @Autowired
     private  JobService jobService;
 
     @Test
     public void testGetActiveJobs(){
-
         List<Job> jobs = jobService.getNotDeletedJobs();
         Assert.assertTrue(!jobs.isEmpty());
-
     }
-
-
 
 }
