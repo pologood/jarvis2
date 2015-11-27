@@ -35,7 +35,8 @@ public class TaskStatusFactory {
         AbstractTaskStatus dependStatus = null;
         Configuration conf = ConfigUtils.getServerConfig();
         String statusType = conf.getString(TASK_DEPEND_STATUS_KEY);
-        if (statusType.equalsIgnoreCase(DUMMY_DEPEND_STATUS)) {
+        if (statusType != null && statusType.equalsIgnoreCase(DUMMY_DEPEND_STATUS)) {
+            // for testing
             DependencyStrategyExpression commonStrategy = new DefaultDependencyStrategyExpression(CommonStrategy.ALL.getExpression());
             dependStatus = new RuntimeDependStatus(myJobId, preJobId, commonStrategy);
         } else if (jobService != null) {
