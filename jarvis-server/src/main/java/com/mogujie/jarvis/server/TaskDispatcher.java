@@ -16,19 +16,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
+import akka.actor.ActorSelection;
+import akka.actor.ActorSystem;
+
+import com.mogujie.jarvis.core.domain.IdType;
 import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.domain.WorkerInfo;
+import com.mogujie.jarvis.core.util.IdUtils;
 import com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse;
 import com.mogujie.jarvis.server.domain.RetryType;
 import com.mogujie.jarvis.server.scheduler.TaskRetryScheduler;
 import com.mogujie.jarvis.server.service.AppService;
+import com.mogujie.jarvis.server.service.TaskService;
+import com.mogujie.jarvis.server.service.WorkerService;
 import com.mogujie.jarvis.server.util.FutureUtils;
 import com.mogujie.jarvis.server.workerselector.WorkerSelector;
-
-import akka.actor.ActorSelection;
-import akka.actor.ActorSystem;
 
 @Repository
 @Scope("prototype")
@@ -39,6 +43,12 @@ public class TaskDispatcher extends Thread {
 
     @Autowired
     private AppService appService;
+
+    @Autowired
+    private WorkerService workerService;
+
+    @Autowired
+    private TaskService taskService;
 
     @Autowired
     private WorkerSelector workerSelector;
@@ -94,11 +104,17 @@ public class TaskDispatcher extends Thread {
                             try {
                                 WorkerSubmitTaskResponse response = (WorkerSubmitTaskResponse) FutureUtils.awaitResult(actorSelection, request, 30);
                                 if (response.getSuccess()) {
+                                    String ip = workerInfo.getIp();
+                                    int port = workerInfo.getPort();
                                     if (response.getAccept()) {
-                                        LOGGER.debug("Task[{}] was accepted by worker[{}:{}]", fullId, workerInfo.getIp(), workerInfo.getPort());
+                                        // update workerId of task
+                                        int workerId = workerService.getWorkerId(ip, port);
+                                        long taskId = IdUtils.parse(fullId, IdType.TASK_ID);
+                                        taskService.updateWorkerId(taskId, workerId);
+                                        LOGGER.debug("Task[{}] was accepted by worker[{}:{}]", fullId, ip, port);
                                         continue;
                                     } else {
-                                        LOGGER.warn("Task[{}] was rejected by worker[{}:{}]", fullId, workerInfo.getIp(), workerInfo.getPort());
+                                        LOGGER.warn("Task[{}] was rejected by worker[{}:{}]", fullId, ip, port);
                                         taskRetryScheduler.addTask(task, task.getRejectRetries(), task.getRejectInterval(), RetryType.REJECT_RETRY);
                                     }
                                 } else {

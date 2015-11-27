@@ -56,6 +56,15 @@ public class TaskService {
         }
     }
 
+    public void updateWorkerId(long taskId, int workerId) {
+        Task record = taskMapper.selectByPrimaryKey(taskId);
+        if (record != null) {
+            record.setWorkerId(workerId);
+            record.setUpdateTime(new Date());
+            taskMapper.updateByPrimaryKey(record);
+        }
+    }
+
     public List<Task> getTasks(List<Long> taskIds) {
         TaskExample example = new TaskExample();
         example.createCriteria().andTaskIdIn(taskIds);
