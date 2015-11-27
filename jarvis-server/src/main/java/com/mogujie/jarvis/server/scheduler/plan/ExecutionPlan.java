@@ -44,6 +44,10 @@ public enum ExecutionPlan {
         return plan.remove(new ExecutionPlanEntry(jobId, dateTime));
     }
 
+    public boolean removePlan(ExecutionPlanEntry planEntry) {
+        return plan.remove(planEntry);
+    }
+
     public void removePlan(long jobId) {
         Iterator<ExecutionPlanEntry> it = plan.iterator();
         while (it.hasNext()) {

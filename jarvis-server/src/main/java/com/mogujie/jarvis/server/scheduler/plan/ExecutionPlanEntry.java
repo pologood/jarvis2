@@ -64,7 +64,13 @@ public class ExecutionPlanEntry {
         }
 
         ExecutionPlanEntry other = (ExecutionPlanEntry) obj;
-        return Objects.equals(jobId, other.jobId) && Objects.equals(dateTime, other.dateTime);
+        if (taskId == other.getTaskId()) {
+            return true;
+        } else if (jobId == other.getJobId() && dateTime.isEqual(other.getDateTime())) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

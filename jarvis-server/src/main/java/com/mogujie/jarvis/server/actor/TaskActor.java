@@ -36,7 +36,10 @@ import com.mogujie.jarvis.protocol.KillTaskProtos.ServerKillTaskRequest;
 import com.mogujie.jarvis.protocol.KillTaskProtos.ServerKillTaskResponse;
 import com.mogujie.jarvis.protocol.KillTaskProtos.WorkerKillTaskResponse;
 import com.mogujie.jarvis.protocol.ManualRetryTaskProtos.RestServerManualRetryTaskRequest;
+import com.mogujie.jarvis.protocol.ManualRetryTaskProtos.ServerManualRetryTaskResponse;
 import com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry;
+import com.mogujie.jarvis.protocol.RemovePlanProtos.RestServerRemovePlanRequest;
+import com.mogujie.jarvis.protocol.RemovePlanProtos.ServerRemovePlanResponse;
 import com.mogujie.jarvis.protocol.RetryTaskProtos.RestServerRetryTaskRequest;
 import com.mogujie.jarvis.protocol.RetryTaskProtos.ServerRetryTaskResponse;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest;
@@ -45,6 +48,9 @@ import com.mogujie.jarvis.server.TaskManager;
 import com.mogujie.jarvis.server.TaskQueue;
 import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.event.RetryTaskEvent;
+import com.mogujie.jarvis.server.scheduler.plan.ExecutionPlanEntry;
+import com.mogujie.jarvis.server.scheduler.time.TimeScheduler;
+import com.mogujie.jarvis.server.scheduler.time.TimeSchedulerFactory;
 import com.mogujie.jarvis.server.service.IDService;
 import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.FutureUtils;
@@ -83,11 +89,19 @@ public class TaskActor extends UntypedActor {
         } else if (obj instanceof RestServerSubmitTaskRequest) {
             RestServerSubmitTaskRequest msg = (RestServerSubmitTaskRequest) obj;
             submitTask(msg);
+        } else if (obj instanceof RestServerRemovePlanRequest) {
+            RestServerRemovePlanRequest msg = (RestServerRemovePlanRequest) obj;
+            removePlan(msg);
         } else {
             unhandled(obj);
         }
     }
 
+    /**
+     * kill Task
+     *
+     * @param msg
+     */
     private void killTask(RestServerKillTaskRequest msg) throws Exception {
         ServerKillTaskResponse response = null;
         long taskId = msg.getTaskId();
@@ -114,8 +128,15 @@ public class TaskActor extends UntypedActor {
         List<Long> taskIdList = msg.getTaskIdList();
         boolean runChild = msg.getRunChild();
         controller.notify(new RetryTaskEvent(taskIdList, runChild));
+        ServerRetryTaskResponse response = ServerRetryTaskResponse.newBuilder().setSuccess(true).build();
+        getSender().tell(response, getSelf());
     }
 
+    /**
+     * 根据jobId和起止时间手动重跑
+     *
+     * @param msg
+     */
     private void manualRetryTask(RestServerManualRetryTaskRequest msg) {
         List<Long> jobIdList = msg.getJobIdList();
         Date startDate = new Date(msg.getStartTime());
@@ -129,13 +150,35 @@ public class TaskActor extends UntypedActor {
         } else {
             //TODO 按照新依赖关系重跑
         }
+        ServerManualRetryTaskResponse response = ServerManualRetryTaskResponse.newBuilder().setSuccess(true).build();
+        getSender().tell(response, getSelf());
     }
 
+    /**
+     * 一次性执行任务
+     *
+     * @param msg
+     */
     private void submitTask(RestServerSubmitTaskRequest msg) {
         TaskDetail taskDetail = createRunOnceTask(msg);
         taskQueue.put(taskDetail);
         long taskId = IdUtils.parse(taskDetail.getFullId(), IdType.TASK_ID);
         ServerSubmitTaskResponse response = ServerSubmitTaskResponse.newBuilder().setSuccess(true).setTaskId(taskId).build();
+        getSender().tell(response, getSelf());
+    }
+
+    /**
+     * 删除已有的某一个执行计划
+     *
+     * @param msg
+     */
+    private void removePlan(RestServerRemovePlanRequest msg) {
+        long taskId = msg.getTaskId();
+        long jobId = msg.getJobId();
+        DateTime scheduleTime = new DateTime(msg.getScheduleTime());
+        TimeScheduler timeScheduler = TimeSchedulerFactory.getInstance();
+        timeScheduler.removePlan(new ExecutionPlanEntry(jobId, scheduleTime, taskId));
+        ServerRemovePlanResponse response = ServerRemovePlanResponse.newBuilder().setSuccess(true).build();
         getSender().tell(response, getSelf());
     }
 
