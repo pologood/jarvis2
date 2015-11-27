@@ -22,10 +22,6 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 
-/**
- * 
- *
- */
 public class DefaultAlarmer extends Alarmer {
 
     private Configuration serverConfig = ConfigUtils.getServerConfig();
