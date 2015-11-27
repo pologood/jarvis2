@@ -41,10 +41,7 @@ public class DefaultTimeScheduler extends TimeScheduler {
 
     @Override
     public void addJob(long jobId) {
-        DateTime scheduleTime = planGenerator.getScheduleTimeAfter(jobId, DateTime.now());
-        if (scheduleTime != null) {
-            plan.addPlan(jobId, scheduleTime);
-        }
+        planGenerator.generateNextPlan(jobId, DateTime.now());
     }
 
     @Override

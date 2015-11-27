@@ -29,6 +29,7 @@ import com.mogujie.jarvis.core.domain.IdType;
 import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.domain.TaskDetail.TaskDetailBuilder;
+import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.domain.WorkerInfo;
 import com.mogujie.jarvis.core.util.IdUtils;
 import com.mogujie.jarvis.dto.generate.Task;
@@ -36,8 +37,8 @@ import com.mogujie.jarvis.protocol.KillTaskProtos.RestServerKillTaskRequest;
 import com.mogujie.jarvis.protocol.KillTaskProtos.ServerKillTaskRequest;
 import com.mogujie.jarvis.protocol.KillTaskProtos.ServerKillTaskResponse;
 import com.mogujie.jarvis.protocol.KillTaskProtos.WorkerKillTaskResponse;
-import com.mogujie.jarvis.protocol.ManualRetryTaskProtos.RestServerManualRetryTaskRequest;
-import com.mogujie.jarvis.protocol.ManualRetryTaskProtos.ServerManualRetryTaskResponse;
+import com.mogujie.jarvis.protocol.ManualRerunTaskProtos.RestServerManualRerunTaskRequest;
+import com.mogujie.jarvis.protocol.ManualRerunTaskProtos.ServerManualRerunTaskResponse;
 import com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry;
 import com.mogujie.jarvis.protocol.RemovePlanProtos.RestServerRemovePlanRequest;
 import com.mogujie.jarvis.protocol.RemovePlanProtos.ServerRemovePlanResponse;
@@ -85,9 +86,9 @@ public class TaskActor extends UntypedActor {
         } else if (obj instanceof RestServerRetryTaskRequest) {
             RestServerRetryTaskRequest msg = (RestServerRetryTaskRequest) obj;
             retryTask(msg);
-        } else if (obj instanceof RestServerManualRetryTaskRequest ) {
-            RestServerManualRetryTaskRequest msg = (RestServerManualRetryTaskRequest) obj;
-            manualRetryTask(msg);
+        } else if (obj instanceof RestServerManualRerunTaskRequest ) {
+            RestServerManualRerunTaskRequest msg = (RestServerManualRerunTaskRequest) obj;
+            manualRerunTask(msg);
         } else if (obj instanceof RestServerSubmitTaskRequest) {
             RestServerSubmitTaskRequest msg = (RestServerSubmitTaskRequest) obj;
             submitTask(msg);
@@ -139,20 +140,21 @@ public class TaskActor extends UntypedActor {
      *
      * @param msg
      */
-    private void manualRetryTask(RestServerManualRetryTaskRequest msg) {
+    private void manualRerunTask(RestServerManualRerunTaskRequest msg) {
         List<Long> jobIdList = msg.getJobIdList();
+        List<Long> taskIdList = new ArrayList<Long>();
         Date startDate = new Date(msg.getStartTime());
         Date endDate = new Date(msg.getEndTime());
-        List<Long> taskIdList = taskService.getTaskIdsByJobIdsBetween(jobIdList, startDate, endDate);
         boolean runChild = msg.getRunChild();
         boolean newDependency = msg.getNewDependency();
         if (!newDependency) {
             //按照历史依赖重跑
-            controller.notify(new RetryTaskEvent(taskIdList, runChild));
+            taskIdList = taskService.getTaskIdsByJobIdsBetween(jobIdList, startDate, endDate);
         } else {
             //TODO 按照新依赖关系重跑
         }
-        ServerManualRetryTaskResponse response = ServerManualRetryTaskResponse.newBuilder().setSuccess(true).build();
+        controller.notify(new RetryTaskEvent(taskIdList, runChild));
+        ServerManualRerunTaskResponse response = ServerManualRerunTaskResponse.newBuilder().setSuccess(true).build();
         getSender().tell(response, getSelf());
     }
 
@@ -179,6 +181,7 @@ public class TaskActor extends UntypedActor {
         long jobId = msg.getJobId();
         DateTime scheduleTime = new DateTime(msg.getScheduleTime());
         TimeScheduler timeScheduler = TimeSchedulerFactory.getInstance();
+        taskService.updateStatus(taskId, TaskStatus.REMOVED);
         timeScheduler.removePlan(new ExecutionPlanEntry(jobId, scheduleTime, taskId));
         ServerRemovePlanResponse response = ServerRemovePlanResponse.newBuilder().setSuccess(true).build();
         getSender().tell(response, getSelf());

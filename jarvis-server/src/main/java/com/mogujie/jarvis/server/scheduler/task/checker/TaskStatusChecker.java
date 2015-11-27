@@ -16,7 +16,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.google.common.collect.Lists;
 import com.mogujie.jarvis.server.service.TaskDependService;
-import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.SpringContext;
 
 
@@ -27,7 +26,6 @@ import com.mogujie.jarvis.server.util.SpringContext;
 public class TaskStatusChecker {
 
     private TaskDependService taskDependService = SpringContext.getBean(TaskDependService.class);
-    private TaskService taskService = SpringContext.getBean(TaskService.class);
     private Map<Long, AbstractTaskStatus> jobStatusMap = new ConcurrentHashMap<Long, AbstractTaskStatus>();
     private long myJobId;
     private long myTaskId;
