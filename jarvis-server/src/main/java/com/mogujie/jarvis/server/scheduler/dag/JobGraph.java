@@ -314,8 +314,6 @@ public enum JobGraph {
         return children;
     }
 
-
-
     /**
      * submit job if pass the dependency check
      *
@@ -397,7 +395,7 @@ public enum JobGraph {
         Set<Long> jobIds = Sets.newHashSet();
         if (parents != null) {
             for (DAGJob parent : parents) {
-                if (dagJob.getJobFlag().equals(JobFlag.ENABLE)) {
+                if (parent.getJobFlag().equals(JobFlag.ENABLE)) {
                     jobIds.add(parent.getJobId());
                 }
             }

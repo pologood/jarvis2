@@ -14,12 +14,12 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.joda.time.DateTime;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.event.TimeReadyEvent;
 import com.mogujie.jarvis.server.service.TaskService;
+import com.mogujie.jarvis.server.util.SpringContext;
 
 /**
  * @author guangming
@@ -27,9 +27,7 @@ import com.mogujie.jarvis.server.service.TaskService;
  */
 public class NextDayPlanGenerator extends PlanGenerator {
 
-    @Autowired
-    private TaskService taskService;
-
+    private TaskService taskService = SpringContext.getBean(TaskService.class);
     private JobSchedulerController controller = JobSchedulerController.getInstance();
 
     @Override
@@ -41,7 +39,7 @@ public class NextDayPlanGenerator extends PlanGenerator {
         // generate next day time based plans
         List<Long> activeTimeBasedJobs = jobGraph.getActiveTimeBasedJobs();
         for (Long jobId : activeTimeBasedJobs) {
-            DateTime scheduleTime = startDateTime;
+            DateTime scheduleTime = getScheduleTimeAfter(jobId, startDateTime);
             while (scheduleTime.isBefore(endDateTime)) {
                 ExecutionPlanEntry entry = new ExecutionPlanEntry(jobId, scheduleTime);
                 nextDayPlans.add(entry);
@@ -60,8 +58,10 @@ public class NextDayPlanGenerator extends PlanGenerator {
         }
 
         List<Task> nextDayTasks = taskService.getTasksBetween(startDateTime.toDate(), endDateTime.toDate());
-        for (Task task : nextDayTasks) {
-            plan.addPlan(new ExecutionPlanEntry(task.getJobId(), new DateTime(task.getScheduleTime()), task.getTaskId()));
+        if (nextDayTasks != null) {
+            for (Task task : nextDayTasks) {
+                plan.addPlan(new ExecutionPlanEntry(task.getJobId(), new DateTime(task.getScheduleTime()), task.getTaskId()));
+            }
         }
     }
 

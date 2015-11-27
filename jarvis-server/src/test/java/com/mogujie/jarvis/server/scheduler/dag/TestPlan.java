@@ -14,6 +14,7 @@ import org.junit.Test;
 import com.google.common.collect.Sets;
 import com.mogujie.jarvis.core.exeception.JobScheduleException;
 import com.mogujie.jarvis.server.scheduler.event.TimeReadyEvent;
+import com.mogujie.jarvis.server.scheduler.plan.NextDayPlanGenerator;
 
 /**
  * @author guangming
@@ -23,6 +24,9 @@ public class TestPlan extends TestSchedulerBase {
     private long jobAId = 1;
     private long jobBId = 2;
     private long jobCId = 3;
+    private long jobDId = 4;
+    private long jobEId = 5;
+    private long jobFId = 6;
     private long t1 = 1000;
     private long t2 = 2000;
     private long t3 = 3000;
@@ -84,5 +88,17 @@ public class TestPlan extends TestSchedulerBase {
         timeReadyEventB = new TimeReadyEvent(jobBId, t4);
         dagScheduler.handleTimeReadyEvent(timeReadyEventB);
         Assert.assertEquals(6, taskScheduler.getReadyTable().size());
+    }
+
+    @Test
+    public void testGenerateNextDayPlan() throws JobScheduleException {
+        jobGraph.addJob(jobAId, new DAGJob(jobAId, DAGJobType.TIME), null);
+        jobGraph.addJob(jobBId, new DAGJob(jobBId, DAGJobType.DEPEND), Sets.newHashSet(jobAId));
+        jobGraph.addJob(jobCId, new DAGJob(jobCId, DAGJobType.DEPEND), Sets.newHashSet(jobAId));
+        jobGraph.addJob(jobDId, new DAGJob(jobDId, DAGJobType.TIME), null);
+        jobGraph.addJob(jobEId, new DAGJob(jobEId, DAGJobType.TIME), null);
+        jobGraph.addJob(jobFId, new DAGJob(jobFId, DAGJobType.DEPEND), Sets.newHashSet(jobDId, jobEId));
+        NextDayPlanGenerator planGenerator = new NextDayPlanGenerator();
+        planGenerator.generateNextPlan();
     }
 }
