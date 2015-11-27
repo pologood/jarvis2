@@ -77,7 +77,7 @@ public class JobController extends AbstractController {
             Integer priority = para.getInt("priority");
 
             // todo , 转换为 list
-            List<DependencyEntry> dependEntryList = new ArrayList<DependencyEntry>();
+            List<DependencyEntry> dependEntryList = new ArrayList<>();
 
             // 不为null且不为空字符串才处理
             if (dependJobIds != null && !dependJobIds.equals("") && !dependJobIds.equals("null")) {
@@ -112,7 +112,7 @@ public class JobController extends AbstractController {
 
             // 构造新增任务请求
             RestServerSubmitJobRequest.Builder builder = RestServerSubmitJobRequest.newBuilder().setAppAuth(appAuth).setJobName(jobName)
-                    .setCronExpression(cronExpression).addAllDependencyEntry(dependEntryList).setUser(user).setJobType(jobType).setContent(content)
+                    .addAllDependencyEntry(dependEntryList).setUser(user).setJobType(jobType).setContent(content)
                     .setGroupId(groupId).setPriority(priority).setFailedRetries(failedRetries).setFailedInterval(failedInterval)
                     .setRejectRetries(rejectRetries).setRejectInterval(rejectInterval).addAllParameters(paraList);
             if (startTimeLong != null) {
@@ -221,7 +221,9 @@ public class JobController extends AbstractController {
             // 构造修改job基本信息请求
             RestServerModifyJobRequest request = null;
             RestServerModifyJobRequest.Builder builder = RestServerModifyJobRequest.newBuilder().setAppAuth(appAuth).setJobName(jobName)
-                    .setJobId(jobId).setCronExpression(cronExpression).setUser(user).setJobType(jobType).setContent(content).setGroupId(groupId)
+                    .setJobId(jobId)
+                    .setUser(user)
+                    .setJobType(jobType).setContent(content).setGroupId(groupId)
                     .setPriority(priority).setFailedRetries(failedRetries).setFailedInterval(failedInterval).setRejectRetries(rejectRetries)
                     .setRejectInterval(rejectInterval).addAllParameters(paraList);
 

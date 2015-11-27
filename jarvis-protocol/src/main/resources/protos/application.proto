@@ -4,31 +4,27 @@ option java_package = "com.mogujie.jarvis.protocol";
 option java_outer_classname = "ApplicationProtos";
 
 
-message RestServerCreateApplicationRequest {
+message RestCreateApplicationRequest {
     required AppAuth app_auth = 1;
-    required string app_name = 2;
-    optional int32 status = 3 [default = 1];
-    required string user = 4;
-    optional int32 max_concurrency = 5 [default = 10];
+    required string user = 2;
+    required string app_name = 3;
+    optional int32 status = 4;
+    optional int32 max_concurrency = 5;
 }
-
 
 message ServerCreateApplicationResponse {
     required bool success = 1;
     optional string message = 2 [default = ""];
-    optional string app_key = 3;
-    optional string app_name = 4;
 }
 
-
-message RestServerModifyApplicationRequest {
+message RestModifyApplicationRequest {
     required AppAuth app_auth = 1;
-    optional string app_name = 2;
-    optional int32 status = 3;
-    optional int32 max_concurrency = 4;
-    required string user = 5;
+    required string user = 2;
+    required int32 app_id = 3;
+    optional string app_name = 4;
+    optional int32 status = 5;
+    optional int32 max_concurrency = 6;
 }
-
 
 message ServerModifyApplicationResponse {
     required bool success = 1;
