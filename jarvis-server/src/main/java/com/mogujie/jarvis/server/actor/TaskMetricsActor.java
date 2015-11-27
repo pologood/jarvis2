@@ -18,11 +18,11 @@ import org.springframework.context.annotation.Scope;
 import akka.actor.UntypedActor;
 
 import com.mogujie.jarvis.core.domain.ActorEntry;
-import com.mogujie.jarvis.core.domain.TaskStatus;
+import com.mogujie.jarvis.core.domain.IdType;
 import com.mogujie.jarvis.core.domain.MessageType;
+import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.observer.Event;
-import com.mogujie.jarvis.dao.generate.TaskMapper;
-import com.mogujie.jarvis.dto.generate.Task;
+import com.mogujie.jarvis.core.util.IdUtils;
 import com.mogujie.jarvis.protocol.ReportTaskProgressProtos.ServerReportTaskProgressResponse;
 import com.mogujie.jarvis.protocol.ReportTaskProgressProtos.WorkerReportTaskProgressRequest;
 import com.mogujie.jarvis.protocol.ReportTaskStatusProtos.ServerReportTaskStatusResponse;
@@ -33,6 +33,7 @@ import com.mogujie.jarvis.server.scheduler.event.KilledEvent;
 import com.mogujie.jarvis.server.scheduler.event.RunningEvent;
 import com.mogujie.jarvis.server.scheduler.event.SuccessEvent;
 import com.mogujie.jarvis.server.scheduler.event.UnhandleEvent;
+import com.mogujie.jarvis.server.service.TaskService;
 
 /**
  * Actor used to receive task metrics information (e.g. status, process) 1. send task status to
@@ -48,16 +49,15 @@ public class TaskMetricsActor extends UntypedActor {
     private JobSchedulerController schedulerController = JobSchedulerController.getInstance();
 
     @Autowired
-    private TaskMapper taskMapper;
+    private TaskService taskService;
 
     @Override
     public void onReceive(Object obj) throws Exception {
         if (obj instanceof WorkerReportTaskStatusRequest) {
             WorkerReportTaskStatusRequest msg = (WorkerReportTaskStatusRequest) obj;
             String fullId = msg.getFullId();
-            String[] idList = fullId.split("_");
-            long jobId = Long.parseLong(idList[0]);
-            long taskId = Long.parseLong(idList[1]);
+            long jobId = IdUtils.parse(fullId, IdType.JOB_ID);
+            long taskId = IdUtils.parse(fullId, IdType.TASK_ID);
 
             TaskStatus status = TaskStatus.getInstance(msg.getStatus());
             Event event = new UnhandleEvent();
@@ -77,14 +77,9 @@ public class TaskMetricsActor extends UntypedActor {
         } else if (obj instanceof WorkerReportTaskProgressRequest) {
             WorkerReportTaskProgressRequest request = (WorkerReportTaskProgressRequest) obj;
             String fullId = request.getFullId();
-            long taskId = Long.parseLong(fullId.split("_")[1]);
+            long taskId = IdUtils.parse(fullId, IdType.TASK_ID);
             float progress = request.getProgress();
-
-            Task task = new Task();
-            task.setTaskId(taskId);
-            task.setProgress(progress);
-
-            taskMapper.updateByPrimaryKey(task);
+            taskService.updateProgress(taskId, progress);
             ServerReportTaskProgressResponse response = ServerReportTaskProgressResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());
         } else {

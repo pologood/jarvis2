@@ -39,8 +39,21 @@ public class TaskService {
         return taskMapper.selectByPrimaryKey(taskId);
     }
 
-    public void update(Task task) {
-        taskMapper.updateByPrimaryKey(task);
+    public long insert(Task record) {
+        return taskMapper.insert(record);
+    }
+
+    public void update(Task record) {
+        taskMapper.updateByPrimaryKey(record);
+    }
+
+    public void updateProgress(long taskId, float progress) {
+        Task record = taskMapper.selectByPrimaryKey(taskId);
+        if (record != null) {
+            record.setProgress(progress);
+            record.setUpdateTime(new Date());
+            taskMapper.updateByPrimaryKey(record);
+        }
     }
 
     public List<Task> getTasks(List<Long> taskIds) {
@@ -87,8 +100,16 @@ public class TaskService {
     }
 
     public List<Long> getTaskIdsByJobIdsBetween(List<Long> jobIds, Date start, Date end) {
-        //TODO
-        return null;
+        TaskExample example = new TaskExample();
+        example.createCriteria().andJobIdIn(jobIds).andScheduleTimeBetween(start, end);
+        List<Task> tasks = taskMapper.selectByExample(example);
+        List<Long> taskIdList = new ArrayList<Long>();
+        if (tasks != null) {
+            for (Task task : tasks) {
+                taskIdList.add(task.getTaskId());
+            }
+        }
+        return taskIdList;
     }
 
     public void updateStatusWithStart(long taskId, TaskStatus status) {

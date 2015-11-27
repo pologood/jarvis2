@@ -31,6 +31,7 @@ import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.domain.TaskDetail.TaskDetailBuilder;
 import com.mogujie.jarvis.core.domain.WorkerInfo;
 import com.mogujie.jarvis.core.util.IdUtils;
+import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.protocol.KillTaskProtos.RestServerKillTaskRequest;
 import com.mogujie.jarvis.protocol.KillTaskProtos.ServerKillTaskRequest;
 import com.mogujie.jarvis.protocol.KillTaskProtos.ServerKillTaskResponse;
@@ -54,6 +55,7 @@ import com.mogujie.jarvis.server.scheduler.time.TimeSchedulerFactory;
 import com.mogujie.jarvis.server.service.IDService;
 import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.FutureUtils;
+import com.mogujie.jarvis.server.util.MessageUtil;
 
 /**
  * @author guangming
@@ -183,8 +185,11 @@ public class TaskActor extends UntypedActor {
     }
 
     private TaskDetail createRunOnceTask(RestServerSubmitTaskRequest request) {
+        Task task = MessageUtil.convert2Task(request);
+        taskService.insert(task);
+        long taskId = task.getTaskId();
         TaskDetailBuilder builder = TaskDetail.newTaskDetailBuilder();
-        builder.setFullId("0_" + idService.getNextTaskId() + "_0");
+        builder.setFullId("0_" + taskId + "_0");
         builder.setAppName(request.getAppAuth().getName());
         builder.setTaskName(request.getTaskName());
         builder.setUser(request.getUser());

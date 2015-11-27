@@ -16,8 +16,10 @@ import com.mogujie.jarvis.core.domain.JobFlag;
 import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.dto.generate.JobDepend;
+import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.protocol.ModifyJobProtos.RestServerModifyJobRequest;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitJobRequest;
+import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest;
 import com.mogujie.jarvis.server.service.AppService;
 import com.mogujie.jarvis.server.service.JobService;
 
@@ -115,32 +117,18 @@ public class MessageUtil {
         return jobDepend;
     }
 
-//    public static Map<ModifyJobType, ModifyJobEntry> convert2ModifyJobMap(RestServerModifyJobRequest msg, JobService jobService) {
-//
-//        Map<ModifyJobType, ModifyJobEntry> modifyMap = new HashMap<ModifyJobType, ModifyJobEntry>();
-//        long jobId = msg.getJobId();
-//        if (msg.hasExpressionEntry()) {
-//            ScheduleExpressionEntry expressionEntry = msg.getExpressionEntry();
-//            ScheduleExpressionType expressionType = ScheduleExpressionType.getInstance(expressionEntry.getExpressionType());
-//            String newExpression = expressionEntry.getScheduleExpression();
-//            if (!expressionType.equals(ScheduleExpressionType.FIXED_DELAY)) {
-//
-//            }
-//            ModifyOperation operation;
-//            if (newExpression == null || newExpression.isEmpty()) {
-//                operation = ModifyOperation.DEL;
-//            } else {
-//                Crontab oldCron = cronService.getPositiveCrontab(jobId);
-//                if (oldCron == null) {
-//                    operation = ModifyOperation.ADD;
-//                } else {
-//                    operation = ModifyOperation.MODIFY;
-//                }
-//            }
-//            ModifyJobEntry entry = new ModifyJobEntry(operation, newCronExpression);
-//            modifyMap.put(ModifyJobType.CRON, entry);
-//        }
-//
-//        return modifyMap;
-//    }
+    public static Task convert2Task(RestServerSubmitTaskRequest msg) {
+        Task task = new Task();
+        task.setJobId((long) 0);
+        task.setAttemptId(1);
+        task.setContent(msg.getContent());
+        task.setExecuteUser(msg.getUser());
+        task.setProgress((float) 0);
+        Date now = new Date();
+        task.setScheduleTime(now);
+        task.setCreateTime(now);
+        task.setUpdateTime(now);
+        return task;
+    }
+
 }
