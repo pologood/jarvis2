@@ -18,7 +18,6 @@ import com.mogujie.jarvis.core.expression.DependencyExpression;
 import com.mogujie.jarvis.core.expression.DependencyStrategyExpression;
 import com.mogujie.jarvis.server.domain.JobDependencyEntry;
 import com.mogujie.jarvis.server.service.JobService;
-import com.mogujie.jarvis.server.service.TaskDependService;
 import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.SpringContext;
 
@@ -29,7 +28,7 @@ import com.mogujie.jarvis.server.util.SpringContext;
  */
 public class TaskStatusChecker {
 
-    private TaskDependService taskDependService = SpringContext.getBean(TaskDependService.class);
+//    private TaskDependService taskDependService = SpringContext.getBean(TaskDependService.class);
     private JobService jobService = SpringContext.getBean(JobService.class);
     private TaskService taskService = SpringContext.getBean(TaskService.class);
     private Map<Long, TaskDependStatus> jobStatusMap = new ConcurrentHashMap<Long, TaskDependStatus>();
@@ -40,7 +39,6 @@ public class TaskStatusChecker {
         this.myJobId = jobId;
         this.myTaskId = taskId;
         if (dependTaskIdMap != null && !dependTaskIdMap.isEmpty()) {
-            //taskDependService.createTaskDependenices(taskId, dependTaskIdMap);
             this.jobStatusMap = convertToJobStatus(scheduleTime, dependTaskIdMap);
         }
     }
@@ -79,9 +77,9 @@ public class TaskStatusChecker {
         return finishStatus;
     }
 
-    public List<Long> getChildTaskIds() {
-        return taskDependService.getChildTaskIds(myTaskId);
-    }
+//    public List<Long> getChildTaskIds() {
+//        return taskDependService.getChildTaskIds(myTaskId);
+//    }
 
     public List<Long> getDependTaskIds() {
         List<Long> dependTaskIds = new ArrayList<Long>();
@@ -114,6 +112,10 @@ public class TaskStatusChecker {
                 JobDependencyEntry dependencyEntry = dependencyMap.get(preJobId);
                 DependencyStrategyExpression commonStrategy = dependencyEntry.getDependencyStrategyExpression();
                 List<Long> dependTaskIds = entry.getValue();
+                if (dependTaskIds == null || dependTaskIds.isEmpty()) {
+                    DependencyExpression dependencyExpression = dependencyEntry.getDependencyExpression();
+                    dependTaskIds = taskService.getDependTaskIds(myJobId, preJobId, scheduleTime, dependencyExpression);
+                }
                 TaskDependStatus taskStatus = new TaskDependStatus(dependTaskIds, commonStrategy);
                 jobStatusMap.put(preJobId, taskStatus);
             }

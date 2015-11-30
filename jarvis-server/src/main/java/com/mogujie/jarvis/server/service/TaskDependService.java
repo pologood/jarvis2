@@ -29,6 +29,7 @@ import com.mogujie.jarvis.dto.generate.TaskDependExample;
  * @author guangming
  *
  */
+@Deprecated
 @Service
 public class TaskDependService {
     @Autowired
