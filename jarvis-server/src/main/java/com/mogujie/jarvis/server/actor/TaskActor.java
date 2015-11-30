@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.inject.Named;
 
@@ -23,6 +24,7 @@ import akka.actor.ActorSelection;
 import akka.actor.UntypedActor;
 
 import com.google.common.collect.Maps;
+import com.google.common.collect.Range;
 import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.domain.ActorEntry;
 import com.mogujie.jarvis.core.domain.IdType;
@@ -49,8 +51,12 @@ import com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse;
 import com.mogujie.jarvis.server.TaskManager;
 import com.mogujie.jarvis.server.TaskQueue;
 import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
+import com.mogujie.jarvis.server.scheduler.dag.JobGraph;
 import com.mogujie.jarvis.server.scheduler.event.RetryTaskEvent;
 import com.mogujie.jarvis.server.scheduler.plan.ExecutionPlanEntry;
+import com.mogujie.jarvis.server.scheduler.plan.PlanGenerator;
+import com.mogujie.jarvis.server.scheduler.task.DAGTask;
+import com.mogujie.jarvis.server.scheduler.task.TaskGraph;
 import com.mogujie.jarvis.server.scheduler.time.TimeScheduler;
 import com.mogujie.jarvis.server.scheduler.time.TimeSchedulerFactory;
 import com.mogujie.jarvis.server.service.IDService;
@@ -74,6 +80,8 @@ public class TaskActor extends UntypedActor {
     @Autowired
     private IDService idService;
 
+    private JobGraph jobGraph = JobGraph.INSTANCE;
+    private TaskGraph taskGraph = TaskGraph.INSTANCE;
     private TaskQueue taskQueue = TaskQueue.INSTANCE;
 
     private JobSchedulerController controller = JobSchedulerController.getInstance();
@@ -151,7 +159,52 @@ public class TaskActor extends UntypedActor {
             //按照历史依赖重跑
             taskIdList = taskService.getTaskIdsByJobIdsBetween(jobIdList, startDate, endDate);
         } else {
-            //TODO 按照新依赖关系重跑
+            //按照新依赖关系重跑
+            // 1.生成所有任务的执行计划
+            TimeScheduler timeScheduler = TimeSchedulerFactory.getInstance();
+            PlanGenerator planGenerator = timeScheduler.getPlanGenerator();
+            Range<DateTime> range = Range.closed(new DateTime(startDate), new DateTime(endDate));
+            Map<Long, List<ExecutionPlanEntry>> planMap = planGenerator.getReschedulePlan(jobIdList, range);
+            // 2.通过新的job依赖关系生成新的task
+            for (long jobId : jobIdList) {
+                List<ExecutionPlanEntry> planList = planMap.get(jobId);
+                for (ExecutionPlanEntry planEntry : planList) {
+                    // create new task
+                    long scheduleTime = planEntry.getDateTime().getMillis();
+                    Task newTask = taskService.createTaskByJobId(jobId, scheduleTime);
+                    long taskId = newTask.getTaskId();
+                    planEntry.setTaskId(taskId);
+                    taskIdList.add(taskId);
+                }
+            }
+            // 3.添加DAGTask到TaskGraph中
+            for (long jobId : jobIdList) {
+                List<ExecutionPlanEntry> planList = planMap.get(jobId);
+                for (ExecutionPlanEntry planEntry : planList) {
+                    // add to taskGraph
+                    long taskId = planEntry.getTaskId();
+                    long scheduleTime = planEntry.getDateTime().getMillis();
+                    DAGTask dagTask = new DAGTask(jobId, taskId, 1, scheduleTime);
+                    taskGraph.addTask(taskId, dagTask);
+                }
+            }
+            // 4.添加依赖关系
+            for (long jobId : jobIdList) {
+                Set<Long> dependJobIds = jobGraph.getEnableParentJobIds(jobId);
+                for (long preJobId: jobIdList) {
+                    if (dependJobIds.contains(preJobId)) {
+                        List<ExecutionPlanEntry> planList = planMap.get(jobId);
+                        for (ExecutionPlanEntry planEntry : planList) {
+                            long taskId = planEntry.getTaskId();
+                            DAGTask dagTask = taskGraph.getTask(taskId);
+                            List<Long> dependTaskIds = dagTask.getDependTaskIds();
+                            for (Long parentId : dependTaskIds) {
+                                taskGraph.addDependency(parentId, taskId);
+                            }
+                        }
+                    }
+                }
+            }
         }
         controller.notify(new RetryTaskEvent(taskIdList, runChild));
         ServerManualRerunTaskResponse response = ServerManualRerunTaskResponse.newBuilder().setSuccess(true).build();

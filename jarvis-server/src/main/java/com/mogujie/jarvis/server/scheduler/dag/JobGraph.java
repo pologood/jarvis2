@@ -328,7 +328,7 @@ public enum JobGraph {
             // submit task to task scheduler
             Map<Long, List<ScheduleTask>> dependTaskMap = dagJob.getDependTaskMap();
             long scheduleTime = getLastScheduleTime(dependTaskMap);
-            Map<Long, Set<Long>> dependTaskIdMap = convert2DependTaskIdMap(dependTaskMap);
+            Map<Long, List<Long>> dependTaskIdMap = convert2DependTaskIdMap(dependTaskMap);
             AddTaskEvent event = new AddTaskEvent(jobId, dependTaskIdMap, scheduleTime);
             controller.notify(event);
 
@@ -345,7 +345,7 @@ public enum JobGraph {
 
             // submit task to task scheduler
             Map<Long, List<ScheduleTask>> dependTaskMap = dagJob.getDependTaskMap();
-            Map<Long, Set<Long>> dependTaskIdMap = convert2DependTaskIdMap(dependTaskMap);
+            Map<Long, List<Long>> dependTaskIdMap = convert2DependTaskIdMap(dependTaskMap);
             AddTaskEvent event = new AddTaskEvent(jobId, dependTaskIdMap, scheduleTime);
             controller.notify(event);
 
@@ -355,7 +355,7 @@ public enum JobGraph {
     }
 
     @VisibleForTesting
-    protected synchronized void addDependency(long parentId, long childId) throws CycleFoundException {
+    public synchronized void addDependency(long parentId, long childId) throws CycleFoundException {
         DAGJob parent = waitingTable.get(parentId);
         DAGJob child = waitingTable.get(childId);
         if (parent != null && child != null) {
@@ -417,16 +417,16 @@ public enum JobGraph {
         return scheduleTime;
     }
 
-    private Map<Long, Set<Long>> convert2DependTaskIdMap(Map<Long, List<ScheduleTask>> dependTaskMap) {
-        Map<Long, Set<Long>> dependTaskIdMap = new HashMap<Long, Set<Long>>();
+    private Map<Long, List<Long>> convert2DependTaskIdMap(Map<Long, List<ScheduleTask>> dependTaskMap) {
+        Map<Long, List<Long>> dependTaskIdMap = new HashMap<Long, List<Long>>();
         for (Entry<Long, List<ScheduleTask>> entry : dependTaskMap.entrySet()) {
             long jobId = entry.getKey();
             List<ScheduleTask> dependTasks = entry.getValue();
             if (dependTasks == null || dependTasks.isEmpty()) {
-                Set<Long> dependTaskIds = Sets.newHashSet((long)0);
+                List<Long> dependTaskIds = new ArrayList<Long>();
                 dependTaskIdMap.put(jobId, dependTaskIds);
             } else {
-                Set<Long> dependTaskIds = Sets.newHashSet();
+                List<Long> dependTaskIds = new ArrayList<Long>();
                 for (ScheduleTask task : dependTasks) {
                     dependTaskIds.add(task.getTaskId());
                 }

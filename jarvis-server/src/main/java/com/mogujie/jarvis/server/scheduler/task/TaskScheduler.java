@@ -10,8 +10,6 @@ package com.mogujie.jarvis.server.scheduler.task;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -62,36 +60,17 @@ public class TaskScheduler extends Scheduler {
         return instance;
     }
 
+    private TaskGraph taskGraph = TaskGraph.INSTANCE;
     private JobService jobService = SpringContext.getBean(JobService.class);
     private TaskService taskService = SpringContext.getBean(TaskService.class);
     private TaskManager taskManager = SpringContext.getBean(TaskManager.class);
     private TaskQueue taskQueue = TaskQueue.INSTANCE;
     private TaskRetryScheduler retryScheduler = TaskRetryScheduler.INSTANCE;
 
-    private Map<Long, DAGTask> readyTable = new ConcurrentHashMap<>();
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public void init(List<Task> readyTasks, List<Task> runningTasks) {
-        if (readyTasks != null) {
-            for (Task task : readyTasks) {
-                DAGTask dagTask = new DAGTask(task.getJobId(), task.getTaskId(), task.getAttemptId());
-                readyTable.put(task.getTaskId(), dagTask);
-                if (dagTask.checkStatus()) {
-                    retryTask(task);
-                }
-            }
-        }
-
-        if (runningTasks != null) {
-            for (Task task : runningTasks) {
-                DAGTask dagTask = new DAGTask(task.getJobId(), task.getTaskId(), task.getAttemptId());
-                readyTable.put(task.getTaskId(), dagTask);
-            }
-        }
-    }
-
     public void destroy() {
-        readyTable.clear();
+        taskGraph.clear();
     }
 
     @Override
@@ -107,19 +86,18 @@ public class TaskScheduler extends Scheduler {
     @Transactional
     public void handleSuccessEvent(SuccessEvent e) {
         long taskId = e.getTaskId();
-        // update task status and remove from readyTable
+        // update task status
         updateTaskStatus(taskId, TaskStatus.SUCCESS);
-        DAGTask dagTask = readyTable.remove(taskId);
+
+        // remove from taskGraph
+        List<DAGTask> childTasks = taskGraph.getChildren(taskId);
+        taskGraph.removeTask(taskId);
 
         // notify child tasks
-        if (dagTask != null) {
-            List<Long> childTasks = dagTask.getChildTaskIds();
-            for (Long childId : childTasks) {
-                DAGTask childTask = readyTable.get(childId);
-                if (childTask != null && childTask.checkStatus()) {
-                    LOGGER.debug("DAGTask {} pass the status check when handle SuccessEvent", childTask.getTaskId());
-                    submitTask(childTask);
-                }
+        for (DAGTask childTask : childTasks) {
+            if (childTask != null && childTask.checkStatus()) {
+                LOGGER.debug("DAGTask {} pass the status check when handle SuccessEvent", childTask.getTaskId());
+                submitTask(childTask);
             }
         }
 
@@ -141,7 +119,7 @@ public class TaskScheduler extends Scheduler {
     public void handleKilledEvent(KilledEvent e) {
         long taskId = e.getTaskId();
         updateTaskStatus(taskId, TaskStatus.KILLED);
-        readyTable.remove(taskId);
+        taskGraph.removeTask(taskId);
         reduceTaskNum(e.getJobId());
     }
 
@@ -151,7 +129,7 @@ public class TaskScheduler extends Scheduler {
     public void handleFailedEvent(FailedEvent e) {
         long jobId = e.getJobId();
         long taskId = e.getTaskId();
-        DAGTask dagTask = readyTable.get(taskId);
+        DAGTask dagTask = taskGraph.getTask(taskId);
         if (dagTask != null) {
             Job job = jobService.get(dagTask.getJobId()).getJob();
             int failedRetries = job.getFailedAttempts();
@@ -171,7 +149,7 @@ public class TaskScheduler extends Scheduler {
                 }
             } else {
                 updateTaskStatus(e.getTaskId(), TaskStatus.FAILED);
-                readyTable.remove(taskId);
+                taskGraph.removeTask(taskId);
                 retryScheduler.remove(jobId + "_" + taskId, RetryType.FAILED_RETRY);
             }
         }
@@ -184,26 +162,32 @@ public class TaskScheduler extends Scheduler {
     public void handleAddTaskEvent(AddTaskEvent e) {
         long jobId = e.getJobId();
         long scheduleTime = e.getScheduleTime();
-        Map<Long, Set<Long>> dependTaskIdMap = e.getDependTaskIdMap();
+        Map<Long, List<Long>> dependTaskIdMap = e.getDependTaskIdMap();
 
         // create new task
         Task newTask = taskService.createTaskByJobId(jobId, scheduleTime);
         long taskId = newTask.getTaskId();
 
+        // add to taskGraph
         DAGTask dagTask = new DAGTask(jobId, taskId, scheduleTime, dependTaskIdMap);
-        if (!readyTable.containsKey(taskId)) {
-            // add to readyTable
-            readyTable.put(taskId, dagTask);
+        taskGraph.addTask(taskId, dagTask);
 
-            // 如果通过依赖检查，提交给任务执行器
-            if (dagTask.checkStatus()) {
-                submitTask(dagTask);
+        // add task dependency
+        for (Long preJobId : dependTaskIdMap.keySet()) {
+            List<Long> preTasks = dependTaskIdMap.get(preJobId);
+            for (Long parentId : preTasks) {
+                taskGraph.addDependency(parentId, taskId);
             }
-
-            // send ScheduleEvent
-            ScheduleEvent event = new ScheduleEvent(jobId, taskId, scheduleTime);
-            getSchedulerController().notify(event);
         }
+
+        // 如果通过依赖检查，提交给任务执行器
+        if (dagTask.checkStatus()) {
+            submitTask(dagTask);
+        }
+
+        // send ScheduleEvent
+        ScheduleEvent event = new ScheduleEvent(jobId, taskId, scheduleTime);
+        getSchedulerController().notify(event);
     }
 
     @Subscribe
@@ -216,18 +200,19 @@ public class TaskScheduler extends Scheduler {
             if (task != null) {
                 updateTaskStatus(taskId, TaskStatus.WAITING);
 
-                DAGTask dagTask;
-                if (!readyTable.containsKey(taskId)) {
+                DAGTask dagTask = taskGraph.getTask(taskId);
+                if (dagTask == null) {
                     dagTask = new DAGTask(task.getJobId(), taskId, task.getAttemptId(), task.getScheduleTime().getTime(), runChild);
-                    readyTable.put(taskId, dagTask);
-                } else {
-                    dagTask = readyTable.get(taskId);
+                    taskGraph.addTask(taskId, dagTask);
                 }
                 if (dagTask != null && dagTask.checkStatus()) {
                     int attemptId = dagTask.getAttemptId();
                     attemptId++;
                     dagTask.setAttemptId(attemptId);
-                    retryTask(task);
+                    task.setAttemptId(attemptId);
+                    task.setUpdateTime(DateTime.now().toDate());
+                    taskService.update(task);
+                    submitTask(dagTask);
                 }
             }
         }
@@ -236,7 +221,7 @@ public class TaskScheduler extends Scheduler {
     @Subscribe
     public void handleRunTaskEvent(RunTaskEvent e) {
         long taskId = e.getTaskId();
-        DAGTask dagTask = readyTable.get(taskId);
+        DAGTask dagTask = taskGraph.getTask(taskId);
         if (dagTask != null && dagTask.checkStatus()) {
             submitTask(dagTask);
         }
@@ -254,7 +239,7 @@ public class TaskScheduler extends Scheduler {
 
     @VisibleForTesting
     public Map<Long, DAGTask> getReadyTable() {
-        return readyTable;
+        return taskGraph.getReadyTable();
     }
 
     @VisibleForTesting
@@ -262,19 +247,7 @@ public class TaskScheduler extends Scheduler {
         return taskQueue;
     }
 
-    private void retryTask(Task task) {
-        long taskId = task.getTaskId();
-        DAGTask dagTask = readyTable.get(taskId);
-        if (dagTask != null) {
-            task.setAttemptId(dagTask.getAttemptId());
-            task.setUpdateTime(DateTime.now().toDate());
-            taskService.update(task);
-
-            submitTask(dagTask);
-        }
-    }
-
-    private void submitTask(DAGTask dagTask) {
+    public void submitTask(DAGTask dagTask) {
         // update status to ready
         updateTaskStatus(dagTask.getTaskId(), TaskStatus.READY);
 

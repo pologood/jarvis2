@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Range;
 import com.mogujie.jarvis.core.domain.TaskStatus;
+import com.mogujie.jarvis.core.expression.DependencyExpression;
 import com.mogujie.jarvis.dao.generate.JobMapper;
 import com.mogujie.jarvis.dao.generate.TaskMapper;
 import com.mogujie.jarvis.dto.generate.Job;
@@ -96,9 +97,9 @@ public class TaskService {
         return record;
     }
 
-    public List<Task> getTasksByStatus(Integer status) {
+    public List<Task> getTasksByStatusNotIn(List<Integer> statusList) {
         TaskExample example = new TaskExample();
-        example.createCriteria().andStatusEqualTo(status);
+        example.createCriteria().andStatusNotIn(statusList);
         return taskMapper.selectByExample(example);
     }
 
@@ -146,6 +147,11 @@ public class TaskService {
         task.setStatus(status.getValue());
         task.setUpdateTime(DateTime.now().toDate());
         taskMapper.updateByPrimaryKey(task);
+    }
+
+    public List<Long> getDependTaskIds(long myJobId, long preJobId, long scheduleTime, DependencyExpression dependencyExpression) {
+        //TODO
+        return null;
     }
 
     public List<Task> getTasksByOffsetDay(long jobId, int offset) {

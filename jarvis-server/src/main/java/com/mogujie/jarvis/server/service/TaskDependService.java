@@ -76,12 +76,12 @@ public class TaskDependService {
         return dependTaskIdMap;
     }
 
-    public void createTaskDependenices(long taskId, Map<Long, Set<Long>> dependTaskIdMap) {
+    public void createTaskDependenices(long taskId, Map<Long, List<Long>> dependTaskIdMap) {
         DateTime dt = DateTime.now();
         Date currentTime = dt.toDate();
-        for (Entry<Long, Set<Long>> entry : dependTaskIdMap.entrySet()) {
+        for (Entry<Long, List<Long>> entry : dependTaskIdMap.entrySet()) {
             long preJobId = entry.getKey();
-            Set<Long> preTaskIds = entry.getValue();
+            List<Long> preTaskIds = entry.getValue();
             for (Long preTaskId : preTaskIds) {
                 TaskDepend record = new TaskDepend();
                 record.setTaskId(taskId);

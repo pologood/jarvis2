@@ -10,7 +10,6 @@ package com.mogujie.jarvis.server.scheduler.task;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import com.mogujie.jarvis.server.scheduler.task.checker.TaskStatusChecker;
 
@@ -26,11 +25,7 @@ public class DAGTask {
     private TaskStatusChecker statusChecker;
     private boolean runChild = true;
 
-    public DAGTask(long jobId, long taskId, long scheduleTime) {
-        this(jobId, taskId, 1, scheduleTime);
-    }
-
-    public DAGTask(long jobId, long taskId, long scheduleTime, Map<Long, Set<Long>> dependTaskIdMap) {
+    public DAGTask(long jobId, long taskId, long scheduleTime, Map<Long, List<Long>> dependTaskIdMap) {
         this(jobId, taskId, 1, scheduleTime, dependTaskIdMap);
     }
 
@@ -47,7 +42,7 @@ public class DAGTask {
         this.runChild = runChild;
     }
 
-    public DAGTask(long jobId, long taskId, int attemptId, long scheduleTime, Map<Long, Set<Long>> dependTaskIdMap) {
+    public DAGTask(long jobId, long taskId, int attemptId, long scheduleTime, Map<Long, List<Long>> dependTaskIdMap) {
         this.jobId = jobId;
         this.taskId = taskId;
         this.attemptId = attemptId;
@@ -109,12 +104,8 @@ public class DAGTask {
         return (scheduleTime <= timeStamp) && statusChecker.checkStatus();
     }
 
-    public List<Long> getChildTaskIds() {
-        if (runChild) {
-            return statusChecker.getChildTaskIds();
-        } else {
-            return null;
-        }
+    public List<Long> getDependTaskIds() {
+        return statusChecker.getDependTaskIds();
     }
 
     @Override

@@ -3,7 +3,7 @@
  * Copyright (c) 2010-2015 All Rights Reserved.
  *
  * Author: guangming
- * Create Date: 2015年11月5日 上午9:56:41
+ * Create Date: 2015年11月30日 下午2:51:27
  */
 
 package com.mogujie.jarvis.server.scheduler.task.checker;
@@ -17,36 +17,29 @@ import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.SpringContext;
 
-
 /**
  * @author guangming
  *
  */
-public class RuntimeDependStatus extends AbstractTaskStatus {
-
+public class TaskDependStatus {
     private List<Long> dependTaskIds;
-    private TaskService taskService;
+    private TaskService taskService = SpringContext.getBean(TaskService.class);
+    private DependencyStrategyExpression commonStrategy;
 
-    /**
-     * @param myJobId
-     * @param preJobId
-     * @param commonStrategy
-     */
-    public RuntimeDependStatus(long myJobId, long preJobId, DependencyStrategyExpression commonStrategy) {
-        super(myJobId, preJobId, commonStrategy);
-        this.taskService = SpringContext.getBean(TaskService.class);
+    public TaskDependStatus(List<Long> dependTaskIds, DependencyStrategyExpression commonStrategy) {
+        this.dependTaskIds = dependTaskIds;
+        this.commonStrategy = commonStrategy;
     }
 
     public List<Long> getDependTaskIds() {
         return dependTaskIds;
     }
 
-    public void setDependTaskIds(List<Long> dependTaskIds) {
-        this.dependTaskIds = dependTaskIds;
+    public boolean check() {
+        return commonStrategy.check(getStatusList());
     }
 
-    @Override
-    protected List<Boolean> getStatusList() {
+    private List<Boolean> getStatusList() {
         List<Task> dependTasks = taskService.getTasks(dependTaskIds);
         List<Boolean> taskStatus = new ArrayList<Boolean>();
         for (Task task : dependTasks) {

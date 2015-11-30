@@ -87,6 +87,10 @@ public abstract class TimeScheduler extends Scheduler {
         plan.removePlan(planEntry);
     }
 
+    public PlanGenerator getPlanGenerator() {
+        return planGenerator;
+    }
+
     public abstract void addJob(long jobId);
 
     public abstract void removeJob(long jobId);

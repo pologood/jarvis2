@@ -12,12 +12,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.google.common.collect.Sets;
+import com.google.common.collect.Lists;
 import com.mogujie.jarvis.server.scheduler.event.AddTaskEvent;
 import com.mogujie.jarvis.server.scheduler.event.SuccessEvent;
 
@@ -53,9 +52,9 @@ public class TestTaskSchedulerWithEvent extends TestSchedulerBase {
         taskIds = new ArrayList<Long>(taskScheduler.getReadyTable().keySet());
         taskBId = taskIds.get(1);
 
-        Map<Long, Set<Long>> dependTaskIdMap = new HashMap<Long, Set<Long>>();
-        dependTaskIdMap.put(jobAId, Sets.newHashSet(taskAId));
-        dependTaskIdMap.put(jobBId, Sets.newHashSet(taskBId));
+        Map<Long, List<Long>> dependTaskIdMap = new HashMap<Long, List<Long>>();
+        dependTaskIdMap.put(jobAId, Lists.newArrayList(taskAId));
+        dependTaskIdMap.put(jobBId, Lists.newArrayList(taskBId));
         AddTaskEvent addTaskEventC = new AddTaskEvent(jobCId, dependTaskIdMap);
         taskScheduler.handleAddTaskEvent(addTaskEventC);
         Assert.assertEquals(3, taskScheduler.getReadyTable().size());

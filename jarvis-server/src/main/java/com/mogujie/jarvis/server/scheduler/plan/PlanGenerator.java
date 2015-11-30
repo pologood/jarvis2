@@ -8,13 +8,16 @@
 
 package com.mogujie.jarvis.server.scheduler.plan;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.joda.time.DateTime;
 import org.joda.time.MutableDateTime;
 
 import com.google.common.collect.BoundType;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Range;
 import com.mogujie.jarvis.core.expression.DependencyExpression;
 import com.mogujie.jarvis.core.expression.ScheduleExpression;
@@ -49,6 +52,18 @@ public class PlanGenerator {
         }
     }
 
+    public List<ExecutionPlanEntry> getReschedulePlan(long jobId, Range<DateTime> dateTimeRange) {
+        List<ExecutionPlanEntry> planList = new ArrayList<ExecutionPlanEntry>();
+        DateTime startDateTime = dateTimeRange.lowerEndpoint();
+        DateTime endDatetTime = dateTimeRange.upperEndpoint();
+        DateTime nextDateTime = getScheduleTimeAfter(jobId, startDateTime.minusSeconds(1));
+        while (!nextDateTime.isBefore(startDateTime) && !nextDateTime.isAfter(endDatetTime)) {
+            planList.add(new ExecutionPlanEntry(jobId, nextDateTime));
+            nextDateTime = getScheduleTimeAfter(jobId, nextDateTime);
+        }
+        return planList;
+    }
+
     /**
      * 批量生成任务重跑执行计划
      *
@@ -59,6 +74,14 @@ public class PlanGenerator {
         for (Long jobId : jobIds) {
             generateReschedulePlan(jobId, dateTimeRange);
         }
+    }
+
+    public Map<Long, List<ExecutionPlanEntry>> getReschedulePlan(List<Long> jobIds, Range<DateTime> dateTimeRange) {
+        Map<Long, List<ExecutionPlanEntry>> planMap = Maps.newHashMap();
+        for (Long jobId : jobIds) {
+            planMap.put(jobId, getReschedulePlan(jobId, dateTimeRange));
+        }
+        return planMap;
     }
 
     public void generateReschedulePlan(long jobId, DateTime dateTime) {

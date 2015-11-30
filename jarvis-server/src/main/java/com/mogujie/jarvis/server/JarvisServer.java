@@ -15,6 +15,7 @@ import java.util.concurrent.Executors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jgrapht.experimental.dag.DirectedAcyclicGraph.CycleFoundException;
 import org.springframework.context.ApplicationContext;
 
 import akka.actor.ActorSystem;
@@ -41,6 +42,8 @@ import com.mogujie.jarvis.server.scheduler.dag.DAGJob;
 import com.mogujie.jarvis.server.scheduler.dag.DAGJobType;
 import com.mogujie.jarvis.server.scheduler.dag.DAGScheduler;
 import com.mogujie.jarvis.server.scheduler.event.StartEvent;
+import com.mogujie.jarvis.server.scheduler.task.DAGTask;
+import com.mogujie.jarvis.server.scheduler.task.TaskGraph;
 import com.mogujie.jarvis.server.scheduler.task.TaskScheduler;
 import com.mogujie.jarvis.server.scheduler.time.TimeScheduler;
 import com.mogujie.jarvis.server.scheduler.time.TimeSchedulerFactory;
@@ -86,13 +89,14 @@ public class JarvisServer {
         // initTimerTask();
     }
 
-    private static void initScheduler() throws JobScheduleException {
+    private static void initScheduler() throws JobScheduleException, CycleFoundException {
         // 1. register schedulers to controller
         JobSchedulerController controller = JobSchedulerController.getInstance();
         DAGScheduler dagScheduler = DAGScheduler.getInstance();
         TaskScheduler taskScheduler = TaskScheduler.getInstance();
         TimeScheduler timeScheduler = TimeSchedulerFactory.getInstance();
         AlarmScheduler alarmScheduler = SpringContext.getBean(AlarmScheduler.class);
+        TaskGraph taskGraph = TaskGraph.INSTANCE;
         controller.register(dagScheduler);
         controller.register(taskScheduler);
         controller.register(timeScheduler);
@@ -102,6 +106,7 @@ public class JarvisServer {
         JobService jobService = SpringContext.getBean(JobService.class);
         TaskService taskService = SpringContext.getBean(TaskService.class);
         List<Job> jobs = jobService.getNotDeletedJobs();
+        // 2.1 先添加job
         for (Job job : jobs) {
             long jobId = job.getJobId();
             JobEntry jobEntry = jobService.get(jobId);
@@ -122,16 +127,46 @@ public class JarvisServer {
             int dependFlag = (!dependencies.isEmpty()) ? 1 : 0;
             DAGJobType type = DAGJobType.getDAGJobType(timeFlag, dependFlag, cycleFlag);
             JobFlag flag = JobFlag.getInstance(job.getJobFlag());
-            dagScheduler.getJobGraph().addJob(jobId, new DAGJob(jobId, type, flag), dependencies);
+            dagScheduler.getJobGraph().addJob(jobId, new DAGJob(jobId, type, flag), null);
             if (type.implies(DAGJobType.TIME) && flag.equals(JobFlag.ENABLE) && jobService.isActive(jobId)) {
                 timeScheduler.addJob(jobId);
             }
         }
+        // 2.2 再添加依赖关系
+        for (Job job : jobs) {
+            long jobId = job.getJobId();
+            JobEntry jobEntry = jobService.get(jobId);
+            Set<Long> dependencies = jobEntry.getDependencies().keySet();
+            for (long parentId : dependencies) {
+                dagScheduler.getJobGraph().addDependency(parentId, jobId);
+            }
+        }
 
         // 3. initialize TaskScheduler
+        List<Task> recoveryTasks = taskService.getTasksByStatusNotIn(
+                Lists.newArrayList(TaskStatus.SUCCESS.getValue(),
+                TaskStatus.REMOVED.getValue()));
+        // 3.1 先恢复task
+        for (Task task : recoveryTasks) {
+            DAGTask dagTask = new DAGTask(task.getJobId(), task.getTaskId(), task.getAttemptId(), task.getScheduleTime().getTime());
+            taskGraph.addTask(task.getTaskId(), dagTask);
+        }
+        // 3.2 再构造task依赖关系
+        for (Task task : recoveryTasks) {
+            DAGTask dagTask = taskGraph.getTask(task.getTaskId());
+            List<Long> dependTaskIds = dagTask.getDependTaskIds();
+            for (Long parentId : dependTaskIds) {
+                taskGraph.addDependency(parentId, task.getTaskId());
+            }
+        }
+        // 3.3 重跑waiting和ready的task
         List<Task> readyTasks = taskService.getTasksByStatus(Lists.newArrayList(TaskStatus.WAITING.getValue(), TaskStatus.READY.getValue()));
-        List<Task> runningTasks = taskService.getTasksByStatus(TaskStatus.RUNNING.getValue());
-        taskScheduler.init(readyTasks, runningTasks);
+        for (Task task : readyTasks) {
+            DAGTask dagTask = taskGraph.getTask(task.getTaskId());
+            if (dagTask != null && dagTask.checkStatus()) {
+                taskScheduler.submitTask(dagTask);
+            }
+        }
 
         // 4. start schedulers
         controller.notify(new StartEvent());

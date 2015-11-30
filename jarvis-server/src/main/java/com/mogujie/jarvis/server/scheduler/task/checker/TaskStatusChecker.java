@@ -8,14 +8,18 @@
 
 package com.mogujie.jarvis.server.scheduler.task.checker;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.google.common.collect.Lists;
+import com.mogujie.jarvis.core.expression.DependencyExpression;
+import com.mogujie.jarvis.core.expression.DependencyStrategyExpression;
+import com.mogujie.jarvis.server.domain.JobDependencyEntry;
+import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.TaskDependService;
+import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.SpringContext;
 
 
@@ -26,15 +30,17 @@ import com.mogujie.jarvis.server.util.SpringContext;
 public class TaskStatusChecker {
 
     private TaskDependService taskDependService = SpringContext.getBean(TaskDependService.class);
-    private Map<Long, AbstractTaskStatus> jobStatusMap = new ConcurrentHashMap<Long, AbstractTaskStatus>();
+    private JobService jobService = SpringContext.getBean(JobService.class);
+    private TaskService taskService = SpringContext.getBean(TaskService.class);
+    private Map<Long, TaskDependStatus> jobStatusMap = new ConcurrentHashMap<Long, TaskDependStatus>();
     private long myJobId;
     private long myTaskId;
 
-    public TaskStatusChecker(long jobId, long taskId, long scheduleTime, Map<Long, Set<Long>> dependTaskIdMap) {
+    public TaskStatusChecker(long jobId, long taskId, long scheduleTime, Map<Long, List<Long>> dependTaskIdMap) {
         this.myJobId = jobId;
         this.myTaskId = taskId;
         if (dependTaskIdMap != null && !dependTaskIdMap.isEmpty()) {
-            taskDependService.createTaskDependenices(taskId, dependTaskIdMap);
+            //taskDependService.createTaskDependenices(taskId, dependTaskIdMap);
             this.jobStatusMap = convertToJobStatus(scheduleTime, dependTaskIdMap);
         }
     }
@@ -42,7 +48,7 @@ public class TaskStatusChecker {
     public TaskStatusChecker(long jobId, long taskId, long scheduleTime) {
         this.myJobId = jobId;
         this.myTaskId = taskId;
-        this.jobStatusMap = loadJobStatus(taskId, scheduleTime);
+        this.jobStatusMap = loadJobStatus(myJobId, scheduleTime);
     }
 
     public long getMyJobId() {
@@ -63,8 +69,8 @@ public class TaskStatusChecker {
 
     public boolean checkStatus() {
         boolean finishStatus = true;
-        for (Entry<Long, AbstractTaskStatus> entry : jobStatusMap.entrySet()) {
-            AbstractTaskStatus status = entry.getValue();
+        for (Entry<Long, TaskDependStatus> entry : jobStatusMap.entrySet()) {
+            TaskDependStatus status = entry.getValue();
             if (!status.check()) {
                 finishStatus = false;
                 break;
@@ -77,21 +83,38 @@ public class TaskStatusChecker {
         return taskDependService.getChildTaskIds(myTaskId);
     }
 
-    private Map<Long, AbstractTaskStatus> loadJobStatus(long taskId, long scheduleTime) {
-        Map<Long, Set<Long>> dependTaskIdMap = taskDependService.getDependTaskIdMap(taskId);
-        return convertToJobStatus(scheduleTime, dependTaskIdMap);
+    public List<Long> getDependTaskIds() {
+        List<Long> dependTaskIds = new ArrayList<Long>();
+        for (TaskDependStatus status : jobStatusMap.values()) {
+            dependTaskIds.addAll(status.getDependTaskIds());
+        }
+        return dependTaskIds;
     }
 
-    private Map<Long, AbstractTaskStatus> convertToJobStatus(long scheduleTime, Map<Long, Set<Long>> dependTaskIdMap) {
-        Map<Long, AbstractTaskStatus> jobStatusMap = new ConcurrentHashMap<Long, AbstractTaskStatus>();
-        for (Entry<Long, Set<Long>> entry : dependTaskIdMap.entrySet()) {
+    private Map<Long, TaskDependStatus> loadJobStatus(long myJobId, long scheduleTime) {
+        Map<Long, TaskDependStatus> jobStatusMap = new ConcurrentHashMap<Long, TaskDependStatus>();
+        Map<Long, JobDependencyEntry> dependencyMap = jobService.get(myJobId).getDependencies();
+        for (Long preJobId : dependencyMap.keySet()) {
+            JobDependencyEntry dependencyEntry = dependencyMap.get(preJobId);
+            DependencyStrategyExpression commonStrategy = dependencyEntry.getDependencyStrategyExpression();
+            DependencyExpression dependencyExpression = dependencyEntry.getDependencyExpression();
+            List<Long> dependTaskIds = taskService.getDependTaskIds(myJobId, preJobId, scheduleTime, dependencyExpression);
+            TaskDependStatus taskStatus = new TaskDependStatus(dependTaskIds, commonStrategy);
+            jobStatusMap.put(preJobId, taskStatus);
+        }
+        return jobStatusMap;
+    }
+
+    private Map<Long, TaskDependStatus> convertToJobStatus(long scheduleTime, Map<Long, List<Long>> dependTaskIdMap) {
+        Map<Long, TaskDependStatus> jobStatusMap = new ConcurrentHashMap<Long, TaskDependStatus>();
+        for (Entry<Long, List<Long>> entry : dependTaskIdMap.entrySet()) {
             long preJobId = entry.getKey();
-            AbstractTaskStatus taskStatus = TaskStatusFactory.create(getMyJobId(), preJobId, scheduleTime);
-            if (taskStatus instanceof RuntimeDependStatus) {
-                Set<Long> dependTasks = dependTaskIdMap.get(preJobId);
-                List<Long> dependTaskList = Lists.newArrayList();
-                dependTaskList.addAll(dependTasks);
-                ((RuntimeDependStatus) taskStatus).setDependTaskIds(dependTaskList);
+            Map<Long, JobDependencyEntry> dependencyMap = jobService.get(myJobId).getDependencies();
+            if (dependencyMap != null && dependencyMap.containsKey(preJobId)) {
+                JobDependencyEntry dependencyEntry = dependencyMap.get(preJobId);
+                DependencyStrategyExpression commonStrategy = dependencyEntry.getDependencyStrategyExpression();
+                List<Long> dependTaskIds = entry.getValue();
+                TaskDependStatus taskStatus = new TaskDependStatus(dependTaskIds, commonStrategy);
                 jobStatusMap.put(preJobId, taskStatus);
             }
         }
