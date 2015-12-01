@@ -66,6 +66,9 @@ public class TaskService {
     }
 
     public List<Task> getTasks(List<Long> taskIds) {
+        if(taskIds == null || taskIds.isEmpty()){
+            return null;
+        }
         TaskExample example = new TaskExample();
         example.createCriteria().andTaskIdIn(taskIds);
         return taskMapper.selectByExample(example);

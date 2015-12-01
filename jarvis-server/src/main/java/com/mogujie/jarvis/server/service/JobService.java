@@ -85,7 +85,7 @@ public class JobService {
     }
 
     public void updateJob(Job record) {
-        jobMapper.updateByPrimaryKey(record);
+        jobMapper.updateByPrimaryKeySelective(record);
     }
 
     public void deleteJob(long jobId) {
@@ -117,6 +117,16 @@ public class JobService {
     public void updateScheduleExpression(JobScheduleExpression record) {
         jobScheduleExpressionMapper.updateByPrimaryKey(record);
     }
+
+    public void updateScheduleExpression(long jobId, ScheduleExpressionEntry entry) {
+        JobScheduleExpression record = new JobScheduleExpression();
+        record.setJobId(jobId);
+        record.setExpressionType(entry.getExpressionType());
+        record.setExpression(entry.getScheduleExpression());
+        record.setUpdateTime(new Date());
+        jobScheduleExpressionMapper.updateByPrimaryKey(record);
+    }
+
 
     public void deleteScheduleExpression(long jobId) {
         JobScheduleExpressionExample example = new JobScheduleExpressionExample();

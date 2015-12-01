@@ -15,11 +15,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.mogujie.jarvis.dao.generate.WorkerMapper;
 import com.mogujie.jarvis.dto.generate.Worker;
 import com.mogujie.jarvis.dto.generate.WorkerExample;
+import org.springframework.stereotype.Service;
 
 /**
  * @author guangming
  *
  */
+@Service
 public class WorkerService {
     @Autowired
     private WorkerMapper workerMapper;

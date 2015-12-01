@@ -48,6 +48,10 @@ public class DefaultDependencyStrategyExpression extends DependencyStrategyExpre
 
     @Override
     public boolean check(List<Boolean> list) {
+        if(list == null || list.isEmpty()){
+            return false;
+        }
+
         if (isValid > 0 || (isValid == 0 && isValid())) {
             char c = expression.charAt(0);
             switch (c) {

@@ -115,6 +115,9 @@ public class TimeOffsetExpression extends DependencyExpression {
 
     @Override
     public boolean isValid() {
+        if(expression == null){
+            return false;
+        }
         for (Entry<Pattern, String> entry : MAP.entrySet()) {
             Pattern pattern = entry.getKey();
             Matcher m = pattern.matcher(expression);

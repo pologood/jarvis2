@@ -2,6 +2,7 @@ package com.mogujie.jarvis.rest.utils;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import com.google.gson.internal.Primitives;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
@@ -27,6 +28,14 @@ public class JsonParams {
         if(data == null ){
             data = new HashMap<>();
         }
+    }
+
+    public static <T> T fromJson(String json, Class<T> classOfT) throws JsonSyntaxException {
+        return gson.fromJson(json, classOfT);
+    }
+
+    public static String toJson(Object object , Type typeOfSrc){
+        return gson.toJson(object,typeOfSrc);
     }
 
     public Object getObject(String key, Object defaultVal) {

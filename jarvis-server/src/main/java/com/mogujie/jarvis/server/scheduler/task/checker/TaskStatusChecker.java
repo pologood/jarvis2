@@ -79,9 +79,11 @@ public class TaskStatusChecker {
     }
 
     public List<Long> getDependTaskIds() {
-        List<Long> dependTaskIds = new ArrayList<Long>();
+        List<Long> dependTaskIds = new ArrayList<>();
         for (TaskDependStatus status : jobStatusMap.values()) {
-            dependTaskIds.addAll(status.getDependTaskIds());
+            if(status.getDependTaskIds() != null){
+                dependTaskIds.addAll(status.getDependTaskIds());
+            }
         }
         return dependTaskIds;
     }
@@ -89,13 +91,15 @@ public class TaskStatusChecker {
     private Map<Long, TaskDependStatus> loadJobStatus(long myJobId, long scheduleTime) {
         Map<Long, TaskDependStatus> jobStatusMap = new ConcurrentHashMap<Long, TaskDependStatus>();
         Map<Long, JobDependencyEntry> dependencyMap = jobService.get(myJobId).getDependencies();
-        for (Long preJobId : dependencyMap.keySet()) {
-            JobDependencyEntry dependencyEntry = dependencyMap.get(preJobId);
-            DependencyStrategyExpression commonStrategy = dependencyEntry.getDependencyStrategyExpression();
-            DependencyExpression dependencyExpression = dependencyEntry.getDependencyExpression();
-            List<Long> dependTaskIds = taskService.getDependTaskIds(myJobId, preJobId, scheduleTime, dependencyExpression);
-            TaskDependStatus taskStatus = new TaskDependStatus(dependTaskIds, commonStrategy);
-            jobStatusMap.put(preJobId, taskStatus);
+        if(dependencyMap !=null) {
+            for (Long preJobId : dependencyMap.keySet()) {
+                JobDependencyEntry dependencyEntry = dependencyMap.get(preJobId);
+                DependencyStrategyExpression commonStrategy = dependencyEntry.getDependencyStrategyExpression();
+                DependencyExpression dependencyExpression = dependencyEntry.getDependencyExpression();
+                List<Long> dependTaskIds = taskService.getDependTaskIds(myJobId, preJobId, scheduleTime, dependencyExpression);
+                TaskDependStatus taskStatus = new TaskDependStatus(dependTaskIds, commonStrategy);
+                jobStatusMap.put(preJobId, taskStatus);
+            }
         }
         return jobStatusMap;
     }
