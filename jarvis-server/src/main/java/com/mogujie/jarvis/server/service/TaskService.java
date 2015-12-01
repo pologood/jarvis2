@@ -67,7 +67,7 @@ public class TaskService {
     }
 
     public List<Task> getTasks(List<Long> taskIds) {
-        if(taskIds == null || taskIds.isEmpty()){
+        if (taskIds == null || taskIds.isEmpty()) {
             return null;
         }
         TaskExample example = new TaskExample();
@@ -152,13 +152,16 @@ public class TaskService {
         taskMapper.updateByPrimaryKey(task);
     }
 
-    public List<Long> getDependTaskIds(long preJobId, long scheduleTime, DependencyExpression dependencyExpression) {
-        List<Task> tasks = new ArrayList<Task>();
+    public List<Long> getDependTaskIds(long myJobId, long preJobId, long scheduleTime, DependencyExpression dependencyExpression) {
+        List<Task> tasks;
         if (dependencyExpression != null) {
             tasks = getTasksBetween(preJobId, dependencyExpression.getRange(new DateTime(scheduleTime)));
+        } else {
+            long preScheduleTime = getPreScheduleTime(myJobId, scheduleTime);
+            tasks = getTasksBetween(preJobId, new DateTime(preScheduleTime), new DateTime(scheduleTime));
         }
         List<Long> taskIds = new ArrayList<Long>();
-        for(Task task : tasks){
+        for (Task task : tasks) {
             taskIds.add(task.getTaskId());
         }
         return taskIds;
@@ -223,10 +226,25 @@ public class TaskService {
             return null;
         }
         List<Boolean> status = new ArrayList<>();
-        for(Task task : tasks){
+        for (Task task : tasks) {
             status.add(task.getStatus() == TaskStatus.SUCCESS.getValue());
         }
         return status;
+    }
+
+    public long getPreScheduleTime(long jobId, long scheduleTime) {
+        if (jobId == 0 || scheduleTime == 0) {
+            return 0;
+        }
+        TaskExample example = new TaskExample();
+        example.createCriteria().andJobIdEqualTo(jobId).andScheduleTimeLessThan(new DateTime(scheduleTime * 1000L).toDate());
+        example.setOrderByClause("taskId desc");
+        List<Task> tasks = taskMapper.selectByExample(example);
+        if (tasks == null || tasks.isEmpty()) {
+            return 0;
+        }
+        return new DateTime(tasks.get(0).getScheduleTime()).getMillis();
+
     }
 
 
