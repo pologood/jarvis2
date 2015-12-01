@@ -104,7 +104,7 @@ public class TaskStatusChecker {
                 if (dependencyMap.containsKey(preJobId)) {
                     dependTaskIds = dependTaskIdMap.get(preJobId);
                 } else {
-                    dependTaskIds = taskService.getDependTaskIds(preJobId, scheduleTime, dependencyExpression);
+                    dependTaskIds = taskService.getDependTaskIds(myJobId, preJobId, scheduleTime, dependencyExpression);
                 }
                 TaskDependStatus taskStatus = new TaskDependStatus(dependTaskIds, commonStrategy);
                 jobStatusMap.put(preJobId, taskStatus);
@@ -124,7 +124,7 @@ public class TaskStatusChecker {
                 DependencyStrategyExpression commonStrategy = dependencyEntry.getDependencyStrategyExpression();
                 if (dependTaskIds == null || dependTaskIds.isEmpty()) {
                     DependencyExpression dependencyExpression = dependencyEntry.getDependencyExpression();
-                    dependTaskIds = taskService.getDependTaskIds(preJobId, scheduleTime, dependencyExpression);
+                    dependTaskIds = taskService.getDependTaskIds(myJobId, preJobId, scheduleTime, dependencyExpression);
                 }
                 TaskDependStatus taskStatus = new TaskDependStatus(dependTaskIds, commonStrategy);
                 jobStatusMap.put(preJobId, taskStatus);

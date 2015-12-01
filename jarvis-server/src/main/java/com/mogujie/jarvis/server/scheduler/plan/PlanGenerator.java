@@ -96,16 +96,14 @@ public class PlanGenerator {
     }
 
     public DateTime getScheduleTimeAfter(long jobId, DateTime dateTime) {
-        MutableDateTime result = null;
+        DateTime result = null;
         JobEntry jobEntry = jobService.get(jobId);
         List<ScheduleExpression> expressions = jobEntry.getScheduleExpressions();
         if (expressions != null && expressions.size() > 0) {
             for (ScheduleExpression scheduleExpression : expressions) {
                 DateTime nextTime = scheduleExpression.getTimeAfter(dateTime);
-                if (result == null) {
-                    result = new MutableDateTime(nextTime);
-                } else if (result.isAfter(nextTime)) {
-                    result.setDate(nextTime);
+                if (result == null || result.isAfter(nextTime)) {
+                    result = nextTime;
                 }
             }
 
@@ -117,10 +115,8 @@ public class PlanGenerator {
             DependencyExpression dependencyExpression = jobEntry.getDependencies().get(dependencyJobId).getDependencyExpression();
             if (dependencyExpression == null) {
                 DateTime nextTime = getScheduleTimeAfter(dependencyJobId, dateTime);
-                if (result == null) {
-                    result = new MutableDateTime(nextTime);
-                } else if (result.isBefore(nextTime)) {
-                    result.setDate(nextTime);
+                if (result == null || result.isBefore(nextTime)) {
+                    result = nextTime;
                 }
             } else {
                 MutableDateTime mutableDateTime = dateTime.toMutableDateTime();
@@ -133,10 +129,8 @@ public class PlanGenerator {
 
                     DateTime nextTime = getScheduleTimeAfter(dependencyJobId, startDateTime);
                     while (nextTime.isBefore(endDateTime)) {
-                        if (result == null) {
-                            result = new MutableDateTime(nextTime);
-                        } else if (result.isBefore(nextTime)) {
-                            result.setDate(nextTime);
+                        if (result == null || result.isBefore(nextTime)) {
+                            result = nextTime;
                         }
                         nextTime = getScheduleTimeAfter(dependencyJobId, nextTime);
                     }
@@ -150,7 +144,7 @@ public class PlanGenerator {
             }
         }
 
-        return result.toDateTime();
+        return result;
     }
 
     public void generateNextPlan(long jobId, DateTime dt) {

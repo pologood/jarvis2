@@ -187,7 +187,7 @@ public class TaskActor extends UntypedActor {
                     for (long preJobId : dependencyMap.keySet()) {
                         JobDependencyEntry dependencyEntry = dependencyMap.get(preJobId);
                         DependencyExpression dependencyExpression = dependencyEntry.getDependencyExpression();
-                        List<Long> dependTaskIds = taskService.getDependTaskIds(preJobId, scheduleTime, dependencyExpression);
+                        List<Long> dependTaskIds = taskService.getDependTaskIds(jobId, preJobId, scheduleTime, dependencyExpression);
                         dependTaskIdMap.put(preJobId, dependTaskIds);
                     }
                 }
