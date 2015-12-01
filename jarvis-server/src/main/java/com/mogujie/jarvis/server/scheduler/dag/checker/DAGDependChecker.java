@@ -16,6 +16,9 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.mogujie.jarvis.core.expression.DependencyExpression;
+import com.mogujie.jarvis.core.expression.TimeOffsetExpression;
+
 /**
  * @author guangming
  *
@@ -138,7 +141,11 @@ public class DAGDependChecker {
     public void updateExpression(long parentId, String expression) {
         TaskDependSchedule dependSchedule = jobScheduleMap.get(parentId);
         if (dependSchedule != null) {
-            dependSchedule.setExpression(expression);
+            DependencyExpression dependencyExpression = null;
+            if (expression != null) {
+                dependencyExpression = new TimeOffsetExpression(expression);
+                dependSchedule.setDependencyExpression(dependencyExpression);
+            }
         }
     }
 

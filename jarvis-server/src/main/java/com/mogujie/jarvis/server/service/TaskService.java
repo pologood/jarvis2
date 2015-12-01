@@ -15,6 +15,7 @@ import java.util.List;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.google.common.collect.Range;
 import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.expression.DependencyExpression;
@@ -152,11 +153,11 @@ public class TaskService {
     }
 
     public List<Long> getDependTaskIds(long myJobId, long preJobId, long scheduleTime, DependencyExpression dependencyExpression) {
-        List<Task> tasks = getTasksBetween(preJobId, dependencyExpression.getRange(new DateTime(scheduleTime)));
-        if (tasks == null) {
-            return null;
+        List<Task> tasks = new ArrayList<Task>();
+        if (dependencyExpression != null) {
+            tasks = getTasksBetween(preJobId, dependencyExpression.getRange(new DateTime(scheduleTime)));
         }
-        List<Long> taskIds = new ArrayList<>();
+        List<Long> taskIds = new ArrayList<Long>();
         for(Task task : tasks){
             taskIds.add(task.getTaskId());
         }

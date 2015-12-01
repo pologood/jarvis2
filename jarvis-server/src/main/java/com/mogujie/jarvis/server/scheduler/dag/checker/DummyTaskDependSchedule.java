@@ -8,6 +8,8 @@
 
 package com.mogujie.jarvis.server.scheduler.dag.checker;
 
+import com.mogujie.jarvis.core.expression.DependencyExpression;
+
 /**
  * @author guangming
  *
@@ -18,8 +20,8 @@ public class DummyTaskDependSchedule extends TaskDependSchedule {
      * @param preJobId
      * @param expression
      */
-    public DummyTaskDependSchedule(long myJobId, long preJobId, String expression) {
-        super(myJobId, preJobId, expression);
+    public DummyTaskDependSchedule(long myJobId, long preJobId, DependencyExpression dependencyExpression) {
+        super(myJobId, preJobId, dependencyExpression);
     }
 
     @Override

@@ -17,7 +17,7 @@ import java.util.concurrent.ConcurrentSkipListSet;
 import org.joda.time.DateTime;
 
 import com.google.common.collect.Range;
-import com.mogujie.jarvis.core.expression.TimeOffsetExpression;
+import com.mogujie.jarvis.core.expression.DependencyExpression;
 import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.SpringContext;
@@ -29,7 +29,7 @@ import com.mogujie.jarvis.server.util.SpringContext;
 public class TaskDependSchedule {
     private long myJobId;
     private long preJobId;
-    private String expression;
+    private DependencyExpression dependencyExpression;
     private JobDependType dependType;
 
     // SortedSet<ScheduleTask>
@@ -46,17 +46,26 @@ public class TaskDependSchedule {
 
     public TaskDependSchedule() {}
 
-    public TaskDependSchedule(long myJobId, long preJobId, String expression) {
+    public TaskDependSchedule(long myJobId, long preJobId, DependencyExpression dependencyExpression) {
         this.myJobId = myJobId;
         this.preJobId = preJobId;
-        this.expression = expression;
-        if (expression == null) {
+        this.dependencyExpression = dependencyExpression;
+        this.dependType = getJobDependType(dependencyExpression);
+    }
+
+    private JobDependType getJobDependType(DependencyExpression dependencyExpression) {
+        JobDependType dependType;
+        if (dependencyExpression == null) {
             dependType = JobDependType.RUNTIME;
-        } else if (expression.startsWith("c")) {
-            dependType = JobDependType.CURRENT;
         } else {
-            dependType = JobDependType.OFFSET;
+            String expression = dependencyExpression.getExpression();
+            if (expression.startsWith("c")) {
+                dependType = JobDependType.CURRENT;
+            } else {
+                dependType = JobDependType.OFFSET;
+            }
         }
+        return dependType;
     }
 
     public long getMyJobId() {
@@ -75,19 +84,13 @@ public class TaskDependSchedule {
         this.preJobId = preJobId;
     }
 
-    public String getExpression() {
-        return expression;
+    public DependencyExpression getDependencyExpression() {
+        return dependencyExpression;
     }
 
-    public void setExpression(String expression) {
-        this.expression = expression;
-        if (expression == null) {
-            dependType = JobDependType.RUNTIME;
-        } else if (expression.startsWith("c")) {
-            dependType = JobDependType.CURRENT;
-        } else {
-            dependType = JobDependType.OFFSET;
-        }
+    public void setDependencyExpression(DependencyExpression dependencyExpression) {
+        this.dependencyExpression = dependencyExpression;
+        this.dependType = getJobDependType(dependencyExpression);
     }
 
     /**
@@ -126,9 +129,8 @@ public class TaskDependSchedule {
                 pass = true;
             }
         } else if (dependType.equals(JobDependType.CURRENT)) {
-            TimeOffsetExpression dependExpression = new TimeOffsetExpression(expression);
             DateTime scheduleDate = new DateTime(scheduleTime);
-            Range<DateTime> range = dependExpression.getRange(scheduleDate);
+            Range<DateTime> range = dependencyExpression.getRange(scheduleDate);
             for (ScheduleTask task : schedulingTasks) {
                 long theTaskScheduleTime = task.getScheduleTime();
                 DateTime theScheduleDate = new DateTime(theTaskScheduleTime);
@@ -178,8 +180,7 @@ public class TaskDependSchedule {
 
         List<Task> tasks = null;
         if (dependType.equals(JobDependType.CURRENT)) {
-            TimeOffsetExpression timeOffsetExpression = new TimeOffsetExpression(expression);
-            Range<DateTime> range = timeOffsetExpression.getRange(now);
+            Range<DateTime> range = dependencyExpression.getRange(now);
             tasks = taskService.getTasksBetween(preJobId, range);
         }
 

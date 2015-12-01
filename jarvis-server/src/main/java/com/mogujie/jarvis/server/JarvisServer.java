@@ -155,8 +155,10 @@ public class JarvisServer {
         for (Task task : recoveryTasks) {
             DAGTask dagTask = taskGraph.getTask(task.getTaskId());
             List<Long> dependTaskIds = dagTask.getDependTaskIds();
-            for (Long parentId : dependTaskIds) {
-                taskGraph.addDependency(parentId, task.getTaskId());
+            if (dependTaskIds != null) {
+                for (Long parentId : dependTaskIds) {
+                    taskGraph.addDependency(parentId, task.getTaskId());
+                }
             }
         }
         // 3.3 重跑waiting和ready的task

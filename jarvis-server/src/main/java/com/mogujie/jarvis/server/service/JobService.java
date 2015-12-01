@@ -277,10 +277,13 @@ public class JobService {
                     }
 
                     // 检查依赖表达式是否有效
-                    DependencyExpression dependencyExpression = new TimeOffsetExpression(offsetStrategy);
-                    if (offsetStrategy != null && !dependencyExpression.isValid()) {
-                        LOGGER.warn("dependency expression is invalid. id={}; value={}",jobId,dependencyExpression.toString());
-                        continue;
+                    DependencyExpression dependencyExpression = null;
+                    if (offsetStrategy != null) {
+                        dependencyExpression = new TimeOffsetExpression(offsetStrategy);
+                        if (!dependencyExpression.isValid()) {
+                            LOGGER.warn("dependency expression is invalid. id={}; value={}",jobId,dependencyExpression.toString());
+                            continue;
+                        }
                     }
 
                     // 检查依赖策略表达式是否有效

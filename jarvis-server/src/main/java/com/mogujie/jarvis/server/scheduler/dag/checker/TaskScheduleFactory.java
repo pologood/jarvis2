@@ -12,6 +12,7 @@ import java.util.Map;
 
 import org.apache.commons.configuration.Configuration;
 
+import com.mogujie.jarvis.core.expression.DependencyExpression;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.server.domain.JobDependencyEntry;
 import com.mogujie.jarvis.server.service.JobService;
@@ -31,17 +32,17 @@ public class TaskScheduleFactory {
         String className = conf.getString(TASK_SCHEDULE_KEY, DEFAULT_TASK_SCHEDULE);
 
         TaskDependSchedule dependSchedule = null;
-        String offsetStrategy = null;
+        DependencyExpression dependencyExpression = null;
         if (className.equalsIgnoreCase(DEFAULT_TASK_SCHEDULE)) {
             JobService jobService = SpringContext.getBean(JobService.class);
             Map<Long, JobDependencyEntry> dependencyMap = jobService.get(myJobId).getDependencies();
             if (dependencyMap != null && dependencyMap.containsKey(preJobId)) {
-                offsetStrategy = dependencyMap.get(preJobId).getDependencyExpression().getExpression();
+                dependencyExpression = dependencyMap.get(preJobId).getDependencyExpression();
             }
-            dependSchedule = new TaskDependSchedule(myJobId, preJobId, offsetStrategy);
+            dependSchedule = new TaskDependSchedule(myJobId, preJobId, dependencyExpression);
             dependSchedule.init();
         } else {
-            dependSchedule = new DummyTaskDependSchedule(myJobId, preJobId, offsetStrategy);
+            dependSchedule = new DummyTaskDependSchedule(myJobId, preJobId, dependencyExpression);
         }
 
         return dependSchedule;
