@@ -88,6 +88,9 @@ public class TaskScheduler extends Scheduler {
         long taskId = e.getTaskId();
         // update task status
         updateTaskStatus(taskId, TaskStatus.SUCCESS);
+        DAGTask dagTask = taskGraph.getTask(taskId);
+        List<Long> dependTaskIds = dagTask.getDependTaskIds();
+        LOGGER.info("task {} success, dependIds is {}", taskId, dependTaskIds);
 
         // remove from taskGraph
         List<DAGTask> childTasks = taskGraph.getChildren(taskId);
@@ -148,7 +151,9 @@ public class TaskScheduler extends Scheduler {
                     retryScheduler.addTask(getTaskInfo(dagTask), failedRetries, failedInterval, RetryType.FAILED_RETRY);
                 }
             } else {
-                updateTaskStatus(e.getTaskId(), TaskStatus.FAILED);
+                List<Long> dependTaskIds = dagTask.getDependTaskIds();
+                LOGGER.info("task {} success, dependIds is {}", taskId, dependTaskIds);
+                updateTaskStatus(taskId, TaskStatus.FAILED);
                 taskGraph.removeTask(taskId);
                 retryScheduler.remove(jobId + "_" + taskId, RetryType.FAILED_RETRY);
             }

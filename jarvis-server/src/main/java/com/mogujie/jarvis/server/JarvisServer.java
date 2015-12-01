@@ -110,9 +110,6 @@ public class JarvisServer {
         for (Job job : jobs) {
             long jobId = job.getJobId();
             JobEntry jobEntry = jobService.get(jobId);
-            if(jobEntry.getDependencies() ==null){
-                continue;
-            }
             Set<Long> dependencies = jobEntry.getDependencies().keySet();
             int cycleFlag = 0;
             int timeFlag = 0;
@@ -139,9 +136,6 @@ public class JarvisServer {
         for (Job job : jobs) {
             long jobId = job.getJobId();
             JobEntry jobEntry = jobService.get(jobId);
-            if(jobEntry.getDependencies() ==null){
-                continue;
-            }
             Set<Long> dependencies = jobEntry.getDependencies().keySet();
             for (long parentId : dependencies) {
                 dagScheduler.getJobGraph().addDependency(parentId, jobId);

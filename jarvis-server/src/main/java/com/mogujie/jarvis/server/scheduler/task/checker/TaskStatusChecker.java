@@ -79,11 +79,9 @@ public class TaskStatusChecker {
     }
 
     public List<Long> getDependTaskIds() {
-        List<Long> dependTaskIds = new ArrayList<>();
+        List<Long> dependTaskIds = new ArrayList<Long>();
         for (TaskDependStatus status : jobStatusMap.values()) {
-            if(status.getDependTaskIds() != null){
-                dependTaskIds.addAll(status.getDependTaskIds());
-            }
+            dependTaskIds.addAll(status.getDependTaskIds());
         }
         return dependTaskIds;
     }

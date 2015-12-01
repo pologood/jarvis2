@@ -248,10 +248,9 @@ public class JobService {
         for (Job job : jobs) {
             long jobId = job.getJobId();
             List<ScheduleExpression> jobScheduleExpressions = new ArrayList<>(scheduleExpressionMap.get(jobId));
-            Map<Long, JobDependencyEntry> dependencies = null;
+            Map<Long, JobDependencyEntry> dependencies = Maps.newHashMap();
             Collection<JobDepend> jobDependsCollection = jobDependMap.get(jobId);
             if (jobDependsCollection != null && jobDependsCollection.size() > 0) {
-                dependencies = Maps.newHashMap();
                 for (JobDepend jobDepend : jobDependsCollection) {
                     String offsetStrategy = jobDepend.getOffsetStrategy();
                     // default is null
