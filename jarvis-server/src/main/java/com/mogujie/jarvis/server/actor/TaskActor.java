@@ -24,6 +24,7 @@ import org.springframework.context.annotation.Scope;
 import akka.actor.ActorSelection;
 import akka.actor.UntypedActor;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Range;
 import com.mogujie.jarvis.core.JarvisConstants;
@@ -54,6 +55,7 @@ import com.mogujie.jarvis.server.TaskQueue;
 import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.dag.JobGraph;
 import com.mogujie.jarvis.server.scheduler.event.RetryTaskEvent;
+import com.mogujie.jarvis.server.scheduler.event.ScheduleEvent;
 import com.mogujie.jarvis.server.scheduler.plan.ExecutionPlanEntry;
 import com.mogujie.jarvis.server.scheduler.plan.PlanGenerator;
 import com.mogujie.jarvis.server.scheduler.task.DAGTask;
@@ -136,15 +138,14 @@ public class TaskActor extends UntypedActor {
      * @param msg
      */
     private void retryTask(RestServerRetryTaskRequest msg) {
-        List<Long> taskIdList = msg.getTaskIdList();
-        boolean runChild = msg.getRunChild();
-        controller.notify(new RetryTaskEvent(taskIdList, runChild));
+        List<Long> taskIdList = Lists.newArrayList(msg.getTaskId());
+        controller.notify(new RetryTaskEvent(taskIdList));
         ServerRetryTaskResponse response = ServerRetryTaskResponse.newBuilder().setSuccess(true).build();
         getSender().tell(response, getSelf());
     }
 
     /**
-     * 根据jobId和起止时间手动重跑
+     * 根据jobId和起止时间，按照新依赖关系重跑
      *
      * @param msg
      */
@@ -154,59 +155,65 @@ public class TaskActor extends UntypedActor {
         Date startDate = new Date(msg.getStartTime());
         Date endDate = new Date(msg.getEndTime());
         boolean runChild = msg.getRunChild();
-        boolean newDependency = msg.getNewDependency();
-        if (!newDependency) {
-            //按照历史依赖重跑
-            taskIdList = taskService.getTaskIdsByJobIdsBetween(jobIdList, startDate, endDate);
-        } else {
-            //按照新依赖关系重跑
-            // 1.生成所有任务的执行计划
-            TimeScheduler timeScheduler = TimeSchedulerFactory.getInstance();
-            PlanGenerator planGenerator = timeScheduler.getPlanGenerator();
-            Range<DateTime> range = Range.closed(new DateTime(startDate), new DateTime(endDate));
-            Map<Long, List<ExecutionPlanEntry>> planMap = planGenerator.getReschedulePlan(jobIdList, range);
-            // 2.通过新的job依赖关系生成新的task
-            for (long jobId : jobIdList) {
-                List<ExecutionPlanEntry> planList = planMap.get(jobId);
-                for (ExecutionPlanEntry planEntry : planList) {
-                    // create new task
-                    long scheduleTime = planEntry.getDateTime().getMillis();
-                    Task newTask = taskService.createTaskByJobId(jobId, scheduleTime);
-                    long taskId = newTask.getTaskId();
-                    planEntry.setTaskId(taskId);
-                    taskIdList.add(taskId);
-                }
+        // 1.生成所有任务的执行计划
+        TimeScheduler timeScheduler = TimeSchedulerFactory.getInstance();
+        PlanGenerator planGenerator = timeScheduler.getPlanGenerator();
+        Range<DateTime> range = Range.closed(new DateTime(startDate), new DateTime(endDate));
+        Map<Long, List<ExecutionPlanEntry>> planMap = planGenerator.getReschedulePlan(jobIdList, range);
+        // 2.通过新的job依赖关系生成新的task
+        for (long jobId : jobIdList) {
+            List<ExecutionPlanEntry> planList = planMap.get(jobId);
+            for (ExecutionPlanEntry planEntry : planList) {
+                // create new task
+                long scheduleTime = planEntry.getDateTime().getMillis();
+                Task newTask = taskService.createTaskByJobId(jobId, scheduleTime);
+                long taskId = newTask.getTaskId();
+                planEntry.setTaskId(taskId);
+                taskIdList.add(taskId);
             }
-            // 3.添加DAGTask到TaskGraph中
-            for (long jobId : jobIdList) {
-                List<ExecutionPlanEntry> planList = planMap.get(jobId);
-                for (ExecutionPlanEntry planEntry : planList) {
-                    // add to taskGraph
-                    long taskId = planEntry.getTaskId();
-                    long scheduleTime = planEntry.getDateTime().getMillis();
-                    DAGTask dagTask = new DAGTask(jobId, taskId, 1, scheduleTime);
-                    taskGraph.addTask(taskId, dagTask);
-                }
+        }
+        // 3.添加DAGTask到TaskGraph中
+        for (long jobId : jobIdList) {
+            List<ExecutionPlanEntry> planList = planMap.get(jobId);
+            for (ExecutionPlanEntry planEntry : planList) {
+                // add to taskGraph
+                long taskId = planEntry.getTaskId();
+                long scheduleTime = planEntry.getDateTime().getMillis();
+                DAGTask dagTask = new DAGTask(jobId, taskId, 1, scheduleTime);
+                taskGraph.addTask(taskId, dagTask);
             }
-            // 4.添加依赖关系
-            for (long jobId : jobIdList) {
-                Set<Long> dependJobIds = jobGraph.getEnableParentJobIds(jobId);
-                for (long preJobId: jobIdList) {
-                    if (dependJobIds.contains(preJobId)) {
-                        List<ExecutionPlanEntry> planList = planMap.get(jobId);
-                        for (ExecutionPlanEntry planEntry : planList) {
-                            long taskId = planEntry.getTaskId();
-                            DAGTask dagTask = taskGraph.getTask(taskId);
-                            List<Long> dependTaskIds = dagTask.getDependTaskIds();
-                            for (Long parentId : dependTaskIds) {
-                                taskGraph.addDependency(parentId, taskId);
-                            }
+        }
+        // 4.添加依赖关系
+        for (long jobId : jobIdList) {
+            Set<Long> dependJobIds = jobGraph.getEnableParentJobIds(jobId);
+            for (long preJobId: jobIdList) {
+                if (dependJobIds.contains(preJobId)) {
+                    List<ExecutionPlanEntry> planList = planMap.get(jobId);
+                    for (ExecutionPlanEntry planEntry : planList) {
+                        long taskId = planEntry.getTaskId();
+                        DAGTask dagTask = taskGraph.getTask(taskId);
+                        List<Long> dependTaskIds = dagTask.getDependTaskIds();
+                        for (Long parentId : dependTaskIds) {
+                            taskGraph.addDependency(parentId, taskId);
                         }
                     }
                 }
             }
         }
-        controller.notify(new RetryTaskEvent(taskIdList, runChild));
+        controller.notify(new RetryTaskEvent(taskIdList));
+
+        // 5.如果需要重跑后续任务，触发后续依赖任务
+        if (runChild) {
+            for (long taskId : taskIdList) {
+                DAGTask dagTask = taskGraph.getTask(taskId);
+                List<DAGTask> children = taskGraph.getChildren(taskId);
+                if (children == null || children.isEmpty()) {
+                    ScheduleEvent scheduleEvent = new ScheduleEvent(dagTask.getJobId(), taskId, dagTask.getScheduleTime());
+                    controller.notify(scheduleEvent);
+                }
+            }
+        }
+
         ServerManualRerunTaskResponse response = ServerManualRerunTaskResponse.newBuilder().setSuccess(true).build();
         getSender().tell(response, getSelf());
     }

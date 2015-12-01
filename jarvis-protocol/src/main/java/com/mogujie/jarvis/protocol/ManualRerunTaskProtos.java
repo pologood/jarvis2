@@ -8,10 +8,10 @@ public final class ManualRerunTaskProtos {
   public static void registerAllExtensions(
       com.google.protobuf.ExtensionRegistry registry) {
   }
-  public interface RestServerManualRerunTaskRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:RestServerManualRerunTaskRequest)
-      com.google.protobuf.MessageOrBuilder {
+  public interface RestServerManualRerunTaskRequestOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required .AppAuth app_auth = 1;
     /**
      * <code>required .AppAuth app_auth = 1;</code>
      */
@@ -25,6 +25,7 @@ public final class ManualRerunTaskProtos {
      */
     com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder();
 
+    // required int64 start_time = 2;
     /**
      * <code>required int64 start_time = 2;</code>
      */
@@ -34,6 +35,7 @@ public final class ManualRerunTaskProtos {
      */
     long getStartTime();
 
+    // required int64 end_time = 3;
     /**
      * <code>required int64 end_time = 3;</code>
      */
@@ -43,6 +45,7 @@ public final class ManualRerunTaskProtos {
      */
     long getEndTime();
 
+    // repeated int64 job_id = 4;
     /**
      * <code>repeated int64 job_id = 4;</code>
      */
@@ -56,21 +59,13 @@ public final class ManualRerunTaskProtos {
      */
     long getJobId(int index);
 
+    // optional bool run_child = 5 [default = true];
     /**
-     * <code>optional bool new_dependency = 5 [default = false];</code>
-     */
-    boolean hasNewDependency();
-    /**
-     * <code>optional bool new_dependency = 5 [default = false];</code>
-     */
-    boolean getNewDependency();
-
-    /**
-     * <code>optional bool run_child = 6 [default = true];</code>
+     * <code>optional bool run_child = 5 [default = true];</code>
      */
     boolean hasRunChild();
     /**
-     * <code>optional bool run_child = 6 [default = true];</code>
+     * <code>optional bool run_child = 5 [default = true];</code>
      */
     boolean getRunChild();
   }
@@ -78,9 +73,8 @@ public final class ManualRerunTaskProtos {
    * Protobuf type {@code RestServerManualRerunTaskRequest}
    */
   public static final class RestServerManualRerunTaskRequest extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:RestServerManualRerunTaskRequest)
-      RestServerManualRerunTaskRequestOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements RestServerManualRerunTaskRequestOrBuilder {
     // Use RestServerManualRerunTaskRequest.newBuilder() to construct.
     private RestServerManualRerunTaskRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -172,11 +166,6 @@ public final class ManualRerunTaskProtos {
             }
             case 40: {
               bitField0_ |= 0x00000008;
-              newDependency_ = input.readBool();
-              break;
-            }
-            case 48: {
-              bitField0_ |= 0x00000010;
               runChild_ = input.readBool();
               break;
             }
@@ -223,6 +212,7 @@ public final class ManualRerunTaskProtos {
     }
 
     private int bitField0_;
+    // required .AppAuth app_auth = 1;
     public static final int APP_AUTH_FIELD_NUMBER = 1;
     private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_;
     /**
@@ -244,6 +234,7 @@ public final class ManualRerunTaskProtos {
       return appAuth_;
     }
 
+    // required int64 start_time = 2;
     public static final int START_TIME_FIELD_NUMBER = 2;
     private long startTime_;
     /**
@@ -259,6 +250,7 @@ public final class ManualRerunTaskProtos {
       return startTime_;
     }
 
+    // required int64 end_time = 3;
     public static final int END_TIME_FIELD_NUMBER = 3;
     private long endTime_;
     /**
@@ -274,6 +266,7 @@ public final class ManualRerunTaskProtos {
       return endTime_;
     }
 
+    // repeated int64 job_id = 4;
     public static final int JOB_ID_FIELD_NUMBER = 4;
     private java.util.List<java.lang.Long> jobId_;
     /**
@@ -296,31 +289,17 @@ public final class ManualRerunTaskProtos {
       return jobId_.get(index);
     }
 
-    public static final int NEW_DEPENDENCY_FIELD_NUMBER = 5;
-    private boolean newDependency_;
+    // optional bool run_child = 5 [default = true];
+    public static final int RUN_CHILD_FIELD_NUMBER = 5;
+    private boolean runChild_;
     /**
-     * <code>optional bool new_dependency = 5 [default = false];</code>
+     * <code>optional bool run_child = 5 [default = true];</code>
      */
-    public boolean hasNewDependency() {
+    public boolean hasRunChild() {
       return ((bitField0_ & 0x00000008) == 0x00000008);
     }
     /**
-     * <code>optional bool new_dependency = 5 [default = false];</code>
-     */
-    public boolean getNewDependency() {
-      return newDependency_;
-    }
-
-    public static final int RUN_CHILD_FIELD_NUMBER = 6;
-    private boolean runChild_;
-    /**
-     * <code>optional bool run_child = 6 [default = true];</code>
-     */
-    public boolean hasRunChild() {
-      return ((bitField0_ & 0x00000010) == 0x00000010);
-    }
-    /**
-     * <code>optional bool run_child = 6 [default = true];</code>
+     * <code>optional bool run_child = 5 [default = true];</code>
      */
     public boolean getRunChild() {
       return runChild_;
@@ -331,14 +310,12 @@ public final class ManualRerunTaskProtos {
       startTime_ = 0L;
       endTime_ = 0L;
       jobId_ = java.util.Collections.emptyList();
-      newDependency_ = false;
       runChild_ = true;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasAppAuth()) {
         memoizedIsInitialized = 0;
@@ -376,10 +353,7 @@ public final class ManualRerunTaskProtos {
         output.writeInt64(4, jobId_.get(i));
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        output.writeBool(5, newDependency_);
-      }
-      if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        output.writeBool(6, runChild_);
+        output.writeBool(5, runChild_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -413,11 +387,7 @@ public final class ManualRerunTaskProtos {
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(5, newDependency_);
-      }
-      if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(6, runChild_);
+          .computeBoolSize(5, runChild_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -501,9 +471,8 @@ public final class ManualRerunTaskProtos {
      * Protobuf type {@code RestServerManualRerunTaskRequest}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:RestServerManualRerunTaskRequest)
-        com.mogujie.jarvis.protocol.ManualRerunTaskProtos.RestServerManualRerunTaskRequestOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.mogujie.jarvis.protocol.ManualRerunTaskProtos.RestServerManualRerunTaskRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mogujie.jarvis.protocol.ManualRerunTaskProtos.internal_static_RestServerManualRerunTaskRequest_descriptor;
@@ -549,10 +518,8 @@ public final class ManualRerunTaskProtos {
         bitField0_ = (bitField0_ & ~0x00000004);
         jobId_ = java.util.Collections.emptyList();
         bitField0_ = (bitField0_ & ~0x00000008);
-        newDependency_ = false;
-        bitField0_ = (bitField0_ & ~0x00000010);
         runChild_ = true;
-        bitField0_ = (bitField0_ & ~0x00000020);
+        bitField0_ = (bitField0_ & ~0x00000010);
         return this;
       }
 
@@ -605,10 +572,6 @@ public final class ManualRerunTaskProtos {
         if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
           to_bitField0_ |= 0x00000008;
         }
-        result.newDependency_ = newDependency_;
-        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
-          to_bitField0_ |= 0x00000010;
-        }
         result.runChild_ = runChild_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
@@ -644,9 +607,6 @@ public final class ManualRerunTaskProtos {
             jobId_.addAll(other.jobId_);
           }
           onChanged();
-        }
-        if (other.hasNewDependency()) {
-          setNewDependency(other.getNewDependency());
         }
         if (other.hasRunChild()) {
           setRunChild(other.getRunChild());
@@ -694,6 +654,7 @@ public final class ManualRerunTaskProtos {
       }
       private int bitField0_;
 
+      // required .AppAuth app_auth = 1;
       private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> appAuthBuilder_;
@@ -802,7 +763,7 @@ public final class ManualRerunTaskProtos {
         if (appAuthBuilder_ == null) {
           appAuthBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder>(
-                  getAppAuth(),
+                  appAuth_,
                   getParentForChildren(),
                   isClean());
           appAuth_ = null;
@@ -810,6 +771,7 @@ public final class ManualRerunTaskProtos {
         return appAuthBuilder_;
       }
 
+      // required int64 start_time = 2;
       private long startTime_ ;
       /**
        * <code>required int64 start_time = 2;</code>
@@ -842,6 +804,7 @@ public final class ManualRerunTaskProtos {
         return this;
       }
 
+      // required int64 end_time = 3;
       private long endTime_ ;
       /**
        * <code>required int64 end_time = 3;</code>
@@ -874,6 +837,7 @@ public final class ManualRerunTaskProtos {
         return this;
       }
 
+      // repeated int64 job_id = 4;
       private java.util.List<java.lang.Long> jobId_ = java.util.Collections.emptyList();
       private void ensureJobIdIsMutable() {
         if (!((bitField0_ & 0x00000008) == 0x00000008)) {
@@ -925,8 +889,7 @@ public final class ManualRerunTaskProtos {
       public Builder addAllJobId(
           java.lang.Iterable<? extends java.lang.Long> values) {
         ensureJobIdIsMutable();
-        com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, jobId_);
+        super.addAll(values, jobId_);
         onChanged();
         return this;
       }
@@ -940,65 +903,34 @@ public final class ManualRerunTaskProtos {
         return this;
       }
 
-      private boolean newDependency_ ;
+      // optional bool run_child = 5 [default = true];
+      private boolean runChild_ = true;
       /**
-       * <code>optional bool new_dependency = 5 [default = false];</code>
+       * <code>optional bool run_child = 5 [default = true];</code>
        */
-      public boolean hasNewDependency() {
+      public boolean hasRunChild() {
         return ((bitField0_ & 0x00000010) == 0x00000010);
       }
       /**
-       * <code>optional bool new_dependency = 5 [default = false];</code>
-       */
-      public boolean getNewDependency() {
-        return newDependency_;
-      }
-      /**
-       * <code>optional bool new_dependency = 5 [default = false];</code>
-       */
-      public Builder setNewDependency(boolean value) {
-        bitField0_ |= 0x00000010;
-        newDependency_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional bool new_dependency = 5 [default = false];</code>
-       */
-      public Builder clearNewDependency() {
-        bitField0_ = (bitField0_ & ~0x00000010);
-        newDependency_ = false;
-        onChanged();
-        return this;
-      }
-
-      private boolean runChild_ = true;
-      /**
-       * <code>optional bool run_child = 6 [default = true];</code>
-       */
-      public boolean hasRunChild() {
-        return ((bitField0_ & 0x00000020) == 0x00000020);
-      }
-      /**
-       * <code>optional bool run_child = 6 [default = true];</code>
+       * <code>optional bool run_child = 5 [default = true];</code>
        */
       public boolean getRunChild() {
         return runChild_;
       }
       /**
-       * <code>optional bool run_child = 6 [default = true];</code>
+       * <code>optional bool run_child = 5 [default = true];</code>
        */
       public Builder setRunChild(boolean value) {
-        bitField0_ |= 0x00000020;
+        bitField0_ |= 0x00000010;
         runChild_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional bool run_child = 6 [default = true];</code>
+       * <code>optional bool run_child = 5 [default = true];</code>
        */
       public Builder clearRunChild() {
-        bitField0_ = (bitField0_ & ~0x00000020);
+        bitField0_ = (bitField0_ & ~0x00000010);
         runChild_ = true;
         onChanged();
         return this;
@@ -1015,10 +947,10 @@ public final class ManualRerunTaskProtos {
     // @@protoc_insertion_point(class_scope:RestServerManualRerunTaskRequest)
   }
 
-  public interface ServerManualRerunTaskResponseOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:ServerManualRerunTaskResponse)
-      com.google.protobuf.MessageOrBuilder {
+  public interface ServerManualRerunTaskResponseOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required bool success = 1;
     /**
      * <code>required bool success = 1;</code>
      */
@@ -1028,6 +960,7 @@ public final class ManualRerunTaskProtos {
      */
     boolean getSuccess();
 
+    // optional string message = 2 [default = ""];
     /**
      * <code>optional string message = 2 [default = ""];</code>
      */
@@ -1046,9 +979,8 @@ public final class ManualRerunTaskProtos {
    * Protobuf type {@code ServerManualRerunTaskResponse}
    */
   public static final class ServerManualRerunTaskResponse extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:ServerManualRerunTaskResponse)
-      ServerManualRerunTaskResponseOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements ServerManualRerunTaskResponseOrBuilder {
     // Use ServerManualRerunTaskResponse.newBuilder() to construct.
     private ServerManualRerunTaskResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -1100,9 +1032,8 @@ public final class ManualRerunTaskProtos {
               break;
             }
             case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              message_ = bs;
+              message_ = input.readBytes();
               break;
             }
           }
@@ -1145,6 +1076,7 @@ public final class ManualRerunTaskProtos {
     }
 
     private int bitField0_;
+    // required bool success = 1;
     public static final int SUCCESS_FIELD_NUMBER = 1;
     private boolean success_;
     /**
@@ -1160,6 +1092,7 @@ public final class ManualRerunTaskProtos {
       return success_;
     }
 
+    // optional string message = 2 [default = ""];
     public static final int MESSAGE_FIELD_NUMBER = 2;
     private java.lang.Object message_;
     /**
@@ -1209,8 +1142,7 @@ public final class ManualRerunTaskProtos {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasSuccess()) {
         memoizedIsInitialized = 0;
@@ -1328,9 +1260,8 @@ public final class ManualRerunTaskProtos {
      * Protobuf type {@code ServerManualRerunTaskResponse}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:ServerManualRerunTaskResponse)
-        com.mogujie.jarvis.protocol.ManualRerunTaskProtos.ServerManualRerunTaskResponseOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.mogujie.jarvis.protocol.ManualRerunTaskProtos.ServerManualRerunTaskResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mogujie.jarvis.protocol.ManualRerunTaskProtos.internal_static_ServerManualRerunTaskResponse_descriptor;
@@ -1458,6 +1389,7 @@ public final class ManualRerunTaskProtos {
       }
       private int bitField0_;
 
+      // required bool success = 1;
       private boolean success_ ;
       /**
        * <code>required bool success = 1;</code>
@@ -1490,6 +1422,7 @@ public final class ManualRerunTaskProtos {
         return this;
       }
 
+      // optional string message = 2 [default = ""];
       private java.lang.Object message_ = "";
       /**
        * <code>optional string message = 2 [default = ""];</code>
@@ -1503,12 +1436,9 @@ public final class ManualRerunTaskProtos {
       public java.lang.String getMessage() {
         java.lang.Object ref = message_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            message_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          message_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -1577,12 +1507,12 @@ public final class ManualRerunTaskProtos {
     // @@protoc_insertion_point(class_scope:ServerManualRerunTaskResponse)
   }
 
-  private static final com.google.protobuf.Descriptors.Descriptor
+  private static com.google.protobuf.Descriptors.Descriptor
     internal_static_RestServerManualRerunTaskRequest_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_RestServerManualRerunTaskRequest_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
+  private static com.google.protobuf.Descriptors.Descriptor
     internal_static_ServerManualRerunTaskResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -1597,41 +1527,39 @@ public final class ManualRerunTaskProtos {
   static {
     java.lang.String[] descriptorData = {
       "\n\027manual_rerun_task.proto\032\016app_auth.prot" +
-      "o\"\254\001\n RestServerManualRerunTaskRequest\022\032" +
+      "o\"\215\001\n RestServerManualRerunTaskRequest\022\032" +
       "\n\010app_auth\030\001 \002(\0132\010.AppAuth\022\022\n\nstart_time" +
       "\030\002 \002(\003\022\020\n\010end_time\030\003 \002(\003\022\016\n\006job_id\030\004 \003(\003" +
-      "\022\035\n\016new_dependency\030\005 \001(\010:\005false\022\027\n\trun_c" +
-      "hild\030\006 \001(\010:\004true\"C\n\035ServerManualRerunTas" +
-      "kResponse\022\017\n\007success\030\001 \002(\010\022\021\n\007message\030\002 " +
-      "\001(\t:\000B4\n\033com.mogujie.jarvis.protocolB\025Ma" +
-      "nualRerunTaskProtos"
+      "\022\027\n\trun_child\030\005 \001(\010:\004true\"C\n\035ServerManua" +
+      "lRerunTaskResponse\022\017\n\007success\030\001 \002(\010\022\021\n\007m" +
+      "essage\030\002 \001(\t:\000B4\n\033com.mogujie.jarvis.pro" +
+      "tocolB\025ManualRerunTaskProtos"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
-          public com.google.protobuf.ExtensionRegistry assignDescriptors(
-              com.google.protobuf.Descriptors.FileDescriptor root) {
-            descriptor = root;
-            return null;
-          }
-        };
+      new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
+        public com.google.protobuf.ExtensionRegistry assignDescriptors(
+            com.google.protobuf.Descriptors.FileDescriptor root) {
+          descriptor = root;
+          internal_static_RestServerManualRerunTaskRequest_descriptor =
+            getDescriptor().getMessageTypes().get(0);
+          internal_static_RestServerManualRerunTaskRequest_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_RestServerManualRerunTaskRequest_descriptor,
+              new java.lang.String[] { "AppAuth", "StartTime", "EndTime", "JobId", "RunChild", });
+          internal_static_ServerManualRerunTaskResponse_descriptor =
+            getDescriptor().getMessageTypes().get(1);
+          internal_static_ServerManualRerunTaskResponse_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_ServerManualRerunTaskResponse_descriptor,
+              new java.lang.String[] { "Success", "Message", });
+          return null;
+        }
+      };
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           com.mogujie.jarvis.protocol.AppAuthProtos.getDescriptor(),
         }, assigner);
-    internal_static_RestServerManualRerunTaskRequest_descriptor =
-      getDescriptor().getMessageTypes().get(0);
-    internal_static_RestServerManualRerunTaskRequest_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_RestServerManualRerunTaskRequest_descriptor,
-        new java.lang.String[] { "AppAuth", "StartTime", "EndTime", "JobId", "NewDependency", "RunChild", });
-    internal_static_ServerManualRerunTaskResponse_descriptor =
-      getDescriptor().getMessageTypes().get(1);
-    internal_static_ServerManualRerunTaskResponse_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_ServerManualRerunTaskResponse_descriptor,
-        new java.lang.String[] { "Success", "Message", });
-    com.mogujie.jarvis.protocol.AppAuthProtos.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

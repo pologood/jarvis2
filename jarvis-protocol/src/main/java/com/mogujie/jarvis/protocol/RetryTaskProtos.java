@@ -8,10 +8,10 @@ public final class RetryTaskProtos {
   public static void registerAllExtensions(
       com.google.protobuf.ExtensionRegistry registry) {
   }
-  public interface RestServerRetryTaskRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:RestServerRetryTaskRequest)
-      com.google.protobuf.MessageOrBuilder {
+  public interface RestServerRetryTaskRequestOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required .AppAuth app_auth = 1;
     /**
      * <code>required .AppAuth app_auth = 1;</code>
      */
@@ -25,35 +25,22 @@ public final class RetryTaskProtos {
      */
     com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder();
 
+    // required int64 task_id = 2;
     /**
-     * <code>repeated int64 task_id = 2;</code>
+     * <code>required int64 task_id = 2;</code>
      */
-    java.util.List<java.lang.Long> getTaskIdList();
+    boolean hasTaskId();
     /**
-     * <code>repeated int64 task_id = 2;</code>
+     * <code>required int64 task_id = 2;</code>
      */
-    int getTaskIdCount();
-    /**
-     * <code>repeated int64 task_id = 2;</code>
-     */
-    long getTaskId(int index);
-
-    /**
-     * <code>optional bool run_child = 3 [default = true];</code>
-     */
-    boolean hasRunChild();
-    /**
-     * <code>optional bool run_child = 3 [default = true];</code>
-     */
-    boolean getRunChild();
+    long getTaskId();
   }
   /**
    * Protobuf type {@code RestServerRetryTaskRequest}
    */
   public static final class RestServerRetryTaskRequest extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:RestServerRetryTaskRequest)
-      RestServerRetryTaskRequestOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements RestServerRetryTaskRequestOrBuilder {
     // Use RestServerRetryTaskRequest.newBuilder() to construct.
     private RestServerRetryTaskRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -113,29 +100,8 @@ public final class RetryTaskProtos {
               break;
             }
             case 16: {
-              if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
-                taskId_ = new java.util.ArrayList<java.lang.Long>();
-                mutable_bitField0_ |= 0x00000002;
-              }
-              taskId_.add(input.readInt64());
-              break;
-            }
-            case 18: {
-              int length = input.readRawVarint32();
-              int limit = input.pushLimit(length);
-              if (!((mutable_bitField0_ & 0x00000002) == 0x00000002) && input.getBytesUntilLimit() > 0) {
-                taskId_ = new java.util.ArrayList<java.lang.Long>();
-                mutable_bitField0_ |= 0x00000002;
-              }
-              while (input.getBytesUntilLimit() > 0) {
-                taskId_.add(input.readInt64());
-              }
-              input.popLimit(limit);
-              break;
-            }
-            case 24: {
               bitField0_ |= 0x00000002;
-              runChild_ = input.readBool();
+              taskId_ = input.readInt64();
               break;
             }
           }
@@ -146,9 +112,6 @@ public final class RetryTaskProtos {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e.getMessage()).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
-          taskId_ = java.util.Collections.unmodifiableList(taskId_);
-        }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
@@ -181,6 +144,7 @@ public final class RetryTaskProtos {
     }
 
     private int bitField0_;
+    // required .AppAuth app_auth = 1;
     public static final int APP_AUTH_FIELD_NUMBER = 1;
     private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_;
     /**
@@ -202,55 +166,36 @@ public final class RetryTaskProtos {
       return appAuth_;
     }
 
+    // required int64 task_id = 2;
     public static final int TASK_ID_FIELD_NUMBER = 2;
-    private java.util.List<java.lang.Long> taskId_;
+    private long taskId_;
     /**
-     * <code>repeated int64 task_id = 2;</code>
+     * <code>required int64 task_id = 2;</code>
      */
-    public java.util.List<java.lang.Long>
-        getTaskIdList() {
-      return taskId_;
-    }
-    /**
-     * <code>repeated int64 task_id = 2;</code>
-     */
-    public int getTaskIdCount() {
-      return taskId_.size();
-    }
-    /**
-     * <code>repeated int64 task_id = 2;</code>
-     */
-    public long getTaskId(int index) {
-      return taskId_.get(index);
-    }
-
-    public static final int RUN_CHILD_FIELD_NUMBER = 3;
-    private boolean runChild_;
-    /**
-     * <code>optional bool run_child = 3 [default = true];</code>
-     */
-    public boolean hasRunChild() {
+    public boolean hasTaskId() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
-     * <code>optional bool run_child = 3 [default = true];</code>
+     * <code>required int64 task_id = 2;</code>
      */
-    public boolean getRunChild() {
-      return runChild_;
+    public long getTaskId() {
+      return taskId_;
     }
 
     private void initFields() {
       appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
-      taskId_ = java.util.Collections.emptyList();
-      runChild_ = true;
+      taskId_ = 0L;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasAppAuth()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasTaskId()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -268,11 +213,8 @@ public final class RetryTaskProtos {
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         output.writeMessage(1, appAuth_);
       }
-      for (int i = 0; i < taskId_.size(); i++) {
-        output.writeInt64(2, taskId_.get(i));
-      }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeBool(3, runChild_);
+        output.writeInt64(2, taskId_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -287,18 +229,9 @@ public final class RetryTaskProtos {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(1, appAuth_);
       }
-      {
-        int dataSize = 0;
-        for (int i = 0; i < taskId_.size(); i++) {
-          dataSize += com.google.protobuf.CodedOutputStream
-            .computeInt64SizeNoTag(taskId_.get(i));
-        }
-        size += dataSize;
-        size += 1 * getTaskIdList().size();
-      }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(3, runChild_);
+          .computeInt64Size(2, taskId_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -382,9 +315,8 @@ public final class RetryTaskProtos {
      * Protobuf type {@code RestServerRetryTaskRequest}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:RestServerRetryTaskRequest)
-        com.mogujie.jarvis.protocol.RetryTaskProtos.RestServerRetryTaskRequestOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.mogujie.jarvis.protocol.RetryTaskProtos.RestServerRetryTaskRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mogujie.jarvis.protocol.RetryTaskProtos.internal_static_RestServerRetryTaskRequest_descriptor;
@@ -424,10 +356,8 @@ public final class RetryTaskProtos {
           appAuthBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000001);
-        taskId_ = java.util.Collections.emptyList();
+        taskId_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000002);
-        runChild_ = true;
-        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
 
@@ -464,15 +394,10 @@ public final class RetryTaskProtos {
         } else {
           result.appAuth_ = appAuthBuilder_.build();
         }
-        if (((bitField0_ & 0x00000002) == 0x00000002)) {
-          taskId_ = java.util.Collections.unmodifiableList(taskId_);
-          bitField0_ = (bitField0_ & ~0x00000002);
-        }
-        result.taskId_ = taskId_;
-        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
           to_bitField0_ |= 0x00000002;
         }
-        result.runChild_ = runChild_;
+        result.taskId_ = taskId_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -492,18 +417,8 @@ public final class RetryTaskProtos {
         if (other.hasAppAuth()) {
           mergeAppAuth(other.getAppAuth());
         }
-        if (!other.taskId_.isEmpty()) {
-          if (taskId_.isEmpty()) {
-            taskId_ = other.taskId_;
-            bitField0_ = (bitField0_ & ~0x00000002);
-          } else {
-            ensureTaskIdIsMutable();
-            taskId_.addAll(other.taskId_);
-          }
-          onChanged();
-        }
-        if (other.hasRunChild()) {
-          setRunChild(other.getRunChild());
+        if (other.hasTaskId()) {
+          setTaskId(other.getTaskId());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -511,6 +426,10 @@ public final class RetryTaskProtos {
 
       public final boolean isInitialized() {
         if (!hasAppAuth()) {
+          
+          return false;
+        }
+        if (!hasTaskId()) {
           
           return false;
         }
@@ -540,6 +459,7 @@ public final class RetryTaskProtos {
       }
       private int bitField0_;
 
+      // required .AppAuth app_auth = 1;
       private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> appAuthBuilder_;
@@ -648,7 +568,7 @@ public final class RetryTaskProtos {
         if (appAuthBuilder_ == null) {
           appAuthBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder>(
-                  getAppAuth(),
+                  appAuth_,
                   getParentForChildren(),
                   isClean());
           appAuth_ = null;
@@ -656,100 +576,35 @@ public final class RetryTaskProtos {
         return appAuthBuilder_;
       }
 
-      private java.util.List<java.lang.Long> taskId_ = java.util.Collections.emptyList();
-      private void ensureTaskIdIsMutable() {
-        if (!((bitField0_ & 0x00000002) == 0x00000002)) {
-          taskId_ = new java.util.ArrayList<java.lang.Long>(taskId_);
-          bitField0_ |= 0x00000002;
-         }
+      // required int64 task_id = 2;
+      private long taskId_ ;
+      /**
+       * <code>required int64 task_id = 2;</code>
+       */
+      public boolean hasTaskId() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
-       * <code>repeated int64 task_id = 2;</code>
+       * <code>required int64 task_id = 2;</code>
        */
-      public java.util.List<java.lang.Long>
-          getTaskIdList() {
-        return java.util.Collections.unmodifiableList(taskId_);
+      public long getTaskId() {
+        return taskId_;
       }
       /**
-       * <code>repeated int64 task_id = 2;</code>
+       * <code>required int64 task_id = 2;</code>
        */
-      public int getTaskIdCount() {
-        return taskId_.size();
-      }
-      /**
-       * <code>repeated int64 task_id = 2;</code>
-       */
-      public long getTaskId(int index) {
-        return taskId_.get(index);
-      }
-      /**
-       * <code>repeated int64 task_id = 2;</code>
-       */
-      public Builder setTaskId(
-          int index, long value) {
-        ensureTaskIdIsMutable();
-        taskId_.set(index, value);
+      public Builder setTaskId(long value) {
+        bitField0_ |= 0x00000002;
+        taskId_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>repeated int64 task_id = 2;</code>
-       */
-      public Builder addTaskId(long value) {
-        ensureTaskIdIsMutable();
-        taskId_.add(value);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated int64 task_id = 2;</code>
-       */
-      public Builder addAllTaskId(
-          java.lang.Iterable<? extends java.lang.Long> values) {
-        ensureTaskIdIsMutable();
-        com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, taskId_);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated int64 task_id = 2;</code>
+       * <code>required int64 task_id = 2;</code>
        */
       public Builder clearTaskId() {
-        taskId_ = java.util.Collections.emptyList();
         bitField0_ = (bitField0_ & ~0x00000002);
-        onChanged();
-        return this;
-      }
-
-      private boolean runChild_ = true;
-      /**
-       * <code>optional bool run_child = 3 [default = true];</code>
-       */
-      public boolean hasRunChild() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
-      }
-      /**
-       * <code>optional bool run_child = 3 [default = true];</code>
-       */
-      public boolean getRunChild() {
-        return runChild_;
-      }
-      /**
-       * <code>optional bool run_child = 3 [default = true];</code>
-       */
-      public Builder setRunChild(boolean value) {
-        bitField0_ |= 0x00000004;
-        runChild_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional bool run_child = 3 [default = true];</code>
-       */
-      public Builder clearRunChild() {
-        bitField0_ = (bitField0_ & ~0x00000004);
-        runChild_ = true;
+        taskId_ = 0L;
         onChanged();
         return this;
       }
@@ -765,10 +620,10 @@ public final class RetryTaskProtos {
     // @@protoc_insertion_point(class_scope:RestServerRetryTaskRequest)
   }
 
-  public interface ServerRetryTaskResponseOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:ServerRetryTaskResponse)
-      com.google.protobuf.MessageOrBuilder {
+  public interface ServerRetryTaskResponseOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required bool success = 1;
     /**
      * <code>required bool success = 1;</code>
      */
@@ -778,6 +633,7 @@ public final class RetryTaskProtos {
      */
     boolean getSuccess();
 
+    // optional string message = 2 [default = ""];
     /**
      * <code>optional string message = 2 [default = ""];</code>
      */
@@ -796,9 +652,8 @@ public final class RetryTaskProtos {
    * Protobuf type {@code ServerRetryTaskResponse}
    */
   public static final class ServerRetryTaskResponse extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:ServerRetryTaskResponse)
-      ServerRetryTaskResponseOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements ServerRetryTaskResponseOrBuilder {
     // Use ServerRetryTaskResponse.newBuilder() to construct.
     private ServerRetryTaskResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -850,9 +705,8 @@ public final class RetryTaskProtos {
               break;
             }
             case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              message_ = bs;
+              message_ = input.readBytes();
               break;
             }
           }
@@ -895,6 +749,7 @@ public final class RetryTaskProtos {
     }
 
     private int bitField0_;
+    // required bool success = 1;
     public static final int SUCCESS_FIELD_NUMBER = 1;
     private boolean success_;
     /**
@@ -910,6 +765,7 @@ public final class RetryTaskProtos {
       return success_;
     }
 
+    // optional string message = 2 [default = ""];
     public static final int MESSAGE_FIELD_NUMBER = 2;
     private java.lang.Object message_;
     /**
@@ -959,8 +815,7 @@ public final class RetryTaskProtos {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasSuccess()) {
         memoizedIsInitialized = 0;
@@ -1078,9 +933,8 @@ public final class RetryTaskProtos {
      * Protobuf type {@code ServerRetryTaskResponse}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:ServerRetryTaskResponse)
-        com.mogujie.jarvis.protocol.RetryTaskProtos.ServerRetryTaskResponseOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.mogujie.jarvis.protocol.RetryTaskProtos.ServerRetryTaskResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mogujie.jarvis.protocol.RetryTaskProtos.internal_static_ServerRetryTaskResponse_descriptor;
@@ -1208,6 +1062,7 @@ public final class RetryTaskProtos {
       }
       private int bitField0_;
 
+      // required bool success = 1;
       private boolean success_ ;
       /**
        * <code>required bool success = 1;</code>
@@ -1240,6 +1095,7 @@ public final class RetryTaskProtos {
         return this;
       }
 
+      // optional string message = 2 [default = ""];
       private java.lang.Object message_ = "";
       /**
        * <code>optional string message = 2 [default = ""];</code>
@@ -1253,12 +1109,9 @@ public final class RetryTaskProtos {
       public java.lang.String getMessage() {
         java.lang.Object ref = message_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            message_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          message_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -1327,12 +1180,12 @@ public final class RetryTaskProtos {
     // @@protoc_insertion_point(class_scope:ServerRetryTaskResponse)
   }
 
-  private static final com.google.protobuf.Descriptors.Descriptor
+  private static com.google.protobuf.Descriptors.Descriptor
     internal_static_RestServerRetryTaskRequest_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_RestServerRetryTaskRequest_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
+  private static com.google.protobuf.Descriptors.Descriptor
     internal_static_ServerRetryTaskResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -1346,40 +1199,38 @@ public final class RetryTaskProtos {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\020retry_task.proto\032\016app_auth.proto\"b\n\032Re" +
+      "\n\020retry_task.proto\032\016app_auth.proto\"I\n\032Re" +
       "stServerRetryTaskRequest\022\032\n\010app_auth\030\001 \002" +
-      "(\0132\010.AppAuth\022\017\n\007task_id\030\002 \003(\003\022\027\n\trun_chi" +
-      "ld\030\003 \001(\010:\004true\"=\n\027ServerRetryTaskRespons" +
-      "e\022\017\n\007success\030\001 \002(\010\022\021\n\007message\030\002 \001(\t:\000B.\n" +
-      "\033com.mogujie.jarvis.protocolB\017RetryTaskP" +
-      "rotos"
+      "(\0132\010.AppAuth\022\017\n\007task_id\030\002 \002(\003\"=\n\027ServerR" +
+      "etryTaskResponse\022\017\n\007success\030\001 \002(\010\022\021\n\007mes" +
+      "sage\030\002 \001(\t:\000B.\n\033com.mogujie.jarvis.proto" +
+      "colB\017RetryTaskProtos"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
-          public com.google.protobuf.ExtensionRegistry assignDescriptors(
-              com.google.protobuf.Descriptors.FileDescriptor root) {
-            descriptor = root;
-            return null;
-          }
-        };
+      new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
+        public com.google.protobuf.ExtensionRegistry assignDescriptors(
+            com.google.protobuf.Descriptors.FileDescriptor root) {
+          descriptor = root;
+          internal_static_RestServerRetryTaskRequest_descriptor =
+            getDescriptor().getMessageTypes().get(0);
+          internal_static_RestServerRetryTaskRequest_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_RestServerRetryTaskRequest_descriptor,
+              new java.lang.String[] { "AppAuth", "TaskId", });
+          internal_static_ServerRetryTaskResponse_descriptor =
+            getDescriptor().getMessageTypes().get(1);
+          internal_static_ServerRetryTaskResponse_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_ServerRetryTaskResponse_descriptor,
+              new java.lang.String[] { "Success", "Message", });
+          return null;
+        }
+      };
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           com.mogujie.jarvis.protocol.AppAuthProtos.getDescriptor(),
         }, assigner);
-    internal_static_RestServerRetryTaskRequest_descriptor =
-      getDescriptor().getMessageTypes().get(0);
-    internal_static_RestServerRetryTaskRequest_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_RestServerRetryTaskRequest_descriptor,
-        new java.lang.String[] { "AppAuth", "TaskId", "RunChild", });
-    internal_static_ServerRetryTaskResponse_descriptor =
-      getDescriptor().getMessageTypes().get(1);
-    internal_static_ServerRetryTaskResponse_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_ServerRetryTaskResponse_descriptor,
-        new java.lang.String[] { "Success", "Message", });
-    com.mogujie.jarvis.protocol.AppAuthProtos.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

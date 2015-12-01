@@ -196,7 +196,6 @@ public class TaskScheduler extends Scheduler {
     @Transactional
     public void handleRetryTaskEvent(RetryTaskEvent e) {
         List<Long> taskIdList = e.getTaskIdList();
-        boolean runChild = e.isRunChild();
         for (Long taskId : taskIdList) {
             Task task = taskService.get(taskId);
             if (task != null) {
@@ -204,7 +203,7 @@ public class TaskScheduler extends Scheduler {
 
                 DAGTask dagTask = taskGraph.getTask(taskId);
                 if (dagTask == null) {
-                    dagTask = new DAGTask(task.getJobId(), taskId, task.getAttemptId(), task.getScheduleTime().getTime(), runChild);
+                    dagTask = new DAGTask(task.getJobId(), taskId, task.getAttemptId(), task.getScheduleTime().getTime());
                     taskGraph.addTask(taskId, dagTask);
                 }
                 if (dagTask != null && dagTask.checkStatus()) {

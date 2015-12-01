@@ -23,7 +23,6 @@ public class DAGTask {
     private int attemptId;
     private long scheduleTime;
     private TaskStatusChecker statusChecker;
-    private boolean runChild = true;
 
     public DAGTask(long jobId, long taskId, long scheduleTime, Map<Long, List<Long>> dependTaskIdMap) {
         this(jobId, taskId, 1, scheduleTime, dependTaskIdMap);
@@ -35,11 +34,6 @@ public class DAGTask {
         this.attemptId = attemptId;
         this.scheduleTime = scheduleTime;
         this.statusChecker = new TaskStatusChecker(jobId, taskId, scheduleTime);
-    }
-
-    public DAGTask(long jobId, long taskId, int attemptId, long scheduleTime, boolean runChild) {
-        this(jobId, taskId, attemptId, scheduleTime);
-        this.runChild = runChild;
     }
 
     public DAGTask(long jobId, long taskId, int attemptId, long scheduleTime, Map<Long, List<Long>> dependTaskIdMap) {
@@ -80,14 +74,6 @@ public class DAGTask {
 
     public void setScheduleTime(long scheduleTime) {
         this.scheduleTime = scheduleTime;
-    }
-
-    public boolean isRunChild() {
-        return runChild;
-    }
-
-    public void setRunChild(boolean runChild) {
-        this.runChild = runChild;
     }
 
     public TaskStatusChecker getStatusChecker() {

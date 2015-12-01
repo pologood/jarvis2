@@ -91,7 +91,7 @@ public class TaskStatusChecker {
     private Map<Long, TaskDependStatus> loadJobStatus(long myJobId, long scheduleTime) {
         Map<Long, TaskDependStatus> jobStatusMap = new ConcurrentHashMap<Long, TaskDependStatus>();
         Map<Long, JobDependencyEntry> dependencyMap = jobService.get(myJobId).getDependencies();
-        if(dependencyMap !=null) {
+        if(dependencyMap != null) {
             for (Long preJobId : dependencyMap.keySet()) {
                 JobDependencyEntry dependencyEntry = dependencyMap.get(preJobId);
                 DependencyStrategyExpression commonStrategy = dependencyEntry.getDependencyStrategyExpression();

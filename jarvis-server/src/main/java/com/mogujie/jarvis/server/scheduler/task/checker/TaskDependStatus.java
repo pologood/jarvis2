@@ -41,13 +41,12 @@ public class TaskDependStatus {
 
     private List<Boolean> getStatusList() {
         List<Task> dependTasks = taskService.getTasks(dependTaskIds);
-        if(dependTasks == null){
-            return null;
-        }
         List<Boolean> taskStatus = new ArrayList<Boolean>();
-        for (Task task : dependTasks) {
-            Boolean status = (task.getStatus() == TaskStatus.SUCCESS.getValue()) ? true : false;
-            taskStatus.add(status);
+        if (dependTasks != null) {
+            for (Task task : dependTasks) {
+                Boolean status = (task.getStatus() == TaskStatus.SUCCESS.getValue()) ? true : false;
+                taskStatus.add(status);
+            }
         }
 
         return taskStatus;

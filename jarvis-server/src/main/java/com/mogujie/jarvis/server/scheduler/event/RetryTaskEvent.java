@@ -19,15 +19,13 @@ import com.mogujie.jarvis.core.observer.Event;
 public class RetryTaskEvent implements Event {
 
     private List<Long> taskIdList;
-    private boolean runChild;
 
     /**
      * @param taskIdList
      * @param runChild
      */
-    public RetryTaskEvent(List<Long> taskIdList, boolean runChild) {
+    public RetryTaskEvent(List<Long> taskIdList) {
         this.taskIdList = taskIdList;
-        this.runChild = runChild;
     }
 
     public List<Long> getTaskIdList() {
@@ -36,13 +34,5 @@ public class RetryTaskEvent implements Event {
 
     public void setTaskIdList(List<Long> taskIdList) {
         this.taskIdList = taskIdList;
-    }
-
-    public boolean isRunChild() {
-        return runChild;
-    }
-
-    public void setRunChild(boolean runChild) {
-        this.runChild = runChild;
     }
 }
