@@ -173,10 +173,12 @@ public class TaskScheduler extends Scheduler {
         taskGraph.addTask(taskId, dagTask);
 
         // add task dependency
-        for (Long preJobId : dependTaskIdMap.keySet()) {
-            List<Long> preTasks = dependTaskIdMap.get(preJobId);
-            for (Long parentId : preTasks) {
-                taskGraph.addDependency(parentId, taskId);
+        if (dependTaskIdMap != null) {
+            for (Long preJobId : dependTaskIdMap.keySet()) {
+                List<Long> preTasks = dependTaskIdMap.get(preJobId);
+                for (Long parentId : preTasks) {
+                    taskGraph.addDependency(parentId, taskId);
+                }
             }
         }
 

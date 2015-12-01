@@ -81,6 +81,13 @@ public class TaskDependSchedule {
 
     public void setExpression(String expression) {
         this.expression = expression;
+        if (expression == null) {
+            dependType = JobDependType.RUNTIME;
+        } else if (expression.startsWith("c")) {
+            dependType = JobDependType.CURRENT;
+        } else {
+            dependType = JobDependType.OFFSET;
+        }
     }
 
     /**

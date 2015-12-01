@@ -65,6 +65,7 @@ public class TestJobSchedulerController extends TestSchedulerBase {
         SuccessEvent successEventA = new SuccessEvent(jobAId, taskAId);
         controller.notify(successEventA);
         Assert.assertEquals(2, taskScheduler.getReadyTable().size());
+        Assert.assertEquals(2, taskQueue.size());
 
         // jobB success, taskScheduler remove jobB from readyTable, and jobC run
         SuccessEvent successEventB = new SuccessEvent(jobBId, taskBId);
