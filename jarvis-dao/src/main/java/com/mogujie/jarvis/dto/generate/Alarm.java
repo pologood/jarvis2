@@ -1,6 +1,7 @@
 package com.mogujie.jarvis.dto.generate;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class Alarm implements Serializable {
     private Integer id;
@@ -12,6 +13,8 @@ public class Alarm implements Serializable {
     private String receiver;
 
     private Integer status;
+
+    private Date createTime;
 
     private static final long serialVersionUID = 1L;
 
@@ -53,5 +56,13 @@ public class Alarm implements Serializable {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 }

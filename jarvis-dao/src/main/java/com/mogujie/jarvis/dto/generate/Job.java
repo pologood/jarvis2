@@ -6,8 +6,6 @@ import java.util.Date;
 public class Job implements Serializable {
     private Long jobId;
 
-    private Long originJobId;
-
     private String jobName;
 
     private String jobType;
@@ -24,11 +22,11 @@ public class Job implements Serializable {
 
     private Integer appId;
 
+    private Integer workerGroupId;
+
     private Date activeStartDate;
 
     private Date activeEndDate;
-
-    private Integer workerGroupId;
 
     private Integer rejectAttempts;
 
@@ -52,14 +50,6 @@ public class Job implements Serializable {
 
     public void setJobId(Long jobId) {
         this.jobId = jobId;
-    }
-
-    public Long getOriginJobId() {
-        return originJobId;
-    }
-
-    public void setOriginJobId(Long originJobId) {
-        this.originJobId = originJobId;
     }
 
     public String getJobName() {
@@ -126,6 +116,14 @@ public class Job implements Serializable {
         this.appId = appId;
     }
 
+    public Integer getWorkerGroupId() {
+        return workerGroupId;
+    }
+
+    public void setWorkerGroupId(Integer workerGroupId) {
+        this.workerGroupId = workerGroupId;
+    }
+
     public Date getActiveStartDate() {
         return activeStartDate;
     }
@@ -140,14 +138,6 @@ public class Job implements Serializable {
 
     public void setActiveEndDate(Date activeEndDate) {
         this.activeEndDate = activeEndDate;
-    }
-
-    public Integer getWorkerGroupId() {
-        return workerGroupId;
-    }
-
-    public void setWorkerGroupId(Integer workerGroupId) {
-        this.workerGroupId = workerGroupId;
     }
 
     public Integer getRejectAttempts() {

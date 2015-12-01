@@ -3,7 +3,6 @@
 <mapper namespace="com.mogujie.jarvis.dao.generate.JobMapper" >
   <resultMap id="BaseResultMap" type="com.mogujie.jarvis.dto.generate.Job" >
     <id column="jobId" property="jobId" jdbcType="BIGINT" />
-    <result column="originJobId" property="originJobId" jdbcType="BIGINT" />
     <result column="jobName" property="jobName" jdbcType="VARCHAR" />
     <result column="jobType" property="jobType" jdbcType="VARCHAR" />
     <result column="jobFlag" property="jobFlag" jdbcType="INTEGER" />
@@ -12,9 +11,9 @@
     <result column="submitUser" property="submitUser" jdbcType="VARCHAR" />
     <result column="priority" property="priority" jdbcType="INTEGER" />
     <result column="appId" property="appId" jdbcType="INTEGER" />
+    <result column="workerGroupId" property="workerGroupId" jdbcType="INTEGER" />
     <result column="activeStartDate" property="activeStartDate" jdbcType="TIMESTAMP" />
     <result column="activeEndDate" property="activeEndDate" jdbcType="TIMESTAMP" />
-    <result column="workerGroupId" property="workerGroupId" jdbcType="INTEGER" />
     <result column="rejectAttempts" property="rejectAttempts" jdbcType="INTEGER" />
     <result column="rejectInterval" property="rejectInterval" jdbcType="INTEGER" />
     <result column="failedAttempts" property="failedAttempts" jdbcType="INTEGER" />
@@ -82,9 +81,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    jobId, originJobId, jobName, jobType, jobFlag, content, params, submitUser, priority, 
-    appId, activeStartDate, activeEndDate, workerGroupId, rejectAttempts, rejectInterval, 
-    failedAttempts, failedInterval, createTime, updateTime, updateUser
+    jobId, jobName, jobType, jobFlag, content, params, submitUser, priority, appId, workerGroupId, 
+    activeStartDate, activeEndDate, rejectAttempts, rejectInterval, failedAttempts, failedInterval, 
+    createTime, updateTime, updateUser
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.mogujie.jarvis.dto.generate.JobExample" >
     select
@@ -120,20 +119,20 @@
     <selectKey resultType="java.lang.Long" keyProperty="jobId" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into job (originJobId, jobName, jobType, 
-      jobFlag, content, params, 
-      submitUser, priority, appId, 
-      activeStartDate, activeEndDate, workerGroupId, 
-      rejectAttempts, rejectInterval, failedAttempts, 
-      failedInterval, createTime, updateTime, 
-      updateUser)
-    values (#{originJobId,jdbcType=BIGINT}, #{jobName,jdbcType=VARCHAR}, #{jobType,jdbcType=VARCHAR}, 
-      #{jobFlag,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, #{params,jdbcType=VARCHAR}, 
-      #{submitUser,jdbcType=VARCHAR}, #{priority,jdbcType=INTEGER}, #{appId,jdbcType=INTEGER}, 
-      #{activeStartDate,jdbcType=TIMESTAMP}, #{activeEndDate,jdbcType=TIMESTAMP}, #{workerGroupId,jdbcType=INTEGER}, 
-      #{rejectAttempts,jdbcType=INTEGER}, #{rejectInterval,jdbcType=INTEGER}, #{failedAttempts,jdbcType=INTEGER}, 
-      #{failedInterval,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{updateUser,jdbcType=VARCHAR})
+    insert into job (jobName, jobType, jobFlag, 
+      content, params, submitUser, 
+      priority, appId, workerGroupId, 
+      activeStartDate, activeEndDate, rejectAttempts, 
+      rejectInterval, failedAttempts, failedInterval, 
+      createTime, updateTime, updateUser
+      )
+    values (#{jobName,jdbcType=VARCHAR}, #{jobType,jdbcType=VARCHAR}, #{jobFlag,jdbcType=INTEGER}, 
+      #{content,jdbcType=VARCHAR}, #{params,jdbcType=VARCHAR}, #{submitUser,jdbcType=VARCHAR}, 
+      #{priority,jdbcType=INTEGER}, #{appId,jdbcType=INTEGER}, #{workerGroupId,jdbcType=INTEGER}, 
+      #{activeStartDate,jdbcType=TIMESTAMP}, #{activeEndDate,jdbcType=TIMESTAMP}, #{rejectAttempts,jdbcType=INTEGER}, 
+      #{rejectInterval,jdbcType=INTEGER}, #{failedAttempts,jdbcType=INTEGER}, #{failedInterval,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.mogujie.jarvis.dto.generate.Job" >
     <selectKey resultType="java.lang.Long" keyProperty="jobId" order="AFTER" >
@@ -141,9 +140,6 @@
     </selectKey>
     insert into job
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="originJobId != null" >
-        originJobId,
-      </if>
       <if test="jobName != null" >
         jobName,
       </if>
@@ -168,14 +164,14 @@
       <if test="appId != null" >
         appId,
       </if>
+      <if test="workerGroupId != null" >
+        workerGroupId,
+      </if>
       <if test="activeStartDate != null" >
         activeStartDate,
       </if>
       <if test="activeEndDate != null" >
         activeEndDate,
-      </if>
-      <if test="workerGroupId != null" >
-        workerGroupId,
       </if>
       <if test="rejectAttempts != null" >
         rejectAttempts,
@@ -200,9 +196,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="originJobId != null" >
-        #{originJobId,jdbcType=BIGINT},
-      </if>
       <if test="jobName != null" >
         #{jobName,jdbcType=VARCHAR},
       </if>
@@ -227,14 +220,14 @@
       <if test="appId != null" >
         #{appId,jdbcType=INTEGER},
       </if>
+      <if test="workerGroupId != null" >
+        #{workerGroupId,jdbcType=INTEGER},
+      </if>
       <if test="activeStartDate != null" >
         #{activeStartDate,jdbcType=TIMESTAMP},
       </if>
       <if test="activeEndDate != null" >
         #{activeEndDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="workerGroupId != null" >
-        #{workerGroupId,jdbcType=INTEGER},
       </if>
       <if test="rejectAttempts != null" >
         #{rejectAttempts,jdbcType=INTEGER},
@@ -271,9 +264,6 @@
       <if test="record.jobId != null" >
         jobId = #{record.jobId,jdbcType=BIGINT},
       </if>
-      <if test="record.originJobId != null" >
-        originJobId = #{record.originJobId,jdbcType=BIGINT},
-      </if>
       <if test="record.jobName != null" >
         jobName = #{record.jobName,jdbcType=VARCHAR},
       </if>
@@ -298,14 +288,14 @@
       <if test="record.appId != null" >
         appId = #{record.appId,jdbcType=INTEGER},
       </if>
+      <if test="record.workerGroupId != null" >
+        workerGroupId = #{record.workerGroupId,jdbcType=INTEGER},
+      </if>
       <if test="record.activeStartDate != null" >
         activeStartDate = #{record.activeStartDate,jdbcType=TIMESTAMP},
       </if>
       <if test="record.activeEndDate != null" >
         activeEndDate = #{record.activeEndDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.workerGroupId != null" >
-        workerGroupId = #{record.workerGroupId,jdbcType=INTEGER},
       </if>
       <if test="record.rejectAttempts != null" >
         rejectAttempts = #{record.rejectAttempts,jdbcType=INTEGER},
@@ -336,7 +326,6 @@
   <update id="updateByExample" parameterType="map" >
     update job
     set jobId = #{record.jobId,jdbcType=BIGINT},
-      originJobId = #{record.originJobId,jdbcType=BIGINT},
       jobName = #{record.jobName,jdbcType=VARCHAR},
       jobType = #{record.jobType,jdbcType=VARCHAR},
       jobFlag = #{record.jobFlag,jdbcType=INTEGER},
@@ -345,9 +334,9 @@
       submitUser = #{record.submitUser,jdbcType=VARCHAR},
       priority = #{record.priority,jdbcType=INTEGER},
       appId = #{record.appId,jdbcType=INTEGER},
+      workerGroupId = #{record.workerGroupId,jdbcType=INTEGER},
       activeStartDate = #{record.activeStartDate,jdbcType=TIMESTAMP},
       activeEndDate = #{record.activeEndDate,jdbcType=TIMESTAMP},
-      workerGroupId = #{record.workerGroupId,jdbcType=INTEGER},
       rejectAttempts = #{record.rejectAttempts,jdbcType=INTEGER},
       rejectInterval = #{record.rejectInterval,jdbcType=INTEGER},
       failedAttempts = #{record.failedAttempts,jdbcType=INTEGER},
@@ -362,9 +351,6 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.mogujie.jarvis.dto.generate.Job" >
     update job
     <set >
-      <if test="originJobId != null" >
-        originJobId = #{originJobId,jdbcType=BIGINT},
-      </if>
       <if test="jobName != null" >
         jobName = #{jobName,jdbcType=VARCHAR},
       </if>
@@ -389,14 +375,14 @@
       <if test="appId != null" >
         appId = #{appId,jdbcType=INTEGER},
       </if>
+      <if test="workerGroupId != null" >
+        workerGroupId = #{workerGroupId,jdbcType=INTEGER},
+      </if>
       <if test="activeStartDate != null" >
         activeStartDate = #{activeStartDate,jdbcType=TIMESTAMP},
       </if>
       <if test="activeEndDate != null" >
         activeEndDate = #{activeEndDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="workerGroupId != null" >
-        workerGroupId = #{workerGroupId,jdbcType=INTEGER},
       </if>
       <if test="rejectAttempts != null" >
         rejectAttempts = #{rejectAttempts,jdbcType=INTEGER},
@@ -424,8 +410,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.mogujie.jarvis.dto.generate.Job" >
     update job
-    set originJobId = #{originJobId,jdbcType=BIGINT},
-      jobName = #{jobName,jdbcType=VARCHAR},
+    set jobName = #{jobName,jdbcType=VARCHAR},
       jobType = #{jobType,jdbcType=VARCHAR},
       jobFlag = #{jobFlag,jdbcType=INTEGER},
       content = #{content,jdbcType=VARCHAR},
@@ -433,9 +418,9 @@
       submitUser = #{submitUser,jdbcType=VARCHAR},
       priority = #{priority,jdbcType=INTEGER},
       appId = #{appId,jdbcType=INTEGER},
+      workerGroupId = #{workerGroupId,jdbcType=INTEGER},
       activeStartDate = #{activeStartDate,jdbcType=TIMESTAMP},
       activeEndDate = #{activeEndDate,jdbcType=TIMESTAMP},
-      workerGroupId = #{workerGroupId,jdbcType=INTEGER},
       rejectAttempts = #{rejectAttempts,jdbcType=INTEGER},
       rejectInterval = #{rejectInterval,jdbcType=INTEGER},
       failedAttempts = #{failedAttempts,jdbcType=INTEGER},

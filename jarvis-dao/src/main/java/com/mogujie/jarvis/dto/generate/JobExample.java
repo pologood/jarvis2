@@ -165,66 +165,6 @@ public class JobExample {
             return (Criteria) this;
         }
 
-        public Criteria andOriginJobIdIsNull() {
-            addCriterion("originJobId is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andOriginJobIdIsNotNull() {
-            addCriterion("originJobId is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andOriginJobIdEqualTo(Long value) {
-            addCriterion("originJobId =", value, "originJobId");
-            return (Criteria) this;
-        }
-
-        public Criteria andOriginJobIdNotEqualTo(Long value) {
-            addCriterion("originJobId <>", value, "originJobId");
-            return (Criteria) this;
-        }
-
-        public Criteria andOriginJobIdGreaterThan(Long value) {
-            addCriterion("originJobId >", value, "originJobId");
-            return (Criteria) this;
-        }
-
-        public Criteria andOriginJobIdGreaterThanOrEqualTo(Long value) {
-            addCriterion("originJobId >=", value, "originJobId");
-            return (Criteria) this;
-        }
-
-        public Criteria andOriginJobIdLessThan(Long value) {
-            addCriterion("originJobId <", value, "originJobId");
-            return (Criteria) this;
-        }
-
-        public Criteria andOriginJobIdLessThanOrEqualTo(Long value) {
-            addCriterion("originJobId <=", value, "originJobId");
-            return (Criteria) this;
-        }
-
-        public Criteria andOriginJobIdIn(List<Long> values) {
-            addCriterion("originJobId in", values, "originJobId");
-            return (Criteria) this;
-        }
-
-        public Criteria andOriginJobIdNotIn(List<Long> values) {
-            addCriterion("originJobId not in", values, "originJobId");
-            return (Criteria) this;
-        }
-
-        public Criteria andOriginJobIdBetween(Long value1, Long value2) {
-            addCriterion("originJobId between", value1, value2, "originJobId");
-            return (Criteria) this;
-        }
-
-        public Criteria andOriginJobIdNotBetween(Long value1, Long value2) {
-            addCriterion("originJobId not between", value1, value2, "originJobId");
-            return (Criteria) this;
-        }
-
         public Criteria andJobNameIsNull() {
             addCriterion("jobName is null");
             return (Criteria) this;
@@ -755,6 +695,66 @@ public class JobExample {
             return (Criteria) this;
         }
 
+        public Criteria andWorkerGroupIdIsNull() {
+            addCriterion("workerGroupId is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkerGroupIdIsNotNull() {
+            addCriterion("workerGroupId is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkerGroupIdEqualTo(Integer value) {
+            addCriterion("workerGroupId =", value, "workerGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkerGroupIdNotEqualTo(Integer value) {
+            addCriterion("workerGroupId <>", value, "workerGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkerGroupIdGreaterThan(Integer value) {
+            addCriterion("workerGroupId >", value, "workerGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkerGroupIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("workerGroupId >=", value, "workerGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkerGroupIdLessThan(Integer value) {
+            addCriterion("workerGroupId <", value, "workerGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkerGroupIdLessThanOrEqualTo(Integer value) {
+            addCriterion("workerGroupId <=", value, "workerGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkerGroupIdIn(List<Integer> values) {
+            addCriterion("workerGroupId in", values, "workerGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkerGroupIdNotIn(List<Integer> values) {
+            addCriterion("workerGroupId not in", values, "workerGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkerGroupIdBetween(Integer value1, Integer value2) {
+            addCriterion("workerGroupId between", value1, value2, "workerGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkerGroupIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("workerGroupId not between", value1, value2, "workerGroupId");
+            return (Criteria) this;
+        }
+
         public Criteria andActiveStartDateIsNull() {
             addCriterion("activeStartDate is null");
             return (Criteria) this;
@@ -872,66 +872,6 @@ public class JobExample {
 
         public Criteria andActiveEndDateNotBetween(Date value1, Date value2) {
             addCriterion("activeEndDate not between", value1, value2, "activeEndDate");
-            return (Criteria) this;
-        }
-
-        public Criteria andWorkerGroupIdIsNull() {
-            addCriterion("workerGroupId is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andWorkerGroupIdIsNotNull() {
-            addCriterion("workerGroupId is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andWorkerGroupIdEqualTo(Integer value) {
-            addCriterion("workerGroupId =", value, "workerGroupId");
-            return (Criteria) this;
-        }
-
-        public Criteria andWorkerGroupIdNotEqualTo(Integer value) {
-            addCriterion("workerGroupId <>", value, "workerGroupId");
-            return (Criteria) this;
-        }
-
-        public Criteria andWorkerGroupIdGreaterThan(Integer value) {
-            addCriterion("workerGroupId >", value, "workerGroupId");
-            return (Criteria) this;
-        }
-
-        public Criteria andWorkerGroupIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("workerGroupId >=", value, "workerGroupId");
-            return (Criteria) this;
-        }
-
-        public Criteria andWorkerGroupIdLessThan(Integer value) {
-            addCriterion("workerGroupId <", value, "workerGroupId");
-            return (Criteria) this;
-        }
-
-        public Criteria andWorkerGroupIdLessThanOrEqualTo(Integer value) {
-            addCriterion("workerGroupId <=", value, "workerGroupId");
-            return (Criteria) this;
-        }
-
-        public Criteria andWorkerGroupIdIn(List<Integer> values) {
-            addCriterion("workerGroupId in", values, "workerGroupId");
-            return (Criteria) this;
-        }
-
-        public Criteria andWorkerGroupIdNotIn(List<Integer> values) {
-            addCriterion("workerGroupId not in", values, "workerGroupId");
-            return (Criteria) this;
-        }
-
-        public Criteria andWorkerGroupIdBetween(Integer value1, Integer value2) {
-            addCriterion("workerGroupId between", value1, value2, "workerGroupId");
-            return (Criteria) this;
-        }
-
-        public Criteria andWorkerGroupIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("workerGroupId not between", value1, value2, "workerGroupId");
             return (Criteria) this;
         }
 
