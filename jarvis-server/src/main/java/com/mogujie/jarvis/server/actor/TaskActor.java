@@ -16,7 +16,6 @@ import java.util.Set;
 
 import javax.inject.Named;
 
-import com.mogujie.jarvis.server.service.ConvertValidService;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -35,6 +34,7 @@ import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.domain.TaskDetail.TaskDetailBuilder;
 import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.domain.WorkerInfo;
+import com.mogujie.jarvis.core.expression.DependencyExpression;
 import com.mogujie.jarvis.core.util.IdUtils;
 import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.protocol.KillTaskProtos.RestServerKillTaskRequest;
@@ -52,6 +52,7 @@ import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse;
 import com.mogujie.jarvis.server.TaskManager;
 import com.mogujie.jarvis.server.TaskQueue;
+import com.mogujie.jarvis.server.domain.JobDependencyEntry;
 import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.dag.JobGraph;
 import com.mogujie.jarvis.server.scheduler.event.RetryTaskEvent;
@@ -62,7 +63,9 @@ import com.mogujie.jarvis.server.scheduler.task.DAGTask;
 import com.mogujie.jarvis.server.scheduler.task.TaskGraph;
 import com.mogujie.jarvis.server.scheduler.time.TimeScheduler;
 import com.mogujie.jarvis.server.scheduler.time.TimeSchedulerFactory;
+import com.mogujie.jarvis.server.service.ConvertValidService;
 import com.mogujie.jarvis.server.service.IDService;
+import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.FutureUtils;
 
@@ -77,6 +80,8 @@ public class TaskActor extends UntypedActor {
     private TaskManager taskManager;
     @Autowired
     private TaskService taskService;
+    @Autowired
+    private JobService jobService;
     @Autowired
     private IDService idService;
     @Autowired
@@ -179,7 +184,17 @@ public class TaskActor extends UntypedActor {
                 // add to taskGraph
                 long taskId = planEntry.getTaskId();
                 long scheduleTime = planEntry.getDateTime().getMillis();
-                DAGTask dagTask = new DAGTask(jobId, taskId, 1, scheduleTime);
+                Map<Long, List<Long>> dependTaskIdMap = Maps.newHashMap();
+                Map<Long, JobDependencyEntry> dependencyMap = jobService.get(jobId).getDependencies();
+                if(dependencyMap != null) {
+                    for (long preJobId : dependencyMap.keySet()) {
+                        JobDependencyEntry dependencyEntry = dependencyMap.get(preJobId);
+                        DependencyExpression dependencyExpression = dependencyEntry.getDependencyExpression();
+                        List<Long> dependTaskIds = taskService.getDependTaskIds(preJobId, scheduleTime, dependencyExpression);
+                        dependTaskIdMap.put(preJobId, dependTaskIds);
+                    }
+                }
+                DAGTask dagTask = new DAGTask(jobId, taskId, scheduleTime, dependTaskIdMap);
                 taskGraph.addTask(taskId, dagTask);
             }
         }

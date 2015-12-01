@@ -152,7 +152,7 @@ public class TaskService {
         taskMapper.updateByPrimaryKey(task);
     }
 
-    public List<Long> getDependTaskIds(long myJobId, long preJobId, long scheduleTime, DependencyExpression dependencyExpression) {
+    public List<Long> getDependTaskIds(long preJobId, long scheduleTime, DependencyExpression dependencyExpression) {
         List<Task> tasks = new ArrayList<Task>();
         if (dependencyExpression != null) {
             tasks = getTasksBetween(preJobId, dependencyExpression.getRange(new DateTime(scheduleTime)));
