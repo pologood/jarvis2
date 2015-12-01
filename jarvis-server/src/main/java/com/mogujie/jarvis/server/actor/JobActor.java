@@ -13,21 +13,22 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+
 import javax.inject.Named;
 
-import com.mogujie.jarvis.core.exeception.JobScheduleException;
-import com.mogujie.jarvis.server.service.ConvertValidService;
-import com.mogujie.jarvis.server.service.IDService;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.transaction.annotation.Transactional;
+
 import akka.actor.UntypedActor;
+
 import com.google.common.collect.Sets;
 import com.mogujie.jarvis.core.domain.ActorEntry;
 import com.mogujie.jarvis.core.domain.JobFlag;
 import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.core.domain.Pair;
+import com.mogujie.jarvis.core.exeception.JobScheduleException;
 import com.mogujie.jarvis.core.expression.ScheduleExpressionType;
 import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.dto.generate.JobDepend;
@@ -35,14 +36,14 @@ import com.mogujie.jarvis.dto.generate.JobDependKey;
 import com.mogujie.jarvis.dto.generate.JobScheduleExpression;
 import com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry;
 import com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.DependencyOperator;
-import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobRequest;
-import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobResponse;
-import com.mogujie.jarvis.protocol.JobProtos.RestSubmitJobRequest;
-import com.mogujie.jarvis.protocol.JobProtos.ServerSubmitJobResponse;
 import com.mogujie.jarvis.protocol.JobProtos.JobFlagEntry;
+import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobRequest;
 import com.mogujie.jarvis.protocol.JobProtos.RestQueryJobRelationRequest;
 import com.mogujie.jarvis.protocol.JobProtos.RestQueryJobRelationRequest.RelationType;
+import com.mogujie.jarvis.protocol.JobProtos.RestSubmitJobRequest;
+import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobResponse;
 import com.mogujie.jarvis.protocol.JobProtos.ServerQueryJobRelationResponse;
+import com.mogujie.jarvis.protocol.JobProtos.ServerSubmitJobResponse;
 import com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry;
 import com.mogujie.jarvis.server.domain.ModifyDependEntry;
 import com.mogujie.jarvis.server.domain.ModifyOperation;
@@ -52,6 +53,7 @@ import com.mogujie.jarvis.server.scheduler.dag.DAGJobType;
 import com.mogujie.jarvis.server.scheduler.dag.DAGScheduler;
 import com.mogujie.jarvis.server.scheduler.time.TimeScheduler;
 import com.mogujie.jarvis.server.scheduler.time.TimeSchedulerFactory;
+import com.mogujie.jarvis.server.service.ConvertValidService;
 import com.mogujie.jarvis.server.service.JobService;
 
 /**
@@ -68,8 +70,6 @@ public class JobActor extends UntypedActor {
     private JobService jobService;
     @Autowired
     private ConvertValidService convertValidService;
-    @Autowired
-    private IDService idService;
 
     /**
      * 处理消息
@@ -116,9 +116,7 @@ public class JobActor extends UntypedActor {
             Job job = convertValidService.convert2Job(msg);
 
             // 1. insert job to DB
-            long jobId = idService.getNextJobId();
-            job.setJobId(jobId);
-            jobService.insertJob(job);
+            long jobId = jobService.insertJob(job);
 
             // 2. insert schedule expression to DB
             if (msg.hasExpressionEntry()) {

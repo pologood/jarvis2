@@ -64,7 +64,6 @@ import com.mogujie.jarvis.server.scheduler.task.TaskGraph;
 import com.mogujie.jarvis.server.scheduler.time.TimeScheduler;
 import com.mogujie.jarvis.server.scheduler.time.TimeSchedulerFactory;
 import com.mogujie.jarvis.server.service.ConvertValidService;
-import com.mogujie.jarvis.server.service.IDService;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.FutureUtils;
@@ -82,8 +81,6 @@ public class TaskActor extends UntypedActor {
     private TaskService taskService;
     @Autowired
     private JobService jobService;
-    @Autowired
-    private IDService idService;
     @Autowired
     private ConvertValidService convertValidService;
 

@@ -80,15 +80,18 @@ public class JobService {
     }
 
     public long insertJob(Job record) {
+        //TODO
         jobMapper.insert(record);
         return record.getJobId();
     }
 
     public void updateJob(Job record) {
+        //TODO
         jobMapper.updateByPrimaryKeySelective(record);
     }
 
     public void deleteJob(long jobId) {
+        //TODO
         jobMapper.deleteByPrimaryKey(jobId);
     }
 
@@ -115,10 +118,12 @@ public class JobService {
     }
 
     public void updateScheduleExpression(JobScheduleExpression record) {
+        //TODO
         jobScheduleExpressionMapper.updateByPrimaryKey(record);
     }
 
     public void updateScheduleExpression(long jobId, ScheduleExpressionEntry entry) {
+        //TODO
         JobScheduleExpression record = new JobScheduleExpression();
         record.setJobId(jobId);
         record.setExpressionType(entry.getExpressionType());
@@ -129,16 +134,19 @@ public class JobService {
 
 
     public void deleteScheduleExpression(long jobId) {
+        //TODO
         JobScheduleExpressionExample example = new JobScheduleExpressionExample();
         example.createCriteria().andJobIdEqualTo(jobId);
         jobScheduleExpressionMapper.deleteByExample(example);
     }
 
     public void insertJobDepend(JobDepend record) {
+        //TODO
         jobDependMapper.insert(record);
     }
 
     public void deleteJobDepend(JobDependKey key) {
+        //TODO
         jobDependMapper.deleteByPrimaryKey(key);
     }
 
@@ -147,6 +155,7 @@ public class JobService {
      * @param jobId
      */
     public void deleteJobDependByPreJob(long jobId) {
+        //TODO
         JobDependExample jobDependExample = new JobDependExample();
         jobDependExample.createCriteria().andPreJobIdEqualTo(jobId);
         jobDependMapper.deleteByExample(jobDependExample);
@@ -157,6 +166,7 @@ public class JobService {
     }
 
     public void updateJobDepend(JobDepend record) {
+        //TODO
         jobDependMapper.updateByPrimaryKey(record);
     }
 
@@ -188,6 +198,7 @@ public class JobService {
 
 
     public void updateJobFlag(long jobId, String user, int newFlag) {
+        //TODO
         Job record = jobMapper.selectByPrimaryKey(jobId);
         record.setJobFlag(newFlag);
         record.setUpdateUser(user);
