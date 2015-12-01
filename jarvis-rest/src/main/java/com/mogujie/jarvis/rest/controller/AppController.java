@@ -12,7 +12,7 @@ import com.mogujie.jarvis.rest.RestResult;
 import com.mogujie.jarvis.rest.utils.JsonParams;
 
 /**
- * muming
+ * @author muming
  */
 @Path("api/app")
 public class AppController extends AbstractController {
@@ -59,7 +59,7 @@ public class AppController extends AbstractController {
      * 修改app
      */
     @POST
-    @Path("update")
+    @Path("edit")
     @Produces(MediaType.APPLICATION_JSON)
     public RestResult update(@FormParam("user") String user,
                              @FormParam("appName") String appName,

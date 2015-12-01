@@ -16,6 +16,7 @@ import java.util.Set;
 
 import javax.inject.Named;
 
+import com.mogujie.jarvis.server.service.ConvertValidService;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -62,7 +63,6 @@ import com.mogujie.jarvis.server.scheduler.time.TimeSchedulerFactory;
 import com.mogujie.jarvis.server.service.IDService;
 import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.FutureUtils;
-import com.mogujie.jarvis.server.util.MessageUtil;
 
 /**
  * @author guangming
@@ -73,12 +73,12 @@ import com.mogujie.jarvis.server.util.MessageUtil;
 public class TaskActor extends UntypedActor {
     @Autowired
     private TaskManager taskManager;
-
     @Autowired
     private TaskService taskService;
-
     @Autowired
     private IDService idService;
+    @Autowired
+    private ConvertValidService convertValidService;
 
     private JobGraph jobGraph = JobGraph.INSTANCE;
     private TaskGraph taskGraph = TaskGraph.INSTANCE;
@@ -241,7 +241,7 @@ public class TaskActor extends UntypedActor {
     }
 
     private TaskDetail createRunOnceTask(RestServerSubmitTaskRequest request) {
-        Task task = MessageUtil.convert2Task(request);
+        Task task = convertValidService.convert2Task(request);
         taskService.insert(task);
         long taskId = task.getTaskId();
         TaskDetailBuilder builder = TaskDetail.newTaskDetailBuilder();

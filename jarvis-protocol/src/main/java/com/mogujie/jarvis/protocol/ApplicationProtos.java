@@ -54,20 +54,20 @@ public final class ApplicationProtos {
         getAppNameBytes();
 
     /**
-     * <code>optional int32 status = 4 [default = 1];</code>
+     * <code>optional int32 status = 4;</code>
      */
     boolean hasStatus();
     /**
-     * <code>optional int32 status = 4 [default = 1];</code>
+     * <code>optional int32 status = 4;</code>
      */
     int getStatus();
 
     /**
-     * <code>optional int32 max_concurrency = 5 [default = 10];</code>
+     * <code>optional int32 max_concurrency = 5;</code>
      */
     boolean hasMaxConcurrency();
     /**
-     * <code>optional int32 max_concurrency = 5 [default = 10];</code>
+     * <code>optional int32 max_concurrency = 5;</code>
      */
     int getMaxConcurrency();
   }
@@ -306,13 +306,13 @@ public final class ApplicationProtos {
     public static final int STATUS_FIELD_NUMBER = 4;
     private int status_;
     /**
-     * <code>optional int32 status = 4 [default = 1];</code>
+     * <code>optional int32 status = 4;</code>
      */
     public boolean hasStatus() {
       return ((bitField0_ & 0x00000008) == 0x00000008);
     }
     /**
-     * <code>optional int32 status = 4 [default = 1];</code>
+     * <code>optional int32 status = 4;</code>
      */
     public int getStatus() {
       return status_;
@@ -321,13 +321,13 @@ public final class ApplicationProtos {
     public static final int MAX_CONCURRENCY_FIELD_NUMBER = 5;
     private int maxConcurrency_;
     /**
-     * <code>optional int32 max_concurrency = 5 [default = 10];</code>
+     * <code>optional int32 max_concurrency = 5;</code>
      */
     public boolean hasMaxConcurrency() {
       return ((bitField0_ & 0x00000010) == 0x00000010);
     }
     /**
-     * <code>optional int32 max_concurrency = 5 [default = 10];</code>
+     * <code>optional int32 max_concurrency = 5;</code>
      */
     public int getMaxConcurrency() {
       return maxConcurrency_;
@@ -337,8 +337,8 @@ public final class ApplicationProtos {
       appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
       user_ = "";
       appName_ = "";
-      status_ = 1;
-      maxConcurrency_ = 10;
+      status_ = 0;
+      maxConcurrency_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -541,9 +541,9 @@ public final class ApplicationProtos {
         bitField0_ = (bitField0_ & ~0x00000002);
         appName_ = "";
         bitField0_ = (bitField0_ & ~0x00000004);
-        status_ = 1;
+        status_ = 0;
         bitField0_ = (bitField0_ & ~0x00000008);
-        maxConcurrency_ = 10;
+        maxConcurrency_ = 0;
         bitField0_ = (bitField0_ & ~0x00000010);
         return this;
       }
@@ -943,21 +943,21 @@ public final class ApplicationProtos {
         return this;
       }
 
-      private int status_ = 1;
+      private int status_ ;
       /**
-       * <code>optional int32 status = 4 [default = 1];</code>
+       * <code>optional int32 status = 4;</code>
        */
       public boolean hasStatus() {
         return ((bitField0_ & 0x00000008) == 0x00000008);
       }
       /**
-       * <code>optional int32 status = 4 [default = 1];</code>
+       * <code>optional int32 status = 4;</code>
        */
       public int getStatus() {
         return status_;
       }
       /**
-       * <code>optional int32 status = 4 [default = 1];</code>
+       * <code>optional int32 status = 4;</code>
        */
       public Builder setStatus(int value) {
         bitField0_ |= 0x00000008;
@@ -966,30 +966,30 @@ public final class ApplicationProtos {
         return this;
       }
       /**
-       * <code>optional int32 status = 4 [default = 1];</code>
+       * <code>optional int32 status = 4;</code>
        */
       public Builder clearStatus() {
         bitField0_ = (bitField0_ & ~0x00000008);
-        status_ = 1;
+        status_ = 0;
         onChanged();
         return this;
       }
 
-      private int maxConcurrency_ = 10;
+      private int maxConcurrency_ ;
       /**
-       * <code>optional int32 max_concurrency = 5 [default = 10];</code>
+       * <code>optional int32 max_concurrency = 5;</code>
        */
       public boolean hasMaxConcurrency() {
         return ((bitField0_ & 0x00000010) == 0x00000010);
       }
       /**
-       * <code>optional int32 max_concurrency = 5 [default = 10];</code>
+       * <code>optional int32 max_concurrency = 5;</code>
        */
       public int getMaxConcurrency() {
         return maxConcurrency_;
       }
       /**
-       * <code>optional int32 max_concurrency = 5 [default = 10];</code>
+       * <code>optional int32 max_concurrency = 5;</code>
        */
       public Builder setMaxConcurrency(int value) {
         bitField0_ |= 0x00000010;
@@ -998,11 +998,11 @@ public final class ApplicationProtos {
         return this;
       }
       /**
-       * <code>optional int32 max_concurrency = 5 [default = 10];</code>
+       * <code>optional int32 max_concurrency = 5;</code>
        */
       public Builder clearMaxConcurrency() {
         bitField0_ = (bitField0_ & ~0x00000010);
-        maxConcurrency_ = 10;
+        maxConcurrency_ = 0;
         onChanged();
         return this;
       }
@@ -3259,19 +3259,19 @@ public final class ApplicationProtos {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\021application.proto\032\016app_auth.proto\"\212\001\n\034" +
+      "\n\021application.proto\032\016app_auth.proto\"\203\001\n\034" +
       "RestCreateApplicationRequest\022\032\n\010app_auth" +
       "\030\001 \002(\0132\010.AppAuth\022\014\n\004user\030\002 \002(\t\022\020\n\010app_na" +
-      "me\030\003 \002(\t\022\021\n\006status\030\004 \001(\005:\0011\022\033\n\017max_concu" +
-      "rrency\030\005 \001(\005:\00210\"E\n\037ServerCreateApplicat" +
-      "ionResponse\022\017\n\007success\030\001 \002(\010\022\021\n\007message\030" +
-      "\002 \001(\t:\000\"\223\001\n\034RestModifyApplicationRequest" +
-      "\022\032\n\010app_auth\030\001 \002(\0132\010.AppAuth\022\014\n\004user\030\002 \002" +
-      "(\t\022\016\n\006app_id\030\003 \002(\005\022\020\n\010app_name\030\004 \001(\t\022\016\n\006" +
-      "status\030\005 \001(\005\022\027\n\017max_concurrency\030\006 \001(\005\"E\n",
-      "\037ServerModifyApplicationResponse\022\017\n\007succ" +
-      "ess\030\001 \002(\010\022\021\n\007message\030\002 \001(\t:\000B0\n\033com.mogu" +
-      "jie.jarvis.protocolB\021ApplicationProtos"
+      "me\030\003 \002(\t\022\016\n\006status\030\004 \001(\005\022\027\n\017max_concurre" +
+      "ncy\030\005 \001(\005\"E\n\037ServerCreateApplicationResp" +
+      "onse\022\017\n\007success\030\001 \002(\010\022\021\n\007message\030\002 \001(\t:\000" +
+      "\"\223\001\n\034RestModifyApplicationRequest\022\032\n\010app" +
+      "_auth\030\001 \002(\0132\010.AppAuth\022\014\n\004user\030\002 \002(\t\022\016\n\006a" +
+      "pp_id\030\003 \002(\005\022\020\n\010app_name\030\004 \001(\t\022\016\n\006status\030" +
+      "\005 \001(\005\022\027\n\017max_concurrency\030\006 \001(\005\"E\n\037Server",
+      "ModifyApplicationResponse\022\017\n\007success\030\001 \002" +
+      "(\010\022\021\n\007message\030\002 \001(\t:\000B0\n\033com.mogujie.jar" +
+      "vis.protocolB\021ApplicationProtos"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {

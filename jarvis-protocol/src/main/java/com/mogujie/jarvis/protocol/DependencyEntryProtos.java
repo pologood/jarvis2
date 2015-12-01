@@ -177,40 +177,40 @@ public final class DependencyEntryProtos {
     public enum DependencyOperator
         implements com.google.protobuf.ProtocolMessageEnum {
       /**
-       * <code>ADD = 0;</code>
+       * <code>ADD = 1;</code>
        */
-      ADD(0, 0),
-      /**
-       * <code>REMOVE = 1;</code>
-       */
-      REMOVE(1, 1),
+      ADD(0, 1),
       /**
        * <code>UPDATE = 2;</code>
        */
-      UPDATE(2, 2),
+      UPDATE(1, 2),
+      /**
+       * <code>REMOVE = 3;</code>
+       */
+      REMOVE(2, 3),
       ;
 
       /**
-       * <code>ADD = 0;</code>
+       * <code>ADD = 1;</code>
        */
-      public static final int ADD_VALUE = 0;
-      /**
-       * <code>REMOVE = 1;</code>
-       */
-      public static final int REMOVE_VALUE = 1;
+      public static final int ADD_VALUE = 1;
       /**
        * <code>UPDATE = 2;</code>
        */
       public static final int UPDATE_VALUE = 2;
+      /**
+       * <code>REMOVE = 3;</code>
+       */
+      public static final int REMOVE_VALUE = 3;
 
 
       public final int getNumber() { return value; }
 
       public static DependencyOperator valueOf(int value) {
         switch (value) {
-          case 0: return ADD;
-          case 1: return REMOVE;
+          case 1: return ADD;
           case 2: return UPDATE;
+          case 3: return REMOVE;
           default: return null;
         }
       }
@@ -853,7 +853,7 @@ public final class DependencyEntryProtos {
       ".DependencyOperator\022\016\n\006job_id\030\002 \002(\003\022!\n\026c" +
       "ommon_depend_strategy\030\003 \001(\005:\0010\022 \n\026offset" +
       "_depend_strategy\030\004 \001(\t:\000\"5\n\022DependencyOp" +
-      "erator\022\007\n\003ADD\020\000\022\n\n\006REMOVE\020\001\022\n\n\006UPDATE\020\002B" +
+      "erator\022\007\n\003ADD\020\001\022\n\n\006UPDATE\020\002\022\n\n\006REMOVE\020\003B" +
       "4\n\033com.mogujie.jarvis.protocolB\025Dependen" +
       "cyEntryProtos"
     };

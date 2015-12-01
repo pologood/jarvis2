@@ -1,0 +1,83 @@
+import "map_entry.proto";
+import "dependency_entry.proto";
+import "app_auth.proto";
+import "schedule_expression_entry.proto";
+
+option java_package = "com.mogujie.jarvis.protocol";
+option java_outer_classname = "JobProtos";
+
+//submitJob
+message RestSubmitJobRequest {
+    required AppAuth app_auth = 1;
+    required string user = 2;
+    required string job_name = 3;
+    required string job_type = 4;
+    required int32 job_flag = 5;
+    required string content = 6;
+    optional string parameters = 7 [default = ""];
+    required int32 worker_group_id = 8;
+    optional int32 priority = 9 [default = 1];
+    optional int64 active_start_time = 10;
+    optional int64 active_end_time = 11;
+    optional int32 reject_attempts = 12 [default = 0];
+    optional int32 reject_interval = 13 [default = 3];
+    optional int32 failed_attempts = 14 [default = 0];
+    optional int32 failed_interval = 15 [default = 3];
+    optional ScheduleExpressionEntry expression_entry = 16;
+    repeated DependencyEntry dependency_entry = 17;
+}
+
+message ServerSubmitJobResponse {
+    optional int64 job_id = 1;
+    required bool success = 2;
+    optional string message = 3 [default = ""];
+}
+
+//modifyJob
+message RestModifyJobRequest {
+    required AppAuth app_auth = 1;
+    required string user = 2;
+    required int64 job_id = 3;
+    optional string job_name = 4;
+    optional string job_type = 5;
+    optional int32 job_flag = 6;
+    optional string content = 7;
+    optional string parameters = 8;
+    optional int32 worker_group_id = 9;
+    optional int32 priority = 10;
+    optional int64 active_start_time = 11;
+    optional int64 active_end_time = 12;
+    optional int32 reject_attempts = 13;
+    optional int32 reject_interval = 14;
+    optional int32 failed_attempts = 15;
+    optional int32 failed_interval = 16;
+    optional ScheduleExpressionEntry expression_entry = 17;
+    repeated DependencyEntry dependency_entry = 18;
+}
+
+message ServerModifyJobResponse {
+    required bool success = 1;
+    optional string message = 2 [default = ""];
+}
+
+//QueryJobRelation
+message JobFlagEntry {
+    required int64 job_id = 1;
+    required int32 job_flag = 2;
+}
+
+message RestQueryJobRelationRequest {
+    enum RelationType {
+        PARENTS = 0;
+        CHILDREN = 1;
+    }
+    required AppAuth app_auth = 1;
+    required int64 job_id = 2;
+    required RelationType relation_type = 3;
+}
+
+message ServerQueryJobRelationResponse {
+    repeated JobFlagEntry job_flag_entry = 1;
+    required bool success = 2;
+    optional string message = 3 [default = ""];
+}

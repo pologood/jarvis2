@@ -6,7 +6,7 @@ import "schedule_expression_entry.proto";
 option java_package = "com.mogujie.jarvis.protocol";
 option java_outer_classname = "SubmitJobProtos";
 
-message RestServerSubmitJobRequest {
+message DeleteRestServerSubmitJobRequest {
     required AppAuth app_auth = 1;
     required string job_name = 2;
     optional ScheduleExpressionEntry expression_entry = 3;
@@ -26,7 +26,7 @@ message RestServerSubmitJobRequest {
 }
 
 
-message ServerSubmitJobResponse {
+message DeleteServerSubmitJobResponse {
     optional int64 job_id = 1;
     required bool success = 2;
     optional string message = 3 [default = ""];
