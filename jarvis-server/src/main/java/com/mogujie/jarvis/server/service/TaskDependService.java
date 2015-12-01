@@ -2,7 +2,7 @@
  * 蘑菇街 Inc.
  * Copyright (c) 2010-2015 All Rights Reserved.
  *
- * Author: guangming
+ * Author: muming
  * Create Date: 2015年12月1日 下午7:15:05
  */
 
@@ -14,7 +14,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 /**
- * @author guangming
+ * @author muming
  *
  */
 @Service
