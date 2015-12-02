@@ -4,1106 +4,1103 @@
 package com.mogujie.jarvis.protocol;
 
 public final class RegistryWorkerProtos {
-  private RegistryWorkerProtos() {}
-  public static void registerAllExtensions(
-      com.google.protobuf.ExtensionRegistry registry) {
-  }
-  public interface WorkerRegistryRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:WorkerRegistryRequest)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <code>required string key = 1;</code>
-     */
-    boolean hasKey();
-    /**
-     * <code>required string key = 1;</code>
-     */
-    java.lang.String getKey();
-    /**
-     * <code>required string key = 1;</code>
-     */
-    com.google.protobuf.ByteString
-        getKeyBytes();
-  }
-  /**
-   * Protobuf type {@code WorkerRegistryRequest}
-   */
-  public static final class WorkerRegistryRequest extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:WorkerRegistryRequest)
-      WorkerRegistryRequestOrBuilder {
-    // Use WorkerRegistryRequest.newBuilder() to construct.
-    private WorkerRegistryRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
-      super(builder);
-      this.unknownFields = builder.getUnknownFields();
-    }
-    private WorkerRegistryRequest(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
-
-    private static final WorkerRegistryRequest defaultInstance;
-    public static WorkerRegistryRequest getDefaultInstance() {
-      return defaultInstance;
+    private RegistryWorkerProtos() {
     }
 
-    public WorkerRegistryRequest getDefaultInstanceForType() {
-      return defaultInstance;
+    public static void registerAllExtensions(com.google.protobuf.ExtensionRegistry registry) {
     }
 
-    private final com.google.protobuf.UnknownFieldSet unknownFields;
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
-      return this.unknownFields;
-    }
-    private WorkerRegistryRequest(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      initFields();
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-            case 10: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000001;
-              key_ = bs;
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e.getMessage()).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.mogujie.jarvis.protocol.RegistryWorkerProtos.internal_static_WorkerRegistryRequest_descriptor;
+    public interface WorkerRegistryRequestOrBuilder extends
+            // @@protoc_insertion_point(interface_extends:WorkerRegistryRequest)
+            com.google.protobuf.MessageOrBuilder {
+
+        /**
+         * <code>required string key = 1;</code>
+         */
+        boolean hasKey();
+
+        /**
+         * <code>required string key = 1;</code>
+         */
+        java.lang.String getKey();
+
+        /**
+         * <code>required string key = 1;</code>
+         */
+        com.google.protobuf.ByteString getKeyBytes();
     }
 
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return com.mogujie.jarvis.protocol.RegistryWorkerProtos.internal_static_WorkerRegistryRequest_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest.class, com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest.Builder.class);
-    }
-
-    public static com.google.protobuf.Parser<WorkerRegistryRequest> PARSER =
-        new com.google.protobuf.AbstractParser<WorkerRegistryRequest>() {
-      public WorkerRegistryRequest parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new WorkerRegistryRequest(input, extensionRegistry);
-      }
-    };
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<WorkerRegistryRequest> getParserForType() {
-      return PARSER;
-    }
-
-    private int bitField0_;
-    public static final int KEY_FIELD_NUMBER = 1;
-    private java.lang.Object key_;
-    /**
-     * <code>required string key = 1;</code>
-     */
-    public boolean hasKey() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
-    /**
-     * <code>required string key = 1;</code>
-     */
-    public java.lang.String getKey() {
-      java.lang.Object ref = key_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          key_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>required string key = 1;</code>
-     */
-    public com.google.protobuf.ByteString
-        getKeyBytes() {
-      java.lang.Object ref = key_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        key_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    private void initFields() {
-      key_ = "";
-    }
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      if (!hasKey()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      getSerializedSize();
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeBytes(1, getKeyBytes());
-      }
-      getUnknownFields().writeTo(output);
-    }
-
-    private int memoizedSerializedSize = -1;
-    public int getSerializedSize() {
-      int size = memoizedSerializedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(1, getKeyBytes());
-      }
-      size += getUnknownFields().getSerializedSize();
-      memoizedSerializedSize = size;
-      return size;
-    }
-
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    protected java.lang.Object writeReplace()
-        throws java.io.ObjectStreamException {
-      return super.writeReplace();
-    }
-
-    public static com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-    public static com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input);
-    }
-    public static com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input, extensionRegistry);
-    }
-    public static com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-
-    public static Builder newBuilder() { return Builder.create(); }
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest prototype) {
-      return newBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() { return newBuilder(this); }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
     /**
      * Protobuf type {@code WorkerRegistryRequest}
      */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:WorkerRegistryRequest)
-        com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequestOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return com.mogujie.jarvis.protocol.RegistryWorkerProtos.internal_static_WorkerRegistryRequest_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return com.mogujie.jarvis.protocol.RegistryWorkerProtos.internal_static_WorkerRegistryRequest_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest.class, com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest.Builder.class);
-      }
-
-      // Construct using com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+    public static final class WorkerRegistryRequest extends com.google.protobuf.GeneratedMessage implements
+            // @@protoc_insertion_point(message_implements:WorkerRegistryRequest)
+            WorkerRegistryRequestOrBuilder {
+        // Use WorkerRegistryRequest.newBuilder() to construct.
+        private WorkerRegistryRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+            super(builder);
+            this.unknownFields = builder.getUnknownFields();
         }
-      }
-      private static Builder create() {
-        return new Builder();
-      }
 
-      public Builder clear() {
-        super.clear();
-        key_ = "";
-        bitField0_ = (bitField0_ & ~0x00000001);
-        return this;
-      }
-
-      public Builder clone() {
-        return create().mergeFrom(buildPartial());
-      }
-
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return com.mogujie.jarvis.protocol.RegistryWorkerProtos.internal_static_WorkerRegistryRequest_descriptor;
-      }
-
-      public com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest getDefaultInstanceForType() {
-        return com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest.getDefaultInstance();
-      }
-
-      public com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest build() {
-        com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
+        private WorkerRegistryRequest(boolean noInit) {
+            this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance();
         }
-        return result;
-      }
 
-      public com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest buildPartial() {
-        com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest result = new com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
+        private static final WorkerRegistryRequest defaultInstance;
+
+        public static WorkerRegistryRequest getDefaultInstance() {
+            return defaultInstance;
         }
-        result.key_ = key_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
 
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest) {
-          return mergeFrom((com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
+        public WorkerRegistryRequest getDefaultInstanceForType() {
+            return defaultInstance;
         }
-      }
 
-      public Builder mergeFrom(com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest other) {
-        if (other == com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest.getDefaultInstance()) return this;
-        if (other.hasKey()) {
-          bitField0_ |= 0x00000001;
-          key_ = other.key_;
-          onChanged();
+        private final com.google.protobuf.UnknownFieldSet unknownFields;
+
+        @java.lang.Override
+        public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
+            return this.unknownFields;
         }
-        this.mergeUnknownFields(other.getUnknownFields());
-        return this;
-      }
 
-      public final boolean isInitialized() {
-        if (!hasKey()) {
-          
-          return false;
-        }
-        return true;
-      }
-
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest) e.getUnfinishedMessage();
-          throw e;
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-      private int bitField0_;
-
-      private java.lang.Object key_ = "";
-      /**
-       * <code>required string key = 1;</code>
-       */
-      public boolean hasKey() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      /**
-       * <code>required string key = 1;</code>
-       */
-      public java.lang.String getKey() {
-        java.lang.Object ref = key_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            key_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>required string key = 1;</code>
-       */
-      public com.google.protobuf.ByteString
-          getKeyBytes() {
-        java.lang.Object ref = key_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          key_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>required string key = 1;</code>
-       */
-      public Builder setKey(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-        key_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string key = 1;</code>
-       */
-      public Builder clearKey() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        key_ = getDefaultInstance().getKey();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string key = 1;</code>
-       */
-      public Builder setKeyBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-        key_ = value;
-        onChanged();
-        return this;
-      }
-
-      // @@protoc_insertion_point(builder_scope:WorkerRegistryRequest)
-    }
-
-    static {
-      defaultInstance = new WorkerRegistryRequest(true);
-      defaultInstance.initFields();
-    }
-
-    // @@protoc_insertion_point(class_scope:WorkerRegistryRequest)
-  }
-
-  public interface ServerRegistryResponseOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:ServerRegistryResponse)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <code>required bool success = 1;</code>
-     */
-    boolean hasSuccess();
-    /**
-     * <code>required bool success = 1;</code>
-     */
-    boolean getSuccess();
-
-    /**
-     * <code>optional string message = 2 [default = ""];</code>
-     */
-    boolean hasMessage();
-    /**
-     * <code>optional string message = 2 [default = ""];</code>
-     */
-    java.lang.String getMessage();
-    /**
-     * <code>optional string message = 2 [default = ""];</code>
-     */
-    com.google.protobuf.ByteString
-        getMessageBytes();
-  }
-  /**
-   * Protobuf type {@code ServerRegistryResponse}
-   */
-  public static final class ServerRegistryResponse extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:ServerRegistryResponse)
-      ServerRegistryResponseOrBuilder {
-    // Use ServerRegistryResponse.newBuilder() to construct.
-    private ServerRegistryResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
-      super(builder);
-      this.unknownFields = builder.getUnknownFields();
-    }
-    private ServerRegistryResponse(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
-
-    private static final ServerRegistryResponse defaultInstance;
-    public static ServerRegistryResponse getDefaultInstance() {
-      return defaultInstance;
-    }
-
-    public ServerRegistryResponse getDefaultInstanceForType() {
-      return defaultInstance;
-    }
-
-    private final com.google.protobuf.UnknownFieldSet unknownFields;
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
-      return this.unknownFields;
-    }
-    private ServerRegistryResponse(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      initFields();
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
+        private WorkerRegistryRequest(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                throws com.google.protobuf.InvalidProtocolBufferException {
+            initFields();
+            com.google.protobuf.UnknownFieldSet.Builder unknownFields = com.google.protobuf.UnknownFieldSet.newBuilder();
+            try {
+                boolean done = false;
+                while (!done) {
+                    int tag = input.readTag();
+                    switch (tag) {
+                        case 0:
+                            done = true;
+                            break;
+                        default: {
+                            if (!parseUnknownField(input, unknownFields, extensionRegistry, tag)) {
+                                done = true;
+                            }
+                            break;
+                        }
+                        case 10: {
+                            com.google.protobuf.ByteString bs = input.readBytes();
+                            bitField0_ |= 0x00000001;
+                            key_ = bs;
+                            break;
+                        }
+                    }
+                }
+            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+                throw e.setUnfinishedMessage(this);
+            } catch (java.io.IOException e) {
+                throw new com.google.protobuf.InvalidProtocolBufferException(e.getMessage()).setUnfinishedMessage(this);
+            } finally {
+                this.unknownFields = unknownFields.build();
+                makeExtensionsImmutable();
             }
-            case 8: {
-              bitField0_ |= 0x00000001;
-              success_ = input.readBool();
-              break;
-            }
-            case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000002;
-              message_ = bs;
-              break;
-            }
-          }
         }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e.getMessage()).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.mogujie.jarvis.protocol.RegistryWorkerProtos.internal_static_ServerRegistryResponse_descriptor;
-    }
 
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return com.mogujie.jarvis.protocol.RegistryWorkerProtos.internal_static_ServerRegistryResponse_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse.class, com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse.Builder.class);
-    }
-
-    public static com.google.protobuf.Parser<ServerRegistryResponse> PARSER =
-        new com.google.protobuf.AbstractParser<ServerRegistryResponse>() {
-      public ServerRegistryResponse parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new ServerRegistryResponse(input, extensionRegistry);
-      }
-    };
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<ServerRegistryResponse> getParserForType() {
-      return PARSER;
-    }
-
-    private int bitField0_;
-    public static final int SUCCESS_FIELD_NUMBER = 1;
-    private boolean success_;
-    /**
-     * <code>required bool success = 1;</code>
-     */
-    public boolean hasSuccess() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
-    /**
-     * <code>required bool success = 1;</code>
-     */
-    public boolean getSuccess() {
-      return success_;
-    }
-
-    public static final int MESSAGE_FIELD_NUMBER = 2;
-    private java.lang.Object message_;
-    /**
-     * <code>optional string message = 2 [default = ""];</code>
-     */
-    public boolean hasMessage() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
-    }
-    /**
-     * <code>optional string message = 2 [default = ""];</code>
-     */
-    public java.lang.String getMessage() {
-      java.lang.Object ref = message_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          message_ = s;
+        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+            return com.mogujie.jarvis.protocol.RegistryWorkerProtos.internal_static_WorkerRegistryRequest_descriptor;
         }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string message = 2 [default = ""];</code>
-     */
-    public com.google.protobuf.ByteString
-        getMessageBytes() {
-      java.lang.Object ref = message_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        message_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+
+        protected com.google.protobuf.GeneratedMessage.FieldAccessorTable internalGetFieldAccessorTable() {
+            return com.mogujie.jarvis.protocol.RegistryWorkerProtos.internal_static_WorkerRegistryRequest_fieldAccessorTable
+                    .ensureFieldAccessorsInitialized(com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest.class,
+                            com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest.Builder.class);
+        }
+
+        public static com.google.protobuf.Parser<WorkerRegistryRequest> PARSER = new com.google.protobuf.AbstractParser<WorkerRegistryRequest>() {
+            public WorkerRegistryRequest parsePartialFrom(com.google.protobuf.CodedInputStream input,
+                    com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+                return new WorkerRegistryRequest(input, extensionRegistry);
+            }
+        };
+
+        @java.lang.Override
+        public com.google.protobuf.Parser<WorkerRegistryRequest> getParserForType() {
+            return PARSER;
+        }
+
+        private int bitField0_;
+        public static final int KEY_FIELD_NUMBER = 1;
+        private java.lang.Object key_;
+
+        /**
+         * <code>required string key = 1;</code>
+         */
+        public boolean hasKey() {
+            return ((bitField0_ & 0x00000001) == 0x00000001);
+        }
+
+        /**
+         * <code>required string key = 1;</code>
+         */
+        public java.lang.String getKey() {
+            java.lang.Object ref = key_;
+            if (ref instanceof java.lang.String) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                if (bs.isValidUtf8()) {
+                    key_ = s;
+                }
+                return s;
+            }
+        }
+
+        /**
+         * <code>required string key = 1;</code>
+         */
+        public com.google.protobuf.ByteString getKeyBytes() {
+            java.lang.Object ref = key_;
+            if (ref instanceof java.lang.String) {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                key_ = b;
+                return b;
+            } else {
+                return (com.google.protobuf.ByteString) ref;
+            }
+        }
+
+        private void initFields() {
+            key_ = "";
+        }
+
+        private byte memoizedIsInitialized = -1;
+
+        public final boolean isInitialized() {
+            byte isInitialized = memoizedIsInitialized;
+            if (isInitialized == 1)
+                return true;
+            if (isInitialized == 0)
+                return false;
+
+            if (!hasKey()) {
+                memoizedIsInitialized = 0;
+                return false;
+            }
+            memoizedIsInitialized = 1;
+            return true;
+        }
+
+        public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
+            getSerializedSize();
+            if (((bitField0_ & 0x00000001) == 0x00000001)) {
+                output.writeBytes(1, getKeyBytes());
+            }
+            getUnknownFields().writeTo(output);
+        }
+
+        private int memoizedSerializedSize = -1;
+
+        public int getSerializedSize() {
+            int size = memoizedSerializedSize;
+            if (size != -1)
+                return size;
+
+            size = 0;
+            if (((bitField0_ & 0x00000001) == 0x00000001)) {
+                size += com.google.protobuf.CodedOutputStream.computeBytesSize(1, getKeyBytes());
+            }
+            size += getUnknownFields().getSerializedSize();
+            memoizedSerializedSize = size;
+            return size;
+        }
+
+        private static final long serialVersionUID = 0L;
+
+        @java.lang.Override
+        protected java.lang.Object writeReplace() throws java.io.ObjectStreamException {
+            return super.writeReplace();
+        }
+
+        public static com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest parseFrom(com.google.protobuf.ByteString data)
+                throws com.google.protobuf.InvalidProtocolBufferException {
+            return PARSER.parseFrom(data);
+        }
+
+        public static com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest parseFrom(com.google.protobuf.ByteString data,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+            return PARSER.parseFrom(data, extensionRegistry);
+        }
+
+        public static com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest parseFrom(byte[] data)
+                throws com.google.protobuf.InvalidProtocolBufferException {
+            return PARSER.parseFrom(data);
+        }
+
+        public static com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest parseFrom(byte[] data,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+            return PARSER.parseFrom(data, extensionRegistry);
+        }
+
+        public static com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest parseFrom(java.io.InputStream input)
+                throws java.io.IOException {
+            return PARSER.parseFrom(input);
+        }
+
+        public static com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest parseFrom(java.io.InputStream input,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            return PARSER.parseFrom(input, extensionRegistry);
+        }
+
+        public static com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest parseDelimitedFrom(java.io.InputStream input)
+                throws java.io.IOException {
+            return PARSER.parseDelimitedFrom(input);
+        }
+
+        public static com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest parseDelimitedFrom(java.io.InputStream input,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            return PARSER.parseDelimitedFrom(input, extensionRegistry);
+        }
+
+        public static com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest parseFrom(com.google.protobuf.CodedInputStream input)
+                throws java.io.IOException {
+            return PARSER.parseFrom(input);
+        }
+
+        public static com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest parseFrom(com.google.protobuf.CodedInputStream input,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            return PARSER.parseFrom(input, extensionRegistry);
+        }
+
+        public static Builder newBuilder() {
+            return Builder.create();
+        }
+
+        public Builder newBuilderForType() {
+            return newBuilder();
+        }
+
+        public static Builder newBuilder(com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest prototype) {
+            return newBuilder().mergeFrom(prototype);
+        }
+
+        public Builder toBuilder() {
+            return newBuilder(this);
+        }
+
+        @java.lang.Override
+        protected Builder newBuilderForType(com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+            Builder builder = new Builder(parent);
+            return builder;
+        }
+
+        /**
+         * Protobuf type {@code WorkerRegistryRequest}
+         */
+        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+                // @@protoc_insertion_point(builder_implements:WorkerRegistryRequest)
+                com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequestOrBuilder {
+            public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+                return com.mogujie.jarvis.protocol.RegistryWorkerProtos.internal_static_WorkerRegistryRequest_descriptor;
+            }
+
+            protected com.google.protobuf.GeneratedMessage.FieldAccessorTable internalGetFieldAccessorTable() {
+                return com.mogujie.jarvis.protocol.RegistryWorkerProtos.internal_static_WorkerRegistryRequest_fieldAccessorTable
+                        .ensureFieldAccessorsInitialized(com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest.class,
+                                com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest.Builder.class);
+            }
+
+            // Construct using
+            // com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest.newBuilder()
+            private Builder() {
+                maybeForceBuilderInitialization();
+            }
+
+            private Builder(com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+                super(parent);
+                maybeForceBuilderInitialization();
+            }
+
+            private void maybeForceBuilderInitialization() {
+                if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+                }
+            }
+
+            private static Builder create() {
+                return new Builder();
+            }
+
+            public Builder clear() {
+                super.clear();
+                key_ = "";
+                bitField0_ = (bitField0_ & ~0x00000001);
+                return this;
+            }
+
+            public Builder clone() {
+                return create().mergeFrom(buildPartial());
+            }
+
+            public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
+                return com.mogujie.jarvis.protocol.RegistryWorkerProtos.internal_static_WorkerRegistryRequest_descriptor;
+            }
+
+            public com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest getDefaultInstanceForType() {
+                return com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest.getDefaultInstance();
+            }
+
+            public com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest build() {
+                com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest result = buildPartial();
+                if (!result.isInitialized()) {
+                    throw newUninitializedMessageException(result);
+                }
+                return result;
+            }
+
+            public com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest buildPartial() {
+                com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest result = new com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest(
+                        this);
+                int from_bitField0_ = bitField0_;
+                int to_bitField0_ = 0;
+                if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+                    to_bitField0_ |= 0x00000001;
+                }
+                result.key_ = key_;
+                result.bitField0_ = to_bitField0_;
+                onBuilt();
+                return result;
+            }
+
+            public Builder mergeFrom(com.google.protobuf.Message other) {
+                if (other instanceof com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest) {
+                    return mergeFrom((com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest) other);
+                } else {
+                    super.mergeFrom(other);
+                    return this;
+                }
+            }
+
+            public Builder mergeFrom(com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest other) {
+                if (other == com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest.getDefaultInstance())
+                    return this;
+                if (other.hasKey()) {
+                    bitField0_ |= 0x00000001;
+                    key_ = other.key_;
+                    onChanged();
+                }
+                this.mergeUnknownFields(other.getUnknownFields());
+                return this;
+            }
+
+            public final boolean isInitialized() {
+                if (!hasKey()) {
+
+                    return false;
+                }
+                return true;
+            }
+
+            public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                    throws java.io.IOException {
+                com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest parsedMessage = null;
+                try {
+                    parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+                } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+                    parsedMessage = (com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest) e.getUnfinishedMessage();
+                    throw e;
+                } finally {
+                    if (parsedMessage != null) {
+                        mergeFrom(parsedMessage);
+                    }
+                }
+                return this;
+            }
+
+            private int bitField0_;
+
+            private java.lang.Object key_ = "";
+
+            /**
+             * <code>required string key = 1;</code>
+             */
+            public boolean hasKey() {
+                return ((bitField0_ & 0x00000001) == 0x00000001);
+            }
+
+            /**
+             * <code>required string key = 1;</code>
+             */
+            public java.lang.String getKey() {
+                java.lang.Object ref = key_;
+                if (!(ref instanceof java.lang.String)) {
+                    com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                    java.lang.String s = bs.toStringUtf8();
+                    if (bs.isValidUtf8()) {
+                        key_ = s;
+                    }
+                    return s;
+                } else {
+                    return (java.lang.String) ref;
+                }
+            }
+
+            /**
+             * <code>required string key = 1;</code>
+             */
+            public com.google.protobuf.ByteString getKeyBytes() {
+                java.lang.Object ref = key_;
+                if (ref instanceof String) {
+                    com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                    key_ = b;
+                    return b;
+                } else {
+                    return (com.google.protobuf.ByteString) ref;
+                }
+            }
+
+            /**
+             * <code>required string key = 1;</code>
+             */
+            public Builder setKey(java.lang.String value) {
+                if (value == null) {
+                    throw new NullPointerException();
+                }
+                bitField0_ |= 0x00000001;
+                key_ = value;
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>required string key = 1;</code>
+             */
+            public Builder clearKey() {
+                bitField0_ = (bitField0_ & ~0x00000001);
+                key_ = getDefaultInstance().getKey();
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>required string key = 1;</code>
+             */
+            public Builder setKeyBytes(com.google.protobuf.ByteString value) {
+                if (value == null) {
+                    throw new NullPointerException();
+                }
+                bitField0_ |= 0x00000001;
+                key_ = value;
+                onChanged();
+                return this;
+            }
+
+            // @@protoc_insertion_point(builder_scope:WorkerRegistryRequest)
+        }
+
+        static {
+            defaultInstance = new WorkerRegistryRequest(true);
+            defaultInstance.initFields();
+        }
+
+        // @@protoc_insertion_point(class_scope:WorkerRegistryRequest)
     }
 
-    private void initFields() {
-      success_ = false;
-      message_ = "";
-    }
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+    public interface ServerRegistryResponseOrBuilder extends
+            // @@protoc_insertion_point(interface_extends:ServerRegistryResponse)
+            com.google.protobuf.MessageOrBuilder {
 
-      if (!hasSuccess()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      memoizedIsInitialized = 1;
-      return true;
-    }
+        /**
+         * <code>required bool success = 1;</code>
+         */
+        boolean hasSuccess();
 
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      getSerializedSize();
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeBool(1, success_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeBytes(2, getMessageBytes());
-      }
-      getUnknownFields().writeTo(output);
-    }
+        /**
+         * <code>required bool success = 1;</code>
+         */
+        boolean getSuccess();
 
-    private int memoizedSerializedSize = -1;
-    public int getSerializedSize() {
-      int size = memoizedSerializedSize;
-      if (size != -1) return size;
+        /**
+         * <code>optional string message = 2 [default = ""];</code>
+         */
+        boolean hasMessage();
 
-      size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(1, success_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(2, getMessageBytes());
-      }
-      size += getUnknownFields().getSerializedSize();
-      memoizedSerializedSize = size;
-      return size;
+        /**
+         * <code>optional string message = 2 [default = ""];</code>
+         */
+        java.lang.String getMessage();
+
+        /**
+         * <code>optional string message = 2 [default = ""];</code>
+         */
+        com.google.protobuf.ByteString getMessageBytes();
     }
 
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    protected java.lang.Object writeReplace()
-        throws java.io.ObjectStreamException {
-      return super.writeReplace();
-    }
-
-    public static com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-    public static com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input);
-    }
-    public static com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input, extensionRegistry);
-    }
-    public static com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-
-    public static Builder newBuilder() { return Builder.create(); }
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse prototype) {
-      return newBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() { return newBuilder(this); }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
     /**
      * Protobuf type {@code ServerRegistryResponse}
      */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:ServerRegistryResponse)
-        com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponseOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return com.mogujie.jarvis.protocol.RegistryWorkerProtos.internal_static_ServerRegistryResponse_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return com.mogujie.jarvis.protocol.RegistryWorkerProtos.internal_static_ServerRegistryResponse_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse.class, com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse.Builder.class);
-      }
-
-      // Construct using com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+    public static final class ServerRegistryResponse extends com.google.protobuf.GeneratedMessage implements
+            // @@protoc_insertion_point(message_implements:ServerRegistryResponse)
+            ServerRegistryResponseOrBuilder {
+        // Use ServerRegistryResponse.newBuilder() to construct.
+        private ServerRegistryResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+            super(builder);
+            this.unknownFields = builder.getUnknownFields();
         }
-      }
-      private static Builder create() {
-        return new Builder();
-      }
 
-      public Builder clear() {
-        super.clear();
-        success_ = false;
-        bitField0_ = (bitField0_ & ~0x00000001);
-        message_ = "";
-        bitField0_ = (bitField0_ & ~0x00000002);
-        return this;
-      }
-
-      public Builder clone() {
-        return create().mergeFrom(buildPartial());
-      }
-
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return com.mogujie.jarvis.protocol.RegistryWorkerProtos.internal_static_ServerRegistryResponse_descriptor;
-      }
-
-      public com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse getDefaultInstanceForType() {
-        return com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse.getDefaultInstance();
-      }
-
-      public com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse build() {
-        com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
+        private ServerRegistryResponse(boolean noInit) {
+            this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance();
         }
-        return result;
-      }
 
-      public com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse buildPartial() {
-        com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse result = new com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.success_ = success_;
-        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.message_ = message_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
+        private static final ServerRegistryResponse defaultInstance;
 
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse) {
-          return mergeFrom((com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
+        public static ServerRegistryResponse getDefaultInstance() {
+            return defaultInstance;
         }
-      }
 
-      public Builder mergeFrom(com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse other) {
-        if (other == com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse.getDefaultInstance()) return this;
-        if (other.hasSuccess()) {
-          setSuccess(other.getSuccess());
+        public ServerRegistryResponse getDefaultInstanceForType() {
+            return defaultInstance;
         }
-        if (other.hasMessage()) {
-          bitField0_ |= 0x00000002;
-          message_ = other.message_;
-          onChanged();
-        }
-        this.mergeUnknownFields(other.getUnknownFields());
-        return this;
-      }
 
-      public final boolean isInitialized() {
-        if (!hasSuccess()) {
-          
-          return false;
-        }
-        return true;
-      }
+        private final com.google.protobuf.UnknownFieldSet unknownFields;
 
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse) e.getUnfinishedMessage();
-          throw e;
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
+        @java.lang.Override
+        public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
+            return this.unknownFields;
         }
-        return this;
-      }
-      private int bitField0_;
 
-      private boolean success_ ;
-      /**
-       * <code>required bool success = 1;</code>
-       */
-      public boolean hasSuccess() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      /**
-       * <code>required bool success = 1;</code>
-       */
-      public boolean getSuccess() {
-        return success_;
-      }
-      /**
-       * <code>required bool success = 1;</code>
-       */
-      public Builder setSuccess(boolean value) {
-        bitField0_ |= 0x00000001;
-        success_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required bool success = 1;</code>
-       */
-      public Builder clearSuccess() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        success_ = false;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object message_ = "";
-      /**
-       * <code>optional string message = 2 [default = ""];</code>
-       */
-      public boolean hasMessage() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
-      }
-      /**
-       * <code>optional string message = 2 [default = ""];</code>
-       */
-      public java.lang.String getMessage() {
-        java.lang.Object ref = message_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            message_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
+        private ServerRegistryResponse(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                throws com.google.protobuf.InvalidProtocolBufferException {
+            initFields();
+            com.google.protobuf.UnknownFieldSet.Builder unknownFields = com.google.protobuf.UnknownFieldSet.newBuilder();
+            try {
+                boolean done = false;
+                while (!done) {
+                    int tag = input.readTag();
+                    switch (tag) {
+                        case 0:
+                            done = true;
+                            break;
+                        default: {
+                            if (!parseUnknownField(input, unknownFields, extensionRegistry, tag)) {
+                                done = true;
+                            }
+                            break;
+                        }
+                        case 8: {
+                            bitField0_ |= 0x00000001;
+                            success_ = input.readBool();
+                            break;
+                        }
+                        case 18: {
+                            com.google.protobuf.ByteString bs = input.readBytes();
+                            bitField0_ |= 0x00000002;
+                            message_ = bs;
+                            break;
+                        }
+                    }
+                }
+            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+                throw e.setUnfinishedMessage(this);
+            } catch (java.io.IOException e) {
+                throw new com.google.protobuf.InvalidProtocolBufferException(e.getMessage()).setUnfinishedMessage(this);
+            } finally {
+                this.unknownFields = unknownFields.build();
+                makeExtensionsImmutable();
+            }
         }
-      }
-      /**
-       * <code>optional string message = 2 [default = ""];</code>
-       */
-      public com.google.protobuf.ByteString
-          getMessageBytes() {
-        java.lang.Object ref = message_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          message_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string message = 2 [default = ""];</code>
-       */
-      public Builder setMessage(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
-        message_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string message = 2 [default = ""];</code>
-       */
-      public Builder clearMessage() {
-        bitField0_ = (bitField0_ & ~0x00000002);
-        message_ = getDefaultInstance().getMessage();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string message = 2 [default = ""];</code>
-       */
-      public Builder setMessageBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
-        message_ = value;
-        onChanged();
-        return this;
-      }
 
-      // @@protoc_insertion_point(builder_scope:ServerRegistryResponse)
+        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+            return com.mogujie.jarvis.protocol.RegistryWorkerProtos.internal_static_ServerRegistryResponse_descriptor;
+        }
+
+        protected com.google.protobuf.GeneratedMessage.FieldAccessorTable internalGetFieldAccessorTable() {
+            return com.mogujie.jarvis.protocol.RegistryWorkerProtos.internal_static_ServerRegistryResponse_fieldAccessorTable
+                    .ensureFieldAccessorsInitialized(com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse.class,
+                            com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse.Builder.class);
+        }
+
+        public static com.google.protobuf.Parser<ServerRegistryResponse> PARSER = new com.google.protobuf.AbstractParser<ServerRegistryResponse>() {
+            public ServerRegistryResponse parsePartialFrom(com.google.protobuf.CodedInputStream input,
+                    com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+                return new ServerRegistryResponse(input, extensionRegistry);
+            }
+        };
+
+        @java.lang.Override
+        public com.google.protobuf.Parser<ServerRegistryResponse> getParserForType() {
+            return PARSER;
+        }
+
+        private int bitField0_;
+        public static final int SUCCESS_FIELD_NUMBER = 1;
+        private boolean success_;
+
+        /**
+         * <code>required bool success = 1;</code>
+         */
+        public boolean hasSuccess() {
+            return ((bitField0_ & 0x00000001) == 0x00000001);
+        }
+
+        /**
+         * <code>required bool success = 1;</code>
+         */
+        public boolean getSuccess() {
+            return success_;
+        }
+
+        public static final int MESSAGE_FIELD_NUMBER = 2;
+        private java.lang.Object message_;
+
+        /**
+         * <code>optional string message = 2 [default = ""];</code>
+         */
+        public boolean hasMessage() {
+            return ((bitField0_ & 0x00000002) == 0x00000002);
+        }
+
+        /**
+         * <code>optional string message = 2 [default = ""];</code>
+         */
+        public java.lang.String getMessage() {
+            java.lang.Object ref = message_;
+            if (ref instanceof java.lang.String) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                if (bs.isValidUtf8()) {
+                    message_ = s;
+                }
+                return s;
+            }
+        }
+
+        /**
+         * <code>optional string message = 2 [default = ""];</code>
+         */
+        public com.google.protobuf.ByteString getMessageBytes() {
+            java.lang.Object ref = message_;
+            if (ref instanceof java.lang.String) {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                message_ = b;
+                return b;
+            } else {
+                return (com.google.protobuf.ByteString) ref;
+            }
+        }
+
+        private void initFields() {
+            success_ = false;
+            message_ = "";
+        }
+
+        private byte memoizedIsInitialized = -1;
+
+        public final boolean isInitialized() {
+            byte isInitialized = memoizedIsInitialized;
+            if (isInitialized == 1)
+                return true;
+            if (isInitialized == 0)
+                return false;
+
+            if (!hasSuccess()) {
+                memoizedIsInitialized = 0;
+                return false;
+            }
+            memoizedIsInitialized = 1;
+            return true;
+        }
+
+        public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
+            getSerializedSize();
+            if (((bitField0_ & 0x00000001) == 0x00000001)) {
+                output.writeBool(1, success_);
+            }
+            if (((bitField0_ & 0x00000002) == 0x00000002)) {
+                output.writeBytes(2, getMessageBytes());
+            }
+            getUnknownFields().writeTo(output);
+        }
+
+        private int memoizedSerializedSize = -1;
+
+        public int getSerializedSize() {
+            int size = memoizedSerializedSize;
+            if (size != -1)
+                return size;
+
+            size = 0;
+            if (((bitField0_ & 0x00000001) == 0x00000001)) {
+                size += com.google.protobuf.CodedOutputStream.computeBoolSize(1, success_);
+            }
+            if (((bitField0_ & 0x00000002) == 0x00000002)) {
+                size += com.google.protobuf.CodedOutputStream.computeBytesSize(2, getMessageBytes());
+            }
+            size += getUnknownFields().getSerializedSize();
+            memoizedSerializedSize = size;
+            return size;
+        }
+
+        private static final long serialVersionUID = 0L;
+
+        @java.lang.Override
+        protected java.lang.Object writeReplace() throws java.io.ObjectStreamException {
+            return super.writeReplace();
+        }
+
+        public static com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse parseFrom(com.google.protobuf.ByteString data)
+                throws com.google.protobuf.InvalidProtocolBufferException {
+            return PARSER.parseFrom(data);
+        }
+
+        public static com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse parseFrom(com.google.protobuf.ByteString data,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+            return PARSER.parseFrom(data, extensionRegistry);
+        }
+
+        public static com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse parseFrom(byte[] data)
+                throws com.google.protobuf.InvalidProtocolBufferException {
+            return PARSER.parseFrom(data);
+        }
+
+        public static com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse parseFrom(byte[] data,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+            return PARSER.parseFrom(data, extensionRegistry);
+        }
+
+        public static com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse parseFrom(java.io.InputStream input)
+                throws java.io.IOException {
+            return PARSER.parseFrom(input);
+        }
+
+        public static com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse parseFrom(java.io.InputStream input,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            return PARSER.parseFrom(input, extensionRegistry);
+        }
+
+        public static com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse parseDelimitedFrom(java.io.InputStream input)
+                throws java.io.IOException {
+            return PARSER.parseDelimitedFrom(input);
+        }
+
+        public static com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse parseDelimitedFrom(java.io.InputStream input,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            return PARSER.parseDelimitedFrom(input, extensionRegistry);
+        }
+
+        public static com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse parseFrom(com.google.protobuf.CodedInputStream input)
+                throws java.io.IOException {
+            return PARSER.parseFrom(input);
+        }
+
+        public static com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse parseFrom(com.google.protobuf.CodedInputStream input,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            return PARSER.parseFrom(input, extensionRegistry);
+        }
+
+        public static Builder newBuilder() {
+            return Builder.create();
+        }
+
+        public Builder newBuilderForType() {
+            return newBuilder();
+        }
+
+        public static Builder newBuilder(com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse prototype) {
+            return newBuilder().mergeFrom(prototype);
+        }
+
+        public Builder toBuilder() {
+            return newBuilder(this);
+        }
+
+        @java.lang.Override
+        protected Builder newBuilderForType(com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+            Builder builder = new Builder(parent);
+            return builder;
+        }
+
+        /**
+         * Protobuf type {@code ServerRegistryResponse}
+         */
+        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+                // @@protoc_insertion_point(builder_implements:ServerRegistryResponse)
+                com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponseOrBuilder {
+            public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+                return com.mogujie.jarvis.protocol.RegistryWorkerProtos.internal_static_ServerRegistryResponse_descriptor;
+            }
+
+            protected com.google.protobuf.GeneratedMessage.FieldAccessorTable internalGetFieldAccessorTable() {
+                return com.mogujie.jarvis.protocol.RegistryWorkerProtos.internal_static_ServerRegistryResponse_fieldAccessorTable
+                        .ensureFieldAccessorsInitialized(com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse.class,
+                                com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse.Builder.class);
+            }
+
+            // Construct using
+            // com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse.newBuilder()
+            private Builder() {
+                maybeForceBuilderInitialization();
+            }
+
+            private Builder(com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+                super(parent);
+                maybeForceBuilderInitialization();
+            }
+
+            private void maybeForceBuilderInitialization() {
+                if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+                }
+            }
+
+            private static Builder create() {
+                return new Builder();
+            }
+
+            public Builder clear() {
+                super.clear();
+                success_ = false;
+                bitField0_ = (bitField0_ & ~0x00000001);
+                message_ = "";
+                bitField0_ = (bitField0_ & ~0x00000002);
+                return this;
+            }
+
+            public Builder clone() {
+                return create().mergeFrom(buildPartial());
+            }
+
+            public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
+                return com.mogujie.jarvis.protocol.RegistryWorkerProtos.internal_static_ServerRegistryResponse_descriptor;
+            }
+
+            public com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse getDefaultInstanceForType() {
+                return com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse.getDefaultInstance();
+            }
+
+            public com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse build() {
+                com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse result = buildPartial();
+                if (!result.isInitialized()) {
+                    throw newUninitializedMessageException(result);
+                }
+                return result;
+            }
+
+            public com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse buildPartial() {
+                com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse result = new com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse(
+                        this);
+                int from_bitField0_ = bitField0_;
+                int to_bitField0_ = 0;
+                if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+                    to_bitField0_ |= 0x00000001;
+                }
+                result.success_ = success_;
+                if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+                    to_bitField0_ |= 0x00000002;
+                }
+                result.message_ = message_;
+                result.bitField0_ = to_bitField0_;
+                onBuilt();
+                return result;
+            }
+
+            public Builder mergeFrom(com.google.protobuf.Message other) {
+                if (other instanceof com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse) {
+                    return mergeFrom((com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse) other);
+                } else {
+                    super.mergeFrom(other);
+                    return this;
+                }
+            }
+
+            public Builder mergeFrom(com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse other) {
+                if (other == com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse.getDefaultInstance())
+                    return this;
+                if (other.hasSuccess()) {
+                    setSuccess(other.getSuccess());
+                }
+                if (other.hasMessage()) {
+                    bitField0_ |= 0x00000002;
+                    message_ = other.message_;
+                    onChanged();
+                }
+                this.mergeUnknownFields(other.getUnknownFields());
+                return this;
+            }
+
+            public final boolean isInitialized() {
+                if (!hasSuccess()) {
+
+                    return false;
+                }
+                return true;
+            }
+
+            public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                    throws java.io.IOException {
+                com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse parsedMessage = null;
+                try {
+                    parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+                } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+                    parsedMessage = (com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse) e.getUnfinishedMessage();
+                    throw e;
+                } finally {
+                    if (parsedMessage != null) {
+                        mergeFrom(parsedMessage);
+                    }
+                }
+                return this;
+            }
+
+            private int bitField0_;
+
+            private boolean success_;
+
+            /**
+             * <code>required bool success = 1;</code>
+             */
+            public boolean hasSuccess() {
+                return ((bitField0_ & 0x00000001) == 0x00000001);
+            }
+
+            /**
+             * <code>required bool success = 1;</code>
+             */
+            public boolean getSuccess() {
+                return success_;
+            }
+
+            /**
+             * <code>required bool success = 1;</code>
+             */
+            public Builder setSuccess(boolean value) {
+                bitField0_ |= 0x00000001;
+                success_ = value;
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>required bool success = 1;</code>
+             */
+            public Builder clearSuccess() {
+                bitField0_ = (bitField0_ & ~0x00000001);
+                success_ = false;
+                onChanged();
+                return this;
+            }
+
+            private java.lang.Object message_ = "";
+
+            /**
+             * <code>optional string message = 2 [default = ""];</code>
+             */
+            public boolean hasMessage() {
+                return ((bitField0_ & 0x00000002) == 0x00000002);
+            }
+
+            /**
+             * <code>optional string message = 2 [default = ""];</code>
+             */
+            public java.lang.String getMessage() {
+                java.lang.Object ref = message_;
+                if (!(ref instanceof java.lang.String)) {
+                    com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                    java.lang.String s = bs.toStringUtf8();
+                    if (bs.isValidUtf8()) {
+                        message_ = s;
+                    }
+                    return s;
+                } else {
+                    return (java.lang.String) ref;
+                }
+            }
+
+            /**
+             * <code>optional string message = 2 [default = ""];</code>
+             */
+            public com.google.protobuf.ByteString getMessageBytes() {
+                java.lang.Object ref = message_;
+                if (ref instanceof String) {
+                    com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                    message_ = b;
+                    return b;
+                } else {
+                    return (com.google.protobuf.ByteString) ref;
+                }
+            }
+
+            /**
+             * <code>optional string message = 2 [default = ""];</code>
+             */
+            public Builder setMessage(java.lang.String value) {
+                if (value == null) {
+                    throw new NullPointerException();
+                }
+                bitField0_ |= 0x00000002;
+                message_ = value;
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>optional string message = 2 [default = ""];</code>
+             */
+            public Builder clearMessage() {
+                bitField0_ = (bitField0_ & ~0x00000002);
+                message_ = getDefaultInstance().getMessage();
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>optional string message = 2 [default = ""];</code>
+             */
+            public Builder setMessageBytes(com.google.protobuf.ByteString value) {
+                if (value == null) {
+                    throw new NullPointerException();
+                }
+                bitField0_ |= 0x00000002;
+                message_ = value;
+                onChanged();
+                return this;
+            }
+
+            // @@protoc_insertion_point(builder_scope:ServerRegistryResponse)
+        }
+
+        static {
+            defaultInstance = new ServerRegistryResponse(true);
+            defaultInstance.initFields();
+        }
+
+        // @@protoc_insertion_point(class_scope:ServerRegistryResponse)
     }
+
+    private static final com.google.protobuf.Descriptors.Descriptor internal_static_WorkerRegistryRequest_descriptor;
+    private static com.google.protobuf.GeneratedMessage.FieldAccessorTable internal_static_WorkerRegistryRequest_fieldAccessorTable;
+    private static final com.google.protobuf.Descriptors.Descriptor internal_static_ServerRegistryResponse_descriptor;
+    private static com.google.protobuf.GeneratedMessage.FieldAccessorTable internal_static_ServerRegistryResponse_fieldAccessorTable;
+
+    public static com.google.protobuf.Descriptors.FileDescriptor getDescriptor() {
+        return descriptor;
+    }
+
+    private static com.google.protobuf.Descriptors.FileDescriptor descriptor;
 
     static {
-      defaultInstance = new ServerRegistryResponse(true);
-      defaultInstance.initFields();
+        java.lang.String[] descriptorData = {
+                "\n\025registry_worker.proto\"$\n\025WorkerRegistr" + "yRequest\022\013\n\003key\030\001 \002(\t\"<\n\026ServerRegistryR"
+                        + "esponse\022\017\n\007success\030\001 \002(\010\022\021\n\007message\030\002 \001("
+                        + "\t:\000B3\n\033com.mogujie.jarvis.protocolB\024Regi" + "stryWorkerProtos" };
+        com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner = new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
+            public com.google.protobuf.ExtensionRegistry assignDescriptors(com.google.protobuf.Descriptors.FileDescriptor root) {
+                descriptor = root;
+                return null;
+            }
+        };
+        com.google.protobuf.Descriptors.FileDescriptor.internalBuildGeneratedFileFrom(descriptorData,
+                new com.google.protobuf.Descriptors.FileDescriptor[] {}, assigner);
+        internal_static_WorkerRegistryRequest_descriptor = getDescriptor().getMessageTypes().get(0);
+        internal_static_WorkerRegistryRequest_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+                internal_static_WorkerRegistryRequest_descriptor, new java.lang.String[] { "Key", });
+        internal_static_ServerRegistryResponse_descriptor = getDescriptor().getMessageTypes().get(1);
+        internal_static_ServerRegistryResponse_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+                internal_static_ServerRegistryResponse_descriptor, new java.lang.String[] { "Success", "Message", });
     }
 
-    // @@protoc_insertion_point(class_scope:ServerRegistryResponse)
-  }
-
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_WorkerRegistryRequest_descriptor;
-  private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_WorkerRegistryRequest_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_ServerRegistryResponse_descriptor;
-  private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_ServerRegistryResponse_fieldAccessorTable;
-
-  public static com.google.protobuf.Descriptors.FileDescriptor
-      getDescriptor() {
-    return descriptor;
-  }
-  private static com.google.protobuf.Descriptors.FileDescriptor
-      descriptor;
-  static {
-    java.lang.String[] descriptorData = {
-      "\n\025registry_worker.proto\"$\n\025WorkerRegistr" +
-      "yRequest\022\013\n\003key\030\001 \002(\t\"<\n\026ServerRegistryR" +
-      "esponse\022\017\n\007success\030\001 \002(\010\022\021\n\007message\030\002 \001(" +
-      "\t:\000B3\n\033com.mogujie.jarvis.protocolB\024Regi" +
-      "stryWorkerProtos"
-    };
-    com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
-          public com.google.protobuf.ExtensionRegistry assignDescriptors(
-              com.google.protobuf.Descriptors.FileDescriptor root) {
-            descriptor = root;
-            return null;
-          }
-        };
-    com.google.protobuf.Descriptors.FileDescriptor
-      .internalBuildGeneratedFileFrom(descriptorData,
-        new com.google.protobuf.Descriptors.FileDescriptor[] {
-        }, assigner);
-    internal_static_WorkerRegistryRequest_descriptor =
-      getDescriptor().getMessageTypes().get(0);
-    internal_static_WorkerRegistryRequest_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_WorkerRegistryRequest_descriptor,
-        new java.lang.String[] { "Key", });
-    internal_static_ServerRegistryResponse_descriptor =
-      getDescriptor().getMessageTypes().get(1);
-    internal_static_ServerRegistryResponse_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_ServerRegistryResponse_descriptor,
-        new java.lang.String[] { "Success", "Message", });
-  }
-
-  // @@protoc_insertion_point(outer_class_scope)
+    // @@protoc_insertion_point(outer_class_scope)
 }
