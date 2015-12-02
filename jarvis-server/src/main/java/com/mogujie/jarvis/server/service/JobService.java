@@ -10,6 +10,7 @@ package com.mogujie.jarvis.server.service;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.mogujie.jarvis.core.domain.JobFlag;
@@ -80,19 +82,28 @@ public class JobService {
     }
 
     public long insertJob(Job record) {
-        //TODO
-        jobMapper.insert(record);
-        return record.getJobId();
+        // 1. insert to DB
+        long jobId = jobMapper.insert(record);
+
+        // 2. insert to cache
+        JobEntry jobEntry = new JobEntry(record, new ArrayList<ScheduleExpression>(), new HashMap<Long, JobDependencyEntry>());
+        metaStore.put(jobId, jobEntry);
+
+        return jobId;
     }
 
     public void updateJob(Job record) {
-        //TODO
+        // 1. update to DB
         jobMapper.updateByPrimaryKeySelective(record);
+
+        // 2. update to cache
+        JobEntry jobEntry = get(record.getJobId());
+        jobEntry.setJob(record);
     }
 
     public void deleteJob(long jobId) {
-        //TODO
         jobMapper.deleteByPrimaryKey(jobId);
+        metaStore.remove(jobId);
     }
 
     public JobScheduleExpression getScheduleExpressionByJobId(long jobId) {
@@ -107,6 +118,7 @@ public class JobService {
     }
 
     public void insertScheduleExpression(long jobId, ScheduleExpressionEntry entry) {
+        // 1. insert to DB
         JobScheduleExpression record = new JobScheduleExpression();
         record.setJobId(jobId);
         record.setExpressionType(entry.getExpressionType());
@@ -115,50 +127,93 @@ public class JobService {
         record.setCreateTime(now);
         record.setUpdateTime(now);
         jobScheduleExpressionMapper.insert(record);
-    }
 
-    public void updateScheduleExpression(JobScheduleExpression record) {
-        //TODO
-        jobScheduleExpressionMapper.updateByPrimaryKey(record);
+        // 2. insert to cache
+        ScheduleExpression scheduleExpression = null;
+        int expressionType = record.getExpressionType();
+        String expression = record.getExpression();
+        if (expressionType == ScheduleExpressionType.CRON.getValue()) {
+            scheduleExpression = new CronExpression(expression);
+        } else if (expressionType == ScheduleExpressionType.FIXED_RATE.getValue()) {
+            scheduleExpression = new FixedRateExpression(expression);
+        } else if (expressionType == ScheduleExpressionType.FIXED_DELAY.getValue()) {
+            scheduleExpression = new FixedDelayExpression(expression);
+        } else if (expressionType == ScheduleExpressionType.ISO8601.getValue()) {
+            scheduleExpression = new ISO8601Expression(expression);
+        }
+        List<ScheduleExpression> jobScheduleExpressions = Lists.newArrayList(scheduleExpression);
+        JobEntry jobEntry = get(jobId);
+        jobEntry.setScheduleExpressions(jobScheduleExpressions);
     }
 
     public void updateScheduleExpression(long jobId, ScheduleExpressionEntry entry) {
-        //TODO
+        // 1. update to DB
         JobScheduleExpression record = new JobScheduleExpression();
         record.setJobId(jobId);
         record.setExpressionType(entry.getExpressionType());
         record.setExpression(entry.getScheduleExpression());
         record.setUpdateTime(new Date());
         jobScheduleExpressionMapper.updateByPrimaryKey(record);
+
+        // 2. update to cache
+        ScheduleExpression scheduleExpression = null;
+        int expressionType = record.getExpressionType();
+        String expression = record.getExpression();
+        if (expressionType == ScheduleExpressionType.CRON.getValue()) {
+            scheduleExpression = new CronExpression(expression);
+        } else if (expressionType == ScheduleExpressionType.FIXED_RATE.getValue()) {
+            scheduleExpression = new FixedRateExpression(expression);
+        } else if (expressionType == ScheduleExpressionType.FIXED_DELAY.getValue()) {
+            scheduleExpression = new FixedDelayExpression(expression);
+        } else if (expressionType == ScheduleExpressionType.ISO8601.getValue()) {
+            scheduleExpression = new ISO8601Expression(expression);
+        }
+        List<ScheduleExpression> jobScheduleExpressions = Lists.newArrayList(scheduleExpression);
+        JobEntry jobEntry = get(record.getJobId());
+        jobEntry.setScheduleExpressions(jobScheduleExpressions);
     }
 
 
     public void deleteScheduleExpression(long jobId) {
-        //TODO
         JobScheduleExpressionExample example = new JobScheduleExpressionExample();
         example.createCriteria().andJobIdEqualTo(jobId);
         jobScheduleExpressionMapper.deleteByExample(example);
+
+        JobEntry jobEntry = get(jobId);
+        jobEntry.setScheduleExpressions(new ArrayList<ScheduleExpression>());
     }
 
     public void insertJobDepend(JobDepend record) {
-        //TODO
         jobDependMapper.insert(record);
+
+        JobDependencyEntry jobDependencyEntry = getJobDependencyEntry(record);
+        JobEntry jobEntry = get(record.getJobId());
+        jobEntry.addDependency(record.getPreJobId(), jobDependencyEntry);
     }
 
     public void deleteJobDepend(JobDependKey key) {
-        //TODO
         jobDependMapper.deleteByPrimaryKey(key);
+
+        JobEntry jobEntry = get(key.getJobId());
+        jobEntry.removeDependency(key.getPreJobId());
     }
 
     /**
-     * remove job depend where preJobId=jobId
+     * remove job depend where preJobId=preJobId
      * @param jobId
      */
-    public void deleteJobDependByPreJob(long jobId) {
-        //TODO
+    public void deleteJobDependByPreJob(long preJobId) {
         JobDependExample jobDependExample = new JobDependExample();
-        jobDependExample.createCriteria().andPreJobIdEqualTo(jobId);
+        jobDependExample.createCriteria().andPreJobIdEqualTo(preJobId);
+        List<JobDepend> jobDependList = jobDependMapper.selectByExample(jobDependExample);
         jobDependMapper.deleteByExample(jobDependExample);
+
+        if (jobDependList != null) {
+            for (JobDepend jobDepend : jobDependList) {
+                JobEntry jobEntry = get(jobDepend.getJobId());
+                jobEntry.removeDependency(preJobId);
+            }
+        }
     }
 
     public JobDepend getJobDepend(JobDependKey key) {
@@ -166,8 +221,11 @@ public class JobService {
     }
 
     public void updateJobDepend(JobDepend record) {
-        //TODO
         jobDependMapper.updateByPrimaryKey(record);
+
+        JobDependencyEntry jobDependencyEntry = getJobDependencyEntry(record);
+        JobEntry jobEntry = get(record.getJobId());
+        jobEntry.updateDependency(record.getPreJobId(), jobDependencyEntry);
     }
 
     public JobEntry get(long jobId) {
@@ -198,7 +256,6 @@ public class JobService {
 
 
     public void updateJobFlag(long jobId, String user, int newFlag) {
-        //TODO
         Job record = jobMapper.selectByPrimaryKey(jobId);
         record.setJobFlag(newFlag);
         record.setUpdateUser(user);
@@ -206,6 +263,9 @@ public class JobService {
         Date currentTime = dt.toDate();
         record.setUpdateTime(currentTime);
         jobMapper.updateByPrimaryKey(record);
+
+        JobEntry jobEntry = get(jobId);
+        jobEntry.updateJobFlag(newFlag);
     }
 
     public String getAppName(long jobId) {
@@ -263,54 +323,63 @@ public class JobService {
             Collection<JobDepend> jobDependsCollection = jobDependMap.get(jobId);
             if (jobDependsCollection != null && jobDependsCollection.size() > 0) {
                 for (JobDepend jobDepend : jobDependsCollection) {
-                    String offsetStrategy = jobDepend.getOffsetStrategy();
-                    // default is null
-                    if (offsetStrategy.isEmpty()) {
-                        offsetStrategy = null;
+                    JobDependencyEntry jobDependencyEntry = getJobDependencyEntry(jobDepend);
+                    if (jobDependencyEntry != null) {
+                        dependencies.put(jobDepend.getPreJobId(), jobDependencyEntry);
                     }
-
-                    String commonStrategyStr = null;
-                    Integer commonStrategy = jobDepend.getCommonStrategy();
-                    if (commonStrategy == null) {
-                        commonStrategyStr = "*";
-                    } else {
-                        switch (commonStrategy) {
-                            case 1:
-                                commonStrategyStr = "L(1)";
-                                break;
-                            case 2:
-                                commonStrategyStr = "+";
-                                break;
-                            default:
-                                commonStrategyStr = "*";
-                                break;
-                        }
-                    }
-
-                    // 检查依赖表达式是否有效
-                    DependencyExpression dependencyExpression = null;
-                    if (offsetStrategy != null) {
-                        dependencyExpression = new TimeOffsetExpression(offsetStrategy);
-                        if (!dependencyExpression.isValid()) {
-                            LOGGER.warn("dependency expression is invalid. id={}; value={}",jobId,dependencyExpression.toString());
-                            continue;
-                        }
-                    }
-
-                    // 检查依赖策略表达式是否有效
-                    DependencyStrategyExpression dependencyStrategyExpression = new DefaultDependencyStrategyExpression(commonStrategyStr);
-                    if (!dependencyStrategyExpression.isValid()) {
-                        LOGGER.warn("dependency strategy is invalid. id={}; value={}",jobId,dependencyStrategyExpression.toString());
-                        continue;
-                    }
-
-                    JobDependencyEntry jobDependencyEntry = new JobDependencyEntry(dependencyExpression, dependencyStrategyExpression);
-                    dependencies.put(jobDepend.getPreJobId(), jobDependencyEntry);
                 }
             }
 
             // 初始化 JobMetaStore
             metaStore.put(job.getJobId(), new JobEntry(job,jobScheduleExpressions, dependencies));
         }
+    }
+
+    private JobDependencyEntry getJobDependencyEntry(JobDepend jobDepend) {
+        long jobId = jobDepend.getJobId();
+        JobDependencyEntry jobDependencyEntry = null;
+        String offsetStrategy = jobDepend.getOffsetStrategy();
+        // default is null
+        if (offsetStrategy.isEmpty()) {
+            offsetStrategy = null;
+        }
+
+        String commonStrategyStr = null;
+        Integer commonStrategy = jobDepend.getCommonStrategy();
+        if (commonStrategy == null) {
+            commonStrategyStr = "*";
+        } else {
+            switch (commonStrategy) {
+                case 1:
+                    commonStrategyStr = "L(1)";
+                    break;
+                case 2:
+                    commonStrategyStr = "+";
+                    break;
+                default:
+                    commonStrategyStr = "*";
+                    break;
+            }
+        }
+
+        // 检查依赖表达式是否有效
+        DependencyExpression dependencyExpression = null;
+        if (offsetStrategy != null) {
+            dependencyExpression = new TimeOffsetExpression(offsetStrategy);
+            if (!dependencyExpression.isValid()) {
+                LOGGER.warn("dependency expression is invalid. id={}; value={}",jobId,dependencyExpression.toString());
+                return jobDependencyEntry;
+            }
+        }
+
+        // 检查依赖策略表达式是否有效
+        DependencyStrategyExpression dependencyStrategyExpression = new DefaultDependencyStrategyExpression(commonStrategyStr);
+        if (!dependencyStrategyExpression.isValid()) {
+            LOGGER.warn("dependency strategy is invalid. id={}; value={}",jobId,dependencyStrategyExpression.toString());
+            return jobDependencyEntry;
+        }
+
+        jobDependencyEntry = new JobDependencyEntry(dependencyExpression, dependencyStrategyExpression);
+        return jobDependencyEntry;
     }
 }
