@@ -9,7 +9,7 @@ import com.mogujie.jarvis.protocol.ApplicationProtos.RestModifyApplicationReques
 import com.mogujie.jarvis.protocol.ApplicationProtos.ServerCreateApplicationResponse;
 import com.mogujie.jarvis.protocol.ApplicationProtos.ServerModifyApplicationResponse;
 import com.mogujie.jarvis.rest.RestResult;
-import com.mogujie.jarvis.rest.utils.JsonParams;
+import com.mogujie.jarvis.rest.utils.JsonParameters;
 
 /**
  * @author muming
@@ -30,7 +30,7 @@ public class AppController extends AbstractController {
         try {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
-            JsonParams paras = new JsonParams(parameters);
+            JsonParameters paras = new JsonParameters(parameters);
             String applicationName = paras.getStringNotEmpty("applicationName");
             Integer status = paras.getInteger("status",1);
             Integer maxConcurrency = paras.getInteger("maxConcurrency",10);
@@ -68,7 +68,7 @@ public class AppController extends AbstractController {
         try {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
-            JsonParams paras = new JsonParams(parameters);
+            JsonParameters paras = new JsonParameters(parameters);
             Integer appId = paras.getIntegerNotNull("appId");
             String applicationName = paras.getString("applicationName");
             Integer status = paras.getInteger("status");
