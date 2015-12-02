@@ -8,13 +8,19 @@
 	</strategies>
 	
 	<jobs>
-	    <job type="hive" class="com.mogujie.jarvis.jobs.impl.HiveJob">
+	    <job type="hive_shell" class="com.mogujie.jarvis.tasks.shell.HiveSqlShellTask">
+	    		<strategies>
+				<strategy>com.mogujie.jarvis.worker.strategy.impl.YarnMemoryAcceptanceStrategy</strategy>
+			</strategies>
+	    </job>
+	    <job type="hive_script" class="com.mogujie.jarvis.tasks.shell.HiveScriptShellTask">
 	    		<strategies>
 				<strategy>com.mogujie.jarvis.worker.strategy.impl.YarnMemoryAcceptanceStrategy</strategy>
 			</strategies>
 	    </job>
 	    
-	    <job type="shell" class="com.mogujie.jarvis.jobs.impl.ShellJob" />
-	    <job type="presto" class="com.mogujie.jarvis.jobs.impl.PrestoJdbcJob" />
+	    <job type="shell" class="com.mogujie.jarvis.tasks.shell.ShellJob" />
+	    <job type="presto" class="com.mogujie.jarvis.tasks.jdbc.PrestoJdbcJob" />
+	    <job type="dummy" class="com.mogujie.jarvis.tasks.DummyJob" />
 	</jobs>
 </configuration>
