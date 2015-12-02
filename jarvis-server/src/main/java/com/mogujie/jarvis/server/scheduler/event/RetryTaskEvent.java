@@ -8,31 +8,19 @@
 
 package com.mogujie.jarvis.server.scheduler.event;
 
-import java.util.List;
-
-import com.mogujie.jarvis.core.observer.Event;
 
 /**
  * @author guangming
  *
  */
-public class RetryTaskEvent implements Event {
-
-    private List<Long> taskIdList;
+public class RetryTaskEvent extends DAGTaskEvent {
 
     /**
-     * @param taskIdList
-     * @param runChild
+     * @param jobId
+     * @param taskId
      */
-    public RetryTaskEvent(List<Long> taskIdList) {
-        this.taskIdList = taskIdList;
+    public RetryTaskEvent(long jobId, long taskId) {
+        super(jobId, taskId);
     }
 
-    public List<Long> getTaskIdList() {
-        return taskIdList;
-    }
-
-    public void setTaskIdList(List<Long> taskIdList) {
-        this.taskIdList = taskIdList;
-    }
 }

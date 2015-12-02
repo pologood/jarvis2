@@ -33,6 +33,7 @@ import com.mogujie.jarvis.server.scheduler.TaskRetryScheduler;
 import com.mogujie.jarvis.server.scheduler.event.AddTaskEvent;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
 import com.mogujie.jarvis.server.scheduler.event.KilledEvent;
+import com.mogujie.jarvis.server.scheduler.event.ManualRerunTaskEvent;
 import com.mogujie.jarvis.server.scheduler.event.RetryTaskEvent;
 import com.mogujie.jarvis.server.scheduler.event.RunTaskEvent;
 import com.mogujie.jarvis.server.scheduler.event.RunningEvent;
@@ -194,26 +195,35 @@ public class TaskScheduler extends Scheduler {
     @Subscribe
     @Transactional
     public void handleRetryTaskEvent(RetryTaskEvent e) {
+        long taskId = e.getTaskId();
+        Task task = taskService.get(taskId);
+        if (task != null) {
+            updateTaskStatus(taskId, TaskStatus.WAITING);
+
+            DAGTask dagTask = taskGraph.getTask(taskId);
+            if (dagTask == null) {
+                dagTask = new DAGTask(task.getJobId(), taskId, task.getAttemptId(), task.getScheduleTime().getTime());
+                taskGraph.addTask(taskId, dagTask);
+            }
+            if (dagTask != null && dagTask.checkStatus()) {
+                int attemptId = dagTask.getAttemptId();
+                attemptId++;
+                dagTask.setAttemptId(attemptId);
+                task.setAttemptId(attemptId);
+                task.setUpdateTime(DateTime.now().toDate());
+                taskService.update(task);
+                submitTask(dagTask);
+            }
+        }
+    }
+
+    @Subscribe
+    public void handleManulRerunTaskEvent(ManualRerunTaskEvent e) {
         List<Long> taskIdList = e.getTaskIdList();
         for (Long taskId : taskIdList) {
-            Task task = taskService.get(taskId);
-            if (task != null) {
-                updateTaskStatus(taskId, TaskStatus.WAITING);
-
-                DAGTask dagTask = taskGraph.getTask(taskId);
-                if (dagTask == null) {
-                    dagTask = new DAGTask(task.getJobId(), taskId, task.getAttemptId(), task.getScheduleTime().getTime());
-                    taskGraph.addTask(taskId, dagTask);
-                }
-                if (dagTask != null && dagTask.checkStatus()) {
-                    int attemptId = dagTask.getAttemptId();
-                    attemptId++;
-                    dagTask.setAttemptId(attemptId);
-                    task.setAttemptId(attemptId);
-                    task.setUpdateTime(DateTime.now().toDate());
-                    taskService.update(task);
-                    submitTask(dagTask);
-                }
+            DAGTask dagTask = taskGraph.getTask(taskId);
+            if (dagTask != null && dagTask.checkStatus()) {
+                submitTask(dagTask);
             }
         }
     }

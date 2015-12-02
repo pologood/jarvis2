@@ -25,7 +25,6 @@ import org.springframework.context.annotation.Scope;
 import akka.actor.ActorSelection;
 import akka.actor.UntypedActor;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Range;
 import com.mogujie.jarvis.core.JarvisConstants;
@@ -57,6 +56,7 @@ import com.mogujie.jarvis.server.TaskQueue;
 import com.mogujie.jarvis.server.domain.JobDependencyEntry;
 import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.dag.JobGraph;
+import com.mogujie.jarvis.server.scheduler.event.ManualRerunTaskEvent;
 import com.mogujie.jarvis.server.scheduler.event.RetryTaskEvent;
 import com.mogujie.jarvis.server.scheduler.event.ScheduleEvent;
 import com.mogujie.jarvis.server.scheduler.plan.ExecutionPlanEntry;
@@ -142,8 +142,7 @@ public class TaskActor extends UntypedActor {
      * @param msg
      */
     private void retryTask(RestServerRetryTaskRequest msg) {
-        List<Long> taskIdList = Lists.newArrayList(msg.getTaskId());
-        controller.notify(new RetryTaskEvent(taskIdList));
+        controller.notify(new RetryTaskEvent(0, msg.getTaskId()));
         ServerRetryTaskResponse response = ServerRetryTaskResponse.newBuilder().setSuccess(true).build();
         getSender().tell(response, getSelf());
     }
@@ -213,7 +212,7 @@ public class TaskActor extends UntypedActor {
                 }
             }
         }
-        controller.notify(new RetryTaskEvent(taskIdList));
+        controller.notify(new ManualRerunTaskEvent(taskIdList));
 
         // 5.如果需要重跑后续任务，触发后续依赖任务
         if (runChild) {
