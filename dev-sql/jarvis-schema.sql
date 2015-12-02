@@ -47,7 +47,7 @@ CREATE TABLE `job` (
   `submitUser` varchar(32) NOT NULL DEFAULT '' COMMENT '提交用户',
   `priority` int(3) unsigned NOT NULL DEFAULT '0' COMMENT '优先级,1:low,2:normal,3:high,4:verg high',
   `appId` int(11) NOT NULL COMMENT '应用ID',
-  `workerGropuId` int(11) unsigned NOT NULL DEFAULT '0' COMMENT 'worker组ID',
+  `workerGroupId` int(11) unsigned NOT NULL DEFAULT '0' COMMENT 'worker组ID',
   `activeStartDate` datetime DEFAULT NULL COMMENT '有效开始日期',
   `activeEndDate` datetime DEFAULT NULL COMMENT '有效结束日期',
   `rejectAttempts` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '任务被Worker拒绝时的重试次数',
@@ -108,7 +108,15 @@ CREATE TABLE `task` (
   KEY `index_dataYmd` (`scheduleTime`),
   KEY `index_executeStartTime` (`executeStartTime`),
   KEY `index_executeUser` (`executeUser`) KEY_BLOCK_SIZE=4
-) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8 COMMENT='task表';
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8 COMMENT='task表';
+
+-- Create syntax for TABLE 'task_depend'
+CREATE TABLE `task_depend` (
+  `taskId` bigint(11) unsigned NOT NULL DEFAULT '0' COMMENT 'taskId',
+  `dependTaskIds` varchar(1024) NOT NULL DEFAULT '' COMMENT '依赖的task情况',
+  `createTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`taskId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='task依赖表';
 
 -- Create syntax for TABLE 'worker'
 CREATE TABLE `worker` (
