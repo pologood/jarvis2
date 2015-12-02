@@ -168,8 +168,7 @@ public class TaskActor extends UntypedActor {
             for (ExecutionPlanEntry planEntry : planList) {
                 // create new task
                 long scheduleTime = planEntry.getDateTime().getMillis();
-                Task newTask = taskService.createTaskByJobId(jobId, scheduleTime);
-                long taskId = newTask.getTaskId();
+                long taskId = taskService.createTaskByJobId(jobId, scheduleTime);
                 planEntry.setTaskId(taskId);
                 taskIdList.add(taskId);
             }

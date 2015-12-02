@@ -82,7 +82,7 @@ public class TaskService {
         return taskMapper.selectByExample(example).get(0);
     }
 
-    public Task createTaskByJobId(long jobId, long scheduleTime) {
+    public long createTaskByJobId(long jobId, long scheduleTime) {
         Task record = new Task();
         record.setJobId(jobId);
         record.setAttemptId(1);
@@ -97,7 +97,7 @@ public class TaskService {
         record.setExecuteUser(job.getSubmitUser());
         record.setContent(job.getContent());
         taskMapper.insert(record);
-        return record;
+        return record.getTaskId();
     }
 
     public List<Task> getTasksByStatusNotIn(List<Integer> statusList) {

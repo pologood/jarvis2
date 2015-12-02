@@ -8,8 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.mogujie.jarvis.dto.generate.Task;
-
 /**
  * Created by muming on 15/11/17.
  */
@@ -25,7 +23,7 @@ public class TestTaskService {
     public void testCreateTaskByJobId(){
         Integer jobId = 3;
         Long scheduleTime = DateTime.now().getMillis()/1000;
-        Task task = taskService.createTaskByJobId(jobId,scheduleTime);
-        Assert.assertNotNull(task);
+        long taskId = taskService.createTaskByJobId(jobId,scheduleTime);
+        Assert.assertNotNull(taskId);
     }
 }
