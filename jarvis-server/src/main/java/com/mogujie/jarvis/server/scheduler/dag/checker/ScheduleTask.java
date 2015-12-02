@@ -8,6 +8,8 @@
 
 package com.mogujie.jarvis.server.scheduler.dag.checker;
 
+import java.util.Objects;
+
 /**
  * @author guangming
  *
@@ -51,5 +53,10 @@ public class ScheduleTask {
         } else {
             return true;
         }
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(taskId);
     }
 }

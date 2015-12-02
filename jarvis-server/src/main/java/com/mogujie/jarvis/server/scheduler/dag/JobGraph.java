@@ -79,7 +79,7 @@ public enum JobGraph {
                 for (DAGJob parent : parents) {
                     long parentId = parent.getJobId();
                     JobFlag flag = parent.getJobFlag();
-                    if (flag.equals(JobFlag.ENABLE) && !jobService.isActive(parentId)); {
+                    if (flag.equals(JobFlag.ENABLE) && !jobService.isActive(parentId)) {
                         flag = JobFlag.EXPIRED;
                     }
                     Pair<Long, JobFlag> jobPair = new Pair<Long, JobFlag>(parentId, flag);
@@ -106,7 +106,7 @@ public enum JobGraph {
                 for (DAGJob child : children) {
                     long childId = child.getJobId();
                     JobFlag flag = child.getJobFlag();
-                    if (flag.equals(JobFlag.ENABLE) && !jobService.isActive(childId)); {
+                    if (flag.equals(JobFlag.ENABLE) && !jobService.isActive(childId)) {
                         flag = JobFlag.EXPIRED;
                     }
                     Pair<Long, JobFlag> jobPair = new Pair<Long, JobFlag>(childId, flag);

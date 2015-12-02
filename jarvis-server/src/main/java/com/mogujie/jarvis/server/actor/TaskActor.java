@@ -9,6 +9,8 @@
 package com.mogujie.jarvis.server.actor;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -215,14 +217,30 @@ public class TaskActor extends UntypedActor {
 
         // 5.如果需要重跑后续任务，触发后续依赖任务
         if (runChild) {
-            for (long taskId : taskIdList) {
-                DAGTask dagTask = taskGraph.getTask(taskId);
-                List<DAGTask> children = taskGraph.getChildren(taskId);
-                if (children == null || children.isEmpty()) {
-                    ScheduleEvent scheduleEvent = new ScheduleEvent(dagTask.getJobId(), taskId, dagTask.getScheduleTime());
-                    controller.notify(scheduleEvent);
+            List<ExecutionPlanEntry> sortedPlanList = new ArrayList<ExecutionPlanEntry>();
+            for (long jobId : planMap.keySet()) {
+                List<ExecutionPlanEntry> planList = planMap.get(jobId);
+                for (ExecutionPlanEntry planEntry : planList) {
+                    long taskId = planEntry.getTaskId();
+                    List<DAGTask> children = taskGraph.getChildren(taskId);
+                    if (children == null || children.isEmpty()) {
+                        sortedPlanList.add(planEntry);
+                    }
                 }
             }
+            Collections.sort(sortedPlanList, new Comparator<ExecutionPlanEntry>(){
+                @Override
+                public int compare(ExecutionPlanEntry entry1, ExecutionPlanEntry entry2) {
+                    return entry1.getDateTime().compareTo(entry2.getDateTime());
+                }
+            });
+            for (ExecutionPlanEntry planEntry : sortedPlanList) {
+                long taskId = planEntry.getTaskId();
+                DAGTask dagTask = taskGraph.getTask(taskId);
+                ScheduleEvent scheduleEvent = new ScheduleEvent(dagTask.getJobId(), taskId, dagTask.getScheduleTime());
+                controller.notify(scheduleEvent);
+            }
+
         }
 
         ServerManualRerunTaskResponse response = ServerManualRerunTaskResponse.newBuilder().setSuccess(true).build();

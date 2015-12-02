@@ -50,7 +50,7 @@ public enum CommonStrategy {
         CommonStrategy[] strategyList = CommonStrategy.values();
         CommonStrategy strategy = CommonStrategy.ALL;
         for (CommonStrategy cs : strategyList) {
-            if (cs.getExpression() == expression) {
+            if (cs.getExpression().equalsIgnoreCase(expression)) {
                 strategy = cs;
                 break;
             }

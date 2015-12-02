@@ -96,11 +96,12 @@ public class TaskStatusChecker {
         Map<Long, TaskDependStatus> jobStatusMap = new ConcurrentHashMap<Long, TaskDependStatus>();
         Map<Long, JobDependencyEntry> dependencyMap = jobService.get(myJobId).getDependencies();
         if(dependencyMap != null) {
-            for (long preJobId : dependencyMap.keySet()) {
-                JobDependencyEntry dependencyEntry = dependencyMap.get(preJobId);
+            for (Entry<Long, JobDependencyEntry> entry : dependencyMap.entrySet()) {
+                long preJobId = entry.getKey();
+                JobDependencyEntry dependencyEntry = entry.getValue();
                 DependencyStrategyExpression commonStrategy = dependencyEntry.getDependencyStrategyExpression();
                 DependencyExpression dependencyExpression = dependencyEntry.getDependencyExpression();
-                List<Long> dependTaskIds = new ArrayList<Long>();
+                List<Long> dependTaskIds = null;
                 if (dependTaskIdMap != null && dependTaskIdMap.containsKey(preJobId)) {
                     dependTaskIds = dependTaskIdMap.get(preJobId);
                 } else {
