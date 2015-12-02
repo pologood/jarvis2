@@ -46,16 +46,18 @@ public class JobController extends AbstractController {
             @FormParam("appName") String appName,
             @FormParam("appToken") String appToken,
             @FormParam("user") String user,
-            @FormParam("arguments") String arguments) {
+            @FormParam("parameters") String parameters) {
 
         LOGGER.debug("提交job任务");
         try {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
-            JobEntryVo jobVo = JsonParameters.fromJson(arguments, JobEntryVo.class);
+            JobEntryVo jobVo = JsonParameters.fromJson(parameters, JobEntryVo.class);
             //parameters处理
-            String parameters = JsonParameters.toJson(jobVo.getParams(), List.class);
-
+            String jobParameters = "";
+            if(jobVo.getParams() != null) {
+                jobParameters = JsonParameters.toJson(jobVo.getParams(), List.class);
+            }
             // 构造新增任务请求
             RestSubmitJobRequest.Builder builder = RestSubmitJobRequest.newBuilder()
                     .setAppAuth(appAuth)
@@ -64,7 +66,8 @@ public class JobController extends AbstractController {
                     .setJobType(jobVo.getJobType())
                     .setJobFlag(jobVo.getJobFlag())
                     .setContent(jobVo.getContent())
-                    .setParameters(parameters)
+                    .setParameters(jobParameters)
+                    .setAppName(jobVo.getAppName(appName))
                     .setWorkerGroupId(jobVo.getWorkerGroupId())
                     .setPriority(jobVo.getPriority(1))
                     .setActiveStartTime(jobVo.getActiveStartTime(0))
@@ -120,16 +123,19 @@ public class JobController extends AbstractController {
     @Path("edit")
     @Produces(MediaType.APPLICATION_JSON)
     public RestResult edit(@FormParam("appName") String appName, @FormParam("appToken") String appToken, @FormParam("user") String user,
-                           @FormParam("arguments") String arguments) {
+                           @FormParam("parameters") String parameters) {
 
         LOGGER.info("更新job任务");
         try {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
-            JobEntryVo jobVo = JsonParameters.fromJson(arguments, JobEntryVo.class);
+            JobEntryVo jobVo = JsonParameters.fromJson(parameters, JobEntryVo.class);
 
             //parameters处理
-            String parameters = JsonParameters.toJson(jobVo.getParams(), List.class);
+            String jobParameters = "";
+            if(jobVo.getParams() != null) {
+                jobParameters = JsonParameters.toJson(jobVo.getParams(), List.class);
+            }
 
             // 构造修改job基本信息请求
             RestModifyJobRequest.Builder builder = RestModifyJobRequest.newBuilder()
@@ -147,10 +153,13 @@ public class JobController extends AbstractController {
                 builder.setContent(jobVo.getContent());
             }
             if(jobVo.getParams() !=null){
-                builder.setParameters(parameters);
+                builder.setParameters(jobParameters);
             }
             if(jobVo.getPriority() != null){
                 builder.setPriority(jobVo.getPriority());
+            }
+            if(jobVo.getAppName() !=null){
+                builder.setAppName(jobVo.getAppName());
             }
             if(jobVo.getWorkerGroupId() != null){
                 builder.setWorkerGroupId(jobVo.getWorkerGroupId());

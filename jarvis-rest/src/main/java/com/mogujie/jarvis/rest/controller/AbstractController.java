@@ -119,8 +119,8 @@ public abstract class AbstractController {
      * @param data
      * @return
      */
-    protected RestResult successResult(AbstractVo data) {
-        RestResult result = new RestResult(MsgCode.SUCCESS);
+    protected <T> RestResult<T> successResult(T data) {
+        RestResult<T> result = new RestResult<>(MsgCode.SUCCESS);
         result.setData(data);
         return result;
     }

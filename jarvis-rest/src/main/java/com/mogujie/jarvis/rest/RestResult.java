@@ -7,7 +7,7 @@ import com.mogujie.jarvis.rest.vo.AbstractVo;
  * 
  * @author 牧名
  */
-public class RestResult {
+public class RestResult<T> {
 
     /** 错误码 */
     private int code;
@@ -20,7 +20,7 @@ public class RestResult {
     private String exception;
 
     /** 数据 */
-    private AbstractVo data;
+    private T data;
 
     /**
      * 构造
@@ -86,11 +86,11 @@ public class RestResult {
         this.exception = exception;
     }
 
-    public AbstractVo getData() {
+    public T getData() {
         return data;
     }
 
-    public void setData(AbstractVo data) {
+    public void setData(T data) {
         this.data = data;
     }
 

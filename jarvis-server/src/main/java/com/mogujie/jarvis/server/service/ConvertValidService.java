@@ -10,6 +10,8 @@ package com.mogujie.jarvis.server.service;
 
 import java.util.Date;
 
+import com.mogujie.jarvis.core.domain.AppType;
+import com.mogujie.jarvis.dto.generate.App;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,6 +42,20 @@ public class ConvertValidService {
 
     public Job convert2Job(RestSubmitJobRequest msg) {
         Job job = new Job();
+
+        Integer appId;
+        App appAuth = appService.getAppByName(msg.getAppAuth().getName());
+        if(appAuth.getAppType() == AppType.NORMAL.getValue()){
+            appId = appAuth.getAppId();
+        }else{
+            if(msg.hasAppName()){
+                appId = appService.getAppIdByName(msg.getAppName());
+            }else{
+                appId = appAuth.getAppId();
+            }
+        }
+        job.setAppId(appId);
+
         job.setAppId(appService.getAppIdByName(msg.getAppAuth().getName()));
 
         job.setJobName(msg.getJobName());

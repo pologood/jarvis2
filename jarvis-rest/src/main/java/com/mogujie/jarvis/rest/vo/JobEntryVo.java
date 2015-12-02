@@ -16,6 +16,7 @@ public class JobEntryVo extends  AbstractVo{
     private Integer jobFlag;
     private String content;
     private List<ParameterEntity> params;
+    private String appName;
     private Integer workerGroupId;
     private Integer priority;
     private Integer activeStartTime;
@@ -137,6 +138,12 @@ public class JobEntryVo extends  AbstractVo{
     public void setParams(List<ParameterEntity> params) {
         this.params = params;
     }
+    public String getAppName() {
+        return appName;
+    }
+    public void setAppName(String appName) {
+        this.appName = appName;
+    }
     public Integer getWorkerGroupId() {
         return workerGroupId;
     }
@@ -199,6 +206,9 @@ public class JobEntryVo extends  AbstractVo{
         this.scheduleExpressionEntry = scheduleExpressionEntry;
     }
 
+    public String getAppName(String defaultValue) {
+        return (appName != null) ? appName : defaultValue;
+    }
     public Integer getActiveStartTime(Integer defaultValue) {
         return (activeStartTime != null) ? activeStartTime : defaultValue;
     }
@@ -220,6 +230,5 @@ public class JobEntryVo extends  AbstractVo{
     public Integer getFailedInterval(Integer defaultValue) {
         return (failedInterval != null) ? failedInterval : defaultValue;
     }
-
 
 }

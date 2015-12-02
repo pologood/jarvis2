@@ -15,16 +15,17 @@ message RestSubmitJobRequest {
     required int32 job_flag = 5;
     required string content = 6;
     optional string parameters = 7 [default = ""];
-    required int32 worker_group_id = 8;
-    optional int32 priority = 9 [default = 1];
-    optional int64 active_start_time = 10;
-    optional int64 active_end_time = 11;
-    optional int32 reject_attempts = 12 [default = 0];
-    optional int32 reject_interval = 13 [default = 3];
-    optional int32 failed_attempts = 14 [default = 0];
-    optional int32 failed_interval = 15 [default = 3];
-    optional ScheduleExpressionEntry expression_entry = 16;
-    repeated DependencyEntry dependency_entry = 17;
+    optional string app_name = 8;
+    required int32 worker_group_id = 9;
+    optional int32 priority = 10 [default = 1];
+    optional int64 active_start_time = 11;
+    optional int64 active_end_time = 12;
+    optional int32 reject_attempts = 13 [default = 0];
+    optional int32 reject_interval = 14 [default = 3];
+    optional int32 failed_attempts = 15 [default = 0];
+    optional int32 failed_interval = 16 [default = 3];
+    optional ScheduleExpressionEntry expression_entry = 17;
+    repeated DependencyEntry dependency_entry = 18;
 }
 
 message ServerSubmitJobResponse {
@@ -43,16 +44,17 @@ message RestModifyJobRequest {
     optional int32 job_flag = 6;
     optional string content = 7;
     optional string parameters = 8;
-    optional int32 worker_group_id = 9;
-    optional int32 priority = 10;
-    optional int64 active_start_time = 11;
-    optional int64 active_end_time = 12;
-    optional int32 reject_attempts = 13;
-    optional int32 reject_interval = 14;
-    optional int32 failed_attempts = 15;
-    optional int32 failed_interval = 16;
-    optional ScheduleExpressionEntry expression_entry = 17;
-    repeated DependencyEntry dependency_entry = 18;
+    optional string app_name = 9;
+    optional int32 worker_group_id = 10;
+    optional int32 priority = 11;
+    optional int64 active_start_time = 12;
+    optional int64 active_end_time = 13;
+    optional int32 reject_attempts = 14;
+    optional int32 reject_interval = 15;
+    optional int32 failed_attempts = 16;
+    optional int32 failed_interval = 17;
+    optional ScheduleExpressionEntry expression_entry = 18;
+    repeated DependencyEntry dependency_entry = 19;
 }
 
 message ServerModifyJobResponse {

@@ -36,12 +36,17 @@ public class AppService {
     private AppWorkerGroupMapper appWorkerGroupMapper;
 
     public int getAppIdByName(String appName) {
+        return getAppByName(appName).getAppId();
+    }
+
+    public App getAppByName(String appName) {
+        Preconditions.checkNotNull(appName, appName + "not found.");
         AppExample example = new AppExample();
         example.createCriteria().andAppNameEqualTo(appName);
         List<App> apps = appMapper.selectByExample(example);
         Preconditions.checkNotNull(apps, appName + "not found.");
         Preconditions.checkArgument(!apps.isEmpty(), appName + "not found.");
-        return apps.get(0).getAppId();
+        return apps.get(0);
     }
 
     public List<App> getAppList() {
