@@ -14,13 +14,13 @@ import java.util.Map;
  */
 
 
-public class JsonParams {
+public class JsonParameters {
 
     Type mapType = new TypeToken<Map<String, Object>>() {}.getType();
     private static Gson gson = new Gson();
     private Map<String, Object> data;
 
-    public JsonParams(String jsonString) {
+    public JsonParameters(String jsonString) {
         try{
             data = gson.fromJson(jsonString, mapType);
         }catch (JsonSyntaxException ex){

@@ -165,8 +165,7 @@ public class TaskScheduler extends Scheduler {
         Map<Long, List<Long>> dependTaskIdMap = e.getDependTaskIdMap();
 
         // create new task
-        Task newTask = taskService.createTaskByJobId(jobId, scheduleTime);
-        long taskId = newTask.getTaskId();
+        long taskId = taskService.createTaskByJobId(jobId, scheduleTime);
 
         // add to taskGraph
         DAGTask dagTask = new DAGTask(jobId, taskId, scheduleTime, dependTaskIdMap);

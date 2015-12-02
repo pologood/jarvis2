@@ -15,7 +15,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import com.mogujie.jarvis.rest.utils.JsonParams;
+import com.mogujie.jarvis.rest.utils.JsonParameters;
 import com.mogujie.jarvis.rest.vo.JobEntryVo;
 import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
@@ -52,9 +52,9 @@ public class JobController extends AbstractController {
         try {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
-            JobEntryVo jobVo = JsonParams.fromJson(arguments, JobEntryVo.class);
+            JobEntryVo jobVo = JsonParameters.fromJson(arguments, JobEntryVo.class);
             //parameters处理
-            String parameters = JsonParams.toJson(jobVo.getParams(), List.class);
+            String parameters = JsonParameters.toJson(jobVo.getParams(), List.class);
 
             // 构造新增任务请求
             RestSubmitJobRequest.Builder builder = RestSubmitJobRequest.newBuilder()
@@ -126,10 +126,10 @@ public class JobController extends AbstractController {
         try {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
-            JobEntryVo jobVo = JsonParams.fromJson(arguments, JobEntryVo.class);
+            JobEntryVo jobVo = JsonParameters.fromJson(arguments, JobEntryVo.class);
 
             //parameters处理
-            String parameters = JsonParams.toJson(jobVo.getParams(), List.class);
+            String parameters = JsonParameters.toJson(jobVo.getParams(), List.class);
 
             // 构造修改job基本信息请求
             RestModifyJobRequest.Builder builder = RestModifyJobRequest.newBuilder()

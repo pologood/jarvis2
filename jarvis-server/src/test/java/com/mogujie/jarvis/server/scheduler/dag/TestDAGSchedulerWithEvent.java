@@ -14,12 +14,15 @@ import org.junit.Test;
 import com.google.common.collect.Sets;
 import com.mogujie.jarvis.server.scheduler.event.ScheduleEvent;
 import com.mogujie.jarvis.server.scheduler.event.TimeReadyEvent;
+import com.mogujie.jarvis.server.service.TaskService;
+import com.mogujie.jarvis.server.util.SpringContext;
 
 /**
  * @author guangming
  *
  */
 public class TestDAGSchedulerWithEvent extends TestSchedulerBase {
+    private TaskService taskService = SpringContext.getBean(TaskService.class);
     private long jobAId = 1;
     private long jobBId = 2;
     private long jobCId = 3;
@@ -47,11 +50,13 @@ public class TestDAGSchedulerWithEvent extends TestSchedulerBase {
         Assert.assertEquals(jobCId, (long)jobGraph.getChildren(jobBId).get(0).getFirst());
         Assert.assertEquals(2, jobGraph.getParents(jobCId).size());
         // schedule jobA
+        taskAId = taskService.createTaskByJobId(jobAId, t1);
         ScheduleEvent scheduleEventA = new ScheduleEvent(jobAId, taskAId, t1);
         dagScheduler.handleScheduleEvent(scheduleEventA);
         Assert.assertEquals(0, taskScheduler.getReadyTable().size());
         // schedule jobB
         // pass the dependency check, start to schedule jobC
+        taskBId = taskService.createTaskByJobId(jobBId, t2);
         ScheduleEvent scheduleEventB = new ScheduleEvent(jobBId, taskBId, t2);
         dagScheduler.handleScheduleEvent(scheduleEventB);
         Assert.assertEquals(1, taskScheduler.getReadyTable().size());
@@ -74,6 +79,7 @@ public class TestDAGSchedulerWithEvent extends TestSchedulerBase {
         Assert.assertEquals(jobAId, (long)jobGraph.getParents(jobCId).get(0).getFirst());
         // schedule jobA
         // pass the dependency check, start to schedule jobB and jobC
+        taskAId = taskService.createTaskByJobId(jobAId, t1);
         ScheduleEvent scheduleEventA = new ScheduleEvent(jobAId, taskAId, t1);
         dagScheduler.handleScheduleEvent(scheduleEventA);
         Assert.assertEquals(2, taskScheduler.getReadyTable().size());
@@ -97,6 +103,7 @@ public class TestDAGSchedulerWithEvent extends TestSchedulerBase {
         Assert.assertEquals(jobCId, (long)jobGraph.getChildren(jobBId).get(0).getFirst());
         // schedule jobA
         // pass the dependency check, start to schedule jobB and jobC
+        taskAId = taskService.createTaskByJobId(jobAId, t1);
         ScheduleEvent scheduleEventA = new ScheduleEvent(jobAId, taskAId, t1);
         dagScheduler.handleScheduleEvent(scheduleEventA);
         Assert.assertEquals(2, taskScheduler.getReadyTable().size());

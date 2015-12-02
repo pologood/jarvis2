@@ -101,7 +101,7 @@ public class TaskStatusChecker {
                 DependencyStrategyExpression commonStrategy = dependencyEntry.getDependencyStrategyExpression();
                 DependencyExpression dependencyExpression = dependencyEntry.getDependencyExpression();
                 List<Long> dependTaskIds = new ArrayList<Long>();
-                if (dependencyMap.containsKey(preJobId)) {
+                if (dependTaskIdMap != null && dependTaskIdMap.containsKey(preJobId)) {
                     dependTaskIds = dependTaskIdMap.get(preJobId);
                 } else {
                     dependTaskIds = taskService.getDependTaskIds(myJobId, preJobId, scheduleTime, dependencyExpression);
