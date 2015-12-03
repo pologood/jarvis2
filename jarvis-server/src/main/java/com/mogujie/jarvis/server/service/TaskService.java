@@ -75,13 +75,6 @@ public class TaskService {
         return taskMapper.selectByExample(example);
     }
 
-    public Task getLastTask(List<Long> taskIds) {
-        TaskExample example = new TaskExample();
-        example.createCriteria().andTaskIdIn(taskIds);
-        example.setOrderByClause("scheduleTime desc");
-        return taskMapper.selectByExample(example).get(0);
-    }
-
     public long createTaskByJobId(long jobId, long scheduleTime) {
         Task record = new Task();
         record.setJobId(jobId);
@@ -167,36 +160,6 @@ public class TaskService {
         return taskIds;
     }
 
-    public List<Task> getTasksByOffsetDay(long jobId, int offset) {
-        DateTime now = DateTime.now();
-        Date offsetDay = now.plus(-offset).toDate();
-        TaskExample example = new TaskExample();
-        example.createCriteria().andJobIdEqualTo(jobId)
-                .andScheduleTimeBetween(offsetDay, now.toDate());
-
-        return taskMapper.selectByExample(example);
-    }
-
-    public List<Task> getTasksByOffsetWeek(long jobId, int offset) {
-        DateTime now = DateTime.now();
-        Date firstDay = now.plusWeeks(-offset).withDayOfWeek(1).toDate();
-        Date lastDay = now.plusWeeks(-offset).withDayOfWeek(7).toDate();
-        TaskExample example = new TaskExample();
-        example.createCriteria().andJobIdEqualTo(jobId)
-                .andScheduleTimeBetween(firstDay, lastDay);
-        return taskMapper.selectByExample(example);
-    }
-
-    public List<Task> getTasksByOffsetMonth(long jobId, int offset) {
-        DateTime now = DateTime.now();
-        Date firstDay = now.plusMonths(-offset).dayOfMonth().withMinimumValue().toDate();
-        Date lastDay = now.plusMonths(-offset).dayOfMonth().withMaximumValue().toDate();
-        TaskExample example = new TaskExample();
-        example.createCriteria().andJobIdEqualTo(jobId)
-                .andScheduleTimeBetween(firstDay, lastDay);
-        return taskMapper.selectByExample(example);
-    }
-
     public List<Task> getTasksBetween(long jobId, Range<DateTime> range) {
         if (jobId == 0 || range == null) {
             return null;
@@ -220,18 +183,6 @@ public class TaskService {
         return taskMapper.selectByExample(example);
     }
 
-    public List<Boolean> getTaskSuccessStatusBetween(long jobId, Range<DateTime> range) {
-        List<Task> tasks = getTasksBetween(jobId, range);
-        if (tasks == null) {
-            return null;
-        }
-        List<Boolean> status = new ArrayList<>();
-        for (Task task : tasks) {
-            status.add(task.getStatus() == TaskStatus.SUCCESS.getValue());
-        }
-        return status;
-    }
-
     public long getPreScheduleTime(long jobId, long scheduleTime) {
         if (jobId == 0 || scheduleTime == 0) {
             return 0;
@@ -244,8 +195,6 @@ public class TaskService {
             return 0;
         }
         return new DateTime(tasks.get(0).getScheduleTime()).getMillis();
-
     }
-
 
 }

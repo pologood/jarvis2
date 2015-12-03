@@ -174,7 +174,6 @@ public class JobService {
         jobEntry.setScheduleExpressions(jobScheduleExpressions);
     }
 
-
     public void deleteScheduleExpression(long jobId) {
         JobScheduleExpressionExample example = new JobScheduleExpressionExample();
         example.createCriteria().andJobIdEqualTo(jobId);
@@ -255,7 +254,6 @@ public class JobService {
             return false;
         }
     }
-
 
     public void updateJobFlag(long jobId, String user, int newFlag) {
         Job record = jobMapper.selectByPrimaryKey(jobId);
