@@ -28,7 +28,7 @@ public class JobEntryVo extends  AbstractVo{
     private List<DependencyEntry> dependencyList;
     private ScheduleExpressionEntry scheduleExpressionEntry;
 
-    public class ParameterEntity{
+    public static class ParameterEntity{
         private String key;
         private String value;
         public String getKey() {
@@ -45,16 +45,16 @@ public class JobEntryVo extends  AbstractVo{
         }
     }
 
-    public class DependencyEntry{
-        private OperationMode operatorMode;
+    public static class DependencyEntry{
+        private Integer operatorMode;
         private Long preJobId;
         private Integer commonStrategy;
         private String offsetStrategy;
 
-        public OperationMode getOperatorMode() {
+        public Integer getOperatorMode() {
             return operatorMode;
         }
-        public void setOperatorMode(OperationMode operatorMode) {
+        public void setOperatorMode(Integer operatorMode) {
             this.operatorMode = operatorMode;
         }
         public Integer getCommonStrategy() {
@@ -77,7 +77,7 @@ public class JobEntryVo extends  AbstractVo{
         }
     }
 
-    public class ScheduleExpressionEntry{
+    public static class ScheduleExpressionEntry{
         private OperationMode operatorMode;
         private Integer expressionType;
         private String expression;

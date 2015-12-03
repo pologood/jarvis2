@@ -83,7 +83,8 @@ public class JobService {
 
     public long insertJob(Job record) {
         // 1. insert to DB
-        long jobId = jobMapper.insert(record);
+        jobMapper.insert(record);
+        long jobId = record.getJobId();
 
         // 2. insert to cache
         JobEntry jobEntry = new JobEntry(record, new ArrayList<ScheduleExpression>(), new HashMap<Long, JobDependencyEntry>());
