@@ -36,7 +36,7 @@ import com.mogujie.jarvis.server.service.TaskService;
  * @author guangming
  *
  */
-@Named("jobActor")
+@Named("planActor")
 @Scope("prototype")
 public class PlanActor extends UntypedActor {
 
