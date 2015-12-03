@@ -64,7 +64,7 @@ public class ExecutionPlanEntry {
         }
 
         ExecutionPlanEntry other = (ExecutionPlanEntry) obj;
-        if (taskId == other.getTaskId()) {
+        if (taskId > 0 &&  other.getTaskId() > 0 && taskId == other.getTaskId()) {
             return true;
         } else if (jobId == other.getJobId() && dateTime.isEqual(other.getDateTime())) {
             return true;

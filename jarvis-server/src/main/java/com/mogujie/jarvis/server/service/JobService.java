@@ -248,7 +248,8 @@ public class JobService {
         Date startDate = job.getActiveStartDate();
         Date endDate = job.getActiveEndDate();
         Date now = new Date();
-        if (now.after(startDate) && now.before(endDate)) {
+        if ((startDate == null || now.after(startDate)) &&
+                (endDate == null || now.before(endDate))) {
             return true;
         } else {
             return false;

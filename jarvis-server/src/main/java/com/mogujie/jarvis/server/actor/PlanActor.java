@@ -22,9 +22,12 @@ import akka.actor.UntypedActor;
 import com.mogujie.jarvis.core.domain.ActorEntry;
 import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.core.domain.TaskStatus;
+import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.protocol.RemovePlanProtos.RestServerRemovePlanRequest;
 import com.mogujie.jarvis.protocol.RemovePlanProtos.ServerRemovePlanResponse;
 import com.mogujie.jarvis.server.scheduler.plan.ExecutionPlanEntry;
+import com.mogujie.jarvis.server.scheduler.task.DAGTask;
+import com.mogujie.jarvis.server.scheduler.task.TaskGraph;
 import com.mogujie.jarvis.server.scheduler.time.TimeScheduler;
 import com.mogujie.jarvis.server.scheduler.time.TimeSchedulerFactory;
 import com.mogujie.jarvis.server.service.TaskService;
@@ -33,12 +36,14 @@ import com.mogujie.jarvis.server.service.TaskService;
  * @author guangming
  *
  */
-@Named("jobActor")
+@Named("planActor")
 @Scope("prototype")
 public class PlanActor extends UntypedActor {
 
     @Autowired
     private TaskService taskService;
+
+    private TaskGraph taskGraph = TaskGraph.INSTANCE;
 
     @Override
     public void onReceive(Object obj) throws Exception {
@@ -54,13 +59,38 @@ public class PlanActor extends UntypedActor {
      * @param msg
      */
     private void removePlan(RestServerRemovePlanRequest msg) {
+        ServerRemovePlanResponse response;
         long taskId = msg.getTaskId();
         long jobId = msg.getJobId();
         DateTime scheduleTime = new DateTime(msg.getScheduleTime());
         TimeScheduler timeScheduler = TimeSchedulerFactory.getInstance();
-        taskService.updateStatus(taskId, TaskStatus.REMOVED);
-        timeScheduler.removePlan(new ExecutionPlanEntry(jobId, scheduleTime, taskId));
-        ServerRemovePlanResponse response = ServerRemovePlanResponse.newBuilder().setSuccess(true).build();
+        boolean ask = msg.getAsk();
+        // 询问，如果有后继任务，则返回失败，提示错误信息
+        if (ask) {
+            List<DAGTask> children = taskGraph.getChildren(taskId);
+            if (children != null && !children.isEmpty()) {
+                List<Long> childIds = new ArrayList<Long>();
+                for (DAGTask child : children) {
+                    childIds.add(child.getTaskId());
+                }
+                String childrenJson = JsonHelper.toJson(childIds, List.class);
+                response = ServerRemovePlanResponse.newBuilder()
+                        .setSuccess(false)
+                        .setMessage(taskId + "有后置任务: " + childrenJson + ", 删除会造成后置任务无法跑起来")
+                        .build();
+            } else {
+                taskService.updateStatus(taskId, TaskStatus.REMOVED);
+                timeScheduler.removePlan(new ExecutionPlanEntry(jobId, scheduleTime, taskId));
+                taskGraph.removeTask(taskId);
+                response = ServerRemovePlanResponse.newBuilder().setSuccess(true).build();
+            }
+        } else {
+            // 不询问，即强制删除
+            taskService.updateStatus(taskId, TaskStatus.REMOVED);
+            timeScheduler.removePlan(new ExecutionPlanEntry(jobId, scheduleTime, taskId));
+            taskGraph.removeTask(taskId);
+            response = ServerRemovePlanResponse.newBuilder().setSuccess(true).build();
+        }
         getSender().tell(response, getSelf());
     }
 

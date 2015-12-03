@@ -14,10 +14,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 import org.json.JSONObject;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry;
 
 /**

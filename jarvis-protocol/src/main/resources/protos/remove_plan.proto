@@ -9,6 +9,7 @@ message RestServerRemovePlanRequest {
     required int64 task_id = 2;
     required int64 job_id = 3;
     required int64 schedule_time = 4;
+    optional bool ask = 5;
 }
 
 message ServerRemovePlanResponse {
