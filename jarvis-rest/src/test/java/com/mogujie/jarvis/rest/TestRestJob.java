@@ -15,15 +15,8 @@ import com.mogujie.jarvis.core.expression.ScheduleExpressionType;
 import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.rest.vo.JobEntryVo;
 import com.mogujie.jarvis.rest.vo.JobVo;
-<<<<<<< HEAD
 import com.mogujie.jarvis.server.domain.CommonStrategy;
-import org.junit.Assert;
-import org.junit.Test;
-
-import java.lang.reflect.Type;
 import java.util.Arrays;
-=======
->>>>>>> 7e63af635b561f13604747e8d2f998f754f33526
 
 /**
  * Created by muming on 15/12/1.
@@ -41,7 +34,6 @@ public class TestRestJob {
         job.setJobFlag(1);
         job.setContent("show create table dw_site_app_clicklog;");
         job.setWorkerGroupId(1);
-<<<<<<< HEAD
 
         //计划表达式
         JobEntryVo.ScheduleExpressionEntry expressionEntry = new JobEntryVo.ScheduleExpressionEntry();
@@ -63,9 +55,6 @@ public class TestRestJob {
 
         //任务参数
         String paramsJson = JsonHelper.toJson(job,JobEntryVo.class);
-=======
-        String paramsJson = JsonHelper.toJson(job, JobEntryVo.class);
->>>>>>> 7e63af635b561f13604747e8d2f998f754f33526
 
         HttpResponse<String> jsonResponse = Unirest.post(baseUrl + "/api/job/submit").field("appName", "jarvis-web").field("appToken", "123")
                 .field("user", "muming").field("parameters", paramsJson).asString();
