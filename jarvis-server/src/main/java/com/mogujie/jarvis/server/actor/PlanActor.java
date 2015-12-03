@@ -64,20 +64,30 @@ public class PlanActor extends UntypedActor {
         long jobId = msg.getJobId();
         DateTime scheduleTime = new DateTime(msg.getScheduleTime());
         TimeScheduler timeScheduler = TimeSchedulerFactory.getInstance();
-        taskService.updateStatus(taskId, TaskStatus.REMOVED);
-        timeScheduler.removePlan(new ExecutionPlanEntry(jobId, scheduleTime, taskId));
-        List<DAGTask> children = taskGraph.getChildren(taskId);
-        if (children != null && !children.isEmpty()) {
-            List<Long> childIds = new ArrayList<Long>();
-            for (DAGTask child : children) {
-                childIds.add(child.getTaskId());
+        boolean ask = msg.getAsk();
+        // 询问，如果有后继任务，则返回失败，提示错误信息
+        if (ask) {
+            List<DAGTask> children = taskGraph.getChildren(taskId);
+            if (children != null && !children.isEmpty()) {
+                List<Long> childIds = new ArrayList<Long>();
+                for (DAGTask child : children) {
+                    childIds.add(child.getTaskId());
+                }
+                String childrenJson = JsonHelper.toJson(childIds, List.class);
+                response = ServerRemovePlanResponse.newBuilder()
+                        .setSuccess(false)
+                        .setMessage(taskId + "有后置任务: " + childrenJson + ", 删除会造成后置任务无法跑起来")
+                        .build();
+            } else {
+                taskService.updateStatus(taskId, TaskStatus.REMOVED);
+                timeScheduler.removePlan(new ExecutionPlanEntry(jobId, scheduleTime, taskId));
+                taskGraph.removeTask(taskId);
+                response = ServerRemovePlanResponse.newBuilder().setSuccess(true).build();
             }
-            String childrenJson = JsonHelper.toJson(childIds, List.class);
-            response = ServerRemovePlanResponse.newBuilder()
-                    .setSuccess(false)
-                    .setMessage(taskId + "有后置任务: " + childrenJson + ", 删除会造成后置任务无法跑起来")
-                    .build();
         } else {
+            // 不询问，即强制删除
+            taskService.updateStatus(taskId, TaskStatus.REMOVED);
+            timeScheduler.removePlan(new ExecutionPlanEntry(jobId, scheduleTime, taskId));
             taskGraph.removeTask(taskId);
             response = ServerRemovePlanResponse.newBuilder().setSuccess(true).build();
         }
