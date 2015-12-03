@@ -14,9 +14,9 @@ package com.mogujie.jarvis.server.domain;
  *
  */
 public enum CommonStrategy {
-    ALL(0, "*"),        // 依赖全部成功
-    LASTONE(1, "L(1)"),    // 依赖最后一次成功
-    ANYONE(2, "+");     // 依赖任何一次成功
+    ALL(1, "*"),        // 依赖全部成功
+    LASTONE(2, "L(1)"),    // 依赖最后一次成功
+    ANYONE(3, "+");     // 依赖任何一次成功
 
     private int value;
     private String expression;
