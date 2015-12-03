@@ -15,7 +15,6 @@ package com.mogujie.jarvis.core.expression;
  */
 public enum ScheduleExpressionType {
 
-    UNKOWN(0),
     CRON(1),
     FIXED_RATE(2),
     FIXED_DELAY(3),
@@ -41,6 +40,16 @@ public enum ScheduleExpressionType {
             }
         }
         return type;
+    }
+
+    public static Boolean isValid(int value) {
+        ScheduleExpressionType[] values = ScheduleExpressionType.values();
+        for (ScheduleExpressionType s : values) {
+            if (s.getValue() == value) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

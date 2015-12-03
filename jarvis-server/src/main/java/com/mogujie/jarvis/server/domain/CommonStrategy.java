@@ -57,4 +57,15 @@ public enum CommonStrategy {
         }
         return strategy;
     }
+
+    public static Boolean isValid(int value) {
+        CommonStrategy[] values = CommonStrategy.values();
+        for (CommonStrategy s : values) {
+            if (s.getValue() == value) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

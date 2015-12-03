@@ -16,6 +16,7 @@ import java.util.Set;
 
 import javax.inject.Named;
 
+import com.mogujie.jarvis.core.domain.*;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -24,10 +25,6 @@ import org.springframework.transaction.annotation.Transactional;
 import akka.actor.UntypedActor;
 
 import com.google.common.collect.Sets;
-import com.mogujie.jarvis.core.domain.ActorEntry;
-import com.mogujie.jarvis.core.domain.JobFlag;
-import com.mogujie.jarvis.core.domain.MessageType;
-import com.mogujie.jarvis.core.domain.Pair;
 import com.mogujie.jarvis.core.exeception.JobScheduleException;
 import com.mogujie.jarvis.core.expression.ScheduleExpressionType;
 import com.mogujie.jarvis.dto.generate.Job;
@@ -35,7 +32,6 @@ import com.mogujie.jarvis.dto.generate.JobDepend;
 import com.mogujie.jarvis.dto.generate.JobDependKey;
 import com.mogujie.jarvis.dto.generate.JobScheduleExpression;
 import com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry;
-import com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.DependencyOperator;
 import com.mogujie.jarvis.protocol.JobProtos.JobFlagEntry;
 import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobRequest;
 import com.mogujie.jarvis.protocol.JobProtos.RestQueryJobRelationRequest;
@@ -251,11 +247,12 @@ public class JobActor extends UntypedActor {
             String user = msg.getUser();
 
             ModifyOperation operation;
-            if (entry.getOperator().equals(DependencyOperator.ADD)) {
+            OperationMode operationMode = OperationMode.getInstance(entry.getOperator());
+            if (operationMode.equals(OperationMode.ADD)) {
                 operation = ModifyOperation.ADD;
                 JobDepend jobDepend = convertValidService.convert2JobDepend(jobId, entry, user);
                 jobService.insertJobDepend(jobDepend);
-            } else if (entry.getOperator().equals(DependencyOperator.REMOVE)) {
+            } else if (operationMode.equals(OperationMode.DELETE)) {
                 operation = ModifyOperation.DEL;
                 JobDependKey key = new JobDependKey();
                 key.setJobId(jobId);

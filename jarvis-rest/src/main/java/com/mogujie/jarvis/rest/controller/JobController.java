@@ -16,12 +16,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-<<<<<<< HEAD
 import com.mogujie.jarvis.rest.utils.ConvertValidUtils;
 import com.mogujie.jarvis.rest.utils.JsonParameters;
 import com.mogujie.jarvis.rest.vo.JobEntryVo;
-=======
->>>>>>> 7e63af635b561f13604747e8d2f998f754f33526
 import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
 import com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry;
@@ -31,8 +28,6 @@ import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobResponse;
 import com.mogujie.jarvis.protocol.JobProtos.ServerSubmitJobResponse;
 import com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry;
 import com.mogujie.jarvis.rest.RestResult;
-import com.mogujie.jarvis.rest.utils.JsonParameters;
-import com.mogujie.jarvis.rest.vo.JobEntryVo;
 import com.mogujie.jarvis.rest.vo.JobVo;
 
 /**
@@ -70,26 +65,12 @@ public class JobController extends AbstractController {
                     .setRejectAttempts(jobVo.getRejectAttempts(0)).setRejectInterval(jobVo.getRejectInterval(3))
                     .setFailedAttempts(jobVo.getFailedAttempts(0)).setFailedInterval(jobVo.getFailedInterval(3));
 
-<<<<<<< HEAD
             if (jobVo.getScheduleExpressionEntry() != null ) {
                 builder.setExpressionEntry(ConvertValidUtils.ConvertScheduleExpressionEnty(jobVo.getScheduleExpressionEntry()));
             }
             if (jobVo.getDependencyList() != null && jobVo.getDependencyList().size() > 0) {
                 for (JobEntryVo.DependencyEntry entryInput : jobVo.getDependencyList()) {
                     builder.addDependencyEntry(ConvertValidUtils.ConvertDependcyEnty(entryInput));
-=======
-            if (jobVo.getScheduleExpressionEntry() != null) {
-                ScheduleExpressionEntry entry = ScheduleExpressionEntry.newBuilder()
-                        .setExpressionType(jobVo.getScheduleExpressionEntry().getExpressionType())
-                        .setScheduleExpression(jobVo.getScheduleExpressionEntry().getExpression()).build();
-                builder.setExpressionEntry(entry);
-            }
-            if (jobVo.getDependencyList() != null && jobVo.getDependencyList().size() > 0) {
-                for (JobEntryVo.DependencyEntry entryInput : jobVo.getDependencyList()) {
-                    DependencyEntry entry = DependencyEntry.newBuilder().setJobId(entryInput.getPreJobId())
-                            .setCommonDependStrategy(entryInput.getCommonStrategy()).setOffsetDependStrategy(entryInput.getOffsetStrategy()).build();
-                    builder.addDependencyEntry(entry);
->>>>>>> 7e63af635b561f13604747e8d2f998f754f33526
                 }
             }
 

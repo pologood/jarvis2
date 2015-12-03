@@ -36,4 +36,17 @@ public enum OperationMode {
         }
         return false;
     }
+
+    public static OperationMode getInstance(int value) {
+        OperationMode[] all = OperationMode.values();
+        OperationMode select = OperationMode.ADD;
+        for (OperationMode s : all) {
+            if (s.getValue() == value) {
+                select = s;
+                break;
+            }
+        }
+        return select;
+    }
+
 }
