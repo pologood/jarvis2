@@ -154,7 +154,6 @@ public class JobActor extends UntypedActor {
         } catch (Exception e) {
             response = ServerSubmitJobResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
             getSender().tell(response, getSelf());
-            throw e;
         }
     }
 
@@ -189,7 +188,6 @@ public class JobActor extends UntypedActor {
         } catch (Exception e) {
             response = ServerModifyJobResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
             getSender().tell(response, getSelf());
-            throw e;
         }
     }
 
@@ -241,7 +239,7 @@ public class JobActor extends UntypedActor {
     }
 
     private void modifyDependency(RestModifyJobRequest msg) throws Exception {
-        if (!msg.hasExpressionEntry()) {
+        if (msg.getDependencyEntryList() == null || msg.getDependencyEntryList().isEmpty()) {
             return;
         }
         long jobId = msg.getJobId();

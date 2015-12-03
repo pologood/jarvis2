@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * Created by muming on 15/12/1.
  */
-public class AppRestTest {
+public class TestRestApp {
 
     private String baseUrl ="http://127.0.0.1:8080";
 

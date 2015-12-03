@@ -12,6 +12,7 @@ import java.util.Date;
 
 import com.mogujie.jarvis.core.domain.AppType;
 import com.mogujie.jarvis.dto.generate.App;
+import com.mogujie.jarvis.server.domain.JobEntry;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -97,12 +98,33 @@ public class ConvertValidService {
     }
 
     public Job convert2Job(RestModifyJobRequest msg) {
+        Job job = new Job();
         long jobId = msg.getJobId();
-        Job job = jobService.get(jobId).getJob();
+        Preconditions.checkArgument(jobId != 0, "jobId不能为空");
+        JobEntry  jobEntry = jobService.get(jobId);
+        Preconditions.checkArgument(jobEntry != null, "该job不存在");
+
+        Integer appId;
+        App appAuth = appService.getAppByName(msg.getAppAuth().getName());
+        if(appAuth.getAppType() == AppType.NORMAL.getValue()){
+            appId = appAuth.getAppId();
+        }else{
+            if(msg.hasAppName()){
+                appId = appService.getAppIdByName(msg.getAppName());
+            }else{
+                appId = appAuth.getAppId();
+            }
+        }
+        job.setAppId(appId);
         job.setJobId(msg.getJobId());
-        job.setAppId(appService.getAppIdByName(msg.getAppAuth().getName()));
         if (msg.hasJobName()) {
             job.setJobName(msg.getJobName());
+        }
+        if(msg.hasJobType()){
+            job.setJobType(msg.getJobType());
+        }
+        if(msg.hasJobFlag()){
+            job.setJobFlag(msg.getJobFlag());
         }
         if (msg.hasContent()) {
             job.setContent(msg.getContent());

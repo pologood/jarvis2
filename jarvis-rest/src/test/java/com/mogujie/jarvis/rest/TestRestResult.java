@@ -7,7 +7,7 @@ import org.junit.Test;
 /**
  * Created by muming on 15/12/1.
  */
-public class RestResultTest {
+public class TestRestResult {
 
 
     @Test

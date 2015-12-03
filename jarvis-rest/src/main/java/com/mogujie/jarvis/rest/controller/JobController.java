@@ -131,7 +131,7 @@ public class JobController extends AbstractController {
 
             JobEntryVo jobVo = JsonParameters.fromJson(parameters, JobEntryVo.class);
 
-            //parameters处理
+            //JobParameters处理
             String jobParameters = "";
             if(jobVo.getParams() != null) {
                 jobParameters = JsonParameters.toJson(jobVo.getParams(), List.class);
@@ -147,6 +147,9 @@ public class JobController extends AbstractController {
                 builder.setJobName(jobVo.getJobName());
             }
             if(jobVo.getJobType() !=null){
+                builder.setJobType(jobVo.getJobType());
+            }
+            if(jobVo.getJobFlag() !=null){
                 builder.setJobFlag(jobVo.getJobFlag());
             }
             if(jobVo.getContent() !=null && !jobVo.getContent().equals("")){
