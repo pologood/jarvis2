@@ -48,12 +48,14 @@ public class PlanController extends AbstractController {
             long jobId = para.getLong("jobId");
             long taskId = para.getLong("taskId");
             long scheduleTime = para.getInt("time");
+            boolean ask = para.getBoolean("ask");
 
             RestServerRemovePlanRequest request = RestServerRemovePlanRequest.newBuilder()
                     .setAppAuth(appAuth)
                     .setJobId(jobId)
                     .setTaskId(taskId)
                     .setScheduleTime(scheduleTime)
+                    .setAsk(ask)
                     .build();
 
             ServerRemovePlanResponse response = (ServerRemovePlanResponse) callActor(AkkaType.SERVER, request);
