@@ -29,7 +29,9 @@ public class TestJobSchedulerController extends TestSchedulerBase {
     private long jobCId = 3;
 
     /**
-     * A B \ / C
+     *    A   B
+     *     \ /
+     *      C
      */
     @Test
     public void testHandleSuccessEvent1() throws Exception {
@@ -77,7 +79,9 @@ public class TestJobSchedulerController extends TestSchedulerBase {
     }
 
     /**
-     * A / \ B C
+     *      A
+     *     / \
+     *    B   C
      */
     @Test
     public void testHandleSuccessEvent2() throws Exception {

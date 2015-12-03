@@ -97,8 +97,8 @@ public class TestJgrapht {
 
     /**
      *     v1
-     *    / \    -->
-     *   v2  v3       v2  v3
+     *    / \    -->  v2  v3
+     *   v2  v3
      */
     @Test
     public void testRemoveVertex() throws CycleFoundException {

@@ -32,7 +32,9 @@ public class TestDAGSchedulerWithEvent extends TestSchedulerBase {
     private long t2 = 2000;
 
     /**
-     * A B \ / C
+     *   A   B
+     *    \ /
+     *     C
      */
     @Test
     public void testHandleScheduleEvent1() throws Exception {
@@ -58,7 +60,9 @@ public class TestDAGSchedulerWithEvent extends TestSchedulerBase {
     }
 
     /**
-     * A / \ B C
+     *     A
+     *    / \
+     *   B   C
      */
     @Test
     public void testHandleScheduleEvent2() throws Exception {
@@ -79,7 +83,11 @@ public class TestDAGSchedulerWithEvent extends TestSchedulerBase {
     }
 
     /**
-     * A | B | C
+     *     A
+     *     |
+     *     B
+     *     |
+     *     C
      */
     @Test
     public void testHandleScheduleEvent3() throws Exception {
@@ -99,7 +107,9 @@ public class TestDAGSchedulerWithEvent extends TestSchedulerBase {
     }
 
     /**
-     * A B \ / C
+     *   A   B
+     *    \ /
+     *     C
      */
     @Test
     public void testHandleTimeReadyEvent1() throws Exception {
@@ -123,7 +133,9 @@ public class TestDAGSchedulerWithEvent extends TestSchedulerBase {
     }
 
     /**
-     * A / \ B C
+     *     A
+     *    / \
+     *   B   C
      */
     @Test
     public void testHandleTimeReadyEvent2() throws Exception {
@@ -143,7 +155,11 @@ public class TestDAGSchedulerWithEvent extends TestSchedulerBase {
     }
 
     /**
-     * A | B | C
+     *     A
+     *     |
+     *     B
+     *     |
+     *     C
      */
     @Test
     public void testHandleTimeReadyEvent3() throws Exception {
