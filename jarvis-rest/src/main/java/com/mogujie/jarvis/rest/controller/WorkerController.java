@@ -32,13 +32,10 @@ public class WorkerController extends AbstractController {
             @FormParam("parameters") String parameters) {
         try {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
-
             JSONObject para = new JSONObject(parameters);
-
-            para.getInt("workerId");
             String ip = para.getString("ip");
-            Integer port = para.getInt("port");
-            Integer status = para.getInt("status");
+            int port = para.getInt("port");
+            int status = para.getInt("status");
 
             RestServerModifyWorkerStatusRequest request = RestServerModifyWorkerStatusRequest.newBuilder().setIp(ip).setPort(port).setStatus(status)
                     .setAppAuth(appAuth).build();
@@ -50,7 +47,6 @@ public class WorkerController extends AbstractController {
                 return errorResult(response.getMessage());
             }
         } catch (Exception e) {
-            e.printStackTrace();
             LOGGER.error("", e);
             return errorResult(e.getMessage());
         }

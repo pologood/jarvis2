@@ -34,7 +34,6 @@ public class WorkerGroupController extends AbstractController {
             @FormParam("parameters") String parameters) {
         try {
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
-
             JSONObject para = new JSONObject(parameters);
             String name = para.getString("name");
 
@@ -49,8 +48,7 @@ public class WorkerGroupController extends AbstractController {
                 return errorResult(response.getMessage());
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            // logger.error(e.getMessage(),e);
+            LOGGER.error("", e);
             return errorResult(e.getMessage());
         }
     }
@@ -67,9 +65,8 @@ public class WorkerGroupController extends AbstractController {
             @FormParam("parameters") String parameters) {
         try {
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
-
             JSONObject para = new JSONObject(parameters);
-            Integer workerGroupId = para.getInt("workerGroupId");
+            int workerGroupId = para.getInt("workerGroupId");
             String name = para.getString("name");
 
             RestServerModifyWorkerGroupRequest request = RestServerModifyWorkerGroupRequest.newBuilder().setWorkerGroupId(workerGroupId)
@@ -82,8 +79,7 @@ public class WorkerGroupController extends AbstractController {
                 return errorResult(response.getMessage());
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            // logger.error("", e);
+            LOGGER.error("", e);
             return errorResult(e.getMessage());
         }
     }
@@ -102,8 +98,8 @@ public class WorkerGroupController extends AbstractController {
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
             JSONObject para = new JSONObject(parameters);
-            Integer workerGroupId = para.getInt("workerGroupId");
-            Integer status = para.getInt("status");
+            int workerGroupId = para.getInt("workerGroupId");
+            int status = para.getInt("status");
 
             RestServerModifyWorkerGroupRequest request = RestServerModifyWorkerGroupRequest.newBuilder().setWorkerGroupId(workerGroupId)
                     .setAppAuth(appAuth).setStatus(status).build();
@@ -116,8 +112,7 @@ public class WorkerGroupController extends AbstractController {
                 return errorResult(response.getMessage());
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            // logger.error("", e);
+            LOGGER.error("", e);
             return errorResult(e.getMessage());
         }
     }

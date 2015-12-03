@@ -42,9 +42,12 @@ public class SystemController extends AbstractController {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
             JSONObject para = new JSONObject(parameters);
-            Integer status = para.getInt("status");
 
-            // WorkerStatus ws = (status == 1) ? WorkerStatus.ONLINE : WorkerStatus.OFFLINE;
+            if (!para.has("status")) {
+                return errorResult("parameter status is required");
+            }
+
+            int status = para.getInt("status");
             RestServerUpdateSystemStatusRequest request = RestServerUpdateSystemStatusRequest.newBuilder().setAppAuth(appAuth).setStatus(status)
                     .build();
             ServerUpdateSystemStatusResponse response = (ServerUpdateSystemStatusResponse) callActor(AkkaType.SERVER, request);
@@ -55,7 +58,7 @@ public class SystemController extends AbstractController {
                 return errorResult(response.getMessage());
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("", e);
             return errorResult(e.getMessage());
         }
     }
