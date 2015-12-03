@@ -14,10 +14,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 import org.json.JSONObject;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry;
 
 /**
@@ -30,6 +30,11 @@ public class JsonHelper {
 
     public static String parseMap2JSON(Map<String, String> map) {
         JSONObject jsonObject = new JSONObject(map);
+        return jsonObject.toString();
+    }
+
+    public static String parseList2JSON(List<Object> list) {
+        JSONObject jsonObject = new JSONObject(list);
         return jsonObject.toString();
     }
 
