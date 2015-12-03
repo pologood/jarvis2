@@ -33,11 +33,6 @@ public class JsonHelper {
         return jsonObject.toString();
     }
 
-    public static String parseList2JSON(List<Object> list) {
-        JSONObject jsonObject = new JSONObject(list);
-        return jsonObject.toString();
-    }
-
     public static Map<String, Object> parseJSON2Map(String jsonStr) {
         Map<String, Object> jsonMap = new HashMap<>();
         JSONObject jsonObject = new JSONObject(jsonStr);
