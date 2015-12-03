@@ -11,8 +11,11 @@ package com.mogujie.jarvis.server.actor;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Named;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+
+import com.mogujie.jarvis.core.domain.WorkerStatus;
 import com.google.common.base.Preconditions;
 import com.mogujie.jarvis.server.service.WorkerService;
 import com.mogujie.jarvis.core.domain.ActorEntry;
@@ -69,7 +72,7 @@ public class WorkerRegistryActor extends UntypedActor {
             WorkerRegistry workerRegistry = WorkerRegistry.getInstance();
             workerRegistry.put(workerInfo, groupId);
 
-            workerService.saveWorker(ip, port, groupId);
+            workerService.saveWorker(ip, port, groupId, WorkerStatus.ONLINE.getValue());
 
             response = ServerRegistryResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());
