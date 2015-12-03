@@ -86,6 +86,7 @@ public class ServerActor extends UntypedActor {
         addActor("appActor", AppActor.handledMessages());
         addActor("workerGroupActor", WorkerGroupActor.handledMessages());
         addActor("systemActor", SystemActor.handledMessages());
+        addActor("planActor", PlanActor.handledMessages());
     }
 
     private Object generateResponse(Class<? extends GeneratedMessage> clazz, boolean success, String msg) {

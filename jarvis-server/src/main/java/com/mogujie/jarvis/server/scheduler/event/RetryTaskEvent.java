@@ -23,4 +23,8 @@ public class RetryTaskEvent extends DAGTaskEvent {
         super(jobId, taskId);
     }
 
+    public RetryTaskEvent(long taskId) {
+        this(0, taskId);
+    }
+
 }

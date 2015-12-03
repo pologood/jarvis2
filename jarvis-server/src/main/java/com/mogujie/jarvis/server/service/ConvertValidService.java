@@ -10,14 +10,13 @@ package com.mogujie.jarvis.server.service;
 
 import java.util.Date;
 
-import com.mogujie.jarvis.core.domain.AppType;
-import com.mogujie.jarvis.dto.generate.App;
-import com.mogujie.jarvis.server.domain.JobEntry;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.common.base.Preconditions;
+import com.mogujie.jarvis.core.domain.AppType;
+import com.mogujie.jarvis.dto.generate.App;
 import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.dto.generate.JobDepend;
 import com.mogujie.jarvis.dto.generate.Task;
@@ -25,6 +24,7 @@ import com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry;
 import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobRequest;
 import com.mogujie.jarvis.protocol.JobProtos.RestSubmitJobRequest;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest;
+import com.mogujie.jarvis.server.domain.JobEntry;
 
 /**
  * @author guangming
@@ -187,6 +187,7 @@ public class ConvertValidService {
         task.setScheduleTime(now);
         task.setCreateTime(now);
         task.setUpdateTime(now);
+        task.setParams(msg.getParameters());
         return task;
     }
 
