@@ -15,6 +15,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import com.mogujie.jarvis.rest.utils.ConvertValidUtils;
 import com.mogujie.jarvis.rest.utils.JsonParameters;
 import com.mogujie.jarvis.rest.vo.JobEntryVo;
 import com.mogujie.jarvis.core.domain.AkkaType;
@@ -78,20 +79,11 @@ public class JobController extends AbstractController {
                     .setFailedInterval(jobVo.getFailedInterval(3));
 
             if (jobVo.getScheduleExpressionEntry() != null ) {
-                ScheduleExpressionEntry entry = ScheduleExpressionEntry.newBuilder()
-                        .setExpressionType(jobVo.getScheduleExpressionEntry().getExpressionType())
-                        .setScheduleExpression(jobVo.getScheduleExpressionEntry().getExpression())
-                        .build();
-                builder.setExpressionEntry(entry);
+                builder.setExpressionEntry(ConvertValidUtils.ConvertScheduleExpressionEnty(jobVo.getScheduleExpressionEntry()));
             }
             if (jobVo.getDependencyList() != null && jobVo.getDependencyList().size() > 0) {
                 for (JobEntryVo.DependencyEntry entryInput : jobVo.getDependencyList()) {
-                    DependencyEntry entry = DependencyEntry.newBuilder()
-                            .setJobId(entryInput.getPreJobId())
-                            .setCommonDependStrategy(entryInput.getCommonStrategy())
-                            .setOffsetDependStrategy(entryInput.getOffsetStrategy())
-                            .build();
-                    builder.addDependencyEntry(entry);
+                    builder.addDependencyEntry(ConvertValidUtils.ConvertDependcyEnty(entryInput));
                 }
             }
 
