@@ -21,7 +21,6 @@ import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 
-
 /**
  * 启动RestServer
  *

@@ -4,8492 +4,8976 @@
 package com.mogujie.jarvis.protocol;
 
 public final class SubmitJobProtos {
-  private SubmitJobProtos() {}
-  public static void registerAllExtensions(
-      com.google.protobuf.ExtensionRegistry registry) {
-  }
-  public interface DeleteRestServerSubmitJobRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:DeleteRestServerSubmitJobRequest)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <code>required .AppAuth app_auth = 1;</code>
-     */
-    boolean hasAppAuth();
-    /**
-     * <code>required .AppAuth app_auth = 1;</code>
-     */
-    com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth getAppAuth();
-    /**
-     * <code>required .AppAuth app_auth = 1;</code>
-     */
-    com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder();
-
-    /**
-     * <code>required string job_name = 2;</code>
-     */
-    boolean hasJobName();
-    /**
-     * <code>required string job_name = 2;</code>
-     */
-    java.lang.String getJobName();
-    /**
-     * <code>required string job_name = 2;</code>
-     */
-    com.google.protobuf.ByteString
-        getJobNameBytes();
-
-    /**
-     * <code>optional .ScheduleExpressionEntry expression_entry = 3;</code>
-     */
-    boolean hasExpressionEntry();
-    /**
-     * <code>optional .ScheduleExpressionEntry expression_entry = 3;</code>
-     */
-    com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry getExpressionEntry();
-    /**
-     * <code>optional .ScheduleExpressionEntry expression_entry = 3;</code>
-     */
-    com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder getExpressionEntryOrBuilder();
-
-    /**
-     * <code>repeated .DependencyEntry dependency_entry = 4;</code>
-     */
-    java.util.List<com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry> 
-        getDependencyEntryList();
-    /**
-     * <code>repeated .DependencyEntry dependency_entry = 4;</code>
-     */
-    com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry getDependencyEntry(int index);
-    /**
-     * <code>repeated .DependencyEntry dependency_entry = 4;</code>
-     */
-    int getDependencyEntryCount();
-    /**
-     * <code>repeated .DependencyEntry dependency_entry = 4;</code>
-     */
-    java.util.List<? extends com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntryOrBuilder> 
-        getDependencyEntryOrBuilderList();
-    /**
-     * <code>repeated .DependencyEntry dependency_entry = 4;</code>
-     */
-    com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntryOrBuilder getDependencyEntryOrBuilder(
-        int index);
-
-    /**
-     * <code>required string user = 5;</code>
-     */
-    boolean hasUser();
-    /**
-     * <code>required string user = 5;</code>
-     */
-    java.lang.String getUser();
-    /**
-     * <code>required string user = 5;</code>
-     */
-    com.google.protobuf.ByteString
-        getUserBytes();
-
-    /**
-     * <code>required string job_type = 6;</code>
-     */
-    boolean hasJobType();
-    /**
-     * <code>required string job_type = 6;</code>
-     */
-    java.lang.String getJobType();
-    /**
-     * <code>required string job_type = 6;</code>
-     */
-    com.google.protobuf.ByteString
-        getJobTypeBytes();
-
-    /**
-     * <code>required string content = 7;</code>
-     */
-    boolean hasContent();
-    /**
-     * <code>required string content = 7;</code>
-     */
-    java.lang.String getContent();
-    /**
-     * <code>required string content = 7;</code>
-     */
-    com.google.protobuf.ByteString
-        getContentBytes();
-
-    /**
-     * <code>required int32 group_id = 8;</code>
-     */
-    boolean hasGroupId();
-    /**
-     * <code>required int32 group_id = 8;</code>
-     */
-    int getGroupId();
-
-    /**
-     * <code>optional int32 priority = 9 [default = 1];</code>
-     */
-    boolean hasPriority();
-    /**
-     * <code>optional int32 priority = 9 [default = 1];</code>
-     */
-    int getPriority();
-
-    /**
-     * <code>optional int32 reject_retries = 10 [default = 0];</code>
-     */
-    boolean hasRejectRetries();
-    /**
-     * <code>optional int32 reject_retries = 10 [default = 0];</code>
-     */
-    int getRejectRetries();
-
-    /**
-     * <code>optional int32 reject_interval = 11 [default = 3];</code>
-     */
-    boolean hasRejectInterval();
-    /**
-     * <code>optional int32 reject_interval = 11 [default = 3];</code>
-     */
-    int getRejectInterval();
-
-    /**
-     * <code>optional int32 failed_retries = 12 [default = 0];</code>
-     */
-    boolean hasFailedRetries();
-    /**
-     * <code>optional int32 failed_retries = 12 [default = 0];</code>
-     */
-    int getFailedRetries();
-
-    /**
-     * <code>optional int32 failed_interval = 13 [default = 3];</code>
-     */
-    boolean hasFailedInterval();
-    /**
-     * <code>optional int32 failed_interval = 13 [default = 3];</code>
-     */
-    int getFailedInterval();
-
-    /**
-     * <code>optional int64 start_time = 14;</code>
-     */
-    boolean hasStartTime();
-    /**
-     * <code>optional int64 start_time = 14;</code>
-     */
-    long getStartTime();
-
-    /**
-     * <code>optional int64 end_time = 15;</code>
-     */
-    boolean hasEndTime();
-    /**
-     * <code>optional int64 end_time = 15;</code>
-     */
-    long getEndTime();
-
-    /**
-     * <code>repeated .MapEntry parameters = 16;</code>
-     */
-    java.util.List<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry> 
-        getParametersList();
-    /**
-     * <code>repeated .MapEntry parameters = 16;</code>
-     */
-    com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry getParameters(int index);
-    /**
-     * <code>repeated .MapEntry parameters = 16;</code>
-     */
-    int getParametersCount();
-    /**
-     * <code>repeated .MapEntry parameters = 16;</code>
-     */
-    java.util.List<? extends com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder> 
-        getParametersOrBuilderList();
-    /**
-     * <code>repeated .MapEntry parameters = 16;</code>
-     */
-    com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder getParametersOrBuilder(
-        int index);
-  }
-  /**
-   * Protobuf type {@code DeleteRestServerSubmitJobRequest}
-   */
-  public static final class DeleteRestServerSubmitJobRequest extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:DeleteRestServerSubmitJobRequest)
-      DeleteRestServerSubmitJobRequestOrBuilder {
-    // Use DeleteRestServerSubmitJobRequest.newBuilder() to construct.
-    private DeleteRestServerSubmitJobRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
-      super(builder);
-      this.unknownFields = builder.getUnknownFields();
-    }
-    private DeleteRestServerSubmitJobRequest(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
-
-    private static final DeleteRestServerSubmitJobRequest defaultInstance;
-    public static DeleteRestServerSubmitJobRequest getDefaultInstance() {
-      return defaultInstance;
+    private SubmitJobProtos() {
     }
 
-    public DeleteRestServerSubmitJobRequest getDefaultInstanceForType() {
-      return defaultInstance;
+    public static void registerAllExtensions(com.google.protobuf.ExtensionRegistry registry) {
     }
 
-    private final com.google.protobuf.UnknownFieldSet unknownFields;
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
-      return this.unknownFields;
-    }
-    private DeleteRestServerSubmitJobRequest(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      initFields();
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-            case 10: {
-              com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000001) == 0x00000001)) {
-                subBuilder = appAuth_.toBuilder();
-              }
-              appAuth_ = input.readMessage(com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.PARSER, extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(appAuth_);
-                appAuth_ = subBuilder.buildPartial();
-              }
-              bitField0_ |= 0x00000001;
-              break;
-            }
-            case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000002;
-              jobName_ = bs;
-              break;
-            }
-            case 26: {
-              com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000004) == 0x00000004)) {
-                subBuilder = expressionEntry_.toBuilder();
-              }
-              expressionEntry_ = input.readMessage(com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.PARSER, extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(expressionEntry_);
-                expressionEntry_ = subBuilder.buildPartial();
-              }
-              bitField0_ |= 0x00000004;
-              break;
-            }
-            case 34: {
-              if (!((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
-                dependencyEntry_ = new java.util.ArrayList<com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry>();
-                mutable_bitField0_ |= 0x00000008;
-              }
-              dependencyEntry_.add(input.readMessage(com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.PARSER, extensionRegistry));
-              break;
-            }
-            case 42: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000008;
-              user_ = bs;
-              break;
-            }
-            case 50: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000010;
-              jobType_ = bs;
-              break;
-            }
-            case 58: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000020;
-              content_ = bs;
-              break;
-            }
-            case 64: {
-              bitField0_ |= 0x00000040;
-              groupId_ = input.readInt32();
-              break;
-            }
-            case 72: {
-              bitField0_ |= 0x00000080;
-              priority_ = input.readInt32();
-              break;
-            }
-            case 80: {
-              bitField0_ |= 0x00000100;
-              rejectRetries_ = input.readInt32();
-              break;
-            }
-            case 88: {
-              bitField0_ |= 0x00000200;
-              rejectInterval_ = input.readInt32();
-              break;
-            }
-            case 96: {
-              bitField0_ |= 0x00000400;
-              failedRetries_ = input.readInt32();
-              break;
-            }
-            case 104: {
-              bitField0_ |= 0x00000800;
-              failedInterval_ = input.readInt32();
-              break;
-            }
-            case 112: {
-              bitField0_ |= 0x00001000;
-              startTime_ = input.readInt64();
-              break;
-            }
-            case 120: {
-              bitField0_ |= 0x00002000;
-              endTime_ = input.readInt64();
-              break;
-            }
-            case 130: {
-              if (!((mutable_bitField0_ & 0x00008000) == 0x00008000)) {
-                parameters_ = new java.util.ArrayList<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry>();
-                mutable_bitField0_ |= 0x00008000;
-              }
-              parameters_.add(input.readMessage(com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.PARSER, extensionRegistry));
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e.getMessage()).setUnfinishedMessage(this);
-      } finally {
-        if (((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
-          dependencyEntry_ = java.util.Collections.unmodifiableList(dependencyEntry_);
-        }
-        if (((mutable_bitField0_ & 0x00008000) == 0x00008000)) {
-          parameters_ = java.util.Collections.unmodifiableList(parameters_);
-        }
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_DeleteRestServerSubmitJobRequest_descriptor;
+    public interface DeleteRestServerSubmitJobRequestOrBuilder extends
+            // @@protoc_insertion_point(interface_extends:DeleteRestServerSubmitJobRequest)
+            com.google.protobuf.MessageOrBuilder {
+
+        /**
+         * <code>required .AppAuth app_auth = 1;</code>
+         */
+        boolean hasAppAuth();
+
+        /**
+         * <code>required .AppAuth app_auth = 1;</code>
+         */
+        com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth getAppAuth();
+
+        /**
+         * <code>required .AppAuth app_auth = 1;</code>
+         */
+        com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder();
+
+        /**
+         * <code>required string job_name = 2;</code>
+         */
+        boolean hasJobName();
+
+        /**
+         * <code>required string job_name = 2;</code>
+         */
+        java.lang.String getJobName();
+
+        /**
+         * <code>required string job_name = 2;</code>
+         */
+        com.google.protobuf.ByteString getJobNameBytes();
+
+        /**
+         * <code>optional .ScheduleExpressionEntry expression_entry = 3;</code>
+         */
+        boolean hasExpressionEntry();
+
+        /**
+         * <code>optional .ScheduleExpressionEntry expression_entry = 3;</code>
+         */
+        com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry getExpressionEntry();
+
+        /**
+         * <code>optional .ScheduleExpressionEntry expression_entry = 3;</code>
+         */
+        com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder getExpressionEntryOrBuilder();
+
+        /**
+         * <code>repeated .DependencyEntry dependency_entry = 4;</code>
+         */
+        java.util.List<com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry> getDependencyEntryList();
+
+        /**
+         * <code>repeated .DependencyEntry dependency_entry = 4;</code>
+         */
+        com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry getDependencyEntry(int index);
+
+        /**
+         * <code>repeated .DependencyEntry dependency_entry = 4;</code>
+         */
+        int getDependencyEntryCount();
+
+        /**
+         * <code>repeated .DependencyEntry dependency_entry = 4;</code>
+         */
+        java.util.List<? extends com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntryOrBuilder> getDependencyEntryOrBuilderList();
+
+        /**
+         * <code>repeated .DependencyEntry dependency_entry = 4;</code>
+         */
+        com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntryOrBuilder getDependencyEntryOrBuilder(int index);
+
+        /**
+         * <code>required string user = 5;</code>
+         */
+        boolean hasUser();
+
+        /**
+         * <code>required string user = 5;</code>
+         */
+        java.lang.String getUser();
+
+        /**
+         * <code>required string user = 5;</code>
+         */
+        com.google.protobuf.ByteString getUserBytes();
+
+        /**
+         * <code>required string job_type = 6;</code>
+         */
+        boolean hasJobType();
+
+        /**
+         * <code>required string job_type = 6;</code>
+         */
+        java.lang.String getJobType();
+
+        /**
+         * <code>required string job_type = 6;</code>
+         */
+        com.google.protobuf.ByteString getJobTypeBytes();
+
+        /**
+         * <code>required string content = 7;</code>
+         */
+        boolean hasContent();
+
+        /**
+         * <code>required string content = 7;</code>
+         */
+        java.lang.String getContent();
+
+        /**
+         * <code>required string content = 7;</code>
+         */
+        com.google.protobuf.ByteString getContentBytes();
+
+        /**
+         * <code>required int32 group_id = 8;</code>
+         */
+        boolean hasGroupId();
+
+        /**
+         * <code>required int32 group_id = 8;</code>
+         */
+        int getGroupId();
+
+        /**
+         * <code>optional int32 priority = 9 [default = 1];</code>
+         */
+        boolean hasPriority();
+
+        /**
+         * <code>optional int32 priority = 9 [default = 1];</code>
+         */
+        int getPriority();
+
+        /**
+         * <code>optional int32 reject_retries = 10 [default = 0];</code>
+         */
+        boolean hasRejectRetries();
+
+        /**
+         * <code>optional int32 reject_retries = 10 [default = 0];</code>
+         */
+        int getRejectRetries();
+
+        /**
+         * <code>optional int32 reject_interval = 11 [default = 3];</code>
+         */
+        boolean hasRejectInterval();
+
+        /**
+         * <code>optional int32 reject_interval = 11 [default = 3];</code>
+         */
+        int getRejectInterval();
+
+        /**
+         * <code>optional int32 failed_retries = 12 [default = 0];</code>
+         */
+        boolean hasFailedRetries();
+
+        /**
+         * <code>optional int32 failed_retries = 12 [default = 0];</code>
+         */
+        int getFailedRetries();
+
+        /**
+         * <code>optional int32 failed_interval = 13 [default = 3];</code>
+         */
+        boolean hasFailedInterval();
+
+        /**
+         * <code>optional int32 failed_interval = 13 [default = 3];</code>
+         */
+        int getFailedInterval();
+
+        /**
+         * <code>optional int64 start_time = 14;</code>
+         */
+        boolean hasStartTime();
+
+        /**
+         * <code>optional int64 start_time = 14;</code>
+         */
+        long getStartTime();
+
+        /**
+         * <code>optional int64 end_time = 15;</code>
+         */
+        boolean hasEndTime();
+
+        /**
+         * <code>optional int64 end_time = 15;</code>
+         */
+        long getEndTime();
+
+        /**
+         * <code>repeated .MapEntry parameters = 16;</code>
+         */
+        java.util.List<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry> getParametersList();
+
+        /**
+         * <code>repeated .MapEntry parameters = 16;</code>
+         */
+        com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry getParameters(int index);
+
+        /**
+         * <code>repeated .MapEntry parameters = 16;</code>
+         */
+        int getParametersCount();
+
+        /**
+         * <code>repeated .MapEntry parameters = 16;</code>
+         */
+        java.util.List<? extends com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder> getParametersOrBuilderList();
+
+        /**
+         * <code>repeated .MapEntry parameters = 16;</code>
+         */
+        com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder getParametersOrBuilder(int index);
     }
 
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_DeleteRestServerSubmitJobRequest_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest.class, com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest.Builder.class);
-    }
-
-    public static com.google.protobuf.Parser<DeleteRestServerSubmitJobRequest> PARSER =
-        new com.google.protobuf.AbstractParser<DeleteRestServerSubmitJobRequest>() {
-      public DeleteRestServerSubmitJobRequest parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new DeleteRestServerSubmitJobRequest(input, extensionRegistry);
-      }
-    };
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<DeleteRestServerSubmitJobRequest> getParserForType() {
-      return PARSER;
-    }
-
-    private int bitField0_;
-    public static final int APP_AUTH_FIELD_NUMBER = 1;
-    private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_;
-    /**
-     * <code>required .AppAuth app_auth = 1;</code>
-     */
-    public boolean hasAppAuth() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
-    /**
-     * <code>required .AppAuth app_auth = 1;</code>
-     */
-    public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth getAppAuth() {
-      return appAuth_;
-    }
-    /**
-     * <code>required .AppAuth app_auth = 1;</code>
-     */
-    public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder() {
-      return appAuth_;
-    }
-
-    public static final int JOB_NAME_FIELD_NUMBER = 2;
-    private java.lang.Object jobName_;
-    /**
-     * <code>required string job_name = 2;</code>
-     */
-    public boolean hasJobName() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
-    }
-    /**
-     * <code>required string job_name = 2;</code>
-     */
-    public java.lang.String getJobName() {
-      java.lang.Object ref = jobName_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          jobName_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>required string job_name = 2;</code>
-     */
-    public com.google.protobuf.ByteString
-        getJobNameBytes() {
-      java.lang.Object ref = jobName_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        jobName_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int EXPRESSION_ENTRY_FIELD_NUMBER = 3;
-    private com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry expressionEntry_;
-    /**
-     * <code>optional .ScheduleExpressionEntry expression_entry = 3;</code>
-     */
-    public boolean hasExpressionEntry() {
-      return ((bitField0_ & 0x00000004) == 0x00000004);
-    }
-    /**
-     * <code>optional .ScheduleExpressionEntry expression_entry = 3;</code>
-     */
-    public com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry getExpressionEntry() {
-      return expressionEntry_;
-    }
-    /**
-     * <code>optional .ScheduleExpressionEntry expression_entry = 3;</code>
-     */
-    public com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder getExpressionEntryOrBuilder() {
-      return expressionEntry_;
-    }
-
-    public static final int DEPENDENCY_ENTRY_FIELD_NUMBER = 4;
-    private java.util.List<com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry> dependencyEntry_;
-    /**
-     * <code>repeated .DependencyEntry dependency_entry = 4;</code>
-     */
-    public java.util.List<com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry> getDependencyEntryList() {
-      return dependencyEntry_;
-    }
-    /**
-     * <code>repeated .DependencyEntry dependency_entry = 4;</code>
-     */
-    public java.util.List<? extends com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntryOrBuilder> 
-        getDependencyEntryOrBuilderList() {
-      return dependencyEntry_;
-    }
-    /**
-     * <code>repeated .DependencyEntry dependency_entry = 4;</code>
-     */
-    public int getDependencyEntryCount() {
-      return dependencyEntry_.size();
-    }
-    /**
-     * <code>repeated .DependencyEntry dependency_entry = 4;</code>
-     */
-    public com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry getDependencyEntry(int index) {
-      return dependencyEntry_.get(index);
-    }
-    /**
-     * <code>repeated .DependencyEntry dependency_entry = 4;</code>
-     */
-    public com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntryOrBuilder getDependencyEntryOrBuilder(
-        int index) {
-      return dependencyEntry_.get(index);
-    }
-
-    public static final int USER_FIELD_NUMBER = 5;
-    private java.lang.Object user_;
-    /**
-     * <code>required string user = 5;</code>
-     */
-    public boolean hasUser() {
-      return ((bitField0_ & 0x00000008) == 0x00000008);
-    }
-    /**
-     * <code>required string user = 5;</code>
-     */
-    public java.lang.String getUser() {
-      java.lang.Object ref = user_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          user_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>required string user = 5;</code>
-     */
-    public com.google.protobuf.ByteString
-        getUserBytes() {
-      java.lang.Object ref = user_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        user_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int JOB_TYPE_FIELD_NUMBER = 6;
-    private java.lang.Object jobType_;
-    /**
-     * <code>required string job_type = 6;</code>
-     */
-    public boolean hasJobType() {
-      return ((bitField0_ & 0x00000010) == 0x00000010);
-    }
-    /**
-     * <code>required string job_type = 6;</code>
-     */
-    public java.lang.String getJobType() {
-      java.lang.Object ref = jobType_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          jobType_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>required string job_type = 6;</code>
-     */
-    public com.google.protobuf.ByteString
-        getJobTypeBytes() {
-      java.lang.Object ref = jobType_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        jobType_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int CONTENT_FIELD_NUMBER = 7;
-    private java.lang.Object content_;
-    /**
-     * <code>required string content = 7;</code>
-     */
-    public boolean hasContent() {
-      return ((bitField0_ & 0x00000020) == 0x00000020);
-    }
-    /**
-     * <code>required string content = 7;</code>
-     */
-    public java.lang.String getContent() {
-      java.lang.Object ref = content_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          content_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>required string content = 7;</code>
-     */
-    public com.google.protobuf.ByteString
-        getContentBytes() {
-      java.lang.Object ref = content_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        content_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int GROUP_ID_FIELD_NUMBER = 8;
-    private int groupId_;
-    /**
-     * <code>required int32 group_id = 8;</code>
-     */
-    public boolean hasGroupId() {
-      return ((bitField0_ & 0x00000040) == 0x00000040);
-    }
-    /**
-     * <code>required int32 group_id = 8;</code>
-     */
-    public int getGroupId() {
-      return groupId_;
-    }
-
-    public static final int PRIORITY_FIELD_NUMBER = 9;
-    private int priority_;
-    /**
-     * <code>optional int32 priority = 9 [default = 1];</code>
-     */
-    public boolean hasPriority() {
-      return ((bitField0_ & 0x00000080) == 0x00000080);
-    }
-    /**
-     * <code>optional int32 priority = 9 [default = 1];</code>
-     */
-    public int getPriority() {
-      return priority_;
-    }
-
-    public static final int REJECT_RETRIES_FIELD_NUMBER = 10;
-    private int rejectRetries_;
-    /**
-     * <code>optional int32 reject_retries = 10 [default = 0];</code>
-     */
-    public boolean hasRejectRetries() {
-      return ((bitField0_ & 0x00000100) == 0x00000100);
-    }
-    /**
-     * <code>optional int32 reject_retries = 10 [default = 0];</code>
-     */
-    public int getRejectRetries() {
-      return rejectRetries_;
-    }
-
-    public static final int REJECT_INTERVAL_FIELD_NUMBER = 11;
-    private int rejectInterval_;
-    /**
-     * <code>optional int32 reject_interval = 11 [default = 3];</code>
-     */
-    public boolean hasRejectInterval() {
-      return ((bitField0_ & 0x00000200) == 0x00000200);
-    }
-    /**
-     * <code>optional int32 reject_interval = 11 [default = 3];</code>
-     */
-    public int getRejectInterval() {
-      return rejectInterval_;
-    }
-
-    public static final int FAILED_RETRIES_FIELD_NUMBER = 12;
-    private int failedRetries_;
-    /**
-     * <code>optional int32 failed_retries = 12 [default = 0];</code>
-     */
-    public boolean hasFailedRetries() {
-      return ((bitField0_ & 0x00000400) == 0x00000400);
-    }
-    /**
-     * <code>optional int32 failed_retries = 12 [default = 0];</code>
-     */
-    public int getFailedRetries() {
-      return failedRetries_;
-    }
-
-    public static final int FAILED_INTERVAL_FIELD_NUMBER = 13;
-    private int failedInterval_;
-    /**
-     * <code>optional int32 failed_interval = 13 [default = 3];</code>
-     */
-    public boolean hasFailedInterval() {
-      return ((bitField0_ & 0x00000800) == 0x00000800);
-    }
-    /**
-     * <code>optional int32 failed_interval = 13 [default = 3];</code>
-     */
-    public int getFailedInterval() {
-      return failedInterval_;
-    }
-
-    public static final int START_TIME_FIELD_NUMBER = 14;
-    private long startTime_;
-    /**
-     * <code>optional int64 start_time = 14;</code>
-     */
-    public boolean hasStartTime() {
-      return ((bitField0_ & 0x00001000) == 0x00001000);
-    }
-    /**
-     * <code>optional int64 start_time = 14;</code>
-     */
-    public long getStartTime() {
-      return startTime_;
-    }
-
-    public static final int END_TIME_FIELD_NUMBER = 15;
-    private long endTime_;
-    /**
-     * <code>optional int64 end_time = 15;</code>
-     */
-    public boolean hasEndTime() {
-      return ((bitField0_ & 0x00002000) == 0x00002000);
-    }
-    /**
-     * <code>optional int64 end_time = 15;</code>
-     */
-    public long getEndTime() {
-      return endTime_;
-    }
-
-    public static final int PARAMETERS_FIELD_NUMBER = 16;
-    private java.util.List<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry> parameters_;
-    /**
-     * <code>repeated .MapEntry parameters = 16;</code>
-     */
-    public java.util.List<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry> getParametersList() {
-      return parameters_;
-    }
-    /**
-     * <code>repeated .MapEntry parameters = 16;</code>
-     */
-    public java.util.List<? extends com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder> 
-        getParametersOrBuilderList() {
-      return parameters_;
-    }
-    /**
-     * <code>repeated .MapEntry parameters = 16;</code>
-     */
-    public int getParametersCount() {
-      return parameters_.size();
-    }
-    /**
-     * <code>repeated .MapEntry parameters = 16;</code>
-     */
-    public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry getParameters(int index) {
-      return parameters_.get(index);
-    }
-    /**
-     * <code>repeated .MapEntry parameters = 16;</code>
-     */
-    public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder getParametersOrBuilder(
-        int index) {
-      return parameters_.get(index);
-    }
-
-    private void initFields() {
-      appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
-      jobName_ = "";
-      expressionEntry_ = com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.getDefaultInstance();
-      dependencyEntry_ = java.util.Collections.emptyList();
-      user_ = "";
-      jobType_ = "";
-      content_ = "";
-      groupId_ = 0;
-      priority_ = 1;
-      rejectRetries_ = 0;
-      rejectInterval_ = 3;
-      failedRetries_ = 0;
-      failedInterval_ = 3;
-      startTime_ = 0L;
-      endTime_ = 0L;
-      parameters_ = java.util.Collections.emptyList();
-    }
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      if (!hasAppAuth()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasJobName()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasUser()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasJobType()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasContent()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasGroupId()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!getAppAuth().isInitialized()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (hasExpressionEntry()) {
-        if (!getExpressionEntry().isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
-      for (int i = 0; i < getDependencyEntryCount(); i++) {
-        if (!getDependencyEntry(i).isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
-      for (int i = 0; i < getParametersCount(); i++) {
-        if (!getParameters(i).isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      getSerializedSize();
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeMessage(1, appAuth_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeBytes(2, getJobNameBytes());
-      }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeMessage(3, expressionEntry_);
-      }
-      for (int i = 0; i < dependencyEntry_.size(); i++) {
-        output.writeMessage(4, dependencyEntry_.get(i));
-      }
-      if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        output.writeBytes(5, getUserBytes());
-      }
-      if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        output.writeBytes(6, getJobTypeBytes());
-      }
-      if (((bitField0_ & 0x00000020) == 0x00000020)) {
-        output.writeBytes(7, getContentBytes());
-      }
-      if (((bitField0_ & 0x00000040) == 0x00000040)) {
-        output.writeInt32(8, groupId_);
-      }
-      if (((bitField0_ & 0x00000080) == 0x00000080)) {
-        output.writeInt32(9, priority_);
-      }
-      if (((bitField0_ & 0x00000100) == 0x00000100)) {
-        output.writeInt32(10, rejectRetries_);
-      }
-      if (((bitField0_ & 0x00000200) == 0x00000200)) {
-        output.writeInt32(11, rejectInterval_);
-      }
-      if (((bitField0_ & 0x00000400) == 0x00000400)) {
-        output.writeInt32(12, failedRetries_);
-      }
-      if (((bitField0_ & 0x00000800) == 0x00000800)) {
-        output.writeInt32(13, failedInterval_);
-      }
-      if (((bitField0_ & 0x00001000) == 0x00001000)) {
-        output.writeInt64(14, startTime_);
-      }
-      if (((bitField0_ & 0x00002000) == 0x00002000)) {
-        output.writeInt64(15, endTime_);
-      }
-      for (int i = 0; i < parameters_.size(); i++) {
-        output.writeMessage(16, parameters_.get(i));
-      }
-      getUnknownFields().writeTo(output);
-    }
-
-    private int memoizedSerializedSize = -1;
-    public int getSerializedSize() {
-      int size = memoizedSerializedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(1, appAuth_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(2, getJobNameBytes());
-      }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(3, expressionEntry_);
-      }
-      for (int i = 0; i < dependencyEntry_.size(); i++) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(4, dependencyEntry_.get(i));
-      }
-      if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(5, getUserBytes());
-      }
-      if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(6, getJobTypeBytes());
-      }
-      if (((bitField0_ & 0x00000020) == 0x00000020)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(7, getContentBytes());
-      }
-      if (((bitField0_ & 0x00000040) == 0x00000040)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(8, groupId_);
-      }
-      if (((bitField0_ & 0x00000080) == 0x00000080)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(9, priority_);
-      }
-      if (((bitField0_ & 0x00000100) == 0x00000100)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(10, rejectRetries_);
-      }
-      if (((bitField0_ & 0x00000200) == 0x00000200)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(11, rejectInterval_);
-      }
-      if (((bitField0_ & 0x00000400) == 0x00000400)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(12, failedRetries_);
-      }
-      if (((bitField0_ & 0x00000800) == 0x00000800)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(13, failedInterval_);
-      }
-      if (((bitField0_ & 0x00001000) == 0x00001000)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(14, startTime_);
-      }
-      if (((bitField0_ & 0x00002000) == 0x00002000)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(15, endTime_);
-      }
-      for (int i = 0; i < parameters_.size(); i++) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(16, parameters_.get(i));
-      }
-      size += getUnknownFields().getSerializedSize();
-      memoizedSerializedSize = size;
-      return size;
-    }
-
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    protected java.lang.Object writeReplace()
-        throws java.io.ObjectStreamException {
-      return super.writeReplace();
-    }
-
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input);
-    }
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input, extensionRegistry);
-    }
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-
-    public static Builder newBuilder() { return Builder.create(); }
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest prototype) {
-      return newBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() { return newBuilder(this); }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
     /**
      * Protobuf type {@code DeleteRestServerSubmitJobRequest}
      */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:DeleteRestServerSubmitJobRequest)
-        com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequestOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_DeleteRestServerSubmitJobRequest_descriptor;
-      }
+    public static final class DeleteRestServerSubmitJobRequest extends com.google.protobuf.GeneratedMessage implements
+            // @@protoc_insertion_point(message_implements:DeleteRestServerSubmitJobRequest)
+            DeleteRestServerSubmitJobRequestOrBuilder {
+        // Use DeleteRestServerSubmitJobRequest.newBuilder() to construct.
+        private DeleteRestServerSubmitJobRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+            super(builder);
+            this.unknownFields = builder.getUnknownFields();
+        }
 
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_DeleteRestServerSubmitJobRequest_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest.class, com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest.Builder.class);
-      }
+        private DeleteRestServerSubmitJobRequest(boolean noInit) {
+            this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+        }
 
-      // Construct using com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
+        private static final DeleteRestServerSubmitJobRequest defaultInstance;
 
-      private Builder(
-          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-          getAppAuthFieldBuilder();
-          getExpressionEntryFieldBuilder();
-          getDependencyEntryFieldBuilder();
-          getParametersFieldBuilder();
+        public static DeleteRestServerSubmitJobRequest getDefaultInstance() {
+            return defaultInstance;
         }
-      }
-      private static Builder create() {
-        return new Builder();
-      }
 
-      public Builder clear() {
-        super.clear();
-        if (appAuthBuilder_ == null) {
-          appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
-        } else {
-          appAuthBuilder_.clear();
+        @Override
+        public DeleteRestServerSubmitJobRequest getDefaultInstanceForType() {
+            return defaultInstance;
         }
-        bitField0_ = (bitField0_ & ~0x00000001);
-        jobName_ = "";
-        bitField0_ = (bitField0_ & ~0x00000002);
-        if (expressionEntryBuilder_ == null) {
-          expressionEntry_ = com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.getDefaultInstance();
-        } else {
-          expressionEntryBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000004);
-        if (dependencyEntryBuilder_ == null) {
-          dependencyEntry_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000008);
-        } else {
-          dependencyEntryBuilder_.clear();
-        }
-        user_ = "";
-        bitField0_ = (bitField0_ & ~0x00000010);
-        jobType_ = "";
-        bitField0_ = (bitField0_ & ~0x00000020);
-        content_ = "";
-        bitField0_ = (bitField0_ & ~0x00000040);
-        groupId_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000080);
-        priority_ = 1;
-        bitField0_ = (bitField0_ & ~0x00000100);
-        rejectRetries_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000200);
-        rejectInterval_ = 3;
-        bitField0_ = (bitField0_ & ~0x00000400);
-        failedRetries_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000800);
-        failedInterval_ = 3;
-        bitField0_ = (bitField0_ & ~0x00001000);
-        startTime_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00002000);
-        endTime_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00004000);
-        if (parametersBuilder_ == null) {
-          parameters_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00008000);
-        } else {
-          parametersBuilder_.clear();
-        }
-        return this;
-      }
 
-      public Builder clone() {
-        return create().mergeFrom(buildPartial());
-      }
+        private final com.google.protobuf.UnknownFieldSet unknownFields;
 
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_DeleteRestServerSubmitJobRequest_descriptor;
-      }
+        @java.lang.Override
+        public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
+            return this.unknownFields;
+        }
 
-      public com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest getDefaultInstanceForType() {
-        return com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest.getDefaultInstance();
-      }
+        private DeleteRestServerSubmitJobRequest(com.google.protobuf.CodedInputStream input,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+            initFields();
+            int mutable_bitField0_ = 0;
+            com.google.protobuf.UnknownFieldSet.Builder unknownFields = com.google.protobuf.UnknownFieldSet.newBuilder();
+            try {
+                boolean done = false;
+                while (!done) {
+                    int tag = input.readTag();
+                    switch (tag) {
+                        case 0:
+                            done = true;
+                            break;
+                        default: {
+                            if (!parseUnknownField(input, unknownFields, extensionRegistry, tag)) {
+                                done = true;
+                            }
+                            break;
+                        }
+                        case 10: {
+                            com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder subBuilder = null;
+                            if (((bitField0_ & 0x00000001) == 0x00000001)) {
+                                subBuilder = appAuth_.toBuilder();
+                            }
+                            appAuth_ = input.readMessage(com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.PARSER, extensionRegistry);
+                            if (subBuilder != null) {
+                                subBuilder.mergeFrom(appAuth_);
+                                appAuth_ = subBuilder.buildPartial();
+                            }
+                            bitField0_ |= 0x00000001;
+                            break;
+                        }
+                        case 18: {
+                            com.google.protobuf.ByteString bs = input.readBytes();
+                            bitField0_ |= 0x00000002;
+                            jobName_ = bs;
+                            break;
+                        }
+                        case 26: {
+                            com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder subBuilder = null;
+                            if (((bitField0_ & 0x00000004) == 0x00000004)) {
+                                subBuilder = expressionEntry_.toBuilder();
+                            }
+                            expressionEntry_ = input.readMessage(
+                                    com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.PARSER, extensionRegistry);
+                            if (subBuilder != null) {
+                                subBuilder.mergeFrom(expressionEntry_);
+                                expressionEntry_ = subBuilder.buildPartial();
+                            }
+                            bitField0_ |= 0x00000004;
+                            break;
+                        }
+                        case 34: {
+                            if (!((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
+                                dependencyEntry_ = new java.util.ArrayList<com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry>();
+                                mutable_bitField0_ |= 0x00000008;
+                            }
+                            dependencyEntry_.add(
+                                    input.readMessage(com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.PARSER, extensionRegistry));
+                            break;
+                        }
+                        case 42: {
+                            com.google.protobuf.ByteString bs = input.readBytes();
+                            bitField0_ |= 0x00000008;
+                            user_ = bs;
+                            break;
+                        }
+                        case 50: {
+                            com.google.protobuf.ByteString bs = input.readBytes();
+                            bitField0_ |= 0x00000010;
+                            jobType_ = bs;
+                            break;
+                        }
+                        case 58: {
+                            com.google.protobuf.ByteString bs = input.readBytes();
+                            bitField0_ |= 0x00000020;
+                            content_ = bs;
+                            break;
+                        }
+                        case 64: {
+                            bitField0_ |= 0x00000040;
+                            groupId_ = input.readInt32();
+                            break;
+                        }
+                        case 72: {
+                            bitField0_ |= 0x00000080;
+                            priority_ = input.readInt32();
+                            break;
+                        }
+                        case 80: {
+                            bitField0_ |= 0x00000100;
+                            rejectRetries_ = input.readInt32();
+                            break;
+                        }
+                        case 88: {
+                            bitField0_ |= 0x00000200;
+                            rejectInterval_ = input.readInt32();
+                            break;
+                        }
+                        case 96: {
+                            bitField0_ |= 0x00000400;
+                            failedRetries_ = input.readInt32();
+                            break;
+                        }
+                        case 104: {
+                            bitField0_ |= 0x00000800;
+                            failedInterval_ = input.readInt32();
+                            break;
+                        }
+                        case 112: {
+                            bitField0_ |= 0x00001000;
+                            startTime_ = input.readInt64();
+                            break;
+                        }
+                        case 120: {
+                            bitField0_ |= 0x00002000;
+                            endTime_ = input.readInt64();
+                            break;
+                        }
+                        case 130: {
+                            if (!((mutable_bitField0_ & 0x00008000) == 0x00008000)) {
+                                parameters_ = new java.util.ArrayList<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry>();
+                                mutable_bitField0_ |= 0x00008000;
+                            }
+                            parameters_.add(input.readMessage(com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.PARSER, extensionRegistry));
+                            break;
+                        }
+                    }
+                }
+            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+                throw e.setUnfinishedMessage(this);
+            } catch (java.io.IOException e) {
+                throw new com.google.protobuf.InvalidProtocolBufferException(e.getMessage()).setUnfinishedMessage(this);
+            } finally {
+                if (((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
+                    dependencyEntry_ = java.util.Collections.unmodifiableList(dependencyEntry_);
+                }
+                if (((mutable_bitField0_ & 0x00008000) == 0x00008000)) {
+                    parameters_ = java.util.Collections.unmodifiableList(parameters_);
+                }
+                this.unknownFields = unknownFields.build();
+                makeExtensionsImmutable();
+            }
+        }
 
-      public com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest build() {
-        com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
+        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+            return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_DeleteRestServerSubmitJobRequest_descriptor;
         }
-        return result;
-      }
 
-      public com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest buildPartial() {
-        com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest result = new com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
+        @Override
+        protected com.google.protobuf.GeneratedMessage.FieldAccessorTable internalGetFieldAccessorTable() {
+            return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_DeleteRestServerSubmitJobRequest_fieldAccessorTable
+                    .ensureFieldAccessorsInitialized(com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest.class,
+                            com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest.Builder.class);
         }
-        if (appAuthBuilder_ == null) {
-          result.appAuth_ = appAuth_;
-        } else {
-          result.appAuth_ = appAuthBuilder_.build();
-        }
-        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.jobName_ = jobName_;
-        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
-          to_bitField0_ |= 0x00000004;
-        }
-        if (expressionEntryBuilder_ == null) {
-          result.expressionEntry_ = expressionEntry_;
-        } else {
-          result.expressionEntry_ = expressionEntryBuilder_.build();
-        }
-        if (dependencyEntryBuilder_ == null) {
-          if (((bitField0_ & 0x00000008) == 0x00000008)) {
-            dependencyEntry_ = java.util.Collections.unmodifiableList(dependencyEntry_);
-            bitField0_ = (bitField0_ & ~0x00000008);
-          }
-          result.dependencyEntry_ = dependencyEntry_;
-        } else {
-          result.dependencyEntry_ = dependencyEntryBuilder_.build();
-        }
-        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
-          to_bitField0_ |= 0x00000008;
-        }
-        result.user_ = user_;
-        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
-          to_bitField0_ |= 0x00000010;
-        }
-        result.jobType_ = jobType_;
-        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
-          to_bitField0_ |= 0x00000020;
-        }
-        result.content_ = content_;
-        if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
-          to_bitField0_ |= 0x00000040;
-        }
-        result.groupId_ = groupId_;
-        if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
-          to_bitField0_ |= 0x00000080;
-        }
-        result.priority_ = priority_;
-        if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
-          to_bitField0_ |= 0x00000100;
-        }
-        result.rejectRetries_ = rejectRetries_;
-        if (((from_bitField0_ & 0x00000400) == 0x00000400)) {
-          to_bitField0_ |= 0x00000200;
-        }
-        result.rejectInterval_ = rejectInterval_;
-        if (((from_bitField0_ & 0x00000800) == 0x00000800)) {
-          to_bitField0_ |= 0x00000400;
-        }
-        result.failedRetries_ = failedRetries_;
-        if (((from_bitField0_ & 0x00001000) == 0x00001000)) {
-          to_bitField0_ |= 0x00000800;
-        }
-        result.failedInterval_ = failedInterval_;
-        if (((from_bitField0_ & 0x00002000) == 0x00002000)) {
-          to_bitField0_ |= 0x00001000;
-        }
-        result.startTime_ = startTime_;
-        if (((from_bitField0_ & 0x00004000) == 0x00004000)) {
-          to_bitField0_ |= 0x00002000;
-        }
-        result.endTime_ = endTime_;
-        if (parametersBuilder_ == null) {
-          if (((bitField0_ & 0x00008000) == 0x00008000)) {
-            parameters_ = java.util.Collections.unmodifiableList(parameters_);
-            bitField0_ = (bitField0_ & ~0x00008000);
-          }
-          result.parameters_ = parameters_;
-        } else {
-          result.parameters_ = parametersBuilder_.build();
-        }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
 
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest) {
-          return mergeFrom((com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
+        public static com.google.protobuf.Parser<DeleteRestServerSubmitJobRequest> PARSER = new com.google.protobuf.AbstractParser<DeleteRestServerSubmitJobRequest>() {
+            @Override
+            public DeleteRestServerSubmitJobRequest parsePartialFrom(com.google.protobuf.CodedInputStream input,
+                    com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+                return new DeleteRestServerSubmitJobRequest(input, extensionRegistry);
+            }
+        };
 
-      public Builder mergeFrom(com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest other) {
-        if (other == com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest.getDefaultInstance()) return this;
-        if (other.hasAppAuth()) {
-          mergeAppAuth(other.getAppAuth());
+        @java.lang.Override
+        public com.google.protobuf.Parser<DeleteRestServerSubmitJobRequest> getParserForType() {
+            return PARSER;
         }
-        if (other.hasJobName()) {
-          bitField0_ |= 0x00000002;
-          jobName_ = other.jobName_;
-          onChanged();
+
+        private int bitField0_;
+        public static final int APP_AUTH_FIELD_NUMBER = 1;
+        private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_;
+
+        /**
+         * <code>required .AppAuth app_auth = 1;</code>
+         */
+        @Override
+        public boolean hasAppAuth() {
+            return ((bitField0_ & 0x00000001) == 0x00000001);
         }
-        if (other.hasExpressionEntry()) {
-          mergeExpressionEntry(other.getExpressionEntry());
+
+        /**
+         * <code>required .AppAuth app_auth = 1;</code>
+         */
+        @Override
+        public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth getAppAuth() {
+            return appAuth_;
         }
-        if (dependencyEntryBuilder_ == null) {
-          if (!other.dependencyEntry_.isEmpty()) {
-            if (dependencyEntry_.isEmpty()) {
-              dependencyEntry_ = other.dependencyEntry_;
-              bitField0_ = (bitField0_ & ~0x00000008);
+
+        /**
+         * <code>required .AppAuth app_auth = 1;</code>
+         */
+        @Override
+        public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder() {
+            return appAuth_;
+        }
+
+        public static final int JOB_NAME_FIELD_NUMBER = 2;
+        private java.lang.Object jobName_;
+
+        /**
+         * <code>required string job_name = 2;</code>
+         */
+        @Override
+        public boolean hasJobName() {
+            return ((bitField0_ & 0x00000002) == 0x00000002);
+        }
+
+        /**
+         * <code>required string job_name = 2;</code>
+         */
+        @Override
+        public java.lang.String getJobName() {
+            java.lang.Object ref = jobName_;
+            if (ref instanceof java.lang.String) {
+                return (java.lang.String) ref;
             } else {
-              ensureDependencyEntryIsMutable();
-              dependencyEntry_.addAll(other.dependencyEntry_);
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                if (bs.isValidUtf8()) {
+                    jobName_ = s;
+                }
+                return s;
             }
-            onChanged();
-          }
-        } else {
-          if (!other.dependencyEntry_.isEmpty()) {
-            if (dependencyEntryBuilder_.isEmpty()) {
-              dependencyEntryBuilder_.dispose();
-              dependencyEntryBuilder_ = null;
-              dependencyEntry_ = other.dependencyEntry_;
-              bitField0_ = (bitField0_ & ~0x00000008);
-              dependencyEntryBuilder_ = 
-                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
-                   getDependencyEntryFieldBuilder() : null;
+        }
+
+        /**
+         * <code>required string job_name = 2;</code>
+         */
+        @Override
+        public com.google.protobuf.ByteString getJobNameBytes() {
+            java.lang.Object ref = jobName_;
+            if (ref instanceof java.lang.String) {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                jobName_ = b;
+                return b;
             } else {
-              dependencyEntryBuilder_.addAllMessages(other.dependencyEntry_);
+                return (com.google.protobuf.ByteString) ref;
             }
-          }
         }
-        if (other.hasUser()) {
-          bitField0_ |= 0x00000010;
-          user_ = other.user_;
-          onChanged();
+
+        public static final int EXPRESSION_ENTRY_FIELD_NUMBER = 3;
+        private com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry expressionEntry_;
+
+        /**
+         * <code>optional .ScheduleExpressionEntry expression_entry = 3;</code>
+         */
+        @Override
+        public boolean hasExpressionEntry() {
+            return ((bitField0_ & 0x00000004) == 0x00000004);
         }
-        if (other.hasJobType()) {
-          bitField0_ |= 0x00000020;
-          jobType_ = other.jobType_;
-          onChanged();
+
+        /**
+         * <code>optional .ScheduleExpressionEntry expression_entry = 3;</code>
+         */
+        @Override
+        public com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry getExpressionEntry() {
+            return expressionEntry_;
         }
-        if (other.hasContent()) {
-          bitField0_ |= 0x00000040;
-          content_ = other.content_;
-          onChanged();
+
+        /**
+         * <code>optional .ScheduleExpressionEntry expression_entry = 3;</code>
+         */
+        @Override
+        public com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder getExpressionEntryOrBuilder() {
+            return expressionEntry_;
         }
-        if (other.hasGroupId()) {
-          setGroupId(other.getGroupId());
+
+        public static final int DEPENDENCY_ENTRY_FIELD_NUMBER = 4;
+        private java.util.List<com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry> dependencyEntry_;
+
+        /**
+         * <code>repeated .DependencyEntry dependency_entry = 4;</code>
+         */
+        @Override
+        public java.util.List<com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry> getDependencyEntryList() {
+            return dependencyEntry_;
         }
-        if (other.hasPriority()) {
-          setPriority(other.getPriority());
+
+        /**
+         * <code>repeated .DependencyEntry dependency_entry = 4;</code>
+         */
+        @Override
+        public java.util.List<? extends com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntryOrBuilder> getDependencyEntryOrBuilderList() {
+            return dependencyEntry_;
         }
-        if (other.hasRejectRetries()) {
-          setRejectRetries(other.getRejectRetries());
+
+        /**
+         * <code>repeated .DependencyEntry dependency_entry = 4;</code>
+         */
+        @Override
+        public int getDependencyEntryCount() {
+            return dependencyEntry_.size();
         }
-        if (other.hasRejectInterval()) {
-          setRejectInterval(other.getRejectInterval());
+
+        /**
+         * <code>repeated .DependencyEntry dependency_entry = 4;</code>
+         */
+        @Override
+        public com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry getDependencyEntry(int index) {
+            return dependencyEntry_.get(index);
         }
-        if (other.hasFailedRetries()) {
-          setFailedRetries(other.getFailedRetries());
+
+        /**
+         * <code>repeated .DependencyEntry dependency_entry = 4;</code>
+         */
+        @Override
+        public com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntryOrBuilder getDependencyEntryOrBuilder(int index) {
+            return dependencyEntry_.get(index);
         }
-        if (other.hasFailedInterval()) {
-          setFailedInterval(other.getFailedInterval());
+
+        public static final int USER_FIELD_NUMBER = 5;
+        private java.lang.Object user_;
+
+        /**
+         * <code>required string user = 5;</code>
+         */
+        @Override
+        public boolean hasUser() {
+            return ((bitField0_ & 0x00000008) == 0x00000008);
         }
-        if (other.hasStartTime()) {
-          setStartTime(other.getStartTime());
-        }
-        if (other.hasEndTime()) {
-          setEndTime(other.getEndTime());
-        }
-        if (parametersBuilder_ == null) {
-          if (!other.parameters_.isEmpty()) {
-            if (parameters_.isEmpty()) {
-              parameters_ = other.parameters_;
-              bitField0_ = (bitField0_ & ~0x00008000);
+
+        /**
+         * <code>required string user = 5;</code>
+         */
+        @Override
+        public java.lang.String getUser() {
+            java.lang.Object ref = user_;
+            if (ref instanceof java.lang.String) {
+                return (java.lang.String) ref;
             } else {
-              ensureParametersIsMutable();
-              parameters_.addAll(other.parameters_);
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                if (bs.isValidUtf8()) {
+                    user_ = s;
+                }
+                return s;
             }
-            onChanged();
-          }
-        } else {
-          if (!other.parameters_.isEmpty()) {
-            if (parametersBuilder_.isEmpty()) {
-              parametersBuilder_.dispose();
-              parametersBuilder_ = null;
-              parameters_ = other.parameters_;
-              bitField0_ = (bitField0_ & ~0x00008000);
-              parametersBuilder_ = 
-                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
-                   getParametersFieldBuilder() : null;
+        }
+
+        /**
+         * <code>required string user = 5;</code>
+         */
+        @Override
+        public com.google.protobuf.ByteString getUserBytes() {
+            java.lang.Object ref = user_;
+            if (ref instanceof java.lang.String) {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                user_ = b;
+                return b;
             } else {
-              parametersBuilder_.addAllMessages(other.parameters_);
+                return (com.google.protobuf.ByteString) ref;
             }
-          }
         }
-        this.mergeUnknownFields(other.getUnknownFields());
-        return this;
-      }
 
-      public final boolean isInitialized() {
-        if (!hasAppAuth()) {
-          
-          return false;
-        }
-        if (!hasJobName()) {
-          
-          return false;
-        }
-        if (!hasUser()) {
-          
-          return false;
-        }
-        if (!hasJobType()) {
-          
-          return false;
-        }
-        if (!hasContent()) {
-          
-          return false;
-        }
-        if (!hasGroupId()) {
-          
-          return false;
-        }
-        if (!getAppAuth().isInitialized()) {
-          
-          return false;
-        }
-        if (hasExpressionEntry()) {
-          if (!getExpressionEntry().isInitialized()) {
-            
-            return false;
-          }
-        }
-        for (int i = 0; i < getDependencyEntryCount(); i++) {
-          if (!getDependencyEntry(i).isInitialized()) {
-            
-            return false;
-          }
-        }
-        for (int i = 0; i < getParametersCount(); i++) {
-          if (!getParameters(i).isInitialized()) {
-            
-            return false;
-          }
-        }
-        return true;
-      }
+        public static final int JOB_TYPE_FIELD_NUMBER = 6;
+        private java.lang.Object jobType_;
 
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest) e.getUnfinishedMessage();
-          throw e;
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
+        /**
+         * <code>required string job_type = 6;</code>
+         */
+        @Override
+        public boolean hasJobType() {
+            return ((bitField0_ & 0x00000010) == 0x00000010);
         }
-        return this;
-      }
-      private int bitField0_;
 
-      private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
-      private com.google.protobuf.SingleFieldBuilder<
-          com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> appAuthBuilder_;
-      /**
-       * <code>required .AppAuth app_auth = 1;</code>
-       */
-      public boolean hasAppAuth() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      /**
-       * <code>required .AppAuth app_auth = 1;</code>
-       */
-      public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth getAppAuth() {
-        if (appAuthBuilder_ == null) {
-          return appAuth_;
-        } else {
-          return appAuthBuilder_.getMessage();
-        }
-      }
-      /**
-       * <code>required .AppAuth app_auth = 1;</code>
-       */
-      public Builder setAppAuth(com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth value) {
-        if (appAuthBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          appAuth_ = value;
-          onChanged();
-        } else {
-          appAuthBuilder_.setMessage(value);
-        }
-        bitField0_ |= 0x00000001;
-        return this;
-      }
-      /**
-       * <code>required .AppAuth app_auth = 1;</code>
-       */
-      public Builder setAppAuth(
-          com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder builderForValue) {
-        if (appAuthBuilder_ == null) {
-          appAuth_ = builderForValue.build();
-          onChanged();
-        } else {
-          appAuthBuilder_.setMessage(builderForValue.build());
-        }
-        bitField0_ |= 0x00000001;
-        return this;
-      }
-      /**
-       * <code>required .AppAuth app_auth = 1;</code>
-       */
-      public Builder mergeAppAuth(com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth value) {
-        if (appAuthBuilder_ == null) {
-          if (((bitField0_ & 0x00000001) == 0x00000001) &&
-              appAuth_ != com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance()) {
-            appAuth_ =
-              com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.newBuilder(appAuth_).mergeFrom(value).buildPartial();
-          } else {
-            appAuth_ = value;
-          }
-          onChanged();
-        } else {
-          appAuthBuilder_.mergeFrom(value);
-        }
-        bitField0_ |= 0x00000001;
-        return this;
-      }
-      /**
-       * <code>required .AppAuth app_auth = 1;</code>
-       */
-      public Builder clearAppAuth() {
-        if (appAuthBuilder_ == null) {
-          appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
-          onChanged();
-        } else {
-          appAuthBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000001);
-        return this;
-      }
-      /**
-       * <code>required .AppAuth app_auth = 1;</code>
-       */
-      public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder getAppAuthBuilder() {
-        bitField0_ |= 0x00000001;
-        onChanged();
-        return getAppAuthFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>required .AppAuth app_auth = 1;</code>
-       */
-      public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder() {
-        if (appAuthBuilder_ != null) {
-          return appAuthBuilder_.getMessageOrBuilder();
-        } else {
-          return appAuth_;
-        }
-      }
-      /**
-       * <code>required .AppAuth app_auth = 1;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilder<
-          com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> 
-          getAppAuthFieldBuilder() {
-        if (appAuthBuilder_ == null) {
-          appAuthBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-              com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder>(
-                  getAppAuth(),
-                  getParentForChildren(),
-                  isClean());
-          appAuth_ = null;
-        }
-        return appAuthBuilder_;
-      }
-
-      private java.lang.Object jobName_ = "";
-      /**
-       * <code>required string job_name = 2;</code>
-       */
-      public boolean hasJobName() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
-      }
-      /**
-       * <code>required string job_name = 2;</code>
-       */
-      public java.lang.String getJobName() {
-        java.lang.Object ref = jobName_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            jobName_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>required string job_name = 2;</code>
-       */
-      public com.google.protobuf.ByteString
-          getJobNameBytes() {
-        java.lang.Object ref = jobName_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          jobName_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>required string job_name = 2;</code>
-       */
-      public Builder setJobName(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
-        jobName_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string job_name = 2;</code>
-       */
-      public Builder clearJobName() {
-        bitField0_ = (bitField0_ & ~0x00000002);
-        jobName_ = getDefaultInstance().getJobName();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string job_name = 2;</code>
-       */
-      public Builder setJobNameBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
-        jobName_ = value;
-        onChanged();
-        return this;
-      }
-
-      private com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry expressionEntry_ = com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.getDefaultInstance();
-      private com.google.protobuf.SingleFieldBuilder<
-          com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder> expressionEntryBuilder_;
-      /**
-       * <code>optional .ScheduleExpressionEntry expression_entry = 3;</code>
-       */
-      public boolean hasExpressionEntry() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
-      }
-      /**
-       * <code>optional .ScheduleExpressionEntry expression_entry = 3;</code>
-       */
-      public com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry getExpressionEntry() {
-        if (expressionEntryBuilder_ == null) {
-          return expressionEntry_;
-        } else {
-          return expressionEntryBuilder_.getMessage();
-        }
-      }
-      /**
-       * <code>optional .ScheduleExpressionEntry expression_entry = 3;</code>
-       */
-      public Builder setExpressionEntry(com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry value) {
-        if (expressionEntryBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          expressionEntry_ = value;
-          onChanged();
-        } else {
-          expressionEntryBuilder_.setMessage(value);
-        }
-        bitField0_ |= 0x00000004;
-        return this;
-      }
-      /**
-       * <code>optional .ScheduleExpressionEntry expression_entry = 3;</code>
-       */
-      public Builder setExpressionEntry(
-          com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder builderForValue) {
-        if (expressionEntryBuilder_ == null) {
-          expressionEntry_ = builderForValue.build();
-          onChanged();
-        } else {
-          expressionEntryBuilder_.setMessage(builderForValue.build());
-        }
-        bitField0_ |= 0x00000004;
-        return this;
-      }
-      /**
-       * <code>optional .ScheduleExpressionEntry expression_entry = 3;</code>
-       */
-      public Builder mergeExpressionEntry(com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry value) {
-        if (expressionEntryBuilder_ == null) {
-          if (((bitField0_ & 0x00000004) == 0x00000004) &&
-              expressionEntry_ != com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.getDefaultInstance()) {
-            expressionEntry_ =
-              com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.newBuilder(expressionEntry_).mergeFrom(value).buildPartial();
-          } else {
-            expressionEntry_ = value;
-          }
-          onChanged();
-        } else {
-          expressionEntryBuilder_.mergeFrom(value);
-        }
-        bitField0_ |= 0x00000004;
-        return this;
-      }
-      /**
-       * <code>optional .ScheduleExpressionEntry expression_entry = 3;</code>
-       */
-      public Builder clearExpressionEntry() {
-        if (expressionEntryBuilder_ == null) {
-          expressionEntry_ = com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.getDefaultInstance();
-          onChanged();
-        } else {
-          expressionEntryBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000004);
-        return this;
-      }
-      /**
-       * <code>optional .ScheduleExpressionEntry expression_entry = 3;</code>
-       */
-      public com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder getExpressionEntryBuilder() {
-        bitField0_ |= 0x00000004;
-        onChanged();
-        return getExpressionEntryFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>optional .ScheduleExpressionEntry expression_entry = 3;</code>
-       */
-      public com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder getExpressionEntryOrBuilder() {
-        if (expressionEntryBuilder_ != null) {
-          return expressionEntryBuilder_.getMessageOrBuilder();
-        } else {
-          return expressionEntry_;
-        }
-      }
-      /**
-       * <code>optional .ScheduleExpressionEntry expression_entry = 3;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilder<
-          com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder> 
-          getExpressionEntryFieldBuilder() {
-        if (expressionEntryBuilder_ == null) {
-          expressionEntryBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-              com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder>(
-                  getExpressionEntry(),
-                  getParentForChildren(),
-                  isClean());
-          expressionEntry_ = null;
-        }
-        return expressionEntryBuilder_;
-      }
-
-      private java.util.List<com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry> dependencyEntry_ =
-        java.util.Collections.emptyList();
-      private void ensureDependencyEntryIsMutable() {
-        if (!((bitField0_ & 0x00000008) == 0x00000008)) {
-          dependencyEntry_ = new java.util.ArrayList<com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry>(dependencyEntry_);
-          bitField0_ |= 0x00000008;
-         }
-      }
-
-      private com.google.protobuf.RepeatedFieldBuilder<
-          com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry, com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.Builder, com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntryOrBuilder> dependencyEntryBuilder_;
-
-      /**
-       * <code>repeated .DependencyEntry dependency_entry = 4;</code>
-       */
-      public java.util.List<com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry> getDependencyEntryList() {
-        if (dependencyEntryBuilder_ == null) {
-          return java.util.Collections.unmodifiableList(dependencyEntry_);
-        } else {
-          return dependencyEntryBuilder_.getMessageList();
-        }
-      }
-      /**
-       * <code>repeated .DependencyEntry dependency_entry = 4;</code>
-       */
-      public int getDependencyEntryCount() {
-        if (dependencyEntryBuilder_ == null) {
-          return dependencyEntry_.size();
-        } else {
-          return dependencyEntryBuilder_.getCount();
-        }
-      }
-      /**
-       * <code>repeated .DependencyEntry dependency_entry = 4;</code>
-       */
-      public com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry getDependencyEntry(int index) {
-        if (dependencyEntryBuilder_ == null) {
-          return dependencyEntry_.get(index);
-        } else {
-          return dependencyEntryBuilder_.getMessage(index);
-        }
-      }
-      /**
-       * <code>repeated .DependencyEntry dependency_entry = 4;</code>
-       */
-      public Builder setDependencyEntry(
-          int index, com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry value) {
-        if (dependencyEntryBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureDependencyEntryIsMutable();
-          dependencyEntry_.set(index, value);
-          onChanged();
-        } else {
-          dependencyEntryBuilder_.setMessage(index, value);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .DependencyEntry dependency_entry = 4;</code>
-       */
-      public Builder setDependencyEntry(
-          int index, com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.Builder builderForValue) {
-        if (dependencyEntryBuilder_ == null) {
-          ensureDependencyEntryIsMutable();
-          dependencyEntry_.set(index, builderForValue.build());
-          onChanged();
-        } else {
-          dependencyEntryBuilder_.setMessage(index, builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .DependencyEntry dependency_entry = 4;</code>
-       */
-      public Builder addDependencyEntry(com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry value) {
-        if (dependencyEntryBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureDependencyEntryIsMutable();
-          dependencyEntry_.add(value);
-          onChanged();
-        } else {
-          dependencyEntryBuilder_.addMessage(value);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .DependencyEntry dependency_entry = 4;</code>
-       */
-      public Builder addDependencyEntry(
-          int index, com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry value) {
-        if (dependencyEntryBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureDependencyEntryIsMutable();
-          dependencyEntry_.add(index, value);
-          onChanged();
-        } else {
-          dependencyEntryBuilder_.addMessage(index, value);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .DependencyEntry dependency_entry = 4;</code>
-       */
-      public Builder addDependencyEntry(
-          com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.Builder builderForValue) {
-        if (dependencyEntryBuilder_ == null) {
-          ensureDependencyEntryIsMutable();
-          dependencyEntry_.add(builderForValue.build());
-          onChanged();
-        } else {
-          dependencyEntryBuilder_.addMessage(builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .DependencyEntry dependency_entry = 4;</code>
-       */
-      public Builder addDependencyEntry(
-          int index, com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.Builder builderForValue) {
-        if (dependencyEntryBuilder_ == null) {
-          ensureDependencyEntryIsMutable();
-          dependencyEntry_.add(index, builderForValue.build());
-          onChanged();
-        } else {
-          dependencyEntryBuilder_.addMessage(index, builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .DependencyEntry dependency_entry = 4;</code>
-       */
-      public Builder addAllDependencyEntry(
-          java.lang.Iterable<? extends com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry> values) {
-        if (dependencyEntryBuilder_ == null) {
-          ensureDependencyEntryIsMutable();
-          com.google.protobuf.AbstractMessageLite.Builder.addAll(
-              values, dependencyEntry_);
-          onChanged();
-        } else {
-          dependencyEntryBuilder_.addAllMessages(values);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .DependencyEntry dependency_entry = 4;</code>
-       */
-      public Builder clearDependencyEntry() {
-        if (dependencyEntryBuilder_ == null) {
-          dependencyEntry_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000008);
-          onChanged();
-        } else {
-          dependencyEntryBuilder_.clear();
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .DependencyEntry dependency_entry = 4;</code>
-       */
-      public Builder removeDependencyEntry(int index) {
-        if (dependencyEntryBuilder_ == null) {
-          ensureDependencyEntryIsMutable();
-          dependencyEntry_.remove(index);
-          onChanged();
-        } else {
-          dependencyEntryBuilder_.remove(index);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .DependencyEntry dependency_entry = 4;</code>
-       */
-      public com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.Builder getDependencyEntryBuilder(
-          int index) {
-        return getDependencyEntryFieldBuilder().getBuilder(index);
-      }
-      /**
-       * <code>repeated .DependencyEntry dependency_entry = 4;</code>
-       */
-      public com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntryOrBuilder getDependencyEntryOrBuilder(
-          int index) {
-        if (dependencyEntryBuilder_ == null) {
-          return dependencyEntry_.get(index);  } else {
-          return dependencyEntryBuilder_.getMessageOrBuilder(index);
-        }
-      }
-      /**
-       * <code>repeated .DependencyEntry dependency_entry = 4;</code>
-       */
-      public java.util.List<? extends com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntryOrBuilder> 
-           getDependencyEntryOrBuilderList() {
-        if (dependencyEntryBuilder_ != null) {
-          return dependencyEntryBuilder_.getMessageOrBuilderList();
-        } else {
-          return java.util.Collections.unmodifiableList(dependencyEntry_);
-        }
-      }
-      /**
-       * <code>repeated .DependencyEntry dependency_entry = 4;</code>
-       */
-      public com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.Builder addDependencyEntryBuilder() {
-        return getDependencyEntryFieldBuilder().addBuilder(
-            com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.getDefaultInstance());
-      }
-      /**
-       * <code>repeated .DependencyEntry dependency_entry = 4;</code>
-       */
-      public com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.Builder addDependencyEntryBuilder(
-          int index) {
-        return getDependencyEntryFieldBuilder().addBuilder(
-            index, com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.getDefaultInstance());
-      }
-      /**
-       * <code>repeated .DependencyEntry dependency_entry = 4;</code>
-       */
-      public java.util.List<com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.Builder> 
-           getDependencyEntryBuilderList() {
-        return getDependencyEntryFieldBuilder().getBuilderList();
-      }
-      private com.google.protobuf.RepeatedFieldBuilder<
-          com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry, com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.Builder, com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntryOrBuilder> 
-          getDependencyEntryFieldBuilder() {
-        if (dependencyEntryBuilder_ == null) {
-          dependencyEntryBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
-              com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry, com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.Builder, com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntryOrBuilder>(
-                  dependencyEntry_,
-                  ((bitField0_ & 0x00000008) == 0x00000008),
-                  getParentForChildren(),
-                  isClean());
-          dependencyEntry_ = null;
-        }
-        return dependencyEntryBuilder_;
-      }
-
-      private java.lang.Object user_ = "";
-      /**
-       * <code>required string user = 5;</code>
-       */
-      public boolean hasUser() {
-        return ((bitField0_ & 0x00000010) == 0x00000010);
-      }
-      /**
-       * <code>required string user = 5;</code>
-       */
-      public java.lang.String getUser() {
-        java.lang.Object ref = user_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            user_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>required string user = 5;</code>
-       */
-      public com.google.protobuf.ByteString
-          getUserBytes() {
-        java.lang.Object ref = user_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          user_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>required string user = 5;</code>
-       */
-      public Builder setUser(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000010;
-        user_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string user = 5;</code>
-       */
-      public Builder clearUser() {
-        bitField0_ = (bitField0_ & ~0x00000010);
-        user_ = getDefaultInstance().getUser();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string user = 5;</code>
-       */
-      public Builder setUserBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000010;
-        user_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object jobType_ = "";
-      /**
-       * <code>required string job_type = 6;</code>
-       */
-      public boolean hasJobType() {
-        return ((bitField0_ & 0x00000020) == 0x00000020);
-      }
-      /**
-       * <code>required string job_type = 6;</code>
-       */
-      public java.lang.String getJobType() {
-        java.lang.Object ref = jobType_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            jobType_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>required string job_type = 6;</code>
-       */
-      public com.google.protobuf.ByteString
-          getJobTypeBytes() {
-        java.lang.Object ref = jobType_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          jobType_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>required string job_type = 6;</code>
-       */
-      public Builder setJobType(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000020;
-        jobType_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string job_type = 6;</code>
-       */
-      public Builder clearJobType() {
-        bitField0_ = (bitField0_ & ~0x00000020);
-        jobType_ = getDefaultInstance().getJobType();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string job_type = 6;</code>
-       */
-      public Builder setJobTypeBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000020;
-        jobType_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object content_ = "";
-      /**
-       * <code>required string content = 7;</code>
-       */
-      public boolean hasContent() {
-        return ((bitField0_ & 0x00000040) == 0x00000040);
-      }
-      /**
-       * <code>required string content = 7;</code>
-       */
-      public java.lang.String getContent() {
-        java.lang.Object ref = content_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            content_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>required string content = 7;</code>
-       */
-      public com.google.protobuf.ByteString
-          getContentBytes() {
-        java.lang.Object ref = content_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          content_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>required string content = 7;</code>
-       */
-      public Builder setContent(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000040;
-        content_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string content = 7;</code>
-       */
-      public Builder clearContent() {
-        bitField0_ = (bitField0_ & ~0x00000040);
-        content_ = getDefaultInstance().getContent();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string content = 7;</code>
-       */
-      public Builder setContentBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000040;
-        content_ = value;
-        onChanged();
-        return this;
-      }
-
-      private int groupId_ ;
-      /**
-       * <code>required int32 group_id = 8;</code>
-       */
-      public boolean hasGroupId() {
-        return ((bitField0_ & 0x00000080) == 0x00000080);
-      }
-      /**
-       * <code>required int32 group_id = 8;</code>
-       */
-      public int getGroupId() {
-        return groupId_;
-      }
-      /**
-       * <code>required int32 group_id = 8;</code>
-       */
-      public Builder setGroupId(int value) {
-        bitField0_ |= 0x00000080;
-        groupId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required int32 group_id = 8;</code>
-       */
-      public Builder clearGroupId() {
-        bitField0_ = (bitField0_ & ~0x00000080);
-        groupId_ = 0;
-        onChanged();
-        return this;
-      }
-
-      private int priority_ = 1;
-      /**
-       * <code>optional int32 priority = 9 [default = 1];</code>
-       */
-      public boolean hasPriority() {
-        return ((bitField0_ & 0x00000100) == 0x00000100);
-      }
-      /**
-       * <code>optional int32 priority = 9 [default = 1];</code>
-       */
-      public int getPriority() {
-        return priority_;
-      }
-      /**
-       * <code>optional int32 priority = 9 [default = 1];</code>
-       */
-      public Builder setPriority(int value) {
-        bitField0_ |= 0x00000100;
-        priority_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional int32 priority = 9 [default = 1];</code>
-       */
-      public Builder clearPriority() {
-        bitField0_ = (bitField0_ & ~0x00000100);
-        priority_ = 1;
-        onChanged();
-        return this;
-      }
-
-      private int rejectRetries_ ;
-      /**
-       * <code>optional int32 reject_retries = 10 [default = 0];</code>
-       */
-      public boolean hasRejectRetries() {
-        return ((bitField0_ & 0x00000200) == 0x00000200);
-      }
-      /**
-       * <code>optional int32 reject_retries = 10 [default = 0];</code>
-       */
-      public int getRejectRetries() {
-        return rejectRetries_;
-      }
-      /**
-       * <code>optional int32 reject_retries = 10 [default = 0];</code>
-       */
-      public Builder setRejectRetries(int value) {
-        bitField0_ |= 0x00000200;
-        rejectRetries_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional int32 reject_retries = 10 [default = 0];</code>
-       */
-      public Builder clearRejectRetries() {
-        bitField0_ = (bitField0_ & ~0x00000200);
-        rejectRetries_ = 0;
-        onChanged();
-        return this;
-      }
-
-      private int rejectInterval_ = 3;
-      /**
-       * <code>optional int32 reject_interval = 11 [default = 3];</code>
-       */
-      public boolean hasRejectInterval() {
-        return ((bitField0_ & 0x00000400) == 0x00000400);
-      }
-      /**
-       * <code>optional int32 reject_interval = 11 [default = 3];</code>
-       */
-      public int getRejectInterval() {
-        return rejectInterval_;
-      }
-      /**
-       * <code>optional int32 reject_interval = 11 [default = 3];</code>
-       */
-      public Builder setRejectInterval(int value) {
-        bitField0_ |= 0x00000400;
-        rejectInterval_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional int32 reject_interval = 11 [default = 3];</code>
-       */
-      public Builder clearRejectInterval() {
-        bitField0_ = (bitField0_ & ~0x00000400);
-        rejectInterval_ = 3;
-        onChanged();
-        return this;
-      }
-
-      private int failedRetries_ ;
-      /**
-       * <code>optional int32 failed_retries = 12 [default = 0];</code>
-       */
-      public boolean hasFailedRetries() {
-        return ((bitField0_ & 0x00000800) == 0x00000800);
-      }
-      /**
-       * <code>optional int32 failed_retries = 12 [default = 0];</code>
-       */
-      public int getFailedRetries() {
-        return failedRetries_;
-      }
-      /**
-       * <code>optional int32 failed_retries = 12 [default = 0];</code>
-       */
-      public Builder setFailedRetries(int value) {
-        bitField0_ |= 0x00000800;
-        failedRetries_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional int32 failed_retries = 12 [default = 0];</code>
-       */
-      public Builder clearFailedRetries() {
-        bitField0_ = (bitField0_ & ~0x00000800);
-        failedRetries_ = 0;
-        onChanged();
-        return this;
-      }
-
-      private int failedInterval_ = 3;
-      /**
-       * <code>optional int32 failed_interval = 13 [default = 3];</code>
-       */
-      public boolean hasFailedInterval() {
-        return ((bitField0_ & 0x00001000) == 0x00001000);
-      }
-      /**
-       * <code>optional int32 failed_interval = 13 [default = 3];</code>
-       */
-      public int getFailedInterval() {
-        return failedInterval_;
-      }
-      /**
-       * <code>optional int32 failed_interval = 13 [default = 3];</code>
-       */
-      public Builder setFailedInterval(int value) {
-        bitField0_ |= 0x00001000;
-        failedInterval_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional int32 failed_interval = 13 [default = 3];</code>
-       */
-      public Builder clearFailedInterval() {
-        bitField0_ = (bitField0_ & ~0x00001000);
-        failedInterval_ = 3;
-        onChanged();
-        return this;
-      }
-
-      private long startTime_ ;
-      /**
-       * <code>optional int64 start_time = 14;</code>
-       */
-      public boolean hasStartTime() {
-        return ((bitField0_ & 0x00002000) == 0x00002000);
-      }
-      /**
-       * <code>optional int64 start_time = 14;</code>
-       */
-      public long getStartTime() {
-        return startTime_;
-      }
-      /**
-       * <code>optional int64 start_time = 14;</code>
-       */
-      public Builder setStartTime(long value) {
-        bitField0_ |= 0x00002000;
-        startTime_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional int64 start_time = 14;</code>
-       */
-      public Builder clearStartTime() {
-        bitField0_ = (bitField0_ & ~0x00002000);
-        startTime_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      private long endTime_ ;
-      /**
-       * <code>optional int64 end_time = 15;</code>
-       */
-      public boolean hasEndTime() {
-        return ((bitField0_ & 0x00004000) == 0x00004000);
-      }
-      /**
-       * <code>optional int64 end_time = 15;</code>
-       */
-      public long getEndTime() {
-        return endTime_;
-      }
-      /**
-       * <code>optional int64 end_time = 15;</code>
-       */
-      public Builder setEndTime(long value) {
-        bitField0_ |= 0x00004000;
-        endTime_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional int64 end_time = 15;</code>
-       */
-      public Builder clearEndTime() {
-        bitField0_ = (bitField0_ & ~0x00004000);
-        endTime_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      private java.util.List<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry> parameters_ =
-        java.util.Collections.emptyList();
-      private void ensureParametersIsMutable() {
-        if (!((bitField0_ & 0x00008000) == 0x00008000)) {
-          parameters_ = new java.util.ArrayList<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry>(parameters_);
-          bitField0_ |= 0x00008000;
-         }
-      }
-
-      private com.google.protobuf.RepeatedFieldBuilder<
-          com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder> parametersBuilder_;
-
-      /**
-       * <code>repeated .MapEntry parameters = 16;</code>
-       */
-      public java.util.List<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry> getParametersList() {
-        if (parametersBuilder_ == null) {
-          return java.util.Collections.unmodifiableList(parameters_);
-        } else {
-          return parametersBuilder_.getMessageList();
-        }
-      }
-      /**
-       * <code>repeated .MapEntry parameters = 16;</code>
-       */
-      public int getParametersCount() {
-        if (parametersBuilder_ == null) {
-          return parameters_.size();
-        } else {
-          return parametersBuilder_.getCount();
-        }
-      }
-      /**
-       * <code>repeated .MapEntry parameters = 16;</code>
-       */
-      public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry getParameters(int index) {
-        if (parametersBuilder_ == null) {
-          return parameters_.get(index);
-        } else {
-          return parametersBuilder_.getMessage(index);
-        }
-      }
-      /**
-       * <code>repeated .MapEntry parameters = 16;</code>
-       */
-      public Builder setParameters(
-          int index, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry value) {
-        if (parametersBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureParametersIsMutable();
-          parameters_.set(index, value);
-          onChanged();
-        } else {
-          parametersBuilder_.setMessage(index, value);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .MapEntry parameters = 16;</code>
-       */
-      public Builder setParameters(
-          int index, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder builderForValue) {
-        if (parametersBuilder_ == null) {
-          ensureParametersIsMutable();
-          parameters_.set(index, builderForValue.build());
-          onChanged();
-        } else {
-          parametersBuilder_.setMessage(index, builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .MapEntry parameters = 16;</code>
-       */
-      public Builder addParameters(com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry value) {
-        if (parametersBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureParametersIsMutable();
-          parameters_.add(value);
-          onChanged();
-        } else {
-          parametersBuilder_.addMessage(value);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .MapEntry parameters = 16;</code>
-       */
-      public Builder addParameters(
-          int index, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry value) {
-        if (parametersBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureParametersIsMutable();
-          parameters_.add(index, value);
-          onChanged();
-        } else {
-          parametersBuilder_.addMessage(index, value);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .MapEntry parameters = 16;</code>
-       */
-      public Builder addParameters(
-          com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder builderForValue) {
-        if (parametersBuilder_ == null) {
-          ensureParametersIsMutable();
-          parameters_.add(builderForValue.build());
-          onChanged();
-        } else {
-          parametersBuilder_.addMessage(builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .MapEntry parameters = 16;</code>
-       */
-      public Builder addParameters(
-          int index, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder builderForValue) {
-        if (parametersBuilder_ == null) {
-          ensureParametersIsMutable();
-          parameters_.add(index, builderForValue.build());
-          onChanged();
-        } else {
-          parametersBuilder_.addMessage(index, builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .MapEntry parameters = 16;</code>
-       */
-      public Builder addAllParameters(
-          java.lang.Iterable<? extends com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry> values) {
-        if (parametersBuilder_ == null) {
-          ensureParametersIsMutable();
-          com.google.protobuf.AbstractMessageLite.Builder.addAll(
-              values, parameters_);
-          onChanged();
-        } else {
-          parametersBuilder_.addAllMessages(values);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .MapEntry parameters = 16;</code>
-       */
-      public Builder clearParameters() {
-        if (parametersBuilder_ == null) {
-          parameters_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00008000);
-          onChanged();
-        } else {
-          parametersBuilder_.clear();
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .MapEntry parameters = 16;</code>
-       */
-      public Builder removeParameters(int index) {
-        if (parametersBuilder_ == null) {
-          ensureParametersIsMutable();
-          parameters_.remove(index);
-          onChanged();
-        } else {
-          parametersBuilder_.remove(index);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .MapEntry parameters = 16;</code>
-       */
-      public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder getParametersBuilder(
-          int index) {
-        return getParametersFieldBuilder().getBuilder(index);
-      }
-      /**
-       * <code>repeated .MapEntry parameters = 16;</code>
-       */
-      public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder getParametersOrBuilder(
-          int index) {
-        if (parametersBuilder_ == null) {
-          return parameters_.get(index);  } else {
-          return parametersBuilder_.getMessageOrBuilder(index);
-        }
-      }
-      /**
-       * <code>repeated .MapEntry parameters = 16;</code>
-       */
-      public java.util.List<? extends com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder> 
-           getParametersOrBuilderList() {
-        if (parametersBuilder_ != null) {
-          return parametersBuilder_.getMessageOrBuilderList();
-        } else {
-          return java.util.Collections.unmodifiableList(parameters_);
-        }
-      }
-      /**
-       * <code>repeated .MapEntry parameters = 16;</code>
-       */
-      public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder addParametersBuilder() {
-        return getParametersFieldBuilder().addBuilder(
-            com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.getDefaultInstance());
-      }
-      /**
-       * <code>repeated .MapEntry parameters = 16;</code>
-       */
-      public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder addParametersBuilder(
-          int index) {
-        return getParametersFieldBuilder().addBuilder(
-            index, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.getDefaultInstance());
-      }
-      /**
-       * <code>repeated .MapEntry parameters = 16;</code>
-       */
-      public java.util.List<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder> 
-           getParametersBuilderList() {
-        return getParametersFieldBuilder().getBuilderList();
-      }
-      private com.google.protobuf.RepeatedFieldBuilder<
-          com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder> 
-          getParametersFieldBuilder() {
-        if (parametersBuilder_ == null) {
-          parametersBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
-              com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder>(
-                  parameters_,
-                  ((bitField0_ & 0x00008000) == 0x00008000),
-                  getParentForChildren(),
-                  isClean());
-          parameters_ = null;
-        }
-        return parametersBuilder_;
-      }
-
-      // @@protoc_insertion_point(builder_scope:DeleteRestServerSubmitJobRequest)
-    }
-
-    static {
-      defaultInstance = new DeleteRestServerSubmitJobRequest(true);
-      defaultInstance.initFields();
-    }
-
-    // @@protoc_insertion_point(class_scope:DeleteRestServerSubmitJobRequest)
-  }
-
-  public interface DeleteServerSubmitJobResponseOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:DeleteServerSubmitJobResponse)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <code>optional int64 job_id = 1;</code>
-     */
-    boolean hasJobId();
-    /**
-     * <code>optional int64 job_id = 1;</code>
-     */
-    long getJobId();
-
-    /**
-     * <code>required bool success = 2;</code>
-     */
-    boolean hasSuccess();
-    /**
-     * <code>required bool success = 2;</code>
-     */
-    boolean getSuccess();
-
-    /**
-     * <code>optional string message = 3 [default = ""];</code>
-     */
-    boolean hasMessage();
-    /**
-     * <code>optional string message = 3 [default = ""];</code>
-     */
-    java.lang.String getMessage();
-    /**
-     * <code>optional string message = 3 [default = ""];</code>
-     */
-    com.google.protobuf.ByteString
-        getMessageBytes();
-  }
-  /**
-   * Protobuf type {@code DeleteServerSubmitJobResponse}
-   */
-  public static final class DeleteServerSubmitJobResponse extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:DeleteServerSubmitJobResponse)
-      DeleteServerSubmitJobResponseOrBuilder {
-    // Use DeleteServerSubmitJobResponse.newBuilder() to construct.
-    private DeleteServerSubmitJobResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
-      super(builder);
-      this.unknownFields = builder.getUnknownFields();
-    }
-    private DeleteServerSubmitJobResponse(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
-
-    private static final DeleteServerSubmitJobResponse defaultInstance;
-    public static DeleteServerSubmitJobResponse getDefaultInstance() {
-      return defaultInstance;
-    }
-
-    public DeleteServerSubmitJobResponse getDefaultInstanceForType() {
-      return defaultInstance;
-    }
-
-    private final com.google.protobuf.UnknownFieldSet unknownFields;
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
-      return this.unknownFields;
-    }
-    private DeleteServerSubmitJobResponse(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      initFields();
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
+        /**
+         * <code>required string job_type = 6;</code>
+         */
+        @Override
+        public java.lang.String getJobType() {
+            java.lang.Object ref = jobType_;
+            if (ref instanceof java.lang.String) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                if (bs.isValidUtf8()) {
+                    jobType_ = s;
+                }
+                return s;
             }
-            case 8: {
-              bitField0_ |= 0x00000001;
-              jobId_ = input.readInt64();
-              break;
-            }
-            case 16: {
-              bitField0_ |= 0x00000002;
-              success_ = input.readBool();
-              break;
-            }
-            case 26: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000004;
-              message_ = bs;
-              break;
-            }
-          }
         }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e.getMessage()).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_DeleteServerSubmitJobResponse_descriptor;
-    }
 
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_DeleteServerSubmitJobResponse_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse.class, com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse.Builder.class);
-    }
-
-    public static com.google.protobuf.Parser<DeleteServerSubmitJobResponse> PARSER =
-        new com.google.protobuf.AbstractParser<DeleteServerSubmitJobResponse>() {
-      public DeleteServerSubmitJobResponse parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new DeleteServerSubmitJobResponse(input, extensionRegistry);
-      }
-    };
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<DeleteServerSubmitJobResponse> getParserForType() {
-      return PARSER;
-    }
-
-    private int bitField0_;
-    public static final int JOB_ID_FIELD_NUMBER = 1;
-    private long jobId_;
-    /**
-     * <code>optional int64 job_id = 1;</code>
-     */
-    public boolean hasJobId() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
-    /**
-     * <code>optional int64 job_id = 1;</code>
-     */
-    public long getJobId() {
-      return jobId_;
-    }
-
-    public static final int SUCCESS_FIELD_NUMBER = 2;
-    private boolean success_;
-    /**
-     * <code>required bool success = 2;</code>
-     */
-    public boolean hasSuccess() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
-    }
-    /**
-     * <code>required bool success = 2;</code>
-     */
-    public boolean getSuccess() {
-      return success_;
-    }
-
-    public static final int MESSAGE_FIELD_NUMBER = 3;
-    private java.lang.Object message_;
-    /**
-     * <code>optional string message = 3 [default = ""];</code>
-     */
-    public boolean hasMessage() {
-      return ((bitField0_ & 0x00000004) == 0x00000004);
-    }
-    /**
-     * <code>optional string message = 3 [default = ""];</code>
-     */
-    public java.lang.String getMessage() {
-      java.lang.Object ref = message_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          message_ = s;
+        /**
+         * <code>required string job_type = 6;</code>
+         */
+        @Override
+        public com.google.protobuf.ByteString getJobTypeBytes() {
+            java.lang.Object ref = jobType_;
+            if (ref instanceof java.lang.String) {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                jobType_ = b;
+                return b;
+            } else {
+                return (com.google.protobuf.ByteString) ref;
+            }
         }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string message = 3 [default = ""];</code>
-     */
-    public com.google.protobuf.ByteString
-        getMessageBytes() {
-      java.lang.Object ref = message_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        message_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+
+        public static final int CONTENT_FIELD_NUMBER = 7;
+        private java.lang.Object content_;
+
+        /**
+         * <code>required string content = 7;</code>
+         */
+        @Override
+        public boolean hasContent() {
+            return ((bitField0_ & 0x00000020) == 0x00000020);
+        }
+
+        /**
+         * <code>required string content = 7;</code>
+         */
+        @Override
+        public java.lang.String getContent() {
+            java.lang.Object ref = content_;
+            if (ref instanceof java.lang.String) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                if (bs.isValidUtf8()) {
+                    content_ = s;
+                }
+                return s;
+            }
+        }
+
+        /**
+         * <code>required string content = 7;</code>
+         */
+        @Override
+        public com.google.protobuf.ByteString getContentBytes() {
+            java.lang.Object ref = content_;
+            if (ref instanceof java.lang.String) {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                content_ = b;
+                return b;
+            } else {
+                return (com.google.protobuf.ByteString) ref;
+            }
+        }
+
+        public static final int GROUP_ID_FIELD_NUMBER = 8;
+        private int groupId_;
+
+        /**
+         * <code>required int32 group_id = 8;</code>
+         */
+        @Override
+        public boolean hasGroupId() {
+            return ((bitField0_ & 0x00000040) == 0x00000040);
+        }
+
+        /**
+         * <code>required int32 group_id = 8;</code>
+         */
+        @Override
+        public int getGroupId() {
+            return groupId_;
+        }
+
+        public static final int PRIORITY_FIELD_NUMBER = 9;
+        private int priority_;
+
+        /**
+         * <code>optional int32 priority = 9 [default = 1];</code>
+         */
+        @Override
+        public boolean hasPriority() {
+            return ((bitField0_ & 0x00000080) == 0x00000080);
+        }
+
+        /**
+         * <code>optional int32 priority = 9 [default = 1];</code>
+         */
+        @Override
+        public int getPriority() {
+            return priority_;
+        }
+
+        public static final int REJECT_RETRIES_FIELD_NUMBER = 10;
+        private int rejectRetries_;
+
+        /**
+         * <code>optional int32 reject_retries = 10 [default = 0];</code>
+         */
+        @Override
+        public boolean hasRejectRetries() {
+            return ((bitField0_ & 0x00000100) == 0x00000100);
+        }
+
+        /**
+         * <code>optional int32 reject_retries = 10 [default = 0];</code>
+         */
+        @Override
+        public int getRejectRetries() {
+            return rejectRetries_;
+        }
+
+        public static final int REJECT_INTERVAL_FIELD_NUMBER = 11;
+        private int rejectInterval_;
+
+        /**
+         * <code>optional int32 reject_interval = 11 [default = 3];</code>
+         */
+        @Override
+        public boolean hasRejectInterval() {
+            return ((bitField0_ & 0x00000200) == 0x00000200);
+        }
+
+        /**
+         * <code>optional int32 reject_interval = 11 [default = 3];</code>
+         */
+        @Override
+        public int getRejectInterval() {
+            return rejectInterval_;
+        }
+
+        public static final int FAILED_RETRIES_FIELD_NUMBER = 12;
+        private int failedRetries_;
+
+        /**
+         * <code>optional int32 failed_retries = 12 [default = 0];</code>
+         */
+        @Override
+        public boolean hasFailedRetries() {
+            return ((bitField0_ & 0x00000400) == 0x00000400);
+        }
+
+        /**
+         * <code>optional int32 failed_retries = 12 [default = 0];</code>
+         */
+        @Override
+        public int getFailedRetries() {
+            return failedRetries_;
+        }
+
+        public static final int FAILED_INTERVAL_FIELD_NUMBER = 13;
+        private int failedInterval_;
+
+        /**
+         * <code>optional int32 failed_interval = 13 [default = 3];</code>
+         */
+        @Override
+        public boolean hasFailedInterval() {
+            return ((bitField0_ & 0x00000800) == 0x00000800);
+        }
+
+        /**
+         * <code>optional int32 failed_interval = 13 [default = 3];</code>
+         */
+        @Override
+        public int getFailedInterval() {
+            return failedInterval_;
+        }
+
+        public static final int START_TIME_FIELD_NUMBER = 14;
+        private long startTime_;
+
+        /**
+         * <code>optional int64 start_time = 14;</code>
+         */
+        @Override
+        public boolean hasStartTime() {
+            return ((bitField0_ & 0x00001000) == 0x00001000);
+        }
+
+        /**
+         * <code>optional int64 start_time = 14;</code>
+         */
+        @Override
+        public long getStartTime() {
+            return startTime_;
+        }
+
+        public static final int END_TIME_FIELD_NUMBER = 15;
+        private long endTime_;
+
+        /**
+         * <code>optional int64 end_time = 15;</code>
+         */
+        @Override
+        public boolean hasEndTime() {
+            return ((bitField0_ & 0x00002000) == 0x00002000);
+        }
+
+        /**
+         * <code>optional int64 end_time = 15;</code>
+         */
+        @Override
+        public long getEndTime() {
+            return endTime_;
+        }
+
+        public static final int PARAMETERS_FIELD_NUMBER = 16;
+        private java.util.List<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry> parameters_;
+
+        /**
+         * <code>repeated .MapEntry parameters = 16;</code>
+         */
+        @Override
+        public java.util.List<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry> getParametersList() {
+            return parameters_;
+        }
+
+        /**
+         * <code>repeated .MapEntry parameters = 16;</code>
+         */
+        @Override
+        public java.util.List<? extends com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder> getParametersOrBuilderList() {
+            return parameters_;
+        }
+
+        /**
+         * <code>repeated .MapEntry parameters = 16;</code>
+         */
+        @Override
+        public int getParametersCount() {
+            return parameters_.size();
+        }
+
+        /**
+         * <code>repeated .MapEntry parameters = 16;</code>
+         */
+        @Override
+        public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry getParameters(int index) {
+            return parameters_.get(index);
+        }
+
+        /**
+         * <code>repeated .MapEntry parameters = 16;</code>
+         */
+        @Override
+        public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder getParametersOrBuilder(int index) {
+            return parameters_.get(index);
+        }
+
+        private void initFields() {
+            appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
+            jobName_ = "";
+            expressionEntry_ = com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.getDefaultInstance();
+            dependencyEntry_ = java.util.Collections.emptyList();
+            user_ = "";
+            jobType_ = "";
+            content_ = "";
+            groupId_ = 0;
+            priority_ = 1;
+            rejectRetries_ = 0;
+            rejectInterval_ = 3;
+            failedRetries_ = 0;
+            failedInterval_ = 3;
+            startTime_ = 0L;
+            endTime_ = 0L;
+            parameters_ = java.util.Collections.emptyList();
+        }
+
+        private byte memoizedIsInitialized = -1;
+
+        @Override
+        public final boolean isInitialized() {
+            byte isInitialized = memoizedIsInitialized;
+            if (isInitialized == 1)
+                return true;
+            if (isInitialized == 0)
+                return false;
+
+            if (!hasAppAuth()) {
+                memoizedIsInitialized = 0;
+                return false;
+            }
+            if (!hasJobName()) {
+                memoizedIsInitialized = 0;
+                return false;
+            }
+            if (!hasUser()) {
+                memoizedIsInitialized = 0;
+                return false;
+            }
+            if (!hasJobType()) {
+                memoizedIsInitialized = 0;
+                return false;
+            }
+            if (!hasContent()) {
+                memoizedIsInitialized = 0;
+                return false;
+            }
+            if (!hasGroupId()) {
+                memoizedIsInitialized = 0;
+                return false;
+            }
+            if (!getAppAuth().isInitialized()) {
+                memoizedIsInitialized = 0;
+                return false;
+            }
+            if (hasExpressionEntry()) {
+                if (!getExpressionEntry().isInitialized()) {
+                    memoizedIsInitialized = 0;
+                    return false;
+                }
+            }
+            for (int i = 0; i < getDependencyEntryCount(); i++) {
+                if (!getDependencyEntry(i).isInitialized()) {
+                    memoizedIsInitialized = 0;
+                    return false;
+                }
+            }
+            for (int i = 0; i < getParametersCount(); i++) {
+                if (!getParameters(i).isInitialized()) {
+                    memoizedIsInitialized = 0;
+                    return false;
+                }
+            }
+            memoizedIsInitialized = 1;
+            return true;
+        }
+
+        @Override
+        public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
+            getSerializedSize();
+            if (((bitField0_ & 0x00000001) == 0x00000001)) {
+                output.writeMessage(1, appAuth_);
+            }
+            if (((bitField0_ & 0x00000002) == 0x00000002)) {
+                output.writeBytes(2, getJobNameBytes());
+            }
+            if (((bitField0_ & 0x00000004) == 0x00000004)) {
+                output.writeMessage(3, expressionEntry_);
+            }
+            for (int i = 0; i < dependencyEntry_.size(); i++) {
+                output.writeMessage(4, dependencyEntry_.get(i));
+            }
+            if (((bitField0_ & 0x00000008) == 0x00000008)) {
+                output.writeBytes(5, getUserBytes());
+            }
+            if (((bitField0_ & 0x00000010) == 0x00000010)) {
+                output.writeBytes(6, getJobTypeBytes());
+            }
+            if (((bitField0_ & 0x00000020) == 0x00000020)) {
+                output.writeBytes(7, getContentBytes());
+            }
+            if (((bitField0_ & 0x00000040) == 0x00000040)) {
+                output.writeInt32(8, groupId_);
+            }
+            if (((bitField0_ & 0x00000080) == 0x00000080)) {
+                output.writeInt32(9, priority_);
+            }
+            if (((bitField0_ & 0x00000100) == 0x00000100)) {
+                output.writeInt32(10, rejectRetries_);
+            }
+            if (((bitField0_ & 0x00000200) == 0x00000200)) {
+                output.writeInt32(11, rejectInterval_);
+            }
+            if (((bitField0_ & 0x00000400) == 0x00000400)) {
+                output.writeInt32(12, failedRetries_);
+            }
+            if (((bitField0_ & 0x00000800) == 0x00000800)) {
+                output.writeInt32(13, failedInterval_);
+            }
+            if (((bitField0_ & 0x00001000) == 0x00001000)) {
+                output.writeInt64(14, startTime_);
+            }
+            if (((bitField0_ & 0x00002000) == 0x00002000)) {
+                output.writeInt64(15, endTime_);
+            }
+            for (int i = 0; i < parameters_.size(); i++) {
+                output.writeMessage(16, parameters_.get(i));
+            }
+            getUnknownFields().writeTo(output);
+        }
+
+        private int memoizedSerializedSize = -1;
+
+        @Override
+        public int getSerializedSize() {
+            int size = memoizedSerializedSize;
+            if (size != -1)
+                return size;
+
+            size = 0;
+            if (((bitField0_ & 0x00000001) == 0x00000001)) {
+                size += com.google.protobuf.CodedOutputStream.computeMessageSize(1, appAuth_);
+            }
+            if (((bitField0_ & 0x00000002) == 0x00000002)) {
+                size += com.google.protobuf.CodedOutputStream.computeBytesSize(2, getJobNameBytes());
+            }
+            if (((bitField0_ & 0x00000004) == 0x00000004)) {
+                size += com.google.protobuf.CodedOutputStream.computeMessageSize(3, expressionEntry_);
+            }
+            for (int i = 0; i < dependencyEntry_.size(); i++) {
+                size += com.google.protobuf.CodedOutputStream.computeMessageSize(4, dependencyEntry_.get(i));
+            }
+            if (((bitField0_ & 0x00000008) == 0x00000008)) {
+                size += com.google.protobuf.CodedOutputStream.computeBytesSize(5, getUserBytes());
+            }
+            if (((bitField0_ & 0x00000010) == 0x00000010)) {
+                size += com.google.protobuf.CodedOutputStream.computeBytesSize(6, getJobTypeBytes());
+            }
+            if (((bitField0_ & 0x00000020) == 0x00000020)) {
+                size += com.google.protobuf.CodedOutputStream.computeBytesSize(7, getContentBytes());
+            }
+            if (((bitField0_ & 0x00000040) == 0x00000040)) {
+                size += com.google.protobuf.CodedOutputStream.computeInt32Size(8, groupId_);
+            }
+            if (((bitField0_ & 0x00000080) == 0x00000080)) {
+                size += com.google.protobuf.CodedOutputStream.computeInt32Size(9, priority_);
+            }
+            if (((bitField0_ & 0x00000100) == 0x00000100)) {
+                size += com.google.protobuf.CodedOutputStream.computeInt32Size(10, rejectRetries_);
+            }
+            if (((bitField0_ & 0x00000200) == 0x00000200)) {
+                size += com.google.protobuf.CodedOutputStream.computeInt32Size(11, rejectInterval_);
+            }
+            if (((bitField0_ & 0x00000400) == 0x00000400)) {
+                size += com.google.protobuf.CodedOutputStream.computeInt32Size(12, failedRetries_);
+            }
+            if (((bitField0_ & 0x00000800) == 0x00000800)) {
+                size += com.google.protobuf.CodedOutputStream.computeInt32Size(13, failedInterval_);
+            }
+            if (((bitField0_ & 0x00001000) == 0x00001000)) {
+                size += com.google.protobuf.CodedOutputStream.computeInt64Size(14, startTime_);
+            }
+            if (((bitField0_ & 0x00002000) == 0x00002000)) {
+                size += com.google.protobuf.CodedOutputStream.computeInt64Size(15, endTime_);
+            }
+            for (int i = 0; i < parameters_.size(); i++) {
+                size += com.google.protobuf.CodedOutputStream.computeMessageSize(16, parameters_.get(i));
+            }
+            size += getUnknownFields().getSerializedSize();
+            memoizedSerializedSize = size;
+            return size;
+        }
+
+        private static final long serialVersionUID = 0L;
+
+        @java.lang.Override
+        protected java.lang.Object writeReplace() throws java.io.ObjectStreamException {
+            return super.writeReplace();
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest parseFrom(com.google.protobuf.ByteString data)
+                throws com.google.protobuf.InvalidProtocolBufferException {
+            return PARSER.parseFrom(data);
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest parseFrom(com.google.protobuf.ByteString data,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+            return PARSER.parseFrom(data, extensionRegistry);
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest parseFrom(byte[] data)
+                throws com.google.protobuf.InvalidProtocolBufferException {
+            return PARSER.parseFrom(data);
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest parseFrom(byte[] data,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+            return PARSER.parseFrom(data, extensionRegistry);
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest parseFrom(java.io.InputStream input)
+                throws java.io.IOException {
+            return PARSER.parseFrom(input);
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest parseFrom(java.io.InputStream input,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            return PARSER.parseFrom(input, extensionRegistry);
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest parseDelimitedFrom(java.io.InputStream input)
+                throws java.io.IOException {
+            return PARSER.parseDelimitedFrom(input);
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest parseDelimitedFrom(java.io.InputStream input,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            return PARSER.parseDelimitedFrom(input, extensionRegistry);
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest parseFrom(
+                com.google.protobuf.CodedInputStream input) throws java.io.IOException {
+            return PARSER.parseFrom(input);
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest parseFrom(
+                com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            return PARSER.parseFrom(input, extensionRegistry);
+        }
+
+        public static Builder newBuilder() {
+            return Builder.create();
+        }
+
+        @Override
+        public Builder newBuilderForType() {
+            return newBuilder();
+        }
+
+        public static Builder newBuilder(com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest prototype) {
+            return newBuilder().mergeFrom(prototype);
+        }
+
+        @Override
+        public Builder toBuilder() {
+            return newBuilder(this);
+        }
+
+        @java.lang.Override
+        protected Builder newBuilderForType(com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+            Builder builder = new Builder(parent);
+            return builder;
+        }
+
+        /**
+         * Protobuf type {@code DeleteRestServerSubmitJobRequest}
+         */
+        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+                // @@protoc_insertion_point(builder_implements:DeleteRestServerSubmitJobRequest)
+                com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequestOrBuilder {
+            public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+                return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_DeleteRestServerSubmitJobRequest_descriptor;
+            }
+
+            @Override
+            protected com.google.protobuf.GeneratedMessage.FieldAccessorTable internalGetFieldAccessorTable() {
+                return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_DeleteRestServerSubmitJobRequest_fieldAccessorTable
+                        .ensureFieldAccessorsInitialized(com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest.class,
+                                com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest.Builder.class);
+            }
+
+            // Construct using
+            // com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest.newBuilder()
+            private Builder() {
+                maybeForceBuilderInitialization();
+            }
+
+            private Builder(com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+                super(parent);
+                maybeForceBuilderInitialization();
+            }
+
+            private void maybeForceBuilderInitialization() {
+                if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+                    getAppAuthFieldBuilder();
+                    getExpressionEntryFieldBuilder();
+                    getDependencyEntryFieldBuilder();
+                    getParametersFieldBuilder();
+                }
+            }
+
+            private static Builder create() {
+                return new Builder();
+            }
+
+            @Override
+            public Builder clear() {
+                super.clear();
+                if (appAuthBuilder_ == null) {
+                    appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
+                } else {
+                    appAuthBuilder_.clear();
+                }
+                bitField0_ = (bitField0_ & ~0x00000001);
+                jobName_ = "";
+                bitField0_ = (bitField0_ & ~0x00000002);
+                if (expressionEntryBuilder_ == null) {
+                    expressionEntry_ = com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.getDefaultInstance();
+                } else {
+                    expressionEntryBuilder_.clear();
+                }
+                bitField0_ = (bitField0_ & ~0x00000004);
+                if (dependencyEntryBuilder_ == null) {
+                    dependencyEntry_ = java.util.Collections.emptyList();
+                    bitField0_ = (bitField0_ & ~0x00000008);
+                } else {
+                    dependencyEntryBuilder_.clear();
+                }
+                user_ = "";
+                bitField0_ = (bitField0_ & ~0x00000010);
+                jobType_ = "";
+                bitField0_ = (bitField0_ & ~0x00000020);
+                content_ = "";
+                bitField0_ = (bitField0_ & ~0x00000040);
+                groupId_ = 0;
+                bitField0_ = (bitField0_ & ~0x00000080);
+                priority_ = 1;
+                bitField0_ = (bitField0_ & ~0x00000100);
+                rejectRetries_ = 0;
+                bitField0_ = (bitField0_ & ~0x00000200);
+                rejectInterval_ = 3;
+                bitField0_ = (bitField0_ & ~0x00000400);
+                failedRetries_ = 0;
+                bitField0_ = (bitField0_ & ~0x00000800);
+                failedInterval_ = 3;
+                bitField0_ = (bitField0_ & ~0x00001000);
+                startTime_ = 0L;
+                bitField0_ = (bitField0_ & ~0x00002000);
+                endTime_ = 0L;
+                bitField0_ = (bitField0_ & ~0x00004000);
+                if (parametersBuilder_ == null) {
+                    parameters_ = java.util.Collections.emptyList();
+                    bitField0_ = (bitField0_ & ~0x00008000);
+                } else {
+                    parametersBuilder_.clear();
+                }
+                return this;
+            }
+
+            @Override
+            public Builder clone() {
+                return create().mergeFrom(buildPartial());
+            }
+
+            @Override
+            public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
+                return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_DeleteRestServerSubmitJobRequest_descriptor;
+            }
+
+            @Override
+            public com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest getDefaultInstanceForType() {
+                return com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest.getDefaultInstance();
+            }
+
+            @Override
+            public com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest build() {
+                com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest result = buildPartial();
+                if (!result.isInitialized()) {
+                    throw newUninitializedMessageException(result);
+                }
+                return result;
+            }
+
+            @Override
+            public com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest buildPartial() {
+                com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest result = new com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest(
+                        this);
+                int from_bitField0_ = bitField0_;
+                int to_bitField0_ = 0;
+                if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+                    to_bitField0_ |= 0x00000001;
+                }
+                if (appAuthBuilder_ == null) {
+                    result.appAuth_ = appAuth_;
+                } else {
+                    result.appAuth_ = appAuthBuilder_.build();
+                }
+                if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+                    to_bitField0_ |= 0x00000002;
+                }
+                result.jobName_ = jobName_;
+                if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+                    to_bitField0_ |= 0x00000004;
+                }
+                if (expressionEntryBuilder_ == null) {
+                    result.expressionEntry_ = expressionEntry_;
+                } else {
+                    result.expressionEntry_ = expressionEntryBuilder_.build();
+                }
+                if (dependencyEntryBuilder_ == null) {
+                    if (((bitField0_ & 0x00000008) == 0x00000008)) {
+                        dependencyEntry_ = java.util.Collections.unmodifiableList(dependencyEntry_);
+                        bitField0_ = (bitField0_ & ~0x00000008);
+                    }
+                    result.dependencyEntry_ = dependencyEntry_;
+                } else {
+                    result.dependencyEntry_ = dependencyEntryBuilder_.build();
+                }
+                if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+                    to_bitField0_ |= 0x00000008;
+                }
+                result.user_ = user_;
+                if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+                    to_bitField0_ |= 0x00000010;
+                }
+                result.jobType_ = jobType_;
+                if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+                    to_bitField0_ |= 0x00000020;
+                }
+                result.content_ = content_;
+                if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
+                    to_bitField0_ |= 0x00000040;
+                }
+                result.groupId_ = groupId_;
+                if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
+                    to_bitField0_ |= 0x00000080;
+                }
+                result.priority_ = priority_;
+                if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
+                    to_bitField0_ |= 0x00000100;
+                }
+                result.rejectRetries_ = rejectRetries_;
+                if (((from_bitField0_ & 0x00000400) == 0x00000400)) {
+                    to_bitField0_ |= 0x00000200;
+                }
+                result.rejectInterval_ = rejectInterval_;
+                if (((from_bitField0_ & 0x00000800) == 0x00000800)) {
+                    to_bitField0_ |= 0x00000400;
+                }
+                result.failedRetries_ = failedRetries_;
+                if (((from_bitField0_ & 0x00001000) == 0x00001000)) {
+                    to_bitField0_ |= 0x00000800;
+                }
+                result.failedInterval_ = failedInterval_;
+                if (((from_bitField0_ & 0x00002000) == 0x00002000)) {
+                    to_bitField0_ |= 0x00001000;
+                }
+                result.startTime_ = startTime_;
+                if (((from_bitField0_ & 0x00004000) == 0x00004000)) {
+                    to_bitField0_ |= 0x00002000;
+                }
+                result.endTime_ = endTime_;
+                if (parametersBuilder_ == null) {
+                    if (((bitField0_ & 0x00008000) == 0x00008000)) {
+                        parameters_ = java.util.Collections.unmodifiableList(parameters_);
+                        bitField0_ = (bitField0_ & ~0x00008000);
+                    }
+                    result.parameters_ = parameters_;
+                } else {
+                    result.parameters_ = parametersBuilder_.build();
+                }
+                result.bitField0_ = to_bitField0_;
+                onBuilt();
+                return result;
+            }
+
+            @Override
+            public Builder mergeFrom(com.google.protobuf.Message other) {
+                if (other instanceof com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest) {
+                    return mergeFrom((com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest) other);
+                } else {
+                    super.mergeFrom(other);
+                    return this;
+                }
+            }
+
+            public Builder mergeFrom(com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest other) {
+                if (other == com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest.getDefaultInstance())
+                    return this;
+                if (other.hasAppAuth()) {
+                    mergeAppAuth(other.getAppAuth());
+                }
+                if (other.hasJobName()) {
+                    bitField0_ |= 0x00000002;
+                    jobName_ = other.jobName_;
+                    onChanged();
+                }
+                if (other.hasExpressionEntry()) {
+                    mergeExpressionEntry(other.getExpressionEntry());
+                }
+                if (dependencyEntryBuilder_ == null) {
+                    if (!other.dependencyEntry_.isEmpty()) {
+                        if (dependencyEntry_.isEmpty()) {
+                            dependencyEntry_ = other.dependencyEntry_;
+                            bitField0_ = (bitField0_ & ~0x00000008);
+                        } else {
+                            ensureDependencyEntryIsMutable();
+                            dependencyEntry_.addAll(other.dependencyEntry_);
+                        }
+                        onChanged();
+                    }
+                } else {
+                    if (!other.dependencyEntry_.isEmpty()) {
+                        if (dependencyEntryBuilder_.isEmpty()) {
+                            dependencyEntryBuilder_.dispose();
+                            dependencyEntryBuilder_ = null;
+                            dependencyEntry_ = other.dependencyEntry_;
+                            bitField0_ = (bitField0_ & ~0x00000008);
+                            dependencyEntryBuilder_ = com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ? getDependencyEntryFieldBuilder()
+                                    : null;
+                        } else {
+                            dependencyEntryBuilder_.addAllMessages(other.dependencyEntry_);
+                        }
+                    }
+                }
+                if (other.hasUser()) {
+                    bitField0_ |= 0x00000010;
+                    user_ = other.user_;
+                    onChanged();
+                }
+                if (other.hasJobType()) {
+                    bitField0_ |= 0x00000020;
+                    jobType_ = other.jobType_;
+                    onChanged();
+                }
+                if (other.hasContent()) {
+                    bitField0_ |= 0x00000040;
+                    content_ = other.content_;
+                    onChanged();
+                }
+                if (other.hasGroupId()) {
+                    setGroupId(other.getGroupId());
+                }
+                if (other.hasPriority()) {
+                    setPriority(other.getPriority());
+                }
+                if (other.hasRejectRetries()) {
+                    setRejectRetries(other.getRejectRetries());
+                }
+                if (other.hasRejectInterval()) {
+                    setRejectInterval(other.getRejectInterval());
+                }
+                if (other.hasFailedRetries()) {
+                    setFailedRetries(other.getFailedRetries());
+                }
+                if (other.hasFailedInterval()) {
+                    setFailedInterval(other.getFailedInterval());
+                }
+                if (other.hasStartTime()) {
+                    setStartTime(other.getStartTime());
+                }
+                if (other.hasEndTime()) {
+                    setEndTime(other.getEndTime());
+                }
+                if (parametersBuilder_ == null) {
+                    if (!other.parameters_.isEmpty()) {
+                        if (parameters_.isEmpty()) {
+                            parameters_ = other.parameters_;
+                            bitField0_ = (bitField0_ & ~0x00008000);
+                        } else {
+                            ensureParametersIsMutable();
+                            parameters_.addAll(other.parameters_);
+                        }
+                        onChanged();
+                    }
+                } else {
+                    if (!other.parameters_.isEmpty()) {
+                        if (parametersBuilder_.isEmpty()) {
+                            parametersBuilder_.dispose();
+                            parametersBuilder_ = null;
+                            parameters_ = other.parameters_;
+                            bitField0_ = (bitField0_ & ~0x00008000);
+                            parametersBuilder_ = com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ? getParametersFieldBuilder() : null;
+                        } else {
+                            parametersBuilder_.addAllMessages(other.parameters_);
+                        }
+                    }
+                }
+                this.mergeUnknownFields(other.getUnknownFields());
+                return this;
+            }
+
+            @Override
+            public final boolean isInitialized() {
+                if (!hasAppAuth()) {
+
+                    return false;
+                }
+                if (!hasJobName()) {
+
+                    return false;
+                }
+                if (!hasUser()) {
+
+                    return false;
+                }
+                if (!hasJobType()) {
+
+                    return false;
+                }
+                if (!hasContent()) {
+
+                    return false;
+                }
+                if (!hasGroupId()) {
+
+                    return false;
+                }
+                if (!getAppAuth().isInitialized()) {
+
+                    return false;
+                }
+                if (hasExpressionEntry()) {
+                    if (!getExpressionEntry().isInitialized()) {
+
+                        return false;
+                    }
+                }
+                for (int i = 0; i < getDependencyEntryCount(); i++) {
+                    if (!getDependencyEntry(i).isInitialized()) {
+
+                        return false;
+                    }
+                }
+                for (int i = 0; i < getParametersCount(); i++) {
+                    if (!getParameters(i).isInitialized()) {
+
+                        return false;
+                    }
+                }
+                return true;
+            }
+
+            @Override
+            public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                    throws java.io.IOException {
+                com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest parsedMessage = null;
+                try {
+                    parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+                } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+                    parsedMessage = (com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteRestServerSubmitJobRequest) e.getUnfinishedMessage();
+                    throw e;
+                } finally {
+                    if (parsedMessage != null) {
+                        mergeFrom(parsedMessage);
+                    }
+                }
+                return this;
+            }
+
+            private int bitField0_;
+
+            private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth
+                    .getDefaultInstance();
+            private com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> appAuthBuilder_;
+
+            /**
+             * <code>required .AppAuth app_auth = 1;</code>
+             */
+            @Override
+            public boolean hasAppAuth() {
+                return ((bitField0_ & 0x00000001) == 0x00000001);
+            }
+
+            /**
+             * <code>required .AppAuth app_auth = 1;</code>
+             */
+            @Override
+            public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth getAppAuth() {
+                if (appAuthBuilder_ == null) {
+                    return appAuth_;
+                } else {
+                    return appAuthBuilder_.getMessage();
+                }
+            }
+
+            /**
+             * <code>required .AppAuth app_auth = 1;</code>
+             */
+            public Builder setAppAuth(com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth value) {
+                if (appAuthBuilder_ == null) {
+                    if (value == null) {
+                        throw new NullPointerException();
+                    }
+                    appAuth_ = value;
+                    onChanged();
+                } else {
+                    appAuthBuilder_.setMessage(value);
+                }
+                bitField0_ |= 0x00000001;
+                return this;
+            }
+
+            /**
+             * <code>required .AppAuth app_auth = 1;</code>
+             */
+            public Builder setAppAuth(com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder builderForValue) {
+                if (appAuthBuilder_ == null) {
+                    appAuth_ = builderForValue.build();
+                    onChanged();
+                } else {
+                    appAuthBuilder_.setMessage(builderForValue.build());
+                }
+                bitField0_ |= 0x00000001;
+                return this;
+            }
+
+            /**
+             * <code>required .AppAuth app_auth = 1;</code>
+             */
+            public Builder mergeAppAuth(com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth value) {
+                if (appAuthBuilder_ == null) {
+                    if (((bitField0_ & 0x00000001) == 0x00000001)
+                            && appAuth_ != com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance()) {
+                        appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.newBuilder(appAuth_).mergeFrom(value).buildPartial();
+                    } else {
+                        appAuth_ = value;
+                    }
+                    onChanged();
+                } else {
+                    appAuthBuilder_.mergeFrom(value);
+                }
+                bitField0_ |= 0x00000001;
+                return this;
+            }
+
+            /**
+             * <code>required .AppAuth app_auth = 1;</code>
+             */
+            public Builder clearAppAuth() {
+                if (appAuthBuilder_ == null) {
+                    appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
+                    onChanged();
+                } else {
+                    appAuthBuilder_.clear();
+                }
+                bitField0_ = (bitField0_ & ~0x00000001);
+                return this;
+            }
+
+            /**
+             * <code>required .AppAuth app_auth = 1;</code>
+             */
+            public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder getAppAuthBuilder() {
+                bitField0_ |= 0x00000001;
+                onChanged();
+                return getAppAuthFieldBuilder().getBuilder();
+            }
+
+            /**
+             * <code>required .AppAuth app_auth = 1;</code>
+             */
+            @Override
+            public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder() {
+                if (appAuthBuilder_ != null) {
+                    return appAuthBuilder_.getMessageOrBuilder();
+                } else {
+                    return appAuth_;
+                }
+            }
+
+            /**
+             * <code>required .AppAuth app_auth = 1;</code>
+             */
+            private com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> getAppAuthFieldBuilder() {
+                if (appAuthBuilder_ == null) {
+                    appAuthBuilder_ = new com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder>(
+                            getAppAuth(), getParentForChildren(), isClean());
+                    appAuth_ = null;
+                }
+                return appAuthBuilder_;
+            }
+
+            private java.lang.Object jobName_ = "";
+
+            /**
+             * <code>required string job_name = 2;</code>
+             */
+            @Override
+            public boolean hasJobName() {
+                return ((bitField0_ & 0x00000002) == 0x00000002);
+            }
+
+            /**
+             * <code>required string job_name = 2;</code>
+             */
+            @Override
+            public java.lang.String getJobName() {
+                java.lang.Object ref = jobName_;
+                if (!(ref instanceof java.lang.String)) {
+                    com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                    java.lang.String s = bs.toStringUtf8();
+                    if (bs.isValidUtf8()) {
+                        jobName_ = s;
+                    }
+                    return s;
+                } else {
+                    return (java.lang.String) ref;
+                }
+            }
+
+            /**
+             * <code>required string job_name = 2;</code>
+             */
+            @Override
+            public com.google.protobuf.ByteString getJobNameBytes() {
+                java.lang.Object ref = jobName_;
+                if (ref instanceof String) {
+                    com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                    jobName_ = b;
+                    return b;
+                } else {
+                    return (com.google.protobuf.ByteString) ref;
+                }
+            }
+
+            /**
+             * <code>required string job_name = 2;</code>
+             */
+            public Builder setJobName(java.lang.String value) {
+                if (value == null) {
+                    throw new NullPointerException();
+                }
+                bitField0_ |= 0x00000002;
+                jobName_ = value;
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>required string job_name = 2;</code>
+             */
+            public Builder clearJobName() {
+                bitField0_ = (bitField0_ & ~0x00000002);
+                jobName_ = getDefaultInstance().getJobName();
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>required string job_name = 2;</code>
+             */
+            public Builder setJobNameBytes(com.google.protobuf.ByteString value) {
+                if (value == null) {
+                    throw new NullPointerException();
+                }
+                bitField0_ |= 0x00000002;
+                jobName_ = value;
+                onChanged();
+                return this;
+            }
+
+            private com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry expressionEntry_ = com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry
+                    .getDefaultInstance();
+            private com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder> expressionEntryBuilder_;
+
+            /**
+             * <code>optional .ScheduleExpressionEntry expression_entry = 3;</code>
+             */
+            @Override
+            public boolean hasExpressionEntry() {
+                return ((bitField0_ & 0x00000004) == 0x00000004);
+            }
+
+            /**
+             * <code>optional .ScheduleExpressionEntry expression_entry = 3;</code>
+             */
+            @Override
+            public com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry getExpressionEntry() {
+                if (expressionEntryBuilder_ == null) {
+                    return expressionEntry_;
+                } else {
+                    return expressionEntryBuilder_.getMessage();
+                }
+            }
+
+            /**
+             * <code>optional .ScheduleExpressionEntry expression_entry = 3;</code>
+             */
+            public Builder setExpressionEntry(com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry value) {
+                if (expressionEntryBuilder_ == null) {
+                    if (value == null) {
+                        throw new NullPointerException();
+                    }
+                    expressionEntry_ = value;
+                    onChanged();
+                } else {
+                    expressionEntryBuilder_.setMessage(value);
+                }
+                bitField0_ |= 0x00000004;
+                return this;
+            }
+
+            /**
+             * <code>optional .ScheduleExpressionEntry expression_entry = 3;</code>
+             */
+            public Builder setExpressionEntry(
+                    com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder builderForValue) {
+                if (expressionEntryBuilder_ == null) {
+                    expressionEntry_ = builderForValue.build();
+                    onChanged();
+                } else {
+                    expressionEntryBuilder_.setMessage(builderForValue.build());
+                }
+                bitField0_ |= 0x00000004;
+                return this;
+            }
+
+            /**
+             * <code>optional .ScheduleExpressionEntry expression_entry = 3;</code>
+             */
+            public Builder mergeExpressionEntry(com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry value) {
+                if (expressionEntryBuilder_ == null) {
+                    if (((bitField0_ & 0x00000004) == 0x00000004)
+                            && expressionEntry_ != com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry
+                                    .getDefaultInstance()) {
+                        expressionEntry_ = com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry
+                                .newBuilder(expressionEntry_).mergeFrom(value).buildPartial();
+                    } else {
+                        expressionEntry_ = value;
+                    }
+                    onChanged();
+                } else {
+                    expressionEntryBuilder_.mergeFrom(value);
+                }
+                bitField0_ |= 0x00000004;
+                return this;
+            }
+
+            /**
+             * <code>optional .ScheduleExpressionEntry expression_entry = 3;</code>
+             */
+            public Builder clearExpressionEntry() {
+                if (expressionEntryBuilder_ == null) {
+                    expressionEntry_ = com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.getDefaultInstance();
+                    onChanged();
+                } else {
+                    expressionEntryBuilder_.clear();
+                }
+                bitField0_ = (bitField0_ & ~0x00000004);
+                return this;
+            }
+
+            /**
+             * <code>optional .ScheduleExpressionEntry expression_entry = 3;</code>
+             */
+            public com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder getExpressionEntryBuilder() {
+                bitField0_ |= 0x00000004;
+                onChanged();
+                return getExpressionEntryFieldBuilder().getBuilder();
+            }
+
+            /**
+             * <code>optional .ScheduleExpressionEntry expression_entry = 3;</code>
+             */
+            @Override
+            public com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder getExpressionEntryOrBuilder() {
+                if (expressionEntryBuilder_ != null) {
+                    return expressionEntryBuilder_.getMessageOrBuilder();
+                } else {
+                    return expressionEntry_;
+                }
+            }
+
+            /**
+             * <code>optional .ScheduleExpressionEntry expression_entry = 3;</code>
+             */
+            private com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder> getExpressionEntryFieldBuilder() {
+                if (expressionEntryBuilder_ == null) {
+                    expressionEntryBuilder_ = new com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder>(
+                            getExpressionEntry(), getParentForChildren(), isClean());
+                    expressionEntry_ = null;
+                }
+                return expressionEntryBuilder_;
+            }
+
+            private java.util.List<com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry> dependencyEntry_ = java.util.Collections
+                    .emptyList();
+
+            private void ensureDependencyEntryIsMutable() {
+                if (!((bitField0_ & 0x00000008) == 0x00000008)) {
+                    dependencyEntry_ = new java.util.ArrayList<com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry>(dependencyEntry_);
+                    bitField0_ |= 0x00000008;
+                }
+            }
+
+            private com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry, com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.Builder, com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntryOrBuilder> dependencyEntryBuilder_;
+
+            /**
+             * <code>repeated .DependencyEntry dependency_entry = 4;</code>
+             */
+            @Override
+            public java.util.List<com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry> getDependencyEntryList() {
+                if (dependencyEntryBuilder_ == null) {
+                    return java.util.Collections.unmodifiableList(dependencyEntry_);
+                } else {
+                    return dependencyEntryBuilder_.getMessageList();
+                }
+            }
+
+            /**
+             * <code>repeated .DependencyEntry dependency_entry = 4;</code>
+             */
+            @Override
+            public int getDependencyEntryCount() {
+                if (dependencyEntryBuilder_ == null) {
+                    return dependencyEntry_.size();
+                } else {
+                    return dependencyEntryBuilder_.getCount();
+                }
+            }
+
+            /**
+             * <code>repeated .DependencyEntry dependency_entry = 4;</code>
+             */
+            @Override
+            public com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry getDependencyEntry(int index) {
+                if (dependencyEntryBuilder_ == null) {
+                    return dependencyEntry_.get(index);
+                } else {
+                    return dependencyEntryBuilder_.getMessage(index);
+                }
+            }
+
+            /**
+             * <code>repeated .DependencyEntry dependency_entry = 4;</code>
+             */
+            public Builder setDependencyEntry(int index, com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry value) {
+                if (dependencyEntryBuilder_ == null) {
+                    if (value == null) {
+                        throw new NullPointerException();
+                    }
+                    ensureDependencyEntryIsMutable();
+                    dependencyEntry_.set(index, value);
+                    onChanged();
+                } else {
+                    dependencyEntryBuilder_.setMessage(index, value);
+                }
+                return this;
+            }
+
+            /**
+             * <code>repeated .DependencyEntry dependency_entry = 4;</code>
+             */
+            public Builder setDependencyEntry(int index, com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.Builder builderForValue) {
+                if (dependencyEntryBuilder_ == null) {
+                    ensureDependencyEntryIsMutable();
+                    dependencyEntry_.set(index, builderForValue.build());
+                    onChanged();
+                } else {
+                    dependencyEntryBuilder_.setMessage(index, builderForValue.build());
+                }
+                return this;
+            }
+
+            /**
+             * <code>repeated .DependencyEntry dependency_entry = 4;</code>
+             */
+            public Builder addDependencyEntry(com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry value) {
+                if (dependencyEntryBuilder_ == null) {
+                    if (value == null) {
+                        throw new NullPointerException();
+                    }
+                    ensureDependencyEntryIsMutable();
+                    dependencyEntry_.add(value);
+                    onChanged();
+                } else {
+                    dependencyEntryBuilder_.addMessage(value);
+                }
+                return this;
+            }
+
+            /**
+             * <code>repeated .DependencyEntry dependency_entry = 4;</code>
+             */
+            public Builder addDependencyEntry(int index, com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry value) {
+                if (dependencyEntryBuilder_ == null) {
+                    if (value == null) {
+                        throw new NullPointerException();
+                    }
+                    ensureDependencyEntryIsMutable();
+                    dependencyEntry_.add(index, value);
+                    onChanged();
+                } else {
+                    dependencyEntryBuilder_.addMessage(index, value);
+                }
+                return this;
+            }
+
+            /**
+             * <code>repeated .DependencyEntry dependency_entry = 4;</code>
+             */
+            public Builder addDependencyEntry(com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.Builder builderForValue) {
+                if (dependencyEntryBuilder_ == null) {
+                    ensureDependencyEntryIsMutable();
+                    dependencyEntry_.add(builderForValue.build());
+                    onChanged();
+                } else {
+                    dependencyEntryBuilder_.addMessage(builderForValue.build());
+                }
+                return this;
+            }
+
+            /**
+             * <code>repeated .DependencyEntry dependency_entry = 4;</code>
+             */
+            public Builder addDependencyEntry(int index, com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.Builder builderForValue) {
+                if (dependencyEntryBuilder_ == null) {
+                    ensureDependencyEntryIsMutable();
+                    dependencyEntry_.add(index, builderForValue.build());
+                    onChanged();
+                } else {
+                    dependencyEntryBuilder_.addMessage(index, builderForValue.build());
+                }
+                return this;
+            }
+
+            /**
+             * <code>repeated .DependencyEntry dependency_entry = 4;</code>
+             */
+            public Builder addAllDependencyEntry(
+                    java.lang.Iterable<? extends com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry> values) {
+                if (dependencyEntryBuilder_ == null) {
+                    ensureDependencyEntryIsMutable();
+                    com.google.protobuf.AbstractMessageLite.Builder.addAll(values, dependencyEntry_);
+                    onChanged();
+                } else {
+                    dependencyEntryBuilder_.addAllMessages(values);
+                }
+                return this;
+            }
+
+            /**
+             * <code>repeated .DependencyEntry dependency_entry = 4;</code>
+             */
+            public Builder clearDependencyEntry() {
+                if (dependencyEntryBuilder_ == null) {
+                    dependencyEntry_ = java.util.Collections.emptyList();
+                    bitField0_ = (bitField0_ & ~0x00000008);
+                    onChanged();
+                } else {
+                    dependencyEntryBuilder_.clear();
+                }
+                return this;
+            }
+
+            /**
+             * <code>repeated .DependencyEntry dependency_entry = 4;</code>
+             */
+            public Builder removeDependencyEntry(int index) {
+                if (dependencyEntryBuilder_ == null) {
+                    ensureDependencyEntryIsMutable();
+                    dependencyEntry_.remove(index);
+                    onChanged();
+                } else {
+                    dependencyEntryBuilder_.remove(index);
+                }
+                return this;
+            }
+
+            /**
+             * <code>repeated .DependencyEntry dependency_entry = 4;</code>
+             */
+            public com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.Builder getDependencyEntryBuilder(int index) {
+                return getDependencyEntryFieldBuilder().getBuilder(index);
+            }
+
+            /**
+             * <code>repeated .DependencyEntry dependency_entry = 4;</code>
+             */
+            @Override
+            public com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntryOrBuilder getDependencyEntryOrBuilder(int index) {
+                if (dependencyEntryBuilder_ == null) {
+                    return dependencyEntry_.get(index);
+                } else {
+                    return dependencyEntryBuilder_.getMessageOrBuilder(index);
+                }
+            }
+
+            /**
+             * <code>repeated .DependencyEntry dependency_entry = 4;</code>
+             */
+            @Override
+            public java.util.List<? extends com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntryOrBuilder> getDependencyEntryOrBuilderList() {
+                if (dependencyEntryBuilder_ != null) {
+                    return dependencyEntryBuilder_.getMessageOrBuilderList();
+                } else {
+                    return java.util.Collections.unmodifiableList(dependencyEntry_);
+                }
+            }
+
+            /**
+             * <code>repeated .DependencyEntry dependency_entry = 4;</code>
+             */
+            public com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.Builder addDependencyEntryBuilder() {
+                return getDependencyEntryFieldBuilder()
+                        .addBuilder(com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.getDefaultInstance());
+            }
+
+            /**
+             * <code>repeated .DependencyEntry dependency_entry = 4;</code>
+             */
+            public com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.Builder addDependencyEntryBuilder(int index) {
+                return getDependencyEntryFieldBuilder().addBuilder(index,
+                        com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.getDefaultInstance());
+            }
+
+            /**
+             * <code>repeated .DependencyEntry dependency_entry = 4;</code>
+             */
+            public java.util.List<com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.Builder> getDependencyEntryBuilderList() {
+                return getDependencyEntryFieldBuilder().getBuilderList();
+            }
+
+            private com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry, com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.Builder, com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntryOrBuilder> getDependencyEntryFieldBuilder() {
+                if (dependencyEntryBuilder_ == null) {
+                    dependencyEntryBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry, com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.Builder, com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntryOrBuilder>(
+                            dependencyEntry_, ((bitField0_ & 0x00000008) == 0x00000008), getParentForChildren(), isClean());
+                    dependencyEntry_ = null;
+                }
+                return dependencyEntryBuilder_;
+            }
+
+            private java.lang.Object user_ = "";
+
+            /**
+             * <code>required string user = 5;</code>
+             */
+            @Override
+            public boolean hasUser() {
+                return ((bitField0_ & 0x00000010) == 0x00000010);
+            }
+
+            /**
+             * <code>required string user = 5;</code>
+             */
+            @Override
+            public java.lang.String getUser() {
+                java.lang.Object ref = user_;
+                if (!(ref instanceof java.lang.String)) {
+                    com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                    java.lang.String s = bs.toStringUtf8();
+                    if (bs.isValidUtf8()) {
+                        user_ = s;
+                    }
+                    return s;
+                } else {
+                    return (java.lang.String) ref;
+                }
+            }
+
+            /**
+             * <code>required string user = 5;</code>
+             */
+            @Override
+            public com.google.protobuf.ByteString getUserBytes() {
+                java.lang.Object ref = user_;
+                if (ref instanceof String) {
+                    com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                    user_ = b;
+                    return b;
+                } else {
+                    return (com.google.protobuf.ByteString) ref;
+                }
+            }
+
+            /**
+             * <code>required string user = 5;</code>
+             */
+            public Builder setUser(java.lang.String value) {
+                if (value == null) {
+                    throw new NullPointerException();
+                }
+                bitField0_ |= 0x00000010;
+                user_ = value;
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>required string user = 5;</code>
+             */
+            public Builder clearUser() {
+                bitField0_ = (bitField0_ & ~0x00000010);
+                user_ = getDefaultInstance().getUser();
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>required string user = 5;</code>
+             */
+            public Builder setUserBytes(com.google.protobuf.ByteString value) {
+                if (value == null) {
+                    throw new NullPointerException();
+                }
+                bitField0_ |= 0x00000010;
+                user_ = value;
+                onChanged();
+                return this;
+            }
+
+            private java.lang.Object jobType_ = "";
+
+            /**
+             * <code>required string job_type = 6;</code>
+             */
+            @Override
+            public boolean hasJobType() {
+                return ((bitField0_ & 0x00000020) == 0x00000020);
+            }
+
+            /**
+             * <code>required string job_type = 6;</code>
+             */
+            @Override
+            public java.lang.String getJobType() {
+                java.lang.Object ref = jobType_;
+                if (!(ref instanceof java.lang.String)) {
+                    com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                    java.lang.String s = bs.toStringUtf8();
+                    if (bs.isValidUtf8()) {
+                        jobType_ = s;
+                    }
+                    return s;
+                } else {
+                    return (java.lang.String) ref;
+                }
+            }
+
+            /**
+             * <code>required string job_type = 6;</code>
+             */
+            @Override
+            public com.google.protobuf.ByteString getJobTypeBytes() {
+                java.lang.Object ref = jobType_;
+                if (ref instanceof String) {
+                    com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                    jobType_ = b;
+                    return b;
+                } else {
+                    return (com.google.protobuf.ByteString) ref;
+                }
+            }
+
+            /**
+             * <code>required string job_type = 6;</code>
+             */
+            public Builder setJobType(java.lang.String value) {
+                if (value == null) {
+                    throw new NullPointerException();
+                }
+                bitField0_ |= 0x00000020;
+                jobType_ = value;
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>required string job_type = 6;</code>
+             */
+            public Builder clearJobType() {
+                bitField0_ = (bitField0_ & ~0x00000020);
+                jobType_ = getDefaultInstance().getJobType();
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>required string job_type = 6;</code>
+             */
+            public Builder setJobTypeBytes(com.google.protobuf.ByteString value) {
+                if (value == null) {
+                    throw new NullPointerException();
+                }
+                bitField0_ |= 0x00000020;
+                jobType_ = value;
+                onChanged();
+                return this;
+            }
+
+            private java.lang.Object content_ = "";
+
+            /**
+             * <code>required string content = 7;</code>
+             */
+            @Override
+            public boolean hasContent() {
+                return ((bitField0_ & 0x00000040) == 0x00000040);
+            }
+
+            /**
+             * <code>required string content = 7;</code>
+             */
+            @Override
+            public java.lang.String getContent() {
+                java.lang.Object ref = content_;
+                if (!(ref instanceof java.lang.String)) {
+                    com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                    java.lang.String s = bs.toStringUtf8();
+                    if (bs.isValidUtf8()) {
+                        content_ = s;
+                    }
+                    return s;
+                } else {
+                    return (java.lang.String) ref;
+                }
+            }
+
+            /**
+             * <code>required string content = 7;</code>
+             */
+            @Override
+            public com.google.protobuf.ByteString getContentBytes() {
+                java.lang.Object ref = content_;
+                if (ref instanceof String) {
+                    com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                    content_ = b;
+                    return b;
+                } else {
+                    return (com.google.protobuf.ByteString) ref;
+                }
+            }
+
+            /**
+             * <code>required string content = 7;</code>
+             */
+            public Builder setContent(java.lang.String value) {
+                if (value == null) {
+                    throw new NullPointerException();
+                }
+                bitField0_ |= 0x00000040;
+                content_ = value;
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>required string content = 7;</code>
+             */
+            public Builder clearContent() {
+                bitField0_ = (bitField0_ & ~0x00000040);
+                content_ = getDefaultInstance().getContent();
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>required string content = 7;</code>
+             */
+            public Builder setContentBytes(com.google.protobuf.ByteString value) {
+                if (value == null) {
+                    throw new NullPointerException();
+                }
+                bitField0_ |= 0x00000040;
+                content_ = value;
+                onChanged();
+                return this;
+            }
+
+            private int groupId_;
+
+            /**
+             * <code>required int32 group_id = 8;</code>
+             */
+            @Override
+            public boolean hasGroupId() {
+                return ((bitField0_ & 0x00000080) == 0x00000080);
+            }
+
+            /**
+             * <code>required int32 group_id = 8;</code>
+             */
+            @Override
+            public int getGroupId() {
+                return groupId_;
+            }
+
+            /**
+             * <code>required int32 group_id = 8;</code>
+             */
+            public Builder setGroupId(int value) {
+                bitField0_ |= 0x00000080;
+                groupId_ = value;
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>required int32 group_id = 8;</code>
+             */
+            public Builder clearGroupId() {
+                bitField0_ = (bitField0_ & ~0x00000080);
+                groupId_ = 0;
+                onChanged();
+                return this;
+            }
+
+            private int priority_ = 1;
+
+            /**
+             * <code>optional int32 priority = 9 [default = 1];</code>
+             */
+            @Override
+            public boolean hasPriority() {
+                return ((bitField0_ & 0x00000100) == 0x00000100);
+            }
+
+            /**
+             * <code>optional int32 priority = 9 [default = 1];</code>
+             */
+            @Override
+            public int getPriority() {
+                return priority_;
+            }
+
+            /**
+             * <code>optional int32 priority = 9 [default = 1];</code>
+             */
+            public Builder setPriority(int value) {
+                bitField0_ |= 0x00000100;
+                priority_ = value;
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>optional int32 priority = 9 [default = 1];</code>
+             */
+            public Builder clearPriority() {
+                bitField0_ = (bitField0_ & ~0x00000100);
+                priority_ = 1;
+                onChanged();
+                return this;
+            }
+
+            private int rejectRetries_;
+
+            /**
+             * <code>optional int32 reject_retries = 10 [default = 0];</code>
+             */
+            @Override
+            public boolean hasRejectRetries() {
+                return ((bitField0_ & 0x00000200) == 0x00000200);
+            }
+
+            /**
+             * <code>optional int32 reject_retries = 10 [default = 0];</code>
+             */
+            @Override
+            public int getRejectRetries() {
+                return rejectRetries_;
+            }
+
+            /**
+             * <code>optional int32 reject_retries = 10 [default = 0];</code>
+             */
+            public Builder setRejectRetries(int value) {
+                bitField0_ |= 0x00000200;
+                rejectRetries_ = value;
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>optional int32 reject_retries = 10 [default = 0];</code>
+             */
+            public Builder clearRejectRetries() {
+                bitField0_ = (bitField0_ & ~0x00000200);
+                rejectRetries_ = 0;
+                onChanged();
+                return this;
+            }
+
+            private int rejectInterval_ = 3;
+
+            /**
+             * <code>optional int32 reject_interval = 11 [default = 3];</code>
+             */
+            @Override
+            public boolean hasRejectInterval() {
+                return ((bitField0_ & 0x00000400) == 0x00000400);
+            }
+
+            /**
+             * <code>optional int32 reject_interval = 11 [default = 3];</code>
+             */
+            @Override
+            public int getRejectInterval() {
+                return rejectInterval_;
+            }
+
+            /**
+             * <code>optional int32 reject_interval = 11 [default = 3];</code>
+             */
+            public Builder setRejectInterval(int value) {
+                bitField0_ |= 0x00000400;
+                rejectInterval_ = value;
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>optional int32 reject_interval = 11 [default = 3];</code>
+             */
+            public Builder clearRejectInterval() {
+                bitField0_ = (bitField0_ & ~0x00000400);
+                rejectInterval_ = 3;
+                onChanged();
+                return this;
+            }
+
+            private int failedRetries_;
+
+            /**
+             * <code>optional int32 failed_retries = 12 [default = 0];</code>
+             */
+            @Override
+            public boolean hasFailedRetries() {
+                return ((bitField0_ & 0x00000800) == 0x00000800);
+            }
+
+            /**
+             * <code>optional int32 failed_retries = 12 [default = 0];</code>
+             */
+            @Override
+            public int getFailedRetries() {
+                return failedRetries_;
+            }
+
+            /**
+             * <code>optional int32 failed_retries = 12 [default = 0];</code>
+             */
+            public Builder setFailedRetries(int value) {
+                bitField0_ |= 0x00000800;
+                failedRetries_ = value;
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>optional int32 failed_retries = 12 [default = 0];</code>
+             */
+            public Builder clearFailedRetries() {
+                bitField0_ = (bitField0_ & ~0x00000800);
+                failedRetries_ = 0;
+                onChanged();
+                return this;
+            }
+
+            private int failedInterval_ = 3;
+
+            /**
+             * <code>optional int32 failed_interval = 13 [default = 3];</code>
+             */
+            @Override
+            public boolean hasFailedInterval() {
+                return ((bitField0_ & 0x00001000) == 0x00001000);
+            }
+
+            /**
+             * <code>optional int32 failed_interval = 13 [default = 3];</code>
+             */
+            @Override
+            public int getFailedInterval() {
+                return failedInterval_;
+            }
+
+            /**
+             * <code>optional int32 failed_interval = 13 [default = 3];</code>
+             */
+            public Builder setFailedInterval(int value) {
+                bitField0_ |= 0x00001000;
+                failedInterval_ = value;
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>optional int32 failed_interval = 13 [default = 3];</code>
+             */
+            public Builder clearFailedInterval() {
+                bitField0_ = (bitField0_ & ~0x00001000);
+                failedInterval_ = 3;
+                onChanged();
+                return this;
+            }
+
+            private long startTime_;
+
+            /**
+             * <code>optional int64 start_time = 14;</code>
+             */
+            @Override
+            public boolean hasStartTime() {
+                return ((bitField0_ & 0x00002000) == 0x00002000);
+            }
+
+            /**
+             * <code>optional int64 start_time = 14;</code>
+             */
+            @Override
+            public long getStartTime() {
+                return startTime_;
+            }
+
+            /**
+             * <code>optional int64 start_time = 14;</code>
+             */
+            public Builder setStartTime(long value) {
+                bitField0_ |= 0x00002000;
+                startTime_ = value;
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>optional int64 start_time = 14;</code>
+             */
+            public Builder clearStartTime() {
+                bitField0_ = (bitField0_ & ~0x00002000);
+                startTime_ = 0L;
+                onChanged();
+                return this;
+            }
+
+            private long endTime_;
+
+            /**
+             * <code>optional int64 end_time = 15;</code>
+             */
+            @Override
+            public boolean hasEndTime() {
+                return ((bitField0_ & 0x00004000) == 0x00004000);
+            }
+
+            /**
+             * <code>optional int64 end_time = 15;</code>
+             */
+            @Override
+            public long getEndTime() {
+                return endTime_;
+            }
+
+            /**
+             * <code>optional int64 end_time = 15;</code>
+             */
+            public Builder setEndTime(long value) {
+                bitField0_ |= 0x00004000;
+                endTime_ = value;
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>optional int64 end_time = 15;</code>
+             */
+            public Builder clearEndTime() {
+                bitField0_ = (bitField0_ & ~0x00004000);
+                endTime_ = 0L;
+                onChanged();
+                return this;
+            }
+
+            private java.util.List<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry> parameters_ = java.util.Collections.emptyList();
+
+            private void ensureParametersIsMutable() {
+                if (!((bitField0_ & 0x00008000) == 0x00008000)) {
+                    parameters_ = new java.util.ArrayList<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry>(parameters_);
+                    bitField0_ |= 0x00008000;
+                }
+            }
+
+            private com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder> parametersBuilder_;
+
+            /**
+             * <code>repeated .MapEntry parameters = 16;</code>
+             */
+            @Override
+            public java.util.List<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry> getParametersList() {
+                if (parametersBuilder_ == null) {
+                    return java.util.Collections.unmodifiableList(parameters_);
+                } else {
+                    return parametersBuilder_.getMessageList();
+                }
+            }
+
+            /**
+             * <code>repeated .MapEntry parameters = 16;</code>
+             */
+            @Override
+            public int getParametersCount() {
+                if (parametersBuilder_ == null) {
+                    return parameters_.size();
+                } else {
+                    return parametersBuilder_.getCount();
+                }
+            }
+
+            /**
+             * <code>repeated .MapEntry parameters = 16;</code>
+             */
+            @Override
+            public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry getParameters(int index) {
+                if (parametersBuilder_ == null) {
+                    return parameters_.get(index);
+                } else {
+                    return parametersBuilder_.getMessage(index);
+                }
+            }
+
+            /**
+             * <code>repeated .MapEntry parameters = 16;</code>
+             */
+            public Builder setParameters(int index, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry value) {
+                if (parametersBuilder_ == null) {
+                    if (value == null) {
+                        throw new NullPointerException();
+                    }
+                    ensureParametersIsMutable();
+                    parameters_.set(index, value);
+                    onChanged();
+                } else {
+                    parametersBuilder_.setMessage(index, value);
+                }
+                return this;
+            }
+
+            /**
+             * <code>repeated .MapEntry parameters = 16;</code>
+             */
+            public Builder setParameters(int index, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder builderForValue) {
+                if (parametersBuilder_ == null) {
+                    ensureParametersIsMutable();
+                    parameters_.set(index, builderForValue.build());
+                    onChanged();
+                } else {
+                    parametersBuilder_.setMessage(index, builderForValue.build());
+                }
+                return this;
+            }
+
+            /**
+             * <code>repeated .MapEntry parameters = 16;</code>
+             */
+            public Builder addParameters(com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry value) {
+                if (parametersBuilder_ == null) {
+                    if (value == null) {
+                        throw new NullPointerException();
+                    }
+                    ensureParametersIsMutable();
+                    parameters_.add(value);
+                    onChanged();
+                } else {
+                    parametersBuilder_.addMessage(value);
+                }
+                return this;
+            }
+
+            /**
+             * <code>repeated .MapEntry parameters = 16;</code>
+             */
+            public Builder addParameters(int index, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry value) {
+                if (parametersBuilder_ == null) {
+                    if (value == null) {
+                        throw new NullPointerException();
+                    }
+                    ensureParametersIsMutable();
+                    parameters_.add(index, value);
+                    onChanged();
+                } else {
+                    parametersBuilder_.addMessage(index, value);
+                }
+                return this;
+            }
+
+            /**
+             * <code>repeated .MapEntry parameters = 16;</code>
+             */
+            public Builder addParameters(com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder builderForValue) {
+                if (parametersBuilder_ == null) {
+                    ensureParametersIsMutable();
+                    parameters_.add(builderForValue.build());
+                    onChanged();
+                } else {
+                    parametersBuilder_.addMessage(builderForValue.build());
+                }
+                return this;
+            }
+
+            /**
+             * <code>repeated .MapEntry parameters = 16;</code>
+             */
+            public Builder addParameters(int index, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder builderForValue) {
+                if (parametersBuilder_ == null) {
+                    ensureParametersIsMutable();
+                    parameters_.add(index, builderForValue.build());
+                    onChanged();
+                } else {
+                    parametersBuilder_.addMessage(index, builderForValue.build());
+                }
+                return this;
+            }
+
+            /**
+             * <code>repeated .MapEntry parameters = 16;</code>
+             */
+            public Builder addAllParameters(java.lang.Iterable<? extends com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry> values) {
+                if (parametersBuilder_ == null) {
+                    ensureParametersIsMutable();
+                    com.google.protobuf.AbstractMessageLite.Builder.addAll(values, parameters_);
+                    onChanged();
+                } else {
+                    parametersBuilder_.addAllMessages(values);
+                }
+                return this;
+            }
+
+            /**
+             * <code>repeated .MapEntry parameters = 16;</code>
+             */
+            public Builder clearParameters() {
+                if (parametersBuilder_ == null) {
+                    parameters_ = java.util.Collections.emptyList();
+                    bitField0_ = (bitField0_ & ~0x00008000);
+                    onChanged();
+                } else {
+                    parametersBuilder_.clear();
+                }
+                return this;
+            }
+
+            /**
+             * <code>repeated .MapEntry parameters = 16;</code>
+             */
+            public Builder removeParameters(int index) {
+                if (parametersBuilder_ == null) {
+                    ensureParametersIsMutable();
+                    parameters_.remove(index);
+                    onChanged();
+                } else {
+                    parametersBuilder_.remove(index);
+                }
+                return this;
+            }
+
+            /**
+             * <code>repeated .MapEntry parameters = 16;</code>
+             */
+            public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder getParametersBuilder(int index) {
+                return getParametersFieldBuilder().getBuilder(index);
+            }
+
+            /**
+             * <code>repeated .MapEntry parameters = 16;</code>
+             */
+            @Override
+            public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder getParametersOrBuilder(int index) {
+                if (parametersBuilder_ == null) {
+                    return parameters_.get(index);
+                } else {
+                    return parametersBuilder_.getMessageOrBuilder(index);
+                }
+            }
+
+            /**
+             * <code>repeated .MapEntry parameters = 16;</code>
+             */
+            @Override
+            public java.util.List<? extends com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder> getParametersOrBuilderList() {
+                if (parametersBuilder_ != null) {
+                    return parametersBuilder_.getMessageOrBuilderList();
+                } else {
+                    return java.util.Collections.unmodifiableList(parameters_);
+                }
+            }
+
+            /**
+             * <code>repeated .MapEntry parameters = 16;</code>
+             */
+            public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder addParametersBuilder() {
+                return getParametersFieldBuilder().addBuilder(com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.getDefaultInstance());
+            }
+
+            /**
+             * <code>repeated .MapEntry parameters = 16;</code>
+             */
+            public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder addParametersBuilder(int index) {
+                return getParametersFieldBuilder().addBuilder(index, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.getDefaultInstance());
+            }
+
+            /**
+             * <code>repeated .MapEntry parameters = 16;</code>
+             */
+            public java.util.List<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder> getParametersBuilderList() {
+                return getParametersFieldBuilder().getBuilderList();
+            }
+
+            private com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder> getParametersFieldBuilder() {
+                if (parametersBuilder_ == null) {
+                    parametersBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder>(
+                            parameters_, ((bitField0_ & 0x00008000) == 0x00008000), getParentForChildren(), isClean());
+                    parameters_ = null;
+                }
+                return parametersBuilder_;
+            }
+
+            // @@protoc_insertion_point(builder_scope:DeleteRestServerSubmitJobRequest)
+        }
+
+        static {
+            defaultInstance = new DeleteRestServerSubmitJobRequest(true);
+            defaultInstance.initFields();
+        }
+
+        // @@protoc_insertion_point(class_scope:DeleteRestServerSubmitJobRequest)
     }
 
-    private void initFields() {
-      jobId_ = 0L;
-      success_ = false;
-      message_ = "";
-    }
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+    public interface DeleteServerSubmitJobResponseOrBuilder extends
+            // @@protoc_insertion_point(interface_extends:DeleteServerSubmitJobResponse)
+            com.google.protobuf.MessageOrBuilder {
 
-      if (!hasSuccess()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      memoizedIsInitialized = 1;
-      return true;
-    }
+        /**
+         * <code>optional int64 job_id = 1;</code>
+         */
+        boolean hasJobId();
 
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      getSerializedSize();
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeInt64(1, jobId_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeBool(2, success_);
-      }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeBytes(3, getMessageBytes());
-      }
-      getUnknownFields().writeTo(output);
-    }
+        /**
+         * <code>optional int64 job_id = 1;</code>
+         */
+        long getJobId();
 
-    private int memoizedSerializedSize = -1;
-    public int getSerializedSize() {
-      int size = memoizedSerializedSize;
-      if (size != -1) return size;
+        /**
+         * <code>required bool success = 2;</code>
+         */
+        boolean hasSuccess();
 
-      size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(1, jobId_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(2, success_);
-      }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(3, getMessageBytes());
-      }
-      size += getUnknownFields().getSerializedSize();
-      memoizedSerializedSize = size;
-      return size;
+        /**
+         * <code>required bool success = 2;</code>
+         */
+        boolean getSuccess();
+
+        /**
+         * <code>optional string message = 3 [default = ""];</code>
+         */
+        boolean hasMessage();
+
+        /**
+         * <code>optional string message = 3 [default = ""];</code>
+         */
+        java.lang.String getMessage();
+
+        /**
+         * <code>optional string message = 3 [default = ""];</code>
+         */
+        com.google.protobuf.ByteString getMessageBytes();
     }
 
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    protected java.lang.Object writeReplace()
-        throws java.io.ObjectStreamException {
-      return super.writeReplace();
-    }
-
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input);
-    }
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input, extensionRegistry);
-    }
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-
-    public static Builder newBuilder() { return Builder.create(); }
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse prototype) {
-      return newBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() { return newBuilder(this); }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
     /**
      * Protobuf type {@code DeleteServerSubmitJobResponse}
      */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:DeleteServerSubmitJobResponse)
-        com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponseOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_DeleteServerSubmitJobResponse_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_DeleteServerSubmitJobResponse_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse.class, com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse.Builder.class);
-      }
-
-      // Construct using com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+    public static final class DeleteServerSubmitJobResponse extends com.google.protobuf.GeneratedMessage implements
+            // @@protoc_insertion_point(message_implements:DeleteServerSubmitJobResponse)
+            DeleteServerSubmitJobResponseOrBuilder {
+        // Use DeleteServerSubmitJobResponse.newBuilder() to construct.
+        private DeleteServerSubmitJobResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+            super(builder);
+            this.unknownFields = builder.getUnknownFields();
         }
-      }
-      private static Builder create() {
-        return new Builder();
-      }
 
-      public Builder clear() {
-        super.clear();
-        jobId_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000001);
-        success_ = false;
-        bitField0_ = (bitField0_ & ~0x00000002);
-        message_ = "";
-        bitField0_ = (bitField0_ & ~0x00000004);
-        return this;
-      }
-
-      public Builder clone() {
-        return create().mergeFrom(buildPartial());
-      }
-
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_DeleteServerSubmitJobResponse_descriptor;
-      }
-
-      public com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse getDefaultInstanceForType() {
-        return com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse.getDefaultInstance();
-      }
-
-      public com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse build() {
-        com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
+        private DeleteServerSubmitJobResponse(boolean noInit) {
+            this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance();
         }
-        return result;
-      }
 
-      public com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse buildPartial() {
-        com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse result = new com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
+        private static final DeleteServerSubmitJobResponse defaultInstance;
+
+        public static DeleteServerSubmitJobResponse getDefaultInstance() {
+            return defaultInstance;
         }
-        result.jobId_ = jobId_;
-        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-          to_bitField0_ |= 0x00000002;
+
+        @Override
+        public DeleteServerSubmitJobResponse getDefaultInstanceForType() {
+            return defaultInstance;
         }
-        result.success_ = success_;
-        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
-          to_bitField0_ |= 0x00000004;
+
+        private final com.google.protobuf.UnknownFieldSet unknownFields;
+
+        @java.lang.Override
+        public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
+            return this.unknownFields;
         }
-        result.message_ = message_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
 
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse) {
-          return mergeFrom((com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse other) {
-        if (other == com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse.getDefaultInstance()) return this;
-        if (other.hasJobId()) {
-          setJobId(other.getJobId());
-        }
-        if (other.hasSuccess()) {
-          setSuccess(other.getSuccess());
-        }
-        if (other.hasMessage()) {
-          bitField0_ |= 0x00000004;
-          message_ = other.message_;
-          onChanged();
-        }
-        this.mergeUnknownFields(other.getUnknownFields());
-        return this;
-      }
-
-      public final boolean isInitialized() {
-        if (!hasSuccess()) {
-          
-          return false;
-        }
-        return true;
-      }
-
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse) e.getUnfinishedMessage();
-          throw e;
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-      private int bitField0_;
-
-      private long jobId_ ;
-      /**
-       * <code>optional int64 job_id = 1;</code>
-       */
-      public boolean hasJobId() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      /**
-       * <code>optional int64 job_id = 1;</code>
-       */
-      public long getJobId() {
-        return jobId_;
-      }
-      /**
-       * <code>optional int64 job_id = 1;</code>
-       */
-      public Builder setJobId(long value) {
-        bitField0_ |= 0x00000001;
-        jobId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional int64 job_id = 1;</code>
-       */
-      public Builder clearJobId() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        jobId_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      private boolean success_ ;
-      /**
-       * <code>required bool success = 2;</code>
-       */
-      public boolean hasSuccess() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
-      }
-      /**
-       * <code>required bool success = 2;</code>
-       */
-      public boolean getSuccess() {
-        return success_;
-      }
-      /**
-       * <code>required bool success = 2;</code>
-       */
-      public Builder setSuccess(boolean value) {
-        bitField0_ |= 0x00000002;
-        success_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required bool success = 2;</code>
-       */
-      public Builder clearSuccess() {
-        bitField0_ = (bitField0_ & ~0x00000002);
-        success_ = false;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object message_ = "";
-      /**
-       * <code>optional string message = 3 [default = ""];</code>
-       */
-      public boolean hasMessage() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
-      }
-      /**
-       * <code>optional string message = 3 [default = ""];</code>
-       */
-      public java.lang.String getMessage() {
-        java.lang.Object ref = message_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            message_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>optional string message = 3 [default = ""];</code>
-       */
-      public com.google.protobuf.ByteString
-          getMessageBytes() {
-        java.lang.Object ref = message_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          message_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string message = 3 [default = ""];</code>
-       */
-      public Builder setMessage(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
-        message_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string message = 3 [default = ""];</code>
-       */
-      public Builder clearMessage() {
-        bitField0_ = (bitField0_ & ~0x00000004);
-        message_ = getDefaultInstance().getMessage();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string message = 3 [default = ""];</code>
-       */
-      public Builder setMessageBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
-        message_ = value;
-        onChanged();
-        return this;
-      }
-
-      // @@protoc_insertion_point(builder_scope:DeleteServerSubmitJobResponse)
-    }
-
-    static {
-      defaultInstance = new DeleteServerSubmitJobResponse(true);
-      defaultInstance.initFields();
-    }
-
-    // @@protoc_insertion_point(class_scope:DeleteServerSubmitJobResponse)
-  }
-
-  public interface ServerSubmitTaskRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:ServerSubmitTaskRequest)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <code>required string full_id = 1;</code>
-     */
-    boolean hasFullId();
-    /**
-     * <code>required string full_id = 1;</code>
-     */
-    java.lang.String getFullId();
-    /**
-     * <code>required string full_id = 1;</code>
-     */
-    com.google.protobuf.ByteString
-        getFullIdBytes();
-
-    /**
-     * <code>required string task_name = 2;</code>
-     */
-    boolean hasTaskName();
-    /**
-     * <code>required string task_name = 2;</code>
-     */
-    java.lang.String getTaskName();
-    /**
-     * <code>required string task_name = 2;</code>
-     */
-    com.google.protobuf.ByteString
-        getTaskNameBytes();
-
-    /**
-     * <code>required string app_name = 3;</code>
-     */
-    boolean hasAppName();
-    /**
-     * <code>required string app_name = 3;</code>
-     */
-    java.lang.String getAppName();
-    /**
-     * <code>required string app_name = 3;</code>
-     */
-    com.google.protobuf.ByteString
-        getAppNameBytes();
-
-    /**
-     * <code>required string user = 4;</code>
-     */
-    boolean hasUser();
-    /**
-     * <code>required string user = 4;</code>
-     */
-    java.lang.String getUser();
-    /**
-     * <code>required string user = 4;</code>
-     */
-    com.google.protobuf.ByteString
-        getUserBytes();
-
-    /**
-     * <code>required string task_type = 5;</code>
-     */
-    boolean hasTaskType();
-    /**
-     * <code>required string task_type = 5;</code>
-     */
-    java.lang.String getTaskType();
-    /**
-     * <code>required string task_type = 5;</code>
-     */
-    com.google.protobuf.ByteString
-        getTaskTypeBytes();
-
-    /**
-     * <code>required string content = 6;</code>
-     */
-    boolean hasContent();
-    /**
-     * <code>required string content = 6;</code>
-     */
-    java.lang.String getContent();
-    /**
-     * <code>required string content = 6;</code>
-     */
-    com.google.protobuf.ByteString
-        getContentBytes();
-
-    /**
-     * <code>optional int32 priority = 7 [default = 1];</code>
-     */
-    boolean hasPriority();
-    /**
-     * <code>optional int32 priority = 7 [default = 1];</code>
-     */
-    int getPriority();
-
-    /**
-     * <code>repeated .MapEntry parameters = 8;</code>
-     */
-    java.util.List<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry> 
-        getParametersList();
-    /**
-     * <code>repeated .MapEntry parameters = 8;</code>
-     */
-    com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry getParameters(int index);
-    /**
-     * <code>repeated .MapEntry parameters = 8;</code>
-     */
-    int getParametersCount();
-    /**
-     * <code>repeated .MapEntry parameters = 8;</code>
-     */
-    java.util.List<? extends com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder> 
-        getParametersOrBuilderList();
-    /**
-     * <code>repeated .MapEntry parameters = 8;</code>
-     */
-    com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder getParametersOrBuilder(
-        int index);
-
-    /**
-     * <code>required int64 scheduling_time = 9;</code>
-     */
-    boolean hasSchedulingTime();
-    /**
-     * <code>required int64 scheduling_time = 9;</code>
-     */
-    long getSchedulingTime();
-  }
-  /**
-   * Protobuf type {@code ServerSubmitTaskRequest}
-   */
-  public static final class ServerSubmitTaskRequest extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:ServerSubmitTaskRequest)
-      ServerSubmitTaskRequestOrBuilder {
-    // Use ServerSubmitTaskRequest.newBuilder() to construct.
-    private ServerSubmitTaskRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
-      super(builder);
-      this.unknownFields = builder.getUnknownFields();
-    }
-    private ServerSubmitTaskRequest(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
-
-    private static final ServerSubmitTaskRequest defaultInstance;
-    public static ServerSubmitTaskRequest getDefaultInstance() {
-      return defaultInstance;
-    }
-
-    public ServerSubmitTaskRequest getDefaultInstanceForType() {
-      return defaultInstance;
-    }
-
-    private final com.google.protobuf.UnknownFieldSet unknownFields;
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
-      return this.unknownFields;
-    }
-    private ServerSubmitTaskRequest(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      initFields();
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
+        private DeleteServerSubmitJobResponse(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                throws com.google.protobuf.InvalidProtocolBufferException {
+            initFields();
+            com.google.protobuf.UnknownFieldSet.Builder unknownFields = com.google.protobuf.UnknownFieldSet.newBuilder();
+            try {
+                boolean done = false;
+                while (!done) {
+                    int tag = input.readTag();
+                    switch (tag) {
+                        case 0:
+                            done = true;
+                            break;
+                        default: {
+                            if (!parseUnknownField(input, unknownFields, extensionRegistry, tag)) {
+                                done = true;
+                            }
+                            break;
+                        }
+                        case 8: {
+                            bitField0_ |= 0x00000001;
+                            jobId_ = input.readInt64();
+                            break;
+                        }
+                        case 16: {
+                            bitField0_ |= 0x00000002;
+                            success_ = input.readBool();
+                            break;
+                        }
+                        case 26: {
+                            com.google.protobuf.ByteString bs = input.readBytes();
+                            bitField0_ |= 0x00000004;
+                            message_ = bs;
+                            break;
+                        }
+                    }
+                }
+            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+                throw e.setUnfinishedMessage(this);
+            } catch (java.io.IOException e) {
+                throw new com.google.protobuf.InvalidProtocolBufferException(e.getMessage()).setUnfinishedMessage(this);
+            } finally {
+                this.unknownFields = unknownFields.build();
+                makeExtensionsImmutable();
             }
-            case 10: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000001;
-              fullId_ = bs;
-              break;
-            }
-            case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000002;
-              taskName_ = bs;
-              break;
-            }
-            case 26: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000004;
-              appName_ = bs;
-              break;
-            }
-            case 34: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000008;
-              user_ = bs;
-              break;
-            }
-            case 42: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000010;
-              taskType_ = bs;
-              break;
-            }
-            case 50: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000020;
-              content_ = bs;
-              break;
-            }
-            case 56: {
-              bitField0_ |= 0x00000040;
-              priority_ = input.readInt32();
-              break;
-            }
-            case 66: {
-              if (!((mutable_bitField0_ & 0x00000080) == 0x00000080)) {
-                parameters_ = new java.util.ArrayList<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry>();
-                mutable_bitField0_ |= 0x00000080;
-              }
-              parameters_.add(input.readMessage(com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.PARSER, extensionRegistry));
-              break;
-            }
-            case 72: {
-              bitField0_ |= 0x00000080;
-              schedulingTime_ = input.readInt64();
-              break;
-            }
-          }
         }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e.getMessage()).setUnfinishedMessage(this);
-      } finally {
-        if (((mutable_bitField0_ & 0x00000080) == 0x00000080)) {
-          parameters_ = java.util.Collections.unmodifiableList(parameters_);
+
+        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+            return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_DeleteServerSubmitJobResponse_descriptor;
         }
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_ServerSubmitTaskRequest_descriptor;
-    }
 
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_ServerSubmitTaskRequest_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest.class, com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest.Builder.class);
-    }
-
-    public static com.google.protobuf.Parser<ServerSubmitTaskRequest> PARSER =
-        new com.google.protobuf.AbstractParser<ServerSubmitTaskRequest>() {
-      public ServerSubmitTaskRequest parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new ServerSubmitTaskRequest(input, extensionRegistry);
-      }
-    };
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<ServerSubmitTaskRequest> getParserForType() {
-      return PARSER;
-    }
-
-    private int bitField0_;
-    public static final int FULL_ID_FIELD_NUMBER = 1;
-    private java.lang.Object fullId_;
-    /**
-     * <code>required string full_id = 1;</code>
-     */
-    public boolean hasFullId() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
-    /**
-     * <code>required string full_id = 1;</code>
-     */
-    public java.lang.String getFullId() {
-      java.lang.Object ref = fullId_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          fullId_ = s;
+        @Override
+        protected com.google.protobuf.GeneratedMessage.FieldAccessorTable internalGetFieldAccessorTable() {
+            return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_DeleteServerSubmitJobResponse_fieldAccessorTable
+                    .ensureFieldAccessorsInitialized(com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse.class,
+                            com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse.Builder.class);
         }
-        return s;
-      }
-    }
-    /**
-     * <code>required string full_id = 1;</code>
-     */
-    public com.google.protobuf.ByteString
-        getFullIdBytes() {
-      java.lang.Object ref = fullId_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        fullId_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
 
-    public static final int TASK_NAME_FIELD_NUMBER = 2;
-    private java.lang.Object taskName_;
-    /**
-     * <code>required string task_name = 2;</code>
-     */
-    public boolean hasTaskName() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
-    }
-    /**
-     * <code>required string task_name = 2;</code>
-     */
-    public java.lang.String getTaskName() {
-      java.lang.Object ref = taskName_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          taskName_ = s;
+        public static com.google.protobuf.Parser<DeleteServerSubmitJobResponse> PARSER = new com.google.protobuf.AbstractParser<DeleteServerSubmitJobResponse>() {
+            @Override
+            public DeleteServerSubmitJobResponse parsePartialFrom(com.google.protobuf.CodedInputStream input,
+                    com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+                return new DeleteServerSubmitJobResponse(input, extensionRegistry);
+            }
+        };
+
+        @java.lang.Override
+        public com.google.protobuf.Parser<DeleteServerSubmitJobResponse> getParserForType() {
+            return PARSER;
         }
-        return s;
-      }
-    }
-    /**
-     * <code>required string task_name = 2;</code>
-     */
-    public com.google.protobuf.ByteString
-        getTaskNameBytes() {
-      java.lang.Object ref = taskName_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        taskName_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
 
-    public static final int APP_NAME_FIELD_NUMBER = 3;
-    private java.lang.Object appName_;
-    /**
-     * <code>required string app_name = 3;</code>
-     */
-    public boolean hasAppName() {
-      return ((bitField0_ & 0x00000004) == 0x00000004);
-    }
-    /**
-     * <code>required string app_name = 3;</code>
-     */
-    public java.lang.String getAppName() {
-      java.lang.Object ref = appName_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          appName_ = s;
+        private int bitField0_;
+        public static final int JOB_ID_FIELD_NUMBER = 1;
+        private long jobId_;
+
+        /**
+         * <code>optional int64 job_id = 1;</code>
+         */
+        @Override
+        public boolean hasJobId() {
+            return ((bitField0_ & 0x00000001) == 0x00000001);
         }
-        return s;
-      }
-    }
-    /**
-     * <code>required string app_name = 3;</code>
-     */
-    public com.google.protobuf.ByteString
-        getAppNameBytes() {
-      java.lang.Object ref = appName_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        appName_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
 
-    public static final int USER_FIELD_NUMBER = 4;
-    private java.lang.Object user_;
-    /**
-     * <code>required string user = 4;</code>
-     */
-    public boolean hasUser() {
-      return ((bitField0_ & 0x00000008) == 0x00000008);
-    }
-    /**
-     * <code>required string user = 4;</code>
-     */
-    public java.lang.String getUser() {
-      java.lang.Object ref = user_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          user_ = s;
+        /**
+         * <code>optional int64 job_id = 1;</code>
+         */
+        @Override
+        public long getJobId() {
+            return jobId_;
         }
-        return s;
-      }
-    }
-    /**
-     * <code>required string user = 4;</code>
-     */
-    public com.google.protobuf.ByteString
-        getUserBytes() {
-      java.lang.Object ref = user_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        user_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
 
-    public static final int TASK_TYPE_FIELD_NUMBER = 5;
-    private java.lang.Object taskType_;
-    /**
-     * <code>required string task_type = 5;</code>
-     */
-    public boolean hasTaskType() {
-      return ((bitField0_ & 0x00000010) == 0x00000010);
-    }
-    /**
-     * <code>required string task_type = 5;</code>
-     */
-    public java.lang.String getTaskType() {
-      java.lang.Object ref = taskType_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          taskType_ = s;
+        public static final int SUCCESS_FIELD_NUMBER = 2;
+        private boolean success_;
+
+        /**
+         * <code>required bool success = 2;</code>
+         */
+        @Override
+        public boolean hasSuccess() {
+            return ((bitField0_ & 0x00000002) == 0x00000002);
         }
-        return s;
-      }
-    }
-    /**
-     * <code>required string task_type = 5;</code>
-     */
-    public com.google.protobuf.ByteString
-        getTaskTypeBytes() {
-      java.lang.Object ref = taskType_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        taskType_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
 
-    public static final int CONTENT_FIELD_NUMBER = 6;
-    private java.lang.Object content_;
-    /**
-     * <code>required string content = 6;</code>
-     */
-    public boolean hasContent() {
-      return ((bitField0_ & 0x00000020) == 0x00000020);
-    }
-    /**
-     * <code>required string content = 6;</code>
-     */
-    public java.lang.String getContent() {
-      java.lang.Object ref = content_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          content_ = s;
+        /**
+         * <code>required bool success = 2;</code>
+         */
+        @Override
+        public boolean getSuccess() {
+            return success_;
         }
-        return s;
-      }
-    }
-    /**
-     * <code>required string content = 6;</code>
-     */
-    public com.google.protobuf.ByteString
-        getContentBytes() {
-      java.lang.Object ref = content_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        content_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
 
-    public static final int PRIORITY_FIELD_NUMBER = 7;
-    private int priority_;
-    /**
-     * <code>optional int32 priority = 7 [default = 1];</code>
-     */
-    public boolean hasPriority() {
-      return ((bitField0_ & 0x00000040) == 0x00000040);
-    }
-    /**
-     * <code>optional int32 priority = 7 [default = 1];</code>
-     */
-    public int getPriority() {
-      return priority_;
-    }
+        public static final int MESSAGE_FIELD_NUMBER = 3;
+        private java.lang.Object message_;
 
-    public static final int PARAMETERS_FIELD_NUMBER = 8;
-    private java.util.List<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry> parameters_;
-    /**
-     * <code>repeated .MapEntry parameters = 8;</code>
-     */
-    public java.util.List<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry> getParametersList() {
-      return parameters_;
-    }
-    /**
-     * <code>repeated .MapEntry parameters = 8;</code>
-     */
-    public java.util.List<? extends com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder> 
-        getParametersOrBuilderList() {
-      return parameters_;
-    }
-    /**
-     * <code>repeated .MapEntry parameters = 8;</code>
-     */
-    public int getParametersCount() {
-      return parameters_.size();
-    }
-    /**
-     * <code>repeated .MapEntry parameters = 8;</code>
-     */
-    public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry getParameters(int index) {
-      return parameters_.get(index);
-    }
-    /**
-     * <code>repeated .MapEntry parameters = 8;</code>
-     */
-    public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder getParametersOrBuilder(
-        int index) {
-      return parameters_.get(index);
-    }
-
-    public static final int SCHEDULING_TIME_FIELD_NUMBER = 9;
-    private long schedulingTime_;
-    /**
-     * <code>required int64 scheduling_time = 9;</code>
-     */
-    public boolean hasSchedulingTime() {
-      return ((bitField0_ & 0x00000080) == 0x00000080);
-    }
-    /**
-     * <code>required int64 scheduling_time = 9;</code>
-     */
-    public long getSchedulingTime() {
-      return schedulingTime_;
-    }
-
-    private void initFields() {
-      fullId_ = "";
-      taskName_ = "";
-      appName_ = "";
-      user_ = "";
-      taskType_ = "";
-      content_ = "";
-      priority_ = 1;
-      parameters_ = java.util.Collections.emptyList();
-      schedulingTime_ = 0L;
-    }
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      if (!hasFullId()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasTaskName()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasAppName()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasUser()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasTaskType()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasContent()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasSchedulingTime()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      for (int i = 0; i < getParametersCount(); i++) {
-        if (!getParameters(i).isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
+        /**
+         * <code>optional string message = 3 [default = ""];</code>
+         */
+        @Override
+        public boolean hasMessage() {
+            return ((bitField0_ & 0x00000004) == 0x00000004);
         }
-      }
-      memoizedIsInitialized = 1;
-      return true;
+
+        /**
+         * <code>optional string message = 3 [default = ""];</code>
+         */
+        @Override
+        public java.lang.String getMessage() {
+            java.lang.Object ref = message_;
+            if (ref instanceof java.lang.String) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                if (bs.isValidUtf8()) {
+                    message_ = s;
+                }
+                return s;
+            }
+        }
+
+        /**
+         * <code>optional string message = 3 [default = ""];</code>
+         */
+        @Override
+        public com.google.protobuf.ByteString getMessageBytes() {
+            java.lang.Object ref = message_;
+            if (ref instanceof java.lang.String) {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                message_ = b;
+                return b;
+            } else {
+                return (com.google.protobuf.ByteString) ref;
+            }
+        }
+
+        private void initFields() {
+            jobId_ = 0L;
+            success_ = false;
+            message_ = "";
+        }
+
+        private byte memoizedIsInitialized = -1;
+
+        @Override
+        public final boolean isInitialized() {
+            byte isInitialized = memoizedIsInitialized;
+            if (isInitialized == 1)
+                return true;
+            if (isInitialized == 0)
+                return false;
+
+            if (!hasSuccess()) {
+                memoizedIsInitialized = 0;
+                return false;
+            }
+            memoizedIsInitialized = 1;
+            return true;
+        }
+
+        @Override
+        public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
+            getSerializedSize();
+            if (((bitField0_ & 0x00000001) == 0x00000001)) {
+                output.writeInt64(1, jobId_);
+            }
+            if (((bitField0_ & 0x00000002) == 0x00000002)) {
+                output.writeBool(2, success_);
+            }
+            if (((bitField0_ & 0x00000004) == 0x00000004)) {
+                output.writeBytes(3, getMessageBytes());
+            }
+            getUnknownFields().writeTo(output);
+        }
+
+        private int memoizedSerializedSize = -1;
+
+        @Override
+        public int getSerializedSize() {
+            int size = memoizedSerializedSize;
+            if (size != -1)
+                return size;
+
+            size = 0;
+            if (((bitField0_ & 0x00000001) == 0x00000001)) {
+                size += com.google.protobuf.CodedOutputStream.computeInt64Size(1, jobId_);
+            }
+            if (((bitField0_ & 0x00000002) == 0x00000002)) {
+                size += com.google.protobuf.CodedOutputStream.computeBoolSize(2, success_);
+            }
+            if (((bitField0_ & 0x00000004) == 0x00000004)) {
+                size += com.google.protobuf.CodedOutputStream.computeBytesSize(3, getMessageBytes());
+            }
+            size += getUnknownFields().getSerializedSize();
+            memoizedSerializedSize = size;
+            return size;
+        }
+
+        private static final long serialVersionUID = 0L;
+
+        @java.lang.Override
+        protected java.lang.Object writeReplace() throws java.io.ObjectStreamException {
+            return super.writeReplace();
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse parseFrom(com.google.protobuf.ByteString data)
+                throws com.google.protobuf.InvalidProtocolBufferException {
+            return PARSER.parseFrom(data);
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse parseFrom(com.google.protobuf.ByteString data,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+            return PARSER.parseFrom(data, extensionRegistry);
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse parseFrom(byte[] data)
+                throws com.google.protobuf.InvalidProtocolBufferException {
+            return PARSER.parseFrom(data);
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse parseFrom(byte[] data,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+            return PARSER.parseFrom(data, extensionRegistry);
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse parseFrom(java.io.InputStream input)
+                throws java.io.IOException {
+            return PARSER.parseFrom(input);
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse parseFrom(java.io.InputStream input,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            return PARSER.parseFrom(input, extensionRegistry);
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse parseDelimitedFrom(java.io.InputStream input)
+                throws java.io.IOException {
+            return PARSER.parseDelimitedFrom(input);
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse parseDelimitedFrom(java.io.InputStream input,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            return PARSER.parseDelimitedFrom(input, extensionRegistry);
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse parseFrom(com.google.protobuf.CodedInputStream input)
+                throws java.io.IOException {
+            return PARSER.parseFrom(input);
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse parseFrom(com.google.protobuf.CodedInputStream input,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            return PARSER.parseFrom(input, extensionRegistry);
+        }
+
+        public static Builder newBuilder() {
+            return Builder.create();
+        }
+
+        @Override
+        public Builder newBuilderForType() {
+            return newBuilder();
+        }
+
+        public static Builder newBuilder(com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse prototype) {
+            return newBuilder().mergeFrom(prototype);
+        }
+
+        @Override
+        public Builder toBuilder() {
+            return newBuilder(this);
+        }
+
+        @java.lang.Override
+        protected Builder newBuilderForType(com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+            Builder builder = new Builder(parent);
+            return builder;
+        }
+
+        /**
+         * Protobuf type {@code DeleteServerSubmitJobResponse}
+         */
+        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+                // @@protoc_insertion_point(builder_implements:DeleteServerSubmitJobResponse)
+                com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponseOrBuilder {
+            public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+                return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_DeleteServerSubmitJobResponse_descriptor;
+            }
+
+            @Override
+            protected com.google.protobuf.GeneratedMessage.FieldAccessorTable internalGetFieldAccessorTable() {
+                return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_DeleteServerSubmitJobResponse_fieldAccessorTable
+                        .ensureFieldAccessorsInitialized(com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse.class,
+                                com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse.Builder.class);
+            }
+
+            // Construct using
+            // com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse.newBuilder()
+            private Builder() {
+                maybeForceBuilderInitialization();
+            }
+
+            private Builder(com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+                super(parent);
+                maybeForceBuilderInitialization();
+            }
+
+            private void maybeForceBuilderInitialization() {
+                if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+                }
+            }
+
+            private static Builder create() {
+                return new Builder();
+            }
+
+            @Override
+            public Builder clear() {
+                super.clear();
+                jobId_ = 0L;
+                bitField0_ = (bitField0_ & ~0x00000001);
+                success_ = false;
+                bitField0_ = (bitField0_ & ~0x00000002);
+                message_ = "";
+                bitField0_ = (bitField0_ & ~0x00000004);
+                return this;
+            }
+
+            @Override
+            public Builder clone() {
+                return create().mergeFrom(buildPartial());
+            }
+
+            @Override
+            public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
+                return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_DeleteServerSubmitJobResponse_descriptor;
+            }
+
+            @Override
+            public com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse getDefaultInstanceForType() {
+                return com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse.getDefaultInstance();
+            }
+
+            @Override
+            public com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse build() {
+                com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse result = buildPartial();
+                if (!result.isInitialized()) {
+                    throw newUninitializedMessageException(result);
+                }
+                return result;
+            }
+
+            @Override
+            public com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse buildPartial() {
+                com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse result = new com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse(
+                        this);
+                int from_bitField0_ = bitField0_;
+                int to_bitField0_ = 0;
+                if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+                    to_bitField0_ |= 0x00000001;
+                }
+                result.jobId_ = jobId_;
+                if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+                    to_bitField0_ |= 0x00000002;
+                }
+                result.success_ = success_;
+                if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+                    to_bitField0_ |= 0x00000004;
+                }
+                result.message_ = message_;
+                result.bitField0_ = to_bitField0_;
+                onBuilt();
+                return result;
+            }
+
+            @Override
+            public Builder mergeFrom(com.google.protobuf.Message other) {
+                if (other instanceof com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse) {
+                    return mergeFrom((com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse) other);
+                } else {
+                    super.mergeFrom(other);
+                    return this;
+                }
+            }
+
+            public Builder mergeFrom(com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse other) {
+                if (other == com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse.getDefaultInstance())
+                    return this;
+                if (other.hasJobId()) {
+                    setJobId(other.getJobId());
+                }
+                if (other.hasSuccess()) {
+                    setSuccess(other.getSuccess());
+                }
+                if (other.hasMessage()) {
+                    bitField0_ |= 0x00000004;
+                    message_ = other.message_;
+                    onChanged();
+                }
+                this.mergeUnknownFields(other.getUnknownFields());
+                return this;
+            }
+
+            @Override
+            public final boolean isInitialized() {
+                if (!hasSuccess()) {
+
+                    return false;
+                }
+                return true;
+            }
+
+            @Override
+            public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                    throws java.io.IOException {
+                com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse parsedMessage = null;
+                try {
+                    parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+                } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+                    parsedMessage = (com.mogujie.jarvis.protocol.SubmitJobProtos.DeleteServerSubmitJobResponse) e.getUnfinishedMessage();
+                    throw e;
+                } finally {
+                    if (parsedMessage != null) {
+                        mergeFrom(parsedMessage);
+                    }
+                }
+                return this;
+            }
+
+            private int bitField0_;
+
+            private long jobId_;
+
+            /**
+             * <code>optional int64 job_id = 1;</code>
+             */
+            @Override
+            public boolean hasJobId() {
+                return ((bitField0_ & 0x00000001) == 0x00000001);
+            }
+
+            /**
+             * <code>optional int64 job_id = 1;</code>
+             */
+            @Override
+            public long getJobId() {
+                return jobId_;
+            }
+
+            /**
+             * <code>optional int64 job_id = 1;</code>
+             */
+            public Builder setJobId(long value) {
+                bitField0_ |= 0x00000001;
+                jobId_ = value;
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>optional int64 job_id = 1;</code>
+             */
+            public Builder clearJobId() {
+                bitField0_ = (bitField0_ & ~0x00000001);
+                jobId_ = 0L;
+                onChanged();
+                return this;
+            }
+
+            private boolean success_;
+
+            /**
+             * <code>required bool success = 2;</code>
+             */
+            @Override
+            public boolean hasSuccess() {
+                return ((bitField0_ & 0x00000002) == 0x00000002);
+            }
+
+            /**
+             * <code>required bool success = 2;</code>
+             */
+            @Override
+            public boolean getSuccess() {
+                return success_;
+            }
+
+            /**
+             * <code>required bool success = 2;</code>
+             */
+            public Builder setSuccess(boolean value) {
+                bitField0_ |= 0x00000002;
+                success_ = value;
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>required bool success = 2;</code>
+             */
+            public Builder clearSuccess() {
+                bitField0_ = (bitField0_ & ~0x00000002);
+                success_ = false;
+                onChanged();
+                return this;
+            }
+
+            private java.lang.Object message_ = "";
+
+            /**
+             * <code>optional string message = 3 [default = ""];</code>
+             */
+            @Override
+            public boolean hasMessage() {
+                return ((bitField0_ & 0x00000004) == 0x00000004);
+            }
+
+            /**
+             * <code>optional string message = 3 [default = ""];</code>
+             */
+            @Override
+            public java.lang.String getMessage() {
+                java.lang.Object ref = message_;
+                if (!(ref instanceof java.lang.String)) {
+                    com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                    java.lang.String s = bs.toStringUtf8();
+                    if (bs.isValidUtf8()) {
+                        message_ = s;
+                    }
+                    return s;
+                } else {
+                    return (java.lang.String) ref;
+                }
+            }
+
+            /**
+             * <code>optional string message = 3 [default = ""];</code>
+             */
+            @Override
+            public com.google.protobuf.ByteString getMessageBytes() {
+                java.lang.Object ref = message_;
+                if (ref instanceof String) {
+                    com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                    message_ = b;
+                    return b;
+                } else {
+                    return (com.google.protobuf.ByteString) ref;
+                }
+            }
+
+            /**
+             * <code>optional string message = 3 [default = ""];</code>
+             */
+            public Builder setMessage(java.lang.String value) {
+                if (value == null) {
+                    throw new NullPointerException();
+                }
+                bitField0_ |= 0x00000004;
+                message_ = value;
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>optional string message = 3 [default = ""];</code>
+             */
+            public Builder clearMessage() {
+                bitField0_ = (bitField0_ & ~0x00000004);
+                message_ = getDefaultInstance().getMessage();
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>optional string message = 3 [default = ""];</code>
+             */
+            public Builder setMessageBytes(com.google.protobuf.ByteString value) {
+                if (value == null) {
+                    throw new NullPointerException();
+                }
+                bitField0_ |= 0x00000004;
+                message_ = value;
+                onChanged();
+                return this;
+            }
+
+            // @@protoc_insertion_point(builder_scope:DeleteServerSubmitJobResponse)
+        }
+
+        static {
+            defaultInstance = new DeleteServerSubmitJobResponse(true);
+            defaultInstance.initFields();
+        }
+
+        // @@protoc_insertion_point(class_scope:DeleteServerSubmitJobResponse)
     }
 
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      getSerializedSize();
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeBytes(1, getFullIdBytes());
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeBytes(2, getTaskNameBytes());
-      }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeBytes(3, getAppNameBytes());
-      }
-      if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        output.writeBytes(4, getUserBytes());
-      }
-      if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        output.writeBytes(5, getTaskTypeBytes());
-      }
-      if (((bitField0_ & 0x00000020) == 0x00000020)) {
-        output.writeBytes(6, getContentBytes());
-      }
-      if (((bitField0_ & 0x00000040) == 0x00000040)) {
-        output.writeInt32(7, priority_);
-      }
-      for (int i = 0; i < parameters_.size(); i++) {
-        output.writeMessage(8, parameters_.get(i));
-      }
-      if (((bitField0_ & 0x00000080) == 0x00000080)) {
-        output.writeInt64(9, schedulingTime_);
-      }
-      getUnknownFields().writeTo(output);
+    public interface ServerSubmitTaskRequestOrBuilder extends
+            // @@protoc_insertion_point(interface_extends:ServerSubmitTaskRequest)
+            com.google.protobuf.MessageOrBuilder {
+
+        /**
+         * <code>required string full_id = 1;</code>
+         */
+        boolean hasFullId();
+
+        /**
+         * <code>required string full_id = 1;</code>
+         */
+        java.lang.String getFullId();
+
+        /**
+         * <code>required string full_id = 1;</code>
+         */
+        com.google.protobuf.ByteString getFullIdBytes();
+
+        /**
+         * <code>required string task_name = 2;</code>
+         */
+        boolean hasTaskName();
+
+        /**
+         * <code>required string task_name = 2;</code>
+         */
+        java.lang.String getTaskName();
+
+        /**
+         * <code>required string task_name = 2;</code>
+         */
+        com.google.protobuf.ByteString getTaskNameBytes();
+
+        /**
+         * <code>required string app_name = 3;</code>
+         */
+        boolean hasAppName();
+
+        /**
+         * <code>required string app_name = 3;</code>
+         */
+        java.lang.String getAppName();
+
+        /**
+         * <code>required string app_name = 3;</code>
+         */
+        com.google.protobuf.ByteString getAppNameBytes();
+
+        /**
+         * <code>required string user = 4;</code>
+         */
+        boolean hasUser();
+
+        /**
+         * <code>required string user = 4;</code>
+         */
+        java.lang.String getUser();
+
+        /**
+         * <code>required string user = 4;</code>
+         */
+        com.google.protobuf.ByteString getUserBytes();
+
+        /**
+         * <code>required string task_type = 5;</code>
+         */
+        boolean hasTaskType();
+
+        /**
+         * <code>required string task_type = 5;</code>
+         */
+        java.lang.String getTaskType();
+
+        /**
+         * <code>required string task_type = 5;</code>
+         */
+        com.google.protobuf.ByteString getTaskTypeBytes();
+
+        /**
+         * <code>required string content = 6;</code>
+         */
+        boolean hasContent();
+
+        /**
+         * <code>required string content = 6;</code>
+         */
+        java.lang.String getContent();
+
+        /**
+         * <code>required string content = 6;</code>
+         */
+        com.google.protobuf.ByteString getContentBytes();
+
+        /**
+         * <code>optional int32 priority = 7 [default = 1];</code>
+         */
+        boolean hasPriority();
+
+        /**
+         * <code>optional int32 priority = 7 [default = 1];</code>
+         */
+        int getPriority();
+
+        /**
+         * <code>repeated .MapEntry parameters = 8;</code>
+         */
+        java.util.List<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry> getParametersList();
+
+        /**
+         * <code>repeated .MapEntry parameters = 8;</code>
+         */
+        com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry getParameters(int index);
+
+        /**
+         * <code>repeated .MapEntry parameters = 8;</code>
+         */
+        int getParametersCount();
+
+        /**
+         * <code>repeated .MapEntry parameters = 8;</code>
+         */
+        java.util.List<? extends com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder> getParametersOrBuilderList();
+
+        /**
+         * <code>repeated .MapEntry parameters = 8;</code>
+         */
+        com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder getParametersOrBuilder(int index);
+
+        /**
+         * <code>required int64 scheduling_time = 9;</code>
+         */
+        boolean hasSchedulingTime();
+
+        /**
+         * <code>required int64 scheduling_time = 9;</code>
+         */
+        long getSchedulingTime();
     }
 
-    private int memoizedSerializedSize = -1;
-    public int getSerializedSize() {
-      int size = memoizedSerializedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(1, getFullIdBytes());
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(2, getTaskNameBytes());
-      }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(3, getAppNameBytes());
-      }
-      if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(4, getUserBytes());
-      }
-      if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(5, getTaskTypeBytes());
-      }
-      if (((bitField0_ & 0x00000020) == 0x00000020)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(6, getContentBytes());
-      }
-      if (((bitField0_ & 0x00000040) == 0x00000040)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(7, priority_);
-      }
-      for (int i = 0; i < parameters_.size(); i++) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(8, parameters_.get(i));
-      }
-      if (((bitField0_ & 0x00000080) == 0x00000080)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(9, schedulingTime_);
-      }
-      size += getUnknownFields().getSerializedSize();
-      memoizedSerializedSize = size;
-      return size;
-    }
-
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    protected java.lang.Object writeReplace()
-        throws java.io.ObjectStreamException {
-      return super.writeReplace();
-    }
-
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input);
-    }
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input, extensionRegistry);
-    }
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-
-    public static Builder newBuilder() { return Builder.create(); }
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest prototype) {
-      return newBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() { return newBuilder(this); }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
     /**
      * Protobuf type {@code ServerSubmitTaskRequest}
      */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:ServerSubmitTaskRequest)
-        com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequestOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_ServerSubmitTaskRequest_descriptor;
-      }
+    public static final class ServerSubmitTaskRequest extends com.google.protobuf.GeneratedMessage implements
+            // @@protoc_insertion_point(message_implements:ServerSubmitTaskRequest)
+            ServerSubmitTaskRequestOrBuilder {
+        // Use ServerSubmitTaskRequest.newBuilder() to construct.
+        private ServerSubmitTaskRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+            super(builder);
+            this.unknownFields = builder.getUnknownFields();
+        }
 
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_ServerSubmitTaskRequest_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest.class, com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest.Builder.class);
-      }
+        private ServerSubmitTaskRequest(boolean noInit) {
+            this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+        }
 
-      // Construct using com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
+        private static final ServerSubmitTaskRequest defaultInstance;
 
-      private Builder(
-          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-          getParametersFieldBuilder();
+        public static ServerSubmitTaskRequest getDefaultInstance() {
+            return defaultInstance;
         }
-      }
-      private static Builder create() {
-        return new Builder();
-      }
 
-      public Builder clear() {
-        super.clear();
-        fullId_ = "";
-        bitField0_ = (bitField0_ & ~0x00000001);
-        taskName_ = "";
-        bitField0_ = (bitField0_ & ~0x00000002);
-        appName_ = "";
-        bitField0_ = (bitField0_ & ~0x00000004);
-        user_ = "";
-        bitField0_ = (bitField0_ & ~0x00000008);
-        taskType_ = "";
-        bitField0_ = (bitField0_ & ~0x00000010);
-        content_ = "";
-        bitField0_ = (bitField0_ & ~0x00000020);
-        priority_ = 1;
-        bitField0_ = (bitField0_ & ~0x00000040);
-        if (parametersBuilder_ == null) {
-          parameters_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000080);
-        } else {
-          parametersBuilder_.clear();
+        @Override
+        public ServerSubmitTaskRequest getDefaultInstanceForType() {
+            return defaultInstance;
         }
-        schedulingTime_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000100);
-        return this;
-      }
 
-      public Builder clone() {
-        return create().mergeFrom(buildPartial());
-      }
+        private final com.google.protobuf.UnknownFieldSet unknownFields;
 
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_ServerSubmitTaskRequest_descriptor;
-      }
+        @java.lang.Override
+        public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
+            return this.unknownFields;
+        }
 
-      public com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest getDefaultInstanceForType() {
-        return com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest.getDefaultInstance();
-      }
+        private ServerSubmitTaskRequest(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                throws com.google.protobuf.InvalidProtocolBufferException {
+            initFields();
+            int mutable_bitField0_ = 0;
+            com.google.protobuf.UnknownFieldSet.Builder unknownFields = com.google.protobuf.UnknownFieldSet.newBuilder();
+            try {
+                boolean done = false;
+                while (!done) {
+                    int tag = input.readTag();
+                    switch (tag) {
+                        case 0:
+                            done = true;
+                            break;
+                        default: {
+                            if (!parseUnknownField(input, unknownFields, extensionRegistry, tag)) {
+                                done = true;
+                            }
+                            break;
+                        }
+                        case 10: {
+                            com.google.protobuf.ByteString bs = input.readBytes();
+                            bitField0_ |= 0x00000001;
+                            fullId_ = bs;
+                            break;
+                        }
+                        case 18: {
+                            com.google.protobuf.ByteString bs = input.readBytes();
+                            bitField0_ |= 0x00000002;
+                            taskName_ = bs;
+                            break;
+                        }
+                        case 26: {
+                            com.google.protobuf.ByteString bs = input.readBytes();
+                            bitField0_ |= 0x00000004;
+                            appName_ = bs;
+                            break;
+                        }
+                        case 34: {
+                            com.google.protobuf.ByteString bs = input.readBytes();
+                            bitField0_ |= 0x00000008;
+                            user_ = bs;
+                            break;
+                        }
+                        case 42: {
+                            com.google.protobuf.ByteString bs = input.readBytes();
+                            bitField0_ |= 0x00000010;
+                            taskType_ = bs;
+                            break;
+                        }
+                        case 50: {
+                            com.google.protobuf.ByteString bs = input.readBytes();
+                            bitField0_ |= 0x00000020;
+                            content_ = bs;
+                            break;
+                        }
+                        case 56: {
+                            bitField0_ |= 0x00000040;
+                            priority_ = input.readInt32();
+                            break;
+                        }
+                        case 66: {
+                            if (!((mutable_bitField0_ & 0x00000080) == 0x00000080)) {
+                                parameters_ = new java.util.ArrayList<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry>();
+                                mutable_bitField0_ |= 0x00000080;
+                            }
+                            parameters_.add(input.readMessage(com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.PARSER, extensionRegistry));
+                            break;
+                        }
+                        case 72: {
+                            bitField0_ |= 0x00000080;
+                            schedulingTime_ = input.readInt64();
+                            break;
+                        }
+                    }
+                }
+            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+                throw e.setUnfinishedMessage(this);
+            } catch (java.io.IOException e) {
+                throw new com.google.protobuf.InvalidProtocolBufferException(e.getMessage()).setUnfinishedMessage(this);
+            } finally {
+                if (((mutable_bitField0_ & 0x00000080) == 0x00000080)) {
+                    parameters_ = java.util.Collections.unmodifiableList(parameters_);
+                }
+                this.unknownFields = unknownFields.build();
+                makeExtensionsImmutable();
+            }
+        }
 
-      public com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest build() {
-        com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
+        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+            return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_ServerSubmitTaskRequest_descriptor;
         }
-        return result;
-      }
 
-      public com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest buildPartial() {
-        com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest result = new com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
+        @Override
+        protected com.google.protobuf.GeneratedMessage.FieldAccessorTable internalGetFieldAccessorTable() {
+            return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_ServerSubmitTaskRequest_fieldAccessorTable
+                    .ensureFieldAccessorsInitialized(com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest.class,
+                            com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest.Builder.class);
         }
-        result.fullId_ = fullId_;
-        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.taskName_ = taskName_;
-        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
-          to_bitField0_ |= 0x00000004;
-        }
-        result.appName_ = appName_;
-        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
-          to_bitField0_ |= 0x00000008;
-        }
-        result.user_ = user_;
-        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
-          to_bitField0_ |= 0x00000010;
-        }
-        result.taskType_ = taskType_;
-        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
-          to_bitField0_ |= 0x00000020;
-        }
-        result.content_ = content_;
-        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
-          to_bitField0_ |= 0x00000040;
-        }
-        result.priority_ = priority_;
-        if (parametersBuilder_ == null) {
-          if (((bitField0_ & 0x00000080) == 0x00000080)) {
-            parameters_ = java.util.Collections.unmodifiableList(parameters_);
-            bitField0_ = (bitField0_ & ~0x00000080);
-          }
-          result.parameters_ = parameters_;
-        } else {
-          result.parameters_ = parametersBuilder_.build();
-        }
-        if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
-          to_bitField0_ |= 0x00000080;
-        }
-        result.schedulingTime_ = schedulingTime_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
 
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest) {
-          return mergeFrom((com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
+        public static com.google.protobuf.Parser<ServerSubmitTaskRequest> PARSER = new com.google.protobuf.AbstractParser<ServerSubmitTaskRequest>() {
+            @Override
+            public ServerSubmitTaskRequest parsePartialFrom(com.google.protobuf.CodedInputStream input,
+                    com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+                return new ServerSubmitTaskRequest(input, extensionRegistry);
+            }
+        };
 
-      public Builder mergeFrom(com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest other) {
-        if (other == com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest.getDefaultInstance()) return this;
-        if (other.hasFullId()) {
-          bitField0_ |= 0x00000001;
-          fullId_ = other.fullId_;
-          onChanged();
+        @java.lang.Override
+        public com.google.protobuf.Parser<ServerSubmitTaskRequest> getParserForType() {
+            return PARSER;
         }
-        if (other.hasTaskName()) {
-          bitField0_ |= 0x00000002;
-          taskName_ = other.taskName_;
-          onChanged();
+
+        private int bitField0_;
+        public static final int FULL_ID_FIELD_NUMBER = 1;
+        private java.lang.Object fullId_;
+
+        /**
+         * <code>required string full_id = 1;</code>
+         */
+        @Override
+        public boolean hasFullId() {
+            return ((bitField0_ & 0x00000001) == 0x00000001);
         }
-        if (other.hasAppName()) {
-          bitField0_ |= 0x00000004;
-          appName_ = other.appName_;
-          onChanged();
-        }
-        if (other.hasUser()) {
-          bitField0_ |= 0x00000008;
-          user_ = other.user_;
-          onChanged();
-        }
-        if (other.hasTaskType()) {
-          bitField0_ |= 0x00000010;
-          taskType_ = other.taskType_;
-          onChanged();
-        }
-        if (other.hasContent()) {
-          bitField0_ |= 0x00000020;
-          content_ = other.content_;
-          onChanged();
-        }
-        if (other.hasPriority()) {
-          setPriority(other.getPriority());
-        }
-        if (parametersBuilder_ == null) {
-          if (!other.parameters_.isEmpty()) {
-            if (parameters_.isEmpty()) {
-              parameters_ = other.parameters_;
-              bitField0_ = (bitField0_ & ~0x00000080);
+
+        /**
+         * <code>required string full_id = 1;</code>
+         */
+        @Override
+        public java.lang.String getFullId() {
+            java.lang.Object ref = fullId_;
+            if (ref instanceof java.lang.String) {
+                return (java.lang.String) ref;
             } else {
-              ensureParametersIsMutable();
-              parameters_.addAll(other.parameters_);
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                if (bs.isValidUtf8()) {
+                    fullId_ = s;
+                }
+                return s;
             }
-            onChanged();
-          }
-        } else {
-          if (!other.parameters_.isEmpty()) {
-            if (parametersBuilder_.isEmpty()) {
-              parametersBuilder_.dispose();
-              parametersBuilder_ = null;
-              parameters_ = other.parameters_;
-              bitField0_ = (bitField0_ & ~0x00000080);
-              parametersBuilder_ = 
-                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
-                   getParametersFieldBuilder() : null;
+        }
+
+        /**
+         * <code>required string full_id = 1;</code>
+         */
+        @Override
+        public com.google.protobuf.ByteString getFullIdBytes() {
+            java.lang.Object ref = fullId_;
+            if (ref instanceof java.lang.String) {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                fullId_ = b;
+                return b;
             } else {
-              parametersBuilder_.addAllMessages(other.parameters_);
+                return (com.google.protobuf.ByteString) ref;
             }
-          }
         }
-        if (other.hasSchedulingTime()) {
-          setSchedulingTime(other.getSchedulingTime());
-        }
-        this.mergeUnknownFields(other.getUnknownFields());
-        return this;
-      }
 
-      public final boolean isInitialized() {
-        if (!hasFullId()) {
-          
-          return false;
-        }
-        if (!hasTaskName()) {
-          
-          return false;
-        }
-        if (!hasAppName()) {
-          
-          return false;
-        }
-        if (!hasUser()) {
-          
-          return false;
-        }
-        if (!hasTaskType()) {
-          
-          return false;
-        }
-        if (!hasContent()) {
-          
-          return false;
-        }
-        if (!hasSchedulingTime()) {
-          
-          return false;
-        }
-        for (int i = 0; i < getParametersCount(); i++) {
-          if (!getParameters(i).isInitialized()) {
-            
-            return false;
-          }
-        }
-        return true;
-      }
+        public static final int TASK_NAME_FIELD_NUMBER = 2;
+        private java.lang.Object taskName_;
 
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest) e.getUnfinishedMessage();
-          throw e;
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
+        /**
+         * <code>required string task_name = 2;</code>
+         */
+        @Override
+        public boolean hasTaskName() {
+            return ((bitField0_ & 0x00000002) == 0x00000002);
         }
-        return this;
-      }
-      private int bitField0_;
 
-      private java.lang.Object fullId_ = "";
-      /**
-       * <code>required string full_id = 1;</code>
-       */
-      public boolean hasFullId() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      /**
-       * <code>required string full_id = 1;</code>
-       */
-      public java.lang.String getFullId() {
-        java.lang.Object ref = fullId_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            fullId_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>required string full_id = 1;</code>
-       */
-      public com.google.protobuf.ByteString
-          getFullIdBytes() {
-        java.lang.Object ref = fullId_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          fullId_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>required string full_id = 1;</code>
-       */
-      public Builder setFullId(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-        fullId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string full_id = 1;</code>
-       */
-      public Builder clearFullId() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        fullId_ = getDefaultInstance().getFullId();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string full_id = 1;</code>
-       */
-      public Builder setFullIdBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-        fullId_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object taskName_ = "";
-      /**
-       * <code>required string task_name = 2;</code>
-       */
-      public boolean hasTaskName() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
-      }
-      /**
-       * <code>required string task_name = 2;</code>
-       */
-      public java.lang.String getTaskName() {
-        java.lang.Object ref = taskName_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            taskName_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>required string task_name = 2;</code>
-       */
-      public com.google.protobuf.ByteString
-          getTaskNameBytes() {
-        java.lang.Object ref = taskName_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          taskName_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>required string task_name = 2;</code>
-       */
-      public Builder setTaskName(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
-        taskName_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string task_name = 2;</code>
-       */
-      public Builder clearTaskName() {
-        bitField0_ = (bitField0_ & ~0x00000002);
-        taskName_ = getDefaultInstance().getTaskName();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string task_name = 2;</code>
-       */
-      public Builder setTaskNameBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
-        taskName_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object appName_ = "";
-      /**
-       * <code>required string app_name = 3;</code>
-       */
-      public boolean hasAppName() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
-      }
-      /**
-       * <code>required string app_name = 3;</code>
-       */
-      public java.lang.String getAppName() {
-        java.lang.Object ref = appName_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            appName_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>required string app_name = 3;</code>
-       */
-      public com.google.protobuf.ByteString
-          getAppNameBytes() {
-        java.lang.Object ref = appName_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          appName_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>required string app_name = 3;</code>
-       */
-      public Builder setAppName(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
-        appName_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string app_name = 3;</code>
-       */
-      public Builder clearAppName() {
-        bitField0_ = (bitField0_ & ~0x00000004);
-        appName_ = getDefaultInstance().getAppName();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string app_name = 3;</code>
-       */
-      public Builder setAppNameBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
-        appName_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object user_ = "";
-      /**
-       * <code>required string user = 4;</code>
-       */
-      public boolean hasUser() {
-        return ((bitField0_ & 0x00000008) == 0x00000008);
-      }
-      /**
-       * <code>required string user = 4;</code>
-       */
-      public java.lang.String getUser() {
-        java.lang.Object ref = user_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            user_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>required string user = 4;</code>
-       */
-      public com.google.protobuf.ByteString
-          getUserBytes() {
-        java.lang.Object ref = user_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          user_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>required string user = 4;</code>
-       */
-      public Builder setUser(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
-        user_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string user = 4;</code>
-       */
-      public Builder clearUser() {
-        bitField0_ = (bitField0_ & ~0x00000008);
-        user_ = getDefaultInstance().getUser();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string user = 4;</code>
-       */
-      public Builder setUserBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
-        user_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object taskType_ = "";
-      /**
-       * <code>required string task_type = 5;</code>
-       */
-      public boolean hasTaskType() {
-        return ((bitField0_ & 0x00000010) == 0x00000010);
-      }
-      /**
-       * <code>required string task_type = 5;</code>
-       */
-      public java.lang.String getTaskType() {
-        java.lang.Object ref = taskType_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            taskType_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>required string task_type = 5;</code>
-       */
-      public com.google.protobuf.ByteString
-          getTaskTypeBytes() {
-        java.lang.Object ref = taskType_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          taskType_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>required string task_type = 5;</code>
-       */
-      public Builder setTaskType(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000010;
-        taskType_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string task_type = 5;</code>
-       */
-      public Builder clearTaskType() {
-        bitField0_ = (bitField0_ & ~0x00000010);
-        taskType_ = getDefaultInstance().getTaskType();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string task_type = 5;</code>
-       */
-      public Builder setTaskTypeBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000010;
-        taskType_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object content_ = "";
-      /**
-       * <code>required string content = 6;</code>
-       */
-      public boolean hasContent() {
-        return ((bitField0_ & 0x00000020) == 0x00000020);
-      }
-      /**
-       * <code>required string content = 6;</code>
-       */
-      public java.lang.String getContent() {
-        java.lang.Object ref = content_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            content_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>required string content = 6;</code>
-       */
-      public com.google.protobuf.ByteString
-          getContentBytes() {
-        java.lang.Object ref = content_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          content_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>required string content = 6;</code>
-       */
-      public Builder setContent(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000020;
-        content_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string content = 6;</code>
-       */
-      public Builder clearContent() {
-        bitField0_ = (bitField0_ & ~0x00000020);
-        content_ = getDefaultInstance().getContent();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string content = 6;</code>
-       */
-      public Builder setContentBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000020;
-        content_ = value;
-        onChanged();
-        return this;
-      }
-
-      private int priority_ = 1;
-      /**
-       * <code>optional int32 priority = 7 [default = 1];</code>
-       */
-      public boolean hasPriority() {
-        return ((bitField0_ & 0x00000040) == 0x00000040);
-      }
-      /**
-       * <code>optional int32 priority = 7 [default = 1];</code>
-       */
-      public int getPriority() {
-        return priority_;
-      }
-      /**
-       * <code>optional int32 priority = 7 [default = 1];</code>
-       */
-      public Builder setPriority(int value) {
-        bitField0_ |= 0x00000040;
-        priority_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional int32 priority = 7 [default = 1];</code>
-       */
-      public Builder clearPriority() {
-        bitField0_ = (bitField0_ & ~0x00000040);
-        priority_ = 1;
-        onChanged();
-        return this;
-      }
-
-      private java.util.List<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry> parameters_ =
-        java.util.Collections.emptyList();
-      private void ensureParametersIsMutable() {
-        if (!((bitField0_ & 0x00000080) == 0x00000080)) {
-          parameters_ = new java.util.ArrayList<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry>(parameters_);
-          bitField0_ |= 0x00000080;
-         }
-      }
-
-      private com.google.protobuf.RepeatedFieldBuilder<
-          com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder> parametersBuilder_;
-
-      /**
-       * <code>repeated .MapEntry parameters = 8;</code>
-       */
-      public java.util.List<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry> getParametersList() {
-        if (parametersBuilder_ == null) {
-          return java.util.Collections.unmodifiableList(parameters_);
-        } else {
-          return parametersBuilder_.getMessageList();
-        }
-      }
-      /**
-       * <code>repeated .MapEntry parameters = 8;</code>
-       */
-      public int getParametersCount() {
-        if (parametersBuilder_ == null) {
-          return parameters_.size();
-        } else {
-          return parametersBuilder_.getCount();
-        }
-      }
-      /**
-       * <code>repeated .MapEntry parameters = 8;</code>
-       */
-      public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry getParameters(int index) {
-        if (parametersBuilder_ == null) {
-          return parameters_.get(index);
-        } else {
-          return parametersBuilder_.getMessage(index);
-        }
-      }
-      /**
-       * <code>repeated .MapEntry parameters = 8;</code>
-       */
-      public Builder setParameters(
-          int index, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry value) {
-        if (parametersBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureParametersIsMutable();
-          parameters_.set(index, value);
-          onChanged();
-        } else {
-          parametersBuilder_.setMessage(index, value);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .MapEntry parameters = 8;</code>
-       */
-      public Builder setParameters(
-          int index, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder builderForValue) {
-        if (parametersBuilder_ == null) {
-          ensureParametersIsMutable();
-          parameters_.set(index, builderForValue.build());
-          onChanged();
-        } else {
-          parametersBuilder_.setMessage(index, builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .MapEntry parameters = 8;</code>
-       */
-      public Builder addParameters(com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry value) {
-        if (parametersBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureParametersIsMutable();
-          parameters_.add(value);
-          onChanged();
-        } else {
-          parametersBuilder_.addMessage(value);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .MapEntry parameters = 8;</code>
-       */
-      public Builder addParameters(
-          int index, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry value) {
-        if (parametersBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureParametersIsMutable();
-          parameters_.add(index, value);
-          onChanged();
-        } else {
-          parametersBuilder_.addMessage(index, value);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .MapEntry parameters = 8;</code>
-       */
-      public Builder addParameters(
-          com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder builderForValue) {
-        if (parametersBuilder_ == null) {
-          ensureParametersIsMutable();
-          parameters_.add(builderForValue.build());
-          onChanged();
-        } else {
-          parametersBuilder_.addMessage(builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .MapEntry parameters = 8;</code>
-       */
-      public Builder addParameters(
-          int index, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder builderForValue) {
-        if (parametersBuilder_ == null) {
-          ensureParametersIsMutable();
-          parameters_.add(index, builderForValue.build());
-          onChanged();
-        } else {
-          parametersBuilder_.addMessage(index, builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .MapEntry parameters = 8;</code>
-       */
-      public Builder addAllParameters(
-          java.lang.Iterable<? extends com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry> values) {
-        if (parametersBuilder_ == null) {
-          ensureParametersIsMutable();
-          com.google.protobuf.AbstractMessageLite.Builder.addAll(
-              values, parameters_);
-          onChanged();
-        } else {
-          parametersBuilder_.addAllMessages(values);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .MapEntry parameters = 8;</code>
-       */
-      public Builder clearParameters() {
-        if (parametersBuilder_ == null) {
-          parameters_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000080);
-          onChanged();
-        } else {
-          parametersBuilder_.clear();
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .MapEntry parameters = 8;</code>
-       */
-      public Builder removeParameters(int index) {
-        if (parametersBuilder_ == null) {
-          ensureParametersIsMutable();
-          parameters_.remove(index);
-          onChanged();
-        } else {
-          parametersBuilder_.remove(index);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .MapEntry parameters = 8;</code>
-       */
-      public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder getParametersBuilder(
-          int index) {
-        return getParametersFieldBuilder().getBuilder(index);
-      }
-      /**
-       * <code>repeated .MapEntry parameters = 8;</code>
-       */
-      public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder getParametersOrBuilder(
-          int index) {
-        if (parametersBuilder_ == null) {
-          return parameters_.get(index);  } else {
-          return parametersBuilder_.getMessageOrBuilder(index);
-        }
-      }
-      /**
-       * <code>repeated .MapEntry parameters = 8;</code>
-       */
-      public java.util.List<? extends com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder> 
-           getParametersOrBuilderList() {
-        if (parametersBuilder_ != null) {
-          return parametersBuilder_.getMessageOrBuilderList();
-        } else {
-          return java.util.Collections.unmodifiableList(parameters_);
-        }
-      }
-      /**
-       * <code>repeated .MapEntry parameters = 8;</code>
-       */
-      public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder addParametersBuilder() {
-        return getParametersFieldBuilder().addBuilder(
-            com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.getDefaultInstance());
-      }
-      /**
-       * <code>repeated .MapEntry parameters = 8;</code>
-       */
-      public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder addParametersBuilder(
-          int index) {
-        return getParametersFieldBuilder().addBuilder(
-            index, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.getDefaultInstance());
-      }
-      /**
-       * <code>repeated .MapEntry parameters = 8;</code>
-       */
-      public java.util.List<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder> 
-           getParametersBuilderList() {
-        return getParametersFieldBuilder().getBuilderList();
-      }
-      private com.google.protobuf.RepeatedFieldBuilder<
-          com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder> 
-          getParametersFieldBuilder() {
-        if (parametersBuilder_ == null) {
-          parametersBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
-              com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder>(
-                  parameters_,
-                  ((bitField0_ & 0x00000080) == 0x00000080),
-                  getParentForChildren(),
-                  isClean());
-          parameters_ = null;
-        }
-        return parametersBuilder_;
-      }
-
-      private long schedulingTime_ ;
-      /**
-       * <code>required int64 scheduling_time = 9;</code>
-       */
-      public boolean hasSchedulingTime() {
-        return ((bitField0_ & 0x00000100) == 0x00000100);
-      }
-      /**
-       * <code>required int64 scheduling_time = 9;</code>
-       */
-      public long getSchedulingTime() {
-        return schedulingTime_;
-      }
-      /**
-       * <code>required int64 scheduling_time = 9;</code>
-       */
-      public Builder setSchedulingTime(long value) {
-        bitField0_ |= 0x00000100;
-        schedulingTime_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required int64 scheduling_time = 9;</code>
-       */
-      public Builder clearSchedulingTime() {
-        bitField0_ = (bitField0_ & ~0x00000100);
-        schedulingTime_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      // @@protoc_insertion_point(builder_scope:ServerSubmitTaskRequest)
-    }
-
-    static {
-      defaultInstance = new ServerSubmitTaskRequest(true);
-      defaultInstance.initFields();
-    }
-
-    // @@protoc_insertion_point(class_scope:ServerSubmitTaskRequest)
-  }
-
-  public interface WorkerSubmitTaskResponseOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:WorkerSubmitTaskResponse)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <code>optional bool accept = 1;</code>
-     */
-    boolean hasAccept();
-    /**
-     * <code>optional bool accept = 1;</code>
-     */
-    boolean getAccept();
-
-    /**
-     * <code>required bool success = 2;</code>
-     */
-    boolean hasSuccess();
-    /**
-     * <code>required bool success = 2;</code>
-     */
-    boolean getSuccess();
-
-    /**
-     * <code>optional string message = 3 [default = ""];</code>
-     */
-    boolean hasMessage();
-    /**
-     * <code>optional string message = 3 [default = ""];</code>
-     */
-    java.lang.String getMessage();
-    /**
-     * <code>optional string message = 3 [default = ""];</code>
-     */
-    com.google.protobuf.ByteString
-        getMessageBytes();
-  }
-  /**
-   * Protobuf type {@code WorkerSubmitTaskResponse}
-   */
-  public static final class WorkerSubmitTaskResponse extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:WorkerSubmitTaskResponse)
-      WorkerSubmitTaskResponseOrBuilder {
-    // Use WorkerSubmitTaskResponse.newBuilder() to construct.
-    private WorkerSubmitTaskResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
-      super(builder);
-      this.unknownFields = builder.getUnknownFields();
-    }
-    private WorkerSubmitTaskResponse(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
-
-    private static final WorkerSubmitTaskResponse defaultInstance;
-    public static WorkerSubmitTaskResponse getDefaultInstance() {
-      return defaultInstance;
-    }
-
-    public WorkerSubmitTaskResponse getDefaultInstanceForType() {
-      return defaultInstance;
-    }
-
-    private final com.google.protobuf.UnknownFieldSet unknownFields;
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
-      return this.unknownFields;
-    }
-    private WorkerSubmitTaskResponse(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      initFields();
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
+        /**
+         * <code>required string task_name = 2;</code>
+         */
+        @Override
+        public java.lang.String getTaskName() {
+            java.lang.Object ref = taskName_;
+            if (ref instanceof java.lang.String) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                if (bs.isValidUtf8()) {
+                    taskName_ = s;
+                }
+                return s;
             }
-            case 8: {
-              bitField0_ |= 0x00000001;
-              accept_ = input.readBool();
-              break;
-            }
-            case 16: {
-              bitField0_ |= 0x00000002;
-              success_ = input.readBool();
-              break;
-            }
-            case 26: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000004;
-              message_ = bs;
-              break;
-            }
-          }
         }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e.getMessage()).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_WorkerSubmitTaskResponse_descriptor;
-    }
 
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_WorkerSubmitTaskResponse_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse.class, com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse.Builder.class);
-    }
-
-    public static com.google.protobuf.Parser<WorkerSubmitTaskResponse> PARSER =
-        new com.google.protobuf.AbstractParser<WorkerSubmitTaskResponse>() {
-      public WorkerSubmitTaskResponse parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new WorkerSubmitTaskResponse(input, extensionRegistry);
-      }
-    };
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<WorkerSubmitTaskResponse> getParserForType() {
-      return PARSER;
-    }
-
-    private int bitField0_;
-    public static final int ACCEPT_FIELD_NUMBER = 1;
-    private boolean accept_;
-    /**
-     * <code>optional bool accept = 1;</code>
-     */
-    public boolean hasAccept() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
-    /**
-     * <code>optional bool accept = 1;</code>
-     */
-    public boolean getAccept() {
-      return accept_;
-    }
-
-    public static final int SUCCESS_FIELD_NUMBER = 2;
-    private boolean success_;
-    /**
-     * <code>required bool success = 2;</code>
-     */
-    public boolean hasSuccess() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
-    }
-    /**
-     * <code>required bool success = 2;</code>
-     */
-    public boolean getSuccess() {
-      return success_;
-    }
-
-    public static final int MESSAGE_FIELD_NUMBER = 3;
-    private java.lang.Object message_;
-    /**
-     * <code>optional string message = 3 [default = ""];</code>
-     */
-    public boolean hasMessage() {
-      return ((bitField0_ & 0x00000004) == 0x00000004);
-    }
-    /**
-     * <code>optional string message = 3 [default = ""];</code>
-     */
-    public java.lang.String getMessage() {
-      java.lang.Object ref = message_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          message_ = s;
+        /**
+         * <code>required string task_name = 2;</code>
+         */
+        @Override
+        public com.google.protobuf.ByteString getTaskNameBytes() {
+            java.lang.Object ref = taskName_;
+            if (ref instanceof java.lang.String) {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                taskName_ = b;
+                return b;
+            } else {
+                return (com.google.protobuf.ByteString) ref;
+            }
         }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string message = 3 [default = ""];</code>
-     */
-    public com.google.protobuf.ByteString
-        getMessageBytes() {
-      java.lang.Object ref = message_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        message_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+
+        public static final int APP_NAME_FIELD_NUMBER = 3;
+        private java.lang.Object appName_;
+
+        /**
+         * <code>required string app_name = 3;</code>
+         */
+        @Override
+        public boolean hasAppName() {
+            return ((bitField0_ & 0x00000004) == 0x00000004);
+        }
+
+        /**
+         * <code>required string app_name = 3;</code>
+         */
+        @Override
+        public java.lang.String getAppName() {
+            java.lang.Object ref = appName_;
+            if (ref instanceof java.lang.String) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                if (bs.isValidUtf8()) {
+                    appName_ = s;
+                }
+                return s;
+            }
+        }
+
+        /**
+         * <code>required string app_name = 3;</code>
+         */
+        @Override
+        public com.google.protobuf.ByteString getAppNameBytes() {
+            java.lang.Object ref = appName_;
+            if (ref instanceof java.lang.String) {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                appName_ = b;
+                return b;
+            } else {
+                return (com.google.protobuf.ByteString) ref;
+            }
+        }
+
+        public static final int USER_FIELD_NUMBER = 4;
+        private java.lang.Object user_;
+
+        /**
+         * <code>required string user = 4;</code>
+         */
+        @Override
+        public boolean hasUser() {
+            return ((bitField0_ & 0x00000008) == 0x00000008);
+        }
+
+        /**
+         * <code>required string user = 4;</code>
+         */
+        @Override
+        public java.lang.String getUser() {
+            java.lang.Object ref = user_;
+            if (ref instanceof java.lang.String) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                if (bs.isValidUtf8()) {
+                    user_ = s;
+                }
+                return s;
+            }
+        }
+
+        /**
+         * <code>required string user = 4;</code>
+         */
+        @Override
+        public com.google.protobuf.ByteString getUserBytes() {
+            java.lang.Object ref = user_;
+            if (ref instanceof java.lang.String) {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                user_ = b;
+                return b;
+            } else {
+                return (com.google.protobuf.ByteString) ref;
+            }
+        }
+
+        public static final int TASK_TYPE_FIELD_NUMBER = 5;
+        private java.lang.Object taskType_;
+
+        /**
+         * <code>required string task_type = 5;</code>
+         */
+        @Override
+        public boolean hasTaskType() {
+            return ((bitField0_ & 0x00000010) == 0x00000010);
+        }
+
+        /**
+         * <code>required string task_type = 5;</code>
+         */
+        @Override
+        public java.lang.String getTaskType() {
+            java.lang.Object ref = taskType_;
+            if (ref instanceof java.lang.String) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                if (bs.isValidUtf8()) {
+                    taskType_ = s;
+                }
+                return s;
+            }
+        }
+
+        /**
+         * <code>required string task_type = 5;</code>
+         */
+        @Override
+        public com.google.protobuf.ByteString getTaskTypeBytes() {
+            java.lang.Object ref = taskType_;
+            if (ref instanceof java.lang.String) {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                taskType_ = b;
+                return b;
+            } else {
+                return (com.google.protobuf.ByteString) ref;
+            }
+        }
+
+        public static final int CONTENT_FIELD_NUMBER = 6;
+        private java.lang.Object content_;
+
+        /**
+         * <code>required string content = 6;</code>
+         */
+        @Override
+        public boolean hasContent() {
+            return ((bitField0_ & 0x00000020) == 0x00000020);
+        }
+
+        /**
+         * <code>required string content = 6;</code>
+         */
+        @Override
+        public java.lang.String getContent() {
+            java.lang.Object ref = content_;
+            if (ref instanceof java.lang.String) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                if (bs.isValidUtf8()) {
+                    content_ = s;
+                }
+                return s;
+            }
+        }
+
+        /**
+         * <code>required string content = 6;</code>
+         */
+        @Override
+        public com.google.protobuf.ByteString getContentBytes() {
+            java.lang.Object ref = content_;
+            if (ref instanceof java.lang.String) {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                content_ = b;
+                return b;
+            } else {
+                return (com.google.protobuf.ByteString) ref;
+            }
+        }
+
+        public static final int PRIORITY_FIELD_NUMBER = 7;
+        private int priority_;
+
+        /**
+         * <code>optional int32 priority = 7 [default = 1];</code>
+         */
+        @Override
+        public boolean hasPriority() {
+            return ((bitField0_ & 0x00000040) == 0x00000040);
+        }
+
+        /**
+         * <code>optional int32 priority = 7 [default = 1];</code>
+         */
+        @Override
+        public int getPriority() {
+            return priority_;
+        }
+
+        public static final int PARAMETERS_FIELD_NUMBER = 8;
+        private java.util.List<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry> parameters_;
+
+        /**
+         * <code>repeated .MapEntry parameters = 8;</code>
+         */
+        @Override
+        public java.util.List<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry> getParametersList() {
+            return parameters_;
+        }
+
+        /**
+         * <code>repeated .MapEntry parameters = 8;</code>
+         */
+        @Override
+        public java.util.List<? extends com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder> getParametersOrBuilderList() {
+            return parameters_;
+        }
+
+        /**
+         * <code>repeated .MapEntry parameters = 8;</code>
+         */
+        @Override
+        public int getParametersCount() {
+            return parameters_.size();
+        }
+
+        /**
+         * <code>repeated .MapEntry parameters = 8;</code>
+         */
+        @Override
+        public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry getParameters(int index) {
+            return parameters_.get(index);
+        }
+
+        /**
+         * <code>repeated .MapEntry parameters = 8;</code>
+         */
+        @Override
+        public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder getParametersOrBuilder(int index) {
+            return parameters_.get(index);
+        }
+
+        public static final int SCHEDULING_TIME_FIELD_NUMBER = 9;
+        private long schedulingTime_;
+
+        /**
+         * <code>required int64 scheduling_time = 9;</code>
+         */
+        @Override
+        public boolean hasSchedulingTime() {
+            return ((bitField0_ & 0x00000080) == 0x00000080);
+        }
+
+        /**
+         * <code>required int64 scheduling_time = 9;</code>
+         */
+        @Override
+        public long getSchedulingTime() {
+            return schedulingTime_;
+        }
+
+        private void initFields() {
+            fullId_ = "";
+            taskName_ = "";
+            appName_ = "";
+            user_ = "";
+            taskType_ = "";
+            content_ = "";
+            priority_ = 1;
+            parameters_ = java.util.Collections.emptyList();
+            schedulingTime_ = 0L;
+        }
+
+        private byte memoizedIsInitialized = -1;
+
+        @Override
+        public final boolean isInitialized() {
+            byte isInitialized = memoizedIsInitialized;
+            if (isInitialized == 1)
+                return true;
+            if (isInitialized == 0)
+                return false;
+
+            if (!hasFullId()) {
+                memoizedIsInitialized = 0;
+                return false;
+            }
+            if (!hasTaskName()) {
+                memoizedIsInitialized = 0;
+                return false;
+            }
+            if (!hasAppName()) {
+                memoizedIsInitialized = 0;
+                return false;
+            }
+            if (!hasUser()) {
+                memoizedIsInitialized = 0;
+                return false;
+            }
+            if (!hasTaskType()) {
+                memoizedIsInitialized = 0;
+                return false;
+            }
+            if (!hasContent()) {
+                memoizedIsInitialized = 0;
+                return false;
+            }
+            if (!hasSchedulingTime()) {
+                memoizedIsInitialized = 0;
+                return false;
+            }
+            for (int i = 0; i < getParametersCount(); i++) {
+                if (!getParameters(i).isInitialized()) {
+                    memoizedIsInitialized = 0;
+                    return false;
+                }
+            }
+            memoizedIsInitialized = 1;
+            return true;
+        }
+
+        @Override
+        public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
+            getSerializedSize();
+            if (((bitField0_ & 0x00000001) == 0x00000001)) {
+                output.writeBytes(1, getFullIdBytes());
+            }
+            if (((bitField0_ & 0x00000002) == 0x00000002)) {
+                output.writeBytes(2, getTaskNameBytes());
+            }
+            if (((bitField0_ & 0x00000004) == 0x00000004)) {
+                output.writeBytes(3, getAppNameBytes());
+            }
+            if (((bitField0_ & 0x00000008) == 0x00000008)) {
+                output.writeBytes(4, getUserBytes());
+            }
+            if (((bitField0_ & 0x00000010) == 0x00000010)) {
+                output.writeBytes(5, getTaskTypeBytes());
+            }
+            if (((bitField0_ & 0x00000020) == 0x00000020)) {
+                output.writeBytes(6, getContentBytes());
+            }
+            if (((bitField0_ & 0x00000040) == 0x00000040)) {
+                output.writeInt32(7, priority_);
+            }
+            for (int i = 0; i < parameters_.size(); i++) {
+                output.writeMessage(8, parameters_.get(i));
+            }
+            if (((bitField0_ & 0x00000080) == 0x00000080)) {
+                output.writeInt64(9, schedulingTime_);
+            }
+            getUnknownFields().writeTo(output);
+        }
+
+        private int memoizedSerializedSize = -1;
+
+        @Override
+        public int getSerializedSize() {
+            int size = memoizedSerializedSize;
+            if (size != -1)
+                return size;
+
+            size = 0;
+            if (((bitField0_ & 0x00000001) == 0x00000001)) {
+                size += com.google.protobuf.CodedOutputStream.computeBytesSize(1, getFullIdBytes());
+            }
+            if (((bitField0_ & 0x00000002) == 0x00000002)) {
+                size += com.google.protobuf.CodedOutputStream.computeBytesSize(2, getTaskNameBytes());
+            }
+            if (((bitField0_ & 0x00000004) == 0x00000004)) {
+                size += com.google.protobuf.CodedOutputStream.computeBytesSize(3, getAppNameBytes());
+            }
+            if (((bitField0_ & 0x00000008) == 0x00000008)) {
+                size += com.google.protobuf.CodedOutputStream.computeBytesSize(4, getUserBytes());
+            }
+            if (((bitField0_ & 0x00000010) == 0x00000010)) {
+                size += com.google.protobuf.CodedOutputStream.computeBytesSize(5, getTaskTypeBytes());
+            }
+            if (((bitField0_ & 0x00000020) == 0x00000020)) {
+                size += com.google.protobuf.CodedOutputStream.computeBytesSize(6, getContentBytes());
+            }
+            if (((bitField0_ & 0x00000040) == 0x00000040)) {
+                size += com.google.protobuf.CodedOutputStream.computeInt32Size(7, priority_);
+            }
+            for (int i = 0; i < parameters_.size(); i++) {
+                size += com.google.protobuf.CodedOutputStream.computeMessageSize(8, parameters_.get(i));
+            }
+            if (((bitField0_ & 0x00000080) == 0x00000080)) {
+                size += com.google.protobuf.CodedOutputStream.computeInt64Size(9, schedulingTime_);
+            }
+            size += getUnknownFields().getSerializedSize();
+            memoizedSerializedSize = size;
+            return size;
+        }
+
+        private static final long serialVersionUID = 0L;
+
+        @java.lang.Override
+        protected java.lang.Object writeReplace() throws java.io.ObjectStreamException {
+            return super.writeReplace();
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest parseFrom(com.google.protobuf.ByteString data)
+                throws com.google.protobuf.InvalidProtocolBufferException {
+            return PARSER.parseFrom(data);
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest parseFrom(com.google.protobuf.ByteString data,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+            return PARSER.parseFrom(data, extensionRegistry);
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest parseFrom(byte[] data)
+                throws com.google.protobuf.InvalidProtocolBufferException {
+            return PARSER.parseFrom(data);
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest parseFrom(byte[] data,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+            return PARSER.parseFrom(data, extensionRegistry);
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest parseFrom(java.io.InputStream input)
+                throws java.io.IOException {
+            return PARSER.parseFrom(input);
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest parseFrom(java.io.InputStream input,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            return PARSER.parseFrom(input, extensionRegistry);
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest parseDelimitedFrom(java.io.InputStream input)
+                throws java.io.IOException {
+            return PARSER.parseDelimitedFrom(input);
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest parseDelimitedFrom(java.io.InputStream input,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            return PARSER.parseDelimitedFrom(input, extensionRegistry);
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest parseFrom(com.google.protobuf.CodedInputStream input)
+                throws java.io.IOException {
+            return PARSER.parseFrom(input);
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest parseFrom(com.google.protobuf.CodedInputStream input,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            return PARSER.parseFrom(input, extensionRegistry);
+        }
+
+        public static Builder newBuilder() {
+            return Builder.create();
+        }
+
+        @Override
+        public Builder newBuilderForType() {
+            return newBuilder();
+        }
+
+        public static Builder newBuilder(com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest prototype) {
+            return newBuilder().mergeFrom(prototype);
+        }
+
+        @Override
+        public Builder toBuilder() {
+            return newBuilder(this);
+        }
+
+        @java.lang.Override
+        protected Builder newBuilderForType(com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+            Builder builder = new Builder(parent);
+            return builder;
+        }
+
+        /**
+         * Protobuf type {@code ServerSubmitTaskRequest}
+         */
+        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+                // @@protoc_insertion_point(builder_implements:ServerSubmitTaskRequest)
+                com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequestOrBuilder {
+            public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+                return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_ServerSubmitTaskRequest_descriptor;
+            }
+
+            @Override
+            protected com.google.protobuf.GeneratedMessage.FieldAccessorTable internalGetFieldAccessorTable() {
+                return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_ServerSubmitTaskRequest_fieldAccessorTable
+                        .ensureFieldAccessorsInitialized(com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest.class,
+                                com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest.Builder.class);
+            }
+
+            // Construct using
+            // com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest.newBuilder()
+            private Builder() {
+                maybeForceBuilderInitialization();
+            }
+
+            private Builder(com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+                super(parent);
+                maybeForceBuilderInitialization();
+            }
+
+            private void maybeForceBuilderInitialization() {
+                if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+                    getParametersFieldBuilder();
+                }
+            }
+
+            private static Builder create() {
+                return new Builder();
+            }
+
+            @Override
+            public Builder clear() {
+                super.clear();
+                fullId_ = "";
+                bitField0_ = (bitField0_ & ~0x00000001);
+                taskName_ = "";
+                bitField0_ = (bitField0_ & ~0x00000002);
+                appName_ = "";
+                bitField0_ = (bitField0_ & ~0x00000004);
+                user_ = "";
+                bitField0_ = (bitField0_ & ~0x00000008);
+                taskType_ = "";
+                bitField0_ = (bitField0_ & ~0x00000010);
+                content_ = "";
+                bitField0_ = (bitField0_ & ~0x00000020);
+                priority_ = 1;
+                bitField0_ = (bitField0_ & ~0x00000040);
+                if (parametersBuilder_ == null) {
+                    parameters_ = java.util.Collections.emptyList();
+                    bitField0_ = (bitField0_ & ~0x00000080);
+                } else {
+                    parametersBuilder_.clear();
+                }
+                schedulingTime_ = 0L;
+                bitField0_ = (bitField0_ & ~0x00000100);
+                return this;
+            }
+
+            @Override
+            public Builder clone() {
+                return create().mergeFrom(buildPartial());
+            }
+
+            @Override
+            public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
+                return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_ServerSubmitTaskRequest_descriptor;
+            }
+
+            @Override
+            public com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest getDefaultInstanceForType() {
+                return com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest.getDefaultInstance();
+            }
+
+            @Override
+            public com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest build() {
+                com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest result = buildPartial();
+                if (!result.isInitialized()) {
+                    throw newUninitializedMessageException(result);
+                }
+                return result;
+            }
+
+            @Override
+            public com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest buildPartial() {
+                com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest result = new com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest(
+                        this);
+                int from_bitField0_ = bitField0_;
+                int to_bitField0_ = 0;
+                if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+                    to_bitField0_ |= 0x00000001;
+                }
+                result.fullId_ = fullId_;
+                if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+                    to_bitField0_ |= 0x00000002;
+                }
+                result.taskName_ = taskName_;
+                if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+                    to_bitField0_ |= 0x00000004;
+                }
+                result.appName_ = appName_;
+                if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+                    to_bitField0_ |= 0x00000008;
+                }
+                result.user_ = user_;
+                if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+                    to_bitField0_ |= 0x00000010;
+                }
+                result.taskType_ = taskType_;
+                if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+                    to_bitField0_ |= 0x00000020;
+                }
+                result.content_ = content_;
+                if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+                    to_bitField0_ |= 0x00000040;
+                }
+                result.priority_ = priority_;
+                if (parametersBuilder_ == null) {
+                    if (((bitField0_ & 0x00000080) == 0x00000080)) {
+                        parameters_ = java.util.Collections.unmodifiableList(parameters_);
+                        bitField0_ = (bitField0_ & ~0x00000080);
+                    }
+                    result.parameters_ = parameters_;
+                } else {
+                    result.parameters_ = parametersBuilder_.build();
+                }
+                if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
+                    to_bitField0_ |= 0x00000080;
+                }
+                result.schedulingTime_ = schedulingTime_;
+                result.bitField0_ = to_bitField0_;
+                onBuilt();
+                return result;
+            }
+
+            @Override
+            public Builder mergeFrom(com.google.protobuf.Message other) {
+                if (other instanceof com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest) {
+                    return mergeFrom((com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest) other);
+                } else {
+                    super.mergeFrom(other);
+                    return this;
+                }
+            }
+
+            public Builder mergeFrom(com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest other) {
+                if (other == com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest.getDefaultInstance())
+                    return this;
+                if (other.hasFullId()) {
+                    bitField0_ |= 0x00000001;
+                    fullId_ = other.fullId_;
+                    onChanged();
+                }
+                if (other.hasTaskName()) {
+                    bitField0_ |= 0x00000002;
+                    taskName_ = other.taskName_;
+                    onChanged();
+                }
+                if (other.hasAppName()) {
+                    bitField0_ |= 0x00000004;
+                    appName_ = other.appName_;
+                    onChanged();
+                }
+                if (other.hasUser()) {
+                    bitField0_ |= 0x00000008;
+                    user_ = other.user_;
+                    onChanged();
+                }
+                if (other.hasTaskType()) {
+                    bitField0_ |= 0x00000010;
+                    taskType_ = other.taskType_;
+                    onChanged();
+                }
+                if (other.hasContent()) {
+                    bitField0_ |= 0x00000020;
+                    content_ = other.content_;
+                    onChanged();
+                }
+                if (other.hasPriority()) {
+                    setPriority(other.getPriority());
+                }
+                if (parametersBuilder_ == null) {
+                    if (!other.parameters_.isEmpty()) {
+                        if (parameters_.isEmpty()) {
+                            parameters_ = other.parameters_;
+                            bitField0_ = (bitField0_ & ~0x00000080);
+                        } else {
+                            ensureParametersIsMutable();
+                            parameters_.addAll(other.parameters_);
+                        }
+                        onChanged();
+                    }
+                } else {
+                    if (!other.parameters_.isEmpty()) {
+                        if (parametersBuilder_.isEmpty()) {
+                            parametersBuilder_.dispose();
+                            parametersBuilder_ = null;
+                            parameters_ = other.parameters_;
+                            bitField0_ = (bitField0_ & ~0x00000080);
+                            parametersBuilder_ = com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ? getParametersFieldBuilder() : null;
+                        } else {
+                            parametersBuilder_.addAllMessages(other.parameters_);
+                        }
+                    }
+                }
+                if (other.hasSchedulingTime()) {
+                    setSchedulingTime(other.getSchedulingTime());
+                }
+                this.mergeUnknownFields(other.getUnknownFields());
+                return this;
+            }
+
+            @Override
+            public final boolean isInitialized() {
+                if (!hasFullId()) {
+
+                    return false;
+                }
+                if (!hasTaskName()) {
+
+                    return false;
+                }
+                if (!hasAppName()) {
+
+                    return false;
+                }
+                if (!hasUser()) {
+
+                    return false;
+                }
+                if (!hasTaskType()) {
+
+                    return false;
+                }
+                if (!hasContent()) {
+
+                    return false;
+                }
+                if (!hasSchedulingTime()) {
+
+                    return false;
+                }
+                for (int i = 0; i < getParametersCount(); i++) {
+                    if (!getParameters(i).isInitialized()) {
+
+                        return false;
+                    }
+                }
+                return true;
+            }
+
+            @Override
+            public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                    throws java.io.IOException {
+                com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest parsedMessage = null;
+                try {
+                    parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+                } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+                    parsedMessage = (com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest) e.getUnfinishedMessage();
+                    throw e;
+                } finally {
+                    if (parsedMessage != null) {
+                        mergeFrom(parsedMessage);
+                    }
+                }
+                return this;
+            }
+
+            private int bitField0_;
+
+            private java.lang.Object fullId_ = "";
+
+            /**
+             * <code>required string full_id = 1;</code>
+             */
+            @Override
+            public boolean hasFullId() {
+                return ((bitField0_ & 0x00000001) == 0x00000001);
+            }
+
+            /**
+             * <code>required string full_id = 1;</code>
+             */
+            @Override
+            public java.lang.String getFullId() {
+                java.lang.Object ref = fullId_;
+                if (!(ref instanceof java.lang.String)) {
+                    com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                    java.lang.String s = bs.toStringUtf8();
+                    if (bs.isValidUtf8()) {
+                        fullId_ = s;
+                    }
+                    return s;
+                } else {
+                    return (java.lang.String) ref;
+                }
+            }
+
+            /**
+             * <code>required string full_id = 1;</code>
+             */
+            @Override
+            public com.google.protobuf.ByteString getFullIdBytes() {
+                java.lang.Object ref = fullId_;
+                if (ref instanceof String) {
+                    com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                    fullId_ = b;
+                    return b;
+                } else {
+                    return (com.google.protobuf.ByteString) ref;
+                }
+            }
+
+            /**
+             * <code>required string full_id = 1;</code>
+             */
+            public Builder setFullId(java.lang.String value) {
+                if (value == null) {
+                    throw new NullPointerException();
+                }
+                bitField0_ |= 0x00000001;
+                fullId_ = value;
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>required string full_id = 1;</code>
+             */
+            public Builder clearFullId() {
+                bitField0_ = (bitField0_ & ~0x00000001);
+                fullId_ = getDefaultInstance().getFullId();
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>required string full_id = 1;</code>
+             */
+            public Builder setFullIdBytes(com.google.protobuf.ByteString value) {
+                if (value == null) {
+                    throw new NullPointerException();
+                }
+                bitField0_ |= 0x00000001;
+                fullId_ = value;
+                onChanged();
+                return this;
+            }
+
+            private java.lang.Object taskName_ = "";
+
+            /**
+             * <code>required string task_name = 2;</code>
+             */
+            @Override
+            public boolean hasTaskName() {
+                return ((bitField0_ & 0x00000002) == 0x00000002);
+            }
+
+            /**
+             * <code>required string task_name = 2;</code>
+             */
+            @Override
+            public java.lang.String getTaskName() {
+                java.lang.Object ref = taskName_;
+                if (!(ref instanceof java.lang.String)) {
+                    com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                    java.lang.String s = bs.toStringUtf8();
+                    if (bs.isValidUtf8()) {
+                        taskName_ = s;
+                    }
+                    return s;
+                } else {
+                    return (java.lang.String) ref;
+                }
+            }
+
+            /**
+             * <code>required string task_name = 2;</code>
+             */
+            @Override
+            public com.google.protobuf.ByteString getTaskNameBytes() {
+                java.lang.Object ref = taskName_;
+                if (ref instanceof String) {
+                    com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                    taskName_ = b;
+                    return b;
+                } else {
+                    return (com.google.protobuf.ByteString) ref;
+                }
+            }
+
+            /**
+             * <code>required string task_name = 2;</code>
+             */
+            public Builder setTaskName(java.lang.String value) {
+                if (value == null) {
+                    throw new NullPointerException();
+                }
+                bitField0_ |= 0x00000002;
+                taskName_ = value;
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>required string task_name = 2;</code>
+             */
+            public Builder clearTaskName() {
+                bitField0_ = (bitField0_ & ~0x00000002);
+                taskName_ = getDefaultInstance().getTaskName();
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>required string task_name = 2;</code>
+             */
+            public Builder setTaskNameBytes(com.google.protobuf.ByteString value) {
+                if (value == null) {
+                    throw new NullPointerException();
+                }
+                bitField0_ |= 0x00000002;
+                taskName_ = value;
+                onChanged();
+                return this;
+            }
+
+            private java.lang.Object appName_ = "";
+
+            /**
+             * <code>required string app_name = 3;</code>
+             */
+            @Override
+            public boolean hasAppName() {
+                return ((bitField0_ & 0x00000004) == 0x00000004);
+            }
+
+            /**
+             * <code>required string app_name = 3;</code>
+             */
+            @Override
+            public java.lang.String getAppName() {
+                java.lang.Object ref = appName_;
+                if (!(ref instanceof java.lang.String)) {
+                    com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                    java.lang.String s = bs.toStringUtf8();
+                    if (bs.isValidUtf8()) {
+                        appName_ = s;
+                    }
+                    return s;
+                } else {
+                    return (java.lang.String) ref;
+                }
+            }
+
+            /**
+             * <code>required string app_name = 3;</code>
+             */
+            @Override
+            public com.google.protobuf.ByteString getAppNameBytes() {
+                java.lang.Object ref = appName_;
+                if (ref instanceof String) {
+                    com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                    appName_ = b;
+                    return b;
+                } else {
+                    return (com.google.protobuf.ByteString) ref;
+                }
+            }
+
+            /**
+             * <code>required string app_name = 3;</code>
+             */
+            public Builder setAppName(java.lang.String value) {
+                if (value == null) {
+                    throw new NullPointerException();
+                }
+                bitField0_ |= 0x00000004;
+                appName_ = value;
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>required string app_name = 3;</code>
+             */
+            public Builder clearAppName() {
+                bitField0_ = (bitField0_ & ~0x00000004);
+                appName_ = getDefaultInstance().getAppName();
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>required string app_name = 3;</code>
+             */
+            public Builder setAppNameBytes(com.google.protobuf.ByteString value) {
+                if (value == null) {
+                    throw new NullPointerException();
+                }
+                bitField0_ |= 0x00000004;
+                appName_ = value;
+                onChanged();
+                return this;
+            }
+
+            private java.lang.Object user_ = "";
+
+            /**
+             * <code>required string user = 4;</code>
+             */
+            @Override
+            public boolean hasUser() {
+                return ((bitField0_ & 0x00000008) == 0x00000008);
+            }
+
+            /**
+             * <code>required string user = 4;</code>
+             */
+            @Override
+            public java.lang.String getUser() {
+                java.lang.Object ref = user_;
+                if (!(ref instanceof java.lang.String)) {
+                    com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                    java.lang.String s = bs.toStringUtf8();
+                    if (bs.isValidUtf8()) {
+                        user_ = s;
+                    }
+                    return s;
+                } else {
+                    return (java.lang.String) ref;
+                }
+            }
+
+            /**
+             * <code>required string user = 4;</code>
+             */
+            @Override
+            public com.google.protobuf.ByteString getUserBytes() {
+                java.lang.Object ref = user_;
+                if (ref instanceof String) {
+                    com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                    user_ = b;
+                    return b;
+                } else {
+                    return (com.google.protobuf.ByteString) ref;
+                }
+            }
+
+            /**
+             * <code>required string user = 4;</code>
+             */
+            public Builder setUser(java.lang.String value) {
+                if (value == null) {
+                    throw new NullPointerException();
+                }
+                bitField0_ |= 0x00000008;
+                user_ = value;
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>required string user = 4;</code>
+             */
+            public Builder clearUser() {
+                bitField0_ = (bitField0_ & ~0x00000008);
+                user_ = getDefaultInstance().getUser();
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>required string user = 4;</code>
+             */
+            public Builder setUserBytes(com.google.protobuf.ByteString value) {
+                if (value == null) {
+                    throw new NullPointerException();
+                }
+                bitField0_ |= 0x00000008;
+                user_ = value;
+                onChanged();
+                return this;
+            }
+
+            private java.lang.Object taskType_ = "";
+
+            /**
+             * <code>required string task_type = 5;</code>
+             */
+            @Override
+            public boolean hasTaskType() {
+                return ((bitField0_ & 0x00000010) == 0x00000010);
+            }
+
+            /**
+             * <code>required string task_type = 5;</code>
+             */
+            @Override
+            public java.lang.String getTaskType() {
+                java.lang.Object ref = taskType_;
+                if (!(ref instanceof java.lang.String)) {
+                    com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                    java.lang.String s = bs.toStringUtf8();
+                    if (bs.isValidUtf8()) {
+                        taskType_ = s;
+                    }
+                    return s;
+                } else {
+                    return (java.lang.String) ref;
+                }
+            }
+
+            /**
+             * <code>required string task_type = 5;</code>
+             */
+            @Override
+            public com.google.protobuf.ByteString getTaskTypeBytes() {
+                java.lang.Object ref = taskType_;
+                if (ref instanceof String) {
+                    com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                    taskType_ = b;
+                    return b;
+                } else {
+                    return (com.google.protobuf.ByteString) ref;
+                }
+            }
+
+            /**
+             * <code>required string task_type = 5;</code>
+             */
+            public Builder setTaskType(java.lang.String value) {
+                if (value == null) {
+                    throw new NullPointerException();
+                }
+                bitField0_ |= 0x00000010;
+                taskType_ = value;
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>required string task_type = 5;</code>
+             */
+            public Builder clearTaskType() {
+                bitField0_ = (bitField0_ & ~0x00000010);
+                taskType_ = getDefaultInstance().getTaskType();
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>required string task_type = 5;</code>
+             */
+            public Builder setTaskTypeBytes(com.google.protobuf.ByteString value) {
+                if (value == null) {
+                    throw new NullPointerException();
+                }
+                bitField0_ |= 0x00000010;
+                taskType_ = value;
+                onChanged();
+                return this;
+            }
+
+            private java.lang.Object content_ = "";
+
+            /**
+             * <code>required string content = 6;</code>
+             */
+            @Override
+            public boolean hasContent() {
+                return ((bitField0_ & 0x00000020) == 0x00000020);
+            }
+
+            /**
+             * <code>required string content = 6;</code>
+             */
+            @Override
+            public java.lang.String getContent() {
+                java.lang.Object ref = content_;
+                if (!(ref instanceof java.lang.String)) {
+                    com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                    java.lang.String s = bs.toStringUtf8();
+                    if (bs.isValidUtf8()) {
+                        content_ = s;
+                    }
+                    return s;
+                } else {
+                    return (java.lang.String) ref;
+                }
+            }
+
+            /**
+             * <code>required string content = 6;</code>
+             */
+            @Override
+            public com.google.protobuf.ByteString getContentBytes() {
+                java.lang.Object ref = content_;
+                if (ref instanceof String) {
+                    com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                    content_ = b;
+                    return b;
+                } else {
+                    return (com.google.protobuf.ByteString) ref;
+                }
+            }
+
+            /**
+             * <code>required string content = 6;</code>
+             */
+            public Builder setContent(java.lang.String value) {
+                if (value == null) {
+                    throw new NullPointerException();
+                }
+                bitField0_ |= 0x00000020;
+                content_ = value;
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>required string content = 6;</code>
+             */
+            public Builder clearContent() {
+                bitField0_ = (bitField0_ & ~0x00000020);
+                content_ = getDefaultInstance().getContent();
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>required string content = 6;</code>
+             */
+            public Builder setContentBytes(com.google.protobuf.ByteString value) {
+                if (value == null) {
+                    throw new NullPointerException();
+                }
+                bitField0_ |= 0x00000020;
+                content_ = value;
+                onChanged();
+                return this;
+            }
+
+            private int priority_ = 1;
+
+            /**
+             * <code>optional int32 priority = 7 [default = 1];</code>
+             */
+            @Override
+            public boolean hasPriority() {
+                return ((bitField0_ & 0x00000040) == 0x00000040);
+            }
+
+            /**
+             * <code>optional int32 priority = 7 [default = 1];</code>
+             */
+            @Override
+            public int getPriority() {
+                return priority_;
+            }
+
+            /**
+             * <code>optional int32 priority = 7 [default = 1];</code>
+             */
+            public Builder setPriority(int value) {
+                bitField0_ |= 0x00000040;
+                priority_ = value;
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>optional int32 priority = 7 [default = 1];</code>
+             */
+            public Builder clearPriority() {
+                bitField0_ = (bitField0_ & ~0x00000040);
+                priority_ = 1;
+                onChanged();
+                return this;
+            }
+
+            private java.util.List<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry> parameters_ = java.util.Collections.emptyList();
+
+            private void ensureParametersIsMutable() {
+                if (!((bitField0_ & 0x00000080) == 0x00000080)) {
+                    parameters_ = new java.util.ArrayList<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry>(parameters_);
+                    bitField0_ |= 0x00000080;
+                }
+            }
+
+            private com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder> parametersBuilder_;
+
+            /**
+             * <code>repeated .MapEntry parameters = 8;</code>
+             */
+            @Override
+            public java.util.List<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry> getParametersList() {
+                if (parametersBuilder_ == null) {
+                    return java.util.Collections.unmodifiableList(parameters_);
+                } else {
+                    return parametersBuilder_.getMessageList();
+                }
+            }
+
+            /**
+             * <code>repeated .MapEntry parameters = 8;</code>
+             */
+            @Override
+            public int getParametersCount() {
+                if (parametersBuilder_ == null) {
+                    return parameters_.size();
+                } else {
+                    return parametersBuilder_.getCount();
+                }
+            }
+
+            /**
+             * <code>repeated .MapEntry parameters = 8;</code>
+             */
+            @Override
+            public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry getParameters(int index) {
+                if (parametersBuilder_ == null) {
+                    return parameters_.get(index);
+                } else {
+                    return parametersBuilder_.getMessage(index);
+                }
+            }
+
+            /**
+             * <code>repeated .MapEntry parameters = 8;</code>
+             */
+            public Builder setParameters(int index, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry value) {
+                if (parametersBuilder_ == null) {
+                    if (value == null) {
+                        throw new NullPointerException();
+                    }
+                    ensureParametersIsMutable();
+                    parameters_.set(index, value);
+                    onChanged();
+                } else {
+                    parametersBuilder_.setMessage(index, value);
+                }
+                return this;
+            }
+
+            /**
+             * <code>repeated .MapEntry parameters = 8;</code>
+             */
+            public Builder setParameters(int index, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder builderForValue) {
+                if (parametersBuilder_ == null) {
+                    ensureParametersIsMutable();
+                    parameters_.set(index, builderForValue.build());
+                    onChanged();
+                } else {
+                    parametersBuilder_.setMessage(index, builderForValue.build());
+                }
+                return this;
+            }
+
+            /**
+             * <code>repeated .MapEntry parameters = 8;</code>
+             */
+            public Builder addParameters(com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry value) {
+                if (parametersBuilder_ == null) {
+                    if (value == null) {
+                        throw new NullPointerException();
+                    }
+                    ensureParametersIsMutable();
+                    parameters_.add(value);
+                    onChanged();
+                } else {
+                    parametersBuilder_.addMessage(value);
+                }
+                return this;
+            }
+
+            /**
+             * <code>repeated .MapEntry parameters = 8;</code>
+             */
+            public Builder addParameters(int index, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry value) {
+                if (parametersBuilder_ == null) {
+                    if (value == null) {
+                        throw new NullPointerException();
+                    }
+                    ensureParametersIsMutable();
+                    parameters_.add(index, value);
+                    onChanged();
+                } else {
+                    parametersBuilder_.addMessage(index, value);
+                }
+                return this;
+            }
+
+            /**
+             * <code>repeated .MapEntry parameters = 8;</code>
+             */
+            public Builder addParameters(com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder builderForValue) {
+                if (parametersBuilder_ == null) {
+                    ensureParametersIsMutable();
+                    parameters_.add(builderForValue.build());
+                    onChanged();
+                } else {
+                    parametersBuilder_.addMessage(builderForValue.build());
+                }
+                return this;
+            }
+
+            /**
+             * <code>repeated .MapEntry parameters = 8;</code>
+             */
+            public Builder addParameters(int index, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder builderForValue) {
+                if (parametersBuilder_ == null) {
+                    ensureParametersIsMutable();
+                    parameters_.add(index, builderForValue.build());
+                    onChanged();
+                } else {
+                    parametersBuilder_.addMessage(index, builderForValue.build());
+                }
+                return this;
+            }
+
+            /**
+             * <code>repeated .MapEntry parameters = 8;</code>
+             */
+            public Builder addAllParameters(java.lang.Iterable<? extends com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry> values) {
+                if (parametersBuilder_ == null) {
+                    ensureParametersIsMutable();
+                    com.google.protobuf.AbstractMessageLite.Builder.addAll(values, parameters_);
+                    onChanged();
+                } else {
+                    parametersBuilder_.addAllMessages(values);
+                }
+                return this;
+            }
+
+            /**
+             * <code>repeated .MapEntry parameters = 8;</code>
+             */
+            public Builder clearParameters() {
+                if (parametersBuilder_ == null) {
+                    parameters_ = java.util.Collections.emptyList();
+                    bitField0_ = (bitField0_ & ~0x00000080);
+                    onChanged();
+                } else {
+                    parametersBuilder_.clear();
+                }
+                return this;
+            }
+
+            /**
+             * <code>repeated .MapEntry parameters = 8;</code>
+             */
+            public Builder removeParameters(int index) {
+                if (parametersBuilder_ == null) {
+                    ensureParametersIsMutable();
+                    parameters_.remove(index);
+                    onChanged();
+                } else {
+                    parametersBuilder_.remove(index);
+                }
+                return this;
+            }
+
+            /**
+             * <code>repeated .MapEntry parameters = 8;</code>
+             */
+            public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder getParametersBuilder(int index) {
+                return getParametersFieldBuilder().getBuilder(index);
+            }
+
+            /**
+             * <code>repeated .MapEntry parameters = 8;</code>
+             */
+            @Override
+            public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder getParametersOrBuilder(int index) {
+                if (parametersBuilder_ == null) {
+                    return parameters_.get(index);
+                } else {
+                    return parametersBuilder_.getMessageOrBuilder(index);
+                }
+            }
+
+            /**
+             * <code>repeated .MapEntry parameters = 8;</code>
+             */
+            @Override
+            public java.util.List<? extends com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder> getParametersOrBuilderList() {
+                if (parametersBuilder_ != null) {
+                    return parametersBuilder_.getMessageOrBuilderList();
+                } else {
+                    return java.util.Collections.unmodifiableList(parameters_);
+                }
+            }
+
+            /**
+             * <code>repeated .MapEntry parameters = 8;</code>
+             */
+            public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder addParametersBuilder() {
+                return getParametersFieldBuilder().addBuilder(com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.getDefaultInstance());
+            }
+
+            /**
+             * <code>repeated .MapEntry parameters = 8;</code>
+             */
+            public com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder addParametersBuilder(int index) {
+                return getParametersFieldBuilder().addBuilder(index, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.getDefaultInstance());
+            }
+
+            /**
+             * <code>repeated .MapEntry parameters = 8;</code>
+             */
+            public java.util.List<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder> getParametersBuilderList() {
+                return getParametersFieldBuilder().getBuilderList();
+            }
+
+            private com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder> getParametersFieldBuilder() {
+                if (parametersBuilder_ == null) {
+                    parametersBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry.Builder, com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder>(
+                            parameters_, ((bitField0_ & 0x00000080) == 0x00000080), getParentForChildren(), isClean());
+                    parameters_ = null;
+                }
+                return parametersBuilder_;
+            }
+
+            private long schedulingTime_;
+
+            /**
+             * <code>required int64 scheduling_time = 9;</code>
+             */
+            @Override
+            public boolean hasSchedulingTime() {
+                return ((bitField0_ & 0x00000100) == 0x00000100);
+            }
+
+            /**
+             * <code>required int64 scheduling_time = 9;</code>
+             */
+            @Override
+            public long getSchedulingTime() {
+                return schedulingTime_;
+            }
+
+            /**
+             * <code>required int64 scheduling_time = 9;</code>
+             */
+            public Builder setSchedulingTime(long value) {
+                bitField0_ |= 0x00000100;
+                schedulingTime_ = value;
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>required int64 scheduling_time = 9;</code>
+             */
+            public Builder clearSchedulingTime() {
+                bitField0_ = (bitField0_ & ~0x00000100);
+                schedulingTime_ = 0L;
+                onChanged();
+                return this;
+            }
+
+            // @@protoc_insertion_point(builder_scope:ServerSubmitTaskRequest)
+        }
+
+        static {
+            defaultInstance = new ServerSubmitTaskRequest(true);
+            defaultInstance.initFields();
+        }
+
+        // @@protoc_insertion_point(class_scope:ServerSubmitTaskRequest)
     }
 
-    private void initFields() {
-      accept_ = false;
-      success_ = false;
-      message_ = "";
-    }
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+    public interface WorkerSubmitTaskResponseOrBuilder extends
+            // @@protoc_insertion_point(interface_extends:WorkerSubmitTaskResponse)
+            com.google.protobuf.MessageOrBuilder {
 
-      if (!hasSuccess()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      memoizedIsInitialized = 1;
-      return true;
-    }
+        /**
+         * <code>optional bool accept = 1;</code>
+         */
+        boolean hasAccept();
 
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      getSerializedSize();
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeBool(1, accept_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeBool(2, success_);
-      }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeBytes(3, getMessageBytes());
-      }
-      getUnknownFields().writeTo(output);
-    }
+        /**
+         * <code>optional bool accept = 1;</code>
+         */
+        boolean getAccept();
 
-    private int memoizedSerializedSize = -1;
-    public int getSerializedSize() {
-      int size = memoizedSerializedSize;
-      if (size != -1) return size;
+        /**
+         * <code>required bool success = 2;</code>
+         */
+        boolean hasSuccess();
 
-      size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(1, accept_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(2, success_);
-      }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(3, getMessageBytes());
-      }
-      size += getUnknownFields().getSerializedSize();
-      memoizedSerializedSize = size;
-      return size;
+        /**
+         * <code>required bool success = 2;</code>
+         */
+        boolean getSuccess();
+
+        /**
+         * <code>optional string message = 3 [default = ""];</code>
+         */
+        boolean hasMessage();
+
+        /**
+         * <code>optional string message = 3 [default = ""];</code>
+         */
+        java.lang.String getMessage();
+
+        /**
+         * <code>optional string message = 3 [default = ""];</code>
+         */
+        com.google.protobuf.ByteString getMessageBytes();
     }
 
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    protected java.lang.Object writeReplace()
-        throws java.io.ObjectStreamException {
-      return super.writeReplace();
-    }
-
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input);
-    }
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input, extensionRegistry);
-    }
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-
-    public static Builder newBuilder() { return Builder.create(); }
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse prototype) {
-      return newBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() { return newBuilder(this); }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
     /**
      * Protobuf type {@code WorkerSubmitTaskResponse}
      */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:WorkerSubmitTaskResponse)
-        com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponseOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_WorkerSubmitTaskResponse_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_WorkerSubmitTaskResponse_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse.class, com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse.Builder.class);
-      }
-
-      // Construct using com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+    public static final class WorkerSubmitTaskResponse extends com.google.protobuf.GeneratedMessage implements
+            // @@protoc_insertion_point(message_implements:WorkerSubmitTaskResponse)
+            WorkerSubmitTaskResponseOrBuilder {
+        // Use WorkerSubmitTaskResponse.newBuilder() to construct.
+        private WorkerSubmitTaskResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+            super(builder);
+            this.unknownFields = builder.getUnknownFields();
         }
-      }
-      private static Builder create() {
-        return new Builder();
-      }
 
-      public Builder clear() {
-        super.clear();
-        accept_ = false;
-        bitField0_ = (bitField0_ & ~0x00000001);
-        success_ = false;
-        bitField0_ = (bitField0_ & ~0x00000002);
-        message_ = "";
-        bitField0_ = (bitField0_ & ~0x00000004);
-        return this;
-      }
-
-      public Builder clone() {
-        return create().mergeFrom(buildPartial());
-      }
-
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_WorkerSubmitTaskResponse_descriptor;
-      }
-
-      public com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse getDefaultInstanceForType() {
-        return com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse.getDefaultInstance();
-      }
-
-      public com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse build() {
-        com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
+        private WorkerSubmitTaskResponse(boolean noInit) {
+            this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance();
         }
-        return result;
-      }
 
-      public com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse buildPartial() {
-        com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse result = new com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
+        private static final WorkerSubmitTaskResponse defaultInstance;
+
+        public static WorkerSubmitTaskResponse getDefaultInstance() {
+            return defaultInstance;
         }
-        result.accept_ = accept_;
-        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-          to_bitField0_ |= 0x00000002;
+
+        @Override
+        public WorkerSubmitTaskResponse getDefaultInstanceForType() {
+            return defaultInstance;
         }
-        result.success_ = success_;
-        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
-          to_bitField0_ |= 0x00000004;
+
+        private final com.google.protobuf.UnknownFieldSet unknownFields;
+
+        @java.lang.Override
+        public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
+            return this.unknownFields;
         }
-        result.message_ = message_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
 
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse) {
-          return mergeFrom((com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse other) {
-        if (other == com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse.getDefaultInstance()) return this;
-        if (other.hasAccept()) {
-          setAccept(other.getAccept());
-        }
-        if (other.hasSuccess()) {
-          setSuccess(other.getSuccess());
-        }
-        if (other.hasMessage()) {
-          bitField0_ |= 0x00000004;
-          message_ = other.message_;
-          onChanged();
-        }
-        this.mergeUnknownFields(other.getUnknownFields());
-        return this;
-      }
-
-      public final boolean isInitialized() {
-        if (!hasSuccess()) {
-          
-          return false;
-        }
-        return true;
-      }
-
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse) e.getUnfinishedMessage();
-          throw e;
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-      private int bitField0_;
-
-      private boolean accept_ ;
-      /**
-       * <code>optional bool accept = 1;</code>
-       */
-      public boolean hasAccept() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      /**
-       * <code>optional bool accept = 1;</code>
-       */
-      public boolean getAccept() {
-        return accept_;
-      }
-      /**
-       * <code>optional bool accept = 1;</code>
-       */
-      public Builder setAccept(boolean value) {
-        bitField0_ |= 0x00000001;
-        accept_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional bool accept = 1;</code>
-       */
-      public Builder clearAccept() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        accept_ = false;
-        onChanged();
-        return this;
-      }
-
-      private boolean success_ ;
-      /**
-       * <code>required bool success = 2;</code>
-       */
-      public boolean hasSuccess() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
-      }
-      /**
-       * <code>required bool success = 2;</code>
-       */
-      public boolean getSuccess() {
-        return success_;
-      }
-      /**
-       * <code>required bool success = 2;</code>
-       */
-      public Builder setSuccess(boolean value) {
-        bitField0_ |= 0x00000002;
-        success_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required bool success = 2;</code>
-       */
-      public Builder clearSuccess() {
-        bitField0_ = (bitField0_ & ~0x00000002);
-        success_ = false;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object message_ = "";
-      /**
-       * <code>optional string message = 3 [default = ""];</code>
-       */
-      public boolean hasMessage() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
-      }
-      /**
-       * <code>optional string message = 3 [default = ""];</code>
-       */
-      public java.lang.String getMessage() {
-        java.lang.Object ref = message_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            message_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>optional string message = 3 [default = ""];</code>
-       */
-      public com.google.protobuf.ByteString
-          getMessageBytes() {
-        java.lang.Object ref = message_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          message_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string message = 3 [default = ""];</code>
-       */
-      public Builder setMessage(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
-        message_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string message = 3 [default = ""];</code>
-       */
-      public Builder clearMessage() {
-        bitField0_ = (bitField0_ & ~0x00000004);
-        message_ = getDefaultInstance().getMessage();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string message = 3 [default = ""];</code>
-       */
-      public Builder setMessageBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
-        message_ = value;
-        onChanged();
-        return this;
-      }
-
-      // @@protoc_insertion_point(builder_scope:WorkerSubmitTaskResponse)
-    }
-
-    static {
-      defaultInstance = new WorkerSubmitTaskResponse(true);
-      defaultInstance.initFields();
-    }
-
-    // @@protoc_insertion_point(class_scope:WorkerSubmitTaskResponse)
-  }
-
-  public interface RestServerSubmitTaskRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:RestServerSubmitTaskRequest)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <code>required .AppAuth app_auth = 1;</code>
-     */
-    boolean hasAppAuth();
-    /**
-     * <code>required .AppAuth app_auth = 1;</code>
-     */
-    com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth getAppAuth();
-    /**
-     * <code>required .AppAuth app_auth = 1;</code>
-     */
-    com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder();
-
-    /**
-     * <code>required string task_name = 2;</code>
-     */
-    boolean hasTaskName();
-    /**
-     * <code>required string task_name = 2;</code>
-     */
-    java.lang.String getTaskName();
-    /**
-     * <code>required string task_name = 2;</code>
-     */
-    com.google.protobuf.ByteString
-        getTaskNameBytes();
-
-    /**
-     * <code>required string user = 3;</code>
-     */
-    boolean hasUser();
-    /**
-     * <code>required string user = 3;</code>
-     */
-    java.lang.String getUser();
-    /**
-     * <code>required string user = 3;</code>
-     */
-    com.google.protobuf.ByteString
-        getUserBytes();
-
-    /**
-     * <code>required string task_type = 4;</code>
-     */
-    boolean hasTaskType();
-    /**
-     * <code>required string task_type = 4;</code>
-     */
-    java.lang.String getTaskType();
-    /**
-     * <code>required string task_type = 4;</code>
-     */
-    com.google.protobuf.ByteString
-        getTaskTypeBytes();
-
-    /**
-     * <code>required string content = 5;</code>
-     */
-    boolean hasContent();
-    /**
-     * <code>required string content = 5;</code>
-     */
-    java.lang.String getContent();
-    /**
-     * <code>required string content = 5;</code>
-     */
-    com.google.protobuf.ByteString
-        getContentBytes();
-
-    /**
-     * <code>required int32 group_id = 6;</code>
-     */
-    boolean hasGroupId();
-    /**
-     * <code>required int32 group_id = 6;</code>
-     */
-    int getGroupId();
-
-    /**
-     * <code>optional int32 priority = 7 [default = 1];</code>
-     */
-    boolean hasPriority();
-    /**
-     * <code>optional int32 priority = 7 [default = 1];</code>
-     */
-    int getPriority();
-
-    /**
-     * <code>optional int32 reject_retries = 8 [default = 0];</code>
-     */
-    boolean hasRejectRetries();
-    /**
-     * <code>optional int32 reject_retries = 8 [default = 0];</code>
-     */
-    int getRejectRetries();
-
-    /**
-     * <code>optional int32 reject_interval = 9 [default = 3];</code>
-     */
-    boolean hasRejectInterval();
-    /**
-     * <code>optional int32 reject_interval = 9 [default = 3];</code>
-     */
-    int getRejectInterval();
-
-    /**
-     * <code>optional int32 failed_retries = 10 [default = 0];</code>
-     */
-    boolean hasFailedRetries();
-    /**
-     * <code>optional int32 failed_retries = 10 [default = 0];</code>
-     */
-    int getFailedRetries();
-
-    /**
-     * <code>optional int32 failed_interval = 11 [default = 3];</code>
-     */
-    boolean hasFailedInterval();
-    /**
-     * <code>optional int32 failed_interval = 11 [default = 3];</code>
-     */
-    int getFailedInterval();
-
-    /**
-     * <code>required string parameters = 12;</code>
-     */
-    boolean hasParameters();
-    /**
-     * <code>required string parameters = 12;</code>
-     */
-    java.lang.String getParameters();
-    /**
-     * <code>required string parameters = 12;</code>
-     */
-    com.google.protobuf.ByteString
-        getParametersBytes();
-  }
-  /**
-   * Protobuf type {@code RestServerSubmitTaskRequest}
-   */
-  public static final class RestServerSubmitTaskRequest extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:RestServerSubmitTaskRequest)
-      RestServerSubmitTaskRequestOrBuilder {
-    // Use RestServerSubmitTaskRequest.newBuilder() to construct.
-    private RestServerSubmitTaskRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
-      super(builder);
-      this.unknownFields = builder.getUnknownFields();
-    }
-    private RestServerSubmitTaskRequest(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
-
-    private static final RestServerSubmitTaskRequest defaultInstance;
-    public static RestServerSubmitTaskRequest getDefaultInstance() {
-      return defaultInstance;
-    }
-
-    public RestServerSubmitTaskRequest getDefaultInstanceForType() {
-      return defaultInstance;
-    }
-
-    private final com.google.protobuf.UnknownFieldSet unknownFields;
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
-      return this.unknownFields;
-    }
-    private RestServerSubmitTaskRequest(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      initFields();
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
+        private WorkerSubmitTaskResponse(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                throws com.google.protobuf.InvalidProtocolBufferException {
+            initFields();
+            com.google.protobuf.UnknownFieldSet.Builder unknownFields = com.google.protobuf.UnknownFieldSet.newBuilder();
+            try {
+                boolean done = false;
+                while (!done) {
+                    int tag = input.readTag();
+                    switch (tag) {
+                        case 0:
+                            done = true;
+                            break;
+                        default: {
+                            if (!parseUnknownField(input, unknownFields, extensionRegistry, tag)) {
+                                done = true;
+                            }
+                            break;
+                        }
+                        case 8: {
+                            bitField0_ |= 0x00000001;
+                            accept_ = input.readBool();
+                            break;
+                        }
+                        case 16: {
+                            bitField0_ |= 0x00000002;
+                            success_ = input.readBool();
+                            break;
+                        }
+                        case 26: {
+                            com.google.protobuf.ByteString bs = input.readBytes();
+                            bitField0_ |= 0x00000004;
+                            message_ = bs;
+                            break;
+                        }
+                    }
+                }
+            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+                throw e.setUnfinishedMessage(this);
+            } catch (java.io.IOException e) {
+                throw new com.google.protobuf.InvalidProtocolBufferException(e.getMessage()).setUnfinishedMessage(this);
+            } finally {
+                this.unknownFields = unknownFields.build();
+                makeExtensionsImmutable();
             }
-            case 10: {
-              com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000001) == 0x00000001)) {
-                subBuilder = appAuth_.toBuilder();
-              }
-              appAuth_ = input.readMessage(com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.PARSER, extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(appAuth_);
-                appAuth_ = subBuilder.buildPartial();
-              }
-              bitField0_ |= 0x00000001;
-              break;
-            }
-            case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000002;
-              taskName_ = bs;
-              break;
-            }
-            case 26: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000004;
-              user_ = bs;
-              break;
-            }
-            case 34: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000008;
-              taskType_ = bs;
-              break;
-            }
-            case 42: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000010;
-              content_ = bs;
-              break;
-            }
-            case 48: {
-              bitField0_ |= 0x00000020;
-              groupId_ = input.readInt32();
-              break;
-            }
-            case 56: {
-              bitField0_ |= 0x00000040;
-              priority_ = input.readInt32();
-              break;
-            }
-            case 64: {
-              bitField0_ |= 0x00000080;
-              rejectRetries_ = input.readInt32();
-              break;
-            }
-            case 72: {
-              bitField0_ |= 0x00000100;
-              rejectInterval_ = input.readInt32();
-              break;
-            }
-            case 80: {
-              bitField0_ |= 0x00000200;
-              failedRetries_ = input.readInt32();
-              break;
-            }
-            case 88: {
-              bitField0_ |= 0x00000400;
-              failedInterval_ = input.readInt32();
-              break;
-            }
-            case 98: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000800;
-              parameters_ = bs;
-              break;
-            }
-          }
         }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e.getMessage()).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_RestServerSubmitTaskRequest_descriptor;
-    }
 
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_RestServerSubmitTaskRequest_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest.class, com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest.Builder.class);
-    }
-
-    public static com.google.protobuf.Parser<RestServerSubmitTaskRequest> PARSER =
-        new com.google.protobuf.AbstractParser<RestServerSubmitTaskRequest>() {
-      public RestServerSubmitTaskRequest parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new RestServerSubmitTaskRequest(input, extensionRegistry);
-      }
-    };
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<RestServerSubmitTaskRequest> getParserForType() {
-      return PARSER;
-    }
-
-    private int bitField0_;
-    public static final int APP_AUTH_FIELD_NUMBER = 1;
-    private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_;
-    /**
-     * <code>required .AppAuth app_auth = 1;</code>
-     */
-    public boolean hasAppAuth() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
-    /**
-     * <code>required .AppAuth app_auth = 1;</code>
-     */
-    public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth getAppAuth() {
-      return appAuth_;
-    }
-    /**
-     * <code>required .AppAuth app_auth = 1;</code>
-     */
-    public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder() {
-      return appAuth_;
-    }
-
-    public static final int TASK_NAME_FIELD_NUMBER = 2;
-    private java.lang.Object taskName_;
-    /**
-     * <code>required string task_name = 2;</code>
-     */
-    public boolean hasTaskName() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
-    }
-    /**
-     * <code>required string task_name = 2;</code>
-     */
-    public java.lang.String getTaskName() {
-      java.lang.Object ref = taskName_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          taskName_ = s;
+        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+            return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_WorkerSubmitTaskResponse_descriptor;
         }
-        return s;
-      }
-    }
-    /**
-     * <code>required string task_name = 2;</code>
-     */
-    public com.google.protobuf.ByteString
-        getTaskNameBytes() {
-      java.lang.Object ref = taskName_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        taskName_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
 
-    public static final int USER_FIELD_NUMBER = 3;
-    private java.lang.Object user_;
-    /**
-     * <code>required string user = 3;</code>
-     */
-    public boolean hasUser() {
-      return ((bitField0_ & 0x00000004) == 0x00000004);
-    }
-    /**
-     * <code>required string user = 3;</code>
-     */
-    public java.lang.String getUser() {
-      java.lang.Object ref = user_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          user_ = s;
+        @Override
+        protected com.google.protobuf.GeneratedMessage.FieldAccessorTable internalGetFieldAccessorTable() {
+            return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_WorkerSubmitTaskResponse_fieldAccessorTable
+                    .ensureFieldAccessorsInitialized(com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse.class,
+                            com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse.Builder.class);
         }
-        return s;
-      }
-    }
-    /**
-     * <code>required string user = 3;</code>
-     */
-    public com.google.protobuf.ByteString
-        getUserBytes() {
-      java.lang.Object ref = user_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        user_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
 
-    public static final int TASK_TYPE_FIELD_NUMBER = 4;
-    private java.lang.Object taskType_;
-    /**
-     * <code>required string task_type = 4;</code>
-     */
-    public boolean hasTaskType() {
-      return ((bitField0_ & 0x00000008) == 0x00000008);
-    }
-    /**
-     * <code>required string task_type = 4;</code>
-     */
-    public java.lang.String getTaskType() {
-      java.lang.Object ref = taskType_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          taskType_ = s;
+        public static com.google.protobuf.Parser<WorkerSubmitTaskResponse> PARSER = new com.google.protobuf.AbstractParser<WorkerSubmitTaskResponse>() {
+            @Override
+            public WorkerSubmitTaskResponse parsePartialFrom(com.google.protobuf.CodedInputStream input,
+                    com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+                return new WorkerSubmitTaskResponse(input, extensionRegistry);
+            }
+        };
+
+        @java.lang.Override
+        public com.google.protobuf.Parser<WorkerSubmitTaskResponse> getParserForType() {
+            return PARSER;
         }
-        return s;
-      }
-    }
-    /**
-     * <code>required string task_type = 4;</code>
-     */
-    public com.google.protobuf.ByteString
-        getTaskTypeBytes() {
-      java.lang.Object ref = taskType_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        taskType_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
 
-    public static final int CONTENT_FIELD_NUMBER = 5;
-    private java.lang.Object content_;
-    /**
-     * <code>required string content = 5;</code>
-     */
-    public boolean hasContent() {
-      return ((bitField0_ & 0x00000010) == 0x00000010);
-    }
-    /**
-     * <code>required string content = 5;</code>
-     */
-    public java.lang.String getContent() {
-      java.lang.Object ref = content_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          content_ = s;
+        private int bitField0_;
+        public static final int ACCEPT_FIELD_NUMBER = 1;
+        private boolean accept_;
+
+        /**
+         * <code>optional bool accept = 1;</code>
+         */
+        @Override
+        public boolean hasAccept() {
+            return ((bitField0_ & 0x00000001) == 0x00000001);
         }
-        return s;
-      }
-    }
-    /**
-     * <code>required string content = 5;</code>
-     */
-    public com.google.protobuf.ByteString
-        getContentBytes() {
-      java.lang.Object ref = content_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        content_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
 
-    public static final int GROUP_ID_FIELD_NUMBER = 6;
-    private int groupId_;
-    /**
-     * <code>required int32 group_id = 6;</code>
-     */
-    public boolean hasGroupId() {
-      return ((bitField0_ & 0x00000020) == 0x00000020);
-    }
-    /**
-     * <code>required int32 group_id = 6;</code>
-     */
-    public int getGroupId() {
-      return groupId_;
-    }
-
-    public static final int PRIORITY_FIELD_NUMBER = 7;
-    private int priority_;
-    /**
-     * <code>optional int32 priority = 7 [default = 1];</code>
-     */
-    public boolean hasPriority() {
-      return ((bitField0_ & 0x00000040) == 0x00000040);
-    }
-    /**
-     * <code>optional int32 priority = 7 [default = 1];</code>
-     */
-    public int getPriority() {
-      return priority_;
-    }
-
-    public static final int REJECT_RETRIES_FIELD_NUMBER = 8;
-    private int rejectRetries_;
-    /**
-     * <code>optional int32 reject_retries = 8 [default = 0];</code>
-     */
-    public boolean hasRejectRetries() {
-      return ((bitField0_ & 0x00000080) == 0x00000080);
-    }
-    /**
-     * <code>optional int32 reject_retries = 8 [default = 0];</code>
-     */
-    public int getRejectRetries() {
-      return rejectRetries_;
-    }
-
-    public static final int REJECT_INTERVAL_FIELD_NUMBER = 9;
-    private int rejectInterval_;
-    /**
-     * <code>optional int32 reject_interval = 9 [default = 3];</code>
-     */
-    public boolean hasRejectInterval() {
-      return ((bitField0_ & 0x00000100) == 0x00000100);
-    }
-    /**
-     * <code>optional int32 reject_interval = 9 [default = 3];</code>
-     */
-    public int getRejectInterval() {
-      return rejectInterval_;
-    }
-
-    public static final int FAILED_RETRIES_FIELD_NUMBER = 10;
-    private int failedRetries_;
-    /**
-     * <code>optional int32 failed_retries = 10 [default = 0];</code>
-     */
-    public boolean hasFailedRetries() {
-      return ((bitField0_ & 0x00000200) == 0x00000200);
-    }
-    /**
-     * <code>optional int32 failed_retries = 10 [default = 0];</code>
-     */
-    public int getFailedRetries() {
-      return failedRetries_;
-    }
-
-    public static final int FAILED_INTERVAL_FIELD_NUMBER = 11;
-    private int failedInterval_;
-    /**
-     * <code>optional int32 failed_interval = 11 [default = 3];</code>
-     */
-    public boolean hasFailedInterval() {
-      return ((bitField0_ & 0x00000400) == 0x00000400);
-    }
-    /**
-     * <code>optional int32 failed_interval = 11 [default = 3];</code>
-     */
-    public int getFailedInterval() {
-      return failedInterval_;
-    }
-
-    public static final int PARAMETERS_FIELD_NUMBER = 12;
-    private java.lang.Object parameters_;
-    /**
-     * <code>required string parameters = 12;</code>
-     */
-    public boolean hasParameters() {
-      return ((bitField0_ & 0x00000800) == 0x00000800);
-    }
-    /**
-     * <code>required string parameters = 12;</code>
-     */
-    public java.lang.String getParameters() {
-      java.lang.Object ref = parameters_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          parameters_ = s;
+        /**
+         * <code>optional bool accept = 1;</code>
+         */
+        @Override
+        public boolean getAccept() {
+            return accept_;
         }
-        return s;
-      }
-    }
-    /**
-     * <code>required string parameters = 12;</code>
-     */
-    public com.google.protobuf.ByteString
-        getParametersBytes() {
-      java.lang.Object ref = parameters_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        parameters_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+
+        public static final int SUCCESS_FIELD_NUMBER = 2;
+        private boolean success_;
+
+        /**
+         * <code>required bool success = 2;</code>
+         */
+        @Override
+        public boolean hasSuccess() {
+            return ((bitField0_ & 0x00000002) == 0x00000002);
+        }
+
+        /**
+         * <code>required bool success = 2;</code>
+         */
+        @Override
+        public boolean getSuccess() {
+            return success_;
+        }
+
+        public static final int MESSAGE_FIELD_NUMBER = 3;
+        private java.lang.Object message_;
+
+        /**
+         * <code>optional string message = 3 [default = ""];</code>
+         */
+        @Override
+        public boolean hasMessage() {
+            return ((bitField0_ & 0x00000004) == 0x00000004);
+        }
+
+        /**
+         * <code>optional string message = 3 [default = ""];</code>
+         */
+        @Override
+        public java.lang.String getMessage() {
+            java.lang.Object ref = message_;
+            if (ref instanceof java.lang.String) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                if (bs.isValidUtf8()) {
+                    message_ = s;
+                }
+                return s;
+            }
+        }
+
+        /**
+         * <code>optional string message = 3 [default = ""];</code>
+         */
+        @Override
+        public com.google.protobuf.ByteString getMessageBytes() {
+            java.lang.Object ref = message_;
+            if (ref instanceof java.lang.String) {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                message_ = b;
+                return b;
+            } else {
+                return (com.google.protobuf.ByteString) ref;
+            }
+        }
+
+        private void initFields() {
+            accept_ = false;
+            success_ = false;
+            message_ = "";
+        }
+
+        private byte memoizedIsInitialized = -1;
+
+        @Override
+        public final boolean isInitialized() {
+            byte isInitialized = memoizedIsInitialized;
+            if (isInitialized == 1)
+                return true;
+            if (isInitialized == 0)
+                return false;
+
+            if (!hasSuccess()) {
+                memoizedIsInitialized = 0;
+                return false;
+            }
+            memoizedIsInitialized = 1;
+            return true;
+        }
+
+        @Override
+        public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
+            getSerializedSize();
+            if (((bitField0_ & 0x00000001) == 0x00000001)) {
+                output.writeBool(1, accept_);
+            }
+            if (((bitField0_ & 0x00000002) == 0x00000002)) {
+                output.writeBool(2, success_);
+            }
+            if (((bitField0_ & 0x00000004) == 0x00000004)) {
+                output.writeBytes(3, getMessageBytes());
+            }
+            getUnknownFields().writeTo(output);
+        }
+
+        private int memoizedSerializedSize = -1;
+
+        @Override
+        public int getSerializedSize() {
+            int size = memoizedSerializedSize;
+            if (size != -1)
+                return size;
+
+            size = 0;
+            if (((bitField0_ & 0x00000001) == 0x00000001)) {
+                size += com.google.protobuf.CodedOutputStream.computeBoolSize(1, accept_);
+            }
+            if (((bitField0_ & 0x00000002) == 0x00000002)) {
+                size += com.google.protobuf.CodedOutputStream.computeBoolSize(2, success_);
+            }
+            if (((bitField0_ & 0x00000004) == 0x00000004)) {
+                size += com.google.protobuf.CodedOutputStream.computeBytesSize(3, getMessageBytes());
+            }
+            size += getUnknownFields().getSerializedSize();
+            memoizedSerializedSize = size;
+            return size;
+        }
+
+        private static final long serialVersionUID = 0L;
+
+        @java.lang.Override
+        protected java.lang.Object writeReplace() throws java.io.ObjectStreamException {
+            return super.writeReplace();
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse parseFrom(com.google.protobuf.ByteString data)
+                throws com.google.protobuf.InvalidProtocolBufferException {
+            return PARSER.parseFrom(data);
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse parseFrom(com.google.protobuf.ByteString data,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+            return PARSER.parseFrom(data, extensionRegistry);
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse parseFrom(byte[] data)
+                throws com.google.protobuf.InvalidProtocolBufferException {
+            return PARSER.parseFrom(data);
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse parseFrom(byte[] data,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+            return PARSER.parseFrom(data, extensionRegistry);
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse parseFrom(java.io.InputStream input)
+                throws java.io.IOException {
+            return PARSER.parseFrom(input);
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse parseFrom(java.io.InputStream input,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            return PARSER.parseFrom(input, extensionRegistry);
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse parseDelimitedFrom(java.io.InputStream input)
+                throws java.io.IOException {
+            return PARSER.parseDelimitedFrom(input);
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse parseDelimitedFrom(java.io.InputStream input,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            return PARSER.parseDelimitedFrom(input, extensionRegistry);
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse parseFrom(com.google.protobuf.CodedInputStream input)
+                throws java.io.IOException {
+            return PARSER.parseFrom(input);
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse parseFrom(com.google.protobuf.CodedInputStream input,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            return PARSER.parseFrom(input, extensionRegistry);
+        }
+
+        public static Builder newBuilder() {
+            return Builder.create();
+        }
+
+        @Override
+        public Builder newBuilderForType() {
+            return newBuilder();
+        }
+
+        public static Builder newBuilder(com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse prototype) {
+            return newBuilder().mergeFrom(prototype);
+        }
+
+        @Override
+        public Builder toBuilder() {
+            return newBuilder(this);
+        }
+
+        @java.lang.Override
+        protected Builder newBuilderForType(com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+            Builder builder = new Builder(parent);
+            return builder;
+        }
+
+        /**
+         * Protobuf type {@code WorkerSubmitTaskResponse}
+         */
+        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+                // @@protoc_insertion_point(builder_implements:WorkerSubmitTaskResponse)
+                com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponseOrBuilder {
+            public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+                return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_WorkerSubmitTaskResponse_descriptor;
+            }
+
+            @Override
+            protected com.google.protobuf.GeneratedMessage.FieldAccessorTable internalGetFieldAccessorTable() {
+                return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_WorkerSubmitTaskResponse_fieldAccessorTable
+                        .ensureFieldAccessorsInitialized(com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse.class,
+                                com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse.Builder.class);
+            }
+
+            // Construct using
+            // com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse.newBuilder()
+            private Builder() {
+                maybeForceBuilderInitialization();
+            }
+
+            private Builder(com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+                super(parent);
+                maybeForceBuilderInitialization();
+            }
+
+            private void maybeForceBuilderInitialization() {
+                if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+                }
+            }
+
+            private static Builder create() {
+                return new Builder();
+            }
+
+            @Override
+            public Builder clear() {
+                super.clear();
+                accept_ = false;
+                bitField0_ = (bitField0_ & ~0x00000001);
+                success_ = false;
+                bitField0_ = (bitField0_ & ~0x00000002);
+                message_ = "";
+                bitField0_ = (bitField0_ & ~0x00000004);
+                return this;
+            }
+
+            @Override
+            public Builder clone() {
+                return create().mergeFrom(buildPartial());
+            }
+
+            @Override
+            public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
+                return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_WorkerSubmitTaskResponse_descriptor;
+            }
+
+            @Override
+            public com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse getDefaultInstanceForType() {
+                return com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse.getDefaultInstance();
+            }
+
+            @Override
+            public com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse build() {
+                com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse result = buildPartial();
+                if (!result.isInitialized()) {
+                    throw newUninitializedMessageException(result);
+                }
+                return result;
+            }
+
+            @Override
+            public com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse buildPartial() {
+                com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse result = new com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse(
+                        this);
+                int from_bitField0_ = bitField0_;
+                int to_bitField0_ = 0;
+                if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+                    to_bitField0_ |= 0x00000001;
+                }
+                result.accept_ = accept_;
+                if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+                    to_bitField0_ |= 0x00000002;
+                }
+                result.success_ = success_;
+                if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+                    to_bitField0_ |= 0x00000004;
+                }
+                result.message_ = message_;
+                result.bitField0_ = to_bitField0_;
+                onBuilt();
+                return result;
+            }
+
+            @Override
+            public Builder mergeFrom(com.google.protobuf.Message other) {
+                if (other instanceof com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse) {
+                    return mergeFrom((com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse) other);
+                } else {
+                    super.mergeFrom(other);
+                    return this;
+                }
+            }
+
+            public Builder mergeFrom(com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse other) {
+                if (other == com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse.getDefaultInstance())
+                    return this;
+                if (other.hasAccept()) {
+                    setAccept(other.getAccept());
+                }
+                if (other.hasSuccess()) {
+                    setSuccess(other.getSuccess());
+                }
+                if (other.hasMessage()) {
+                    bitField0_ |= 0x00000004;
+                    message_ = other.message_;
+                    onChanged();
+                }
+                this.mergeUnknownFields(other.getUnknownFields());
+                return this;
+            }
+
+            @Override
+            public final boolean isInitialized() {
+                if (!hasSuccess()) {
+
+                    return false;
+                }
+                return true;
+            }
+
+            @Override
+            public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                    throws java.io.IOException {
+                com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse parsedMessage = null;
+                try {
+                    parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+                } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+                    parsedMessage = (com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse) e.getUnfinishedMessage();
+                    throw e;
+                } finally {
+                    if (parsedMessage != null) {
+                        mergeFrom(parsedMessage);
+                    }
+                }
+                return this;
+            }
+
+            private int bitField0_;
+
+            private boolean accept_;
+
+            /**
+             * <code>optional bool accept = 1;</code>
+             */
+            @Override
+            public boolean hasAccept() {
+                return ((bitField0_ & 0x00000001) == 0x00000001);
+            }
+
+            /**
+             * <code>optional bool accept = 1;</code>
+             */
+            @Override
+            public boolean getAccept() {
+                return accept_;
+            }
+
+            /**
+             * <code>optional bool accept = 1;</code>
+             */
+            public Builder setAccept(boolean value) {
+                bitField0_ |= 0x00000001;
+                accept_ = value;
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>optional bool accept = 1;</code>
+             */
+            public Builder clearAccept() {
+                bitField0_ = (bitField0_ & ~0x00000001);
+                accept_ = false;
+                onChanged();
+                return this;
+            }
+
+            private boolean success_;
+
+            /**
+             * <code>required bool success = 2;</code>
+             */
+            @Override
+            public boolean hasSuccess() {
+                return ((bitField0_ & 0x00000002) == 0x00000002);
+            }
+
+            /**
+             * <code>required bool success = 2;</code>
+             */
+            @Override
+            public boolean getSuccess() {
+                return success_;
+            }
+
+            /**
+             * <code>required bool success = 2;</code>
+             */
+            public Builder setSuccess(boolean value) {
+                bitField0_ |= 0x00000002;
+                success_ = value;
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>required bool success = 2;</code>
+             */
+            public Builder clearSuccess() {
+                bitField0_ = (bitField0_ & ~0x00000002);
+                success_ = false;
+                onChanged();
+                return this;
+            }
+
+            private java.lang.Object message_ = "";
+
+            /**
+             * <code>optional string message = 3 [default = ""];</code>
+             */
+            @Override
+            public boolean hasMessage() {
+                return ((bitField0_ & 0x00000004) == 0x00000004);
+            }
+
+            /**
+             * <code>optional string message = 3 [default = ""];</code>
+             */
+            @Override
+            public java.lang.String getMessage() {
+                java.lang.Object ref = message_;
+                if (!(ref instanceof java.lang.String)) {
+                    com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                    java.lang.String s = bs.toStringUtf8();
+                    if (bs.isValidUtf8()) {
+                        message_ = s;
+                    }
+                    return s;
+                } else {
+                    return (java.lang.String) ref;
+                }
+            }
+
+            /**
+             * <code>optional string message = 3 [default = ""];</code>
+             */
+            @Override
+            public com.google.protobuf.ByteString getMessageBytes() {
+                java.lang.Object ref = message_;
+                if (ref instanceof String) {
+                    com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                    message_ = b;
+                    return b;
+                } else {
+                    return (com.google.protobuf.ByteString) ref;
+                }
+            }
+
+            /**
+             * <code>optional string message = 3 [default = ""];</code>
+             */
+            public Builder setMessage(java.lang.String value) {
+                if (value == null) {
+                    throw new NullPointerException();
+                }
+                bitField0_ |= 0x00000004;
+                message_ = value;
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>optional string message = 3 [default = ""];</code>
+             */
+            public Builder clearMessage() {
+                bitField0_ = (bitField0_ & ~0x00000004);
+                message_ = getDefaultInstance().getMessage();
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>optional string message = 3 [default = ""];</code>
+             */
+            public Builder setMessageBytes(com.google.protobuf.ByteString value) {
+                if (value == null) {
+                    throw new NullPointerException();
+                }
+                bitField0_ |= 0x00000004;
+                message_ = value;
+                onChanged();
+                return this;
+            }
+
+            // @@protoc_insertion_point(builder_scope:WorkerSubmitTaskResponse)
+        }
+
+        static {
+            defaultInstance = new WorkerSubmitTaskResponse(true);
+            defaultInstance.initFields();
+        }
+
+        // @@protoc_insertion_point(class_scope:WorkerSubmitTaskResponse)
     }
 
-    private void initFields() {
-      appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
-      taskName_ = "";
-      user_ = "";
-      taskType_ = "";
-      content_ = "";
-      groupId_ = 0;
-      priority_ = 1;
-      rejectRetries_ = 0;
-      rejectInterval_ = 3;
-      failedRetries_ = 0;
-      failedInterval_ = 3;
-      parameters_ = "";
-    }
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+    public interface RestServerSubmitTaskRequestOrBuilder extends
+            // @@protoc_insertion_point(interface_extends:RestServerSubmitTaskRequest)
+            com.google.protobuf.MessageOrBuilder {
 
-      if (!hasAppAuth()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasTaskName()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasUser()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasTaskType()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasContent()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasGroupId()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasParameters()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!getAppAuth().isInitialized()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      memoizedIsInitialized = 1;
-      return true;
-    }
+        /**
+         * <code>required .AppAuth app_auth = 1;</code>
+         */
+        boolean hasAppAuth();
 
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      getSerializedSize();
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeMessage(1, appAuth_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeBytes(2, getTaskNameBytes());
-      }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeBytes(3, getUserBytes());
-      }
-      if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        output.writeBytes(4, getTaskTypeBytes());
-      }
-      if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        output.writeBytes(5, getContentBytes());
-      }
-      if (((bitField0_ & 0x00000020) == 0x00000020)) {
-        output.writeInt32(6, groupId_);
-      }
-      if (((bitField0_ & 0x00000040) == 0x00000040)) {
-        output.writeInt32(7, priority_);
-      }
-      if (((bitField0_ & 0x00000080) == 0x00000080)) {
-        output.writeInt32(8, rejectRetries_);
-      }
-      if (((bitField0_ & 0x00000100) == 0x00000100)) {
-        output.writeInt32(9, rejectInterval_);
-      }
-      if (((bitField0_ & 0x00000200) == 0x00000200)) {
-        output.writeInt32(10, failedRetries_);
-      }
-      if (((bitField0_ & 0x00000400) == 0x00000400)) {
-        output.writeInt32(11, failedInterval_);
-      }
-      if (((bitField0_ & 0x00000800) == 0x00000800)) {
-        output.writeBytes(12, getParametersBytes());
-      }
-      getUnknownFields().writeTo(output);
-    }
+        /**
+         * <code>required .AppAuth app_auth = 1;</code>
+         */
+        com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth getAppAuth();
 
-    private int memoizedSerializedSize = -1;
-    public int getSerializedSize() {
-      int size = memoizedSerializedSize;
-      if (size != -1) return size;
+        /**
+         * <code>required .AppAuth app_auth = 1;</code>
+         */
+        com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder();
 
-      size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(1, appAuth_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(2, getTaskNameBytes());
-      }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(3, getUserBytes());
-      }
-      if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(4, getTaskTypeBytes());
-      }
-      if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(5, getContentBytes());
-      }
-      if (((bitField0_ & 0x00000020) == 0x00000020)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(6, groupId_);
-      }
-      if (((bitField0_ & 0x00000040) == 0x00000040)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(7, priority_);
-      }
-      if (((bitField0_ & 0x00000080) == 0x00000080)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(8, rejectRetries_);
-      }
-      if (((bitField0_ & 0x00000100) == 0x00000100)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(9, rejectInterval_);
-      }
-      if (((bitField0_ & 0x00000200) == 0x00000200)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(10, failedRetries_);
-      }
-      if (((bitField0_ & 0x00000400) == 0x00000400)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(11, failedInterval_);
-      }
-      if (((bitField0_ & 0x00000800) == 0x00000800)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(12, getParametersBytes());
-      }
-      size += getUnknownFields().getSerializedSize();
-      memoizedSerializedSize = size;
-      return size;
+        /**
+         * <code>required string task_name = 2;</code>
+         */
+        boolean hasTaskName();
+
+        /**
+         * <code>required string task_name = 2;</code>
+         */
+        java.lang.String getTaskName();
+
+        /**
+         * <code>required string task_name = 2;</code>
+         */
+        com.google.protobuf.ByteString getTaskNameBytes();
+
+        /**
+         * <code>required string user = 3;</code>
+         */
+        boolean hasUser();
+
+        /**
+         * <code>required string user = 3;</code>
+         */
+        java.lang.String getUser();
+
+        /**
+         * <code>required string user = 3;</code>
+         */
+        com.google.protobuf.ByteString getUserBytes();
+
+        /**
+         * <code>required string task_type = 4;</code>
+         */
+        boolean hasTaskType();
+
+        /**
+         * <code>required string task_type = 4;</code>
+         */
+        java.lang.String getTaskType();
+
+        /**
+         * <code>required string task_type = 4;</code>
+         */
+        com.google.protobuf.ByteString getTaskTypeBytes();
+
+        /**
+         * <code>required string content = 5;</code>
+         */
+        boolean hasContent();
+
+        /**
+         * <code>required string content = 5;</code>
+         */
+        java.lang.String getContent();
+
+        /**
+         * <code>required string content = 5;</code>
+         */
+        com.google.protobuf.ByteString getContentBytes();
+
+        /**
+         * <code>required int32 group_id = 6;</code>
+         */
+        boolean hasGroupId();
+
+        /**
+         * <code>required int32 group_id = 6;</code>
+         */
+        int getGroupId();
+
+        /**
+         * <code>optional int32 priority = 7 [default = 1];</code>
+         */
+        boolean hasPriority();
+
+        /**
+         * <code>optional int32 priority = 7 [default = 1];</code>
+         */
+        int getPriority();
+
+        /**
+         * <code>optional int32 reject_retries = 8 [default = 0];</code>
+         */
+        boolean hasRejectRetries();
+
+        /**
+         * <code>optional int32 reject_retries = 8 [default = 0];</code>
+         */
+        int getRejectRetries();
+
+        /**
+         * <code>optional int32 reject_interval = 9 [default = 3];</code>
+         */
+        boolean hasRejectInterval();
+
+        /**
+         * <code>optional int32 reject_interval = 9 [default = 3];</code>
+         */
+        int getRejectInterval();
+
+        /**
+         * <code>optional int32 failed_retries = 10 [default = 0];</code>
+         */
+        boolean hasFailedRetries();
+
+        /**
+         * <code>optional int32 failed_retries = 10 [default = 0];</code>
+         */
+        int getFailedRetries();
+
+        /**
+         * <code>optional int32 failed_interval = 11 [default = 3];</code>
+         */
+        boolean hasFailedInterval();
+
+        /**
+         * <code>optional int32 failed_interval = 11 [default = 3];</code>
+         */
+        int getFailedInterval();
+
+        /**
+         * <code>required string parameters = 12;</code>
+         */
+        boolean hasParameters();
+
+        /**
+         * <code>required string parameters = 12;</code>
+         */
+        java.lang.String getParameters();
+
+        /**
+         * <code>required string parameters = 12;</code>
+         */
+        com.google.protobuf.ByteString getParametersBytes();
     }
 
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    protected java.lang.Object writeReplace()
-        throws java.io.ObjectStreamException {
-      return super.writeReplace();
-    }
-
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input);
-    }
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input, extensionRegistry);
-    }
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-
-    public static Builder newBuilder() { return Builder.create(); }
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest prototype) {
-      return newBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() { return newBuilder(this); }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
     /**
      * Protobuf type {@code RestServerSubmitTaskRequest}
      */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:RestServerSubmitTaskRequest)
-        com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequestOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_RestServerSubmitTaskRequest_descriptor;
-      }
+    public static final class RestServerSubmitTaskRequest extends com.google.protobuf.GeneratedMessage implements
+            // @@protoc_insertion_point(message_implements:RestServerSubmitTaskRequest)
+            RestServerSubmitTaskRequestOrBuilder {
+        // Use RestServerSubmitTaskRequest.newBuilder() to construct.
+        private RestServerSubmitTaskRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+            super(builder);
+            this.unknownFields = builder.getUnknownFields();
+        }
 
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_RestServerSubmitTaskRequest_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest.class, com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest.Builder.class);
-      }
+        private RestServerSubmitTaskRequest(boolean noInit) {
+            this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+        }
 
-      // Construct using com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
+        private static final RestServerSubmitTaskRequest defaultInstance;
 
-      private Builder(
-          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-          getAppAuthFieldBuilder();
+        public static RestServerSubmitTaskRequest getDefaultInstance() {
+            return defaultInstance;
         }
-      }
-      private static Builder create() {
-        return new Builder();
-      }
 
-      public Builder clear() {
-        super.clear();
-        if (appAuthBuilder_ == null) {
-          appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
-        } else {
-          appAuthBuilder_.clear();
+        @Override
+        public RestServerSubmitTaskRequest getDefaultInstanceForType() {
+            return defaultInstance;
         }
-        bitField0_ = (bitField0_ & ~0x00000001);
-        taskName_ = "";
-        bitField0_ = (bitField0_ & ~0x00000002);
-        user_ = "";
-        bitField0_ = (bitField0_ & ~0x00000004);
-        taskType_ = "";
-        bitField0_ = (bitField0_ & ~0x00000008);
-        content_ = "";
-        bitField0_ = (bitField0_ & ~0x00000010);
-        groupId_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000020);
-        priority_ = 1;
-        bitField0_ = (bitField0_ & ~0x00000040);
-        rejectRetries_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000080);
-        rejectInterval_ = 3;
-        bitField0_ = (bitField0_ & ~0x00000100);
-        failedRetries_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000200);
-        failedInterval_ = 3;
-        bitField0_ = (bitField0_ & ~0x00000400);
-        parameters_ = "";
-        bitField0_ = (bitField0_ & ~0x00000800);
-        return this;
-      }
 
-      public Builder clone() {
-        return create().mergeFrom(buildPartial());
-      }
+        private final com.google.protobuf.UnknownFieldSet unknownFields;
 
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_RestServerSubmitTaskRequest_descriptor;
-      }
+        @java.lang.Override
+        public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
+            return this.unknownFields;
+        }
 
-      public com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest getDefaultInstanceForType() {
-        return com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest.getDefaultInstance();
-      }
-
-      public com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest build() {
-        com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      public com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest buildPartial() {
-        com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest result = new com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        if (appAuthBuilder_ == null) {
-          result.appAuth_ = appAuth_;
-        } else {
-          result.appAuth_ = appAuthBuilder_.build();
-        }
-        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.taskName_ = taskName_;
-        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
-          to_bitField0_ |= 0x00000004;
-        }
-        result.user_ = user_;
-        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
-          to_bitField0_ |= 0x00000008;
-        }
-        result.taskType_ = taskType_;
-        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
-          to_bitField0_ |= 0x00000010;
-        }
-        result.content_ = content_;
-        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
-          to_bitField0_ |= 0x00000020;
-        }
-        result.groupId_ = groupId_;
-        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
-          to_bitField0_ |= 0x00000040;
-        }
-        result.priority_ = priority_;
-        if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
-          to_bitField0_ |= 0x00000080;
-        }
-        result.rejectRetries_ = rejectRetries_;
-        if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
-          to_bitField0_ |= 0x00000100;
-        }
-        result.rejectInterval_ = rejectInterval_;
-        if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
-          to_bitField0_ |= 0x00000200;
-        }
-        result.failedRetries_ = failedRetries_;
-        if (((from_bitField0_ & 0x00000400) == 0x00000400)) {
-          to_bitField0_ |= 0x00000400;
-        }
-        result.failedInterval_ = failedInterval_;
-        if (((from_bitField0_ & 0x00000800) == 0x00000800)) {
-          to_bitField0_ |= 0x00000800;
-        }
-        result.parameters_ = parameters_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
-
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest) {
-          return mergeFrom((com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest other) {
-        if (other == com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest.getDefaultInstance()) return this;
-        if (other.hasAppAuth()) {
-          mergeAppAuth(other.getAppAuth());
-        }
-        if (other.hasTaskName()) {
-          bitField0_ |= 0x00000002;
-          taskName_ = other.taskName_;
-          onChanged();
-        }
-        if (other.hasUser()) {
-          bitField0_ |= 0x00000004;
-          user_ = other.user_;
-          onChanged();
-        }
-        if (other.hasTaskType()) {
-          bitField0_ |= 0x00000008;
-          taskType_ = other.taskType_;
-          onChanged();
-        }
-        if (other.hasContent()) {
-          bitField0_ |= 0x00000010;
-          content_ = other.content_;
-          onChanged();
-        }
-        if (other.hasGroupId()) {
-          setGroupId(other.getGroupId());
-        }
-        if (other.hasPriority()) {
-          setPriority(other.getPriority());
-        }
-        if (other.hasRejectRetries()) {
-          setRejectRetries(other.getRejectRetries());
-        }
-        if (other.hasRejectInterval()) {
-          setRejectInterval(other.getRejectInterval());
-        }
-        if (other.hasFailedRetries()) {
-          setFailedRetries(other.getFailedRetries());
-        }
-        if (other.hasFailedInterval()) {
-          setFailedInterval(other.getFailedInterval());
-        }
-        if (other.hasParameters()) {
-          bitField0_ |= 0x00000800;
-          parameters_ = other.parameters_;
-          onChanged();
-        }
-        this.mergeUnknownFields(other.getUnknownFields());
-        return this;
-      }
-
-      public final boolean isInitialized() {
-        if (!hasAppAuth()) {
-          
-          return false;
-        }
-        if (!hasTaskName()) {
-          
-          return false;
-        }
-        if (!hasUser()) {
-          
-          return false;
-        }
-        if (!hasTaskType()) {
-          
-          return false;
-        }
-        if (!hasContent()) {
-          
-          return false;
-        }
-        if (!hasGroupId()) {
-          
-          return false;
-        }
-        if (!hasParameters()) {
-          
-          return false;
-        }
-        if (!getAppAuth().isInitialized()) {
-          
-          return false;
-        }
-        return true;
-      }
-
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest) e.getUnfinishedMessage();
-          throw e;
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-      private int bitField0_;
-
-      private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
-      private com.google.protobuf.SingleFieldBuilder<
-          com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> appAuthBuilder_;
-      /**
-       * <code>required .AppAuth app_auth = 1;</code>
-       */
-      public boolean hasAppAuth() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      /**
-       * <code>required .AppAuth app_auth = 1;</code>
-       */
-      public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth getAppAuth() {
-        if (appAuthBuilder_ == null) {
-          return appAuth_;
-        } else {
-          return appAuthBuilder_.getMessage();
-        }
-      }
-      /**
-       * <code>required .AppAuth app_auth = 1;</code>
-       */
-      public Builder setAppAuth(com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth value) {
-        if (appAuthBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          appAuth_ = value;
-          onChanged();
-        } else {
-          appAuthBuilder_.setMessage(value);
-        }
-        bitField0_ |= 0x00000001;
-        return this;
-      }
-      /**
-       * <code>required .AppAuth app_auth = 1;</code>
-       */
-      public Builder setAppAuth(
-          com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder builderForValue) {
-        if (appAuthBuilder_ == null) {
-          appAuth_ = builderForValue.build();
-          onChanged();
-        } else {
-          appAuthBuilder_.setMessage(builderForValue.build());
-        }
-        bitField0_ |= 0x00000001;
-        return this;
-      }
-      /**
-       * <code>required .AppAuth app_auth = 1;</code>
-       */
-      public Builder mergeAppAuth(com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth value) {
-        if (appAuthBuilder_ == null) {
-          if (((bitField0_ & 0x00000001) == 0x00000001) &&
-              appAuth_ != com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance()) {
-            appAuth_ =
-              com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.newBuilder(appAuth_).mergeFrom(value).buildPartial();
-          } else {
-            appAuth_ = value;
-          }
-          onChanged();
-        } else {
-          appAuthBuilder_.mergeFrom(value);
-        }
-        bitField0_ |= 0x00000001;
-        return this;
-      }
-      /**
-       * <code>required .AppAuth app_auth = 1;</code>
-       */
-      public Builder clearAppAuth() {
-        if (appAuthBuilder_ == null) {
-          appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
-          onChanged();
-        } else {
-          appAuthBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000001);
-        return this;
-      }
-      /**
-       * <code>required .AppAuth app_auth = 1;</code>
-       */
-      public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder getAppAuthBuilder() {
-        bitField0_ |= 0x00000001;
-        onChanged();
-        return getAppAuthFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>required .AppAuth app_auth = 1;</code>
-       */
-      public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder() {
-        if (appAuthBuilder_ != null) {
-          return appAuthBuilder_.getMessageOrBuilder();
-        } else {
-          return appAuth_;
-        }
-      }
-      /**
-       * <code>required .AppAuth app_auth = 1;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilder<
-          com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> 
-          getAppAuthFieldBuilder() {
-        if (appAuthBuilder_ == null) {
-          appAuthBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-              com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder>(
-                  getAppAuth(),
-                  getParentForChildren(),
-                  isClean());
-          appAuth_ = null;
-        }
-        return appAuthBuilder_;
-      }
-
-      private java.lang.Object taskName_ = "";
-      /**
-       * <code>required string task_name = 2;</code>
-       */
-      public boolean hasTaskName() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
-      }
-      /**
-       * <code>required string task_name = 2;</code>
-       */
-      public java.lang.String getTaskName() {
-        java.lang.Object ref = taskName_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            taskName_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>required string task_name = 2;</code>
-       */
-      public com.google.protobuf.ByteString
-          getTaskNameBytes() {
-        java.lang.Object ref = taskName_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          taskName_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>required string task_name = 2;</code>
-       */
-      public Builder setTaskName(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
-        taskName_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string task_name = 2;</code>
-       */
-      public Builder clearTaskName() {
-        bitField0_ = (bitField0_ & ~0x00000002);
-        taskName_ = getDefaultInstance().getTaskName();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string task_name = 2;</code>
-       */
-      public Builder setTaskNameBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
-        taskName_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object user_ = "";
-      /**
-       * <code>required string user = 3;</code>
-       */
-      public boolean hasUser() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
-      }
-      /**
-       * <code>required string user = 3;</code>
-       */
-      public java.lang.String getUser() {
-        java.lang.Object ref = user_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            user_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>required string user = 3;</code>
-       */
-      public com.google.protobuf.ByteString
-          getUserBytes() {
-        java.lang.Object ref = user_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          user_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>required string user = 3;</code>
-       */
-      public Builder setUser(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
-        user_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string user = 3;</code>
-       */
-      public Builder clearUser() {
-        bitField0_ = (bitField0_ & ~0x00000004);
-        user_ = getDefaultInstance().getUser();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string user = 3;</code>
-       */
-      public Builder setUserBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
-        user_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object taskType_ = "";
-      /**
-       * <code>required string task_type = 4;</code>
-       */
-      public boolean hasTaskType() {
-        return ((bitField0_ & 0x00000008) == 0x00000008);
-      }
-      /**
-       * <code>required string task_type = 4;</code>
-       */
-      public java.lang.String getTaskType() {
-        java.lang.Object ref = taskType_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            taskType_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>required string task_type = 4;</code>
-       */
-      public com.google.protobuf.ByteString
-          getTaskTypeBytes() {
-        java.lang.Object ref = taskType_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          taskType_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>required string task_type = 4;</code>
-       */
-      public Builder setTaskType(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
-        taskType_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string task_type = 4;</code>
-       */
-      public Builder clearTaskType() {
-        bitField0_ = (bitField0_ & ~0x00000008);
-        taskType_ = getDefaultInstance().getTaskType();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string task_type = 4;</code>
-       */
-      public Builder setTaskTypeBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
-        taskType_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object content_ = "";
-      /**
-       * <code>required string content = 5;</code>
-       */
-      public boolean hasContent() {
-        return ((bitField0_ & 0x00000010) == 0x00000010);
-      }
-      /**
-       * <code>required string content = 5;</code>
-       */
-      public java.lang.String getContent() {
-        java.lang.Object ref = content_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            content_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>required string content = 5;</code>
-       */
-      public com.google.protobuf.ByteString
-          getContentBytes() {
-        java.lang.Object ref = content_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          content_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>required string content = 5;</code>
-       */
-      public Builder setContent(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000010;
-        content_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string content = 5;</code>
-       */
-      public Builder clearContent() {
-        bitField0_ = (bitField0_ & ~0x00000010);
-        content_ = getDefaultInstance().getContent();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string content = 5;</code>
-       */
-      public Builder setContentBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000010;
-        content_ = value;
-        onChanged();
-        return this;
-      }
-
-      private int groupId_ ;
-      /**
-       * <code>required int32 group_id = 6;</code>
-       */
-      public boolean hasGroupId() {
-        return ((bitField0_ & 0x00000020) == 0x00000020);
-      }
-      /**
-       * <code>required int32 group_id = 6;</code>
-       */
-      public int getGroupId() {
-        return groupId_;
-      }
-      /**
-       * <code>required int32 group_id = 6;</code>
-       */
-      public Builder setGroupId(int value) {
-        bitField0_ |= 0x00000020;
-        groupId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required int32 group_id = 6;</code>
-       */
-      public Builder clearGroupId() {
-        bitField0_ = (bitField0_ & ~0x00000020);
-        groupId_ = 0;
-        onChanged();
-        return this;
-      }
-
-      private int priority_ = 1;
-      /**
-       * <code>optional int32 priority = 7 [default = 1];</code>
-       */
-      public boolean hasPriority() {
-        return ((bitField0_ & 0x00000040) == 0x00000040);
-      }
-      /**
-       * <code>optional int32 priority = 7 [default = 1];</code>
-       */
-      public int getPriority() {
-        return priority_;
-      }
-      /**
-       * <code>optional int32 priority = 7 [default = 1];</code>
-       */
-      public Builder setPriority(int value) {
-        bitField0_ |= 0x00000040;
-        priority_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional int32 priority = 7 [default = 1];</code>
-       */
-      public Builder clearPriority() {
-        bitField0_ = (bitField0_ & ~0x00000040);
-        priority_ = 1;
-        onChanged();
-        return this;
-      }
-
-      private int rejectRetries_ ;
-      /**
-       * <code>optional int32 reject_retries = 8 [default = 0];</code>
-       */
-      public boolean hasRejectRetries() {
-        return ((bitField0_ & 0x00000080) == 0x00000080);
-      }
-      /**
-       * <code>optional int32 reject_retries = 8 [default = 0];</code>
-       */
-      public int getRejectRetries() {
-        return rejectRetries_;
-      }
-      /**
-       * <code>optional int32 reject_retries = 8 [default = 0];</code>
-       */
-      public Builder setRejectRetries(int value) {
-        bitField0_ |= 0x00000080;
-        rejectRetries_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional int32 reject_retries = 8 [default = 0];</code>
-       */
-      public Builder clearRejectRetries() {
-        bitField0_ = (bitField0_ & ~0x00000080);
-        rejectRetries_ = 0;
-        onChanged();
-        return this;
-      }
-
-      private int rejectInterval_ = 3;
-      /**
-       * <code>optional int32 reject_interval = 9 [default = 3];</code>
-       */
-      public boolean hasRejectInterval() {
-        return ((bitField0_ & 0x00000100) == 0x00000100);
-      }
-      /**
-       * <code>optional int32 reject_interval = 9 [default = 3];</code>
-       */
-      public int getRejectInterval() {
-        return rejectInterval_;
-      }
-      /**
-       * <code>optional int32 reject_interval = 9 [default = 3];</code>
-       */
-      public Builder setRejectInterval(int value) {
-        bitField0_ |= 0x00000100;
-        rejectInterval_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional int32 reject_interval = 9 [default = 3];</code>
-       */
-      public Builder clearRejectInterval() {
-        bitField0_ = (bitField0_ & ~0x00000100);
-        rejectInterval_ = 3;
-        onChanged();
-        return this;
-      }
-
-      private int failedRetries_ ;
-      /**
-       * <code>optional int32 failed_retries = 10 [default = 0];</code>
-       */
-      public boolean hasFailedRetries() {
-        return ((bitField0_ & 0x00000200) == 0x00000200);
-      }
-      /**
-       * <code>optional int32 failed_retries = 10 [default = 0];</code>
-       */
-      public int getFailedRetries() {
-        return failedRetries_;
-      }
-      /**
-       * <code>optional int32 failed_retries = 10 [default = 0];</code>
-       */
-      public Builder setFailedRetries(int value) {
-        bitField0_ |= 0x00000200;
-        failedRetries_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional int32 failed_retries = 10 [default = 0];</code>
-       */
-      public Builder clearFailedRetries() {
-        bitField0_ = (bitField0_ & ~0x00000200);
-        failedRetries_ = 0;
-        onChanged();
-        return this;
-      }
-
-      private int failedInterval_ = 3;
-      /**
-       * <code>optional int32 failed_interval = 11 [default = 3];</code>
-       */
-      public boolean hasFailedInterval() {
-        return ((bitField0_ & 0x00000400) == 0x00000400);
-      }
-      /**
-       * <code>optional int32 failed_interval = 11 [default = 3];</code>
-       */
-      public int getFailedInterval() {
-        return failedInterval_;
-      }
-      /**
-       * <code>optional int32 failed_interval = 11 [default = 3];</code>
-       */
-      public Builder setFailedInterval(int value) {
-        bitField0_ |= 0x00000400;
-        failedInterval_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional int32 failed_interval = 11 [default = 3];</code>
-       */
-      public Builder clearFailedInterval() {
-        bitField0_ = (bitField0_ & ~0x00000400);
-        failedInterval_ = 3;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object parameters_ = "";
-      /**
-       * <code>required string parameters = 12;</code>
-       */
-      public boolean hasParameters() {
-        return ((bitField0_ & 0x00000800) == 0x00000800);
-      }
-      /**
-       * <code>required string parameters = 12;</code>
-       */
-      public java.lang.String getParameters() {
-        java.lang.Object ref = parameters_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            parameters_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>required string parameters = 12;</code>
-       */
-      public com.google.protobuf.ByteString
-          getParametersBytes() {
-        java.lang.Object ref = parameters_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          parameters_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>required string parameters = 12;</code>
-       */
-      public Builder setParameters(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000800;
-        parameters_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string parameters = 12;</code>
-       */
-      public Builder clearParameters() {
-        bitField0_ = (bitField0_ & ~0x00000800);
-        parameters_ = getDefaultInstance().getParameters();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string parameters = 12;</code>
-       */
-      public Builder setParametersBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000800;
-        parameters_ = value;
-        onChanged();
-        return this;
-      }
-
-      // @@protoc_insertion_point(builder_scope:RestServerSubmitTaskRequest)
-    }
-
-    static {
-      defaultInstance = new RestServerSubmitTaskRequest(true);
-      defaultInstance.initFields();
-    }
-
-    // @@protoc_insertion_point(class_scope:RestServerSubmitTaskRequest)
-  }
-
-  public interface ServerSubmitTaskResponseOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:ServerSubmitTaskResponse)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <code>optional int64 task_id = 1;</code>
-     */
-    boolean hasTaskId();
-    /**
-     * <code>optional int64 task_id = 1;</code>
-     */
-    long getTaskId();
-
-    /**
-     * <code>required bool success = 2;</code>
-     */
-    boolean hasSuccess();
-    /**
-     * <code>required bool success = 2;</code>
-     */
-    boolean getSuccess();
-
-    /**
-     * <code>optional string message = 3 [default = ""];</code>
-     */
-    boolean hasMessage();
-    /**
-     * <code>optional string message = 3 [default = ""];</code>
-     */
-    java.lang.String getMessage();
-    /**
-     * <code>optional string message = 3 [default = ""];</code>
-     */
-    com.google.protobuf.ByteString
-        getMessageBytes();
-  }
-  /**
-   * Protobuf type {@code ServerSubmitTaskResponse}
-   */
-  public static final class ServerSubmitTaskResponse extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:ServerSubmitTaskResponse)
-      ServerSubmitTaskResponseOrBuilder {
-    // Use ServerSubmitTaskResponse.newBuilder() to construct.
-    private ServerSubmitTaskResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
-      super(builder);
-      this.unknownFields = builder.getUnknownFields();
-    }
-    private ServerSubmitTaskResponse(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
-
-    private static final ServerSubmitTaskResponse defaultInstance;
-    public static ServerSubmitTaskResponse getDefaultInstance() {
-      return defaultInstance;
-    }
-
-    public ServerSubmitTaskResponse getDefaultInstanceForType() {
-      return defaultInstance;
-    }
-
-    private final com.google.protobuf.UnknownFieldSet unknownFields;
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
-      return this.unknownFields;
-    }
-    private ServerSubmitTaskResponse(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      initFields();
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
+        private RestServerSubmitTaskRequest(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                throws com.google.protobuf.InvalidProtocolBufferException {
+            initFields();
+            com.google.protobuf.UnknownFieldSet.Builder unknownFields = com.google.protobuf.UnknownFieldSet.newBuilder();
+            try {
+                boolean done = false;
+                while (!done) {
+                    int tag = input.readTag();
+                    switch (tag) {
+                        case 0:
+                            done = true;
+                            break;
+                        default: {
+                            if (!parseUnknownField(input, unknownFields, extensionRegistry, tag)) {
+                                done = true;
+                            }
+                            break;
+                        }
+                        case 10: {
+                            com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder subBuilder = null;
+                            if (((bitField0_ & 0x00000001) == 0x00000001)) {
+                                subBuilder = appAuth_.toBuilder();
+                            }
+                            appAuth_ = input.readMessage(com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.PARSER, extensionRegistry);
+                            if (subBuilder != null) {
+                                subBuilder.mergeFrom(appAuth_);
+                                appAuth_ = subBuilder.buildPartial();
+                            }
+                            bitField0_ |= 0x00000001;
+                            break;
+                        }
+                        case 18: {
+                            com.google.protobuf.ByteString bs = input.readBytes();
+                            bitField0_ |= 0x00000002;
+                            taskName_ = bs;
+                            break;
+                        }
+                        case 26: {
+                            com.google.protobuf.ByteString bs = input.readBytes();
+                            bitField0_ |= 0x00000004;
+                            user_ = bs;
+                            break;
+                        }
+                        case 34: {
+                            com.google.protobuf.ByteString bs = input.readBytes();
+                            bitField0_ |= 0x00000008;
+                            taskType_ = bs;
+                            break;
+                        }
+                        case 42: {
+                            com.google.protobuf.ByteString bs = input.readBytes();
+                            bitField0_ |= 0x00000010;
+                            content_ = bs;
+                            break;
+                        }
+                        case 48: {
+                            bitField0_ |= 0x00000020;
+                            groupId_ = input.readInt32();
+                            break;
+                        }
+                        case 56: {
+                            bitField0_ |= 0x00000040;
+                            priority_ = input.readInt32();
+                            break;
+                        }
+                        case 64: {
+                            bitField0_ |= 0x00000080;
+                            rejectRetries_ = input.readInt32();
+                            break;
+                        }
+                        case 72: {
+                            bitField0_ |= 0x00000100;
+                            rejectInterval_ = input.readInt32();
+                            break;
+                        }
+                        case 80: {
+                            bitField0_ |= 0x00000200;
+                            failedRetries_ = input.readInt32();
+                            break;
+                        }
+                        case 88: {
+                            bitField0_ |= 0x00000400;
+                            failedInterval_ = input.readInt32();
+                            break;
+                        }
+                        case 98: {
+                            com.google.protobuf.ByteString bs = input.readBytes();
+                            bitField0_ |= 0x00000800;
+                            parameters_ = bs;
+                            break;
+                        }
+                    }
+                }
+            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+                throw e.setUnfinishedMessage(this);
+            } catch (java.io.IOException e) {
+                throw new com.google.protobuf.InvalidProtocolBufferException(e.getMessage()).setUnfinishedMessage(this);
+            } finally {
+                this.unknownFields = unknownFields.build();
+                makeExtensionsImmutable();
             }
-            case 8: {
-              bitField0_ |= 0x00000001;
-              taskId_ = input.readInt64();
-              break;
-            }
-            case 16: {
-              bitField0_ |= 0x00000002;
-              success_ = input.readBool();
-              break;
-            }
-            case 26: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000004;
-              message_ = bs;
-              break;
-            }
-          }
         }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e.getMessage()).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_ServerSubmitTaskResponse_descriptor;
-    }
 
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_ServerSubmitTaskResponse_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse.class, com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse.Builder.class);
-    }
-
-    public static com.google.protobuf.Parser<ServerSubmitTaskResponse> PARSER =
-        new com.google.protobuf.AbstractParser<ServerSubmitTaskResponse>() {
-      public ServerSubmitTaskResponse parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new ServerSubmitTaskResponse(input, extensionRegistry);
-      }
-    };
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<ServerSubmitTaskResponse> getParserForType() {
-      return PARSER;
-    }
-
-    private int bitField0_;
-    public static final int TASK_ID_FIELD_NUMBER = 1;
-    private long taskId_;
-    /**
-     * <code>optional int64 task_id = 1;</code>
-     */
-    public boolean hasTaskId() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
-    /**
-     * <code>optional int64 task_id = 1;</code>
-     */
-    public long getTaskId() {
-      return taskId_;
-    }
-
-    public static final int SUCCESS_FIELD_NUMBER = 2;
-    private boolean success_;
-    /**
-     * <code>required bool success = 2;</code>
-     */
-    public boolean hasSuccess() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
-    }
-    /**
-     * <code>required bool success = 2;</code>
-     */
-    public boolean getSuccess() {
-      return success_;
-    }
-
-    public static final int MESSAGE_FIELD_NUMBER = 3;
-    private java.lang.Object message_;
-    /**
-     * <code>optional string message = 3 [default = ""];</code>
-     */
-    public boolean hasMessage() {
-      return ((bitField0_ & 0x00000004) == 0x00000004);
-    }
-    /**
-     * <code>optional string message = 3 [default = ""];</code>
-     */
-    public java.lang.String getMessage() {
-      java.lang.Object ref = message_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          message_ = s;
+        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+            return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_RestServerSubmitTaskRequest_descriptor;
         }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string message = 3 [default = ""];</code>
-     */
-    public com.google.protobuf.ByteString
-        getMessageBytes() {
-      java.lang.Object ref = message_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        message_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+
+        @Override
+        protected com.google.protobuf.GeneratedMessage.FieldAccessorTable internalGetFieldAccessorTable() {
+            return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_RestServerSubmitTaskRequest_fieldAccessorTable
+                    .ensureFieldAccessorsInitialized(com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest.class,
+                            com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest.Builder.class);
+        }
+
+        public static com.google.protobuf.Parser<RestServerSubmitTaskRequest> PARSER = new com.google.protobuf.AbstractParser<RestServerSubmitTaskRequest>() {
+            @Override
+            public RestServerSubmitTaskRequest parsePartialFrom(com.google.protobuf.CodedInputStream input,
+                    com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+                return new RestServerSubmitTaskRequest(input, extensionRegistry);
+            }
+        };
+
+        @java.lang.Override
+        public com.google.protobuf.Parser<RestServerSubmitTaskRequest> getParserForType() {
+            return PARSER;
+        }
+
+        private int bitField0_;
+        public static final int APP_AUTH_FIELD_NUMBER = 1;
+        private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_;
+
+        /**
+         * <code>required .AppAuth app_auth = 1;</code>
+         */
+        @Override
+        public boolean hasAppAuth() {
+            return ((bitField0_ & 0x00000001) == 0x00000001);
+        }
+
+        /**
+         * <code>required .AppAuth app_auth = 1;</code>
+         */
+        @Override
+        public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth getAppAuth() {
+            return appAuth_;
+        }
+
+        /**
+         * <code>required .AppAuth app_auth = 1;</code>
+         */
+        @Override
+        public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder() {
+            return appAuth_;
+        }
+
+        public static final int TASK_NAME_FIELD_NUMBER = 2;
+        private java.lang.Object taskName_;
+
+        /**
+         * <code>required string task_name = 2;</code>
+         */
+        @Override
+        public boolean hasTaskName() {
+            return ((bitField0_ & 0x00000002) == 0x00000002);
+        }
+
+        /**
+         * <code>required string task_name = 2;</code>
+         */
+        @Override
+        public java.lang.String getTaskName() {
+            java.lang.Object ref = taskName_;
+            if (ref instanceof java.lang.String) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                if (bs.isValidUtf8()) {
+                    taskName_ = s;
+                }
+                return s;
+            }
+        }
+
+        /**
+         * <code>required string task_name = 2;</code>
+         */
+        @Override
+        public com.google.protobuf.ByteString getTaskNameBytes() {
+            java.lang.Object ref = taskName_;
+            if (ref instanceof java.lang.String) {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                taskName_ = b;
+                return b;
+            } else {
+                return (com.google.protobuf.ByteString) ref;
+            }
+        }
+
+        public static final int USER_FIELD_NUMBER = 3;
+        private java.lang.Object user_;
+
+        /**
+         * <code>required string user = 3;</code>
+         */
+        @Override
+        public boolean hasUser() {
+            return ((bitField0_ & 0x00000004) == 0x00000004);
+        }
+
+        /**
+         * <code>required string user = 3;</code>
+         */
+        @Override
+        public java.lang.String getUser() {
+            java.lang.Object ref = user_;
+            if (ref instanceof java.lang.String) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                if (bs.isValidUtf8()) {
+                    user_ = s;
+                }
+                return s;
+            }
+        }
+
+        /**
+         * <code>required string user = 3;</code>
+         */
+        @Override
+        public com.google.protobuf.ByteString getUserBytes() {
+            java.lang.Object ref = user_;
+            if (ref instanceof java.lang.String) {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                user_ = b;
+                return b;
+            } else {
+                return (com.google.protobuf.ByteString) ref;
+            }
+        }
+
+        public static final int TASK_TYPE_FIELD_NUMBER = 4;
+        private java.lang.Object taskType_;
+
+        /**
+         * <code>required string task_type = 4;</code>
+         */
+        @Override
+        public boolean hasTaskType() {
+            return ((bitField0_ & 0x00000008) == 0x00000008);
+        }
+
+        /**
+         * <code>required string task_type = 4;</code>
+         */
+        @Override
+        public java.lang.String getTaskType() {
+            java.lang.Object ref = taskType_;
+            if (ref instanceof java.lang.String) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                if (bs.isValidUtf8()) {
+                    taskType_ = s;
+                }
+                return s;
+            }
+        }
+
+        /**
+         * <code>required string task_type = 4;</code>
+         */
+        @Override
+        public com.google.protobuf.ByteString getTaskTypeBytes() {
+            java.lang.Object ref = taskType_;
+            if (ref instanceof java.lang.String) {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                taskType_ = b;
+                return b;
+            } else {
+                return (com.google.protobuf.ByteString) ref;
+            }
+        }
+
+        public static final int CONTENT_FIELD_NUMBER = 5;
+        private java.lang.Object content_;
+
+        /**
+         * <code>required string content = 5;</code>
+         */
+        @Override
+        public boolean hasContent() {
+            return ((bitField0_ & 0x00000010) == 0x00000010);
+        }
+
+        /**
+         * <code>required string content = 5;</code>
+         */
+        @Override
+        public java.lang.String getContent() {
+            java.lang.Object ref = content_;
+            if (ref instanceof java.lang.String) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                if (bs.isValidUtf8()) {
+                    content_ = s;
+                }
+                return s;
+            }
+        }
+
+        /**
+         * <code>required string content = 5;</code>
+         */
+        @Override
+        public com.google.protobuf.ByteString getContentBytes() {
+            java.lang.Object ref = content_;
+            if (ref instanceof java.lang.String) {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                content_ = b;
+                return b;
+            } else {
+                return (com.google.protobuf.ByteString) ref;
+            }
+        }
+
+        public static final int GROUP_ID_FIELD_NUMBER = 6;
+        private int groupId_;
+
+        /**
+         * <code>required int32 group_id = 6;</code>
+         */
+        @Override
+        public boolean hasGroupId() {
+            return ((bitField0_ & 0x00000020) == 0x00000020);
+        }
+
+        /**
+         * <code>required int32 group_id = 6;</code>
+         */
+        @Override
+        public int getGroupId() {
+            return groupId_;
+        }
+
+        public static final int PRIORITY_FIELD_NUMBER = 7;
+        private int priority_;
+
+        /**
+         * <code>optional int32 priority = 7 [default = 1];</code>
+         */
+        @Override
+        public boolean hasPriority() {
+            return ((bitField0_ & 0x00000040) == 0x00000040);
+        }
+
+        /**
+         * <code>optional int32 priority = 7 [default = 1];</code>
+         */
+        @Override
+        public int getPriority() {
+            return priority_;
+        }
+
+        public static final int REJECT_RETRIES_FIELD_NUMBER = 8;
+        private int rejectRetries_;
+
+        /**
+         * <code>optional int32 reject_retries = 8 [default = 0];</code>
+         */
+        @Override
+        public boolean hasRejectRetries() {
+            return ((bitField0_ & 0x00000080) == 0x00000080);
+        }
+
+        /**
+         * <code>optional int32 reject_retries = 8 [default = 0];</code>
+         */
+        @Override
+        public int getRejectRetries() {
+            return rejectRetries_;
+        }
+
+        public static final int REJECT_INTERVAL_FIELD_NUMBER = 9;
+        private int rejectInterval_;
+
+        /**
+         * <code>optional int32 reject_interval = 9 [default = 3];</code>
+         */
+        @Override
+        public boolean hasRejectInterval() {
+            return ((bitField0_ & 0x00000100) == 0x00000100);
+        }
+
+        /**
+         * <code>optional int32 reject_interval = 9 [default = 3];</code>
+         */
+        @Override
+        public int getRejectInterval() {
+            return rejectInterval_;
+        }
+
+        public static final int FAILED_RETRIES_FIELD_NUMBER = 10;
+        private int failedRetries_;
+
+        /**
+         * <code>optional int32 failed_retries = 10 [default = 0];</code>
+         */
+        @Override
+        public boolean hasFailedRetries() {
+            return ((bitField0_ & 0x00000200) == 0x00000200);
+        }
+
+        /**
+         * <code>optional int32 failed_retries = 10 [default = 0];</code>
+         */
+        @Override
+        public int getFailedRetries() {
+            return failedRetries_;
+        }
+
+        public static final int FAILED_INTERVAL_FIELD_NUMBER = 11;
+        private int failedInterval_;
+
+        /**
+         * <code>optional int32 failed_interval = 11 [default = 3];</code>
+         */
+        @Override
+        public boolean hasFailedInterval() {
+            return ((bitField0_ & 0x00000400) == 0x00000400);
+        }
+
+        /**
+         * <code>optional int32 failed_interval = 11 [default = 3];</code>
+         */
+        @Override
+        public int getFailedInterval() {
+            return failedInterval_;
+        }
+
+        public static final int PARAMETERS_FIELD_NUMBER = 12;
+        private java.lang.Object parameters_;
+
+        /**
+         * <code>required string parameters = 12;</code>
+         */
+        @Override
+        public boolean hasParameters() {
+            return ((bitField0_ & 0x00000800) == 0x00000800);
+        }
+
+        /**
+         * <code>required string parameters = 12;</code>
+         */
+        @Override
+        public java.lang.String getParameters() {
+            java.lang.Object ref = parameters_;
+            if (ref instanceof java.lang.String) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                if (bs.isValidUtf8()) {
+                    parameters_ = s;
+                }
+                return s;
+            }
+        }
+
+        /**
+         * <code>required string parameters = 12;</code>
+         */
+        @Override
+        public com.google.protobuf.ByteString getParametersBytes() {
+            java.lang.Object ref = parameters_;
+            if (ref instanceof java.lang.String) {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                parameters_ = b;
+                return b;
+            } else {
+                return (com.google.protobuf.ByteString) ref;
+            }
+        }
+
+        private void initFields() {
+            appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
+            taskName_ = "";
+            user_ = "";
+            taskType_ = "";
+            content_ = "";
+            groupId_ = 0;
+            priority_ = 1;
+            rejectRetries_ = 0;
+            rejectInterval_ = 3;
+            failedRetries_ = 0;
+            failedInterval_ = 3;
+            parameters_ = "";
+        }
+
+        private byte memoizedIsInitialized = -1;
+
+        @Override
+        public final boolean isInitialized() {
+            byte isInitialized = memoizedIsInitialized;
+            if (isInitialized == 1)
+                return true;
+            if (isInitialized == 0)
+                return false;
+
+            if (!hasAppAuth()) {
+                memoizedIsInitialized = 0;
+                return false;
+            }
+            if (!hasTaskName()) {
+                memoizedIsInitialized = 0;
+                return false;
+            }
+            if (!hasUser()) {
+                memoizedIsInitialized = 0;
+                return false;
+            }
+            if (!hasTaskType()) {
+                memoizedIsInitialized = 0;
+                return false;
+            }
+            if (!hasContent()) {
+                memoizedIsInitialized = 0;
+                return false;
+            }
+            if (!hasGroupId()) {
+                memoizedIsInitialized = 0;
+                return false;
+            }
+            if (!hasParameters()) {
+                memoizedIsInitialized = 0;
+                return false;
+            }
+            if (!getAppAuth().isInitialized()) {
+                memoizedIsInitialized = 0;
+                return false;
+            }
+            memoizedIsInitialized = 1;
+            return true;
+        }
+
+        @Override
+        public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
+            getSerializedSize();
+            if (((bitField0_ & 0x00000001) == 0x00000001)) {
+                output.writeMessage(1, appAuth_);
+            }
+            if (((bitField0_ & 0x00000002) == 0x00000002)) {
+                output.writeBytes(2, getTaskNameBytes());
+            }
+            if (((bitField0_ & 0x00000004) == 0x00000004)) {
+                output.writeBytes(3, getUserBytes());
+            }
+            if (((bitField0_ & 0x00000008) == 0x00000008)) {
+                output.writeBytes(4, getTaskTypeBytes());
+            }
+            if (((bitField0_ & 0x00000010) == 0x00000010)) {
+                output.writeBytes(5, getContentBytes());
+            }
+            if (((bitField0_ & 0x00000020) == 0x00000020)) {
+                output.writeInt32(6, groupId_);
+            }
+            if (((bitField0_ & 0x00000040) == 0x00000040)) {
+                output.writeInt32(7, priority_);
+            }
+            if (((bitField0_ & 0x00000080) == 0x00000080)) {
+                output.writeInt32(8, rejectRetries_);
+            }
+            if (((bitField0_ & 0x00000100) == 0x00000100)) {
+                output.writeInt32(9, rejectInterval_);
+            }
+            if (((bitField0_ & 0x00000200) == 0x00000200)) {
+                output.writeInt32(10, failedRetries_);
+            }
+            if (((bitField0_ & 0x00000400) == 0x00000400)) {
+                output.writeInt32(11, failedInterval_);
+            }
+            if (((bitField0_ & 0x00000800) == 0x00000800)) {
+                output.writeBytes(12, getParametersBytes());
+            }
+            getUnknownFields().writeTo(output);
+        }
+
+        private int memoizedSerializedSize = -1;
+
+        @Override
+        public int getSerializedSize() {
+            int size = memoizedSerializedSize;
+            if (size != -1)
+                return size;
+
+            size = 0;
+            if (((bitField0_ & 0x00000001) == 0x00000001)) {
+                size += com.google.protobuf.CodedOutputStream.computeMessageSize(1, appAuth_);
+            }
+            if (((bitField0_ & 0x00000002) == 0x00000002)) {
+                size += com.google.protobuf.CodedOutputStream.computeBytesSize(2, getTaskNameBytes());
+            }
+            if (((bitField0_ & 0x00000004) == 0x00000004)) {
+                size += com.google.protobuf.CodedOutputStream.computeBytesSize(3, getUserBytes());
+            }
+            if (((bitField0_ & 0x00000008) == 0x00000008)) {
+                size += com.google.protobuf.CodedOutputStream.computeBytesSize(4, getTaskTypeBytes());
+            }
+            if (((bitField0_ & 0x00000010) == 0x00000010)) {
+                size += com.google.protobuf.CodedOutputStream.computeBytesSize(5, getContentBytes());
+            }
+            if (((bitField0_ & 0x00000020) == 0x00000020)) {
+                size += com.google.protobuf.CodedOutputStream.computeInt32Size(6, groupId_);
+            }
+            if (((bitField0_ & 0x00000040) == 0x00000040)) {
+                size += com.google.protobuf.CodedOutputStream.computeInt32Size(7, priority_);
+            }
+            if (((bitField0_ & 0x00000080) == 0x00000080)) {
+                size += com.google.protobuf.CodedOutputStream.computeInt32Size(8, rejectRetries_);
+            }
+            if (((bitField0_ & 0x00000100) == 0x00000100)) {
+                size += com.google.protobuf.CodedOutputStream.computeInt32Size(9, rejectInterval_);
+            }
+            if (((bitField0_ & 0x00000200) == 0x00000200)) {
+                size += com.google.protobuf.CodedOutputStream.computeInt32Size(10, failedRetries_);
+            }
+            if (((bitField0_ & 0x00000400) == 0x00000400)) {
+                size += com.google.protobuf.CodedOutputStream.computeInt32Size(11, failedInterval_);
+            }
+            if (((bitField0_ & 0x00000800) == 0x00000800)) {
+                size += com.google.protobuf.CodedOutputStream.computeBytesSize(12, getParametersBytes());
+            }
+            size += getUnknownFields().getSerializedSize();
+            memoizedSerializedSize = size;
+            return size;
+        }
+
+        private static final long serialVersionUID = 0L;
+
+        @java.lang.Override
+        protected java.lang.Object writeReplace() throws java.io.ObjectStreamException {
+            return super.writeReplace();
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest parseFrom(com.google.protobuf.ByteString data)
+                throws com.google.protobuf.InvalidProtocolBufferException {
+            return PARSER.parseFrom(data);
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest parseFrom(com.google.protobuf.ByteString data,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+            return PARSER.parseFrom(data, extensionRegistry);
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest parseFrom(byte[] data)
+                throws com.google.protobuf.InvalidProtocolBufferException {
+            return PARSER.parseFrom(data);
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest parseFrom(byte[] data,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+            return PARSER.parseFrom(data, extensionRegistry);
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest parseFrom(java.io.InputStream input)
+                throws java.io.IOException {
+            return PARSER.parseFrom(input);
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest parseFrom(java.io.InputStream input,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            return PARSER.parseFrom(input, extensionRegistry);
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest parseDelimitedFrom(java.io.InputStream input)
+                throws java.io.IOException {
+            return PARSER.parseDelimitedFrom(input);
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest parseDelimitedFrom(java.io.InputStream input,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            return PARSER.parseDelimitedFrom(input, extensionRegistry);
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest parseFrom(com.google.protobuf.CodedInputStream input)
+                throws java.io.IOException {
+            return PARSER.parseFrom(input);
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest parseFrom(com.google.protobuf.CodedInputStream input,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            return PARSER.parseFrom(input, extensionRegistry);
+        }
+
+        public static Builder newBuilder() {
+            return Builder.create();
+        }
+
+        @Override
+        public Builder newBuilderForType() {
+            return newBuilder();
+        }
+
+        public static Builder newBuilder(com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest prototype) {
+            return newBuilder().mergeFrom(prototype);
+        }
+
+        @Override
+        public Builder toBuilder() {
+            return newBuilder(this);
+        }
+
+        @java.lang.Override
+        protected Builder newBuilderForType(com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+            Builder builder = new Builder(parent);
+            return builder;
+        }
+
+        /**
+         * Protobuf type {@code RestServerSubmitTaskRequest}
+         */
+        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+                // @@protoc_insertion_point(builder_implements:RestServerSubmitTaskRequest)
+                com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequestOrBuilder {
+            public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+                return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_RestServerSubmitTaskRequest_descriptor;
+            }
+
+            @Override
+            protected com.google.protobuf.GeneratedMessage.FieldAccessorTable internalGetFieldAccessorTable() {
+                return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_RestServerSubmitTaskRequest_fieldAccessorTable
+                        .ensureFieldAccessorsInitialized(com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest.class,
+                                com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest.Builder.class);
+            }
+
+            // Construct using
+            // com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest.newBuilder()
+            private Builder() {
+                maybeForceBuilderInitialization();
+            }
+
+            private Builder(com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+                super(parent);
+                maybeForceBuilderInitialization();
+            }
+
+            private void maybeForceBuilderInitialization() {
+                if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+                    getAppAuthFieldBuilder();
+                }
+            }
+
+            private static Builder create() {
+                return new Builder();
+            }
+
+            @Override
+            public Builder clear() {
+                super.clear();
+                if (appAuthBuilder_ == null) {
+                    appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
+                } else {
+                    appAuthBuilder_.clear();
+                }
+                bitField0_ = (bitField0_ & ~0x00000001);
+                taskName_ = "";
+                bitField0_ = (bitField0_ & ~0x00000002);
+                user_ = "";
+                bitField0_ = (bitField0_ & ~0x00000004);
+                taskType_ = "";
+                bitField0_ = (bitField0_ & ~0x00000008);
+                content_ = "";
+                bitField0_ = (bitField0_ & ~0x00000010);
+                groupId_ = 0;
+                bitField0_ = (bitField0_ & ~0x00000020);
+                priority_ = 1;
+                bitField0_ = (bitField0_ & ~0x00000040);
+                rejectRetries_ = 0;
+                bitField0_ = (bitField0_ & ~0x00000080);
+                rejectInterval_ = 3;
+                bitField0_ = (bitField0_ & ~0x00000100);
+                failedRetries_ = 0;
+                bitField0_ = (bitField0_ & ~0x00000200);
+                failedInterval_ = 3;
+                bitField0_ = (bitField0_ & ~0x00000400);
+                parameters_ = "";
+                bitField0_ = (bitField0_ & ~0x00000800);
+                return this;
+            }
+
+            @Override
+            public Builder clone() {
+                return create().mergeFrom(buildPartial());
+            }
+
+            @Override
+            public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
+                return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_RestServerSubmitTaskRequest_descriptor;
+            }
+
+            @Override
+            public com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest getDefaultInstanceForType() {
+                return com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest.getDefaultInstance();
+            }
+
+            @Override
+            public com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest build() {
+                com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest result = buildPartial();
+                if (!result.isInitialized()) {
+                    throw newUninitializedMessageException(result);
+                }
+                return result;
+            }
+
+            @Override
+            public com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest buildPartial() {
+                com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest result = new com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest(
+                        this);
+                int from_bitField0_ = bitField0_;
+                int to_bitField0_ = 0;
+                if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+                    to_bitField0_ |= 0x00000001;
+                }
+                if (appAuthBuilder_ == null) {
+                    result.appAuth_ = appAuth_;
+                } else {
+                    result.appAuth_ = appAuthBuilder_.build();
+                }
+                if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+                    to_bitField0_ |= 0x00000002;
+                }
+                result.taskName_ = taskName_;
+                if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+                    to_bitField0_ |= 0x00000004;
+                }
+                result.user_ = user_;
+                if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+                    to_bitField0_ |= 0x00000008;
+                }
+                result.taskType_ = taskType_;
+                if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+                    to_bitField0_ |= 0x00000010;
+                }
+                result.content_ = content_;
+                if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+                    to_bitField0_ |= 0x00000020;
+                }
+                result.groupId_ = groupId_;
+                if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+                    to_bitField0_ |= 0x00000040;
+                }
+                result.priority_ = priority_;
+                if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
+                    to_bitField0_ |= 0x00000080;
+                }
+                result.rejectRetries_ = rejectRetries_;
+                if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
+                    to_bitField0_ |= 0x00000100;
+                }
+                result.rejectInterval_ = rejectInterval_;
+                if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
+                    to_bitField0_ |= 0x00000200;
+                }
+                result.failedRetries_ = failedRetries_;
+                if (((from_bitField0_ & 0x00000400) == 0x00000400)) {
+                    to_bitField0_ |= 0x00000400;
+                }
+                result.failedInterval_ = failedInterval_;
+                if (((from_bitField0_ & 0x00000800) == 0x00000800)) {
+                    to_bitField0_ |= 0x00000800;
+                }
+                result.parameters_ = parameters_;
+                result.bitField0_ = to_bitField0_;
+                onBuilt();
+                return result;
+            }
+
+            @Override
+            public Builder mergeFrom(com.google.protobuf.Message other) {
+                if (other instanceof com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest) {
+                    return mergeFrom((com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest) other);
+                } else {
+                    super.mergeFrom(other);
+                    return this;
+                }
+            }
+
+            public Builder mergeFrom(com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest other) {
+                if (other == com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest.getDefaultInstance())
+                    return this;
+                if (other.hasAppAuth()) {
+                    mergeAppAuth(other.getAppAuth());
+                }
+                if (other.hasTaskName()) {
+                    bitField0_ |= 0x00000002;
+                    taskName_ = other.taskName_;
+                    onChanged();
+                }
+                if (other.hasUser()) {
+                    bitField0_ |= 0x00000004;
+                    user_ = other.user_;
+                    onChanged();
+                }
+                if (other.hasTaskType()) {
+                    bitField0_ |= 0x00000008;
+                    taskType_ = other.taskType_;
+                    onChanged();
+                }
+                if (other.hasContent()) {
+                    bitField0_ |= 0x00000010;
+                    content_ = other.content_;
+                    onChanged();
+                }
+                if (other.hasGroupId()) {
+                    setGroupId(other.getGroupId());
+                }
+                if (other.hasPriority()) {
+                    setPriority(other.getPriority());
+                }
+                if (other.hasRejectRetries()) {
+                    setRejectRetries(other.getRejectRetries());
+                }
+                if (other.hasRejectInterval()) {
+                    setRejectInterval(other.getRejectInterval());
+                }
+                if (other.hasFailedRetries()) {
+                    setFailedRetries(other.getFailedRetries());
+                }
+                if (other.hasFailedInterval()) {
+                    setFailedInterval(other.getFailedInterval());
+                }
+                if (other.hasParameters()) {
+                    bitField0_ |= 0x00000800;
+                    parameters_ = other.parameters_;
+                    onChanged();
+                }
+                this.mergeUnknownFields(other.getUnknownFields());
+                return this;
+            }
+
+            @Override
+            public final boolean isInitialized() {
+                if (!hasAppAuth()) {
+
+                    return false;
+                }
+                if (!hasTaskName()) {
+
+                    return false;
+                }
+                if (!hasUser()) {
+
+                    return false;
+                }
+                if (!hasTaskType()) {
+
+                    return false;
+                }
+                if (!hasContent()) {
+
+                    return false;
+                }
+                if (!hasGroupId()) {
+
+                    return false;
+                }
+                if (!hasParameters()) {
+
+                    return false;
+                }
+                if (!getAppAuth().isInitialized()) {
+
+                    return false;
+                }
+                return true;
+            }
+
+            @Override
+            public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                    throws java.io.IOException {
+                com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest parsedMessage = null;
+                try {
+                    parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+                } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+                    parsedMessage = (com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest) e.getUnfinishedMessage();
+                    throw e;
+                } finally {
+                    if (parsedMessage != null) {
+                        mergeFrom(parsedMessage);
+                    }
+                }
+                return this;
+            }
+
+            private int bitField0_;
+
+            private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth
+                    .getDefaultInstance();
+            private com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> appAuthBuilder_;
+
+            /**
+             * <code>required .AppAuth app_auth = 1;</code>
+             */
+            @Override
+            public boolean hasAppAuth() {
+                return ((bitField0_ & 0x00000001) == 0x00000001);
+            }
+
+            /**
+             * <code>required .AppAuth app_auth = 1;</code>
+             */
+            @Override
+            public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth getAppAuth() {
+                if (appAuthBuilder_ == null) {
+                    return appAuth_;
+                } else {
+                    return appAuthBuilder_.getMessage();
+                }
+            }
+
+            /**
+             * <code>required .AppAuth app_auth = 1;</code>
+             */
+            public Builder setAppAuth(com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth value) {
+                if (appAuthBuilder_ == null) {
+                    if (value == null) {
+                        throw new NullPointerException();
+                    }
+                    appAuth_ = value;
+                    onChanged();
+                } else {
+                    appAuthBuilder_.setMessage(value);
+                }
+                bitField0_ |= 0x00000001;
+                return this;
+            }
+
+            /**
+             * <code>required .AppAuth app_auth = 1;</code>
+             */
+            public Builder setAppAuth(com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder builderForValue) {
+                if (appAuthBuilder_ == null) {
+                    appAuth_ = builderForValue.build();
+                    onChanged();
+                } else {
+                    appAuthBuilder_.setMessage(builderForValue.build());
+                }
+                bitField0_ |= 0x00000001;
+                return this;
+            }
+
+            /**
+             * <code>required .AppAuth app_auth = 1;</code>
+             */
+            public Builder mergeAppAuth(com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth value) {
+                if (appAuthBuilder_ == null) {
+                    if (((bitField0_ & 0x00000001) == 0x00000001)
+                            && appAuth_ != com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance()) {
+                        appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.newBuilder(appAuth_).mergeFrom(value).buildPartial();
+                    } else {
+                        appAuth_ = value;
+                    }
+                    onChanged();
+                } else {
+                    appAuthBuilder_.mergeFrom(value);
+                }
+                bitField0_ |= 0x00000001;
+                return this;
+            }
+
+            /**
+             * <code>required .AppAuth app_auth = 1;</code>
+             */
+            public Builder clearAppAuth() {
+                if (appAuthBuilder_ == null) {
+                    appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
+                    onChanged();
+                } else {
+                    appAuthBuilder_.clear();
+                }
+                bitField0_ = (bitField0_ & ~0x00000001);
+                return this;
+            }
+
+            /**
+             * <code>required .AppAuth app_auth = 1;</code>
+             */
+            public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder getAppAuthBuilder() {
+                bitField0_ |= 0x00000001;
+                onChanged();
+                return getAppAuthFieldBuilder().getBuilder();
+            }
+
+            /**
+             * <code>required .AppAuth app_auth = 1;</code>
+             */
+            @Override
+            public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder() {
+                if (appAuthBuilder_ != null) {
+                    return appAuthBuilder_.getMessageOrBuilder();
+                } else {
+                    return appAuth_;
+                }
+            }
+
+            /**
+             * <code>required .AppAuth app_auth = 1;</code>
+             */
+            private com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> getAppAuthFieldBuilder() {
+                if (appAuthBuilder_ == null) {
+                    appAuthBuilder_ = new com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder>(
+                            getAppAuth(), getParentForChildren(), isClean());
+                    appAuth_ = null;
+                }
+                return appAuthBuilder_;
+            }
+
+            private java.lang.Object taskName_ = "";
+
+            /**
+             * <code>required string task_name = 2;</code>
+             */
+            @Override
+            public boolean hasTaskName() {
+                return ((bitField0_ & 0x00000002) == 0x00000002);
+            }
+
+            /**
+             * <code>required string task_name = 2;</code>
+             */
+            @Override
+            public java.lang.String getTaskName() {
+                java.lang.Object ref = taskName_;
+                if (!(ref instanceof java.lang.String)) {
+                    com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                    java.lang.String s = bs.toStringUtf8();
+                    if (bs.isValidUtf8()) {
+                        taskName_ = s;
+                    }
+                    return s;
+                } else {
+                    return (java.lang.String) ref;
+                }
+            }
+
+            /**
+             * <code>required string task_name = 2;</code>
+             */
+            @Override
+            public com.google.protobuf.ByteString getTaskNameBytes() {
+                java.lang.Object ref = taskName_;
+                if (ref instanceof String) {
+                    com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                    taskName_ = b;
+                    return b;
+                } else {
+                    return (com.google.protobuf.ByteString) ref;
+                }
+            }
+
+            /**
+             * <code>required string task_name = 2;</code>
+             */
+            public Builder setTaskName(java.lang.String value) {
+                if (value == null) {
+                    throw new NullPointerException();
+                }
+                bitField0_ |= 0x00000002;
+                taskName_ = value;
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>required string task_name = 2;</code>
+             */
+            public Builder clearTaskName() {
+                bitField0_ = (bitField0_ & ~0x00000002);
+                taskName_ = getDefaultInstance().getTaskName();
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>required string task_name = 2;</code>
+             */
+            public Builder setTaskNameBytes(com.google.protobuf.ByteString value) {
+                if (value == null) {
+                    throw new NullPointerException();
+                }
+                bitField0_ |= 0x00000002;
+                taskName_ = value;
+                onChanged();
+                return this;
+            }
+
+            private java.lang.Object user_ = "";
+
+            /**
+             * <code>required string user = 3;</code>
+             */
+            @Override
+            public boolean hasUser() {
+                return ((bitField0_ & 0x00000004) == 0x00000004);
+            }
+
+            /**
+             * <code>required string user = 3;</code>
+             */
+            @Override
+            public java.lang.String getUser() {
+                java.lang.Object ref = user_;
+                if (!(ref instanceof java.lang.String)) {
+                    com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                    java.lang.String s = bs.toStringUtf8();
+                    if (bs.isValidUtf8()) {
+                        user_ = s;
+                    }
+                    return s;
+                } else {
+                    return (java.lang.String) ref;
+                }
+            }
+
+            /**
+             * <code>required string user = 3;</code>
+             */
+            @Override
+            public com.google.protobuf.ByteString getUserBytes() {
+                java.lang.Object ref = user_;
+                if (ref instanceof String) {
+                    com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                    user_ = b;
+                    return b;
+                } else {
+                    return (com.google.protobuf.ByteString) ref;
+                }
+            }
+
+            /**
+             * <code>required string user = 3;</code>
+             */
+            public Builder setUser(java.lang.String value) {
+                if (value == null) {
+                    throw new NullPointerException();
+                }
+                bitField0_ |= 0x00000004;
+                user_ = value;
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>required string user = 3;</code>
+             */
+            public Builder clearUser() {
+                bitField0_ = (bitField0_ & ~0x00000004);
+                user_ = getDefaultInstance().getUser();
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>required string user = 3;</code>
+             */
+            public Builder setUserBytes(com.google.protobuf.ByteString value) {
+                if (value == null) {
+                    throw new NullPointerException();
+                }
+                bitField0_ |= 0x00000004;
+                user_ = value;
+                onChanged();
+                return this;
+            }
+
+            private java.lang.Object taskType_ = "";
+
+            /**
+             * <code>required string task_type = 4;</code>
+             */
+            @Override
+            public boolean hasTaskType() {
+                return ((bitField0_ & 0x00000008) == 0x00000008);
+            }
+
+            /**
+             * <code>required string task_type = 4;</code>
+             */
+            @Override
+            public java.lang.String getTaskType() {
+                java.lang.Object ref = taskType_;
+                if (!(ref instanceof java.lang.String)) {
+                    com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                    java.lang.String s = bs.toStringUtf8();
+                    if (bs.isValidUtf8()) {
+                        taskType_ = s;
+                    }
+                    return s;
+                } else {
+                    return (java.lang.String) ref;
+                }
+            }
+
+            /**
+             * <code>required string task_type = 4;</code>
+             */
+            @Override
+            public com.google.protobuf.ByteString getTaskTypeBytes() {
+                java.lang.Object ref = taskType_;
+                if (ref instanceof String) {
+                    com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                    taskType_ = b;
+                    return b;
+                } else {
+                    return (com.google.protobuf.ByteString) ref;
+                }
+            }
+
+            /**
+             * <code>required string task_type = 4;</code>
+             */
+            public Builder setTaskType(java.lang.String value) {
+                if (value == null) {
+                    throw new NullPointerException();
+                }
+                bitField0_ |= 0x00000008;
+                taskType_ = value;
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>required string task_type = 4;</code>
+             */
+            public Builder clearTaskType() {
+                bitField0_ = (bitField0_ & ~0x00000008);
+                taskType_ = getDefaultInstance().getTaskType();
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>required string task_type = 4;</code>
+             */
+            public Builder setTaskTypeBytes(com.google.protobuf.ByteString value) {
+                if (value == null) {
+                    throw new NullPointerException();
+                }
+                bitField0_ |= 0x00000008;
+                taskType_ = value;
+                onChanged();
+                return this;
+            }
+
+            private java.lang.Object content_ = "";
+
+            /**
+             * <code>required string content = 5;</code>
+             */
+            @Override
+            public boolean hasContent() {
+                return ((bitField0_ & 0x00000010) == 0x00000010);
+            }
+
+            /**
+             * <code>required string content = 5;</code>
+             */
+            @Override
+            public java.lang.String getContent() {
+                java.lang.Object ref = content_;
+                if (!(ref instanceof java.lang.String)) {
+                    com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                    java.lang.String s = bs.toStringUtf8();
+                    if (bs.isValidUtf8()) {
+                        content_ = s;
+                    }
+                    return s;
+                } else {
+                    return (java.lang.String) ref;
+                }
+            }
+
+            /**
+             * <code>required string content = 5;</code>
+             */
+            @Override
+            public com.google.protobuf.ByteString getContentBytes() {
+                java.lang.Object ref = content_;
+                if (ref instanceof String) {
+                    com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                    content_ = b;
+                    return b;
+                } else {
+                    return (com.google.protobuf.ByteString) ref;
+                }
+            }
+
+            /**
+             * <code>required string content = 5;</code>
+             */
+            public Builder setContent(java.lang.String value) {
+                if (value == null) {
+                    throw new NullPointerException();
+                }
+                bitField0_ |= 0x00000010;
+                content_ = value;
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>required string content = 5;</code>
+             */
+            public Builder clearContent() {
+                bitField0_ = (bitField0_ & ~0x00000010);
+                content_ = getDefaultInstance().getContent();
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>required string content = 5;</code>
+             */
+            public Builder setContentBytes(com.google.protobuf.ByteString value) {
+                if (value == null) {
+                    throw new NullPointerException();
+                }
+                bitField0_ |= 0x00000010;
+                content_ = value;
+                onChanged();
+                return this;
+            }
+
+            private int groupId_;
+
+            /**
+             * <code>required int32 group_id = 6;</code>
+             */
+            @Override
+            public boolean hasGroupId() {
+                return ((bitField0_ & 0x00000020) == 0x00000020);
+            }
+
+            /**
+             * <code>required int32 group_id = 6;</code>
+             */
+            @Override
+            public int getGroupId() {
+                return groupId_;
+            }
+
+            /**
+             * <code>required int32 group_id = 6;</code>
+             */
+            public Builder setGroupId(int value) {
+                bitField0_ |= 0x00000020;
+                groupId_ = value;
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>required int32 group_id = 6;</code>
+             */
+            public Builder clearGroupId() {
+                bitField0_ = (bitField0_ & ~0x00000020);
+                groupId_ = 0;
+                onChanged();
+                return this;
+            }
+
+            private int priority_ = 1;
+
+            /**
+             * <code>optional int32 priority = 7 [default = 1];</code>
+             */
+            @Override
+            public boolean hasPriority() {
+                return ((bitField0_ & 0x00000040) == 0x00000040);
+            }
+
+            /**
+             * <code>optional int32 priority = 7 [default = 1];</code>
+             */
+            @Override
+            public int getPriority() {
+                return priority_;
+            }
+
+            /**
+             * <code>optional int32 priority = 7 [default = 1];</code>
+             */
+            public Builder setPriority(int value) {
+                bitField0_ |= 0x00000040;
+                priority_ = value;
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>optional int32 priority = 7 [default = 1];</code>
+             */
+            public Builder clearPriority() {
+                bitField0_ = (bitField0_ & ~0x00000040);
+                priority_ = 1;
+                onChanged();
+                return this;
+            }
+
+            private int rejectRetries_;
+
+            /**
+             * <code>optional int32 reject_retries = 8 [default = 0];</code>
+             */
+            @Override
+            public boolean hasRejectRetries() {
+                return ((bitField0_ & 0x00000080) == 0x00000080);
+            }
+
+            /**
+             * <code>optional int32 reject_retries = 8 [default = 0];</code>
+             */
+            @Override
+            public int getRejectRetries() {
+                return rejectRetries_;
+            }
+
+            /**
+             * <code>optional int32 reject_retries = 8 [default = 0];</code>
+             */
+            public Builder setRejectRetries(int value) {
+                bitField0_ |= 0x00000080;
+                rejectRetries_ = value;
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>optional int32 reject_retries = 8 [default = 0];</code>
+             */
+            public Builder clearRejectRetries() {
+                bitField0_ = (bitField0_ & ~0x00000080);
+                rejectRetries_ = 0;
+                onChanged();
+                return this;
+            }
+
+            private int rejectInterval_ = 3;
+
+            /**
+             * <code>optional int32 reject_interval = 9 [default = 3];</code>
+             */
+            @Override
+            public boolean hasRejectInterval() {
+                return ((bitField0_ & 0x00000100) == 0x00000100);
+            }
+
+            /**
+             * <code>optional int32 reject_interval = 9 [default = 3];</code>
+             */
+            @Override
+            public int getRejectInterval() {
+                return rejectInterval_;
+            }
+
+            /**
+             * <code>optional int32 reject_interval = 9 [default = 3];</code>
+             */
+            public Builder setRejectInterval(int value) {
+                bitField0_ |= 0x00000100;
+                rejectInterval_ = value;
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>optional int32 reject_interval = 9 [default = 3];</code>
+             */
+            public Builder clearRejectInterval() {
+                bitField0_ = (bitField0_ & ~0x00000100);
+                rejectInterval_ = 3;
+                onChanged();
+                return this;
+            }
+
+            private int failedRetries_;
+
+            /**
+             * <code>optional int32 failed_retries = 10 [default = 0];</code>
+             */
+            @Override
+            public boolean hasFailedRetries() {
+                return ((bitField0_ & 0x00000200) == 0x00000200);
+            }
+
+            /**
+             * <code>optional int32 failed_retries = 10 [default = 0];</code>
+             */
+            @Override
+            public int getFailedRetries() {
+                return failedRetries_;
+            }
+
+            /**
+             * <code>optional int32 failed_retries = 10 [default = 0];</code>
+             */
+            public Builder setFailedRetries(int value) {
+                bitField0_ |= 0x00000200;
+                failedRetries_ = value;
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>optional int32 failed_retries = 10 [default = 0];</code>
+             */
+            public Builder clearFailedRetries() {
+                bitField0_ = (bitField0_ & ~0x00000200);
+                failedRetries_ = 0;
+                onChanged();
+                return this;
+            }
+
+            private int failedInterval_ = 3;
+
+            /**
+             * <code>optional int32 failed_interval = 11 [default = 3];</code>
+             */
+            @Override
+            public boolean hasFailedInterval() {
+                return ((bitField0_ & 0x00000400) == 0x00000400);
+            }
+
+            /**
+             * <code>optional int32 failed_interval = 11 [default = 3];</code>
+             */
+            @Override
+            public int getFailedInterval() {
+                return failedInterval_;
+            }
+
+            /**
+             * <code>optional int32 failed_interval = 11 [default = 3];</code>
+             */
+            public Builder setFailedInterval(int value) {
+                bitField0_ |= 0x00000400;
+                failedInterval_ = value;
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>optional int32 failed_interval = 11 [default = 3];</code>
+             */
+            public Builder clearFailedInterval() {
+                bitField0_ = (bitField0_ & ~0x00000400);
+                failedInterval_ = 3;
+                onChanged();
+                return this;
+            }
+
+            private java.lang.Object parameters_ = "";
+
+            /**
+             * <code>required string parameters = 12;</code>
+             */
+            @Override
+            public boolean hasParameters() {
+                return ((bitField0_ & 0x00000800) == 0x00000800);
+            }
+
+            /**
+             * <code>required string parameters = 12;</code>
+             */
+            @Override
+            public java.lang.String getParameters() {
+                java.lang.Object ref = parameters_;
+                if (!(ref instanceof java.lang.String)) {
+                    com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                    java.lang.String s = bs.toStringUtf8();
+                    if (bs.isValidUtf8()) {
+                        parameters_ = s;
+                    }
+                    return s;
+                } else {
+                    return (java.lang.String) ref;
+                }
+            }
+
+            /**
+             * <code>required string parameters = 12;</code>
+             */
+            @Override
+            public com.google.protobuf.ByteString getParametersBytes() {
+                java.lang.Object ref = parameters_;
+                if (ref instanceof String) {
+                    com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                    parameters_ = b;
+                    return b;
+                } else {
+                    return (com.google.protobuf.ByteString) ref;
+                }
+            }
+
+            /**
+             * <code>required string parameters = 12;</code>
+             */
+            public Builder setParameters(java.lang.String value) {
+                if (value == null) {
+                    throw new NullPointerException();
+                }
+                bitField0_ |= 0x00000800;
+                parameters_ = value;
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>required string parameters = 12;</code>
+             */
+            public Builder clearParameters() {
+                bitField0_ = (bitField0_ & ~0x00000800);
+                parameters_ = getDefaultInstance().getParameters();
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>required string parameters = 12;</code>
+             */
+            public Builder setParametersBytes(com.google.protobuf.ByteString value) {
+                if (value == null) {
+                    throw new NullPointerException();
+                }
+                bitField0_ |= 0x00000800;
+                parameters_ = value;
+                onChanged();
+                return this;
+            }
+
+            // @@protoc_insertion_point(builder_scope:RestServerSubmitTaskRequest)
+        }
+
+        static {
+            defaultInstance = new RestServerSubmitTaskRequest(true);
+            defaultInstance.initFields();
+        }
+
+        // @@protoc_insertion_point(class_scope:RestServerSubmitTaskRequest)
     }
 
-    private void initFields() {
-      taskId_ = 0L;
-      success_ = false;
-      message_ = "";
-    }
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+    public interface ServerSubmitTaskResponseOrBuilder extends
+            // @@protoc_insertion_point(interface_extends:ServerSubmitTaskResponse)
+            com.google.protobuf.MessageOrBuilder {
 
-      if (!hasSuccess()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      memoizedIsInitialized = 1;
-      return true;
-    }
+        /**
+         * <code>optional int64 task_id = 1;</code>
+         */
+        boolean hasTaskId();
 
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      getSerializedSize();
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeInt64(1, taskId_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeBool(2, success_);
-      }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeBytes(3, getMessageBytes());
-      }
-      getUnknownFields().writeTo(output);
-    }
+        /**
+         * <code>optional int64 task_id = 1;</code>
+         */
+        long getTaskId();
 
-    private int memoizedSerializedSize = -1;
-    public int getSerializedSize() {
-      int size = memoizedSerializedSize;
-      if (size != -1) return size;
+        /**
+         * <code>required bool success = 2;</code>
+         */
+        boolean hasSuccess();
 
-      size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(1, taskId_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(2, success_);
-      }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(3, getMessageBytes());
-      }
-      size += getUnknownFields().getSerializedSize();
-      memoizedSerializedSize = size;
-      return size;
+        /**
+         * <code>required bool success = 2;</code>
+         */
+        boolean getSuccess();
+
+        /**
+         * <code>optional string message = 3 [default = ""];</code>
+         */
+        boolean hasMessage();
+
+        /**
+         * <code>optional string message = 3 [default = ""];</code>
+         */
+        java.lang.String getMessage();
+
+        /**
+         * <code>optional string message = 3 [default = ""];</code>
+         */
+        com.google.protobuf.ByteString getMessageBytes();
     }
 
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    protected java.lang.Object writeReplace()
-        throws java.io.ObjectStreamException {
-      return super.writeReplace();
-    }
-
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input);
-    }
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input, extensionRegistry);
-    }
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-
-    public static Builder newBuilder() { return Builder.create(); }
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse prototype) {
-      return newBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() { return newBuilder(this); }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
     /**
      * Protobuf type {@code ServerSubmitTaskResponse}
      */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:ServerSubmitTaskResponse)
-        com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponseOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_ServerSubmitTaskResponse_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_ServerSubmitTaskResponse_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse.class, com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse.Builder.class);
-      }
-
-      // Construct using com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+    public static final class ServerSubmitTaskResponse extends com.google.protobuf.GeneratedMessage implements
+            // @@protoc_insertion_point(message_implements:ServerSubmitTaskResponse)
+            ServerSubmitTaskResponseOrBuilder {
+        // Use ServerSubmitTaskResponse.newBuilder() to construct.
+        private ServerSubmitTaskResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+            super(builder);
+            this.unknownFields = builder.getUnknownFields();
         }
-      }
-      private static Builder create() {
-        return new Builder();
-      }
 
-      public Builder clear() {
-        super.clear();
-        taskId_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000001);
-        success_ = false;
-        bitField0_ = (bitField0_ & ~0x00000002);
-        message_ = "";
-        bitField0_ = (bitField0_ & ~0x00000004);
-        return this;
-      }
-
-      public Builder clone() {
-        return create().mergeFrom(buildPartial());
-      }
-
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_ServerSubmitTaskResponse_descriptor;
-      }
-
-      public com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse getDefaultInstanceForType() {
-        return com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse.getDefaultInstance();
-      }
-
-      public com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse build() {
-        com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
+        private ServerSubmitTaskResponse(boolean noInit) {
+            this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance();
         }
-        return result;
-      }
 
-      public com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse buildPartial() {
-        com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse result = new com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.taskId_ = taskId_;
-        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.success_ = success_;
-        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
-          to_bitField0_ |= 0x00000004;
-        }
-        result.message_ = message_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
+        private static final ServerSubmitTaskResponse defaultInstance;
 
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse) {
-          return mergeFrom((com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
+        public static ServerSubmitTaskResponse getDefaultInstance() {
+            return defaultInstance;
         }
-      }
 
-      public Builder mergeFrom(com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse other) {
-        if (other == com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse.getDefaultInstance()) return this;
-        if (other.hasTaskId()) {
-          setTaskId(other.getTaskId());
+        @Override
+        public ServerSubmitTaskResponse getDefaultInstanceForType() {
+            return defaultInstance;
         }
-        if (other.hasSuccess()) {
-          setSuccess(other.getSuccess());
-        }
-        if (other.hasMessage()) {
-          bitField0_ |= 0x00000004;
-          message_ = other.message_;
-          onChanged();
-        }
-        this.mergeUnknownFields(other.getUnknownFields());
-        return this;
-      }
 
-      public final boolean isInitialized() {
-        if (!hasSuccess()) {
-          
-          return false;
+        private final com.google.protobuf.UnknownFieldSet unknownFields;
+
+        @java.lang.Override
+        public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
+            return this.unknownFields;
         }
-        return true;
-      }
 
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse) e.getUnfinishedMessage();
-          throw e;
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
+        private ServerSubmitTaskResponse(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                throws com.google.protobuf.InvalidProtocolBufferException {
+            initFields();
+            com.google.protobuf.UnknownFieldSet.Builder unknownFields = com.google.protobuf.UnknownFieldSet.newBuilder();
+            try {
+                boolean done = false;
+                while (!done) {
+                    int tag = input.readTag();
+                    switch (tag) {
+                        case 0:
+                            done = true;
+                            break;
+                        default: {
+                            if (!parseUnknownField(input, unknownFields, extensionRegistry, tag)) {
+                                done = true;
+                            }
+                            break;
+                        }
+                        case 8: {
+                            bitField0_ |= 0x00000001;
+                            taskId_ = input.readInt64();
+                            break;
+                        }
+                        case 16: {
+                            bitField0_ |= 0x00000002;
+                            success_ = input.readBool();
+                            break;
+                        }
+                        case 26: {
+                            com.google.protobuf.ByteString bs = input.readBytes();
+                            bitField0_ |= 0x00000004;
+                            message_ = bs;
+                            break;
+                        }
+                    }
+                }
+            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+                throw e.setUnfinishedMessage(this);
+            } catch (java.io.IOException e) {
+                throw new com.google.protobuf.InvalidProtocolBufferException(e.getMessage()).setUnfinishedMessage(this);
+            } finally {
+                this.unknownFields = unknownFields.build();
+                makeExtensionsImmutable();
+            }
         }
-        return this;
-      }
-      private int bitField0_;
 
-      private long taskId_ ;
-      /**
-       * <code>optional int64 task_id = 1;</code>
-       */
-      public boolean hasTaskId() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      /**
-       * <code>optional int64 task_id = 1;</code>
-       */
-      public long getTaskId() {
-        return taskId_;
-      }
-      /**
-       * <code>optional int64 task_id = 1;</code>
-       */
-      public Builder setTaskId(long value) {
-        bitField0_ |= 0x00000001;
-        taskId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional int64 task_id = 1;</code>
-       */
-      public Builder clearTaskId() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        taskId_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      private boolean success_ ;
-      /**
-       * <code>required bool success = 2;</code>
-       */
-      public boolean hasSuccess() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
-      }
-      /**
-       * <code>required bool success = 2;</code>
-       */
-      public boolean getSuccess() {
-        return success_;
-      }
-      /**
-       * <code>required bool success = 2;</code>
-       */
-      public Builder setSuccess(boolean value) {
-        bitField0_ |= 0x00000002;
-        success_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required bool success = 2;</code>
-       */
-      public Builder clearSuccess() {
-        bitField0_ = (bitField0_ & ~0x00000002);
-        success_ = false;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object message_ = "";
-      /**
-       * <code>optional string message = 3 [default = ""];</code>
-       */
-      public boolean hasMessage() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
-      }
-      /**
-       * <code>optional string message = 3 [default = ""];</code>
-       */
-      public java.lang.String getMessage() {
-        java.lang.Object ref = message_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            message_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
+        public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+            return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_ServerSubmitTaskResponse_descriptor;
         }
-      }
-      /**
-       * <code>optional string message = 3 [default = ""];</code>
-       */
-      public com.google.protobuf.ByteString
-          getMessageBytes() {
-        java.lang.Object ref = message_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          message_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string message = 3 [default = ""];</code>
-       */
-      public Builder setMessage(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
-        message_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string message = 3 [default = ""];</code>
-       */
-      public Builder clearMessage() {
-        bitField0_ = (bitField0_ & ~0x00000004);
-        message_ = getDefaultInstance().getMessage();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string message = 3 [default = ""];</code>
-       */
-      public Builder setMessageBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
-        message_ = value;
-        onChanged();
-        return this;
-      }
 
-      // @@protoc_insertion_point(builder_scope:ServerSubmitTaskResponse)
+        @Override
+        protected com.google.protobuf.GeneratedMessage.FieldAccessorTable internalGetFieldAccessorTable() {
+            return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_ServerSubmitTaskResponse_fieldAccessorTable
+                    .ensureFieldAccessorsInitialized(com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse.class,
+                            com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse.Builder.class);
+        }
+
+        public static com.google.protobuf.Parser<ServerSubmitTaskResponse> PARSER = new com.google.protobuf.AbstractParser<ServerSubmitTaskResponse>() {
+            @Override
+            public ServerSubmitTaskResponse parsePartialFrom(com.google.protobuf.CodedInputStream input,
+                    com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+                return new ServerSubmitTaskResponse(input, extensionRegistry);
+            }
+        };
+
+        @java.lang.Override
+        public com.google.protobuf.Parser<ServerSubmitTaskResponse> getParserForType() {
+            return PARSER;
+        }
+
+        private int bitField0_;
+        public static final int TASK_ID_FIELD_NUMBER = 1;
+        private long taskId_;
+
+        /**
+         * <code>optional int64 task_id = 1;</code>
+         */
+        @Override
+        public boolean hasTaskId() {
+            return ((bitField0_ & 0x00000001) == 0x00000001);
+        }
+
+        /**
+         * <code>optional int64 task_id = 1;</code>
+         */
+        @Override
+        public long getTaskId() {
+            return taskId_;
+        }
+
+        public static final int SUCCESS_FIELD_NUMBER = 2;
+        private boolean success_;
+
+        /**
+         * <code>required bool success = 2;</code>
+         */
+        @Override
+        public boolean hasSuccess() {
+            return ((bitField0_ & 0x00000002) == 0x00000002);
+        }
+
+        /**
+         * <code>required bool success = 2;</code>
+         */
+        @Override
+        public boolean getSuccess() {
+            return success_;
+        }
+
+        public static final int MESSAGE_FIELD_NUMBER = 3;
+        private java.lang.Object message_;
+
+        /**
+         * <code>optional string message = 3 [default = ""];</code>
+         */
+        @Override
+        public boolean hasMessage() {
+            return ((bitField0_ & 0x00000004) == 0x00000004);
+        }
+
+        /**
+         * <code>optional string message = 3 [default = ""];</code>
+         */
+        @Override
+        public java.lang.String getMessage() {
+            java.lang.Object ref = message_;
+            if (ref instanceof java.lang.String) {
+                return (java.lang.String) ref;
+            } else {
+                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                java.lang.String s = bs.toStringUtf8();
+                if (bs.isValidUtf8()) {
+                    message_ = s;
+                }
+                return s;
+            }
+        }
+
+        /**
+         * <code>optional string message = 3 [default = ""];</code>
+         */
+        @Override
+        public com.google.protobuf.ByteString getMessageBytes() {
+            java.lang.Object ref = message_;
+            if (ref instanceof java.lang.String) {
+                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                message_ = b;
+                return b;
+            } else {
+                return (com.google.protobuf.ByteString) ref;
+            }
+        }
+
+        private void initFields() {
+            taskId_ = 0L;
+            success_ = false;
+            message_ = "";
+        }
+
+        private byte memoizedIsInitialized = -1;
+
+        @Override
+        public final boolean isInitialized() {
+            byte isInitialized = memoizedIsInitialized;
+            if (isInitialized == 1)
+                return true;
+            if (isInitialized == 0)
+                return false;
+
+            if (!hasSuccess()) {
+                memoizedIsInitialized = 0;
+                return false;
+            }
+            memoizedIsInitialized = 1;
+            return true;
+        }
+
+        @Override
+        public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
+            getSerializedSize();
+            if (((bitField0_ & 0x00000001) == 0x00000001)) {
+                output.writeInt64(1, taskId_);
+            }
+            if (((bitField0_ & 0x00000002) == 0x00000002)) {
+                output.writeBool(2, success_);
+            }
+            if (((bitField0_ & 0x00000004) == 0x00000004)) {
+                output.writeBytes(3, getMessageBytes());
+            }
+            getUnknownFields().writeTo(output);
+        }
+
+        private int memoizedSerializedSize = -1;
+
+        @Override
+        public int getSerializedSize() {
+            int size = memoizedSerializedSize;
+            if (size != -1)
+                return size;
+
+            size = 0;
+            if (((bitField0_ & 0x00000001) == 0x00000001)) {
+                size += com.google.protobuf.CodedOutputStream.computeInt64Size(1, taskId_);
+            }
+            if (((bitField0_ & 0x00000002) == 0x00000002)) {
+                size += com.google.protobuf.CodedOutputStream.computeBoolSize(2, success_);
+            }
+            if (((bitField0_ & 0x00000004) == 0x00000004)) {
+                size += com.google.protobuf.CodedOutputStream.computeBytesSize(3, getMessageBytes());
+            }
+            size += getUnknownFields().getSerializedSize();
+            memoizedSerializedSize = size;
+            return size;
+        }
+
+        private static final long serialVersionUID = 0L;
+
+        @java.lang.Override
+        protected java.lang.Object writeReplace() throws java.io.ObjectStreamException {
+            return super.writeReplace();
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse parseFrom(com.google.protobuf.ByteString data)
+                throws com.google.protobuf.InvalidProtocolBufferException {
+            return PARSER.parseFrom(data);
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse parseFrom(com.google.protobuf.ByteString data,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+            return PARSER.parseFrom(data, extensionRegistry);
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse parseFrom(byte[] data)
+                throws com.google.protobuf.InvalidProtocolBufferException {
+            return PARSER.parseFrom(data);
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse parseFrom(byte[] data,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws com.google.protobuf.InvalidProtocolBufferException {
+            return PARSER.parseFrom(data, extensionRegistry);
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse parseFrom(java.io.InputStream input)
+                throws java.io.IOException {
+            return PARSER.parseFrom(input);
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse parseFrom(java.io.InputStream input,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            return PARSER.parseFrom(input, extensionRegistry);
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse parseDelimitedFrom(java.io.InputStream input)
+                throws java.io.IOException {
+            return PARSER.parseDelimitedFrom(input);
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse parseDelimitedFrom(java.io.InputStream input,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            return PARSER.parseDelimitedFrom(input, extensionRegistry);
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse parseFrom(com.google.protobuf.CodedInputStream input)
+                throws java.io.IOException {
+            return PARSER.parseFrom(input);
+        }
+
+        public static com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse parseFrom(com.google.protobuf.CodedInputStream input,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry) throws java.io.IOException {
+            return PARSER.parseFrom(input, extensionRegistry);
+        }
+
+        public static Builder newBuilder() {
+            return Builder.create();
+        }
+
+        @Override
+        public Builder newBuilderForType() {
+            return newBuilder();
+        }
+
+        public static Builder newBuilder(com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse prototype) {
+            return newBuilder().mergeFrom(prototype);
+        }
+
+        @Override
+        public Builder toBuilder() {
+            return newBuilder(this);
+        }
+
+        @java.lang.Override
+        protected Builder newBuilderForType(com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+            Builder builder = new Builder(parent);
+            return builder;
+        }
+
+        /**
+         * Protobuf type {@code ServerSubmitTaskResponse}
+         */
+        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+                // @@protoc_insertion_point(builder_implements:ServerSubmitTaskResponse)
+                com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponseOrBuilder {
+            public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+                return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_ServerSubmitTaskResponse_descriptor;
+            }
+
+            @Override
+            protected com.google.protobuf.GeneratedMessage.FieldAccessorTable internalGetFieldAccessorTable() {
+                return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_ServerSubmitTaskResponse_fieldAccessorTable
+                        .ensureFieldAccessorsInitialized(com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse.class,
+                                com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse.Builder.class);
+            }
+
+            // Construct using
+            // com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse.newBuilder()
+            private Builder() {
+                maybeForceBuilderInitialization();
+            }
+
+            private Builder(com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+                super(parent);
+                maybeForceBuilderInitialization();
+            }
+
+            private void maybeForceBuilderInitialization() {
+                if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+                }
+            }
+
+            private static Builder create() {
+                return new Builder();
+            }
+
+            @Override
+            public Builder clear() {
+                super.clear();
+                taskId_ = 0L;
+                bitField0_ = (bitField0_ & ~0x00000001);
+                success_ = false;
+                bitField0_ = (bitField0_ & ~0x00000002);
+                message_ = "";
+                bitField0_ = (bitField0_ & ~0x00000004);
+                return this;
+            }
+
+            @Override
+            public Builder clone() {
+                return create().mergeFrom(buildPartial());
+            }
+
+            @Override
+            public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
+                return com.mogujie.jarvis.protocol.SubmitJobProtos.internal_static_ServerSubmitTaskResponse_descriptor;
+            }
+
+            @Override
+            public com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse getDefaultInstanceForType() {
+                return com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse.getDefaultInstance();
+            }
+
+            @Override
+            public com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse build() {
+                com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse result = buildPartial();
+                if (!result.isInitialized()) {
+                    throw newUninitializedMessageException(result);
+                }
+                return result;
+            }
+
+            @Override
+            public com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse buildPartial() {
+                com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse result = new com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse(
+                        this);
+                int from_bitField0_ = bitField0_;
+                int to_bitField0_ = 0;
+                if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+                    to_bitField0_ |= 0x00000001;
+                }
+                result.taskId_ = taskId_;
+                if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+                    to_bitField0_ |= 0x00000002;
+                }
+                result.success_ = success_;
+                if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+                    to_bitField0_ |= 0x00000004;
+                }
+                result.message_ = message_;
+                result.bitField0_ = to_bitField0_;
+                onBuilt();
+                return result;
+            }
+
+            @Override
+            public Builder mergeFrom(com.google.protobuf.Message other) {
+                if (other instanceof com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse) {
+                    return mergeFrom((com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse) other);
+                } else {
+                    super.mergeFrom(other);
+                    return this;
+                }
+            }
+
+            public Builder mergeFrom(com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse other) {
+                if (other == com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse.getDefaultInstance())
+                    return this;
+                if (other.hasTaskId()) {
+                    setTaskId(other.getTaskId());
+                }
+                if (other.hasSuccess()) {
+                    setSuccess(other.getSuccess());
+                }
+                if (other.hasMessage()) {
+                    bitField0_ |= 0x00000004;
+                    message_ = other.message_;
+                    onChanged();
+                }
+                this.mergeUnknownFields(other.getUnknownFields());
+                return this;
+            }
+
+            @Override
+            public final boolean isInitialized() {
+                if (!hasSuccess()) {
+
+                    return false;
+                }
+                return true;
+            }
+
+            @Override
+            public Builder mergeFrom(com.google.protobuf.CodedInputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                    throws java.io.IOException {
+                com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse parsedMessage = null;
+                try {
+                    parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+                } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+                    parsedMessage = (com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse) e.getUnfinishedMessage();
+                    throw e;
+                } finally {
+                    if (parsedMessage != null) {
+                        mergeFrom(parsedMessage);
+                    }
+                }
+                return this;
+            }
+
+            private int bitField0_;
+
+            private long taskId_;
+
+            /**
+             * <code>optional int64 task_id = 1;</code>
+             */
+            @Override
+            public boolean hasTaskId() {
+                return ((bitField0_ & 0x00000001) == 0x00000001);
+            }
+
+            /**
+             * <code>optional int64 task_id = 1;</code>
+             */
+            @Override
+            public long getTaskId() {
+                return taskId_;
+            }
+
+            /**
+             * <code>optional int64 task_id = 1;</code>
+             */
+            public Builder setTaskId(long value) {
+                bitField0_ |= 0x00000001;
+                taskId_ = value;
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>optional int64 task_id = 1;</code>
+             */
+            public Builder clearTaskId() {
+                bitField0_ = (bitField0_ & ~0x00000001);
+                taskId_ = 0L;
+                onChanged();
+                return this;
+            }
+
+            private boolean success_;
+
+            /**
+             * <code>required bool success = 2;</code>
+             */
+            @Override
+            public boolean hasSuccess() {
+                return ((bitField0_ & 0x00000002) == 0x00000002);
+            }
+
+            /**
+             * <code>required bool success = 2;</code>
+             */
+            @Override
+            public boolean getSuccess() {
+                return success_;
+            }
+
+            /**
+             * <code>required bool success = 2;</code>
+             */
+            public Builder setSuccess(boolean value) {
+                bitField0_ |= 0x00000002;
+                success_ = value;
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>required bool success = 2;</code>
+             */
+            public Builder clearSuccess() {
+                bitField0_ = (bitField0_ & ~0x00000002);
+                success_ = false;
+                onChanged();
+                return this;
+            }
+
+            private java.lang.Object message_ = "";
+
+            /**
+             * <code>optional string message = 3 [default = ""];</code>
+             */
+            @Override
+            public boolean hasMessage() {
+                return ((bitField0_ & 0x00000004) == 0x00000004);
+            }
+
+            /**
+             * <code>optional string message = 3 [default = ""];</code>
+             */
+            @Override
+            public java.lang.String getMessage() {
+                java.lang.Object ref = message_;
+                if (!(ref instanceof java.lang.String)) {
+                    com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                    java.lang.String s = bs.toStringUtf8();
+                    if (bs.isValidUtf8()) {
+                        message_ = s;
+                    }
+                    return s;
+                } else {
+                    return (java.lang.String) ref;
+                }
+            }
+
+            /**
+             * <code>optional string message = 3 [default = ""];</code>
+             */
+            @Override
+            public com.google.protobuf.ByteString getMessageBytes() {
+                java.lang.Object ref = message_;
+                if (ref instanceof String) {
+                    com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
+                    message_ = b;
+                    return b;
+                } else {
+                    return (com.google.protobuf.ByteString) ref;
+                }
+            }
+
+            /**
+             * <code>optional string message = 3 [default = ""];</code>
+             */
+            public Builder setMessage(java.lang.String value) {
+                if (value == null) {
+                    throw new NullPointerException();
+                }
+                bitField0_ |= 0x00000004;
+                message_ = value;
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>optional string message = 3 [default = ""];</code>
+             */
+            public Builder clearMessage() {
+                bitField0_ = (bitField0_ & ~0x00000004);
+                message_ = getDefaultInstance().getMessage();
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>optional string message = 3 [default = ""];</code>
+             */
+            public Builder setMessageBytes(com.google.protobuf.ByteString value) {
+                if (value == null) {
+                    throw new NullPointerException();
+                }
+                bitField0_ |= 0x00000004;
+                message_ = value;
+                onChanged();
+                return this;
+            }
+
+            // @@protoc_insertion_point(builder_scope:ServerSubmitTaskResponse)
+        }
+
+        static {
+            defaultInstance = new ServerSubmitTaskResponse(true);
+            defaultInstance.initFields();
+        }
+
+        // @@protoc_insertion_point(class_scope:ServerSubmitTaskResponse)
     }
+
+    private static final com.google.protobuf.Descriptors.Descriptor internal_static_DeleteRestServerSubmitJobRequest_descriptor;
+    private static com.google.protobuf.GeneratedMessage.FieldAccessorTable internal_static_DeleteRestServerSubmitJobRequest_fieldAccessorTable;
+    private static final com.google.protobuf.Descriptors.Descriptor internal_static_DeleteServerSubmitJobResponse_descriptor;
+    private static com.google.protobuf.GeneratedMessage.FieldAccessorTable internal_static_DeleteServerSubmitJobResponse_fieldAccessorTable;
+    private static final com.google.protobuf.Descriptors.Descriptor internal_static_ServerSubmitTaskRequest_descriptor;
+    private static com.google.protobuf.GeneratedMessage.FieldAccessorTable internal_static_ServerSubmitTaskRequest_fieldAccessorTable;
+    private static final com.google.protobuf.Descriptors.Descriptor internal_static_WorkerSubmitTaskResponse_descriptor;
+    private static com.google.protobuf.GeneratedMessage.FieldAccessorTable internal_static_WorkerSubmitTaskResponse_fieldAccessorTable;
+    private static final com.google.protobuf.Descriptors.Descriptor internal_static_RestServerSubmitTaskRequest_descriptor;
+    private static com.google.protobuf.GeneratedMessage.FieldAccessorTable internal_static_RestServerSubmitTaskRequest_fieldAccessorTable;
+    private static final com.google.protobuf.Descriptors.Descriptor internal_static_ServerSubmitTaskResponse_descriptor;
+    private static com.google.protobuf.GeneratedMessage.FieldAccessorTable internal_static_ServerSubmitTaskResponse_fieldAccessorTable;
+
+    public static com.google.protobuf.Descriptors.FileDescriptor getDescriptor() {
+        return descriptor;
+    }
+
+    private static com.google.protobuf.Descriptors.FileDescriptor descriptor;
 
     static {
-      defaultInstance = new ServerSubmitTaskResponse(true);
-      defaultInstance.initFields();
+        java.lang.String[] descriptorData = {
+                "\n\021submit_task.proto\032\017map_entry.proto\032\026de" + "pendency_entry.proto\032\016app_auth.proto\032\037sc"
+                        + "hedule_expression_entry.proto\"\273\003\n Delete" + "RestServerSubmitJobRequest\022\032\n\010app_auth\030\001"
+                        + " \002(\0132\010.AppAuth\022\020\n\010job_name\030\002 \002(\t\0222\n\020expr"
+                        + "ession_entry\030\003 \001(\0132\030.ScheduleExpressionE" + "ntry\022*\n\020dependency_entry\030\004 \003(\0132\020.Depende"
+                        + "ncyEntry\022\014\n\004user\030\005 \002(\t\022\020\n\010job_type\030\006 \002(\t"
+                        + "\022\017\n\007content\030\007 \002(\t\022\020\n\010group_id\030\010 \002(\005\022\023\n\010p"
+                        + "riority\030\t \001(\005:\0011\022\031\n\016reject_retries\030\n \001(\005",
+                ":\0010\022\032\n\017reject_interval\030\013 \001(\005:\0013\022\031\n\016faile"
+                        + "d_retries\030\014 \001(\005:\0010\022\032\n\017failed_interval\030\r "
+                        + "\001(\005:\0013\022\022\n\nstart_time\030\016 \001(\003\022\020\n\010end_time\030\017"
+                        + " \001(\003\022\035\n\nparameters\030\020 \003(\0132\t.MapEntry\"S\n\035D"
+                        + "eleteServerSubmitJobResponse\022\016\n\006job_id\030\001"
+                        + " \001(\003\022\017\n\007success\030\002 \002(\010\022\021\n\007message\030\003 \001(\t:\000"
+                        + "\"\316\001\n\027ServerSubmitTaskRequest\022\017\n\007full_id\030"
+                        + "\001 \002(\t\022\021\n\ttask_name\030\002 \002(\t\022\020\n\010app_name\030\003 \002"
+                        + "(\t\022\014\n\004user\030\004 \002(\t\022\021\n\ttask_type\030\005 \002(\t\022\017\n\007c"
+                        + "ontent\030\006 \002(\t\022\023\n\010priority\030\007 \001(\005:\0011\022\035\n\npar",
+                "ameters\030\010 \003(\0132\t.MapEntry\022\027\n\017scheduling_t" + "ime\030\t \002(\003\"N\n\030WorkerSubmitTaskResponse\022\016\n"
+                        + "\006accept\030\001 \001(\010\022\017\n\007success\030\002 \002(\010\022\021\n\007messag"
+                        + "e\030\003 \001(\t:\000\"\247\002\n\033RestServerSubmitTaskReques"
+                        + "t\022\032\n\010app_auth\030\001 \002(\0132\010.AppAuth\022\021\n\ttask_na"
+                        + "me\030\002 \002(\t\022\014\n\004user\030\003 \002(\t\022\021\n\ttask_type\030\004 \002("
+                        + "\t\022\017\n\007content\030\005 \002(\t\022\020\n\010group_id\030\006 \002(\005\022\023\n\010"
+                        + "priority\030\007 \001(\005:\0011\022\031\n\016reject_retries\030\010 \001("
+                        + "\005:\0010\022\032\n\017reject_interval\030\t \001(\005:\0013\022\031\n\016fail"
+                        + "ed_retries\030\n \001(\005:\0010\022\032\n\017failed_interval\030\013",
+                " \001(\005:\0013\022\022\n\nparameters\030\014 \002(\t\"O\n\030ServerSub"
+                        + "mitTaskResponse\022\017\n\007task_id\030\001 \001(\003\022\017\n\007succ"
+                        + "ess\030\002 \002(\010\022\021\n\007message\030\003 \001(\t:\000B.\n\033com.mogu"
+                        + "jie.jarvis.protocolB\017SubmitJobProtos" };
+        com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner = new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
+            @Override
+            public com.google.protobuf.ExtensionRegistry assignDescriptors(com.google.protobuf.Descriptors.FileDescriptor root) {
+                descriptor = root;
+                return null;
+            }
+        };
+        com.google.protobuf.Descriptors.FileDescriptor.internalBuildGeneratedFileFrom(descriptorData,
+                new com.google.protobuf.Descriptors.FileDescriptor[] { com.mogujie.jarvis.protocol.MapEntryProtos.getDescriptor(),
+                        com.mogujie.jarvis.protocol.DependencyEntryProtos.getDescriptor(), com.mogujie.jarvis.protocol.AppAuthProtos.getDescriptor(),
+                        com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.getDescriptor(), },
+                assigner);
+        internal_static_DeleteRestServerSubmitJobRequest_descriptor = getDescriptor().getMessageTypes().get(0);
+        internal_static_DeleteRestServerSubmitJobRequest_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+                internal_static_DeleteRestServerSubmitJobRequest_descriptor,
+                new java.lang.String[] { "AppAuth", "JobName", "ExpressionEntry", "DependencyEntry", "User", "JobType", "Content", "GroupId",
+                        "Priority", "RejectRetries", "RejectInterval", "FailedRetries", "FailedInterval", "StartTime", "EndTime", "Parameters", });
+        internal_static_DeleteServerSubmitJobResponse_descriptor = getDescriptor().getMessageTypes().get(1);
+        internal_static_DeleteServerSubmitJobResponse_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+                internal_static_DeleteServerSubmitJobResponse_descriptor, new java.lang.String[] { "JobId", "Success", "Message", });
+        internal_static_ServerSubmitTaskRequest_descriptor = getDescriptor().getMessageTypes().get(2);
+        internal_static_ServerSubmitTaskRequest_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+                internal_static_ServerSubmitTaskRequest_descriptor, new java.lang.String[] { "FullId", "TaskName", "AppName", "User", "TaskType",
+                        "Content", "Priority", "Parameters", "SchedulingTime", });
+        internal_static_WorkerSubmitTaskResponse_descriptor = getDescriptor().getMessageTypes().get(3);
+        internal_static_WorkerSubmitTaskResponse_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+                internal_static_WorkerSubmitTaskResponse_descriptor, new java.lang.String[] { "Accept", "Success", "Message", });
+        internal_static_RestServerSubmitTaskRequest_descriptor = getDescriptor().getMessageTypes().get(4);
+        internal_static_RestServerSubmitTaskRequest_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+                internal_static_RestServerSubmitTaskRequest_descriptor, new java.lang.String[] { "AppAuth", "TaskName", "User", "TaskType", "Content",
+                        "GroupId", "Priority", "RejectRetries", "RejectInterval", "FailedRetries", "FailedInterval", "Parameters", });
+        internal_static_ServerSubmitTaskResponse_descriptor = getDescriptor().getMessageTypes().get(5);
+        internal_static_ServerSubmitTaskResponse_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+                internal_static_ServerSubmitTaskResponse_descriptor, new java.lang.String[] { "TaskId", "Success", "Message", });
+        com.mogujie.jarvis.protocol.MapEntryProtos.getDescriptor();
+        com.mogujie.jarvis.protocol.DependencyEntryProtos.getDescriptor();
+        com.mogujie.jarvis.protocol.AppAuthProtos.getDescriptor();
+        com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.getDescriptor();
     }
 
-    // @@protoc_insertion_point(class_scope:ServerSubmitTaskResponse)
-  }
-
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_DeleteRestServerSubmitJobRequest_descriptor;
-  private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_DeleteRestServerSubmitJobRequest_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_DeleteServerSubmitJobResponse_descriptor;
-  private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_DeleteServerSubmitJobResponse_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_ServerSubmitTaskRequest_descriptor;
-  private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_ServerSubmitTaskRequest_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_WorkerSubmitTaskResponse_descriptor;
-  private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_WorkerSubmitTaskResponse_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_RestServerSubmitTaskRequest_descriptor;
-  private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_RestServerSubmitTaskRequest_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_ServerSubmitTaskResponse_descriptor;
-  private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_ServerSubmitTaskResponse_fieldAccessorTable;
-
-  public static com.google.protobuf.Descriptors.FileDescriptor
-      getDescriptor() {
-    return descriptor;
-  }
-  private static com.google.protobuf.Descriptors.FileDescriptor
-      descriptor;
-  static {
-    java.lang.String[] descriptorData = {
-      "\n\021submit_task.proto\032\017map_entry.proto\032\026de" +
-      "pendency_entry.proto\032\016app_auth.proto\032\037sc" +
-      "hedule_expression_entry.proto\"\273\003\n Delete" +
-      "RestServerSubmitJobRequest\022\032\n\010app_auth\030\001" +
-      " \002(\0132\010.AppAuth\022\020\n\010job_name\030\002 \002(\t\0222\n\020expr" +
-      "ession_entry\030\003 \001(\0132\030.ScheduleExpressionE" +
-      "ntry\022*\n\020dependency_entry\030\004 \003(\0132\020.Depende" +
-      "ncyEntry\022\014\n\004user\030\005 \002(\t\022\020\n\010job_type\030\006 \002(\t" +
-      "\022\017\n\007content\030\007 \002(\t\022\020\n\010group_id\030\010 \002(\005\022\023\n\010p" +
-      "riority\030\t \001(\005:\0011\022\031\n\016reject_retries\030\n \001(\005",
-      ":\0010\022\032\n\017reject_interval\030\013 \001(\005:\0013\022\031\n\016faile" +
-      "d_retries\030\014 \001(\005:\0010\022\032\n\017failed_interval\030\r " +
-      "\001(\005:\0013\022\022\n\nstart_time\030\016 \001(\003\022\020\n\010end_time\030\017" +
-      " \001(\003\022\035\n\nparameters\030\020 \003(\0132\t.MapEntry\"S\n\035D" +
-      "eleteServerSubmitJobResponse\022\016\n\006job_id\030\001" +
-      " \001(\003\022\017\n\007success\030\002 \002(\010\022\021\n\007message\030\003 \001(\t:\000" +
-      "\"\316\001\n\027ServerSubmitTaskRequest\022\017\n\007full_id\030" +
-      "\001 \002(\t\022\021\n\ttask_name\030\002 \002(\t\022\020\n\010app_name\030\003 \002" +
-      "(\t\022\014\n\004user\030\004 \002(\t\022\021\n\ttask_type\030\005 \002(\t\022\017\n\007c" +
-      "ontent\030\006 \002(\t\022\023\n\010priority\030\007 \001(\005:\0011\022\035\n\npar",
-      "ameters\030\010 \003(\0132\t.MapEntry\022\027\n\017scheduling_t" +
-      "ime\030\t \002(\003\"N\n\030WorkerSubmitTaskResponse\022\016\n" +
-      "\006accept\030\001 \001(\010\022\017\n\007success\030\002 \002(\010\022\021\n\007messag" +
-      "e\030\003 \001(\t:\000\"\247\002\n\033RestServerSubmitTaskReques" +
-      "t\022\032\n\010app_auth\030\001 \002(\0132\010.AppAuth\022\021\n\ttask_na" +
-      "me\030\002 \002(\t\022\014\n\004user\030\003 \002(\t\022\021\n\ttask_type\030\004 \002(" +
-      "\t\022\017\n\007content\030\005 \002(\t\022\020\n\010group_id\030\006 \002(\005\022\023\n\010" +
-      "priority\030\007 \001(\005:\0011\022\031\n\016reject_retries\030\010 \001(" +
-      "\005:\0010\022\032\n\017reject_interval\030\t \001(\005:\0013\022\031\n\016fail" +
-      "ed_retries\030\n \001(\005:\0010\022\032\n\017failed_interval\030\013",
-      " \001(\005:\0013\022\022\n\nparameters\030\014 \002(\t\"O\n\030ServerSub" +
-      "mitTaskResponse\022\017\n\007task_id\030\001 \001(\003\022\017\n\007succ" +
-      "ess\030\002 \002(\010\022\021\n\007message\030\003 \001(\t:\000B.\n\033com.mogu" +
-      "jie.jarvis.protocolB\017SubmitJobProtos"
-    };
-    com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
-          public com.google.protobuf.ExtensionRegistry assignDescriptors(
-              com.google.protobuf.Descriptors.FileDescriptor root) {
-            descriptor = root;
-            return null;
-          }
-        };
-    com.google.protobuf.Descriptors.FileDescriptor
-      .internalBuildGeneratedFileFrom(descriptorData,
-        new com.google.protobuf.Descriptors.FileDescriptor[] {
-          com.mogujie.jarvis.protocol.MapEntryProtos.getDescriptor(),
-          com.mogujie.jarvis.protocol.DependencyEntryProtos.getDescriptor(),
-          com.mogujie.jarvis.protocol.AppAuthProtos.getDescriptor(),
-          com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.getDescriptor(),
-        }, assigner);
-    internal_static_DeleteRestServerSubmitJobRequest_descriptor =
-      getDescriptor().getMessageTypes().get(0);
-    internal_static_DeleteRestServerSubmitJobRequest_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_DeleteRestServerSubmitJobRequest_descriptor,
-        new java.lang.String[] { "AppAuth", "JobName", "ExpressionEntry", "DependencyEntry", "User", "JobType", "Content", "GroupId", "Priority", "RejectRetries", "RejectInterval", "FailedRetries", "FailedInterval", "StartTime", "EndTime", "Parameters", });
-    internal_static_DeleteServerSubmitJobResponse_descriptor =
-      getDescriptor().getMessageTypes().get(1);
-    internal_static_DeleteServerSubmitJobResponse_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_DeleteServerSubmitJobResponse_descriptor,
-        new java.lang.String[] { "JobId", "Success", "Message", });
-    internal_static_ServerSubmitTaskRequest_descriptor =
-      getDescriptor().getMessageTypes().get(2);
-    internal_static_ServerSubmitTaskRequest_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_ServerSubmitTaskRequest_descriptor,
-        new java.lang.String[] { "FullId", "TaskName", "AppName", "User", "TaskType", "Content", "Priority", "Parameters", "SchedulingTime", });
-    internal_static_WorkerSubmitTaskResponse_descriptor =
-      getDescriptor().getMessageTypes().get(3);
-    internal_static_WorkerSubmitTaskResponse_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_WorkerSubmitTaskResponse_descriptor,
-        new java.lang.String[] { "Accept", "Success", "Message", });
-    internal_static_RestServerSubmitTaskRequest_descriptor =
-      getDescriptor().getMessageTypes().get(4);
-    internal_static_RestServerSubmitTaskRequest_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_RestServerSubmitTaskRequest_descriptor,
-        new java.lang.String[] { "AppAuth", "TaskName", "User", "TaskType", "Content", "GroupId", "Priority", "RejectRetries", "RejectInterval", "FailedRetries", "FailedInterval", "Parameters", });
-    internal_static_ServerSubmitTaskResponse_descriptor =
-      getDescriptor().getMessageTypes().get(5);
-    internal_static_ServerSubmitTaskResponse_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_ServerSubmitTaskResponse_descriptor,
-        new java.lang.String[] { "TaskId", "Success", "Message", });
-    com.mogujie.jarvis.protocol.MapEntryProtos.getDescriptor();
-    com.mogujie.jarvis.protocol.DependencyEntryProtos.getDescriptor();
-    com.mogujie.jarvis.protocol.AppAuthProtos.getDescriptor();
-    com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.getDescriptor();
-  }
-
-  // @@protoc_insertion_point(outer_class_scope)
+    // @@protoc_insertion_point(outer_class_scope)
 }

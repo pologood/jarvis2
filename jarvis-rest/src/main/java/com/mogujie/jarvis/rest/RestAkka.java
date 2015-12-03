@@ -21,8 +21,7 @@ import org.apache.commons.configuration.Configuration;
  */
 public class RestAkka {
 
-    private static ActorSystem system = ActorSystem.create(JarvisConstants.REST_AKKA_SYSTEM_NAME,
-            ConfigUtils.getAkkaConfig("akka-rest.conf"));
+    private static ActorSystem system = ActorSystem.create(JarvisConstants.REST_AKKA_SYSTEM_NAME, ConfigUtils.getAkkaConfig("akka-rest.conf"));
 
     public static ActorSystem getSystem() {
         return system;
@@ -48,6 +47,5 @@ public class RestAkka {
         return system.actorSelection(userPath);
 
     }
-
 
 }
