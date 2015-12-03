@@ -40,8 +40,11 @@ public enum TaskPool {
     Options options = new Options();
     options.createIfMissing(true);
     try {
-      db = factory.open(new File(ConfigUtils.getWorkerConfig().getString("worker.leveldb.path")),
-          options);
+        String path = ConfigUtils.getWorkerConfig().getString("worker.leveldb.path");
+        if(path == null || path.isEmpty()){
+            path = "worker.level.db";
+        }
+      db = factory.open(new File(path), options);
     } catch (IOException e) {
       Throwables.propagate(e);
     }

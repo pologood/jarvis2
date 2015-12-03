@@ -24,7 +24,7 @@ CREATE TABLE `app` (
   `updateUser` varchar(32) NOT NULL DEFAULT '' COMMENT '最后更新用户',
   PRIMARY KEY (`appId`),
   UNIQUE KEY `index_appName` (`appName`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='app表';
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COMMENT='app表';
 
 -- Create syntax for TABLE 'app_worker_group'
 CREATE TABLE `app_worker_group` (
@@ -60,13 +60,13 @@ CREATE TABLE `job` (
   PRIMARY KEY (`jobId`),
   KEY `index_submitUser` (`submitUser`),
   KEY `index_createTime` (`createTime`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COMMENT='job表';
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8 COMMENT='job表';
 
 -- Create syntax for TABLE 'job_depend'
 CREATE TABLE `job_depend` (
   `jobId` bigint(11) unsigned NOT NULL DEFAULT '0' COMMENT 'jobId',
   `preJobId` bigint(11) unsigned NOT NULL DEFAULT '0' COMMENT '前置JobId',
-  `commonStrategy` int(3) unsigned NOT NULL DEFAULT '0' COMMENT '通用依赖策略。0:ALL, 1:LASTONE, 2:ANYONE',
+  `commonStrategy` int(3) unsigned NOT NULL DEFAULT '0' COMMENT '通用依赖策略。1:ALL, 2:LASTONE, 3:ANYONE',
   `offsetStrategy` varchar(1024) NOT NULL DEFAULT '' COMMENT '偏移依赖策略',
   `createTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updateTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
@@ -84,7 +84,7 @@ CREATE TABLE `job_schedule_expression` (
   `updateTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
   PRIMARY KEY (`id`),
   KEY `index_jobId` (`jobId`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
 -- Create syntax for TABLE 'task'
 CREATE TABLE `task` (
@@ -108,7 +108,7 @@ CREATE TABLE `task` (
   KEY `index_dataYmd` (`scheduleTime`),
   KEY `index_executeStartTime` (`executeStartTime`),
   KEY `index_executeUser` (`executeUser`) KEY_BLOCK_SIZE=4
-) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8 COMMENT='task表';
+) ENGINE=InnoDB AUTO_INCREMENT=104 DEFAULT CHARSET=utf8 COMMENT='task表';
 
 -- Create syntax for TABLE 'task_depend'
 CREATE TABLE `task_depend` (
@@ -121,14 +121,14 @@ CREATE TABLE `task_depend` (
 -- Create syntax for TABLE 'worker'
 CREATE TABLE `worker` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'workerId',
-  `workerGroupId` int(11) unsigned NOT NULL COMMENT 'workerGroupID',
   `ip` char(16) NOT NULL DEFAULT '' COMMENT 'ip地址',
   `port` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '端口号',
+  `workerGroupId` int(11) unsigned NOT NULL DEFAULT '0' COMMENT 'workerGroupID',
   `status` int(3) unsigned NOT NULL DEFAULT '0' COMMENT '状态：0：下线；1：上线；',
   `createTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updateTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='worker表';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='worker表';
 
 -- Create syntax for TABLE 'worker_group'
 CREATE TABLE `worker_group` (
