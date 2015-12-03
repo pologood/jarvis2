@@ -20,7 +20,6 @@ import com.google.common.collect.Lists;
 import com.mogujie.jarvis.server.scheduler.event.AddTaskEvent;
 import com.mogujie.jarvis.server.scheduler.event.SuccessEvent;
 
-
 /**
  * @author guangming
  *
@@ -31,10 +30,6 @@ public class TestTaskSchedulerWithEvent extends TestSchedulerBase {
     private long jobCId = 3;
     private long taskAId = 1;
     private long taskBId = 2;
-    private long taskCId = 3;
-    private long t1 = 1000;
-    private long t2 = 2000;
-    private long t3 = 3000;
 
     @Test
     public void testHandleAddTaskEvent1() {

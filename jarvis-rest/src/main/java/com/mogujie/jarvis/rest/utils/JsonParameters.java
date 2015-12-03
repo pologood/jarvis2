@@ -1,31 +1,30 @@
 package com.mogujie.jarvis.rest.utils;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.internal.Primitives;
-import com.google.gson.reflect.TypeToken;
-
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 
 /**
  * Created by muming on 15/11/26.
  */
 
-
 public class JsonParameters {
 
-    Type mapType = new TypeToken<Map<String, Object>>() {}.getType();
+    Type mapType = new TypeToken<Map<String, Object>>() {
+    }.getType();
     private static Gson gson = new Gson();
     private Map<String, Object> data;
 
     public JsonParameters(String jsonString) {
-        try{
+        try {
             data = gson.fromJson(jsonString, mapType);
-        }catch (JsonSyntaxException ex){
+        } catch (JsonSyntaxException ex) {
         }
-        if(data == null ){
+        if (data == null) {
             data = new HashMap<>();
         }
     }
@@ -34,8 +33,8 @@ public class JsonParameters {
         return gson.fromJson(json, classOfT);
     }
 
-    public static String toJson(Object object , Type typeOfSrc){
-        return gson.toJson(object,typeOfSrc);
+    public static String toJson(Object object, Type typeOfSrc) {
+        return gson.toJson(object, typeOfSrc);
     }
 
     public Object getObject(String key, Object defaultVal) {
@@ -47,7 +46,7 @@ public class JsonParameters {
     }
 
     public Object getObject(String key) {
-        return getObject(key,null);
+        return getObject(key, null);
     }
 
     public String getString(String key, String defaultVal) {
@@ -62,10 +61,10 @@ public class JsonParameters {
         return getString(key, null);
     }
 
-    public String getStringNotEmpty(String key) throws IllegalArgumentException{
+    public String getStringNotEmpty(String key) throws IllegalArgumentException {
         String value = getString(key, null);
-        if(value == null || value.equals("")){
-            throw new IllegalArgumentException( key + "不能为空");
+        if (value == null || value.equals("")) {
+            throw new IllegalArgumentException(key + "不能为空");
         }
         return value;
     }
@@ -83,13 +82,13 @@ public class JsonParameters {
     }
 
     public Integer getInteger(String key) {
-        return getInteger(key,null);
+        return getInteger(key, null);
     }
 
     public Integer getIntegerNotNull(String key) {
-        Integer value = getInteger(key,null);
-        if(value == null){
-            throw new IllegalArgumentException( key + "不能为空");
+        Integer value = getInteger(key, null);
+        if (value == null) {
+            throw new IllegalArgumentException(key + "不能为空");
         }
         return value;
     }
@@ -112,8 +111,8 @@ public class JsonParameters {
 
     public Long getLongNotNull(String key) {
         Long value = getLong(key, null);
-        if(value == null){
-            throw new IllegalArgumentException( key + "不能为空");
+        if (value == null) {
+            throw new IllegalArgumentException(key + "不能为空");
         }
         return value;
     }

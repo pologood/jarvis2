@@ -37,10 +37,8 @@ public class PlanController extends AbstractController {
     @POST
     @Path("delete")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult delete(@FormParam("user") String user,
-                           @FormParam("appToken") String appToken,
-                           @FormParam("appName") String appName,
-                           @FormParam("parameters") String parameters) {
+    public RestResult<?> delete(@FormParam("user") String user, @FormParam("appToken") String appToken, @FormParam("appName") String appName,
+            @FormParam("parameters") String parameters) {
         try {
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
@@ -50,13 +48,8 @@ public class PlanController extends AbstractController {
             long scheduleTime = para.getInt("time");
             boolean ask = para.getBoolean("ask");
 
-            RestServerRemovePlanRequest request = RestServerRemovePlanRequest.newBuilder()
-                    .setAppAuth(appAuth)
-                    .setJobId(jobId)
-                    .setTaskId(taskId)
-                    .setScheduleTime(scheduleTime)
-                    .setAsk(ask)
-                    .build();
+            RestServerRemovePlanRequest request = RestServerRemovePlanRequest.newBuilder().setAppAuth(appAuth).setJobId(jobId).setTaskId(taskId)
+                    .setScheduleTime(scheduleTime).setAsk(ask).build();
 
             ServerRemovePlanResponse response = (ServerRemovePlanResponse) callActor(AkkaType.SERVER, request);
             if (response.getSuccess()) {

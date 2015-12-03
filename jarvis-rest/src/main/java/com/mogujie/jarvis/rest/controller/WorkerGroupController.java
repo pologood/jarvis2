@@ -6,6 +6,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.json.JSONObject;
+
 import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.protocol.AppAuthProtos;
 import com.mogujie.jarvis.protocol.WorkerGroupProtos.RestServerCreateWorkerGroupRequest;
@@ -13,7 +15,6 @@ import com.mogujie.jarvis.protocol.WorkerGroupProtos.RestServerModifyWorkerGroup
 import com.mogujie.jarvis.protocol.WorkerGroupProtos.ServerCreateWorkerGroupResponse;
 import com.mogujie.jarvis.protocol.WorkerGroupProtos.ServerModifyWorkerGroupResponse;
 import com.mogujie.jarvis.rest.RestResult;
-import org.json.JSONObject;
 
 /**
  * Created by hejian on 15/10/15.
@@ -21,23 +22,21 @@ import org.json.JSONObject;
 @Path("api/workerGroup")
 public class WorkerGroupController extends AbstractController {
 
-
     /**
      * 新增worker group
+     * 
      * @author hejian
-     * */
+     */
     @POST
     @Path("add")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult add(@FormParam("appName") String appName,
-                          @FormParam("user") String user,
-                          @FormParam("appToken") String appToken,
-                          @FormParam("parameters") String parameters) {
+    public RestResult<?> add(@FormParam("appName") String appName, @FormParam("user") String user, @FormParam("appToken") String appToken,
+            @FormParam("parameters") String parameters) {
         try {
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
-            JSONObject para=new JSONObject(parameters);
-            String name=para.getString("name");
+            JSONObject para = new JSONObject(parameters);
+            String name = para.getString("name");
 
             RestServerCreateWorkerGroupRequest request = RestServerCreateWorkerGroupRequest.newBuilder().setWorkerGroupName(name).setUser(user)
                     .setAppAuth(appAuth).build();
@@ -58,21 +57,20 @@ public class WorkerGroupController extends AbstractController {
 
     /**
      * 更新worker group
+     * 
      * @author hejian
-     * */
+     */
     @POST
     @Path("update")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult update(@FormParam("appName") String appName,
-                             @FormParam("appToken") String appToken,
-                             @FormParam("user") String user,
-                             @FormParam("parameters") String parameters) {
+    public RestResult<?> update(@FormParam("appName") String appName, @FormParam("appToken") String appToken, @FormParam("user") String user,
+            @FormParam("parameters") String parameters) {
         try {
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
-            JSONObject para=new JSONObject(parameters);
-            Integer workerGroupId=para.getInt("workerGroupId");
-            String name=para.getString("name");
+            JSONObject para = new JSONObject(parameters);
+            Integer workerGroupId = para.getInt("workerGroupId");
+            String name = para.getString("name");
 
             RestServerModifyWorkerGroupRequest request = RestServerModifyWorkerGroupRequest.newBuilder().setWorkerGroupId(workerGroupId)
                     .setAppAuth(appAuth).setWorkerGroupName(name).setUser(user).build();
@@ -92,23 +90,20 @@ public class WorkerGroupController extends AbstractController {
 
     /**
      * 更新worker group状态
+     * 
      * @author hejian
-     * */
+     */
     @POST
     @Path("status")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult delete(@FormParam("user") String user,
-                             @FormParam("appName") String appName,
-                             @FormParam("appToken") String appToken,
-                             @FormParam("parameters") String parameters) {
+    public RestResult<?> delete(@FormParam("user") String user, @FormParam("appName") String appName, @FormParam("appToken") String appToken,
+            @FormParam("parameters") String parameters) {
         try {
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
-
-            JSONObject para=new JSONObject(parameters);
-            Integer workerGroupId=para.getInt("workerGroupId");
-            Integer status=para.getInt("status");
-
+            JSONObject para = new JSONObject(parameters);
+            Integer workerGroupId = para.getInt("workerGroupId");
+            Integer status = para.getInt("status");
 
             RestServerModifyWorkerGroupRequest request = RestServerModifyWorkerGroupRequest.newBuilder().setWorkerGroupId(workerGroupId)
                     .setAppAuth(appAuth).setStatus(status).build();
