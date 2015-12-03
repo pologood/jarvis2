@@ -33,10 +33,10 @@ import com.mogujie.jarvis.core.domain.IdType;
 import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.domain.TaskDetail.TaskDetailBuilder;
-import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.domain.WorkerInfo;
 import com.mogujie.jarvis.core.expression.DependencyExpression;
 import com.mogujie.jarvis.core.util.IdUtils;
+import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.protocol.KillTaskProtos.RestServerKillTaskRequest;
 import com.mogujie.jarvis.protocol.KillTaskProtos.ServerKillTaskRequest;
@@ -44,9 +44,6 @@ import com.mogujie.jarvis.protocol.KillTaskProtos.ServerKillTaskResponse;
 import com.mogujie.jarvis.protocol.KillTaskProtos.WorkerKillTaskResponse;
 import com.mogujie.jarvis.protocol.ManualRerunTaskProtos.RestServerManualRerunTaskRequest;
 import com.mogujie.jarvis.protocol.ManualRerunTaskProtos.ServerManualRerunTaskResponse;
-import com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry;
-import com.mogujie.jarvis.protocol.RemovePlanProtos.RestServerRemovePlanRequest;
-import com.mogujie.jarvis.protocol.RemovePlanProtos.ServerRemovePlanResponse;
 import com.mogujie.jarvis.protocol.RetryTaskProtos.RestServerRetryTaskRequest;
 import com.mogujie.jarvis.protocol.RetryTaskProtos.ServerRetryTaskResponse;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest;
@@ -106,9 +103,6 @@ public class TaskActor extends UntypedActor {
         } else if (obj instanceof RestServerSubmitTaskRequest) {
             RestServerSubmitTaskRequest msg = (RestServerSubmitTaskRequest) obj;
             submitTask(msg);
-        } else if (obj instanceof RestServerRemovePlanRequest) {
-            RestServerRemovePlanRequest msg = (RestServerRemovePlanRequest) obj;
-            removePlan(msg);
         } else {
             unhandled(obj);
         }
@@ -121,8 +115,8 @@ public class TaskActor extends UntypedActor {
      */
     private void killTask(RestServerKillTaskRequest msg) throws Exception {
         ServerKillTaskResponse response = null;
-        long taskId = msg.getTaskId();
-        String fullId = "";
+        String fullId = msg.getFullId();
+        long taskId = IdUtils.parse(fullId, IdType.TASK_ID);
         WorkerInfo workerInfo = taskManager.getWorkerInfo(fullId);
         if (workerInfo != null) {
             ActorSelection actorSelection = getContext().actorSelection(workerInfo.getAkkaRootPath() + JarvisConstants.WORKER_AKKA_USER_PATH);
@@ -142,7 +136,7 @@ public class TaskActor extends UntypedActor {
      * @param msg
      */
     private void retryTask(RestServerRetryTaskRequest msg) {
-        controller.notify(new RetryTaskEvent(0, msg.getTaskId()));
+        controller.notify(new RetryTaskEvent(msg.getTaskId()));
         ServerRetryTaskResponse response = ServerRetryTaskResponse.newBuilder().setSuccess(true).build();
         getSender().tell(response, getSelf());
     }
@@ -259,47 +253,25 @@ public class TaskActor extends UntypedActor {
         getSender().tell(response, getSelf());
     }
 
-    /**
-     * 删除已有的某一个执行计划
-     *
-     * @param msg
-     */
-    private void removePlan(RestServerRemovePlanRequest msg) {
-        long taskId = msg.getTaskId();
-        long jobId = msg.getJobId();
-        DateTime scheduleTime = new DateTime(msg.getScheduleTime());
-        TimeScheduler timeScheduler = TimeSchedulerFactory.getInstance();
-        taskService.updateStatus(taskId, TaskStatus.REMOVED);
-        timeScheduler.removePlan(new ExecutionPlanEntry(jobId, scheduleTime, taskId));
-        ServerRemovePlanResponse response = ServerRemovePlanResponse.newBuilder().setSuccess(true).build();
-        getSender().tell(response, getSelf());
-    }
-
     private TaskDetail createRunOnceTask(RestServerSubmitTaskRequest request) {
         Task task = convertValidService.convert2Task(request);
         taskService.insert(task);
         long taskId = task.getTaskId();
-        TaskDetailBuilder builder = TaskDetail.newTaskDetailBuilder();
-        builder.setFullId("0_" + taskId + "_0");
-        builder.setAppName(request.getAppAuth().getName());
-        builder.setTaskName(request.getTaskName());
-        builder.setUser(request.getUser());
-        builder.setTaskType(request.getTaskType());
-        builder.setContent(request.getContent());
-        builder.setGroupId(request.getGroupId());
-        builder.setPriority(request.getPriority());
-        builder.setRejectRetries(request.getRejectRetries());
-        builder.setRejectInterval(request.getRejectInterval());
-        builder.setFailedRetries(request.getFailedRetries());
-        builder.setFailedInterval(request.getFailedInterval());
-        builder.setSchedulingTime(DateTime.now().getMillis() / 1000);
-        if (request.getParametersList().size() > 0) {
-            Map<String, Object> parameters = Maps.newHashMap();
-            for (MapEntry entry : request.getParametersList()) {
-                parameters.put(entry.getKey(), entry.getValue());
-            }
-            builder.setParameters(parameters);
-        }
+        TaskDetailBuilder builder = TaskDetail.newTaskDetailBuilder()
+                .setFullId("0_" + taskId + "_0")
+                .setAppName(request.getAppAuth().getName())
+                .setTaskName(request.getTaskName())
+                .setUser(request.getUser())
+                .setTaskType(request.getTaskType())
+                .setContent(request.getContent())
+                .setGroupId(request.getGroupId())
+                .setPriority(request.getPriority())
+                .setRejectRetries(request.getRejectRetries())
+                .setRejectInterval(request.getRejectInterval())
+                .setFailedRetries(request.getFailedRetries())
+                .setFailedInterval(request.getFailedInterval())
+                .setSchedulingTime(DateTime.now().getMillis() / 1000)
+                .setParameters(JsonHelper.parseJSON2Map(request.getParameters()));
 
         return builder.build();
     }
@@ -310,7 +282,6 @@ public class TaskActor extends UntypedActor {
         list.add(new ActorEntry(RestServerRetryTaskRequest.class, ServerRetryTaskResponse.class, MessageType.GENERAL));
         list.add(new ActorEntry(RestServerSubmitTaskRequest.class, ServerSubmitTaskResponse.class, MessageType.GENERAL));
         list.add(new ActorEntry(RestServerManualRerunTaskRequest.class, ServerManualRerunTaskResponse.class, MessageType.GENERAL));
-        list.add(new ActorEntry(RestServerRemovePlanRequest.class, ServerRemovePlanResponse.class, MessageType.GENERAL));
         return list;
     }
 }

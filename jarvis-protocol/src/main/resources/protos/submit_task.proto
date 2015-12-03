@@ -64,7 +64,7 @@ message RestServerSubmitTaskRequest {
     optional int32 reject_interval = 9 [default = 3];
     optional int32 failed_retries = 10 [default = 0];
     optional int32 failed_interval = 11 [default = 3];
-    repeated MapEntry parameters = 12;
+    required string parameters = 12;
 }
 
 

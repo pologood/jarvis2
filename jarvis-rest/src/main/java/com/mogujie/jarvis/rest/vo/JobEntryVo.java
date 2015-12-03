@@ -1,8 +1,8 @@
 package com.mogujie.jarvis.rest.vo;
 
-import com.mogujie.jarvis.core.domain.OperationMode;
-
 import java.util.List;
+
+import com.mogujie.jarvis.core.domain.OperationMode;
 
 /**
  * job返回类
