@@ -44,10 +44,8 @@ public class TaskController extends AbstractController {
     @POST
     @Path("kill")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult kill(@FormParam("user") String user,
-                           @FormParam("appToken") String appToken,
-                           @FormParam("appName") String appName,
-                           @FormParam("parameters") String parameters) {
+    public RestResult<?> kill(@FormParam("user") String user, @FormParam("appToken") String appToken, @FormParam("appName") String appName,
+            @FormParam("parameters") String parameters) {
         try {
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
@@ -57,10 +55,7 @@ public class TaskController extends AbstractController {
             int attemptId = para.getInt("attemptId");
             String fullId = IdUtils.getFullId(jobId, taskId, attemptId);
 
-            RestServerKillTaskRequest request = RestServerKillTaskRequest.newBuilder()
-                    .setAppAuth(appAuth)
-                    .setFullId(fullId)
-                    .build();
+            RestServerKillTaskRequest request = RestServerKillTaskRequest.newBuilder().setAppAuth(appAuth).setFullId(fullId).build();
 
             ServerKillTaskResponse response = (ServerKillTaskResponse) callActor(AkkaType.SERVER, request);
             if (response.getSuccess()) {
@@ -77,20 +72,15 @@ public class TaskController extends AbstractController {
     @POST
     @Path("retry")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult retry(@FormParam("user") String user,
-                           @FormParam("appToken") String appToken,
-                           @FormParam("appName") String appName,
-                           @FormParam("parameters") String parameters) {
+    public RestResult<?> retry(@FormParam("user") String user, @FormParam("appToken") String appToken, @FormParam("appName") String appName,
+            @FormParam("parameters") String parameters) {
         try {
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
             JSONObject para = new JSONObject(parameters);
             long taskId = para.getLong("taskId");
 
-            RestServerRetryTaskRequest request = RestServerRetryTaskRequest.newBuilder()
-                    .setAppAuth(appAuth)
-                    .setTaskId(taskId)
-                    .build();
+            RestServerRetryTaskRequest request = RestServerRetryTaskRequest.newBuilder().setAppAuth(appAuth).setTaskId(taskId).build();
 
             ServerRetryTaskResponse response = (ServerRetryTaskResponse) callActor(AkkaType.SERVER, request);
             if (response.getSuccess()) {
@@ -107,10 +97,8 @@ public class TaskController extends AbstractController {
     @POST
     @Path("rerun")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult rerun(@FormParam("user") String user,
-                           @FormParam("appToken") String appToken,
-                           @FormParam("appName") String appName,
-                           @FormParam("parameters") String parameters) {
+    public RestResult<?> rerun(@FormParam("user") String user, @FormParam("appToken") String appToken, @FormParam("appName") String appName,
+            @FormParam("parameters") String parameters) {
         try {
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
@@ -124,14 +112,10 @@ public class TaskController extends AbstractController {
             for (long jobId : jobIdList) {
                 builder.addJobId(jobId);
             }
-            RestServerManualRerunTaskRequest request = builder
-                    .setAppAuth(appAuth)
-                    .setStartTime(startDate)
-                    .setEndTime(endDate)
-                    .setRunChild(runChild)
+            RestServerManualRerunTaskRequest request = builder.setAppAuth(appAuth).setStartTime(startDate).setEndTime(endDate).setRunChild(runChild)
                     .build();
 
-            ServerManualRerunTaskResponse response =  (ServerManualRerunTaskResponse) callActor(AkkaType.SERVER, request);
+            ServerManualRerunTaskResponse response = (ServerManualRerunTaskResponse) callActor(AkkaType.SERVER, request);
             if (response.getSuccess()) {
                 return successResult();
             } else {
@@ -146,34 +130,21 @@ public class TaskController extends AbstractController {
     @POST
     @Path("submit")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult submit(@FormParam("user") String user,
-                           @FormParam("appToken") String appToken,
-                           @FormParam("appName") String appName,
-                           @FormParam("parameters") String parameters) {
+    public RestResult<?> submit(@FormParam("user") String user, @FormParam("appToken") String appToken, @FormParam("appName") String appName,
+            @FormParam("parameters") String parameters) {
         try {
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
             TaskEntryVo taskVo = JsonParameters.fromJson(parameters, TaskEntryVo.class);
-            //parameters处理
-            String jobParameters = "";
-            if(taskVo.getParams() != null) {
-                jobParameters = JsonParameters.toJson(taskVo.getParams(), List.class);
+            if (taskVo.getParams() != null) {
+                JsonParameters.toJson(taskVo.getParams(), List.class);
             }
-            RestServerSubmitTaskRequest request = RestServerSubmitTaskRequest.newBuilder()
-                    .setAppAuth(appAuth)
-                    .setTaskName(taskVo.getTaskName())
-                    .setContent(taskVo.getContent())
-                    .setTaskType(taskVo.getTaskType())
-                    .setUser(taskVo.getUser())
-                    .setGroupId(taskVo.getGroupId())
-                    .setPriority(taskVo.getPriority(0))
-                    .setRejectRetries(taskVo.getRejectRetries(0))
-                    .setRejectInterval(taskVo.getRejectInterval(3))
-                    .setFailedRetries(taskVo.getFailedRetries(0))
-                    .setFailedInterval(taskVo.getFailedInterval(3))
-                    .build();
+            RestServerSubmitTaskRequest request = RestServerSubmitTaskRequest.newBuilder().setAppAuth(appAuth).setTaskName(taskVo.getTaskName())
+                    .setContent(taskVo.getContent()).setTaskType(taskVo.getTaskType()).setUser(taskVo.getUser()).setGroupId(taskVo.getGroupId())
+                    .setPriority(taskVo.getPriority(0)).setRejectRetries(taskVo.getRejectRetries(0)).setRejectInterval(taskVo.getRejectInterval(3))
+                    .setFailedRetries(taskVo.getFailedRetries(0)).setFailedInterval(taskVo.getFailedInterval(3)).build();
 
-            ServerSubmitTaskResponse response =  (ServerSubmitTaskResponse) callActor(AkkaType.SERVER, request);
+            ServerSubmitTaskResponse response = (ServerSubmitTaskResponse) callActor(AkkaType.SERVER, request);
             if (response.getSuccess()) {
                 TaskVo vo = new TaskVo();
                 vo.setTaskId(response.getTaskId());

@@ -13,12 +13,13 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.json.JSONObject;
+
 import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
 import com.mogujie.jarvis.protocol.SystemStatusProtos.RestServerUpdateSystemStatusRequest;
 import com.mogujie.jarvis.protocol.SystemStatusProtos.ServerUpdateSystemStatusResponse;
 import com.mogujie.jarvis.rest.RestResult;
-import org.json.JSONObject;
 
 /**
  * @author muming
@@ -29,24 +30,23 @@ public class SystemController extends AbstractController {
 
     /**
      * 修改系统状态
+     * 
      * @author hejian
      */
     @POST
     @Path("status")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult status(@FormParam("user") String user,
-                             @FormParam("appToken") String appToken,
-                             @FormParam("appName") String appName,
-                             @FormParam("parameters") String parameters) {
+    public RestResult<?> status(@FormParam("user") String user, @FormParam("appToken") String appToken, @FormParam("appName") String appName,
+            @FormParam("parameters") String parameters) {
         try {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
-            JSONObject para=new JSONObject(parameters);
-            Integer status=para.getInt("status");
+            JSONObject para = new JSONObject(parameters);
+            Integer status = para.getInt("status");
 
-            //WorkerStatus ws = (status == 1) ? WorkerStatus.ONLINE : WorkerStatus.OFFLINE;
-            RestServerUpdateSystemStatusRequest request = RestServerUpdateSystemStatusRequest.newBuilder()
-                                                .setAppAuth(appAuth).setStatus(status).build();
+            // WorkerStatus ws = (status == 1) ? WorkerStatus.ONLINE : WorkerStatus.OFFLINE;
+            RestServerUpdateSystemStatusRequest request = RestServerUpdateSystemStatusRequest.newBuilder().setAppAuth(appAuth).setStatus(status)
+                    .build();
             ServerUpdateSystemStatusResponse response = (ServerUpdateSystemStatusResponse) callActor(AkkaType.SERVER, request);
 
             if (response.getSuccess()) {

@@ -1,7 +1,5 @@
 package com.mogujie.jarvis.rest;
 
-import com.mogujie.jarvis.rest.vo.AbstractVo;
-
 /**
  * REST结果
  * 
@@ -28,14 +26,12 @@ public class RestResult<T> {
     public RestResult() {
     }
 
-
     /**
      * 构造
      */
     public RestResult(int code) {
         this.code = code;
     }
-
 
     /**
      * @return the code

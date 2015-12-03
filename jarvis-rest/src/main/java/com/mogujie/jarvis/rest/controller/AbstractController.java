@@ -10,7 +10,6 @@ import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.rest.MsgCode;
 import com.mogujie.jarvis.rest.RestAkka;
 import com.mogujie.jarvis.rest.RestResult;
-import com.mogujie.jarvis.rest.vo.AbstractVo;
 
 import akka.actor.ActorSelection;
 import akka.pattern.Patterns;
@@ -87,7 +86,7 @@ public abstract class AbstractController {
      * @param msg
      * @return
      */
-    protected RestResult errorResult(String msg) {
+    protected RestResult<?> errorResult(String msg) {
         return errorResult(MsgCode.UNDEFINE_ERROR, msg);
     }
 
@@ -97,8 +96,8 @@ public abstract class AbstractController {
      * @param msg
      * @return
      */
-    protected RestResult errorResult(int code, String msg) {
-        RestResult result = new RestResult();
+    protected RestResult<?> errorResult(int code, String msg) {
+        RestResult<?> result = new RestResult<>();
         result.setCode(code);
         result.setMsg(msg);
         return result;
@@ -109,8 +108,8 @@ public abstract class AbstractController {
      *
      * @return
      */
-    protected RestResult successResult() {
-        return new RestResult(MsgCode.SUCCESS);
+    protected RestResult<?> successResult() {
+        return new RestResult<>(MsgCode.SUCCESS);
     }
 
     /**

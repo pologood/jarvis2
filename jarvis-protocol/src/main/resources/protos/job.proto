@@ -1,4 +1,3 @@
-import "map_entry.proto";
 import "dependency_entry.proto";
 import "app_auth.proto";
 import "schedule_expression_entry.proto";

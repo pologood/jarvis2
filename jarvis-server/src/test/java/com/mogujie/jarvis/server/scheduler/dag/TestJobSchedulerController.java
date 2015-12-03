@@ -29,20 +29,17 @@ public class TestJobSchedulerController extends TestSchedulerBase {
     private long jobCId = 3;
 
     /**
-     *   A   B
-     *    \ /
-     *     C
+     * A B \ / C
      */
     @Test
     public void testHandleSuccessEvent1() throws Exception {
         jobGraph.addJob(jobAId, new DAGJob(jobAId, DAGJobType.TIME), null);
         jobGraph.addJob(jobBId, new DAGJob(jobBId, DAGJobType.TIME), null);
-        jobGraph.addJob(jobCId, new DAGJob(jobCId, DAGJobType.DEPEND),
-                Sets.newHashSet(jobAId, jobBId));
+        jobGraph.addJob(jobCId, new DAGJob(jobCId, DAGJobType.DEPEND), Sets.newHashSet(jobAId, jobBId));
         Assert.assertEquals(1, jobGraph.getChildren(jobAId).size());
-        Assert.assertEquals(jobCId, (long)jobGraph.getChildren(jobAId).get(0).getFirst());
+        Assert.assertEquals(jobCId, (long) jobGraph.getChildren(jobAId).get(0).getFirst());
         Assert.assertEquals(1, jobGraph.getChildren(jobBId).size());
-        Assert.assertEquals(jobCId, (long)jobGraph.getChildren(jobBId).get(0).getFirst());
+        Assert.assertEquals(jobCId, (long) jobGraph.getChildren(jobBId).get(0).getFirst());
         Assert.assertEquals(2, jobGraph.getParents(jobCId).size());
         // jobA time ready
         TimeReadyEvent timeEventA = new TimeReadyEvent(jobAId);
@@ -80,9 +77,7 @@ public class TestJobSchedulerController extends TestSchedulerBase {
     }
 
     /**
-     *     A
-     *    / \
-     *   B   C
+     * A / \ B C
      */
     @Test
     public void testHandleSuccessEvent2() throws Exception {
@@ -102,8 +97,6 @@ public class TestJobSchedulerController extends TestSchedulerBase {
         List<Long> taskIds = new ArrayList<Long>(taskScheduler.getReadyTable().keySet());
         Collections.sort(taskIds);
         long taskAId = taskIds.get(0);
-        long taskBId = taskIds.get(1);
-        long taskCId = taskIds.get(2);
 
         // jobA success
         SuccessEvent eventA = new SuccessEvent(jobAId, taskAId);
