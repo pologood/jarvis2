@@ -238,7 +238,7 @@ public class JobService {
 
     public List<Job> getNotDeletedJobs() {
         JobExample example = new JobExample();
-        example.createCriteria().andJobFlagNotEqualTo(JobFlag.DELETED.getValue()).andJobIdNotEqualTo(0L);
+        example.createCriteria().andJobFlagNotEqualTo(JobFlag.DELETED.getValue());
         return jobMapper.selectByExample(example);
     }
 
@@ -277,11 +277,7 @@ public class JobService {
      * 读取metaData
      */
     private void loadMetaDataFromDB(){
-
-        JobExample jobExample = new JobExample();
-        jobExample.createCriteria().andJobFlagNotEqualTo(JobFlag.DELETED.getValue());
-        List<Job> jobs = jobMapper.selectByExample(jobExample);
-
+        List<Job> jobs = getNotDeletedJobs();
         List<JobScheduleExpression> scheduleExpressions = jobScheduleExpressionMapper.selectByExample(new JobScheduleExpressionExample());
         Multimap<Long, ScheduleExpression> scheduleExpressionMap = ArrayListMultimap.create();
         for (JobScheduleExpression jobScheduleExpression : scheduleExpressions) {

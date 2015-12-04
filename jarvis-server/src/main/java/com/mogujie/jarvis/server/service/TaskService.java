@@ -95,19 +95,19 @@ public class TaskService {
 
     public List<Task> getTasksByStatusNotIn(List<Integer> statusList) {
         TaskExample example = new TaskExample();
-        example.createCriteria().andStatusNotIn(statusList);
+        example.createCriteria().andStatusNotIn(statusList).andJobIdNotEqualTo(0L);
         return taskMapper.selectByExample(example);
     }
 
     public List<Task> getTasksByStatus(List<Integer> statusList) {
         TaskExample example = new TaskExample();
-        example.createCriteria().andStatusIn(statusList);
+        example.createCriteria().andStatusIn(statusList).andJobIdNotEqualTo(0L);
         return taskMapper.selectByExample(example);
     }
 
     public List<Long> getTaskIdsByJobIdsBetween(List<Long> jobIds, Date start, Date end) {
         TaskExample example = new TaskExample();
-        example.createCriteria().andJobIdIn(jobIds).andScheduleTimeBetween(start, end);
+        example.createCriteria().andJobIdIn(jobIds).andScheduleTimeBetween(start, end).andJobIdNotEqualTo(0L);
         List<Task> tasks = taskMapper.selectByExample(example);
         List<Long> taskIdList = new ArrayList<Long>();
         if (tasks != null) {
@@ -173,7 +173,8 @@ public class TaskService {
         }
         TaskExample example = new TaskExample();
         example.createCriteria().andJobIdEqualTo(jobId)
-                .andScheduleTimeBetween(start.toDate(), end.toDate());
+                .andScheduleTimeBetween(start.toDate(), end.toDate())
+                .andJobIdNotEqualTo(0L);
         return taskMapper.selectByExample(example);
     }
 
@@ -188,7 +189,10 @@ public class TaskService {
             return 0;
         }
         TaskExample example = new TaskExample();
-        example.createCriteria().andJobIdEqualTo(jobId).andScheduleTimeLessThan(new DateTime(scheduleTime * 1000L).toDate());
+        example.createCriteria()
+            .andJobIdEqualTo(jobId)
+            .andScheduleTimeLessThan(new DateTime(scheduleTime * 1000L).toDate())
+            .andJobIdNotEqualTo(0L);
         example.setOrderByClause("taskId desc");
         List<Task> tasks = taskMapper.selectByExample(example);
         if (tasks == null || tasks.isEmpty()) {
