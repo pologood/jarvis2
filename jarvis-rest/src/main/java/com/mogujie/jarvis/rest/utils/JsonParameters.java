@@ -29,18 +29,6 @@ public class JsonParameters {
         }
     }
 
-    public static <T> T fromJson(String json, Class<T> classOfT) throws JsonSyntaxException {
-        return gson.fromJson(json, classOfT);
-    }
-
-    public static Map<String, Object> fromJson2JobParams(String json) throws JsonSyntaxException {
-        return gson.fromJson(json, mapType);
-    }
-
-    public static String toJson(Object object, Type typeOfSrc) {
-        return gson.toJson(object, typeOfSrc);
-    }
-
     public Object getObject(String key, Object defaultVal) {
         if (data.containsKey(key)) {
             return data.get(key).toString();
@@ -61,9 +49,23 @@ public class JsonParameters {
         }
     }
 
+    public Boolean getBoolean(String key) {
+        return getBoolean(key, null);
+    }
+
+    public Boolean getBoolean(String key, Boolean defaultVal) {
+        if (data.containsKey(key)) {
+            return Boolean.parseBoolean(data.get(key).toString());
+        } else {
+            return defaultVal;
+        }
+    }
+
     public String getString(String key) {
         return getString(key, null);
     }
+
+
 
     public String getStringNotEmpty(String key) throws IllegalArgumentException {
         String value = getString(key, null);

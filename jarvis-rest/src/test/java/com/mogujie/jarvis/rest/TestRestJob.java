@@ -65,10 +65,10 @@ public class TestRestJob {
         job.setParams(jobPrams);
 //        job.setParams(Arrays.asList());
 
-        String a = JsonParameters.toJson(jobPrams, Map.class);
+        String a = JsonHelper.toJson(jobPrams, Map.class);
 
 
-        Map<String,Object> mapA = JsonParameters.fromJson2JobParams(a);
+        Map<String,Object> mapA = JsonHelper.fromJson2JobParams(a);
 
 
 

@@ -13,14 +13,13 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import org.json.JSONObject;
-
 import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.core.domain.StreamType;
 import com.mogujie.jarvis.protocol.AppAuthProtos;
 import com.mogujie.jarvis.protocol.ReadLogProtos.LogServerReadLogResponse;
 import com.mogujie.jarvis.protocol.ReadLogProtos.RestServerReadLogRequest;
 import com.mogujie.jarvis.rest.RestResult;
+import com.mogujie.jarvis.rest.utils.JsonParameters;
 import com.mogujie.jarvis.rest.vo.LogVo;
 
 /**
@@ -54,10 +53,10 @@ public class LogController extends AbstractController {
         try {
             AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
-            JSONObject para = new JSONObject(parameters);
+            JsonParameters para = new JsonParameters(parameters);
             Long taskId = para.getLong("taskId");
             Long offset = para.getLong("offset");
-            Integer lines = para.getInt("lines");
+            Integer lines = para.getInteger("lines");
 
             RestServerReadLogRequest request = RestServerReadLogRequest.newBuilder().setTaskId(taskId).setType(StreamType.STD_ERR.getValue())
                     .setOffset(offset).setLines(lines).build();
@@ -98,11 +97,11 @@ public class LogController extends AbstractController {
         try {
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
-            JSONObject para = new JSONObject(parameters);
+            JsonParameters para = new JsonParameters(parameters);
             Long taskId = para.getLong("taskId");
             Long offset = para.getLong("offset");
-            Integer lines = para.getInt("lines");
-            Integer type = para.getInt("type");
+            Integer lines = para.getInteger("lines");
+            Integer type = para.getInteger("type");
 
             RestServerReadLogRequest request = RestServerReadLogRequest.newBuilder().setTaskId(taskId).setType(StreamType.STD_OUT.getValue())
                     .setOffset(offset).setType(type).setAppAuth(appAuth).setLines(lines).build();

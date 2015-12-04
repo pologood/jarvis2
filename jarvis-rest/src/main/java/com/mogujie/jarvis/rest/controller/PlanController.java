@@ -14,13 +14,12 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import org.json.JSONObject;
-
 import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.protocol.AppAuthProtos;
 import com.mogujie.jarvis.protocol.RemovePlanProtos.RestServerRemovePlanRequest;
 import com.mogujie.jarvis.protocol.RemovePlanProtos.ServerRemovePlanResponse;
 import com.mogujie.jarvis.rest.RestResult;
+import com.mogujie.jarvis.rest.utils.JsonParameters;
 
 /**
  * @author guangming
@@ -42,10 +41,10 @@ public class PlanController extends AbstractController {
         try {
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
-            JSONObject para = new JSONObject(parameters);
+            JsonParameters para = new JsonParameters(parameters);
             long jobId = para.getLong("jobId");
             long taskId = para.getLong("taskId");
-            long scheduleTime = para.getInt("time");
+            long scheduleTime = para.getInteger("time");
             boolean ask = para.getBoolean("ask");
 
             RestServerRemovePlanRequest request = RestServerRemovePlanRequest.newBuilder().setAppAuth(appAuth).setJobId(jobId).setTaskId(taskId)

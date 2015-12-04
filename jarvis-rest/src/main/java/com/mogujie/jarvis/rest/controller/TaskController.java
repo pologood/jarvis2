@@ -18,7 +18,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import com.mogujie.jarvis.core.util.JsonHelper;
-import org.json.JSONObject;
+import com.mogujie.jarvis.rest.utils.JsonParameters;
 
 import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.core.util.IdUtils;
@@ -50,10 +50,10 @@ public class TaskController extends AbstractController {
         try {
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
-            JSONObject para = new JSONObject(parameters);
+            JsonParameters para = new JsonParameters(parameters);
             long jobId = para.getLong("jobId");
             long taskId = para.getLong("taskId");
-            int attemptId = para.getInt("attemptId");
+            int attemptId = para.getInteger("attemptId");
             String fullId = IdUtils.getFullId(jobId, taskId, attemptId);
 
             RestServerKillTaskRequest request = RestServerKillTaskRequest.newBuilder().setAppAuth(appAuth).setFullId(fullId).build();
@@ -78,7 +78,7 @@ public class TaskController extends AbstractController {
         try {
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
-            JSONObject para = new JSONObject(parameters);
+            JsonParameters para = new JsonParameters(parameters);
             long taskId = para.getLong("taskId");
 
             RestServerRetryTaskRequest request = RestServerRetryTaskRequest.newBuilder().setAppAuth(appAuth).setTaskId(taskId).build();

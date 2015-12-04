@@ -6,8 +6,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import org.json.JSONObject;
-
 import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.protocol.AppAuthProtos;
 import com.mogujie.jarvis.protocol.WorkerGroupProtos.RestServerCreateWorkerGroupRequest;
@@ -15,6 +13,7 @@ import com.mogujie.jarvis.protocol.WorkerGroupProtos.RestServerModifyWorkerGroup
 import com.mogujie.jarvis.protocol.WorkerGroupProtos.ServerCreateWorkerGroupResponse;
 import com.mogujie.jarvis.protocol.WorkerGroupProtos.ServerModifyWorkerGroupResponse;
 import com.mogujie.jarvis.rest.RestResult;
+import com.mogujie.jarvis.rest.utils.JsonParameters;
 
 /**
  * Created by hejian on 15/10/15.
@@ -34,7 +33,7 @@ public class WorkerGroupController extends AbstractController {
             @FormParam("parameters") String parameters) {
         try {
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
-            JSONObject para = new JSONObject(parameters);
+            JsonParameters para = new JsonParameters(parameters);
             String name = para.getString("name");
 
             RestServerCreateWorkerGroupRequest request = RestServerCreateWorkerGroupRequest.newBuilder().setWorkerGroupName(name).setUser(user)
@@ -65,8 +64,8 @@ public class WorkerGroupController extends AbstractController {
             @FormParam("parameters") String parameters) {
         try {
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
-            JSONObject para = new JSONObject(parameters);
-            int workerGroupId = para.getInt("workerGroupId");
+            JsonParameters para = new JsonParameters(parameters);
+            int workerGroupId = para.getInteger("workerGroupId");
             String name = para.getString("name");
 
             RestServerModifyWorkerGroupRequest request = RestServerModifyWorkerGroupRequest.newBuilder().setWorkerGroupId(workerGroupId)
@@ -97,9 +96,9 @@ public class WorkerGroupController extends AbstractController {
         try {
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
-            JSONObject para = new JSONObject(parameters);
-            int workerGroupId = para.getInt("workerGroupId");
-            int status = para.getInt("status");
+            JsonParameters para = new JsonParameters(parameters);
+            int workerGroupId = para.getInteger("workerGroupId");
+            int status = para.getInteger("status");
 
             RestServerModifyWorkerGroupRequest request = RestServerModifyWorkerGroupRequest.newBuilder().setWorkerGroupId(workerGroupId)
                     .setAppAuth(appAuth).setStatus(status).build();

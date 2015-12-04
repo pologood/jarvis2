@@ -9,57 +9,22 @@
 package com.mogujie.jarvis.core.util;
 
 import java.lang.reflect.Type;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
-
 import com.google.gson.reflect.TypeToken;
-import org.json.JSONObject;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry;
 
 /**
- * @author guangming
- *
+ * @author muming
  */
 public class JsonHelper {
 
-    private static Gson gson = new Gson();
-
     static Type mapType = new TypeToken<Map<String, Object>>() {
     }.getType();
-
-    public static String parseMap2JSON(Map<String, String> map) {
-        JSONObject jsonObject = new JSONObject(map);
-        return jsonObject.toString();
-    }
-
-    public static Map<String, Object> parseJSON2Map(String jsonStr) {
-        Map<String, Object> jsonMap = new HashMap<>();
-        JSONObject jsonObject = new JSONObject(jsonStr);
-        Iterator<String> it = jsonObject.keys();
-        while (it.hasNext()) {
-            String key = String.valueOf(it.next());
-            Object value = jsonObject.get(key);
-            jsonMap.put(key, value);
-        }
-        return jsonMap;
-    }
-
-    public static String parseMapEntryList2JSON(List<MapEntry> mapEntryList) {
-        Map<String, String> jsonMap = new HashMap<>();
-        for (MapEntry mapEntry : mapEntryList) {
-            jsonMap.put(mapEntry.getKey(), mapEntry.getValue());
-        }
-        JSONObject jsonObject = new JSONObject(jsonMap);
-        return jsonObject.toString();
-    }
+    private static Gson gson = new Gson();
 
     public static Map<String, Object> fromJson2JobParams(String json) throws JsonSyntaxException {
-        if(json == null || json.equals(""))
+        if (json == null || json.equals(""))
             return null;
         return gson.fromJson(json, mapType);
     }
@@ -72,8 +37,12 @@ public class JsonHelper {
         return gson.fromJson(json, typeOfT);
     }
 
-    public static String toJson(Object object , Type typeOfSrc){
-        return gson.toJson(object,typeOfSrc);
+    public static String toJson(Object object, Type typeOfSrc) {
+        return gson.toJson(object, typeOfSrc);
+    }
+
+    public static String toJson(Object object) {
+        return gson.toJson(object);
     }
 
 }
