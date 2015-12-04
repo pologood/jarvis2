@@ -178,9 +178,19 @@ public class TaskService {
         return taskMapper.selectByExample(example);
     }
 
+    public Task getTaskByJobIdAndScheduleTime(long jobId, long scheduleTime) {
+        TaskExample example = new TaskExample();
+        example.createCriteria().andJobIdEqualTo(jobId).andScheduleTimeEqualTo(new Date(scheduleTime));
+        List<Task> taskList = taskMapper.selectByExample(example);
+        if (taskList != null && !taskList.isEmpty()) {
+            return taskList.get(0);
+        }
+        return null;
+    }
+
     public List<Task> getTasksBetween(Date start, Date end) {
         TaskExample example = new TaskExample();
-        example.createCriteria().andScheduleTimeBetween(start, end);
+        example.createCriteria().andScheduleTimeBetween(start, end).andJobIdNotEqualTo(0L);
         return taskMapper.selectByExample(example);
     }
 

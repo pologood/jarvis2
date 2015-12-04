@@ -34,7 +34,7 @@ public class NextDayPlanGenerator extends PlanGenerator {
     public void generateNextPlan() {
         final DateTime startDateTime = DateTime.now().plusDays(1).withTimeAtStartOfDay();
         final DateTime endDateTime = DateTime.now().plusDays(2).withTimeAtStartOfDay();
-        List<ExecutionPlanEntry> nextDayPlans = new ArrayList<ExecutionPlanEntry>();
+        List<ExecutionPlanEntry> nextDayTimeBasedPlans = new ArrayList<ExecutionPlanEntry>();
 
         // generate next day time based plans
         List<Long> activeTimeBasedJobs = jobGraph.getActiveTimeBasedJobs();
@@ -42,26 +42,29 @@ public class NextDayPlanGenerator extends PlanGenerator {
             DateTime scheduleTime = getScheduleTimeAfter(jobId, startDateTime);
             while (scheduleTime.isBefore(endDateTime)) {
                 ExecutionPlanEntry entry = new ExecutionPlanEntry(jobId, scheduleTime);
-                nextDayPlans.add(entry);
+                nextDayTimeBasedPlans.add(entry);
                 scheduleTime = getScheduleTimeAfter(jobId, scheduleTime);
             }
         }
 
         // generate next day all tasks
-        Collections.sort(nextDayPlans, new Comparator<ExecutionPlanEntry>() {
+        Collections.sort(nextDayTimeBasedPlans, new Comparator<ExecutionPlanEntry>() {
             public int compare(ExecutionPlanEntry entry1, ExecutionPlanEntry entry2) {
                 return entry1.getDateTime().compareTo(entry2.getDateTime());
             }
         });
-        for (ExecutionPlanEntry planEntry : nextDayPlans) {
+        for (ExecutionPlanEntry planEntry : nextDayTimeBasedPlans) {
             controller.notify(new TimeReadyEvent(planEntry.getJobId(), planEntry.getDateTime().getMillis()));
         }
 
-        List<Task> nextDayTasks = taskService.getTasksBetween(startDateTime.toDate(), endDateTime.toDate());
-        if (nextDayTasks != null) {
-            for (Task task : nextDayTasks) {
-                plan.addPlan(new ExecutionPlanEntry(task.getJobId(), new DateTime(task.getScheduleTime()), task.getTaskId()));
+        // add time based plan
+        for (ExecutionPlanEntry planEntry : nextDayTimeBasedPlans) {
+            Task task = taskService.getTaskByJobIdAndScheduleTime(planEntry.getJobId(), planEntry.getDateTime().getMillis());
+            if (task != null) {
+                planEntry.setTaskId(task.getTaskId());
+                plan.addPlan(planEntry);
             }
+
         }
     }
 
