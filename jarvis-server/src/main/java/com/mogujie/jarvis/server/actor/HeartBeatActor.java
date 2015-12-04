@@ -51,6 +51,9 @@ public class HeartBeatActor extends UntypedActor {
             HeartBeatResponse response = null;
             if (groupId < 0) {
                 LOGGER.warn("groupId is not valid: heartbeat[ip={}, port={}, groupId={}, jobNum={}]", ip, port, groupId, jobNum);
+                //todo debug 测试临时屏蔽worker注册
+                heartBeatService.put(groupId, workerInfo, jobNum);
+                //todo end.......
                 response = HeartBeatResponse.newBuilder().setSuccess(false).setMessage("groupId is not valid: " + groupId).build();
             } else {
                 LOGGER.debug("heartbeat[ip={}, port={}, groupId={}, jobNum={}]", ip, port, groupId, jobNum);

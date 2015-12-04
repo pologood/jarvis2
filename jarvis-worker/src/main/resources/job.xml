@@ -2,7 +2,7 @@
 <configuration>
 	<strategies>
 		<strategy>com.mogujie.jarvis.worker.strategy.impl.CpuAcceptanceStrategy</strategy>
-		<strategy>com.mogujie.jarvis.worker.strategy.impl.JobNumAcceptionStrategy</strategy>
+		<strategy>com.mogujie.jarvis.worker.strategy.impl.TaskNumAcceptanceStrategy</strategy>
 		<strategy>com.mogujie.jarvis.worker.strategy.impl.LoadAcceptanceStrategy</strategy>
 		<strategy>com.mogujie.jarvis.worker.strategy.impl.MemoryAcceptanceStrategy</strategy>
 	</strategies>
