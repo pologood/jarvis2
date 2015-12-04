@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import com.google.common.base.Preconditions;
 import com.mogujie.jarvis.core.domain.AppType;
+import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.dto.generate.App;
 import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.dto.generate.JobDepend;
@@ -188,6 +189,7 @@ public class ConvertValidService {
         task.setCreateTime(now);
         task.setUpdateTime(now);
         task.setParams(msg.getParameters());
+        task.setStatus(TaskStatus.WAITING.getValue());
         return task;
     }
 

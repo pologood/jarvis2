@@ -255,8 +255,7 @@ public class TaskActor extends UntypedActor {
 
     private TaskDetail createRunOnceTask(RestServerSubmitTaskRequest request) {
         Task task = convertValidService.convert2Task(request);
-        taskService.insert(task);
-        long taskId = task.getTaskId();
+        long taskId = taskService.insert(task);
         TaskDetailBuilder builder = TaskDetail.newTaskDetailBuilder()
                 .setFullId("0_" + taskId + "_0")
                 .setAppName(request.getAppAuth().getName())

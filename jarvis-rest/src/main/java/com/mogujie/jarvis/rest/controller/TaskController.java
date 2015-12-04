@@ -136,13 +136,14 @@ public class TaskController extends AbstractController {
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
             TaskEntryVo taskVo = JsonParameters.fromJson(parameters, TaskEntryVo.class);
+            String jobParameters = "";
             if (taskVo.getParams() != null) {
-                JsonParameters.toJson(taskVo.getParams(), List.class);
+                jobParameters = JsonParameters.toJson(taskVo.getParams(), List.class);
             }
             RestServerSubmitTaskRequest request = RestServerSubmitTaskRequest.newBuilder().setAppAuth(appAuth).setTaskName(taskVo.getTaskName())
                     .setContent(taskVo.getContent()).setTaskType(taskVo.getTaskType()).setUser(taskVo.getUser()).setGroupId(taskVo.getGroupId())
                     .setPriority(taskVo.getPriority(0)).setRejectRetries(taskVo.getRejectRetries(0)).setRejectInterval(taskVo.getRejectInterval(3))
-                    .setFailedRetries(taskVo.getFailedRetries(0)).setFailedInterval(taskVo.getFailedInterval(3)).build();
+                    .setFailedRetries(taskVo.getFailedRetries(0)).setFailedInterval(taskVo.getFailedInterval(3)).setParameters(jobParameters).build();
 
             ServerSubmitTaskResponse response = (ServerSubmitTaskResponse) callActor(AkkaType.SERVER, request);
             if (response.getSuccess()) {

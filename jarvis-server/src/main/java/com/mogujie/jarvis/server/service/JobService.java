@@ -238,7 +238,7 @@ public class JobService {
 
     public List<Job> getNotDeletedJobs() {
         JobExample example = new JobExample();
-        example.createCriteria().andJobFlagNotEqualTo(JobFlag.DELETED.getValue());
+        example.createCriteria().andJobFlagNotEqualTo(JobFlag.DELETED.getValue()).andJobIdNotEqualTo(0L);
         return jobMapper.selectByExample(example);
     }
 
