@@ -12,8 +12,6 @@
 
 
 local.properties
-.classpath
-.settings/
 .loadpath
 
 # maven ignore
@@ -47,3 +45,4 @@ Thumbs.db
 # External tool builders
 .externalToolBuilders/
 
+worker.level.db
