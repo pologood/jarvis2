@@ -41,7 +41,8 @@ public class TaskService {
     }
 
     public long insert(Task record) {
-        return taskMapper.insert(record);
+        taskMapper.insert(record);
+        return record.getTaskId();
     }
 
     public void update(Task record) {
@@ -89,6 +90,7 @@ public class TaskService {
         Job job = jobMapper.selectByPrimaryKey(jobId);
         record.setExecuteUser(job.getSubmitUser());
         record.setContent(job.getContent());
+        record.setParams(job.getParams());
         taskMapper.insert(record);
         return record.getTaskId();
     }

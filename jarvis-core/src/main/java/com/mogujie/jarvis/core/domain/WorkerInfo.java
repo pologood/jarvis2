@@ -57,6 +57,10 @@ public class WorkerInfo {
         return akkaPath;
     }
 
+    public String getWorkerPath() {
+        return getAkkaRootPath() + JarvisConstants.WORKER_AKKA_USER_PATH;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(ip, port);

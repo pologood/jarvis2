@@ -74,8 +74,19 @@ public class TaskDispatcher extends Thread {
     public void run() {
         while (true) {
             if (running) {
+                TaskDetail task = null;
                 try {
-                    TaskDetail task = queue.take();
+                    task = queue.take();
+                } catch (InterruptedException e) {
+                    LOGGER.error("Take taskDetail error from taskQueue", e);
+                }
+
+                if (task == null) {
+                    continue;
+                }
+
+                try {
+
                     String appName = task.getAppName();
                     int appId = appService.getAppIdByName(appName);
 
@@ -87,11 +98,12 @@ public class TaskDispatcher extends Thread {
                     builder = builder.setTaskType(task.getTaskType());
                     builder = builder.setContent(task.getContent());
                     builder = builder.setPriority(task.getPriority());
+                    builder = builder.setSchedulingTime(task.getSchedulingTime());
 
                     int i = 0;
                     for (Entry<String, Object> entry : task.getParameters().entrySet()) {
                         MapEntry mapEntry = MapEntry.newBuilder().setKey(entry.getKey()).setValue(entry.getValue().toString()).build();
-                        builder.setParameters(i++, mapEntry);
+                        builder.addParameters(i++, mapEntry);
                     }
                     ServerSubmitTaskRequest request = builder.build();
 
@@ -100,7 +112,7 @@ public class TaskDispatcher extends Thread {
                         String fullId = task.getFullId();
                         boolean allowed = taskManager.addTask(fullId, workerInfo, appId);
                         if (allowed) {
-                            ActorSelection actorSelection = system.actorSelection(workerInfo.getAkkaRootPath());
+                            ActorSelection actorSelection = system.actorSelection(workerInfo.getWorkerPath());
                             try {
                                 WorkerSubmitTaskResponse response = (WorkerSubmitTaskResponse) FutureUtils.awaitResult(actorSelection, request, 30);
                                 if (response.getSuccess()) {
@@ -128,10 +140,8 @@ public class TaskDispatcher extends Thread {
                         }
                         taskManager.appCounterDecrement(appId);
                     }
-
-                    queue.put(task);
-                } catch (InterruptedException e) {
-                    LOGGER.error("Take taskDetail error from taskQueue", e);
+                } catch (Exception e) {
+                    LOGGER.error("",e);
                 }
             } else {
                 yield();
