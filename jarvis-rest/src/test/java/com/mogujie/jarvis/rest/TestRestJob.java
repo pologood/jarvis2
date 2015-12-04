@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.mogujie.jarvis.rest.utils.JsonParameters;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -63,14 +62,6 @@ public class TestRestJob {
         jobPrams.put("age", 18);
         jobPrams.put("isMail", false);
         job.setParams(jobPrams);
-//        job.setParams(Arrays.asList());
-
-        String a = JsonHelper.toJson(jobPrams, Map.class);
-
-
-        Map<String,Object> mapA = JsonHelper.fromJson2JobParams(a);
-
-
 
         // 任务参数
         String paramsJson = JsonHelper.toJson(job, JobEntryVo.class);

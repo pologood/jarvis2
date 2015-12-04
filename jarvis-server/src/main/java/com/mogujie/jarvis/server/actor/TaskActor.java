@@ -246,11 +246,17 @@ public class TaskActor extends UntypedActor {
      * @param msg
      */
     private void submitTask(RestServerSubmitTaskRequest msg) {
-        TaskDetail taskDetail = createRunOnceTask(msg);
-        taskQueue.put(taskDetail);
-        long taskId = IdUtils.parse(taskDetail.getFullId(), IdType.TASK_ID);
-        ServerSubmitTaskResponse response = ServerSubmitTaskResponse.newBuilder().setSuccess(true).setTaskId(taskId).build();
-        getSender().tell(response, getSelf());
+        ServerSubmitTaskResponse response;
+        try {
+            TaskDetail taskDetail = createRunOnceTask(msg);
+            taskQueue.put(taskDetail);
+            long taskId = IdUtils.parse(taskDetail.getFullId(), IdType.TASK_ID);
+            response = ServerSubmitTaskResponse.newBuilder().setSuccess(true).setTaskId(taskId).build();
+            getSender().tell(response, getSelf());
+        }catch (Exception e){
+            response = ServerSubmitTaskResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
+            getSender().tell(response, getSelf());
+        }
     }
 
     private TaskDetail createRunOnceTask(RestServerSubmitTaskRequest request) {

@@ -141,10 +141,11 @@ public class TaskService {
     }
 
     public void updateStatus(long taskId, TaskStatus status) {
-        Task task = taskMapper.selectByPrimaryKey(taskId);
+        Task task = new Task();
+        task.setTaskId(taskId);
         task.setStatus(status.getValue());
         task.setUpdateTime(DateTime.now().toDate());
-        taskMapper.updateByPrimaryKey(task);
+        taskMapper.updateByPrimaryKeySelective(task);
     }
 
     public List<Long> getDependTaskIds(long myJobId, long preJobId, long scheduleTime, DependencyExpression dependencyExpression) {
