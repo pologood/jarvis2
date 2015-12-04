@@ -23,21 +23,20 @@
 	    <!--<job type="presto" class="com.mogujie.jarvis.tasks.jdbc.PrestoJdbcJob" />-->
 	    <!--<job type="dummy" class="com.mogujie.jarvis.tasks.DummyJob" />-->
 
-        <job type="hive_shell" class="com.mogujie.jarvis.tasks.mock.MockTask">
+        <job type="hive_shell" class="com.mogujie.jarvis.tasks.DummyTask">
             <strategies>
                 <strategy>com.mogujie.jarvis.worker.strategy.impl.YarnMemoryAcceptanceStrategy</strategy>
             </strategies>
         </job>
-        <job type="hive_script" class="com.mogujie.jarvis.tasks.mock.MockTask">
+        <job type="hive_script" class="com.mogujie.jarvis.tasks.DummyTask">
             <strategies>
                 <strategy>com.mogujie.jarvis.worker.strategy.impl.YarnMemoryAcceptanceStrategy</strategy>
             </strategies>
         </job>
 
-        <job type="shell" class="com.mogujie.jarvis.tasks.mock.MockTask" />
-        <job type="presto" class="com.mogujie.jarvis.tasks.mock.MockTask" />
-        <job type="dummy" class="com.mogujie.jarvis.tasks.mock.MockTask" />
-
+        <job type="shell" class="com.mogujie.jarvis.tasks.DummyTask" />
+        <job type="presto" class="com.mogujie.jarvis.tasks.DummyTask" />
+        <job type="dummy" class="com.mogujie.jarvis.tasks.DummyTask" />
 
 	</jobs>
 </configuration>
