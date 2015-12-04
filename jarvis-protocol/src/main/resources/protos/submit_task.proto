@@ -1,37 +1,8 @@
-import "map_entry.proto";
-import "dependency_entry.proto";
 import "app_auth.proto";
-import "schedule_expression_entry.proto";
+import "map_entry.proto";
 
 option java_package = "com.mogujie.jarvis.protocol";
 option java_outer_classname = "SubmitJobProtos";
-
-message DeleteRestServerSubmitJobRequest {
-    required AppAuth app_auth = 1;
-    required string job_name = 2;
-    optional ScheduleExpressionEntry expression_entry = 3;
-    repeated DependencyEntry dependency_entry = 4;
-    required string user = 5;
-    required string job_type = 6;
-    required string content = 7;
-    required int32 group_id = 8;
-    optional int32 priority = 9 [default = 1];
-    optional int32 reject_retries = 10 [default = 0];
-    optional int32 reject_interval = 11 [default = 3];
-    optional int32 failed_retries = 12 [default = 0];
-    optional int32 failed_interval = 13 [default = 3];
-    optional int64 start_time = 14;
-    optional int64 end_time = 15;
-    repeated MapEntry parameters = 16;
-}
-
-
-message DeleteServerSubmitJobResponse {
-    optional int64 job_id = 1;
-    required bool success = 2;
-    optional string message = 3 [default = ""];
-}
-
 
 message ServerSubmitTaskRequest {
     required string full_id = 1;
@@ -66,7 +37,6 @@ message RestServerSubmitTaskRequest {
     optional int32 failed_interval = 11 [default = 3];
     required string parameters = 12;
 }
-
 
 message ServerSubmitTaskResponse {
     optional int64 task_id = 1;

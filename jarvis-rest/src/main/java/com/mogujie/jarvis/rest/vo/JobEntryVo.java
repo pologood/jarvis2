@@ -29,23 +29,6 @@ public class JobEntryVo extends  AbstractVo{
     private List<DependencyEntry> dependencyList;
     private ScheduleExpressionEntry scheduleExpressionEntry;
 
-    public static class ParameterEntity{
-        private String key;
-        private String value;
-        public String getKey() {
-            return key;
-        }
-        public void setKey(String key) {
-            this.key = key;
-        }
-        public String getValue() {
-            return value;
-        }
-        public void setValue(String value) {
-            this.value = value;
-        }
-    }
-
     public static class DependencyEntry{
         private Integer operatorMode;
         private Long preJobId;
