@@ -24,87 +24,64 @@ import com.mogujie.jarvis.rest.vo.LogVo;
 
 /**
  * @author muming
- *
  */
 @Path("api/log")
 public class LogController extends AbstractController {
 
+    private final static int DEFAULT_LINE = 1000;
+
     /**
      * 获取执行日志
      *
-     * @param appName
-     *            appName
-     * @param appToken
-     *            taskId
+     * @param appName    appName
+     * @param appToken   taskId
      * @param user
-     *
-     * @param parameters
-     *            (taskId、offset：日志内容的字节偏移量、lines：日志读取的行数)
-     *
+     * @param parameters (taskId、offset：日志内容的字节偏移量、lines：日志读取的行数)
      * @return
      * @throws Exception
      */
     @POST
-    @Path("executeLog")
+    @Path("readExecuteLog")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult<?> executeLog(@FormParam("appToken") String appToken, @FormParam("appName") String appName, @FormParam("user") String user,
-            @FormParam("parameters") String parameters) {
+    public RestResult<?> readExecuteLog(@FormParam("appToken") String appToken, @FormParam("appName") String appName, @FormParam("user") String user,
+                                    @FormParam("parameters") String parameters) {
 
-        try {
-            AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
-
-            JsonParameters para = new JsonParameters(parameters);
-            Long taskId = para.getLong("taskId");
-            Long offset = para.getLong("offset");
-            Integer lines = para.getInteger("lines");
-
-            RestServerReadLogRequest request = RestServerReadLogRequest.newBuilder().setTaskId(taskId).setType(StreamType.STD_ERR.getValue())
-                    .setOffset(offset).setLines(lines).build();
-
-            LogServerReadLogResponse response = (LogServerReadLogResponse) callActor(AkkaType.LOGSTORAGE, request);
-
-            if (response.getSuccess()) {
-                return successResult();
-            } else {
-                return errorResult("msg");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return errorResult(e.getMessage());
-        }
+        return _getData(StreamType.STD_ERR, appToken, appName, user, parameters);
     }
 
     /**
      * 获取结果数据
      *
-     * @param appName
-     *            appName
+     * @param appName    appName
      * @param appToken
-     *
      * @param user
-     *
-     * @param parameters
-     *            (taskId、offset：日志内容的字节偏移量、lines：日志读取的行数)
-     *
+     * @param parameters (taskId、offset：日志内容的字节偏移量、lines：日志读取的行数)
      * @return
      * @throws Exception
      */
     @POST
-    @Path("result")
+    @Path("readResult")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult<?> result(@FormParam("appToken") String appToken, @FormParam("appName") String appName, @FormParam("user") String user,
-            @FormParam("parameters") String parameters) throws Exception {
+    public RestResult<?> readResult(@FormParam("appToken") String appToken, @FormParam("appName") String appName, @FormParam("user") String user,
+                                @FormParam("parameters") String parameters) throws Exception {
+        return _getData(StreamType.STD_OUT, appToken, appName, user, parameters);
+    }
+
+    /**
+     * 获取数据_内部函数
+     */
+    private RestResult<?> _getData(StreamType type, String appToken, String appName, String user, String parameters) {
+
         try {
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
             JsonParameters para = new JsonParameters(parameters);
-            Long taskId = para.getLong("taskId");
-            Long offset = para.getLong("offset");
-            Integer lines = para.getInteger("lines");
-            Integer type = para.getInteger("type");
+            Long taskId = para.getLongNotNull("taskId");
+            Long offset = para.getLong("offset", 0L);
+            Integer lines = para.getInteger("lines", DEFAULT_LINE);
 
-            RestServerReadLogRequest request = RestServerReadLogRequest.newBuilder().setTaskId(taskId).setType(StreamType.STD_OUT.getValue())
-                    .setOffset(offset).setType(type).setAppAuth(appAuth).setLines(lines).build();
+            RestServerReadLogRequest request = RestServerReadLogRequest.newBuilder().setTaskId(taskId)
+                    .setOffset(offset).setType(type.getValue()).setAppAuth(appAuth).setLines(lines).build();
 
             LogServerReadLogResponse response = (LogServerReadLogResponse) callActor(AkkaType.LOGSTORAGE, request);
 
@@ -118,7 +95,6 @@ public class LogController extends AbstractController {
                 return errorResult(response.getMessage());
             }
         } catch (Exception e) {
-            e.printStackTrace();
             return errorResult(e.getMessage());
         }
     }
