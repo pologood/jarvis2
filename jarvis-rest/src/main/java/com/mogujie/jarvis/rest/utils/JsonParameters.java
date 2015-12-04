@@ -14,7 +14,7 @@ import com.google.gson.reflect.TypeToken;
 
 public class JsonParameters {
 
-    Type mapType = new TypeToken<Map<String, Object>>() {
+    static Type mapType = new TypeToken<Map<String, Object>>() {
     }.getType();
     private static Gson gson = new Gson();
     private Map<String, Object> data;
@@ -31,6 +31,10 @@ public class JsonParameters {
 
     public static <T> T fromJson(String json, Class<T> classOfT) throws JsonSyntaxException {
         return gson.fromJson(json, classOfT);
+    }
+
+    public static Map<String, Object> fromJson2JobParams(String json) throws JsonSyntaxException {
+        return gson.fromJson(json, mapType);
     }
 
     public static String toJson(Object object, Type typeOfSrc) {

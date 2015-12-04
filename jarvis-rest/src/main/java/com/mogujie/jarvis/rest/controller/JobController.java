@@ -7,7 +7,7 @@
  */
 package com.mogujie.jarvis.rest.controller;
 
-import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -16,8 +16,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.rest.utils.ConvertValidUtils;
-import com.mogujie.jarvis.rest.utils.JsonParameters;
 import com.mogujie.jarvis.rest.vo.JobEntryVo;
 import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
@@ -51,12 +51,13 @@ public class JobController extends AbstractController {
         try {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
-            JobEntryVo jobVo = JsonParameters.fromJson(parameters, JobEntryVo.class);
+            JobEntryVo jobVo = JsonHelper.fromJson(parameters, JobEntryVo.class);
             // parameters处理
             String jobParameters = "";
             if (jobVo.getParams() != null) {
-                jobParameters = JsonParameters.toJson(jobVo.getParams(), List.class);
+                jobParameters = JsonHelper.toJson(jobVo.getParams(), Map.class);
             }
+
             // 构造新增任务请求
             RestSubmitJobRequest.Builder builder = RestSubmitJobRequest.newBuilder().setAppAuth(appAuth).setUser(user).setJobName(jobVo.getJobName())
                     .setJobType(jobVo.getJobType()).setJobFlag(jobVo.getJobFlag()).setContent(jobVo.getContent()).setParameters(jobParameters)
@@ -107,12 +108,12 @@ public class JobController extends AbstractController {
         try {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
-            JobEntryVo jobVo = JsonParameters.fromJson(parameters, JobEntryVo.class);
+            JobEntryVo jobVo = JsonHelper.fromJson(parameters, JobEntryVo.class);
 
             // JobParameters处理
             String jobParameters = "";
             if (jobVo.getParams() != null) {
-                jobParameters = JsonParameters.toJson(jobVo.getParams(), List.class);
+                jobParameters = JsonHelper.toJson(jobVo.getParams(), Map.class);
             }
 
             // 构造修改job基本信息请求

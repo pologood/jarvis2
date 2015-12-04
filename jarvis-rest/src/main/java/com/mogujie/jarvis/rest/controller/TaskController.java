@@ -9,6 +9,7 @@
 package com.mogujie.jarvis.rest.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
@@ -16,6 +17,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import com.mogujie.jarvis.core.util.JsonHelper;
 import org.json.JSONObject;
 
 import com.mogujie.jarvis.core.domain.AkkaType;
@@ -30,7 +32,6 @@ import com.mogujie.jarvis.protocol.RetryTaskProtos.ServerRetryTaskResponse;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse;
 import com.mogujie.jarvis.rest.RestResult;
-import com.mogujie.jarvis.rest.utils.JsonParameters;
 import com.mogujie.jarvis.rest.vo.RerunTaskVo;
 import com.mogujie.jarvis.rest.vo.TaskEntryVo;
 import com.mogujie.jarvis.rest.vo.TaskVo;
@@ -102,7 +103,7 @@ public class TaskController extends AbstractController {
         try {
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
-            RerunTaskVo rerunVo = JsonParameters.fromJson(parameters, RerunTaskVo.class);
+            RerunTaskVo rerunVo = JsonHelper.fromJson(parameters, RerunTaskVo.class);
             List<Long> jobIdList = rerunVo.getJobIdList();
             long startDate = rerunVo.getStartDate();
             long endDate = rerunVo.getEndDate();
@@ -135,10 +136,10 @@ public class TaskController extends AbstractController {
         try {
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
-            TaskEntryVo taskVo = JsonParameters.fromJson(parameters, TaskEntryVo.class);
+            TaskEntryVo taskVo = JsonHelper.fromJson(parameters, TaskEntryVo.class);
             String jobParameters = "";
             if (taskVo.getParams() != null) {
-                jobParameters = JsonParameters.toJson(taskVo.getParams(), List.class);
+                jobParameters = JsonHelper.toJson(taskVo.getParams(), Map.class);
             }
             RestServerSubmitTaskRequest request = RestServerSubmitTaskRequest.newBuilder().setAppAuth(appAuth).setTaskName(taskVo.getTaskName())
                     .setContent(taskVo.getContent()).setTaskType(taskVo.getTaskType()).setUser(taskVo.getUser()).setGroupId(taskVo.getGroupId())

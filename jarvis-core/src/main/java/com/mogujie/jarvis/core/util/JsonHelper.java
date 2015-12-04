@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.google.gson.reflect.TypeToken;
 import org.json.JSONObject;
 
 import com.google.gson.Gson;
@@ -27,6 +28,9 @@ import com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry;
 public class JsonHelper {
 
     private static Gson gson = new Gson();
+
+    static Type mapType = new TypeToken<Map<String, Object>>() {
+    }.getType();
 
     public static String parseMap2JSON(Map<String, String> map) {
         JSONObject jsonObject = new JSONObject(map);
@@ -52,6 +56,12 @@ public class JsonHelper {
         }
         JSONObject jsonObject = new JSONObject(jsonMap);
         return jsonObject.toString();
+    }
+
+    public static Map<String, Object> fromJson2JobParams(String json) throws JsonSyntaxException {
+        if(json == null || json.equals(""))
+            return null;
+        return gson.fromJson(json, mapType);
     }
 
     public static <T> T fromJson(String json, Class<T> classOfT) throws JsonSyntaxException {

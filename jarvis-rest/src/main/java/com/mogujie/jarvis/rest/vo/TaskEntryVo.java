@@ -8,7 +8,7 @@
 
 package com.mogujie.jarvis.rest.vo;
 
-import java.util.List;
+import java.util.Map;
 
 /**
  * @author guangming
@@ -25,7 +25,7 @@ public class TaskEntryVo {
     private Integer rejectInterval;
     private Integer failedRetries;
     private Integer failedInterval;
-    private List<ParameterEntity> params;
+    private Map<String,Object> params;
 
     public String getTaskName() {
         return taskName;
@@ -107,14 +107,12 @@ public class TaskEntryVo {
         this.failedInterval = failedInterval;
     }
 
-    public List<ParameterEntity> getParams() {
+    public Map<String,Object> getParams() {
         return params;
     }
-
-    public void setParams(List<ParameterEntity> params) {
+    public void setParams(Map<String,Object> params) {
         this.params = params;
     }
-
     public Integer getPriority(Integer defaultValue) {
         return (priority != null) ? priority : defaultValue;
     }

@@ -275,8 +275,7 @@ public class TaskScheduler extends Scheduler {
         Job job = jobService.get(jobId).getJob();
         taskDetail = TaskDetail.newTaskDetailBuilder().setFullId(fullId).setTaskName(job.getJobName()).setAppName(jobService.getAppName(jobId))
                 .setUser(job.getSubmitUser()).setPriority(job.getPriority()).setContent(job.getContent()).setTaskType(job.getJobType())
-                .setParameters(JsonHelper.parseJSON2Map(job.getParams())).setSchedulingTime(dagTask.getScheduleTime()).build();
-
+                .setParameters(JsonHelper.fromJson2JobParams(job.getParams())).setSchedulingTime(dagTask.getScheduleTime()).build();
         return taskDetail;
     }
 

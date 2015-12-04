@@ -270,7 +270,7 @@ public class TaskActor extends UntypedActor {
                 .setFailedRetries(request.getFailedRetries())
                 .setFailedInterval(request.getFailedInterval())
                 .setSchedulingTime(DateTime.now().getMillis() / 1000)
-                .setParameters(JsonHelper.parseJSON2Map(request.getParameters()));
+                .setParameters(JsonHelper.fromJson2JobParams(request.getParameters()));
 
         return builder.build();
     }

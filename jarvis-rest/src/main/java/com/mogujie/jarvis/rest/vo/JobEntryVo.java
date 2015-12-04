@@ -1,6 +1,7 @@
 package com.mogujie.jarvis.rest.vo;
 
 import java.util.List;
+import java.util.Map;
 
 import com.mogujie.jarvis.core.domain.OperationMode;
 
@@ -15,7 +16,7 @@ public class JobEntryVo extends  AbstractVo{
     private String jobType;
     private Integer jobFlag;
     private String content;
-    private List<ParameterEntity> params;
+    private Map<String,Object> params;
     private String appName;
     private Integer workerGroupId;
     private Integer priority;
@@ -132,10 +133,10 @@ public class JobEntryVo extends  AbstractVo{
     public void setContent(String content) {
         this.content = content;
     }
-    public List<ParameterEntity> getParams() {
+    public Map<String,Object> getParams() {
         return params;
     }
-    public void setParams(List<ParameterEntity> params) {
+    public void setParams(Map<String,Object> params) {
         this.params = params;
     }
     public String getAppName() {

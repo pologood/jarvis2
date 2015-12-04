@@ -2,7 +2,10 @@ package com.mogujie.jarvis.rest;
 
 import java.lang.reflect.Type;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
+import com.mogujie.jarvis.rest.utils.JsonParameters;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -52,6 +55,22 @@ public class TestRestJob {
         dependencyEntry2.setCommonStrategy(CommonStrategy.ALL.getValue());
         dependencyEntry2.setOffsetStrategy("cd");
         job.setDependencyList(Arrays.asList(dependencyEntry1, dependencyEntry2));
+
+
+        //任务参数
+        Map<String,Object> jobPrams = new HashMap<>();
+        jobPrams.put("name","muming");
+        jobPrams.put("age", 18);
+        jobPrams.put("isMail", false);
+        job.setParams(jobPrams);
+//        job.setParams(Arrays.asList());
+
+        String a = JsonParameters.toJson(jobPrams, Map.class);
+
+
+        Map<String,Object> mapA = JsonParameters.fromJson2JobParams(a);
+
+
 
         // 任务参数
         String paramsJson = JsonHelper.toJson(job, JobEntryVo.class);
