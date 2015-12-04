@@ -28,63 +28,62 @@ import com.mogujie.jarvis.worker.strategy.AcceptanceStrategy;
 
 public class TaskConfigUtils {
 
-  private static XMLConfiguration config;
+    private static XMLConfiguration config;
 
-  static {
-    try {
-      config = new XMLConfiguration("job.xml");
-    } catch (ConfigurationException e) {
-      Throwables.propagate(e);
+    static {
+        try {
+            config = new XMLConfiguration("job.xml");
+        } catch (ConfigurationException e) {
+            Throwables.propagate(e);
+        }
     }
-  }
 
-  public static Set<String> getJobStrategies() {
-    Set<String> set = new HashSet<String>();
-    List<Object> lists = config.configurationAt(".strategies").getList("strategy");
-    for (Object object : lists) {
-      set.add(object.toString());
+    public static Set<String> getJobStrategies() {
+        Set<String> set = new HashSet<>();
+        List<Object> lists = config.configurationAt(".strategies").getList("strategy");
+        for (Object object : lists) {
+            set.add(object.toString());
+        }
+        return set;
     }
-    return set;
-  }
 
-  @SuppressWarnings("unchecked")
-  public static Map<String, Tuple2<Class<? extends AbstractTask>, List<AcceptanceStrategy>>> getRegisteredJobs() {
-    Map<String, Tuple2<Class<? extends AbstractTask>, List<AcceptanceStrategy>>> map = new HashMap<String, Tuple2<Class<? extends AbstractTask>, List<AcceptanceStrategy>>>();
+    @SuppressWarnings("unchecked")
+    public static Map<String, Tuple2<Class<? extends AbstractTask>, List<AcceptanceStrategy>>> getRegisteredJobs() {
+        Map<String, Tuple2<Class<? extends AbstractTask>, List<AcceptanceStrategy>>> map = new HashMap<>();
 
-    try {
-      Set<String> commonStrategyNames = getJobStrategies();
-      List<AcceptanceStrategy> commonAcceptStrategies = new ArrayList<AcceptanceStrategy>();
-      for (String commonStrategyName : commonStrategyNames) {
-        AcceptanceStrategy acceptStrategy = ReflectionUtils.getInstanceByClassName(commonStrategyName);
-        commonAcceptStrategies.add(acceptStrategy);
-      }
+        try {
+            Set<String> commonStrategyNames = getJobStrategies();
+            List<AcceptanceStrategy> commonAcceptStrategies = new ArrayList<>();
+            for (String commonStrategyName : commonStrategyNames) {
+                AcceptanceStrategy acceptStrategy = ReflectionUtils.getInstanceByClassName(commonStrategyName);
+                commonAcceptStrategies.add(acceptStrategy);
+            }
 
-      List<HierarchicalConfiguration> jobs = config.configurationsAt(".jobs.job");
-      for (HierarchicalConfiguration jobConf : jobs) {
-        String type = jobConf.getString("[@type]");
-        String clazz = jobConf.getString("[@class]");
+            List<HierarchicalConfiguration> jobs = config.configurationsAt(".jobs.job");
+            for (HierarchicalConfiguration jobConf : jobs) {
+                String type = jobConf.getString("[@type]");
+                String clazz = jobConf.getString("[@class]");
 
-        List<AcceptanceStrategy> acceptStrategies = new ArrayList<AcceptanceStrategy>(
-            commonAcceptStrategies);
-        List<HierarchicalConfiguration> strategies = jobConf
-            .configurationsAt(".strategies.strategy");
-        for (HierarchicalConfiguration strategyConf : strategies) {
-          String strategyName = strategyConf.getRootNode().getValue().toString();
-          if (!commonStrategyNames.contains(strategyName)) {
-            AcceptanceStrategy acceptStrategy = ReflectionUtils.getInstanceByClassName(strategyName);
-            acceptStrategies.add(acceptStrategy);
-          }
+                List<AcceptanceStrategy> acceptStrategies = new ArrayList<AcceptanceStrategy>(
+                        commonAcceptStrategies);
+                List<HierarchicalConfiguration> strategies = jobConf
+                        .configurationsAt(".strategies.strategy");
+                for (HierarchicalConfiguration strategyConf : strategies) {
+                    String strategyName = strategyConf.getRootNode().getValue().toString();
+                    if (!commonStrategyNames.contains(strategyName)) {
+                        AcceptanceStrategy acceptStrategy = ReflectionUtils.getInstanceByClassName(strategyName);
+                        acceptStrategies.add(acceptStrategy);
+                    }
+                }
+
+                Class<? extends AbstractTask> jobClass = (Class<? extends AbstractTask>) Class.forName(clazz);
+                Tuple2<Class<? extends AbstractTask>, List<AcceptanceStrategy>> t2 = new Tuple2<>(jobClass, acceptStrategies);
+                map.put(type, t2);
+            }
+        } catch (Exception e) {
+            Throwables.propagate(e);
         }
 
-        Class<? extends AbstractTask> jobClass = (Class<? extends AbstractTask>) Class.forName(clazz);
-        Tuple2<Class<? extends AbstractTask>, List<AcceptanceStrategy>> t2 = new Tuple2<Class<? extends AbstractTask>, List<AcceptanceStrategy>>(
-            jobClass, acceptStrategies);
-        map.put(type, t2);
-      }
-    } catch (Exception e) {
-      Throwables.propagate(e);
+        return map;
     }
-
-    return map;
-  }
 }
