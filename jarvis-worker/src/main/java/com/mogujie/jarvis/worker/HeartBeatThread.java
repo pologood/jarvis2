@@ -21,6 +21,7 @@ public class HeartBeatThread extends Thread {
 
   private ActorSelection heartBeatActor;
   private ActorRef sender;
+  private TaskPool taskPool = TaskPool.INSTANCE;
 
   public HeartBeatThread(ActorSelection heartBeatActor, ActorRef sender) {
     this.heartBeatActor = heartBeatActor;
@@ -29,7 +30,7 @@ public class HeartBeatThread extends Thread {
 
   @Override
   public void run() {
-    int jobNum = TaskPool.getInstance().size();
+    int jobNum = taskPool.size();
     HeartBeatRequest request = HeartBeatRequest.newBuilder().setJobNum(jobNum).build();
     heartBeatActor.tell(request, sender);
   }

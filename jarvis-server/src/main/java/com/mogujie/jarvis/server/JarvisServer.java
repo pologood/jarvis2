@@ -65,7 +65,7 @@ public class JarvisServer {
         ActorSystem system = JarvisServerActorSystem.getInstance();
         SpringExtension.SPRING_EXT_PROVIDER.get(system).initialize(context);
 
-        system.actorOf(new SmallestMailboxPool(100).props(ServerActor.props()), JarvisConstants.SERVER_AKKA_SYSTEM_NAME);
+        system.actorOf(new SmallestMailboxPool(500).props(ServerActor.props()), JarvisConstants.SERVER_AKKA_SYSTEM_NAME);
 
         int taskDispatcherThreads = 5;
         ExecutorService executorService = Executors.newFixedThreadPool(taskDispatcherThreads);

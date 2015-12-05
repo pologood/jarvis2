@@ -23,10 +23,6 @@ public enum TaskPool {
 
   private Map<String, AbstractTask> pool = Maps.newConcurrentMap();
 
-  public static final TaskPool getInstance() {
-    return INSTANCE;
-  }
-
   public void add(String fullId, AbstractTask task) {
     pool.put(fullId, task);
   }

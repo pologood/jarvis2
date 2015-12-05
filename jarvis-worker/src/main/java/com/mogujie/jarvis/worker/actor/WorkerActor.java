@@ -17,15 +17,11 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import org.apache.commons.configuration.Configuration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import scala.Tuple2;
-import akka.actor.ActorSelection;
-import akka.actor.Props;
-import akka.actor.UntypedActor;
 
 import com.mogujie.jarvis.core.AbstractLogCollector;
 import com.mogujie.jarvis.core.DefaultLogCollector;
@@ -56,6 +52,11 @@ import com.mogujie.jarvis.worker.strategy.AcceptanceResult;
 import com.mogujie.jarvis.worker.strategy.AcceptanceStrategy;
 import com.mogujie.jarvis.worker.util.FutureUtils;
 import com.mogujie.jarvis.worker.util.TaskConfigUtils;
+
+import akka.actor.ActorSelection;
+import akka.actor.Props;
+import akka.actor.UntypedActor;
+import scala.Tuple2;
 
 public class WorkerActor extends UntypedActor {
 
@@ -133,18 +134,19 @@ public class WorkerActor extends UntypedActor {
       try {
         AcceptanceResult result = strategy.accept();
         if (!result.isAccepted()) {
-          getSender().tell(WorkerSubmitTaskResponse.newBuilder().setAccept(false)
-                  .setSuccess(true).setMessage(result.getMessage()).build(), getSelf());
+          getSender().tell(WorkerSubmitTaskResponse.newBuilder().setAccept(false).setSuccess(true)
+              .setMessage(result.getMessage()).build(), getSelf());
           return;
         }
       } catch (AcceptanceException e) {
-        getSender().tell(WorkerSubmitTaskResponse.newBuilder().setAccept(false)
-                .setSuccess(false).setMessage(e.getMessage()).build(), getSelf());
+        getSender().tell(WorkerSubmitTaskResponse.newBuilder().setAccept(false).setSuccess(false)
+            .setMessage(e.getMessage()).build(), getSelf());
         return;
       }
     }
 
-    getSender().tell(WorkerSubmitTaskResponse.newBuilder().setAccept(true).setSuccess(true).build(), getSelf());
+    getSender().tell(WorkerSubmitTaskResponse.newBuilder().setAccept(true).setSuccess(true).build(),
+        getSelf());
     try {
       Constructor<? extends AbstractTask> constructor = t2._1().getConstructor(TaskContext.class);
       AbstractTask job = constructor.newInstance(contextBuilder.build());
@@ -154,7 +156,7 @@ public class WorkerActor extends UntypedActor {
           .build(), getSelf());
       reporter.report(0);
       Callable<Boolean> task = new TaskCallable(job);
-      java.util.concurrent.Future<Boolean> future = executorService.submit(task);
+      Future<Boolean> future = executorService.submit(task);
       boolean result = false;
       try {
         result = future.get();

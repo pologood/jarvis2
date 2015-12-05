@@ -25,7 +25,7 @@ public class TaskNumAcceptanceStrategy implements AcceptanceStrategy {
 
   @Override
   public AcceptanceResult accept() throws AcceptanceException {
-    int currentJobNum = TaskPool.getInstance().size();
+    int currentJobNum = TaskPool.INSTANCE.size();
     if (currentJobNum > JOB_MAX_THRESHOLD) {
       return new AcceptanceResult(false,
           "client当前运行任务数" + currentJobNum + ", 超过阈值" + JOB_MAX_THRESHOLD);
