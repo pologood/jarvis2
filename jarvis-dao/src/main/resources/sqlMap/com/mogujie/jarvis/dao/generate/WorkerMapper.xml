@@ -3,9 +3,9 @@
 <mapper namespace="com.mogujie.jarvis.dao.generate.WorkerMapper" >
   <resultMap id="BaseResultMap" type="com.mogujie.jarvis.dto.generate.Worker" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="workerGroupId" property="workerGroupId" jdbcType="INTEGER" />
     <result column="ip" property="ip" jdbcType="CHAR" />
     <result column="port" property="port" jdbcType="INTEGER" />
+    <result column="workerGroupId" property="workerGroupId" jdbcType="INTEGER" />
     <result column="status" property="status" jdbcType="INTEGER" />
     <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
     <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
@@ -69,7 +69,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, workerGroupId, ip, port, status, createTime, updateTime
+    id, ip, port, workerGroupId, status, createTime, updateTime
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.mogujie.jarvis.dto.generate.WorkerExample" >
     select
@@ -105,10 +105,10 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into worker (workerGroupId, ip, port, 
+    insert into worker (ip, port, workerGroupId, 
       status, createTime, updateTime
       )
-    values (#{workerGroupId,jdbcType=INTEGER}, #{ip,jdbcType=CHAR}, #{port,jdbcType=INTEGER}, 
+    values (#{ip,jdbcType=CHAR}, #{port,jdbcType=INTEGER}, #{workerGroupId,jdbcType=INTEGER}, 
       #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
       )
   </insert>
@@ -118,14 +118,14 @@
     </selectKey>
     insert into worker
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="workerGroupId != null" >
-        workerGroupId,
-      </if>
       <if test="ip != null" >
         ip,
       </if>
       <if test="port != null" >
         port,
+      </if>
+      <if test="workerGroupId != null" >
+        workerGroupId,
       </if>
       <if test="status != null" >
         status,
@@ -138,14 +138,14 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="workerGroupId != null" >
-        #{workerGroupId,jdbcType=INTEGER},
-      </if>
       <if test="ip != null" >
         #{ip,jdbcType=CHAR},
       </if>
       <if test="port != null" >
         #{port,jdbcType=INTEGER},
+      </if>
+      <if test="workerGroupId != null" >
+        #{workerGroupId,jdbcType=INTEGER},
       </if>
       <if test="status != null" >
         #{status,jdbcType=INTEGER},
@@ -170,14 +170,14 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.workerGroupId != null" >
-        workerGroupId = #{record.workerGroupId,jdbcType=INTEGER},
-      </if>
       <if test="record.ip != null" >
         ip = #{record.ip,jdbcType=CHAR},
       </if>
       <if test="record.port != null" >
         port = #{record.port,jdbcType=INTEGER},
+      </if>
+      <if test="record.workerGroupId != null" >
+        workerGroupId = #{record.workerGroupId,jdbcType=INTEGER},
       </if>
       <if test="record.status != null" >
         status = #{record.status,jdbcType=INTEGER},
@@ -196,9 +196,9 @@
   <update id="updateByExample" parameterType="map" >
     update worker
     set id = #{record.id,jdbcType=INTEGER},
-      workerGroupId = #{record.workerGroupId,jdbcType=INTEGER},
       ip = #{record.ip,jdbcType=CHAR},
       port = #{record.port,jdbcType=INTEGER},
+      workerGroupId = #{record.workerGroupId,jdbcType=INTEGER},
       status = #{record.status,jdbcType=INTEGER},
       createTime = #{record.createTime,jdbcType=TIMESTAMP},
       updateTime = #{record.updateTime,jdbcType=TIMESTAMP}
@@ -209,14 +209,14 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.mogujie.jarvis.dto.generate.Worker" >
     update worker
     <set >
-      <if test="workerGroupId != null" >
-        workerGroupId = #{workerGroupId,jdbcType=INTEGER},
-      </if>
       <if test="ip != null" >
         ip = #{ip,jdbcType=CHAR},
       </if>
       <if test="port != null" >
         port = #{port,jdbcType=INTEGER},
+      </if>
+      <if test="workerGroupId != null" >
+        workerGroupId = #{workerGroupId,jdbcType=INTEGER},
       </if>
       <if test="status != null" >
         status = #{status,jdbcType=INTEGER},
@@ -232,9 +232,9 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.mogujie.jarvis.dto.generate.Worker" >
     update worker
-    set workerGroupId = #{workerGroupId,jdbcType=INTEGER},
-      ip = #{ip,jdbcType=CHAR},
+    set ip = #{ip,jdbcType=CHAR},
       port = #{port,jdbcType=INTEGER},
+      workerGroupId = #{workerGroupId,jdbcType=INTEGER},
       status = #{status,jdbcType=INTEGER},
       createTime = #{createTime,jdbcType=TIMESTAMP},
       updateTime = #{updateTime,jdbcType=TIMESTAMP}

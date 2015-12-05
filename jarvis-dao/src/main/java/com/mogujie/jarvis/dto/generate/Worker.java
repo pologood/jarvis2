@@ -6,11 +6,11 @@ import java.util.Date;
 public class Worker implements Serializable {
     private Integer id;
 
-    private Integer workerGroupId;
-
     private String ip;
 
     private Integer port;
+
+    private Integer workerGroupId;
 
     private Integer status;
 
@@ -28,14 +28,6 @@ public class Worker implements Serializable {
         this.id = id;
     }
 
-    public Integer getWorkerGroupId() {
-        return workerGroupId;
-    }
-
-    public void setWorkerGroupId(Integer workerGroupId) {
-        this.workerGroupId = workerGroupId;
-    }
-
     public String getIp() {
         return ip;
     }
@@ -50,6 +42,14 @@ public class Worker implements Serializable {
 
     public void setPort(Integer port) {
         this.port = port;
+    }
+
+    public Integer getWorkerGroupId() {
+        return workerGroupId;
+    }
+
+    public void setWorkerGroupId(Integer workerGroupId) {
+        this.workerGroupId = workerGroupId;
     }
 
     public Integer getStatus() {

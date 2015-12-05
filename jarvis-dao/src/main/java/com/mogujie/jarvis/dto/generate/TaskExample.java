@@ -605,6 +605,66 @@ public class TaskExample {
             return (Criteria) this;
         }
 
+        public Criteria andAppIdIsNull() {
+            addCriterion("appId is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppIdIsNotNull() {
+            addCriterion("appId is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppIdEqualTo(Integer value) {
+            addCriterion("appId =", value, "appId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppIdNotEqualTo(Integer value) {
+            addCriterion("appId <>", value, "appId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppIdGreaterThan(Integer value) {
+            addCriterion("appId >", value, "appId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("appId >=", value, "appId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppIdLessThan(Integer value) {
+            addCriterion("appId <", value, "appId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppIdLessThanOrEqualTo(Integer value) {
+            addCriterion("appId <=", value, "appId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppIdIn(List<Integer> values) {
+            addCriterion("appId in", values, "appId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppIdNotIn(List<Integer> values) {
+            addCriterion("appId not in", values, "appId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppIdBetween(Integer value1, Integer value2) {
+            addCriterion("appId between", value1, value2, "appId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAppIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("appId not between", value1, value2, "appId");
+            return (Criteria) this;
+        }
+
         public Criteria andWorkerIdIsNull() {
             addCriterion("workerId is null");
             return (Criteria) this;

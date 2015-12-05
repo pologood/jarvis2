@@ -20,6 +20,8 @@ public class Task implements Serializable {
 
     private Integer status;
 
+    private Integer appId;
+
     private Integer workerId;
 
     private String executeUser;
@@ -98,6 +100,14 @@ public class Task implements Serializable {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Integer getAppId() {
+        return appId;
+    }
+
+    public void setAppId(Integer appId) {
+        this.appId = appId;
     }
 
     public Integer getWorkerId() {
