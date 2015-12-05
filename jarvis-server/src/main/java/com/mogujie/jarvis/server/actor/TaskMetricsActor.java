@@ -15,6 +15,7 @@ import javax.inject.Named;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 
+import akka.actor.Address;
 import akka.actor.UntypedActor;
 
 import com.mogujie.jarvis.core.domain.ActorEntry;
@@ -34,6 +35,7 @@ import com.mogujie.jarvis.server.scheduler.event.RunningEvent;
 import com.mogujie.jarvis.server.scheduler.event.SuccessEvent;
 import com.mogujie.jarvis.server.scheduler.event.UnhandleEvent;
 import com.mogujie.jarvis.server.service.TaskService;
+import com.mogujie.jarvis.server.service.WorkerService;
 
 /**
  * Actor used to receive task metrics information (e.g. status, process) 1. send task status to
@@ -51,6 +53,9 @@ public class TaskMetricsActor extends UntypedActor {
     @Autowired
     private TaskService taskService;
 
+    @Autowired
+    private WorkerService workerService;
+
     @Override
     public void onReceive(Object obj) throws Exception {
         if (obj instanceof WorkerReportTaskStatusRequest) {
@@ -58,7 +63,6 @@ public class TaskMetricsActor extends UntypedActor {
             String fullId = msg.getFullId();
             long jobId = IdUtils.parse(fullId, IdType.JOB_ID);
             long taskId = IdUtils.parse(fullId, IdType.TASK_ID);
-
             TaskStatus status = TaskStatus.getInstance(msg.getStatus());
             Event event = new UnhandleEvent();
             if (status.equals(TaskStatus.SUCCESS)) {
@@ -66,7 +70,11 @@ public class TaskMetricsActor extends UntypedActor {
             } else if (status.equals(TaskStatus.FAILED)) {
                 event = new FailedEvent(jobId, taskId);
             } else if (status.equals(TaskStatus.RUNNING)) {
-                event = new RunningEvent(jobId, taskId);
+                Address address = getSender().path().address();
+                String ip = address.host().get();
+                int port = Integer.parseInt(address.port().get().toString());
+                int workerId = workerService.getWorkerId(ip, port);
+                event = new RunningEvent(jobId, taskId, workerId);
             } else if (status.equals(TaskStatus.KILLED)) {
                 event = new KilledEvent(jobId, taskId);
             }

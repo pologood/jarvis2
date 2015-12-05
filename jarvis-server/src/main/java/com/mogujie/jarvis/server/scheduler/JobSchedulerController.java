@@ -17,6 +17,8 @@ import org.apache.logging.log4j.Logger;
 
 import com.google.common.eventbus.AsyncEventBus;
 import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.SubscriberExceptionContext;
+import com.google.common.eventbus.SubscriberExceptionHandler;
 import com.mogujie.jarvis.core.observer.Event;
 import com.mogujie.jarvis.core.observer.Observable;
 import com.mogujie.jarvis.core.observer.Observer;
@@ -39,13 +41,14 @@ public class JobSchedulerController implements Observable {
     protected EventBus eventBus;
 
     private JobSchedulerController() {
+        SubscriberExceptionHandler subscriberExceptionHandler = new JarvisSubscriberExceptionHandler();
         Configuration conf = ConfigUtils.getServerConfig();
         String type = conf.getString(SCHEDULER_CONTROLLER_TYPE, SCHEDULER_CONTROLLER_TYPE_ASYNC);
         if (type.equalsIgnoreCase(SCHEDULER_CONTROLLER_TYPE_SYNC)) {
-            eventBus = new EventBus("SyncJobSchedulerController");
+            eventBus = new EventBus(subscriberExceptionHandler);
         } else {
             ExecutorService executorService = Executors.newCachedThreadPool();
-            eventBus = new AsyncEventBus(executorService);
+            eventBus = new AsyncEventBus(executorService,subscriberExceptionHandler);
         }
     }
 
@@ -78,6 +81,14 @@ public class JobSchedulerController implements Observable {
     @Override
     public void notify(Event event) {
         eventBus.post(event);
+    }
+
+    static class JarvisSubscriberExceptionHandler implements SubscriberExceptionHandler {
+
+        @Override
+        public void handleException(Throwable t, SubscriberExceptionContext context) {
+            LOGGER.error("handle error: " + context.getEvent(), t);
+        }
     }
 
 }

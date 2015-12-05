@@ -45,26 +45,25 @@ public class TaskService {
         return record.getTaskId();
     }
 
-    public void update(Task record) {
-        taskMapper.updateByPrimaryKey(record);
+    public void updateSelective(Task record) {
+        taskMapper.updateByPrimaryKeySelective(record);
     }
 
     public void updateProgress(long taskId, float progress) {
-        Task record = taskMapper.selectByPrimaryKey(taskId);
-        if (record != null) {
-            record.setProgress(progress);
-            record.setUpdateTime(new Date());
-            taskMapper.updateByPrimaryKey(record);
-        }
+        Task record = new Task();
+        record.setTaskId(taskId);
+        record.setProgress(progress);
+        record.setUpdateTime(new Date());
+        taskMapper.updateByPrimaryKeySelective(record);
     }
 
     public void updateWorkerId(long taskId, int workerId) {
-        Task record = taskMapper.selectByPrimaryKey(taskId);
-        if (record != null) {
-            record.setWorkerId(workerId);
-            record.setUpdateTime(new Date());
-            taskMapper.updateByPrimaryKey(record);
-        }
+        Task task = new Task();
+        task.setTaskId(taskId);
+        task.setWorkerId(workerId);
+        task.setUpdateTime(new Date());
+        taskMapper.updateByPrimaryKeySelective(task);
+        System.out.println(DateTime.now()+"\t"+task);
     }
 
     public List<Task> getTasks(List<Long> taskIds) {
@@ -91,6 +90,7 @@ public class TaskService {
         record.setExecuteUser(job.getSubmitUser());
         record.setContent(job.getContent());
         record.setParams(job.getParams());
+        record.setAppId(job.getAppId());
         taskMapper.insert(record);
         return record.getTaskId();
     }
@@ -120,24 +120,29 @@ public class TaskService {
         return taskIdList;
     }
 
-    public void updateStatusWithStart(long taskId, TaskStatus status) {
-        Task task = taskMapper.selectByPrimaryKey(taskId);
+    public void updateStatusWithStart(long taskId, TaskStatus status, int workerId) {
+        Task task = new Task();
+        task.setTaskId(taskId);
         task.setStatus(status.getValue());
         DateTime dt = DateTime.now();
         Date currentTime = dt.toDate();
         task.setExecuteStartTime(currentTime);
         task.setUpdateTime(currentTime);
-        taskMapper.updateByPrimaryKey(task);
+        task.setWorkerId(workerId);
+        taskMapper.updateByPrimaryKeySelective(task);
+        System.out.println(DateTime.now()+"\t"+task);
     }
 
     public void updateStatusWithEnd(long taskId, TaskStatus status) {
-        Task task = taskMapper.selectByPrimaryKey(taskId);
+        Task task = new Task();
+        task.setTaskId(taskId);
         task.setStatus(status.getValue());
         DateTime dt = DateTime.now();
         Date currentTime = dt.toDate();
         task.setExecuteEndTime(currentTime);
         task.setUpdateTime(currentTime);
-        taskMapper.updateByPrimaryKey(task);
+        taskMapper.updateByPrimaryKeySelective(task);
+        System.out.println(DateTime.now()+"\t"+task);
     }
 
     public void updateStatus(long taskId, TaskStatus status) {
@@ -175,9 +180,7 @@ public class TaskService {
             return null;
         }
         TaskExample example = new TaskExample();
-        example.createCriteria().andJobIdEqualTo(jobId)
-                .andScheduleTimeBetween(start.toDate(), end.toDate())
-                .andJobIdNotEqualTo(0L);
+        example.createCriteria().andJobIdEqualTo(jobId).andScheduleTimeBetween(start.toDate(), end.toDate()).andJobIdNotEqualTo(0L);
         return taskMapper.selectByExample(example);
     }
 
@@ -202,10 +205,7 @@ public class TaskService {
             return 0;
         }
         TaskExample example = new TaskExample();
-        example.createCriteria()
-            .andJobIdEqualTo(jobId)
-            .andScheduleTimeLessThan(new DateTime(scheduleTime * 1000L).toDate())
-            .andJobIdNotEqualTo(0L);
+        example.createCriteria().andJobIdEqualTo(jobId).andScheduleTimeLessThan(new DateTime(scheduleTime * 1000L).toDate()).andJobIdNotEqualTo(0L);
         example.setOrderByClause("taskId desc");
         List<Task> tasks = taskMapper.selectByExample(example);
         if (tasks == null || tasks.isEmpty()) {

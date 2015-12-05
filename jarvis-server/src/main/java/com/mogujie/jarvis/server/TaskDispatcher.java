@@ -19,10 +19,8 @@ import org.springframework.stereotype.Repository;
 import akka.actor.ActorSelection;
 import akka.actor.ActorSystem;
 
-import com.mogujie.jarvis.core.domain.IdType;
 import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.domain.WorkerInfo;
-import com.mogujie.jarvis.core.util.IdUtils;
 import com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskRequest;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse;
@@ -119,10 +117,6 @@ public class TaskDispatcher extends Thread {
                                     String ip = workerInfo.getIp();
                                     int port = workerInfo.getPort();
                                     if (response.getAccept()) {
-                                        // update workerId of task
-                                        int workerId = workerService.getWorkerId(ip, port);
-                                        long taskId = IdUtils.parse(fullId, IdType.TASK_ID);
-                                        taskService.updateWorkerId(taskId, workerId);
                                         LOGGER.debug("Task[{}] was accepted by worker[{}:{}]", fullId, ip, port);
                                         continue;
                                     } else {

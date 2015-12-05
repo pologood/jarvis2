@@ -38,9 +38,11 @@ public class ConvertValidService {
     @Autowired
     private AppService appService;
 
-    @Autowired JobService jobService;
+    @Autowired
+    private JobService jobService;
 
-    @Autowired IDService idService;
+    @Autowired
+    private IDService idService;
 
     public Job convert2Job(RestSubmitJobRequest msg) {
         Job job = new Job();
@@ -190,6 +192,8 @@ public class ConvertValidService {
         task.setUpdateTime(now);
         task.setParams(msg.getParameters());
         task.setStatus(TaskStatus.WAITING.getValue());
+        int appId = appService.getAppIdByName(msg.getAppAuth().getName());
+        task.setAppId(appId);
         return task;
     }
 

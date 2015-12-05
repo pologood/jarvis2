@@ -13,13 +13,24 @@ package com.mogujie.jarvis.server.scheduler.event;
  *
  */
 public class RunningEvent extends DAGTaskEvent {
+    private int workerId;
 
     /**
      * @param jobId
      * @param taskId
+     * @param workerId
      */
-    public RunningEvent(long jobId, long taskId) {
+    public RunningEvent(long jobId, long taskId, int workerId) {
         super(jobId, taskId);
+        this.workerId = workerId;
+    }
+
+    public int getWorkerId() {
+        return workerId;
+    }
+
+    public void setWorkerId(int workerId) {
+        this.workerId = workerId;
     }
 
 }
