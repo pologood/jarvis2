@@ -1,9 +1,7 @@
 /*
- * 蘑菇街 Inc.
- * Copyright (c) 2010-2015 All Rights Reserved.
+ * 蘑菇街 Inc. Copyright (c) 2010-2015 All Rights Reserved.
  *
- * Author: wuya
- * Create Date: 2015年9月21日 下午4:11:14
+ * Author: wuya Create Date: 2015年9月21日 下午4:11:14
  */
 
 package com.mogujie.jarvis.server;
@@ -17,9 +15,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jgrapht.experimental.dag.DirectedAcyclicGraph.CycleFoundException;
 import org.springframework.context.ApplicationContext;
-
-import akka.actor.ActorSystem;
-import akka.routing.SmallestMailboxPool;
 
 import com.google.common.collect.Lists;
 import com.mogujie.jarvis.core.JarvisConstants;
@@ -52,6 +47,9 @@ import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.SpringContext;
 import com.mogujie.jarvis.server.util.SpringExtension;
 
+import akka.actor.ActorSystem;
+import akka.routing.SmallestMailboxPool;
+
 /**
  *
  *
@@ -67,7 +65,7 @@ public class JarvisServer {
         ActorSystem system = JarvisServerActorSystem.getInstance();
         SpringExtension.SPRING_EXT_PROVIDER.get(system).initialize(context);
 
-        system.actorOf(new SmallestMailboxPool(10).props(ServerActor.props()), JarvisConstants.SERVER_AKKA_SYSTEM_NAME);
+        system.actorOf(new SmallestMailboxPool(100).props(ServerActor.props()), JarvisConstants.SERVER_AKKA_SYSTEM_NAME);
 
         int taskDispatcherThreads = 5;
         ExecutorService executorService = Executors.newFixedThreadPool(taskDispatcherThreads);
@@ -143,9 +141,8 @@ public class JarvisServer {
         }
 
         // 3. initialize TaskScheduler
-        List<Task> recoveryTasks = taskService.getTasksByStatusNotIn(
-                Lists.newArrayList(TaskStatus.SUCCESS.getValue(),
-                TaskStatus.REMOVED.getValue()));
+        List<Task> recoveryTasks = taskService
+                .getTasksByStatusNotIn(Lists.newArrayList(TaskStatus.SUCCESS.getValue(), TaskStatus.REMOVED.getValue()));
         // 3.1 先恢复task
         for (Task task : recoveryTasks) {
             DAGTask dagTask = new DAGTask(task.getJobId(), task.getTaskId(), task.getAttemptId(), task.getScheduleTime().getTime());

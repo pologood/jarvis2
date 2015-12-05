@@ -1,30 +1,29 @@
 /*
- * 蘑菇街 Inc.
- * Copyright (c) 2010-2015 All Rights Reserved.
+ * 蘑菇街 Inc. Copyright (c) 2010-2015 All Rights Reserved.
  *
- * Author: wuya
- * Create Date: 2015年9月22日 上午9:55:19
+ * Author: wuya Create Date: 2015年9月22日 上午9:55:19
  */
 
 package com.mogujie.jarvis.server.actor;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.inject.Named;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 
-import com.mogujie.jarvis.core.domain.WorkerStatus;
 import com.google.common.base.Preconditions;
-import com.mogujie.jarvis.server.service.WorkerService;
 import com.mogujie.jarvis.core.domain.ActorEntry;
 import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.core.domain.WorkerInfo;
-import com.mogujie.jarvis.dao.generate.WorkerGroupMapper;
+import com.mogujie.jarvis.core.domain.WorkerStatus;
 import com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse;
 import com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest;
 import com.mogujie.jarvis.server.WorkerRegistry;
+import com.mogujie.jarvis.server.service.WorkerService;
+
 import akka.actor.Address;
 import akka.actor.UntypedActor;
 
@@ -36,11 +35,7 @@ import akka.actor.UntypedActor;
 public class WorkerRegistryActor extends UntypedActor {
 
     @Autowired
-    private WorkerGroupMapper workerGroupMapper;
-
-    @Autowired
     private WorkerService workerService;
-
 
     public static List<ActorEntry> handledMessages() {
         List<ActorEntry> list = new ArrayList<>();
@@ -82,6 +77,5 @@ public class WorkerRegistryActor extends UntypedActor {
             getSender().tell(response, getSelf());
         }
     }
-
 
 }
