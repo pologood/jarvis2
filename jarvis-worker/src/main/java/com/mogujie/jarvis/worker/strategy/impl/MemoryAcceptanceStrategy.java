@@ -34,7 +34,7 @@ public class MemoryAcceptanceStrategy implements AcceptanceStrategy {
     Sigar sigar = new Sigar();
     try {
       Mem mem = sigar.getMem();
-      double currentMemoryUsage = mem.getUsedPercent();
+      double currentMemoryUsage = mem.getUsedPercent() / 100;
       if (currentMemoryUsage > MAX_MEMORY_USAGE) {
         return new AcceptanceResult(false, "client当前内存使用率" + decimalFormat.format(currentMemoryUsage)
             + ", 超过阈值" + MAX_MEMORY_USAGE);

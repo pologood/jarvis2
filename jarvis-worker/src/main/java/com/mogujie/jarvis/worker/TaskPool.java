@@ -55,7 +55,7 @@ public enum TaskPool {
   }
 
   public void add(String fullId, AbstractTask job) {
-    db.put(bytes(fullId), KryoUtils.writeClassAndObject(job));
+//    db.put(bytes(fullId), KryoUtils.writeClassAndObject(job));
   }
 
   public void remove(String fullId) {

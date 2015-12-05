@@ -22,6 +22,11 @@ import org.apache.commons.configuration.Configuration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import scala.Tuple2;
+import akka.actor.ActorSelection;
+import akka.actor.Props;
+import akka.actor.UntypedActor;
+
 import com.mogujie.jarvis.core.AbstractLogCollector;
 import com.mogujie.jarvis.core.DefaultLogCollector;
 import com.mogujie.jarvis.core.DefaultProgressReporter;
@@ -51,11 +56,6 @@ import com.mogujie.jarvis.worker.strategy.AcceptanceResult;
 import com.mogujie.jarvis.worker.strategy.AcceptanceStrategy;
 import com.mogujie.jarvis.worker.util.FutureUtils;
 import com.mogujie.jarvis.worker.util.TaskConfigUtils;
-
-import akka.actor.ActorSelection;
-import akka.actor.Props;
-import akka.actor.UntypedActor;
-import scala.Tuple2;
 
 public class WorkerActor extends UntypedActor {
 
@@ -133,17 +133,17 @@ public class WorkerActor extends UntypedActor {
         AcceptanceResult result = strategy.accept();
         if (!result.isAccepted()) {
           getSender().tell(WorkerSubmitTaskResponse.newBuilder().setAccept(false)
-              .setMessage(result.getMessage()).build(), getSelf());
+                  .setSuccess(true).setMessage(result.getMessage()).build(), getSelf());
           return;
         }
       } catch (AcceptanceException e) {
         getSender().tell(WorkerSubmitTaskResponse.newBuilder().setAccept(false)
-            .setMessage(e.getMessage()).build(), getSelf());
+                .setSuccess(false).setMessage(e.getMessage()).build(), getSelf());
         return;
       }
     }
 
-    getSender().tell(WorkerSubmitTaskResponse.newBuilder().setAccept(true).build(), getSelf());
+    getSender().tell(WorkerSubmitTaskResponse.newBuilder().setAccept(true).setSuccess(true).build(), getSelf());
     try {
       Constructor<? extends AbstractTask> constructor = t2._1().getConstructor(TaskContext.class);
       AbstractTask job = constructor.newInstance(contextBuilder.build());
