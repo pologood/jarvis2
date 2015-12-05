@@ -1,9 +1,7 @@
 /*
- * 蘑菇街 Inc.
- * Copyright (c) 2010-2015 All Rights Reserved.
+ * 蘑菇街 Inc. Copyright (c) 2010-2015 All Rights Reserved.
  *
- * Author: wuya
- * Create Date: 2015年9月21日 下午4:13:54
+ * Author: wuya Create Date: 2015年9月21日 下午4:13:54
  */
 
 package com.mogujie.jarvis.server.actor;
@@ -21,12 +19,6 @@ import javax.inject.Named;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 
-import akka.actor.ActorRef;
-import akka.actor.Props;
-import akka.actor.UntypedActor;
-import akka.routing.RouterConfig;
-import akka.routing.SmallestMailboxPool;
-
 import com.google.common.base.Throwables;
 import com.google.protobuf.GeneratedMessage;
 import com.mogujie.jarvis.core.domain.ActorEntry;
@@ -39,6 +31,12 @@ import com.mogujie.jarvis.dto.generate.AppExample;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
 import com.mogujie.jarvis.server.util.AppTokenUtils;
 import com.mogujie.jarvis.server.util.SpringExtension;
+
+import akka.actor.ActorRef;
+import akka.actor.Props;
+import akka.actor.UntypedActor;
+import akka.routing.RouterConfig;
+import akka.routing.SmallestMailboxPool;
 
 @Named("serverActor")
 @Scope("prototype")
@@ -77,7 +75,8 @@ public class ServerActor extends UntypedActor {
     }
 
     private void addActors() {
-        addActor("taskMetricsActor", TaskMetricsActor.handledMessages());
+        actorRefs.add(new Pair<ActorRef, List<ActorEntry>>(getContext().actorOf(TaskMetricsRoutingActor.props(50)),
+                TaskMetricsRoutingActor.handledMessages()));
         addActor("heartBeatActor", HeartBeatActor.handledMessages());
         addActor("workerRegistryActor", WorkerRegistryActor.handledMessages());
         addActor("taskActor", new SmallestMailboxPool(10), TaskActor.handledMessages());

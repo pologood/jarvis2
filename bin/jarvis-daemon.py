@@ -12,7 +12,7 @@ confDir = rootDir + '/conf'
 logsDir = rootDir + '/logs'
 
 javaHome = os.environ.get('JAVA_HOME')
-javaOps = '-XX:+UseCompressedOops -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled -XX:+CMSParallelRemarkEnabled -XX:+DisableExplicitGC -XX:+UseCMSInitiatingOccupancyOnly -XX:CMSInitiatingOccupancyFraction=75 -XX:SoftRefLRUPolicyMSPerMB=0 -Dsentinel.log.dir=%s' % logsDir
+javaOps = '-Xms8G -Xmx8G -Xmn512M -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:+HeapDumpOnOutOfMemoryError -Dsentinel.log.dir=%s' % logsDir
 
 def execute(cmd):
     subprocess.call(cmd, shell=True)
