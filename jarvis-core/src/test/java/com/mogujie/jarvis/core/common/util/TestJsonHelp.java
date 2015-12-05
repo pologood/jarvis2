@@ -1,24 +1,18 @@
 /*
- * 蘑菇街 Inc.
- * Copyright (c) 2010-2015 All Rights Reserved.
+ * 蘑菇街 Inc. Copyright (c) 2010-2015 All Rights Reserved.
  *
- * Author: guangming
- * Create Date: 2015年9月17日 下午8:23:47
+ * Author: guangming Create Date: 2015年9月17日 下午8:23:47
  */
 
 package com.mogujie.jarvis.core.common.util;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 import com.mogujie.jarvis.core.util.JsonHelper;
-import com.mogujie.jarvis.protocol.MapEntryProtos;
-import com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry;
 
 /**
  * @author guangming

@@ -59,8 +59,9 @@ import scala.Tuple2;
 
 public class WorkerActor extends UntypedActor {
 
+  private TaskPool taskPool = TaskPool.INSTANCE;
+
   private static ExecutorService executorService = Executors.newCachedThreadPool();
-  private static TaskPool jobPool = TaskPool.getInstance();
 
   private static final String SERVER_AKKA_PATH = ConfigUtils.getWorkerConfig()
       .getString("server.akka.path") + JarvisConstants.SERVER_AKKA_USER_PATH;
@@ -147,7 +148,7 @@ public class WorkerActor extends UntypedActor {
     try {
       Constructor<? extends AbstractTask> constructor = t2._1().getConstructor(TaskContext.class);
       AbstractTask job = constructor.newInstance(contextBuilder.build());
-      jobPool.add(fullId, job);
+      taskPool.add(fullId, job);
       serverActor.tell(WorkerReportTaskStatusRequest.newBuilder().setFullId(fullId)
           .setStatus(TaskStatus.RUNNING.getValue()).setTimestamp(System.currentTimeMillis() / 1000)
           .build(), getSelf());
@@ -175,7 +176,7 @@ public class WorkerActor extends UntypedActor {
       logCollector.collectStderr("", true);
       logCollector.collectStdout("", true);
 
-      jobPool.remove(fullId);
+      taskPool.remove(fullId);
     } catch (NoSuchMethodException | SecurityException | InstantiationException
         | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
       getSender().tell(
@@ -186,9 +187,9 @@ public class WorkerActor extends UntypedActor {
 
   private WorkerKillTaskResponse killJob(ServerKillTaskRequest request) {
     String fullId = request.getFullId();
-    AbstractTask job = jobPool.get(fullId);
+    AbstractTask job = taskPool.get(fullId);
     if (job != null) {
-      jobPool.remove(fullId);
+      taskPool.remove(fullId);
       try {
         return WorkerKillTaskResponse.newBuilder().setSuccess(job.kill()).build();
       } catch (TaskException e) {

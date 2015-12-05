@@ -8,22 +8,10 @@
 
 package com.mogujie.jarvis.worker;
 
-import static org.iq80.leveldb.impl.Iq80DBFactory.bytes;
-import static org.iq80.leveldb.impl.Iq80DBFactory.factory;
+import java.util.Map;
 
-import java.io.File;
-import java.io.IOException;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.iq80.leveldb.DB;
-import org.iq80.leveldb.DBIterator;
-import org.iq80.leveldb.Options;
-
-import com.google.common.base.Throwables;
+import com.google.common.collect.Maps;
 import com.mogujie.jarvis.core.task.AbstractTask;
-import com.mogujie.jarvis.core.util.ConfigUtils;
-import com.mogujie.jarvis.core.util.KryoUtils;
 
 /**
  * @author wuya
@@ -33,53 +21,25 @@ public enum TaskPool {
 
   INSTANCE;
 
-  private static DB db;
-  private static final Logger LOGGER = LogManager.getLogger();
-
-  static {
-    Options options = new Options();
-    options.createIfMissing(true);
-    try {
-        String path = ConfigUtils.getWorkerConfig().getString("worker.leveldb.path");
-        if(path == null || path.isEmpty()){
-            path = "worker.level.db";
-        }
-      db = factory.open(new File(path), options);
-    } catch (IOException e) {
-      Throwables.propagate(e);
-    }
-  }
+  private Map<String, AbstractTask> pool = Maps.newConcurrentMap();
 
   public static final TaskPool getInstance() {
     return INSTANCE;
   }
 
-  public void add(String fullId, AbstractTask job) {
-    db.put(bytes(fullId), KryoUtils.writeClassAndObject(job));
+  public void add(String fullId, AbstractTask task) {
+    pool.put(fullId, task);
   }
 
   public void remove(String fullId) {
-    db.delete(bytes(fullId));
+    pool.remove(fullId);
   }
 
   public AbstractTask get(String fullId) {
-    return (AbstractTask) KryoUtils.readClassAndObject(db.get(bytes(fullId)));
+    return pool.get(fullId);
   }
 
   public int size() {
-    int size = 0;
-    DBIterator iterator = db.iterator();
-    try {
-      for (iterator.seekToFirst(); iterator.hasNext(); iterator.next()) {
-        size++;
-      }
-    } finally {
-      try {
-        iterator.close();
-      } catch (IOException e) {
-        LOGGER.error("", e);
-      }
-    }
-    return size;
+    return pool.size();
   }
 }
