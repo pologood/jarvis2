@@ -38,8 +38,6 @@ import com.mogujie.jarvis.server.scheduler.plan.ExecutionPlanEntry;
 import com.mogujie.jarvis.server.scheduler.plan.PlanGenerator;
 import com.mogujie.jarvis.server.scheduler.task.DAGTask;
 import com.mogujie.jarvis.server.scheduler.task.TaskGraph;
-import com.mogujie.jarvis.server.scheduler.time.TimeScheduler;
-import com.mogujie.jarvis.server.scheduler.time.TimeSchedulerFactory;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.SpringContext;
@@ -96,8 +94,7 @@ public class TestRetryTask extends TestSchedulerBase {
         Date endDate = new Date(t2);
         boolean runChild = true;
         // 1.生成所有任务的执行计划
-        TimeScheduler timeScheduler = TimeSchedulerFactory.getInstance();
-        PlanGenerator planGenerator = timeScheduler.getPlanGenerator();
+        PlanGenerator planGenerator = new PlanGenerator();
         Range<DateTime> range = Range.closed(new DateTime(startDate), new DateTime(endDate));
         Map<Long, List<ExecutionPlanEntry>> planMap = planGenerator.getReschedulePlan(jobIdList, range);
         // 2.通过新的job依赖关系生成新的task

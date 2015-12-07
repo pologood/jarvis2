@@ -9,6 +9,8 @@
 package com.mogujie.jarvis.server.scheduler.plan;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -21,9 +23,13 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Range;
 import com.mogujie.jarvis.core.expression.DependencyExpression;
 import com.mogujie.jarvis.core.expression.ScheduleExpression;
+import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.server.domain.JobEntry;
+import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.dag.JobGraph;
+import com.mogujie.jarvis.server.scheduler.event.TimeReadyEvent;
 import com.mogujie.jarvis.server.service.JobService;
+import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.SpringContext;
 
 /**
@@ -32,9 +38,11 @@ import com.mogujie.jarvis.server.util.SpringContext;
  */
 public class PlanGenerator {
 
-    protected ExecutionPlan plan = ExecutionPlan.INSTANCE;
-    protected JobGraph jobGraph = JobGraph.INSTANCE;
-    protected JobService jobService = SpringContext.getBean(JobService.class);
+    private ExecutionPlan plan = ExecutionPlan.INSTANCE;
+    private JobGraph jobGraph = JobGraph.INSTANCE;
+    private JobService jobService = SpringContext.getBean(JobService.class);
+    private TaskService taskService = SpringContext.getBean(TaskService.class);
+    private JobSchedulerController controller = JobSchedulerController.getInstance();
 
     /**
      * 生成任务重跑执行计划
@@ -143,10 +151,40 @@ public class PlanGenerator {
         }
     }
 
-    public void generateNextPlan(DateTime startDateTime, DateTime endDateTime) {}
+    public void generateAllPlan(Range<DateTime> range) {
+        DateTime startDateTime = range.lowerEndpoint();
+        DateTime endDateTime = range.upperEndpoint();
+        List<ExecutionPlanEntry> nextDayTimeBasedPlans = new ArrayList<ExecutionPlanEntry>();
 
-    public long getPeriod() {
-        return 0;
+        // generate next day time based plans
+        List<Long> activeTimeBasedJobs = jobGraph.getActiveTimeBasedJobs();
+        for (Long jobId : activeTimeBasedJobs) {
+            DateTime scheduleTime = getScheduleTimeAfter(jobId, startDateTime);
+            while (scheduleTime != null && scheduleTime.isBefore(endDateTime)) {
+                ExecutionPlanEntry entry = new ExecutionPlanEntry(jobId, scheduleTime);
+                nextDayTimeBasedPlans.add(entry);
+                scheduleTime = getScheduleTimeAfter(jobId, scheduleTime);
+            }
+        }
+
+        // generate next day all tasks
+        Collections.sort(nextDayTimeBasedPlans, new Comparator<ExecutionPlanEntry>() {
+            public int compare(ExecutionPlanEntry entry1, ExecutionPlanEntry entry2) {
+                return entry1.getDateTime().compareTo(entry2.getDateTime());
+            }
+        });
+        for (ExecutionPlanEntry planEntry : nextDayTimeBasedPlans) {
+            controller.notify(new TimeReadyEvent(planEntry.getJobId(), planEntry.getDateTime().getMillis()));
+        }
+
+        // add time based plan
+        for (ExecutionPlanEntry planEntry : nextDayTimeBasedPlans) {
+            Task task = taskService.getTaskByJobIdAndScheduleTime(planEntry.getJobId(), planEntry.getDateTime().getMillis());
+            if (task != null) {
+                planEntry.setTaskId(task.getTaskId());
+                plan.addPlan(planEntry);
+            }
+        }
     }
 
 }

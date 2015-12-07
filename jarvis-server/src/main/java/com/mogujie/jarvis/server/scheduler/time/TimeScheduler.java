@@ -29,7 +29,7 @@ public abstract class TimeScheduler extends Scheduler {
     protected ExecutionPlan plan = ExecutionPlan.INSTANCE;
     private volatile boolean running = true;
     protected JobSchedulerController controller = JobSchedulerController.getInstance();
-    protected PlanGenerator planGenerator;
+    protected PlanGenerator planGenerator = new PlanGenerator();
 
     @Autowired
     protected JobService jobService;
@@ -85,10 +85,6 @@ public abstract class TimeScheduler extends Scheduler {
 
     public void removePlan(ExecutionPlanEntry planEntry) {
         plan.removePlan(planEntry);
-    }
-
-    public PlanGenerator getPlanGenerator() {
-        return planGenerator;
     }
 
     public abstract void addJob(long jobId);

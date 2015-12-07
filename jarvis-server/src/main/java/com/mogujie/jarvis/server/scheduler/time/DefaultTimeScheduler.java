@@ -23,6 +23,7 @@ import com.mogujie.jarvis.server.scheduler.plan.PlanGenerator;
  */
 public class DefaultTimeScheduler extends TimeScheduler {
     private static DefaultTimeScheduler instance = new DefaultTimeScheduler();
+    private PlanGenerator planGenerator;
 
     private DefaultTimeScheduler() {
         this.planGenerator = new PlanGenerator();
