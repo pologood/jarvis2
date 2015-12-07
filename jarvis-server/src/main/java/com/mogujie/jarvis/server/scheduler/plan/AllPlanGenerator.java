@@ -38,7 +38,7 @@ public class AllPlanGenerator extends PlanGenerator {
         List<Long> activeTimeBasedJobs = jobGraph.getActiveTimeBasedJobs();
         for (Long jobId : activeTimeBasedJobs) {
             DateTime scheduleTime = getScheduleTimeAfter(jobId, startDateTime);
-            while (scheduleTime.isBefore(endDateTime)) {
+            while (scheduleTime != null && scheduleTime.isBefore(endDateTime)) {
                 ExecutionPlanEntry entry = new ExecutionPlanEntry(jobId, scheduleTime);
                 nextDayTimeBasedPlans.add(entry);
                 scheduleTime = getScheduleTimeAfter(jobId, scheduleTime);
