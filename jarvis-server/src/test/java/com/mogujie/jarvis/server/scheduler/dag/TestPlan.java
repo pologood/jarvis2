@@ -18,8 +18,8 @@ import com.google.common.collect.Range;
 import com.google.common.collect.Sets;
 import com.mogujie.jarvis.core.exeception.JobScheduleException;
 import com.mogujie.jarvis.server.scheduler.event.TimeReadyEvent;
+import com.mogujie.jarvis.server.scheduler.plan.AllPlanGenerator;
 import com.mogujie.jarvis.server.scheduler.plan.ExecutionPlanEntry;
-import com.mogujie.jarvis.server.scheduler.plan.NextDayPlanGenerator;
 import com.mogujie.jarvis.server.scheduler.plan.PlanGenerator;
 
 /**
@@ -104,8 +104,10 @@ public class TestPlan extends TestSchedulerBase {
         jobGraph.addJob(jobDId, new DAGJob(jobDId, DAGJobType.TIME), null);
         jobGraph.addJob(jobEId, new DAGJob(jobEId, DAGJobType.TIME), null);
         jobGraph.addJob(jobFId, new DAGJob(jobFId, DAGJobType.DEPEND), Sets.newHashSet(jobDId, jobEId));
-        NextDayPlanGenerator planGenerator = new NextDayPlanGenerator();
-        planGenerator.generateNextPlan();
+        final DateTime startDateTime = DateTime.now().plusDays(1).withTimeAtStartOfDay();
+        final DateTime endDateTime = DateTime.now().plusDays(2).withTimeAtStartOfDay();
+        AllPlanGenerator planGenerator = new AllPlanGenerator();
+        planGenerator.generateNextPlan(startDateTime, endDateTime);
     }
 
     @Test

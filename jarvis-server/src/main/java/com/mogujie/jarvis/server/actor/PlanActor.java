@@ -23,8 +23,11 @@ import com.mogujie.jarvis.core.domain.ActorEntry;
 import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.util.JsonHelper;
+import com.mogujie.jarvis.protocol.GeneratePlanProtos.RestServerGenereateAllPlanRequest;
+import com.mogujie.jarvis.protocol.GeneratePlanProtos.ServerGenereateAllPlanResponse;
 import com.mogujie.jarvis.protocol.RemovePlanProtos.RestServerRemovePlanRequest;
 import com.mogujie.jarvis.protocol.RemovePlanProtos.ServerRemovePlanResponse;
+import com.mogujie.jarvis.server.scheduler.plan.AllPlanGenerator;
 import com.mogujie.jarvis.server.scheduler.plan.ExecutionPlanEntry;
 import com.mogujie.jarvis.server.scheduler.task.DAGTask;
 import com.mogujie.jarvis.server.scheduler.task.TaskGraph;
@@ -50,6 +53,11 @@ public class PlanActor extends UntypedActor {
         if (obj instanceof RestServerRemovePlanRequest) {
             RestServerRemovePlanRequest msg = (RestServerRemovePlanRequest) obj;
             removePlan(msg);
+        } else if (obj instanceof RestServerGenereateAllPlanRequest) {
+            RestServerGenereateAllPlanRequest msg = (RestServerGenereateAllPlanRequest) obj;
+            generateAllPlan(msg);
+        } else {
+            unhandled(obj);
         }
     }
 
@@ -91,6 +99,26 @@ public class PlanActor extends UntypedActor {
             taskGraph.removeTask(taskId);
             response = ServerRemovePlanResponse.newBuilder().setSuccess(true).build();
         }
+        getSender().tell(response, getSelf());
+    }
+
+    /**
+     * 生成一段时间的所有任务
+     *
+     * @param msg
+     */
+    private void generateAllPlan(RestServerGenereateAllPlanRequest msg) {
+        DateTime start = new DateTime(msg.getStartDate());
+        DateTime end = new DateTime(msg.getEndDate());
+
+        ServerGenereateAllPlanResponse response;
+        try {
+            AllPlanGenerator planGenerator = new AllPlanGenerator();
+            planGenerator.generateNextPlan(start, end);
+        } catch (Exception e) {
+            response = ServerGenereateAllPlanResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
+        }
+        response = ServerGenereateAllPlanResponse.newBuilder().setSuccess(true).build();
         getSender().tell(response, getSelf());
     }
 

@@ -16,6 +16,8 @@ import javax.ws.rs.core.MediaType;
 
 import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.protocol.AppAuthProtos;
+import com.mogujie.jarvis.protocol.GeneratePlanProtos.RestServerGenereateAllPlanRequest;
+import com.mogujie.jarvis.protocol.GeneratePlanProtos.ServerGenereateAllPlanResponse;
 import com.mogujie.jarvis.protocol.RemovePlanProtos.RestServerRemovePlanRequest;
 import com.mogujie.jarvis.protocol.RemovePlanProtos.ServerRemovePlanResponse;
 import com.mogujie.jarvis.rest.RestResult;
@@ -51,6 +53,40 @@ public class PlanController extends AbstractController {
                     .setScheduleTime(scheduleTime).setAsk(ask).build();
 
             ServerRemovePlanResponse response = (ServerRemovePlanResponse) callActor(AkkaType.SERVER, request);
+            if (response.getSuccess()) {
+                return successResult();
+            } else {
+                return errorResult(response.getMessage());
+            }
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+            return errorResult(e.getMessage());
+        }
+    }
+
+    /**
+     * 生成一段时间的所有任务
+     *
+     * @throws Exception
+     */
+    @POST
+    @Path("generate/all")
+    @Produces(MediaType.APPLICATION_JSON)
+    public RestResult<?> generateAll(@FormParam("user") String user, @FormParam("appToken") String appToken, @FormParam("appName") String appName,
+            @FormParam("parameters") String parameters) {
+        try {
+            AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
+
+            JsonParameters para = new JsonParameters(parameters);
+            long startTime = para.getLong("start");
+            long endTime = para.getLong("end");
+            RestServerGenereateAllPlanRequest request = RestServerGenereateAllPlanRequest.newBuilder()
+                    .setAppAuth(appAuth)
+                    .setStartDate(startTime)
+                    .setEndDate(endTime)
+                    .build();
+
+            ServerGenereateAllPlanResponse response = (ServerGenereateAllPlanResponse) callActor(AkkaType.SERVER, request);
             if (response.getSuccess()) {
                 return successResult();
             } else {
