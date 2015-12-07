@@ -1,9 +1,7 @@
 /*
- * 蘑菇街 Inc.
- * Copyright (c) 2010-2015 All Rights Reserved.
+ * 蘑菇街 Inc. Copyright (c) 2010-2015 All Rights Reserved.
  *
- * Author: guangming
- * Create Date: 2015年9月29日 下午4:42:28
+ * Author: guangming Create Date: 2015年9月29日 下午4:42:28
  */
 
 package com.mogujie.jarvis.server.service;
@@ -41,20 +39,17 @@ public class ConvertValidService {
     @Autowired
     private JobService jobService;
 
-    @Autowired
-    private IDService idService;
-
     public Job convert2Job(RestSubmitJobRequest msg) {
         Job job = new Job();
 
         Integer appId;
         App appAuth = appService.getAppByName(msg.getAppAuth().getName());
-        if(appAuth.getAppType() == AppType.NORMAL.getValue()){
+        if (appAuth.getAppType() == AppType.NORMAL.getValue()) {
             appId = appAuth.getAppId();
-        }else{
-            if(msg.hasAppName()){
+        } else {
+            if (msg.hasAppName()) {
                 appId = appService.getAppIdByName(msg.getAppName());
-            }else{
+            } else {
                 appId = appAuth.getAppId();
             }
         }
@@ -104,17 +99,17 @@ public class ConvertValidService {
         Job job = new Job();
         long jobId = msg.getJobId();
         Preconditions.checkArgument(jobId != 0, "jobId不能为空");
-        JobEntry  jobEntry = jobService.get(jobId);
+        JobEntry jobEntry = jobService.get(jobId);
         Preconditions.checkArgument(jobEntry != null, "该job不存在");
 
         Integer appId;
         App appAuth = appService.getAppByName(msg.getAppAuth().getName());
-        if(appAuth.getAppType() == AppType.NORMAL.getValue()){
+        if (appAuth.getAppType() == AppType.NORMAL.getValue()) {
             appId = appAuth.getAppId();
-        }else{
-            if(msg.hasAppName()){
+        } else {
+            if (msg.hasAppName()) {
                 appId = appService.getAppIdByName(msg.getAppName());
-            }else{
+            } else {
                 appId = appAuth.getAppId();
             }
         }
@@ -123,10 +118,10 @@ public class ConvertValidService {
         if (msg.hasJobName()) {
             job.setJobName(msg.getJobName());
         }
-        if(msg.hasJobType()){
+        if (msg.hasJobType()) {
             job.setJobType(msg.getJobType());
         }
-        if(msg.hasJobFlag()){
+        if (msg.hasJobFlag()) {
             job.setJobFlag(msg.getJobFlag());
         }
         if (msg.hasContent()) {

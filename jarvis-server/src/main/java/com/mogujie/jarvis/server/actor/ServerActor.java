@@ -17,12 +17,6 @@ import javax.inject.Named;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 
-import akka.actor.ActorRef;
-import akka.actor.Props;
-import akka.actor.UntypedActor;
-import akka.routing.RouterConfig;
-import akka.routing.SmallestMailboxPool;
-
 import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -31,12 +25,19 @@ import com.mogujie.jarvis.core.domain.ActorEntry;
 import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.core.domain.Pair;
 import com.mogujie.jarvis.core.exeception.AppTokenInvalidException;
+import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.dao.generate.AppMapper;
 import com.mogujie.jarvis.dto.generate.App;
 import com.mogujie.jarvis.dto.generate.AppExample;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
 import com.mogujie.jarvis.server.util.AppTokenUtils;
 import com.mogujie.jarvis.server.util.SpringExtension;
+
+import akka.actor.ActorRef;
+import akka.actor.Props;
+import akka.actor.UntypedActor;
+import akka.routing.RouterConfig;
+import akka.routing.SmallestMailboxPool;
 
 @Named("serverActor")
 @Scope("prototype")
@@ -45,6 +46,7 @@ public class ServerActor extends UntypedActor {
     @Autowired
     private AppMapper appMapper;
 
+    private static boolean appTokenVerifyEnable = ConfigUtils.getServerConfig().getBoolean("app.token.verify.enable", true);
     private static Map<Class<?>, Pair<ActorRef, ActorEntry>> map = Maps.newConcurrentMap();
     private static List<Pair<ActorRef, List<ActorEntry>>> actorRefs = Lists.newArrayList();
 
@@ -69,14 +71,14 @@ public class ServerActor extends UntypedActor {
     }
 
     private void addActor(String actorName, RouterConfig routerConfig, List<ActorEntry> handledMessages) {
-        ActorRef actorRef = getContext().actorOf(
-                SpringExtension.SPRING_EXT_PROVIDER.get(getContext().system()).props(actorName).withRouter(routerConfig));
+        ActorRef actorRef = getContext()
+                .actorOf(SpringExtension.SPRING_EXT_PROVIDER.get(getContext().system()).props(actorName).withRouter(routerConfig));
         actorRefs.add(new Pair<>(actorRef, handledMessages));
     }
 
     private void addActors() {
-        actorRefs.add(new Pair<ActorRef, List<ActorEntry>>(getContext().actorOf(TaskMetricsRoutingActor.props(50)), TaskMetricsRoutingActor
-                .handledMessages()));
+        actorRefs.add(new Pair<ActorRef, List<ActorEntry>>(getContext().actorOf(TaskMetricsRoutingActor.props(50)),
+                TaskMetricsRoutingActor.handledMessages()));
         addActor("heartBeatActor", HeartBeatActor.handledMessages());
         addActor("workerRegistryActor", WorkerRegistryActor.handledMessages());
         addActor("taskActor", new SmallestMailboxPool(10), TaskActor.handledMessages());
@@ -149,19 +151,21 @@ public class ServerActor extends UntypedActor {
                     getSender().tell(msg, getSelf());
                     return;
                 } else {
-                    try {
-                        // 验证token
-                        AppTokenUtils.verifyToken(app.getAppKey(), appAuth.getToken());
-                        // 验证授权
-                        if (actorEntry.getMessageType() == MessageType.SYSTEM && app.getAppType() != MessageType.SYSTEM.getValue()) {
-                            Object msg = generateResponse(actorEntry.getResponseClass(), false, "request is rejected");
+                    if (appTokenVerifyEnable) {
+                        try {
+                            // 验证token
+                            AppTokenUtils.verifyToken(app.getAppKey(), appAuth.getToken());
+                            // 验证授权
+                            if (actorEntry.getMessageType() == MessageType.SYSTEM && app.getAppType() != MessageType.SYSTEM.getValue()) {
+                                Object msg = generateResponse(actorEntry.getResponseClass(), false, "request is rejected");
+                                getSender().tell(msg, getSelf());
+                                return;
+                            }
+                        } catch (AppTokenInvalidException e) {
+                            Object msg = generateResponse(actorEntry.getResponseClass(), false, e.getMessage());
                             getSender().tell(msg, getSelf());
                             return;
                         }
-                    } catch (AppTokenInvalidException e) {
-                        Object msg = generateResponse(actorEntry.getResponseClass(), false, e.getMessage());
-                        getSender().tell(msg, getSelf());
-                        return;
                     }
                 }
             }

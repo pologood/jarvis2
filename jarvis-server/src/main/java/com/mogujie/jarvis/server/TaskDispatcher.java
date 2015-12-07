@@ -1,9 +1,7 @@
 /*
- * 蘑菇街 Inc.
- * Copyright (c) 2010-2015 All Rights Reserved.
+ * 蘑菇街 Inc. Copyright (c) 2010-2015 All Rights Reserved.
  *
- * Author: wuya
- * Create Date: 2015年9月25日 上午11:39:46
+ * Author: wuya Create Date: 2015年9月25日 上午11:39:46
  */
 
 package com.mogujie.jarvis.server;
@@ -16,9 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
-import akka.actor.ActorSelection;
-import akka.actor.ActorSystem;
-
 import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.domain.WorkerInfo;
 import com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry;
@@ -27,10 +22,11 @@ import com.mogujie.jarvis.protocol.SubmitJobProtos.WorkerSubmitTaskResponse;
 import com.mogujie.jarvis.server.domain.RetryType;
 import com.mogujie.jarvis.server.scheduler.TaskRetryScheduler;
 import com.mogujie.jarvis.server.service.AppService;
-import com.mogujie.jarvis.server.service.TaskService;
-import com.mogujie.jarvis.server.service.WorkerService;
 import com.mogujie.jarvis.server.util.FutureUtils;
 import com.mogujie.jarvis.server.workerselector.WorkerSelector;
+
+import akka.actor.ActorSelection;
+import akka.actor.ActorSystem;
 
 @Repository
 @Scope("prototype")
@@ -41,12 +37,6 @@ public class TaskDispatcher extends Thread {
 
     @Autowired
     private AppService appService;
-
-    @Autowired
-    private WorkerService workerService;
-
-    @Autowired
-    private TaskService taskService;
 
     @Autowired
     private WorkerSelector workerSelector;
@@ -84,7 +74,6 @@ public class TaskDispatcher extends Thread {
                 }
 
                 try {
-
                     String appName = task.getAppName();
                     int appId = appService.getAppIdByName(appName);
 
@@ -137,7 +126,7 @@ public class TaskDispatcher extends Thread {
                         taskManager.appCounterDecrement(appId);
                     }
                 } catch (Exception e) {
-                    LOGGER.error("",e);
+                    LOGGER.error("", e);
                 }
             } else {
                 yield();
