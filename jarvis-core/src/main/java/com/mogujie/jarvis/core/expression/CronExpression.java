@@ -180,6 +180,7 @@ public class CronExpression extends ScheduleExpression {
         return dayValues;
     }
 
+    @Override
     public DateTime getTimeAfter(DateTime dateTime) {
         try {
             String[] fixedCronExp = appendYearField(expression.split("\\s+"));
@@ -248,6 +249,7 @@ public class CronExpression extends ScheduleExpression {
         return null;
     }
 
+    @Override
     public DateTime getTimeBefore(DateTime dateTime) {
         try {
             String[] fixedCronExp = appendYearField(expression.split("\\s+"));
@@ -365,9 +367,14 @@ public class CronExpression extends ScheduleExpression {
         return list;
     }
 
+    @Override
     public boolean isValid() {
         DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0);
-        return getTimeAfter(dateTime) != null;
+        try {
+            return getTimeAfter(dateTime) != null;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     @Override
