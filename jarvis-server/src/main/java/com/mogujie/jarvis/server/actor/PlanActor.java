@@ -132,6 +132,7 @@ public class PlanActor extends UntypedActor {
     public static List<ActorEntry> handledMessages() {
         List<ActorEntry> list = new ArrayList<>();
         list.add(new ActorEntry(RestServerRemovePlanRequest.class, ServerRemovePlanResponse.class, MessageType.GENERAL));
+        list.add(new ActorEntry(RestServerGenereateAllPlanRequest.class, ServerGenereateAllPlanResponse.class, MessageType.GENERAL));
         return list;
     }
 }
