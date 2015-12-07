@@ -1,9 +1,7 @@
 /*
- * 蘑菇街 Inc.
- * Copyright (c) 2010-2015 All Rights Reserved.
+ * 蘑菇街 Inc. Copyright (c) 2010-2015 All Rights Reserved.
  *
- * Author: wuya
- * Create Date: 2015年9月22日 下午3:25:50
+ * Author: wuya Create Date: 2015年9月22日 下午3:25:50
  */
 
 package com.mogujie.jarvis.server.actor;
@@ -26,10 +24,6 @@ import com.mogujie.jarvis.protocol.ModifyWorkerStatusProtos.ServerModifyWorkerSt
 
 import akka.actor.UntypedActor;
 
-/**
- * 
- *
- */
 @Named("modifyWorkerStatusActor")
 @Scope("prototype")
 public class ModifyWorkerStatusActor extends UntypedActor {

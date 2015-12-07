@@ -1,17 +1,11 @@
 /*
- * 蘑菇街 Inc.
- * Copyright (c) 2010-2015 All Rights Reserved.
+ * 蘑菇街 Inc. Copyright (c) 2010-2015 All Rights Reserved.
  *
- * Author: wuya
- * Create Date: 2015年11月25日 下午1:25:20
+ * Author: wuya Create Date: 2015年11月25日 下午1:25:20
  */
 
 package com.mogujie.jarvis.server.alarm;
 
-/**
- * 
- *
- */
 public enum AlarmType {
     SMS(0), TT(1), EMAIL(2), WEBCHAT(3);
 

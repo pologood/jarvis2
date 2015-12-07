@@ -50,10 +50,6 @@ import com.mogujie.jarvis.server.util.SpringExtension;
 import akka.actor.ActorSystem;
 import akka.routing.SmallestMailboxPool;
 
-/**
- *
- *
- */
 public class JarvisServer {
 
     private static final Logger LOGGER = LogManager.getLogger();

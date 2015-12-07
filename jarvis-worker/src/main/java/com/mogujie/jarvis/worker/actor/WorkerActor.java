@@ -30,6 +30,7 @@ import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.ProgressReporter;
 import com.mogujie.jarvis.core.TaskContext;
 import com.mogujie.jarvis.core.TaskContext.TaskContextBuilder;
+import com.mogujie.jarvis.core.domain.Pair;
 import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.domain.TaskDetail.TaskDetailBuilder;
 import com.mogujie.jarvis.core.domain.TaskStatus;
@@ -56,7 +57,6 @@ import com.mogujie.jarvis.worker.util.TaskConfigUtils;
 import akka.actor.ActorSelection;
 import akka.actor.Props;
 import akka.actor.UntypedActor;
-import scala.Tuple2;
 
 public class WorkerActor extends UntypedActor {
 
@@ -127,9 +127,9 @@ public class WorkerActor extends UntypedActor {
     ProgressReporter reporter = new DefaultProgressReporter(serverActor, fullId);
     contextBuilder.setProgressReporter(reporter);
 
-    Tuple2<Class<? extends AbstractTask>, List<AcceptanceStrategy>> t2 = TaskConfigUtils
+    Pair<Class<? extends AbstractTask>, List<AcceptanceStrategy>> t2 = TaskConfigUtils
         .getRegisteredJobs().get(taskType);
-    List<AcceptanceStrategy> strategies = t2._2();
+    List<AcceptanceStrategy> strategies = t2.getSecond();
     for (AcceptanceStrategy strategy : strategies) {
       try {
         AcceptanceResult result = strategy.accept();
@@ -148,7 +148,8 @@ public class WorkerActor extends UntypedActor {
     getSender().tell(WorkerSubmitTaskResponse.newBuilder().setAccept(true).setSuccess(true).build(),
         getSelf());
     try {
-      Constructor<? extends AbstractTask> constructor = t2._1().getConstructor(TaskContext.class);
+      Constructor<? extends AbstractTask> constructor = t2.getFirst()
+          .getConstructor(TaskContext.class);
       AbstractTask job = constructor.newInstance(contextBuilder.build());
       taskPool.add(fullId, job);
       serverActor.tell(WorkerReportTaskStatusRequest.newBuilder().setFullId(fullId)

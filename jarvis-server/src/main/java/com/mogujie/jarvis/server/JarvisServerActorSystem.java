@@ -1,9 +1,7 @@
 /*
- * 蘑菇街 Inc.
- * Copyright (c) 2010-2015 All Rights Reserved.
+ * 蘑菇街 Inc. Copyright (c) 2010-2015 All Rights Reserved.
  *
- * Author: wuya
- * Create Date: 2015年9月21日 下午3:55:58
+ * Author: wuya Create Date: 2015年9月21日 下午3:55:58
  */
 
 package com.mogujie.jarvis.server;
@@ -14,10 +12,6 @@ import com.typesafe.config.Config;
 
 import akka.actor.ActorSystem;
 
-/**
- * 
- *
- */
 public class JarvisServerActorSystem {
 
     private static Config config = ConfigUtils.getAkkaConfig("akka-server.conf");

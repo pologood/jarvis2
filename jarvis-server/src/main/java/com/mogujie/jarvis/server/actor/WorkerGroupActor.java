@@ -1,9 +1,7 @@
 /*
- * 蘑菇街 Inc.
- * Copyright (c) 2010-2015 All Rights Reserved.
+ * 蘑菇街 Inc. Copyright (c) 2010-2015 All Rights Reserved.
  *
- * Author: wuya
- * Create Date: 2015年10月12日 上午10:18:24
+ * Author: wuya Create Date: 2015年10月12日 上午10:18:24
  */
 
 package com.mogujie.jarvis.server.actor;
@@ -29,10 +27,6 @@ import com.mogujie.jarvis.protocol.WorkerGroupProtos.ServerModifyWorkerGroupResp
 
 import akka.actor.UntypedActor;
 
-/**
- * 
- *
- */
 @Named("workerGroupActor")
 @Scope("prototype")
 public class WorkerGroupActor extends UntypedActor {

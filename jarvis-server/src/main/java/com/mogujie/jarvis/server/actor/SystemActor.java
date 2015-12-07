@@ -1,9 +1,7 @@
 /*
- * 蘑菇街 Inc.
- * Copyright (c) 2010-2015 All Rights Reserved.
+ * 蘑菇街 Inc. Copyright (c) 2010-2015 All Rights Reserved.
  *
- * Author: wuya
- * Create Date: 2015年10月12日 上午11:14:54
+ * Author: wuya Create Date: 2015年10月12日 上午11:14:54
  */
 
 package com.mogujie.jarvis.server.actor;
@@ -24,10 +22,6 @@ import com.mogujie.jarvis.server.TaskDispatcher;
 
 import akka.actor.UntypedActor;
 
-/**
- * 
- *
- */
 @Named("systemActor")
 @Scope("prototype")
 public class SystemActor extends UntypedActor {

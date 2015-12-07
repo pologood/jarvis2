@@ -1,9 +1,7 @@
 /*
- * 蘑菇街 Inc.
- * Copyright (c) 2010-2015 All Rights Reserved.
+ * 蘑菇街 Inc. Copyright (c) 2010-2015 All Rights Reserved.
  *
- * Author: wuya
- * Create Date: 2015年11月25日 下午1:59:14
+ * Author: wuya Create Date: 2015年11月25日 下午1:59:14
  */
 
 package com.mogujie.jarvis.server.scheduler;
@@ -31,10 +29,6 @@ import com.mogujie.jarvis.server.scheduler.event.KilledEvent;
 import com.mogujie.jarvis.server.scheduler.event.StartEvent;
 import com.mogujie.jarvis.server.scheduler.event.StopEvent;
 
-/**
- * 
- *
- */
 @Repository
 public class AlarmScheduler extends Scheduler {
 

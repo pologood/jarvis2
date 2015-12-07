@@ -1,9 +1,7 @@
 /*
- * 蘑菇街 Inc.
- * Copyright (c) 2010-2015 All Rights Reserved.
+ * 蘑菇街 Inc. Copyright (c) 2010-2015 All Rights Reserved.
  *
- * Author: wuya
- * Create Date: 2015年11月25日 下午1:16:24
+ * Author: wuya Create Date: 2015年11月25日 下午1:16:24
  */
 
 package com.mogujie.jarvis.server.alarm;
@@ -12,10 +10,6 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
-/**
- * 
- *
- */
 public abstract class Alarmer {
 
     abstract public boolean alarm(AlarmLevel alarmLevel, List<AlarmType> alarmTypes, List<String> receiver, String message);
