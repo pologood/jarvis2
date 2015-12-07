@@ -17,6 +17,7 @@ import org.joda.time.DateTime;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.eventbus.AllowConcurrentEvents;
 import com.google.common.eventbus.Subscribe;
 import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.domain.TaskStatus;
@@ -83,6 +84,7 @@ public class TaskScheduler extends Scheduler {
 
     @Subscribe
     @Transactional
+    @AllowConcurrentEvents
     public void handleSuccessEvent(SuccessEvent e) {
         long taskId = e.getTaskId();
         // update task status
@@ -106,6 +108,7 @@ public class TaskScheduler extends Scheduler {
 
     @Subscribe
     @Transactional
+    @AllowConcurrentEvents
     public void handleRunningEvent(RunningEvent e) {
         long taskId = e.getTaskId();
         int workerId = e.getWorkerId();
@@ -114,6 +117,7 @@ public class TaskScheduler extends Scheduler {
 
     @Subscribe
     @Transactional
+    @AllowConcurrentEvents
     public void handleKilledEvent(KilledEvent e) {
         long taskId = e.getTaskId();
         taskService.updateStatusWithEnd(taskId, TaskStatus.KILLED);
@@ -123,6 +127,7 @@ public class TaskScheduler extends Scheduler {
 
     @Subscribe
     @Transactional
+    @AllowConcurrentEvents
     public void handleFailedEvent(FailedEvent e) {
         long jobId = e.getJobId();
         long taskId = e.getTaskId();
@@ -232,11 +237,6 @@ public class TaskScheduler extends Scheduler {
         if (dagTask != null && dagTask.checkStatus()) {
             submitTask(dagTask);
         }
-    }
-
-    @VisibleForTesting
-    public Map<Long, DAGTask> getReadyTable() {
-        return taskGraph.getReadyTable();
     }
 
     @VisibleForTesting

@@ -25,19 +25,19 @@ import org.jgrapht.graph.DefaultEdge;
 public enum TaskGraph {
     INSTANCE;
 
-    private Map<Long, DAGTask> readyTable = new ConcurrentHashMap<>();
+    private Map<Long, DAGTask> taskMap = new ConcurrentHashMap<>();
     private DirectedAcyclicGraph<DAGTask, DefaultEdge> dag = new DirectedAcyclicGraph<DAGTask, DefaultEdge>(DefaultEdge.class);
 
-    public Map<Long, DAGTask> getReadyTable() {
-        return readyTable;
+    public Map<Long, DAGTask> getTaskMap() {
+        return taskMap;
     }
 
     public DAGTask getTask(long taskId) {
-        return readyTable.get(taskId);
+        return taskMap.get(taskId);
     }
 
     public void clear() {
-        readyTable.clear();
+        taskMap.clear();
         Set<DAGTask> allTasks = dag.vertexSet();
         if (allTasks != null) {
             List<DAGTask> tmpTasks = new ArrayList<DAGTask>();
@@ -47,23 +47,23 @@ public enum TaskGraph {
     }
 
     public void addTask(long taskId, DAGTask dagTask) {
-        if (!readyTable.containsKey(taskId)) {
-            readyTable.put(taskId, dagTask);
+        if (!taskMap.containsKey(taskId)) {
+            taskMap.put(taskId, dagTask);
             dag.addVertex(dagTask);
         }
     }
 
     public void removeTask(long taskId) {
-        DAGTask dagTask = readyTable.get(taskId);
+        DAGTask dagTask = taskMap.get(taskId);
         if (dagTask != null) {
-            readyTable.remove(taskId);
+            taskMap.remove(taskId);
             dag.removeVertex(dagTask);
         }
     }
 
     public void addDependency(long parentId, long childId) {
-        DAGTask parent = readyTable.get(parentId);
-        DAGTask child = readyTable.get(childId);
+        DAGTask parent = taskMap.get(parentId);
+        DAGTask child = taskMap.get(childId);
         if (parent != null && child != null) {
             try {
                 dag.addDagEdge(parent, child);
@@ -75,7 +75,7 @@ public enum TaskGraph {
 
     public List<DAGTask> getParents(long taskId) {
         List<DAGTask> parents = new ArrayList<DAGTask>();
-        DAGTask dagTask = readyTable.get(taskId);
+        DAGTask dagTask = taskMap.get(taskId);
         if (dagTask != null) {
             Set<DefaultEdge> inEdges = dag.incomingEdgesOf(dagTask);
             if (inEdges != null) {
@@ -89,7 +89,7 @@ public enum TaskGraph {
 
     public List<DAGTask> getChildren(long taskId) {
         List<DAGTask> children = new ArrayList<DAGTask>();
-        DAGTask dagTask = readyTable.get(taskId);
+        DAGTask dagTask = taskMap.get(taskId);
         if (dagTask != null) {
             Set<DefaultEdge> inEdges = dag.outgoingEdgesOf(dagTask);
             if (inEdges != null) {

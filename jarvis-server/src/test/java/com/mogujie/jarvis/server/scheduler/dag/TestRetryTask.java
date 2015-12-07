@@ -62,9 +62,9 @@ public class TestRetryTask extends TestSchedulerBase {
     public void testRetryTask1() {
         AddTaskEvent addTaskEvent = new AddTaskEvent(jobAId, null);
         controller.notify(addTaskEvent);
-        Assert.assertEquals(1, taskScheduler.getReadyTable().size());
+        Assert.assertEquals(1, taskGraph.getTaskMap().size());
         Assert.assertEquals(1, taskQueue.size());
-        List<Long> taskIds = new ArrayList<Long>(taskScheduler.getReadyTable().keySet());
+        List<Long> taskIds = new ArrayList<Long>(taskGraph.getTaskMap().keySet());
         Collections.sort(taskIds);
         long taskAId = taskIds.get(0);
         Task task = taskService.get(taskAId);

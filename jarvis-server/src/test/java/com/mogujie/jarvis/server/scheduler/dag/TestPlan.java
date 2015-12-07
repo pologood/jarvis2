@@ -57,11 +57,11 @@ public class TestPlan extends TestSchedulerBase {
         // pass the dependency check, start to schedule jobB and jobC
         TimeReadyEvent timeReadyEventA = new TimeReadyEvent(jobAId, t1);
         dagScheduler.handleTimeReadyEvent(timeReadyEventA);
-        Assert.assertEquals(3, taskScheduler.getReadyTable().size());
+        Assert.assertEquals(3, taskGraph.getTaskMap().size());
         // jobA time ready
         TimeReadyEvent timeReadyEventB = new TimeReadyEvent(jobAId, t2);
         dagScheduler.handleTimeReadyEvent(timeReadyEventB);
-        Assert.assertEquals(6, taskScheduler.getReadyTable().size());
+        Assert.assertEquals(6, taskGraph.getTaskMap().size());
     }
 
     /**
@@ -80,20 +80,20 @@ public class TestPlan extends TestSchedulerBase {
         // jobA time ready
         TimeReadyEvent timeReadyEventA = new TimeReadyEvent(jobAId, t1);
         dagScheduler.handleTimeReadyEvent(timeReadyEventA);
-        Assert.assertEquals(1, taskScheduler.getReadyTable().size());
+        Assert.assertEquals(1, taskGraph.getTaskMap().size());
         // jobB time ready
         TimeReadyEvent timeReadyEventB = new TimeReadyEvent(jobBId, t2);
         dagScheduler.handleTimeReadyEvent(timeReadyEventB);
-        Assert.assertEquals(3, taskScheduler.getReadyTable().size());
+        Assert.assertEquals(3, taskGraph.getTaskMap().size());
 
         // jobA time ready
         timeReadyEventA = new TimeReadyEvent(jobAId, t3);
         dagScheduler.handleTimeReadyEvent(timeReadyEventA);
-        Assert.assertEquals(4, taskScheduler.getReadyTable().size());
+        Assert.assertEquals(4, taskGraph.getTaskMap().size());
         // jobB time ready
         timeReadyEventB = new TimeReadyEvent(jobBId, t4);
         dagScheduler.handleTimeReadyEvent(timeReadyEventB);
-        Assert.assertEquals(6, taskScheduler.getReadyTable().size());
+        Assert.assertEquals(6, taskGraph.getTaskMap().size());
     }
 
     @Test

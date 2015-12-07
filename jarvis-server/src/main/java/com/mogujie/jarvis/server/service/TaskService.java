@@ -16,13 +16,16 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Range;
 import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.expression.DependencyExpression;
 import com.mogujie.jarvis.dao.generate.JobMapper;
+import com.mogujie.jarvis.dao.generate.TaskDependMapper;
 import com.mogujie.jarvis.dao.generate.TaskMapper;
 import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.dto.generate.Task;
+import com.mogujie.jarvis.dto.generate.TaskDependExample;
 import com.mogujie.jarvis.dto.generate.TaskExample;
 
 /**
@@ -32,6 +35,9 @@ import com.mogujie.jarvis.dto.generate.TaskExample;
 public class TaskService {
     @Autowired
     private TaskMapper taskMapper;
+
+    @Autowired
+    private TaskDependMapper taskDependMapper;
 
     @Autowired
     private JobMapper jobMapper;
@@ -209,6 +215,17 @@ public class TaskService {
             return 0;
         }
         return new DateTime(tasks.get(0).getScheduleTime()).getMillis();
+    }
+
+    @VisibleForTesting
+    public void deleteTaskAndRelation(long taskId) {
+        if (taskId > 0) {
+            taskMapper.deleteByPrimaryKey(taskId);
+
+            TaskDependExample example = new TaskDependExample();
+            example.createCriteria().andTaskIdEqualTo(taskId);
+            taskDependMapper.deleteByExample(example);
+        }
     }
 
 }

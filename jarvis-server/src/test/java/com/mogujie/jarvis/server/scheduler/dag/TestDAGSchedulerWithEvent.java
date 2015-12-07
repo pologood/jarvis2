@@ -14,6 +14,7 @@ import org.junit.Test;
 import com.google.common.collect.Sets;
 import com.mogujie.jarvis.server.scheduler.event.ScheduleEvent;
 import com.mogujie.jarvis.server.scheduler.event.TimeReadyEvent;
+import com.mogujie.jarvis.server.scheduler.task.DAGTask;
 import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.SpringContext;
 
@@ -48,15 +49,18 @@ public class TestDAGSchedulerWithEvent extends TestSchedulerBase {
         Assert.assertEquals(2, jobGraph.getParents(jobCId).size());
         // schedule jobA
         taskAId = taskService.createTaskByJobId(jobAId, t1);
+        taskGraph.addTask(taskAId, new DAGTask(jobAId, taskAId, t1, null));
         ScheduleEvent scheduleEventA = new ScheduleEvent(jobAId, taskAId, t1);
         dagScheduler.handleScheduleEvent(scheduleEventA);
-        Assert.assertEquals(0, taskScheduler.getReadyTable().size());
+        Assert.assertEquals(1, taskGraph.getTaskMap().size());
+
         // schedule jobB
         // pass the dependency check, start to schedule jobC
-        taskBId = taskService.createTaskByJobId(jobBId, t2);
+        taskBId = taskService.createTaskByJobId(jobAId, t1);
+        taskGraph.addTask(taskBId, new DAGTask(jobBId, taskBId, t2, null));
         ScheduleEvent scheduleEventB = new ScheduleEvent(jobBId, taskBId, t2);
         dagScheduler.handleScheduleEvent(scheduleEventB);
-        Assert.assertEquals(1, taskScheduler.getReadyTable().size());
+        Assert.assertEquals(3, taskGraph.getTaskMap().size());
     }
 
     /**
@@ -77,9 +81,10 @@ public class TestDAGSchedulerWithEvent extends TestSchedulerBase {
         // schedule jobA
         // pass the dependency check, start to schedule jobB and jobC
         taskAId = taskService.createTaskByJobId(jobAId, t1);
+        taskGraph.addTask(taskAId, new DAGTask(jobAId, taskAId, t1, null));
         ScheduleEvent scheduleEventA = new ScheduleEvent(jobAId, taskAId, t1);
         dagScheduler.handleScheduleEvent(scheduleEventA);
-        Assert.assertEquals(2, taskScheduler.getReadyTable().size());
+        Assert.assertEquals(3, taskGraph.getTaskMap().size());
     }
 
     /**
@@ -101,9 +106,10 @@ public class TestDAGSchedulerWithEvent extends TestSchedulerBase {
         // schedule jobA
         // pass the dependency check, start to schedule jobB and jobC
         taskAId = taskService.createTaskByJobId(jobAId, t1);
+        taskGraph.addTask(taskAId, new DAGTask(jobAId, taskAId, t1, null));
         ScheduleEvent scheduleEventA = new ScheduleEvent(jobAId, taskAId, t1);
         dagScheduler.handleScheduleEvent(scheduleEventA);
-        Assert.assertEquals(2, taskScheduler.getReadyTable().size());
+        Assert.assertEquals(3, taskGraph.getTaskMap().size());
     }
 
     /**
@@ -124,12 +130,12 @@ public class TestDAGSchedulerWithEvent extends TestSchedulerBase {
         // jobA time ready
         TimeReadyEvent timeReadyEventA = new TimeReadyEvent(jobAId);
         dagScheduler.handleTimeReadyEvent(timeReadyEventA);
-        Assert.assertEquals(1, taskScheduler.getReadyTable().size());
+        Assert.assertEquals(1, taskGraph.getTaskMap().size());
         // jobB time ready
         // pass the dependency check, start to schedule jobC
         TimeReadyEvent timeReadyEventB = new TimeReadyEvent(jobBId);
         dagScheduler.handleTimeReadyEvent(timeReadyEventB);
-        Assert.assertEquals(3, taskScheduler.getReadyTable().size());
+        Assert.assertEquals(3, taskGraph.getTaskMap().size());
     }
 
     /**
@@ -151,7 +157,7 @@ public class TestDAGSchedulerWithEvent extends TestSchedulerBase {
         // pass the dependency check, start to schedule jobB and jobC
         TimeReadyEvent timeReadyEventA = new TimeReadyEvent(jobAId);
         dagScheduler.handleTimeReadyEvent(timeReadyEventA);
-        Assert.assertEquals(3, taskScheduler.getReadyTable().size());
+        Assert.assertEquals(3, taskGraph.getTaskMap().size());
     }
 
     /**
@@ -174,7 +180,7 @@ public class TestDAGSchedulerWithEvent extends TestSchedulerBase {
         // pass the dependency check, start to schedule jobB and jobC
         TimeReadyEvent timeReadyEventA = new TimeReadyEvent(jobAId);
         dagScheduler.handleTimeReadyEvent(timeReadyEventA);
-        Assert.assertEquals(3, taskScheduler.getReadyTable().size());
+        Assert.assertEquals(3, taskGraph.getTaskMap().size());
     }
 
 }
