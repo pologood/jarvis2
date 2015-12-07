@@ -37,5 +37,7 @@ public class TestTaskDependService {
 
         Assert.assertEquals(write, read);
 
+        taskDependService.remove(taskId);
+
     }
 }

@@ -54,4 +54,10 @@ public class TaskDependService {
         return JsonHelper.fromJson(data.getDependTaskIds(), dataType);
     }
 
+    public void remove(long taskId){
+        mapper.deleteByPrimaryKey(taskId);
+    }
+
+
+
 }
