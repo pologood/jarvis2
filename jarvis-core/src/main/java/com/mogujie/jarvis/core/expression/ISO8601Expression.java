@@ -1,9 +1,7 @@
 /*
- * 蘑菇街 Inc.
- * Copyright (c) 2010-2015 All Rights Reserved.
+ * 蘑菇街 Inc. Copyright (c) 2010-2015 All Rights Reserved.
  *
- * Author: wuya
- * Create Date: 2015年11月5日 下午7:56:32
+ * Author: wuya Create Date: 2015年11月5日 下午7:56:32
  */
 
 package com.mogujie.jarvis.core.expression;
@@ -60,7 +58,6 @@ public class ISO8601Expression extends ScheduleExpression {
             try {
                 period = ISOPeriodFormat.standard().parsePeriod(periodStr);
             } catch (IllegalArgumentException e) {
-                e.printStackTrace();
                 isValid = -1;
                 return false;
             }
