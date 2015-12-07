@@ -31,7 +31,7 @@ import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.tasks.domain.HiveTaskEntity;
 import com.mogujie.jarvis.tasks.util.HiveConfigUtils;
 import com.mogujie.jarvis.tasks.util.MoguAnnotationUtils;
-import com.mogujie.jarvis.tasks.util.MoguDateParamUtils;
+import com.mogujie.jarvis.tasks.util.HiveScriptParamUtils;
 import com.mogujie.jarvis.tasks.util.YarnUtils;
 
 /**
@@ -77,7 +77,7 @@ public abstract class HiveShellTask extends ShellTask {
         sb.append("set mapred.job.name=" + task.getTaskName() + ";");
         // 打印列名的时候不打印表名，否则xray无法显示数据
         sb.append("set hive.resultset.use.unique.column.names=false;");
-        sb.append(MoguAnnotationUtils.removeAnnotation(MoguDateParamUtils.parse(getContent(task))));
+        sb.append(MoguAnnotationUtils.removeAnnotation(HiveScriptParamUtils.parse(getContent(task))));
         sb.append("\"");
         return sb.toString();
 

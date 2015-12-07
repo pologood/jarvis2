@@ -20,8 +20,8 @@ public class JobEntryVo extends  AbstractVo{
     private String appName;
     private Integer workerGroupId;
     private Integer priority;
-    private Integer activeStartTime;
-    private Integer activeEndTime;
+    private Long activeStartTime;
+    private Long activeEndTime;
     private Integer rejectAttempts;
     private Integer rejectInterval;
     private Integer failedAttempts;
@@ -140,16 +140,16 @@ public class JobEntryVo extends  AbstractVo{
     public void setPriority(Integer priority) {
         this.priority = priority;
     }
-    public Integer getActiveStartTime() {
+    public Long getActiveStartTime() {
         return activeStartTime;
     }
-    public void setActiveStartTime(Integer activeStartTime) {
+    public void setActiveStartTime(Long activeStartTime) {
         this.activeStartTime = activeStartTime;
     }
-    public Integer getActiveEndTime() {
+    public Long getActiveEndTime() {
         return activeEndTime;
     }
-    public void setActiveEndTime(Integer activeEndTime) {
+    public void setActiveEndTime(Long activeEndTime) {
         this.activeEndTime = activeEndTime;
     }
 
@@ -193,10 +193,10 @@ public class JobEntryVo extends  AbstractVo{
     public String getAppName(String defaultValue) {
         return (appName != null) ? appName : defaultValue;
     }
-    public Integer getActiveStartTime(Integer defaultValue) {
+    public Long getActiveStartTime(Long defaultValue) {
         return (activeStartTime != null) ? activeStartTime : defaultValue;
     }
-    public Integer getActiveEndTime(Integer defaultValue) {
+    public Long getActiveEndTime(Long defaultValue) {
         return (activeEndTime != null) ? activeEndTime : defaultValue;
     }
     public Integer getPriority(Integer defaultValue) {

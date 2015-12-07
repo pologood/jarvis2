@@ -10,10 +10,10 @@ import com.mogujie.jarvis.worker.util.TaskConfigUtils;
  */
 public class TestWorker {
 
-  @Test
-  public void testJobXml() throws UnirestException {
+    @Test
+    public void testJobXml() throws UnirestException {
 
-    TaskConfigUtils.getRegisteredJobs().get("dummy");
-  }
+        TaskConfigUtils.getRegisteredJobs().get("dummy");
+    }
 
 }

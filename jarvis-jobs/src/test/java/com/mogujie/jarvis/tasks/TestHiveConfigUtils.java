@@ -2,6 +2,7 @@ package com.mogujie.jarvis.tasks;
 
 import com.mogujie.jarvis.tasks.domain.HiveTaskEntity;
 import com.mogujie.jarvis.tasks.util.HiveConfigUtils;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -14,9 +15,7 @@ public class TestHiveConfigUtils {
 
         String app = "ironman";
         HiveTaskEntity hive = HiveConfigUtils.getHiveJobEntry(app);
-        if(hive != null){
-            System.out.print(hive.toString());
-        }
+        Assert.assertNotNull(hive);
     }
 
 }

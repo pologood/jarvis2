@@ -62,7 +62,7 @@ public class JobController extends AbstractController {
             RestSubmitJobRequest.Builder builder = RestSubmitJobRequest.newBuilder().setAppAuth(appAuth).setUser(user).setJobName(jobVo.getJobName())
                     .setJobType(jobVo.getJobType()).setJobFlag(jobVo.getJobFlag()).setContent(jobVo.getContent()).setParameters(jobParameters)
                     .setAppName(jobVo.getAppName(appName)).setWorkerGroupId(jobVo.getWorkerGroupId()).setPriority(jobVo.getPriority(1))
-                    .setActiveStartTime(jobVo.getActiveStartTime(0)).setActiveEndTime(jobVo.getActiveEndTime(0))
+                    .setActiveStartTime(jobVo.getActiveStartTime(0L)).setActiveEndTime(jobVo.getActiveEndTime(0L))
                     .setRejectAttempts(jobVo.getRejectAttempts(0)).setRejectInterval(jobVo.getRejectInterval(3))
                     .setFailedAttempts(jobVo.getFailedAttempts(0)).setFailedInterval(jobVo.getFailedInterval(3));
 
