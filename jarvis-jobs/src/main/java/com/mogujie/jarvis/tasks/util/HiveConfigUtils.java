@@ -23,37 +23,39 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author wuya
- *
  */
 public class HiveConfigUtils {
 
-  private static XMLConfiguration config;
-  private static Map<String, HiveTaskEntity> map = new ConcurrentHashMap<String, HiveTaskEntity>();
-  private static final Logger LOGGER = LogManager.getLogger();
+    private static XMLConfiguration config;
+    private static Map<String, HiveTaskEntity> map = new ConcurrentHashMap<>();
+    private static final Logger LOGGER = LogManager.getLogger();
 
-  static {
-    try {
-      config = new XMLConfiguration("hive-job.xml");
-      config.setReloadingStrategy(new FileChangedReloadingStrategy());
-    } catch (ConfigurationException e) {
-      LOGGER.error("", e);
-    }
-  }
-
-  public synchronized static HiveTaskEntity getHiveJobEntry(String name) {
-    map.clear();
-    List<HierarchicalConfiguration> list = config.configurationsAt(".App");
-    for (HierarchicalConfiguration conf : list) {
-      String appName = conf.getString("[@name]");
-      String user = conf.getString("[@user]");
-      boolean isAdmin = conf.getInt("[@isAdmin]") == 1;
-      int maxResultRows = conf.getInt("[@maxResultRows]");
-      int maxMapperNum = conf.getInt("[@maxMapperNum]");
-      HiveTaskEntity entity = new HiveTaskEntity(appName, user, isAdmin, maxResultRows, maxMapperNum);
-      map.put(appName, entity);
+    static {
+        try {
+            config = new XMLConfiguration("job-hive.xml");
+            config.setReloadingStrategy(new FileChangedReloadingStrategy());
+        } catch (ConfigurationException e) {
+            LOGGER.error("", e);
+        }
     }
 
-    return map.get(name);
-  }
+    public synchronized static HiveTaskEntity getHiveJobEntry(String name) {
+        if(config == null){
+            return  null;
+        }
+        map.clear();
+        List<HierarchicalConfiguration> list = config.configurationsAt(".App");
+        for (HierarchicalConfiguration conf : list) {
+            String appName = conf.getString("[@name]");
+            String user = conf.getString("[@user]");
+            boolean isAdmin = conf.getInt("[@isAdmin]") == 1;
+            int maxResultRows = conf.getInt("[@maxResultRows]");
+            int maxMapperNum = conf.getInt("[@maxMapperNum]");
+            HiveTaskEntity entity = new HiveTaskEntity(appName, user, isAdmin, maxResultRows, maxMapperNum);
+            map.put(appName, entity);
+        }
+
+        return map.get(name);
+    }
 
 }

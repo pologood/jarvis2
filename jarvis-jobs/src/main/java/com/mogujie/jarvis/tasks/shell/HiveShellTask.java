@@ -55,7 +55,7 @@ public abstract class HiveShellTask extends ShellTask {
         TaskDetail task = getTaskContext().getTaskDetail();
         String user = null;
         HiveTaskEntity entity = HiveConfigUtils.getHiveJobEntry(task.getAppName());
-        if (entity == null || (entity.isAdmin() && !task.getUser().trim().isEmpty())) {
+        if (entity == null || (entity.isAdmin() && !task.getUser().isEmpty())) {
             user = task.getUser();
         } else {
             user = entity.getUser();
