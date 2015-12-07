@@ -18,8 +18,8 @@ import com.google.common.collect.Range;
 import com.google.common.collect.Sets;
 import com.mogujie.jarvis.core.exeception.JobScheduleException;
 import com.mogujie.jarvis.server.scheduler.event.TimeReadyEvent;
+import com.mogujie.jarvis.server.scheduler.plan.AllPlanGenerator;
 import com.mogujie.jarvis.server.scheduler.plan.ExecutionPlanEntry;
-import com.mogujie.jarvis.server.scheduler.plan.NextDayPlanGenerator;
 import com.mogujie.jarvis.server.scheduler.plan.PlanGenerator;
 
 /**
@@ -57,11 +57,11 @@ public class TestPlan extends TestSchedulerBase {
         // pass the dependency check, start to schedule jobB and jobC
         TimeReadyEvent timeReadyEventA = new TimeReadyEvent(jobAId, t1);
         dagScheduler.handleTimeReadyEvent(timeReadyEventA);
-        Assert.assertEquals(3, taskScheduler.getReadyTable().size());
+        Assert.assertEquals(3, taskGraph.getTaskMap().size());
         // jobA time ready
         TimeReadyEvent timeReadyEventB = new TimeReadyEvent(jobAId, t2);
         dagScheduler.handleTimeReadyEvent(timeReadyEventB);
-        Assert.assertEquals(6, taskScheduler.getReadyTable().size());
+        Assert.assertEquals(6, taskGraph.getTaskMap().size());
     }
 
     /**
@@ -80,20 +80,20 @@ public class TestPlan extends TestSchedulerBase {
         // jobA time ready
         TimeReadyEvent timeReadyEventA = new TimeReadyEvent(jobAId, t1);
         dagScheduler.handleTimeReadyEvent(timeReadyEventA);
-        Assert.assertEquals(1, taskScheduler.getReadyTable().size());
+        Assert.assertEquals(1, taskGraph.getTaskMap().size());
         // jobB time ready
         TimeReadyEvent timeReadyEventB = new TimeReadyEvent(jobBId, t2);
         dagScheduler.handleTimeReadyEvent(timeReadyEventB);
-        Assert.assertEquals(3, taskScheduler.getReadyTable().size());
+        Assert.assertEquals(3, taskGraph.getTaskMap().size());
 
         // jobA time ready
         timeReadyEventA = new TimeReadyEvent(jobAId, t3);
         dagScheduler.handleTimeReadyEvent(timeReadyEventA);
-        Assert.assertEquals(4, taskScheduler.getReadyTable().size());
+        Assert.assertEquals(4, taskGraph.getTaskMap().size());
         // jobB time ready
         timeReadyEventB = new TimeReadyEvent(jobBId, t4);
         dagScheduler.handleTimeReadyEvent(timeReadyEventB);
-        Assert.assertEquals(6, taskScheduler.getReadyTable().size());
+        Assert.assertEquals(6, taskGraph.getTaskMap().size());
     }
 
     @Test
@@ -104,8 +104,10 @@ public class TestPlan extends TestSchedulerBase {
         jobGraph.addJob(jobDId, new DAGJob(jobDId, DAGJobType.TIME), null);
         jobGraph.addJob(jobEId, new DAGJob(jobEId, DAGJobType.TIME), null);
         jobGraph.addJob(jobFId, new DAGJob(jobFId, DAGJobType.DEPEND), Sets.newHashSet(jobDId, jobEId));
-        NextDayPlanGenerator planGenerator = new NextDayPlanGenerator();
-        planGenerator.generateNextPlan();
+        final DateTime startDateTime = DateTime.now().plusDays(1).withTimeAtStartOfDay();
+        final DateTime endDateTime = DateTime.now().plusDays(2).withTimeAtStartOfDay();
+        AllPlanGenerator planGenerator = new AllPlanGenerator();
+        planGenerator.generateNextPlan(startDateTime, endDateTime);
     }
 
     @Test

@@ -22,6 +22,7 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -105,6 +106,13 @@ public class JobService {
     public void deleteJob(long jobId) {
         jobMapper.deleteByPrimaryKey(jobId);
         metaStore.remove(jobId);
+    }
+
+    @VisibleForTesting
+    public void deleteJobAndRelation(long jobId) {
+        deleteJob(jobId);
+        deleteJobDependByPreJob(jobId);
+        deleteScheduleExpression(jobId);
     }
 
     public JobScheduleExpression getScheduleExpressionByJobId(long jobId) {

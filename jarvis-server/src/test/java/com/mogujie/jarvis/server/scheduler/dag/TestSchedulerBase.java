@@ -8,6 +8,8 @@
 
 package com.mogujie.jarvis.server.scheduler.dag;
 
+import java.util.Map;
+
 import org.apache.commons.configuration.Configuration;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -17,7 +19,11 @@ import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.server.TaskQueue;
 import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.dag.checker.TaskScheduleFactory;
+import com.mogujie.jarvis.server.scheduler.task.DAGTask;
+import com.mogujie.jarvis.server.scheduler.task.TaskGraph;
 import com.mogujie.jarvis.server.scheduler.task.TaskScheduler;
+import com.mogujie.jarvis.server.service.TaskService;
+import com.mogujie.jarvis.server.util.SpringContext;
 
 /**
  * @author guangming
@@ -28,8 +34,10 @@ public class TestSchedulerBase {
     protected static TaskScheduler taskScheduler;
     protected static JobSchedulerController controller;
     protected static JobGraph jobGraph;
+    protected static TaskGraph taskGraph;
     protected static TaskQueue taskQueue;
     protected static Configuration conf = ConfigUtils.getServerConfig();
+    protected TaskService taskService = SpringContext.getBean(TaskService.class);
 
     @BeforeClass
     public static void setup() throws Exception {
@@ -41,7 +49,8 @@ public class TestSchedulerBase {
         taskScheduler = TaskScheduler.getInstance();
         controller.register(dagScheduler);
         controller.register(taskScheduler);
-        jobGraph = dagScheduler.getJobGraph();
+        jobGraph = JobGraph.INSTANCE;
+        taskGraph = TaskGraph.INSTANCE;
         taskQueue = taskScheduler.getTaskQueue();
     }
 
@@ -53,6 +62,10 @@ public class TestSchedulerBase {
 
     @After
     public void tearDown() throws Exception {
+        Map<Long, DAGTask> taskMap = taskGraph.getTaskMap();
+        for (long taskId : taskMap.keySet()) {
+            taskService.deleteTaskAndRelation(taskId);
+        }
         dagScheduler.destroy();
         taskScheduler.destroy();
         taskQueue.clear();

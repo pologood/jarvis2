@@ -1,9 +1,7 @@
 /*
- * 蘑菇街 Inc.
- * Copyright (c) 2010-2015 All Rights Reserved.
+ * 蘑菇街 Inc. Copyright (c) 2010-2015 All Rights Reserved.
  *
- * Author: muming
- * Create Date: 2015年10月08日 下午3:19:28
+ * Author: muming Create Date: 2015年10月08日 下午3:19:28
  */
 package com.mogujie.jarvis.rest.controller;
 
@@ -16,10 +14,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import com.mogujie.jarvis.core.util.JsonHelper;
-import com.mogujie.jarvis.rest.utils.ConvertValidUtils;
-import com.mogujie.jarvis.rest.vo.JobEntryVo;
 import com.mogujie.jarvis.core.domain.AkkaType;
+import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
 import com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry;
 import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobRequest;
@@ -28,6 +24,8 @@ import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobResponse;
 import com.mogujie.jarvis.protocol.JobProtos.ServerSubmitJobResponse;
 import com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry;
 import com.mogujie.jarvis.rest.RestResult;
+import com.mogujie.jarvis.rest.utils.ConvertValidUtils;
+import com.mogujie.jarvis.rest.vo.JobEntryVo;
 import com.mogujie.jarvis.rest.vo.JobVo;
 
 /**
@@ -66,7 +64,7 @@ public class JobController extends AbstractController {
                     .setRejectAttempts(jobVo.getRejectAttempts(0)).setRejectInterval(jobVo.getRejectInterval(3))
                     .setFailedAttempts(jobVo.getFailedAttempts(0)).setFailedInterval(jobVo.getFailedInterval(3));
 
-            if (jobVo.getScheduleExpressionEntry() != null ) {
+            if (jobVo.getScheduleExpressionEntry() != null) {
                 builder.setExpressionEntry(ConvertValidUtils.ConvertScheduleExpressionEnty(jobVo.getScheduleExpressionEntry()));
             }
             if (jobVo.getDependencyList() != null && jobVo.getDependencyList().size() > 0) {
@@ -187,8 +185,7 @@ public class JobController extends AbstractController {
                 return errorResult(response.getMessage());
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            LOGGER.info(e.getStackTrace());
+            LOGGER.error("", e);
             return errorResult(e.getMessage());
         }
     }

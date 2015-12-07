@@ -25,15 +25,13 @@ import com.mogujie.jarvis.server.util.SpringContext;
  * @author guangming
  *
  */
-public class NextDayPlanGenerator extends PlanGenerator {
+public class AllPlanGenerator extends PlanGenerator {
 
     private TaskService taskService = SpringContext.getBean(TaskService.class);
     private JobSchedulerController controller = JobSchedulerController.getInstance();
 
     @Override
-    public void generateNextPlan() {
-        final DateTime startDateTime = DateTime.now().plusDays(1).withTimeAtStartOfDay();
-        final DateTime endDateTime = DateTime.now().plusDays(2).withTimeAtStartOfDay();
+    public void generateNextPlan(DateTime startDateTime, DateTime endDateTime) {
         List<ExecutionPlanEntry> nextDayTimeBasedPlans = new ArrayList<ExecutionPlanEntry>();
 
         // generate next day time based plans

@@ -89,7 +89,6 @@ public class AppController extends AbstractController {
                 return errorResult(response.getMessage());
             }
         } catch (Exception e) {
-            e.printStackTrace();
             LOGGER.error("", e);
             return errorResult(e.getMessage());
         }

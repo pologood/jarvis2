@@ -14,10 +14,12 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.joda.time.DateTime;
+
 import com.mogujie.jarvis.core.domain.JobFlag;
 import com.mogujie.jarvis.server.scheduler.event.RunTaskEvent;
+import com.mogujie.jarvis.server.scheduler.plan.AllPlanGenerator;
 import com.mogujie.jarvis.server.scheduler.plan.ExecutionPlanEntry;
-import com.mogujie.jarvis.server.scheduler.plan.NextDayPlanGenerator;
 
 /**
  * Plan based TimeScheduler
@@ -30,7 +32,7 @@ public class PlanTimeScheduler extends TimeScheduler {
     private static PlanTimeScheduler instance = new PlanTimeScheduler();
 
     private PlanTimeScheduler() {
-        this.planGenerator = new NextDayPlanGenerator();
+        this.planGenerator = new AllPlanGenerator();
 
         long period = planGenerator.getPeriod();
         final String startTime = "23:30:00";
@@ -52,7 +54,9 @@ public class PlanTimeScheduler extends TimeScheduler {
     class PlanTimerTask extends TimerTask {
         @Override
         public void run() {
-            planGenerator.generateNextPlan();
+            final DateTime startDateTime = DateTime.now().plusDays(1).withTimeAtStartOfDay();
+            final DateTime endDateTime = DateTime.now().plusDays(2).withTimeAtStartOfDay();
+            planGenerator.generateNextPlan(startDateTime, endDateTime);
         }
     }
 

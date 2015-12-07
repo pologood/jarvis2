@@ -43,7 +43,7 @@ import com.mogujie.jarvis.server.util.SpringContext;
 public enum JobGraph {
     INSTANCE;
 
-    private Map<Long, DAGJob> waitingTable = new ConcurrentHashMap<Long, DAGJob>();
+    private Map<Long, DAGJob> jobMap = new ConcurrentHashMap<Long, DAGJob>();
     private DirectedAcyclicGraph<DAGJob, DefaultEdge> dag = new DirectedAcyclicGraph<DAGJob, DefaultEdge>(DefaultEdge.class);
     private JobSchedulerController controller = JobSchedulerController.getInstance();
     private JobService jobService = SpringContext.getBean(JobService.class);
@@ -57,11 +57,15 @@ public enum JobGraph {
             tmpJobs.addAll(dag.vertexSet());
             dag.removeAllVertices(tmpJobs);
         }
-        waitingTable.clear();
+        jobMap.clear();
+    }
+
+    protected Map<Long, DAGJob> getJobMap() {
+        return jobMap;
     }
 
     public DAGJob getDAGJob(long jobId) {
-        return waitingTable.get(jobId);
+        return jobMap.get(jobId);
     }
 
     /**
@@ -72,7 +76,7 @@ public enum JobGraph {
      */
     public List<Pair<Long, JobFlag>> getParents(long jobId) {
         List<Pair<Long, JobFlag>> parentJobPairs = new ArrayList<Pair<Long, JobFlag>>();
-        DAGJob dagJob = waitingTable.get(jobId);
+        DAGJob dagJob = jobMap.get(jobId);
         if (dagJob != null) {
             List<DAGJob> parents = getParents(dagJob);
             if (parents != null) {
@@ -99,7 +103,7 @@ public enum JobGraph {
      */
     public List<Pair<Long, JobFlag>> getChildren(long jobId) {
         List<Pair<Long, JobFlag>> childJobPairs = new ArrayList<Pair<Long, JobFlag>>();
-        DAGJob dagJob = waitingTable.get(jobId);
+        DAGJob dagJob = jobMap.get(jobId);
         if (dagJob != null) {
             List<DAGJob> children = getChildren(dagJob);
             if (children != null) {
@@ -124,7 +128,7 @@ public enum JobGraph {
      */
     public List<Long> getActiveTimeBasedJobs() {
         List<Long> jobs = new ArrayList<Long>();
-        for (DAGJob dagJob : waitingTable.values()) {
+        for (DAGJob dagJob : jobMap.values()) {
             if (dagJob.getType().implies(DAGJobType.TIME) &&
                     dagJob.getJobFlag().equals(JobFlag.ENABLE) &&
                     jobService.isActive(dagJob.getJobId())) {
@@ -143,12 +147,12 @@ public enum JobGraph {
      * @throws JobScheduleException
      */
     public synchronized void addJob(long jobId, DAGJob dagJob, Set<Long> dependencies) throws JobScheduleException {
-        if (waitingTable.get(jobId) == null) {
+        if (jobMap.get(jobId) == null) {
             dag.addVertex(dagJob);
             LOGGER.debug("add DAGJob {} to graph successfully.", dagJob.toString());
             if (dependencies != null) {
                 for (long d : dependencies) {
-                    DAGJob parent = waitingTable.get(d);
+                    DAGJob parent = jobMap.get(d);
                     if (parent != null) {
                         try {
                             // 过滤自依赖
@@ -164,7 +168,7 @@ public enum JobGraph {
                     }
                 }
             }
-            waitingTable.put(jobId, dagJob);
+            jobMap.put(jobId, dagJob);
             LOGGER.info("add DAGJob {} to DAGScheduler successfully.", dagJob.toString());
         }
     }
@@ -176,18 +180,18 @@ public enum JobGraph {
      * @throws JobScheduleException
      */
     public synchronized void removeJob(long jobId) throws JobScheduleException {
-        if (waitingTable.containsKey(jobId)) {
-            DAGJob dagJob = waitingTable.get(jobId);
+        if (jobMap.containsKey(jobId)) {
+            DAGJob dagJob = jobMap.get(jobId);
             dagJob.resetTaskSchedule();
             dag.removeVertex(dagJob);
-            waitingTable.remove(jobId);
+            jobMap.remove(jobId);
             LOGGER.info("remove DAGJob {} from DAGScheduler successfully.", jobId);
         }
     }
 
     public synchronized void removeJob(DAGJob dagJob) {
         if (dagJob != null) {
-            waitingTable.remove(dagJob.getJobId());
+            jobMap.remove(dagJob.getJobId());
             dag.removeVertex(dagJob);
         }
     }
@@ -356,8 +360,8 @@ public enum JobGraph {
 
     @VisibleForTesting
     public synchronized void addDependency(long parentId, long childId) throws CycleFoundException {
-        DAGJob parent = waitingTable.get(parentId);
-        DAGJob child = waitingTable.get(childId);
+        DAGJob parent = jobMap.get(parentId);
+        DAGJob child = jobMap.get(childId);
         if (parent != null && child != null) {
             dag.addDagEdge(parent, child);
         }
@@ -365,16 +369,16 @@ public enum JobGraph {
 
     @VisibleForTesting
     protected synchronized void removeDependency(long parentId, long childId) {
-        DAGJob parent = waitingTable.get(parentId);
-        DAGJob child = waitingTable.get(childId);
+        DAGJob parent = jobMap.get(parentId);
+        DAGJob child = jobMap.get(childId);
         if (parent != null && child != null) {
             dag.removeEdge(parent, child);
         }
     }
 
     protected void modifyDependency(long parentId, long childId, String offsetStrategy) {
-        DAGJob parent = waitingTable.get(parentId);
-        DAGJob child = waitingTable.get(childId);
+        DAGJob parent = jobMap.get(parentId);
+        DAGJob child = jobMap.get(childId);
         if (parent != null && child != null) {
             DAGDependChecker checker = child.getDependChecker();
             checker.updateExpression(parentId, offsetStrategy);
@@ -382,7 +386,7 @@ public enum JobGraph {
     }
 
     public Set<Long> getEnableParentJobIds(long jobId) {
-        DAGJob dagJob = waitingTable.get(jobId);
+        DAGJob dagJob = jobMap.get(jobId);
         Set<Long> jobIds = Sets.newHashSet();
         if (dagJob != null) {
             jobIds = getEnableParentJobIds(dagJob);

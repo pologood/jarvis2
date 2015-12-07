@@ -84,17 +84,6 @@ public class PlanGenerator {
         return planMap;
     }
 
-    public void generateReschedulePlan(long jobId, DateTime dateTime) {
-        Range<DateTime> range = Range.closed(dateTime, dateTime);
-        generateReschedulePlan(jobId, range);
-    }
-
-    public void generateReschedulePlan(List<Long> jobIds, DateTime dateTime) {
-        for (Long jobId : jobIds) {
-            generateReschedulePlan(jobId, dateTime);
-        }
-    }
-
     public DateTime getScheduleTimeAfter(long jobId, DateTime dateTime) {
         DateTime result = null;
         JobEntry jobEntry = jobService.get(jobId);
@@ -154,7 +143,7 @@ public class PlanGenerator {
         }
     }
 
-    public void generateNextPlan() {}
+    public void generateNextPlan(DateTime startDateTime, DateTime endDateTime) {}
 
     public long getPeriod() {
         return 0;
