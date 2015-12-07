@@ -9,13 +9,14 @@ package com.mogujie.jarvis.server.actor;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mogujie.jarvis.core.domain.ActorEntry;
-import com.mogujie.jarvis.protocol.ReportTaskStatusProtos.WorkerReportTaskStatusRequest;
-import com.mogujie.jarvis.server.util.SpringExtension;
-
 import akka.actor.ActorRef;
 import akka.actor.Props;
 import akka.actor.UntypedActor;
+
+import com.mogujie.jarvis.core.domain.ActorEntry;
+import com.mogujie.jarvis.protocol.ReportTaskProgressProtos.WorkerReportTaskProgressRequest;
+import com.mogujie.jarvis.protocol.ReportTaskStatusProtos.WorkerReportTaskStatusRequest;
+import com.mogujie.jarvis.server.util.SpringExtension;
 
 public class TaskMetricsRoutingActor extends UntypedActor {
 
@@ -39,6 +40,10 @@ public class TaskMetricsRoutingActor extends UntypedActor {
     public void onReceive(Object obj) throws Exception {
         if (obj instanceof WorkerReportTaskStatusRequest) {
             WorkerReportTaskStatusRequest request = (WorkerReportTaskStatusRequest) obj;
+            String fullId = request.getFullId();
+            actors.get(Math.abs(fullId.hashCode()) % size).forward(obj, getContext());
+        } else if (obj instanceof WorkerReportTaskProgressRequest) {
+            WorkerReportTaskProgressRequest request = (WorkerReportTaskProgressRequest) obj;
             String fullId = request.getFullId();
             actors.get(Math.abs(fullId.hashCode()) % size).forward(obj, getContext());
         } else {

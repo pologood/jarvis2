@@ -9,8 +9,6 @@ package com.mogujie.jarvis.server.actor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,7 +17,15 @@ import javax.inject.Named;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 
+import akka.actor.ActorRef;
+import akka.actor.Props;
+import akka.actor.UntypedActor;
+import akka.routing.RouterConfig;
+import akka.routing.SmallestMailboxPool;
+
 import com.google.common.base.Throwables;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.protobuf.GeneratedMessage;
 import com.mogujie.jarvis.core.domain.ActorEntry;
 import com.mogujie.jarvis.core.domain.MessageType;
@@ -32,12 +38,6 @@ import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
 import com.mogujie.jarvis.server.util.AppTokenUtils;
 import com.mogujie.jarvis.server.util.SpringExtension;
 
-import akka.actor.ActorRef;
-import akka.actor.Props;
-import akka.actor.UntypedActor;
-import akka.routing.RouterConfig;
-import akka.routing.SmallestMailboxPool;
-
 @Named("serverActor")
 @Scope("prototype")
 public class ServerActor extends UntypedActor {
@@ -45,8 +45,8 @@ public class ServerActor extends UntypedActor {
     @Autowired
     private AppMapper appMapper;
 
-    private Map<Class<?>, Pair<ActorRef, ActorEntry>> map = new HashMap<>();
-    private List<Pair<ActorRef, List<ActorEntry>>> actorRefs = new ArrayList<>();
+    private static Map<Class<?>, Pair<ActorRef, ActorEntry>> map = Maps.newConcurrentMap();
+    private static List<Pair<ActorRef, List<ActorEntry>>> actorRefs = Lists.newArrayList();
 
     public static Props props() {
         return Props.create(ServerActor.class);
@@ -69,14 +69,14 @@ public class ServerActor extends UntypedActor {
     }
 
     private void addActor(String actorName, RouterConfig routerConfig, List<ActorEntry> handledMessages) {
-        ActorRef actorRef = getContext()
-                .actorOf(SpringExtension.SPRING_EXT_PROVIDER.get(getContext().system()).props(actorName).withRouter(routerConfig));
+        ActorRef actorRef = getContext().actorOf(
+                SpringExtension.SPRING_EXT_PROVIDER.get(getContext().system()).props(actorName).withRouter(routerConfig));
         actorRefs.add(new Pair<>(actorRef, handledMessages));
     }
 
     private void addActors() {
-        actorRefs.add(new Pair<ActorRef, List<ActorEntry>>(getContext().actorOf(TaskMetricsRoutingActor.props(50)),
-                TaskMetricsRoutingActor.handledMessages()));
+        actorRefs.add(new Pair<ActorRef, List<ActorEntry>>(getContext().actorOf(TaskMetricsRoutingActor.props(50)), TaskMetricsRoutingActor
+                .handledMessages()));
         addActor("heartBeatActor", HeartBeatActor.handledMessages());
         addActor("workerRegistryActor", WorkerRegistryActor.handledMessages());
         addActor("taskActor", new SmallestMailboxPool(10), TaskActor.handledMessages());
@@ -114,11 +114,15 @@ public class ServerActor extends UntypedActor {
 
     @Override
     public void preStart() throws Exception {
-        addActors();
-        for (Pair<ActorRef, List<ActorEntry>> pair : actorRefs) {
-            ActorRef actorRef = pair.getFirst();
-            for (ActorEntry handledMessage : pair.getSecond()) {
-                map.put(handledMessage.getRequestClass(), new Pair<ActorRef, ActorEntry>(actorRef, handledMessage));
+        synchronized (actorRefs) {
+            if (actorRefs.size() == 0) {
+                addActors();
+                for (Pair<ActorRef, List<ActorEntry>> pair : actorRefs) {
+                    ActorRef actorRef = pair.getFirst();
+                    for (ActorEntry handledMessage : pair.getSecond()) {
+                        map.put(handledMessage.getRequestClass(), new Pair<ActorRef, ActorEntry>(actorRef, handledMessage));
+                    }
+                }
             }
         }
     }
@@ -162,7 +166,6 @@ public class ServerActor extends UntypedActor {
                 }
             }
         }
-
         pair.getFirst().forward(obj, getContext());
     }
 

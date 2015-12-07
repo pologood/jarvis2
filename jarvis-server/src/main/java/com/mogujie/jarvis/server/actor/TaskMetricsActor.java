@@ -38,8 +38,7 @@ import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.service.WorkerService;
 
 /**
- * Actor used to receive task metrics information (e.g. status, process) 1. send task status to
- * {@link com.mogujie.jarvis.server.actor.JobSchedulerActor } 2. send process to restserver
+ * Actor used to receive task metrics information (e.g. status, process)
  *
  * @author guangming
  *

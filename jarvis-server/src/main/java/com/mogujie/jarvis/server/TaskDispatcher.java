@@ -99,9 +99,11 @@ public class TaskDispatcher extends Thread {
                     builder = builder.setSchedulingTime(task.getSchedulingTime());
 
                     int i = 0;
-                    for (Entry<String, Object> entry : task.getParameters().entrySet()) {
-                        MapEntry mapEntry = MapEntry.newBuilder().setKey(entry.getKey()).setValue(entry.getValue().toString()).build();
-                        builder.addParameters(i++, mapEntry);
+                    if (task.getParameters() != null) {
+                        for (Entry<String, Object> entry : task.getParameters().entrySet()) {
+                            MapEntry mapEntry = MapEntry.newBuilder().setKey(entry.getKey()).setValue(entry.getValue().toString()).build();
+                            builder.addParameters(i++, mapEntry);
+                        }
                     }
                     ServerSubmitTaskRequest request = builder.build();
 

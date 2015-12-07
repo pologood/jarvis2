@@ -63,7 +63,6 @@ public class TaskService {
         task.setWorkerId(workerId);
         task.setUpdateTime(new Date());
         taskMapper.updateByPrimaryKeySelective(task);
-        System.out.println(DateTime.now()+"\t"+task);
     }
 
     public List<Task> getTasks(List<Long> taskIds) {
@@ -130,7 +129,6 @@ public class TaskService {
         task.setUpdateTime(currentTime);
         task.setWorkerId(workerId);
         taskMapper.updateByPrimaryKeySelective(task);
-        System.out.println(DateTime.now()+"\t"+task);
     }
 
     public void updateStatusWithEnd(long taskId, TaskStatus status) {
@@ -142,7 +140,6 @@ public class TaskService {
         task.setExecuteEndTime(currentTime);
         task.setUpdateTime(currentTime);
         taskMapper.updateByPrimaryKeySelective(task);
-        System.out.println(DateTime.now()+"\t"+task);
     }
 
     public void updateStatus(long taskId, TaskStatus status) {
