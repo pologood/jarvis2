@@ -26,10 +26,9 @@ import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.core.domain.Pair;
 import com.mogujie.jarvis.core.exeception.AppTokenInvalidException;
 import com.mogujie.jarvis.core.util.ConfigUtils;
-import com.mogujie.jarvis.dao.generate.AppMapper;
 import com.mogujie.jarvis.dto.generate.App;
-import com.mogujie.jarvis.dto.generate.AppExample;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
+import com.mogujie.jarvis.server.service.AppService;
 import com.mogujie.jarvis.server.util.AppTokenUtils;
 import com.mogujie.jarvis.server.util.SpringExtension;
 
@@ -44,7 +43,7 @@ import akka.routing.SmallestMailboxPool;
 public class ServerActor extends UntypedActor {
 
     @Autowired
-    private AppMapper appMapper;
+    private AppService appService;
 
     private static boolean appTokenVerifyEnable = ConfigUtils.getServerConfig().getBoolean("app.token.verify.enable", true);
     private static Map<Class<?>, Pair<ActorRef, ActorEntry>> map = Maps.newConcurrentMap();
@@ -52,17 +51,6 @@ public class ServerActor extends UntypedActor {
 
     public static Props props() {
         return Props.create(ServerActor.class);
-    }
-
-    private App queryAppByName(String appName) {
-        AppExample example = new AppExample();
-        example.createCriteria().andAppNameEqualTo(appName);
-        List<App> list = appMapper.selectByExample(example);
-        if (list != null && list.size() > 0) {
-            return list.get(0);
-        }
-
-        return null;
     }
 
     private void addActor(String actorName, List<ActorEntry> handledMessages) {
@@ -145,7 +133,7 @@ public class ServerActor extends UntypedActor {
                 field.setAccessible(true);
                 AppAuth appAuth = (AppAuth) field.get(obj);
                 String appName = appAuth.getName();
-                App app = queryAppByName(appName);
+                App app = appService.getAppByName(appName);
                 if (app == null) {
                     Object msg = generateResponse(actorEntry.getResponseClass(), false, "App[" + appName + "] not found");
                     getSender().tell(msg, getSelf());

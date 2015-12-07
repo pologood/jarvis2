@@ -28,7 +28,6 @@ import com.mogujie.jarvis.core.expression.ISO8601Expression;
 import com.mogujie.jarvis.core.expression.ScheduleExpression;
 import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.dto.generate.Task;
-import com.mogujie.jarvis.server.actor.ServerActor;
 import com.mogujie.jarvis.server.domain.JobEntry;
 import com.mogujie.jarvis.server.scheduler.AlarmScheduler;
 import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
@@ -48,7 +47,7 @@ import com.mogujie.jarvis.server.util.SpringContext;
 import com.mogujie.jarvis.server.util.SpringExtension;
 
 import akka.actor.ActorSystem;
-import akka.routing.SmallestMailboxPool;
+import akka.routing.RoundRobinPool;
 
 public class JarvisServer {
 
@@ -61,7 +60,8 @@ public class JarvisServer {
         ActorSystem system = JarvisServerActorSystem.getInstance();
         SpringExtension.SPRING_EXT_PROVIDER.get(system).initialize(context);
 
-        system.actorOf(new SmallestMailboxPool(500).props(ServerActor.props()), JarvisConstants.SERVER_AKKA_SYSTEM_NAME);
+        system.actorOf(SpringExtension.SPRING_EXT_PROVIDER.get(system).props("serverActor").withRouter(new RoundRobinPool(500)),
+                JarvisConstants.SERVER_AKKA_SYSTEM_NAME);
 
         int taskDispatcherThreads = 5;
         ExecutorService executorService = Executors.newFixedThreadPool(taskDispatcherThreads);
