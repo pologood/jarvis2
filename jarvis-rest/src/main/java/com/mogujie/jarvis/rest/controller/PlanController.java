@@ -8,12 +8,17 @@
 
 package com.mogujie.jarvis.rest.controller;
 
+import java.lang.reflect.Type;
+import java.util.Map;
+
 import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import com.google.gson.reflect.TypeToken;
 import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.protocol.AppAuthProtos;
 import com.mogujie.jarvis.protocol.GeneratePlanProtos.RestServerGenereateAllPlanRequest;
@@ -22,6 +27,7 @@ import com.mogujie.jarvis.protocol.RemovePlanProtos.RestServerRemovePlanRequest;
 import com.mogujie.jarvis.protocol.RemovePlanProtos.ServerRemovePlanResponse;
 import com.mogujie.jarvis.rest.RestResult;
 import com.mogujie.jarvis.rest.utils.JsonParameters;
+import com.mogujie.jarvis.rest.vo.JobVo;
 
 /**
  * @author guangming
@@ -77,7 +83,8 @@ public class PlanController extends AbstractController {
         try {
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
-            JsonParameters para = new JsonParameters(parameters);
+            Type type = new TypeToken<Map<String, Long>>() {}.getType();
+            JsonParameters para = new JsonParameters(parameters, type);
             long startTime = para.getLong("start");
             long endTime = para.getLong("end");
             RestServerGenereateAllPlanRequest request = RestServerGenereateAllPlanRequest.newBuilder()
@@ -96,5 +103,15 @@ public class PlanController extends AbstractController {
             LOGGER.error(e.getMessage());
             return errorResult(e.getMessage());
         }
+    }
+
+    @GET
+    @Path("test")
+    @Produces(MediaType.APPLICATION_JSON)
+    public RestResult<?> test() throws Exception {
+        JobVo vo = new JobVo();
+        vo.setJobId(123456);
+        return successResult(vo);
+
     }
 }

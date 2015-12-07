@@ -20,8 +20,12 @@ public class JsonParameters {
     private Map<String, Object> data;
 
     public JsonParameters(String jsonString) {
+        this(jsonString, mapType);
+    }
+
+    public JsonParameters(String jsonString, Type typeOfT) {
         try {
-            data = gson.fromJson(jsonString, mapType);
+            data = gson.fromJson(jsonString, typeOfT);
         } catch (JsonSyntaxException ex) {
         }
         if (data == null) {
