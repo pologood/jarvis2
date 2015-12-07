@@ -1,7 +1,9 @@
 /*
- * 蘑菇街 Inc. Copyright (c) 2010-2015 All Rights Reserved.
+ * 蘑菇街 Inc. 
+ * Copyright (c) 2010-2015 All Rights Reserved.
  *
- * Author: wuya Create Date: 2015年10月9日 下午5:14:53
+ * Author: wuya
+ * Create Date: 2015年10月9日 下午5:14:53
  */
 
 package com.mogujie.jarvis.server.actor;
@@ -25,6 +27,7 @@ import com.mogujie.jarvis.protocol.ApplicationProtos.RestModifyApplicationReques
 import com.mogujie.jarvis.protocol.ApplicationProtos.ServerCreateApplicationResponse;
 import com.mogujie.jarvis.protocol.ApplicationProtos.ServerModifyApplicationResponse;
 import com.mogujie.jarvis.server.TaskManager;
+import com.mogujie.jarvis.server.service.AppService;
 
 import akka.actor.UntypedActor;
 
@@ -34,8 +37,12 @@ public class AppActor extends UntypedActor {
 
     @Autowired
     private TaskManager taskManager;
+
     @Autowired
     private AppMapper appMapper;
+
+    @Autowired
+    private AppService appService;
 
     public static List<ActorEntry> handledMessages() {
         List<ActorEntry> list = new ArrayList<>();
@@ -99,6 +106,8 @@ public class AppActor extends UntypedActor {
             app.setUpdateUser(request.getUser());
 
             appMapper.updateByPrimaryKeySelective(app);
+            appService.update(app);
+
             if (request.hasMaxConcurrency()) {
                 taskManager.updateAppMaxParallelism(appId, request.getMaxConcurrency());
             }

@@ -8,13 +8,20 @@
 
 package com.mogujie.jarvis.server.service;
 
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.common.base.Preconditions;
-import com.mogujie.jarvis.core.domain.AppStatus;
+import com.google.common.base.Throwables;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.mogujie.jarvis.dao.generate.AppMapper;
 import com.mogujie.jarvis.dao.generate.AppWorkerGroupMapper;
 import com.mogujie.jarvis.dto.generate.App;
@@ -35,24 +42,65 @@ public class AppService {
     @Autowired
     private AppWorkerGroupMapper appWorkerGroupMapper;
 
+    private Map<Integer, App> appMetastore = Maps.newConcurrentMap();
+
+    @PostConstruct
+    private void init() {
+        AppExample example = new AppExample();
+        List<App> apps = appMapper.selectByExample(example);
+        for (App app : apps) {
+            appMetastore.put(app.getAppId(), app);
+        }
+    }
+
     public int getAppIdByName(String appName) {
         return getAppByName(appName).getAppId();
     }
 
     public App getAppByName(String appName) {
         Preconditions.checkNotNull(appName, appName + "not found.");
-        AppExample example = new AppExample();
-        example.createCriteria().andAppNameEqualTo(appName);
-        List<App> apps = appMapper.selectByExample(example);
-        Preconditions.checkNotNull(apps, appName + "not found.");
-        Preconditions.checkArgument(!apps.isEmpty(), appName + "not found.");
-        return apps.get(0);
+        for (Entry<Integer, App> entry : appMetastore.entrySet()) {
+            App app = entry.getValue();
+            if (app.getAppName().equals(appName)) {
+                return app;
+            }
+        }
+
+        return null;
     }
 
     public List<App> getAppList() {
-        AppExample example = new AppExample();
-        example.createCriteria().andStatusEqualTo(AppStatus.ENABLE.getValue());
-        return appMapper.selectByExample(example);
+        List<App> list = Lists.newArrayList(appMetastore.values());
+        return list;
+    }
+
+    public void removeApp(int appId) {
+        appMetastore.remove(appId);
+    }
+
+    public void add(App app) {
+        appMetastore.put(app.getAppId(), app);
+    }
+
+    public void update(App app) {
+        int appId = app.getAppId();
+        App srcApp = appMetastore.get(appId);
+        if (srcApp == null) {
+            appMetastore.put(appId, app);
+        } else {
+            Field[] fields = app.getClass().getDeclaredFields();
+            for (Field field : fields) {
+                field.setAccessible(true);
+                try {
+                    Object value = field.get(app);
+                    if (value != null) {
+                        field.set(srcApp, value);
+                    }
+                } catch (IllegalArgumentException | IllegalAccessException e) {
+                    Throwables.propagate(e);
+                }
+            }
+        }
     }
 
     /**
