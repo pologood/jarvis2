@@ -129,11 +129,11 @@ public class TaskScheduler extends Scheduler {
     @Transactional
     @AllowConcurrentEvents
     public void handleFailedEvent(FailedEvent e) {
-        long jobId = e.getJobId();
         long taskId = e.getTaskId();
         DAGTask dagTask = taskGraph.getTask(taskId);
         if (dagTask != null) {
-            Job job = jobService.get(dagTask.getJobId()).getJob();
+            long jobId = dagTask.getJobId();
+            Job job = jobService.get(jobId).getJob();
             int failedRetries = job.getFailedAttempts();
             int failedInterval = job.getFailedInterval();
 

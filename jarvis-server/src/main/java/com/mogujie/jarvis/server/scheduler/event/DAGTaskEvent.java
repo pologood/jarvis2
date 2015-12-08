@@ -21,6 +21,10 @@ public abstract class DAGTaskEvent extends DAGJobEvent {
         this.taskId = taskId;
     }
 
+    public DAGTaskEvent(long taskId) {
+        this(0, taskId);
+    }
+
     public long getTaskId() {
         return taskId;
     }

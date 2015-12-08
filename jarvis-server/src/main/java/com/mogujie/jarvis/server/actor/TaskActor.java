@@ -33,8 +33,10 @@ import com.mogujie.jarvis.core.domain.IdType;
 import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.domain.TaskDetail.TaskDetailBuilder;
+import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.domain.WorkerInfo;
 import com.mogujie.jarvis.core.expression.DependencyExpression;
+import com.mogujie.jarvis.core.observer.Event;
 import com.mogujie.jarvis.core.util.IdUtils;
 import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.dto.generate.Task;
@@ -44,6 +46,8 @@ import com.mogujie.jarvis.protocol.KillTaskProtos.ServerKillTaskResponse;
 import com.mogujie.jarvis.protocol.KillTaskProtos.WorkerKillTaskResponse;
 import com.mogujie.jarvis.protocol.ManualRerunTaskProtos.RestServerManualRerunTaskRequest;
 import com.mogujie.jarvis.protocol.ManualRerunTaskProtos.ServerManualRerunTaskResponse;
+import com.mogujie.jarvis.protocol.ModifyTaskStatusProtos.RestServerModifyTaskStatusRequest;
+import com.mogujie.jarvis.protocol.ModifyTaskStatusProtos.ServerModifyTaskStatusResponse;
 import com.mogujie.jarvis.protocol.RetryTaskProtos.RestServerRetryTaskRequest;
 import com.mogujie.jarvis.protocol.RetryTaskProtos.ServerRetryTaskResponse;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest;
@@ -53,9 +57,12 @@ import com.mogujie.jarvis.server.TaskQueue;
 import com.mogujie.jarvis.server.domain.JobDependencyEntry;
 import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.dag.JobGraph;
+import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
 import com.mogujie.jarvis.server.scheduler.event.ManualRerunTaskEvent;
 import com.mogujie.jarvis.server.scheduler.event.RetryTaskEvent;
 import com.mogujie.jarvis.server.scheduler.event.ScheduleEvent;
+import com.mogujie.jarvis.server.scheduler.event.SuccessEvent;
+import com.mogujie.jarvis.server.scheduler.event.UnhandleEvent;
 import com.mogujie.jarvis.server.scheduler.plan.ExecutionPlanEntry;
 import com.mogujie.jarvis.server.scheduler.plan.PlanGenerator;
 import com.mogujie.jarvis.server.scheduler.task.DAGTask;
@@ -101,6 +108,9 @@ public class TaskActor extends UntypedActor {
         } else if (obj instanceof RestServerSubmitTaskRequest) {
             RestServerSubmitTaskRequest msg = (RestServerSubmitTaskRequest) obj;
             submitTask(msg);
+        } else if (obj instanceof RestServerModifyTaskStatusRequest) {
+            RestServerModifyTaskStatusRequest msg = (RestServerModifyTaskStatusRequest) obj;
+            modifyTaskStatus(msg);
         } else {
             unhandled(obj);
         }
@@ -256,6 +266,27 @@ public class TaskActor extends UntypedActor {
         }
     }
 
+    /**
+     * 强制修改task状态（非管理员禁止使用！！）
+     *
+     * @param msg
+     */
+    private void modifyTaskStatus(RestServerModifyTaskStatusRequest msg) {
+        long taskId = msg.getTaskId();
+        TaskStatus status = TaskStatus.getInstance(msg.getStatus());
+        Event event = new UnhandleEvent();
+        if (status.equals(TaskStatus.SUCCESS)) {
+            event = new SuccessEvent(taskId);
+        } else if (status.equals(TaskStatus.FAILED)) {
+            event = new FailedEvent(taskId);
+        }
+        JobSchedulerController schedulerController = JobSchedulerController.getInstance();
+        schedulerController.notify(event);
+        ServerModifyTaskStatusResponse response = ServerModifyTaskStatusResponse.newBuilder()
+                .setSuccess(true).build();
+        getSender().tell(response, getSelf());
+    }
+
     private TaskDetail createRunOnceTask(RestServerSubmitTaskRequest request) {
         Task task = convertValidService.convert2Task(request);
         long taskId = taskService.insert(task);
@@ -284,6 +315,7 @@ public class TaskActor extends UntypedActor {
         list.add(new ActorEntry(RestServerRetryTaskRequest.class, ServerRetryTaskResponse.class, MessageType.GENERAL));
         list.add(new ActorEntry(RestServerSubmitTaskRequest.class, ServerSubmitTaskResponse.class, MessageType.GENERAL));
         list.add(new ActorEntry(RestServerManualRerunTaskRequest.class, ServerManualRerunTaskResponse.class, MessageType.GENERAL));
+        list.add(new ActorEntry(RestServerModifyTaskStatusRequest.class, ServerModifyTaskStatusResponse.class, MessageType.GENERAL));
         return list;
     }
 }

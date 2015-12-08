@@ -17,21 +17,22 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import com.mogujie.jarvis.core.util.JsonHelper;
-import com.mogujie.jarvis.rest.utils.JsonParameters;
-
 import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.core.util.IdUtils;
+import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.protocol.AppAuthProtos;
 import com.mogujie.jarvis.protocol.KillTaskProtos.RestServerKillTaskRequest;
 import com.mogujie.jarvis.protocol.KillTaskProtos.ServerKillTaskResponse;
 import com.mogujie.jarvis.protocol.ManualRerunTaskProtos.RestServerManualRerunTaskRequest;
 import com.mogujie.jarvis.protocol.ManualRerunTaskProtos.ServerManualRerunTaskResponse;
+import com.mogujie.jarvis.protocol.ModifyTaskStatusProtos.RestServerModifyTaskStatusRequest;
+import com.mogujie.jarvis.protocol.ModifyTaskStatusProtos.ServerModifyTaskStatusResponse;
 import com.mogujie.jarvis.protocol.RetryTaskProtos.RestServerRetryTaskRequest;
 import com.mogujie.jarvis.protocol.RetryTaskProtos.ServerRetryTaskResponse;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse;
 import com.mogujie.jarvis.rest.RestResult;
+import com.mogujie.jarvis.rest.utils.JsonParameters;
 import com.mogujie.jarvis.rest.vo.RerunTaskVo;
 import com.mogujie.jarvis.rest.vo.TaskEntryVo;
 import com.mogujie.jarvis.rest.vo.TaskVo;
@@ -42,6 +43,12 @@ import com.mogujie.jarvis.rest.vo.TaskVo;
  */
 @Path("api/task")
 public class TaskController extends AbstractController {
+
+    /**
+     * 根据fullId kill task
+     *
+     * @throws Exception
+     */
     @POST
     @Path("kill")
     @Produces(MediaType.APPLICATION_JSON)
@@ -70,6 +77,11 @@ public class TaskController extends AbstractController {
         }
     }
 
+    /**
+     * 根据taskId原地重试task，按照历史依赖关系
+     *
+     * @throws Exception
+     */
     @POST
     @Path("retry")
     @Produces(MediaType.APPLICATION_JSON)
@@ -95,6 +107,11 @@ public class TaskController extends AbstractController {
         }
     }
 
+    /**
+     * 给定jobId和一段时间，手动重跑任务，按照新的依赖关系，支持是否重跑后续任务
+     *
+     * @throws Exception
+     */
     @POST
     @Path("rerun")
     @Produces(MediaType.APPLICATION_JSON)
@@ -128,6 +145,11 @@ public class TaskController extends AbstractController {
         }
     }
 
+    /**
+     * 提交一次性任务
+     *
+     * @throws Exception
+     */
     @POST
     @Path("submit")
     @Produces(MediaType.APPLICATION_JSON)
@@ -155,6 +177,38 @@ public class TaskController extends AbstractController {
                 return errorResult(response.getMessage());
             }
 
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+            return errorResult(e.getMessage());
+        }
+    }
+
+    /**
+     * 强制修改task的状态（慎用！！仅限管理员使用！！）
+     *
+     * @throws Exception
+     */
+    @POST
+    @Path("modify/status")
+    @Produces(MediaType.APPLICATION_JSON)
+    public RestResult<?> modifyStatus(@FormParam("user") String user, @FormParam("appToken") String appToken, @FormParam("appName") String appName,
+            @FormParam("parameters") String parameters) {
+        try {
+            AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
+
+            JsonParameters para = new JsonParameters(parameters);
+            long taskId = para.getLong("taskId");
+            int status = para.getInteger("status");
+
+            RestServerModifyTaskStatusRequest request = RestServerModifyTaskStatusRequest.newBuilder()
+                    .setAppAuth(appAuth).setTaskId(taskId).setStatus(status).build();
+
+            ServerModifyTaskStatusResponse response = (ServerModifyTaskStatusResponse) callActor(AkkaType.SERVER, request);
+            if (response.getSuccess()) {
+                return successResult();
+            } else {
+                return errorResult(response.getMessage());
+            }
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
             return errorResult(e.getMessage());

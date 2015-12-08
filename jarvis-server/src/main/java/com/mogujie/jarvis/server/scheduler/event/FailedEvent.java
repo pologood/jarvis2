@@ -23,4 +23,11 @@ public class FailedEvent extends DAGTaskEvent {
         super(jobId, taskId);
     }
 
+    /**
+     * @param  taskId
+     */
+    public FailedEvent(long taskId) {
+        super(taskId);
+    }
+
 }
