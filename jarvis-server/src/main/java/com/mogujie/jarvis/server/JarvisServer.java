@@ -16,7 +16,11 @@ import java.util.concurrent.Executors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jgrapht.experimental.dag.DirectedAcyclicGraph.CycleFoundException;
+import org.joda.time.DateTime;
 import org.springframework.context.ApplicationContext;
+
+import akka.actor.ActorSystem;
+import akka.routing.RoundRobinPool;
 
 import com.google.common.collect.Lists;
 import com.mogujie.jarvis.core.JarvisConstants;
@@ -37,7 +41,10 @@ import com.mogujie.jarvis.server.scheduler.TaskRetryScheduler;
 import com.mogujie.jarvis.server.scheduler.dag.DAGJob;
 import com.mogujie.jarvis.server.scheduler.dag.DAGJobType;
 import com.mogujie.jarvis.server.scheduler.dag.DAGScheduler;
+import com.mogujie.jarvis.server.scheduler.dag.JobGraph;
 import com.mogujie.jarvis.server.scheduler.event.StartEvent;
+import com.mogujie.jarvis.server.scheduler.plan.ExecutionPlan;
+import com.mogujie.jarvis.server.scheduler.plan.ExecutionPlanEntry;
 import com.mogujie.jarvis.server.scheduler.task.DAGTask;
 import com.mogujie.jarvis.server.scheduler.task.TaskGraph;
 import com.mogujie.jarvis.server.scheduler.task.TaskScheduler;
@@ -47,9 +54,6 @@ import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.SpringContext;
 import com.mogujie.jarvis.server.util.SpringExtension;
-
-import akka.actor.ActorSystem;
-import akka.routing.RoundRobinPool;
 
 public class JarvisServer {
 
@@ -92,6 +96,7 @@ public class JarvisServer {
         TaskScheduler taskScheduler = TaskScheduler.getInstance();
         TimeScheduler timeScheduler = TimeSchedulerFactory.getInstance();
         AlarmScheduler alarmScheduler = SpringContext.getBean(AlarmScheduler.class);
+        JobGraph jobGraph = JobGraph.INSTANCE;
         TaskGraph taskGraph = TaskGraph.INSTANCE;
         controller.register(dagScheduler);
         controller.register(taskScheduler);
@@ -156,12 +161,16 @@ public class JarvisServer {
                 }
             }
         }
-        // 3.3 重跑waiting和ready的task
+        // 3.3 把waiting和ready的task重新加入执行计划
         List<Task> readyTasks = taskService.getTasksByStatus(Lists.newArrayList(TaskStatus.WAITING.getValue(), TaskStatus.READY.getValue()));
         for (Task task : readyTasks) {
-            DAGTask dagTask = taskGraph.getTask(task.getTaskId());
-            if (dagTask != null && dagTask.checkStatus()) {
-                taskScheduler.submitTask(dagTask);
+            long jobId = task.getJobId();
+            DAGJob dagJob = jobGraph.getDAGJob(jobId);
+            if (dagJob.getType().implies(DAGJobType.TIME)) {
+                ExecutionPlan plan = ExecutionPlan.INSTANCE;
+                ExecutionPlanEntry planEntry = new ExecutionPlanEntry(jobId,
+                        new DateTime(task.getScheduleTime()), task.getTaskId());
+                plan.addPlan(planEntry);
             }
         }
 
