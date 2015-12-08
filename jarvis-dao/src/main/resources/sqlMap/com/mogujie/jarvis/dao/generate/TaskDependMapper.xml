@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.mogujie.jarvis.dto.generate.TaskDepend" >
     <id column="taskId" property="taskId" jdbcType="BIGINT" />
     <result column="dependTaskIds" property="dependTaskIds" jdbcType="VARCHAR" />
+    <result column="childTaskIds" property="childTaskIds" jdbcType="VARCHAR" />
     <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Example_Where_Clause" >
@@ -65,7 +66,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    taskId, dependTaskIds, createTime
+    taskId, dependTaskIds, childTaskIds, createTime
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.mogujie.jarvis.dto.generate.TaskDependExample" >
     select
@@ -98,10 +99,10 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.mogujie.jarvis.dto.generate.TaskDepend" >
-    insert into task_depend (taskId, dependTaskIds, createTime
-      )
-    values (#{taskId,jdbcType=BIGINT}, #{dependTaskIds,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
-      )
+    insert into task_depend (taskId, dependTaskIds, childTaskIds, 
+      createTime)
+    values (#{taskId,jdbcType=BIGINT}, #{dependTaskIds,jdbcType=VARCHAR}, #{childTaskIds,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.mogujie.jarvis.dto.generate.TaskDepend" >
     insert into task_depend
@@ -111,6 +112,9 @@
       </if>
       <if test="dependTaskIds != null" >
         dependTaskIds,
+      </if>
+      <if test="childTaskIds != null" >
+        childTaskIds,
       </if>
       <if test="createTime != null" >
         createTime,
@@ -122,6 +126,9 @@
       </if>
       <if test="dependTaskIds != null" >
         #{dependTaskIds,jdbcType=VARCHAR},
+      </if>
+      <if test="childTaskIds != null" >
+        #{childTaskIds,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
@@ -143,6 +150,9 @@
       <if test="record.dependTaskIds != null" >
         dependTaskIds = #{record.dependTaskIds,jdbcType=VARCHAR},
       </if>
+      <if test="record.childTaskIds != null" >
+        childTaskIds = #{record.childTaskIds,jdbcType=VARCHAR},
+      </if>
       <if test="record.createTime != null" >
         createTime = #{record.createTime,jdbcType=TIMESTAMP},
       </if>
@@ -155,6 +165,7 @@
     update task_depend
     set taskId = #{record.taskId,jdbcType=BIGINT},
       dependTaskIds = #{record.dependTaskIds,jdbcType=VARCHAR},
+      childTaskIds = #{record.childTaskIds,jdbcType=VARCHAR},
       createTime = #{record.createTime,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -166,6 +177,9 @@
       <if test="dependTaskIds != null" >
         dependTaskIds = #{dependTaskIds,jdbcType=VARCHAR},
       </if>
+      <if test="childTaskIds != null" >
+        childTaskIds = #{childTaskIds,jdbcType=VARCHAR},
+      </if>
       <if test="createTime != null" >
         createTime = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -175,6 +189,7 @@
   <update id="updateByPrimaryKey" parameterType="com.mogujie.jarvis.dto.generate.TaskDepend" >
     update task_depend
     set dependTaskIds = #{dependTaskIds,jdbcType=VARCHAR},
+      childTaskIds = #{childTaskIds,jdbcType=VARCHAR},
       createTime = #{createTime,jdbcType=TIMESTAMP}
     where taskId = #{taskId,jdbcType=BIGINT}
   </update>

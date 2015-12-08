@@ -8,6 +8,8 @@ public class TaskDepend implements Serializable {
 
     private String dependTaskIds;
 
+    private String childTaskIds;
+
     private Date createTime;
 
     private static final long serialVersionUID = 1L;
@@ -26,6 +28,14 @@ public class TaskDepend implements Serializable {
 
     public void setDependTaskIds(String dependTaskIds) {
         this.dependTaskIds = dependTaskIds;
+    }
+
+    public String getChildTaskIds() {
+        return childTaskIds;
+    }
+
+    public void setChildTaskIds(String childTaskIds) {
+        this.childTaskIds = childTaskIds;
     }
 
     public Date getCreateTime() {
