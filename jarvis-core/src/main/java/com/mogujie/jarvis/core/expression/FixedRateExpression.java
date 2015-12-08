@@ -20,10 +20,6 @@ import org.joda.time.format.DateTimeFormat;
 import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.util.DurationFieldTypes;
 
-/**
- *
- *
- */
 public class FixedRateExpression extends ScheduleExpression {
 
     private int isValid;

@@ -5,7 +5,7 @@
  * Author: wuya
  * Create Date: 2015年1月14日 下午11:06:53
  */
-package com.mogujie.jarvis.server.cron;
+package com.mogujie.jarvis.core.expression;
 
 import static org.junit.Assert.*;
 

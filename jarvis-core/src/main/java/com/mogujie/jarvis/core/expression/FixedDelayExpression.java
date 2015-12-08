@@ -14,15 +14,12 @@ import java.util.regex.Pattern;
 import org.joda.time.DateTime;
 import org.joda.time.DurationFieldType;
 import org.joda.time.IllegalFieldValueException;
+import org.joda.time.chrono.ISOChronology;
 import org.joda.time.format.DateTimeFormat;
 
 import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.util.DurationFieldTypes;
 
-/**
- *
- *
- */
 public class FixedDelayExpression extends ScheduleExpression {
 
     private int isValid;
@@ -33,6 +30,21 @@ public class FixedDelayExpression extends ScheduleExpression {
 
     public FixedDelayExpression(String expression) {
         super(expression);
+    }
+
+    private DateTime calculateDateTime(DateTime dateTime, int value) {
+        if (firstDateTime == null) {
+            return dateTime.withFieldAdded(durationFieldType, value);
+        } else {
+            if (firstDateTime.compareTo(dateTime) * value > 0) {
+                System.out.println("OK");
+                return firstDateTime;
+            } else {
+                return firstDateTime.withFieldAdded(durationFieldType,
+                        (durationFieldType.getField(ISOChronology.getInstanceUTC()).getDifference(dateTime.getMillis(), firstDateTime.getMillis())
+                                / value + 1) * value);
+            }
+        }
     }
 
     @Override
@@ -67,10 +79,7 @@ public class FixedDelayExpression extends ScheduleExpression {
     @Override
     public DateTime getTimeBefore(DateTime dateTime) {
         if (isValid > 0 || (isValid == 0 && isValid())) {
-            if (firstDateTime != null && firstDateTime.isBefore(dateTime)) {
-                return firstDateTime;
-            }
-            return dateTime.withFieldAdded(durationFieldType, -value);
+            return calculateDateTime(dateTime, -value);
         }
 
         return null;
@@ -79,10 +88,7 @@ public class FixedDelayExpression extends ScheduleExpression {
     @Override
     public DateTime getTimeAfter(DateTime dateTime) {
         if (isValid > 0 || (isValid == 0 && isValid())) {
-            if (firstDateTime != null && firstDateTime.isAfter(dateTime)) {
-                return firstDateTime;
-            }
-            return dateTime.withFieldAdded(durationFieldType, value);
+            return calculateDateTime(dateTime, value);
         }
 
         return null;

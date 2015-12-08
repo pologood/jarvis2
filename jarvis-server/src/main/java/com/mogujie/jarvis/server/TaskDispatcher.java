@@ -123,8 +123,12 @@ public class TaskDispatcher extends Thread {
                         } else {
                             LOGGER.warn("The running task number of App[{}] more than maximum parallelism", appName);
                         }
-                        taskManager.appCounterDecrement(appId);
+                        //taskManager.appCounterDecrement(appId);
+                    } else {
+                        LOGGER.warn("worker not exist, worker group id: {}", task.getGroupId());
                     }
+
+                    taskRetryScheduler.addTask(task, task.getFailedRetries(), task.getFailedInterval(), RetryType.FAILED_RETRY);
                 } catch (Exception e) {
                     LOGGER.error("", e);
                 }
