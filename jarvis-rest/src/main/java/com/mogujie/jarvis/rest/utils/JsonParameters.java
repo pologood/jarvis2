@@ -4,8 +4,7 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
+import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 
 /**
@@ -16,6 +15,7 @@ public class JsonParameters {
 
     static Type mapType = new TypeToken<Map<String, Object>>() {
     }.getType();
+
     private static Gson gson = new Gson();
     private Map<String, Object> data;
 
@@ -24,10 +24,7 @@ public class JsonParameters {
     }
 
     public JsonParameters(String jsonString, Type typeOfT) {
-        try {
-            data = gson.fromJson(jsonString, typeOfT);
-        } catch (JsonSyntaxException ex) {
-        }
+        data = gson.fromJson(jsonString, typeOfT);
         if (data == null) {
             data = new HashMap<>();
         }
@@ -69,8 +66,6 @@ public class JsonParameters {
         return getString(key, null);
     }
 
-
-
     public String getStringNotEmpty(String key) throws IllegalArgumentException {
         String value = getString(key, null);
         if (value == null || value.equals("")) {
@@ -82,9 +77,9 @@ public class JsonParameters {
     public Integer getInteger(String key, Integer defaultVal) {
         if (data.containsKey(key)) {
             try {
-                return Integer.parseInt(data.get(key).toString());
+                return convert2Integer(data.get(key));
             } catch (NumberFormatException Ex) {
-                return defaultVal;
+                throw new IllegalArgumentException("获取Integer值失败；key='" + key + "';value=" + data.get(key).toString());
             }
         } else {
             return defaultVal;
@@ -106,9 +101,9 @@ public class JsonParameters {
     public Long getLong(String key, Long defaultVal) {
         if (data.containsKey(key)) {
             try {
-                return Long.parseLong(data.get(key).toString());
+                return convert2Long(data.get(key));
             } catch (NumberFormatException Ex) {
-                return defaultVal;
+                throw new IllegalArgumentException("获取Long值失败；key='" + key + "';value=" + data.get(key).toString());
             }
         } else {
             return defaultVal;
@@ -125,6 +120,44 @@ public class JsonParameters {
             throw new IllegalArgumentException(key + "不能为空");
         }
         return value;
+    }
+
+    public Double getDouble(String key, Double defaultVal) {
+        if (data.containsKey(key)) {
+            try {
+                return Double.parseDouble(data.get(key).toString());
+            } catch (NumberFormatException Ex) {
+                throw new IllegalArgumentException("获取Double值失败；key='" + key + "';value=" + data.get(key).toString());
+            }
+        } else {
+            return defaultVal;
+        }
+    }
+
+    public Double getDouble(String key) {
+        return getDouble(key, null);
+    }
+
+    private Long convert2Long(Object value){
+        if(value.getClass() != Double.class){
+            throw new NumberFormatException();
+        }
+        Double d =  (Double) value;
+        if( d - d.longValue() != 0){
+            throw new NumberFormatException();
+        }
+        return d.longValue();
+    }
+
+    private Integer convert2Integer(Object value){
+        if(value.getClass() != Double.class){
+            throw new NumberFormatException();
+        }
+        Double d =  (Double) value;
+        if(d - d.longValue() != 0  || d.intValue() != d.longValue()){
+            throw new NumberFormatException();
+        }
+        return d.intValue();
     }
 
 }
