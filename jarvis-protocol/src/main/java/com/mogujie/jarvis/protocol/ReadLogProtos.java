@@ -26,52 +26,43 @@ public final class ReadLogProtos {
     com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder();
 
     /**
-     * <code>required int64 task_id = 2;</code>
-     */
-    boolean hasTaskId();
-    /**
-     * <code>required int64 task_id = 2;</code>
-     */
-    long getTaskId();
-
-    /**
-     * <code>optional string full_id = 3;</code>
+     * <code>required string full_id = 2;</code>
      */
     boolean hasFullId();
     /**
-     * <code>optional string full_id = 3;</code>
+     * <code>required string full_id = 2;</code>
      */
     java.lang.String getFullId();
     /**
-     * <code>optional string full_id = 3;</code>
+     * <code>required string full_id = 2;</code>
      */
     com.google.protobuf.ByteString
         getFullIdBytes();
 
     /**
-     * <code>required int32 type = 4;</code>
+     * <code>required int32 type = 3;</code>
      */
     boolean hasType();
     /**
-     * <code>required int32 type = 4;</code>
+     * <code>required int32 type = 3;</code>
      */
     int getType();
 
     /**
-     * <code>optional int64 offset = 5 [default = 0];</code>
+     * <code>optional int64 offset = 4 [default = 0];</code>
      */
     boolean hasOffset();
     /**
-     * <code>optional int64 offset = 5 [default = 0];</code>
+     * <code>optional int64 offset = 4 [default = 0];</code>
      */
     long getOffset();
 
     /**
-     * <code>optional int32 lines = 6 [default = 100];</code>
+     * <code>optional int32 lines = 5 [default = 100];</code>
      */
     boolean hasLines();
     /**
-     * <code>optional int32 lines = 6 [default = 100];</code>
+     * <code>optional int32 lines = 5 [default = 100];</code>
      */
     int getLines();
   }
@@ -140,29 +131,24 @@ public final class ReadLogProtos {
               bitField0_ |= 0x00000001;
               break;
             }
-            case 16: {
+            case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              taskId_ = input.readInt64();
+              fullId_ = bs;
               break;
             }
-            case 26: {
-              com.google.protobuf.ByteString bs = input.readBytes();
+            case 24: {
               bitField0_ |= 0x00000004;
-              fullId_ = bs;
+              type_ = input.readInt32();
               break;
             }
             case 32: {
               bitField0_ |= 0x00000008;
-              type_ = input.readInt32();
+              offset_ = input.readInt64();
               break;
             }
             case 40: {
               bitField0_ |= 0x00000010;
-              offset_ = input.readInt64();
-              break;
-            }
-            case 48: {
-              bitField0_ |= 0x00000020;
               lines_ = input.readInt32();
               break;
             }
@@ -227,31 +213,16 @@ public final class ReadLogProtos {
       return appAuth_;
     }
 
-    public static final int TASK_ID_FIELD_NUMBER = 2;
-    private long taskId_;
+    public static final int FULL_ID_FIELD_NUMBER = 2;
+    private java.lang.Object fullId_;
     /**
-     * <code>required int64 task_id = 2;</code>
+     * <code>required string full_id = 2;</code>
      */
-    public boolean hasTaskId() {
+    public boolean hasFullId() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
-     * <code>required int64 task_id = 2;</code>
-     */
-    public long getTaskId() {
-      return taskId_;
-    }
-
-    public static final int FULL_ID_FIELD_NUMBER = 3;
-    private java.lang.Object fullId_;
-    /**
-     * <code>optional string full_id = 3;</code>
-     */
-    public boolean hasFullId() {
-      return ((bitField0_ & 0x00000004) == 0x00000004);
-    }
-    /**
-     * <code>optional string full_id = 3;</code>
+     * <code>required string full_id = 2;</code>
      */
     public java.lang.String getFullId() {
       java.lang.Object ref = fullId_;
@@ -268,7 +239,7 @@ public final class ReadLogProtos {
       }
     }
     /**
-     * <code>optional string full_id = 3;</code>
+     * <code>required string full_id = 2;</code>
      */
     public com.google.protobuf.ByteString
         getFullIdBytes() {
@@ -284,46 +255,46 @@ public final class ReadLogProtos {
       }
     }
 
-    public static final int TYPE_FIELD_NUMBER = 4;
+    public static final int TYPE_FIELD_NUMBER = 3;
     private int type_;
     /**
-     * <code>required int32 type = 4;</code>
+     * <code>required int32 type = 3;</code>
      */
     public boolean hasType() {
-      return ((bitField0_ & 0x00000008) == 0x00000008);
+      return ((bitField0_ & 0x00000004) == 0x00000004);
     }
     /**
-     * <code>required int32 type = 4;</code>
+     * <code>required int32 type = 3;</code>
      */
     public int getType() {
       return type_;
     }
 
-    public static final int OFFSET_FIELD_NUMBER = 5;
+    public static final int OFFSET_FIELD_NUMBER = 4;
     private long offset_;
     /**
-     * <code>optional int64 offset = 5 [default = 0];</code>
+     * <code>optional int64 offset = 4 [default = 0];</code>
      */
     public boolean hasOffset() {
-      return ((bitField0_ & 0x00000010) == 0x00000010);
+      return ((bitField0_ & 0x00000008) == 0x00000008);
     }
     /**
-     * <code>optional int64 offset = 5 [default = 0];</code>
+     * <code>optional int64 offset = 4 [default = 0];</code>
      */
     public long getOffset() {
       return offset_;
     }
 
-    public static final int LINES_FIELD_NUMBER = 6;
+    public static final int LINES_FIELD_NUMBER = 5;
     private int lines_;
     /**
-     * <code>optional int32 lines = 6 [default = 100];</code>
+     * <code>optional int32 lines = 5 [default = 100];</code>
      */
     public boolean hasLines() {
-      return ((bitField0_ & 0x00000020) == 0x00000020);
+      return ((bitField0_ & 0x00000010) == 0x00000010);
     }
     /**
-     * <code>optional int32 lines = 6 [default = 100];</code>
+     * <code>optional int32 lines = 5 [default = 100];</code>
      */
     public int getLines() {
       return lines_;
@@ -331,7 +302,6 @@ public final class ReadLogProtos {
 
     private void initFields() {
       appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
-      taskId_ = 0L;
       fullId_ = "";
       type_ = 0;
       offset_ = 0L;
@@ -347,7 +317,7 @@ public final class ReadLogProtos {
         memoizedIsInitialized = 0;
         return false;
       }
-      if (!hasTaskId()) {
+      if (!hasFullId()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -370,19 +340,16 @@ public final class ReadLogProtos {
         output.writeMessage(1, appAuth_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeInt64(2, taskId_);
+        output.writeBytes(2, getFullIdBytes());
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeBytes(3, getFullIdBytes());
+        output.writeInt32(3, type_);
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        output.writeInt32(4, type_);
+        output.writeInt64(4, offset_);
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        output.writeInt64(5, offset_);
-      }
-      if (((bitField0_ & 0x00000020) == 0x00000020)) {
-        output.writeInt32(6, lines_);
+        output.writeInt32(5, lines_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -399,23 +366,19 @@ public final class ReadLogProtos {
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(2, taskId_);
+          .computeBytesSize(2, getFullIdBytes());
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(3, getFullIdBytes());
+          .computeInt32Size(3, type_);
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(4, type_);
+          .computeInt64Size(4, offset_);
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(5, offset_);
-      }
-      if (((bitField0_ & 0x00000020) == 0x00000020)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(6, lines_);
+          .computeInt32Size(5, lines_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -541,16 +504,14 @@ public final class ReadLogProtos {
           appAuthBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000001);
-        taskId_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000002);
         fullId_ = "";
-        bitField0_ = (bitField0_ & ~0x00000004);
+        bitField0_ = (bitField0_ & ~0x00000002);
         type_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000008);
+        bitField0_ = (bitField0_ & ~0x00000004);
         offset_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000010);
+        bitField0_ = (bitField0_ & ~0x00000008);
         lines_ = 100;
-        bitField0_ = (bitField0_ & ~0x00000020);
+        bitField0_ = (bitField0_ & ~0x00000010);
         return this;
       }
 
@@ -590,21 +551,17 @@ public final class ReadLogProtos {
         if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
           to_bitField0_ |= 0x00000002;
         }
-        result.taskId_ = taskId_;
+        result.fullId_ = fullId_;
         if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
           to_bitField0_ |= 0x00000004;
         }
-        result.fullId_ = fullId_;
+        result.type_ = type_;
         if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
           to_bitField0_ |= 0x00000008;
         }
-        result.type_ = type_;
+        result.offset_ = offset_;
         if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
           to_bitField0_ |= 0x00000010;
-        }
-        result.offset_ = offset_;
-        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
-          to_bitField0_ |= 0x00000020;
         }
         result.lines_ = lines_;
         result.bitField0_ = to_bitField0_;
@@ -626,11 +583,8 @@ public final class ReadLogProtos {
         if (other.hasAppAuth()) {
           mergeAppAuth(other.getAppAuth());
         }
-        if (other.hasTaskId()) {
-          setTaskId(other.getTaskId());
-        }
         if (other.hasFullId()) {
-          bitField0_ |= 0x00000004;
+          bitField0_ |= 0x00000002;
           fullId_ = other.fullId_;
           onChanged();
         }
@@ -652,7 +606,7 @@ public final class ReadLogProtos {
           
           return false;
         }
-        if (!hasTaskId()) {
+        if (!hasFullId()) {
           
           return false;
         }
@@ -802,47 +756,15 @@ public final class ReadLogProtos {
         return appAuthBuilder_;
       }
 
-      private long taskId_ ;
+      private java.lang.Object fullId_ = "";
       /**
-       * <code>required int64 task_id = 2;</code>
+       * <code>required string full_id = 2;</code>
        */
-      public boolean hasTaskId() {
+      public boolean hasFullId() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
-       * <code>required int64 task_id = 2;</code>
-       */
-      public long getTaskId() {
-        return taskId_;
-      }
-      /**
-       * <code>required int64 task_id = 2;</code>
-       */
-      public Builder setTaskId(long value) {
-        bitField0_ |= 0x00000002;
-        taskId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required int64 task_id = 2;</code>
-       */
-      public Builder clearTaskId() {
-        bitField0_ = (bitField0_ & ~0x00000002);
-        taskId_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object fullId_ = "";
-      /**
-       * <code>optional string full_id = 3;</code>
-       */
-      public boolean hasFullId() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
-      }
-      /**
-       * <code>optional string full_id = 3;</code>
+       * <code>required string full_id = 2;</code>
        */
       public java.lang.String getFullId() {
         java.lang.Object ref = fullId_;
@@ -859,7 +781,7 @@ public final class ReadLogProtos {
         }
       }
       /**
-       * <code>optional string full_id = 3;</code>
+       * <code>required string full_id = 2;</code>
        */
       public com.google.protobuf.ByteString
           getFullIdBytes() {
@@ -875,36 +797,36 @@ public final class ReadLogProtos {
         }
       }
       /**
-       * <code>optional string full_id = 3;</code>
+       * <code>required string full_id = 2;</code>
        */
       public Builder setFullId(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000004;
+  bitField0_ |= 0x00000002;
         fullId_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional string full_id = 3;</code>
+       * <code>required string full_id = 2;</code>
        */
       public Builder clearFullId() {
-        bitField0_ = (bitField0_ & ~0x00000004);
+        bitField0_ = (bitField0_ & ~0x00000002);
         fullId_ = getDefaultInstance().getFullId();
         onChanged();
         return this;
       }
       /**
-       * <code>optional string full_id = 3;</code>
+       * <code>required string full_id = 2;</code>
        */
       public Builder setFullIdBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000004;
+  bitField0_ |= 0x00000002;
         fullId_ = value;
         onChanged();
         return this;
@@ -912,31 +834,31 @@ public final class ReadLogProtos {
 
       private int type_ ;
       /**
-       * <code>required int32 type = 4;</code>
+       * <code>required int32 type = 3;</code>
        */
       public boolean hasType() {
-        return ((bitField0_ & 0x00000008) == 0x00000008);
+        return ((bitField0_ & 0x00000004) == 0x00000004);
       }
       /**
-       * <code>required int32 type = 4;</code>
+       * <code>required int32 type = 3;</code>
        */
       public int getType() {
         return type_;
       }
       /**
-       * <code>required int32 type = 4;</code>
+       * <code>required int32 type = 3;</code>
        */
       public Builder setType(int value) {
-        bitField0_ |= 0x00000008;
+        bitField0_ |= 0x00000004;
         type_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required int32 type = 4;</code>
+       * <code>required int32 type = 3;</code>
        */
       public Builder clearType() {
-        bitField0_ = (bitField0_ & ~0x00000008);
+        bitField0_ = (bitField0_ & ~0x00000004);
         type_ = 0;
         onChanged();
         return this;
@@ -944,31 +866,31 @@ public final class ReadLogProtos {
 
       private long offset_ ;
       /**
-       * <code>optional int64 offset = 5 [default = 0];</code>
+       * <code>optional int64 offset = 4 [default = 0];</code>
        */
       public boolean hasOffset() {
-        return ((bitField0_ & 0x00000010) == 0x00000010);
+        return ((bitField0_ & 0x00000008) == 0x00000008);
       }
       /**
-       * <code>optional int64 offset = 5 [default = 0];</code>
+       * <code>optional int64 offset = 4 [default = 0];</code>
        */
       public long getOffset() {
         return offset_;
       }
       /**
-       * <code>optional int64 offset = 5 [default = 0];</code>
+       * <code>optional int64 offset = 4 [default = 0];</code>
        */
       public Builder setOffset(long value) {
-        bitField0_ |= 0x00000010;
+        bitField0_ |= 0x00000008;
         offset_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int64 offset = 5 [default = 0];</code>
+       * <code>optional int64 offset = 4 [default = 0];</code>
        */
       public Builder clearOffset() {
-        bitField0_ = (bitField0_ & ~0x00000010);
+        bitField0_ = (bitField0_ & ~0x00000008);
         offset_ = 0L;
         onChanged();
         return this;
@@ -976,31 +898,31 @@ public final class ReadLogProtos {
 
       private int lines_ = 100;
       /**
-       * <code>optional int32 lines = 6 [default = 100];</code>
+       * <code>optional int32 lines = 5 [default = 100];</code>
        */
       public boolean hasLines() {
-        return ((bitField0_ & 0x00000020) == 0x00000020);
+        return ((bitField0_ & 0x00000010) == 0x00000010);
       }
       /**
-       * <code>optional int32 lines = 6 [default = 100];</code>
+       * <code>optional int32 lines = 5 [default = 100];</code>
        */
       public int getLines() {
         return lines_;
       }
       /**
-       * <code>optional int32 lines = 6 [default = 100];</code>
+       * <code>optional int32 lines = 5 [default = 100];</code>
        */
       public Builder setLines(int value) {
-        bitField0_ |= 0x00000020;
+        bitField0_ |= 0x00000010;
         lines_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int32 lines = 6 [default = 100];</code>
+       * <code>optional int32 lines = 5 [default = 100];</code>
        */
       public Builder clearLines() {
-        bitField0_ = (bitField0_ & ~0x00000020);
+        bitField0_ = (bitField0_ & ~0x00000010);
         lines_ = 100;
         onChanged();
         return this;
@@ -1022,27 +944,27 @@ public final class ReadLogProtos {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional bool is_end = 1;</code>
-     */
-    boolean hasIsEnd();
-    /**
-     * <code>optional bool is_end = 1;</code>
-     */
-    boolean getIsEnd();
-
-    /**
-     * <code>optional string log = 2;</code>
+     * <code>optional string log = 1;</code>
      */
     boolean hasLog();
     /**
-     * <code>optional string log = 2;</code>
+     * <code>optional string log = 1;</code>
      */
     java.lang.String getLog();
     /**
-     * <code>optional string log = 2;</code>
+     * <code>optional string log = 1;</code>
      */
     com.google.protobuf.ByteString
         getLogBytes();
+
+    /**
+     * <code>optional bool is_end = 2;</code>
+     */
+    boolean hasIsEnd();
+    /**
+     * <code>optional bool is_end = 2;</code>
+     */
+    boolean getIsEnd();
 
     /**
      * <code>optional int64 offset = 3;</code>
@@ -1128,15 +1050,15 @@ public final class ReadLogProtos {
               }
               break;
             }
-            case 8: {
+            case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              isEnd_ = input.readBool();
+              log_ = bs;
               break;
             }
-            case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
+            case 16: {
               bitField0_ |= 0x00000002;
-              log_ = bs;
+              isEnd_ = input.readBool();
               break;
             }
             case 24: {
@@ -1195,31 +1117,16 @@ public final class ReadLogProtos {
     }
 
     private int bitField0_;
-    public static final int IS_END_FIELD_NUMBER = 1;
-    private boolean isEnd_;
+    public static final int LOG_FIELD_NUMBER = 1;
+    private java.lang.Object log_;
     /**
-     * <code>optional bool is_end = 1;</code>
+     * <code>optional string log = 1;</code>
      */
-    public boolean hasIsEnd() {
+    public boolean hasLog() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>optional bool is_end = 1;</code>
-     */
-    public boolean getIsEnd() {
-      return isEnd_;
-    }
-
-    public static final int LOG_FIELD_NUMBER = 2;
-    private java.lang.Object log_;
-    /**
-     * <code>optional string log = 2;</code>
-     */
-    public boolean hasLog() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
-    }
-    /**
-     * <code>optional string log = 2;</code>
+     * <code>optional string log = 1;</code>
      */
     public java.lang.String getLog() {
       java.lang.Object ref = log_;
@@ -1236,7 +1143,7 @@ public final class ReadLogProtos {
       }
     }
     /**
-     * <code>optional string log = 2;</code>
+     * <code>optional string log = 1;</code>
      */
     public com.google.protobuf.ByteString
         getLogBytes() {
@@ -1250,6 +1157,21 @@ public final class ReadLogProtos {
       } else {
         return (com.google.protobuf.ByteString) ref;
       }
+    }
+
+    public static final int IS_END_FIELD_NUMBER = 2;
+    private boolean isEnd_;
+    /**
+     * <code>optional bool is_end = 2;</code>
+     */
+    public boolean hasIsEnd() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional bool is_end = 2;</code>
+     */
+    public boolean getIsEnd() {
+      return isEnd_;
     }
 
     public static final int OFFSET_FIELD_NUMBER = 3;
@@ -1325,8 +1247,8 @@ public final class ReadLogProtos {
     }
 
     private void initFields() {
-      isEnd_ = false;
       log_ = "";
+      isEnd_ = false;
       offset_ = 0L;
       success_ = false;
       message_ = "";
@@ -1349,10 +1271,10 @@ public final class ReadLogProtos {
                         throws java.io.IOException {
       getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeBool(1, isEnd_);
+        output.writeBytes(1, getLogBytes());
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeBytes(2, getLogBytes());
+        output.writeBool(2, isEnd_);
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         output.writeInt64(3, offset_);
@@ -1374,11 +1296,11 @@ public final class ReadLogProtos {
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(1, isEnd_);
+          .computeBytesSize(1, getLogBytes());
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(2, getLogBytes());
+          .computeBoolSize(2, isEnd_);
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
@@ -1509,9 +1431,9 @@ public final class ReadLogProtos {
 
       public Builder clear() {
         super.clear();
-        isEnd_ = false;
-        bitField0_ = (bitField0_ & ~0x00000001);
         log_ = "";
+        bitField0_ = (bitField0_ & ~0x00000001);
+        isEnd_ = false;
         bitField0_ = (bitField0_ & ~0x00000002);
         offset_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000004);
@@ -1550,11 +1472,11 @@ public final class ReadLogProtos {
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
           to_bitField0_ |= 0x00000001;
         }
-        result.isEnd_ = isEnd_;
+        result.log_ = log_;
         if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
           to_bitField0_ |= 0x00000002;
         }
-        result.log_ = log_;
+        result.isEnd_ = isEnd_;
         if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
           to_bitField0_ |= 0x00000004;
         }
@@ -1583,13 +1505,13 @@ public final class ReadLogProtos {
 
       public Builder mergeFrom(com.mogujie.jarvis.protocol.ReadLogProtos.LogStorageReadLogResponse other) {
         if (other == com.mogujie.jarvis.protocol.ReadLogProtos.LogStorageReadLogResponse.getDefaultInstance()) return this;
-        if (other.hasIsEnd()) {
-          setIsEnd(other.getIsEnd());
-        }
         if (other.hasLog()) {
-          bitField0_ |= 0x00000002;
+          bitField0_ |= 0x00000001;
           log_ = other.log_;
           onChanged();
+        }
+        if (other.hasIsEnd()) {
+          setIsEnd(other.getIsEnd());
         }
         if (other.hasOffset()) {
           setOffset(other.getOffset());
@@ -1633,47 +1555,15 @@ public final class ReadLogProtos {
       }
       private int bitField0_;
 
-      private boolean isEnd_ ;
+      private java.lang.Object log_ = "";
       /**
-       * <code>optional bool is_end = 1;</code>
+       * <code>optional string log = 1;</code>
        */
-      public boolean hasIsEnd() {
+      public boolean hasLog() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>optional bool is_end = 1;</code>
-       */
-      public boolean getIsEnd() {
-        return isEnd_;
-      }
-      /**
-       * <code>optional bool is_end = 1;</code>
-       */
-      public Builder setIsEnd(boolean value) {
-        bitField0_ |= 0x00000001;
-        isEnd_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional bool is_end = 1;</code>
-       */
-      public Builder clearIsEnd() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        isEnd_ = false;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object log_ = "";
-      /**
-       * <code>optional string log = 2;</code>
-       */
-      public boolean hasLog() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
-      }
-      /**
-       * <code>optional string log = 2;</code>
+       * <code>optional string log = 1;</code>
        */
       public java.lang.String getLog() {
         java.lang.Object ref = log_;
@@ -1690,7 +1580,7 @@ public final class ReadLogProtos {
         }
       }
       /**
-       * <code>optional string log = 2;</code>
+       * <code>optional string log = 1;</code>
        */
       public com.google.protobuf.ByteString
           getLogBytes() {
@@ -1706,37 +1596,69 @@ public final class ReadLogProtos {
         }
       }
       /**
-       * <code>optional string log = 2;</code>
+       * <code>optional string log = 1;</code>
        */
       public Builder setLog(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000002;
+  bitField0_ |= 0x00000001;
         log_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional string log = 2;</code>
+       * <code>optional string log = 1;</code>
        */
       public Builder clearLog() {
-        bitField0_ = (bitField0_ & ~0x00000002);
+        bitField0_ = (bitField0_ & ~0x00000001);
         log_ = getDefaultInstance().getLog();
         onChanged();
         return this;
       }
       /**
-       * <code>optional string log = 2;</code>
+       * <code>optional string log = 1;</code>
        */
       public Builder setLogBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000002;
+  bitField0_ |= 0x00000001;
         log_ = value;
+        onChanged();
+        return this;
+      }
+
+      private boolean isEnd_ ;
+      /**
+       * <code>optional bool is_end = 2;</code>
+       */
+      public boolean hasIsEnd() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional bool is_end = 2;</code>
+       */
+      public boolean getIsEnd() {
+        return isEnd_;
+      }
+      /**
+       * <code>optional bool is_end = 2;</code>
+       */
+      public Builder setIsEnd(boolean value) {
+        bitField0_ |= 0x00000002;
+        isEnd_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool is_end = 2;</code>
+       */
+      public Builder clearIsEnd() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        isEnd_ = false;
         onChanged();
         return this;
       }
@@ -1911,15 +1833,14 @@ public final class ReadLogProtos {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\016read_log.proto\032\016app_auth.proto\"\207\001\n\022Res" +
-      "tReadLogRequest\022\032\n\010app_auth\030\001 \002(\0132\010.AppA" +
-      "uth\022\017\n\007task_id\030\002 \002(\003\022\017\n\007full_id\030\003 \001(\t\022\014\n" +
-      "\004type\030\004 \002(\005\022\021\n\006offset\030\005 \001(\003:\0010\022\022\n\005lines\030" +
-      "\006 \001(\005:\003100\"l\n\031LogStorageReadLogResponse\022" +
-      "\016\n\006is_end\030\001 \001(\010\022\013\n\003log\030\002 \001(\t\022\016\n\006offset\030\003" +
-      " \001(\003\022\017\n\007success\030\004 \002(\010\022\021\n\007message\030\005 \001(\t:\000" +
-      "B,\n\033com.mogujie.jarvis.protocolB\rReadLog" +
-      "Protos"
+      "\n\016read_log.proto\032\016app_auth.proto\"v\n\022Rest" +
+      "ReadLogRequest\022\032\n\010app_auth\030\001 \002(\0132\010.AppAu" +
+      "th\022\017\n\007full_id\030\002 \002(\t\022\014\n\004type\030\003 \002(\005\022\021\n\006off" +
+      "set\030\004 \001(\003:\0010\022\022\n\005lines\030\005 \001(\005:\003100\"l\n\031LogS" +
+      "torageReadLogResponse\022\013\n\003log\030\001 \001(\t\022\016\n\006is" +
+      "_end\030\002 \001(\010\022\016\n\006offset\030\003 \001(\003\022\017\n\007success\030\004 " +
+      "\002(\010\022\021\n\007message\030\005 \001(\t:\000B,\n\033com.mogujie.ja" +
+      "rvis.protocolB\rReadLogProtos"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1939,13 +1860,13 @@ public final class ReadLogProtos {
     internal_static_RestReadLogRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_RestReadLogRequest_descriptor,
-        new java.lang.String[] { "AppAuth", "TaskId", "FullId", "Type", "Offset", "Lines", });
+        new java.lang.String[] { "AppAuth", "FullId", "Type", "Offset", "Lines", });
     internal_static_LogStorageReadLogResponse_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_LogStorageReadLogResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_LogStorageReadLogResponse_descriptor,
-        new java.lang.String[] { "IsEnd", "Log", "Offset", "Success", "Message", });
+        new java.lang.String[] { "Log", "IsEnd", "Offset", "Success", "Message", });
     com.mogujie.jarvis.protocol.AppAuthProtos.getDescriptor();
   }
 
