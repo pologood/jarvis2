@@ -18,6 +18,9 @@ import org.jgrapht.experimental.dag.DirectedAcyclicGraph;
 import org.jgrapht.experimental.dag.DirectedAcyclicGraph.CycleFoundException;
 import org.jgrapht.graph.DefaultEdge;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+
 /**
  * @author guangming
  *
@@ -99,5 +102,21 @@ public enum TaskGraph {
             }
         }
         return children;
+    }
+
+    public static Map<Long, List<Long>> convert2TaskMap(List<DAGTask> dagTasks) {
+        Map<Long, List<Long>> taskMap = Maps.newHashMap();
+        for (DAGTask dagTask : dagTasks) {
+            long jobId = dagTask.getJobId();
+            long taskId = dagTask.getTaskId();
+            if (taskMap.containsKey(jobId)) {
+                List<Long> taskList = taskMap.get(jobId);
+                taskList.add(taskId);
+            } else {
+                List<Long> taskList = Lists.newArrayList(taskId);
+                taskMap.put(jobId, taskList);
+            }
+        }
+        return taskMap;
     }
 }
