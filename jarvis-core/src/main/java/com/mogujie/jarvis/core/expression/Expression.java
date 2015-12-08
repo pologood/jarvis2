@@ -8,10 +8,6 @@
 
 package com.mogujie.jarvis.core.expression;
 
-/**
- *
- *
- */
 public interface Expression {
 
     public boolean isValid();
