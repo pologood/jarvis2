@@ -46,12 +46,12 @@ public class TaskManager {
     }
 
     public synchronized boolean addTask(String fullId, WorkerInfo workerInfo, int appId) {
+        parallelismCounter.getAndIncrement(appId);
+
         taskMap.put(fullId, new Pair<>(workerInfo, appId));
         if (parallelismCounter.get(appId) >= maxParallelismMap.get(appId)) {
             return false;
         }
-
-        parallelismCounter.getAndIncrement(appId);
         return true;
     }
 
