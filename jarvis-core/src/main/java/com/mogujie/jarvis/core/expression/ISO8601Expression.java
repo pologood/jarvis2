@@ -16,10 +16,6 @@ import org.joda.time.Period;
 import org.joda.time.Seconds;
 import org.joda.time.format.ISOPeriodFormat;
 
-/**
- *
- *
- */
 public class ISO8601Expression extends ScheduleExpression {
 
     private int isValid;

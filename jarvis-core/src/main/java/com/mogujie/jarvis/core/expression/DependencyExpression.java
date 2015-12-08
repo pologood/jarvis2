@@ -12,10 +12,6 @@ import org.joda.time.DateTime;
 
 import com.google.common.collect.Range;
 
-/**
- *
- *
- */
 public abstract class DependencyExpression implements Expression {
     protected String expression;
 
@@ -23,6 +19,7 @@ public abstract class DependencyExpression implements Expression {
         this.expression = expression;
     }
 
+    @Override
     public String getExpression() {
         return expression;
     }

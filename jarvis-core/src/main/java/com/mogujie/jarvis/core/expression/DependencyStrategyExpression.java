@@ -10,10 +10,6 @@ package com.mogujie.jarvis.core.expression;
 
 import java.util.List;
 
-/**
- *
- *
- */
 public abstract class DependencyStrategyExpression implements Expression {
 
     protected String expression;
@@ -22,6 +18,7 @@ public abstract class DependencyStrategyExpression implements Expression {
         this.expression = expression;
     }
 
+    @Override
     public String getExpression() {
         return expression;
     }

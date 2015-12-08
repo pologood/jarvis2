@@ -23,9 +23,6 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 
-import akka.actor.ActorSelection;
-import akka.actor.UntypedActor;
-
 import com.google.common.collect.Maps;
 import com.google.common.collect.Range;
 import com.mogujie.jarvis.core.JarvisConstants;
@@ -55,8 +52,8 @@ import com.mogujie.jarvis.protocol.QueryTaskRelationProtos.ServerQueryTaskRelati
 import com.mogujie.jarvis.protocol.QueryTaskRelationProtos.TaskMapEntry;
 import com.mogujie.jarvis.protocol.RetryTaskProtos.RestServerRetryTaskRequest;
 import com.mogujie.jarvis.protocol.RetryTaskProtos.ServerRetryTaskResponse;
-import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest;
-import com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse;
+import com.mogujie.jarvis.protocol.SubmitTaskProtos.RestServerSubmitTaskRequest;
+import com.mogujie.jarvis.protocol.SubmitTaskProtos.ServerSubmitTaskResponse;
 import com.mogujie.jarvis.server.TaskManager;
 import com.mogujie.jarvis.server.TaskQueue;
 import com.mogujie.jarvis.server.domain.JobDependencyEntry;
@@ -78,6 +75,9 @@ import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.TaskDependService;
 import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.FutureUtils;
+
+import akka.actor.ActorSelection;
+import akka.actor.UntypedActor;
 
 /**
  * @author guangming
@@ -111,7 +111,7 @@ public class TaskActor extends UntypedActor {
         } else if (obj instanceof RestServerRetryTaskRequest) {
             RestServerRetryTaskRequest msg = (RestServerRetryTaskRequest) obj;
             retryTask(msg);
-        } else if (obj instanceof RestServerManualRerunTaskRequest ) {
+        } else if (obj instanceof RestServerManualRerunTaskRequest) {
             RestServerManualRerunTaskRequest msg = (RestServerManualRerunTaskRequest) obj;
             manualRerunTask(msg);
         } else if (obj instanceof RestServerSubmitTaskRequest) {
@@ -142,8 +142,7 @@ public class TaskActor extends UntypedActor {
             ActorSelection actorSelection = getContext().actorSelection(workerInfo.getAkkaRootPath() + JarvisConstants.WORKER_AKKA_USER_PATH);
             ServerKillTaskRequest serverRequest = ServerKillTaskRequest.newBuilder().setFullId(fullId).build();
             WorkerKillTaskResponse workerResponse = (WorkerKillTaskResponse) FutureUtils.awaitResult(actorSelection, serverRequest, 30);
-            response = ServerKillTaskResponse.newBuilder().setSuccess(workerResponse.getSuccess()).setMessage(workerResponse.getMessage())
-                    .build();
+            response = ServerKillTaskResponse.newBuilder().setSuccess(workerResponse.getSuccess()).setMessage(workerResponse.getMessage()).build();
         } else {
             response = ServerKillTaskResponse.newBuilder().setSuccess(false).setMessage("Kill task[" + taskId + "] failed").build();
         }
@@ -196,7 +195,7 @@ public class TaskActor extends UntypedActor {
                 long scheduleTime = planEntry.getDateTime().getMillis();
                 Map<Long, List<Long>> dependTaskIdMap = Maps.newHashMap();
                 Map<Long, JobDependencyEntry> dependencyMap = jobService.get(jobId).getDependencies();
-                if(dependencyMap != null) {
+                if (dependencyMap != null) {
                     for (long preJobId : dependencyMap.keySet()) {
                         JobDependencyEntry dependencyEntry = dependencyMap.get(preJobId);
                         DependencyExpression dependencyExpression = dependencyEntry.getDependencyExpression();
@@ -211,7 +210,7 @@ public class TaskActor extends UntypedActor {
         // 4.添加依赖关系
         for (long jobId : jobIdList) {
             Set<Long> dependJobIds = jobGraph.getEnableParentJobIds(jobId);
-            for (long preJobId: jobIdList) {
+            for (long preJobId : jobIdList) {
                 if (dependJobIds.contains(preJobId)) {
                     List<ExecutionPlanEntry> planList = planMap.get(jobId);
                     for (ExecutionPlanEntry planEntry : planList) {
@@ -240,7 +239,7 @@ public class TaskActor extends UntypedActor {
                     }
                 }
             }
-            Collections.sort(sortedPlanList, new Comparator<ExecutionPlanEntry>(){
+            Collections.sort(sortedPlanList, new Comparator<ExecutionPlanEntry>() {
                 @Override
                 public int compare(ExecutionPlanEntry entry1, ExecutionPlanEntry entry2) {
                     return entry1.getDateTime().compareTo(entry2.getDateTime());
@@ -272,7 +271,7 @@ public class TaskActor extends UntypedActor {
             long taskId = IdUtils.parse(taskDetail.getFullId(), IdType.TASK_ID);
             response = ServerSubmitTaskResponse.newBuilder().setSuccess(true).setTaskId(taskId).build();
             getSender().tell(response, getSelf());
-        }catch (Exception e){
+        } catch (Exception e) {
             response = ServerSubmitTaskResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
             getSender().tell(response, getSelf());
         }
@@ -299,8 +298,7 @@ public class TaskActor extends UntypedActor {
         ExecutionPlan plan = ExecutionPlan.INSTANCE;
         plan.removePlan(new ExecutionPlanEntry(0, null, taskId));
 
-        ServerModifyTaskStatusResponse response = ServerModifyTaskStatusResponse.newBuilder()
-                .setSuccess(true).build();
+        ServerModifyTaskStatusResponse response = ServerModifyTaskStatusResponse.newBuilder().setSuccess(true).build();
         getSender().tell(response, getSelf());
     }
 
@@ -346,20 +344,11 @@ public class TaskActor extends UntypedActor {
     private TaskDetail createRunOnceTask(RestServerSubmitTaskRequest request) {
         Task task = convertValidService.convert2Task(request);
         long taskId = taskService.insert(task);
-        TaskDetailBuilder builder = TaskDetail.newTaskDetailBuilder()
-                .setFullId("0_" + taskId + "_0")
-                .setAppName(request.getAppAuth().getName())
-                .setTaskName(request.getTaskName())
-                .setUser(request.getUser())
-                .setTaskType(request.getTaskType())
-                .setContent(request.getContent())
-                .setGroupId(request.getGroupId())
-                .setPriority(request.getPriority())
-                .setRejectRetries(request.getRejectRetries())
-                .setRejectInterval(request.getRejectInterval())
-                .setFailedRetries(request.getFailedRetries())
-                .setFailedInterval(request.getFailedInterval())
-                .setSchedulingTime(DateTime.now().getMillis() / 1000)
+        TaskDetailBuilder builder = TaskDetail.newTaskDetailBuilder().setFullId("0_" + taskId + "_0").setAppName(request.getAppAuth().getName())
+                .setTaskName(request.getTaskName()).setUser(request.getUser()).setTaskType(request.getTaskType()).setContent(request.getContent())
+                .setGroupId(request.getGroupId()).setPriority(request.getPriority()).setRejectRetries(request.getRejectRetries())
+                .setRejectInterval(request.getRejectInterval()).setFailedRetries(request.getFailedRetries())
+                .setFailedInterval(request.getFailedInterval()).setSchedulingTime(DateTime.now().getMillis() / 1000)
                 .setParameters(JsonHelper.fromJson2JobParams(request.getParameters()));
 
         return builder.build();

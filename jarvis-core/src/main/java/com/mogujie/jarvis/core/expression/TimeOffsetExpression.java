@@ -24,10 +24,6 @@ import com.google.common.collect.Range;
 import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.util.DurationFieldTypes;
 
-/**
- *
- *
- */
 public class TimeOffsetExpression extends DependencyExpression {
 
     private int isValid;
@@ -115,7 +111,7 @@ public class TimeOffsetExpression extends DependencyExpression {
 
     @Override
     public boolean isValid() {
-        if(expression == null){
+        if (expression == null) {
             return false;
         }
         for (Entry<Pattern, String> entry : MAP.entrySet()) {
@@ -126,7 +122,7 @@ public class TimeOffsetExpression extends DependencyExpression {
                 break;
             }
         }
-        if(expressionFormula == null){
+        if (expressionFormula == null) {
             return false;
         }
         Matcher m = EXPRESSION_PATTERN.matcher(expressionFormula);

@@ -36,12 +36,12 @@ public class FixedRateExpression extends ScheduleExpression {
         if (firstDateTime == null) {
             return dateTime.withFieldAdded(durationFieldType, value);
         } else {
-            if (firstDateTime.compareTo(dateTime) * value > 0) {
-                return firstDateTime;
+            int difference = durationFieldType.getField(ISOChronology.getInstanceUTC()).getDifference(dateTime.getMillis(),
+                    firstDateTime.getMillis());
+            if (value * difference >= 0) {
+                return firstDateTime.withFieldAdded(durationFieldType, (difference / value + 1) * value);
             } else {
-                return firstDateTime.withFieldAdded(durationFieldType,
-                        (durationFieldType.getField(ISOChronology.getInstanceUTC()).getDifference(dateTime.getMillis(), firstDateTime.getMillis())
-                                / value + 1) * value);
+                return firstDateTime.withFieldAdded(durationFieldType, difference / value * value);
             }
         }
     }

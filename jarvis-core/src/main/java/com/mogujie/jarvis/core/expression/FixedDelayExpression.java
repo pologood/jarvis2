@@ -13,11 +13,7 @@ import java.util.regex.Pattern;
 
 import org.joda.time.DateTime;
 import org.joda.time.DurationFieldType;
-import org.joda.time.IllegalFieldValueException;
-import org.joda.time.chrono.ISOChronology;
-import org.joda.time.format.DateTimeFormat;
 
-import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.util.DurationFieldTypes;
 
 public class FixedDelayExpression extends ScheduleExpression {
@@ -25,26 +21,14 @@ public class FixedDelayExpression extends ScheduleExpression {
     private int isValid;
     private DurationFieldType durationFieldType;
     private int value;
-    private DateTime firstDateTime;
-    private static final Pattern EXPRESSION_PATTERN = Pattern.compile("([smhdwMy])\\(('(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2})',)?(\\d+)\\)");
+    private static final Pattern EXPRESSION_PATTERN = Pattern.compile("([smhdwMy])\\((\\d+)\\)");
 
     public FixedDelayExpression(String expression) {
         super(expression);
     }
 
     private DateTime calculateDateTime(DateTime dateTime, int value) {
-        if (firstDateTime == null) {
-            return dateTime.withFieldAdded(durationFieldType, value);
-        } else {
-            if (firstDateTime.compareTo(dateTime) * value > 0) {
-                System.out.println("OK");
-                return firstDateTime;
-            } else {
-                return firstDateTime.withFieldAdded(durationFieldType,
-                        (durationFieldType.getField(ISOChronology.getInstanceUTC()).getDifference(dateTime.getMillis(), firstDateTime.getMillis())
-                                / value + 1) * value);
-            }
-        }
+        return dateTime.withFieldAdded(durationFieldType, value);
     }
 
     @Override
@@ -52,17 +36,7 @@ public class FixedDelayExpression extends ScheduleExpression {
         Matcher m = EXPRESSION_PATTERN.matcher(expression);
         if (m.matches()) {
             durationFieldType = DurationFieldTypes.valueOf(m.group(1).charAt(0));
-            String strDateTime = m.group(3);
-            if (strDateTime != null) {
-                try {
-                    firstDateTime = DateTimeFormat.forPattern(JarvisConstants.DEFAULT_DATE_TIME_FORMAT).parseDateTime(strDateTime);
-                } catch (IllegalFieldValueException e) {
-                    isValid = -1;
-                    return false;
-                }
-            }
-
-            value = Integer.parseInt(m.group(4));
+            value = Integer.parseInt(m.group(2));
             if (value <= 0) {
                 isValid = -1;
                 return false;

@@ -22,7 +22,7 @@ import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry;
 import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobRequest;
 import com.mogujie.jarvis.protocol.JobProtos.RestSubmitJobRequest;
-import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest;
+import com.mogujie.jarvis.protocol.SubmitTaskProtos.RestServerSubmitTaskRequest;
 import com.mogujie.jarvis.server.domain.JobEntry;
 
 /**

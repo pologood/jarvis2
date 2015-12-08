@@ -12,10 +12,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- *
- *
- */
 public class DefaultDependencyStrategyExpression extends DependencyStrategyExpression {
 
     private int isValid;
@@ -48,7 +44,7 @@ public class DefaultDependencyStrategyExpression extends DependencyStrategyExpre
 
     @Override
     public boolean check(List<Boolean> list) {
-        if(list == null || list.isEmpty()){
+        if (list == null || list.isEmpty()) {
             return false;
         }
 
