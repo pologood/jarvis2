@@ -8,13 +8,14 @@
 
 package com.mogujie.jarvis.logstorage;
 
+import com.mogujie.jarvis.logstorage.actor.LogReaderActor;
 import org.apache.commons.configuration.Configuration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.util.ConfigUtils;
-import com.mogujie.jarvis.logstorage.actor.LogActor;
+import com.mogujie.jarvis.logstorage.actor.LogWriterActor;
 import com.typesafe.config.Config;
 
 import akka.actor.ActorSystem;
@@ -26,7 +27,7 @@ public class JarvisLogstorage {
 
     public static void main(String[] args) {
 
-        LOGGER.info("Starting jarvis logstorage...");
+        LOGGER.info("Starting jarvis logStorage...");
 
         Config akkaConfig = ConfigUtils.getAkkaConfig("akka-logstorage.conf");
         ActorSystem system = ActorSystem.create(JarvisConstants.LOGSTORAGE_AKKA_SYSTEM_NAME, akkaConfig);
@@ -34,9 +35,9 @@ public class JarvisLogstorage {
         Configuration logConfig = ConfigUtils.getLogstorageConfig();
         int actorNum = logConfig.getInt("logstorage.actors.num", 1000);
 
-        system.actorOf(new SmallestMailboxPool(actorNum).props(LogActor.props()), JarvisConstants.LOGSTORAGE_AKKA_SYSTEM_NAME);
+        system.actorOf(new SmallestMailboxPool(actorNum).props(LogReaderActor.props()), JarvisConstants.LOGSTORAGE_AKKA_SYSTEM_NAME);
 
-        LOGGER.info("Jarvis logstorage started.");
+        LOGGER.info("Jarvis logStorage started.");
 
     }
 

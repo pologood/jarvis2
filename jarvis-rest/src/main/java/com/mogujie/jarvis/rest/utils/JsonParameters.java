@@ -138,7 +138,7 @@ public class JsonParameters {
         return getDouble(key, null);
     }
 
-    private Long convert2Long(Object value){
+    private Long convert2Long(Object value) throws NumberFormatException{
         if(value.getClass() == Long.class){
             return (Long) value;
         }
@@ -152,7 +152,7 @@ public class JsonParameters {
         return d.longValue();
     }
 
-    private Integer convert2Integer(Object value){
+    private Integer convert2Integer(Object value) throws NumberFormatException {
         if(value.getClass() == Integer.class){
             return (Integer) value;
         }

@@ -4,7 +4,7 @@ option java_package = "com.mogujie.jarvis.protocol";
 option java_outer_classname = "ReadLogProtos";
 
 
-message RestServerReadLogRequest {
+message RestReadLogRequest {
     required AppAuth app_auth = 1;
     required int64 task_id = 2;
     optional string full_id = 3;
@@ -13,7 +13,7 @@ message RestServerReadLogRequest {
     optional int32 lines = 6 [default = 100];
 }
 
-message LogServerReadLogResponse {
+message LogStorageReadLogResponse {
     optional bool is_end = 1;
     optional string log = 2;
     optional int64 offset = 3;

@@ -9,7 +9,7 @@ message WorkerWriteLogRequest {
     required bool is_end = 4;
 }
 
-message LogServerWriteLogResponse {
+message LogStorageWriteLogResponse {
     required bool success = 1;
     optional string message = 2 [default = ""];
 }

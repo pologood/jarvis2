@@ -25,55 +25,39 @@ public class TestLogStorage {
     @Test
     public void testLogWrite() throws ParseException, IOException {
 
-
-        LocalLogStream localLogStream = new LocalLogStream("fullid_test001",StreamType.STD_OUT);
-
-
+        LocalLogStream localLogStream = new LocalLogStream("1001_1002_1",StreamType.STD_OUT);
         String log;
         for (Integer i = 1; i < 100; i++) {
             log = "hello " + i.toString();
             localLogStream.writeLine(log);
-
         }
-
         localLogStream.writeEndFlag();
 
     }
 
     @Test
     public void testLogRead() throws ParseException, IOException {
-
-
-        LocalLogStream localLogStream = new LocalLogStream("fullid_test001",StreamType.STD_OUT);
-
-
+        LocalLogStream localLogStream = new LocalLogStream("1001_1002_1",StreamType.STD_OUT);
         long offset = 0;
         int i = 0;
         while (true) {
             i++;
-
             LogReadResult result = localLogStream.readLines(offset, 60);
-
-
             String log = result.getLog();
             if (log.length() > 0) {
                 System.out.printf(log);
             }
 
             offset = result.getOffset();
-
             if (result.isEnd()) {
                 System.out.printf("end");
                 break;
             }
-
             if (i > 1000) {
                 System.out.printf("out of test lines");
                 break;
             }
-
         }
-
     }
 
 }

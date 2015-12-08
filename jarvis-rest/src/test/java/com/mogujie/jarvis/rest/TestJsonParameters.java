@@ -16,7 +16,6 @@ import java.util.Map;
  */
 public class TestJsonParameters {
 
-
     @Test
     public void test() {
 
@@ -33,6 +32,7 @@ public class TestJsonParameters {
         Assert.assertTrue(age == 18);
         Assert.assertTrue(!sex);
         Assert.assertTrue(live == 18.9);
+        Assert.assertTrue(start == 1449504000000L);
     }
 
 }

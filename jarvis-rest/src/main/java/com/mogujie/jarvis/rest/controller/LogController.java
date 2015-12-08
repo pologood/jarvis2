@@ -16,8 +16,8 @@ import javax.ws.rs.core.MediaType;
 import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.core.domain.StreamType;
 import com.mogujie.jarvis.protocol.AppAuthProtos;
-import com.mogujie.jarvis.protocol.ReadLogProtos.LogServerReadLogResponse;
-import com.mogujie.jarvis.protocol.ReadLogProtos.RestServerReadLogRequest;
+import com.mogujie.jarvis.protocol.ReadLogProtos.LogStorageReadLogResponse;
+import com.mogujie.jarvis.protocol.ReadLogProtos.RestReadLogRequest;
 import com.mogujie.jarvis.rest.RestResult;
 import com.mogujie.jarvis.rest.utils.JsonParameters;
 import com.mogujie.jarvis.rest.vo.LogVo;
@@ -32,13 +32,7 @@ public class LogController extends AbstractController {
 
     /**
      * 获取执行日志
-     *
-     * @param appName    appName
-     * @param appToken   taskId
-     * @param user
      * @param parameters (taskId、offset：日志内容的字节偏移量、lines：日志读取的行数)
-     * @return
-     * @throws Exception
      */
     @POST
     @Path("readExecuteLog")
@@ -51,13 +45,7 @@ public class LogController extends AbstractController {
 
     /**
      * 获取结果数据
-     *
-     * @param appName    appName
-     * @param appToken
-     * @param user
      * @param parameters (taskId、offset：日志内容的字节偏移量、lines：日志读取的行数)
-     * @return
-     * @throws Exception
      */
     @POST
     @Path("readResult")
@@ -80,10 +68,10 @@ public class LogController extends AbstractController {
             Long offset = para.getLong("offset", 0L);
             Integer lines = para.getInteger("lines", DEFAULT_LINE);
 
-            RestServerReadLogRequest request = RestServerReadLogRequest.newBuilder().setTaskId(taskId)
+            RestReadLogRequest request = RestReadLogRequest.newBuilder().setTaskId(taskId)
                     .setOffset(offset).setType(type.getValue()).setAppAuth(appAuth).setLines(lines).build();
 
-            LogServerReadLogResponse response = (LogServerReadLogResponse) callActor(AkkaType.LOGSTORAGE, request);
+            LogStorageReadLogResponse response = (LogStorageReadLogResponse) callActor(AkkaType.LOGSTORAGE, request);
 
             if (response.getSuccess()) {
                 LogVo logVo = new LogVo();
