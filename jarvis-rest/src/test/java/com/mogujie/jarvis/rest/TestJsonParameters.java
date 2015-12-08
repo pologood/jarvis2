@@ -1,38 +1,38 @@
 package com.mogujie.jarvis.rest;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.junit.Assert;
-import org.junit.Test;
-
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.mogujie.jarvis.core.util.JsonHelper;
+import com.mogujie.jarvis.rest.utils.JsonParameters;
+import org.junit.Assert;
+import org.junit.Test;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by muming on 15/12/1.
  */
 public class TestJsonParameters {
 
-    private String baseUrl = "http://127.0.0.1:8080";
 
     @Test
-    public void appAdd() throws UnirestException {
+    public void test() {
 
-        Map<String, Object> params = new HashMap<>();
-        params.put("applicationName", "mumingTest1");
-        params.put("status", 1);
-        params.put("maxConcurrency", 20);
-        String paramsJson = JsonHelper.toJson(params, Map.class);
+        String json = "{name:'muming',age:18,sex:false,live:18.9,start:1449504000000}";
+        JsonParameters para = new JsonParameters(json);
 
-        HttpResponse<String> jsonResponse = Unirest.post(baseUrl + "/api/app/add").field("appName", "jarvis-web").field("appToken", "123")
-                .field("user", "muming").field("parameters", paramsJson).asString();
+        String name = para.getString("name");
+        Integer age = para.getInteger("age");
+        Boolean sex = para.getBoolean("sex");
+        Double live = para.getDouble("live");
+        Long start = para.getLong("start");
 
-        Assert.assertEquals(jsonResponse.getStatus(), 200);
-        RestResult<?> result = JsonHelper.fromJson(jsonResponse.getBody(), RestResult.class);
-        Assert.assertEquals(result.getCode(), 0);
+        Assert.assertTrue(name.equals("muming"));
+        Assert.assertTrue(age == 18);
+        Assert.assertTrue(!sex);
+        Assert.assertTrue(live == 18.9);
     }
 
 }
