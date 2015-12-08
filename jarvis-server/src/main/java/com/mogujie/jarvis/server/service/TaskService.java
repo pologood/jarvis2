@@ -11,6 +11,7 @@ package com.mogujie.jarvis.server.service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +22,9 @@ import com.google.common.collect.Range;
 import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.expression.DependencyExpression;
 import com.mogujie.jarvis.dao.generate.JobMapper;
-import com.mogujie.jarvis.dao.generate.TaskDependMapper;
 import com.mogujie.jarvis.dao.generate.TaskMapper;
 import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.dto.generate.Task;
-import com.mogujie.jarvis.dto.generate.TaskDependExample;
 import com.mogujie.jarvis.dto.generate.TaskExample;
 
 /**
@@ -37,7 +36,7 @@ public class TaskService {
     private TaskMapper taskMapper;
 
     @Autowired
-    private TaskDependMapper taskDependMapper;
+    private TaskDependService taskDependService;
 
     @Autowired
     private JobMapper jobMapper;
@@ -148,6 +147,11 @@ public class TaskService {
         taskMapper.updateByPrimaryKeySelective(task);
     }
 
+    public void updateStatusWithEnd(long taskId, TaskStatus status, Map<Long, List<Long>> childTaskMap) {
+        updateStatusWithEnd(taskId, status);
+        taskDependService.storeChild(taskId, childTaskMap);
+    }
+
     public void updateStatus(long taskId, TaskStatus status) {
         Task task = new Task();
         task.setTaskId(taskId);
@@ -221,10 +225,7 @@ public class TaskService {
     public void deleteTaskAndRelation(long taskId) {
         if (taskId > 0) {
             taskMapper.deleteByPrimaryKey(taskId);
-
-            TaskDependExample example = new TaskDependExample();
-            example.createCriteria().andTaskIdEqualTo(taskId);
-            taskDependMapper.deleteByExample(example);
+            taskDependService.remove(taskId);
         }
     }
 

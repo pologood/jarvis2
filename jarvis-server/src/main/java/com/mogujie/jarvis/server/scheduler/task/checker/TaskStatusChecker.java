@@ -44,7 +44,7 @@ public class TaskStatusChecker {
         if (dependTaskIdMap != null && !dependTaskIdMap.isEmpty()) {
             this.jobStatusMap = convertToJobStatus(scheduleTime, dependTaskIdMap);
             // store task dependency
-            taskDependService.store(taskId, dependTaskIdMap);
+            taskDependService.storeParent(taskId, dependTaskIdMap);
         }
     }
 
@@ -52,7 +52,7 @@ public class TaskStatusChecker {
         this.myJobId = jobId;
         this.myTaskId = taskId;
         // load dependTaskIdMap from taskDependService
-        Map<Long, List<Long>> dependTaskIdMap = taskDependService.load(taskId);
+        Map<Long, List<Long>> dependTaskIdMap = taskDependService.loadParent(taskId);
         this.jobStatusMap = loadJobStatus(dependTaskIdMap, scheduleTime);
     }
 

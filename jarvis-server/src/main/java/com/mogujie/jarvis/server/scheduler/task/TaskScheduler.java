@@ -88,10 +88,11 @@ public class TaskScheduler extends Scheduler {
     public void handleSuccessEvent(SuccessEvent e) {
         long taskId = e.getTaskId();
         // update task status
-        taskService.updateStatusWithEnd(taskId, TaskStatus.SUCCESS);
+        List<DAGTask> childTasks = taskGraph.getChildren(taskId);
+        Map<Long, List<Long>> childTaskMap = TaskGraph.convert2TaskMap(childTasks);
+        taskService.updateStatusWithEnd(taskId, TaskStatus.SUCCESS, childTaskMap);
 
         // remove from taskGraph
-        List<DAGTask> childTasks = taskGraph.getChildren(taskId);
         taskGraph.removeTask(taskId);
 
         // notify child tasks
@@ -121,7 +122,6 @@ public class TaskScheduler extends Scheduler {
     public void handleKilledEvent(KilledEvent e) {
         long taskId = e.getTaskId();
         taskService.updateStatusWithEnd(taskId, TaskStatus.KILLED);
-        taskGraph.removeTask(taskId);
         reduceTaskNum(taskId);
     }
 
@@ -150,7 +150,6 @@ public class TaskScheduler extends Scheduler {
                 retryScheduler.addTask(getTaskInfo(dagTask), failedRetries, failedInterval, RetryType.FAILED_RETRY);
             } else {
                 taskService.updateStatusWithEnd(taskId, TaskStatus.FAILED);
-                taskGraph.removeTask(taskId);
                 retryScheduler.remove(jobId + "_" + taskId, RetryType.FAILED_RETRY);
             }
         }
@@ -285,4 +284,5 @@ public class TaskScheduler extends Scheduler {
             taskManager.appCounterDecrement(task.getAppId());
         }
     }
+
 }

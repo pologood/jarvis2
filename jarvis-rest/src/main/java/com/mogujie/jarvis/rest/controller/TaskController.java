@@ -29,8 +29,8 @@ import com.mogujie.jarvis.protocol.ModifyTaskStatusProtos.RestServerModifyTaskSt
 import com.mogujie.jarvis.protocol.ModifyTaskStatusProtos.ServerModifyTaskStatusResponse;
 import com.mogujie.jarvis.protocol.RetryTaskProtos.RestServerRetryTaskRequest;
 import com.mogujie.jarvis.protocol.RetryTaskProtos.ServerRetryTaskResponse;
-import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest;
-import com.mogujie.jarvis.protocol.SubmitJobProtos.ServerSubmitTaskResponse;
+import com.mogujie.jarvis.protocol.SubmitTaskProtos.RestServerSubmitTaskRequest;
+import com.mogujie.jarvis.protocol.SubmitTaskProtos.ServerSubmitTaskResponse;
 import com.mogujie.jarvis.rest.RestResult;
 import com.mogujie.jarvis.rest.utils.JsonParameters;
 import com.mogujie.jarvis.rest.vo.RerunTaskVo;
@@ -200,8 +200,8 @@ public class TaskController extends AbstractController {
             long taskId = para.getLong("taskId");
             int status = para.getInteger("status");
 
-            RestServerModifyTaskStatusRequest request = RestServerModifyTaskStatusRequest.newBuilder()
-                    .setAppAuth(appAuth).setTaskId(taskId).setStatus(status).build();
+            RestServerModifyTaskStatusRequest request = RestServerModifyTaskStatusRequest.newBuilder().setAppAuth(appAuth).setTaskId(taskId)
+                    .setStatus(status).build();
 
             ServerModifyTaskStatusResponse response = (ServerModifyTaskStatusResponse) callActor(AkkaType.SERVER, request);
             if (response.getSuccess()) {

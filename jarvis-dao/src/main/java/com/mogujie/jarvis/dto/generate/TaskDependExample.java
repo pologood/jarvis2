@@ -235,6 +235,76 @@ public class TaskDependExample {
             return (Criteria) this;
         }
 
+        public Criteria andChildTaskIdsIsNull() {
+            addCriterion("childTaskIds is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andChildTaskIdsIsNotNull() {
+            addCriterion("childTaskIds is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andChildTaskIdsEqualTo(String value) {
+            addCriterion("childTaskIds =", value, "childTaskIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andChildTaskIdsNotEqualTo(String value) {
+            addCriterion("childTaskIds <>", value, "childTaskIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andChildTaskIdsGreaterThan(String value) {
+            addCriterion("childTaskIds >", value, "childTaskIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andChildTaskIdsGreaterThanOrEqualTo(String value) {
+            addCriterion("childTaskIds >=", value, "childTaskIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andChildTaskIdsLessThan(String value) {
+            addCriterion("childTaskIds <", value, "childTaskIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andChildTaskIdsLessThanOrEqualTo(String value) {
+            addCriterion("childTaskIds <=", value, "childTaskIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andChildTaskIdsLike(String value) {
+            addCriterion("childTaskIds like", value, "childTaskIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andChildTaskIdsNotLike(String value) {
+            addCriterion("childTaskIds not like", value, "childTaskIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andChildTaskIdsIn(List<String> values) {
+            addCriterion("childTaskIds in", values, "childTaskIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andChildTaskIdsNotIn(List<String> values) {
+            addCriterion("childTaskIds not in", values, "childTaskIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andChildTaskIdsBetween(String value1, String value2) {
+            addCriterion("childTaskIds between", value1, value2, "childTaskIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andChildTaskIdsNotBetween(String value1, String value2) {
+            addCriterion("childTaskIds not between", value1, value2, "childTaskIds");
+            return (Criteria) this;
+        }
+
         public Criteria andCreateTimeIsNull() {
             addCriterion("createTime is null");
             return (Criteria) this;
