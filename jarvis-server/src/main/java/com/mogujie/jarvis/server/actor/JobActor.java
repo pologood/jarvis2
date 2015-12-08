@@ -35,7 +35,6 @@ import com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry;
 import com.mogujie.jarvis.protocol.JobProtos.JobFlagEntry;
 import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobRequest;
 import com.mogujie.jarvis.protocol.JobProtos.RestQueryJobRelationRequest;
-import com.mogujie.jarvis.protocol.JobProtos.RestQueryJobRelationRequest.RelationType;
 import com.mogujie.jarvis.protocol.JobProtos.RestSubmitJobRequest;
 import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobResponse;
 import com.mogujie.jarvis.protocol.JobProtos.ServerQueryJobRelationResponse;
@@ -294,7 +293,7 @@ public class JobActor extends UntypedActor {
             long jobId = msg.getJobId();
             ServerQueryJobRelationResponse.Builder builder = ServerQueryJobRelationResponse.newBuilder();
             List<Pair<Long, JobFlag>> relations;
-            if (msg.getRelationType().equals(RelationType.PARENTS)) {
+            if (msg.getRelationType() == (JobRelationType.PARENT.getValue())) {
                 relations = dagScheduler.getJobGraph().getParents(jobId);
             } else {
                 relations = dagScheduler.getJobGraph().getChildren(jobId);

@@ -7367,22 +7367,36 @@ public final class JobProtos {
     com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder();
 
     /**
-     * <code>required int64 job_id = 2;</code>
+     * <code>required string user = 2;</code>
+     */
+    boolean hasUser();
+    /**
+     * <code>required string user = 2;</code>
+     */
+    java.lang.String getUser();
+    /**
+     * <code>required string user = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getUserBytes();
+
+    /**
+     * <code>required int64 job_id = 3;</code>
      */
     boolean hasJobId();
     /**
-     * <code>required int64 job_id = 2;</code>
+     * <code>required int64 job_id = 3;</code>
      */
     long getJobId();
 
     /**
-     * <code>required .RestQueryJobRelationRequest.RelationType relation_type = 3;</code>
+     * <code>required int32 relation_type = 4;</code>
      */
     boolean hasRelationType();
     /**
-     * <code>required .RestQueryJobRelationRequest.RelationType relation_type = 3;</code>
+     * <code>required int32 relation_type = 4;</code>
      */
-    com.mogujie.jarvis.protocol.JobProtos.RestQueryJobRelationRequest.RelationType getRelationType();
+    int getRelationType();
   }
   /**
    * Protobuf type {@code RestQueryJobRelationRequest}
@@ -7449,20 +7463,20 @@ public final class JobProtos {
               bitField0_ |= 0x00000001;
               break;
             }
-            case 16: {
+            case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              jobId_ = input.readInt64();
+              user_ = bs;
               break;
             }
             case 24: {
-              int rawValue = input.readEnum();
-              com.mogujie.jarvis.protocol.JobProtos.RestQueryJobRelationRequest.RelationType value = com.mogujie.jarvis.protocol.JobProtos.RestQueryJobRelationRequest.RelationType.valueOf(rawValue);
-              if (value == null) {
-                unknownFields.mergeVarintField(3, rawValue);
-              } else {
-                bitField0_ |= 0x00000004;
-                relationType_ = value;
-              }
+              bitField0_ |= 0x00000004;
+              jobId_ = input.readInt64();
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000008;
+              relationType_ = input.readInt32();
               break;
             }
           }
@@ -7504,88 +7518,6 @@ public final class JobProtos {
       return PARSER;
     }
 
-    /**
-     * Protobuf enum {@code RestQueryJobRelationRequest.RelationType}
-     */
-    public enum RelationType
-        implements com.google.protobuf.ProtocolMessageEnum {
-      /**
-       * <code>PARENTS = 0;</code>
-       */
-      PARENTS(0, 0),
-      /**
-       * <code>CHILDREN = 1;</code>
-       */
-      CHILDREN(1, 1),
-      ;
-
-      /**
-       * <code>PARENTS = 0;</code>
-       */
-      public static final int PARENTS_VALUE = 0;
-      /**
-       * <code>CHILDREN = 1;</code>
-       */
-      public static final int CHILDREN_VALUE = 1;
-
-
-      public final int getNumber() { return value; }
-
-      public static RelationType valueOf(int value) {
-        switch (value) {
-          case 0: return PARENTS;
-          case 1: return CHILDREN;
-          default: return null;
-        }
-      }
-
-      public static com.google.protobuf.Internal.EnumLiteMap<RelationType>
-          internalGetValueMap() {
-        return internalValueMap;
-      }
-      private static com.google.protobuf.Internal.EnumLiteMap<RelationType>
-          internalValueMap =
-            new com.google.protobuf.Internal.EnumLiteMap<RelationType>() {
-              public RelationType findValueByNumber(int number) {
-                return RelationType.valueOf(number);
-              }
-            };
-
-      public final com.google.protobuf.Descriptors.EnumValueDescriptor
-          getValueDescriptor() {
-        return getDescriptor().getValues().get(index);
-      }
-      public final com.google.protobuf.Descriptors.EnumDescriptor
-          getDescriptorForType() {
-        return getDescriptor();
-      }
-      public static final com.google.protobuf.Descriptors.EnumDescriptor
-          getDescriptor() {
-        return com.mogujie.jarvis.protocol.JobProtos.RestQueryJobRelationRequest.getDescriptor().getEnumTypes().get(0);
-      }
-
-      private static final RelationType[] VALUES = values();
-
-      public static RelationType valueOf(
-          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
-        if (desc.getType() != getDescriptor()) {
-          throw new java.lang.IllegalArgumentException(
-            "EnumValueDescriptor is not for this type.");
-        }
-        return VALUES[desc.getIndex()];
-      }
-
-      private final int index;
-      private final int value;
-
-      private RelationType(int index, int value) {
-        this.index = index;
-        this.value = value;
-      }
-
-      // @@protoc_insertion_point(enum_scope:RestQueryJobRelationRequest.RelationType)
-    }
-
     private int bitField0_;
     public static final int APP_AUTH_FIELD_NUMBER = 1;
     private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_;
@@ -7608,40 +7540,83 @@ public final class JobProtos {
       return appAuth_;
     }
 
-    public static final int JOB_ID_FIELD_NUMBER = 2;
-    private long jobId_;
+    public static final int USER_FIELD_NUMBER = 2;
+    private java.lang.Object user_;
     /**
-     * <code>required int64 job_id = 2;</code>
+     * <code>required string user = 2;</code>
      */
-    public boolean hasJobId() {
+    public boolean hasUser() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
-     * <code>required int64 job_id = 2;</code>
+     * <code>required string user = 2;</code>
+     */
+    public java.lang.String getUser() {
+      java.lang.Object ref = user_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          user_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string user = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getUserBytes() {
+      java.lang.Object ref = user_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        user_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int JOB_ID_FIELD_NUMBER = 3;
+    private long jobId_;
+    /**
+     * <code>required int64 job_id = 3;</code>
+     */
+    public boolean hasJobId() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>required int64 job_id = 3;</code>
      */
     public long getJobId() {
       return jobId_;
     }
 
-    public static final int RELATION_TYPE_FIELD_NUMBER = 3;
-    private com.mogujie.jarvis.protocol.JobProtos.RestQueryJobRelationRequest.RelationType relationType_;
+    public static final int RELATION_TYPE_FIELD_NUMBER = 4;
+    private int relationType_;
     /**
-     * <code>required .RestQueryJobRelationRequest.RelationType relation_type = 3;</code>
+     * <code>required int32 relation_type = 4;</code>
      */
     public boolean hasRelationType() {
-      return ((bitField0_ & 0x00000004) == 0x00000004);
+      return ((bitField0_ & 0x00000008) == 0x00000008);
     }
     /**
-     * <code>required .RestQueryJobRelationRequest.RelationType relation_type = 3;</code>
+     * <code>required int32 relation_type = 4;</code>
      */
-    public com.mogujie.jarvis.protocol.JobProtos.RestQueryJobRelationRequest.RelationType getRelationType() {
+    public int getRelationType() {
       return relationType_;
     }
 
     private void initFields() {
       appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
+      user_ = "";
       jobId_ = 0L;
-      relationType_ = com.mogujie.jarvis.protocol.JobProtos.RestQueryJobRelationRequest.RelationType.PARENTS;
+      relationType_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -7650,6 +7625,10 @@ public final class JobProtos {
       if (isInitialized == 0) return false;
 
       if (!hasAppAuth()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasUser()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -7676,10 +7655,13 @@ public final class JobProtos {
         output.writeMessage(1, appAuth_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeInt64(2, jobId_);
+        output.writeBytes(2, getUserBytes());
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeEnum(3, relationType_.getNumber());
+        output.writeInt64(3, jobId_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeInt32(4, relationType_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -7696,11 +7678,15 @@ public final class JobProtos {
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(2, jobId_);
+          .computeBytesSize(2, getUserBytes());
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(3, relationType_.getNumber());
+          .computeInt64Size(3, jobId_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(4, relationType_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -7826,10 +7812,12 @@ public final class JobProtos {
           appAuthBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000001);
-        jobId_ = 0L;
+        user_ = "";
         bitField0_ = (bitField0_ & ~0x00000002);
-        relationType_ = com.mogujie.jarvis.protocol.JobProtos.RestQueryJobRelationRequest.RelationType.PARENTS;
+        jobId_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000004);
+        relationType_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000008);
         return this;
       }
 
@@ -7869,9 +7857,13 @@ public final class JobProtos {
         if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
           to_bitField0_ |= 0x00000002;
         }
-        result.jobId_ = jobId_;
+        result.user_ = user_;
         if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
           to_bitField0_ |= 0x00000004;
+        }
+        result.jobId_ = jobId_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
         }
         result.relationType_ = relationType_;
         result.bitField0_ = to_bitField0_;
@@ -7893,6 +7885,11 @@ public final class JobProtos {
         if (other.hasAppAuth()) {
           mergeAppAuth(other.getAppAuth());
         }
+        if (other.hasUser()) {
+          bitField0_ |= 0x00000002;
+          user_ = other.user_;
+          onChanged();
+        }
         if (other.hasJobId()) {
           setJobId(other.getJobId());
         }
@@ -7905,6 +7902,10 @@ public final class JobProtos {
 
       public final boolean isInitialized() {
         if (!hasAppAuth()) {
+          
+          return false;
+        }
+        if (!hasUser()) {
           
           return false;
         }
@@ -8058,69 +8059,142 @@ public final class JobProtos {
         return appAuthBuilder_;
       }
 
-      private long jobId_ ;
+      private java.lang.Object user_ = "";
       /**
-       * <code>required int64 job_id = 2;</code>
+       * <code>required string user = 2;</code>
        */
-      public boolean hasJobId() {
+      public boolean hasUser() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
-       * <code>required int64 job_id = 2;</code>
+       * <code>required string user = 2;</code>
+       */
+      public java.lang.String getUser() {
+        java.lang.Object ref = user_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            user_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string user = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getUserBytes() {
+        java.lang.Object ref = user_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          user_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string user = 2;</code>
+       */
+      public Builder setUser(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        user_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string user = 2;</code>
+       */
+      public Builder clearUser() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        user_ = getDefaultInstance().getUser();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string user = 2;</code>
+       */
+      public Builder setUserBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        user_ = value;
+        onChanged();
+        return this;
+      }
+
+      private long jobId_ ;
+      /**
+       * <code>required int64 job_id = 3;</code>
+       */
+      public boolean hasJobId() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>required int64 job_id = 3;</code>
        */
       public long getJobId() {
         return jobId_;
       }
       /**
-       * <code>required int64 job_id = 2;</code>
+       * <code>required int64 job_id = 3;</code>
        */
       public Builder setJobId(long value) {
-        bitField0_ |= 0x00000002;
+        bitField0_ |= 0x00000004;
         jobId_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required int64 job_id = 2;</code>
+       * <code>required int64 job_id = 3;</code>
        */
       public Builder clearJobId() {
-        bitField0_ = (bitField0_ & ~0x00000002);
+        bitField0_ = (bitField0_ & ~0x00000004);
         jobId_ = 0L;
         onChanged();
         return this;
       }
 
-      private com.mogujie.jarvis.protocol.JobProtos.RestQueryJobRelationRequest.RelationType relationType_ = com.mogujie.jarvis.protocol.JobProtos.RestQueryJobRelationRequest.RelationType.PARENTS;
+      private int relationType_ ;
       /**
-       * <code>required .RestQueryJobRelationRequest.RelationType relation_type = 3;</code>
+       * <code>required int32 relation_type = 4;</code>
        */
       public boolean hasRelationType() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
+        return ((bitField0_ & 0x00000008) == 0x00000008);
       }
       /**
-       * <code>required .RestQueryJobRelationRequest.RelationType relation_type = 3;</code>
+       * <code>required int32 relation_type = 4;</code>
        */
-      public com.mogujie.jarvis.protocol.JobProtos.RestQueryJobRelationRequest.RelationType getRelationType() {
+      public int getRelationType() {
         return relationType_;
       }
       /**
-       * <code>required .RestQueryJobRelationRequest.RelationType relation_type = 3;</code>
+       * <code>required int32 relation_type = 4;</code>
        */
-      public Builder setRelationType(com.mogujie.jarvis.protocol.JobProtos.RestQueryJobRelationRequest.RelationType value) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        bitField0_ |= 0x00000004;
+      public Builder setRelationType(int value) {
+        bitField0_ |= 0x00000008;
         relationType_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required .RestQueryJobRelationRequest.RelationType relation_type = 3;</code>
+       * <code>required int32 relation_type = 4;</code>
        */
       public Builder clearRelationType() {
-        bitField0_ = (bitField0_ & ~0x00000004);
-        relationType_ = com.mogujie.jarvis.protocol.JobProtos.RestQueryJobRelationRequest.RelationType.PARENTS;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        relationType_ = 0;
         onChanged();
         return this;
       }
@@ -9145,15 +9219,13 @@ public final class JobProtos {
       "dencyEntry\"=\n\027ServerModifyJobResponse\022\017\n" +
       "\007success\030\001 \002(\010\022\021\n\007message\030\002 \001(\t:\000\"0\n\014Job",
       "FlagEntry\022\016\n\006job_id\030\001 \002(\003\022\020\n\010job_flag\030\002 " +
-      "\002(\005\"\266\001\n\033RestQueryJobRelationRequest\022\032\n\010a" +
-      "pp_auth\030\001 \002(\0132\010.AppAuth\022\016\n\006job_id\030\002 \002(\003\022" +
-      "@\n\rrelation_type\030\003 \002(\0162).RestQueryJobRel" +
-      "ationRequest.RelationType\")\n\014RelationTyp" +
-      "e\022\013\n\007PARENTS\020\000\022\014\n\010CHILDREN\020\001\"k\n\036ServerQu" +
-      "eryJobRelationResponse\022%\n\016job_flag_entry" +
-      "\030\001 \003(\0132\r.JobFlagEntry\022\017\n\007success\030\002 \002(\010\022\021" +
-      "\n\007message\030\003 \001(\t:\000B(\n\033com.mogujie.jarvis." +
-      "protocolB\tJobProtos"
+      "\002(\005\"n\n\033RestQueryJobRelationRequest\022\032\n\010ap" +
+      "p_auth\030\001 \002(\0132\010.AppAuth\022\014\n\004user\030\002 \002(\t\022\016\n\006" +
+      "job_id\030\003 \002(\003\022\025\n\rrelation_type\030\004 \002(\005\"k\n\036S" +
+      "erverQueryJobRelationResponse\022%\n\016job_fla" +
+      "g_entry\030\001 \003(\0132\r.JobFlagEntry\022\017\n\007success\030" +
+      "\002 \002(\010\022\021\n\007message\030\003 \001(\t:\000B(\n\033com.mogujie." +
+      "jarvis.protocolB\tJobProtos"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -9205,7 +9277,7 @@ public final class JobProtos {
     internal_static_RestQueryJobRelationRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_RestQueryJobRelationRequest_descriptor,
-        new java.lang.String[] { "AppAuth", "JobId", "RelationType", });
+        new java.lang.String[] { "AppAuth", "User", "JobId", "RelationType", });
     internal_static_ServerQueryJobRelationResponse_descriptor =
       getDescriptor().getMessageTypes().get(6);
     internal_static_ServerQueryJobRelationResponse_fieldAccessorTable = new

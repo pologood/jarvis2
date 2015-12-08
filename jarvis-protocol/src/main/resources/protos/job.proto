@@ -68,13 +68,10 @@ message JobFlagEntry {
 }
 
 message RestQueryJobRelationRequest {
-    enum RelationType {
-        PARENTS = 0;
-        CHILDREN = 1;
-    }
     required AppAuth app_auth = 1;
-    required int64 job_id = 2;
-    required RelationType relation_type = 3;
+    required string user = 2;
+    required int64 job_id = 3;
+    required int32 relation_type = 4;
 }
 
 message ServerQueryJobRelationResponse {
