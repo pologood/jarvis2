@@ -19,6 +19,7 @@ import java.util.Set;
 
 import javax.inject.Named;
 
+import com.mogujie.jarvis.core.domain.*;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -26,13 +27,7 @@ import org.springframework.context.annotation.Scope;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Range;
 import com.mogujie.jarvis.core.JarvisConstants;
-import com.mogujie.jarvis.core.domain.ActorEntry;
-import com.mogujie.jarvis.core.domain.IdType;
-import com.mogujie.jarvis.core.domain.MessageType;
-import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.domain.TaskDetail.TaskDetailBuilder;
-import com.mogujie.jarvis.core.domain.TaskStatus;
-import com.mogujie.jarvis.core.domain.WorkerInfo;
 import com.mogujie.jarvis.core.expression.DependencyExpression;
 import com.mogujie.jarvis.core.observer.Event;
 import com.mogujie.jarvis.core.util.IdUtils;
@@ -47,7 +42,6 @@ import com.mogujie.jarvis.protocol.ManualRerunTaskProtos.ServerManualRerunTaskRe
 import com.mogujie.jarvis.protocol.ModifyTaskStatusProtos.RestServerModifyTaskStatusRequest;
 import com.mogujie.jarvis.protocol.ModifyTaskStatusProtos.ServerModifyTaskStatusResponse;
 import com.mogujie.jarvis.protocol.QueryTaskRelationProtos.RestServerQueryTaskRelationRequest;
-import com.mogujie.jarvis.protocol.QueryTaskRelationProtos.RestServerQueryTaskRelationRequest.RelationType;
 import com.mogujie.jarvis.protocol.QueryTaskRelationProtos.ServerQueryTaskRelationResponse;
 import com.mogujie.jarvis.protocol.QueryTaskRelationProtos.TaskMapEntry;
 import com.mogujie.jarvis.protocol.RetryTaskProtos.RestServerRetryTaskRequest;
@@ -314,7 +308,7 @@ public class TaskActor extends UntypedActor {
             long taskId = msg.getTaskId();
             ServerQueryTaskRelationResponse.Builder builder = ServerQueryTaskRelationResponse.newBuilder();
             Map<Long, List<Long>> taskRelationMap;
-            if (msg.getRelationType().equals(RelationType.PARENTS)) {
+            if (msg.getRelationType() == JobRelationType.PARENT.getValue()) {
                 taskRelationMap = taskDependService.loadParent(taskId);
             } else {
                 DAGTask dagTask = taskGraph.getTask(taskId);

@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.mogujie.jarvis.rest.vo.JobRelationsVo;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -96,5 +97,29 @@ public class TestRestJob {
         Assert.assertEquals(result.getCode(), 0);
 
     }
+
+
+    @Test
+    public void queryRelations() throws UnirestException {
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("jobId", 2);
+        params.put("relationType", 1);
+        String paramsJson = JsonHelper.toJson(params, Map.class);
+
+        HttpResponse<String> jsonResponse = Unirest.post(baseUrl + "/api/job/queryRelation")
+                .field("appName", "jarvis-web")
+                .field("appToken", "123")
+                .field("user", "muming")
+                .field("parameters", paramsJson).asString();
+
+        Type restType = new TypeToken<RestResult<JobRelationsVo>>() {}.getType();
+
+        Assert.assertEquals(jsonResponse.getStatus(), 200);
+        RestResult<?> result = JsonHelper.fromJson(jsonResponse.getBody(), restType);
+        Assert.assertEquals(result.getCode(), 0);
+
+    }
+
 
 }
