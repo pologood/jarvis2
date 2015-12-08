@@ -14,6 +14,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.inject.Named;
@@ -40,6 +41,7 @@ import com.mogujie.jarvis.core.observer.Event;
 import com.mogujie.jarvis.core.util.IdUtils;
 import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.dto.generate.Task;
+import com.mogujie.jarvis.protocol.JobProtos.RestQueryJobRelationRequest.RelationType;
 import com.mogujie.jarvis.protocol.KillTaskProtos.RestServerKillTaskRequest;
 import com.mogujie.jarvis.protocol.KillTaskProtos.ServerKillTaskRequest;
 import com.mogujie.jarvis.protocol.KillTaskProtos.ServerKillTaskResponse;
@@ -48,6 +50,9 @@ import com.mogujie.jarvis.protocol.ManualRerunTaskProtos.RestServerManualRerunTa
 import com.mogujie.jarvis.protocol.ManualRerunTaskProtos.ServerManualRerunTaskResponse;
 import com.mogujie.jarvis.protocol.ModifyTaskStatusProtos.RestServerModifyTaskStatusRequest;
 import com.mogujie.jarvis.protocol.ModifyTaskStatusProtos.ServerModifyTaskStatusResponse;
+import com.mogujie.jarvis.protocol.QueryTaskRelationProtos.RestServerQueryTaskRelationRequest;
+import com.mogujie.jarvis.protocol.QueryTaskRelationProtos.ServerQueryTaskRelationResponse;
+import com.mogujie.jarvis.protocol.QueryTaskRelationProtos.TaskMapEntry;
 import com.mogujie.jarvis.protocol.RetryTaskProtos.RestServerRetryTaskRequest;
 import com.mogujie.jarvis.protocol.RetryTaskProtos.ServerRetryTaskResponse;
 import com.mogujie.jarvis.protocol.SubmitJobProtos.RestServerSubmitTaskRequest;
@@ -63,12 +68,14 @@ import com.mogujie.jarvis.server.scheduler.event.RetryTaskEvent;
 import com.mogujie.jarvis.server.scheduler.event.ScheduleEvent;
 import com.mogujie.jarvis.server.scheduler.event.SuccessEvent;
 import com.mogujie.jarvis.server.scheduler.event.UnhandleEvent;
+import com.mogujie.jarvis.server.scheduler.plan.ExecutionPlan;
 import com.mogujie.jarvis.server.scheduler.plan.ExecutionPlanEntry;
 import com.mogujie.jarvis.server.scheduler.plan.PlanGenerator;
 import com.mogujie.jarvis.server.scheduler.task.DAGTask;
 import com.mogujie.jarvis.server.scheduler.task.TaskGraph;
 import com.mogujie.jarvis.server.service.ConvertValidService;
 import com.mogujie.jarvis.server.service.JobService;
+import com.mogujie.jarvis.server.service.TaskDependService;
 import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.FutureUtils;
 
@@ -85,6 +92,8 @@ public class TaskActor extends UntypedActor {
     private TaskService taskService;
     @Autowired
     private JobService jobService;
+    @Autowired
+    private TaskDependService taskDependService;
     @Autowired
     private ConvertValidService convertValidService;
 
@@ -111,6 +120,9 @@ public class TaskActor extends UntypedActor {
         } else if (obj instanceof RestServerModifyTaskStatusRequest) {
             RestServerModifyTaskStatusRequest msg = (RestServerModifyTaskStatusRequest) obj;
             modifyTaskStatus(msg);
+        } else if (obj instanceof RestServerQueryTaskRelationRequest) {
+            RestServerQueryTaskRelationRequest msg = (RestServerQueryTaskRelationRequest) obj;
+            queryTaskRelation(msg);
         } else {
             unhandled(obj);
         }
@@ -280,11 +292,55 @@ public class TaskActor extends UntypedActor {
         } else if (status.equals(TaskStatus.FAILED)) {
             event = new FailedEvent(taskId);
         }
+        // 1. handle success/failed event
         JobSchedulerController schedulerController = JobSchedulerController.getInstance();
         schedulerController.notify(event);
+        // 2. remove from plan if necessary
+        ExecutionPlan plan = ExecutionPlan.INSTANCE;
+        plan.removePlan(new ExecutionPlanEntry(0, null, taskId));
+
         ServerModifyTaskStatusResponse response = ServerModifyTaskStatusResponse.newBuilder()
                 .setSuccess(true).build();
         getSender().tell(response, getSelf());
+    }
+
+    /**
+     * 查询task的依赖关系
+     *
+     * @param msg
+     */
+    private void queryTaskRelation(RestServerQueryTaskRelationRequest msg) throws Exception {
+
+        ServerQueryTaskRelationResponse response;
+        try {
+            long taskId = msg.getTaskId();
+            ServerQueryTaskRelationResponse.Builder builder = ServerQueryTaskRelationResponse.newBuilder();
+            Map<Long, List<Long>> taskRelationMap;
+            if (msg.getRelationType().equals(RelationType.PARENTS)) {
+                taskRelationMap = taskDependService.loadParent(taskId);
+            } else {
+                DAGTask dagTask = taskGraph.getTask(taskId);
+                if (dagTask != null) {
+                    List<DAGTask> childDagTasks = taskGraph.getChildren(taskId);
+                    taskRelationMap = TaskGraph.convert2TaskMap(childDagTasks);
+                } else {
+                    taskRelationMap = taskDependService.loadChild(taskId);
+                }
+            }
+            for (Entry<Long, List<Long>> entry : taskRelationMap.entrySet()) {
+                long jobId = entry.getKey();
+                List<Long> taskList = entry.getValue();
+                TaskMapEntry taskMapEntry = TaskMapEntry.newBuilder().setJobId(jobId).addAllTaskId(taskList).build();
+                builder.addTaskRelationMap(taskMapEntry);
+            }
+            response = builder.setSuccess(true).build();
+            getSender().tell(response, getSelf());
+
+        } catch (Exception e) {
+            response = ServerQueryTaskRelationResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
+            getSender().tell(response, getSelf());
+            throw e;
+        }
     }
 
     private TaskDetail createRunOnceTask(RestServerSubmitTaskRequest request) {
@@ -316,6 +372,7 @@ public class TaskActor extends UntypedActor {
         list.add(new ActorEntry(RestServerSubmitTaskRequest.class, ServerSubmitTaskResponse.class, MessageType.GENERAL));
         list.add(new ActorEntry(RestServerManualRerunTaskRequest.class, ServerManualRerunTaskResponse.class, MessageType.GENERAL));
         list.add(new ActorEntry(RestServerModifyTaskStatusRequest.class, ServerModifyTaskStatusResponse.class, MessageType.GENERAL));
+        list.add(new ActorEntry(RestServerQueryTaskRelationRequest.class, ServerQueryTaskRelationResponse.class, MessageType.GENERAL));
         return list;
     }
 }

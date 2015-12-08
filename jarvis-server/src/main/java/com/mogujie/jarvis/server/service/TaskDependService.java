@@ -12,13 +12,14 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 
+import org.joda.time.DateTime;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.google.gson.reflect.TypeToken;
 import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.dao.generate.TaskDependMapper;
 import com.mogujie.jarvis.dto.generate.TaskDepend;
-import org.joda.time.DateTime;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 /**
  * @author muming
@@ -31,7 +32,7 @@ public class TaskDependService {
 
     Type dataType = new TypeToken<Map<Long, List<Long>>>() {}.getType();
 
-    public void store(long taskId, Map<Long, List<Long>> dependTaskIdMap) {
+    public void storeParent(long taskId, Map<Long, List<Long>> dependTaskIdMap) {
         String dependJson = JsonHelper.toJson(dependTaskIdMap, dataType);
         TaskDepend newData = new TaskDepend();
         newData.setTaskId(taskId);
@@ -46,7 +47,7 @@ public class TaskDependService {
         }
     }
 
-    public Map<Long, List<Long>> load(long taskId) {
+    public Map<Long, List<Long>> loadParent(long taskId) {
         TaskDepend data = mapper.selectByPrimaryKey(taskId);
         if (data == null) {
             return null;
@@ -54,10 +55,25 @@ public class TaskDependService {
         return JsonHelper.fromJson(data.getDependTaskIds(), dataType);
     }
 
+    public void storeChild(long taskId, Map<Long, List<Long>> childTaskIdMap) {
+        String childJson = JsonHelper.toJson(childTaskIdMap, dataType);
+
+        TaskDepend record = new TaskDepend();
+        record.setTaskId(taskId);
+        record.setChildTaskIds(childJson);
+        mapper.updateByPrimaryKeySelective(record);
+    }
+
+    public Map<Long, List<Long>> loadChild(long taskId) {
+        TaskDepend data = mapper.selectByPrimaryKey(taskId);
+        if (data == null) {
+            return null;
+        }
+        return JsonHelper.fromJson(data.getChildTaskIds(), dataType);
+    }
+
     public void remove(long taskId){
         mapper.deleteByPrimaryKey(taskId);
     }
-
-
 
 }
