@@ -216,7 +216,7 @@ public class JobController extends AbstractController {
             JsonParameters paras = new JsonParameters(parameters);
             Long jobId = paras.getLongNotNull("jobId");
             Integer relationType = paras.getIntegerNotNull("relationType");
-            if(JobRelationType.isValid(relationType)){
+            if(!JobRelationType.isValid(relationType)){
                 throw new IllegalArgumentException("参数不对。key='relationType',value=" + relationType.toString());
             }
 
