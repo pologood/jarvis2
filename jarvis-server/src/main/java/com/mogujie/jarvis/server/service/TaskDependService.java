@@ -41,7 +41,7 @@ public class TaskDependService {
 
         TaskDepend oldData = mapper.selectByPrimaryKey(taskId);
         if (oldData == null) {
-            mapper.insert(newData);
+            mapper.insertSelective(newData);
         } else {
             mapper.updateByPrimaryKey(newData);
         }
@@ -58,10 +58,17 @@ public class TaskDependService {
     public void storeChild(long taskId, Map<Long, List<Long>> childTaskIdMap) {
         String childJson = JsonHelper.toJson(childTaskIdMap, dataType);
 
-        TaskDepend record = new TaskDepend();
-        record.setTaskId(taskId);
-        record.setChildTaskIds(childJson);
-        mapper.updateByPrimaryKeySelective(record);
+        TaskDepend oldData = mapper.selectByPrimaryKey(taskId);
+        if (oldData != null) {
+            oldData.setChildTaskIds(childJson);
+            mapper.updateByPrimaryKey(oldData);
+        } else {
+            TaskDepend newData = new TaskDepend();
+            newData.setTaskId(taskId);
+            newData.setChildTaskIds(childJson);
+            newData.setCreateTime(DateTime.now().toDate());
+            mapper.insertSelective(newData);
+        }
     }
 
     public Map<Long, List<Long>> loadChild(long taskId) {

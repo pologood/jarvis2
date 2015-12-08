@@ -149,7 +149,9 @@ public class TaskService {
 
     public void updateStatusWithEnd(long taskId, TaskStatus status, Map<Long, List<Long>> childTaskMap) {
         updateStatusWithEnd(taskId, status);
-        taskDependService.storeChild(taskId, childTaskMap);
+        if (childTaskMap != null && !childTaskMap.isEmpty()) {
+            taskDependService.storeChild(taskId, childTaskMap);
+        }
     }
 
     public void updateStatus(long taskId, TaskStatus status) {
