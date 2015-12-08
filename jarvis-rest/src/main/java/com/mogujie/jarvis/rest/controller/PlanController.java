@@ -8,9 +8,6 @@
 
 package com.mogujie.jarvis.rest.controller;
 
-import java.lang.reflect.Type;
-import java.util.Map;
-
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -18,7 +15,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import com.google.gson.reflect.TypeToken;
 import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.protocol.AppAuthProtos;
 import com.mogujie.jarvis.protocol.GeneratePlanProtos.RestServerGenereateAllPlanRequest;
@@ -50,13 +46,13 @@ public class PlanController extends AbstractController {
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
             JsonParameters para = new JsonParameters(parameters);
-            long jobId = para.getLong("jobId");
             long taskId = para.getLong("taskId");
-            long scheduleTime = para.getInteger("time");
-            boolean ask = para.getBoolean("ask");
+            boolean ask = para.getBoolean("ask", true);
 
-            RestServerRemovePlanRequest request = RestServerRemovePlanRequest.newBuilder().setAppAuth(appAuth).setJobId(jobId).setTaskId(taskId)
-                    .setScheduleTime(scheduleTime).setAsk(ask).build();
+            RestServerRemovePlanRequest request = RestServerRemovePlanRequest.newBuilder().setAppAuth(appAuth)
+                    .setTaskId(taskId)
+                    .setAsk(ask)
+                    .build();
 
             ServerRemovePlanResponse response = (ServerRemovePlanResponse) callActor(AkkaType.SERVER, request);
             if (response.getSuccess()) {
@@ -83,8 +79,7 @@ public class PlanController extends AbstractController {
         try {
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
-            Type type = new TypeToken<Map<String, Long>>() {}.getType();
-            JsonParameters para = new JsonParameters(parameters, type);
+            JsonParameters para = new JsonParameters(parameters);
             long startTime = para.getLong("start");
             long endTime = para.getLong("end");
             RestServerGenereateAllPlanRequest request = RestServerGenereateAllPlanRequest.newBuilder()

@@ -7,9 +7,7 @@ option java_outer_classname = "RemovePlanProtos";
 message RestServerRemovePlanRequest {
     required AppAuth app_auth = 1;
     required int64 task_id = 2;
-    required int64 job_id = 3;
-    required int64 schedule_time = 4;
-    optional bool ask = 5;
+    optional bool ask = 3;
 }
 
 message ServerRemovePlanResponse {
