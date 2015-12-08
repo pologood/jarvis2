@@ -21,7 +21,6 @@ import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 
 import com.mogujie.jarvis.core.util.ConfigUtils;
-import com.mogujie.jarvis.rest.utils.GrizzlyUtil;
 
 /**
  * 启动RestServer
@@ -29,7 +28,11 @@ import com.mogujie.jarvis.rest.utils.GrizzlyUtil;
  */
 public class JarvisRest {
 
-    private static final Logger LOGGER = LogManager.getLogger();
+    static{
+        //GrizzlyHttpServer`logger change
+        System.setProperty("java.util.logging.manager","org.apache.logging.log4j.jul.LogManager");
+    }
+    private  static final Logger LOGGER = LogManager.getLogger();
 
     public static void main(String[] args) throws IOException {
         LOGGER.info("Starting rest server...");
@@ -38,10 +41,8 @@ public class JarvisRest {
 
         // 控制器注册
         ResourceConfig resourceConfig = new RestResourceConfig();
-
         URI baseUri = UriBuilder.fromUri("http://" + Inet4Address.getLocalHost().getHostAddress() + "/").port(port).build();
         HttpServer server = GrizzlyHttpServerFactory.createHttpServer(baseUri, resourceConfig);
-        GrizzlyUtil.SwitchLog();
         server.start();
 
         LOGGER.info("Rest server started.");
