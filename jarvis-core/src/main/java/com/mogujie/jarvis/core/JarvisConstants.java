@@ -1,5 +1,7 @@
 package com.mogujie.jarvis.core;
 
+import org.joda.time.DateTime;
+
 /**
  * @author wuya
  *
@@ -25,4 +27,8 @@ public interface JarvisConstants {
     public static final String EMPTY_STRING = "";
     public static final String LINE_SEPARATOR = System.getProperty("line.separator");
     public static final String DEFAULT_DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
+
+    public static final DateTime DATETIME_MAX = new DateTime("9999-12-31 00:00:00:00");
+    public static final DateTime DATETIME_MIN = new DateTime("1970-01-01 00:00:00:00");
+
 }

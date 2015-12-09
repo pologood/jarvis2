@@ -19,11 +19,12 @@ public class TestTaskService {
     @Autowired
     private  TaskService taskService;
 
-    @Test
-    public void testCreateTaskByJobId(){
-        Integer jobId = 3;
-        Long scheduleTime = DateTime.now().getMillis()/1000;
-        long taskId = taskService.createTaskByJobId(jobId,scheduleTime);
-        Assert.assertNotNull(taskId);
-    }
+//    @Test
+//    public void testCreateTaskByJobId(){
+//        Integer jobId = 3;
+//        Long scheduleTime = DateTime.now().getMillis()/1000;
+//        long taskId = taskService.createTaskByJobId(jobId,scheduleTime);
+//        Assert.assertNotNull(taskId);
+//    }
+
 }

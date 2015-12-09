@@ -73,4 +73,8 @@ public class WorkerService {
         return 0;
     }
 
+    public WorkerGroup getGroupByGroupId(int groupId) {
+        return  workerGroupMapper.selectByPrimaryKey(groupId);
+    }
+
 }
