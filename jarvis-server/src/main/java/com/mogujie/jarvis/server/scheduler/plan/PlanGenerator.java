@@ -159,10 +159,20 @@ public class PlanGenerator {
         // generate next day time based plans
         List<Long> activeTimeBasedJobs = jobGraph.getActiveTimeBasedJobs();
         for (Long jobId : activeTimeBasedJobs) {
-            DateTime scheduleTime = getScheduleTimeAfter(jobId, startDateTime);
+            long lastScheduleTime = taskService.getPreScheduleTime(jobId, startDateTime.getMillis());
+            DateTime lastDateTime;
+            if (lastScheduleTime > 0) {
+                lastDateTime = new DateTime(lastScheduleTime);
+            } else {
+                lastDateTime = startDateTime;
+            }
+
+            DateTime scheduleTime = getScheduleTimeAfter(jobId, lastDateTime);
             while (scheduleTime != null && scheduleTime.isBefore(endDateTime)) {
-                ExecutionPlanEntry entry = new ExecutionPlanEntry(jobId, scheduleTime);
-                nextDayTimeBasedPlans.add(entry);
+                if (scheduleTime.isAfter(startDateTime)) {
+                    ExecutionPlanEntry entry = new ExecutionPlanEntry(jobId, scheduleTime);
+                    nextDayTimeBasedPlans.add(entry);
+                }
                 scheduleTime = getScheduleTimeAfter(jobId, scheduleTime);
             }
         }

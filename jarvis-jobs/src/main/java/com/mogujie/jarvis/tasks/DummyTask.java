@@ -11,6 +11,7 @@ package com.mogujie.jarvis.tasks;
 import com.mogujie.jarvis.core.TaskContext;
 import com.mogujie.jarvis.core.exeception.TaskException;
 import com.mogujie.jarvis.core.task.AbstractTask;
+import com.mogujie.jarvis.core.util.ThreadUtils;
 
 /**
  * @author guangming
@@ -27,6 +28,7 @@ public class DummyTask extends AbstractTask {
 
     @Override
     public boolean execute() throws TaskException {
+        ThreadUtils.sleep(2000);
         return true;
     }
 

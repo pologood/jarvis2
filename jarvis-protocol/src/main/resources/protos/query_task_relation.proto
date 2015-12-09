@@ -9,13 +9,9 @@ message TaskMapEntry {
 }
 
 message RestServerQueryTaskRelationRequest {
-	enum RelationType {
-        PARENTS = 0;
-        CHILDREN = 1;
-    }
     required AppAuth app_auth = 1;
     required int64 task_id = 2;
-    required RelationType relation_type = 3;
+    required int32 relation_type = 3;
 }
 
 message ServerQueryTaskRelationResponse {

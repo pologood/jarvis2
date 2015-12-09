@@ -45,31 +45,6 @@ public class TaskService {
         return taskMapper.selectByPrimaryKey(taskId);
     }
 
-    public long insert(Task record) {
-        taskMapper.insert(record);
-        return record.getTaskId();
-    }
-
-    public void updateSelective(Task record) {
-        taskMapper.updateByPrimaryKeySelective(record);
-    }
-
-    public void updateProgress(long taskId, float progress) {
-        Task record = new Task();
-        record.setTaskId(taskId);
-        record.setProgress(progress);
-        record.setUpdateTime(new Date());
-        taskMapper.updateByPrimaryKeySelective(record);
-    }
-
-    public void updateWorkerId(long taskId, int workerId) {
-        Task task = new Task();
-        task.setTaskId(taskId);
-        task.setWorkerId(workerId);
-        task.setUpdateTime(new Date());
-        taskMapper.updateByPrimaryKeySelective(task);
-    }
-
     public List<Task> getTasks(List<Long> taskIds) {
         if (taskIds == null || taskIds.isEmpty()) {
             return null;
@@ -77,6 +52,16 @@ public class TaskService {
         TaskExample example = new TaskExample();
         example.createCriteria().andTaskIdIn(taskIds);
         return taskMapper.selectByExample(example);
+    }
+
+    public long insert(Task record) {
+        taskMapper.insert(record);
+        return record.getTaskId();
+    }
+
+    public long insertSelective(Task record) {
+        taskMapper.insertSelective(record);
+        return record.getTaskId();
     }
 
     public long createTaskByJobId(long jobId, long scheduleTime) {
@@ -95,8 +80,63 @@ public class TaskService {
         record.setContent(job.getContent());
         record.setParams(job.getParams());
         record.setAppId(job.getAppId());
-        taskMapper.insert(record);
-        return record.getTaskId();
+        return insertSelective(record);
+    }
+
+    public void updateSelective(Task record) {
+        taskMapper.updateByPrimaryKeySelective(record);
+    }
+
+    public void updateProgress(long taskId, float progress) {
+        Task record = new Task();
+        record.setTaskId(taskId);
+        record.setProgress(progress);
+        record.setUpdateTime(DateTime.now().toDate());
+        taskMapper.updateByPrimaryKeySelective(record);
+    }
+
+    public void updateWorkerId(long taskId, int workerId) {
+        Task task = new Task();
+        task.setTaskId(taskId);
+        task.setWorkerId(workerId);
+        task.setUpdateTime(DateTime.now().toDate());
+        taskMapper.updateByPrimaryKeySelective(task);
+    }
+
+    public void updateStatus(long taskId, TaskStatus status) {
+        Task task = new Task();
+        task.setTaskId(taskId);
+        task.setStatus(status.getValue());
+        task.setUpdateTime(DateTime.now().toDate());
+        taskMapper.updateByPrimaryKeySelective(task);
+    }
+
+    public void updateStatusWithStart(long taskId, TaskStatus status, int workerId) {
+        Task task = new Task();
+        task.setTaskId(taskId);
+        task.setStatus(status.getValue());
+        task.setWorkerId(workerId);
+        Date currentTime = DateTime.now().toDate();
+        task.setExecuteStartTime(currentTime);
+        task.setUpdateTime(currentTime);
+        taskMapper.updateByPrimaryKeySelective(task);
+    }
+
+    public void updateStatusWithEnd(long taskId, TaskStatus status) {
+        Task task = new Task();
+        task.setTaskId(taskId);
+        task.setStatus(status.getValue());
+        Date currentTime = DateTime.now().toDate();
+        task.setExecuteEndTime(currentTime);
+        task.setUpdateTime(currentTime);
+        taskMapper.updateByPrimaryKeySelective(task);
+    }
+
+    public void updateStatusWithEnd(long taskId, TaskStatus status, Map<Long, List<Long>> childTaskMap) {
+        updateStatusWithEnd(taskId, status);
+        if (childTaskMap != null && !childTaskMap.isEmpty()) {
+            taskDependService.storeChild(taskId, childTaskMap);
+        }
     }
 
     public List<Task> getTasksByStatusNotIn(List<Integer> statusList) {
@@ -111,55 +151,6 @@ public class TaskService {
         return taskMapper.selectByExample(example);
     }
 
-    public List<Long> getTaskIdsByJobIdsBetween(List<Long> jobIds, Date start, Date end) {
-        TaskExample example = new TaskExample();
-        example.createCriteria().andJobIdIn(jobIds).andScheduleTimeBetween(start, end).andJobIdNotEqualTo(0L);
-        List<Task> tasks = taskMapper.selectByExample(example);
-        List<Long> taskIdList = new ArrayList<Long>();
-        if (tasks != null) {
-            for (Task task : tasks) {
-                taskIdList.add(task.getTaskId());
-            }
-        }
-        return taskIdList;
-    }
-
-    public void updateStatusWithStart(long taskId, TaskStatus status, int workerId) {
-        Task task = new Task();
-        task.setTaskId(taskId);
-        task.setStatus(status.getValue());
-        DateTime dt = DateTime.now();
-        Date currentTime = dt.toDate();
-        task.setExecuteStartTime(currentTime);
-        task.setUpdateTime(currentTime);
-        task.setWorkerId(workerId);
-        taskMapper.updateByPrimaryKeySelective(task);
-    }
-
-    public void updateStatusWithEnd(long taskId, TaskStatus status) {
-        Task task = new Task();
-        task.setTaskId(taskId);
-        task.setStatus(status.getValue());
-        DateTime dt = DateTime.now();
-        Date currentTime = dt.toDate();
-        task.setExecuteEndTime(currentTime);
-        task.setUpdateTime(currentTime);
-        taskMapper.updateByPrimaryKeySelective(task);
-    }
-
-    public void updateStatusWithEnd(long taskId, TaskStatus status, Map<Long, List<Long>> childTaskMap) {
-        updateStatusWithEnd(taskId, status);
-        taskDependService.storeChild(taskId, childTaskMap);
-    }
-
-    public void updateStatus(long taskId, TaskStatus status) {
-        Task task = new Task();
-        task.setTaskId(taskId);
-        task.setStatus(status.getValue());
-        task.setUpdateTime(DateTime.now().toDate());
-        taskMapper.updateByPrimaryKeySelective(task);
-    }
-
     public List<Long> getDependTaskIds(long myJobId, long preJobId, long scheduleTime, DependencyExpression dependencyExpression) {
         List<Task> tasks;
         if (dependencyExpression != null) {
@@ -168,7 +159,7 @@ public class TaskService {
             long preScheduleTime = getPreScheduleTime(myJobId, scheduleTime);
             tasks = getTasksBetween(preJobId, new DateTime(preScheduleTime), new DateTime(scheduleTime));
         }
-        List<Long> taskIds = new ArrayList<Long>();
+        List<Long> taskIds = new ArrayList<>();
         for (Task task : tasks) {
             taskIds.add(task.getTaskId());
         }
@@ -187,7 +178,8 @@ public class TaskService {
             return null;
         }
         TaskExample example = new TaskExample();
-        example.createCriteria().andJobIdEqualTo(jobId).andScheduleTimeBetween(start.toDate(), end.toDate()).andJobIdNotEqualTo(0L);
+        example.createCriteria().andJobIdEqualTo(jobId)
+                .andScheduleTimeBetween(start.toDate(), end.toDate());
         return taskMapper.selectByExample(example);
     }
 
@@ -201,18 +193,13 @@ public class TaskService {
         return null;
     }
 
-    public List<Task> getTasksBetween(Date start, Date end) {
-        TaskExample example = new TaskExample();
-        example.createCriteria().andScheduleTimeBetween(start, end).andJobIdNotEqualTo(0L);
-        return taskMapper.selectByExample(example);
-    }
-
     public long getPreScheduleTime(long jobId, long scheduleTime) {
         if (jobId == 0 || scheduleTime == 0) {
             return 0;
         }
         TaskExample example = new TaskExample();
-        example.createCriteria().andJobIdEqualTo(jobId).andScheduleTimeLessThan(new DateTime(scheduleTime * 1000L).toDate()).andJobIdNotEqualTo(0L);
+        example.createCriteria().andJobIdEqualTo(jobId)
+                .andScheduleTimeLessThan(new Date(scheduleTime));
         example.setOrderByClause("taskId desc");
         List<Task> tasks = taskMapper.selectByExample(example);
         if (tasks == null || tasks.isEmpty()) {

@@ -23,11 +23,15 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 
+import akka.actor.ActorSelection;
+import akka.actor.UntypedActor;
+
 import com.google.common.collect.Maps;
 import com.google.common.collect.Range;
 import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.domain.ActorEntry;
 import com.mogujie.jarvis.core.domain.IdType;
+import com.mogujie.jarvis.core.domain.JobRelationType;
 import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.domain.TaskDetail.TaskDetailBuilder;
@@ -47,7 +51,6 @@ import com.mogujie.jarvis.protocol.ManualRerunTaskProtos.ServerManualRerunTaskRe
 import com.mogujie.jarvis.protocol.ModifyTaskStatusProtos.RestServerModifyTaskStatusRequest;
 import com.mogujie.jarvis.protocol.ModifyTaskStatusProtos.ServerModifyTaskStatusResponse;
 import com.mogujie.jarvis.protocol.QueryTaskRelationProtos.RestServerQueryTaskRelationRequest;
-import com.mogujie.jarvis.protocol.QueryTaskRelationProtos.RestServerQueryTaskRelationRequest.RelationType;
 import com.mogujie.jarvis.protocol.QueryTaskRelationProtos.ServerQueryTaskRelationResponse;
 import com.mogujie.jarvis.protocol.QueryTaskRelationProtos.TaskMapEntry;
 import com.mogujie.jarvis.protocol.RetryTaskProtos.RestServerRetryTaskRequest;
@@ -75,9 +78,6 @@ import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.TaskDependService;
 import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.FutureUtils;
-
-import akka.actor.ActorSelection;
-import akka.actor.UntypedActor;
 
 /**
  * @author guangming
@@ -314,7 +314,7 @@ public class TaskActor extends UntypedActor {
             long taskId = msg.getTaskId();
             ServerQueryTaskRelationResponse.Builder builder = ServerQueryTaskRelationResponse.newBuilder();
             Map<Long, List<Long>> taskRelationMap;
-            if (msg.getRelationType().equals(RelationType.PARENTS)) {
+            if (msg.getRelationType() == JobRelationType.PARENT.getValue()) {
                 taskRelationMap = taskDependService.loadParent(taskId);
             } else {
                 DAGTask dagTask = taskGraph.getTask(taskId);
@@ -343,7 +343,7 @@ public class TaskActor extends UntypedActor {
 
     private TaskDetail createRunOnceTask(RestServerSubmitTaskRequest request) {
         Task task = convertValidService.convert2Task(request);
-        long taskId = taskService.insert(task);
+        long taskId = taskService.insertSelective(task);
         TaskDetailBuilder builder = TaskDetail.newTaskDetailBuilder().setFullId("0_" + taskId + "_0").setAppName(request.getAppAuth().getName())
                 .setTaskName(request.getTaskName()).setUser(request.getUser()).setTaskType(request.getTaskType()).setContent(request.getContent())
                 .setGroupId(request.getGroupId()).setPriority(request.getPriority()).setRejectRetries(request.getRejectRetries())

@@ -12,6 +12,8 @@ import java.util.List;
 
 import javax.inject.Named;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 
@@ -46,14 +48,13 @@ import com.mogujie.jarvis.server.service.WorkerService;
 @Named("taskMetricsActor")
 @Scope("prototype")
 public class TaskMetricsActor extends UntypedActor {
-
-    private JobSchedulerController schedulerController = JobSchedulerController.getInstance();
-
     @Autowired
     private TaskService taskService;
-
     @Autowired
     private WorkerService workerService;
+
+    private JobSchedulerController schedulerController = JobSchedulerController.getInstance();
+    private static final Logger LOGGER = LogManager.getLogger();
 
     @Override
     public void onReceive(Object obj) throws Exception {
@@ -63,6 +64,7 @@ public class TaskMetricsActor extends UntypedActor {
             long jobId = IdUtils.parse(fullId, IdType.JOB_ID);
             long taskId = IdUtils.parse(fullId, IdType.TASK_ID);
             TaskStatus status = TaskStatus.getInstance(msg.getStatus());
+            LOGGER.info("receive task {} status {}", taskId, status);
             Event event = new UnhandleEvent();
             if (status.equals(TaskStatus.SUCCESS)) {
                 event = new SuccessEvent(jobId, taskId);
@@ -86,6 +88,7 @@ public class TaskMetricsActor extends UntypedActor {
             String fullId = request.getFullId();
             long taskId = IdUtils.parse(fullId, IdType.TASK_ID);
             float progress = request.getProgress();
+            LOGGER.info("receive task {} progress {}", taskId, progress);
             taskService.updateProgress(taskId, progress);
             ServerReportTaskProgressResponse response = ServerReportTaskProgressResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());

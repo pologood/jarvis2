@@ -327,7 +327,7 @@ public enum JobGraph {
         Set<Long> needJobs = getEnableParentJobIds(dagJob);
         if (dagJob.checkDependency(needJobs)) {
             long jobId = dagJob.getJobId();
-            LOGGER.debug("DAGJob {} pass the dependency check", dagJob.getJobId());
+            LOGGER.info("{} pass the dependency check", dagJob);
 
             // submit task to task scheduler
             Map<Long, List<ScheduleTask>> dependTaskMap = dagJob.getDependTaskMap();
@@ -345,7 +345,7 @@ public enum JobGraph {
         Set<Long> needJobs = getEnableParentJobIds(dagJob);
         if (dagJob.checkDependency(needJobs)) {
             long jobId = dagJob.getJobId();
-            LOGGER.debug("DAGJob {} pass the dependency check", dagJob.getJobId());
+            LOGGER.info("{} pass the dependency check", dagJob);
 
             // submit task to task scheduler
             Map<Long, List<ScheduleTask>> dependTaskMap = dagJob.getDependTaskMap();

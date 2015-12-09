@@ -12,6 +12,8 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +31,7 @@ public class TaskDependService {
 
     @Autowired
     private TaskDependMapper mapper;
+    private static final Logger LOGGER = LogManager.getLogger();
 
     Type dataType = new TypeToken<Map<Long, List<Long>>>() {}.getType();
 
@@ -41,9 +44,11 @@ public class TaskDependService {
 
         TaskDepend oldData = mapper.selectByPrimaryKey(taskId);
         if (oldData == null) {
-            mapper.insert(newData);
+            mapper.insertSelective(newData);
+            LOGGER.info("insert parent task dependecy, taskId={}, parents is {}", taskId, dependJson);
         } else {
             mapper.updateByPrimaryKey(newData);
+            LOGGER.info("update parent task dependecy, taskId={}, parents is {}", taskId, dependJson);
         }
     }
 
@@ -58,10 +63,19 @@ public class TaskDependService {
     public void storeChild(long taskId, Map<Long, List<Long>> childTaskIdMap) {
         String childJson = JsonHelper.toJson(childTaskIdMap, dataType);
 
-        TaskDepend record = new TaskDepend();
-        record.setTaskId(taskId);
-        record.setChildTaskIds(childJson);
-        mapper.updateByPrimaryKeySelective(record);
+        TaskDepend oldData = mapper.selectByPrimaryKey(taskId);
+        if (oldData != null) {
+            oldData.setChildTaskIds(childJson);
+            mapper.updateByPrimaryKey(oldData);
+            LOGGER.info("update child task dependecy, taskId={}, parents is {}", taskId, childJson);
+        } else {
+            TaskDepend newData = new TaskDepend();
+            newData.setTaskId(taskId);
+            newData.setChildTaskIds(childJson);
+            newData.setCreateTime(DateTime.now().toDate());
+            mapper.insertSelective(newData);
+            LOGGER.info("insert child task dependecy, taskId={}, parents is {}", taskId, childJson);
+        }
     }
 
     public Map<Long, List<Long>> loadChild(long taskId) {
