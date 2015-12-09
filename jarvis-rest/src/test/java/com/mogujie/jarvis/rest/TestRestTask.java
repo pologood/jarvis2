@@ -7,6 +7,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.rest.vo.JobVo;
 import com.mogujie.jarvis.rest.vo.TaskEntryVo;
+import com.mogujie.jarvis.rest.vo.TaskRelationsVo;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -23,18 +24,6 @@ public class TestRestTask {
 
     @Test
     public void taskSubmit() throws UnirestException {
-
-//        private String taskName;
-//        private String user;
-//        private String taskType;
-//        private String content;
-//        private int groupId;
-//        private Integer priority;
-//        private Integer rejectRetries;
-//        private Integer rejectInterval;
-//        private Integer failedRetries;
-//        private Integer failedInterval;
-//        private Map<String,Object> params;
 
         TaskEntryVo task = new TaskEntryVo();
         task.setTaskName("mmTest");
@@ -63,5 +52,30 @@ public class TestRestTask {
         RestResult<?> result = JsonHelper.fromJson(jsonResponse.getBody(), restType);
         Assert.assertEquals(result.getCode(), 0);
     }
+
+
+    @Test
+    public void queryRelations() throws UnirestException {
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("taskId", 4);
+        params.put("relationType", 2);
+        String paramsJson = JsonHelper.toJson(params, Map.class);
+
+        HttpResponse<String> jsonResponse = Unirest.post(baseUrl + "/api/task/queryRelation")
+                .field("appName", "jarvis-web")
+                .field("appToken", "123")
+                .field("user", "muming")
+                .field("parameters", paramsJson).asString();
+
+        Type restType = new TypeToken<RestResult<TaskRelationsVo>>() {}.getType();
+
+        Assert.assertEquals(jsonResponse.getStatus(), 200);
+        RestResult<?> result = JsonHelper.fromJson(jsonResponse.getBody(), restType);
+        Assert.assertEquals(result.getCode(), 0);
+
+    }
+
+
 
 }

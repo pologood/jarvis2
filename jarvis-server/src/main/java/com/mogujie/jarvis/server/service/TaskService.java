@@ -45,6 +45,15 @@ public class TaskService {
         return taskMapper.selectByPrimaryKey(taskId);
     }
 
+    public List<Task> getTasks(List<Long> taskIds) {
+        if (taskIds == null || taskIds.isEmpty()) {
+            return null;
+        }
+        TaskExample example = new TaskExample();
+        example.createCriteria().andTaskIdIn(taskIds);
+        return taskMapper.selectByExample(example);
+    }
+
     public long insert(Task record) {
         taskMapper.insert(record);
         return record.getTaskId();
@@ -58,7 +67,7 @@ public class TaskService {
         Task record = new Task();
         record.setTaskId(taskId);
         record.setProgress(progress);
-        record.setUpdateTime(new Date());
+        record.setUpdateTime(DateTime.now().toDate());
         taskMapper.updateByPrimaryKeySelective(record);
     }
 
@@ -66,18 +75,10 @@ public class TaskService {
         Task task = new Task();
         task.setTaskId(taskId);
         task.setWorkerId(workerId);
-        task.setUpdateTime(new Date());
+        task.setUpdateTime(DateTime.now().toDate());
         taskMapper.updateByPrimaryKeySelective(task);
     }
 
-    public List<Task> getTasks(List<Long> taskIds) {
-        if (taskIds == null || taskIds.isEmpty()) {
-            return null;
-        }
-        TaskExample example = new TaskExample();
-        example.createCriteria().andTaskIdIn(taskIds);
-        return taskMapper.selectByExample(example);
-    }
 
     public long createTaskByJobId(long jobId, long scheduleTime) {
         Task record = new Task();
@@ -124,15 +125,22 @@ public class TaskService {
         return taskIdList;
     }
 
+    public void updateStatus(long taskId, TaskStatus status) {
+        Task task = new Task();
+        task.setTaskId(taskId);
+        task.setStatus(status.getValue());
+        task.setUpdateTime(DateTime.now().toDate());
+        taskMapper.updateByPrimaryKeySelective(task);
+    }
+
     public void updateStatusWithStart(long taskId, TaskStatus status, int workerId) {
         Task task = new Task();
         task.setTaskId(taskId);
         task.setStatus(status.getValue());
-        DateTime dt = DateTime.now();
-        Date currentTime = dt.toDate();
+        task.setWorkerId(workerId);
+        Date currentTime = DateTime.now().toDate();
         task.setExecuteStartTime(currentTime);
         task.setUpdateTime(currentTime);
-        task.setWorkerId(workerId);
         taskMapper.updateByPrimaryKeySelective(task);
     }
 
@@ -140,8 +148,7 @@ public class TaskService {
         Task task = new Task();
         task.setTaskId(taskId);
         task.setStatus(status.getValue());
-        DateTime dt = DateTime.now();
-        Date currentTime = dt.toDate();
+        Date currentTime = DateTime.now().toDate();
         task.setExecuteEndTime(currentTime);
         task.setUpdateTime(currentTime);
         taskMapper.updateByPrimaryKeySelective(task);
@@ -152,14 +159,6 @@ public class TaskService {
         if (childTaskMap != null && !childTaskMap.isEmpty()) {
             taskDependService.storeChild(taskId, childTaskMap);
         }
-    }
-
-    public void updateStatus(long taskId, TaskStatus status) {
-        Task task = new Task();
-        task.setTaskId(taskId);
-        task.setStatus(status.getValue());
-        task.setUpdateTime(DateTime.now().toDate());
-        taskMapper.updateByPrimaryKeySelective(task);
     }
 
     public List<Long> getDependTaskIds(long myJobId, long preJobId, long scheduleTime, DependencyExpression dependencyExpression) {
