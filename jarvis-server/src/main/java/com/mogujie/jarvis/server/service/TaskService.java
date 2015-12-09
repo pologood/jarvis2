@@ -59,6 +59,25 @@ public class TaskService {
         return record.getTaskId();
     }
 
+    public long createTaskByJobId(long jobId, long scheduleTime) {
+        Task record = new Task();
+        record.setJobId(jobId);
+        record.setAttemptId(1);
+        DateTime dt = DateTime.now();
+        Date currentTime = dt.toDate();
+        record.setCreateTime(currentTime);
+        record.setUpdateTime(currentTime);
+        record.setScheduleTime(new Date(scheduleTime));
+        record.setStatus(TaskStatus.WAITING.getValue());
+        record.setProgress((float) 0);
+        Job job = jobMapper.selectByPrimaryKey(jobId);
+        record.setExecuteUser(job.getSubmitUser());
+        record.setContent(job.getContent());
+        record.setParams(job.getParams());
+        record.setAppId(job.getAppId());
+        return insert(record);
+    }
+
     public void updateSelective(Task record) {
         taskMapper.updateByPrimaryKeySelective(record);
     }
@@ -79,26 +98,6 @@ public class TaskService {
         taskMapper.updateByPrimaryKeySelective(task);
     }
 
-
-    public long createTaskByJobId(long jobId, long scheduleTime) {
-        Task record = new Task();
-        record.setJobId(jobId);
-        record.setAttemptId(1);
-        DateTime dt = DateTime.now();
-        Date currentTime = dt.toDate();
-        record.setCreateTime(currentTime);
-        record.setUpdateTime(currentTime);
-        record.setScheduleTime(new Date(scheduleTime));
-        record.setStatus(TaskStatus.WAITING.getValue());
-        record.setProgress((float) 0);
-        Job job = jobMapper.selectByPrimaryKey(jobId);
-        record.setExecuteUser(job.getSubmitUser());
-        record.setContent(job.getContent());
-        record.setParams(job.getParams());
-        record.setAppId(job.getAppId());
-        taskMapper.insert(record);
-        return record.getTaskId();
-    }
 
     public List<Task> getTasksByStatusNotIn(List<Integer> statusList) {
         TaskExample example = new TaskExample();
