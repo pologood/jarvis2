@@ -55,7 +55,7 @@ public class TaskService {
     }
 
     public long insert(Task record) {
-        taskMapper.insert(record);
+        taskMapper.insertSelective(record);
         return record.getTaskId();
     }
 
