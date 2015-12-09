@@ -98,32 +98,6 @@ public class TaskService {
         taskMapper.updateByPrimaryKeySelective(task);
     }
 
-
-    public List<Task> getTasksByStatusNotIn(List<Integer> statusList) {
-        TaskExample example = new TaskExample();
-        example.createCriteria().andStatusNotIn(statusList).andJobIdNotEqualTo(0L);
-        return taskMapper.selectByExample(example);
-    }
-
-    public List<Task> getTasksByStatus(List<Integer> statusList) {
-        TaskExample example = new TaskExample();
-        example.createCriteria().andStatusIn(statusList).andJobIdNotEqualTo(0L);
-        return taskMapper.selectByExample(example);
-    }
-
-    public List<Long> getTaskIdsByJobIdsBetween(List<Long> jobIds, Date start, Date end) {
-        TaskExample example = new TaskExample();
-        example.createCriteria().andJobIdIn(jobIds).andScheduleTimeBetween(start, end).andJobIdNotEqualTo(0L);
-        List<Task> tasks = taskMapper.selectByExample(example);
-        List<Long> taskIdList = new ArrayList<Long>();
-        if (tasks != null) {
-            for (Task task : tasks) {
-                taskIdList.add(task.getTaskId());
-            }
-        }
-        return taskIdList;
-    }
-
     public void updateStatus(long taskId, TaskStatus status) {
         Task task = new Task();
         task.setTaskId(taskId);
@@ -160,6 +134,18 @@ public class TaskService {
         }
     }
 
+    public List<Task> getTasksByStatusNotIn(List<Integer> statusList) {
+        TaskExample example = new TaskExample();
+        example.createCriteria().andStatusNotIn(statusList).andJobIdNotEqualTo(0L);
+        return taskMapper.selectByExample(example);
+    }
+
+    public List<Task> getTasksByStatus(List<Integer> statusList) {
+        TaskExample example = new TaskExample();
+        example.createCriteria().andStatusIn(statusList).andJobIdNotEqualTo(0L);
+        return taskMapper.selectByExample(example);
+    }
+
     public List<Long> getDependTaskIds(long myJobId, long preJobId, long scheduleTime, DependencyExpression dependencyExpression) {
         List<Task> tasks;
         if (dependencyExpression != null) {
@@ -168,7 +154,7 @@ public class TaskService {
             long preScheduleTime = getPreScheduleTime(myJobId, scheduleTime);
             tasks = getTasksBetween(preJobId, new DateTime(preScheduleTime), new DateTime(scheduleTime));
         }
-        List<Long> taskIds = new ArrayList<Long>();
+        List<Long> taskIds = new ArrayList<>();
         for (Task task : tasks) {
             taskIds.add(task.getTaskId());
         }
@@ -187,7 +173,8 @@ public class TaskService {
             return null;
         }
         TaskExample example = new TaskExample();
-        example.createCriteria().andJobIdEqualTo(jobId).andScheduleTimeBetween(start.toDate(), end.toDate()).andJobIdNotEqualTo(0L);
+        example.createCriteria().andJobIdEqualTo(jobId)
+                .andScheduleTimeBetween(start.toDate(), end.toDate());
         return taskMapper.selectByExample(example);
     }
 
@@ -201,18 +188,13 @@ public class TaskService {
         return null;
     }
 
-    public List<Task> getTasksBetween(Date start, Date end) {
-        TaskExample example = new TaskExample();
-        example.createCriteria().andScheduleTimeBetween(start, end).andJobIdNotEqualTo(0L);
-        return taskMapper.selectByExample(example);
-    }
-
     public long getPreScheduleTime(long jobId, long scheduleTime) {
         if (jobId == 0 || scheduleTime == 0) {
             return 0;
         }
         TaskExample example = new TaskExample();
-        example.createCriteria().andJobIdEqualTo(jobId).andScheduleTimeLessThan(new DateTime(scheduleTime * 1000L).toDate()).andJobIdNotEqualTo(0L);
+        example.createCriteria().andJobIdEqualTo(jobId)
+                .andScheduleTimeLessThan(new Date(scheduleTime));
         example.setOrderByClause("taskId desc");
         List<Task> tasks = taskMapper.selectByExample(example);
         if (tasks == null || tasks.isEmpty()) {
