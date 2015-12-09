@@ -75,7 +75,7 @@ public class DAGScheduler extends Scheduler {
         long scheduleTime = e.getScheduleTime();
         long childJobId = e.getChildJobId();
         LOGGER.info("start handleScheduleEvent, jobId={}, scheduleTime={}, taskId={}, "
-                + "childJobId={}", jobId, scheduleTime, scheduleTime, childJobId);
+                + "childJobId={}", jobId, scheduleTime, taskId, childJobId);
         DAGJob dagJob = getDAGJob(jobId);
         if (dagJob != null) {
             if (childJobId == 0) {

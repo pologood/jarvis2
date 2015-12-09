@@ -10,6 +10,8 @@ package com.mogujie.jarvis.core.domain;
 
 import java.util.Map;
 
+import org.joda.time.DateTime;
+
 /**
  * 
  *
@@ -25,7 +27,7 @@ public class TaskDetail {
     private int priority;
     private int groupId;
     private Map<String, Object> parameters;
-    private long schedulingTime;
+    private DateTime schedulingTime;
     private int rejectInterval;
     private int rejectRetries;
     private int failedRetries;
@@ -70,7 +72,7 @@ public class TaskDetail {
         return parameters;
     }
 
-    public long getSchedulingTime() {
+    public DateTime getSchedulingTime() {
         return schedulingTime;
     }
 
@@ -146,7 +148,7 @@ public class TaskDetail {
             return this;
         }
 
-        public TaskDetailBuilder setSchedulingTime(long schedulingTime) {
+        public TaskDetailBuilder setSchedulingTime(DateTime schedulingTime) {
             this.task.schedulingTime = schedulingTime;
             return this;
         }

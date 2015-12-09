@@ -10,10 +10,6 @@ package com.mogujie.jarvis.core.util;
 
 import org.joda.time.DurationFieldType;
 
-/**
- * 
- *
- */
 public class DurationFieldTypes {
 
     public static DurationFieldType valueOf(char c) {

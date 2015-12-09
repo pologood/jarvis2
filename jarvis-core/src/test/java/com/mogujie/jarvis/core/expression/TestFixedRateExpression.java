@@ -26,19 +26,19 @@ public class TestFixedRateExpression {
 
         ScheduleExpression exp2 = new FixedRateExpression("s('2015-01-01 12:00:00',10)");
         Assert.assertTrue(exp2.isValid());
-        Assert.assertEquals(exp2.getTimeBefore(new DateTime(2014, 10, 8, 1, 2, 0)), new DateTime(2014, 10, 8, 1, 1, 50));
-        Assert.assertEquals(exp2.getTimeBefore(new DateTime(2015, 1, 1, 12, 0, 0)), new DateTime(2015, 1, 1, 11, 59, 50));
+        Assert.assertEquals(exp2.getTimeBefore(new DateTime(2014, 10, 8, 1, 2, 0)), null);
+        Assert.assertEquals(exp2.getTimeBefore(new DateTime(2015, 1, 1, 12, 0, 0)), null);
         Assert.assertEquals(exp2.getTimeBefore(new DateTime(2015, 12, 8, 1, 2, 0)), new DateTime(2015, 12, 8, 1, 2, 0));
-        Assert.assertEquals(exp2.getTimeAfter(new DateTime(2014, 10, 8, 1, 2, 0)), new DateTime(2014, 10, 8, 1, 2, 0));
+        Assert.assertEquals(exp2.getTimeAfter(new DateTime(2014, 10, 8, 1, 2, 0)), new DateTime(2015, 1, 1, 12, 0, 0));
         Assert.assertEquals(exp2.getTimeAfter(new DateTime(2015, 1, 1, 12, 0, 0)), new DateTime(2015, 1, 1, 12, 0, 10));
         Assert.assertEquals(exp2.getTimeAfter(new DateTime(2015, 12, 8, 1, 2, 0)), new DateTime(2015, 12, 8, 1, 2, 10));
 
         ScheduleExpression exp3 = new FixedRateExpression("s('2030-01-01 12:00:00',10)");
         Assert.assertTrue(exp3.isValid());
-        Assert.assertEquals(exp3.getTimeBefore(new DateTime(2014, 10, 8, 1, 2, 0)), new DateTime(2014, 10, 8, 1, 1, 50));
-        Assert.assertEquals(exp3.getTimeBefore(new DateTime(2030, 1, 1, 12, 0, 0)), new DateTime(2030, 1, 1, 11, 59, 50));
+        Assert.assertEquals(exp3.getTimeBefore(new DateTime(2014, 10, 8, 1, 2, 0)), null);
+        Assert.assertEquals(exp3.getTimeBefore(new DateTime(2030, 1, 1, 12, 0, 0)), null);
         Assert.assertEquals(exp3.getTimeBefore(new DateTime(2031, 12, 8, 1, 2, 0)), new DateTime(2031, 12, 8, 1, 2, 0));
-        Assert.assertEquals(exp3.getTimeAfter(new DateTime(2014, 10, 8, 1, 2, 0)), new DateTime(2014, 10, 8, 1, 2, 0));
+        Assert.assertEquals(exp3.getTimeAfter(new DateTime(2014, 10, 8, 1, 2, 0)), new DateTime(2030, 1, 1, 12, 0, 0));
         Assert.assertEquals(exp3.getTimeAfter(new DateTime(2030, 1, 1, 12, 0, 0)), new DateTime(2030, 1, 1, 12, 0, 10));
         Assert.assertEquals(exp3.getTimeAfter(new DateTime(2031, 12, 8, 1, 2, 0)), new DateTime(2031, 12, 8, 1, 2, 10));
 
@@ -58,19 +58,19 @@ public class TestFixedRateExpression {
 
         ScheduleExpression exp2 = new FixedRateExpression("m('2015-01-01 12:00:00',5)");
         Assert.assertTrue(exp2.isValid());
-        Assert.assertEquals(exp2.getTimeBefore(new DateTime(2014, 10, 8, 1, 2, 0)), new DateTime(2014, 10, 8, 1, 0, 0));
-        Assert.assertEquals(exp2.getTimeBefore(new DateTime(2015, 1, 1, 12, 0, 0)), new DateTime(2015, 1, 1, 11, 55, 0));
+        Assert.assertEquals(exp2.getTimeBefore(new DateTime(2014, 10, 8, 1, 2, 0)), null);
+        Assert.assertEquals(exp2.getTimeBefore(new DateTime(2015, 1, 1, 12, 0, 0)), null);
         Assert.assertEquals(exp2.getTimeBefore(new DateTime(2015, 12, 8, 1, 2, 0)), new DateTime(2015, 12, 8, 1, 0, 0));
-        Assert.assertEquals(exp2.getTimeAfter(new DateTime(2014, 10, 8, 1, 2, 0)), new DateTime(2014, 10, 8, 1, 5, 0));
+        Assert.assertEquals(exp2.getTimeAfter(new DateTime(2014, 10, 8, 1, 2, 0)), new DateTime(2015, 1, 1, 12, 0, 0));
         Assert.assertEquals(exp2.getTimeAfter(new DateTime(2015, 1, 1, 12, 0, 0)), new DateTime(2015, 1, 1, 12, 5, 0));
         Assert.assertEquals(exp2.getTimeAfter(new DateTime(2015, 12, 8, 1, 2, 0)), new DateTime(2015, 12, 8, 1, 5, 0));
 
         ScheduleExpression exp3 = new FixedRateExpression("m('2030-01-01 12:00:00',5)");
         Assert.assertTrue(exp3.isValid());
-        Assert.assertEquals(exp3.getTimeBefore(new DateTime(2014, 10, 8, 1, 2, 0)), new DateTime(2014, 10, 8, 1, 0, 0));
-        Assert.assertEquals(exp3.getTimeBefore(new DateTime(2030, 1, 1, 12, 0, 0)), new DateTime(2030, 1, 1, 11, 55, 0));
+        Assert.assertEquals(exp3.getTimeBefore(new DateTime(2014, 10, 8, 1, 2, 0)), null);
+        Assert.assertEquals(exp3.getTimeBefore(new DateTime(2030, 1, 1, 12, 0, 0)), null);
         Assert.assertEquals(exp3.getTimeBefore(new DateTime(2031, 12, 8, 1, 2, 0)), new DateTime(2031, 12, 8, 1, 0, 0));
-        Assert.assertEquals(exp3.getTimeAfter(new DateTime(2014, 10, 8, 1, 2, 0)), new DateTime(2014, 10, 8, 1, 5, 0));
+        Assert.assertEquals(exp3.getTimeAfter(new DateTime(2014, 10, 8, 1, 2, 0)), new DateTime(2030, 1, 1, 12, 0, 0));
         Assert.assertEquals(exp3.getTimeAfter(new DateTime(2030, 1, 1, 12, 0, 0)), new DateTime(2030, 1, 1, 12, 5, 0));
         Assert.assertEquals(exp3.getTimeAfter(new DateTime(2031, 12, 8, 1, 2, 0)), new DateTime(2031, 12, 8, 1, 5, 0));
 
@@ -90,19 +90,19 @@ public class TestFixedRateExpression {
 
         ScheduleExpression exp2 = new FixedRateExpression("h('2015-01-01 12:00:00',5)");
         Assert.assertTrue(exp2.isValid());
-        Assert.assertEquals(exp2.getTimeBefore(new DateTime(2014, 10, 8, 1, 2, 0)), new DateTime(2014, 10, 7, 21, 0, 0));
-        Assert.assertEquals(exp2.getTimeBefore(new DateTime(2015, 1, 1, 12, 0, 0)), new DateTime(2015, 1, 1, 7, 0, 0));
+        Assert.assertEquals(exp2.getTimeBefore(new DateTime(2014, 10, 8, 1, 2, 0)), null);
+        Assert.assertEquals(exp2.getTimeBefore(new DateTime(2015, 1, 1, 12, 0, 0)), null);
         Assert.assertEquals(exp2.getTimeBefore(new DateTime(2015, 12, 8, 1, 2, 0)), new DateTime(2015, 12, 7, 22, 0, 0));
-        Assert.assertEquals(exp2.getTimeAfter(new DateTime(2014, 10, 8, 1, 2, 0)), new DateTime(2014, 10, 8, 2, 0, 0));
+        Assert.assertEquals(exp2.getTimeAfter(new DateTime(2014, 10, 8, 1, 2, 0)), new DateTime(2015, 1, 1, 12, 0, 0));
         Assert.assertEquals(exp2.getTimeAfter(new DateTime(2015, 1, 1, 12, 0, 0)), new DateTime(2015, 1, 1, 17, 0, 0));
         Assert.assertEquals(exp2.getTimeAfter(new DateTime(2015, 12, 8, 1, 2, 0)), new DateTime(2015, 12, 8, 3, 0, 0));
 
         ScheduleExpression exp3 = new FixedRateExpression("h('2030-01-01 12:00:00',5)");
         Assert.assertTrue(exp3.isValid());
-        Assert.assertEquals(exp3.getTimeBefore(new DateTime(2014, 10, 8, 1, 2, 0)), new DateTime(2014, 10, 7, 22, 0, 0));
-        Assert.assertEquals(exp3.getTimeBefore(new DateTime(2030, 1, 1, 12, 0, 0)), new DateTime(2030, 1, 1, 7, 0, 0));
+        Assert.assertEquals(exp3.getTimeBefore(new DateTime(2014, 10, 8, 1, 2, 0)), null);
+        Assert.assertEquals(exp3.getTimeBefore(new DateTime(2030, 1, 1, 12, 0, 0)), null);
         Assert.assertEquals(exp3.getTimeBefore(new DateTime(2031, 12, 8, 1, 2, 0)), new DateTime(2031, 12, 7, 22, 0, 0));
-        Assert.assertEquals(exp3.getTimeAfter(new DateTime(2014, 10, 8, 1, 2, 0)), new DateTime(2014, 10, 8, 3, 0, 0));
+        Assert.assertEquals(exp3.getTimeAfter(new DateTime(2014, 10, 8, 1, 2, 0)), new DateTime(2030, 1, 1, 12, 0, 0));
         Assert.assertEquals(exp3.getTimeAfter(new DateTime(2030, 1, 1, 12, 0, 0)), new DateTime(2030, 1, 1, 17, 0, 0));
         Assert.assertEquals(exp3.getTimeAfter(new DateTime(2031, 12, 8, 1, 2, 0)), new DateTime(2031, 12, 8, 3, 0, 0));
 
@@ -122,19 +122,19 @@ public class TestFixedRateExpression {
 
         ScheduleExpression exp2 = new FixedRateExpression("d('2015-01-01 12:00:00',5)");
         Assert.assertTrue(exp2.isValid());
-        Assert.assertEquals(exp2.getTimeBefore(new DateTime(2014, 10, 8, 1, 2, 0)), new DateTime(2014, 10, 3, 12, 0, 0));
-        Assert.assertEquals(exp2.getTimeBefore(new DateTime(2015, 1, 1, 12, 0, 0)), new DateTime(2014, 12, 27, 12, 0, 0));
+        Assert.assertEquals(exp2.getTimeBefore(new DateTime(2014, 10, 8, 1, 2, 0)), null);
+        Assert.assertEquals(exp2.getTimeBefore(new DateTime(2015, 1, 1, 12, 0, 0)), null);
         Assert.assertEquals(exp2.getTimeBefore(new DateTime(2015, 12, 8, 1, 2, 0)), new DateTime(2015, 12, 7, 12, 0, 0));
-        Assert.assertEquals(exp2.getTimeAfter(new DateTime(2014, 10, 8, 1, 2, 0)), new DateTime(2014, 10, 8, 12, 0, 0));
+        Assert.assertEquals(exp2.getTimeAfter(new DateTime(2014, 10, 8, 1, 2, 0)), new DateTime(2015, 1, 1, 12, 0, 0));
         Assert.assertEquals(exp2.getTimeAfter(new DateTime(2015, 1, 1, 12, 0, 0)), new DateTime(2015, 1, 6, 12, 0, 0));
         Assert.assertEquals(exp2.getTimeAfter(new DateTime(2015, 12, 8, 1, 2, 0)), new DateTime(2015, 12, 12, 12, 0, 0));
 
         ScheduleExpression exp3 = new FixedRateExpression("d('2030-01-01 12:00:00',5)");
         Assert.assertTrue(exp3.isValid());
-        Assert.assertEquals(exp3.getTimeBefore(new DateTime(2014, 10, 8, 1, 2, 0)), new DateTime(2014, 10, 7, 12, 0, 0));
-        Assert.assertEquals(exp3.getTimeBefore(new DateTime(2030, 1, 1, 12, 0, 0)), new DateTime(2029, 12, 27, 12, 0, 0));
+        Assert.assertEquals(exp3.getTimeBefore(new DateTime(2014, 10, 8, 1, 2, 0)), null);
+        Assert.assertEquals(exp3.getTimeBefore(new DateTime(2030, 1, 1, 12, 0, 0)), null);
         Assert.assertEquals(exp3.getTimeBefore(new DateTime(2031, 12, 8, 1, 2, 0)), new DateTime(2031, 12, 7, 12, 0, 0));
-        Assert.assertEquals(exp3.getTimeAfter(new DateTime(2014, 10, 8, 1, 2, 0)), new DateTime(2014, 10, 12, 12, 0, 0));
+        Assert.assertEquals(exp3.getTimeAfter(new DateTime(2014, 10, 8, 1, 2, 0)), new DateTime(2030, 1, 1, 12, 0, 0));
         Assert.assertEquals(exp3.getTimeAfter(new DateTime(2030, 1, 1, 12, 0, 0)), new DateTime(2030, 1, 6, 12, 0, 0));
         Assert.assertEquals(exp3.getTimeAfter(new DateTime(2031, 12, 8, 1, 2, 0)), new DateTime(2031, 12, 12, 12, 0, 0));
 
@@ -154,8 +154,8 @@ public class TestFixedRateExpression {
 
         ScheduleExpression exp2 = new FixedRateExpression("M('2015-01-01 12:00:00',5)");
         Assert.assertTrue(exp2.isValid());
-        Assert.assertEquals(exp2.getTimeBefore(new DateTime(2014, 10, 8, 1, 2, 0)), new DateTime(2014, 8, 1, 12, 0, 0));
-        Assert.assertEquals(exp2.getTimeBefore(new DateTime(2015, 1, 1, 12, 0, 0)), new DateTime(2014, 8, 1, 12, 0, 0));
+        Assert.assertEquals(exp2.getTimeBefore(new DateTime(2014, 10, 8, 1, 2, 0)), null);
+        Assert.assertEquals(exp2.getTimeBefore(new DateTime(2015, 1, 1, 12, 0, 0)), null);
         Assert.assertEquals(exp2.getTimeBefore(new DateTime(2015, 12, 8, 1, 2, 0)), new DateTime(2015, 11, 1, 12, 0, 0));
         Assert.assertEquals(exp2.getTimeAfter(new DateTime(2014, 10, 8, 1, 2, 0)), new DateTime(2015, 1, 1, 12, 0, 0));
         Assert.assertEquals(exp2.getTimeAfter(new DateTime(2015, 1, 1, 12, 0, 0)), new DateTime(2015, 6, 1, 12, 0, 0));
@@ -163,10 +163,10 @@ public class TestFixedRateExpression {
 
         ScheduleExpression exp3 = new FixedRateExpression("M('2030-01-01 12:00:00',5)");
         Assert.assertTrue(exp3.isValid());
-        Assert.assertEquals(exp3.getTimeBefore(new DateTime(2014, 10, 8, 1, 2, 0)), new DateTime(2014, 8, 1, 12, 0, 0));
-        Assert.assertEquals(exp3.getTimeBefore(new DateTime(2030, 1, 1, 12, 0, 0)), new DateTime(2029, 8, 1, 12, 0, 0));
+        Assert.assertEquals(exp3.getTimeBefore(new DateTime(2014, 10, 8, 1, 2, 0)), null);
+        Assert.assertEquals(exp3.getTimeBefore(new DateTime(2030, 1, 1, 12, 0, 0)), null);
         Assert.assertEquals(exp3.getTimeBefore(new DateTime(2031, 12, 8, 1, 2, 0)), new DateTime(2031, 9, 1, 12, 0, 0));
-        Assert.assertEquals(exp3.getTimeAfter(new DateTime(2014, 10, 8, 1, 2, 0)), new DateTime(2015, 1, 1, 12, 0, 0));
+        Assert.assertEquals(exp3.getTimeAfter(new DateTime(2014, 10, 8, 1, 2, 0)), new DateTime(2030, 1, 1, 12, 0, 0));
         Assert.assertEquals(exp3.getTimeAfter(new DateTime(2030, 1, 1, 12, 0, 0)), new DateTime(2030, 6, 1, 12, 0, 0));
         Assert.assertEquals(exp3.getTimeAfter(new DateTime(2031, 12, 8, 1, 2, 0)), new DateTime(2032, 2, 1, 12, 0, 0));
 
@@ -186,19 +186,19 @@ public class TestFixedRateExpression {
 
         ScheduleExpression exp2 = new FixedRateExpression("y('2015-01-01 12:00:00',5)");
         Assert.assertTrue(exp2.isValid());
-        Assert.assertEquals(exp2.getTimeBefore(new DateTime(2014, 10, 8, 1, 2, 0)), new DateTime(2010, 1, 1, 12, 0, 0));
-        Assert.assertEquals(exp2.getTimeBefore(new DateTime(2015, 1, 1, 12, 0, 0)), new DateTime(2010, 1, 1, 12, 0, 0));
-        Assert.assertEquals(exp2.getTimeBefore(new DateTime(2015, 12, 8, 1, 2, 0)), new DateTime(2010, 1, 1, 12, 0, 0));
-        Assert.assertEquals(exp2.getTimeAfter(new DateTime(2014, 10, 8, 1, 2, 0)), new DateTime(2020, 1, 1, 12, 0, 0));
+        Assert.assertEquals(exp2.getTimeBefore(new DateTime(2014, 10, 8, 1, 2, 0)), null);
+        Assert.assertEquals(exp2.getTimeBefore(new DateTime(2015, 1, 1, 12, 0, 0)), null);
+        Assert.assertEquals(exp2.getTimeBefore(new DateTime(2015, 12, 8, 1, 2, 0)), new DateTime(2015, 1, 1, 12, 0, 0));
+        Assert.assertEquals(exp2.getTimeAfter(new DateTime(2014, 10, 8, 1, 2, 0)), new DateTime(2015, 1, 1, 12, 0, 0));
         Assert.assertEquals(exp2.getTimeAfter(new DateTime(2015, 1, 1, 12, 0, 0)), new DateTime(2020, 1, 1, 12, 0, 0));
         Assert.assertEquals(exp2.getTimeAfter(new DateTime(2015, 12, 8, 1, 2, 0)), new DateTime(2020, 1, 1, 12, 0, 0));
 
         ScheduleExpression exp3 = new FixedRateExpression("y('2030-01-01 12:00:00',5)");
         Assert.assertTrue(exp3.isValid());
-        Assert.assertEquals(exp3.getTimeBefore(new DateTime(2014, 10, 8, 1, 2, 0)), new DateTime(2010, 1, 1, 12, 0, 0));
-        Assert.assertEquals(exp3.getTimeBefore(new DateTime(2030, 1, 1, 12, 0, 0)), new DateTime(2025, 1, 1, 12, 0, 0));
+        Assert.assertEquals(exp3.getTimeBefore(new DateTime(2014, 10, 8, 1, 2, 0)), null);
+        Assert.assertEquals(exp3.getTimeBefore(new DateTime(2030, 1, 1, 12, 0, 0)), null);
         Assert.assertEquals(exp3.getTimeBefore(new DateTime(2031, 12, 8, 1, 2, 0)), new DateTime(2030, 1, 1, 12, 0, 0));
-        Assert.assertEquals(exp3.getTimeAfter(new DateTime(2014, 10, 8, 1, 2, 0)), new DateTime(2015, 1, 1, 12, 0, 0));
+        Assert.assertEquals(exp3.getTimeAfter(new DateTime(2014, 10, 8, 1, 2, 0)), new DateTime(2030, 1, 1, 12, 0, 0));
         Assert.assertEquals(exp3.getTimeAfter(new DateTime(2030, 1, 1, 12, 0, 0)), new DateTime(2035, 1, 1, 12, 0, 0));
         Assert.assertEquals(exp3.getTimeAfter(new DateTime(2031, 12, 8, 1, 2, 0)), new DateTime(2035, 1, 1, 12, 0, 0));
 
@@ -218,19 +218,19 @@ public class TestFixedRateExpression {
 
         ScheduleExpression exp2 = new FixedRateExpression("w('2015-01-01 12:00:00',1)");
         Assert.assertTrue(exp2.isValid());
-        Assert.assertEquals(exp2.getTimeBefore(new DateTime(2014, 10, 8, 1, 2, 0)), new DateTime(2014, 10, 2, 12, 0, 0));
-        Assert.assertEquals(exp2.getTimeBefore(new DateTime(2015, 1, 1, 12, 0, 0)), new DateTime(2014, 12, 25, 12, 0, 0));
+        Assert.assertEquals(exp2.getTimeBefore(new DateTime(2014, 10, 8, 1, 2, 0)), null);
+        Assert.assertEquals(exp2.getTimeBefore(new DateTime(2015, 1, 1, 12, 0, 0)), null);
         Assert.assertEquals(exp2.getTimeBefore(new DateTime(2015, 12, 8, 1, 2, 0)), new DateTime(2015, 12, 3, 12, 0, 0));
-        Assert.assertEquals(exp2.getTimeAfter(new DateTime(2014, 10, 8, 1, 2, 0)), new DateTime(2014, 10, 9, 12, 0, 0));
+        Assert.assertEquals(exp2.getTimeAfter(new DateTime(2014, 10, 8, 1, 2, 0)), new DateTime(2015, 1, 1, 12, 0, 0));
         Assert.assertEquals(exp2.getTimeAfter(new DateTime(2015, 1, 1, 12, 0, 0)), new DateTime(2015, 1, 8, 12, 0, 0));
         Assert.assertEquals(exp2.getTimeAfter(new DateTime(2015, 12, 8, 1, 2, 0)), new DateTime(2015, 12, 10, 12, 0, 0));
 
         ScheduleExpression exp3 = new FixedRateExpression("w('2030-01-01 12:00:00',1)");
         Assert.assertTrue(exp3.isValid());
-        Assert.assertEquals(exp3.getTimeBefore(new DateTime(2014, 10, 8, 1, 2, 0)), new DateTime(2014, 10, 7, 12, 0, 0));
-        Assert.assertEquals(exp3.getTimeBefore(new DateTime(2030, 1, 1, 12, 0, 0)), new DateTime(2029, 12, 25, 12, 0, 0));
+        Assert.assertEquals(exp3.getTimeBefore(new DateTime(2014, 10, 8, 1, 2, 0)), null);
+        Assert.assertEquals(exp3.getTimeBefore(new DateTime(2030, 1, 1, 12, 0, 0)), null);
         Assert.assertEquals(exp3.getTimeBefore(new DateTime(2031, 12, 8, 1, 2, 0)), new DateTime(2031, 12, 2, 12, 0, 0));
-        Assert.assertEquals(exp3.getTimeAfter(new DateTime(2014, 10, 8, 1, 2, 0)), new DateTime(2014, 10, 14, 12, 0, 0));
+        Assert.assertEquals(exp3.getTimeAfter(new DateTime(2014, 10, 8, 1, 2, 0)), new DateTime(2030, 1, 1, 12, 0, 0));
         Assert.assertEquals(exp3.getTimeAfter(new DateTime(2030, 1, 1, 12, 0, 0)), new DateTime(2030, 1, 8, 12, 0, 0));
         Assert.assertEquals(exp3.getTimeAfter(new DateTime(2031, 12, 8, 1, 2, 0)), new DateTime(2031, 12, 9, 12, 0, 0));
 

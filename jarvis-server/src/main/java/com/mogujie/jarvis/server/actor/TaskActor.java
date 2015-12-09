@@ -23,9 +23,6 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 
-import akka.actor.ActorSelection;
-import akka.actor.UntypedActor;
-
 import com.google.common.collect.Maps;
 import com.google.common.collect.Range;
 import com.mogujie.jarvis.core.JarvisConstants;
@@ -78,6 +75,9 @@ import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.TaskDependService;
 import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.FutureUtils;
+
+import akka.actor.ActorSelection;
+import akka.actor.UntypedActor;
 
 /**
  * @author guangming
@@ -348,7 +348,7 @@ public class TaskActor extends UntypedActor {
                 .setTaskName(request.getTaskName()).setUser(request.getUser()).setTaskType(request.getTaskType()).setContent(request.getContent())
                 .setGroupId(request.getGroupId()).setPriority(request.getPriority()).setRejectRetries(request.getRejectRetries())
                 .setRejectInterval(request.getRejectInterval()).setFailedRetries(request.getFailedRetries())
-                .setFailedInterval(request.getFailedInterval()).setSchedulingTime(DateTime.now().getMillis() / 1000)
+                .setFailedInterval(request.getFailedInterval()).setSchedulingTime(DateTime.now())
                 .setParameters(JsonHelper.fromJson2JobParams(request.getParameters()));
 
         return builder.build();

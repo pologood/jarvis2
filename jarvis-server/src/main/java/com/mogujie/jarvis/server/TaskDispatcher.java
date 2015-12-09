@@ -85,7 +85,7 @@ public class TaskDispatcher extends Thread {
                     builder = builder.setTaskType(task.getTaskType());
                     builder = builder.setContent(task.getContent());
                     builder = builder.setPriority(task.getPriority());
-                    builder = builder.setSchedulingTime(task.getSchedulingTime());
+                    builder = builder.setSchedulingTime(task.getSchedulingTime().getMillis());
 
                     int i = 0;
                     if (task.getParameters() != null) {

@@ -10,10 +10,6 @@ package com.mogujie.jarvis.core.util;
 
 import com.mogujie.jarvis.core.domain.IdType;
 
-/**
- *
- *
- */
 public class IdUtils {
 
     public static long parse(String fullId, IdType type) {
