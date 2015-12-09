@@ -8,6 +8,7 @@
 
 package com.mogujie.jarvis.rest.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +22,10 @@ import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.core.util.IdUtils;
 import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.protocol.AppAuthProtos;
+import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
+import com.mogujie.jarvis.protocol.QueryTaskRelationProtos.RestServerQueryTaskRelationRequest;
+import com.mogujie.jarvis.protocol.QueryTaskRelationProtos.ServerQueryTaskRelationResponse;
+import com.mogujie.jarvis.protocol.QueryTaskRelationProtos.TaskMapEntry;
 import com.mogujie.jarvis.protocol.KillTaskProtos.RestServerKillTaskRequest;
 import com.mogujie.jarvis.protocol.KillTaskProtos.ServerKillTaskResponse;
 import com.mogujie.jarvis.protocol.ManualRerunTaskProtos.RestServerManualRerunTaskRequest;
@@ -35,7 +40,9 @@ import com.mogujie.jarvis.rest.RestResult;
 import com.mogujie.jarvis.rest.utils.JsonParameters;
 import com.mogujie.jarvis.rest.vo.RerunTaskVo;
 import com.mogujie.jarvis.rest.vo.TaskEntryVo;
+import com.mogujie.jarvis.rest.vo.TaskRelationsVo;
 import com.mogujie.jarvis.rest.vo.TaskVo;
+import com.mogujie.jarvis.core.domain.JobRelationType;
 
 /**
  * @author guangming
@@ -214,4 +221,52 @@ public class TaskController extends AbstractController {
             return errorResult(e.getMessage());
         }
     }
+
+    /**
+     * 查找Job关系
+     */
+    @POST
+    @Path("queryRelation")
+    @Produces(MediaType.APPLICATION_JSON)
+    public RestResult<?> queryRelation(@FormParam("user") String user,
+                                       @FormParam("appToken") String appToken,
+                                       @FormParam("appName") String appName,
+                                       @FormParam("parameters") String parameters) {
+        try {
+            AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
+
+            JsonParameters paras = new JsonParameters(parameters);
+            Long jobId = paras.getLongNotNull("taskId");
+            Integer relationType = paras.getIntegerNotNull("relationType");
+            if(!JobRelationType.isValid(relationType)){
+                throw new IllegalArgumentException("参数不对。key='relationType',value=" + relationType.toString());
+            }
+
+            RestServerQueryTaskRelationRequest request =RestServerQueryTaskRelationRequest.newBuilder()
+                    .setAppAuth(appAuth)
+                    .setTaskId(jobId)
+                    .setRelationType(relationType)
+                    .build();
+
+            ServerQueryTaskRelationResponse response = (ServerQueryTaskRelationResponse) callActor(AkkaType.SERVER, request);
+            if (response.getSuccess()) {
+                TaskRelationsVo vo = new TaskRelationsVo();
+                if(response.getTaskRelationMapList() != null){
+                    List<TaskRelationsVo.RelationEntry> list = new ArrayList<>();
+                    for(TaskMapEntry entry : response.getTaskRelationMapList()){
+                        list.add(new TaskRelationsVo.RelationEntry().setJobId(entry.getJobId()).setTaskIds(entry.getTaskIdList()));
+                    }
+                    vo.setList(list);
+                }
+                return successResult(vo);
+            } else {
+                return errorResult(response.getMessage());
+            }
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+            return errorResult(e.getMessage());
+        }
+    }
+
+
 }
