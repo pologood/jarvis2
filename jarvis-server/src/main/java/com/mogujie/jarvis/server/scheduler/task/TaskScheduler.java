@@ -287,22 +287,11 @@ public class TaskScheduler extends Scheduler {
         TaskDetail taskDetail = null;
         long jobId = dagTask.getJobId();
         Job job = jobService.get(jobId).getJob();
-        taskDetail = TaskDetail.newTaskDetailBuilder()
-                .setFullId(fullId)
-                .setTaskName(job.getJobName())
-                .setAppName(jobService.getAppName(jobId))
-                .setUser(job.getSubmitUser())
-                .setPriority(job.getPriority())
-                .setContent(job.getContent())
-                .setTaskType(job.getJobType())
-                .setParameters(JsonHelper.fromJson2JobParams(job.getParams()))
-                .setSchedulingTime(dagTask.getScheduleTime())
-                .setGroupId(job.getWorkerGroupId())
-                .setFailedRetries(job.getFailedAttempts())
-                .setFailedInterval(job.getFailedInterval())
-                .setRejectRetries(job.getRejectAttempts())
-                .setRejectInterval(job.getRejectInterval())
-                .build();
+        taskDetail = TaskDetail.newTaskDetailBuilder().setFullId(fullId).setTaskName(job.getJobName()).setAppName(jobService.getAppName(jobId))
+                .setUser(job.getSubmitUser()).setPriority(job.getPriority()).setContent(job.getContent()).setTaskType(job.getJobType())
+                .setParameters(JsonHelper.fromJson2JobParams(job.getParams())).setSchedulingTime(new DateTime(dagTask.getScheduleTime()))
+                .setGroupId(job.getWorkerGroupId()).setFailedRetries(job.getFailedAttempts()).setFailedInterval(job.getFailedInterval())
+                .setRejectRetries(job.getRejectAttempts()).setRejectInterval(job.getRejectInterval()).build();
         return taskDetail;
     }
 

@@ -22,6 +22,7 @@ import java.util.concurrent.Future;
 import org.apache.commons.configuration.Configuration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.joda.time.DateTime;
 
 import com.mogujie.jarvis.core.AbstractLogCollector;
 import com.mogujie.jarvis.core.DefaultLogCollector;
@@ -106,7 +107,7 @@ public class WorkerActor extends UntypedActor {
     taskBuilder.setTaskType(taskType);
     taskBuilder.setContent(request.getContent());
     taskBuilder.setPriority(request.getPriority());
-    taskBuilder.setSchedulingTime(request.getSchedulingTime());
+    taskBuilder.setSchedulingTime(new DateTime(request.getSchedulingTime()));
 
     Map<String, Object> map = new HashMap<>();
     List<MapEntry> parameters = request.getParametersList();
