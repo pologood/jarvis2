@@ -59,6 +59,11 @@ public class TaskService {
         return record.getTaskId();
     }
 
+    public long insertSelective(Task record) {
+        taskMapper.insertSelective(record);
+        return record.getTaskId();
+    }
+
     public long createTaskByJobId(long jobId, long scheduleTime) {
         Task record = new Task();
         record.setJobId(jobId);
@@ -75,7 +80,7 @@ public class TaskService {
         record.setContent(job.getContent());
         record.setParams(job.getParams());
         record.setAppId(job.getAppId());
-        return insert(record);
+        return insertSelective(record);
     }
 
     public void updateSelective(Task record) {
