@@ -96,8 +96,6 @@ public class DAGTask {
 
     @Override
     public String toString() {
-        return "[jobId=" + jobId +
-                ", taskId=" + taskId +
-                ", attemptId=" + attemptId + "]";
+        return "DAGTask [jobId=" + jobId + ", taskId=" + taskId + ", attemptId=" + attemptId + ", scheduleTime=" + scheduleTime + "]";
     }
 }

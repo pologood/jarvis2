@@ -12,6 +12,8 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +31,7 @@ public class TaskDependService {
 
     @Autowired
     private TaskDependMapper mapper;
+    private static final Logger LOGGER = LogManager.getLogger();
 
     Type dataType = new TypeToken<Map<Long, List<Long>>>() {}.getType();
 
@@ -42,8 +45,10 @@ public class TaskDependService {
         TaskDepend oldData = mapper.selectByPrimaryKey(taskId);
         if (oldData == null) {
             mapper.insertSelective(newData);
+            LOGGER.info("insert parent task dependecy, taskId={}, parents is {}", taskId, dependJson);
         } else {
             mapper.updateByPrimaryKey(newData);
+            LOGGER.info("update parent task dependecy, taskId={}, parents is {}", taskId, dependJson);
         }
     }
 
@@ -62,12 +67,14 @@ public class TaskDependService {
         if (oldData != null) {
             oldData.setChildTaskIds(childJson);
             mapper.updateByPrimaryKey(oldData);
+            LOGGER.info("update child task dependecy, taskId={}, parents is {}", taskId, childJson);
         } else {
             TaskDepend newData = new TaskDepend();
             newData.setTaskId(taskId);
             newData.setChildTaskIds(childJson);
             newData.setCreateTime(DateTime.now().toDate());
             mapper.insertSelective(newData);
+            LOGGER.info("insert child task dependecy, taskId={}, parents is {}", taskId, childJson);
         }
     }
 

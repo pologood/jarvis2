@@ -87,18 +87,22 @@ public class TaskScheduler extends Scheduler {
     @AllowConcurrentEvents
     public void handleSuccessEvent(SuccessEvent e) {
         long taskId = e.getTaskId();
+        LOGGER.info("start handleSuccessEvent, taskId={}", taskId);
         // update task status
         List<DAGTask> childTasks = taskGraph.getChildren(taskId);
         Map<Long, List<Long>> childTaskMap = TaskGraph.convert2TaskMap(childTasks);
         taskService.updateStatusWithEnd(taskId, TaskStatus.SUCCESS, childTaskMap);
+        LOGGER.info("update {} with SUCCESS status", taskId);
 
         // remove from taskGraph
         taskGraph.removeTask(taskId);
+        LOGGER.info("remove {} from taskGraph", taskId);
 
         // notify child tasks
+        LOGGER.info("notify child tasks {}", childTasks);
         for (DAGTask childTask : childTasks) {
             if (childTask != null && childTask.checkStatus()) {
-                LOGGER.debug("DAGTask {} pass the status check when handle SuccessEvent", childTask.getTaskId());
+                LOGGER.info("child {} pass the status check", childTask);
                 submitTask(childTask);
             }
         }
@@ -112,8 +116,10 @@ public class TaskScheduler extends Scheduler {
     @AllowConcurrentEvents
     public void handleRunningEvent(RunningEvent e) {
         long taskId = e.getTaskId();
+        LOGGER.info("start handleRunningEvent, taskId={}", taskId);
         int workerId = e.getWorkerId();
         taskService.updateStatusWithStart(taskId, TaskStatus.RUNNING, workerId);
+        LOGGER.info("update {} with RUNNING status", taskId);
     }
 
     @Subscribe
@@ -121,7 +127,9 @@ public class TaskScheduler extends Scheduler {
     @AllowConcurrentEvents
     public void handleKilledEvent(KilledEvent e) {
         long taskId = e.getTaskId();
+        LOGGER.info("start handleKilledEvent, taskId={}", taskId);
         taskService.updateStatusWithEnd(taskId, TaskStatus.KILLED);
+        LOGGER.info("update {} with KILLED status", taskId);
         reduceTaskNum(taskId);
     }
 
@@ -130,6 +138,7 @@ public class TaskScheduler extends Scheduler {
     @AllowConcurrentEvents
     public void handleFailedEvent(FailedEvent e) {
         long taskId = e.getTaskId();
+        LOGGER.info("start handleFailedEvent, taskId={}", taskId);
         DAGTask dagTask = taskGraph.getTask(taskId);
         if (dagTask != null) {
             long jobId = dagTask.getJobId();
@@ -137,8 +146,9 @@ public class TaskScheduler extends Scheduler {
             int failedRetries = job.getFailedAttempts();
             int failedInterval = job.getFailedInterval();
 
-            if (dagTask.getAttemptId() <= failedRetries) {
-                int attemptId = dagTask.getAttemptId();
+            int attemptId = dagTask.getAttemptId();
+            LOGGER.info("attemptId={}, failedRetries={}", attemptId, failedRetries);
+            if (attemptId <= failedRetries) {
                 attemptId++;
                 dagTask.setAttemptId(attemptId);
                 Task task = new Task();
@@ -147,10 +157,15 @@ public class TaskScheduler extends Scheduler {
                 task.setUpdateTime(DateTime.now().toDate());
                 task.setStatus(TaskStatus.READY.getValue());
                 taskService.updateSelective(task);
+                LOGGER.info("update task {}, attemptId={}", taskId, attemptId);
                 retryScheduler.addTask(getTaskInfo(dagTask), failedRetries, failedInterval, RetryType.FAILED_RETRY);
+                LOGGER.info("add to retryScheduler");
             } else {
                 taskService.updateStatusWithEnd(taskId, TaskStatus.FAILED);
-                retryScheduler.remove(jobId + "_" + taskId, RetryType.FAILED_RETRY);
+                LOGGER.info("update {} with FAILED status", taskId);
+                String key = jobId + "_" + taskId;
+                retryScheduler.remove(key, RetryType.FAILED_RETRY);
+                LOGGER.info("remove from retryScheduler, key={}", key);
             }
         }
 
@@ -162,14 +177,17 @@ public class TaskScheduler extends Scheduler {
     public void handleAddTaskEvent(AddTaskEvent e) {
         long jobId = e.getJobId();
         long scheduleTime = e.getScheduleTime();
+        LOGGER.info("start handleAddTaskEvent, jobId={}, scheduleTime={}", jobId, scheduleTime);
         Map<Long, List<Long>> dependTaskIdMap = e.getDependTaskIdMap();
 
         // create new task
         long taskId = taskService.createTaskByJobId(jobId, scheduleTime);
+        LOGGER.info("add new task[{}] to DB", taskId);
 
         // add to taskGraph
         DAGTask dagTask = new DAGTask(jobId, taskId, scheduleTime, dependTaskIdMap);
         taskGraph.addTask(taskId, dagTask);
+        LOGGER.info("add {} to taskGraph", dagTask);
 
         // add task dependency
         if (dependTaskIdMap != null) {
@@ -195,16 +213,20 @@ public class TaskScheduler extends Scheduler {
     @Transactional
     public void handleRetryTaskEvent(RetryTaskEvent e) {
         long taskId = e.getTaskId();
+        LOGGER.info("start handleRetryTaskEvent, taskId={}", taskId);
         Task task = taskService.get(taskId);
         if (task != null) {
             taskService.updateStatus(taskId, TaskStatus.WAITING);
+            LOGGER.info("update {} with WAITING status", taskId);
 
             DAGTask dagTask = taskGraph.getTask(taskId);
             if (dagTask == null) {
                 dagTask = new DAGTask(task.getJobId(), taskId, task.getAttemptId(), task.getScheduleTime().getTime());
                 taskGraph.addTask(taskId, dagTask);
+                LOGGER.info("add {} to taskGraph", dagTask);
             }
             if (dagTask != null && dagTask.checkStatus()) {
+                LOGGER.info("{} pass status check", dagTask);
                 int attemptId = dagTask.getAttemptId();
                 attemptId++;
                 dagTask.setAttemptId(attemptId);
@@ -213,6 +235,7 @@ public class TaskScheduler extends Scheduler {
                 updateTask.setAttemptId(attemptId);
                 updateTask.setUpdateTime(DateTime.now().toDate());
                 taskService.updateSelective(updateTask);
+                LOGGER.info("update task {}, attemptId={}", taskId, attemptId);
                 submitTask(dagTask);
             }
         }
@@ -221,9 +244,11 @@ public class TaskScheduler extends Scheduler {
     @Subscribe
     public void handleManulRerunTaskEvent(ManualRerunTaskEvent e) {
         List<Long> taskIdList = e.getTaskIdList();
+        LOGGER.info("start handleRetryTaskEvent, taskIdList={}", taskIdList);
         for (Long taskId : taskIdList) {
             DAGTask dagTask = taskGraph.getTask(taskId);
             if (dagTask != null && dagTask.checkStatus()) {
+                LOGGER.info("{} pass status check", dagTask);
                 submitTask(dagTask);
             }
         }
@@ -232,8 +257,10 @@ public class TaskScheduler extends Scheduler {
     @Subscribe
     public void handleRunTaskEvent(RunTaskEvent e) {
         long taskId = e.getTaskId();
+        LOGGER.info("start handleRunTaskEvent, taskId={}", taskId);
         DAGTask dagTask = taskGraph.getTask(taskId);
         if (dagTask != null && dagTask.checkStatus()) {
+            LOGGER.info("{} pass status check", dagTask);
             submitTask(dagTask);
         }
     }
@@ -246,6 +273,7 @@ public class TaskScheduler extends Scheduler {
     public void submitTask(DAGTask dagTask) {
         // update status to ready
         taskService.updateStatus(dagTask.getTaskId(), TaskStatus.READY);
+        LOGGER.info("update {} with READY status", dagTask.getTaskId());
 
         // submit to TaskQueue
         TaskDetail taskDetail = getTaskInfo(dagTask);

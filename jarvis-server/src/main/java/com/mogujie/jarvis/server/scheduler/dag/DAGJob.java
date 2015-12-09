@@ -73,13 +73,6 @@ public class DAGJob extends AbstractDAGJob {
         return dependChecker.getDependTaskIdMap();
     }
 
-    @Override
-    public String toString() {
-        return "{[jobId is " + jobId + "]," +
-                "[DAG type is " + type + "]," +
-                "[depend check instance is " + dependChecker.getClass().getSimpleName() + "]}";
-    }
-
     public long getJobId() {
         return jobId;
     }
@@ -138,5 +131,10 @@ public class DAGJob extends AbstractDAGJob {
         } else {
             type = type.remove(that);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "DAGJob [jobId=" + jobId + ", type=" + type + ", timeReadyFlag=" + timeReadyFlag + "]";
     }
 }

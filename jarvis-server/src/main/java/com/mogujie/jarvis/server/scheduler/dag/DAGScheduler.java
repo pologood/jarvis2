@@ -53,6 +53,7 @@ public class DAGScheduler extends Scheduler {
     public void handleTimeReadyEvent(TimeReadyEvent e) {
         long jobId = e.getJobId();
         long scheduleTime = e.getScheduleTime();
+        LOGGER.info("start handleTimeReadyEvent, jobId={}, scheduleTime={}", jobId, scheduleTime);
         DAGJob dagJob = getDAGJob(jobId);
         if (dagJob != null) {
             if (!(dagJob.getType().implies(DAGJobType.TIME))) {
@@ -61,7 +62,7 @@ public class DAGScheduler extends Scheduler {
             }
             // 更新时间标识
             dagJob.setTimeReadyFlag();
-            LOGGER.debug("DAGJob {} time ready", dagJob.getJobId());
+            LOGGER.info("DAGJob {} time ready", dagJob.getJobId());
             // 如果通过依赖检查，提交给taskScheduler，并重置自己的依赖状态
             jobGraph.submitJobWithCheck(dagJob, scheduleTime);
         }
@@ -73,6 +74,8 @@ public class DAGScheduler extends Scheduler {
         long taskId = e.getTaskId();
         long scheduleTime = e.getScheduleTime();
         long childJobId = e.getChildJobId();
+        LOGGER.info("start handleScheduleEvent, jobId={}, scheduleTime={}, taskId={}, "
+                + "childJobId={}", jobId, scheduleTime, scheduleTime, childJobId);
         DAGJob dagJob = getDAGJob(jobId);
         if (dagJob != null) {
             if (childJobId == 0) {
