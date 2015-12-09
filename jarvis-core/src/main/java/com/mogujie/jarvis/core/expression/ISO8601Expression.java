@@ -44,7 +44,6 @@ public class ISO8601Expression extends ScheduleExpression {
                 try {
                     startDateTime = DateTime.parse(startStr);
                 } catch (IllegalArgumentException e) {
-                    e.printStackTrace();
                     isValid = -1;
                     return false;
                 }
@@ -67,34 +66,49 @@ public class ISO8601Expression extends ScheduleExpression {
     }
 
     private DateTime calculateDateTime(DateTime dateTime, int value) {
-        if (startDateTime.compareTo(dateTime) * value > 0) {
-            return startDateTime;
-        } else if (period.getYears() == 0 && period.getMonths() == 0) {
-            Seconds dateTimePeriod = new Period(startDateTime, dateTime).toStandardSeconds();
-            int scalar = dateTimePeriod.getSeconds() / period.toStandardSeconds().getSeconds();
-            if (Math.abs(scalar + value) >= repeat) {
-                return null;
-            } else {
-                return startDateTime.withPeriodAdded(period.toStandardSeconds(), scalar + value);
-            }
-        } else {
-            int scalar = 0;
-            MutableDateTime result = startDateTime.toMutableDateTime();
-            while (result.compareTo(dateTime) * value <= 0) {
-                result.add(period, value);
-                if (++scalar >= repeat) {
+        if (period.getYears() == 0 && period.getMonths() == 0) {
+            Period diffPeriod = new Period(startDateTime, dateTime);
+            if (diffPeriod.getYears() == 0 && diffPeriod.getMonths() == 0) {
+                Seconds dateTimePeriod = diffPeriod.toStandardSeconds();
+                int scalar = dateTimePeriod.getSeconds() / period.toStandardSeconds().getSeconds();
+                if (repeat > 0 && Math.abs(scalar + value) >= repeat) {
                     return null;
+                } else if (value > 0) {
+                    return startDateTime.withPeriodAdded(period.toStandardSeconds(), scalar + 1);
+                } else {
+                    if (dateTimePeriod.getSeconds() % period.toStandardSeconds().getSeconds() == 0) {
+                        return startDateTime.withPeriodAdded(period.toStandardSeconds(), scalar - 1);
+                    } else {
+                        return startDateTime.withPeriodAdded(period.toStandardSeconds(), scalar);
+                    }
                 }
             }
-
-            return result.toDateTime();
         }
+
+        int scalar = 0;
+        MutableDateTime result = startDateTime.toMutableDateTime();
+        while (result.compareTo(dateTime) * (-Math.abs(value)) >= 0) {
+            result.add(period, Math.abs(value));
+            if (repeat > 0 && ++scalar >= repeat) {
+                return null;
+            }
+        }
+
+        if (value < 0) {
+            result.add(period, value);
+        }
+        return result.toDateTime();
+
     }
 
     @Override
     public DateTime getTimeBefore(DateTime dateTime) {
         if (isValid > 0 || (isValid == 0 && isValid())) {
-            return calculateDateTime(dateTime, -1);
+            if (!dateTime.isAfter(startDateTime)) {
+                return null;
+            } else {
+                return calculateDateTime(dateTime, -1);
+            }
         }
 
         return null;
@@ -103,7 +117,11 @@ public class ISO8601Expression extends ScheduleExpression {
     @Override
     public DateTime getTimeAfter(DateTime dateTime) {
         if (isValid > 0 || (isValid == 0 && isValid())) {
-            return calculateDateTime(dateTime, 1);
+            if (dateTime.isBefore(startDateTime)) {
+                return startDateTime;
+            } else {
+                return calculateDateTime(dateTime, 1);
+            }
         }
 
         return null;

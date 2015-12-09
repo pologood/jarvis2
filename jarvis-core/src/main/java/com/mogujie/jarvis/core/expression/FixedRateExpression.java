@@ -38,7 +38,7 @@ public class FixedRateExpression extends ScheduleExpression {
         } else {
             int difference = durationFieldType.getField(ISOChronology.getInstanceUTC()).getDifference(dateTime.getMillis(),
                     firstDateTime.getMillis());
-            if (value * difference >= 0) {
+            if (value > 0) {
                 return firstDateTime.withFieldAdded(durationFieldType, (difference / value + 1) * value);
             } else {
                 return firstDateTime.withFieldAdded(durationFieldType, difference / value * value);
@@ -78,7 +78,11 @@ public class FixedRateExpression extends ScheduleExpression {
     @Override
     public DateTime getTimeBefore(DateTime dateTime) {
         if (isValid > 0 || (isValid == 0 && isValid())) {
-            return calculateDateTime(dateTime, -value);
+            if (firstDateTime != null && !dateTime.isAfter(firstDateTime)) {
+                return null;
+            } else {
+                return calculateDateTime(dateTime, -value);
+            }
         }
 
         return null;
@@ -87,7 +91,11 @@ public class FixedRateExpression extends ScheduleExpression {
     @Override
     public DateTime getTimeAfter(DateTime dateTime) {
         if (isValid > 0 || (isValid == 0 && isValid())) {
-            return calculateDateTime(dateTime, value);
+            if (firstDateTime != null && dateTime.isBefore(firstDateTime)) {
+                return firstDateTime;
+            } else {
+                return calculateDateTime(dateTime, value);
+            }
         }
 
         return null;
