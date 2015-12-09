@@ -14,6 +14,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jgrapht.experimental.dag.DirectedAcyclicGraph;
 import org.jgrapht.experimental.dag.DirectedAcyclicGraph.CycleFoundException;
 import org.jgrapht.graph.DefaultEdge;
@@ -27,6 +29,7 @@ import com.google.common.collect.Maps;
  */
 public enum TaskGraph {
     INSTANCE;
+    private static final Logger LOGGER = LogManager.getLogger();
 
     private Map<Long, DAGTask> taskMap = new ConcurrentHashMap<>();
     private DirectedAcyclicGraph<DAGTask, DefaultEdge> dag = new DirectedAcyclicGraph<DAGTask, DefaultEdge>(DefaultEdge.class);
@@ -70,6 +73,7 @@ public enum TaskGraph {
         if (parent != null && child != null) {
             try {
                 dag.addDagEdge(parent, child);
+                LOGGER.info("add dependency from {} to {}", parent, child);
             } catch (CycleFoundException e) {
                 throw new RuntimeException(e);
             }
