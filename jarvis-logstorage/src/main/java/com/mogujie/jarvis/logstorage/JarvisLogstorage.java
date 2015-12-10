@@ -8,14 +8,13 @@
 
 package com.mogujie.jarvis.logstorage;
 
-import com.mogujie.jarvis.logstorage.actor.LogReaderActor;
 import org.apache.commons.configuration.Configuration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.util.ConfigUtils;
-import com.mogujie.jarvis.logstorage.actor.LogWriterActor;
+import com.mogujie.jarvis.logstorage.actor.LogReaderActor;
 import com.typesafe.config.Config;
 
 import akka.actor.ActorSystem;

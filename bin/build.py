@@ -6,7 +6,7 @@ import sys
 import subprocess
 import shutil
 
-gitBranch = 'sentinel2'
+gitBranch = 'master'
 gitUrl = 'http://readonly:den10.malice@gitlab.mogujie.org/bigdata/jarvis2.git'
 
 rootDir = os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir))

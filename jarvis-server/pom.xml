@@ -18,17 +18,14 @@
 		<dependency>
 			<groupId>com.mogujie.jarvis</groupId>
 			<artifactId>jarvis-core</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.mogujie.jarvis</groupId>
 			<artifactId>jarvis-protocol</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.mogujie.jarvis</groupId>
 			<artifactId>jarvis-dao</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 
 		<!-- Spring -->

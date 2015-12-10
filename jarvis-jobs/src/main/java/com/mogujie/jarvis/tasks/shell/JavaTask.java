@@ -29,10 +29,6 @@ import com.mogujie.jarvis.core.exeception.TaskException;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.core.util.IdUtils;
 
-/**
- * 
- *
- */
 public class JavaTask extends ShellTask {
 
     private static final String HDFS_ROOT_PATH = ConfigUtils.getWorkerConfig().getString("hdfs.jar.root.path");

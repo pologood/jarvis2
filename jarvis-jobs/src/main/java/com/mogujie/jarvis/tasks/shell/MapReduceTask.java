@@ -13,10 +13,6 @@ import java.util.List;
 import com.google.common.base.Joiner;
 import com.mogujie.jarvis.core.TaskContext;
 
-/**
- * 
- *
- */
 public class MapReduceTask extends JavaTask {
 
     public MapReduceTask(TaskContext taskContext) {

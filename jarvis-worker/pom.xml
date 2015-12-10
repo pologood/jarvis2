@@ -18,12 +18,10 @@
 		<dependency>
 			<groupId>com.mogujie.jarvis</groupId>
 			<artifactId>jarvis-core</artifactId>
-			<version>${project.version}</version>
 		</dependency>
         <dependency>
             <groupId>com.mogujie.jarvis</groupId>
             <artifactId>jarvis-jobs</artifactId>
-            <version>${project.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>
@@ -34,7 +32,6 @@
 		<dependency>
 			<groupId>com.mogujie.jarvis</groupId>
 			<artifactId>jarvis-protocol</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.fusesource</groupId>

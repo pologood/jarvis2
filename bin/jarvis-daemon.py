@@ -12,13 +12,13 @@ confDir = rootDir + '/conf'
 logsDir = rootDir + '/logs'
 
 javaHome = os.environ.get('JAVA_HOME')
-javaOps = '-Xms8G -Xmx8G -Xmn512M -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:+HeapDumpOnOutOfMemoryError -Dsentinel.log.dir=%s' % logsDir
+javaOps = '-Xms8G -Xmx8G -Xmn512M -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:+HeapDumpOnOutOfMemoryError -Djarvis.log.dir=%s' % logsDir
 
 def execute(cmd):
     subprocess.call(cmd, shell=True)
 
 def start(mainClass, role):
-    execute('nohup %s/bin/java %s -Dsentinel.role=%s -cp %s:%s/* %s > %s/app.log 2>&1 &' % (javaHome, javaOps, role, confDir, libDir, mainClass, logsDir))
+    execute('nohup %s/bin/java %s -Djarvis.role=%s -cp %s:%s/* %s > %s/app.log 2>&1 &' % (javaHome, javaOps, role, confDir, libDir, mainClass, logsDir))
 
 def stop(mainClass):
     execute('%s/bin/jps -lm | grep %s | awk \'{print $1}\' | xargs kill' % (javaHome, mainClass))
