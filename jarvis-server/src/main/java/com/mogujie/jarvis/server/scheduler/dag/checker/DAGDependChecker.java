@@ -60,10 +60,10 @@ public class DAGDependChecker {
 
         if (taskSchedule == null) {
             taskSchedule = getSchedule(myJobId, jobId);
+            jobScheduleMap.put(jobId, taskSchedule);
         }
 
         if (taskSchedule != null) {
-            jobScheduleMap.put(jobId, taskSchedule);
             taskSchedule.scheduleTask(taskId, scheduleTime);
         }
     }

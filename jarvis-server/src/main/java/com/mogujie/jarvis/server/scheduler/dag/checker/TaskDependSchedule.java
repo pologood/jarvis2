@@ -30,7 +30,6 @@ public class TaskDependSchedule {
     private long myJobId;
     private long preJobId;
     private DependencyExpression dependencyExpression;
-    private JobDependType dependType;
 
     // SortedSet<ScheduleTask>
     private SortedSet<ScheduleTask> schedulingTasks = new ConcurrentSkipListSet<>(
@@ -50,22 +49,6 @@ public class TaskDependSchedule {
         this.myJobId = myJobId;
         this.preJobId = preJobId;
         this.dependencyExpression = dependencyExpression;
-        this.dependType = getJobDependType(dependencyExpression);
-    }
-
-    private JobDependType getJobDependType(DependencyExpression dependencyExpression) {
-        JobDependType dependType;
-        if (dependencyExpression == null) {
-            dependType = JobDependType.RUNTIME;
-        } else {
-            String expression = dependencyExpression.getExpression();
-            if (expression.startsWith("c")) {
-                dependType = JobDependType.CURRENT;
-            } else {
-                dependType = JobDependType.OFFSET;
-            }
-        }
-        return dependType;
     }
 
     public long getMyJobId() {
@@ -90,7 +73,6 @@ public class TaskDependSchedule {
 
     public void setDependencyExpression(DependencyExpression dependencyExpression) {
         this.dependencyExpression = dependencyExpression;
-        this.dependType = getJobDependType(dependencyExpression);
     }
 
     /**
@@ -122,29 +104,46 @@ public class TaskDependSchedule {
      */
     public boolean check(long scheduleTime) {
         boolean pass = false;
-        if (dependType.equals(JobDependType.RUNTIME)) {
+
+        // runtime
+        if (dependencyExpression == null) {
             // 默认实现至少有一个就通过依赖检查
             if (schedulingTasks.size() > 0) {
                 selectedTasks.addAll(schedulingTasks);
                 pass = true;
             }
-        } else if (dependType.equals(JobDependType.CURRENT)) {
+        } else {
+            // offset
             DateTime scheduleDate = new DateTime(scheduleTime);
             Range<DateTime> range = dependencyExpression.getRange(scheduleDate);
-            for (ScheduleTask task : schedulingTasks) {
-                long theTaskScheduleTime = task.getScheduleTime();
-                DateTime theScheduleDate = new DateTime(theTaskScheduleTime);
-                if (range.contains(theScheduleDate)) {
-                    selectedTasks.add(task);
-                } else {
-                    break;
+            DateTime startTime = range.lowerEndpoint();
+            DateTime endTime = range.upperEndpoint();
+
+            if (scheduleDate.isAfter(endTime)) {
+                // 对过去的依赖
+                schedulingTasks.clear();
+                selectedTasks.clear();
+                pass = true;
+            } else if (scheduleDate.isBefore(startTime)) {
+                // 对未来的依赖，当前不支持
+                schedulingTasks.clear();
+                selectedTasks.clear();
+                pass = false;
+            } else {
+                // 对当前周期的依赖，比如当天
+                for (ScheduleTask task : schedulingTasks) {
+                    long theTaskScheduleTime = task.getScheduleTime();
+                    DateTime theScheduleDate = new DateTime(theTaskScheduleTime);
+                    if (range.contains(theScheduleDate)) {
+                        selectedTasks.add(task);
+                    } else {
+                        break;
+                    }
+                }
+                if (selectedTasks.size() > 0) {
+                    pass = true;
                 }
             }
-            if (selectedTasks.size() > 0) {
-                pass = true;
-            }
-        } else {
-            pass = true;
         }
 
         return pass;
@@ -154,9 +153,18 @@ public class TaskDependSchedule {
      * start schedule task
      */
     public void scheduleTask(long taskId, long scheduleTime) {
-        if (!dependType.equals(JobDependType.OFFSET)) {
+        // 如果是runtime
+        if (dependencyExpression == null) {
             ScheduleTask task = new ScheduleTask(taskId, scheduleTime);
             schedulingTasks.add(task);
+        } else {
+            DateTime scheduleDate = new DateTime(scheduleTime);
+            Range<DateTime> range = dependencyExpression.getRange(scheduleDate);
+            // 或者current
+            if (range.contains(scheduleDate)) {
+                ScheduleTask task = new ScheduleTask(taskId, scheduleTime);
+                schedulingTasks.add(task);
+            }
         }
     }
 
@@ -179,9 +187,12 @@ public class TaskDependSchedule {
         DateTime now = DateTime.now();
 
         List<Task> tasks = null;
-        if (dependType.equals(JobDependType.CURRENT)) {
+        if (dependencyExpression != null) {
             Range<DateTime> range = dependencyExpression.getRange(now);
-            tasks = taskService.getTasksBetween(preJobId, range);
+            // 如果是对当前周期的依赖，需要重新load进来
+            if (range.contains(now)) {
+                tasks = taskService.getTasksBetween(preJobId, range);
+            }
         }
 
         if (tasks != null) {

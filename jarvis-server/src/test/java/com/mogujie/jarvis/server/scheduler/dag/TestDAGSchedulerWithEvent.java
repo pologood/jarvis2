@@ -56,7 +56,7 @@ public class TestDAGSchedulerWithEvent extends TestSchedulerBase {
 
         // schedule jobB
         // pass the dependency check, start to schedule jobC
-        taskBId = taskService.createTaskByJobId(jobAId, t1);
+        taskBId = taskService.createTaskByJobId(jobBId, t2);
         taskGraph.addTask(taskBId, new DAGTask(jobBId, taskBId, t2, null));
         ScheduleEvent scheduleEventB = new ScheduleEvent(jobBId, taskBId, t2);
         dagScheduler.handleScheduleEvent(scheduleEventB);
