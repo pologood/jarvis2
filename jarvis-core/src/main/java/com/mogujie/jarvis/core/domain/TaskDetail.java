@@ -12,10 +12,6 @@ import java.util.Map;
 
 import org.joda.time.DateTime;
 
-/**
- * 
- *
- */
 public class TaskDetail {
 
     private String fullId;

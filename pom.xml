@@ -47,7 +47,7 @@
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
-			<version>18.0</version>
+			<version>19.0</version>
 		</dependency>
 		<dependency>
 			<groupId>joda-time</groupId>
@@ -73,6 +73,51 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>com.mogujie.jarvis</groupId>
+				<artifactId>jarvis-core</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.mogujie.jarvis</groupId>
+				<artifactId>jarvis-dao</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.mogujie.jarvis</groupId>
+				<artifactId>jarvis-jobs</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.mogujie.jarvis</groupId>
+				<artifactId>jarvis-logstorage</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.mogujie.jarvis</groupId>
+				<artifactId>jarvis-protocol</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.mogujie.jarvis</groupId>
+				<artifactId>jarvis-rest</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.mogujie.jarvis</groupId>
+				<artifactId>jarvis-server</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.mogujie.jarvis</groupId>
+				<artifactId>jarvis-worker</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 	<build>
 		<plugins>
