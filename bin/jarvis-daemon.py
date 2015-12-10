@@ -28,7 +28,7 @@ def restart(mainClass, role):
     start(mainClass, role)
 
 def printHelp():
-    print('Usage: python jarvis-daemon.py start|stop|restart server|logserver|client|restful\n')
+    print('Usage: python jarvis-daemon.py start|stop|restart server|logserver|client|rest\n')
 
 def checkJavaVersion():
     proc = subprocess.Popen("java -version", shell=True, stderr=subprocess.PIPE)
@@ -43,9 +43,9 @@ def main():
 
     mainClassDcit = {
         'server': 'com.mogujie.jarvis.server.JarvisServer',
-        'logserver': 'com.mogujie.jarvis.logserver.JarvisLogServer',
+        'logserver': 'com.mogujie.jarvis.logstorage.JarvisLogstorage',
         'worker': 'com.mogujie.jarvis.worker.JarvisWorker',
-        'rest': 'com.mogujie.jarvis.rest.JarvisRestServer'
+        'rest': 'com.mogujie.jarvis.rest.JarvisRest'
     }
 
     if len(sys.argv) != 3:

@@ -31,17 +31,15 @@ public class DAGJob extends AbstractDAGJob {
     private boolean timeReadyFlag = false;
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public DAGJob(long jobId, DAGJobType type) {
-        this.jobId = jobId;
-        this.type = type;
-        this.dependChecker = new DAGDependChecker(jobId);
-    }
-
     public DAGJob(long jobId, DAGJobType type, JobFlag jobFlag) {
         this.jobId = jobId;
         this.type = type;
         this.jobFlag = jobFlag;
         this.dependChecker = new DAGDependChecker(jobId);
+    }
+
+    public DAGJob(long jobId, DAGJobType type) {
+        this(jobId, type, JobFlag.ENABLE);
     }
 
     @Override
