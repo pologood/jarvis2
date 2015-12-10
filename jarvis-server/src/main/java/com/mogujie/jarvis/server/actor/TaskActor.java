@@ -22,6 +22,7 @@ import javax.inject.Named;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Range;
@@ -165,6 +166,7 @@ public class TaskActor extends UntypedActor {
      *
      * @param msg
      */
+    @Transactional
     private void manualRerunTask(RestServerManualRerunTaskRequest msg) {
         List<Long> jobIdList = msg.getJobIdList();
         List<Long> taskIdList = new ArrayList<Long>();

@@ -16,8 +16,7 @@ import javax.inject.Named;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-
-import akka.actor.UntypedActor;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.collect.Range;
 import com.mogujie.jarvis.core.domain.ActorEntry;
@@ -36,6 +35,8 @@ import com.mogujie.jarvis.server.scheduler.task.TaskGraph;
 import com.mogujie.jarvis.server.scheduler.time.TimeScheduler;
 import com.mogujie.jarvis.server.scheduler.time.TimeSchedulerFactory;
 import com.mogujie.jarvis.server.service.TaskService;
+
+import akka.actor.UntypedActor;
 
 /**
  * @author guangming
@@ -68,6 +69,7 @@ public class PlanActor extends UntypedActor {
      *
      * @param msg
      */
+    @Transactional
     private void removePlan(RestServerRemovePlanRequest msg) {
         ServerRemovePlanResponse response;
         long taskId = msg.getTaskId();
@@ -86,10 +88,8 @@ public class PlanActor extends UntypedActor {
                         childIds.add(child.getTaskId());
                     }
                     String childrenJson = JsonHelper.toJson(childIds, List.class);
-                    response = ServerRemovePlanResponse.newBuilder()
-                            .setSuccess(false)
-                            .setMessage(taskId + "有后置任务: " + childrenJson + ", 删除会造成后置任务无法跑起来")
-                            .build();
+                    response = ServerRemovePlanResponse.newBuilder().setSuccess(false)
+                            .setMessage(taskId + "有后置任务: " + childrenJson + ", 删除会造成后置任务无法跑起来").build();
                 } else {
                     taskService.updateStatus(taskId, TaskStatus.REMOVED);
                     timeScheduler.removePlan(new ExecutionPlanEntry(jobId, scheduleTime, taskId));
@@ -104,10 +104,7 @@ public class PlanActor extends UntypedActor {
                 response = ServerRemovePlanResponse.newBuilder().setSuccess(true).build();
             }
         } else {
-            response = ServerRemovePlanResponse.newBuilder()
-                    .setSuccess(false)
-                    .setMessage("Task: taskId= " + taskId + " 不存在!")
-                    .build();
+            response = ServerRemovePlanResponse.newBuilder().setSuccess(false).setMessage("Task: taskId= " + taskId + " 不存在!").build();
         }
         getSender().tell(response, getSelf());
     }
