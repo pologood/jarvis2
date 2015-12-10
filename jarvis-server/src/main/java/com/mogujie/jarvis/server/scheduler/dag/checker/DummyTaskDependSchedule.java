@@ -23,7 +23,4 @@ public class DummyTaskDependSchedule extends TaskDependSchedule {
     public DummyTaskDependSchedule(long myJobId, long preJobId, DependencyExpression dependencyExpression) {
         super(myJobId, preJobId, dependencyExpression);
     }
-
-    @Override
-    protected void loadSchedulingTasks() {}
 }

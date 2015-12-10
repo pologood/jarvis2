@@ -130,6 +130,7 @@ public class TaskStatusChecker {
                 TaskDependStatus taskStatus = new TaskDependStatus(dependTaskIds, commonStrategy);
                 jobStatusMap.put(preJobId, taskStatus);
             } else {
+                // for testing
                 if (dependTaskIds != null && !dependTaskIds.isEmpty()) {
                     DependencyStrategyExpression commonStrategy = new DefaultDependencyStrategyExpression(CommonStrategy.ALL.getExpression());
                     TaskDependStatus taskStatus = new TaskDependStatus(dependTaskIds, commonStrategy);

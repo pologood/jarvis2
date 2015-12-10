@@ -170,6 +170,7 @@ public enum JobGraph {
             }
             jobMap.put(jobId, dagJob);
             LOGGER.info("add DAGJob {} to DAGScheduler successfully.", dagJob.toString());
+            submitJobWithCheck(dagJob);
         }
     }
 
