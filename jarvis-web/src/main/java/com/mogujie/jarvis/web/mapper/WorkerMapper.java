@@ -1,8 +1,8 @@
 package com.mogujie.jarvis.web.mapper;
 
-import com.mogujie.jarvis.web.entity.vo.WorkerGroupSearchVo;
+import com.mogujie.jarvis.web.entity.vo.WorkerGroupQo;
 import com.mogujie.jarvis.web.entity.vo.WorkerGroupVo;
-import com.mogujie.jarvis.web.entity.vo.WorkerSearchVo;
+import com.mogujie.jarvis.web.entity.vo.WorkerQo;
 import com.mogujie.jarvis.web.entity.vo.WorkerVo;
 
 import java.util.List;
@@ -13,20 +13,20 @@ import java.util.Map;
  */
 public interface WorkerMapper {
     //worker
-    public WorkerVo getWorkerById(Integer id);
-    public Integer getWorkerCount(WorkerSearchVo workerSearchVo);
-    public List<WorkerVo> getWorkerList(WorkerSearchVo workerSearchVo);
-    public List<String> getAllWorkerIp();
-    public List<Integer> getAllWorkerPort();
-    public WorkerVo getWorkerByIpAndPort(Map<String,Object> para);
+    WorkerVo getWorkerById(Integer id);
+    Integer getWorkerCount(WorkerQo workerSearchVo);
+    List<WorkerVo> getWorkerList(WorkerQo workerSearchVo);
+    List<String> getAllWorkerIp();
+    List<Integer> getAllWorkerPort();
+    WorkerVo getWorkerByIpAndPort(Map<String,Object> para);
 
 
     //WorkerGroup
-    public List<WorkerGroupVo> getAllWorkerGroup();
-    public WorkerGroupVo getWorkerGroupById(Integer id);
-    public WorkerGroupVo getWorkerGroupByName(String name);
-    public Integer getWorkerGroupCount(WorkerGroupSearchVo workerGroupSearchVo);
-    public List<WorkerGroupVo> getWorkerGroupList(WorkerGroupSearchVo workerGroupSearchVo);
-    public List<String> getAllWorkerGroupCreator();
+    List<WorkerGroupVo> getAllWorkerGroup();
+    WorkerGroupVo getWorkerGroupById(Integer id);
+    WorkerGroupVo getWorkerGroupByName(String name);
+    Integer getWorkerGroupCount(WorkerGroupQo workerGroupSearchVo);
+    List<WorkerGroupVo> getWorkerGroupList(WorkerGroupQo workerGroupSearchVo);
+    List<String> getAllWorkerGroupCreator();
 
 }

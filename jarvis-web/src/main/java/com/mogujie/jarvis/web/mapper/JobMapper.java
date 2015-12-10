@@ -1,27 +1,31 @@
 package com.mogujie.jarvis.web.mapper;
 
-import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.web.entity.vo.CronTabVo;
-import com.mogujie.jarvis.web.entity.vo.JobSearchVo;
+import com.mogujie.jarvis.web.entity.vo.JobQo;
 import com.mogujie.jarvis.web.entity.vo.JobVo;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by hejian on 15/9/17.
  */
 public interface JobMapper {
-    public JobVo getJobById(Long jobId);
-    public JobVo getJobByName(String jobName);
-    public Integer getCountByCondition(JobSearchVo jobSearchVo);
-    public List<JobVo> getJobsByCondition(JobSearchVo jobSearchVo);
+    JobVo getJobById(Long jobId);
+    JobVo getJobByName(String jobName);
+    Integer getCountByCondition(JobQo jobQo);
+    List<JobVo> getJobsByCondition(JobQo jobQo);
 
-    public List<Long> getJobIds();
-    public List<String> getJobNames();
-    public List<String> getSubmitUsers();
+    List<Long> getJobIds();
+    List<String> getJobNames();
+    List<String> getSubmitUsers();
 
-    public List<Integer> getSimilarJobIds(JobSearchVo jobSearchVo);
-    public List<String> getSimilarJobNames(JobSearchVo jobSearchVo);
+    List<Long> getSimilarJobIds(Long jobId);
+    List<String> getSimilarJobNames(String jobName);
 
-    public CronTabVo getCronTabByJobId(Long jobId);
+    CronTabVo getCronTabByJobId(Long jobId);
+
+    List<JobVo> getJobByIds(@Param("list")Set<String> jobIds);
+
 }

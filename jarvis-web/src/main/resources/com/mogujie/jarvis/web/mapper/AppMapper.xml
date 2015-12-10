@@ -7,6 +7,9 @@
             <if test="appId!=null">
                 appId=#{appId}
             </if>
+            <if test="appType!=null and appType!=''">
+                AND appType=#{appType}
+            </if>
             <if test="appName!=null and appName!=''">
                 AND appName=#{appName}
             </if>
@@ -21,13 +24,13 @@
         </if>
     </sql>
 
-    <select id="getAppCount" parameterType="AppSearchVo" resultType="Integer">
+    <select id="getAppCount" parameterType="AppQo" resultType="Integer">
         SELECT count(1) FROM app
         <include refid="condition" />
     </select>
 
 
-    <select id="getAppList" parameterType="AppSearchVo" resultType="AppVo">
+    <select id="getAppList" parameterType="AppQo" resultType="AppVo">
         SELECT * FROM app
         <include refid="condition" />
         <include refid="pager" />

@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.mogujie.jarvis.web.entity.vo.JobDependVo;
 import com.mogujie.jarvis.web.mapper.JobDependMapper;
-import com.mogujie.jarvis.web.entity.vo.JobSearchVo;
+import com.mogujie.jarvis.web.entity.vo.JobQo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +21,7 @@ public class JobDependService {
     /**
      * 获取所有依赖于此job的job
      * */
-    public JSONObject getTreeDependedOnJob(JobSearchVo jobSearchVo){
+    public JSONObject getTreeDependedOnJob(JobQo jobSearchVo){
         JSONObject jsonObject=new JSONObject();
         JobDependVo jobDependVo=jobDependMapper.getJobById(jobSearchVo.getJobId());
 
@@ -43,7 +43,7 @@ public class JobDependService {
     /**
      * 获取所有依赖于此job的job
      * */
-    public JSONObject getTwoDirectionTreeDependedOnJob(JobSearchVo jobSearchVo){
+    public JSONObject getTwoDirectionTreeDependedOnJob(JobQo jobSearchVo){
         JSONObject jsonObject=new JSONObject();
         JobDependVo jobDependVo=jobDependMapper.getJobById(jobSearchVo.getJobId());
         jobDependVo.setName(jobDependVo.getText());

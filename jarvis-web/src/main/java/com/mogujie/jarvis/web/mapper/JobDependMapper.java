@@ -8,7 +8,7 @@ import java.util.List;
  * Created by hejian on 15/9/22.
  */
 public interface JobDependMapper {
-    public JobDependVo getJobById(Long jobId);
-    public List<JobDependVo> getChildrenById(Long jobId);
-    public List<JobDependVo> getParentById(Long jobId);
+    JobDependVo getJobById(Long jobId);
+    List<JobDependVo> getChildrenById(Long jobId);
+    List<JobDependVo> getParentById(Long jobId);
 }

@@ -2,9 +2,9 @@ var taskStatusJson=null;
 
 $(function(){
     createDatetimePickerById("executeDate");
-    createDatetimePickerById("scheduleTime");
-    createDatetimePickerById("executeStartTime");
-    createDatetimePickerById("executeEndTime");
+    createDatetimePickerById("scheduleDate");
+    createDatetimePickerById("startDate");
+    createDatetimePickerById("endDate");
 
 
     //初始化作业类型内容
@@ -14,8 +14,9 @@ $(function(){
             width:'100%'
         });
     });
+    //select采用select2 实现
+    $(".input-group select").select2({width:'100%'});
     $.ajaxSettings.async = false;
-    //初始化任务状态
     $.getJSON("/assets/jarvis/json/taskStatus.json",function(data){
         taskStatusJson=data;
         $(data).each(function(index,content){
@@ -46,8 +47,57 @@ $(function(){
     });
     $.ajaxSettings.async = true;
 
-    //select采用select2 实现
-    $(".input-group select").select2({width:'100%'});
+
+    $("#jobId").select2({
+        ajax: {
+            url: "/jarvis/api/job/getSimilarJobIds",
+            dataType: 'json',
+            delay: 250,
+            data: function (params) {
+                return {
+                    q: params.term, // search term
+                    page: params.page
+                };
+            },
+            processResults: function (data, page) {
+                return {
+                    results: data.items
+                };
+            },
+            cache: true
+        },
+        escapeMarkup: function (markup) { return markup; },
+        minimumInputLength: 1,
+        templateResult: formatResult,
+        templateSelection: formatResultSelection,
+
+        width:'100%'
+    });
+    $("#jobName").select2({
+        ajax: {
+            url: "/jarvis/api/job/getSimilarJobNames",
+            dataType: 'json',
+            delay: 250,
+            data: function (params) {
+                return {
+                    q: params.term, // search term
+                    page: params.page
+                };
+            },
+            processResults: function (data, page) {
+                return {
+                    results: data.items
+                };
+            },
+            cache: true
+        },
+        escapeMarkup: function (markup) { return markup; },
+        minimumInputLength: 1,
+        templateResult: formatResult,
+        templateSelection: formatResultSelection,
+        width:'100%'
+    });
+
 
     initData();
 });
@@ -60,14 +110,14 @@ function search(){
 }
 //重置参数
 function reset(){
+    $("#scheduleDate").val("");
     $("#executeDate").val("");
-    $("#dataDate").val("");
-    $("#executeStartTime").val("");
-    $("#executeEndTime").val("");
+    $("#startDate").val("");
+    $("#endDate").val("");
     $("#jobId").val("all").trigger("change");
     $("#jobName").val("all").trigger("change");
     $("#jobType").val("all").trigger("change");
-    $("#submitUser").val("all").trigger("change");
+    $("#executeUser").val("all").trigger("change");
     $("#taskStatus input").each(function(i,c){
         this.checked=false;
     });
@@ -78,14 +128,14 @@ function reset(){
 function getQueryPara(){
     var queryPara={};
 
+    var scheduleDate=$("#scheduleDate").val();
     var executeDate=$("#executeDate").val();
-    var dataDate=$("#dataDate").val();
-    var executeStartTime=$("#executeStartTime").val();
-    var executeEndTime=$("#executeEndTime").val();
+    var startDate=$("#startDate").val();
+    var endDate=$("#endDate").val();
     var jobId=$("#jobId").val();
     var jobName=$("#jobName").val();
     var jobType=$("#jobType").val();
-    var submitUser=$("#submitUser").val();
+    var executeUser=$("#executeUser").val();
 
     var taskStatus=new Array();
     var inputs=$("#taskStatus").find("input:checked");
@@ -99,16 +149,16 @@ function getQueryPara(){
     jobId=jobId=="all"?'':jobId;
     jobName=jobName=='all'?'':jobName;
     jobType=jobType=='all'?'':jobType;
-    submitUser=submitUser=="all"?'':submitUser;
+    executeUser=executeUser=="all"?'':executeUser;
 
+    queryPara["scheduleDate"]=scheduleDate;
     queryPara["executeDate"]=executeDate;
-    queryPara["dataDate"]=dataDate;
-    queryPara["startTime"]=executeStartTime;
-    queryPara["endTime"]=executeEndTime;
+    queryPara["startDate"]=startDate;
+    queryPara["endDate"]=endDate;
     queryPara["jobId"]=jobId;
     queryPara["jobName"]=jobName;
     queryPara["jobType"]=jobType;
-    queryPara["submitUser"]=submitUser;
+    queryPara["executeUser"]=executeUser;
     queryPara["taskStatusArrStr"]=JSON.stringify(taskStatus);
 
     return queryPara;
@@ -134,8 +184,8 @@ function initData(){
         showHeader:true,
         showToggle:true,
         pageSize:1,
-        pageSize:10,
-        pageList:[5,10,20,50,100,200,500,1000],
+        pageSize:20,
+        pageList:[10,20,50,100,200,500,1000],
         paginationFirstText:'首页',
         paginationPreText:'上一页',
         paginationNextText:'下一页',
@@ -156,7 +206,8 @@ function initData(){
 var columns=[{
     field: 'taskId',
     title: '执行ID',
-    switchable:true
+    switchable:true,
+    visible:true
 }, {
     field: 'attemptId',
     title: '最后尝试ID',
@@ -165,27 +216,26 @@ var columns=[{
 }, {
     field: 'jobId',
     title: '任务ID',
-    switchable:true,
-    visible:false
+    switchable:true
 }, {
     field: 'jobName',
     title: '任务名',
     switchable:true
 },{
-    field: 'jobContent',
-    title: '任务内容',
+    field: 'jobType',
+    title: '任务类型',
     switchable:true
-}, {
-    field: 'jobParams',
-    title: '任务参数',
+},{
+    field: 'content',
+    title: '任务内容',
     switchable:true,
     visible:false
 }, {
-    field: 'scheduleTime',
-    title: '调度时间',
+    field: 'params',
+    title: '任务参数',
     switchable:true,
-    formatter:formatDateTime
-}, {
+    visible:false
+},{
     field: 'status',
     title: '执行状态',
     switchable:true,
@@ -194,6 +244,27 @@ var columns=[{
     field: 'executeUser',
     title: '执行用户',
     switchable:true
+},{
+    field: 'scheduleTime',
+    title: '调度时间',
+    switchable:true,
+    formatter:formatDateTime
+}, {
+    field: 'progress',
+    title: '进度',
+    switchable:true,
+    visible:false,
+    formatter:progressFormatter
+}, {
+    field: 'workerGroupId',
+    title: 'workerGroupId',
+    switchable:true,
+    visible:false
+},{
+    field: 'workerId',
+    title: 'workerId',
+    switchable:true,
+    visible:false
 }, {
     field: 'executeStartTime',
     title: '开始执行时间',
@@ -205,9 +276,16 @@ var columns=[{
     switchable:true,
     formatter:formatDateTime
 }, {
+    field: 'executeTime',
+    title: '执行时长',
+    switchable:false,
+    visible:true,
+    formatter:formatTimeInterval
+},{
     field: 'createTime',
     title: '执行创建时间',
-    switchable:true,
+    switchable:false,
+    visible:false,
     formatter:formatDateTime
 }, {
     field: 'updateTime',
@@ -215,24 +293,7 @@ var columns=[{
     switchable:true,
     visible:false,
     formatter:formatDateTime
-}, {
-    field: 'activeStartDate',
-    title: '任务有效期起始',
-    switchable:true,
-    formatter:formatDate,
-    visible:false
-}, {
-    field: 'activeEndDate',
-    title: '任务有效期截止',
-    switchable:true,
-    formatter:formatDate,
-    visible:false
-}, {
-    field: 'jobType',
-    title: '任务类型',
-    switchable:true,
-    visible:false
-}, {
+},   {
     field: 'submitUser',
     title: '任务创建者',
     switchable:true,
@@ -247,12 +308,7 @@ var columns=[{
     title: '任务优先级',
     switchable:true,
     visible:false
-}, {
-    field: 'workerGroupId',
-    title: '任务workerGroupId',
-    switchable:true,
-    visible:false
-}, {
+},  {
     field: 'operation',
     title: '操作',
     switchable:true,
@@ -274,11 +330,21 @@ function operateFormatter(value, row, index) {
     return result;
 }
 
+//执行状态格式化
 function taskStatusFormatter(value,row,index){
     return formatStatus(taskStatusJson,value);
+}
+//百分比格式化
+function progressFormatter(value,row,index){
+    var result=value*100+"%";
+    return result;
 }
 
 
 
-
-
+function formatResult(result){
+    return result.text;
+}
+function formatResultSelection(result){
+    return result.id;
+}

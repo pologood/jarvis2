@@ -1,6 +1,7 @@
 package com.mogujie.jarvis.web.entity.vo;
 
 import com.alibaba.fastjson.JSONObject;
+import com.mogujie.jarvis.dto.generate.JobDepend;
 
 import java.util.List;
 
@@ -19,6 +20,7 @@ public class JobDependVo {
     private boolean parentFlag=false;
     private boolean rootFlag=false;
     private JSONObject state;
+
 
     public List<JobDependVo> getChildren() {
         return children;
@@ -107,4 +109,5 @@ public class JobDependVo {
     public void setRootFlag(boolean rootFlag) {
         this.rootFlag = rootFlag;
     }
+
 }

@@ -44,7 +44,7 @@
 <script type="text/javascript">
     var jobVo=${jobVo};
 </script>
-<script type="text/javascript" src="/assets/jarvis/plugins/d3/concept-graph.js" charset="UTF-8"></script>
+<script type="text/javascript" src="/assets/jarvis/js/jarvis/job/concept-graph.js" charset="UTF-8"></script>
 
 <script type="text/javascript" src="/assets/jarvis/js/jarvis/job/dependency.js"></script>
 

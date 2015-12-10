@@ -3,11 +3,14 @@ package com.mogujie.jarvis.web.entity.vo;
 /**
  * Created by hejian on 15/10/21.
  */
-public class PlanSearchVo {
+public class PlanQo {
+    private Long jobId;
     private String jobName;
     private String jobType;
     private Integer priority;
+    private String scheduleTime;
     private String submitUser;
+    private String executeUser;
     private Integer offset;
     private Integer limit;
 
@@ -57,5 +60,29 @@ public class PlanSearchVo {
 
     public void setLimit(Integer limit) {
         this.limit = limit;
+    }
+
+    public Long getJobId() {
+        return jobId;
+    }
+
+    public void setJobId(Long jobId) {
+        this.jobId = jobId;
+    }
+
+    public String getScheduleTime() {
+        return scheduleTime;
+    }
+
+    public void setScheduleTime(String scheduleTime) {
+        this.scheduleTime = scheduleTime;
+    }
+
+    public String getExecuteUser() {
+        return executeUser;
+    }
+
+    public void setExecuteUser(String executeUser) {
+        this.executeUser = executeUser;
     }
 }

@@ -1,7 +1,7 @@
 package com.mogujie.jarvis.web.controller.jarvis;
 
-import com.alibaba.dubbo.common.json.JSONObject;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.mogujie.jarvis.web.auth.annotation.JarvisPassport;
 import com.mogujie.jarvis.web.auth.conf.JarvisAuthType;
 import com.mogujie.jarvis.web.entity.vo.*;
@@ -11,14 +11,14 @@ import com.mogujie.jarvis.web.service.JobService;
 import com.mogujie.jarvis.web.service.WorkerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Repository;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by hejian on 15/9/15.
@@ -43,14 +43,14 @@ public class JobController extends BaseController{
     @RequestMapping
     @JarvisPassport(authTypes = JarvisAuthType.job)
     public String index(ModelMap modelMap){
-        List<Long> jobIds= jobService.getJobIds();
-        List<String> jobNames= jobService.getJobNames();
         List<String> submitUsers= jobService.getSubmitUsers();
 
-        modelMap.put("jobIds",jobIds);
-        modelMap.put("jobNames",jobNames);
-        modelMap.put("submitUsers",submitUsers);
+        List<AppVo> appVoList=appService.getAppList(new AppQo());
+        List<WorkerGroupVo> workerGroupVoList=workerService.getAllWorkerGroup();
 
+        modelMap.put("submitUsers",submitUsers);
+        modelMap.put("appVoList",appVoList);
+        modelMap.put("workerGroupVoList",workerGroupVoList);
         return "job/index";
     }
 
@@ -60,7 +60,7 @@ public class JobController extends BaseController{
     * */
     @RequestMapping(value = "addOrEdit")
     public String addOrEdit(ModelMap modelMap,Long jobId){
-        AppSearchVo appSearchVo = new AppSearchVo();
+        AppQo appSearchVo = new AppQo();
         appSearchVo.setStatus(1);
         List<AppVo> appVoList =appService.getAppList(appSearchVo);
 
@@ -76,14 +76,14 @@ public class JobController extends BaseController{
 
             List<JobDependVo> jobDependVoList = jobDependService.getParentById(jobId);
             List<String> parentIds=new ArrayList<String>();
+            JSONObject jsonObject = new JSONObject();
             for(JobDependVo jobDependVo:jobDependVoList){
                 parentIds.add(jobDependVo.getId().toString());
+                jsonObject.put(jobDependVo.getId().toString(),jobDependVo);
             }
             String ids= JSON.toJSONString(parentIds);
             modelMap.put("dependIds",ids);
-
-            CronTabVo cronTabVo=jobService.getCronTabByJobId(jobId);
-            modelMap.put("cronTabVo",cronTabVo);
+            modelMap.put("dependJobs",jsonObject.toJSONString());
         }
 
 

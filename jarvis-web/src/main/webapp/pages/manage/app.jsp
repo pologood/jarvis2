@@ -37,17 +37,29 @@
                     </div>
                 </div>
 
+                <div class="col-md-3">
+                    <div class="input-group" style="width:100%">
+                        <span class="input-group-addon" style="width:35%">类型</span>
+                        <select id="appType" >
+                            <option value="all">全部</option>
+                            <option value="1">普通</option>
+                            <option value="2">管理</option>
+                        </select>
+                    </div>
+                </div>
 
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">状态</span>
                         <select id="status" >
                             <option value="all">全部</option>
-                            <option value="0">禁用</option>
+                            <option value="0">停用</option>
                             <option value="1">启用</option>
                         </select>
                     </div>
                 </div>
+
+
 
                 <div class="col-md-3 pull-right">
                     <div class="row">

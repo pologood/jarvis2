@@ -3,9 +3,7 @@ package com.mogujie.jarvis.web.service;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.mogujie.jarvis.web.common.Constants;
-import com.mogujie.jarvis.web.common.TimeTools;
-import com.mogujie.jarvis.web.entity.vo.TaskSearchVo;
+import com.mogujie.jarvis.web.entity.vo.TaskQo;
 import com.mogujie.jarvis.web.entity.vo.TaskVo;
 import com.mogujie.jarvis.web.mapper.TaskMapper;
 import org.apache.commons.lang.StringUtils;
@@ -28,27 +26,32 @@ public class TaskService {
         return taskVo;
     }
 
-    public JSONObject getTasks(TaskSearchVo taskSearchVo){
+    public JSONObject getTasks(TaskQo taskQo){
         JSONObject jsonObject=new JSONObject();
 
-        if(StringUtils.isNotBlank(taskSearchVo.getTaskStatusArrStr())){
-            JSONArray arr= JSON.parseArray(taskSearchVo.getTaskStatusArrStr());
+        if(StringUtils.isNotBlank(taskQo.getTaskStatusArrStr())){
+            JSONArray arr= JSON.parseArray(taskQo.getTaskStatusArrStr());
             if(arr.size()>0){
                 List<Integer> taskStatus= new ArrayList<Integer>();
                 for(int i=0;i<arr.size();i++){
                     Integer status=arr.getInteger(i);
                     taskStatus.add(status);
                 }
-                taskSearchVo.setTaskStatus(taskStatus);
+                taskQo.setTaskStatus(taskStatus);
             }
         }
 
-        Integer count = taskMapper.getCountByCondition(taskSearchVo);
+        Integer count = taskMapper.getCountByCondition(taskQo);
         count=count==null?0:count;
-        List<TaskVo> taskVoList=taskMapper.getTasksByCondition(taskSearchVo);
+        List<TaskVo> taskVoList=taskMapper.getTasksByCondition(taskQo);
         jsonObject.put("total",count);
         jsonObject.put("rows",taskVoList);
 
         return jsonObject;
+    }
+
+
+    public List<String> getAllExecuteUser(){
+        return taskMapper.getAllExecuteUser();
     }
 }

@@ -22,9 +22,6 @@
     <a href="/logout" class="checkout-btn">Logout</a>
 </div>
 
-<a href="mailto:hejian@mogujie.com" class="btn btn-default btn-lg" style="width:100%;border-radius: 0px;">
-    <span class="glyphicon glyphicon-envelope"></span>联系@和剑
-</a>
 
 <a href="javascript:void(0);" class="cd-top">Top</a>
 
@@ -37,8 +34,8 @@
 <script type="text/javascript" src="/assets/jarvis/plugins/back-to-top/js/main.js" charset="UTF-8"></script>
 <script type="text/javascript" src="/assets/jarvis/js/cart.js" charset="UTF-8"></script>
 <script type="text/javascript" src="/assets/jarvis/js/pager.js" charset="UTF-8"></script>
-<script type="text/javascript" src="/assets/jarvis/plugins/select2-4.0.0/js/select2.full.min.js"></script>
-<script type="text/javascript" src="/assets/jarvis/plugins/select2-4.0.0/js/i18n/zh-CN.js"></script>
+<script type="text/javascript" src="/assets/jarvis/plugins/select2/4.0.1/js/select2.min.js"></script>
+<script type="text/javascript" src="/assets/jarvis/plugins/select2/4.0.1/js/i18n/zh-CN.js"></script>
 <script type="text/javascript" src="/assets/jarvis/plugins/form/jquery.form.min.js" charset="UTF-8"></script>
 <script type="text/javascript" src="/assets/jarvis/plugins/qtip2/jquery.qtip.min.js"></script>
 <script type="text/javascript" src="/assets/jarvis/plugins/pnotify/pnotify.custom.min.js" charset="UTF-8"></script>

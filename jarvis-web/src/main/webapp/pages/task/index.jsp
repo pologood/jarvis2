@@ -29,7 +29,7 @@
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">调度日期</span>
-                        <input id="scheduleTime" class="form-control" />
+                        <input id="scheduleDate" class="form-control" />
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -41,14 +41,14 @@
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">执行开始日期>=</span>
-                        <input id="executeStartTime"  class="form-control" />
+                        <input id="startDate"  class="form-control" />
                     </div>
                 </div>
 
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">执行结束日期<</span>
-                        <input id="executeEndTime"  class="form-control" />
+                        <input id="endDate"  class="form-control" />
                     </div>
                 </div>
             </div>
@@ -58,10 +58,7 @@
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">任务ID</span>
                         <select id="jobId" >
-                            <option value="all">全部</option>
-                            <c:forEach items="${jobIds}" var="jobId" varStatus="status">
-                                <option value="${jobId}">${jobId}</option>
-                            </c:forEach>
+
                         </select>
                     </div>
                 </div>
@@ -69,10 +66,7 @@
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">任务名称</span>
                         <select id="jobName" >
-                            <option value="all">全部</option>
-                            <c:forEach items="${jobNames}" var="jobName" varStatus="status">
-                                <option value="${jobName}">${jobName}</option>
-                            </c:forEach>
+
                         </select>
                     </div>
                 </div>
@@ -84,11 +78,11 @@
                 </div>
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">发布者</span>
-                        <select id="submitUser" >
+                        <span class="input-group-addon" style="width:35%">执行用户</span>
+                        <select id="executeUser" >
                             <option value="all">全部</option>
-                            <c:forEach items="${submitUsers}" var="submitUser" varStatus="status">
-                                <option value="${submitUser}">${submitUser}</option>
+                            <c:forEach items="${executeUsers}" var="executeUser" varStatus="status">
+                                <option value="${executeUser}">${executeUser}</option>
                             </c:forEach>
                         </select>
                     </div>

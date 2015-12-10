@@ -175,8 +175,19 @@
             <div class="row top-buffer">
                 <div class="col-md-6 col-md-offset-3">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">Cron表达式</span>
-                        <input id="cronExpression" class="form-control" value="${cronTabVo.cronExpression}" />
+                        <span class="input-group-addon" style="width:35%">表达式类型</span>
+                        <select id="expressionType">
+
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row top-buffer">
+                <div class="col-md-6 col-md-offset-3">
+                    <div class="input-group" style="width:100%">
+                        <span class="input-group-addon" style="width:35%">表达式</span>
+                        <input id="expression" class="form-control" value="${jobVo.expression}" />
                     </div>
                 </div>
             </div>
@@ -235,12 +246,60 @@
                         <span class="input-group-addon" style="width:35%">依赖任务</span>
                         <select id="dependJobIds" multiple>
                             <c:forEach items="${jobVoList}" var="job" varStatus="status">
-                                <option value="${job.jobId}">${job.jobName}</option>
+                                <c:choose>
+                                    <c:when test="${jobVo!=null}">
+                                        <c:choose>
+                                            <c:when test="${jobVo.jobId!=job.jobId}">
+                                                <option value="${job.jobId}">${job.jobName}</option>
+                                            </c:when>
+                                        </c:choose>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <option value="${job.jobId}">${job.jobName}</option>
+                                    </c:otherwise>
+                                </c:choose>
                             </c:forEach>
                         </select>
                     </div>
                 </div>
             </div>
+            <div class="row top-buffer">
+                <div class="col-md-5 col-md-offset-4">
+
+                    <div id="strategyPattern" style="display: none">
+
+                        <div class="col-md-9" style="margin-bottom: 2px">
+                            <div class="input-group commonStrategy" style="width:100%">
+                                <span name="dependJob" class="input-group-addon" style="width:50%;background-color:#d9edf7"></span>
+                                <span class="input-group-addon" style="width:10%">通用</span>
+                                <select name="commonStrategy" class="form-control">
+
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3" style="margin-bottom: 2px">
+                            <div class="input-group offsetStrategy" style="margin-left:-25px;margin-right: -15px" style="width:100%">
+                                <span class="input-group-addon" style="width:30%;" >偏移</span>
+                                <input  name="offsetStrategy" class="form-control"  value="cd" placeholder="默认cd为当天"  />
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <dl id="strategyList">
+
+                    </dl>
+
+
+
+
+                </div>
+                <span >
+                    <i class="fa fa-question text-info fa-2x" style="cursor: pointer;position: relative;position: absolute;margin-left:10px;" onmouseover="showDescription(this)" onmouseout="hideDescription(this)"></i>
+                </span>
+            </div>
+
 
             <div class="row top-buffer">
                 <div class="col-md-6 col-md-offset-3 text-center">
@@ -252,9 +311,6 @@
                             <button type="button" class="btn btn-primary" onclick="edit()">更新</button>
                         </c:otherwise>
                     </c:choose>
-
-
-
                     <button type="button" class="btn btn-primary" onclick="reset()">重置</button>
                 </div>
 
@@ -281,11 +337,17 @@
     var jobType=undefined;
     var jobPriority=undefined;
     var dependIds=undefined;
+    var expressionType=undefined;
+    var expression=undefined;
+    var dependJobs=undefined;
     <c:choose>
     <c:when test="${jobVo!=null}">
         jobType='${jobVo.jobType}';
         jobPriority='${jobVo.priority}';
         dependIds='${dependIds}';
+        expressionType='${jobVo.expressionType}';
+        expression='${jobVo.expression}';
+        dependJobs='${dependJobs}';
     </c:when>
     </c:choose>
 </script>

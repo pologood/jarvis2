@@ -26,3 +26,15 @@
     border-bottom-left-radius:0px;
     border-top-left-radius:0px;
 }
+
+
+.commonStrategy .form-control{
+    border-bottom-left-radius: 0px;
+    border-top-left-radius: 0px;
+}
+#strategyList .input-group-addon{
+    padding: 2px;
+}
+.offsetStrategy .form-control{
+    padding: 4px;
+}

@@ -1,7 +1,7 @@
 package com.mogujie.jarvis.web.controller.api;
 
 import com.alibaba.fastjson.JSONObject;
-import com.mogujie.jarvis.web.entity.vo.JobSearchVo;
+import com.mogujie.jarvis.web.entity.vo.JobQo;
 import com.mogujie.jarvis.web.service.JobDependService;
 import com.mogujie.jarvis.web.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +23,9 @@ public class JobAPIController {
 
     @RequestMapping("/getJobs")
     @ResponseBody
-    public JSONObject getJobs(JobSearchVo jobSearchVo){
+    public JSONObject getJobs(JobQo jobQo){
 
-        JSONObject jobJson=jobService.getJobs(jobSearchVo);
+        JSONObject jobJson=jobService.getJobs(jobQo);
 
         return jobJson;
     }
@@ -35,7 +35,7 @@ public class JobAPIController {
      * */
     @RequestMapping("/getTreeDependedONJob")
     @ResponseBody
-    public JSONObject getTreeDependedONJob(JobSearchVo jobSearchVo){
+    public JSONObject getTreeDependedONJob(JobQo jobSearchVo){
 
         JSONObject jobJson=jobDependService.getTreeDependedOnJob(jobSearchVo);
 
@@ -47,7 +47,7 @@ public class JobAPIController {
      * */
     @RequestMapping("/getTwoDirectionTree")
     @ResponseBody
-    public JSONObject getTwoDirectionTree(JobSearchVo jobSearchVo){
+    public JSONObject getTwoDirectionTree(JobQo jobSearchVo){
 
         JSONObject jobJson=jobDependService.getTwoDirectionTreeDependedOnJob(jobSearchVo);
 
@@ -60,23 +60,19 @@ public class JobAPIController {
      * */
     @RequestMapping("/getSimilarJobIds")
     @ResponseBody
-    public JSONObject getSimilarJobIds(JobSearchVo jobSearchVo,Long q){
-        jobSearchVo.setJobId(q);
-        JSONObject jobJson=jobService.getSimilarJobIds(jobSearchVo);
-
+    public JSONObject getSimilarJobIds(Long q){
+        JSONObject jobJson=jobService.getSimilarJobIds(q);
         return jobJson;
     }
 
     /**
-     * 相似jobId
+     * 相似jobName
      *
      * */
     @RequestMapping("/getSimilarJobNames")
     @ResponseBody
-    public JSONObject getSimilarJobNames(JobSearchVo jobSearchVo,String q){
-        jobSearchVo.setJobName(q);
-        JSONObject jobJson=jobService.getSimilarJobNames(jobSearchVo);
-
+    public JSONObject getSimilarJobNames(String q){
+        JSONObject jobJson=jobService.getSimilarJobNames(q);
         return jobJson;
     }
 }

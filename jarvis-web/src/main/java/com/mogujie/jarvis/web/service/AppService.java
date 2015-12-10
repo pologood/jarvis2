@@ -1,15 +1,12 @@
 package com.mogujie.jarvis.web.service;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.mogujie.jarvis.web.entity.vo.AppSearchVo;
+import com.mogujie.jarvis.web.entity.vo.AppQo;
 import com.mogujie.jarvis.web.entity.vo.AppVo;
-import com.mogujie.jarvis.web.entity.vo.CronTabVo;
 import com.mogujie.jarvis.web.mapper.AppMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -21,7 +18,7 @@ public class AppService {
     AppMapper appMapper;
 
     //获取应用列表
-    public JSONObject getApps(AppSearchVo appSearchVo){
+    public JSONObject getApps(AppQo appSearchVo){
         JSONObject jsonObject =new JSONObject();
 
         Integer count = appMapper.getAppCount(appSearchVo);
@@ -32,7 +29,7 @@ public class AppService {
 
         return jsonObject;
     }
-    public List<AppVo> getAppList(AppSearchVo appSearchVo){
+    public List<AppVo> getAppList(AppQo appSearchVo){
         List<AppVo> appVoList=appMapper.getAppList(appSearchVo);
         return appVoList;
     }

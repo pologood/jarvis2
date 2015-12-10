@@ -2,7 +2,6 @@ package com.mogujie.jarvis.web.controller.jarvis;
 
 import com.mogujie.jarvis.web.auth.annotation.JarvisPassport;
 import com.mogujie.jarvis.web.auth.conf.JarvisAuthType;
-import com.mogujie.jarvis.web.entity.vo.JobSearchVo;
 import com.mogujie.jarvis.web.entity.vo.JobVo;
 import com.mogujie.jarvis.web.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;

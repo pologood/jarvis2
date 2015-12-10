@@ -7,11 +7,11 @@ import java.util.List;
 /**
  * Created by hejian on 15/9/17.
  */
-public class TaskSearchVo extends Task {
+public class TaskQo extends Task {
+    private String scheduleDate;
     private String executeDate;
-    private String dataDate;
-    private String startTime;
-    private String endTime;
+    private String startDate;
+    private String endDate;
     private String jobName;
     private String jobType;
     private String submitUser;
@@ -22,21 +22,7 @@ public class TaskSearchVo extends Task {
     private Integer limit;
     private String orderField;
 
-    public String getExecuteDate() {
-        return executeDate;
-    }
 
-    public void setExecuteDate(String executeDate) {
-        this.executeDate = executeDate;
-    }
-
-    public String getDataDate() {
-        return dataDate;
-    }
-
-    public void setDataDate(String dataDate) {
-        this.dataDate = dataDate;
-    }
 
     public String getJobName() {
         return jobName;
@@ -70,21 +56,6 @@ public class TaskSearchVo extends Task {
         this.taskStatusArrStr = taskStatusArrStr;
     }
 
-    public String getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(String startTime) {
-        this.startTime = startTime;
-    }
-
-    public String getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
-    }
 
     public String getOrder() {
         return order;
@@ -124,5 +95,37 @@ public class TaskSearchVo extends Task {
 
     public void setOrderField(String orderField) {
         this.orderField = orderField;
+    }
+
+    public String getExecuteDate() {
+        return executeDate;
+    }
+
+    public void setExecuteDate(String executeDate) {
+        this.executeDate = executeDate;
+    }
+
+    public String getScheduleDate() {
+        return scheduleDate;
+    }
+
+    public void setScheduleDate(String scheduleDate) {
+        this.scheduleDate = scheduleDate;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
     }
 }

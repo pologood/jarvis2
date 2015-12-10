@@ -32,6 +32,58 @@ $(function(){
     //select采用select2 实现
     $(".input-group select").select2({width:'100%'});
 
+    $("#jobId").select2({
+        ajax: {
+            url: "/jarvis/api/job/getSimilarJobIds",
+            dataType: 'json',
+            delay: 250,
+            data: function (params) {
+                return {
+                    q: params.term, // search term
+                    page: params.page
+                };
+            },
+            processResults: function (data, page) {
+                return {
+                    results: data.items
+                };
+            },
+            cache: true
+        },
+        escapeMarkup: function (markup) { return markup; },
+        minimumInputLength: 1,
+        templateResult: formatResult,
+        templateSelection: formatResultSelection,
+
+        width:'100%'
+    });
+
+    $("#jobName").select2({
+        ajax: {
+            url: "/jarvis/api/job/getSimilarJobNames",
+            dataType: 'json',
+            delay: 250,
+            data: function (params) {
+                return {
+                    q: params.term, // search term
+                    page: params.page
+                };
+            },
+            processResults: function (data, page) {
+                return {
+                    results: data.items
+                };
+            },
+            cache: true
+        },
+        escapeMarkup: function (markup) { return markup; },
+        minimumInputLength: 1,
+        templateResult: formatResult,
+        templateSelection: formatResultSelection,
+        width:'100%'
+    });
+
+
     initData();
 });
 
@@ -50,9 +102,10 @@ function reset(){
     $("#jobName").val("all").trigger("change");
     $("#jobType").val("all").trigger("change");
     $("#submitUser").val("all").trigger("change");
-    //$("#executeCycle").val("all").trigger("change");
     $("#jobFlag").val("all").trigger("change");
     $("#jobPriority").val("all").trigger("change");
+    $("#appId").val("").trigger("change");
+    $("#workerGroupId").val("").trigger("change");
 }
 
 
@@ -132,15 +185,24 @@ var columns=[{
     title: '任务id',
     switchable:true
 }, {
-    field: 'originJobId',
-    title: '原始任务id',
-    switchable:true,
-    visible:false
-}, {
     field: 'jobName',
     title: '任务名',
     switchable:true
 }, {
+    field: 'appName',
+    title: '应用名',
+    switchable:true
+},{
+    field: 'workerGroupId',
+    title: 'worker组ID',
+    switchable:true,
+    visible:false
+}, {
+    field: 'workerGroupName',
+    title: 'WorkerGroup名',
+    switchable:true,
+    visible:false
+},{
     field: 'jobType',
     title: '任务类型',
     switchable:true
@@ -148,27 +210,25 @@ var columns=[{
     field: 'jobFlag',
     title: '任务状态',
     switchable:true,
-    formatter:jobFlagFormatter
+    formatter:jobFlagFormatter,
+    visible:false
 }, {
     field: 'content',
     title: '任务内容',
-    switchable:true
+    switchable:true,
+    visible:false
 }, {
     field: 'params',
     title: '参数',
     switchable:true,
     visible:false
-}, {
-    field: 'submitUser',
-    title: '提交人',
-    switchable:true
-}, {
+},  {
     field: 'priority',
     title: '优先级',
     switchable:true
-}, {
-    field: 'appName',
-    title: '应用名',
+},  {
+    field: 'submitUser',
+    title: '提交人',
     switchable:true
 }, {
     field: 'createTime',
@@ -185,16 +245,13 @@ var columns=[{
     field: 'activeStartDate',
     title: '开始日期',
     switchable:true,
-    formatter:formatDate
+    formatter:formatDate,
+    visible:false
 },{
     field: 'activeEndDate',
     title: '结束日期',
     switchable:true,
-    formatter:formatDate
-}, {
-    field: 'workerGroupId',
-    title: 'worker组ID',
-    switchable:true,
+    formatter:formatDate,
     visible:false
 }, {
     field: 'rejectAttempts',
@@ -258,4 +315,11 @@ function operateFormatter(value, row, index) {
 
 function jobFlagFormatter(value, row, index){
     return formatStatus(jobFlagJson,value);
+}
+
+function formatResult(result){
+    return result.text;
+}
+function formatResultSelection(result){
+    return result.id;
 }

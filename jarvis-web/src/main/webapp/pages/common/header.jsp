@@ -18,8 +18,7 @@
     <link rel="stylesheet" href="/assets/jarvis/css/cart.css" type="text/css" charset="utf-8">
     <link rel="stylesheet" href="/assets/jarvis/plugins/breadcrumbs/css/style.css" type="text/css" charset="utf-8">
     <link rel="stylesheet" href="/assets/jarvis/css/main.css" type="text/css" charset="utf-8">
-    <link rel="stylesheet" href="/assets/jarvis/plugins/select2-4.0.0/css/select2.min.css" type="text/css" charset="utf-8">
-    <link rel="stylesheet" href="/assets/jarvis/plugins/select2-4.0.0/css/select2-bootstrap3.css" type="text/css" charset="utf-8">
+    <link rel="stylesheet" href="/assets/jarvis/plugins/select2/4.0.1/css/select2.min.css" type="text/css" charset="utf-8">
     <link type="text/css" rel="stylesheet" href="/assets/jarvis/plugins/qtip2/jquery.qtip.min.css" />
     <link type="text/css" rel="stylesheet" href="/assets/jarvis/plugins/pnotify/pnotify.custom.min.css" />
     <link type="text/css" rel="stylesheet" href="/assets/jarvis/plugins/bootstrap-table/bootstrap-table.min.css" />

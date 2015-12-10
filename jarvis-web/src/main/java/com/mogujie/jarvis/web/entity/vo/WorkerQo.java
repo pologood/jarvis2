@@ -1,11 +1,11 @@
 package com.mogujie.jarvis.web.entity.vo;
 
-import com.mogujie.jarvis.dto.generate.App;
+import com.mogujie.jarvis.dto.generate.Worker;
 
 /**
- * Created by hejian on 15/9/24.
+ * Created by hejian on 15/9/28.
  */
-public class AppSearchVo extends App {
+public class WorkerQo extends Worker {
     private Integer offset;
     private Integer limit;
 

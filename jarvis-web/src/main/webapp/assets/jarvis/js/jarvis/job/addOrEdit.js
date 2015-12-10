@@ -2,7 +2,6 @@ var testNum=/^[0-9]*$/;
 
 
 $(function(){
-
     //初始化作业类型内容
     $.getJSON("/assets/jarvis/json/jobType.json",function(data){
         var newData=new Array();
@@ -41,12 +40,33 @@ $(function(){
     });
 
 
-    //select采用select2 实现
-    $(".input-group select").select2({width:'100%'});
 
-    if(dependIds!=undefined&&dependIds!='[]'){
-        $("#dependJobIds").val(JSON.parse(dependIds)).trigger("change");
-    }
+
+    //初始化表达式类型
+    $.getJSON("/assets/jarvis/json/expressionType.json",function(data){
+        var newData=new Array();
+        $(data).each(function(i,c){
+            if(this.id!='all'){
+                newData.push(this);
+            }
+        });
+
+        $("#expressionType").select2({
+            data:newData,
+            width:'100%'
+        });
+        if(expressionType!=undefined){
+            $("#expressionType").val(expressionType).trigger("change");
+        }
+    });
+
+
+
+
+    //select采用select2 实现
+    $(".input-group select[name!=commonStrategy]").select2({width:'100%'});
+
+
 
     $('#startTime').datetimepicker({
         language:'zh-CN',
@@ -61,7 +81,77 @@ $(function(){
         format: 'yyyy-mm-dd',
         autoclose:true
     });
+
+    $.ajaxSettings.async=false;
+    $.getJSON("/assets/jarvis/json/commonStrategy.json",function(data){
+        var newData=new Array();
+        $(data).each(function(i,c){
+            if(this.id!='all'){
+                newData.push(this);
+            }
+        });
+
+
+        $(newData).each(function(i,c){
+            var option=$("<option></option>");
+            option.attr("value", c.id);
+            option.text(c.text);
+            $("#strategyPattern select[name=commonStrategy]").append(option);
+        });
+    });
+    $.ajaxSettings.async=true;
+
+    $("#dependJobIds").on("change",function(){
+        generateStrategy();
+    });
+
+    if(dependIds!=undefined&&dependIds!='[]'){
+        $("#dependJobIds").val(JSON.parse(dependIds)).trigger("change");
+    }
 });
+
+//生成策略表单
+function generateStrategy(){
+    var dependIds=$("#dependJobIds").val();
+    var dds={};
+
+    //暂存
+    $("#strategyList>dd").each(function(i,c){
+        var jobId=$(c).attr("value");
+        var dd=$(c).clone();
+        dds[jobId]=dd;
+    });
+    //清空
+    $("#strategyList").empty();
+    var dependJobJson={};
+    if(dependJobs!=undefined&&dependJobs!=''){
+        dependJobJson=JSON.parse(dependJobs);
+    }
+    //重新生成
+    $(dependIds).each(function(i,c){
+        var dd=dds[c];
+        if(dd!=undefined){
+            $("#strategyList").append(dd);
+        }
+        else{
+            dd=$("<dd value=\'"+c+"\'></dd>");
+            var pattern=$($("#strategyPattern").html()).clone();
+
+            var jobName=$("#dependJobIds").find("option[value="+c+"]").text();
+            $(pattern).find("span[name=dependJob]").text(jobName);
+
+            var dependJob=dependJobJson[c];
+            if(dependJob!=undefined){
+                $(pattern).find("select[name=commonStrategy] option[value="+dependJob.commonStrategy+"]").attr("selected","selected");
+                $(pattern).find("input[name=offsetStrategy]").val(dependJob.offsetStrategy);
+            }
+
+            $(dd).append(pattern);
+            $("#strategyList").append(dd);
+        }
+    });
+
+}
 
 
 function changeTextArea(thisTag,rows,cols){
@@ -82,7 +172,7 @@ function reset(){
             $(c).val(value).trigger("change");
         }
     });
-
+    $("#dependJobIds").val(null).trigger("change");
 }
 
 
@@ -135,21 +225,57 @@ function getData(){
     result["user"]=user;
     var appKey=$("#appName").find("option:selected").attr("appKey");
     result["appKey"]=appKey;
+    //前置任务信息
+    var dependencyList = calculateOperator(dependIds,result["dependJobIds"]);
+    result["dependencyList"]=JSON.stringify(dependencyList);
 
-    var newDependIds =calculateOperator(dependIds,result["dependJobIds"]);
-    result["dependJobIds"]=JSON.stringify(newDependIds);
+    //表示式类型与表达式内容
+    var scheduleExpressionEntry = getScheduleExpressionEntry();
+    result["scheduleExpressionEntry"]=scheduleExpressionEntry;
 
     return result;
 }
 
+//计算表达式
+function getScheduleExpressionEntry(){
+    var scheduleExpressionEntry={};
+
+    var newExpressionType = $("#expressionType").val();
+    var newExpression =$("#expression").val();
+
+
+    if((expressionType==undefined||expressionType=='')&&newExpressionType!=null&&newExpression!=''){
+        var operatorMode=1;
+        scheduleExpressionEntry["expressionType"]=newExpressionType;
+        scheduleExpressionEntry["expression"]=newExpression;
+        scheduleExpressionEntry["operatorMode"]=operatorMode;
+    }
+    if((expressionType!=undefined&&expressionType!='')&&newExpressionType!=null&&newExpression!=''){
+        var operatorMode=2;
+        scheduleExpressionEntry["expressionType"]=newExpressionType;
+        scheduleExpressionEntry["expression"]=newExpression;
+        scheduleExpressionEntry["operatorMode"]=operatorMode;
+    }
+    if((expressionType!=undefined&&expressionType!='')&&(newExpressionType==null||newExpression=='')){
+        var operatorMode=3;
+        scheduleExpressionEntry["expressionType"]=newExpressionType;
+        scheduleExpressionEntry["expression"]=newExpression;
+        scheduleExpressionEntry["operatorMode"]=operatorMode;
+    }
+
+
+    return scheduleExpressionEntry;
+}
+
+
 //根据原始依赖与新依赖确定操作类型
 function calculateOperator(sourceStr,afterChangeStr){
+    var dependencyList=new Array();
     var myDependIds = {};
     if(sourceStr!=null){
         //console.log("sourceStr:"+sourceStr);
         var source=JSON.parse(sourceStr);
         var afterChange=JSON.parse(afterChangeStr);
-
 
         if(afterChange==null){
             for(var i=0;i<source.length;i++){
@@ -165,7 +291,7 @@ function calculateOperator(sourceStr,afterChangeStr){
             }
 
             for(var key in myDependIds){
-                var operator="no";
+                var operator=1;
                 var source_flag=false;
                 var afterChange_flag=false;
                 for(var i=0;i<source.length;i++){
@@ -181,33 +307,45 @@ function calculateOperator(sourceStr,afterChangeStr){
                     }
                 }
                 if(source_flag==true&&afterChange_flag==true){
-                    operator="no";
+                    operator=2;
                 }
                 if(source_flag==true&&afterChange_flag==false){
-                    operator="delete";
+                    operator=3;
                 }
                 if(source_flag==false&&afterChange_flag==true){
-                    operator="add";
+                    operator=1;
                 }
-                //不可能
-                if(source_flag==false&&afterChange_flag==false){
-                    operator="no possible";
-                }
-                myDependIds[key]=operator;
+
+                var dependency={};
+                dependency["preJobId"]=key;
+                dependency["operatorMode"]=operator;
+                dependency["commonStrategy"]=$("#strategyList dd[value="+key+"]").find("select[name=commonStrategy]").val();
+                dependency["offsetStrategy"]=$("#strategyList dd[value="+key+"]").find("input[name=offsetStrategy]").val();
+
+                dependencyList.push(dependency);
             }
         }
     }
     else{
-        var afterChange=JSON.parse(afterChangeStr);
-        if(afterChange!=null){
-            for(var i=0;i<afterChange.length;i++){
-                myDependIds[afterChange[i]]="add";
-            }
-        }
+        var dds=$("#strategyList dd");
+        $(dds).each(function(i,c){
+            var preJobId=$(c).attr("value");
+            var commonStrategy=$(c).find("select[name=commonStrategy]").val();
+            var offsetStrategy=$(c).find("input[name=offsetStrategy]").val();
+            var operatorMode=1;
+
+            var dependency={};
+            dependency["preJobId"]=preJobId;
+            dependency["operatorMode"]=operatorMode;
+            dependency["commonStrategy"]=commonStrategy;
+            dependency["offsetStrategy"]=offsetStrategy;
+
+            dependencyList.push(dependency);
+        });
     }
 
     //console.log("result:"+JSON.stringify(myDependIds));
-    return myDependIds;
+    return dependencyList;
 }
 
 //提交任务
@@ -407,3 +545,35 @@ function deletePara(thisTag){
     $(thisTag).parent().parent().remove();
 }
 
+
+function showDescription(thisTag){
+    var options={};
+
+    var content="通用策略:<br/>表示对前置任务的所有执行依赖策略<br/><br/>";
+    content+="偏移策略:<br/>";
+    content+="c:current,d:天,";
+    content+="m:分钟,";
+    content+="h:小时,";
+    content+="w:周,";
+    content+="M:月,";
+    content+="y:年<br/>";
+    content+="例如:<br/>按天偏移:cd,d(-n),d(n),d(-n,n),n>0<br/>";
+    content+="按周偏移:cw,w(-n),w(n),w(-n,n),n>0<br/>";
+
+
+
+    options["content"]=content;
+    options["template"]='<div class="popover" role="tooltip" style="width:100%"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>';
+    options["animation"]=true;
+    options["placement"]="right";
+
+    //console.log(options);
+
+    $(thisTag).popover(options);
+    $(thisTag).popover('show');
+    $(".popover-content").html(content);
+}
+
+function hideDescription(thisTag){
+    $(thisTag).popover('hide');
+}

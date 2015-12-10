@@ -7,9 +7,6 @@
           <if test="jobId!=null">
               jobId=#{jobId}
           </if>
-          <if test="originJobId!=null">
-              AND originJobId=#{originJobId}
-          </if>
           <if test="jobName!=null and jobName!='' and jobName!='all'">
               AND jobName=#{jobName}
           </if>
@@ -22,9 +19,6 @@
           <if test="submitUser!=null and submitUser!='' and submitUser!='all' ">
               AND submitUser=#{submitUser}
           </if>
-          <if test="content!=null">
-              AND content=#{content}
-          </if>
           <if test="priority!=null">
               AND priority=#{priority}
           </if>
@@ -33,9 +27,6 @@
           </if>
           <if test="workerGroupId!=null">
               AND workerGroupId=#{workerGroupId}
-          </if>
-          <if test="updateUser!=null">
-              AND updateUser=#{updateUser}
           </if>
 
       </where>
@@ -46,20 +37,31 @@
         </if>
     </sql>
     
-    <select id="getCountByCondition" parameterType="JobSearchVo" resultType="Integer">
+    <select id="getCountByCondition" parameterType="JobQo" resultType="Integer">
       SELECT COUNT(1) FROM job
       <include refid="condition" />
     </select>
 
-    <select id="getJobsByCondition" parameterType="JobSearchVo" resultType="JobVo">
-      SELECT job.*,app.appName,app.appKey FROM job LEFT JOIN app ON job.appId=app.appId
+    <select id="getJobsByCondition" parameterType="JobQo" resultType="JobVo">
+      SELECT
+        job.*,app.appName,
+        app.appKey,
+        job_schedule_expression.expressionType,
+        job_schedule_expression.expression,
+        worker_group.name AS workerGroupName
+      FROM job
+        LEFT JOIN app ON job.appId=app.appId
+          LEFT JOIN job_schedule_expression ON job.jobId=job_schedule_expression.jobId
+            LEFT JOIN worker_group ON job.workerGroupId=worker_group.id
       <include refid="condition" />
-
+      ORDER BY job.jobId ASC
       <include refid="pager" />
     </select>
 
     <select id="getJobById" parameterType="Long" resultType="JobVo">
-        SELECT * FROM job WHERE jobId=#{jobId} limit 0,1
+        SELECT job.*,job_schedule_expression.expressionType,job_schedule_expression.expression
+        FROM job LEFT JOIN job_schedule_expression ON job.jobId=job_schedule_expression.jobId
+        WHERE job.jobId=#{jobId} limit 0,1
     </select>
 
     <select id="getJobByName" parameterType="String" resultType="JobVo">
@@ -78,25 +80,30 @@
       SELECT DISTINCT submitUser FROM job;
     </select>
 
-    <select id="getSimilarJobIds" parameterType="JobSearchVo" resultType="Integer">
+    <select id="getSimilarJobIds" parameterType="Long" resultType="Long">
       SELECT DISTINCT jobId FROM job
       <where>
-          <if test="jobId!=null">
-              jobId LIKE '%${jobId}%'
+          <if test="_parameter!=null">
+              jobId LIKE '%${_parameter}%'
           </if>
       </where>
     </select>
 
-    <select id="getSimilarJobNames" parameterType="JobSearchVo" resultType="String">
+    <select id="getSimilarJobNames" parameterType="String" resultType="String">
       SELECT DISTINCT jobName FROM job
       <where>
-          <if test="jobName!=null and jobName!=''">
-              jobName LIKE '%${jobName}%'
+          <if test="_parameter!=null and _parameter!=''">
+              jobName LIKE '%${_parameter}%'
           </if>
       </where>
     </select>
 
-    <select id="getCronTabByJobId" parameterType="Long" resultType="CronTabVo">
-        SELECT * FROM crontab WHERE jobId=${_parameter}
+    
+    <select id="getJobByIds"  resultType="JobVo">
+        SELECT * FROM job WHERE jobId IN
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
     </select>
+
 </mapper>

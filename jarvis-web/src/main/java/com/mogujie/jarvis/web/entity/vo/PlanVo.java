@@ -1,17 +1,23 @@
 package com.mogujie.jarvis.web.entity.vo;
 
+
+import com.mogujie.jarvis.dto.generate.Task;
+
+import java.util.Date;
+
 /**
  * Created by hejian on 15/10/21.
  */
-public class PlanVo{
+public class PlanVo extends Task{
+
     private String jobName;
     private String jobType;
     private String submitUser;
     private Integer priority;
     private Integer appId;
-    private Integer workerGroupId;
-    private String content;
-    private String params;
+    private String appName;
+    private String workerGroupId;
+    private Long executeTime;
 
     public String getJobName() {
         return jobName;
@@ -53,27 +59,27 @@ public class PlanVo{
         this.appId = appId;
     }
 
-    public Integer getWorkerGroupId() {
+    public String getAppName() {
+        return appName;
+    }
+
+    public void setAppName(String appName) {
+        this.appName = appName;
+    }
+
+    public String getWorkerGroupId() {
         return workerGroupId;
     }
 
-    public void setWorkerGroupId(Integer workerGroupId) {
+    public void setWorkerGroupId(String workerGroupId) {
         this.workerGroupId = workerGroupId;
     }
 
-    public String getContent() {
-        return content;
+    public Long getExecuteTime() {
+        return executeTime;
     }
 
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getParams() {
-        return params;
-    }
-
-    public void setParams(String params) {
-        this.params = params;
+    public void setExecuteTime(Long executeTime) {
+        this.executeTime = executeTime;
     }
 }

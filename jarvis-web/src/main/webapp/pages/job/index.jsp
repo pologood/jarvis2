@@ -30,10 +30,7 @@
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">任务ID</span>
                         <select id="jobId" >
-                            <option value="all">全部</option>
-                            <c:forEach items="${jobIds}" var="jobId" varStatus="status">
-                                <option value="${jobId}">${jobId}</option>
-                            </c:forEach>
+
                         </select>
                     </div>
                 </div>
@@ -41,10 +38,7 @@
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">任务名称</span>
                         <select id="jobName"  >
-                            <option value="all">全部</option>
-                            <c:forEach items="${jobNames}" var="jobName" varStatus="status">
-                                <option value="${jobName}">${jobName}</option>
-                            </c:forEach>
+
                         </select>
                     </div>
                 </div>
@@ -55,6 +49,18 @@
                         </select>
                     </div>
                 </div>
+
+                <div class="col-md-3">
+                    <div class="input-group" style="width:100%">
+                        <span class="input-group-addon" style="width:35%">状态</span>
+                        <select id="jobFlag" ></select>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row top-buffer">
+
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">发布者</span>
@@ -66,24 +72,7 @@
                         </select>
                     </div>
                 </div>
-            </div>
 
-            <div class="row top-buffer">
-                <!--
-                <div class="col-md-3">
-                    <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">执行周期</span>
-                        <select id="executeCycle" ></select>
-                    </div>
-                </div>
-                -->
-
-                <div class="col-md-3">
-                    <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">状态</span>
-                        <select id="jobFlag" ></select>
-                    </div>
-                </div>
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">优先级</span>
@@ -91,6 +80,33 @@
                     </div>
                 </div>
 
+                <div class="col-md-3">
+                    <div class="input-group" style="width:100%">
+                        <span class="input-group-addon" style="width:35%">应用名称</span>
+                        <select id="appId" >
+                            <option value="">全部</option>
+                            <c:forEach items="${appVoList}" var="app" >
+                                <option value="${app.appId}">${app.appName}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="input-group" style="width:100%">
+                        <span class="input-group-addon" style="width:35%">WorkerGroup名</span>
+                        <select id="workerGroupId" >
+                            <option value="">全部</option>
+                            <c:forEach items="${workerGroupVoList}" var="workerGroup" >
+                                <option value="${workerGroup.id}">${workerGroup.name}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row top-buffer">
                 <div class="col-md-3 pull-right">
                     <div class="row">
                         <div class="col-md-6 col-lg-offset-6">

@@ -23,12 +23,15 @@ function getQueryPara(){
     var queryPara={};
 
     var appName=$("#appName").val();
+    var appType=$("#appType").val();
     var status=$("#status").val();
 
     appName=appName=='all'?'':appName;
+    appType=appType=='all'?'':appType;
     status=status=='all'?'':status;
 
     queryPara["appName"]=appName;
+    queryPara["appType"]=appType;
     queryPara["status"]=status;
 
     return queryPara;
@@ -110,11 +113,24 @@ var columns=[{
     field: 'appKey',
     title: 'appkey',
     switchable:true
+},{
+    field: 'appType',
+    title: '应用类型',
+    switchable:true,
+    formatter:appTypeFormatter
 }, {
     field: 'status',
     title: '应用状态',
     switchable:true,
     formatter:appStatusFormatter
+},{
+    field: 'maxConcurrency',
+    title: '最大并发数',
+    switchable:true
+}, {
+    field: 'updateUser',
+    title: '最后更新人',
+    switchable:true
 }, {
     field: 'createTime',
     title: '创建时间',
@@ -141,6 +157,22 @@ function search(){
 }
 
 function reset(){
-    $("#appName").val("all").trigger("change");
-    $("#status").val("all").trigger("change");
+    var selects=$(".input-group select");
+    $(selects).each(function(i,c){
+        $(c).val("all").trigger("change");
+    });
+}
+
+function appTypeFormatter(value,row,index){
+    var result='';
+    if(value==1){
+        result="普通";
+    }
+    else if(value==2){
+        result="管理";
+    }
+    else{
+        result="未定义类型:"+value;
+    }
+    return result;
 }

@@ -1,3 +1,5 @@
+var taskStatusJson=null;
+
 $(function(){
 
     $('#planDate').datetimepicker({
@@ -22,6 +24,7 @@ $(function(){
             width:'100%'
         });
     });
+
 
 
     //select采用select2 实现
@@ -75,7 +78,14 @@ $(function(){
         templateResult: formatResult,
         templateSelection: formatResultSelection,
         width:'100%'
-    })
+    });
+
+    $.ajaxSettings.async = false;
+    $.getJSON("/assets/jarvis/json/taskStatus.json",function(data){
+        taskStatusJson=data;
+    });
+    $.ajaxSettings.async = true;
+
 
 
     initData();
@@ -152,8 +162,8 @@ function initData(){
         showHeader:true,
         showToggle:true,
         pageNumber:1,
-        pageSize:10,
-        pageList:[5,10,20,50,100,200,500,1000],
+        pageSize:20,
+        pageList:[10,20,50,100,200,500,1000],
         paginationFirstText:'首页',
         paginationPreText:'上一页',
         paginationNextText:'下一页',
@@ -172,17 +182,18 @@ function initData(){
 
 
 var columns=[{
-    field: 'planId',
-    title: '计划ID',
-    switchable:true
+    field: 'taskId',
+    title: '执行ID',
+    switchable:true,
+    visible:true
 }, {
     field: 'jobId',
     title: '任务ID',
     switchable:true,
-    visible:false
+    visible:true
 }, {
     field: 'jobName',
-    title: '任务名',
+    title: '任务名称',
     switchable:true
 },{
     field: 'appId',
@@ -190,32 +201,81 @@ var columns=[{
     switchable:true,
     visible:false
 },{
+    field: 'appName',
+    title: 'APP名',
+    switchable:true,
+    visible:false
+},{
     field: 'jobType',
     title: '任务类型',
-    switchable:true
+    switchable:true,
+    visible:false
 }, {
     field: 'content',
     title: '任务内容',
     switchable:true,
+    visible:false,
     formatter:StringFormatter
 },  {
     field: 'priority',
     title: '任务优先级',
-    switchable:true
+    switchable:true,
+    visible:false
 }, {
     field: 'params',
     title: '任务参数',
     switchable:true,
+    visible:false,
     formatter:StringFormatter
 }, {
-    field: 'planDate',
-    title: '计划日期',
+    field: 'submitUser',
+    title: '创建用户',
     switchable:true,
-    formatter:formatDate
+    visible:false
 },{
-    field: 'planDate',
-    title: '计划日期',
-    switchable:true
+    field: 'executeUser',
+    title: '执行用户',
+    switchable:true,
+    visible:true
+},{
+    field: 'workerGroupId',
+    title: 'workerGroupId',
+    switchable:true,
+    visible:false
+},{
+    field: 'workerId',
+    title: 'workerId',
+    switchable:true,
+    visible:false
+},{
+    field: 'scheduleTime',
+    title: '调度时间',
+    switchable:true,
+    formatter:formatDateTime
+},{
+    field: 'status',
+    title: '状态',
+    switchable:true,
+    visible:true,
+    formatter:taskStatusFormatter
+},{
+    field: 'executeStartTime',
+    title: '执行开始时间',
+    switchable:true,
+    visible:false,
+    formatter:formatDateTime
+},{
+    field: 'executeEndTime',
+    title: '执行结束时间',
+    switchable:true,
+    visible:false,
+    formatter:formatDateTime
+},{
+    field: 'executeTime',
+    title: '执行时长',
+    switchable:true,
+    visible:false,
+    formatter:formatTimeInterval
 },{
     field: 'createTime',
     title: '创建时间',
@@ -224,21 +284,11 @@ var columns=[{
     formatter:formatDateTime
 }, {
     field: 'updateTime',
-    title: '执行更新时间',
+    title: '最后更新时间',
     switchable:true,
     visible:false,
     formatter:formatDateTime
 },  {
-    field: 'submitUser',
-    title: '任务创建者',
-    switchable:true,
-    visible:false
-},{
-    field: 'workerGroupId',
-    title: '任务workerGroupId',
-    switchable:true,
-    visible:false
-}, {
     field: 'operation',
     title: '操作',
     switchable:true,
@@ -247,10 +297,10 @@ var columns=[{
 
 function operateFormatter(value, row, index) {
     //console.log(row);
-    var planId=row["planId"];
+    var taskId=row["taskId"];
     //console.log(jobId);
     var result= [
-        '<a class="edit" href="/jarvis/plan/dependency?planId='+planId+'" title="查看执行详情" target="_blank">',
+        '<a class="edit" href="/jarvis/plan/dependency?taskId='+taskId+'" title="查看执行详情" target="_blank">',
         '<i class="glyphicon glyphicon-eye-open"></i>',
         '</a>  '
     ].join('');
@@ -259,7 +309,9 @@ function operateFormatter(value, row, index) {
 
     return result;
 }
-
+function taskStatusFormatter(value,row,index){
+    return formatStatus(taskStatusJson,value);
+}
 function StringFormatter(value,row,index){
     return value;
 }

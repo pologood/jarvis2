@@ -1,8 +1,8 @@
 package com.mogujie.jarvis.web.controller.api;
 
 import com.alibaba.fastjson.JSONObject;
-import com.mogujie.jarvis.web.entity.vo.WorkerGroupSearchVo;
-import com.mogujie.jarvis.web.entity.vo.WorkerSearchVo;
+import com.mogujie.jarvis.web.entity.vo.WorkerGroupQo;
+import com.mogujie.jarvis.web.entity.vo.WorkerQo;
 import com.mogujie.jarvis.web.service.WorkerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,7 +21,7 @@ public class WorkerAPIController {
 
     @RequestMapping(value = "/getWorkers")
     @ResponseBody
-    public JSONObject getWorkers(ModelMap modelMap,WorkerSearchVo workerSearchVo){
+    public JSONObject getWorkers(ModelMap modelMap,WorkerQo workerSearchVo){
         JSONObject result;
         result=workerService.getWorkers(workerSearchVo);
         return result;
@@ -29,7 +29,7 @@ public class WorkerAPIController {
 
     @RequestMapping(value = "/getWorkerGroups")
     @ResponseBody
-    public JSONObject getWorkerGroups(ModelMap modelMap,WorkerGroupSearchVo workerGroupSearchVo){
+    public JSONObject getWorkerGroups(ModelMap modelMap,WorkerGroupQo workerGroupSearchVo){
         JSONObject result;
         result=workerService.getWorkerGroups(workerGroupSearchVo);
         return result;

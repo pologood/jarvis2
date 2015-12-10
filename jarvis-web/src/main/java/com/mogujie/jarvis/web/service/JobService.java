@@ -3,14 +3,13 @@ package com.mogujie.jarvis.web.service;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.mogujie.jarvis.web.entity.vo.CronTabVo;
-import com.mogujie.jarvis.web.entity.vo.JobSearchVo;
+import com.mogujie.jarvis.web.entity.vo.JobQo;
 import com.mogujie.jarvis.web.entity.vo.JobVo;
 import com.mogujie.jarvis.web.mapper.JobMapper;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -24,18 +23,18 @@ public class JobService {
     Logger logger = Logger.getLogger(this.getClass());
 
     public List<JobVo> getAllJobs(Integer jobFlag){
-        JobSearchVo jobSearchVo=new JobSearchVo();
+        JobQo jobSearchVo=new JobQo();
         jobSearchVo.setJobFlag(jobFlag);
         List<JobVo> jobVoList=jobMapper.getJobsByCondition(jobSearchVo);
         return jobVoList;
     }
 
-    public JSONObject getJobs(JobSearchVo jobSearchVo){
+    public JSONObject getJobs(JobQo jobQo){
         JSONObject jsonObject=new JSONObject();
-        Integer count=jobMapper.getCountByCondition(jobSearchVo);
+        Integer count=jobMapper.getCountByCondition(jobQo);
         count=count==null?0:count;
 
-        List<JobVo> jobList=jobMapper.getJobsByCondition(jobSearchVo);
+        List<JobVo> jobList=jobMapper.getJobsByCondition(jobQo);
 
         jsonObject.put("total",count);
         jsonObject.put("rows", jobList);
@@ -43,10 +42,10 @@ public class JobService {
         return jsonObject;
     }
 
-    public JSONObject getSimilarJobIds(JobSearchVo jobSearchVo){
+    public JSONObject getSimilarJobIds(Long jobId){
         JSONObject jsonObject=new JSONObject();
 
-        List<Integer> jobList=jobMapper.getSimilarJobIds(jobSearchVo);
+        List<Long> jobList=jobMapper.getSimilarJobIds(jobId);
         JSONArray jsonArray = new JSONArray();
         for(int i=0;i<jobList.size();i++){
             JSONObject singleJson = new JSONObject();
@@ -61,10 +60,10 @@ public class JobService {
         return jsonObject;
     }
 
-    public JSONObject getSimilarJobNames(JobSearchVo jobSearchVo){
+    public JSONObject getSimilarJobNames(String jobName){
         JSONObject jsonObject=new JSONObject();
 
-        List<String> jobList=jobMapper.getSimilarJobNames(jobSearchVo);
+        List<String> jobList=jobMapper.getSimilarJobNames(jobName);
 
         JSONArray jsonArray = new JSONArray();
         for(int i=0;i<jobList.size();i++){

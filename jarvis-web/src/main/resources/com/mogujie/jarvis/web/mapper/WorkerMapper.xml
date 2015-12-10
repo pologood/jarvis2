@@ -45,11 +45,11 @@
     <select id="getWorkerByIpAndPort" parameterType="Map" resultType="WorkerVo">
         SELECT * FROM worker where ip=#{ip} AND port=#{port} limit 0,1;
     </select>
-    <select id="getWorkerCount" parameterType="WorkerSearchVo" resultType="Integer">
+    <select id="getWorkerCount" parameterType="WorkerQo" resultType="Integer">
         SELECT count(1) FROM worker
          <include refid="workerCondition" />
     </select>
-    <select id="getWorkerList" parameterType="WorkerSearchVo" resultType="WorkerVo">
+    <select id="getWorkerList" parameterType="WorkerQo" resultType="WorkerVo">
         SELECT * FROM worker
         <include refid="workerCondition" />
         <include refid="pager" />
@@ -71,11 +71,11 @@
     <select id="getWorkerGroupByName" parameterType="String" resultType="WorkerGroupVo">
         SELECT * FROM worker_group WHERE name=#{_parameter} limit 0,1;
     </select>
-    <select id="getWorkerGroupCount" parameterType="WorkerGroupSearchVo" resultType="Integer">
+    <select id="getWorkerGroupCount" parameterType="WorkerGroupQo" resultType="Integer">
         SELECT count(1) FROM worker_group
         <include refid="workerGroupCondition" />
     </select>
-    <select id="getWorkerGroupList" parameterType="WorkerGroupSearchVo" resultType="WorkerGroupVo">
+    <select id="getWorkerGroupList" parameterType="WorkerGroupQo" resultType="WorkerGroupVo">
         SELECT * FROM worker_group
         <include refid="workerGroupCondition" />
         <include refid="pager" />

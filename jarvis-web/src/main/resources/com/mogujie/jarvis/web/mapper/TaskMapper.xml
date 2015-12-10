@@ -15,25 +15,25 @@
             <if test="jobType!=null and jobType!=''">
                 AND job.jobType=#{jobType}
             </if>
-            <if test="submitUser!=null and submitUser!=''">
-                AND job.submitUser=#{submitUser}
+            <if test="executeUser!=null and executeUser!=''">
+                AND task.executeUser=#{executeUser}
             </if>
-            <if test="startTime!=null and startTime!=''">
-                AND task.executeStartTime>=#{startTime}
+            <if test="startDate!=null and startDate!=''">
+                AND task.executeStartTime>=#{startDate}
             </if>
-            <if test="endTime!=null and endTime!=''">
+            <if test="endDate!=null and endDate!=''">
                 <![CDATA[
-                  AND task.executeEndTime<#{endTime}
+                  AND task.executeEndTime<#{endDate}
                 ]]>
             </if>
-            <if test="scheduleTime!=null and scheduleTime!=''">
+            <if test="scheduleDate!=null and scheduleDate!=''">
                 <![CDATA[
-                  AND (task.scheduleTime>=#{scheduleTime} AND task.scheduleTime<DATE_ADD(#{scheduleTime},INTERVAL 1 DAY))
+                  AND (task.scheduleTime>=#{scheduleDate} AND task.scheduleTime<DATE_ADD(#{scheduleDate},INTERVAL 1 DAY))
                 ]]>
             </if>
             <if test="executeDate!=null and executeDate!=''">
                 <![CDATA[
-                  AND task.executeStartTime>=executeDate AND task.executeStartTime<=DATE_ADD(#{executeDate},INTERVAL 1 DAY)
+                  AND task.executeStartTime>=#{executeDate} AND task.executeStartTime<=DATE_ADD(#{executeDate},INTERVAL 1 DAY)
                 ]]>
 
             </if>
@@ -70,16 +70,16 @@
     </sql>
 
 
-    <select id="getCountByCondition" parameterType="TaskSearchVo" resultType="Integer">
+    <select id="getCountByCondition" parameterType="TaskQo" resultType="Integer">
         SELECT COUNT(1) FROM task LEFT JOIN job ON task.jobId=job.jobId
         <include refid="condition" />
     </select>
 
-    <select id="getTasksByCondition" parameterType="TaskSearchVo" resultType="TaskVo">
+    <select id="getTasksByCondition" parameterType="TaskQo" resultType="TaskVo">
         SELECT *,time_to_sec(TIMEDIFF(task.executeEndTime,task.executeStartTime)) AS executeTime
         FROM task LEFT JOIN job ON task.jobId=job.jobId LEFT JOIN app ON job.appId=app.appId
         <include refid="condition" />
-        <include refid="order" />
+        ORDER BY executeStartTime DESC
         <include refid="pager" />
     </select>
 
@@ -88,5 +88,86 @@
     </select>
 
 
+    <select id="getAllExecuteUser" resultType="String">
+        SELECT DISTINCT executeUser FROM task;
+    </select>
+
+
+    <!--******************************************************-->
+    <!--*****************执行计划相关*************-->
+    <!--******************************************************-->
+    
+    <sql id="planCondition">
+        <where>
+            <if test="jobId!=null">
+                task.jobId=#{jobId}
+            </if>
+            <if test="jobName!=null and jobName!=''">
+                AND job.jobName=#{jobName}
+            </if>
+            <if test="jobType!=null and jobType!=''">
+                AND job.jobType=#{jobType}
+            </if>
+            <if test="priority!=null">
+                AND job.priority=#{priority}
+            </if>
+            <if test="executeUser!=null and executeUser!=''">
+                AND task.executeUser=#{executeUser}
+            </if>
+            <if test="scheduleTime!=null">
+                <![CDATA[
+                  AND (task.scheduleTime>=#{scheduleTime} AND task.scheduleTime<(DATE_ADD(#{scheduleTime},INTERVAL 1 DAY)))
+                ]]>
+            </if>
+        </where>
+    </sql>
+
+    <sql id="orderCondition">
+        <choose>
+            <when test="">
+
+            </when>
+            <when test="">
+
+            </when>
+            <otherwise>
+
+            </otherwise>
+        </choose>
+    </sql>
+
+    
+    <select id="getPlanCountByCondition" parameterType="PlanQo" resultType="Integer">
+        SELECT COUNT(1) FROM task LEFT JOIN job ON task.jobId=job.jobId
+        <include refid="planCondition" />
+    </select>
+    
+    <select id="getPlansByCondition" parameterType="PlanQo" resultType="PlanVo">
+        SELECT
+          task.*,
+          job.jobName,
+          job.jobType,
+          job.submitUser,
+          job.priority,
+          job.appId,
+          job.workerGroupId,
+          app.appName,
+          time_to_sec(TIMEDIFF(task.executeEndTime,task.executeStartTime)) AS executeTime
+        FROM task LEFT JOIN job ON task.jobId=job.jobId LEFT JOIN app ON job.appId=app.appId
+        <include refid="planCondition" />
+        ORDER BY task.scheduleTime DESC
+        <include refid="pager" />
+    </select>
+
+
+
+    <select id="getTaskByIds" resultType="TaskVo">
+        SELECT task.*,time_to_sec(TIMEDIFF(task.executeEndTime,task.executeStartTime)) AS executeTime,job.jobName
+        FROM task LEFT JOIN job ON task.jobId=job.jobId
+        WHERE taskId IN
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
 
 </mapper>

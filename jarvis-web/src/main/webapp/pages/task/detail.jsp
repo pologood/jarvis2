@@ -30,24 +30,52 @@
                 <table class="table table-bordered">
                     <tbody>
                     <tr>
-                        <td class="emphasize">任务名称</td><td>${jobVo.jobName}</td>
-                        <td class="emphasize">任务ID</td><td>${jobVo.jobId}</td>
-                        <td class="emphasize">发布者</td><td>${jobVo.submitUser}</td>
+                        <td class="emphasize bg-warning">任务ID</td><td>${jobVo.jobId}</td>
+                        <td class="emphasize bg-warning">任务名称</td><td>${jobVo.jobName}</td>
+                        <td class="emphasize bg-warning">参数</td><td>${taskVo.params}</td>
                     </tr>
                     <tr>
-                        <td class="emphasize">计划执行时间</td><td>-</td>
-                        <td class="emphasize">创建时间</td><td><fmt:formatDate value="${taskVo.createTime}" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate></td>
-                        <td class="emphasize">调度时间</td><td><fmt:formatDate value="${taskVo.scheduleTime}" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate></td>
+                        <td class="emphasize bg-warning">执行ID</td><td>${taskVo.taskId}</td>
+                        <td class="emphasize bg-warning">执行者</td><td>${taskVo.executeUser}</td>
+                        <td class="emphasize bg-warning">状态</td>
+                        <td >
+                            <c:choose>
+                                <c:when test="${taskVo.status==1}">
+                                    等待
+                                </c:when>
+                                <c:when test="${taskVo.status==2}">
+                                    准备
+                                </c:when>
+                                <c:when test="${taskVo.status==3}">
+                                    执行
+                                </c:when>
+                                <c:when test="${taskVo.status==4}">
+                                    成功
+                                </c:when>
+                                <c:when test="${taskVo.status==5}">
+                                    失败
+                                </c:when>
+                                <c:when test="${taskVo.status==6}">
+                                    终止
+                                </c:when>
+                            </c:choose>
+                        </td>
                     </tr>
                     <tr>
-                        <td class="emphasize">耗时(秒)</td><td>${taskVo.executeTime}</td>
-                        <td class="emphasize">开始时间</td><td><fmt:formatDate value="${taskVo.executeStartTime}" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate></td>
-                        <td class="emphasize">结束时间</td><td><fmt:formatDate value="${taskVo.executeEndTime}" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate></td>
+                        <td class="emphasize bg-warning">调度时间</td><td><fmt:formatDate value="${taskVo.scheduleTime}" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate></td>
+                        <td class="emphasize bg-warning">执行进度</td><td><fmt:formatNumber type="number" value="${taskVo.progress*100}" maxIntegerDigits="2"></fmt:formatNumber>%</td>
+                        <td class="emphasize bg-warning">最近30次平均耗时(秒)</td><td>${taskVo.avgExecuteTime}</td>
                     </tr>
                     <tr>
-                        <td class="emphasize">最近30次平均耗时(秒)</td><td>${taskVo.avgExecuteTime}</td>
-                        <td class="emphasize">状态</td><td colspan="3">${taskVo.status}</td>
+                        <td class="emphasize bg-warning">开始时间</td><td><fmt:formatDate value="${taskVo.executeStartTime}" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate></td>
+                        <td class="emphasize bg-warning">结束时间</td><td><fmt:formatDate value="${taskVo.executeEndTime}" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate></td>
+                        <td class="emphasize bg-warning">耗时(秒)</td><td>${taskVo.executeTime}</td>
                     </tr>
+                    <tr>
+                        <td class="emphasize bg-warning">应用ID</td><td>${taskVo.appId}</td>
+                        <td class="emphasize bg-warning">workerId</td><td>${taskVo.workerId}</td>
+                    </tr>
+
                     <tr>
                         <td colspan="6">
                             <div id="container" style="height:400px;width:100%"></div>
@@ -61,14 +89,14 @@
                                         <a href="#executeContent" data-toggle="tab">执行内容</a>
                                     </li>
                                     <li role="presentation">
-                                        <a href="#errorLog" data-toggle="tab">错误日志</a>
+                                        <a href="#errorLog" data-toggle="tab">日志</a>
                                     </li>
                                 </ul>
 
                                 <div class="tab-content">
                                     <div id="executeContent" class="tab-pane active" >
                                         <pre>
-                                            ${taskVo.jobContent}
+                                            ${taskVo.content}
                                         </pre>
                                     </div>
 
@@ -84,7 +112,8 @@
 
                         </td>
                     </tr>
-                    </tbody></table>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

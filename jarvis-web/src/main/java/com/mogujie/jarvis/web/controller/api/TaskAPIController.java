@@ -1,7 +1,7 @@
 package com.mogujie.jarvis.web.controller.api;
 
 import com.alibaba.fastjson.JSONObject;
-import com.mogujie.jarvis.web.entity.vo.TaskSearchVo;
+import com.mogujie.jarvis.web.entity.vo.TaskQo;
 import com.mogujie.jarvis.web.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,9 +19,12 @@ public class TaskAPIController {
 
     @RequestMapping(value = "/getTasks")
     @ResponseBody
-    public JSONObject getTasks(TaskSearchVo taskSearchVo){
-        JSONObject jsonObject = taskService.getTasks(taskSearchVo);
+    public JSONObject getTasks(TaskQo taskQo){
+        JSONObject jsonObject = taskService.getTasks(taskQo);
 
         return jsonObject;
     }
+
+
+
 }

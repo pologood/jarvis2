@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created by hejian on 15/9/15.
@@ -33,7 +34,6 @@ public class ManageController extends BaseController {
     @RequestMapping
     @JarvisPassport(authTypes = JarvisAuthType.manage)
     public String index(){
-
         return "manage/index";
     }
     @RequestMapping(value = "app")
