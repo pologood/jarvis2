@@ -12,8 +12,6 @@ public class TestWorker {
 
     @Test
     public void testJobXml() throws UnirestException {
-
         TaskConfigUtils.getRegisteredJobs().get("dummy");
     }
-
 }
