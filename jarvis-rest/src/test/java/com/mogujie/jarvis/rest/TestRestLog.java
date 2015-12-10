@@ -31,26 +31,26 @@ public class TestRestLog {
         params.put("offset", 0);
         String paramsJson = JsonHelper.toJson(params, Map.class);
 
-//        while(true) {
-//            HttpResponse<String> jsonResponse = Unirest.post(baseUrl + "/api/log/readResult")
-//                    .field("appName", "jarvis-web")
-//                    .field("appToken", "123")
-//                    .field("user", "muming")
-//                    .field("parameters", paramsJson)
-//                    .asString();
-//
-//            Assert.assertEquals(jsonResponse.getStatus(), 200);
-//            Type type = new TypeToken<RestResult<LogResultVo>>(){}.getType();
-//            RestResult<?> result = JsonHelper.fromJson(jsonResponse.getBody(), type);
-//            Assert.assertEquals(result.getCode(), 0);
-//            LogResultVo log = (LogResultVo)result.getData();
-//            System.out.print(log.getLog());
-//            if(log.isEnd()){
-//                break;
-//            }
-//            params.put("offset",log.getOffset());
-//            paramsJson = JsonHelper.toJson(params, Map.class);
-//        }
+        while(true) {
+            HttpResponse<String> jsonResponse = Unirest.post(baseUrl + "/api/log/readResult")
+                    .field("appName", "jarvis-web")
+                    .field("appToken", "123")
+                    .field("user", "muming")
+                    .field("parameters", paramsJson)
+                    .asString();
+
+            Assert.assertEquals(jsonResponse.getStatus(), 200);
+            Type type = new TypeToken<TestRestResultEntity<LogResultVo>>(){}.getType();
+            TestRestResultEntity<?> result = JsonHelper.fromJson(jsonResponse.getBody(), type);
+            Assert.assertEquals(result.getCode(), 0);
+            LogResultVo log = (LogResultVo)result.getData();
+            System.out.print(log.getLog());
+            if(log.isEnd()){
+                break;
+            }
+            params.put("offset",log.getOffset());
+            paramsJson = JsonHelper.toJson(params, Map.class);
+        }
     }
 
 }

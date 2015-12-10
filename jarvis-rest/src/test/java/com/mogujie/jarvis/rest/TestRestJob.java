@@ -69,12 +69,12 @@ public class TestRestJob {
         HttpResponse<String> jsonResponse = Unirest.post(baseUrl + "/api/job/submit").field("appName", "jarvis-web").field("appToken", "123")
                 .field("user", "muming").field("parameters", paramsJson).asString();
 
-        Type restType = new TypeToken<RestResult<JobVo>>() {
+        Type restType = new TypeToken<TestRestResultEntity<JobVo>>() {
         }.getType();
 
-//        Assert.assertEquals(jsonResponse.getStatus(), 200);
-//        RestResult<?> result = JsonHelper.fromJson(jsonResponse.getBody(), restType);
-//        Assert.assertEquals(result.getCode(), 0);
+        Assert.assertEquals(jsonResponse.getStatus(), 200);
+        TestRestResultEntity<?> result = JsonHelper.fromJson(jsonResponse.getBody(), restType);
+        Assert.assertEquals(result.getCode(), 0);
     }
 
     @Test
@@ -88,12 +88,12 @@ public class TestRestJob {
         HttpResponse<String> jsonResponse = Unirest.post(baseUrl + "/api/job/edit").field("appName", "jarvis-web").field("appToken", "123")
                 .field("user", "muming").field("parameters", paramsJson).asString();
 
-        Type restType = new TypeToken<RestResult<JobVo>>() {
+        Type restType = new TypeToken<TestRestResultEntity<JobVo>>() {
         }.getType();
 
-//        Assert.assertEquals(jsonResponse.getStatus(), 200);
-//        RestResult<?> result = JsonHelper.fromJson(jsonResponse.getBody(), restType);
-//        Assert.assertEquals(result.getCode(), 0);
+        Assert.assertEquals(jsonResponse.getStatus(), 200);
+        TestRestResultEntity<?> result = JsonHelper.fromJson(jsonResponse.getBody(), restType);
+        Assert.assertEquals(result.getCode(), 0);
 
     }
 
@@ -112,11 +112,11 @@ public class TestRestJob {
                 .field("user", "muming")
                 .field("parameters", paramsJson).asString();
 
-        Type restType = new TypeToken<RestResult<JobRelationsVo>>() {}.getType();
+        Type restType = new TypeToken<TestRestResultEntity<JobRelationsVo>>() {}.getType();
 
-//        Assert.assertEquals(jsonResponse.getStatus(), 200);
-//        RestResult<?> result = JsonHelper.fromJson(jsonResponse.getBody(), restType);
-//        Assert.assertEquals(result.getCode(), 0);
+        Assert.assertEquals(jsonResponse.getStatus(), 200);
+        TestRestResultEntity<?> result = JsonHelper.fromJson(jsonResponse.getBody(), restType);
+        Assert.assertEquals(result.getCode(), 0);
 
     }
 

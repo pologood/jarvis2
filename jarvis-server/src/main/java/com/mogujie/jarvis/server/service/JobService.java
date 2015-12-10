@@ -16,6 +16,7 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
+import com.mogujie.jarvis.core.exeception.JarvisException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
@@ -84,11 +85,11 @@ public class JobService {
 
     public long insertJob(Job record) {
         // 1. insert to DB
-        jobMapper.insert(record);
+        jobMapper.insertSelective(record);
         long jobId = record.getJobId();
 
         // 2. insert to cache
-        JobEntry jobEntry = new JobEntry(record, new ArrayList<ScheduleExpression>(), new HashMap<Long, JobDependencyEntry>());
+        JobEntry jobEntry = new JobEntry(record, new ArrayList<>(), new HashMap<>());
         metaStore.put(jobId, jobEntry);
 
         return jobId;
@@ -113,12 +114,6 @@ public class JobService {
         metaStore.remove(jobId);
     }
 
-    @VisibleForTesting
-    public void deleteJobAndRelation(long jobId) {
-        deleteJob(jobId);
-        deleteJobDependByPreJob(jobId);
-        deleteScheduleExpression(jobId);
-    }
 
     public JobScheduleExpression getScheduleExpressionByJobId(long jobId) {
         JobScheduleExpressionExample example = new JobScheduleExpressionExample();
@@ -211,10 +206,6 @@ public class JobService {
         jobEntry.removeDependency(key.getPreJobId());
     }
 
-    /**
-     * remove job depend where preJobId=preJobId
-     * @param jobId
-     */
     public void deleteJobDependByPreJob(long preJobId) {
         JobDependExample jobDependExample = new JobDependExample();
         jobDependExample.createCriteria().andPreJobIdEqualTo(preJobId);
@@ -391,4 +382,14 @@ public class JobService {
         jobDependencyEntry = new JobDependencyEntry(dependencyExpression, dependencyStrategyExpression);
         return jobDependencyEntry;
     }
+
+
+    @VisibleForTesting
+    public void deleteJobAndRelation(long jobId) {
+        deleteJob(jobId);
+        deleteJobDependByPreJob(jobId);
+        deleteScheduleExpression(jobId);
+    }
+
+
 }

@@ -27,7 +27,7 @@ public class AppController extends AbstractController {
     @POST
     @Path("add")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult<?> add(@FormParam("user") String user, @FormParam("appToken") String appToken, @FormParam("appName") String appName,
+    public RestResult add(@FormParam("user") String user, @FormParam("appToken") String appToken, @FormParam("appName") String appName,
             @FormParam("parameters") String parameters) {
         try {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
@@ -58,7 +58,7 @@ public class AppController extends AbstractController {
     @POST
     @Path("edit")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult<?> update(@FormParam("user") String user, @FormParam("appName") String appName, @FormParam("appToken") String appToken,
+    public RestResult update(@FormParam("user") String user, @FormParam("appName") String appName, @FormParam("appToken") String appToken,
             @FormParam("parameters") String parameters) {
         try {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();

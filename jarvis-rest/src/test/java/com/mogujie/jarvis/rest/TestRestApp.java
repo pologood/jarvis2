@@ -1,8 +1,12 @@
 package com.mogujie.jarvis.rest;
 
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.gson.reflect.TypeToken;
+import com.mogujie.jarvis.rest.vo.AbstractVo;
+import com.mogujie.jarvis.rest.vo.JobRelationsVo;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -30,9 +34,11 @@ public class TestRestApp {
         HttpResponse<String> jsonResponse = Unirest.post(baseUrl + "/api/app/add").field("appName", "jarvis-web").field("appToken", "123")
                 .field("user", "muming").field("parameters", paramsJson).asString();
 
-//        Assert.assertEquals(jsonResponse.getStatus(), 200);
-//        RestResult<?> result = JsonHelper.fromJson(jsonResponse.getBody(), RestResult.class);
-//        Assert.assertEquals(result.getCode(), 0);
+        Type restType = new TypeToken<TestRestResultEntity<AbstractVo>>() {}.getType();
+
+        Assert.assertEquals(jsonResponse.getStatus(), 200);
+        TestRestResultEntity<?> result = JsonHelper.fromJson(jsonResponse.getBody(), restType);
+        Assert.assertEquals(result.getCode(), 0);
     }
 
 }

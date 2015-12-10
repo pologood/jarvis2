@@ -51,7 +51,7 @@ public class JobController extends AbstractController {
     @POST
     @Path("submit")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult<?> submit(@FormParam("appName") String appName, @FormParam("appToken") String appToken, @FormParam("user") String user,
+    public RestResult submit(@FormParam("appName") String appName, @FormParam("appToken") String appToken, @FormParam("user") String user,
                                 @FormParam("parameters") String parameters) {
 
         LOGGER.debug("提交job任务");
@@ -108,7 +108,7 @@ public class JobController extends AbstractController {
     @POST
     @Path("edit")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult<?> edit(@FormParam("appName") String appName, @FormParam("appToken") String appToken, @FormParam("user") String user,
+    public RestResult edit(@FormParam("appName") String appName, @FormParam("appToken") String appToken, @FormParam("user") String user,
                               @FormParam("parameters") String parameters) {
 
         LOGGER.info("更新job任务");
@@ -206,7 +206,7 @@ public class JobController extends AbstractController {
     @POST
     @Path("queryRelation")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult<?> queryRelation(@FormParam("user") String user,
+    public RestResult queryRelation(@FormParam("user") String user,
                                        @FormParam("appToken") String appToken,
                                        @FormParam("appName") String appName,
                                        @FormParam("parameters") String parameters) {
@@ -256,7 +256,7 @@ public class JobController extends AbstractController {
     @GET
     @Path("test")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult<?> test() throws Exception {
+    public RestResult test() throws Exception {
         JobVo vo = new JobVo();
         vo.setJobId(123456);
         return successResult(vo);

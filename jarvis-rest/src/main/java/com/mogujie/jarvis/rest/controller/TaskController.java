@@ -59,7 +59,7 @@ public class TaskController extends AbstractController {
     @POST
     @Path("kill")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult<?> kill(@FormParam("user") String user, @FormParam("appToken") String appToken, @FormParam("appName") String appName,
+    public RestResult kill(@FormParam("user") String user, @FormParam("appToken") String appToken, @FormParam("appName") String appName,
             @FormParam("parameters") String parameters) {
         try {
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
@@ -92,7 +92,7 @@ public class TaskController extends AbstractController {
     @POST
     @Path("retry")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult<?> retry(@FormParam("user") String user, @FormParam("appToken") String appToken, @FormParam("appName") String appName,
+    public RestResult retry(@FormParam("user") String user, @FormParam("appToken") String appToken, @FormParam("appName") String appName,
             @FormParam("parameters") String parameters) {
         try {
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
@@ -122,7 +122,7 @@ public class TaskController extends AbstractController {
     @POST
     @Path("rerun")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult<?> rerun(@FormParam("user") String user, @FormParam("appToken") String appToken, @FormParam("appName") String appName,
+    public RestResult rerun(@FormParam("user") String user, @FormParam("appToken") String appToken, @FormParam("appName") String appName,
             @FormParam("parameters") String parameters) {
         try {
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
@@ -160,7 +160,7 @@ public class TaskController extends AbstractController {
     @POST
     @Path("submit")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult<?> submit(@FormParam("user") String user, @FormParam("appToken") String appToken, @FormParam("appName") String appName,
+    public RestResult submit(@FormParam("user") String user, @FormParam("appToken") String appToken, @FormParam("appName") String appName,
             @FormParam("parameters") String parameters) {
         try {
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
@@ -198,7 +198,7 @@ public class TaskController extends AbstractController {
     @POST
     @Path("modify/status")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult<?> modifyStatus(@FormParam("user") String user, @FormParam("appToken") String appToken, @FormParam("appName") String appName,
+    public RestResult modifyStatus(@FormParam("user") String user, @FormParam("appToken") String appToken, @FormParam("appName") String appName,
             @FormParam("parameters") String parameters) {
         try {
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
@@ -228,7 +228,7 @@ public class TaskController extends AbstractController {
     @POST
     @Path("queryRelation")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult<?> queryRelation(@FormParam("user") String user,
+    public RestResult queryRelation(@FormParam("user") String user,
                                        @FormParam("appToken") String appToken,
                                        @FormParam("appName") String appName,
                                        @FormParam("parameters") String parameters) {

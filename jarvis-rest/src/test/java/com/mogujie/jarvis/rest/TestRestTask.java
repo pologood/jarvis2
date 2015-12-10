@@ -45,12 +45,12 @@ public class TestRestTask {
         HttpResponse<String> jsonResponse = Unirest.post(baseUrl + "/api/task/submit").field("appName", "jarvis-web").field("appToken", "123")
                 .field("user", "muming").field("parameters", paramsJson).asString();
 
-        Type restType = new TypeToken<RestResult<JobVo>>() {
+        Type restType = new TypeToken<TestRestResultEntity<JobVo>>() {
         }.getType();
 
-//        Assert.assertEquals(jsonResponse.getStatus(), 200);
-//        RestResult<?> result = JsonHelper.fromJson(jsonResponse.getBody(), restType);
-//        Assert.assertEquals(result.getCode(), 0);
+        Assert.assertEquals(jsonResponse.getStatus(), 200);
+        TestRestResultEntity<?> result = JsonHelper.fromJson(jsonResponse.getBody(), restType);
+        Assert.assertEquals(result.getCode(), 0);
     }
 
 
@@ -68,11 +68,11 @@ public class TestRestTask {
                 .field("user", "muming")
                 .field("parameters", paramsJson).asString();
 
-        Type restType = new TypeToken<RestResult<TaskRelationsVo>>() {}.getType();
+        Type restType = new TypeToken<TestRestResultEntity<TaskRelationsVo>>() {}.getType();
 
-//        Assert.assertEquals(jsonResponse.getStatus(), 200);
-//        RestResult<?> result = JsonHelper.fromJson(jsonResponse.getBody(), restType);
-//        Assert.assertEquals(result.getCode(), 0);
+        Assert.assertEquals(jsonResponse.getStatus(), 200);
+        TestRestResultEntity<?> result = JsonHelper.fromJson(jsonResponse.getBody(), restType);
+        Assert.assertEquals(result.getCode(), 0);
 
     }
 

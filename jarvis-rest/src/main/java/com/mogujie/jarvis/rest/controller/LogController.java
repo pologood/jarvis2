@@ -38,7 +38,7 @@ public class LogController extends AbstractController {
     @POST
     @Path("readExecuteLog")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult<?> readExecuteLog(@FormParam("appToken") String appToken,
+    public RestResult readExecuteLog(@FormParam("appToken") String appToken,
                                         @FormParam("appName") String appName,
                                         @FormParam("user") String user,
                                         @FormParam("parameters") String parameters) {
@@ -54,7 +54,7 @@ public class LogController extends AbstractController {
     @POST
     @Path("readResult")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult<?> readResult(@FormParam("appToken") String appToken,
+    public RestResult readResult(@FormParam("appToken") String appToken,
                                     @FormParam("appName") String appName,
                                     @FormParam("user") String user,
                                     @FormParam("parameters") String parameters) throws Exception {
@@ -64,7 +64,7 @@ public class LogController extends AbstractController {
     /**
      * 获取数据_内部函数
      */
-    private RestResult<?> queryLog(StreamType type, String appToken, String appName, String user, String parameters) {
+    private RestResult queryLog(StreamType type, String appToken, String appName, String user, String parameters) {
 
         try {
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
