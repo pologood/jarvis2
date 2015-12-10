@@ -20,10 +20,6 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
 import com.mogujie.jarvis.core.domain.WorkerInfo;
 
-/**
- * 
- *
- */
 @Service
 public class HeartBeatService {
 

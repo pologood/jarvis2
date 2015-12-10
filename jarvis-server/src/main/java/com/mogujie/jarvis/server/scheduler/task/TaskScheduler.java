@@ -10,6 +10,7 @@ package com.mogujie.jarvis.server.scheduler.task;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -191,8 +192,8 @@ public class TaskScheduler extends Scheduler {
 
         // add task dependency
         if (dependTaskIdMap != null) {
-            for (Long preJobId : dependTaskIdMap.keySet()) {
-                List<Long> preTasks = dependTaskIdMap.get(preJobId);
+            for (Entry<Long, List<Long>> entry : dependTaskIdMap.entrySet()) {
+                List<Long> preTasks = entry.getValue();
                 for (Long parentId : preTasks) {
                     taskGraph.addDependency(parentId, taskId);
                 }

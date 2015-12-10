@@ -196,8 +196,9 @@ public class TaskActor extends UntypedActor {
                 Map<Long, List<Long>> dependTaskIdMap = Maps.newHashMap();
                 Map<Long, JobDependencyEntry> dependencyMap = jobService.get(jobId).getDependencies();
                 if (dependencyMap != null) {
-                    for (long preJobId : dependencyMap.keySet()) {
-                        JobDependencyEntry dependencyEntry = dependencyMap.get(preJobId);
+                    for (Entry<Long, JobDependencyEntry> entry : dependencyMap.entrySet()) {
+                        long preJobId = entry.getKey();
+                        JobDependencyEntry dependencyEntry = entry.getValue();
                         DependencyExpression dependencyExpression = dependencyEntry.getDependencyExpression();
                         List<Long> dependTaskIds = taskService.getDependTaskIds(jobId, preJobId, scheduleTime, dependencyExpression);
                         dependTaskIdMap.put(preJobId, dependTaskIds);
@@ -229,8 +230,8 @@ public class TaskActor extends UntypedActor {
         // 5.如果需要重跑后续任务，触发后续依赖任务
         if (runChild) {
             List<ExecutionPlanEntry> sortedPlanList = new ArrayList<ExecutionPlanEntry>();
-            for (long jobId : planMap.keySet()) {
-                List<ExecutionPlanEntry> planList = planMap.get(jobId);
+            for (Entry<Long, List<ExecutionPlanEntry>> entry : planMap.entrySet()) {
+                List<ExecutionPlanEntry> planList = entry.getValue();
                 for (ExecutionPlanEntry planEntry : planList) {
                     long taskId = planEntry.getTaskId();
                     List<DAGTask> children = taskGraph.getChildren(taskId);

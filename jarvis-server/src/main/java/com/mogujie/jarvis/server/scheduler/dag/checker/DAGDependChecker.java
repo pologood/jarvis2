@@ -27,8 +27,7 @@ public class DAGDependChecker {
     private long myJobId;
 
     // Map<JobId, TaskDependSchedule>
-    protected Map<Long, TaskDependSchedule> jobScheduleMap =
-            new ConcurrentHashMap<Long, TaskDependSchedule>();
+    protected Map<Long, TaskDependSchedule> jobScheduleMap = new ConcurrentHashMap<Long, TaskDependSchedule>();
 
     public DAGDependChecker() {
     }
@@ -75,11 +74,7 @@ public class DAGDependChecker {
             TaskDependSchedule taskSchedule = jobScheduleMap.get(jobId);
             if (taskSchedule == null) {
                 taskSchedule = getSchedule(myJobId, jobId);
-                if (taskSchedule != null) {
-                    jobScheduleMap.put(jobId, taskSchedule);
-                } else {
-                    return false;
-                }
+                jobScheduleMap.put(jobId, taskSchedule);
             }
         }
 
