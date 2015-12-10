@@ -95,14 +95,6 @@ public class TaskService {
         taskMapper.updateByPrimaryKeySelective(record);
     }
 
-    public void updateWorkerId(long taskId, int workerId) {
-        Task task = new Task();
-        task.setTaskId(taskId);
-        task.setWorkerId(workerId);
-        task.setUpdateTime(DateTime.now().toDate());
-        taskMapper.updateByPrimaryKeySelective(task);
-    }
-
     public void updateStatus(long taskId, TaskStatus status) {
         Task task = new Task();
         task.setTaskId(taskId);

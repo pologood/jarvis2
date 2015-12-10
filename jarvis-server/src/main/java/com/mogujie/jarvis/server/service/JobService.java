@@ -99,12 +99,11 @@ public class JobService {
         // 1. update to DB
         jobMapper.updateByPrimaryKeySelective(record);
 
-        long jobId = record.getJobId();
-        Job newRecord = jobMapper.selectByPrimaryKey(jobId);
-
         // 2. update to cache
+        long jobId = record.getJobId();
         JobEntry jobEntry = get(jobId);
         if (jobEntry != null) {
+            Job newRecord = jobMapper.selectByPrimaryKey(jobId);
             jobEntry.setJob(newRecord);
         }
     }
