@@ -12,10 +12,6 @@ import java.util.Objects;
 
 import org.joda.time.DateTime;
 
-/**
- *
- *
- */
 public class ExecutionPlanEntry {
     private final long jobId;
     private final DateTime dateTime;
@@ -64,7 +60,7 @@ public class ExecutionPlanEntry {
         }
 
         ExecutionPlanEntry other = (ExecutionPlanEntry) obj;
-        if (taskId > 0 &&  other.getTaskId() > 0 && taskId == other.getTaskId()) {
+        if (taskId > 0 && other.getTaskId() > 0 && taskId == other.getTaskId()) {
             return true;
         } else if (jobId == other.getJobId() && dateTime.isEqual(other.getDateTime())) {
             return true;
