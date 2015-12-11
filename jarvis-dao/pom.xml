@@ -51,6 +51,7 @@
 				<version>${mybatis.generator.version}</version>
 				<executions>
 					<execution>
+                        <phase>test</phase>
 						<id>GenerateMyBatis Artifacts</id>
 						<goals>
 							<goal>generate</goal>
