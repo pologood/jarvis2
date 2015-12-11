@@ -297,6 +297,13 @@
                 <profiles.active>production-one</profiles.active>
             </properties>
         </profile>
+        <profile>
+            <!-- 生产环境 -->
+            <id>test</id>
+            <properties>
+                <profiles.active>test</profiles.active>
+            </properties>
+        </profile>
 
     </profiles>
 
@@ -312,6 +319,7 @@
                 <excludes>
                     <exclude>production/*</exclude>
                     <exclude>development-one/*</exclude>
+                    <exclude>test/*</exclude>
                 </excludes>
             </resource>
             <resource>
