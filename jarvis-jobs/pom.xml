@@ -10,7 +10,6 @@
 	<artifactId>jarvis-jobs</artifactId>
 
 	<properties>
-		<build.finalname>jarvis-jobs</build.finalname>
 		<hadoop.version>2.7.1</hadoop.version>
 	</properties>
 
@@ -41,7 +40,4 @@
 		</dependency>
 	</dependencies>
 
-	<build>
-		<finalName>${build.finalname}</finalName>
-	</build>
 </project>
