@@ -32,10 +32,6 @@ import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.SpringContext;
 
-/**
- *
- *
- */
 public class PlanGenerator {
 
     private ExecutionPlan plan = ExecutionPlan.INSTANCE;
@@ -179,6 +175,7 @@ public class PlanGenerator {
 
         // generate next day all tasks
         Collections.sort(nextDayTimeBasedPlans, new Comparator<ExecutionPlanEntry>() {
+            @Override
             public int compare(ExecutionPlanEntry entry1, ExecutionPlanEntry entry2) {
                 return entry1.getDateTime().compareTo(entry2.getDateTime());
             }

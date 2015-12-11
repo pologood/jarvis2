@@ -15,10 +15,6 @@ import java.util.concurrent.ConcurrentSkipListSet;
 
 import org.joda.time.DateTime;
 
-/**
- *
- *
- */
 public enum ExecutionPlan {
     INSTANCE;
 

@@ -32,18 +32,18 @@ public class TaskDependSchedule {
     private DependencyExpression dependencyExpression;
 
     // SortedSet<ScheduleTask>
-    private SortedSet<ScheduleTask> schedulingTasks = new ConcurrentSkipListSet<>(
-            new Comparator<ScheduleTask>() {
+    private SortedSet<ScheduleTask> schedulingTasks = new ConcurrentSkipListSet<>(new Comparator<ScheduleTask>() {
         @Override
         public int compare(ScheduleTask task1, ScheduleTask task2) {
-            return (int)(task1.getScheduleTime() - task2.getScheduleTime());
+            return Long.compare(task1.getScheduleTime(), task2.getScheduleTime());
         }
     });
 
     // List<ScheduleTask>
     private List<ScheduleTask> selectedTasks = new ArrayList<ScheduleTask>();
 
-    public TaskDependSchedule() {}
+    public TaskDependSchedule() {
+    }
 
     public TaskDependSchedule(long myJobId, long preJobId, DependencyExpression dependencyExpression) {
         this.myJobId = myJobId;
@@ -200,5 +200,5 @@ public class TaskDependSchedule {
                 schedulingTasks.add(new ScheduleTask(task.getTaskId(), task.getScheduleTime().getTime()));
             }
         }
-     }
+    }
 }
