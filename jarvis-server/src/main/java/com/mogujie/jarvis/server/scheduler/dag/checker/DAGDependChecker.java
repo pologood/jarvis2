@@ -44,17 +44,6 @@ public class DAGDependChecker {
         this.myJobId = myJobId;
     }
 
-    public void removeDependency(long jobId) {
-        TaskDependSchedule taskSchedule = jobScheduleMap.get(jobId);
-        if (taskSchedule != null) {
-            jobScheduleMap.remove(jobId);
-        }
-    }
-
-    public void addDependency(long jobId) {
-
-    }
-
     public void scheduleTask(long jobId, long taskId, long scheduleTime) {
         TaskDependSchedule taskSchedule = jobScheduleMap.get(jobId);
 

@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.mogujie.jarvis.core.util.IdUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
