@@ -115,7 +115,7 @@
     var taskId=${taskId};
     var stautsColor={};
 </script>
-<script type="text/javascript" src="${contextPath}/js/jarvis/plan/concept-graph.js" charset="UTF-8"></script>
+<script type="text/javascript" src="${contextPath}/assets/js/jarvis/plan/concept-graph.js" charset="UTF-8"></script>
 
-<script type="text/javascript" src="${contextPath}/js/jarvis/plan/dependency.js"></script>
+<script type="text/javascript" src="${contextPath}/assets/js/jarvis/plan/dependency.js"></script>
 

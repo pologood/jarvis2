@@ -153,4 +153,4 @@
     var user='${user.uname}';
 </script>
 
-<script type="text/javascript" src="${contextPath}/js/jarvis/job/job.js"></script>
+<script type="text/javascript" src="${contextPath}/assets/js/jarvis/job/job.js"></script>

@@ -141,4 +141,4 @@
     <jsp:param name="menuMap" value="${menuMap}"/>
 </jsp:include>
 
-<script type="text/javascript" src="${contextPath}/js/jarvis/task/task.js"></script>
+<script type="text/javascript" src="${contextPath}/assets/js/jarvis/task/task.js"></script>

@@ -132,4 +132,4 @@
     var taskVoList=${taskVoList};
     var taskId='${taskVo.taskId}';
 </script>
-<script type="text/javascript" src="${contextPath}/js/jarvis/task/detail.js"></script>
+<script type="text/javascript" src="${contextPath}/assets/js/jarvis/task/detail.js"></script>

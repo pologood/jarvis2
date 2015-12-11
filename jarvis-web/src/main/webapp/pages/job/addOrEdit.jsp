@@ -352,6 +352,6 @@
     </c:choose>
 </script>
 
-<script type="text/javascript" src="${contextPath}/js/jarvis/job/addOrEdit.js"></script>
+<script type="text/javascript" src="${contextPath}/assets/js/jarvis/job/addOrEdit.js"></script>
 
 

@@ -102,4 +102,4 @@
     <jsp:param name="menuMap" value="${menuMap}"/>
 </jsp:include>
 
-<script type="text/javascript" src="${contextPath}/js/jarvis/manage/app.js"></script>
+<script type="text/javascript" src="${contextPath}/assets/js/jarvis/manage/app.js"></script>
