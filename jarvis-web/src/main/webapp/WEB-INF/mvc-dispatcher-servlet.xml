@@ -18,6 +18,7 @@
 
     <mvc:annotation-driven />
 
+    <mvc:resources mapping="/assets/**" location="/assets/"></mvc:resources>
 
     <mvc:interceptors>
         <bean class="com.mogu.bigdata.admin.common.passport.interceptor.LoginInterceptor"/>
