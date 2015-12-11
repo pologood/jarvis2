@@ -11,7 +11,6 @@
 	<name>jarvis-rest</name>
 
 	<properties>
-		<build.finalname>jarvis-rest</build.finalname>
 		<jersey.version>2.19</jersey.version>
 	</properties>
 
@@ -19,17 +18,14 @@
 		<dependency>
 			<groupId>com.mogujie.jarvis</groupId>
 			<artifactId>jarvis-core</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.mogujie.jarvis</groupId>
 			<artifactId>jarvis-protocol</artifactId>
-			<version>${project.version}</version>
 		</dependency>
         <dependency>
             <groupId>com.mogujie.jarvis</groupId>
             <artifactId>jarvis-server</artifactId>
-            <version>${project.version}</version>
         </dependency>
 
 		<!-- Jersey -->
@@ -69,7 +65,4 @@
         </dependency>
 	</dependencies>
 
-	<build>
-		<finalName>${build.finalname}</finalName>
-	</build>
 </project>

@@ -18,10 +18,6 @@ import scala.concurrent.Await;
 import scala.concurrent.Future;
 import scala.concurrent.duration.Duration;
 
-/**
- * 
- *
- */
 public class FutureUtils {
 
     public static Object awaitResult(ActorRef ref, Object msg, long seconds) throws Exception {

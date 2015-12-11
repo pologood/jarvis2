@@ -17,6 +17,7 @@ import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.google.gson.reflect.TypeToken;
 import com.mogujie.jarvis.core.util.JsonHelper;
@@ -33,7 +34,8 @@ public class TaskDependService {
     private TaskDependMapper mapper;
     private static final Logger LOGGER = LogManager.getLogger();
 
-    Type dataType = new TypeToken<Map<Long, List<Long>>>() {}.getType();
+    Type dataType = new TypeToken<Map<Long, List<Long>>>() {
+    }.getType();
 
     public void storeParent(long taskId, Map<Long, List<Long>> dependTaskIdMap) {
         String dependJson = JsonHelper.toJson(dependTaskIdMap, dataType);
@@ -60,6 +62,7 @@ public class TaskDependService {
         return JsonHelper.fromJson(data.getDependTaskIds(), dataType);
     }
 
+    @Transactional
     public void storeChild(long taskId, Map<Long, List<Long>> childTaskIdMap) {
         String childJson = JsonHelper.toJson(childTaskIdMap, dataType);
 
@@ -86,7 +89,7 @@ public class TaskDependService {
         return JsonHelper.fromJson(data.getChildTaskIds(), dataType);
     }
 
-    public void remove(long taskId){
+    public void remove(long taskId) {
         mapper.deleteByPrimaryKey(taskId);
     }
 

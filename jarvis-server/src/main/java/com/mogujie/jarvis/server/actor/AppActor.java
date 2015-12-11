@@ -17,6 +17,7 @@ import javax.inject.Named;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.mogujie.jarvis.core.domain.ActorEntry;
 import com.mogujie.jarvis.core.domain.MessageType;
@@ -85,6 +86,7 @@ public class AppActor extends UntypedActor {
         }
     }
 
+    @Transactional
     public void modifyApplication(RestModifyApplicationRequest request) {
         ServerModifyApplicationResponse response = null;
         try {

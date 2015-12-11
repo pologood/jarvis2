@@ -13,10 +13,6 @@ import java.nio.charset.StandardCharsets;
 import com.google.common.hash.Hashing;
 import com.mogujie.jarvis.core.exeception.AppTokenInvalidException;
 
-/**
- * 
- *
- */
 public class AppTokenUtils {
 
     private static final int APP_TOKEN_LENGTH = 42;

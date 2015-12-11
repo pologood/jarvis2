@@ -29,7 +29,7 @@ public class WorkerGroupController extends AbstractController {
     @POST
     @Path("add")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult<?> add(@FormParam("appName") String appName, @FormParam("user") String user, @FormParam("appToken") String appToken,
+    public RestResult add(@FormParam("appName") String appName, @FormParam("user") String user, @FormParam("appToken") String appToken,
             @FormParam("parameters") String parameters) {
         try {
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
@@ -60,7 +60,7 @@ public class WorkerGroupController extends AbstractController {
     @POST
     @Path("update")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult<?> update(@FormParam("appName") String appName, @FormParam("appToken") String appToken, @FormParam("user") String user,
+    public RestResult update(@FormParam("appName") String appName, @FormParam("appToken") String appToken, @FormParam("user") String user,
             @FormParam("parameters") String parameters) {
         try {
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
@@ -91,7 +91,7 @@ public class WorkerGroupController extends AbstractController {
     @POST
     @Path("status")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult<?> delete(@FormParam("user") String user, @FormParam("appName") String appName, @FormParam("appToken") String appToken,
+    public RestResult delete(@FormParam("user") String user, @FormParam("appName") String appName, @FormParam("appToken") String appToken,
             @FormParam("parameters") String parameters) {
         try {
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();

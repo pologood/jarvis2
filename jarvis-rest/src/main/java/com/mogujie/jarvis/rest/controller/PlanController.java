@@ -40,7 +40,7 @@ public class PlanController extends AbstractController {
     @POST
     @Path("delete")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult<?> delete(@FormParam("user") String user, @FormParam("appToken") String appToken, @FormParam("appName") String appName,
+    public RestResult delete(@FormParam("user") String user, @FormParam("appToken") String appToken, @FormParam("appName") String appName,
             @FormParam("parameters") String parameters) {
         try {
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
@@ -74,7 +74,7 @@ public class PlanController extends AbstractController {
     @POST
     @Path("generate/all")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult<?> generateAll(@FormParam("user") String user, @FormParam("appToken") String appToken, @FormParam("appName") String appName,
+    public RestResult generateAll(@FormParam("user") String user, @FormParam("appToken") String appToken, @FormParam("appName") String appName,
             @FormParam("parameters") String parameters) {
         try {
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
@@ -103,7 +103,7 @@ public class PlanController extends AbstractController {
     @GET
     @Path("test")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult<?> test() throws Exception {
+    public RestResult test() throws Exception {
         JobVo vo = new JobVo();
         vo.setJobId(123456);
         return successResult(vo);

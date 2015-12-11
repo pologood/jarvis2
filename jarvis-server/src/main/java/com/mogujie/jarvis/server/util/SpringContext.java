@@ -11,10 +11,6 @@ package com.mogujie.jarvis.server.util;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-/**
- * 
- *
- */
 public class SpringContext {
 
     private static ApplicationContext context = new ClassPathXmlApplicationContext("context.xml");

@@ -17,10 +17,6 @@ import com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskRequest;
 import akka.actor.ActorRef;
 import akka.actor.ActorSelection;
 
-/**
- * 
- *
- */
 public class TaskReporter {
 
     private ActorSelection actor;

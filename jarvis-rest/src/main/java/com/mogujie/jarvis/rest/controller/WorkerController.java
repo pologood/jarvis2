@@ -27,7 +27,7 @@ public class WorkerController extends AbstractController {
     @POST
     @Path("status")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult<?> delete(@FormParam("appName") String appName, @FormParam("appToken") String appToken, @FormParam("user") String user,
+    public RestResult delete(@FormParam("appName") String appName, @FormParam("appToken") String appToken, @FormParam("user") String user,
                                 @FormParam("parameters") String parameters) {
         try {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();

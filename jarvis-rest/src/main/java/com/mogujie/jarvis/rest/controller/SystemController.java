@@ -35,7 +35,7 @@ public class SystemController extends AbstractController {
     @POST
     @Path("status")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult<?> status(@FormParam("user") String user, @FormParam("appToken") String appToken, @FormParam("appName") String appName,
+    public RestResult status(@FormParam("user") String user, @FormParam("appToken") String appToken, @FormParam("appName") String appName,
             @FormParam("parameters") String parameters) {
         try {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();

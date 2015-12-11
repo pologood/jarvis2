@@ -1,18 +1,20 @@
 package com.mogujie.jarvis.rest;
 
+import com.mogujie.jarvis.rest.vo.AbstractVo;
+
 /**
  * REST结果
  * 
  * @author 牧名
  */
-public class RestResult<T> {
+public class RestResult{
 
     /** 错误码 */
     private int code;
     /** 错误信息 */
     private String msg;
     /** 数据 */
-    private T data;
+    private AbstractVo data;
     /**
      * 构造
      */
@@ -37,10 +39,10 @@ public class RestResult<T> {
     public void setMsg(String msg) {
         this.msg = msg;
     }
-    public T getData() {
+    public AbstractVo getData() {
         return data;
     }
-    public void setData(T data) {
+    public void setData(AbstractVo data) {
         this.data = data;
     }
 

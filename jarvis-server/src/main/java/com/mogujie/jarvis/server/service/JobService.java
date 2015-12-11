@@ -21,6 +21,7 @@ import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ArrayListMultimap;
@@ -77,18 +78,18 @@ public class JobService {
     private AppMapper appMapper;
 
     @PostConstruct
-    private void init(){
+    private void init() {
         loadMetaDataFromDB();
         LOGGER.info("jobService loadMetaDataFromDB finished.");
     }
 
     public long insertJob(Job record) {
         // 1. insert to DB
-        jobMapper.insert(record);
+        jobMapper.insertSelective(record);
         long jobId = record.getJobId();
 
         // 2. insert to cache
-        JobEntry jobEntry = new JobEntry(record, new ArrayList<ScheduleExpression>(), new HashMap<Long, JobDependencyEntry>());
+        JobEntry jobEntry = new JobEntry(record, new ArrayList<>(), new HashMap<>());
         metaStore.put(jobId, jobEntry);
 
         return jobId;
@@ -98,12 +99,11 @@ public class JobService {
         // 1. update to DB
         jobMapper.updateByPrimaryKeySelective(record);
 
-        long jobId = record.getJobId();
-        Job newRecord = jobMapper.selectByPrimaryKey(jobId);
-
         // 2. update to cache
+        long jobId = record.getJobId();
         JobEntry jobEntry = get(jobId);
         if (jobEntry != null) {
+            Job newRecord = jobMapper.selectByPrimaryKey(jobId);
             jobEntry.setJob(newRecord);
         }
     }
@@ -111,13 +111,6 @@ public class JobService {
     public void deleteJob(long jobId) {
         jobMapper.deleteByPrimaryKey(jobId);
         metaStore.remove(jobId);
-    }
-
-    @VisibleForTesting
-    public void deleteJobAndRelation(long jobId) {
-        deleteJob(jobId);
-        deleteJobDependByPreJob(jobId);
-        deleteScheduleExpression(jobId);
     }
 
     public JobScheduleExpression getScheduleExpressionByJobId(long jobId) {
@@ -211,10 +204,6 @@ public class JobService {
         jobEntry.removeDependency(key.getPreJobId());
     }
 
-    /**
-     * remove job depend where preJobId=preJobId
-     * @param jobId
-     */
     public void deleteJobDependByPreJob(long preJobId) {
         JobDependExample jobDependExample = new JobDependExample();
         jobDependExample.createCriteria().andPreJobIdEqualTo(preJobId);
@@ -245,7 +234,7 @@ public class JobService {
         return metaStore.get(jobId);
     }
 
-    public Map<Long, JobEntry> getMetaStore(){
+    public Map<Long, JobEntry> getMetaStore() {
         return metaStore;
     }
 
@@ -260,8 +249,7 @@ public class JobService {
         Date startDate = job.getActiveStartDate();
         Date endDate = job.getActiveEndDate();
         Date now = new Date();
-        if ((startDate == null || now.after(startDate)) &&
-                (endDate == null || now.before(endDate))) {
+        if ((startDate == null || now.after(startDate)) && (endDate == null || now.before(endDate))) {
             return true;
         } else {
             return false;
@@ -289,7 +277,8 @@ public class JobService {
     /**
      * 读取metaData
      */
-    private void loadMetaDataFromDB(){
+    @Transactional
+    private void loadMetaDataFromDB() {
         List<Job> jobs = getNotDeletedJobs();
         List<JobScheduleExpression> scheduleExpressions = jobScheduleExpressionMapper.selectByExample(new JobScheduleExpressionExample());
         Multimap<Long, ScheduleExpression> scheduleExpressionMap = ArrayListMultimap.create();
@@ -306,13 +295,13 @@ public class JobService {
                 scheduleExpression = new FixedDelayExpression(jobScheduleExpression.getExpression());
             } else if (expressionType == ScheduleExpressionType.ISO8601.getValue()) {
                 scheduleExpression = new ISO8601Expression(jobScheduleExpression.getExpression());
-            }else{
-                LOGGER.warn("ExpressionType is undefined. id={};type={}",jobId,expressionType);
+            } else {
+                LOGGER.warn("ExpressionType is undefined. id={};type={}", jobId, expressionType);
                 continue;
             }
 
             if (!scheduleExpression.isValid()) {
-                LOGGER.warn("expression value is invalid. id={};value={}",jobId,scheduleExpression.toString());
+                LOGGER.warn("expression value is invalid. id={};value={}", jobId, scheduleExpression.toString());
                 continue;
             }
 
@@ -340,7 +329,7 @@ public class JobService {
             }
 
             // 初始化 JobMetaStore
-            metaStore.put(job.getJobId(), new JobEntry(job,jobScheduleExpressions, dependencies));
+            metaStore.put(job.getJobId(), new JobEntry(job, jobScheduleExpressions, dependencies));
         }
     }
 
@@ -376,7 +365,7 @@ public class JobService {
         if (offsetStrategy != null) {
             dependencyExpression = new TimeOffsetExpression(offsetStrategy);
             if (!dependencyExpression.isValid()) {
-                LOGGER.warn("dependency expression is invalid. id={}; value={}",jobId,dependencyExpression.toString());
+                LOGGER.warn("dependency expression is invalid. id={}; value={}", jobId, dependencyExpression.toString());
                 return jobDependencyEntry;
             }
         }
@@ -384,11 +373,19 @@ public class JobService {
         // 检查依赖策略表达式是否有效
         DependencyStrategyExpression dependencyStrategyExpression = new DefaultDependencyStrategyExpression(commonStrategyStr);
         if (!dependencyStrategyExpression.isValid()) {
-            LOGGER.warn("dependency strategy is invalid. id={}; value={}",jobId,dependencyStrategyExpression.toString());
+            LOGGER.warn("dependency strategy is invalid. id={}; value={}", jobId, dependencyStrategyExpression.toString());
             return jobDependencyEntry;
         }
 
         jobDependencyEntry = new JobDependencyEntry(dependencyExpression, dependencyStrategyExpression);
         return jobDependencyEntry;
     }
+
+    @VisibleForTesting
+    public void deleteJobAndRelation(long jobId) {
+        deleteJob(jobId);
+        deleteJobDependByPreJob(jobId);
+        deleteScheduleExpression(jobId);
+    }
+
 }

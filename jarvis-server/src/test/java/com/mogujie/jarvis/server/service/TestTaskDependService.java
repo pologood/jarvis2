@@ -23,10 +23,12 @@ public class TestTaskDependService {
     @Autowired
     private TaskDependService taskDependService;
 
+    @Autowired IDService idService;
+
     @Test
     public void testStoreLoadParent() {
 
-        long taskId = 1;
+        long taskId = idService.getNextTaskId();
         Map<Long, List<Long>> write = new HashMap<>();
         write.put(100L, Arrays.asList(101L, 102L, 103L));
         write.put(200L, Arrays.asList(201L, 202L, 203L));

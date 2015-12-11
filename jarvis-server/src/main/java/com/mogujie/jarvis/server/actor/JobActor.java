@@ -16,15 +16,18 @@ import java.util.Set;
 
 import javax.inject.Named;
 
-import com.mogujie.jarvis.core.domain.*;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.transaction.annotation.Transactional;
 
-import akka.actor.UntypedActor;
-
 import com.google.common.collect.Sets;
+import com.mogujie.jarvis.core.domain.ActorEntry;
+import com.mogujie.jarvis.core.domain.JobFlag;
+import com.mogujie.jarvis.core.domain.JobRelationType;
+import com.mogujie.jarvis.core.domain.MessageType;
+import com.mogujie.jarvis.core.domain.OperationMode;
+import com.mogujie.jarvis.core.domain.Pair;
 import com.mogujie.jarvis.core.exeception.JobScheduleException;
 import com.mogujie.jarvis.core.expression.ScheduleExpressionType;
 import com.mogujie.jarvis.dto.generate.Job;
@@ -50,6 +53,8 @@ import com.mogujie.jarvis.server.scheduler.time.TimeScheduler;
 import com.mogujie.jarvis.server.scheduler.time.TimeSchedulerFactory;
 import com.mogujie.jarvis.server.service.ConvertValidService;
 import com.mogujie.jarvis.server.service.JobService;
+
+import akka.actor.UntypedActor;
 
 /**
  * @author guangming
@@ -233,6 +238,7 @@ public class JobActor extends UntypedActor {
         }
     }
 
+    @Transactional
     private void modifyDependency(RestModifyJobRequest msg) throws Exception {
         if (msg.getDependencyEntryList() == null || msg.getDependencyEntryList().isEmpty()) {
             return;
@@ -299,10 +305,7 @@ public class JobActor extends UntypedActor {
                 relations = dagScheduler.getJobGraph().getChildren(jobId);
             }
             for (Pair<Long, JobFlag> relation : relations) {
-                JobFlagEntry entry = JobFlagEntry.newBuilder()
-                        .setJobId(relation.getFirst())
-                        .setJobFlag(relation.getSecond().getValue())
-                        .build();
+                JobFlagEntry entry = JobFlagEntry.newBuilder().setJobId(relation.getFirst()).setJobFlag(relation.getSecond().getValue()).build();
                 builder.addJobFlagEntry(entry);
             }
             response = builder.setSuccess(true).build();

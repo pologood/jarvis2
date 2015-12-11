@@ -10,20 +10,14 @@
 	<artifactId>jarvis-worker</artifactId>
 	<name>jarvis-worker</name>
 
-	<properties>
-		<build.finalname>jarvis-worker</build.finalname>
-	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>com.mogujie.jarvis</groupId>
 			<artifactId>jarvis-core</artifactId>
-			<version>${project.version}</version>
 		</dependency>
         <dependency>
             <groupId>com.mogujie.jarvis</groupId>
             <artifactId>jarvis-jobs</artifactId>
-            <version>${project.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>
@@ -34,7 +28,6 @@
 		<dependency>
 			<groupId>com.mogujie.jarvis</groupId>
 			<artifactId>jarvis-protocol</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.fusesource</groupId>
@@ -53,7 +46,4 @@
         </dependency>
 	</dependencies>
 
-	<build>
-		<finalName>${build.finalname}</finalName>
-	</build>
 </project>

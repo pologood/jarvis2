@@ -10,7 +10,6 @@
 	<artifactId>jarvis-jobs</artifactId>
 
 	<properties>
-		<build.finalname>jarvis-jobs</build.finalname>
 		<hadoop.version>2.7.1</hadoop.version>
 	</properties>
 
@@ -18,17 +17,16 @@
 		<dependency>
 			<groupId>com.mogujie.jarvis</groupId>
 			<artifactId>jarvis-core</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.facebook.presto</groupId>
 			<artifactId>presto-jdbc</artifactId>
-			<version>0.115</version>
+			<version>0.128</version>
 		</dependency>
 		<dependency>
 			<groupId>com.github.stuxuhai</groupId>
 			<artifactId>jpinyin</artifactId>
-			<version>1.0</version>
+			<version>1.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.hadoop</groupId>
@@ -42,7 +40,4 @@
 		</dependency>
 	</dependencies>
 
-	<build>
-		<finalName>${build.finalname}</finalName>
-	</build>
 </project>

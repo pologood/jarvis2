@@ -1,5 +1,6 @@
 /*
- * 蘑菇街 Inc. Copyright (c) 2010-2015 All Rights Reserved.
+ * 蘑菇街 Inc.
+ * Copyright (c) 2010-2015 All Rights Reserved.
  *
  * Author: wuya Create Date: 2015年11月25日 下午1:20:18
  */

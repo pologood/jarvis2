@@ -19,9 +19,15 @@ import java.util.Set;
 
 import javax.inject.Named;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.transaction.annotation.Transactional;
+
+import akka.actor.ActorSelection;
+import akka.actor.UntypedActor;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Range;
@@ -76,9 +82,6 @@ import com.mogujie.jarvis.server.service.TaskDependService;
 import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.FutureUtils;
 
-import akka.actor.ActorSelection;
-import akka.actor.UntypedActor;
-
 /**
  * @author guangming
  *
@@ -100,8 +103,9 @@ public class TaskActor extends UntypedActor {
     private JobGraph jobGraph = JobGraph.INSTANCE;
     private TaskGraph taskGraph = TaskGraph.INSTANCE;
     private TaskQueue taskQueue = TaskQueue.INSTANCE;
-
     private JobSchedulerController controller = JobSchedulerController.getInstance();
+
+    private static final Logger LOGGER = LogManager.getLogger();
 
     @Override
     public void onReceive(Object obj) throws Exception {
@@ -134,6 +138,7 @@ public class TaskActor extends UntypedActor {
      * @param msg
      */
     private void killTask(RestServerKillTaskRequest msg) throws Exception {
+        LOGGER.info("start killTask");
         ServerKillTaskResponse response = null;
         String fullId = msg.getFullId();
         long taskId = IdUtils.parse(fullId, IdType.TASK_ID);
@@ -155,6 +160,7 @@ public class TaskActor extends UntypedActor {
      * @param msg
      */
     private void retryTask(RestServerRetryTaskRequest msg) {
+        LOGGER.info("start retryTask");
         controller.notify(new RetryTaskEvent(msg.getTaskId()));
         ServerRetryTaskResponse response = ServerRetryTaskResponse.newBuilder().setSuccess(true).build();
         getSender().tell(response, getSelf());
@@ -165,7 +171,9 @@ public class TaskActor extends UntypedActor {
      *
      * @param msg
      */
+    @Transactional
     private void manualRerunTask(RestServerManualRerunTaskRequest msg) {
+        LOGGER.info("start manualRerunTask");
         List<Long> jobIdList = msg.getJobIdList();
         List<Long> taskIdList = new ArrayList<Long>();
         Date startDate = new Date(msg.getStartTime());
@@ -196,8 +204,9 @@ public class TaskActor extends UntypedActor {
                 Map<Long, List<Long>> dependTaskIdMap = Maps.newHashMap();
                 Map<Long, JobDependencyEntry> dependencyMap = jobService.get(jobId).getDependencies();
                 if (dependencyMap != null) {
-                    for (long preJobId : dependencyMap.keySet()) {
-                        JobDependencyEntry dependencyEntry = dependencyMap.get(preJobId);
+                    for (Entry<Long, JobDependencyEntry> entry : dependencyMap.entrySet()) {
+                        long preJobId = entry.getKey();
+                        JobDependencyEntry dependencyEntry = entry.getValue();
                         DependencyExpression dependencyExpression = dependencyEntry.getDependencyExpression();
                         List<Long> dependTaskIds = taskService.getDependTaskIds(jobId, preJobId, scheduleTime, dependencyExpression);
                         dependTaskIdMap.put(preJobId, dependTaskIds);
@@ -229,8 +238,8 @@ public class TaskActor extends UntypedActor {
         // 5.如果需要重跑后续任务，触发后续依赖任务
         if (runChild) {
             List<ExecutionPlanEntry> sortedPlanList = new ArrayList<ExecutionPlanEntry>();
-            for (long jobId : planMap.keySet()) {
-                List<ExecutionPlanEntry> planList = planMap.get(jobId);
+            for (Entry<Long, List<ExecutionPlanEntry>> entry : planMap.entrySet()) {
+                List<ExecutionPlanEntry> planList = entry.getValue();
                 for (ExecutionPlanEntry planEntry : planList) {
                     long taskId = planEntry.getTaskId();
                     List<DAGTask> children = taskGraph.getChildren(taskId);
@@ -264,6 +273,7 @@ public class TaskActor extends UntypedActor {
      * @param msg
      */
     private void submitTask(RestServerSubmitTaskRequest msg) {
+        LOGGER.info("start submitTask");
         ServerSubmitTaskResponse response;
         try {
             TaskDetail taskDetail = createRunOnceTask(msg);
@@ -283,6 +293,7 @@ public class TaskActor extends UntypedActor {
      * @param msg
      */
     private void modifyTaskStatus(RestServerModifyTaskStatusRequest msg) {
+        LOGGER.info("start modifyTaskStatus");
         long taskId = msg.getTaskId();
         TaskStatus status = TaskStatus.getInstance(msg.getStatus());
         Event event = new UnhandleEvent();
@@ -308,7 +319,7 @@ public class TaskActor extends UntypedActor {
      * @param msg
      */
     private void queryTaskRelation(RestServerQueryTaskRelationRequest msg) throws Exception {
-
+        LOGGER.info("start queryTaskRelation");
         ServerQueryTaskRelationResponse response;
         try {
             long taskId = msg.getTaskId();

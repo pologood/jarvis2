@@ -8,10 +8,6 @@
 
 package com.mogujie.jarvis.core.domain;
 
-/**
- * 
- *
- */
 public enum MessageType {
 
     GENERAL(1), SYSTEM(2);
