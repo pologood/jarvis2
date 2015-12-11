@@ -317,8 +317,8 @@
                 <directory>src/main/resources</directory>
                 <!-- 资源根目录排除各环境的配置，使用单独的资源目录来指定 -->
                 <excludes>
-                    <exclude>production/*</exclude>
-                    <exclude>development-one/*</exclude>
+                    <exclude>development/*</exclude>
+                    <exclude>production-one/*</exclude>
                     <exclude>test/*</exclude>
                 </excludes>
             </resource>
