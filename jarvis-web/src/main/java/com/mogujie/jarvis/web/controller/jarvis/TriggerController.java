@@ -15,7 +15,7 @@ import java.util.List;
  * Created by hejian on 15/9/15.
  */
 @Controller
-@RequestMapping("/jarvis/trigger")
+@RequestMapping("/trigger")
 public class TriggerController extends BaseController{
 
     @Autowired

@@ -8,7 +8,7 @@ $(function(){
 
 
     //初始化作业类型内容
-    $.getJSON("/assets/jarvis/json/jobType.json",function(data){
+    $.getJSON(contextPath+"/assets/json/jobType.json",function(data){
         $("#jobType").select2({
             data:data,
             width:'100%'
@@ -17,7 +17,7 @@ $(function(){
     //select采用select2 实现
     $(".input-group select").select2({width:'100%'});
     $.ajaxSettings.async = false;
-    $.getJSON("/assets/jarvis/json/taskStatus.json",function(data){
+    $.getJSON(contextPath+"/assets/json/taskStatus.json",function(data){
         taskStatusJson=data;
         $(data).each(function(index,content){
             var value=content.id;
@@ -50,7 +50,7 @@ $(function(){
 
     $("#jobId").select2({
         ajax: {
-            url: "/jarvis/api/job/getSimilarJobIds",
+            url: contextPath+"/api/job/getSimilarJobIds",
             dataType: 'json',
             delay: 250,
             data: function (params) {
@@ -75,7 +75,7 @@ $(function(){
     });
     $("#jobName").select2({
         ajax: {
-            url: "/jarvis/api/job/getSimilarJobNames",
+            url: contextPath+"/api/job/getSimilarJobNames",
             dataType: 'json',
             delay: 250,
             data: function (params) {
@@ -172,7 +172,7 @@ function initData(){
         pagination:true,
         sidePagination:'server',
         search:false,
-        url:'/jarvis/api/task/getTasks',
+        url:contextPath+'/api/task/getTasks',
         queryParams:function(params) {
             for(var key in queryParams){
                 var value = queryParams[key];
@@ -320,7 +320,7 @@ function operateFormatter(value, row, index) {
     var taskId=row["taskId"];
     //console.log(jobId);
     var result= [
-        '<a class="edit" href="/jarvis/task/detail?taskId='+taskId+'" title="查看执行详情" target="_blank">',
+        '<a class="edit" href="'+contextPath+'/task/detail?taskId='+taskId+'" title="查看执行详情" target="_blank">',
         '<i class="glyphicon glyphicon-eye-open"></i>',
         '</a>  '
     ].join('');

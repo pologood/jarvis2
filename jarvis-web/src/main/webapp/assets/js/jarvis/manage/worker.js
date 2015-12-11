@@ -6,11 +6,11 @@ $(function(){
     initWorkerGroupData();
 
     $.ajaxSettings.async = false;
-    $.getJSON("/assets/jarvis/json/workerStatus.json",function(data){
+    $.getJSON(contextPath+"/assets/json/workerStatus.json",function(data){
         workerStatusJson=data;
     });
 
-    $.getJSON("/assets/jarvis/json/workerGroupStatus.json",function(data){
+    $.getJSON(contextPath+"/assets/json/workerGroupStatus.json",function(data){
         workerGroupStatusJson=data;
     });
     $.ajaxSettings.async = true;
@@ -98,7 +98,7 @@ function initWorkerGroupData(){
         pagination:true,
         sidePagination:'server',
         search:false,
-        url:'/jarvis/api/worker/getWorkerGroups',
+        url:contextPath+'/api/worker/getWorkerGroups',
         queryParams:function(params) {
             for(var key in queryParams){
                 var value = queryParams[key];
@@ -157,7 +157,7 @@ function operateWorkerGroupFormatter(value, row, index) {
     var authKey=row["authKey"];
     //console.log(jobId);
     var result= [
-        '<a class="edit" href="/jarvis/manage/workerGroupAddOrEdit?id='+id+'" title="编辑WorkerGroup信息" target="_blank">',
+        '<a class="edit" href="'+contextPath+'/manage/workerGroupAddOrEdit?id='+id+'" title="编辑WorkerGroup信息" target="_blank">',
         '<i class="glyphicon glyphicon-edit"></i>',
         '</a>  '
 

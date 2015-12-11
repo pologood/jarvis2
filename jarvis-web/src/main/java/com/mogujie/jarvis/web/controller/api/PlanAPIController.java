@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * Created by hejian on 15/10/21.
  */
 @Controller
-@RequestMapping(value = "/jarvis/api/plan")
+@RequestMapping(value = "/api/plan")
 public class PlanAPIController {
     @Autowired
     PlanService planService;

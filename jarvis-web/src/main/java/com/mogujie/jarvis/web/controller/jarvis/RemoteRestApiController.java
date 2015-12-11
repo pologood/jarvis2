@@ -27,7 +27,7 @@ import java.util.Map;
  * Created by hejian on 15/10/12.
  */
 @Controller
-@RequestMapping("/jarvis/remote")
+@RequestMapping("/remote")
 public class RemoteRestApiController extends BaseController {
     String domain="http://10.0.55.120:8080";
     /*

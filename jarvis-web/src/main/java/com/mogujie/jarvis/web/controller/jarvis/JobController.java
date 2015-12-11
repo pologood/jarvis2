@@ -24,7 +24,7 @@ import java.util.Map;
  * Created by hejian on 15/9/15.
  */
 @Controller
-@RequestMapping("/jarvis/job")
+@RequestMapping("/job")
 public class JobController extends BaseController{
 
     @Autowired

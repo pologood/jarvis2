@@ -1,11 +1,11 @@
-var dependencyAPIUrl="/jarvis/api/plan/getDependDetail?taskId=";
-var dependencyUrl="/jarvis/plan/dependency?taskId=";
+var dependencyAPIUrl=contextPath+"/api/plan/getDependDetail?taskId=";
+var dependencyUrl=contextPath+"/plan/dependency?taskId=";
 var url=dependencyAPIUrl+taskId;
 
 
 $(function(){
     $.ajaxSettings.async=false;
-    $.getJSON("/assets/jarvis/json/taskStatusColor.json",function(data){
+    $.getJSON(contextPath+"/assets/json/taskStatusColor.json",function(data){
         stautsColor=data;
     });
     $.ajaxSettings.async=true;

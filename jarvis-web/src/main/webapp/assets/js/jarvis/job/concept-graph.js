@@ -81,7 +81,7 @@ var CollapsibleTree = function(elt,w,h) {
                 .attr("transform", function(d) { return "translate(" + source.x0 + "," + source.y0 + ")"; })
                 .on("click", function(d) {
                     console.log(d);
-                    window.location.href="/jarvis/job/dependency?jobId="+ d.id;
+                    window.location.href=contextPath+"/job/dependency?jobId="+ d.id;
                     //that.toggle(d); that.updateBoth(d);
                 });
 

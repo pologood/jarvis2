@@ -25,32 +25,32 @@
 
 <a href="javascript:void(0);" class="cd-top">Top</a>
 
-<script type="text/javascript" src="/assets/jarvis/plugins/bootstrap-3.3.5/js/bootstrap.min.js" charset="UTF-8"></script>
-<script type="text/javascript" src="/assets/jarvis/js/login.js" charset="UTF-8"></script>
-<script type="text/javascript" src="/assets/jarvis/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js" charset="UTF-8"></script>
-<script type="text/javascript" src="/assets/jarvis/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
-<script type="text/javascript" src="/assets/jarvis/plugins/bootstrap-switch/js/bootstrap-switch.min.js" charset="UTF-8"></script>
-<script type="text/javascript" src="/assets/jarvis/js/common.js" charset="UTF-8"></script>
-<script type="text/javascript" src="/assets/jarvis/plugins/back-to-top/js/main.js" charset="UTF-8"></script>
-<script type="text/javascript" src="/assets/jarvis/js/cart.js" charset="UTF-8"></script>
-<script type="text/javascript" src="/assets/jarvis/js/pager.js" charset="UTF-8"></script>
-<script type="text/javascript" src="/assets/jarvis/plugins/select2/4.0.1/js/select2.min.js"></script>
-<script type="text/javascript" src="/assets/jarvis/plugins/select2/4.0.1/js/i18n/zh-CN.js"></script>
-<script type="text/javascript" src="/assets/jarvis/plugins/form/jquery.form.min.js" charset="UTF-8"></script>
-<script type="text/javascript" src="/assets/jarvis/plugins/qtip2/jquery.qtip.min.js"></script>
-<script type="text/javascript" src="/assets/jarvis/plugins/pnotify/pnotify.custom.min.js" charset="UTF-8"></script>
-<script type="text/javascript" src="/assets/jarvis/plugins/echarts-2.2.7/echarts-all.js" charset="UTF-8"></script>
-<script type="text/javascript" src="/assets/jarvis/plugins/bootstrap-table/bootstrap-table.min.js" charset="UTF-8"></script>
-<script type="text/javascript" src="/assets/jarvis/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js" charset="UTF-8"></script>
-<script type="text/javascript" src="/assets/jarvis/plugins/bootstrap-table/extensions/export/bootstrap-table-export.min.js" charset="UTF-8"></script>
-<script type="text/javascript" src="/assets/jarvis/plugins/tableExport.jquery.plugin/tableExport.js" charset="UTF-8"></script>
-<script type="text/javascript" src="/assets/jarvis/plugins/jstree/3.2.1/jstree.min.js" charset="UTF-8"></script>
-<script type="text/javascript" src="/assets/jarvis/plugins/momentjs/moment.js" charset="UTF-8"></script>
-<script type="text/javascript" src="/assets/jarvis/plugins/d3/d3.min.js" charset="UTF-8"></script>
-<script type="text/javascript" src="/assets/jarvis/plugins/d3/d3.layout.js" charset="UTF-8"></script>
+<script type="text/javascript" src="${contextPath}/plugins/bootstrap-3.3.5/js/bootstrap.min.js" charset="UTF-8"></script>
+<script type="text/javascript" src="${contextPath}/js/login.js" charset="UTF-8"></script>
+<script type="text/javascript" src="${contextPath}/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js" charset="UTF-8"></script>
+<script type="text/javascript" src="${contextPath}/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+<script type="text/javascript" src="${contextPath}/plugins/bootstrap-switch/js/bootstrap-switch.min.js" charset="UTF-8"></script>
+<script type="text/javascript" src="${contextPath}/js/common.js" charset="UTF-8"></script>
+<script type="text/javascript" src="${contextPath}/plugins/back-to-top/js/main.js" charset="UTF-8"></script>
+<script type="text/javascript" src="${contextPath}/js/cart.js" charset="UTF-8"></script>
+<script type="text/javascript" src="${contextPath}/js/pager.js" charset="UTF-8"></script>
+<script type="text/javascript" src="${contextPath}/plugins/select2/4.0.1/js/select2.min.js"></script>
+<script type="text/javascript" src="${contextPath}/plugins/select2/4.0.1/js/i18n/zh-CN.js"></script>
+<script type="text/javascript" src="${contextPath}/plugins/form/jquery.form.min.js" charset="UTF-8"></script>
+<script type="text/javascript" src="${contextPath}/plugins/qtip2/jquery.qtip.min.js"></script>
+<script type="text/javascript" src="${contextPath}/plugins/pnotify/pnotify.custom.min.js" charset="UTF-8"></script>
+<script type="text/javascript" src="${contextPath}/plugins/echarts-2.2.7/echarts-all.js" charset="UTF-8"></script>
+<script type="text/javascript" src="${contextPath}/plugins/bootstrap-table/bootstrap-table.min.js" charset="UTF-8"></script>
+<script type="text/javascript" src="${contextPath}/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js" charset="UTF-8"></script>
+<script type="text/javascript" src="${contextPath}/plugins/bootstrap-table/extensions/export/bootstrap-table-export.min.js" charset="UTF-8"></script>
+<script type="text/javascript" src="${contextPath}/plugins/tableExport.jquery.plugin/tableExport.js" charset="UTF-8"></script>
+<script type="text/javascript" src="${contextPath}/plugins/jstree/3.2.1/jstree.min.js" charset="UTF-8"></script>
+<script type="text/javascript" src="${contextPath}/plugins/momentjs/moment.js" charset="UTF-8"></script>
+<script type="text/javascript" src="${contextPath}/plugins/d3/d3.min.js" charset="UTF-8"></script>
+<script type="text/javascript" src="${contextPath}/plugins/d3/d3.layout.js" charset="UTF-8"></script>
 
 
-<script type="text/javascript" src="/assets/jarvis/js/jarvis.js" charset="UTF-8"></script>
+<script type="text/javascript" src="${contextPath}/js/jarvis.js" charset="UTF-8"></script>
 
 </body>
 </html>

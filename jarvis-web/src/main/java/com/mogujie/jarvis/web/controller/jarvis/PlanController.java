@@ -19,7 +19,7 @@ import java.util.List;
  * Created by hejian on 15/9/15.
  */
 @Controller
-@RequestMapping("/jarvis/plan")
+@RequestMapping("/plan")
 public class PlanController extends BaseController{
     @Autowired
     JobService jobService;

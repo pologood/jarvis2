@@ -3,7 +3,7 @@ var testNum=/^[0-9]*$/;
 
 $(function(){
     //初始化作业类型内容
-    $.getJSON("/assets/jarvis/json/jobType.json",function(data){
+    $.getJSON(contextPath+"/assets/json/jobType.json",function(data){
         var newData=new Array();
         $(data).each(function(i,c){
             if(this.id!='all'){
@@ -22,7 +22,7 @@ $(function(){
 
 
 
-    $.getJSON("/assets/jarvis/json/jobPriority.json",function(data){
+    $.getJSON(contextPath+"/assets/json/jobPriority.json",function(data){
         var newData=new Array();
         $(data).each(function(i,c){
             if(this.id!='all'){
@@ -43,7 +43,7 @@ $(function(){
 
 
     //初始化表达式类型
-    $.getJSON("/assets/jarvis/json/expressionType.json",function(data){
+    $.getJSON(contextPath+"/assets/json/expressionType.json",function(data){
         var newData=new Array();
         $(data).each(function(i,c){
             if(this.id!='all'){
@@ -83,7 +83,7 @@ $(function(){
     });
 
     $.ajaxSettings.async=false;
-    $.getJSON("/assets/jarvis/json/commonStrategy.json",function(data){
+    $.getJSON(contextPath+"/assets/json/commonStrategy.json",function(data){
         var newData=new Array();
         $(data).each(function(i,c){
             if(this.id!='all'){
@@ -414,7 +414,7 @@ function checkJobName(thisTag){
 
 
     $.ajax({
-        url:'/jarvis/job/checkJobName',
+        url:contextPath+'/job/checkJobName',
         type:'POST',
         async:false,
         data:{jobId:jobId,jobName:jobName},

@@ -1,4 +1,4 @@
-var dependencyUrl="/jarvis/api/job/getTwoDirectionTree?jobId=";
+var dependencyUrl=contextPath+"/api/job/getTwoDirectionTree?jobId=";
 var url=dependencyUrl+jobVo.jobId;
 
 $(function(){

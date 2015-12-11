@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * Created by hejian on 15/9/28.
  */
 @Controller
-@RequestMapping(value = "/jarvis/api/worker")
+@RequestMapping(value = "/api/worker")
 public class WorkerAPIController {
     @Autowired
     WorkerService workerService;

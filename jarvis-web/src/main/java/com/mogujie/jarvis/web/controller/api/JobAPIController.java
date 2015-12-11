@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * Created by hejian on 15/9/15.
  */
 @Controller
-@RequestMapping(value = "/jarvis/api/job")
+@RequestMapping(value = "/api/job")
 public class JobAPIController {
 
     @Autowired

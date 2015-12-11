@@ -18,7 +18,7 @@
         <div class="col-md-6">
             <nav>
                 <ol class="cd-breadcrumb triangle">
-                    <li><a href="/jarvis/">首页</a></li>
+                    <li><a href="${contextPath}/">首页</a></li>
                     <li class="current"><em>重跑任务</em></li>
                 </ol>
             </nav>
@@ -93,4 +93,4 @@
 <jsp:include page="../common/footer.jsp">
     <jsp:param name="menuMap" value="${menuMap}"/>
 </jsp:include>
-<script type="text/javascript" src="/assets/jarvis/js/jarvis/trigger/trigger.js"></script>
+<script type="text/javascript" src="${contextPath}/js/jarvis/trigger/trigger.js"></script>

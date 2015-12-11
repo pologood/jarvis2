@@ -23,7 +23,7 @@ import java.util.UUID;
  * Created by hejian on 15/9/15.
  */
 @Controller
-@RequestMapping("/jarvis/manage")
+@RequestMapping("/manage")
 public class ManageController extends BaseController {
 
     @Autowired

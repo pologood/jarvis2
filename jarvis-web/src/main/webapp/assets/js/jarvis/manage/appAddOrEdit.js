@@ -36,7 +36,7 @@ function checkAppName(){
     var appName=$("#appName").val();
     var flag=true;
     $.ajax({
-        url:'/jarvis/manage/checkAppName',
+        url:contextPath+'/manage/checkAppName',
         type:'POST',
         async:false,
         data:{appId:appId,appName:appName},

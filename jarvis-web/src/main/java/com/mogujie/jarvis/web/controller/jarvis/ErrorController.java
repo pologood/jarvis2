@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class ErrorController extends BaseController{
 
-    @RequestMapping(value = "/jarvis/error", method = RequestMethod.GET)
+    @RequestMapping(value = "/error", method = RequestMethod.GET)
     public String error(ModelMap modelMap,String message){
         modelMap.put("message",message);
         return "common/error";

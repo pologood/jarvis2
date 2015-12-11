@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * Created by hejian on 15/9/24.
  */
 @Controller
-@RequestMapping(value = "/jarvis/api/app")
+@RequestMapping(value = "/api/app")
 public class AppAPIController {
     @Autowired
     AppService appService;

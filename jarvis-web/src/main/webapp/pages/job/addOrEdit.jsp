@@ -16,8 +16,8 @@
         <div class="col-md-6">
             <nav>
                 <ol class="cd-breadcrumb triangle">
-                    <li><a href="/jarvis/">首页</a></li>
-                    <li ><a href="/jarvis/job">任务管理</a></li>
+                    <li><a href="${contextPath}/">首页</a></li>
+                    <li ><a href="${contextPath}/job">任务管理</a></li>
                     <c:choose>
                         <c:when test="${jobVo!=null}">
                             <li class="current"><em>编辑任务</em></li>
@@ -352,6 +352,6 @@
     </c:choose>
 </script>
 
-<script type="text/javascript" src="/assets/jarvis/js/jarvis/job/addOrEdit.js"></script>
+<script type="text/javascript" src="${contextPath}/js/jarvis/job/addOrEdit.js"></script>
 
 

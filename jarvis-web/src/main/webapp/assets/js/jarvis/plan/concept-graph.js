@@ -86,11 +86,11 @@ var CollapsibleTree = function(elt,w,h) {
                 .style("fill", function(d) { return getColor(d) })
                 .on("click", function(d) {
                     if(d.taskId!=null){
-                        window.location.href="/jarvis/plan/dependency?taskId="+ d.taskId;
+                        window.location.href=contextPath+"/plan/dependency?taskId="+ d.taskId;
                     }
                     else{
                          if(d.taskList.length==1){
-                            window.location.href="/jarvis/plan/dependency?taskId="+ d.taskList[0].taskId;
+                            window.location.href=contextPath+"/plan/dependency?taskId="+ d.taskList[0].taskId;
                          }
                          else{
                              chooseTask(d);

@@ -3,7 +3,7 @@ var jobFlagJson=null;
 var jobPriorityJson=null;
 $(function(){
     $.ajaxSettings.async = false;
-    $.getJSON("/assets/jarvis/json/jobType.json",function(data){
+    $.getJSON(contextPath+"/assets/json/jobType.json",function(data){
         jobTypeJson=data;
         $("#jobType").select2({
             data:data,
@@ -11,7 +11,7 @@ $(function(){
         });
     });
 
-    $.getJSON("/assets/jarvis/json/jobFlag.json",function(data){
+    $.getJSON(contextPath+"/assets/json/jobFlag.json",function(data){
         jobFlagJson=data;
         $("#jobFlag").select2({
             data:data,
@@ -19,7 +19,7 @@ $(function(){
         });
     });
 
-    $.getJSON("/assets/jarvis/json/jobPriority.json",function(data){
+    $.getJSON(contextPath+"/assets/json/jobPriority.json",function(data){
         jobPriorityJson=data;
         $("#jobPriority").select2({
             data:data,
@@ -34,7 +34,7 @@ $(function(){
 
     $("#jobId").select2({
         ajax: {
-            url: "/jarvis/api/job/getSimilarJobIds",
+            url: contextPath+"/api/job/getSimilarJobIds",
             dataType: 'json',
             delay: 250,
             data: function (params) {
@@ -60,7 +60,7 @@ $(function(){
 
     $("#jobName").select2({
         ajax: {
-            url: "/jarvis/api/job/getSimilarJobNames",
+            url: contextPath+"/api/job/getSimilarJobNames",
             dataType: 'json',
             delay: 250,
             data: function (params) {
@@ -149,7 +149,7 @@ function initData(){
         pagination:true,
         sidePagination:'server',
         search:false,
-        url:'/jarvis/api/job/getJobs',
+        url:contextPath+'/api/job/getJobs',
         queryParams:function(params) {
             for(var key in queryParams){
                 var value = queryParams[key];
@@ -289,10 +289,10 @@ function operateFormatter(value, row, index) {
     var operateFlag=row["jobFlag"];
     //console.log(jobId);
     var result= [
-        '<a  href="/jarvis/job/addOrEdit?jobId='+jobId+'" title="编辑任务信息" target="_blank">',
+        '<a  href="'+contextPath+'/job/addOrEdit?jobId='+jobId+'" title="编辑任务信息" target="_blank">',
         '<i class="glyphicon glyphicon-edit"></i>',
         '</a>  ',
-        '<a  href="/jarvis/job/dependency?jobId='+jobId+'" title="查看任务依赖" target="_blank">',
+        '<a  href="'+contextPath+'/job/dependency?jobId='+jobId+'" title="查看任务依赖" target="_blank">',
         '<i class="glyphicon glyphicon-eye-open"></i>',
         '</a>  '
     ].join('');

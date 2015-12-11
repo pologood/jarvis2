@@ -376,8 +376,9 @@
                     <linebreakpos>-1</linebreakpos>
                     <sourceDirectory>src/main/webapp/assets</sourceDirectory>
                     <includes>
-                        <include>**/js/*.js</include>
-                        <include>**/css/*.css</include>
+                        <include>js/**/*.js</include>
+                        <include>js/*.js</include>
+                        <include>css/*.css</include>
                     </includes>
                     <excludes>
                         <exclude>**/*.min.js</exclude>

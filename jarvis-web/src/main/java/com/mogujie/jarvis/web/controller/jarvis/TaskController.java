@@ -23,7 +23,7 @@ import java.util.List;
  * Created by hejian on 15/9/14.
  */
 @Controller
-@RequestMapping("/jarvis/task")
+@RequestMapping("/task")
 public class TaskController extends BaseController {
 
     @Autowired

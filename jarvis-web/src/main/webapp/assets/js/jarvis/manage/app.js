@@ -2,11 +2,11 @@ var appStatusJson=null;
 var appTypeJson=null;
 $(function(){
     $.ajaxSettings.async = false;
-    $.getJSON("/assets/jarvis/json/appStatus.json",function(data){
+    $.getJSON(contextPath+"/assets/json/appStatus.json",function(data){
         appStatusJson=data;
     });
 
-    $.getJSON("/assets/jarvis/json/appType.json",function(data){
+    $.getJSON(contextPath+"/assets/json/appType.json",function(data){
         appTypeJson=data;
     });
     $.ajaxSettings.async = true;
@@ -45,7 +45,7 @@ function initData(){
         pagination:true,
         sidePagination:'server',
         search:false,
-        url:'/jarvis/api/app/getApps',
+        url:contextPath+'/api/app/getApps',
         queryParams:function(params) {
             for(var key in queryParams){
                 var value = queryParams[key];
@@ -79,7 +79,7 @@ function operateFormatter(value, row, index) {
     var appId=row["appId"];
     var status=row["status"];
     var result= [
-        '<a class="edit" href="/jarvis/manage/appAddOrEdit?appId='+appId+'" title="编辑应用信息" target="_blank">',
+        '<a class="edit" href="'+contextPath+'/manage/appAddOrEdit?appId='+appId+'" title="编辑应用信息" target="_blank">',
         '<i class="glyphicon glyphicon-edit"></i>',
         '</a>  '
     ].join('');

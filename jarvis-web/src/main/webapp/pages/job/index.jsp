@@ -15,7 +15,7 @@
         <div class="col-md-6">
             <nav>
                 <ol class="cd-breadcrumb triangle">
-                    <li><a href="/jarvis/">首页</a></li>
+                    <li><a href="${contextPath}/">首页</a></li>
                     <li class="current"><em>任务管理</em></li>
                 </ol>
             </nav>
@@ -127,7 +127,7 @@
     <div class="row top-buffer">
         <div class="col-md-12">
             <div id="add">
-                <a class="btn btn-primary" href="/jarvis/job/addOrEdit" target="_blank">新增任务</a>
+                <a class="btn btn-primary" href="${contextPath}/job/addOrEdit" target="_blank">新增任务</a>
             </div>
             <table id="content" >
 
@@ -153,4 +153,4 @@
     var user='${user.uname}';
 </script>
 
-<script type="text/javascript" src="/assets/jarvis/js/jarvis/job/job.js"></script>
+<script type="text/javascript" src="${contextPath}/js/jarvis/job/job.js"></script>

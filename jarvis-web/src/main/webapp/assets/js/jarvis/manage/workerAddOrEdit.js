@@ -9,7 +9,7 @@ function checkWorkerExist(){
     var port=$("#port").val();
     var flag=true;
     $.ajax({
-        url:'/jarvis/manage/checkWorkerExist',
+        url:contextPath+'/manage/checkWorkerExist',
         type:'POST',
         data:{id:workerId,ip:ip,port:port},
         success:function(data){

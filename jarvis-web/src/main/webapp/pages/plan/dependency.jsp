@@ -24,8 +24,8 @@
         <div class="col-md-6">
             <nav>
                 <ol class="cd-breadcrumb triangle">
-                    <li><a href="/jarvis/">首页</a></li>
-                    <li ><a href="/jarvis/plan">执行计划</a></li>
+                    <li><a href="${contextPath}/">首页</a></li>
+                    <li ><a href="${contextPath}/plan">执行计划</a></li>
                     <li class="current"><em>执行情况</em></li>
                 </ol>
             </nav>
@@ -115,7 +115,7 @@
     var taskId=${taskId};
     var stautsColor={};
 </script>
-<script type="text/javascript" src="/assets/jarvis/js/jarvis/plan/concept-graph.js" charset="UTF-8"></script>
+<script type="text/javascript" src="${contextPath}/js/jarvis/plan/concept-graph.js" charset="UTF-8"></script>
 
-<script type="text/javascript" src="/assets/jarvis/js/jarvis/plan/dependency.js"></script>
+<script type="text/javascript" src="${contextPath}/js/jarvis/plan/dependency.js"></script>
 

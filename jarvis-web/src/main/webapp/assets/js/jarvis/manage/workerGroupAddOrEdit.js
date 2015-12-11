@@ -19,7 +19,7 @@ function checkWorkerGroupName(){
 
     var flag=true;
     $.ajax({
-        url:'/jarvis/manage/checkWorkerGroupName',
+        url:contextPath+'/manage/checkWorkerGroupName',
         type:'POST',
         data:{id:workerGroupId,name:name},
         success:function(data){
