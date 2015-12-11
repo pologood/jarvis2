@@ -10,10 +10,6 @@
 	<artifactId>jarvis-server</artifactId>
 	<name>jarvis-server</name>
 
-	<properties>
-		<build.finalname>jarvis-server</build.finalname>
-	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>com.mogujie.jarvis</groupId>
@@ -88,7 +84,4 @@
 		</dependency>
 	</dependencies>
 
-	<build>
-		<finalName>${build.finalname}</finalName>
-	</build>
 </project>
