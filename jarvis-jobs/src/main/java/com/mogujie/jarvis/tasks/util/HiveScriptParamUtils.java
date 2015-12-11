@@ -4,8 +4,6 @@ import com.google.common.primitives.Ints;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -16,7 +14,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
-
 /**
  * 时间参数解析工具
  */
@@ -24,16 +21,16 @@ public class HiveScriptParamUtils {
     private static final String defaultFormat = "yyyyMMdd";
     private static final String defaultFormatMGD = "yyyyMMdd HHmmss";
 
-    public static String parse(String text){
-        return parse(text,DateTime.now());
+    public static String parse(String text) {
+        return parse(text, DateTime.now());
     }
 
-    public static String parse(String text, String date){
+    public static String parse(String text, String date) {
         DateTime destDate = DateTimeFormat.forPattern("yyyy-MM-dd").parseDateTime(date);
-        return parse(text,destDate);
+        return parse(text, destDate);
     }
 
-    public static String parse(String text, DateTime date){
+    public static String parse(String text, DateTime date) {
         Map<String, String> dates = new HashMap<>();
         Pattern patternYtd = Pattern.compile("\\$YTD\\(.*?\\)");
         Pattern patternMgd = Pattern.compile("\\$MGD\\(.*?\\)");
@@ -54,26 +51,32 @@ public class HiveScriptParamUtils {
     }
 
     private static String getDateStr4YTD(String paramInput, DateTime date) {
-        String format = defaultFormat;
         String params = paramInput.substring(paramInput.indexOf('(') + 1, paramInput.indexOf(')'));
-        if(!params.equals("")){
-            String[] param = params.split(",");
-            if(param.length == 1){
-                if(Ints.tryParse(param[0]) != null){
-                    date = date.plusDays(Integer.parseInt(param[0]));
-                }else{
-                    format =  param[0];
-                }
-            }
-            if(param.length ==2){
-                if(Ints.tryParse(param[0]) != null){
-                    date =  date.plusDays(Integer.parseInt(param[0]));
-                }
-                format =  param[1];
-            }
+        if(params.equals("")){
+            return getDateStr4YTD(0,defaultFormat,date);
         }
-        DateTimeFormatter df = DateTimeFormat.forPattern(format);
-        return df.print(date);
+        String[] param = params.split(",");
+        if (param.length == 1) {
+            Integer plusDay = Ints.tryParse(param[0]);
+            if (plusDay != null) {
+                return getDateStr4YTD(plusDay,defaultFormat,date);
+            } else {
+                return getDateStr4YTD(0,param[0],date);
+            }
+        }else if(param.length == 2){
+            Integer plusDay = Ints.tryParse(param[0]);
+            if(plusDay == null){
+                throw new IllegalArgumentException("日期参数不合法。");
+            }
+            return getDateStr4YTD(plusDay,param[1],date);
+        }else{
+            throw new IllegalArgumentException("日期参数不合法。");
+        }
+    }
+
+    private static String getDateStr4YTD(int plusDay, String format, DateTime date) {
+        date = date.plusDays(plusDay);
+        return DateTimeFormat.forPattern(format).print(date);
     }
 
 
@@ -111,71 +114,6 @@ public class HiveScriptParamUtils {
         } else {
             return 1;
         }
-    }
-
-
-
-    private static String getDateStrMGD(int amount, String format, String type) {
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, -1);
-        switch (type) {
-            case "Y":
-            case "y":
-                cal.add(Calendar.YEAR, amount);
-                break;
-            case "M":
-            case "m":
-                cal.add(Calendar.MONTH, amount);
-                break;
-            case "D":
-            case "d":
-                cal.add(Calendar.DATE, amount);
-                break;
-            case "H":
-            case "h":
-                cal.add(Calendar.HOUR, amount);
-                break;
-            case "I":
-            case "i":
-                cal.add(Calendar.MINUTE, amount);
-                break;
-            case "S":
-            case "s":
-                cal.add(Calendar.SECOND, amount);
-        }
-        int hour = 0, min = 0, sec = 0;
-        if (format.indexOf("HH") == -1 || format.indexOf("mm") == -1 || format.indexOf("ss") == -1) {
-            int idxHour = format.indexOf(":");
-            if (StringUtils.isNumeric(format.substring(idxHour - 2, idxHour))) {
-                hour = Integer.parseInt(format.substring(idxHour - 2, idxHour));
-                StringBuffer paramBuffer = new StringBuffer(format);
-                paramBuffer.replace(idxHour - 2, idxHour, "HH");
-                format = paramBuffer.toString();
-            }
-            int idxMin = format.indexOf(":", idxHour + 1);
-            if (StringUtils.isNumeric(format.substring(idxMin - 2, idxMin))) {
-                min = Integer.parseInt(format.substring(idxMin - 2, idxMin));
-                StringBuffer paramBuffer = new StringBuffer(format);
-                paramBuffer.replace(idxMin - 2, idxMin, "mm");
-                format = paramBuffer.toString();
-            }
-            if (StringUtils.isNumeric(format.substring(idxMin + 1, idxMin + 3))) {
-                sec = Integer.parseInt(format.substring(idxMin + 1, idxMin + 3));
-                StringBuffer paramBuffer = new StringBuffer(format);
-                paramBuffer.replace(idxMin + 1, idxMin + 3, "ss");
-                format = paramBuffer.toString();
-            }
-        }
-
-        if (hour != 0)
-            cal.set(Calendar.HOUR_OF_DAY, hour);// 时
-        if (min != 0)
-            cal.set(Calendar.MINUTE, min);// 分
-        if (sec != 0)
-            cal.set(Calendar.SECOND, sec);// 秒
-
-        SimpleDateFormat sdf = new SimpleDateFormat(format);
-        return sdf.format(cal.getTime());
     }
 
     private static String getDateStrMGD() {
@@ -258,19 +196,98 @@ public class HiveScriptParamUtils {
     }
 
 
+    private static String getDateStrMGD(int amount, String format, String type) {
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, -1);
+        switch (type) {
+            case "Y":
+            case "y":
+                cal.add(Calendar.YEAR, amount);
+                break;
+            case "M":
+            case "m":
+                cal.add(Calendar.MONTH, amount);
+                break;
+            case "D":
+            case "d":
+                cal.add(Calendar.DATE, amount);
+                break;
+            case "H":
+            case "h":
+                cal.add(Calendar.HOUR, amount);
+                break;
+            case "I":
+            case "i":
+                cal.add(Calendar.MINUTE, amount);
+                break;
+            case "S":
+            case "s":
+                cal.add(Calendar.SECOND, amount);
+        }
+        int hour = 0, min = 0, sec = 0;
+        if (format.indexOf("HH") == -1 || format.indexOf("mm") == -1 || format.indexOf("ss") == -1) {
+            int idxHour = format.indexOf(":");
+            if (StringUtils.isNumeric(format.substring(idxHour - 2, idxHour))) {
+                hour = Integer.parseInt(format.substring(idxHour - 2, idxHour));
+                StringBuffer paramBuffer = new StringBuffer(format);
+                paramBuffer.replace(idxHour - 2, idxHour, "HH");
+                format = paramBuffer.toString();
+            }
+            int idxMin = format.indexOf(":", idxHour + 1);
+            if (StringUtils.isNumeric(format.substring(idxMin - 2, idxMin))) {
+                min = Integer.parseInt(format.substring(idxMin - 2, idxMin));
+                StringBuffer paramBuffer = new StringBuffer(format);
+                paramBuffer.replace(idxMin - 2, idxMin, "mm");
+                format = paramBuffer.toString();
+            }
+            if (StringUtils.isNumeric(format.substring(idxMin + 1, idxMin + 3))) {
+                sec = Integer.parseInt(format.substring(idxMin + 1, idxMin + 3));
+                StringBuffer paramBuffer = new StringBuffer(format);
+                paramBuffer.replace(idxMin + 1, idxMin + 3, "ss");
+                format = paramBuffer.toString();
+            }
+        }
+
+        if (hour != 0)
+            cal.set(Calendar.HOUR_OF_DAY, hour);// 时
+        if (min != 0)
+            cal.set(Calendar.MINUTE, min);// 分
+        if (sec != 0)
+            cal.set(Calendar.SECOND, sec);// 秒
+
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        return sdf.format(cal.getTime());
+    }
+
+
     public static void main(String[] args) {
+        System.out.println(parse("$MGD(-1,yyyy-MM-dd 00:00:00)"));
+
+
         System.out.println(parse(
                 " dwd_usr_users_$YTD(-1,yyyy-MM-dd)    from dwd_usr_users_$YTD(-1) a left outer join (select userid,min(realname) realname,min(province) province, min(city) city,min(area) area,min(address) address"
                         + " from dwd_usr_address_$YTD(yyyy-MM-dd)  group by userid )b "
                         + "on(a.userid=b.userid) left outer join dwd_usr_extra_$YTD(yyyy-MM-dd) c on(a.userid=c.userid)"
-                        + " where a.userid is not null","2013-11-04"));
+                        + " where a.userid is not null"));
 
-//        System.out.println(prase(
-//                " dwd_usr_users_$YTD(-1,yyyy-MM-dd)    from dwd_usr_users_$YTD(-1) a left outer join (select userid,min(realname) realname,min(province) province, min(city) city,min(area) area,min(address) address"
-//                        + " from dwd_usr_address_$YTD(yyyy-MM-dd)  group by userid )b "
-//                        + "on(a.userid=b.userid) left outer join dwd_usr_extra_$YTD(yyyy-MM-dd) c on(a.userid=c.userid)"
-//                        + " where a.userid is not null",
-//                "2013-11-04"));
-
+        String text = "select count(distinct e2.buyeruserid) buyercnt, e1.level userlevel from user_score$tmptable e1\n" +
+                "join dwd_trd_tradeorder e2 on e1.userid = e2.buyeruserid \n" +
+                "where e2.paytime >= unix_timestamp('$MGD(-31d,yyyy-MM-dd 00:00:00)') AND \n" +
+                "e2.paytime <= unix_timestamp('$MGD(-1d, yyyy-MM-dd 00:00:00)') and e2.level = 2\n" +
+                "GROUP BY e1.level"
+                + "union"
+                + "insert overwrite table mid_member_level_buy partition (stat_date='$YTD(yyyy-MM-dd)')\n" +
+                "select * from (\n" +
+                "select buyeruserid, count(distinct from_unixtime(paytime, 'yyyyMMdd')) cnt \n" +
+                "from dwd_trd_tradeorder \n" +
+                "where paytime >= unix_timestamp('$MGD(-1M, yyyy-MM-dd 00:00:00)') \n" +
+                "and paytime <= unix_timestamp('$MGD(yyyy-MM-dd 23:59:59)')\n" +
+                "and level = 2\n" +
+                "group by buyeruserid) x where x.cnt >= 3;"
+                ;
+        System.out.println(parse(text));
     }
+
+
+
 }
