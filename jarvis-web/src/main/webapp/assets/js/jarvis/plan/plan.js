@@ -81,7 +81,7 @@ $(function(){
     });
 
     $.ajaxSettings.async = false;
-    $.getJSON("/assets/jarvis/json/taskStatus.json",function(data){
+    $.getJSON(contextPath+"/assets/json/taskStatus.json",function(data){
         taskStatusJson=data;
     });
     $.ajaxSettings.async = true;
@@ -150,7 +150,7 @@ function initData(){
         pagination:true,
         sidePagination:'server',
         search:false,
-        url:'/jarvis/api/plan/getPlans',
+        url:contextPath+'/api/plan/getPlans',
         queryParams:function(params) {
             for(var key in queryParams){
                 var value = queryParams[key];

@@ -26,7 +26,7 @@ function requestRemoteRestApi(url,title,para){
 
 
     $.ajax({
-        url:'/jarvis/remote/request',
+        url:contextPath+'/remote/request',
         type:'POST',
         async:false,
         data:{url:url,para:JSON.stringify(data)},

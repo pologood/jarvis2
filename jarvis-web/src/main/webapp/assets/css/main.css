@@ -66,14 +66,14 @@
     height:40px;
     line-height:40px;
     font-size:14px;
-    background:url(/assets/jarvis/img/menu_bg.png) repeat-x;border-radius:3px;
+    background:url(/jarvis/assets/img/menu_bg.png) repeat-x;border-radius:3px;
     margin:10px 0 0;
 }
 
 .bdmenu li{
     float:left;
     line-height:40px;
-    background:url(/assets/jarvis/img/menu_bg.png) repeat-x;
+    background:url(/jarvis/assets/img/menu_bg.png) repeat-x;
     position:relative;
 }
 .bdmenu li.active{

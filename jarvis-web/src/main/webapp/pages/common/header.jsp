@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<c:set var="contextPath" value="<%=request.getContextPath()%>" />
+<c:set var="contextPath" scope="application" value="<%=request.getContextPath()%>" />
 
 <!doctype html>
 <html lang="en" class="no-js">
@@ -44,7 +44,7 @@
   <div id="cd-logo" class="bdmenu">
     <ul>
       <li class="active">
-        <a  href="/${platform.path}">${platform.name}</a>
+        <a  href="${contextPath}/">${platform.name}</a>
       </li>
     </ul>
   </div>

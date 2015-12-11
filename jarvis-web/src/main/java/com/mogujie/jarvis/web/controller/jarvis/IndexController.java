@@ -23,23 +23,17 @@ import javax.servlet.http.HttpServletResponse;
 public class IndexController extends BaseController{
 
     @RequestMapping("/")
-    public String index(ModelMap model){
+    public String index(ModelMap model,HttpServletRequest request, HttpServletResponse response){
         if (null == user || null == user.get().getUname() || StringUtils.isBlank(user.get().getUname())) {
             model.addAttribute("platform", PlatformConf.jarvis);
             return "index";
         } else {
-            return "redirect:/jarvis";
+            model.clear();
+            model.put("user",user.get());
+            return "redirect:plan";
         }
     }
 
-    @RequestMapping(value = "/jarvis", method = RequestMethod.GET)
-    public void jarvis(HttpServletRequest request, HttpServletResponse response){
-        try {
-            request.getRequestDispatcher("/jarvis/plan").forward(request, response);
-        } catch (Exception e){
-            log.error(e);
-        }
-    }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
@@ -67,7 +61,7 @@ public class IndexController extends BaseController{
     }
 
 
-    @RequestMapping(value = "logout", method = RequestMethod.GET)
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public String logout(HttpServletResponse response, @CookieValue(value = SessionHelper.COOKIE_KEY, required = false) String sessionId){
         sessionHelper.clearSession(sessionId, response);
         return "redirect:/";

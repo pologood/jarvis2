@@ -65,6 +65,9 @@ public class BaseController {
             this.user.set(new User());
         }
         HashMap<Integer, String> urlMap = getUrlMap();
+
+        log.info("urlMap:"+urlMap);
+
         LinkedHashMap<Long, Menu> menuMap = rbacService.getMenuByPlatformAndUser(urlMap, PlatformConf.jarvis.getCode(), user.get().getUname(),jarvisAuthTypeAdapter.getAll());
         mp.put("platform", PlatformConf.jarvis);
         mp.put("menuMap", menuMap);
@@ -94,7 +97,7 @@ public class BaseController {
                 JarvisAuthType[] jarvisAuthTypes = jarvisPassport.authTypes();
                 for(JarvisAuthType a: jarvisAuthTypes){
                     TreeSet<String> tmp = new TreeSet<String>(key.getPatternsCondition().getPatterns());
-                    urlMap.put(a.getCode(), tmp.first());
+                    urlMap.put(a.getCode(), "/jarvis"+tmp.first());
                 }
             }
         }

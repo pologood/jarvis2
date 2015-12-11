@@ -8,7 +8,7 @@
     <jsp:param name="platforms" value="${platforms}"/>
 </jsp:include>
 
-<link type="text/css" rel="stylesheet" href="/assets/jarvis/plugins/d3/d3-collapsible-tree.css" />
+<link type="text/css" rel="stylesheet" href="${contextPath}/assets/plugins/d3/d3-collapsible-tree.css" />
 
 
 <div class="container">

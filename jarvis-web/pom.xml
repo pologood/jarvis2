@@ -393,7 +393,7 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <version>2.6</version>
                 <configuration>
-                    <warSourceExcludes>assets/jarvis/js/**/*.js,assets/jarvis/css/**/*.css</warSourceExcludes>
+                    <warSourceExcludes>assets/js/**/*.js,assets/css/**/*.css</warSourceExcludes>
                 </configuration>
             </plugin>
 

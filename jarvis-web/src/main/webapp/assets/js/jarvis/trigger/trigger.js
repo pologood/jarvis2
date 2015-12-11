@@ -29,7 +29,7 @@ $(function(){
 function buildTree(jobId){
 
     $.ajax({
-        url:'/jarvis/api/job/getTreeDependedONJob',
+        url:contextPath+'/api/job/getTreeDependedONJob',
         data:{jobId:jobId},
         success:function(data){
             $("#reRunJobs").jstree({

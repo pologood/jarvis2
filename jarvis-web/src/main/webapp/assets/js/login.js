@@ -108,7 +108,7 @@ jQuery(document).ready(function($){
 
         $.ajax({
             type: 'POST',
-            url: '/login/',
+            url: contextPath+'/login/',
             data: {
                 uname: uname,
                 password: password

@@ -66,7 +66,7 @@ function initWorkerData(){
         pagination:true,
         sidePagination:'server',
         search:false,
-        url:'/jarvis/api/worker/getWorkers',
+        url:contextPath+'/api/worker/getWorkers',
         queryParams:function(params) {
             for(var key in queryParams){
                 var value = queryParams[key];
