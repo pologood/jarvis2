@@ -7,9 +7,6 @@
  */
 package com.mogujie.jarvis.core.util;
 
-import java.net.Inet4Address;
-import java.net.UnknownHostException;
-
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
@@ -108,14 +105,12 @@ public class ConfigUtils {
      * @return
      */
     public static Config getAkkaConfig(String fileName) {
+        String key = "akka.remote.netty.tcp.hostname";
         Config akkaConfig = ConfigFactory.load(fileName);
-        try {
-            String ipv4 = Inet4Address.getLocalHost().getHostAddress();
-            return ConfigFactory.parseString("akka.remote.netty.tcp.hostname=" + ipv4).withFallback(akkaConfig);
-        } catch (UnknownHostException e) {
-            Throwables.propagate(e);
+        if (akkaConfig.hasPath(key)) {
+            return akkaConfig;
+        } else {
+            return ConfigFactory.parseString(key + "=" + IPUtils.getIPV4Address()).withFallback(akkaConfig);
         }
-
-        return akkaConfig;
     }
 }
