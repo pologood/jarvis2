@@ -22,7 +22,6 @@ public class TestRestLog {
 
     private String baseUrl = "http://127.0.0.1:8080";
 
-    @Test
     public void testLogRead() throws UnirestException {
 
         Map<String, Object> params = new HashMap<>();
