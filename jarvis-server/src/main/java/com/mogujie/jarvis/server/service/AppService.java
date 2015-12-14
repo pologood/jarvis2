@@ -9,6 +9,7 @@
 package com.mogujie.jarvis.server.service;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -31,7 +32,6 @@ import com.mogujie.jarvis.dto.generate.AppWorkerGroupExample;
 
 /**
  * @author guangming
- *
  */
 @Service
 public class AppService {
@@ -90,6 +90,10 @@ public class AppService {
         } else {
             Field[] fields = app.getClass().getDeclaredFields();
             for (Field field : fields) {
+                if (Modifier.isStatic(field.getModifiers())) {
+                    continue;
+                }
+
                 field.setAccessible(true);
                 try {
                     Object value = field.get(app);
@@ -105,9 +109,10 @@ public class AppService {
 
     /**
      * app能否访问workerGroup
+     *
      * @param appId         ：appId
      * @param workerGroupId ：workerGroupId
-     * @return              ：
+     * @return ：
      */
     public boolean canAccessWorkerGroup(int appId, int workerGroupId) {
 
