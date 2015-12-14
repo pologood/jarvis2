@@ -20,7 +20,8 @@ public class ConvertValidUtils {
     public static ScheduleExpressionEntry ConvertScheduleExpressionEnty(JobEntryVo.ScheduleExpressionEntry input) {
 
         Integer expressionType = input.getExpressionType();
-        Preconditions.checkArgument(expressionType != null && ScheduleExpressionType.isValid(expressionType), "scheduleExpressionType不对");
+        Preconditions.checkArgument(expressionType != null , "scheduleExpressionType不能为空");
+        Preconditions.checkArgument(ScheduleExpressionType.isValid(expressionType), "scheduleExpressionType不对。type:" + expressionType.toString());
 
         String expression = input.getExpression();
         Preconditions.checkArgument(expression != null , "scheduleExpression不能为空");
