@@ -155,12 +155,14 @@ public class JobService {
 
     public void updateScheduleExpression(long jobId, ScheduleExpressionEntry entry) {
         // 1. update to DB
+        JobScheduleExpressionExample example = new JobScheduleExpressionExample();
+        example.createCriteria().andJobIdEqualTo(jobId);
+
         JobScheduleExpression record = new JobScheduleExpression();
-        record.setJobId(jobId);
         record.setExpressionType(entry.getExpressionType());
         record.setExpression(entry.getScheduleExpression());
         record.setUpdateTime(new Date());
-        jobScheduleExpressionMapper.updateByPrimaryKey(record);
+        jobScheduleExpressionMapper.updateByExampleSelective(record,example);
 
         // 2. update to cache
         ScheduleExpression scheduleExpression = null;
