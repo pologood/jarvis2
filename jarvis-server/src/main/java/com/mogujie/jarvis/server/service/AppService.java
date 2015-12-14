@@ -78,11 +78,14 @@ public class AppService {
         appMetastore.remove(appId);
     }
 
-    public void add(App app) {
+    public void insert(App app) {
+        appMapper.insertSelective(app);
         appMetastore.put(app.getAppId(), app);
     }
 
     public void update(App app) {
+        appMapper.updateByPrimaryKeySelective(app);
+
         int appId = app.getAppId();
         App srcApp = appMetastore.get(appId);
         if (srcApp == null) {
