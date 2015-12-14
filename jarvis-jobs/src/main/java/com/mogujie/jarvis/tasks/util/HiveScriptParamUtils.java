@@ -4,6 +4,7 @@ import com.google.common.primitives.Ints;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -32,8 +33,8 @@ public class HiveScriptParamUtils {
 
     public static String parse(String text, DateTime date) {
         Map<String, String> dates = new HashMap<>();
-        Pattern patternYtd = Pattern.compile("\\$YTD\\(.*?\\)");
-        Pattern patternMgd = Pattern.compile("\\$MGD\\(.*?\\)");
+        Pattern patternYtd = Pattern.compile("\\$YTD\\(.*?\\)|\\$\\{YTD\\(.*?\\)\\}");
+        Pattern patternMgd = Pattern.compile("\\$MGD\\(.*?\\)|\\$\\{MGD\\(.*?\\)\\}");
         Matcher matcherYtd = patternYtd.matcher(text);
         Matcher matcherMgd = patternMgd.matcher(text);
         while (matcherYtd.find()) {
@@ -52,24 +53,24 @@ public class HiveScriptParamUtils {
 
     private static String getDateStr4YTD(String paramInput, DateTime date) {
         String params = paramInput.substring(paramInput.indexOf('(') + 1, paramInput.indexOf(')'));
-        if(params.equals("")){
-            return getDateStr4YTD(0,defaultFormat,date);
+        if (params.equals("")) {
+            return getDateStr4YTD(0, defaultFormat, date);
         }
         String[] param = params.split(",");
         if (param.length == 1) {
             Integer plusDay = Ints.tryParse(param[0]);
             if (plusDay != null) {
-                return getDateStr4YTD(plusDay,defaultFormat,date);
+                return getDateStr4YTD(plusDay, defaultFormat, date);
             } else {
-                return getDateStr4YTD(0,param[0],date);
+                return getDateStr4YTD(0, param[0], date);
             }
-        }else if(param.length == 2){
+        } else if (param.length == 2) {
             Integer plusDay = Ints.tryParse(param[0]);
-            if(plusDay == null){
+            if (plusDay == null) {
                 throw new IllegalArgumentException("日期参数不合法。");
             }
-            return getDateStr4YTD(plusDay,param[1],date);
-        }else{
+            return getDateStr4YTD(plusDay, param[1], date);
+        } else {
             throw new IllegalArgumentException("日期参数不合法。");
         }
     }
@@ -261,7 +262,16 @@ public class HiveScriptParamUtils {
 
 
     public static void main(String[] args) {
-        System.out.println(parse("$MGD(-1,yyyy-MM-dd 00:00:00)"));
+
+        String text;
+
+        text = parse("where paytime >= unix_timestamp('$MGD(-1M, yyyy-MM-dd 00:00:00)')");
+
+        System.out.println(parse(
+                " dwd_usr_users_${YTD(-1,yyyy-MM-dd)}    from dwd_usr_users_${YTD(-1)} a left outer join (select userid,min(realname) realname,min(province) province, min(city) city,min(area) area,min(address) address"
+                        + " from dwd_usr_address_${YTD(yyyy-MM-dd)}  group by userid )b "
+                        + "on(a.userid=b.userid) left outer join dwd_usr_extra_${YTD(yyyy-MM-dd)} c on(a.userid=c.userid)"
+                        + " where a.userid is not null"));
 
 
         System.out.println(parse(
@@ -270,7 +280,8 @@ public class HiveScriptParamUtils {
                         + "on(a.userid=b.userid) left outer join dwd_usr_extra_$YTD(yyyy-MM-dd) c on(a.userid=c.userid)"
                         + " where a.userid is not null"));
 
-        String text = "select count(distinct e2.buyeruserid) buyercnt, e1.level userlevel from user_score$tmptable e1\n" +
+        System.out.println(parse("$MGD(-1d,yyyy-MM-dd 00:00:00)"));
+        text = "select count(distinct e2.buyeruserid) buyercnt, e1.level userlevel from user_score$tmptable e1\n" +
                 "join dwd_trd_tradeorder e2 on e1.userid = e2.buyeruserid \n" +
                 "where e2.paytime >= unix_timestamp('$MGD(-31d,yyyy-MM-dd 00:00:00)') AND \n" +
                 "e2.paytime <= unix_timestamp('$MGD(-1d, yyyy-MM-dd 00:00:00)') and e2.level = 2\n" +
@@ -284,10 +295,9 @@ public class HiveScriptParamUtils {
                 "and paytime <= unix_timestamp('$MGD(yyyy-MM-dd 23:59:59)')\n" +
                 "and level = 2\n" +
                 "group by buyeruserid) x where x.cnt >= 3;"
-                ;
+        ;
         System.out.println(parse(text));
     }
-
 
 
 }
