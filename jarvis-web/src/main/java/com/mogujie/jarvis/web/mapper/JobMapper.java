@@ -22,7 +22,8 @@ public interface JobMapper {
     List<String> getSubmitUsers();
 
     List<Long> getSimilarJobIds(Long jobId);
-    List<String> getSimilarJobNames(String jobName);
+    List<String> getSimilarJobNames(String jobName);   //根据任务名获取相似任务名
+    List<JobVo> getJobBySimilarNames(String jobName);  //根据任务名获取相似任务的详细信息
 
     CronTabVo getCronTabByJobId(Long jobId);
 

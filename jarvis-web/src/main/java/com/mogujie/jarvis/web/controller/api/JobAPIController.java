@@ -35,9 +35,9 @@ public class JobAPIController {
      * */
     @RequestMapping("/getTreeDependedONJob")
     @ResponseBody
-    public JSONObject getTreeDependedONJob(JobQo jobSearchVo){
+    public JSONObject getTreeDependedONJob(JobQo jobQo){
 
-        JSONObject jobJson=jobDependService.getTreeDependedOnJob(jobSearchVo);
+        JSONObject jobJson=jobDependService.getTreeDependedOnJob(jobQo);
 
         return jobJson;
     }
@@ -73,6 +73,17 @@ public class JobAPIController {
     @ResponseBody
     public JSONObject getSimilarJobNames(String q){
         JSONObject jobJson=jobService.getSimilarJobNames(q);
+        return jobJson;
+    }
+
+    /**
+     * 相似jobName
+     *
+     * */
+    @RequestMapping("/getJobBySimilarNames")
+    @ResponseBody
+    public JSONObject getJobBySimilarNames(String q){
+        JSONObject jobJson=jobService.getJobBySimilarNames(q);
         return jobJson;
     }
 }

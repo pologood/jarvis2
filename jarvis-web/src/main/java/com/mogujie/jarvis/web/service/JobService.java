@@ -79,6 +79,24 @@ public class JobService {
         return jsonObject;
     }
 
+    public JSONObject getJobBySimilarNames(String jobName){
+        JSONObject jsonObject=new JSONObject();
+
+        List<JobVo> jobList=jobMapper.getJobBySimilarNames(jobName);
+
+        JSONArray jsonArray = new JSONArray();
+        for(JobVo jobVo:jobList){
+            JSONObject singleJson= new JSONObject();
+            singleJson.put("id",jobVo.getJobId());
+            singleJson.put("text",jobVo.getJobName());
+            jsonArray.add(singleJson);
+        }
+        jsonObject.put("total",jobList.size());
+        jsonObject.put("items", jsonArray);
+
+        return jsonObject;
+    }
+
 
 
     public JobVo getJobById(Long jobId){

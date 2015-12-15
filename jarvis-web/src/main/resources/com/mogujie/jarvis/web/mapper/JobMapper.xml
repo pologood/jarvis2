@@ -98,6 +98,15 @@
       </where>
     </select>
 
+    <select id="getJobBySimilarNames" parameterType="String" resultType="JobVo">
+        SELECT DISTINCT * FROM job
+        <where>
+            <if test="_parameter!=null and _parameter!=''">
+                jobName LIKE '%${_parameter}%'
+            </if>
+        </where>
+    </select>
+
     
     <select id="getJobByIds"  resultType="JobVo">
         SELECT * FROM job WHERE jobId IN

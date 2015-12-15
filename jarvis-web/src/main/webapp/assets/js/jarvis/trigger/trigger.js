@@ -14,38 +14,72 @@ $(function(){
     });
 
     //select采用select2 实现
-    $(".input-group select").select2({width:'100%'});
+    $("#originJobId").select2({
+        ajax: {
+            url: contextPath+"/api/job/getJobBySimilarNames",
+            dataType: 'json',
+            delay: 250,
+            data: function (params) {
+                return {
+                    q: params.term, // search term
+                    page: params.page
+                };
+            },
+            processResults: function (data, page) {
+                return {
+                    results: data.items
+                };
+            },
+            cache: true
+        },
+        escapeMarkup: function (markup) { return markup; },
+        minimumInputLength: 1,
+        templateResult: formatResult,
+        templateSelection: formatResultSelection,
+
+        width:'100%'
+    });
+
+
     $("#originJobId").on("change", function (e) {
-        $("#reRunJobs").jstree('destroy');
-        var id=$(e.target).val();
-        if(id!=null&&id!=''){
-            buildTree(id);
+        $("#reRunJobs div[name=children]").jstree('destroy');
+        $("#reRunJobs").empty();
+        var jobIds=$(e.target).val();
+        if(jobIds!=null&&jobIds!=''){
+            buildTree(jobIds);
         }
     });
 
 
 });
 
-function buildTree(jobId){
+function buildTree(jobIds){
 
-    $.ajax({
-        url:contextPath+'/api/job/getTreeDependedONJob',
-        data:{jobId:jobId},
-        success:function(data){
-            $("#reRunJobs").jstree({
-                'core':{
-                    data:data
-                },
-                "types": {
-                    "default": {"icon": "fa fa-users icon-green", "valid_children": []}
-                },
-                plugins : [
-                    'checkbox','types'
-                ]
-            });
-        }
+    $(jobIds).each(function(i,c){
+        var jobId=c;
+        var id="jobId"+jobId
+        var childrenTree=$('<div name="children" id="'+id+'"></div><hr/>');
+        $("#reRunJobs").append(childrenTree);
+
+
+        $.ajax({
+            url:contextPath+'/api/job/getTreeDependedONJob',
+            data:{jobId:jobId},
+            success:function(data){
+                $("#"+id).jstree({
+                    'core':{
+                        data:data
+                    },
+                    "types": {
+                        "default": {"icon": "fa fa-users icon-green", "valid_children": []}
+                    },
+                    plugins : [
+                        'checkbox','types'
+                    ]
+                });
+            }
+        });
     });
-
 
 }
 
@@ -59,8 +93,6 @@ function reset(){
 
 function submit(){
     var originJobId=$("#originJobId").val();
-    var appName=$("#originJobId option:selected").attr("appName");
-    var appKey=$("#originJobId option:selected").attr("appKey");
     var startTime=$("#startTime").val();
     var endTime=$("#endTime").val();
     if(originJobId==null||originJobId==''){
@@ -84,27 +116,50 @@ function submit(){
         });
         return ;
     }
-    
-    var reRunJobs=$("#reRunJobs").jstree().get_checked();
 
-    if(reRunJobs.length<=0){
-        reRunJobs.push(originJobId);
+    if(new Date(endTime)<=(new Date())){
+        new PNotify({
+            title: '重跑任务',
+            text: "截止日期必须大于当前时间",
+            type: 'warning',
+            icon: true,
+            styling: 'bootstrap3'
+        });
+        return ;
     }
-    else{
-        var flag = false;
-        for(var i=0;i<reRunJobs.length;i++){
-            if(reRunJobs[i]==originJobId){
-                flag=true;
-                break;
+
+
+    var jobIdCache={};
+    var reRunJobs=new Array();
+    $(originJobId).each(function(i,c){
+        reRunJobs.push(c);
+        jobIdCache[c]=c;
+    });
+
+    var divTrees=$("#reRunJobs>div");
+    $(divTrees).each(function(i,c){
+        var treeJobIds=$(c).jstree().get_checked();
+        $(treeJobIds).each(function(i,c){
+            if(jobIdCache[c]==null){
+                reRunJobs.push(c);
+                jobIdCache[c]=c;
             }
-        }
-        //重跑的任务里没有选择的原始任务，则加进去统一处理
-        if(!flag){
-            reRunJobs.push(originJobId);
-        }
-    }
-    //console.log(reRunJobs);
-    var data={originJobId:originJobId,appName:appName,appKey:appKey,startTime:startTime,endTime:endTime,reRunJobs:JSON.stringify(reRunJobs)};
-    requestRemoteRestApi("/api/job/rerun","重跑任务",data);
+        });
+    });
 
+    //
+    var runChild=$("input[name=runChild]:checked").val();
+
+    var data={runChild:runChild,startDate:startTime,endDate:endTime,jobIdList:JSON.stringify(reRunJobs)};
+    requestRemoteRestApi("/api/task/rerun","重跑任务",data);
+
+}
+
+
+
+function formatResult(result){
+    return result.text;
+}
+function formatResultSelection(result){
+    return result.text;
 }

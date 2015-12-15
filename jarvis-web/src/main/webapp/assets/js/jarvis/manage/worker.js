@@ -291,7 +291,7 @@ function resetWorkerGroup(){
 //修改worker
 function modifyWorkerStatus(workerId,status,ip,port){
     var data={workerId:workerId,status:status,ip:ip,port:port};
-    requestRemoteRestApi("/api/worker/status","修改Worker Group状态",data);
+    requestRemoteRestApi("/api/worker/status/set","修改Worker Group状态",data);
     $("#workerContent").bootstrapTable("destroy");
     initWorkerData();
 
@@ -300,7 +300,7 @@ function modifyWorkerStatus(workerId,status,ip,port){
 //修改worker group状态
 function modifyWorkerGroupStatus(workerGroupId,authKey,status){
     var data={workerGroupId:workerGroupId,status:status};
-    requestRemoteRestApi("/api/workerGroup/setStatus","修改Worker Group状态",data);
+    requestRemoteRestApi("/api/workerGroup/status/set","修改Worker Group状态",data);
     $("#workerGroupContent").bootstrapTable("destroy");
     initWorkerGroupData();
 }

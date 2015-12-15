@@ -52,6 +52,6 @@ function updateWorker(){
 
 function modifyWorkerStatus(workerGroupId,status){
     var data={workerGroupId:workerGroupId,status:status}
-    requestRemoteRestApi("/api/worker/status","修改worker group 状态",data);
+    requestRemoteRestApi("/api/worker/status/set","修改worker group 状态",data);
 
 }
