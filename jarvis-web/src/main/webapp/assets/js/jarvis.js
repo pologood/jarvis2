@@ -12,18 +12,9 @@ function createDatetimePickerById(tagId){
     });
 }
 //通过后台请求远程rest api,根据请求结果返回flag
-function requestRemoteRestApi(url,title,para){
+function requestRemoteRestApi(url,title,data){
     var flag=true;
-    var data={};
     var result={};
-    for(var key in para){
-        //var value=encodeURIComponent(para[key]);
-        var value=para[key];
-        //var value=value.replace(/\?/g,"%3F");
-        data[key]= value;
-    }
-
-
 
     $.ajax({
         url:contextPath+'/remote/request',

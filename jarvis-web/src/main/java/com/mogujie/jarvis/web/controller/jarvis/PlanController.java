@@ -50,6 +50,7 @@ public class PlanController extends BaseController{
      * 执行计划详情，前置、后续计划执行状态
      **/
     @RequestMapping(value = "dependency")
+    @JarvisPassport(authTypes = JarvisAuthType.plan,isMenu = false)
     public String dependency(ModelMap modelMap,Long taskId){
 
         TaskVo taskVo=taskService.getTaskById(taskId);

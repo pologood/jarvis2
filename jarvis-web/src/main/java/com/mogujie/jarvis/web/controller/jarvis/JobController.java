@@ -59,6 +59,7 @@ public class JobController extends BaseController{
     * @author hejian
     * */
     @RequestMapping(value = "addOrEdit")
+    @JarvisPassport(authTypes = JarvisAuthType.job,isMenu = false)
     public String addOrEdit(ModelMap modelMap,Long jobId){
         AppQo appSearchVo = new AppQo();
         appSearchVo.setStatus(1);
@@ -103,8 +104,8 @@ public class JobController extends BaseController{
     * */
     @RequestMapping("checkJobName")
     @ResponseBody
-    public com.alibaba.fastjson.JSONObject checkJobName(Long jobId,String jobName){
-        com.alibaba.fastjson.JSONObject result=new com.alibaba.fastjson.JSONObject();
+    public JSONObject checkJobName(Long jobId,String jobName){
+        JSONObject result = new JSONObject();
 
         JobVo jobVo=jobService.getJobByName(jobName);
         //新增job时校验
@@ -145,6 +146,7 @@ public class JobController extends BaseController{
     * @author hejian
     * */
     @RequestMapping(value = "dependency")
+    @JarvisPassport(authTypes = JarvisAuthType.job,isMenu = false)
     public String dependency(ModelMap modelMap,Long jobId){
         JobVo jobVo=jobService.getJobById(jobId);
 

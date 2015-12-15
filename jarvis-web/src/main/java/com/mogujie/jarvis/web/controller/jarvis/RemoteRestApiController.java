@@ -59,39 +59,8 @@ public class RemoteRestApiController extends BaseController {
         url = domain + url;
         log.info("remote url:"+url+",para:"+para);
 
-        //检查参数是否合法，如果抛出异常，则不进行下一步解析
-        boolean para_flag=true;
-        JSONObject paraJson=new JSONObject();
-        try {
-            paraJson = JSONObject.parseObject(para);
-        } catch (Exception e) {
-            e.printStackTrace();
-            jsonObject.put("code",1);
-            jsonObject.put("msg", e.getLocalizedMessage());
-        }
-
-        if(!para_flag){
-            return jsonObject;
-        }
-        Map<String,Object> rawData = new HashMap<String,Object>();
         Map<String,String> data = new HashMap<String,String>();
-        String newPara="";
-        for(Map.Entry entry:paraJson.entrySet()){
-            String key=(String)entry.getKey();
-            Object value=entry.getValue();
-            //key为空字符串的情况过滤掉
-            if(key.equals("")){
-                continue;
-            }
-            try {
-                rawData.put(key,value);
-                //data.put(key,URLEncoder.encode(value,"UTF-8"));
-                //newPara=newPara+"&"+key+"="+URLEncoder.encode(value,"UTF-8");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        data.put("parameters",JSON.toJSONString(rawData));
+        data.put("parameters",para);
         try {
             User user=(User)modelMap.get("user");
             String uname=user.getUname();

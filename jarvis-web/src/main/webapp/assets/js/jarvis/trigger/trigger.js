@@ -132,7 +132,7 @@ function submit(){
     var jobIdCache={};
     var reRunJobs=new Array();
     $(originJobId).each(function(i,c){
-        reRunJobs.push(c);
+        reRunJobs.push(parseInt(c));
         jobIdCache[c]=c;
     });
 
@@ -141,7 +141,7 @@ function submit(){
         var treeJobIds=$(c).jstree().get_checked();
         $(treeJobIds).each(function(i,c){
             if(jobIdCache[c]==null){
-                reRunJobs.push(c);
+                reRunJobs.push(parseInt(c));
                 jobIdCache[c]=c;
             }
         });
@@ -149,8 +149,16 @@ function submit(){
 
     //
     var runChild=$("input[name=runChild]:checked").val();
+    if(runChild='true'){
+        runChild=true;
+    }
+    else{
+        runChild=false;
+    }
 
-    var data={runChild:runChild,startDate:startTime,endDate:endTime,jobIdList:JSON.stringify(reRunJobs)};
+    var startDate=(new Date(startTime)).getTime();
+    var endDate=(new Date(endTime)).getTime();
+    var data={runChild:runChild,startDate:startDate,endDate:endDate,jobIdList:reRunJobs};
     requestRemoteRestApi("/api/task/rerun","重跑任务",data);
 
 }
