@@ -8,11 +8,11 @@
 
 package com.mogujie.jarvis.server.scheduler.time;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import org.joda.time.DateTime;
 
 import com.mogujie.jarvis.core.domain.JobFlag;
 import com.mogujie.jarvis.server.scheduler.event.RunTaskEvent;
@@ -32,16 +32,14 @@ public class PlanTimeScheduler extends TimeScheduler {
     private PlanPeriod planPeriod = PlanPeriodFactory.create();
 
     private PlanTimeScheduler() {
-
         final long period = planPeriod.getPeriod();
         final String startTime = planPeriod.getStartTime();
-        final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd " + startTime);
-        Date firstTime;
         try {
-            firstTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(sdf.format(new Date()));
+            String currentDate = DateTime.now().toString("yyyy-MM-dd");
+            Date firstTime = (new DateTime(currentDate + "T" + startTime)).toDate();
             Timer timer = new Timer();
             timer.scheduleAtFixedRate(new PlanTimerTask(), firstTime, period);
-        } catch (ParseException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
