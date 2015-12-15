@@ -24,7 +24,6 @@ import org.apache.logging.log4j.Logger;
 
 import com.github.stuxuhai.jpinyin.PinyinFormat;
 import com.github.stuxuhai.jpinyin.PinyinHelper;
-import com.mogujie.jarvis.core.TaskContext;
 import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.exeception.ShellException;
 import com.mogujie.jarvis.core.util.ConfigUtils;
@@ -33,6 +32,7 @@ import com.mogujie.jarvis.tasks.util.HiveConfigUtils;
 import com.mogujie.jarvis.tasks.util.MoguAnnotationUtils;
 import com.mogujie.jarvis.tasks.util.HiveScriptParamUtils;
 import com.mogujie.jarvis.tasks.util.YarnUtils;
+import com.mogujie.jarvis.worker.TaskContext;
 
 /**
  * @author wuya

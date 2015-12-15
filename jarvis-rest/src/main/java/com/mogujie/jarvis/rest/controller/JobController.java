@@ -169,16 +169,11 @@ public class JobController extends AbstractController {
                 builder.setFailedInterval(jobVo.getFailedInterval());
             }
             if (jobVo.getScheduleExpressionEntry() != null) {
-                ScheduleExpressionEntry entry = ScheduleExpressionEntry.newBuilder()
-                        .setExpressionType(jobVo.getScheduleExpressionEntry().getExpressionType())
-                        .setScheduleExpression(jobVo.getScheduleExpressionEntry().getExpression()).build();
-                builder.setExpressionEntry(entry);
+                builder.setExpressionEntry(ConvertValidUtils.ConvertScheduleExpressionEnty(jobVo.getScheduleExpressionEntry()));
             }
             if (jobVo.getDependencyList() != null && jobVo.getDependencyList().size() > 0) {
                 for (JobEntryVo.DependencyEntry entryInput : jobVo.getDependencyList()) {
-                    DependencyEntry entry = DependencyEntry.newBuilder().setJobId(entryInput.getPreJobId())
-                            .setCommonDependStrategy(entryInput.getCommonStrategy()).setOffsetDependStrategy(entryInput.getOffsetStrategy()).build();
-                    builder.addDependencyEntry(entry);
+                    builder.addDependencyEntry(ConvertValidUtils.ConvertDependcyEnty(entryInput));
                 }
             }
 
@@ -194,7 +189,7 @@ public class JobController extends AbstractController {
                 return errorResult(response.getMessage());
             }
         } catch (Exception e) {
-            LOGGER.error("", e);
+            LOGGER.error("edit job error", e);
             return errorResult(e.getMessage());
         }
     }

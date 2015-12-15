@@ -10,6 +10,11 @@ package com.mogujie.jarvis.server.scheduler.event;
 
 
 /**
+ * This Event handled by {@link com.mogujie.jarvis.server.scheduler.task.TaskScheduler}.
+ * Sent by {@link com.mogujie.jarvis.server.actor.TaskActor}
+ *
+ * 原地重试task处理事件
+ *
  * @author guangming
  *
  */

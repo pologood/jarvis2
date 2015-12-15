@@ -8,6 +8,10 @@
 
 package com.mogujie.jarvis.server.scheduler;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.google.common.eventbus.DeadEvent;
 import com.google.common.eventbus.Subscribe;
 import com.mogujie.jarvis.core.observer.Observer;
 import com.mogujie.jarvis.server.scheduler.event.StartEvent;
@@ -19,6 +23,7 @@ import com.mogujie.jarvis.server.scheduler.event.StopEvent;
  */
 public abstract class Scheduler implements Observer {
     private JobSchedulerController schedulerController;
+    private static final Logger LOGGER = LogManager.getLogger();
 
     public void setSchedulerController(JobSchedulerController schedulerController) {
         this.schedulerController = schedulerController;
@@ -33,4 +38,9 @@ public abstract class Scheduler implements Observer {
 
     @Subscribe
     public abstract void handleStopEvent(StopEvent event);
+
+    @Subscribe
+    public void handleDeadEvent(DeadEvent event) {
+        LOGGER.warn("Receive DeadEvent {} from {}", event.getEvent(), event.getSource().getClass());
+    }
 }

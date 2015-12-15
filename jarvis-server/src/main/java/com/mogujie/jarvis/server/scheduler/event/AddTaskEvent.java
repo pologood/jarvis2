@@ -12,6 +12,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * This Event handled by {@link com.mogujie.jarvis.server.scheduler.task.TaskScheduler}.
+ * Sent by {@link com.mogujie.jarvis.server.scheduler.dag.DAGScheduler}.
+ *
+ * 根据jobId和scheduleTime创建新的task，添加到TaskGraph和TaskService中。
+ * 根据dependTaskIdMap添加task依赖关系到TaskGraph和对应的DAGTask.TaskStatusChecker中，并持久化到TaskDependService中
+ *
  * @author guangming
  *
  */

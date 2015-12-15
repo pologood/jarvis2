@@ -163,13 +163,15 @@ public enum JobGraph {
                             }
                         } catch (CycleFoundException e) {
                             LOGGER.error(e);
+                            dag.removeVertex(dagJob);
+                            LOGGER.warn("rollback {}", dagJob);
                             throw new JobScheduleException(e);
                         }
                     }
                 }
             }
             jobMap.put(jobId, dagJob);
-            LOGGER.info("add DAGJob {} to DAGScheduler successfully.", dagJob.toString());
+            LOGGER.info("add DAGJob {} and dependency {} to JobGraph successfully.", dagJob.toString());
             submitJobWithCheck(dagJob);
         }
     }
@@ -325,8 +327,7 @@ public enum JobGraph {
      * @param dagJob
      */
     public void submitJobWithCheck(DAGJob dagJob) {
-        Set<Long> needJobs = getEnableParentJobIds(dagJob);
-        if (dagJob.checkDependency(needJobs)) {
+        if (dagJob.checkDependency()) {
             long jobId = dagJob.getJobId();
             LOGGER.info("{} pass the dependency check", dagJob);
 
@@ -343,8 +344,7 @@ public enum JobGraph {
     }
 
     public void submitJobWithCheck(DAGJob dagJob, long scheduleTime) {
-        Set<Long> needJobs = getEnableParentJobIds(dagJob);
-        if (dagJob.checkDependency(needJobs)) {
+        if (dagJob.checkDependency()) {
             long jobId = dagJob.getJobId();
             LOGGER.info("{} pass the dependency check", dagJob);
 

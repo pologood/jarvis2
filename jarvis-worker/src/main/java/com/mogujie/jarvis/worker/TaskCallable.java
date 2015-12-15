@@ -10,8 +10,6 @@ package com.mogujie.jarvis.worker;
 
 import java.util.concurrent.Callable;
 
-import com.mogujie.jarvis.core.task.AbstractTask;
-
 public class TaskCallable implements Callable<Boolean> {
 
   private AbstractTask job;

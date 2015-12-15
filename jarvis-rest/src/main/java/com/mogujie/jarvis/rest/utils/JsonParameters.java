@@ -142,6 +142,10 @@ public class JsonParameters {
         if(value.getClass() == Long.class){
             return (Long) value;
         }
+        if(value.getClass() == String.class){
+            return Long.parseLong((String)value);
+        }
+
         if(value.getClass() != Double.class){
             throw new NumberFormatException();
         }
@@ -155,6 +159,9 @@ public class JsonParameters {
     private Integer convert2Integer(Object value) throws NumberFormatException {
         if(value.getClass() == Integer.class){
             return (Integer) value;
+        }
+        if(value.getClass() == String.class){
+            return Integer.parseInt((String)value);
         }
         if(value.getClass() != Double.class){
             throw new NumberFormatException();

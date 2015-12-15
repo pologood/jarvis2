@@ -29,6 +29,7 @@ public class DAGJob extends AbstractDAGJob {
     private DAGDependChecker dependChecker;
     private DAGJobType type;
     private boolean timeReadyFlag = false;
+    private JobGraph jobGraph = JobGraph.INSTANCE;
     private static final Logger LOGGER = LogManager.getLogger();
 
     public DAGJob(long jobId, DAGJobType type, JobFlag jobFlag) {
@@ -43,8 +44,9 @@ public class DAGJob extends AbstractDAGJob {
     }
 
     @Override
-    public boolean checkDependency(Set<Long> needJobs) {
+    public boolean checkDependency() {
         boolean passCheck = true;
+        Set<Long> needJobs = jobGraph.getEnableParentJobIds(jobId);
         if (type.implies(DAGJobType.DEPEND)) {
             boolean dependCheck = dependChecker.checkDependency(needJobs);
             if (!dependCheck) {

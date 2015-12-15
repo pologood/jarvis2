@@ -9,6 +9,11 @@
 package com.mogujie.jarvis.server.scheduler.event;
 
 /**
+ * This Event handled by {@link com.mogujie.jarvis.server.scheduler.task.TaskScheduler}.
+ * Sent by {@link com.mogujie.jarvis.server.scheduler.time.TimeScheduler}.
+ *
+ * 用来触发任务执行，触发子任务的调度。未来可扩展作为维护手段，强制执行某个任务。
+ *
  * @author guangming
  *
  */

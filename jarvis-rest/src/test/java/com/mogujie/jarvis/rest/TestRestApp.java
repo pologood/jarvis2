@@ -8,6 +8,7 @@ import com.google.gson.reflect.TypeToken;
 import com.mogujie.jarvis.rest.vo.AbstractVo;
 import com.mogujie.jarvis.rest.vo.JobRelationsVo;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.mashape.unirest.http.HttpResponse;
@@ -18,15 +19,12 @@ import com.mogujie.jarvis.core.util.JsonHelper;
 /**
  * Created by muming on 15/12/1.
  */
-public class TestRestApp {
+public class TestRestApp extends TestRestAbstact{
 
-    private String baseUrl = "http://127.0.0.1:8080";
-
-    @Test
     public void appAdd() throws UnirestException {
 
         Map<String, Object> params = new HashMap<>();
-        params.put("applicationName", "mumingTest1");
+        params.put("applicationName", "mumingTest2");
         params.put("status", 1);
         params.put("maxConcurrency", 20);
         String paramsJson = JsonHelper.toJson(params, Map.class);

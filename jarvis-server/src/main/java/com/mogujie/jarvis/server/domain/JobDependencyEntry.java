@@ -1,7 +1,9 @@
 /*
- * 蘑菇街 Inc. Copyright (c) 2010-2015 All Rights Reserved.
+ * 蘑菇街 Inc.
+ * Copyright (c) 2010-2015 All Rights Reserved.
  *
- * Author: wuya Create Date: 2015年11月6日 上午11:41:34
+ * Author: wuya
+ * Create Date: 2015年11月6日 上午11:41:34
  */
 
 package com.mogujie.jarvis.server.domain;

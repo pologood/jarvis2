@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.mogujie.jarvis.rest.vo.JobRelationsVo;
+import com.mogujie.jarvis.server.domain.JobEntry;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -27,8 +28,10 @@ import com.mogujie.jarvis.server.domain.CommonStrategy;
 public class TestRestJob {
 
     private String baseUrl = "http://127.0.0.1:8080";
+//    private String baseUrl = "http://10.11.129.54:8080";
 
-    @Test
+
+
     public void jobSubmit() throws UnirestException {
 
         JobEntryVo job = new JobEntryVo();
@@ -77,12 +80,16 @@ public class TestRestJob {
         Assert.assertEquals(result.getCode(), 0);
     }
 
-    @Test
     public void jobEdit() throws UnirestException {
 
         JobEntryVo job = new JobEntryVo();
-        job.setJobId(13);
-        job.setJobFlag(JobFlag.DELETED.getValue());
+        job.setJobId(7);
+
+        JobEntryVo.ScheduleExpressionEntry expressionEntry = new JobEntryVo.ScheduleExpressionEntry();
+        expressionEntry.setExpression("0 43 5 * * ?");
+        expressionEntry.setExpressionType(7);
+        job.setScheduleExpressionEntry(expressionEntry);
+
         String paramsJson = JsonHelper.toJson(job, JobEntryVo.class);
 
         HttpResponse<String> jsonResponse = Unirest.post(baseUrl + "/api/job/edit").field("appName", "jarvis-web").field("appToken", "123")
@@ -98,7 +105,6 @@ public class TestRestJob {
     }
 
 
-    @Test
     public void queryRelations() throws UnirestException {
 
         Map<String, Object> params = new HashMap<>();

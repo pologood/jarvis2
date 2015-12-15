@@ -6,8 +6,9 @@
  * Create Date: 2015年9月7日 下午2:31:05
  */
 
-package com.mogujie.jarvis.core;
+package com.mogujie.jarvis.worker;
 
+import com.mogujie.jarvis.core.ProgressReporter;
 import com.mogujie.jarvis.protocol.ReportTaskProgressProtos.WorkerReportTaskProgressRequest;
 
 import akka.actor.ActorRef;

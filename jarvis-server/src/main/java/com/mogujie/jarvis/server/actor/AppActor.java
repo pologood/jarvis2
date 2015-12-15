@@ -9,25 +9,24 @@
 package com.mogujie.jarvis.server.actor;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 import javax.inject.Named;
 
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mogujie.jarvis.core.domain.ActorEntry;
 import com.mogujie.jarvis.core.domain.MessageType;
-import com.mogujie.jarvis.dao.generate.AppMapper;
 import com.mogujie.jarvis.dto.generate.App;
 import com.mogujie.jarvis.protocol.ApplicationProtos.RestCreateApplicationRequest;
 import com.mogujie.jarvis.protocol.ApplicationProtos.RestModifyApplicationRequest;
 import com.mogujie.jarvis.protocol.ApplicationProtos.ServerCreateApplicationResponse;
 import com.mogujie.jarvis.protocol.ApplicationProtos.ServerModifyApplicationResponse;
 import com.mogujie.jarvis.server.TaskManager;
+import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.service.AppService;
 
 import akka.actor.UntypedActor;
@@ -38,9 +37,6 @@ public class AppActor extends UntypedActor {
 
     @Autowired
     private TaskManager taskManager;
-
-    @Autowired
-    private AppMapper appMapper;
 
     @Autowired
     private AppService appService;
@@ -67,16 +63,16 @@ public class AppActor extends UntypedActor {
         ServerCreateApplicationResponse response = null;
         try {
             String key = UUID.randomUUID().toString().replace("-", "");
-            Date date = new Date();
+            DateTime date = DateTime.now();
             App app = new App();
             app.setAppName(request.getAppName());
             app.setAppKey(key);
             app.setStatus(request.getStatus());
             app.setMaxConcurrency(request.getMaxConcurrency());
-            app.setCreateTime(date);
-            app.setUpdateTime(date);
+            app.setCreateTime(date.toDate());
+            app.setUpdateTime(date.toDate());
             app.setUpdateUser(request.getUser());
-            appMapper.insertSelective(app);
+            appService.insert(app);
             taskManager.addApp(app.getAppId(), request.getMaxConcurrency());
             response = ServerCreateApplicationResponse.newBuilder().setSuccess(true).build();
         } catch (Exception ex) {
@@ -90,7 +86,6 @@ public class AppActor extends UntypedActor {
     public void modifyApplication(RestModifyApplicationRequest request) {
         ServerModifyApplicationResponse response = null;
         try {
-            Date date = new Date();
             App app = new App();
             Integer appId = request.getAppId();
             app.setAppId(appId);
@@ -103,13 +98,9 @@ public class AppActor extends UntypedActor {
             if (request.hasMaxConcurrency()) {
                 app.setMaxConcurrency(request.getMaxConcurrency());
             }
-            app.setCreateTime(date);
-            app.setUpdateTime(date);
+            app.setUpdateTime(DateTime.now().toDate());
             app.setUpdateUser(request.getUser());
-
-            appMapper.updateByPrimaryKeySelective(app);
             appService.update(app);
-
             if (request.hasMaxConcurrency()) {
                 taskManager.updateAppMaxParallelism(appId, request.getMaxConcurrency());
             }

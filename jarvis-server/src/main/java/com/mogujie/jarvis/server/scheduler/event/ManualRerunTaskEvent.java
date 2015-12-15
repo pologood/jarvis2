@@ -13,6 +13,11 @@ import java.util.List;
 import com.mogujie.jarvis.core.observer.Event;
 
 /**
+ * This Event handled by {@link com.mogujie.jarvis.server.scheduler.task.TaskScheduler}.
+ * Sent by {@link com.mogujie.jarvis.server.actor.TaskActor}
+ *
+ * 手工重跑任务处理事件
+ *
  * @author guangming
  *
  */

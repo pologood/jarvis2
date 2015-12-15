@@ -22,7 +22,6 @@ public class TestRestTask {
 
     private String baseUrl = "http://127.0.0.1:8080";
 
-    @Test
     public void taskSubmit() throws UnirestException {
 
         TaskEntryVo task = new TaskEntryVo();
@@ -53,8 +52,6 @@ public class TestRestTask {
         Assert.assertEquals(result.getCode(), 0);
     }
 
-
-    @Test
     public void queryRelations() throws UnirestException {
 
         Map<String, Object> params = new HashMap<>();
