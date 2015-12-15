@@ -57,8 +57,8 @@ public class DAGScheduler extends Scheduler {
         DAGJob dagJob = getDAGJob(jobId);
         if (dagJob != null) {
             if (!(dagJob.getType().implies(DAGJobType.TIME))) {
-                LOGGER.warn("DAGJob {} doesn't imply TIME type , auto fix to add TIME type.", e.getJobId());
-                dagJob.updateJobTypeByTimeFlag(true);
+                LOGGER.error("{} doesn't imply TIME type, but receive {} ", dagJob, e);
+                return;
             }
             // 更新时间标识
             dagJob.setTimeReadyFlag();

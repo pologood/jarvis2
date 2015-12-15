@@ -11,6 +11,11 @@ package com.mogujie.jarvis.server.scheduler.event;
 import org.joda.time.DateTime;
 
 /**
+ * This Event handled by {@link com.mogujie.jarvis.server.scheduler.dag.DAGScheduler}.
+ * Sent by {@link com.mogujie.jarvis.server.scheduler.time.TimeScheduler}.
+ *
+ * 处理time based job时间到达的事件
+ *
  * @author guangming
  *
  */
@@ -40,6 +45,11 @@ public class TimeReadyEvent extends DAGJobEvent {
 
     public void setScheduleTime(long scheduleTime) {
         this.scheduleTime = scheduleTime;
+    }
+
+    @Override
+    public String toString() {
+        return "TimeReadyEvent [jobId=" + getJobId() + ", scheduleTime=" + scheduleTime + "]";
     }
 
 }
