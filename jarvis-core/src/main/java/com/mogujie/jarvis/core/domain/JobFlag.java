@@ -37,7 +37,6 @@ public enum JobFlag {
                 break;
             }
         }
-
         return status;
     }
 }

@@ -11,47 +11,53 @@ import java.util.List;
 
 import javax.inject.Named;
 
+import com.mogujie.jarvis.server.service.WorkerService;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 
 import com.mogujie.jarvis.core.domain.MessageType;
-import com.mogujie.jarvis.dao.generate.WorkerMapper;
-import com.mogujie.jarvis.dto.generate.Worker;
-import com.mogujie.jarvis.dto.generate.WorkerExample;
 import com.mogujie.jarvis.protocol.ModifyWorkerStatusProtos.RestServerModifyWorkerStatusRequest;
 import com.mogujie.jarvis.protocol.ModifyWorkerStatusProtos.ServerModifyWorkerStatusResponse;
 import com.mogujie.jarvis.server.domain.ActorEntry;
 
 import akka.actor.UntypedActor;
 
-@Named("modifyWorkerStatusActor")
+@Named("workerModifyStatusActor")
 @Scope("prototype")
-public class ModifyWorkerStatusActor extends UntypedActor {
+public class WorkerModifyStatusActor extends UntypedActor {
 
     @Autowired
-    private WorkerMapper workerMapper;
+    private WorkerService workerService;
 
     @Override
     public void onReceive(Object obj) throws Exception {
         if (obj instanceof RestServerModifyWorkerStatusRequest) {
-            RestServerModifyWorkerStatusRequest request = (RestServerModifyWorkerStatusRequest) obj;
-            String ip = request.getIp();
-            int port = request.getPort();
-            int status = request.getStatus();
-
-            ServerModifyWorkerStatusResponse response = ServerModifyWorkerStatusResponse.newBuilder().setSuccess(true).setMessage("").build();
-            getSender().tell(response, getSelf());
-
-            Worker worker = new Worker();
-            worker.setStatus(status);
-
-            WorkerExample example = new WorkerExample();
-            example.createCriteria().andIpEqualTo(ip).andPortEqualTo(port);
-            workerMapper.updateByExample(worker, example);
+            updateStatus((RestServerModifyWorkerStatusRequest) obj);
         } else {
             unhandled(obj);
         }
     }
+
+    public void updateStatus(RestServerModifyWorkerStatusRequest request) {
+        ServerModifyWorkerStatusResponse response;
+        try {
+            String ip = request.getIp();
+            int port = request.getPort();
+            int status = request.getStatus();
+            int workerId = workerService.getWorkerId(ip, port);
+            if (workerId == 0) {
+                throw new NotFoundException("worker不存在。ip:" + ip + ";port:" + port);
+            }
+            workerService.updateWorkerStatus(workerId, status);
+            response = ServerModifyWorkerStatusResponse.newBuilder().setSuccess(true).build();
+            getSender().tell(response, getSelf());
+        } catch (Exception ex) {
+            response = ServerModifyWorkerStatusResponse.newBuilder().setSuccess(false).setMessage(ex.getMessage()).build();
+            getSender().tell(response, getSelf());
+        }
+    }
+
 
     public static List<ActorEntry> handledMessages() {
         List<ActorEntry> list = new ArrayList<>();

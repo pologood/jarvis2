@@ -8,6 +8,7 @@
 
 package com.mogujie.jarvis.server.service;
 
+import com.mogujie.jarvis.core.domain.WorkerStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +35,7 @@ public class WorkerService {
     private WorkerGroupMapper workerGroupMapper;
 
     public int getWorkerId(String ip, int port) {
-        int workerId = -1;
+        int workerId = 0;
         WorkerExample example = new WorkerExample();
         example.createCriteria().andIpEqualTo(ip).andPortEqualTo(port);
         List<Worker> workers = workerMapper.selectByExample(example);
@@ -62,6 +63,14 @@ public class WorkerService {
             workerMapper.insert(worker);
         }
     }
+
+    public void updateWorkerStatus(int workerId, int status){
+        Worker worker = new Worker();
+        worker.setId(workerId);
+        worker.setStatus(status);
+        workerMapper.updateByPrimaryKeySelective(worker);
+    }
+
 
     public int getGroupIdByAuthKey(String key) {
         WorkerGroupExample example = new WorkerGroupExample();

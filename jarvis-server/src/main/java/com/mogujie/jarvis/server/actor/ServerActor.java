@@ -72,23 +72,24 @@ public class ServerActor extends UntypedActor {
         int taskMetricsRoutingActorNum = serverConfig.getInt(ServerConigKeys.TASK_METRICS_ACTOR_NUM, 50);
         actorRefs.add(new Pair<ActorRef, List<ActorEntry>>(getContext().actorOf(TaskMetricsRoutingActor.props(taskMetricsRoutingActorNum)),
                 TaskMetricsRoutingActor.handledMessages()));
-        addActor("heartBeatActor", HeartBeatActor.handledMessages());
-        addActor("workerRegistryActor", WorkerRegistryActor.handledMessages());
 
         int taskActorNum = serverConfig.getInt(ServerConigKeys.TASK_ACTOR_NUM, 10);
         addActor("taskActor", new SmallestMailboxPool(taskActorNum), TaskActor.handledMessages());
-        addActor("jobActor", JobActor.handledMessages());
-        addActor("modifyWorkerStatusActor", ModifyWorkerStatusActor.handledMessages());
+
         addActor("appActor", AppActor.handledMessages());
+        addActor("jobActor", JobActor.handledMessages());
+        addActor("heartBeatActor", HeartBeatActor.handledMessages());
         addActor("workerGroupActor", WorkerGroupActor.handledMessages());
+        addActor("workerModifyStatusActor", WorkerModifyStatusActor.handledMessages());
+        addActor("workerRegistryActor", WorkerRegistryActor.handledMessages());
         addActor("systemActor", SystemActor.handledMessages());
         addActor("planActor", PlanActor.handledMessages());
     }
 
     private Object generateResponse(Class<? extends GeneratedMessage> clazz, boolean success, String msg) {
         try {
-            Method method = clazz.getMethod("getDefaultInstance", new Class[] {});
-            Object object = method.invoke(null, new Object[] {});
+            Method method = clazz.getMethod("getDefaultInstance", new Class[]{});
+            Object object = method.invoke(null, new Object[]{});
             for (Field field : object.getClass().getDeclaredFields()) {
                 if ("success_".equals(field.getName())) {
                     field.setAccessible(true);
