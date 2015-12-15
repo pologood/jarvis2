@@ -15,13 +15,13 @@ import javax.inject.Named;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 
+import akka.actor.UntypedActor;
+
 import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.protocol.SystemStatusProtos.RestServerUpdateSystemStatusRequest;
 import com.mogujie.jarvis.protocol.SystemStatusProtos.ServerUpdateSystemStatusResponse;
-import com.mogujie.jarvis.server.TaskDispatcher;
+import com.mogujie.jarvis.server.dispatcher.TaskDispatcher;
 import com.mogujie.jarvis.server.domain.ActorEntry;
-
-import akka.actor.UntypedActor;
 
 @Named("systemActor")
 @Scope("prototype")
