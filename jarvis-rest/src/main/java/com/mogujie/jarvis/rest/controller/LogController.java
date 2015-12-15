@@ -15,6 +15,7 @@ import javax.ws.rs.core.MediaType;
 
 import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.core.domain.StreamType;
+import com.mogujie.jarvis.core.util.IdUtils;
 import com.mogujie.jarvis.protocol.AppAuthProtos;
 import com.mogujie.jarvis.protocol.ReadLogProtos.LogStorageReadLogResponse;
 import com.mogujie.jarvis.protocol.ReadLogProtos.RestReadLogRequest;
@@ -39,9 +40,9 @@ public class LogController extends AbstractController {
     @Path("readExecuteLog")
     @Produces(MediaType.APPLICATION_JSON)
     public RestResult readExecuteLog(@FormParam("appToken") String appToken,
-                                        @FormParam("appName") String appName,
-                                        @FormParam("user") String user,
-                                        @FormParam("parameters") String parameters) {
+                                     @FormParam("appName") String appName,
+                                     @FormParam("user") String user,
+                                     @FormParam("parameters") String parameters) {
 
         return queryLog(StreamType.STD_ERR, appToken, appName, user, parameters);
     }
@@ -55,9 +56,9 @@ public class LogController extends AbstractController {
     @Path("readResult")
     @Produces(MediaType.APPLICATION_JSON)
     public RestResult readResult(@FormParam("appToken") String appToken,
-                                    @FormParam("appName") String appName,
-                                    @FormParam("user") String user,
-                                    @FormParam("parameters") String parameters) throws Exception {
+                                 @FormParam("appName") String appName,
+                                 @FormParam("user") String user,
+                                 @FormParam("parameters") String parameters) throws Exception {
         return queryLog(StreamType.STD_OUT, appToken, appName, user, parameters);
     }
 
@@ -70,7 +71,25 @@ public class LogController extends AbstractController {
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
             JsonParameters para = new JsonParameters(parameters);
-            String fullId = para.getStringNotEmpty("fullId");
+            String fullId = para.getString("fullId");
+            if (fullId == null || fullId.equals("")) {
+                Long jobId = para.getLong("jobId");
+                if (jobId == null) {
+                    throw new IllegalArgumentException("请传入jobId 或者 fullId");
+                }
+                Long taskId = para.getLong("taskId");
+                if (taskId == null) {
+                    throw new IllegalArgumentException("请传入taskId 或者 fullId");
+                }
+                if (taskId == 0) {
+                    throw new IllegalArgumentException("taskId不能等于0");
+                }
+                Integer attemptId = para.getInteger("attemptId");
+                if (attemptId == null) {
+                    throw new IllegalArgumentException("请传入attemptId 或者 fullId");
+                }
+                fullId = IdUtils.getFullId(jobId, taskId, attemptId);
+            }
             Long offset = para.getLong("offset", 0L);
             Integer lines = para.getInteger("lines", DEFAULT_LINE);
 

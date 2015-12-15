@@ -21,6 +21,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.transaction.annotation.Transactional;
 
+import akka.actor.UntypedActor;
+
 import com.google.common.collect.Sets;
 import com.mogujie.jarvis.core.domain.JobFlag;
 import com.mogujie.jarvis.core.domain.JobRelationType;
@@ -53,8 +55,6 @@ import com.mogujie.jarvis.server.scheduler.time.TimeScheduler;
 import com.mogujie.jarvis.server.scheduler.time.TimeSchedulerFactory;
 import com.mogujie.jarvis.server.service.ConvertValidService;
 import com.mogujie.jarvis.server.service.JobService;
-
-import akka.actor.UntypedActor;
 
 /**
  * @author guangming
@@ -259,10 +259,7 @@ public class JobActor extends UntypedActor {
                 jobService.insertJobDepend(jobDepend);
             } else if (operationMode.equals(OperationMode.DELETE)) {
                 operation = ModifyOperation.DEL;
-                JobDependKey key = new JobDependKey();
-                key.setJobId(jobId);
-                key.setPreJobId(preJobId);
-                jobService.deleteJobDepend(key);
+                jobService.deleteJobDepend(jobId, preJobId);
             } else {
                 operation = ModifyOperation.MODIFY;
                 JobDependKey key = new JobDependKey();
@@ -305,7 +302,12 @@ public class JobActor extends UntypedActor {
                 relations = dagScheduler.getJobGraph().getChildren(jobId);
             }
             for (Pair<Long, JobFlag> relation : relations) {
-                JobFlagEntry entry = JobFlagEntry.newBuilder().setJobId(relation.getFirst()).setJobFlag(relation.getSecond().getValue()).build();
+                long relationId = relation.getFirst();
+                JobFlag flag = relation.getSecond();
+                if (flag.equals(JobFlag.ENABLE) && !jobService.isActive(relationId)) {
+                    flag = JobFlag.EXPIRED;
+                }
+                JobFlagEntry entry = JobFlagEntry.newBuilder().setJobId(relationId).setJobFlag(flag.getValue()).build();
                 builder.addJobFlagEntry(entry);
             }
             response = builder.setSuccess(true).build();

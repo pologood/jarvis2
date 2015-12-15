@@ -21,6 +21,7 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.mogujie.jarvis.core.util.ConfigUtils;
+import com.mogujie.jarvis.server.ServerConigKeys;
 
 public class DefaultAlarmer extends Alarmer {
 
@@ -30,7 +31,7 @@ public class DefaultAlarmer extends Alarmer {
     @Override
     public boolean alarm(AlarmLevel alarmLevel, List<AlarmType> alarmTypes, List<String> receiver, String message) {
         Map<String, Object> fields = Maps.newHashMap();
-        fields.put("appName", serverConfig.getString("alarm.app.name"));
+        fields.put("appName", serverConfig.getString(ServerConigKeys.ALARM_APP_NAME));
         fields.put("errorLevel", alarmLevel.name());
         fields.put("errorMsg", message);
 
@@ -39,7 +40,7 @@ public class DefaultAlarmer extends Alarmer {
         fields.put("ext", ext);
 
         try {
-            HttpResponse<JsonNode> response = Unirest.post(serverConfig.getString("alarm.service.url")).fields(fields).asJson();
+            HttpResponse<JsonNode> response = Unirest.post(serverConfig.getString(ServerConigKeys.ALARM_SERVICE_URL)).fields(fields).asJson();
             return response.getBody().getObject().getBoolean("success");
         } catch (UnirestException e) {
             LOGGER.error("Alarm error", e);

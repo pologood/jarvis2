@@ -21,6 +21,7 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.mogujie.jarvis.core.exeception.AcceptanceException;
 import com.mogujie.jarvis.core.util.ConfigUtils;
+import com.mogujie.jarvis.worker.WorkerConfigKeys;
 import com.mogujie.jarvis.worker.strategy.AcceptanceResult;
 import com.mogujie.jarvis.worker.strategy.AcceptanceStrategy;
 
@@ -34,9 +35,9 @@ public class YarnMemoryAcceptanceStrategy implements AcceptanceStrategy {
   private DecimalFormat decimalFormat = new DecimalFormat("#0.00");
   private static final Configuration CONFIG = ConfigUtils.getWorkerConfig();
   private static final double MAX_YARN_MEMORY_USAGE = CONFIG
-      .getDouble("yarn.memory.usage.threshold", 0.9);
+      .getDouble(WorkerConfigKeys.YARN_MEMORY_USAGE_THRESHOLD, 0.9);
   private static final List<Object> YARN_REST_API_URIS = CONFIG
-      .getList("yarn.resoucemanager.rest.api.uris");
+      .getList(WorkerConfigKeys.YARN_RESOUCEMANAGER_REST_API_URIS);
 
   @Override
   public AcceptanceResult accept() throws AcceptanceException {

@@ -14,21 +14,24 @@ import org.junit.Test;
 
 import com.google.common.collect.Sets;
 import com.mogujie.jarvis.core.exeception.JobScheduleException;
-import com.mogujie.jarvis.server.scheduler.dag.checker.TaskScheduleFactory;
+import com.mogujie.jarvis.dto.generate.Job;
+import com.mogujie.jarvis.dto.generate.JobDepend;
 import com.mogujie.jarvis.server.scheduler.event.ScheduleEvent;
 import com.mogujie.jarvis.server.scheduler.task.DAGTask;
+import com.mogujie.jarvis.server.service.JobService;
+import com.mogujie.jarvis.server.util.SpringContext;
 
 /**
  * @author guangming
  *
  */
 public class TestScheduleWithOffsetStrategy extends TestSchedulerBase {
-
-    private long jobAId = 1;
-    private long jobBId = 2;
-    private long jobCId = 3;
-    private long taskAId = 1;
-    private long taskBId = 2;
+    private JobService jobService = SpringContext.getBean(JobService.class);
+    private long jobAId;
+    private long jobBId;
+    private long jobCId;
+    private long taskAId;
+    private long taskBId;
 
     /**
      *   A   B
@@ -41,8 +44,11 @@ public class TestScheduleWithOffsetStrategy extends TestSchedulerBase {
      */
     @Test
     public void testCurrentDay1() throws JobScheduleException {
-        conf.setProperty(TaskScheduleFactory.JOB_OFFSET_STRATEGY, "cd");
-
+        jobAId = createJob("jobA");
+        jobBId = createJob("jobB");
+        jobCId = createJob("jobC");
+        createJobDepend(jobCId, jobAId, "cd");
+        createJobDepend(jobCId, jobBId, "cd");
         jobGraph.addJob(jobAId, new DAGJob(jobAId, DAGJobType.TIME), null);
         jobGraph.addJob(jobBId, new DAGJob(jobBId, DAGJobType.TIME), null);
         jobGraph.addJob(jobCId, new DAGJob(jobCId, DAGJobType.DEPEND), Sets.newHashSet(jobAId, jobBId));
@@ -69,6 +75,12 @@ public class TestScheduleWithOffsetStrategy extends TestSchedulerBase {
         ScheduleEvent scheduleEventB = new ScheduleEvent(jobBId, taskBId, t2);
         dagScheduler.handleScheduleEvent(scheduleEventB);
         Assert.assertEquals(3, taskGraph.getTaskMap().size());
+
+        jobService.deleteJobDepend(jobCId, jobAId);
+        jobService.deleteJobDepend(jobCId, jobBId);
+        jobService.deleteJob(jobAId);
+        jobService.deleteJob(jobBId);
+        jobService.deleteJob(jobCId);
     }
 
     /**
@@ -82,8 +94,8 @@ public class TestScheduleWithOffsetStrategy extends TestSchedulerBase {
      */
     @Test
     public void testCurrentDay2() throws JobScheduleException {
-        conf.setProperty(TaskScheduleFactory.JOB_OFFSET_STRATEGY, "cd");
-
+        jobAId = createJob("jobA");
+        jobBId = createJob("jobB");
         jobGraph.addJob(jobAId, new DAGJob(jobAId, DAGJobType.TIME), null);
         jobGraph.addJob(jobBId, new DAGJob(jobBId, DAGJobType.TIME), null);
 
@@ -96,6 +108,9 @@ public class TestScheduleWithOffsetStrategy extends TestSchedulerBase {
         dagScheduler.handleScheduleEvent(scheduleEventA);
         Assert.assertEquals(1, taskGraph.getTaskMap().size());
 
+        jobCId = createJob("jobC");
+        createJobDepend(jobCId, jobAId, "cd");
+        createJobDepend(jobCId, jobBId, "cd");
         jobGraph.addJob(jobCId, new DAGJob(jobCId, DAGJobType.DEPEND), Sets.newHashSet(jobAId, jobBId));
 
         // schedule jobB
@@ -106,6 +121,12 @@ public class TestScheduleWithOffsetStrategy extends TestSchedulerBase {
         ScheduleEvent scheduleEventB = new ScheduleEvent(jobBId, taskBId, t2);
         dagScheduler.handleScheduleEvent(scheduleEventB);
         Assert.assertEquals(3, taskGraph.getTaskMap().size());
+
+        jobService.deleteJobDepend(jobCId, jobAId);
+        jobService.deleteJobDepend(jobCId, jobBId);
+        jobService.deleteJob(jobAId);
+        jobService.deleteJob(jobBId);
+        jobService.deleteJob(jobCId);
     }
 
     /**
@@ -119,8 +140,8 @@ public class TestScheduleWithOffsetStrategy extends TestSchedulerBase {
      */
     @Test
     public void testCurrentDay3() throws JobScheduleException {
-        conf.setProperty(TaskScheduleFactory.JOB_OFFSET_STRATEGY, "cd");
-
+        jobAId = createJob("jobA");
+        jobBId = createJob("jobB");
         jobGraph.addJob(jobAId, new DAGJob(jobAId, DAGJobType.TIME), null);
         jobGraph.addJob(jobBId, new DAGJob(jobBId, DAGJobType.TIME), null);
 
@@ -142,8 +163,38 @@ public class TestScheduleWithOffsetStrategy extends TestSchedulerBase {
         dagScheduler.handleScheduleEvent(scheduleEventB);
         Assert.assertEquals(2, taskGraph.getTaskMap().size());
 
+        jobCId = createJob("jobC");
+        createJobDepend(jobCId, jobAId, "cd");
+        createJobDepend(jobCId, jobBId, "cd");
         jobGraph.addJob(jobCId, new DAGJob(jobCId, DAGJobType.DEPEND), Sets.newHashSet(jobAId, jobBId));
 
         Assert.assertEquals(3, taskGraph.getTaskMap().size());
+
+        jobService.deleteJobDepend(jobCId, jobAId);
+        jobService.deleteJobDepend(jobCId, jobBId);
+        jobService.deleteJob(jobAId);
+        jobService.deleteJob(jobBId);
+        jobService.deleteJob(jobCId);
+    }
+
+    private long createJob(String jobName) {
+        Job job = new Job();
+        job.setJobName(jobName);
+        job.setSubmitUser("test");
+        job.setAppId(1);
+        job.setActiveStartDate(new DateTime("2000-01-01").toDate());
+        job.setActiveEndDate(new DateTime("2050-01-01").toDate());
+        job.setContent("abc");
+        job.setUpdateUser("test");
+        return jobService.insertJob(job);
+    }
+
+    private void createJobDepend(long myJobId, long preJobId, String offsetStrategy) {
+        JobDepend jobDepend = new JobDepend();
+        jobDepend.setJobId(myJobId);
+        jobDepend.setPreJobId(preJobId);
+        jobDepend.setOffsetStrategy(offsetStrategy);
+        jobDepend.setUpdateUser("test");
+        jobService.insertJobDepend(jobDepend);
     }
 }

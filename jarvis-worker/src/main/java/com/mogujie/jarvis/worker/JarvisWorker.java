@@ -14,13 +14,6 @@ import org.apache.commons.configuration.Configuration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import scala.concurrent.duration.Duration;
-import akka.actor.ActorRef;
-import akka.actor.ActorSelection;
-import akka.actor.ActorSystem;
-import akka.actor.DeadLetter;
-import akka.routing.SmallestMailboxPool;
-
 import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse;
@@ -29,6 +22,13 @@ import com.mogujie.jarvis.worker.actor.DeadLetterActor;
 import com.mogujie.jarvis.worker.actor.WorkerActor;
 import com.mogujie.jarvis.worker.util.FutureUtils;
 import com.typesafe.config.Config;
+
+import akka.actor.ActorRef;
+import akka.actor.ActorSelection;
+import akka.actor.ActorSystem;
+import akka.actor.DeadLetter;
+import akka.routing.SmallestMailboxPool;
+import scala.concurrent.duration.Duration;
 
 public class JarvisWorker {
 
@@ -39,10 +39,10 @@ public class JarvisWorker {
     ActorSystem system = ActorSystem.create(JarvisConstants.WORKER_AKKA_SYSTEM_NAME, akkaConfig);
 
     Configuration workerConfig = ConfigUtils.getWorkerConfig();
-    String serverAkkaPath = workerConfig.getString("server.akka.path")
+    String serverAkkaPath = workerConfig.getString(WorkerConfigKeys.SERVER_AKKA_PATH)
         + JarvisConstants.SERVER_AKKA_USER_PATH;
-    int workerGroupId = workerConfig.getInt("worker.group.id", 0);
-    String workerKey = workerConfig.getString("worker.key");
+    int workerGroupId = workerConfig.getInt(WorkerConfigKeys.WORKER_GROUP_ID, 0);
+    String workerKey = workerConfig.getString(WorkerConfigKeys.WORKER_KEY);
     WorkerRegistryRequest request = WorkerRegistryRequest.newBuilder().setKey(workerKey).build();
 
     // 注册Worker
@@ -66,14 +66,15 @@ public class JarvisWorker {
         .actorOf(new SmallestMailboxPool(10).props(DeadLetterActor.props()));
     system.eventStream().subscribe(deadLetterActor, DeadLetter.class);
 
-    int actorNum = workerConfig.getInt("worker.actors.num", 500);
+    int actorNum = workerConfig.getInt(WorkerConfigKeys.WORKER_ACTORS_NUM, 500);
     ActorRef workerActor = system.actorOf(
         new SmallestMailboxPool(actorNum).props(WorkerActor.props()),
         JarvisConstants.WORKER_AKKA_SYSTEM_NAME);
 
     ActorSelection heartBeatActor = system.actorSelection(serverAkkaPath);
 
-    int heartBeatInterval = workerConfig.getInt("worker.heart.beat.interval.seconds", 5);
+    int heartBeatInterval = workerConfig.getInt(WorkerConfigKeys.WORKER_HEART_BEAT_INTERVAL_SECONDS,
+        5);
 
     // 心跳汇报
     system.scheduler().schedule(Duration.Zero(),

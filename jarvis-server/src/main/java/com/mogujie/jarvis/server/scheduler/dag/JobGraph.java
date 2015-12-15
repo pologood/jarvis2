@@ -81,12 +81,8 @@ public enum JobGraph {
             List<DAGJob> parents = getParents(dagJob);
             if (parents != null) {
                 for (DAGJob parent : parents) {
-                    long parentId = parent.getJobId();
-                    JobFlag flag = parent.getJobFlag();
-                    if (flag.equals(JobFlag.ENABLE) && !jobService.isActive(parentId)) {
-                        flag = JobFlag.EXPIRED;
-                    }
-                    Pair<Long, JobFlag> jobPair = new Pair<Long, JobFlag>(parentId, flag);
+                    Pair<Long, JobFlag> jobPair = new Pair<Long, JobFlag>(parent.getJobId(),
+                            parent.getJobFlag());
                     parentJobPairs.add(jobPair);
                 }
             }
@@ -108,12 +104,8 @@ public enum JobGraph {
             List<DAGJob> children = getChildren(dagJob);
             if (children != null) {
                 for (DAGJob child : children) {
-                    long childId = child.getJobId();
-                    JobFlag flag = child.getJobFlag();
-                    if (flag.equals(JobFlag.ENABLE) && !jobService.isActive(childId)) {
-                        flag = JobFlag.EXPIRED;
-                    }
-                    Pair<Long, JobFlag> jobPair = new Pair<Long, JobFlag>(childId, flag);
+                    Pair<Long, JobFlag> jobPair = new Pair<Long, JobFlag>(child.getJobId(),
+                            child.getJobFlag());
                     childJobPairs.add(jobPair);
                 }
             }
@@ -155,12 +147,9 @@ public enum JobGraph {
                     DAGJob parent = jobMap.get(d);
                     if (parent != null) {
                         try {
-                            // 过滤自依赖
-                            if (parent.getJobId() != jobId) {
-                                dag.addDagEdge(parent, dagJob);
-                                LOGGER.debug("add dependency successfully, parent is {}, child is {}",
-                                        parent.getJobId(), dagJob.getJobId());
-                            }
+                            dag.addDagEdge(parent, dagJob);
+                            LOGGER.debug("add dependency successfully, parent is {}, child is {}",
+                                    parent.getJobId(), dagJob.getJobId());
                         } catch (CycleFoundException e) {
                             LOGGER.error(e);
                             dag.removeVertex(dagJob);

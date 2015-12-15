@@ -221,6 +221,20 @@ public class TestCronExpression {
     }
 
     @Test
+    public void checkLeapDay() {
+        assertEquals(new CronExpression("0 0 1 * * ?").getTimeAfter(new DateTime(2000, 2, 28, 23, 59)), new DateTime(2000, 2, 29, 01, 00));
+        assertEquals(new CronExpression("0 0 1 * * ?").getTimeAfter(new DateTime(2016, 2, 29, 23, 59)), new DateTime(2016, 3, 01, 01, 00));
+        assertEquals(new CronExpression("0 0 1 * * ?").getTimeAfter(new DateTime(2016, 2, 28, 23, 59)), new DateTime(2016, 2, 29, 01, 00));
+        assertEquals(new CronExpression("0 0 1 * * ?").getTimeAfter(new DateTime(2017, 2, 28, 23, 59)), new DateTime(2017, 3, 01, 01, 00));
+
+        assertEquals(new CronExpression("0 0 1 29 * ?").getTimeAfter(new DateTime(2015, 2, 28, 23, 59)), new DateTime(2015, 3, 29, 01, 00));
+        assertEquals(new CronExpression("0 0 1 29 2 ?").getTimeAfter(new DateTime(2017, 2, 28, 23, 59)), new DateTime(2020, 2, 29, 01, 00));
+
+        assertTrue(!new CronExpression("0 0 0 29 2 ? 2015").isValid());
+        assertTrue(new CronExpression("0 0 0 29 2 ? 2016").isValid());
+    }
+
+    @Test
     public void shallNotNotSupportRollingPeriod() {
         assertTrue(!new CronExpression("* * 5-1 * * ?").isValid());
     }

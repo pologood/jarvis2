@@ -11,6 +11,7 @@ package com.mogujie.jarvis.worker.strategy.impl;
 import com.mogujie.jarvis.core.exeception.AcceptanceException;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.worker.TaskPool;
+import com.mogujie.jarvis.worker.WorkerConfigKeys;
 import com.mogujie.jarvis.worker.strategy.AcceptanceResult;
 import com.mogujie.jarvis.worker.strategy.AcceptanceStrategy;
 
@@ -21,7 +22,7 @@ import com.mogujie.jarvis.worker.strategy.AcceptanceStrategy;
 public class TaskNumAcceptanceStrategy implements AcceptanceStrategy {
 
   public static final int JOB_MAX_THRESHOLD = ConfigUtils.getWorkerConfig()
-      .getInt("worker.job.num.threshold", 100);
+      .getInt(WorkerConfigKeys.WORKER_JOB_NUM_THRESHOLD, 100);
 
   @Override
   public AcceptanceResult accept() throws AcceptanceException {

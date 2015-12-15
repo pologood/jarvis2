@@ -192,14 +192,17 @@ public class JobService {
     }
 
     public void insertJobDepend(JobDepend record) {
-        jobDependMapper.insert(record);
+        jobDependMapper.insertSelective(record);
 
         JobDependencyEntry jobDependencyEntry = getJobDependencyEntry(record);
         JobEntry jobEntry = get(record.getJobId());
         jobEntry.addDependency(record.getPreJobId(), jobDependencyEntry);
     }
 
-    public void deleteJobDepend(JobDependKey key) {
+    public void deleteJobDepend(long jobId, long preJobId) {
+        JobDependKey key = new JobDependKey();
+        key.setJobId(jobId);
+        key.setPreJobId(preJobId);
         jobDependMapper.deleteByPrimaryKey(key);
 
         JobEntry jobEntry = get(key.getJobId());
