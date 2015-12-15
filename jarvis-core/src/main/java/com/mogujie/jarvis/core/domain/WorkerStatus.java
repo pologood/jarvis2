@@ -8,7 +8,7 @@
 package com.mogujie.jarvis.core.domain;
 
 /**
- * @author guangming@mogujie.com
+ * @author muming
  *
  */
 public enum WorkerStatus {
@@ -25,4 +25,28 @@ public enum WorkerStatus {
     public int getValue() {
         return value;
     }
+
+    public static Boolean isValid(int value) {
+        WorkerStatus[] values = WorkerStatus.values();
+        for (WorkerStatus s : values) {
+            if (s.getValue() == value) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static WorkerStatus getInstance(int value) {
+        WorkerStatus[] statusList = WorkerStatus.values();
+        WorkerStatus status = WorkerStatus.ONLINE;
+        for (WorkerStatus s : statusList) {
+            if (s.getValue() == value) {
+                status = s;
+                break;
+            }
+        }
+        return status;
+    }
+
+
 }

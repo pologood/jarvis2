@@ -88,7 +88,7 @@ public class WorkerGroupController extends AbstractController {
      * 更新worker group状态
      */
     @POST
-    @Path("setStatus")
+    @Path("status/set")
     @Produces(MediaType.APPLICATION_JSON)
     public RestResult setStatus(@FormParam("user") String user, @FormParam("appName") String appName, @FormParam("appToken") String appToken,
                                 @FormParam("parameters") String parameters) {
