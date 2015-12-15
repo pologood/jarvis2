@@ -5,7 +5,7 @@
  * Author: wuya Create Date: 2015年11月25日 下午1:59:14
  */
 
-package com.mogujie.jarvis.server.scheduler;
+package com.mogujie.jarvis.server.alarm;
 
 import java.util.List;
 
@@ -21,9 +21,7 @@ import com.mogujie.jarvis.dao.generate.JobMapper;
 import com.mogujie.jarvis.dto.generate.Alarm;
 import com.mogujie.jarvis.dto.generate.AlarmExample;
 import com.mogujie.jarvis.dto.generate.Job;
-import com.mogujie.jarvis.server.alarm.AlarmType;
-import com.mogujie.jarvis.server.alarm.Alarmer;
-import com.mogujie.jarvis.server.alarm.DefaultAlarmer;
+import com.mogujie.jarvis.server.scheduler.Scheduler;
 import com.mogujie.jarvis.server.scheduler.event.DAGTaskEvent;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
 import com.mogujie.jarvis.server.scheduler.event.KilledEvent;

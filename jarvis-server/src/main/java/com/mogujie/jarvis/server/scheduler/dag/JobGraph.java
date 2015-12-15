@@ -332,6 +332,12 @@ public enum JobGraph {
         }
     }
 
+    /**
+     * submit job if pass the dependency check
+     *
+     * @param dagJob
+     * @param scheduleTime
+     */
     public void submitJobWithCheck(DAGJob dagJob, long scheduleTime) {
         if (dagJob.checkDependency()) {
             long jobId = dagJob.getJobId();

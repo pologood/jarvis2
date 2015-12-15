@@ -6,7 +6,7 @@
  * Create Date: 2015年9月22日 下午2:45:50
  */
 
-package com.mogujie.jarvis.server;
+package com.mogujie.jarvis.server.dispatcher;
 
 import java.util.List;
 import java.util.Map;

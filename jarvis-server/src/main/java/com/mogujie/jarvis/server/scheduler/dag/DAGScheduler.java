@@ -49,6 +49,12 @@ public class DAGScheduler extends Scheduler {
     public void handleStopEvent(StopEvent event) {
     }
 
+    /**
+     * 由TimeScheduler发送TimeReadyEvent，DAGScheduler进行处理。
+     * 首先更新该DAGJob的时间标识，然后进行依赖检查
+     *
+     * @param e
+     */
     @Subscribe
     public void handleTimeReadyEvent(TimeReadyEvent e) {
         long jobId = e.getJobId();
@@ -68,6 +74,13 @@ public class DAGScheduler extends Scheduler {
         }
     }
 
+    /**
+     * 由TaskScheduler发送ScheduleEvent，DAGScheduler进行处理。
+     * 如果childJobId=0，会触发该job的所有子任务
+     * 否则，触发jobId=childJobId的子任务
+     *
+     * @param e
+     */
     @Subscribe
     public void handleScheduleEvent(ScheduleEvent e) {
         long jobId = e.getJobId();

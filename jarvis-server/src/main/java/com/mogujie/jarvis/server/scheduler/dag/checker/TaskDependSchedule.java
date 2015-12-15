@@ -12,8 +12,9 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.SortedSet;
-import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.TreeSet;
 
+import org.apache.http.annotation.NotThreadSafe;
 import org.joda.time.DateTime;
 
 import com.google.common.collect.Range;
@@ -23,16 +24,22 @@ import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.SpringContext;
 
 /**
+ * 任务A对任务B的依赖检查器。
+ * 内部SortedSet<ScheduleTask> schedulingTasks维护当前正在调度的所有前置task
+ * 内部List<ScheduleTask> selectedTasks维护每次依赖检查时已选择的前置task，如果依赖检查通过或失败，都会重置。
+ * TaskDependSchedule不是线程安全的，但是当前外部都是同步调用，不会有问题。
+ *
  * @author guangming
  *
  */
+@NotThreadSafe
 public class TaskDependSchedule {
     private long myJobId;
     private long preJobId;
     private DependencyExpression dependencyExpression;
 
     // SortedSet<ScheduleTask>
-    private SortedSet<ScheduleTask> schedulingTasks = new ConcurrentSkipListSet<>(new Comparator<ScheduleTask>() {
+    private SortedSet<ScheduleTask> schedulingTasks = new TreeSet<ScheduleTask>(new Comparator<ScheduleTask>() {
         @Override
         public int compare(ScheduleTask task1, ScheduleTask task2) {
             return Long.compare(task1.getScheduleTime(), task2.getScheduleTime());

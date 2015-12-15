@@ -28,7 +28,7 @@ import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.observer.Event;
 import com.mogujie.jarvis.core.util.IdUtils;
 import com.mogujie.jarvis.core.util.ThreadUtils;
-import com.mogujie.jarvis.server.TaskQueue;
+import com.mogujie.jarvis.server.dispatcher.TaskQueue;
 import com.mogujie.jarvis.server.domain.RetryType;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
 

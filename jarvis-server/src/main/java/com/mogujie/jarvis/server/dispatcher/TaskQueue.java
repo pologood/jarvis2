@@ -6,7 +6,7 @@
  * Create Date: 2015年9月15日 下午4:40:30
  */
 
-package com.mogujie.jarvis.server;
+package com.mogujie.jarvis.server.dispatcher;
 
 import java.util.Comparator;
 import java.util.Iterator;

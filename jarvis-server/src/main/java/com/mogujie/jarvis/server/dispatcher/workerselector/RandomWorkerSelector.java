@@ -6,7 +6,7 @@
  * Create Date: 2015年8月31日 下午4:05:00
  */
 
-package com.mogujie.jarvis.server.workerselector;
+package com.mogujie.jarvis.server.dispatcher.workerselector;
 
 import java.util.List;
 import java.util.Random;

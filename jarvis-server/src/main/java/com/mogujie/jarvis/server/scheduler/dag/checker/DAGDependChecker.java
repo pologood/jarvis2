@@ -14,23 +14,30 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
+import org.apache.http.annotation.NotThreadSafe;
+
+import com.google.common.collect.Maps;
 import com.mogujie.jarvis.core.expression.DependencyExpression;
 import com.mogujie.jarvis.core.expression.TimeOffsetExpression;
 import com.mogujie.jarvis.server.domain.JobDependencyEntry;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.util.SpringContext;
+ort com.mogujie.jarvis.server.util.SpringContext;
 
 /**
+ * 单个任务的依赖检查器，内部维护Map<Long, TaskDependSchedule> jobScheduleMap进行依赖检查。
+ * jobScheduleMap不是线程安全的数据结构，但是当前外部都是同步调用，不会有问题。
+ *
  * @author guangming
  *
  */
+@NotThreadSafe
 public class DAGDependChecker {
     private long myJobId;
 
     // Map<JobId, TaskDependSchedule>
-    protected Map<Long, TaskDependSchedule> jobScheduleMap = new ConcurrentHashMap<Long, TaskDependSchedule>();
+    protected Map<Long, TaskDependSchedule> jobScheduleMap = Maps.newHashMap();
 
     public DAGDependChecker() {
     }

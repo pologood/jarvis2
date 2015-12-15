@@ -4,7 +4,7 @@
  * Author: wuya Create Date: 2015年9月25日 上午11:39:46
  */
 
-package com.mogujie.jarvis.server;
+package com.mogujie.jarvis.server.dispatcher;
 
 import java.util.Map.Entry;
 
@@ -14,19 +14,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
+import akka.actor.ActorSelection;
+import akka.actor.ActorSystem;
+
 import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.domain.WorkerInfo;
 import com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry;
 import com.mogujie.jarvis.protocol.SubmitTaskProtos.ServerSubmitTaskRequest;
 import com.mogujie.jarvis.protocol.SubmitTaskProtos.WorkerSubmitTaskResponse;
+import com.mogujie.jarvis.server.dispatcher.workerselector.WorkerSelector;
 import com.mogujie.jarvis.server.domain.RetryType;
 import com.mogujie.jarvis.server.scheduler.TaskRetryScheduler;
 import com.mogujie.jarvis.server.service.AppService;
 import com.mogujie.jarvis.server.util.FutureUtils;
-import com.mogujie.jarvis.server.workerselector.WorkerSelector;
-
-import akka.actor.ActorSelection;
-import akka.actor.ActorSystem;
 
 @Repository
 @Scope("prototype")

@@ -25,7 +25,7 @@ import com.mogujie.jarvis.protocol.ApplicationProtos.RestCreateApplicationReques
 import com.mogujie.jarvis.protocol.ApplicationProtos.RestModifyApplicationRequest;
 import com.mogujie.jarvis.protocol.ApplicationProtos.ServerCreateApplicationResponse;
 import com.mogujie.jarvis.protocol.ApplicationProtos.ServerModifyApplicationResponse;
-import com.mogujie.jarvis.server.TaskManager;
+import com.mogujie.jarvis.server.dispatcher.TaskManager;
 import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.service.AppService;
 
