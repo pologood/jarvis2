@@ -18,6 +18,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.mogujie.jarvis.core.expression.DependencyExpression;
 import com.mogujie.jarvis.core.expression.TimeOffsetExpression;
+import com.mogujie.jarvis.server.domain.JobDependencyEntry;
+import com.mogujie.jarvis.server.service.JobService;
+import com.mogujie.jarvis.server.util.SpringContext;
 
 /**
  * @author guangming
@@ -144,6 +147,15 @@ public class DAGDependChecker {
     }
 
     private TaskDependSchedule getSchedule(long myJobId, long preJobId) {
-        return TaskScheduleFactory.create(myJobId, preJobId);
+        JobService jobService = SpringContext.getBean(JobService.class);
+        DependencyExpression dependencyExpression = null;
+        Map<Long, JobDependencyEntry> dependencyMap = jobService.get(myJobId).getDependencies();
+        if (dependencyMap != null && dependencyMap.containsKey(preJobId)) {
+            dependencyExpression = dependencyMap.get(preJobId).getDependencyExpression();
+        }
+        TaskDependSchedule dependSchedule = new TaskDependSchedule(myJobId, preJobId, dependencyExpression);
+        dependSchedule.init();
+
+        return dependSchedule;
     }
 }
