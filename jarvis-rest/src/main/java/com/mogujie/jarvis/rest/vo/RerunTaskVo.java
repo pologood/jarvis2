@@ -16,8 +16,8 @@ import java.util.List;
  */
 public class RerunTaskVo extends  AbstractVo {
     private List<Long> jobIdList;
-    private long startDate;
-    private long endDate;
+    private Long startDate;
+    private Long endDate;
     private boolean runChild;
 
     public List<Long> getJobIdList() {
@@ -26,16 +26,16 @@ public class RerunTaskVo extends  AbstractVo {
     public void setJobIdList(List<Long> jobIdList) {
         this.jobIdList = jobIdList;
     }
-    public long getStartDate() {
+    public Long getStartDate() {
         return startDate;
     }
-    public void setStartDate(long startDate) {
+    public void setStartDate(Long startDate) {
         this.startDate = startDate;
     }
-    public long getEndDate() {
+    public Long getEndDate() {
         return endDate;
     }
-    public void setEndDate(long endDate) {
+    public void setEndDate(Long endDate) {
         this.endDate = endDate;
     }
     public boolean isRunChild() {

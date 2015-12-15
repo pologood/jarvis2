@@ -8,16 +8,12 @@
 
 package com.mogujie.jarvis.server.service;
 
-import com.mogujie.jarvis.core.domain.WorkerStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
 
-import com.mogujie.jarvis.dao.generate.WorkerGroupMapper;
-import com.mogujie.jarvis.dto.generate.WorkerGroup;
-import com.mogujie.jarvis.dto.generate.WorkerGroupExample;
 import org.joda.time.DateTime;
 import com.mogujie.jarvis.dao.generate.WorkerMapper;
 import com.mogujie.jarvis.dto.generate.Worker;
@@ -30,9 +26,6 @@ import com.mogujie.jarvis.dto.generate.WorkerExample;
 public class WorkerService {
     @Autowired
     private WorkerMapper workerMapper;
-
-    @Autowired
-    private WorkerGroupMapper workerGroupMapper;
 
     public int getWorkerId(String ip, int port) {
         int workerId = 0;
@@ -64,26 +57,11 @@ public class WorkerService {
         }
     }
 
-    public void updateWorkerStatus(int workerId, int status){
+    public void updateWorkerStatus(int workerId, int status) {
         Worker worker = new Worker();
         worker.setId(workerId);
         worker.setStatus(status);
         workerMapper.updateByPrimaryKeySelective(worker);
-    }
-
-
-    public int getGroupIdByAuthKey(String key) {
-        WorkerGroupExample example = new WorkerGroupExample();
-        example.createCriteria().andAuthKeyEqualTo(key);
-        List<WorkerGroup> list = workerGroupMapper.selectByExample(example);
-        if (list != null && list.size() > 0) {
-            return list.get(0).getId();
-        }
-        return 0;
-    }
-
-    public WorkerGroup getGroupByGroupId(int groupId) {
-        return  workerGroupMapper.selectByPrimaryKey(groupId);
     }
 
 }

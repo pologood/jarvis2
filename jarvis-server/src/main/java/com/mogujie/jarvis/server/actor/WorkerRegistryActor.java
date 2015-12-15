@@ -12,6 +12,7 @@ import java.util.List;
 
 import javax.inject.Named;
 
+import com.mogujie.jarvis.server.service.WorkerGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 
@@ -38,6 +39,9 @@ public class WorkerRegistryActor extends UntypedActor {
     @Autowired
     private WorkerService workerService;
 
+    @Autowired
+    private WorkerGroupService workerGroupService;
+
     public static List<ActorEntry> handledMessages() {
         List<ActorEntry> list = new ArrayList<>();
         list.add(new ActorEntry(WorkerRegistryRequest.class, ServerRegistryResponse.class, MessageType.SYSTEM));
@@ -58,8 +62,8 @@ public class WorkerRegistryActor extends UntypedActor {
         try {
 
             String key = request.getKey();
-            int groupId = workerService.getGroupIdByAuthKey(key);
-            Preconditions.checkArgument(groupId != 0, "invaild worker group key");
+            int groupId = workerGroupService.getGroupIdByAuthKey(key);
+            Preconditions.checkArgument(groupId != 0, "worker group key不合法。key:" + key);
 
             Address address = getSender().path().address();
             String ip = address.host().get();

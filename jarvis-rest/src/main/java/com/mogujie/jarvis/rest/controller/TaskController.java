@@ -46,7 +46,6 @@ import com.mogujie.jarvis.core.domain.JobRelationType;
 
 /**
  * @author guangming
- *
  */
 @Path("api/task")
 public class TaskController extends AbstractController {
@@ -60,7 +59,7 @@ public class TaskController extends AbstractController {
     @Path("kill")
     @Produces(MediaType.APPLICATION_JSON)
     public RestResult kill(@FormParam("user") String user, @FormParam("appToken") String appToken, @FormParam("appName") String appName,
-            @FormParam("parameters") String parameters) {
+                           @FormParam("parameters") String parameters) {
         try {
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
@@ -93,7 +92,7 @@ public class TaskController extends AbstractController {
     @Path("retry")
     @Produces(MediaType.APPLICATION_JSON)
     public RestResult retry(@FormParam("user") String user, @FormParam("appToken") String appToken, @FormParam("appName") String appName,
-            @FormParam("parameters") String parameters) {
+                            @FormParam("parameters") String parameters) {
         try {
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
@@ -123,7 +122,7 @@ public class TaskController extends AbstractController {
     @Path("rerun")
     @Produces(MediaType.APPLICATION_JSON)
     public RestResult rerun(@FormParam("user") String user, @FormParam("appToken") String appToken, @FormParam("appName") String appName,
-            @FormParam("parameters") String parameters) {
+                            @FormParam("parameters") String parameters) {
         try {
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
@@ -161,7 +160,7 @@ public class TaskController extends AbstractController {
     @Path("submit")
     @Produces(MediaType.APPLICATION_JSON)
     public RestResult submit(@FormParam("user") String user, @FormParam("appToken") String appToken, @FormParam("appName") String appName,
-            @FormParam("parameters") String parameters) {
+                             @FormParam("parameters") String parameters) {
         try {
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
@@ -199,7 +198,7 @@ public class TaskController extends AbstractController {
     @Path("modify/status")
     @Produces(MediaType.APPLICATION_JSON)
     public RestResult modifyStatus(@FormParam("user") String user, @FormParam("appToken") String appToken, @FormParam("appName") String appName,
-            @FormParam("parameters") String parameters) {
+                                   @FormParam("parameters") String parameters) {
         try {
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
@@ -229,20 +228,20 @@ public class TaskController extends AbstractController {
     @Path("queryRelation")
     @Produces(MediaType.APPLICATION_JSON)
     public RestResult queryRelation(@FormParam("user") String user,
-                                       @FormParam("appToken") String appToken,
-                                       @FormParam("appName") String appName,
-                                       @FormParam("parameters") String parameters) {
+                                    @FormParam("appToken") String appToken,
+                                    @FormParam("appName") String appName,
+                                    @FormParam("parameters") String parameters) {
         try {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
             JsonParameters paras = new JsonParameters(parameters);
             Long jobId = paras.getLongNotNull("taskId");
             Integer relationType = paras.getIntegerNotNull("relationType");
-            if(!JobRelationType.isValid(relationType)){
+            if (!JobRelationType.isValid(relationType)) {
                 throw new IllegalArgumentException("参数不对。key='relationType',value=" + relationType.toString());
             }
 
-            RestServerQueryTaskRelationRequest request =RestServerQueryTaskRelationRequest.newBuilder()
+            RestServerQueryTaskRelationRequest request = RestServerQueryTaskRelationRequest.newBuilder()
                     .setAppAuth(appAuth)
                     .setTaskId(jobId)
                     .setRelationType(relationType)
@@ -251,9 +250,9 @@ public class TaskController extends AbstractController {
             ServerQueryTaskRelationResponse response = (ServerQueryTaskRelationResponse) callActor(AkkaType.SERVER, request);
             if (response.getSuccess()) {
                 TaskRelationsVo vo = new TaskRelationsVo();
-                if(response.getTaskRelationMapList() != null){
+                if (response.getTaskRelationMapList() != null) {
                     List<TaskRelationsVo.RelationEntry> list = new ArrayList<>();
-                    for(TaskMapEntry entry : response.getTaskRelationMapList()){
+                    for (TaskMapEntry entry : response.getTaskRelationMapList()) {
                         list.add(new TaskRelationsVo.RelationEntry().setJobId(entry.getJobId()).setTaskIds(entry.getTaskIdList()));
                     }
                     vo.setList(list);
