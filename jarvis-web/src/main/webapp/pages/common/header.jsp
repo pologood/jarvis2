@@ -75,11 +75,10 @@
         </ul>
     </nav>
 
-
     <c:choose>
         <c:when test="${null != user && user.uname != ''}">
             <a id="cd-menu-trigger" href="javascript:void(0);">
-                <span class="cd-menu-text">${user.uname}</span>
+                <span class="cd-menu-text">${user.nick}</span>
             </a>
         </c:when>
         <c:otherwise>

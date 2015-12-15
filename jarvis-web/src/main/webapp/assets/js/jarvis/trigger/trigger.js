@@ -106,6 +106,17 @@ function submit(){
         return ;
     }
 
+    if(''==startTime||''==endTime){
+        new PNotify({
+            title: '重跑任务',
+            text: "开始日期与结束日期必须填写",
+            type: 'warning',
+            icon: true,
+            styling: 'bootstrap3'
+        });
+        return ;
+    }
+
     if(startTime!=''&&endTime!=''&&((new Date(startTime))>(new Date(endTime)))){
         new PNotify({
             title: '重跑任务',
@@ -120,7 +131,7 @@ function submit(){
     if(new Date(endTime)<=(new Date())){
         new PNotify({
             title: '重跑任务',
-            text: "截止日期必须大于当前时间",
+            text: "结束日期必须大于今天",
             type: 'warning',
             icon: true,
             styling: 'bootstrap3'
