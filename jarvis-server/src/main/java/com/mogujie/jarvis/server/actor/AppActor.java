@@ -19,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mogujie.jarvis.core.domain.ActorEntry;
 import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.dto.generate.App;
 import com.mogujie.jarvis.protocol.ApplicationProtos.RestCreateApplicationRequest;
@@ -27,6 +26,7 @@ import com.mogujie.jarvis.protocol.ApplicationProtos.RestModifyApplicationReques
 import com.mogujie.jarvis.protocol.ApplicationProtos.ServerCreateApplicationResponse;
 import com.mogujie.jarvis.protocol.ApplicationProtos.ServerModifyApplicationResponse;
 import com.mogujie.jarvis.server.TaskManager;
+import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.service.AppService;
 
 import akka.actor.UntypedActor;

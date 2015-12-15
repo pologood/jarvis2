@@ -6,7 +6,7 @@
  * Create Date: 2015年10月9日 上午9:58:47
  */
 
-package com.mogujie.jarvis.core;
+package com.mogujie.jarvis.worker;
 
 import java.util.Map.Entry;
 

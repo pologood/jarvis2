@@ -6,8 +6,9 @@
  * Create Date: 2015年9月1日 下午2:26:16
  */
 
-package com.mogujie.jarvis.core;
+package com.mogujie.jarvis.worker;
 
+import com.mogujie.jarvis.core.AbstractLogCollector;
 import com.mogujie.jarvis.core.domain.StreamType;
 import com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest;
 

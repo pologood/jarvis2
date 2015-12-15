@@ -21,12 +21,12 @@ import org.springframework.context.annotation.Scope;
 import akka.actor.Address;
 import akka.actor.UntypedActor;
 
-import com.mogujie.jarvis.core.domain.ActorEntry;
 import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.core.domain.WorkerInfo;
 import com.mogujie.jarvis.protocol.HeartBeatProtos.HeartBeatRequest;
 import com.mogujie.jarvis.protocol.HeartBeatProtos.HeartBeatResponse;
 import com.mogujie.jarvis.server.WorkerRegistry;
+import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.service.HeartBeatService;
 
 @Named("heartBeatActor")

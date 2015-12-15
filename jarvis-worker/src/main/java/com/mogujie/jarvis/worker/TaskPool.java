@@ -11,7 +11,6 @@ package com.mogujie.jarvis.worker;
 import java.util.Map;
 
 import com.google.common.collect.Maps;
-import com.mogujie.jarvis.core.task.AbstractTask;
 
 /**
  * @author wuya

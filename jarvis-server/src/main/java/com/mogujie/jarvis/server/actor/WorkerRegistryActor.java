@@ -16,13 +16,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 
 import com.google.common.base.Preconditions;
-import com.mogujie.jarvis.core.domain.ActorEntry;
 import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.core.domain.WorkerInfo;
 import com.mogujie.jarvis.core.domain.WorkerStatus;
 import com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse;
 import com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest;
 import com.mogujie.jarvis.server.WorkerRegistry;
+import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.service.WorkerService;
 
 import akka.actor.Address;

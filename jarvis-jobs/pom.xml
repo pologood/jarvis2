@@ -19,6 +19,10 @@
 			<artifactId>jarvis-core</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>com.mogujie.jarvis</groupId>
+			<artifactId>jarvis-worker</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>com.facebook.presto</groupId>
 			<artifactId>presto-jdbc</artifactId>
 			<version>0.128</version>

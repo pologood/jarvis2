@@ -23,12 +23,12 @@ import org.apache.logging.log4j.Logger;
 import com.google.common.base.Joiner;
 import com.google.common.base.Throwables;
 import com.mogujie.jarvis.core.AbstractLogCollector;
-import com.mogujie.jarvis.core.TaskContext;
 import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.exeception.TaskException;
-import com.mogujie.jarvis.core.task.AbstractTask;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.tasks.util.HiveQLUtil;
+import com.mogujie.jarvis.worker.AbstractTask;
+import com.mogujie.jarvis.worker.TaskContext;
 
 /**
  * @author guangming
