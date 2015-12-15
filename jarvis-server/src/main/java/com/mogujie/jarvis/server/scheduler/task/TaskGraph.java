@@ -42,7 +42,7 @@ public enum TaskGraph {
         return taskMap.get(taskId);
     }
 
-    public void clear() {
+    public synchronized void clear() {
         taskMap.clear();
         Set<DAGTask> allTasks = dag.vertexSet();
         if (allTasks != null) {
@@ -52,14 +52,14 @@ public enum TaskGraph {
         }
     }
 
-    public void addTask(long taskId, DAGTask dagTask) {
+    public synchronized void addTask(long taskId, DAGTask dagTask) {
         if (!taskMap.containsKey(taskId)) {
             taskMap.put(taskId, dagTask);
             dag.addVertex(dagTask);
         }
     }
 
-    public void removeTask(long taskId) {
+    public synchronized void removeTask(long taskId) {
         DAGTask dagTask = taskMap.get(taskId);
         if (dagTask != null) {
             taskMap.remove(taskId);
@@ -67,7 +67,7 @@ public enum TaskGraph {
         }
     }
 
-    public void addDependency(long parentId, long childId) {
+    public synchronized void addDependency(long parentId, long childId) {
         DAGTask parent = taskMap.get(parentId);
         DAGTask child = taskMap.get(childId);
         if (parent != null && child != null) {
@@ -80,7 +80,7 @@ public enum TaskGraph {
         }
     }
 
-    public List<DAGTask> getParents(long taskId) {
+    public synchronized List<DAGTask> getParents(long taskId) {
         List<DAGTask> parents = new ArrayList<DAGTask>();
         DAGTask dagTask = taskMap.get(taskId);
         if (dagTask != null) {
@@ -94,7 +94,7 @@ public enum TaskGraph {
         return parents;
     }
 
-    public List<DAGTask> getChildren(long taskId) {
+    public synchronized List<DAGTask> getChildren(long taskId) {
         List<DAGTask> children = new ArrayList<DAGTask>();
         DAGTask dagTask = taskMap.get(taskId);
         if (dagTask != null) {
