@@ -296,7 +296,7 @@ function modifyWorkerStatus(workerId,status,ip,port){
 
 //修改worker group状态
 function modifyWorkerGroupStatus(workerGroupId,authKey,status){
-    var data={workerGroupId:workerGroupId,authKey:authKey,status:status};
+    var data={workerGroupId:workerGroupId,status:status};
     requestRemoteRestApi("/api/workerGroup/status","修改Worker Group状态",data);
 }
 

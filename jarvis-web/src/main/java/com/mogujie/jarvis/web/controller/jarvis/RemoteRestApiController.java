@@ -3,7 +3,7 @@ package com.mogujie.jarvis.web.controller.jarvis;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.hash.Hashing;
-import com.mogu.bigdata.admin.common.entity.User;
+import com.mogu.bigdata.admin.core.entity.User;
 import com.mogujie.jarvis.web.common.Constants;
 import com.sun.org.apache.xerces.internal.util.URI;
 import org.apache.http.client.utils.URLEncodedUtils;
@@ -17,11 +17,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.beans.Encoder;
+import java.io.InputStream;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * Created by hejian on 15/10/12.
@@ -29,7 +31,21 @@ import java.util.Map;
 @Controller
 @RequestMapping("/remote")
 public class RemoteRestApiController extends BaseController {
-    String domain="http://10.0.55.120:8080";
+    static String domain="";
+
+
+    static {
+        try {
+            InputStream inputStream=RemoteRestApiController.class.getClassLoader().getResourceAsStream("api.properties");
+            Properties properties=new Properties();
+            properties.load(inputStream);
+            domain=properties.getProperty("rest.domain");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
     /*
     * 执行远程请求的方法，作为一个client，需要传入参数url与para
     * @param url,远程rest url，必须
@@ -57,12 +73,12 @@ public class RemoteRestApiController extends BaseController {
         if(!para_flag){
             return jsonObject;
         }
-        Map<String,String> rawData = new HashMap<String,String>();
+        Map<String,Object> rawData = new HashMap<String,Object>();
         Map<String,String> data = new HashMap<String,String>();
         String newPara="";
         for(Map.Entry entry:paraJson.entrySet()){
             String key=(String)entry.getKey();
-            String value=String.valueOf(entry.getValue());
+            Object value=entry.getValue();
             //key为空字符串的情况过滤掉
             if(key.equals("")){
                 continue;

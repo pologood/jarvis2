@@ -239,6 +239,15 @@
                 </div>
             </div>
 
+            <div class="row top-buffer">
+                <div class="col-md-6 col-md-offset-3">
+                    <div class="input-group" style="width:100%">
+                        <span class="input-group-addon" style="width:35%">报警</span>
+                        <select id="alarm" multiple></select>
+                    </div>
+                </div>
+            </div>
+
 
             <div class="row top-buffer">
                 <div class="col-md-6 col-md-offset-3">
@@ -290,10 +299,6 @@
                     <dl id="strategyList">
 
                     </dl>
-
-
-
-
                 </div>
                 <span >
                     <i class="fa fa-question text-info fa-2x" style="cursor: pointer;position: relative;position: absolute;margin-left:10px;" onmouseover="showDescription(this)" onmouseout="hideDescription(this)"></i>

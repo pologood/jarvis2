@@ -1,0 +1,8 @@
+{
+  "1":[{"url":"/api/task/kill","text":"终止"}],
+  "2":[{"url":"/api/task/retry","text":"重试"},{"url":"/api/task/kill","text":"终止"}],
+  "3":[{"url":"/api/task/kill","text":"终止"}],
+  "4":[{"url":"/api/task/retry","text":"重试"},{"url":"/api/task/kill","text":"终止"}],
+  "5":[{"url":"/api/task/retry","text":"重试"},{"url":"/api/task/kill","text":"终止"}],
+  "6":[{"url":"/api/task/retry","text":"重试"},{"url":"/api/task/kill","text":"终止"}]
+}

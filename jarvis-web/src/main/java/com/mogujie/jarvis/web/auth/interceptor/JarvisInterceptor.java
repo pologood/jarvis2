@@ -1,13 +1,16 @@
 package com.mogujie.jarvis.web.auth.interceptor;
 
 import com.alibaba.fastjson.JSON;
-import com.mogu.bigdata.admin.common.entity.User;
-import com.mogu.bigdata.admin.common.passport.conf.PlatformConf;
-import com.mogu.bigdata.admin.common.passport.conf.ResultType;
-import com.mogu.bigdata.admin.common.passport.session.SessionHelper;
-import com.mogu.bigdata.admin.common.service.RbacService;
+
+import com.alibaba.fastjson.JSONObject;
+import com.mogu.bigdata.admin.client.service.RbacService;
+import com.mogu.bigdata.admin.core.consts.PlatformConfig;
+import com.mogu.bigdata.admin.core.entity.User;
+import com.mogu.bigdata.admin.passport.conf.ResultType;
+import com.mogu.bigdata.admin.passport.session.SessionHelper;
 import com.mogujie.jarvis.web.auth.annotation.JarvisPassport;
 import com.mogujie.jarvis.web.auth.conf.JarvisAuthType;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.method.HandlerMethod;
@@ -30,7 +33,8 @@ public class JarvisInterceptor extends HandlerInterceptorAdapter {
     @Autowired
     private SessionHelper sessionHelper;
 
-    final Logger logger = Logger.getLogger(JarvisInterceptor.class);
+    static final Logger log = Logger.getLogger(JarvisInterceptor.class);
+
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -40,8 +44,12 @@ public class JarvisInterceptor extends HandlerInterceptorAdapter {
             return true;
         }
 
+        if (0 < passport.authTypes().length) {
+            request.setAttribute("permissionId", passport.authTypes()[0].getCode());
+        }
+
         User sessionUser = sessionHelper.getSessionUserFromRequest(request);
-        if (null == sessionUser || null == sessionUser.getUname() || "".equals(sessionUser.getUname())) {
+        if (null == sessionUser || StringUtils.isBlank(sessionUser.getUname())) {
             if (passport.resultType() == ResultType.page) {
                 request.getRequestDispatcher("/").forward(request, response);
             } else if(passport.resultType() == ResultType.json) {
@@ -66,9 +74,13 @@ public class JarvisInterceptor extends HandlerInterceptorAdapter {
             return false;
         }
 
+        if (!passport.needCheck()) {
+            return true;
+        }
+
         for(JarvisAuthType a: passport.authTypes()) {
             Integer permissionId = a.getCode();
-            if (!rbacService.checkPermissionByUser(sessionUser.getUname(), permissionId, PlatformConf.jarvis.getCode())) {
+            if (!rbacService.check(sessionUser.getUname(), permissionId, PlatformConfig.platformId, PlatformConfig.secret)) {
                 if (passport.resultType() == ResultType.page) {
                     request.getRequestDispatcher("/error?message=没有权限").forward(request, response);
                 } else if (passport.resultType() == ResultType.json) {
@@ -92,9 +104,6 @@ public class JarvisInterceptor extends HandlerInterceptorAdapter {
                 }
                 return false;
             }
-        }
-        if (0 < passport.authTypes().length) {
-            request.setAttribute("permissionId", passport.authTypes()[0].getCode());
         }
         return true;
     }

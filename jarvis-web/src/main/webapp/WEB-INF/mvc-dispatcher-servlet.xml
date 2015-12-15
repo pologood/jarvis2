@@ -21,9 +21,9 @@
     <mvc:resources mapping="/assets/**" location="/assets/"></mvc:resources>
 
     <mvc:interceptors>
-        <bean class="com.mogu.bigdata.admin.common.passport.interceptor.LoginInterceptor"/>
+        <bean class="com.mogu.bigdata.admin.passport.interceptor.LoginInterceptor"/>
         <mvc:interceptor>
-            <mvc:mapping path="/jarvis/**"/>
+            <mvc:mapping path="/**"/>
             <bean class="com.mogujie.jarvis.web.auth.interceptor.JarvisInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>

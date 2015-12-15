@@ -100,7 +100,7 @@
                                         </pre>
                                     </div>
 
-                                    <div id="errorLog" class="tab-pane">
+                                    <div id="log" class="tab-pane">
 
                                     </div>
                                 </div>
@@ -131,5 +131,7 @@
 <script type="text/javascript">
     var taskVoList=${taskVoList};
     var taskId='${taskVo.taskId}';
+    var jobId='${taskVo.jobId}';
+    var attemptId='${taskVo.attemptId}';
 </script>
 <script type="text/javascript" src="${contextPath}/assets/js/jarvis/task/detail.js"></script>

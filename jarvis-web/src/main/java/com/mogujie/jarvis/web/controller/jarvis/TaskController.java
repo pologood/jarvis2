@@ -43,6 +43,7 @@ public class TaskController extends BaseController {
     }
 
     @RequestMapping(value = "detail")
+    @JarvisPassport(authTypes = JarvisAuthType.task,isMenu = false)
     public String dependency(ModelMap modelMap,Long taskId){
         TaskVo taskVo=taskService.getTaskById(taskId);
         Long jobId=taskVo.getJobId();

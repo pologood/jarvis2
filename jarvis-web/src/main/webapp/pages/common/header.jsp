@@ -52,21 +52,22 @@
 
     <nav id="cd-top-nav" class="navbar">
         <ul class="main-menu">
-            <c:forEach var="m" items="${menuMap}">
+            <c:forEach var="m" items="${menu}">
                 <c:choose>
-                    <c:when test="${m.value.menuMap.size() > 1}">
+                    <c:when test="${m.menuMap.size() > 1}">
                         <li class="main-menu dropdown">
-                            <a class="main-menu dropdown-toggle <c:if test="${m.value.isCurrent}">current</c:if>"  data-toggle="dropdown" href="javascript:void(0);">${m.value.name}</a>
+                            <a class="main-menu dropdown-toggle <c:if test="${m.isCurrent}">current</c:if>"  data-toggle="dropdown" href="javascript:void(0);">${m.name}</a>
                             <ul class="dropdown-menu">
-                                <c:forEach var="sm" items="${m.value.menuMap}">
-                                    <li <c:if test="${currentUri == sm.value}">class="active"</c:if>><a href="${sm.value}">${sm.key}</a></li>
+
+                                <c:forEach var="sm" items="${m.menuMap}">
+                                    <li <c:if test="${currentUri == sm.value}">class="active"</c:if>><a href="${contextPath}${sm.value}">${sm.key}</a></li>
                                 </c:forEach>
                             </ul>
                         </li>
                     </c:when>
-                    <c:when test="${m.value.menuMap.size() == 1}">
-                        <c:forEach var="sm" items="${m.value.menuMap}">
-                            <li class="main-menu"><a class="main-menu <c:if test="${m.value.isCurrent}">current</c:if>"  href="${sm.value}">${sm.key}</a></li>
+                    <c:when test="${m.menuMap.size() == 1}">
+                        <c:forEach var="sm" items="${m.menuMap}">
+                            <li class="main-menu"><a class="main-menu <c:if test="${m.isCurrent}">current</c:if>"  href="${contextPath}${sm.value}">${m.name}</a></li>
                         </c:forEach>
                     </c:when>
                 </c:choose>

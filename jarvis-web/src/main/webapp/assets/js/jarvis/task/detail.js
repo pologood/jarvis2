@@ -77,14 +77,19 @@ $(function(){
 
 
 function initLog(){
+    console.log("attemptId:"+attemptId);
+    console.log("jobId:"+jobId);
+    console.log("taskId:"+taskId);
     var data={};
     data["taskId"]=taskId;
+    data["jobId"]=jobId;
+    data["taskId"]=taskId;
     data["offset"]=0;
-    data["lines"]=20;
-    var result=requestRemoteRestApi('/api/log/result',"日志",data);
+    data["lines"]=1000;
+    var result=requestRemoteRestApi('/api/log/readResult',"日志",data);
 
     if(result.flag==true){
-        $("#errorLog").text("");
+        $("#log").text(result);
     }
 }
 

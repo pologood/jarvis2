@@ -36,23 +36,30 @@
     <input id="appId" type="hidden" value="${appVo.appId}">
 
     <div class="row top-buffer">
+
         <div class="col-md-6 col-md-offset-3">
             <div class="input-group" style="width:100%">
                 <span class="input-group-addon" style="width:35%">应用名称</span>
                 <input class="form-control" id="appName" value="${appVo.appName}" onblur="checkAppName()"/>
             </div>
         </div>
-        <!--
+
+        <div class="col-md-6 col-md-offset-3 top-buffer">
+            <div class="input-group" style="width:100%">
+                <span class="input-group-addon" style="width:35%">最大并发数</span>
+                <input id="maxConcurrency" class="form-control" value="<c:choose><c:when test="${appVo.maxConcurrency!=null}">${appVo.maxConcurrency}</c:when><c:otherwise>10</c:otherwise></c:choose>" placeholder="最大并发书,默认10"  />
+            </div>
+        </div>
+
         <div class="col-md-6 col-md-offset-3 top-buffer">
             <div class="input-group" style="width:100%">
                 <span class="input-group-addon" style="width:35%">状态</span>
                 <select id="status">
-                    <option value="0" <c:choose><c:when test="${appVo!=null&&appVo.status==0}">selected</c:when></c:choose> >停用</option>
-                    <option value="1" <c:choose><c:when test="${appVo!=null&&appVo.status==1}">selected</c:when></c:choose> >启用</option>
+
                 </select>
             </div>
         </div>
-        -->
+
 
         <div class="col-md-6 col-md-offset-3 top-buffer text-center">
             <div class="input-group" style="width:100%">
@@ -78,5 +85,17 @@
 <jsp:include page="../common/footer.jsp">
     <jsp:param name="menuMap" value="${menuMap}"/>
 </jsp:include>
+
+<script>
+    var appType=undefined;
+    var appstatus=undefined;
+    <c:choose>
+        <c:when test="${appVo!=null}">
+            appType=${appVo.appType};
+            appstatus=${appVo.status};
+        </c:when>
+    </c:choose>
+
+</script>
 
 <script type="text/javascript" src="${contextPath}/assets/js/jarvis/manage/appAddOrEdit.js"></script>

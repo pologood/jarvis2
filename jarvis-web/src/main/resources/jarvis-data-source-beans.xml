@@ -10,6 +10,7 @@
                 <value>classpath:db.properties</value>
                 <value>classpath:sqlsession.properties</value>
                 <value>classpath:mysql.properties</value>
+                <value>classpath:platform.properties</value>
             </list>
         </property>
     </bean>

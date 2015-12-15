@@ -1,21 +1,38 @@
 $(function(){
-    $(".input-group select").select2({width:'100%'});
+
+    $.getJSON(contextPath+"/assets/json/appStatus.json",function(data){
+        $("#status").select2({
+            data:data,
+            width:'100%'
+        });
+
+        if(appstatus!=undefined){
+            $("#status").val(appstatus).trigger("change");
+        }
+    });
+
+
+
 });
 
 
-
+/**
+ * 修改应用信息
+ * */
 function updateApp(){
     var appId=$("#appId").val();
     var applicationName=$("#appName").val();
-    //var status=$("#status").val();
+    var status=$("#status").val();
+    var maxConcurrency=$("#maxConcurrency").val();
     var flag=checkAppName();
     if(flag==false){
         return;
     }
 
-    var data={appId:appId,applicationName:applicationName};
-    requestRemoteRestApi("/api/app/update","修改应用",data);
+    var data={appId:appId,applicationName:applicationName,status:status,maxConcurrency:maxConcurrency};
+    requestRemoteRestApi("/api/app/edit","修改应用",data);
 }
+
 
 function addApp(){
     var applicationName=$("#appName").val();

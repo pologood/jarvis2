@@ -1,4 +1,5 @@
 var taskStatusJson=null;
+var planOperation=null;
 
 $(function(){
 
@@ -81,9 +82,16 @@ $(function(){
     });
 
     $.ajaxSettings.async = false;
+    //
     $.getJSON(contextPath+"/assets/json/taskStatus.json",function(data){
         taskStatusJson=data;
     });
+
+    //初始化操作类型
+    $.getJSON(contextPath+"/assets/json/planOperation.json",function(data){
+        planOperation=data;
+    });
+
     $.ajaxSettings.async = true;
 
 
@@ -297,12 +305,29 @@ var columns=[{
 
 function operateFormatter(value, row, index) {
     //console.log(row);
+    var jobId=row["jobId"];
     var taskId=row["taskId"];
+    var attemptId=row["attemptId"];
+
+    var status=row["status"];
+    var operations=planOperation[status];
+
+    var operationStr="";
+    $(operations).each(function(i,c){
+        operationStr+='<li><a href="javascript:void(0)" onclick="TaskOperate(\''+jobId+'\',\''+taskId+'\',\''+attemptId+'\',\''+c.url+'\',\''+c.text+'\')">'+ c.text+'</a></li>';
+    });
+
+
     //console.log(jobId);
     var result= [
         '<a class="edit" href="'+contextPath+'/plan/dependency?taskId='+taskId+'" title="查看执行详情" target="_blank">',
         '<i class="glyphicon glyphicon-eye-open"></i>',
-        '</a>  '
+        '</a>  ',
+        '<div class="btn-group"> <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">操作 <span class="caret"></span> </button>',
+        '<ul class="dropdown-menu">',
+        operationStr,
+        '</ul>',
+        '</div>'
     ].join('');
 
     //console.log(result);
@@ -314,4 +339,33 @@ function taskStatusFormatter(value,row,index){
 }
 function StringFormatter(value,row,index){
     return value;
+}
+
+//重试还是kill，type与rest接口一一对应
+function TaskOperate(jobId,taskId,attemptId,url,text){
+
+    (new PNotify({
+        title: '任务操作',
+        text: '确定'+text+"?",
+        icon: 'glyphicon glyphicon-question-sign',
+        hide: false,
+        confirm: {
+            confirm: true
+        },
+        buttons: {
+            closer: false,
+            sticker: false
+        },
+        history: {
+            history: false
+        }
+    })).get().on('pnotify.confirm', function() {
+            var data={};
+            data["jobId"]=jobId;
+            data["taskId"]=taskId;
+            data["attemptId"]=attemptId;
+            requestRemoteRestApi(url,text,data);
+        }).on('pnotify.cancel', function() {
+
+        });
 }

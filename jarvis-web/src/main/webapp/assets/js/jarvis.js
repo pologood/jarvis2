@@ -33,23 +33,45 @@ function requestRemoteRestApi(url,title,para){
         success:function(data){
             if(data.code==0){
                 flag=true;
-                new PNotify({
-                    title: title,
-                    text: data.msg,
-                    type: 'success',
-                    icon: true,
-                    styling: 'bootstrap3'
-                });
+                if(data.msg==null||data.msg==''){
+                    new PNotify({
+                        title: title,
+                        text: '操作成功',
+                        type: 'success',
+                        icon: true,
+                        styling: 'bootstrap3'
+                    });
+                }
+                else{
+                    new PNotify({
+                        title: title,
+                        text: data.msg,
+                        type: 'success',
+                        icon: true,
+                        styling: 'bootstrap3'
+                    });
+                }
             }
             else{
                 flag=false;
-                new PNotify({
-                    title: title,
-                    text: data.msg,
-                    type: 'warning',
-                    icon: true,
-                    styling: 'bootstrap3'
-                });
+                if(data.msg==null||data.msg==''){
+                    new PNotify({
+                        title: title,
+                        text: '操作失败',
+                        type: 'warning',
+                        icon: true,
+                        styling: 'bootstrap3'
+                    });
+                }
+                else{
+                    new PNotify({
+                        title: title,
+                        text: data.msg,
+                        type: 'warning',
+                        icon: true,
+                        styling: 'bootstrap3'
+                    });
+                }
             }
             result["data"]=data;
         }

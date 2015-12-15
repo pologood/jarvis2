@@ -4,15 +4,15 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-       <bean id="propertyConfigurer4Redis" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" >
-              <property name="order" value="1" />
-              <property name="ignoreUnresolvablePlaceholders" value="true" />
-              <property name="locations">
-                     <list>
-                            <value>classpath:redis.properties</value>
-                     </list>
-              </property>
-       </bean>
+    <bean id="propertyConfigurer4Redis" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" >
+        <property name="order" value="1" />
+        <property name="ignoreUnresolvablePlaceholders" value="true" />
+        <property name="locations">
+            <list>
+                <value>classpath:redis.properties</value>
+            </list>
+        </property>
+    </bean>
 
     <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
         <property name="maxTotal" value="${redis.pool.maxTotal}" />
@@ -37,15 +37,15 @@
         <constructor-arg index="3" name="timeout" value="${redis.timeout}"/>
     </bean>
 
-    <bean id="redisDataSource" class="com.mogu.bigdata.admin.common.redis.RedisDataSourceImpl">
+    <bean id="redisDataSource" class="com.mogu.bigdata.admin.cache.impl.redis.RedisDataSourceImpl">
         <constructor-arg ref="jedisSentinelPool"/>
     </bean>
 
-    <bean id="redisClientTemplate" class="com.mogu.bigdata.admin.common.redis.RedisClientTemplate">
+    <bean id="redisClientTemplate" class="com.mogu.bigdata.admin.cache.impl.redis.RedisClientTemplate">
         <constructor-arg ref="redisDataSource"/>
     </bean>
 
-    <bean id="sessionHelper" class="com.mogu.bigdata.admin.common.passport.session.SessionHelper">
+    <bean id="sessionHelper" class="com.mogu.bigdata.admin.passport.session.impl.RedisSessionHelper">
         <constructor-arg ref="redisClientTemplate"/>
     </bean>
 

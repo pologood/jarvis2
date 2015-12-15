@@ -69,14 +69,18 @@ function initData(){
     });
 }
 
-function modifyAppStatus(){
-
+function modifyAppStatus(appId,status,appName,maxConcurrency){
+    var data={appId:appId,applicationName:appName,status:status,maxConcurrency:maxConcurrency};
+    requestRemoteRestApi("/api/app/edit","修改应用状态",data);
+    search();
 }
 
 
 function operateFormatter(value, row, index) {
     var appStatus=[{"id":"0","text":"停用"},{"id":"1","text":"启用"}];
     var appId=row["appId"];
+    var appName=row["appName"];
+    var maxConcurrency=row["maxConcurrency"];
     var status=row["status"];
     var result= [
         '<a class="edit" href="'+contextPath+'/manage/appAddOrEdit?appId='+appId+'" title="编辑应用信息" target="_blank">',
@@ -84,19 +88,26 @@ function operateFormatter(value, row, index) {
         '</a>  '
     ].join('');
 
+    var operation='';
+    /*
     var operation='<div class="btn-group"> <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">修改状态 <span class="caret"></span> </button>';
     operation=operation+'<ul class="dropdown-menu">';
     $(appStatus).each(function(i,c){
         if(c["id"]!='all'&&c["id"]!=status){
-            var li='<li><a href="javascript:void(0)" onclick="modifyAppStatus('+appId+'\','+c["id"]+')" >'+c["text"]+'</a></li>';
+            var li='<li><a href="javascript:void(0)" onclick="modifyAppStatus(\''+appId+'\','+c["id"]+',\''+appName+'\')" >'+c["text"]+'</a></li>';
             operation=operation+li;
         }
     });
     operation=operation+'</ul></div>';
-
+    */
+    $(appStatus).each(function(i,c){
+        if(c["id"]!='all'&&c["id"]!=status){
+            operation+='<a href="javascript:void(0)" onclick="modifyAppStatus('+appId+','+c["id"]+',\''+appName+'\','+maxConcurrency+')" >'+c["text"]+'</a>';
+        }
+    });
     //console.log(result);
 
-    return result+operation;
+    return result+"&nbsp;&nbsp"+operation;
 }
 
 

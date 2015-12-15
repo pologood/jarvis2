@@ -1,11 +1,11 @@
 package com.mogujie.jarvis.web.controller.jarvis;
 
+import com.atlassian.crowd.exception.*;
 import com.atlassian.crowd.model.user.User;
-import com.mogu.bigdata.admin.common.passport.conf.PlatformConf;
-import com.mogu.bigdata.admin.common.passport.session.SessionHelper;
-import com.mogu.bigdata.admin.common.util.JsonReturn;
-import com.mogujie.jarvis.web.controller.jarvis.BaseController;
+import com.mogu.bigdata.admin.core.util.JsonReturn;
+import com.mogu.bigdata.admin.passport.session.SessionHelper;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -21,19 +21,17 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Controller
 public class IndexController extends BaseController{
+    Logger logger = Logger.getLogger(this.getClass());
 
-    @RequestMapping("/")
-    public String index(ModelMap model,HttpServletRequest request, HttpServletResponse response){
-        if (null == user || null == user.get().getUname() || StringUtils.isBlank(user.get().getUname())) {
-            model.addAttribute("platform", PlatformConf.jarvis);
+    @RequestMapping(value = "/")
+    public String index(ModelMap mp){
+        if (null == user || StringUtils.isBlank(user.get().getUname())) {
             return "index";
         } else {
-            model.clear();
-            model.put("user",user.get());
-            return "redirect:plan";
+            mp.clear();
+            return "redirect:/plan";
         }
     }
-
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
@@ -45,11 +43,11 @@ public class IndexController extends BaseController{
                 user.get().setUname(uname);
                 user.get().setNick(crowdUser.getDisplayName());
                 user.get().setEmail(crowdUser.getEmailAddress());
-                userService.insertUser(user.get());
-                user.set(userService.getUser(uname));
+                userService.insert(user.get());
+                user.set(userService.get(uname));
                 String sessionId = SessionHelper.genSessionId();
                 sessionHelper.updateSession(sessionId, user.get(), response);
-                return new JsonReturn(1001, "/jarvis");
+                return new JsonReturn(1001, "/");
             } else {
                 log.error("login fail");
                 return new JsonReturn(4004);
@@ -60,10 +58,10 @@ public class IndexController extends BaseController{
         }
     }
 
-
-    @RequestMapping(value = "/logout", method = RequestMethod.GET)
-    public String logout(HttpServletResponse response, @CookieValue(value = SessionHelper.COOKIE_KEY, required = false) String sessionId){
+    @RequestMapping(value = "logout", method = RequestMethod.GET)
+    public String logout(ModelMap mp, HttpServletResponse response, @CookieValue(value = SessionHelper.COOKIE_KEY, required = false) String sessionId){
         sessionHelper.clearSession(sessionId, response);
+        mp.clear();
         return "redirect:/";
     }
 }

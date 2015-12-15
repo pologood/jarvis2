@@ -32,12 +32,12 @@ public class ManageController extends BaseController {
     WorkerService workerService;
 
     @RequestMapping
-    @JarvisPassport(authTypes = JarvisAuthType.manage)
+    @JarvisPassport(authTypes = JarvisAuthType.manage_system)
     public String index(){
         return "manage/index";
     }
     @RequestMapping(value = "app")
-    @JarvisPassport(authTypes = JarvisAuthType.app)
+    @JarvisPassport(authTypes = JarvisAuthType.manage_app)
     public String app(ModelMap modelMap){
 
         List<String> appNameList=appService.getAllAppName();
@@ -86,7 +86,7 @@ public class ManageController extends BaseController {
 
 
     @RequestMapping(value = "worker")
-    @JarvisPassport(authTypes = JarvisAuthType.worker)
+    @JarvisPassport(authTypes = JarvisAuthType.manage_worker)
     public String worker(ModelMap modelMap){
         //workerService.getAllWorkerGroupId();
         List<WorkerGroupVo> workerGroupVoList=workerService.getAllWorkerGroup();
