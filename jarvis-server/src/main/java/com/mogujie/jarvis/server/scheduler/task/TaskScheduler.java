@@ -235,6 +235,11 @@ public class TaskScheduler extends Scheduler {
                 updateTask.setTaskId(taskId);
                 updateTask.setAttemptId(attemptId);
                 updateTask.setUpdateTime(DateTime.now().toDate());
+                Job job = jobService.get(dagTask.getJobId()).getJob();
+                updateTask.setContent(job.getContent());
+                updateTask.setExecuteUser(job.getUpdateUser());
+                updateTask.setAppId(job.getAppId());
+                updateTask.setWorkerId(job.getWorkerGroupId());
                 taskService.updateSelective(updateTask);
                 LOGGER.info("update task {}, attemptId={}", taskId, attemptId);
                 submitTask(dagTask);
