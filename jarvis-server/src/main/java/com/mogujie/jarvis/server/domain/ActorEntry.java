@@ -6,9 +6,10 @@
  * Create Date: 2015年10月16日 下午2:05:30
  */
 
-package com.mogujie.jarvis.core.domain;
+package com.mogujie.jarvis.server.domain;
 
 import com.google.protobuf.GeneratedMessage;
+import com.mogujie.jarvis.core.domain.MessageType;
 
 public class ActorEntry {
 

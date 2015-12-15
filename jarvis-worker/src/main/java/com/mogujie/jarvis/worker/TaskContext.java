@@ -6,8 +6,10 @@
  * Create Date: 2015年8月31日 下午2:54:51
  */
 
-package com.mogujie.jarvis.core;
+package com.mogujie.jarvis.worker;
 
+import com.mogujie.jarvis.core.AbstractLogCollector;
+import com.mogujie.jarvis.core.ProgressReporter;
 import com.mogujie.jarvis.core.domain.TaskDetail;
 
 /**

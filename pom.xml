@@ -12,7 +12,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<log4j.version>2.4.1</log4j.version>
+		<log4j.version>2.5</log4j.version>
 		<akka.version>2.4.1</akka.version>
 		<spring.version>4.2.2.RELEASE</spring.version>
 	</properties>

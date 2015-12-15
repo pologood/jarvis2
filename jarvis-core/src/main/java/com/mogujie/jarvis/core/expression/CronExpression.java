@@ -54,10 +54,10 @@ public class CronExpression extends ScheduleExpression {
         super(expression);
 
         secondParsers = new ArrayList<>();
-        secondParsers.add(new PoundSignParser(SECOND_RANGE, DurationField.MINUTE));
-        secondParsers.add(new RangeParser(SECOND_RANGE, DurationField.MINUTE));
-        secondParsers.add(new StepParser(SECOND_RANGE, DurationField.MINUTE));
-        secondParsers.add(new SingleParser(SECOND_RANGE, DurationField.MINUTE));
+        secondParsers.add(new PoundSignParser(SECOND_RANGE, DurationField.SECOND));
+        secondParsers.add(new RangeParser(SECOND_RANGE, DurationField.SECOND));
+        secondParsers.add(new StepParser(SECOND_RANGE, DurationField.SECOND));
+        secondParsers.add(new SingleParser(SECOND_RANGE, DurationField.SECOND));
 
         minuteParsers = new ArrayList<>();
         minuteParsers.add(new PoundSignParser(MINUTE_RANGE, DurationField.MINUTE));

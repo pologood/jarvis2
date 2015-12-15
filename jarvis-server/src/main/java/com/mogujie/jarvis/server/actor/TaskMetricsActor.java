@@ -20,7 +20,6 @@ import org.springframework.context.annotation.Scope;
 import akka.actor.Address;
 import akka.actor.UntypedActor;
 
-import com.mogujie.jarvis.core.domain.ActorEntry;
 import com.mogujie.jarvis.core.domain.IdType;
 import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.core.domain.TaskStatus;
@@ -30,6 +29,7 @@ import com.mogujie.jarvis.protocol.ReportTaskProgressProtos.ServerReportTaskProg
 import com.mogujie.jarvis.protocol.ReportTaskProgressProtos.WorkerReportTaskProgressRequest;
 import com.mogujie.jarvis.protocol.ReportTaskStatusProtos.ServerReportTaskStatusResponse;
 import com.mogujie.jarvis.protocol.ReportTaskStatusProtos.WorkerReportTaskStatusRequest;
+import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
 import com.mogujie.jarvis.server.scheduler.event.KilledEvent;

@@ -10,7 +10,7 @@ package com.mogujie.jarvis.tasks.jdbc;
 
 import org.apache.commons.configuration.Configuration;
 
-import com.mogujie.jarvis.core.TaskContext;
+import com.mogujie.jarvis.worker.TaskContext;
 
 /**
  * @author guangming
