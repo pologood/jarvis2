@@ -9,8 +9,7 @@
 package com.mogujie.jarvis.core;
 
 /**
- * @author wuya
- *
+ * Abstract Log Collector
  */
 public abstract class AbstractLogCollector {
 

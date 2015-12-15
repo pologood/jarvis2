@@ -16,6 +16,7 @@ import org.hyperic.sigar.SigarException;
 
 import com.mogujie.jarvis.core.exeception.AcceptanceException;
 import com.mogujie.jarvis.core.util.ConfigUtils;
+import com.mogujie.jarvis.worker.WorkerConfigKeys;
 import com.mogujie.jarvis.worker.strategy.AcceptanceResult;
 import com.mogujie.jarvis.worker.strategy.AcceptanceStrategy;
 
@@ -27,7 +28,7 @@ public class MemoryAcceptanceStrategy implements AcceptanceStrategy {
 
   private DecimalFormat decimalFormat = new DecimalFormat("#0.00");
   private static final double MAX_MEMORY_USAGE = ConfigUtils.getWorkerConfig()
-      .getDouble("worker.memory.usage.threshold", 0.9);
+      .getDouble(WorkerConfigKeys.WORKER_MEMORY_USAGE_THRESHOLD, 0.9);
 
   @Override
   public AcceptanceResult accept() throws AcceptanceException {
@@ -36,8 +37,8 @@ public class MemoryAcceptanceStrategy implements AcceptanceStrategy {
       Mem mem = sigar.getMem();
       double currentMemoryUsage = mem.getUsedPercent() / 100;
       if (currentMemoryUsage > MAX_MEMORY_USAGE) {
-        return new AcceptanceResult(false, "client当前内存使用率" + decimalFormat.format(currentMemoryUsage)
-            + ", 超过阈值" + MAX_MEMORY_USAGE);
+        return new AcceptanceResult(false, "client当前内存使用率"
+            + decimalFormat.format(currentMemoryUsage) + ", 超过阈值" + MAX_MEMORY_USAGE);
       }
     } catch (SigarException e) {
       return new AcceptanceResult(false, e.getMessage());

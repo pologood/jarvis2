@@ -13,14 +13,12 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.apache.commons.configuration.Configuration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jgrapht.experimental.dag.DirectedAcyclicGraph.CycleFoundException;
 import org.joda.time.DateTime;
 import org.springframework.context.ApplicationContext;
-
-import akka.actor.ActorSystem;
-import akka.routing.RoundRobinPool;
 
 import com.google.common.collect.Lists;
 import com.mogujie.jarvis.core.JarvisConstants;
@@ -32,6 +30,7 @@ import com.mogujie.jarvis.core.expression.FixedDelayExpression;
 import com.mogujie.jarvis.core.expression.FixedRateExpression;
 import com.mogujie.jarvis.core.expression.ISO8601Expression;
 import com.mogujie.jarvis.core.expression.ScheduleExpression;
+import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.server.domain.JobEntry;
@@ -55,6 +54,9 @@ import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.SpringContext;
 import com.mogujie.jarvis.server.util.SpringExtension;
 
+import akka.actor.ActorSystem;
+import akka.routing.RoundRobinPool;
+
 public class JarvisServer {
 
     private static final Logger LOGGER = LogManager.getLogger();
@@ -66,10 +68,12 @@ public class JarvisServer {
         ActorSystem system = JarvisServerActorSystem.getInstance();
         SpringExtension.SPRING_EXT_PROVIDER.get(system).initialize(context);
 
-        system.actorOf(SpringExtension.SPRING_EXT_PROVIDER.get(system).props("serverActor").withRouter(new RoundRobinPool(500)),
+        Configuration config = ConfigUtils.getServerConfig();
+        int serverActorNum = config.getInt(ServerConigKeys.SERVER_ACTOR_NUM, 500);
+        system.actorOf(SpringExtension.SPRING_EXT_PROVIDER.get(system).props("serverActor").withRouter(new RoundRobinPool(serverActorNum)),
                 JarvisConstants.SERVER_AKKA_SYSTEM_NAME);
 
-        int taskDispatcherThreads = 5;
+        int taskDispatcherThreads = config.getInt(ServerConigKeys.SERVER_DISPATCHER_THREADS, 5);
         ExecutorService executorService = Executors.newFixedThreadPool(taskDispatcherThreads);
         for (int i = 0; i < taskDispatcherThreads; i++) {
             executorService.submit(SpringContext.getBean(TaskDispatcher.class));
@@ -168,8 +172,7 @@ public class JarvisServer {
             DAGJob dagJob = jobGraph.getDAGJob(jobId);
             if (dagJob.getType().implies(DAGJobType.TIME)) {
                 ExecutionPlan plan = ExecutionPlan.INSTANCE;
-                ExecutionPlanEntry planEntry = new ExecutionPlanEntry(jobId,
-                        new DateTime(task.getScheduleTime()), task.getTaskId());
+                ExecutionPlanEntry planEntry = new ExecutionPlanEntry(jobId, new DateTime(task.getScheduleTime()), task.getTaskId());
                 plan.addPlan(planEntry);
             }
         }

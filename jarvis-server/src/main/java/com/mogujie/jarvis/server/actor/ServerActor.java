@@ -15,6 +15,7 @@ import java.util.Map;
 
 import javax.inject.Named;
 
+import org.apache.commons.configuration.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 
@@ -28,6 +29,7 @@ import com.mogujie.jarvis.core.exeception.AppTokenInvalidException;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.dto.generate.App;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
+import com.mogujie.jarvis.server.ServerConigKeys;
 import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.service.AppService;
 import com.mogujie.jarvis.server.util.AppTokenUtils;
@@ -46,7 +48,8 @@ public class ServerActor extends UntypedActor {
     @Autowired
     private AppService appService;
 
-    private static boolean appTokenVerifyEnable = ConfigUtils.getServerConfig().getBoolean("app.token.verify.enable", true);
+    private static Configuration serverConfig = ConfigUtils.getServerConfig();
+    private static boolean appTokenVerifyEnable = serverConfig.getBoolean(ServerConigKeys.APP_TOKEN_VERIFY_ENABLE, true);
     private static Map<Class<?>, Pair<ActorRef, ActorEntry>> map = Maps.newConcurrentMap();
     private static List<Pair<ActorRef, List<ActorEntry>>> actorRefs = Lists.newArrayList();
 
@@ -66,11 +69,14 @@ public class ServerActor extends UntypedActor {
     }
 
     private void addActors() {
-        actorRefs.add(new Pair<ActorRef, List<ActorEntry>>(getContext().actorOf(TaskMetricsRoutingActor.props(50)),
+        int taskMetricsRoutingActorNum = serverConfig.getInt(ServerConigKeys.TASK_METRICS_ACTOR_NUM, 50);
+        actorRefs.add(new Pair<ActorRef, List<ActorEntry>>(getContext().actorOf(TaskMetricsRoutingActor.props(taskMetricsRoutingActorNum)),
                 TaskMetricsRoutingActor.handledMessages()));
         addActor("heartBeatActor", HeartBeatActor.handledMessages());
         addActor("workerRegistryActor", WorkerRegistryActor.handledMessages());
-        addActor("taskActor", new SmallestMailboxPool(10), TaskActor.handledMessages());
+
+        int taskActorNum = serverConfig.getInt(ServerConigKeys.TASK_ACTOR_NUM, 10);
+        addActor("taskActor", new SmallestMailboxPool(taskActorNum), TaskActor.handledMessages());
         addActor("jobActor", JobActor.handledMessages());
         addActor("modifyWorkerStatusActor", ModifyWorkerStatusActor.handledMessages());
         addActor("appActor", AppActor.handledMessages());

@@ -14,6 +14,7 @@ import java.text.DecimalFormat;
 
 import com.mogujie.jarvis.core.exeception.AcceptanceException;
 import com.mogujie.jarvis.core.util.ConfigUtils;
+import com.mogujie.jarvis.worker.WorkerConfigKeys;
 import com.mogujie.jarvis.worker.strategy.AcceptanceResult;
 import com.mogujie.jarvis.worker.strategy.AcceptanceStrategy;
 
@@ -26,12 +27,11 @@ public class LoadAcceptanceStrategy implements AcceptanceStrategy {
   private DecimalFormat decimalFormat = new DecimalFormat("#0.00");
   public static final int CPU_NUM = Runtime.getRuntime().availableProcessors();
   public static final double LOAD_THRESHOLD = ConfigUtils.getWorkerConfig()
-      .getDouble("worker.cpu.load.avg.threshold", CPU_NUM * 1.5);
+      .getDouble(WorkerConfigKeys.WORKER_CPU_LOAD_AVG_THRESHOLD, CPU_NUM * 1.5);
 
   @Override
   public AcceptanceResult accept() throws AcceptanceException {
-    OperatingSystemMXBean bean = (OperatingSystemMXBean) ManagementFactory
-        .getOperatingSystemMXBean();
+    OperatingSystemMXBean bean = ManagementFactory.getOperatingSystemMXBean();
     double currentLoad = bean.getSystemLoadAverage();
     if (currentLoad > LOAD_THRESHOLD) {
       return new AcceptanceResult(false,

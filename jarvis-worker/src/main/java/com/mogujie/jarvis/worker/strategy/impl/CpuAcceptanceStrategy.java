@@ -16,6 +16,7 @@ import org.hyperic.sigar.SigarException;
 
 import com.mogujie.jarvis.core.exeception.AcceptanceException;
 import com.mogujie.jarvis.core.util.ConfigUtils;
+import com.mogujie.jarvis.worker.WorkerConfigKeys;
 import com.mogujie.jarvis.worker.strategy.AcceptanceResult;
 import com.mogujie.jarvis.worker.strategy.AcceptanceStrategy;
 
@@ -27,7 +28,7 @@ public class CpuAcceptanceStrategy implements AcceptanceStrategy {
 
   private DecimalFormat decimalFormat = new DecimalFormat("#0.00");
   public static final double MAX_CPU_USAGE = ConfigUtils.getWorkerConfig()
-      .getDouble("worker.cpu.usage.threshold", 0.85);
+      .getDouble(WorkerConfigKeys.WORKER_CPU_USAGE_THRESHOLD, 0.85);
 
   @Override
   public AcceptanceResult accept() throws AcceptanceException {

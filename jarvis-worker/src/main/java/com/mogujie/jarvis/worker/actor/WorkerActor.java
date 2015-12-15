@@ -48,8 +48,9 @@ import com.mogujie.jarvis.worker.DefaultLogCollector;
 import com.mogujie.jarvis.worker.DefaultProgressReporter;
 import com.mogujie.jarvis.worker.TaskCallable;
 import com.mogujie.jarvis.worker.TaskContext;
-import com.mogujie.jarvis.worker.TaskPool;
 import com.mogujie.jarvis.worker.TaskContext.TaskContextBuilder;
+import com.mogujie.jarvis.worker.TaskPool;
+import com.mogujie.jarvis.worker.WorkerConfigKeys;
 import com.mogujie.jarvis.worker.strategy.AcceptanceResult;
 import com.mogujie.jarvis.worker.strategy.AcceptanceStrategy;
 import com.mogujie.jarvis.worker.util.FutureUtils;
@@ -66,10 +67,10 @@ public class WorkerActor extends UntypedActor {
   private static ExecutorService executorService = Executors.newCachedThreadPool();
 
   private static final String SERVER_AKKA_PATH = ConfigUtils.getWorkerConfig()
-      .getString("server.akka.path") + JarvisConstants.SERVER_AKKA_USER_PATH;
+      .getString(WorkerConfigKeys.SERVER_AKKA_PATH) + JarvisConstants.SERVER_AKKA_USER_PATH;
 
   private static final String LOGSERVER_AKKA_PATH = ConfigUtils.getWorkerConfig()
-      .getString("logserver.akka.path") + JarvisConstants.LOGSTORAGE_AKKA_USER_PATH;
+      .getString(WorkerConfigKeys.LOGSERVER_AKKA_PATH) + JarvisConstants.LOGSTORAGE_AKKA_USER_PATH;
 
   private static final Logger LOGGER = LogManager.getLogger();
 
@@ -207,10 +208,10 @@ public class WorkerActor extends UntypedActor {
 
   private void registerWorker() {
     Configuration workerConfig = ConfigUtils.getWorkerConfig();
-    String serverAkkaPath = workerConfig.getString("server.akka.path")
+    String serverAkkaPath = workerConfig.getString(WorkerConfigKeys.SERVER_AKKA_PATH)
         + JarvisConstants.SERVER_AKKA_USER_PATH;
-    int workerGroupId = workerConfig.getInt("worker.group.id", 0);
-    String workerKey = workerConfig.getString("worker.key");
+    int workerGroupId = workerConfig.getInt(WorkerConfigKeys.WORKER_GROUP_ID, 0);
+    String workerKey = workerConfig.getString(WorkerConfigKeys.WORKER_KEY);
     WorkerRegistryRequest request = WorkerRegistryRequest.newBuilder().setKey(workerKey).build();
 
     // 注册Worker
