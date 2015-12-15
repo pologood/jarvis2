@@ -130,7 +130,7 @@ public class JobService {
         record.setJobId(jobId);
         record.setExpressionType(entry.getExpressionType());
         record.setExpression(entry.getScheduleExpression());
-        Date now = new Date();
+        Date now = DateTime.now().toDate();
         record.setCreateTime(now);
         record.setUpdateTime(now);
         jobScheduleExpressionMapper.insert(record);
@@ -161,7 +161,7 @@ public class JobService {
         JobScheduleExpression record = new JobScheduleExpression();
         record.setExpressionType(entry.getExpressionType());
         record.setExpression(entry.getScheduleExpression());
-        record.setUpdateTime(new Date());
+        record.setUpdateTime(DateTime.now().toDate());
         jobScheduleExpressionMapper.updateByExampleSelective(record,example);
 
         // 2. update to cache
@@ -253,7 +253,7 @@ public class JobService {
         Job job = get(jobId).getJob();
         Date startDate = job.getActiveStartDate();
         Date endDate = job.getActiveEndDate();
-        Date now = new Date();
+        Date now = DateTime.now().toDate();
         if ((startDate == null || now.after(startDate)) && (endDate == null || now.before(endDate))) {
             return true;
         } else {
@@ -265,9 +265,7 @@ public class JobService {
         Job record = jobMapper.selectByPrimaryKey(jobId);
         record.setJobFlag(newFlag);
         record.setUpdateUser(user);
-        DateTime dt = DateTime.now();
-        Date currentTime = dt.toDate();
-        record.setUpdateTime(currentTime);
+        record.setUpdateTime(DateTime.now().toDate());
         jobMapper.updateByPrimaryKey(record);
 
         JobEntry jobEntry = get(jobId);

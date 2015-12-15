@@ -11,7 +11,6 @@ package com.mogujie.jarvis.server.actor;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -176,12 +175,12 @@ public class TaskActor extends UntypedActor {
         LOGGER.info("start manualRerunTask");
         List<Long> jobIdList = msg.getJobIdList();
         List<Long> taskIdList = new ArrayList<Long>();
-        Date startDate = new Date(msg.getStartTime());
-        Date endDate = new Date(msg.getEndTime());
+        DateTime startDate = new DateTime(msg.getStartTime());
+        DateTime endDate = new DateTime(msg.getEndTime());
         boolean runChild = msg.getRunChild();
         // 1.生成所有任务的执行计划
         PlanGenerator planGenerator = new PlanGenerator();
-        Range<DateTime> range = Range.closed(new DateTime(startDate), new DateTime(endDate));
+        Range<DateTime> range = Range.closed(startDate, endDate);
         Map<Long, List<ExecutionPlanEntry>> planMap = planGenerator.getReschedulePlan(jobIdList, range);
         // 2.通过新的job依赖关系生成新的task
         for (long jobId : jobIdList) {

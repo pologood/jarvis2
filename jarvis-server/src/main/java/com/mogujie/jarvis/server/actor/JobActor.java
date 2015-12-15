@@ -10,7 +10,6 @@ package com.mogujie.jarvis.server.actor;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -270,9 +269,7 @@ public class JobActor extends UntypedActor {
                     record.setCommonStrategy(commonStrategyValue);
                     record.setOffsetStrategy(offsetStrategyValue);
                     record.setUpdateUser(user);
-                    DateTime dt = DateTime.now();
-                    Date currentTime = dt.toDate();
-                    record.setUpdateTime(currentTime);
+                    record.setUpdateTime(DateTime.now().toDate());
                     jobService.updateJobDepend(record);
                 }
             }
