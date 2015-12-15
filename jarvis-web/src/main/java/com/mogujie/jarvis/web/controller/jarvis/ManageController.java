@@ -45,6 +45,7 @@ public class ManageController extends BaseController {
         return "manage/app";
     }
     @RequestMapping(value = "appAddOrEdit")
+    @JarvisPassport(authTypes = JarvisAuthType.manage_app,isMenu = false)
     public String appAddOrEdit(ModelMap modelMap,Integer appId){
         if(appId!=null){
             AppVo appVo=appService.getAppById(appId);
@@ -102,6 +103,7 @@ public class ManageController extends BaseController {
     }
 
     @RequestMapping(value = "workerAddOrEdit")
+    @JarvisPassport(authTypes = JarvisAuthType.manage_worker,isMenu = false)
     public String workerAddOrEdit(ModelMap modelMap,Integer id){
         if(id!=null){
             WorkerVo workerVo = workerService.getWorkerById(id);
@@ -150,6 +152,7 @@ public class ManageController extends BaseController {
 
 
     @RequestMapping(value = "workerGroupAddOrEdit")
+    @JarvisPassport(authTypes = JarvisAuthType.manage_worker,isMenu = false)
     public String workerGroupAddOrEdit(ModelMap modelMap,Integer id){
         if(id!=null){
             WorkerGroupVo workerGroupVo=workerService.getWorkerGroupById(id);

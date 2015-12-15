@@ -25,6 +25,7 @@ public class WorkerGroupController extends AbstractController {
      * 新增worker group
      */
     @POST
+
     @Path("add")
     @Produces(MediaType.APPLICATION_JSON)
     public RestResult add(@FormParam("appName") String appName, @FormParam("user") String user, @FormParam("appToken") String appToken,

@@ -83,7 +83,7 @@ function initLog(){
     var data={};
     data["taskId"]=taskId;
     data["jobId"]=jobId;
-    data["taskId"]=taskId;
+    data["attemptId"]=attemptId;
     data["offset"]=0;
     data["lines"]=1000;
     var result=requestRemoteRestApi('/api/log/readResult',"日志",data);
