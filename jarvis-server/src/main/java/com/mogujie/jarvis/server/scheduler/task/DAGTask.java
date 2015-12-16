@@ -24,16 +24,16 @@ public class DAGTask {
     private long scheduleTime;
     private TaskStatusChecker statusChecker;
 
-    public DAGTask(long jobId, long taskId, long scheduleTime, Map<Long, List<Long>> dependTaskIdMap) {
-        this(jobId, taskId, 1, scheduleTime, dependTaskIdMap);
-    }
-
     public DAGTask(long jobId, long taskId, int attemptId, long scheduleTime) {
         this.jobId = jobId;
         this.taskId = taskId;
         this.attemptId = attemptId;
         this.scheduleTime = scheduleTime;
         this.statusChecker = new TaskStatusChecker(jobId, taskId, scheduleTime);
+    }
+
+    public DAGTask(long jobId, long taskId, long scheduleTime, Map<Long, List<Long>> dependTaskIdMap) {
+        this(jobId, taskId, 1, scheduleTime, dependTaskIdMap);
     }
 
     public DAGTask(long jobId, long taskId, int attemptId, long scheduleTime, Map<Long, List<Long>> dependTaskIdMap) {

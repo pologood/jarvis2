@@ -198,6 +198,11 @@ public class TaskService {
         return new DateTime(tasks.get(0).getScheduleTime()).getMillis();
     }
 
+    public Task getLastTask(long jobId, long taskId) {
+        //TODO
+        return null;
+    }
+
     @VisibleForTesting
     public void deleteTaskAndRelation(long taskId) {
         if (taskId > 0) {
