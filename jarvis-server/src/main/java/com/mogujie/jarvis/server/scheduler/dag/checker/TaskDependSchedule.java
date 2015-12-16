@@ -193,18 +193,14 @@ public class TaskDependSchedule {
         TaskService taskService = Injectors.getInjector().getInstance(TaskService.class);
         DateTime now = DateTime.now();
 
-        List<Task> tasks = null;
         if (dependencyExpression != null) {
             Range<DateTime> range = dependencyExpression.getRange(now);
             // 如果是对当前周期的依赖，需要重新load进来
             if (range.contains(now)) {
-                tasks = taskService.getTasksBetween(preJobId, range);
-            }
-        }
-
-        if (tasks != null) {
-            for (Task task : tasks) {
-                schedulingTasks.add(new ScheduleTask(task.getTaskId(), task.getScheduleTime().getTime()));
+                List<Task> tasks = taskService.getTasksBetween(preJobId, range);
+                for (Task task : tasks) {
+                    schedulingTasks.add(new ScheduleTask(task.getTaskId(), task.getScheduleTime().getTime()));
+                }
             }
         }
     }
