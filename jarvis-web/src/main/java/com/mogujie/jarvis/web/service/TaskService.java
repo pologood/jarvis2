@@ -30,12 +30,12 @@ public class TaskService {
         Map<String, Object> result = new HashMap<String, Object>();
 
         if (StringUtils.isNotBlank(taskQo.getTaskStatusArrStr())) {
-            List<Integer> statusList = JsonHelper.fromJson(taskQo.getTaskStatusArrStr(), List.class);
+            List<String> statusList = JsonHelper.fromJson(taskQo.getTaskStatusArrStr(), List.class);
 
             if (statusList.size() > 0) {
                 List<Integer> taskStatus = new ArrayList<Integer>();
                 for (int i = 0; i < statusList.size(); i++) {
-                    Integer status = statusList.get(i);
+                    Integer status = Integer.parseInt(statusList.get(i));
                     taskStatus.add(status);
                 }
                 taskQo.setTaskStatus(taskStatus);

@@ -44,7 +44,7 @@
   <div id="cd-logo" class="bdmenu">
     <ul>
       <li class="active">
-        <a  href="${contextPath}/">${platform.name}</a>
+        <a  href="${contextPath}/">${platformName}</a>
       </li>
     </ul>
   </div>
