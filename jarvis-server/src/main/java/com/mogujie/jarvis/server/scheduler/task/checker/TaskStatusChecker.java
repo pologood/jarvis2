@@ -70,7 +70,7 @@ public class TaskStatusChecker {
         this.myTaskId = myTaskId;
     }
 
-    public boolean checkStatus() {
+    public synchronized boolean checkStatus() {
         boolean finishStatus = true;
         for (Entry<Long, TaskDependStatus> entry : jobStatusMap.entrySet()) {
             TaskDependStatus status = entry.getValue();
@@ -82,7 +82,7 @@ public class TaskStatusChecker {
         return finishStatus;
     }
 
-    public List<Long> getDependTaskIds() {
+    public synchronized List<Long> getDependTaskIds() {
         List<Long> dependTaskIds = new ArrayList<Long>();
         for (TaskDependStatus status : jobStatusMap.values()) {
             dependTaskIds.addAll(status.getDependTaskIds());
@@ -90,7 +90,7 @@ public class TaskStatusChecker {
         return dependTaskIds;
     }
 
-    public void removeJob(long jobId) {
+    public synchronized void removeJob(long jobId) {
         jobStatusMap.remove(jobId);
         Map<Long, List<Long>> dependTaskIdMap = convert2DependTaskIdMap(jobStatusMap);
         // flush task dependency
@@ -98,7 +98,7 @@ public class TaskStatusChecker {
         taskDependService.storeParent(myTaskId, dependTaskIdMap);
     }
 
-    public void removeTask(long jobId, long taskId) {
+    public synchronized void removeTask(long jobId, long taskId) {
         if (jobStatusMap.containsKey(jobId)) {
             TaskDependStatus taskStatus = jobStatusMap.get(jobId);
             taskStatus.removeTask(taskId);
