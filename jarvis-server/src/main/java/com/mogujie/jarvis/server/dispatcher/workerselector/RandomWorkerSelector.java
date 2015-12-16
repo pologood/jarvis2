@@ -12,15 +12,12 @@ import java.util.List;
 import java.util.Random;
 
 import com.mogujie.jarvis.core.domain.WorkerInfo;
+import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.service.HeartBeatService;
 
 public class RandomWorkerSelector implements WorkerSelector {
 
-    private HeartBeatService heartBeatService;
-
-    public RandomWorkerSelector(HeartBeatService heartBeatService) {
-        this.heartBeatService = heartBeatService;
-    }
+    private HeartBeatService heartBeatService = Injectors.getInjector().getInstance(HeartBeatService.class);
 
     @Override
     public WorkerInfo select(int workerGroupId) {

@@ -13,18 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import javax.inject.Named;
-
 import org.joda.time.DateTime;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.transaction.annotation.Transactional;
-
-import akka.actor.UntypedActor;
+import org.mybatis.guice.transactional.Transactional;
 
 import com.google.common.collect.Sets;
-import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.core.domain.JobRelationType;
+import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.core.domain.OperationMode;
 import com.mogujie.jarvis.core.domain.Pair;
@@ -47,6 +41,7 @@ import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.domain.ModifyDependEntry;
 import com.mogujie.jarvis.server.domain.ModifyOperation;
 import com.mogujie.jarvis.server.domain.RemoveJobRequest;
+import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.dag.DAGJob;
 import com.mogujie.jarvis.server.scheduler.dag.DAGJobType;
 import com.mogujie.jarvis.server.scheduler.dag.DAGScheduler;
@@ -55,20 +50,23 @@ import com.mogujie.jarvis.server.scheduler.time.TimeSchedulerFactory;
 import com.mogujie.jarvis.server.service.ConvertValidService;
 import com.mogujie.jarvis.server.service.JobService;
 
+import akka.actor.Props;
+import akka.actor.UntypedActor;
+
 /**
  * @author guangming
  */
-@Named("jobActor")
-@Scope("prototype")
 public class JobActor extends UntypedActor {
 
     private DAGScheduler dagScheduler = DAGScheduler.getInstance();
     private TimeScheduler timeScheduler = TimeSchedulerFactory.getInstance();
 
-    @Autowired
-    private JobService jobService;
-    @Autowired
-    private ConvertValidService convertValidService;
+    private JobService jobService = Injectors.getInjector().getInstance(JobService.class);
+    private ConvertValidService convertValidService = Injectors.getInjector().getInstance(ConvertValidService.class);
+
+    public static Props props() {
+        return Props.create(JobActor.class);
+    }
 
     /**
      * 处理消息

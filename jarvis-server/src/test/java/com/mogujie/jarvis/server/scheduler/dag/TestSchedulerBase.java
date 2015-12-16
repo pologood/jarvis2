@@ -17,12 +17,12 @@ import org.junit.BeforeClass;
 
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.server.dispatcher.TaskQueue;
+import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.task.DAGTask;
 import com.mogujie.jarvis.server.scheduler.task.TaskGraph;
 import com.mogujie.jarvis.server.scheduler.task.TaskScheduler;
 import com.mogujie.jarvis.server.service.TaskService;
-import com.mogujie.jarvis.server.util.SpringContext;
 
 /**
  * @author guangming
@@ -36,7 +36,7 @@ public class TestSchedulerBase {
     protected static TaskGraph taskGraph;
     protected static TaskQueue taskQueue;
     protected static Configuration conf = ConfigUtils.getServerConfig();
-    protected TaskService taskService = SpringContext.getBean(TaskService.class);
+    protected TaskService taskService = Injectors.getInjector().getInstance(TaskService.class);
 
     @BeforeClass
     public static void setup() throws Exception {

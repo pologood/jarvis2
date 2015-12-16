@@ -1,9 +1,8 @@
 package com.mogujie.jarvis.dto.generate;
 
-import java.io.Serializable;
 import java.util.Date;
 
-public class App implements Serializable {
+public class App {
     private Integer appId;
 
     private String appName;
@@ -21,8 +20,6 @@ public class App implements Serializable {
     private Date updateTime;
 
     private String updateUser;
-
-    private static final long serialVersionUID = 1L;
 
     public Integer getAppId() {
         return appId;

@@ -1,9 +1,8 @@
 package com.mogujie.jarvis.dto.generate;
 
-import java.io.Serializable;
 import java.util.Date;
 
-public class Alarm implements Serializable {
+public class Alarm {
     private Integer id;
 
     private Long jobId;
@@ -15,8 +14,6 @@ public class Alarm implements Serializable {
     private Integer status;
 
     private Date createTime;
-
-    private static final long serialVersionUID = 1L;
 
     public Integer getId() {
         return id;

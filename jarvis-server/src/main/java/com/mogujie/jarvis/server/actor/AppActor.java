@@ -12,12 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import javax.inject.Named;
-
 import org.joda.time.DateTime;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.transaction.annotation.Transactional;
+import org.mybatis.guice.transactional.Transactional;
 
 import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.dto.generate.App;
@@ -27,19 +23,21 @@ import com.mogujie.jarvis.protocol.ApplicationProtos.ServerCreateApplicationResp
 import com.mogujie.jarvis.protocol.ApplicationProtos.ServerModifyApplicationResponse;
 import com.mogujie.jarvis.server.dispatcher.TaskManager;
 import com.mogujie.jarvis.server.domain.ActorEntry;
+import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.service.AppService;
 
+import akka.actor.Props;
 import akka.actor.UntypedActor;
 
-@Named("appActor")
-@Scope("prototype")
 public class AppActor extends UntypedActor {
 
-    @Autowired
-    private TaskManager taskManager;
+    private TaskManager taskManager = Injectors.getInjector().getInstance(TaskManager.class);
 
-    @Autowired
-    private AppService appService;
+    private AppService appService = Injectors.getInjector().getInstance(AppService.class);
+
+    public static Props props() {
+        return Props.create(AppActor.class);
+    }
 
     public static List<ActorEntry> handledMessages() {
         List<ActorEntry> list = new ArrayList<>();

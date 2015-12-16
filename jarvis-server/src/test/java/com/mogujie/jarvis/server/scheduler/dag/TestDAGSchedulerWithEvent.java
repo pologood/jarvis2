@@ -12,18 +12,18 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.google.common.collect.Sets;
+import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.event.ScheduleEvent;
 import com.mogujie.jarvis.server.scheduler.event.TimeReadyEvent;
 import com.mogujie.jarvis.server.scheduler.task.DAGTask;
 import com.mogujie.jarvis.server.service.TaskService;
-import com.mogujie.jarvis.server.util.SpringContext;
 
 /**
  * @author guangming
  *
  */
 public class TestDAGSchedulerWithEvent extends TestSchedulerBase {
-    private TaskService taskService = SpringContext.getBean(TaskService.class);
+    private TaskService taskService = Injectors.getInjector().getInstance(TaskService.class);
     private long jobAId = 1;
     private long jobBId = 2;
     private long jobCId = 3;

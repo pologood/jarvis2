@@ -383,5 +383,4 @@
       updateTime = #{updateTime,jdbcType=TIMESTAMP}
     where taskId = #{taskId,jdbcType=BIGINT}
   </update>
-  <cache />
 </mapper>

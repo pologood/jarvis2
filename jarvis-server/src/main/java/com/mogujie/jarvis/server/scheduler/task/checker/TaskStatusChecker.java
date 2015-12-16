@@ -20,11 +20,10 @@ import com.mogujie.jarvis.core.expression.DependencyExpression;
 import com.mogujie.jarvis.core.expression.DependencyStrategyExpression;
 import com.mogujie.jarvis.server.domain.CommonStrategy;
 import com.mogujie.jarvis.server.domain.JobDependencyEntry;
+import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.TaskDependService;
 import com.mogujie.jarvis.server.service.TaskService;
-import com.mogujie.jarvis.server.util.SpringContext;
-
 
 /**
  * @author guangming
@@ -32,9 +31,9 @@ import com.mogujie.jarvis.server.util.SpringContext;
  */
 public class TaskStatusChecker {
 
-    private JobService jobService = SpringContext.getBean(JobService.class);
-    private TaskService taskService = SpringContext.getBean(TaskService.class);
-    private TaskDependService taskDependService = SpringContext.getBean(TaskDependService.class);
+    private JobService jobService = Injectors.getInjector().getInstance(JobService.class);
+    private TaskService taskService = Injectors.getInjector().getInstance(TaskService.class);
+    private TaskDependService taskDependService = Injectors.getInjector().getInstance(TaskDependService.class);
     // Map<jobId, TaskDependStatus>
     private Map<Long, TaskDependStatus> jobStatusMap = new ConcurrentHashMap<Long, TaskDependStatus>();
     private long myJobId;
@@ -114,7 +113,7 @@ public class TaskStatusChecker {
     private Map<Long, TaskDependStatus> loadJobStatus(Map<Long, List<Long>> dependTaskIdMap, long scheduleTime) {
         Map<Long, TaskDependStatus> jobStatusMap = new ConcurrentHashMap<Long, TaskDependStatus>();
         Map<Long, JobDependencyEntry> dependencyMap = jobService.get(myJobId).getDependencies();
-        if(dependencyMap != null) {
+        if (dependencyMap != null) {
             for (Entry<Long, JobDependencyEntry> entry : dependencyMap.entrySet()) {
                 long preJobId = entry.getKey();
                 JobDependencyEntry dependencyEntry = entry.getValue();
@@ -161,7 +160,7 @@ public class TaskStatusChecker {
     }
 
     private Map<Long, List<Long>> convert2DependTaskIdMap(Map<Long, TaskDependStatus> jobStatusMap) {
-        Map<Long, List<Long>> dependTaskIdMap =  Maps.newHashMap();
+        Map<Long, List<Long>> dependTaskIdMap = Maps.newHashMap();
         for (Entry<Long, TaskDependStatus> entry : jobStatusMap.entrySet()) {
             long jobId = entry.getKey();
             TaskDependStatus taskStatus = entry.getValue();

@@ -8,13 +8,13 @@
 
 package com.mogujie.jarvis.server.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.util.Date;
 import java.util.List;
 
 import org.joda.time.DateTime;
+
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.mogujie.jarvis.dao.generate.WorkerMapper;
 import com.mogujie.jarvis.dto.generate.Worker;
 import com.mogujie.jarvis.dto.generate.WorkerExample;
@@ -22,9 +22,9 @@ import com.mogujie.jarvis.dto.generate.WorkerExample;
 /**
  * @author guangming
  */
-@Service
+@Singleton
 public class WorkerService {
-    @Autowired
+    @Inject
     private WorkerMapper workerMapper;
 
     public int getWorkerId(String ip, int port) {

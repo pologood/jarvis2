@@ -11,14 +11,8 @@ package com.mogujie.jarvis.server.actor;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Named;
-
 import org.joda.time.DateTime;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.transaction.annotation.Transactional;
-
-import akka.actor.UntypedActor;
+import org.mybatis.guice.transactional.Transactional;
 
 import com.google.common.collect.Range;
 import com.mogujie.jarvis.core.domain.MessageType;
@@ -30,6 +24,7 @@ import com.mogujie.jarvis.protocol.GeneratePlanProtos.ServerGenereateAllPlanResp
 import com.mogujie.jarvis.protocol.RemovePlanProtos.RestServerRemovePlanRequest;
 import com.mogujie.jarvis.protocol.RemovePlanProtos.ServerRemovePlanResponse;
 import com.mogujie.jarvis.server.domain.ActorEntry;
+import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.event.RemoveTaskEvent;
 import com.mogujie.jarvis.server.scheduler.plan.ExecutionPlanEntry;
@@ -40,19 +35,23 @@ import com.mogujie.jarvis.server.scheduler.time.TimeScheduler;
 import com.mogujie.jarvis.server.scheduler.time.TimeSchedulerFactory;
 import com.mogujie.jarvis.server.service.TaskService;
 
+import akka.actor.Props;
+import akka.actor.UntypedActor;
+
 /**
  * @author guangming
  *
  */
-@Named("planActor")
-@Scope("prototype")
 public class PlanActor extends UntypedActor {
 
-    @Autowired
-    private TaskService taskService;
+    private TaskService taskService = Injectors.getInjector().getInstance(TaskService.class);
 
     private TaskGraph taskGraph = TaskGraph.INSTANCE;
     private JobSchedulerController controller = JobSchedulerController.getInstance();
+
+    public static Props props() {
+        return Props.create(PlanActor.class);
+    }
 
     @Override
     public void onReceive(Object obj) throws Exception {

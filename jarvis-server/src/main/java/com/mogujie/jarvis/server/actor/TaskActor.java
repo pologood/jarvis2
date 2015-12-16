@@ -16,17 +16,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import javax.inject.Named;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.transaction.annotation.Transactional;
-
-import akka.actor.ActorSelection;
-import akka.actor.UntypedActor;
+import org.mybatis.guice.transactional.Transactional;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Range;
@@ -62,6 +55,7 @@ import com.mogujie.jarvis.server.dispatcher.TaskManager;
 import com.mogujie.jarvis.server.dispatcher.TaskQueue;
 import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.domain.JobDependencyEntry;
+import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.dag.JobGraph;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
@@ -81,23 +75,20 @@ import com.mogujie.jarvis.server.service.TaskDependService;
 import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.FutureUtils;
 
+import akka.actor.ActorSelection;
+import akka.actor.Props;
+import akka.actor.UntypedActor;
+
 /**
  * @author guangming
  *
  */
-@Named("taskActor")
-@Scope("prototype")
 public class TaskActor extends UntypedActor {
-    @Autowired
-    private TaskManager taskManager;
-    @Autowired
-    private TaskService taskService;
-    @Autowired
-    private JobService jobService;
-    @Autowired
-    private TaskDependService taskDependService;
-    @Autowired
-    private ConvertValidService convertValidService;
+    private TaskManager taskManager = Injectors.getInjector().getInstance(TaskManager.class);
+    private TaskService taskService = Injectors.getInjector().getInstance(TaskService.class);
+    private JobService jobService = Injectors.getInjector().getInstance(JobService.class);
+    private TaskDependService taskDependService = Injectors.getInjector().getInstance(TaskDependService.class);
+    private ConvertValidService convertValidService = Injectors.getInjector().getInstance(ConvertValidService.class);
 
     private JobGraph jobGraph = JobGraph.INSTANCE;
     private TaskGraph taskGraph = TaskGraph.INSTANCE;
@@ -105,6 +96,10 @@ public class TaskActor extends UntypedActor {
     private JobSchedulerController controller = JobSchedulerController.getInstance();
 
     private static final Logger LOGGER = LogManager.getLogger();
+
+    public static Props props() {
+        return Props.create(TaskActor.class);
+    }
 
     @Override
     public void onReceive(Object obj) throws Exception {

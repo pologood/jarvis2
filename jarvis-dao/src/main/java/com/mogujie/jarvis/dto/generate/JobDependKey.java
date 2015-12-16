@@ -1,13 +1,9 @@
 package com.mogujie.jarvis.dto.generate;
 
-import java.io.Serializable;
-
-public class JobDependKey implements Serializable {
+public class JobDependKey {
     private Long jobId;
 
     private Long preJobId;
-
-    private static final long serialVersionUID = 1L;
 
     public Long getJobId() {
         return jobId;

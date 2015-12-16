@@ -1,16 +1,13 @@
 package com.mogujie.jarvis.dto.generate;
 
-import java.io.Serializable;
 import java.util.Date;
 
-public class AppWorkerGroup extends AppWorkerGroupKey implements Serializable {
+public class AppWorkerGroup extends AppWorkerGroupKey {
     private Date createTime;
 
     private Date updateTime;
 
     private String updateUser;
-
-    private static final long serialVersionUID = 1L;
 
     public Date getCreateTime() {
         return createTime;

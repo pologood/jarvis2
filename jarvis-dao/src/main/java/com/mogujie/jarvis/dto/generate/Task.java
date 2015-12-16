@@ -1,9 +1,8 @@
 package com.mogujie.jarvis.dto.generate;
 
-import java.io.Serializable;
 import java.util.Date;
 
-public class Task implements Serializable {
+public class Task {
     private Long taskId;
 
     private Integer attemptId;
@@ -35,8 +34,6 @@ public class Task implements Serializable {
     private Date createTime;
 
     private Date updateTime;
-
-    private static final long serialVersionUID = 1L;
 
     public Long getTaskId() {
         return taskId;

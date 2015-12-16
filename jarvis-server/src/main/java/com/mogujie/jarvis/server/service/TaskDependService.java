@@ -15,11 +15,11 @@ import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.mybatis.guice.transactional.Transactional;
 
 import com.google.gson.reflect.TypeToken;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.dao.generate.TaskDependMapper;
 import com.mogujie.jarvis.dto.generate.TaskDepend;
@@ -27,10 +27,10 @@ import com.mogujie.jarvis.dto.generate.TaskDepend;
 /**
  * @author muming
  */
-@Service
+@Singleton
 public class TaskDependService {
 
-    @Autowired
+    @Inject
     private TaskDependMapper mapper;
     private static final Logger LOGGER = LogManager.getLogger();
 

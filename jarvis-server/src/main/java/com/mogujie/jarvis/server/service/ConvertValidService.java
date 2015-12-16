@@ -9,10 +9,10 @@ package com.mogujie.jarvis.server.service;
 import java.util.Date;
 
 import org.joda.time.DateTime;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import com.google.common.base.Preconditions;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.mogujie.jarvis.core.domain.AppType;
 import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.dto.generate.App;
@@ -30,13 +30,13 @@ import com.mogujie.jarvis.server.domain.JobEntry;
  *
  */
 
-@Service
+@Singleton
 public class ConvertValidService {
 
-    @Autowired
+    @Inject
     private AppService appService;
 
-    @Autowired
+    @Inject
     private JobService jobService;
 
     public Job convert2Job(RestSubmitJobRequest msg) {

@@ -1,9 +1,8 @@
 package com.mogujie.jarvis.dto.generate;
 
-import java.io.Serializable;
 import java.util.Date;
 
-public class WorkerGroup implements Serializable {
+public class WorkerGroup {
     private Integer id;
 
     private String name;
@@ -17,8 +16,6 @@ public class WorkerGroup implements Serializable {
     private Date updateTime;
 
     private String updateUser;
-
-    private static final long serialVersionUID = 1L;
 
     public Integer getId() {
         return id;

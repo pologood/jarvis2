@@ -14,20 +14,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.PostConstruct;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.mybatis.guice.transactional.Transactional;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.core.expression.CronExpression;
 import com.mogujie.jarvis.core.expression.DefaultDependencyStrategyExpression;
@@ -59,25 +57,25 @@ import com.mogujie.jarvis.server.domain.JobEntry;
  * @author wuya
  *
  */
-@Service
+@Singleton
 public class JobService {
 
     private static final Logger LOGGER = LogManager.getLogger();
     private Map<Long, JobEntry> metaStore = Maps.newConcurrentMap();
 
-    @Autowired
+    @Inject
     private JobMapper jobMapper;
 
-    @Autowired
+    @Inject
     private JobScheduleExpressionMapper jobScheduleExpressionMapper;
 
-    @Autowired
+    @Inject
     private JobDependMapper jobDependMapper;
 
-    @Autowired
+    @Inject
     private AppMapper appMapper;
 
-    @PostConstruct
+    @Inject
     private void init() {
         loadMetaDataFromDB();
         LOGGER.info("jobService loadMetaDataFromDB finished.");
@@ -162,7 +160,7 @@ public class JobService {
         record.setExpressionType(entry.getExpressionType());
         record.setExpression(entry.getScheduleExpression());
         record.setUpdateTime(DateTime.now().toDate());
-        jobScheduleExpressionMapper.updateByExampleSelective(record,example);
+        jobScheduleExpressionMapper.updateByExampleSelective(record, example);
 
         // 2. update to cache
         ScheduleExpression scheduleExpression = null;

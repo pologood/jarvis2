@@ -1,9 +1,8 @@
 package com.mogujie.jarvis.dto.generate;
 
-import java.io.Serializable;
 import java.util.Date;
 
-public class TaskDepend implements Serializable {
+public class TaskDepend {
     private Long taskId;
 
     private String dependTaskIds;
@@ -11,8 +10,6 @@ public class TaskDepend implements Serializable {
     private String childTaskIds;
 
     private Date createTime;
-
-    private static final long serialVersionUID = 1L;
 
     public Long getTaskId() {
         return taskId;

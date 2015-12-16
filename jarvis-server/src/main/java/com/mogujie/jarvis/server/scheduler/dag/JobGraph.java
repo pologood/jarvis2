@@ -29,12 +29,12 @@ import com.mogujie.jarvis.core.domain.Pair;
 import com.mogujie.jarvis.core.exeception.JobScheduleException;
 import com.mogujie.jarvis.server.domain.ModifyDependEntry;
 import com.mogujie.jarvis.server.domain.ModifyOperation;
+import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.dag.checker.DAGDependChecker;
 import com.mogujie.jarvis.server.scheduler.dag.checker.ScheduleTask;
 import com.mogujie.jarvis.server.scheduler.event.AddTaskEvent;
 import com.mogujie.jarvis.server.service.JobService;
-import com.mogujie.jarvis.server.util.SpringContext;
 
 /**
  * @author guangming
@@ -46,7 +46,7 @@ public enum JobGraph {
     private Map<Long, DAGJob> jobMap = new ConcurrentHashMap<Long, DAGJob>();
     private DirectedAcyclicGraph<DAGJob, DefaultEdge> dag = new DirectedAcyclicGraph<DAGJob, DefaultEdge>(DefaultEdge.class);
     private JobSchedulerController controller = JobSchedulerController.getInstance();
-    private JobService jobService = SpringContext.getBean(JobService.class);
+    private JobService jobService = Injectors.getInjector().getInstance(JobService.class);
 
     private static final Logger LOGGER = LogManager.getLogger();
 
@@ -81,8 +81,7 @@ public enum JobGraph {
             List<DAGJob> parents = getParents(dagJob);
             if (parents != null) {
                 for (DAGJob parent : parents) {
-                    Pair<Long, JobStatus> jobPair = new Pair<Long, JobStatus>(parent.getJobId(),
-                            parent.getJobStatus());
+                    Pair<Long, JobStatus> jobPair = new Pair<Long, JobStatus>(parent.getJobId(), parent.getJobStatus());
                     parentJobPairs.add(jobPair);
                 }
             }
@@ -104,8 +103,7 @@ public enum JobGraph {
             List<DAGJob> children = getChildren(dagJob);
             if (children != null) {
                 for (DAGJob child : children) {
-                    Pair<Long, JobStatus> jobPair = new Pair<Long, JobStatus>(child.getJobId(),
-                            child.getJobStatus());
+                    Pair<Long, JobStatus> jobPair = new Pair<Long, JobStatus>(child.getJobId(), child.getJobStatus());
                     childJobPairs.add(jobPair);
                 }
             }
@@ -121,9 +119,8 @@ public enum JobGraph {
     public List<Long> getActiveTimeBasedJobs() {
         List<Long> jobs = new ArrayList<Long>();
         for (DAGJob dagJob : jobMap.values()) {
-            if (dagJob.getType().implies(DAGJobType.TIME) &&
-                    dagJob.getJobStatus().equals(JobStatus.ENABLE) &&
-                    jobService.isActive(dagJob.getJobId())) {
+            if (dagJob.getType().implies(DAGJobType.TIME) && dagJob.getJobStatus().equals(JobStatus.ENABLE)
+                    && jobService.isActive(dagJob.getJobId())) {
                 jobs.add(dagJob.getJobId());
             }
         }
@@ -148,8 +145,7 @@ public enum JobGraph {
                     if (parent != null) {
                         try {
                             dag.addDagEdge(parent, dagJob);
-                            LOGGER.debug("add dependency successfully, parent is {}, child is {}",
-                                    parent.getJobId(), dagJob.getJobId());
+                            LOGGER.debug("add dependency successfully, parent is {}, child is {}", parent.getJobId(), dagJob.getJobId());
                         } catch (CycleFoundException e) {
                             LOGGER.error(e);
                             dag.removeVertex(dagJob);
@@ -205,8 +201,8 @@ public enum JobGraph {
                 LOGGER.info("remove dependency successfully, parent {}, child {}", preJobId, jobId);
             } else if (entry.getOperation().equals(ModifyOperation.MODIFY)) {
                 modifyDependency(preJobId, jobId, entry.getOffsetStrategy());
-                LOGGER.info("modify dependency strategy, new common strategy is {}, new offset Strategy is {}",
-                        entry.getCommonStrategy(), entry.getOffsetStrategy());
+                LOGGER.info("modify dependency strategy, new common strategy is {}, new offset Strategy is {}", entry.getCommonStrategy(),
+                        entry.getOffsetStrategy());
             }
         }
 
@@ -265,7 +261,7 @@ public enum JobGraph {
      * @param newType
      * @throws JobScheduleException
      */
-    public void modifyDAGJobType(long jobId, DAGJobType newType)  {
+    public void modifyDAGJobType(long jobId, DAGJobType newType) {
         // update dag job type
         DAGJob dagJob = getDAGJob(jobId);
         if (dagJob != null) {

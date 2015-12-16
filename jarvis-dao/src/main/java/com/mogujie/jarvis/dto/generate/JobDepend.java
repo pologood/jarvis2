@@ -1,9 +1,8 @@
 package com.mogujie.jarvis.dto.generate;
 
-import java.io.Serializable;
 import java.util.Date;
 
-public class JobDepend extends JobDependKey implements Serializable {
+public class JobDepend extends JobDependKey {
     private Integer commonStrategy;
 
     private String offsetStrategy;
@@ -13,8 +12,6 @@ public class JobDepend extends JobDependKey implements Serializable {
     private Date updateTime;
 
     private String updateUser;
-
-    private static final long serialVersionUID = 1L;
 
     public Integer getCommonStrategy() {
         return commonStrategy;
