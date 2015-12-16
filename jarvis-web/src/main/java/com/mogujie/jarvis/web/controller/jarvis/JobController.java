@@ -1,9 +1,9 @@
 package com.mogujie.jarvis.web.controller.jarvis;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
+import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.web.auth.annotation.JarvisPassport;
 import com.mogujie.jarvis.web.auth.conf.JarvisAuthType;
+import com.mogujie.jarvis.web.entity.qo.AppQo;
 import com.mogujie.jarvis.web.entity.vo.*;
 import com.mogujie.jarvis.web.service.AppService;
 import com.mogujie.jarvis.web.service.JobDependService;
@@ -61,9 +61,9 @@ public class JobController extends BaseController {
     @RequestMapping(value = "addOrEdit")
     @JarvisPassport(authTypes = JarvisAuthType.job, isMenu = false)
     public String addOrEdit(ModelMap modelMap, Long jobId) {
-        AppQo appSearchVo = new AppQo();
-        appSearchVo.setStatus(1);
-        List<AppVo> appVoList = appService.getAppList(appSearchVo);
+        AppQo appQo = new AppQo();
+        appQo.setStatus(1);
+        List<AppVo> appVoList = appService.getAppList(appQo);
 
         if (jobId != null) {
             JobVo jobVo = jobService.getJobById(jobId);
@@ -77,14 +77,14 @@ public class JobController extends BaseController {
 
             List<JobDependVo> jobDependVoList = jobDependService.getParentById(jobId);
             List<String> parentIds = new ArrayList<String>();
-            JSONObject jsonObject = new JSONObject();
+            Map<String,Object> map = new HashMap<String, Object>();
             for (JobDependVo jobDependVo : jobDependVoList) {
                 parentIds.add(jobDependVo.getId().toString());
-                jsonObject.put(jobDependVo.getId().toString(), jobDependVo);
+                map.put(jobDependVo.getId().toString(), jobDependVo);
             }
-            String ids = JSON.toJSONString(parentIds);
+            String ids = JsonHelper.toJson(parentIds);
             modelMap.put("dependIds", ids);
-            modelMap.put("dependJobs", jsonObject.toJSONString());
+            modelMap.put("dependJobs",JsonHelper.toJson(map));
         }
 
 
@@ -104,8 +104,8 @@ public class JobController extends BaseController {
     * */
     @RequestMapping("checkJobName")
     @ResponseBody
-    public JSONObject checkJobName(Long jobId, String jobName) {
-        JSONObject result = new JSONObject();
+    public Map<String,Object> checkJobName(Long jobId, String jobName) {
+        Map<String,Object> result = new HashMap<String, Object>();
 
         JobVo jobVo = jobService.getJobByName(jobName);
         //新增job时校验
@@ -151,7 +151,7 @@ public class JobController extends BaseController {
             jobVo = new JobVo();
         }
 
-        modelMap.put("jobVo", JSON.toJSONString(jobVo));
+        modelMap.put("jobVo", JsonHelper.toJson(jobVo));
         return "job/dependency";
     }
 

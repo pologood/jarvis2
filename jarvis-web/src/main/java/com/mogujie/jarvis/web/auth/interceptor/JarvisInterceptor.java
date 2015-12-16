@@ -1,13 +1,11 @@
 package com.mogujie.jarvis.web.auth.interceptor;
 
-import com.alibaba.fastjson.JSON;
-
-import com.alibaba.fastjson.JSONObject;
 import com.mogu.bigdata.admin.client.service.RbacService;
 import com.mogu.bigdata.admin.core.consts.PlatformConfig;
 import com.mogu.bigdata.admin.core.entity.User;
 import com.mogu.bigdata.admin.passport.conf.ResultType;
 import com.mogu.bigdata.admin.passport.session.SessionHelper;
+import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.web.auth.annotation.JarvisPassport;
 import com.mogujie.jarvis.web.auth.conf.JarvisAuthType;
 import org.apache.commons.lang3.StringUtils;
@@ -52,12 +50,12 @@ public class JarvisInterceptor extends HandlerInterceptorAdapter {
         if (null == sessionUser || StringUtils.isBlank(sessionUser.getUname())) {
             if (passport.resultType() == ResultType.page) {
                 request.getRequestDispatcher("/").forward(request, response);
-            } else if(passport.resultType() == ResultType.json) {
+            } else if (passport.resultType() == ResultType.json) {
                 //ajax页面的登录
                 response.setCharacterEncoding("utf-8");
                 response.setContentType("application/json;charset=UTF-8");
                 OutputStream out = response.getOutputStream();
-                PrintWriter pw = new PrintWriter(new OutputStreamWriter(out,"utf-8"));
+                PrintWriter pw = new PrintWriter(new OutputStreamWriter(out, "utf-8"));
                 //返回json格式的提示
                 Map<String, Object> result = new HashMap<String, Object>();
                 Map<String, Object> status = new HashMap<String, Object>();
@@ -66,7 +64,7 @@ public class JarvisInterceptor extends HandlerInterceptorAdapter {
                 result.put("status", status);
                 result.put("message", "没有权限");
                 result.put("result", "没有权限");
-                String resultStr = JSON.toJSONString(result);
+                String resultStr = JsonHelper.toJson(result);
                 pw.println(resultStr);
                 pw.flush();
                 pw.close();
@@ -78,7 +76,7 @@ public class JarvisInterceptor extends HandlerInterceptorAdapter {
             return true;
         }
 
-        for(JarvisAuthType a: passport.authTypes()) {
+        for (JarvisAuthType a : passport.authTypes()) {
             Integer permissionId = a.getCode();
             if (!rbacService.check(sessionUser.getUname(), permissionId, PlatformConfig.platformId, PlatformConfig.secret)) {
                 if (passport.resultType() == ResultType.page) {
@@ -88,7 +86,7 @@ public class JarvisInterceptor extends HandlerInterceptorAdapter {
                     response.setCharacterEncoding("utf-8");
                     response.setContentType("application/json;charset=UTF-8");
                     OutputStream out = response.getOutputStream();
-                    PrintWriter pw = new PrintWriter(new OutputStreamWriter(out,"utf-8"));
+                    PrintWriter pw = new PrintWriter(new OutputStreamWriter(out, "utf-8"));
                     //返回json格式的提示
                     Map<String, Object> result = new HashMap<String, Object>();
                     Map<String, Object> status = new HashMap<String, Object>();
@@ -97,7 +95,7 @@ public class JarvisInterceptor extends HandlerInterceptorAdapter {
                     result.put("status", status);
                     result.put("message", "没有权限");
                     result.put("result", "没有权限");
-                    String resultStr = JSON.toJSONString(result);
+                    String resultStr = JsonHelper.toJson(result);
                     pw.println(resultStr);
                     pw.flush();
                     pw.close();

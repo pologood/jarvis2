@@ -1,9 +1,7 @@
 package com.mogujie.jarvis.web.controller.api;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.mogujie.jarvis.web.entity.vo.JobVo;
-import com.mogujie.jarvis.web.entity.vo.PlanQo;
+import com.mogujie.jarvis.web.entity.qo.PlanQo;
 import com.mogujie.jarvis.web.entity.vo.TaskDependVo;
 import com.mogujie.jarvis.web.entity.vo.TaskVo;
 import com.mogujie.jarvis.web.service.JobService;

@@ -1,7 +1,6 @@
 package com.mogujie.jarvis.web.controller.api;
 
-import com.alibaba.fastjson.JSONObject;
-import com.mogujie.jarvis.web.entity.vo.JobQo;
+import com.mogujie.jarvis.web.entity.qo.JobQo;
 import com.mogujie.jarvis.web.service.JobDependService;
 import com.mogujie.jarvis.web.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Created by hejian on 15/9/15.
@@ -37,11 +37,11 @@ public class JobAPIController {
      */
     @RequestMapping("/getTreeDependedONJob")
     @ResponseBody
-    public JSONObject getTreeDependedONJob(JobQo jobQo) {
+    public Map<String,Object> getTreeDependedONJob(JobQo jobQo) {
 
-        JSONObject jobJson = jobDependService.getTreeDependedOnJob(jobQo);
+        Map<String,Object> result = jobDependService.getTreeDependedOnJob(jobQo);
 
-        return jobJson;
+        return result;
     }
 
     /**
@@ -49,11 +49,11 @@ public class JobAPIController {
      */
     @RequestMapping("/getTwoDirectionTree")
     @ResponseBody
-    public JSONObject getTwoDirectionTree(JobQo jobSearchVo) {
+    public Map<String,Object> getTwoDirectionTree(JobQo jobSearchVo) {
 
-        JSONObject jobJson = jobDependService.getTwoDirectionTreeDependedOnJob(jobSearchVo);
+        Map<String,Object> result = jobDependService.getTwoDirectionTreeDependedOnJob(jobSearchVo);
 
-        return jobJson;
+        return result;
     }
 
     /**

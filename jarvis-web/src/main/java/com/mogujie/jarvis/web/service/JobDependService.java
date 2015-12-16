@@ -1,14 +1,15 @@
 package com.mogujie.jarvis.web.service;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.mogujie.jarvis.web.entity.vo.JobDependVo;
 import com.mogujie.jarvis.web.mapper.JobDependMapper;
-import com.mogujie.jarvis.web.entity.vo.JobQo;
+import com.mogujie.jarvis.web.entity.qo.JobQo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -22,20 +23,30 @@ public class JobDependService {
     /**
      * 获取所有依赖于此job的job
      */
-    public JSONObject getTreeDependedOnJob(JobQo jobQo) {
-        JSONObject result=new JSONObject();
+    public Map<String,Object> getTreeDependedOnJob(JobQo jobQo) {
+        Map<String,Object> result=new HashMap<String, Object>();
         JobDependVo jobDependVo = jobDependMapper.getJobById(jobQo.getJobId());
 
         if (jobDependVo == null) {
             return result;
         }
-        JSONObject mapState = new JSONObject();
+        Map<String,Object> mapState=new HashMap<String, Object>();
         mapState.put("opened", true);
 
         List<JobDependVo> jobDependVoChildrenList = getChildren(jobDependVo, true);
         jobDependVo.setChildren(jobDependVoChildrenList);
 
-        result = (JSONObject) JSON.toJSON(jobDependVo);
+        try {
+            Field[] fields=jobDependVo.getClass().getDeclaredFields();
+            for(int i=0,len=fields.length;i<len;i++){
+                Field field=fields[i];
+                Object value=(Object)field.get(jobDependVo);
+                result.put(field.getName(),value);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         result.put("state", mapState);
 
         return result;
@@ -44,18 +55,18 @@ public class JobDependService {
     /**
      * 获取所有依赖于此job的job
      */
-    public JSONObject getTwoDirectionTreeDependedOnJob(JobQo jobSearchVo) {
-        JSONObject jsonObject = new JSONObject();
+    public Map<String,Object> getTwoDirectionTreeDependedOnJob(JobQo jobSearchVo) {
+        Map<String,Object> result=new HashMap<String, Object>();
         JobDependVo jobDependVo = jobDependMapper.getJobById(jobSearchVo.getJobId());
         jobDependVo.setName(jobDependVo.getText());
         jobDependVo.setValue(jobDependVo.getId());
         jobDependVo.setRootFlag(true);
 
         if (jobDependVo == null) {
-            return jsonObject;
+            return result;
         }
-        JSONObject jsonState = new JSONObject();
-        jsonState.put("opened", true);
+        Map<String,Object> mapState=new HashMap<String, Object>();
+        mapState.put("opened", true);
 
         List<JobDependVo> jobDependVoChildrenList = getChildren(jobDependVo, false);
         jobDependVo.setChildren(jobDependVoChildrenList);
@@ -64,12 +75,20 @@ public class JobDependService {
         List<JobDependVo> jobDependVoParentList = getParents(jobDependVo, false);
         jobDependVo.setParents(jobDependVoParentList);
 
+        try {
+            Field[] fields=jobDependVo.getClass().getDeclaredFields();
+            for(int i=0,len=fields.length;i<len;i++){
+                Field field=fields[i];
+                Object value=(Object)field.get(jobDependVo);
+                result.put(field.getName(),value);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
+        result.put("state", mapState);
 
-        jsonObject = (JSONObject) JSON.toJSON(jobDependVo);
-        jsonObject.put("state", jsonState);
-
-        return jsonObject;
+        return result;
     }
 
     /**
@@ -77,12 +96,12 @@ public class JobDependService {
      */
     public List<JobDependVo> getChildren(JobDependVo jobDependVo, boolean all) {
         List<JobDependVo> jobChildren = jobDependMapper.getChildrenById(jobDependVo.getId());
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("opened", true);
+        Map<String,Object> mapState=new HashMap<String, Object>();
+        mapState.put("opened", true);
 
         if (jobChildren != null && jobChildren.size() > 0) {
             for (JobDependVo childJob : jobChildren) {
-                childJob.setState(jsonObject);
+                childJob.setState(mapState);
                 childJob.setName(childJob.getText());
                 childJob.setValue(childJob.getId());
                 if (all) {
@@ -99,11 +118,11 @@ public class JobDependService {
      */
     public List<JobDependVo> getParents(JobDependVo jobDependVo, boolean all) {
         List<JobDependVo> jobParents = jobDependMapper.getParentById(jobDependVo.getId());
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("opened", true);
+        Map<String,Object> mapState=new HashMap<String, Object>();
+        mapState.put("opened", true);
         if (jobParents != null && jobParents.size() > 0) {
             for (JobDependVo parentJob : jobParents) {
-                parentJob.setState(jsonObject);
+                parentJob.setState(mapState);
                 parentJob.setParentFlag(true);
                 parentJob.setName(parentJob.getText());
                 parentJob.setValue(parentJob.getId());

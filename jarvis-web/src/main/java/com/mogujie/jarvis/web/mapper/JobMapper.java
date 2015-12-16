@@ -1,7 +1,6 @@
 package com.mogujie.jarvis.web.mapper;
 
-import com.mogujie.jarvis.web.entity.vo.CronTabVo;
-import com.mogujie.jarvis.web.entity.vo.JobQo;
+import com.mogujie.jarvis.web.entity.qo.JobQo;
 import com.mogujie.jarvis.web.entity.vo.JobVo;
 import org.apache.ibatis.annotations.Param;
 
@@ -25,7 +24,6 @@ public interface JobMapper {
     List<String> getSimilarJobNames(String jobName);   //根据任务名获取相似任务名
     List<JobVo> getJobBySimilarNames(String jobName);  //根据任务名获取相似任务的详细信息
 
-    CronTabVo getCronTabByJobId(Long jobId);
 
     List<JobVo> getJobByIds(@Param("list")Set<String> jobIds);
 

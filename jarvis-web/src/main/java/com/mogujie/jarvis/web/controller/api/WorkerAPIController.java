@@ -1,14 +1,15 @@
 package com.mogujie.jarvis.web.controller.api;
 
-import com.alibaba.fastjson.JSONObject;
-import com.mogujie.jarvis.web.entity.vo.WorkerGroupQo;
-import com.mogujie.jarvis.web.entity.vo.WorkerQo;
+import com.mogujie.jarvis.web.entity.qo.WorkerGroupQo;
+import com.mogujie.jarvis.web.entity.qo.WorkerQo;
 import com.mogujie.jarvis.web.service.WorkerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.Map;
 
 /**
  * Created by hejian on 15/9/28.
@@ -21,16 +22,16 @@ public class WorkerAPIController {
 
     @RequestMapping(value = "/getWorkers")
     @ResponseBody
-    public JSONObject getWorkers(ModelMap modelMap, WorkerQo workerSearchVo) {
-        JSONObject result;
+    public Map<String, Object> getWorkers(WorkerQo workerSearchVo) {
+        Map<String, Object> result;
         result = workerService.getWorkers(workerSearchVo);
         return result;
     }
 
     @RequestMapping(value = "/getWorkerGroups")
     @ResponseBody
-    public JSONObject getWorkerGroups(ModelMap modelMap, WorkerGroupQo workerGroupSearchVo) {
-        JSONObject result;
+    public Map<String, Object> getWorkerGroups(WorkerGroupQo workerGroupSearchVo) {
+        Map<String, Object> result;
         result = workerService.getWorkerGroups(workerGroupSearchVo);
         return result;
     }

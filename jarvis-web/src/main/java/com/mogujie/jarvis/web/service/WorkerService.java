@@ -1,14 +1,14 @@
 package com.mogujie.jarvis.web.service;
 
-import com.alibaba.fastjson.JSONObject;
-import com.mogujie.jarvis.web.entity.vo.WorkerGroupQo;
+import com.mogujie.jarvis.web.entity.qo.WorkerGroupQo;
 import com.mogujie.jarvis.web.entity.vo.WorkerGroupVo;
-import com.mogujie.jarvis.web.entity.vo.WorkerQo;
+import com.mogujie.jarvis.web.entity.qo.WorkerQo;
 import com.mogujie.jarvis.web.entity.vo.WorkerVo;
 import com.mogujie.jarvis.web.mapper.WorkerMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -42,10 +42,10 @@ public class WorkerService {
     /*
     * 根据条件查询worker列表
     * */
-    public JSONObject getWorkers(WorkerQo workerSearchVo) {
+    public Map<String,Object> getWorkers(WorkerQo workerSearchVo) {
         Integer total = workerMapper.getWorkerCount(workerSearchVo);
         List<WorkerVo> workerVoList = workerMapper.getWorkerList(workerSearchVo);
-        JSONObject result = new JSONObject();
+        Map<String,Object> result = new HashMap<String, Object>();
         result.put("total", total);
         result.put("rows", workerVoList);
         return result;
@@ -94,11 +94,11 @@ public class WorkerService {
     /*
     * 根据条件获取WorkerGroup列表
     * */
-    public JSONObject getWorkerGroups(WorkerGroupQo workerGroupSearchVo) {
+    public Map<String,Object> getWorkerGroups(WorkerGroupQo workerGroupSearchVo) {
         Integer total = workerMapper.getWorkerGroupCount(workerGroupSearchVo);
         List<WorkerGroupVo> workerGroupVoList = workerMapper.getWorkerGroupList(workerGroupSearchVo);
 
-        JSONObject result = new JSONObject();
+        Map<String,Object> result = new HashMap<String, Object>();
         result.put("total", total);
         result.put("rows", workerGroupVoList);
         return result;

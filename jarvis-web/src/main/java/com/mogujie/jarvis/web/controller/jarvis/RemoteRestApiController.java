@@ -1,26 +1,19 @@
 package com.mogujie.jarvis.web.controller.jarvis;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.google.common.hash.Hashing;
 import com.mogu.bigdata.admin.core.entity.User;
+import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.web.common.Constants;
-import com.sun.org.apache.xerces.internal.util.URI;
-import org.apache.http.client.utils.URLEncodedUtils;
 import org.joda.time.DateTime;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
-import org.jsoup.helper.HttpConnection;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.beans.Encoder;
 import java.io.InputStream;
-import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -54,8 +47,8 @@ public class RemoteRestApiController extends BaseController {
     * */
     @RequestMapping("/request")
     @ResponseBody
-    public JSONObject restApi(ModelMap modelMap, String url, String para) {
-        JSONObject jsonObject = new JSONObject();
+    public Map<String,Object> restApi(ModelMap modelMap, String url, String para) {
+        Map<String,Object> result = new HashMap<String, Object>();
         url = domain + url;
         log.info("remote url:" + url + ",para:" + para);
 
@@ -91,17 +84,17 @@ public class RemoteRestApiController extends BaseController {
             Connection.Response response = connection.execute();
 
             log.info("request url:" + response.url());
-            String result = response.body();
+            String resultBody = response.body();
             log.info(result);
-            JSONObject resultJson = JSON.parseObject(result);
-            return resultJson;
+            result = JsonHelper.fromJson(resultBody,Map.class);
+            return result;
         } catch (Exception e) {
             e.printStackTrace();
-            jsonObject.put("code", 1);
-            jsonObject.put("msg", e.getLocalizedMessage());
+            result.put("code", 1);
+            result.put("msg", e.getLocalizedMessage());
         }
 
-        return jsonObject;
+        return result;
     }
 
     public static String generateToken(long timestamp, String appKey) {

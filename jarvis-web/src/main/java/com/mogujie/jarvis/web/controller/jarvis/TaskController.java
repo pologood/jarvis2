@@ -4,7 +4,7 @@ import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.web.auth.annotation.JarvisPassport;
 import com.mogujie.jarvis.web.auth.conf.JarvisAuthType;
 import com.mogujie.jarvis.web.entity.vo.JobVo;
-import com.mogujie.jarvis.web.entity.vo.TaskQo;
+import com.mogujie.jarvis.web.entity.qo.TaskQo;
 import com.mogujie.jarvis.web.entity.vo.TaskVo;
 import com.mogujie.jarvis.web.service.JobService;
 import com.mogujie.jarvis.web.service.TaskService;

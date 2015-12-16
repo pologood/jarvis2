@@ -1,8 +1,6 @@
 package com.mogujie.jarvis.web.service;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
+import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.web.entity.vo.JobDependVo;
 import com.mogujie.jarvis.web.entity.vo.JobVo;
 import com.mogujie.jarvis.web.entity.vo.TaskDependVo;
@@ -57,19 +55,20 @@ public class TaskDependService {
         taskDependVo.setExecuteStartTime(task.getExecuteStartTime());
         taskDependVo.setExecuteEndTime(task.getExecuteEndTime());
         taskDependVo.setExecuteTime(task.getExecuteTime());
-        //
 
 
+        //获取任务依赖中的前置任务
         String dependTaskIdsStr = taskDependVo.getDependTaskIds();
+        //获取任务依赖中的后续任务
         String childTaskIdsStr = taskDependVo.getChildTaskIds();
 
         logger.info("dependTaskIdsStr:" + dependTaskIdsStr);
         logger.info("childTaskIdsStr:" + childTaskIdsStr);
-        JSONObject dependTaskIds = JSON.parseObject(dependTaskIdsStr);
-        JSONObject childTaskIds = JSON.parseObject(childTaskIdsStr);
+        //
+        Map<String, List<Double>> previousTaskIds = JsonHelper.fromJson(dependTaskIdsStr, Map.class);
+        Map<String, List<Double>> nextTaskIds = JsonHelper.fromJson(childTaskIdsStr, Map.class);
 
-        Set<String> dependJobIds = dependTaskIds.keySet();
-        Set<String> childJobIds = childTaskIds.keySet();
+        Set<String> childJobIds = nextTaskIds.keySet();
 
         List<JobDependVo> jobDependVoList = jobDependMapper.getParentById(task.getJobId());
         Set<String> PreJobIds = new HashSet<String>();
@@ -79,37 +78,42 @@ public class TaskDependService {
 
 
         //所有的job信息
-        Set<String> preJobIds = new HashSet<String>();
-        Set<String> postJobIds = new HashSet<String>();
-        preJobIds.addAll(PreJobIds);    //job表中的前置(有些过期或失效的job不会存在task依赖表中)
-        postJobIds.addAll(childJobIds);  //task依赖表中的后续
+        Set<String> previousJobIds = new HashSet<String>();
+        Set<String> nextJobIds = new HashSet<String>();
+        previousJobIds.addAll(PreJobIds);    //job表中的前置(有些过期或失效的job不会存在task依赖表中)
+        nextJobIds.addAll(childJobIds);  //task依赖表中的后续
 
 
         //所有的taskId
         Set<String> taskIds = new HashSet<String>();
-        for (Map.Entry entry : dependTaskIds.entrySet()) {
-            JSONArray jsonArray = (JSONArray) entry.getValue();
-            for (int i = 0, size = jsonArray.size(); i < size; i++) {
-                taskIds.add(jsonArray.getString(i));
+
+        for (Object object : previousTaskIds.entrySet()) {
+            Map.Entry entry = (Map.Entry) object;
+
+            List<Double> list = (List) entry.getValue();
+            for (int i = 0, size = list.size(); i < size; i++) {
+                taskIds.add(String.valueOf(list.get(i).longValue()));
             }
         }
-        for (Map.Entry entry : childTaskIds.entrySet()) {
-            JSONArray jsonArray = (JSONArray) entry.getValue();
-            for (int i = 0, size = jsonArray.size(); i < size; i++) {
-                taskIds.add(jsonArray.getString(i));
+        for (Object object : nextTaskIds.entrySet()) {
+            Map.Entry entry = (Map.Entry) object;
+            List<Double> list = (List) entry.getValue();
+            for (int i = 0, size = list.size(); i < size; i++) {
+                taskIds.add(String.valueOf(list.get(i).longValue()));
             }
         }
 
         //批量查询，提高效率
         logger.info("获取job");
         List<JobVo> preJobList = new ArrayList<JobVo>();
-        if (preJobIds.size() > 0) {
-            preJobList = jobMapper.getJobByIds(preJobIds);
+        logger.info("previousJobIds:" + previousJobIds);
+        if (previousJobIds.size() > 0) {
+            preJobList = jobMapper.getJobByIds(previousJobIds);
         }
 
-        List<JobVo> postJobList = new ArrayList<JobVo>();
-        if (postJobIds.size() > 0) {
-            postJobList = jobMapper.getJobByIds(postJobIds);
+        List<JobVo> nextJobList = new ArrayList<JobVo>();
+        if (nextJobIds.size() > 0) {
+            nextJobList = jobMapper.getJobByIds(nextJobIds);
         }
 
         logger.info("获取task");
@@ -119,7 +123,7 @@ public class TaskDependService {
         Map<Long, TaskVo> taskMap = new HashMap<Long, TaskVo>();
 
         //构造map，方便后续使用
-        for (JobVo jobVo : postJobList) {
+        for (JobVo jobVo : nextJobList) {
             jobMap.put(jobVo.getJobId(), jobVo);
         }
         for (TaskVo taskVo : taskList) {
@@ -127,28 +131,33 @@ public class TaskDependService {
         }
 
         //构造前置任务的执行详情
+        logger.info("previousTaskIds:" + previousTaskIds);
         for (JobVo jobVo : preJobList) {
-
             TaskDependVo singleTaskDependVo = new TaskDependVo();
-            JSONArray jsonArray = dependTaskIds.getJSONArray(jobVo.getJobId().toString());
-            if (jsonArray == null) {
-                jsonArray = new JSONArray();
-            }
 
+            List<Double> list = previousTaskIds.get(jobVo.getJobId().toString());
+            if (list == null) {
+                list = new ArrayList<Double>();
+            }
 
             singleTaskDependVo.setJobId(jobVo.getJobId());
             singleTaskDependVo.setJobName(jobVo.getJobName());
-            singleTaskDependVo.setTotalTask(jsonArray.size());
+            singleTaskDependVo.setTotalTask(list.size());
 
             Integer completeCount = 0;
             //只有有效状态才设置taskList
             if (jobVo.getStatus().equals(1)) {
-                for (int i = 0, size = jsonArray.size(); i < size; i++) {
-                    TaskVo singleTaskVo = taskMap.get(jsonArray.getLong(i));
-                    singleTaskDependVo.getTaskList().add(singleTaskVo);
-                    //4代表success
-                    if (singleTaskVo.getStatus().equals(4)) {
-                        completeCount++;
+                logger.info("taskMap:" + taskMap);
+                for (int i = 0, size = list.size(); i < size; i++) {
+                    Long taskId = list.get(i).longValue();
+                    logger.info("taskId:" + taskId);
+                    TaskVo singleTaskVo = taskMap.get(taskId);
+                    if(null!=singleTaskVo){
+                        singleTaskDependVo.getTaskList().add(singleTaskVo);
+                        //4代表success
+                        if (singleTaskVo.getStatus().equals(4)) {
+                            completeCount++;
+                        }
                     }
                 }
             } else {
@@ -162,21 +171,27 @@ public class TaskDependService {
         }
 
         //构造后续任务的执行详情
-        for (Map.Entry entry : childTaskIds.entrySet()) {
-            JSONArray jsonArray = (JSONArray) entry.getValue();
+        for (Object object : nextTaskIds.entrySet()) {
+            Map.Entry entry = (Map.Entry) object;
 
+            List<Double> list = (List<Double>) entry.getValue();
+            if (list == null) {
+                list = new ArrayList<Double>();
+            }
             TaskDependVo singleTaskDependVo = new TaskDependVo();
 
             singleTaskDependVo.setJobId(Long.valueOf((String) entry.getKey()));
             singleTaskDependVo.setJobName(jobMap.get(Long.valueOf((String) entry.getKey())).getJobName());
-            singleTaskDependVo.setTotalTask(jsonArray.size());
+            singleTaskDependVo.setTotalTask(list.size());
 
             Integer completeCount = 0;
-            for (int i = 0, size = jsonArray.size(); i < size; i++) {
-                TaskVo singleTaskVo = taskMap.get(jsonArray.getLong(i));
-                singleTaskDependVo.getTaskList().add(singleTaskVo);
-                if (singleTaskVo.getStatus().equals(4)) {
-                    completeCount++;
+            for (int i = 0, size = list.size(); i < size; i++) {
+                TaskVo singleTaskVo = taskMap.get(list.get(i).longValue());
+                if(null!=singleTaskVo){
+                    singleTaskDependVo.getTaskList().add(singleTaskVo);
+                    if (singleTaskVo.getStatus().equals(4)) {
+                        completeCount++;
+                    }
                 }
             }
             singleTaskDependVo.setCompleteTask(completeCount);

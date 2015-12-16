@@ -1,4 +1,4 @@
-package com.mogujie.jarvis.web.entity.vo;
+package com.mogujie.jarvis.web.entity.qo;
 
 import com.mogujie.jarvis.dto.generate.App;
 

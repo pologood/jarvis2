@@ -1,7 +1,6 @@
 package com.mogujie.jarvis.web.service;
 
-import com.mogujie.jarvis.web.entity.vo.CronTabVo;
-import com.mogujie.jarvis.web.entity.vo.JobQo;
+import com.mogujie.jarvis.web.entity.qo.JobQo;
 import com.mogujie.jarvis.web.entity.vo.JobVo;
 import com.mogujie.jarvis.web.mapper.JobMapper;
 import org.apache.log4j.Logger;
@@ -24,9 +23,9 @@ public class JobService {
     Logger logger = Logger.getLogger(this.getClass());
 
     public List<JobVo> getAllJobs(Integer jobFlag){
-        JobQo jobSearchVo=new JobQo();
-        jobSearchVo.setStatus(jobFlag);
-        List<JobVo> jobVoList=jobMapper.getJobsByCondition(jobSearchVo);
+        JobQo jobQo=new JobQo();
+        jobQo.setStatus(jobFlag);
+        List<JobVo> jobVoList=jobMapper.getJobsByCondition(jobQo);
         return jobVoList;
     }
 
@@ -115,7 +114,4 @@ public class JobService {
         return jobMapper.getSubmitUsers();
     }
 
-    public CronTabVo getCronTabByJobId(Long jobId){
-        return jobMapper.getCronTabByJobId(jobId);
-    }
 }

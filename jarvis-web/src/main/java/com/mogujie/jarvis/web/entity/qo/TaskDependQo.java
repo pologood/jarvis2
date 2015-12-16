@@ -1,4 +1,4 @@
-package com.mogujie.jarvis.web.entity.vo;
+package com.mogujie.jarvis.web.entity.qo;
 
 /**
  * Created by hejian on 15/12/8.

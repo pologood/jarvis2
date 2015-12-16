@@ -1,7 +1,6 @@
 package com.mogujie.jarvis.web.controller.api;
 
-import com.alibaba.fastjson.JSONObject;
-import com.mogujie.jarvis.web.entity.vo.TaskQo;
+import com.mogujie.jarvis.web.entity.qo.TaskQo;
 import com.mogujie.jarvis.web.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

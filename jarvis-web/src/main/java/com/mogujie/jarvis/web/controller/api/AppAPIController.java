@@ -1,7 +1,6 @@
 package com.mogujie.jarvis.web.controller.api;
 
-import com.alibaba.fastjson.JSONObject;
-import com.mogujie.jarvis.web.entity.vo.AppQo;
+import com.mogujie.jarvis.web.entity.qo.AppQo;
 import com.mogujie.jarvis.web.service.AppService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,8 +20,8 @@ public class AppAPIController {
 
     @RequestMapping(value = "getApps")
     @ResponseBody
-    public Map<String, Object> getApps(AppQo appSearchVo) {
-        Map<String, Object> result = appService.getApps(appSearchVo);
+    public Map<String, Object> getApps(AppQo appQo) {
+        Map<String, Object> result = appService.getApps(appQo);
 
         return result;
     }

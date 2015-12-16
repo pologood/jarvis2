@@ -14,7 +14,7 @@
               AND jobType=#{jobType}
           </if>
           <if test="status!=null">
-              AND status=#{status}
+              AND job.status=#{status}
           </if>
           <if test="submitUser!=null and submitUser!='' and submitUser!='all' ">
               AND submitUser=#{submitUser}

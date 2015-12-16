@@ -1,6 +1,5 @@
 package com.mogujie.jarvis.web.controller.jarvis;
 
-import com.alibaba.fastjson.JSONObject;
 import com.atlassian.crowd.integration.http.CrowdHttpAuthenticator;
 import com.mogu.bigdata.admin.client.service.MenuService;
 import com.mogu.bigdata.admin.client.service.RbacService;
@@ -129,4 +128,5 @@ public class BaseController {
         }
         return re;
     }
+
 }

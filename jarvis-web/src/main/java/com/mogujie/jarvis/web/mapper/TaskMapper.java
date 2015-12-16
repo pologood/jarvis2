@@ -1,8 +1,8 @@
 package com.mogujie.jarvis.web.mapper;
 
-import com.mogujie.jarvis.web.entity.vo.PlanQo;
+import com.mogujie.jarvis.web.entity.qo.PlanQo;
 import com.mogujie.jarvis.web.entity.vo.PlanVo;
-import com.mogujie.jarvis.web.entity.vo.TaskQo;
+import com.mogujie.jarvis.web.entity.qo.TaskQo;
 import com.mogujie.jarvis.web.entity.vo.TaskVo;
 import org.apache.ibatis.annotations.Param;
 

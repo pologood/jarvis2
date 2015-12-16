@@ -162,8 +162,8 @@ function initData() {
         showHeader: true,
         showToggle: true,
         pageSize: 1,
-        pageSize: 10,
-        pageList: [5, 10, 20, 50, 100, 200, 500],
+        pageSize: 20,
+        pageList: [10, 20, 50, 100, 200, 500],
         paginationFirstText: '首页',
         paginationPreText: '上一页',
         paginationNextText: '下一页',
@@ -175,9 +175,9 @@ function initData() {
 }
 
 
-function updateJobStatus(jobId, appKey, appName, jobStatus) {
+function updateJobStatus(jobId, jobStatus) {
     var data = {jobId: jobId, status: jobStatus};
-    requestRemoteRestApi("/api/job/status", "更新任务状态", data);
+    requestRemoteRestApi("/api/job/status/set", "更新任务状态", data);
 }
 
 
@@ -231,17 +231,6 @@ var columns = [{
     title: '提交人',
     switchable: true
 }, {
-    field: 'createTime',
-    title: '创建时间',
-    switchable: true,
-    formatter: formatDateTime
-}, {
-    field: 'updateTime',
-    title: '更新时间',
-    switchable: true,
-    visible: false,
-    formatter: formatDateTime
-}, {
     field: 'activeStartDate',
     title: '开始日期',
     switchable: true,
@@ -253,7 +242,18 @@ var columns = [{
     switchable: true,
     formatter: formatDate,
     visible: false
+},{
+    field: 'createTime',
+    title: '创建时间',
+    switchable: true,
+    formatter: formatDateTime
 }, {
+    field: 'updateTime',
+    title: '更新时间',
+    switchable: true,
+    visible: false,
+    formatter: formatDateTime
+},  {
     field: 'rejectAttempts',
     title: '被Worker拒绝时重试次数',
     switchable: true,
@@ -286,7 +286,7 @@ function operateFormatter(value, row, index) {
     var jobId = row["jobId"];
     var appKey = row["appKey"];
     var appName = row["appName"];
-    var operateFlag = row["jobFlag"];
+    var status = row["status"];
     //console.log(jobId);
     var result = [
         '<a  href="' + contextPath + '/job/addOrEdit?jobId=' + jobId + '" title="编辑任务信息" target="_blank">',
@@ -301,8 +301,8 @@ function operateFormatter(value, row, index) {
     var operation = '<div class="btn-group"> <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">修改状态 <span class="caret"></span> </button>';
     operation = operation + '<ul class="dropdown-menu">';
     $(jobStatusJson).each(function (i, c) {
-        if (c["id"] != 'all' && c["id"] != operateFlag && c["id"] != '3') {
-            var li = '<li><a href="javascript:void(0)" onclick="updateJobStatus(' + jobId + ',\'' + appKey + '\',\'' + appName + '\',' + c["id"] + ')" >' + c["text"] + '</a></li>';
+        if (c["id"] != 'all' && c["id"] != status && c["id"] != '3') {
+            var li = '<li><a href="javascript:void(0)" onclick="updateJobStatus(' + jobId + ',' + c["id"] + ')" >' + c["text"] + '</a></li>';
             operation = operation + li;
         }
     });

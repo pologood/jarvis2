@@ -1,11 +1,11 @@
-package com.mogujie.jarvis.web.entity.vo;
+package com.mogujie.jarvis.web.entity.qo;
 
-import com.mogujie.jarvis.dto.generate.Worker;
+import com.mogujie.jarvis.dto.generate.WorkerGroup;
 
 /**
  * Created by hejian on 15/9/28.
  */
-public class WorkerQo extends Worker {
+public class WorkerGroupQo extends WorkerGroup {
     private Integer offset;
     private Integer limit;
 

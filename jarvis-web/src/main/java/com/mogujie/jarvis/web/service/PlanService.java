@@ -1,6 +1,6 @@
 package com.mogujie.jarvis.web.service;
 
-import com.mogujie.jarvis.web.entity.vo.PlanQo;
+import com.mogujie.jarvis.web.entity.qo.PlanQo;
 import com.mogujie.jarvis.web.entity.vo.PlanVo;
 import com.mogujie.jarvis.web.mapper.TaskMapper;
 import org.springframework.beans.factory.annotation.Autowired;

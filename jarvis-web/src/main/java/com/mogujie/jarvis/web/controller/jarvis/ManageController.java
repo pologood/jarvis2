@@ -1,6 +1,5 @@
 package com.mogujie.jarvis.web.controller.jarvis;
 
-import com.alibaba.fastjson.JSONObject;
 import com.mogujie.jarvis.web.auth.annotation.JarvisPassport;
 import com.mogujie.jarvis.web.auth.conf.JarvisAuthType;
 import com.mogujie.jarvis.web.entity.vo.AppVo;
@@ -58,29 +57,29 @@ public class ManageController extends BaseController {
 
     @RequestMapping(value = "checkAppName")
     @ResponseBody
-    public JSONObject checkAppName(ModelMap modelMap, Integer appId, String appName) {
-        JSONObject jsonObject = new JSONObject();
+    public Map<String,Object> checkAppName(ModelMap modelMap, Integer appId, String appName) {
+        Map<String,Object> result=new HashMap<String, Object>();
 
         AppVo appVo = appService.getAppByName(appName);
         if (appVo == null) {
-            jsonObject.put("code", 0);
-            jsonObject.put("msg", "此应用名不存在");
+            result.put("code", 0);
+            result.put("msg", "此应用名不存在");
         } else {
             if (appId == null) {
-                jsonObject.put("code", 1);
-                jsonObject.put("msg", "已经存在此名字应用:" + appName);
+                result.put("code", 1);
+                result.put("msg", "已经存在此名字应用:" + appName);
             } else {
                 if (appVo.getAppId().equals(appId)) {
-                    jsonObject.put("code", 0);
-                    jsonObject.put("msg", "自身,可以保存");
+                    result.put("code", 0);
+                    result.put("msg", "自身,可以保存");
                 } else {
-                    jsonObject.put("code", 1);
-                    jsonObject.put("msg", "已经存在此名字其他应用:" + appName);
+                    result.put("code", 1);
+                    result.put("msg", "已经存在此名字其他应用:" + appName);
                 }
             }
         }
 
-        return jsonObject;
+        return result;
     }
 
 
@@ -114,8 +113,8 @@ public class ManageController extends BaseController {
 
     @RequestMapping(value = "checkWorkerExist")
     @ResponseBody
-    public JSONObject checkWorkerExist(ModelMap modelMap, Integer id, String ip, Integer port) {
-        JSONObject result = new JSONObject();
+    public Map<String,Object> checkWorkerExist(ModelMap modelMap, Integer id, String ip, Integer port) {
+        Map<String,Object> result=new HashMap<String, Object>();
 
         Map<String, Object> para = new HashMap<String, Object>();
         para.put("ip", ip);
@@ -157,8 +156,8 @@ public class ManageController extends BaseController {
 
     @RequestMapping(value = "checkWorkerGroupName")
     @ResponseBody
-    public JSONObject checkWorkerGroupName(ModelMap modelMap, Integer id, String name) {
-        JSONObject result = new JSONObject();
+    public Map<String,Object> checkWorkerGroupName(ModelMap modelMap, Integer id, String name) {
+        Map<String,Object> result=new HashMap<String, Object>();
 
         WorkerGroupVo workerGroupVo = workerService.getWorkerGroupByName(name);
         if (workerGroupVo == null) {

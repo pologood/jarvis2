@@ -1,8 +1,7 @@
 package com.mogujie.jarvis.web.service;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.mogujie.jarvis.web.entity.vo.TaskQo;
+import com.mogujie.jarvis.core.util.JsonHelper;
+import com.mogujie.jarvis.web.entity.qo.TaskQo;
 import com.mogujie.jarvis.web.entity.vo.TaskVo;
 import com.mogujie.jarvis.web.mapper.TaskMapper;
 import org.apache.commons.lang.StringUtils;
@@ -31,12 +30,12 @@ public class TaskService {
         Map<String, Object> result = new HashMap<String, Object>();
 
         if (StringUtils.isNotBlank(taskQo.getTaskStatusArrStr())) {
-            JSONArray arr = JSON.parseArray(taskQo.getTaskStatusArrStr());
+            List<Integer> statusList = JsonHelper.fromJson(taskQo.getTaskStatusArrStr(), List.class);
 
-            if (arr.size() > 0) {
+            if (statusList.size() > 0) {
                 List<Integer> taskStatus = new ArrayList<Integer>();
-                for (int i = 0; i < arr.size(); i++) {
-                    Integer status = arr.getInteger(i);
+                for (int i = 0; i < statusList.size(); i++) {
+                    Integer status = statusList.get(i);
                     taskStatus.add(status);
                 }
                 taskQo.setTaskStatus(taskStatus);

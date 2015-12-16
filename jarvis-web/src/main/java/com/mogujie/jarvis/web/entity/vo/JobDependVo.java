@@ -1,9 +1,9 @@
 package com.mogujie.jarvis.web.entity.vo;
 
-import com.alibaba.fastjson.JSONObject;
 import com.mogujie.jarvis.dto.generate.JobDepend;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by hejian on 15/9/22.
@@ -19,7 +19,7 @@ public class JobDependVo {
     private List<JobDependVo> parents;
     private boolean parentFlag=false;
     private boolean rootFlag=false;
-    private JSONObject state;
+    private Map<String,Object> state;
 
 
     public List<JobDependVo> getChildren() {
@@ -46,11 +46,11 @@ public class JobDependVo {
         this.text = text;
     }
 
-    public JSONObject getState() {
+    public Map<String, Object> getState() {
         return state;
     }
 
-    public void setState(JSONObject state) {
+    public void setState(Map<String, Object> state) {
         this.state = state;
     }
 
