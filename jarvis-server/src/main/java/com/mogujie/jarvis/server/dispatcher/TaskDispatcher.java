@@ -28,7 +28,7 @@ import akka.actor.ActorSystem;
 
 public class TaskDispatcher extends Thread {
 
-    private TaskQueue queue = TaskQueue.INSTANCE;
+    private TaskQueue queue = Injectors.getInjector().getInstance(TaskQueue.class);
     private TaskRetryScheduler taskRetryScheduler = TaskRetryScheduler.INSTANCE;
 
     private AppService appService = Injectors.getInjector().getInstance(AppService.class);

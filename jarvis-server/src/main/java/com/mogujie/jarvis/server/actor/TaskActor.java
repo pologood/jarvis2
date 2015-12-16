@@ -90,7 +90,7 @@ public class TaskActor extends UntypedActor {
     private ConvertValidService convertValidService = Injectors.getInjector().getInstance(ConvertValidService.class);
 
     private TaskGraph taskGraph = TaskGraph.INSTANCE;
-    private TaskQueue taskQueue = TaskQueue.INSTANCE;
+    private TaskQueue taskQueue = Injectors.getInjector().getInstance(TaskQueue.class);
     private JobSchedulerController controller = JobSchedulerController.getInstance();
 
     private static final Logger LOGGER = LogManager.getLogger();

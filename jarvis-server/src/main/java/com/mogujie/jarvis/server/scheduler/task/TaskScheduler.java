@@ -69,7 +69,7 @@ public class TaskScheduler extends Scheduler {
     private JobService jobService = Injectors.getInjector().getInstance(JobService.class);
     private TaskService taskService = Injectors.getInjector().getInstance(TaskService.class);
     private TaskManager taskManager = Injectors.getInjector().getInstance(TaskManager.class);
-    private TaskQueue taskQueue = TaskQueue.INSTANCE;
+    private TaskQueue taskQueue = Injectors.getInjector().getInstance(TaskQueue.class);
     private TaskRetryScheduler retryScheduler = TaskRetryScheduler.INSTANCE;
 
     private static final Logger LOGGER = LogManager.getLogger();
