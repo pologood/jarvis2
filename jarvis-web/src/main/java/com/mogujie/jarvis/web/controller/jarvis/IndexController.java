@@ -20,11 +20,11 @@ import javax.servlet.http.HttpServletResponse;
  * Created by hejian on 15/9/14.
  */
 @Controller
-public class IndexController extends BaseController{
+public class IndexController extends BaseController {
     Logger logger = Logger.getLogger(this.getClass());
 
     @RequestMapping(value = "/")
-    public String index(ModelMap mp){
+    public String index(ModelMap mp) {
         if (null == user || StringUtils.isBlank(user.get().getUname())) {
             return "index";
         } else {
@@ -35,7 +35,7 @@ public class IndexController extends BaseController{
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
-    public JsonReturn login(HttpServletRequest request, HttpServletResponse response, String uname, String password){
+    public JsonReturn login(HttpServletRequest request, HttpServletResponse response, String uname, String password) {
         try {
             crowdHttpAuthenticator.authenticate(request, response, uname, password);
             if (crowdHttpAuthenticator.isAuthenticated(request, response)) {
@@ -52,14 +52,14 @@ public class IndexController extends BaseController{
                 log.error("login fail");
                 return new JsonReturn(4004);
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             log.error(e.getLocalizedMessage(), e);
             return new JsonReturn(4001, e.getMessage());
         }
     }
 
     @RequestMapping(value = "logout", method = RequestMethod.GET)
-    public String logout(ModelMap mp, HttpServletResponse response, @CookieValue(value = SessionHelper.COOKIE_KEY, required = false) String sessionId){
+    public String logout(ModelMap mp, HttpServletResponse response, @CookieValue(value = SessionHelper.COOKIE_KEY, required = false) String sessionId) {
         sessionHelper.clearSession(sessionId, response);
         mp.clear();
         return "redirect:/";

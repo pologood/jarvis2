@@ -21,17 +21,17 @@ public class WorkerAPIController {
 
     @RequestMapping(value = "/getWorkers")
     @ResponseBody
-    public JSONObject getWorkers(ModelMap modelMap,WorkerQo workerSearchVo){
+    public JSONObject getWorkers(ModelMap modelMap, WorkerQo workerSearchVo) {
         JSONObject result;
-        result=workerService.getWorkers(workerSearchVo);
+        result = workerService.getWorkers(workerSearchVo);
         return result;
     }
 
     @RequestMapping(value = "/getWorkerGroups")
     @ResponseBody
-    public JSONObject getWorkerGroups(ModelMap modelMap,WorkerGroupQo workerGroupSearchVo){
+    public JSONObject getWorkerGroups(ModelMap modelMap, WorkerGroupQo workerGroupSearchVo) {
         JSONObject result;
-        result=workerService.getWorkerGroups(workerGroupSearchVo);
+        result = workerService.getWorkerGroups(workerGroupSearchVo);
         return result;
     }
 }

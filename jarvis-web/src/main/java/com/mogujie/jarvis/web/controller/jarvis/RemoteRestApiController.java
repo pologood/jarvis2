@@ -31,15 +31,15 @@ import java.util.Properties;
 @Controller
 @RequestMapping("/remote")
 public class RemoteRestApiController extends BaseController {
-    static String domain="";
+    static String domain = "";
 
 
     static {
         try {
-            InputStream inputStream=RemoteRestApiController.class.getClassLoader().getResourceAsStream("api.properties");
-            Properties properties=new Properties();
+            InputStream inputStream = RemoteRestApiController.class.getClassLoader().getResourceAsStream("api.properties");
+            Properties properties = new Properties();
             properties.load(inputStream);
-            domain=properties.getProperty("rest.domain");
+            domain = properties.getProperty("rest.domain");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -54,21 +54,21 @@ public class RemoteRestApiController extends BaseController {
     * */
     @RequestMapping("/request")
     @ResponseBody
-    public JSONObject restApi(ModelMap modelMap,String url,String para){
-        JSONObject jsonObject=new JSONObject();
+    public JSONObject restApi(ModelMap modelMap, String url, String para) {
+        JSONObject jsonObject = new JSONObject();
         url = domain + url;
-        log.info("remote url:"+url+",para:"+para);
+        log.info("remote url:" + url + ",para:" + para);
 
-        Map<String,String> data = new HashMap<String,String>();
-        data.put("parameters",para);
+        Map<String, String> data = new HashMap<String, String>();
+        data.put("parameters", para);
         try {
-            User user=(User)modelMap.get("user");
-            String uname=user.getUname();
-            data.put("user",uname);
+            User user = (User) modelMap.get("user");
+            String uname = user.getUname();
+            data.put("user", uname);
 
-            DateTime dateTime= new DateTime();
-            Long timeStamp=dateTime.getMillis()/1000;
-            String token= generateToken(timeStamp, Constants.appKey);
+            DateTime dateTime = new DateTime();
+            Long timeStamp = dateTime.getMillis() / 1000;
+            String token = generateToken(timeStamp, Constants.appKey);
 
             data.put("appToken", token);
         } catch (Exception e) {
@@ -82,23 +82,23 @@ public class RemoteRestApiController extends BaseController {
             log.info(data);
             //log.info(data);
             //log.info(newPara);
-            Connection connection=Jsoup.connect(url)
-                                    .data(data)
-                                    .postDataCharset("UTF-8")
-                                    .ignoreContentType(true)
-                                    .timeout(15000)
-                                    .method(Connection.Method.POST);
-            Connection.Response response=connection.execute();
+            Connection connection = Jsoup.connect(url)
+                    .data(data)
+                    .postDataCharset("UTF-8")
+                    .ignoreContentType(true)
+                    .timeout(15000)
+                    .method(Connection.Method.POST);
+            Connection.Response response = connection.execute();
 
-            log.info("request url:"+response.url());
-            String result=response.body();
+            log.info("request url:" + response.url());
+            String result = response.body();
             log.info(result);
             JSONObject resultJson = JSON.parseObject(result);
             return resultJson;
         } catch (Exception e) {
             e.printStackTrace();
-            jsonObject.put("code",1);
-            jsonObject.put("msg",e.getLocalizedMessage());
+            jsonObject.put("code", 1);
+            jsonObject.put("msg", e.getLocalizedMessage());
         }
 
         return jsonObject;

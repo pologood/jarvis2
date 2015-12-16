@@ -16,17 +16,17 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/trigger")
-public class TriggerController extends BaseController{
+public class TriggerController extends BaseController {
 
     @Autowired
     JobService jobService;
 
     @RequestMapping
     @JarvisPassport(authTypes = JarvisAuthType.trigger)
-    public String index(ModelMap modelMap){
-        List<JobVo> jobVoList=jobService.getAllJobs(null);
+    public String index(ModelMap modelMap) {
+        List<JobVo> jobVoList = jobService.getAllJobs(null);
 
-        modelMap.put("jobVoList",jobVoList);
+        modelMap.put("jobVoList", jobVoList);
         return "trigger/index";
     }
 
