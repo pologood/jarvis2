@@ -18,6 +18,7 @@ import org.joda.time.DateTime;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.Lists;
 import com.google.common.eventbus.AllowConcurrentEvents;
 import com.google.common.eventbus.Subscribe;
 import com.mogujie.jarvis.core.domain.TaskDetail;
@@ -185,6 +186,15 @@ public class TaskScheduler extends Scheduler {
         // create new task
         long taskId = taskService.createTaskByJobId(jobId, scheduleTime);
         LOGGER.info("add new task[{}] to DB", taskId);
+
+        // 如果是串行任务，添加自依赖
+        if (jobService.get(jobId).getJob().getSerialFlag() > 0) {
+            Task task = taskService.getLastTask(jobId, taskId);
+            if (task != null) {
+                List<Long> dependTaskIds = Lists.newArrayList(task.getTaskId());
+                dependTaskIdMap.put(jobId, dependTaskIds);
+            }
+        }
 
         // add to taskGraph
         DAGTask dagTask = new DAGTask(jobId, taskId, scheduleTime, dependTaskIdMap);
