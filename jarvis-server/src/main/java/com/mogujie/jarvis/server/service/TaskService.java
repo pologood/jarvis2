@@ -16,12 +16,12 @@ import java.util.Map;
 import org.joda.time.DateTime;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Range;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.expression.DependencyExpression;
-import com.mogujie.jarvis.dao.generate.JobMapper;
 import com.mogujie.jarvis.dao.generate.TaskMapper;
 import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.dto.generate.Task;
@@ -39,7 +39,7 @@ public class TaskService {
     private TaskDependService taskDependService;
 
     @Inject
-    private JobMapper jobMapper;
+    private JobService jobService;
 
     public Task get(long taskId) {
         return taskMapper.selectByPrimaryKey(taskId);
@@ -75,7 +75,7 @@ public class TaskService {
         record.setScheduleTime(new Date(scheduleTime));
         record.setStatus(TaskStatus.WAITING.getValue());
         record.setProgress((float) 0);
-        Job job = jobMapper.selectByPrimaryKey(jobId);
+        Job job = jobService.get(jobId).getJob();
         record.setExecuteUser(job.getSubmitUser());
         record.setContent(job.getContent());
         record.setParams(job.getParams());
@@ -134,13 +134,15 @@ public class TaskService {
     public List<Task> getTasksByStatusNotIn(List<Integer> statusList) {
         TaskExample example = new TaskExample();
         example.createCriteria().andStatusNotIn(statusList).andJobIdNotEqualTo(0L);
-        return taskMapper.selectByExample(example);
+        List<Task> tasks = taskMapper.selectByExample(example);
+        return getActiveTasks(tasks);
     }
 
     public List<Task> getTasksByStatus(List<Integer> statusList) {
         TaskExample example = new TaskExample();
         example.createCriteria().andStatusIn(statusList).andJobIdNotEqualTo(0L);
-        return taskMapper.selectByExample(example);
+        List<Task> tasks = taskMapper.selectByExample(example);
+        return getActiveTasks(tasks);
     }
 
     public List<Long> getDependTaskIds(long myJobId, long preJobId, long scheduleTime, DependencyExpression dependencyExpression) {
@@ -209,6 +211,18 @@ public class TaskService {
             taskMapper.deleteByPrimaryKey(taskId);
             taskDependService.remove(taskId);
         }
+    }
+
+    private List<Task> getActiveTasks(List<Task> tasks) {
+        List<Task> activeTasks = Lists.newArrayList();
+        if (tasks != null) {
+            for (Task task : tasks) {
+                if (jobService.get(task.getJobId()) != null) {
+                    activeTasks.add(task);
+                }
+            }
+        }
+        return activeTasks;
     }
 
 }

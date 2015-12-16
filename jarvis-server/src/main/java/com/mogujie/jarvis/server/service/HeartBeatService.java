@@ -28,7 +28,25 @@ public class HeartBeatService {
 
         @Override
         public int compare(WorkerInfo left, WorkerInfo right) {
-            return left.getAkkaRootPath().compareTo(right.getAkkaRootPath());
+            if (left == null && right != null) {
+                return -1;
+            } else if (left != null && right == null) {
+                return 1;
+            } else if (left == null && right == null) {
+                return 0;
+            }
+
+            String leftPath = left.getAkkaRootPath();
+            String rightPath = right.getAkkaRootPath();
+            if (leftPath == null && rightPath != null) {
+                return -1;
+            } else if (leftPath != null && rightPath == null) {
+                return 1;
+            } else if (leftPath == null && rightPath == null) {
+                return 0;
+            }
+
+            return leftPath.compareTo(rightPath);
         }
     };
 
