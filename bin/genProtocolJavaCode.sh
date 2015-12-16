@@ -1,1 +1,1 @@
-protoc   --java_out=..quickdata-protocol/src/main/java  --proto_path=..quickdata-protocol/src/main/resources/protos ..quickdata-protocol/src/main/resources/protos/*.proto
+protoc   --java_out=../jarvis-protocol/src/main/java  --proto_path=../jarvis-protocol/src/main/resources/protos ../jarvis-protocol/src/main/resources/protos/*.proto
