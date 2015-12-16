@@ -1,12 +1,14 @@
 package com.mogujie.jarvis.rest.utils;
 
 import com.google.common.base.Preconditions;
+import com.mogujie.jarvis.core.domain.AppStatus;
 import com.mogujie.jarvis.core.domain.OperationMode;
 import com.mogujie.jarvis.core.expression.*;
 import com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry;
 import com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry;
 import com.mogujie.jarvis.rest.vo.JobEntryVo;
 import com.mogujie.jarvis.server.domain.CommonStrategy;
+import sun.security.ssl.Debug;
 
 /**
  * 检验函数
@@ -17,7 +19,7 @@ import com.mogujie.jarvis.server.domain.CommonStrategy;
 public class ConvertValidUtils {
 
 
-    public static ScheduleExpressionEntry ConvertScheduleExpressionEnty(JobEntryVo.ScheduleExpressionEntry input) {
+    public static ScheduleExpressionEntry ConvertScheduleExpressionEntry(JobEntryVo.ScheduleExpressionEntry input) {
 
         Integer expressionType = input.getExpressionType();
         Preconditions.checkArgument(expressionType != null , "scheduleExpressionType不能为空");
@@ -45,7 +47,7 @@ public class ConvertValidUtils {
     }
 
 
-    public static DependencyEntry ConvertDependcyEnty(JobEntryVo.DependencyEntry input) {
+    public static DependencyEntry ConvertDependencyEntry(JobEntryVo.DependencyEntry input) {
         Integer mode = input.getOperatorMode();
         Preconditions.checkArgument(mode != null && OperationMode.isValid(mode), "操作模式不对");
 
@@ -73,5 +75,19 @@ public class ConvertValidUtils {
         return entry;
     }
 
+    /**
+     * APP内容检查
+     */
+    public static void checkAppVo(OperationMode mode,String appName,Integer status,Integer maxConcurrency){
+        if(mode == OperationMode.ADD){
+            Preconditions.checkArgument( appName != null && appName.equals(""),"appName不能为空");
+            Preconditions.checkArgument( status != null,"status不能为空");
+            Preconditions.checkArgument( AppStatus.isValid(status),"status内容不对。value:" + status);
+        }
+        if(mode == OperationMode.EDIT){
+            Preconditions.checkArgument( appName == null || appName.equals(""),"appName不能为空");
+            Preconditions.checkArgument( status == null || AppStatus.isValid(status),"status内容不对。value:" + status);
+        }
+    }
 
 }

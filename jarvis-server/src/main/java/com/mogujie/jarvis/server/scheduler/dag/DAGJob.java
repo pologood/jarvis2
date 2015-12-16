@@ -15,7 +15,7 @@ import java.util.Set;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.mogujie.jarvis.core.domain.JobFlag;
+import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.server.scheduler.dag.checker.DAGDependChecker;
 import com.mogujie.jarvis.server.scheduler.dag.checker.ScheduleTask;
 
@@ -32,15 +32,15 @@ public class DAGJob extends AbstractDAGJob {
     private JobGraph jobGraph = JobGraph.INSTANCE;
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public DAGJob(long jobId, DAGJobType type, JobFlag jobFlag) {
+    public DAGJob(long jobId, DAGJobType type, JobStatus jobStatus) {
         this.jobId = jobId;
         this.type = type;
-        this.jobFlag = jobFlag;
+        this.jobStatus = jobStatus;
         this.dependChecker = new DAGDependChecker(jobId);
     }
 
     public DAGJob(long jobId, DAGJobType type) {
-        this(jobId, type, JobFlag.ENABLE);
+        this(jobId, type, JobStatus.ENABLE);
     }
 
     @Override

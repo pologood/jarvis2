@@ -6,13 +6,17 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import com.google.common.base.Preconditions;
 import com.mogujie.jarvis.core.domain.AkkaType;
+import com.mogujie.jarvis.core.domain.AppStatus;
+import com.mogujie.jarvis.core.domain.OperationMode;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
 import com.mogujie.jarvis.protocol.ApplicationProtos.RestCreateApplicationRequest;
 import com.mogujie.jarvis.protocol.ApplicationProtos.RestModifyApplicationRequest;
 import com.mogujie.jarvis.protocol.ApplicationProtos.ServerCreateApplicationResponse;
 import com.mogujie.jarvis.protocol.ApplicationProtos.ServerModifyApplicationResponse;
 import com.mogujie.jarvis.rest.RestResult;
+import com.mogujie.jarvis.rest.utils.ConvertValidUtils;
 import com.mogujie.jarvis.rest.utils.JsonParameters;
 
 /**
@@ -33,10 +37,10 @@ public class AppController extends AbstractController {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
             JsonParameters paras = new JsonParameters(parameters);
-            String applicationName = paras.getStringNotEmpty("applicationName");
+            String applicationName = paras.getStringNotEmpty("applicationName").trim();
             Integer status = paras.getInteger("status", 1);
             Integer maxConcurrency = paras.getInteger("maxConcurrency", 10);
-
+            ConvertValidUtils.checkAppVo(OperationMode.ADD,applicationName,status,maxConcurrency);
             RestCreateApplicationRequest request = RestCreateApplicationRequest.newBuilder().setAppAuth(appAuth).setUser(user)
                     .setAppName(applicationName).setStatus(status).setMaxConcurrency(maxConcurrency).build();
 
@@ -65,10 +69,10 @@ public class AppController extends AbstractController {
 
             JsonParameters paras = new JsonParameters(parameters);
             Integer appId = paras.getIntegerNotNull("appId");
-            String applicationName = paras.getString("applicationName");
+            String applicationName = paras.getString("applicationName").trim();
             Integer status = paras.getInteger("status");
             Integer maxConcurrency = paras.getInteger("maxConcurrency");
-
+            ConvertValidUtils.checkAppVo(OperationMode.EDIT,applicationName,status,maxConcurrency);
             RestModifyApplicationRequest.Builder builder = RestModifyApplicationRequest.newBuilder();
             builder.setAppAuth(appAuth).setUser(user).setAppId(appId);
             if (applicationName != null && !applicationName.equals("")) {

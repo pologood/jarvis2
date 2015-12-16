@@ -59,6 +59,6 @@ public class JobEntry {
     }
 
     public void updateJobFlag(int jobFlag) {
-        job.setJobFlag(jobFlag);
+        job.setStatus(jobFlag);
     }
 }

@@ -5,7 +5,7 @@
     <id column="jobId" property="jobId" jdbcType="BIGINT" />
     <result column="jobName" property="jobName" jdbcType="VARCHAR" />
     <result column="jobType" property="jobType" jdbcType="VARCHAR" />
-    <result column="jobFlag" property="jobFlag" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="INTEGER" />
     <result column="content" property="content" jdbcType="VARCHAR" />
     <result column="params" property="params" jdbcType="VARCHAR" />
     <result column="submitUser" property="submitUser" jdbcType="VARCHAR" />
@@ -82,7 +82,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    jobId, jobName, jobType, jobFlag, content, params, submitUser, priority, serialFlag, 
+    jobId, jobName, jobType, status, content, params, submitUser, priority, serialFlag, 
     appId, workerGroupId, activeStartDate, activeEndDate, rejectAttempts, rejectInterval, 
     failedAttempts, failedInterval, createTime, updateTime, updateUser
   </sql>
@@ -120,14 +120,14 @@
     <selectKey resultType="java.lang.Long" keyProperty="jobId" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into job (jobName, jobType, jobFlag, 
+    insert into job (jobName, jobType, status, 
       content, params, submitUser, 
       priority, serialFlag, appId, 
       workerGroupId, activeStartDate, activeEndDate, 
       rejectAttempts, rejectInterval, failedAttempts, 
       failedInterval, createTime, updateTime, 
       updateUser)
-    values (#{jobName,jdbcType=VARCHAR}, #{jobType,jdbcType=VARCHAR}, #{jobFlag,jdbcType=INTEGER}, 
+    values (#{jobName,jdbcType=VARCHAR}, #{jobType,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
       #{content,jdbcType=VARCHAR}, #{params,jdbcType=VARCHAR}, #{submitUser,jdbcType=VARCHAR}, 
       #{priority,jdbcType=INTEGER}, #{serialFlag,jdbcType=INTEGER}, #{appId,jdbcType=INTEGER}, 
       #{workerGroupId,jdbcType=INTEGER}, #{activeStartDate,jdbcType=TIMESTAMP}, #{activeEndDate,jdbcType=TIMESTAMP}, 
@@ -147,8 +147,8 @@
       <if test="jobType != null" >
         jobType,
       </if>
-      <if test="jobFlag != null" >
-        jobFlag,
+      <if test="status != null" >
+        status,
       </if>
       <if test="content != null" >
         content,
@@ -206,8 +206,8 @@
       <if test="jobType != null" >
         #{jobType,jdbcType=VARCHAR},
       </if>
-      <if test="jobFlag != null" >
-        #{jobFlag,jdbcType=INTEGER},
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
       </if>
       <if test="content != null" >
         #{content,jdbcType=VARCHAR},
@@ -277,8 +277,8 @@
       <if test="record.jobType != null" >
         jobType = #{record.jobType,jdbcType=VARCHAR},
       </if>
-      <if test="record.jobFlag != null" >
-        jobFlag = #{record.jobFlag,jdbcType=INTEGER},
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=INTEGER},
       </if>
       <if test="record.content != null" >
         content = #{record.content,jdbcType=VARCHAR},
@@ -338,7 +338,7 @@
     set jobId = #{record.jobId,jdbcType=BIGINT},
       jobName = #{record.jobName,jdbcType=VARCHAR},
       jobType = #{record.jobType,jdbcType=VARCHAR},
-      jobFlag = #{record.jobFlag,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=INTEGER},
       content = #{record.content,jdbcType=VARCHAR},
       params = #{record.params,jdbcType=VARCHAR},
       submitUser = #{record.submitUser,jdbcType=VARCHAR},
@@ -368,8 +368,8 @@
       <if test="jobType != null" >
         jobType = #{jobType,jdbcType=VARCHAR},
       </if>
-      <if test="jobFlag != null" >
-        jobFlag = #{jobFlag,jdbcType=INTEGER},
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
       </if>
       <if test="content != null" >
         content = #{content,jdbcType=VARCHAR},
@@ -426,7 +426,7 @@
     update job
     set jobName = #{jobName,jdbcType=VARCHAR},
       jobType = #{jobType,jdbcType=VARCHAR},
-      jobFlag = #{jobFlag,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
       content = #{content,jdbcType=VARCHAR},
       params = #{params,jdbcType=VARCHAR},
       submitUser = #{submitUser,jdbcType=VARCHAR},

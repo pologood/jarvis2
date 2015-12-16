@@ -25,7 +25,7 @@ import akka.routing.RoundRobinPool;
 
 import com.google.common.collect.Lists;
 import com.mogujie.jarvis.core.JarvisConstants;
-import com.mogujie.jarvis.core.domain.JobFlag;
+import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.exeception.JobScheduleException;
 import com.mogujie.jarvis.core.expression.CronExpression;
@@ -132,9 +132,9 @@ public class JarvisServer {
             }
             int dependFlag = (!dependencies.isEmpty()) ? 1 : 0;
             DAGJobType type = DAGJobType.getDAGJobType(timeFlag, dependFlag, cycleFlag);
-            JobFlag flag = JobFlag.getInstance(job.getJobFlag());
+            JobStatus flag = JobStatus.getInstance(job.getStatus());
             dagScheduler.getJobGraph().addJob(jobId, new DAGJob(jobId, type, flag), null);
-            if (type.implies(DAGJobType.TIME) && flag.equals(JobFlag.ENABLE) && jobService.isActive(jobId)) {
+            if (type.implies(DAGJobType.TIME) && flag.equals(JobStatus.ENABLE) && jobService.isActive(jobId)) {
                 timeScheduler.addJob(jobId);
             }
         }

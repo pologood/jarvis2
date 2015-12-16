@@ -17,11 +17,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import com.mogujie.jarvis.core.domain.AkkaType;
-import com.mogujie.jarvis.core.domain.JobFlag;
 import com.mogujie.jarvis.core.domain.JobRelationType;
 import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
-import com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry;
 import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobRequest;
 import com.mogujie.jarvis.protocol.JobProtos.RestSubmitJobRequest;
 import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobResponse;
@@ -29,7 +27,6 @@ import com.mogujie.jarvis.protocol.JobProtos.ServerSubmitJobResponse;
 import com.mogujie.jarvis.protocol.JobProtos.RestQueryJobRelationRequest;
 import com.mogujie.jarvis.protocol.JobProtos.ServerQueryJobRelationResponse;
 import com.mogujie.jarvis.protocol.JobProtos.JobFlagEntry;
-import com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry;
 import com.mogujie.jarvis.rest.RestResult;
 import com.mogujie.jarvis.rest.utils.ConvertValidUtils;
 import com.mogujie.jarvis.rest.utils.JsonParameters;
@@ -74,11 +71,11 @@ public class JobController extends AbstractController {
                     .setFailedAttempts(jobVo.getFailedAttempts(0)).setFailedInterval(jobVo.getFailedInterval(3));
 
             if (jobVo.getScheduleExpressionEntry() != null) {
-                builder.setExpressionEntry(ConvertValidUtils.ConvertScheduleExpressionEnty(jobVo.getScheduleExpressionEntry()));
+                builder.setExpressionEntry(ConvertValidUtils.ConvertScheduleExpressionEntry(jobVo.getScheduleExpressionEntry()));
             }
             if (jobVo.getDependencyList() != null && jobVo.getDependencyList().size() > 0) {
                 for (JobEntryVo.DependencyEntry entryInput : jobVo.getDependencyList()) {
-                    builder.addDependencyEntry(ConvertValidUtils.ConvertDependcyEnty(entryInput));
+                    builder.addDependencyEntry(ConvertValidUtils.ConvertDependencyEntry(entryInput));
                 }
             }
 
@@ -111,7 +108,7 @@ public class JobController extends AbstractController {
     public RestResult edit(@FormParam("appName") String appName, @FormParam("appToken") String appToken, @FormParam("user") String user,
                               @FormParam("parameters") String parameters) {
 
-        LOGGER.info("更新job任务");
+        LOGGER.debug("更新job任务");
         try {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
@@ -169,11 +166,11 @@ public class JobController extends AbstractController {
                 builder.setFailedInterval(jobVo.getFailedInterval());
             }
             if (jobVo.getScheduleExpressionEntry() != null) {
-                builder.setExpressionEntry(ConvertValidUtils.ConvertScheduleExpressionEnty(jobVo.getScheduleExpressionEntry()));
+                builder.setExpressionEntry(ConvertValidUtils.ConvertScheduleExpressionEntry(jobVo.getScheduleExpressionEntry()));
             }
             if (jobVo.getDependencyList() != null && jobVo.getDependencyList().size() > 0) {
                 for (JobEntryVo.DependencyEntry entryInput : jobVo.getDependencyList()) {
-                    builder.addDependencyEntry(ConvertValidUtils.ConvertDependcyEnty(entryInput));
+                    builder.addDependencyEntry(ConvertValidUtils.ConvertDependencyEntry(entryInput));
                 }
             }
 
@@ -193,6 +190,52 @@ public class JobController extends AbstractController {
             return errorResult(e.getMessage());
         }
     }
+
+    /**
+     * 修改job任务状态
+     *
+     * @throws Exception
+     */
+    @POST
+    @Path("flag/set")
+    @Produces(MediaType.APPLICATION_JSON)
+    public RestResult statusSet(@FormParam("appName") String appName, @FormParam("appToken") String appToken, @FormParam("user") String user,
+                           @FormParam("parameters") String parameters) {
+
+        LOGGER.debug("更新job任务标志");
+        try {
+            AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
+
+            JsonParameters para = new JsonParameters(parameters);
+            long jobId = para.getLongNotNull("jobId");
+            int jobFlag = para.getIntegerNotNull("flag");
+
+            // 构造修改job基本信息请求
+            RestModifyJobRequest.Builder builder = RestModifyJobRequest.newBuilder()
+                    .setAppAuth(appAuth)
+                    .setUser(user)
+                    .setJobId(jobId)
+                    .setJobFlag(jobFlag);
+
+            // 发送信息到server修改job基本信息
+            ServerModifyJobResponse response = (ServerModifyJobResponse) callActor(AkkaType.SERVER, builder.build());
+
+            // 判断修改基本信息是否成功，修改基本信息成功后才尝试修改依赖
+            if (response.getSuccess()) {
+                return successResult();
+            }
+            // 修改基本信息出错
+            else {
+                return errorResult(response.getMessage());
+            }
+        } catch (Exception e) {
+            LOGGER.error("edit job error", e);
+            return errorResult(e.getMessage());
+        }
+    }
+
+
+
 
 
     /**

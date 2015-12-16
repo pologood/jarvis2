@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import akka.actor.UntypedActor;
 
 import com.google.common.collect.Sets;
-import com.mogujie.jarvis.core.domain.JobFlag;
+import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.core.domain.JobRelationType;
 import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.core.domain.OperationMode;
@@ -194,7 +194,7 @@ public class JobActor extends UntypedActor {
         if (!msg.hasJobFlag())
             return;
         long jobId = msg.getJobId();
-        JobFlag flag = JobFlag.getInstance(msg.getJobFlag());
+        JobStatus flag = JobStatus.getInstance(msg.getJobFlag());
         timeScheduler.modifyJobFlag(jobId, flag);
         dagScheduler.getJobGraph().modifyJobFlag(jobId, flag);
     }
@@ -292,17 +292,17 @@ public class JobActor extends UntypedActor {
         try {
             long jobId = msg.getJobId();
             ServerQueryJobRelationResponse.Builder builder = ServerQueryJobRelationResponse.newBuilder();
-            List<Pair<Long, JobFlag>> relations;
+            List<Pair<Long, JobStatus>> relations;
             if (msg.getRelationType() == (JobRelationType.PARENT.getValue())) {
                 relations = dagScheduler.getJobGraph().getParents(jobId);
             } else {
                 relations = dagScheduler.getJobGraph().getChildren(jobId);
             }
-            for (Pair<Long, JobFlag> relation : relations) {
+            for (Pair<Long, JobStatus> relation : relations) {
                 long relationId = relation.getFirst();
-                JobFlag flag = relation.getSecond();
-                if (flag.equals(JobFlag.ENABLE) && !jobService.isActive(relationId)) {
-                    flag = JobFlag.EXPIRED;
+                JobStatus flag = relation.getSecond();
+                if (flag.equals(JobStatus.ENABLE) && !jobService.isActive(relationId)) {
+                    flag = JobStatus.EXPIRED;
                 }
                 JobFlagEntry entry = JobFlagEntry.newBuilder().setJobId(relationId).setJobFlag(flag.getValue()).build();
                 builder.addJobFlagEntry(entry);

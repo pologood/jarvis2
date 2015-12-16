@@ -14,7 +14,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.google.common.eventbus.Subscribe;
-import com.mogujie.jarvis.core.domain.JobFlag;
+import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
 import com.mogujie.jarvis.server.scheduler.event.ScheduleEvent;
 import com.mogujie.jarvis.server.scheduler.event.StartEvent;
@@ -95,7 +95,7 @@ public class DAGScheduler extends Scheduler {
                 List<DAGJob> children = jobGraph.getActiveChildren(dagJob);
                 if (children != null) {
                     for (DAGJob child : children) {
-                        if (child.getJobFlag().equals(JobFlag.ENABLE)) {
+                        if (child.getJobStatus().equals(JobStatus.ENABLE)) {
                             child.scheduleTask(jobId, taskId, scheduleTime);
                             jobGraph.submitJobWithCheck(child);
                         }
@@ -104,7 +104,7 @@ public class DAGScheduler extends Scheduler {
             } else {
                 DAGJob child = getDAGJob(childJobId);
                 if (child != null) {
-                    if (child.getJobFlag().equals(JobFlag.ENABLE)) {
+                    if (child.getJobStatus().equals(JobStatus.ENABLE)) {
                         child.scheduleTask(jobId, taskId, scheduleTime);
                         jobGraph.submitJobWithCheck(child);
                     }

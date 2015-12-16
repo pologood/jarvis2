@@ -10,7 +10,7 @@ public class Job implements Serializable {
 
     private String jobType;
 
-    private Integer jobFlag;
+    private Integer status;
 
     private String content;
 
@@ -70,12 +70,12 @@ public class Job implements Serializable {
         this.jobType = jobType;
     }
 
-    public Integer getJobFlag() {
-        return jobFlag;
+    public Integer getStatus() {
+        return status;
     }
 
-    public void setJobFlag(Integer jobFlag) {
-        this.jobFlag = jobFlag;
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public String getContent() {

@@ -15,7 +15,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.google.common.collect.Sets;
-import com.mogujie.jarvis.core.domain.JobFlag;
+import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 
 
@@ -248,7 +248,7 @@ public class TestJobGraph {
         Assert.assertEquals(2, jobGraph.getParents(jobCId).size());
 
         // jobB disable
-        jobGraph.modifyJobFlag(jobBId, JobFlag.DISABLE);
+        jobGraph.modifyJobFlag(jobBId, JobStatus.DISABLE);
         // jobC has two parents
         Assert.assertEquals(2, jobGraph.getParents(jobCId).size());
     }
@@ -273,7 +273,7 @@ public class TestJobGraph {
         Assert.assertEquals(2, jobGraph.getParents(jobCId).size());
 
         // jobB disable
-        jobGraph.modifyJobFlag(jobBId, JobFlag.DELETED);
+        jobGraph.modifyJobFlag(jobBId, JobStatus.DELETED);
         // jobC has two parents
         Assert.assertEquals(1, jobGraph.getParents(jobCId).size());
     }

@@ -11,7 +11,7 @@ package com.mogujie.jarvis.core.domain;
  * @author muming
  *
  */
-public enum JobFlag {
+public enum JobStatus {
 
     ENABLE(1),      //启用（有效）
     DISABLE(2),     //禁用（失效）
@@ -20,7 +20,7 @@ public enum JobFlag {
 
     private int value;
 
-    JobFlag(int value) {
+    JobStatus(int value) {
         this.value = value;
     }
 
@@ -28,10 +28,10 @@ public enum JobFlag {
         return value;
     }
 
-    public static JobFlag getInstance(int value) {
-        JobFlag[] statusList = JobFlag.values();
-        JobFlag status = JobFlag.ENABLE;
-        for (JobFlag s : statusList) {
+    public static JobStatus getInstance(int value) {
+        JobStatus[] statusList = JobStatus.values();
+        JobStatus status = JobStatus.ENABLE;
+        for (JobStatus s : statusList) {
             if (s.getValue() == value) {
                 status = s;
                 break;
