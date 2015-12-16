@@ -635,6 +635,66 @@ public class JobExample {
             return (Criteria) this;
         }
 
+        public Criteria andSerialFlagIsNull() {
+            addCriterion("serialFlag is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSerialFlagIsNotNull() {
+            addCriterion("serialFlag is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSerialFlagEqualTo(Integer value) {
+            addCriterion("serialFlag =", value, "serialFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andSerialFlagNotEqualTo(Integer value) {
+            addCriterion("serialFlag <>", value, "serialFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andSerialFlagGreaterThan(Integer value) {
+            addCriterion("serialFlag >", value, "serialFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andSerialFlagGreaterThanOrEqualTo(Integer value) {
+            addCriterion("serialFlag >=", value, "serialFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andSerialFlagLessThan(Integer value) {
+            addCriterion("serialFlag <", value, "serialFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andSerialFlagLessThanOrEqualTo(Integer value) {
+            addCriterion("serialFlag <=", value, "serialFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andSerialFlagIn(List<Integer> values) {
+            addCriterion("serialFlag in", values, "serialFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andSerialFlagNotIn(List<Integer> values) {
+            addCriterion("serialFlag not in", values, "serialFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andSerialFlagBetween(Integer value1, Integer value2) {
+            addCriterion("serialFlag between", value1, value2, "serialFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andSerialFlagNotBetween(Integer value1, Integer value2) {
+            addCriterion("serialFlag not between", value1, value2, "serialFlag");
+            return (Criteria) this;
+        }
+
         public Criteria andAppIdIsNull() {
             addCriterion("appId is null");
             return (Criteria) this;

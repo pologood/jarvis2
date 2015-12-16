@@ -20,6 +20,8 @@ public class Job implements Serializable {
 
     private Integer priority;
 
+    private Integer serialFlag;
+
     private Integer appId;
 
     private Integer workerGroupId;
@@ -106,6 +108,14 @@ public class Job implements Serializable {
 
     public void setPriority(Integer priority) {
         this.priority = priority;
+    }
+
+    public Integer getSerialFlag() {
+        return serialFlag;
+    }
+
+    public void setSerialFlag(Integer serialFlag) {
+        this.serialFlag = serialFlag;
     }
 
     public Integer getAppId() {

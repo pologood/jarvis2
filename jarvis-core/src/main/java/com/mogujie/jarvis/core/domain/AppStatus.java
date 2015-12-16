@@ -27,4 +27,14 @@ public enum AppStatus {
         return value;
     }
 
+    public static Boolean isValid(int value) {
+        AppStatus[] values = AppStatus.values();
+        for (AppStatus s : values) {
+            if (s.getValue() == value) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

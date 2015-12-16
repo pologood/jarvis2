@@ -10,6 +10,7 @@
     <result column="params" property="params" jdbcType="VARCHAR" />
     <result column="submitUser" property="submitUser" jdbcType="VARCHAR" />
     <result column="priority" property="priority" jdbcType="INTEGER" />
+    <result column="serialFlag" property="serialFlag" jdbcType="INTEGER" />
     <result column="appId" property="appId" jdbcType="INTEGER" />
     <result column="workerGroupId" property="workerGroupId" jdbcType="INTEGER" />
     <result column="activeStartDate" property="activeStartDate" jdbcType="TIMESTAMP" />
@@ -81,9 +82,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    jobId, jobName, jobType, jobFlag, content, params, submitUser, priority, appId, workerGroupId, 
-    activeStartDate, activeEndDate, rejectAttempts, rejectInterval, failedAttempts, failedInterval, 
-    createTime, updateTime, updateUser
+    jobId, jobName, jobType, jobFlag, content, params, submitUser, priority, serialFlag, 
+    appId, workerGroupId, activeStartDate, activeEndDate, rejectAttempts, rejectInterval, 
+    failedAttempts, failedInterval, createTime, updateTime, updateUser
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.mogujie.jarvis.dto.generate.JobExample" >
     select
@@ -121,18 +122,18 @@
     </selectKey>
     insert into job (jobName, jobType, jobFlag, 
       content, params, submitUser, 
-      priority, appId, workerGroupId, 
-      activeStartDate, activeEndDate, rejectAttempts, 
-      rejectInterval, failedAttempts, failedInterval, 
-      createTime, updateTime, updateUser
-      )
+      priority, serialFlag, appId, 
+      workerGroupId, activeStartDate, activeEndDate, 
+      rejectAttempts, rejectInterval, failedAttempts, 
+      failedInterval, createTime, updateTime, 
+      updateUser)
     values (#{jobName,jdbcType=VARCHAR}, #{jobType,jdbcType=VARCHAR}, #{jobFlag,jdbcType=INTEGER}, 
       #{content,jdbcType=VARCHAR}, #{params,jdbcType=VARCHAR}, #{submitUser,jdbcType=VARCHAR}, 
-      #{priority,jdbcType=INTEGER}, #{appId,jdbcType=INTEGER}, #{workerGroupId,jdbcType=INTEGER}, 
-      #{activeStartDate,jdbcType=TIMESTAMP}, #{activeEndDate,jdbcType=TIMESTAMP}, #{rejectAttempts,jdbcType=INTEGER}, 
-      #{rejectInterval,jdbcType=INTEGER}, #{failedAttempts,jdbcType=INTEGER}, #{failedInterval,jdbcType=INTEGER}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}
-      )
+      #{priority,jdbcType=INTEGER}, #{serialFlag,jdbcType=INTEGER}, #{appId,jdbcType=INTEGER}, 
+      #{workerGroupId,jdbcType=INTEGER}, #{activeStartDate,jdbcType=TIMESTAMP}, #{activeEndDate,jdbcType=TIMESTAMP}, 
+      #{rejectAttempts,jdbcType=INTEGER}, #{rejectInterval,jdbcType=INTEGER}, #{failedAttempts,jdbcType=INTEGER}, 
+      #{failedInterval,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{updateUser,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.mogujie.jarvis.dto.generate.Job" >
     <selectKey resultType="java.lang.Long" keyProperty="jobId" order="AFTER" >
@@ -160,6 +161,9 @@
       </if>
       <if test="priority != null" >
         priority,
+      </if>
+      <if test="serialFlag != null" >
+        serialFlag,
       </if>
       <if test="appId != null" >
         appId,
@@ -216,6 +220,9 @@
       </if>
       <if test="priority != null" >
         #{priority,jdbcType=INTEGER},
+      </if>
+      <if test="serialFlag != null" >
+        #{serialFlag,jdbcType=INTEGER},
       </if>
       <if test="appId != null" >
         #{appId,jdbcType=INTEGER},
@@ -285,6 +292,9 @@
       <if test="record.priority != null" >
         priority = #{record.priority,jdbcType=INTEGER},
       </if>
+      <if test="record.serialFlag != null" >
+        serialFlag = #{record.serialFlag,jdbcType=INTEGER},
+      </if>
       <if test="record.appId != null" >
         appId = #{record.appId,jdbcType=INTEGER},
       </if>
@@ -333,6 +343,7 @@
       params = #{record.params,jdbcType=VARCHAR},
       submitUser = #{record.submitUser,jdbcType=VARCHAR},
       priority = #{record.priority,jdbcType=INTEGER},
+      serialFlag = #{record.serialFlag,jdbcType=INTEGER},
       appId = #{record.appId,jdbcType=INTEGER},
       workerGroupId = #{record.workerGroupId,jdbcType=INTEGER},
       activeStartDate = #{record.activeStartDate,jdbcType=TIMESTAMP},
@@ -371,6 +382,9 @@
       </if>
       <if test="priority != null" >
         priority = #{priority,jdbcType=INTEGER},
+      </if>
+      <if test="serialFlag != null" >
+        serialFlag = #{serialFlag,jdbcType=INTEGER},
       </if>
       <if test="appId != null" >
         appId = #{appId,jdbcType=INTEGER},
@@ -417,6 +431,7 @@
       params = #{params,jdbcType=VARCHAR},
       submitUser = #{submitUser,jdbcType=VARCHAR},
       priority = #{priority,jdbcType=INTEGER},
+      serialFlag = #{serialFlag,jdbcType=INTEGER},
       appId = #{appId,jdbcType=INTEGER},
       workerGroupId = #{workerGroupId,jdbcType=INTEGER},
       activeStartDate = #{activeStartDate,jdbcType=TIMESTAMP},
