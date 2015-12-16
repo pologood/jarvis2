@@ -64,7 +64,7 @@ public class JobController extends AbstractController {
 
             // 构造新增任务请求
             RestSubmitJobRequest.Builder builder = RestSubmitJobRequest.newBuilder().setAppAuth(appAuth).setUser(user).setJobName(jobVo.getJobName())
-                    .setJobType(jobVo.getJobType()).setJobFlag(jobVo.getJobFlag()).setContent(jobVo.getContent()).setParameters(jobParameters)
+                    .setJobType(jobVo.getJobType()).setJobFlag(jobVo.getStatus()).setContent(jobVo.getContent()).setParameters(jobParameters)
                     .setAppName(jobVo.getAppName(appName)).setWorkerGroupId(jobVo.getWorkerGroupId()).setPriority(jobVo.getPriority(1))
                     .setActiveStartTime(jobVo.getActiveStartTime(0L)).setActiveEndTime(jobVo.getActiveEndTime(0L))
                     .setRejectAttempts(jobVo.getRejectAttempts(0)).setRejectInterval(jobVo.getRejectInterval(3))
@@ -129,8 +129,8 @@ public class JobController extends AbstractController {
             if (jobVo.getJobType() != null) {
                 builder.setJobType(jobVo.getJobType());
             }
-            if (jobVo.getJobFlag() != null) {
-                builder.setJobFlag(jobVo.getJobFlag());
+            if (jobVo.getStatus() != null) {
+                builder.setJobFlag(jobVo.getStatus());
             }
             if (jobVo.getContent() != null && !jobVo.getContent().equals("")) {
                 builder.setContent(jobVo.getContent());
@@ -197,7 +197,7 @@ public class JobController extends AbstractController {
      * @throws Exception
      */
     @POST
-    @Path("flag/set")
+    @Path("status/set")
     @Produces(MediaType.APPLICATION_JSON)
     public RestResult statusSet(@FormParam("appName") String appName, @FormParam("appToken") String appToken, @FormParam("user") String user,
                            @FormParam("parameters") String parameters) {
@@ -208,14 +208,14 @@ public class JobController extends AbstractController {
 
             JsonParameters para = new JsonParameters(parameters);
             long jobId = para.getLongNotNull("jobId");
-            int jobFlag = para.getIntegerNotNull("flag");
+            int status = para.getIntegerNotNull("status");
 
             // 构造修改job基本信息请求
             RestModifyJobRequest.Builder builder = RestModifyJobRequest.newBuilder()
                     .setAppAuth(appAuth)
                     .setUser(user)
                     .setJobId(jobId)
-                    .setJobFlag(jobFlag);
+                    .setJobFlag(status);
 
             // 发送信息到server修改job基本信息
             ServerModifyJobResponse response = (ServerModifyJobResponse) callActor(AkkaType.SERVER, builder.build());
@@ -269,9 +269,9 @@ public class JobController extends AbstractController {
             if (response.getSuccess()) {
                 JobRelationsVo vo = new JobRelationsVo();
                 if(response.getJobFlagEntryOrBuilderList() != null){
-                    List<JobRelationsVo.JobFlagEntry> list = new ArrayList<>();
+                    List<JobRelationsVo.JobStatusEntry> list = new ArrayList<>();
                     for(JobFlagEntry entry : response.getJobFlagEntryList()){
-                         list.add(new JobRelationsVo.JobFlagEntry().setJobId(entry.getJobId()).setJobFlag(entry.getJobFlag()));
+                         list.add(new JobRelationsVo.JobStatusEntry().setJobId(entry.getJobId()).setStatus(entry.getJobFlag()));
                     }
                     vo.setList(list);
                 }

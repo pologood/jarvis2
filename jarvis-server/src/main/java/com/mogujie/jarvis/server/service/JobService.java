@@ -269,7 +269,7 @@ public class JobService {
         jobMapper.updateByPrimaryKey(record);
 
         JobEntry jobEntry = get(jobId);
-        jobEntry.updateJobFlag(newFlag);
+        jobEntry.updateJobStatus(newFlag);
     }
 
     public String getAppName(long jobId) {

@@ -6,15 +6,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.mogujie.jarvis.rest.vo.JobRelationsVo;
-import com.mogujie.jarvis.server.domain.JobEntry;
 import org.junit.Assert;
-import org.junit.Test;
 
 import com.google.gson.reflect.TypeToken;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import com.mogujie.jarvis.core.domain.JobFlag;
 import com.mogujie.jarvis.core.domain.OperationMode;
 import com.mogujie.jarvis.core.expression.ScheduleExpressionType;
 import com.mogujie.jarvis.core.util.JsonHelper;
@@ -37,7 +34,7 @@ public class TestRestJob {
         JobEntryVo job = new JobEntryVo();
         job.setJobName("mmTest");
         job.setJobType("hive");
-        job.setJobFlag(1);
+        job.setStatus(1);
         job.setContent("show create table dw_site_app_clicklog;");
         job.setWorkerGroupId(1);
 
