@@ -18,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.transaction.annotation.Transactional;
 
+import akka.actor.UntypedActor;
+
 import com.google.common.collect.Range;
 import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.core.domain.TaskStatus;
@@ -28,6 +30,8 @@ import com.mogujie.jarvis.protocol.GeneratePlanProtos.ServerGenereateAllPlanResp
 import com.mogujie.jarvis.protocol.RemovePlanProtos.RestServerRemovePlanRequest;
 import com.mogujie.jarvis.protocol.RemovePlanProtos.ServerRemovePlanResponse;
 import com.mogujie.jarvis.server.domain.ActorEntry;
+import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
+import com.mogujie.jarvis.server.scheduler.event.RemoveTaskEvent;
 import com.mogujie.jarvis.server.scheduler.plan.ExecutionPlanEntry;
 import com.mogujie.jarvis.server.scheduler.plan.PlanGenerator;
 import com.mogujie.jarvis.server.scheduler.task.DAGTask;
@@ -35,8 +39,6 @@ import com.mogujie.jarvis.server.scheduler.task.TaskGraph;
 import com.mogujie.jarvis.server.scheduler.time.TimeScheduler;
 import com.mogujie.jarvis.server.scheduler.time.TimeSchedulerFactory;
 import com.mogujie.jarvis.server.service.TaskService;
-
-import akka.actor.UntypedActor;
 
 /**
  * @author guangming
@@ -50,6 +52,7 @@ public class PlanActor extends UntypedActor {
     private TaskService taskService;
 
     private TaskGraph taskGraph = TaskGraph.INSTANCE;
+    private JobSchedulerController controller = JobSchedulerController.getInstance();
 
     @Override
     public void onReceive(Object obj) throws Exception {
@@ -89,18 +92,18 @@ public class PlanActor extends UntypedActor {
                     }
                     String childrenJson = JsonHelper.toJson(childIds, List.class);
                     response = ServerRemovePlanResponse.newBuilder().setSuccess(false)
-                            .setMessage(taskId + "有后置任务: " + childrenJson + ", 删除会造成后置任务无法跑起来").build();
+                            .setMessage(taskId + "有后置任务: " + childrenJson + ", 删除后置任务将不再依赖于" + taskId).build();
                 } else {
                     taskService.updateStatus(taskId, TaskStatus.REMOVED);
                     timeScheduler.removePlan(new ExecutionPlanEntry(jobId, scheduleTime, taskId));
-                    taskGraph.removeTask(taskId);
+                    controller.notify(new RemoveTaskEvent(jobId, taskId));
                     response = ServerRemovePlanResponse.newBuilder().setSuccess(true).build();
                 }
             } else {
                 // 不询问，即强制删除
                 taskService.updateStatus(taskId, TaskStatus.REMOVED);
                 timeScheduler.removePlan(new ExecutionPlanEntry(jobId, scheduleTime, taskId));
-                taskGraph.removeTask(taskId);
+                controller.notify(new RemoveTaskEvent(jobId, taskId));
                 response = ServerRemovePlanResponse.newBuilder().setSuccess(true).build();
             }
         } else {

@@ -39,6 +39,10 @@ public class TaskDependStatus {
         return commonStrategy.check(getStatusList());
     }
 
+    public void removeTask(long taskId) {
+        dependTaskIds.remove(taskId);
+    }
+
     private List<Boolean> getStatusList() {
         List<Task> dependTasks = taskService.getTasks(dependTaskIds);
         List<Boolean> taskStatus = new ArrayList<Boolean>();
