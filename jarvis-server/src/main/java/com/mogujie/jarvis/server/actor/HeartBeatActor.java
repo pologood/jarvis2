@@ -46,7 +46,7 @@ public class HeartBeatActor extends UntypedActor {
             int port = Integer.parseInt(address.port().get().toString());
             int jobNum = request.getJobNum();
             WorkerInfo workerInfo = new WorkerInfo(ip, port);
-            int groupId = WorkerRegistry.getInstance().getWorkerGroupId(workerInfo);
+            int groupId = Injectors.getInjector().getInstance(WorkerRegistry.class).getWorkerGroupId(workerInfo);
             HeartBeatResponse response = null;
             if (groupId < 0) {
                 LOGGER.warn("groupId is not valid: heartbeat[ip={}, port={}, groupId={}, jobNum={}]", ip, port, groupId, jobNum);

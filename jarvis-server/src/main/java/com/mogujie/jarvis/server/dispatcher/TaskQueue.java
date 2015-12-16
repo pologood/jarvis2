@@ -12,11 +12,11 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.concurrent.PriorityBlockingQueue;
 
+import com.google.inject.Singleton;
 import com.mogujie.jarvis.core.domain.TaskDetail;
 
-public enum TaskQueue {
-
-    INSTANCE;
+@Singleton
+public class TaskQueue {
 
     private Comparator<TaskDetail> comparator = new Comparator<TaskDetail>() {
 

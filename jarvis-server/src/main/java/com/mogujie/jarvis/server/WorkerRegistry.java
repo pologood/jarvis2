@@ -9,17 +9,13 @@ package com.mogujie.jarvis.server;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.inject.Singleton;
 import com.mogujie.jarvis.core.domain.WorkerInfo;
 
-public enum WorkerRegistry {
-
-    INSTANCE;
+@Singleton
+public class WorkerRegistry {
 
     private Map<WorkerInfo, Integer> map = new HashMap<WorkerInfo, Integer>();
-
-    public static WorkerRegistry getInstance() {
-        return INSTANCE;
-    }
 
     public void put(WorkerInfo workerInfo, int groupId) {
         map.put(workerInfo, groupId);

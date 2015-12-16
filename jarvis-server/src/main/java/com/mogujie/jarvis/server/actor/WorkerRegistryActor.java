@@ -65,7 +65,7 @@ public class WorkerRegistryActor extends UntypedActor {
             String ip = address.host().get();
             int port = Integer.parseInt(address.port().get().toString());
             WorkerInfo workerInfo = new WorkerInfo(ip, port);
-            WorkerRegistry workerRegistry = WorkerRegistry.getInstance();
+            WorkerRegistry workerRegistry = Injectors.getInjector().getInstance(WorkerRegistry.class);
             workerRegistry.put(workerInfo, groupId);
 
             workerService.saveWorker(ip, port, groupId, WorkerStatus.ONLINE.getValue());
