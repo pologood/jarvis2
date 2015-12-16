@@ -73,7 +73,7 @@ public class JarvisServer {
         int taskDispatcherThreads = config.getInt(ServerConigKeys.SERVER_DISPATCHER_THREADS, 5);
         ExecutorService executorService = Executors.newFixedThreadPool(taskDispatcherThreads);
         for (int i = 0; i < taskDispatcherThreads; i++) {
-            executorService.submit(Injectors.getInjector().getInstance(TaskDispatcher.class));
+            executorService.submit(new TaskDispatcher());
         }
         executorService.shutdown();
 

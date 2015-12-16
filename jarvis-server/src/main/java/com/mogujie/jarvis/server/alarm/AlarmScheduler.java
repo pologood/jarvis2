@@ -14,10 +14,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.google.common.collect.Lists;
 import com.google.common.eventbus.Subscribe;
-import com.mogujie.jarvis.dao.generate.AlarmMapper;
-import com.mogujie.jarvis.dao.generate.JobMapper;
 import com.mogujie.jarvis.dto.generate.Alarm;
-import com.mogujie.jarvis.dto.generate.AlarmExample;
 import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
@@ -26,11 +23,13 @@ import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
 import com.mogujie.jarvis.server.scheduler.event.KilledEvent;
 import com.mogujie.jarvis.server.scheduler.event.StartEvent;
 import com.mogujie.jarvis.server.scheduler.event.StopEvent;
+import com.mogujie.jarvis.server.service.AlarmService;
+import com.mogujie.jarvis.server.service.JobService;
 
 public class AlarmScheduler extends Scheduler {
 
-    private JobMapper jobMapper = Injectors.getInjector().getInstance(JobMapper.class);
-    private AlarmMapper alarmMapper = Injectors.getInjector().getInstance(AlarmMapper.class);
+    private JobService jobService = Injectors.getInjector().getInstance(JobService.class);
+    private AlarmService alarmService = Injectors.getInjector().getInstance(AlarmService.class);
 
     private Alarmer alarmer = new DefaultAlarmer();
 
@@ -58,34 +57,29 @@ public class AlarmScheduler extends Scheduler {
 
     private void alarm(DAGTaskEvent event) {
         long jobId = event.getJobId();
-        Job job = jobMapper.selectByPrimaryKey(jobId);
+        Job job = jobService.get(jobId).getJob();
         if (job != null) {
             String jobName = job.getJobName();
-            AlarmExample alarmExample = new AlarmExample();
-            alarmExample.createCriteria().andJobIdEqualTo(jobId);
-            List<Alarm> alarms = alarmMapper.selectByExample(alarmExample);
-            if (alarms != null && alarms.size() == 1) {
-                Alarm alarm = alarms.get(0);
-                if (alarm.getStatus().intValue() == 1) {
-                    String msg = null;
-                    if (event instanceof FailedEvent) {
-                        msg = "任务[" + jobName + "]运行失败";
-                    } else if (event instanceof KilledEvent) {
-                        msg = "任务[" + jobName + "]被Kill";
-                    }
+            Alarm alarm = alarmService.getAlarmByJobId(jobId);
+            if (alarm.getStatus().intValue() == 1) {
+                String msg = null;
+                if (event instanceof FailedEvent) {
+                    msg = "任务[" + jobName + "]运行失败";
+                } else if (event instanceof KilledEvent) {
+                    msg = "任务[" + jobName + "]被Kill";
+                }
 
-                    String[] tokens = alarm.getAlarmType().split(",");
-                    List<AlarmType> alarmTypes = Lists.newArrayList();
-                    for (String str : tokens) {
-                        int type = Integer.parseInt(str);
-                        alarmTypes.add(AlarmType.getInstance(type));
-                    }
+                String[] tokens = alarm.getAlarmType().split(",");
+                List<AlarmType> alarmTypes = Lists.newArrayList();
+                for (String str : tokens) {
+                    int type = Integer.parseInt(str);
+                    alarmTypes.add(AlarmType.getInstance(type));
+                }
 
-                    List<String> receiver = Lists.newArrayList(alarm.getReceiver().split(","));
-                    boolean success = alarmer.alarm(alarmTypes, receiver, msg);
-                    if (!success) {
-                        LOGGER.warn("Alarm Failed");
-                    }
+                List<String> receiver = Lists.newArrayList(alarm.getReceiver().split(","));
+                boolean success = alarmer.alarm(alarmTypes, receiver, msg);
+                if (!success) {
+                    LOGGER.warn("Alarm Failed");
                 }
             }
         }
