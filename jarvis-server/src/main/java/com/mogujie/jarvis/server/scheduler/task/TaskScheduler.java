@@ -35,6 +35,7 @@ import com.mogujie.jarvis.server.scheduler.event.AddTaskEvent;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
 import com.mogujie.jarvis.server.scheduler.event.KilledEvent;
 import com.mogujie.jarvis.server.scheduler.event.ManualRerunTaskEvent;
+import com.mogujie.jarvis.server.scheduler.event.RemoveTaskEvent;
 import com.mogujie.jarvis.server.scheduler.event.RetryTaskEvent;
 import com.mogujie.jarvis.server.scheduler.event.RunTaskEvent;
 import com.mogujie.jarvis.server.scheduler.event.RunningEvent;
@@ -268,6 +269,22 @@ public class TaskScheduler extends Scheduler {
         if (dagTask != null && dagTask.checkStatus()) {
             LOGGER.info("{} pass status check", dagTask);
             submitTask(dagTask);
+        }
+    }
+
+    @Subscribe
+    public void handleRemoveTaskEvent(RemoveTaskEvent e) {
+        long jobId = e.getJobId();
+        long taskId = e.getTaskId();
+        LOGGER.info("start handleRemoveTaskEvent, taskId={}", taskId);
+        List<DAGTask> children = taskGraph.getChildren(taskId);
+        for (DAGTask child : children) {
+            child.getStatusChecker().removeTask(jobId, taskId);
+            taskGraph.removeTask(taskId);
+            if (child.checkStatus()) {
+                LOGGER.info("{} pass status check", child);
+                submitTask(child);
+            }
         }
     }
 

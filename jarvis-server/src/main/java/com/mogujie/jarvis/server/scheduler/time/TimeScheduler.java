@@ -14,7 +14,7 @@ import java.util.SortedSet;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.mogujie.jarvis.core.domain.JobFlag;
+import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
 import com.mogujie.jarvis.server.scheduler.event.StartEvent;
@@ -91,7 +91,7 @@ public abstract class TimeScheduler extends Scheduler {
 
     public abstract void removeJob(long jobId);
 
-    public abstract void modifyJobFlag(long jobId, JobFlag flag);
+    public abstract void modifyJobFlag(long jobId, JobStatus flag);
 
     protected abstract void startPlan(ExecutionPlanEntry entry);
 

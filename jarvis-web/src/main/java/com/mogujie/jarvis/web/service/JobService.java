@@ -25,7 +25,7 @@ public class JobService {
 
     public List<JobVo> getAllJobs(Integer jobFlag){
         JobQo jobSearchVo=new JobQo();
-        jobSearchVo.setJobFlag(jobFlag);
+        jobSearchVo.setStatus(jobFlag);
         List<JobVo> jobVoList=jobMapper.getJobsByCondition(jobSearchVo);
         return jobVoList;
     }

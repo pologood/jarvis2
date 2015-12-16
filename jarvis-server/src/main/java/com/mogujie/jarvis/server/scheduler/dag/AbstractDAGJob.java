@@ -8,7 +8,7 @@
 
 package com.mogujie.jarvis.server.scheduler.dag;
 
-import com.mogujie.jarvis.core.domain.JobFlag;
+import com.mogujie.jarvis.core.domain.JobStatus;
 
 
 /**
@@ -17,18 +17,18 @@ import com.mogujie.jarvis.core.domain.JobFlag;
  */
 public abstract class AbstractDAGJob {
 
-    protected JobFlag jobFlag = JobFlag.ENABLE;
+    protected JobStatus jobStatus = JobStatus.ENABLE;
 
     /**
      * return true if dependency check passed. Otherwise return false.
      */
     public abstract boolean checkDependency();
 
-    public JobFlag getJobFlag() {
-        return jobFlag;
+    public JobStatus getJobStatus() {
+        return jobStatus;
     }
 
-    public void setJobFlag(JobFlag jobFlag) {
-        this.jobFlag = jobFlag;
+    public void setJobStatus(JobStatus jobStatus) {
+        this.jobStatus = jobStatus;
     }
 }

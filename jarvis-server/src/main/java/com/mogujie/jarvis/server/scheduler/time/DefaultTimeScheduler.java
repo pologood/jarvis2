@@ -10,7 +10,7 @@ package com.mogujie.jarvis.server.scheduler.time;
 
 import org.joda.time.DateTime;
 
-import com.mogujie.jarvis.core.domain.JobFlag;
+import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.server.scheduler.event.TimeReadyEvent;
 import com.mogujie.jarvis.server.scheduler.plan.ExecutionPlanEntry;
 import com.mogujie.jarvis.server.scheduler.plan.PlanGenerator;
@@ -51,10 +51,10 @@ public class DefaultTimeScheduler extends TimeScheduler {
     }
 
     @Override
-    public void modifyJobFlag(long jobId, JobFlag flag) {
-        if (flag.equals(JobFlag.DISABLE) || flag.equals(JobFlag.DELETED)) {
+    public void modifyJobFlag(long jobId, JobStatus flag) {
+        if (flag.equals(JobStatus.DISABLE) || flag.equals(JobStatus.DELETED)) {
             removeJob(jobId);
-        } else if (flag.equals(JobFlag.ENABLE)) {
+        } else if (flag.equals(JobStatus.ENABLE)) {
             addJob(jobId);
         }
     }

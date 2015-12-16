@@ -28,7 +28,7 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
-import com.mogujie.jarvis.core.domain.JobFlag;
+import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.core.expression.CronExpression;
 import com.mogujie.jarvis.core.expression.DefaultDependencyStrategyExpression;
 import com.mogujie.jarvis.core.expression.DependencyExpression;
@@ -245,7 +245,7 @@ public class JobService {
 
     public List<Job> getNotDeletedJobs() {
         JobExample example = new JobExample();
-        example.createCriteria().andJobFlagNotEqualTo(JobFlag.DELETED.getValue());
+        example.createCriteria().andStatusNotEqualTo(JobStatus.DELETED.getValue());
         return jobMapper.selectByExample(example);
     }
 
@@ -263,13 +263,13 @@ public class JobService {
 
     public void updateJobFlag(long jobId, String user, int newFlag) {
         Job record = jobMapper.selectByPrimaryKey(jobId);
-        record.setJobFlag(newFlag);
+        record.setStatus(newFlag);
         record.setUpdateUser(user);
         record.setUpdateTime(DateTime.now().toDate());
         jobMapper.updateByPrimaryKey(record);
 
         JobEntry jobEntry = get(jobId);
-        jobEntry.updateJobFlag(newFlag);
+        jobEntry.updateJobStatus(newFlag);
     }
 
     public String getAppName(long jobId) {

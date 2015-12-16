@@ -14,7 +14,7 @@ import java.util.TimerTask;
 
 import org.joda.time.DateTime;
 
-import com.mogujie.jarvis.core.domain.JobFlag;
+import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.server.scheduler.event.RunTaskEvent;
 import com.mogujie.jarvis.server.scheduler.plan.ExecutionPlanEntry;
 import com.mogujie.jarvis.server.scheduler.plan.PlanPeriod;
@@ -70,7 +70,7 @@ public class PlanTimeScheduler extends TimeScheduler {
     }
 
     @Override
-    public void modifyJobFlag(long jobId, JobFlag flag) {
+    public void modifyJobFlag(long jobId, JobStatus flag) {
     }
 
 }

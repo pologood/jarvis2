@@ -61,7 +61,7 @@ public class ConvertValidService {
         job.setContent(msg.getContent());
         job.setParams(msg.getParameters());
         job.setPriority(msg.getPriority());
-        job.setJobFlag(msg.getJobFlag());
+        job.setStatus(msg.getJobFlag());
         job.setJobType(msg.getJobType());
         job.setWorkerGroupId(msg.getWorkerGroupId());
 
@@ -122,7 +122,7 @@ public class ConvertValidService {
             job.setJobType(msg.getJobType());
         }
         if (msg.hasJobFlag()) {
-            job.setJobFlag(msg.getJobFlag());
+            job.setStatus(msg.getJobFlag());
         }
         if (msg.hasContent()) {
             job.setContent(msg.getContent());

@@ -14,7 +14,7 @@ public class JobEntryVo extends  AbstractVo{
     private long jobId;
     private String jobName;
     private String jobType;
-    private Integer jobFlag;
+    private Integer status;
     private String content;
     private Map<String,Object> params;
     private String appName;
@@ -104,11 +104,11 @@ public class JobEntryVo extends  AbstractVo{
     public void setJobType(String jobType) {
         this.jobType = jobType;
     }
-    public Integer getJobFlag() {
-        return jobFlag;
+    public Integer getStatus() {
+        return status;
     }
-    public void setJobFlag(Integer jobFlag) {
-        this.jobFlag = jobFlag;
+    public void setStatus(Integer status) {
+        this.status = status;
     }
     public String getContent() {
         return content;

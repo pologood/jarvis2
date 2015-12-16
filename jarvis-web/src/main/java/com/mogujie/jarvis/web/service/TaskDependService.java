@@ -142,7 +142,7 @@ public class TaskDependService {
 
             Integer completeCount = 0;
             //只有有效状态才设置taskList
-            if (jobVo.getJobFlag().equals(1)) {
+            if (jobVo.getStatus().equals(1)) {
                 for (int i = 0, size = jsonArray.size(); i < size; i++) {
                     TaskVo singleTaskVo = taskMap.get(jsonArray.getLong(i));
                     singleTaskDependVo.getTaskList().add(singleTaskVo);

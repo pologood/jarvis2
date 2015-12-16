@@ -1,5 +1,7 @@
 package com.mogujie.jarvis.rest;
 
+import com.mogujie.jarvis.core.util.ConfigUtils;
+import com.mogujie.jarvis.core.util.IPUtils;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -16,13 +18,16 @@ public class TestRestAbstact {
 
     protected static String baseUrl;
 
-    public static void before() throws IOException{
-        baseUrl = "http://" + Inet4Address.getLocalHost().getHostAddress();
+    @BeforeClass
+    public static void before() throws IOException {
+        int port = ConfigUtils.getRestConfig().getInt("rest.http.port", 8080);
+        baseUrl = "http://" + IPUtils.getIPV4Address() + ":" + port;
         server = RestServerFactory.createHttpServer();
         server.start();
     }
 
-    public static void after(){
+    @AfterClass
+    public static void after() {
         server.shutdown();
     }
 

@@ -58,7 +58,7 @@ public class JobEntry {
         dependencies.remove(preJobId);
     }
 
-    public void updateJobFlag(int jobFlag) {
-        job.setJobFlag(jobFlag);
+    public void updateJobStatus(int status) {
+        job.setStatus(status);
     }
 }

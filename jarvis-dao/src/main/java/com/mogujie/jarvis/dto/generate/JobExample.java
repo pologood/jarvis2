@@ -305,63 +305,63 @@ public class JobExample {
             return (Criteria) this;
         }
 
-        public Criteria andJobFlagIsNull() {
-            addCriterion("jobFlag is null");
+        public Criteria andStatusIsNull() {
+            addCriterion("status is null");
             return (Criteria) this;
         }
 
-        public Criteria andJobFlagIsNotNull() {
-            addCriterion("jobFlag is not null");
+        public Criteria andStatusIsNotNull() {
+            addCriterion("status is not null");
             return (Criteria) this;
         }
 
-        public Criteria andJobFlagEqualTo(Integer value) {
-            addCriterion("jobFlag =", value, "jobFlag");
+        public Criteria andStatusEqualTo(Integer value) {
+            addCriterion("status =", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andJobFlagNotEqualTo(Integer value) {
-            addCriterion("jobFlag <>", value, "jobFlag");
+        public Criteria andStatusNotEqualTo(Integer value) {
+            addCriterion("status <>", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andJobFlagGreaterThan(Integer value) {
-            addCriterion("jobFlag >", value, "jobFlag");
+        public Criteria andStatusGreaterThan(Integer value) {
+            addCriterion("status >", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andJobFlagGreaterThanOrEqualTo(Integer value) {
-            addCriterion("jobFlag >=", value, "jobFlag");
+        public Criteria andStatusGreaterThanOrEqualTo(Integer value) {
+            addCriterion("status >=", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andJobFlagLessThan(Integer value) {
-            addCriterion("jobFlag <", value, "jobFlag");
+        public Criteria andStatusLessThan(Integer value) {
+            addCriterion("status <", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andJobFlagLessThanOrEqualTo(Integer value) {
-            addCriterion("jobFlag <=", value, "jobFlag");
+        public Criteria andStatusLessThanOrEqualTo(Integer value) {
+            addCriterion("status <=", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andJobFlagIn(List<Integer> values) {
-            addCriterion("jobFlag in", values, "jobFlag");
+        public Criteria andStatusIn(List<Integer> values) {
+            addCriterion("status in", values, "status");
             return (Criteria) this;
         }
 
-        public Criteria andJobFlagNotIn(List<Integer> values) {
-            addCriterion("jobFlag not in", values, "jobFlag");
+        public Criteria andStatusNotIn(List<Integer> values) {
+            addCriterion("status not in", values, "status");
             return (Criteria) this;
         }
 
-        public Criteria andJobFlagBetween(Integer value1, Integer value2) {
-            addCriterion("jobFlag between", value1, value2, "jobFlag");
+        public Criteria andStatusBetween(Integer value1, Integer value2) {
+            addCriterion("status between", value1, value2, "status");
             return (Criteria) this;
         }
 
-        public Criteria andJobFlagNotBetween(Integer value1, Integer value2) {
-            addCriterion("jobFlag not between", value1, value2, "jobFlag");
+        public Criteria andStatusNotBetween(Integer value1, Integer value2) {
+            addCriterion("status not between", value1, value2, "status");
             return (Criteria) this;
         }
 

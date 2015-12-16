@@ -8,29 +8,29 @@ import java.util.List;
  */
 public class JobRelationsVo extends  AbstractVo{
 
-    private List<JobFlagEntry> list;
+    private List<JobStatusEntry> list;
 
-    public List<JobFlagEntry> getList() {
+    public List<JobStatusEntry> getList() {
         return list;
     }
-    public void setList(List<JobFlagEntry> list) {
+    public void setList(List<JobStatusEntry> list) {
         this.list = list;
     }
-    public static class JobFlagEntry{
+    public static class JobStatusEntry {
         private long jobId;
-        private int jobFlag;
+        private int status;
         public long getJobId() {
             return jobId;
         }
-        public JobFlagEntry setJobId(long jobId) {
+        public JobStatusEntry setJobId(long jobId) {
             this.jobId = jobId;
             return this;
         }
-        public int getJobFlag() {
-            return jobFlag;
+        public int getStatus() {
+            return status;
         }
-        public JobFlagEntry setJobFlag(int jobFlag) {
-            this.jobFlag = jobFlag;
+        public JobStatusEntry setStatus(int status) {
+            this.status = status;
             return this;
         }
     }

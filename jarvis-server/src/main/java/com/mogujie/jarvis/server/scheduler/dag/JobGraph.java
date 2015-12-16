@@ -24,7 +24,7 @@ import org.jgrapht.graph.DefaultEdge;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Sets;
-import com.mogujie.jarvis.core.domain.JobFlag;
+import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.core.domain.Pair;
 import com.mogujie.jarvis.core.exeception.JobScheduleException;
 import com.mogujie.jarvis.server.domain.ModifyDependEntry;
@@ -74,15 +74,15 @@ public enum JobGraph {
      * @param jobId
      * @return List of parents'pair with jobid and JobFlag
      */
-    public List<Pair<Long, JobFlag>> getParents(long jobId) {
-        List<Pair<Long, JobFlag>> parentJobPairs = new ArrayList<Pair<Long, JobFlag>>();
+    public List<Pair<Long, JobStatus>> getParents(long jobId) {
+        List<Pair<Long, JobStatus>> parentJobPairs = new ArrayList<Pair<Long, JobStatus>>();
         DAGJob dagJob = jobMap.get(jobId);
         if (dagJob != null) {
             List<DAGJob> parents = getParents(dagJob);
             if (parents != null) {
                 for (DAGJob parent : parents) {
-                    Pair<Long, JobFlag> jobPair = new Pair<Long, JobFlag>(parent.getJobId(),
-                            parent.getJobFlag());
+                    Pair<Long, JobStatus> jobPair = new Pair<Long, JobStatus>(parent.getJobId(),
+                            parent.getJobStatus());
                     parentJobPairs.add(jobPair);
                 }
             }
@@ -97,15 +97,15 @@ public enum JobGraph {
      * @param jobId
      * @return List of children'pair with jobid and JobFlag
      */
-    public List<Pair<Long, JobFlag>> getChildren(long jobId) {
-        List<Pair<Long, JobFlag>> childJobPairs = new ArrayList<Pair<Long, JobFlag>>();
+    public List<Pair<Long, JobStatus>> getChildren(long jobId) {
+        List<Pair<Long, JobStatus>> childJobPairs = new ArrayList<Pair<Long, JobStatus>>();
         DAGJob dagJob = jobMap.get(jobId);
         if (dagJob != null) {
             List<DAGJob> children = getChildren(dagJob);
             if (children != null) {
                 for (DAGJob child : children) {
-                    Pair<Long, JobFlag> jobPair = new Pair<Long, JobFlag>(child.getJobId(),
-                            child.getJobFlag());
+                    Pair<Long, JobStatus> jobPair = new Pair<Long, JobStatus>(child.getJobId(),
+                            child.getJobStatus());
                     childJobPairs.add(jobPair);
                 }
             }
@@ -122,7 +122,7 @@ public enum JobGraph {
         List<Long> jobs = new ArrayList<Long>();
         for (DAGJob dagJob : jobMap.values()) {
             if (dagJob.getType().implies(DAGJobType.TIME) &&
-                    dagJob.getJobFlag().equals(JobFlag.ENABLE) &&
+                    dagJob.getJobStatus().equals(JobStatus.ENABLE) &&
                     jobService.isActive(dagJob.getJobId())) {
                 jobs.add(dagJob.getJobId());
             }
@@ -227,26 +227,26 @@ public enum JobGraph {
      * modify job flag
      *
      * @param jobId
-     * @param jobFlag
+     * @param jobStatus
      * @throws JobScheduleException
      */
-    public void modifyJobFlag(long jobId, JobFlag jobFlag) throws JobScheduleException {
+    public void modifyJobFlag(long jobId, JobStatus jobStatus) throws JobScheduleException {
         DAGJob dagJob = getDAGJob(jobId);
         List<DAGJob> children = new ArrayList<DAGJob>();
         if (dagJob != null) {
             children = getChildren(dagJob);
         }
 
-        if (jobFlag.equals(JobFlag.DELETED)) {
+        if (jobStatus.equals(JobStatus.DELETED)) {
             if (dagJob != null) {
                 removeJob(dagJob);
                 LOGGER.info("remove DAGJob {} from DAGScheduler successfully.", dagJob.getJobId());
             }
         } else {
             if (dagJob != null) {
-                JobFlag oldFlag = dagJob.getJobFlag();
-                dagJob.setJobFlag(jobFlag);
-                LOGGER.info("moidfy job flag from {} to {}.", oldFlag, jobFlag);
+                JobStatus oldFlag = dagJob.getJobStatus();
+                dagJob.setJobStatus(jobStatus);
+                LOGGER.info("moidfy job flag from {} to {}.", oldFlag, jobStatus);
             }
         }
 
@@ -302,7 +302,7 @@ public enum JobGraph {
         if (outEdges != null) {
             for (DefaultEdge edge : outEdges) {
                 DAGJob child = dag.getEdgeTarget(edge);
-                if (child.getJobFlag().equals(JobFlag.ENABLE) && jobService.isActive(child.getJobId())) {
+                if (child.getJobStatus().equals(JobStatus.ENABLE) && jobService.isActive(child.getJobId())) {
                     children.add(dag.getEdgeTarget(edge));
                 }
             }
@@ -395,7 +395,7 @@ public enum JobGraph {
         Set<Long> jobIds = Sets.newHashSet();
         if (parents != null) {
             for (DAGJob parent : parents) {
-                if (parent.getJobFlag().equals(JobFlag.ENABLE)) {
+                if (parent.getJobStatus().equals(JobStatus.ENABLE)) {
                     jobIds.add(parent.getJobId());
                 }
             }
