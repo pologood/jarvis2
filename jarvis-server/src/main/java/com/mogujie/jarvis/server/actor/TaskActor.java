@@ -57,7 +57,6 @@ import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.domain.JobDependencyEntry;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
-import com.mogujie.jarvis.server.scheduler.dag.JobGraph;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
 import com.mogujie.jarvis.server.scheduler.event.ManualRerunTaskEvent;
 import com.mogujie.jarvis.server.scheduler.event.RetryTaskEvent;
@@ -90,7 +89,6 @@ public class TaskActor extends UntypedActor {
     private TaskDependService taskDependService = Injectors.getInjector().getInstance(TaskDependService.class);
     private ConvertValidService convertValidService = Injectors.getInjector().getInstance(ConvertValidService.class);
 
-    private JobGraph jobGraph = JobGraph.INSTANCE;
     private TaskGraph taskGraph = TaskGraph.INSTANCE;
     private TaskQueue taskQueue = TaskQueue.INSTANCE;
     private JobSchedulerController controller = JobSchedulerController.getInstance();

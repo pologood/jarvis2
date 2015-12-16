@@ -87,7 +87,8 @@ public class JobService {
         long jobId = record.getJobId();
 
         // 2. insert to cache
-        JobEntry jobEntry = new JobEntry(record, new ArrayList<>(), new HashMap<>());
+        Job newRecord = jobMapper.selectByPrimaryKey(jobId);
+        JobEntry jobEntry = new JobEntry(newRecord, new ArrayList<>(), new HashMap<>());
         metaStore.put(jobId, jobEntry);
 
         return jobId;

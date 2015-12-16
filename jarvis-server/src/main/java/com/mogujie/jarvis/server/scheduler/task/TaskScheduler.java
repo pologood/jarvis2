@@ -29,6 +29,7 @@ import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.server.dispatcher.TaskManager;
 import com.mogujie.jarvis.server.dispatcher.TaskQueue;
+import com.mogujie.jarvis.server.domain.JobEntry;
 import com.mogujie.jarvis.server.domain.RetryType;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
@@ -188,7 +189,8 @@ public class TaskScheduler extends Scheduler {
         LOGGER.info("add new task[{}] to DB", taskId);
 
         // 如果是串行任务，添加自依赖
-        if (jobService.get(jobId).getJob().getSerialFlag() > 0) {
+        JobEntry jobEntry = jobService.get(jobId);
+        if (jobEntry != null && jobEntry.getJob().getSerialFlag() > 0) {
             Task task = taskService.getLastTask(jobId, taskId);
             if (task != null) {
                 List<Long> dependTaskIds = Lists.newArrayList(task.getTaskId());
