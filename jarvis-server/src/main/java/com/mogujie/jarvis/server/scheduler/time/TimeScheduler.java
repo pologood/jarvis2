@@ -12,9 +12,9 @@ import java.util.Iterator;
 import java.util.SortedSet;
 
 import org.joda.time.DateTime;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mogujie.jarvis.core.domain.JobStatus;
+import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
 import com.mogujie.jarvis.server.scheduler.event.StartEvent;
@@ -31,8 +31,7 @@ public abstract class TimeScheduler extends Scheduler {
     protected JobSchedulerController controller = JobSchedulerController.getInstance();
     protected PlanGenerator planGenerator = new PlanGenerator();
 
-    @Autowired
-    protected JobService jobService;
+    protected JobService jobService = Injectors.getInjector().getInstance(JobService.class);
 
     class TimeScanThread extends Thread {
         public TimeScanThread(String name) {
@@ -67,6 +66,7 @@ public abstract class TimeScheduler extends Scheduler {
             }
         }
     }
+
     private TimeScanThread scanThread;
 
     @Override

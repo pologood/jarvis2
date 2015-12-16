@@ -21,8 +21,8 @@ import com.google.common.collect.Maps;
 import com.mogujie.jarvis.core.expression.DependencyExpression;
 import com.mogujie.jarvis.core.expression.TimeOffsetExpression;
 import com.mogujie.jarvis.server.domain.JobDependencyEntry;
+import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.service.JobService;
-import com.mogujie.jarvis.server.util.SpringContext;
 
 /**
  * 单个任务的依赖检查器，内部维护Map<Long, TaskDependSchedule> jobScheduleMap进行依赖检查。
@@ -153,7 +153,7 @@ public class DAGDependChecker {
     }
 
     private TaskDependSchedule getSchedule(long myJobId, long preJobId) {
-        JobService jobService = SpringContext.getBean(JobService.class);
+        JobService jobService = Injectors.getInjector().getInstance(JobService.class);
         DependencyExpression dependencyExpression = null;
         Map<Long, JobDependencyEntry> dependencyMap = jobService.get(myJobId).getDependencies();
         if (dependencyMap != null && dependencyMap.containsKey(preJobId)) {

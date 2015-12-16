@@ -13,11 +13,7 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 
-import javax.inject.Named;
-
 import org.apache.commons.configuration.Configuration;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 
 import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
@@ -31,22 +27,18 @@ import com.mogujie.jarvis.dto.generate.App;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
 import com.mogujie.jarvis.server.ServerConigKeys;
 import com.mogujie.jarvis.server.domain.ActorEntry;
+import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.service.AppService;
 import com.mogujie.jarvis.server.util.AppTokenUtils;
-import com.mogujie.jarvis.server.util.SpringExtension;
 
 import akka.actor.ActorRef;
 import akka.actor.Props;
 import akka.actor.UntypedActor;
-import akka.routing.RouterConfig;
 import akka.routing.SmallestMailboxPool;
 
-@Named("serverActor")
-@Scope("prototype")
 public class ServerActor extends UntypedActor {
 
-    @Autowired
-    private AppService appService;
+    private AppService appService = Injectors.getInjector().getInstance(AppService.class);
 
     private static Configuration serverConfig = ConfigUtils.getServerConfig();
     private static boolean appTokenVerifyEnable = serverConfig.getBoolean(ServerConigKeys.APP_TOKEN_VERIFY_ENABLE, true);
@@ -57,14 +49,7 @@ public class ServerActor extends UntypedActor {
         return Props.create(ServerActor.class);
     }
 
-    private void addActor(String actorName, List<ActorEntry> handledMessages) {
-        ActorRef actorRef = getContext().actorOf(SpringExtension.SPRING_EXT_PROVIDER.get(getContext().system()).props(actorName));
-        actorRefs.add(new Pair<>(actorRef, handledMessages));
-    }
-
-    private void addActor(String actorName, RouterConfig routerConfig, List<ActorEntry> handledMessages) {
-        ActorRef actorRef = getContext()
-                .actorOf(SpringExtension.SPRING_EXT_PROVIDER.get(getContext().system()).props(actorName).withRouter(routerConfig));
+    private void addActor(ActorRef actorRef, List<ActorEntry> handledMessages) {
         actorRefs.add(new Pair<>(actorRef, handledMessages));
     }
 
@@ -74,22 +59,21 @@ public class ServerActor extends UntypedActor {
                 TaskMetricsRoutingActor.handledMessages()));
 
         int taskActorNum = serverConfig.getInt(ServerConigKeys.TASK_ACTOR_NUM, 10);
-        addActor("taskActor", new SmallestMailboxPool(taskActorNum), TaskActor.handledMessages());
-
-        addActor("appActor", AppActor.handledMessages());
-        addActor("jobActor", JobActor.handledMessages());
-        addActor("heartBeatActor", HeartBeatActor.handledMessages());
-        addActor("workerGroupActor", WorkerGroupActor.handledMessages());
-        addActor("workerModifyStatusActor", WorkerModifyStatusActor.handledMessages());
-        addActor("workerRegistryActor", WorkerRegistryActor.handledMessages());
-        addActor("systemActor", SystemActor.handledMessages());
-        addActor("planActor", PlanActor.handledMessages());
+        addActor(getContext().actorOf(TaskActor.props().withRouter(new SmallestMailboxPool(taskActorNum))), TaskActor.handledMessages());
+        addActor(getContext().actorOf(AppActor.props()), AppActor.handledMessages());
+        addActor(getContext().actorOf(JobActor.props()), JobActor.handledMessages());
+        addActor(getContext().actorOf(HeartBeatActor.props()), HeartBeatActor.handledMessages());
+        addActor(getContext().actorOf(WorkerGroupActor.props()), WorkerGroupActor.handledMessages());
+        addActor(getContext().actorOf(WorkerModifyStatusActor.props()), WorkerModifyStatusActor.handledMessages());
+        addActor(getContext().actorOf(WorkerRegistryActor.props()), WorkerRegistryActor.handledMessages());
+        addActor(getContext().actorOf(SystemActor.props()), SystemActor.handledMessages());
+        addActor(getContext().actorOf(PlanActor.props()), PlanActor.handledMessages());
     }
 
     private Object generateResponse(Class<? extends GeneratedMessage> clazz, boolean success, String msg) {
         try {
-            Method method = clazz.getMethod("getDefaultInstance", new Class[]{});
-            Object object = method.invoke(null, new Object[]{});
+            Method method = clazz.getMethod("getDefaultInstance", new Class[] {});
+            Object object = method.invoke(null, new Object[] {});
             for (Field field : object.getClass().getDeclaredFields()) {
                 if ("success_".equals(field.getName())) {
                     field.setAccessible(true);

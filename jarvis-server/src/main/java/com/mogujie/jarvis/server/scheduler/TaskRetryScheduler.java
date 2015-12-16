@@ -18,8 +18,6 @@ import java.util.concurrent.Executors;
 
 import org.joda.time.DateTime;
 
-import akka.japi.tuple.Tuple3;
-
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.AtomicLongMap;
 import com.mogujie.jarvis.core.domain.IdType;
@@ -30,7 +28,10 @@ import com.mogujie.jarvis.core.util.IdUtils;
 import com.mogujie.jarvis.core.util.ThreadUtils;
 import com.mogujie.jarvis.server.dispatcher.TaskQueue;
 import com.mogujie.jarvis.server.domain.RetryType;
+import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
+
+import akka.japi.tuple.Tuple3;
 
 /**
  * Task Retry Scheduler
@@ -39,7 +40,7 @@ import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
 public enum TaskRetryScheduler {
     INSTANCE;
 
-    private TaskQueue taskQueue = TaskQueue.INSTANCE;
+    private TaskQueue taskQueue = Injectors.getInjector().getInstance(TaskQueue.class);
     private volatile boolean running;
     private Map<Pair<String, RetryType>, Pair<TaskDetail, Integer>> taskMap = Maps.newConcurrentMap();
     private AtomicLongMap<Pair<String, RetryType>> taskRetriedCounter = AtomicLongMap.create();

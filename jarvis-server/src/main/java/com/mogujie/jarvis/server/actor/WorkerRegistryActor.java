@@ -10,12 +10,6 @@ package com.mogujie.jarvis.server.actor;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Named;
-
-import com.mogujie.jarvis.server.service.WorkerGroupService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-
 import com.google.common.base.Preconditions;
 import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.core.domain.WorkerInfo;
@@ -24,23 +18,25 @@ import com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse;
 import com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest;
 import com.mogujie.jarvis.server.WorkerRegistry;
 import com.mogujie.jarvis.server.domain.ActorEntry;
+import com.mogujie.jarvis.server.guice.Injectors;
+import com.mogujie.jarvis.server.service.WorkerGroupService;
 import com.mogujie.jarvis.server.service.WorkerService;
 
 import akka.actor.Address;
+import akka.actor.Props;
 import akka.actor.UntypedActor;
 
 /**
  * Worker authentication
  */
-@Named("workerRegistryActor")
-@Scope("prototype")
 public class WorkerRegistryActor extends UntypedActor {
 
-    @Autowired
-    private WorkerService workerService;
+    private WorkerService workerService = Injectors.getInjector().getInstance(WorkerService.class);
+    private WorkerGroupService workerGroupService = Injectors.getInjector().getInstance(WorkerGroupService.class);
 
-    @Autowired
-    private WorkerGroupService workerGroupService;
+    public static Props props() {
+        return Props.create(WorkerRegistryActor.class);
+    }
 
     public static List<ActorEntry> handledMessages() {
         List<ActorEntry> list = new ArrayList<>();
@@ -69,7 +65,7 @@ public class WorkerRegistryActor extends UntypedActor {
             String ip = address.host().get();
             int port = Integer.parseInt(address.port().get().toString());
             WorkerInfo workerInfo = new WorkerInfo(ip, port);
-            WorkerRegistry workerRegistry = WorkerRegistry.getInstance();
+            WorkerRegistry workerRegistry = Injectors.getInjector().getInstance(WorkerRegistry.class);
             workerRegistry.put(workerInfo, groupId);
 
             workerService.saveWorker(ip, port, groupId, WorkerStatus.ONLINE.getValue());

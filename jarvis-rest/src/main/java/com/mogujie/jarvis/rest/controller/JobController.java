@@ -26,7 +26,9 @@ import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobResponse;
 import com.mogujie.jarvis.protocol.JobProtos.ServerSubmitJobResponse;
 import com.mogujie.jarvis.protocol.JobProtos.RestQueryJobRelationRequest;
 import com.mogujie.jarvis.protocol.JobProtos.ServerQueryJobRelationResponse;
-import com.mogujie.jarvis.protocol.JobProtos.JobFlagEntry;
+import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobStatusRequest;
+import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobStatusResponse;
+import com.mogujie.jarvis.protocol.JobProtos.JobStatusEntry;
 import com.mogujie.jarvis.rest.RestResult;
 import com.mogujie.jarvis.rest.utils.ConvertValidUtils;
 import com.mogujie.jarvis.rest.utils.JsonParameters;
@@ -129,9 +131,6 @@ public class JobController extends AbstractController {
             if (jobVo.getJobType() != null) {
                 builder.setJobType(jobVo.getJobType());
             }
-            if (jobVo.getStatus() != null) {
-                builder.setJobFlag(jobVo.getStatus());
-            }
             if (jobVo.getContent() != null && !jobVo.getContent().equals("")) {
                 builder.setContent(jobVo.getContent());
             }
@@ -211,14 +210,14 @@ public class JobController extends AbstractController {
             int status = para.getIntegerNotNull("status");
 
             // 构造修改job基本信息请求
-            RestModifyJobRequest.Builder builder = RestModifyJobRequest.newBuilder()
+            RestModifyJobStatusRequest.Builder builder = RestModifyJobStatusRequest.newBuilder()
                     .setAppAuth(appAuth)
                     .setUser(user)
                     .setJobId(jobId)
-                    .setJobFlag(status);
+                    .setStatus(status);
 
             // 发送信息到server修改job基本信息
-            ServerModifyJobResponse response = (ServerModifyJobResponse) callActor(AkkaType.SERVER, builder.build());
+            ServerModifyJobStatusResponse response = (ServerModifyJobStatusResponse) callActor(AkkaType.SERVER, builder.build());
 
             // 判断修改基本信息是否成功，修改基本信息成功后才尝试修改依赖
             if (response.getSuccess()) {
@@ -268,10 +267,10 @@ public class JobController extends AbstractController {
             ServerQueryJobRelationResponse response = (ServerQueryJobRelationResponse) callActor(AkkaType.SERVER, request);
             if (response.getSuccess()) {
                 JobRelationsVo vo = new JobRelationsVo();
-                if(response.getJobFlagEntryOrBuilderList() != null){
+                if(response.getJobStatusEntryOrBuilderList() != null){
                     List<JobRelationsVo.JobStatusEntry> list = new ArrayList<>();
-                    for(JobFlagEntry entry : response.getJobFlagEntryList()){
-                         list.add(new JobRelationsVo.JobStatusEntry().setJobId(entry.getJobId()).setStatus(entry.getJobFlag()));
+                    for(JobStatusEntry entry : response.getJobStatusEntryList()){
+                         list.add(new JobRelationsVo.JobStatusEntry().setJobId(entry.getJobId()).setStatus(entry.getStatus()));
                     }
                     vo.setList(list);
                 }

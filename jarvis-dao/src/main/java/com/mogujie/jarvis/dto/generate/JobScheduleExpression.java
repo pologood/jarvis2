@@ -1,9 +1,8 @@
 package com.mogujie.jarvis.dto.generate;
 
-import java.io.Serializable;
 import java.util.Date;
 
-public class JobScheduleExpression implements Serializable {
+public class JobScheduleExpression {
     private Integer id;
 
     private Long jobId;
@@ -15,8 +14,6 @@ public class JobScheduleExpression implements Serializable {
     private Date createTime;
 
     private Date updateTime;
-
-    private static final long serialVersionUID = 1L;
 
     public Integer getId() {
         return id;

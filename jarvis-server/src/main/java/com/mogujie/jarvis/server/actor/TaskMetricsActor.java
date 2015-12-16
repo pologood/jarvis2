@@ -10,15 +10,8 @@ package com.mogujie.jarvis.server.actor;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Named;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-
-import akka.actor.Address;
-import akka.actor.UntypedActor;
 
 import com.mogujie.jarvis.core.domain.IdType;
 import com.mogujie.jarvis.core.domain.MessageType;
@@ -30,6 +23,7 @@ import com.mogujie.jarvis.protocol.ReportTaskProgressProtos.WorkerReportTaskProg
 import com.mogujie.jarvis.protocol.ReportTaskStatusProtos.ServerReportTaskStatusResponse;
 import com.mogujie.jarvis.protocol.ReportTaskStatusProtos.WorkerReportTaskStatusRequest;
 import com.mogujie.jarvis.server.domain.ActorEntry;
+import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
 import com.mogujie.jarvis.server.scheduler.event.KilledEvent;
@@ -39,22 +33,26 @@ import com.mogujie.jarvis.server.scheduler.event.UnhandleEvent;
 import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.service.WorkerService;
 
+import akka.actor.Address;
+import akka.actor.Props;
+import akka.actor.UntypedActor;
+
 /**
  * Actor used to receive task metrics information (e.g. status, process)
  *
  * @author guangming
  *
  */
-@Named("taskMetricsActor")
-@Scope("prototype")
 public class TaskMetricsActor extends UntypedActor {
-    @Autowired
-    private TaskService taskService;
-    @Autowired
-    private WorkerService workerService;
+    private TaskService taskService = Injectors.getInjector().getInstance(TaskService.class);
+    private WorkerService workerService = Injectors.getInjector().getInstance(WorkerService.class);
 
     private JobSchedulerController schedulerController = JobSchedulerController.getInstance();
     private static final Logger LOGGER = LogManager.getLogger();
+
+    public static Props props() {
+        return Props.create(TaskMetricsActor.class);
+    }
 
     @Override
     public void onReceive(Object obj) throws Exception {

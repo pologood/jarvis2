@@ -39,4 +39,17 @@ public enum JobStatus {
         }
         return status;
     }
+
+    public static Boolean isValid(int value) {
+        JobStatus[] values = JobStatus.values();
+        for (JobStatus s : values) {
+            if (s.getValue() == value) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+
 }

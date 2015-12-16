@@ -240,5 +240,4 @@
     where jobId = #{jobId,jdbcType=BIGINT}
       and preJobId = #{preJobId,jdbcType=BIGINT}
   </update>
-  <cache />
 </mapper>

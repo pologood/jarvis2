@@ -11,29 +11,26 @@ package com.mogujie.jarvis.server.dispatcher;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.PostConstruct;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.AtomicLongMap;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.mogujie.jarvis.core.domain.Pair;
 import com.mogujie.jarvis.core.domain.WorkerInfo;
 import com.mogujie.jarvis.dto.generate.App;
+import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.service.AppService;
 
-@Repository
+@Singleton
 public class TaskManager {
 
-    @Autowired
-    private AppService appService;
+    private AppService appService = Injectors.getInjector().getInstance(AppService.class);
 
     private Map<String, Pair<WorkerInfo, Integer>> taskMap = Maps.newHashMap();
     private Map<Integer, Integer> maxParallelismMap = Maps.newHashMap();
     private AtomicLongMap<Integer> parallelismCounter = AtomicLongMap.create();
 
-    @PostConstruct
+    @Inject
     private void init() {
         List<App> list = appService.getAppList();
         for (App app : list) {

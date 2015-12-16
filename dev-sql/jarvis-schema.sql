@@ -24,7 +24,7 @@ CREATE TABLE `app` (
   `updateUser` varchar(32) NOT NULL DEFAULT '' COMMENT '最后更新用户',
   PRIMARY KEY (`appId`),
   UNIQUE KEY `index_appName` (`appName`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COMMENT='app表';
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8 COMMENT='app表';
 
 -- Create syntax for TABLE 'app_worker_group'
 CREATE TABLE `app_worker_group` (
@@ -41,11 +41,12 @@ CREATE TABLE `job` (
   `jobId` bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'jobID',
   `jobName` varchar(64) NOT NULL DEFAULT '' COMMENT '任务名称',
   `jobType` varchar(64) NOT NULL DEFAULT '0' COMMENT '任务类型 hive_sql; hive_script; shell; java; MR',
-  `jobFlag` int(3) NOT NULL DEFAULT '1' COMMENT '任务标志 1:有效； 2:无效；3：过期；4：垃圾箱；',
+  `status` int(3) NOT NULL DEFAULT '1' COMMENT '任务状态 1:有效； 2:无效；3：过期；4：垃圾箱；',
   `content` varchar(10000) NOT NULL DEFAULT '' COMMENT '任务内容,脚本内容或脚本名',
-  `params` varchar(2048) DEFAULT '' COMMENT '任务参数，json格式',
+  `params` varchar(2048) NOT NULL DEFAULT '' COMMENT '任务参数，json格式',
   `submitUser` varchar(32) NOT NULL DEFAULT '' COMMENT '提交用户',
   `priority` int(3) unsigned NOT NULL DEFAULT '0' COMMENT '优先级,1:low,2:normal,3:high,4:verg high',
+  `serialFlag` int(3) unsigned NOT NULL DEFAULT '0' COMMENT '是否串行。0：并行; 1：串行',
   `appId` int(11) NOT NULL COMMENT '应用ID',
   `workerGroupId` int(11) unsigned NOT NULL DEFAULT '0' COMMENT 'worker组ID',
   `activeStartDate` datetime DEFAULT NULL COMMENT '有效开始日期',
@@ -60,13 +61,13 @@ CREATE TABLE `job` (
   PRIMARY KEY (`jobId`),
   KEY `index_submitUser` (`submitUser`),
   KEY `index_createTime` (`createTime`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8 COMMENT='job表';
+) ENGINE=InnoDB AUTO_INCREMENT=198 DEFAULT CHARSET=utf8 COMMENT='job表';
 
 -- Create syntax for TABLE 'job_depend'
 CREATE TABLE `job_depend` (
   `jobId` bigint(11) unsigned NOT NULL DEFAULT '0' COMMENT 'jobId',
   `preJobId` bigint(11) unsigned NOT NULL DEFAULT '0' COMMENT '前置JobId',
-  `commonStrategy` int(3) unsigned NOT NULL DEFAULT '0' COMMENT '通用依赖策略。1:ALL, 2:LASTONE, 3:ANYONE',
+  `commonStrategy` int(3) unsigned NOT NULL DEFAULT '1' COMMENT '通用依赖策略。1:ALL, 2:LASTONE, 3:ANYONE',
   `offsetStrategy` varchar(1024) NOT NULL DEFAULT '' COMMENT '偏移依赖策略',
   `createTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updateTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
@@ -84,7 +85,7 @@ CREATE TABLE `job_schedule_expression` (
   `updateTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
   PRIMARY KEY (`id`),
   KEY `index_jobId` (`jobId`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
 
 -- Create syntax for TABLE 'task'
 CREATE TABLE `task` (
@@ -92,15 +93,16 @@ CREATE TABLE `task` (
   `attemptId` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '最后的尝试ID',
   `jobId` bigint(11) unsigned NOT NULL DEFAULT '0' COMMENT '所属JobID',
   `content` varchar(10000) NOT NULL DEFAULT '' COMMENT '任务内容',
-  `params` varchar(2048) DEFAULT '' COMMENT '任务参数',
-  `scheduleTime` datetime DEFAULT NULL COMMENT '调度时间',
+  `params` varchar(2048) NOT NULL DEFAULT '' COMMENT '任务参数',
+  `scheduleTime` datetime NOT NULL COMMENT '调度时间',
   `progress` float NOT NULL DEFAULT '0' COMMENT '执行进度',
-  `status` int(3) unsigned NOT NULL DEFAULT '1' COMMENT 'task状态： 1:waiting；2:ready；3:running；4:success；5:failed；6:killed',
-  `workerId` int(11) DEFAULT '0' COMMENT 'workerId',
+  `status` int(3) unsigned NOT NULL DEFAULT '1' COMMENT 'task状态： 1:waiting；2:ready；3:running；4:success；5:failed；6:killed；99:removed',
+  `appId` int(11) NOT NULL DEFAULT '0' COMMENT 'appId',
+  `workerId` int(11) NOT NULL DEFAULT '0' COMMENT 'workerId',
   `executeUser` varchar(32) NOT NULL DEFAULT '' COMMENT '执行用户',
   `executeStartTime` datetime DEFAULT NULL COMMENT '执行开始时间',
   `executeEndTime` datetime DEFAULT NULL COMMENT '执行结束时间',
-  `attemptExtra` varchar(1024) DEFAULT '' COMMENT '尝试扩展信息,json格式',
+  `attemptExtra` varchar(1024) NOT NULL DEFAULT '' COMMENT '尝试扩展信息,json格式',
   `createTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updateTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
   PRIMARY KEY (`taskId`),
@@ -108,12 +110,13 @@ CREATE TABLE `task` (
   KEY `index_dataYmd` (`scheduleTime`),
   KEY `index_executeStartTime` (`executeStartTime`),
   KEY `index_executeUser` (`executeUser`) KEY_BLOCK_SIZE=4
-) ENGINE=InnoDB AUTO_INCREMENT=104 DEFAULT CHARSET=utf8 COMMENT='task表';
+) ENGINE=InnoDB AUTO_INCREMENT=3508 DEFAULT CHARSET=utf8 COMMENT='task表';
 
 -- Create syntax for TABLE 'task_depend'
 CREATE TABLE `task_depend` (
   `taskId` bigint(11) unsigned NOT NULL DEFAULT '0' COMMENT 'taskId',
-  `dependTaskIds` varchar(1024) NOT NULL DEFAULT '' COMMENT '依赖的task情况',
+  `dependTaskIds` varchar(2048) NOT NULL DEFAULT '{}' COMMENT '依赖task信息',
+  `childTaskIds` varchar(2048) NOT NULL DEFAULT '{}' COMMENT '子task信息',
   `createTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`taskId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='task依赖表';
@@ -127,8 +130,9 @@ CREATE TABLE `worker` (
   `status` int(3) unsigned NOT NULL DEFAULT '0' COMMENT '状态：0：下线；1：上线；',
   `createTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updateTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='worker表';
+  PRIMARY KEY (`id`),
+  KEY `index_ip_port` (`ip`,`port`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='worker表';
 
 -- Create syntax for TABLE 'worker_group'
 CREATE TABLE `worker_group` (
@@ -140,4 +144,4 @@ CREATE TABLE `worker_group` (
   `updateTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
   `updateUser` varchar(32) NOT NULL DEFAULT '' COMMENT '最后更新用户',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='workerGroup表';
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='workerGroup表';

@@ -13,40 +13,37 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import javax.inject.Named;
-
 import org.joda.time.DateTime;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.transaction.annotation.Transactional;
-
-import akka.actor.UntypedActor;
+import org.mybatis.guice.transactional.Transactional;
 
 import com.google.common.collect.Sets;
-import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.core.domain.JobRelationType;
+import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.core.domain.OperationMode;
 import com.mogujie.jarvis.core.domain.Pair;
-import com.mogujie.jarvis.core.exeception.JobScheduleException;
 import com.mogujie.jarvis.core.expression.ScheduleExpressionType;
 import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.dto.generate.JobDepend;
 import com.mogujie.jarvis.dto.generate.JobDependKey;
 import com.mogujie.jarvis.dto.generate.JobScheduleExpression;
 import com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry;
-import com.mogujie.jarvis.protocol.JobProtos.JobFlagEntry;
+import com.mogujie.jarvis.protocol.JobProtos.JobStatusEntry;
 import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobRequest;
 import com.mogujie.jarvis.protocol.JobProtos.RestQueryJobRelationRequest;
 import com.mogujie.jarvis.protocol.JobProtos.RestSubmitJobRequest;
 import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobResponse;
 import com.mogujie.jarvis.protocol.JobProtos.ServerQueryJobRelationResponse;
 import com.mogujie.jarvis.protocol.JobProtos.ServerSubmitJobResponse;
+import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobStatusRequest;
+import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobStatusResponse;
+
 import com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry;
 import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.domain.ModifyDependEntry;
 import com.mogujie.jarvis.server.domain.ModifyOperation;
 import com.mogujie.jarvis.server.domain.RemoveJobRequest;
+import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.dag.DAGJob;
 import com.mogujie.jarvis.server.scheduler.dag.DAGJobType;
 import com.mogujie.jarvis.server.scheduler.dag.DAGScheduler;
@@ -55,20 +52,23 @@ import com.mogujie.jarvis.server.scheduler.time.TimeSchedulerFactory;
 import com.mogujie.jarvis.server.service.ConvertValidService;
 import com.mogujie.jarvis.server.service.JobService;
 
+import akka.actor.Props;
+import akka.actor.UntypedActor;
+
 /**
  * @author guangming
  */
-@Named("jobActor")
-@Scope("prototype")
 public class JobActor extends UntypedActor {
 
     private DAGScheduler dagScheduler = DAGScheduler.getInstance();
     private TimeScheduler timeScheduler = TimeSchedulerFactory.getInstance();
 
-    @Autowired
-    private JobService jobService;
-    @Autowired
-    private ConvertValidService convertValidService;
+    private JobService jobService = Injectors.getInjector().getInstance(JobService.class);
+    private ConvertValidService convertValidService = Injectors.getInjector().getInstance(ConvertValidService.class);
+
+    public static Props props() {
+        return Props.create(JobActor.class);
+    }
 
     /**
      * 处理消息
@@ -112,7 +112,7 @@ public class JobActor extends UntypedActor {
         ServerSubmitJobResponse response;
         try {
             // 参数检查
-            Job job = convertValidService.convert2Job(msg);
+            Job job = convertValidService.convertCheck2Job(msg);
 
             // 1. insert job to DB
             long jobId = jobService.insertJob(job);
@@ -168,12 +168,10 @@ public class JobActor extends UntypedActor {
         ServerModifyJobResponse response;
         try {
             // 参数检查
-            Job job = convertValidService.convert2Job(msg);
+            Job job = convertValidService.convertCheck2Job(msg);
 
             // 1. update job to DB
             jobService.updateJob(job);
-
-            modifyJobFlag(msg);
 
             modifyDependency(msg);
 
@@ -190,13 +188,35 @@ public class JobActor extends UntypedActor {
         }
     }
 
-    private void modifyJobFlag(RestModifyJobRequest msg) throws JobScheduleException {
-        if (!msg.hasJobFlag())
-            return;
-        long jobId = msg.getJobId();
-        JobStatus flag = JobStatus.getInstance(msg.getJobFlag());
-        timeScheduler.modifyJobFlag(jobId, flag);
-        dagScheduler.getJobGraph().modifyJobFlag(jobId, flag);
+
+    /**
+     * 修改任务
+     *
+     * @param msg
+     * @throws IOException
+     */
+    @Transactional
+    private void modifyJobStatus(RestModifyJobStatusRequest msg) throws Exception {
+
+        ServerModifyJobStatusResponse response;
+        try {
+            // 参数检查
+            Job job = convertValidService.convertCheck2Job(msg);
+
+            // 1. update job to DB
+            jobService.updateJob(job);
+
+            long jobId = msg.getJobId();
+            JobStatus flag = JobStatus.getInstance(msg.getStatus());
+            timeScheduler.modifyJobFlag(jobId, flag);
+            dagScheduler.getJobGraph().modifyJobFlag(jobId, flag);
+
+            response = ServerModifyJobStatusResponse.newBuilder().setSuccess(true).build();
+            getSender().tell(response, getSelf());
+        } catch (Exception e) {
+            response = ServerModifyJobStatusResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
+            getSender().tell(response, getSelf());
+        }
     }
 
     private void modifyJobExpression(RestModifyJobRequest msg) {
@@ -304,8 +324,8 @@ public class JobActor extends UntypedActor {
                 if (flag.equals(JobStatus.ENABLE) && !jobService.isActive(relationId)) {
                     flag = JobStatus.EXPIRED;
                 }
-                JobFlagEntry entry = JobFlagEntry.newBuilder().setJobId(relationId).setJobFlag(flag.getValue()).build();
-                builder.addJobFlagEntry(entry);
+                JobStatusEntry entry = JobStatusEntry.newBuilder().setJobId(relationId).setStatus(flag.getValue()).build();
+                builder.addJobStatusEntry(entry);
             }
             response = builder.setSuccess(true).build();
             getSender().tell(response, getSelf());

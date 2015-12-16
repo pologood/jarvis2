@@ -14,15 +14,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.annotation.PostConstruct;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.google.common.base.Preconditions;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.mogujie.jarvis.dao.generate.AppMapper;
 import com.mogujie.jarvis.dao.generate.AppWorkerGroupMapper;
 import com.mogujie.jarvis.dto.generate.App;
@@ -33,18 +30,18 @@ import com.mogujie.jarvis.dto.generate.AppWorkerGroupExample;
 /**
  * @author guangming
  */
-@Service
+@Singleton
 public class AppService {
 
-    @Autowired
+    @Inject
     private AppMapper appMapper;
 
-    @Autowired
+    @Inject
     private AppWorkerGroupMapper appWorkerGroupMapper;
 
     private Map<Integer, App> appMetastore = Maps.newConcurrentMap();
 
-    @PostConstruct
+    @Inject
     private void init() {
         AppExample example = new AppExample();
         List<App> apps = appMapper.selectByExample(example);

@@ -29,6 +29,7 @@ import com.mogujie.jarvis.core.exeception.JobScheduleException;
 import com.mogujie.jarvis.core.expression.DependencyExpression;
 import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.server.domain.JobDependencyEntry;
+import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.event.AddTaskEvent;
 import com.mogujie.jarvis.server.scheduler.event.ManualRerunTaskEvent;
 import com.mogujie.jarvis.server.scheduler.event.RetryTaskEvent;
@@ -40,7 +41,6 @@ import com.mogujie.jarvis.server.scheduler.task.DAGTask;
 import com.mogujie.jarvis.server.scheduler.task.TaskGraph;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.TaskService;
-import com.mogujie.jarvis.server.util.SpringContext;
 
 /**
  * @author guangming
@@ -52,8 +52,8 @@ public class TestRetryTask extends TestSchedulerBase {
     private long jobCId = 3;
     private long t1 = new DateTime("2000-10-10").getMillis();
     private long t2 = new DateTime("2000-10-12").getMillis();
-    private TaskService taskService = SpringContext.getBean(TaskService.class);
-    private JobService jobService = SpringContext.getBean(JobService.class);
+    private TaskService taskService = Injectors.getInjector().getInstance(TaskService.class);
+    private JobService jobService = Injectors.getInjector().getInstance(JobService.class);
     private TaskGraph taskGraph = TaskGraph.INSTANCE;
 
     @Test
@@ -117,7 +117,7 @@ public class TestRetryTask extends TestSchedulerBase {
                 long scheduleTime = planEntry.getDateTime().getMillis();
                 Map<Long, List<Long>> dependTaskIdMap = Maps.newHashMap();
                 Map<Long, JobDependencyEntry> dependencyMap = jobService.get(jobId).getDependencies();
-                if(dependencyMap != null) {
+                if (dependencyMap != null) {
                     for (long preJobId : dependencyMap.keySet()) {
                         JobDependencyEntry dependencyEntry = dependencyMap.get(preJobId);
                         DependencyExpression dependencyExpression = dependencyEntry.getDependencyExpression();
@@ -132,7 +132,7 @@ public class TestRetryTask extends TestSchedulerBase {
         // 4.添加依赖关系
         for (long jobId : jobIdList) {
             Set<Long> dependJobIds = jobGraph.getEnableParentJobIds(jobId);
-            for (long preJobId: jobIdList) {
+            for (long preJobId : jobIdList) {
                 if (dependJobIds.contains(preJobId)) {
                     List<ExecutionPlanEntry> planList = planMap.get(jobId);
                     for (ExecutionPlanEntry planEntry : planList) {
@@ -161,7 +161,7 @@ public class TestRetryTask extends TestSchedulerBase {
                     }
                 }
             }
-            Collections.sort(sortedPlanList, new Comparator<ExecutionPlanEntry>(){
+            Collections.sort(sortedPlanList, new Comparator<ExecutionPlanEntry>() {
                 @Override
                 public int compare(ExecutionPlanEntry entry1, ExecutionPlanEntry entry2) {
                     return entry1.getDateTime().compareTo(entry2.getDateTime());

@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.mogujie.jarvis.dao.generate.AppWorkerGroupMapper" >
-  <resultMap id="BaseResultMap" type="com.mogujie.jarvis.dto.generate.AppWorkerGroup" >
+<mapper namespace="com.mogujie.jarvis.dao.generate.AppMapper" >
+  <resultMap id="BaseResultMap" type="com.mogujie.jarvis.dto.generate.App" >
     <id column="appId" property="appId" jdbcType="INTEGER" />
-    <id column="workerGroupId" property="workerGroupId" jdbcType="INTEGER" />
+    <result column="appName" property="appName" jdbcType="VARCHAR" />
+    <result column="appKey" property="appKey" jdbcType="VARCHAR" />
+    <result column="appType" property="appType" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="maxConcurrency" property="maxConcurrency" jdbcType="INTEGER" />
     <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
     <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
     <result column="updateUser" property="updateUser" jdbcType="VARCHAR" />
@@ -67,15 +71,16 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    appId, workerGroupId, createTime, updateTime, updateUser
+    appId, appName, appKey, appType, status, maxConcurrency, createTime, updateTime, 
+    updateUser
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.mogujie.jarvis.dto.generate.AppWorkerGroupExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.mogujie.jarvis.dto.generate.AppExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from app_worker_group
+    from app
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -83,38 +88,53 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.mogujie.jarvis.dto.generate.AppWorkerGroupKey" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from app_worker_group
+    from app
     where appId = #{appId,jdbcType=INTEGER}
-      and workerGroupId = #{workerGroupId,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="com.mogujie.jarvis.dto.generate.AppWorkerGroupKey" >
-    delete from app_worker_group
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from app
     where appId = #{appId,jdbcType=INTEGER}
-      and workerGroupId = #{workerGroupId,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.mogujie.jarvis.dto.generate.AppWorkerGroupExample" >
-    delete from app_worker_group
+  <delete id="deleteByExample" parameterType="com.mogujie.jarvis.dto.generate.AppExample" >
+    delete from app
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.mogujie.jarvis.dto.generate.AppWorkerGroup" >
-    insert into app_worker_group (appId, workerGroupId, createTime, 
+  <insert id="insert" parameterType="com.mogujie.jarvis.dto.generate.App" >
+    <selectKey resultType="java.lang.Integer" keyProperty="appId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into app (appName, appKey, appType, 
+      status, maxConcurrency, createTime, 
       updateTime, updateUser)
-    values (#{appId,jdbcType=INTEGER}, #{workerGroupId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+    values (#{appName,jdbcType=VARCHAR}, #{appKey,jdbcType=VARCHAR}, #{appType,jdbcType=INTEGER}, 
+      #{status,jdbcType=INTEGER}, #{maxConcurrency,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.mogujie.jarvis.dto.generate.AppWorkerGroup" >
-    insert into app_worker_group
+  <insert id="insertSelective" parameterType="com.mogujie.jarvis.dto.generate.App" >
+    <selectKey resultType="java.lang.Integer" keyProperty="appId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into app
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="appId != null" >
-        appId,
+      <if test="appName != null" >
+        appName,
       </if>
-      <if test="workerGroupId != null" >
-        workerGroupId,
+      <if test="appKey != null" >
+        appKey,
+      </if>
+      <if test="appType != null" >
+        appType,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="maxConcurrency != null" >
+        maxConcurrency,
       </if>
       <if test="createTime != null" >
         createTime,
@@ -127,11 +147,20 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="appId != null" >
-        #{appId,jdbcType=INTEGER},
+      <if test="appName != null" >
+        #{appName,jdbcType=VARCHAR},
       </if>
-      <if test="workerGroupId != null" >
-        #{workerGroupId,jdbcType=INTEGER},
+      <if test="appKey != null" >
+        #{appKey,jdbcType=VARCHAR},
+      </if>
+      <if test="appType != null" >
+        #{appType,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="maxConcurrency != null" >
+        #{maxConcurrency,jdbcType=INTEGER},
       </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
@@ -144,20 +173,32 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.mogujie.jarvis.dto.generate.AppWorkerGroupExample" resultType="java.lang.Integer" >
-    select count(*) from app_worker_group
+  <select id="countByExample" parameterType="com.mogujie.jarvis.dto.generate.AppExample" resultType="java.lang.Integer" >
+    select count(*) from app
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update app_worker_group
+    update app
     <set >
       <if test="record.appId != null" >
         appId = #{record.appId,jdbcType=INTEGER},
       </if>
-      <if test="record.workerGroupId != null" >
-        workerGroupId = #{record.workerGroupId,jdbcType=INTEGER},
+      <if test="record.appName != null" >
+        appName = #{record.appName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.appKey != null" >
+        appKey = #{record.appKey,jdbcType=VARCHAR},
+      </if>
+      <if test="record.appType != null" >
+        appType = #{record.appType,jdbcType=INTEGER},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.maxConcurrency != null" >
+        maxConcurrency = #{record.maxConcurrency,jdbcType=INTEGER},
       </if>
       <if test="record.createTime != null" >
         createTime = #{record.createTime,jdbcType=TIMESTAMP},
@@ -174,9 +215,13 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update app_worker_group
+    update app
     set appId = #{record.appId,jdbcType=INTEGER},
-      workerGroupId = #{record.workerGroupId,jdbcType=INTEGER},
+      appName = #{record.appName,jdbcType=VARCHAR},
+      appKey = #{record.appKey,jdbcType=VARCHAR},
+      appType = #{record.appType,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=INTEGER},
+      maxConcurrency = #{record.maxConcurrency,jdbcType=INTEGER},
       createTime = #{record.createTime,jdbcType=TIMESTAMP},
       updateTime = #{record.updateTime,jdbcType=TIMESTAMP},
       updateUser = #{record.updateUser,jdbcType=VARCHAR}
@@ -184,9 +229,24 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.mogujie.jarvis.dto.generate.AppWorkerGroup" >
-    update app_worker_group
+  <update id="updateByPrimaryKeySelective" parameterType="com.mogujie.jarvis.dto.generate.App" >
+    update app
     <set >
+      <if test="appName != null" >
+        appName = #{appName,jdbcType=VARCHAR},
+      </if>
+      <if test="appKey != null" >
+        appKey = #{appKey,jdbcType=VARCHAR},
+      </if>
+      <if test="appType != null" >
+        appType = #{appType,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="maxConcurrency != null" >
+        maxConcurrency = #{maxConcurrency,jdbcType=INTEGER},
+      </if>
       <if test="createTime != null" >
         createTime = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -198,15 +258,17 @@
       </if>
     </set>
     where appId = #{appId,jdbcType=INTEGER}
-      and workerGroupId = #{workerGroupId,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.mogujie.jarvis.dto.generate.AppWorkerGroup" >
-    update app_worker_group
-    set createTime = #{createTime,jdbcType=TIMESTAMP},
+  <update id="updateByPrimaryKey" parameterType="com.mogujie.jarvis.dto.generate.App" >
+    update app
+    set appName = #{appName,jdbcType=VARCHAR},
+      appKey = #{appKey,jdbcType=VARCHAR},
+      appType = #{appType,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      maxConcurrency = #{maxConcurrency,jdbcType=INTEGER},
+      createTime = #{createTime,jdbcType=TIMESTAMP},
       updateTime = #{updateTime,jdbcType=TIMESTAMP},
       updateUser = #{updateUser,jdbcType=VARCHAR}
     where appId = #{appId,jdbcType=INTEGER}
-      and workerGroupId = #{workerGroupId,jdbcType=INTEGER}
   </update>
-  <cache />
 </mapper>

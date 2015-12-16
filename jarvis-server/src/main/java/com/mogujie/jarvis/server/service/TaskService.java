@@ -14,11 +14,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.joda.time.DateTime;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Range;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.expression.DependencyExpression;
 import com.mogujie.jarvis.dao.generate.JobMapper;
@@ -30,15 +30,15 @@ import com.mogujie.jarvis.dto.generate.TaskExample;
 /**
  * @author guangming
  */
-@Service
+@Singleton
 public class TaskService {
-    @Autowired
+    @Inject
     private TaskMapper taskMapper;
 
-    @Autowired
+    @Inject
     private TaskDependService taskDependService;
 
-    @Autowired
+    @Inject
     private JobMapper jobMapper;
 
     public Task get(long taskId) {
@@ -170,8 +170,7 @@ public class TaskService {
             return null;
         }
         TaskExample example = new TaskExample();
-        example.createCriteria().andJobIdEqualTo(jobId)
-                .andScheduleTimeBetween(start.toDate(), end.toDate());
+        example.createCriteria().andJobIdEqualTo(jobId).andScheduleTimeBetween(start.toDate(), end.toDate());
         return taskMapper.selectByExample(example);
     }
 
@@ -190,14 +189,18 @@ public class TaskService {
             return 0;
         }
         TaskExample example = new TaskExample();
-        example.createCriteria().andJobIdEqualTo(jobId)
-                .andScheduleTimeLessThan(new Date(scheduleTime));
+        example.createCriteria().andJobIdEqualTo(jobId).andScheduleTimeLessThan(new Date(scheduleTime));
         example.setOrderByClause("taskId desc");
         List<Task> tasks = taskMapper.selectByExample(example);
         if (tasks == null || tasks.isEmpty()) {
             return 0;
         }
         return new DateTime(tasks.get(0).getScheduleTime()).getMillis();
+    }
+
+    public Task getLastTask(long jobId, long taskId) {
+        //TODO
+        return null;
     }
 
     @VisibleForTesting

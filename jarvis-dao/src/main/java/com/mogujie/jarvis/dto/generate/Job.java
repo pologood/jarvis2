@@ -1,9 +1,8 @@
 package com.mogujie.jarvis.dto.generate;
 
-import java.io.Serializable;
 import java.util.Date;
 
-public class Job implements Serializable {
+public class Job {
     private Long jobId;
 
     private String jobName;
@@ -43,8 +42,6 @@ public class Job implements Serializable {
     private Date updateTime;
 
     private String updateUser;
-
-    private static final long serialVersionUID = 1L;
 
     public Long getJobId() {
         return jobId;
