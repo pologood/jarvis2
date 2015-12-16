@@ -12,7 +12,6 @@ public class TaskVo extends Task {
     private String jobType;
     private String submitUser;
     private Integer priority;
-    private Integer appId;
     private String appName;
     private String workerGroupId;
 
@@ -53,13 +52,6 @@ public class TaskVo extends Task {
         this.priority = priority;
     }
 
-    public Integer getAppId() {
-        return appId;
-    }
-
-    public void setAppId(Integer appId) {
-        this.appId = appId;
-    }
 
     public String getAppName() {
         return appName;

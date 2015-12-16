@@ -1,7 +1,5 @@
 package com.mogujie.jarvis.web.service;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.mogujie.jarvis.web.entity.vo.CronTabVo;
 import com.mogujie.jarvis.web.entity.vo.JobQo;
 import com.mogujie.jarvis.web.entity.vo.JobVo;
@@ -10,7 +8,10 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by hejian on 15/9/17.
@@ -29,72 +30,71 @@ public class JobService {
         return jobVoList;
     }
 
-    public JSONObject getJobs(JobQo jobQo){
-        JSONObject jsonObject=new JSONObject();
+    public Map<String,Object> getJobs(JobQo jobQo){
+        Map<String, Object> result = new HashMap<String, Object>();
         Integer count=jobMapper.getCountByCondition(jobQo);
         count=count==null?0:count;
 
         List<JobVo> jobList=jobMapper.getJobsByCondition(jobQo);
 
-        jsonObject.put("total",count);
-        jsonObject.put("rows", jobList);
+        result.put("total",count);
+        result.put("rows", jobList);
 
-        return jsonObject;
+        return result;
     }
 
-    public JSONObject getSimilarJobIds(Long jobId){
-        JSONObject jsonObject=new JSONObject();
+    public Map<String,Object> getSimilarJobIds(Long jobId){
+        Map<String, Object> result = new HashMap<String, Object>();
 
-        List<Long> jobList=jobMapper.getSimilarJobIds(jobId);
-        JSONArray jsonArray = new JSONArray();
+        List<Long> jobList = jobMapper.getSimilarJobIds(jobId);
+        List<Map> list = new ArrayList<Map>();
         for(int i=0;i<jobList.size();i++){
-            JSONObject singleJson = new JSONObject();
-            singleJson.put("id",jobList.get(i));
-            singleJson.put("text",jobList.get(i));
-            jsonArray.add(singleJson);
+            Map<String, Object> item = new HashMap<String, Object>();
+            item.put("id",jobList.get(i));
+            item.put("text",jobList.get(i));
+            list.add(item);
         }
 
-        jsonObject.put("total",jobList.size());
-        jsonObject.put("items", jsonArray);
+        result.put("total",jobList.size());
+        result.put("items", list);
 
-        return jsonObject;
+        return result;
     }
 
-    public JSONObject getSimilarJobNames(String jobName){
-        JSONObject jsonObject=new JSONObject();
+    public Map<String,Object> getSimilarJobNames(String jobName){
+        Map<String, Object> result = new HashMap<String, Object>();
+        List<String> jobList = jobMapper.getSimilarJobNames(jobName);
 
-        List<String> jobList=jobMapper.getSimilarJobNames(jobName);
-
-        JSONArray jsonArray = new JSONArray();
+        List<Map> list = new ArrayList<Map>();
         for(int i=0;i<jobList.size();i++){
-            JSONObject singleJson= new JSONObject();
-            singleJson.put("id",jobList.get(i));
-            singleJson.put("text",jobList.get(i));
-            jsonArray.add(singleJson);
+            Map<String,Object> item =new HashMap<String, Object>();
+            item.put("id",jobList.get(i));
+            item.put("text",jobList.get(i));
+            list.add(item);
         }
 
-        jsonObject.put("total",jobList.size());
-        jsonObject.put("items", jsonArray);
+        result.put("total",jobList.size());
+        result.put("items", list);
 
-        return jsonObject;
+        return result;
     }
 
-    public JSONObject getJobBySimilarNames(String jobName){
-        JSONObject jsonObject=new JSONObject();
+    public Map<String,Object> getJobBySimilarNames(String jobName){
+        Map<String, Object> result = new HashMap<String, Object>();
 
         List<JobVo> jobList=jobMapper.getJobBySimilarNames(jobName);
 
-        JSONArray jsonArray = new JSONArray();
+        List<Map> list = new ArrayList<Map>();
         for(JobVo jobVo:jobList){
-            JSONObject singleJson= new JSONObject();
-            singleJson.put("id",jobVo.getJobId());
-            singleJson.put("text",jobVo.getJobName());
-            jsonArray.add(singleJson);
+            Map<String,Object> item = new HashMap<String, Object>();
+            item.put("id",jobVo.getJobId());
+            item.put("text",jobVo.getJobName());
+            list.add(item);
         }
-        jsonObject.put("total",jobList.size());
-        jsonObject.put("items", jsonArray);
+        result.put("total",jobList.size());
+        result.put("items", list);
 
-        return jsonObject;
+        return result;
     }
 
 

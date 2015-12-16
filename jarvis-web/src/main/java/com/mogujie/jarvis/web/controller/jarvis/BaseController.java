@@ -66,9 +66,9 @@ public class BaseController {
 
     private void initUser(ModelMap mp, HttpServletRequest request, HttpServletResponse response, String sessionId) {
         Object sessionUser = sessionHelper.getSessionUserFromRequest(request);
-        if (null != sessionUser){
+        if (null != sessionUser) {
             this.user.set((User) sessionUser);
-            sessionHelper.updateSession(sessionId, user.get(),response);
+            sessionHelper.updateSession(sessionId, user.get(), response);
         } else {
             this.user.set(new User());
         }
@@ -87,20 +87,20 @@ public class BaseController {
             return;
         }
         Integer permissionId = (Integer) request.getAttribute("permissionId");
-        String uri=request.getRequestURI();
-        uri=uri.substring(uri.indexOf("/")+1);
-        uri=uri.substring(uri.indexOf("/"));
-        mp.put("currentUri",uri);
+        String uri = request.getRequestURI();
+        uri = uri.substring(uri.indexOf("/") + 1);
+        uri = uri.substring(uri.indexOf("/"));
+        mp.put("currentUri", uri);
 
         if (null == permissionId) permissionId = 0;
         boolean hasCurrent = false;
         Map<Integer, Map<String, String>> urlMap = getUrlMap(handlerMapping);
-        for(Menu menu: menus) {
+        for (Menu menu : menus) {
             if (!hasCurrent && menu.getPermissionIds().contains(permissionId)) {
                 menu.setIsCurrent(true);
                 hasCurrent = true;
             }
-            for(Integer p: menu.getPermissionIds()) {
+            for (Integer p : menu.getPermissionIds()) {
                 if (urlMap.containsKey(p)) {
                     menu.putUrl(urlMap.get(p));
                 }
@@ -113,13 +113,13 @@ public class BaseController {
     private Map<Integer, Map<String, String>> getUrlMap(RequestMappingHandlerMapping handlerMapping) {
         Map<RequestMappingInfo, HandlerMethod> handlerMap = handlerMapping.getHandlerMethods();
         Map<Integer, Map<String, String>> re = new HashMap<Integer, Map<String, String>>();
-        for(Map.Entry<RequestMappingInfo, HandlerMethod> m: handlerMap.entrySet()) {
+        for (Map.Entry<RequestMappingInfo, HandlerMethod> m : handlerMap.entrySet()) {
             RequestMappingInfo key = m.getKey();
             HandlerMethod value = m.getValue();
             JarvisPassport passport = value.getMethodAnnotation(JarvisPassport.class);
             if (null != passport && passport.isMenu()) {
                 JarvisAuthType[] authTypes = passport.authTypes();
-                for(JarvisAuthType a: authTypes){
+                for (JarvisAuthType a : authTypes) {
                     TreeSet<String> tmp = new TreeSet<String>(key.getPatternsCondition().getPatterns());
                     Map<String, String> v = new HashMap<String, String>();
                     v.put(JarvisAuthType.getNameByCode(a.getCode()), tmp.first());

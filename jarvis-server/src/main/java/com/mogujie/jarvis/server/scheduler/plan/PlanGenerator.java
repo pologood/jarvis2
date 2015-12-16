@@ -25,19 +25,19 @@ import com.mogujie.jarvis.core.expression.DependencyExpression;
 import com.mogujie.jarvis.core.expression.ScheduleExpression;
 import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.server.domain.JobEntry;
+import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.dag.JobGraph;
 import com.mogujie.jarvis.server.scheduler.event.TimeReadyEvent;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.TaskService;
-import com.mogujie.jarvis.server.util.SpringContext;
 
 public class PlanGenerator {
 
     private ExecutionPlan plan = ExecutionPlan.INSTANCE;
     private JobGraph jobGraph = JobGraph.INSTANCE;
-    private JobService jobService = SpringContext.getBean(JobService.class);
-    private TaskService taskService = SpringContext.getBean(TaskService.class);
+    private JobService jobService = Injectors.getInjector().getInstance(JobService.class);
+    private TaskService taskService = Injectors.getInjector().getInstance(TaskService.class);
     private JobSchedulerController controller = JobSchedulerController.getInstance();
 
     /**

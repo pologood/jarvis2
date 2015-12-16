@@ -10,23 +10,20 @@ package com.mogujie.jarvis.server.service;
 
 import java.util.concurrent.atomic.AtomicLong;
 
-import javax.annotation.PostConstruct;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.mogujie.jarvis.dao.IDMapper;
 
-@Service
+@Singleton
 public class IDService {
 
-    @Autowired
+    @Inject
     private IDMapper idMapper;
 
     private AtomicLong atomicJobId;
     private AtomicLong atomicTaskId;
 
-    @PostConstruct
+    @Inject
     public void init() {
         Long jobId = idMapper.selectMaxJobId();
         atomicJobId = jobId == null ? new AtomicLong(0) : new AtomicLong(jobId);

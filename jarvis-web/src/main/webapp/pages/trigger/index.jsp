@@ -66,7 +66,7 @@
                         <span class="input-group-addon" style="width:35%">是否重跑后续任务</span>
                         <div class="form-control">
                             <input name="runChild" type="radio" value="true" />重跑后续任务
-                            <input name="runChild" type="radio" value="false" checked="checked" />不重跑后续任务
+                            <input name="runChild" type="radio" value="false" checked="true" />不重跑后续任务
                         </div>
                     </div>
                 </div>

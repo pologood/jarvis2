@@ -53,7 +53,7 @@
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">状态</span>
-                        <select id="jobFlag" ></select>
+                        <select id="jobStatus" ></select>
                     </div>
                 </div>
 

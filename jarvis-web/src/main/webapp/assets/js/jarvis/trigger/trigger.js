@@ -84,9 +84,11 @@ function buildTree(jobIds){
 }
 
 function reset(){
-    $("#content").val(null).trigger("change");
-    $("#jobStart").val('');
-    $("#jobEnd").val('');
+    $("#originJobId").val({}).trigger("change");
+    $("#startTime").val('');
+    $("#endTime").val('');
+    $("input[name=runChild]").removeAttr("checked");
+    $("input[name=runChild][value=false]").click();
     $("#reRunJobs").removeAttr("checked");
 }
 

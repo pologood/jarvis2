@@ -15,11 +15,11 @@ import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.collect.Maps;
 import com.google.gson.reflect.TypeToken;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.dao.generate.TaskDependMapper;
 import com.mogujie.jarvis.dto.generate.TaskDepend;
@@ -27,10 +27,10 @@ import com.mogujie.jarvis.dto.generate.TaskDepend;
 /**
  * @author muming
  */
-@Service
+@Singleton
 public class TaskDependService {
 
-    @Autowired
+    @Inject
     private TaskDependMapper mapper;
     private static final Logger LOGGER = LogManager.getLogger();
 
@@ -55,14 +55,17 @@ public class TaskDependService {
     }
 
     public Map<Long, List<Long>> loadParent(long taskId) {
+        Map<Long, List<Long>> parentTaskIdMap = Maps.newHashMap();
         TaskDepend data = mapper.selectByPrimaryKey(taskId);
-        if (data == null) {
-            return null;
+        if (data != null) {
+            Map<Long, List<Long>> tmpMap = JsonHelper.fromJson(data.getDependTaskIds(), dataType);
+            if (tmpMap != null) {
+                parentTaskIdMap = tmpMap;
+            }
         }
-        return JsonHelper.fromJson(data.getDependTaskIds(), dataType);
+        return parentTaskIdMap;
     }
 
-    @Transactional
     public void storeChild(long taskId, Map<Long, List<Long>> childTaskIdMap) {
         String childJson = JsonHelper.toJson(childTaskIdMap, dataType);
 
@@ -82,11 +85,15 @@ public class TaskDependService {
     }
 
     public Map<Long, List<Long>> loadChild(long taskId) {
+        Map<Long, List<Long>> childTaskIdMap = Maps.newHashMap();
         TaskDepend data = mapper.selectByPrimaryKey(taskId);
-        if (data == null) {
-            return null;
+        if (data != null) {
+            Map<Long, List<Long>> tmpMap = JsonHelper.fromJson(data.getChildTaskIds(), dataType);
+            if (tmpMap != null) {
+                childTaskIdMap = tmpMap;
+            }
         }
-        return JsonHelper.fromJson(data.getChildTaskIds(), dataType);
+        return childTaskIdMap;
     }
 
     public void remove(long taskId) {

@@ -14,20 +14,13 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
-
-import javax.inject.Named;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.transaction.annotation.Transactional;
+import org.mybatis.guice.transactional.Transactional;
 
-import akka.actor.ActorSelection;
-import akka.actor.UntypedActor;
-
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Range;
 import com.mogujie.jarvis.core.JarvisConstants;
@@ -62,8 +55,8 @@ import com.mogujie.jarvis.server.dispatcher.TaskManager;
 import com.mogujie.jarvis.server.dispatcher.TaskQueue;
 import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.domain.JobDependencyEntry;
+import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
-import com.mogujie.jarvis.server.scheduler.dag.JobGraph;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
 import com.mogujie.jarvis.server.scheduler.event.ManualRerunTaskEvent;
 import com.mogujie.jarvis.server.scheduler.event.RetryTaskEvent;
@@ -81,30 +74,30 @@ import com.mogujie.jarvis.server.service.TaskDependService;
 import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.FutureUtils;
 
+import akka.actor.ActorSelection;
+import akka.actor.Props;
+import akka.actor.UntypedActor;
+
 /**
  * @author guangming
  *
  */
-@Named("taskActor")
-@Scope("prototype")
 public class TaskActor extends UntypedActor {
-    @Autowired
-    private TaskManager taskManager;
-    @Autowired
-    private TaskService taskService;
-    @Autowired
-    private JobService jobService;
-    @Autowired
-    private TaskDependService taskDependService;
-    @Autowired
-    private ConvertValidService convertValidService;
+    private TaskManager taskManager = Injectors.getInjector().getInstance(TaskManager.class);
+    private TaskService taskService = Injectors.getInjector().getInstance(TaskService.class);
+    private JobService jobService = Injectors.getInjector().getInstance(JobService.class);
+    private TaskDependService taskDependService = Injectors.getInjector().getInstance(TaskDependService.class);
+    private ConvertValidService convertValidService = Injectors.getInjector().getInstance(ConvertValidService.class);
 
-    private JobGraph jobGraph = JobGraph.INSTANCE;
     private TaskGraph taskGraph = TaskGraph.INSTANCE;
     private TaskQueue taskQueue = TaskQueue.INSTANCE;
     private JobSchedulerController controller = JobSchedulerController.getInstance();
 
     private static final Logger LOGGER = LogManager.getLogger();
+
+    public static Props props() {
+        return Props.create(TaskActor.class);
+    }
 
     @Override
     public void onReceive(Object obj) throws Exception {
@@ -211,30 +204,29 @@ public class TaskActor extends UntypedActor {
                         dependTaskIdMap.put(preJobId, dependTaskIds);
                     }
                 }
+                if (jobService.get(jobId).getJob().getSerialFlag() > 0) {
+                    Task task = taskService.getLastTask(jobId, taskId);
+                    if (task != null) {
+                        List<Long> dependTaskIds = Lists.newArrayList(task.getTaskId());
+                        dependTaskIdMap.put(jobId, dependTaskIds);
+                    }
+                }
                 DAGTask dagTask = new DAGTask(jobId, taskId, scheduleTime, dependTaskIdMap);
                 taskGraph.addTask(taskId, dagTask);
             }
         }
         // 4.添加依赖关系
-        for (long jobId : jobIdList) {
-            Set<Long> dependJobIds = jobGraph.getEnableParentJobIds(jobId);
-            for (long preJobId : jobIdList) {
-                if (dependJobIds.contains(preJobId)) {
-                    List<ExecutionPlanEntry> planList = planMap.get(jobId);
-                    for (ExecutionPlanEntry planEntry : planList) {
-                        long taskId = planEntry.getTaskId();
-                        DAGTask dagTask = taskGraph.getTask(taskId);
-                        List<Long> dependTaskIds = dagTask.getDependTaskIds();
-                        for (Long parentId : dependTaskIds) {
-                            taskGraph.addDependency(parentId, taskId);
-                        }
-                    }
-                }
+        for (long taskId : taskIdList) {
+            DAGTask dagTask = taskGraph.getTask(taskId);
+            List<Long> dependTaskIds = dagTask.getDependTaskIds();
+            for (long parentId : dependTaskIds) {
+                taskGraph.addDependency(parentId, taskId);
             }
         }
+        // 5. 重跑任务
         controller.notify(new ManualRerunTaskEvent(taskIdList));
 
-        // 5.如果需要重跑后续任务，触发后续依赖任务
+        // 6.如果需要重跑后续任务，触发后续依赖任务
         if (runChild) {
             List<ExecutionPlanEntry> sortedPlanList = new ArrayList<ExecutionPlanEntry>();
             for (Entry<Long, List<ExecutionPlanEntry>> entry : planMap.entrySet()) {

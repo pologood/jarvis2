@@ -20,8 +20,8 @@ import org.joda.time.DateTime;
 import com.google.common.collect.Range;
 import com.mogujie.jarvis.core.expression.DependencyExpression;
 import com.mogujie.jarvis.dto.generate.Task;
+import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.service.TaskService;
-import com.mogujie.jarvis.server.util.SpringContext;
 
 /**
  * 任务A对任务B的依赖检查器。
@@ -190,7 +190,7 @@ public class TaskDependSchedule {
     }
 
     protected void loadSchedulingTasks() {
-        TaskService taskService = SpringContext.getBean(TaskService.class);
+        TaskService taskService = Injectors.getInjector().getInstance(TaskService.class);
         DateTime now = DateTime.now();
 
         List<Task> tasks = null;

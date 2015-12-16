@@ -10,44 +10,36 @@ import java.util.Map.Entry;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Repository;
-
-import akka.actor.ActorSelection;
-import akka.actor.ActorSystem;
 
 import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.domain.WorkerInfo;
 import com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry;
 import com.mogujie.jarvis.protocol.SubmitTaskProtos.ServerSubmitTaskRequest;
 import com.mogujie.jarvis.protocol.SubmitTaskProtos.WorkerSubmitTaskResponse;
-import com.mogujie.jarvis.server.JarvisServerActorSystem;
 import com.mogujie.jarvis.server.dispatcher.workerselector.WorkerSelector;
 import com.mogujie.jarvis.server.domain.RetryType;
+import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.TaskRetryScheduler;
 import com.mogujie.jarvis.server.service.AppService;
 import com.mogujie.jarvis.server.util.FutureUtils;
 
-@Repository
-@Scope("prototype")
+import akka.actor.ActorSelection;
+import akka.actor.ActorSystem;
+
 public class TaskDispatcher extends Thread {
 
     private TaskQueue queue = TaskQueue.INSTANCE;
     private TaskRetryScheduler taskRetryScheduler = TaskRetryScheduler.INSTANCE;
 
-    @Autowired
-    private AppService appService;
+    private AppService appService = Injectors.getInjector().getInstance(AppService.class);
 
-    @Autowired
-    private WorkerSelector workerSelector;
+    private WorkerSelector workerSelector = Injectors.getInjector().getInstance(WorkerSelector.class);
 
-    @Autowired
-    private TaskManager taskManager;
+    private TaskManager taskManager = Injectors.getInjector().getInstance(TaskManager.class);
 
     private volatile boolean running = true;
 
-    private ActorSystem system = JarvisServerActorSystem.getInstance();
+    private ActorSystem system = Injectors.getInjector().getInstance(ActorSystem.class);
 
     private static final Logger LOGGER = LogManager.getLogger();
 

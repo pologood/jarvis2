@@ -27,14 +27,17 @@ import com.google.common.collect.Sets;
 import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.core.domain.Pair;
 import com.mogujie.jarvis.core.exeception.JobScheduleException;
+import com.mogujie.jarvis.core.expression.DependencyExpression;
+import com.mogujie.jarvis.server.domain.JobDependencyEntry;
 import com.mogujie.jarvis.server.domain.ModifyDependEntry;
 import com.mogujie.jarvis.server.domain.ModifyOperation;
+import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.dag.checker.DAGDependChecker;
 import com.mogujie.jarvis.server.scheduler.dag.checker.ScheduleTask;
 import com.mogujie.jarvis.server.scheduler.event.AddTaskEvent;
 import com.mogujie.jarvis.server.service.JobService;
-import com.mogujie.jarvis.server.util.SpringContext;
+import com.mogujie.jarvis.server.service.TaskService;
 
 /**
  * @author guangming
@@ -46,7 +49,7 @@ public enum JobGraph {
     private Map<Long, DAGJob> jobMap = new ConcurrentHashMap<Long, DAGJob>();
     private DirectedAcyclicGraph<DAGJob, DefaultEdge> dag = new DirectedAcyclicGraph<DAGJob, DefaultEdge>(DefaultEdge.class);
     private JobSchedulerController controller = JobSchedulerController.getInstance();
-    private JobService jobService = SpringContext.getBean(JobService.class);
+    private JobService jobService = Injectors.getInjector().getInstance(JobService.class);
 
     private static final Logger LOGGER = LogManager.getLogger();
 
@@ -81,8 +84,7 @@ public enum JobGraph {
             List<DAGJob> parents = getParents(dagJob);
             if (parents != null) {
                 for (DAGJob parent : parents) {
-                    Pair<Long, JobStatus> jobPair = new Pair<Long, JobStatus>(parent.getJobId(),
-                            parent.getJobStatus());
+                    Pair<Long, JobStatus> jobPair = new Pair<Long, JobStatus>(parent.getJobId(), parent.getJobStatus());
                     parentJobPairs.add(jobPair);
                 }
             }
@@ -104,8 +106,7 @@ public enum JobGraph {
             List<DAGJob> children = getChildren(dagJob);
             if (children != null) {
                 for (DAGJob child : children) {
-                    Pair<Long, JobStatus> jobPair = new Pair<Long, JobStatus>(child.getJobId(),
-                            child.getJobStatus());
+                    Pair<Long, JobStatus> jobPair = new Pair<Long, JobStatus>(child.getJobId(), child.getJobStatus());
                     childJobPairs.add(jobPair);
                 }
             }
@@ -121,9 +122,8 @@ public enum JobGraph {
     public List<Long> getActiveTimeBasedJobs() {
         List<Long> jobs = new ArrayList<Long>();
         for (DAGJob dagJob : jobMap.values()) {
-            if (dagJob.getType().implies(DAGJobType.TIME) &&
-                    dagJob.getJobStatus().equals(JobStatus.ENABLE) &&
-                    jobService.isActive(dagJob.getJobId())) {
+            if (dagJob.getType().implies(DAGJobType.TIME) && dagJob.getJobStatus().equals(JobStatus.ENABLE)
+                    && jobService.isActive(dagJob.getJobId())) {
                 jobs.add(dagJob.getJobId());
             }
         }
@@ -148,8 +148,7 @@ public enum JobGraph {
                     if (parent != null) {
                         try {
                             dag.addDagEdge(parent, dagJob);
-                            LOGGER.debug("add dependency successfully, parent is {}, child is {}",
-                                    parent.getJobId(), dagJob.getJobId());
+                            LOGGER.debug("add dependency successfully, parent is {}, child is {}", parent.getJobId(), dagJob.getJobId());
                         } catch (CycleFoundException e) {
                             LOGGER.error(e);
                             dag.removeVertex(dagJob);
@@ -205,8 +204,8 @@ public enum JobGraph {
                 LOGGER.info("remove dependency successfully, parent {}, child {}", preJobId, jobId);
             } else if (entry.getOperation().equals(ModifyOperation.MODIFY)) {
                 modifyDependency(preJobId, jobId, entry.getOffsetStrategy());
-                LOGGER.info("modify dependency strategy, new common strategy is {}, new offset Strategy is {}",
-                        entry.getCommonStrategy(), entry.getOffsetStrategy());
+                LOGGER.info("modify dependency strategy, new common strategy is {}, new offset Strategy is {}", entry.getCommonStrategy(),
+                        entry.getOffsetStrategy());
             }
         }
 
@@ -265,7 +264,7 @@ public enum JobGraph {
      * @param newType
      * @throws JobScheduleException
      */
-    public void modifyDAGJobType(long jobId, DAGJobType newType)  {
+    public void modifyDAGJobType(long jobId, DAGJobType newType) {
         // update dag job type
         DAGJob dagJob = getDAGJob(jobId);
         if (dagJob != null) {
@@ -323,7 +322,7 @@ public enum JobGraph {
             // submit task to task scheduler
             Map<Long, List<ScheduleTask>> dependTaskMap = dagJob.getDependTaskMap();
             long scheduleTime = getLastScheduleTime(dependTaskMap);
-            Map<Long, List<Long>> dependTaskIdMap = convert2DependTaskIdMap(dependTaskMap);
+            Map<Long, List<Long>> dependTaskIdMap = convert2DependTaskIdMap(jobId, scheduleTime, dependTaskMap);
             AddTaskEvent event = new AddTaskEvent(jobId, dependTaskIdMap, scheduleTime);
             controller.notify(event);
 
@@ -345,7 +344,7 @@ public enum JobGraph {
 
             // submit task to task scheduler
             Map<Long, List<ScheduleTask>> dependTaskMap = dagJob.getDependTaskMap();
-            Map<Long, List<Long>> dependTaskIdMap = convert2DependTaskIdMap(dependTaskMap);
+            Map<Long, List<Long>> dependTaskIdMap = convert2DependTaskIdMap(jobId, scheduleTime, dependTaskMap);
             AddTaskEvent event = new AddTaskEvent(jobId, dependTaskIdMap, scheduleTime);
             controller.notify(event);
 
@@ -417,20 +416,27 @@ public enum JobGraph {
         return scheduleTime;
     }
 
-    private Map<Long, List<Long>> convert2DependTaskIdMap(Map<Long, List<ScheduleTask>> dependTaskMap) {
+    private Map<Long, List<Long>> convert2DependTaskIdMap(long myJobId, long scheduleTime, Map<Long, List<ScheduleTask>> dependTaskMap) {
         Map<Long, List<Long>> dependTaskIdMap = new HashMap<Long, List<Long>>();
         for (Entry<Long, List<ScheduleTask>> entry : dependTaskMap.entrySet()) {
-            long jobId = entry.getKey();
+            long preJobId = entry.getKey();
             List<ScheduleTask> dependTasks = entry.getValue();
             if (dependTasks == null || dependTasks.isEmpty()) {
                 List<Long> dependTaskIds = new ArrayList<Long>();
-                dependTaskIdMap.put(jobId, dependTaskIds);
+                Map<Long, JobDependencyEntry> dependencyMap = jobService.get(myJobId).getDependencies();
+                if (dependencyMap != null && dependencyMap.containsKey(preJobId)) {
+                    JobDependencyEntry dependencyEntry = dependencyMap.get(preJobId);
+                    DependencyExpression dependencyExpression = dependencyEntry.getDependencyExpression();
+                    TaskService taskService = Injectors.getInjector().getInstance(TaskService.class);
+                    dependTaskIds = taskService.getDependTaskIds(myJobId, preJobId, scheduleTime, dependencyExpression);
+                }
+                dependTaskIdMap.put(preJobId, dependTaskIds);
             } else {
                 List<Long> dependTaskIds = new ArrayList<Long>();
                 for (ScheduleTask task : dependTasks) {
                     dependTaskIds.add(task.getTaskId());
                 }
-                dependTaskIdMap.put(jobId, dependTaskIds);
+                dependTaskIdMap.put(preJobId, dependTaskIds);
             }
         }
         return dependTaskIdMap;

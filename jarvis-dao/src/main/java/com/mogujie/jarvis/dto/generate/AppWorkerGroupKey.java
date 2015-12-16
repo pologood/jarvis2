@@ -1,13 +1,9 @@
 package com.mogujie.jarvis.dto.generate;
 
-import java.io.Serializable;
-
-public class AppWorkerGroupKey implements Serializable {
+public class AppWorkerGroupKey {
     private Integer appId;
 
     private Integer workerGroupId;
-
-    private static final long serialVersionUID = 1L;
 
     public Integer getAppId() {
         return appId;

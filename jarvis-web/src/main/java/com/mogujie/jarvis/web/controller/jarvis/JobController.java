@@ -25,7 +25,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("/job")
-public class JobController extends BaseController{
+public class JobController extends BaseController {
 
     @Autowired
     JobService jobService;
@@ -42,15 +42,15 @@ public class JobController extends BaseController{
     * */
     @RequestMapping
     @JarvisPassport(authTypes = JarvisAuthType.job)
-    public String index(ModelMap modelMap){
-        List<String> submitUsers= jobService.getSubmitUsers();
+    public String index(ModelMap modelMap) {
+        List<String> submitUsers = jobService.getSubmitUsers();
 
-        List<AppVo> appVoList=appService.getAppList(new AppQo());
-        List<WorkerGroupVo> workerGroupVoList=workerService.getAllWorkerGroup();
+        List<AppVo> appVoList = appService.getAppList(new AppQo());
+        List<WorkerGroupVo> workerGroupVoList = workerService.getAllWorkerGroup();
 
-        modelMap.put("submitUsers",submitUsers);
-        modelMap.put("appVoList",appVoList);
-        modelMap.put("workerGroupVoList",workerGroupVoList);
+        modelMap.put("submitUsers", submitUsers);
+        modelMap.put("appVoList", appVoList);
+        modelMap.put("workerGroupVoList", workerGroupVoList);
         return "job/index";
     }
 
@@ -59,42 +59,42 @@ public class JobController extends BaseController{
     * @author hejian
     * */
     @RequestMapping(value = "addOrEdit")
-    @JarvisPassport(authTypes = JarvisAuthType.job,isMenu = false)
-    public String addOrEdit(ModelMap modelMap,Long jobId){
+    @JarvisPassport(authTypes = JarvisAuthType.job, isMenu = false)
+    public String addOrEdit(ModelMap modelMap, Long jobId) {
         AppQo appSearchVo = new AppQo();
         appSearchVo.setStatus(1);
-        List<AppVo> appVoList =appService.getAppList(appSearchVo);
+        List<AppVo> appVoList = appService.getAppList(appSearchVo);
 
-        if(jobId!=null){
-            JobVo jobVo=jobService.getJobById(jobId);
-            modelMap.put("jobVo",jobVo);
+        if (jobId != null) {
+            JobVo jobVo = jobService.getJobById(jobId);
+            modelMap.put("jobVo", jobVo);
 
-            Integer appId=jobVo.getAppId();
-            AppVo appVo=appService.getAppById(appId);
-            if(appVo!=null&&appVo.getStatus()==0){
+            Integer appId = jobVo.getAppId();
+            AppVo appVo = appService.getAppById(appId);
+            if (appVo != null && appVo.getStatus() == 0) {
                 appVoList.add(appVo);
             }
 
             List<JobDependVo> jobDependVoList = jobDependService.getParentById(jobId);
-            List<String> parentIds=new ArrayList<String>();
+            List<String> parentIds = new ArrayList<String>();
             JSONObject jsonObject = new JSONObject();
-            for(JobDependVo jobDependVo:jobDependVoList){
+            for (JobDependVo jobDependVo : jobDependVoList) {
                 parentIds.add(jobDependVo.getId().toString());
-                jsonObject.put(jobDependVo.getId().toString(),jobDependVo);
+                jsonObject.put(jobDependVo.getId().toString(), jobDependVo);
             }
-            String ids= JSON.toJSONString(parentIds);
-            modelMap.put("dependIds",ids);
-            modelMap.put("dependJobs",jsonObject.toJSONString());
+            String ids = JSON.toJSONString(parentIds);
+            modelMap.put("dependIds", ids);
+            modelMap.put("dependJobs", jsonObject.toJSONString());
         }
 
 
-        List<WorkerGroupVo> WorkerGroupVoList=workerService.getAllWorkerGroup();
+        List<WorkerGroupVo> WorkerGroupVoList = workerService.getAllWorkerGroup();
 
-        List<JobVo> jobVoList=jobService.getAllJobs(1);
+        List<JobVo> jobVoList = jobService.getAllJobs(1);
 
-        modelMap.put("WorkerGroupVoList",WorkerGroupVoList);
-        modelMap.put("appVoList",appVoList);
-        modelMap.put("jobVoList",jobVoList);
+        modelMap.put("WorkerGroupVoList", WorkerGroupVoList);
+        modelMap.put("appVoList", appVoList);
+        modelMap.put("jobVoList", jobVoList);
         return "job/addOrEdit";
     }
 
@@ -104,37 +104,34 @@ public class JobController extends BaseController{
     * */
     @RequestMapping("checkJobName")
     @ResponseBody
-    public JSONObject checkJobName(Long jobId,String jobName){
+    public JSONObject checkJobName(Long jobId, String jobName) {
         JSONObject result = new JSONObject();
 
-        JobVo jobVo=jobService.getJobByName(jobName);
+        JobVo jobVo = jobService.getJobByName(jobName);
         //新增job时校验
-        if(jobId==null){
+        if (jobId == null) {
             //已经存在此名字job
-            if(jobVo!=null){
-                result.put("code",1);
-                result.put("msg","已存在此名字任务:"+jobName+",不能新增");
-            }
-            else{
-                result.put("code",0);
-                result.put("msg","不存在此名字任务:"+jobName+",可以新增");
+            if (jobVo != null) {
+                result.put("code", 1);
+                result.put("msg", "已存在此名字任务:" + jobName + ",不能新增");
+            } else {
+                result.put("code", 0);
+                result.put("msg", "不存在此名字任务:" + jobName + ",可以新增");
             }
         }
         //已存在job的情况下校验
-        else{
-            if(jobVo!=null){
-                if(jobVo.getJobId().equals(jobId)){
-                    result.put("code",0);
-                    result.put("msg","任务名为本身，没修改:"+jobName+",可以更新");
+        else {
+            if (jobVo != null) {
+                if (jobVo.getJobId().equals(jobId)) {
+                    result.put("code", 0);
+                    result.put("msg", "任务名为本身，没修改:" + jobName + ",可以更新");
+                } else {
+                    result.put("code", 1);
+                    result.put("msg", "已存在此名字任务:" + jobName + ",不能更新");
                 }
-                else{
-                    result.put("code",1);
-                    result.put("msg","已存在此名字任务:"+jobName+",不能更新");
-                }
-            }
-            else{
-                result.put("code",0);
-                result.put("msg","不存在此名字任务:"+jobName+",可以更新");
+            } else {
+                result.put("code", 0);
+                result.put("msg", "不存在此名字任务:" + jobName + ",可以更新");
             }
         }
 
@@ -146,20 +143,17 @@ public class JobController extends BaseController{
     * @author hejian
     * */
     @RequestMapping(value = "dependency")
-    @JarvisPassport(authTypes = JarvisAuthType.job,isMenu = false)
-    public String dependency(ModelMap modelMap,Long jobId){
-        JobVo jobVo=jobService.getJobById(jobId);
+    @JarvisPassport(authTypes = JarvisAuthType.job, isMenu = false)
+    public String dependency(ModelMap modelMap, Long jobId) {
+        JobVo jobVo = jobService.getJobById(jobId);
 
-        if(jobVo==null){
-            jobVo=new JobVo();
+        if (jobVo == null) {
+            jobVo = new JobVo();
         }
 
         modelMap.put("jobVo", JSON.toJSONString(jobVo));
         return "job/dependency";
     }
-
-
-
 
 
 }

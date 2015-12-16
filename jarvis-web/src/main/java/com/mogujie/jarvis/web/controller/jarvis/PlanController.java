@@ -20,7 +20,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/plan")
-public class PlanController extends BaseController{
+public class PlanController extends BaseController {
     @Autowired
     JobService jobService;
     @Autowired
@@ -30,34 +30,33 @@ public class PlanController extends BaseController{
 
     /**
      * 执行计划首页
-     *
-     * */
+     */
     @RequestMapping
     @JarvisPassport(authTypes = JarvisAuthType.plan)
-    public String index(ModelMap modelMap){
+    public String index(ModelMap modelMap) {
 
-        List<Long> jobIdList=jobService.getJobIds();
-        List<String> jobNameList=jobService.getJobNames();
+        List<Long> jobIdList = jobService.getJobIds();
+        List<String> jobNameList = jobService.getJobNames();
 
-        List<String> executeUserList=taskService.getAllExecuteUser();
-        modelMap.put("jobIdList",jobIdList);
-        modelMap.put("jobNameList",jobNameList);
-        modelMap.put("executeUserList",executeUserList);
+        List<String> executeUserList = taskService.getAllExecuteUser();
+        modelMap.put("jobIdList", jobIdList);
+        modelMap.put("jobNameList", jobNameList);
+        modelMap.put("executeUserList", executeUserList);
         return "plan/index";
     }
 
     /**
      * 执行计划详情，前置、后续计划执行状态
-     **/
+     */
     @RequestMapping(value = "dependency")
-    @JarvisPassport(authTypes = JarvisAuthType.plan,isMenu = false)
-    public String dependency(ModelMap modelMap,Long taskId){
+    @JarvisPassport(authTypes = JarvisAuthType.plan, isMenu = false)
+    public String dependency(ModelMap modelMap, Long taskId) {
 
-        TaskVo taskVo=taskService.getTaskById(taskId);
-        JobVo jobVo=jobService.getJobById(taskVo.getJobId());
+        TaskVo taskVo = taskService.getTaskById(taskId);
+        JobVo jobVo = jobService.getJobById(taskVo.getJobId());
 
-        modelMap.put("taskId",taskId);
-        modelMap.put("jobVo",jobVo);
+        modelMap.put("taskId", taskId);
+        modelMap.put("jobVo", jobVo);
         return "plan/dependency";
     }
 }

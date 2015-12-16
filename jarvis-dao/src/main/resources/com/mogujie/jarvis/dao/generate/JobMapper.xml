@@ -445,5 +445,4 @@
       updateUser = #{updateUser,jdbcType=VARCHAR}
     where jobId = #{jobId,jdbcType=BIGINT}
   </update>
-  <cache />
 </mapper>

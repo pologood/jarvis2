@@ -193,5 +193,4 @@
       createTime = #{createTime,jdbcType=TIMESTAMP}
     where taskId = #{taskId,jdbcType=BIGINT}
   </update>
-  <cache />
 </mapper>

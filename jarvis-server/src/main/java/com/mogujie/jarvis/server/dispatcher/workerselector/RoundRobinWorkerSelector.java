@@ -13,17 +13,14 @@ import java.util.Map;
 
 import com.google.common.collect.Maps;
 import com.mogujie.jarvis.core.domain.WorkerInfo;
+import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.service.HeartBeatService;
 
 public class RoundRobinWorkerSelector implements WorkerSelector {
 
-    private HeartBeatService heartBeatService;
+    private HeartBeatService heartBeatService = Injectors.getInjector().getInstance(HeartBeatService.class);
 
     private Map<Integer, Integer> map = Maps.newConcurrentMap();
-
-    public RoundRobinWorkerSelector(HeartBeatService heartBeatService) {
-        this.heartBeatService = heartBeatService;
-    }
 
     @Override
     public synchronized WorkerInfo select(int workerGroupId) {

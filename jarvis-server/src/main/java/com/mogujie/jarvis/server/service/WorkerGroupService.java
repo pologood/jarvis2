@@ -1,27 +1,27 @@
 package com.mogujie.jarvis.server.service;
 
+import java.util.List;
+
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.mogujie.jarvis.dao.generate.WorkerGroupMapper;
 import com.mogujie.jarvis.dto.generate.WorkerGroup;
 import com.mogujie.jarvis.dto.generate.WorkerGroupExample;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * @author muming
  */
-@Service
+@Singleton
 public class WorkerGroupService {
 
-    @Autowired
+    @Inject
     private WorkerGroupMapper workerGroupMapper;
 
     public int update(WorkerGroup workerGroup) {
         return workerGroupMapper.updateByPrimaryKeySelective(workerGroup);
     }
 
-    public int insert(WorkerGroup workerGroup){
+    public int insert(WorkerGroup workerGroup) {
         return workerGroupMapper.insertSelective(workerGroup);
     }
 
@@ -36,8 +36,7 @@ public class WorkerGroupService {
     }
 
     public WorkerGroup getGroupByGroupId(int groupId) {
-        return  workerGroupMapper.selectByPrimaryKey(groupId);
+        return workerGroupMapper.selectByPrimaryKey(groupId);
     }
-
 
 }

@@ -12,15 +12,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import org.springframework.stereotype.Service;
-
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
+import com.google.inject.Singleton;
 import com.mogujie.jarvis.core.domain.WorkerInfo;
 
-@Service
+@Singleton
 public class HeartBeatService {
 
     private static final int MAX_HEART_BEAT_TIMEOUT_SECONDS = 15;

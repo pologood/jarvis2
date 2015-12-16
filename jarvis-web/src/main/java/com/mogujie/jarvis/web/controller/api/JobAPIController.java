@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Map;
+
 /**
  * Created by hejian on 15/9/15.
  */
@@ -23,67 +25,64 @@ public class JobAPIController {
 
     @RequestMapping("/getJobs")
     @ResponseBody
-    public JSONObject getJobs(JobQo jobQo){
+    public Map<String, Object> getJobs(JobQo jobQo) {
 
-        JSONObject jobJson=jobService.getJobs(jobQo);
+        Map<String, Object> result = jobService.getJobs(jobQo);
 
-        return jobJson;
+        return result;
     }
 
     /**
      * 单向依赖树
-     * */
+     */
     @RequestMapping("/getTreeDependedONJob")
     @ResponseBody
-    public JSONObject getTreeDependedONJob(JobQo jobQo){
+    public JSONObject getTreeDependedONJob(JobQo jobQo) {
 
-        JSONObject jobJson=jobDependService.getTreeDependedOnJob(jobQo);
+        JSONObject jobJson = jobDependService.getTreeDependedOnJob(jobQo);
 
         return jobJson;
     }
 
     /**
      * 两向树
-     * */
+     */
     @RequestMapping("/getTwoDirectionTree")
     @ResponseBody
-    public JSONObject getTwoDirectionTree(JobQo jobSearchVo){
+    public JSONObject getTwoDirectionTree(JobQo jobSearchVo) {
 
-        JSONObject jobJson=jobDependService.getTwoDirectionTreeDependedOnJob(jobSearchVo);
+        JSONObject jobJson = jobDependService.getTwoDirectionTreeDependedOnJob(jobSearchVo);
 
         return jobJson;
     }
 
     /**
      * 相似jobId
-     *
-     * */
+     */
     @RequestMapping("/getSimilarJobIds")
     @ResponseBody
-    public JSONObject getSimilarJobIds(Long q){
-        JSONObject jobJson=jobService.getSimilarJobIds(q);
-        return jobJson;
+    public Map<String, Object> getSimilarJobIds(Long q) {
+        Map<String, Object> result = jobService.getSimilarJobIds(q);
+        return result;
     }
 
     /**
      * 相似jobName
-     *
-     * */
+     */
     @RequestMapping("/getSimilarJobNames")
     @ResponseBody
-    public JSONObject getSimilarJobNames(String q){
-        JSONObject jobJson=jobService.getSimilarJobNames(q);
-        return jobJson;
+    public Map<String, Object> getSimilarJobNames(String q) {
+        Map<String, Object> result = jobService.getSimilarJobNames(q);
+        return result;
     }
 
     /**
      * 相似jobName
-     *
-     * */
+     */
     @RequestMapping("/getJobBySimilarNames")
     @ResponseBody
-    public JSONObject getJobBySimilarNames(String q){
-        JSONObject jobJson=jobService.getJobBySimilarNames(q);
-        return jobJson;
+    public Map<String, Object> getJobBySimilarNames(String q) {
+        Map<String, Object> result = jobService.getJobBySimilarNames(q);
+        return result;
     }
 }

@@ -16,17 +16,17 @@ import com.google.common.collect.Sets;
 import com.mogujie.jarvis.core.exeception.JobScheduleException;
 import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.dto.generate.JobDepend;
+import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.event.ScheduleEvent;
 import com.mogujie.jarvis.server.scheduler.task.DAGTask;
 import com.mogujie.jarvis.server.service.JobService;
-import com.mogujie.jarvis.server.util.SpringContext;
 
 /**
  * @author guangming
  *
  */
 public class TestScheduleWithOffsetStrategy extends TestSchedulerBase {
-    private JobService jobService = SpringContext.getBean(JobService.class);
+    private JobService jobService = Injectors.getInjector().getInstance(JobService.class);
     private long jobAId;
     private long jobBId;
     private long jobCId;

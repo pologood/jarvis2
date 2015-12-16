@@ -3,9 +3,6 @@
 <generatorConfiguration>
 
 	<context id="context1" targetRuntime="MyBatis3">
-		<plugin type="org.mybatis.generator.plugins.CachePlugin" />
-		<plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
-
         <commentGenerator>
             <property name="suppressDate" value="true"/>
             <property name="suppressAllComments" value="true"/>
@@ -19,7 +16,7 @@
         <javaModelGenerator targetPackage="com.mogujie.jarvis.dto.generate"
 			targetProject="src/main/java" />
 		<sqlMapGenerator targetPackage="com.mogujie.jarvis.dao.generate"
-			targetProject="src/main/resources/sqlMap" />
+			targetProject="src/main/resources" />
 		<javaClientGenerator targetPackage="com.mogujie.jarvis.dao.generate"
 			targetProject="src/main/java" type="XMLMAPPER" />
 

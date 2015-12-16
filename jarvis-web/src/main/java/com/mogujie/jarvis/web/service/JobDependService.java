@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+
 /**
  * Created by hejian on 15/9/22.
  */
@@ -20,101 +21,105 @@ public class JobDependService {
 
     /**
      * 获取所有依赖于此job的job
-     * */
-    public JSONObject getTreeDependedOnJob(JobQo jobSearchVo){
-        JSONObject jsonObject=new JSONObject();
-        JobDependVo jobDependVo=jobDependMapper.getJobById(jobSearchVo.getJobId());
+     */
+    public JSONObject getTreeDependedOnJob(JobQo jobQo) {
+        JSONObject result=new JSONObject();
+        JobDependVo jobDependVo = jobDependMapper.getJobById(jobQo.getJobId());
 
-        if(jobDependVo==null){
-            return jsonObject;
+        if (jobDependVo == null) {
+            return result;
         }
-        JSONObject jsonState =new JSONObject();
-        jsonState.put("opened", true);
+        JSONObject mapState = new JSONObject();
+        mapState.put("opened", true);
 
-        List<JobDependVo> jobDependVoChildrenList=getChildren(jobDependVo,true);
+        List<JobDependVo> jobDependVoChildrenList = getChildren(jobDependVo, true);
         jobDependVo.setChildren(jobDependVoChildrenList);
 
-        jsonObject=(JSONObject)JSON.toJSON(jobDependVo);
-        jsonObject.put("state",jsonState);
+        result = (JSONObject) JSON.toJSON(jobDependVo);
+        result.put("state", mapState);
 
-        return jsonObject;
+        return result;
     }
 
     /**
      * 获取所有依赖于此job的job
-     * */
-    public JSONObject getTwoDirectionTreeDependedOnJob(JobQo jobSearchVo){
-        JSONObject jsonObject=new JSONObject();
-        JobDependVo jobDependVo=jobDependMapper.getJobById(jobSearchVo.getJobId());
+     */
+    public JSONObject getTwoDirectionTreeDependedOnJob(JobQo jobSearchVo) {
+        JSONObject jsonObject = new JSONObject();
+        JobDependVo jobDependVo = jobDependMapper.getJobById(jobSearchVo.getJobId());
         jobDependVo.setName(jobDependVo.getText());
         jobDependVo.setValue(jobDependVo.getId());
         jobDependVo.setRootFlag(true);
 
-        if(jobDependVo==null){
+        if (jobDependVo == null) {
             return jsonObject;
         }
-        JSONObject jsonState =new JSONObject();
+        JSONObject jsonState = new JSONObject();
         jsonState.put("opened", true);
 
-        List<JobDependVo> jobDependVoChildrenList=getChildren(jobDependVo,false);
+        List<JobDependVo> jobDependVoChildrenList = getChildren(jobDependVo, false);
         jobDependVo.setChildren(jobDependVoChildrenList);
 
 
-        List<JobDependVo> jobDependVoParentList=getParents(jobDependVo,false);
+        List<JobDependVo> jobDependVoParentList = getParents(jobDependVo, false);
         jobDependVo.setParents(jobDependVoParentList);
 
-        jsonObject=(JSONObject)JSON.toJSON(jobDependVo);
-        jsonObject.put("state",jsonState);
+
+
+        jsonObject = (JSONObject) JSON.toJSON(jobDependVo);
+        jsonObject.put("state", jsonState);
 
         return jsonObject;
     }
 
     /**
      * 递归获取所有子节点
-     * */
-    public List<JobDependVo> getChildren(JobDependVo jobDependVo,boolean all){
-        List<JobDependVo> jobChildren=jobDependMapper.getChildrenById(jobDependVo.getId());
-        JSONObject jsonObject =new JSONObject();
-        jsonObject.put("opened",true);
+     */
+    public List<JobDependVo> getChildren(JobDependVo jobDependVo, boolean all) {
+        List<JobDependVo> jobChildren = jobDependMapper.getChildrenById(jobDependVo.getId());
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("opened", true);
 
-        if(jobChildren!=null&&jobChildren.size()>0){
-            for(JobDependVo childJob:jobChildren){
+        if (jobChildren != null && jobChildren.size() > 0) {
+            for (JobDependVo childJob : jobChildren) {
                 childJob.setState(jsonObject);
                 childJob.setName(childJob.getText());
                 childJob.setValue(childJob.getId());
-                if(all){
-                    childJob.setChildren(getChildren(childJob,all));
+                if (all) {
+                    childJob.setChildren(getChildren(childJob, all));
                 }
             }
         }
 
         return jobChildren;
     }
+
     /**
      * 递归获取所有父节点
-     * */
-    public List<JobDependVo> getParents(JobDependVo jobDependVo,boolean all){
-        List<JobDependVo> jobParents=jobDependMapper.getParentById(jobDependVo.getId());
-        JSONObject jsonObject =new JSONObject();
-        jsonObject.put("opened",true);
-        if(jobParents!=null&&jobParents.size()>0){
-            for(JobDependVo parentJob:jobParents){
+     */
+    public List<JobDependVo> getParents(JobDependVo jobDependVo, boolean all) {
+        List<JobDependVo> jobParents = jobDependMapper.getParentById(jobDependVo.getId());
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("opened", true);
+        if (jobParents != null && jobParents.size() > 0) {
+            for (JobDependVo parentJob : jobParents) {
                 parentJob.setState(jsonObject);
                 parentJob.setParentFlag(true);
                 parentJob.setName(parentJob.getText());
                 parentJob.setValue(parentJob.getId());
-                if(all){
-                    parentJob.setParents(getParents(parentJob,all));
+                if (all) {
+                    parentJob.setParents(getParents(parentJob, all));
                 }
             }
         }
 
         return jobParents;
     }
+
     /**
-    * 获取最近父节点
-    * */
-    public List<JobDependVo> getParentById(Long jobId){
+     * 获取最近父节点
+     */
+    public List<JobDependVo> getParentById(Long jobId) {
         return jobDependMapper.getParentById(jobId);
     }
 }

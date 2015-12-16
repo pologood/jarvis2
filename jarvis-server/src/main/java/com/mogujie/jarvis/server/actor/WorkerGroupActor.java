@@ -11,12 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import javax.inject.Named;
-
-import com.mogujie.jarvis.server.service.WorkerGroupService;
 import org.joda.time.DateTime;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 
 import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.dto.generate.WorkerGroup;
@@ -25,15 +20,19 @@ import com.mogujie.jarvis.protocol.WorkerGroupProtos.RestServerModifyWorkerGroup
 import com.mogujie.jarvis.protocol.WorkerGroupProtos.ServerCreateWorkerGroupResponse;
 import com.mogujie.jarvis.protocol.WorkerGroupProtos.ServerModifyWorkerGroupResponse;
 import com.mogujie.jarvis.server.domain.ActorEntry;
+import com.mogujie.jarvis.server.guice.Injectors;
+import com.mogujie.jarvis.server.service.WorkerGroupService;
 
+import akka.actor.Props;
 import akka.actor.UntypedActor;
 
-@Named("workerGroupActor")
-@Scope("prototype")
 public class WorkerGroupActor extends UntypedActor {
 
-    @Autowired
-    private WorkerGroupService workerGroupService;
+    private WorkerGroupService workerGroupService = Injectors.getInjector().getInstance(WorkerGroupService.class);
+
+    public static Props props() {
+        return Props.create(WorkerGroupActor.class);
+    }
 
     public static List<ActorEntry> handledMessages() {
         List<ActorEntry> list = new ArrayList<>();
@@ -47,7 +46,7 @@ public class WorkerGroupActor extends UntypedActor {
         if (obj instanceof RestServerCreateWorkerGroupRequest) {
             createWorkerGroup((RestServerCreateWorkerGroupRequest) obj);
         } else if (obj instanceof RestServerModifyWorkerGroupRequest) {
-            modifyWorkerGroup((RestServerModifyWorkerGroupRequest)obj);
+            modifyWorkerGroup((RestServerModifyWorkerGroupRequest) obj);
         } else {
             unhandled(obj);
         }
@@ -74,7 +73,6 @@ public class WorkerGroupActor extends UntypedActor {
         }
     }
 
-
     public void modifyWorkerGroup(RestServerModifyWorkerGroupRequest request) {
         ServerModifyWorkerGroupResponse response;
         try {
@@ -99,6 +97,5 @@ public class WorkerGroupActor extends UntypedActor {
             getSender().tell(response, getSelf());
         }
     }
-
 
 }

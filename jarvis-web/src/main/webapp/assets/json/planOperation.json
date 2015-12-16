@@ -1,8 +1,8 @@
 {
-  "1":[],
-  "2":[{"url":"/api/task/retry","text":"重试"}],
-  "3":[{"url":"/api/task/kill","text":"终止"}],
-  "4":[{"url":"/api/task/retry","text":"重试"}],
-  "5":[{"url":"/api/task/retry","text":"重试"}],
-  "6":[{"url":"/api/task/retry","text":"重试"}]
+  "1":[{"url":"/api/plan/delete","text":"删除"}],
+  "2":[{"url":"/api/task/retry","text":"重试"},{"url":"/api/plan/delete","text":"删除"}],
+  "3":[{"url":"/api/task/kill","text":"终止"},{"url":"/api/plan/delete","text":"删除"}],
+  "4":[{"url":"/api/task/retry","text":"重试"},{"url":"/api/plan/delete","text":"删除"}],
+  "5":[{"url":"/api/task/retry","text":"重试"},{"url":"/api/plan/delete","text":"删除"}],
+  "6":[{"url":"/api/task/retry","text":"重试"},{"url":"/api/plan/delete","text":"删除"}]
 }

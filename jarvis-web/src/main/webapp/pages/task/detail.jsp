@@ -89,7 +89,7 @@
                                         <a href="#executeContent" data-toggle="tab">执行内容</a>
                                     </li>
                                     <li role="presentation">
-                                        <a href="#errorLog" data-toggle="tab">日志</a>
+                                        <a href="#log" data-toggle="tab">日志</a>
                                     </li>
                                 </ul>
 

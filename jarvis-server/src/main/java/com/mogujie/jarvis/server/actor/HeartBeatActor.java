@@ -11,15 +11,8 @@ package com.mogujie.jarvis.server.actor;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Named;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-
-import akka.actor.Address;
-import akka.actor.UntypedActor;
 
 import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.core.domain.WorkerInfo;
@@ -27,16 +20,22 @@ import com.mogujie.jarvis.protocol.HeartBeatProtos.HeartBeatRequest;
 import com.mogujie.jarvis.protocol.HeartBeatProtos.HeartBeatResponse;
 import com.mogujie.jarvis.server.WorkerRegistry;
 import com.mogujie.jarvis.server.domain.ActorEntry;
+import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.service.HeartBeatService;
 
-@Named("heartBeatActor")
-@Scope("prototype")
+import akka.actor.Address;
+import akka.actor.Props;
+import akka.actor.UntypedActor;
+
 public class HeartBeatActor extends UntypedActor {
 
-    @Autowired
-    private HeartBeatService heartBeatService;
+    private HeartBeatService heartBeatService = Injectors.getInjector().getInstance(HeartBeatService.class);
 
     private static final Logger LOGGER = LogManager.getLogger("heartbeat");
+
+    public static Props props() {
+        return Props.create(HeartBeatActor.class);
+    }
 
     @Override
     public void onReceive(Object obj) throws Exception {

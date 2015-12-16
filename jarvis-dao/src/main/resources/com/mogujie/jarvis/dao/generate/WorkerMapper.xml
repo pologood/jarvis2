@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.mogujie.jarvis.dao.generate.JobScheduleExpressionMapper" >
-  <resultMap id="BaseResultMap" type="com.mogujie.jarvis.dto.generate.JobScheduleExpression" >
+<mapper namespace="com.mogujie.jarvis.dao.generate.WorkerMapper" >
+  <resultMap id="BaseResultMap" type="com.mogujie.jarvis.dto.generate.Worker" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="jobId" property="jobId" jdbcType="BIGINT" />
-    <result column="expressionType" property="expressionType" jdbcType="INTEGER" />
-    <result column="expression" property="expression" jdbcType="VARCHAR" />
+    <result column="ip" property="ip" jdbcType="CHAR" />
+    <result column="port" property="port" jdbcType="INTEGER" />
+    <result column="workerGroupId" property="workerGroupId" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="INTEGER" />
     <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
     <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
@@ -68,15 +69,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, jobId, expressionType, expression, createTime, updateTime
+    id, ip, port, workerGroupId, status, createTime, updateTime
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.mogujie.jarvis.dto.generate.JobScheduleExpressionExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.mogujie.jarvis.dto.generate.WorkerExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from job_schedule_expression
+    from worker
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -87,42 +88,47 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from job_schedule_expression
+    from worker
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from job_schedule_expression
+    delete from worker
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.mogujie.jarvis.dto.generate.JobScheduleExpressionExample" >
-    delete from job_schedule_expression
+  <delete id="deleteByExample" parameterType="com.mogujie.jarvis.dto.generate.WorkerExample" >
+    delete from worker
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.mogujie.jarvis.dto.generate.JobScheduleExpression" >
+  <insert id="insert" parameterType="com.mogujie.jarvis.dto.generate.Worker" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into job_schedule_expression (jobId, expressionType, expression, 
-      createTime, updateTime)
-    values (#{jobId,jdbcType=BIGINT}, #{expressionType,jdbcType=INTEGER}, #{expression,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+    insert into worker (ip, port, workerGroupId, 
+      status, createTime, updateTime
+      )
+    values (#{ip,jdbcType=CHAR}, #{port,jdbcType=INTEGER}, #{workerGroupId,jdbcType=INTEGER}, 
+      #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.mogujie.jarvis.dto.generate.JobScheduleExpression" >
+  <insert id="insertSelective" parameterType="com.mogujie.jarvis.dto.generate.Worker" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into job_schedule_expression
+    insert into worker
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="jobId != null" >
-        jobId,
+      <if test="ip != null" >
+        ip,
       </if>
-      <if test="expressionType != null" >
-        expressionType,
+      <if test="port != null" >
+        port,
       </if>
-      <if test="expression != null" >
-        expression,
+      <if test="workerGroupId != null" >
+        workerGroupId,
+      </if>
+      <if test="status != null" >
+        status,
       </if>
       <if test="createTime != null" >
         createTime,
@@ -132,14 +138,17 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="jobId != null" >
-        #{jobId,jdbcType=BIGINT},
+      <if test="ip != null" >
+        #{ip,jdbcType=CHAR},
       </if>
-      <if test="expressionType != null" >
-        #{expressionType,jdbcType=INTEGER},
+      <if test="port != null" >
+        #{port,jdbcType=INTEGER},
       </if>
-      <if test="expression != null" >
-        #{expression,jdbcType=VARCHAR},
+      <if test="workerGroupId != null" >
+        #{workerGroupId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
       </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
@@ -149,26 +158,29 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.mogujie.jarvis.dto.generate.JobScheduleExpressionExample" resultType="java.lang.Integer" >
-    select count(*) from job_schedule_expression
+  <select id="countByExample" parameterType="com.mogujie.jarvis.dto.generate.WorkerExample" resultType="java.lang.Integer" >
+    select count(*) from worker
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update job_schedule_expression
+    update worker
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.jobId != null" >
-        jobId = #{record.jobId,jdbcType=BIGINT},
+      <if test="record.ip != null" >
+        ip = #{record.ip,jdbcType=CHAR},
       </if>
-      <if test="record.expressionType != null" >
-        expressionType = #{record.expressionType,jdbcType=INTEGER},
+      <if test="record.port != null" >
+        port = #{record.port,jdbcType=INTEGER},
       </if>
-      <if test="record.expression != null" >
-        expression = #{record.expression,jdbcType=VARCHAR},
+      <if test="record.workerGroupId != null" >
+        workerGroupId = #{record.workerGroupId,jdbcType=INTEGER},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=INTEGER},
       </if>
       <if test="record.createTime != null" >
         createTime = #{record.createTime,jdbcType=TIMESTAMP},
@@ -182,28 +194,32 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update job_schedule_expression
+    update worker
     set id = #{record.id,jdbcType=INTEGER},
-      jobId = #{record.jobId,jdbcType=BIGINT},
-      expressionType = #{record.expressionType,jdbcType=INTEGER},
-      expression = #{record.expression,jdbcType=VARCHAR},
+      ip = #{record.ip,jdbcType=CHAR},
+      port = #{record.port,jdbcType=INTEGER},
+      workerGroupId = #{record.workerGroupId,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=INTEGER},
       createTime = #{record.createTime,jdbcType=TIMESTAMP},
       updateTime = #{record.updateTime,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.mogujie.jarvis.dto.generate.JobScheduleExpression" >
-    update job_schedule_expression
+  <update id="updateByPrimaryKeySelective" parameterType="com.mogujie.jarvis.dto.generate.Worker" >
+    update worker
     <set >
-      <if test="jobId != null" >
-        jobId = #{jobId,jdbcType=BIGINT},
+      <if test="ip != null" >
+        ip = #{ip,jdbcType=CHAR},
       </if>
-      <if test="expressionType != null" >
-        expressionType = #{expressionType,jdbcType=INTEGER},
+      <if test="port != null" >
+        port = #{port,jdbcType=INTEGER},
       </if>
-      <if test="expression != null" >
-        expression = #{expression,jdbcType=VARCHAR},
+      <if test="workerGroupId != null" >
+        workerGroupId = #{workerGroupId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
       </if>
       <if test="createTime != null" >
         createTime = #{createTime,jdbcType=TIMESTAMP},
@@ -214,14 +230,14 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.mogujie.jarvis.dto.generate.JobScheduleExpression" >
-    update job_schedule_expression
-    set jobId = #{jobId,jdbcType=BIGINT},
-      expressionType = #{expressionType,jdbcType=INTEGER},
-      expression = #{expression,jdbcType=VARCHAR},
+  <update id="updateByPrimaryKey" parameterType="com.mogujie.jarvis.dto.generate.Worker" >
+    update worker
+    set ip = #{ip,jdbcType=CHAR},
+      port = #{port,jdbcType=INTEGER},
+      workerGroupId = #{workerGroupId,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
       createTime = #{createTime,jdbcType=TIMESTAMP},
       updateTime = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <cache />
 </mapper>

@@ -14,8 +14,8 @@ import java.util.List;
 import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.expression.DependencyStrategyExpression;
 import com.mogujie.jarvis.dto.generate.Task;
+import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.service.TaskService;
-import com.mogujie.jarvis.server.util.SpringContext;
 
 /**
  * @author guangming
@@ -23,7 +23,7 @@ import com.mogujie.jarvis.server.util.SpringContext;
  */
 public class TaskDependStatus {
     private List<Long> dependTaskIds;
-    private TaskService taskService = SpringContext.getBean(TaskService.class);
+    private TaskService taskService = Injectors.getInjector().getInstance(TaskService.class);
     private DependencyStrategyExpression commonStrategy;
 
     public TaskDependStatus(List<Long> dependTaskIds, DependencyStrategyExpression commonStrategy) {

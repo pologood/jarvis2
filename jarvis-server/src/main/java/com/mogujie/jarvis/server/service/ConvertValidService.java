@@ -12,10 +12,10 @@ import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
 import org.joda.time.DateTime;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import com.google.common.base.Preconditions;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.mogujie.jarvis.core.domain.AppType;
 import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.dto.generate.App;
@@ -33,7 +33,7 @@ import com.mogujie.jarvis.server.domain.JobEntry;
  * @author guangming
  */
 
-@Service
+@Singleton
 public class ConvertValidService {
 
     private enum CheckMode {
@@ -43,10 +43,10 @@ public class ConvertValidService {
         DELETE          //删除
     }
 
-    @Autowired
+    @Inject
     private AppService appService;
 
-    @Autowired
+    @Inject
     private JobService jobService;
 
     public Job convertCheck2Job(RestSubmitJobRequest msg) {
@@ -55,7 +55,7 @@ public class ConvertValidService {
         return job;
     }
 
-    public Job convertCheckJob(RestModifyJobRequest msg) {
+    public Job convertCheck2Job(RestModifyJobRequest msg) {
         Job job = convert2Job(msg);
         checkJob(CheckMode.EDIT, job);
         return job;
@@ -152,7 +152,7 @@ public class ConvertValidService {
     public Job convert2Job(RestModifyJobStatusRequest msg) {
         Job job = new Job();
         job.setJobId(msg.getJobId());
-        job.setStatus(msg.getJobStatus());
+        job.setStatus(msg.getStatus());
         return job;
     }
 

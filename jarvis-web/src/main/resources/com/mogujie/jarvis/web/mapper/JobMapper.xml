@@ -13,8 +13,8 @@
           <if test="jobType!=null and jobType!='' and jobType!='all'">
               AND jobType=#{jobType}
           </if>
-          <if test="jobFlag!=null">
-              AND jobFlag=#{jobFlag}
+          <if test="status!=null">
+              AND status=#{status}
           </if>
           <if test="submitUser!=null and submitUser!='' and submitUser!='all' ">
               AND submitUser=#{submitUser}

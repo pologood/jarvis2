@@ -10,25 +10,23 @@ package com.mogujie.jarvis.server.actor;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Named;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-
-import akka.actor.UntypedActor;
-
 import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.protocol.SystemStatusProtos.RestServerUpdateSystemStatusRequest;
 import com.mogujie.jarvis.protocol.SystemStatusProtos.ServerUpdateSystemStatusResponse;
 import com.mogujie.jarvis.server.dispatcher.TaskDispatcher;
 import com.mogujie.jarvis.server.domain.ActorEntry;
+import com.mogujie.jarvis.server.guice.Injectors;
 
-@Named("systemActor")
-@Scope("prototype")
+import akka.actor.Props;
+import akka.actor.UntypedActor;
+
 public class SystemActor extends UntypedActor {
 
-    @Autowired
-    private TaskDispatcher taskDispatcher;
+    private TaskDispatcher taskDispatcher = Injectors.getInjector().getInstance(TaskDispatcher.class);
+
+    public static Props props() {
+        return Props.create(SystemActor.class);
+    }
 
     @Override
     public void onReceive(Object obj) throws Exception {

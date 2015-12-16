@@ -9,26 +9,25 @@ package com.mogujie.jarvis.server.actor;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Named;
-
-import com.mogujie.jarvis.server.service.WorkerService;
-import javassist.NotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
+import org.apache.ibatis.javassist.NotFoundException;
 
 import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.protocol.ModifyWorkerStatusProtos.RestServerModifyWorkerStatusRequest;
 import com.mogujie.jarvis.protocol.ModifyWorkerStatusProtos.ServerModifyWorkerStatusResponse;
 import com.mogujie.jarvis.server.domain.ActorEntry;
+import com.mogujie.jarvis.server.guice.Injectors;
+import com.mogujie.jarvis.server.service.WorkerService;
 
+import akka.actor.Props;
 import akka.actor.UntypedActor;
 
-@Named("workerModifyStatusActor")
-@Scope("prototype")
 public class WorkerModifyStatusActor extends UntypedActor {
 
-    @Autowired
-    private WorkerService workerService;
+    private WorkerService workerService = Injectors.getInjector().getInstance(WorkerService.class);
+
+    public static Props props() {
+        return Props.create(WorkerModifyStatusActor.class);
+    }
 
     @Override
     public void onReceive(Object obj) throws Exception {
@@ -57,7 +56,6 @@ public class WorkerModifyStatusActor extends UntypedActor {
             getSender().tell(response, getSelf());
         }
     }
-
 
     public static List<ActorEntry> handledMessages() {
         List<ActorEntry> list = new ArrayList<>();

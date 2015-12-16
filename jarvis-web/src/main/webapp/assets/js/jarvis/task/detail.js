@@ -1,5 +1,5 @@
 $(function(){
-    console.log(taskVoList);
+    //console.log(taskVoList);
     var xAxis=new Array();
     var data = new Array();
     for(var i=0;i<taskVoList.length;i++){
@@ -77,19 +77,23 @@ $(function(){
 
 
 function initLog(){
-    console.log("attemptId:"+attemptId);
-    console.log("jobId:"+jobId);
-    console.log("taskId:"+taskId);
+    //console.log("attemptId:"+attemptId);
+    //console.log("jobId:"+jobId);
+    //console.log("taskId:"+taskId);
     var data={};
     data["taskId"]=taskId;
     data["jobId"]=jobId;
     data["attemptId"]=attemptId;
     data["offset"]=0;
     data["lines"]=1000;
-    var result=requestRemoteRestApi('/api/log/readResult',"日志",data);
+    var result=requestRemoteRestApi('/api/log/readResult',"读取执行日志",data);
+
+    console.log(result);
+    console.log(result.data.data.log);
 
     if(result.flag==true){
-        $("#log").text(result);
+        $("#log").text(result.data.data.log);
+        //$("#log").text("test");
     }
 }
 

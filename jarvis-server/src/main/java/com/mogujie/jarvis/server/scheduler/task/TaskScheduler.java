@@ -15,9 +15,10 @@ import java.util.Map.Entry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
-import org.springframework.transaction.annotation.Transactional;
+import org.mybatis.guice.transactional.Transactional;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.Lists;
 import com.google.common.eventbus.AllowConcurrentEvents;
 import com.google.common.eventbus.Subscribe;
 import com.mogujie.jarvis.core.domain.TaskDetail;
@@ -28,7 +29,9 @@ import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.server.dispatcher.TaskManager;
 import com.mogujie.jarvis.server.dispatcher.TaskQueue;
+import com.mogujie.jarvis.server.domain.JobEntry;
 import com.mogujie.jarvis.server.domain.RetryType;
+import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
 import com.mogujie.jarvis.server.scheduler.TaskRetryScheduler;
 import com.mogujie.jarvis.server.scheduler.event.AddTaskEvent;
@@ -45,7 +48,6 @@ import com.mogujie.jarvis.server.scheduler.event.StopEvent;
 import com.mogujie.jarvis.server.scheduler.event.SuccessEvent;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.TaskService;
-import com.mogujie.jarvis.server.util.SpringContext;
 
 /**
  * Scheduler used to handle ready tasks.
@@ -64,9 +66,9 @@ public class TaskScheduler extends Scheduler {
     }
 
     private TaskGraph taskGraph = TaskGraph.INSTANCE;
-    private JobService jobService = SpringContext.getBean(JobService.class);
-    private TaskService taskService = SpringContext.getBean(TaskService.class);
-    private TaskManager taskManager = SpringContext.getBean(TaskManager.class);
+    private JobService jobService = Injectors.getInjector().getInstance(JobService.class);
+    private TaskService taskService = Injectors.getInjector().getInstance(TaskService.class);
+    private TaskManager taskManager = Injectors.getInjector().getInstance(TaskManager.class);
     private TaskQueue taskQueue = TaskQueue.INSTANCE;
     private TaskRetryScheduler retryScheduler = TaskRetryScheduler.INSTANCE;
 
@@ -185,6 +187,16 @@ public class TaskScheduler extends Scheduler {
         // create new task
         long taskId = taskService.createTaskByJobId(jobId, scheduleTime);
         LOGGER.info("add new task[{}] to DB", taskId);
+
+        // 如果是串行任务，添加自依赖
+        JobEntry jobEntry = jobService.get(jobId);
+        if (jobEntry != null && jobEntry.getJob().getSerialFlag() > 0) {
+            Task task = taskService.getLastTask(jobId, taskId);
+            if (task != null) {
+                List<Long> dependTaskIds = Lists.newArrayList(task.getTaskId());
+                dependTaskIdMap.put(jobId, dependTaskIds);
+            }
+        }
 
         // add to taskGraph
         DAGTask dagTask = new DAGTask(jobId, taskId, scheduleTime, dependTaskIdMap);

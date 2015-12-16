@@ -11,8 +11,6 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 
 import com.google.common.collect.Lists;
 import com.google.common.eventbus.Subscribe;
@@ -21,6 +19,7 @@ import com.mogujie.jarvis.dao.generate.JobMapper;
 import com.mogujie.jarvis.dto.generate.Alarm;
 import com.mogujie.jarvis.dto.generate.AlarmExample;
 import com.mogujie.jarvis.dto.generate.Job;
+import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
 import com.mogujie.jarvis.server.scheduler.event.DAGTaskEvent;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
@@ -28,14 +27,10 @@ import com.mogujie.jarvis.server.scheduler.event.KilledEvent;
 import com.mogujie.jarvis.server.scheduler.event.StartEvent;
 import com.mogujie.jarvis.server.scheduler.event.StopEvent;
 
-@Repository
 public class AlarmScheduler extends Scheduler {
 
-    @Autowired
-    private JobMapper jobMapper;
-
-    @Autowired
-    private AlarmMapper alarmMapper;
+    private JobMapper jobMapper = Injectors.getInjector().getInstance(JobMapper.class);
+    private AlarmMapper alarmMapper = Injectors.getInjector().getInstance(AlarmMapper.class);
 
     private Alarmer alarmer = new DefaultAlarmer();
 

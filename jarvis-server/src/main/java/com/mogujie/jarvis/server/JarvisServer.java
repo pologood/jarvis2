@@ -18,10 +18,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jgrapht.experimental.dag.DirectedAcyclicGraph.CycleFoundException;
 import org.joda.time.DateTime;
-import org.springframework.context.ApplicationContext;
-
-import akka.actor.ActorSystem;
-import akka.routing.RoundRobinPool;
 
 import com.google.common.collect.Lists;
 import com.mogujie.jarvis.core.JarvisConstants;
@@ -36,9 +32,11 @@ import com.mogujie.jarvis.core.expression.ScheduleExpression;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.dto.generate.Task;
+import com.mogujie.jarvis.server.actor.ServerActor;
 import com.mogujie.jarvis.server.alarm.AlarmScheduler;
 import com.mogujie.jarvis.server.dispatcher.TaskDispatcher;
 import com.mogujie.jarvis.server.domain.JobEntry;
+import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.TaskRetryScheduler;
 import com.mogujie.jarvis.server.scheduler.dag.DAGJob;
@@ -55,8 +53,9 @@ import com.mogujie.jarvis.server.scheduler.time.TimeScheduler;
 import com.mogujie.jarvis.server.scheduler.time.TimeSchedulerFactory;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.TaskService;
-import com.mogujie.jarvis.server.util.SpringContext;
-import com.mogujie.jarvis.server.util.SpringExtension;
+
+import akka.actor.ActorSystem;
+import akka.routing.RoundRobinPool;
 
 public class JarvisServer {
 
@@ -65,19 +64,16 @@ public class JarvisServer {
     public static void main(String[] args) throws Exception {
         LOGGER.info("Starting Jarvis server...");
 
-        ApplicationContext context = SpringContext.getApplicationContext();
-        ActorSystem system = JarvisServerActorSystem.getInstance();
-        SpringExtension.SPRING_EXT_PROVIDER.get(system).initialize(context);
+        ActorSystem system = Injectors.getInjector().getInstance(ActorSystem.class);
 
         Configuration config = ConfigUtils.getServerConfig();
         int serverActorNum = config.getInt(ServerConigKeys.SERVER_ACTOR_NUM, 500);
-        system.actorOf(SpringExtension.SPRING_EXT_PROVIDER.get(system).props("serverActor").withRouter(new RoundRobinPool(serverActorNum)),
-                JarvisConstants.SERVER_AKKA_SYSTEM_NAME);
+        system.actorOf(ServerActor.props().withRouter(new RoundRobinPool(serverActorNum)), JarvisConstants.SERVER_AKKA_SYSTEM_NAME);
 
         int taskDispatcherThreads = config.getInt(ServerConigKeys.SERVER_DISPATCHER_THREADS, 5);
         ExecutorService executorService = Executors.newFixedThreadPool(taskDispatcherThreads);
         for (int i = 0; i < taskDispatcherThreads; i++) {
-            executorService.submit(SpringContext.getBean(TaskDispatcher.class));
+            executorService.submit(Injectors.getInjector().getInstance(TaskDispatcher.class));
         }
         executorService.shutdown();
 
@@ -100,7 +96,7 @@ public class JarvisServer {
         DAGScheduler dagScheduler = DAGScheduler.getInstance();
         TaskScheduler taskScheduler = TaskScheduler.getInstance();
         TimeScheduler timeScheduler = TimeSchedulerFactory.getInstance();
-        AlarmScheduler alarmScheduler = SpringContext.getBean(AlarmScheduler.class);
+        AlarmScheduler alarmScheduler = Injectors.getInjector().getInstance(AlarmScheduler.class);
         JobGraph jobGraph = JobGraph.INSTANCE;
         TaskGraph taskGraph = TaskGraph.INSTANCE;
         controller.register(dagScheduler);
@@ -109,8 +105,8 @@ public class JarvisServer {
         controller.register(alarmScheduler);
 
         // 2. initialize DAGScheduler and TimeScheduler
-        JobService jobService = SpringContext.getBean(JobService.class);
-        TaskService taskService = SpringContext.getBean(TaskService.class);
+        JobService jobService = Injectors.getInjector().getInstance(JobService.class);
+        TaskService taskService = Injectors.getInjector().getInstance(TaskService.class);
         List<Job> jobs = jobService.getNotDeletedJobs();
         // 2.1 先添加job
         for (Job job : jobs) {
