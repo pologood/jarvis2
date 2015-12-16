@@ -15,6 +15,7 @@ import java.util.Set;
 
 import javax.inject.Named;
 
+import com.mogujie.jarvis.protocol.JobProtos;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -42,6 +43,9 @@ import com.mogujie.jarvis.protocol.JobProtos.RestSubmitJobRequest;
 import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobResponse;
 import com.mogujie.jarvis.protocol.JobProtos.ServerQueryJobRelationResponse;
 import com.mogujie.jarvis.protocol.JobProtos.ServerSubmitJobResponse;
+import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobStatusRequest;
+import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobStatusResponse;
+
 import com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry;
 import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.domain.ModifyDependEntry;
@@ -173,8 +177,6 @@ public class JobActor extends UntypedActor {
             // 1. update job to DB
             jobService.updateJob(job);
 
-            modifyJobFlag(msg);
-
             modifyDependency(msg);
 
             modifyJobExpression(msg);
@@ -190,13 +192,35 @@ public class JobActor extends UntypedActor {
         }
     }
 
-    private void modifyJobFlag(RestModifyJobRequest msg) throws JobScheduleException {
-        if (!msg.hasJobFlag())
-            return;
-        long jobId = msg.getJobId();
-        JobStatus flag = JobStatus.getInstance(msg.getJobFlag());
-        timeScheduler.modifyJobFlag(jobId, flag);
-        dagScheduler.getJobGraph().modifyJobFlag(jobId, flag);
+
+    /**
+     * 修改任务
+     *
+     * @param msg
+     * @throws IOException
+     */
+    @Transactional
+    private void modifyJobStatus(RestModifyJobStatusRequest msg) throws Exception {
+
+        ServerModifyJobStatusResponse response;
+        try {
+            // 参数检查
+            Job job = convertValidService.convert2Job(msg);
+
+            // 1. update job to DB
+            jobService.updateJob(job);
+
+            long jobId = msg.getJobId();
+            JobStatus flag = JobStatus.getInstance(msg.getJobStatus());
+            timeScheduler.modifyJobFlag(jobId, flag);
+            dagScheduler.getJobGraph().modifyJobFlag(jobId, flag);
+
+            response = ServerModifyJobStatusResponse.newBuilder().setSuccess(true).build();
+            getSender().tell(response, getSelf());
+        } catch (Exception e) {
+            response = ServerModifyJobStatusResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
+            getSender().tell(response, getSelf());
+        }
     }
 
     private void modifyJobExpression(RestModifyJobRequest msg) {
