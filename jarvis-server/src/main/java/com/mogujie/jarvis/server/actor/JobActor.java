@@ -210,7 +210,7 @@ public class JobActor extends UntypedActor {
             jobService.updateJob(job);
 
             long jobId = msg.getJobId();
-            JobStatus flag = JobStatus.getInstance(msg.getStatus());
+            JobStatus flag = JobStatus.parseValue(msg.getStatus());
             timeScheduler.modifyJobFlag(jobId, flag);
             dagScheduler.getJobGraph().modifyJobFlag(jobId, flag);
 
@@ -274,7 +274,7 @@ public class JobActor extends UntypedActor {
             String user = msg.getUser();
 
             ModifyOperation operation;
-            OperationMode operationMode = OperationMode.getInstance(entry.getOperator());
+            OperationMode operationMode = OperationMode.parseValue(entry.getOperator());
             if (operationMode.equals(OperationMode.ADD)) {
                 operation = ModifyOperation.ADD;
                 JobDepend jobDepend = convertValidService.convert2JobDepend(jobId, entry, user);

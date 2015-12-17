@@ -9,7 +9,6 @@ package com.mogujie.jarvis.core.domain;
 
 /**
  * @author muming
- *
  */
 public enum JobPriority {
 
@@ -28,17 +27,13 @@ public enum JobPriority {
         return value;
     }
 
-    public static JobPriority getInstance(int value) {
-
+    public static JobPriority parseValue(int value) {
         JobPriority[] all = JobPriority.values();
-        JobPriority select = JobPriority.NORMAL;
         for (JobPriority s : all) {
             if (s.getValue() == value) {
-                select = s;
-                break;
+                return s;
             }
         }
-
-        return select;
+        throw new IllegalArgumentException("JobPriority value is invalid. value:" + value);
     }
 }

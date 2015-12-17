@@ -9,7 +9,6 @@ package com.mogujie.jarvis.core.domain;
 
 /**
  * @author muming
- *
  */
 public enum JobRelationType {
 
@@ -36,16 +35,14 @@ public enum JobRelationType {
         return false;
     }
 
-    public static JobRelationType getInstance(int value) {
+    public static JobRelationType parseValue(int value) {
         JobRelationType[] all = JobRelationType.values();
-        JobRelationType select = JobRelationType.PARENT;
         for (JobRelationType s : all) {
             if (s.getValue() == value) {
-                select = s;
-                break;
+                return s;
             }
         }
-        return select;
+        throw new IllegalArgumentException("JobRelationType value is invalid. value:" + value);
     }
 
 }

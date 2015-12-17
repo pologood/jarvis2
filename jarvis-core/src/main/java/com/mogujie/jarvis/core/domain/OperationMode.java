@@ -9,7 +9,6 @@ package com.mogujie.jarvis.core.domain;
 
 /**
  * @author muming
- *
  */
 public enum OperationMode {
 
@@ -37,16 +36,14 @@ public enum OperationMode {
         return false;
     }
 
-    public static OperationMode getInstance(int value) {
+    public static OperationMode parseValue(int value) {
         OperationMode[] all = OperationMode.values();
-        OperationMode select = OperationMode.ADD;
         for (OperationMode s : all) {
             if (s.getValue() == value) {
-                select = s;
-                break;
+                return s;
             }
         }
-        return select;
+        throw new IllegalArgumentException("OperationMode value is invalid. value:" + value);
     }
 
 }

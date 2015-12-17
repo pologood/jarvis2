@@ -9,7 +9,6 @@ package com.mogujie.jarvis.core.domain;
 
 /**
  * @author muming
- *
  */
 public enum JobStatus {
 
@@ -28,7 +27,7 @@ public enum JobStatus {
         return value;
     }
 
-    public static JobStatus getInstance(int value) {
+    public static JobStatus parseValue(int value) {
         JobStatus[] statusList = JobStatus.values();
         JobStatus status = JobStatus.ENABLE;
         for (JobStatus s : statusList) {
@@ -49,7 +48,6 @@ public enum JobStatus {
         }
         return false;
     }
-
 
 
 }

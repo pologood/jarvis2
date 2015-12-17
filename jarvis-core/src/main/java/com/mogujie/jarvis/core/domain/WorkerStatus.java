@@ -9,7 +9,6 @@ package com.mogujie.jarvis.core.domain;
 
 /**
  * @author muming
- *
  */
 public enum WorkerStatus {
 
@@ -36,17 +35,14 @@ public enum WorkerStatus {
         return false;
     }
 
-    public static WorkerStatus getInstance(int value) {
+    public static WorkerStatus parseValue(int value) {
         WorkerStatus[] statusList = WorkerStatus.values();
-        WorkerStatus status = WorkerStatus.ONLINE;
         for (WorkerStatus s : statusList) {
             if (s.getValue() == value) {
-                status = s;
-                break;
+                return s;
             }
         }
-        return status;
+        throw new IllegalArgumentException("WorkerStatus value is invalid. value:" + value);
     }
-
 
 }

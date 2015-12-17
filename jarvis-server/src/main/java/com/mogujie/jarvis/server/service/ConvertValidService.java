@@ -74,7 +74,7 @@ public class ConvertValidService {
         job.setContent(msg.getContent());
         job.setParams(msg.getParameters());
         job.setPriority(msg.getPriority());
-        job.setStatus(msg.getJobFlag());
+        job.setStatus(msg.getStatus());
         job.setJobType(msg.getJobType());
         job.setWorkerGroupId(msg.getWorkerGroupId());
         if (msg.hasActiveStartTime() && msg.getActiveStartTime() != 0) {
