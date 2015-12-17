@@ -61,7 +61,7 @@ public class AlarmScheduler extends Scheduler {
         if (job != null) {
             String jobName = job.getJobName();
             Alarm alarm = alarmService.getAlarmByJobId(jobId);
-            if (alarm.getStatus().intValue() == 1) {
+            if (alarm != null && alarm.getStatus().intValue() == 1) {
                 String msg = null;
                 if (event instanceof FailedEvent) {
                     msg = "任务[" + jobName + "]运行失败";
