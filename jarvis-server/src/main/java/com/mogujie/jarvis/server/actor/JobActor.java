@@ -79,6 +79,7 @@ public class JobActor extends UntypedActor {
         List<ActorEntry> list = new ArrayList<>();
         list.add(new ActorEntry(RestSubmitJobRequest.class, ServerSubmitJobResponse.class, MessageType.GENERAL));
         list.add(new ActorEntry(RestModifyJobRequest.class, ServerModifyJobResponse.class, MessageType.GENERAL));
+        list.add(new ActorEntry(RestModifyJobStatusRequest.class, ServerModifyJobStatusResponse.class, MessageType.GENERAL));
         list.add(new ActorEntry(RestQueryJobRelationRequest.class, ServerQueryJobRelationResponse.class, MessageType.GENERAL));
         return list;
     }
@@ -89,6 +90,8 @@ public class JobActor extends UntypedActor {
             submitJob((RestSubmitJobRequest) obj);
         } else if (obj instanceof RestModifyJobRequest) {
             modifyJob((RestModifyJobRequest) obj);
+        } else if (obj instanceof RestModifyJobStatusRequest) {
+            modifyJobStatus((RestModifyJobStatusRequest) obj);
         } else if (obj instanceof RestQueryJobRelationRequest) {
             RestQueryJobRelationRequest msg = (RestQueryJobRelationRequest) obj;
             queryJobRelation(msg);
