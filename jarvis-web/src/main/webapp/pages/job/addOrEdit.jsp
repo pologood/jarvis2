@@ -1,6 +1,5 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <jsp:include page="../common/header.jsp">
@@ -17,7 +16,7 @@
             <nav>
                 <ol class="cd-breadcrumb triangle">
                     <li><a href="${contextPath}/">首页</a></li>
-                    <li ><a href="${contextPath}/job">任务管理</a></li>
+                    <li><a href="${contextPath}/job">任务管理</a></li>
                     <c:choose>
                         <c:when test="${jobVo!=null}">
                             <li class="current"><em>编辑任务</em></li>
@@ -34,17 +33,21 @@
     <div class="row" id="jobData">
         <div class="col-md-12">
             <!-- 用户名必须 -->
-            <input type="hidden" id="user" desc="用户名" value="${user.uname}" />
-            <input type="hidden" id="jobId" desc="任务id" value="${jobVo.jobId}" />
+            <input type="hidden" id="user" desc="用户名" value="${user.uname}"/>
+            <input type="hidden" id="jobId" desc="任务id" value="${jobVo.jobId}"/>
 
 
             <div class="row top-buffer">
                 <div class="col-md-6 col-md-offset-3">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">应用名称<span class="text-danger" style="vertical-align: middle" >*</span></span>
-                        <select id="appName" desc="应用名称" >
+                        <span class="input-group-addon" style="width:35%">应用名称<span class="text-danger"
+                                                                                    style="vertical-align: middle">*</span></span>
+                        <select id="appName" desc="应用名称">
                             <c:forEach items="${appVoList}" var="app" varStatus="status">
-                                <option value="${app.appName}" appKey="${app.appKey}" <c:choose><c:when test="${app.appName==jobVo.appName}">selected</c:when></c:choose> >${app.appName}</option>
+                                <option value="${app.appName}" appKey="${app.appKey}"
+                                        <c:choose>
+                                        <c:when test="${app.appName==jobVo.appName}">selected</c:when>
+                                </c:choose> >${app.appName}</option>
                             </c:forEach>
                         </select>
                     </div>
@@ -54,8 +57,23 @@
             <div class="row top-buffer">
                 <div class="col-md-6 col-md-offset-3">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">任务名称<span class="text-danger" style="vertical-align: middle" >*</span></span>
-                        <input id="jobName" class="form-control" desc="任务名称" value="${jobVo.jobName}" onblur="checkJobName(this)" />
+                        <span class="input-group-addon" style="width:35%">任务名称<span class="text-danger"
+                                                                                    style="vertical-align: middle">*</span></span>
+                        <input id="jobName" class="form-control" desc="任务名称" value="${jobVo.jobName}"
+                               onblur="checkJobName(this)"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row top-buffer">
+                <div class="col-md-6 col-md-offset-3">
+                    <div class="input-group" style="width:100%">
+                        <span class="input-group-addon" style="width:35%">并行|串行<span class="text-danger"
+                                                                                     style="vertical-align: middle">*</span></span>
+                        <select id="serialFlag">
+                            <option value="0">并行</option>
+                            <option value="1">串行</option>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -65,7 +83,8 @@
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">起始时间</span>
 
-                        <input id="startTime" class="form-control" value="<fmt:formatDate value="${jobVo.activeStartDate}" pattern="yyyy-MM-dd"></fmt:formatDate>" />
+                        <input id="startTime" class="form-control"
+                               value="<fmt:formatDate value="${jobVo.activeStartDate}" pattern="yyyy-MM-dd"></fmt:formatDate>"/>
 
                     </div>
                 </div>
@@ -75,7 +94,8 @@
                 <div class="col-md-6 col-md-offset-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">结束时间</span>
-                        <input id="endTime" class="form-control" value="<fmt:formatDate value="${jobVo.activeEndDate}" pattern="yyyy-MM-dd"></fmt:formatDate>" />
+                        <input id="endTime" class="form-control"
+                               value="<fmt:formatDate value="${jobVo.activeEndDate}" pattern="yyyy-MM-dd"></fmt:formatDate>"/>
                     </div>
                 </div>
             </div>
@@ -83,8 +103,9 @@
             <div class="row top-buffer">
                 <div class="col-md-6 col-md-offset-3">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">任务类型<span class="text-danger" style="vertical-align: middle" >*</span></span>
-                        <select id="jobType"  desc="任务类型">
+                        <span class="input-group-addon" style="width:35%">任务类型<span class="text-danger"
+                                                                                    style="vertical-align: middle">*</span></span>
+                        <select id="jobType" desc="任务类型">
 
                         </select>
                     </div>
@@ -94,8 +115,11 @@
             <div class="row top-buffer">
                 <div class="col-md-6 col-md-offset-3">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">执行命令<span class="text-danger" style="vertical-align: middle" >*</span></span>
-                        <textarea id="content" class="form-control" desc="执行命令" rows="4" onclick="changeTextArea(this,15,10)" onblur="changeTextArea(this,4,10)">${jobVo.content}</textarea>
+                        <span class="input-group-addon" style="width:35%">执行命令<span class="text-danger"
+                                                                                    style="vertical-align: middle">*</span></span>
+                        <textarea id="content" class="form-control" desc="执行命令" rows="4"
+                                  onclick="changeTextArea(this,15,10)"
+                                  onblur="changeTextArea(this,4,10)">${jobVo.content}</textarea>
                     </div>
                 </div>
             </div>
@@ -112,7 +136,8 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                        aria-hidden="true">&times;</span></button>
                                 <h4 class="modal-title">任务参数</h4>
                             </div>
                             <div class="modal-body">
@@ -125,46 +150,54 @@
                                             <input name="value" class="form-control" placeholder="请输入属性的value">
                                         </td>
                                         <td>
-                                            <a class="glyphicon glyphicon-plus" href="javascript:void(0)" onclick="addPara(this)"></a>
-                                            <a class="glyphicon glyphicon-minus" href="javascript:void(0)" onclick="deletePara(this)"></a>
+                                            <a class="glyphicon glyphicon-plus" href="javascript:void(0)"
+                                               onclick="addPara(this)"></a>
+                                            <a class="glyphicon glyphicon-minus" href="javascript:void(0)"
+                                               onclick="deletePara(this)"></a>
                                         </td>
                                     </tr>
                                 </table>
 
                                 <table id="paras" class="table table-bordered">
                                     <thead>
-                                        <tr>
-                                            <th>key</th>
-                                            <th>value</th>
-                                            <th>操作</th>
-                                        </tr>
+                                    <tr>
+                                        <th>key</th>
+                                        <th>value</th>
+                                        <th>操作</th>
+                                    </tr>
 
                                     </thead>
                                     <tbody>
 
                                     </tbody>
                                 </table>
-                                <a class="glyphicon glyphicon-plus" href="javascript:void(0)" onclick="addPara(null)"></a>
+                                <a class="glyphicon glyphicon-plus" href="javascript:void(0)"
+                                   onclick="addPara(null)"></a>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                                 <button type="button" class="btn btn-primary" onclick="ensurePara()">确定</button>
                             </div>
-                        </div><!-- /.modal-content -->
-                    </div><!-- /.modal-dialog -->
-                </div><!-- /.modal -->
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                </div>
+                <!-- /.modal -->
             </div>
-
-
 
 
             <div class="row top-buffer">
                 <div class="col-md-6 col-md-offset-3">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">Worker Group<span class="text-danger" style="vertical-align: middle" >*</span></span>
-                        <select id="groupId" desc="Worker Group" >
+                        <span class="input-group-addon" style="width:35%">Worker Group<span class="text-danger"
+                                                                                            style="vertical-align: middle">*</span></span>
+                        <select id="groupId" desc="Worker Group">
                             <c:forEach items="${WorkerGroupVoList}" var="workerGroup" varStatus="status">
-                                <option value="${workerGroup.id}" <c:choose><c:when test="${jobVo.workerGroupId==workerGroup.id}">selected</c:when></c:choose>  >${workerGroup.name}</option>
+                                <option value="${workerGroup.id}"
+                                        <c:choose>
+                                        <c:when test="${jobVo.workerGroupId==workerGroup.id}">selected</c:when>
+                                </c:choose>  >${workerGroup.name}</option>
                             </c:forEach>
                         </select>
                     </div>
@@ -187,7 +220,7 @@
                 <div class="col-md-6 col-md-offset-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">表达式</span>
-                        <input id="expression" class="form-control" value="${jobVo.expression}" />
+                        <input id="expression" class="form-control" value="${jobVo.expression}"/>
                     </div>
                 </div>
             </div>
@@ -197,7 +230,8 @@
                 <div class="col-md-6 col-md-offset-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">拒绝重试数</span>
-                        <input id="rejectRetries" class="form-control" value="${jobVo.rejectAttempts}" desc="拒绝重试数" placeholder="0" onblur="checkNum(this)"/>
+                        <input id="rejectRetries" class="form-control" value="${jobVo.rejectAttempts}" desc="拒绝重试数"
+                               placeholder="0" onblur="checkNum(this)"/>
                     </div>
                 </div>
             </div>
@@ -206,7 +240,8 @@
                 <div class="col-md-6 col-md-offset-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">拒绝重试间隔(秒)</span>
-                        <input id="rejectInterval" class="form-control" value="${jobVo.rejectInterval}" desc="拒绝重试间隔(秒)" placeholder="3" onblur="checkNum(this)" />
+                        <input id="rejectInterval" class="form-control" value="${jobVo.rejectInterval}" desc="拒绝重试间隔(秒)"
+                               placeholder="3" onblur="checkNum(this)"/>
                     </div>
                 </div>
             </div>
@@ -215,7 +250,8 @@
                 <div class="col-md-6 col-md-offset-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">失败重试数</span>
-                        <input id="failedRetries" class="form-control" value="${jobVo.failedAttempts}" desc="失败重试数" placeholder="0" onblur="checkNum(this)" />
+                        <input id="failedRetries" class="form-control" value="${jobVo.failedAttempts}" desc="失败重试数"
+                               placeholder="0" onblur="checkNum(this)"/>
                     </div>
                 </div>
             </div>
@@ -224,7 +260,8 @@
                 <div class="col-md-6 col-md-offset-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">失败重试间隔(秒)</span>
-                        <input id="failedInterval" class="form-control" value="${jobVo.failedInterval}" desc="失败重试间隔(秒)" placeholder="3" onblur="checkNum(this)" />
+                        <input id="failedInterval" class="form-control" value="${jobVo.failedInterval}" desc="失败重试间隔(秒)"
+                               placeholder="3" onblur="checkNum(this)"/>
                     </div>
                 </div>
             </div>
@@ -244,6 +281,45 @@
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">报警</span>
                         <select id="alarm" multiple></select>
+                    </div>
+
+
+                    <div class="col-md-10 col-md-offset-2">
+
+                        <div id="alarmPattern" style="display: none;">
+                            <div class="row">
+                                <div class="col-md-8" style="margin-top: 2px">
+                                    <div class="input-group" style="width:100%">
+                                        <span name="alarm-user" class="input-group-addon"
+                                              style="width:50%;background-color:#d9edf7"></span>
+                                        <select name="alarm-type" class="form-control">
+
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4" style="margin-top: 2px">
+                                    <div class="input-group" style="margin-left:-25px;margin-right: -15px"
+                                         style="width:100%">
+                                        <span class="input-group-addon" style="width:30%;">操作</span>
+
+                                        <div class="form-control">
+                                            <a href="javascript:void(0)" onclick="addAlarm(this)"><i
+                                                    class="glyphicon glyphicon-plus"></i></a>
+                                            <a href="javascript:void(0)" onclick="deleteAlarm(this)"><i
+                                                    class="glyphicon glyphicon-minus"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <dl id="alarmList">
+
+                        </dl>
+
                     </div>
                 </div>
             </div>
@@ -279,7 +355,8 @@
 
                         <div class="col-md-9" style="margin-bottom: 2px">
                             <div class="input-group commonStrategy" style="width:100%">
-                                <span name="dependJob" class="input-group-addon" style="width:50%;background-color:#d9edf7"></span>
+                                <span name="dependJob" class="input-group-addon"
+                                      style="width:50%;background-color:#d9edf7"></span>
                                 <span class="input-group-addon" style="width:10%">通用</span>
                                 <select name="commonStrategy" class="form-control">
 
@@ -288,9 +365,10 @@
                         </div>
 
                         <div class="col-md-3" style="margin-bottom: 2px">
-                            <div class="input-group offsetStrategy" style="margin-left:-25px;margin-right: -15px" style="width:100%">
-                                <span class="input-group-addon" style="width:30%;" >偏移</span>
-                                <input  name="offsetStrategy" class="form-control"  value="cd" placeholder="默认cd为当天"  />
+                            <div class="input-group offsetStrategy" style="margin-left:-25px;margin-right: -15px"
+                                 style="width:100%">
+                                <span class="input-group-addon" style="width:30%;">偏移</span>
+                                <input name="offsetStrategy" class="form-control" value="cd" placeholder="默认cd为当天"/>
                             </div>
                         </div>
 
@@ -300,8 +378,10 @@
 
                     </dl>
                 </div>
-                <span >
-                    <i class="fa fa-question text-info fa-2x" style="cursor: pointer;position: relative;position: absolute;margin-left:10px;" onmouseover="showDescription(this)" onmouseout="hideDescription(this)"></i>
+                <span>
+                    <i class="fa fa-question text-info fa-2x"
+                       style="cursor: pointer;position: relative;position: absolute;margin-left:10px;"
+                       onmouseover="showDescription(this)" onmouseout="hideDescription(this)"></i>
                 </span>
             </div>
 
@@ -339,20 +419,22 @@
 </jsp:include>
 
 <script type="text/javascript">
-    var jobType=undefined;
-    var jobPriority=undefined;
-    var dependIds=undefined;
-    var expressionType=undefined;
-    var expression=undefined;
-    var dependJobs=undefined;
+    var jobType = undefined;
+    var jobPriority = undefined;
+    var dependIds = undefined;
+    var expressionType = undefined;
+    var expression = undefined;
+    var dependJobs = undefined;
+    var existAlarmList = undefined;
     <c:choose>
     <c:when test="${jobVo!=null}">
-        jobType='${jobVo.jobType}';
-        jobPriority='${jobVo.priority}';
-        dependIds='${dependIds}';
-        expressionType='${jobVo.expressionType}';
-        expression='${jobVo.expression}';
-        dependJobs='${dependJobs}';
+    jobType = '${jobVo.jobType}';
+    jobPriority = '${jobVo.priority}';
+    dependIds = '${dependIds}';
+    expressionType = '${jobVo.expressionType}';
+    expression = '${jobVo.expression}';
+    dependJobs = '${dependJobs}';
+    existAlarmList = '${existAlarmList}';
     </c:when>
     </c:choose>
 </script>

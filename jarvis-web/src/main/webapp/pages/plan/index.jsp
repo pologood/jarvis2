@@ -1,6 +1,5 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <jsp:include page="../common/header.jsp">
     <jsp:param name="uname" value="${user.uname}"/>
@@ -30,7 +29,7 @@
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">任务ID</span>
-                        <select id="jobId" >
+                        <select id="jobId">
 
                         </select>
                     </div>
@@ -38,21 +37,21 @@
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">任务名称</span>
-                        <select id="jobName" >
+                        <select id="jobName">
                         </select>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">任务类型</span>
-                        <select id="jobType" ></select>
+                        <select id="jobType"></select>
                     </div>
                 </div>
 
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">优先级</span>
-                        <select id="priority" ></select>
+                        <select id="priority"></select>
                     </div>
                 </div>
 
@@ -63,13 +62,13 @@
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">调度日期</span>
-                        <input type="text" id="planDate" class="form-control" />
+                        <input type="text" id="planDate" class="form-control"/>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">执行用户</span>
-                        <select id="submitUser" >
+                        <select id="submitUser">
                             <option value="all">全部</option>
                             <c:forEach items="${executeUserList}" var="executeUser" varStatus="status">
                                 <option value="${executeUser}">${executeUser}</option>
@@ -82,7 +81,9 @@
                     <div class="row">
                         <div class="col-md-6 col-md-offset-6">
                             <div class="input-group pull-right">
-                                <button type="button" class="btn btn-primary " onclick="search()" style="margin-right: 3px">查询</button>
+                                <button type="button" class="btn btn-primary " onclick="search()"
+                                        style="margin-right: 3px">查询
+                                </button>
                                 <button type="button" class="btn btn-primary " onclick="reset()">重置</button>
                             </div>
                         </div>
@@ -98,7 +99,7 @@
 
     <div class="row top-buffer">
         <div class="col-md-12">
-            <table id="content" >
+            <table id="content">
 
             </table>
 

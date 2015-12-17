@@ -26,14 +26,14 @@
 
     <select id="getAppCount" parameterType="AppQo" resultType="Integer">
         SELECT count(1) FROM app
-        <include refid="condition" />
+        <include refid="condition"/>
     </select>
 
 
     <select id="getAppList" parameterType="AppQo" resultType="AppVo">
         SELECT * FROM app
-        <include refid="condition" />
-        <include refid="pager" />
+        <include refid="condition"/>
+        <include refid="pager"/>
     </select>
 
     <select id="getAllAppName" resultType="String">

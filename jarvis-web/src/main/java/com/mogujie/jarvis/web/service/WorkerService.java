@@ -42,10 +42,10 @@ public class WorkerService {
     /*
     * 根据条件查询worker列表
     * */
-    public Map<String,Object> getWorkers(WorkerQo workerSearchVo) {
+    public Map<String, Object> getWorkers(WorkerQo workerSearchVo) {
         Integer total = workerMapper.getWorkerCount(workerSearchVo);
         List<WorkerVo> workerVoList = workerMapper.getWorkerList(workerSearchVo);
-        Map<String,Object> result = new HashMap<String, Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("total", total);
         result.put("rows", workerVoList);
         return result;
@@ -94,11 +94,11 @@ public class WorkerService {
     /*
     * 根据条件获取WorkerGroup列表
     * */
-    public Map<String,Object> getWorkerGroups(WorkerGroupQo workerGroupSearchVo) {
+    public Map<String, Object> getWorkerGroups(WorkerGroupQo workerGroupSearchVo) {
         Integer total = workerMapper.getWorkerGroupCount(workerGroupSearchVo);
         List<WorkerGroupVo> workerGroupVoList = workerMapper.getWorkerGroupList(workerGroupSearchVo);
 
-        Map<String,Object> result = new HashMap<String, Object>();
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("total", total);
         result.put("rows", workerGroupVoList);
         return result;

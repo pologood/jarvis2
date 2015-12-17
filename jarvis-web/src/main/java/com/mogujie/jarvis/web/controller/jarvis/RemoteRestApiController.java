@@ -47,8 +47,8 @@ public class RemoteRestApiController extends BaseController {
     * */
     @RequestMapping("/request")
     @ResponseBody
-    public Map<String,Object> restApi(ModelMap modelMap, String url, String para) {
-        Map<String,Object> result = new HashMap<String, Object>();
+    public Map<String, Object> restApi(ModelMap modelMap, String url, String para) {
+        Map<String, Object> result = new HashMap<String, Object>();
         url = domain + url;
         log.info("remote url:" + url + ",para:" + para);
 
@@ -86,7 +86,7 @@ public class RemoteRestApiController extends BaseController {
             log.info("request url:" + response.url());
             String resultBody = response.body();
             log.info(result);
-            result = JsonHelper.fromJson(resultBody,Map.class);
+            result = JsonHelper.fromJson(resultBody, Map.class);
             return result;
         } catch (Exception e) {
             e.printStackTrace();

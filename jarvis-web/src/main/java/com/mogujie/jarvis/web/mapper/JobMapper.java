@@ -12,19 +12,26 @@ import java.util.Set;
  */
 public interface JobMapper {
     JobVo getJobById(Long jobId);
+
     JobVo getJobByName(String jobName);
+
     Integer getCountByCondition(JobQo jobQo);
+
     List<JobVo> getJobsByCondition(JobQo jobQo);
 
     List<Long> getJobIds();
+
     List<String> getJobNames();
+
     List<String> getSubmitUsers();
 
     List<Long> getSimilarJobIds(Long jobId);
+
     List<String> getSimilarJobNames(String jobName);   //根据任务名获取相似任务名
+
     List<JobVo> getJobBySimilarNames(String jobName);  //根据任务名获取相似任务的详细信息
 
 
-    List<JobVo> getJobByIds(@Param("list")Set<String> jobIds);
+    List<JobVo> getJobByIds(@Param("list") Set<String> jobIds);
 
 }

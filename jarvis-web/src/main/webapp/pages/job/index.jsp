@@ -1,6 +1,5 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <jsp:include page="../common/header.jsp">
     <jsp:param name="uname" value="${user.uname}"/>
@@ -29,7 +28,7 @@
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">任务ID</span>
-                        <select id="jobId" >
+                        <select id="jobId">
 
                         </select>
                     </div>
@@ -37,7 +36,7 @@
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">任务名称</span>
-                        <select id="jobName"  >
+                        <select id="jobName">
 
                         </select>
                     </div>
@@ -45,7 +44,7 @@
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">任务类型</span>
-                        <select id="jobType" >
+                        <select id="jobType">
                         </select>
                     </div>
                 </div>
@@ -53,7 +52,7 @@
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">状态</span>
-                        <select id="jobStatus" ></select>
+                        <select id="jobStatus"></select>
                     </div>
                 </div>
 
@@ -64,7 +63,7 @@
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">发布者</span>
-                        <select id="submitUser" >
+                        <select id="submitUser">
                             <option value="all">全部</option>
                             <c:forEach items="${submitUsers}" var="submitUser" varStatus="status">
                                 <option value="${submitUser}">${submitUser}</option>
@@ -76,16 +75,16 @@
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">优先级</span>
-                        <select id="jobPriority" ></select>
+                        <select id="jobPriority"></select>
                     </div>
                 </div>
 
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">应用名称</span>
-                        <select id="appId" >
+                        <select id="appId">
                             <option value="">全部</option>
-                            <c:forEach items="${appVoList}" var="app" >
+                            <c:forEach items="${appVoList}" var="app">
                                 <option value="${app.appId}">${app.appName}</option>
                             </c:forEach>
                         </select>
@@ -95,9 +94,9 @@
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">WorkerGroup名</span>
-                        <select id="workerGroupId" >
+                        <select id="workerGroupId">
                             <option value="">全部</option>
-                            <c:forEach items="${workerGroupVoList}" var="workerGroup" >
+                            <c:forEach items="${workerGroupVoList}" var="workerGroup">
                                 <option value="${workerGroup.id}">${workerGroup.name}</option>
                             </c:forEach>
                         </select>
@@ -112,7 +111,9 @@
                         <div class="col-md-6 col-lg-offset-6">
                             <div class="input-group">
                                 <button type="button" class="btn btn-primary" onclick="search()">查询</button>
-                                <button type="button" class="btn btn-primary" onclick="reset()" style="margin-left: 3px">重置</button>
+                                <button type="button" class="btn btn-primary" onclick="reset()"
+                                        style="margin-left: 3px">重置
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -129,7 +130,7 @@
             <div id="add">
                 <a class="btn btn-primary" href="${contextPath}/job/addOrEdit" target="_blank">新增任务</a>
             </div>
-            <table id="content" >
+            <table id="content">
 
             </table>
 
@@ -150,7 +151,7 @@
     <jsp:param name="menuMap" value="${menuMap}"/>
 </jsp:include>
 <script type="text/javascript">
-    var user='${user.uname}';
+    var user = '${user.uname}';
 </script>
 
 <script type="text/javascript" src="${contextPath}/assets/js/jarvis/job/job.js"></script>

@@ -14,19 +14,29 @@ import java.util.Map;
 public interface WorkerMapper {
     //worker
     WorkerVo getWorkerById(Integer id);
+
     Integer getWorkerCount(WorkerQo workerSearchVo);
+
     List<WorkerVo> getWorkerList(WorkerQo workerSearchVo);
+
     List<String> getAllWorkerIp();
+
     List<Integer> getAllWorkerPort();
-    WorkerVo getWorkerByIpAndPort(Map<String,Object> para);
+
+    WorkerVo getWorkerByIpAndPort(Map<String, Object> para);
 
 
     //WorkerGroup
     List<WorkerGroupVo> getAllWorkerGroup();
+
     WorkerGroupVo getWorkerGroupById(Integer id);
+
     WorkerGroupVo getWorkerGroupByName(String name);
+
     Integer getWorkerGroupCount(WorkerGroupQo workerGroupSearchVo);
+
     List<WorkerGroupVo> getWorkerGroupList(WorkerGroupQo workerGroupSearchVo);
+
     List<String> getAllWorkerGroupCreator();
 
 }

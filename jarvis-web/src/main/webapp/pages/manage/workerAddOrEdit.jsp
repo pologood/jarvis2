@@ -1,6 +1,5 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <jsp:include page="../common/header.jsp">
     <jsp:param name="uname" value="${user.uname}"/>
@@ -33,7 +32,7 @@
     </div>
 
 
-    <input id="workerId" type="hidden" value="${workerVo.id}" />
+    <input id="workerId" type="hidden" value="${workerVo.id}"/>
 
     <div class="row top-buffer">
         <div class="col-md-6 col-md-offset-3 top-buffer">
@@ -41,7 +40,10 @@
                 <span class="input-group-addon" style="width:35%">workerGroupId</span>
                 <select id="workerGroupId">
                     <c:forEach items="${workerGroupVoList}" var="workerGroupVo">
-                        <option value="${workerGroupVo.id}" <c:choose><c:when test="${workerVo.workerGroupId==workerGroupVo.id}">selected</c:when></c:choose> >${workerGroupVo.name}</option>
+                        <option value="${workerGroupVo.id}"
+                                <c:choose>
+                                <c:when test="${workerVo.workerGroupId==workerGroupVo.id}">selected</c:when>
+                        </c:choose> >${workerGroupVo.name}</option>
                     </c:forEach>
                 </select>
             </div>
@@ -49,13 +51,13 @@
         <div class="col-md-6 col-md-offset-3 top-buffer">
             <div class="input-group" style="width:100%">
                 <span class="input-group-addon" style="width:35%">IP</span>
-                <input class="form-control" id="ip" value="${workerVo.ip}" />
+                <input class="form-control" id="ip" value="${workerVo.ip}"/>
             </div>
         </div>
         <div class="col-md-6 col-md-offset-3 top-buffer">
             <div class="input-group" style="width:100%">
                 <span class="input-group-addon" style="width:35%">端口</span>
-                <input class="form-control" id="port" value="${workerVo.port}" />
+                <input class="form-control" id="port" value="${workerVo.port}"/>
             </div>
         </div>
 
@@ -63,8 +65,16 @@
             <div class="input-group" style="width:100%">
                 <span class="input-group-addon" style="width:35%">状态</span>
                 <select id="status">
-                    <option value="0" <c:choose><c:when test="${workerVo!=null&&workerVo.status==0}">selected</c:when></c:choose> >停用</option>
-                    <option value="1" <c:choose><c:when test="${workerVo!=null&&workerVo.status==1}">selected</c:when></c:choose> >启用</option>
+                    <option value="0"
+                            <c:choose>
+                            <c:when test="${workerVo!=null&&workerVo.status==0}">selected</c:when>
+                    </c:choose> >停用
+                    </option>
+                    <option value="1"
+                            <c:choose>
+                            <c:when test="${workerVo!=null&&workerVo.status==1}">selected</c:when>
+                    </c:choose> >启用
+                    </option>
                 </select>
             </div>
         </div>

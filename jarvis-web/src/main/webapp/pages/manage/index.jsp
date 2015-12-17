@@ -1,6 +1,5 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <jsp:include page="../common/header.jsp">
     <jsp:param name="uname" value="${user.uname}"/>
@@ -37,7 +36,9 @@
                 <div class="col-md-6 col-md-offset-3 text-center top-buffer">
                     <div class="input-group" style="width:100%">
                         <button type="button" class="btn btn-default" onclick="updateSystemStatus(1)">启动调度系统</button>
-                        <button type="button" class="btn btn-default" onclick="updateSystemStatus(0)" style="margin-left: 5px">暂停调度系统</button>
+                        <button type="button" class="btn btn-default" onclick="updateSystemStatus(0)"
+                                style="margin-left: 5px">暂停调度系统
+                        </button>
                     </div>
                 </div>
             </div>

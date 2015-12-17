@@ -1,6 +1,5 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <jsp:include page="../common/header.jsp">
     <jsp:param name="uname" value="${user.uname}"/>
@@ -47,7 +46,9 @@
         <div class="col-md-6 col-md-offset-3 top-buffer">
             <div class="input-group" style="width:100%">
                 <span class="input-group-addon" style="width:35%">最大并发数</span>
-                <input id="maxConcurrency" class="form-control" value="<c:choose><c:when test="${appVo.maxConcurrency!=null}">${appVo.maxConcurrency}</c:when><c:otherwise>10</c:otherwise></c:choose>" placeholder="最大并发书,默认10"  />
+                <input id="maxConcurrency" class="form-control"
+                       value="<c:choose><c:when test="${appVo.maxConcurrency!=null}">${appVo.maxConcurrency}</c:when><c:otherwise>10</c:otherwise></c:choose>"
+                       placeholder="最大并发书,默认10"/>
             </div>
         </div>
 
@@ -87,13 +88,13 @@
 </jsp:include>
 
 <script>
-    var appType=undefined;
-    var appstatus=undefined;
+    var appType = undefined;
+    var appstatus = undefined;
     <c:choose>
-        <c:when test="${appVo!=null}">
-            appType=${appVo.appType};
-            appstatus=${appVo.status};
-        </c:when>
+    <c:when test="${appVo!=null}">
+    appType =${appVo.appType};
+    appstatus =${appVo.status};
+    </c:when>
     </c:choose>
 
 </script>

@@ -15,16 +15,21 @@ import java.util.Set;
 public interface TaskMapper {
 
     TaskVo getTaskById(Long taskId);
+
     Integer getCountByCondition(TaskQo taskQo);
+
     List<TaskVo> getTasksByCondition(TaskQo taskQo);
+
     List<String> getAllExecuteUser();
+
     /**
      * 执行计划
      */
 
     Integer getPlanCountByCondition(PlanQo planQo);      //某个
+
     List<PlanVo> getPlansByCondition(PlanQo planQo);
 
 
-    List<TaskVo> getTaskByIds(@Param("list")Set<String> taskIds);
+    List<TaskVo> getTaskByIds(@Param("list") Set<String> taskIds);
 }

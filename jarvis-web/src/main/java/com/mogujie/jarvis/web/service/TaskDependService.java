@@ -152,7 +152,7 @@ public class TaskDependService {
                     Long taskId = list.get(i).longValue();
                     logger.info("taskId:" + taskId);
                     TaskVo singleTaskVo = taskMap.get(taskId);
-                    if(null!=singleTaskVo){
+                    if (null != singleTaskVo) {
                         singleTaskDependVo.getTaskList().add(singleTaskVo);
                         //4代表success
                         if (singleTaskVo.getStatus().equals(4)) {
@@ -187,7 +187,7 @@ public class TaskDependService {
             Integer completeCount = 0;
             for (int i = 0, size = list.size(); i < size; i++) {
                 TaskVo singleTaskVo = taskMap.get(list.get(i).longValue());
-                if(null!=singleTaskVo){
+                if (null != singleTaskVo) {
                     singleTaskDependVo.getTaskList().add(singleTaskVo);
                     if (singleTaskVo.getStatus().equals(4)) {
                         completeCount++;

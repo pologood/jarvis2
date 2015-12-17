@@ -5,10 +5,7 @@ import com.mogujie.jarvis.web.auth.annotation.JarvisPassport;
 import com.mogujie.jarvis.web.auth.conf.JarvisAuthType;
 import com.mogujie.jarvis.web.entity.qo.AppQo;
 import com.mogujie.jarvis.web.entity.vo.*;
-import com.mogujie.jarvis.web.service.AppService;
-import com.mogujie.jarvis.web.service.JobDependService;
-import com.mogujie.jarvis.web.service.JobService;
-import com.mogujie.jarvis.web.service.WorkerService;
+import com.mogujie.jarvis.web.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -35,6 +32,8 @@ public class JobController extends BaseController {
     AppService appService;
     @Autowired
     JobDependService jobDependService;
+    @Autowired
+    AlarmService alarmService;
 
     /*
     * job任务管理首页
@@ -77,14 +76,16 @@ public class JobController extends BaseController {
 
             List<JobDependVo> jobDependVoList = jobDependService.getParentById(jobId);
             List<String> parentIds = new ArrayList<String>();
-            Map<String,Object> map = new HashMap<String, Object>();
+            Map<String, Object> map = new HashMap<String, Object>();
             for (JobDependVo jobDependVo : jobDependVoList) {
                 parentIds.add(jobDependVo.getId().toString());
                 map.put(jobDependVo.getId().toString(), jobDependVo);
             }
             String ids = JsonHelper.toJson(parentIds);
+            List<AlarmVo> alarmVoList = alarmService.getEnableAlarmsByJobId(jobId);
             modelMap.put("dependIds", ids);
-            modelMap.put("dependJobs",JsonHelper.toJson(map));
+            modelMap.put("dependJobs", JsonHelper.toJson(map));
+            modelMap.put("existAlarmList", JsonHelper.toJson(alarmVoList));
         }
 
 
@@ -104,8 +105,8 @@ public class JobController extends BaseController {
     * */
     @RequestMapping("checkJobName")
     @ResponseBody
-    public Map<String,Object> checkJobName(Long jobId, String jobName) {
-        Map<String,Object> result = new HashMap<String, Object>();
+    public Map<String, Object> checkJobName(Long jobId, String jobName) {
+        Map<String, Object> result = new HashMap<String, Object>();
 
         JobVo jobVo = jobService.getJobByName(jobName);
         //新增job时校验

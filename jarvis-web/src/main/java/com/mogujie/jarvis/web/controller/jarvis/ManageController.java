@@ -57,8 +57,8 @@ public class ManageController extends BaseController {
 
     @RequestMapping(value = "checkAppName")
     @ResponseBody
-    public Map<String,Object> checkAppName(ModelMap modelMap, Integer appId, String appName) {
-        Map<String,Object> result=new HashMap<String, Object>();
+    public Map<String, Object> checkAppName(ModelMap modelMap, Integer appId, String appName) {
+        Map<String, Object> result = new HashMap<String, Object>();
 
         AppVo appVo = appService.getAppByName(appName);
         if (appVo == null) {
@@ -113,8 +113,8 @@ public class ManageController extends BaseController {
 
     @RequestMapping(value = "checkWorkerExist")
     @ResponseBody
-    public Map<String,Object> checkWorkerExist(ModelMap modelMap, Integer id, String ip, Integer port) {
-        Map<String,Object> result=new HashMap<String, Object>();
+    public Map<String, Object> checkWorkerExist(ModelMap modelMap, Integer id, String ip, Integer port) {
+        Map<String, Object> result = new HashMap<String, Object>();
 
         Map<String, Object> para = new HashMap<String, Object>();
         para.put("ip", ip);
@@ -156,8 +156,8 @@ public class ManageController extends BaseController {
 
     @RequestMapping(value = "checkWorkerGroupName")
     @ResponseBody
-    public Map<String,Object> checkWorkerGroupName(ModelMap modelMap, Integer id, String name) {
-        Map<String,Object> result=new HashMap<String, Object>();
+    public Map<String, Object> checkWorkerGroupName(ModelMap modelMap, Integer id, String name) {
+        Map<String, Object> result = new HashMap<String, Object>();
 
         WorkerGroupVo workerGroupVo = workerService.getWorkerGroupByName(name);
         if (workerGroupVo == null) {

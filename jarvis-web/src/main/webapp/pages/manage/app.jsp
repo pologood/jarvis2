@@ -1,6 +1,5 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <jsp:include page="../common/header.jsp">
     <jsp:param name="uname" value="${user.uname}"/>
@@ -28,7 +27,7 @@
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">应用名称</span>
-                        <select id="appName" >
+                        <select id="appName">
                             <option value="all">全部</option>
                             <c:forEach items="${appNameList}" var="appName" varStatus="status">
                                 <option value="${appName}">${appName}</option>
@@ -40,7 +39,7 @@
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">类型</span>
-                        <select id="appType" >
+                        <select id="appType">
                             <option value="all">全部</option>
                             <option value="1">普通</option>
                             <option value="2">管理</option>
@@ -51,7 +50,7 @@
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">状态</span>
-                        <select id="status" >
+                        <select id="status">
                             <option value="all">全部</option>
                             <option value="0">停用</option>
                             <option value="1">启用</option>
@@ -60,13 +59,14 @@
                 </div>
 
 
-
                 <div class="col-md-3 pull-right">
                     <div class="row">
                         <div class="col-md-6 col-lg-offset-6">
                             <div class="input-group">
                                 <button type="button" class="btn btn-primary" onclick="search()">查询</button>
-                                <button type="button" class="btn btn-primary" onclick="reset()" style="margin-left: 3px">重置</button>
+                                <button type="button" class="btn btn-primary" onclick="reset()"
+                                        style="margin-left: 3px">重置
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -80,7 +80,7 @@
                     <div id="add">
                         <a class="btn btn-primary" href="${contextPath}/manage/appAddOrEdit" target="_blank">新增应用</a>
                     </div>
-                    <table id="content" >
+                    <table id="content">
 
                     </table>
 

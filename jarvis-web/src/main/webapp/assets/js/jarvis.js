@@ -1,30 +1,30 @@
 //时间选择器
-function createDatetimePickerById(tagId){
-    if(tagId==undefined||tagId==''){
+function createDatetimePickerById(tagId) {
+    if (tagId == undefined || tagId == '') {
         return;
     }
 
-    $("#"+tagId).datetimepicker({
-        language:'zh-CN',
-        minView:'month',
+    $("#" + tagId).datetimepicker({
+        language: 'zh-CN',
+        minView: 'month',
         format: 'yyyy-mm-dd',
-        autoclose:true
+        autoclose: true
     });
 }
 //通过后台请求远程rest api,根据请求结果返回flag
-function requestRemoteRestApi(url,title,data){
-    var flag=true;
-    var result={};
+function requestRemoteRestApi(url, title, data) {
+    var flag = true;
+    var result = {};
 
     $.ajax({
-        url:contextPath+'/remote/request',
-        type:'POST',
-        async:false,
-        data:{url:url,para:JSON.stringify(data)},
-        success:function(data){
-            if(data.code==0){
-                flag=true;
-                if(data.msg==null||data.msg==''){
+        url: contextPath + '/remote/request',
+        type: 'POST',
+        async: false,
+        data: {url: url, para: JSON.stringify(data)},
+        success: function (data) {
+            if (data.code == 0) {
+                flag = true;
+                if (data.msg == null || data.msg == '') {
                     new PNotify({
                         title: title,
                         text: '操作成功',
@@ -33,7 +33,7 @@ function requestRemoteRestApi(url,title,data){
                         styling: 'bootstrap3'
                     });
                 }
-                else{
+                else {
                     new PNotify({
                         title: title,
                         text: data.msg,
@@ -43,9 +43,9 @@ function requestRemoteRestApi(url,title,data){
                     });
                 }
             }
-            else{
-                flag=false;
-                if(data.msg==null||data.msg==''){
+            else {
+                flag = false;
+                if (data.msg == null || data.msg == '') {
                     new PNotify({
                         title: title,
                         text: '操作失败',
@@ -54,7 +54,7 @@ function requestRemoteRestApi(url,title,data){
                         styling: 'bootstrap3'
                     });
                 }
-                else{
+                else {
                     new PNotify({
                         title: title,
                         text: data.msg,
@@ -64,79 +64,79 @@ function requestRemoteRestApi(url,title,data){
                     });
                 }
             }
-            result["data"]=data;
+            result["data"] = data;
         }
     });
 
-    result["flag"]=flag;
+    result["flag"] = flag;
     return result;
 }
 
 
 //时间戳转化成日期
-function formatDate(date){
-    if(date==undefined||date==''){
+function formatDate(date) {
+    if (date == undefined || date == '') {
         return '-';
     }
-    var theDate=new Date(date);
-    var result=moment(theDate).format("YYYY-MM-DD");
+    var theDate = new Date(date);
+    var result = moment(theDate).format("YYYY-MM-DD");
     return result;
 }
 //时间戳转化成日期时间
-function formatDateTime(dateTime){
-    if(dateTime==undefined||dateTime==''){
+function formatDateTime(dateTime) {
+    if (dateTime == undefined || dateTime == '') {
         return '-';
     }
-    var theDate=new Date(dateTime);
-    var result=moment(theDate).format("YYYY-MM-DD HH:mm:ss");
+    var theDate = new Date(dateTime);
+    var result = moment(theDate).format("YYYY-MM-DD HH:mm:ss");
     return result;
 }
 //秒转化成对应的时间长度
-function formatTimeInterval(timeInterval){
+function formatTimeInterval(timeInterval) {
     //console.log(timeInterval);
-    if(timeInterval==undefined){
+    if (timeInterval == undefined) {
         return "-";
     }
-    if(parseInt(timeInterval)==0){
+    if (parseInt(timeInterval) == 0) {
         return "0秒";
     }
-    var result="";
+    var result = "";
 
-    var day=24*3600;
-    var hour=3600;
-    var minute=60;
+    var day = 24 * 3600;
+    var hour = 3600;
+    var minute = 60;
 
-    var totalDay=parseInt(timeInterval/day);
-    var totalHour=parseInt((timeInterval%day)/hour);
-    var totalMinute=parseInt(((timeInterval%day)%hour)/minute);
-    var totalSecond=(((timeInterval%day)%hour)%minute);
+    var totalDay = parseInt(timeInterval / day);
+    var totalHour = parseInt((timeInterval % day) / hour);
+    var totalMinute = parseInt(((timeInterval % day) % hour) / minute);
+    var totalSecond = (((timeInterval % day) % hour) % minute);
 
-    if(totalDay>0){
-        result=totalDay+"天";
+    if (totalDay > 0) {
+        result = totalDay + "天";
     }
-    if(totalHour>0){
-        result+=totalHour+"小时";
+    if (totalHour > 0) {
+        result += totalHour + "小时";
     }
-    if(totalMinute>0){
-        result+=totalMinute+"分钟";
+    if (totalMinute > 0) {
+        result += totalMinute + "分钟";
     }
-    if(totalSecond>0){
-        result+=totalSecond+"秒";
+    if (totalSecond > 0) {
+        result += totalSecond + "秒";
     }
 
     return result;
 }
 
 //格式化状态
-function formatStatus(dataArr,status){
-    if(dataArr==undefined||dataArr==null||status==undefined||status==null){
+function formatStatus(dataArr, status) {
+    if (dataArr == undefined || dataArr == null || status == undefined || status == null) {
         return "";
     }
-    var statusStr="";
-    $(dataArr).each(function(i,c){
-        var id=c["id"];
-        if(id==status){
-            statusStr=c["text"];
+    var statusStr = "";
+    $(dataArr).each(function (i, c) {
+        var id = c["id"];
+        if (id == status) {
+            statusStr = c["text"];
             return false;
         }
     });

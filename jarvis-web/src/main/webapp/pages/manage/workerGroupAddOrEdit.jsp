@@ -1,6 +1,5 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <jsp:include page="../common/header.jsp">
     <jsp:param name="uname" value="${user.uname}"/>
@@ -34,11 +33,12 @@
 
 
     <input id="workerGroupId" type="hidden" value="${workerGroupVo.id}">
+
     <div class="row top-buffer">
         <div class="col-md-6 col-md-offset-3">
             <div class="input-group" style="width:100%">
                 <span class="input-group-addon" style="width:35%">workerGroup名称</span>
-                <input class="form-control" id="name" value="${workerGroupVo.name}" onblur="checkWorkerGroupName()" />
+                <input class="form-control" id="name" value="${workerGroupVo.name}" onblur="checkWorkerGroupName()"/>
             </div>
         </div>
 

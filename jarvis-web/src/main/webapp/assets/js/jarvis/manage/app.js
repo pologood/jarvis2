@@ -1,189 +1,187 @@
-var appStatusJson=null;
-var appTypeJson=null;
-$(function(){
+var appStatusJson = null;
+var appTypeJson = null;
+$(function () {
     $.ajaxSettings.async = false;
-    $.getJSON(contextPath+"/assets/json/appStatus.json",function(data){
-        appStatusJson=data;
+    $.getJSON(contextPath + "/assets/json/appStatus.json", function (data) {
+        appStatusJson = data;
     });
 
-    $.getJSON(contextPath+"/assets/json/appType.json",function(data){
-        appTypeJson=data;
+    $.getJSON(contextPath + "/assets/json/appType.json", function (data) {
+        appTypeJson = data;
     });
     $.ajaxSettings.async = true;
 
     initData();
 
-    $(".input-group select").select2({width:'100%'});
+    $(".input-group select").select2({width: '100%'});
 });
 
 
-
 //获取查询参数
-function getQueryPara(){
-    var queryPara={};
+function getQueryPara() {
+    var queryPara = {};
 
-    var appName=$("#appName").val();
-    var appType=$("#appType").val();
-    var status=$("#status").val();
+    var appName = $("#appName").val();
+    var appType = $("#appType").val();
+    var status = $("#status").val();
 
-    appName=appName=='all'?'':appName;
-    appType=appType=='all'?'':appType;
-    status=status=='all'?'':status;
+    appName = appName == 'all' ? '' : appName;
+    appType = appType == 'all' ? '' : appType;
+    status = status == 'all' ? '' : status;
 
-    queryPara["appName"]=appName;
-    queryPara["appType"]=appType;
-    queryPara["status"]=status;
+    queryPara["appName"] = appName;
+    queryPara["appType"] = appType;
+    queryPara["status"] = status;
 
     return queryPara;
 }
 
 //初始化数据及分页
-function initData(){
-    var queryParams=getQueryPara();
+function initData() {
+    var queryParams = getQueryPara();
     $("#content").bootstrapTable({
-        columns:columns,
-        pagination:true,
-        sidePagination:'server',
-        search:false,
-        url:contextPath+'/api/app/getApps',
-        queryParams:function(params) {
-            for(var key in queryParams){
+        columns: columns,
+        pagination: true,
+        sidePagination: 'server',
+        search: false,
+        url: contextPath + '/api/app/getApps',
+        queryParams: function (params) {
+            for (var key in queryParams) {
                 var value = queryParams[key];
-                params[key]=value;
+                params[key] = value;
             }
             return params;
         },
-        showColumns:true,
-        showHeader:true,
-        showToggle:true,
-        pageSize:1,
-        pageSize:10,
-        pageList:[5,10,20,50,100,200,500],
-        paginationFirstText:'首页',
-        paginationPreText:'上一页',
-        paginationNextText:'下一页',
-        paginationLastText:'末页',
-        showExport:true,
-        exportTypes:['json', 'xml', 'csv', 'txt', 'sql', 'doc', 'excel'],
-        exportDataType:'all'
+        showColumns: true,
+        showHeader: true,
+        showToggle: true,
+        pageSize: 1,
+        pageSize: 10,
+        pageList: [5, 10, 20, 50, 100, 200, 500],
+        paginationFirstText: '首页',
+        paginationPreText: '上一页',
+        paginationNextText: '下一页',
+        paginationLastText: '末页',
+        showExport: true,
+        exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'doc', 'excel'],
+        exportDataType: 'all'
     });
 }
 
-function modifyAppStatus(appId,status,appName,maxConcurrency){
-    var data={appId:appId,applicationName:appName,status:status,maxConcurrency:maxConcurrency};
-    requestRemoteRestApi("/api/app/edit","修改应用状态",data);
+function modifyAppStatus(appId, status, appName, maxConcurrency) {
+    var data = {appId: appId, applicationName: appName, status: status, maxConcurrency: maxConcurrency};
+    requestRemoteRestApi("/api/app/edit", "修改应用状态", data);
     search();
 }
 
 
 function operateFormatter(value, row, index) {
-    var appStatus=[{"id":"0","text":"停用"},{"id":"1","text":"启用"}];
-    var appId=row["appId"];
-    var appName=row["appName"];
-    var maxConcurrency=row["maxConcurrency"];
-    var status=row["status"];
-    var result= [
-        '<a class="edit" href="'+contextPath+'/manage/appAddOrEdit?appId='+appId+'" title="编辑应用信息" target="_blank">',
+    var appStatus = [{"id": "0", "text": "停用"}, {"id": "1", "text": "启用"}];
+    var appId = row["appId"];
+    var appName = row["appName"];
+    var maxConcurrency = row["maxConcurrency"];
+    var status = row["status"];
+    var result = [
+        '<a class="edit" href="' + contextPath + '/manage/appAddOrEdit?appId=' + appId + '" title="编辑应用信息" target="_blank">',
         '<i class="glyphicon glyphicon-edit"></i>',
         '</a>  '
     ].join('');
 
-    var operation='';
+    var operation = '';
     /*
-    var operation='<div class="btn-group"> <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">修改状态 <span class="caret"></span> </button>';
-    operation=operation+'<ul class="dropdown-menu">';
-    $(appStatus).each(function(i,c){
-        if(c["id"]!='all'&&c["id"]!=status){
-            var li='<li><a href="javascript:void(0)" onclick="modifyAppStatus(\''+appId+'\','+c["id"]+',\''+appName+'\')" >'+c["text"]+'</a></li>';
-            operation=operation+li;
-        }
-    });
-    operation=operation+'</ul></div>';
-    */
-    $(appStatus).each(function(i,c){
-        if(c["id"]!='all'&&c["id"]!=status){
-            operation+='<a href="javascript:void(0)" onclick="modifyAppStatus('+appId+','+c["id"]+',\''+appName+'\','+maxConcurrency+')" >'+c["text"]+'</a>';
+     var operation='<div class="btn-group"> <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">修改状态 <span class="caret"></span> </button>';
+     operation=operation+'<ul class="dropdown-menu">';
+     $(appStatus).each(function(i,c){
+     if(c["id"]!='all'&&c["id"]!=status){
+     var li='<li><a href="javascript:void(0)" onclick="modifyAppStatus(\''+appId+'\','+c["id"]+',\''+appName+'\')" >'+c["text"]+'</a></li>';
+     operation=operation+li;
+     }
+     });
+     operation=operation+'</ul></div>';
+     */
+    $(appStatus).each(function (i, c) {
+        if (c["id"] != 'all' && c["id"] != status) {
+            operation += '<a href="javascript:void(0)" onclick="modifyAppStatus(' + appId + ',' + c["id"] + ',\'' + appName + '\',' + maxConcurrency + ')" >' + c["text"] + '</a>';
         }
     });
     //console.log(result);
 
-    return result+"&nbsp;&nbsp"+operation;
+    return result + "&nbsp;&nbsp" + operation;
 }
 
 
-
-var columns=[{
+var columns = [{
     field: 'appId',
     title: '应用id',
-    switchable:true
+    switchable: true
 }, {
     field: 'appName',
     title: '应用名称',
-    switchable:true
+    switchable: true
 }, {
     field: 'appKey',
     title: 'appkey',
-    switchable:true
-},{
+    switchable: true
+}, {
     field: 'appType',
     title: '应用类型',
-    switchable:true,
-    formatter:appTypeFormatter
+    switchable: true,
+    formatter: appTypeFormatter
 }, {
     field: 'status',
     title: '应用状态',
-    switchable:true,
-    formatter:appStatusFormatter
-},{
+    switchable: true,
+    formatter: appStatusFormatter
+}, {
     field: 'maxConcurrency',
     title: '最大并发数',
-    switchable:true
+    switchable: true
 }, {
     field: 'updateUser',
     title: '最后更新人',
-    switchable:true
+    switchable: true
 }, {
     field: 'createTime',
     title: '创建时间',
-    switchable:true,
-    formatter:formatDate
+    switchable: true,
+    formatter: formatDate
 }, {
     field: 'updateTime',
     title: '更新时间',
-    switchable:true,
-    formatter:formatDate
-},  {
+    switchable: true,
+    formatter: formatDate
+}, {
     field: 'operation',
     title: '操作',
-    switchable:true,
+    switchable: true,
     formatter: operateFormatter
 }];
-function appStatusFormatter(value,row,index){
-    return formatStatus(appStatusJson,value);
+function appStatusFormatter(value, row, index) {
+    return formatStatus(appStatusJson, value);
 }
 
-function search(){
-    $("#content").bootstrapTable('destroy','');
+function search() {
+    $("#content").bootstrapTable('destroy', '');
     initData();
 }
 
-function reset(){
-    var selects=$(".input-group select");
-    $(selects).each(function(i,c){
+function reset() {
+    var selects = $(".input-group select");
+    $(selects).each(function (i, c) {
         $(c).val("all").trigger("change");
     });
 }
 
-function appTypeFormatter(value,row,index){
-    var result='';
-    if(value==1){
-        result="普通";
+function appTypeFormatter(value, row, index) {
+    var result = '';
+    if (value == 1) {
+        result = "普通";
     }
-    else if(value==2){
-        result="管理";
+    else if (value == 2) {
+        result = "管理";
     }
-    else{
-        result="未定义类型:"+value;
+    else {
+        result = "未定义类型:" + value;
     }
     return result;
 }

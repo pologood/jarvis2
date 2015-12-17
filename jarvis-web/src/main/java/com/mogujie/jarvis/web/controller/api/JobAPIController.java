@@ -1,13 +1,19 @@
 package com.mogujie.jarvis.web.controller.api;
 
+import com.mogu.bigdata.admin.core.entity.vo.UserInfo;
+import com.mogu.bigdata.admin.inside.service.AdminUserService;
+import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.web.entity.qo.JobQo;
 import com.mogujie.jarvis.web.service.JobDependService;
 import com.mogujie.jarvis.web.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -22,6 +28,8 @@ public class JobAPIController {
     private JobService jobService;
     @Autowired
     private JobDependService jobDependService;
+    @Autowired
+    protected AdminUserService userService;
 
     @RequestMapping("/getJobs")
     @ResponseBody
@@ -32,14 +40,27 @@ public class JobAPIController {
         return result;
     }
 
+    @RequestMapping("/getAllUser")
+    @ResponseBody
+    public List<UserInfo> getAllUser(ModelMap mp) {
+        List<UserInfo> userInfoList = null;
+        try {
+            userInfoList = userService.getAllUsers();
+        } catch (Exception e) {
+            e.printStackTrace();
+            userInfoList = new ArrayList<UserInfo>();
+        }
+        return userInfoList;
+    }
+
     /**
      * 单向依赖树
      */
     @RequestMapping("/getTreeDependedONJob")
     @ResponseBody
-    public Map<String,Object> getTreeDependedONJob(JobQo jobQo) {
+    public Map<String, Object> getTreeDependedONJob(JobQo jobQo) {
 
-        Map<String,Object> result = jobDependService.getTreeDependedOnJob(jobQo);
+        Map<String, Object> result = jobDependService.getTreeDependedOnJob(jobQo);
 
         return result;
     }
@@ -49,9 +70,9 @@ public class JobAPIController {
      */
     @RequestMapping("/getTwoDirectionTree")
     @ResponseBody
-    public Map<String,Object> getTwoDirectionTree(JobQo jobSearchVo) {
+    public Map<String, Object> getTwoDirectionTree(JobQo jobSearchVo) {
 
-        Map<String,Object> result = jobDependService.getTwoDirectionTreeDependedOnJob(jobSearchVo);
+        Map<String, Object> result = jobDependService.getTwoDirectionTreeDependedOnJob(jobSearchVo);
 
         return result;
     }

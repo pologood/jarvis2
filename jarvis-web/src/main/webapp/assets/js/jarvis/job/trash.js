@@ -1,25 +1,25 @@
-$(function(){
+$(function () {
 
 });
 
-var columns=[{
+var columns = [{
     field: 'id',
     title: 'Item ID',
 
-    switchable:true
+    switchable: true
 }, {
     field: 'name',
     title: 'Item Name',
 
-    switchable:true
+    switchable: true
 }, {
     field: 'price',
     title: 'Item Price',
 
-    switchable:true
+    switchable: true
 }];
 
-var data=[
+var data = [
     {
         "id": 0,
         "name": "Item 0",
@@ -128,17 +128,17 @@ var data=[
 ];
 
 $("#content").bootstrapTable({
-    columns:columns,
-    data:data,
-    pagination:true,
-    sidePagination:'client',
-    search:true,
-    searchText:'',
-    showColumns:true,
-    showHeader:true,
-    showToggle:true,
-    paginationFirstText:'首页',
-    paginationPreText:'上一页',
-    paginationNextText:'下一页',
-    paginationLastText:'末页'
+    columns: columns,
+    data: data,
+    pagination: true,
+    sidePagination: 'client',
+    search: true,
+    searchText: '',
+    showColumns: true,
+    showHeader: true,
+    showToggle: true,
+    paginationFirstText: '首页',
+    paginationPreText: '上一页',
+    paginationNextText: '下一页',
+    paginationLastText: '末页'
 });

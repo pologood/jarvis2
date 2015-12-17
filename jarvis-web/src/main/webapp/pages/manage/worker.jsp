@@ -1,6 +1,5 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
@@ -38,7 +37,7 @@
                         <div class="col-md-3">
                             <div class="input-group" style="width:100%">
                                 <span class="input-group-addon" style="width:35%">Worker Group 名</span>
-                                <select id="workerGroupId" >
+                                <select id="workerGroupId">
                                     <option value="all">全部</option>
                                     <c:forEach items="${workerGroupVoList}" var="workerGroup">
                                         <option value="${workerGroup.id}">${workerGroup.name}</option>
@@ -51,7 +50,7 @@
                         <div class="col-md-3">
                             <div class="input-group" style="width:100%">
                                 <span class="input-group-addon" style="width:35%">IP</span>
-                                <select id="ip" >
+                                <select id="ip">
                                     <option value="all">全部</option>
                                     <c:forEach items="${ipList}" var="ip">
                                         <option value="${ip}">${ip}</option>
@@ -63,7 +62,7 @@
                         <div class="col-md-2">
                             <div class="input-group" style="width:100%">
                                 <span class="input-group-addon" style="width:35%">port</span>
-                                <select id="port" >
+                                <select id="port">
                                     <option value="all">全部</option>
                                     <c:forEach items="${portList}" var="port">
                                         <option value="${port}">${port}</option>
@@ -75,7 +74,7 @@
                         <div class="col-md-2">
                             <div class="input-group" style="width:100%">
                                 <span class="input-group-addon" style="width:35%">状态</span>
-                                <select id="workerStatus" >
+                                <select id="workerStatus">
                                     <option value="all">全部</option>
                                     <option value="0">下线</option>
                                     <option value="1">上线</option>
@@ -84,13 +83,15 @@
                         </div>
 
 
-
                         <div class="col-md-2 pull-right">
                             <div class="row">
                                 <div class="col-md-10 col-lg-offset-2">
                                     <div class="input-group">
-                                        <button type="button" class="btn btn-primary" onclick="searchWorker()">查询</button>
-                                        <button type="button" class="btn btn-primary" onclick="resetWorker()" style="margin-left: 3px">重置</button>
+                                        <button type="button" class="btn btn-primary" onclick="searchWorker()">查询
+                                        </button>
+                                        <button type="button" class="btn btn-primary" onclick="resetWorker()"
+                                                style="margin-left: 3px">重置
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -102,7 +103,7 @@
                     <div class="row top-buffer">
                         <div class="col-md-12">
 
-                            <table id="workerContent" >
+                            <table id="workerContent">
 
                             </table>
 
@@ -120,7 +121,7 @@
                         <div class="col-md-3">
                             <div class="input-group" style="width:100%">
                                 <span class="input-group-addon" style="width:35%">Worker Group名称</span>
-                                <select id="name" >
+                                <select id="name">
                                     <option value="all">全部</option>
                                     <c:forEach items="${workerGroupVoList}" var="workerGroupVo">
                                         <option value="${workerGroupVo.name}">${workerGroupVo.name}</option>
@@ -133,7 +134,7 @@
                         <div class="col-md-3">
                             <div class="input-group" style="width:100%">
                                 <span class="input-group-addon" style="width:35%">最后更新者</span>
-                                <select id="creator" >
+                                <select id="creator">
                                     <option value="all">全部</option>
                                     <c:forEach items="${workerGroupVoList}" var="workerGroupVo">
                                         <option value="${workerGroupVo.updateUser}">${workerGroupVo.updateUser}</option>
@@ -146,8 +147,11 @@
                             <div class="row">
                                 <div class="col-md-6 col-lg-offset-6">
                                     <div class="input-group">
-                                        <button type="button" class="btn btn-primary" onclick="searchWorkerGroup()">查询</button>
-                                        <button type="button" class="btn btn-primary" onclick="resetWorkerGroup()" style="margin-left: 3px">重置</button>
+                                        <button type="button" class="btn btn-primary" onclick="searchWorkerGroup()">查询
+                                        </button>
+                                        <button type="button" class="btn btn-primary" onclick="resetWorkerGroup()"
+                                                style="margin-left: 3px">重置
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -159,9 +163,10 @@
                     <div class="row top-buffer">
                         <div class="col-md-12">
                             <div id="add">
-                                <a class="btn btn-primary" href="${contextPath}/manage/workerGroupAddOrEdit" target="_blank">新增Worker Group</a>
+                                <a class="btn btn-primary" href="${contextPath}/manage/workerGroupAddOrEdit"
+                                   target="_blank">新增Worker Group</a>
                             </div>
-                            <table id="workerGroupContent" >
+                            <table id="workerGroupContent">
 
                             </table>
 
@@ -173,7 +178,6 @@
             </div>
         </div>
     </div>
-
 
 
 </div>

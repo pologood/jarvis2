@@ -22,95 +22,98 @@ public class JobService {
 
     Logger logger = Logger.getLogger(this.getClass());
 
-    public List<JobVo> getAllJobs(Integer jobFlag){
-        JobQo jobQo=new JobQo();
+    public List<JobVo> getAllJobs(Integer jobFlag) {
+        JobQo jobQo = new JobQo();
         jobQo.setStatus(jobFlag);
-        List<JobVo> jobVoList=jobMapper.getJobsByCondition(jobQo);
+        List<JobVo> jobVoList = jobMapper.getJobsByCondition(jobQo);
         return jobVoList;
     }
 
-    public Map<String,Object> getJobs(JobQo jobQo){
+    public Map<String, Object> getJobs(JobQo jobQo) {
         Map<String, Object> result = new HashMap<String, Object>();
-        Integer count=jobMapper.getCountByCondition(jobQo);
-        count=count==null?0:count;
+        Integer count = jobMapper.getCountByCondition(jobQo);
+        count = count == null ? 0 : count;
 
-        List<JobVo> jobList=jobMapper.getJobsByCondition(jobQo);
+        List<JobVo> jobList = jobMapper.getJobsByCondition(jobQo);
 
-        result.put("total",count);
+        result.put("total", count);
         result.put("rows", jobList);
 
         return result;
     }
 
-    public Map<String,Object> getSimilarJobIds(Long jobId){
+    public Map<String, Object> getSimilarJobIds(Long jobId) {
         Map<String, Object> result = new HashMap<String, Object>();
 
         List<Long> jobList = jobMapper.getSimilarJobIds(jobId);
         List<Map> list = new ArrayList<Map>();
-        for(int i=0;i<jobList.size();i++){
+        for (int i = 0; i < jobList.size(); i++) {
             Map<String, Object> item = new HashMap<String, Object>();
-            item.put("id",jobList.get(i));
-            item.put("text",jobList.get(i));
+            item.put("id", jobList.get(i));
+            item.put("text", jobList.get(i));
             list.add(item);
         }
 
-        result.put("total",jobList.size());
+        result.put("total", jobList.size());
         result.put("items", list);
 
         return result;
     }
 
-    public Map<String,Object> getSimilarJobNames(String jobName){
+    public Map<String, Object> getSimilarJobNames(String jobName) {
         Map<String, Object> result = new HashMap<String, Object>();
         List<String> jobList = jobMapper.getSimilarJobNames(jobName);
 
         List<Map> list = new ArrayList<Map>();
-        for(int i=0;i<jobList.size();i++){
-            Map<String,Object> item =new HashMap<String, Object>();
-            item.put("id",jobList.get(i));
-            item.put("text",jobList.get(i));
+        for (int i = 0; i < jobList.size(); i++) {
+            Map<String, Object> item = new HashMap<String, Object>();
+            item.put("id", jobList.get(i));
+            item.put("text", jobList.get(i));
             list.add(item);
         }
 
-        result.put("total",jobList.size());
+        result.put("total", jobList.size());
         result.put("items", list);
 
         return result;
     }
 
-    public Map<String,Object> getJobBySimilarNames(String jobName){
+    public Map<String, Object> getJobBySimilarNames(String jobName) {
         Map<String, Object> result = new HashMap<String, Object>();
 
-        List<JobVo> jobList=jobMapper.getJobBySimilarNames(jobName);
+        List<JobVo> jobList = jobMapper.getJobBySimilarNames(jobName);
 
         List<Map> list = new ArrayList<Map>();
-        for(JobVo jobVo:jobList){
-            Map<String,Object> item = new HashMap<String, Object>();
-            item.put("id",jobVo.getJobId());
-            item.put("text",jobVo.getJobName());
+        for (JobVo jobVo : jobList) {
+            Map<String, Object> item = new HashMap<String, Object>();
+            item.put("id", jobVo.getJobId());
+            item.put("text", jobVo.getJobName());
             list.add(item);
         }
-        result.put("total",jobList.size());
+        result.put("total", jobList.size());
         result.put("items", list);
 
         return result;
     }
 
 
-
-    public JobVo getJobById(Long jobId){
+    public JobVo getJobById(Long jobId) {
         return jobMapper.getJobById(jobId);
     }
-    public JobVo getJobByName(String jobName){
+
+    public JobVo getJobByName(String jobName) {
         return jobMapper.getJobByName(jobName);
     }
-    public List<Long> getJobIds(){
+
+    public List<Long> getJobIds() {
         return jobMapper.getJobIds();
     }
-    public List<String> getJobNames(){
+
+    public List<String> getJobNames() {
         return jobMapper.getJobNames();
     }
-    public List<String> getSubmitUsers(){
+
+    public List<String> getSubmitUsers() {
         return jobMapper.getSubmitUsers();
     }
 

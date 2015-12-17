@@ -1,6 +1,5 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <jsp:include page="../common/header.jsp">
     <jsp:param name="uname" value="${user.uname}"/>
@@ -9,7 +8,9 @@
 </jsp:include>
 
 <style>
-    *.icon-green {color: #2ca02c}
+    *.icon-green {
+        color: #2ca02c
+    }
 </style>
 
 <div class="container">
@@ -35,7 +36,8 @@
                         <select id="originJobId" multiple>
                             <option value="">无</option>
                             <c:forEach items="${jobVoList}" var="job" varStatus="status">
-                                <option value="${job.jobId}" appName="${job.appName}" appKey="${job.appKey}" >${job.jobName}</option>
+                                <option value="${job.jobId}" appName="${job.appName}"
+                                        appKey="${job.appKey}">${job.jobName}</option>
                             </c:forEach>
                         </select>
                     </div>
@@ -46,7 +48,7 @@
                 <div class="col-md-6 col-md-offset-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">开始日期</span>
-                        <input id="startTime"  class="form-control"/>
+                        <input id="startTime" class="form-control"/>
                     </div>
                 </div>
             </div>
@@ -55,7 +57,7 @@
                 <div class="col-md-6 col-md-offset-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">结束日期</span>
-                        <input id="endTime"  class="form-control" />
+                        <input id="endTime" class="form-control"/>
                     </div>
                 </div>
             </div>
@@ -64,9 +66,10 @@
                 <div class="col-md-6 col-md-offset-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">是否重跑后续任务</span>
+
                         <div class="form-control">
-                            <input name="runChild" type="radio" value="true" />重跑后续任务
-                            <input name="runChild" type="radio" value="false" checked="true" />不重跑后续任务
+                            <input name="runChild" type="radio" value="true"/>重跑后续任务
+                            <input name="runChild" type="radio" value="false" checked="true"/>不重跑后续任务
                         </div>
                     </div>
                 </div>
@@ -74,7 +77,7 @@
 
             <div class="row top-buffer">
                 <div class="col-md-6 col-md-offset-3">
-                    <div class="input-group" >
+                    <div class="input-group">
                         <span class="input-group-addon" style="border-radius:4px;border:1px solid #ccc">选择重跑任务</span>
                     </div>
 

@@ -1,14 +1,14 @@
 //初始化对象
-var CollapsibleTree = function(elt,w,h) {
+var CollapsibleTree = function (elt, w, h) {
     //属性
     var m = [20, 120, 20, 120],
-        w=1140,
-        h=500,
+        w = 1140,
+        h = 500,
         i = 0,
         root,
         root2,
-        childrenDepth= 0,
-        parentsDepth=0;
+        childrenDepth = 0,
+        parentsDepth = 0;
     //初始化树
     var tree = d3.layout.tree()
         //.size([h, w]);
@@ -17,10 +17,14 @@ var CollapsibleTree = function(elt,w,h) {
     //     .projection(function(d) { return [d.y, d.x]; });
 
     var parentdiagonal = d3.svg.diagonal()
-        .projection(function(d) { return [d.x, -d.y]; });
+        .projection(function (d) {
+            return [d.x, -d.y];
+        });
 
     var childdiagonal = d3.svg.diagonal()
-        .projection(function(d) { return [d.x, d.y]; });
+        .projection(function (d) {
+            return [d.x, d.y];
+        });
 
     var vis = d3.select(elt).append("svg")
         .attr("width", w)
@@ -28,13 +32,13 @@ var CollapsibleTree = function(elt,w,h) {
         .append("g")
         // .attr("transform", "translate(" + m[3] + "," + m[0] + ")"); // left-right
         // .attr("transform", "translate(" + m[0] + "," + m[3] + ")"); // top-bottom
-        .attr("transform", "translate(0,"+h/2+")"); // bidirectional-tree
+        .attr("transform", "translate(0," + h / 2 + ")"); // bidirectional-tree
 
 
     var that = {
-        init: function(url) {
+        init: function (url) {
             var that = this;
-            d3.json(url, function(json) {
+            d3.json(url, function (json) {
                 root = json;
 
                 // root.x0 = h / 2;
@@ -55,7 +59,7 @@ var CollapsibleTree = function(elt,w,h) {
 
             });
         },
-        updateBoth: function(source) {
+        updateBoth: function (source) {
             var duration = d3.event && d3.event.altKey ? 5000 : 150;
 
             // Compute the new tree layout.
@@ -64,35 +68,41 @@ var CollapsibleTree = function(elt,w,h) {
 
             // Normalize for fixed-depth.
             //根据树的深度设置y轴的值，即进行分层，每层固定
-            nodes.forEach(function(d) {
-                var y=d.depth * 120;
-                if(d.y==undefined|| d.y==null|| d.y>y){
-                    d.y=y;
+            nodes.forEach(function (d) {
+                var y = d.depth * 120;
+                if (d.y == undefined || d.y == null || d.y > y) {
+                    d.y = y;
                 }
             });
 
             // Update the nodes…
             var node = vis.selectAll("g.node")
-                .data(nodes, function(d) { return d.id || (d.id = ++i); });
+                .data(nodes, function (d) {
+                    return d.id || (d.id = ++i);
+                });
 
             // Enter any new nodes at the parent's previous position.
             var nodeEnter = node.enter().append("svg:g")
                 .attr("class", "node")
-                .attr("transform", function(d) { return "translate(" + source.x0 + "," + source.y0 + ")"; })
-                .on("click", function(d) {
+                .attr("transform", function (d) {
+                    return "translate(" + source.x0 + "," + source.y0 + ")";
+                })
+                .on("click", function (d) {
                     console.log(d);
-                    window.location.href=contextPath+"/job/dependency?jobId="+ d.id;
+                    window.location.href = contextPath + "/job/dependency?jobId=" + d.id;
                     //that.toggle(d); that.updateBoth(d);
                 });
 
             nodeEnter.append("svg:circle")
                 .attr("r", 1e-6)
-                .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
+                .style("fill", function (d) {
+                    return d._children ? "lightsteelblue" : "#fff";
+                });
 
             nodeEnter.append("svg:text")
                 // .attr("x", function(d) { return d.children || d._children ? -10 : 10; })
-                .attr("x", function(d) {
-                    if( that.isParent(d) ) {
+                .attr("x", function (d) {
+                    if (that.isParent(d)) {
                         return -10;
                     } else {
                         return d.children || d._children ? -10 : 10;
@@ -100,30 +110,32 @@ var CollapsibleTree = function(elt,w,h) {
                 })
                 .attr("dy", ".35em")
                 // .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
-                .attr("text-anchor", function(d) {
-                    if( that.isParent(d) ) {
+                .attr("text-anchor", function (d) {
+                    if (that.isParent(d)) {
                         return "end";
                     } else {
                         return d.children || d._children ? "end" : "start";
                     }
                 })
-                .attr("transform",function(d) {
-                    if( d != root ) {
-                        if( that.isParent(d) ) {
+                .attr("transform", function (d) {
+                    if (d != root) {
+                        if (that.isParent(d)) {
                             return "rotate(0)";
                         } else {
                             return "rotate(0)";
                         }
                     }
                 })
-                .text(function(d) { return d.text; })
+                .text(function (d) {
+                    return d.text;
+                })
                 .style("fill-opacity", 1e-6);
 
             // Transition nodes to their new position.
             var nodeUpdate = node.transition()
                 .duration(duration)
-                .attr("transform", function(d) {
-                    if( that.isParent(d) ) {
+                .attr("transform", function (d) {
+                    if (that.isParent(d)) {
                         return "translate(" + d.x + "," + -d.y + ")";
                     } else {
                         return "translate(" + d.x + "," + d.y + ")";
@@ -132,12 +144,12 @@ var CollapsibleTree = function(elt,w,h) {
             //设置圆圈设置半径与颜色
             nodeUpdate.select("circle")
                 .attr("r", 9)
-                .style("fill", function(d) {
+                .style("fill", function (d) {
                     //return d._children ? "lightsteelblue" : "#4682B4";
-                    if(d.rootFlag==true){
+                    if (d.rootFlag == true) {
                         return "#EC1C1C";
                     }
-                    else{
+                    else {
                         return d.parentFlag ? "lightsteelblue" : "#4682B4";
                     }
                 });
@@ -149,7 +161,9 @@ var CollapsibleTree = function(elt,w,h) {
             var nodeExit = node.exit().transition()
                 .duration(duration)
                 // .attr("transform", function(d) { return "translate(" + source.y + "," + source.x + ")"; })
-                .attr("transform", function(d) { return "translate(" + source.x + "," + source.y + ")"; })
+                .attr("transform", function (d) {
+                    return "translate(" + source.x + "," + source.y + ")";
+                })
                 .remove();
 
             nodeExit.select("circle")
@@ -160,15 +174,16 @@ var CollapsibleTree = function(elt,w,h) {
 
             // Update the links…
             var link = vis.selectAll("path.link")
-                .data(tree.links_parents(nodes).concat(tree.links(nodes)), function(d) {
-                    return d.target.id; });
+                .data(tree.links_parents(nodes).concat(tree.links(nodes)), function (d) {
+                    return d.target.id;
+                });
             //console.log(link);
             // Enter any new links at the parent's previous position.
             link.enter().insert("svg:path", "g")
                 .attr("class", "link")
-                .attr("d", function(d) {
+                .attr("d", function (d) {
                     var o = {x: source.x0, y: source.y0};
-                    if( that.isParent(d.target) ) {
+                    if (that.isParent(d.target)) {
                         return parentdiagonal({source: o, target: o});
                     } else {
                         // return parentdiagonal({source: o, target: o});
@@ -178,8 +193,8 @@ var CollapsibleTree = function(elt,w,h) {
                 .transition()
                 .duration(duration)
                 // .attr("d", parentdiagonal);
-                .attr("d", function(d) {
-                    if( that.isParent(d.target) ) {
+                .attr("d", function (d) {
+                    if (that.isParent(d.target)) {
                         return parentdiagonal(d);
                     } else {
                         // return parentdiagonal(d);
@@ -191,8 +206,8 @@ var CollapsibleTree = function(elt,w,h) {
             link.transition()
                 .duration(duration)
                 // .attr("d", parentdiagonal);
-                .attr("d", function(d) {
-                    if( that.isParent(d.target) ) {
+                .attr("d", function (d) {
+                    if (that.isParent(d.target)) {
                         return parentdiagonal(d);
                     } else {
                         return childdiagonal(d);
@@ -202,10 +217,10 @@ var CollapsibleTree = function(elt,w,h) {
             // Transition exiting nodes to the parent's new position.
             link.exit().transition()
                 .duration(duration)
-                .attr("d", function(d) {
+                .attr("d", function (d) {
                     var o = {x: source.x, y: source.y};
                     // return parentdiagonal({source: o, target: o});
-                    if( that.isParent(d.target) ) {
+                    if (that.isParent(d.target)) {
                         return parentdiagonal({source: o, target: o});
                     } else {
                         return childdiagonal({source: o, target: o});
@@ -214,52 +229,72 @@ var CollapsibleTree = function(elt,w,h) {
                 .remove();
 
             // Stash the old positions for transition.
-            nodes.forEach(function(d) {
+            nodes.forEach(function (d) {
                 d.x0 = d.x;
                 d.y0 = d.y;
             });
         },
-        updateParents: function(source) {
+        updateParents: function (source) {
             var duration = d3.event && d3.event.altKey ? 5000 : 500;
 
             // Compute the new tree layout.
             var nodes = tree.nodes(root).reverse();
 
             // Normalize for fixed-depth.
-            nodes.forEach(function(d) { d.y = d.depth * 180; });
+            nodes.forEach(function (d) {
+                d.y = d.depth * 180;
+            });
 
             // Update the nodes…
             var node = vis.selectAll("g.node")
-                .data(nodes, function(d) { return d.id || (d.id = ++i); });
+                .data(nodes, function (d) {
+                    return d.id || (d.id = ++i);
+                });
 
             // Enter any new nodes at the parent's previous position.
             var nodeEnter = node.enter().append("svg:g")
                 .attr("class", "node")
                 // .attr("transform", function(d) { return "translate(" + source.y0 + "," + source.x0 + ")"; })
-                .attr("transform", function(d) { return "translate(" + source.x0 + "," + source.y0 + ")"; })
-                .on("click", function(d) {
+                .attr("transform", function (d) {
+                    return "translate(" + source.x0 + "," + source.y0 + ")";
+                })
+                .on("click", function (d) {
 
-                    that.toggle(d); that.updateParents(d); });
+                    that.toggle(d);
+                    that.updateParents(d);
+                });
 
             nodeEnter.append("svg:circle")
                 .attr("r", 1e-6)
-                .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
+                .style("fill", function (d) {
+                    return d._children ? "lightsteelblue" : "#fff";
+                });
 
             nodeEnter.append("svg:text")
-                .attr("x", function(d) { return d.children || d._children ? -10 : 10; })
+                .attr("x", function (d) {
+                    return d.children || d._children ? -10 : 10;
+                })
                 .attr("dy", ".35em")
-                .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
-                .text(function(d) { return d.text; })
+                .attr("text-anchor", function (d) {
+                    return d.children || d._children ? "end" : "start";
+                })
+                .text(function (d) {
+                    return d.text;
+                })
                 .style("fill-opacity", 1e-6);
 
             // Transition nodes to their new position.
             var nodeUpdate = node.transition()
                 .duration(duration)
-                .attr("transform", function(d) { return "translate(" + d.x + "," + -d.y + ")"; });
+                .attr("transform", function (d) {
+                    return "translate(" + d.x + "," + -d.y + ")";
+                });
 
             nodeUpdate.select("circle")
                 .attr("r", 4.5)
-                .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
+                .style("fill", function (d) {
+                    return d._children ? "lightsteelblue" : "#fff";
+                });
 
             nodeUpdate.select("text")
                 .style("fill-opacity", 1);
@@ -268,7 +303,9 @@ var CollapsibleTree = function(elt,w,h) {
             var nodeExit = node.exit().transition()
                 .duration(duration)
                 // .attr("transform", function(d) { return "translate(" + source.y + "," + source.x + ")"; })
-                .attr("transform", function(d) { return "translate(" + source.x + "," + source.y + ")"; })
+                .attr("transform", function (d) {
+                    return "translate(" + source.x + "," + source.y + ")";
+                })
                 .remove();
 
             nodeExit.select("circle")
@@ -279,12 +316,14 @@ var CollapsibleTree = function(elt,w,h) {
 
             // Update the links…
             var link = vis.selectAll("path.link")
-                .data(tree.links(nodes), function(d) { return d.target.id; });
+                .data(tree.links(nodes), function (d) {
+                    return d.target.id;
+                });
 
             // Enter any new links at the parent's previous position.
             link.enter().insert("svg:path", "g")
                 .attr("class", "link")
-                .attr("d", function(d) {
+                .attr("d", function (d) {
                     var o = {x: source.x0, y: source.y0};
                     return parentdiagonal({source: o, target: o});
                 })
@@ -300,58 +339,79 @@ var CollapsibleTree = function(elt,w,h) {
             // Transition exiting nodes to the parent's new position.
             link.exit().transition()
                 .duration(duration)
-                .attr("d", function(d) {
+                .attr("d", function (d) {
                     var o = {x: source.x, y: source.y};
                     return parentdiagonal({source: o, target: o});
                 })
                 .remove();
 
             // Stash the old positions for transition.
-            nodes.forEach(function(d) {
+            nodes.forEach(function (d) {
                 d.x0 = d.x;
                 d.y0 = d.y;
             });
         },
-        updateChildren: function(source) {
+        updateChildren: function (source) {
             var duration = d3.event && d3.event.altKey ? 5000 : 500;
 
             // Compute the new tree layout.
             var nodes = tree.nodes(root2).reverse();
 
             // Normalize for fixed-depth.
-            nodes.forEach(function(d) { d.y = d.depth * 180; });
+            nodes.forEach(function (d) {
+                d.y = d.depth * 180;
+            });
 
             // Update the nodes…
             var node = vis.selectAll("g.node")
-                .data(nodes, function(d) { return d.id || (d.id = ++i); });
+                .data(nodes, function (d) {
+                    return d.id || (d.id = ++i);
+                });
 
             // Enter any new nodes at the parent's previous position.
             var nodeEnter = node.enter().append("svg:g")
                 .attr("class", "node")
                 // .attr("transform", function(d) { return "translate(" + source.y0 + "," + source.x0 + ")"; })
-                .attr("transform", function(d) { return "translate(" + source.x0 + "," + source.y0 + ")"; })
-                .on("click", function(d) { that.toggle(d); that.updateChildren(d); });
+                .attr("transform", function (d) {
+                    return "translate(" + source.x0 + "," + source.y0 + ")";
+                })
+                .on("click", function (d) {
+                    that.toggle(d);
+                    that.updateChildren(d);
+                });
 
             nodeEnter.append("svg:circle")
                 .attr("r", 1e-6)
-                .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
+                .style("fill", function (d) {
+                    return d._children ? "lightsteelblue" : "#fff";
+                });
 
             nodeEnter.append("svg:text")
-                .attr("x", function(d) { return d.children || d._children ? -10 : 10; })
+                .attr("x", function (d) {
+                    return d.children || d._children ? -10 : 10;
+                })
                 .attr("dy", ".35em")
-                .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
-                .text(function(d) { return d.text; })
+                .attr("text-anchor", function (d) {
+                    return d.children || d._children ? "end" : "start";
+                })
+                .text(function (d) {
+                    return d.text;
+                })
                 .style("fill-opacity", 1e-6);
 
             // Transition nodes to their new position.
             var nodeUpdate = node.transition()
                 .duration(duration)
                 // .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
-                .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+                .attr("transform", function (d) {
+                    return "translate(" + d.x + "," + d.y + ")";
+                });
 
             nodeUpdate.select("circle")
                 .attr("r", 4.5)
-                .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
+                .style("fill", function (d) {
+                    return d._children ? "lightsteelblue" : "#fff";
+                });
 
             nodeUpdate.select("text")
                 .style("fill-opacity", 1);
@@ -360,7 +420,9 @@ var CollapsibleTree = function(elt,w,h) {
             var nodeExit = node.exit().transition()
                 .duration(duration)
                 // .attr("transform", function(d) { return "translate(" + source.y + "," + source.x + ")"; })
-                .attr("transform", function(d) { return "translate(" + source.x + "," + source.y + ")"; })
+                .attr("transform", function (d) {
+                    return "translate(" + source.x + "," + source.y + ")";
+                })
                 .remove();
 
             nodeExit.select("circle")
@@ -371,12 +433,14 @@ var CollapsibleTree = function(elt,w,h) {
 
             // Update the links…
             var link = vis.selectAll("path.link")
-                .data(tree.links(nodes), function(d) { return d.target.id; });
+                .data(tree.links(nodes), function (d) {
+                    return d.target.id;
+                });
 
             // Enter any new links at the parent's previous position.
             link.enter().insert("svg:path", "g")
                 .attr("class", "link")
-                .attr("d", function(d) {
+                .attr("d", function (d) {
                     var o = {x: source.x0, y: source.y0};
                     return childdiagonal({source: o, target: o});
                 })
@@ -392,25 +456,25 @@ var CollapsibleTree = function(elt,w,h) {
             // Transition exiting nodes to the parent's new position.
             link.exit().transition()
                 .duration(duration)
-                .attr("d", function(d) {
+                .attr("d", function (d) {
                     var o = {x: source.x, y: source.y};
                     return childdiagonal({source: o, target: o});
                 })
                 .remove();
 
             // Stash the old positions for transition.
-            nodes.forEach(function(d) {
+            nodes.forEach(function (d) {
                 d.x0 = d.x;
                 d.y0 = d.y;
             });
         },
 
-        isParent: function(node) {
-            if( node.parent && node.parent != root ) {
+        isParent: function (node) {
+            if (node.parent && node.parent != root) {
                 return this.isParent(node.parent);
             } else
             // if ( node.name == 'data' || node.name == 'scale' || node.name == 'util' ) {
-            if( node.parentFlag ) {
+            if (node.parentFlag) {
                 return true;
             } else {
                 return false;
@@ -418,7 +482,7 @@ var CollapsibleTree = function(elt,w,h) {
         },
 
         // Toggle children.展开或关闭
-        toggle: function(d) {
+        toggle: function (d) {
             if (d.children) {
                 d._children = d.children;
                 d.children = null;
@@ -435,7 +499,7 @@ var CollapsibleTree = function(elt,w,h) {
             }
         },
         //递归触发展开所有
-        toggleAll: function(d) {
+        toggleAll: function (d) {
             if (d.children) {
                 d.children.forEach(that.toggleAll);
                 that.toggle(d);

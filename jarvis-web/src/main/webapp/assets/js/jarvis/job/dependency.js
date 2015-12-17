@@ -1,13 +1,13 @@
-var dependencyUrl=contextPath+"/api/job/getTwoDirectionTree?jobId=";
-var url=dependencyUrl+jobVo.jobId;
+var dependencyUrl = contextPath + "/api/job/getTwoDirectionTree?jobId=";
+var url = dependencyUrl + jobVo.jobId;
 
-$(function(){
+$(function () {
     var tree = CollapsibleTree("#dependTree");
 
     tree.init(url);
 });
 
-function generateForceData(data){
+function generateForceData(data) {
 
 }
 

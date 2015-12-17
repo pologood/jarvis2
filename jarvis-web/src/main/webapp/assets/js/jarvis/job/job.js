@@ -242,7 +242,7 @@ var columns = [{
     switchable: true,
     formatter: formatDate,
     visible: false
-},{
+}, {
     field: 'createTime',
     title: '创建时间',
     switchable: true,
@@ -253,7 +253,7 @@ var columns = [{
     switchable: true,
     visible: false,
     formatter: formatDateTime
-},  {
+}, {
     field: 'rejectAttempts',
     title: '被Worker拒绝时重试次数',
     switchable: true,
