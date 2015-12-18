@@ -16,6 +16,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.http.annotation.NotThreadSafe;
+import org.joda.time.DateTime;
 
 import com.google.common.collect.Maps;
 import com.mogujie.jarvis.core.expression.DependencyExpression;
@@ -97,7 +98,15 @@ public class DAGDependChecker {
                 }
             }
         } else {
-            finishDependencies = false;
+            // if all are offset dependency, we also should pass check
+            long scheduleTime = DateTime.now().getMillis();
+            for (TaskDependSchedule taskSchedule : jobScheduleMap.values()) {
+                if (!taskSchedule.check(scheduleTime)) {
+                    finishDependencies = false;
+                    resetAllSelected();
+                    break;
+                }
+            }
         }
 
         autoFix(needJobs);
