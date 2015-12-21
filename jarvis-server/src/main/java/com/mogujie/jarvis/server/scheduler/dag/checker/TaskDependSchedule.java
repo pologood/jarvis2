@@ -150,8 +150,6 @@ public class TaskDependSchedule {
                     DateTime theScheduleDate = new DateTime(theTaskScheduleTime);
                     if (range.contains(theScheduleDate)) {
                         selectedTasks.add(task);
-                    } else {
-                        break;
                     }
                 }
                 if (selectedTasks.size() > 0) {
