@@ -54,6 +54,9 @@ public class DAGDependChecker {
         this.myJobId = myJobId;
     }
 
+    /**
+     * 收到某个task，根据jobId找到对应的TaskDependSchedule，并加入到其schedulingTasks中
+     */
     public void scheduleTask(long jobId, long taskId, long scheduleTime) {
         TaskDependSchedule taskSchedule = jobScheduleMap.get(jobId);
 
@@ -67,6 +70,14 @@ public class DAGDependChecker {
         }
     }
 
+    /**
+     * 根据需要的JobId进行依赖检查
+     * 首先从jobScheduleMap找一个schedulingTasks列队大于0的TaskDependSchedule，
+     * 对schedulingTasks的每一个task，根据scheduleTime遍历jobScheduleMap中的所有TaskDependSchedule，
+     * 如果所有TaskDependSchedule都能通过依赖检查，则该检查通过
+     *
+     * @param needJobs
+     */
     public boolean checkDependency(Set<Long> needJobs) {
         boolean finishDependencies = true;
         for (long jobId : needJobs) {
@@ -95,6 +106,10 @@ public class DAGDependChecker {
                         resetAllSelected();
                         break;
                     }
+                }
+                // 有一个通过即通过依赖检查
+                if (finishDependencies) {
+                    break;
                 }
             }
         } else {
@@ -126,12 +141,18 @@ public class DAGDependChecker {
         return dependTaskMap;
     }
 
+    /**
+     * 依赖检查失败后要重置jobScheduleMap中所有的TaskDependSchedule，回退到之前状态
+     */
     public void resetAllSelected() {
         for (TaskDependSchedule taskSchedule : jobScheduleMap.values()) {
             taskSchedule.resetSelected();
         }
     }
 
+    /**
+     * 依赖检查通过后，把选择的task从每个TaskDependSchedule移除
+     */
     public void finishAllSchedule() {
         for (TaskDependSchedule taskSchedule : jobScheduleMap.values()) {
             taskSchedule.finishSchedule();
