@@ -39,6 +39,7 @@ public class TaskDependSchedule {
     private DependencyExpression dependencyExpression;
 
     // SortedSet<ScheduleTask>
+    // 根据调度时间由小到大排序
     private SortedSet<ScheduleTask> schedulingTasks = new TreeSet<ScheduleTask>(new Comparator<ScheduleTask>() {
         @Override
         public int compare(ScheduleTask task1, ScheduleTask task2) {
@@ -91,6 +92,7 @@ public class TaskDependSchedule {
 
     /**
      * reset selected
+     * 依赖检查失败后要重置selectedTasks
      */
     public void resetSelected() {
         selectedTasks.clear();
@@ -98,6 +100,7 @@ public class TaskDependSchedule {
 
     /**
      * finish schedule
+     * 完成调度后要把selectedTasks有的task从schedulingTasks移除，并重置selectedTasks，好进行下一次调度
      */
     public void finishSchedule() {
         for (ScheduleTask task : selectedTasks) {
@@ -108,6 +111,10 @@ public class TaskDependSchedule {
 
     /**
      * check dependency
+     * 根据scheduleTime来判断，schedulingTasks中是否有满足该调度时间的task，
+     * 如果有，则加入到selectedTasks列表中，并返回true
+     *
+     * @param scheduleTime
      */
     public boolean check(long scheduleTime) {
         boolean pass = false;
@@ -143,8 +150,6 @@ public class TaskDependSchedule {
                     DateTime theScheduleDate = new DateTime(theTaskScheduleTime);
                     if (range.contains(theScheduleDate)) {
                         selectedTasks.add(task);
-                    } else {
-                        break;
                     }
                 }
                 if (selectedTasks.size() > 0) {
@@ -158,6 +163,10 @@ public class TaskDependSchedule {
 
     /**
      * start schedule task
+     * 根据dependencyExpression判断，如果是runtime或者current的offset依赖，加入到schedulingTasks中
+     *
+     * @param taskId
+     * @param scheduleTime
      */
     public void scheduleTask(long taskId, long scheduleTime) {
         // 如果是runtime
@@ -189,6 +198,9 @@ public class TaskDependSchedule {
         return selectedTasks;
     }
 
+    /**
+     * 当新添加一个job的时候，如果有对当天依赖的job，需要把当天已经跑过的task依赖重新load进来
+     */
     protected void loadSchedulingTasks() {
         TaskService taskService = Injectors.getInjector().getInstance(TaskService.class);
         DateTime now = DateTime.now();

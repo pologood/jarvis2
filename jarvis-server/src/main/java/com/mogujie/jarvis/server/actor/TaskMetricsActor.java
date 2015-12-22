@@ -61,7 +61,7 @@ public class TaskMetricsActor extends UntypedActor {
             String fullId = msg.getFullId();
             long jobId = IdUtils.parse(fullId, IdType.JOB_ID);
             long taskId = IdUtils.parse(fullId, IdType.TASK_ID);
-            TaskStatus status = TaskStatus.getInstance(msg.getStatus());
+            TaskStatus status = TaskStatus.parseValue(msg.getStatus());
             LOGGER.info("receive task {} status {}", taskId, status);
             Event event = new UnhandleEvent();
             if (status.equals(TaskStatus.SUCCESS)) {

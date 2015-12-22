@@ -45,7 +45,7 @@ public class LogWriterActor extends UntypedActor {
     private void writeLog(WorkerWriteLogRequest msg) throws Exception {
 
         String fullId = msg.getFullId();
-        StreamType streamType = StreamType.getInstance(msg.getType());
+        StreamType streamType = StreamType.parseValue(msg.getType());
         String log = msg.getLog();
         Boolean isEnd = msg.getIsEnd();
 

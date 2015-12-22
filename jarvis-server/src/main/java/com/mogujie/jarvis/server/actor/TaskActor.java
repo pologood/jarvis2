@@ -286,7 +286,7 @@ public class TaskActor extends UntypedActor {
     private void modifyTaskStatus(RestServerModifyTaskStatusRequest msg) {
         LOGGER.info("start modifyTaskStatus");
         long taskId = msg.getTaskId();
-        TaskStatus status = TaskStatus.getInstance(msg.getStatus());
+        TaskStatus status = TaskStatus.parseValue(msg.getStatus());
         Event event = new UnhandleEvent();
         if (status.equals(TaskStatus.SUCCESS)) {
             event = new SuccessEvent(taskId);

@@ -66,7 +66,7 @@ public class JobController extends AbstractController {
 
             // 构造新增任务请求
             RestSubmitJobRequest.Builder builder = RestSubmitJobRequest.newBuilder().setAppAuth(appAuth).setUser(user).setJobName(jobVo.getJobName())
-                    .setJobType(jobVo.getJobType()).setJobFlag(jobVo.getStatus()).setContent(jobVo.getContent()).setParameters(jobParameters)
+                    .setJobType(jobVo.getJobType()).setStatus(jobVo.getStatus()).setContent(jobVo.getContent()).setParameters(jobParameters)
                     .setAppName(jobVo.getAppName(appName)).setWorkerGroupId(jobVo.getWorkerGroupId()).setPriority(jobVo.getPriority(1))
                     .setActiveStartTime(jobVo.getActiveStartTime(0L)).setActiveEndTime(jobVo.getActiveEndTime(0L))
                     .setRejectAttempts(jobVo.getRejectAttempts(0)).setRejectInterval(jobVo.getRejectInterval(3))

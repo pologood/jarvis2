@@ -260,15 +260,15 @@ public class JobService {
         }
     }
 
-    public void updateJobFlag(long jobId, String user, int newFlag) {
+    public void updateStatus(long jobId, String user, int status) {
         Job record = jobMapper.selectByPrimaryKey(jobId);
-        record.setStatus(newFlag);
+        record.setStatus(status);
         record.setUpdateUser(user);
         record.setUpdateTime(DateTime.now().toDate());
         jobMapper.updateByPrimaryKey(record);
 
         JobEntry jobEntry = get(jobId);
-        jobEntry.updateJobStatus(newFlag);
+        jobEntry.updateJobStatus(status);
     }
 
     public String getAppName(long jobId) {

@@ -14,7 +14,7 @@ message RestSubmitJobRequest {
     required string user = 2;
     required string job_name = 3;
     required string job_type = 4;
-    required int32 job_flag = 5;
+    required int32 status = 5;
     required string content = 6;
     optional string parameters = 7 [default = ""];
     optional string app_name = 8;

@@ -9,7 +9,6 @@ package com.mogujie.jarvis.core.domain;
 
 /**
  * @author wuya
- *
  */
 public enum StreamType {
     STD_OUT(1), STD_ERR(2);
@@ -25,18 +24,14 @@ public enum StreamType {
     }
 
 
-    public static StreamType getInstance(int value) {
-
+    public static StreamType parseValue(int value) {
         StreamType[] all = StreamType.values();
-        StreamType select = StreamType.STD_OUT;
         for (StreamType s : all) {
             if (s.getValue() == value) {
-                select = s;
-                break;
+                return s;
             }
         }
-
-        return select;
+        throw new IllegalArgumentException("StreamType value is invalid. value:" + value);
     }
 
 }

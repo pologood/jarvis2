@@ -128,7 +128,7 @@ public class JarvisServer {
             }
             int dependFlag = (!dependencies.isEmpty()) ? 1 : 0;
             DAGJobType type = DAGJobType.getDAGJobType(timeFlag, dependFlag, cycleFlag);
-            JobStatus flag = JobStatus.getInstance(job.getStatus());
+            JobStatus flag = JobStatus.parseValue(job.getStatus());
             dagScheduler.getJobGraph().addJob(jobId, new DAGJob(jobId, type, flag), null);
             if (type.implies(DAGJobType.TIME) && flag.equals(JobStatus.ENABLE) && jobService.isActive(jobId)) {
                 timeScheduler.addJob(jobId);

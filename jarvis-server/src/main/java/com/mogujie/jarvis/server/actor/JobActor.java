@@ -79,6 +79,7 @@ public class JobActor extends UntypedActor {
         List<ActorEntry> list = new ArrayList<>();
         list.add(new ActorEntry(RestSubmitJobRequest.class, ServerSubmitJobResponse.class, MessageType.GENERAL));
         list.add(new ActorEntry(RestModifyJobRequest.class, ServerModifyJobResponse.class, MessageType.GENERAL));
+        list.add(new ActorEntry(RestModifyJobStatusRequest.class, ServerModifyJobStatusResponse.class, MessageType.GENERAL));
         list.add(new ActorEntry(RestQueryJobRelationRequest.class, ServerQueryJobRelationResponse.class, MessageType.GENERAL));
         return list;
     }
@@ -89,6 +90,8 @@ public class JobActor extends UntypedActor {
             submitJob((RestSubmitJobRequest) obj);
         } else if (obj instanceof RestModifyJobRequest) {
             modifyJob((RestModifyJobRequest) obj);
+        } else if (obj instanceof RestModifyJobStatusRequest) {
+            modifyJobStatus((RestModifyJobStatusRequest) obj);
         } else if (obj instanceof RestQueryJobRelationRequest) {
             RestQueryJobRelationRequest msg = (RestQueryJobRelationRequest) obj;
             queryJobRelation(msg);
@@ -207,7 +210,7 @@ public class JobActor extends UntypedActor {
             jobService.updateJob(job);
 
             long jobId = msg.getJobId();
-            JobStatus flag = JobStatus.getInstance(msg.getStatus());
+            JobStatus flag = JobStatus.parseValue(msg.getStatus());
             timeScheduler.modifyJobFlag(jobId, flag);
             dagScheduler.getJobGraph().modifyJobFlag(jobId, flag);
 
@@ -271,7 +274,7 @@ public class JobActor extends UntypedActor {
             String user = msg.getUser();
 
             ModifyOperation operation;
-            OperationMode operationMode = OperationMode.getInstance(entry.getOperator());
+            OperationMode operationMode = OperationMode.parseValue(entry.getOperator());
             if (operationMode.equals(OperationMode.ADD)) {
                 operation = ModifyOperation.ADD;
                 JobDepend jobDepend = convertValidService.convert2JobDepend(jobId, entry, user);

@@ -45,7 +45,7 @@ public class LogReaderActor extends UntypedActor {
 
         //fullID
         String fullId = msg.getFullId();
-        StreamType streamType = StreamType.getInstance(msg.getType());
+        StreamType streamType = StreamType.parseValue(msg.getType());
 
         LogStream logStream = new LocalLogStream(fullId,streamType);
 

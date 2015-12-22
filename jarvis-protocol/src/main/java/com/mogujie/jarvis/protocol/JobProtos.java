@@ -68,13 +68,13 @@ public final class JobProtos {
         getJobTypeBytes();
 
     /**
-     * <code>required int32 job_flag = 5;</code>
+     * <code>required int32 status = 5;</code>
      */
-    boolean hasJobFlag();
+    boolean hasStatus();
     /**
-     * <code>required int32 job_flag = 5;</code>
+     * <code>required int32 status = 5;</code>
      */
-    int getJobFlag();
+    int getStatus();
 
     /**
      * <code>required string content = 6;</code>
@@ -316,7 +316,7 @@ public final class JobProtos {
             }
             case 40: {
               bitField0_ |= 0x00000010;
-              jobFlag_ = input.readInt32();
+              status_ = input.readInt32();
               break;
             }
             case 50: {
@@ -588,19 +588,19 @@ public final class JobProtos {
       }
     }
 
-    public static final int JOB_FLAG_FIELD_NUMBER = 5;
-    private int jobFlag_;
+    public static final int STATUS_FIELD_NUMBER = 5;
+    private int status_;
     /**
-     * <code>required int32 job_flag = 5;</code>
+     * <code>required int32 status = 5;</code>
      */
-    public boolean hasJobFlag() {
+    public boolean hasStatus() {
       return ((bitField0_ & 0x00000010) == 0x00000010);
     }
     /**
-     * <code>required int32 job_flag = 5;</code>
+     * <code>required int32 status = 5;</code>
      */
-    public int getJobFlag() {
-      return jobFlag_;
+    public int getStatus() {
+      return status_;
     }
 
     public static final int CONTENT_FIELD_NUMBER = 6;
@@ -910,7 +910,7 @@ public final class JobProtos {
       user_ = "";
       jobName_ = "";
       jobType_ = "";
-      jobFlag_ = 0;
+      status_ = 0;
       content_ = "";
       parameters_ = "";
       appName_ = "";
@@ -947,7 +947,7 @@ public final class JobProtos {
         memoizedIsInitialized = 0;
         return false;
       }
-      if (!hasJobFlag()) {
+      if (!hasStatus()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -995,7 +995,7 @@ public final class JobProtos {
         output.writeBytes(4, getJobTypeBytes());
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        output.writeInt32(5, jobFlag_);
+        output.writeInt32(5, status_);
       }
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
         output.writeBytes(6, getContentBytes());
@@ -1063,7 +1063,7 @@ public final class JobProtos {
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(5, jobFlag_);
+          .computeInt32Size(5, status_);
       }
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
         size += com.google.protobuf.CodedOutputStream
@@ -1253,7 +1253,7 @@ public final class JobProtos {
         bitField0_ = (bitField0_ & ~0x00000004);
         jobType_ = "";
         bitField0_ = (bitField0_ & ~0x00000008);
-        jobFlag_ = 0;
+        status_ = 0;
         bitField0_ = (bitField0_ & ~0x00000010);
         content_ = "";
         bitField0_ = (bitField0_ & ~0x00000020);
@@ -1340,7 +1340,7 @@ public final class JobProtos {
         if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
           to_bitField0_ |= 0x00000010;
         }
-        result.jobFlag_ = jobFlag_;
+        result.status_ = status_;
         if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
           to_bitField0_ |= 0x00000020;
         }
@@ -1436,8 +1436,8 @@ public final class JobProtos {
           jobType_ = other.jobType_;
           onChanged();
         }
-        if (other.hasJobFlag()) {
-          setJobFlag(other.getJobFlag());
+        if (other.hasStatus()) {
+          setStatus(other.getStatus());
         }
         if (other.hasContent()) {
           bitField0_ |= 0x00000020;
@@ -1528,7 +1528,7 @@ public final class JobProtos {
           
           return false;
         }
-        if (!hasJobFlag()) {
+        if (!hasStatus()) {
           
           return false;
         }
@@ -1922,34 +1922,34 @@ public final class JobProtos {
         return this;
       }
 
-      private int jobFlag_ ;
+      private int status_ ;
       /**
-       * <code>required int32 job_flag = 5;</code>
+       * <code>required int32 status = 5;</code>
        */
-      public boolean hasJobFlag() {
+      public boolean hasStatus() {
         return ((bitField0_ & 0x00000010) == 0x00000010);
       }
       /**
-       * <code>required int32 job_flag = 5;</code>
+       * <code>required int32 status = 5;</code>
        */
-      public int getJobFlag() {
-        return jobFlag_;
+      public int getStatus() {
+        return status_;
       }
       /**
-       * <code>required int32 job_flag = 5;</code>
+       * <code>required int32 status = 5;</code>
        */
-      public Builder setJobFlag(int value) {
+      public Builder setStatus(int value) {
         bitField0_ |= 0x00000010;
-        jobFlag_ = value;
+        status_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required int32 job_flag = 5;</code>
+       * <code>required int32 status = 5;</code>
        */
-      public Builder clearJobFlag() {
+      public Builder clearStatus() {
         bitField0_ = (bitField0_ & ~0x00000010);
-        jobFlag_ = 0;
+        status_ = 0;
         onChanged();
         return this;
       }
@@ -10553,46 +10553,46 @@ public final class JobProtos {
     java.lang.String[] descriptorData = {
       "\n\tjob.proto\032\026dependency_entry.proto\032\016app" +
       "_auth.proto\032\037schedule_expression_entry.p" +
-      "roto\"\341\003\n\024RestSubmitJobRequest\022\032\n\010app_aut" +
+      "roto\"\337\003\n\024RestSubmitJobRequest\022\032\n\010app_aut" +
       "h\030\001 \002(\0132\010.AppAuth\022\014\n\004user\030\002 \002(\t\022\020\n\010job_n" +
-      "ame\030\003 \002(\t\022\020\n\010job_type\030\004 \002(\t\022\020\n\010job_flag\030" +
-      "\005 \002(\005\022\017\n\007content\030\006 \002(\t\022\024\n\nparameters\030\007 \001" +
-      "(\t:\000\022\020\n\010app_name\030\010 \001(\t\022\027\n\017worker_group_i" +
-      "d\030\t \002(\005\022\023\n\010priority\030\n \001(\005:\0011\022\031\n\021active_s" +
-      "tart_time\030\013 \001(\003\022\027\n\017active_end_time\030\014 \001(\003" +
-      "\022\032\n\017reject_attempts\030\r \001(\005:\0010\022\032\n\017reject_i",
-      "nterval\030\016 \001(\005:\0013\022\032\n\017failed_attempts\030\017 \001(" +
-      "\005:\0010\022\032\n\017failed_interval\030\020 \001(\005:\0013\0222\n\020expr" +
-      "ession_entry\030\021 \001(\0132\030.ScheduleExpressionE" +
-      "ntry\022*\n\020dependency_entry\030\022 \003(\0132\020.Depende" +
-      "ncyEntry\"M\n\027ServerSubmitJobResponse\022\016\n\006j" +
-      "ob_id\030\001 \001(\003\022\017\n\007success\030\002 \002(\010\022\021\n\007message\030" +
-      "\003 \001(\t:\000\"\316\003\n\024RestModifyJobRequest\022\032\n\010app_" +
-      "auth\030\001 \002(\0132\010.AppAuth\022\014\n\004user\030\002 \002(\t\022\016\n\006jo" +
-      "b_id\030\003 \002(\003\022\020\n\010job_name\030\004 \001(\t\022\020\n\010job_type" +
-      "\030\005 \001(\t\022\017\n\007content\030\006 \001(\t\022\022\n\nparameters\030\007 ",
-      "\001(\t\022\020\n\010app_name\030\010 \001(\t\022\027\n\017worker_group_id" +
-      "\030\t \001(\005\022\020\n\010priority\030\n \001(\005\022\031\n\021active_start" +
-      "_time\030\013 \001(\003\022\027\n\017active_end_time\030\014 \001(\003\022\027\n\017" +
-      "reject_attempts\030\r \001(\005\022\027\n\017reject_interval" +
-      "\030\016 \001(\005\022\027\n\017failed_attempts\030\017 \001(\005\022\027\n\017faile" +
-      "d_interval\030\020 \001(\005\0222\n\020expression_entry\030\021 \001" +
-      "(\0132\030.ScheduleExpressionEntry\022*\n\020dependen" +
-      "cy_entry\030\022 \003(\0132\020.DependencyEntry\"=\n\027Serv" +
-      "erModifyJobResponse\022\017\n\007success\030\001 \002(\010\022\021\n\007" +
-      "message\030\002 \001(\t:\000\"f\n\032RestModifyJobStatusRe",
-      "quest\022\032\n\010app_auth\030\001 \002(\0132\010.AppAuth\022\014\n\004use" +
-      "r\030\002 \002(\t\022\016\n\006job_id\030\003 \002(\003\022\016\n\006status\030\004 \002(\005\"" +
-      "C\n\035ServerModifyJobStatusResponse\022\017\n\007succ" +
-      "ess\030\001 \002(\010\022\021\n\007message\030\002 \001(\t:\000\"0\n\016JobStatu" +
-      "sEntry\022\016\n\006job_id\030\001 \002(\003\022\016\n\006status\030\002 \002(\005\"n" +
-      "\n\033RestQueryJobRelationRequest\022\032\n\010app_aut" +
-      "h\030\001 \002(\0132\010.AppAuth\022\014\n\004user\030\002 \002(\t\022\016\n\006job_i" +
-      "d\030\003 \002(\003\022\025\n\rrelation_type\030\004 \002(\005\"o\n\036Server" +
-      "QueryJobRelationResponse\022)\n\020job_status_e" +
-      "ntry\030\001 \003(\0132\017.JobStatusEntry\022\017\n\007success\030\002",
-      " \002(\010\022\021\n\007message\030\003 \001(\t:\000B(\n\033com.mogujie.j" +
-      "arvis.protocolB\tJobProtos"
+      "ame\030\003 \002(\t\022\020\n\010job_type\030\004 \002(\t\022\016\n\006status\030\005 " +
+      "\002(\005\022\017\n\007content\030\006 \002(\t\022\024\n\nparameters\030\007 \001(\t" +
+      ":\000\022\020\n\010app_name\030\010 \001(\t\022\027\n\017worker_group_id\030" +
+      "\t \002(\005\022\023\n\010priority\030\n \001(\005:\0011\022\031\n\021active_sta" +
+      "rt_time\030\013 \001(\003\022\027\n\017active_end_time\030\014 \001(\003\022\032" +
+      "\n\017reject_attempts\030\r \001(\005:\0010\022\032\n\017reject_int",
+      "erval\030\016 \001(\005:\0013\022\032\n\017failed_attempts\030\017 \001(\005:" +
+      "\0010\022\032\n\017failed_interval\030\020 \001(\005:\0013\0222\n\020expres" +
+      "sion_entry\030\021 \001(\0132\030.ScheduleExpressionEnt" +
+      "ry\022*\n\020dependency_entry\030\022 \003(\0132\020.Dependenc" +
+      "yEntry\"M\n\027ServerSubmitJobResponse\022\016\n\006job" +
+      "_id\030\001 \001(\003\022\017\n\007success\030\002 \002(\010\022\021\n\007message\030\003 " +
+      "\001(\t:\000\"\316\003\n\024RestModifyJobRequest\022\032\n\010app_au" +
+      "th\030\001 \002(\0132\010.AppAuth\022\014\n\004user\030\002 \002(\t\022\016\n\006job_" +
+      "id\030\003 \002(\003\022\020\n\010job_name\030\004 \001(\t\022\020\n\010job_type\030\005" +
+      " \001(\t\022\017\n\007content\030\006 \001(\t\022\022\n\nparameters\030\007 \001(",
+      "\t\022\020\n\010app_name\030\010 \001(\t\022\027\n\017worker_group_id\030\t" +
+      " \001(\005\022\020\n\010priority\030\n \001(\005\022\031\n\021active_start_t" +
+      "ime\030\013 \001(\003\022\027\n\017active_end_time\030\014 \001(\003\022\027\n\017re" +
+      "ject_attempts\030\r \001(\005\022\027\n\017reject_interval\030\016" +
+      " \001(\005\022\027\n\017failed_attempts\030\017 \001(\005\022\027\n\017failed_" +
+      "interval\030\020 \001(\005\0222\n\020expression_entry\030\021 \001(\013" +
+      "2\030.ScheduleExpressionEntry\022*\n\020dependency" +
+      "_entry\030\022 \003(\0132\020.DependencyEntry\"=\n\027Server" +
+      "ModifyJobResponse\022\017\n\007success\030\001 \002(\010\022\021\n\007me" +
+      "ssage\030\002 \001(\t:\000\"f\n\032RestModifyJobStatusRequ",
+      "est\022\032\n\010app_auth\030\001 \002(\0132\010.AppAuth\022\014\n\004user\030" +
+      "\002 \002(\t\022\016\n\006job_id\030\003 \002(\003\022\016\n\006status\030\004 \002(\005\"C\n" +
+      "\035ServerModifyJobStatusResponse\022\017\n\007succes" +
+      "s\030\001 \002(\010\022\021\n\007message\030\002 \001(\t:\000\"0\n\016JobStatusE" +
+      "ntry\022\016\n\006job_id\030\001 \002(\003\022\016\n\006status\030\002 \002(\005\"n\n\033" +
+      "RestQueryJobRelationRequest\022\032\n\010app_auth\030" +
+      "\001 \002(\0132\010.AppAuth\022\014\n\004user\030\002 \002(\t\022\016\n\006job_id\030" +
+      "\003 \002(\003\022\025\n\rrelation_type\030\004 \002(\005\"o\n\036ServerQu" +
+      "eryJobRelationResponse\022)\n\020job_status_ent" +
+      "ry\030\001 \003(\0132\017.JobStatusEntry\022\017\n\007success\030\002 \002",
+      "(\010\022\021\n\007message\030\003 \001(\t:\000B(\n\033com.mogujie.jar" +
+      "vis.protocolB\tJobProtos"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -10614,7 +10614,7 @@ public final class JobProtos {
     internal_static_RestSubmitJobRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_RestSubmitJobRequest_descriptor,
-        new java.lang.String[] { "AppAuth", "User", "JobName", "JobType", "JobFlag", "Content", "Parameters", "AppName", "WorkerGroupId", "Priority", "ActiveStartTime", "ActiveEndTime", "RejectAttempts", "RejectInterval", "FailedAttempts", "FailedInterval", "ExpressionEntry", "DependencyEntry", });
+        new java.lang.String[] { "AppAuth", "User", "JobName", "JobType", "Status", "Content", "Parameters", "AppName", "WorkerGroupId", "Priority", "ActiveStartTime", "ActiveEndTime", "RejectAttempts", "RejectInterval", "FailedAttempts", "FailedInterval", "ExpressionEntry", "DependencyEntry", });
     internal_static_ServerSubmitJobResponse_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_ServerSubmitJobResponse_fieldAccessorTable = new

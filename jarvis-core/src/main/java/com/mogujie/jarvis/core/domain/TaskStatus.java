@@ -9,7 +9,6 @@ package com.mogujie.jarvis.core.domain;
 
 /**
  * @author muming
- *
  */
 public enum TaskStatus {
 
@@ -32,16 +31,13 @@ public enum TaskStatus {
         return value;
     }
 
-    public static TaskStatus getInstance(int value) {
+    public static TaskStatus parseValue(int value) {
         TaskStatus[] statusList = TaskStatus.values();
-        TaskStatus status = TaskStatus.UNKNOWN;
         for (TaskStatus s : statusList) {
             if (s.getValue() == value) {
-                status = s;
-                break;
+                return s;
             }
         }
-
-        return status;
+        throw new IllegalArgumentException("TaskStatus value is invalid. value:" + value);
     }
 }
