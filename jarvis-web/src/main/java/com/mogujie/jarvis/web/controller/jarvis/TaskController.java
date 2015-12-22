@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -49,8 +50,12 @@ public class TaskController extends BaseController {
         JobVo jobVo = jobService.getJobById(jobId);
 
         TaskQo taskQo = new TaskQo();
-        taskQo.setJobId(jobId);
-        taskQo.setStatus(4);
+        List<String> jobIdList=new ArrayList<String>();
+        jobIdList.add(jobId.toString());
+        taskQo.setJobIdList(JsonHelper.toJson(jobIdList));
+        List<Integer> statusList=new ArrayList<Integer>();
+        statusList.add(4);
+        taskQo.setTaskStatus(statusList);
         taskQo.setOrderField("executeEndTime");
         taskQo.setOrder("DESC");
         taskQo.setOffset(0);

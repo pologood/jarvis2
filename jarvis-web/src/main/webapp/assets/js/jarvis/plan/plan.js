@@ -14,7 +14,8 @@ $(function () {
     $.getJSON(contextPath + "/assets/json/jobType.json", function (data) {
         $("#jobType").select2({
             data: data,
-            width: '100%'
+            width: '100%',
+            tags:true
         });
     });
 
@@ -128,26 +129,31 @@ function reset() {
 function getQueryPara() {
     var queryPara = {};
 
-    var jobId = $("#jobId").val();
-    var jobName = $("#jobName").val();
-    var jobType = $("#jobType").val();
-    var priority = $("#priority").val();
-    var submitUser = $("#submitUser").val();
-    var planDate = $("#planDate").val();
+    var jobIdList = $("#jobId").val();
+    var jobNameList = $("#jobNameList").val();
+    var jobTypeList = $("#jobTypeList").val();
+    var priorityList = $("#priority").val();
+    var executeUserList = $("#executeUser").val();
+    var scheduleTime = $("#scheduleTime").val();
 
-    jobId = jobId == "all" ? '' : jobId;
-    jobName = jobName == 'all' ? '' : jobName;
-    jobType = jobType == 'all' ? '' : jobType;
-    submitUser = submitUser == "all" ? '' : submitUser;
-    priority = priority == "all" ? '' : priority;
-    planDate = planDate == '' ? undefined : planDate;
+    jobIdList = jobIdList == "all" ? undefined : jobIdList;
+    jobIdList = jobIdList == null ? undefined : jobIdList;
+    jobNameList = jobNameList == 'all' ? undefined : jobNameList;
+    jobNameList = jobNameList == null ? undefined : jobNameList;
+    jobTypeList = jobTypeList == 'all' ? undefined : jobTypeList;
+    jobTypeList = jobTypeList == null ? undefined : jobTypeList;
+    executeUserList = executeUserList == "all" ? undefined : executeUserList;
+    executeUserList = executeUserList == null ? undefined : executeUserList;
+    priorityList = priorityList == "all" ? undefined : priorityList;
+    priorityList = priorityList == null ? undefined : priorityList;
+    scheduleTime = scheduleTime == '' ? undefined : scheduleTime;
 
-    queryPara["jobId"] = jobId;
-    queryPara["jobName"] = jobName;
-    queryPara["jobType"] = jobType;
-    queryPara["submitUser"] = submitUser;
-    queryPara["priority"] = priority;
-    queryPara["planDate"] = planDate;
+    queryPara["jobIdList"] = JSON.stringify(jobIdList) ;
+    queryPara["jobNameList"] =JSON.stringify(jobNameList) ;
+    queryPara["jobTypeList"] = JSON.stringify(jobTypeList);
+    queryPara["executeUserList"] =JSON.stringify(executeUserList) ;
+    queryPara["priorityList"] =JSON.stringify(priorityList) ;
+    queryPara["scheduleTime"] = scheduleTime;
 
     return queryPara;
 }
@@ -166,6 +172,7 @@ function initData() {
                 var value = queryParams[key];
                 params[key] = value;
             }
+            console.log(params);
             return params;
         },
         showColumns: true,
@@ -213,7 +220,7 @@ var columns = [{
     field: 'jobType',
     title: '任务类型',
     switchable: true,
-    visible: false
+    visible: true
 }, {
     field: 'content',
     title: '任务内容',
@@ -224,7 +231,7 @@ var columns = [{
     field: 'priority',
     title: '任务优先级',
     switchable: true,
-    visible: false
+    visible: true
 }, {
     field: 'params',
     title: '任务参数',

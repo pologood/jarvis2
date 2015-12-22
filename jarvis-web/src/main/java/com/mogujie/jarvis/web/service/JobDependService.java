@@ -25,7 +25,10 @@ public class JobDependService {
      */
     public Map<String, Object> getTreeDependedOnJob(JobQo jobQo) {
         Map<String, Object> result = new HashMap<String, Object>();
-        JobDependVo jobDependVo = jobDependMapper.getJobById(jobQo.getJobId());
+        if (null == jobQo || jobQo.getJobIdList().size() == 0) {
+            return result;
+        }
+        JobDependVo jobDependVo = jobDependMapper.getJobById(Long.valueOf(jobQo.getJobIdList().get(0)));
 
         if (jobDependVo == null) {
             return result;
@@ -55,9 +58,13 @@ public class JobDependService {
     /**
      * 获取所有依赖于此job的job
      */
-    public Map<String, Object> getTwoDirectionTreeDependedOnJob(JobQo jobSearchVo) {
+    public Map<String, Object> getTwoDirectionTreeDependedOnJob(JobQo jobQo) {
         Map<String, Object> result = new HashMap<String, Object>();
-        JobDependVo jobDependVo = jobDependMapper.getJobById(jobSearchVo.getJobId());
+        if (null == jobQo || jobQo.getJobIdList().size() == 0) {
+            return result;
+        }
+
+        JobDependVo jobDependVo = jobDependMapper.getJobById(Long.valueOf(jobQo.getJobIdList().get(0)));
         jobDependVo.setName(jobDependVo.getText());
         jobDependVo.setValue(jobDependVo.getId());
         jobDependVo.setRootFlag(true);

@@ -33,7 +33,6 @@
     <div class="row" id="jobData">
         <div class="col-md-12">
             <!-- 用户名必须 -->
-            <input type="hidden" id="user" desc="用户名" value="${user.uname}"/>
             <input type="hidden" id="jobId" desc="任务id" value="${jobVo.jobId}"/>
 
 
@@ -44,7 +43,7 @@
                                                                                     style="vertical-align: middle">*</span></span>
                         <select id="appName" desc="应用名称">
                             <c:forEach items="${appVoList}" var="app" varStatus="status">
-                                <option value="${app.appName}" appKey="${app.appKey}"
+                                <option value="${app.appName}"
                                         <c:choose>
                                         <c:when test="${app.appName==jobVo.appName}">selected</c:when>
                                 </c:choose> >${app.appName}</option>
@@ -83,7 +82,7 @@
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">起始时间</span>
 
-                        <input id="startTime" class="form-control"
+                        <input id="activeStartTime" class="form-control"
                                value="<fmt:formatDate value="${jobVo.activeStartDate}" pattern="yyyy-MM-dd"></fmt:formatDate>"/>
 
                     </div>
@@ -94,7 +93,7 @@
                 <div class="col-md-6 col-md-offset-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">结束时间</span>
-                        <input id="endTime" class="form-control"
+                        <input id="activeEndTime" class="form-control"
                                value="<fmt:formatDate value="${jobVo.activeEndDate}" pattern="yyyy-MM-dd"></fmt:formatDate>"/>
                     </div>
                 </div>
@@ -115,9 +114,26 @@
             <div class="row top-buffer">
                 <div class="col-md-6 col-md-offset-3">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">执行命令<span class="text-danger"
+                        <span class="input-group-addon" style="width:35%">Worker Group<span class="text-danger"
+                                                                                            style="vertical-align: middle">*</span></span>
+                        <select id="workerGroupId" desc="Worker Group">
+                            <c:forEach items="${WorkerGroupVoList}" var="workerGroup" varStatus="status">
+                                <option value="${workerGroup.id}"
+                                        <c:choose>
+                                            <c:when test="${jobVo.workerGroupId==workerGroup.id}">selected</c:when>
+                                        </c:choose>  >${workerGroup.name}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row top-buffer">
+                <div class="col-md-6 col-md-offset-3">
+                    <div class="input-group" style="width:100%">
+                        <span class="input-group-addon" style="width:35%">执行内容<span class="text-danger"
                                                                                     style="vertical-align: middle">*</span></span>
-                        <textarea id="content" class="form-control" desc="执行命令" rows="4"
+                        <textarea id="content" class="form-control" desc="执行内容" rows="4"
                                   onclick="changeTextArea(this,15,10)"
                                   onblur="changeTextArea(this,4,10)">${jobVo.content}</textarea>
                     </div>
@@ -128,7 +144,7 @@
                 <div class="col-md-6 col-md-offset-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">任务参数</span>
-                        <input id="parameters" class="form-control" value='${jobVo.params}' onclick="showParaModel()"/>
+                        <input id="parameters" class="form-control" value='<c:choose><c:when test="${jobVo.params!=null}">${jobVo.params}</c:when><c:otherwise>{}</c:otherwise></c:choose>' onclick="showParaModel()"/>
                     </div>
                 </div>
 
@@ -187,23 +203,6 @@
             </div>
 
 
-            <div class="row top-buffer">
-                <div class="col-md-6 col-md-offset-3">
-                    <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">Worker Group<span class="text-danger"
-                                                                                            style="vertical-align: middle">*</span></span>
-                        <select id="groupId" desc="Worker Group">
-                            <c:forEach items="${WorkerGroupVoList}" var="workerGroup" varStatus="status">
-                                <option value="${workerGroup.id}"
-                                        <c:choose>
-                                        <c:when test="${jobVo.workerGroupId==workerGroup.id}">selected</c:when>
-                                </c:choose>  >${workerGroup.name}</option>
-                            </c:forEach>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
 
             <div class="row top-buffer">
                 <div class="col-md-6 col-md-offset-3">
@@ -225,101 +224,11 @@
                 </div>
             </div>
 
-
-            <div class="row top-buffer">
-                <div class="col-md-6 col-md-offset-3">
-                    <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">拒绝重试数</span>
-                        <input id="rejectRetries" class="form-control" value="${jobVo.rejectAttempts}" desc="拒绝重试数"
-                               placeholder="0" onblur="checkNum(this)"/>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row top-buffer">
-                <div class="col-md-6 col-md-offset-3">
-                    <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">拒绝重试间隔(秒)</span>
-                        <input id="rejectInterval" class="form-control" value="${jobVo.rejectInterval}" desc="拒绝重试间隔(秒)"
-                               placeholder="3" onblur="checkNum(this)"/>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row top-buffer">
-                <div class="col-md-6 col-md-offset-3">
-                    <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">失败重试数</span>
-                        <input id="failedRetries" class="form-control" value="${jobVo.failedAttempts}" desc="失败重试数"
-                               placeholder="0" onblur="checkNum(this)"/>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row top-buffer">
-                <div class="col-md-6 col-md-offset-3">
-                    <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">失败重试间隔(秒)</span>
-                        <input id="failedInterval" class="form-control" value="${jobVo.failedInterval}" desc="失败重试间隔(秒)"
-                               placeholder="3" onblur="checkNum(this)"/>
-                    </div>
-                </div>
-            </div>
-
-
             <div class="row top-buffer">
                 <div class="col-md-6 col-md-offset-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">优先级</span>
                         <select id="priority"></select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row top-buffer">
-                <div class="col-md-6 col-md-offset-3">
-                    <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">报警</span>
-                        <select id="alarm" multiple></select>
-                    </div>
-
-
-                    <div class="col-md-10 col-md-offset-2">
-
-                        <div id="alarmPattern" style="display: none;">
-                            <div class="row">
-                                <div class="col-md-8" style="margin-top: 2px">
-                                    <div class="input-group" style="width:100%">
-                                        <span name="alarm-user" class="input-group-addon"
-                                              style="width:50%;background-color:#d9edf7"></span>
-                                        <select name="alarm-type" class="form-control">
-
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-4" style="margin-top: 2px">
-                                    <div class="input-group" style="margin-left:-25px;margin-right: -15px"
-                                         style="width:100%">
-                                        <span class="input-group-addon" style="width:30%;">操作</span>
-
-                                        <div class="form-control">
-                                            <a href="javascript:void(0)" onclick="addAlarm(this)"><i
-                                                    class="glyphicon glyphicon-plus"></i></a>
-                                            <a href="javascript:void(0)" onclick="deleteAlarm(this)"><i
-                                                    class="glyphicon glyphicon-minus"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-
-
-                        <dl id="alarmList">
-
-                        </dl>
-
                     </div>
                 </div>
             </div>
@@ -384,6 +293,81 @@
                        onmouseover="showDescription(this)" onmouseout="hideDescription(this)"></i>
                 </span>
             </div>
+
+
+            <div class="row top-buffer">
+                <div class="col-md-6 col-md-offset-3">
+                    <div class="input-group" style="width:100%">
+                        <span class="input-group-addon" style="width:35%">拒绝重试数</span>
+                        <input id="rejectRetries" class="form-control" value="<c:choose><c:when test="${jobVo.rejectAttempts!=null}">${jobVo.rejectAttempts}</c:when><c:otherwise>0</c:otherwise></c:choose>" desc="拒绝重试数"
+                               placeholder="0" onblur="checkNum(this)"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row top-buffer">
+                <div class="col-md-6 col-md-offset-3">
+                    <div class="input-group" style="width:100%">
+                        <span class="input-group-addon" style="width:35%">拒绝重试间隔(秒)</span>
+                        <input id="rejectInterval" class="form-control" value="<c:choose><c:when test="${jobVo.rejectInterval!=null}">${jobVo.rejectInterval}</c:when><c:otherwise>3</c:otherwise></c:choose>" desc="拒绝重试间隔(秒)"
+                               placeholder="3" onblur="checkNum(this)"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row top-buffer">
+                <div class="col-md-6 col-md-offset-3">
+                    <div class="input-group" style="width:100%">
+                        <span class="input-group-addon" style="width:35%">失败重试数</span>
+                        <input id="failedRetries" class="form-control" value="<c:choose><c:when test="${jobVo.failedAttempts!=null}">${jobVo.failedAttempts}</c:when><c:otherwise>0</c:otherwise></c:choose>" desc="失败重试数"
+                               placeholder="0" onblur="checkNum(this)"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row top-buffer">
+                <div class="col-md-6 col-md-offset-3">
+                    <div class="input-group" style="width:100%">
+                        <span class="input-group-addon" style="width:35%">失败重试间隔(秒)</span>
+                        <input id="failedInterval" class="form-control" value="<c:choose><c:when test="${jobVo.failedInterval!=null}">${jobVo.failedInterval}</c:when><c:otherwise>3</c:otherwise></c:choose>" desc="失败重试间隔(秒)"
+                               placeholder="3" onblur="checkNum(this)"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row top-buffer">
+                <div class="col-md-6 col-md-offset-3">
+                    <div class="input-group" style="width:100%">
+                        <span class="input-group-addon" style="width:35%">报警人</span>
+                        <select id="alarm" multiple></select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row top-buffer">
+                <div class="col-md-6 col-md-offset-3">
+                    <div class="input-group" style="width:100%">
+                        <span class="input-group-addon" style="width:35%">报警类型</span>
+                        <div id="alarmType" class="form-control">
+                            <input type="checkbox" onclick="changeAll(this)">全部
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row top-buffer">
+                <div class="col-md-6 col-md-offset-3">
+                    <div class="input-group" style="width:100%">
+                        <span class="input-group-addon" style="width:35%">报警启用/禁用</span>
+                        <div id="alarmStatus" class="form-control">
+                            <input name="alarmStatus" type="radio" value="0" >禁用
+                            <input name="alarmStatus" type="radio" value="1" checked="checked">启用
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
 
 
             <div class="row top-buffer">

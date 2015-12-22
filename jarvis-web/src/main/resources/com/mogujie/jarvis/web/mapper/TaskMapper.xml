@@ -6,17 +6,29 @@
 
     <sql id="condition">
         <where>
-            <if test="jobId!=null">
-                job.jobId=#{jobId}
+            <if test="jobIdList!=null">
+                job.jobId IN
+                <foreach collection="jobIdList" item="jobId" open="(" close=")" separator=",">
+                    #{jobId}
+                </foreach>
             </if>
-            <if test="jobName!=null and jobName!=''">
-                AND job.jobName=#{jobName}
+            <if test="jobNameList!=null">
+                AND job.jobName IN
+                <foreach collection="jobNameList" item="jobName" open="(" close=")" separator=",">
+                    #{jobName}
+                </foreach>
             </if>
-            <if test="jobType!=null and jobType!=''">
-                AND job.jobType=#{jobType}
+            <if test="jobTypeList!=null">
+                AND job.jobType IN
+                <foreach collection="jobTypeList" item="jobType" open="(" close=")" separator=",">
+                    #{jobType}
+                </foreach>
             </if>
-            <if test="executeUser!=null and executeUser!=''">
-                AND task.executeUser=#{executeUser}
+            <if test="executeUserList!=null">
+                AND task.executeUser IN
+                <foreach collection="executeUserList" item="executeUser" open="(" close=")" separator=",">
+                    #{executeUser}
+                </foreach>
             </if>
             <if test="startDate!=null and startDate!=''">
                 AND task.executeStartTime>=#{startDate}
@@ -99,20 +111,35 @@
     
     <sql id="planCondition">
         <where>
-            <if test="jobId!=null">
-                task.jobId=#{jobId}
+            <if test="jobIdList!=null">
+                task.jobId IN
+                <foreach collection="jobIdList" item="jobId" open="(" close=")" separator=",">
+                    #{jobId}
+                </foreach>
             </if>
-            <if test="jobName!=null and jobName!=''">
-                AND job.jobName=#{jobName}
+            <if test="jobNameList!=null and jobNameList!=''">
+                AND job.jobName IN
+                <foreach collection="jobNameList" item="jobName" open="(" close=")" separator=",">
+                    #{jobName}
+                </foreach>
             </if>
-            <if test="jobType!=null and jobType!=''">
-                AND job.jobType=#{jobType}
+            <if test="jobTypeList!=null and jobTypeList!=''">
+                AND job.jobType IN
+                <foreach collection="jobTypeList" item="jobType" open="(" close=")" separator=",">
+                    #{jobType}
+                </foreach>
             </if>
-            <if test="priority!=null">
-                AND job.priority=#{priority}
+            <if test="priorityList!=null">
+                AND job.priority IN
+                <foreach collection="priorityList" item="priority" open="(" close=")" separator=",">
+                    #{priority}
+                </foreach>
             </if>
-            <if test="executeUser!=null and executeUser!=''">
-                AND task.executeUser=#{executeUser}
+            <if test="executeUserList!=null and executeUserList!=''">
+                AND task.executeUser IN
+                <foreach collection="executeUserList" item="executeUser" open="(" close=")" separator=",">
+                    #{executeUser}
+                </foreach>
             </if>
             <if test="scheduleTime!=null">
                 <![CDATA[

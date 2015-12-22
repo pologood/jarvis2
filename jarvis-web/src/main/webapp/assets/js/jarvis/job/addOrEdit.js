@@ -1,19 +1,20 @@
 var testNum = /^[0-9]*$/;
 
-var alarmType = null;
+//var alarmType = null;
 $(function () {
     //初始化报警类型
     $.ajaxSettings.async = false;
     $.getJSON(contextPath + "/assets/json/alarmType.json", function (data) {
-        alarmType = data;
+        $(data).each(function (i, c) {
+            var input = $('<input name="alarmType" type="checkbox" value="' + c.id + '" />');
+            $("#alarmType").append(input);
+            $("#alarmType").append(c.text + "&nbsp;&nbsp;");
+        });
     });
     $.ajaxSettings.async = true;
 
     //初始化内网所有用户
     generateUsers();
-    $("#alarm").on("change", function (e) {
-        changeAlarm(e);
-    });
 
     //初始化作业类型内容
     $.getJSON(contextPath + "/assets/json/jobType.json", function (data) {
@@ -75,14 +76,14 @@ $(function () {
     $(".input-group select[name!=commonStrategy][name!=alarm-type]").select2({width: '100%'});
 
 
-    $('#startTime').datetimepicker({
+    $('#activeStartTime').datetimepicker({
         language: 'zh-CN',
         minView: 'month',
         format: 'yyyy-mm-dd',
         autoclose: true
     });
 
-    $('#endTime').datetimepicker({
+    $('#activeEndTime').datetimepicker({
         language: 'zh-CN',
         minView: 'month',
         format: 'yyyy-mm-dd',
@@ -153,6 +154,16 @@ function generateUsers() {
         }
     });
 }
+
+
+function changeAll(thisTag) {
+    var thisTagValue = thisTag.checked;
+    var siblings = $(thisTag).siblings();
+    $(siblings).each(function (i, c) {
+        c.checked = thisTagValue;
+    });
+}
+
 
 //修改报警人触发
 function changeAlarm(e) {
@@ -310,42 +321,36 @@ function checkEmpty(ids) {
     return flag;
 }
 
-//获取参数
-function getData() {
-    var result = {};
 
-    var inputs = $("#jobData .input-group>input,#jobData .input-group>textarea");
-    var selects = $("#jobData .input-group>select");
+
+//获取配置的报警信息
+function getAlarm() {
+    var jobId=$("#jobId").val();
+    var receiver = $("#alarm").val();  //报警人
+
+    if (null == receiver) {
+        return null;
+    }
+
+    var inputs = $("#alarmType input[name=alarmType]:checked");
+    if(inputs.length<=0){
+        return null;
+    }
+
+    var alarmType = new Array();
     $(inputs).each(function (i, c) {
-        var id = $(c).prop("id");
-        var value = $(c).val();
-        result[id] = value
+        var type = $(c).val();
+        alarmType.push(parseInt(type));
     });
-    $(selects).each(function (i, c) {
-        var id = $(c).prop("id");
-        var value = $(c).val();
-        if ($(c).attr("multiple") != null && $(c).attr("multiple") != '') {
-            result[id] = JSON.stringify(value);
-        }
-        else {
-            result[id] = value;
-        }
+    var status = $("#alarmStatus input[name=alarmStatus]:checked").val();
 
-    });
+    var data = {};
+    data["jobId"] = parseInt(jobId);
+    data["alarmType"] = alarmType;
+    data["receiver"] = receiver;
+    data["status"] = parseInt(status);
 
-    var user = $("#user").val();
-    result["user"] = user;
-    var appKey = $("#appName").find("option:selected").attr("appKey");
-    result["appKey"] = appKey;
-    //前置任务信息
-    var dependencyList = calculateOperator(dependIds, result["dependJobIds"]);
-    result["dependencyList"] = JSON.stringify(dependencyList);
-
-    //表示式类型与表达式内容
-    var scheduleExpressionEntry = getScheduleExpressionEntry();
-    result["scheduleExpressionEntry"] = scheduleExpressionEntry;
-
-    return result;
+    return data;
 }
 
 //计算表达式
@@ -462,7 +467,7 @@ function calculateOperator(sourceStr, afterChangeStr) {
 
 //提交任务
 function submit() {
-    var ids = ["user", "appName", "jobName", "jobType", "content", "groupId"];
+    var ids = ["appName", "jobName", "jobType", "content", "workerGroupId"];
     var flag = checkEmpty(ids);
     if (flag == false) {
         return;
@@ -481,6 +486,62 @@ function submit() {
     var resultFlag = requestRemoteRestApi("/api/job/submit", "新增任务", data);
 
 }
+
+//获取参数
+function getData() {
+    var result = {};
+    var inputs = $("#jobData .input-group>input,#jobData .input-group>textarea");
+    var selects = $("#jobData .input-group>select");
+    $(inputs).each(function (i, c) {
+        var id = $(c).prop("id");
+        if(id==null||id==''){
+            return;
+        }
+        var value = $(c).val();
+
+        if(value!=''&&testNum.test(value)){
+            value=parseInt(value);
+        }
+        if(id=='parameters'){
+            value=JSON.parse(value);
+        }
+        if(id=='activeStartTime'||id=='activeEndTime'){
+            if(value!=''){
+                value=(new Date(value)).getTime();
+            }
+            else{
+                value=0;
+            }
+        }
+
+        result[id] = value
+
+    });
+    $(selects).each(function (i, c) {
+        if($(c).attr("id")=='dependJobIds'||$(c).attr("id")=='alarm'||$(c).attr("name")=='commonStrategy'){
+            return ;
+        }
+
+        var id = $(c).prop("id");
+        var value = $(c).val();
+
+        if(value!=''&&testNum.test(value)){
+            value=parseInt(value);
+        }
+        result[id] = value;
+
+    });
+    //前置任务信息
+    var dependencyList = calculateOperator(dependIds, result["dependJobIds"]);
+    result["dependencyList"] = dependencyList;
+
+    //表示式类型与表达式内容
+    var scheduleExpressionEntry = getScheduleExpressionEntry();
+    result["scheduleExpressionEntry"] = scheduleExpressionEntry;
+
+    return result;
+}
+
 
 //编辑任务
 function edit() {

@@ -28,8 +28,8 @@
             <div class="row top-buffer">
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">任务ID</span>
-                        <select id="jobId">
+                        <span class="input-group-addon" style="width:35%" >任务ID</span>
+                        <select id="jobId" multiple>
 
                         </select>
                     </div>
@@ -37,21 +37,21 @@
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">任务名称</span>
-                        <select id="jobName">
+                        <select id="jobName" multiple>
                         </select>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">任务类型</span>
-                        <select id="jobType"></select>
+                        <select id="jobType" multiple></select>
                     </div>
                 </div>
 
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">优先级</span>
-                        <select id="priority"></select>
+                        <select id="priority" multiple></select>
                     </div>
                 </div>
 
@@ -62,13 +62,13 @@
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">调度日期</span>
-                        <input type="text" id="planDate" class="form-control"/>
+                        <input type="text" id="scheduleTime" class="form-control"/>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">执行用户</span>
-                        <select id="submitUser">
+                        <select id="executeUser" multiple>
                             <option value="all">全部</option>
                             <c:forEach items="${executeUserList}" var="executeUser" varStatus="status">
                                 <option value="${executeUser}">${executeUser}</option>

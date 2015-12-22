@@ -11,7 +11,8 @@ $(function () {
     $.getJSON(contextPath + "/assets/json/jobType.json", function (data) {
         $("#jobType").select2({
             data: data,
-            width: '100%'
+            width: '100%',
+            tags:true
         });
     });
     //select采用select2 实现
@@ -136,10 +137,10 @@ function getQueryPara() {
     var executeDate = $("#executeDate").val();
     var startDate = $("#startDate").val();
     var endDate = $("#endDate").val();
-    var jobId = $("#jobId").val();
-    var jobName = $("#jobName").val();
-    var jobType = $("#jobType").val();
-    var executeUser = $("#executeUser").val();
+    var jobIdList = $("#jobId").val();
+    var jobNameList = $("#jobName").val();
+    var jobTypeList = $("#jobType").val();
+    var executeUserList = $("#executeUser").val();
 
     var taskStatus = new Array();
     var inputs = $("#taskStatus").find("input:checked");
@@ -150,19 +151,23 @@ function getQueryPara() {
         }
     });
 
-    jobId = jobId == "all" ? '' : jobId;
-    jobName = jobName == 'all' ? '' : jobName;
-    jobType = jobType == 'all' ? '' : jobType;
-    executeUser = executeUser == "all" ? '' : executeUser;
+    jobIdList = jobIdList == "all" ? undefined : jobIdList;
+    jobIdList = jobIdList == null ? undefined : jobIdList;
+    jobNameList = jobNameList == 'all' ? undefined : jobNameList;
+    jobNameList = jobNameList == null ? undefined : jobNameList;
+    jobTypeList = jobTypeList == 'all' ? undefined : jobTypeList;
+    jobTypeList = jobTypeList == null ? undefined : jobTypeList;
+    executeUserList = executeUserList == "all" ? undefined : executeUserList;
+    executeUserList = executeUserList == null ? undefined : executeUserList;
 
     queryPara["scheduleDate"] = scheduleDate;
     queryPara["executeDate"] = executeDate;
     queryPara["startDate"] = startDate;
     queryPara["endDate"] = endDate;
-    queryPara["jobId"] = jobId;
-    queryPara["jobName"] = jobName;
-    queryPara["jobType"] = jobType;
-    queryPara["executeUser"] = executeUser;
+    queryPara["jobIdList"] = JSON.stringify(jobIdList);
+    queryPara["jobNameList"] = JSON.stringify(jobNameList);
+    queryPara["jobTypeList"] = JSON.stringify(jobTypeList);
+    queryPara["executeUserList"] = JSON.stringify(executeUserList) ;
     queryPara["taskStatusArrStr"] = JSON.stringify(taskStatus);
 
     return queryPara;

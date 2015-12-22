@@ -27,32 +27,32 @@
             <div class="row">
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">任务ID</span>
-                        <select id="jobId">
+                        <span class="input-group-addon" style="width:45%">任务ID</span>
+                        <select id="jobId" multiple>
 
                         </select>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">任务名称</span>
-                        <select id="jobName">
+                        <span class="input-group-addon" style="width:45%">任务名称</span>
+                        <select id="jobName" multiple>
 
                         </select>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">任务类型</span>
-                        <select id="jobType">
+                        <span class="input-group-addon" style="width:45%">任务类型</span>
+                        <select id="jobType" multiple>
                         </select>
                     </div>
                 </div>
 
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">状态</span>
-                        <select id="jobStatus"></select>
+                        <span class="input-group-addon" style="width:48%">状态</span>
+                        <select id="jobStatus" multiple></select>
                     </div>
                 </div>
 
@@ -62,8 +62,8 @@
 
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">发布者</span>
-                        <select id="submitUser">
+                        <span class="input-group-addon" style="width:45%">发布者</span>
+                        <select id="submitUser" multiple>
                             <option value="all">全部</option>
                             <c:forEach items="${submitUsers}" var="submitUser" varStatus="status">
                                 <option value="${submitUser}">${submitUser}</option>
@@ -74,15 +74,15 @@
 
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">优先级</span>
-                        <select id="jobPriority"></select>
+                        <span class="input-group-addon" style="width:45%">优先级</span>
+                        <select id="jobPriority" multiple></select>
                     </div>
                 </div>
 
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">应用名称</span>
-                        <select id="appId">
+                        <span class="input-group-addon" style="width:45%">应用名称</span>
+                        <select id="appId" multiple>
                             <option value="">全部</option>
                             <c:forEach items="${appVoList}" var="app">
                                 <option value="${app.appId}">${app.appName}</option>
@@ -93,9 +93,9 @@
 
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">WorkerGroup名</span>
-                        <select id="workerGroupId">
-                            <option value="">全部</option>
+                        <span class="input-group-addon" style="width:48%">WorkerGroup名</span>
+                        <select id="workerGroupId" multiple>
+                            <option value="all">全部</option>
                             <c:forEach items="${workerGroupVoList}" var="workerGroup">
                                 <option value="${workerGroup.id}">${workerGroup.name}</option>
                             </c:forEach>

@@ -1,24 +1,133 @@
 package com.mogujie.jarvis.web.entity.qo;
 
+import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.dto.generate.Job;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.List;
 
 /**
  * Created by hejian on 15/9/15.
+ * 备注:setter方法重写过，勿删除
  */
 public class JobQo {
-    private Long jobId;
-    private String jobName;
-    private String jobType;
-    private Integer status;
-    private String submitUser;
-    private Integer priority;
-    private Integer appId;
-    private Integer workerGroupId;
+    private List<String> jobIdList;
+    private List<String> jobNameList;
+    private List<String> jobTypeList;
+    private List<String> statusList;
+    private List<String> submitUserList;
+    private List<String> priorityList;
+    private List<String> appIdList;
+    private List<String> workerGroupIdList;
 
 
     private Integer offset;
     private Integer limit;
     private String order;
+
+    public List<String> getJobIdList() {
+        return jobIdList;
+    }
+
+    public void setJobIdList(String jobIdList) {
+        if (StringUtils.isNotBlank(jobIdList)) {
+            List<String> list = JsonHelper.fromJson(jobIdList, List.class);
+            if (list.size() > 0) {
+                this.jobIdList = list;
+            }
+        }
+    }
+
+    public List<String> getJobNameList() {
+        return jobNameList;
+    }
+
+    public void setJobNameList(String jobNameList) {
+        if (StringUtils.isNotBlank(jobNameList)) {
+            List<String> list = JsonHelper.fromJson(jobNameList, List.class);
+            if (list.size() > 0) {
+                this.jobNameList = list;
+            }
+        }
+    }
+
+    public List<String> getJobTypeList() {
+        return jobTypeList;
+    }
+
+    public void setJobTypeList(String jobTypeList) {
+        if (StringUtils.isNotBlank(jobTypeList)) {
+            List<String> list = JsonHelper.fromJson(jobTypeList, List.class);
+            if (list.size() > 0) {
+                this.jobTypeList = list;
+            }
+        }
+    }
+
+    public List<String> getStatusList() {
+        return statusList;
+    }
+
+    public void setStatusList(String statusList) {
+        if (StringUtils.isNotBlank(statusList)) {
+            List<String> list = JsonHelper.fromJson(statusList, List.class);
+            if (list.size() > 0) {
+                this.statusList = list;
+            }
+        }
+    }
+
+    public List<String> getSubmitUserList() {
+        return submitUserList;
+    }
+
+    public void setSubmitUserList(String submitUserList) {
+        if (StringUtils.isNotBlank(submitUserList)) {
+            List<String> list = JsonHelper.fromJson(submitUserList, List.class);
+            if (list.size() > 0) {
+                this.submitUserList = list;
+            }
+        }
+    }
+
+    public List<String> getPriorityList() {
+        return priorityList;
+    }
+
+    public void setPriorityList(String priorityList) {
+        if (StringUtils.isNotBlank(priorityList)) {
+            List<String> list = JsonHelper.fromJson(priorityList, List.class);
+            if (list.size() > 0) {
+                this.priorityList = list;
+            }
+        }
+    }
+
+    public List<String> getAppIdList() {
+        return appIdList;
+    }
+
+    public void setAppIdList(String appIdList) {
+        if (StringUtils.isNotBlank(appIdList)) {
+            List<String> list = JsonHelper.fromJson(appIdList, List.class);
+            if (list.size() > 0) {
+                this.appIdList = list;
+            }
+        }
+    }
+
+    public List<String> getWorkerGroupIdList() {
+        return workerGroupIdList;
+    }
+
+    public void setWorkerGroupIdList(String workerGroupIdList) {
+        if (StringUtils.isNotBlank(workerGroupIdList)) {
+            List<String> list = JsonHelper.fromJson(workerGroupIdList, List.class);
+            if (list.size() > 0) {
+                this.workerGroupIdList = list;
+            }
+        }
+    }
 
     public Integer getOffset() {
         return offset;
@@ -42,69 +151,5 @@ public class JobQo {
 
     public void setOrder(String order) {
         this.order = order;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public Long getJobId() {
-        return jobId;
-    }
-
-    public void setJobId(Long jobId) {
-        this.jobId = jobId;
-    }
-
-    public String getJobName() {
-        return jobName;
-    }
-
-    public void setJobName(String jobName) {
-        this.jobName = jobName;
-    }
-
-    public String getJobType() {
-        return jobType;
-    }
-
-    public void setJobType(String jobType) {
-        this.jobType = jobType;
-    }
-
-    public String getSubmitUser() {
-        return submitUser;
-    }
-
-    public void setSubmitUser(String submitUser) {
-        this.submitUser = submitUser;
-    }
-
-    public Integer getPriority() {
-        return priority;
-    }
-
-    public void setPriority(Integer priority) {
-        this.priority = priority;
-    }
-
-    public Integer getAppId() {
-        return appId;
-    }
-
-    public void setAppId(Integer appId) {
-        this.appId = appId;
-    }
-
-    public Integer getWorkerGroupId() {
-        return workerGroupId;
-    }
-
-    public void setWorkerGroupId(Integer workerGroupId) {
-        this.workerGroupId = workerGroupId;
     }
 }

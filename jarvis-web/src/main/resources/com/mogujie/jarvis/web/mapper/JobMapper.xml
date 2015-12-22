@@ -4,29 +4,53 @@
 
     <sql id="condition">
       <where>
-          <if test="jobId!=null">
-              jobId=#{jobId}
+          <if test="jobIdList!=null">
+              jobId IN
+              <foreach collection="jobIdList" item="jobId" open="(" close=")" separator=",">
+                #{jobId}
+              </foreach>
           </if>
-          <if test="jobName!=null and jobName!='' and jobName!='all'">
-              AND jobName=#{jobName}
+          <if test="jobNameList!=null">
+              AND jobName IN
+              <foreach collection="jobNameList" item="jobName" open="(" close=")" separator=",">
+                  #{jobName}
+              </foreach>
           </if>
-          <if test="jobType!=null and jobType!='' and jobType!='all'">
-              AND jobType=#{jobType}
+          <if test="jobTypeList!=null">
+              AND jobType IN
+              <foreach collection="jobTypeList" item="jobType" open="(" close=")" separator=",">
+                  #{jobType}
+              </foreach>
           </if>
-          <if test="status!=null">
-              AND job.status=#{status}
+          <if test="statusList!=null">
+              AND job.status IN
+              <foreach collection="statusList" item="status" open="(" close=")" separator=",">
+                  #{status}
+              </foreach>
           </if>
-          <if test="submitUser!=null and submitUser!='' and submitUser!='all' ">
-              AND submitUser=#{submitUser}
+          <if test="submitUserList!=null">
+              AND submitUser IN
+              <foreach collection="submitUserList" item="submitUser" open="(" close=")" separator=",">
+                  #{submitUser}
+              </foreach>
           </if>
-          <if test="priority!=null">
-              AND priority=#{priority}
+          <if test="priorityList!=null">
+              AND priority IN
+              <foreach collection="priorityList" item="priority" open="(" close=")" separator=",">
+                  #{priority}
+              </foreach>
           </if>
-          <if test="appId!=null">
-              AND appId=#{appId}
+          <if test="appIdList!=null">
+              AND appId IN
+              <foreach collection="appIdList" item="appId" open="(" close=")" separator=",">
+                  #{appId}
+              </foreach>
           </if>
-          <if test="workerGroupId!=null">
-              AND workerGroupId=#{workerGroupId}
+          <if test="workerGroupIdList!=null">
+              AND workerGroupId IN
+              <foreach collection="workerGroupIdList" item="workerGroupId" open="(" close=")" separator=",">
+                  #{workerGroupId}
+              </foreach>
           </if>
 
       </where>

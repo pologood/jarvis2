@@ -2,12 +2,16 @@ var jobTypeJson = null;
 var jobStatusJson = null;
 var jobPriorityJson = null;
 $(function () {
+    //select采用select2 实现
+    $(".input-group select").select2({width: '100%'});
+
     $.ajaxSettings.async = false;
     $.getJSON(contextPath + "/assets/json/jobType.json", function (data) {
         jobTypeJson = data;
         $("#jobType").select2({
             data: data,
-            width: '100%'
+            width: '100%',
+            tags: true
         });
     });
 
@@ -28,9 +32,6 @@ $(function () {
     });
     $.ajaxSettings.async = true;
 
-
-    //select采用select2 实现
-    $(".input-group select").select2({width: '100%'});
 
     $("#jobId").select2({
         ajax: {
@@ -114,30 +115,41 @@ function reset() {
 function getQueryPara() {
     var queryPara = {};
 
-    var jobId = $("#jobId").val();
-    var jobName = $("#jobName").val();
-    var jobType = $("#jobType").val();
-    var jobStatus = $("#jobStatus").val();
-    var jobPriority = $("#jobPriority").val();
-    var submitUser = $("#submitUser").val();
-    //var executeCycle=$("#executeCycle").val();
+    var jobIdList = $("#jobId").val();
+    var jobNameList = $("#jobName").val();
+    var jobTypeList = $("#jobType").val();
+    var statusList = $("#jobStatus").val();
+    var priorityList = $("#jobPriority").val();
+    var submitUserList = $("#submitUser").val();
+    var appIdList = $("#appId").val();
+    var workerGroupIdList = $("#workerGroupId").val();
 
 
-    jobId = jobId == 'all' ? '' : jobId;
-    jobName = jobName == 'all' ? '' : jobName;
-    jobType = jobType == 'all' ? '' : jobType;
-    jobStatus = jobStatus == 'all' ? '' : jobStatus;
-    jobPriority = jobPriority == 'all' ? '' : jobPriority;
-    submitUser = submitUser == 'all' ? '' : submitUser;
-    //executeCycle=executeCycle=='all'?'':executeCycle;
+    jobIdList = jobIdList == 'all' ? undefined : jobIdList;
+    jobIdList = jobIdList == null ? undefined : jobIdList;
+    jobNameList = jobNameList == 'all' ? undefined : jobNameList;
+    jobNameList = jobNameList == null ? undefined : jobNameList;
+    jobTypeList = jobTypeList == 'all' ? undefined : jobTypeList;
+    jobTypeList = jobTypeList == null ? undefined : jobTypeList;
+    statusList = statusList == 'all' ? undefined : statusList;
+    statusList = statusList == null ? undefined : statusList;
+    priorityList = priorityList == 'all' ? undefined : priorityList;
+    priorityList = priorityList == null ? undefined : priorityList;
+    submitUserList = submitUserList == 'all' ? undefined : submitUserList;
+    submitUserList = submitUserList == null ? undefined : submitUserList;
+    appIdList = appIdList == 'all' ? undefined : appIdList;
+    appIdList = appIdList == null ? undefined : appIdList;
+    workerGroupIdList = workerGroupIdList == 'all' ? undefined : workerGroupIdList;
+    workerGroupIdList = workerGroupIdList == null ? undefined : workerGroupIdList;
 
-    queryPara["jobId"] = jobId;
-    queryPara["jobName"] = jobName;
-    queryPara["jobType"] = jobType;
-    queryPara["status"] = jobStatus;
-    queryPara["priority"] = jobPriority;
-    queryPara["submitUser"] = submitUser;
-    //queryPara["executeCycle"]=executeCycle;
+    queryPara["jobIdList"] = JSON.stringify(jobIdList);
+    queryPara["jobNameList"] = JSON.stringify(jobNameList);
+    queryPara["jobTypeList"] = JSON.stringify(jobTypeList);
+    queryPara["statusList"] = JSON.stringify(statusList);
+    queryPara["priorityList"] = JSON.stringify(priorityList);
+    queryPara["submitUserList"] = JSON.stringify(submitUserList);
+    queryPara["appIdList"] = JSON.stringify(appIdList);
+    queryPara["workerGroupIdList"] = JSON.stringify(workerGroupIdList);
 
     return queryPara;
 }
@@ -178,6 +190,7 @@ function initData() {
 function updateJobStatus(jobId, jobStatus) {
     var data = {jobId: jobId, status: jobStatus};
     requestRemoteRestApi("/api/job/status/set", "更新任务状态", data);
+    search();
 }
 
 

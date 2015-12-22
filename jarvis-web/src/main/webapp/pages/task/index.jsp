@@ -27,26 +27,26 @@
             <div class="row">
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">调度日期</span>
+                        <span class="input-group-addon" style="width:50%">调度日期</span>
                         <input id="scheduleDate" class="form-control"/>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">执行日期</span>
+                        <span class="input-group-addon" style="width:50%">执行日期</span>
                         <input id="executeDate" class="form-control"/>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">执行开始日期>=</span>
+                        <span class="input-group-addon" style="width:50%">执行开始日期>=</span>
                         <input id="startDate" class="form-control"/>
                     </div>
                 </div>
 
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">执行结束日期<</span>
+                        <span class="input-group-addon" style="width:50%">执行结束日期<</span>
                         <input id="endDate" class="form-control"/>
                     </div>
                 </div>
@@ -55,30 +55,30 @@
             <div class="row top-buffer">
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">任务ID</span>
-                        <select id="jobId">
+                        <span class="input-group-addon" style="width:50%">任务ID</span>
+                        <select id="jobId" multiple>
 
                         </select>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">任务名称</span>
-                        <select id="jobName">
+                        <span class="input-group-addon" style="width:50%">任务名称</span>
+                        <select id="jobName" multiple>
 
                         </select>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">任务类型</span>
-                        <select id="jobType"></select>
+                        <span class="input-group-addon" style="width:50%">任务类型</span>
+                        <select id="jobType" multiple></select>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">执行用户</span>
-                        <select id="executeUser">
+                        <span class="input-group-addon" style="width:50%">执行用户</span>
+                        <select id="executeUser" multiple>
                             <option value="all">全部</option>
                             <c:forEach items="${executeUsers}" var="executeUser" varStatus="status">
                                 <option value="${executeUser}">${executeUser}</option>
@@ -93,7 +93,7 @@
 
                 <div class="col-md-6">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:16.5%">状态</span>
+                        <span class="input-group-addon" style="width:23.5%">状态</span>
 
                         <div class="form-control" id="taskStatus">
                         </div>

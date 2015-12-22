@@ -1,5 +1,6 @@
 package com.mogujie.jarvis.web.service;
 
+import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.web.entity.qo.JobQo;
 import com.mogujie.jarvis.web.entity.vo.JobVo;
 import com.mogujie.jarvis.web.mapper.JobMapper;
@@ -22,9 +23,11 @@ public class JobService {
 
     Logger logger = Logger.getLogger(this.getClass());
 
-    public List<JobVo> getAllJobs(Integer jobFlag) {
+    public List<JobVo> getAllJobs(Integer status) {
         JobQo jobQo = new JobQo();
-        jobQo.setStatus(jobFlag);
+        List<String> statusList = new ArrayList<String>();
+        statusList.add(status.toString());
+        jobQo.setStatusList(JsonHelper.toJson(statusList));
         List<JobVo> jobVoList = jobMapper.getJobsByCondition(jobQo);
         return jobVoList;
     }
