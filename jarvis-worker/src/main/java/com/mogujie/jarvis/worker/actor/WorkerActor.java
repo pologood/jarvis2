@@ -62,172 +62,160 @@ import akka.actor.UntypedActor;
 
 public class WorkerActor extends UntypedActor {
 
-  private TaskPool taskPool = TaskPool.INSTANCE;
+    private TaskPool taskPool = TaskPool.INSTANCE;
 
-  private static ExecutorService executorService = Executors.newCachedThreadPool();
+    private static ExecutorService executorService = Executors.newCachedThreadPool();
 
-  private static final String SERVER_AKKA_PATH = ConfigUtils.getWorkerConfig()
-      .getString(WorkerConfigKeys.SERVER_AKKA_PATH) + JarvisConstants.SERVER_AKKA_USER_PATH;
+    private static final String SERVER_AKKA_PATH = ConfigUtils.getWorkerConfig().getString(WorkerConfigKeys.SERVER_AKKA_PATH)
+            + JarvisConstants.SERVER_AKKA_USER_PATH;
 
-  private static final String LOGSERVER_AKKA_PATH = ConfigUtils.getWorkerConfig()
-      .getString(WorkerConfigKeys.LOGSERVER_AKKA_PATH) + JarvisConstants.LOGSTORAGE_AKKA_USER_PATH;
+    private static final String LOGSERVER_AKKA_PATH = ConfigUtils.getWorkerConfig().getString(WorkerConfigKeys.LOGSERVER_AKKA_PATH)
+            + JarvisConstants.LOGSTORAGE_AKKA_USER_PATH;
 
-  private static final Logger LOGGER = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
 
-  public static Props props() {
-    return Props.create(WorkerActor.class);
-  }
-
-  @Override
-  public void onReceive(Object obj) throws Exception {
-    if (obj instanceof ServerSubmitTaskRequest) {
-      ServerSubmitTaskRequest request = (ServerSubmitTaskRequest) obj;
-      submitJob(request);
-    } else if (obj instanceof ServerKillTaskRequest) {
-      ServerKillTaskRequest request = (ServerKillTaskRequest) obj;
-      WorkerKillTaskResponse response = killJob(request);
-      getSender().tell(response, getSelf());
-    } else if (obj instanceof HeartBeatResponse) {
-      HeartBeatResponse response = (HeartBeatResponse) obj;
-      if (!response.getSuccess()) {
-        registerWorker();
-      }
-    } else {
-      unhandled(obj);
+    public static Props props() {
+        return Props.create(WorkerActor.class);
     }
-  }
 
-  private void submitJob(ServerSubmitTaskRequest request) {
-    String fullId = request.getFullId();
-    String taskType = request.getTaskType();
-    TaskDetailBuilder taskBuilder = TaskDetail.newTaskDetailBuilder();
-    taskBuilder.setFullId(fullId);
-    taskBuilder.setTaskName(request.getTaskName());
-    taskBuilder.setAppName(request.getAppName());
-    taskBuilder.setUser(request.getUser());
-    taskBuilder.setTaskType(taskType);
-    taskBuilder.setContent(request.getContent());
-    taskBuilder.setPriority(request.getPriority());
-    taskBuilder.setSchedulingTime(new DateTime(request.getSchedulingTime()));
-
-    Map<String, Object> map = new HashMap<>();
-    List<MapEntry> parameters = request.getParametersList();
-    for (int i = 0, len = parameters.size(); i < len; i++) {
-      MapEntry entry = parameters.get(i);
-      map.put(entry.getKey(), entry.getValue());
-    }
-    taskBuilder.setParameters(map);
-
-    TaskContextBuilder contextBuilder = TaskContext.newBuilder();
-    contextBuilder.setTaskDetail(taskBuilder.build());
-
-    ActorSelection logActor = getContext().actorSelection(LOGSERVER_AKKA_PATH);
-    AbstractLogCollector logCollector = new DefaultLogCollector(logActor, fullId);
-    contextBuilder.setLogCollector(logCollector);
-
-    ActorSelection serverActor = getContext().actorSelection(SERVER_AKKA_PATH);
-    ProgressReporter reporter = new DefaultProgressReporter(serverActor, fullId);
-    contextBuilder.setProgressReporter(reporter);
-
-    Pair<Class<? extends AbstractTask>, List<AcceptanceStrategy>> t2 = TaskConfigUtils
-        .getRegisteredJobs().get(taskType);
-    List<AcceptanceStrategy> strategies = t2.getSecond();
-    for (AcceptanceStrategy strategy : strategies) {
-      try {
-        AcceptanceResult result = strategy.accept();
-        if (!result.isAccepted()) {
-          getSender().tell(WorkerSubmitTaskResponse.newBuilder().setAccept(false).setSuccess(true)
-              .setMessage(result.getMessage()).build(), getSelf());
-          return;
+    @Override
+    public void onReceive(Object obj) throws Exception {
+        if (obj instanceof ServerSubmitTaskRequest) {
+            ServerSubmitTaskRequest request = (ServerSubmitTaskRequest) obj;
+            submitTask(request);
+        } else if (obj instanceof ServerKillTaskRequest) {
+            ServerKillTaskRequest request = (ServerKillTaskRequest) obj;
+            WorkerKillTaskResponse response = killTask(request);
+            getSender().tell(response, getSelf());
+        } else if (obj instanceof HeartBeatResponse) {
+            HeartBeatResponse response = (HeartBeatResponse) obj;
+            if (!response.getSuccess()) {
+                registerWorker();
+            }
+        } else {
+            unhandled(obj);
         }
-      } catch (AcceptanceException e) {
-        getSender().tell(WorkerSubmitTaskResponse.newBuilder().setAccept(false).setSuccess(false)
-            .setMessage(e.getMessage()).build(), getSelf());
-        return;
-      }
     }
 
-    getSender().tell(WorkerSubmitTaskResponse.newBuilder().setAccept(true).setSuccess(true).build(),
-        getSelf());
-    try {
-      Constructor<? extends AbstractTask> constructor = t2.getFirst()
-          .getConstructor(TaskContext.class);
-      AbstractTask job = constructor.newInstance(contextBuilder.build());
-      taskPool.add(fullId, job);
-      serverActor.tell(WorkerReportTaskStatusRequest.newBuilder().setFullId(fullId)
-          .setStatus(TaskStatus.RUNNING.getValue()).setTimestamp(System.currentTimeMillis() / 1000)
-          .build(), getSelf());
-      reporter.report(0);
-      Callable<Boolean> task = new TaskCallable(job);
-      Future<Boolean> future = executorService.submit(task);
-      boolean result = false;
-      try {
-        result = future.get();
-      } catch (InterruptedException | ExecutionException e) {
-        logCollector.collectStderr(e.getMessage(), true);
-      }
+    private void submitTask(ServerSubmitTaskRequest request) {
+        String fullId = request.getFullId();
+        String taskType = request.getTaskType();
+        TaskDetailBuilder taskBuilder = TaskDetail.newTaskDetailBuilder();
+        taskBuilder.setFullId(fullId);
+        taskBuilder.setTaskName(request.getTaskName());
+        taskBuilder.setAppName(request.getAppName());
+        taskBuilder.setUser(request.getUser());
+        taskBuilder.setTaskType(taskType);
+        taskBuilder.setContent(request.getContent());
+        taskBuilder.setPriority(request.getPriority());
+        taskBuilder.setSchedulingTime(new DateTime(request.getSchedulingTime()));
 
-      if (result) {
-        serverActor.tell(WorkerReportTaskStatusRequest.newBuilder().setFullId(fullId)
-            .setStatus(TaskStatus.SUCCESS.getValue())
-            .setTimestamp(System.currentTimeMillis() / 1000).build(), getSelf());
-      } else {
-        serverActor.tell(WorkerReportTaskStatusRequest.newBuilder().setFullId(fullId)
-            .setStatus(TaskStatus.FAILED.getValue()).setTimestamp(System.currentTimeMillis() / 1000)
-            .build(), getSelf());
-      }
+        Map<String, Object> map = new HashMap<>();
+        List<MapEntry> parameters = request.getParametersList();
+        for (int i = 0, len = parameters.size(); i < len; i++) {
+            MapEntry entry = parameters.get(i);
+            map.put(entry.getKey(), entry.getValue());
+        }
+        taskBuilder.setParameters(map);
 
-      reporter.report(1);
-      logCollector.collectStderr("", true);
-      logCollector.collectStdout("", true);
+        TaskContextBuilder contextBuilder = TaskContext.newBuilder();
+        contextBuilder.setTaskDetail(taskBuilder.build());
 
-      taskPool.remove(fullId);
-    } catch (NoSuchMethodException | SecurityException | InstantiationException
-        | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-      getSender().tell(
-          WorkerSubmitTaskResponse.newBuilder().setAccept(false).setMessage(e.getMessage()).build(),
-          getSelf());
+        ActorSelection logActor = getContext().actorSelection(LOGSERVER_AKKA_PATH);
+        AbstractLogCollector logCollector = new DefaultLogCollector(logActor, fullId);
+        contextBuilder.setLogCollector(logCollector);
+
+        ActorSelection serverActor = getContext().actorSelection(SERVER_AKKA_PATH);
+        ProgressReporter reporter = new DefaultProgressReporter(serverActor, fullId);
+        contextBuilder.setProgressReporter(reporter);
+
+        Pair<Class<? extends AbstractTask>, List<AcceptanceStrategy>> t2 = TaskConfigUtils.getRegisteredJobs().get(taskType);
+        List<AcceptanceStrategy> strategies = t2.getSecond();
+        for (AcceptanceStrategy strategy : strategies) {
+            try {
+                AcceptanceResult result = strategy.accept();
+                if (!result.isAccepted()) {
+                    getSender().tell(WorkerSubmitTaskResponse.newBuilder().setAccept(false).setSuccess(true).setMessage(result.getMessage()).build(),
+                            getSelf());
+                    return;
+                }
+            } catch (AcceptanceException e) {
+                getSender().tell(WorkerSubmitTaskResponse.newBuilder().setAccept(false).setSuccess(false).setMessage(e.getMessage()).build(),
+                        getSelf());
+                return;
+            }
+        }
+
+        getSender().tell(WorkerSubmitTaskResponse.newBuilder().setAccept(true).setSuccess(true).build(), getSelf());
+        try {
+            Constructor<? extends AbstractTask> constructor = t2.getFirst().getConstructor(TaskContext.class);
+            AbstractTask job = constructor.newInstance(contextBuilder.build());
+            taskPool.add(fullId, job);
+            serverActor.tell(WorkerReportTaskStatusRequest.newBuilder().setFullId(fullId).setStatus(TaskStatus.RUNNING.getValue())
+                    .setTimestamp(System.currentTimeMillis() / 1000).build(), getSelf());
+            reporter.report(0);
+            Callable<Boolean> task = new TaskCallable(job);
+            Future<Boolean> future = executorService.submit(task);
+            boolean result = false;
+            try {
+                result = future.get();
+            } catch (InterruptedException | ExecutionException e) {
+                logCollector.collectStderr(e.getMessage(), true);
+            }
+
+            if (result) {
+                serverActor.tell(WorkerReportTaskStatusRequest.newBuilder().setFullId(fullId).setStatus(TaskStatus.SUCCESS.getValue())
+                        .setTimestamp(System.currentTimeMillis() / 1000).build(), getSelf());
+            } else {
+                serverActor.tell(WorkerReportTaskStatusRequest.newBuilder().setFullId(fullId).setStatus(TaskStatus.FAILED.getValue())
+                        .setTimestamp(System.currentTimeMillis() / 1000).build(), getSelf());
+            }
+
+            reporter.report(1);
+            logCollector.collectStderr("", true);
+            logCollector.collectStdout("", true);
+
+            taskPool.remove(fullId);
+        } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException
+                | InvocationTargetException e) {
+            getSender().tell(WorkerSubmitTaskResponse.newBuilder().setAccept(false).setMessage(e.getMessage()).build(), getSelf());
+        }
     }
-  }
 
-  private WorkerKillTaskResponse killJob(ServerKillTaskRequest request) {
-    String fullId = request.getFullId();
-    AbstractTask job = taskPool.get(fullId);
-    if (job != null) {
-      taskPool.remove(fullId);
-      try {
-        return WorkerKillTaskResponse.newBuilder().setSuccess(job.kill()).build();
-      } catch (TaskException e) {
-        return WorkerKillTaskResponse.newBuilder().setSuccess(false).setMessage(e.getMessage())
-            .build();
-      }
+    private WorkerKillTaskResponse killTask(ServerKillTaskRequest request) {
+        String fullId = request.getFullId();
+        AbstractTask task = taskPool.get(fullId);
+        if (task != null) {
+            taskPool.remove(fullId);
+            try {
+                return WorkerKillTaskResponse.newBuilder().setSuccess(task.kill()).build();
+            } catch (TaskException e) {
+                return WorkerKillTaskResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
+            }
+        }
+
+        return WorkerKillTaskResponse.newBuilder().setSuccess(true).build();
     }
 
-    return WorkerKillTaskResponse.newBuilder().setSuccess(true).build();
-  }
+    private void registerWorker() {
+        Configuration workerConfig = ConfigUtils.getWorkerConfig();
+        String serverAkkaPath = workerConfig.getString(WorkerConfigKeys.SERVER_AKKA_PATH) + JarvisConstants.SERVER_AKKA_USER_PATH;
+        int workerGroupId = workerConfig.getInt(WorkerConfigKeys.WORKER_GROUP_ID, 0);
+        String workerKey = workerConfig.getString(WorkerConfigKeys.WORKER_KEY);
+        WorkerRegistryRequest request = WorkerRegistryRequest.newBuilder().setKey(workerKey).build();
 
-  private void registerWorker() {
-    Configuration workerConfig = ConfigUtils.getWorkerConfig();
-    String serverAkkaPath = workerConfig.getString(WorkerConfigKeys.SERVER_AKKA_PATH)
-        + JarvisConstants.SERVER_AKKA_USER_PATH;
-    int workerGroupId = workerConfig.getInt(WorkerConfigKeys.WORKER_GROUP_ID, 0);
-    String workerKey = workerConfig.getString(WorkerConfigKeys.WORKER_KEY);
-    WorkerRegistryRequest request = WorkerRegistryRequest.newBuilder().setKey(workerKey).build();
-
-    // 注册Worker
-    ActorSelection serverActor = getContext().actorSelection(serverAkkaPath);
-    try {
-      ServerRegistryResponse response = (ServerRegistryResponse) FutureUtils
-          .awaitResult(serverActor, request, 30);
-      if (!response.getSuccess()) {
-        LOGGER.error("Worker register failed with group.id={}, worker.key={}", workerGroupId,
-            workerKey);
-        return;
-      }
-    } catch (Exception e) {
-      LOGGER.error("Worker register failed", e);
-      return;
+        // 注册Worker
+        ActorSelection serverActor = getContext().actorSelection(serverAkkaPath);
+        try {
+            ServerRegistryResponse response = (ServerRegistryResponse) FutureUtils.awaitResult(serverActor, request, 30);
+            if (!response.getSuccess()) {
+                LOGGER.error("Worker register failed with group.id={}, worker.key={}", workerGroupId, workerKey);
+                return;
+            }
+        } catch (Exception e) {
+            LOGGER.error("Worker register failed", e);
+            return;
+        }
     }
-  }
 
 }
