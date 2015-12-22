@@ -6,6 +6,7 @@
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="authKey" property="authKey" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="owner" property="owner" jdbcType="VARCHAR" />
     <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
     <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
     <result column="updateUser" property="updateUser" jdbcType="VARCHAR" />
@@ -69,7 +70,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, name, authKey, status, createTime, updateTime, updateUser
+    id, name, authKey, status, owner, createTime, updateTime, updateUser
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.mogujie.jarvis.dto.generate.WorkerGroupExample" >
     select
@@ -106,11 +107,11 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into worker_group (name, authKey, status, 
-      createTime, updateTime, updateUser
-      )
+      owner, createTime, updateTime, 
+      updateUser)
     values (#{name,jdbcType=VARCHAR}, #{authKey,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}
-      )
+      #{owner,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{updateUser,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.mogujie.jarvis.dto.generate.WorkerGroup" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -126,6 +127,9 @@
       </if>
       <if test="status != null" >
         status,
+      </if>
+      <if test="owner != null" >
+        owner,
       </if>
       <if test="createTime != null" >
         createTime,
@@ -146,6 +150,9 @@
       </if>
       <if test="status != null" >
         #{status,jdbcType=INTEGER},
+      </if>
+      <if test="owner != null" >
+        #{owner,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
@@ -179,6 +186,9 @@
       <if test="record.status != null" >
         status = #{record.status,jdbcType=INTEGER},
       </if>
+      <if test="record.owner != null" >
+        owner = #{record.owner,jdbcType=VARCHAR},
+      </if>
       <if test="record.createTime != null" >
         createTime = #{record.createTime,jdbcType=TIMESTAMP},
       </if>
@@ -199,6 +209,7 @@
       name = #{record.name,jdbcType=VARCHAR},
       authKey = #{record.authKey,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=INTEGER},
+      owner = #{record.owner,jdbcType=VARCHAR},
       createTime = #{record.createTime,jdbcType=TIMESTAMP},
       updateTime = #{record.updateTime,jdbcType=TIMESTAMP},
       updateUser = #{record.updateUser,jdbcType=VARCHAR}
@@ -218,6 +229,9 @@
       <if test="status != null" >
         status = #{status,jdbcType=INTEGER},
       </if>
+      <if test="owner != null" >
+        owner = #{owner,jdbcType=VARCHAR},
+      </if>
       <if test="createTime != null" >
         createTime = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -235,6 +249,7 @@
     set name = #{name,jdbcType=VARCHAR},
       authKey = #{authKey,jdbcType=VARCHAR},
       status = #{status,jdbcType=INTEGER},
+      owner = #{owner,jdbcType=VARCHAR},
       createTime = #{createTime,jdbcType=TIMESTAMP},
       updateTime = #{updateTime,jdbcType=TIMESTAMP},
       updateUser = #{updateUser,jdbcType=VARCHAR}

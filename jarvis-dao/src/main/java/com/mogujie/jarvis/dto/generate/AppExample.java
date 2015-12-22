@@ -485,6 +485,146 @@ public class AppExample {
             return (Criteria) this;
         }
 
+        public Criteria andOwnerIsNull() {
+            addCriterion("owner is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOwnerIsNotNull() {
+            addCriterion("owner is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOwnerEqualTo(String value) {
+            addCriterion("owner =", value, "owner");
+            return (Criteria) this;
+        }
+
+        public Criteria andOwnerNotEqualTo(String value) {
+            addCriterion("owner <>", value, "owner");
+            return (Criteria) this;
+        }
+
+        public Criteria andOwnerGreaterThan(String value) {
+            addCriterion("owner >", value, "owner");
+            return (Criteria) this;
+        }
+
+        public Criteria andOwnerGreaterThanOrEqualTo(String value) {
+            addCriterion("owner >=", value, "owner");
+            return (Criteria) this;
+        }
+
+        public Criteria andOwnerLessThan(String value) {
+            addCriterion("owner <", value, "owner");
+            return (Criteria) this;
+        }
+
+        public Criteria andOwnerLessThanOrEqualTo(String value) {
+            addCriterion("owner <=", value, "owner");
+            return (Criteria) this;
+        }
+
+        public Criteria andOwnerLike(String value) {
+            addCriterion("owner like", value, "owner");
+            return (Criteria) this;
+        }
+
+        public Criteria andOwnerNotLike(String value) {
+            addCriterion("owner not like", value, "owner");
+            return (Criteria) this;
+        }
+
+        public Criteria andOwnerIn(List<String> values) {
+            addCriterion("owner in", values, "owner");
+            return (Criteria) this;
+        }
+
+        public Criteria andOwnerNotIn(List<String> values) {
+            addCriterion("owner not in", values, "owner");
+            return (Criteria) this;
+        }
+
+        public Criteria andOwnerBetween(String value1, String value2) {
+            addCriterion("owner between", value1, value2, "owner");
+            return (Criteria) this;
+        }
+
+        public Criteria andOwnerNotBetween(String value1, String value2) {
+            addCriterion("owner not between", value1, value2, "owner");
+            return (Criteria) this;
+        }
+
+        public Criteria andMemberIsNull() {
+            addCriterion("member is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMemberIsNotNull() {
+            addCriterion("member is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMemberEqualTo(String value) {
+            addCriterion("member =", value, "member");
+            return (Criteria) this;
+        }
+
+        public Criteria andMemberNotEqualTo(String value) {
+            addCriterion("member <>", value, "member");
+            return (Criteria) this;
+        }
+
+        public Criteria andMemberGreaterThan(String value) {
+            addCriterion("member >", value, "member");
+            return (Criteria) this;
+        }
+
+        public Criteria andMemberGreaterThanOrEqualTo(String value) {
+            addCriterion("member >=", value, "member");
+            return (Criteria) this;
+        }
+
+        public Criteria andMemberLessThan(String value) {
+            addCriterion("member <", value, "member");
+            return (Criteria) this;
+        }
+
+        public Criteria andMemberLessThanOrEqualTo(String value) {
+            addCriterion("member <=", value, "member");
+            return (Criteria) this;
+        }
+
+        public Criteria andMemberLike(String value) {
+            addCriterion("member like", value, "member");
+            return (Criteria) this;
+        }
+
+        public Criteria andMemberNotLike(String value) {
+            addCriterion("member not like", value, "member");
+            return (Criteria) this;
+        }
+
+        public Criteria andMemberIn(List<String> values) {
+            addCriterion("member in", values, "member");
+            return (Criteria) this;
+        }
+
+        public Criteria andMemberNotIn(List<String> values) {
+            addCriterion("member not in", values, "member");
+            return (Criteria) this;
+        }
+
+        public Criteria andMemberBetween(String value1, String value2) {
+            addCriterion("member between", value1, value2, "member");
+            return (Criteria) this;
+        }
+
+        public Criteria andMemberNotBetween(String value1, String value2) {
+            addCriterion("member not between", value1, value2, "member");
+            return (Criteria) this;
+        }
+
         public Criteria andCreateTimeIsNull() {
             addCriterion("createTime is null");
             return (Criteria) this;
