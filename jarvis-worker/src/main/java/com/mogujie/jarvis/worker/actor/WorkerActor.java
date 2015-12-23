@@ -8,30 +8,23 @@
 
 package com.mogujie.jarvis.worker.actor;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.configuration.Configuration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 
+import com.google.common.collect.Queues;
 import com.mogujie.jarvis.core.AbstractLogCollector;
 import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.ProgressReporter;
-import com.mogujie.jarvis.core.domain.Pair;
 import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.domain.TaskDetail.TaskDetailBuilder;
-import com.mogujie.jarvis.core.domain.TaskStatus;
-import com.mogujie.jarvis.core.exeception.AcceptanceException;
 import com.mogujie.jarvis.core.exeception.TaskException;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.protocol.HeartBeatProtos.HeartBeatResponse;
@@ -40,21 +33,16 @@ import com.mogujie.jarvis.protocol.KillTaskProtos.WorkerKillTaskResponse;
 import com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry;
 import com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse;
 import com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest;
-import com.mogujie.jarvis.protocol.ReportTaskStatusProtos.WorkerReportTaskStatusRequest;
 import com.mogujie.jarvis.protocol.SubmitTaskProtos.ServerSubmitTaskRequest;
-import com.mogujie.jarvis.protocol.SubmitTaskProtos.WorkerSubmitTaskResponse;
 import com.mogujie.jarvis.worker.AbstractTask;
 import com.mogujie.jarvis.worker.DefaultLogCollector;
 import com.mogujie.jarvis.worker.DefaultProgressReporter;
-import com.mogujie.jarvis.worker.TaskCallable;
 import com.mogujie.jarvis.worker.TaskContext;
 import com.mogujie.jarvis.worker.TaskContext.TaskContextBuilder;
+import com.mogujie.jarvis.worker.TaskExecutor;
 import com.mogujie.jarvis.worker.TaskPool;
 import com.mogujie.jarvis.worker.WorkerConfigKeys;
-import com.mogujie.jarvis.worker.strategy.AcceptanceResult;
-import com.mogujie.jarvis.worker.strategy.AcceptanceStrategy;
 import com.mogujie.jarvis.worker.util.FutureUtils;
-import com.mogujie.jarvis.worker.util.TaskConfigUtils;
 
 import akka.actor.ActorSelection;
 import akka.actor.Props;
@@ -64,7 +52,12 @@ public class WorkerActor extends UntypedActor {
 
     private TaskPool taskPool = TaskPool.INSTANCE;
 
-    private static ExecutorService executorService = Executors.newCachedThreadPool();
+    private static Configuration workerConfig = ConfigUtils.getWorkerConfig();
+    private static int corePoolSize = workerConfig.getInt(WorkerConfigKeys.WORKER_EXECUTOR_POOL_CORE_SIZE, 5);
+    private static int maximumPoolSize = workerConfig.getInt(WorkerConfigKeys.WORKER_EXECUTOR_POOL_MAXIMUM_SIZE, 20);
+    private static int keepAliveTime = workerConfig.getInt(WorkerConfigKeys.WORKER_EXECUTOR_POOL_KEEP_ALIVE_SECONDS, 3600);
+    private static ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(corePoolSize, maximumPoolSize, keepAliveTime, TimeUnit.SECONDS,
+            Queues.newArrayBlockingQueue(corePoolSize));
 
     private static final String SERVER_AKKA_PATH = ConfigUtils.getWorkerConfig().getString(WorkerConfigKeys.SERVER_AKKA_PATH)
             + JarvisConstants.SERVER_AKKA_USER_PATH;
@@ -129,57 +122,7 @@ public class WorkerActor extends UntypedActor {
         ProgressReporter reporter = new DefaultProgressReporter(serverActor, fullId);
         contextBuilder.setProgressReporter(reporter);
 
-        Pair<Class<? extends AbstractTask>, List<AcceptanceStrategy>> t2 = TaskConfigUtils.getRegisteredJobs().get(taskType);
-        List<AcceptanceStrategy> strategies = t2.getSecond();
-        for (AcceptanceStrategy strategy : strategies) {
-            try {
-                AcceptanceResult result = strategy.accept();
-                if (!result.isAccepted()) {
-                    getSender().tell(WorkerSubmitTaskResponse.newBuilder().setAccept(false).setSuccess(true).setMessage(result.getMessage()).build(),
-                            getSelf());
-                    return;
-                }
-            } catch (AcceptanceException e) {
-                getSender().tell(WorkerSubmitTaskResponse.newBuilder().setAccept(false).setSuccess(false).setMessage(e.getMessage()).build(),
-                        getSelf());
-                return;
-            }
-        }
-
-        getSender().tell(WorkerSubmitTaskResponse.newBuilder().setAccept(true).setSuccess(true).build(), getSelf());
-        try {
-            Constructor<? extends AbstractTask> constructor = t2.getFirst().getConstructor(TaskContext.class);
-            AbstractTask job = constructor.newInstance(contextBuilder.build());
-            taskPool.add(fullId, job);
-            serverActor.tell(WorkerReportTaskStatusRequest.newBuilder().setFullId(fullId).setStatus(TaskStatus.RUNNING.getValue())
-                    .setTimestamp(System.currentTimeMillis() / 1000).build(), getSelf());
-            reporter.report(0);
-            Callable<Boolean> task = new TaskCallable(job);
-            Future<Boolean> future = executorService.submit(task);
-            boolean result = false;
-            try {
-                result = future.get();
-            } catch (InterruptedException | ExecutionException e) {
-                logCollector.collectStderr(e.getMessage(), true);
-            }
-
-            if (result) {
-                serverActor.tell(WorkerReportTaskStatusRequest.newBuilder().setFullId(fullId).setStatus(TaskStatus.SUCCESS.getValue())
-                        .setTimestamp(System.currentTimeMillis() / 1000).build(), getSelf());
-            } else {
-                serverActor.tell(WorkerReportTaskStatusRequest.newBuilder().setFullId(fullId).setStatus(TaskStatus.FAILED.getValue())
-                        .setTimestamp(System.currentTimeMillis() / 1000).build(), getSelf());
-            }
-
-            reporter.report(1);
-            logCollector.collectStderr("", true);
-            logCollector.collectStdout("", true);
-
-            taskPool.remove(fullId);
-        } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException
-                | InvocationTargetException e) {
-            getSender().tell(WorkerSubmitTaskResponse.newBuilder().setAccept(false).setMessage(e.getMessage()).build(), getSelf());
-        }
+        threadPoolExecutor.execute(new TaskExecutor(contextBuilder.build(), getSelf(), getSender(), serverActor));
     }
 
     private WorkerKillTaskResponse killTask(ServerKillTaskRequest request) {

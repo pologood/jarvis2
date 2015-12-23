@@ -17,6 +17,9 @@ public interface WorkerConfigKeys {
     public static final String WORKER_HEART_BEAT_INTERVAL_SECONDS = "worker.heart.beat.interval.seconds";
     public static final String LOGSERVER_AKKA_PATH = "logserver.akka.path";
     public static final String WORKER_REGISTRY_FAILED_INTERVAL = "worker.registry.failed.interval";
+    public static final String WORKER_EXECUTOR_POOL_CORE_SIZE = "worker.executor.pool.core.size";
+    public static final String WORKER_EXECUTOR_POOL_MAXIMUM_SIZE = "worker.executor.pool.maximum.size";
+    public static final String WORKER_EXECUTOR_POOL_KEEP_ALIVE_SECONDS = "worker.executor.pool.keep.alive.seconds";
 
     public static final String YARN_MEMORY_USAGE_THRESHOLD = "yarn.memory.usage.threshold";
     public static final String YARN_RESOUCEMANAGER_REST_API_URIS = "yarn.resoucemanager.rest.api.uris";
