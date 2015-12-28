@@ -15,6 +15,10 @@ public class App {
 
     private Integer maxConcurrency;
 
+    private String owner;
+
+    private String member;
+
     private Date createTime;
 
     private Date updateTime;
@@ -67,6 +71,22 @@ public class App {
 
     public void setMaxConcurrency(Integer maxConcurrency) {
         this.maxConcurrency = maxConcurrency;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
+    public String getMember() {
+        return member;
+    }
+
+    public void setMember(String member) {
+        this.member = member;
     }
 
     public Date getCreateTime() {

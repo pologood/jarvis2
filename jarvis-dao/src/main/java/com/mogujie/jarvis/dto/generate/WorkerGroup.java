@@ -11,6 +11,8 @@ public class WorkerGroup {
 
     private Integer status;
 
+    private String owner;
+
     private Date createTime;
 
     private Date updateTime;
@@ -47,6 +49,14 @@ public class WorkerGroup {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
     }
 
     public Date getCreateTime() {

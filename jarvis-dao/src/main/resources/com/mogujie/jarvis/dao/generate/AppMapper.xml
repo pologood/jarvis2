@@ -8,6 +8,8 @@
     <result column="appType" property="appType" jdbcType="INTEGER" />
     <result column="status" property="status" jdbcType="INTEGER" />
     <result column="maxConcurrency" property="maxConcurrency" jdbcType="INTEGER" />
+    <result column="owner" property="owner" jdbcType="VARCHAR" />
+    <result column="member" property="member" jdbcType="VARCHAR" />
     <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
     <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
     <result column="updateUser" property="updateUser" jdbcType="VARCHAR" />
@@ -71,8 +73,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    appId, appName, appKey, appType, status, maxConcurrency, createTime, updateTime, 
-    updateUser
+    appId, appName, appKey, appType, status, maxConcurrency, owner, member, createTime, 
+    updateTime, updateUser
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.mogujie.jarvis.dto.generate.AppExample" >
     select
@@ -109,11 +111,13 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into app (appName, appKey, appType, 
-      status, maxConcurrency, createTime, 
-      updateTime, updateUser)
+      status, maxConcurrency, owner, 
+      member, createTime, updateTime, 
+      updateUser)
     values (#{appName,jdbcType=VARCHAR}, #{appKey,jdbcType=VARCHAR}, #{appType,jdbcType=INTEGER}, 
-      #{status,jdbcType=INTEGER}, #{maxConcurrency,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR})
+      #{status,jdbcType=INTEGER}, #{maxConcurrency,jdbcType=INTEGER}, #{owner,jdbcType=VARCHAR}, 
+      #{member,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{updateUser,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.mogujie.jarvis.dto.generate.App" >
     <selectKey resultType="java.lang.Integer" keyProperty="appId" order="AFTER" >
@@ -135,6 +139,12 @@
       </if>
       <if test="maxConcurrency != null" >
         maxConcurrency,
+      </if>
+      <if test="owner != null" >
+        owner,
+      </if>
+      <if test="member != null" >
+        member,
       </if>
       <if test="createTime != null" >
         createTime,
@@ -161,6 +171,12 @@
       </if>
       <if test="maxConcurrency != null" >
         #{maxConcurrency,jdbcType=INTEGER},
+      </if>
+      <if test="owner != null" >
+        #{owner,jdbcType=VARCHAR},
+      </if>
+      <if test="member != null" >
+        #{member,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
@@ -200,6 +216,12 @@
       <if test="record.maxConcurrency != null" >
         maxConcurrency = #{record.maxConcurrency,jdbcType=INTEGER},
       </if>
+      <if test="record.owner != null" >
+        owner = #{record.owner,jdbcType=VARCHAR},
+      </if>
+      <if test="record.member != null" >
+        member = #{record.member,jdbcType=VARCHAR},
+      </if>
       <if test="record.createTime != null" >
         createTime = #{record.createTime,jdbcType=TIMESTAMP},
       </if>
@@ -222,6 +244,8 @@
       appType = #{record.appType,jdbcType=INTEGER},
       status = #{record.status,jdbcType=INTEGER},
       maxConcurrency = #{record.maxConcurrency,jdbcType=INTEGER},
+      owner = #{record.owner,jdbcType=VARCHAR},
+      member = #{record.member,jdbcType=VARCHAR},
       createTime = #{record.createTime,jdbcType=TIMESTAMP},
       updateTime = #{record.updateTime,jdbcType=TIMESTAMP},
       updateUser = #{record.updateUser,jdbcType=VARCHAR}
@@ -247,6 +271,12 @@
       <if test="maxConcurrency != null" >
         maxConcurrency = #{maxConcurrency,jdbcType=INTEGER},
       </if>
+      <if test="owner != null" >
+        owner = #{owner,jdbcType=VARCHAR},
+      </if>
+      <if test="member != null" >
+        member = #{member,jdbcType=VARCHAR},
+      </if>
       <if test="createTime != null" >
         createTime = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -266,6 +296,8 @@
       appType = #{appType,jdbcType=INTEGER},
       status = #{status,jdbcType=INTEGER},
       maxConcurrency = #{maxConcurrency,jdbcType=INTEGER},
+      owner = #{owner,jdbcType=VARCHAR},
+      member = #{member,jdbcType=VARCHAR},
       createTime = #{createTime,jdbcType=TIMESTAMP},
       updateTime = #{updateTime,jdbcType=TIMESTAMP},
       updateUser = #{updateUser,jdbcType=VARCHAR}

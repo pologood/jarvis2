@@ -157,7 +157,7 @@
 		<module>jarvis-server</module>
 		<module>jarvis-worker</module>
 		<module>jarvis-protocol</module>
-		<module>jarvis-jobs</module>
+		<module>jarvis-tasks</module>
 		<module>jarvis-rest</module>
 		<module>jarvis-logstorage</module>
 		<module>jarvis-web</module>
