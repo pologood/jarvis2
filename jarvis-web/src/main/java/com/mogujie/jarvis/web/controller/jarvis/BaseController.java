@@ -48,9 +48,9 @@ public class BaseController {
 
 
     @ModelAttribute
-    public void init(HttpServletRequest request, ModelMap mp, HttpServletResponse response,
-                     @CookieValue(value = SessionHelper.COOKIE_KEY, required = false) String sessionId) throws BigdataException {
+    public void init(HttpServletRequest request, ModelMap mp, HttpServletResponse response) throws BigdataException {
         org.apache.ibatis.logging.LogFactory.useLog4JLogging();
+        String sessionId = SessionHelper.getSessionIdFromRequest(request);
         mp.put("contextPath", request.getContextPath());
         // user
         initUser(mp, request, response, sessionId);

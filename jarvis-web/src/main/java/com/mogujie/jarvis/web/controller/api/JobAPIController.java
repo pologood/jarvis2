@@ -1,8 +1,8 @@
 package com.mogujie.jarvis.web.controller.api;
 
+import com.mogu.bigdata.admin.core.entity.User;
 import com.mogu.bigdata.admin.core.entity.vo.UserInfo;
 import com.mogu.bigdata.admin.inside.service.AdminUserService;
-import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.web.entity.qo.JobQo;
 import com.mogujie.jarvis.web.service.JobDependService;
 import com.mogujie.jarvis.web.service.JobService;
@@ -42,15 +42,15 @@ public class JobAPIController {
 
     @RequestMapping("/getAllUser")
     @ResponseBody
-    public List<UserInfo> getAllUser(ModelMap mp) {
-        List<UserInfo> userInfoList = null;
+    public List<User> getAllUser(ModelMap mp) {
+        List<User> userList = null;
         try {
-            userInfoList = userService.getAllUsers();
+            userList = userService.getAllUsers();
         } catch (Exception e) {
             e.printStackTrace();
-            userInfoList = new ArrayList<UserInfo>();
+            userList = new ArrayList<User>();
         }
-        return userInfoList;
+        return userList;
     }
 
     /**

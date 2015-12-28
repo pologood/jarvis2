@@ -4,8 +4,10 @@ import com.atlassian.crowd.exception.*;
 import com.atlassian.crowd.model.user.User;
 import com.mogu.bigdata.admin.core.util.JsonReturn;
 import com.mogu.bigdata.admin.passport.session.SessionHelper;
+import com.mogu.bigdata.admin.passport.user.UuapService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -22,6 +24,9 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class IndexController extends BaseController {
     Logger logger = Logger.getLogger(this.getClass());
+
+    @Autowired
+    private UuapService uuapService;
 
     @RequestMapping(value = "/")
     public String index(ModelMap mp) {
@@ -59,8 +64,8 @@ public class IndexController extends BaseController {
     }
 
     @RequestMapping(value = "logout", method = RequestMethod.GET)
-    public String logout(ModelMap mp, HttpServletResponse response, @CookieValue(value = SessionHelper.COOKIE_KEY, required = false) String sessionId) {
-        sessionHelper.clearSession(sessionId, response);
+    public String logout(ModelMap mp, HttpServletRequest request, HttpServletResponse response) throws Exception{
+        uuapService.logout(request, response);
         mp.clear();
         return "redirect:/";
     }
