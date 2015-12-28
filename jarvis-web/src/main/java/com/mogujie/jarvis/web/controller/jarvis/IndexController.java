@@ -38,27 +38,18 @@ public class IndexController extends BaseController {
         }
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @RequestMapping(value = "login", method = RequestMethod.POST)
     @ResponseBody
-    public JsonReturn login(HttpServletRequest request, HttpServletResponse response, String uname, String password) {
+    public JsonReturn login(HttpServletRequest request, HttpServletResponse response, String uname, String password){
         try {
-            crowdHttpAuthenticator.authenticate(request, response, uname, password);
-            if (crowdHttpAuthenticator.isAuthenticated(request, response)) {
-                User crowdUser = crowdHttpAuthenticator.getUser(request);
-                user.get().setUname(uname);
-                user.get().setNick(crowdUser.getDisplayName());
-                user.get().setEmail(crowdUser.getEmailAddress());
-                userService.insert(user.get());
-                user.set(userService.get(uname));
-                String sessionId = SessionHelper.genSessionId();
-                sessionHelper.updateSession(sessionId, user.get(), response);
-                return new JsonReturn(1001, "/");
-            } else {
-                log.error("login fail");
-                return new JsonReturn(4004);
+            com.mogu.bigdata.admin.core.entity.User user = uuapService.authenticate(request, response, uname, password);
+            if (null == user) {
+                return new JsonReturn(4004,"登录失败");
             }
+            userService.insert(user);
+            return new JsonReturn(1001, "/");
         } catch (Exception e) {
-            log.error(e.getLocalizedMessage(), e);
+            log.error(e);
             return new JsonReturn(4001, e.getMessage());
         }
     }

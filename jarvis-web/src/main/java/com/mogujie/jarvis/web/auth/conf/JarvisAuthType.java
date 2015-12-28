@@ -13,7 +13,8 @@ public enum JarvisAuthType implements AuthType {
     trigger(4001,"重跑任务"),
     manage_system(5001,"调度系统管理"),
     manage_app(5002,"应用管理"),
-    manage_worker(5003,"worker管理")
+    manage_worker(5003,"worker管理"),
+    help(6001,"使用帮助手册")
     ;
     private Integer code;
     private String name;

@@ -41,7 +41,6 @@ public class JarvisInterceptor extends HandlerInterceptorAdapter {
         if (null == passport) {
             return true;
         }
-
         if (0 < passport.authTypes().length) {
             request.setAttribute("permissionId", passport.authTypes()[0].getCode());
         }
@@ -50,12 +49,12 @@ public class JarvisInterceptor extends HandlerInterceptorAdapter {
         if (null == sessionUser || StringUtils.isBlank(sessionUser.getUname())) {
             if (passport.resultType() == ResultType.page) {
                 request.getRequestDispatcher("/").forward(request, response);
-            } else if (passport.resultType() == ResultType.json) {
+            } else if(passport.resultType() == ResultType.json) {
                 //ajax页面的登录
                 response.setCharacterEncoding("utf-8");
                 response.setContentType("application/json;charset=UTF-8");
                 OutputStream out = response.getOutputStream();
-                PrintWriter pw = new PrintWriter(new OutputStreamWriter(out, "utf-8"));
+                PrintWriter pw = new PrintWriter(new OutputStreamWriter(out,"utf-8"));
                 //返回json格式的提示
                 Map<String, Object> result = new HashMap<String, Object>();
                 Map<String, Object> status = new HashMap<String, Object>();
@@ -76,7 +75,7 @@ public class JarvisInterceptor extends HandlerInterceptorAdapter {
             return true;
         }
 
-        for (JarvisAuthType a : passport.authTypes()) {
+        for(JarvisAuthType a: passport.authTypes()) {
             Integer permissionId = a.getCode();
             if (!rbacService.check(sessionUser.getUname(), permissionId, PlatformConfig.platformId, PlatformConfig.secret)) {
                 if (passport.resultType() == ResultType.page) {
@@ -86,7 +85,7 @@ public class JarvisInterceptor extends HandlerInterceptorAdapter {
                     response.setCharacterEncoding("utf-8");
                     response.setContentType("application/json;charset=UTF-8");
                     OutputStream out = response.getOutputStream();
-                    PrintWriter pw = new PrintWriter(new OutputStreamWriter(out, "utf-8"));
+                    PrintWriter pw = new PrintWriter(new OutputStreamWriter(out,"utf-8"));
                     //返回json格式的提示
                     Map<String, Object> result = new HashMap<String, Object>();
                     Map<String, Object> status = new HashMap<String, Object>();

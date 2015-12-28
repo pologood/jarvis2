@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://code.alibabatech.com/schema/dubbo
+       http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+       <!-- 提供方应用信息，用于计算依赖关系 -->
+       <dubbo:application name="${platform.dubbo.application}"  />
+
+       <!--注册中心-->
+       <dubbo:registry address="${platform.dubbo.registry}" />
+
+       <!-- 用dubbo协议在20880端口暴露服务 -->
+       <dubbo:protocol name="dubbo" port="${platform.dubbo.port}"/>
+
+
+       <dubbo:reference id="rbacService" interface="com.mogu.bigdata.admin.client.service.RbacService" version="1.0.0"/>
+       <dubbo:reference id="menuService" interface="com.mogu.bigdata.admin.client.service.MenuService" version="1.0.0"/>
+       <dubbo:reference id="userService" interface="com.mogu.bigdata.admin.inside.service.AdminUserService" version="1.0.0"/>
+
+
+       <bean id="jarvisAuthTypeAdapter" class="com.mogujie.jarvis.web.auth.adapter.JarvisAuthTypeAdapter" />
+
+
+       <!-- 声明需要暴露的服务接口 -->
+
+       <dubbo:service interface="com.mogu.bigdata.admin.client.adapter.AuthTypeAdapter" group="jarvis" ref="jarvisAuthTypeAdapter" timeout="1000"/>
+
+       <bean id="propertyConfigurer4Redis" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" >
+              <property name="order" value="1" />
+              <property name="ignoreUnresolvablePlaceholders" value="true" />
+              <property name="locations">
+                     <list>
+                            <value>classpath:redis.properties</value>
+                     </list>
+              </property>
+       </bean>
+
+       <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+              <property name="maxTotal" value="${redis.pool.maxTotal}" />
+              <property name="maxIdle" value="${redis.pool.maxIdle}" />
+              <property name="minIdle" value="${redis.pool.minIdle}"/>
+              <property name="maxWaitMillis" value="${redis.pool.maxWaitMillis}" />
+              <property name="testOnBorrow" value="${redis.pool.testOnBorrow}"/>
+              <property name="testOnReturn" value="${redis.pool.testOnReturn}"/>
+              <property name="testWhileIdle" value="${redis.pool.testWhileIdle}"/>
+       </bean>
+
+       <bean id="jedisSentinelPool" class="redis.clients.jedis.JedisSentinelPool">
+              <constructor-arg index="0" name="masterName" value="${redis.sentinels.masterName}"/>
+              <constructor-arg index="1" name="sentinels">
+                     <set>
+                            <value>${redis.sentinels.one}</value>
+                            <value>${redis.sentinels.two}</value>
+                            <value>${redis.sentinels.three}</value>
+                     </set>
+              </constructor-arg>
+              <constructor-arg index="2" name="poolConfig" ref="jedisPoolConfig"/>
+              <constructor-arg index="3" name="timeout" value="${redis.timeout}"/>
+       </bean>
+
+       <bean id="redisDataSource" class="com.mogu.bigdata.admin.cache.impl.redis.RedisDataSourceImpl">
+              <constructor-arg ref="jedisSentinelPool"/>
+       </bean>
+
+       <bean id="redisClientTemplate" class="com.mogu.bigdata.admin.cache.impl.redis.RedisClientTemplate">
+              <constructor-arg ref="redisDataSource"/>
+       </bean>
+
+       <bean id="sessionHelper" class="com.mogu.bigdata.admin.passport.session.impl.RedisSessionHelper">
+              <constructor-arg ref="redisClientTemplate"/>
+       </bean>
+
+       <bean id="uuapService" class="com.mogu.bigdata.admin.passport.user.impl.SsoUuapServiceImpl">
+              <constructor-arg index="0" value="http://mac.mogujie.org/verify"/>
+              <constructor-arg index="1" value="http://mac.mogujie.org/appAuth"/>
+              <constructor-arg index="2" value="d5970b59-cc59-4743-98a5-3ee1b2f9eda8"/>
+              <constructor-arg index="3" value="bda.mogujie.org"/>
+              <constructor-arg index="4" ref="sessionHelper"/>
+       </bean>
+
+</beans>
