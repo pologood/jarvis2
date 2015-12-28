@@ -24,6 +24,11 @@ command=$1
 shift
 
 
+if [ ! -f "/tmp/${USER}/jarvis/" ]; then
+    mkdir -p /tmp/${USER}/jarvis/
+fi
+PID="/tmp/${USER}/jarvis/${command}.pid"
+
 if [ -f "${JARVIS_CONF_DIR}/jarvis-env.sh" ]; then
     . "${JARVIS_CONF_DIR}/jarvis-env.sh"
 fi
@@ -40,8 +45,52 @@ if [ ! -x "${JAVA}" ]; then
     exit 1
 fi
 
-echo ${JAVA}
 
 if [ "${command}" == "server" ]; then
-    starting_secure_dn="true"
+    MAIN_CLASS="com.mogujie.jarvis.server.JarvisServer"
+    JAVA_OPTS=${JARVIS_SERVER_OPTS}
+elif [ "${command}" == "worker" ] ; then
+    MAIN_CLASS="com.mogujie.jarvis.worker.JarvisWorker"
+    JAVA_OPTS=${JARVIS_WORKER_OPTS}
+elif [ "${command}" == "rest" ] ; then
+    MAIN_CLASS="com.mogujie.jarvis.rest.JarvisRest"
+    JAVA_OPTS=${JARVIS_RESTSERVER_OPTS}
+elif [ "${command}" == "logstorage" ] ; then
+    MAIN_CLASS="com.mogujie.jarvis.logstorage.JarvisLogstorage"
+    JAVA_OPTS=${JARVIS_LOGSERVER_OPTS}
+else
+    echo "Invalid command. Valid commands: server, worker, rest, logstorage"
+    exit 1
+fi
+
+
+start()
+{
+    nohup ${JAVA} ${JAVA_OPTS} -cp ${JARVIS_CONF_DIR}:${JARVIS_LIB_DIR}/* ${MAIN_CLASS} > /dev/null 2>&1 &
+    echo $! > ${PID}
+    echo "${command} started."
+}
+
+stop()
+{
+    if [ -f ${PID} ]; then
+        TARGET_PID=`cat ${PID}`
+        kill -9 ${TARGET_PID}
+        echo "${command} killed."
+    else
+        echo "pid file not exist."
+    fi
+}
+
+
+if [ "${action}" == "start" ]; then
+    start
+elif [ "${action}" == "stop" ] ; then
+    stop
+elif [ "${action}" == "restart" ] ; then
+    stop
+    start
+else
+    echo "Invalid action. Valid action: start, stop, restart"
+    exit 1
 fi
