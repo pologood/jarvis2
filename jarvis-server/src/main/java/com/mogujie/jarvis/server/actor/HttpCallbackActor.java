@@ -38,6 +38,8 @@ public class HttpCallbackActor extends UntypedActor {
             } catch (UnirestException e) {
                 LOGGER.error(e);
             }
+
+            getContext().stop(getSelf());
         } else {
             unhandled(obj);
         }
