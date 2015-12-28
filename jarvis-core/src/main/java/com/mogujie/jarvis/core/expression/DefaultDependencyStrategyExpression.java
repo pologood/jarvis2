@@ -12,6 +12,10 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Provides a parser and evaluator for dependency strategy expressions, such as "L(1)".
+ * Expression format: "*", "+", "L(n)"
+ */
 public class DefaultDependencyStrategyExpression extends DependencyStrategyExpression {
 
     private int isValid;

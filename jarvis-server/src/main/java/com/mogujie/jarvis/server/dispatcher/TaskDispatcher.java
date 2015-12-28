@@ -26,6 +26,9 @@ import com.mogujie.jarvis.server.util.FutureUtils;
 import akka.actor.ActorSelection;
 import akka.actor.ActorSystem;
 
+/**
+ * Take task from task queue then dispatch it to selected worker
+ */
 public class TaskDispatcher extends Thread {
 
     private TaskQueue queue = Injectors.getInjector().getInstance(TaskQueue.class);

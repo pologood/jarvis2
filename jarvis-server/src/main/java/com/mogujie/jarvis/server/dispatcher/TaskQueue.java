@@ -18,6 +18,9 @@ import org.apache.logging.log4j.Logger;
 import com.google.inject.Singleton;
 import com.mogujie.jarvis.core.domain.TaskDetail;
 
+/**
+ * Priority task queue 
+ */
 @Singleton
 public class TaskQueue {
 

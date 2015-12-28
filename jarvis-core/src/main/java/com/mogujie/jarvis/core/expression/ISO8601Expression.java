@@ -18,6 +18,10 @@ import org.joda.time.Period;
 import org.joda.time.Seconds;
 import org.joda.time.format.ISOPeriodFormat;
 
+/**
+ * Provides a parser and evaluator for ISO8601 expressions, such as "R10/2015-12-28T15:52:00/PT2S".
+ * See more: http://www.w3.org/TR/NOTE-datetime
+ */
 public class ISO8601Expression extends ScheduleExpression {
 
     private int isValid;

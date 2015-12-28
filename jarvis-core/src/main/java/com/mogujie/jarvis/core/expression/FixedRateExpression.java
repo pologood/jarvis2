@@ -20,6 +20,10 @@ import org.joda.time.format.DateTimeFormat;
 import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.util.DurationFieldTypes;
 
+/**
+ * Provides a parser and evaluator for fixed rate expressions, such as "d(1)".
+ * Expression format: "s|m|h|d|w|M|y(n)"
+ */
 public class FixedRateExpression extends ScheduleExpression {
 
     private int isValid;
