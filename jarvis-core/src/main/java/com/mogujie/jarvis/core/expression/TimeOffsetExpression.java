@@ -24,6 +24,9 @@ import com.google.common.collect.Range;
 import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.util.DurationFieldTypes;
 
+/**
+ * Provides a parser and evaluator for timeOffset dependency expressions, such as "['yyyy-MM-dd 00:00:00',d(-1),d(1))".
+ */
 public class TimeOffsetExpression extends DependencyExpression {
 
     private int isValid;

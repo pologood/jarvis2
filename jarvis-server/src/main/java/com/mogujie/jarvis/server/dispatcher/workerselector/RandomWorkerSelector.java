@@ -15,6 +15,9 @@ import com.mogujie.jarvis.core.domain.WorkerInfo;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.service.HeartBeatService;
 
+/**
+ * Select a worker by random strategy
+ */
 public class RandomWorkerSelector implements WorkerSelector {
 
     private HeartBeatService heartBeatService = Injectors.getInjector().getInstance(HeartBeatService.class);

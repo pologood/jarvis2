@@ -32,6 +32,10 @@ import com.mogujie.jarvis.core.expression.cron.RangeParser;
 import com.mogujie.jarvis.core.expression.cron.SingleParser;
 import com.mogujie.jarvis.core.expression.cron.StepParser;
 
+/**
+ * Provides a parser and evaluator for unix-like cron expressions, such as "0 0 12 * * ?".
+ * Expression format: "seconds minutes hours dayOfMonth month dayOfWeek [years]"
+ */
 public class CronExpression extends ScheduleExpression {
 
     private List<AbstractParser> secondParsers;

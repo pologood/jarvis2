@@ -26,6 +26,9 @@ import com.mogujie.jarvis.server.scheduler.event.StopEvent;
 import com.mogujie.jarvis.server.service.AlarmService;
 import com.mogujie.jarvis.server.service.JobService;
 
+/**
+ * Manage alarm when task executed failed.
+ */
 public class AlarmScheduler extends Scheduler {
 
     private JobService jobService = Injectors.getInjector().getInstance(JobService.class);
