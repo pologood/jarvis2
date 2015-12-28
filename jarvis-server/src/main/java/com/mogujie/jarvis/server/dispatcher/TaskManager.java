@@ -11,6 +11,9 @@ package com.mogujie.jarvis.server.dispatcher;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.AtomicLongMap;
 import com.google.inject.Inject;
@@ -29,9 +32,11 @@ public class TaskManager {
     private Map<String, Pair<WorkerInfo, Integer>> taskMap = Maps.newHashMap();
     private Map<Integer, Integer> maxParallelismMap = Maps.newHashMap();
     private AtomicLongMap<Integer> parallelismCounter = AtomicLongMap.create();
+    private static final Logger LOGGER = LogManager.getLogger();
 
     @Inject
     private void init() {
+        LOGGER.debug("init task manager");
         List<App> list = appService.getAppList();
         for (App app : list) {
             maxParallelismMap.put(app.getAppId(), app.getMaxConcurrency());
@@ -40,6 +45,7 @@ public class TaskManager {
 
     public void addApp(int appId, int maxParallelism) {
         maxParallelismMap.put(appId, maxParallelism);
+        LOGGER.debug("add application: id[{}], parallelism[{}].", appId, maxParallelism);
     }
 
     public synchronized boolean addTask(String fullId, WorkerInfo workerInfo, int appId) {
@@ -60,6 +66,7 @@ public class TaskManager {
         int appId = taskMap.get(fullId).getSecond();
         parallelismCounter.getAndDecrement(appId);
         taskMap.remove(fullId);
+        LOGGER.debug("remove task: {}", fullId);
     }
 
     public synchronized boolean contains(String fullId) {

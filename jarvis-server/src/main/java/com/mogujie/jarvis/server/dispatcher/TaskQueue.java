@@ -12,6 +12,9 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.concurrent.PriorityBlockingQueue;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.google.inject.Singleton;
 import com.mogujie.jarvis.core.domain.TaskDetail;
 
@@ -28,12 +31,17 @@ public class TaskQueue {
 
     private PriorityBlockingQueue<TaskDetail> queue = new PriorityBlockingQueue<>(100, comparator);
 
+    private static final Logger LOGGER = LogManager.getLogger();
+
     public void put(TaskDetail taskDetail) {
         queue.put(taskDetail);
+        LOGGER.debug("put task[{}] to queue.", taskDetail.getFullId());
     }
 
     public TaskDetail take() throws InterruptedException {
-        return queue.take();
+        TaskDetail taskDetail = queue.take();
+        LOGGER.debug("take task[{}] from queue.", taskDetail.getFullId());
+        return taskDetail;
     }
 
     public int size() {
