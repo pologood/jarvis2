@@ -19,12 +19,19 @@ import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
 import com.mogujie.jarvis.server.scheduler.event.StartEvent;
 import com.mogujie.jarvis.server.scheduler.event.StopEvent;
+import com.mogujie.jarvis.server.scheduler.event.TimeReadyEvent;
 import com.mogujie.jarvis.server.scheduler.plan.ExecutionPlan;
 import com.mogujie.jarvis.server.scheduler.plan.ExecutionPlanEntry;
 import com.mogujie.jarvis.server.scheduler.plan.PlanGenerator;
 import com.mogujie.jarvis.server.service.JobService;
 
-public abstract class TimeScheduler extends Scheduler {
+public class TimeScheduler extends Scheduler {
+
+    private static TimeScheduler instance = new TimeScheduler();
+    private TimeScheduler() {}
+    public static TimeScheduler getInstance() {
+        return instance;
+    }
 
     protected ExecutionPlan plan = ExecutionPlan.INSTANCE;
     private volatile boolean running = true;
@@ -87,12 +94,27 @@ public abstract class TimeScheduler extends Scheduler {
         plan.removePlan(planEntry);
     }
 
-    public abstract void addJob(long jobId);
+    public void addJob(long jobId) {
+        planGenerator.generateNextPlan(jobId, DateTime.now());
+    }
 
-    public abstract void removeJob(long jobId);
+    public void removeJob(long jobId) {
+        plan.removePlan(jobId);
+    }
 
-    public abstract void modifyJobFlag(long jobId, JobStatus flag);
+    public void modifyJobFlag(long jobId, JobStatus flag) {
+        if (flag.equals(JobStatus.DISABLE) || flag.equals(JobStatus.DELETED)) {
+            removeJob(jobId);
+        } else if (flag.equals(JobStatus.ENABLE)) {
+            addJob(jobId);
+        }
+    }
 
-    protected abstract void startPlan(ExecutionPlanEntry entry);
+    private void startPlan(ExecutionPlanEntry entry) {
+        long jobId = entry.getJobId();
+        DateTime dt = entry.getDateTime();
+        controller.notify(new TimeReadyEvent(jobId, dt.getMillis()));
+        planGenerator.generateNextPlan(jobId, dt);
+    }
 
 }

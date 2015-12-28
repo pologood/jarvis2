@@ -8,10 +8,15 @@
 
 package com.mogujie.jarvis.server.scheduler.task;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.mogujie.jarvis.server.scheduler.task.checker.TaskStatusChecker;
+import com.mogujie.jarvis.core.domain.TaskStatus;
+import com.mogujie.jarvis.dto.generate.Task;
+import com.mogujie.jarvis.server.guice.Injectors;
+import com.mogujie.jarvis.server.service.TaskDependService;
+import com.mogujie.jarvis.server.service.TaskService;
 
 /**
  * @author guangming
@@ -22,14 +27,14 @@ public class DAGTask {
     private long taskId;
     private int attemptId;
     private long scheduleTime;
-    private TaskStatusChecker statusChecker;
+    private TaskGraph taskGraph = TaskGraph.INSTANCE;
+    private TaskService taskService = Injectors.getInjector().getInstance(TaskService.class);
 
     public DAGTask(long jobId, long taskId, int attemptId, long scheduleTime) {
         this.jobId = jobId;
         this.taskId = taskId;
         this.attemptId = attemptId;
         this.scheduleTime = scheduleTime;
-        this.statusChecker = new TaskStatusChecker(jobId, taskId, scheduleTime);
     }
 
     public DAGTask(long jobId, long taskId, long scheduleTime, Map<Long, List<Long>> dependTaskIdMap) {
@@ -41,7 +46,12 @@ public class DAGTask {
         this.taskId = taskId;
         this.attemptId = attemptId;
         this.scheduleTime = scheduleTime;
-        this.statusChecker = new TaskStatusChecker(jobId, taskId, scheduleTime, dependTaskIdMap);
+        if (dependTaskIdMap != null && !dependTaskIdMap.isEmpty()) {
+            // store parent dependency
+            TaskDependService taskDependService = Injectors.getInjector().getInstance(TaskDependService.class);
+            taskDependService.storeParent(taskId, dependTaskIdMap);
+            // TODO add child dependency
+        }
     }
 
     public long getJobId() {
@@ -76,22 +86,30 @@ public class DAGTask {
         this.scheduleTime = scheduleTime;
     }
 
-    public TaskStatusChecker getStatusChecker() {
-        return statusChecker;
-    }
-
-    public void setStatusChecker(TaskStatusChecker statusChecker) {
-        this.statusChecker = statusChecker;
-    }
-
     public boolean checkStatus() {
-        long timeStamp = System.currentTimeMillis();
-        long scheduleTime = getScheduleTime();
-        return (scheduleTime <= timeStamp) && statusChecker.checkStatus();
+        boolean pass = true;
+        List<DAGTask> parents = taskGraph.getChildren(taskId);
+        for (DAGTask parent : parents) {
+            Task task = taskService.get(parent.getTaskId());
+            if (task == null || task.getStatus() != TaskStatus.SUCCESS.getValue()) {
+                pass = false;
+                break;
+            }
+        }
+
+        return pass;
     }
 
     public List<Long> getDependTaskIds() {
-        return statusChecker.getDependTaskIds();
+        // load dependTaskIdMap from taskDependService
+        TaskDependService taskDependService = Injectors.getInjector().getInstance(TaskDependService.class);
+        Map<Long, List<Long>> dependTaskIdMap = taskDependService.loadParent(taskId);
+        List<Long> dependTaskIds = new ArrayList<Long>();
+        for (List<Long> taskIds : dependTaskIdMap.values()) {
+            dependTaskIds.addAll(taskIds);
+        }
+
+        return dependTaskIds;
     }
 
     @Override

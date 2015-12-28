@@ -18,18 +18,24 @@ package com.mogujie.jarvis.server.scheduler.event;
  *
  */
 public class SuccessEvent extends DAGTaskEvent {
+    private long scheduleTime;
+
     /**
      * @param jobId
      * @param taskId
+     * @param scheduleTime
      */
-    public SuccessEvent(long jobId, long taskId) {
+    public SuccessEvent(long jobId, long taskId, long scheduleTime) {
         super(jobId, taskId);
+        this.scheduleTime = scheduleTime;
     }
 
-    /**
-     * @param taskId
-     */
-    public SuccessEvent(long taskId) {
-        super(taskId);
+    public long getScheduleTime() {
+        return scheduleTime;
     }
+
+    public void setScheduleTime(long scheduleTime) {
+        this.scheduleTime = scheduleTime;
+    }
+
 }

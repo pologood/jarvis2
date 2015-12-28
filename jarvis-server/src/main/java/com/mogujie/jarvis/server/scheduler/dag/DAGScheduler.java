@@ -15,11 +15,13 @@ import org.apache.logging.log4j.Logger;
 
 import com.google.common.eventbus.Subscribe;
 import com.mogujie.jarvis.core.domain.JobStatus;
+import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
 import com.mogujie.jarvis.server.scheduler.event.ScheduleEvent;
 import com.mogujie.jarvis.server.scheduler.event.StartEvent;
 import com.mogujie.jarvis.server.scheduler.event.StopEvent;
 import com.mogujie.jarvis.server.scheduler.event.TimeReadyEvent;
+import com.mogujie.jarvis.server.service.JobService;
 
 /**
  * Scheduler used to handle dependency based job.
@@ -35,6 +37,7 @@ public class DAGScheduler extends Scheduler {
     }
 
     private JobGraph jobGraph = JobGraph.INSTANCE;
+    private JobService jobService = Injectors.getInjector().getInstance(JobService.class);
     private static final Logger LOGGER = LogManager.getLogger();
 
     public void destroy() {
@@ -67,17 +70,15 @@ public class DAGScheduler extends Scheduler {
                 return;
             }
             // 更新时间标识
-            dagJob.setTimeReadyFlag();
+            dagJob.addTimeStamp(scheduleTime);
             LOGGER.info("DAGJob {} time ready", dagJob.getJobId());
-            // 如果通过依赖检查，提交给taskScheduler，并重置自己的依赖状态
+            // 如果通过依赖检查，提交给taskScheduler，并移除自己的时间戳
             jobGraph.submitJobWithCheck(dagJob, scheduleTime);
         }
     }
 
     /**
      * 由TaskScheduler发送ScheduleEvent，DAGScheduler进行处理。
-     * 如果childJobId=0，会触发该job的所有子任务
-     * 否则，触发jobId=childJobId的子任务
      *
      * @param e
      */
@@ -86,29 +87,21 @@ public class DAGScheduler extends Scheduler {
         long jobId = e.getJobId();
         long taskId = e.getTaskId();
         long scheduleTime = e.getScheduleTime();
-        long childJobId = e.getChildJobId();
-        LOGGER.info("start handleScheduleEvent, jobId={}, scheduleTime={}, taskId={}, "
-                + "childJobId={}", jobId, scheduleTime, taskId, childJobId);
+        LOGGER.info("start handleScheduleEvent, jobId={}, scheduleTime={}, taskId={}",
+                jobId, scheduleTime, taskId);
         DAGJob dagJob = getDAGJob(jobId);
         if (dagJob != null) {
-            if (childJobId == 0) {
-                List<DAGJob> children = jobGraph.getActiveChildren(dagJob);
-                if (children != null) {
-                    for (DAGJob child : children) {
-                        if (child.getJobStatus().equals(JobStatus.ENABLE)) {
-                            child.scheduleTask(jobId, taskId, scheduleTime);
-                            jobGraph.submitJobWithCheck(child);
-                        }
-                    }
-                }
-            } else {
-                DAGJob child = getDAGJob(childJobId);
-                if (child != null) {
+            List<DAGJob> children = jobGraph.getActiveChildren(dagJob);
+            // 如果有子任务，触发子任务
+            if (children != null && !children.isEmpty()) {
+                for (DAGJob child : children) {
                     if (child.getJobStatus().equals(JobStatus.ENABLE)) {
-                        child.scheduleTask(jobId, taskId, scheduleTime);
-                        jobGraph.submitJobWithCheck(child);
+                        jobGraph.submitJobWithCheck(child, scheduleTime);
                     }
                 }
+            } else if (jobService.get(jobId).getJob().getSerialFlag() > 0) {
+                // 如果是串行任务，触发自己
+                jobGraph.submitJobWithCheck(dagJob, scheduleTime);
             }
         }
     }

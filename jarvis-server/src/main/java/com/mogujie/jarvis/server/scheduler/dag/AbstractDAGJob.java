@@ -22,7 +22,7 @@ public abstract class AbstractDAGJob {
     /**
      * return true if dependency check passed. Otherwise return false.
      */
-    public abstract boolean checkDependency();
+    public abstract boolean checkDependency(long scheduleTime);
 
     public JobStatus getJobStatus() {
         return jobStatus;

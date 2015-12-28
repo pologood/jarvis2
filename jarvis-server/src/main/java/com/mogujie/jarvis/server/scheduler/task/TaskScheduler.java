@@ -10,7 +10,6 @@ package com.mogujie.jarvis.server.scheduler.task;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,7 +17,6 @@ import org.joda.time.DateTime;
 import org.mybatis.guice.transactional.Transactional;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.collect.Lists;
 import com.google.common.eventbus.AllowConcurrentEvents;
 import com.google.common.eventbus.Subscribe;
 import com.mogujie.jarvis.core.domain.TaskDetail;
@@ -29,7 +27,6 @@ import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.server.dispatcher.TaskManager;
 import com.mogujie.jarvis.server.dispatcher.TaskQueue;
-import com.mogujie.jarvis.server.domain.JobEntry;
 import com.mogujie.jarvis.server.domain.RetryType;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
@@ -38,7 +35,6 @@ import com.mogujie.jarvis.server.scheduler.event.AddTaskEvent;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
 import com.mogujie.jarvis.server.scheduler.event.KilledEvent;
 import com.mogujie.jarvis.server.scheduler.event.ManualRerunTaskEvent;
-import com.mogujie.jarvis.server.scheduler.event.RemoveTaskEvent;
 import com.mogujie.jarvis.server.scheduler.event.RetryTaskEvent;
 import com.mogujie.jarvis.server.scheduler.event.RunTaskEvent;
 import com.mogujie.jarvis.server.scheduler.event.RunningEvent;
@@ -90,25 +86,34 @@ public class TaskScheduler extends Scheduler {
     @Transactional
     @AllowConcurrentEvents
     public void handleSuccessEvent(SuccessEvent e) {
+        long jobId = e.getJobId();
         long taskId = e.getTaskId();
+        long scheduleTime = e.getScheduleTime();
         LOGGER.info("start handleSuccessEvent, taskId={}", taskId);
-        // update task status
-        List<DAGTask> childTasks = taskGraph.getChildren(taskId);
-        Map<Long, List<Long>> childTaskMap = TaskGraph.convert2TaskMap(childTasks);
-        taskService.updateStatusWithEnd(taskId, TaskStatus.SUCCESS, childTaskMap);
+
+        // update success status
+        taskService.updateStatusWithEnd(taskId, TaskStatus.SUCCESS);
         LOGGER.info("update {} with SUCCESS status", taskId);
 
         // remove from taskGraph
         taskGraph.removeTask(taskId);
         LOGGER.info("remove {} from taskGraph", taskId);
 
-        // notify child tasks
-        LOGGER.info("notify child tasks {}", childTasks);
-        for (DAGTask childTask : childTasks) {
-            if (childTask != null && childTask.checkStatus()) {
-                LOGGER.info("child {} pass the status check", childTask);
-                submitTask(childTask);
+        List<DAGTask> childTasks = taskGraph.getChildren(taskId);
+        if (childTasks != null && !childTasks.isEmpty()) {
+            // TaskGraph trigger
+            // notify child tasks
+            LOGGER.info("notify child tasks {}", childTasks);
+            for (DAGTask childTask : childTasks) {
+                if (childTask != null && childTask.checkStatus()) {
+                    LOGGER.info("child {} pass the status check", childTask);
+                    submitTask(childTask);
+                }
             }
+        } else {
+            // JobGraph trigger
+            ScheduleEvent event = new ScheduleEvent(jobId, taskId, scheduleTime);
+            getSchedulerController().notify(event);
         }
 
         // reduce task number
@@ -188,39 +193,11 @@ public class TaskScheduler extends Scheduler {
         long taskId = taskService.createTaskByJobId(jobId, scheduleTime);
         LOGGER.info("add new task[{}] to DB", taskId);
 
-        // 如果是串行任务，添加自依赖
-        JobEntry jobEntry = jobService.get(jobId);
-        if (jobEntry != null && jobEntry.getJob().getSerialFlag() > 0) {
-            Task task = taskService.getLastTask(jobId, taskId);
-            if (task != null) {
-                List<Long> dependTaskIds = Lists.newArrayList(task.getTaskId());
-                dependTaskIdMap.put(jobId, dependTaskIds);
-            }
-        }
-
         // add to taskGraph
         DAGTask dagTask = new DAGTask(jobId, taskId, scheduleTime, dependTaskIdMap);
         taskGraph.addTask(taskId, dagTask);
         LOGGER.info("add {} to taskGraph", dagTask);
 
-        // add task dependency
-        if (dependTaskIdMap != null) {
-            for (Entry<Long, List<Long>> entry : dependTaskIdMap.entrySet()) {
-                List<Long> preTasks = entry.getValue();
-                for (Long parentId : preTasks) {
-                    taskGraph.addDependency(parentId, taskId);
-                }
-            }
-        }
-
-        // 如果通过依赖检查，提交给任务执行器
-        if (dagTask.checkStatus()) {
-            submitTask(dagTask);
-        }
-
-        // send ScheduleEvent
-        ScheduleEvent event = new ScheduleEvent(jobId, taskId, scheduleTime);
-        getSchedulerController().notify(event);
     }
 
     @Subscribe
@@ -278,27 +255,27 @@ public class TaskScheduler extends Scheduler {
         long taskId = e.getTaskId();
         LOGGER.info("start handleRunTaskEvent, taskId={}", taskId);
         DAGTask dagTask = taskGraph.getTask(taskId);
-        if (dagTask != null && dagTask.checkStatus()) {
-            LOGGER.info("{} pass status check", dagTask);
+        if (dagTask != null) {
             submitTask(dagTask);
         }
     }
 
-    @Subscribe
-    public void handleRemoveTaskEvent(RemoveTaskEvent e) {
-        long jobId = e.getJobId();
-        long taskId = e.getTaskId();
-        LOGGER.info("start handleRemoveTaskEvent, taskId={}", taskId);
-        List<DAGTask> children = taskGraph.getChildren(taskId);
-        for (DAGTask child : children) {
-            child.getStatusChecker().removeTask(jobId, taskId);
-            taskGraph.removeTask(taskId);
-            if (child.checkStatus()) {
-                LOGGER.info("{} pass status check", child);
-                submitTask(child);
-            }
-        }
-    }
+    //TODO not supported now
+//    @Subscribe
+//    public void handleRemoveTaskEvent(RemoveTaskEvent e) {
+//        long jobId = e.getJobId();
+//        long taskId = e.getTaskId();
+//        LOGGER.info("start handleRemoveTaskEvent, taskId={}", taskId);
+//        List<DAGTask> children = taskGraph.getChildren(taskId);
+//        for (DAGTask child : children) {
+//            child.getStatusChecker().removeTask(jobId, taskId);
+//            taskGraph.removeTask(taskId);
+//            if (child.checkStatus()) {
+//                LOGGER.info("{} pass status check", child);
+//                submitTask(child);
+//            }
+//        }
+//    }
 
     @VisibleForTesting
     public TaskQueue getTaskQueue() {
@@ -322,11 +299,22 @@ public class TaskScheduler extends Scheduler {
         TaskDetail taskDetail = null;
         long jobId = dagTask.getJobId();
         Job job = jobService.get(jobId).getJob();
-        taskDetail = TaskDetail.newTaskDetailBuilder().setFullId(fullId).setTaskName(job.getJobName()).setAppName(jobService.getAppName(jobId))
-                .setUser(job.getSubmitUser()).setPriority(job.getPriority()).setContent(job.getContent()).setTaskType(job.getJobType())
-                .setParameters(JsonHelper.fromJson2JobParams(job.getParams())).setSchedulingTime(new DateTime(dagTask.getScheduleTime()))
-                .setGroupId(job.getWorkerGroupId()).setFailedRetries(job.getFailedAttempts()).setFailedInterval(job.getFailedInterval())
-                .setRejectRetries(job.getRejectAttempts()).setRejectInterval(job.getRejectInterval()).build();
+        taskDetail = TaskDetail.newTaskDetailBuilder()
+                .setFullId(fullId)
+                .setTaskName(job.getJobName())
+                .setAppName(jobService.getAppName(jobId))
+                .setUser(job.getSubmitUser())
+                .setPriority(job.getPriority())
+                .setContent(job.getContent())
+                .setTaskType(job.getJobType())
+                .setParameters(JsonHelper.fromJson2JobParams(job.getParams()))
+                .setSchedulingTime(new DateTime(dagTask.getScheduleTime()))
+                .setGroupId(job.getWorkerGroupId())
+                .setFailedRetries(job.getFailedAttempts())
+                .setFailedInterval(job.getFailedInterval())
+                .setRejectRetries(job.getRejectAttempts())
+                .setRejectInterval(job.getRejectInterval())
+                .build();
         return taskDetail;
     }
 

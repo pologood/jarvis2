@@ -8,7 +8,6 @@
 
 package com.mogujie.jarvis.server.scheduler.dag.checker;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -16,17 +15,20 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.http.annotation.NotThreadSafe;
-import org.joda.time.DateTime;
 
 import com.google.common.collect.Maps;
+import com.mogujie.jarvis.core.expression.DefaultDependencyStrategyExpression;
 import com.mogujie.jarvis.core.expression.DependencyExpression;
+import com.mogujie.jarvis.core.expression.DependencyStrategyExpression;
 import com.mogujie.jarvis.core.expression.TimeOffsetExpression;
+import com.mogujie.jarvis.dto.generate.Task;
+import com.mogujie.jarvis.server.domain.CommonStrategy;
 import com.mogujie.jarvis.server.domain.JobDependencyEntry;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.service.JobService;
 
 /**
- * 单个任务的依赖检查器，内部维护Map<Long, TaskDependSchedule> jobScheduleMap进行依赖检查。
+ * 单个任务的依赖检查器，内部维护Map<Long, JobDependStatus> jobScheduleMap进行依赖检查。
  * jobScheduleMap不是线程安全的数据结构，但是当前外部都是同步调用，不会有问题。
  *
  * @author guangming
@@ -36,8 +38,8 @@ import com.mogujie.jarvis.server.service.JobService;
 public class DAGDependChecker {
     private long myJobId;
 
-    // Map<JobId, TaskDependSchedule>
-    protected Map<Long, TaskDependSchedule> jobScheduleMap = Maps.newHashMap();
+    // Map<JobId, JobDependStatus>
+    protected Map<Long, JobDependStatus> jobDependMap = Maps.newHashMap();
 
     public DAGDependChecker() {
     }
@@ -54,73 +56,18 @@ public class DAGDependChecker {
         this.myJobId = myJobId;
     }
 
-    /**
-     * 收到某个task，根据jobId找到对应的TaskDependSchedule，并加入到其schedulingTasks中
-     */
-    public void scheduleTask(long jobId, long taskId, long scheduleTime) {
-        TaskDependSchedule taskSchedule = jobScheduleMap.get(jobId);
-
-        if (taskSchedule == null) {
-            taskSchedule = getSchedule(myJobId, jobId);
-            jobScheduleMap.put(jobId, taskSchedule);
-        }
-
-        if (taskSchedule != null) {
-            taskSchedule.scheduleTask(taskId, scheduleTime);
-        }
-    }
-
-    /**
-     * 根据需要的JobId进行依赖检查
-     * 首先从jobScheduleMap找一个schedulingTasks列队大于0的TaskDependSchedule，
-     * 对schedulingTasks的每一个task，根据scheduleTime遍历jobScheduleMap中的所有TaskDependSchedule，
-     * 如果所有TaskDependSchedule都能通过依赖检查，则该检查通过
-     *
-     * @param needJobs
-     */
-    public boolean checkDependency(Set<Long> needJobs) {
+    public boolean checkDependency(Set<Long> needJobs, long scheduleTime) {
         boolean finishDependencies = true;
         for (long jobId : needJobs) {
-            TaskDependSchedule taskSchedule = jobScheduleMap.get(jobId);
+            JobDependStatus taskSchedule = jobDependMap.get(jobId);
             if (taskSchedule == null) {
                 taskSchedule = getSchedule(myJobId, jobId);
-                jobScheduleMap.put(jobId, taskSchedule);
+                jobDependMap.put(jobId, taskSchedule);
             }
-        }
 
-        List<ScheduleTask> schedulingTasks = null;
-        for (TaskDependSchedule taskSchedule : jobScheduleMap.values()) {
-            // find one which not offset dependency
-            // and size of scheduling tasks > 0
-            if (taskSchedule.getSchedulingTasks().size() > 0) {
-                schedulingTasks = taskSchedule.getSchedulingTasks();
+            if (!taskSchedule.check(scheduleTime)) {
+                finishDependencies = false;
                 break;
-            }
-        }
-        if (schedulingTasks != null) {
-            for (ScheduleTask task : schedulingTasks) {
-                long scheduleTime = task.getScheduleTime();
-                for (TaskDependSchedule taskSchedule : jobScheduleMap.values()) {
-                    if (!taskSchedule.check(scheduleTime)) {
-                        finishDependencies = false;
-                        resetAllSelected();
-                        break;
-                    }
-                }
-                // 有一个通过即通过依赖检查
-                if (finishDependencies) {
-                    break;
-                }
-            }
-        } else {
-            // if all are offset dependency, we also should pass check
-            long scheduleTime = DateTime.now().getMillis();
-            for (TaskDependSchedule taskSchedule : jobScheduleMap.values()) {
-                if (!taskSchedule.check(scheduleTime)) {
-                    finishDependencies = false;
-                    resetAllSelected();
-                    break;
-                }
             }
         }
 
@@ -130,37 +77,19 @@ public class DAGDependChecker {
     }
 
     /**
-     * return Map<JobId, Set<preTaskId>>
+     * return Map<JobId, List<preTaskId>>
      *
      */
-    public Map<Long, List<ScheduleTask>> getDependTaskIdMap() {
-        Map<Long, List<ScheduleTask>> dependTaskMap = new HashMap<Long, List<ScheduleTask>>();
-        for (Entry<Long, TaskDependSchedule> entry : jobScheduleMap.entrySet()) {
-            dependTaskMap.put(entry.getKey(), entry.getValue().getSelectedTasks());
+    public Map<Long, List<Task>> getDependTaskMap(long scheduleTime) {
+        Map<Long, List<Task>> dependTaskMap = Maps.newHashMap();
+        for (Entry<Long, JobDependStatus> entry : jobDependMap.entrySet()) {
+            dependTaskMap.put(entry.getKey(), entry.getValue().getDependTasks(scheduleTime));
         }
         return dependTaskMap;
     }
 
-    /**
-     * 依赖检查失败后要重置jobScheduleMap中所有的TaskDependSchedule，回退到之前状态
-     */
-    public void resetAllSelected() {
-        for (TaskDependSchedule taskSchedule : jobScheduleMap.values()) {
-            taskSchedule.resetSelected();
-        }
-    }
-
-    /**
-     * 依赖检查通过后，把选择的task从每个TaskDependSchedule移除
-     */
-    public void finishAllSchedule() {
-        for (TaskDependSchedule taskSchedule : jobScheduleMap.values()) {
-            taskSchedule.finishSchedule();
-        }
-    }
-
     public void updateExpression(long parentId, String expression) {
-        TaskDependSchedule dependSchedule = jobScheduleMap.get(parentId);
+        JobDependStatus dependSchedule = jobDependMap.get(parentId);
         if (dependSchedule != null) {
             DependencyExpression dependencyExpression = null;
             if (expression != null) {
@@ -171,26 +100,26 @@ public class DAGDependChecker {
     }
 
     private void autoFix(Set<Long> needJobs) {
-        Iterator<Entry<Long, TaskDependSchedule>> it = jobScheduleMap.entrySet().iterator();
+        Iterator<Entry<Long, JobDependStatus>> it = jobDependMap.entrySet().iterator();
         while (it.hasNext()) {
-            Entry<Long, TaskDependSchedule> entry = it.next();
+            Entry<Long, JobDependStatus> entry = it.next();
             long jobId = entry.getKey();
             if (!needJobs.contains(jobId)) {
-                entry.getValue().resetSelected();
                 it.remove();
             }
         }
     }
 
-    private TaskDependSchedule getSchedule(long myJobId, long preJobId) {
+    private JobDependStatus getSchedule(long myJobId, long preJobId) {
         JobService jobService = Injectors.getInjector().getInstance(JobService.class);
         DependencyExpression dependencyExpression = null;
+        DependencyStrategyExpression commonStrategy = new DefaultDependencyStrategyExpression(CommonStrategy.ALL.getExpression());
         Map<Long, JobDependencyEntry> dependencyMap = jobService.get(myJobId).getDependencies();
         if (dependencyMap != null && dependencyMap.containsKey(preJobId)) {
             dependencyExpression = dependencyMap.get(preJobId).getDependencyExpression();
+            commonStrategy = dependencyMap.get(preJobId).getDependencyStrategyExpression();
         }
-        TaskDependSchedule dependSchedule = new TaskDependSchedule(myJobId, preJobId, dependencyExpression);
-        dependSchedule.init();
+        JobDependStatus dependSchedule = new JobDependStatus(myJobId, preJobId, dependencyExpression, commonStrategy);
 
         return dependSchedule;
     }
