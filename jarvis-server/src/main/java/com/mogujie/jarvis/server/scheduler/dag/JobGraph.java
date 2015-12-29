@@ -384,6 +384,7 @@ public enum JobGraph {
                 }
             } else if (needJobs.size() > 1) {
                 // 如果是多亲纯依赖，根据传进来的调度时间进行依赖检查
+                // 当前这种情况可以不支持，如果是多亲依赖必须配置调度时间
                 if (dagJob.checkDependency(scheduleTime)) {
                     long jobId = dagJob.getJobId();
                     LOGGER.info("{} pass the dependency check", dagJob);

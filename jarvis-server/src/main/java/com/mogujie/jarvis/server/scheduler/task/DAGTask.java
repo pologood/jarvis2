@@ -50,7 +50,12 @@ public class DAGTask {
             // store parent dependency
             TaskDependService taskDependService = Injectors.getInjector().getInstance(TaskDependService.class);
             taskDependService.storeParent(taskId, dependTaskIdMap);
-            // TODO add child dependency
+            // add child dependency
+            for (List<Long> taskIds : dependTaskIdMap.values()) {
+                for (long parentTaskId : taskIds) {
+                    taskDependService.addChildDependency(parentTaskId, jobId, taskId);
+                }
+            }
         }
     }
 

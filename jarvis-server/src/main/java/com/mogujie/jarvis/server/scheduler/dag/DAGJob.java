@@ -29,6 +29,7 @@ public class DAGJob extends AbstractDAGJob {
     private long jobId;
     private DAGDependChecker dependChecker;
     private DAGJobType type;
+    //timeStamps不需要持久化，异常恢复的时候通过时间调度去自动重建
     private List<Long> timeStamps = new ArrayList<Long>();
     private JobGraph jobGraph = JobGraph.INSTANCE;
     private static final Logger LOGGER = LogManager.getLogger();
@@ -72,17 +73,14 @@ public class DAGJob extends AbstractDAGJob {
     }
 
     public void addTimeStamp(long timeStamp) {
-        // TODO 需要持久化
         timeStamps.add(timeStamp);
     }
 
     public void removeTimeStamp(long timeStamp) {
-        // TODO 需要持久化
         timeStamps.remove(timeStamp);
     }
 
     public void clearTimeStamp() {
-        // TODO 需要持久化
         timeStamps.clear();
     }
 

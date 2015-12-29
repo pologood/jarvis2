@@ -9,7 +9,6 @@ message RestServerManualRerunTaskRequest {
     required int64 start_time = 2;
     required int64 end_time = 3; 
     repeated int64 job_id = 4; 
-    optional bool run_child = 5 [default = true];
 }
 
 message ServerManualRerunTaskResponse {

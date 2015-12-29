@@ -100,4 +100,8 @@ public class TaskDependService {
         mapper.deleteByPrimaryKey(taskId);
     }
 
+    public void addChildDependency(long parentTaskId, long childJobId, long childTaskId) {
+        //TODO
+    }
+
 }

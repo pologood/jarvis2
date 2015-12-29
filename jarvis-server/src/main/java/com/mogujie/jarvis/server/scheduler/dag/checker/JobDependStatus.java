@@ -65,6 +65,14 @@ public class JobDependStatus {
         this.dependencyExpression = dependencyExpression;
     }
 
+    public DependencyStrategyExpression getDependencyStrategy() {
+        return dependencyStrategy;
+    }
+
+    public void setDependencyStrategy(DependencyStrategyExpression dependencyStrategy) {
+        this.dependencyStrategy = dependencyStrategy;
+    }
+
     /**
      * check dependency
      *
@@ -82,11 +90,11 @@ public class JobDependStatus {
             List<Boolean> taskStatus = new ArrayList<Boolean>();
             if (tasks != null) {
                 for (Task task : tasks) {
-                    Boolean status = (task.getStatus() == TaskStatus.SUCCESS.getValue()) ? true : false;
+                    boolean status = (task.getStatus() == TaskStatus.SUCCESS.getValue()) ? true : false;
                     taskStatus.add(status);
                 }
+                pass = dependencyStrategy.check(taskStatus);
             }
-            pass = dependencyStrategy.check(taskStatus);
         }
 
         return pass;

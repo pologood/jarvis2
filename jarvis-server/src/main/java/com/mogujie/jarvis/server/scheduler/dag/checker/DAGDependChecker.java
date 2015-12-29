@@ -59,13 +59,13 @@ public class DAGDependChecker {
     public boolean checkDependency(Set<Long> needJobs, long scheduleTime) {
         boolean finishDependencies = true;
         for (long jobId : needJobs) {
-            JobDependStatus taskSchedule = jobDependMap.get(jobId);
-            if (taskSchedule == null) {
-                taskSchedule = getSchedule(myJobId, jobId);
-                jobDependMap.put(jobId, taskSchedule);
+            JobDependStatus dependStatus = jobDependMap.get(jobId);
+            if (dependStatus == null) {
+                dependStatus = create(myJobId, jobId);
+                jobDependMap.put(jobId, dependStatus);
             }
 
-            if (!taskSchedule.check(scheduleTime)) {
+            if (!dependStatus.check(scheduleTime)) {
                 finishDependencies = false;
                 break;
             }
@@ -110,7 +110,7 @@ public class DAGDependChecker {
         }
     }
 
-    private JobDependStatus getSchedule(long myJobId, long preJobId) {
+    private JobDependStatus create(long myJobId, long preJobId) {
         JobService jobService = Injectors.getInjector().getInstance(JobService.class);
         DependencyExpression dependencyExpression = null;
         DependencyStrategyExpression commonStrategy = new DefaultDependencyStrategyExpression(CommonStrategy.ALL.getExpression());

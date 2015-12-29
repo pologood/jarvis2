@@ -19,6 +19,9 @@ import org.apache.logging.log4j.Logger;
 import org.jgrapht.experimental.dag.DirectedAcyclicGraph.CycleFoundException;
 import org.joda.time.DateTime;
 
+import akka.actor.ActorSystem;
+import akka.routing.RoundRobinPool;
+
 import com.google.common.collect.Lists;
 import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.domain.JobStatus;
@@ -44,18 +47,14 @@ import com.mogujie.jarvis.server.scheduler.dag.DAGJobType;
 import com.mogujie.jarvis.server.scheduler.dag.DAGScheduler;
 import com.mogujie.jarvis.server.scheduler.dag.JobGraph;
 import com.mogujie.jarvis.server.scheduler.event.StartEvent;
-import com.mogujie.jarvis.server.scheduler.plan.ExecutionPlan;
-import com.mogujie.jarvis.server.scheduler.plan.ExecutionPlanEntry;
 import com.mogujie.jarvis.server.scheduler.task.DAGTask;
 import com.mogujie.jarvis.server.scheduler.task.TaskGraph;
 import com.mogujie.jarvis.server.scheduler.task.TaskScheduler;
+import com.mogujie.jarvis.server.scheduler.time.ExecutionPlan;
+import com.mogujie.jarvis.server.scheduler.time.ExecutionPlanEntry;
 import com.mogujie.jarvis.server.scheduler.time.TimeScheduler;
-import com.mogujie.jarvis.server.scheduler.time.TimeSchedulerFactory;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.TaskService;
-
-import akka.actor.ActorSystem;
-import akka.routing.RoundRobinPool;
 
 public class JarvisServer {
 
@@ -97,7 +96,7 @@ public class JarvisServer {
         JobSchedulerController controller = JobSchedulerController.getInstance();
         DAGScheduler dagScheduler = DAGScheduler.getInstance();
         TaskScheduler taskScheduler = TaskScheduler.getInstance();
-        TimeScheduler timeScheduler = TimeSchedulerFactory.getInstance();
+        TimeScheduler timeScheduler = TimeScheduler.getInstance();
         AlarmScheduler alarmScheduler = Injectors.getInjector().getInstance(AlarmScheduler.class);
         JobGraph jobGraph = JobGraph.INSTANCE;
         TaskGraph taskGraph = TaskGraph.INSTANCE;

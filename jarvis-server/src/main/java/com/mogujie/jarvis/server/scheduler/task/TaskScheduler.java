@@ -14,7 +14,6 @@ import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
-import org.mybatis.guice.transactional.Transactional;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.eventbus.AllowConcurrentEvents;
@@ -83,7 +82,6 @@ public class TaskScheduler extends Scheduler {
     }
 
     @Subscribe
-    @Transactional
     @AllowConcurrentEvents
     public void handleSuccessEvent(SuccessEvent e) {
         long jobId = e.getJobId();
@@ -121,7 +119,6 @@ public class TaskScheduler extends Scheduler {
     }
 
     @Subscribe
-    @Transactional
     @AllowConcurrentEvents
     public void handleRunningEvent(RunningEvent e) {
         long taskId = e.getTaskId();
@@ -132,7 +129,6 @@ public class TaskScheduler extends Scheduler {
     }
 
     @Subscribe
-    @Transactional
     @AllowConcurrentEvents
     public void handleKilledEvent(KilledEvent e) {
         long taskId = e.getTaskId();
@@ -143,7 +139,6 @@ public class TaskScheduler extends Scheduler {
     }
 
     @Subscribe
-    @Transactional
     @AllowConcurrentEvents
     public void handleFailedEvent(FailedEvent e) {
         long taskId = e.getTaskId();
@@ -182,7 +177,6 @@ public class TaskScheduler extends Scheduler {
     }
 
     @Subscribe
-    @Transactional
     public void handleAddTaskEvent(AddTaskEvent e) {
         long jobId = e.getJobId();
         long scheduleTime = e.getScheduleTime();
@@ -198,10 +192,11 @@ public class TaskScheduler extends Scheduler {
         taskGraph.addTask(taskId, dagTask);
         LOGGER.info("add {} to taskGraph", dagTask);
 
+        // submit task
+        submitTask(dagTask);
     }
 
     @Subscribe
-    @Transactional
     public void handleRetryTaskEvent(RetryTaskEvent e) {
         long taskId = e.getTaskId();
         LOGGER.info("start handleRetryTaskEvent, taskId={}", taskId);
@@ -282,7 +277,7 @@ public class TaskScheduler extends Scheduler {
         return taskQueue;
     }
 
-    public void submitTask(DAGTask dagTask) {
+    private void submitTask(DAGTask dagTask) {
         // update status to ready
         taskService.updateStatus(dagTask.getTaskId(), TaskStatus.READY);
         LOGGER.info("update {} with READY status", dagTask.getTaskId());
