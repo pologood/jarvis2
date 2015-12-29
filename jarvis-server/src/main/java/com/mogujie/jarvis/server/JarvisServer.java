@@ -17,7 +17,6 @@ import org.apache.commons.configuration.Configuration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jgrapht.experimental.dag.DirectedAcyclicGraph.CycleFoundException;
-import org.joda.time.DateTime;
 
 import akka.actor.ActorSystem;
 import akka.routing.RoundRobinPool;
@@ -45,13 +44,11 @@ import com.mogujie.jarvis.server.scheduler.TaskRetryScheduler;
 import com.mogujie.jarvis.server.scheduler.dag.DAGJob;
 import com.mogujie.jarvis.server.scheduler.dag.DAGJobType;
 import com.mogujie.jarvis.server.scheduler.dag.DAGScheduler;
-import com.mogujie.jarvis.server.scheduler.dag.JobGraph;
+import com.mogujie.jarvis.server.scheduler.event.RetryTaskEvent;
 import com.mogujie.jarvis.server.scheduler.event.StartEvent;
 import com.mogujie.jarvis.server.scheduler.task.DAGTask;
 import com.mogujie.jarvis.server.scheduler.task.TaskGraph;
 import com.mogujie.jarvis.server.scheduler.task.TaskScheduler;
-import com.mogujie.jarvis.server.scheduler.time.ExecutionPlan;
-import com.mogujie.jarvis.server.scheduler.time.ExecutionPlanEntry;
 import com.mogujie.jarvis.server.scheduler.time.TimeScheduler;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.TaskService;
@@ -98,18 +95,20 @@ public class JarvisServer {
         TaskScheduler taskScheduler = TaskScheduler.getInstance();
         TimeScheduler timeScheduler = TimeScheduler.getInstance();
         AlarmScheduler alarmScheduler = Injectors.getInjector().getInstance(AlarmScheduler.class);
-        JobGraph jobGraph = JobGraph.INSTANCE;
         TaskGraph taskGraph = TaskGraph.INSTANCE;
         controller.register(dagScheduler);
         controller.register(taskScheduler);
         controller.register(timeScheduler);
         controller.register(alarmScheduler);
 
-        // 2. initialize DAGScheduler and TimeScheduler
+        // 2. start schedulers
+        controller.notify(new StartEvent());
+
+        // 3. initialize DAGScheduler and TimeScheduler
         JobService jobService = Injectors.getInjector().getInstance(JobService.class);
         TaskService taskService = Injectors.getInjector().getInstance(TaskService.class);
         List<Job> jobs = jobService.getNotDeletedJobs();
-        // 2.1 先添加job
+        // 3.1 先添加job
         for (Job job : jobs) {
             long jobId = job.getJobId();
             JobEntry jobEntry = jobService.get(jobId);
@@ -135,7 +134,7 @@ public class JarvisServer {
                 timeScheduler.addJob(jobId);
             }
         }
-        // 2.2 再添加依赖关系
+        // 3.2 再添加依赖关系
         for (Job job : jobs) {
             long jobId = job.getJobId();
             JobEntry jobEntry = jobService.get(jobId);
@@ -145,15 +144,15 @@ public class JarvisServer {
             }
         }
 
-        // 3. initialize TaskScheduler
+        // 4. initialize TaskScheduler
         List<Task> recoveryTasks = taskService
                 .getTasksByStatusNotIn(Lists.newArrayList(TaskStatus.SUCCESS.getValue(), TaskStatus.REMOVED.getValue()));
-        // 3.1 先恢复task
+        // 4.1 先恢复task
         for (Task task : recoveryTasks) {
             DAGTask dagTask = new DAGTask(task.getJobId(), task.getTaskId(), task.getAttemptId(), task.getScheduleTime().getTime());
             taskGraph.addTask(task.getTaskId(), dagTask);
         }
-        // 3.2 再构造task依赖关系
+        // 4.2 再构造task依赖关系
         for (Task task : recoveryTasks) {
             DAGTask dagTask = taskGraph.getTask(task.getTaskId());
             List<Long> dependTaskIds = dagTask.getDependTaskIds();
@@ -163,19 +162,10 @@ public class JarvisServer {
                 }
             }
         }
-        // 3.3 把waiting和ready的task重新加入执行计划
+        // 4.3 重试waiting和ready的task
         List<Task> readyTasks = taskService.getTasksByStatus(Lists.newArrayList(TaskStatus.WAITING.getValue(), TaskStatus.READY.getValue()));
         for (Task task : readyTasks) {
-            long jobId = task.getJobId();
-            DAGJob dagJob = jobGraph.getDAGJob(jobId);
-            if (dagJob.getType().implies(DAGJobType.TIME)) {
-                ExecutionPlan plan = ExecutionPlan.INSTANCE;
-                ExecutionPlanEntry planEntry = new ExecutionPlanEntry(jobId, new DateTime(task.getScheduleTime()), task.getTaskId());
-                plan.addPlan(planEntry);
-            }
+            controller.notify(new RetryTaskEvent(task.getJobId(), task.getTaskId()));
         }
-
-        // 4. start schedulers
-        controller.notify(new StartEvent());
     }
 }

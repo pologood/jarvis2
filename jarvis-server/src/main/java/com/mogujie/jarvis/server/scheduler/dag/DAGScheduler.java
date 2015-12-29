@@ -54,7 +54,7 @@ public class DAGScheduler extends Scheduler {
 
     /**
      * 由TimeScheduler发送TimeReadyEvent，DAGScheduler进行处理。
-     * 首先更新该DAGJob的时间标识，然后进行依赖检查
+     * 首先添加该DAGJob的时间标识，然后进行依赖检查
      *
      * @param e
      */
@@ -69,7 +69,7 @@ public class DAGScheduler extends Scheduler {
                 LOGGER.error("{} doesn't imply TIME type, but receive {} ", dagJob, e);
                 return;
             }
-            // 更新时间标识
+            // 添加时间标识
             dagJob.addTimeStamp(scheduleTime);
             LOGGER.info("DAGJob {} time ready", dagJob.getJobId());
             // 如果通过依赖检查，提交给taskScheduler，并移除自己的时间戳
