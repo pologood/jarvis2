@@ -15,6 +15,11 @@ import java.util.Map;
 
 import org.apache.commons.configuration.Configuration;
 
+import akka.actor.ActorRef;
+import akka.actor.Props;
+import akka.actor.UntypedActor;
+import akka.routing.SmallestMailboxPool;
+
 import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -30,11 +35,6 @@ import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.service.AppService;
 import com.mogujie.jarvis.server.util.AppTokenUtils;
-
-import akka.actor.ActorRef;
-import akka.actor.Props;
-import akka.actor.UntypedActor;
-import akka.routing.SmallestMailboxPool;
 
 public class ServerActor extends UntypedActor {
 
@@ -67,7 +67,6 @@ public class ServerActor extends UntypedActor {
         addActor(getContext().actorOf(WorkerModifyStatusActor.props()), WorkerModifyStatusActor.handledMessages());
         addActor(getContext().actorOf(WorkerRegistryActor.props()), WorkerRegistryActor.handledMessages());
         addActor(getContext().actorOf(SystemActor.props()), SystemActor.handledMessages());
-        addActor(getContext().actorOf(PlanActor.props()), PlanActor.handledMessages());
     }
 
     private Object generateResponse(Class<? extends GeneratedMessage> clazz, boolean success, String msg) {

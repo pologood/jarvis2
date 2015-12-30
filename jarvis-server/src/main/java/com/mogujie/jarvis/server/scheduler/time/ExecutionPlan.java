@@ -6,7 +6,7 @@
  * Create Date: 2015年11月5日 下午3:47:31
  */
 
-package com.mogujie.jarvis.server.scheduler.plan;
+package com.mogujie.jarvis.server.scheduler.time;
 
 import java.util.Comparator;
 import java.util.Iterator;

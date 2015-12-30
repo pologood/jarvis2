@@ -14,6 +14,11 @@ import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import akka.actor.ActorRef;
+import akka.actor.Address;
+import akka.actor.Props;
+import akka.actor.UntypedActor;
+
 import com.google.common.collect.Maps;
 import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.domain.IdType;
@@ -22,6 +27,7 @@ import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.observer.Event;
 import com.mogujie.jarvis.core.util.IdUtils;
 import com.mogujie.jarvis.core.util.JsonHelper;
+import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.protocol.ReportTaskProgressProtos.ServerReportTaskProgressResponse;
 import com.mogujie.jarvis.protocol.ReportTaskProgressProtos.WorkerReportTaskProgressRequest;
 import com.mogujie.jarvis.protocol.ReportTaskStatusProtos.ServerReportTaskStatusResponse;
@@ -38,11 +44,6 @@ import com.mogujie.jarvis.server.scheduler.event.UnhandleEvent;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.service.WorkerService;
-
-import akka.actor.ActorRef;
-import akka.actor.Address;
-import akka.actor.Props;
-import akka.actor.UntypedActor;
 
 /**
  * Actor used to receive task metrics information (e.g. status, process)
@@ -73,7 +74,8 @@ public class TaskMetricsActor extends UntypedActor {
             LOGGER.info("receive task {} status {}", taskId, status);
             Event event = new UnhandleEvent();
             if (status.equals(TaskStatus.SUCCESS)) {
-                event = new SuccessEvent(jobId, taskId);
+                Task task = taskService.get(taskId);
+                event = new SuccessEvent(jobId, taskId, task.getScheduleTime().getTime());
             } else if (status.equals(TaskStatus.FAILED)) {
                 event = new FailedEvent(jobId, taskId);
             } else if (status.equals(TaskStatus.RUNNING)) {

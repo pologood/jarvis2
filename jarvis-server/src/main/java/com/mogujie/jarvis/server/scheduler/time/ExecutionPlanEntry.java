@@ -6,7 +6,7 @@
  * Create Date: 2015年11月23日 下午2:35:51
  */
 
-package com.mogujie.jarvis.server.scheduler.plan;
+package com.mogujie.jarvis.server.scheduler.time;
 
 import java.util.Objects;
 

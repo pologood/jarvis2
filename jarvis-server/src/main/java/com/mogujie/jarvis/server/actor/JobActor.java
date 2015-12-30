@@ -16,6 +16,9 @@ import java.util.Set;
 import org.joda.time.DateTime;
 import org.mybatis.guice.transactional.Transactional;
 
+import akka.actor.Props;
+import akka.actor.UntypedActor;
+
 import com.google.common.collect.Sets;
 import com.mogujie.jarvis.core.domain.JobRelationType;
 import com.mogujie.jarvis.core.domain.JobStatus;
@@ -30,14 +33,13 @@ import com.mogujie.jarvis.dto.generate.JobScheduleExpression;
 import com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry;
 import com.mogujie.jarvis.protocol.JobProtos.JobStatusEntry;
 import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobRequest;
+import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobStatusRequest;
 import com.mogujie.jarvis.protocol.JobProtos.RestQueryJobRelationRequest;
 import com.mogujie.jarvis.protocol.JobProtos.RestSubmitJobRequest;
 import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobResponse;
+import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobStatusResponse;
 import com.mogujie.jarvis.protocol.JobProtos.ServerQueryJobRelationResponse;
 import com.mogujie.jarvis.protocol.JobProtos.ServerSubmitJobResponse;
-import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobStatusRequest;
-import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobStatusResponse;
-
 import com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry;
 import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.domain.ModifyDependEntry;
@@ -48,12 +50,8 @@ import com.mogujie.jarvis.server.scheduler.dag.DAGJob;
 import com.mogujie.jarvis.server.scheduler.dag.DAGJobType;
 import com.mogujie.jarvis.server.scheduler.dag.DAGScheduler;
 import com.mogujie.jarvis.server.scheduler.time.TimeScheduler;
-import com.mogujie.jarvis.server.scheduler.time.TimeSchedulerFactory;
 import com.mogujie.jarvis.server.service.ConvertValidService;
 import com.mogujie.jarvis.server.service.JobService;
-
-import akka.actor.Props;
-import akka.actor.UntypedActor;
 
 /**
  * @author guangming
@@ -61,7 +59,7 @@ import akka.actor.UntypedActor;
 public class JobActor extends UntypedActor {
 
     private DAGScheduler dagScheduler = DAGScheduler.getInstance();
-    private TimeScheduler timeScheduler = TimeSchedulerFactory.getInstance();
+    private TimeScheduler timeScheduler = TimeScheduler.getInstance();
 
     private JobService jobService = Injectors.getInjector().getInstance(JobService.class);
     private ConvertValidService convertValidService = Injectors.getInjector().getInstance(ConvertValidService.class);
