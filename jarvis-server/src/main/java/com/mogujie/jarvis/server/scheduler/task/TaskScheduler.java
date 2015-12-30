@@ -17,6 +17,7 @@ import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.Lists;
 import com.google.common.eventbus.AllowConcurrentEvents;
 import com.google.common.eventbus.Subscribe;
 import com.mogujie.jarvis.core.domain.TaskDetail;
@@ -98,6 +99,7 @@ public class TaskScheduler extends Scheduler {
         if (childTasks != null && !childTasks.isEmpty()) {
             // TaskGraph trigger
             // notify child tasks
+            // notice: 如果是串行任务，之前失败了，这里也可以触发自身后续跑起来
             LOGGER.info("notify child tasks {}", childTasks);
             for (DAGTask childTask : childTasks) {
                 if (childTask != null && childTask.checkStatus()) {
@@ -106,9 +108,14 @@ public class TaskScheduler extends Scheduler {
                 }
             }
         } else {
-            // JobGraph trigger
-            ScheduleEvent event = new ScheduleEvent(jobId, taskId, scheduleTime);
-            getSchedulerController().notify(event);
+            boolean isTemp = e.isTemp();
+            // 如果是临时任务，只会通过TaskGraph触发
+            // 反之如果是正常调度，交给DAGScheduler触发后续任务
+            if (!isTemp) {
+                // JobGraph trigger
+                ScheduleEvent event = new ScheduleEvent(jobId, taskId, scheduleTime);
+                getSchedulerController().notify(event);
+            }
         }
 
         // remove from taskGraph
@@ -187,6 +194,22 @@ public class TaskScheduler extends Scheduler {
         // create new task
         long taskId = taskService.createTaskByJobId(jobId, scheduleTime);
         LOGGER.info("add new task[{}] to DB", taskId);
+
+        // 如果是串行任务
+        if (jobService.get(jobId).getJob().getIsSerial()) {
+            // 首先检查自己上一次是否成功
+            Task task = taskService.getLastTask(jobId, scheduleTime);
+            if (task != null) {
+                if (task.getStatus() != TaskStatus.SUCCESS.getValue()) {
+                    // 如果失败，标记为失败
+                    // TODO 还要写上失败的原因
+                    taskService.updateStatusWithEnd(taskId, TaskStatus.FAILED);
+                }
+                // 增加自依赖
+                List<Long> dependTaskIds = Lists.newArrayList(task.getTaskId());
+                dependTaskIdMap.put(jobId, dependTaskIds);
+            }
+        }
 
         // add to taskGraph
         DAGTask dagTask = new DAGTask(jobId, taskId, scheduleTime, dependTaskIdMap);
@@ -267,23 +290,6 @@ public class TaskScheduler extends Scheduler {
             submitTask(dagTask);
         }
     }
-
-    //TODO not supported now
-//    @Subscribe
-//    public void handleRemoveTaskEvent(RemoveTaskEvent e) {
-//        long jobId = e.getJobId();
-//        long taskId = e.getTaskId();
-//        LOGGER.info("start handleRemoveTaskEvent, taskId={}", taskId);
-//        List<DAGTask> children = taskGraph.getChildren(taskId);
-//        for (DAGTask child : children) {
-//            child.getStatusChecker().removeTask(jobId, taskId);
-//            taskGraph.removeTask(taskId);
-//            if (child.checkStatus()) {
-//                LOGGER.info("{} pass status check", child);
-//                submitTask(child);
-//            }
-//        }
-//    }
 
     @VisibleForTesting
     public TaskQueue getTaskQueue() {

@@ -8,6 +8,7 @@
 
 package com.mogujie.jarvis.server.scheduler.dag.checker;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -84,6 +85,23 @@ public class DAGDependChecker {
         Map<Long, List<Task>> dependTaskMap = Maps.newHashMap();
         for (Entry<Long, JobDependStatus> entry : jobDependMap.entrySet()) {
             dependTaskMap.put(entry.getKey(), entry.getValue().getDependTasks(scheduleTime));
+        }
+        return dependTaskMap;
+    }
+
+    /**
+     * return Map<JobId, List<preTaskId>>
+     *
+     */
+    public Map<Long, List<Long>> getDependTaskIdMap(long scheduleTime) {
+        Map<Long, List<Long>> dependTaskMap = Maps.newHashMap();
+        for (Entry<Long, JobDependStatus> entry : jobDependMap.entrySet()) {
+            List<Long> preTaskIds = new ArrayList<Long>();
+            List<Task> preTasks = entry.getValue().getDependTasks(scheduleTime);
+            for (Task task : preTasks) {
+                preTaskIds.add(task.getTaskId());
+            }
+            dependTaskMap.put(entry.getKey(), preTaskIds);
         }
         return dependTaskMap;
     }

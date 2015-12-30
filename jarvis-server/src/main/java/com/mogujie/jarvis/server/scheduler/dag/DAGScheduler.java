@@ -15,13 +15,11 @@ import org.apache.logging.log4j.Logger;
 
 import com.google.common.eventbus.Subscribe;
 import com.mogujie.jarvis.core.domain.JobStatus;
-import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
 import com.mogujie.jarvis.server.scheduler.event.ScheduleEvent;
 import com.mogujie.jarvis.server.scheduler.event.StartEvent;
 import com.mogujie.jarvis.server.scheduler.event.StopEvent;
 import com.mogujie.jarvis.server.scheduler.event.TimeReadyEvent;
-import com.mogujie.jarvis.server.service.JobService;
 
 /**
  * Scheduler used to handle dependency based job.
@@ -37,7 +35,6 @@ public class DAGScheduler extends Scheduler {
     }
 
     private JobGraph jobGraph = JobGraph.INSTANCE;
-    private JobService jobService = Injectors.getInjector().getInstance(JobService.class);
     private static final Logger LOGGER = LogManager.getLogger();
 
     public void destroy() {
@@ -99,9 +96,6 @@ public class DAGScheduler extends Scheduler {
                         jobGraph.submitJobWithCheck(child, scheduleTime);
                     }
                 }
-            } else if (jobService.get(jobId).getJob().getIsSerial()) {
-                // 如果是串行任务，触发自己
-                jobGraph.submitJobWithCheck(dagJob, scheduleTime);
             }
         }
     }

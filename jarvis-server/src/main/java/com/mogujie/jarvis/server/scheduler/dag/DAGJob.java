@@ -17,7 +17,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.mogujie.jarvis.core.domain.JobStatus;
-import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.server.scheduler.dag.checker.DAGDependChecker;
 
 /**
@@ -59,8 +58,8 @@ public class DAGJob extends AbstractDAGJob {
         return dependCheck;
     }
 
-    public Map<Long, List<Task>> getDependTaskMap(long scheduleTime) {
-        return dependChecker.getDependTaskMap(scheduleTime);
+    public Map<Long, List<Long>> getDependTaskIdMap(long scheduleTime) {
+        return dependChecker.getDependTaskIdMap(scheduleTime);
     }
 
     public long getJobId() {
