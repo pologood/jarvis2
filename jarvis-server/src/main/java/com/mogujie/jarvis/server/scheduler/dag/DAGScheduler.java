@@ -99,7 +99,7 @@ public class DAGScheduler extends Scheduler {
                         jobGraph.submitJobWithCheck(child, scheduleTime);
                     }
                 }
-            } else if (jobService.get(jobId).getJob().getSerialFlag() > 0) {
+            } else if (jobService.get(jobId).getJob().getIsSerial()) {
                 // 如果是串行任务，触发自己
                 jobGraph.submitJobWithCheck(dagJob, scheduleTime);
             }

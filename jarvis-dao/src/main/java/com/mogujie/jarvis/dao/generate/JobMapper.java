@@ -16,15 +16,21 @@ public interface JobMapper {
 
     int insertSelective(Job record);
 
+    List<Job> selectByExampleWithBLOBs(JobExample example);
+
     List<Job> selectByExample(JobExample example);
 
     Job selectByPrimaryKey(Long jobId);
 
     int updateByExampleSelective(@Param("record") Job record, @Param("example") JobExample example);
 
+    int updateByExampleWithBLOBs(@Param("record") Job record, @Param("example") JobExample example);
+
     int updateByExample(@Param("record") Job record, @Param("example") JobExample example);
 
     int updateByPrimaryKeySelective(Job record);
+
+    int updateByPrimaryKeyWithBLOBs(Job record);
 
     int updateByPrimaryKey(Job record);
 }

@@ -9,8 +9,6 @@ public class Task {
 
     private Long jobId;
 
-    private String content;
-
     private String params;
 
     private Date scheduleTime;
@@ -35,6 +33,8 @@ public class Task {
 
     private Date updateTime;
 
+    private String content;
+
     public Long getTaskId() {
         return taskId;
     }
@@ -57,14 +57,6 @@ public class Task {
 
     public void setJobId(Long jobId) {
         this.jobId = jobId;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
     }
 
     public String getParams() {
@@ -161,5 +153,13 @@ public class Task {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }

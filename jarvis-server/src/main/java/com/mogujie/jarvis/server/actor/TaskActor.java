@@ -200,7 +200,8 @@ public class TaskActor extends UntypedActor {
                         dependTaskIdMap.put(preJobId, dependTaskIds);
                     }
                 }
-                if (jobService.get(jobId).getJob().getSerialFlag() > 0) {
+                //如果是串行任务
+                if (jobService.get(jobId).getJob().getIsSerial()) {
                     Task task = taskService.getLastTask(jobId, scheduleTime);
                     if (task != null) {
                         List<Long> dependTaskIds = Lists.newArrayList(task.getTaskId());

@@ -16,15 +16,21 @@ public interface TaskMapper {
 
     int insertSelective(Task record);
 
+    List<Task> selectByExampleWithBLOBs(TaskExample example);
+
     List<Task> selectByExample(TaskExample example);
 
     Task selectByPrimaryKey(Long taskId);
 
     int updateByExampleSelective(@Param("record") Task record, @Param("example") TaskExample example);
 
+    int updateByExampleWithBLOBs(@Param("record") Task record, @Param("example") TaskExample example);
+
     int updateByExample(@Param("record") Task record, @Param("example") TaskExample example);
 
     int updateByPrimaryKeySelective(Task record);
+
+    int updateByPrimaryKeyWithBLOBs(Task record);
 
     int updateByPrimaryKey(Task record);
 }

@@ -325,7 +325,7 @@ public enum JobGraph {
 
             long jobId = dagJob.getJobId();
             // 如果是串行任务
-            if (jobService.get(jobId).getJob().getSerialFlag() > 0) {
+            if (jobService.get(jobId).getJob().getIsSerial()) {
                 if (timeStamps.size() > 0) {
                     // 只触发第一个
                     long timeStamp = timeStamps.get(0);

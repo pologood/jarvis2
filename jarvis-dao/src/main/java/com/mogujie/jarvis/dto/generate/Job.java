@@ -11,15 +11,13 @@ public class Job {
 
     private Integer status;
 
-    private String content;
-
     private String params;
 
     private String submitUser;
 
     private Integer priority;
 
-    private Integer serialFlag;
+    private Boolean isSerial;
 
     private Integer appId;
 
@@ -42,6 +40,8 @@ public class Job {
     private Date updateTime;
 
     private String updateUser;
+
+    private String content;
 
     public Long getJobId() {
         return jobId;
@@ -75,14 +75,6 @@ public class Job {
         this.status = status;
     }
 
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
     public String getParams() {
         return params;
     }
@@ -107,12 +99,12 @@ public class Job {
         this.priority = priority;
     }
 
-    public Integer getSerialFlag() {
-        return serialFlag;
+    public Boolean getIsSerial() {
+        return isSerial;
     }
 
-    public void setSerialFlag(Integer serialFlag) {
-        this.serialFlag = serialFlag;
+    public void setIsSerial(Boolean isSerial) {
+        this.isSerial = isSerial;
     }
 
     public Integer getAppId() {
@@ -201,5 +193,13 @@ public class Job {
 
     public void setUpdateUser(String updateUser) {
         this.updateUser = updateUser;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }

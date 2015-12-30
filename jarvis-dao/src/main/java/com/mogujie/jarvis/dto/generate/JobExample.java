@@ -365,76 +365,6 @@ public class JobExample {
             return (Criteria) this;
         }
 
-        public Criteria andContentIsNull() {
-            addCriterion("content is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentIsNotNull() {
-            addCriterion("content is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentEqualTo(String value) {
-            addCriterion("content =", value, "content");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentNotEqualTo(String value) {
-            addCriterion("content <>", value, "content");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentGreaterThan(String value) {
-            addCriterion("content >", value, "content");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentGreaterThanOrEqualTo(String value) {
-            addCriterion("content >=", value, "content");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentLessThan(String value) {
-            addCriterion("content <", value, "content");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentLessThanOrEqualTo(String value) {
-            addCriterion("content <=", value, "content");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentLike(String value) {
-            addCriterion("content like", value, "content");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentNotLike(String value) {
-            addCriterion("content not like", value, "content");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentIn(List<String> values) {
-            addCriterion("content in", values, "content");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentNotIn(List<String> values) {
-            addCriterion("content not in", values, "content");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentBetween(String value1, String value2) {
-            addCriterion("content between", value1, value2, "content");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentNotBetween(String value1, String value2) {
-            addCriterion("content not between", value1, value2, "content");
-            return (Criteria) this;
-        }
-
         public Criteria andParamsIsNull() {
             addCriterion("params is null");
             return (Criteria) this;
@@ -635,63 +565,63 @@ public class JobExample {
             return (Criteria) this;
         }
 
-        public Criteria andSerialFlagIsNull() {
-            addCriterion("serialFlag is null");
+        public Criteria andIsSerialIsNull() {
+            addCriterion("isSerial is null");
             return (Criteria) this;
         }
 
-        public Criteria andSerialFlagIsNotNull() {
-            addCriterion("serialFlag is not null");
+        public Criteria andIsSerialIsNotNull() {
+            addCriterion("isSerial is not null");
             return (Criteria) this;
         }
 
-        public Criteria andSerialFlagEqualTo(Integer value) {
-            addCriterion("serialFlag =", value, "serialFlag");
+        public Criteria andIsSerialEqualTo(Boolean value) {
+            addCriterion("isSerial =", value, "isSerial");
             return (Criteria) this;
         }
 
-        public Criteria andSerialFlagNotEqualTo(Integer value) {
-            addCriterion("serialFlag <>", value, "serialFlag");
+        public Criteria andIsSerialNotEqualTo(Boolean value) {
+            addCriterion("isSerial <>", value, "isSerial");
             return (Criteria) this;
         }
 
-        public Criteria andSerialFlagGreaterThan(Integer value) {
-            addCriterion("serialFlag >", value, "serialFlag");
+        public Criteria andIsSerialGreaterThan(Boolean value) {
+            addCriterion("isSerial >", value, "isSerial");
             return (Criteria) this;
         }
 
-        public Criteria andSerialFlagGreaterThanOrEqualTo(Integer value) {
-            addCriterion("serialFlag >=", value, "serialFlag");
+        public Criteria andIsSerialGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("isSerial >=", value, "isSerial");
             return (Criteria) this;
         }
 
-        public Criteria andSerialFlagLessThan(Integer value) {
-            addCriterion("serialFlag <", value, "serialFlag");
+        public Criteria andIsSerialLessThan(Boolean value) {
+            addCriterion("isSerial <", value, "isSerial");
             return (Criteria) this;
         }
 
-        public Criteria andSerialFlagLessThanOrEqualTo(Integer value) {
-            addCriterion("serialFlag <=", value, "serialFlag");
+        public Criteria andIsSerialLessThanOrEqualTo(Boolean value) {
+            addCriterion("isSerial <=", value, "isSerial");
             return (Criteria) this;
         }
 
-        public Criteria andSerialFlagIn(List<Integer> values) {
-            addCriterion("serialFlag in", values, "serialFlag");
+        public Criteria andIsSerialIn(List<Boolean> values) {
+            addCriterion("isSerial in", values, "isSerial");
             return (Criteria) this;
         }
 
-        public Criteria andSerialFlagNotIn(List<Integer> values) {
-            addCriterion("serialFlag not in", values, "serialFlag");
+        public Criteria andIsSerialNotIn(List<Boolean> values) {
+            addCriterion("isSerial not in", values, "isSerial");
             return (Criteria) this;
         }
 
-        public Criteria andSerialFlagBetween(Integer value1, Integer value2) {
-            addCriterion("serialFlag between", value1, value2, "serialFlag");
+        public Criteria andIsSerialBetween(Boolean value1, Boolean value2) {
+            addCriterion("isSerial between", value1, value2, "isSerial");
             return (Criteria) this;
         }
 
-        public Criteria andSerialFlagNotBetween(Integer value1, Integer value2) {
-            addCriterion("serialFlag not between", value1, value2, "serialFlag");
+        public Criteria andIsSerialNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("isSerial not between", value1, value2, "isSerial");
             return (Criteria) this;
         }
 
