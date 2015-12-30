@@ -15,6 +15,8 @@ public class Task {
 
     private Float progress;
 
+    private Boolean isTemp;
+
     private Integer status;
 
     private Integer appId;
@@ -81,6 +83,14 @@ public class Task {
 
     public void setProgress(Float progress) {
         this.progress = progress;
+    }
+
+    public Boolean getIsTemp() {
+        return isTemp;
+    }
+
+    public void setIsTemp(Boolean isTemp) {
+        this.isTemp = isTemp;
     }
 
     public Integer getStatus() {

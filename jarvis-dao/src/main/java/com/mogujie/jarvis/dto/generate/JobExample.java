@@ -625,6 +625,66 @@ public class JobExample {
             return (Criteria) this;
         }
 
+        public Criteria andIsTempIsNull() {
+            addCriterion("isTemp is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsTempIsNotNull() {
+            addCriterion("isTemp is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsTempEqualTo(Boolean value) {
+            addCriterion("isTemp =", value, "isTemp");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsTempNotEqualTo(Boolean value) {
+            addCriterion("isTemp <>", value, "isTemp");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsTempGreaterThan(Boolean value) {
+            addCriterion("isTemp >", value, "isTemp");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsTempGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("isTemp >=", value, "isTemp");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsTempLessThan(Boolean value) {
+            addCriterion("isTemp <", value, "isTemp");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsTempLessThanOrEqualTo(Boolean value) {
+            addCriterion("isTemp <=", value, "isTemp");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsTempIn(List<Boolean> values) {
+            addCriterion("isTemp in", values, "isTemp");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsTempNotIn(List<Boolean> values) {
+            addCriterion("isTemp not in", values, "isTemp");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsTempBetween(Boolean value1, Boolean value2) {
+            addCriterion("isTemp between", value1, value2, "isTemp");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsTempNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("isTemp not between", value1, value2, "isTemp");
+            return (Criteria) this;
+        }
+
         public Criteria andAppIdIsNull() {
             addCriterion("appId is null");
             return (Criteria) this;

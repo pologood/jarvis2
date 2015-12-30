@@ -19,6 +19,8 @@ public class Job {
 
     private Boolean isSerial;
 
+    private Boolean isTemp;
+
     private Integer appId;
 
     private Integer workerGroupId;
@@ -105,6 +107,14 @@ public class Job {
 
     public void setIsSerial(Boolean isSerial) {
         this.isSerial = isSerial;
+    }
+
+    public Boolean getIsTemp() {
+        return isTemp;
+    }
+
+    public void setIsTemp(Boolean isTemp) {
+        this.isTemp = isTemp;
     }
 
     public Integer getAppId() {
