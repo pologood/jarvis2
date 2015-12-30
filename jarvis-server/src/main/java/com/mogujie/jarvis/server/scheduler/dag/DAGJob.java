@@ -8,7 +8,6 @@
 
 package com.mogujie.jarvis.server.scheduler.dag;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -28,8 +27,6 @@ public class DAGJob extends AbstractDAGJob {
     private long jobId;
     private DAGDependChecker dependChecker;
     private DAGJobType type;
-    //timeStamps不需要持久化，异常恢复的时候通过时间调度去自动重建
-    private List<Long> timeStamps = new ArrayList<Long>();
     private JobGraph jobGraph = JobGraph.INSTANCE;
     private static final Logger LOGGER = LogManager.getLogger();
 
@@ -71,22 +68,6 @@ public class DAGJob extends AbstractDAGJob {
         this.dependChecker.setMyJobId(jobId);
     }
 
-    public void addTimeStamp(long timeStamp) {
-        timeStamps.add(timeStamp);
-    }
-
-    public void removeTimeStamp(long timeStamp) {
-        timeStamps.remove(timeStamp);
-    }
-
-    public void clearTimeStamp() {
-        timeStamps.clear();
-    }
-
-    public List<Long> getTimeStamps() {
-        return timeStamps;
-    }
-
     public DAGDependChecker getDependChecker() {
         return dependChecker;
     }
@@ -125,7 +106,7 @@ public class DAGJob extends AbstractDAGJob {
 
     @Override
     public String toString() {
-        return "DAGJob [jobId=" + jobId + ", type=" + type + ", timeStamps=" + timeStamps + "]";
+        return "DAGJob [jobId=" + jobId + ", type=" + type + "]";
     }
 
 }

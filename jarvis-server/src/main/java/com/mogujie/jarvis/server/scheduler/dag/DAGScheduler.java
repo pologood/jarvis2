@@ -19,7 +19,6 @@ import com.mogujie.jarvis.server.scheduler.Scheduler;
 import com.mogujie.jarvis.server.scheduler.event.ScheduleEvent;
 import com.mogujie.jarvis.server.scheduler.event.StartEvent;
 import com.mogujie.jarvis.server.scheduler.event.StopEvent;
-import com.mogujie.jarvis.server.scheduler.event.TimeReadyEvent;
 
 /**
  * Scheduler used to handle dependency based job.
@@ -50,31 +49,6 @@ public class DAGScheduler extends Scheduler {
     }
 
     /**
-     * 由TimeScheduler发送TimeReadyEvent，DAGScheduler进行处理。
-     * 首先添加该DAGJob的时间标识，然后进行依赖检查
-     *
-     * @param e
-     */
-    @Subscribe
-    public void handleTimeReadyEvent(TimeReadyEvent e) {
-        long jobId = e.getJobId();
-        long scheduleTime = e.getScheduleTime();
-        LOGGER.info("start handleTimeReadyEvent, jobId={}, scheduleTime={}", jobId, scheduleTime);
-        DAGJob dagJob = getDAGJob(jobId);
-        if (dagJob != null) {
-            if (!(dagJob.getType().implies(DAGJobType.TIME))) {
-                LOGGER.error("{} doesn't imply TIME type, but receive {} ", dagJob, e);
-                return;
-            }
-            // 添加时间标识
-            dagJob.addTimeStamp(scheduleTime);
-            LOGGER.info("DAGJob {} time ready", dagJob.getJobId());
-            // 如果通过依赖检查，提交给taskScheduler，并移除自己的时间戳
-            jobGraph.submitJobWithCheck(dagJob, scheduleTime);
-        }
-    }
-
-    /**
      * 由TaskScheduler发送ScheduleEvent，DAGScheduler进行处理。
      *
      * @param e
@@ -86,7 +60,7 @@ public class DAGScheduler extends Scheduler {
         long scheduleTime = e.getScheduleTime();
         LOGGER.info("start handleScheduleEvent, jobId={}, scheduleTime={}, taskId={}",
                 jobId, scheduleTime, taskId);
-        DAGJob dagJob = getDAGJob(jobId);
+        DAGJob dagJob = jobGraph.getDAGJob(jobId);
         if (dagJob != null) {
             List<DAGJob> children = jobGraph.getActiveChildren(dagJob);
             // 如果有子任务，触发子任务
@@ -102,10 +76,6 @@ public class DAGScheduler extends Scheduler {
 
     public JobGraph getJobGraph() {
         return jobGraph;
-    }
-
-    private DAGJob getDAGJob(long jobId) {
-        return jobGraph.getDAGJob(jobId);
     }
 
 }

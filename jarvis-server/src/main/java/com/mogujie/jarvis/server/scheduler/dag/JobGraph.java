@@ -35,6 +35,8 @@ import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.dag.checker.DAGDependChecker;
 import com.mogujie.jarvis.server.scheduler.event.AddTaskEvent;
+import com.mogujie.jarvis.server.scheduler.time.ExecutionPlan;
+import com.mogujie.jarvis.server.scheduler.time.ExecutionPlanEntry;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.TaskService;
 
@@ -50,6 +52,7 @@ public enum JobGraph {
     private JobSchedulerController controller = JobSchedulerController.getInstance();
     private JobService jobService = Injectors.getInjector().getInstance(JobService.class);
     private TaskService taskService = Injectors.getInjector().getInstance(TaskService.class);
+    private ExecutionPlan plan = ExecutionPlan.INSTANCE;
 
     private static final Logger LOGGER = LogManager.getLogger();
 
@@ -173,7 +176,6 @@ public enum JobGraph {
     public synchronized void removeJob(long jobId) throws JobScheduleException {
         if (jobMap.containsKey(jobId)) {
             DAGJob dagJob = jobMap.get(jobId);
-            dagJob.clearTimeStamp();
             dag.removeVertex(dagJob);
             jobMap.remove(jobId);
             LOGGER.info("remove DAGJob {} from DAGScheduler successfully.", jobId);
@@ -317,26 +319,23 @@ public enum JobGraph {
      * @param scheduleTime
      */
     public void submitJobWithCheck(DAGJob dagJob, long scheduleTime) {
-        // 如果是时间任务，遍历自己的调度时间做依赖检查
         long jobId = dagJob.getJobId();
+        // 如果是时间任务，遍历自己的调度时间做依赖检查
         if (dagJob.getType().implies(DAGJobType.TIME)) {
-            List<Long> timeStamps = dagJob.getTimeStamps();
+            List<Long> timeStamps = getUnScheduledTimeStamps(jobId);
             for (long timeStamp : timeStamps) {
                 if (dagJob.checkDependency(timeStamp)) {
                     LOGGER.info("{} pass the dependency check", dagJob);
 
-                    // submit task to task scheduler
+                    // 提交给TimeScheduler进行时间调度
                     Map<Long, List<Long>> dependTaskIdMap = dagJob.getDependTaskIdMap(timeStamp);
-                    AddTaskEvent event = new AddTaskEvent(jobId, dependTaskIdMap, timeStamp);
-                    controller.notify(event);
-
-                    // remove time stamp
-                    dagJob.removeTimeStamp(timeStamp);
+                    ExecutionPlanEntry entry = new ExecutionPlanEntry(jobId, new DateTime(scheduleTime), dependTaskIdMap);
+                    plan.addPlan(entry);
                 }
             }
         } else {
             Set<Long> needJobs = getEnableParentJobIds(dagJob.getJobId());
-            // 如果是单亲纯依赖，表示runtime，不需要做依赖检查了
+            // 如果是单亲纯依赖，表示runtime，不需要做依赖检查了，直接提交给TaskScheduler
             if (needJobs.size() == 1) {
                 long preJobId = needJobs.iterator().next();
                 Task task = taskService.getTaskByJobIdAndScheduleTime(preJobId, scheduleTime);
@@ -400,6 +399,19 @@ public enum JobGraph {
             }
         }
         return jobIds;
+    }
+
+    /**
+     * 从上一次调度找到当前时间的下一次，应该要调度但是尚未开始调度的时间
+     * 为什么要找到当前时间下一次？比如C依赖A和B，A是1点，B是2点，当前时间3点，C时间是6点，那必须找到下一次才保险
+     *
+     * @param jobId
+     * @return
+     */
+    private List<Long> getUnScheduledTimeStamps(long jobId) {
+        //TODO
+        List<Long> timeStamps = new ArrayList<Long>();
+        return timeStamps;
     }
 
 }

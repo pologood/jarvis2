@@ -28,23 +28,23 @@ public enum ExecutionPlan {
 
     private SortedSet<ExecutionPlanEntry> plan = new ConcurrentSkipListSet<>(comparator);
 
-    public boolean addPlan(long jobId, DateTime dateTime) {
+    public synchronized boolean addPlan(long jobId, DateTime dateTime) {
         return plan.add(new ExecutionPlanEntry(jobId, dateTime));
     }
 
-    public boolean addPlan(ExecutionPlanEntry entry) {
+    public synchronized boolean addPlan(ExecutionPlanEntry entry) {
         return plan.add(entry);
     }
 
-    public boolean removePlan(long jobId, DateTime dateTime) {
+    public synchronized boolean removePlan(long jobId, DateTime dateTime) {
         return plan.remove(new ExecutionPlanEntry(jobId, dateTime));
     }
 
-    public boolean removePlan(ExecutionPlanEntry planEntry) {
+    public synchronized boolean removePlan(ExecutionPlanEntry planEntry) {
         return plan.remove(planEntry);
     }
 
-    public void removePlan(long jobId) {
+    public synchronized void removePlan(long jobId) {
         Iterator<ExecutionPlanEntry> it = plan.iterator();
         while (it.hasNext()) {
             ExecutionPlanEntry entry = it.next();
@@ -54,7 +54,7 @@ public enum ExecutionPlan {
         }
     }
 
-    public SortedSet<ExecutionPlanEntry> getPlan() {
+    public synchronized SortedSet<ExecutionPlanEntry> getPlan() {
         return plan;
     }
 

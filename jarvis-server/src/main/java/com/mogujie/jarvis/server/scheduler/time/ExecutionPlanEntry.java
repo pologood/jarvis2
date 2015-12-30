@@ -8,6 +8,8 @@
 
 package com.mogujie.jarvis.server.scheduler.time;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import org.joda.time.DateTime;
@@ -16,6 +18,7 @@ public class ExecutionPlanEntry {
     private final long jobId;
     private final DateTime dateTime;
     private long taskId;
+    private Map<Long, List<Long>> dependTaskIdMap;
 
     public ExecutionPlanEntry(long jobId, DateTime dateTime) {
         this.jobId = jobId;
@@ -26,6 +29,12 @@ public class ExecutionPlanEntry {
         this.jobId = jobId;
         this.dateTime = dateTime;
         this.taskId = taskId;
+    }
+
+    public ExecutionPlanEntry(long jobId, DateTime dateTime, Map<Long, List<Long>> dependTaskIdMap) {
+        this.jobId = jobId;
+        this.dateTime = dateTime;
+        this.dependTaskIdMap = dependTaskIdMap;
     }
 
     public long getJobId() {
@@ -42,6 +51,14 @@ public class ExecutionPlanEntry {
 
     public void setTaskId(long taskId) {
         this.taskId = taskId;
+    }
+
+    public Map<Long, List<Long>> getDependTaskIdMap() {
+        return dependTaskIdMap;
+    }
+
+    public void setDependTaskIdMap(Map<Long, List<Long>> dependTaskIdMap) {
+        this.dependTaskIdMap = dependTaskIdMap;
     }
 
     @Override

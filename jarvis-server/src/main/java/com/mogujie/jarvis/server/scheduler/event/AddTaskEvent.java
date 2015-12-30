@@ -28,17 +28,12 @@ public class AddTaskEvent extends DAGJobEvent {
     /**
      * @param jobId
      * @param dependTaskIdMap
+     * @param scheduleTime
      */
     public AddTaskEvent(long jobId, Map<Long, List<Long>> dependTaskIdMap, long scheduleTime) {
         super(jobId);
         this.dependTaskIdMap = dependTaskIdMap;
         this.scheduleTime = scheduleTime;
-    }
-
-    public AddTaskEvent(long jobId, Map<Long, List<Long>> dependTaskIdMap) {
-        super(jobId);
-        this.dependTaskIdMap = dependTaskIdMap;
-        this.scheduleTime = 0;
     }
 
     public Map<Long, List<Long>> getDependTaskIdMap() {

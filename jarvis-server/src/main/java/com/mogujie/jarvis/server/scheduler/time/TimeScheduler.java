@@ -12,15 +12,9 @@ package com.mogujie.jarvis.server.scheduler.time;
  * @author guangming
  *
  */
-/*
- * 蘑菇街 Inc.
- * Copyright (c) 2010-2015 All Rights Reserved.
- *
- * Author: wuya
- * Create Date: 2015年10月23日 上午11:32:26
- */
-
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.SortedSet;
 
 import org.joda.time.DateTime;
@@ -30,9 +24,12 @@ import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
+import com.mogujie.jarvis.server.scheduler.dag.DAGJob;
+import com.mogujie.jarvis.server.scheduler.dag.DAGJobType;
+import com.mogujie.jarvis.server.scheduler.dag.JobGraph;
+import com.mogujie.jarvis.server.scheduler.event.AddTaskEvent;
 import com.mogujie.jarvis.server.scheduler.event.StartEvent;
 import com.mogujie.jarvis.server.scheduler.event.StopEvent;
-import com.mogujie.jarvis.server.scheduler.event.TimeReadyEvent;
 import com.mogujie.jarvis.server.service.TaskService;
 
 public class TimeScheduler extends Scheduler {
@@ -44,6 +41,7 @@ public class TimeScheduler extends Scheduler {
     }
 
     private ExecutionPlan plan = ExecutionPlan.INSTANCE;
+    private JobGraph jobGraph = JobGraph.INSTANCE;
     private volatile boolean running = true;
     private JobSchedulerController controller = JobSchedulerController.getInstance();
     private PlanGenerator planGenerator = new PlanGenerator();
@@ -65,7 +63,7 @@ public class TimeScheduler extends Scheduler {
                         ExecutionPlanEntry entry = it.next();
                         if (!entry.getDateTime().isAfter(now)) {
                             // 1. start this time based job
-                            startPlan(entry);
+                            submitJob(entry);
                             // 2. remove this from plan
                             it.remove();
                         } else {
@@ -128,12 +126,16 @@ public class TimeScheduler extends Scheduler {
         }
     }
 
-    private void startPlan(ExecutionPlanEntry entry) {
+    private void submitJob(ExecutionPlanEntry entry) {
         long jobId = entry.getJobId();
         DateTime dt = entry.getDateTime();
-        controller.notify(new TimeReadyEvent(jobId, dt.getMillis()));
-        planGenerator.generateNextPlan(jobId, dt);
+        Map<Long, List<Long>> dependTaskIdMap = entry.getDependTaskIdMap();
+        AddTaskEvent event = new AddTaskEvent(jobId, dependTaskIdMap, dt.getMillis());
+        controller.notify(event);
+        DAGJob dagJob = jobGraph.getDAGJob(jobId);
+        if (dagJob.getType().equals(DAGJobType.TIME)) {
+            planGenerator.generateNextPlan(jobId, dt);
+        }
     }
-
 }
 
