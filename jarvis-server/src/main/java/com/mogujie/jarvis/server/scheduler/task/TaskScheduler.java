@@ -10,6 +10,7 @@ package com.mogujie.jarvis.server.scheduler.task;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -93,10 +94,6 @@ public class TaskScheduler extends Scheduler {
         taskService.updateStatusWithEnd(taskId, TaskStatus.SUCCESS);
         LOGGER.info("update {} with SUCCESS status", taskId);
 
-        // remove from taskGraph
-        taskGraph.removeTask(taskId);
-        LOGGER.info("remove {} from taskGraph", taskId);
-
         List<DAGTask> childTasks = taskGraph.getChildren(taskId);
         if (childTasks != null && !childTasks.isEmpty()) {
             // TaskGraph trigger
@@ -113,6 +110,10 @@ public class TaskScheduler extends Scheduler {
             ScheduleEvent event = new ScheduleEvent(jobId, taskId, scheduleTime);
             getSchedulerController().notify(event);
         }
+
+        // remove from taskGraph
+        taskGraph.removeTask(taskId);
+        LOGGER.info("remove {} from taskGraph", taskId);
 
         // reduce task number
         reduceTaskNum(taskId);
@@ -192,8 +193,20 @@ public class TaskScheduler extends Scheduler {
         taskGraph.addTask(taskId, dagTask);
         LOGGER.info("add {} to taskGraph", dagTask);
 
-        // submit task
-        submitTask(dagTask);
+        // add task dependency
+        if (dependTaskIdMap != null) {
+            for (Entry<Long, List<Long>> entry : dependTaskIdMap.entrySet()) {
+                List<Long> preTaskIds = entry.getValue();
+                for (long parentId : preTaskIds) {
+                    taskGraph.addDependency(parentId, taskId);
+                }
+            }
+        }
+
+        // 如果通过依赖检查，提交给任务执行器
+        if (dagTask.checkStatus()) {
+            submitTask(dagTask);
+        }
     }
 
     @Subscribe
