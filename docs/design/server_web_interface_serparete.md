@@ -6,15 +6,15 @@
 
 ##接口Web与server相关动作
 
-需要分离的接口名|web功能|与server无关功能|与server有关功能|server通知
+需要分离的接口名|web功能|与server无关功能|与server有关功能|server通知|是否分离
 ---|---|---|---
-app相关|查询，修改，删除|app修改{所有者，成员}|app增加，app删除，app修改{app名称，app状态（停用/启用），最大任务并行数}|√
-app&workerGroup|查询，修改，删除||app与WorkerGroup的关系，增加，删除|√
+app相关|查询，修改，删除|app修改{所有者，成员}|app增加，app删除，app修改{app名称，app状态（停用/启用），最大任务并行数}|√|
+app&workerGroup|查询，修改，删除||app与WorkerGroup的关系，增加，删除|√|
 worker|查询，修改，删除||worker状态变更（启用，停止）|√
 worker&workerGroup|查询，修改，删除||worker与WorkerGroup的关系，增加，删除|√
 alarm报警配置|查询，修改，删除|查询，修改，增加，删除||×
 
-* 备注 报警alarm方案待定，应该从jarvis中移除出来
+* 备注： 报警alarm方案待定，可能会从jarvis中移除出来，放到其他平台配置。
 
 
 ## 分析与方案
