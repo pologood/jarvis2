@@ -41,7 +41,7 @@ public class DAGJob  {
     public boolean checkDependency(long scheduleTime) {
         boolean dependCheck = true;
         if (type.implies(DAGJobType.DEPEND)) {
-            Set<Long> needJobs = jobGraph.getEnableParentJobIds(jobId);
+            Set<Long> needJobs = jobGraph.getParentJobIds(jobId);
             dependCheck = dependChecker.checkDependency(needJobs, scheduleTime);
             if (!dependCheck) {
                 LOGGER.debug("dependChecker failed, job {}, needJobs {}", jobId, needJobs);

@@ -67,7 +67,7 @@ public class PlanUtil {
             return result.toDateTime();
         }
 
-        Set<Long> parentIds = jobGraph.getEnableParentJobIds(jobId);
+        Set<Long> parentIds = jobGraph.getParentJobIds(jobId);
         for (long dependencyJobId : parentIds) {
             DependencyExpression dependencyExpression = jobEntry.getDependencies().get(dependencyJobId).getDependencyExpression();
             if (dependencyExpression == null) {

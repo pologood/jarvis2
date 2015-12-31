@@ -326,7 +326,7 @@ public enum JobGraph {
                 }
             }
         } else {
-            Set<Long> needJobs = getEnableParentJobIds(dagJob.getJobId());
+            Set<Long> needJobs = getParentJobIds(dagJob.getJobId());
             // 如果是单亲纯依赖，表示runtime，不需要做依赖检查了，直接提交给TaskScheduler
             if (needJobs.size() == 1) {
                 long preJobId = needJobs.iterator().next();
@@ -371,23 +371,21 @@ public enum JobGraph {
         }
     }
 
-    public Set<Long> getEnableParentJobIds(long jobId) {
+    public Set<Long> getParentJobIds(long jobId) {
         DAGJob dagJob = jobMap.get(jobId);
         Set<Long> jobIds = Sets.newHashSet();
         if (dagJob != null) {
-            jobIds = getEnableParentJobIds(dagJob);
+            jobIds = getParentJobIds(dagJob);
         }
         return jobIds;
     }
 
-    private Set<Long> getEnableParentJobIds(DAGJob dagJob) {
+    private Set<Long> getParentJobIds(DAGJob dagJob) {
         List<DAGJob> parents = getParents(dagJob);
         Set<Long> jobIds = Sets.newHashSet();
         if (parents != null) {
             for (DAGJob parent : parents) {
-                if (parent.getJobStatus().equals(JobStatus.ENABLE)) {
-                    jobIds.add(parent.getJobId());
-                }
+                jobIds.add(parent.getJobId());
             }
         }
         return jobIds;
