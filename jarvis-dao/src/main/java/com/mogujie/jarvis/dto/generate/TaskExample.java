@@ -655,6 +655,76 @@ public class TaskExample {
             return (Criteria) this;
         }
 
+        public Criteria andFinishReasonIsNull() {
+            addCriterion("finishReason is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinishReasonIsNotNull() {
+            addCriterion("finishReason is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinishReasonEqualTo(String value) {
+            addCriterion("finishReason =", value, "finishReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinishReasonNotEqualTo(String value) {
+            addCriterion("finishReason <>", value, "finishReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinishReasonGreaterThan(String value) {
+            addCriterion("finishReason >", value, "finishReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinishReasonGreaterThanOrEqualTo(String value) {
+            addCriterion("finishReason >=", value, "finishReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinishReasonLessThan(String value) {
+            addCriterion("finishReason <", value, "finishReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinishReasonLessThanOrEqualTo(String value) {
+            addCriterion("finishReason <=", value, "finishReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinishReasonLike(String value) {
+            addCriterion("finishReason like", value, "finishReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinishReasonNotLike(String value) {
+            addCriterion("finishReason not like", value, "finishReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinishReasonIn(List<String> values) {
+            addCriterion("finishReason in", values, "finishReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinishReasonNotIn(List<String> values) {
+            addCriterion("finishReason not in", values, "finishReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinishReasonBetween(String value1, String value2) {
+            addCriterion("finishReason between", value1, value2, "finishReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinishReasonNotBetween(String value1, String value2) {
+            addCriterion("finishReason not between", value1, value2, "finishReason");
+            return (Criteria) this;
+        }
+
         public Criteria andAppIdIsNull() {
             addCriterion("appId is null");
             return (Criteria) this;
@@ -962,76 +1032,6 @@ public class TaskExample {
 
         public Criteria andExecuteEndTimeNotBetween(Date value1, Date value2) {
             addCriterion("executeEndTime not between", value1, value2, "executeEndTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andAttemptExtraIsNull() {
-            addCriterion("attemptExtra is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andAttemptExtraIsNotNull() {
-            addCriterion("attemptExtra is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andAttemptExtraEqualTo(String value) {
-            addCriterion("attemptExtra =", value, "attemptExtra");
-            return (Criteria) this;
-        }
-
-        public Criteria andAttemptExtraNotEqualTo(String value) {
-            addCriterion("attemptExtra <>", value, "attemptExtra");
-            return (Criteria) this;
-        }
-
-        public Criteria andAttemptExtraGreaterThan(String value) {
-            addCriterion("attemptExtra >", value, "attemptExtra");
-            return (Criteria) this;
-        }
-
-        public Criteria andAttemptExtraGreaterThanOrEqualTo(String value) {
-            addCriterion("attemptExtra >=", value, "attemptExtra");
-            return (Criteria) this;
-        }
-
-        public Criteria andAttemptExtraLessThan(String value) {
-            addCriterion("attemptExtra <", value, "attemptExtra");
-            return (Criteria) this;
-        }
-
-        public Criteria andAttemptExtraLessThanOrEqualTo(String value) {
-            addCriterion("attemptExtra <=", value, "attemptExtra");
-            return (Criteria) this;
-        }
-
-        public Criteria andAttemptExtraLike(String value) {
-            addCriterion("attemptExtra like", value, "attemptExtra");
-            return (Criteria) this;
-        }
-
-        public Criteria andAttemptExtraNotLike(String value) {
-            addCriterion("attemptExtra not like", value, "attemptExtra");
-            return (Criteria) this;
-        }
-
-        public Criteria andAttemptExtraIn(List<String> values) {
-            addCriterion("attemptExtra in", values, "attemptExtra");
-            return (Criteria) this;
-        }
-
-        public Criteria andAttemptExtraNotIn(List<String> values) {
-            addCriterion("attemptExtra not in", values, "attemptExtra");
-            return (Criteria) this;
-        }
-
-        public Criteria andAttemptExtraBetween(String value1, String value2) {
-            addCriterion("attemptExtra between", value1, value2, "attemptExtra");
-            return (Criteria) this;
-        }
-
-        public Criteria andAttemptExtraNotBetween(String value1, String value2) {
-            addCriterion("attemptExtra not between", value1, value2, "attemptExtra");
             return (Criteria) this;
         }
 

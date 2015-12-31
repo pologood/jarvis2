@@ -21,6 +21,8 @@ public class Task {
 
     private Integer status;
 
+    private String finishReason;
+
     private Integer appId;
 
     private Integer workerId;
@@ -30,8 +32,6 @@ public class Task {
     private Date executeStartTime;
 
     private Date executeEndTime;
-
-    private String attemptExtra;
 
     private Date createTime;
 
@@ -111,6 +111,14 @@ public class Task {
         this.status = status;
     }
 
+    public String getFinishReason() {
+        return finishReason;
+    }
+
+    public void setFinishReason(String finishReason) {
+        this.finishReason = finishReason;
+    }
+
     public Integer getAppId() {
         return appId;
     }
@@ -149,14 +157,6 @@ public class Task {
 
     public void setExecuteEndTime(Date executeEndTime) {
         this.executeEndTime = executeEndTime;
-    }
-
-    public String getAttemptExtra() {
-        return attemptExtra;
-    }
-
-    public void setAttemptExtra(String attemptExtra) {
-        this.attemptExtra = attemptExtra;
     }
 
     public Date getCreateTime() {
