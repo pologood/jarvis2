@@ -130,10 +130,10 @@ public class JarvisServer {
             }
             int dependFlag = (!dependencies.isEmpty()) ? 1 : 0;
             DAGJobType type = DAGJobType.getDAGJobType(timeFlag, dependFlag, cycleFlag);
-            JobStatus flag = JobStatus.parseValue(job.getStatus());
-            dagScheduler.getJobGraph().addJob(jobId, new DAGJob(jobId, type, flag), null);
-            if (type.equals(DAGJobType.TIME) && flag.equals(JobStatus.ENABLE) && jobService.isActive(jobId)) {
-                plan.addJob(jobId);
+            DAGJob dagJob = new DAGJob(jobId, type);
+            dagScheduler.getJobGraph().addJob(jobId, dagJob, null);
+            if (type.equals(DAGJobType.TIME) && dagJob.getJobStatus().equals(JobStatus.ENABLE) && jobService.isActive(jobId)) {
+                plan.recoverJob(jobId);
             }
         }
         // 3.2 再添加依赖关系

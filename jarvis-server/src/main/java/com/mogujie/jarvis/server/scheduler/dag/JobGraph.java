@@ -229,23 +229,17 @@ public enum JobGraph {
      * @param jobStatus
      * @throws JobScheduleException
      */
-    public void modifyJobFlag(long jobId, JobStatus jobStatus) throws JobScheduleException {
+    public void modifyJobFlag(long jobId, JobStatus oldStatus, JobStatus newStatus) throws JobScheduleException {
         DAGJob dagJob = getDAGJob(jobId);
         List<DAGJob> children = new ArrayList<DAGJob>();
         if (dagJob != null) {
             children = getChildren(dagJob);
         }
 
-        if (jobStatus.equals(JobStatus.DELETED)) {
+        if (newStatus.equals(JobStatus.DELETED)) {
             if (dagJob != null) {
                 removeJob(dagJob);
                 LOGGER.info("remove DAGJob {} from DAGScheduler successfully.", dagJob.getJobId());
-            }
-        } else {
-            if (dagJob != null) {
-                JobStatus oldFlag = dagJob.getJobStatus();
-                dagJob.setJobStatus(jobStatus);
-                LOGGER.info("moidfy job flag from {} to {}.", oldFlag, jobStatus);
             }
         }
 

@@ -20,7 +20,6 @@ import java.util.SortedSet;
 import org.joda.time.DateTime;
 
 import com.google.common.eventbus.Subscribe;
-import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
 import com.mogujie.jarvis.server.scheduler.dag.DAGJob;
@@ -102,14 +101,6 @@ public class TimeScheduler extends Scheduler {
         Map<Long, List<Long>> dependTaskIdMap = event.getDependTaskIdMap();
         TimePlanEntry entry = new TimePlanEntry(jobId, new DateTime(scheduleTime), dependTaskIdMap);
         plan.addPlan(entry);
-    }
-
-    public void modifyJobFlag(long jobId, JobStatus flag) {
-        if (flag.equals(JobStatus.DISABLE) || flag.equals(JobStatus.DELETED)) {
-            plan.removeJob(jobId);
-        } else if (flag.equals(JobStatus.ENABLE)) {
-            plan.addJob(jobId);
-        }
     }
 
     private void submitJob(TimePlanEntry entry) {

@@ -53,6 +53,11 @@ public enum TimePlan {
     }
 
     public synchronized void addJob(long jobId) {
+        DateTime nextTime = PlanUtil.getScheduleTimeAfter(jobId, DateTime.now());
+        addPlan(jobId, nextTime);
+    }
+
+    public synchronized void recoverJob(long jobId) {
         long scheduleTime = DateTime.now().getMillis();
         Task lastone = taskService.getLastTask(jobId, scheduleTime);
         if (lastone != null) {
@@ -72,11 +77,19 @@ public enum TimePlan {
         }
     }
 
-    public synchronized void modifyJobFlag(long jobId, JobStatus flag) {
-        if (flag.equals(JobStatus.DISABLE) || flag.equals(JobStatus.DELETED)) {
+    public synchronized void modifyJobFlag(long jobId, JobStatus oldStatus, JobStatus newStatus) {
+        if (newStatus.equals(JobStatus.DISABLE) || newStatus.equals(JobStatus.DELETED)) {
             removeJob(jobId);
-        } else if (flag.equals(JobStatus.ENABLE)) {
-            addJob(jobId);
+        } else if (newStatus.equals(JobStatus.ENABLE)) {
+            if (oldStatus.equals(JobStatus.PAUSED)) {
+                //如果从暂停状态恢复过来，要把之前的没跑过的都恢复回来
+                recoverJob(jobId);
+            } else if (oldStatus.equals(JobStatus.DISABLE) || oldStatus.equals(JobStatus.DELETED)) {
+                //如果是从禁用或废弃状态恢复回来，不需要恢复历史任务，从当前时间计算下一次
+                addJob(jobId);
+            } else if (oldStatus.equals(JobStatus.ENABLE)) {
+                // nothing to do
+            }
         }
     }
 

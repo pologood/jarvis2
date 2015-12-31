@@ -144,7 +144,7 @@ public class JobActor extends UntypedActor {
             int dependFlag = (!needDependencies.isEmpty()) ? 1 : 0;
             DAGJobType type = DAGJobType.getDAGJobType(cycleFlag, dependFlag, timeFlag);
             jobGraph.addJob(jobId, new DAGJob(jobId, type), needDependencies);
-            if (timeFlag > 0) {
+            if (type.equals(DAGJobType.TIME)) {
                 plan.addJob(jobId);
             }
 
@@ -201,16 +201,17 @@ public class JobActor extends UntypedActor {
 
         ServerModifyJobStatusResponse response;
         try {
+            long jobId = msg.getJobId();
             // 参数检查
             Job job = convertValidService.convertCheck2Job(msg);
 
             // 1. update job to DB
+            JobStatus oldStatus = JobStatus.parseValue(jobService.get(jobId).getJob().getStatus());
             jobService.updateJob(job);
 
-            long jobId = msg.getJobId();
-            JobStatus flag = JobStatus.parseValue(msg.getStatus());
-            plan.modifyJobFlag(jobId, flag);
-            jobGraph.modifyJobFlag(jobId, flag);
+            JobStatus newStatus = JobStatus.parseValue(msg.getStatus());
+            plan.modifyJobFlag(jobId, oldStatus, newStatus);
+            jobGraph.modifyJobFlag(jobId, oldStatus, newStatus);
 
             response = ServerModifyJobStatusResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());
