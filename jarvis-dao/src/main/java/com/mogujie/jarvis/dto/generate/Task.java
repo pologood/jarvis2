@@ -17,7 +17,7 @@ public class Task {
 
     private Float progress;
 
-    private Boolean isTemp;
+    private Integer type;
 
     private Integer status;
 
@@ -95,12 +95,12 @@ public class Task {
         this.progress = progress;
     }
 
-    public Boolean getIsTemp() {
-        return isTemp;
+    public Integer getType() {
+        return type;
     }
 
-    public void setIsTemp(Boolean isTemp) {
-        this.isTemp = isTemp;
+    public void setType(Integer type) {
+        this.type = type;
     }
 
     public Integer getStatus() {

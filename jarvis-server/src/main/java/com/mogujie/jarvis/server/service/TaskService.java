@@ -21,6 +21,7 @@ import com.google.common.collect.Range;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.mogujie.jarvis.core.domain.TaskStatus;
+import com.mogujie.jarvis.core.domain.TaskType;
 import com.mogujie.jarvis.core.expression.DependencyExpression;
 import com.mogujie.jarvis.dao.generate.TaskMapper;
 import com.mogujie.jarvis.dto.generate.Job;
@@ -64,7 +65,7 @@ public class TaskService {
         return record.getTaskId();
     }
 
-    public long createTaskByJobId(long jobId, long scheduleTime) {
+    public long createTaskByJobId(long jobId, long scheduleTime, TaskType taskType) {
         Task record = new Task();
         record.setJobId(jobId);
         record.setAttemptId(1);
@@ -72,10 +73,22 @@ public class TaskService {
         Date currentTime = dt.toDate();
         record.setCreateTime(currentTime);
         record.setUpdateTime(currentTime);
-        record.setScheduleTime(new Date(scheduleTime));
+        if (taskType.equals(TaskType.RERUN)) {
+            //如果是手动重跑，调度时间设为当前系统时间
+            record.setScheduleTime(currentTime);
+        } else {
+            record.setScheduleTime(new Date(scheduleTime));
+        }
+        record.setDataTime(new Date(scheduleTime));
         record.setStatus(TaskStatus.WAITING.getValue());
         record.setProgress((float) 0);
         Job job = jobService.get(jobId).getJob();
+        if (job.getIsTemp()) {
+            //如果是临时任务，设置task类型为TEMP
+            record.setType(TaskType.TEMP.getValue());
+        } else {
+            record.setType(taskType.getValue());
+        }
         record.setExecuteUser(job.getSubmitUser());
         record.setContent(job.getContent());
         record.setParams(job.getParams());

@@ -22,6 +22,7 @@ import com.google.common.eventbus.AllowConcurrentEvents;
 import com.google.common.eventbus.Subscribe;
 import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.domain.TaskStatus;
+import com.mogujie.jarvis.core.domain.TaskType;
 import com.mogujie.jarvis.core.util.IdUtils;
 import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.dto.generate.Job;
@@ -192,7 +193,7 @@ public class TaskScheduler extends Scheduler {
         Map<Long, List<Long>> dependTaskIdMap = e.getDependTaskIdMap();
 
         // create new task
-        long taskId = taskService.createTaskByJobId(jobId, scheduleTime);
+        long taskId = taskService.createTaskByJobId(jobId, scheduleTime, TaskType.SCHEDULE);
         LOGGER.info("add new task[{}] to DB", taskId);
 
         // 如果是串行任务

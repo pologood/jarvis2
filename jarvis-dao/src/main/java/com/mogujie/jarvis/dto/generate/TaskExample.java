@@ -535,63 +535,63 @@ public class TaskExample {
             return (Criteria) this;
         }
 
-        public Criteria andIsTempIsNull() {
-            addCriterion("isTemp is null");
+        public Criteria andTypeIsNull() {
+            addCriterion("type is null");
             return (Criteria) this;
         }
 
-        public Criteria andIsTempIsNotNull() {
-            addCriterion("isTemp is not null");
+        public Criteria andTypeIsNotNull() {
+            addCriterion("type is not null");
             return (Criteria) this;
         }
 
-        public Criteria andIsTempEqualTo(Boolean value) {
-            addCriterion("isTemp =", value, "isTemp");
+        public Criteria andTypeEqualTo(Integer value) {
+            addCriterion("type =", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andIsTempNotEqualTo(Boolean value) {
-            addCriterion("isTemp <>", value, "isTemp");
+        public Criteria andTypeNotEqualTo(Integer value) {
+            addCriterion("type <>", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andIsTempGreaterThan(Boolean value) {
-            addCriterion("isTemp >", value, "isTemp");
+        public Criteria andTypeGreaterThan(Integer value) {
+            addCriterion("type >", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andIsTempGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("isTemp >=", value, "isTemp");
+        public Criteria andTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("type >=", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andIsTempLessThan(Boolean value) {
-            addCriterion("isTemp <", value, "isTemp");
+        public Criteria andTypeLessThan(Integer value) {
+            addCriterion("type <", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andIsTempLessThanOrEqualTo(Boolean value) {
-            addCriterion("isTemp <=", value, "isTemp");
+        public Criteria andTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("type <=", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andIsTempIn(List<Boolean> values) {
-            addCriterion("isTemp in", values, "isTemp");
+        public Criteria andTypeIn(List<Integer> values) {
+            addCriterion("type in", values, "type");
             return (Criteria) this;
         }
 
-        public Criteria andIsTempNotIn(List<Boolean> values) {
-            addCriterion("isTemp not in", values, "isTemp");
+        public Criteria andTypeNotIn(List<Integer> values) {
+            addCriterion("type not in", values, "type");
             return (Criteria) this;
         }
 
-        public Criteria andIsTempBetween(Boolean value1, Boolean value2) {
-            addCriterion("isTemp between", value1, value2, "isTemp");
+        public Criteria andTypeBetween(Integer value1, Integer value2) {
+            addCriterion("type between", value1, value2, "type");
             return (Criteria) this;
         }
 
-        public Criteria andIsTempNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("isTemp not between", value1, value2, "isTemp");
+        public Criteria andTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("type not between", value1, value2, "type");
             return (Criteria) this;
         }
 

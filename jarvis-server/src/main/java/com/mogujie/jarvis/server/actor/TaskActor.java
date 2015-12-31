@@ -32,6 +32,7 @@ import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.domain.TaskDetail.TaskDetailBuilder;
 import com.mogujie.jarvis.core.domain.TaskStatus;
+import com.mogujie.jarvis.core.domain.TaskType;
 import com.mogujie.jarvis.core.domain.WorkerInfo;
 import com.mogujie.jarvis.core.expression.DependencyExpression;
 import com.mogujie.jarvis.core.observer.Event;
@@ -176,7 +177,7 @@ public class TaskActor extends UntypedActor {
             for (TimePlanEntry planEntry : planList) {
                 // create new task
                 long scheduleTime = planEntry.getDateTime().getMillis();
-                long taskId = taskService.createTaskByJobId(jobId, scheduleTime);
+                long taskId = taskService.createTaskByJobId(jobId, scheduleTime, TaskType.RERUN);
                 planEntry.setTaskId(taskId);
                 taskIdList.add(taskId);
             }
