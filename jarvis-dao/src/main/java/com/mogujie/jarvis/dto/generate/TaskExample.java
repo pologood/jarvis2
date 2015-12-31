@@ -415,6 +415,66 @@ public class TaskExample {
             return (Criteria) this;
         }
 
+        public Criteria andDataTimeIsNull() {
+            addCriterion("dataTime is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataTimeIsNotNull() {
+            addCriterion("dataTime is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataTimeEqualTo(Date value) {
+            addCriterion("dataTime =", value, "dataTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataTimeNotEqualTo(Date value) {
+            addCriterion("dataTime <>", value, "dataTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataTimeGreaterThan(Date value) {
+            addCriterion("dataTime >", value, "dataTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataTimeGreaterThanOrEqualTo(Date value) {
+            addCriterion("dataTime >=", value, "dataTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataTimeLessThan(Date value) {
+            addCriterion("dataTime <", value, "dataTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataTimeLessThanOrEqualTo(Date value) {
+            addCriterion("dataTime <=", value, "dataTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataTimeIn(List<Date> values) {
+            addCriterion("dataTime in", values, "dataTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataTimeNotIn(List<Date> values) {
+            addCriterion("dataTime not in", values, "dataTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataTimeBetween(Date value1, Date value2) {
+            addCriterion("dataTime between", value1, value2, "dataTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataTimeNotBetween(Date value1, Date value2) {
+            addCriterion("dataTime not between", value1, value2, "dataTime");
+            return (Criteria) this;
+        }
+
         public Criteria andProgressIsNull() {
             addCriterion("progress is null");
             return (Criteria) this;

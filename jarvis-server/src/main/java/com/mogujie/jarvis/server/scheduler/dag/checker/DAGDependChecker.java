@@ -81,18 +81,6 @@ public class DAGDependChecker {
      * return Map<JobId, List<preTaskId>>
      *
      */
-    public Map<Long, List<Task>> getDependTaskMap(long scheduleTime) {
-        Map<Long, List<Task>> dependTaskMap = Maps.newHashMap();
-        for (Entry<Long, JobDependStatus> entry : jobDependMap.entrySet()) {
-            dependTaskMap.put(entry.getKey(), entry.getValue().getDependTasks(scheduleTime));
-        }
-        return dependTaskMap;
-    }
-
-    /**
-     * return Map<JobId, List<preTaskId>>
-     *
-     */
     public Map<Long, List<Long>> getDependTaskIdMap(long scheduleTime) {
         Map<Long, List<Long>> dependTaskMap = Maps.newHashMap();
         for (Entry<Long, JobDependStatus> entry : jobDependMap.entrySet()) {

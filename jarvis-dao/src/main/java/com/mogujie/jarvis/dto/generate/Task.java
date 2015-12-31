@@ -13,6 +13,8 @@ public class Task {
 
     private Date scheduleTime;
 
+    private Date dataTime;
+
     private Float progress;
 
     private Boolean isTemp;
@@ -75,6 +77,14 @@ public class Task {
 
     public void setScheduleTime(Date scheduleTime) {
         this.scheduleTime = scheduleTime;
+    }
+
+    public Date getDataTime() {
+        return dataTime;
+    }
+
+    public void setDataTime(Date dataTime) {
+        this.dataTime = dataTime;
     }
 
     public Float getProgress() {
