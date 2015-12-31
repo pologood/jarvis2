@@ -49,6 +49,7 @@ import com.mogujie.jarvis.server.scheduler.event.StartEvent;
 import com.mogujie.jarvis.server.scheduler.task.DAGTask;
 import com.mogujie.jarvis.server.scheduler.task.TaskGraph;
 import com.mogujie.jarvis.server.scheduler.task.TaskScheduler;
+import com.mogujie.jarvis.server.scheduler.time.TimePlan;
 import com.mogujie.jarvis.server.scheduler.time.TimeScheduler;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.TaskService;
@@ -96,6 +97,7 @@ public class JarvisServer {
         TimeScheduler timeScheduler = TimeScheduler.getInstance();
         AlarmScheduler alarmScheduler = Injectors.getInjector().getInstance(AlarmScheduler.class);
         TaskGraph taskGraph = TaskGraph.INSTANCE;
+        TimePlan plan = TimePlan.INSTANCE;
         controller.register(dagScheduler);
         controller.register(taskScheduler);
         controller.register(timeScheduler);
@@ -130,8 +132,8 @@ public class JarvisServer {
             DAGJobType type = DAGJobType.getDAGJobType(timeFlag, dependFlag, cycleFlag);
             JobStatus flag = JobStatus.parseValue(job.getStatus());
             dagScheduler.getJobGraph().addJob(jobId, new DAGJob(jobId, type, flag), null);
-            if (type.implies(DAGJobType.TIME) && flag.equals(JobStatus.ENABLE) && jobService.isActive(jobId)) {
-                timeScheduler.addJob(jobId);
+            if (type.equals(DAGJobType.TIME) && flag.equals(JobStatus.ENABLE) && jobService.isActive(jobId)) {
+                plan.addJob(jobId);
             }
         }
         // 3.2 再添加依赖关系

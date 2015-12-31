@@ -14,24 +14,24 @@ import java.util.Objects;
 
 import org.joda.time.DateTime;
 
-public class ExecutionPlanEntry {
+public class TimePlanEntry {
     private final long jobId;
     private final DateTime dateTime;
     private long taskId;
     private Map<Long, List<Long>> dependTaskIdMap;
 
-    public ExecutionPlanEntry(long jobId, DateTime dateTime) {
+    public TimePlanEntry(long jobId, DateTime dateTime) {
         this.jobId = jobId;
         this.dateTime = dateTime;
     }
 
-    public ExecutionPlanEntry(long jobId, DateTime dateTime, long taskId) {
+    public TimePlanEntry(long jobId, DateTime dateTime, long taskId) {
         this.jobId = jobId;
         this.dateTime = dateTime;
         this.taskId = taskId;
     }
 
-    public ExecutionPlanEntry(long jobId, DateTime dateTime, Map<Long, List<Long>> dependTaskIdMap) {
+    public TimePlanEntry(long jobId, DateTime dateTime, Map<Long, List<Long>> dependTaskIdMap) {
         this.jobId = jobId;
         this.dateTime = dateTime;
         this.dependTaskIdMap = dependTaskIdMap;
@@ -72,11 +72,11 @@ public class ExecutionPlanEntry {
             return true;
         }
 
-        if (!(obj instanceof ExecutionPlanEntry)) {
+        if (!(obj instanceof TimePlanEntry)) {
             return false;
         }
 
-        ExecutionPlanEntry other = (ExecutionPlanEntry) obj;
+        TimePlanEntry other = (TimePlanEntry) obj;
         if (taskId > 0 && other.getTaskId() > 0 && taskId == other.getTaskId()) {
             return true;
         } else if (jobId == other.getJobId() && dateTime.isEqual(other.getDateTime())) {

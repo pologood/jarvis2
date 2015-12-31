@@ -66,14 +66,14 @@ import com.mogujie.jarvis.server.scheduler.event.SuccessEvent;
 import com.mogujie.jarvis.server.scheduler.event.UnhandleEvent;
 import com.mogujie.jarvis.server.scheduler.task.DAGTask;
 import com.mogujie.jarvis.server.scheduler.task.TaskGraph;
-import com.mogujie.jarvis.server.scheduler.time.ExecutionPlan;
-import com.mogujie.jarvis.server.scheduler.time.ExecutionPlanEntry;
-import com.mogujie.jarvis.server.scheduler.time.PlanGenerator;
+import com.mogujie.jarvis.server.scheduler.time.TimePlan;
+import com.mogujie.jarvis.server.scheduler.time.TimePlanEntry;
 import com.mogujie.jarvis.server.service.ConvertValidService;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.TaskDependService;
 import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.FutureUtils;
+import com.mogujie.jarvis.server.util.PlanUtil;
 
 /**
  * @author guangming
@@ -168,13 +168,12 @@ public class TaskActor extends UntypedActor {
         DateTime startDate = new DateTime(msg.getStartTime());
         DateTime endDate = new DateTime(msg.getEndTime());
         // 1.生成所有任务的执行计划
-        PlanGenerator planGenerator = new PlanGenerator();
         Range<DateTime> range = Range.closed(startDate, endDate);
-        Map<Long, List<ExecutionPlanEntry>> planMap = planGenerator.getReschedulePlan(jobIdList, range);
+        Map<Long, List<TimePlanEntry>> planMap = PlanUtil.getReschedulePlan(jobIdList, range);
         // 2.通过新的job依赖关系生成新的task
         for (long jobId : jobIdList) {
-            List<ExecutionPlanEntry> planList = planMap.get(jobId);
-            for (ExecutionPlanEntry planEntry : planList) {
+            List<TimePlanEntry> planList = planMap.get(jobId);
+            for (TimePlanEntry planEntry : planList) {
                 // create new task
                 long scheduleTime = planEntry.getDateTime().getMillis();
                 long taskId = taskService.createTaskByJobId(jobId, scheduleTime);
@@ -184,8 +183,8 @@ public class TaskActor extends UntypedActor {
         }
         // 3.添加DAGTask到TaskGraph中
         for (long jobId : jobIdList) {
-            List<ExecutionPlanEntry> planList = planMap.get(jobId);
-            for (ExecutionPlanEntry planEntry : planList) {
+            List<TimePlanEntry> planList = planMap.get(jobId);
+            for (TimePlanEntry planEntry : planList) {
                 // add to taskGraph
                 long taskId = planEntry.getTaskId();
                 long scheduleTime = planEntry.getDateTime().getMillis();
@@ -267,8 +266,8 @@ public class TaskActor extends UntypedActor {
         JobSchedulerController schedulerController = JobSchedulerController.getInstance();
         schedulerController.notify(event);
         // 2. remove from plan if necessary
-        ExecutionPlan plan = ExecutionPlan.INSTANCE;
-        plan.removePlan(new ExecutionPlanEntry(0, null, taskId));
+        TimePlan plan = TimePlan.INSTANCE;
+        plan.removePlan(new TimePlanEntry(0, null, taskId));
 
         ServerModifyTaskStatusResponse response = ServerModifyTaskStatusResponse.newBuilder().setSuccess(true).build();
         getSender().tell(response, getSelf());

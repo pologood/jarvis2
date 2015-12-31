@@ -34,9 +34,8 @@ import com.mogujie.jarvis.server.domain.ModifyOperation;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.dag.checker.DAGDependChecker;
+import com.mogujie.jarvis.server.scheduler.event.AddPlanEvent;
 import com.mogujie.jarvis.server.scheduler.event.AddTaskEvent;
-import com.mogujie.jarvis.server.scheduler.time.ExecutionPlan;
-import com.mogujie.jarvis.server.scheduler.time.ExecutionPlanEntry;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.TaskService;
 
@@ -52,7 +51,6 @@ public enum JobGraph {
     private JobSchedulerController controller = JobSchedulerController.getInstance();
     private JobService jobService = Injectors.getInjector().getInstance(JobService.class);
     private TaskService taskService = Injectors.getInjector().getInstance(TaskService.class);
-    private ExecutionPlan plan = ExecutionPlan.INSTANCE;
 
     private static final Logger LOGGER = LogManager.getLogger();
 
@@ -329,8 +327,8 @@ public enum JobGraph {
 
                     // 提交给TimeScheduler进行时间调度
                     Map<Long, List<Long>> dependTaskIdMap = dagJob.getDependTaskIdMap(timeStamp);
-                    ExecutionPlanEntry entry = new ExecutionPlanEntry(jobId, new DateTime(scheduleTime), dependTaskIdMap);
-                    plan.addPlan(entry);
+                    AddPlanEvent event = new AddPlanEvent(jobId, scheduleTime, dependTaskIdMap);
+                    controller.notify(event);
                 }
             }
         } else {
