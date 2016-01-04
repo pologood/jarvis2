@@ -17,7 +17,7 @@ import org.junit.Test;
  * @author guangming
  *
  */
-public class TestPanEntry {
+public class TestTimePlan {
     private TimePlan plan = TimePlan.INSTANCE;
 
     @After
