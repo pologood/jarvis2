@@ -11,7 +11,6 @@ package com.mogujie.jarvis.server.service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import org.joda.time.DateTime;
 
@@ -128,20 +127,20 @@ public class TaskService {
     }
 
     public void updateStatusWithEnd(long taskId, TaskStatus status) {
+        updateStatusWithEnd(taskId, status, null);
+    }
+
+    public void updateStatusWithEnd(long taskId, TaskStatus status, String reason) {
         Task task = new Task();
         task.setTaskId(taskId);
         task.setStatus(status.getValue());
+        if (reason != null) {
+            task.setFinishReason(reason);
+        }
         Date currentTime = DateTime.now().toDate();
         task.setExecuteEndTime(currentTime);
         task.setUpdateTime(currentTime);
         taskMapper.updateByPrimaryKeySelective(task);
-    }
-
-    public void updateStatusWithEnd(long taskId, TaskStatus status, Map<Long, List<Long>> childTaskMap) {
-        updateStatusWithEnd(taskId, status);
-        if (childTaskMap != null && !childTaskMap.isEmpty()) {
-            taskDependService.storeChild(taskId, childTaskMap);
-        }
     }
 
     public List<Task> getTasksByStatusNotIn(List<Integer> statusList) {

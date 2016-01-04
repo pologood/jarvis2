@@ -8,6 +8,8 @@
 
 package com.mogujie.jarvis.server.scheduler.event;
 
+import com.mogujie.jarvis.core.domain.TaskType;
+
 /**
  * This Event handled by {@link com.mogujie.jarvis.server.scheduler.task.TaskScheduler}.
  * Sent by {@link com.mogujie.jarvis.server.actor.TaskMetricsActor}.
@@ -19,28 +21,21 @@ package com.mogujie.jarvis.server.scheduler.event;
  */
 public class SuccessEvent extends DAGTaskEvent {
     private long scheduleTime;
-    private boolean isTemp;
+    private TaskType taskType;
+    private String reason;
 
     /**
      * @param jobId
      * @param taskId
      * @param scheduleTime
+     * @param taskType
+     * @param reason
      */
-    public SuccessEvent(long jobId, long taskId, long scheduleTime) {
+    public SuccessEvent(long jobId, long taskId, long scheduleTime, TaskType taskType, String reason) {
         super(jobId, taskId);
         this.scheduleTime = scheduleTime;
-    }
-
-    /**
-     * @param jobId
-     * @param taskId
-     * @param scheduleTime
-     * @param isTemp
-     */
-    public SuccessEvent(long jobId, long taskId, long scheduleTime, boolean isTemp) {
-        super(jobId, taskId);
-        this.scheduleTime = scheduleTime;
-        this.isTemp = isTemp;
+        this.taskType = taskType;
+        this.reason = reason;
     }
 
     public long getScheduleTime() {
@@ -51,12 +46,20 @@ public class SuccessEvent extends DAGTaskEvent {
         this.scheduleTime = scheduleTime;
     }
 
-    public boolean isTemp() {
-        return isTemp;
+    public TaskType getTaskType() {
+        return taskType;
     }
 
-    public void setTemp(boolean isTemp) {
-        this.isTemp = isTemp;
+    public void setTaskType(TaskType taskType) {
+        this.taskType = taskType;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 
 }

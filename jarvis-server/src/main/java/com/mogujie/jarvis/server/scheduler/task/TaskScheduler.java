@@ -90,10 +90,12 @@ public class TaskScheduler extends Scheduler {
         long jobId = e.getJobId();
         long taskId = e.getTaskId();
         long scheduleTime = e.getScheduleTime();
+        TaskType taskType = e.getTaskType();
+        String reason = e.getReason();
         LOGGER.info("start handleSuccessEvent, taskId={}", taskId);
 
         // update success status
-        taskService.updateStatusWithEnd(taskId, TaskStatus.SUCCESS);
+        taskService.updateStatusWithEnd(taskId, TaskStatus.SUCCESS, reason);
         LOGGER.info("update {} with SUCCESS status", taskId);
 
         List<DAGTask> childTasks = taskGraph.getChildren(taskId);
@@ -109,10 +111,8 @@ public class TaskScheduler extends Scheduler {
                 }
             }
         } else {
-            boolean isTemp = e.isTemp();
-            // 如果是临时任务，只会通过TaskGraph触发
-            // 反之如果是正常调度，交给DAGScheduler触发后续任务
-            if (!isTemp) {
+            // 如果是正常调度，交给DAGScheduler触发后续任务
+            if (taskType.equals(TaskType.SCHEDULE)) {
                 // JobGraph trigger
                 ScheduleEvent event = new ScheduleEvent(jobId, taskId, scheduleTime);
                 getSchedulerController().notify(event);
@@ -151,6 +151,7 @@ public class TaskScheduler extends Scheduler {
     @AllowConcurrentEvents
     public void handleFailedEvent(FailedEvent e) {
         long taskId = e.getTaskId();
+        String reason = e.getReason();
         LOGGER.info("start handleFailedEvent, taskId={}", taskId);
         DAGTask dagTask = taskGraph.getTask(taskId);
         if (dagTask != null) {
@@ -174,7 +175,7 @@ public class TaskScheduler extends Scheduler {
                 retryScheduler.addTask(getTaskInfo(dagTask), failedRetries, failedInterval, RetryType.FAILED_RETRY);
                 LOGGER.info("add to retryScheduler");
             } else {
-                taskService.updateStatusWithEnd(taskId, TaskStatus.FAILED);
+                taskService.updateStatusWithEnd(taskId, TaskStatus.FAILED, reason);
                 LOGGER.info("update {} with FAILED status", taskId);
                 String key = jobId + "_" + taskId;
                 retryScheduler.remove(key, RetryType.FAILED_RETRY);
@@ -203,8 +204,8 @@ public class TaskScheduler extends Scheduler {
             if (task != null) {
                 if (task.getStatus() != TaskStatus.SUCCESS.getValue()) {
                     // 如果失败，标记为失败
-                    // TODO 还要写上失败的原因
-                    taskService.updateStatusWithEnd(taskId, TaskStatus.FAILED);
+                    String failedReason = "前置串行任务失败";
+                    taskService.updateStatusWithEnd(taskId, TaskStatus.FAILED, failedReason);
                 }
                 // 增加自依赖
                 List<Long> dependTaskIds = Lists.newArrayList(task.getTaskId());

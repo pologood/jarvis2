@@ -20,19 +20,33 @@ package com.mogujie.jarvis.server.scheduler.event;
  */
 public class FailedEvent extends DAGTaskEvent {
 
+    private String reason;
+
     /**
      * @param  jobId
      * @param  taskId
+     * @param  reason
      */
-    public FailedEvent(long jobId, long taskId) {
+    public FailedEvent(long jobId, long taskId, String reason) {
         super(jobId, taskId);
+        this.reason = reason;
     }
 
     /**
      * @param  taskId
+     * @param  reason
      */
-    public FailedEvent(long taskId) {
+    public FailedEvent(long taskId, String reason) {
         super(taskId);
+        this.reason = reason;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 
 }

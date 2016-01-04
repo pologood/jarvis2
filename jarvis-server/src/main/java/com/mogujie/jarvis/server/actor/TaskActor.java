@@ -256,11 +256,12 @@ public class TaskActor extends UntypedActor {
         long taskId = msg.getTaskId();
         TaskStatus status = TaskStatus.parseValue(msg.getStatus());
         Event event = new UnhandleEvent();
+        String reason = "Manual modify task status.";
         if (status.equals(TaskStatus.SUCCESS)) {
             Task task = taskService.get(taskId);
-            event = new SuccessEvent(task.getJobId(), taskId, task.getScheduleTime().getTime());
+            event = new SuccessEvent(task.getJobId(), taskId, task.getScheduleTime().getTime(), reason);
         } else if (status.equals(TaskStatus.FAILED)) {
-            event = new FailedEvent(taskId);
+            event = new FailedEvent(taskId, reason);
         }
         // handle success/failed event
         JobSchedulerController schedulerController = JobSchedulerController.getInstance();
