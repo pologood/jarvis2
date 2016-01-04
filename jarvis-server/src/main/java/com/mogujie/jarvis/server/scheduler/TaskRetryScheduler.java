@@ -8,16 +8,15 @@
 
 package com.mogujie.jarvis.server.scheduler;
 
+import java.util.Arrays;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.PriorityBlockingQueue;
 
 import org.joda.time.DateTime;
-
-import akka.japi.tuple.Tuple3;
 
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.AtomicLongMap;
@@ -31,6 +30,8 @@ import com.mogujie.jarvis.server.dispatcher.TaskQueue;
 import com.mogujie.jarvis.server.domain.RetryType;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
+
+import akka.japi.tuple.Tuple3;
 
 /**
  * Task Retry Scheduler
@@ -51,7 +52,7 @@ public enum TaskRetryScheduler {
         }
     };
 
-    private PriorityQueue<Tuple3<String, RetryType, DateTime>> taskSet = new PriorityQueue<>(comparator);
+    private Queue<Tuple3<String, RetryType, DateTime>> tasks = new PriorityBlockingQueue<>(100, comparator);
     private JobSchedulerController schedulerController = JobSchedulerController.getInstance();
 
     public void start() {
@@ -64,7 +65,7 @@ public enum TaskRetryScheduler {
     public void addTask(TaskDetail taskDetail, int retries, int interval, RetryType retryType) {
         String jobIdWithTaskId = taskDetail.getFullId().replaceAll("_\\d+$", "");
         taskMap.put(new Pair<String, RetryType>(jobIdWithTaskId, retryType), new Pair<TaskDetail, Integer>(taskDetail, retries));
-        taskSet.add(new Tuple3<String, RetryType, DateTime>(jobIdWithTaskId, retryType, DateTime.now().plusSeconds(interval)));
+        tasks.add(new Tuple3<String, RetryType, DateTime>(jobIdWithTaskId, retryType, DateTime.now().plusSeconds(interval)));
     }
 
     public void remove(String jobIdWithTaskId, RetryType retryType) {
@@ -79,13 +80,16 @@ public enum TaskRetryScheduler {
 
     class TaskRetryThread extends Thread {
 
+        @SuppressWarnings("unchecked")
         @Override
         public void run() {
             while (running) {
                 DateTime now = DateTime.now();
-                Iterator<Tuple3<String, RetryType, DateTime>> it = taskSet.iterator();
-                while (it.hasNext()) {
-                    Tuple3<String, RetryType, DateTime> taskSetKey = it.next();
+
+                Object[] array = new Object[tasks.size()];
+                Arrays.sort(tasks.toArray(array));
+                for (Object obj : array) {
+                    Tuple3<String, RetryType, DateTime> taskSetKey = (Tuple3<String, RetryType, DateTime>) obj;
                     if (taskSetKey.t3().isBefore(now)) {
                         Pair<String, RetryType> taskKey = new Pair<String, RetryType>(taskSetKey.t1(), taskSetKey.t2());
                         Pair<TaskDetail, Integer> taskValue = taskMap.get(taskKey);
@@ -104,7 +108,7 @@ public enum TaskRetryScheduler {
                                 taskRetriedCounter.getAndIncrement(taskKey);
                             }
                         }
-                        it.remove();
+                        tasks.remove(obj);
                     } else {
                         break;
                     }
