@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.mybatis.guice.transactional.Transactional;
+
 import com.google.common.base.Preconditions;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
@@ -80,6 +82,7 @@ public class AppService {
         appMetastore.put(app.getAppId(), app);
     }
 
+    @Transactional
     public void update(App app) {
         appMapper.updateByPrimaryKeySelective(app);
 

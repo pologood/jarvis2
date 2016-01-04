@@ -11,8 +11,7 @@ package com.mogujie.jarvis.server.scheduler;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.SortedSet;
-import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.PriorityQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -52,7 +51,7 @@ public enum TaskRetryScheduler {
         }
     };
 
-    private SortedSet<Tuple3<String, RetryType, DateTime>> taskSet = new ConcurrentSkipListSet<>(comparator);
+    private PriorityQueue<Tuple3<String, RetryType, DateTime>> taskSet = new PriorityQueue<>(comparator);
     private JobSchedulerController schedulerController = JobSchedulerController.getInstance();
 
     public void start() {
