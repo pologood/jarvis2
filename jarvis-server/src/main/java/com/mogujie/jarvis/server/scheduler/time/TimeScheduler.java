@@ -12,10 +12,9 @@ package com.mogujie.jarvis.server.scheduler.time;
  * @author guangming
  *
  */
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.SortedSet;
+import java.util.Queue;
 
 import org.joda.time.DateTime;
 
@@ -54,15 +53,14 @@ public class TimeScheduler extends Scheduler {
             while (true) {
                 if (running) {
                     DateTime now = DateTime.now();
-                    SortedSet<TimePlanEntry> planSet = plan.getPlan();
-                    Iterator<TimePlanEntry> it = planSet.iterator();
-                    while (it.hasNext()) {
-                        TimePlanEntry entry = it.next();
+                    Queue<TimePlanEntry> planQueue = plan.getPlan();
+                    while (!planQueue.isEmpty()) {
+                        TimePlanEntry entry = planQueue.peek();
                         if (!entry.getDateTime().isAfter(now)) {
                             // 1. start this time based job
                             submitJob(entry);
                             // 2. remove this from plan
-                            it.remove();
+                            planQueue.poll();
                         } else {
                             break;
                         }

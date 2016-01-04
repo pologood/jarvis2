@@ -10,8 +10,8 @@ package com.mogujie.jarvis.server.scheduler.time;
 
 import java.util.Comparator;
 import java.util.Iterator;
-import java.util.SortedSet;
-import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
 import org.joda.time.DateTime;
 
@@ -33,7 +33,7 @@ public enum TimePlan {
         }
     };
 
-    private SortedSet<TimePlanEntry> plan = new ConcurrentSkipListSet<>(comparator);
+    private Queue<TimePlanEntry> plan = new PriorityQueue<>(comparator);
 
     public synchronized boolean addPlan(long jobId, DateTime dateTime) {
         return plan.add(new TimePlanEntry(jobId, dateTime));
@@ -89,7 +89,7 @@ public enum TimePlan {
         }
     }
 
-    public synchronized SortedSet<TimePlanEntry> getPlan() {
+    public synchronized Queue<TimePlanEntry> getPlan() {
         return plan;
     }
 

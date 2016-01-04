@@ -14,7 +14,7 @@ import java.util.Objects;
 
 import org.joda.time.DateTime;
 
-public class TimePlanEntry {
+public class TimePlanEntry  {
     private final long jobId;
     private final DateTime dateTime;
     private long taskId;
@@ -84,6 +84,11 @@ public class TimePlanEntry {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "TimePlanEntry [jobId=" + jobId + ", dateTime=" + dateTime + ", taskId=" + taskId + ", dependTaskIdMap=" + dependTaskIdMap + "]";
     }
 
 }
