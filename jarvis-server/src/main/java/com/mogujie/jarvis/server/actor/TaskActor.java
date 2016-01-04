@@ -259,7 +259,8 @@ public class TaskActor extends UntypedActor {
         String reason = "Manual modify task status.";
         if (status.equals(TaskStatus.SUCCESS)) {
             Task task = taskService.get(taskId);
-            event = new SuccessEvent(task.getJobId(), taskId, task.getScheduleTime().getTime(), reason);
+            event = new SuccessEvent(task.getJobId(), taskId, task.getScheduleTime().getTime(),
+                    TaskType.parseValue(task.getType()), reason);
         } else if (status.equals(TaskStatus.FAILED)) {
             event = new FailedEvent(taskId, reason);
         }

@@ -17,6 +17,8 @@ import java.util.concurrent.Executors;
 
 import org.joda.time.DateTime;
 
+import akka.japi.tuple.Tuple3;
+
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.AtomicLongMap;
 import com.mogujie.jarvis.core.domain.IdType;
@@ -29,8 +31,6 @@ import com.mogujie.jarvis.server.dispatcher.TaskQueue;
 import com.mogujie.jarvis.server.domain.RetryType;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
-
-import akka.japi.tuple.Tuple3;
 
 /**
  * Task Retry Scheduler
@@ -97,7 +97,7 @@ public enum TaskRetryScheduler {
                                 taskRetriedCounter.remove(taskKey);
                                 long jobId = IdUtils.parse(taskDetail.getFullId(), IdType.JOB_ID);
                                 long taskId = IdUtils.parse(taskDetail.getFullId(), IdType.TASK_ID);
-                                Event event = new FailedEvent(jobId, taskId);
+                                Event event = new FailedEvent(jobId, taskId, null);
                                 schedulerController.notify(event);
                             } else {
                                 taskQueue.put(taskDetail);
