@@ -199,7 +199,7 @@ public class TaskScheduler extends Scheduler {
         // 如果是串行任务
         if (jobService.get(jobId).getJob().getIsSerial()) {
             // 首先检查自己上一次是否成功
-            Task task = taskService.getLastTask(jobId, scheduleTime);
+            Task task = taskService.getLastTask(jobId, scheduleTime, TaskType.SCHEDULE);
             if (task != null) {
                 if (task.getStatus() != TaskStatus.SUCCESS.getValue()) {
                     // 如果失败，标记为失败

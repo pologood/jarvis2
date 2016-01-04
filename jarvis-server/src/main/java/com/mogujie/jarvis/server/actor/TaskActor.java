@@ -67,7 +67,6 @@ import com.mogujie.jarvis.server.scheduler.event.SuccessEvent;
 import com.mogujie.jarvis.server.scheduler.event.UnhandleEvent;
 import com.mogujie.jarvis.server.scheduler.task.DAGTask;
 import com.mogujie.jarvis.server.scheduler.task.TaskGraph;
-import com.mogujie.jarvis.server.scheduler.time.TimePlan;
 import com.mogujie.jarvis.server.scheduler.time.TimePlanEntry;
 import com.mogujie.jarvis.server.service.ConvertValidService;
 import com.mogujie.jarvis.server.service.JobService;
@@ -202,7 +201,7 @@ public class TaskActor extends UntypedActor {
                 }
                 //如果是串行任务
                 if (jobService.get(jobId).getJob().getIsSerial()) {
-                    Task task = taskService.getLastTask(jobId, scheduleTime);
+                    Task task = taskService.getLastTask(jobId, scheduleTime, TaskType.RERUN);
                     if (task != null) {
                         List<Long> dependTaskIds = Lists.newArrayList(task.getTaskId());
                         dependTaskIdMap.put(jobId, dependTaskIds);
@@ -263,12 +262,9 @@ public class TaskActor extends UntypedActor {
         } else if (status.equals(TaskStatus.FAILED)) {
             event = new FailedEvent(taskId);
         }
-        // 1. handle success/failed event
+        // handle success/failed event
         JobSchedulerController schedulerController = JobSchedulerController.getInstance();
         schedulerController.notify(event);
-        // 2. remove from plan if necessary
-        TimePlan plan = TimePlan.INSTANCE;
-        plan.removePlan(new TimePlanEntry(0, null, taskId));
 
         ServerModifyTaskStatusResponse response = ServerModifyTaskStatusResponse.newBuilder().setSuccess(true).build();
         getSender().tell(response, getSelf());

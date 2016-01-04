@@ -213,7 +213,12 @@ public class TaskService {
         return new DateTime(tasks.get(0).getScheduleTime()).getMillis();
     }
 
-    public Task getLastTask(long jobId, long scheduleTime) {
+    public Task getLastTask(long jobId, long scheduleTime, TaskType taskType) {
+        //TODO
+        return null;
+    }
+
+    public Task getLastTask(long jobId, TaskType taskType) {
         //TODO
         return null;
     }

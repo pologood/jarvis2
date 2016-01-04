@@ -16,6 +16,7 @@ import java.util.concurrent.ConcurrentSkipListSet;
 import org.joda.time.DateTime;
 
 import com.mogujie.jarvis.core.domain.JobStatus;
+import com.mogujie.jarvis.core.domain.TaskType;
 import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.service.TaskService;
@@ -34,18 +35,12 @@ public enum TimePlan {
 
     private SortedSet<TimePlanEntry> plan = new ConcurrentSkipListSet<>(comparator);
 
-    private TaskService taskService = Injectors.getInjector().getInstance(TaskService.class);
-
     public synchronized boolean addPlan(long jobId, DateTime dateTime) {
         return plan.add(new TimePlanEntry(jobId, dateTime));
     }
 
     public synchronized boolean addPlan(TimePlanEntry entry) {
         return plan.add(entry);
-    }
-
-    public synchronized boolean removePlan(long jobId, DateTime dateTime) {
-        return plan.remove(new TimePlanEntry(jobId, dateTime));
     }
 
     public synchronized boolean removePlan(TimePlanEntry planEntry) {
@@ -59,7 +54,8 @@ public enum TimePlan {
 
     public synchronized void recoverJob(long jobId) {
         long scheduleTime = DateTime.now().getMillis();
-        Task lastone = taskService.getLastTask(jobId, scheduleTime);
+        TaskService taskService = Injectors.getInjector().getInstance(TaskService.class);
+        Task lastone = taskService.getLastTask(jobId, scheduleTime, TaskType.SCHEDULE);
         if (lastone != null) {
             scheduleTime = lastone.getScheduleTime().getTime();
         }
@@ -81,7 +77,7 @@ public enum TimePlan {
         if (newStatus.equals(JobStatus.DISABLE) || newStatus.equals(JobStatus.DELETED)) {
             removeJob(jobId);
         } else if (newStatus.equals(JobStatus.ENABLE)) {
-            if (oldStatus.equals(JobStatus.PAUSED)) {
+            if (oldStatus.equals(JobStatus.PAUSE)) {
                 //如果从暂停状态恢复过来，要把之前的没跑过的都恢复回来
                 recoverJob(jobId);
             } else if (oldStatus.equals(JobStatus.DISABLE) || oldStatus.equals(JobStatus.DELETED)) {
@@ -95,6 +91,10 @@ public enum TimePlan {
 
     public synchronized SortedSet<TimePlanEntry> getPlan() {
         return plan;
+    }
+
+    public synchronized void clear() {
+        plan.clear();
     }
 
 }

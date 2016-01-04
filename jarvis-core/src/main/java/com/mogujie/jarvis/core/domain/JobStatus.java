@@ -16,7 +16,7 @@ public enum JobStatus {
     DISABLE(2),     //禁用（失效）
     EXPIRED(3),     //过期
     DELETED(4),     //删除（垃圾箱）
-    PAUSED(5);      //暂停
+    PAUSE(5);       //暂停
 
     private int value;
 

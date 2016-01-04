@@ -27,6 +27,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.core.domain.Pair;
+import com.mogujie.jarvis.core.domain.TaskType;
 import com.mogujie.jarvis.core.exeception.JobScheduleException;
 import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.server.domain.ModifyDependEntry;
@@ -38,6 +39,7 @@ import com.mogujie.jarvis.server.scheduler.event.AddPlanEvent;
 import com.mogujie.jarvis.server.scheduler.event.AddTaskEvent;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.TaskService;
+import com.mogujie.jarvis.server.util.PlanUtil;
 
 /**
  * @author guangming
@@ -399,8 +401,16 @@ public enum JobGraph {
      * @return
      */
     private List<Long> getUnScheduledTimeStamps(long jobId) {
-        //TODO
         List<Long> timeStamps = new ArrayList<Long>();
+        Task lastTask = taskService.getLastTask(jobId, TaskType.SCHEDULE);
+        DateTime startTime = PlanUtil.getScheduleTimeAfter(jobId, new DateTime(lastTask.getDataTime()));
+        DateTime endTime = PlanUtil.getScheduleTimeAfter(jobId, DateTime.now());
+        timeStamps.add(startTime.getMillis());
+        DateTime nextTime = startTime;
+        while (nextTime.isBefore(endTime)) {
+            nextTime = PlanUtil.getScheduleTimeAfter(jobId, nextTime);
+            timeStamps.add(nextTime.getMillis());
+        }
         return timeStamps;
     }
 
