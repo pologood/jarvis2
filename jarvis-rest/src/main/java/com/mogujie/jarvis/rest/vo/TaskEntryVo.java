@@ -21,11 +21,10 @@ public class TaskEntryVo {
     private String content;
     private int groupId;
     private Integer priority;
-    private Integer rejectRetries;
-    private Integer rejectInterval;
+    private Integer expiredTime;
     private Integer failedRetries;
     private Integer failedInterval;
-    private Map<String,Object> params;
+    private Map<String, Object> params;
 
     public String getTaskName() {
         return taskName;
@@ -75,20 +74,12 @@ public class TaskEntryVo {
         this.priority = priority;
     }
 
-    public Integer getRejectRetries() {
-        return rejectRetries;
+    public Integer getExpiredTime() {
+        return expiredTime;
     }
 
-    public void setRejectRetries(Integer rejectRetries) {
-        this.rejectRetries = rejectRetries;
-    }
-
-    public Integer getRejectInterval() {
-        return rejectInterval;
-    }
-
-    public void setRejectInterval(Integer rejectInterval) {
-        this.rejectInterval = rejectInterval;
+    public void setExpiredTime(Integer expiredTime) {
+        this.expiredTime = expiredTime;
     }
 
     public Integer getFailedRetries() {
@@ -107,22 +98,20 @@ public class TaskEntryVo {
         this.failedInterval = failedInterval;
     }
 
-    public Map<String,Object> getParams() {
+    public Map<String, Object> getParams() {
         return params;
     }
-    public void setParams(Map<String,Object> params) {
+
+    public void setParams(Map<String, Object> params) {
         this.params = params;
     }
+
     public Integer getPriority(Integer defaultValue) {
         return (priority != null) ? priority : defaultValue;
     }
 
-    public Integer getRejectRetries(Integer defaultValue) {
-        return (rejectRetries != null) ? rejectRetries : defaultValue;
-    }
-
-    public Integer getRejectInterval(Integer defaultValue) {
-        return (rejectInterval != null) ? rejectInterval : defaultValue;
+    public Integer getExpiredTime(Integer defaultValue) {
+        return (expiredTime != null) ? expiredTime : defaultValue;
     }
 
     public Integer getFailedRetries(Integer defaultValue) {

@@ -18,10 +18,6 @@ import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 import org.mybatis.guice.transactional.Transactional;
 
-import akka.actor.ActorSelection;
-import akka.actor.Props;
-import akka.actor.UntypedActor;
-
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Range;
@@ -74,6 +70,10 @@ import com.mogujie.jarvis.server.service.TaskDependService;
 import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.FutureUtils;
 import com.mogujie.jarvis.server.util.PlanUtil;
+
+import akka.actor.ActorSelection;
+import akka.actor.Props;
+import akka.actor.UntypedActor;
 
 /**
  * @author guangming
@@ -259,8 +259,7 @@ public class TaskActor extends UntypedActor {
         String reason = "Manual modify task status.";
         if (status.equals(TaskStatus.SUCCESS)) {
             Task task = taskService.get(taskId);
-            event = new SuccessEvent(task.getJobId(), taskId, task.getScheduleTime().getTime(),
-                    TaskType.parseValue(task.getType()), reason);
+            event = new SuccessEvent(task.getJobId(), taskId, task.getScheduleTime().getTime(), TaskType.parseValue(task.getType()), reason);
         } else if (status.equals(TaskStatus.FAILED)) {
             event = new FailedEvent(taskId, reason);
         }
@@ -316,9 +315,8 @@ public class TaskActor extends UntypedActor {
         long taskId = taskService.insertSelective(task);
         TaskDetailBuilder builder = TaskDetail.newTaskDetailBuilder().setFullId("0_" + taskId + "_0").setAppName(request.getAppAuth().getName())
                 .setTaskName(request.getTaskName()).setUser(request.getUser()).setTaskType(request.getTaskType()).setContent(request.getContent())
-                .setGroupId(request.getGroupId()).setPriority(request.getPriority()).setRejectRetries(request.getRejectRetries())
-                .setRejectInterval(request.getRejectInterval()).setFailedRetries(request.getFailedRetries())
-                .setFailedInterval(request.getFailedInterval()).setSchedulingTime(DateTime.now())
+                .setGroupId(request.getGroupId()).setPriority(request.getPriority()).setExpiredTime(request.getExpiredTime())
+                .setFailedRetries(request.getFailedRetries()).setFailedInterval(request.getFailedInterval()).setSchedulingTime(DateTime.now())
                 .setParameters(JsonHelper.fromJson2JobParams(request.getParameters()));
 
         return builder.build();

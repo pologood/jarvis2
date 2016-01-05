@@ -108,7 +108,7 @@ public class TaskDispatcher extends Thread {
                                         continue;
                                     } else {
                                         LOGGER.warn("Task[{}] was rejected by worker[{}:{}]", fullId, ip, port);
-                                        taskRetryScheduler.addTask(task, task.getRejectRetries(), task.getRejectInterval(), RetryType.REJECT_RETRY);
+                                        taskRetryScheduler.addTask(task, RetryType.REJECT_RETRY);
                                     }
                                 } else {
                                     LOGGER.error("Send ServerSubmitTaskRequest error: " + response.getMessage());
@@ -124,7 +124,7 @@ public class TaskDispatcher extends Thread {
                         LOGGER.warn("worker not exist, worker group id: {}", task.getGroupId());
                     }
 
-                    taskRetryScheduler.addTask(task, task.getFailedRetries(), task.getFailedInterval(), RetryType.FAILED_RETRY);
+                    taskRetryScheduler.addTask(task, RetryType.FAILED_RETRY);
                 } catch (Exception e) {
                     LOGGER.error("", e);
                 }

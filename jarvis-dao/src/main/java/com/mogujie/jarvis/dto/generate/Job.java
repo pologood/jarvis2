@@ -29,9 +29,7 @@ public class Job {
 
     private Date activeEndDate;
 
-    private Integer rejectAttempts;
-
-    private Integer rejectInterval;
+    private Integer expiredTime;
 
     private Integer failedAttempts;
 
@@ -149,20 +147,12 @@ public class Job {
         this.activeEndDate = activeEndDate;
     }
 
-    public Integer getRejectAttempts() {
-        return rejectAttempts;
+    public Integer getExpiredTime() {
+        return expiredTime;
     }
 
-    public void setRejectAttempts(Integer rejectAttempts) {
-        this.rejectAttempts = rejectAttempts;
-    }
-
-    public Integer getRejectInterval() {
-        return rejectInterval;
-    }
-
-    public void setRejectInterval(Integer rejectInterval) {
-        this.rejectInterval = rejectInterval;
+    public void setExpiredTime(Integer expiredTime) {
+        this.expiredTime = expiredTime;
     }
 
     public Integer getFailedAttempts() {

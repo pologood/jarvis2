@@ -2724,57 +2724,47 @@ public final class SubmitTaskProtos {
         int getPriority();
 
         /**
-         * <code>optional int32 reject_retries = 8 [default = 0];</code>
+         * <code>optional int32 expired_time = 8;</code>
          */
-        boolean hasRejectRetries();
+        boolean hasExpiredTime();
 
         /**
-         * <code>optional int32 reject_retries = 8 [default = 0];</code>
+         * <code>optional int32 expired_time = 8;</code>
          */
-        int getRejectRetries();
+        int getExpiredTime();
 
         /**
-         * <code>optional int32 reject_interval = 9 [default = 3];</code>
-         */
-        boolean hasRejectInterval();
-
-        /**
-         * <code>optional int32 reject_interval = 9 [default = 3];</code>
-         */
-        int getRejectInterval();
-
-        /**
-         * <code>optional int32 failed_retries = 10 [default = 0];</code>
+         * <code>optional int32 failed_retries = 9 [default = 0];</code>
          */
         boolean hasFailedRetries();
 
         /**
-         * <code>optional int32 failed_retries = 10 [default = 0];</code>
+         * <code>optional int32 failed_retries = 9 [default = 0];</code>
          */
         int getFailedRetries();
 
         /**
-         * <code>optional int32 failed_interval = 11 [default = 3];</code>
+         * <code>optional int32 failed_interval = 10 [default = 3];</code>
          */
         boolean hasFailedInterval();
 
         /**
-         * <code>optional int32 failed_interval = 11 [default = 3];</code>
+         * <code>optional int32 failed_interval = 10 [default = 3];</code>
          */
         int getFailedInterval();
 
         /**
-         * <code>required string parameters = 12;</code>
+         * <code>required string parameters = 11;</code>
          */
         boolean hasParameters();
 
         /**
-         * <code>required string parameters = 12;</code>
+         * <code>required string parameters = 11;</code>
          */
         java.lang.String getParameters();
 
         /**
-         * <code>required string parameters = 12;</code>
+         * <code>required string parameters = 11;</code>
          */
         com.google.protobuf.ByteString getParametersBytes();
     }
@@ -2880,27 +2870,22 @@ public final class SubmitTaskProtos {
                         }
                         case 64: {
                             bitField0_ |= 0x00000080;
-                            rejectRetries_ = input.readInt32();
+                            expiredTime_ = input.readInt32();
                             break;
                         }
                         case 72: {
                             bitField0_ |= 0x00000100;
-                            rejectInterval_ = input.readInt32();
+                            failedRetries_ = input.readInt32();
                             break;
                         }
                         case 80: {
                             bitField0_ |= 0x00000200;
-                            failedRetries_ = input.readInt32();
-                            break;
-                        }
-                        case 88: {
-                            bitField0_ |= 0x00000400;
                             failedInterval_ = input.readInt32();
                             break;
                         }
-                        case 98: {
+                        case 90: {
                             com.google.protobuf.ByteString bs = input.readBytes();
-                            bitField0_ |= 0x00000800;
+                            bitField0_ |= 0x00000400;
                             parameters_ = bs;
                             break;
                         }
@@ -3182,95 +3167,76 @@ public final class SubmitTaskProtos {
             return priority_;
         }
 
-        public static final int REJECT_RETRIES_FIELD_NUMBER = 8;
-        private int rejectRetries_;
+        public static final int EXPIRED_TIME_FIELD_NUMBER = 8;
+        private int expiredTime_;
 
         /**
-         * <code>optional int32 reject_retries = 8 [default = 0];</code>
+         * <code>optional int32 expired_time = 8;</code>
          */
         @Override
-        public boolean hasRejectRetries() {
+        public boolean hasExpiredTime() {
             return ((bitField0_ & 0x00000080) == 0x00000080);
         }
 
         /**
-         * <code>optional int32 reject_retries = 8 [default = 0];</code>
+         * <code>optional int32 expired_time = 8;</code>
          */
         @Override
-        public int getRejectRetries() {
-            return rejectRetries_;
+        public int getExpiredTime() {
+            return expiredTime_;
         }
 
-        public static final int REJECT_INTERVAL_FIELD_NUMBER = 9;
-        private int rejectInterval_;
+        public static final int FAILED_RETRIES_FIELD_NUMBER = 9;
+        private int failedRetries_;
 
         /**
-         * <code>optional int32 reject_interval = 9 [default = 3];</code>
+         * <code>optional int32 failed_retries = 9 [default = 0];</code>
          */
         @Override
-        public boolean hasRejectInterval() {
+        public boolean hasFailedRetries() {
             return ((bitField0_ & 0x00000100) == 0x00000100);
         }
 
         /**
-         * <code>optional int32 reject_interval = 9 [default = 3];</code>
-         */
-        @Override
-        public int getRejectInterval() {
-            return rejectInterval_;
-        }
-
-        public static final int FAILED_RETRIES_FIELD_NUMBER = 10;
-        private int failedRetries_;
-
-        /**
-         * <code>optional int32 failed_retries = 10 [default = 0];</code>
-         */
-        @Override
-        public boolean hasFailedRetries() {
-            return ((bitField0_ & 0x00000200) == 0x00000200);
-        }
-
-        /**
-         * <code>optional int32 failed_retries = 10 [default = 0];</code>
+         * <code>optional int32 failed_retries = 9 [default = 0];</code>
          */
         @Override
         public int getFailedRetries() {
             return failedRetries_;
         }
 
-        public static final int FAILED_INTERVAL_FIELD_NUMBER = 11;
+        public static final int FAILED_INTERVAL_FIELD_NUMBER = 10;
         private int failedInterval_;
 
         /**
-         * <code>optional int32 failed_interval = 11 [default = 3];</code>
+         * <code>optional int32 failed_interval = 10 [default = 3];</code>
          */
         @Override
         public boolean hasFailedInterval() {
-            return ((bitField0_ & 0x00000400) == 0x00000400);
+            return ((bitField0_ & 0x00000200) == 0x00000200);
         }
 
         /**
-         * <code>optional int32 failed_interval = 11 [default = 3];</code>
+         * <code>optional int32 failed_interval = 10 [default = 3];</code>
          */
         @Override
         public int getFailedInterval() {
             return failedInterval_;
         }
 
-        public static final int PARAMETERS_FIELD_NUMBER = 12;
+        public static final int PARAMETERS_FIELD_NUMBER = 11;
         private java.lang.Object parameters_;
 
         /**
-         * <code>required string parameters = 12;</code>
+         * <code>required string parameters = 11;</code>
          */
         @Override
         public boolean hasParameters() {
-            return ((bitField0_ & 0x00000800) == 0x00000800);
+            return ((bitField0_ & 0x00000400) == 0x00000400);
         }
 
         /**
-         * <code>required string parameters = 12;</code>
+         * <code>required string parameters = 11;</code>
          */
         @Override
         public java.lang.String getParameters() {
@@ -3288,7 +3254,7 @@ public final class SubmitTaskProtos {
         }
 
         /**
-         * <code>required string parameters = 12;</code>
+         * <code>required string parameters = 11;</code>
          */
         @Override
         public com.google.protobuf.ByteString getParametersBytes() {
@@ -3310,8 +3276,7 @@ public final class SubmitTaskProtos {
             content_ = "";
             groupId_ = 0;
             priority_ = 1;
-            rejectRetries_ = 0;
-            rejectInterval_ = 3;
+            expiredTime_ = 0;
             failedRetries_ = 0;
             failedInterval_ = 3;
             parameters_ = "";
@@ -3388,19 +3353,16 @@ public final class SubmitTaskProtos {
                 output.writeInt32(7, priority_);
             }
             if (((bitField0_ & 0x00000080) == 0x00000080)) {
-                output.writeInt32(8, rejectRetries_);
+                output.writeInt32(8, expiredTime_);
             }
             if (((bitField0_ & 0x00000100) == 0x00000100)) {
-                output.writeInt32(9, rejectInterval_);
+                output.writeInt32(9, failedRetries_);
             }
             if (((bitField0_ & 0x00000200) == 0x00000200)) {
-                output.writeInt32(10, failedRetries_);
+                output.writeInt32(10, failedInterval_);
             }
             if (((bitField0_ & 0x00000400) == 0x00000400)) {
-                output.writeInt32(11, failedInterval_);
-            }
-            if (((bitField0_ & 0x00000800) == 0x00000800)) {
-                output.writeBytes(12, getParametersBytes());
+                output.writeBytes(11, getParametersBytes());
             }
             getUnknownFields().writeTo(output);
         }
@@ -3436,19 +3398,16 @@ public final class SubmitTaskProtos {
                 size += com.google.protobuf.CodedOutputStream.computeInt32Size(7, priority_);
             }
             if (((bitField0_ & 0x00000080) == 0x00000080)) {
-                size += com.google.protobuf.CodedOutputStream.computeInt32Size(8, rejectRetries_);
+                size += com.google.protobuf.CodedOutputStream.computeInt32Size(8, expiredTime_);
             }
             if (((bitField0_ & 0x00000100) == 0x00000100)) {
-                size += com.google.protobuf.CodedOutputStream.computeInt32Size(9, rejectInterval_);
+                size += com.google.protobuf.CodedOutputStream.computeInt32Size(9, failedRetries_);
             }
             if (((bitField0_ & 0x00000200) == 0x00000200)) {
-                size += com.google.protobuf.CodedOutputStream.computeInt32Size(10, failedRetries_);
+                size += com.google.protobuf.CodedOutputStream.computeInt32Size(10, failedInterval_);
             }
             if (((bitField0_ & 0x00000400) == 0x00000400)) {
-                size += com.google.protobuf.CodedOutputStream.computeInt32Size(11, failedInterval_);
-            }
-            if (((bitField0_ & 0x00000800) == 0x00000800)) {
-                size += com.google.protobuf.CodedOutputStream.computeBytesSize(12, getParametersBytes());
+                size += com.google.protobuf.CodedOutputStream.computeBytesSize(11, getParametersBytes());
             }
             size += getUnknownFields().getSerializedSize();
             memoizedSerializedSize = size;
@@ -3594,16 +3553,14 @@ public final class SubmitTaskProtos {
                 bitField0_ = (bitField0_ & ~0x00000020);
                 priority_ = 1;
                 bitField0_ = (bitField0_ & ~0x00000040);
-                rejectRetries_ = 0;
+                expiredTime_ = 0;
                 bitField0_ = (bitField0_ & ~0x00000080);
-                rejectInterval_ = 3;
-                bitField0_ = (bitField0_ & ~0x00000100);
                 failedRetries_ = 0;
-                bitField0_ = (bitField0_ & ~0x00000200);
+                bitField0_ = (bitField0_ & ~0x00000100);
                 failedInterval_ = 3;
-                bitField0_ = (bitField0_ & ~0x00000400);
+                bitField0_ = (bitField0_ & ~0x00000200);
                 parameters_ = "";
-                bitField0_ = (bitField0_ & ~0x00000800);
+                bitField0_ = (bitField0_ & ~0x00000400);
                 return this;
             }
 
@@ -3672,21 +3629,17 @@ public final class SubmitTaskProtos {
                 if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
                     to_bitField0_ |= 0x00000080;
                 }
-                result.rejectRetries_ = rejectRetries_;
+                result.expiredTime_ = expiredTime_;
                 if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
                     to_bitField0_ |= 0x00000100;
                 }
-                result.rejectInterval_ = rejectInterval_;
+                result.failedRetries_ = failedRetries_;
                 if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
                     to_bitField0_ |= 0x00000200;
                 }
-                result.failedRetries_ = failedRetries_;
+                result.failedInterval_ = failedInterval_;
                 if (((from_bitField0_ & 0x00000400) == 0x00000400)) {
                     to_bitField0_ |= 0x00000400;
-                }
-                result.failedInterval_ = failedInterval_;
-                if (((from_bitField0_ & 0x00000800) == 0x00000800)) {
-                    to_bitField0_ |= 0x00000800;
                 }
                 result.parameters_ = parameters_;
                 result.bitField0_ = to_bitField0_;
@@ -3736,11 +3689,8 @@ public final class SubmitTaskProtos {
                 if (other.hasPriority()) {
                     setPriority(other.getPriority());
                 }
-                if (other.hasRejectRetries()) {
-                    setRejectRetries(other.getRejectRetries());
-                }
-                if (other.hasRejectInterval()) {
-                    setRejectInterval(other.getRejectInterval());
+                if (other.hasExpiredTime()) {
+                    setExpiredTime(other.getExpiredTime());
                 }
                 if (other.hasFailedRetries()) {
                     setFailedRetries(other.getFailedRetries());
@@ -3749,7 +3699,7 @@ public final class SubmitTaskProtos {
                     setFailedInterval(other.getFailedInterval());
                 }
                 if (other.hasParameters()) {
-                    bitField0_ |= 0x00000800;
+                    bitField0_ |= 0x00000400;
                     parameters_ = other.parameters_;
                     onChanged();
                 }
@@ -4326,78 +4276,40 @@ public final class SubmitTaskProtos {
                 return this;
             }
 
-            private int rejectRetries_;
+            private int expiredTime_;
 
             /**
-             * <code>optional int32 reject_retries = 8 [default = 0];</code>
+             * <code>optional int32 expired_time = 8;</code>
              */
             @Override
-            public boolean hasRejectRetries() {
+            public boolean hasExpiredTime() {
                 return ((bitField0_ & 0x00000080) == 0x00000080);
             }
 
             /**
-             * <code>optional int32 reject_retries = 8 [default = 0];</code>
+             * <code>optional int32 expired_time = 8;</code>
              */
             @Override
-            public int getRejectRetries() {
-                return rejectRetries_;
+            public int getExpiredTime() {
+                return expiredTime_;
             }
 
             /**
-             * <code>optional int32 reject_retries = 8 [default = 0];</code>
+             * <code>optional int32 expired_time = 8;</code>
              */
-            public Builder setRejectRetries(int value) {
+            public Builder setExpiredTime(int value) {
                 bitField0_ |= 0x00000080;
-                rejectRetries_ = value;
+                expiredTime_ = value;
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>optional int32 reject_retries = 8 [default = 0];</code>
+             * <code>optional int32 expired_time = 8;</code>
              */
-            public Builder clearRejectRetries() {
+            public Builder clearExpiredTime() {
                 bitField0_ = (bitField0_ & ~0x00000080);
-                rejectRetries_ = 0;
-                onChanged();
-                return this;
-            }
-
-            private int rejectInterval_ = 3;
-
-            /**
-             * <code>optional int32 reject_interval = 9 [default = 3];</code>
-             */
-            @Override
-            public boolean hasRejectInterval() {
-                return ((bitField0_ & 0x00000100) == 0x00000100);
-            }
-
-            /**
-             * <code>optional int32 reject_interval = 9 [default = 3];</code>
-             */
-            @Override
-            public int getRejectInterval() {
-                return rejectInterval_;
-            }
-
-            /**
-             * <code>optional int32 reject_interval = 9 [default = 3];</code>
-             */
-            public Builder setRejectInterval(int value) {
-                bitField0_ |= 0x00000100;
-                rejectInterval_ = value;
-                onChanged();
-                return this;
-            }
-
-            /**
-             * <code>optional int32 reject_interval = 9 [default = 3];</code>
-             */
-            public Builder clearRejectInterval() {
-                bitField0_ = (bitField0_ & ~0x00000100);
-                rejectInterval_ = 3;
+                expiredTime_ = 0;
                 onChanged();
                 return this;
             }
@@ -4405,15 +4317,15 @@ public final class SubmitTaskProtos {
             private int failedRetries_;
 
             /**
-             * <code>optional int32 failed_retries = 10 [default = 0];</code>
+             * <code>optional int32 failed_retries = 9 [default = 0];</code>
              */
             @Override
             public boolean hasFailedRetries() {
-                return ((bitField0_ & 0x00000200) == 0x00000200);
+                return ((bitField0_ & 0x00000100) == 0x00000100);
             }
 
             /**
-             * <code>optional int32 failed_retries = 10 [default = 0];</code>
+             * <code>optional int32 failed_retries = 9 [default = 0];</code>
              */
             @Override
             public int getFailedRetries() {
@@ -4421,20 +4333,20 @@ public final class SubmitTaskProtos {
             }
 
             /**
-             * <code>optional int32 failed_retries = 10 [default = 0];</code>
+             * <code>optional int32 failed_retries = 9 [default = 0];</code>
              */
             public Builder setFailedRetries(int value) {
-                bitField0_ |= 0x00000200;
+                bitField0_ |= 0x00000100;
                 failedRetries_ = value;
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>optional int32 failed_retries = 10 [default = 0];</code>
+             * <code>optional int32 failed_retries = 9 [default = 0];</code>
              */
             public Builder clearFailedRetries() {
-                bitField0_ = (bitField0_ & ~0x00000200);
+                bitField0_ = (bitField0_ & ~0x00000100);
                 failedRetries_ = 0;
                 onChanged();
                 return this;
@@ -4443,15 +4355,15 @@ public final class SubmitTaskProtos {
             private int failedInterval_ = 3;
 
             /**
-             * <code>optional int32 failed_interval = 11 [default = 3];</code>
+             * <code>optional int32 failed_interval = 10 [default = 3];</code>
              */
             @Override
             public boolean hasFailedInterval() {
-                return ((bitField0_ & 0x00000400) == 0x00000400);
+                return ((bitField0_ & 0x00000200) == 0x00000200);
             }
 
             /**
-             * <code>optional int32 failed_interval = 11 [default = 3];</code>
+             * <code>optional int32 failed_interval = 10 [default = 3];</code>
              */
             @Override
             public int getFailedInterval() {
@@ -4459,20 +4371,20 @@ public final class SubmitTaskProtos {
             }
 
             /**
-             * <code>optional int32 failed_interval = 11 [default = 3];</code>
+             * <code>optional int32 failed_interval = 10 [default = 3];</code>
              */
             public Builder setFailedInterval(int value) {
-                bitField0_ |= 0x00000400;
+                bitField0_ |= 0x00000200;
                 failedInterval_ = value;
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>optional int32 failed_interval = 11 [default = 3];</code>
+             * <code>optional int32 failed_interval = 10 [default = 3];</code>
              */
             public Builder clearFailedInterval() {
-                bitField0_ = (bitField0_ & ~0x00000400);
+                bitField0_ = (bitField0_ & ~0x00000200);
                 failedInterval_ = 3;
                 onChanged();
                 return this;
@@ -4481,15 +4393,15 @@ public final class SubmitTaskProtos {
             private java.lang.Object parameters_ = "";
 
             /**
-             * <code>required string parameters = 12;</code>
+             * <code>required string parameters = 11;</code>
              */
             @Override
             public boolean hasParameters() {
-                return ((bitField0_ & 0x00000800) == 0x00000800);
+                return ((bitField0_ & 0x00000400) == 0x00000400);
             }
 
             /**
-             * <code>required string parameters = 12;</code>
+             * <code>required string parameters = 11;</code>
              */
             @Override
             public java.lang.String getParameters() {
@@ -4507,7 +4419,7 @@ public final class SubmitTaskProtos {
             }
 
             /**
-             * <code>required string parameters = 12;</code>
+             * <code>required string parameters = 11;</code>
              */
             @Override
             public com.google.protobuf.ByteString getParametersBytes() {
@@ -4522,36 +4434,36 @@ public final class SubmitTaskProtos {
             }
 
             /**
-             * <code>required string parameters = 12;</code>
+             * <code>required string parameters = 11;</code>
              */
             public Builder setParameters(java.lang.String value) {
                 if (value == null) {
                     throw new NullPointerException();
                 }
-                bitField0_ |= 0x00000800;
+                bitField0_ |= 0x00000400;
                 parameters_ = value;
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>required string parameters = 12;</code>
+             * <code>required string parameters = 11;</code>
              */
             public Builder clearParameters() {
-                bitField0_ = (bitField0_ & ~0x00000800);
+                bitField0_ = (bitField0_ & ~0x00000400);
                 parameters_ = getDefaultInstance().getParameters();
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>required string parameters = 12;</code>
+             * <code>required string parameters = 11;</code>
              */
             public Builder setParametersBytes(com.google.protobuf.ByteString value) {
                 if (value == null) {
                     throw new NullPointerException();
                 }
-                bitField0_ |= 0x00000800;
+                bitField0_ |= 0x00000400;
                 parameters_ = value;
                 onChanged();
                 return this;
@@ -5279,17 +5191,16 @@ public final class SubmitTaskProtos {
                         + "(\005:\0011\022\035\n\nparameters\030\010 \003(\0132\t.MapEntry\022\027\n\017"
                         + "scheduling_time\030\t \002(\003\"N\n\030WorkerSubmitTas"
                         + "kResponse\022\016\n\006accept\030\001 \001(\010\022\017\n\007success\030\002 \002"
-                        + "(\010\022\021\n\007message\030\003 \001(\t:\000\"\247\002\n\033RestServerSubm"
+                        + "(\010\022\021\n\007message\030\003 \001(\t:\000\"\206\002\n\033RestServerSubm"
                         + "itTaskRequest\022\032\n\010app_auth\030\001 \002(\0132\010.AppAut",
                 "h\022\021\n\ttask_name\030\002 \002(\t\022\014\n\004user\030\003 \002(\t\022\021\n\tta"
                         + "sk_type\030\004 \002(\t\022\017\n\007content\030\005 \002(\t\022\020\n\010group_"
-                        + "id\030\006 \002(\005\022\023\n\010priority\030\007 \001(\005:\0011\022\031\n\016reject_"
-                        + "retries\030\010 \001(\005:\0010\022\032\n\017reject_interval\030\t \001("
-                        + "\005:\0013\022\031\n\016failed_retries\030\n \001(\005:\0010\022\032\n\017faile"
-                        + "d_interval\030\013 \001(\005:\0013\022\022\n\nparameters\030\014 \002(\t\""
-                        + "O\n\030ServerSubmitTaskResponse\022\017\n\007task_id\030\001"
-                        + " \001(\003\022\017\n\007success\030\002 \002(\010\022\021\n\007message\030\003 \001(\t:\000"
-                        + "B/\n\033com.mogujie.jarvis.protocolB\020SubmitT" + "askProtos" };
+                        + "id\030\006 \002(\005\022\023\n\010priority\030\007 \001(\005:\0011\022\024\n\014expired"
+                        + "_time\030\010 \001(\005\022\031\n\016failed_retries\030\t \001(\005:\0010\022\032"
+                        + "\n\017failed_interval\030\n \001(\005:\0013\022\022\n\nparameters"
+                        + "\030\013 \002(\t\"O\n\030ServerSubmitTaskResponse\022\017\n\007ta"
+                        + "sk_id\030\001 \001(\003\022\017\n\007success\030\002 \002(\010\022\021\n\007message\030"
+                        + "\003 \001(\t:\000B/\n\033com.mogujie.jarvis.protocolB\020" + "SubmitTaskProtos" };
         com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner = new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
             @Override
             public com.google.protobuf.ExtensionRegistry assignDescriptors(com.google.protobuf.Descriptors.FileDescriptor root) {
@@ -5311,7 +5222,7 @@ public final class SubmitTaskProtos {
         internal_static_RestServerSubmitTaskRequest_descriptor = getDescriptor().getMessageTypes().get(2);
         internal_static_RestServerSubmitTaskRequest_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
                 internal_static_RestServerSubmitTaskRequest_descriptor, new java.lang.String[] { "AppAuth", "TaskName", "User", "TaskType", "Content",
-                        "GroupId", "Priority", "RejectRetries", "RejectInterval", "FailedRetries", "FailedInterval", "Parameters", });
+                        "GroupId", "Priority", "ExpiredTime", "FailedRetries", "FailedInterval", "Parameters", });
         internal_static_ServerSubmitTaskResponse_descriptor = getDescriptor().getMessageTypes().get(3);
         internal_static_ServerSubmitTaskResponse_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
                 internal_static_ServerSubmitTaskResponse_descriptor, new java.lang.String[] { "TaskId", "Success", "Message", });

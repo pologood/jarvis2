@@ -24,8 +24,7 @@ public class TaskDetail {
     private int groupId;
     private Map<String, Object> parameters;
     private DateTime schedulingTime;
-    private int rejectInterval;
-    private int rejectRetries;
+    private int expiredTime;
     private int failedRetries;
     private int failedInterval;
 
@@ -72,12 +71,8 @@ public class TaskDetail {
         return schedulingTime;
     }
 
-    public int getRejectInterval() {
-        return rejectInterval;
-    }
-
-    public int getRejectRetries() {
-        return rejectRetries;
+    public int getExpiredTime() {
+        return expiredTime;
     }
 
     public int getFailedRetries() {
@@ -149,13 +144,8 @@ public class TaskDetail {
             return this;
         }
 
-        public TaskDetailBuilder setRejectRetries(int rejectRetries) {
-            this.task.rejectRetries = rejectRetries;
-            return this;
-        }
-
-        public TaskDetailBuilder setRejectInterval(int rejectInterval) {
-            this.task.rejectInterval = rejectInterval;
+        public TaskDetailBuilder setExpiredTime(int expiredTime) {
+            this.task.expiredTime = expiredTime;
             return this;
         }
 

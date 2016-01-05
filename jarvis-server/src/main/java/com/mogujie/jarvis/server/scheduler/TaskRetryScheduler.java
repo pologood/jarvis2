@@ -24,8 +24,10 @@ import com.mogujie.jarvis.core.domain.IdType;
 import com.mogujie.jarvis.core.domain.Pair;
 import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.observer.Event;
+import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.core.util.IdUtils;
 import com.mogujie.jarvis.core.util.ThreadUtils;
+import com.mogujie.jarvis.server.ServerConigKeys;
 import com.mogujie.jarvis.server.dispatcher.TaskQueue;
 import com.mogujie.jarvis.server.domain.RetryType;
 import com.mogujie.jarvis.server.guice.Injectors;
@@ -42,8 +44,10 @@ public enum TaskRetryScheduler {
 
     private TaskQueue taskQueue = Injectors.getInjector().getInstance(TaskQueue.class);
     private volatile boolean running;
-    private Map<Pair<String, RetryType>, Pair<TaskDetail, Integer>> taskMap = Maps.newConcurrentMap();
-    private AtomicLongMap<Pair<String, RetryType>> taskRetriedCounter = AtomicLongMap.create();
+    private Map<Pair<String, RetryType>, TaskDetail> taskMap = Maps.newConcurrentMap();
+    private Map<String, DateTime> expiredTimeMap = Maps.newConcurrentMap();
+    private AtomicLongMap<String> taskFailedRetryCounter = AtomicLongMap.create();
+    private int rejectInterval = ConfigUtils.getServerConfig().getInt(ServerConigKeys.TASK_REJECT_INTERVAL, 10);
     private Comparator<Tuple3<String, RetryType, DateTime>> comparator = new Comparator<Tuple3<String, RetryType, DateTime>>() {
 
         @Override
@@ -62,16 +66,26 @@ public enum TaskRetryScheduler {
         executorService.shutdown();
     }
 
-    public void addTask(TaskDetail taskDetail, int retries, int interval, RetryType retryType) {
+    public void addTask(TaskDetail taskDetail, RetryType retryType) {
         String jobIdWithTaskId = taskDetail.getFullId().replaceAll("_\\d+$", "");
-        taskMap.put(new Pair<String, RetryType>(jobIdWithTaskId, retryType), new Pair<TaskDetail, Integer>(taskDetail, retries));
-        tasks.add(new Tuple3<String, RetryType, DateTime>(jobIdWithTaskId, retryType, DateTime.now().plusSeconds(interval)));
+        DateTime expiredDateTime = null;
+        if (retryType == RetryType.FAILED_RETRY) {
+            expiredDateTime = DateTime.now().plusSeconds(taskDetail.getFailedInterval());
+            taskMap.put(new Pair<String, RetryType>(jobIdWithTaskId, retryType), taskDetail);
+        } else {
+            expiredDateTime = DateTime.now().plusSeconds(rejectInterval);
+            if (!expiredTimeMap.containsKey(jobIdWithTaskId)) {
+                expiredTimeMap.put(jobIdWithTaskId, DateTime.now());
+            }
+        }
+
+        tasks.add(new Tuple3<String, RetryType, DateTime>(jobIdWithTaskId, retryType, expiredDateTime));
     }
 
     public void remove(String jobIdWithTaskId, RetryType retryType) {
         Pair<String, RetryType> taskKey = new Pair<String, RetryType>(jobIdWithTaskId, retryType);
         taskMap.remove(taskKey);
-        taskRetriedCounter.remove(taskKey);
+        taskFailedRetryCounter.remove(jobIdWithTaskId);
     }
 
     public void shutdown() {
@@ -85,30 +99,47 @@ public enum TaskRetryScheduler {
         public void run() {
             while (running) {
                 DateTime now = DateTime.now();
-
                 Object[] array = new Object[tasks.size()];
                 Arrays.sort(tasks.toArray(array));
                 for (Object obj : array) {
                     Tuple3<String, RetryType, DateTime> taskSetKey = (Tuple3<String, RetryType, DateTime>) obj;
                     if (taskSetKey.t3().isBefore(now)) {
-                        Pair<String, RetryType> taskKey = new Pair<String, RetryType>(taskSetKey.t1(), taskSetKey.t2());
-                        Pair<TaskDetail, Integer> taskValue = taskMap.get(taskKey);
-                        TaskDetail taskDetail = taskValue.getFirst();
-                        if (taskDetail != null) {
-                            int retries = taskValue.getSecond();
-                            if (taskRetriedCounter.get(taskKey) > retries) {
-                                taskMap.remove(taskKey);
-                                taskRetriedCounter.remove(taskKey);
-                                long jobId = IdUtils.parse(taskDetail.getFullId(), IdType.JOB_ID);
-                                long taskId = IdUtils.parse(taskDetail.getFullId(), IdType.TASK_ID);
-                                Event event = new FailedEvent(jobId, taskId, null);
-                                schedulerController.notify(event);
+                        String jobIdWithTaskId = taskSetKey.t1();
+                        Pair<String, RetryType> taskKey = new Pair<String, RetryType>(jobIdWithTaskId, taskSetKey.t2());
+                        TaskDetail taskDetail = taskMap.get(taskKey);
+                        if (taskSetKey.t2() == RetryType.FAILED_RETRY) {
+                            if (taskDetail != null) {
+                                int retries = taskDetail.getFailedRetries();
+                                if (taskFailedRetryCounter.get(taskKey.getFirst()) > retries) {
+                                    taskMap.remove(taskKey);
+                                    taskFailedRetryCounter.remove(taskKey.getFirst());
+                                    long jobId = IdUtils.parse(taskDetail.getFullId(), IdType.JOB_ID);
+                                    long taskId = IdUtils.parse(taskDetail.getFullId(), IdType.TASK_ID);
+                                    Event event = new FailedEvent(jobId, taskId, null);
+                                    schedulerController.notify(event);
+                                } else {
+                                    taskQueue.put(taskDetail);
+                                    taskFailedRetryCounter.getAndIncrement(taskKey.getFirst());
+                                }
+                            }
+                            tasks.remove(obj);
+                        } else {
+                            DateTime firstRetryTime = expiredTimeMap.get(jobIdWithTaskId);
+                            int expiredTime = taskDetail.getExpiredTime();
+                            if (expiredTime > 0 && firstRetryTime != null) {
+                                long timeDiff = (now.getMillis() - firstRetryTime.getMillis()) / 1000;
+                                if (timeDiff > expiredTime) {
+                                    taskMap.remove(taskKey);
+                                    expiredTimeMap.remove(jobIdWithTaskId);
+                                    long jobId = IdUtils.parse(taskDetail.getFullId(), IdType.JOB_ID);
+                                    long taskId = IdUtils.parse(taskDetail.getFullId(), IdType.TASK_ID);
+                                    Event event = new FailedEvent(jobId, taskId, null);
+                                    schedulerController.notify(event);
+                                }
                             } else {
                                 taskQueue.put(taskDetail);
-                                taskRetriedCounter.getAndIncrement(taskKey);
                             }
                         }
-                        tasks.remove(obj);
                     } else {
                         break;
                     }
