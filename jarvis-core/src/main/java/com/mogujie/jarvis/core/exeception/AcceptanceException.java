@@ -8,10 +8,6 @@
 
 package com.mogujie.jarvis.core.exeception;
 
-/**
- * @author wuya
- *
- */
 public class AcceptanceException extends Exception {
 
     private static final long serialVersionUID = 1L;

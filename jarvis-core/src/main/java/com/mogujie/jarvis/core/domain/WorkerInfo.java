@@ -11,10 +11,6 @@ import java.util.Objects;
 
 import com.mogujie.jarvis.core.JarvisConstants;
 
-/**
- * @author wuya
- *
- */
 public class WorkerInfo {
 
     private String ip;

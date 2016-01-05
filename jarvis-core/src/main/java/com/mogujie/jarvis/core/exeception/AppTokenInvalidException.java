@@ -8,10 +8,6 @@
 
 package com.mogujie.jarvis.core.exeception;
 
-/**
- * @author wuya
- *
- */
 public class AppTokenInvalidException extends JarvisException {
 
     private static final long serialVersionUID = 1L;
