@@ -245,7 +245,7 @@ public class JobService {
     public List<Job> getNotDeletedJobs() {
         JobExample example = new JobExample();
         example.createCriteria().andStatusNotEqualTo(JobStatus.DELETED.getValue());
-        List<Job> jobs = jobMapper.selectByExample(example);
+        List<Job> jobs = jobMapper.selectByExampleWithBLOBs(example);
         if (jobs == null) {
             jobs = new ArrayList<Job>();
         }
