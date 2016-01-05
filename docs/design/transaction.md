@@ -38,5 +38,7 @@
   STM、CAS？
 
   开源STM框架
+  
   https://github.com/pveentjer/Multiverse
+
   http://www.javacreed.com/software-transactional-memory-example-using-multiverse/
