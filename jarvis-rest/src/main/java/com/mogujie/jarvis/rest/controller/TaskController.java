@@ -10,7 +10,6 @@ package com.mogujie.jarvis.rest.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
@@ -35,14 +34,10 @@ import com.mogujie.jarvis.protocol.QueryTaskRelationProtos.ServerQueryTaskRelati
 import com.mogujie.jarvis.protocol.QueryTaskRelationProtos.TaskMapEntry;
 import com.mogujie.jarvis.protocol.RetryTaskProtos.RestServerRetryTaskRequest;
 import com.mogujie.jarvis.protocol.RetryTaskProtos.ServerRetryTaskResponse;
-import com.mogujie.jarvis.protocol.SubmitTaskProtos.RestServerSubmitTaskRequest;
-import com.mogujie.jarvis.protocol.SubmitTaskProtos.ServerSubmitTaskResponse;
 import com.mogujie.jarvis.rest.RestResult;
 import com.mogujie.jarvis.rest.utils.JsonParameters;
 import com.mogujie.jarvis.rest.vo.RerunTaskVo;
-import com.mogujie.jarvis.rest.vo.TaskEntryVo;
 import com.mogujie.jarvis.rest.vo.TaskRelationsVo;
-import com.mogujie.jarvis.rest.vo.TaskVo;
 
 /**
  * @author guangming
@@ -143,44 +138,6 @@ public class TaskController extends AbstractController {
             } else {
                 return errorResult(response.getMessage());
             }
-        } catch (Exception e) {
-            LOGGER.error(e.getMessage());
-            return errorResult(e.getMessage());
-        }
-    }
-
-    /**
-     * 提交一次性任务
-     *
-     * @throws Exception
-     */
-    @POST
-    @Path("submit")
-    @Produces(MediaType.APPLICATION_JSON)
-    public RestResult submit(@FormParam("user") String user, @FormParam("appToken") String appToken, @FormParam("appName") String appName,
-            @FormParam("parameters") String parameters) {
-        try {
-            AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
-
-            TaskEntryVo taskVo = JsonHelper.fromJson(parameters, TaskEntryVo.class);
-            String jobParameters = "";
-            if (taskVo.getParams() != null) {
-                jobParameters = JsonHelper.toJson(taskVo.getParams(), Map.class);
-            }
-            RestServerSubmitTaskRequest request = RestServerSubmitTaskRequest.newBuilder().setAppAuth(appAuth).setTaskName(taskVo.getTaskName())
-                    .setContent(taskVo.getContent()).setTaskType(taskVo.getTaskType()).setUser(taskVo.getUser()).setGroupId(taskVo.getGroupId())
-                    .setPriority(taskVo.getPriority(0)).setExpiredTime(taskVo.getExpiredTime()).setFailedRetries(taskVo.getFailedRetries(0))
-                    .setFailedInterval(taskVo.getFailedInterval(3)).setParameters(jobParameters).build();
-
-            ServerSubmitTaskResponse response = (ServerSubmitTaskResponse) callActor(AkkaType.SERVER, request);
-            if (response.getSuccess()) {
-                TaskVo vo = new TaskVo();
-                vo.setTaskId(response.getTaskId());
-                return successResult(vo);
-            } else {
-                return errorResult(response.getMessage());
-            }
-
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
             return errorResult(e.getMessage());

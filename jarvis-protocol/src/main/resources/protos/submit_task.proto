@@ -22,23 +22,3 @@ message WorkerSubmitTaskResponse {
     required bool success = 2;
     optional string message = 3 [default = ""];
 }
-
-message RestServerSubmitTaskRequest {
-    required AppAuth app_auth = 1;
-    required string task_name = 2;
-    required string user = 3;
-    required string task_type = 4;
-    required string content = 5;
-    required int32 group_id = 6;
-    optional int32 priority = 7 [default = 1];
-    optional int32 expired_time = 8;
-    optional int32 failed_retries = 9 [default = 0];
-    optional int32 failed_interval = 10 [default = 3];
-    required string parameters = 11;
-}
-
-message ServerSubmitTaskResponse {
-    optional int64 task_id = 1;
-    required bool success = 2;
-    optional string message = 3 [default = ""];
-}
