@@ -49,12 +49,12 @@ public class TestTimePlan {
     @Test
     public void testAddPlan() {
         for (int i = 1; i < 10000; i+=2) {
-            TimePlanEntry entry = new TimePlanEntry(i, new DateTime(i*1000));
+            TimePlanEntry entry = new TimePlanEntry(i, new DateTime(i*1000L));
             plan.addPlan(entry);
         }
 
         for (int i = 2; i < 10000; i+=2) {
-            TimePlanEntry entry = new TimePlanEntry(i, new DateTime(i*1000));
+            TimePlanEntry entry = new TimePlanEntry(i, new DateTime(i*1000L));
             plan.addPlan(entry);
         }
 
