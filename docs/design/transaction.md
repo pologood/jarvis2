@@ -33,6 +33,10 @@
    D\*M\*        | D异常：无需处理  M异常：捕获异常，内存回滚，然后重新抛出异常 |
    M\*D\*        | 捕获异常，内存回滚，然后重新抛出异常               |
   
-- 内存回滚
+- 内存事务
   
   STM、CAS？
+
+  开源STM框架
+  https://github.com/pveentjer/Multiverse
+  http://www.javacreed.com/software-transactional-memory-example-using-multiverse/
