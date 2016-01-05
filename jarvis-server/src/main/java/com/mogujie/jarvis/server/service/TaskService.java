@@ -64,7 +64,7 @@ public class TaskService {
         return record.getTaskId();
     }
 
-    public long createTaskByJobId(long jobId, long scheduleTime, TaskType taskType) {
+    public long createTaskByJobId(long jobId, long scheduleTime, long dataTime, TaskType taskType) {
         Task record = new Task();
         record.setJobId(jobId);
         record.setAttemptId(1);
@@ -72,12 +72,7 @@ public class TaskService {
         Date currentTime = dt.toDate();
         record.setCreateTime(currentTime);
         record.setUpdateTime(currentTime);
-        if (taskType.equals(TaskType.RERUN)) {
-            //如果是手动重跑，调度时间设为当前系统时间
-            record.setScheduleTime(currentTime);
-        } else {
-            record.setScheduleTime(new Date(scheduleTime));
-        }
+        record.setScheduleTime(new Date(scheduleTime));
         record.setDataTime(new Date(scheduleTime));
         record.setStatus(TaskStatus.WAITING.getValue());
         record.setProgress((float) 0);

@@ -194,7 +194,7 @@ public class TaskScheduler extends Scheduler {
         Map<Long, List<Long>> dependTaskIdMap = e.getDependTaskIdMap();
 
         // create new task
-        long taskId = taskService.createTaskByJobId(jobId, scheduleTime, TaskType.SCHEDULE);
+        long taskId = taskService.createTaskByJobId(jobId, scheduleTime, scheduleTime, TaskType.SCHEDULE);
         LOGGER.info("add new task[{}] to DB", taskId);
 
         // 如果是串行任务

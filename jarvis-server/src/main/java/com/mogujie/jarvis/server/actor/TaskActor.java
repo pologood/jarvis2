@@ -171,17 +171,18 @@ public class TaskActor extends UntypedActor {
         Range<DateTime> range = Range.closed(startDate, endDate);
         Map<Long, List<TimePlanEntry>> planMap = PlanUtil.getReschedulePlan(jobIdList, range);
         // 2.生成新的task
+        long scheduleTime = DateTime.now().getMillis();
         for (long jobId : jobIdList) {
             List<TimePlanEntry> planList = planMap.get(jobId);
             for (TimePlanEntry planEntry : planList) {
                 // create new task
-                long scheduleTime = planEntry.getDateTime().getMillis();
-                long taskId = taskService.createTaskByJobId(jobId, scheduleTime, TaskType.RERUN);
+                long dataTime = planEntry.getDateTime().getMillis();
+                long taskId = taskService.createTaskByJobId(jobId, scheduleTime, dataTime, TaskType.RERUN);
                 planEntry.setTaskId(taskId);
                 taskIdList.add(taskId);
             }
         }
-        // 3.添加DAGTask到TaskGraph中
+        // 3.确定task依赖关系，添加DAGTask到TaskGraph中
         for (long jobId : jobIdList) {
             List<TimePlanEntry> planList = planMap.get(jobId);
             for (int i = 0; i < planList.size(); i++) {
