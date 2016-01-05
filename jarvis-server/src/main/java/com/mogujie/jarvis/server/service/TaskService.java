@@ -20,7 +20,6 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.domain.TaskType;
-import com.mogujie.jarvis.core.expression.DependencyExpression;
 import com.mogujie.jarvis.dao.generate.TaskMapper;
 import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.dto.generate.Task;
@@ -42,15 +41,6 @@ public class TaskService {
 
     public Task get(long taskId) {
         return taskMapper.selectByPrimaryKey(taskId);
-    }
-
-    public List<Task> getTasks(List<Long> taskIds) {
-        if (taskIds == null || taskIds.isEmpty()) {
-            return null;
-        }
-        TaskExample example = new TaskExample();
-        example.createCriteria().andTaskIdIn(taskIds);
-        return taskMapper.selectByExample(example);
     }
 
     public long insert(Task record) {
@@ -149,35 +139,21 @@ public class TaskService {
         return taskMapper.selectByExample(example);
     }
 
-    public List<Long> getDependTaskIds(long myJobId, long preJobId, long scheduleTime, DependencyExpression dependencyExpression) {
-        List<Task> tasks;
-        if (dependencyExpression != null) {
-            tasks = getTasksBetween(preJobId, dependencyExpression.getRange(new DateTime(scheduleTime)));
-        } else {
-            long preScheduleTime = getPreScheduleTime(myJobId, scheduleTime);
-            tasks = getTasksBetween(preJobId, new DateTime(preScheduleTime), new DateTime(scheduleTime));
-        }
-        List<Long> taskIds = new ArrayList<>();
-        for (Task task : tasks) {
-            taskIds.add(task.getTaskId());
-        }
-        return taskIds;
-    }
-
     public List<Task> getTasksBetween(long jobId, Range<DateTime> range) {
-        if (jobId == 0 || range == null) {
-            return null;
-        }
-        return getTasksBetween(jobId, range.lowerEndpoint(), range.upperEndpoint());
+        return getTasksBetween(jobId, range, TaskType.SCHEDULE);
     }
 
-    public List<Task> getTasksBetween(long jobId, DateTime start, DateTime end) {
-        if (jobId == 0 || start == null || end == null) {
-            return null;
-        }
+    public List<Task> getTasksBetween(long jobId, Range<DateTime> range, TaskType taskType) {
         TaskExample example = new TaskExample();
-        example.createCriteria().andJobIdEqualTo(jobId).andScheduleTimeBetween(start.toDate(), end.toDate());
-        return taskMapper.selectByExample(example);
+        example.createCriteria().andJobIdEqualTo(jobId)
+        .andScheduleTimeBetween(range.lowerEndpoint().toDate(), range.upperEndpoint().toDate())
+        .andTypeEqualTo(taskType.getValue());
+        List<Task> tasks = taskMapper.selectByExample(example);
+        if (tasks == null) {
+            tasks = new ArrayList<Task>();
+        }
+
+        return tasks;
     }
 
     public Task getTaskByJobIdAndScheduleTime(long jobId, long scheduleTime) {
@@ -188,20 +164,6 @@ public class TaskService {
             return taskList.get(0);
         }
         return null;
-    }
-
-    public long getPreScheduleTime(long jobId, long scheduleTime) {
-        if (jobId == 0 || scheduleTime == 0) {
-            return 0;
-        }
-        TaskExample example = new TaskExample();
-        example.createCriteria().andJobIdEqualTo(jobId).andScheduleTimeLessThan(new Date(scheduleTime));
-        example.setOrderByClause("taskId desc");
-        List<Task> tasks = taskMapper.selectByExample(example);
-        if (tasks == null || tasks.isEmpty()) {
-            return 0;
-        }
-        return new DateTime(tasks.get(0).getScheduleTime()).getMillis();
     }
 
     public Task getLastTask(long jobId, long scheduleTime, TaskType taskType) {
