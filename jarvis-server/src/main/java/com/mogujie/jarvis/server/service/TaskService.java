@@ -130,13 +130,21 @@ public class TaskService {
     public List<Task> getTasksByStatusNotIn(List<Integer> statusList) {
         TaskExample example = new TaskExample();
         example.createCriteria().andStatusNotIn(statusList).andTypeNotEqualTo(TaskType.TEMP.getValue());
-        return taskMapper.selectByExample(example);
+        List<Task> tasks = taskMapper.selectByExample(example);
+        if (tasks == null) {
+            tasks = new ArrayList<Task>();
+        }
+        return tasks;
     }
 
     public List<Task> getTasksByStatus(List<Integer> statusList) {
         TaskExample example = new TaskExample();
         example.createCriteria().andStatusIn(statusList).andTypeNotEqualTo(TaskType.TEMP.getValue());
-        return taskMapper.selectByExample(example);
+        List<Task> tasks = taskMapper.selectByExample(example);
+        if (tasks == null) {
+            tasks = new ArrayList<Task>();
+        }
+        return tasks;
     }
 
     public List<Task> getTasksBetween(long jobId, Range<DateTime> range) {
@@ -152,7 +160,6 @@ public class TaskService {
         if (tasks == null) {
             tasks = new ArrayList<Task>();
         }
-
         return tasks;
     }
 
@@ -173,10 +180,8 @@ public class TaskService {
 
     @VisibleForTesting
     public void deleteTaskAndRelation(long taskId) {
-        if (taskId > 0) {
-            taskMapper.deleteByPrimaryKey(taskId);
-            taskDependService.remove(taskId);
-        }
+        taskMapper.deleteByPrimaryKey(taskId);
+        taskDependService.remove(taskId);
     }
 
 }
