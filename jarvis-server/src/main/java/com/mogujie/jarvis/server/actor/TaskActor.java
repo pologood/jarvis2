@@ -29,15 +29,12 @@ import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.domain.IdType;
 import com.mogujie.jarvis.core.domain.JobRelationType;
 import com.mogujie.jarvis.core.domain.MessageType;
-import com.mogujie.jarvis.core.domain.TaskDetail;
-import com.mogujie.jarvis.core.domain.TaskDetail.TaskDetailBuilder;
 import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.domain.TaskType;
 import com.mogujie.jarvis.core.domain.WorkerInfo;
 import com.mogujie.jarvis.core.expression.DependencyExpression;
 import com.mogujie.jarvis.core.observer.Event;
 import com.mogujie.jarvis.core.util.IdUtils;
-import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.protocol.KillTaskProtos.RestServerKillTaskRequest;
 import com.mogujie.jarvis.protocol.KillTaskProtos.ServerKillTaskRequest;
@@ -52,10 +49,7 @@ import com.mogujie.jarvis.protocol.QueryTaskRelationProtos.ServerQueryTaskRelati
 import com.mogujie.jarvis.protocol.QueryTaskRelationProtos.TaskMapEntry;
 import com.mogujie.jarvis.protocol.RetryTaskProtos.RestServerRetryTaskRequest;
 import com.mogujie.jarvis.protocol.RetryTaskProtos.ServerRetryTaskResponse;
-import com.mogujie.jarvis.protocol.SubmitTaskProtos.RestServerSubmitTaskRequest;
-import com.mogujie.jarvis.protocol.SubmitTaskProtos.ServerSubmitTaskResponse;
 import com.mogujie.jarvis.server.dispatcher.TaskManager;
-import com.mogujie.jarvis.server.dispatcher.TaskQueue;
 import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.domain.JobDependencyEntry;
 import com.mogujie.jarvis.server.guice.Injectors;
@@ -68,7 +62,6 @@ import com.mogujie.jarvis.server.scheduler.event.UnhandleEvent;
 import com.mogujie.jarvis.server.scheduler.task.DAGTask;
 import com.mogujie.jarvis.server.scheduler.task.TaskGraph;
 import com.mogujie.jarvis.server.scheduler.time.TimePlanEntry;
-import com.mogujie.jarvis.server.service.ConvertValidService;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.TaskDependService;
 import com.mogujie.jarvis.server.service.TaskService;
@@ -84,10 +77,8 @@ public class TaskActor extends UntypedActor {
     private TaskService taskService = Injectors.getInjector().getInstance(TaskService.class);
     private JobService jobService = Injectors.getInjector().getInstance(JobService.class);
     private TaskDependService taskDependService = Injectors.getInjector().getInstance(TaskDependService.class);
-    private ConvertValidService convertValidService = Injectors.getInjector().getInstance(ConvertValidService.class);
 
     private TaskGraph taskGraph = TaskGraph.INSTANCE;
-    private TaskQueue taskQueue = Injectors.getInjector().getInstance(TaskQueue.class);
     private JobSchedulerController controller = JobSchedulerController.getInstance();
 
     private static final Logger LOGGER = LogManager.getLogger();
@@ -312,23 +303,10 @@ public class TaskActor extends UntypedActor {
         }
     }
 
-    private TaskDetail createRunOnceTask(RestServerSubmitTaskRequest request) {
-        Task task = convertValidService.convert2Task(request);
-        long taskId = taskService.insertSelective(task);
-        TaskDetailBuilder builder = TaskDetail.newTaskDetailBuilder().setFullId("0_" + taskId + "_0").setAppName(request.getAppAuth().getName())
-                .setTaskName(request.getTaskName()).setUser(request.getUser()).setTaskType(request.getTaskType()).setContent(request.getContent())
-                .setGroupId(request.getGroupId()).setPriority(request.getPriority()).setExpiredTime(request.getExpiredTime())
-                .setFailedRetries(request.getFailedRetries()).setFailedInterval(request.getFailedInterval()).setDataTime(DateTime.now())
-                .setParameters(JsonHelper.fromJson2JobParams(request.getParameters()));
-
-        return builder.build();
-    }
-
     public static List<ActorEntry> handledMessages() {
         List<ActorEntry> list = new ArrayList<>();
         list.add(new ActorEntry(RestServerKillTaskRequest.class, ServerKillTaskResponse.class, MessageType.GENERAL));
         list.add(new ActorEntry(RestServerRetryTaskRequest.class, ServerRetryTaskResponse.class, MessageType.GENERAL));
-        list.add(new ActorEntry(RestServerSubmitTaskRequest.class, ServerSubmitTaskResponse.class, MessageType.GENERAL));
         list.add(new ActorEntry(RestServerManualRerunTaskRequest.class, ServerManualRerunTaskResponse.class, MessageType.GENERAL));
         list.add(new ActorEntry(RestServerModifyTaskStatusRequest.class, ServerModifyTaskStatusResponse.class, MessageType.GENERAL));
         list.add(new ActorEntry(RestServerQueryTaskRelationRequest.class, ServerQueryTaskRelationResponse.class, MessageType.GENERAL));

@@ -16,17 +16,14 @@ import com.google.inject.Singleton;
 import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.domain.AppType;
 import com.mogujie.jarvis.core.domain.JobStatus;
-import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.dto.generate.App;
 import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.dto.generate.JobDepend;
-import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
 import com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry;
 import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobRequest;
 import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobStatusRequest;
 import com.mogujie.jarvis.protocol.JobProtos.RestSubmitJobRequest;
-import com.mogujie.jarvis.protocol.SubmitTaskProtos.RestServerSubmitTaskRequest;
 import com.mogujie.jarvis.server.domain.JobEntry;
 
 /**
@@ -163,24 +160,6 @@ public class ConvertValidService {
         jobDepend.setUpdateTime(currentTime);
         jobDepend.setUpdateUser(user);
         return jobDepend;
-    }
-
-    public Task convert2Task(RestServerSubmitTaskRequest msg) {
-        Task task = new Task();
-        task.setJobId((long) 0);
-        task.setAttemptId(1);
-        task.setContent(msg.getContent());
-        task.setExecuteUser(msg.getUser());
-        task.setProgress((float) 0);
-        Date now = new Date();
-        task.setScheduleTime(now);
-        task.setCreateTime(now);
-        task.setUpdateTime(now);
-        task.setParams(msg.getParameters());
-        task.setStatus(TaskStatus.WAITING.getValue());
-        int appId = appService.getAppIdByName(msg.getAppAuth().getName());
-        task.setAppId(appId);
-        return task;
     }
 
     /**
