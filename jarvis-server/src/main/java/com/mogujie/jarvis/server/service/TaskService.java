@@ -15,7 +15,6 @@ import java.util.List;
 import org.joda.time.DateTime;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Range;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -138,18 +137,16 @@ public class TaskService {
         taskMapper.updateByPrimaryKeySelective(task);
     }
 
-    public List<Task> getTasksByStatusNotIn(List<Integer> statusList) {
+    public List<Task> getTasksByStatusNotIn(List<Integer> statusList, List<Integer> taskTypeList) {
         TaskExample example = new TaskExample();
-        example.createCriteria().andStatusNotIn(statusList).andJobIdNotEqualTo(0L);
-        List<Task> tasks = taskMapper.selectByExample(example);
-        return getActiveTasks(tasks);
+        example.createCriteria().andStatusNotIn(statusList).andTypeIn(taskTypeList);
+        return taskMapper.selectByExample(example);
     }
 
-    public List<Task> getTasksByStatus(List<Integer> statusList) {
+    public List<Task> getTasksByStatus(List<Integer> statusList, List<Integer> taskTypeList) {
         TaskExample example = new TaskExample();
-        example.createCriteria().andStatusIn(statusList).andJobIdNotEqualTo(0L);
-        List<Task> tasks = taskMapper.selectByExample(example);
-        return getActiveTasks(tasks);
+        example.createCriteria().andStatusIn(statusList).andTypeIn(taskTypeList);
+        return taskMapper.selectByExample(example);
     }
 
     public List<Long> getDependTaskIds(long myJobId, long preJobId, long scheduleTime, DependencyExpression dependencyExpression) {
@@ -212,29 +209,12 @@ public class TaskService {
         return null;
     }
 
-    public Task getLastTask(long jobId, TaskType taskType) {
-        //TODO
-        return null;
-    }
-
     @VisibleForTesting
     public void deleteTaskAndRelation(long taskId) {
         if (taskId > 0) {
             taskMapper.deleteByPrimaryKey(taskId);
             taskDependService.remove(taskId);
         }
-    }
-
-    private List<Task> getActiveTasks(List<Task> tasks) {
-        List<Task> activeTasks = Lists.newArrayList();
-        if (tasks != null) {
-            for (Task task : tasks) {
-                if (jobService.get(task.getJobId()) != null) {
-                    activeTasks.add(task);
-                }
-            }
-        }
-        return activeTasks;
     }
 
 }
