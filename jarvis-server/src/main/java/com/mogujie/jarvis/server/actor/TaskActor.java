@@ -18,6 +18,10 @@ import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 import org.mybatis.guice.transactional.Transactional;
 
+import akka.actor.ActorSelection;
+import akka.actor.Props;
+import akka.actor.UntypedActor;
+
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Range;
@@ -71,10 +75,6 @@ import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.FutureUtils;
 import com.mogujie.jarvis.server.util.PlanUtil;
 
-import akka.actor.ActorSelection;
-import akka.actor.Props;
-import akka.actor.UntypedActor;
-
 /**
  * @author guangming
  *
@@ -107,9 +107,6 @@ public class TaskActor extends UntypedActor {
         } else if (obj instanceof RestServerManualRerunTaskRequest) {
             RestServerManualRerunTaskRequest msg = (RestServerManualRerunTaskRequest) obj;
             manualRerunTask(msg);
-        } else if (obj instanceof RestServerSubmitTaskRequest) {
-            RestServerSubmitTaskRequest msg = (RestServerSubmitTaskRequest) obj;
-            submitTask(msg);
         } else if (obj instanceof RestServerModifyTaskStatusRequest) {
             RestServerModifyTaskStatusRequest msg = (RestServerModifyTaskStatusRequest) obj;
             modifyTaskStatus(msg);
@@ -249,26 +246,6 @@ public class TaskActor extends UntypedActor {
             }
         }
         return dependTaskIds;
-    }
-
-    /**
-     * 一次性执行任务
-     *
-     * @param msg
-     */
-    private void submitTask(RestServerSubmitTaskRequest msg) {
-        LOGGER.info("start submitTask");
-        ServerSubmitTaskResponse response;
-        try {
-            TaskDetail taskDetail = createRunOnceTask(msg);
-            taskQueue.put(taskDetail);
-            long taskId = IdUtils.parse(taskDetail.getFullId(), IdType.TASK_ID);
-            response = ServerSubmitTaskResponse.newBuilder().setSuccess(true).setTaskId(taskId).build();
-            getSender().tell(response, getSelf());
-        } catch (Exception e) {
-            response = ServerSubmitTaskResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
-            getSender().tell(response, getSelf());
-        }
     }
 
     /**
