@@ -10,6 +10,7 @@ package com.mogujie.jarvis.server.scheduler;
 
 import org.joda.time.DateTime;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -35,7 +36,7 @@ public class TestTaskRetryScheduler {
         builder.setAppName("testApp");
         builder.setContent("content");
         builder.setDataTime(new DateTime(2016, 1, 5, 1, 2, 3));
-        builder.setExpiredTime(10);
+        builder.setExpiredTime(5);
         builder.setFailedInterval(3);
         builder.setFailedRetries(3);
         builder.setFullId("123_456_789");
@@ -50,16 +51,23 @@ public class TestTaskRetryScheduler {
 
     @Test
     public void testFailedRetry() {
-        taskRetryScheduler.addTask(taskDetail, RetryType.FAILED_RETRY);
-        taskRetryScheduler.addTask(taskDetail, RetryType.FAILED_RETRY);
-        taskRetryScheduler.addTask(taskDetail, RetryType.FAILED_RETRY);
-        taskRetryScheduler.addTask(taskDetail, RetryType.FAILED_RETRY);
-        for (int i = 0; i < 10; i++) {
-            System.out.println(taskQueue.size());
-            ThreadUtils.sleep(1000);
+        taskQueue.clear();
+        for (int i = 0; i < 5; i++) {
+            taskRetryScheduler.addTask(taskDetail, RetryType.FAILED_RETRY);
         }
+        ThreadUtils.sleep(5000);
+        Assert.assertEquals(taskQueue.size(), taskDetail.getFailedRetries());
+    }
 
-        System.out.println(taskQueue);
+    @Test
+    public void testRejectRetry() {
+        taskQueue.clear();
+        for (int i = 0; i < 5; i++) {
+            taskRetryScheduler.addTask(taskDetail, RetryType.REJECT_RETRY);
+            ThreadUtils.sleep(2000);
+        }
+        ThreadUtils.sleep(10000);
+        Assert.assertEquals(taskQueue.size(), 3);
     }
 
     @After

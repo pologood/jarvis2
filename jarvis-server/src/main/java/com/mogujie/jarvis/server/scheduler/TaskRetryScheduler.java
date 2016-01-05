@@ -73,7 +73,8 @@ public enum TaskRetryScheduler {
         } else {
             expiredDateTime = DateTime.now().plusSeconds(rejectInterval);
             if (!expiredTimeMap.containsKey(jobIdWithTaskId)) {
-                expiredTimeMap.putIfAbsent(jobIdWithTaskId, DateTime.now());
+                taskMap.putIfAbsent(new Pair<String, RetryType>(jobIdWithTaskId, retryType), taskDetail);
+                expiredTimeMap.putIfAbsent(jobIdWithTaskId, expiredDateTime);
             }
         }
 
@@ -114,6 +115,7 @@ public enum TaskRetryScheduler {
                             Pair<String, RetryType> pair = new Pair<String, RetryType>(jobIdWithTaskId, taskKey.t2());
                             TaskDetail taskDetail = taskMap.get(pair);
                             if (taskDetail == null) {
+                                it.remove();
                                 continue;
                             }
 
@@ -142,6 +144,8 @@ public enum TaskRetryScheduler {
                                         long taskId = IdUtils.parse(taskDetail.getFullId(), IdType.TASK_ID);
                                         Event event = new FailedEvent(jobId, taskId, null);
                                         schedulerController.notify(event);
+                                    } else {
+                                        taskQueue.put(taskDetail);
                                     }
                                 } else {
                                     taskQueue.put(taskDetail);
