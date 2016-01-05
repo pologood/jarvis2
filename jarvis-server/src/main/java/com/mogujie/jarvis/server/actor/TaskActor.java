@@ -170,7 +170,7 @@ public class TaskActor extends UntypedActor {
         // 1.生成所有任务的执行计划
         Range<DateTime> range = Range.closed(startDate, endDate);
         Map<Long, List<TimePlanEntry>> planMap = PlanUtil.getReschedulePlan(jobIdList, range);
-        // 2.通过新的job依赖关系生成新的task
+        // 2.生成新的task
         for (long jobId : jobIdList) {
             List<TimePlanEntry> planList = planMap.get(jobId);
             for (TimePlanEntry planEntry : planList) {
@@ -184,30 +184,34 @@ public class TaskActor extends UntypedActor {
         // 3.添加DAGTask到TaskGraph中
         for (long jobId : jobIdList) {
             List<TimePlanEntry> planList = planMap.get(jobId);
-            for (TimePlanEntry planEntry : planList) {
-                // add to taskGraph
+            for (int i = 0; i < planList.size(); i++) {
+                TimePlanEntry planEntry = planList.get(i);
                 long taskId = planEntry.getTaskId();
-                long scheduleTime = planEntry.getDateTime().getMillis();
+                long dataTime = planEntry.getDateTime().getMillis();
                 Map<Long, List<Long>> dependTaskIdMap = Maps.newHashMap();
                 Map<Long, JobDependencyEntry> dependencyMap = jobService.get(jobId).getDependencies();
                 if (dependencyMap != null) {
                     for (Entry<Long, JobDependencyEntry> entry : dependencyMap.entrySet()) {
                         long preJobId = entry.getKey();
-                        JobDependencyEntry dependencyEntry = entry.getValue();
-                        DependencyExpression dependencyExpression = dependencyEntry.getDependencyExpression();
-                        List<Long> dependTaskIds = taskService.getDependTaskIds(jobId, preJobId, scheduleTime, dependencyExpression);
-                        dependTaskIdMap.put(preJobId, dependTaskIds);
+                        if (jobIdList.contains(preJobId)) {
+                            JobDependencyEntry dependencyEntry = entry.getValue();
+                            DependencyExpression dependencyExpression = dependencyEntry.getDependencyExpression();
+                            List<Long> dependTaskIds = getDependTaskIds(planMap.get(preJobId), dataTime, dependencyExpression);
+                            dependTaskIdMap.put(preJobId, dependTaskIds);
+                        }
                     }
                 }
                 //如果是串行任务
                 if (jobService.get(jobId).getJob().getIsSerial()) {
-                    Task task = taskService.getLastTask(jobId, scheduleTime, TaskType.RERUN);
-                    if (task != null) {
-                        List<Long> dependTaskIds = Lists.newArrayList(task.getTaskId());
+                    if (i > 0) {
+                        // 增加自依赖
+                        long preTaskId = planList.get(i - 1).getTaskId();
+                        List<Long> dependTaskIds = Lists.newArrayList(preTaskId);
                         dependTaskIdMap.put(jobId, dependTaskIds);
                     }
                 }
-                DAGTask dagTask = new DAGTask(jobId, taskId, scheduleTime, dependTaskIdMap);
+                // add to taskGraph
+                DAGTask dagTask = new DAGTask(jobId, taskId, dataTime, dependTaskIdMap);
                 taskGraph.addTask(taskId, dagTask);
             }
         }
@@ -224,6 +228,26 @@ public class TaskActor extends UntypedActor {
 
         ServerManualRerunTaskResponse response = ServerManualRerunTaskResponse.newBuilder().setSuccess(true).build();
         getSender().tell(response, getSelf());
+    }
+
+    private List<Long> getDependTaskIds(List<TimePlanEntry> planList, long dataTime, DependencyExpression dependencyExpression) {
+        List<Long> dependTaskIds = new ArrayList<Long>();
+        if (dependencyExpression == null) {
+            for (TimePlanEntry entry : planList) {
+                if (entry.getDateTime().getMillis() == dataTime) {
+                    dependTaskIds.add(entry.getTaskId());
+                    break;
+                }
+            }
+        } else {
+            Range<DateTime> range = dependencyExpression.getRange(new DateTime(dataTime));
+            for (TimePlanEntry entry : planList) {
+                if (range.contains(entry.getDateTime())) {
+                    dependTaskIds.add(entry.getTaskId());
+                }
+            }
+        }
+        return dependTaskIds;
     }
 
     /**
@@ -318,7 +342,7 @@ public class TaskActor extends UntypedActor {
                 .setTaskName(request.getTaskName()).setUser(request.getUser()).setTaskType(request.getTaskType()).setContent(request.getContent())
                 .setGroupId(request.getGroupId()).setPriority(request.getPriority()).setRejectRetries(request.getRejectRetries())
                 .setRejectInterval(request.getRejectInterval()).setFailedRetries(request.getFailedRetries())
-                .setFailedInterval(request.getFailedInterval()).setSchedulingTime(DateTime.now())
+                .setFailedInterval(request.getFailedInterval()).setDataTime(DateTime.now())
                 .setParameters(JsonHelper.fromJson2JobParams(request.getParameters()));
 
         return builder.build();

@@ -245,7 +245,7 @@ public class TaskScheduler extends Scheduler {
 
             DAGTask dagTask = taskGraph.getTask(taskId);
             if (dagTask == null) {
-                dagTask = new DAGTask(task.getJobId(), taskId, task.getAttemptId(), task.getScheduleTime().getTime());
+                dagTask = new DAGTask(task.getJobId(), taskId, task.getAttemptId(), task.getDataTime().getTime());
                 taskGraph.addTask(taskId, dagTask);
                 LOGGER.info("add {} to taskGraph", dagTask);
             }
@@ -324,7 +324,7 @@ public class TaskScheduler extends Scheduler {
                 .setContent(job.getContent())
                 .setTaskType(job.getJobType())
                 .setParameters(JsonHelper.fromJson2JobParams(job.getParams()))
-                .setSchedulingTime(new DateTime(dagTask.getScheduleTime()))
+                .setDataTime(new DateTime(dagTask.getDataTime()))
                 .setGroupId(job.getWorkerGroupId())
                 .setFailedRetries(job.getFailedAttempts())
                 .setFailedInterval(job.getFailedInterval())
