@@ -15,7 +15,6 @@ import java.util.List;
 import org.joda.time.DateTime;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Range;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -64,7 +63,7 @@ public class TaskService {
         return record.getTaskId();
     }
 
-    public long createTaskByJobId(long jobId, long scheduleTime, TaskType taskType) {
+    public long createTaskByJobId(long jobId, long scheduleTime, long dataTime, TaskType taskType) {
         Task record = new Task();
         record.setJobId(jobId);
         record.setAttemptId(1);
@@ -72,12 +71,7 @@ public class TaskService {
         Date currentTime = dt.toDate();
         record.setCreateTime(currentTime);
         record.setUpdateTime(currentTime);
-        if (taskType.equals(TaskType.RERUN)) {
-            //如果是手动重跑，调度时间设为当前系统时间
-            record.setScheduleTime(currentTime);
-        } else {
-            record.setScheduleTime(new Date(scheduleTime));
-        }
+        record.setScheduleTime(new Date(scheduleTime));
         record.setDataTime(new Date(scheduleTime));
         record.setStatus(TaskStatus.WAITING.getValue());
         record.setProgress((float) 0);
@@ -145,16 +139,14 @@ public class TaskService {
 
     public List<Task> getTasksByStatusNotIn(List<Integer> statusList) {
         TaskExample example = new TaskExample();
-        example.createCriteria().andStatusNotIn(statusList).andJobIdNotEqualTo(0L);
-        List<Task> tasks = taskMapper.selectByExample(example);
-        return getActiveTasks(tasks);
+        example.createCriteria().andStatusNotIn(statusList).andTypeNotEqualTo(TaskType.TEMP.getValue());
+        return taskMapper.selectByExample(example);
     }
 
     public List<Task> getTasksByStatus(List<Integer> statusList) {
         TaskExample example = new TaskExample();
-        example.createCriteria().andStatusIn(statusList).andJobIdNotEqualTo(0L);
-        List<Task> tasks = taskMapper.selectByExample(example);
-        return getActiveTasks(tasks);
+        example.createCriteria().andStatusIn(statusList).andTypeNotEqualTo(TaskType.TEMP.getValue());
+        return taskMapper.selectByExample(example);
     }
 
     public List<Long> getDependTaskIds(long myJobId, long preJobId, long scheduleTime, DependencyExpression dependencyExpression) {
@@ -217,29 +209,12 @@ public class TaskService {
         return null;
     }
 
-    public Task getLastTask(long jobId, TaskType taskType) {
-        //TODO
-        return null;
-    }
-
     @VisibleForTesting
     public void deleteTaskAndRelation(long taskId) {
         if (taskId > 0) {
             taskMapper.deleteByPrimaryKey(taskId);
             taskDependService.remove(taskId);
         }
-    }
-
-    private List<Task> getActiveTasks(List<Task> tasks) {
-        List<Task> activeTasks = Lists.newArrayList();
-        if (tasks != null) {
-            for (Task task : tasks) {
-                if (jobService.get(task.getJobId()) != null) {
-                    activeTasks.add(task);
-                }
-            }
-        }
-        return activeTasks;
     }
 
 }

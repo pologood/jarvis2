@@ -140,14 +140,14 @@ public final class SubmitTaskProtos {
         com.mogujie.jarvis.protocol.MapEntryProtos.MapEntryOrBuilder getParametersOrBuilder(int index);
 
         /**
-         * <code>required int64 scheduling_time = 9;</code>
+         * <code>required int64 data_time = 9;</code>
          */
-        boolean hasSchedulingTime();
+        boolean hasDataTime();
 
         /**
-         * <code>required int64 scheduling_time = 9;</code>
+         * <code>required int64 data_time = 9;</code>
          */
-        long getSchedulingTime();
+        long getDataTime();
     }
 
     /**
@@ -254,7 +254,7 @@ public final class SubmitTaskProtos {
                         }
                         case 72: {
                             bitField0_ |= 0x00000080;
-                            schedulingTime_ = input.readInt64();
+                            dataTime_ = input.readInt64();
                             break;
                         }
                     }
@@ -623,23 +623,23 @@ public final class SubmitTaskProtos {
             return parameters_.get(index);
         }
 
-        public static final int SCHEDULING_TIME_FIELD_NUMBER = 9;
-        private long schedulingTime_;
+        public static final int DATA_TIME_FIELD_NUMBER = 9;
+        private long dataTime_;
 
         /**
-         * <code>required int64 scheduling_time = 9;</code>
+         * <code>required int64 data_time = 9;</code>
          */
         @Override
-        public boolean hasSchedulingTime() {
+        public boolean hasDataTime() {
             return ((bitField0_ & 0x00000080) == 0x00000080);
         }
 
         /**
-         * <code>required int64 scheduling_time = 9;</code>
+         * <code>required int64 data_time = 9;</code>
          */
         @Override
-        public long getSchedulingTime() {
-            return schedulingTime_;
+        public long getDataTime() {
+            return dataTime_;
         }
 
         private void initFields() {
@@ -651,7 +651,7 @@ public final class SubmitTaskProtos {
             content_ = "";
             priority_ = 1;
             parameters_ = java.util.Collections.emptyList();
-            schedulingTime_ = 0L;
+            dataTime_ = 0L;
         }
 
         private byte memoizedIsInitialized = -1;
@@ -688,7 +688,7 @@ public final class SubmitTaskProtos {
                 memoizedIsInitialized = 0;
                 return false;
             }
-            if (!hasSchedulingTime()) {
+            if (!hasDataTime()) {
                 memoizedIsInitialized = 0;
                 return false;
             }
@@ -730,7 +730,7 @@ public final class SubmitTaskProtos {
                 output.writeMessage(8, parameters_.get(i));
             }
             if (((bitField0_ & 0x00000080) == 0x00000080)) {
-                output.writeInt64(9, schedulingTime_);
+                output.writeInt64(9, dataTime_);
             }
             getUnknownFields().writeTo(output);
         }
@@ -769,7 +769,7 @@ public final class SubmitTaskProtos {
                 size += com.google.protobuf.CodedOutputStream.computeMessageSize(8, parameters_.get(i));
             }
             if (((bitField0_ & 0x00000080) == 0x00000080)) {
-                size += com.google.protobuf.CodedOutputStream.computeInt64Size(9, schedulingTime_);
+                size += com.google.protobuf.CodedOutputStream.computeInt64Size(9, dataTime_);
             }
             size += getUnknownFields().getSerializedSize();
             memoizedSerializedSize = size;
@@ -917,7 +917,7 @@ public final class SubmitTaskProtos {
                 } else {
                     parametersBuilder_.clear();
                 }
-                schedulingTime_ = 0L;
+                dataTime_ = 0L;
                 bitField0_ = (bitField0_ & ~0x00000100);
                 return this;
             }
@@ -992,7 +992,7 @@ public final class SubmitTaskProtos {
                 if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
                     to_bitField0_ |= 0x00000080;
                 }
-                result.schedulingTime_ = schedulingTime_;
+                result.dataTime_ = dataTime_;
                 result.bitField0_ = to_bitField0_;
                 onBuilt();
                 return result;
@@ -1068,8 +1068,8 @@ public final class SubmitTaskProtos {
                         }
                     }
                 }
-                if (other.hasSchedulingTime()) {
-                    setSchedulingTime(other.getSchedulingTime());
+                if (other.hasDataTime()) {
+                    setDataTime(other.getDataTime());
                 }
                 this.mergeUnknownFields(other.getUnknownFields());
                 return this;
@@ -1101,7 +1101,7 @@ public final class SubmitTaskProtos {
 
                     return false;
                 }
-                if (!hasSchedulingTime()) {
+                if (!hasDataTime()) {
 
                     return false;
                 }
@@ -1888,40 +1888,40 @@ public final class SubmitTaskProtos {
                 return parametersBuilder_;
             }
 
-            private long schedulingTime_;
+            private long dataTime_;
 
             /**
-             * <code>required int64 scheduling_time = 9;</code>
+             * <code>required int64 data_time = 9;</code>
              */
             @Override
-            public boolean hasSchedulingTime() {
+            public boolean hasDataTime() {
                 return ((bitField0_ & 0x00000100) == 0x00000100);
             }
 
             /**
-             * <code>required int64 scheduling_time = 9;</code>
+             * <code>required int64 data_time = 9;</code>
              */
             @Override
-            public long getSchedulingTime() {
-                return schedulingTime_;
+            public long getDataTime() {
+                return dataTime_;
             }
 
             /**
-             * <code>required int64 scheduling_time = 9;</code>
+             * <code>required int64 data_time = 9;</code>
              */
-            public Builder setSchedulingTime(long value) {
+            public Builder setDataTime(long value) {
                 bitField0_ |= 0x00000100;
-                schedulingTime_ = value;
+                dataTime_ = value;
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>required int64 scheduling_time = 9;</code>
+             * <code>required int64 data_time = 9;</code>
              */
-            public Builder clearSchedulingTime() {
+            public Builder clearDataTime() {
                 bitField0_ = (bitField0_ & ~0x00000100);
-                schedulingTime_ = 0L;
+                dataTime_ = 0L;
                 onChanged();
                 return this;
             }
@@ -5184,23 +5184,23 @@ public final class SubmitTaskProtos {
 
     static {
         java.lang.String[] descriptorData = {
-                "\n\021submit_task.proto\032\016app_auth.proto\032\017map" + "_entry.proto\"\316\001\n\027ServerSubmitTaskRequest"
+                "\n\021submit_task.proto\032\016app_auth.proto\032\017map" + "_entry.proto\"\310\001\n\027ServerSubmitTaskRequest"
                         + "\022\017\n\007full_id\030\001 \002(\t\022\021\n\ttask_name\030\002 \002(\t\022\020\n\010"
                         + "app_name\030\003 \002(\t\022\014\n\004user\030\004 \002(\t\022\021\n\ttask_typ"
                         + "e\030\005 \002(\t\022\017\n\007content\030\006 \002(\t\022\023\n\010priority\030\007 \001"
-                        + "(\005:\0011\022\035\n\nparameters\030\010 \003(\0132\t.MapEntry\022\027\n\017"
-                        + "scheduling_time\030\t \002(\003\"N\n\030WorkerSubmitTas"
-                        + "kResponse\022\016\n\006accept\030\001 \001(\010\022\017\n\007success\030\002 \002"
-                        + "(\010\022\021\n\007message\030\003 \001(\t:\000\"\206\002\n\033RestServerSubm"
-                        + "itTaskRequest\022\032\n\010app_auth\030\001 \002(\0132\010.AppAut",
-                "h\022\021\n\ttask_name\030\002 \002(\t\022\014\n\004user\030\003 \002(\t\022\021\n\tta"
-                        + "sk_type\030\004 \002(\t\022\017\n\007content\030\005 \002(\t\022\020\n\010group_"
-                        + "id\030\006 \002(\005\022\023\n\010priority\030\007 \001(\005:\0011\022\024\n\014expired"
-                        + "_time\030\010 \001(\005\022\031\n\016failed_retries\030\t \001(\005:\0010\022\032"
-                        + "\n\017failed_interval\030\n \001(\005:\0013\022\022\n\nparameters"
-                        + "\030\013 \002(\t\"O\n\030ServerSubmitTaskResponse\022\017\n\007ta"
-                        + "sk_id\030\001 \001(\003\022\017\n\007success\030\002 \002(\010\022\021\n\007message\030"
-                        + "\003 \001(\t:\000B/\n\033com.mogujie.jarvis.protocolB\020" + "SubmitTaskProtos" };
+                        + "(\005:\0011\022\035\n\nparameters\030\010 \003(\0132\t.MapEntry\022\021\n\t"
+                        + "data_time\030\t \002(\003\"N\n\030WorkerSubmitTaskRespo"
+                        + "nse\022\016\n\006accept\030\001 \001(\010\022\017\n\007success\030\002 \002(\010\022\021\n\007"
+                        + "message\030\003 \001(\t:\000\"\206\002\n\033RestServerSubmitTask"
+                        + "Request\022\032\n\010app_auth\030\001 \002(\0132\010.AppAuth\022\021\n\tt",
+                "ask_name\030\002 \002(\t\022\014\n\004user\030\003 \002(\t\022\021\n\ttask_typ"
+                        + "e\030\004 \002(\t\022\017\n\007content\030\005 \002(\t\022\020\n\010group_id\030\006 \002"
+                        + "(\005\022\023\n\010priority\030\007 \001(\005:\0011\022\024\n\014expired_time\030"
+                        + "\010 \001(\005\022\031\n\016failed_retries\030\t \001(\005:\0010\022\032\n\017fail"
+                        + "ed_interval\030\n \001(\005:\0013\022\022\n\nparameters\030\013 \002(\t"
+                        + "\"O\n\030ServerSubmitTaskResponse\022\017\n\007task_id\030"
+                        + "\001 \001(\003\022\017\n\007success\030\002 \002(\010\022\021\n\007message\030\003 \001(\t:"
+                        + "\000B/\n\033com.mogujie.jarvis.protocolB\020Submit" + "TaskProtos" };
         com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner = new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
             @Override
             public com.google.protobuf.ExtensionRegistry assignDescriptors(com.google.protobuf.Descriptors.FileDescriptor root) {
@@ -5214,8 +5214,8 @@ public final class SubmitTaskProtos {
                 assigner);
         internal_static_ServerSubmitTaskRequest_descriptor = getDescriptor().getMessageTypes().get(0);
         internal_static_ServerSubmitTaskRequest_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-                internal_static_ServerSubmitTaskRequest_descriptor, new java.lang.String[] { "FullId", "TaskName", "AppName", "User", "TaskType",
-                        "Content", "Priority", "Parameters", "SchedulingTime", });
+                internal_static_ServerSubmitTaskRequest_descriptor,
+                new java.lang.String[] { "FullId", "TaskName", "AppName", "User", "TaskType", "Content", "Priority", "Parameters", "DataTime", });
         internal_static_WorkerSubmitTaskResponse_descriptor = getDescriptor().getMessageTypes().get(1);
         internal_static_WorkerSubmitTaskResponse_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
                 internal_static_WorkerSubmitTaskResponse_descriptor, new java.lang.String[] { "Accept", "Success", "Message", });

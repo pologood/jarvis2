@@ -26,26 +26,26 @@ public class DAGTask {
     private long jobId;
     private long taskId;
     private int attemptId;
-    private long scheduleTime;
+    private long dataTime;
     private TaskGraph taskGraph = TaskGraph.INSTANCE;
     private TaskService taskService = Injectors.getInjector().getInstance(TaskService.class);
 
-    public DAGTask(long jobId, long taskId, int attemptId, long scheduleTime) {
+    public DAGTask(long jobId, long taskId, int attemptId, long dataTime) {
         this.jobId = jobId;
         this.taskId = taskId;
         this.attemptId = attemptId;
-        this.scheduleTime = scheduleTime;
+        this.dataTime = dataTime;
     }
 
-    public DAGTask(long jobId, long taskId, long scheduleTime, Map<Long, List<Long>> dependTaskIdMap) {
-        this(jobId, taskId, 1, scheduleTime, dependTaskIdMap);
+    public DAGTask(long jobId, long taskId, long dataTime, Map<Long, List<Long>> dependTaskIdMap) {
+        this(jobId, taskId, 1, dataTime, dependTaskIdMap);
     }
 
-    public DAGTask(long jobId, long taskId, int attemptId, long scheduleTime, Map<Long, List<Long>> dependTaskIdMap) {
+    public DAGTask(long jobId, long taskId, int attemptId, long dataTime, Map<Long, List<Long>> dependTaskIdMap) {
         this.jobId = jobId;
         this.taskId = taskId;
         this.attemptId = attemptId;
-        this.scheduleTime = scheduleTime;
+        this.dataTime = dataTime;
         if (dependTaskIdMap != null && !dependTaskIdMap.isEmpty()) {
             // store parent dependency
             TaskDependService taskDependService = Injectors.getInjector().getInstance(TaskDependService.class);
@@ -83,12 +83,12 @@ public class DAGTask {
         this.attemptId = attemptId;
     }
 
-    public long getScheduleTime() {
-        return scheduleTime;
+    public long getDataTime() {
+        return dataTime;
     }
 
-    public void setScheduleTime(long scheduleTime) {
-        this.scheduleTime = scheduleTime;
+    public void setDataTime(long dataTime) {
+        this.dataTime = dataTime;
     }
 
     public boolean checkStatus() {
@@ -119,6 +119,6 @@ public class DAGTask {
 
     @Override
     public String toString() {
-        return "DAGTask [jobId=" + jobId + ", taskId=" + taskId + ", attemptId=" + attemptId + ", scheduleTime=" + scheduleTime + "]";
+        return "DAGTask [jobId=" + jobId + ", taskId=" + taskId + ", attemptId=" + attemptId + ", dataTime=" + dataTime + "]";
     }
 }

@@ -402,7 +402,7 @@ public enum JobGraph {
      */
     private List<Long> getUnScheduledTimeStamps(long jobId) {
         List<Long> timeStamps = new ArrayList<Long>();
-        Task lastTask = taskService.getLastTask(jobId, TaskType.SCHEDULE);
+        Task lastTask = taskService.getLastTask(jobId, DateTime.now().getMillis(), TaskType.SCHEDULE);
         DateTime startTime = PlanUtil.getScheduleTimeAfter(jobId, new DateTime(lastTask.getDataTime()));
         DateTime endTime = PlanUtil.getScheduleTimeAfter(jobId, DateTime.now());
         timeStamps.add(startTime.getMillis());

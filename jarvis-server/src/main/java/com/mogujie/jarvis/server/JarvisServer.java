@@ -151,7 +151,7 @@ public class JarvisServer {
                 .getTasksByStatusNotIn(Lists.newArrayList(TaskStatus.SUCCESS.getValue(), TaskStatus.REMOVED.getValue()));
         // 4.1 先恢复task
         for (Task task : recoveryTasks) {
-            DAGTask dagTask = new DAGTask(task.getJobId(), task.getTaskId(), task.getAttemptId(), task.getScheduleTime().getTime());
+            DAGTask dagTask = new DAGTask(task.getJobId(), task.getTaskId(), task.getAttemptId(), task.getDataTime().getTime());
             taskGraph.addTask(task.getTaskId(), dagTask);
         }
         // 4.2 再构造task依赖关系

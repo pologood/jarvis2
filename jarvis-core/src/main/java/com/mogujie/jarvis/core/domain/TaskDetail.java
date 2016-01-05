@@ -23,8 +23,8 @@ public class TaskDetail {
     private int priority;
     private int groupId;
     private Map<String, Object> parameters;
-    private DateTime schedulingTime;
     private int expiredTime;
+    private DateTime dataTime;
     private int failedRetries;
     private int failedInterval;
 
@@ -67,8 +67,8 @@ public class TaskDetail {
         return parameters;
     }
 
-    public DateTime getSchedulingTime() {
-        return schedulingTime;
+    public DateTime getDataTime() {
+        return dataTime;
     }
 
     public int getExpiredTime() {
@@ -139,8 +139,8 @@ public class TaskDetail {
             return this;
         }
 
-        public TaskDetailBuilder setSchedulingTime(DateTime schedulingTime) {
-            this.task.schedulingTime = schedulingTime;
+        public TaskDetailBuilder setDataTime(DateTime dataTime) {
+            this.task.dataTime = dataTime;
             return this;
         }
 

@@ -193,7 +193,7 @@ public class TaskScheduler extends Scheduler {
         Map<Long, List<Long>> dependTaskIdMap = e.getDependTaskIdMap();
 
         // create new task
-        long taskId = taskService.createTaskByJobId(jobId, scheduleTime, TaskType.SCHEDULE);
+        long taskId = taskService.createTaskByJobId(jobId, scheduleTime, scheduleTime, TaskType.SCHEDULE);
         LOGGER.info("add new task[{}] to DB", taskId);
 
         // 如果是串行任务
@@ -244,7 +244,7 @@ public class TaskScheduler extends Scheduler {
 
             DAGTask dagTask = taskGraph.getTask(taskId);
             if (dagTask == null) {
-                dagTask = new DAGTask(task.getJobId(), taskId, task.getAttemptId(), task.getScheduleTime().getTime());
+                dagTask = new DAGTask(task.getJobId(), taskId, task.getAttemptId(), task.getDataTime().getTime());
                 taskGraph.addTask(taskId, dagTask);
                 LOGGER.info("add {} to taskGraph", dagTask);
             }
@@ -316,7 +316,7 @@ public class TaskScheduler extends Scheduler {
         Job job = jobService.get(jobId).getJob();
         taskDetail = TaskDetail.newTaskDetailBuilder().setFullId(fullId).setTaskName(job.getJobName()).setAppName(jobService.getAppName(jobId))
                 .setUser(job.getSubmitUser()).setPriority(job.getPriority()).setContent(job.getContent()).setTaskType(job.getJobType())
-                .setParameters(JsonHelper.fromJson2JobParams(job.getParams())).setSchedulingTime(new DateTime(dagTask.getScheduleTime()))
+                .setParameters(JsonHelper.fromJson2JobParams(job.getParams())).setDataTime(new DateTime(dagTask.getDataTime()))
                 .setGroupId(job.getWorkerGroupId()).setFailedRetries(job.getFailedAttempts()).setFailedInterval(job.getFailedInterval())
                 .setExpiredTime(job.getExpiredTime()).build();
         return taskDetail;
