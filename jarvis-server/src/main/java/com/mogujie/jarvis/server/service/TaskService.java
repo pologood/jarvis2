@@ -137,15 +137,15 @@ public class TaskService {
         taskMapper.updateByPrimaryKeySelective(task);
     }
 
-    public List<Task> getTasksByStatusNotIn(List<Integer> statusList, List<Integer> taskTypeList) {
+    public List<Task> getTasksByStatusNotIn(List<Integer> statusList) {
         TaskExample example = new TaskExample();
-        example.createCriteria().andStatusNotIn(statusList).andTypeIn(taskTypeList);
+        example.createCriteria().andStatusNotIn(statusList).andTypeNotEqualTo(TaskType.TEMP.getValue());
         return taskMapper.selectByExample(example);
     }
 
-    public List<Task> getTasksByStatus(List<Integer> statusList, List<Integer> taskTypeList) {
+    public List<Task> getTasksByStatus(List<Integer> statusList) {
         TaskExample example = new TaskExample();
-        example.createCriteria().andStatusIn(statusList).andTypeIn(taskTypeList);
+        example.createCriteria().andStatusIn(statusList).andTypeNotEqualTo(TaskType.TEMP.getValue());
         return taskMapper.selectByExample(example);
     }
 

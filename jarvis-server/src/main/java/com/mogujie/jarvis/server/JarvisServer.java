@@ -25,7 +25,6 @@ import com.google.common.collect.Lists;
 import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.core.domain.TaskStatus;
-import com.mogujie.jarvis.core.domain.TaskType;
 import com.mogujie.jarvis.core.exeception.JobScheduleException;
 import com.mogujie.jarvis.core.expression.CronExpression;
 import com.mogujie.jarvis.core.expression.FixedDelayExpression;
@@ -149,8 +148,7 @@ public class JarvisServer {
 
         // 4. initialize TaskScheduler
         List<Task> recoveryTasks = taskService
-                .getTasksByStatusNotIn(Lists.newArrayList(TaskStatus.SUCCESS.getValue(), TaskStatus.REMOVED.getValue()),
-                        Lists.newArrayList(TaskType.SCHEDULE.getValue(), TaskType.RERUN.getValue()));
+                .getTasksByStatusNotIn(Lists.newArrayList(TaskStatus.SUCCESS.getValue(), TaskStatus.REMOVED.getValue()));
         // 4.1 先恢复task
         for (Task task : recoveryTasks) {
             DAGTask dagTask = new DAGTask(task.getJobId(), task.getTaskId(), task.getAttemptId(), task.getDataTime().getTime());
@@ -167,8 +165,7 @@ public class JarvisServer {
             }
         }
         // 4.3 重试waiting和ready的task
-        List<Task> readyTasks = taskService.getTasksByStatus(Lists.newArrayList(TaskStatus.WAITING.getValue(), TaskStatus.READY.getValue()),
-                Lists.newArrayList(TaskType.SCHEDULE.getValue(), TaskType.RERUN.getValue()));
+        List<Task> readyTasks = taskService.getTasksByStatus(Lists.newArrayList(TaskStatus.WAITING.getValue(), TaskStatus.READY.getValue()));
         for (Task task : readyTasks) {
             controller.notify(new RetryTaskEvent(task.getJobId(), task.getTaskId()));
         }
