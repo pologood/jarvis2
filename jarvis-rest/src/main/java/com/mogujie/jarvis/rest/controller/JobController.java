@@ -51,7 +51,7 @@ public class JobController extends AbstractController {
     @Path("submit")
     @Produces(MediaType.APPLICATION_JSON)
     public RestResult submit(@FormParam("appName") String appName, @FormParam("appToken") String appToken, @FormParam("user") String user,
-            @FormParam("parameters") String parameters) {
+                             @FormParam("parameters") String parameters) {
 
         LOGGER.debug("提交job任务");
         try {
@@ -71,9 +71,12 @@ public class JobController extends AbstractController {
                     .setActiveStartTime(jobVo.getActiveStartTime(0L)).setActiveEndTime(jobVo.getActiveEndTime(0L)).setExpiredTime(600)
                     .setFailedAttempts(jobVo.getFailedAttempts(0)).setFailedInterval(jobVo.getFailedInterval(3));
 
-            if (jobVo.getScheduleExpressionEntry() != null) {
-                builder.setExpressionEntry(ConvertValidUtils.ConvertScheduleExpressionEntry(jobVo.getScheduleExpressionEntry()));
+            if (jobVo.getScheduleExpressionList() != null && jobVo.getScheduleExpressionList().size() > 0) {
+                for (JobEntryVo.ScheduleExpressionEntry entryInput : jobVo.getScheduleExpressionList()) {
+                    builder.addExpressionEntry(ConvertValidUtils.ConvertScheduleExpressionEntry(entryInput));
+                }
             }
+
             if (jobVo.getDependencyList() != null && jobVo.getDependencyList().size() > 0) {
                 for (JobEntryVo.DependencyEntry entryInput : jobVo.getDependencyList()) {
                     builder.addDependencyEntry(ConvertValidUtils.ConvertDependencyEntry(entryInput));
@@ -107,7 +110,7 @@ public class JobController extends AbstractController {
     @Path("edit")
     @Produces(MediaType.APPLICATION_JSON)
     public RestResult edit(@FormParam("appName") String appName, @FormParam("appToken") String appToken, @FormParam("user") String user,
-            @FormParam("parameters") String parameters) {
+                           @FormParam("parameters") String parameters) {
 
         LOGGER.debug("更新job任务");
         try {
@@ -160,8 +163,10 @@ public class JobController extends AbstractController {
             if (jobVo.getFailedInterval() != null) {
                 builder.setFailedInterval(jobVo.getFailedInterval());
             }
-            if (jobVo.getScheduleExpressionEntry() != null) {
-                builder.setExpressionEntry(ConvertValidUtils.ConvertScheduleExpressionEntry(jobVo.getScheduleExpressionEntry()));
+            if (jobVo.getScheduleExpressionList() != null && jobVo.getScheduleExpressionList().size() > 0) {
+                for (JobEntryVo.ScheduleExpressionEntry entryInput : jobVo.getScheduleExpressionList()) {
+                    builder.addExpressionEntry(ConvertValidUtils.ConvertScheduleExpressionEntry(entryInput));
+                }
             }
             if (jobVo.getDependencyList() != null && jobVo.getDependencyList().size() > 0) {
                 for (JobEntryVo.DependencyEntry entryInput : jobVo.getDependencyList()) {
@@ -195,7 +200,7 @@ public class JobController extends AbstractController {
     @Path("status/set")
     @Produces(MediaType.APPLICATION_JSON)
     public RestResult statusSet(@FormParam("appName") String appName, @FormParam("appToken") String appToken, @FormParam("user") String user,
-            @FormParam("parameters") String parameters) {
+                                @FormParam("parameters") String parameters) {
 
         LOGGER.debug("更新job任务标志");
         try {
@@ -233,7 +238,7 @@ public class JobController extends AbstractController {
     @Path("queryRelation")
     @Produces(MediaType.APPLICATION_JSON)
     public RestResult queryRelation(@FormParam("user") String user, @FormParam("appToken") String appToken, @FormParam("appName") String appName,
-            @FormParam("parameters") String parameters) {
+                                    @FormParam("parameters") String parameters) {
         try {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
