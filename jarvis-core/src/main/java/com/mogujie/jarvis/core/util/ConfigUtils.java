@@ -103,7 +103,7 @@ public class ConfigUtils {
     public static Config getAkkaConfig(String fileName) {
         String key = "akka.remote.netty.tcp.hostname";
         Config akkaConfig = ConfigFactory.load(fileName);
-        if (akkaConfig.hasPath(key)) {
+        if (akkaConfig.hasPath(key) && !akkaConfig.getString(key).isEmpty()) {
             return akkaConfig;
         } else {
             return ConfigFactory.parseString(key + "=" + IPUtils.getIPV4Address()).withFallback(akkaConfig);

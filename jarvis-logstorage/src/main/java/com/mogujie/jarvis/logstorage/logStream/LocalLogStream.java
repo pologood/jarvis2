@@ -1,17 +1,17 @@
 package com.mogujie.jarvis.logstorage.logStream;
 
-import com.mogujie.jarvis.core.JarvisConstants;
-import com.mogujie.jarvis.core.domain.StreamType;
-import com.mogujie.jarvis.core.util.ConfigUtils;
-import com.mogujie.jarvis.logstorage.LogConstants;
-import com.mogujie.jarvis.logstorage.domain.LogReadResult;
-import org.apache.commons.io.FileUtils;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.charset.StandardCharsets;
+
+import org.apache.commons.io.FileUtils;
+
+import com.mogujie.jarvis.core.domain.StreamType;
+import com.mogujie.jarvis.core.util.ConfigUtils;
+import com.mogujie.jarvis.logstorage.LogConstants;
+import com.mogujie.jarvis.logstorage.domain.LogReadResult;
 
 /**
  * @author muming
@@ -19,8 +19,7 @@ import java.nio.charset.StandardCharsets;
  */
 public class LocalLogStream implements LogStream {
 
-    private static final String LOG_PATH_BASE = ConfigUtils.getLogstorageConfig().
-            getString("log.path.local", "/tmp/logs");
+    private static final String LOG_PATH_BASE = ConfigUtils.getLogstorageConfig().getString("log.path.local", "/tmp/logs");
 
     private String logFile;
 
@@ -41,8 +40,7 @@ public class LocalLogStream implements LogStream {
             return;
         }
         //写文件
-        FileUtils.writeStringToFile(new File(logFile), text + JarvisConstants.LINE_SEPARATOR,
-                StandardCharsets.UTF_8, true);
+        FileUtils.writeStringToFile(new File(logFile), text, StandardCharsets.UTF_8, true);
     }
 
     /**
@@ -94,7 +92,6 @@ public class LocalLogStream implements LogStream {
                 }
                 offset = raf.getFilePointer();
                 sb.append(new String(line.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8));
-                sb.append(JarvisConstants.LINE_SEPARATOR);
             }
             return new LogReadResult(isEnd, sb.toString(), offset);
         } catch (FileNotFoundException ex) {

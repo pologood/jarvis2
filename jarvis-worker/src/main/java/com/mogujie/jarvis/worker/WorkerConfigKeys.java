@@ -27,4 +27,6 @@ public interface WorkerConfigKeys {
     public static final String WORKER_CPU_LOAD_AVG_THRESHOLD = "worker.cpu.load.avg.threshold";
     public static final String WORKER_MEMORY_USAGE_THRESHOLD = "worker.memory.usage.threshold";
     public static final String WORKER_JOB_NUM_THRESHOLD = "worker.job.num.threshold";
+
+    public static final String LOG_SEND_MAX_BYTES = "log.send.max.bytes";
 }

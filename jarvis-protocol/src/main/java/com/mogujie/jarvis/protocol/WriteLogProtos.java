@@ -30,19 +30,14 @@ public final class WriteLogProtos {
         com.google.protobuf.ByteString getFullIdBytes();
 
         /**
-         * <code>required string log = 2;</code>
+         * <code>required bytes log = 2;</code>
          */
         boolean hasLog();
 
         /**
-         * <code>required string log = 2;</code>
+         * <code>required bytes log = 2;</code>
          */
-        java.lang.String getLog();
-
-        /**
-         * <code>required string log = 2;</code>
-         */
-        com.google.protobuf.ByteString getLogBytes();
+        com.google.protobuf.ByteString getLog();
 
         /**
          * <code>required int32 type = 3;</code>
@@ -124,9 +119,8 @@ public final class WriteLogProtos {
                             break;
                         }
                         case 18: {
-                            com.google.protobuf.ByteString bs = input.readBytes();
                             bitField0_ |= 0x00000002;
-                            log_ = bs;
+                            log_ = input.readBytes();
                             break;
                         }
                         case 24: {
@@ -221,10 +215,10 @@ public final class WriteLogProtos {
         }
 
         public static final int LOG_FIELD_NUMBER = 2;
-        private java.lang.Object log_;
+        private com.google.protobuf.ByteString log_;
 
         /**
-         * <code>required string log = 2;</code>
+         * <code>required bytes log = 2;</code>
          */
         @Override
         public boolean hasLog() {
@@ -232,36 +226,11 @@ public final class WriteLogProtos {
         }
 
         /**
-         * <code>required string log = 2;</code>
+         * <code>required bytes log = 2;</code>
          */
         @Override
-        public java.lang.String getLog() {
-            java.lang.Object ref = log_;
-            if (ref instanceof java.lang.String) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                if (bs.isValidUtf8()) {
-                    log_ = s;
-                }
-                return s;
-            }
-        }
-
-        /**
-         * <code>required string log = 2;</code>
-         */
-        @Override
-        public com.google.protobuf.ByteString getLogBytes() {
-            java.lang.Object ref = log_;
-            if (ref instanceof java.lang.String) {
-                com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                log_ = b;
-                return b;
-            } else {
-                return (com.google.protobuf.ByteString) ref;
-            }
+        public com.google.protobuf.ByteString getLog() {
+            return log_;
         }
 
         public static final int TYPE_FIELD_NUMBER = 3;
@@ -304,7 +273,7 @@ public final class WriteLogProtos {
 
         private void initFields() {
             fullId_ = "";
-            log_ = "";
+            log_ = com.google.protobuf.ByteString.EMPTY;
             type_ = 0;
             isEnd_ = false;
         }
@@ -346,7 +315,7 @@ public final class WriteLogProtos {
                 output.writeBytes(1, getFullIdBytes());
             }
             if (((bitField0_ & 0x00000002) == 0x00000002)) {
-                output.writeBytes(2, getLogBytes());
+                output.writeBytes(2, log_);
             }
             if (((bitField0_ & 0x00000004) == 0x00000004)) {
                 output.writeInt32(3, type_);
@@ -370,7 +339,7 @@ public final class WriteLogProtos {
                 size += com.google.protobuf.CodedOutputStream.computeBytesSize(1, getFullIdBytes());
             }
             if (((bitField0_ & 0x00000002) == 0x00000002)) {
-                size += com.google.protobuf.CodedOutputStream.computeBytesSize(2, getLogBytes());
+                size += com.google.protobuf.CodedOutputStream.computeBytesSize(2, log_);
             }
             if (((bitField0_ & 0x00000004) == 0x00000004)) {
                 size += com.google.protobuf.CodedOutputStream.computeInt32Size(3, type_);
@@ -505,7 +474,7 @@ public final class WriteLogProtos {
                 super.clear();
                 fullId_ = "";
                 bitField0_ = (bitField0_ & ~0x00000001);
-                log_ = "";
+                log_ = com.google.protobuf.ByteString.EMPTY;
                 bitField0_ = (bitField0_ & ~0x00000002);
                 type_ = 0;
                 bitField0_ = (bitField0_ & ~0x00000004);
@@ -584,9 +553,7 @@ public final class WriteLogProtos {
                     onChanged();
                 }
                 if (other.hasLog()) {
-                    bitField0_ |= 0x00000002;
-                    log_ = other.log_;
-                    onChanged();
+                    setLog(other.getLog());
                 }
                 if (other.hasType()) {
                     setType(other.getType());
@@ -717,10 +684,10 @@ public final class WriteLogProtos {
                 return this;
             }
 
-            private java.lang.Object log_ = "";
+            private com.google.protobuf.ByteString log_ = com.google.protobuf.ByteString.EMPTY;
 
             /**
-             * <code>required string log = 2;</code>
+             * <code>required bytes log = 2;</code>
              */
             @Override
             public boolean hasLog() {
@@ -728,42 +695,17 @@ public final class WriteLogProtos {
             }
 
             /**
-             * <code>required string log = 2;</code>
+             * <code>required bytes log = 2;</code>
              */
             @Override
-            public java.lang.String getLog() {
-                java.lang.Object ref = log_;
-                if (!(ref instanceof java.lang.String)) {
-                    com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                    java.lang.String s = bs.toStringUtf8();
-                    if (bs.isValidUtf8()) {
-                        log_ = s;
-                    }
-                    return s;
-                } else {
-                    return (java.lang.String) ref;
-                }
+            public com.google.protobuf.ByteString getLog() {
+                return log_;
             }
 
             /**
-             * <code>required string log = 2;</code>
+             * <code>required bytes log = 2;</code>
              */
-            @Override
-            public com.google.protobuf.ByteString getLogBytes() {
-                java.lang.Object ref = log_;
-                if (ref instanceof String) {
-                    com.google.protobuf.ByteString b = com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
-                    log_ = b;
-                    return b;
-                } else {
-                    return (com.google.protobuf.ByteString) ref;
-                }
-            }
-
-            /**
-             * <code>required string log = 2;</code>
-             */
-            public Builder setLog(java.lang.String value) {
+            public Builder setLog(com.google.protobuf.ByteString value) {
                 if (value == null) {
                     throw new NullPointerException();
                 }
@@ -774,24 +716,11 @@ public final class WriteLogProtos {
             }
 
             /**
-             * <code>required string log = 2;</code>
+             * <code>required bytes log = 2;</code>
              */
             public Builder clearLog() {
                 bitField0_ = (bitField0_ & ~0x00000002);
                 log_ = getDefaultInstance().getLog();
-                onChanged();
-                return this;
-            }
-
-            /**
-             * <code>required string log = 2;</code>
-             */
-            public Builder setLogBytes(com.google.protobuf.ByteString value) {
-                if (value == null) {
-                    throw new NullPointerException();
-                }
-                bitField0_ |= 0x00000002;
-                log_ = value;
                 onChanged();
                 return this;
             }
@@ -1495,7 +1424,7 @@ public final class WriteLogProtos {
 
     static {
         java.lang.String[] descriptorData = { "\n\017write_log.proto\"S\n\025WorkerWriteLogReque"
-                + "st\022\017\n\007full_id\030\001 \002(\t\022\013\n\003log\030\002 \002(\t\022\014\n\004type"
+                + "st\022\017\n\007full_id\030\001 \002(\t\022\013\n\003log\030\002 \002(\014\022\014\n\004type"
                 + "\030\003 \002(\005\022\016\n\006is_end\030\004 \002(\010\"@\n\032LogStorageWrit"
                 + "eLogResponse\022\017\n\007success\030\001 \002(\010\022\021\n\007message"
                 + "\030\002 \001(\t:\000B-\n\033com.mogujie.jarvis.protocolB" + "\016WriteLogProtos" };
