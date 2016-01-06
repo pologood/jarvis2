@@ -104,4 +104,21 @@ public class PlanUtil {
         return result;
     }
 
+    public static DateTime getScheduleTimeBefore(long jobId, DateTime dateTime) {
+        DateTime result = null;
+        JobEntry jobEntry = jobService.get(jobId);
+        Map<Long, ScheduleExpression> expressions = jobEntry.getScheduleExpressions();
+        if (expressions != null && !expressions.isEmpty()) {
+            for (ScheduleExpression scheduleExpression : expressions.values()) {
+                DateTime lastTime = scheduleExpression.getTimeBefore(dateTime);
+                if (result == null || result.isBefore(lastTime)) {
+                    result = lastTime;
+                }
+            }
+            return result;
+        }
+
+        return result;
+    }
+
 }

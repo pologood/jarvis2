@@ -265,7 +265,6 @@ public enum JobGraph {
         DAGJob dagJob = getDAGJob(jobId);
         if (dagJob != null) {
             dagJob.setType(newType);
-            submitJobWithCheck(dagJob, DateTime.now().getMillis());
         }
     }
 

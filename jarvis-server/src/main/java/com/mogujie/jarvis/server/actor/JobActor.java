@@ -20,6 +20,7 @@ import org.mybatis.guice.transactional.Transactional;
 import akka.actor.Props;
 import akka.actor.UntypedActor;
 
+import com.google.common.collect.Range;
 import com.google.common.collect.Sets;
 import com.mogujie.jarvis.core.domain.JobRelationType;
 import com.mogujie.jarvis.core.domain.JobStatus;
@@ -34,6 +35,7 @@ import com.mogujie.jarvis.core.expression.ScheduleExpression;
 import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.dto.generate.JobDepend;
 import com.mogujie.jarvis.dto.generate.JobDependKey;
+import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry;
 import com.mogujie.jarvis.protocol.JobProtos.JobStatusEntry;
 import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobRequest;
@@ -56,6 +58,8 @@ import com.mogujie.jarvis.server.scheduler.dag.JobGraph;
 import com.mogujie.jarvis.server.scheduler.time.TimePlan;
 import com.mogujie.jarvis.server.service.ConvertValidService;
 import com.mogujie.jarvis.server.service.JobService;
+import com.mogujie.jarvis.server.service.TaskService;
+import com.mogujie.jarvis.server.util.PlanUtil;
 
 /**
  * @author guangming
@@ -209,6 +213,35 @@ public class JobActor extends UntypedActor {
             DAGJobType type = DAGJobType.getDAGJobType(cycleFlag, dependFlag, timeFlag);
             jobGraph.modifyDAGJobType(jobId, type);
 
+            List<ScheduleExpressionEntry> expressionEntries = msg.getExpressionEntryList();
+            //如果修改过时间，可能要修改时间计划
+            if (expressionEntries != null && !expressionEntries.isEmpty()) {
+                // 如果是纯时间任务
+                if (type.equals(DAGJobType.TIME)) {
+                    //重新计算下一次时间
+                    DateTime now = DateTime.now();
+                    DateTime lastTime = PlanUtil.getScheduleTimeBefore(jobId, now);
+                    if (lastTime == null) {
+                        lastTime = new DateTime(0);
+                    } else {
+                        lastTime = lastTime.minusSeconds(1);
+                    }
+                    DateTime nextTime = PlanUtil.getScheduleTimeAfter(jobId, now);
+                    TaskService taskService = Injectors.getInjector().getInstance(TaskService.class);
+                    List<Task> tasks = taskService.getTasksBetween(jobId, Range.closed(lastTime, nextTime));
+                    if (tasks != null && !tasks.isEmpty()) {
+                        //如果当前周期已经跑过一次，则下一周期生效
+                        // noting to do
+                    } else {
+                        //如果当前周期尚未开始跑，则立即生效，重新计算下一次时间
+                        plan.removeJob(jobId);
+                        plan.addJob(jobId);
+                    }
+                } else if (!type.implies(DAGJobType.TIME)) {
+                    plan.removeJob(jobId);
+                }
+            }
+
             response = ServerModifyJobResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());
         } catch (Exception e) {
@@ -259,13 +292,10 @@ public class JobActor extends UntypedActor {
             OperationMode operation = OperationMode.parseValue(entry.getOperator());
             if (operation.equals(OperationMode.ADD)) {
                 jobService.insertScheduleExpression(jobId, entry);
-                //TODO
             } else if (operation.equals(OperationMode.DELETE)) {
                 jobService.deleteScheduleExpression(jobId, entry.getExpressionId());
-                //TODO
             } else if (operation.equals(OperationMode.EDIT)) {
                 jobService.updateScheduleExpression(jobId, entry);
-                //TODO
             }
         }
     }
