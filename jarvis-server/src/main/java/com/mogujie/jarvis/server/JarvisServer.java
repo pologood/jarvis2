@@ -119,7 +119,7 @@ public class JarvisServer {
             int cycleFlag = 0;
             int timeFlag = 0;
             Map<Long, ScheduleExpression> timeExpressions = jobEntry.getScheduleExpressions();
-            if (!timeExpressions.isEmpty()) {
+            if (timeExpressions != null && !timeExpressions.isEmpty()) {
                 for (ScheduleExpression expression : timeExpressions.values()) {
                     if (expression instanceof CronExpression || expression instanceof FixedRateExpression
                             || expression instanceof ISO8601Expression) {
