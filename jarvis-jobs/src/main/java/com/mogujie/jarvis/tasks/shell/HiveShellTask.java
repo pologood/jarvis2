@@ -24,15 +24,15 @@ import org.apache.logging.log4j.Logger;
 
 import com.github.stuxuhai.jpinyin.PinyinFormat;
 import com.github.stuxuhai.jpinyin.PinyinHelper;
+import com.mogujie.jarvis.core.TaskContext;
 import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.exeception.ShellException;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.tasks.domain.HiveTaskEntity;
 import com.mogujie.jarvis.tasks.util.HiveConfigUtils;
-import com.mogujie.jarvis.tasks.util.MoguAnnotationUtils;
 import com.mogujie.jarvis.tasks.util.HiveScriptParamUtils;
+import com.mogujie.jarvis.tasks.util.MoguAnnotationUtils;
 import com.mogujie.jarvis.tasks.util.YarnUtils;
-import com.mogujie.jarvis.worker.TaskContext;
 
 /**
  * @author wuya
@@ -77,7 +77,7 @@ public abstract class HiveShellTask extends ShellTask {
         sb.append("set mapred.job.name=" + task.getTaskName() + ";");
         // 打印列名的时候不打印表名，否则xray无法显示数据
         sb.append("set hive.resultset.use.unique.column.names=false;");
-        sb.append(MoguAnnotationUtils.removeAnnotation(HiveScriptParamUtils.parse(getContent(task),task.getDataTime())));
+        sb.append(MoguAnnotationUtils.removeAnnotation(HiveScriptParamUtils.parse(getContent(task), task.getDataTime())));
         sb.append("\"");
         return sb.toString();
 

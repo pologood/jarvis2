@@ -11,7 +11,7 @@ package com.mogujie.jarvis.tasks.shell;
 import java.util.List;
 
 import com.google.common.base.Joiner;
-import com.mogujie.jarvis.worker.TaskContext;
+import com.mogujie.jarvis.core.TaskContext;
 
 public class SparkTask extends JavaTask {
 

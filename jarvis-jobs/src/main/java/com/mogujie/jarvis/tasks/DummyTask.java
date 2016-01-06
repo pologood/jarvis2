@@ -8,10 +8,10 @@
 
 package com.mogujie.jarvis.tasks;
 
+import com.mogujie.jarvis.core.AbstractTask;
+import com.mogujie.jarvis.core.TaskContext;
 import com.mogujie.jarvis.core.exeception.TaskException;
 import com.mogujie.jarvis.core.util.ThreadUtils;
-import com.mogujie.jarvis.worker.AbstractTask;
-import com.mogujie.jarvis.worker.TaskContext;
 
 /**
  * @author guangming
