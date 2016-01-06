@@ -14,7 +14,6 @@ import org.junit.Test;
 import com.google.common.collect.Sets;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.event.ScheduleEvent;
-import com.mogujie.jarvis.server.scheduler.event.TimeReadyEvent;
 import com.mogujie.jarvis.server.scheduler.task.DAGTask;
 import com.mogujie.jarvis.server.service.TaskService;
 
@@ -112,75 +111,75 @@ public class TestDAGSchedulerWithEvent extends TestSchedulerBase {
         Assert.assertEquals(3, taskGraph.getTaskMap().size());
     }
 
-    /**
-     *   A   B
-     *    \ /
-     *     C
-     */
-    @Test
-    public void testHandleTimeReadyEvent1() throws Exception {
-        jobGraph.addJob(jobAId, new DAGJob(jobAId, DAGJobType.TIME), null);
-        jobGraph.addJob(jobBId, new DAGJob(jobBId, DAGJobType.TIME), null);
-        jobGraph.addJob(jobCId, new DAGJob(jobCId, DAGJobType.DEPEND), Sets.newHashSet(jobAId, jobBId));
-        Assert.assertEquals(1, jobGraph.getChildren(jobAId).size());
-        Assert.assertEquals(jobCId, (long) jobGraph.getChildren(jobAId).get(0).getFirst());
-        Assert.assertEquals(1, jobGraph.getChildren(jobBId).size());
-        Assert.assertEquals(jobCId, (long) jobGraph.getChildren(jobBId).get(0).getFirst());
-        Assert.assertEquals(2, jobGraph.getParents(jobCId).size());
-        // jobA time ready
-        TimeReadyEvent timeReadyEventA = new TimeReadyEvent(jobAId);
-        dagScheduler.handleTimeReadyEvent(timeReadyEventA);
-        Assert.assertEquals(1, taskGraph.getTaskMap().size());
-        // jobB time ready
-        // pass the dependency check, start to schedule jobC
-        TimeReadyEvent timeReadyEventB = new TimeReadyEvent(jobBId);
-        dagScheduler.handleTimeReadyEvent(timeReadyEventB);
-        Assert.assertEquals(3, taskGraph.getTaskMap().size());
-    }
-
-    /**
-     *     A
-     *    / \
-     *   B   C
-     */
-    @Test
-    public void testHandleTimeReadyEvent2() throws Exception {
-        jobGraph.addJob(jobAId, new DAGJob(jobAId, DAGJobType.TIME), null);
-        jobGraph.addJob(jobBId, new DAGJob(jobBId, DAGJobType.DEPEND), Sets.newHashSet(jobAId));
-        jobGraph.addJob(jobCId, new DAGJob(jobCId, DAGJobType.DEPEND), Sets.newHashSet(jobAId));
-        Assert.assertEquals(2, jobGraph.getChildren(jobAId).size());
-        Assert.assertEquals(1, jobGraph.getParents(jobBId).size());
-        Assert.assertEquals(jobAId, (long) jobGraph.getParents(jobBId).get(0).getFirst());
-        Assert.assertEquals(1, jobGraph.getParents(jobCId).size());
-        Assert.assertEquals(jobAId, (long) jobGraph.getParents(jobCId).get(0).getFirst());
-        // jobA time ready
-        // pass the dependency check, start to schedule jobB and jobC
-        TimeReadyEvent timeReadyEventA = new TimeReadyEvent(jobAId);
-        dagScheduler.handleTimeReadyEvent(timeReadyEventA);
-        Assert.assertEquals(3, taskGraph.getTaskMap().size());
-    }
-
-    /**
-     *     A
-     *     |
-     *     B
-     *     |
-     *     C
-     */
-    @Test
-    public void testHandleTimeReadyEvent3() throws Exception {
-        jobGraph.addJob(jobAId, new DAGJob(jobAId, DAGJobType.TIME), null);
-        jobGraph.addJob(jobBId, new DAGJob(jobBId, DAGJobType.DEPEND), Sets.newHashSet(jobAId));
-        jobGraph.addJob(jobCId, new DAGJob(jobCId, DAGJobType.DEPEND), Sets.newHashSet(jobBId));
-        Assert.assertEquals(1, jobGraph.getParents(jobBId).size());
-        Assert.assertEquals(jobAId, (long) jobGraph.getParents(jobBId).get(0).getFirst());
-        Assert.assertEquals(1, jobGraph.getChildren(jobBId).size());
-        Assert.assertEquals(jobCId, (long) jobGraph.getChildren(jobBId).get(0).getFirst());
-        // jobA time ready
-        // pass the dependency check, start to schedule jobB and jobC
-        TimeReadyEvent timeReadyEventA = new TimeReadyEvent(jobAId);
-        dagScheduler.handleTimeReadyEvent(timeReadyEventA);
-        Assert.assertEquals(3, taskGraph.getTaskMap().size());
-    }
+//    /**
+//     *   A   B
+//     *    \ /
+//     *     C
+//     */
+//    @Test
+//    public void testHandleTimeReadyEvent1() throws Exception {
+//        jobGraph.addJob(jobAId, new DAGJob(jobAId, DAGJobType.TIME), null);
+//        jobGraph.addJob(jobBId, new DAGJob(jobBId, DAGJobType.TIME), null);
+//        jobGraph.addJob(jobCId, new DAGJob(jobCId, DAGJobType.DEPEND), Sets.newHashSet(jobAId, jobBId));
+//        Assert.assertEquals(1, jobGraph.getChildren(jobAId).size());
+//        Assert.assertEquals(jobCId, (long) jobGraph.getChildren(jobAId).get(0).getFirst());
+//        Assert.assertEquals(1, jobGraph.getChildren(jobBId).size());
+//        Assert.assertEquals(jobCId, (long) jobGraph.getChildren(jobBId).get(0).getFirst());
+//        Assert.assertEquals(2, jobGraph.getParents(jobCId).size());
+//        // jobA time ready
+//        TimeReadyEvent timeReadyEventA = new TimeReadyEvent(jobAId);
+//        dagScheduler.handleTimeReadyEvent(timeReadyEventA);
+//        Assert.assertEquals(1, taskGraph.getTaskMap().size());
+//        // jobB time ready
+//        // pass the dependency check, start to schedule jobC
+//        TimeReadyEvent timeReadyEventB = new TimeReadyEvent(jobBId);
+//        dagScheduler.handleTimeReadyEvent(timeReadyEventB);
+//        Assert.assertEquals(3, taskGraph.getTaskMap().size());
+//    }
+//
+//    /**
+//     *     A
+//     *    / \
+//     *   B   C
+//     */
+//    @Test
+//    public void testHandleTimeReadyEvent2() throws Exception {
+//        jobGraph.addJob(jobAId, new DAGJob(jobAId, DAGJobType.TIME), null);
+//        jobGraph.addJob(jobBId, new DAGJob(jobBId, DAGJobType.DEPEND), Sets.newHashSet(jobAId));
+//        jobGraph.addJob(jobCId, new DAGJob(jobCId, DAGJobType.DEPEND), Sets.newHashSet(jobAId));
+//        Assert.assertEquals(2, jobGraph.getChildren(jobAId).size());
+//        Assert.assertEquals(1, jobGraph.getParents(jobBId).size());
+//        Assert.assertEquals(jobAId, (long) jobGraph.getParents(jobBId).get(0).getFirst());
+//        Assert.assertEquals(1, jobGraph.getParents(jobCId).size());
+//        Assert.assertEquals(jobAId, (long) jobGraph.getParents(jobCId).get(0).getFirst());
+//        // jobA time ready
+//        // pass the dependency check, start to schedule jobB and jobC
+//        TimeReadyEvent timeReadyEventA = new TimeReadyEvent(jobAId);
+//        dagScheduler.handleTimeReadyEvent(timeReadyEventA);
+//        Assert.assertEquals(3, taskGraph.getTaskMap().size());
+//    }
+//
+//    /**
+//     *     A
+//     *     |
+//     *     B
+//     *     |
+//     *     C
+//     */
+//    @Test
+//    public void testHandleTimeReadyEvent3() throws Exception {
+//        jobGraph.addJob(jobAId, new DAGJob(jobAId, DAGJobType.TIME), null);
+//        jobGraph.addJob(jobBId, new DAGJob(jobBId, DAGJobType.DEPEND), Sets.newHashSet(jobAId));
+//        jobGraph.addJob(jobCId, new DAGJob(jobCId, DAGJobType.DEPEND), Sets.newHashSet(jobBId));
+//        Assert.assertEquals(1, jobGraph.getParents(jobBId).size());
+//        Assert.assertEquals(jobAId, (long) jobGraph.getParents(jobBId).get(0).getFirst());
+//        Assert.assertEquals(1, jobGraph.getChildren(jobBId).size());
+//        Assert.assertEquals(jobCId, (long) jobGraph.getChildren(jobBId).get(0).getFirst());
+//        // jobA time ready
+//        // pass the dependency check, start to schedule jobB and jobC
+//        TimeReadyEvent timeReadyEventA = new TimeReadyEvent(jobAId);
+//        dagScheduler.handleTimeReadyEvent(timeReadyEventA);
+//        Assert.assertEquals(3, taskGraph.getTaskMap().size());
+//    }
 
 }

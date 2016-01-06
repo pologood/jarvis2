@@ -12,10 +12,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.InputStream;
+import java.util.*;
 
 /**
  * Created by hejian on 15/9/15.
@@ -34,6 +32,21 @@ public class JobController extends BaseController {
     JobDependService jobDependService;
     @Autowired
     AlarmService alarmService;
+
+    static AppVo app = new AppVo();
+
+    static {
+        try {
+            InputStream inputStream = BaseController.class.getResourceAsStream("app.properties");
+            Properties properties = new Properties();
+            properties.load(inputStream);
+            app.setAppId(Integer.parseInt(properties.getProperty("app.id")));
+            app.setAppName(properties.getProperty("app.name"));
+            app.setAppKey(properties.getProperty("app.key"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     /*
     * job任务管理首页
@@ -60,18 +73,16 @@ public class JobController extends BaseController {
     @RequestMapping(value = "addOrEdit")
     @JarvisPassport(authTypes = JarvisAuthType.job, isMenu = false)
     public String addOrEdit(ModelMap modelMap, Long jobId) {
-        AppQo appQo = new AppQo();
-        appQo.setStatus(1);
-        List<AppVo> appVoList = appService.getAppList(appQo);
-
+        modelMap.put("app", app);
         if (jobId != null) {
             JobVo jobVo = jobService.getJobById(jobId);
             modelMap.put("jobVo", jobVo);
 
-            Integer appId = jobVo.getAppId();
-            AppVo appVo = appService.getAppById(appId);
-            if (appVo != null && appVo.getStatus() == 0) {
-                appVoList.add(appVo);
+            //如果不是系统app，则用job自身的app
+            if (!jobVo.getAppId().equals(app.getAppId())) {
+                AppVo appVo = new AppVo();
+                appVo.setAppId(jobVo.getAppId());
+                modelMap.put("app", appVo);
             }
 
             List<JobDependVo> jobDependVoList = jobDependService.getParentById(jobId);
@@ -94,7 +105,6 @@ public class JobController extends BaseController {
         List<JobVo> jobVoList = jobService.getAllJobs(1);
 
         modelMap.put("WorkerGroupVoList", WorkerGroupVoList);
-        modelMap.put("appVoList", appVoList);
         modelMap.put("jobVoList", jobVoList);
         return "job/addOrEdit";
     }
