@@ -403,13 +403,15 @@ public enum JobGraph {
     private List<Long> getUnScheduledTimeStamps(long jobId) {
         List<Long> timeStamps = new ArrayList<Long>();
         Task lastTask = taskService.getLastTask(jobId, DateTime.now().getMillis(), TaskType.SCHEDULE);
-        DateTime startTime = PlanUtil.getScheduleTimeAfter(jobId, new DateTime(lastTask.getDataTime()));
-        DateTime endTime = PlanUtil.getScheduleTimeAfter(jobId, DateTime.now());
-        timeStamps.add(startTime.getMillis());
-        DateTime nextTime = startTime;
-        while (nextTime.isBefore(endTime)) {
-            nextTime = PlanUtil.getScheduleTimeAfter(jobId, nextTime);
-            timeStamps.add(nextTime.getMillis());
+        if (lastTask != null) {
+            DateTime startTime = PlanUtil.getScheduleTimeAfter(jobId, new DateTime(lastTask.getDataTime()));
+            DateTime endTime = PlanUtil.getScheduleTimeAfter(jobId, DateTime.now());
+            timeStamps.add(startTime.getMillis());
+            DateTime nextTime = startTime;
+            while (nextTime.isBefore(endTime)) {
+                nextTime = PlanUtil.getScheduleTimeAfter(jobId, nextTime);
+                timeStamps.add(nextTime.getMillis());
+            }
         }
         return timeStamps;
     }

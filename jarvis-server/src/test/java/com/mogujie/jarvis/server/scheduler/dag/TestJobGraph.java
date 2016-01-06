@@ -274,7 +274,7 @@ public class TestJobGraph {
 
         // jobB disable
         jobGraph.modifyJobFlag(jobBId, JobStatus.ENABLE, JobStatus.DELETED);
-        // jobC has two parents
+        // jobC has one parent
         Assert.assertEquals(1, jobGraph.getParents(jobCId).size());
     }
 
