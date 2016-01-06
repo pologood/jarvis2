@@ -22,16 +22,14 @@ public enum ScheduleExpressionType {
         return value;
     }
 
-    public static ScheduleExpressionType getInstance(int value) {
+    public static ScheduleExpressionType parseValue(int value) throws IllegalArgumentException {
         ScheduleExpressionType[] typeList = ScheduleExpressionType.values();
-        ScheduleExpressionType type = ScheduleExpressionType.CRON;
         for (ScheduleExpressionType t : typeList) {
             if (t.getValue() == value) {
-                type = t;
-                break;
+                return t;
             }
         }
-        return type;
+        throw new IllegalArgumentException("ScheduleExpressionType value is invalid. value:" + value);
     }
 
     public static Boolean isValid(int value) {
