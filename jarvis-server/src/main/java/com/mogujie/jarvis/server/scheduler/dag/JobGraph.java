@@ -26,12 +26,12 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.mogujie.jarvis.core.domain.JobStatus;
+import com.mogujie.jarvis.core.domain.OperationMode;
 import com.mogujie.jarvis.core.domain.Pair;
 import com.mogujie.jarvis.core.domain.TaskType;
 import com.mogujie.jarvis.core.exeception.JobScheduleException;
 import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.server.domain.ModifyDependEntry;
-import com.mogujie.jarvis.server.domain.ModifyOperation;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.dag.checker.DAGDependChecker;
@@ -198,13 +198,13 @@ public enum JobGraph {
     public void modifyDependency(long jobId, List<ModifyDependEntry> dependEntries) throws CycleFoundException {
         for (ModifyDependEntry entry : dependEntries) {
             long preJobId = entry.getPreJobId();
-            if (entry.getOperation().equals(ModifyOperation.ADD)) {
+            if (entry.getOperation().equals(OperationMode.ADD)) {
                 addDependency(preJobId, jobId);
                 LOGGER.info("add dependency successfully, parent {}, child {}", preJobId, jobId);
-            } else if (entry.getOperation().equals(ModifyOperation.DEL)) {
+            } else if (entry.getOperation().equals(OperationMode.DELETE)) {
                 removeDependency(preJobId, jobId);
                 LOGGER.info("remove dependency successfully, parent {}, child {}", preJobId, jobId);
-            } else if (entry.getOperation().equals(ModifyOperation.MODIFY)) {
+            } else if (entry.getOperation().equals(OperationMode.EDIT)) {
                 modifyDependency(preJobId, jobId, entry.getOffsetStrategy());
                 LOGGER.info("modify dependency strategy, new common strategy is {}, new offset Strategy is {}", entry.getCommonStrategy(),
                         entry.getOffsetStrategy());

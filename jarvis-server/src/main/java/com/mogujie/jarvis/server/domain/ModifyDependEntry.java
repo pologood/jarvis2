@@ -8,6 +8,8 @@
 
 package com.mogujie.jarvis.server.domain;
 
+import com.mogujie.jarvis.core.domain.OperationMode;
+
 
 
 /**
@@ -16,18 +18,18 @@ package com.mogujie.jarvis.server.domain;
  */
 public class ModifyDependEntry {
 
-    private ModifyOperation operation;
+    private OperationMode operation;
     private long preJobId;
     private int commonStrategy;
     private String offsetStrategy;
 
-    public ModifyDependEntry(ModifyOperation operation, long preJobId) {
+    public ModifyDependEntry(OperationMode operation, long preJobId) {
         this.operation = operation;
         this.preJobId = preJobId;
         this.commonStrategy = CommonStrategy.ALL.getValue();
     }
 
-    public ModifyDependEntry(ModifyOperation operation, long preJobId,
+    public ModifyDependEntry(OperationMode operation, long preJobId,
             int commonStrategy, String offsetStrategy) {
         this.operation = operation;
         this.preJobId = preJobId;
@@ -35,11 +37,11 @@ public class ModifyDependEntry {
         this.offsetStrategy = offsetStrategy;
     }
 
-    public ModifyOperation getOperation() {
+    public OperationMode getOperation() {
         return operation;
     }
 
-    public void setOperation(ModifyOperation operation) {
+    public void setOperation(OperationMode operation) {
         this.operation = operation;
     }
 

@@ -55,9 +55,9 @@ public class PlanUtil {
     public static DateTime getScheduleTimeAfter(long jobId, DateTime dateTime) {
         DateTime result = null;
         JobEntry jobEntry = jobService.get(jobId);
-        List<ScheduleExpression> expressions = jobEntry.getScheduleExpressions();
-        if (expressions != null && expressions.size() > 0) {
-            for (ScheduleExpression scheduleExpression : expressions) {
+        Map<Long, ScheduleExpression> expressions = jobEntry.getScheduleExpressions();
+        if (expressions != null && !expressions.isEmpty()) {
+            for (ScheduleExpression scheduleExpression : expressions.values()) {
                 DateTime nextTime = scheduleExpression.getTimeAfter(dateTime);
                 if (result == null || result.isAfter(nextTime)) {
                     result = nextTime;
