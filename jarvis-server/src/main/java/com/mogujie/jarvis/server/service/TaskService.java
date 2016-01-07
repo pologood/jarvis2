@@ -132,7 +132,7 @@ public class TaskService {
         example.createCriteria().andStatusNotIn(statusList).andTypeNotEqualTo(TaskType.TEMP.getValue());
         List<Task> tasks = taskMapper.selectByExample(example);
         if (tasks == null) {
-            tasks = new ArrayList<Task>();
+            tasks = new ArrayList<>();
         }
         return tasks;
     }
@@ -142,7 +142,7 @@ public class TaskService {
         example.createCriteria().andStatusIn(statusList).andTypeNotEqualTo(TaskType.TEMP.getValue());
         List<Task> tasks = taskMapper.selectByExample(example);
         if (tasks == null) {
-            tasks = new ArrayList<Task>();
+            tasks = new ArrayList<>();
         }
         return tasks;
     }
@@ -158,23 +158,20 @@ public class TaskService {
         .andTypeEqualTo(taskType.getValue());
         List<Task> tasks = taskMapper.selectByExample(example);
         if (tasks == null) {
-            tasks = new ArrayList<Task>();
+            tasks = new ArrayList<>();
         }
         return tasks;
     }
 
-    public Task getTaskByJobIdAndScheduleTime(long jobId, long scheduleTime) {
+    public Task getLastTask(long jobId, long scheduleTime, TaskType taskType) {
         TaskExample example = new TaskExample();
-        example.createCriteria().andJobIdEqualTo(jobId).andScheduleTimeEqualTo(new Date(scheduleTime));
+        example.createCriteria().andJobIdEqualTo(jobId)
+                .andScheduleTimeGreaterThanOrEqualTo(new DateTime(scheduleTime).toDate())
+                .andTypeEqualTo(taskType.getValue());
         List<Task> taskList = taskMapper.selectByExample(example);
         if (taskList != null && !taskList.isEmpty()) {
             return taskList.get(0);
         }
-        return null;
-    }
-
-    public Task getLastTask(long jobId, long scheduleTime, TaskType taskType) {
-        //TODO
         return null;
     }
 
