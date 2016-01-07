@@ -20,12 +20,20 @@
 
     <mvc:resources mapping="/assets/**" location="/assets/"></mvc:resources>
 
+
     <mvc:interceptors>
-        <bean class="com.mogu.bigdata.admin.passport.interceptor.LoginInterceptor"/>
+
         <mvc:interceptor>
             <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/assets/**" />
+            <bean class="com.mogu.bigdata.admin.passport.interceptor.LoginInterceptor"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/assets/**" />
             <bean class="com.mogujie.jarvis.web.auth.interceptor.JarvisInterceptor"/>
         </mvc:interceptor>
+
     </mvc:interceptors>
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">

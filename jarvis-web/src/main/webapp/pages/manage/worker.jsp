@@ -130,19 +130,6 @@
                             </div>
                         </div>
 
-
-                        <div class="col-md-3">
-                            <div class="input-group" style="width:100%">
-                                <span class="input-group-addon" style="width:35%">最后更新者</span>
-                                <select id="creator">
-                                    <option value="all">全部</option>
-                                    <c:forEach items="${workerGroupVoList}" var="workerGroupVo">
-                                        <option value="${workerGroupVo.updateUser}">${workerGroupVo.updateUser}</option>
-                                    </c:forEach>
-                                </select>
-                            </div>
-                        </div>
-
                         <div class="col-md-3 pull-right">
                             <div class="row">
                                 <div class="col-md-6 col-lg-offset-6">

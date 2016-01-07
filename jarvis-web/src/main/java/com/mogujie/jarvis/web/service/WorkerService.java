@@ -5,9 +5,16 @@ import com.mogujie.jarvis.web.entity.vo.WorkerGroupVo;
 import com.mogujie.jarvis.web.entity.qo.WorkerQo;
 import com.mogujie.jarvis.web.entity.vo.WorkerVo;
 import com.mogujie.jarvis.web.mapper.WorkerMapper;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.mybatis.spring.SqlSessionFactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.XmlWebApplicationContext;
 
+import java.net.URI;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,9 +49,9 @@ public class WorkerService {
     /*
     * 根据条件查询worker列表
     * */
-    public Map<String, Object> getWorkers(WorkerQo workerSearchVo) {
-        Integer total = workerMapper.getWorkerCount(workerSearchVo);
-        List<WorkerVo> workerVoList = workerMapper.getWorkerList(workerSearchVo);
+    public Map<String, Object> getWorkers(WorkerQo workerQo) {
+        Integer total = workerMapper.getWorkerCount(workerQo);
+        List<WorkerVo> workerVoList = workerMapper.getWorkerList(workerQo);
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("total", total);
         result.put("rows", workerVoList);
