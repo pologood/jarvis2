@@ -19,6 +19,7 @@ import org.joda.time.MutableDateTime;
 import org.joda.time.format.DateTimeFormat;
 
 import com.google.common.base.CharMatcher;
+import com.google.common.collect.BoundType;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Range;
 import com.mogujie.jarvis.core.JarvisConstants;
@@ -171,15 +172,10 @@ public class TimeOffsetExpression extends DependencyExpression {
 
             DateTime start = startDateTime.isBefore(endDateTime) ? startDateTime.toDateTime() : endDateTime.toDateTime();
             DateTime end = startDateTime.isAfter(endDateTime) ? startDateTime.toDateTime() : endDateTime.toDateTime();
-            if (rangeStartFlag == '(' && rangeEndFlag == ')') {
-                return Range.open(start, end);
-            } else if (rangeStartFlag == '(' && rangeEndFlag == ']') {
-                return Range.openClosed(start, end);
-            } else if (rangeStartFlag == '[' && rangeEndFlag == ')') {
-                return Range.closedOpen(start, end);
-            } else {
-                return Range.closed(start, end);
-            }
+
+            BoundType lowerBoundType = rangeStartFlag == '(' ? BoundType.OPEN : BoundType.CLOSED;
+            BoundType upperBoundType = rangeEndFlag == '(' ? BoundType.OPEN : BoundType.CLOSED;
+            return Range.range(start, lowerBoundType, end, upperBoundType);
         }
 
         return null;
