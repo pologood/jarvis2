@@ -25,4 +25,15 @@ public abstract class DependencyExpression implements Expression {
     }
 
     abstract public Range<DateTime> getRange(DateTime dateTime);
+
+    public Range<DateTime> getReverseRange(DateTime dateTime) {
+        Range<DateTime> range = getRange(dateTime);
+        if (range == null) {
+            return null;
+        }
+
+        long t1 = dateTime.getMillis() - range.lowerEndpoint().getMillis();
+        long t2 = range.upperEndpoint().getMillis() - dateTime.getMillis();
+        return Range.range(dateTime.minus(t2), range.upperBoundType(), dateTime.plus(t1), range.lowerBoundType());
+    }
 }
