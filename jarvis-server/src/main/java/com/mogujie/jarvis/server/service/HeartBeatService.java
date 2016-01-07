@@ -28,22 +28,18 @@ public class HeartBeatService {
 
         @Override
         public int compare(WorkerInfo left, WorkerInfo right) {
-            if (left == null && right != null) {
-                return -1;
-            } else if (left != null && right == null) {
+            if (left == null) {
+                return right == null ? 0 : -1;
+            } else if (right == null) {
                 return 1;
-            } else if (left == null && right == null) {
-                return 0;
             }
 
             String leftPath = left.getAkkaRootPath();
             String rightPath = right.getAkkaRootPath();
-            if (leftPath == null && rightPath != null) {
-                return -1;
-            } else if (leftPath != null && rightPath == null) {
+            if (leftPath == null) {
+                return rightPath == null ? 0 : -1;
+            } else if (rightPath == null) {
                 return 1;
-            } else if (leftPath == null && rightPath == null) {
-                return 0;
             }
 
             return leftPath.compareTo(rightPath);
