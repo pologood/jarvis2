@@ -17,6 +17,7 @@ public class PlanVo extends Task{
     private Integer appId;
     private String appName;
     private String workerGroupId;
+
     private Long executeTime;
 
     public String getJobName() {
@@ -82,4 +83,5 @@ public class PlanVo extends Task{
     public void setExecuteTime(Long executeTime) {
         this.executeTime = executeTime;
     }
+
 }

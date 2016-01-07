@@ -11,9 +11,10 @@ $(function () {
     });
     $.ajaxSettings.async = true;
 
-    initData();
-
     $(".input-group select").select2({width: '100%'});
+    $("#appType").val(1).trigger("change");
+    $("#status").val(1).trigger("change");
+    initData();
 });
 
 
@@ -55,9 +56,8 @@ function initData() {
         showColumns: true,
         showHeader: true,
         showToggle: true,
-        pageSize: 1,
-        pageSize: 10,
-        pageList: [5, 10, 20, 50, 100, 200, 500],
+        pageSize: 20,
+        pageList: [10, 20, 50, 100, 200, 500],
         paginationFirstText: '首页',
         paginationPreText: '上一页',
         paginationNextText: '下一页',
@@ -88,20 +88,18 @@ function operateFormatter(value, row, index) {
     ].join('');
 
     var operation = '';
-    /*
-     var operation='<div class="btn-group"> <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">修改状态 <span class="caret"></span> </button>';
-     operation=operation+'<ul class="dropdown-menu">';
-     $(appStatus).each(function(i,c){
-     if(c["id"]!='all'&&c["id"]!=status){
-     var li='<li><a href="javascript:void(0)" onclick="modifyAppStatus(\''+appId+'\','+c["id"]+',\''+appName+'\')" >'+c["text"]+'</a></li>';
-     operation=operation+li;
-     }
-     });
-     operation=operation+'</ul></div>';
-     */
+
     $(appStatus).each(function (i, c) {
         if (c["id"] != 'all' && c["id"] != status) {
-            operation += '<a href="javascript:void(0)" onclick="modifyAppStatus(' + appId + ',' + c["id"] + ',\'' + appName + '\',' + maxConcurrency + ')" >' + c["text"] + '</a>';
+            var style = "";
+            if (0 == c["id"]) {
+                style = "btn btn-xs btn-danger";
+            }
+            else if (1 == c["id"]) {
+                style = "btn btn-xs btn-success";
+            }
+
+            operation += '<a class="' + style + '" href="javascript:void(0)" onclick="modifyAppStatus(' + appId + ',' + c["id"] + ',\'' + appName + '\',' + maxConcurrency + ')" >' + c["text"] + '</a>';
         }
     });
     //console.log(result);
@@ -113,7 +111,8 @@ function operateFormatter(value, row, index) {
 var columns = [{
     field: 'appId',
     title: '应用id',
-    switchable: true
+    switchable: true,
+    visible: false
 }, {
     field: 'appName',
     title: '应用名称',
@@ -126,7 +125,8 @@ var columns = [{
     field: 'appType',
     title: '应用类型',
     switchable: true,
-    formatter: appTypeFormatter
+    formatter: appTypeFormatter,
+    visible: false
 }, {
     field: 'status',
     title: '应用状态',
@@ -137,19 +137,31 @@ var columns = [{
     title: '最大并发数',
     switchable: true
 }, {
+    field: 'owner',
+    title: '维护人',
+    switchable: true
+}, {
+    field: 'member',
+    title: '成员',
+    switchable: true,
+    formatter: memberFormatter
+}, {
     field: 'updateUser',
     title: '最后更新人',
-    switchable: true
+    switchable: true,
+    visible: false
 }, {
     field: 'createTime',
     title: '创建时间',
     switchable: true,
-    formatter: formatDate
+    formatter: formatDate,
+    visible: false
 }, {
     field: 'updateTime',
     title: '更新时间',
     switchable: true,
-    formatter: formatDate
+    formatter: formatDate,
+    visible: false
 }, {
     field: 'operation',
     title: '操作',
@@ -157,7 +169,41 @@ var columns = [{
     formatter: operateFormatter
 }];
 function appStatusFormatter(value, row, index) {
-    return formatStatus(appStatusJson, value);
+    var result = "";
+    //停用
+    if (0 == value) {
+        result = "<i class='glyphicon glyphicon-pause text-danger'></i>";
+    }
+    //启用
+    else if (1 == value) {
+        result = "<i class='glyphicon glyphicon-ok text-success'></i>";
+    }
+
+    return result;
+}
+
+function memberFormatter(value) {
+    var memberArr = value.split(",");
+    var member = '';
+    var threshold = 5;
+    if (memberArr.length > threshold) {
+        for (var i = 0; i < threshold; i++) {
+            if ('' == member) {
+                member = memberArr[i];
+            }
+            else {
+                member = member + "," + memberArr[i];
+            }
+        }
+        member += "...";
+    }
+    else {
+        member = value;
+    }
+    var result = '<span title="' + value + '">' + member + '</span>';
+
+
+    return result;
 }
 
 function search() {

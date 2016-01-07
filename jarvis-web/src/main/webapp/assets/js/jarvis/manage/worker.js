@@ -46,14 +46,10 @@ function getWorkerGroupQueryPara() {
     var queryPara = {};
 
     var name = $("#name").val();
-    var creator = $("#creator").val();
 
     name = name == 'all' ? '' : name;
-    creator = creator == 'all' ? '' : creator;
 
     queryPara["name"] = name;
-    queryPara["creator"] = creator;
-
     return queryPara;
 }
 
@@ -76,9 +72,8 @@ function initWorkerData() {
         showColumns: true,
         showHeader: true,
         showToggle: true,
-        pageSize: 1,
-        pageSize: 10,
-        pageList: [5, 10, 20, 50, 100, 200, 500],
+        pageSize: 20,
+        pageList: [10, 20, 50, 100, 200, 500],
         paginationFirstText: '首页',
         paginationPreText: '上一页',
         paginationNextText: '下一页',
@@ -108,9 +103,8 @@ function initWorkerGroupData() {
         showColumns: true,
         showHeader: true,
         showToggle: true,
-        pageSize: 1,
-        pageSize: 10,
-        pageList: [5, 10, 20, 50, 100, 200, 500],
+        pageSize: 20,
+        pageList: [10, 20, 50, 100, 200, 500],
         paginationFirstText: '首页',
         paginationPreText: '上一页',
         paginationNextText: '下一页',
@@ -122,34 +116,35 @@ function initWorkerGroupData() {
 }
 //worker操作状态
 function operateWorkerFormatter(value, row, index) {
-    //console.log(row);
     var workerStatus = [{"id": "0", "text": "下线"}, {"id": "1", "text": "上线"}];
     var id = row["id"];
     var ip = row["ip"];
     var port = row["port"];
     var operateFlag = row["status"];
-    //console.log(jobId);
-    var result = [
-        ''
-    ].join('');
 
-    var operation = '<div class="btn-group"> <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">修改状态 <span class="caret"></span> </button>';
-    operation = operation + '<ul class="dropdown-menu">';
+    var operation = "";
+
     $(workerStatus).each(function (i, c) {
         if (c["id"] != 'all' && c["id"] != operateFlag) {
-            var li = '<li><a href="javascript:void(0)" onclick="modifyWorkerStatus(' + id + ',' + c["id"] + ',\'' + ip + '\',' + port + ')" >' + c["text"] + '</a></li>';
-            operation = operation + li;
+            var style="";
+            if(0==c["id"]){
+                style="btn btn-xs btn-danger";
+            }
+            else if(1==c["id"]){
+                style="btn btn-xs btn-success";
+            }
+            var item = '<a class="'+style+'" href="javascript:void(0)" onclick="modifyWorkerStatus(' + id + ',' + c["id"] + ',\'' + ip + '\',' + port + ')" >' + c["text"] + '</a>';
+            operation = operation + item;
         }
     });
-    operation = operation + '</ul></div>';
 
     //console.log(result);
 
-    return result + operation;
+    return operation;
 }
 //worker group操作状态
 function operateWorkerGroupFormatter(value, row, index) {
-    var workerGroupStatus = [{"id": "0", "text": "无效"}, {"id": "1", "text": "有效"}];
+    var workerGroupStatus = [{"id": "0", "text": "禁用"}, {"id": "1", "text": "启用"}];
     //console.log(row);
     var id = row["id"];
     var operateFlag = row["status"];
@@ -162,15 +157,24 @@ function operateWorkerGroupFormatter(value, row, index) {
 
     ].join('');
 
-    var operation = '<div class="btn-group"> <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">修改状态 <span class="caret"></span> </button>';
-    operation = operation + '<ul class="dropdown-menu">';
+    var operation = '';
+
     $(workerGroupStatus).each(function (i, c) {
         if (c["id"] != 'all' && c["id"] != operateFlag) {
-            var li = '<li><a href="javascript:void(0)" onclick="modifyWorkerGroupStatus(' + id + ',\'' + authKey + '\',' + c["id"] + ')" >' + c["text"] + '</a></li>';
-            operation = operation + li;
+            var style="";
+            //禁用
+            if(0==c["id"]){
+                style="btn btn-xs btn-danger";
+            }
+            //启用
+            else if(1==c["id"]){
+                style="btn btn-xs btn-success";
+            }
+
+            var item = '<a class="'+style+'" href="javascript:void(0)" onclick="modifyWorkerGroupStatus(' + id + ',\'' + authKey + '\',' + c["id"] + ')" >' + c["text"] + '</a>';
+            operation = operation + item;
         }
     });
-    operation = operation + '</ul></div>';
 
     //console.log(result);
 
@@ -181,18 +185,24 @@ function operateWorkerGroupFormatter(value, row, index) {
 var workerColumns = [{
     field: 'id',
     title: 'Worker Id',
-    switchable: true
+    switchable: true,
+    visible:false
 }, {
     field: 'workerGroupId',
     title: 'Worker Group Id',
-    switchable: true
+    switchable: true,
+    visible:false
 }, {
     field: 'ip',
     title: 'IP',
     switchable: true
 }, {
     field: 'port',
-    title: 'PORT',
+    title: '端口',
+    switchable: true
+},{
+    field: 'workerGroupName',
+    title: 'WorkerGroup名',
     switchable: true
 }, {
     field: 'status',
@@ -203,12 +213,14 @@ var workerColumns = [{
     field: 'createTime',
     title: '创建时间',
     switchable: true,
-    formatter: formatDateTime
+    formatter: formatDateTime,
+    visible:false
 }, {
     field: 'updateTime',
     title: '更新时间',
     switchable: true,
-    formatter: formatDateTime
+    formatter: formatDateTime,
+    visible:false
 }, {
     field: 'operation',
     title: '操作',
@@ -220,12 +232,8 @@ var workerColumns = [{
 var workerGroupColumns = [{
     field: 'id',
     title: 'Worker Group id',
-    switchable: true
-}, {
-    field: 'status',
-    title: '状态',
     switchable: true,
-    formatter: workerGroupStatusFormatter
+    visible:false
 }, {
     field: 'name',
     title: '名称',
@@ -234,20 +242,28 @@ var workerGroupColumns = [{
     field: 'authKey',
     title: 'authKey',
     switchable: true
-}, {
+},{
+    field: 'status',
+    title: '状态',
+    switchable: true,
+    formatter: workerGroupStatusFormatter
+},  {
     field: 'createTime',
     title: '创建时间',
     switchable: true,
-    formatter: formatDateTime
+    formatter: formatDateTime,
+    visible:false
 }, {
     field: 'updateTime',
     title: '更新时间',
     switchable: true,
-    formatter: formatDateTime
+    formatter: formatDateTime,
+    visible:false
 }, {
     field: 'updateUser',
     title: '更新人',
-    switchable: true
+    switchable: true,
+    visible:false
 }, {
     field: 'operation',
     title: '操作',
@@ -256,10 +272,33 @@ var workerGroupColumns = [{
 }];
 
 function workerStatusFormatter(value, row, index) {
-    return formatStatus(workerStatusJson, value);
+    var result="";
+    //下线
+    if(0==value){
+        result="<i class='glyphicon glyphicon-remove text-danger'></i>";
+    }
+    //上线
+    else if(1==value){
+        result="<i class='glyphicon glyphicon-ok text-success'></i>";
+    }
+
+    return result;
 }
 function workerGroupStatusFormatter(value, row, index) {
-    return formatStatus(workerGroupStatusJson, value);
+    var result="";
+    //禁用
+    if(0==value){
+        result="<i class='glyphicon glyphicon-remove text-danger'></i>";
+    }
+    //启用
+    else if(1==value){
+        result="<i class='glyphicon glyphicon-ok text-success'></i>";
+    }
+    else{
+        result="<i class='glyphicon glyphicon-question-sign text-info'></i>";
+    }
+
+    return result;
 }
 
 function searchWorker() {

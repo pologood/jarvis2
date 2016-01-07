@@ -35,24 +35,6 @@
             <!-- 用户名必须 -->
             <input type="hidden" id="jobId" desc="任务id" value="${jobVo.jobId}"/>
 
-
-            <div class="row top-buffer">
-                <div class="col-md-6 col-md-offset-3">
-                    <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">应用名称<span class="text-danger"
-                                                                                    style="vertical-align: middle">*</span></span>
-                        <select id="appName" desc="应用名称">
-                            <c:forEach items="${appVoList}" var="app" varStatus="status">
-                                <option value="${app.appName}"
-                                        <c:choose>
-                                        <c:when test="${app.appName==jobVo.appName}">selected</c:when>
-                                </c:choose> >${app.appName}</option>
-                            </c:forEach>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
             <div class="row top-buffer">
                 <div class="col-md-6 col-md-offset-3">
                     <div class="input-group" style="width:100%">
@@ -60,19 +42,6 @@
                                                                                     style="vertical-align: middle">*</span></span>
                         <input id="jobName" class="form-control" desc="任务名称" value="${jobVo.jobName}"
                                onblur="checkJobName(this)"/>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row top-buffer">
-                <div class="col-md-6 col-md-offset-3">
-                    <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">并行|串行<span class="text-danger"
-                                                                                     style="vertical-align: middle">*</span></span>
-                        <select id="serialFlag">
-                            <option value="0">并行</option>
-                            <option value="1">串行</option>
-                        </select>
                     </div>
                 </div>
             </div>

@@ -1,5 +1,7 @@
 package com.mogujie.jarvis.web.controller.jarvis;
 
+import com.mogu.bigdata.admin.core.entity.User;
+import com.mogu.bigdata.admin.inside.service.AdminUserService;
 import com.mogujie.jarvis.web.auth.annotation.JarvisPassport;
 import com.mogujie.jarvis.web.auth.conf.JarvisAuthType;
 import com.mogujie.jarvis.web.entity.vo.AppVo;
@@ -29,6 +31,8 @@ public class ManageController extends BaseController {
     AppService appService;
     @Autowired
     WorkerService workerService;
+    @Autowired
+    AdminUserService userService;
 
     @RequestMapping
     @JarvisPassport(authTypes = JarvisAuthType.manage_system)
@@ -39,7 +43,6 @@ public class ManageController extends BaseController {
     @RequestMapping(value = "app")
     @JarvisPassport(authTypes = JarvisAuthType.manage_app)
     public String app(ModelMap modelMap) {
-
         List<String> appNameList = appService.getAllAppName();
         modelMap.put("appNameList", appNameList);
         return "manage/app";
@@ -47,11 +50,13 @@ public class ManageController extends BaseController {
 
     @RequestMapping(value = "appAddOrEdit")
     @JarvisPassport(authTypes = JarvisAuthType.manage_app, isMenu = false)
-    public String appAddOrEdit(ModelMap modelMap, Integer appId) {
+    public String appAddOrEdit(ModelMap modelMap, Integer appId) throws Exception {
+        List<User> userList = userService.getAllUsers();
         if (appId != null) {
             AppVo appVo = appService.getAppById(appId);
             modelMap.put("appVo", appVo);
         }
+        modelMap.put("userList", userList);
         return "manage/appAddOrEdit";
     }
 
