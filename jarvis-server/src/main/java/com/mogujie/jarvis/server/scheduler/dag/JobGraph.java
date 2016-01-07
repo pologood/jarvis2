@@ -24,19 +24,20 @@ import org.joda.time.DateTime;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Range;
 import com.google.common.collect.Sets;
 import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.core.domain.OperationMode;
 import com.mogujie.jarvis.core.domain.Pair;
-import com.mogujie.jarvis.core.domain.TaskType;
 import com.mogujie.jarvis.core.exception.JobScheduleException;
-import com.mogujie.jarvis.dto.generate.Task;
+import com.mogujie.jarvis.core.expression.DependencyExpression;
 import com.mogujie.jarvis.server.domain.ModifyDependEntry;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.dag.checker.DAGDependChecker;
 import com.mogujie.jarvis.server.scheduler.event.AddPlanEvent;
 import com.mogujie.jarvis.server.scheduler.event.AddTaskEvent;
+import com.mogujie.jarvis.server.scheduler.time.TimePlanEntry;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.PlanUtil;
@@ -301,7 +302,7 @@ public enum JobGraph {
     }
 
     /**
-     * submit job if pass the dependency check
+     * 该方法由修改job依赖关系触发
      * 如果不是单亲纯依赖，必须配置调度时间
      *
      * @param dagJob
@@ -311,22 +312,19 @@ public enum JobGraph {
         long jobId = dagJob.getJobId();
         // 如果是时间任务，遍历自己的调度时间做依赖检查
         if (dagJob.getType().implies(DAGJobType.TIME)) {
-            List<Long> timeStamps = getUnScheduledTimeStamps(jobId);
-            for (long timeStamp : timeStamps) {
-                if (dagJob.checkDependency(timeStamp)) {
-                    LOGGER.info("{} pass the dependency check", dagJob);
-
-                    // 提交给TimeScheduler进行时间调度
-                    Map<Long, List<Long>> dependTaskIdMap = dagJob.getDependTaskIdMap(timeStamp);
-                    AddPlanEvent event = new AddPlanEvent(jobId, scheduleTime, dependTaskIdMap);
-                    controller.notify(event);
-                }
+            long planScheduleTime = PlanUtil.getScheduleTimeAfter(jobId, DateTime.now()).getMillis();
+            if (dagJob.checkDependency(planScheduleTime)) {
+                LOGGER.info("{} pass the dependency check", dagJob);
+                // 提交给TimeScheduler进行时间调度
+                Map<Long, List<Long>> dependTaskIdMap = dagJob.getDependTaskIdMap(planScheduleTime);
+                AddPlanEvent event = new AddPlanEvent(jobId, scheduleTime, dependTaskIdMap);
+                controller.notify(event);
             }
         }
     }
 
     /**
-     * submit job if pass the dependency check
+     * 该方法由task发送成功事件触发，进行孩子job的依赖检查
      * 如果不是单亲纯依赖，必须配置调度时间
      *
      * @param dagJob
@@ -336,15 +334,19 @@ public enum JobGraph {
         long jobId = dagJob.getJobId();
         // 如果是时间任务，遍历自己的调度时间做依赖检查
         if (dagJob.getType().implies(DAGJobType.TIME)) {
-            List<Long> timeStamps = getUnScheduledTimeStamps(jobId);
-            for (long timeStamp : timeStamps) {
-                if (dagJob.checkDependency(timeStamp)) {
-                    LOGGER.info("{} pass the dependency check", dagJob);
-
-                    // 提交给TimeScheduler进行时间调度
-                    Map<Long, List<Long>> dependTaskIdMap = dagJob.getDependTaskIdMap(timeStamp);
-                    AddPlanEvent event = new AddPlanEvent(jobId, scheduleTime, dependTaskIdMap);
-                    controller.notify(event);
+            DependencyExpression dependencyExpression = jobService.get(jobId).getDependencies().get(parentJobId).getDependencyExpression();
+            if (dependencyExpression != null) {
+                Range<DateTime> range = dependencyExpression.getReverseRange(new DateTime(scheduleTime));
+                List<TimePlanEntry> plan = PlanUtil.getReschedulePlan(jobId, range);
+                for (TimePlanEntry entry : plan) {
+                    long planScheduleTime = entry.getDateTime().getMillis();
+                    if (dagJob.checkDependency(planScheduleTime)) {
+                        LOGGER.info("{} pass the dependency check", dagJob);
+                        // 提交给TimeScheduler进行时间调度
+                        Map<Long, List<Long>> dependTaskIdMap = dagJob.getDependTaskIdMap(planScheduleTime);
+                        AddPlanEvent event = new AddPlanEvent(jobId, scheduleTime, dependTaskIdMap);
+                        controller.notify(event);
+                    }
                 }
             }
         } else {
@@ -411,36 +413,6 @@ public enum JobGraph {
             }
         }
         return jobIds;
-    }
-
-    /**
-     * 从上一次调度找到当前时间的下一次，应该要调度但是尚未开始调度的时间
-     * 为什么要找到当前时间下一次？比如C依赖A和B，A是1点，B是2点，当前时间3点，C时间是6点，那必须找到下一次才保险
-     *
-     * @param jobId
-     * @return
-     */
-    private List<Long> getUnScheduledTimeStamps(long jobId) {
-        List<Long> timeStamps = new ArrayList<Long>();
-        Task lastTask = taskService.getLastTask(jobId, DateTime.now().getMillis(), TaskType.SCHEDULE);
-        if (lastTask != null) {
-            DateTime startTime = PlanUtil.getScheduleTimeAfter(jobId, new DateTime(lastTask.getDataTime()));
-            DateTime endTime = PlanUtil.getScheduleTimeAfter(jobId, DateTime.now());
-            timeStamps.add(startTime.getMillis());
-            DateTime nextTime = startTime;
-            while (nextTime.isBefore(endTime)) {
-                nextTime = PlanUtil.getScheduleTimeAfter(jobId, nextTime);
-                if (nextTime != null) {
-                    timeStamps.add(nextTime.getMillis());
-                }
-            }
-        } else {
-            DateTime nextTime = PlanUtil.getScheduleTimeAfter(jobId, DateTime.now());
-            if (nextTime != null) {
-                timeStamps.add(nextTime.getMillis());
-            }
-        }
-        return timeStamps;
     }
 
 }
