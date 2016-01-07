@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://code.alibabatech.com/schema/dubbo
+       http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+       <!-- 提供方应用信息，用于计算依赖关系 -->
+       <dubbo:application name="${platform.dubbo.application}"  />
+
+       <!--注册中心-->
+       <dubbo:registry address="${platform.dubbo.registry}" />
+
+       <!-- 用dubbo协议在20880端口暴露服务 -->
+       <dubbo:protocol name="dubbo" port="${platform.dubbo.port}"/>
+
+
+       <dubbo:reference id="rbacService" interface="com.mogu.bigdata.admin.client.service.RbacService" version="1.0.0"/>
+       <dubbo:reference id="menuService" interface="com.mogu.bigdata.admin.client.service.MenuService" version="1.0.0"/>
+       <dubbo:reference id="userService" interface="com.mogu.bigdata.admin.inside.service.AdminUserService" version="1.0.0"/>
+
+
+       <bean id="jarvisAuthTypeAdapter" class="com.mogujie.jarvis.web.auth.adapter.JarvisAuthTypeAdapter" />
+
+
+       <!-- 声明需要暴露的服务接口 -->
+
+       <dubbo:service interface="com.mogu.bigdata.admin.client.adapter.AuthTypeAdapter" group="jarvis" ref="jarvisAuthTypeAdapter" timeout="1000"/>
+
+       <bean id="propertyConfigurer4Redis" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" >
+              <property name="order" value="1" />
+              <property name="ignoreUnresolvablePlaceholders" value="true" />
+              <property name="locations">
+                     <list>
+                            <value>classpath:redis.properties</value>
+                     </list>
+              </property>
+       </bean>
+
+       <bean id="sessionHelper" class="com.mogu.bigdata.admin.passport.session.impl.DefaultSessionHelper">
+       </bean>
+
+       <bean id="uuapService" class="com.mogu.bigdata.admin.passport.user.impl.SsoUuapServiceImpl">
+              <constructor-arg index="0" value="http://mac.mogujie.org/verify"/>
+              <constructor-arg index="1" value="http://mac.mogujie.org/appAuth"/>
+              <constructor-arg index="2" value="d5970b59-cc59-4743-98a5-3ee1b2f9eda8"/>
+              <constructor-arg index="3" value="bda.mogujie.org"/>
+              <constructor-arg index="4" ref="sessionHelper"/>
+       </bean>
+
+</beans>

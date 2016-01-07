@@ -30,7 +30,6 @@
 
     <dependencies>
 
-
         <dependency>
             <groupId>com.mogu</groupId>
             <artifactId>admin-core</artifactId>
