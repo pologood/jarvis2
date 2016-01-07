@@ -32,4 +32,6 @@ public interface TaskMapper {
 
 
     List<TaskVo> getTaskByIds(@Param("list") Set<String> taskIds);
+
+    List<PlanVo> getRecentExecuteTaskByJobId(List<Long> jobIdList);
 }

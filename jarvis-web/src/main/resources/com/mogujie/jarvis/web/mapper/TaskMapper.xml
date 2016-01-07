@@ -196,5 +196,16 @@
             #{item}
         </foreach>
     </select>
+    
+    <select id="getRecentExecuteTaskByJobId" parameterType="List" resultType="PlanVo">
+        <foreach collection="list" item="jobId" open="" close="" separator="UNION">
+            (
+            SELECT taskId,jobId,time_to_sec(TIMEDIFF(task.executeEndTime,task.executeStartTime)) as executeTime
+              from task
+                where status=4 and jobId=#{jobId}
+                  ORDER BY executeEndTime DESC limit 10
+            )
+        </foreach>
+    </select>
 
 </mapper>

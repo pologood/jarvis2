@@ -268,7 +268,7 @@
                 <div class="col-md-6 col-md-offset-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">拒绝重试数</span>
-                        <input id="rejectRetries" class="form-control" value="<c:choose><c:when test="${jobVo.rejectAttempts!=null}">${jobVo.rejectAttempts}</c:when><c:otherwise>0</c:otherwise></c:choose>" desc="拒绝重试数"
+                        <input id="rejectRetries" class="form-control" value="<c:choose><c:when test="${jobVo.failedAttempts!=null}">${jobVo.failedAttempts}</c:when><c:otherwise>0</c:otherwise></c:choose>" desc="失败重试数"
                                placeholder="0" onblur="checkNum(this)"/>
                     </div>
                 </div>
@@ -278,7 +278,7 @@
                 <div class="col-md-6 col-md-offset-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">拒绝重试间隔(秒)</span>
-                        <input id="rejectInterval" class="form-control" value="<c:choose><c:when test="${jobVo.rejectInterval!=null}">${jobVo.rejectInterval}</c:when><c:otherwise>3</c:otherwise></c:choose>" desc="拒绝重试间隔(秒)"
+                        <input id="rejectInterval" class="form-control" value="<c:choose><c:when test="${jobVo.failedInterval!=null}">${jobVo.failedInterval}</c:when><c:otherwise>3</c:otherwise></c:choose>" desc="失败重试间隔(秒)"
                                placeholder="3" onblur="checkNum(this)"/>
                     </div>
                 </div>

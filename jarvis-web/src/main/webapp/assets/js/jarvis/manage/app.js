@@ -141,11 +141,6 @@ var columns = [{
     title: '维护人',
     switchable: true
 }, {
-    field: 'member',
-    title: '成员',
-    switchable: true,
-    formatter: memberFormatter
-}, {
     field: 'updateUser',
     title: '最后更新人',
     switchable: true,
@@ -178,30 +173,6 @@ function appStatusFormatter(value, row, index) {
     else if (1 == value) {
         result = "<i class='glyphicon glyphicon-ok text-success'></i>";
     }
-
-    return result;
-}
-
-function memberFormatter(value) {
-    var memberArr = value.split(",");
-    var member = '';
-    var threshold = 5;
-    if (memberArr.length > threshold) {
-        for (var i = 0; i < threshold; i++) {
-            if ('' == member) {
-                member = memberArr[i];
-            }
-            else {
-                member = member + "," + memberArr[i];
-            }
-        }
-        member += "...";
-    }
-    else {
-        member = value;
-    }
-    var result = '<span title="' + value + '">' + member + '</span>';
-
 
     return result;
 }

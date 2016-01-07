@@ -1,4 +1,5 @@
 var taskStatusJson = null;
+var taskStatusColor = null;
 
 $(function () {
     createDatetimePickerById("executeDate");
@@ -45,6 +46,11 @@ $(function () {
             $("#taskStatus").append(text);
             $("#taskStatus").append('  ');
         });
+    });
+
+    //初始化颜色
+    $.getJSON(contextPath + "/assets/json/taskStatusColor.json", function (data) {
+        taskStatusColor = data;
     });
     $.ajaxSettings.async = true;
 
@@ -239,11 +245,6 @@ var columns = [{
     switchable: true,
     visible: false
 }, {
-    field: 'status',
-    title: '执行状态',
-    switchable: true,
-    formatter: taskStatusFormatter
-}, {
     field: 'executeUser',
     title: '执行用户',
     switchable: true
@@ -284,7 +285,12 @@ var columns = [{
     switchable: false,
     visible: true,
     formatter: formatTimeInterval
-}, {
+},{
+    field: 'status',
+    title: '执行状态',
+    switchable: true,
+    formatter: taskStatusFormatter
+},  {
     field: 'createTime',
     title: '执行创建时间',
     switchable: false,
@@ -335,7 +341,10 @@ function operateFormatter(value, row, index) {
 
 //执行状态格式化
 function taskStatusFormatter(value, row, index) {
-    return formatStatus(taskStatusJson, value);
+    var color = taskStatusColor[value];
+    var result = '<i class="fa fa-circle fa-2x" style="color: ' + color + '"></i>';
+
+    return result;
 }
 //百分比格式化
 function progressFormatter(value, row, index) {

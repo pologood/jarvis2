@@ -45,6 +45,8 @@ public class TaskService {
         Integer count = taskMapper.getCountByCondition(taskQo);
         count = count == null ? 0 : count;
         List<TaskVo> taskVoList = taskMapper.getTasksByCondition(taskQo);
+
+
         result.put("total", count);
         result.put("rows", taskVoList);
 

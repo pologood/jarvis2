@@ -22,7 +22,6 @@ public class TaskAPIController {
     @ResponseBody
     public Map<String, Object> getTasks(TaskQo taskQo) {
         Map<String, Object> result = taskService.getTasks(taskQo);
-
         return result;
     }
 

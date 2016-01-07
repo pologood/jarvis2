@@ -1,5 +1,6 @@
 var taskStatusJson = null;
 var planOperation = null;
+var taskStatusColor = null;
 
 $(function () {
 
@@ -15,7 +16,7 @@ $(function () {
         $("#jobType").select2({
             data: data,
             width: '100%',
-            tags:true
+            tags: true
         });
     });
 
@@ -90,7 +91,10 @@ $(function () {
     $.getJSON(contextPath + "/assets/json/taskStatus.json", function (data) {
         taskStatusJson = data;
     });
-
+    //初始化颜色
+    $.getJSON(contextPath + "/assets/json/taskStatusColor.json", function (data) {
+        taskStatusColor = data;
+    });
     //初始化操作类型
     $.getJSON(contextPath + "/assets/json/planOperation.json", function (data) {
         planOperation = data;
@@ -148,11 +152,11 @@ function getQueryPara() {
     priorityList = priorityList == null ? undefined : priorityList;
     scheduleTime = scheduleTime == '' ? undefined : scheduleTime;
 
-    queryPara["jobIdList"] = JSON.stringify(jobIdList) ;
-    queryPara["jobNameList"] =JSON.stringify(jobNameList) ;
+    queryPara["jobIdList"] = JSON.stringify(jobIdList);
+    queryPara["jobNameList"] = JSON.stringify(jobNameList);
     queryPara["jobTypeList"] = JSON.stringify(jobTypeList);
-    queryPara["executeUserList"] =JSON.stringify(executeUserList) ;
-    queryPara["priorityList"] =JSON.stringify(priorityList) ;
+    queryPara["executeUserList"] = JSON.stringify(executeUserList);
+    queryPara["priorityList"] = JSON.stringify(priorityList);
     queryPara["scheduleTime"] = scheduleTime;
 
     return queryPara;
@@ -264,11 +268,22 @@ var columns = [{
     switchable: true,
     formatter: formatDateTime
 }, {
+    field: 'predictExecuteTime',
+    title: '预计执行时长',
+    switchable: true,
+    formatter: formatTimeInterval
+}, {
     field: 'status',
     title: '状态',
     switchable: true,
     visible: true,
     formatter: taskStatusFormatter
+}, {
+    field: 'executeTime',
+    title: '执行时长',
+    switchable: true,
+    visible: false,
+    formatter: formatTimeInterval
 }, {
     field: 'executeStartTime',
     title: '执行开始时间',
@@ -281,12 +296,6 @@ var columns = [{
     switchable: true,
     visible: false,
     formatter: formatDateTime
-}, {
-    field: 'executeTime',
-    title: '执行时长',
-    switchable: true,
-    visible: false,
-    formatter: formatTimeInterval
 }, {
     field: 'createTime',
     title: '创建时间',
@@ -338,7 +347,10 @@ function operateFormatter(value, row, index) {
     return result;
 }
 function taskStatusFormatter(value, row, index) {
-    return formatStatus(taskStatusJson, value);
+    var color = taskStatusColor[value];
+    var result = '<i class="fa fa-circle fa-2x" style="color: ' + color + '"></i>';
+
+    return result;
 }
 function StringFormatter(value, row, index) {
     return value;

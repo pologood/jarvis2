@@ -72,17 +72,6 @@
             </div>
         </div>
 
-        <div class="col-md-6 col-md-offset-3 top-buffer">
-            <div class="input-group" style="width:100%">
-                <span class="input-group-addon" style="width:35%">成员</span>
-                <select id="member" title="${appVo.member}" multiple>
-                    <c:forEach items="${userList}" var="user">
-                        <option value="${user.uname}">${user.nick}</option>
-                    </c:forEach>
-                </select>
-            </div>
-        </div>
-
 
         <div class="col-md-6 col-md-offset-3 top-buffer text-center">
             <div class="input-group" style="width:100%">

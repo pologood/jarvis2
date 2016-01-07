@@ -19,6 +19,7 @@ public class PlanVo extends Task{
     private String workerGroupId;
 
     private Long executeTime;
+    private Long predictExecuteTime;
 
     public String getJobName() {
         return jobName;
@@ -84,4 +85,11 @@ public class PlanVo extends Task{
         this.executeTime = executeTime;
     }
 
+    public Long getPredictExecuteTime() {
+        return predictExecuteTime;
+    }
+
+    public void setPredictExecuteTime(Long predictExecuteTime) {
+        this.predictExecuteTime = predictExecuteTime;
+    }
 }

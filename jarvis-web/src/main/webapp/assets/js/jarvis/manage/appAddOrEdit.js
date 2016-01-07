@@ -12,7 +12,6 @@ $(function () {
     });
 
     initOwner();
-    initMember();
 });
 
 function initOwner() {
@@ -29,19 +28,6 @@ function initOwner() {
     $("#owner").val(data).trigger("change");
 }
 
-function initMember() {
-    var member = $("#member").attr("title");
-    var data = new Array();
-    var arr = member.split(",");
-    $(arr).each(function (i, c) {
-        data.push(c);
-    });
-    $("#member").select2({
-        width: '100%'
-    });
-    $("#member").val(data).trigger("change");
-}
-
 
 /**
  * 修改应用信息
@@ -53,12 +39,21 @@ function updateApp() {
     var maxConcurrency = $("#maxConcurrency").val();
     var flag = checkAppName();
     var owner = ArrToStr($("#owner").val());
-    var member = ArrToStr($("#member").val());
     if (flag == false) {
         return;
     }
+    if (null == owner || '' == owner) {
+        new PNotify({
+            title: '保存应用',
+            text: "维护人不能为空",
+            type: 'warning',
+            icon: true,
+            styling: 'bootstrap3'
+        });
+        return;
+    }
 
-    var data = {appId: appId, applicationName: applicationName, status: status, maxConcurrency: maxConcurrency};
+    var data = {appId: appId, applicationName: applicationName, status: status, maxConcurrency: maxConcurrency,owner:owner};
     requestRemoteRestApi("/api/app/edit", "修改应用", data);
 }
 
@@ -84,6 +79,7 @@ function ArrToStr(arr) {
             result += "," + c;
         }
     });
+    return result;
 }
 
 function checkAppName() {
