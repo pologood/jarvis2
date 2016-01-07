@@ -15,7 +15,10 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
+import com.mogujie.jarvis.core.domain.IdType;
+import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.util.ConfigUtils;
+import com.mogujie.jarvis.core.util.IdUtils;
 import com.mogujie.jarvis.server.dispatcher.TaskQueue;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
@@ -62,6 +65,11 @@ public class TestSchedulerBase {
     public void tearDown() throws Exception {
         Map<Long, DAGTask> taskMap = taskGraph.getTaskMap();
         for (long taskId : taskMap.keySet()) {
+            taskService.deleteTaskAndRelation(taskId);
+        }
+        while (!taskQueue.isEmpty()) {
+            TaskDetail taskDetail = taskQueue.take();
+            long taskId = IdUtils.parse(taskDetail.getFullId(), IdType.TASK_ID);
             taskService.deleteTaskAndRelation(taskId);
         }
         dagScheduler.destroy();
