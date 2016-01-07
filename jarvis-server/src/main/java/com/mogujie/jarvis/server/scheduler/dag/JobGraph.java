@@ -66,10 +66,6 @@ public enum JobGraph {
         jobMap.clear();
     }
 
-    protected Map<Long, DAGJob> getJobMap() {
-        return jobMap;
-    }
-
     public DAGJob getDAGJob(long jobId) {
         return jobMap.get(jobId);
     }
@@ -326,18 +322,43 @@ public enum JobGraph {
                     controller.notify(event);
                 }
             }
+        }
+    }
+
+    /**
+     * submit job if pass the dependency check
+     * 如果不是单亲纯依赖，必须配置调度时间
+     *
+     * @param dagJob
+     * @param scheduleTime
+     */
+    public void submitJobWithCheck(DAGJob dagJob, long scheduleTime, long parentJobId, long parentTaskId) {
+        long jobId = dagJob.getJobId();
+        // 如果是时间任务，遍历自己的调度时间做依赖检查
+        if (dagJob.getType().implies(DAGJobType.TIME)) {
+            List<Long> timeStamps = getUnScheduledTimeStamps(jobId);
+            for (long timeStamp : timeStamps) {
+                if (dagJob.checkDependency(timeStamp)) {
+                    LOGGER.info("{} pass the dependency check", dagJob);
+
+                    // 提交给TimeScheduler进行时间调度
+                    Map<Long, List<Long>> dependTaskIdMap = dagJob.getDependTaskIdMap(timeStamp);
+                    AddPlanEvent event = new AddPlanEvent(jobId, scheduleTime, dependTaskIdMap);
+                    controller.notify(event);
+                }
+            }
         } else {
             Set<Long> needJobs = getParentJobIds(dagJob.getJobId());
             // 如果是单亲纯依赖，表示runtime，不需要做依赖检查了，直接提交给TaskScheduler
             if (needJobs.size() == 1) {
                 long preJobId = needJobs.iterator().next();
-                Task task = taskService.getTaskByJobIdAndScheduleTime(preJobId, scheduleTime);
-                if (task != null) {
-                    long taskId = task.getTaskId();
+                if (parentJobId == preJobId) {
                     Map<Long, List<Long>> dependTaskIdMap = Maps.newHashMap();
-                    dependTaskIdMap.put(preJobId, Lists.newArrayList(taskId));
+                    dependTaskIdMap.put(parentJobId, Lists.newArrayList(parentTaskId));
                     AddTaskEvent event = new AddTaskEvent(jobId, dependTaskIdMap, scheduleTime);
                     controller.notify(event);
+                } else {
+                    LOGGER.error("parentJobId {} != preJobId {}", parentJobId, preJobId);
                 }
             } else {
                 LOGGER.warn("不是单亲纯依赖必须配置调度时间！！");
@@ -409,6 +430,13 @@ public enum JobGraph {
             DateTime nextTime = startTime;
             while (nextTime.isBefore(endTime)) {
                 nextTime = PlanUtil.getScheduleTimeAfter(jobId, nextTime);
+                if (nextTime != null) {
+                    timeStamps.add(nextTime.getMillis());
+                }
+            }
+        } else {
+            DateTime nextTime = PlanUtil.getScheduleTimeAfter(jobId, DateTime.now());
+            if (nextTime != null) {
                 timeStamps.add(nextTime.getMillis());
             }
         }

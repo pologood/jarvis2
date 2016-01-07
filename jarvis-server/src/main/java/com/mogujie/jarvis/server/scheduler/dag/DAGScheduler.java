@@ -67,7 +67,7 @@ public class DAGScheduler extends Scheduler {
             if (children != null && !children.isEmpty()) {
                 for (DAGJob child : children) {
                     if (child.getJobStatus().equals(JobStatus.ENABLE)) {
-                        jobGraph.submitJobWithCheck(child, scheduleTime);
+                        jobGraph.submitJobWithCheck(child, scheduleTime, jobId, taskId);
                     }
                 }
             }
