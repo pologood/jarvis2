@@ -12,12 +12,17 @@ import java.net.URI;
 
 /**
  * RestServer工厂
+ *
  * @author muming
  */
 public class RestServerFactory {
     public static HttpServer createHttpServer() throws IOException {
         int port = ConfigUtils.getRestConfig().getInt("rest.http.port", 8080);
-        URI baseUri = UriBuilder.fromUri("http://" + IPUtils.getIPV4Address() + "/").port(port).build();
+        String host = ConfigUtils.getRestConfig().getString("rest.http.hostname");
+        if (host == null || host.trim().equals("")) {
+            host = IPUtils.getIPV4Address();
+        }
+        URI baseUri = UriBuilder.fromUri("http://" + host + "/").port(port).build();
         ResourceConfig resourceConfig = new RestResourceConfig();
         return GrizzlyHttpServerFactory.createHttpServer(baseUri, resourceConfig);
     }
