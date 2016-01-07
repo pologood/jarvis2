@@ -166,8 +166,9 @@ public class TaskService {
     public Task getLastTask(long jobId, long scheduleTime, TaskType taskType) {
         TaskExample example = new TaskExample();
         example.createCriteria().andJobIdEqualTo(jobId)
-                .andScheduleTimeGreaterThanOrEqualTo(new DateTime(scheduleTime).toDate())
+                .andScheduleTimeLessThanOrEqualTo(new DateTime(scheduleTime).toDate())
                 .andTypeEqualTo(taskType.getValue());
+        example.setOrderByClause("scheduleTime desc");
         List<Task> taskList = taskMapper.selectByExample(example);
         if (taskList != null && !taskList.isEmpty()) {
             return taskList.get(0);
