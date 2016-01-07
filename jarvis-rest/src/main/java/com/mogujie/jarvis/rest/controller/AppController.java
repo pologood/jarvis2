@@ -7,6 +7,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import com.mogujie.jarvis.core.domain.AkkaType;
+import com.mogujie.jarvis.core.domain.AppStatus;
 import com.mogujie.jarvis.core.domain.OperationMode;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
 import com.mogujie.jarvis.protocol.ApplicationProtos.RestCreateApplicationRequest;
@@ -29,18 +30,24 @@ public class AppController extends AbstractController {
     @POST
     @Path("add")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult add(@FormParam("user") String user, @FormParam("appToken") String appToken, @FormParam("appName") String appName,
-            @FormParam("parameters") String parameters) {
+    public RestResult add(@FormParam("user") String user,
+                          @FormParam("appToken") String appToken,
+                          @FormParam("appName") String appName,
+                          @FormParam("parameters") String parameters) {
         try {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
             JsonParameters paras = new JsonParameters(parameters);
-            String applicationName = paras.getStringNotEmpty("applicationName").trim();
-            Integer status = paras.getInteger("status", 1);
+            String applicationName = paras.getStringNotEmpty("applicationName");
+            String owner = paras.getStringNotEmpty("owner");
+            Integer status = paras.getInteger("status", AppStatus.ENABLE.getValue());
             Integer maxConcurrency = paras.getInteger("maxConcurrency", 10);
-            ConvertValidUtils.checkAppVo(OperationMode.ADD, applicationName, status, maxConcurrency);
+
+            ConvertValidUtils.checkAppVo(OperationMode.ADD, applicationName, owner, status, maxConcurrency);
             RestCreateApplicationRequest request = RestCreateApplicationRequest.newBuilder().setAppAuth(appAuth).setUser(user)
-                    .setAppName(applicationName).setStatus(status).setMaxConcurrency(maxConcurrency).build();
+                    .setAppName(applicationName.trim()).setOwner(owner)
+                    .setStatus(status).setMaxConcurrency(maxConcurrency)
+                    .build();
 
             ServerCreateApplicationResponse response = (ServerCreateApplicationResponse) callActor(AkkaType.SERVER, request);
             if (response.getSuccess()) {
@@ -60,21 +67,28 @@ public class AppController extends AbstractController {
     @POST
     @Path("edit")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult update(@FormParam("user") String user, @FormParam("appName") String appName, @FormParam("appToken") String appToken,
-            @FormParam("parameters") String parameters) {
+    public RestResult update(@FormParam("user") String user,
+                             @FormParam("appName") String appName,
+                             @FormParam("appToken") String appToken,
+                             @FormParam("parameters") String parameters) {
         try {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
             JsonParameters paras = new JsonParameters(parameters);
             Integer appId = paras.getIntegerNotNull("appId");
-            String applicationName = paras.getString("applicationName").trim();
+            String applicationName = paras.getString("applicationName");
+            String owner = paras.getString("owner");
             Integer status = paras.getInteger("status");
             Integer maxConcurrency = paras.getInteger("maxConcurrency");
-            ConvertValidUtils.checkAppVo(OperationMode.EDIT, applicationName, status, maxConcurrency);
+
+            ConvertValidUtils.checkAppVo(OperationMode.EDIT, applicationName, owner, status, maxConcurrency);
             RestModifyApplicationRequest.Builder builder = RestModifyApplicationRequest.newBuilder();
             builder.setAppAuth(appAuth).setUser(user).setAppId(appId);
-            if (applicationName != null && !applicationName.equals("")) {
-                builder.setAppName(applicationName);
+            if (applicationName != null) {
+                builder.setAppName(applicationName.trim());
+            }
+            if (owner != null) {
+                builder.setOwner(owner.trim());
             }
             if (status != null) {
                 builder.setStatus(status);

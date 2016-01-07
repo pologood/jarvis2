@@ -64,6 +64,7 @@ public class AppActor extends UntypedActor {
             App app = new App();
             app.setAppName(request.getAppName());
             app.setAppKey(key);
+            app.setOwner(request.getOwner());
             app.setStatus(request.getStatus());
             app.setMaxConcurrency(request.getMaxConcurrency());
             app.setCreateTime(date.toDate());
@@ -87,6 +88,9 @@ public class AppActor extends UntypedActor {
         app.setAppId(appId);
         if (request.hasAppName()) {
             app.setAppName(request.getAppName());
+        }
+        if (request.hasOwner()) {
+            app.setOwner(request.getOwner());
         }
         if (request.hasStatus()) {
             app.setStatus(request.getStatus());

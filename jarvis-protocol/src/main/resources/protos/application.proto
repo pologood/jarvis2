@@ -8,8 +8,9 @@ message RestCreateApplicationRequest {
     required AppAuth app_auth = 1;
     required string user = 2;
     required string app_name = 3;
-    optional int32 status = 4;
-    optional int32 max_concurrency = 5;
+    required string owner = 4;
+    optional int32 status = 5;
+    optional int32 max_concurrency = 6;
 }
 
 message ServerCreateApplicationResponse {
@@ -22,8 +23,9 @@ message RestModifyApplicationRequest {
     required string user = 2;
     required int32 app_id = 3;
     optional string app_name = 4;
-    optional int32 status = 5;
-    optional int32 max_concurrency = 6;
+    optional string owner = 5;
+    optional int32 status = 6;
+    optional int32 max_concurrency = 7;
 }
 
 message ServerModifyApplicationResponse {

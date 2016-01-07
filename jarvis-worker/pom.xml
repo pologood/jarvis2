@@ -23,6 +23,12 @@
 			<groupId>com.mogujie.jarvis</groupId>
 			<artifactId>jarvis-tasks</artifactId>
 			<scope>runtime</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-log4j12</artifactId>
+                </exclusion>
+            </exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.fusesource</groupId>

@@ -23,11 +23,17 @@ import com.mogujie.jarvis.server.domain.CommonStrategy;
 
 public class ConvertValidUtils {
 
+    /**
+     * 计划表达式-转换
+     * @param input
+     * @return
+     */
     public static ScheduleExpressionEntry ConvertScheduleExpressionEntry(JobEntryVo.ScheduleExpressionEntry input) {
 
         Integer expressionType = input.getExpressionType();
         Preconditions.checkArgument(expressionType != null, "scheduleExpressionType不能为空");
-        Preconditions.checkArgument(ScheduleExpressionType.isValid(expressionType), "scheduleExpressionType不对。type:" + expressionType.toString());
+        Preconditions.checkArgument(ScheduleExpressionType.isValid(expressionType),
+                "scheduleExpressionType不对。type:" + expressionType.toString());
 
         String expression = input.getExpression();
         Preconditions.checkArgument(expression != null, "scheduleExpression不能为空");
@@ -43,11 +49,17 @@ public class ConvertValidUtils {
         }
         Preconditions.checkArgument(scheduleExpression.isValid(), "scheduleExpression不对");
 
-        ScheduleExpressionEntry entry = ScheduleExpressionEntry.newBuilder().setExpressionType(expressionType).setScheduleExpression(expression)
+        ScheduleExpressionEntry entry = ScheduleExpressionEntry.newBuilder().setExpressionType(expressionType)
+                .setScheduleExpression(expression)
                 .build();
         return entry;
     }
 
+    /**
+     * 依赖-转换
+     * @param input
+     * @return
+     */
     public static DependencyEntry ConvertDependencyEntry(JobEntryVo.DependencyEntry input) {
         Integer mode = input.getOperatorMode();
         Preconditions.checkArgument(mode != null && OperationMode.isValid(mode), "操作模式不对");
@@ -66,23 +78,27 @@ public class ConvertValidUtils {
             Preconditions.checkArgument(new TimeOffsetExpression(offsetStrategy).isValid(), "依赖的偏移策略不对");
         }
 
-        DependencyEntry entry = DependencyEntry.newBuilder().setOperator(mode).setJobId(preJobId).setCommonDependStrategy(commonStrategy)
-                .setOffsetDependStrategy(offsetStrategy).build();
-
+        DependencyEntry entry = DependencyEntry.newBuilder().setOperator(mode).setJobId(preJobId)
+                .setCommonDependStrategy(commonStrategy).setOffsetDependStrategy(offsetStrategy)
+                .build();
         return entry;
     }
 
     /**
      * APP内容检查
      */
-    public static void checkAppVo(OperationMode mode, String appName, Integer status, Integer maxConcurrency) {
+    public static void checkAppVo(OperationMode mode, String appName, String owner, Integer status, Integer maxConcurrency) {
+        //追加模式
         if (mode == OperationMode.ADD) {
-            Preconditions.checkArgument(appName != null && !appName.equals(""), "appName不能为空");
+            Preconditions.checkArgument(appName != null && !appName.trim().equals(""), "appName不能为空");
+            Preconditions.checkArgument(owner != null && !owner.trim().equals(""), "owner不能为空");
             Preconditions.checkArgument(status != null, "status不能为空");
             Preconditions.checkArgument(AppStatus.isValid(status), "status内容不对。value:" + status);
         }
+        //编辑模式
         if (mode == OperationMode.EDIT) {
-            Preconditions.checkArgument(appName == null || appName.equals(""), "appName不能为空");
+            Preconditions.checkArgument(appName == null || !appName.trim().equals(""), "appName不能为空");
+            Preconditions.checkArgument(owner == null || !owner.trim().equals(""), "owner不能为空");
             Preconditions.checkArgument(status == null || AppStatus.isValid(status), "status内容不对。value:" + status);
         }
     }
