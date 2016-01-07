@@ -16,13 +16,15 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.mogujie.jarvis.core.domain.JobStatus;
+import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.dag.checker.DAGDependChecker;
+import com.mogujie.jarvis.server.service.JobService;
 
 /**
  * @author guangming
  *
  */
-public class DAGJob extends AbstractDAGJob {
+public class DAGJob  {
 
     private long jobId;
     private DAGDependChecker dependChecker;
@@ -30,22 +32,16 @@ public class DAGJob extends AbstractDAGJob {
     private JobGraph jobGraph = JobGraph.INSTANCE;
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public DAGJob(long jobId, DAGJobType type, JobStatus jobStatus) {
+    public DAGJob(long jobId, DAGJobType type) {
         this.jobId = jobId;
         this.type = type;
-        this.jobStatus = jobStatus;
         this.dependChecker = new DAGDependChecker(jobId);
     }
 
-    public DAGJob(long jobId, DAGJobType type) {
-        this(jobId, type, JobStatus.ENABLE);
-    }
-
-    @Override
     public boolean checkDependency(long scheduleTime) {
         boolean dependCheck = true;
         if (type.implies(DAGJobType.DEPEND)) {
-            Set<Long> needJobs = jobGraph.getEnableParentJobIds(jobId);
+            Set<Long> needJobs = jobGraph.getParentJobIds(jobId);
             dependCheck = dependChecker.checkDependency(needJobs, scheduleTime);
             if (!dependCheck) {
                 LOGGER.debug("dependChecker failed, job {}, needJobs {}", jobId, needJobs);
@@ -82,6 +78,12 @@ public class DAGJob extends AbstractDAGJob {
 
     public void setType(DAGJobType type) {
         this.type = type;
+    }
+
+    public JobStatus getJobStatus() {
+        JobService jobService = Injectors.getInjector().getInstance(JobService.class);
+        JobStatus status = JobStatus.parseValue(jobService.get(jobId).getJob().getStatus());
+        return status;
     }
 
     public void updateJobTypeByTimeFlag(boolean timeFlag) {

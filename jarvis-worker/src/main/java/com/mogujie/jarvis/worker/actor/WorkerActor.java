@@ -19,6 +19,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 
+import akka.actor.ActorSelection;
+import akka.actor.Props;
+import akka.actor.UntypedActor;
+
 import com.google.common.collect.Queues;
 import com.mogujie.jarvis.core.AbstractLogCollector;
 import com.mogujie.jarvis.core.JarvisConstants;
@@ -43,10 +47,6 @@ import com.mogujie.jarvis.worker.TaskExecutor;
 import com.mogujie.jarvis.worker.TaskPool;
 import com.mogujie.jarvis.worker.WorkerConfigKeys;
 import com.mogujie.jarvis.worker.util.FutureUtils;
-
-import akka.actor.ActorSelection;
-import akka.actor.Props;
-import akka.actor.UntypedActor;
 
 public class WorkerActor extends UntypedActor {
 
@@ -101,7 +101,7 @@ public class WorkerActor extends UntypedActor {
         taskBuilder.setTaskType(taskType);
         taskBuilder.setContent(request.getContent());
         taskBuilder.setPriority(request.getPriority());
-        taskBuilder.setSchedulingTime(new DateTime(request.getSchedulingTime()));
+        taskBuilder.setDataTime(new DateTime(request.getDataTime()));
 
         Map<String, Object> map = new HashMap<>();
         List<MapEntry> parameters = request.getParametersList();

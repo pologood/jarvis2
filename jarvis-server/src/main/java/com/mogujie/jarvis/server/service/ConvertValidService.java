@@ -8,25 +8,22 @@ package com.mogujie.jarvis.server.service;
 
 import java.util.Date;
 
-import com.mogujie.jarvis.core.JarvisConstants;
-import com.mogujie.jarvis.core.domain.JobStatus;
-import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
 import org.joda.time.DateTime;
 
 import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.domain.AppType;
-import com.mogujie.jarvis.core.domain.TaskStatus;
+import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.dto.generate.App;
 import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.dto.generate.JobDepend;
-import com.mogujie.jarvis.dto.generate.Task;
+import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
 import com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry;
 import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobRequest;
 import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobStatusRequest;
 import com.mogujie.jarvis.protocol.JobProtos.RestSubmitJobRequest;
-import com.mogujie.jarvis.protocol.SubmitTaskProtos.RestServerSubmitTaskRequest;
 import com.mogujie.jarvis.server.domain.JobEntry;
 
 /**
@@ -37,10 +34,10 @@ import com.mogujie.jarvis.server.domain.JobEntry;
 public class ConvertValidService {
 
     private enum CheckMode {
-        ADD,            //追加
-        EDIT,           //修改
-        EDIT_STATUS,    //修改_状态
-        DELETE          //删除
+        ADD, //追加
+        EDIT, //修改
+        EDIT_STATUS, //修改_状态
+        DELETE //删除
     }
 
     @Inject
@@ -88,8 +85,7 @@ public class ConvertValidService {
             job.setActiveEndDate(JarvisConstants.DATETIME_MAX.toDate());
         }
 
-        job.setRejectAttempts(msg.getRejectAttempts());
-        job.setRejectInterval(msg.getRejectInterval());
+        job.setExpiredTime(msg.getExpiredTime());
         job.setFailedAttempts(msg.getFailedAttempts());
         job.setFailedInterval(msg.getFailedInterval());
         job.setSubmitUser(msg.getUser());
@@ -130,11 +126,8 @@ public class ConvertValidService {
         if (msg.hasActiveEndTime()) {
             job.setActiveEndDate(new Date(msg.getActiveEndTime()));
         }
-        if (msg.hasRejectAttempts()) {
-            job.setRejectAttempts(msg.getRejectAttempts());
-        }
-        if (msg.hasRejectInterval()) {
-            job.setRejectInterval(msg.getRejectInterval());
+        if (msg.hasExpiredTime()) {
+            job.setExpiredTime(msg.getExpiredTime());
         }
         if (msg.hasFailedAttempts()) {
             job.setFailedAttempts(msg.getFailedAttempts());
@@ -169,25 +162,6 @@ public class ConvertValidService {
         return jobDepend;
     }
 
-    public Task convert2Task(RestServerSubmitTaskRequest msg) {
-        Task task = new Task();
-        task.setJobId((long) 0);
-        task.setAttemptId(1);
-        task.setContent(msg.getContent());
-        task.setExecuteUser(msg.getUser());
-        task.setProgress((float) 0);
-        Date now = new Date();
-        task.setScheduleTime(now);
-        task.setCreateTime(now);
-        task.setUpdateTime(now);
-        task.setParams(msg.getParameters());
-        task.setStatus(TaskStatus.WAITING.getValue());
-        int appId = appService.getAppIdByName(msg.getAppAuth().getName());
-        task.setAppId(appId);
-        return task;
-    }
-
-
     /**
      * @param job
      */
@@ -201,7 +175,7 @@ public class ConvertValidService {
             Preconditions.checkNotNull(job.getStatus(), "status不能为空");
         }
 
-        Job oldJob=null;
+        Job oldJob = null;
         if (mode == CheckMode.EDIT || mode == CheckMode.EDIT_STATUS) {
             Preconditions.checkArgument(job.getJobId() != null && job.getJobId() != 0, "jobId不能为空");
             JobEntry oldJobEntry = jobService.get(job.getJobId());
@@ -220,14 +194,13 @@ public class ConvertValidService {
         Preconditions.checkArgument(job.getStatus() == null || JobStatus.isValid(job.getStatus()), "status内容不正确。value:" + job.getStatus());
         if (job.getActiveStartDate() != null && job.getActiveEndDate() != null) {
             Preconditions.checkArgument(job.getActiveStartDate().getTime() <= job.getActiveEndDate().getTime(), "有效开始日不能大于有效结束日");
-        }else if(job.getActiveStartDate() != null && job.getActiveEndDate() == null){
+        } else if (job.getActiveStartDate() != null && job.getActiveEndDate() == null) {
             Preconditions.checkArgument(job.getActiveStartDate().getTime() <= oldJob.getActiveEndDate().getTime(), "有效开始日不能大于有效结束日");
-        }else if(job.getActiveStartDate() == null && job.getActiveEndDate() != null){
+        } else if (job.getActiveStartDate() == null && job.getActiveEndDate() != null) {
             Preconditions.checkArgument(oldJob.getActiveStartDate().getTime() <= job.getActiveEndDate().getTime(), "有效开始日不能大于有效结束日");
         }
 
     }
-
 
     private int dealAppId(AppAuth appAuth, String appName) {
         int appId;
@@ -243,6 +216,5 @@ public class ConvertValidService {
         }
         return appId;
     }
-
 
 }

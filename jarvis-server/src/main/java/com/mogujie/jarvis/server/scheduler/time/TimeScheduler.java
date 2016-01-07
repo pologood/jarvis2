@@ -12,25 +12,23 @@ package com.mogujie.jarvis.server.scheduler.time;
  * @author guangming
  *
  */
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.SortedSet;
+import java.util.Queue;
 
 import org.joda.time.DateTime;
 
-import com.mogujie.jarvis.core.domain.JobStatus;
-import com.mogujie.jarvis.dto.generate.Task;
-import com.mogujie.jarvis.server.guice.Injectors;
+import com.google.common.eventbus.Subscribe;
 import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
 import com.mogujie.jarvis.server.scheduler.dag.DAGJob;
 import com.mogujie.jarvis.server.scheduler.dag.DAGJobType;
 import com.mogujie.jarvis.server.scheduler.dag.JobGraph;
+import com.mogujie.jarvis.server.scheduler.event.AddPlanEvent;
 import com.mogujie.jarvis.server.scheduler.event.AddTaskEvent;
 import com.mogujie.jarvis.server.scheduler.event.StartEvent;
 import com.mogujie.jarvis.server.scheduler.event.StopEvent;
-import com.mogujie.jarvis.server.service.TaskService;
+import com.mogujie.jarvis.server.util.PlanUtil;
 
 public class TimeScheduler extends Scheduler {
 
@@ -40,12 +38,10 @@ public class TimeScheduler extends Scheduler {
         return instance;
     }
 
-    private ExecutionPlan plan = ExecutionPlan.INSTANCE;
+    private TimePlan plan = TimePlan.INSTANCE;
     private JobGraph jobGraph = JobGraph.INSTANCE;
     private volatile boolean running = true;
     private JobSchedulerController controller = JobSchedulerController.getInstance();
-    private PlanGenerator planGenerator = new PlanGenerator();
-    private TaskService taskService = Injectors.getInjector().getInstance(TaskService.class);
 
     class TimeScanThread extends Thread {
         public TimeScanThread(String name) {
@@ -57,15 +53,14 @@ public class TimeScheduler extends Scheduler {
             while (true) {
                 if (running) {
                     DateTime now = DateTime.now();
-                    SortedSet<ExecutionPlanEntry> planSet = plan.getPlan();
-                    Iterator<ExecutionPlanEntry> it = planSet.iterator();
-                    while (it.hasNext()) {
-                        ExecutionPlanEntry entry = it.next();
+                    Queue<TimePlanEntry> planQueue = plan.getPlan();
+                    while (!planQueue.isEmpty()) {
+                        TimePlanEntry entry = planQueue.peek();
                         if (!entry.getDateTime().isAfter(now)) {
                             // 1. start this time based job
                             submitJob(entry);
                             // 2. remove this from plan
-                            it.remove();
+                            planQueue.poll();
                         } else {
                             break;
                         }
@@ -97,44 +92,26 @@ public class TimeScheduler extends Scheduler {
         running = false;
     }
 
-    public void removePlan(ExecutionPlanEntry planEntry) {
-        plan.removePlan(planEntry);
+    @Subscribe
+    public void handleAddPlanEvent(AddPlanEvent event) {
+        long jobId = event.getJobId();
+        long scheduleTime = event.getScheduleTime();
+        Map<Long, List<Long>> dependTaskIdMap = event.getDependTaskIdMap();
+        TimePlanEntry entry = new TimePlanEntry(jobId, new DateTime(scheduleTime), dependTaskIdMap);
+        plan.addPlan(entry);
     }
 
-    /**
-     * add job的时候，首先寻找上一次调度时间，从上一次调度时间计算下一次，这样可以处理异常恢复的时候漏掉需要执行的记录。
-     * 如果找不到上一次，说明确实是新加的job，则从当前时间开始计算下一次。
-     */
-    public void addJob(long jobId) {
-        long scheduleTime = DateTime.now().getMillis();
-        Task lastone = taskService.getLastTask(jobId, scheduleTime);
-        if (lastone != null) {
-            scheduleTime = lastone.getScheduleTime().getTime();
-        }
-        planGenerator.generateNextPlan(jobId, new DateTime(scheduleTime));
-    }
-
-    public void removeJob(long jobId) {
-        plan.removePlan(jobId);
-    }
-
-    public void modifyJobFlag(long jobId, JobStatus flag) {
-        if (flag.equals(JobStatus.DISABLE) || flag.equals(JobStatus.DELETED)) {
-            removeJob(jobId);
-        } else if (flag.equals(JobStatus.ENABLE)) {
-            addJob(jobId);
-        }
-    }
-
-    private void submitJob(ExecutionPlanEntry entry) {
+    private void submitJob(TimePlanEntry entry) {
         long jobId = entry.getJobId();
         DateTime dt = entry.getDateTime();
         Map<Long, List<Long>> dependTaskIdMap = entry.getDependTaskIdMap();
         AddTaskEvent event = new AddTaskEvent(jobId, dependTaskIdMap, dt.getMillis());
         controller.notify(event);
         DAGJob dagJob = jobGraph.getDAGJob(jobId);
+        // 如果是纯时间任务，自动计算下一次
         if (dagJob.getType().equals(DAGJobType.TIME)) {
-            planGenerator.generateNextPlan(jobId, dt);
+            DateTime nextTime = PlanUtil.getScheduleTimeAfter(jobId, dt);
+            plan.addPlan(jobId, nextTime);
         }
     }
 }

@@ -20,15 +20,15 @@ import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.core.domain.JobRelationType;
 import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
+import com.mogujie.jarvis.protocol.JobProtos.JobStatusEntry;
 import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobRequest;
+import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobStatusRequest;
+import com.mogujie.jarvis.protocol.JobProtos.RestQueryJobRelationRequest;
 import com.mogujie.jarvis.protocol.JobProtos.RestSubmitJobRequest;
 import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobResponse;
-import com.mogujie.jarvis.protocol.JobProtos.ServerSubmitJobResponse;
-import com.mogujie.jarvis.protocol.JobProtos.RestQueryJobRelationRequest;
-import com.mogujie.jarvis.protocol.JobProtos.ServerQueryJobRelationResponse;
-import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobStatusRequest;
 import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobStatusResponse;
-import com.mogujie.jarvis.protocol.JobProtos.JobStatusEntry;
+import com.mogujie.jarvis.protocol.JobProtos.ServerQueryJobRelationResponse;
+import com.mogujie.jarvis.protocol.JobProtos.ServerSubmitJobResponse;
 import com.mogujie.jarvis.rest.RestResult;
 import com.mogujie.jarvis.rest.utils.ConvertValidUtils;
 import com.mogujie.jarvis.rest.utils.JsonParameters;
@@ -51,7 +51,7 @@ public class JobController extends AbstractController {
     @Path("submit")
     @Produces(MediaType.APPLICATION_JSON)
     public RestResult submit(@FormParam("appName") String appName, @FormParam("appToken") String appToken, @FormParam("user") String user,
-                                @FormParam("parameters") String parameters) {
+            @FormParam("parameters") String parameters) {
 
         LOGGER.debug("提交job任务");
         try {
@@ -68,8 +68,7 @@ public class JobController extends AbstractController {
             RestSubmitJobRequest.Builder builder = RestSubmitJobRequest.newBuilder().setAppAuth(appAuth).setUser(user).setJobName(jobVo.getJobName())
                     .setJobType(jobVo.getJobType()).setStatus(jobVo.getStatus()).setContent(jobVo.getContent()).setParameters(jobParameters)
                     .setAppName(jobVo.getAppName(appName)).setWorkerGroupId(jobVo.getWorkerGroupId()).setPriority(jobVo.getPriority(1))
-                    .setActiveStartTime(jobVo.getActiveStartTime(0L)).setActiveEndTime(jobVo.getActiveEndTime(0L))
-                    .setRejectAttempts(jobVo.getRejectAttempts(0)).setRejectInterval(jobVo.getRejectInterval(3))
+                    .setActiveStartTime(jobVo.getActiveStartTime(0L)).setActiveEndTime(jobVo.getActiveEndTime(0L)).setExpiredTime(600)
                     .setFailedAttempts(jobVo.getFailedAttempts(0)).setFailedInterval(jobVo.getFailedInterval(3));
 
             if (jobVo.getScheduleExpressionEntry() != null) {
@@ -108,7 +107,7 @@ public class JobController extends AbstractController {
     @Path("edit")
     @Produces(MediaType.APPLICATION_JSON)
     public RestResult edit(@FormParam("appName") String appName, @FormParam("appToken") String appToken, @FormParam("user") String user,
-                              @FormParam("parameters") String parameters) {
+            @FormParam("parameters") String parameters) {
 
         LOGGER.debug("更新job任务");
         try {
@@ -152,11 +151,8 @@ public class JobController extends AbstractController {
             if (jobVo.getActiveEndTime() != null) {
                 builder.setActiveEndTime(jobVo.getActiveEndTime());
             }
-            if (jobVo.getRejectAttempts() != null) {
-                builder.setRejectAttempts(jobVo.getRejectAttempts());
-            }
-            if (jobVo.getRejectInterval() != null) {
-                builder.setRejectInterval(jobVo.getRejectInterval());
+            if (jobVo.getExpiredTime() != null) {
+                builder.setExpiredTime(jobVo.getExpiredTime());
             }
             if (jobVo.getFailedAttempts() != null) {
                 builder.setFailedAttempts(jobVo.getFailedAttempts());
@@ -199,7 +195,7 @@ public class JobController extends AbstractController {
     @Path("status/set")
     @Produces(MediaType.APPLICATION_JSON)
     public RestResult statusSet(@FormParam("appName") String appName, @FormParam("appToken") String appToken, @FormParam("user") String user,
-                           @FormParam("parameters") String parameters) {
+            @FormParam("parameters") String parameters) {
 
         LOGGER.debug("更新job任务标志");
         try {
@@ -210,10 +206,7 @@ public class JobController extends AbstractController {
             int status = para.getIntegerNotNull("status");
 
             // 构造修改job基本信息请求
-            RestModifyJobStatusRequest.Builder builder = RestModifyJobStatusRequest.newBuilder()
-                    .setAppAuth(appAuth)
-                    .setUser(user)
-                    .setJobId(jobId)
+            RestModifyJobStatusRequest.Builder builder = RestModifyJobStatusRequest.newBuilder().setAppAuth(appAuth).setUser(user).setJobId(jobId)
                     .setStatus(status);
 
             // 发送信息到server修改job基本信息
@@ -233,44 +226,34 @@ public class JobController extends AbstractController {
         }
     }
 
-
-
-
-
     /**
      * 查找Job关系
      */
     @POST
     @Path("queryRelation")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult queryRelation(@FormParam("user") String user,
-                                       @FormParam("appToken") String appToken,
-                                       @FormParam("appName") String appName,
-                                       @FormParam("parameters") String parameters) {
+    public RestResult queryRelation(@FormParam("user") String user, @FormParam("appToken") String appToken, @FormParam("appName") String appName,
+            @FormParam("parameters") String parameters) {
         try {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
             JsonParameters paras = new JsonParameters(parameters);
             Long jobId = paras.getLongNotNull("jobId");
             Integer relationType = paras.getIntegerNotNull("relationType");
-            if(!JobRelationType.isValid(relationType)){
+            if (!JobRelationType.isValid(relationType)) {
                 throw new IllegalArgumentException("参数不对。key='relationType',value=" + relationType.toString());
             }
 
-            RestQueryJobRelationRequest request = RestQueryJobRelationRequest.newBuilder()
-                    .setAppAuth(appAuth)
-                    .setUser(user)
-                    .setJobId(jobId)
-                    .setRelationType(relationType)
-                    .build();
+            RestQueryJobRelationRequest request = RestQueryJobRelationRequest.newBuilder().setAppAuth(appAuth).setUser(user).setJobId(jobId)
+                    .setRelationType(relationType).build();
 
             ServerQueryJobRelationResponse response = (ServerQueryJobRelationResponse) callActor(AkkaType.SERVER, request);
             if (response.getSuccess()) {
                 JobRelationsVo vo = new JobRelationsVo();
-                if(response.getJobStatusEntryOrBuilderList() != null){
+                if (response.getJobStatusEntryOrBuilderList() != null) {
                     List<JobRelationsVo.JobStatusEntry> list = new ArrayList<>();
-                    for(JobStatusEntry entry : response.getJobStatusEntryList()){
-                         list.add(new JobRelationsVo.JobStatusEntry().setJobId(entry.getJobId()).setStatus(entry.getStatus()));
+                    for (JobStatusEntry entry : response.getJobStatusEntryList()) {
+                        list.add(new JobRelationsVo.JobStatusEntry().setJobId(entry.getJobId()).setStatus(entry.getStatus()));
                     }
                     vo.setList(list);
                 }
@@ -283,7 +266,6 @@ public class JobController extends AbstractController {
             return errorResult(e.getMessage());
         }
     }
-
 
     /**
      * 测试

@@ -49,6 +49,7 @@ import com.mogujie.jarvis.server.scheduler.event.StartEvent;
 import com.mogujie.jarvis.server.scheduler.task.DAGTask;
 import com.mogujie.jarvis.server.scheduler.task.TaskGraph;
 import com.mogujie.jarvis.server.scheduler.task.TaskScheduler;
+import com.mogujie.jarvis.server.scheduler.time.TimePlan;
 import com.mogujie.jarvis.server.scheduler.time.TimeScheduler;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.TaskService;
@@ -96,6 +97,7 @@ public class JarvisServer {
         TimeScheduler timeScheduler = TimeScheduler.getInstance();
         AlarmScheduler alarmScheduler = Injectors.getInjector().getInstance(AlarmScheduler.class);
         TaskGraph taskGraph = TaskGraph.INSTANCE;
+        TimePlan plan = TimePlan.INSTANCE;
         controller.register(dagScheduler);
         controller.register(taskScheduler);
         controller.register(timeScheduler);
@@ -128,10 +130,10 @@ public class JarvisServer {
             }
             int dependFlag = (!dependencies.isEmpty()) ? 1 : 0;
             DAGJobType type = DAGJobType.getDAGJobType(timeFlag, dependFlag, cycleFlag);
-            JobStatus flag = JobStatus.parseValue(job.getStatus());
-            dagScheduler.getJobGraph().addJob(jobId, new DAGJob(jobId, type, flag), null);
-            if (type.implies(DAGJobType.TIME) && flag.equals(JobStatus.ENABLE) && jobService.isActive(jobId)) {
-                timeScheduler.addJob(jobId);
+            DAGJob dagJob = new DAGJob(jobId, type);
+            dagScheduler.getJobGraph().addJob(jobId, dagJob, null);
+            if (type.equals(DAGJobType.TIME) && dagJob.getJobStatus().equals(JobStatus.ENABLE) && jobService.isActive(jobId)) {
+                plan.recoverJob(jobId);
             }
         }
         // 3.2 再添加依赖关系
@@ -149,7 +151,7 @@ public class JarvisServer {
                 .getTasksByStatusNotIn(Lists.newArrayList(TaskStatus.SUCCESS.getValue(), TaskStatus.REMOVED.getValue()));
         // 4.1 先恢复task
         for (Task task : recoveryTasks) {
-            DAGTask dagTask = new DAGTask(task.getJobId(), task.getTaskId(), task.getAttemptId(), task.getScheduleTime().getTime());
+            DAGTask dagTask = new DAGTask(task.getJobId(), task.getTaskId(), task.getAttemptId(), task.getDataTime().getTime());
             taskGraph.addTask(task.getTaskId(), dagTask);
         }
         // 4.2 再构造task依赖关系

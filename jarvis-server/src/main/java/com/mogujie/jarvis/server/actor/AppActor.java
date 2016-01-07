@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.UUID;
 
 import org.joda.time.DateTime;
-import org.mybatis.guice.transactional.Transactional;
 
 import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.dto.generate.App;
@@ -80,24 +79,25 @@ public class AppActor extends UntypedActor {
         }
     }
 
-    @Transactional
     public void modifyApplication(RestModifyApplicationRequest request) {
         ServerModifyApplicationResponse response = null;
+
+        App app = new App();
+        Integer appId = request.getAppId();
+        app.setAppId(appId);
+        if (request.hasAppName()) {
+            app.setAppName(request.getAppName());
+        }
+        if (request.hasStatus()) {
+            app.setStatus(request.getStatus());
+        }
+        if (request.hasMaxConcurrency()) {
+            app.setMaxConcurrency(request.getMaxConcurrency());
+        }
+        app.setUpdateTime(DateTime.now().toDate());
+        app.setUpdateUser(request.getUser());
+
         try {
-            App app = new App();
-            Integer appId = request.getAppId();
-            app.setAppId(appId);
-            if (request.hasAppName()) {
-                app.setAppName(request.getAppName());
-            }
-            if (request.hasStatus()) {
-                app.setStatus(request.getStatus());
-            }
-            if (request.hasMaxConcurrency()) {
-                app.setMaxConcurrency(request.getMaxConcurrency());
-            }
-            app.setUpdateTime(DateTime.now().toDate());
-            app.setUpdateUser(request.getUser());
             appService.update(app);
             if (request.hasMaxConcurrency()) {
                 taskManager.updateAppMaxParallelism(appId, request.getMaxConcurrency());

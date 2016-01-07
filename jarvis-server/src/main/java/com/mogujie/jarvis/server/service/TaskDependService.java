@@ -16,6 +16,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.reflect.TypeToken;
 import com.google.inject.Inject;
@@ -101,7 +102,20 @@ public class TaskDependService {
     }
 
     public void addChildDependency(long parentTaskId, long childJobId, long childTaskId) {
-        //TODO
+        // load old
+        Map<Long, List<Long>> childTaskIdMap = loadChild(parentTaskId);
+        if (childTaskIdMap.containsKey(childJobId)) {
+            List<Long> childTaskIds = childTaskIdMap.get(childJobId);
+            if (!childTaskIds.contains(childTaskId)) {
+                childTaskIds.add(childTaskId);
+            }
+            childTaskIdMap.put(childJobId, childTaskIds);
+        } else {
+            List<Long> childTaskIds = Lists.newArrayList(childTaskId);
+            childTaskIdMap.put(childJobId, childTaskIds);
+        }
+        // store new
+        storeChild(parentTaskId, childTaskIdMap);
     }
 
 }

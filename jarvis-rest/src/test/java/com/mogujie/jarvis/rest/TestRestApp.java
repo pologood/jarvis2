@@ -4,22 +4,19 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.google.gson.reflect.TypeToken;
-import com.mogujie.jarvis.rest.vo.AbstractVo;
-import com.mogujie.jarvis.rest.vo.JobRelationsVo;
 import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
 
+import com.google.gson.reflect.TypeToken;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.mogujie.jarvis.core.util.JsonHelper;
+import com.mogujie.jarvis.rest.vo.AbstractVo;
 
 /**
  * Created by muming on 15/12/1.
  */
-public class TestRestApp extends TestRestAbstact{
+public class TestRestApp extends TestRestAbstact {
 
     public void appAdd() throws UnirestException {
 
@@ -32,15 +29,12 @@ public class TestRestApp extends TestRestAbstact{
         HttpResponse<String> jsonResponse = Unirest.post(baseUrl + "/api/app/add").field("appName", "jarvis-web").field("appToken", "123")
                 .field("user", "muming").field("parameters", paramsJson).asString();
 
-        Type restType = new TypeToken<TestRestResultEntity<AbstractVo>>() {}.getType();
+        Type restType = new TypeToken<TestRestResultEntity<AbstractVo>>() {
+        }.getType();
 
         Assert.assertEquals(jsonResponse.getStatus(), 200);
         TestRestResultEntity<?> result = JsonHelper.fromJson(jsonResponse.getBody(), restType);
         Assert.assertEquals(result.getCode(), 0);
     }
-
-
-
-
 
 }

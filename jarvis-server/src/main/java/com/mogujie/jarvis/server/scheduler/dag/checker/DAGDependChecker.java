@@ -40,10 +40,7 @@ public class DAGDependChecker {
     private long myJobId;
 
     // Map<JobId, JobDependStatus>
-    protected Map<Long, JobDependStatus> jobDependMap = Maps.newHashMap();
-
-    public DAGDependChecker() {
-    }
+    private Map<Long, JobDependStatus> jobDependMap = Maps.newHashMap();
 
     public DAGDependChecker(long jobId) {
         this.myJobId = jobId;
@@ -55,6 +52,14 @@ public class DAGDependChecker {
 
     public void setMyJobId(long myJobId) {
         this.myJobId = myJobId;
+    }
+
+    public Map<Long, JobDependStatus> getJobDependMap() {
+        return jobDependMap;
+    }
+
+    public void setJobDependMap(Map<Long, JobDependStatus> jobDependMap) {
+        this.jobDependMap = jobDependMap;
     }
 
     public boolean checkDependency(Set<Long> needJobs, long scheduleTime) {

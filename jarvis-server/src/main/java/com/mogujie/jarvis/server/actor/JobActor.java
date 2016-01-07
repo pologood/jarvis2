@@ -48,8 +48,8 @@ import com.mogujie.jarvis.server.domain.RemoveJobRequest;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.dag.DAGJob;
 import com.mogujie.jarvis.server.scheduler.dag.DAGJobType;
-import com.mogujie.jarvis.server.scheduler.dag.DAGScheduler;
-import com.mogujie.jarvis.server.scheduler.time.TimeScheduler;
+import com.mogujie.jarvis.server.scheduler.dag.JobGraph;
+import com.mogujie.jarvis.server.scheduler.time.TimePlan;
 import com.mogujie.jarvis.server.service.ConvertValidService;
 import com.mogujie.jarvis.server.service.JobService;
 
@@ -58,8 +58,8 @@ import com.mogujie.jarvis.server.service.JobService;
  */
 public class JobActor extends UntypedActor {
 
-    private DAGScheduler dagScheduler = DAGScheduler.getInstance();
-    private TimeScheduler timeScheduler = TimeScheduler.getInstance();
+    private JobGraph jobGraph = JobGraph.INSTANCE;
+    private TimePlan plan = TimePlan.INSTANCE;
 
     private JobService jobService = Injectors.getInjector().getInstance(JobService.class);
     private ConvertValidService convertValidService = Injectors.getInjector().getInstance(ConvertValidService.class);
@@ -143,9 +143,9 @@ public class JobActor extends UntypedActor {
             }
             int dependFlag = (!needDependencies.isEmpty()) ? 1 : 0;
             DAGJobType type = DAGJobType.getDAGJobType(cycleFlag, dependFlag, timeFlag);
-            dagScheduler.getJobGraph().addJob(jobId, new DAGJob(jobId, type), needDependencies);
-            if (timeFlag > 0) {
-                timeScheduler.addJob(jobId);
+            jobGraph.addJob(jobId, new DAGJob(jobId, type), needDependencies);
+            if (type.equals(DAGJobType.TIME)) {
+                plan.addJob(jobId);
             }
 
             response = ServerSubmitJobResponse.newBuilder().setSuccess(true).setJobId(jobId).build();
@@ -201,16 +201,17 @@ public class JobActor extends UntypedActor {
 
         ServerModifyJobStatusResponse response;
         try {
+            long jobId = msg.getJobId();
             // 参数检查
             Job job = convertValidService.convertCheck2Job(msg);
 
             // 1. update job to DB
+            JobStatus oldStatus = JobStatus.parseValue(jobService.get(jobId).getJob().getStatus());
             jobService.updateJob(job);
 
-            long jobId = msg.getJobId();
-            JobStatus flag = JobStatus.parseValue(msg.getStatus());
-            timeScheduler.modifyJobFlag(jobId, flag);
-            dagScheduler.getJobGraph().modifyJobFlag(jobId, flag);
+            JobStatus newStatus = JobStatus.parseValue(msg.getStatus());
+            plan.modifyJobFlag(jobId, oldStatus, newStatus);
+            jobGraph.modifyJobFlag(jobId, oldStatus, newStatus);
 
             response = ServerModifyJobStatusResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());
@@ -241,7 +242,7 @@ public class JobActor extends UntypedActor {
             }
         }
 
-        int dependFlag = dagScheduler.getJobGraph().getParents(jobId).isEmpty() ? 0 : 1;
+        int dependFlag = jobGraph.getParents(jobId).isEmpty() ? 0 : 1;
         int timeFlag = 0;
         int cycleFlag = 0;
         if (newExpression != null && !newExpression.isEmpty()) {
@@ -252,9 +253,9 @@ public class JobActor extends UntypedActor {
             }
         }
         DAGJobType type = DAGJobType.getDAGJobType(cycleFlag, dependFlag, timeFlag);
-        dagScheduler.getJobGraph().modifyDAGJobType(jobId, type);
+        jobGraph.modifyDAGJobType(jobId, type);
         if (timeFlag == 0) {
-            timeScheduler.removeJob(jobId);
+            plan.removeJob(jobId);
         }
     }
 
@@ -298,7 +299,7 @@ public class JobActor extends UntypedActor {
             dependEntries.add(dependEntry);
         }
 
-        dagScheduler.getJobGraph().modifyDependency(jobId, dependEntries);
+        jobGraph.modifyDependency(jobId, dependEntries);
     }
 
     /**
@@ -315,9 +316,9 @@ public class JobActor extends UntypedActor {
             ServerQueryJobRelationResponse.Builder builder = ServerQueryJobRelationResponse.newBuilder();
             List<Pair<Long, JobStatus>> relations;
             if (msg.getRelationType() == (JobRelationType.PARENT.getValue())) {
-                relations = dagScheduler.getJobGraph().getParents(jobId);
+                relations = jobGraph.getParents(jobId);
             } else {
-                relations = dagScheduler.getJobGraph().getChildren(jobId);
+                relations = jobGraph.getChildren(jobId);
             }
             for (Pair<Long, JobStatus> relation : relations) {
                 long relationId = relation.getFirst();
@@ -356,8 +357,8 @@ public class JobActor extends UntypedActor {
             // remove expression where jobId=jobId
             jobService.deleteScheduleExpression(jobId);
             // scheduler remove job
-            timeScheduler.removeJob(jobId);
-            dagScheduler.getJobGraph().removeJob(jobId);
+            plan.removeJob(jobId);
+            jobGraph.removeJob(jobId);
             getSender().tell("remove success", getSelf());
         } catch (Exception e) {
             getSender().tell("remove failed", getSelf());

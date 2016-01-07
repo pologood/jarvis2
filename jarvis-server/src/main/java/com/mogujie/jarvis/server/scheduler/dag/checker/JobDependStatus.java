@@ -32,7 +32,6 @@ public class JobDependStatus {
     private long preJobId;
     private DependencyExpression dependencyExpression;
     private DependencyStrategyExpression dependencyStrategy;
-    private TaskService taskService = Injectors.getInjector().getInstance(TaskService.class);
 
     public JobDependStatus(long myJobId, long preJobId, DependencyExpression dependencyExpression, DependencyStrategyExpression dependencyStrategy) {
         this.myJobId = myJobId;
@@ -88,19 +87,18 @@ public class JobDependStatus {
             // offset
             List<Task> tasks = getDependTasks(scheduleTime);
             List<Boolean> taskStatus = new ArrayList<Boolean>();
-            if (tasks != null) {
-                for (Task task : tasks) {
-                    boolean status = (task.getStatus() == TaskStatus.SUCCESS.getValue()) ? true : false;
-                    taskStatus.add(status);
-                }
-                pass = dependencyStrategy.check(taskStatus);
+            for (Task task : tasks) {
+                boolean status = (task.getStatus() == TaskStatus.SUCCESS.getValue()) ? true : false;
+                taskStatus.add(status);
             }
+            pass = dependencyStrategy.check(taskStatus);
         }
 
         return pass;
     }
 
     public List<Task> getDependTasks(long scheduleTime) {
+        TaskService taskService = Injectors.getInjector().getInstance(TaskService.class);
         DateTime scheduleDate = new DateTime(scheduleTime);
         Range<DateTime> range = dependencyExpression.getRange(scheduleDate);
         return taskService.getTasksBetween(preJobId, range);

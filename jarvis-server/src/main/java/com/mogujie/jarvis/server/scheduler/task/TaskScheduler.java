@@ -22,6 +22,7 @@ import com.google.common.eventbus.AllowConcurrentEvents;
 import com.google.common.eventbus.Subscribe;
 import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.domain.TaskStatus;
+import com.mogujie.jarvis.core.domain.TaskType;
 import com.mogujie.jarvis.core.util.IdUtils;
 import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.dto.generate.Job;
@@ -89,10 +90,12 @@ public class TaskScheduler extends Scheduler {
         long jobId = e.getJobId();
         long taskId = e.getTaskId();
         long scheduleTime = e.getScheduleTime();
+        TaskType taskType = e.getTaskType();
+        String reason = e.getReason();
         LOGGER.info("start handleSuccessEvent, taskId={}", taskId);
 
         // update success status
-        taskService.updateStatusWithEnd(taskId, TaskStatus.SUCCESS);
+        taskService.updateStatusWithEnd(taskId, TaskStatus.SUCCESS, reason);
         LOGGER.info("update {} with SUCCESS status", taskId);
 
         List<DAGTask> childTasks = taskGraph.getChildren(taskId);
@@ -108,10 +111,8 @@ public class TaskScheduler extends Scheduler {
                 }
             }
         } else {
-            boolean isTemp = e.isTemp();
-            // 如果是临时任务，只会通过TaskGraph触发
-            // 反之如果是正常调度，交给DAGScheduler触发后续任务
-            if (!isTemp) {
+            // 如果是正常调度，交给DAGScheduler触发后续任务
+            if (taskType.equals(TaskType.SCHEDULE)) {
                 // JobGraph trigger
                 ScheduleEvent event = new ScheduleEvent(jobId, taskId, scheduleTime);
                 getSchedulerController().notify(event);
@@ -150,13 +151,13 @@ public class TaskScheduler extends Scheduler {
     @AllowConcurrentEvents
     public void handleFailedEvent(FailedEvent e) {
         long taskId = e.getTaskId();
+        String reason = e.getReason();
         LOGGER.info("start handleFailedEvent, taskId={}", taskId);
         DAGTask dagTask = taskGraph.getTask(taskId);
         if (dagTask != null) {
             long jobId = dagTask.getJobId();
             Job job = jobService.get(jobId).getJob();
             int failedRetries = job.getFailedAttempts();
-            int failedInterval = job.getFailedInterval();
 
             int attemptId = dagTask.getAttemptId();
             LOGGER.info("attemptId={}, failedRetries={}", attemptId, failedRetries);
@@ -170,10 +171,10 @@ public class TaskScheduler extends Scheduler {
                 task.setStatus(TaskStatus.READY.getValue());
                 taskService.updateSelective(task);
                 LOGGER.info("update task {}, attemptId={}", taskId, attemptId);
-                retryScheduler.addTask(getTaskInfo(dagTask), failedRetries, failedInterval, RetryType.FAILED_RETRY);
+                retryScheduler.addTask(getTaskInfo(dagTask), RetryType.FAILED_RETRY);
                 LOGGER.info("add to retryScheduler");
             } else {
-                taskService.updateStatusWithEnd(taskId, TaskStatus.FAILED);
+                taskService.updateStatusWithEnd(taskId, TaskStatus.FAILED, reason);
                 LOGGER.info("update {} with FAILED status", taskId);
                 String key = jobId + "_" + taskId;
                 retryScheduler.remove(key, RetryType.FAILED_RETRY);
@@ -192,18 +193,18 @@ public class TaskScheduler extends Scheduler {
         Map<Long, List<Long>> dependTaskIdMap = e.getDependTaskIdMap();
 
         // create new task
-        long taskId = taskService.createTaskByJobId(jobId, scheduleTime);
+        long taskId = taskService.createTaskByJobId(jobId, scheduleTime, scheduleTime, TaskType.SCHEDULE);
         LOGGER.info("add new task[{}] to DB", taskId);
 
         // 如果是串行任务
         if (jobService.get(jobId).getJob().getIsSerial()) {
             // 首先检查自己上一次是否成功
-            Task task = taskService.getLastTask(jobId, scheduleTime);
+            Task task = taskService.getLastTask(jobId, scheduleTime, TaskType.SCHEDULE);
             if (task != null) {
                 if (task.getStatus() != TaskStatus.SUCCESS.getValue()) {
                     // 如果失败，标记为失败
-                    // TODO 还要写上失败的原因
-                    taskService.updateStatusWithEnd(taskId, TaskStatus.FAILED);
+                    String failedReason = "前置串行任务失败";
+                    taskService.updateStatusWithEnd(taskId, TaskStatus.FAILED, failedReason);
                 }
                 // 增加自依赖
                 List<Long> dependTaskIds = Lists.newArrayList(task.getTaskId());
@@ -243,7 +244,7 @@ public class TaskScheduler extends Scheduler {
 
             DAGTask dagTask = taskGraph.getTask(taskId);
             if (dagTask == null) {
-                dagTask = new DAGTask(task.getJobId(), taskId, task.getAttemptId(), task.getScheduleTime().getTime());
+                dagTask = new DAGTask(task.getJobId(), taskId, task.getAttemptId(), task.getDataTime().getTime());
                 taskGraph.addTask(taskId, dagTask);
                 LOGGER.info("add {} to taskGraph", dagTask);
             }
@@ -313,22 +314,11 @@ public class TaskScheduler extends Scheduler {
         TaskDetail taskDetail = null;
         long jobId = dagTask.getJobId();
         Job job = jobService.get(jobId).getJob();
-        taskDetail = TaskDetail.newTaskDetailBuilder()
-                .setFullId(fullId)
-                .setTaskName(job.getJobName())
-                .setAppName(jobService.getAppName(jobId))
-                .setUser(job.getSubmitUser())
-                .setPriority(job.getPriority())
-                .setContent(job.getContent())
-                .setTaskType(job.getJobType())
-                .setParameters(JsonHelper.fromJson2JobParams(job.getParams()))
-                .setSchedulingTime(new DateTime(dagTask.getScheduleTime()))
-                .setGroupId(job.getWorkerGroupId())
-                .setFailedRetries(job.getFailedAttempts())
-                .setFailedInterval(job.getFailedInterval())
-                .setRejectRetries(job.getRejectAttempts())
-                .setRejectInterval(job.getRejectInterval())
-                .build();
+        taskDetail = TaskDetail.newTaskDetailBuilder().setFullId(fullId).setTaskName(job.getJobName()).setAppName(jobService.getAppName(jobId))
+                .setUser(job.getSubmitUser()).setPriority(job.getPriority()).setContent(job.getContent()).setTaskType(job.getJobType())
+                .setParameters(JsonHelper.fromJson2JobParams(job.getParams())).setDataTime(new DateTime(dagTask.getDataTime()))
+                .setGroupId(job.getWorkerGroupId()).setFailedRetries(job.getFailedAttempts()).setFailedInterval(job.getFailedInterval())
+                .setExpiredTime(job.getExpiredTime()).build();
         return taskDetail;
     }
 

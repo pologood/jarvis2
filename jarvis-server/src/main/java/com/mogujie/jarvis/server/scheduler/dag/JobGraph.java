@@ -27,6 +27,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.core.domain.Pair;
+import com.mogujie.jarvis.core.domain.TaskType;
 import com.mogujie.jarvis.core.exeception.JobScheduleException;
 import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.server.domain.ModifyDependEntry;
@@ -34,11 +35,11 @@ import com.mogujie.jarvis.server.domain.ModifyOperation;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.dag.checker.DAGDependChecker;
+import com.mogujie.jarvis.server.scheduler.event.AddPlanEvent;
 import com.mogujie.jarvis.server.scheduler.event.AddTaskEvent;
-import com.mogujie.jarvis.server.scheduler.time.ExecutionPlan;
-import com.mogujie.jarvis.server.scheduler.time.ExecutionPlanEntry;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.TaskService;
+import com.mogujie.jarvis.server.util.PlanUtil;
 
 /**
  * @author guangming
@@ -52,7 +53,6 @@ public enum JobGraph {
     private JobSchedulerController controller = JobSchedulerController.getInstance();
     private JobService jobService = Injectors.getInjector().getInstance(JobService.class);
     private TaskService taskService = Injectors.getInjector().getInstance(TaskService.class);
-    private ExecutionPlan plan = ExecutionPlan.INSTANCE;
 
     private static final Logger LOGGER = LogManager.getLogger();
 
@@ -231,23 +231,17 @@ public enum JobGraph {
      * @param jobStatus
      * @throws JobScheduleException
      */
-    public void modifyJobFlag(long jobId, JobStatus jobStatus) throws JobScheduleException {
+    public void modifyJobFlag(long jobId, JobStatus oldStatus, JobStatus newStatus) throws JobScheduleException {
         DAGJob dagJob = getDAGJob(jobId);
         List<DAGJob> children = new ArrayList<DAGJob>();
         if (dagJob != null) {
             children = getChildren(dagJob);
         }
 
-        if (jobStatus.equals(JobStatus.DELETED)) {
+        if (newStatus.equals(JobStatus.DELETED)) {
             if (dagJob != null) {
                 removeJob(dagJob);
                 LOGGER.info("remove DAGJob {} from DAGScheduler successfully.", dagJob.getJobId());
-            }
-        } else {
-            if (dagJob != null) {
-                JobStatus oldFlag = dagJob.getJobStatus();
-                dagJob.setJobStatus(jobStatus);
-                LOGGER.info("moidfy job flag from {} to {}.", oldFlag, jobStatus);
             }
         }
 
@@ -329,12 +323,12 @@ public enum JobGraph {
 
                     // 提交给TimeScheduler进行时间调度
                     Map<Long, List<Long>> dependTaskIdMap = dagJob.getDependTaskIdMap(timeStamp);
-                    ExecutionPlanEntry entry = new ExecutionPlanEntry(jobId, new DateTime(scheduleTime), dependTaskIdMap);
-                    plan.addPlan(entry);
+                    AddPlanEvent event = new AddPlanEvent(jobId, scheduleTime, dependTaskIdMap);
+                    controller.notify(event);
                 }
             }
         } else {
-            Set<Long> needJobs = getEnableParentJobIds(dagJob.getJobId());
+            Set<Long> needJobs = getParentJobIds(dagJob.getJobId());
             // 如果是单亲纯依赖，表示runtime，不需要做依赖检查了，直接提交给TaskScheduler
             if (needJobs.size() == 1) {
                 long preJobId = needJobs.iterator().next();
@@ -379,23 +373,21 @@ public enum JobGraph {
         }
     }
 
-    public Set<Long> getEnableParentJobIds(long jobId) {
+    public Set<Long> getParentJobIds(long jobId) {
         DAGJob dagJob = jobMap.get(jobId);
         Set<Long> jobIds = Sets.newHashSet();
         if (dagJob != null) {
-            jobIds = getEnableParentJobIds(dagJob);
+            jobIds = getParentJobIds(dagJob);
         }
         return jobIds;
     }
 
-    private Set<Long> getEnableParentJobIds(DAGJob dagJob) {
+    private Set<Long> getParentJobIds(DAGJob dagJob) {
         List<DAGJob> parents = getParents(dagJob);
         Set<Long> jobIds = Sets.newHashSet();
         if (parents != null) {
             for (DAGJob parent : parents) {
-                if (parent.getJobStatus().equals(JobStatus.ENABLE)) {
-                    jobIds.add(parent.getJobId());
-                }
+                jobIds.add(parent.getJobId());
             }
         }
         return jobIds;
@@ -409,8 +401,18 @@ public enum JobGraph {
      * @return
      */
     private List<Long> getUnScheduledTimeStamps(long jobId) {
-        //TODO
         List<Long> timeStamps = new ArrayList<Long>();
+        Task lastTask = taskService.getLastTask(jobId, DateTime.now().getMillis(), TaskType.SCHEDULE);
+        if (lastTask != null) {
+            DateTime startTime = PlanUtil.getScheduleTimeAfter(jobId, new DateTime(lastTask.getDataTime()));
+            DateTime endTime = PlanUtil.getScheduleTimeAfter(jobId, DateTime.now());
+            timeStamps.add(startTime.getMillis());
+            DateTime nextTime = startTime;
+            while (nextTime.isBefore(endTime)) {
+                nextTime = PlanUtil.getScheduleTimeAfter(jobId, nextTime);
+                timeStamps.add(nextTime.getMillis());
+            }
+        }
         return timeStamps;
     }
 

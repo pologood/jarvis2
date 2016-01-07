@@ -50,7 +50,7 @@
          <include refid="workerCondition" />
     </select>
     <select id="getWorkerList" parameterType="WorkerQo" resultType="WorkerVo">
-        SELECT * FROM worker
+        SELECT worker.*,worker_group.name AS workerGroupName FROM worker LEFT JOIN worker_group ON worker.workerGroupId=worker_group.id
         <include refid="workerCondition" />
         <include refid="pager" />
     </select>

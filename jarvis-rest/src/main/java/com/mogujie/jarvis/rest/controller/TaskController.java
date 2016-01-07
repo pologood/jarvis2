@@ -10,7 +10,6 @@ package com.mogujie.jarvis.rest.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
@@ -35,14 +34,10 @@ import com.mogujie.jarvis.protocol.QueryTaskRelationProtos.ServerQueryTaskRelati
 import com.mogujie.jarvis.protocol.QueryTaskRelationProtos.TaskMapEntry;
 import com.mogujie.jarvis.protocol.RetryTaskProtos.RestServerRetryTaskRequest;
 import com.mogujie.jarvis.protocol.RetryTaskProtos.ServerRetryTaskResponse;
-import com.mogujie.jarvis.protocol.SubmitTaskProtos.RestServerSubmitTaskRequest;
-import com.mogujie.jarvis.protocol.SubmitTaskProtos.ServerSubmitTaskResponse;
 import com.mogujie.jarvis.rest.RestResult;
 import com.mogujie.jarvis.rest.utils.JsonParameters;
 import com.mogujie.jarvis.rest.vo.RerunTaskVo;
-import com.mogujie.jarvis.rest.vo.TaskEntryVo;
 import com.mogujie.jarvis.rest.vo.TaskRelationsVo;
-import com.mogujie.jarvis.rest.vo.TaskVo;
 
 /**
  * @author guangming
@@ -59,7 +54,7 @@ public class TaskController extends AbstractController {
     @Path("kill")
     @Produces(MediaType.APPLICATION_JSON)
     public RestResult kill(@FormParam("user") String user, @FormParam("appToken") String appToken, @FormParam("appName") String appName,
-                           @FormParam("parameters") String parameters) {
+            @FormParam("parameters") String parameters) {
         try {
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
@@ -92,7 +87,7 @@ public class TaskController extends AbstractController {
     @Path("retry")
     @Produces(MediaType.APPLICATION_JSON)
     public RestResult retry(@FormParam("user") String user, @FormParam("appToken") String appToken, @FormParam("appName") String appName,
-                            @FormParam("parameters") String parameters) {
+            @FormParam("parameters") String parameters) {
         try {
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
@@ -122,7 +117,7 @@ public class TaskController extends AbstractController {
     @Path("rerun")
     @Produces(MediaType.APPLICATION_JSON)
     public RestResult rerun(@FormParam("user") String user, @FormParam("appToken") String appToken, @FormParam("appName") String appName,
-                            @FormParam("parameters") String parameters) {
+            @FormParam("parameters") String parameters) {
         try {
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
@@ -135,8 +130,7 @@ public class TaskController extends AbstractController {
             for (long jobId : jobIdList) {
                 builder.addJobId(jobId);
             }
-            RestServerManualRerunTaskRequest request = builder.setAppAuth(appAuth).setStartTime(startDate).setEndTime(endDate)
-                    .build();
+            RestServerManualRerunTaskRequest request = builder.setAppAuth(appAuth).setStartTime(startDate).setEndTime(endDate).build();
 
             ServerManualRerunTaskResponse response = (ServerManualRerunTaskResponse) callActor(AkkaType.SERVER, request);
             if (response.getSuccess()) {
@@ -144,44 +138,6 @@ public class TaskController extends AbstractController {
             } else {
                 return errorResult(response.getMessage());
             }
-        } catch (Exception e) {
-            LOGGER.error(e.getMessage());
-            return errorResult(e.getMessage());
-        }
-    }
-
-    /**
-     * 提交一次性任务
-     *
-     * @throws Exception
-     */
-    @POST
-    @Path("submit")
-    @Produces(MediaType.APPLICATION_JSON)
-    public RestResult submit(@FormParam("user") String user, @FormParam("appToken") String appToken, @FormParam("appName") String appName,
-                             @FormParam("parameters") String parameters) {
-        try {
-            AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
-
-            TaskEntryVo taskVo = JsonHelper.fromJson(parameters, TaskEntryVo.class);
-            String jobParameters = "";
-            if (taskVo.getParams() != null) {
-                jobParameters = JsonHelper.toJson(taskVo.getParams(), Map.class);
-            }
-            RestServerSubmitTaskRequest request = RestServerSubmitTaskRequest.newBuilder().setAppAuth(appAuth).setTaskName(taskVo.getTaskName())
-                    .setContent(taskVo.getContent()).setTaskType(taskVo.getTaskType()).setUser(taskVo.getUser()).setGroupId(taskVo.getGroupId())
-                    .setPriority(taskVo.getPriority(0)).setRejectRetries(taskVo.getRejectRetries(0)).setRejectInterval(taskVo.getRejectInterval(3))
-                    .setFailedRetries(taskVo.getFailedRetries(0)).setFailedInterval(taskVo.getFailedInterval(3)).setParameters(jobParameters).build();
-
-            ServerSubmitTaskResponse response = (ServerSubmitTaskResponse) callActor(AkkaType.SERVER, request);
-            if (response.getSuccess()) {
-                TaskVo vo = new TaskVo();
-                vo.setTaskId(response.getTaskId());
-                return successResult(vo);
-            } else {
-                return errorResult(response.getMessage());
-            }
-
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
             return errorResult(e.getMessage());
@@ -197,7 +153,7 @@ public class TaskController extends AbstractController {
     @Path("modify/status")
     @Produces(MediaType.APPLICATION_JSON)
     public RestResult modifyStatus(@FormParam("user") String user, @FormParam("appToken") String appToken, @FormParam("appName") String appName,
-                                   @FormParam("parameters") String parameters) {
+            @FormParam("parameters") String parameters) {
         try {
             AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
@@ -226,10 +182,8 @@ public class TaskController extends AbstractController {
     @POST
     @Path("queryRelation")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult queryRelation(@FormParam("user") String user,
-                                    @FormParam("appToken") String appToken,
-                                    @FormParam("appName") String appName,
-                                    @FormParam("parameters") String parameters) {
+    public RestResult queryRelation(@FormParam("user") String user, @FormParam("appToken") String appToken, @FormParam("appName") String appName,
+            @FormParam("parameters") String parameters) {
         try {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
@@ -240,11 +194,8 @@ public class TaskController extends AbstractController {
                 throw new IllegalArgumentException("参数不对。key='relationType',value=" + relationType.toString());
             }
 
-            RestServerQueryTaskRelationRequest request = RestServerQueryTaskRelationRequest.newBuilder()
-                    .setAppAuth(appAuth)
-                    .setTaskId(jobId)
-                    .setRelationType(relationType)
-                    .build();
+            RestServerQueryTaskRelationRequest request = RestServerQueryTaskRelationRequest.newBuilder().setAppAuth(appAuth).setTaskId(jobId)
+                    .setRelationType(relationType).build();
 
             ServerQueryTaskRelationResponse response = (ServerQueryTaskRelationResponse) callActor(AkkaType.SERVER, request);
             if (response.getSuccess()) {
@@ -265,6 +216,5 @@ public class TaskController extends AbstractController {
             return errorResult(e.getMessage());
         }
     }
-
 
 }

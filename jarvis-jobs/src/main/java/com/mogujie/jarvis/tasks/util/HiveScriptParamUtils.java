@@ -22,15 +22,6 @@ public class HiveScriptParamUtils {
     private static final String defaultFormat = "yyyyMMdd";
     private static final String defaultFormatMGD = "yyyyMMdd HHmmss";
 
-    public static String parse(String text) {
-        return parse(text, DateTime.now());
-    }
-
-    public static String parse(String text, String date) {
-        DateTime destDate = DateTimeFormat.forPattern("yyyy-MM-dd").parseDateTime(date);
-        return parse(text, destDate);
-    }
-
     public static String parse(String text, DateTime date) {
         Map<String, String> dates = new HashMap<>();
         Pattern patternYtd = Pattern.compile("\\$YTD\\(.*?\\)|\\$\\{YTD\\(.*?\\)\\}");
@@ -265,22 +256,23 @@ public class HiveScriptParamUtils {
 
         String text;
 
-        text = parse("where paytime >= unix_timestamp('$MGD(-1M, yyyy-MM-dd 00:00:00)')");
+        DateTime today = DateTime.now();
+        text = parse("where paytime >= unix_timestamp('$MGD(-1M, yyyy-MM-dd 00:00:00)')",today);
 
         System.out.println(parse(
                 " dwd_usr_users_${YTD(-1,yyyy-MM-dd)}    from dwd_usr_users_${YTD(-1)} a left outer join (select userid,min(realname) realname,min(province) province, min(city) city,min(area) area,min(address) address"
                         + " from dwd_usr_address_${YTD(yyyy-MM-dd)}  group by userid )b "
                         + "on(a.userid=b.userid) left outer join dwd_usr_extra_${YTD(yyyy-MM-dd)} c on(a.userid=c.userid)"
-                        + " where a.userid is not null"));
+                        + " where a.userid is not null",today));
 
 
         System.out.println(parse(
                 " dwd_usr_users_$YTD(-1,yyyy-MM-dd)    from dwd_usr_users_$YTD(-1) a left outer join (select userid,min(realname) realname,min(province) province, min(city) city,min(area) area,min(address) address"
                         + " from dwd_usr_address_$YTD(yyyy-MM-dd)  group by userid )b "
                         + "on(a.userid=b.userid) left outer join dwd_usr_extra_$YTD(yyyy-MM-dd) c on(a.userid=c.userid)"
-                        + " where a.userid is not null"));
+                        + " where a.userid is not null",today));
 
-        System.out.println(parse("$MGD(-1d,yyyy-MM-dd 00:00:00)"));
+        System.out.println(parse("$MGD(-1d,yyyy-MM-dd 00:00:00)",today));
         text = "select count(distinct e2.buyeruserid) buyercnt, e1.level userlevel from user_score$tmptable e1\n" +
                 "join dwd_trd_tradeorder e2 on e1.userid = e2.buyeruserid \n" +
                 "where e2.paytime >= unix_timestamp('$MGD(-31d,yyyy-MM-dd 00:00:00)') AND \n" +
@@ -296,7 +288,7 @@ public class HiveScriptParamUtils {
                 "and level = 2\n" +
                 "group by buyeruserid) x where x.cnt >= 3;"
         ;
-        System.out.println(parse(text));
+        System.out.println(parse(text,today));
     }
 
 

@@ -17,9 +17,11 @@ public class Task {
 
     private Float progress;
 
-    private Boolean isTemp;
+    private Integer type;
 
     private Integer status;
+
+    private String finishReason;
 
     private Integer appId;
 
@@ -30,8 +32,6 @@ public class Task {
     private Date executeStartTime;
 
     private Date executeEndTime;
-
-    private String attemptExtra;
 
     private Date createTime;
 
@@ -95,12 +95,12 @@ public class Task {
         this.progress = progress;
     }
 
-    public Boolean getIsTemp() {
-        return isTemp;
+    public Integer getType() {
+        return type;
     }
 
-    public void setIsTemp(Boolean isTemp) {
-        this.isTemp = isTemp;
+    public void setType(Integer type) {
+        this.type = type;
     }
 
     public Integer getStatus() {
@@ -109,6 +109,14 @@ public class Task {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public String getFinishReason() {
+        return finishReason;
+    }
+
+    public void setFinishReason(String finishReason) {
+        this.finishReason = finishReason;
     }
 
     public Integer getAppId() {
@@ -149,14 +157,6 @@ public class Task {
 
     public void setExecuteEndTime(Date executeEndTime) {
         this.executeEndTime = executeEndTime;
-    }
-
-    public String getAttemptExtra() {
-        return attemptExtra;
-    }
-
-    public void setAttemptExtra(String attemptExtra) {
-        this.attemptExtra = attemptExtra;
     }
 
     public Date getCreateTime() {

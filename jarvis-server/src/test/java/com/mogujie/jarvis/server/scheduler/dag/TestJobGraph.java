@@ -248,7 +248,7 @@ public class TestJobGraph {
         Assert.assertEquals(2, jobGraph.getParents(jobCId).size());
 
         // jobB disable
-        jobGraph.modifyJobFlag(jobBId, JobStatus.DISABLE);
+        jobGraph.modifyJobFlag(jobBId, JobStatus.ENABLE, JobStatus.DISABLE);
         // jobC has two parents
         Assert.assertEquals(2, jobGraph.getParents(jobCId).size());
     }
@@ -273,8 +273,8 @@ public class TestJobGraph {
         Assert.assertEquals(2, jobGraph.getParents(jobCId).size());
 
         // jobB disable
-        jobGraph.modifyJobFlag(jobBId, JobStatus.DELETED);
-        // jobC has two parents
+        jobGraph.modifyJobFlag(jobBId, JobStatus.ENABLE, JobStatus.DELETED);
+        // jobC has one parent
         Assert.assertEquals(1, jobGraph.getParents(jobCId).size());
     }
 

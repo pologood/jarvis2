@@ -29,6 +29,7 @@ import com.mogujie.jarvis.rest.vo.JobVo;
  * @author guangming
  *
  */
+@Deprecated
 @Path("api/plan")
 public class PlanController extends AbstractController {
 

@@ -9,10 +9,6 @@ package com.mogujie.jarvis.core.util;
 
 import com.google.common.base.Throwables;
 
-/**
- * @author wuya
- *
- */
 public class ThreadUtils {
 
     public static void sleep(long ms) {

@@ -8,10 +8,6 @@
 
 package com.mogujie.jarvis.core.domain;
 
-/**
- * 
- *
- */
 public enum IdType {
 
     JOB_ID, TASK_ID, ATTEMPT_ID;

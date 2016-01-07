@@ -1,7 +1,9 @@
 /*
- * 蘑菇街 Inc. Copyright (c) 2010-2015 All Rights Reserved.
+ * 蘑菇街 Inc.
+ * Copyright (c) 2010-2015 All Rights Reserved.
  *
- * Author: wuya Create Date: 2015年9月25日 上午11:39:46
+ * Author: wuya
+ * Create Date: 2015年9月25日 上午11:39:46
  */
 
 package com.mogujie.jarvis.server.dispatcher;
@@ -81,7 +83,7 @@ public class TaskDispatcher extends Thread {
                     builder = builder.setTaskType(task.getTaskType());
                     builder = builder.setContent(task.getContent());
                     builder = builder.setPriority(task.getPriority());
-                    builder = builder.setSchedulingTime(task.getSchedulingTime().getMillis());
+                    builder = builder.setDataTime(task.getDataTime().getMillis());
 
                     int i = 0;
                     if (task.getParameters() != null) {
@@ -108,7 +110,7 @@ public class TaskDispatcher extends Thread {
                                         continue;
                                     } else {
                                         LOGGER.warn("Task[{}] was rejected by worker[{}:{}]", fullId, ip, port);
-                                        taskRetryScheduler.addTask(task, task.getRejectRetries(), task.getRejectInterval(), RetryType.REJECT_RETRY);
+                                        taskRetryScheduler.addTask(task, RetryType.REJECT_RETRY);
                                     }
                                 } else {
                                     LOGGER.error("Send ServerSubmitTaskRequest error: " + response.getMessage());
@@ -121,10 +123,13 @@ public class TaskDispatcher extends Thread {
                         }
                         //taskManager.appCounterDecrement(appId);
                     } else {
+                        // Worker不存在时进行重试处理(在一定时间内一直重试)
+                        taskRetryScheduler.addTask(task, RetryType.REJECT_RETRY);
                         LOGGER.warn("worker not exist, worker group id: {}", task.getGroupId());
+                        continue;
                     }
 
-                    taskRetryScheduler.addTask(task, task.getFailedRetries(), task.getFailedInterval(), RetryType.FAILED_RETRY);
+                    taskRetryScheduler.addTask(task, RetryType.FAILED_RETRY);
                 } catch (Exception e) {
                     LOGGER.error("", e);
                 }

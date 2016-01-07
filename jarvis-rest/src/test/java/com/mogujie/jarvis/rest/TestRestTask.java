@@ -1,5 +1,11 @@
 package com.mogujie.jarvis.rest;
 
+import java.lang.reflect.Type;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.junit.Assert;
+
 import com.google.gson.reflect.TypeToken;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
@@ -8,12 +14,6 @@ import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.rest.vo.JobVo;
 import com.mogujie.jarvis.rest.vo.TaskEntryVo;
 import com.mogujie.jarvis.rest.vo.TaskRelationsVo;
-import org.junit.Assert;
-import org.junit.Test;
-
-import java.lang.reflect.Type;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by muming on 15/12/1.
@@ -32,8 +32,8 @@ public class TestRestTask {
         task.setGroupId(1);
 
         //任务参数
-        Map<String,Object> jobPrams = new HashMap<>();
-        jobPrams.put("name","muming");
+        Map<String, Object> jobPrams = new HashMap<>();
+        jobPrams.put("name", "muming");
         jobPrams.put("age", 18);
         jobPrams.put("isMail", false);
         task.setParams(jobPrams);
@@ -59,20 +59,16 @@ public class TestRestTask {
         params.put("relationType", 2);
         String paramsJson = JsonHelper.toJson(params, Map.class);
 
-        HttpResponse<String> jsonResponse = Unirest.post(baseUrl + "/api/task/queryRelation")
-                .field("appName", "jarvis-web")
-                .field("appToken", "123")
-                .field("user", "muming")
-                .field("parameters", paramsJson).asString();
+        HttpResponse<String> jsonResponse = Unirest.post(baseUrl + "/api/task/queryRelation").field("appName", "jarvis-web").field("appToken", "123")
+                .field("user", "muming").field("parameters", paramsJson).asString();
 
-        Type restType = new TypeToken<TestRestResultEntity<TaskRelationsVo>>() {}.getType();
+        Type restType = new TypeToken<TestRestResultEntity<TaskRelationsVo>>() {
+        }.getType();
 
         Assert.assertEquals(jsonResponse.getStatus(), 200);
         TestRestResultEntity<?> result = JsonHelper.fromJson(jsonResponse.getBody(), restType);
         Assert.assertEquals(result.getCode(), 0);
 
     }
-
-
 
 }

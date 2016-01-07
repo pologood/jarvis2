@@ -29,14 +29,12 @@ import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.domain.IdType;
 import com.mogujie.jarvis.core.domain.JobRelationType;
 import com.mogujie.jarvis.core.domain.MessageType;
-import com.mogujie.jarvis.core.domain.TaskDetail;
-import com.mogujie.jarvis.core.domain.TaskDetail.TaskDetailBuilder;
 import com.mogujie.jarvis.core.domain.TaskStatus;
+import com.mogujie.jarvis.core.domain.TaskType;
 import com.mogujie.jarvis.core.domain.WorkerInfo;
 import com.mogujie.jarvis.core.expression.DependencyExpression;
 import com.mogujie.jarvis.core.observer.Event;
 import com.mogujie.jarvis.core.util.IdUtils;
-import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.protocol.KillTaskProtos.RestServerKillTaskRequest;
 import com.mogujie.jarvis.protocol.KillTaskProtos.ServerKillTaskRequest;
@@ -51,10 +49,7 @@ import com.mogujie.jarvis.protocol.QueryTaskRelationProtos.ServerQueryTaskRelati
 import com.mogujie.jarvis.protocol.QueryTaskRelationProtos.TaskMapEntry;
 import com.mogujie.jarvis.protocol.RetryTaskProtos.RestServerRetryTaskRequest;
 import com.mogujie.jarvis.protocol.RetryTaskProtos.ServerRetryTaskResponse;
-import com.mogujie.jarvis.protocol.SubmitTaskProtos.RestServerSubmitTaskRequest;
-import com.mogujie.jarvis.protocol.SubmitTaskProtos.ServerSubmitTaskResponse;
 import com.mogujie.jarvis.server.dispatcher.TaskManager;
-import com.mogujie.jarvis.server.dispatcher.TaskQueue;
 import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.domain.JobDependencyEntry;
 import com.mogujie.jarvis.server.guice.Injectors;
@@ -66,14 +61,12 @@ import com.mogujie.jarvis.server.scheduler.event.SuccessEvent;
 import com.mogujie.jarvis.server.scheduler.event.UnhandleEvent;
 import com.mogujie.jarvis.server.scheduler.task.DAGTask;
 import com.mogujie.jarvis.server.scheduler.task.TaskGraph;
-import com.mogujie.jarvis.server.scheduler.time.ExecutionPlan;
-import com.mogujie.jarvis.server.scheduler.time.ExecutionPlanEntry;
-import com.mogujie.jarvis.server.scheduler.time.PlanGenerator;
-import com.mogujie.jarvis.server.service.ConvertValidService;
+import com.mogujie.jarvis.server.scheduler.time.TimePlanEntry;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.TaskDependService;
 import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.FutureUtils;
+import com.mogujie.jarvis.server.util.PlanUtil;
 
 /**
  * @author guangming
@@ -84,10 +77,8 @@ public class TaskActor extends UntypedActor {
     private TaskService taskService = Injectors.getInjector().getInstance(TaskService.class);
     private JobService jobService = Injectors.getInjector().getInstance(JobService.class);
     private TaskDependService taskDependService = Injectors.getInjector().getInstance(TaskDependService.class);
-    private ConvertValidService convertValidService = Injectors.getInjector().getInstance(ConvertValidService.class);
 
     private TaskGraph taskGraph = TaskGraph.INSTANCE;
-    private TaskQueue taskQueue = Injectors.getInjector().getInstance(TaskQueue.class);
     private JobSchedulerController controller = JobSchedulerController.getInstance();
 
     private static final Logger LOGGER = LogManager.getLogger();
@@ -107,9 +98,6 @@ public class TaskActor extends UntypedActor {
         } else if (obj instanceof RestServerManualRerunTaskRequest) {
             RestServerManualRerunTaskRequest msg = (RestServerManualRerunTaskRequest) obj;
             manualRerunTask(msg);
-        } else if (obj instanceof RestServerSubmitTaskRequest) {
-            RestServerSubmitTaskRequest msg = (RestServerSubmitTaskRequest) obj;
-            submitTask(msg);
         } else if (obj instanceof RestServerModifyTaskStatusRequest) {
             RestServerModifyTaskStatusRequest msg = (RestServerModifyTaskStatusRequest) obj;
             modifyTaskStatus(msg);
@@ -168,47 +156,51 @@ public class TaskActor extends UntypedActor {
         DateTime startDate = new DateTime(msg.getStartTime());
         DateTime endDate = new DateTime(msg.getEndTime());
         // 1.生成所有任务的执行计划
-        PlanGenerator planGenerator = new PlanGenerator();
         Range<DateTime> range = Range.closed(startDate, endDate);
-        Map<Long, List<ExecutionPlanEntry>> planMap = planGenerator.getReschedulePlan(jobIdList, range);
-        // 2.通过新的job依赖关系生成新的task
+        Map<Long, List<TimePlanEntry>> planMap = PlanUtil.getReschedulePlan(jobIdList, range);
+        // 2.生成新的task
+        long scheduleTime = DateTime.now().getMillis();
         for (long jobId : jobIdList) {
-            List<ExecutionPlanEntry> planList = planMap.get(jobId);
-            for (ExecutionPlanEntry planEntry : planList) {
+            List<TimePlanEntry> planList = planMap.get(jobId);
+            for (TimePlanEntry planEntry : planList) {
                 // create new task
-                long scheduleTime = planEntry.getDateTime().getMillis();
-                long taskId = taskService.createTaskByJobId(jobId, scheduleTime);
+                long dataTime = planEntry.getDateTime().getMillis();
+                long taskId = taskService.createTaskByJobId(jobId, scheduleTime, dataTime, TaskType.RERUN);
                 planEntry.setTaskId(taskId);
                 taskIdList.add(taskId);
             }
         }
-        // 3.添加DAGTask到TaskGraph中
+        // 3.确定task依赖关系，添加DAGTask到TaskGraph中
         for (long jobId : jobIdList) {
-            List<ExecutionPlanEntry> planList = planMap.get(jobId);
-            for (ExecutionPlanEntry planEntry : planList) {
-                // add to taskGraph
+            List<TimePlanEntry> planList = planMap.get(jobId);
+            for (int i = 0; i < planList.size(); i++) {
+                TimePlanEntry planEntry = planList.get(i);
                 long taskId = planEntry.getTaskId();
-                long scheduleTime = planEntry.getDateTime().getMillis();
+                long dataTime = planEntry.getDateTime().getMillis();
                 Map<Long, List<Long>> dependTaskIdMap = Maps.newHashMap();
                 Map<Long, JobDependencyEntry> dependencyMap = jobService.get(jobId).getDependencies();
                 if (dependencyMap != null) {
                     for (Entry<Long, JobDependencyEntry> entry : dependencyMap.entrySet()) {
                         long preJobId = entry.getKey();
-                        JobDependencyEntry dependencyEntry = entry.getValue();
-                        DependencyExpression dependencyExpression = dependencyEntry.getDependencyExpression();
-                        List<Long> dependTaskIds = taskService.getDependTaskIds(jobId, preJobId, scheduleTime, dependencyExpression);
-                        dependTaskIdMap.put(preJobId, dependTaskIds);
+                        if (jobIdList.contains(preJobId)) {
+                            JobDependencyEntry dependencyEntry = entry.getValue();
+                            DependencyExpression dependencyExpression = dependencyEntry.getDependencyExpression();
+                            List<Long> dependTaskIds = getDependTaskIds(planMap.get(preJobId), dataTime, dependencyExpression);
+                            dependTaskIdMap.put(preJobId, dependTaskIds);
+                        }
                     }
                 }
                 //如果是串行任务
                 if (jobService.get(jobId).getJob().getIsSerial()) {
-                    Task task = taskService.getLastTask(jobId, scheduleTime);
-                    if (task != null) {
-                        List<Long> dependTaskIds = Lists.newArrayList(task.getTaskId());
+                    if (i > 0) {
+                        // 增加自依赖
+                        long preTaskId = planList.get(i - 1).getTaskId();
+                        List<Long> dependTaskIds = Lists.newArrayList(preTaskId);
                         dependTaskIdMap.put(jobId, dependTaskIds);
                     }
                 }
-                DAGTask dagTask = new DAGTask(jobId, taskId, scheduleTime, dependTaskIdMap);
+                // add to taskGraph
+                DAGTask dagTask = new DAGTask(jobId, taskId, dataTime, dependTaskIdMap);
                 taskGraph.addTask(taskId, dagTask);
             }
         }
@@ -227,24 +219,24 @@ public class TaskActor extends UntypedActor {
         getSender().tell(response, getSelf());
     }
 
-    /**
-     * 一次性执行任务
-     *
-     * @param msg
-     */
-    private void submitTask(RestServerSubmitTaskRequest msg) {
-        LOGGER.info("start submitTask");
-        ServerSubmitTaskResponse response;
-        try {
-            TaskDetail taskDetail = createRunOnceTask(msg);
-            taskQueue.put(taskDetail);
-            long taskId = IdUtils.parse(taskDetail.getFullId(), IdType.TASK_ID);
-            response = ServerSubmitTaskResponse.newBuilder().setSuccess(true).setTaskId(taskId).build();
-            getSender().tell(response, getSelf());
-        } catch (Exception e) {
-            response = ServerSubmitTaskResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
-            getSender().tell(response, getSelf());
+    private List<Long> getDependTaskIds(List<TimePlanEntry> planList, long dataTime, DependencyExpression dependencyExpression) {
+        List<Long> dependTaskIds = new ArrayList<Long>();
+        if (dependencyExpression == null) {
+            for (TimePlanEntry entry : planList) {
+                if (entry.getDateTime().getMillis() == dataTime) {
+                    dependTaskIds.add(entry.getTaskId());
+                    break;
+                }
+            }
+        } else {
+            Range<DateTime> range = dependencyExpression.getRange(new DateTime(dataTime));
+            for (TimePlanEntry entry : planList) {
+                if (range.contains(entry.getDateTime())) {
+                    dependTaskIds.add(entry.getTaskId());
+                }
+            }
         }
+        return dependTaskIds;
     }
 
     /**
@@ -257,18 +249,16 @@ public class TaskActor extends UntypedActor {
         long taskId = msg.getTaskId();
         TaskStatus status = TaskStatus.parseValue(msg.getStatus());
         Event event = new UnhandleEvent();
+        String reason = "Manual modify task status.";
         if (status.equals(TaskStatus.SUCCESS)) {
             Task task = taskService.get(taskId);
-            event = new SuccessEvent(task.getJobId(), taskId, task.getScheduleTime().getTime());
+            event = new SuccessEvent(task.getJobId(), taskId, task.getScheduleTime().getTime(), TaskType.parseValue(task.getType()), reason);
         } else if (status.equals(TaskStatus.FAILED)) {
-            event = new FailedEvent(taskId);
+            event = new FailedEvent(taskId, reason);
         }
-        // 1. handle success/failed event
+        // handle success/failed event
         JobSchedulerController schedulerController = JobSchedulerController.getInstance();
         schedulerController.notify(event);
-        // 2. remove from plan if necessary
-        ExecutionPlan plan = ExecutionPlan.INSTANCE;
-        plan.removePlan(new ExecutionPlanEntry(0, null, taskId));
 
         ServerModifyTaskStatusResponse response = ServerModifyTaskStatusResponse.newBuilder().setSuccess(true).build();
         getSender().tell(response, getSelf());
@@ -313,24 +303,10 @@ public class TaskActor extends UntypedActor {
         }
     }
 
-    private TaskDetail createRunOnceTask(RestServerSubmitTaskRequest request) {
-        Task task = convertValidService.convert2Task(request);
-        long taskId = taskService.insertSelective(task);
-        TaskDetailBuilder builder = TaskDetail.newTaskDetailBuilder().setFullId("0_" + taskId + "_0").setAppName(request.getAppAuth().getName())
-                .setTaskName(request.getTaskName()).setUser(request.getUser()).setTaskType(request.getTaskType()).setContent(request.getContent())
-                .setGroupId(request.getGroupId()).setPriority(request.getPriority()).setRejectRetries(request.getRejectRetries())
-                .setRejectInterval(request.getRejectInterval()).setFailedRetries(request.getFailedRetries())
-                .setFailedInterval(request.getFailedInterval()).setSchedulingTime(DateTime.now())
-                .setParameters(JsonHelper.fromJson2JobParams(request.getParameters()));
-
-        return builder.build();
-    }
-
     public static List<ActorEntry> handledMessages() {
         List<ActorEntry> list = new ArrayList<>();
         list.add(new ActorEntry(RestServerKillTaskRequest.class, ServerKillTaskResponse.class, MessageType.GENERAL));
         list.add(new ActorEntry(RestServerRetryTaskRequest.class, ServerRetryTaskResponse.class, MessageType.GENERAL));
-        list.add(new ActorEntry(RestServerSubmitTaskRequest.class, ServerSubmitTaskResponse.class, MessageType.GENERAL));
         list.add(new ActorEntry(RestServerManualRerunTaskRequest.class, ServerManualRerunTaskResponse.class, MessageType.GENERAL));
         list.add(new ActorEntry(RestServerModifyTaskStatusRequest.class, ServerModifyTaskStatusResponse.class, MessageType.GENERAL));
         list.add(new ActorEntry(RestServerQueryTaskRelationRequest.class, ServerQueryTaskRelationResponse.class, MessageType.GENERAL));

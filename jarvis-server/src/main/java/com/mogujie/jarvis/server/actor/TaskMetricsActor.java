@@ -24,6 +24,7 @@ import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.domain.IdType;
 import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.core.domain.TaskStatus;
+import com.mogujie.jarvis.core.domain.TaskType;
 import com.mogujie.jarvis.core.observer.Event;
 import com.mogujie.jarvis.core.util.IdUtils;
 import com.mogujie.jarvis.core.util.JsonHelper;
@@ -73,15 +74,18 @@ public class TaskMetricsActor extends UntypedActor {
             TaskStatus status = TaskStatus.parseValue(msg.getStatus());
             LOGGER.info("receive task {} status {}", taskId, status);
             Event event = new UnhandleEvent();
+            Address address = getSender().path().address();
+            String ip = address.host().get();
+            int port = Integer.parseInt(address.port().get().toString());
+            Task task = taskService.get(taskId);
+            TaskType taskType = TaskType.parseValue(task.getType());
             if (status.equals(TaskStatus.SUCCESS)) {
-                Task task = taskService.get(taskId);
-                event = new SuccessEvent(jobId, taskId, task.getScheduleTime().getTime());
+                String reason = "worker [" + ip + ":" + port + "] report success status.";
+                event = new SuccessEvent(jobId, taskId, task.getScheduleTime().getTime(), taskType, reason);
             } else if (status.equals(TaskStatus.FAILED)) {
-                event = new FailedEvent(jobId, taskId);
+                String reason = "worker [" + ip + ":" + port + "] report failed status.";
+                event = new FailedEvent(jobId, taskId, reason);
             } else if (status.equals(TaskStatus.RUNNING)) {
-                Address address = getSender().path().address();
-                String ip = address.host().get();
-                int port = Integer.parseInt(address.port().get().toString());
                 int workerId = workerService.getWorkerId(ip, port);
                 event = new RunningEvent(jobId, taskId, workerId);
             } else if (status.equals(TaskStatus.KILLED)) {

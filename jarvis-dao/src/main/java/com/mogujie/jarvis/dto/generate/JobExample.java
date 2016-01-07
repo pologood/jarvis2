@@ -925,123 +925,63 @@ public class JobExample {
             return (Criteria) this;
         }
 
-        public Criteria andRejectAttemptsIsNull() {
-            addCriterion("rejectAttempts is null");
+        public Criteria andExpiredTimeIsNull() {
+            addCriterion("expiredTime is null");
             return (Criteria) this;
         }
 
-        public Criteria andRejectAttemptsIsNotNull() {
-            addCriterion("rejectAttempts is not null");
+        public Criteria andExpiredTimeIsNotNull() {
+            addCriterion("expiredTime is not null");
             return (Criteria) this;
         }
 
-        public Criteria andRejectAttemptsEqualTo(Integer value) {
-            addCriterion("rejectAttempts =", value, "rejectAttempts");
+        public Criteria andExpiredTimeEqualTo(Integer value) {
+            addCriterion("expiredTime =", value, "expiredTime");
             return (Criteria) this;
         }
 
-        public Criteria andRejectAttemptsNotEqualTo(Integer value) {
-            addCriterion("rejectAttempts <>", value, "rejectAttempts");
+        public Criteria andExpiredTimeNotEqualTo(Integer value) {
+            addCriterion("expiredTime <>", value, "expiredTime");
             return (Criteria) this;
         }
 
-        public Criteria andRejectAttemptsGreaterThan(Integer value) {
-            addCriterion("rejectAttempts >", value, "rejectAttempts");
+        public Criteria andExpiredTimeGreaterThan(Integer value) {
+            addCriterion("expiredTime >", value, "expiredTime");
             return (Criteria) this;
         }
 
-        public Criteria andRejectAttemptsGreaterThanOrEqualTo(Integer value) {
-            addCriterion("rejectAttempts >=", value, "rejectAttempts");
+        public Criteria andExpiredTimeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("expiredTime >=", value, "expiredTime");
             return (Criteria) this;
         }
 
-        public Criteria andRejectAttemptsLessThan(Integer value) {
-            addCriterion("rejectAttempts <", value, "rejectAttempts");
+        public Criteria andExpiredTimeLessThan(Integer value) {
+            addCriterion("expiredTime <", value, "expiredTime");
             return (Criteria) this;
         }
 
-        public Criteria andRejectAttemptsLessThanOrEqualTo(Integer value) {
-            addCriterion("rejectAttempts <=", value, "rejectAttempts");
+        public Criteria andExpiredTimeLessThanOrEqualTo(Integer value) {
+            addCriterion("expiredTime <=", value, "expiredTime");
             return (Criteria) this;
         }
 
-        public Criteria andRejectAttemptsIn(List<Integer> values) {
-            addCriterion("rejectAttempts in", values, "rejectAttempts");
+        public Criteria andExpiredTimeIn(List<Integer> values) {
+            addCriterion("expiredTime in", values, "expiredTime");
             return (Criteria) this;
         }
 
-        public Criteria andRejectAttemptsNotIn(List<Integer> values) {
-            addCriterion("rejectAttempts not in", values, "rejectAttempts");
+        public Criteria andExpiredTimeNotIn(List<Integer> values) {
+            addCriterion("expiredTime not in", values, "expiredTime");
             return (Criteria) this;
         }
 
-        public Criteria andRejectAttemptsBetween(Integer value1, Integer value2) {
-            addCriterion("rejectAttempts between", value1, value2, "rejectAttempts");
+        public Criteria andExpiredTimeBetween(Integer value1, Integer value2) {
+            addCriterion("expiredTime between", value1, value2, "expiredTime");
             return (Criteria) this;
         }
 
-        public Criteria andRejectAttemptsNotBetween(Integer value1, Integer value2) {
-            addCriterion("rejectAttempts not between", value1, value2, "rejectAttempts");
-            return (Criteria) this;
-        }
-
-        public Criteria andRejectIntervalIsNull() {
-            addCriterion("rejectInterval is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andRejectIntervalIsNotNull() {
-            addCriterion("rejectInterval is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andRejectIntervalEqualTo(Integer value) {
-            addCriterion("rejectInterval =", value, "rejectInterval");
-            return (Criteria) this;
-        }
-
-        public Criteria andRejectIntervalNotEqualTo(Integer value) {
-            addCriterion("rejectInterval <>", value, "rejectInterval");
-            return (Criteria) this;
-        }
-
-        public Criteria andRejectIntervalGreaterThan(Integer value) {
-            addCriterion("rejectInterval >", value, "rejectInterval");
-            return (Criteria) this;
-        }
-
-        public Criteria andRejectIntervalGreaterThanOrEqualTo(Integer value) {
-            addCriterion("rejectInterval >=", value, "rejectInterval");
-            return (Criteria) this;
-        }
-
-        public Criteria andRejectIntervalLessThan(Integer value) {
-            addCriterion("rejectInterval <", value, "rejectInterval");
-            return (Criteria) this;
-        }
-
-        public Criteria andRejectIntervalLessThanOrEqualTo(Integer value) {
-            addCriterion("rejectInterval <=", value, "rejectInterval");
-            return (Criteria) this;
-        }
-
-        public Criteria andRejectIntervalIn(List<Integer> values) {
-            addCriterion("rejectInterval in", values, "rejectInterval");
-            return (Criteria) this;
-        }
-
-        public Criteria andRejectIntervalNotIn(List<Integer> values) {
-            addCriterion("rejectInterval not in", values, "rejectInterval");
-            return (Criteria) this;
-        }
-
-        public Criteria andRejectIntervalBetween(Integer value1, Integer value2) {
-            addCriterion("rejectInterval between", value1, value2, "rejectInterval");
-            return (Criteria) this;
-        }
-
-        public Criteria andRejectIntervalNotBetween(Integer value1, Integer value2) {
-            addCriterion("rejectInterval not between", value1, value2, "rejectInterval");
+        public Criteria andExpiredTimeNotBetween(Integer value1, Integer value2) {
+            addCriterion("expiredTime not between", value1, value2, "expiredTime");
             return (Criteria) this;
         }
 

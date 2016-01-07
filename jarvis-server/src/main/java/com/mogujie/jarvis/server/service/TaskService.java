@@ -11,17 +11,15 @@ package com.mogujie.jarvis.server.service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import org.joda.time.DateTime;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Range;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.mogujie.jarvis.core.domain.TaskStatus;
-import com.mogujie.jarvis.core.expression.DependencyExpression;
+import com.mogujie.jarvis.core.domain.TaskType;
 import com.mogujie.jarvis.dao.generate.TaskMapper;
 import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.dto.generate.Task;
@@ -45,15 +43,6 @@ public class TaskService {
         return taskMapper.selectByPrimaryKey(taskId);
     }
 
-    public List<Task> getTasks(List<Long> taskIds) {
-        if (taskIds == null || taskIds.isEmpty()) {
-            return null;
-        }
-        TaskExample example = new TaskExample();
-        example.createCriteria().andTaskIdIn(taskIds);
-        return taskMapper.selectByExample(example);
-    }
-
     public long insert(Task record) {
         taskMapper.insert(record);
         return record.getTaskId();
@@ -64,7 +53,7 @@ public class TaskService {
         return record.getTaskId();
     }
 
-    public long createTaskByJobId(long jobId, long scheduleTime) {
+    public long createTaskByJobId(long jobId, long scheduleTime, long dataTime, TaskType taskType) {
         Task record = new Task();
         record.setJobId(jobId);
         record.setAttemptId(1);
@@ -73,9 +62,16 @@ public class TaskService {
         record.setCreateTime(currentTime);
         record.setUpdateTime(currentTime);
         record.setScheduleTime(new Date(scheduleTime));
+        record.setDataTime(new Date(scheduleTime));
         record.setStatus(TaskStatus.WAITING.getValue());
         record.setProgress((float) 0);
         Job job = jobService.get(jobId).getJob();
+        if (job.getIsTemp()) {
+            //如果是临时任务，设置task类型为TEMP
+            record.setType(TaskType.TEMP.getValue());
+        } else {
+            record.setType(taskType.getValue());
+        }
         record.setExecuteUser(job.getSubmitUser());
         record.setContent(job.getContent());
         record.setParams(job.getParams());
@@ -115,65 +111,56 @@ public class TaskService {
     }
 
     public void updateStatusWithEnd(long taskId, TaskStatus status) {
+        updateStatusWithEnd(taskId, status, null);
+    }
+
+    public void updateStatusWithEnd(long taskId, TaskStatus status, String reason) {
         Task task = new Task();
         task.setTaskId(taskId);
         task.setStatus(status.getValue());
+        if (reason != null) {
+            task.setFinishReason(reason);
+        }
         Date currentTime = DateTime.now().toDate();
         task.setExecuteEndTime(currentTime);
         task.setUpdateTime(currentTime);
         taskMapper.updateByPrimaryKeySelective(task);
     }
 
-    public void updateStatusWithEnd(long taskId, TaskStatus status, Map<Long, List<Long>> childTaskMap) {
-        updateStatusWithEnd(taskId, status);
-        if (childTaskMap != null && !childTaskMap.isEmpty()) {
-            taskDependService.storeChild(taskId, childTaskMap);
-        }
-    }
-
     public List<Task> getTasksByStatusNotIn(List<Integer> statusList) {
         TaskExample example = new TaskExample();
-        example.createCriteria().andStatusNotIn(statusList).andJobIdNotEqualTo(0L);
+        example.createCriteria().andStatusNotIn(statusList).andTypeNotEqualTo(TaskType.TEMP.getValue());
         List<Task> tasks = taskMapper.selectByExample(example);
-        return getActiveTasks(tasks);
+        if (tasks == null) {
+            tasks = new ArrayList<Task>();
+        }
+        return tasks;
     }
 
     public List<Task> getTasksByStatus(List<Integer> statusList) {
         TaskExample example = new TaskExample();
-        example.createCriteria().andStatusIn(statusList).andJobIdNotEqualTo(0L);
+        example.createCriteria().andStatusIn(statusList).andTypeNotEqualTo(TaskType.TEMP.getValue());
         List<Task> tasks = taskMapper.selectByExample(example);
-        return getActiveTasks(tasks);
-    }
-
-    public List<Long> getDependTaskIds(long myJobId, long preJobId, long scheduleTime, DependencyExpression dependencyExpression) {
-        List<Task> tasks;
-        if (dependencyExpression != null) {
-            tasks = getTasksBetween(preJobId, dependencyExpression.getRange(new DateTime(scheduleTime)));
-        } else {
-            long preScheduleTime = getPreScheduleTime(myJobId, scheduleTime);
-            tasks = getTasksBetween(preJobId, new DateTime(preScheduleTime), new DateTime(scheduleTime));
+        if (tasks == null) {
+            tasks = new ArrayList<Task>();
         }
-        List<Long> taskIds = new ArrayList<>();
-        for (Task task : tasks) {
-            taskIds.add(task.getTaskId());
-        }
-        return taskIds;
+        return tasks;
     }
 
     public List<Task> getTasksBetween(long jobId, Range<DateTime> range) {
-        if (jobId == 0 || range == null) {
-            return null;
-        }
-        return getTasksBetween(jobId, range.lowerEndpoint(), range.upperEndpoint());
+        return getTasksBetween(jobId, range, TaskType.SCHEDULE);
     }
 
-    public List<Task> getTasksBetween(long jobId, DateTime start, DateTime end) {
-        if (jobId == 0 || start == null || end == null) {
-            return null;
-        }
+    public List<Task> getTasksBetween(long jobId, Range<DateTime> range, TaskType taskType) {
         TaskExample example = new TaskExample();
-        example.createCriteria().andJobIdEqualTo(jobId).andScheduleTimeBetween(start.toDate(), end.toDate());
-        return taskMapper.selectByExample(example);
+        example.createCriteria().andJobIdEqualTo(jobId)
+        .andScheduleTimeBetween(range.lowerEndpoint().toDate(), range.upperEndpoint().toDate())
+        .andTypeEqualTo(taskType.getValue());
+        List<Task> tasks = taskMapper.selectByExample(example);
+        if (tasks == null) {
+            tasks = new ArrayList<Task>();
+        }
+        return tasks;
     }
 
     public Task getTaskByJobIdAndScheduleTime(long jobId, long scheduleTime) {
@@ -186,43 +173,15 @@ public class TaskService {
         return null;
     }
 
-    public long getPreScheduleTime(long jobId, long scheduleTime) {
-        if (jobId == 0 || scheduleTime == 0) {
-            return 0;
-        }
-        TaskExample example = new TaskExample();
-        example.createCriteria().andJobIdEqualTo(jobId).andScheduleTimeLessThan(new Date(scheduleTime));
-        example.setOrderByClause("taskId desc");
-        List<Task> tasks = taskMapper.selectByExample(example);
-        if (tasks == null || tasks.isEmpty()) {
-            return 0;
-        }
-        return new DateTime(tasks.get(0).getScheduleTime()).getMillis();
-    }
-
-    public Task getLastTask(long jobId, long scheduleTime) {
+    public Task getLastTask(long jobId, long scheduleTime, TaskType taskType) {
         //TODO
         return null;
     }
 
     @VisibleForTesting
     public void deleteTaskAndRelation(long taskId) {
-        if (taskId > 0) {
-            taskMapper.deleteByPrimaryKey(taskId);
-            taskDependService.remove(taskId);
-        }
-    }
-
-    private List<Task> getActiveTasks(List<Task> tasks) {
-        List<Task> activeTasks = Lists.newArrayList();
-        if (tasks != null) {
-            for (Task task : tasks) {
-                if (jobService.get(task.getJobId()) != null) {
-                    activeTasks.add(task);
-                }
-            }
-        }
-        return activeTasks;
+        taskMapper.deleteByPrimaryKey(taskId);
+        taskDependService.remove(taskId);
     }
 
 }

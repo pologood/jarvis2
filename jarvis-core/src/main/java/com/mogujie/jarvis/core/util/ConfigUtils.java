@@ -16,10 +16,6 @@ import com.google.common.base.Throwables;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 
-/**
- * @author wuya
- *
- */
 public class ConfigUtils {
 
     private static PropertiesConfiguration workerConfig;

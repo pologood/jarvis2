@@ -1,13 +1,13 @@
 package com.mogujie.jarvis.rest;
 
-import com.mogujie.jarvis.core.util.ConfigUtils;
-import com.mogujie.jarvis.core.util.IPUtils;
+import java.io.IOException;
+
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
-import java.io.IOException;
-import java.net.Inet4Address;
+import com.mogujie.jarvis.core.util.ConfigUtils;
+import com.mogujie.jarvis.core.util.IPUtils;
 
 /**
  * Created by muming on 15/12/10.

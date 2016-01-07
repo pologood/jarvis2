@@ -127,4 +127,34 @@ public class TestISO8601Expression {
         Assert.assertTrue(expression2.isValid());
         Assert.assertEquals(expression2.getTimeAfter(new DateTime(2020, 12, 20, 15, 0, 5)), new DateTime(2021, 12, 8, 13, 0, 0));
     }
+
+    @Test
+    public void test1() {
+        ScheduleExpression expression = new ISO8601Expression("R5/2015-12-08T13:00:00/P1Y2M3D");
+        Assert.assertTrue(expression.isValid());
+        Assert.assertEquals(expression.getTimeBefore(new DateTime(2015, 12, 7, 1, 2, 3)), null);
+        Assert.assertEquals(expression.getTimeBefore(new DateTime(2015, 12, 8, 13, 0, 0)), null);
+        Assert.assertEquals(expression.getTimeBefore(new DateTime(2015, 12, 8, 13, 0, 2)), new DateTime(2015, 12, 8, 13, 0, 0));
+        Assert.assertEquals(expression.getTimeBefore(new DateTime(2018, 4, 12, 15, 4, 6)), new DateTime(2017, 2, 11, 13, 0, 0));
+
+        Assert.assertEquals(expression.getTimeAfter(new DateTime(2015, 12, 7, 1, 2, 3)), new DateTime(2015, 12, 8, 13, 0, 0));
+        Assert.assertEquals(expression.getTimeAfter(new DateTime(2015, 12, 8, 13, 0, 0)), new DateTime(2017, 2, 11, 13, 0, 0));
+        Assert.assertEquals(expression.getTimeAfter(new DateTime(2015, 12, 8, 13, 0, 2)), new DateTime(2017, 2, 11, 13, 0, 0));
+        Assert.assertEquals(expression.getTimeAfter(new DateTime(2018, 4, 12, 15, 4, 6)), new DateTime(2018, 4, 14, 13, 0, 0));
+    }
+
+    @Test
+    public void test2() {
+        ScheduleExpression expression = new ISO8601Expression("R5/2015-12-08T13:00:00/PT1H2M3S");
+        Assert.assertTrue(expression.isValid());
+        Assert.assertEquals(expression.getTimeBefore(new DateTime(2015, 12, 7, 1, 2, 3)), null);
+        Assert.assertEquals(expression.getTimeBefore(new DateTime(2015, 12, 8, 13, 0, 0)), null);
+        Assert.assertEquals(expression.getTimeBefore(new DateTime(2015, 12, 8, 13, 0, 2)), new DateTime(2015, 12, 8, 13, 0, 0));
+        Assert.assertEquals(expression.getTimeBefore(new DateTime(2018, 4, 12, 15, 4, 6)), null);
+
+        Assert.assertEquals(expression.getTimeAfter(new DateTime(2015, 12, 7, 1, 2, 3)), new DateTime(2015, 12, 8, 13, 0, 0));
+        Assert.assertEquals(expression.getTimeAfter(new DateTime(2015, 12, 8, 13, 0, 0)), new DateTime(2015, 12, 8, 14, 2, 3));
+        Assert.assertEquals(expression.getTimeAfter(new DateTime(2015, 12, 8, 13, 0, 2)), new DateTime(2015, 12, 8, 14, 2, 3));
+        Assert.assertEquals(expression.getTimeAfter(new DateTime(2018, 4, 12, 15, 4, 6)), null);
+    }
 }

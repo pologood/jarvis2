@@ -3,12 +3,17 @@ package com.mogujie.jarvis.rest.utils;
 import com.google.common.base.Preconditions;
 import com.mogujie.jarvis.core.domain.AppStatus;
 import com.mogujie.jarvis.core.domain.OperationMode;
-import com.mogujie.jarvis.core.expression.*;
+import com.mogujie.jarvis.core.expression.CronExpression;
+import com.mogujie.jarvis.core.expression.FixedDelayExpression;
+import com.mogujie.jarvis.core.expression.FixedRateExpression;
+import com.mogujie.jarvis.core.expression.ISO8601Expression;
+import com.mogujie.jarvis.core.expression.ScheduleExpression;
+import com.mogujie.jarvis.core.expression.ScheduleExpressionType;
+import com.mogujie.jarvis.core.expression.TimeOffsetExpression;
 import com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry;
 import com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry;
 import com.mogujie.jarvis.rest.vo.JobEntryVo;
 import com.mogujie.jarvis.server.domain.CommonStrategy;
-import sun.security.ssl.Debug;
 
 /**
  * 检验函数
@@ -18,15 +23,14 @@ import sun.security.ssl.Debug;
 
 public class ConvertValidUtils {
 
-
     public static ScheduleExpressionEntry ConvertScheduleExpressionEntry(JobEntryVo.ScheduleExpressionEntry input) {
 
         Integer expressionType = input.getExpressionType();
-        Preconditions.checkArgument(expressionType != null , "scheduleExpressionType不能为空");
+        Preconditions.checkArgument(expressionType != null, "scheduleExpressionType不能为空");
         Preconditions.checkArgument(ScheduleExpressionType.isValid(expressionType), "scheduleExpressionType不对。type:" + expressionType.toString());
 
         String expression = input.getExpression();
-        Preconditions.checkArgument(expression != null , "scheduleExpression不能为空");
+        Preconditions.checkArgument(expression != null, "scheduleExpression不能为空");
         ScheduleExpression scheduleExpression = null;
         if (expressionType == ScheduleExpressionType.CRON.getValue()) {
             scheduleExpression = new CronExpression(expression);
@@ -39,13 +43,10 @@ public class ConvertValidUtils {
         }
         Preconditions.checkArgument(scheduleExpression.isValid(), "scheduleExpression不对");
 
-        ScheduleExpressionEntry entry = ScheduleExpressionEntry.newBuilder()
-                .setExpressionType(expressionType)
-                .setScheduleExpression(expression)
+        ScheduleExpressionEntry entry = ScheduleExpressionEntry.newBuilder().setExpressionType(expressionType).setScheduleExpression(expression)
                 .build();
         return entry;
     }
-
 
     public static DependencyEntry ConvertDependencyEntry(JobEntryVo.DependencyEntry input) {
         Integer mode = input.getOperatorMode();
@@ -65,12 +66,8 @@ public class ConvertValidUtils {
             Preconditions.checkArgument(new TimeOffsetExpression(offsetStrategy).isValid(), "依赖的偏移策略不对");
         }
 
-        DependencyEntry entry = DependencyEntry.newBuilder()
-                .setOperator(mode)
-                .setJobId(preJobId)
-                .setCommonDependStrategy(commonStrategy)
-                .setOffsetDependStrategy(offsetStrategy)
-                .build();
+        DependencyEntry entry = DependencyEntry.newBuilder().setOperator(mode).setJobId(preJobId).setCommonDependStrategy(commonStrategy)
+                .setOffsetDependStrategy(offsetStrategy).build();
 
         return entry;
     }
@@ -78,15 +75,15 @@ public class ConvertValidUtils {
     /**
      * APP内容检查
      */
-    public static void checkAppVo(OperationMode mode,String appName,Integer status,Integer maxConcurrency){
-        if(mode == OperationMode.ADD){
-            Preconditions.checkArgument( appName != null && appName.equals(""),"appName不能为空");
-            Preconditions.checkArgument( status != null,"status不能为空");
-            Preconditions.checkArgument( AppStatus.isValid(status),"status内容不对。value:" + status);
+    public static void checkAppVo(OperationMode mode, String appName, Integer status, Integer maxConcurrency) {
+        if (mode == OperationMode.ADD) {
+            Preconditions.checkArgument(appName != null && appName.equals(""), "appName不能为空");
+            Preconditions.checkArgument(status != null, "status不能为空");
+            Preconditions.checkArgument(AppStatus.isValid(status), "status内容不对。value:" + status);
         }
-        if(mode == OperationMode.EDIT){
-            Preconditions.checkArgument( appName == null || appName.equals(""),"appName不能为空");
-            Preconditions.checkArgument( status == null || AppStatus.isValid(status),"status内容不对。value:" + status);
+        if (mode == OperationMode.EDIT) {
+            Preconditions.checkArgument(appName == null || appName.equals(""), "appName不能为空");
+            Preconditions.checkArgument(status == null || AppStatus.isValid(status), "status内容不对。value:" + status);
         }
     }
 
