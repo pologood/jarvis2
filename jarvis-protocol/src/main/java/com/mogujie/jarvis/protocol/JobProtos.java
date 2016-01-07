@@ -10,10 +10,9 @@ public final class JobProtos {
     public static void registerAllExtensions(com.google.protobuf.ExtensionRegistry registry) {
     }
 
-    public interface RestSubmitJobRequestOrBuilder extends
-            // @@protoc_insertion_point(interface_extends:RestSubmitJobRequest)
-            com.google.protobuf.MessageOrBuilder {
+    public interface RestSubmitJobRequestOrBuilder extends com.google.protobuf.MessageOrBuilder {
 
+        // required .AppAuth app_auth = 1;
         /**
          * <code>required .AppAuth app_auth = 1;</code>
          */
@@ -29,6 +28,7 @@ public final class JobProtos {
          */
         com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder();
 
+        // required string user = 2;
         /**
          * <code>required string user = 2;</code>
          */
@@ -44,6 +44,7 @@ public final class JobProtos {
          */
         com.google.protobuf.ByteString getUserBytes();
 
+        // required string job_name = 3;
         /**
          * <code>required string job_name = 3;</code>
          */
@@ -59,6 +60,7 @@ public final class JobProtos {
          */
         com.google.protobuf.ByteString getJobNameBytes();
 
+        // required string job_type = 4;
         /**
          * <code>required string job_type = 4;</code>
          */
@@ -74,6 +76,7 @@ public final class JobProtos {
          */
         com.google.protobuf.ByteString getJobTypeBytes();
 
+        // required int32 status = 5;
         /**
          * <code>required int32 status = 5;</code>
          */
@@ -84,6 +87,7 @@ public final class JobProtos {
          */
         int getStatus();
 
+        // required string content = 6;
         /**
          * <code>required string content = 6;</code>
          */
@@ -99,6 +103,7 @@ public final class JobProtos {
          */
         com.google.protobuf.ByteString getContentBytes();
 
+        // optional string parameters = 7 [default = ""];
         /**
          * <code>optional string parameters = 7 [default = ""];</code>
          */
@@ -114,6 +119,7 @@ public final class JobProtos {
          */
         com.google.protobuf.ByteString getParametersBytes();
 
+        // optional string app_name = 8;
         /**
          * <code>optional string app_name = 8;</code>
          */
@@ -129,6 +135,7 @@ public final class JobProtos {
          */
         com.google.protobuf.ByteString getAppNameBytes();
 
+        // required int32 worker_group_id = 9;
         /**
          * <code>required int32 worker_group_id = 9;</code>
          */
@@ -139,6 +146,7 @@ public final class JobProtos {
          */
         int getWorkerGroupId();
 
+        // optional int32 priority = 10 [default = 1];
         /**
          * <code>optional int32 priority = 10 [default = 1];</code>
          */
@@ -149,6 +157,7 @@ public final class JobProtos {
          */
         int getPriority();
 
+        // optional int64 active_start_time = 11;
         /**
          * <code>optional int64 active_start_time = 11;</code>
          */
@@ -159,6 +168,7 @@ public final class JobProtos {
          */
         long getActiveStartTime();
 
+        // optional int64 active_end_time = 12;
         /**
          * <code>optional int64 active_end_time = 12;</code>
          */
@@ -169,6 +179,7 @@ public final class JobProtos {
          */
         long getActiveEndTime();
 
+        // optional int32 expired_time = 13 [default = 600];
         /**
          * <code>optional int32 expired_time = 13 [default = 600];</code>
          */
@@ -179,6 +190,7 @@ public final class JobProtos {
          */
         int getExpiredTime();
 
+        // optional int32 failed_attempts = 14 [default = 0];
         /**
          * <code>optional int32 failed_attempts = 14 [default = 0];</code>
          */
@@ -189,6 +201,7 @@ public final class JobProtos {
          */
         int getFailedAttempts();
 
+        // optional int32 failed_interval = 15 [default = 3];
         /**
          * <code>optional int32 failed_interval = 15 [default = 3];</code>
          */
@@ -199,21 +212,33 @@ public final class JobProtos {
          */
         int getFailedInterval();
 
+        // repeated .ScheduleExpressionEntry expression_entry = 16;
         /**
-         * <code>optional .ScheduleExpressionEntry expression_entry = 16;</code>
+         * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
          */
-        boolean hasExpressionEntry();
+        java.util.List<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry> getExpressionEntryList();
 
         /**
-         * <code>optional .ScheduleExpressionEntry expression_entry = 16;</code>
+         * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
          */
-        com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry getExpressionEntry();
+        com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry getExpressionEntry(int index);
 
         /**
-         * <code>optional .ScheduleExpressionEntry expression_entry = 16;</code>
+         * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
          */
-        com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder getExpressionEntryOrBuilder();
+        int getExpressionEntryCount();
 
+        /**
+         * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
+         */
+        java.util.List<? extends com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder> getExpressionEntryOrBuilderList();
+
+        /**
+         * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
+         */
+        com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder getExpressionEntryOrBuilder(int index);
+
+        // repeated .DependencyEntry dependency_entry = 17;
         /**
          * <code>repeated .DependencyEntry dependency_entry = 17;</code>
          */
@@ -247,9 +272,7 @@ public final class JobProtos {
      *1.submitJob
      * </pre>
      */
-    public static final class RestSubmitJobRequest extends com.google.protobuf.GeneratedMessage implements
-            // @@protoc_insertion_point(message_implements:RestSubmitJobRequest)
-            RestSubmitJobRequestOrBuilder {
+    public static final class RestSubmitJobRequest extends com.google.protobuf.GeneratedMessage implements RestSubmitJobRequestOrBuilder {
         // Use RestSubmitJobRequest.newBuilder() to construct.
         private RestSubmitJobRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
             super(builder);
@@ -311,21 +334,18 @@ public final class JobProtos {
                             break;
                         }
                         case 18: {
-                            com.google.protobuf.ByteString bs = input.readBytes();
                             bitField0_ |= 0x00000002;
-                            user_ = bs;
+                            user_ = input.readBytes();
                             break;
                         }
                         case 26: {
-                            com.google.protobuf.ByteString bs = input.readBytes();
                             bitField0_ |= 0x00000004;
-                            jobName_ = bs;
+                            jobName_ = input.readBytes();
                             break;
                         }
                         case 34: {
-                            com.google.protobuf.ByteString bs = input.readBytes();
                             bitField0_ |= 0x00000008;
-                            jobType_ = bs;
+                            jobType_ = input.readBytes();
                             break;
                         }
                         case 40: {
@@ -334,21 +354,18 @@ public final class JobProtos {
                             break;
                         }
                         case 50: {
-                            com.google.protobuf.ByteString bs = input.readBytes();
                             bitField0_ |= 0x00000020;
-                            content_ = bs;
+                            content_ = input.readBytes();
                             break;
                         }
                         case 58: {
-                            com.google.protobuf.ByteString bs = input.readBytes();
                             bitField0_ |= 0x00000040;
-                            parameters_ = bs;
+                            parameters_ = input.readBytes();
                             break;
                         }
                         case 66: {
-                            com.google.protobuf.ByteString bs = input.readBytes();
                             bitField0_ |= 0x00000080;
-                            appName_ = bs;
+                            appName_ = input.readBytes();
                             break;
                         }
                         case 72: {
@@ -387,17 +404,12 @@ public final class JobProtos {
                             break;
                         }
                         case 130: {
-                            com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder subBuilder = null;
-                            if (((bitField0_ & 0x00008000) == 0x00008000)) {
-                                subBuilder = expressionEntry_.toBuilder();
+                            if (!((mutable_bitField0_ & 0x00008000) == 0x00008000)) {
+                                expressionEntry_ = new java.util.ArrayList<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry>();
+                                mutable_bitField0_ |= 0x00008000;
                             }
-                            expressionEntry_ = input.readMessage(
-                                    com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.PARSER, extensionRegistry);
-                            if (subBuilder != null) {
-                                subBuilder.mergeFrom(expressionEntry_);
-                                expressionEntry_ = subBuilder.buildPartial();
-                            }
-                            bitField0_ |= 0x00008000;
+                            expressionEntry_.add(input.readMessage(
+                                    com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.PARSER, extensionRegistry));
                             break;
                         }
                         case 138: {
@@ -416,6 +428,9 @@ public final class JobProtos {
             } catch (java.io.IOException e) {
                 throw new com.google.protobuf.InvalidProtocolBufferException(e.getMessage()).setUnfinishedMessage(this);
             } finally {
+                if (((mutable_bitField0_ & 0x00008000) == 0x00008000)) {
+                    expressionEntry_ = java.util.Collections.unmodifiableList(expressionEntry_);
+                }
                 if (((mutable_bitField0_ & 0x00010000) == 0x00010000)) {
                     dependencyEntry_ = java.util.Collections.unmodifiableList(dependencyEntry_);
                 }
@@ -449,6 +464,7 @@ public final class JobProtos {
         }
 
         private int bitField0_;
+        // required .AppAuth app_auth = 1;
         public static final int APP_AUTH_FIELD_NUMBER = 1;
         private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_;
 
@@ -476,6 +492,7 @@ public final class JobProtos {
             return appAuth_;
         }
 
+        // required string user = 2;
         public static final int USER_FIELD_NUMBER = 2;
         private java.lang.Object user_;
 
@@ -520,6 +537,7 @@ public final class JobProtos {
             }
         }
 
+        // required string job_name = 3;
         public static final int JOB_NAME_FIELD_NUMBER = 3;
         private java.lang.Object jobName_;
 
@@ -564,6 +582,7 @@ public final class JobProtos {
             }
         }
 
+        // required string job_type = 4;
         public static final int JOB_TYPE_FIELD_NUMBER = 4;
         private java.lang.Object jobType_;
 
@@ -608,6 +627,7 @@ public final class JobProtos {
             }
         }
 
+        // required int32 status = 5;
         public static final int STATUS_FIELD_NUMBER = 5;
         private int status_;
 
@@ -627,6 +647,7 @@ public final class JobProtos {
             return status_;
         }
 
+        // required string content = 6;
         public static final int CONTENT_FIELD_NUMBER = 6;
         private java.lang.Object content_;
 
@@ -671,6 +692,7 @@ public final class JobProtos {
             }
         }
 
+        // optional string parameters = 7 [default = ""];
         public static final int PARAMETERS_FIELD_NUMBER = 7;
         private java.lang.Object parameters_;
 
@@ -715,6 +737,7 @@ public final class JobProtos {
             }
         }
 
+        // optional string app_name = 8;
         public static final int APP_NAME_FIELD_NUMBER = 8;
         private java.lang.Object appName_;
 
@@ -759,6 +782,7 @@ public final class JobProtos {
             }
         }
 
+        // required int32 worker_group_id = 9;
         public static final int WORKER_GROUP_ID_FIELD_NUMBER = 9;
         private int workerGroupId_;
 
@@ -778,6 +802,7 @@ public final class JobProtos {
             return workerGroupId_;
         }
 
+        // optional int32 priority = 10 [default = 1];
         public static final int PRIORITY_FIELD_NUMBER = 10;
         private int priority_;
 
@@ -797,6 +822,7 @@ public final class JobProtos {
             return priority_;
         }
 
+        // optional int64 active_start_time = 11;
         public static final int ACTIVE_START_TIME_FIELD_NUMBER = 11;
         private long activeStartTime_;
 
@@ -816,6 +842,7 @@ public final class JobProtos {
             return activeStartTime_;
         }
 
+        // optional int64 active_end_time = 12;
         public static final int ACTIVE_END_TIME_FIELD_NUMBER = 12;
         private long activeEndTime_;
 
@@ -835,6 +862,7 @@ public final class JobProtos {
             return activeEndTime_;
         }
 
+        // optional int32 expired_time = 13 [default = 600];
         public static final int EXPIRED_TIME_FIELD_NUMBER = 13;
         private int expiredTime_;
 
@@ -854,6 +882,7 @@ public final class JobProtos {
             return expiredTime_;
         }
 
+        // optional int32 failed_attempts = 14 [default = 0];
         public static final int FAILED_ATTEMPTS_FIELD_NUMBER = 14;
         private int failedAttempts_;
 
@@ -873,6 +902,7 @@ public final class JobProtos {
             return failedAttempts_;
         }
 
+        // optional int32 failed_interval = 15 [default = 3];
         public static final int FAILED_INTERVAL_FIELD_NUMBER = 15;
         private int failedInterval_;
 
@@ -892,33 +922,51 @@ public final class JobProtos {
             return failedInterval_;
         }
 
+        // repeated .ScheduleExpressionEntry expression_entry = 16;
         public static final int EXPRESSION_ENTRY_FIELD_NUMBER = 16;
-        private com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry expressionEntry_;
+        private java.util.List<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry> expressionEntry_;
 
         /**
-         * <code>optional .ScheduleExpressionEntry expression_entry = 16;</code>
+         * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
          */
         @Override
-        public boolean hasExpressionEntry() {
-            return ((bitField0_ & 0x00008000) == 0x00008000);
-        }
-
-        /**
-         * <code>optional .ScheduleExpressionEntry expression_entry = 16;</code>
-         */
-        @Override
-        public com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry getExpressionEntry() {
+        public java.util.List<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry> getExpressionEntryList() {
             return expressionEntry_;
         }
 
         /**
-         * <code>optional .ScheduleExpressionEntry expression_entry = 16;</code>
+         * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
          */
         @Override
-        public com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder getExpressionEntryOrBuilder() {
+        public java.util.List<? extends com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder> getExpressionEntryOrBuilderList() {
             return expressionEntry_;
         }
 
+        /**
+         * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
+         */
+        @Override
+        public int getExpressionEntryCount() {
+            return expressionEntry_.size();
+        }
+
+        /**
+         * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
+         */
+        @Override
+        public com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry getExpressionEntry(int index) {
+            return expressionEntry_.get(index);
+        }
+
+        /**
+         * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
+         */
+        @Override
+        public com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder getExpressionEntryOrBuilder(int index) {
+            return expressionEntry_.get(index);
+        }
+
+        // repeated .DependencyEntry dependency_entry = 17;
         public static final int DEPENDENCY_ENTRY_FIELD_NUMBER = 17;
         private java.util.List<com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry> dependencyEntry_;
 
@@ -978,7 +1026,7 @@ public final class JobProtos {
             expiredTime_ = 600;
             failedAttempts_ = 0;
             failedInterval_ = 3;
-            expressionEntry_ = com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.getDefaultInstance();
+            expressionEntry_ = java.util.Collections.emptyList();
             dependencyEntry_ = java.util.Collections.emptyList();
         }
 
@@ -987,10 +1035,8 @@ public final class JobProtos {
         @Override
         public final boolean isInitialized() {
             byte isInitialized = memoizedIsInitialized;
-            if (isInitialized == 1)
-                return true;
-            if (isInitialized == 0)
-                return false;
+            if (isInitialized != -1)
+                return isInitialized == 1;
 
             if (!hasAppAuth()) {
                 memoizedIsInitialized = 0;
@@ -1024,8 +1070,8 @@ public final class JobProtos {
                 memoizedIsInitialized = 0;
                 return false;
             }
-            if (hasExpressionEntry()) {
-                if (!getExpressionEntry().isInitialized()) {
+            for (int i = 0; i < getExpressionEntryCount(); i++) {
+                if (!getExpressionEntry(i).isInitialized()) {
                     memoizedIsInitialized = 0;
                     return false;
                 }
@@ -1088,8 +1134,8 @@ public final class JobProtos {
             if (((bitField0_ & 0x00004000) == 0x00004000)) {
                 output.writeInt32(15, failedInterval_);
             }
-            if (((bitField0_ & 0x00008000) == 0x00008000)) {
-                output.writeMessage(16, expressionEntry_);
+            for (int i = 0; i < expressionEntry_.size(); i++) {
+                output.writeMessage(16, expressionEntry_.get(i));
             }
             for (int i = 0; i < dependencyEntry_.size(); i++) {
                 output.writeMessage(17, dependencyEntry_.get(i));
@@ -1151,8 +1197,8 @@ public final class JobProtos {
             if (((bitField0_ & 0x00004000) == 0x00004000)) {
                 size += com.google.protobuf.CodedOutputStream.computeInt32Size(15, failedInterval_);
             }
-            if (((bitField0_ & 0x00008000) == 0x00008000)) {
-                size += com.google.protobuf.CodedOutputStream.computeMessageSize(16, expressionEntry_);
+            for (int i = 0; i < expressionEntry_.size(); i++) {
+                size += com.google.protobuf.CodedOutputStream.computeMessageSize(16, expressionEntry_.get(i));
             }
             for (int i = 0; i < dependencyEntry_.size(); i++) {
                 size += com.google.protobuf.CodedOutputStream.computeMessageSize(17, dependencyEntry_.get(i));
@@ -1249,9 +1295,8 @@ public final class JobProtos {
          *1.submitJob
          * </pre>
          */
-        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-                // @@protoc_insertion_point(builder_implements:RestSubmitJobRequest)
-                com.mogujie.jarvis.protocol.JobProtos.RestSubmitJobRequestOrBuilder {
+        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder>
+                implements com.mogujie.jarvis.protocol.JobProtos.RestSubmitJobRequestOrBuilder {
             public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
                 return com.mogujie.jarvis.protocol.JobProtos.internal_static_RestSubmitJobRequest_descriptor;
             }
@@ -1323,11 +1368,11 @@ public final class JobProtos {
                 failedInterval_ = 3;
                 bitField0_ = (bitField0_ & ~0x00004000);
                 if (expressionEntryBuilder_ == null) {
-                    expressionEntry_ = com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.getDefaultInstance();
+                    expressionEntry_ = java.util.Collections.emptyList();
+                    bitField0_ = (bitField0_ & ~0x00008000);
                 } else {
                     expressionEntryBuilder_.clear();
                 }
-                bitField0_ = (bitField0_ & ~0x00008000);
                 if (dependencyEntryBuilder_ == null) {
                     dependencyEntry_ = java.util.Collections.emptyList();
                     bitField0_ = (bitField0_ & ~0x00010000);
@@ -1431,10 +1476,11 @@ public final class JobProtos {
                     to_bitField0_ |= 0x00004000;
                 }
                 result.failedInterval_ = failedInterval_;
-                if (((from_bitField0_ & 0x00008000) == 0x00008000)) {
-                    to_bitField0_ |= 0x00008000;
-                }
                 if (expressionEntryBuilder_ == null) {
+                    if (((bitField0_ & 0x00008000) == 0x00008000)) {
+                        expressionEntry_ = java.util.Collections.unmodifiableList(expressionEntry_);
+                        bitField0_ = (bitField0_ & ~0x00008000);
+                    }
                     result.expressionEntry_ = expressionEntry_;
                 } else {
                     result.expressionEntry_ = expressionEntryBuilder_.build();
@@ -1523,8 +1569,30 @@ public final class JobProtos {
                 if (other.hasFailedInterval()) {
                     setFailedInterval(other.getFailedInterval());
                 }
-                if (other.hasExpressionEntry()) {
-                    mergeExpressionEntry(other.getExpressionEntry());
+                if (expressionEntryBuilder_ == null) {
+                    if (!other.expressionEntry_.isEmpty()) {
+                        if (expressionEntry_.isEmpty()) {
+                            expressionEntry_ = other.expressionEntry_;
+                            bitField0_ = (bitField0_ & ~0x00008000);
+                        } else {
+                            ensureExpressionEntryIsMutable();
+                            expressionEntry_.addAll(other.expressionEntry_);
+                        }
+                        onChanged();
+                    }
+                } else {
+                    if (!other.expressionEntry_.isEmpty()) {
+                        if (expressionEntryBuilder_.isEmpty()) {
+                            expressionEntryBuilder_.dispose();
+                            expressionEntryBuilder_ = null;
+                            expressionEntry_ = other.expressionEntry_;
+                            bitField0_ = (bitField0_ & ~0x00008000);
+                            expressionEntryBuilder_ = com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ? getExpressionEntryFieldBuilder()
+                                    : null;
+                        } else {
+                            expressionEntryBuilder_.addAllMessages(other.expressionEntry_);
+                        }
+                    }
                 }
                 if (dependencyEntryBuilder_ == null) {
                     if (!other.dependencyEntry_.isEmpty()) {
@@ -1589,8 +1657,8 @@ public final class JobProtos {
 
                     return false;
                 }
-                if (hasExpressionEntry()) {
-                    if (!getExpressionEntry().isInitialized()) {
+                for (int i = 0; i < getExpressionEntryCount(); i++) {
+                    if (!getExpressionEntry(i).isInitialized()) {
 
                         return false;
                     }
@@ -1623,6 +1691,7 @@ public final class JobProtos {
 
             private int bitField0_;
 
+            // required .AppAuth app_auth = 1;
             private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth
                     .getDefaultInstance();
             private com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> appAuthBuilder_;
@@ -1738,12 +1807,13 @@ public final class JobProtos {
             private com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> getAppAuthFieldBuilder() {
                 if (appAuthBuilder_ == null) {
                     appAuthBuilder_ = new com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder>(
-                            getAppAuth(), getParentForChildren(), isClean());
+                            appAuth_, getParentForChildren(), isClean());
                     appAuth_ = null;
                 }
                 return appAuthBuilder_;
             }
 
+            // required string user = 2;
             private java.lang.Object user_ = "";
 
             /**
@@ -1761,11 +1831,8 @@ public final class JobProtos {
             public java.lang.String getUser() {
                 java.lang.Object ref = user_;
                 if (!(ref instanceof java.lang.String)) {
-                    com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                    java.lang.String s = bs.toStringUtf8();
-                    if (bs.isValidUtf8()) {
-                        user_ = s;
-                    }
+                    java.lang.String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+                    user_ = s;
                     return s;
                 } else {
                     return (java.lang.String) ref;
@@ -1823,6 +1890,7 @@ public final class JobProtos {
                 return this;
             }
 
+            // required string job_name = 3;
             private java.lang.Object jobName_ = "";
 
             /**
@@ -1840,11 +1908,8 @@ public final class JobProtos {
             public java.lang.String getJobName() {
                 java.lang.Object ref = jobName_;
                 if (!(ref instanceof java.lang.String)) {
-                    com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                    java.lang.String s = bs.toStringUtf8();
-                    if (bs.isValidUtf8()) {
-                        jobName_ = s;
-                    }
+                    java.lang.String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+                    jobName_ = s;
                     return s;
                 } else {
                     return (java.lang.String) ref;
@@ -1902,6 +1967,7 @@ public final class JobProtos {
                 return this;
             }
 
+            // required string job_type = 4;
             private java.lang.Object jobType_ = "";
 
             /**
@@ -1919,11 +1985,8 @@ public final class JobProtos {
             public java.lang.String getJobType() {
                 java.lang.Object ref = jobType_;
                 if (!(ref instanceof java.lang.String)) {
-                    com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                    java.lang.String s = bs.toStringUtf8();
-                    if (bs.isValidUtf8()) {
-                        jobType_ = s;
-                    }
+                    java.lang.String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+                    jobType_ = s;
                     return s;
                 } else {
                     return (java.lang.String) ref;
@@ -1981,6 +2044,7 @@ public final class JobProtos {
                 return this;
             }
 
+            // required int32 status = 5;
             private int status_;
 
             /**
@@ -2019,6 +2083,7 @@ public final class JobProtos {
                 return this;
             }
 
+            // required string content = 6;
             private java.lang.Object content_ = "";
 
             /**
@@ -2036,11 +2101,8 @@ public final class JobProtos {
             public java.lang.String getContent() {
                 java.lang.Object ref = content_;
                 if (!(ref instanceof java.lang.String)) {
-                    com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                    java.lang.String s = bs.toStringUtf8();
-                    if (bs.isValidUtf8()) {
-                        content_ = s;
-                    }
+                    java.lang.String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+                    content_ = s;
                     return s;
                 } else {
                     return (java.lang.String) ref;
@@ -2098,6 +2160,7 @@ public final class JobProtos {
                 return this;
             }
 
+            // optional string parameters = 7 [default = ""];
             private java.lang.Object parameters_ = "";
 
             /**
@@ -2115,11 +2178,8 @@ public final class JobProtos {
             public java.lang.String getParameters() {
                 java.lang.Object ref = parameters_;
                 if (!(ref instanceof java.lang.String)) {
-                    com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                    java.lang.String s = bs.toStringUtf8();
-                    if (bs.isValidUtf8()) {
-                        parameters_ = s;
-                    }
+                    java.lang.String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+                    parameters_ = s;
                     return s;
                 } else {
                     return (java.lang.String) ref;
@@ -2177,6 +2237,7 @@ public final class JobProtos {
                 return this;
             }
 
+            // optional string app_name = 8;
             private java.lang.Object appName_ = "";
 
             /**
@@ -2194,11 +2255,8 @@ public final class JobProtos {
             public java.lang.String getAppName() {
                 java.lang.Object ref = appName_;
                 if (!(ref instanceof java.lang.String)) {
-                    com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                    java.lang.String s = bs.toStringUtf8();
-                    if (bs.isValidUtf8()) {
-                        appName_ = s;
-                    }
+                    java.lang.String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+                    appName_ = s;
                     return s;
                 } else {
                     return (java.lang.String) ref;
@@ -2256,6 +2314,7 @@ public final class JobProtos {
                 return this;
             }
 
+            // required int32 worker_group_id = 9;
             private int workerGroupId_;
 
             /**
@@ -2294,6 +2353,7 @@ public final class JobProtos {
                 return this;
             }
 
+            // optional int32 priority = 10 [default = 1];
             private int priority_ = 1;
 
             /**
@@ -2332,6 +2392,7 @@ public final class JobProtos {
                 return this;
             }
 
+            // optional int64 active_start_time = 11;
             private long activeStartTime_;
 
             /**
@@ -2370,6 +2431,7 @@ public final class JobProtos {
                 return this;
             }
 
+            // optional int64 active_end_time = 12;
             private long activeEndTime_;
 
             /**
@@ -2408,6 +2470,7 @@ public final class JobProtos {
                 return this;
             }
 
+            // optional int32 expired_time = 13 [default = 600];
             private int expiredTime_ = 600;
 
             /**
@@ -2446,6 +2509,7 @@ public final class JobProtos {
                 return this;
             }
 
+            // optional int32 failed_attempts = 14 [default = 0];
             private int failedAttempts_;
 
             /**
@@ -2484,6 +2548,7 @@ public final class JobProtos {
                 return this;
             }
 
+            // optional int32 failed_interval = 15 [default = 3];
             private int failedInterval_ = 3;
 
             /**
@@ -2522,130 +2587,259 @@ public final class JobProtos {
                 return this;
             }
 
-            private com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry expressionEntry_ = com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry
-                    .getDefaultInstance();
-            private com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder> expressionEntryBuilder_;
+            // repeated .ScheduleExpressionEntry expression_entry = 16;
+            private java.util.List<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry> expressionEntry_ = java.util.Collections
+                    .emptyList();
 
-            /**
-             * <code>optional .ScheduleExpressionEntry expression_entry = 16;</code>
-             */
-            @Override
-            public boolean hasExpressionEntry() {
-                return ((bitField0_ & 0x00008000) == 0x00008000);
+            private void ensureExpressionEntryIsMutable() {
+                if (!((bitField0_ & 0x00008000) == 0x00008000)) {
+                    expressionEntry_ = new java.util.ArrayList<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry>(
+                            expressionEntry_);
+                    bitField0_ |= 0x00008000;
+                }
             }
 
+            private com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder> expressionEntryBuilder_;
+
             /**
-             * <code>optional .ScheduleExpressionEntry expression_entry = 16;</code>
+             * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
              */
             @Override
-            public com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry getExpressionEntry() {
+            public java.util.List<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry> getExpressionEntryList() {
                 if (expressionEntryBuilder_ == null) {
-                    return expressionEntry_;
+                    return java.util.Collections.unmodifiableList(expressionEntry_);
                 } else {
-                    return expressionEntryBuilder_.getMessage();
+                    return expressionEntryBuilder_.getMessageList();
                 }
             }
 
             /**
-             * <code>optional .ScheduleExpressionEntry expression_entry = 16;</code>
+             * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
              */
-            public Builder setExpressionEntry(com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry value) {
+            @Override
+            public int getExpressionEntryCount() {
+                if (expressionEntryBuilder_ == null) {
+                    return expressionEntry_.size();
+                } else {
+                    return expressionEntryBuilder_.getCount();
+                }
+            }
+
+            /**
+             * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
+             */
+            @Override
+            public com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry getExpressionEntry(int index) {
+                if (expressionEntryBuilder_ == null) {
+                    return expressionEntry_.get(index);
+                } else {
+                    return expressionEntryBuilder_.getMessage(index);
+                }
+            }
+
+            /**
+             * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
+             */
+            public Builder setExpressionEntry(int index, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry value) {
                 if (expressionEntryBuilder_ == null) {
                     if (value == null) {
                         throw new NullPointerException();
                     }
-                    expressionEntry_ = value;
+                    ensureExpressionEntryIsMutable();
+                    expressionEntry_.set(index, value);
                     onChanged();
                 } else {
-                    expressionEntryBuilder_.setMessage(value);
+                    expressionEntryBuilder_.setMessage(index, value);
                 }
-                bitField0_ |= 0x00008000;
                 return this;
             }
 
             /**
-             * <code>optional .ScheduleExpressionEntry expression_entry = 16;</code>
+             * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
              */
-            public Builder setExpressionEntry(
+            public Builder setExpressionEntry(int index,
                     com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder builderForValue) {
                 if (expressionEntryBuilder_ == null) {
-                    expressionEntry_ = builderForValue.build();
+                    ensureExpressionEntryIsMutable();
+                    expressionEntry_.set(index, builderForValue.build());
                     onChanged();
                 } else {
-                    expressionEntryBuilder_.setMessage(builderForValue.build());
+                    expressionEntryBuilder_.setMessage(index, builderForValue.build());
                 }
-                bitField0_ |= 0x00008000;
                 return this;
             }
 
             /**
-             * <code>optional .ScheduleExpressionEntry expression_entry = 16;</code>
+             * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
              */
-            public Builder mergeExpressionEntry(com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry value) {
+            public Builder addExpressionEntry(com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry value) {
                 if (expressionEntryBuilder_ == null) {
-                    if (((bitField0_ & 0x00008000) == 0x00008000)
-                            && expressionEntry_ != com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry
-                                    .getDefaultInstance()) {
-                        expressionEntry_ = com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry
-                                .newBuilder(expressionEntry_).mergeFrom(value).buildPartial();
-                    } else {
-                        expressionEntry_ = value;
+                    if (value == null) {
+                        throw new NullPointerException();
                     }
+                    ensureExpressionEntryIsMutable();
+                    expressionEntry_.add(value);
                     onChanged();
                 } else {
-                    expressionEntryBuilder_.mergeFrom(value);
+                    expressionEntryBuilder_.addMessage(value);
                 }
-                bitField0_ |= 0x00008000;
                 return this;
             }
 
             /**
-             * <code>optional .ScheduleExpressionEntry expression_entry = 16;</code>
+             * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
+             */
+            public Builder addExpressionEntry(int index, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry value) {
+                if (expressionEntryBuilder_ == null) {
+                    if (value == null) {
+                        throw new NullPointerException();
+                    }
+                    ensureExpressionEntryIsMutable();
+                    expressionEntry_.add(index, value);
+                    onChanged();
+                } else {
+                    expressionEntryBuilder_.addMessage(index, value);
+                }
+                return this;
+            }
+
+            /**
+             * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
+             */
+            public Builder addExpressionEntry(
+                    com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder builderForValue) {
+                if (expressionEntryBuilder_ == null) {
+                    ensureExpressionEntryIsMutable();
+                    expressionEntry_.add(builderForValue.build());
+                    onChanged();
+                } else {
+                    expressionEntryBuilder_.addMessage(builderForValue.build());
+                }
+                return this;
+            }
+
+            /**
+             * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
+             */
+            public Builder addExpressionEntry(int index,
+                    com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder builderForValue) {
+                if (expressionEntryBuilder_ == null) {
+                    ensureExpressionEntryIsMutable();
+                    expressionEntry_.add(index, builderForValue.build());
+                    onChanged();
+                } else {
+                    expressionEntryBuilder_.addMessage(index, builderForValue.build());
+                }
+                return this;
+            }
+
+            /**
+             * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
+             */
+            public Builder addAllExpressionEntry(
+                    java.lang.Iterable<? extends com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry> values) {
+                if (expressionEntryBuilder_ == null) {
+                    ensureExpressionEntryIsMutable();
+                    super.addAll(values, expressionEntry_);
+                    onChanged();
+                } else {
+                    expressionEntryBuilder_.addAllMessages(values);
+                }
+                return this;
+            }
+
+            /**
+             * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
              */
             public Builder clearExpressionEntry() {
                 if (expressionEntryBuilder_ == null) {
-                    expressionEntry_ = com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.getDefaultInstance();
+                    expressionEntry_ = java.util.Collections.emptyList();
+                    bitField0_ = (bitField0_ & ~0x00008000);
                     onChanged();
                 } else {
                     expressionEntryBuilder_.clear();
                 }
-                bitField0_ = (bitField0_ & ~0x00008000);
                 return this;
             }
 
             /**
-             * <code>optional .ScheduleExpressionEntry expression_entry = 16;</code>
+             * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
              */
-            public com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder getExpressionEntryBuilder() {
-                bitField0_ |= 0x00008000;
-                onChanged();
-                return getExpressionEntryFieldBuilder().getBuilder();
+            public Builder removeExpressionEntry(int index) {
+                if (expressionEntryBuilder_ == null) {
+                    ensureExpressionEntryIsMutable();
+                    expressionEntry_.remove(index);
+                    onChanged();
+                } else {
+                    expressionEntryBuilder_.remove(index);
+                }
+                return this;
             }
 
             /**
-             * <code>optional .ScheduleExpressionEntry expression_entry = 16;</code>
+             * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
+             */
+            public com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder getExpressionEntryBuilder(int index) {
+                return getExpressionEntryFieldBuilder().getBuilder(index);
+            }
+
+            /**
+             * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
              */
             @Override
-            public com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder getExpressionEntryOrBuilder() {
-                if (expressionEntryBuilder_ != null) {
-                    return expressionEntryBuilder_.getMessageOrBuilder();
+            public com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder getExpressionEntryOrBuilder(int index) {
+                if (expressionEntryBuilder_ == null) {
+                    return expressionEntry_.get(index);
                 } else {
-                    return expressionEntry_;
+                    return expressionEntryBuilder_.getMessageOrBuilder(index);
                 }
             }
 
             /**
-             * <code>optional .ScheduleExpressionEntry expression_entry = 16;</code>
+             * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
              */
-            private com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder> getExpressionEntryFieldBuilder() {
+            @Override
+            public java.util.List<? extends com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder> getExpressionEntryOrBuilderList() {
+                if (expressionEntryBuilder_ != null) {
+                    return expressionEntryBuilder_.getMessageOrBuilderList();
+                } else {
+                    return java.util.Collections.unmodifiableList(expressionEntry_);
+                }
+            }
+
+            /**
+             * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
+             */
+            public com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder addExpressionEntryBuilder() {
+                return getExpressionEntryFieldBuilder()
+                        .addBuilder(com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.getDefaultInstance());
+            }
+
+            /**
+             * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
+             */
+            public com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder addExpressionEntryBuilder(int index) {
+                return getExpressionEntryFieldBuilder().addBuilder(index,
+                        com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.getDefaultInstance());
+            }
+
+            /**
+             * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
+             */
+            public java.util.List<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder> getExpressionEntryBuilderList() {
+                return getExpressionEntryFieldBuilder().getBuilderList();
+            }
+
+            private com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder> getExpressionEntryFieldBuilder() {
                 if (expressionEntryBuilder_ == null) {
-                    expressionEntryBuilder_ = new com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder>(
-                            getExpressionEntry(), getParentForChildren(), isClean());
+                    expressionEntryBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder>(
+                            expressionEntry_, ((bitField0_ & 0x00008000) == 0x00008000), getParentForChildren(), isClean());
                     expressionEntry_ = null;
                 }
                 return expressionEntryBuilder_;
             }
 
+            // repeated .DependencyEntry dependency_entry = 17;
             private java.util.List<com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry> dependencyEntry_ = java.util.Collections
                     .emptyList();
 
@@ -2794,7 +2988,7 @@ public final class JobProtos {
                     java.lang.Iterable<? extends com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry> values) {
                 if (dependencyEntryBuilder_ == null) {
                     ensureDependencyEntryIsMutable();
-                    com.google.protobuf.AbstractMessageLite.Builder.addAll(values, dependencyEntry_);
+                    super.addAll(values, dependencyEntry_);
                     onChanged();
                 } else {
                     dependencyEntryBuilder_.addAllMessages(values);
@@ -2904,10 +3098,9 @@ public final class JobProtos {
         // @@protoc_insertion_point(class_scope:RestSubmitJobRequest)
     }
 
-    public interface ServerSubmitJobResponseOrBuilder extends
-            // @@protoc_insertion_point(interface_extends:ServerSubmitJobResponse)
-            com.google.protobuf.MessageOrBuilder {
+    public interface ServerSubmitJobResponseOrBuilder extends com.google.protobuf.MessageOrBuilder {
 
+        // optional int64 job_id = 1;
         /**
          * <code>optional int64 job_id = 1;</code>
          */
@@ -2918,6 +3111,7 @@ public final class JobProtos {
          */
         long getJobId();
 
+        // required bool success = 2;
         /**
          * <code>required bool success = 2;</code>
          */
@@ -2928,6 +3122,7 @@ public final class JobProtos {
          */
         boolean getSuccess();
 
+        // optional string message = 3 [default = ""];
         /**
          * <code>optional string message = 3 [default = ""];</code>
          */
@@ -2947,9 +3142,7 @@ public final class JobProtos {
     /**
      * Protobuf type {@code ServerSubmitJobResponse}
      */
-    public static final class ServerSubmitJobResponse extends com.google.protobuf.GeneratedMessage implements
-            // @@protoc_insertion_point(message_implements:ServerSubmitJobResponse)
-            ServerSubmitJobResponseOrBuilder {
+    public static final class ServerSubmitJobResponse extends com.google.protobuf.GeneratedMessage implements ServerSubmitJobResponseOrBuilder {
         // Use ServerSubmitJobResponse.newBuilder() to construct.
         private ServerSubmitJobResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
             super(builder);
@@ -3007,9 +3200,8 @@ public final class JobProtos {
                             break;
                         }
                         case 26: {
-                            com.google.protobuf.ByteString bs = input.readBytes();
                             bitField0_ |= 0x00000004;
-                            message_ = bs;
+                            message_ = input.readBytes();
                             break;
                         }
                     }
@@ -3049,6 +3241,7 @@ public final class JobProtos {
         }
 
         private int bitField0_;
+        // optional int64 job_id = 1;
         public static final int JOB_ID_FIELD_NUMBER = 1;
         private long jobId_;
 
@@ -3068,6 +3261,7 @@ public final class JobProtos {
             return jobId_;
         }
 
+        // required bool success = 2;
         public static final int SUCCESS_FIELD_NUMBER = 2;
         private boolean success_;
 
@@ -3087,6 +3281,7 @@ public final class JobProtos {
             return success_;
         }
 
+        // optional string message = 3 [default = ""];
         public static final int MESSAGE_FIELD_NUMBER = 3;
         private java.lang.Object message_;
 
@@ -3142,10 +3337,8 @@ public final class JobProtos {
         @Override
         public final boolean isInitialized() {
             byte isInitialized = memoizedIsInitialized;
-            if (isInitialized == 1)
-                return true;
-            if (isInitialized == 0)
-                return false;
+            if (isInitialized != -1)
+                return isInitialized == 1;
 
             if (!hasSuccess()) {
                 memoizedIsInitialized = 0;
@@ -3276,9 +3469,8 @@ public final class JobProtos {
         /**
          * Protobuf type {@code ServerSubmitJobResponse}
          */
-        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-                // @@protoc_insertion_point(builder_implements:ServerSubmitJobResponse)
-                com.mogujie.jarvis.protocol.JobProtos.ServerSubmitJobResponseOrBuilder {
+        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder>
+                implements com.mogujie.jarvis.protocol.JobProtos.ServerSubmitJobResponseOrBuilder {
             public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
                 return com.mogujie.jarvis.protocol.JobProtos.internal_static_ServerSubmitJobResponse_descriptor;
             }
@@ -3424,6 +3616,7 @@ public final class JobProtos {
 
             private int bitField0_;
 
+            // optional int64 job_id = 1;
             private long jobId_;
 
             /**
@@ -3462,6 +3655,7 @@ public final class JobProtos {
                 return this;
             }
 
+            // required bool success = 2;
             private boolean success_;
 
             /**
@@ -3500,6 +3694,7 @@ public final class JobProtos {
                 return this;
             }
 
+            // optional string message = 3 [default = ""];
             private java.lang.Object message_ = "";
 
             /**
@@ -3517,11 +3712,8 @@ public final class JobProtos {
             public java.lang.String getMessage() {
                 java.lang.Object ref = message_;
                 if (!(ref instanceof java.lang.String)) {
-                    com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                    java.lang.String s = bs.toStringUtf8();
-                    if (bs.isValidUtf8()) {
-                        message_ = s;
-                    }
+                    java.lang.String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+                    message_ = s;
                     return s;
                 } else {
                     return (java.lang.String) ref;
@@ -3590,10 +3782,9 @@ public final class JobProtos {
         // @@protoc_insertion_point(class_scope:ServerSubmitJobResponse)
     }
 
-    public interface RestModifyJobRequestOrBuilder extends
-            // @@protoc_insertion_point(interface_extends:RestModifyJobRequest)
-            com.google.protobuf.MessageOrBuilder {
+    public interface RestModifyJobRequestOrBuilder extends com.google.protobuf.MessageOrBuilder {
 
+        // required .AppAuth app_auth = 1;
         /**
          * <code>required .AppAuth app_auth = 1;</code>
          */
@@ -3609,6 +3800,7 @@ public final class JobProtos {
          */
         com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder();
 
+        // required string user = 2;
         /**
          * <code>required string user = 2;</code>
          */
@@ -3624,6 +3816,7 @@ public final class JobProtos {
          */
         com.google.protobuf.ByteString getUserBytes();
 
+        // required int64 job_id = 3;
         /**
          * <code>required int64 job_id = 3;</code>
          */
@@ -3634,6 +3827,7 @@ public final class JobProtos {
          */
         long getJobId();
 
+        // optional string job_name = 4;
         /**
          * <code>optional string job_name = 4;</code>
          */
@@ -3649,6 +3843,7 @@ public final class JobProtos {
          */
         com.google.protobuf.ByteString getJobNameBytes();
 
+        // optional string job_type = 5;
         /**
          * <code>optional string job_type = 5;</code>
          */
@@ -3664,6 +3859,7 @@ public final class JobProtos {
          */
         com.google.protobuf.ByteString getJobTypeBytes();
 
+        // optional string content = 6;
         /**
          * <code>optional string content = 6;</code>
          */
@@ -3679,6 +3875,7 @@ public final class JobProtos {
          */
         com.google.protobuf.ByteString getContentBytes();
 
+        // optional string parameters = 7;
         /**
          * <code>optional string parameters = 7;</code>
          */
@@ -3694,6 +3891,7 @@ public final class JobProtos {
          */
         com.google.protobuf.ByteString getParametersBytes();
 
+        // optional string app_name = 8;
         /**
          * <code>optional string app_name = 8;</code>
          */
@@ -3709,6 +3907,7 @@ public final class JobProtos {
          */
         com.google.protobuf.ByteString getAppNameBytes();
 
+        // optional int32 worker_group_id = 9;
         /**
          * <code>optional int32 worker_group_id = 9;</code>
          */
@@ -3719,6 +3918,7 @@ public final class JobProtos {
          */
         int getWorkerGroupId();
 
+        // optional int32 priority = 10;
         /**
          * <code>optional int32 priority = 10;</code>
          */
@@ -3729,6 +3929,7 @@ public final class JobProtos {
          */
         int getPriority();
 
+        // optional int64 active_start_time = 11;
         /**
          * <code>optional int64 active_start_time = 11;</code>
          */
@@ -3739,6 +3940,7 @@ public final class JobProtos {
          */
         long getActiveStartTime();
 
+        // optional int64 active_end_time = 12;
         /**
          * <code>optional int64 active_end_time = 12;</code>
          */
@@ -3749,6 +3951,7 @@ public final class JobProtos {
          */
         long getActiveEndTime();
 
+        // optional int32 expired_time = 13;
         /**
          * <code>optional int32 expired_time = 13;</code>
          */
@@ -3759,6 +3962,7 @@ public final class JobProtos {
          */
         int getExpiredTime();
 
+        // optional int32 failed_attempts = 14;
         /**
          * <code>optional int32 failed_attempts = 14;</code>
          */
@@ -3769,6 +3973,7 @@ public final class JobProtos {
          */
         int getFailedAttempts();
 
+        // optional int32 failed_interval = 15;
         /**
          * <code>optional int32 failed_interval = 15;</code>
          */
@@ -3779,21 +3984,33 @@ public final class JobProtos {
          */
         int getFailedInterval();
 
+        // repeated .ScheduleExpressionEntry expression_entry = 16;
         /**
-         * <code>optional .ScheduleExpressionEntry expression_entry = 16;</code>
+         * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
          */
-        boolean hasExpressionEntry();
+        java.util.List<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry> getExpressionEntryList();
 
         /**
-         * <code>optional .ScheduleExpressionEntry expression_entry = 16;</code>
+         * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
          */
-        com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry getExpressionEntry();
+        com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry getExpressionEntry(int index);
 
         /**
-         * <code>optional .ScheduleExpressionEntry expression_entry = 16;</code>
+         * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
          */
-        com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder getExpressionEntryOrBuilder();
+        int getExpressionEntryCount();
 
+        /**
+         * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
+         */
+        java.util.List<? extends com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder> getExpressionEntryOrBuilderList();
+
+        /**
+         * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
+         */
+        com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder getExpressionEntryOrBuilder(int index);
+
+        // repeated .DependencyEntry dependency_entry = 17;
         /**
          * <code>repeated .DependencyEntry dependency_entry = 17;</code>
          */
@@ -3827,9 +4044,7 @@ public final class JobProtos {
      *2.modifyJob
      * </pre>
      */
-    public static final class RestModifyJobRequest extends com.google.protobuf.GeneratedMessage implements
-            // @@protoc_insertion_point(message_implements:RestModifyJobRequest)
-            RestModifyJobRequestOrBuilder {
+    public static final class RestModifyJobRequest extends com.google.protobuf.GeneratedMessage implements RestModifyJobRequestOrBuilder {
         // Use RestModifyJobRequest.newBuilder() to construct.
         private RestModifyJobRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
             super(builder);
@@ -3891,9 +4106,8 @@ public final class JobProtos {
                             break;
                         }
                         case 18: {
-                            com.google.protobuf.ByteString bs = input.readBytes();
                             bitField0_ |= 0x00000002;
-                            user_ = bs;
+                            user_ = input.readBytes();
                             break;
                         }
                         case 24: {
@@ -3902,33 +4116,28 @@ public final class JobProtos {
                             break;
                         }
                         case 34: {
-                            com.google.protobuf.ByteString bs = input.readBytes();
                             bitField0_ |= 0x00000008;
-                            jobName_ = bs;
+                            jobName_ = input.readBytes();
                             break;
                         }
                         case 42: {
-                            com.google.protobuf.ByteString bs = input.readBytes();
                             bitField0_ |= 0x00000010;
-                            jobType_ = bs;
+                            jobType_ = input.readBytes();
                             break;
                         }
                         case 50: {
-                            com.google.protobuf.ByteString bs = input.readBytes();
                             bitField0_ |= 0x00000020;
-                            content_ = bs;
+                            content_ = input.readBytes();
                             break;
                         }
                         case 58: {
-                            com.google.protobuf.ByteString bs = input.readBytes();
                             bitField0_ |= 0x00000040;
-                            parameters_ = bs;
+                            parameters_ = input.readBytes();
                             break;
                         }
                         case 66: {
-                            com.google.protobuf.ByteString bs = input.readBytes();
                             bitField0_ |= 0x00000080;
-                            appName_ = bs;
+                            appName_ = input.readBytes();
                             break;
                         }
                         case 72: {
@@ -3967,17 +4176,12 @@ public final class JobProtos {
                             break;
                         }
                         case 130: {
-                            com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder subBuilder = null;
-                            if (((bitField0_ & 0x00008000) == 0x00008000)) {
-                                subBuilder = expressionEntry_.toBuilder();
+                            if (!((mutable_bitField0_ & 0x00008000) == 0x00008000)) {
+                                expressionEntry_ = new java.util.ArrayList<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry>();
+                                mutable_bitField0_ |= 0x00008000;
                             }
-                            expressionEntry_ = input.readMessage(
-                                    com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.PARSER, extensionRegistry);
-                            if (subBuilder != null) {
-                                subBuilder.mergeFrom(expressionEntry_);
-                                expressionEntry_ = subBuilder.buildPartial();
-                            }
-                            bitField0_ |= 0x00008000;
+                            expressionEntry_.add(input.readMessage(
+                                    com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.PARSER, extensionRegistry));
                             break;
                         }
                         case 138: {
@@ -3996,6 +4200,9 @@ public final class JobProtos {
             } catch (java.io.IOException e) {
                 throw new com.google.protobuf.InvalidProtocolBufferException(e.getMessage()).setUnfinishedMessage(this);
             } finally {
+                if (((mutable_bitField0_ & 0x00008000) == 0x00008000)) {
+                    expressionEntry_ = java.util.Collections.unmodifiableList(expressionEntry_);
+                }
                 if (((mutable_bitField0_ & 0x00010000) == 0x00010000)) {
                     dependencyEntry_ = java.util.Collections.unmodifiableList(dependencyEntry_);
                 }
@@ -4029,6 +4236,7 @@ public final class JobProtos {
         }
 
         private int bitField0_;
+        // required .AppAuth app_auth = 1;
         public static final int APP_AUTH_FIELD_NUMBER = 1;
         private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_;
 
@@ -4056,6 +4264,7 @@ public final class JobProtos {
             return appAuth_;
         }
 
+        // required string user = 2;
         public static final int USER_FIELD_NUMBER = 2;
         private java.lang.Object user_;
 
@@ -4100,6 +4309,7 @@ public final class JobProtos {
             }
         }
 
+        // required int64 job_id = 3;
         public static final int JOB_ID_FIELD_NUMBER = 3;
         private long jobId_;
 
@@ -4119,6 +4329,7 @@ public final class JobProtos {
             return jobId_;
         }
 
+        // optional string job_name = 4;
         public static final int JOB_NAME_FIELD_NUMBER = 4;
         private java.lang.Object jobName_;
 
@@ -4163,6 +4374,7 @@ public final class JobProtos {
             }
         }
 
+        // optional string job_type = 5;
         public static final int JOB_TYPE_FIELD_NUMBER = 5;
         private java.lang.Object jobType_;
 
@@ -4207,6 +4419,7 @@ public final class JobProtos {
             }
         }
 
+        // optional string content = 6;
         public static final int CONTENT_FIELD_NUMBER = 6;
         private java.lang.Object content_;
 
@@ -4251,6 +4464,7 @@ public final class JobProtos {
             }
         }
 
+        // optional string parameters = 7;
         public static final int PARAMETERS_FIELD_NUMBER = 7;
         private java.lang.Object parameters_;
 
@@ -4295,6 +4509,7 @@ public final class JobProtos {
             }
         }
 
+        // optional string app_name = 8;
         public static final int APP_NAME_FIELD_NUMBER = 8;
         private java.lang.Object appName_;
 
@@ -4339,6 +4554,7 @@ public final class JobProtos {
             }
         }
 
+        // optional int32 worker_group_id = 9;
         public static final int WORKER_GROUP_ID_FIELD_NUMBER = 9;
         private int workerGroupId_;
 
@@ -4358,6 +4574,7 @@ public final class JobProtos {
             return workerGroupId_;
         }
 
+        // optional int32 priority = 10;
         public static final int PRIORITY_FIELD_NUMBER = 10;
         private int priority_;
 
@@ -4377,6 +4594,7 @@ public final class JobProtos {
             return priority_;
         }
 
+        // optional int64 active_start_time = 11;
         public static final int ACTIVE_START_TIME_FIELD_NUMBER = 11;
         private long activeStartTime_;
 
@@ -4396,6 +4614,7 @@ public final class JobProtos {
             return activeStartTime_;
         }
 
+        // optional int64 active_end_time = 12;
         public static final int ACTIVE_END_TIME_FIELD_NUMBER = 12;
         private long activeEndTime_;
 
@@ -4415,6 +4634,7 @@ public final class JobProtos {
             return activeEndTime_;
         }
 
+        // optional int32 expired_time = 13;
         public static final int EXPIRED_TIME_FIELD_NUMBER = 13;
         private int expiredTime_;
 
@@ -4434,6 +4654,7 @@ public final class JobProtos {
             return expiredTime_;
         }
 
+        // optional int32 failed_attempts = 14;
         public static final int FAILED_ATTEMPTS_FIELD_NUMBER = 14;
         private int failedAttempts_;
 
@@ -4453,6 +4674,7 @@ public final class JobProtos {
             return failedAttempts_;
         }
 
+        // optional int32 failed_interval = 15;
         public static final int FAILED_INTERVAL_FIELD_NUMBER = 15;
         private int failedInterval_;
 
@@ -4472,33 +4694,51 @@ public final class JobProtos {
             return failedInterval_;
         }
 
+        // repeated .ScheduleExpressionEntry expression_entry = 16;
         public static final int EXPRESSION_ENTRY_FIELD_NUMBER = 16;
-        private com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry expressionEntry_;
+        private java.util.List<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry> expressionEntry_;
 
         /**
-         * <code>optional .ScheduleExpressionEntry expression_entry = 16;</code>
+         * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
          */
         @Override
-        public boolean hasExpressionEntry() {
-            return ((bitField0_ & 0x00008000) == 0x00008000);
-        }
-
-        /**
-         * <code>optional .ScheduleExpressionEntry expression_entry = 16;</code>
-         */
-        @Override
-        public com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry getExpressionEntry() {
+        public java.util.List<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry> getExpressionEntryList() {
             return expressionEntry_;
         }
 
         /**
-         * <code>optional .ScheduleExpressionEntry expression_entry = 16;</code>
+         * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
          */
         @Override
-        public com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder getExpressionEntryOrBuilder() {
+        public java.util.List<? extends com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder> getExpressionEntryOrBuilderList() {
             return expressionEntry_;
         }
 
+        /**
+         * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
+         */
+        @Override
+        public int getExpressionEntryCount() {
+            return expressionEntry_.size();
+        }
+
+        /**
+         * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
+         */
+        @Override
+        public com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry getExpressionEntry(int index) {
+            return expressionEntry_.get(index);
+        }
+
+        /**
+         * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
+         */
+        @Override
+        public com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder getExpressionEntryOrBuilder(int index) {
+            return expressionEntry_.get(index);
+        }
+
+        // repeated .DependencyEntry dependency_entry = 17;
         public static final int DEPENDENCY_ENTRY_FIELD_NUMBER = 17;
         private java.util.List<com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry> dependencyEntry_;
 
@@ -4558,7 +4798,7 @@ public final class JobProtos {
             expiredTime_ = 0;
             failedAttempts_ = 0;
             failedInterval_ = 0;
-            expressionEntry_ = com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.getDefaultInstance();
+            expressionEntry_ = java.util.Collections.emptyList();
             dependencyEntry_ = java.util.Collections.emptyList();
         }
 
@@ -4567,10 +4807,8 @@ public final class JobProtos {
         @Override
         public final boolean isInitialized() {
             byte isInitialized = memoizedIsInitialized;
-            if (isInitialized == 1)
-                return true;
-            if (isInitialized == 0)
-                return false;
+            if (isInitialized != -1)
+                return isInitialized == 1;
 
             if (!hasAppAuth()) {
                 memoizedIsInitialized = 0;
@@ -4588,8 +4826,8 @@ public final class JobProtos {
                 memoizedIsInitialized = 0;
                 return false;
             }
-            if (hasExpressionEntry()) {
-                if (!getExpressionEntry().isInitialized()) {
+            for (int i = 0; i < getExpressionEntryCount(); i++) {
+                if (!getExpressionEntry(i).isInitialized()) {
                     memoizedIsInitialized = 0;
                     return false;
                 }
@@ -4652,8 +4890,8 @@ public final class JobProtos {
             if (((bitField0_ & 0x00004000) == 0x00004000)) {
                 output.writeInt32(15, failedInterval_);
             }
-            if (((bitField0_ & 0x00008000) == 0x00008000)) {
-                output.writeMessage(16, expressionEntry_);
+            for (int i = 0; i < expressionEntry_.size(); i++) {
+                output.writeMessage(16, expressionEntry_.get(i));
             }
             for (int i = 0; i < dependencyEntry_.size(); i++) {
                 output.writeMessage(17, dependencyEntry_.get(i));
@@ -4715,8 +4953,8 @@ public final class JobProtos {
             if (((bitField0_ & 0x00004000) == 0x00004000)) {
                 size += com.google.protobuf.CodedOutputStream.computeInt32Size(15, failedInterval_);
             }
-            if (((bitField0_ & 0x00008000) == 0x00008000)) {
-                size += com.google.protobuf.CodedOutputStream.computeMessageSize(16, expressionEntry_);
+            for (int i = 0; i < expressionEntry_.size(); i++) {
+                size += com.google.protobuf.CodedOutputStream.computeMessageSize(16, expressionEntry_.get(i));
             }
             for (int i = 0; i < dependencyEntry_.size(); i++) {
                 size += com.google.protobuf.CodedOutputStream.computeMessageSize(17, dependencyEntry_.get(i));
@@ -4813,9 +5051,8 @@ public final class JobProtos {
          *2.modifyJob
          * </pre>
          */
-        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-                // @@protoc_insertion_point(builder_implements:RestModifyJobRequest)
-                com.mogujie.jarvis.protocol.JobProtos.RestModifyJobRequestOrBuilder {
+        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder>
+                implements com.mogujie.jarvis.protocol.JobProtos.RestModifyJobRequestOrBuilder {
             public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
                 return com.mogujie.jarvis.protocol.JobProtos.internal_static_RestModifyJobRequest_descriptor;
             }
@@ -4887,11 +5124,11 @@ public final class JobProtos {
                 failedInterval_ = 0;
                 bitField0_ = (bitField0_ & ~0x00004000);
                 if (expressionEntryBuilder_ == null) {
-                    expressionEntry_ = com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.getDefaultInstance();
+                    expressionEntry_ = java.util.Collections.emptyList();
+                    bitField0_ = (bitField0_ & ~0x00008000);
                 } else {
                     expressionEntryBuilder_.clear();
                 }
-                bitField0_ = (bitField0_ & ~0x00008000);
                 if (dependencyEntryBuilder_ == null) {
                     dependencyEntry_ = java.util.Collections.emptyList();
                     bitField0_ = (bitField0_ & ~0x00010000);
@@ -4995,10 +5232,11 @@ public final class JobProtos {
                     to_bitField0_ |= 0x00004000;
                 }
                 result.failedInterval_ = failedInterval_;
-                if (((from_bitField0_ & 0x00008000) == 0x00008000)) {
-                    to_bitField0_ |= 0x00008000;
-                }
                 if (expressionEntryBuilder_ == null) {
+                    if (((bitField0_ & 0x00008000) == 0x00008000)) {
+                        expressionEntry_ = java.util.Collections.unmodifiableList(expressionEntry_);
+                        bitField0_ = (bitField0_ & ~0x00008000);
+                    }
                     result.expressionEntry_ = expressionEntry_;
                 } else {
                     result.expressionEntry_ = expressionEntryBuilder_.build();
@@ -5087,8 +5325,30 @@ public final class JobProtos {
                 if (other.hasFailedInterval()) {
                     setFailedInterval(other.getFailedInterval());
                 }
-                if (other.hasExpressionEntry()) {
-                    mergeExpressionEntry(other.getExpressionEntry());
+                if (expressionEntryBuilder_ == null) {
+                    if (!other.expressionEntry_.isEmpty()) {
+                        if (expressionEntry_.isEmpty()) {
+                            expressionEntry_ = other.expressionEntry_;
+                            bitField0_ = (bitField0_ & ~0x00008000);
+                        } else {
+                            ensureExpressionEntryIsMutable();
+                            expressionEntry_.addAll(other.expressionEntry_);
+                        }
+                        onChanged();
+                    }
+                } else {
+                    if (!other.expressionEntry_.isEmpty()) {
+                        if (expressionEntryBuilder_.isEmpty()) {
+                            expressionEntryBuilder_.dispose();
+                            expressionEntryBuilder_ = null;
+                            expressionEntry_ = other.expressionEntry_;
+                            bitField0_ = (bitField0_ & ~0x00008000);
+                            expressionEntryBuilder_ = com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ? getExpressionEntryFieldBuilder()
+                                    : null;
+                        } else {
+                            expressionEntryBuilder_.addAllMessages(other.expressionEntry_);
+                        }
+                    }
                 }
                 if (dependencyEntryBuilder_ == null) {
                     if (!other.dependencyEntry_.isEmpty()) {
@@ -5137,8 +5397,8 @@ public final class JobProtos {
 
                     return false;
                 }
-                if (hasExpressionEntry()) {
-                    if (!getExpressionEntry().isInitialized()) {
+                for (int i = 0; i < getExpressionEntryCount(); i++) {
+                    if (!getExpressionEntry(i).isInitialized()) {
 
                         return false;
                     }
@@ -5171,6 +5431,7 @@ public final class JobProtos {
 
             private int bitField0_;
 
+            // required .AppAuth app_auth = 1;
             private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth
                     .getDefaultInstance();
             private com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> appAuthBuilder_;
@@ -5286,12 +5547,13 @@ public final class JobProtos {
             private com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> getAppAuthFieldBuilder() {
                 if (appAuthBuilder_ == null) {
                     appAuthBuilder_ = new com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder>(
-                            getAppAuth(), getParentForChildren(), isClean());
+                            appAuth_, getParentForChildren(), isClean());
                     appAuth_ = null;
                 }
                 return appAuthBuilder_;
             }
 
+            // required string user = 2;
             private java.lang.Object user_ = "";
 
             /**
@@ -5309,11 +5571,8 @@ public final class JobProtos {
             public java.lang.String getUser() {
                 java.lang.Object ref = user_;
                 if (!(ref instanceof java.lang.String)) {
-                    com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                    java.lang.String s = bs.toStringUtf8();
-                    if (bs.isValidUtf8()) {
-                        user_ = s;
-                    }
+                    java.lang.String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+                    user_ = s;
                     return s;
                 } else {
                     return (java.lang.String) ref;
@@ -5371,6 +5630,7 @@ public final class JobProtos {
                 return this;
             }
 
+            // required int64 job_id = 3;
             private long jobId_;
 
             /**
@@ -5409,6 +5669,7 @@ public final class JobProtos {
                 return this;
             }
 
+            // optional string job_name = 4;
             private java.lang.Object jobName_ = "";
 
             /**
@@ -5426,11 +5687,8 @@ public final class JobProtos {
             public java.lang.String getJobName() {
                 java.lang.Object ref = jobName_;
                 if (!(ref instanceof java.lang.String)) {
-                    com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                    java.lang.String s = bs.toStringUtf8();
-                    if (bs.isValidUtf8()) {
-                        jobName_ = s;
-                    }
+                    java.lang.String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+                    jobName_ = s;
                     return s;
                 } else {
                     return (java.lang.String) ref;
@@ -5488,6 +5746,7 @@ public final class JobProtos {
                 return this;
             }
 
+            // optional string job_type = 5;
             private java.lang.Object jobType_ = "";
 
             /**
@@ -5505,11 +5764,8 @@ public final class JobProtos {
             public java.lang.String getJobType() {
                 java.lang.Object ref = jobType_;
                 if (!(ref instanceof java.lang.String)) {
-                    com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                    java.lang.String s = bs.toStringUtf8();
-                    if (bs.isValidUtf8()) {
-                        jobType_ = s;
-                    }
+                    java.lang.String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+                    jobType_ = s;
                     return s;
                 } else {
                     return (java.lang.String) ref;
@@ -5567,6 +5823,7 @@ public final class JobProtos {
                 return this;
             }
 
+            // optional string content = 6;
             private java.lang.Object content_ = "";
 
             /**
@@ -5584,11 +5841,8 @@ public final class JobProtos {
             public java.lang.String getContent() {
                 java.lang.Object ref = content_;
                 if (!(ref instanceof java.lang.String)) {
-                    com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                    java.lang.String s = bs.toStringUtf8();
-                    if (bs.isValidUtf8()) {
-                        content_ = s;
-                    }
+                    java.lang.String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+                    content_ = s;
                     return s;
                 } else {
                     return (java.lang.String) ref;
@@ -5646,6 +5900,7 @@ public final class JobProtos {
                 return this;
             }
 
+            // optional string parameters = 7;
             private java.lang.Object parameters_ = "";
 
             /**
@@ -5663,11 +5918,8 @@ public final class JobProtos {
             public java.lang.String getParameters() {
                 java.lang.Object ref = parameters_;
                 if (!(ref instanceof java.lang.String)) {
-                    com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                    java.lang.String s = bs.toStringUtf8();
-                    if (bs.isValidUtf8()) {
-                        parameters_ = s;
-                    }
+                    java.lang.String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+                    parameters_ = s;
                     return s;
                 } else {
                     return (java.lang.String) ref;
@@ -5725,6 +5977,7 @@ public final class JobProtos {
                 return this;
             }
 
+            // optional string app_name = 8;
             private java.lang.Object appName_ = "";
 
             /**
@@ -5742,11 +5995,8 @@ public final class JobProtos {
             public java.lang.String getAppName() {
                 java.lang.Object ref = appName_;
                 if (!(ref instanceof java.lang.String)) {
-                    com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                    java.lang.String s = bs.toStringUtf8();
-                    if (bs.isValidUtf8()) {
-                        appName_ = s;
-                    }
+                    java.lang.String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+                    appName_ = s;
                     return s;
                 } else {
                     return (java.lang.String) ref;
@@ -5804,6 +6054,7 @@ public final class JobProtos {
                 return this;
             }
 
+            // optional int32 worker_group_id = 9;
             private int workerGroupId_;
 
             /**
@@ -5842,6 +6093,7 @@ public final class JobProtos {
                 return this;
             }
 
+            // optional int32 priority = 10;
             private int priority_;
 
             /**
@@ -5880,6 +6132,7 @@ public final class JobProtos {
                 return this;
             }
 
+            // optional int64 active_start_time = 11;
             private long activeStartTime_;
 
             /**
@@ -5918,6 +6171,7 @@ public final class JobProtos {
                 return this;
             }
 
+            // optional int64 active_end_time = 12;
             private long activeEndTime_;
 
             /**
@@ -5956,6 +6210,7 @@ public final class JobProtos {
                 return this;
             }
 
+            // optional int32 expired_time = 13;
             private int expiredTime_;
 
             /**
@@ -5994,6 +6249,7 @@ public final class JobProtos {
                 return this;
             }
 
+            // optional int32 failed_attempts = 14;
             private int failedAttempts_;
 
             /**
@@ -6032,6 +6288,7 @@ public final class JobProtos {
                 return this;
             }
 
+            // optional int32 failed_interval = 15;
             private int failedInterval_;
 
             /**
@@ -6070,130 +6327,259 @@ public final class JobProtos {
                 return this;
             }
 
-            private com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry expressionEntry_ = com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry
-                    .getDefaultInstance();
-            private com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder> expressionEntryBuilder_;
+            // repeated .ScheduleExpressionEntry expression_entry = 16;
+            private java.util.List<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry> expressionEntry_ = java.util.Collections
+                    .emptyList();
 
-            /**
-             * <code>optional .ScheduleExpressionEntry expression_entry = 16;</code>
-             */
-            @Override
-            public boolean hasExpressionEntry() {
-                return ((bitField0_ & 0x00008000) == 0x00008000);
+            private void ensureExpressionEntryIsMutable() {
+                if (!((bitField0_ & 0x00008000) == 0x00008000)) {
+                    expressionEntry_ = new java.util.ArrayList<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry>(
+                            expressionEntry_);
+                    bitField0_ |= 0x00008000;
+                }
             }
 
+            private com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder> expressionEntryBuilder_;
+
             /**
-             * <code>optional .ScheduleExpressionEntry expression_entry = 16;</code>
+             * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
              */
             @Override
-            public com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry getExpressionEntry() {
+            public java.util.List<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry> getExpressionEntryList() {
                 if (expressionEntryBuilder_ == null) {
-                    return expressionEntry_;
+                    return java.util.Collections.unmodifiableList(expressionEntry_);
                 } else {
-                    return expressionEntryBuilder_.getMessage();
+                    return expressionEntryBuilder_.getMessageList();
                 }
             }
 
             /**
-             * <code>optional .ScheduleExpressionEntry expression_entry = 16;</code>
+             * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
              */
-            public Builder setExpressionEntry(com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry value) {
+            @Override
+            public int getExpressionEntryCount() {
+                if (expressionEntryBuilder_ == null) {
+                    return expressionEntry_.size();
+                } else {
+                    return expressionEntryBuilder_.getCount();
+                }
+            }
+
+            /**
+             * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
+             */
+            @Override
+            public com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry getExpressionEntry(int index) {
+                if (expressionEntryBuilder_ == null) {
+                    return expressionEntry_.get(index);
+                } else {
+                    return expressionEntryBuilder_.getMessage(index);
+                }
+            }
+
+            /**
+             * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
+             */
+            public Builder setExpressionEntry(int index, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry value) {
                 if (expressionEntryBuilder_ == null) {
                     if (value == null) {
                         throw new NullPointerException();
                     }
-                    expressionEntry_ = value;
+                    ensureExpressionEntryIsMutable();
+                    expressionEntry_.set(index, value);
                     onChanged();
                 } else {
-                    expressionEntryBuilder_.setMessage(value);
+                    expressionEntryBuilder_.setMessage(index, value);
                 }
-                bitField0_ |= 0x00008000;
                 return this;
             }
 
             /**
-             * <code>optional .ScheduleExpressionEntry expression_entry = 16;</code>
+             * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
              */
-            public Builder setExpressionEntry(
+            public Builder setExpressionEntry(int index,
                     com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder builderForValue) {
                 if (expressionEntryBuilder_ == null) {
-                    expressionEntry_ = builderForValue.build();
+                    ensureExpressionEntryIsMutable();
+                    expressionEntry_.set(index, builderForValue.build());
                     onChanged();
                 } else {
-                    expressionEntryBuilder_.setMessage(builderForValue.build());
+                    expressionEntryBuilder_.setMessage(index, builderForValue.build());
                 }
-                bitField0_ |= 0x00008000;
                 return this;
             }
 
             /**
-             * <code>optional .ScheduleExpressionEntry expression_entry = 16;</code>
+             * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
              */
-            public Builder mergeExpressionEntry(com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry value) {
+            public Builder addExpressionEntry(com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry value) {
                 if (expressionEntryBuilder_ == null) {
-                    if (((bitField0_ & 0x00008000) == 0x00008000)
-                            && expressionEntry_ != com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry
-                                    .getDefaultInstance()) {
-                        expressionEntry_ = com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry
-                                .newBuilder(expressionEntry_).mergeFrom(value).buildPartial();
-                    } else {
-                        expressionEntry_ = value;
+                    if (value == null) {
+                        throw new NullPointerException();
                     }
+                    ensureExpressionEntryIsMutable();
+                    expressionEntry_.add(value);
                     onChanged();
                 } else {
-                    expressionEntryBuilder_.mergeFrom(value);
+                    expressionEntryBuilder_.addMessage(value);
                 }
-                bitField0_ |= 0x00008000;
                 return this;
             }
 
             /**
-             * <code>optional .ScheduleExpressionEntry expression_entry = 16;</code>
+             * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
+             */
+            public Builder addExpressionEntry(int index, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry value) {
+                if (expressionEntryBuilder_ == null) {
+                    if (value == null) {
+                        throw new NullPointerException();
+                    }
+                    ensureExpressionEntryIsMutable();
+                    expressionEntry_.add(index, value);
+                    onChanged();
+                } else {
+                    expressionEntryBuilder_.addMessage(index, value);
+                }
+                return this;
+            }
+
+            /**
+             * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
+             */
+            public Builder addExpressionEntry(
+                    com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder builderForValue) {
+                if (expressionEntryBuilder_ == null) {
+                    ensureExpressionEntryIsMutable();
+                    expressionEntry_.add(builderForValue.build());
+                    onChanged();
+                } else {
+                    expressionEntryBuilder_.addMessage(builderForValue.build());
+                }
+                return this;
+            }
+
+            /**
+             * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
+             */
+            public Builder addExpressionEntry(int index,
+                    com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder builderForValue) {
+                if (expressionEntryBuilder_ == null) {
+                    ensureExpressionEntryIsMutable();
+                    expressionEntry_.add(index, builderForValue.build());
+                    onChanged();
+                } else {
+                    expressionEntryBuilder_.addMessage(index, builderForValue.build());
+                }
+                return this;
+            }
+
+            /**
+             * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
+             */
+            public Builder addAllExpressionEntry(
+                    java.lang.Iterable<? extends com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry> values) {
+                if (expressionEntryBuilder_ == null) {
+                    ensureExpressionEntryIsMutable();
+                    super.addAll(values, expressionEntry_);
+                    onChanged();
+                } else {
+                    expressionEntryBuilder_.addAllMessages(values);
+                }
+                return this;
+            }
+
+            /**
+             * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
              */
             public Builder clearExpressionEntry() {
                 if (expressionEntryBuilder_ == null) {
-                    expressionEntry_ = com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.getDefaultInstance();
+                    expressionEntry_ = java.util.Collections.emptyList();
+                    bitField0_ = (bitField0_ & ~0x00008000);
                     onChanged();
                 } else {
                     expressionEntryBuilder_.clear();
                 }
-                bitField0_ = (bitField0_ & ~0x00008000);
                 return this;
             }
 
             /**
-             * <code>optional .ScheduleExpressionEntry expression_entry = 16;</code>
+             * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
              */
-            public com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder getExpressionEntryBuilder() {
-                bitField0_ |= 0x00008000;
-                onChanged();
-                return getExpressionEntryFieldBuilder().getBuilder();
+            public Builder removeExpressionEntry(int index) {
+                if (expressionEntryBuilder_ == null) {
+                    ensureExpressionEntryIsMutable();
+                    expressionEntry_.remove(index);
+                    onChanged();
+                } else {
+                    expressionEntryBuilder_.remove(index);
+                }
+                return this;
             }
 
             /**
-             * <code>optional .ScheduleExpressionEntry expression_entry = 16;</code>
+             * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
+             */
+            public com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder getExpressionEntryBuilder(int index) {
+                return getExpressionEntryFieldBuilder().getBuilder(index);
+            }
+
+            /**
+             * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
              */
             @Override
-            public com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder getExpressionEntryOrBuilder() {
-                if (expressionEntryBuilder_ != null) {
-                    return expressionEntryBuilder_.getMessageOrBuilder();
+            public com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder getExpressionEntryOrBuilder(int index) {
+                if (expressionEntryBuilder_ == null) {
+                    return expressionEntry_.get(index);
                 } else {
-                    return expressionEntry_;
+                    return expressionEntryBuilder_.getMessageOrBuilder(index);
                 }
             }
 
             /**
-             * <code>optional .ScheduleExpressionEntry expression_entry = 16;</code>
+             * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
              */
-            private com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder> getExpressionEntryFieldBuilder() {
+            @Override
+            public java.util.List<? extends com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder> getExpressionEntryOrBuilderList() {
+                if (expressionEntryBuilder_ != null) {
+                    return expressionEntryBuilder_.getMessageOrBuilderList();
+                } else {
+                    return java.util.Collections.unmodifiableList(expressionEntry_);
+                }
+            }
+
+            /**
+             * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
+             */
+            public com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder addExpressionEntryBuilder() {
+                return getExpressionEntryFieldBuilder()
+                        .addBuilder(com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.getDefaultInstance());
+            }
+
+            /**
+             * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
+             */
+            public com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder addExpressionEntryBuilder(int index) {
+                return getExpressionEntryFieldBuilder().addBuilder(index,
+                        com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.getDefaultInstance());
+            }
+
+            /**
+             * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
+             */
+            public java.util.List<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder> getExpressionEntryBuilderList() {
+                return getExpressionEntryFieldBuilder().getBuilderList();
+            }
+
+            private com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder> getExpressionEntryFieldBuilder() {
                 if (expressionEntryBuilder_ == null) {
-                    expressionEntryBuilder_ = new com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder>(
-                            getExpressionEntry(), getParentForChildren(), isClean());
+                    expressionEntryBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder>(
+                            expressionEntry_, ((bitField0_ & 0x00008000) == 0x00008000), getParentForChildren(), isClean());
                     expressionEntry_ = null;
                 }
                 return expressionEntryBuilder_;
             }
 
+            // repeated .DependencyEntry dependency_entry = 17;
             private java.util.List<com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry> dependencyEntry_ = java.util.Collections
                     .emptyList();
 
@@ -6342,7 +6728,7 @@ public final class JobProtos {
                     java.lang.Iterable<? extends com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry> values) {
                 if (dependencyEntryBuilder_ == null) {
                     ensureDependencyEntryIsMutable();
-                    com.google.protobuf.AbstractMessageLite.Builder.addAll(values, dependencyEntry_);
+                    super.addAll(values, dependencyEntry_);
                     onChanged();
                 } else {
                     dependencyEntryBuilder_.addAllMessages(values);
@@ -6452,10 +6838,9 @@ public final class JobProtos {
         // @@protoc_insertion_point(class_scope:RestModifyJobRequest)
     }
 
-    public interface ServerModifyJobResponseOrBuilder extends
-            // @@protoc_insertion_point(interface_extends:ServerModifyJobResponse)
-            com.google.protobuf.MessageOrBuilder {
+    public interface ServerModifyJobResponseOrBuilder extends com.google.protobuf.MessageOrBuilder {
 
+        // required bool success = 1;
         /**
          * <code>required bool success = 1;</code>
          */
@@ -6466,6 +6851,7 @@ public final class JobProtos {
          */
         boolean getSuccess();
 
+        // optional string message = 2 [default = ""];
         /**
          * <code>optional string message = 2 [default = ""];</code>
          */
@@ -6485,9 +6871,7 @@ public final class JobProtos {
     /**
      * Protobuf type {@code ServerModifyJobResponse}
      */
-    public static final class ServerModifyJobResponse extends com.google.protobuf.GeneratedMessage implements
-            // @@protoc_insertion_point(message_implements:ServerModifyJobResponse)
-            ServerModifyJobResponseOrBuilder {
+    public static final class ServerModifyJobResponse extends com.google.protobuf.GeneratedMessage implements ServerModifyJobResponseOrBuilder {
         // Use ServerModifyJobResponse.newBuilder() to construct.
         private ServerModifyJobResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
             super(builder);
@@ -6540,9 +6924,8 @@ public final class JobProtos {
                             break;
                         }
                         case 18: {
-                            com.google.protobuf.ByteString bs = input.readBytes();
                             bitField0_ |= 0x00000002;
-                            message_ = bs;
+                            message_ = input.readBytes();
                             break;
                         }
                     }
@@ -6582,6 +6965,7 @@ public final class JobProtos {
         }
 
         private int bitField0_;
+        // required bool success = 1;
         public static final int SUCCESS_FIELD_NUMBER = 1;
         private boolean success_;
 
@@ -6601,6 +6985,7 @@ public final class JobProtos {
             return success_;
         }
 
+        // optional string message = 2 [default = ""];
         public static final int MESSAGE_FIELD_NUMBER = 2;
         private java.lang.Object message_;
 
@@ -6655,10 +7040,8 @@ public final class JobProtos {
         @Override
         public final boolean isInitialized() {
             byte isInitialized = memoizedIsInitialized;
-            if (isInitialized == 1)
-                return true;
-            if (isInitialized == 0)
-                return false;
+            if (isInitialized != -1)
+                return isInitialized == 1;
 
             if (!hasSuccess()) {
                 memoizedIsInitialized = 0;
@@ -6783,9 +7166,8 @@ public final class JobProtos {
         /**
          * Protobuf type {@code ServerModifyJobResponse}
          */
-        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-                // @@protoc_insertion_point(builder_implements:ServerModifyJobResponse)
-                com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobResponseOrBuilder {
+        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder>
+                implements com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobResponseOrBuilder {
             public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
                 return com.mogujie.jarvis.protocol.JobProtos.internal_static_ServerModifyJobResponse_descriptor;
             }
@@ -6922,6 +7304,7 @@ public final class JobProtos {
 
             private int bitField0_;
 
+            // required bool success = 1;
             private boolean success_;
 
             /**
@@ -6960,6 +7343,7 @@ public final class JobProtos {
                 return this;
             }
 
+            // optional string message = 2 [default = ""];
             private java.lang.Object message_ = "";
 
             /**
@@ -6977,11 +7361,8 @@ public final class JobProtos {
             public java.lang.String getMessage() {
                 java.lang.Object ref = message_;
                 if (!(ref instanceof java.lang.String)) {
-                    com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                    java.lang.String s = bs.toStringUtf8();
-                    if (bs.isValidUtf8()) {
-                        message_ = s;
-                    }
+                    java.lang.String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+                    message_ = s;
                     return s;
                 } else {
                     return (java.lang.String) ref;
@@ -7050,10 +7431,9 @@ public final class JobProtos {
         // @@protoc_insertion_point(class_scope:ServerModifyJobResponse)
     }
 
-    public interface RestModifyJobStatusRequestOrBuilder extends
-            // @@protoc_insertion_point(interface_extends:RestModifyJobStatusRequest)
-            com.google.protobuf.MessageOrBuilder {
+    public interface RestModifyJobStatusRequestOrBuilder extends com.google.protobuf.MessageOrBuilder {
 
+        // required .AppAuth app_auth = 1;
         /**
          * <code>required .AppAuth app_auth = 1;</code>
          */
@@ -7069,6 +7449,7 @@ public final class JobProtos {
          */
         com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder();
 
+        // required string user = 2;
         /**
          * <code>required string user = 2;</code>
          */
@@ -7084,6 +7465,7 @@ public final class JobProtos {
          */
         com.google.protobuf.ByteString getUserBytes();
 
+        // required int64 job_id = 3;
         /**
          * <code>required int64 job_id = 3;</code>
          */
@@ -7094,6 +7476,7 @@ public final class JobProtos {
          */
         long getJobId();
 
+        // required int32 status = 4;
         /**
          * <code>required int32 status = 4;</code>
          */
@@ -7112,9 +7495,7 @@ public final class JobProtos {
      *3.modifyJobStatus
      * </pre>
      */
-    public static final class RestModifyJobStatusRequest extends com.google.protobuf.GeneratedMessage implements
-            // @@protoc_insertion_point(message_implements:RestModifyJobStatusRequest)
-            RestModifyJobStatusRequestOrBuilder {
+    public static final class RestModifyJobStatusRequest extends com.google.protobuf.GeneratedMessage implements RestModifyJobStatusRequestOrBuilder {
         // Use RestModifyJobStatusRequest.newBuilder() to construct.
         private RestModifyJobStatusRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
             super(builder);
@@ -7175,9 +7556,8 @@ public final class JobProtos {
                             break;
                         }
                         case 18: {
-                            com.google.protobuf.ByteString bs = input.readBytes();
                             bitField0_ |= 0x00000002;
-                            user_ = bs;
+                            user_ = input.readBytes();
                             break;
                         }
                         case 24: {
@@ -7227,6 +7607,7 @@ public final class JobProtos {
         }
 
         private int bitField0_;
+        // required .AppAuth app_auth = 1;
         public static final int APP_AUTH_FIELD_NUMBER = 1;
         private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_;
 
@@ -7254,6 +7635,7 @@ public final class JobProtos {
             return appAuth_;
         }
 
+        // required string user = 2;
         public static final int USER_FIELD_NUMBER = 2;
         private java.lang.Object user_;
 
@@ -7298,6 +7680,7 @@ public final class JobProtos {
             }
         }
 
+        // required int64 job_id = 3;
         public static final int JOB_ID_FIELD_NUMBER = 3;
         private long jobId_;
 
@@ -7317,6 +7700,7 @@ public final class JobProtos {
             return jobId_;
         }
 
+        // required int32 status = 4;
         public static final int STATUS_FIELD_NUMBER = 4;
         private int status_;
 
@@ -7348,10 +7732,8 @@ public final class JobProtos {
         @Override
         public final boolean isInitialized() {
             byte isInitialized = memoizedIsInitialized;
-            if (isInitialized == 1)
-                return true;
-            if (isInitialized == 0)
-                return false;
+            if (isInitialized != -1)
+                return isInitialized == 1;
 
             if (!hasAppAuth()) {
                 memoizedIsInitialized = 0;
@@ -7509,9 +7891,8 @@ public final class JobProtos {
          *3.modifyJobStatus
          * </pre>
          */
-        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-                // @@protoc_insertion_point(builder_implements:RestModifyJobStatusRequest)
-                com.mogujie.jarvis.protocol.JobProtos.RestModifyJobStatusRequestOrBuilder {
+        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder>
+                implements com.mogujie.jarvis.protocol.JobProtos.RestModifyJobStatusRequestOrBuilder {
             public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
                 return com.mogujie.jarvis.protocol.JobProtos.internal_static_RestModifyJobStatusRequest_descriptor;
             }
@@ -7691,6 +8072,7 @@ public final class JobProtos {
 
             private int bitField0_;
 
+            // required .AppAuth app_auth = 1;
             private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth
                     .getDefaultInstance();
             private com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> appAuthBuilder_;
@@ -7806,12 +8188,13 @@ public final class JobProtos {
             private com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> getAppAuthFieldBuilder() {
                 if (appAuthBuilder_ == null) {
                     appAuthBuilder_ = new com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder>(
-                            getAppAuth(), getParentForChildren(), isClean());
+                            appAuth_, getParentForChildren(), isClean());
                     appAuth_ = null;
                 }
                 return appAuthBuilder_;
             }
 
+            // required string user = 2;
             private java.lang.Object user_ = "";
 
             /**
@@ -7829,11 +8212,8 @@ public final class JobProtos {
             public java.lang.String getUser() {
                 java.lang.Object ref = user_;
                 if (!(ref instanceof java.lang.String)) {
-                    com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                    java.lang.String s = bs.toStringUtf8();
-                    if (bs.isValidUtf8()) {
-                        user_ = s;
-                    }
+                    java.lang.String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+                    user_ = s;
                     return s;
                 } else {
                     return (java.lang.String) ref;
@@ -7891,6 +8271,7 @@ public final class JobProtos {
                 return this;
             }
 
+            // required int64 job_id = 3;
             private long jobId_;
 
             /**
@@ -7929,6 +8310,7 @@ public final class JobProtos {
                 return this;
             }
 
+            // required int32 status = 4;
             private int status_;
 
             /**
@@ -7978,10 +8360,9 @@ public final class JobProtos {
         // @@protoc_insertion_point(class_scope:RestModifyJobStatusRequest)
     }
 
-    public interface ServerModifyJobStatusResponseOrBuilder extends
-            // @@protoc_insertion_point(interface_extends:ServerModifyJobStatusResponse)
-            com.google.protobuf.MessageOrBuilder {
+    public interface ServerModifyJobStatusResponseOrBuilder extends com.google.protobuf.MessageOrBuilder {
 
+        // required bool success = 1;
         /**
          * <code>required bool success = 1;</code>
          */
@@ -7992,6 +8373,7 @@ public final class JobProtos {
          */
         boolean getSuccess();
 
+        // optional string message = 2 [default = ""];
         /**
          * <code>optional string message = 2 [default = ""];</code>
          */
@@ -8011,9 +8393,8 @@ public final class JobProtos {
     /**
      * Protobuf type {@code ServerModifyJobStatusResponse}
      */
-    public static final class ServerModifyJobStatusResponse extends com.google.protobuf.GeneratedMessage implements
-            // @@protoc_insertion_point(message_implements:ServerModifyJobStatusResponse)
-            ServerModifyJobStatusResponseOrBuilder {
+    public static final class ServerModifyJobStatusResponse extends com.google.protobuf.GeneratedMessage
+            implements ServerModifyJobStatusResponseOrBuilder {
         // Use ServerModifyJobStatusResponse.newBuilder() to construct.
         private ServerModifyJobStatusResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
             super(builder);
@@ -8066,9 +8447,8 @@ public final class JobProtos {
                             break;
                         }
                         case 18: {
-                            com.google.protobuf.ByteString bs = input.readBytes();
                             bitField0_ |= 0x00000002;
-                            message_ = bs;
+                            message_ = input.readBytes();
                             break;
                         }
                     }
@@ -8108,6 +8488,7 @@ public final class JobProtos {
         }
 
         private int bitField0_;
+        // required bool success = 1;
         public static final int SUCCESS_FIELD_NUMBER = 1;
         private boolean success_;
 
@@ -8127,6 +8508,7 @@ public final class JobProtos {
             return success_;
         }
 
+        // optional string message = 2 [default = ""];
         public static final int MESSAGE_FIELD_NUMBER = 2;
         private java.lang.Object message_;
 
@@ -8181,10 +8563,8 @@ public final class JobProtos {
         @Override
         public final boolean isInitialized() {
             byte isInitialized = memoizedIsInitialized;
-            if (isInitialized == 1)
-                return true;
-            if (isInitialized == 0)
-                return false;
+            if (isInitialized != -1)
+                return isInitialized == 1;
 
             if (!hasSuccess()) {
                 memoizedIsInitialized = 0;
@@ -8310,9 +8690,8 @@ public final class JobProtos {
         /**
          * Protobuf type {@code ServerModifyJobStatusResponse}
          */
-        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-                // @@protoc_insertion_point(builder_implements:ServerModifyJobStatusResponse)
-                com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobStatusResponseOrBuilder {
+        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder>
+                implements com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobStatusResponseOrBuilder {
             public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
                 return com.mogujie.jarvis.protocol.JobProtos.internal_static_ServerModifyJobStatusResponse_descriptor;
             }
@@ -8449,6 +8828,7 @@ public final class JobProtos {
 
             private int bitField0_;
 
+            // required bool success = 1;
             private boolean success_;
 
             /**
@@ -8487,6 +8867,7 @@ public final class JobProtos {
                 return this;
             }
 
+            // optional string message = 2 [default = ""];
             private java.lang.Object message_ = "";
 
             /**
@@ -8504,11 +8885,8 @@ public final class JobProtos {
             public java.lang.String getMessage() {
                 java.lang.Object ref = message_;
                 if (!(ref instanceof java.lang.String)) {
-                    com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                    java.lang.String s = bs.toStringUtf8();
-                    if (bs.isValidUtf8()) {
-                        message_ = s;
-                    }
+                    java.lang.String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+                    message_ = s;
                     return s;
                 } else {
                     return (java.lang.String) ref;
@@ -8577,10 +8955,9 @@ public final class JobProtos {
         // @@protoc_insertion_point(class_scope:ServerModifyJobStatusResponse)
     }
 
-    public interface JobStatusEntryOrBuilder extends
-            // @@protoc_insertion_point(interface_extends:JobStatusEntry)
-            com.google.protobuf.MessageOrBuilder {
+    public interface JobStatusEntryOrBuilder extends com.google.protobuf.MessageOrBuilder {
 
+        // required int64 job_id = 1;
         /**
          * <code>required int64 job_id = 1;</code>
          */
@@ -8591,6 +8968,7 @@ public final class JobProtos {
          */
         long getJobId();
 
+        // required int32 status = 2;
         /**
          * <code>required int32 status = 2;</code>
          */
@@ -8609,9 +8987,7 @@ public final class JobProtos {
      *4.queryJobRelation
      * </pre>
      */
-    public static final class JobStatusEntry extends com.google.protobuf.GeneratedMessage implements
-            // @@protoc_insertion_point(message_implements:JobStatusEntry)
-            JobStatusEntryOrBuilder {
+    public static final class JobStatusEntry extends com.google.protobuf.GeneratedMessage implements JobStatusEntryOrBuilder {
         // Use JobStatusEntry.newBuilder() to construct.
         private JobStatusEntry(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
             super(builder);
@@ -8704,6 +9080,7 @@ public final class JobProtos {
         }
 
         private int bitField0_;
+        // required int64 job_id = 1;
         public static final int JOB_ID_FIELD_NUMBER = 1;
         private long jobId_;
 
@@ -8723,6 +9100,7 @@ public final class JobProtos {
             return jobId_;
         }
 
+        // required int32 status = 2;
         public static final int STATUS_FIELD_NUMBER = 2;
         private int status_;
 
@@ -8752,10 +9130,8 @@ public final class JobProtos {
         @Override
         public final boolean isInitialized() {
             byte isInitialized = memoizedIsInitialized;
-            if (isInitialized == 1)
-                return true;
-            if (isInitialized == 0)
-                return false;
+            if (isInitialized != -1)
+                return isInitialized == 1;
 
             if (!hasJobId()) {
                 memoizedIsInitialized = 0;
@@ -8887,9 +9263,8 @@ public final class JobProtos {
          *4.queryJobRelation
          * </pre>
          */
-        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-                // @@protoc_insertion_point(builder_implements:JobStatusEntry)
-                com.mogujie.jarvis.protocol.JobProtos.JobStatusEntryOrBuilder {
+        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder>
+                implements com.mogujie.jarvis.protocol.JobProtos.JobStatusEntryOrBuilder {
             public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
                 return com.mogujie.jarvis.protocol.JobProtos.internal_static_JobStatusEntry_descriptor;
             }
@@ -9027,6 +9402,7 @@ public final class JobProtos {
 
             private int bitField0_;
 
+            // required int64 job_id = 1;
             private long jobId_;
 
             /**
@@ -9065,6 +9441,7 @@ public final class JobProtos {
                 return this;
             }
 
+            // required int32 status = 2;
             private int status_;
 
             /**
@@ -9114,10 +9491,9 @@ public final class JobProtos {
         // @@protoc_insertion_point(class_scope:JobStatusEntry)
     }
 
-    public interface RestQueryJobRelationRequestOrBuilder extends
-            // @@protoc_insertion_point(interface_extends:RestQueryJobRelationRequest)
-            com.google.protobuf.MessageOrBuilder {
+    public interface RestQueryJobRelationRequestOrBuilder extends com.google.protobuf.MessageOrBuilder {
 
+        // required .AppAuth app_auth = 1;
         /**
          * <code>required .AppAuth app_auth = 1;</code>
          */
@@ -9133,6 +9509,7 @@ public final class JobProtos {
          */
         com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder();
 
+        // required string user = 2;
         /**
          * <code>required string user = 2;</code>
          */
@@ -9148,6 +9525,7 @@ public final class JobProtos {
          */
         com.google.protobuf.ByteString getUserBytes();
 
+        // required int64 job_id = 3;
         /**
          * <code>required int64 job_id = 3;</code>
          */
@@ -9158,6 +9536,7 @@ public final class JobProtos {
          */
         long getJobId();
 
+        // required int32 relation_type = 4;
         /**
          * <code>required int32 relation_type = 4;</code>
          */
@@ -9172,9 +9551,8 @@ public final class JobProtos {
     /**
      * Protobuf type {@code RestQueryJobRelationRequest}
      */
-    public static final class RestQueryJobRelationRequest extends com.google.protobuf.GeneratedMessage implements
-            // @@protoc_insertion_point(message_implements:RestQueryJobRelationRequest)
-            RestQueryJobRelationRequestOrBuilder {
+    public static final class RestQueryJobRelationRequest extends com.google.protobuf.GeneratedMessage
+            implements RestQueryJobRelationRequestOrBuilder {
         // Use RestQueryJobRelationRequest.newBuilder() to construct.
         private RestQueryJobRelationRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
             super(builder);
@@ -9235,9 +9613,8 @@ public final class JobProtos {
                             break;
                         }
                         case 18: {
-                            com.google.protobuf.ByteString bs = input.readBytes();
                             bitField0_ |= 0x00000002;
-                            user_ = bs;
+                            user_ = input.readBytes();
                             break;
                         }
                         case 24: {
@@ -9287,6 +9664,7 @@ public final class JobProtos {
         }
 
         private int bitField0_;
+        // required .AppAuth app_auth = 1;
         public static final int APP_AUTH_FIELD_NUMBER = 1;
         private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_;
 
@@ -9314,6 +9692,7 @@ public final class JobProtos {
             return appAuth_;
         }
 
+        // required string user = 2;
         public static final int USER_FIELD_NUMBER = 2;
         private java.lang.Object user_;
 
@@ -9358,6 +9737,7 @@ public final class JobProtos {
             }
         }
 
+        // required int64 job_id = 3;
         public static final int JOB_ID_FIELD_NUMBER = 3;
         private long jobId_;
 
@@ -9377,6 +9757,7 @@ public final class JobProtos {
             return jobId_;
         }
 
+        // required int32 relation_type = 4;
         public static final int RELATION_TYPE_FIELD_NUMBER = 4;
         private int relationType_;
 
@@ -9408,10 +9789,8 @@ public final class JobProtos {
         @Override
         public final boolean isInitialized() {
             byte isInitialized = memoizedIsInitialized;
-            if (isInitialized == 1)
-                return true;
-            if (isInitialized == 0)
-                return false;
+            if (isInitialized != -1)
+                return isInitialized == 1;
 
             if (!hasAppAuth()) {
                 memoizedIsInitialized = 0;
@@ -9565,9 +9944,8 @@ public final class JobProtos {
         /**
          * Protobuf type {@code RestQueryJobRelationRequest}
          */
-        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-                // @@protoc_insertion_point(builder_implements:RestQueryJobRelationRequest)
-                com.mogujie.jarvis.protocol.JobProtos.RestQueryJobRelationRequestOrBuilder {
+        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder>
+                implements com.mogujie.jarvis.protocol.JobProtos.RestQueryJobRelationRequestOrBuilder {
             public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
                 return com.mogujie.jarvis.protocol.JobProtos.internal_static_RestQueryJobRelationRequest_descriptor;
             }
@@ -9747,6 +10125,7 @@ public final class JobProtos {
 
             private int bitField0_;
 
+            // required .AppAuth app_auth = 1;
             private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth
                     .getDefaultInstance();
             private com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> appAuthBuilder_;
@@ -9862,12 +10241,13 @@ public final class JobProtos {
             private com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> getAppAuthFieldBuilder() {
                 if (appAuthBuilder_ == null) {
                     appAuthBuilder_ = new com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder>(
-                            getAppAuth(), getParentForChildren(), isClean());
+                            appAuth_, getParentForChildren(), isClean());
                     appAuth_ = null;
                 }
                 return appAuthBuilder_;
             }
 
+            // required string user = 2;
             private java.lang.Object user_ = "";
 
             /**
@@ -9885,11 +10265,8 @@ public final class JobProtos {
             public java.lang.String getUser() {
                 java.lang.Object ref = user_;
                 if (!(ref instanceof java.lang.String)) {
-                    com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                    java.lang.String s = bs.toStringUtf8();
-                    if (bs.isValidUtf8()) {
-                        user_ = s;
-                    }
+                    java.lang.String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+                    user_ = s;
                     return s;
                 } else {
                     return (java.lang.String) ref;
@@ -9947,6 +10324,7 @@ public final class JobProtos {
                 return this;
             }
 
+            // required int64 job_id = 3;
             private long jobId_;
 
             /**
@@ -9985,6 +10363,7 @@ public final class JobProtos {
                 return this;
             }
 
+            // required int32 relation_type = 4;
             private int relationType_;
 
             /**
@@ -10034,10 +10413,9 @@ public final class JobProtos {
         // @@protoc_insertion_point(class_scope:RestQueryJobRelationRequest)
     }
 
-    public interface ServerQueryJobRelationResponseOrBuilder extends
-            // @@protoc_insertion_point(interface_extends:ServerQueryJobRelationResponse)
-            com.google.protobuf.MessageOrBuilder {
+    public interface ServerQueryJobRelationResponseOrBuilder extends com.google.protobuf.MessageOrBuilder {
 
+        // repeated .JobStatusEntry job_status_entry = 1;
         /**
          * <code>repeated .JobStatusEntry job_status_entry = 1;</code>
          */
@@ -10063,6 +10441,7 @@ public final class JobProtos {
          */
         com.mogujie.jarvis.protocol.JobProtos.JobStatusEntryOrBuilder getJobStatusEntryOrBuilder(int index);
 
+        // required bool success = 2;
         /**
          * <code>required bool success = 2;</code>
          */
@@ -10073,6 +10452,7 @@ public final class JobProtos {
          */
         boolean getSuccess();
 
+        // optional string message = 3 [default = ""];
         /**
          * <code>optional string message = 3 [default = ""];</code>
          */
@@ -10092,9 +10472,8 @@ public final class JobProtos {
     /**
      * Protobuf type {@code ServerQueryJobRelationResponse}
      */
-    public static final class ServerQueryJobRelationResponse extends com.google.protobuf.GeneratedMessage implements
-            // @@protoc_insertion_point(message_implements:ServerQueryJobRelationResponse)
-            ServerQueryJobRelationResponseOrBuilder {
+    public static final class ServerQueryJobRelationResponse extends com.google.protobuf.GeneratedMessage
+            implements ServerQueryJobRelationResponseOrBuilder {
         // Use ServerQueryJobRelationResponse.newBuilder() to construct.
         private ServerQueryJobRelationResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
             super(builder);
@@ -10156,9 +10535,8 @@ public final class JobProtos {
                             break;
                         }
                         case 26: {
-                            com.google.protobuf.ByteString bs = input.readBytes();
                             bitField0_ |= 0x00000002;
-                            message_ = bs;
+                            message_ = input.readBytes();
                             break;
                         }
                     }
@@ -10201,6 +10579,7 @@ public final class JobProtos {
         }
 
         private int bitField0_;
+        // repeated .JobStatusEntry job_status_entry = 1;
         public static final int JOB_STATUS_ENTRY_FIELD_NUMBER = 1;
         private java.util.List<com.mogujie.jarvis.protocol.JobProtos.JobStatusEntry> jobStatusEntry_;
 
@@ -10244,6 +10623,7 @@ public final class JobProtos {
             return jobStatusEntry_.get(index);
         }
 
+        // required bool success = 2;
         public static final int SUCCESS_FIELD_NUMBER = 2;
         private boolean success_;
 
@@ -10263,6 +10643,7 @@ public final class JobProtos {
             return success_;
         }
 
+        // optional string message = 3 [default = ""];
         public static final int MESSAGE_FIELD_NUMBER = 3;
         private java.lang.Object message_;
 
@@ -10318,10 +10699,8 @@ public final class JobProtos {
         @Override
         public final boolean isInitialized() {
             byte isInitialized = memoizedIsInitialized;
-            if (isInitialized == 1)
-                return true;
-            if (isInitialized == 0)
-                return false;
+            if (isInitialized != -1)
+                return isInitialized == 1;
 
             if (!hasSuccess()) {
                 memoizedIsInitialized = 0;
@@ -10459,9 +10838,8 @@ public final class JobProtos {
         /**
          * Protobuf type {@code ServerQueryJobRelationResponse}
          */
-        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-                // @@protoc_insertion_point(builder_implements:ServerQueryJobRelationResponse)
-                com.mogujie.jarvis.protocol.JobProtos.ServerQueryJobRelationResponseOrBuilder {
+        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder>
+                implements com.mogujie.jarvis.protocol.JobProtos.ServerQueryJobRelationResponseOrBuilder {
             public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
                 return com.mogujie.jarvis.protocol.JobProtos.internal_static_ServerQueryJobRelationResponse_descriptor;
             }
@@ -10645,6 +11023,7 @@ public final class JobProtos {
 
             private int bitField0_;
 
+            // repeated .JobStatusEntry job_status_entry = 1;
             private java.util.List<com.mogujie.jarvis.protocol.JobProtos.JobStatusEntry> jobStatusEntry_ = java.util.Collections.emptyList();
 
             private void ensureJobStatusEntryIsMutable() {
@@ -10791,7 +11170,7 @@ public final class JobProtos {
             public Builder addAllJobStatusEntry(java.lang.Iterable<? extends com.mogujie.jarvis.protocol.JobProtos.JobStatusEntry> values) {
                 if (jobStatusEntryBuilder_ == null) {
                     ensureJobStatusEntryIsMutable();
-                    com.google.protobuf.AbstractMessageLite.Builder.addAll(values, jobStatusEntry_);
+                    super.addAll(values, jobStatusEntry_);
                     onChanged();
                 } else {
                     jobStatusEntryBuilder_.addAllMessages(values);
@@ -10888,6 +11267,7 @@ public final class JobProtos {
                 return jobStatusEntryBuilder_;
             }
 
+            // required bool success = 2;
             private boolean success_;
 
             /**
@@ -10926,6 +11306,7 @@ public final class JobProtos {
                 return this;
             }
 
+            // optional string message = 3 [default = ""];
             private java.lang.Object message_ = "";
 
             /**
@@ -10943,11 +11324,8 @@ public final class JobProtos {
             public java.lang.String getMessage() {
                 java.lang.Object ref = message_;
                 if (!(ref instanceof java.lang.String)) {
-                    com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
-                    java.lang.String s = bs.toStringUtf8();
-                    if (bs.isValidUtf8()) {
-                        message_ = s;
-                    }
+                    java.lang.String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+                    message_ = s;
                     return s;
                 } else {
                     return (java.lang.String) ref;
@@ -11016,23 +11394,23 @@ public final class JobProtos {
         // @@protoc_insertion_point(class_scope:ServerQueryJobRelationResponse)
     }
 
-    private static final com.google.protobuf.Descriptors.Descriptor internal_static_RestSubmitJobRequest_descriptor;
+    private static com.google.protobuf.Descriptors.Descriptor internal_static_RestSubmitJobRequest_descriptor;
     private static com.google.protobuf.GeneratedMessage.FieldAccessorTable internal_static_RestSubmitJobRequest_fieldAccessorTable;
-    private static final com.google.protobuf.Descriptors.Descriptor internal_static_ServerSubmitJobResponse_descriptor;
+    private static com.google.protobuf.Descriptors.Descriptor internal_static_ServerSubmitJobResponse_descriptor;
     private static com.google.protobuf.GeneratedMessage.FieldAccessorTable internal_static_ServerSubmitJobResponse_fieldAccessorTable;
-    private static final com.google.protobuf.Descriptors.Descriptor internal_static_RestModifyJobRequest_descriptor;
+    private static com.google.protobuf.Descriptors.Descriptor internal_static_RestModifyJobRequest_descriptor;
     private static com.google.protobuf.GeneratedMessage.FieldAccessorTable internal_static_RestModifyJobRequest_fieldAccessorTable;
-    private static final com.google.protobuf.Descriptors.Descriptor internal_static_ServerModifyJobResponse_descriptor;
+    private static com.google.protobuf.Descriptors.Descriptor internal_static_ServerModifyJobResponse_descriptor;
     private static com.google.protobuf.GeneratedMessage.FieldAccessorTable internal_static_ServerModifyJobResponse_fieldAccessorTable;
-    private static final com.google.protobuf.Descriptors.Descriptor internal_static_RestModifyJobStatusRequest_descriptor;
+    private static com.google.protobuf.Descriptors.Descriptor internal_static_RestModifyJobStatusRequest_descriptor;
     private static com.google.protobuf.GeneratedMessage.FieldAccessorTable internal_static_RestModifyJobStatusRequest_fieldAccessorTable;
-    private static final com.google.protobuf.Descriptors.Descriptor internal_static_ServerModifyJobStatusResponse_descriptor;
+    private static com.google.protobuf.Descriptors.Descriptor internal_static_ServerModifyJobStatusResponse_descriptor;
     private static com.google.protobuf.GeneratedMessage.FieldAccessorTable internal_static_ServerModifyJobStatusResponse_fieldAccessorTable;
-    private static final com.google.protobuf.Descriptors.Descriptor internal_static_JobStatusEntry_descriptor;
+    private static com.google.protobuf.Descriptors.Descriptor internal_static_JobStatusEntry_descriptor;
     private static com.google.protobuf.GeneratedMessage.FieldAccessorTable internal_static_JobStatusEntry_fieldAccessorTable;
-    private static final com.google.protobuf.Descriptors.Descriptor internal_static_RestQueryJobRelationRequest_descriptor;
+    private static com.google.protobuf.Descriptors.Descriptor internal_static_RestQueryJobRelationRequest_descriptor;
     private static com.google.protobuf.GeneratedMessage.FieldAccessorTable internal_static_RestQueryJobRelationRequest_fieldAccessorTable;
-    private static final com.google.protobuf.Descriptors.Descriptor internal_static_ServerQueryJobRelationResponse_descriptor;
+    private static com.google.protobuf.Descriptors.Descriptor internal_static_ServerQueryJobRelationResponse_descriptor;
     private static com.google.protobuf.GeneratedMessage.FieldAccessorTable internal_static_ServerQueryJobRelationResponse_fieldAccessorTable;
 
     public static com.google.protobuf.Descriptors.FileDescriptor getDescriptor() {
@@ -11053,7 +11431,7 @@ public final class JobProtos {
                         + "rt_time\030\013 \001(\003\022\027\n\017active_end_time\030\014 \001(\003\022\031"
                         + "\n\014expired_time\030\r \001(\005:\003600\022\032\n\017failed_atte",
                 "mpts\030\016 \001(\005:\0010\022\032\n\017failed_interval\030\017 \001(\005:\001"
-                        + "3\0222\n\020expression_entry\030\020 \001(\0132\030.ScheduleEx"
+                        + "3\0222\n\020expression_entry\030\020 \003(\0132\030.ScheduleEx"
                         + "pressionEntry\022*\n\020dependency_entry\030\021 \003(\0132" + "\020.DependencyEntry\"M\n\027ServerSubmitJobResp"
                         + "onse\022\016\n\006job_id\030\001 \001(\003\022\017\n\007success\030\002 \002(\010\022\021\n"
                         + "\007message\030\003 \001(\t:\000\"\262\003\n\024RestModifyJobReques"
@@ -11065,7 +11443,7 @@ public final class JobProtos {
                         + "ive_start_time\030\013 \001(\003\022\027\n\017active_end_time\030"
                         + "\014 \001(\003\022\024\n\014expired_time\030\r \001(\005\022\027\n\017failed_at"
                         + "tempts\030\016 \001(\005\022\027\n\017failed_interval\030\017 \001(\005\0222\n"
-                        + "\020expression_entry\030\020 \001(\0132\030.ScheduleExpres"
+                        + "\020expression_entry\030\020 \003(\0132\030.ScheduleExpres"
                         + "sionEntry\022*\n\020dependency_entry\030\021 \003(\0132\020.De" + "pendencyEntry\"=\n\027ServerModifyJobResponse"
                         + "\022\017\n\007success\030\001 \002(\010\022\021\n\007message\030\002 \001(\t:\000\"f\n\032"
                         + "RestModifyJobStatusRequest\022\032\n\010app_auth\030\001"
@@ -11085,6 +11463,41 @@ public final class JobProtos {
             @Override
             public com.google.protobuf.ExtensionRegistry assignDescriptors(com.google.protobuf.Descriptors.FileDescriptor root) {
                 descriptor = root;
+                internal_static_RestSubmitJobRequest_descriptor = getDescriptor().getMessageTypes().get(0);
+                internal_static_RestSubmitJobRequest_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+                        internal_static_RestSubmitJobRequest_descriptor,
+                        new java.lang.String[] { "AppAuth", "User", "JobName", "JobType", "Status", "Content", "Parameters", "AppName",
+                                "WorkerGroupId", "Priority", "ActiveStartTime", "ActiveEndTime", "ExpiredTime", "FailedAttempts", "FailedInterval",
+                                "ExpressionEntry", "DependencyEntry", });
+                internal_static_ServerSubmitJobResponse_descriptor = getDescriptor().getMessageTypes().get(1);
+                internal_static_ServerSubmitJobResponse_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+                        internal_static_ServerSubmitJobResponse_descriptor, new java.lang.String[] { "JobId", "Success", "Message", });
+                internal_static_RestModifyJobRequest_descriptor = getDescriptor().getMessageTypes().get(2);
+                internal_static_RestModifyJobRequest_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+                        internal_static_RestModifyJobRequest_descriptor,
+                        new java.lang.String[] { "AppAuth", "User", "JobId", "JobName", "JobType", "Content", "Parameters", "AppName",
+                                "WorkerGroupId", "Priority", "ActiveStartTime", "ActiveEndTime", "ExpiredTime", "FailedAttempts", "FailedInterval",
+                                "ExpressionEntry", "DependencyEntry", });
+                internal_static_ServerModifyJobResponse_descriptor = getDescriptor().getMessageTypes().get(3);
+                internal_static_ServerModifyJobResponse_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+                        internal_static_ServerModifyJobResponse_descriptor, new java.lang.String[] { "Success", "Message", });
+                internal_static_RestModifyJobStatusRequest_descriptor = getDescriptor().getMessageTypes().get(4);
+                internal_static_RestModifyJobStatusRequest_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+                        internal_static_RestModifyJobStatusRequest_descriptor, new java.lang.String[] { "AppAuth", "User", "JobId", "Status", });
+                internal_static_ServerModifyJobStatusResponse_descriptor = getDescriptor().getMessageTypes().get(5);
+                internal_static_ServerModifyJobStatusResponse_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+                        internal_static_ServerModifyJobStatusResponse_descriptor, new java.lang.String[] { "Success", "Message", });
+                internal_static_JobStatusEntry_descriptor = getDescriptor().getMessageTypes().get(6);
+                internal_static_JobStatusEntry_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+                        internal_static_JobStatusEntry_descriptor, new java.lang.String[] { "JobId", "Status", });
+                internal_static_RestQueryJobRelationRequest_descriptor = getDescriptor().getMessageTypes().get(7);
+                internal_static_RestQueryJobRelationRequest_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+                        internal_static_RestQueryJobRelationRequest_descriptor,
+                        new java.lang.String[] { "AppAuth", "User", "JobId", "RelationType", });
+                internal_static_ServerQueryJobRelationResponse_descriptor = getDescriptor().getMessageTypes().get(8);
+                internal_static_ServerQueryJobRelationResponse_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+                        internal_static_ServerQueryJobRelationResponse_descriptor,
+                        new java.lang.String[] { "JobStatusEntry", "Success", "Message", });
                 return null;
             }
         };
@@ -11093,42 +11506,6 @@ public final class JobProtos {
                         com.mogujie.jarvis.protocol.AppAuthProtos.getDescriptor(),
                         com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.getDescriptor(), },
                 assigner);
-        internal_static_RestSubmitJobRequest_descriptor = getDescriptor().getMessageTypes().get(0);
-        internal_static_RestSubmitJobRequest_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-                internal_static_RestSubmitJobRequest_descriptor,
-                new java.lang.String[] { "AppAuth", "User", "JobName", "JobType", "Status", "Content", "Parameters", "AppName", "WorkerGroupId",
-                        "Priority", "ActiveStartTime", "ActiveEndTime", "ExpiredTime", "FailedAttempts", "FailedInterval", "ExpressionEntry",
-                        "DependencyEntry", });
-        internal_static_ServerSubmitJobResponse_descriptor = getDescriptor().getMessageTypes().get(1);
-        internal_static_ServerSubmitJobResponse_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-                internal_static_ServerSubmitJobResponse_descriptor, new java.lang.String[] { "JobId", "Success", "Message", });
-        internal_static_RestModifyJobRequest_descriptor = getDescriptor().getMessageTypes().get(2);
-        internal_static_RestModifyJobRequest_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-                internal_static_RestModifyJobRequest_descriptor,
-                new java.lang.String[] { "AppAuth", "User", "JobId", "JobName", "JobType", "Content", "Parameters", "AppName", "WorkerGroupId",
-                        "Priority", "ActiveStartTime", "ActiveEndTime", "ExpiredTime", "FailedAttempts", "FailedInterval", "ExpressionEntry",
-                        "DependencyEntry", });
-        internal_static_ServerModifyJobResponse_descriptor = getDescriptor().getMessageTypes().get(3);
-        internal_static_ServerModifyJobResponse_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-                internal_static_ServerModifyJobResponse_descriptor, new java.lang.String[] { "Success", "Message", });
-        internal_static_RestModifyJobStatusRequest_descriptor = getDescriptor().getMessageTypes().get(4);
-        internal_static_RestModifyJobStatusRequest_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-                internal_static_RestModifyJobStatusRequest_descriptor, new java.lang.String[] { "AppAuth", "User", "JobId", "Status", });
-        internal_static_ServerModifyJobStatusResponse_descriptor = getDescriptor().getMessageTypes().get(5);
-        internal_static_ServerModifyJobStatusResponse_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-                internal_static_ServerModifyJobStatusResponse_descriptor, new java.lang.String[] { "Success", "Message", });
-        internal_static_JobStatusEntry_descriptor = getDescriptor().getMessageTypes().get(6);
-        internal_static_JobStatusEntry_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-                internal_static_JobStatusEntry_descriptor, new java.lang.String[] { "JobId", "Status", });
-        internal_static_RestQueryJobRelationRequest_descriptor = getDescriptor().getMessageTypes().get(7);
-        internal_static_RestQueryJobRelationRequest_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-                internal_static_RestQueryJobRelationRequest_descriptor, new java.lang.String[] { "AppAuth", "User", "JobId", "RelationType", });
-        internal_static_ServerQueryJobRelationResponse_descriptor = getDescriptor().getMessageTypes().get(8);
-        internal_static_ServerQueryJobRelationResponse_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-                internal_static_ServerQueryJobRelationResponse_descriptor, new java.lang.String[] { "JobStatusEntry", "Success", "Message", });
-        com.mogujie.jarvis.protocol.DependencyEntryProtos.getDescriptor();
-        com.mogujie.jarvis.protocol.AppAuthProtos.getDescriptor();
-        com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.getDescriptor();
     }
 
     // @@protoc_insertion_point(outer_class_scope)

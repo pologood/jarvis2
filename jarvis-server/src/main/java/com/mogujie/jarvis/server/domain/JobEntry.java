@@ -1,6 +1,5 @@
 package com.mogujie.jarvis.server.domain;
 
-import java.util.List;
 import java.util.Map;
 
 import com.mogujie.jarvis.core.expression.ScheduleExpression;
@@ -12,10 +11,10 @@ import com.mogujie.jarvis.dto.generate.Job;
 public class JobEntry {
 
     private Job job;
-    private List<ScheduleExpression> scheduleExpressions;
+    private Map<Long, ScheduleExpression> scheduleExpressions;
     private Map<Long, JobDependencyEntry> dependencies;
 
-    public JobEntry(Job job, List<ScheduleExpression> scheduleExpressions, Map<Long, JobDependencyEntry> dependencies) {
+    public JobEntry(Job job, Map<Long, ScheduleExpression> scheduleExpressions, Map<Long, JobDependencyEntry> dependencies) {
         this.job = job;
         this.scheduleExpressions = scheduleExpressions;
         this.dependencies = dependencies;
@@ -29,12 +28,30 @@ public class JobEntry {
         this.job = job;
     }
 
-    public List<ScheduleExpression> getScheduleExpressions() {
+    public Map<Long, ScheduleExpression> getScheduleExpressions() {
         return scheduleExpressions;
     }
 
-    public void setScheduleExpressions(List<ScheduleExpression> scheduleExpressions) {
+    public void setScheduleExpressions(Map<Long, ScheduleExpression> scheduleExpressions) {
         this.scheduleExpressions = scheduleExpressions;
+    }
+
+    public void addScheduleExpression(long expressionId, ScheduleExpression scheduleExpression) {
+        if (!scheduleExpressions.containsKey(expressionId)) {
+            scheduleExpressions.put(expressionId, scheduleExpression);
+        }
+    }
+
+    public void removeScheduleExpression(long expressionId) {
+        scheduleExpressions.remove(expressionId);
+    }
+
+    public void updateScheduleExpression(long expressionId, ScheduleExpression newExpression) {
+        scheduleExpressions.put(expressionId, newExpression);
+    }
+
+    public void clearScheduleExpressions() {
+        scheduleExpressions.clear();
     }
 
     public Map<Long, JobDependencyEntry> getDependencies() {

@@ -25,7 +25,7 @@ message RestSubmitJobRequest {
     optional int32 expired_time = 13 [default = 600];
     optional int32 failed_attempts = 14 [default = 0];
     optional int32 failed_interval = 15 [default = 3];
-    optional ScheduleExpressionEntry expression_entry = 16;
+    repeated ScheduleExpressionEntry expression_entry = 16;
     repeated DependencyEntry dependency_entry = 17;
 }
 
@@ -52,7 +52,7 @@ message RestModifyJobRequest {
     optional int32 expired_time = 13;
     optional int32 failed_attempts = 14;
     optional int32 failed_interval = 15;
-    optional ScheduleExpressionEntry expression_entry = 16;
+    repeated ScheduleExpressionEntry expression_entry = 16;
     repeated DependencyEntry dependency_entry = 17;
 }
 

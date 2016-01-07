@@ -77,7 +77,7 @@ public class ConvertValidUtils {
      */
     public static void checkAppVo(OperationMode mode, String appName, Integer status, Integer maxConcurrency) {
         if (mode == OperationMode.ADD) {
-            Preconditions.checkArgument(appName != null && appName.equals(""), "appName不能为空");
+            Preconditions.checkArgument(appName != null && !appName.equals(""), "appName不能为空");
             Preconditions.checkArgument(status != null, "status不能为空");
             Preconditions.checkArgument(AppStatus.isValid(status), "status内容不对。value:" + status);
         }

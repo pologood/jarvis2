@@ -10,7 +10,7 @@ public interface JobScheduleExpressionMapper {
 
     int deleteByExample(JobScheduleExpressionExample example);
 
-    int deleteByPrimaryKey(Integer id);
+    int deleteByPrimaryKey(Long id);
 
     int insert(JobScheduleExpression record);
 
@@ -18,7 +18,7 @@ public interface JobScheduleExpressionMapper {
 
     List<JobScheduleExpression> selectByExample(JobScheduleExpressionExample example);
 
-    JobScheduleExpression selectByPrimaryKey(Integer id);
+    JobScheduleExpression selectByPrimaryKey(Long id);
 
     int updateByExampleSelective(@Param("record") JobScheduleExpression record, @Param("example") JobScheduleExpressionExample example);
 

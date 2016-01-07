@@ -42,7 +42,7 @@ public class TestRestJob {
         JobEntryVo.ScheduleExpressionEntry expressionEntry = new JobEntryVo.ScheduleExpressionEntry();
         expressionEntry.setExpressionType(ScheduleExpressionType.CRON.getValue());
         expressionEntry.setExpression("0 0 3 * * ?");
-        job.setScheduleExpressionEntry(expressionEntry);
+        job.setScheduleExpressionList(Arrays.asList(expressionEntry));
 
         // 依赖任务
         JobEntryVo.DependencyEntry dependencyEntry1 = new JobEntryVo.DependencyEntry();
@@ -85,7 +85,7 @@ public class TestRestJob {
         JobEntryVo.ScheduleExpressionEntry expressionEntry = new JobEntryVo.ScheduleExpressionEntry();
         expressionEntry.setExpression("0 43 5 * * ?");
         expressionEntry.setExpressionType(7);
-        job.setScheduleExpressionEntry(expressionEntry);
+        job.setScheduleExpressionList(Arrays.asList(expressionEntry));
 
         String paramsJson = JsonHelper.toJson(job, JobEntryVo.class);
 

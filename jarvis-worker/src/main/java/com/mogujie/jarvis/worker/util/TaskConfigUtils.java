@@ -20,9 +20,9 @@ import org.apache.commons.configuration.HierarchicalConfiguration;
 import org.apache.commons.configuration.XMLConfiguration;
 
 import com.google.common.base.Throwables;
+import com.mogujie.jarvis.core.AbstractTask;
 import com.mogujie.jarvis.core.domain.Pair;
 import com.mogujie.jarvis.core.util.ReflectionUtils;
-import com.mogujie.jarvis.worker.AbstractTask;
 import com.mogujie.jarvis.worker.strategy.AcceptanceStrategy;
 
 public class TaskConfigUtils {

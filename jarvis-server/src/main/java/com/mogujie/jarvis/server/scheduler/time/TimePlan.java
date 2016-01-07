@@ -40,7 +40,11 @@ public enum TimePlan {
     }
 
     public synchronized boolean addPlan(TimePlanEntry entry) {
-        return plan.add(entry);
+        if (!plan.contains(entry)) {
+            return plan.add(entry);
+        } else {
+            return false;
+        }
     }
 
     public synchronized boolean removePlan(TimePlanEntry planEntry) {

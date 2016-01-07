@@ -12,7 +12,9 @@ import java.lang.reflect.Constructor;
 import java.util.List;
 
 import com.mogujie.jarvis.core.AbstractLogCollector;
+import com.mogujie.jarvis.core.AbstractTask;
 import com.mogujie.jarvis.core.ProgressReporter;
+import com.mogujie.jarvis.core.TaskContext;
 import com.mogujie.jarvis.core.domain.Pair;
 import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.exeception.AcceptanceException;

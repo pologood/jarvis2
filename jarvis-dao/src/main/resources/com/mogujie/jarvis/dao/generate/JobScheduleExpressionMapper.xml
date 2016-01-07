@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.mogujie.jarvis.dao.generate.JobScheduleExpressionMapper" >
   <resultMap id="BaseResultMap" type="com.mogujie.jarvis.dto.generate.JobScheduleExpression" >
-    <id column="id" property="id" jdbcType="INTEGER" />
+    <id column="id" property="id" jdbcType="BIGINT" />
     <result column="jobId" property="jobId" jdbcType="BIGINT" />
     <result column="expressionType" property="expressionType" jdbcType="INTEGER" />
     <result column="expression" property="expression" jdbcType="VARCHAR" />
@@ -84,15 +84,15 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
     from job_schedule_expression
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from job_schedule_expression
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
   </delete>
   <delete id="deleteByExample" parameterType="com.mogujie.jarvis.dto.generate.JobScheduleExpressionExample" >
     delete from job_schedule_expression
@@ -101,7 +101,7 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.mogujie.jarvis.dto.generate.JobScheduleExpression" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into job_schedule_expression (jobId, expressionType, expression, 
@@ -110,7 +110,7 @@
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.mogujie.jarvis.dto.generate.JobScheduleExpression" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into job_schedule_expression
@@ -159,7 +159,7 @@
     update job_schedule_expression
     <set >
       <if test="record.id != null" >
-        id = #{record.id,jdbcType=INTEGER},
+        id = #{record.id,jdbcType=BIGINT},
       </if>
       <if test="record.jobId != null" >
         jobId = #{record.jobId,jdbcType=BIGINT},
@@ -183,7 +183,7 @@
   </update>
   <update id="updateByExample" parameterType="map" >
     update job_schedule_expression
-    set id = #{record.id,jdbcType=INTEGER},
+    set id = #{record.id,jdbcType=BIGINT},
       jobId = #{record.jobId,jdbcType=BIGINT},
       expressionType = #{record.expressionType,jdbcType=INTEGER},
       expression = #{record.expression,jdbcType=VARCHAR},
@@ -212,7 +212,7 @@
         updateTime = #{updateTime,jdbcType=TIMESTAMP},
       </if>
     </set>
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.mogujie.jarvis.dto.generate.JobScheduleExpression" >
     update job_schedule_expression
@@ -221,6 +221,6 @@
       expression = #{expression,jdbcType=VARCHAR},
       createTime = #{createTime,jdbcType=TIMESTAMP},
       updateTime = #{updateTime,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

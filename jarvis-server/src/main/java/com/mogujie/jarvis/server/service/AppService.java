@@ -56,6 +56,14 @@ public class AppService {
         return getAppByName(appName).getAppId();
     }
 
+    public String getAppNameByAppId(Integer appId){
+        App app = appMetastore.get(appId);
+        if (app == null){
+            return "";
+        }
+        return app.getAppName();
+    }
+
     public App getAppByName(String appName) {
         Preconditions.checkNotNull(appName, appName + "not found.");
         for (Entry<Integer, App> entry : appMetastore.entrySet()) {
@@ -71,10 +79,6 @@ public class AppService {
     public List<App> getAppList() {
         List<App> list = Lists.newArrayList(appMetastore.values());
         return list;
-    }
-
-    public void removeApp(int appId) {
-        appMetastore.remove(appId);
     }
 
     public void insert(App app) {

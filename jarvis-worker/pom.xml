@@ -20,6 +20,11 @@
 			<artifactId>jarvis-protocol</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>com.mogujie.jarvis</groupId>
+			<artifactId>jarvis-tasks</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.fusesource</groupId>
 			<artifactId>sigar</artifactId>
 			<version>1.6.4</version>

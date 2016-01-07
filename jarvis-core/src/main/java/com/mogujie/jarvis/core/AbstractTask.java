@@ -6,7 +6,7 @@
  * Create Date: 2015年8月31日 下午2:51:49
  */
 
-package com.mogujie.jarvis.worker;
+package com.mogujie.jarvis.core;
 
 import com.mogujie.jarvis.core.exeception.TaskException;
 

@@ -3,7 +3,7 @@ package com.mogujie.jarvis.dto.generate;
 import java.util.Date;
 
 public class JobScheduleExpression {
-    private Integer id;
+    private Long id;
 
     private Long jobId;
 
@@ -15,11 +15,11 @@ public class JobScheduleExpression {
 
     private Date updateTime;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

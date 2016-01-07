@@ -17,11 +17,11 @@ import com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskRequest;
 import akka.actor.ActorRef;
 import akka.actor.ActorSelection;
 
-public class TaskReporter {
+public class DefaultTaskReporter {
 
     private ActorSelection actor;
 
-    public TaskReporter(ActorSelection actor) {
+    public DefaultTaskReporter(ActorSelection actor) {
         this.actor = actor;
     }
 

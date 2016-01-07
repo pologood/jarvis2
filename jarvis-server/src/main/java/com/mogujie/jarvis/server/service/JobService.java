@@ -10,7 +10,6 @@ package com.mogujie.jarvis.server.service;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,7 +20,6 @@ import org.mybatis.guice.transactional.Transactional;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.google.inject.Inject;
@@ -37,11 +35,9 @@ import com.mogujie.jarvis.core.expression.ISO8601Expression;
 import com.mogujie.jarvis.core.expression.ScheduleExpression;
 import com.mogujie.jarvis.core.expression.ScheduleExpressionType;
 import com.mogujie.jarvis.core.expression.TimeOffsetExpression;
-import com.mogujie.jarvis.dao.generate.AppMapper;
 import com.mogujie.jarvis.dao.generate.JobDependMapper;
 import com.mogujie.jarvis.dao.generate.JobMapper;
 import com.mogujie.jarvis.dao.generate.JobScheduleExpressionMapper;
-import com.mogujie.jarvis.dto.generate.App;
 import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.dto.generate.JobDepend;
 import com.mogujie.jarvis.dto.generate.JobDependExample;
@@ -55,7 +51,6 @@ import com.mogujie.jarvis.server.domain.JobEntry;
 
 /**
  * @author wuya
- *
  */
 @Singleton
 public class JobService {
@@ -73,12 +68,41 @@ public class JobService {
     private JobDependMapper jobDependMapper;
 
     @Inject
-    private AppMapper appMapper;
-
-    @Inject
     private void init() {
         loadMetaDataFromDB();
         LOGGER.info("jobService loadMetaDataFromDB finished.");
+    }
+
+    public Map<Long, JobEntry> getMetaStore() {
+        return metaStore;
+    }
+
+    //------------------------  job信息处理 -------------------------------------
+
+    public JobEntry get(long jobId) {
+        return metaStore.get(jobId);
+    }
+
+    public List<Job> getNotDeletedJobs() {
+        JobExample example = new JobExample();
+        example.createCriteria().andStatusNotEqualTo(JobStatus.DELETED.getValue());
+        List<Job> jobs = jobMapper.selectByExampleWithBLOBs(example);
+        if (jobs == null) {
+            jobs = new ArrayList<>();
+        }
+        return jobs;
+    }
+
+    public boolean isActive(long jobId) {
+        Job job = metaStore.get(jobId).getJob();
+        Date startDate = job.getActiveStartDate();
+        Date endDate = job.getActiveEndDate();
+        Date now = DateTime.now().toDate();
+        if ((startDate == null || now.after(startDate)) && (endDate == null || now.before(endDate))) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public long insertJob(Job record) {
@@ -88,7 +112,7 @@ public class JobService {
 
         // 2. insert to cache
         Job newRecord = jobMapper.selectByPrimaryKey(jobId);
-        JobEntry jobEntry = new JobEntry(newRecord, new ArrayList<>(), new HashMap<>());
+        JobEntry jobEntry = new JobEntry(newRecord, Maps.newHashMap(), Maps.newHashMap());
         metaStore.put(jobId, jobEntry);
 
         return jobId;
@@ -100,10 +124,23 @@ public class JobService {
 
         // 2. update to cache
         long jobId = record.getJobId();
-        JobEntry jobEntry = get(jobId);
+        JobEntry jobEntry = metaStore.get(jobId);
         if (jobEntry != null) {
             Job newRecord = jobMapper.selectByPrimaryKey(jobId);
             jobEntry.setJob(newRecord);
+        }
+    }
+
+    public void updateStatus(long jobId, String user, int status) {
+        Job record = jobMapper.selectByPrimaryKey(jobId);
+        record.setStatus(status);
+        record.setUpdateUser(user);
+        record.setUpdateTime(DateTime.now().toDate());
+        jobMapper.updateByPrimaryKey(record);
+
+        JobEntry jobEntry = metaStore.get(jobId);
+        if (jobEntry != null) {
+            jobEntry.updateJobStatus(status);
         }
     }
 
@@ -112,6 +149,14 @@ public class JobService {
         metaStore.remove(jobId);
     }
 
+    //------------------------  job计划表达式——处理 -------------------------------------
+
+    /**
+     * 获取job的计划表达式
+     *
+     * @param jobId
+     * @return
+     */
     public JobScheduleExpression getScheduleExpressionByJobId(long jobId) {
         JobScheduleExpressionExample example = new JobScheduleExpressionExample();
         example.createCriteria().andJobIdEqualTo(jobId);
@@ -123,6 +168,12 @@ public class JobService {
         return record;
     }
 
+    /**
+     * 插入job的计划表达式
+     *
+     * @param jobId
+     * @param entry
+     */
     public void insertScheduleExpression(long jobId, ScheduleExpressionEntry entry) {
         // 1. insert to DB
         JobScheduleExpression record = new JobScheduleExpression();
@@ -135,67 +186,70 @@ public class JobService {
         jobScheduleExpressionMapper.insert(record);
 
         // 2. insert to cache
-        ScheduleExpression scheduleExpression = null;
-        int expressionType = record.getExpressionType();
+        ScheduleExpressionType expressionType = ScheduleExpressionType.parseValue(record.getExpressionType());
         String expression = record.getExpression();
-        if (expressionType == ScheduleExpressionType.CRON.getValue()) {
-            scheduleExpression = new CronExpression(expression);
-        } else if (expressionType == ScheduleExpressionType.FIXED_RATE.getValue()) {
-            scheduleExpression = new FixedRateExpression(expression);
-        } else if (expressionType == ScheduleExpressionType.FIXED_DELAY.getValue()) {
-            scheduleExpression = new FixedDelayExpression(expression);
-        } else if (expressionType == ScheduleExpressionType.ISO8601.getValue()) {
-            scheduleExpression = new ISO8601Expression(expression);
-        }
-        List<ScheduleExpression> jobScheduleExpressions = Lists.newArrayList(scheduleExpression);
-        JobEntry jobEntry = get(jobId);
-        jobEntry.setScheduleExpressions(jobScheduleExpressions);
+        ScheduleExpression scheduleExpression = getScheduleExpression(expressionType, expression);
+        JobEntry jobEntry = metaStore.get(jobId);
+        jobEntry.addScheduleExpression(entry.getExpressionId(), scheduleExpression);
     }
 
+    public void deleteScheduleExpression(long jobId, long expressionId) {
+        jobScheduleExpressionMapper.deleteByPrimaryKey(expressionId);
+        get(jobId).removeScheduleExpression(expressionId);
+   }
+
+    /**
+     * 更新job的计划表达式
+     *
+     * @param jobId
+     * @param entry
+     */
     public void updateScheduleExpression(long jobId, ScheduleExpressionEntry entry) {
         // 1. update to DB
-        JobScheduleExpressionExample example = new JobScheduleExpressionExample();
-        example.createCriteria().andJobIdEqualTo(jobId);
-
-        JobScheduleExpression record = new JobScheduleExpression();
+        long expressionId = entry.getExpressionId();
+        JobScheduleExpression record = jobScheduleExpressionMapper.selectByPrimaryKey(expressionId);
         record.setExpressionType(entry.getExpressionType());
         record.setExpression(entry.getScheduleExpression());
         record.setUpdateTime(DateTime.now().toDate());
-        jobScheduleExpressionMapper.updateByExampleSelective(record, example);
+        jobScheduleExpressionMapper.updateByPrimaryKey(record);
 
         // 2. update to cache
-        ScheduleExpression scheduleExpression = null;
-        int expressionType = record.getExpressionType();
+        ScheduleExpressionType expressionType = ScheduleExpressionType.parseValue(record.getExpressionType());
         String expression = record.getExpression();
-        if (expressionType == ScheduleExpressionType.CRON.getValue()) {
-            scheduleExpression = new CronExpression(expression);
-        } else if (expressionType == ScheduleExpressionType.FIXED_RATE.getValue()) {
-            scheduleExpression = new FixedRateExpression(expression);
-        } else if (expressionType == ScheduleExpressionType.FIXED_DELAY.getValue()) {
-            scheduleExpression = new FixedDelayExpression(expression);
-        } else if (expressionType == ScheduleExpressionType.ISO8601.getValue()) {
-            scheduleExpression = new ISO8601Expression(expression);
-        }
-        List<ScheduleExpression> jobScheduleExpressions = Lists.newArrayList(scheduleExpression);
-        JobEntry jobEntry = get(record.getJobId());
-        jobEntry.setScheduleExpressions(jobScheduleExpressions);
+        ScheduleExpression scheduleExpression = getScheduleExpression(expressionType, expression);
+        JobEntry jobEntry = metaStore.get(jobId);
+        jobEntry.updateScheduleExpression(entry.getExpressionId(), scheduleExpression);
     }
 
-    public void deleteScheduleExpression(long jobId) {
+    public void deleteScheduleExpressionByJobId(long jobId) {
         JobScheduleExpressionExample example = new JobScheduleExpressionExample();
         example.createCriteria().andJobIdEqualTo(jobId);
         jobScheduleExpressionMapper.deleteByExample(example);
 
-        JobEntry jobEntry = get(jobId);
-        jobEntry.setScheduleExpressions(new ArrayList<ScheduleExpression>());
+        JobEntry jobEntry = metaStore.get(jobId);
+        jobEntry.clearScheduleExpressions();
+    }
+
+    //------------------------  job依赖处理 -------------------------------------
+
+    public JobDepend getJobDepend(JobDependKey key) {
+        return jobDependMapper.selectByPrimaryKey(key);
     }
 
     public void insertJobDepend(JobDepend record) {
         jobDependMapper.insertSelective(record);
 
         JobDependencyEntry jobDependencyEntry = getJobDependencyEntry(record);
-        JobEntry jobEntry = get(record.getJobId());
+        JobEntry jobEntry = metaStore.get(record.getJobId());
         jobEntry.addDependency(record.getPreJobId(), jobDependencyEntry);
+    }
+
+    public void updateJobDepend(JobDepend record) {
+        jobDependMapper.updateByPrimaryKey(record);
+
+        JobDependencyEntry jobDependencyEntry = getJobDependencyEntry(record);
+        JobEntry jobEntry = metaStore.get(record.getJobId());
+        jobEntry.updateDependency(record.getPreJobId(), jobDependencyEntry);
     }
 
     public void deleteJobDepend(long jobId, long preJobId) {
@@ -204,8 +258,10 @@ public class JobService {
         key.setPreJobId(preJobId);
         jobDependMapper.deleteByPrimaryKey(key);
 
-        JobEntry jobEntry = get(key.getJobId());
-        jobEntry.removeDependency(key.getPreJobId());
+        JobEntry jobEntry = metaStore.get(jobId);
+        if (jobEntry != null) {
+            jobEntry.removeDependency(preJobId);
+        }
     }
 
     public void deleteJobDependByPreJob(long preJobId) {
@@ -216,69 +272,15 @@ public class JobService {
 
         if (jobDependList != null) {
             for (JobDepend jobDepend : jobDependList) {
-                JobEntry jobEntry = get(jobDepend.getJobId());
-                jobEntry.removeDependency(preJobId);
+                JobEntry jobEntry = metaStore.get(jobDepend.getJobId());
+                if (jobEntry != null) {
+                    jobEntry.removeDependency(preJobId);
+                }
             }
         }
     }
 
-    public JobDepend getJobDepend(JobDependKey key) {
-        return jobDependMapper.selectByPrimaryKey(key);
-    }
-
-    public void updateJobDepend(JobDepend record) {
-        jobDependMapper.updateByPrimaryKey(record);
-
-        JobDependencyEntry jobDependencyEntry = getJobDependencyEntry(record);
-        JobEntry jobEntry = get(record.getJobId());
-        jobEntry.updateDependency(record.getPreJobId(), jobDependencyEntry);
-    }
-
-    public JobEntry get(long jobId) {
-        return metaStore.get(jobId);
-    }
-
-    public Map<Long, JobEntry> getMetaStore() {
-        return metaStore;
-    }
-
-    public List<Job> getNotDeletedJobs() {
-        JobExample example = new JobExample();
-        example.createCriteria().andStatusNotEqualTo(JobStatus.DELETED.getValue());
-        List<Job> jobs = jobMapper.selectByExampleWithBLOBs(example);
-        if (jobs == null) {
-            jobs = new ArrayList<Job>();
-        }
-        return jobs;
-    }
-
-    public boolean isActive(long jobId) {
-        Job job = get(jobId).getJob();
-        Date startDate = job.getActiveStartDate();
-        Date endDate = job.getActiveEndDate();
-        Date now = DateTime.now().toDate();
-        if ((startDate == null || now.after(startDate)) && (endDate == null || now.before(endDate))) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public void updateStatus(long jobId, String user, int status) {
-        Job record = jobMapper.selectByPrimaryKey(jobId);
-        record.setStatus(status);
-        record.setUpdateUser(user);
-        record.setUpdateTime(DateTime.now().toDate());
-        jobMapper.updateByPrimaryKey(record);
-
-        JobEntry jobEntry = get(jobId);
-        jobEntry.updateJobStatus(status);
-    }
-
-    public String getAppName(long jobId) {
-        App app = appMapper.selectByPrimaryKey(get(jobId).getJob().getAppId());
-        return app.getAppName();
-    }
+    //------------------------  载入数据 -------------------------------------
 
     /**
      * 读取metaData
@@ -287,31 +289,32 @@ public class JobService {
     private void loadMetaDataFromDB() {
         List<Job> jobs = getNotDeletedJobs();
         List<JobScheduleExpression> scheduleExpressions = jobScheduleExpressionMapper.selectByExample(new JobScheduleExpressionExample());
-        Multimap<Long, ScheduleExpression> scheduleExpressionMap = ArrayListMultimap.create();
+        Map<Long, Map<Long, ScheduleExpression>> scheduleExpressionMap = Maps.newHashMap();
         for (JobScheduleExpression jobScheduleExpression : scheduleExpressions) {
-            ScheduleExpression scheduleExpression = null;
-            int expressionType = jobScheduleExpression.getExpressionType();
             long jobId = jobScheduleExpression.getJobId();
+            long expressionId = jobScheduleExpression.getId();
+            ScheduleExpressionType expressionType;
+            try {
+                expressionType = ScheduleExpressionType.parseValue(jobScheduleExpression.getExpressionType());
+            } catch (Exception ex) {
+                LOGGER.warn("ExpressionType is undefined. id={};type={}", jobId, jobScheduleExpression.getExpressionType());
+                continue;
+            }
+            String expression = jobScheduleExpression.getExpression();
+            ScheduleExpression scheduleExpression = getScheduleExpression(expressionType, expression);
+            if (scheduleExpression == null || !scheduleExpression.isValid()) {
+                LOGGER.warn("expression value is invalid. id={};value={}", jobId, expression);
+                continue;
+            }
 
-            if (expressionType == ScheduleExpressionType.CRON.getValue()) {
-                scheduleExpression = new CronExpression(jobScheduleExpression.getExpression());
-            } else if (expressionType == ScheduleExpressionType.FIXED_RATE.getValue()) {
-                scheduleExpression = new FixedRateExpression(jobScheduleExpression.getExpression());
-            } else if (expressionType == ScheduleExpressionType.FIXED_DELAY.getValue()) {
-                scheduleExpression = new FixedDelayExpression(jobScheduleExpression.getExpression());
-            } else if (expressionType == ScheduleExpressionType.ISO8601.getValue()) {
-                scheduleExpression = new ISO8601Expression(jobScheduleExpression.getExpression());
+            if (scheduleExpressionMap.containsKey(jobId)) {
+                Map<Long, ScheduleExpression> expressionMap = scheduleExpressionMap.get(jobId);
+                expressionMap.put(expressionId, scheduleExpression);
             } else {
-                LOGGER.warn("ExpressionType is undefined. id={};type={}", jobId, expressionType);
-                continue;
+                Map<Long, ScheduleExpression> expressionMap = Maps.newHashMap();
+                expressionMap.put(expressionId, scheduleExpression);
+                scheduleExpressionMap.put(jobId, expressionMap);
             }
-
-            if (!scheduleExpression.isValid()) {
-                LOGGER.warn("expression value is invalid. id={};value={}", jobId, scheduleExpression.toString());
-                continue;
-            }
-
-            scheduleExpressionMap.put(jobId, scheduleExpression);
         }
 
         List<JobDepend> jobDepends = jobDependMapper.selectByExample(new JobDependExample());
@@ -322,7 +325,7 @@ public class JobService {
 
         for (Job job : jobs) {
             long jobId = job.getJobId();
-            List<ScheduleExpression> jobScheduleExpressions = new ArrayList<>(scheduleExpressionMap.get(jobId));
+            Map<Long, ScheduleExpression> expressionMap = scheduleExpressionMap.get(jobId);
             Map<Long, JobDependencyEntry> dependencies = Maps.newHashMap();
             Collection<JobDepend> jobDependsCollection = jobDependMap.get(jobId);
             if (jobDependsCollection != null && jobDependsCollection.size() > 0) {
@@ -335,15 +338,13 @@ public class JobService {
             }
 
             // 初始化 JobMetaStore
-            metaStore.put(job.getJobId(), new JobEntry(job, jobScheduleExpressions, dependencies));
+            metaStore.put(job.getJobId(), new JobEntry(job, expressionMap, dependencies));
         }
     }
 
     private JobDependencyEntry getJobDependencyEntry(JobDepend jobDepend) {
         long jobId = jobDepend.getJobId();
-        JobDependencyEntry jobDependencyEntry = null;
         String offsetStrategy = jobDepend.getOffsetStrategy();
-        // default is null
         if (offsetStrategy.isEmpty()) {
             offsetStrategy = null;
         }
@@ -372,7 +373,7 @@ public class JobService {
             dependencyExpression = new TimeOffsetExpression(offsetStrategy);
             if (!dependencyExpression.isValid()) {
                 LOGGER.warn("dependency expression is invalid. id={}; value={}", jobId, dependencyExpression.toString());
-                return jobDependencyEntry;
+                return null;
             }
         }
 
@@ -380,18 +381,38 @@ public class JobService {
         DependencyStrategyExpression dependencyStrategyExpression = new DefaultDependencyStrategyExpression(commonStrategyStr);
         if (!dependencyStrategyExpression.isValid()) {
             LOGGER.warn("dependency strategy is invalid. id={}; value={}", jobId, dependencyStrategyExpression.toString());
-            return jobDependencyEntry;
+            return null;
         }
 
-        jobDependencyEntry = new JobDependencyEntry(dependencyExpression, dependencyStrategyExpression);
+        JobDependencyEntry jobDependencyEntry = new JobDependencyEntry(dependencyExpression, dependencyStrategyExpression);
         return jobDependencyEntry;
     }
+
+    /**
+     * @return
+     */
+    private ScheduleExpression getScheduleExpression(ScheduleExpressionType expressionType, String expression) {
+
+        ScheduleExpression scheduleExpression = null;
+        if (expressionType == ScheduleExpressionType.CRON) {
+            scheduleExpression = new CronExpression(expression);
+        } else if (expressionType == ScheduleExpressionType.FIXED_RATE) {
+            scheduleExpression = new FixedRateExpression(expression);
+        } else if (expressionType == ScheduleExpressionType.FIXED_DELAY) {
+            scheduleExpression = new FixedDelayExpression(expression);
+        } else if (expressionType == ScheduleExpressionType.ISO8601) {
+            scheduleExpression = new ISO8601Expression(expression);
+        }
+
+        return scheduleExpression;
+    }
+
 
     @VisibleForTesting
     public void deleteJobAndRelation(long jobId) {
         deleteJob(jobId);
         deleteJobDependByPreJob(jobId);
-        deleteScheduleExpression(jobId);
+        deleteScheduleExpressionByJobId(jobId);
     }
 
 }

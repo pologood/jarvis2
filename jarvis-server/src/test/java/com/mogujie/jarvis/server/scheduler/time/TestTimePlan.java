@@ -62,4 +62,22 @@ public class TestTimePlan {
             System.out.println(plan.getPlan().poll());
         }
     }
+
+    @Test
+    public void testAddPlan2() {
+        TimePlanEntry entry1 = new TimePlanEntry(1, new DateTime(1000));
+        TimePlanEntry entry2 = new TimePlanEntry(2, new DateTime(2000));
+        TimePlanEntry entry3 = new TimePlanEntry(3, new DateTime(3000), 3);
+
+        plan.addPlan(entry2);
+        plan.addPlan(entry3);
+        plan.addPlan(entry1);
+        Assert.assertEquals(3, plan.getPlan().size());
+
+        plan.addPlan(new TimePlanEntry(1, new DateTime(1000)));
+        Assert.assertEquals(3, plan.getPlan().size());
+
+        plan.removePlan(new TimePlanEntry(1, new DateTime(1000)));
+        System.out.println(plan.getPlan().size());
+    }
 }

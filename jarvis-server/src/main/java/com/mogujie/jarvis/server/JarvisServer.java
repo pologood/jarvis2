@@ -9,6 +9,7 @@
 package com.mogujie.jarvis.server;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -117,9 +118,9 @@ public class JarvisServer {
             Set<Long> dependencies = jobEntry.getDependencies().keySet();
             int cycleFlag = 0;
             int timeFlag = 0;
-            List<ScheduleExpression> timeExpressions = jobEntry.getScheduleExpressions();
-            if (!timeExpressions.isEmpty()) {
-                for (ScheduleExpression expression : timeExpressions) {
+            Map<Long, ScheduleExpression> timeExpressions = jobEntry.getScheduleExpressions();
+            if (timeExpressions != null && !timeExpressions.isEmpty()) {
+                for (ScheduleExpression expression : timeExpressions.values()) {
                     if (expression instanceof CronExpression || expression instanceof FixedRateExpression
                             || expression instanceof ISO8601Expression) {
                         timeFlag = 1;

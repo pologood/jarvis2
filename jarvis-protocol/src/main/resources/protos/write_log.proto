@@ -4,7 +4,7 @@ option java_outer_classname = "WriteLogProtos";
 
 message WorkerWriteLogRequest {
     required string full_id = 1;
-    required string log = 2;
+    required bytes log = 2;
     required int32 type = 3;
     required bool is_end = 4;
 }

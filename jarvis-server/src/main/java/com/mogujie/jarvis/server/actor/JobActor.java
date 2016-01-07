@@ -11,6 +11,7 @@ package com.mogujie.jarvis.server.actor;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.joda.time.DateTime;
@@ -19,17 +20,22 @@ import org.mybatis.guice.transactional.Transactional;
 import akka.actor.Props;
 import akka.actor.UntypedActor;
 
+import com.google.common.collect.Range;
 import com.google.common.collect.Sets;
 import com.mogujie.jarvis.core.domain.JobRelationType;
 import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.core.domain.OperationMode;
 import com.mogujie.jarvis.core.domain.Pair;
-import com.mogujie.jarvis.core.expression.ScheduleExpressionType;
+import com.mogujie.jarvis.core.expression.CronExpression;
+import com.mogujie.jarvis.core.expression.FixedDelayExpression;
+import com.mogujie.jarvis.core.expression.FixedRateExpression;
+import com.mogujie.jarvis.core.expression.ISO8601Expression;
+import com.mogujie.jarvis.core.expression.ScheduleExpression;
 import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.dto.generate.JobDepend;
 import com.mogujie.jarvis.dto.generate.JobDependKey;
-import com.mogujie.jarvis.dto.generate.JobScheduleExpression;
+import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry;
 import com.mogujie.jarvis.protocol.JobProtos.JobStatusEntry;
 import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobRequest;
@@ -42,8 +48,8 @@ import com.mogujie.jarvis.protocol.JobProtos.ServerQueryJobRelationResponse;
 import com.mogujie.jarvis.protocol.JobProtos.ServerSubmitJobResponse;
 import com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry;
 import com.mogujie.jarvis.server.domain.ActorEntry;
+import com.mogujie.jarvis.server.domain.JobEntry;
 import com.mogujie.jarvis.server.domain.ModifyDependEntry;
-import com.mogujie.jarvis.server.domain.ModifyOperation;
 import com.mogujie.jarvis.server.domain.RemoveJobRequest;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.dag.DAGJob;
@@ -52,6 +58,8 @@ import com.mogujie.jarvis.server.scheduler.dag.JobGraph;
 import com.mogujie.jarvis.server.scheduler.time.TimePlan;
 import com.mogujie.jarvis.server.service.ConvertValidService;
 import com.mogujie.jarvis.server.service.JobService;
+import com.mogujie.jarvis.server.service.TaskService;
+import com.mogujie.jarvis.server.util.PlanUtil;
 
 /**
  * @author guangming
@@ -119,8 +127,11 @@ public class JobActor extends UntypedActor {
             long jobId = jobService.insertJob(job);
 
             // 2. insert schedule expression to DB
-            if (msg.hasExpressionEntry()) {
-                jobService.insertScheduleExpression(jobId, msg.getExpressionEntry());
+            List<ScheduleExpressionEntry> expressionEntries = msg.getExpressionEntryList();
+            if (expressionEntries != null && !expressionEntries.isEmpty()) {
+                for (ScheduleExpressionEntry entry : expressionEntries) {
+                    jobService.insertScheduleExpression(jobId, entry);
+                }
             }
 
             // 3. insert jobDepend to DB
@@ -134,11 +145,15 @@ public class JobActor extends UntypedActor {
             // 4. add job to scheduler
             int timeFlag = 0;
             int cycleFlag = 0;
-            if (msg.hasExpressionEntry()) {
-                if (msg.getExpressionEntry().getExpressionType() == ScheduleExpressionType.FIXED_DELAY.getValue()) {
-                    cycleFlag = 1;
-                } else {
-                    timeFlag = 1;
+            Map<Long, ScheduleExpression> timeExpressions = jobService.get(jobId).getScheduleExpressions();
+            if (!timeExpressions.isEmpty()) {
+                for (ScheduleExpression expression : timeExpressions.values()) {
+                    if (expression instanceof CronExpression || expression instanceof FixedRateExpression
+                            || expression instanceof ISO8601Expression) {
+                        timeFlag = 1;
+                    } else if (expression instanceof FixedDelayExpression) {
+                        cycleFlag = 1;
+                    }
                 }
             }
             int dependFlag = (!needDependencies.isEmpty()) ? 1 : 0;
@@ -152,6 +167,7 @@ public class JobActor extends UntypedActor {
             getSender().tell(response, getSelf());
 
         } catch (Exception e) {
+            // TODO rollback
             response = ServerSubmitJobResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
             getSender().tell(response, getSelf());
         }
@@ -178,8 +194,53 @@ public class JobActor extends UntypedActor {
 
             modifyJobExpression(msg);
 
-            // 3. scheduler modify job
-            // timeScheduler.modifyJob(jobId);
+            long jobId = msg.getJobId();
+            int dependFlag = jobGraph.getParents(jobId).isEmpty() ? 0 : 1;
+            JobEntry jobEntry = jobService.get(jobId);
+            int cycleFlag = 0;
+            int timeFlag = 0;
+            Map<Long, ScheduleExpression> timeExpressions = jobEntry.getScheduleExpressions();
+            if (!timeExpressions.isEmpty()) {
+                for (ScheduleExpression expression : timeExpressions.values()) {
+                    if (expression instanceof CronExpression || expression instanceof FixedRateExpression
+                            || expression instanceof ISO8601Expression) {
+                        timeFlag = 1;
+                    } else if (expression instanceof FixedDelayExpression) {
+                        cycleFlag = 1;
+                    }
+                }
+            }
+            DAGJobType type = DAGJobType.getDAGJobType(cycleFlag, dependFlag, timeFlag);
+            jobGraph.modifyDAGJobType(jobId, type);
+
+            List<ScheduleExpressionEntry> expressionEntries = msg.getExpressionEntryList();
+            //如果修改过时间，可能要修改时间计划
+            if (expressionEntries != null && !expressionEntries.isEmpty()) {
+                // 如果是纯时间任务
+                if (type.equals(DAGJobType.TIME)) {
+                    //重新计算下一次时间
+                    DateTime now = DateTime.now();
+                    DateTime lastTime = PlanUtil.getScheduleTimeBefore(jobId, now);
+                    if (lastTime == null) {
+                        lastTime = new DateTime(0);
+                    } else {
+                        lastTime = lastTime.minusSeconds(1);
+                    }
+                    DateTime nextTime = PlanUtil.getScheduleTimeAfter(jobId, now);
+                    TaskService taskService = Injectors.getInjector().getInstance(TaskService.class);
+                    List<Task> tasks = taskService.getTasksBetween(jobId, Range.closed(lastTime, nextTime));
+                    if (tasks != null && !tasks.isEmpty()) {
+                        //如果当前周期已经跑过一次，则下一周期生效
+                        // noting to do
+                    } else {
+                        //如果当前周期尚未开始跑，则立即生效，重新计算下一次时间
+                        plan.removeJob(jobId);
+                        plan.addJob(jobId);
+                    }
+                } else if (!type.implies(DAGJobType.TIME)) {
+                    plan.removeJob(jobId);
+                }
+            }
 
             response = ServerModifyJobResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());
@@ -222,40 +283,20 @@ public class JobActor extends UntypedActor {
     }
 
     private void modifyJobExpression(RestModifyJobRequest msg) {
-        if (!msg.hasExpressionEntry()) {
+        List<ScheduleExpressionEntry> expressionEntries = msg.getExpressionEntryList();
+        if (expressionEntries == null || expressionEntries.isEmpty()) {
             return;
         }
         long jobId = msg.getJobId();
-        ScheduleExpressionEntry expressionEntry = msg.getExpressionEntry();
-        String newExpression = expressionEntry.getScheduleExpression();
-        // newExpression为空表示删除调度表达式
-        if (newExpression == null || newExpression.isEmpty()) {
-            jobService.deleteScheduleExpression(jobId);
-        } else {
-            JobScheduleExpression record = jobService.getScheduleExpressionByJobId(jobId);
-            if (record == null) {
-                // 插入新的expression表
-                jobService.insertScheduleExpression(jobId, expressionEntry);
-            } else {
-                // 更新旧的expression表
-                jobService.updateScheduleExpression(jobId, expressionEntry);
+        for (ScheduleExpressionEntry entry : expressionEntries) {
+            OperationMode operation = OperationMode.parseValue(entry.getOperator());
+            if (operation.equals(OperationMode.ADD)) {
+                jobService.insertScheduleExpression(jobId, entry);
+            } else if (operation.equals(OperationMode.DELETE)) {
+                jobService.deleteScheduleExpression(jobId, entry.getExpressionId());
+            } else if (operation.equals(OperationMode.EDIT)) {
+                jobService.updateScheduleExpression(jobId, entry);
             }
-        }
-
-        int dependFlag = jobGraph.getParents(jobId).isEmpty() ? 0 : 1;
-        int timeFlag = 0;
-        int cycleFlag = 0;
-        if (newExpression != null && !newExpression.isEmpty()) {
-            if (expressionEntry.getExpressionType() == ScheduleExpressionType.FIXED_DELAY.getValue()) {
-                cycleFlag = 1;
-            } else {
-                timeFlag = 1;
-            }
-        }
-        DAGJobType type = DAGJobType.getDAGJobType(cycleFlag, dependFlag, timeFlag);
-        jobGraph.modifyDAGJobType(jobId, type);
-        if (timeFlag == 0) {
-            plan.removeJob(jobId);
         }
     }
 
@@ -272,17 +313,13 @@ public class JobActor extends UntypedActor {
             String offsetStrategyValue = entry.getOffsetDependStrategy();
             String user = msg.getUser();
 
-            ModifyOperation operation;
             OperationMode operationMode = OperationMode.parseValue(entry.getOperator());
             if (operationMode.equals(OperationMode.ADD)) {
-                operation = ModifyOperation.ADD;
                 JobDepend jobDepend = convertValidService.convert2JobDepend(jobId, entry, user);
                 jobService.insertJobDepend(jobDepend);
             } else if (operationMode.equals(OperationMode.DELETE)) {
-                operation = ModifyOperation.DEL;
                 jobService.deleteJobDepend(jobId, preJobId);
             } else {
-                operation = ModifyOperation.MODIFY;
                 JobDependKey key = new JobDependKey();
                 key.setJobId(jobId);
                 key.setPreJobId(preJobId);
@@ -295,7 +332,7 @@ public class JobActor extends UntypedActor {
                     jobService.updateJobDepend(record);
                 }
             }
-            ModifyDependEntry dependEntry = new ModifyDependEntry(operation, preJobId, commonStrategyValue, offsetStrategyValue);
+            ModifyDependEntry dependEntry = new ModifyDependEntry(operationMode, preJobId, commonStrategyValue, offsetStrategyValue);
             dependEntries.add(dependEntry);
         }
 
@@ -355,7 +392,7 @@ public class JobActor extends UntypedActor {
             // remove job depend where preJobId=jobId
             jobService.deleteJobDependByPreJob(jobId);
             // remove expression where jobId=jobId
-            jobService.deleteScheduleExpression(jobId);
+            jobService.deleteScheduleExpressionByJobId(jobId);
             // scheduler remove job
             plan.removeJob(jobId);
             jobGraph.removeJob(jobId);

@@ -10,8 +10,8 @@ package com.mogujie.jarvis.tasks.shell;
 
 import java.util.Set;
 
+import com.mogujie.jarvis.core.TaskContext;
 import com.mogujie.jarvis.core.domain.TaskDetail;
-import com.mogujie.jarvis.worker.TaskContext;
 
 /**
  * @author guangming

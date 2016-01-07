@@ -7,7 +7,7 @@
 		<version>2.0</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
-	<artifactId>jarvis-jobs</artifactId>
+	<artifactId>jarvis-tasks</artifactId>
 
 	<properties>
 		<hadoop.version>2.7.1</hadoop.version>
@@ -17,10 +17,6 @@
 		<dependency>
 			<groupId>com.mogujie.jarvis</groupId>
 			<artifactId>jarvis-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.mogujie.jarvis</groupId>
-			<artifactId>jarvis-worker</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.facebook.presto</groupId>

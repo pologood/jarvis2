@@ -26,7 +26,7 @@ public class JobEntryVo extends AbstractVo {
     private Integer failedAttempts;
     private Integer failedInterval;
     private List<DependencyEntry> dependencyList;
-    private ScheduleExpressionEntry scheduleExpressionEntry;
+    private List<ScheduleExpressionEntry> scheduleExpressionList;
 
     public static class DependencyEntry {
         private Integer operatorMode;
@@ -217,12 +217,12 @@ public class JobEntryVo extends AbstractVo {
         this.dependencyList = dependencyList;
     }
 
-    public ScheduleExpressionEntry getScheduleExpressionEntry() {
-        return scheduleExpressionEntry;
+    public List<ScheduleExpressionEntry> getScheduleExpressionList() {
+        return scheduleExpressionList;
     }
 
-    public void setScheduleExpressionEntry(ScheduleExpressionEntry scheduleExpressionEntry) {
-        this.scheduleExpressionEntry = scheduleExpressionEntry;
+    public void setScheduleExpressionList(List<ScheduleExpressionEntry> scheduleExpressionList) {
+        this.scheduleExpressionList = scheduleExpressionList;
     }
 
     public String getAppName(String defaultValue) {

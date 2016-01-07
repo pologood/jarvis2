@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.mogujie.jarvis.server.service.AppService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
@@ -51,7 +52,6 @@ import com.mogujie.jarvis.server.service.TaskService;
  * Scheduler used to handle ready tasks.
  *
  * @author guangming
- *
  */
 public class TaskScheduler extends Scheduler {
     private static TaskScheduler instance = new TaskScheduler();
@@ -64,6 +64,7 @@ public class TaskScheduler extends Scheduler {
     }
 
     private TaskGraph taskGraph = TaskGraph.INSTANCE;
+    private AppService appService = Injectors.getInjector().getInstance(AppService.class);
     private JobService jobService = Injectors.getInjector().getInstance(JobService.class);
     private TaskService taskService = Injectors.getInjector().getInstance(TaskService.class);
     private TaskManager taskManager = Injectors.getInjector().getInstance(TaskManager.class);
@@ -314,7 +315,8 @@ public class TaskScheduler extends Scheduler {
         TaskDetail taskDetail = null;
         long jobId = dagTask.getJobId();
         Job job = jobService.get(jobId).getJob();
-        taskDetail = TaskDetail.newTaskDetailBuilder().setFullId(fullId).setTaskName(job.getJobName()).setAppName(jobService.getAppName(jobId))
+        taskDetail = TaskDetail.newTaskDetailBuilder().setFullId(fullId).setTaskName(job.getJobName())
+                .setAppName(appService.getAppNameByAppId(job.getAppId()))
                 .setUser(job.getSubmitUser()).setPriority(job.getPriority()).setContent(job.getContent()).setTaskType(job.getJobType())
                 .setParameters(JsonHelper.fromJson2JobParams(job.getParams())).setDataTime(new DateTime(dagTask.getDataTime()))
                 .setGroupId(job.getWorkerGroupId()).setFailedRetries(job.getFailedAttempts()).setFailedInterval(job.getFailedInterval())
