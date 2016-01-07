@@ -8,7 +8,7 @@
 
 package com.mogujie.jarvis.core;
 
-import com.mogujie.jarvis.core.exeception.TaskException;
+import com.mogujie.jarvis.core.exception.TaskException;
 
 /**
  * @author wuya

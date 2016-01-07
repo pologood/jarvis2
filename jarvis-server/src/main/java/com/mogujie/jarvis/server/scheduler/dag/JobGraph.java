@@ -29,7 +29,7 @@ import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.core.domain.OperationMode;
 import com.mogujie.jarvis.core.domain.Pair;
 import com.mogujie.jarvis.core.domain.TaskType;
-import com.mogujie.jarvis.core.exeception.JobScheduleException;
+import com.mogujie.jarvis.core.exception.JobScheduleException;
 import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.server.domain.ModifyDependEntry;
 import com.mogujie.jarvis.server.guice.Injectors;

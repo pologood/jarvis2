@@ -10,7 +10,7 @@ package com.mogujie.jarvis.tasks;
 
 import com.mogujie.jarvis.core.AbstractTask;
 import com.mogujie.jarvis.core.TaskContext;
-import com.mogujie.jarvis.core.exeception.TaskException;
+import com.mogujie.jarvis.core.exception.TaskException;
 import com.mogujie.jarvis.core.util.ThreadUtils;
 
 /**

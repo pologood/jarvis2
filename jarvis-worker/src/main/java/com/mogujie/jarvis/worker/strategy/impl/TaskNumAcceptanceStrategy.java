@@ -8,7 +8,7 @@
 
 package com.mogujie.jarvis.worker.strategy.impl;
 
-import com.mogujie.jarvis.core.exeception.AcceptanceException;
+import com.mogujie.jarvis.core.exception.AcceptanceException;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.worker.TaskPool;
 import com.mogujie.jarvis.worker.WorkerConfigKeys;

@@ -6,7 +6,7 @@
  * Create Date: 2015年8月31日 下午2:52:35
  */
 
-package com.mogujie.jarvis.core.exeception;
+package com.mogujie.jarvis.core.exception;
 
 public class TaskException extends JarvisException {
 

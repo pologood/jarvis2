@@ -26,7 +26,7 @@ import com.google.common.collect.Lists;
 import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.core.domain.TaskStatus;
-import com.mogujie.jarvis.core.exeception.JobScheduleException;
+import com.mogujie.jarvis.core.exception.JobScheduleException;
 import com.mogujie.jarvis.core.expression.CronExpression;
 import com.mogujie.jarvis.core.expression.FixedDelayExpression;
 import com.mogujie.jarvis.core.expression.FixedRateExpression;

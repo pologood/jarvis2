@@ -6,7 +6,7 @@
  * Create Date: 2015年9月1日 下午2:04:58
  */
 
-package com.mogujie.jarvis.core.exeception;
+package com.mogujie.jarvis.core.exception;
 
 /**
  * @author guangming

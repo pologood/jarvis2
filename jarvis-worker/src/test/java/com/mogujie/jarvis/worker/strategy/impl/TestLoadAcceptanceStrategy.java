@@ -14,7 +14,7 @@ import org.hyperic.sigar.SigarException;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.mogujie.jarvis.core.exeception.AcceptanceException;
+import com.mogujie.jarvis.core.exception.AcceptanceException;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.worker.WorkerConfigKeys;
 import com.mogujie.jarvis.worker.strategy.AcceptanceStrategy;

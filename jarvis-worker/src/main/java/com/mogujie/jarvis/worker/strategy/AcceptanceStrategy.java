@@ -8,7 +8,7 @@
 
 package com.mogujie.jarvis.worker.strategy;
 
-import com.mogujie.jarvis.core.exeception.AcceptanceException;
+import com.mogujie.jarvis.core.exception.AcceptanceException;
 
 /**
  * @author wuya

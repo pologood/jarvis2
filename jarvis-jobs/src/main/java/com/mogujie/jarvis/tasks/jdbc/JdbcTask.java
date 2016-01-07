@@ -26,7 +26,7 @@ import com.mogujie.jarvis.core.AbstractLogCollector;
 import com.mogujie.jarvis.core.AbstractTask;
 import com.mogujie.jarvis.core.TaskContext;
 import com.mogujie.jarvis.core.domain.TaskDetail;
-import com.mogujie.jarvis.core.exeception.TaskException;
+import com.mogujie.jarvis.core.exception.TaskException;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.tasks.util.HiveQLUtil;
 

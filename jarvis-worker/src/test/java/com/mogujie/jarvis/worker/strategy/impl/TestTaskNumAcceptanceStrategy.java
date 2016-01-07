@@ -11,7 +11,7 @@ package com.mogujie.jarvis.worker.strategy.impl;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.mogujie.jarvis.core.exeception.AcceptanceException;
+import com.mogujie.jarvis.core.exception.AcceptanceException;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.tasks.DummyTask;
 import com.mogujie.jarvis.worker.TaskPool;

@@ -14,7 +14,7 @@ import org.hyperic.sigar.CpuPerc;
 import org.hyperic.sigar.Sigar;
 import org.hyperic.sigar.SigarException;
 
-import com.mogujie.jarvis.core.exeception.AcceptanceException;
+import com.mogujie.jarvis.core.exception.AcceptanceException;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.worker.WorkerConfigKeys;
 import com.mogujie.jarvis.worker.strategy.AcceptanceResult;

@@ -1,4 +1,4 @@
-package com.mogujie.jarvis.core.exeception;
+package com.mogujie.jarvis.core.exception;
 
 /**
  * @author muming

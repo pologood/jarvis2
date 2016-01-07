@@ -11,7 +11,7 @@ package com.mogujie.jarvis.server.util;
 import java.nio.charset.StandardCharsets;
 
 import com.google.common.hash.Hashing;
-import com.mogujie.jarvis.core.exeception.AppTokenInvalidException;
+import com.mogujie.jarvis.core.exception.AppTokenInvalidException;
 
 public class AppTokenUtils {
 

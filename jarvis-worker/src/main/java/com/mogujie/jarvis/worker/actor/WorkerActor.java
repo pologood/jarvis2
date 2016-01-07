@@ -32,7 +32,7 @@ import com.mogujie.jarvis.core.TaskContext;
 import com.mogujie.jarvis.core.TaskContext.TaskContextBuilder;
 import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.domain.TaskDetail.TaskDetailBuilder;
-import com.mogujie.jarvis.core.exeception.TaskException;
+import com.mogujie.jarvis.core.exception.TaskException;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.protocol.HeartBeatProtos.HeartBeatResponse;
 import com.mogujie.jarvis.protocol.KillTaskProtos.ServerKillTaskRequest;

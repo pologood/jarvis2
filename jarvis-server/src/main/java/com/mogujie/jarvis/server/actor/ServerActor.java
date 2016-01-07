@@ -26,7 +26,7 @@ import com.google.common.collect.Maps;
 import com.google.protobuf.GeneratedMessage;
 import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.core.domain.Pair;
-import com.mogujie.jarvis.core.exeception.AppTokenInvalidException;
+import com.mogujie.jarvis.core.exception.AppTokenInvalidException;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.dto.generate.App;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;

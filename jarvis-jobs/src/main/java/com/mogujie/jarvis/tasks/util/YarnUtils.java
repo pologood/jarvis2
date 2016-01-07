@@ -15,7 +15,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.mogujie.jarvis.core.exeception.ShellException;
+import com.mogujie.jarvis.core.exception.ShellException;
 
 /**
  * @author wuya

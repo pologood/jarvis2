@@ -12,7 +12,7 @@ import java.lang.management.ManagementFactory;
 import java.lang.management.OperatingSystemMXBean;
 import java.text.DecimalFormat;
 
-import com.mogujie.jarvis.core.exeception.AcceptanceException;
+import com.mogujie.jarvis.core.exception.AcceptanceException;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.worker.WorkerConfigKeys;
 import com.mogujie.jarvis.worker.strategy.AcceptanceResult;
