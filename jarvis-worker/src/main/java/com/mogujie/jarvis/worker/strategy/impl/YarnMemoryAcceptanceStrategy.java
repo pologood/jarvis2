@@ -31,36 +31,36 @@ import com.mogujie.jarvis.worker.strategy.AcceptanceStrategy;
  */
 public class YarnMemoryAcceptanceStrategy implements AcceptanceStrategy {
 
-  private int activeUriIndex = 0;
-  private DecimalFormat decimalFormat = new DecimalFormat("#0.00");
-  private static final Configuration CONFIG = ConfigUtils.getWorkerConfig();
-  private static final double MAX_YARN_MEMORY_USAGE = CONFIG
-      .getDouble(WorkerConfigKeys.YARN_MEMORY_USAGE_THRESHOLD, 0.9);
-  private static final List<Object> YARN_REST_API_URIS = CONFIG
-      .getList(WorkerConfigKeys.YARN_RESOUCEMANAGER_REST_API_URIS);
+    private int activeUriIndex = 0;
+    private DecimalFormat decimalFormat = new DecimalFormat("#0.00");
+    private static final Configuration CONFIG = ConfigUtils.getWorkerConfig();
+    private static final double MAX_YARN_MEMORY_USAGE = CONFIG.getDouble(WorkerConfigKeys.YARN_MEMORY_USAGE_THRESHOLD, 0.9);
+    private static final List<Object> YARN_REST_API_URIS = CONFIG.getList(WorkerConfigKeys.YARN_RESOUCEMANAGER_REST_API_URIS);
 
-  @Override
-  public AcceptanceResult accept() throws AcceptanceException {
-    for (int i = 0, len = YARN_REST_API_URIS.size(); i < len; i++) {
-      try {
-        HttpResponse<JsonNode> response = Unirest
-            .get(YARN_REST_API_URIS.get(activeUriIndex).toString()).asJson();
-        JSONObject clusterMetrics = response.getBody().getObject().getJSONObject("clusterMetrics");
-        int allocatedMB = clusterMetrics.getInt("allocatedMB");
-        int totalMB = clusterMetrics.getInt("totalMB");
-        double currentMemoryUsage = (double) allocatedMB / totalMB;
-        if (currentMemoryUsage < MAX_YARN_MEMORY_USAGE) {
-          return new AcceptanceResult(true, "");
-        } else {
-          return new AcceptanceResult(false, "Yarn集群当前内存使用率"
-              + decimalFormat.format(currentMemoryUsage) + ", 超过阈值" + MAX_YARN_MEMORY_USAGE);
+    @Override
+    public AcceptanceResult accept() throws AcceptanceException {
+        if (YARN_REST_API_URIS == null || YARN_REST_API_URIS.size() < 1) {
+            throw new AcceptanceException("The value of " + WorkerConfigKeys.YARN_RESOUCEMANAGER_REST_API_URIS + " is invalid");
         }
-      } catch (UnirestException | JSONException e) {
-        activeUriIndex = ++activeUriIndex % len;
-      }
-    }
 
-    return new AcceptanceResult(false, "Can not get yarn cluster metrics");
-  }
+        for (int i = 0, len = YARN_REST_API_URIS.size(); i < len; i++) {
+            try {
+                HttpResponse<JsonNode> response = Unirest.get(YARN_REST_API_URIS.get(activeUriIndex).toString()).asJson();
+                JSONObject clusterMetrics = response.getBody().getObject().getJSONObject("clusterMetrics");
+                int allocatedMB = clusterMetrics.getInt("allocatedMB");
+                int totalMB = clusterMetrics.getInt("totalMB");
+                double currentMemoryUsage = (double) allocatedMB / totalMB;
+                if (currentMemoryUsage < MAX_YARN_MEMORY_USAGE) {
+                    return new AcceptanceResult(true, "");
+                } else {
+                    return new AcceptanceResult(false, "Yarn集群当前内存使用率" + decimalFormat.format(currentMemoryUsage) + ", 超过阈值" + MAX_YARN_MEMORY_USAGE);
+                }
+            } catch (UnirestException | JSONException e) {
+                activeUriIndex = ++activeUriIndex % len;
+            }
+        }
+
+        return new AcceptanceResult(false, "Can not get yarn cluster metrics");
+    }
 
 }
