@@ -26,7 +26,9 @@ public class JobService {
     public List<JobVo> getAllJobs(Integer status) {
         JobQo jobQo = new JobQo();
         List<String> statusList = new ArrayList<String>();
-        statusList.add(status.toString());
+        if(null!=status){
+            statusList.add(status.toString());
+        }
         jobQo.setStatusList(JsonHelper.toJson(statusList));
         List<JobVo> jobVoList = jobMapper.getJobsByCondition(jobQo);
         return jobVoList;
