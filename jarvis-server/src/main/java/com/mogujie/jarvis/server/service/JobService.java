@@ -190,7 +190,7 @@ public class JobService {
         String expression = record.getExpression();
         ScheduleExpression scheduleExpression = getScheduleExpression(expressionType, expression);
         JobEntry jobEntry = metaStore.get(jobId);
-        jobEntry.addScheduleExpression(entry.getExpressionId(), scheduleExpression);
+        jobEntry.addScheduleExpression(record.getId(), scheduleExpression);
     }
 
     public void deleteScheduleExpression(long jobId, long expressionId) {
