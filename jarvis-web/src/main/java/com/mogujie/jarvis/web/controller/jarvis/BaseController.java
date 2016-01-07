@@ -1,6 +1,5 @@
 package com.mogujie.jarvis.web.controller.jarvis;
 
-import com.atlassian.crowd.integration.http.CrowdHttpAuthenticator;
 import com.mogu.bigdata.admin.client.service.MenuService;
 import com.mogu.bigdata.admin.client.service.RbacService;
 import com.mogu.bigdata.admin.core.consts.PlatformConfig;
@@ -9,14 +8,12 @@ import com.mogu.bigdata.admin.core.entity.vo.Menu;
 import com.mogu.bigdata.admin.core.exception.BigdataException;
 import com.mogu.bigdata.admin.inside.service.AdminUserService;
 import com.mogu.bigdata.admin.passport.session.SessionHelper;
-import com.mogujie.jarvis.web.auth.adapter.JarvisAuthTypeAdapter;
 import com.mogujie.jarvis.web.auth.annotation.JarvisPassport;
 import com.mogujie.jarvis.web.auth.conf.JarvisAuthType;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
