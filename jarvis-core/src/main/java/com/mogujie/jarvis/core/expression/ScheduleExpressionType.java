@@ -10,16 +10,25 @@ package com.mogujie.jarvis.core.expression;
 
 public enum ScheduleExpressionType {
 
-    CRON(1), FIXED_RATE(2), FIXED_DELAY(3), ISO8601(4);
+    CRON(1,"Cron表达式"),
+    FIXED_RATE(2,"固定频率"),
+    FIXED_DELAY(3,"固定时延"),
+    ISO8601(4,"ISO8601");
 
     private int value;
+    private String description;
 
-    ScheduleExpressionType(int value) {
+    ScheduleExpressionType(int value,String description) {
         this.value = value;
+        this.description=description;
     }
 
     public int getValue() {
         return value;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public static ScheduleExpressionType parseValue(int value) throws IllegalArgumentException {

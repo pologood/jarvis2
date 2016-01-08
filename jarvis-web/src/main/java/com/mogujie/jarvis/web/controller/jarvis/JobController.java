@@ -27,6 +27,8 @@ public class JobController extends BaseController {
     @Autowired
     WorkerService workerService;
     @Autowired
+    WorkerGroupService workerGroupService;
+    @Autowired
     AppService appService;
     @Autowired
     JobDependService jobDependService;
@@ -58,7 +60,7 @@ public class JobController extends BaseController {
         List<String> submitUsers = jobService.getSubmitUsers();
 
         List<AppVo> appVoList = appService.getAppList(new AppQo());
-        List<WorkerGroupVo> workerGroupVoList = workerService.getAllWorkerGroup();
+        List<WorkerGroupVo> workerGroupVoList = workerGroupService.getAllWorkerGroup();
 
         modelMap.put("submitUsers", submitUsers);
         modelMap.put("appVoList", appVoList);
@@ -100,7 +102,7 @@ public class JobController extends BaseController {
         }
 
 
-        List<WorkerGroupVo> WorkerGroupVoList = workerService.getAllWorkerGroup();
+        List<WorkerGroupVo> WorkerGroupVoList = workerGroupService.getAllWorkerGroup();
 
         List<JobVo> jobVoList = jobService.getAllJobs(1);
 

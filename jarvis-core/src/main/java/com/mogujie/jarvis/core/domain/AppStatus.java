@@ -9,18 +9,22 @@
 package com.mogujie.jarvis.core.domain;
 
 /**
- * 
+ *
  *
  */
 public enum AppStatus {
 
-    DISABLED(0),    //无效
-    ENABLE(1);      //有效
+    ENABLE(1, "启用"),      //启用
+    DISABLED(2, "禁用"),    //禁用
+    DELETE(3, "删除");      //删除
 
-    private  int value;
 
-    AppStatus(int value){
+    private int value;
+    private String description;
+
+    AppStatus(int value, String description) {
         this.value = value;
+        this.description = description;
     }
 
     public int getValue() {
@@ -37,4 +41,7 @@ public enum AppStatus {
         return false;
     }
 
+    public String getDescription() {
+        return description;
+    }
 }

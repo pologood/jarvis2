@@ -1,5 +1,6 @@
 package com.mogujie.jarvis.web.controller.api;
 
+import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.web.entity.qo.TaskQo;
 import com.mogujie.jarvis.web.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,5 +29,21 @@ public class TaskAPIController {
         return result;
     }
 
+
+    @RequestMapping(value = "getTaskStatus")
+    @ResponseBody
+    public List<Map<String, Object>> getJobStatus() {
+        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+
+        TaskStatus[] taskStatuses = TaskStatus.values();
+        for (TaskStatus taskStatus : taskStatuses) {
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("id",taskStatus.getValue());
+            map.put("text",taskStatus.getDescription());
+            list.add(map);
+        }
+
+        return list;
+    }
 
 }

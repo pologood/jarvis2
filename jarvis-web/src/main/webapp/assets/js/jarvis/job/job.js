@@ -1,5 +1,5 @@
 var jobTypeJson = null;
-var jobStatusJson = null;
+var jobStatus = null;
 var jobPriorityJson = null;
 $(function () {
     //select采用select2 实现
@@ -15,8 +15,8 @@ $(function () {
         });
     });
 
-    $.getJSON(contextPath + "/assets/json/jobStatus.json", function (data) {
-        jobStatusJson = data;
+    $.getJSON(contextPath + "/api/job/getJobStatus", function (data) {
+        jobStatus = data;
         $("#jobStatus").select2({
             data: data,
             width: '100%'
@@ -313,7 +313,7 @@ function operateFormatter(value, row, index) {
 
     var operation = '<div class="btn-group"> <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">修改状态 <span class="caret"></span> </button>';
     operation = operation + '<ul class="dropdown-menu">';
-    $(jobStatusJson).each(function (i, c) {
+    $(jobStatus).each(function (i, c) {
         if (c["id"] != 'all' && c["id"] != status && c["id"] != '3') {
             var li = '<li><a href="javascript:void(0)" onclick="updateJobStatus(' + jobId + ',' + c["id"] + ')" >' + c["text"] + '</a></li>';
             operation = operation + li;
@@ -326,8 +326,18 @@ function operateFormatter(value, row, index) {
     return result + operation;
 }
 
+var jobStatusClass={
+    "1":"glyphicon glyphicon-ok text-success",
+    "2":"glyphicon glyphicon-remove text-danger",
+    "3":"glyphicon glyphicon-calendar text-info",
+    "4":"glyphicon glyphicon-minus text-warning",
+    "5":"glyphicon glyphicon-pause text-primary"
+}
+
 function statusFormatter(value, row, index) {
-    return formatStatus(jobStatusJson, value);
+    var result;
+    result='<i class="'+jobStatusClass[value]+'"></i>'
+    return result;
 }
 
 function formatResult(result) {

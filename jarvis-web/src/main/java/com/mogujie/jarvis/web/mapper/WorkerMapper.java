@@ -26,17 +26,4 @@ public interface WorkerMapper {
     WorkerVo getWorkerByIpAndPort(Map<String, Object> para);
 
 
-    //WorkerGroup
-    List<WorkerGroupVo> getAllWorkerGroup();
-
-    WorkerGroupVo getWorkerGroupById(Integer id);
-
-    WorkerGroupVo getWorkerGroupByName(String name);
-
-    Integer getWorkerGroupCount(WorkerGroupQo workerGroupSearchVo);
-
-    List<WorkerGroupVo> getWorkerGroupList(WorkerGroupQo workerGroupSearchVo);
-
-    List<String> getAllWorkerGroupCreator();
-
 }

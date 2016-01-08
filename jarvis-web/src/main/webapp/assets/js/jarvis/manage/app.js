@@ -1,22 +1,67 @@
-var appStatusJson = null;
-var appTypeJson = null;
+var appStatus = null;
+var appType = null;
 $(function () {
     $.ajaxSettings.async = false;
-    $.getJSON(contextPath + "/assets/json/appStatus.json", function (data) {
-        appStatusJson = data;
+    $.getJSON(contextPath + "/api/app/getAppStatus", function (data) {
+        appStatus = data;
     });
 
-    $.getJSON(contextPath + "/assets/json/appType.json", function (data) {
-        appTypeJson = data;
+    $.getJSON(contextPath + "/api/app/getAppType", function (data) {
+        appType = data;
     });
     $.ajaxSettings.async = true;
 
     $(".input-group select").select2({width: '100%'});
-    $("#appType").val(1).trigger("change");
-    $("#status").val(1).trigger("change");
+    initType(appType);
+    initStatus(appStatus);
+
     initData();
 });
 
+function initType(appType){
+    var data = new Array();
+    var all = {};
+    all["id"] = "all";
+    all["text"] = "全部";
+    data.push(all);
+    $(appType).each(function (i, c) {
+        data.push(c);
+    });
+    $("#appType").select2({
+        data: data,
+        width: '100%'
+    });
+    $("#appType").val(1).trigger("change");
+}
+function initStatus(appStatus) {
+    var data = new Array();
+    var all = {};
+    all["id"] = "all";
+    all["text"] = "全部";
+    data.push(all);
+    $(appStatus).each(function (i, c) {
+        if(c["id"]!=3){
+            data.push(c);
+        }
+    });
+    $("#status").select2({
+        data: data,
+        width: '100%'
+    });
+
+}
+
+function search() {
+    $("#content").bootstrapTable('destroy', '');
+    initData();
+}
+
+function reset() {
+    var selects = $(".input-group select");
+    $(selects).each(function (i, c) {
+        $(c).val("all").trigger("change");
+    });
+}
 
 //获取查询参数
 function getQueryPara() {
@@ -70,41 +115,34 @@ function initData() {
 
 function modifyAppStatus(appId, status, appName, maxConcurrency) {
     var data = {appId: appId, applicationName: appName, status: status, maxConcurrency: maxConcurrency};
-    requestRemoteRestApi("/api/app/edit", "修改应用状态", data);
-    search();
-}
-
-
-function operateFormatter(value, row, index) {
-    var appStatus = [{"id": "0", "text": "停用"}, {"id": "1", "text": "启用"}];
-    var appId = row["appId"];
-    var appName = row["appName"];
-    var maxConcurrency = row["maxConcurrency"];
-    var status = row["status"];
-    var result = [
-        '<a class="edit" href="' + contextPath + '/manage/appAddOrEdit?appId=' + appId + '" title="编辑应用信息" target="_blank">',
-        '<i class="glyphicon glyphicon-edit"></i>',
-        '</a>  '
-    ].join('');
-
-    var operation = '';
-
-    $(appStatus).each(function (i, c) {
-        if (c["id"] != 'all' && c["id"] != status) {
-            var style = "";
-            if (0 == c["id"]) {
-                style = "btn btn-xs btn-danger";
+    //删除需要提示
+    if (3 == status) {
+        (new PNotify({
+            title: '删除App',
+            text: '确定删除App?',
+            icon: 'glyphicon glyphicon-question-sign',
+            hide: false,
+            confirm: {
+                confirm: true
+            },
+            buttons: {
+                closer: false,
+                sticker: false
+            },
+            history: {
+                history: false
             }
-            else if (1 == c["id"]) {
-                style = "btn btn-xs btn-success";
-            }
-
-            operation += '<a class="' + style + '" href="javascript:void(0)" onclick="modifyAppStatus(' + appId + ',' + c["id"] + ',\'' + appName + '\',' + maxConcurrency + ')" >' + c["text"] + '</a>';
-        }
-    });
-    //console.log(result);
-
-    return result + "&nbsp;&nbsp" + operation;
+        })).get().on('pnotify.confirm', function () {
+                requestRemoteRestApi("/api/app/edit", "修改应用状态", data);
+                search();
+            }).on('pnotify.cancel', function () {
+            });
+    }
+    //启用或停用
+    else {
+        requestRemoteRestApi("/api/app/edit", "修改应用状态", data);
+        search();
+    }
 }
 
 
@@ -163,10 +201,12 @@ var columns = [{
     switchable: true,
     formatter: operateFormatter
 }];
+
+
 function appStatusFormatter(value, row, index) {
     var result = "";
     //停用
-    if (0 == value) {
+    if (2 == value) {
         result = "<i class='glyphicon glyphicon-pause text-danger'></i>";
     }
     //启用
@@ -177,16 +217,32 @@ function appStatusFormatter(value, row, index) {
     return result;
 }
 
-function search() {
-    $("#content").bootstrapTable('destroy', '');
-    initData();
-}
+function operateFormatter(value, row, index) {
+    var appId = row["appId"];
+    var appName = row["appName"];
+    var maxConcurrency = row["maxConcurrency"];
+    var status = row["status"];
+    var result = [
+        '<a class="edit" href="' + contextPath + '/manage/appAddOrEdit?appId=' + appId + '" title="编辑应用信息" target="_blank">',
+        '<i class="glyphicon glyphicon-edit"></i>',
+        '</a>  '
+    ].join('');
 
-function reset() {
-    var selects = $(".input-group select");
-    $(selects).each(function (i, c) {
-        $(c).val("all").trigger("change");
+    var operation = '';
+
+    $(appStatus).each(function (i, c) {
+        if (c["id"] != 'all' && c["id"] != status) {
+            var style = "";
+            if (1 == c["id"]) {
+                style = "btn btn-xs btn-success";
+            }
+            else if (2 == c["id"]) {
+                style = "btn btn-xs btn-danger";
+            }
+            operation += '&nbsp;<a class="' + style + '" href="javascript:void(0)" onclick="modifyAppStatus(' + appId + ',' + c["id"] + ',\'' + appName + '\',' + maxConcurrency + ')" >' + c["text"] + '</a>';
+        }
     });
+    return result + "&nbsp" + operation;
 }
 
 function appTypeFormatter(value, row, index) {

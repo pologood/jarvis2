@@ -1,5 +1,7 @@
 package com.mogujie.jarvis.web.controller.api;
 
+import com.mogujie.jarvis.core.domain.TaskStatus;
+import com.mogujie.jarvis.core.domain.WorkerStatus;
 import com.mogujie.jarvis.web.entity.qo.WorkerGroupQo;
 import com.mogujie.jarvis.web.entity.qo.WorkerQo;
 import com.mogujie.jarvis.web.service.WorkerService;
@@ -9,6 +11,9 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,11 +33,20 @@ public class WorkerAPIController {
         return result;
     }
 
-    @RequestMapping(value = "/getWorkerGroups")
+    @RequestMapping(value = "getWorkerStatus")
     @ResponseBody
-    public Map<String, Object> getWorkerGroups(WorkerGroupQo workerGroupSearchVo) {
-        Map<String, Object> result;
-        result = workerService.getWorkerGroups(workerGroupSearchVo);
-        return result;
+    public List<Map<String, Object>> getWorkerStatus() {
+        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+
+        WorkerStatus[] workerStatuses = WorkerStatus.values();
+        for (WorkerStatus workerStatus : workerStatuses) {
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("id",workerStatus.getValue());
+            map.put("text",workerStatus.getDescription());
+            list.add(map);
+        }
+
+        return list;
     }
+
 }

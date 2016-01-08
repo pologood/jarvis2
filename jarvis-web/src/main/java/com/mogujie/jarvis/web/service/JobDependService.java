@@ -60,7 +60,7 @@ public class JobDependService {
      */
     public Map<String, Object> getTwoDirectionTreeDependedOnJob(JobQo jobQo) {
         Map<String, Object> result = new HashMap<String, Object>();
-        if (null == jobQo || jobQo.getJobIdList().size() == 0) {
+        if (null == jobQo || null == jobQo.getJobIdList() || (jobQo.getJobIdList() != null && 0 == jobQo.getJobIdList().size())) {
             return result;
         }
 

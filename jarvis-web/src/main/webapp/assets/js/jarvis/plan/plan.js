@@ -4,10 +4,17 @@ var taskStatusColor = null;
 
 $(function () {
 
-    $('#planDate').datetimepicker({
+    $('#dataDate').datetimepicker({
         language: 'zh-CN',
         minView: 'month',
         format: 'yyyy-mm-dd',
+        autoclose: true
+    });
+
+    $('#dataTime').datetimepicker({
+        language: 'zh-CN',
+        minView: 'hour',
+        format: 'yyyy-mm-dd hh:ii:ss',
         autoclose: true
     });
 
@@ -88,7 +95,7 @@ $(function () {
 
     $.ajaxSettings.async = false;
     //
-    $.getJSON(contextPath + "/assets/json/taskStatus.json", function (data) {
+    $.getJSON(contextPath + "/api/job/getJobStatus", function (data) {
         taskStatusJson = data;
     });
     //初始化颜色
@@ -176,7 +183,7 @@ function initData() {
                 var value = queryParams[key];
                 params[key] = value;
             }
-            console.log(params);
+            //console.log(params);
             return params;
         },
         showColumns: true,
@@ -205,7 +212,8 @@ var columns = [{
     field: 'jobId',
     title: '任务ID',
     switchable: true,
-    visible: true
+    visible: true,
+    visible:false
 }, {
     field: 'jobName',
     title: '任务名称',

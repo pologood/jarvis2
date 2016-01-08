@@ -4,7 +4,7 @@ var testNum = /^[0-9]*$/;
 $(function () {
     //初始化报警类型
     $.ajaxSettings.async = false;
-    $.getJSON(contextPath + "/assets/json/alarmType.json", function (data) {
+    $.getJSON(contextPath + "/api/alarm/getAlarmType", function (data) {
         $(data).each(function (i, c) {
             var input = $('<input name="alarmType" type="checkbox" value="' + c.id + '" />');
             $("#alarmType").append(input);
@@ -54,7 +54,7 @@ $(function () {
 
 
     //初始化表达式类型
-    $.getJSON(contextPath + "/assets/json/expressionType.json", function (data) {
+    $.getJSON(contextPath + "/api/job/getExpressionType", function (data) {
         var newData = new Array();
         $(data).each(function (i, c) {
             if (this.id != 'all') {
@@ -91,7 +91,7 @@ $(function () {
     });
 
     $.ajaxSettings.async = false;
-    $.getJSON(contextPath + "/assets/json/commonStrategy.json", function (data) {
+    $.getJSON(contextPath + "/api/job/getCommonStrategy", function (data) {
         var newData = new Array();
         $(data).each(function (i, c) {
             if (this.id != 'all') {

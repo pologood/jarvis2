@@ -12,17 +12,23 @@ package com.mogujie.jarvis.core.domain;
  */
 public enum WorkerStatus {
 
-    OFFLINE(0), //下线
-    ONLINE(1);  //上线
+    OFFLINE(1, "上线"), //下线
+    ONLINE(2, "下线");  //上线
 
     private int value;
+    private String description;
 
-    WorkerStatus(int value) {
+    WorkerStatus(int value, String description) {
         this.value = value;
+        this.description = description;
     }
 
     public int getValue() {
         return value;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public static Boolean isValid(int value) {

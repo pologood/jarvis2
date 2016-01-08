@@ -1,17 +1,17 @@
-var workerStatusJson = null;
-var workerGroupStatusJson = null;
+var workerStatus = null;
+var workerGroupStatus = null;
 
 $(function () {
     initWorkerData();
     initWorkerGroupData();
 
     $.ajaxSettings.async = false;
-    $.getJSON(contextPath + "/assets/json/workerStatus.json", function (data) {
-        workerStatusJson = data;
+    $.getJSON(contextPath + "/api/worker/getWorkerStatus", function (data) {
+        workerStatus = data;
     });
 
-    $.getJSON(contextPath + "/assets/json/workerGroupStatus.json", function (data) {
-        workerGroupStatusJson = data;
+    $.getJSON(contextPath + "/api/workerGroup/getWorkerGroupStatus", function (data) {
+        workerGroupStatus = data;
     });
     $.ajaxSettings.async = true;
 
@@ -92,7 +92,7 @@ function initWorkerGroupData() {
         pagination: true,
         sidePagination: 'server',
         search: false,
-        url: contextPath + '/api/worker/getWorkerGroups',
+        url: contextPath + '/api/workerGroup/getWorkerGroups',
         queryParams: function (params) {
             for (var key in queryParams) {
                 var value = queryParams[key];
@@ -116,7 +116,6 @@ function initWorkerGroupData() {
 }
 //worker操作状态
 function operateWorkerFormatter(value, row, index) {
-    var workerStatus = [{"id": "0", "text": "下线"}, {"id": "1", "text": "上线"}];
     var id = row["id"];
     var ip = row["ip"];
     var port = row["port"];
@@ -127,7 +126,7 @@ function operateWorkerFormatter(value, row, index) {
     $(workerStatus).each(function (i, c) {
         if (c["id"] != 'all' && c["id"] != operateFlag) {
             var style="";
-            if(0==c["id"]){
+            if(2==c["id"]){
                 style="btn btn-xs btn-danger";
             }
             else if(1==c["id"]){
@@ -144,7 +143,6 @@ function operateWorkerFormatter(value, row, index) {
 }
 //worker group操作状态
 function operateWorkerGroupFormatter(value, row, index) {
-    var workerGroupStatus = [{"id": "0", "text": "禁用"}, {"id": "1", "text": "启用"}];
     //console.log(row);
     var id = row["id"];
     var operateFlag = row["status"];
@@ -163,7 +161,7 @@ function operateWorkerGroupFormatter(value, row, index) {
         if (c["id"] != 'all' && c["id"] != operateFlag) {
             var style="";
             //禁用
-            if(0==c["id"]){
+            if(2==c["id"]){
                 style="btn btn-xs btn-danger";
             }
             //启用
@@ -274,7 +272,7 @@ var workerGroupColumns = [{
 function workerStatusFormatter(value, row, index) {
     var result="";
     //下线
-    if(0==value){
+    if(2==value){
         result="<i class='glyphicon glyphicon-remove text-danger'></i>";
     }
     //上线
@@ -287,7 +285,7 @@ function workerStatusFormatter(value, row, index) {
 function workerGroupStatusFormatter(value, row, index) {
     var result="";
     //禁用
-    if(0==value){
+    if(2==value){
         result="<i class='glyphicon glyphicon-remove text-danger'></i>";
     }
     //启用

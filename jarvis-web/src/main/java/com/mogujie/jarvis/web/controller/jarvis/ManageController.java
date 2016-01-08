@@ -8,6 +8,7 @@ import com.mogujie.jarvis.web.entity.vo.AppVo;
 import com.mogujie.jarvis.web.entity.vo.WorkerGroupVo;
 import com.mogujie.jarvis.web.entity.vo.WorkerVo;
 import com.mogujie.jarvis.web.service.AppService;
+import com.mogujie.jarvis.web.service.WorkerGroupService;
 import com.mogujie.jarvis.web.service.WorkerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,6 +32,8 @@ public class ManageController extends BaseController {
     AppService appService;
     @Autowired
     WorkerService workerService;
+    @Autowired
+    WorkerGroupService workerGroupService;
     @Autowired
     AdminUserService userService;
 
@@ -92,7 +95,7 @@ public class ManageController extends BaseController {
     @JarvisPassport(authTypes = JarvisAuthType.manage_worker)
     public String worker(ModelMap modelMap) {
         //workerService.getAllWorkerGroupId();
-        List<WorkerGroupVo> workerGroupVoList = workerService.getAllWorkerGroup();
+        List<WorkerGroupVo> workerGroupVoList = workerGroupService.getAllWorkerGroup();
         List<String> ipList = workerService.getAllWorkerIp();
         List<Integer> portList = workerService.getAllWorkerPort();
 
@@ -111,7 +114,7 @@ public class ManageController extends BaseController {
             WorkerVo workerVo = workerService.getWorkerById(id);
             modelMap.put("workerVo", workerVo);
         }
-        List<WorkerGroupVo> workerGroupVoList = workerService.getAllWorkerGroup();
+        List<WorkerGroupVo> workerGroupVoList = workerGroupService.getAllWorkerGroup();
         modelMap.put("workerGroupVoList", workerGroupVoList);
         return "manage/workerAddOrEdit";
     }
@@ -153,7 +156,7 @@ public class ManageController extends BaseController {
     @JarvisPassport(authTypes = JarvisAuthType.manage_worker, isMenu = false)
     public String workerGroupAddOrEdit(ModelMap modelMap, Integer id) {
         if (id != null) {
-            WorkerGroupVo workerGroupVo = workerService.getWorkerGroupById(id);
+            WorkerGroupVo workerGroupVo = workerGroupService.getWorkerGroupById(id);
             modelMap.put("workerGroupVo", workerGroupVo);
         }
         return "manage/workerGroupAddOrEdit";
@@ -164,7 +167,7 @@ public class ManageController extends BaseController {
     public Map<String, Object> checkWorkerGroupName(ModelMap modelMap, Integer id, String name) {
         Map<String, Object> result = new HashMap<String, Object>();
 
-        WorkerGroupVo workerGroupVo = workerService.getWorkerGroupByName(name);
+        WorkerGroupVo workerGroupVo = workerGroupService.getWorkerGroupByName(name);
         if (workerGroupVo == null) {
             result.put("code", 0);
             result.put("msg", "不存在，可保存");
