@@ -25,6 +25,8 @@ public class Job {
 
     private Integer workerGroupId;
 
+    private Integer bizGroupId;
+
     private Date activeStartDate;
 
     private Date activeEndDate;
@@ -129,6 +131,14 @@ public class Job {
 
     public void setWorkerGroupId(Integer workerGroupId) {
         this.workerGroupId = workerGroupId;
+    }
+
+    public Integer getBizGroupId() {
+        return bizGroupId;
+    }
+
+    public void setBizGroupId(Integer bizGroupId) {
+        this.bizGroupId = bizGroupId;
     }
 
     public Date getActiveStartDate() {
