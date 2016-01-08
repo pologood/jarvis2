@@ -19,6 +19,7 @@ import com.google.common.collect.Sets;
 import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.domain.TaskType;
 import com.mogujie.jarvis.dto.generate.Task;
+import com.mogujie.jarvis.server.scheduler.TestSchedulerBase;
 import com.mogujie.jarvis.server.scheduler.event.AddTaskEvent;
 import com.mogujie.jarvis.server.scheduler.event.SuccessEvent;
 
