@@ -34,9 +34,6 @@ public class TestDAGDependChecker {
     private long jobAId = 1;
     private long jobBId = 2;
     private long jobCId = 3;
-    private long t1 = new DateTime("2015-10-10T10:10:00").getMillis();
-    private long t2 = new DateTime("2015-10-11T10:10:00").getMillis();
-    private long t3 = new DateTime("2015-10-12T10:10:00").getMillis();
     private TaskService taskService = Injectors.getInjector().getInstance(TaskService.class);
 
     /**
@@ -45,7 +42,8 @@ public class TestDAGDependChecker {
     *     C
     */
     @Test
-    public void testCurrentDayAll() {
+    public void testCurrentDayAll1() {
+        long t1 = new DateTime("2015-10-10T10:10:00").getMillis();
         long taskAId = taskService.createTaskByJobId(jobAId, t1, t1, TaskType.SCHEDULE);
         long taskBId = taskService.createTaskByJobId(jobBId, t1, t1, TaskType.SCHEDULE);
 
@@ -71,4 +69,42 @@ public class TestDAGDependChecker {
         taskService.deleteTaskAndRelation(taskAId);
         taskService.deleteTaskAndRelation(taskBId);
     }
+
+    /**
+     *   A   B
+     *    \ /
+     *     C
+     */
+    @Test
+    public void testLast3DayAll() {
+        long t1 = new DateTime("2020-10-10T10:10:00").getMillis();
+        long t2 = new DateTime("2020-10-11T10:10:00").getMillis();
+        long t3 = new DateTime("2020-10-12T10:10:00").getMillis();
+        long t4 = new DateTime("2020-10-13T10:10:00").getMillis();
+        long taskAId1 = taskService.createTaskByJobId(jobAId, t1, t1, TaskType.SCHEDULE);
+        long taskAId2 = taskService.createTaskByJobId(jobAId, t2, t2, TaskType.SCHEDULE);
+        long taskAId3 = taskService.createTaskByJobId(jobAId, t3, t3, TaskType.SCHEDULE);
+        long taskBId1 = taskService.createTaskByJobId(jobBId, t1, t1, TaskType.SCHEDULE);
+        long taskBId2 = taskService.createTaskByJobId(jobBId, t2, t2, TaskType.SCHEDULE);
+        long taskBId3 = taskService.createTaskByJobId(jobBId, t3, t3, TaskType.SCHEDULE);
+
+        DAGDependChecker checker = new DAGDependChecker(jobCId);
+        Map<Long, JobDependStatus> jobDependMap = Maps.newHashMap();
+        DependencyExpression dependencyExpression = new TimeOffsetExpression("d(3)");
+        DependencyStrategyExpression dependencyStrategy = new DefaultDependencyStrategyExpression(CommonStrategy.ALL.getExpression());
+        JobDependStatus statusC2A = new JobDependStatus(jobCId, jobAId, dependencyExpression, dependencyStrategy);
+        JobDependStatus statusC2B = new JobDependStatus(jobCId, jobBId, dependencyExpression, dependencyStrategy);
+        jobDependMap.put(jobAId, statusC2A);
+        jobDependMap.put(jobBId, statusC2B);
+        checker.setJobDependMap(jobDependMap);
+
+        //TODO
+        taskService.deleteTaskAndRelation(taskAId1);
+        taskService.deleteTaskAndRelation(taskAId2);
+        taskService.deleteTaskAndRelation(taskAId3);
+        taskService.deleteTaskAndRelation(taskBId1);
+        taskService.deleteTaskAndRelation(taskBId2);
+        taskService.deleteTaskAndRelation(taskBId3);
+    }
+
 }
