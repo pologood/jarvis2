@@ -13,6 +13,7 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 
+import com.mogujie.jarvis.core.domain.AppStatus;
 import org.apache.commons.configuration.Configuration;
 
 import akka.actor.ActorRef;
@@ -127,6 +128,10 @@ public class ServerActor extends UntypedActor {
                 App app = appService.getAppByName(appName);
                 if (app == null) {
                     Object msg = generateResponse(actorEntry.getResponseClass(), false, "App[" + appName + "] not found");
+                    getSender().tell(msg, getSelf());
+                    return;
+                } else if(app.getStatus() != AppStatus.ENABLE.getValue()){
+                    Object msg = generateResponse(actorEntry.getResponseClass(), false, "App[" + appName + "] not enable");
                     getSender().tell(msg, getSelf());
                     return;
                 } else {

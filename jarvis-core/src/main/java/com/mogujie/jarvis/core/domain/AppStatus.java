@@ -14,8 +14,9 @@ package com.mogujie.jarvis.core.domain;
  */
 public enum AppStatus {
 
-    DISABLED(0),    //无效
-    ENABLE(1);      //有效
+    ENABLE(1),      //有效
+    DISABLED(2),    //无效
+    DELETED(3);    //删除
 
     private  int value;
 
