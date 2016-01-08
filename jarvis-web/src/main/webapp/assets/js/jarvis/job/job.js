@@ -330,8 +330,8 @@ var jobStatusClass={
     "1":"glyphicon glyphicon-ok text-success",
     "2":"glyphicon glyphicon-remove text-danger",
     "3":"glyphicon glyphicon-calendar text-info",
-    "4":"glyphicon glyphicon-minus text-warning",
-    "5":"glyphicon glyphicon-pause text-primary"
+    "4":"glyphicon glyphicon-minus text-danger",
+    "5":"glyphicon glyphicon-pause text-warning"
 }
 
 function statusFormatter(value, row, index) {

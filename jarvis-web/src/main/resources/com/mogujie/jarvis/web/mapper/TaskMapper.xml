@@ -91,7 +91,7 @@
         SELECT *,time_to_sec(TIMEDIFF(task.executeEndTime,task.executeStartTime)) AS executeTime
         FROM task LEFT JOIN job ON task.jobId=job.jobId LEFT JOIN app ON job.appId=app.appId
         <include refid="condition" />
-        ORDER BY executeStartTime DESC
+        ORDER BY scheduleTime DESC,executeEndTime DESC,executeStartTime DESC
         <include refid="pager" />
     </select>
 
