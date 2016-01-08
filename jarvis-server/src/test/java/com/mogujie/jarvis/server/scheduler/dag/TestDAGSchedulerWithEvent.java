@@ -14,6 +14,7 @@ import org.junit.Test;
 import com.google.common.collect.Sets;
 import com.mogujie.jarvis.core.domain.TaskType;
 import com.mogujie.jarvis.server.guice.Injectors;
+import com.mogujie.jarvis.server.scheduler.TestSchedulerBase;
 import com.mogujie.jarvis.server.scheduler.event.ScheduleEvent;
 import com.mogujie.jarvis.server.scheduler.task.DAGTask;
 import com.mogujie.jarvis.server.service.TaskService;
