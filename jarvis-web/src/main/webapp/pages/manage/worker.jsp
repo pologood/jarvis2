@@ -149,11 +149,11 @@
 
                     <div class="row top-buffer">
                         <div class="col-md-12">
-                            <div id="add">
+                            <div id="toolbar">
                                 <a class="btn btn-primary" href="${contextPath}/manage/workerGroupAddOrEdit"
                                    target="_blank">新增Worker Group</a>
                             </div>
-                            <table id="workerGroupContent">
+                            <table id="workerGroupContent" data-toolbar="#toolbar">
 
                             </table>
 

@@ -34,6 +34,7 @@
         <div class="col-md-12">
             <!-- 用户名必须 -->
             <input type="hidden" id="jobId" desc="任务id" value="${jobVo.jobId}"/>
+            <input type="hidden" id="appId" desc="AppId" value="${app.appId}">
 
             <div class="row top-buffer">
                 <div class="col-md-6 col-md-offset-3">

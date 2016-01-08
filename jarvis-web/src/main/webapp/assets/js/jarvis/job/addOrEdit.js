@@ -322,10 +322,9 @@ function checkEmpty(ids) {
 }
 
 
-
 //获取配置的报警信息
 function getAlarm() {
-    var jobId=$("#jobId").val();
+    var jobId = $("#jobId").val();
     var receiver = $("#alarm").val();  //报警人
 
     if (null == receiver) {
@@ -333,7 +332,7 @@ function getAlarm() {
     }
 
     var inputs = $("#alarmType input[name=alarmType]:checked");
-    if(inputs.length<=0){
+    if (inputs.length <= 0) {
         return null;
     }
 
@@ -467,7 +466,7 @@ function calculateOperator(sourceStr, afterChangeStr) {
 
 //提交任务
 function submit() {
-    var ids = ["appName", "jobName", "jobType", "content", "workerGroupId"];
+    var ids = ["jobName", "jobType", "content", "workerGroupId"];
     var flag = checkEmpty(ids);
     if (flag == false) {
         return;
@@ -494,23 +493,23 @@ function getData() {
     var selects = $("#jobData .input-group>select");
     $(inputs).each(function (i, c) {
         var id = $(c).prop("id");
-        if(id==null||id==''){
+        if (id == null || id == '') {
             return;
         }
         var value = $(c).val();
 
-        if(value!=''&&testNum.test(value)){
-            value=parseInt(value);
+        if (value != '' && testNum.test(value)) {
+            value = parseInt(value);
         }
-        if(id=='parameters'){
-            value=JSON.parse(value);
+        if (id == 'parameters') {
+            value = JSON.parse(value);
         }
-        if(id=='activeStartTime'||id=='activeEndTime'){
-            if(value!=''){
-                value=(new Date(value)).getTime();
+        if (id == 'activeStartTime' || id == 'activeEndTime') {
+            if (value != '') {
+                value = (new Date(value)).getTime();
             }
-            else{
-                value=0;
+            else {
+                value = 0;
             }
         }
 
@@ -518,15 +517,15 @@ function getData() {
 
     });
     $(selects).each(function (i, c) {
-        if($(c).attr("id")=='dependJobIds'||$(c).attr("id")=='alarm'||$(c).attr("name")=='commonStrategy'){
-            return ;
+        if ($(c).attr("id") == 'dependJobIds' || $(c).attr("id") == 'alarm' || $(c).attr("name") == 'commonStrategy') {
+            return;
         }
 
         var id = $(c).prop("id");
         var value = $(c).val();
 
-        if(value!=''&&testNum.test(value)){
-            value=parseInt(value);
+        if (value != '' && testNum.test(value)) {
+            value = parseInt(value);
         }
         result[id] = value;
 
@@ -545,7 +544,7 @@ function getData() {
 
 //编辑任务
 function edit() {
-    var ids = ["user", "jobId", "appName", "jobName", "jobType", "content", "groupId"];
+    var ids = ["user", "jobId", "jobName", "jobType", "content", "groupId"];
     var flag = checkEmpty(ids);
     if (flag == false) {
         return;

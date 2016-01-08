@@ -14,7 +14,7 @@ $(function () {
     $('#dataTime').datetimepicker({
         language: 'zh-CN',
         minView: 'hour',
-        format: 'yyyy-mm-dd hh:ii:ss',
+        format: 'yyyy-mm-dd hh:ii',
         autoclose: true
     });
 
