@@ -12,8 +12,9 @@ package com.mogujie.jarvis.core.domain;
  */
 public enum WorkerStatus {
 
-    OFFLINE(1, "上线"), //下线
-    ONLINE(2, "下线");  //上线
+
+    ONLINE(1, "上线"), //下线
+    OFFLINE(2, "下线");  //上线
 
     private int value;
     private String description;

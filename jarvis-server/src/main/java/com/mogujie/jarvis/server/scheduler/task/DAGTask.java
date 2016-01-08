@@ -93,7 +93,7 @@ public class DAGTask {
 
     public boolean checkStatus() {
         boolean pass = true;
-        List<DAGTask> parents = taskGraph.getChildren(taskId);
+        List<DAGTask> parents = taskGraph.getParents(taskId);
         for (DAGTask parent : parents) {
             Task task = taskService.get(parent.getTaskId());
             if (task == null || task.getStatus() != TaskStatus.SUCCESS.getValue()) {

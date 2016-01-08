@@ -9,21 +9,17 @@
 package com.mogujie.jarvis.core.domain;
 
 /**
- *
- *
+ * 报警状态
  */
-public enum AppStatus {
+public enum AlarmStatus {
 
-    ENABLE(1, "启用"),      //启用
-    DISABLED(2, "禁用"),    //禁用
-    DELETE(3, "删除");      //删除
+    ENABLE(1),      //有效
+    DISABLED(2);    //无效
 
-    private int value;
-    private String description;
+    private  int value;
 
-    AppStatus(int value, String description) {
+    AlarmStatus(int value){
         this.value = value;
-        this.description = description;
     }
 
     public int getValue() {
@@ -31,8 +27,8 @@ public enum AppStatus {
     }
 
     public static Boolean isValid(int value) {
-        AppStatus[] values = AppStatus.values();
-        for (AppStatus s : values) {
+        AlarmStatus[] values = AlarmStatus.values();
+        for (AlarmStatus s : values) {
             if (s.getValue() == value) {
                 return true;
             }
@@ -40,7 +36,4 @@ public enum AppStatus {
         return false;
     }
 
-    public String getDescription() {
-        return description;
-    }
 }

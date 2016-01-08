@@ -14,6 +14,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
 import com.google.inject.Singleton;
@@ -66,7 +67,7 @@ public class HeartBeatService {
 
     public synchronized List<WorkerInfo> getWorkers(int groupId) {
         if (!HEART_BEAT_CACHE.containsKey(groupId)) {
-            return null;
+            return Lists.newArrayList();
         }
 
         return WORKER_ORDERING.sortedCopy(HEART_BEAT_CACHE.get(groupId).asMap().keySet());

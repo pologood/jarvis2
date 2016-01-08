@@ -14,9 +14,9 @@ package com.mogujie.jarvis.core.domain;
  */
 public enum TaskType {
 
-    SCHEDULE(0,"自动调度"), //调度系统自动调度的task
-    RERUN(1,"手动重跑"),    //手动重跑的task
-    TEMP(2,"临时调度");     //一次性的临时task
+    SCHEDULE(1,"自动调度"), //调度系统自动调度的task
+    RERUN(2,"手动重跑"),    //手动重跑的task
+    TEMP(3,"临时调度");     //一次性的临时task
 
     private int value;
     private String description;

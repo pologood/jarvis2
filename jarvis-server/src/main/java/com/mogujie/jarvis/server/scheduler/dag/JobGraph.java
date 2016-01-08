@@ -39,7 +39,6 @@ import com.mogujie.jarvis.server.scheduler.event.AddPlanEvent;
 import com.mogujie.jarvis.server.scheduler.event.AddTaskEvent;
 import com.mogujie.jarvis.server.scheduler.time.TimePlanEntry;
 import com.mogujie.jarvis.server.service.JobService;
-import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.PlanUtil;
 
 /**
@@ -53,7 +52,6 @@ public enum JobGraph {
     private DirectedAcyclicGraph<DAGJob, DefaultEdge> dag = new DirectedAcyclicGraph<DAGJob, DefaultEdge>(DefaultEdge.class);
     private JobSchedulerController controller = JobSchedulerController.getInstance();
     private JobService jobService = Injectors.getInjector().getInstance(JobService.class);
-    private TaskService taskService = Injectors.getInjector().getInstance(TaskService.class);
 
     private static final Logger LOGGER = LogManager.getLogger();
 

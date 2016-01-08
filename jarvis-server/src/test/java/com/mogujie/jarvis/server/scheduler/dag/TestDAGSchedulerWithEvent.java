@@ -12,7 +12,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.google.common.collect.Sets;
-import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.domain.TaskType;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.event.ScheduleEvent;
@@ -86,25 +85,26 @@ public class TestDAGSchedulerWithEvent extends TestSchedulerBase {
      *    / \
      *   B   C
      */
-    @Test
-    public void testCurrentDaySchedule1() throws Exception {
-        jobGraph.addJob(jobAId, new DAGJob(jobAId, DAGJobType.TIME), null);
-        jobGraph.addJob(jobBId, new DAGJob(jobBId, DAGJobType.DEPEND_TIME), Sets.newHashSet(jobAId));
-        jobGraph.addJob(jobCId, new DAGJob(jobBId, DAGJobType.DEPEND_TIME), Sets.newHashSet(jobAId));
-        Assert.assertEquals(2, jobGraph.getChildren(jobAId).size());
-        Assert.assertEquals(1, jobGraph.getParents(jobBId).size());
-        Assert.assertEquals(1, jobGraph.getParents(jobCId).size());
-
-        long taskAId = taskService.createTaskByJobId(jobAId, t1, t1, TaskType.SCHEDULE);
-        taskService.updateStatus(taskAId, TaskStatus.SUCCESS);
-        taskGraph.addTask(taskAId, new DAGTask(jobAId, taskAId, t1, null));
-        Assert.assertEquals(1, taskGraph.getTaskMap().size());
-
-        // schedule jobA
-        ScheduleEvent scheduleEventA = new ScheduleEvent(jobAId, taskAId, t1);
-        dagScheduler.handleScheduleEvent(scheduleEventA);
-        Assert.assertEquals(3, taskGraph.getTaskMap().size());
-    }
+//    @Test
+//    public void testCurrentDaySchedule1() throws Exception {
+//        long t1 = new DateTime("2020-10-10T10:10:00").getMillis();
+//        jobGraph.addJob(jobAId, new DAGJob(jobAId, DAGJobType.TIME), null);
+//        jobGraph.addJob(jobBId, new DAGJob(jobBId, DAGJobType.DEPEND_TIME), Sets.newHashSet(jobAId));
+//        jobGraph.addJob(jobCId, new DAGJob(jobCId, DAGJobType.DEPEND_TIME), Sets.newHashSet(jobAId));
+//        Assert.assertEquals(2, jobGraph.getChildren(jobAId).size());
+//        Assert.assertEquals(1, jobGraph.getParents(jobBId).size());
+//        Assert.assertEquals(1, jobGraph.getParents(jobCId).size());
+//
+//        long taskAId = taskService.createTaskByJobId(jobAId, t1, t1, TaskType.SCHEDULE);
+//        taskService.updateStatus(taskAId, TaskStatus.SUCCESS);
+//        taskGraph.addTask(taskAId, new DAGTask(jobAId, taskAId, t1, null));
+//        Assert.assertEquals(1, taskGraph.getTaskMap().size());
+//
+//        // schedule jobA
+//        ScheduleEvent scheduleEventA = new ScheduleEvent(jobAId, taskAId, t1);
+//        dagScheduler.handleScheduleEvent(scheduleEventA);
+//        Assert.assertEquals(3, taskGraph.getTaskMap().size());
+//    }
 
 //    /**
 //     *     A

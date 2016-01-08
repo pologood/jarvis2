@@ -805,6 +805,66 @@ public class JobExample {
             return (Criteria) this;
         }
 
+        public Criteria andBizGroupIdIsNull() {
+            addCriterion("bizGroupId is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBizGroupIdIsNotNull() {
+            addCriterion("bizGroupId is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBizGroupIdEqualTo(Integer value) {
+            addCriterion("bizGroupId =", value, "bizGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBizGroupIdNotEqualTo(Integer value) {
+            addCriterion("bizGroupId <>", value, "bizGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBizGroupIdGreaterThan(Integer value) {
+            addCriterion("bizGroupId >", value, "bizGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBizGroupIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("bizGroupId >=", value, "bizGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBizGroupIdLessThan(Integer value) {
+            addCriterion("bizGroupId <", value, "bizGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBizGroupIdLessThanOrEqualTo(Integer value) {
+            addCriterion("bizGroupId <=", value, "bizGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBizGroupIdIn(List<Integer> values) {
+            addCriterion("bizGroupId in", values, "bizGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBizGroupIdNotIn(List<Integer> values) {
+            addCriterion("bizGroupId not in", values, "bizGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBizGroupIdBetween(Integer value1, Integer value2) {
+            addCriterion("bizGroupId between", value1, value2, "bizGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBizGroupIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("bizGroupId not between", value1, value2, "bizGroupId");
+            return (Criteria) this;
+        }
+
         public Criteria andActiveStartDateIsNull() {
             addCriterion("activeStartDate is null");
             return (Criteria) this;
