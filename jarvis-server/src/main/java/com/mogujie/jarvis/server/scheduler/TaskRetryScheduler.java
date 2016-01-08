@@ -142,7 +142,7 @@ public enum TaskRetryScheduler {
                                         expiredTimeMap.remove(jobIdWithTaskId);
                                         long jobId = IdUtils.parse(taskDetail.getFullId(), IdType.JOB_ID);
                                         long taskId = IdUtils.parse(taskDetail.getFullId(), IdType.TASK_ID);
-                                        Event event = new FailedEvent(jobId, taskId, null);
+                                        Event event = new FailedEvent(jobId, taskId, "reject retry");
                                         schedulerController.notify(event);
                                     } else {
                                         taskQueue.put(taskDetail);
