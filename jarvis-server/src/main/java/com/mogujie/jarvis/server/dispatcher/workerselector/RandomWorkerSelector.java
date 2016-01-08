@@ -20,6 +20,7 @@ import com.mogujie.jarvis.server.service.HeartBeatService;
  */
 public class RandomWorkerSelector implements WorkerSelector {
 
+    private Random random = new Random();
     private HeartBeatService heartBeatService = Injectors.getInjector().getInstance(HeartBeatService.class);
 
     @Override
@@ -27,8 +28,7 @@ public class RandomWorkerSelector implements WorkerSelector {
         List<WorkerInfo> workers = heartBeatService.getWorkers(workerGroupId);
         if (workers != null && workers.size() > 0) {
             int min = 0;
-            int max = workers.size() - 1;
-            Random random = new Random();
+            int max = workers.size();
             int index = random.nextInt(max) % (max - min + 1) + min;
             return workers.get(index);
         }
