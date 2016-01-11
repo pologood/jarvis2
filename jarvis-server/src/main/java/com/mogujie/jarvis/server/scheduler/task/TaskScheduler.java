@@ -163,6 +163,9 @@ public class TaskScheduler extends Scheduler {
             int attemptId = dagTask.getAttemptId();
             LOGGER.info("attemptId={}, failedRetries={}", attemptId, failedRetries);
             if (attemptId <= failedRetries) {
+                taskService.insertHistory(taskId);
+                LOGGER.info("insert task [taskId={},attemptId={}] to TaskHistory", taskId, attemptId);
+
                 attemptId++;
                 dagTask.setAttemptId(attemptId);
                 Task task = new Task();
