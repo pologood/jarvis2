@@ -62,7 +62,7 @@ public class TaskService {
         record.setCreateTime(currentTime);
         record.setUpdateTime(currentTime);
         record.setScheduleTime(new Date(scheduleTime));
-        record.setDataTime(new Date(scheduleTime));
+        record.setDataTime(new Date(dataTime));
         record.setStatus(TaskStatus.WAITING.getValue());
         record.setProgress((float) 0);
         Job job = jobService.get(jobId).getJob();

@@ -114,21 +114,6 @@ public enum JobGraph {
     }
 
     /**
-     * get active time based job ids
-     *
-     */
-    public List<Long> getActiveTimeBasedJobs() {
-        List<Long> jobs = new ArrayList<Long>();
-        for (DAGJob dagJob : jobMap.values()) {
-            if (dagJob.getType().implies(DAGJobType.TIME) && dagJob.getJobStatus().equals(JobStatus.ENABLE)
-                    && jobService.isActive(dagJob.getJobId())) {
-                jobs.add(dagJob.getJobId());
-            }
-        }
-        return jobs;
-    }
-
-    /**
      * Add job
      *
      * @param jobId

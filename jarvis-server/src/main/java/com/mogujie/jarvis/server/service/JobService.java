@@ -264,7 +264,7 @@ public class JobService {
         }
     }
 
-    public void deleteJobDependByPreJob(long preJobId) {
+    public void deleteJobDependByPreJobId(long preJobId) {
         JobDependExample jobDependExample = new JobDependExample();
         jobDependExample.createCriteria().andPreJobIdEqualTo(preJobId);
         List<JobDepend> jobDependList = jobDependMapper.selectByExample(jobDependExample);
@@ -278,6 +278,12 @@ public class JobService {
                 }
             }
         }
+    }
+
+    public void deleteJobDependByJobId(long jobId) {
+        JobDependExample jobDependExample = new JobDependExample();
+        jobDependExample.createCriteria().andJobIdEqualTo(jobId);
+        jobDependMapper.deleteByExample(jobDependExample);
     }
 
     //------------------------  载入数据 -------------------------------------
@@ -411,7 +417,8 @@ public class JobService {
     @VisibleForTesting
     public void deleteJobAndRelation(long jobId) {
         deleteJob(jobId);
-        deleteJobDependByPreJob(jobId);
+        deleteJobDependByPreJobId(jobId);
+        deleteJobDependByJobId(jobId);
         deleteScheduleExpressionByJobId(jobId);
     }
 

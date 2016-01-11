@@ -63,7 +63,7 @@ public class TestTaskScheduler extends TestSchedulerBase {
      *  task2   task3
      */
     @Test
-    public void testScheduleTask() {
+    public void testScheduleTask1() {
         AddTaskEvent addTask1Event = new AddTaskEvent(jobAId, null, t1);
         taskScheduler.handleAddTaskEvent(addTask1Event);
         List<Long> taskIds = new ArrayList<Long>(taskGraph.getTaskMap().keySet());
@@ -100,6 +100,61 @@ public class TestTaskScheduler extends TestSchedulerBase {
 
         Assert.assertEquals(2, taskGraph.getTaskMap().keySet().size());
         Assert.assertEquals(0, taskGraph.getParents(taskBId).size());
+        Assert.assertEquals(0, taskGraph.getParents(taskCId).size());
+        Assert.assertEquals(3, taskQueue.size());
+    }
+
+    /**
+     *  task1   task2
+     *     \     /
+     *      task3
+     */
+    @Test
+    public void testScheduleTask2() {
+        AddTaskEvent addTask1Event = new AddTaskEvent(jobAId, null, t1);
+        taskScheduler.handleAddTaskEvent(addTask1Event);
+        AddTaskEvent addTask2Event = new AddTaskEvent(jobBId, null, t1);
+        taskScheduler.handleAddTaskEvent(addTask2Event);
+        List<Long> taskIds = new ArrayList<Long>(taskGraph.getTaskMap().keySet());
+        Collections.sort(taskIds);
+        long taskAId = taskIds.get(0);
+        long taskBId = taskIds.get(1);
+
+        Map<Long, List<Long>> dependTaskIdMap = Maps.newHashMap();
+        dependTaskIdMap.put(jobAId, Lists.newArrayList(taskAId, taskBId));
+
+        AddTaskEvent addTask3Event = new AddTaskEvent(jobCId, dependTaskIdMap, t1);
+        taskScheduler.handleAddTaskEvent(addTask3Event);
+
+        taskIds = new ArrayList<Long>(taskGraph.getTaskMap().keySet());
+        Collections.sort(taskIds);
+        long taskCId = taskIds.get(2);
+
+        Assert.assertEquals(3, taskGraph.getTaskMap().keySet().size());
+        Assert.assertEquals(1, taskGraph.getChildren(taskAId).size());
+        Assert.assertEquals(1, taskGraph.getChildren(taskBId).size());
+        Assert.assertEquals(2, taskGraph.getParents(taskCId).size());
+        Assert.assertEquals(2, taskQueue.size());
+
+        Task taskA = taskService.get(taskAId);
+        SuccessEvent successEventA = new SuccessEvent(jobAId, taskA.getTaskId(),
+                taskA.getScheduleTime().getTime(), TaskType.parseValue(taskA.getType()), "test");
+        taskScheduler.handleSuccessEvent(successEventA);
+        taskA = taskService.get(taskAId);
+        Assert.assertEquals(TaskStatus.SUCCESS, TaskStatus.parseValue(taskA.getStatus()));
+
+        Assert.assertEquals(2, taskGraph.getTaskMap().keySet().size());
+        Assert.assertEquals(1, taskGraph.getParents(taskCId).size());
+        Assert.assertEquals(2, taskQueue.size());
+
+        Task taskB = taskService.get(taskBId);
+        SuccessEvent successEventB = new SuccessEvent(jobBId, taskB.getTaskId(),
+                taskB.getScheduleTime().getTime(), TaskType.parseValue(taskB.getType()), "test");
+        taskScheduler.handleSuccessEvent(successEventB);
+        taskB = taskService.get(taskBId);
+        Assert.assertEquals(TaskStatus.SUCCESS, TaskStatus.parseValue(taskB.getStatus()));
+
+        Assert.assertEquals(1, taskGraph.getTaskMap().keySet().size());
         Assert.assertEquals(0, taskGraph.getParents(taskCId).size());
         Assert.assertEquals(3, taskQueue.size());
     }

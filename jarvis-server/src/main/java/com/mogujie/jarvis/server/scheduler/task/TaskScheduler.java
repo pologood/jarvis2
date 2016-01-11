@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.mogujie.jarvis.server.service.AppService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
@@ -45,6 +44,7 @@ import com.mogujie.jarvis.server.scheduler.event.ScheduleEvent;
 import com.mogujie.jarvis.server.scheduler.event.StartEvent;
 import com.mogujie.jarvis.server.scheduler.event.StopEvent;
 import com.mogujie.jarvis.server.scheduler.event.SuccessEvent;
+import com.mogujie.jarvis.server.service.AppService;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.TaskService;
 
@@ -274,7 +274,7 @@ public class TaskScheduler extends Scheduler {
     public void handleManulRerunTaskEvent(ManualRerunTaskEvent e) {
         List<Long> taskIdList = e.getTaskIdList();
         LOGGER.info("start handleRetryTaskEvent, taskIdList={}", taskIdList);
-        for (Long taskId : taskIdList) {
+        for (long taskId : taskIdList) {
             DAGTask dagTask = taskGraph.getTask(taskId);
             if (dagTask != null && dagTask.checkStatus()) {
                 LOGGER.info("{} pass status check", dagTask);
