@@ -73,7 +73,7 @@
 			<generatedKey column="id" sqlStatement="MySql" identity="true" />
 		</table>
 
-		<table schema="jarvis2" tableName="task_execute_records">
+		<table schema="jarvis2" tableName="task_history">
 			<property name="useActualColumnNames" value="true" />
 		</table>
 

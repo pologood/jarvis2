@@ -163,6 +163,9 @@ public class TaskScheduler extends Scheduler {
             int attemptId = dagTask.getAttemptId();
             LOGGER.info("attemptId={}, failedRetries={}", attemptId, failedRetries);
             if (attemptId <= failedRetries) {
+                taskService.insertHistory(taskId);
+                LOGGER.info("insert task [taskId={},attemptId={}] to TaskHistory", taskId, attemptId);
+
                 attemptId++;
                 dagTask.setAttemptId(attemptId);
                 Task task = new Task();
@@ -315,12 +318,21 @@ public class TaskScheduler extends Scheduler {
         TaskDetail taskDetail = null;
         long jobId = dagTask.getJobId();
         Job job = jobService.get(jobId).getJob();
-        taskDetail = TaskDetail.newTaskDetailBuilder().setFullId(fullId).setTaskName(job.getJobName())
+        taskDetail = TaskDetail.newTaskDetailBuilder()
+                .setFullId(fullId)
+                .setTaskName(job.getJobName())
                 .setAppName(appService.getAppNameByAppId(job.getAppId()))
-                .setUser(job.getSubmitUser()).setPriority(job.getPriority()).setContent(job.getContent()).setTaskType(job.getJobType())
-                .setParameters(JsonHelper.fromJson2JobParams(job.getParams())).setDataTime(new DateTime(dagTask.getDataTime()))
-                .setGroupId(job.getWorkerGroupId()).setFailedRetries(job.getFailedAttempts()).setFailedInterval(job.getFailedInterval())
-                .setExpiredTime(job.getExpiredTime()).build();
+                .setUser(job.getSubmitUser())
+                .setPriority(job.getPriority())
+                .setContent(job.getContent())
+                .setTaskType(job.getJobType())
+                .setParameters(JsonHelper.fromJson2JobParams(job.getParams()))
+                .setDataTime(new DateTime(dagTask.getDataTime()))
+                .setGroupId(job.getWorkerGroupId())
+                .setFailedRetries(job.getFailedAttempts())
+                .setFailedInterval(job.getFailedInterval())
+                .setExpiredTime(job.getExpiredTime())
+                .build();
         return taskDetail;
     }
 

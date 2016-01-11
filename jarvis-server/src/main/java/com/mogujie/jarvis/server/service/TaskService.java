@@ -24,6 +24,7 @@ import com.mogujie.jarvis.dao.generate.TaskMapper;
 import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.dto.generate.TaskExample;
+import com.mogujie.jarvis.dto.generate.TaskHistory;
 
 /**
  * @author guangming
@@ -35,6 +36,9 @@ public class TaskService {
 
     @Inject
     private TaskDependService taskDependService;
+
+    @Inject
+    private TaskHistoryService taskHistoryService;
 
     @Inject
     private JobService jobService;
@@ -125,6 +129,33 @@ public class TaskService {
         task.setExecuteEndTime(currentTime);
         task.setUpdateTime(currentTime);
         taskMapper.updateByPrimaryKeySelective(task);
+
+        insertHistory(taskId);
+    }
+
+    public void insertHistory(long taskId) {
+        Task task = taskMapper.selectByPrimaryKey(taskId);
+        TaskHistory history = new TaskHistory();
+        history.setTaskId(task.getTaskId());
+        history.setAttemptId(task.getAttemptId());
+        history.setJobId(task.getJobId());
+        history.setContent(task.getContent());
+        history.setParams(task.getParams());
+        history.setScheduleTime(task.getScheduleTime());
+        history.setDataTime(task.getDataTime());
+        history.setProgress(task.getProgress());
+        history.setType(task.getType());
+        history.setStatus(task.getStatus());
+        history.setFinishReason(task.getFinishReason());
+        history.setAppId(task.getAppId());
+        history.setWorkerId(task.getWorkerId());
+        history.setExecuteUser(task.getExecuteUser());
+        history.setExecuteStartTime(task.getExecuteStartTime());
+        history.setExecuteEndTime(task.getExecuteEndTime());
+        Date currentTime = DateTime.now().toDate();
+        history.setExecuteEndTime(currentTime);
+        history.setUpdateTime(currentTime);
+        taskHistoryService.insert(history);
     }
 
     public List<Task> getTasksByStatusNotIn(List<Integer> statusList) {

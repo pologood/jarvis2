@@ -30,6 +30,7 @@ import com.mogujie.jarvis.server.scheduler.TestSchedulerBase;
 import com.mogujie.jarvis.server.scheduler.dag.DAGJob;
 import com.mogujie.jarvis.server.scheduler.dag.DAGJobType;
 import com.mogujie.jarvis.server.scheduler.event.ManualRerunTaskEvent;
+import com.mogujie.jarvis.server.scheduler.event.SuccessEvent;
 import com.mogujie.jarvis.server.scheduler.time.TimePlanEntry;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.util.PlanUtil;
@@ -124,8 +125,37 @@ public class TestRerunTask extends TestSchedulerBase {
 
         // 5. 重跑任务
         controller.notify(new ManualRerunTaskEvent(taskIdList));
-
         Assert.assertEquals(4, taskQueue.size());
+
+        List<TimePlanEntry> planDList = planMap.get(jobDId);
+        TimePlanEntry entryD1 = planDList.get(0);
+        SuccessEvent successEventD1 = new SuccessEvent(entryD1.getJobId(), entryD1.getTaskId(),
+                scheduleTime, TaskType.RERUN, "test");
+        controller.notify(successEventD1);
+        Assert.assertEquals(5, taskGraph.getTaskMap().keySet().size());
+        Assert.assertEquals(4, taskQueue.size());
+
+        List<TimePlanEntry> planEList = planMap.get(jobEId);
+        TimePlanEntry entryE1 = planEList.get(0);
+        SuccessEvent successEventE1 = new SuccessEvent(entryE1.getJobId(), entryE1.getTaskId(),
+                scheduleTime, TaskType.RERUN, "test");
+        controller.notify(successEventE1);
+        Assert.assertEquals(4, taskGraph.getTaskMap().keySet().size());
+        Assert.assertEquals(5, taskQueue.size());
+
+        TimePlanEntry entryD2 = planDList.get(1);
+        SuccessEvent successEventD2 = new SuccessEvent(entryD2.getJobId(), entryD2.getTaskId(),
+                scheduleTime, TaskType.RERUN, "test");
+        controller.notify(successEventD2);
+        Assert.assertEquals(3, taskGraph.getTaskMap().keySet().size());
+        Assert.assertEquals(5, taskQueue.size());
+
+        TimePlanEntry entryE2 = planEList.get(1);
+        SuccessEvent successEventE2 = new SuccessEvent(entryE2.getJobId(), entryE2.getTaskId(),
+                scheduleTime, TaskType.RERUN, "test");
+        controller.notify(successEventE2);
+        Assert.assertEquals(2, taskGraph.getTaskMap().keySet().size());
+        Assert.assertEquals(6, taskQueue.size());
     }
 
     private List<Long> getDependTaskIds(List<TimePlanEntry> planList, long dataTime, DependencyExpression dependencyExpression) {

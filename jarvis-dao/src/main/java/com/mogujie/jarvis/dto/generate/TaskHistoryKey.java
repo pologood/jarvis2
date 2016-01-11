@@ -1,6 +1,6 @@
 package com.mogujie.jarvis.dto.generate;
 
-public class TaskExecuteRecordsKey {
+public class TaskHistoryKey {
     private Long taskId;
 
     private Integer attemptId;
