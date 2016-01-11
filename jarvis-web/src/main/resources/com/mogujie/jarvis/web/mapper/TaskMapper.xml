@@ -141,10 +141,8 @@
                     #{executeUser}
                 </foreach>
             </if>
-            <if test="scheduleTime!=null">
-                <![CDATA[
-                  AND (task.scheduleTime>=#{scheduleTime} AND task.scheduleTime<(DATE_ADD(#{scheduleTime},INTERVAL 1 DAY)))
-                ]]>
+            <if test="dataTime!=null">
+                AND dataTime=#{dataTime}
             </if>
         </where>
     </sql>

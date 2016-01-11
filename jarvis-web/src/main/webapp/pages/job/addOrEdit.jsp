@@ -114,7 +114,9 @@
                 <div class="col-md-6 col-md-offset-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">任务参数</span>
-                        <input id="parameters" class="form-control" value='<c:choose><c:when test="${jobVo.params!=null}">${jobVo.params}</c:when><c:otherwise>{}</c:otherwise></c:choose>' onclick="showParaModel()"/>
+                        <input id="parameters" class="form-control"
+                               value='<c:choose><c:when test="${jobVo.params!=null}">${jobVo.params}</c:when><c:otherwise>{}</c:otherwise></c:choose>'
+                               onclick="showParaModel()"/>
                     </div>
                 </div>
 
@@ -171,7 +173,6 @@
                 </div>
                 <!-- /.modal -->
             </div>
-
 
 
             <div class="row top-buffer">
@@ -269,7 +270,9 @@
                 <div class="col-md-6 col-md-offset-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">拒绝重试数</span>
-                        <input id="rejectRetries" class="form-control" value="<c:choose><c:when test="${jobVo.failedAttempts!=null}">${jobVo.failedAttempts}</c:when><c:otherwise>0</c:otherwise></c:choose>" desc="失败重试数"
+                        <input id="rejectRetries" class="form-control"
+                               value="<c:choose><c:when test="${jobVo.failedAttempts!=null}">${jobVo.failedAttempts}</c:when><c:otherwise>0</c:otherwise></c:choose>"
+                               desc="失败重试数"
                                placeholder="0" onblur="checkNum(this)"/>
                     </div>
                 </div>
@@ -279,7 +282,9 @@
                 <div class="col-md-6 col-md-offset-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">拒绝重试间隔(秒)</span>
-                        <input id="rejectInterval" class="form-control" value="<c:choose><c:when test="${jobVo.failedInterval!=null}">${jobVo.failedInterval}</c:when><c:otherwise>3</c:otherwise></c:choose>" desc="失败重试间隔(秒)"
+                        <input id="rejectInterval" class="form-control"
+                               value="<c:choose><c:when test="${jobVo.failedInterval!=null}">${jobVo.failedInterval}</c:when><c:otherwise>3</c:otherwise></c:choose>"
+                               desc="失败重试间隔(秒)"
                                placeholder="3" onblur="checkNum(this)"/>
                     </div>
                 </div>
@@ -289,7 +294,9 @@
                 <div class="col-md-6 col-md-offset-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">失败重试数</span>
-                        <input id="failedRetries" class="form-control" value="<c:choose><c:when test="${jobVo.failedAttempts!=null}">${jobVo.failedAttempts}</c:when><c:otherwise>0</c:otherwise></c:choose>" desc="失败重试数"
+                        <input id="failedRetries" class="form-control"
+                               value="<c:choose><c:when test="${jobVo.failedAttempts!=null}">${jobVo.failedAttempts}</c:when><c:otherwise>0</c:otherwise></c:choose>"
+                               desc="失败重试数"
                                placeholder="0" onblur="checkNum(this)"/>
                     </div>
                 </div>
@@ -299,7 +306,9 @@
                 <div class="col-md-6 col-md-offset-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">失败重试间隔(秒)</span>
-                        <input id="failedInterval" class="form-control" value="<c:choose><c:when test="${jobVo.failedInterval!=null}">${jobVo.failedInterval}</c:when><c:otherwise>3</c:otherwise></c:choose>" desc="失败重试间隔(秒)"
+                        <input id="failedInterval" class="form-control"
+                               value="<c:choose><c:when test="${jobVo.failedInterval!=null}">${jobVo.failedInterval}</c:when><c:otherwise>3</c:otherwise></c:choose>"
+                               desc="失败重试间隔(秒)"
                                placeholder="3" onblur="checkNum(this)"/>
                     </div>
                 </div>
@@ -318,6 +327,7 @@
                 <div class="col-md-6 col-md-offset-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">报警类型</span>
+
                         <div id="alarmType" class="form-control">
                             <input type="checkbox" onclick="changeAll(this)">全部
                         </div>
@@ -329,15 +339,15 @@
                 <div class="col-md-6 col-md-offset-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">报警启用/禁用</span>
+
                         <div id="alarmStatus" class="form-control">
-                            <input name="alarmStatus" type="radio" value="0" >禁用
+                            <input name="alarmStatus" type="radio" value="0">禁用
                             <input name="alarmStatus" type="radio" value="1" checked="checked">启用
                         </div>
 
                     </div>
                 </div>
             </div>
-
 
 
             <div class="row top-buffer">
@@ -381,15 +391,15 @@
     var dependJobs = undefined;
     var existAlarmList = undefined;
     <c:choose>
-    <c:when test="${jobVo!=null}">
-    jobType = '${jobVo.jobType}';
-    jobPriority = '${jobVo.priority}';
-    dependIds = '${dependIds}';
-    expressionType = '${jobVo.expressionType}';
-    expression = '${jobVo.expression}';
-    dependJobs = '${dependJobs}';
-    existAlarmList = '${existAlarmList}';
-    </c:when>
+        <c:when test="${jobVo!=null}">
+            jobType = '${jobVo.jobType}';
+            jobPriority = '${jobVo.priority}';
+            dependIds = '${dependIds}';
+            expressionType = '${jobVo.expressionType}';
+            expression = '${jobVo.expression}';
+            dependJobs = '${dependJobs}';
+            existAlarmList = '${existAlarmList}';
+        </c:when>
     </c:choose>
 </script>
 

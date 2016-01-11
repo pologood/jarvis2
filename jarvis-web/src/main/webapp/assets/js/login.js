@@ -1,4 +1,4 @@
-jQuery(document).ready(function($){
+jQuery(document).ready(function ($) {
     var $form_modal = $('.cd-user-modal'),
         $form_login = $form_modal.find('#cd-login'),
         $form_forgot_password = $form_modal.find('#cd-reset-password'),
@@ -20,49 +20,48 @@ jQuery(document).ready(function($){
     }
 
     //open modal
-    $signin_in.on('click', function(event){
+    $signin_in.on('click', function (event) {
         //show modal layer
         $form_modal.addClass('is-visible');
-            //show the selected form
+        //show the selected form
         login_selected();
     });
 
     //close modal
-    $('.cd-user-modal').on('click', function(event){
-        if( $(event.target).is($form_modal) || $(event.target).is('.cd-close-form') ) {
+    $('.cd-user-modal').on('click', function (event) {
+        if ($(event.target).is($form_modal) || $(event.target).is('.cd-close-form')) {
             $form_modal.removeClass('is-visible');
         }
     });
 
     //close modal when clicking the esc keyboard button
-    $(document).keyup(function(event){
-        if(event.which=='27'){
+    $(document).keyup(function (event) {
+        if (event.which == '27') {
             $form_modal.removeClass('is-visible');
         }
     });
 
     //switch from a tab to another
-    $form_modal_tab.on('click', function(event) {
+    $form_modal_tab.on('click', function (event) {
         event.preventDefault();
         login_selected();
     });
 
 
     //back to login from the forgot-password form
-    $back_to_login_link.on('click', function(event){
+    $back_to_login_link.on('click', function (event) {
         event.preventDefault();
         login_selected();
     });
 
-    function login_selected(){
+    function login_selected() {
         $form_login.addClass('is-selected');
         $form_forgot_password.removeClass('is-selected');
     }
 
 
-
     //REMOVE THIS - it's just to show error messages
-    $form_login.find('input[type="submit"]').on('click', function(event){
+    $form_login.find('input[type="submit"]').on('click', function (event) {
         event.preventDefault();
         $form_login.find('input[type="email"]').toggleClass('has-error').next('span').toggleClass('is-visible');
     });
@@ -70,20 +69,20 @@ jQuery(document).ready(function($){
 
     //IE9 placeholder fallback
     //credits http://www.hagenburger.net/BLOG/HTML5-Input-Placeholder-Fix-With-jQuery.html
-    if(!Modernizr.input.placeholder){
-        $('[placeholder]').focus(function() {
+    if (!Modernizr.input.placeholder) {
+        $('[placeholder]').focus(function () {
             var input = $(this);
             if (input.val() == input.attr('placeholder')) {
                 input.val('');
             }
-        }).blur(function() {
+        }).blur(function () {
             var input = $(this);
             if (input.val() == '' || input.val() == input.attr('placeholder')) {
                 input.val(input.attr('placeholder'));
             }
         }).blur();
-        $('[placeholder]').parents('form').submit(function() {
-            $(this).find('[placeholder]').each(function() {
+        $('[placeholder]').parents('form').submit(function () {
+            $(this).find('[placeholder]').each(function () {
                 var input = $(this);
                 if (input.val() == input.attr('placeholder')) {
                     input.val('');
@@ -92,7 +91,7 @@ jQuery(document).ready(function($){
         });
     }
 
-    $submit_input.click(function(){
+    $submit_input.click(function () {
         var uname = $("#signin-uname").val(),
             password = $("#signin-password").val();
 
@@ -108,12 +107,12 @@ jQuery(document).ready(function($){
 
         $.ajax({
             type: 'POST',
-            url: contextPath+'/login/',
+            url: contextPath + '/login/',
             data: {
                 uname: uname,
                 password: password
             },
-            success: function(result){
+            success: function (result) {
                 console.log(result);
                 if (result.status.code != 1001) {
                     $pass_msg.html(result.status.msg);
@@ -130,8 +129,8 @@ jQuery(document).ready(function($){
 
 
 //credits http://css-tricks.com/snippets/jquery/move-cursor-to-end-of-textarea-or-input/
-jQuery.fn.putCursorAtEnd = function() {
-    return this.each(function() {
+jQuery.fn.putCursorAtEnd = function () {
+    return this.each(function () {
         // If this function exists...
         if (this.setSelectionRange) {
             // ... then use it (Doesn't work in IE)

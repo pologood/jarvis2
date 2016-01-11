@@ -391,6 +391,7 @@ function calculateOperator(sourceStr, afterChangeStr) {
     if (sourceStr != null) {
         //console.log("sourceStr:"+sourceStr);
         var source = JSON.parse(sourceStr);
+        console.log(afterChangeStr);
         var afterChange = JSON.parse(afterChangeStr);
 
         if (afterChange == null) {
@@ -531,12 +532,18 @@ function getData() {
 
     });
     //前置任务信息
-    var dependencyList = calculateOperator(dependIds, result["dependJobIds"]);
+    var afterDependIds = result["dependJobIds"];
+    afterDependIds = afterDependIds == undefined ? "[]" : afterDependIds;
+
+    var dependencyList = calculateOperator(dependIds, afterDependIds);
     result["dependencyList"] = dependencyList;
 
     //表示式类型与表达式内容
     var scheduleExpressionEntry = getScheduleExpressionEntry();
     result["scheduleExpressionEntry"] = scheduleExpressionEntry;
+
+    var appId = $("#appId").val();
+    result["appId"] = appId;
 
     return result;
 }

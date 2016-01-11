@@ -25,12 +25,12 @@ public class JobDependService {
      */
     public Map<String, Object> getTreeDependedOnJob(JobQo jobQo) {
         Map<String, Object> result = new HashMap<String, Object>();
-        if (null == jobQo || jobQo.getJobIdList().size() == 0) {
+        if (null == jobQo || null == jobQo.getJobId()) {
             return result;
         }
-        JobDependVo jobDependVo = jobDependMapper.getJobById(Long.valueOf(jobQo.getJobIdList().get(0)));
+        JobDependVo jobDependVo = jobDependMapper.getJobById(Long.valueOf(jobQo.getJobId()));
 
-        if (jobDependVo == null) {
+        if (null == jobDependVo) {
             return result;
         }
         Map<String, Object> mapState = new HashMap<String, Object>();
@@ -43,7 +43,8 @@ public class JobDependService {
             Field[] fields = jobDependVo.getClass().getDeclaredFields();
             for (int i = 0, len = fields.length; i < len; i++) {
                 Field field = fields[i];
-                Object value = (Object) field.get(jobDependVo);
+                field.setAccessible(true);
+                Object value = field.get(jobDependVo);
                 result.put(field.getName(), value);
             }
         } catch (Exception e) {
@@ -69,7 +70,7 @@ public class JobDependService {
         jobDependVo.setValue(jobDependVo.getId());
         jobDependVo.setRootFlag(true);
 
-        if (jobDependVo == null) {
+        if (null == jobDependVo) {
             return result;
         }
         Map<String, Object> mapState = new HashMap<String, Object>();

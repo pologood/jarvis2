@@ -41,7 +41,6 @@ public class TaskDependService {
     public void generate(TaskDependVo taskDependVo) {
         TaskVo task = taskMapper.getTaskById(taskDependVo.getTaskId());
         JobVo job = jobMapper.getJobById(task.getJobId());
-        List<TaskExecuteRecordsVo> taskExecuteRecordsList = taskExecuteRecordsMapper.getByTaskId(taskDependVo.getTaskId());
         //初始化当前task基本情况
         taskDependVo.setRootFlag(true);
         taskDependVo.setExecuteUser(task.getExecuteUser());
@@ -52,7 +51,6 @@ public class TaskDependService {
         taskDependVo.setExecuteStartTime(task.getExecuteStartTime());
         taskDependVo.setExecuteEndTime(task.getExecuteEndTime());
         taskDependVo.setExecuteTime(task.getExecuteTime());
-        taskDependVo.setTaskExecuteRecordsVoList(taskExecuteRecordsList);
 
         //获取任务依赖中的前置任务
         String dependTaskIdsStr = taskDependVo.getDependTaskIds();
@@ -158,8 +156,6 @@ public class TaskDependService {
             } else {
                 singleTaskDependVo.setStatus(91);     //91代表失效、过期、垃圾箱等(在前台渲染需要)
             }
-            List<TaskExecuteRecordsVo> preTaskExecuteRecordsList = taskExecuteRecordsMapper.getByTaskId(singleTaskDependVo.getTaskId());
-            singleTaskDependVo.setTaskExecuteRecordsVoList(preTaskExecuteRecordsList);
             singleTaskDependVo.setCompleteTask(completeCount);
             singleTaskDependVo.setParentFlag(true);
 
@@ -191,8 +187,6 @@ public class TaskDependService {
                     }
                 }
             }
-            List<TaskExecuteRecordsVo> postTaskExecuteRecordsList = taskExecuteRecordsMapper.getByTaskId(singleTaskDependVo.getTaskId());
-            singleTaskDependVo.setTaskExecuteRecordsVoList(postTaskExecuteRecordsList);
             singleTaskDependVo.setCompleteTask(completeCount);
 
             taskDependVo.getChildren().add(singleTaskDependVo);

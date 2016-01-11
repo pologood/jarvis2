@@ -40,11 +40,11 @@ public class IndexController extends BaseController {
 
     @RequestMapping(value = "login", method = RequestMethod.POST)
     @ResponseBody
-    public JsonReturn login(HttpServletRequest request, HttpServletResponse response, String uname, String password){
+    public JsonReturn login(HttpServletRequest request, HttpServletResponse response, String uname, String password) {
         try {
             com.mogu.bigdata.admin.core.entity.User user = uuapService.authenticate(request, response, uname, password);
             if (null == user) {
-                return new JsonReturn(4004,"登录失败");
+                return new JsonReturn(4004, "登录失败");
             }
             userService.insert(user);
             return new JsonReturn(1001, "/");
@@ -55,7 +55,7 @@ public class IndexController extends BaseController {
     }
 
     @RequestMapping(value = "logout", method = RequestMethod.GET)
-    public String logout(ModelMap mp, HttpServletRequest request, HttpServletResponse response) throws Exception{
+    public String logout(ModelMap mp, HttpServletRequest request, HttpServletResponse response) throws Exception {
         uuapService.logout(request, response);
         mp.clear();
         return "redirect:/";

@@ -4,13 +4,6 @@ var taskStatusColor = null;
 
 $(function () {
 
-    $('#dataDate').datetimepicker({
-        language: 'zh-CN',
-        minView: 'month',
-        format: 'yyyy-mm-dd',
-        autoclose: true
-    });
-
     $('#dataTime').datetimepicker({
         language: 'zh-CN',
         minView: 'hour',
@@ -145,7 +138,7 @@ function getQueryPara() {
     var jobTypeList = $("#jobTypeList").val();
     var priorityList = $("#priority").val();
     var executeUserList = $("#executeUser").val();
-    var scheduleTime = $("#scheduleTime").val();
+    var dataTime = $("#dataTime").val();
 
     jobIdList = jobIdList == "all" ? undefined : jobIdList;
     jobIdList = jobIdList == null ? undefined : jobIdList;
@@ -157,14 +150,14 @@ function getQueryPara() {
     executeUserList = executeUserList == null ? undefined : executeUserList;
     priorityList = priorityList == "all" ? undefined : priorityList;
     priorityList = priorityList == null ? undefined : priorityList;
-    scheduleTime = scheduleTime == '' ? undefined : scheduleTime;
+    dataTime = dataTime == '' ? undefined : dataTime;
 
     queryPara["jobIdList"] = JSON.stringify(jobIdList);
     queryPara["jobNameList"] = JSON.stringify(jobNameList);
     queryPara["jobTypeList"] = JSON.stringify(jobTypeList);
     queryPara["executeUserList"] = JSON.stringify(executeUserList);
     queryPara["priorityList"] = JSON.stringify(priorityList);
-    queryPara["scheduleTime"] = scheduleTime;
+    queryPara["dataTime"] = dataTime;
 
     return queryPara;
 }
@@ -213,7 +206,7 @@ var columns = [{
     title: '任务ID',
     switchable: true,
     visible: true,
-    visible:false
+    visible: false
 }, {
     field: 'jobName',
     title: '任务名称',

@@ -65,6 +65,15 @@
             <div class="row top-buffer">
                 <div class="col-md-6 col-md-offset-3">
                     <div class="input-group" style="width:100%">
+                        <span class="input-group-addon" style="width:35%">数据时间</span>
+                        <input id="dataTime" class="form-control"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row top-buffer">
+                <div class="col-md-6 col-md-offset-3">
+                    <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">是否重跑后续任务</span>
 
                         <div class="form-control">

@@ -23,14 +23,14 @@ $(function () {
         taskStatusJson = data;
 
         var newData = new Array();
-        var all={};
-        all["id"]="all";
-        all["text"]="全部";
+        var all = {};
+        all["id"] = "all";
+        all["text"] = "全部";
         newData.push(all);
-        $(data).each(function(i,c){
-            var item={};
-            item["id"]=c["id"];
-            item["text"]=c["text"];
+        $(data).each(function (i, c) {
+            var item = {};
+            item["id"] = c["id"];
+            item["text"] = c["text"];
             newData.push(item);
         });
 

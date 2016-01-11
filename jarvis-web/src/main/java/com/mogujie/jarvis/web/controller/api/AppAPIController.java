@@ -42,8 +42,8 @@ public class AppAPIController {
         AppStatus[] appStatuses = AppStatus.values();
         for (AppStatus appStatus : appStatuses) {
             Map<String, Object> map = new HashMap<String, Object>();
-            map.put("id",appStatus.getValue());
-            map.put("text",appStatus.getDescription());
+            map.put("id", appStatus.getValue());
+            map.put("text", appStatus.getDescription());
             list.add(map);
         }
 
@@ -61,8 +61,8 @@ public class AppAPIController {
         AppType[] appStatuses = AppType.values();
         for (AppType appType : appStatuses) {
             Map<String, Object> map = new HashMap<String, Object>();
-            map.put("id",appType.getValue());
-            map.put("text",appType.getDescription());
+            map.put("id", appType.getValue());
+            map.put("text", appType.getDescription());
             list.add(map);
         }
 

@@ -1,7 +1,5 @@
 package com.mogujie.jarvis.web.mapper;
 
-import com.mogujie.jarvis.web.entity.qo.WorkerGroupQo;
-import com.mogujie.jarvis.web.entity.vo.WorkerGroupVo;
 import com.mogujie.jarvis.web.entity.qo.WorkerQo;
 import com.mogujie.jarvis.web.entity.vo.WorkerVo;
 

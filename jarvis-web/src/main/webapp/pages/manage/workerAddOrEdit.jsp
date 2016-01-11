@@ -42,8 +42,8 @@
                     <c:forEach items="${workerGroupVoList}" var="workerGroupVo">
                         <option value="${workerGroupVo.id}"
                                 <c:choose>
-                                <c:when test="${workerVo.workerGroupId==workerGroupVo.id}">selected</c:when>
-                        </c:choose> >${workerGroupVo.name}</option>
+                                    <c:when test="${workerVo.workerGroupId==workerGroupVo.id}">selected</c:when>
+                                </c:choose> >${workerGroupVo.name}</option>
                     </c:forEach>
                 </select>
             </div>
@@ -67,13 +67,13 @@
                 <select id="status">
                     <option value="0"
                             <c:choose>
-                            <c:when test="${workerVo!=null&&workerVo.status==0}">selected</c:when>
-                    </c:choose> >停用
+                                <c:when test="${workerVo!=null&&workerVo.status==0}">selected</c:when>
+                            </c:choose> >停用
                     </option>
                     <option value="1"
                             <c:choose>
-                            <c:when test="${workerVo!=null&&workerVo.status==1}">selected</c:when>
-                    </c:choose> >启用
+                                <c:when test="${workerVo!=null&&workerVo.status==1}">selected</c:when>
+                            </c:choose> >启用
                     </option>
                 </select>
             </div>

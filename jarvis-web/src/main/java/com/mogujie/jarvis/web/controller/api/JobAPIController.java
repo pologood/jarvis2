@@ -36,7 +36,7 @@ public class JobAPIController {
     public Map<String, Object> getJobs(JobQo jobQo) {
 
         Map<String, Object> result = jobService.getJobs(jobQo);
-        JobStatus[] jobStatuses=JobStatus.values();
+        JobStatus[] jobStatuses = JobStatus.values();
 
         return result;
     }
@@ -57,12 +57,10 @@ public class JobAPIController {
     /**
      * 单向依赖树
      */
-    @RequestMapping("/getTreeDependedONJob")
+    @RequestMapping("/getTreeDependedOnJob")
     @ResponseBody
-    public Map<String, Object> getTreeDependedONJob(JobQo jobQo) {
-
+    public Map<String, Object> getTreeDependedOnJob(JobQo jobQo) {
         Map<String, Object> result = jobDependService.getTreeDependedOnJob(jobQo);
-
         return result;
     }
 
@@ -72,9 +70,7 @@ public class JobAPIController {
     @RequestMapping("/getTwoDirectionTree")
     @ResponseBody
     public Map<String, Object> getTwoDirectionTree(JobQo jobSearchVo) {
-
         Map<String, Object> result = jobDependService.getTwoDirectionTreeDependedOnJob(jobSearchVo);
-
         return result;
     }
 
@@ -113,12 +109,11 @@ public class JobAPIController {
     @ResponseBody
     public List<Map<String, Object>> getJobStatus() {
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-
         JobStatus[] jobStatuses = JobStatus.values();
         for (JobStatus jobStatus : jobStatuses) {
             Map<String, Object> map = new HashMap<String, Object>();
-            map.put("id",jobStatus.getValue());
-            map.put("text",jobStatus.getDescription());
+            map.put("id", jobStatus.getValue());
+            map.put("text", jobStatus.getDescription());
             list.add(map);
         }
 
@@ -133,8 +128,8 @@ public class JobAPIController {
         ScheduleExpressionType[] scheduleExpressionTypes = ScheduleExpressionType.values();
         for (ScheduleExpressionType scheduleExpressionType : scheduleExpressionTypes) {
             Map<String, Object> map = new HashMap<String, Object>();
-            map.put("id",scheduleExpressionType.getValue());
-            map.put("text",scheduleExpressionType.getDescription());
+            map.put("id", scheduleExpressionType.getValue());
+            map.put("text", scheduleExpressionType.getDescription());
             list.add(map);
         }
 
@@ -149,8 +144,8 @@ public class JobAPIController {
         CommonStrategy[] commonStrategies = CommonStrategy.values();
         for (CommonStrategy commonStrategy : commonStrategies) {
             Map<String, Object> map = new HashMap<String, Object>();
-            map.put("id",commonStrategy.getValue());
-            map.put("text",commonStrategy.getDescription());
+            map.put("id", commonStrategy.getValue());
+            map.put("text", commonStrategy.getDescription());
             list.add(map);
         }
 

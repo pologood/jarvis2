@@ -38,8 +38,8 @@ public class TaskAPIController {
         TaskStatus[] taskStatuses = TaskStatus.values();
         for (TaskStatus taskStatus : taskStatuses) {
             Map<String, Object> map = new HashMap<String, Object>();
-            map.put("id",taskStatus.getValue());
-            map.put("text",taskStatus.getDescription());
+            map.put("id", taskStatus.getValue());
+            map.put("text", taskStatus.getDescription());
             list.add(map);
         }
 

@@ -39,8 +39,8 @@ public class WorkerGroupAPIController {
         WorkerGroupStatus[] workerGroupStatuses = WorkerGroupStatus.values();
         for (WorkerGroupStatus workerGroupStatus : workerGroupStatuses) {
             Map<String, Object> map = new HashMap<String, Object>();
-            map.put("id",workerGroupStatus.getValue());
-            map.put("text",workerGroupStatus.getDescription());
+            map.put("id", workerGroupStatus.getValue());
+            map.put("text", workerGroupStatus.getDescription());
             list.add(map);
         }
 

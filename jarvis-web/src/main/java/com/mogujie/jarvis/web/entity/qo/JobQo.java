@@ -11,6 +11,7 @@ import java.util.List;
  * 备注:setter方法重写过，勿删除
  */
 public class JobQo {
+    private Long jobId;
     private List<String> jobIdList;
     private List<String> jobNameList;
     private List<String> jobTypeList;
@@ -151,5 +152,13 @@ public class JobQo {
 
     public void setOrder(String order) {
         this.order = order;
+    }
+
+    public Long getJobId() {
+        return jobId;
+    }
+
+    public void setJobId(Long jobId) {
+        this.jobId = jobId;
     }
 }

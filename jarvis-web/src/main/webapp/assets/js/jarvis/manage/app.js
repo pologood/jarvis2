@@ -18,7 +18,7 @@ $(function () {
     initData();
 });
 
-function initType(appType){
+function initType(appType) {
     var data = new Array();
     var all = {};
     all["id"] = "all";
@@ -40,7 +40,7 @@ function initStatus(appStatus) {
     all["text"] = "全部";
     data.push(all);
     $(appStatus).each(function (i, c) {
-        if(c["id"]!=3){
+        if (c["id"] != 3) {
             data.push(c);
         }
     });

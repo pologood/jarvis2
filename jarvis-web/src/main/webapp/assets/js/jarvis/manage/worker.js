@@ -125,14 +125,14 @@ function operateWorkerFormatter(value, row, index) {
 
     $(workerStatus).each(function (i, c) {
         if (c["id"] != 'all' && c["id"] != operateFlag) {
-            var style="";
-            if(2==c["id"]){
-                style="btn btn-xs btn-danger";
+            var style = "";
+            if (2 == c["id"]) {
+                style = "btn btn-xs btn-danger";
             }
-            else if(1==c["id"]){
-                style="btn btn-xs btn-success";
+            else if (1 == c["id"]) {
+                style = "btn btn-xs btn-success";
             }
-            var item = '<a class="'+style+'" href="javascript:void(0)" onclick="modifyWorkerStatus(' + id + ',' + c["id"] + ',\'' + ip + '\',' + port + ')" >' + c["text"] + '</a>';
+            var item = '<a class="' + style + '" href="javascript:void(0)" onclick="modifyWorkerStatus(' + id + ',' + c["id"] + ',\'' + ip + '\',' + port + ')" >' + c["text"] + '</a>';
             operation = operation + item;
         }
     });
@@ -159,17 +159,17 @@ function operateWorkerGroupFormatter(value, row, index) {
 
     $(workerGroupStatus).each(function (i, c) {
         if (c["id"] != 'all' && c["id"] != operateFlag) {
-            var style="";
+            var style = "";
             //禁用
-            if(2==c["id"]){
-                style="btn btn-xs btn-danger";
+            if (2 == c["id"]) {
+                style = "btn btn-xs btn-danger";
             }
             //启用
-            else if(1==c["id"]){
-                style="btn btn-xs btn-success";
+            else if (1 == c["id"]) {
+                style = "btn btn-xs btn-success";
             }
 
-            var item = '<a class="'+style+'" href="javascript:void(0)" onclick="modifyWorkerGroupStatus(' + id + ',\'' + authKey + '\',' + c["id"] + ')" >' + c["text"] + '</a>';
+            var item = '<a class="' + style + '" href="javascript:void(0)" onclick="modifyWorkerGroupStatus(' + id + ',\'' + authKey + '\',' + c["id"] + ')" >' + c["text"] + '</a>';
             operation = operation + item;
         }
     });
@@ -184,12 +184,12 @@ var workerColumns = [{
     field: 'id',
     title: 'Worker Id',
     switchable: true,
-    visible:false
+    visible: false
 }, {
     field: 'workerGroupId',
     title: 'Worker Group Id',
     switchable: true,
-    visible:false
+    visible: false
 }, {
     field: 'ip',
     title: 'IP',
@@ -198,7 +198,7 @@ var workerColumns = [{
     field: 'port',
     title: '端口',
     switchable: true
-},{
+}, {
     field: 'workerGroupName',
     title: 'WorkerGroup名',
     switchable: true
@@ -212,13 +212,13 @@ var workerColumns = [{
     title: '创建时间',
     switchable: true,
     formatter: formatDateTime,
-    visible:false
+    visible: false
 }, {
     field: 'updateTime',
     title: '更新时间',
     switchable: true,
     formatter: formatDateTime,
-    visible:false
+    visible: false
 }, {
     field: 'operation',
     title: '操作',
@@ -231,7 +231,7 @@ var workerGroupColumns = [{
     field: 'id',
     title: 'Worker Group id',
     switchable: true,
-    visible:false
+    visible: false
 }, {
     field: 'name',
     title: '名称',
@@ -240,28 +240,28 @@ var workerGroupColumns = [{
     field: 'authKey',
     title: 'authKey',
     switchable: true
-},{
+}, {
     field: 'status',
     title: '状态',
     switchable: true,
     formatter: workerGroupStatusFormatter
-},  {
+}, {
     field: 'createTime',
     title: '创建时间',
     switchable: true,
     formatter: formatDateTime,
-    visible:false
+    visible: false
 }, {
     field: 'updateTime',
     title: '更新时间',
     switchable: true,
     formatter: formatDateTime,
-    visible:false
+    visible: false
 }, {
     field: 'updateUser',
     title: '更新人',
     switchable: true,
-    visible:false
+    visible: false
 }, {
     field: 'operation',
     title: '操作',
@@ -270,30 +270,30 @@ var workerGroupColumns = [{
 }];
 
 function workerStatusFormatter(value, row, index) {
-    var result="";
+    var result = "";
     //下线
-    if(2==value){
-        result="<i class='glyphicon glyphicon-remove text-danger'></i>";
+    if (2 == value) {
+        result = "<i class='glyphicon glyphicon-remove text-danger'></i>";
     }
     //上线
-    else if(1==value){
-        result="<i class='glyphicon glyphicon-ok text-success'></i>";
+    else if (1 == value) {
+        result = "<i class='glyphicon glyphicon-ok text-success'></i>";
     }
 
     return result;
 }
 function workerGroupStatusFormatter(value, row, index) {
-    var result="";
+    var result = "";
     //禁用
-    if(2==value){
-        result="<i class='glyphicon glyphicon-remove text-danger'></i>";
+    if (2 == value) {
+        result = "<i class='glyphicon glyphicon-remove text-danger'></i>";
     }
     //启用
-    else if(1==value){
-        result="<i class='glyphicon glyphicon-ok text-success'></i>";
+    else if (1 == value) {
+        result = "<i class='glyphicon glyphicon-ok text-success'></i>";
     }
-    else{
-        result="<i class='glyphicon glyphicon-question-sign text-info'></i>";
+    else {
+        result = "<i class='glyphicon glyphicon-question-sign text-info'></i>";
     }
 
     return result;

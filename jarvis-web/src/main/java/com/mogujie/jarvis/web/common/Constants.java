@@ -1,8 +1,5 @@
 package com.mogujie.jarvis.web.common;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Created by hejian on 15/9/17.
  */

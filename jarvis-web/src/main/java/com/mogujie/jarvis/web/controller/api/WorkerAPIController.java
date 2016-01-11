@@ -41,8 +41,8 @@ public class WorkerAPIController {
         WorkerStatus[] workerStatuses = WorkerStatus.values();
         for (WorkerStatus workerStatus : workerStatuses) {
             Map<String, Object> map = new HashMap<String, Object>();
-            map.put("id",workerStatus.getValue());
-            map.put("text",workerStatus.getDescription());
+            map.put("id", workerStatus.getValue());
+            map.put("text", workerStatus.getDescription());
             list.add(map);
         }
 

@@ -78,34 +78,27 @@ public class JobController extends BaseController {
         modelMap.put("app", app);
         if (jobId != null) {
             JobVo jobVo = jobService.getJobById(jobId);
-            modelMap.put("jobVo", jobVo);
+            //只有此应用才能编辑
+            if(jobVo.getAppId().equals(app.getAppId())){
+                modelMap.put("jobVo", jobVo);
 
-            //如果不是系统app，则用job自身的app
-            if (!jobVo.getAppId().equals(app.getAppId())) {
-                AppVo appVo = new AppVo();
-                appVo.setAppId(jobVo.getAppId());
-                modelMap.put("app", appVo);
+                List<JobDependVo> jobDependVoList = jobDependService.getParentById(jobId);
+                List<String> parentIds = new ArrayList<String>();
+                Map<String, Object> map = new HashMap<String, Object>();
+                for (JobDependVo jobDependVo : jobDependVoList) {
+                    parentIds.add(jobDependVo.getId().toString());
+                    map.put(jobDependVo.getId().toString(), jobDependVo);
+                }
+                String ids = JsonHelper.toJson(parentIds);
+                List<AlarmVo> alarmVoList = alarmService.getEnableAlarmsByJobId(jobId);
+                modelMap.put("dependIds", ids);
+                modelMap.put("dependJobs", JsonHelper.toJson(map));
+                modelMap.put("existAlarmList", JsonHelper.toJson(alarmVoList));
             }
-
-            List<JobDependVo> jobDependVoList = jobDependService.getParentById(jobId);
-            List<String> parentIds = new ArrayList<String>();
-            Map<String, Object> map = new HashMap<String, Object>();
-            for (JobDependVo jobDependVo : jobDependVoList) {
-                parentIds.add(jobDependVo.getId().toString());
-                map.put(jobDependVo.getId().toString(), jobDependVo);
-            }
-            String ids = JsonHelper.toJson(parentIds);
-            List<AlarmVo> alarmVoList = alarmService.getEnableAlarmsByJobId(jobId);
-            modelMap.put("dependIds", ids);
-            modelMap.put("dependJobs", JsonHelper.toJson(map));
-            modelMap.put("existAlarmList", JsonHelper.toJson(alarmVoList));
         }
 
-
         List<WorkerGroupVo> WorkerGroupVoList = workerGroupService.getAllWorkerGroup();
-
         List<JobVo> jobVoList = jobService.getAllJobs(1);
-
         modelMap.put("WorkerGroupVoList", WorkerGroupVoList);
         modelMap.put("jobVoList", jobVoList);
         return "job/addOrEdit";

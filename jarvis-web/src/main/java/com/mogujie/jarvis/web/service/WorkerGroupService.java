@@ -22,8 +22,6 @@ public class WorkerGroupService {
     @Autowired
     WorkerGroupMapper workerGroupMapper;
 
-
-
     /*
     * 获取
     * */

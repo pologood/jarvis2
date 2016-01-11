@@ -18,7 +18,7 @@ public class PlanQo {
     private List<String> submitUserList;
     private List<String> executeUserList;
 
-    private String scheduleTime;
+    private String dataTime;
     private Integer offset;
     private Integer limit;
 
@@ -102,12 +102,12 @@ public class PlanQo {
         }
     }
 
-    public String getScheduleTime() {
-        return scheduleTime;
+    public String getDataTime() {
+        return dataTime;
     }
 
-    public void setScheduleTime(String scheduleTime) {
-        this.scheduleTime = scheduleTime;
+    public void setDataTime(String dataTime) {
+        this.dataTime = dataTime;
     }
 
     public Integer getOffset() {

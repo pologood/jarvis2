@@ -53,14 +53,8 @@
             <div class="row top-buffer">
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">数据日期</span>
-                        <input type="text" id="dataDate" class="form-control" placeholder="与数据时间只能二选一"/>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">数据时间</span>
-                        <input type="text" id="dataTime" class="form-control" placeholder="与数据日期只能二选一"/>
+                        <input type="text" id="dataTime" class="form-control" placeholder="日期请选择0点(00:00)"/>
                     </div>
                 </div>
                 <div class="col-md-3">

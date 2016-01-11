@@ -9,8 +9,8 @@ function initAppStatus() {
         $(data).each(function (i, c) {
             if (c["id"] != 3) {
                 var item = {};
-                item["id"]=c["id"];
-                item["text"]=c["text"];
+                item["id"] = c["id"];
+                item["text"] = c["text"];
                 newData.push(item);
             }
         });
