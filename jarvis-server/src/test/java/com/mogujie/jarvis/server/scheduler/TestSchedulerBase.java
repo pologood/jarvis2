@@ -21,7 +21,6 @@ import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.core.util.IdUtils;
 import com.mogujie.jarvis.server.dispatcher.TaskQueue;
 import com.mogujie.jarvis.server.guice.Injectors;
-import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.dag.DAGScheduler;
 import com.mogujie.jarvis.server.scheduler.dag.JobGraph;
 import com.mogujie.jarvis.server.scheduler.task.DAGTask;
