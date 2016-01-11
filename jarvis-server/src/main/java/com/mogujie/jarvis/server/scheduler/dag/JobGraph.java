@@ -295,13 +295,16 @@ public enum JobGraph {
         long jobId = dagJob.getJobId();
         // 如果是时间任务，遍历自己的调度时间做依赖检查
         if (dagJob.getType().implies(DAGJobType.TIME)) {
-            long planScheduleTime = PlanUtil.getScheduleTimeAfter(jobId, DateTime.now()).getMillis();
-            if (dagJob.checkDependency(planScheduleTime)) {
-                LOGGER.info("{} pass the dependency check", dagJob);
-                // 提交给TimeScheduler进行时间调度
-                Map<Long, List<Long>> dependTaskIdMap = dagJob.getDependTaskIdMap(planScheduleTime);
-                AddPlanEvent event = new AddPlanEvent(jobId, scheduleTime, dependTaskIdMap);
-                controller.notify(event);
+            DateTime nextDateTime = PlanUtil.getScheduleTimeAfter(jobId, new DateTime(scheduleTime));
+            if (nextDateTime != null) {
+                long planScheduleTime = nextDateTime.getMillis();
+                if (dagJob.checkDependency(planScheduleTime)) {
+                    LOGGER.info("{} pass the dependency check", dagJob);
+                    // 提交给TimeScheduler进行时间调度
+                    Map<Long, List<Long>> dependTaskIdMap = dagJob.getDependTaskIdMap(planScheduleTime);
+                    AddPlanEvent event = new AddPlanEvent(jobId, scheduleTime, dependTaskIdMap);
+                    controller.notify(event);
+                }
             }
         }
     }
