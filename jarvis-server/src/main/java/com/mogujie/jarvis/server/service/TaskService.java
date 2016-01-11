@@ -153,7 +153,7 @@ public class TaskService {
         history.setExecuteStartTime(task.getExecuteStartTime());
         history.setExecuteEndTime(task.getExecuteEndTime());
         Date currentTime = DateTime.now().toDate();
-        history.setExecuteEndTime(currentTime);
+        history.setCreateTime(currentTime);
         history.setUpdateTime(currentTime);
         taskHistoryService.insert(history);
     }
