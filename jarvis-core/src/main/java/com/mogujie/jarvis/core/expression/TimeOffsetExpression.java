@@ -15,7 +15,9 @@ import java.util.regex.Pattern;
 
 import org.joda.time.DateTime;
 import org.joda.time.IllegalFieldValueException;
+import org.joda.time.Months;
 import org.joda.time.MutableDateTime;
+import org.joda.time.Years;
 import org.joda.time.format.DateTimeFormat;
 
 import com.google.common.base.CharMatcher;
@@ -186,22 +188,22 @@ public class TimeOffsetExpression extends DependencyExpression {
     }
 
     private Range<DateTime> fixRange(Range<DateTime> range) {
+        DateTime lowerEndpoint = range.lowerEndpoint();
+        DateTime upperEndpoint = range.upperEndpoint();
+
+        BoundType lowerBoundType = range.lowerBoundType();
+        BoundType upperBoundType = range.upperBoundType();
         switch (format) {
             case "yyyy-MM-dd HH:mm:00":
-                return Range.range(range.lowerEndpoint().plusMinutes(1), range.lowerBoundType(), range.upperEndpoint().plusMinutes(1),
-                        range.upperBoundType());
+                return Range.range(lowerEndpoint.plusMinutes(1), lowerBoundType, upperEndpoint.plusMinutes(1), upperBoundType);
             case "yyyy-MM-dd HH:00:00":
-                return Range.range(range.lowerEndpoint().plusHours(1), range.lowerBoundType(), range.upperEndpoint().plusHours(1),
-                        range.upperBoundType());
+                return Range.range(lowerEndpoint.plusHours(1), lowerBoundType, upperEndpoint.plusHours(1), upperBoundType);
             case "yyyy-MM-dd 00:00:00":
-                return Range.range(range.lowerEndpoint().plusDays(1), range.lowerBoundType(), range.upperEndpoint().plusDays(1),
-                        range.upperBoundType());
+                return Range.range(lowerEndpoint.plusDays(1), lowerBoundType, upperEndpoint.plusDays(1), upperBoundType);
             case "yyyy-MM-01 00:00:00":
-                return Range.range(range.lowerEndpoint().plusMonths(1), range.lowerBoundType(), range.upperEndpoint().plusMonths(1),
-                        range.upperBoundType());
+                return Range.range(lowerEndpoint.plusMonths(1), lowerBoundType, upperEndpoint.plusMonths(1), upperBoundType);
             case "yyyy-01-01 00:00:00":
-                return Range.range(range.lowerEndpoint().plusYears(1), range.lowerBoundType(), range.upperEndpoint().plusYears(1),
-                        range.upperBoundType());
+                return Range.range(lowerEndpoint.plusYears(1), lowerBoundType, upperEndpoint.plusYears(1), upperBoundType);
             default:
                 return range;
         }
@@ -215,11 +217,26 @@ public class TimeOffsetExpression extends DependencyExpression {
         }
 
         DateTime formatedDateTime = DateTimeFormat.forPattern(JarvisConstants.DEFAULT_DATE_TIME_FORMAT).parseDateTime(dateTime.toString(format));
-        long t1 = formatedDateTime.getMillis() - range.lowerEndpoint().getMillis();
-        long t2 = range.upperEndpoint().getMillis() - formatedDateTime.getMillis();
+        DateTime lowerEndpoint = null;
+        DateTime upperEndpoint = null;
 
-        DateTime lowerEndpoint = formatedDateTime.minus(t2);
-        DateTime upperEndpoint = formatedDateTime.plus(t1);
+        switch (format) {
+            case "yyyy-MM-01 00:00:00":
+                lowerEndpoint = formatedDateTime.withPeriodAdded(Months.monthsBetween(range.upperEndpoint(), formatedDateTime), 1);
+                upperEndpoint = formatedDateTime.withPeriodAdded(Months.monthsBetween(formatedDateTime, range.lowerEndpoint()), -1);
+                break;
+            case "yyyy-01-01 00:00:00":
+                lowerEndpoint = formatedDateTime.withPeriodAdded(Years.yearsBetween(range.upperEndpoint(), formatedDateTime), 1);
+                upperEndpoint = formatedDateTime.withPeriodAdded(Years.yearsBetween(formatedDateTime, range.lowerEndpoint()), -1);
+                break;
+            default:
+                long t1 = formatedDateTime.getMillis() - range.lowerEndpoint().getMillis();
+                long t2 = range.upperEndpoint().getMillis() - formatedDateTime.getMillis();
+                lowerEndpoint = formatedDateTime.minus(t2);
+                upperEndpoint = formatedDateTime.plus(t1);
+                break;
+        }
+
         if (lowerEndpoint.isAfter(upperEndpoint)) {
             return fixRange(Range.range(upperEndpoint, range.lowerBoundType(), lowerEndpoint, range.upperBoundType()));
         }
