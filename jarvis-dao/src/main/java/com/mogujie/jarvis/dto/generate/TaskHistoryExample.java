@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class TaskExecuteRecordsExample {
+public class TaskHistoryExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public TaskExecuteRecordsExample() {
+    public TaskHistoryExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -415,6 +415,66 @@ public class TaskExecuteRecordsExample {
             return (Criteria) this;
         }
 
+        public Criteria andDataTimeIsNull() {
+            addCriterion("dataTime is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataTimeIsNotNull() {
+            addCriterion("dataTime is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataTimeEqualTo(Date value) {
+            addCriterion("dataTime =", value, "dataTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataTimeNotEqualTo(Date value) {
+            addCriterion("dataTime <>", value, "dataTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataTimeGreaterThan(Date value) {
+            addCriterion("dataTime >", value, "dataTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataTimeGreaterThanOrEqualTo(Date value) {
+            addCriterion("dataTime >=", value, "dataTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataTimeLessThan(Date value) {
+            addCriterion("dataTime <", value, "dataTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataTimeLessThanOrEqualTo(Date value) {
+            addCriterion("dataTime <=", value, "dataTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataTimeIn(List<Date> values) {
+            addCriterion("dataTime in", values, "dataTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataTimeNotIn(List<Date> values) {
+            addCriterion("dataTime not in", values, "dataTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataTimeBetween(Date value1, Date value2) {
+            addCriterion("dataTime between", value1, value2, "dataTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andDataTimeNotBetween(Date value1, Date value2) {
+            addCriterion("dataTime not between", value1, value2, "dataTime");
+            return (Criteria) this;
+        }
+
         public Criteria andProgressIsNull() {
             addCriterion("progress is null");
             return (Criteria) this;
@@ -475,6 +535,66 @@ public class TaskExecuteRecordsExample {
             return (Criteria) this;
         }
 
+        public Criteria andTypeIsNull() {
+            addCriterion("type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeIsNotNull() {
+            addCriterion("type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeEqualTo(Integer value) {
+            addCriterion("type =", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotEqualTo(Integer value) {
+            addCriterion("type <>", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeGreaterThan(Integer value) {
+            addCriterion("type >", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("type >=", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeLessThan(Integer value) {
+            addCriterion("type <", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("type <=", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeIn(List<Integer> values) {
+            addCriterion("type in", values, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotIn(List<Integer> values) {
+            addCriterion("type not in", values, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeBetween(Integer value1, Integer value2) {
+            addCriterion("type between", value1, value2, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("type not between", value1, value2, "type");
+            return (Criteria) this;
+        }
+
         public Criteria andStatusIsNull() {
             addCriterion("status is null");
             return (Criteria) this;
@@ -532,6 +652,76 @@ public class TaskExecuteRecordsExample {
 
         public Criteria andStatusNotBetween(Integer value1, Integer value2) {
             addCriterion("status not between", value1, value2, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinishReasonIsNull() {
+            addCriterion("finishReason is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinishReasonIsNotNull() {
+            addCriterion("finishReason is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinishReasonEqualTo(String value) {
+            addCriterion("finishReason =", value, "finishReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinishReasonNotEqualTo(String value) {
+            addCriterion("finishReason <>", value, "finishReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinishReasonGreaterThan(String value) {
+            addCriterion("finishReason >", value, "finishReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinishReasonGreaterThanOrEqualTo(String value) {
+            addCriterion("finishReason >=", value, "finishReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinishReasonLessThan(String value) {
+            addCriterion("finishReason <", value, "finishReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinishReasonLessThanOrEqualTo(String value) {
+            addCriterion("finishReason <=", value, "finishReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinishReasonLike(String value) {
+            addCriterion("finishReason like", value, "finishReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinishReasonNotLike(String value) {
+            addCriterion("finishReason not like", value, "finishReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinishReasonIn(List<String> values) {
+            addCriterion("finishReason in", values, "finishReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinishReasonNotIn(List<String> values) {
+            addCriterion("finishReason not in", values, "finishReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinishReasonBetween(String value1, String value2) {
+            addCriterion("finishReason between", value1, value2, "finishReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinishReasonNotBetween(String value1, String value2) {
+            addCriterion("finishReason not between", value1, value2, "finishReason");
             return (Criteria) this;
         }
 

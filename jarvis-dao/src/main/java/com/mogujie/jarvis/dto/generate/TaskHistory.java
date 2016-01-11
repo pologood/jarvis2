@@ -2,16 +2,22 @@ package com.mogujie.jarvis.dto.generate;
 
 import java.util.Date;
 
-public class TaskExecuteRecords extends TaskExecuteRecordsKey {
+public class TaskHistory extends TaskHistoryKey {
     private Long jobId;
 
     private String params;
 
     private Date scheduleTime;
 
+    private Date dataTime;
+
     private Float progress;
 
+    private Integer type;
+
     private Integer status;
+
+    private String finishReason;
 
     private Integer appId;
 
@@ -53,6 +59,14 @@ public class TaskExecuteRecords extends TaskExecuteRecordsKey {
         this.scheduleTime = scheduleTime;
     }
 
+    public Date getDataTime() {
+        return dataTime;
+    }
+
+    public void setDataTime(Date dataTime) {
+        this.dataTime = dataTime;
+    }
+
     public Float getProgress() {
         return progress;
     }
@@ -61,12 +75,28 @@ public class TaskExecuteRecords extends TaskExecuteRecordsKey {
         this.progress = progress;
     }
 
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
     public Integer getStatus() {
         return status;
     }
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public String getFinishReason() {
+        return finishReason;
+    }
+
+    public void setFinishReason(String finishReason) {
+        this.finishReason = finishReason;
     }
 
     public Integer getAppId() {
