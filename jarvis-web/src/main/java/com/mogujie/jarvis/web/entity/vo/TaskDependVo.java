@@ -28,6 +28,7 @@ public class TaskDependVo extends TaskDepend {
     private Integer completeTask;
     private Integer totalTask;
     private List<TaskVo> taskList = new ArrayList<TaskVo>();
+    private List<TaskExecuteRecordsVo> taskExecuteRecordsVoList;
 
 
     public Integer getStatus() {
@@ -148,5 +149,13 @@ public class TaskDependVo extends TaskDepend {
 
     public void setExecuteUser(String executeUser) {
         this.executeUser = executeUser;
+    }
+
+    public List<TaskExecuteRecordsVo> getTaskExecuteRecordsVoList() {
+        return taskExecuteRecordsVoList;
+    }
+
+    public void setTaskExecuteRecordsVoList(List<TaskExecuteRecordsVo> taskExecuteRecordsVoList) {
+        this.taskExecuteRecordsVoList = taskExecuteRecordsVoList;
     }
 }

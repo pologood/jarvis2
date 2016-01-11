@@ -73,5 +73,9 @@
 			<generatedKey column="id" sqlStatement="MySql" identity="true" />
 		</table>
 
+		<table schema="jarvis2" tableName="task_execute_records">
+			<property name="useActualColumnNames" value="true" />
+		</table>
+
 	</context>
 </generatorConfiguration>

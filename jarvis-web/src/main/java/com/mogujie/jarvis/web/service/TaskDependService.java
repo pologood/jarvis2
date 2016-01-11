@@ -1,14 +1,8 @@
 package com.mogujie.jarvis.web.service;
 
 import com.mogujie.jarvis.core.util.JsonHelper;
-import com.mogujie.jarvis.web.entity.vo.JobDependVo;
-import com.mogujie.jarvis.web.entity.vo.JobVo;
-import com.mogujie.jarvis.web.entity.vo.TaskDependVo;
-import com.mogujie.jarvis.web.entity.vo.TaskVo;
-import com.mogujie.jarvis.web.mapper.JobDependMapper;
-import com.mogujie.jarvis.web.mapper.JobMapper;
-import com.mogujie.jarvis.web.mapper.TaskDependMapper;
-import com.mogujie.jarvis.web.mapper.TaskMapper;
+import com.mogujie.jarvis.web.entity.vo.*;
+import com.mogujie.jarvis.web.mapper.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,11 +22,13 @@ public class TaskDependService {
     JobDependMapper jobDependMapper;
     @Autowired
     TaskMapper taskMapper;
+    @Autowired
+    TaskExecuteRecordsMapper taskExecuteRecordsMapper;
 
     Logger logger = Logger.getLogger(TaskDependService.class);
 
     /*
-    *
+    * 根据taskId获取task依赖信息
     * */
     public TaskDependVo getTaskDependByTaskId(Long taskId) {
         return taskDependMapper.getTaskDependByTaskId(taskId);
@@ -45,6 +41,7 @@ public class TaskDependService {
     public void generate(TaskDependVo taskDependVo) {
         TaskVo task = taskMapper.getTaskById(taskDependVo.getTaskId());
         JobVo job = jobMapper.getJobById(task.getJobId());
+        List<TaskExecuteRecordsVo> taskExecuteRecordsList = taskExecuteRecordsMapper.getByTaskId(taskDependVo.getTaskId());
         //初始化当前task基本情况
         taskDependVo.setRootFlag(true);
         taskDependVo.setExecuteUser(task.getExecuteUser());
@@ -55,7 +52,7 @@ public class TaskDependService {
         taskDependVo.setExecuteStartTime(task.getExecuteStartTime());
         taskDependVo.setExecuteEndTime(task.getExecuteEndTime());
         taskDependVo.setExecuteTime(task.getExecuteTime());
-
+        taskDependVo.setTaskExecuteRecordsVoList(taskExecuteRecordsList);
 
         //获取任务依赖中的前置任务
         String dependTaskIdsStr = taskDependVo.getDependTaskIds();
@@ -80,8 +77,8 @@ public class TaskDependService {
         //所有的job信息
         Set<String> previousJobIds = new HashSet<String>();
         Set<String> nextJobIds = new HashSet<String>();
-        previousJobIds.addAll(PreJobIds);    //job表中的前置(有些过期或失效的job不会存在task依赖表中)
-        nextJobIds.addAll(childJobIds);  //task依赖表中的后续
+        previousJobIds.addAll(PreJobIds);            //job表中的前置(有些过期或失效的job不会存在task依赖表中)
+        nextJobIds.addAll(childJobIds);              //task依赖表中的后续
 
 
         //所有的taskId
@@ -147,10 +144,8 @@ public class TaskDependService {
             Integer completeCount = 0;
             //只有有效状态才设置taskList
             if (jobVo.getStatus().equals(1)) {
-                logger.info("taskMap:" + taskMap);
                 for (int i = 0, size = list.size(); i < size; i++) {
                     Long taskId = list.get(i).longValue();
-                    logger.info("taskId:" + taskId);
                     TaskVo singleTaskVo = taskMap.get(taskId);
                     if (null != singleTaskVo) {
                         singleTaskDependVo.getTaskList().add(singleTaskVo);
@@ -161,8 +156,10 @@ public class TaskDependService {
                     }
                 }
             } else {
-                singleTaskDependVo.setStatus(91);     //91代表失效、过期、垃圾箱等，在前台渲染需要
+                singleTaskDependVo.setStatus(91);     //91代表失效、过期、垃圾箱等(在前台渲染需要)
             }
+            List<TaskExecuteRecordsVo> preTaskExecuteRecordsList = taskExecuteRecordsMapper.getByTaskId(singleTaskDependVo.getTaskId());
+            singleTaskDependVo.setTaskExecuteRecordsVoList(preTaskExecuteRecordsList);
             singleTaskDependVo.setCompleteTask(completeCount);
             singleTaskDependVo.setParentFlag(true);
 
@@ -194,6 +191,8 @@ public class TaskDependService {
                     }
                 }
             }
+            List<TaskExecuteRecordsVo> postTaskExecuteRecordsList = taskExecuteRecordsMapper.getByTaskId(singleTaskDependVo.getTaskId());
+            singleTaskDependVo.setTaskExecuteRecordsVoList(postTaskExecuteRecordsList);
             singleTaskDependVo.setCompleteTask(completeCount);
 
             taskDependVo.getChildren().add(singleTaskDependVo);

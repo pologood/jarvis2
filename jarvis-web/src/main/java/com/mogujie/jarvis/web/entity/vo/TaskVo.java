@@ -3,6 +3,7 @@ package com.mogujie.jarvis.web.entity.vo;
 import com.mogujie.jarvis.dto.generate.Task;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by hejian on 15/9/17.
@@ -18,7 +19,6 @@ public class TaskVo extends Task {
 
     private Long executeTime;
     private Long avgExecuteTime;
-
 
     public String getJobName() {
         return jobName;
@@ -84,5 +84,4 @@ public class TaskVo extends Task {
     public void setWorkerGroupId(String workerGroupId) {
         this.workerGroupId = workerGroupId;
     }
-
 }
