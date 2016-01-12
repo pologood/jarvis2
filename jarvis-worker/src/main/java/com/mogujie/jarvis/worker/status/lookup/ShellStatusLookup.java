@@ -17,7 +17,6 @@ public class ShellStatusLookup implements TaskStatusLookup {
 
     @Override
     public void init(Configuration conf) {
-        // TODO Auto-generated method stub
 
     }
 

@@ -15,8 +15,6 @@ import org.apache.commons.configuration.Configuration;
 import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.worker.status.TaskStateStore;
 
-import akka.actor.Status;
-
 public class ZooKeeperStateStore implements TaskStateStore {
 
     @Override
@@ -32,7 +30,12 @@ public class ZooKeeperStateStore implements TaskStateStore {
     }
 
     @Override
-    public Map<TaskDetail, Status> restore() {
+    public void delete(TaskDetail taskDetail) {
+
+    }
+
+    @Override
+    public Map<TaskDetail, Integer> restore() {
         // TODO Auto-generated method stub
         return null;
     }
