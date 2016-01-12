@@ -155,7 +155,7 @@ public class TaskService {
         Date currentTime = DateTime.now().toDate();
         history.setCreateTime(currentTime);
         history.setUpdateTime(currentTime);
-        taskHistoryService.insert(history);
+        taskHistoryService.insertOrUpdate(history);
     }
 
     public List<Task> getTasksByStatusNotIn(List<Integer> statusList) {
@@ -197,7 +197,7 @@ public class TaskService {
     public Task getLastTask(long jobId, long scheduleTime, TaskType taskType) {
         TaskExample example = new TaskExample();
         example.createCriteria().andJobIdEqualTo(jobId)
-                .andScheduleTimeLessThanOrEqualTo(new DateTime(scheduleTime).toDate())
+                .andScheduleTimeLessThan(new DateTime(scheduleTime).toDate())
                 .andTypeEqualTo(taskType.getValue());
         example.setOrderByClause("scheduleTime desc");
         List<Task> taskList = taskMapper.selectByExample(example);
@@ -211,6 +211,7 @@ public class TaskService {
     public void deleteTaskAndRelation(long taskId) {
         taskMapper.deleteByPrimaryKey(taskId);
         taskDependService.remove(taskId);
+        taskHistoryService.deleteByTaskId(taskId);
     }
 
 }

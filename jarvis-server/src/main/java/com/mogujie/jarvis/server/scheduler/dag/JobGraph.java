@@ -343,7 +343,7 @@ public enum JobGraph {
                 if (parentJobId == preJobId) {
                     Map<Long, List<Long>> dependTaskIdMap = Maps.newHashMap();
                     dependTaskIdMap.put(parentJobId, Lists.newArrayList(parentTaskId));
-                    AddTaskEvent event = new AddTaskEvent(jobId, dependTaskIdMap, scheduleTime);
+                    AddTaskEvent event = new AddTaskEvent(jobId, scheduleTime, dependTaskIdMap);
                     controller.notify(event);
                 } else {
                     LOGGER.error("parentJobId {} != preJobId {}", parentJobId, preJobId);

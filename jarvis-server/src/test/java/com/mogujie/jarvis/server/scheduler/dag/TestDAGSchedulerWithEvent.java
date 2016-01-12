@@ -117,8 +117,6 @@ public class TestDAGSchedulerWithEvent extends TestSchedulerBase {
         taskService.updateStatus(taskEId, TaskStatus.SUCCESS);
         ScheduleEvent scheduleEventE = new ScheduleEvent(jobEId, taskDId, t1);
         dagScheduler.handleScheduleEvent(scheduleEventE);
-//        Assert.assertEquals(3, taskGraph.getTaskMap().size());
-        //TODO
 
     }
 

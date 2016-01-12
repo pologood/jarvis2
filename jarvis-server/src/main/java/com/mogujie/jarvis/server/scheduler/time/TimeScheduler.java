@@ -105,7 +105,7 @@ public class TimeScheduler extends Scheduler {
         long jobId = entry.getJobId();
         DateTime dt = entry.getDateTime();
         Map<Long, List<Long>> dependTaskIdMap = entry.getDependTaskIdMap();
-        AddTaskEvent event = new AddTaskEvent(jobId, dependTaskIdMap, dt.getMillis());
+        AddTaskEvent event = new AddTaskEvent(jobId, dt.getMillis(), dependTaskIdMap);
         controller.notify(event);
         DAGJob dagJob = jobGraph.getDAGJob(jobId);
         // 如果是纯时间任务，自动计算下一次
