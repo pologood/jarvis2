@@ -19,7 +19,7 @@ import org.apache.curator.utils.CloseableUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.facebook.presto.jdbc.internal.guava.collect.Maps;
+import com.google.common.collect.Maps;
 import com.google.common.primitives.Ints;
 import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.worker.status.TaskStateStore;

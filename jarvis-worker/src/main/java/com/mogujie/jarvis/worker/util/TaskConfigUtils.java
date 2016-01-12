@@ -18,8 +18,8 @@ import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.HierarchicalConfiguration;
 import org.apache.commons.configuration.XMLConfiguration;
 
-import com.facebook.presto.jdbc.internal.guava.collect.Maps;
 import com.google.common.base.Throwables;
+import com.google.common.collect.Maps;
 import com.mogujie.jarvis.core.util.ReflectionUtils;
 import com.mogujie.jarvis.worker.domain.TaskEntry;
 import com.mogujie.jarvis.worker.strategy.AcceptanceStrategy;
