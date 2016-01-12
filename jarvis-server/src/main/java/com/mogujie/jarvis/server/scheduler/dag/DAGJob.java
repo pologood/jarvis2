@@ -38,10 +38,15 @@ public class DAGJob  {
         this.dependChecker = new DAGDependChecker(jobId);
     }
 
+    /**
+     * check dependency with scheduleTime
+     *
+     * @param scheduleTime
+     */
     public boolean checkDependency(long scheduleTime) {
         boolean dependCheck = true;
         if (type.implies(DAGJobType.DEPEND)) {
-            Set<Long> needJobs = jobGraph.getParentJobIds(jobId);
+            Set<Long> needJobs = jobGraph.getParentJobIds(this);
             dependCheck = dependChecker.checkDependency(needJobs, scheduleTime);
             if (!dependCheck) {
                 LOGGER.debug("dependChecker failed, job {}, needJobs {}", jobId, needJobs);
@@ -51,6 +56,10 @@ public class DAGJob  {
         return dependCheck;
     }
 
+    /**
+     * get depend taskId map
+     *
+     */
     public Map<Long, List<Long>> getDependTaskIdMap(long scheduleTime) {
         return dependChecker.getDependTaskIdMap(scheduleTime);
     }

@@ -10,8 +10,6 @@ package com.mogujie.jarvis.server.domain;
 
 import com.mogujie.jarvis.core.domain.OperationMode;
 
-
-
 /**
  * @author guangming
  *

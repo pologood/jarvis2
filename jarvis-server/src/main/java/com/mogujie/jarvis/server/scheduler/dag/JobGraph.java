@@ -73,7 +73,7 @@ public enum JobGraph {
      * get dependent parent
      *
      * @param jobId
-     * @return List of parents'pair with jobid and JobFlag
+     * @return List of parents'pair with jobId and JobFlag
      */
     public List<Pair<Long, JobStatus>> getParents(long jobId) {
         List<Pair<Long, JobStatus>> parentJobPairs = new ArrayList<Pair<Long, JobStatus>>();
@@ -95,7 +95,7 @@ public enum JobGraph {
      * get subsequent child
      *
      * @param jobId
-     * @return List of children'pair with jobid and JobFlag
+     * @return List of children'pair with jobId and JobFlag
      */
     public List<Pair<Long, JobStatus>> getChildren(long jobId) {
         List<Pair<Long, JobStatus>> childJobPairs = new ArrayList<Pair<Long, JobStatus>>();
@@ -151,9 +151,8 @@ public enum JobGraph {
      * Remove job
      *
      * @param jobId
-     * @throws JobScheduleException
      */
-    public synchronized void removeJob(long jobId) throws JobScheduleException {
+    public synchronized void removeJob(long jobId) {
         if (jobMap.containsKey(jobId)) {
             DAGJob dagJob = jobMap.get(jobId);
             dag.removeVertex(dagJob);
@@ -162,10 +161,16 @@ public enum JobGraph {
         }
     }
 
+    /**
+     * Remove job
+     *
+     * @param dagJob
+     */
     public synchronized void removeJob(DAGJob dagJob) {
         if (dagJob != null) {
             jobMap.remove(dagJob.getJobId());
             dag.removeVertex(dagJob);
+            LOGGER.info("remove DAGJob {} from DAGScheduler successfully.", dagJob.getJobId());
         }
     }
 
@@ -185,7 +190,7 @@ public enum JobGraph {
                 removeDependency(preJobId, jobId);
                 LOGGER.info("remove dependency successfully, parent {}, child {}", preJobId, jobId);
             } else if (entry.getOperation().equals(OperationMode.EDIT)) {
-                modifyDependency(preJobId, jobId, entry.getOffsetStrategy());
+                modifyDependency(preJobId, jobId, entry.getOffsetStrategy(), entry.getCommonStrategy());
                 LOGGER.info("modify dependency strategy, new common strategy is {}, new offset Strategy is {}", entry.getCommonStrategy(),
                         entry.getOffsetStrategy());
             }
@@ -238,7 +243,6 @@ public enum JobGraph {
      *
      * @param jobId
      * @param newType
-     * @throws JobScheduleException
      */
     public void modifyDAGJobType(long jobId, DAGJobType newType) {
         // update dag job type
@@ -248,28 +252,11 @@ public enum JobGraph {
         }
     }
 
-    public synchronized List<DAGJob> getParents(DAGJob dagJob) {
-        List<DAGJob> parents = new ArrayList<DAGJob>();
-        Set<DefaultEdge> inEdges = dag.incomingEdgesOf(dagJob);
-        if (inEdges != null) {
-            for (DefaultEdge edge : inEdges) {
-                parents.add(dag.getEdgeSource(edge));
-            }
-        }
-        return parents;
-    }
-
-    public synchronized List<DAGJob> getChildren(DAGJob dagJob) {
-        List<DAGJob> children = new ArrayList<DAGJob>();
-        Set<DefaultEdge> outEdges = dag.outgoingEdgesOf(dagJob);
-        if (outEdges != null) {
-            for (DefaultEdge edge : outEdges) {
-                children.add(dag.getEdgeTarget(edge));
-            }
-        }
-        return children;
-    }
-
+    /**
+     * get active(JobStatus=ENABLE and not expired) children
+     *
+     * @param dagJob
+     */
     public synchronized List<DAGJob> getActiveChildren(DAGJob dagJob) {
         List<DAGJob> children = new ArrayList<DAGJob>();
         Set<DefaultEdge> outEdges = dag.outgoingEdgesOf(dagJob);
@@ -354,6 +341,36 @@ public enum JobGraph {
         }
     }
 
+    /**
+     * get parent jobIds
+     *
+     * @param jobId
+     */
+    public Set<Long> getParentJobIds(long jobId) {
+        DAGJob dagJob = jobMap.get(jobId);
+        Set<Long> jobIds = Sets.newHashSet();
+        if (dagJob != null) {
+            jobIds = getParentJobIds(dagJob);
+        }
+        return jobIds;
+    }
+
+    /**
+     * get parent jobIds
+     *
+     * @param dagJob
+     */
+    public Set<Long> getParentJobIds(DAGJob dagJob) {
+        List<DAGJob> parents = getParents(dagJob);
+        Set<Long> jobIds = Sets.newHashSet();
+        if (parents != null) {
+            for (DAGJob parent : parents) {
+                jobIds.add(parent.getJobId());
+            }
+        }
+        return jobIds;
+    }
+
     @VisibleForTesting
     public synchronized void addDependency(long parentId, long childId) throws CycleFoundException {
         DAGJob parent = jobMap.get(parentId);
@@ -372,33 +389,35 @@ public enum JobGraph {
         }
     }
 
-    protected void modifyDependency(long parentId, long childId, String offsetStrategy) {
+    protected void modifyDependency(long parentId, long childId, String offsetStrategy, int commonStrategy) {
         DAGJob parent = jobMap.get(parentId);
         DAGJob child = jobMap.get(childId);
         if (parent != null && child != null) {
             DAGDependChecker checker = child.getDependChecker();
-            checker.updateExpression(parentId, offsetStrategy);
+            checker.updateDependency(parentId, offsetStrategy, commonStrategy);
         }
     }
 
-    public Set<Long> getParentJobIds(long jobId) {
-        DAGJob dagJob = jobMap.get(jobId);
-        Set<Long> jobIds = Sets.newHashSet();
-        if (dagJob != null) {
-            jobIds = getParentJobIds(dagJob);
-        }
-        return jobIds;
-    }
-
-    private Set<Long> getParentJobIds(DAGJob dagJob) {
-        List<DAGJob> parents = getParents(dagJob);
-        Set<Long> jobIds = Sets.newHashSet();
-        if (parents != null) {
-            for (DAGJob parent : parents) {
-                jobIds.add(parent.getJobId());
+    private List<DAGJob> getParents(DAGJob dagJob) {
+        List<DAGJob> parents = new ArrayList<DAGJob>();
+        Set<DefaultEdge> inEdges = dag.incomingEdgesOf(dagJob);
+        if (inEdges != null) {
+            for (DefaultEdge edge : inEdges) {
+                parents.add(dag.getEdgeSource(edge));
             }
         }
-        return jobIds;
+        return parents;
+    }
+
+    private List<DAGJob> getChildren(DAGJob dagJob) {
+        List<DAGJob> children = new ArrayList<DAGJob>();
+        Set<DefaultEdge> outEdges = dag.outgoingEdgesOf(dagJob);
+        if (outEdges != null) {
+            for (DefaultEdge edge : outEdges) {
+                children.add(dag.getEdgeTarget(edge));
+            }
+        }
+        return children;
     }
 
 }

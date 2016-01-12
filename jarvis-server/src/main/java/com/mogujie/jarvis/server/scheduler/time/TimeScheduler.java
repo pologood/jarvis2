@@ -9,6 +9,8 @@
 package com.mogujie.jarvis.server.scheduler.time;
 
 /**
+ * Scheduler used to handle time based jobs.
+ *
  * @author guangming
  *
  */
@@ -111,7 +113,7 @@ public class TimeScheduler extends Scheduler {
         // 如果是纯时间任务，自动计算下一次
         if (dagJob.getType().equals(DAGJobType.TIME)) {
             DateTime nextTime = PlanUtil.getScheduleTimeAfter(jobId, dt);
-            plan.addPlan(jobId, nextTime);
+            plan.addPlan(new TimePlanEntry(jobId, nextTime));
         }
     }
 }
