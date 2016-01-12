@@ -11,9 +11,12 @@ package com.mogujie.jarvis.worker.util;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
+import org.joda.time.DateTime;
+
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
+import com.mogujie.jarvis.worker.misc.JodaDateTimeSerializer;
 
 public class KryoUtils {
 
@@ -21,6 +24,7 @@ public class KryoUtils {
         @Override
         protected Kryo initialValue() {
             Kryo kryo = new Kryo();
+            kryo.register(DateTime.class, new JodaDateTimeSerializer());
             return kryo;
         };
     };
