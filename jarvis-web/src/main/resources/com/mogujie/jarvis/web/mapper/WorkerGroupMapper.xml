@@ -41,6 +41,11 @@
     <select id="getAllWorkerGroupCreator" resultType="String">
         SELECT DISTINCT `updateUser` FROM worker_group;
     </select>
-    
+
+    <select id="getByAppId" parameterType="Long" resultType="WorkerGroupVo">
+      SELECT worker_group.* FROM app_worker_group LEFT JOIN worker_group
+        ON app_worker_group.workerGroupId=worker_group.id
+          WHERE app_worker_group.appId=#{_parameter}
+    </select>
 
 </mapper>

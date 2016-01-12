@@ -23,10 +23,7 @@ public class TriggerController extends BaseController {
 
     @RequestMapping
     @JarvisPassport(authTypes = JarvisAuthType.trigger)
-    public String index(ModelMap modelMap) {
-        List<JobVo> jobVoList = jobService.getAllJobs(null);
-
-        modelMap.put("jobVoList", jobVoList);
+    public String index() {
         return "trigger/index";
     }
 

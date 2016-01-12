@@ -65,7 +65,7 @@ public class ManageController extends BaseController {
 
     @RequestMapping(value = "checkAppName")
     @ResponseBody
-    public Map<String, Object> checkAppName(ModelMap modelMap, Integer appId, String appName) {
+    public Map<String, Object> checkAppName(Integer appId, String appName) {
         Map<String, Object> result = new HashMap<String, Object>();
 
         AppVo appVo = appService.getAppByName(appName);
@@ -94,7 +94,6 @@ public class ManageController extends BaseController {
     @RequestMapping(value = "worker")
     @JarvisPassport(authTypes = JarvisAuthType.manage_worker)
     public String worker(ModelMap modelMap) {
-        //workerService.getAllWorkerGroupId();
         List<WorkerGroupVo> workerGroupVoList = workerGroupService.getAllWorkerGroup();
         List<String> ipList = workerService.getAllWorkerIp();
         List<Integer> portList = workerService.getAllWorkerPort();

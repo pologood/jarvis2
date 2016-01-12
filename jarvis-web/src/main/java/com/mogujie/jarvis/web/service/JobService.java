@@ -121,5 +121,8 @@ public class JobService {
     public List<String> getSubmitUsers() {
         return jobMapper.getSubmitUsers();
     }
+    public List<Map> getAllJobIdAndName(List<Integer> statusList){
+        return jobMapper.getAllJobIdAndName(statusList);
+    }
 
 }

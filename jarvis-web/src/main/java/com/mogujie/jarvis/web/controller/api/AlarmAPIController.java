@@ -1,6 +1,10 @@
 package com.mogujie.jarvis.web.controller.api;
 
 import com.mogujie.jarvis.core.domain.AlarmType;
+import com.mogujie.jarvis.web.entity.qo.AlarmQo;
+import com.mogujie.jarvis.web.entity.vo.AlarmVo;
+import com.mogujie.jarvis.web.service.AlarmService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -16,7 +20,25 @@ import java.util.Map;
 @Controller()
 @RequestMapping(value = "/api/alarm")
 public class AlarmAPIController {
+    @Autowired
+    AlarmService alarmService;
 
+    /*
+    * 获取某个jobId对应报警信息
+    * */
+    @RequestMapping(value = "getByJobId")
+    @ResponseBody
+    public Object getByJobId(AlarmQo alarmQo) {
+        AlarmVo alarmVo = alarmService.getAlarmByJobId(alarmQo.getJobId());
+        if (null == alarmVo) {
+            alarmVo = new AlarmVo();
+        }
+        return alarmVo;
+    }
+
+    /*
+    * 获取报警类型
+    * */
     @RequestMapping(value = "/getAlarmType")
     @ResponseBody
     public List getAlarmType() {

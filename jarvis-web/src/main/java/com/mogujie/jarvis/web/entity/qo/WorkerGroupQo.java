@@ -5,9 +5,10 @@ import com.mogujie.jarvis.dto.generate.WorkerGroup;
 /**
  * Created by hejian on 15/9/28.
  */
-public class WorkerGroupQo extends WorkerGroup {
+public class WorkerGroupQo{
     private Integer offset;
     private Integer limit;
+    private Long appId;
 
     public Integer getOffset() {
         return offset;
@@ -23,5 +24,13 @@ public class WorkerGroupQo extends WorkerGroup {
 
     public void setLimit(Integer limit) {
         this.limit = limit;
+    }
+
+    public Long getAppId() {
+        return appId;
+    }
+
+    public void setAppId(Long appId) {
+        this.appId = appId;
     }
 }

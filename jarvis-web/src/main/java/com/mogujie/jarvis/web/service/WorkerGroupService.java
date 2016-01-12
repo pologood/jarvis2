@@ -67,4 +67,8 @@ public class WorkerGroupService {
         return workerGroupMapper.getAllWorkerGroupCreator();
     }
 
+    public List<WorkerGroupVo> getByAppId(Long appId){
+        return workerGroupMapper.getByAppId(appId);
+    }
+
 }

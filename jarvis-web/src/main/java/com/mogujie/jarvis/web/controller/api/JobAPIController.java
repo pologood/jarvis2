@@ -7,6 +7,8 @@ import com.mogujie.jarvis.core.domain.CommonStrategy;
 import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.core.expression.ScheduleExpressionType;
 import com.mogujie.jarvis.web.entity.qo.JobQo;
+import com.mogujie.jarvis.web.entity.vo.JobDependVo;
+import com.mogujie.jarvis.web.entity.vo.JobVo;
 import com.mogujie.jarvis.web.service.JobDependService;
 import com.mogujie.jarvis.web.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,20 +33,38 @@ public class JobAPIController {
     @Autowired
     protected AdminUserService userService;
 
+    /*
+    * 根据id获取job的详细信息
+    * */
+    @RequestMapping("getById")
+    @ResponseBody
+    public Object getById(JobQo jobQo) {
+        JobVo jobVo = jobService.getJobById(jobQo.getJobId());
+        return jobVo;
+    }
+
+    /*
+    * 根据id获取job的父任务
+    * */
+    @RequestMapping("getParentsById")
+    @ResponseBody
+    public List getParentsById(JobQo jobQo) {
+        List<JobDependVo> list = jobDependService.getParentById(jobQo.getJobId());
+        return list;
+    }
+
+
     @RequestMapping("/getJobs")
     @ResponseBody
     public Map<String, Object> getJobs(JobQo jobQo) {
-
         Map<String, Object> result = jobService.getJobs(jobQo);
-        JobStatus[] jobStatuses = JobStatus.values();
-
         return result;
     }
 
     @RequestMapping("/getAllUser")
     @ResponseBody
-    public List<User> getAllUser(ModelMap mp) {
-        List<User> userList = null;
+    public List<User> getAllUser() {
+        List<User> userList;
         try {
             userList = userService.getAllUsers();
         } catch (Exception e) {
@@ -53,6 +73,25 @@ public class JobAPIController {
         }
         return userList;
     }
+
+    /*
+    * 提交过job的用户
+    * */
+    @RequestMapping(value = "getSubmitUsers")
+    @ResponseBody
+    public List getSubmitUsers() {
+        List<String> submitUsers = jobService.getSubmitUsers();
+        return submitUsers;
+    }
+
+    @RequestMapping(value = "getAllJobIdAndName")
+    @ResponseBody
+    public List getAllJobs() {
+        List<Integer> statusList = new ArrayList<Integer>();
+        List<Map> list = jobService.getAllJobIdAndName(statusList);
+        return list;
+    }
+
 
     /**
      * 单向依赖树
@@ -151,4 +190,6 @@ public class JobAPIController {
 
         return list;
     }
+
+
 }

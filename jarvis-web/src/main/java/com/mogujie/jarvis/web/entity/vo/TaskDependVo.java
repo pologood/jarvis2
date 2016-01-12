@@ -20,15 +20,15 @@ public class TaskDependVo extends TaskDepend {
     private List<TaskDependVo> children = new ArrayList<TaskDependVo>();
     private List<TaskDependVo> parents = new ArrayList<TaskDependVo>();
 
-    private boolean parentFlag=false;
-    private boolean rootFlag=false;
+    private boolean parentFlag = false;
+    private boolean rootFlag = false;
 
     private Long jobId;
     private String jobName;
     private Integer completeTask;
     private Integer totalTask;
     private List<TaskVo> taskList = new ArrayList<TaskVo>();
-    private List<TaskExecuteRecordsVo> taskExecuteRecordsVoList;
+    private List<TaskHistoryVo> taskExecuteRecordsVoList;
 
 
     public Integer getStatus() {
@@ -151,11 +151,11 @@ public class TaskDependVo extends TaskDepend {
         this.executeUser = executeUser;
     }
 
-    public List<TaskExecuteRecordsVo> getTaskExecuteRecordsVoList() {
+    public List<TaskHistoryVo> getTaskExecuteRecordsVoList() {
         return taskExecuteRecordsVoList;
     }
 
-    public void setTaskExecuteRecordsVoList(List<TaskExecuteRecordsVo> taskExecuteRecordsVoList) {
+    public void setTaskExecuteRecordsVoList(List<TaskHistoryVo> taskExecuteRecordsVoList) {
         this.taskExecuteRecordsVoList = taskExecuteRecordsVoList;
     }
 }

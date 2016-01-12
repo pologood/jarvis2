@@ -5,6 +5,7 @@ import com.mogujie.jarvis.web.entity.vo.JobVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -18,6 +19,8 @@ public interface JobMapper {
     Integer getCountByCondition(JobQo jobQo);
 
     List<JobVo> getJobsByCondition(JobQo jobQo);
+
+    List<Map> getAllJobIdAndName(List<Integer> statusList);
 
     List<Long> getJobIds();
 

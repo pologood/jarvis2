@@ -68,7 +68,8 @@
 
     <select id="getJobsByCondition" parameterType="JobQo" resultType="JobVo">
       SELECT
-        job.*,app.appName,
+        job.*,
+        app.appName,
         app.appKey,
         job_schedule_expression.expressionType,
         job_schedule_expression.expression,
@@ -80,6 +81,17 @@
       <include refid="condition" />
       ORDER BY job.jobId ASC
       <include refid="pager" />
+    </select>
+
+    <select id="getAllJobIdAndName" resultType="Map" parameterType="List">
+        SELECT `jobId`,`jobName`,`status` FROM job
+        <if test="list.size()>0">
+            WHERE status IN
+            <foreach collection="list" item="status" open="(" close=")" separator=",">
+                #{status}
+            </foreach>
+        </if>
+
     </select>
 
     <select id="getJobById" parameterType="Long" resultType="JobVo">

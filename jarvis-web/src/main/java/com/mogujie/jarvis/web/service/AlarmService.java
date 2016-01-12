@@ -15,12 +15,8 @@ public class AlarmService {
     @Autowired
     AlarmMapper alarmMapper;
 
-    public List<AlarmVo> getAllAlarmsByJobId(Long jobId) {
-        return alarmMapper.getAllAlarmsByJobId(jobId);
-    }
-
-    public List<AlarmVo> getEnableAlarmsByJobId(Long jobId) {
-        return alarmMapper.getEnableAlarmsByJobId(jobId);
+    public AlarmVo getAlarmByJobId(Long jobId){
+        return alarmMapper.getAlarmByJobId(jobId);
     }
 
 }

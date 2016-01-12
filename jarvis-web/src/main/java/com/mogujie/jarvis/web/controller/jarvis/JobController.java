@@ -6,6 +6,7 @@ import com.mogujie.jarvis.web.auth.conf.JarvisAuthType;
 import com.mogujie.jarvis.web.entity.qo.AppQo;
 import com.mogujie.jarvis.web.entity.vo.*;
 import com.mogujie.jarvis.web.service.*;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -28,18 +29,12 @@ public class JobController extends BaseController {
     WorkerService workerService;
     @Autowired
     WorkerGroupService workerGroupService;
-    @Autowired
-    AppService appService;
-    @Autowired
-    JobDependService jobDependService;
-    @Autowired
-    AlarmService alarmService;
-
     static AppVo app = new AppVo();
+    Logger logger = Logger.getLogger(JobController.class);
 
     static {
         try {
-            InputStream inputStream = BaseController.class.getResourceAsStream("app.properties");
+            InputStream inputStream = JobController.class.getClassLoader().getResourceAsStream("app.properties");
             Properties properties = new Properties();
             properties.load(inputStream);
             app.setAppId(Integer.parseInt(properties.getProperty("app.id")));
@@ -57,14 +52,7 @@ public class JobController extends BaseController {
     @RequestMapping
     @JarvisPassport(authTypes = JarvisAuthType.job)
     public String index(ModelMap modelMap) {
-        List<String> submitUsers = jobService.getSubmitUsers();
-
-        List<AppVo> appVoList = appService.getAppList(new AppQo());
-        List<WorkerGroupVo> workerGroupVoList = workerGroupService.getAllWorkerGroup();
-
-        modelMap.put("submitUsers", submitUsers);
-        modelMap.put("appVoList", appVoList);
-        modelMap.put("workerGroupVoList", workerGroupVoList);
+        modelMap.put("app", app);
         return "job/index";
     }
 
@@ -76,31 +64,7 @@ public class JobController extends BaseController {
     @JarvisPassport(authTypes = JarvisAuthType.job, isMenu = false)
     public String addOrEdit(ModelMap modelMap, Long jobId) {
         modelMap.put("app", app);
-        if (jobId != null) {
-            JobVo jobVo = jobService.getJobById(jobId);
-            //只有此应用才能编辑
-            if(jobVo.getAppId().equals(app.getAppId())){
-                modelMap.put("jobVo", jobVo);
-
-                List<JobDependVo> jobDependVoList = jobDependService.getParentById(jobId);
-                List<String> parentIds = new ArrayList<String>();
-                Map<String, Object> map = new HashMap<String, Object>();
-                for (JobDependVo jobDependVo : jobDependVoList) {
-                    parentIds.add(jobDependVo.getId().toString());
-                    map.put(jobDependVo.getId().toString(), jobDependVo);
-                }
-                String ids = JsonHelper.toJson(parentIds);
-                List<AlarmVo> alarmVoList = alarmService.getEnableAlarmsByJobId(jobId);
-                modelMap.put("dependIds", ids);
-                modelMap.put("dependJobs", JsonHelper.toJson(map));
-                modelMap.put("existAlarmList", JsonHelper.toJson(alarmVoList));
-            }
-        }
-
-        List<WorkerGroupVo> WorkerGroupVoList = workerGroupService.getAllWorkerGroup();
-        List<JobVo> jobVoList = jobService.getAllJobs(1);
-        modelMap.put("WorkerGroupVoList", WorkerGroupVoList);
-        modelMap.put("jobVoList", jobVoList);
+        modelMap.put("jobId", jobId);
         return "job/addOrEdit";
     }
 

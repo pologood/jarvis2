@@ -18,7 +18,8 @@ public interface WorkerGroupMapper {
 
     Integer getWorkerGroupCount(WorkerGroupQo workerGroupSearchVo);
 
-    List<WorkerGroupVo> getWorkerGroupList(WorkerGroupQo workerGroupSearchVo);
+    List<WorkerGroupVo> getWorkerGroupList(WorkerGroupQo workerGroupQo);
+    List<WorkerGroupVo> getByAppId(Long appId);
 
     List<String> getAllWorkerGroupCreator();
 }

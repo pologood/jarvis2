@@ -23,7 +23,7 @@ public class TaskDependService {
     @Autowired
     TaskMapper taskMapper;
     @Autowired
-    TaskExecuteRecordsMapper taskExecuteRecordsMapper;
+    TaskHistoryMapper taskExecuteRecordsMapper;
 
     Logger logger = Logger.getLogger(TaskDependService.class);
 

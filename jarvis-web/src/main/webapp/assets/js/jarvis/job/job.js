@@ -173,7 +173,6 @@ function initData() {
         showColumns: true,
         showHeader: true,
         showToggle: true,
-        pageSize: 1,
         pageSize: 20,
         pageList: [10, 20, 50, 100, 200, 500],
         paginationFirstText: '首页',
@@ -297,33 +296,49 @@ var columns = [{
 function operateFormatter(value, row, index) {
     //console.log(row);
     var jobId = row["jobId"];
+    var jobAppId = row["appId"];
     var appKey = row["appKey"];
     var appName = row["appName"];
     var status = row["status"];
-    //console.log(jobId);
-    var result = [
-        '<a  href="' + contextPath + '/job/addOrEdit?jobId=' + jobId + '" title="编辑任务信息" target="_blank">',
-        '<i class="glyphicon glyphicon-edit"></i>',
-        '</a>  ',
-        '<a  href="' + contextPath + '/job/dependency?jobId=' + jobId + '" title="查看任务依赖" target="_blank">',
-        '<i class="glyphicon glyphicon-eye-open"></i>',
-        '</a>  '
-    ].join('');
+
+    var result='';
+
+    if(appId==jobAppId){
+        result = [
+            '<a  href="' + contextPath + '/job/addOrEdit?jobId=' + jobId + '" title="编辑任务信息" target="_blank">',
+            '<i class="glyphicon glyphicon-edit"></i>',
+            '</a>  ',
+            '<a  href="' + contextPath + '/job/dependency?jobId=' + jobId + '" title="查看任务依赖" target="_blank">',
+            '<i class="glyphicon glyphicon-eye-open"></i>',
+            '</a>  '
+        ].join('');
 
 
-    var operation = '<div class="btn-group"> <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">修改状态 <span class="caret"></span> </button>';
-    operation = operation + '<ul class="dropdown-menu">';
-    $(jobStatus).each(function (i, c) {
-        if (c["id"] != 'all' && c["id"] != status && c["id"] != '3') {
-            var li = '<li><a href="javascript:void(0)" onclick="updateJobStatus(' + jobId + ',' + c["id"] + ')" >' + c["text"] + '</a></li>';
-            operation = operation + li;
-        }
-    });
-    operation = operation + '</ul></div>';
+        var operation = '<div class="btn-group"> <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">修改状态 <span class="caret"></span> </button>';
+        operation = operation + '<ul class="dropdown-menu">';
+        $(jobStatus).each(function (i, c) {
+            if (c["id"] != 'all' && c["id"] != status && c["id"] != '3') {
+                var li = '<li><a href="javascript:void(0)" onclick="updateJobStatus(' + jobId + ',' + c["id"] + ')" >' + c["text"] + '</a></li>';
+                operation = operation + li;
+            }
+        });
+        operation = operation + '</ul></div>';
+        result=result+operation;
+    }
+    else{
+        result = [
+            '<a  href="' + contextPath + '/job/dependency?jobId=' + jobId + '" title="查看任务依赖" target="_blank">',
+            '<i class="glyphicon glyphicon-eye-open"></i>',
+            '</a>  '
+        ].join('');
+    }
+
+
+
 
     //console.log(result);
 
-    return result + operation;
+    return result;
 }
 
 var jobStatusClass = {

@@ -20,6 +20,8 @@ public class JobDependVo {
     private boolean parentFlag=false;
     private boolean rootFlag=false;
     private Map<String,Object> state;
+    private Integer commonStrategy;
+    private String offsetStrategy;
 
 
     public List<JobDependVo> getChildren() {
@@ -110,4 +112,19 @@ public class JobDependVo {
         this.rootFlag = rootFlag;
     }
 
+    public Integer getCommonStrategy() {
+        return commonStrategy;
+    }
+
+    public void setCommonStrategy(Integer commonStrategy) {
+        this.commonStrategy = commonStrategy;
+    }
+
+    public String getOffsetStrategy() {
+        return offsetStrategy;
+    }
+
+    public void setOffsetStrategy(String offsetStrategy) {
+        this.offsetStrategy = offsetStrategy;
+    }
 }
