@@ -41,7 +41,8 @@ public class TestHeartBeatActor  {
                 ActorSelection heartBeatActor = system.actorSelection(serverAkkaPath);
                 ActorRef workerActor = system.actorOf(new SmallestMailboxPool(10).props(WorkerActor.props()), JarvisConstants.WORKER_AKKA_SYSTEM_NAME);
                 heartBeatActor.tell(heartBeatRequest, getRef());
-                expectMsgEquals(duration("1 seconds"), HeartBeatProtos.HeartBeatResponse.class);
+                //expectMsgEquals(duration("1 seconds"), HeartBeatProtos.HeartBeatResponse.class);
+                expectNoMsg();
             }
         };
 
