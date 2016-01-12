@@ -43,7 +43,7 @@ public class TestJobSchedulerController extends TestSchedulerBase {
         jobGraph.addJob(jobAId, new DAGJob(jobAId, DAGJobType.TIME), null);
 
         // jobA time ready
-        AddTaskEvent addTaskEvent = new AddTaskEvent(jobAId, null, t1);
+        AddTaskEvent addTaskEvent = new AddTaskEvent(jobAId, t1);
         controller.notify(addTaskEvent);
         Assert.assertEquals(1, taskGraph.getTaskMap().size());
         Assert.assertEquals(1, taskQueue.size());
@@ -74,7 +74,7 @@ public class TestJobSchedulerController extends TestSchedulerBase {
         jobGraph.addJob(jobBId, new DAGJob(jobBId, DAGJobType.DEPEND), Sets.newHashSet(jobAId));
 
         // jobA time ready
-        AddTaskEvent addTaskEvent = new AddTaskEvent(jobAId, null, t1);
+        AddTaskEvent addTaskEvent = new AddTaskEvent(jobAId, t1);
         controller.notify(addTaskEvent);
         Assert.assertEquals(1, taskGraph.getTaskMap().size());
         Assert.assertEquals(1, taskQueue.size());

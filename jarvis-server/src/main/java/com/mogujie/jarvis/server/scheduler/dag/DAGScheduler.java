@@ -21,7 +21,7 @@ import com.mogujie.jarvis.server.scheduler.event.StartEvent;
 import com.mogujie.jarvis.server.scheduler.event.StopEvent;
 
 /**
- * Scheduler used to handle dependency based job.
+ * Scheduler used to handle dependency based jobs.
  *
  * @author guangming
  *

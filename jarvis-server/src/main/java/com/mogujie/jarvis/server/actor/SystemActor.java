@@ -10,19 +10,23 @@ package com.mogujie.jarvis.server.actor;
 import java.util.ArrayList;
 import java.util.List;
 
+import akka.actor.Props;
+import akka.actor.UntypedActor;
+
 import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.protocol.SystemStatusProtos.RestServerUpdateSystemStatusRequest;
 import com.mogujie.jarvis.protocol.SystemStatusProtos.ServerUpdateSystemStatusResponse;
 import com.mogujie.jarvis.server.dispatcher.TaskDispatcher;
 import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.guice.Injectors;
-
-import akka.actor.Props;
-import akka.actor.UntypedActor;
+import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
+import com.mogujie.jarvis.server.scheduler.event.StartEvent;
+import com.mogujie.jarvis.server.scheduler.event.StopEvent;
 
 public class SystemActor extends UntypedActor {
 
     private TaskDispatcher taskDispatcher = Injectors.getInjector().getInstance(TaskDispatcher.class);
+    private JobSchedulerController controller = JobSchedulerController.getInstance();
 
     public static Props props() {
         return Props.create(SystemActor.class);
@@ -34,8 +38,10 @@ public class SystemActor extends UntypedActor {
             RestServerUpdateSystemStatusRequest request = (RestServerUpdateSystemStatusRequest) obj;
             if (request.getStatus() > 0) {
                 taskDispatcher.restart();
+                controller.notify(new StartEvent());
             } else {
                 taskDispatcher.pause();
+                controller.notify(new StopEvent());
             }
 
             ServerUpdateSystemStatusResponse response = ServerUpdateSystemStatusResponse.newBuilder().setSuccess(true).build();

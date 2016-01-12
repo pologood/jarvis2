@@ -15,12 +15,12 @@ import com.mogujie.jarvis.core.AbstractLogCollector;
 import com.mogujie.jarvis.core.AbstractTask;
 import com.mogujie.jarvis.core.ProgressReporter;
 import com.mogujie.jarvis.core.TaskContext;
-import com.mogujie.jarvis.core.domain.Pair;
 import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.exception.AcceptanceException;
 import com.mogujie.jarvis.core.exception.TaskException;
 import com.mogujie.jarvis.protocol.ReportTaskStatusProtos.WorkerReportTaskStatusRequest;
 import com.mogujie.jarvis.protocol.SubmitTaskProtos.WorkerSubmitTaskResponse;
+import com.mogujie.jarvis.worker.domain.TaskEntry;
 import com.mogujie.jarvis.worker.strategy.AcceptanceResult;
 import com.mogujie.jarvis.worker.strategy.AcceptanceStrategy;
 import com.mogujie.jarvis.worker.util.TaskConfigUtils;
@@ -45,9 +45,8 @@ public class TaskExecutor extends Thread {
 
     @Override
     public void run() {
-        Pair<Class<? extends AbstractTask>, List<AcceptanceStrategy>> pair = TaskConfigUtils.getRegisteredJobs()
-                .get(taskContext.getTaskDetail().getTaskType());
-        List<AcceptanceStrategy> strategies = pair.getSecond();
+        TaskEntry taskEntry = TaskConfigUtils.getRegisteredTasks().get(taskContext.getTaskDetail().getTaskType());
+        List<AcceptanceStrategy> strategies = taskEntry.getAcceptanceStrategy();
         for (AcceptanceStrategy strategy : strategies) {
             try {
                 AcceptanceResult result = strategy.accept();
@@ -65,7 +64,9 @@ public class TaskExecutor extends Thread {
 
         senderActor.tell(WorkerSubmitTaskResponse.newBuilder().setAccept(true).setSuccess(true).build(), selfActor);
         try {
-            Constructor<? extends AbstractTask> constructor = pair.getFirst().getConstructor(TaskContext.class);
+            @SuppressWarnings("unchecked")
+            Constructor<? extends AbstractTask> constructor = ((Class<? extends AbstractTask>) Class.forName(taskEntry.getTaskClass()))
+                    .getConstructor(TaskContext.class);
             AbstractTask task = constructor.newInstance(taskContext);
             String fullId = taskContext.getTaskDetail().getFullId();
             ProgressReporter reporter = taskContext.getProgressReporter();

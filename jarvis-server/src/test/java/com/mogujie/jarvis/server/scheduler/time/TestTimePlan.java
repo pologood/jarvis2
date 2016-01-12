@@ -80,4 +80,26 @@ public class TestTimePlan {
         plan.removePlan(new TimePlanEntry(1, new DateTime(1000)));
         System.out.println(plan.getPlan().size());
     }
+
+    @Test
+    public void removeJob() {
+        TimePlanEntry entry1 = new TimePlanEntry(1, new DateTime(1000));
+        TimePlanEntry entry2 = new TimePlanEntry(2, new DateTime(2000));
+        TimePlanEntry entry3 = new TimePlanEntry(3, new DateTime(3000), 3);
+        TimePlanEntry entry4 = new TimePlanEntry(3, new DateTime(2500));
+        TimePlanEntry entry5 = new TimePlanEntry(2, new DateTime(4000));
+
+        plan.addPlan(entry2);
+        plan.addPlan(entry3);
+        plan.addPlan(entry1);
+        plan.addPlan(entry4);
+        plan.addPlan(entry5);
+        Assert.assertEquals(5, plan.getPlan().size());
+
+        plan.removeJob(2);
+        Assert.assertEquals(3, plan.getPlan().size());
+
+        plan.removeJob(3);
+        Assert.assertEquals(1, plan.getPlan().size());
+    }
 }

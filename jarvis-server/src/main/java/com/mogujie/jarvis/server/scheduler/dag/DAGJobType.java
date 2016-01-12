@@ -8,7 +8,6 @@
 
 package com.mogujie.jarvis.server.scheduler.dag;
 
-
 /**
  * @author guangming
  *
@@ -43,6 +42,7 @@ public enum DAGJobType {
 
     /**
      * return true if this type implies that type
+     *
      * @param that
      */
     public boolean implies(DAGJobType that) {

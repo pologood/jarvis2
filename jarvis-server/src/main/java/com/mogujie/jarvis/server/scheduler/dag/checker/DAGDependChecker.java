@@ -99,13 +99,16 @@ public class DAGDependChecker {
         return dependTaskMap;
     }
 
-    public void updateExpression(long parentId, String expression) {
+    public void updateDependency(long parentId, String expression, int strategy) {
         JobDependStatus dependSchedule = jobDependMap.get(parentId);
         if (dependSchedule != null) {
             DependencyExpression dependencyExpression = null;
             if (expression != null) {
                 dependencyExpression = new TimeOffsetExpression(expression);
                 dependSchedule.setDependencyExpression(dependencyExpression);
+                CommonStrategy commonStrategy = CommonStrategy.getInstance(strategy);
+                DependencyStrategyExpression dependencyStrategy = new DefaultDependencyStrategyExpression(commonStrategy.getExpression());
+                dependSchedule.setDependencyStrategy(dependencyStrategy);
             }
         }
     }
