@@ -38,7 +38,6 @@ import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
 import com.mogujie.jarvis.server.scheduler.event.KilledEvent;
 import com.mogujie.jarvis.server.scheduler.event.ManualRerunTaskEvent;
 import com.mogujie.jarvis.server.scheduler.event.RetryTaskEvent;
-import com.mogujie.jarvis.server.scheduler.event.RunTaskEvent;
 import com.mogujie.jarvis.server.scheduler.event.RunningEvent;
 import com.mogujie.jarvis.server.scheduler.event.ScheduleEvent;
 import com.mogujie.jarvis.server.scheduler.event.StartEvent;
@@ -287,16 +286,6 @@ public class TaskScheduler extends Scheduler {
                 LOGGER.info("{} pass status check", dagTask);
                 submitTask(dagTask);
             }
-        }
-    }
-
-    @Subscribe
-    public void handleRunTaskEvent(RunTaskEvent e) {
-        long taskId = e.getTaskId();
-        LOGGER.info("start handleRunTaskEvent, taskId={}", taskId);
-        DAGTask dagTask = taskGraph.getTask(taskId);
-        if (dagTask != null) {
-            submitTask(dagTask);
         }
     }
 
