@@ -15,7 +15,9 @@ import java.util.regex.Pattern;
 
 import org.joda.time.DateTime;
 import org.joda.time.IllegalFieldValueException;
+import org.joda.time.Months;
 import org.joda.time.MutableDateTime;
+import org.joda.time.Years;
 import org.joda.time.format.DateTimeFormat;
 
 import com.google.common.base.CharMatcher;
@@ -45,8 +47,8 @@ public class TimeOffsetExpression extends DependencyExpression {
 
     static {
         MAP.put(Pattern.compile("cm"), "['yyyy-MM-dd HH:mm:00',m(-1),m(1))");
-        MAP.put(Pattern.compile("m\\((-?\\d+)\\)"), "('yyyy-MM-dd HH:mm:00',m(a)]");
-        MAP.put(Pattern.compile("m\\((-?\\d+),(-?\\d+)\\)"), "('yyyy-MM-dd HH:mm:00',m(a),m(b)]");
+        MAP.put(Pattern.compile("m\\((-?\\d+)\\)"), "['yyyy-MM-dd HH:mm:00',m(a))");
+        MAP.put(Pattern.compile("m\\((-?\\d+),(-?\\d+)\\)"), "['yyyy-MM-dd HH:mm:00',m(a),m(b))");
 
         MAP.put(Pattern.compile("ch"), "['yyyy-MM-dd HH:00:00',h(-1),h(1))");
         MAP.put(Pattern.compile("h\\((-?\\d+)\\)"), "['yyyy-MM-dd HH:00:00',h(a))");
@@ -95,7 +97,7 @@ public class TimeOffsetExpression extends DependencyExpression {
         return abbrExp;
     }
 
-    private static MutableDateTime convertSingleTimeOffset(MutableDateTime mutableDateTime, String exp) {
+    private static MutableDateTime convertSingleTimeOffset(MutableDateTime mutableDateTime, String exp, OffsetType offsetType) {
         Matcher m = SINGLE_OFFSET_PATTERN.matcher(exp);
         if (m.matches()) {
             char unit = m.group(1).charAt(0);
@@ -107,7 +109,11 @@ public class TimeOffsetExpression extends DependencyExpression {
                 value = Integer.parseInt(mutableDateTime.toString(strValue));
             }
 
-            mutableDateTime.add(DurationFieldTypes.valueOf(unit), -value);
+            if (offsetType == OffsetType.FRONT) {
+                mutableDateTime.add(DurationFieldTypes.valueOf(unit), -value);
+            } else {
+                mutableDateTime.add(DurationFieldTypes.valueOf(unit), value);
+            }
         }
 
         return mutableDateTime;
@@ -158,27 +164,84 @@ public class TimeOffsetExpression extends DependencyExpression {
             DateTime currentDateTime = DateTimeFormat.forPattern(JarvisConstants.DEFAULT_DATE_TIME_FORMAT).parseDateTime(dateTime.toString(format));
             MutableDateTime startDateTime = currentDateTime.toMutableDateTime();
             if (startTimeOffset != null) {
-                Matcher m = SINGLE_OFFSET_PATTERN.matcher(startTimeOffset);
-                while (m.find()) {
-                    startDateTime = convertSingleTimeOffset(startDateTime, m.group());
+                Matcher startMatcher = SINGLE_OFFSET_PATTERN.matcher(startTimeOffset);
+                while (startMatcher.find()) {
+                    startDateTime = convertSingleTimeOffset(startDateTime, startMatcher.group(), OffsetType.FRONT);
                 }
             }
 
             MutableDateTime endDateTime = new MutableDateTime(startDateTime);
-            Matcher m = SINGLE_OFFSET_PATTERN.matcher(endTimeOffset);
-            while (m.find()) {
-                endDateTime = convertSingleTimeOffset(endDateTime, m.group());
+            Matcher endMatcher = SINGLE_OFFSET_PATTERN.matcher(endTimeOffset);
+            while (endMatcher.find()) {
+                endDateTime = convertSingleTimeOffset(endDateTime, endMatcher.group(), OffsetType.FRONT);
             }
 
             DateTime start = startDateTime.isBefore(endDateTime) ? startDateTime.toDateTime() : endDateTime.toDateTime();
             DateTime end = startDateTime.isAfter(endDateTime) ? startDateTime.toDateTime() : endDateTime.toDateTime();
 
             BoundType lowerBoundType = rangeStartFlag == '(' ? BoundType.OPEN : BoundType.CLOSED;
-            BoundType upperBoundType = rangeEndFlag == '(' ? BoundType.OPEN : BoundType.CLOSED;
+            BoundType upperBoundType = rangeEndFlag == ')' ? BoundType.OPEN : BoundType.CLOSED;
             return Range.range(start, lowerBoundType, end, upperBoundType);
         }
 
         return null;
+    }
+
+    private Range<DateTime> fixRange(Range<DateTime> range) {
+        DateTime lowerEndpoint = range.lowerEndpoint();
+        DateTime upperEndpoint = range.upperEndpoint();
+
+        BoundType lowerBoundType = range.lowerBoundType();
+        BoundType upperBoundType = range.upperBoundType();
+        switch (format) {
+            case "yyyy-MM-dd HH:mm:00":
+                return Range.range(lowerEndpoint.plusMinutes(1), lowerBoundType, upperEndpoint.plusMinutes(1), upperBoundType);
+            case "yyyy-MM-dd HH:00:00":
+                return Range.range(lowerEndpoint.plusHours(1), lowerBoundType, upperEndpoint.plusHours(1), upperBoundType);
+            case "yyyy-MM-dd 00:00:00":
+                return Range.range(lowerEndpoint.plusDays(1), lowerBoundType, upperEndpoint.plusDays(1), upperBoundType);
+            case "yyyy-MM-01 00:00:00":
+                return Range.range(lowerEndpoint.plusMonths(1), lowerBoundType, upperEndpoint.plusMonths(1), upperBoundType);
+            case "yyyy-01-01 00:00:00":
+                return Range.range(lowerEndpoint.plusYears(1), lowerBoundType, upperEndpoint.plusYears(1), upperBoundType);
+            default:
+                return range;
+        }
+    }
+
+    @Override
+    public Range<DateTime> getReverseRange(DateTime dateTime) {
+        Range<DateTime> range = getRange(dateTime);
+        if (range == null) {
+            return null;
+        }
+
+        DateTime formatedDateTime = DateTimeFormat.forPattern(JarvisConstants.DEFAULT_DATE_TIME_FORMAT).parseDateTime(dateTime.toString(format));
+        DateTime lowerEndpoint = null;
+        DateTime upperEndpoint = null;
+
+        switch (format) {
+            case "yyyy-MM-01 00:00:00":
+                lowerEndpoint = formatedDateTime.withPeriodAdded(Months.monthsBetween(range.upperEndpoint(), formatedDateTime), 1);
+                upperEndpoint = formatedDateTime.withPeriodAdded(Months.monthsBetween(formatedDateTime, range.lowerEndpoint()), -1);
+                break;
+            case "yyyy-01-01 00:00:00":
+                lowerEndpoint = formatedDateTime.withPeriodAdded(Years.yearsBetween(range.upperEndpoint(), formatedDateTime), 1);
+                upperEndpoint = formatedDateTime.withPeriodAdded(Years.yearsBetween(formatedDateTime, range.lowerEndpoint()), -1);
+                break;
+            default:
+                long t1 = formatedDateTime.getMillis() - range.lowerEndpoint().getMillis();
+                long t2 = range.upperEndpoint().getMillis() - formatedDateTime.getMillis();
+                lowerEndpoint = formatedDateTime.minus(t2);
+                upperEndpoint = formatedDateTime.plus(t1);
+                break;
+        }
+
+        if (lowerEndpoint.isAfter(upperEndpoint)) {
+            return fixRange(Range.range(upperEndpoint, range.lowerBoundType(), lowerEndpoint, range.upperBoundType()));
+        }
+
+        return fixRange(Range.range(lowerEndpoint, range.lowerBoundType(), upperEndpoint, range.upperBoundType()));
     }
 
     @Override
@@ -189,4 +252,5 @@ public class TimeOffsetExpression extends DependencyExpression {
     public String getExpressionFormula() {
         return expressionFormula;
     }
+
 }

@@ -3,7 +3,7 @@ package com.mogujie.jarvis.web.controller.jarvis;
 import com.google.common.hash.Hashing;
 import com.mogu.bigdata.admin.core.entity.User;
 import com.mogujie.jarvis.core.util.JsonHelper;
-import com.mogujie.jarvis.web.common.Constants;
+import com.mogujie.jarvis.web.entity.vo.AppVo;
 import org.joda.time.DateTime;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -25,14 +25,24 @@ import java.util.Properties;
 @RequestMapping("/remote")
 public class RemoteRestApiController extends BaseController {
     static String domain = "";
+    static AppVo app = new AppVo();
 
-
+    /*
+    * 读取配置文件
+    * */
     static {
         try {
             InputStream inputStream = RemoteRestApiController.class.getClassLoader().getResourceAsStream("api.properties");
             Properties properties = new Properties();
             properties.load(inputStream);
             domain = properties.getProperty("rest.domain");
+
+            InputStream appInputStream = RemoteRestApiController.class.getClassLoader().getResourceAsStream("app.properties");
+            Properties appProperties = new Properties();
+            properties.load(appInputStream);
+            app.setAppId(Integer.parseInt(appProperties.getProperty("app.id")));
+            app.setAppName(appProperties.getProperty("app.name"));
+            app.setAppKey(appProperties.getProperty("app.key"));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -61,14 +71,14 @@ public class RemoteRestApiController extends BaseController {
 
             DateTime dateTime = new DateTime();
             Long timeStamp = dateTime.getMillis() / 1000;
-            String token = generateToken(timeStamp, Constants.appKey);
+            String token = generateToken(timeStamp, app.getAppKey());
 
             data.put("appToken", token);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        data.put("appName", Constants.appName);
-        data.put("appKey", Constants.appKey);
+        data.put("appName", app.getAppName());
+        data.put("appKey", app.getAppKey());
 
         //请求远程REST服务器。
         try {

@@ -98,7 +98,22 @@ public class TestDAGDependChecker {
         jobDependMap.put(jobBId, statusC2B);
         checker.setJobDependMap(jobDependMap);
 
-        //TODO
+        Assert.assertEquals(false, checker.checkDependency(Sets.newHashSet(jobAId, jobBId), t4));
+
+        taskService.updateStatus(taskAId1, TaskStatus.SUCCESS);
+        Assert.assertEquals(false, checker.checkDependency(Sets.newHashSet(jobAId, jobBId), t4));
+        taskService.updateStatus(taskAId2, TaskStatus.SUCCESS);
+        Assert.assertEquals(false, checker.checkDependency(Sets.newHashSet(jobAId, jobBId), t4));
+        taskService.updateStatus(taskAId3, TaskStatus.SUCCESS);
+        Assert.assertEquals(false, checker.checkDependency(Sets.newHashSet(jobAId, jobBId), t4));
+
+        taskService.updateStatus(taskBId1, TaskStatus.SUCCESS);
+        Assert.assertEquals(false, checker.checkDependency(Sets.newHashSet(jobAId, jobBId), t4));
+        taskService.updateStatus(taskBId2, TaskStatus.SUCCESS);
+        Assert.assertEquals(false, checker.checkDependency(Sets.newHashSet(jobAId, jobBId), t4));
+        taskService.updateStatus(taskBId3, TaskStatus.SUCCESS);
+        Assert.assertEquals(true, checker.checkDependency(Sets.newHashSet(jobAId, jobBId), t4));
+
         taskService.deleteTaskAndRelation(taskAId1);
         taskService.deleteTaskAndRelation(taskAId2);
         taskService.deleteTaskAndRelation(taskAId3);

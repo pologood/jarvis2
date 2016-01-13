@@ -21,16 +21,6 @@
         </where>
     </sql>
 
-    <sql id="workerGroupCondition">
-        <where>
-            <if test="name!=null and name!=''">
-                `name`=#{name}
-            </if>
-            <if test="updateUser!=null and updateUser!=''">
-                AND updateUser=#{updateUser}
-            </if>
-        </where>
-    </sql>
 
     <sql id="pager">
         <if test="offset!=null and limit!=null">
@@ -59,29 +49,6 @@
     </select>
     <select id="getAllWorkerPort" resultType="Integer">
         SELECT DISTINCT port FROM worker;
-    </select>
-
-
-    <select id="getAllWorkerGroup" resultType="WorkerGroupVo">
-      SELECT * FROM worker_group;
-    </select>
-    <select id="getWorkerGroupById" parameterType="Integer" resultType="WorkerGroupVo">
-        SELECT * FROM worker_group WHERE id=#{id};
-    </select>
-    <select id="getWorkerGroupByName" parameterType="String" resultType="WorkerGroupVo">
-        SELECT * FROM worker_group WHERE name=#{_parameter} limit 0,1;
-    </select>
-    <select id="getWorkerGroupCount" parameterType="WorkerGroupQo" resultType="Integer">
-        SELECT count(1) FROM worker_group
-        <include refid="workerGroupCondition" />
-    </select>
-    <select id="getWorkerGroupList" parameterType="WorkerGroupQo" resultType="WorkerGroupVo">
-        SELECT * FROM worker_group
-        <include refid="workerGroupCondition" />
-        <include refid="pager" />
-    </select>
-    <select id="getAllWorkerGroupCreator" resultType="String">
-        SELECT DISTINCT `updateUser` FROM worker_group;
     </select>
     
 

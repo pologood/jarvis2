@@ -37,7 +37,9 @@
                     <div class="input-group" style="width:100%">
                         <button type="button" class="btn btn-danger" onclick="updateSystemStatus(0)">暂停调度系统
                         </button>
-                        <button type="button" class="btn btn-success" onclick="updateSystemStatus(1)" style="margin-left: 5px">启动调度系统</button>
+                        <button type="button" class="btn btn-success" onclick="updateSystemStatus(1)"
+                                style="margin-left: 5px">启动调度系统
+                        </button>
                     </div>
                 </div>
             </div>

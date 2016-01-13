@@ -4,10 +4,10 @@ var taskStatusColor = null;
 
 $(function () {
 
-    $('#planDate').datetimepicker({
+    $('#dataTime').datetimepicker({
         language: 'zh-CN',
-        minView: 'month',
-        format: 'yyyy-mm-dd',
+        minView: 'hour',
+        format: 'yyyy-mm-dd hh:ii',
         autoclose: true
     });
 
@@ -88,7 +88,7 @@ $(function () {
 
     $.ajaxSettings.async = false;
     //
-    $.getJSON(contextPath + "/assets/json/taskStatus.json", function (data) {
+    $.getJSON(contextPath + "/api/job/getJobStatus", function (data) {
         taskStatusJson = data;
     });
     //初始化颜色
@@ -138,7 +138,7 @@ function getQueryPara() {
     var jobTypeList = $("#jobTypeList").val();
     var priorityList = $("#priority").val();
     var executeUserList = $("#executeUser").val();
-    var scheduleTime = $("#scheduleTime").val();
+    var dataTime = $("#dataTime").val();
 
     jobIdList = jobIdList == "all" ? undefined : jobIdList;
     jobIdList = jobIdList == null ? undefined : jobIdList;
@@ -150,14 +150,14 @@ function getQueryPara() {
     executeUserList = executeUserList == null ? undefined : executeUserList;
     priorityList = priorityList == "all" ? undefined : priorityList;
     priorityList = priorityList == null ? undefined : priorityList;
-    scheduleTime = scheduleTime == '' ? undefined : scheduleTime;
+    dataTime = dataTime == '' ? undefined : dataTime;
 
     queryPara["jobIdList"] = JSON.stringify(jobIdList);
     queryPara["jobNameList"] = JSON.stringify(jobNameList);
     queryPara["jobTypeList"] = JSON.stringify(jobTypeList);
     queryPara["executeUserList"] = JSON.stringify(executeUserList);
     queryPara["priorityList"] = JSON.stringify(priorityList);
-    queryPara["scheduleTime"] = scheduleTime;
+    queryPara["dataTime"] = dataTime;
 
     return queryPara;
 }
@@ -176,7 +176,7 @@ function initData() {
                 var value = queryParams[key];
                 params[key] = value;
             }
-            console.log(params);
+            //console.log(params);
             return params;
         },
         showColumns: true,
@@ -205,7 +205,8 @@ var columns = [{
     field: 'jobId',
     title: '任务ID',
     switchable: true,
-    visible: true
+    visible: true,
+    visible: false
 }, {
     field: 'jobName',
     title: '任务名称',

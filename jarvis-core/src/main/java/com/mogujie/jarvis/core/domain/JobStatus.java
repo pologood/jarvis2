@@ -12,20 +12,26 @@ package com.mogujie.jarvis.core.domain;
  */
 public enum JobStatus {
 
-    ENABLE(1),      //启用（有效）
-    DISABLE(2),     //禁用（失效）
-    EXPIRED(3),     //过期
-    DELETED(4),     //删除（垃圾箱）
-    PAUSE(5);       //暂停
+    ENABLE(1,"启用"),      //启用（有效）
+    DISABLE(2,"禁用"),     //禁用（失效）
+    EXPIRED(3,"过期"),     //过期
+    DELETED(4,"删除"),     //删除（垃圾箱）
+    PAUSE(5,"暂停");       //暂停
 
     private int value;
+    private String description;
 
-    JobStatus(int value) {
+    JobStatus(int value,String description) {
         this.value = value;
+        this.description=description;
     }
 
     public int getValue() {
         return value;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public static JobStatus parseValue(int value) {

@@ -6,7 +6,7 @@
  * Create Date: 2015年9月25日 下午1:19:51
  */
 
-package com.mogujie.jarvis.server.scheduler.dag;
+package com.mogujie.jarvis.server.scheduler;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,6 +19,8 @@ import com.google.common.collect.Sets;
 import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.domain.TaskType;
 import com.mogujie.jarvis.dto.generate.Task;
+import com.mogujie.jarvis.server.scheduler.dag.DAGJob;
+import com.mogujie.jarvis.server.scheduler.dag.DAGJobType;
 import com.mogujie.jarvis.server.scheduler.event.AddTaskEvent;
 import com.mogujie.jarvis.server.scheduler.event.SuccessEvent;
 
@@ -41,7 +43,7 @@ public class TestJobSchedulerController extends TestSchedulerBase {
         jobGraph.addJob(jobAId, new DAGJob(jobAId, DAGJobType.TIME), null);
 
         // jobA time ready
-        AddTaskEvent addTaskEvent = new AddTaskEvent(jobAId, null, t1);
+        AddTaskEvent addTaskEvent = new AddTaskEvent(jobAId, t1);
         controller.notify(addTaskEvent);
         Assert.assertEquals(1, taskGraph.getTaskMap().size());
         Assert.assertEquals(1, taskQueue.size());
@@ -72,7 +74,7 @@ public class TestJobSchedulerController extends TestSchedulerBase {
         jobGraph.addJob(jobBId, new DAGJob(jobBId, DAGJobType.DEPEND), Sets.newHashSet(jobAId));
 
         // jobA time ready
-        AddTaskEvent addTaskEvent = new AddTaskEvent(jobAId, null, t1);
+        AddTaskEvent addTaskEvent = new AddTaskEvent(jobAId, t1);
         controller.notify(addTaskEvent);
         Assert.assertEquals(1, taskGraph.getTaskMap().size());
         Assert.assertEquals(1, taskQueue.size());

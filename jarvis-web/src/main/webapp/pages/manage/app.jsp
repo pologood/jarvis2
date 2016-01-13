@@ -40,9 +40,6 @@
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">类型</span>
                         <select id="appType">
-                            <option value="all">全部</option>
-                            <option value="1">普通</option>
-                            <option value="2">管理</option>
                         </select>
                     </div>
                 </div>
@@ -50,11 +47,7 @@
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">状态</span>
-                        <select id="status">
-                            <option value="all">全部</option>
-                            <option value="0">停用</option>
-                            <option value="1">启用</option>
-                        </select>
+                        <select id="status"></select>
                     </div>
                 </div>
 
@@ -77,10 +70,10 @@
 
             <div class="row top-buffer">
                 <div class="col-md-12">
-                    <div id="add">
+                    <div id="toolbar">
                         <a class="btn btn-primary" href="${contextPath}/manage/appAddOrEdit" target="_blank">新增应用</a>
                     </div>
-                    <table id="content">
+                    <table id="content" data-toolbar="#toolbar">
 
                     </table>
 

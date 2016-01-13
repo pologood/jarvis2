@@ -1,7 +1,5 @@
 package com.mogujie.jarvis.web.mapper;
 
-import com.mogujie.jarvis.web.entity.qo.WorkerGroupQo;
-import com.mogujie.jarvis.web.entity.vo.WorkerGroupVo;
 import com.mogujie.jarvis.web.entity.qo.WorkerQo;
 import com.mogujie.jarvis.web.entity.vo.WorkerVo;
 
@@ -25,18 +23,5 @@ public interface WorkerMapper {
 
     WorkerVo getWorkerByIpAndPort(Map<String, Object> para);
 
-
-    //WorkerGroup
-    List<WorkerGroupVo> getAllWorkerGroup();
-
-    WorkerGroupVo getWorkerGroupById(Integer id);
-
-    WorkerGroupVo getWorkerGroupByName(String name);
-
-    Integer getWorkerGroupCount(WorkerGroupQo workerGroupSearchVo);
-
-    List<WorkerGroupVo> getWorkerGroupList(WorkerGroupQo workerGroupSearchVo);
-
-    List<String> getAllWorkerGroupCreator();
 
 }

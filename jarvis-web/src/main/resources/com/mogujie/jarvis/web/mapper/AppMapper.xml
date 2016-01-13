@@ -16,6 +16,9 @@
             <if test="status!=null">
                 AND status=#{status}
             </if>
+            <if test="status==null">
+                AND status!=3
+            </if>
         </where>
     </sql>
     <sql id="pager">

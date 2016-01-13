@@ -6,7 +6,7 @@
  * Create Date: 2015年11月6日 下午5:40:40
  */
 
-package com.mogujie.jarvis.server.scheduler.dag;
+package com.mogujie.jarvis.server.scheduler;
 
 import java.util.Map;
 
@@ -21,7 +21,8 @@ import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.core.util.IdUtils;
 import com.mogujie.jarvis.server.dispatcher.TaskQueue;
 import com.mogujie.jarvis.server.guice.Injectors;
-import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
+import com.mogujie.jarvis.server.scheduler.dag.DAGScheduler;
+import com.mogujie.jarvis.server.scheduler.dag.JobGraph;
 import com.mogujie.jarvis.server.scheduler.task.DAGTask;
 import com.mogujie.jarvis.server.scheduler.task.TaskGraph;
 import com.mogujie.jarvis.server.scheduler.task.TaskScheduler;

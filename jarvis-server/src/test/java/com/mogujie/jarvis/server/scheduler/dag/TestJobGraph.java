@@ -7,42 +7,26 @@
  */
 package com.mogujie.jarvis.server.scheduler.dag;
 
-import org.apache.commons.configuration.Configuration;
 import org.jgrapht.experimental.dag.DirectedAcyclicGraph.CycleFoundException;
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.google.common.collect.Sets;
 import com.mogujie.jarvis.core.domain.JobStatus;
-import com.mogujie.jarvis.core.util.ConfigUtils;
+import com.mogujie.jarvis.server.scheduler.TestSchedulerBase;
 
 
 /**
  * @author guangming
  *
  */
-public class TestJobGraph {
+public class TestJobGraph extends TestSchedulerBase {
     private long jobAId = 1;
     private long jobBId = 2;
     private long jobCId = 3;
     private DAGJob jobA;
     private DAGJob jobB;
     private DAGJob jobC;
-    private static JobGraph jobGraph;
-    private static Configuration conf = ConfigUtils.getServerConfig();
-
-    @BeforeClass
-    public static void setup() throws Exception {
-        conf.clear();
-        jobGraph = JobGraph.INSTANCE;
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        jobGraph.clear();
-    }
 
     /**
      *   A   B

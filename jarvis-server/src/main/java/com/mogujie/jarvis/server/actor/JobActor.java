@@ -107,7 +107,7 @@ public class JobActor extends UntypedActor {
         } else if (obj instanceof RestQueryJobRelationRequest) {
             RestQueryJobRelationRequest msg = (RestQueryJobRelationRequest) obj;
             queryJobRelation(msg);
-        } else if (obj instanceof RemoveJobRequest) { // 测试用，无须加入handleMessage
+        } else if (obj instanceof RemoveJobRequest) { // 回滚和测试用，无须加入handleMessage
             RemoveJobRequest msg = (RemoveJobRequest) obj;
             removeJob(msg);
         } else {
@@ -125,12 +125,13 @@ public class JobActor extends UntypedActor {
     private void submitJob(RestSubmitJobRequest msg) throws Exception {
 
         ServerSubmitJobResponse response;
+        long jobId = 0;
         try {
             // 参数检查
             Job job = convertValidService.convertCheck2Job(msg);
 
             // 1. insert job to DB
-            long jobId = jobService.insertJob(job);
+            jobId = jobService.insertJob(job);
 
             // 2. insert schedule expression to DB
             List<ScheduleExpressionEntry> expressionEntries = msg.getExpressionEntryList();
@@ -173,7 +174,9 @@ public class JobActor extends UntypedActor {
             getSender().tell(response, getSelf());
 
         } catch (Exception e) {
-            // TODO rollback
+            // roll back submit job
+            RemoveJobRequest removeJobRequest = new RemoveJobRequest(jobId);
+            removeJob(removeJobRequest);
             response = ServerSubmitJobResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
             getSender().tell(response, getSelf());
         }
@@ -419,11 +422,7 @@ public class JobActor extends UntypedActor {
         long jobId = msg.getJobId();
         try {
             // remove job
-            jobService.deleteJob(jobId);
-            // remove job depend where preJobId=jobId
-            jobService.deleteJobDependByPreJob(jobId);
-            // remove expression where jobId=jobId
-            jobService.deleteScheduleExpressionByJobId(jobId);
+            jobService.deleteJobAndRelation(jobId);
             // scheduler remove job
             plan.removeJob(jobId);
             jobGraph.removeJob(jobId);

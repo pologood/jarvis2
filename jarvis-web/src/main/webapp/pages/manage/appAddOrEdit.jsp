@@ -72,6 +72,15 @@
             </div>
         </div>
 
+        <div class="col-md-6 col-md-offset-3 top-buffer">
+            <div class="input-group" style="width:100%">
+                <span class="input-group-addon" style="width:35%">WorkerGroup</span>
+                <select id="workerGroup" multiple>
+
+                </select>
+            </div>
+        </div>
+
 
         <div class="col-md-6 col-md-offset-3 top-buffer text-center">
             <div class="input-group" style="width:100%">
@@ -100,7 +109,7 @@
 
 <script>
     var appType = undefined;
-    var appstatus = undefined;
+    var appStatus = undefined;
     <c:choose>
     <c:when test="${appVo!=null}">
     appType =${appVo.appType};

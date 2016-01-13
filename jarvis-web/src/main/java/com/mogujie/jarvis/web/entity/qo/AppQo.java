@@ -5,7 +5,7 @@ import com.mogujie.jarvis.dto.generate.App;
 /**
  * Created by hejian on 15/9/24.
  */
-public class AppQo extends App {
+public class AppQo{
     private Integer offset;
     private Integer limit;
 

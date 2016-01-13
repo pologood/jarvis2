@@ -1,18 +1,30 @@
 $(function () {
+    initAppStatus();
+    initOwner();
+});
 
-    $.getJSON(contextPath + "/assets/json/appStatus.json", function (data) {
+function initAppStatus() {
+    $.getJSON(contextPath + "/api/app/getAppStatus", function (data) {
+        var newData = new Array();
+        $(data).each(function (i, c) {
+            if (c["id"] != 3) {
+                var item = {};
+                item["id"] = c["id"];
+                item["text"] = c["text"];
+                newData.push(item);
+            }
+        });
+
         $("#status").select2({
-            data: data,
+            data: newData,
             width: '100%'
         });
 
-        if (appstatus != undefined) {
-            $("#status").val(appstatus).trigger("change");
+        if (appStatus != undefined) {
+            $("#status").val(appStatus).trigger("change");
         }
     });
-
-    initOwner();
-});
+}
 
 function initOwner() {
     var owner = $("#owner").attr("title");
@@ -53,7 +65,13 @@ function updateApp() {
         return;
     }
 
-    var data = {appId: appId, applicationName: applicationName, status: status, maxConcurrency: maxConcurrency,owner:owner};
+    var data = {
+        appId: appId,
+        applicationName: applicationName,
+        status: status,
+        maxConcurrency: maxConcurrency,
+        owner: owner
+    };
     requestRemoteRestApi("/api/app/edit", "修改应用", data);
 }
 

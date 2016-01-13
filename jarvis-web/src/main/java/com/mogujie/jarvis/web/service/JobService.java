@@ -26,7 +26,7 @@ public class JobService {
     public List<JobVo> getAllJobs(Integer status) {
         JobQo jobQo = new JobQo();
         List<String> statusList = new ArrayList<String>();
-        if(null!=status){
+        if (null != status) {
             statusList.add(status.toString());
         }
         jobQo.setStatusList(JsonHelper.toJson(statusList));
@@ -120,6 +120,9 @@ public class JobService {
 
     public List<String> getSubmitUsers() {
         return jobMapper.getSubmitUsers();
+    }
+    public List<Map> getAllJobIdAndName(List<Integer> statusList){
+        return jobMapper.getAllJobIdAndName(statusList);
     }
 
 }

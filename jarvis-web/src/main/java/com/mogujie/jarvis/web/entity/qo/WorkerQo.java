@@ -5,7 +5,7 @@ import com.mogujie.jarvis.dto.generate.Worker;
 /**
  * Created by hejian on 15/9/28.
  */
-public class WorkerQo extends Worker {
+public class WorkerQo {
     private Integer offset;
     private Integer limit;
 

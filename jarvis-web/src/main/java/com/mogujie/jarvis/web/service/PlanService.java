@@ -43,8 +43,8 @@ public class PlanService {
                 Map<String, Long> map = avgTimeMap.get(planVo.getJobId());
                 Long size = map.get("size");
                 Long avgTime = map.get("avgTime");
-                Long newSize=size+1;
-                Long newAvgTime=((avgTime*size)+planVo.getExecuteTime())/newSize;
+                Long newSize = size + 1;
+                Long newAvgTime = ((avgTime * size) + planVo.getExecuteTime()) / newSize;
                 map.put("size", newSize);
                 map.put("avgTime", newAvgTime);
             } else {
@@ -56,7 +56,7 @@ public class PlanService {
         }
 
         for (PlanVo planVo : planVoList) {
-            if(planVo.getStatus().equals(1)||planVo.getStatus().equals(2)||planVo.getStatus().equals(3)){
+            if (planVo.getStatus().equals(1) || planVo.getStatus().equals(2) || planVo.getStatus().equals(3)) {
                 planVo.setPredictExecuteTime(avgTimeMap.get(planVo.getJobId()).get("avgTime"));
             }
         }

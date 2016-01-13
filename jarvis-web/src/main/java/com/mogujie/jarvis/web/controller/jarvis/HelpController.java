@@ -14,7 +14,7 @@ public class HelpController extends BaseController {
 
     @RequestMapping
     @JarvisPassport(authTypes = JarvisAuthType.help)
-    public String index(){
+    public String index() {
         return "redirect:http://bda.mogujie.org/gitbooks/jarvis2/";
     }
 }

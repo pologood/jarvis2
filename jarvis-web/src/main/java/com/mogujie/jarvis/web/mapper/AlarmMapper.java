@@ -8,8 +8,5 @@ import java.util.List;
  * Created by hejian on 15/12/17.
  */
 public interface AlarmMapper {
-    List<AlarmVo> getAllAlarmsByJobId(Long jobId);
-
-    List<AlarmVo> getEnableAlarmsByJobId(Long jobId);
-
+    AlarmVo getAlarmByJobId(Long jobId);
 }

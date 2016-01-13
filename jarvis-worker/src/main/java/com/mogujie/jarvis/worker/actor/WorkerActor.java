@@ -154,6 +154,8 @@ public class WorkerActor extends UntypedActor {
             if (!response.getSuccess()) {
                 LOGGER.error("Worker register failed with group.id={}, worker.key={}", workerGroupId, workerKey);
                 return;
+            }else{
+                LOGGER.info("Worker register successful");
             }
         } catch (Exception e) {
             LOGGER.error("Worker register failed", e);

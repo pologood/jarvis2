@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.mogujie.jarvis.server.service.AppService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
@@ -45,6 +44,7 @@ import com.mogujie.jarvis.server.scheduler.event.ScheduleEvent;
 import com.mogujie.jarvis.server.scheduler.event.StartEvent;
 import com.mogujie.jarvis.server.scheduler.event.StopEvent;
 import com.mogujie.jarvis.server.scheduler.event.SuccessEvent;
+import com.mogujie.jarvis.server.service.AppService;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.TaskService;
 
@@ -163,6 +163,9 @@ public class TaskScheduler extends Scheduler {
             int attemptId = dagTask.getAttemptId();
             LOGGER.info("attemptId={}, failedRetries={}", attemptId, failedRetries);
             if (attemptId <= failedRetries) {
+                taskService.insertHistory(taskId);
+                LOGGER.info("insert task [taskId={},attemptId={}] to TaskHistory", taskId, attemptId);
+
                 attemptId++;
                 dagTask.setAttemptId(attemptId);
                 Task task = new Task();
@@ -274,7 +277,7 @@ public class TaskScheduler extends Scheduler {
     public void handleManulRerunTaskEvent(ManualRerunTaskEvent e) {
         List<Long> taskIdList = e.getTaskIdList();
         LOGGER.info("start handleRetryTaskEvent, taskIdList={}", taskIdList);
-        for (Long taskId : taskIdList) {
+        for (long taskId : taskIdList) {
             DAGTask dagTask = taskGraph.getTask(taskId);
             if (dagTask != null && dagTask.checkStatus()) {
                 LOGGER.info("{} pass status check", dagTask);
@@ -315,12 +318,21 @@ public class TaskScheduler extends Scheduler {
         TaskDetail taskDetail = null;
         long jobId = dagTask.getJobId();
         Job job = jobService.get(jobId).getJob();
-        taskDetail = TaskDetail.newTaskDetailBuilder().setFullId(fullId).setTaskName(job.getJobName())
+        taskDetail = TaskDetail.newTaskDetailBuilder()
+                .setFullId(fullId)
+                .setTaskName(job.getJobName())
                 .setAppName(appService.getAppNameByAppId(job.getAppId()))
-                .setUser(job.getSubmitUser()).setPriority(job.getPriority()).setContent(job.getContent()).setTaskType(job.getJobType())
-                .setParameters(JsonHelper.fromJson2JobParams(job.getParams())).setDataTime(new DateTime(dagTask.getDataTime()))
-                .setGroupId(job.getWorkerGroupId()).setFailedRetries(job.getFailedAttempts()).setFailedInterval(job.getFailedInterval())
-                .setExpiredTime(job.getExpiredTime()).build();
+                .setUser(job.getSubmitUser())
+                .setPriority(job.getPriority())
+                .setContent(job.getContent())
+                .setTaskType(job.getJobType())
+                .setParameters(JsonHelper.fromJson2JobParams(job.getParams()))
+                .setDataTime(new DateTime(dagTask.getDataTime()))
+                .setGroupId(job.getWorkerGroupId())
+                .setFailedRetries(job.getFailedAttempts())
+                .setFailedInterval(job.getFailedInterval())
+                .setExpiredTime(job.getExpiredTime())
+                .build();
         return taskDetail;
     }
 

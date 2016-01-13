@@ -14,6 +14,13 @@ import org.apache.commons.configuration.Configuration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import scala.concurrent.duration.Duration;
+import akka.actor.ActorRef;
+import akka.actor.ActorSelection;
+import akka.actor.ActorSystem;
+import akka.actor.DeadLetter;
+import akka.routing.SmallestMailboxPool;
+
 import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.core.util.ThreadUtils;
@@ -24,18 +31,13 @@ import com.mogujie.jarvis.worker.actor.WorkerActor;
 import com.mogujie.jarvis.worker.util.FutureUtils;
 import com.typesafe.config.Config;
 
-import akka.actor.ActorRef;
-import akka.actor.ActorSelection;
-import akka.actor.ActorSystem;
-import akka.actor.DeadLetter;
-import akka.routing.SmallestMailboxPool;
-import scala.concurrent.duration.Duration;
-
 public class JarvisWorker {
 
     private static final Logger LOGGER = LogManager.getLogger();
 
     public static void main(String[] args) {
+        LOGGER.info("Starting jarvis worker...");
+
         Config akkaConfig = ConfigUtils.getAkkaConfig("akka-worker.conf");
         ActorSystem system = ActorSystem.create(JarvisConstants.WORKER_AKKA_SYSTEM_NAME, akkaConfig);
 
@@ -80,7 +82,7 @@ public class JarvisWorker {
         system.scheduler().schedule(Duration.Zero(), Duration.create(heartBeatInterval, TimeUnit.SECONDS),
                 new HeartBeatThread(heartBeatActor, workerActor), system.dispatcher());
 
-        LOGGER.info("Starting jarvis worker...");
+        LOGGER.info("Jarvis worker started.");
     }
 
 }

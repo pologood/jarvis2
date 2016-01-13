@@ -127,10 +127,17 @@
 
     <div class="row top-buffer">
         <div class="col-md-12">
-            <div id="add">
+            <div id="toobar">
                 <a class="btn btn-primary" href="${contextPath}/job/addOrEdit" target="_blank">新增任务</a>
+
+                <i class="glyphicon glyphicon-ok text-success fa-lg"></i>启用
+                <i class="glyphicon glyphicon-remove text-danger fa-lg"></i>禁用
+                <i class="glyphicon glyphicon-calendar text-info fa-lg"></i>过期
+                <i class="glyphicon glyphicon-minus text-danger fa-lg"></i>删除
+                <i class="glyphicon glyphicon-pause text-warning fa-lg"></i>暂停
+
             </div>
-            <table id="content">
+            <table id="content" data-toolbar="#toobar">
 
             </table>
 
@@ -152,6 +159,7 @@
 </jsp:include>
 <script type="text/javascript">
     var user = '${user.uname}';
+    var appId='${app.appId}';
 </script>
 
 <script type="text/javascript" src="${contextPath}/assets/js/jarvis/job/job.js"></script>

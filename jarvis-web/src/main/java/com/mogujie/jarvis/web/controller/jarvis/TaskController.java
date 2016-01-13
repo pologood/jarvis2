@@ -50,10 +50,10 @@ public class TaskController extends BaseController {
         JobVo jobVo = jobService.getJobById(jobId);
 
         TaskQo taskQo = new TaskQo();
-        List<String> jobIdList=new ArrayList<String>();
+        List<String> jobIdList = new ArrayList<String>();
         jobIdList.add(jobId.toString());
         taskQo.setJobIdList(JsonHelper.toJson(jobIdList));
-        List<Integer> statusList=new ArrayList<Integer>();
+        List<Integer> statusList = new ArrayList<Integer>();
         statusList.add(4);
         taskQo.setTaskStatus(statusList);
         taskQo.setOrderField("executeEndTime");

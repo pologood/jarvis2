@@ -14,15 +14,15 @@ import org.apache.commons.configuration.Configuration;
 
 import com.mogujie.jarvis.core.domain.TaskDetail;
 
-import akka.actor.Status;
-
 public interface TaskStateStore {
 
     void init(Configuration conf);
 
     void write(TaskDetail taskDetail, int status);
 
-    Map<TaskDetail, Status> restore();
+    void delete(TaskDetail taskDetail);
+
+    Map<TaskDetail, Integer> restore();
 
     void close();
 }

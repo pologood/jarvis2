@@ -11,6 +11,8 @@ package com.mogujie.jarvis.server.scheduler.event;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.collect.Maps;
+
 /**
  * This Event handled by {@link com.mogujie.jarvis.server.scheduler.task.TaskScheduler}.
  * Sent by {@link com.mogujie.jarvis.server.scheduler.dag.DAGScheduler}.
@@ -30,9 +32,15 @@ public class AddTaskEvent extends DAGJobEvent {
      * @param dependTaskIdMap
      * @param scheduleTime
      */
-    public AddTaskEvent(long jobId, Map<Long, List<Long>> dependTaskIdMap, long scheduleTime) {
+    public AddTaskEvent(long jobId, long scheduleTime, Map<Long, List<Long>> dependTaskIdMap) {
         super(jobId);
         this.dependTaskIdMap = dependTaskIdMap;
+        this.scheduleTime = scheduleTime;
+    }
+
+    public AddTaskEvent(long jobId, long scheduleTime) {
+        super(jobId);
+        this.dependTaskIdMap = Maps.newHashMap();
         this.scheduleTime = scheduleTime;
     }
 

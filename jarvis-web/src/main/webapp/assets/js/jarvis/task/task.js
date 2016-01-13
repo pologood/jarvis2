@@ -13,15 +13,28 @@ $(function () {
         $("#jobType").select2({
             data: data,
             width: '100%',
-            tags:true
+            tags: true
         });
     });
     //select采用select2 实现
     $(".input-group select").select2({width: '100%'});
     $.ajaxSettings.async = false;
-    $.getJSON(contextPath + "/assets/json/taskStatus.json", function (data) {
+    $.getJSON(contextPath + "/api/task/getTaskStatus", function (data) {
         taskStatusJson = data;
-        $(data).each(function (index, content) {
+
+        var newData = new Array();
+        var all = {};
+        all["id"] = "all";
+        all["text"] = "全部";
+        newData.push(all);
+        $(data).each(function (i, c) {
+            var item = {};
+            item["id"] = c["id"];
+            item["text"] = c["text"];
+            newData.push(item);
+        });
+
+        $(newData).each(function (index, content) {
             var value = content.id;
             var text = content.text;
             var input = $("<input type='checkbox' name='taskStatus'/>");
@@ -173,7 +186,7 @@ function getQueryPara() {
     queryPara["jobIdList"] = JSON.stringify(jobIdList);
     queryPara["jobNameList"] = JSON.stringify(jobNameList);
     queryPara["jobTypeList"] = JSON.stringify(jobTypeList);
-    queryPara["executeUserList"] = JSON.stringify(executeUserList) ;
+    queryPara["executeUserList"] = JSON.stringify(executeUserList);
     queryPara["taskStatusArrStr"] = JSON.stringify(taskStatus);
 
     return queryPara;
@@ -285,12 +298,12 @@ var columns = [{
     switchable: false,
     visible: true,
     formatter: formatTimeInterval
-},{
+}, {
     field: 'status',
     title: '执行状态',
     switchable: true,
     formatter: taskStatusFormatter
-},  {
+}, {
     field: 'createTime',
     title: '执行创建时间',
     switchable: false,

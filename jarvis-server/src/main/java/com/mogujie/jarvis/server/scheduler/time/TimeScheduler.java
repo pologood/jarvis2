@@ -9,6 +9,8 @@
 package com.mogujie.jarvis.server.scheduler.time;
 
 /**
+ * Scheduler used to handle time based jobs.
+ *
  * @author guangming
  *
  */
@@ -105,13 +107,13 @@ public class TimeScheduler extends Scheduler {
         long jobId = entry.getJobId();
         DateTime dt = entry.getDateTime();
         Map<Long, List<Long>> dependTaskIdMap = entry.getDependTaskIdMap();
-        AddTaskEvent event = new AddTaskEvent(jobId, dependTaskIdMap, dt.getMillis());
+        AddTaskEvent event = new AddTaskEvent(jobId, dt.getMillis(), dependTaskIdMap);
         controller.notify(event);
         DAGJob dagJob = jobGraph.getDAGJob(jobId);
         // 如果是纯时间任务，自动计算下一次
         if (dagJob.getType().equals(DAGJobType.TIME)) {
             DateTime nextTime = PlanUtil.getScheduleTimeAfter(jobId, dt);
-            plan.addPlan(jobId, nextTime);
+            plan.addPlan(new TimePlanEntry(jobId, nextTime));
         }
     }
 }

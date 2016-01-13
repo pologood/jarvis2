@@ -131,7 +131,7 @@
                 <span><i class="fa fa-circle fa-2x" style="color: #111111"></i>终止</span>
                 <span><i class="fa fa-circle fa-2x" style="color: #ab279d"></i>删除</span>
             </div>
-            <table id="content">
+            <table id="content" data-toolbar="#toolBar">
 
             </table>
 

@@ -24,6 +24,7 @@ import com.mogujie.jarvis.dao.generate.TaskMapper;
 import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.dto.generate.TaskExample;
+import com.mogujie.jarvis.dto.generate.TaskHistory;
 
 /**
  * @author guangming
@@ -35,6 +36,9 @@ public class TaskService {
 
     @Inject
     private TaskDependService taskDependService;
+
+    @Inject
+    private TaskHistoryService taskHistoryService;
 
     @Inject
     private JobService jobService;
@@ -62,7 +66,7 @@ public class TaskService {
         record.setCreateTime(currentTime);
         record.setUpdateTime(currentTime);
         record.setScheduleTime(new Date(scheduleTime));
-        record.setDataTime(new Date(scheduleTime));
+        record.setDataTime(new Date(dataTime));
         record.setStatus(TaskStatus.WAITING.getValue());
         record.setProgress((float) 0);
         Job job = jobService.get(jobId).getJob();
@@ -125,6 +129,33 @@ public class TaskService {
         task.setExecuteEndTime(currentTime);
         task.setUpdateTime(currentTime);
         taskMapper.updateByPrimaryKeySelective(task);
+
+        insertHistory(taskId);
+    }
+
+    public void insertHistory(long taskId) {
+        Task task = taskMapper.selectByPrimaryKey(taskId);
+        TaskHistory history = new TaskHistory();
+        history.setTaskId(task.getTaskId());
+        history.setAttemptId(task.getAttemptId());
+        history.setJobId(task.getJobId());
+        history.setContent(task.getContent());
+        history.setParams(task.getParams());
+        history.setScheduleTime(task.getScheduleTime());
+        history.setDataTime(task.getDataTime());
+        history.setProgress(task.getProgress());
+        history.setType(task.getType());
+        history.setStatus(task.getStatus());
+        history.setFinishReason(task.getFinishReason());
+        history.setAppId(task.getAppId());
+        history.setWorkerId(task.getWorkerId());
+        history.setExecuteUser(task.getExecuteUser());
+        history.setExecuteStartTime(task.getExecuteStartTime());
+        history.setExecuteEndTime(task.getExecuteEndTime());
+        Date currentTime = DateTime.now().toDate();
+        history.setCreateTime(currentTime);
+        history.setUpdateTime(currentTime);
+        taskHistoryService.insertOrUpdate(history);
     }
 
     public List<Task> getTasksByStatusNotIn(List<Integer> statusList) {
@@ -166,7 +197,7 @@ public class TaskService {
     public Task getLastTask(long jobId, long scheduleTime, TaskType taskType) {
         TaskExample example = new TaskExample();
         example.createCriteria().andJobIdEqualTo(jobId)
-                .andScheduleTimeLessThanOrEqualTo(new DateTime(scheduleTime).toDate())
+                .andScheduleTimeLessThan(new DateTime(scheduleTime).toDate())
                 .andTypeEqualTo(taskType.getValue());
         example.setOrderByClause("scheduleTime desc");
         List<Task> taskList = taskMapper.selectByExample(example);
@@ -180,6 +211,7 @@ public class TaskService {
     public void deleteTaskAndRelation(long taskId) {
         taskMapper.deleteByPrimaryKey(taskId);
         taskDependService.remove(taskId);
+        taskHistoryService.deleteByTaskId(taskId);
     }
 
 }

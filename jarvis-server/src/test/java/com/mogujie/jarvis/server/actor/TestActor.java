@@ -18,26 +18,17 @@ import akka.actor.Props;
 import akka.actor.UntypedActor;
 import akka.testkit.JavaTestKit;
 
+import com.mogujie.jarvis.server.guice.Injectors;
+
 /**
  * @author guangming
- *
  */
-public class TestActor {
-    static class MyActor extends UntypedActor {
-        public void onReceive(Object o) throws Exception {
-            if (o.equals("hello")) {
-                getSender().tell("world", getSelf());
-            } else {
-                unhandled(o);
-            }
-        }
-    }
-
-    private static ActorSystem system;
+public class TestActor{
+    protected static ActorSystem system;
 
     @BeforeClass
     public static void setup() {
-        system = ActorSystem.create("mytest");
+        system = Injectors.getInjector().getInstance(ActorSystem.class);
     }
 
     @AfterClass
@@ -52,6 +43,17 @@ public class TestActor {
             ActorRef actorRef = system.actorOf(props);
             actorRef.tell("hello", getRef());
             expectMsgEquals("world");
+            //expectMsgClass(String.class);
         }};
+    }
+
+    static class MyActor extends UntypedActor {
+        public void onReceive(Object o) throws Exception {
+            if (o.equals("hello")) {
+                getSender().tell("world", getSelf());
+            } else {
+                unhandled(o);
+            }
+        }
     }
 }

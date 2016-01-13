@@ -28,14 +28,6 @@
             <div class="row top-buffer">
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%" >任务ID</span>
-                        <select id="jobId" multiple>
-
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">任务名称</span>
                         <select id="jobName" multiple>
                         </select>
@@ -61,8 +53,8 @@
             <div class="row top-buffer">
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">调度日期</span>
-                        <input type="text" id="scheduleTime" class="form-control"/>
+                        <span class="input-group-addon" style="width:35%">数据时间</span>
+                        <input type="text" id="dataTime" class="form-control" placeholder="日期请选择0点(00:00)"/>
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -110,7 +102,7 @@
                 <span><i class="fa fa-circle fa-2x" style="color: #ab279d"></i>删除</span>
             </div>
 
-            <table id="content" >
+            <table id="content" data-toolbar="#toolBar">
 
             </table>
 

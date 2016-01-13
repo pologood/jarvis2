@@ -12,6 +12,13 @@ $(function () {
         format: 'yyyy-mm-dd',
         autoclose: true
     });
+    $('#dataTime').datetimepicker({
+        language: 'zh-CN',
+        minView: 'hour',
+        format: 'yyyy-mm-dd hh:ii',
+        autoclose: true
+    });
+    initValidDate();
 
     //select采用select2 实现
     $("#originJobId").select2({
@@ -51,21 +58,25 @@ $(function () {
             buildTree(jobIds);
         }
     });
-
-
 });
 
-function buildTree(jobIds) {
+//初始化开始日期，优化体验
+function initValidDate() {
+    var today = moment((new Date()).getTime()).format("YYYY-MM-DD");
+    $("#startTime").val(today);
+}
 
+//创建子job的关系树
+function buildTree(jobIds) {
     $(jobIds).each(function (i, c) {
         var jobId = c;
-        var id = "jobId" + jobId
+        var id = "jobId" + jobId;
         var childrenTree = $('<div name="children" id="' + id + '"></div><hr/>');
         $("#reRunJobs").append(childrenTree);
 
 
         $.ajax({
-            url: contextPath + '/api/job/getTreeDependedONJob',
+            url: contextPath + '/api/job/getTreeDependedOnJob',
             data: {jobId: jobId},
             success: function (data) {
                 $("#" + id).jstree({
@@ -76,7 +87,7 @@ function buildTree(jobIds) {
                         "default": {"icon": "fa fa-users icon-green", "valid_children": []}
                     },
                     plugins: [
-                        'checkbox', 'types'
+                        'checkbox', 'types', 'unique'
                     ]
                 });
             }
@@ -85,20 +96,23 @@ function buildTree(jobIds) {
 
 }
 
+//重置所有数据
 function reset() {
     $("#originJobId").val({}).trigger("change");
     $("#startTime").val('');
     $("#endTime").val('');
+    $("#dataTime").val('');
     $("input[name=runChild]").removeAttr("checked");
     $("input[name=runChild][value=false]").click();
     $("#reRunJobs").removeAttr("checked");
 }
 
-
+//提交重跑job
 function submit() {
     var originJobId = $("#originJobId").val();
     var startTime = $("#startTime").val();
     var endTime = $("#endTime").val();
+    var dataTime = $("#dataTime").val();
     if (originJobId == null || originJobId == '') {
         new PNotify({
             title: '重跑任务',
@@ -114,6 +128,16 @@ function submit() {
         new PNotify({
             title: '重跑任务',
             text: "开始日期与结束日期必须填写",
+            type: 'warning',
+            icon: true,
+            styling: 'bootstrap3'
+        });
+        return;
+    }
+    if ('' == dataTime) {
+        new PNotify({
+            title: '重跑任务',
+            text: "请设置数据时间",
             type: 'warning',
             icon: true,
             styling: 'bootstrap3'
@@ -173,15 +197,16 @@ function submit() {
 
     var startDate = (new Date(startTime)).getTime();
     var endDate = (new Date(endTime)).getTime();
-    var data = {runChild: runChild, startDate: startDate, endDate: endDate, jobIdList: reRunJobs};
+    var data = {runChild: runChild, startDate: startDate, endDate: endDate, jobIdList: reRunJobs, dataTime: dataTime};
     requestRemoteRestApi("/api/task/rerun", "重跑任务", data);
 
 }
 
-
+//格式化结果
 function formatResult(result) {
     return result.text;
 }
+//格式化选择框
 function formatResultSelection(result) {
     return result.text;
 }

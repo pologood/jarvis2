@@ -2,8 +2,8 @@
  * 蘑菇街 Inc.
  * Copyright (c) 2010-2015 All Rights Reserved.
  *
- * Author: wuya
- * Create Date: 2015年11月5日 下午3:47:31
+ * Author: guangming
+ * Create Date: 2016年1月12日 下午4:23:40
  */
 
 package com.mogujie.jarvis.server.scheduler.time;
@@ -22,6 +22,12 @@ import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.PlanUtil;
 
+/**
+ * The next plan of time based jobs.
+ *
+ * @author guangming
+ *
+ */
 public enum TimePlan {
     INSTANCE;
 
@@ -33,12 +39,14 @@ public enum TimePlan {
         }
     };
 
+    // 优先级队列，通过调度时间由小到大排序
     private Queue<TimePlanEntry> plan = new PriorityQueue<>(comparator);
 
-    public synchronized boolean addPlan(long jobId, DateTime dateTime) {
-        return plan.add(new TimePlanEntry(jobId, dateTime));
-    }
-
+    /**
+     * add a plan
+     *
+     * @param entry
+     */
     public synchronized boolean addPlan(TimePlanEntry entry) {
         if (!plan.contains(entry)) {
             return plan.add(entry);
@@ -47,15 +55,30 @@ public enum TimePlan {
         }
     }
 
+    /**
+     * remove a plan
+     *
+     * @param entry
+     */
     public synchronized boolean removePlan(TimePlanEntry planEntry) {
         return plan.remove(planEntry);
     }
 
+    /**
+     * add job, add next plan of now
+     *
+     * @param jobId
+     */
     public synchronized void addJob(long jobId) {
         DateTime nextTime = PlanUtil.getScheduleTimeAfter(jobId, DateTime.now());
-        addPlan(jobId, nextTime);
+        plan.add(new TimePlanEntry(jobId, nextTime));
     }
 
+    /**
+     * recover job, add next plan of history
+     *
+     * @param jobId
+     */
     public synchronized void recoverJob(long jobId) {
         long scheduleTime = DateTime.now().getMillis();
         TaskService taskService = Injectors.getInjector().getInstance(TaskService.class);
@@ -64,9 +87,14 @@ public enum TimePlan {
             scheduleTime = lastone.getScheduleTime().getTime();
         }
         DateTime nextTime = PlanUtil.getScheduleTimeAfter(jobId, new DateTime(scheduleTime));
-        addPlan(jobId, nextTime);
+        plan.add(new TimePlanEntry(jobId, nextTime));
     }
 
+    /**
+     * remove job, remove all plan of this job
+     *
+     * @param jobId
+     */
     public synchronized void removeJob(long jobId) {
         Iterator<TimePlanEntry> it = plan.iterator();
         while (it.hasNext()) {
@@ -77,8 +105,19 @@ public enum TimePlan {
         }
     }
 
+    /**
+     * modify job flag
+     * 1) ENABLE->DISABLE|DELETED|PAUSE, remove job
+     * 2) PAUSE->ENABLE, recover job
+     * 3) DISABLE|DELETED->ENABLE, add job
+     *
+     * @param jobId
+     * @param oldStatus
+     * @param newStatus
+     */
     public synchronized void modifyJobFlag(long jobId, JobStatus oldStatus, JobStatus newStatus) {
-        if (newStatus.equals(JobStatus.DISABLE) || newStatus.equals(JobStatus.DELETED)) {
+        if (newStatus.equals(JobStatus.DISABLE) || newStatus.equals(JobStatus.DELETED)
+                || newStatus.equals(JobStatus.PAUSE)) {
             removeJob(jobId);
         } else if (newStatus.equals(JobStatus.ENABLE)) {
             if (oldStatus.equals(JobStatus.PAUSE)) {
