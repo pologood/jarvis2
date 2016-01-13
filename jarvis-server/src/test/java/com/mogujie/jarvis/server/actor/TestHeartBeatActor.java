@@ -38,7 +38,6 @@ public class TestHeartBeatActor  {
     public void testHeartBeat() {
     //todo 对于测试是local的模拟，但是实际通信heartbeat需要远程
         Config akkaConfig = ConfigUtils.getAkkaConfig("akka-worker.conf");
-        Configuration workerConfig = ConfigUtils.getWorkerConfig();
         system = ActorSystem.create(JarvisConstants.WORKER_AKKA_SYSTEM_NAME, akkaConfig);
         Props props = HeartBeatActor.props();
         new JavaTestKit(system) {
