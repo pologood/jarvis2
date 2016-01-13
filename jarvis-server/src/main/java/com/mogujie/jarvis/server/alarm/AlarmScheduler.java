@@ -12,10 +12,13 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
 import com.google.common.eventbus.Subscribe;
+import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.dto.generate.Alarm;
 import com.mogujie.jarvis.dto.generate.Job;
+import com.mogujie.jarvis.server.ServerConigKeys;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
 import com.mogujie.jarvis.server.scheduler.event.DAGTaskEvent;
@@ -34,9 +37,17 @@ public class AlarmScheduler extends Scheduler {
     private JobService jobService = Injectors.getInjector().getInstance(JobService.class);
     private AlarmService alarmService = Injectors.getInjector().getInstance(AlarmService.class);
 
-    private Alarmer alarmer = new DefaultAlarmer();
-
+    private static Alarmer alarmer = null;
     private static final Logger LOGGER = LogManager.getLogger();
+
+    static {
+        String alarmerClass = ConfigUtils.getServerConfig().getString(ServerConigKeys.ALARMER_CLASS);
+        try {
+            alarmer = (Alarmer) Class.forName(alarmerClass).newInstance();
+        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+            Throwables.propagate(e);
+        }
+    }
 
     @Override
     public void handleStartEvent(StartEvent event) {
@@ -59,6 +70,10 @@ public class AlarmScheduler extends Scheduler {
     }
 
     private void alarm(DAGTaskEvent event) {
+        if (alarmer == null) {
+            return;
+        }
+
         long jobId = event.getJobId();
         Job job = jobService.get(jobId).getJob();
         if (job != null) {

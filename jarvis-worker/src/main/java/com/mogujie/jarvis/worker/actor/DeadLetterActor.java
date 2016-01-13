@@ -21,27 +21,26 @@ import akka.actor.UntypedActor;
  */
 public class DeadLetterActor extends UntypedActor {
 
-  public static Props props() {
-    return Props.create(DeadLetterActor.class);
-  }
-
-  @Override
-  public void onReceive(Object obj) throws Exception {
-    if (obj instanceof DeadLetter) {
-      DeadLetter deadLetter = (DeadLetter) obj;
-      Object msg = deadLetter.message();
-      if (msg instanceof WorkerReportTaskStatusRequest) {
-        WorkerReportTaskStatusRequest status = (WorkerReportTaskStatusRequest) msg;
-
-        // 只对成功或者失败的状态进行重发
-        if (status.getStatus() == TaskStatus.SUCCESS.getValue()
-            || status.getStatus() == TaskStatus.FAILED.getValue()) {
-          getSender().tell(status, getSelf());
-          Thread.sleep(3000);
-        }
-      }
-    } else {
-      unhandled(obj);
+    public static Props props() {
+        return Props.create(DeadLetterActor.class);
     }
-  }
+
+    @Override
+    public void onReceive(Object obj) throws Exception {
+        if (obj instanceof DeadLetter) {
+            DeadLetter deadLetter = (DeadLetter) obj;
+            Object msg = deadLetter.message();
+            if (msg instanceof WorkerReportTaskStatusRequest) {
+                WorkerReportTaskStatusRequest status = (WorkerReportTaskStatusRequest) msg;
+
+                if (status.getStatus() == TaskStatus.SUCCESS.getValue() || status.getStatus() == TaskStatus.FAILED.getValue()
+                        || status.getStatus() == TaskStatus.KILLED.getValue()) {
+                    getSender().tell(status, getSelf());
+                    Thread.sleep(1000);
+                }
+            }
+        } else {
+            unhandled(obj);
+        }
+    }
 }
