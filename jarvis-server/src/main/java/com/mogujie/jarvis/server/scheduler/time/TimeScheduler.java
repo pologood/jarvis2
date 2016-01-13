@@ -21,6 +21,7 @@ import java.util.Queue;
 import org.joda.time.DateTime;
 
 import com.google.common.eventbus.Subscribe;
+import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
 import com.mogujie.jarvis.server.scheduler.dag.DAGJob;
@@ -30,6 +31,7 @@ import com.mogujie.jarvis.server.scheduler.event.AddPlanEvent;
 import com.mogujie.jarvis.server.scheduler.event.AddTaskEvent;
 import com.mogujie.jarvis.server.scheduler.event.StartEvent;
 import com.mogujie.jarvis.server.scheduler.event.StopEvent;
+import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.util.PlanUtil;
 
 public class TimeScheduler extends Scheduler {
@@ -110,10 +112,14 @@ public class TimeScheduler extends Scheduler {
         AddTaskEvent event = new AddTaskEvent(jobId, dt.getMillis(), dependTaskIdMap);
         controller.notify(event);
         DAGJob dagJob = jobGraph.getDAGJob(jobId);
-        // 如果是纯时间任务，自动计算下一次
+        // 如果是纯时间任务，并且不是临时任务，自动计算下一次
         if (dagJob.getType().equals(DAGJobType.TIME)) {
-            DateTime nextTime = PlanUtil.getScheduleTimeAfter(jobId, dt);
-            plan.addPlan(new TimePlanEntry(jobId, nextTime));
+            JobService jobService = Injectors.getInjector().getInstance(JobService.class);
+            boolean isTemp = jobService.get(jobId).getJob().getIsTemp();
+            if (!isTemp) {
+                DateTime nextTime = PlanUtil.getScheduleTimeAfter(jobId, dt);
+                plan.addPlan(new TimePlanEntry(jobId, nextTime));
+            }
         }
     }
 }
