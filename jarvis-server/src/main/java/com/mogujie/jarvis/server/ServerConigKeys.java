@@ -19,5 +19,6 @@ public interface ServerConigKeys {
     public static final String ALARM_SERVICE_URL = "alarm.service.url";
     public static final String WORKER_SELECTOR = "worker.selector";
     public static final String TASK_REJECT_INTERVAL = "task.reject.interval";
+    public static final String ALARMER_CLASS = "alarmer.class";
 
 }

@@ -31,7 +31,7 @@ public class LocalFileSystemStateStore implements TaskStateStore {
 
     @Override
     public void init(Configuration conf) {
-        File file = new File(conf.getString("local.filesystem.statestore.dir"));
+        File file = new File(conf.getString("local.filesystem.statestore.dir", System.getProperty("java.io.tmpdir") + "jarvis_state_store"));
         Options options = new Options();
         options.createIfMissing(true);
         try {
@@ -47,8 +47,23 @@ public class LocalFileSystemStateStore implements TaskStateStore {
     }
 
     @Override
-    public void delete(TaskDetail taskDetail) {
-        db.delete(KryoUtils.toBytes(taskDetail));
+    public void delete(String fullId) {
+        DBIterator iterator = db.iterator();
+        try {
+            for (iterator.seekToFirst(); iterator.hasNext(); iterator.next()) {
+                byte[] key = iterator.peekNext().getKey();
+                TaskDetail taskDetail = (TaskDetail) KryoUtils.toObject(key);
+                if (fullId.equals(taskDetail.getFullId())) {
+                    db.delete(key);
+                }
+            }
+        } finally {
+            try {
+                iterator.close();
+            } catch (IOException e) {
+                Throwables.propagate(e);
+            }
+        }
     }
 
     @Override

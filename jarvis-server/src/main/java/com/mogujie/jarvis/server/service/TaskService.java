@@ -15,6 +15,7 @@ import java.util.List;
 import org.joda.time.DateTime;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Range;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -189,7 +190,7 @@ public class TaskService {
         .andTypeEqualTo(taskType.getValue());
         List<Task> tasks = taskMapper.selectByExample(example);
         if (tasks == null) {
-            tasks = new ArrayList<>();
+            tasks = Lists.newArrayList();
         }
         return tasks;
     }

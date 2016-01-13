@@ -1,12 +1,12 @@
 package com.mogujie.jarvis.server.service;
 
-import java.util.List;
-
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.mogujie.jarvis.dao.generate.WorkerGroupMapper;
 import com.mogujie.jarvis.dto.generate.WorkerGroup;
 import com.mogujie.jarvis.dto.generate.WorkerGroupExample;
+
+import java.util.List;
 
 /**
  * @author muming
@@ -16,6 +16,14 @@ public class WorkerGroupService {
 
     @Inject
     private WorkerGroupMapper workerGroupMapper;
+
+    public WorkerGroupMapper getWorkerGroupMapper() {
+        return workerGroupMapper;
+    }
+
+    public void setWorkerGroupMapper(WorkerGroupMapper workerGroupMapper) {
+        this.workerGroupMapper = workerGroupMapper;
+    }
 
     public int update(WorkerGroup workerGroup) {
         return workerGroupMapper.updateByPrimaryKeySelective(workerGroup);

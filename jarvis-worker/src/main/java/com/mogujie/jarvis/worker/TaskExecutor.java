@@ -21,6 +21,8 @@ import com.mogujie.jarvis.core.exception.TaskException;
 import com.mogujie.jarvis.protocol.ReportTaskStatusProtos.WorkerReportTaskStatusRequest;
 import com.mogujie.jarvis.protocol.SubmitTaskProtos.WorkerSubmitTaskResponse;
 import com.mogujie.jarvis.worker.domain.TaskEntry;
+import com.mogujie.jarvis.worker.status.TaskStateStore;
+import com.mogujie.jarvis.worker.status.TaskStateStoreFactory;
 import com.mogujie.jarvis.worker.strategy.AcceptanceResult;
 import com.mogujie.jarvis.worker.strategy.AcceptanceStrategy;
 import com.mogujie.jarvis.worker.util.TaskConfigUtils;
@@ -92,6 +94,9 @@ public class TaskExecutor extends Thread {
                 serverActor.tell(WorkerReportTaskStatusRequest.newBuilder().setFullId(fullId).setStatus(TaskStatus.FAILED.getValue())
                         .setTimestamp(System.currentTimeMillis() / 1000).build(), selfActor);
             }
+
+            TaskStateStore taskStateStore = TaskStateStoreFactory.getInstance();
+            taskStateStore.delete(taskContext.getTaskDetail().getFullId());
 
             reporter.report(1);
             logCollector.collectStderr("", true);
