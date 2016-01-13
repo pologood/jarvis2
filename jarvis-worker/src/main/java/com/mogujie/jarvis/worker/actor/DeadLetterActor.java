@@ -10,6 +10,8 @@ package com.mogujie.jarvis.worker.actor;
 
 import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.protocol.ReportTaskStatusProtos.WorkerReportTaskStatusRequest;
+import com.mogujie.jarvis.worker.status.TaskStateStore;
+import com.mogujie.jarvis.worker.status.TaskStateStoreFactory;
 
 import akka.actor.DeadLetter;
 import akka.actor.Props;
@@ -36,6 +38,10 @@ public class DeadLetterActor extends UntypedActor {
                 if (status.getStatus() == TaskStatus.SUCCESS.getValue() || status.getStatus() == TaskStatus.FAILED.getValue()
                         || status.getStatus() == TaskStatus.KILLED.getValue()) {
                     getSender().tell(status, getSelf());
+
+                    TaskStateStore taskStateStore = TaskStateStoreFactory.getInstance();
+                    taskStateStore.delete(status.getFullId());
+
                     Thread.sleep(1000);
                 }
             }

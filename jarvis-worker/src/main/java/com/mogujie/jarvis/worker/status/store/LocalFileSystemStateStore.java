@@ -47,8 +47,23 @@ public class LocalFileSystemStateStore implements TaskStateStore {
     }
 
     @Override
-    public void delete(TaskDetail taskDetail) {
-        db.delete(KryoUtils.toBytes(taskDetail));
+    public void delete(String fullId) {
+        DBIterator iterator = db.iterator();
+        try {
+            for (iterator.seekToFirst(); iterator.hasNext(); iterator.next()) {
+                byte[] key = iterator.peekNext().getKey();
+                TaskDetail taskDetail = (TaskDetail) KryoUtils.toObject(key);
+                if (fullId.equals(taskDetail.getFullId())) {
+                    db.delete(key);
+                }
+            }
+        } finally {
+            try {
+                iterator.close();
+            } catch (IOException e) {
+                Throwables.propagate(e);
+            }
+        }
     }
 
     @Override

@@ -55,9 +55,9 @@ public class ZooKeeperStateStore implements TaskStateStore {
     }
 
     @Override
-    public void delete(TaskDetail taskDetail) {
+    public void delete(String fullId) {
         try {
-            client.delete().deletingChildrenIfNeeded().forPath("/" + taskDetail.getFullId());
+            client.delete().deletingChildrenIfNeeded().forPath("/" + fullId);
         } catch (Exception e) {
             LOGGER.error("", e);
         }
