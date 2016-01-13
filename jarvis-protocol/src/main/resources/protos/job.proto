@@ -8,7 +8,7 @@ option java_package = "com.mogujie.jarvis.protocol";
 
 option java_outer_classname = "JobProtos";
 
-//1.submitJob
+//submitJob
 message RestSubmitJobRequest {
     required AppAuth app_auth = 1;
     required string user = 2;
@@ -35,7 +35,7 @@ message ServerSubmitJobResponse {
     optional string message = 3 [default = ""];
 }
 
-//2.modifyJob
+//modifyJob
 message RestModifyJobRequest {
     required AppAuth app_auth = 1;
     required string user = 2;
@@ -52,8 +52,6 @@ message RestModifyJobRequest {
     optional int32 expired_time = 13;
     optional int32 failed_attempts = 14;
     optional int32 failed_interval = 15;
-    repeated ScheduleExpressionEntry expression_entry = 16;
-    repeated DependencyEntry dependency_entry = 17;
 }
 
 message ServerModifyJobResponse {
@@ -61,8 +59,33 @@ message ServerModifyJobResponse {
     optional string message = 2 [default = ""];
 }
 
+//modifyJobDependency
+message RestModifyJobDependRequest {
+    required AppAuth app_auth = 1;
+    required string user = 2;
+    required int64 job_id = 3;
+    repeated DependencyEntry dependency_entry = 4;
+}
 
-//3.modifyJobStatus
+message ServerModifyJobDependResponse {
+    required bool success = 1;
+    optional string message = 2 [default = ""];
+}
+
+//modifyJobScheduleExpression
+message RestModifyJobScheduleExpRequest {
+    required AppAuth app_auth = 1;
+    required string user = 2;
+    required int64 job_id = 3;
+    repeated ScheduleExpressionEntry expression_entry = 16;
+}
+
+message ServerModifyJobScheduleExpResponse {
+    required bool success = 1;
+    optional string message = 2 [default = ""];
+}
+
+//modifyJobStatus
 message RestModifyJobStatusRequest {
     required AppAuth app_auth = 1;
     required string user = 2;
@@ -75,7 +98,7 @@ message ServerModifyJobStatusResponse {
     optional string message = 2 [default = ""];
 }
 
-//4.queryJobRelation
+//queryJobRelation
 message JobStatusEntry {
     required int64 job_id = 1;
     required int32 status = 2;
@@ -90,6 +113,38 @@ message RestQueryJobRelationRequest {
 
 message ServerQueryJobRelationResponse {
     repeated JobStatusEntry job_status_entry = 1;
+    required bool success = 2;
+    optional string message = 3 [default = ""];
+}
+
+message jobEntry {
+    required int64 job_id = 1;
+    required string job_name = 2;
+    required string job_type = 3;
+    required int32 status = 4;
+    required string content = 5;
+    required string parameters = 6;
+    required string app_name = 7;
+    required int32 worker_group_id = 8;
+    required int32 priority = 9;
+    required int64 active_start_time = 10;
+    required int64 active_end_time = 11;
+    required int32 expired_time = 12;
+    required int32 failed_attempts = 13;
+    required int32 failed_interval = 14;
+    repeated ScheduleExpressionEntry expression_list = 15;
+    repeated DependencyEntry dependency_list = 16;
+}
+
+//查询job
+message RestQueryJobRequest {
+    required AppAuth app_auth = 1;
+    required string user = 2;
+    required int64 job_id = 3;
+}
+
+message ServerQueryJobResponse {
+    repeated jobEntry list = 1;
     required bool success = 2;
     optional string message = 3 [default = ""];
 }

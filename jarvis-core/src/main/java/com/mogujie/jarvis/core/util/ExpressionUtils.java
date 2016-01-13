@@ -7,15 +7,32 @@
  */
 package com.mogujie.jarvis.core.util;
 
-import com.google.common.base.Throwables;
+import com.google.common.base.Preconditions;
+import com.mogujie.jarvis.core.expression.*;
 
 public class ExpressionUtils {
 
-    public static void sleep(long ms) {
-        try {
-            Thread.sleep(ms);
-        } catch (InterruptedException e) {
-            Throwables.propagate(e);
+    public static  void checkExpression(Integer expressionType, String expressionStr)
+            throws IllegalArgumentException{
+
+        Preconditions.checkArgument(expressionType != null, "scheduleExpressionType不能为空");
+        Preconditions.checkArgument(expressionStr != null, "scheduleExpression表达式不能为空");
+
+        Preconditions.checkArgument(ScheduleExpressionType.isValid(expressionType),
+                "scheduleExpressionType不对。type:" + expressionType);
+
+        ScheduleExpression scheduleExpression = null;
+        if (expressionType == ScheduleExpressionType.CRON.getValue()) {
+            scheduleExpression = new CronExpression(expressionStr);
+        } else if (expressionType == ScheduleExpressionType.FIXED_RATE.getValue()) {
+            scheduleExpression = new FixedRateExpression(expressionStr);
+        } else if (expressionType == ScheduleExpressionType.FIXED_DELAY.getValue()) {
+            scheduleExpression = new FixedDelayExpression(expressionStr);
+        } else if (expressionType == ScheduleExpressionType.ISO8601.getValue()) {
+            scheduleExpression = new ISO8601Expression(expressionStr);
         }
+
+        Preconditions.checkArgument(scheduleExpression.isValid(), "scheduleExpression表达式不对 exp:" + expressionStr);
+
     }
 }

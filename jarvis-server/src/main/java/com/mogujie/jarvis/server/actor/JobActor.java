@@ -14,7 +14,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
+
 import org.mybatis.guice.transactional.Transactional;
 
 import akka.actor.Props;
@@ -34,10 +37,8 @@ import com.mogujie.jarvis.core.expression.ISO8601Expression;
 import com.mogujie.jarvis.core.expression.ScheduleExpression;
 import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.dto.generate.JobDepend;
-import com.mogujie.jarvis.dto.generate.JobDependKey;
 import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.server.domain.ActorEntry;
-import com.mogujie.jarvis.server.domain.JobEntry;
 import com.mogujie.jarvis.server.domain.ModifyDependEntry;
 import com.mogujie.jarvis.server.domain.RemoveJobRequest;
 import com.mogujie.jarvis.server.guice.Injectors;
@@ -82,6 +83,8 @@ public class JobActor extends UntypedActor {
         return Props.create(JobActor.class);
     }
 
+    private Logger logger = LogManager.getLogger();
+
     /**
      * 处理消息
      *
@@ -91,6 +94,8 @@ public class JobActor extends UntypedActor {
         List<ActorEntry> list = new ArrayList<>();
         list.add(new ActorEntry(RestSubmitJobRequest.class, ServerSubmitJobResponse.class, MessageType.GENERAL));
         list.add(new ActorEntry(RestModifyJobRequest.class, ServerModifyJobResponse.class, MessageType.GENERAL));
+        list.add(new ActorEntry(RestModifyJobDependRequest.class, ServerModifyJobDependResponse.class, MessageType.GENERAL));
+        list.add(new ActorEntry(RestModifyJobScheduleExpRequest.class, ServerModifyJobScheduleExpResponse.class, MessageType.GENERAL));
         list.add(new ActorEntry(RestModifyJobStatusRequest.class, ServerModifyJobStatusResponse.class, MessageType.GENERAL));
         list.add(new ActorEntry(RestQueryJobRelationRequest.class, ServerQueryJobRelationResponse.class, MessageType.GENERAL));
         return list;
@@ -102,6 +107,10 @@ public class JobActor extends UntypedActor {
             submitJob((RestSubmitJobRequest) obj);
         } else if (obj instanceof RestModifyJobRequest) {
             modifyJob((RestModifyJobRequest) obj);
+        } else if (obj instanceof RestModifyJobDependRequest) {
+            modifyJobDependency((RestModifyJobDependRequest) obj);
+        } else if (obj instanceof RestModifyJobScheduleExpRequest) {
+            modifyJobScheduleExp((RestModifyJobScheduleExpRequest) obj);
         } else if (obj instanceof RestModifyJobStatusRequest) {
             modifyJobStatus((RestModifyJobStatusRequest) obj);
         } else if (obj instanceof RestQueryJobRelationRequest) {
@@ -127,6 +136,9 @@ public class JobActor extends UntypedActor {
         ServerSubmitJobResponse response;
         long jobId = 0;
         try {
+
+            DateTime now = DateTime.now();
+
             // 参数检查
             Job job = convertValidService.convertCheck2Job(msg);
 
@@ -145,7 +157,7 @@ public class JobActor extends UntypedActor {
             Set<Long> needDependencies = Sets.newHashSet();
             for (DependencyEntry entry : msg.getDependencyEntryList()) {
                 needDependencies.add(entry.getJobId());
-                JobDepend jobDepend = convertValidService.convert2JobDepend(jobId, entry, msg.getUser());
+                JobDepend jobDepend = convertValidService.convert2JobDepend(jobId, entry, msg.getUser(), now);
                 jobService.insertJobDepend(jobDepend);
             }
 
@@ -179,6 +191,11 @@ public class JobActor extends UntypedActor {
             removeJob(removeJobRequest);
             response = ServerSubmitJobResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
             getSender().tell(response, getSelf());
+            logger.error("", e);
+            throw e;
+
+
+
         }
     }
 
@@ -196,7 +213,7 @@ public class JobActor extends UntypedActor {
             // 参数检查
             Job job = convertValidService.convertCheck2Job(msg);
 
-            // 1. update job to DB
+            // update job to DB
             jobService.updateJob(job);
 
             response = ServerModifyJobResponse.newBuilder().setSuccess(true).build();
@@ -204,6 +221,8 @@ public class JobActor extends UntypedActor {
         } catch (Exception e) {
             response = ServerModifyJobResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
             getSender().tell(response, getSelf());
+            logger.error("", e);
+            throw e;
         }
     }
 
@@ -248,6 +267,8 @@ public class JobActor extends UntypedActor {
         } catch (Exception e) {
             response = ServerModifyJobDependResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
             getSender().tell(response, getSelf());
+            logger.error("", e);
+            throw e;
         }
     }
 
@@ -312,12 +333,14 @@ public class JobActor extends UntypedActor {
         } catch (Exception e) {
             response = ServerModifyJobScheduleExpResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
             getSender().tell(response, getSelf());
+            logger.error("", e);
+            throw e;
         }
     }
 
 
     /**
-     * 修改任务
+     * 修改任务状态
      *
      * @param msg
      * @throws IOException
@@ -344,6 +367,8 @@ public class JobActor extends UntypedActor {
         } catch (Exception e) {
             response = ServerModifyJobStatusResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
             getSender().tell(response, getSelf());
+            logger.error("", e);
+            throw e;
         }
     }
 
@@ -380,6 +405,8 @@ public class JobActor extends UntypedActor {
         } catch (Exception e) {
             response = ServerQueryJobRelationResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
             getSender().tell(response, getSelf());
+
+            logger.error("", e);
             throw e;
         }
 
