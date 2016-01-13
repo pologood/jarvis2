@@ -289,7 +289,7 @@ public enum JobGraph {
                     LOGGER.info("{} pass the dependency check", dagJob);
                     // 提交给TimeScheduler进行时间调度
                     Map<Long, List<Long>> dependTaskIdMap = dagJob.getDependTaskIdMap(planScheduleTime);
-                    AddPlanEvent event = new AddPlanEvent(jobId, scheduleTime, dependTaskIdMap);
+                    AddPlanEvent event = new AddPlanEvent(jobId, planScheduleTime, dependTaskIdMap);
                     controller.notify(event);
                 }
             }
