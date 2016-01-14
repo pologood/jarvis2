@@ -140,7 +140,7 @@ public class JobActor extends UntypedActor {
             DateTime now = DateTime.now();
 
             // 参数检查
-            Job job = convertValidService.convertCheck2Job(msg);
+            Job job = convertValidService.convert2JobByCheck(msg);
 
             // 1. insert job to DB
             jobId = jobService.insertJob(job);
@@ -211,7 +211,7 @@ public class JobActor extends UntypedActor {
         ServerModifyJobResponse response;
         try {
             // 参数检查
-            Job job = convertValidService.convertCheck2Job(msg);
+            Job job = convertValidService.convert2JobByCheck(msg);
 
             // update job to DB
             jobService.updateJob(job);
@@ -238,7 +238,7 @@ public class JobActor extends UntypedActor {
         ServerModifyJobDependResponse response;
         try {
             // 参数检查
-            convertValidService.Check2JobDependency(msg);
+            convertValidService.CheckJobDependency(msg);
 
             List<ModifyDependEntry> dependEntries = new ArrayList<>();
             long jobId = msg.getJobId();
@@ -286,7 +286,7 @@ public class JobActor extends UntypedActor {
         try {
 
             // 参数检查
-            convertValidService.Check2JobScheculeExp(msg);
+            convertValidService.Check2JobScheduleExp(msg);
 
             List<ScheduleExpressionEntry> expressionEntries = msg.getExpressionEntryList();
 
@@ -352,7 +352,7 @@ public class JobActor extends UntypedActor {
         try {
             long jobId = msg.getJobId();
             // 参数检查
-            Job job = convertValidService.convertCheck2Job(msg);
+            Job job = convertValidService.convert2JobByCheck(msg);
 
             // 1. update job to DB
             JobStatus oldStatus = JobStatus.parseValue(jobService.get(jobId).getJob().getStatus());
