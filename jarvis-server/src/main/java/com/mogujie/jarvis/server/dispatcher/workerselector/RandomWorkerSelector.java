@@ -9,7 +9,7 @@
 package com.mogujie.jarvis.server.dispatcher.workerselector;
 
 import java.util.List;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 import com.mogujie.jarvis.core.domain.WorkerInfo;
 import com.mogujie.jarvis.server.guice.Injectors;
@@ -20,17 +20,13 @@ import com.mogujie.jarvis.server.service.HeartBeatService;
  */
 public class RandomWorkerSelector implements WorkerSelector {
 
-    private Random random = new Random();
     private HeartBeatService heartBeatService = Injectors.getInjector().getInstance(HeartBeatService.class);
 
     @Override
     public WorkerInfo select(int workerGroupId) {
         List<WorkerInfo> workers = heartBeatService.getWorkers(workerGroupId);
         if (workers != null && workers.size() > 0) {
-            int min = 0;
-            int max = workers.size();
-            int index = random.nextInt(max) % (max - min + 1) + min;
-            return workers.get(index);
+            return workers.get(ThreadLocalRandom.current().nextInt(0, workers.size()));
         }
 
         return null;
