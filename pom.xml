@@ -15,6 +15,7 @@
 		<log4j.version>2.5</log4j.version>
 		<akka.version>2.4.1</akka.version>
 		<guice.version>4.0</guice.version>
+		<metrics.version>3.1.2</metrics.version>
 	</properties>
 
 	<dependencies>
