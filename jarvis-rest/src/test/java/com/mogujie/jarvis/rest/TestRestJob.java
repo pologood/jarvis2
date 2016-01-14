@@ -24,20 +24,17 @@ public class TestRestJob {
     private String baseUrl = "http://127.0.0.1:8080";
 //    private String baseUrl = "http://10.11.129.54:8080";
 
-    @Test
     public void testJobSubmit() throws UnirestException {
         Long jobId = jobSubmit();
 
     }
 
-    @Test
     public void testJobScheduleSet() throws UnirestException{
 //        Long jobId = jobSubmit();
         Long jobId = 299L;
         jobScheduleExpSet(jobId);
     }
 
-    @Test
     public void testJobDependencySet() throws UnirestException{
         Long jobId = jobSubmit();
         jobDependencySet(jobId);

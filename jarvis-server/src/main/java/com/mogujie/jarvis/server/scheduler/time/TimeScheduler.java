@@ -106,15 +106,21 @@ public class TimeScheduler extends Scheduler {
     }
 
     private void submitJob(TimePlanEntry entry) {
+        JobService jobService = Injectors.getInjector().getInstance(JobService.class);
         long jobId = entry.getJobId();
         DateTime dt = entry.getDateTime();
         Map<Long, List<Long>> dependTaskIdMap = entry.getDependTaskIdMap();
-        AddTaskEvent event = new AddTaskEvent(jobId, dt.getMillis(), dependTaskIdMap);
-        controller.notify(event);
-        DAGJob dagJob = jobGraph.getDAGJob(jobId);
+        int expiredTime = jobService.get(jobId).getJob().getExpiredTime();
+        DateTime expiredDateTime = dt.plusSeconds(expiredTime);
+        // 如果该任务没有过期，提交Task给TaskScheduler
+        if (expiredDateTime.isAfter(DateTime.now())) {
+            AddTaskEvent event = new AddTaskEvent(jobId, dt.getMillis(), dependTaskIdMap);
+            controller.notify(event);
+        }
+
         // 如果是纯时间任务，并且不是临时任务，自动计算下一次
-        if (dagJob.getType().equals(DAGJobType.TIME)) {
-            JobService jobService = Injectors.getInjector().getInstance(JobService.class);
+        DAGJob dagJob = jobGraph.getDAGJob(jobId);
+        if (dagJob.getType().equals(DAGJobType.TIME) && jobService.isActive(jobId)) {
             boolean isTemp = jobService.get(jobId).getJob().getIsTemp();
             if (!isTemp) {
                 DateTime nextTime = PlanUtil.getScheduleTimeAfter(jobId, dt);
