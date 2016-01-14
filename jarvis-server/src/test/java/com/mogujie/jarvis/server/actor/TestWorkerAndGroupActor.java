@@ -1,22 +1,24 @@
 package com.mogujie.jarvis.server.actor;
 
-import akka.actor.ActorRef;
-import akka.actor.ActorSystem;
-import akka.actor.Props;
-import akka.actor.UntypedActor;
+import akka.actor.*;
+import akka.remote.RemoteScope;
 import akka.testkit.JavaTestKit;
+import com.mogujie.jarvis.core.domain.MessageType;
+import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.dto.generate.Worker;
-import com.mogujie.jarvis.protocol.AppAuthProtos;
-import com.mogujie.jarvis.protocol.ModifyWorkerStatusProtos;
-import com.mogujie.jarvis.protocol.RegistryWorkerProtos;
-import com.mogujie.jarvis.protocol.WorkerGroupProtos;
+import com.mogujie.jarvis.dto.generate.WorkerGroup;
+import com.mogujie.jarvis.protocol.*;
 import com.mogujie.jarvis.protocol.WorkerGroupProtos.RestServerModifyWorkerGroupRequest;
+import com.mogujie.jarvis.server.WorkerRegistry;
+import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.util.AppTokenUtils;
+import com.typesafe.config.Config;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.core.classloader.annotations.SuppressStaticInitializationFor;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -25,7 +27,7 @@ import java.util.Date;
 import java.util.List;
 
 import static org.mockito.Matchers.any;
-import static org.powermock.api.mockito.PowerMockito.when;
+import static org.powermock.api.mockito.PowerMockito.*;
 
 /**
  * Location www.mogujie.com
@@ -33,50 +35,18 @@ import static org.powermock.api.mockito.PowerMockito.when;
  * used by jarvis-parent
  */
 @RunWith(PowerMockRunner.class)
+@PrepareForTest(ActorPath.class)
 @SuppressStaticInitializationFor("com.mogujie.jarvis.server.guice.Injectors")
 public class TestWorkerAndGroupActor extends TestWorkerServiceBase {
     static ActorSystem system = ActorSystem.create("myActor");
     String authKey = AppTokenUtils.generateToken(new Date().getTime(), "workerRegistry");
     AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName("a").setToken(authKey).build();
 
-
-//    @Test
-//    public void testWorkerRegisterActor() {
-// HeartBeatProtos.HeartBeatResponse response = HeartBeatProtos.HeartBeatResponse.newBuilder().setSuccess(false).build();
-
-//        when(injector.getInstance(WorkerRegistry.class)).thenReturn(workerRegistry);
-//        List<WorkerGroup> workerGroups = new ArrayList<WorkerGroup>();
-//        WorkerGroup workerGroup = new WorkerGroup();
-//        workerGroup.setId(1);
-//        workerGroups.add(workerGroup);
-//        Address address = new Address("akka", "myActor", "127.0.0.1", 10000);
-//
-//
-//        try {
-//            when(workerGroupMapper, "selectByExample", any()).thenReturn(workerGroups);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        RegistryWorkerProtos.WorkerRegistryRequest workerRegistryRequest = RegistryWorkerProtos.WorkerRegistryRequest.newBuilder().setKey(authKey).build();
-//        new JavaTestKit(system) {{
-//
-//            Props props = WorkerRegistryActor.props().withDeploy(new Deploy(new RemoteScope(address)));
-//            ActorRef serverActor = system.actorOf(props, "register");
-//            Props propsTell = Props.create(MessageTeller.class);
-//            ActorRef actorRef = system.actorOf(propsTell);
-//            // system.actorOf(props, "register");
-//            serverActor.tell(workerRegistryRequest, getRef());
-//
-//            expectMsgEquals(RegistryWorkerProtos.ServerRegistryResponse.class);
-//
-//
-//        }};
-//    }
-
     @AfterClass
     public static void tearDown() {
         JavaTestKit.shutdownActorSystem(system);
     }
+
 
     @Before
     public void ready() {
@@ -150,31 +120,7 @@ public class TestWorkerAndGroupActor extends TestWorkerServiceBase {
         }};
     }
 
-    static class MessageTeller extends UntypedActor implements Runnable {
-        ActorSystem system = ActorSystem.create("newActor");
-        Props props = WorkerRegistryActor.props();
-        ActorRef actorRef = system.actorOf(props);
-        transient int flag = 1;
 
-        @Override
-        public void run() {
-            if (flag != 1) {
-                System.out.println("thread stop");
-                Thread.currentThread().stop();
-            }
-        }
-
-        @Override
-        public void onReceive(Object message) throws Exception {
-            if (message instanceof RegistryWorkerProtos.WorkerRegistryRequest) {
-                actorRef.tell(message, getSender());
-            } else if (message instanceof RegistryWorkerProtos.ServerRegistryResponse) {
-                flag++;
-                System.out.println("message receive");
-                getSender().tell(message, getSender());
-            } else unhandled(message);
-        }
-    }
 
 
 }

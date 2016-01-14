@@ -1,4 +1,4 @@
-package com.mogujie.jarvis.worker;
+package com.mogujie.jarvis.worker.actor;
 
 import org.junit.Test;
 
