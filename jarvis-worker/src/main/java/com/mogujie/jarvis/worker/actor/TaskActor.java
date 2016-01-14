@@ -19,6 +19,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 
+import akka.actor.ActorSelection;
+import akka.actor.Props;
+import akka.actor.UntypedActor;
+
 import com.google.common.collect.Queues;
 import com.mogujie.jarvis.core.AbstractLogCollector;
 import com.mogujie.jarvis.core.AbstractTask;
@@ -46,10 +50,6 @@ import com.mogujie.jarvis.worker.WorkerConfigKeys;
 import com.mogujie.jarvis.worker.status.TaskStateStore;
 import com.mogujie.jarvis.worker.status.TaskStateStoreFactory;
 import com.mogujie.jarvis.worker.util.FutureUtils;
-
-import akka.actor.ActorSelection;
-import akka.actor.Props;
-import akka.actor.UntypedActor;
 
 public class TaskActor extends UntypedActor {
 
@@ -95,13 +95,13 @@ public class TaskActor extends UntypedActor {
 
     private void submitTask(ServerSubmitTaskRequest request) {
         String fullId = request.getFullId();
-        String taskType = request.getTaskType();
+        String jobType = request.getJobType();
         TaskDetailBuilder taskBuilder = TaskDetail.newTaskDetailBuilder();
         taskBuilder.setFullId(fullId);
         taskBuilder.setTaskName(request.getTaskName());
         taskBuilder.setAppName(request.getAppName());
         taskBuilder.setUser(request.getUser());
-        taskBuilder.setTaskType(taskType);
+        taskBuilder.setJobType(jobType);
         taskBuilder.setContent(request.getContent());
         taskBuilder.setPriority(request.getPriority());
         taskBuilder.setDataTime(new DateTime(request.getDataTime()));

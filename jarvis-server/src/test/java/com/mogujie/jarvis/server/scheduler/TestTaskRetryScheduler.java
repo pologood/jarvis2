@@ -44,7 +44,7 @@ public class TestTaskRetryScheduler {
         builder.setParameters(Maps.newHashMap());
         builder.setPriority(5);
         builder.setTaskName("testTask");
-        builder.setTaskType("shell");
+        builder.setJobType("shell");
         builder.setUser("user");
         taskDetail = builder.build();
     }

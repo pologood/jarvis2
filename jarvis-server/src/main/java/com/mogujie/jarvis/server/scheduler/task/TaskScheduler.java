@@ -110,13 +110,14 @@ public class TaskScheduler extends Scheduler {
                     submitTask(childTask);
                 }
             }
-        } else {
-            // 如果是正常调度，交给DAGScheduler触发后续任务
-            if (taskType.equals(TaskType.SCHEDULE)) {
-                // JobGraph trigger
-                ScheduleEvent event = new ScheduleEvent(jobId, taskId, scheduleTime);
-                getSchedulerController().notify(event);
-            }
+        }
+
+        // 如果是正常调度，交给DAGScheduler触发后续任务
+        if (taskType.equals(TaskType.SCHEDULE)) {
+            // JobGraph trigger
+            LOGGER.debug("[taskId={}, taskType=SCHEDULE], notify ScheduleEvent to DAGScheudler", taskId);
+            ScheduleEvent event = new ScheduleEvent(jobId, taskId, scheduleTime);
+            getSchedulerController().notify(event);
         }
 
         // remove from taskGraph
@@ -318,7 +319,7 @@ public class TaskScheduler extends Scheduler {
                 .setUser(job.getSubmitUser())
                 .setPriority(job.getPriority())
                 .setContent(job.getContent())
-                .setTaskType(job.getJobType())
+                .setJobType(job.getJobType())
                 .setParameters(JsonHelper.fromJson2JobParams(job.getParams()))
                 .setDataTime(new DateTime(dagTask.getDataTime()))
                 .setGroupId(job.getWorkerGroupId())
@@ -332,7 +333,9 @@ public class TaskScheduler extends Scheduler {
     private void reduceTaskNum(long taskId) {
         Task task = taskService.get(taskId);
         if (task != null) {
-            taskManager.appCounterDecrement(task.getAppId());
+            int appId = task.getAppId();
+            taskManager.appCounterDecrement(appId);
+            LOGGER.info("reduce task num, appId={}", appId);
         }
     }
 

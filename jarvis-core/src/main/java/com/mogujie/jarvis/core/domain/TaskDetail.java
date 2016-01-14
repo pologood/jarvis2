@@ -19,7 +19,7 @@ public class TaskDetail {
     private String taskName;
     private String appName;
     private String user;
-    private String taskType;
+    private String jobType;
     private String content;
     private int priority;
     private int groupId;
@@ -48,8 +48,8 @@ public class TaskDetail {
         return user;
     }
 
-    public String getTaskType() {
-        return taskType;
+    public String getJobType() {
+        return jobType;
     }
 
     public String getContent() {
@@ -86,7 +86,7 @@ public class TaskDetail {
 
     @Override
     public int hashCode() {
-        return Objects.hash(fullId, taskName, appName, user, taskType, content, priority, groupId, parameters, expiredTime, dataTime, failedRetries,
+        return Objects.hash(fullId, taskName, appName, user, jobType, content, priority, groupId, parameters, expiredTime, dataTime, failedRetries,
                 failedInterval);
     }
 
@@ -99,7 +99,7 @@ public class TaskDetail {
         if (obj instanceof TaskDetail) {
             TaskDetail other = (TaskDetail) obj;
             return Objects.equals(fullId, other.fullId) && Objects.equals(taskName, other.taskName) && Objects.equals(appName, other.appName)
-                    && Objects.equals(user, other.user) && Objects.equals(taskType, other.taskType) && Objects.equals(content, other.content)
+                    && Objects.equals(user, other.user) && Objects.equals(jobType, other.jobType) && Objects.equals(content, other.content)
                     && Objects.equals(priority, other.priority) && Objects.equals(groupId, other.groupId)
                     && Objects.equals(parameters, other.parameters) && Objects.equals(expiredTime, other.expiredTime)
                     && Objects.equals(dataTime, other.dataTime) && Objects.equals(failedRetries, other.failedRetries)
@@ -141,8 +141,8 @@ public class TaskDetail {
             return this;
         }
 
-        public TaskDetailBuilder setTaskType(String taskType) {
-            this.task.taskType = taskType;
+        public TaskDetailBuilder setJobType(String jobType) {
+            this.task.jobType = jobType;
             return this;
         }
 

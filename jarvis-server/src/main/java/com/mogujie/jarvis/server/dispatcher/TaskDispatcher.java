@@ -13,6 +13,9 @@ import java.util.Map.Entry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import akka.actor.ActorSelection;
+import akka.actor.ActorSystem;
+
 import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.domain.WorkerInfo;
 import com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry;
@@ -24,9 +27,6 @@ import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.TaskRetryScheduler;
 import com.mogujie.jarvis.server.service.AppService;
 import com.mogujie.jarvis.server.util.FutureUtils;
-
-import akka.actor.ActorSelection;
-import akka.actor.ActorSystem;
 
 /**
  * Take task from task queue then dispatch it to selected worker
@@ -80,7 +80,7 @@ public class TaskDispatcher extends Thread {
                     builder = builder.setTaskName(task.getTaskName());
                     builder = builder.setAppName(task.getAppName());
                     builder = builder.setUser(task.getUser());
-                    builder = builder.setTaskType(task.getTaskType());
+                    builder = builder.setJobType(task.getJobType());
                     builder = builder.setContent(task.getContent());
                     builder = builder.setPriority(task.getPriority());
                     builder = builder.setDataTime(task.getDataTime().getMillis());
