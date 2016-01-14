@@ -211,7 +211,6 @@ function initData() {
         showColumns: true,
         showHeader: true,
         showToggle: true,
-        pageSize: 1,
         pageSize: 20,
         pageList: [10, 20, 50, 100, 200, 500, 1000],
         paginationFirstText: '首页',
@@ -242,7 +241,8 @@ var columns = [{
 }, {
     field: 'jobName',
     title: '任务名',
-    switchable: true
+    switchable: true,
+    formatter: jobNameFormatter
 }, {
     field: 'jobType',
     title: '任务类型',
@@ -338,20 +338,80 @@ var columns = [{
 }];
 
 function operateFormatter(value, row, index) {
-    //console.log(row);
     var taskId = row["taskId"];
-    //console.log(jobId);
     var result = [
         '<a class="edit" href="' + contextPath + '/task/detail?taskId=' + taskId + '" title="查看执行详情" target="_blank">',
         '<i class="glyphicon glyphicon-eye-open"></i>',
-        '</a>  '
+        '</a>  ',
+        ' <a href="javascript:void(0)" onclick="showTaskHistory(' + taskId + ')">执行记录</a>'
     ].join('');
-
-    //console.log(result);
-
     return result;
 }
 
+var taskHistoryColumn = [{
+    field: 'executeStartTime',
+    title: '开始执行时间',
+    switchable: true,
+    formatter:formatDateTime
+}, {
+    field: 'executeEndTime',
+    title: '执行结束时间',
+    switchable: true,
+    formatter:formatDateTime
+}, {
+    field: 'dataTime',
+    title: '数据时间',
+    switchable: true,
+    formatter:formatDateTime
+}, {
+    field: 'executeUser',
+    title: '执行者',
+    switchable: true
+}, {
+    field: 'finishReason',
+    title: '结束原因',
+    switchable: true
+}];
+
+//获取taskHistory并用模态框显示
+function showTaskHistory(taskId) {
+    $("#taskHistory").bootstrapTable("destroy");
+
+    var queryParams = {};
+    queryParams["taskId"] = taskId;
+    $.ajaxSettings.async = false;
+    $("#taskHistory").bootstrapTable({
+        columns: taskHistoryColumn,
+        pagination: false,
+        sidePagination: 'server',
+        search: false,
+        url: contextPath + '/api/taskHistory/getByTaskId',
+        queryParams: function (params) {
+            for (var key in queryParams) {
+                var value = queryParams[key];
+                params[key] = value;
+            }
+            return params;
+        },
+        showColumns: true,
+        showHeader: true,
+        showToggle: true,
+        pageSize: 20,
+        pageList: [10, 20, 50, 100, 200, 500, 1000],
+        paginationFirstText: '首页',
+        paginationPreText: '上一页',
+        paginationNextText: '下一页',
+        paginationLastText: '末页'
+    });
+    $.ajaxSettings.async = true;
+    $("#taskHistoryModal").modal("show");
+}
+
+function jobNameFormatter(value, row, index) {
+    var result = '<a target="_blank" href="' + contextPath + "/job/detail?jobId=" + row["jobId"] + '">' + value + '</a>';
+
+    return result;
+}
 //执行状态格式化
 function taskStatusFormatter(value, row, index) {
     var color = taskStatusColor[value];

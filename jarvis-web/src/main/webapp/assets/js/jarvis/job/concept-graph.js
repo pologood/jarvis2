@@ -89,7 +89,7 @@ var CollapsibleTree = function (elt, w, h) {
                 })
                 .on("click", function (d) {
                     console.log(d);
-                    window.location.href = contextPath + "/job/dependency?jobId=" + d.id;
+                    window.location.href = contextPath + "/job/detail?jobId=" + d.id;
                     //that.toggle(d); that.updateBoth(d);
                 });
 

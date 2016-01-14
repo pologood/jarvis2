@@ -36,18 +36,18 @@ import static org.powermock.api.mockito.PowerMockito.when;
 @SuppressStaticInitializationFor("com.mogujie.jarvis.server.guice.Injectors")
 public class TestWorkerServiceBase {
 
-    protected static WorkerService workerService = new WorkerService();
-    protected static WorkerGroupService workerGroupService = new WorkerGroupService();
-    protected static WorkerRegistry workerRegistry = new WorkerRegistry();
-    protected static WorkerMapper workerMapper;
-    protected static WorkerGroupMapper workerGroupMapper;
-    protected static WorkerGroup workerGroup = new WorkerGroup();
-    protected static Worker worker = new Worker();
-    protected static List<Worker> workers = new ArrayList<Worker>();
-    protected static List<WorkerGroup> workerGroups = new ArrayList<WorkerGroup>();
-    protected static WorkerExample example;
-    protected static List<Integer> resultList = new ArrayList<Integer>();
-    protected static Injector injector;
+    protected  WorkerService workerService = new WorkerService();
+    protected  WorkerGroupService workerGroupService = new WorkerGroupService();
+    protected  WorkerRegistry workerRegistry = new WorkerRegistry();
+    protected  WorkerMapper workerMapper;
+    protected  WorkerGroupMapper workerGroupMapper;
+    protected  WorkerGroup workerGroup = new WorkerGroup();
+    protected  Worker worker = new Worker();
+    protected  List<Worker> workers = new ArrayList<Worker>();
+    protected  List<WorkerGroup> workerGroups = new ArrayList<WorkerGroup>();
+    protected  WorkerExample example;
+    protected  List<Integer> resultList = new ArrayList<Integer>();
+    protected  Injector injector;
 
     @Before
     public  void setup() {

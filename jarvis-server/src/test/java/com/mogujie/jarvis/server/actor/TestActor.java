@@ -8,33 +8,18 @@
 
 package com.mogujie.jarvis.server.actor;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
 import akka.actor.UntypedActor;
 import akka.testkit.JavaTestKit;
-
-import com.mogujie.jarvis.server.guice.Injectors;
+import org.junit.Test;
 
 /**
  * @author guangming
  */
-public class TestActor{
-    protected static ActorSystem system;
-
-    @BeforeClass
-    public static void setup() {
-        system = Injectors.getInjector().getInstance(ActorSystem.class);
-    }
-
-    @AfterClass
-    public static void tearDown() {
-        JavaTestKit.shutdownActorSystem(system);
-    }
+public class TestActor {
+    ActorSystem system = ActorSystem.create();
 
     @Test
     public void testHellWorld() {

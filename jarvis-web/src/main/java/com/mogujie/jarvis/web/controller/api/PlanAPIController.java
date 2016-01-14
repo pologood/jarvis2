@@ -30,6 +30,9 @@ public class PlanAPIController {
     @Autowired
     JobService jobService;
 
+    /*
+    * 分页获取执行计划
+    * */
     @RequestMapping(value = "getPlans")
     @ResponseBody
     public Map<String, Object> getPlans(PlanQo planQo) {
@@ -37,13 +40,20 @@ public class PlanAPIController {
         return result;
     }
 
+    /*
+    * 获取某个执行计划的依赖详情
+    * */
     @RequestMapping(value = "/getDependDetail")
     @ResponseBody
     public TaskDependVo getDependDetail(Long taskId) {
+        //查询依赖信息
         TaskDependVo taskDependVo = taskDependService.getTaskDependByTaskId(taskId);
-        if (taskDependVo != null) {
+        //如果有依赖信息，则生成前置、后续任务信息
+        if (null != taskDependVo && null != taskDependVo.getTaskId()) {
             taskDependService.generate(taskDependVo);
-        } else {
+        }
+        //如果没有依赖信息，则只显示当前task自身信息
+        else {
             TaskVo taskVo = taskService.getTaskById(taskId);
             JobVo jobVo = jobService.getJobById(taskVo.getJobId());
 

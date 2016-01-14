@@ -11,6 +11,9 @@ package com.mogujie.jarvis.worker;
 import java.lang.reflect.Constructor;
 import java.util.List;
 
+import akka.actor.ActorRef;
+import akka.actor.ActorSelection;
+
 import com.mogujie.jarvis.core.AbstractLogCollector;
 import com.mogujie.jarvis.core.AbstractTask;
 import com.mogujie.jarvis.core.ProgressReporter;
@@ -26,9 +29,6 @@ import com.mogujie.jarvis.worker.status.TaskStateStoreFactory;
 import com.mogujie.jarvis.worker.strategy.AcceptanceResult;
 import com.mogujie.jarvis.worker.strategy.AcceptanceStrategy;
 import com.mogujie.jarvis.worker.util.TaskConfigUtils;
-
-import akka.actor.ActorRef;
-import akka.actor.ActorSelection;
 
 public class TaskExecutor extends Thread {
 
@@ -47,7 +47,7 @@ public class TaskExecutor extends Thread {
 
     @Override
     public void run() {
-        TaskEntry taskEntry = TaskConfigUtils.getRegisteredTasks().get(taskContext.getTaskDetail().getTaskType());
+        TaskEntry taskEntry = TaskConfigUtils.getRegisteredTasks().get(taskContext.getTaskDetail().getJobType());
         List<AcceptanceStrategy> strategies = taskEntry.getAcceptanceStrategy();
         for (AcceptanceStrategy strategy : strategies) {
             try {

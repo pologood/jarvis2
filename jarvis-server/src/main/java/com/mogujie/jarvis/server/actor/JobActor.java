@@ -17,7 +17,6 @@ import java.util.Set;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
-
 import org.mybatis.guice.transactional.Transactional;
 
 import akka.actor.Props;
@@ -38,6 +37,21 @@ import com.mogujie.jarvis.core.expression.ScheduleExpression;
 import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.dto.generate.JobDepend;
 import com.mogujie.jarvis.dto.generate.Task;
+import com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry;
+import com.mogujie.jarvis.protocol.JobProtos.JobStatusEntry;
+import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobDependRequest;
+import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobRequest;
+import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobScheduleExpRequest;
+import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobStatusRequest;
+import com.mogujie.jarvis.protocol.JobProtos.RestQueryJobRelationRequest;
+import com.mogujie.jarvis.protocol.JobProtos.RestSubmitJobRequest;
+import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobDependResponse;
+import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobResponse;
+import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobScheduleExpResponse;
+import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobStatusResponse;
+import com.mogujie.jarvis.protocol.JobProtos.ServerQueryJobRelationResponse;
+import com.mogujie.jarvis.protocol.JobProtos.ServerSubmitJobResponse;
+import com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry;
 import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.domain.ModifyDependEntry;
 import com.mogujie.jarvis.server.domain.RemoveJobRequest;
@@ -50,22 +64,6 @@ import com.mogujie.jarvis.server.service.ConvertValidService;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.PlanUtil;
-
-import com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry;
-import com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry;
-import com.mogujie.jarvis.protocol.JobProtos.JobStatusEntry;
-import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobRequest;
-import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobResponse;
-import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobStatusRequest;
-import com.mogujie.jarvis.protocol.JobProtos.RestQueryJobRelationRequest;
-import com.mogujie.jarvis.protocol.JobProtos.RestSubmitJobRequest;
-import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobStatusResponse;
-import com.mogujie.jarvis.protocol.JobProtos.ServerQueryJobRelationResponse;
-import com.mogujie.jarvis.protocol.JobProtos.ServerSubmitJobResponse;
-import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobDependRequest;
-import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobDependResponse;
-import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobScheduleExpRequest;
-import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobScheduleExpResponse;
 
 
 /**
@@ -132,11 +130,9 @@ public class JobActor extends UntypedActor {
      */
     @Transactional
     private void submitJob(RestSubmitJobRequest msg) throws Exception {
-
         ServerSubmitJobResponse response;
         long jobId = 0;
         try {
-
             DateTime now = DateTime.now();
 
             // 参数检查
@@ -193,9 +189,6 @@ public class JobActor extends UntypedActor {
             getSender().tell(response, getSelf());
             logger.error("", e);
             throw e;
-
-
-
         }
     }
 
@@ -207,7 +200,6 @@ public class JobActor extends UntypedActor {
      */
     @Transactional
     private void modifyJob(RestModifyJobRequest msg) throws Exception {
-
         ServerModifyJobResponse response;
         try {
             // 参数检查
@@ -234,12 +226,12 @@ public class JobActor extends UntypedActor {
      */
     @Transactional
     private void modifyJobDependency(RestModifyJobDependRequest msg) throws Exception {
-
         ServerModifyJobDependResponse response;
         try {
             // 参数检查
             convertValidService.CheckJobDependency(msg);
 
+            // 1. update jobService
             List<ModifyDependEntry> dependEntries = new ArrayList<>();
             long jobId = msg.getJobId();
             DateTime now = DateTime.now();
@@ -260,6 +252,7 @@ public class JobActor extends UntypedActor {
                 dependEntries.add(dependEntry);
             }
 
+            // 2. update jobGraph
             jobGraph.modifyDependency(jobId, dependEntries);
 
             response = ServerModifyJobDependResponse.newBuilder().setSuccess(true).build();
@@ -281,16 +274,15 @@ public class JobActor extends UntypedActor {
      */
     @Transactional
     private void modifyJobScheduleExp(RestModifyJobScheduleExpRequest msg) throws Exception {
-
+        long jobId = msg.getJobId();
         ServerModifyJobScheduleExpResponse response;
-        try {
 
+        try {
             // 参数检查
             convertValidService.Check2JobScheduleExp(msg);
 
+            // 1. update jobService
             List<ScheduleExpressionEntry> expressionEntries = msg.getExpressionEntryList();
-
-            long jobId = msg.getJobId();
             for (ScheduleExpressionEntry entry : expressionEntries) {
                 OperationMode operation = OperationMode.parseValue(entry.getOperator());
                 if (operation.equals(OperationMode.ADD)) {
@@ -302,6 +294,27 @@ public class JobActor extends UntypedActor {
                 }
             }
 
+            // 2. update jobGraph
+            boolean timeFlag = false;
+            boolean cycleFlag = false;
+            Map<Long, ScheduleExpression> timeExpressions = jobService.get(jobId).getScheduleExpressions();
+            if (!timeExpressions.isEmpty()) {
+                for (ScheduleExpression expression : timeExpressions.values()) {
+                    if (expression instanceof CronExpression || expression instanceof FixedRateExpression
+                            || expression instanceof ISO8601Expression) {
+                        timeFlag = true;
+                    } else if (expression instanceof FixedDelayExpression) {
+                        cycleFlag = true;
+                    }
+                }
+            }
+            DAGJob dagJob = jobGraph.getDAGJob(jobId);
+            if (dagJob != null) {
+                dagJob.updateJobTypeByTimeFlag(timeFlag);
+                dagJob.updateJobTypeByCycleFlag(cycleFlag);
+            }
+
+            // 3. update next plan
             DAGJobType type = jobGraph.getDAGJob(jobId).getType();
             // 如果是纯时间任务
             if (type.equals(DAGJobType.TIME)) {
@@ -347,7 +360,6 @@ public class JobActor extends UntypedActor {
      */
     @Transactional
     private void modifyJobStatus(RestModifyJobStatusRequest msg) throws Exception {
-
         ServerModifyJobStatusResponse response;
         try {
             long jobId = msg.getJobId();
@@ -379,7 +391,6 @@ public class JobActor extends UntypedActor {
      * @throws IOException
      */
     private void queryJobRelation(RestQueryJobRelationRequest msg) throws Exception {
-
         ServerQueryJobRelationResponse response;
         try {
             long jobId = msg.getJobId();
@@ -405,38 +416,11 @@ public class JobActor extends UntypedActor {
         } catch (Exception e) {
             response = ServerQueryJobRelationResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
             getSender().tell(response, getSelf());
-
             logger.error("", e);
             throw e;
         }
 
     }
-
-//    /**
-//     * 重置DagJobType
-//     *
-//     * @param jobId
-//     */
-//    private DAGJobType calculateDagJobType(long jobId) {
-//        int dependFlag = jobGraph.getParents(jobId).isEmpty() ? 0 : 1;
-//        JobEntry jobEntry = jobService.get(jobId);
-//
-//        int cycleFlag = 0;
-//        int timeFlag = 0;
-//        Map<Long, ScheduleExpression> timeExpressions = jobEntry.getScheduleExpressions();
-//        if (!timeExpressions.isEmpty()) {
-//            for (ScheduleExpression expression : timeExpressions.values()) {
-//                if (expression instanceof CronExpression || expression instanceof FixedRateExpression
-//                        || expression instanceof ISO8601Expression) {
-//                    timeFlag = 1;
-//                } else if (expression instanceof FixedDelayExpression) {
-//                    cycleFlag = 1;
-//                }
-//            }
-//        }
-//        return DAGJobType.getDAGJobType(cycleFlag, dependFlag, timeFlag);
-//    }
-
 
     /**
      * 测试用

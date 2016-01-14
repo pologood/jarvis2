@@ -9,6 +9,7 @@ public class WorkerGroupQo{
     private Integer offset;
     private Integer limit;
     private Long appId;
+    private Integer id;
 
     public Integer getOffset() {
         return offset;
@@ -32,5 +33,13 @@ public class WorkerGroupQo{
 
     public void setAppId(Long appId) {
         this.appId = appId;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

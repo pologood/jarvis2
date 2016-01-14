@@ -15,6 +15,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.mogujie.jarvis.core.JarvisConstants;
+import com.mogujie.jarvis.core.metrics.Metrics;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.core.util.ThreadUtils;
 import com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse;
@@ -84,6 +85,8 @@ public class JarvisWorker {
 
         Thread taskStateRestore = new TaskStateRestore(system);
         taskStateRestore.start();
+
+        Metrics.start(ConfigUtils.getWorkerConfig());
 
         LOGGER.info("Jarvis worker started.");
     }

@@ -14,7 +14,8 @@
 
     <select id="getParentById" parameterType="Long" resultType="JobDependVo">
         SELECT job_depend.preJobId as id,job.jobName AS text,job_depend.commonStrategy,job_depend.offsetStrategy
-        FROM job_depend LEFT JOIN job ON job_depend.preJobId=job.jobId  WHERE job_depend.jobId=#{_parameter}
+        FROM job_depend LEFT JOIN job ON job_depend.preJobId=job.jobId
+        WHERE job_depend.jobId=#{_parameter}
     </select>
 
 </mapper>

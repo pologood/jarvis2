@@ -109,10 +109,10 @@ public class JobController extends BaseController {
     }
 
     /*
-    * job任务依赖页面
+    * job任务详情页面
     * @author hejian
     * */
-    @RequestMapping(value = "dependency")
+    @RequestMapping(value = "detail")
     @JarvisPassport(authTypes = JarvisAuthType.job, isMenu = false)
     public String dependency(ModelMap modelMap, Long jobId) {
         JobVo jobVo = jobService.getJobById(jobId);
@@ -122,7 +122,7 @@ public class JobController extends BaseController {
         }
 
         modelMap.put("jobVo", JsonHelper.toJson(jobVo));
-        return "job/dependency";
+        return "job/detail";
     }
 
 

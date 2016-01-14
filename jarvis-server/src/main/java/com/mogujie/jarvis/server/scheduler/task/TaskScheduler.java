@@ -110,13 +110,14 @@ public class TaskScheduler extends Scheduler {
                     submitTask(childTask);
                 }
             }
-        } else {
-            // 如果是正常调度，交给DAGScheduler触发后续任务
-            if (taskType.equals(TaskType.SCHEDULE)) {
-                // JobGraph trigger
-                ScheduleEvent event = new ScheduleEvent(jobId, taskId, scheduleTime);
-                getSchedulerController().notify(event);
-            }
+        }
+
+        // 如果是正常调度，交给DAGScheduler触发后续任务
+        if (taskType.equals(TaskType.SCHEDULE)) {
+            // JobGraph trigger
+            LOGGER.debug("[taskId={}, taskType=SCHEDULE], notify ScheduleEvent to DAGScheudler", taskId);
+            ScheduleEvent event = new ScheduleEvent(jobId, taskId, scheduleTime);
+            getSchedulerController().notify(event);
         }
 
         // remove from taskGraph
@@ -242,36 +243,30 @@ public class TaskScheduler extends Scheduler {
         LOGGER.info("start handleRetryTaskEvent, taskId={}", taskId);
         Task task = taskService.get(taskId);
         if (task != null) {
-            TaskStatus oldStatus = TaskStatus.parseValue(task.getStatus());
-            // 只有FAILED和KILLED状态的task才允许重试
-            if (oldStatus.equals(TaskStatus.FAILED) || oldStatus.equals(TaskStatus.KILLED)) {
-                taskService.updateStatus(taskId, TaskStatus.WAITING);
-                LOGGER.info("update {} with WAITING status", taskId);
+            taskService.updateStatus(taskId, TaskStatus.WAITING);
+            LOGGER.info("update {} with WAITING status", taskId);
 
-                DAGTask dagTask = taskGraph.getTask(taskId);
-                if (dagTask == null) {
-                    dagTask = new DAGTask(task.getJobId(), taskId, task.getAttemptId(), task.getDataTime().getTime());
-                    taskGraph.addTask(taskId, dagTask);
-                    LOGGER.info("add {} to taskGraph", dagTask);
-                }
-                if (dagTask != null && dagTask.checkStatus()) {
-                    LOGGER.info("{} pass status check", dagTask);
-                    int attemptId = dagTask.getAttemptId();
-                    attemptId++;
-                    dagTask.setAttemptId(attemptId);
-                    Task updateTask = new Task();
-                    updateTask.setTaskId(taskId);
-                    updateTask.setAttemptId(attemptId);
-                    updateTask.setUpdateTime(DateTime.now().toDate());
-                    Job job = jobService.get(dagTask.getJobId()).getJob();
-                    updateTask.setContent(job.getContent());
-                    updateTask.setExecuteUser(job.getUpdateUser());
-                    updateTask.setAppId(job.getAppId());
-                    updateTask.setWorkerId(job.getWorkerGroupId());
-                    taskService.updateSelective(updateTask);
-                    LOGGER.info("update task {}, attemptId={}", taskId, attemptId);
-                    submitTask(dagTask);
-                }
+            DAGTask dagTask = taskGraph.getTask(taskId);
+            if (dagTask == null) {
+                dagTask = new DAGTask(task.getJobId(), taskId, task.getAttemptId(), task.getDataTime().getTime());
+                taskGraph.addTask(taskId, dagTask);
+                LOGGER.info("add {} to taskGraph", dagTask);
+            }
+            if (dagTask != null && dagTask.checkStatus()) {
+                LOGGER.info("{} pass status check", dagTask);
+                int attemptId = dagTask.getAttemptId();
+                attemptId++;
+                dagTask.setAttemptId(attemptId);
+                Task updateTask = new Task();
+                updateTask.setTaskId(taskId);
+                updateTask.setAttemptId(attemptId);
+                updateTask.setUpdateTime(DateTime.now().toDate());
+                Job job = jobService.get(dagTask.getJobId()).getJob();
+                updateTask.setContent(job.getContent());
+                updateTask.setExecuteUser(job.getUpdateUser());
+                taskService.updateSelective(updateTask);
+                LOGGER.info("update task {}, attemptId={}", taskId, attemptId);
+                submitTask(dagTask);
             }
         }
     }
@@ -318,7 +313,7 @@ public class TaskScheduler extends Scheduler {
                 .setUser(job.getSubmitUser())
                 .setPriority(job.getPriority())
                 .setContent(job.getContent())
-                .setTaskType(job.getJobType())
+                .setJobType(job.getJobType())
                 .setParameters(JsonHelper.fromJson2JobParams(job.getParams()))
                 .setDataTime(new DateTime(dagTask.getDataTime()))
                 .setGroupId(job.getWorkerGroupId())
@@ -332,7 +327,9 @@ public class TaskScheduler extends Scheduler {
     private void reduceTaskNum(long taskId) {
         Task task = taskService.get(taskId);
         if (task != null) {
-            taskManager.appCounterDecrement(task.getAppId());
+            int appId = task.getAppId();
+            taskManager.appCounterDecrement(appId);
+            LOGGER.info("reduce task num, appId={}", appId);
         }
     }
 

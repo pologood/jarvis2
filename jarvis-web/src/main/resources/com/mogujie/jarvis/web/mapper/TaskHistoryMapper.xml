@@ -3,7 +3,7 @@
 <mapper namespace="com.mogujie.jarvis.web.mapper.TaskHistoryMapper">
 
     <select id="getByTaskId" parameterType="Long" resultType="TaskHistoryVo">
-      SELECT * FROM task_execute_records WHERE taskId=#{taskId}
+      SELECT * FROM task_history WHERE taskId=#{taskId}
     </select>
 
 </mapper>

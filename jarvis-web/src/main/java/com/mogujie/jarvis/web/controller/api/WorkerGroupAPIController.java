@@ -24,14 +24,27 @@ public class WorkerGroupAPIController {
     @Autowired
     WorkerGroupService workerGroupService;
 
+
+    /*
+    * 获取Id对应的workerGroup
+    * */
+    @RequestMapping(value = "getById")
+    @ResponseBody
+    public WorkerGroupVo getById(WorkerGroupQo workerGroupQo) {
+        WorkerGroupVo workerGroupVo = workerGroupService.getWorkerGroupById(workerGroupQo.getId());
+        return workerGroupVo;
+    }
+
     /*
     * 获取appId对应的workerGroup
     * */
     @RequestMapping(value = "getByAppId")
     @ResponseBody
-    public List<WorkerGroupVo> getByAppId(WorkerGroupQo workerGroupQo) {
+    public Object getByAppId(WorkerGroupQo workerGroupQo) {
+        Map<String, Object> map = new HashMap<String, Object>();
         List<WorkerGroupVo> list = workerGroupService.getByAppId(workerGroupQo.getAppId());
-        return list;
+        map.put("rows", list);
+        return map;
     }
 
     /*

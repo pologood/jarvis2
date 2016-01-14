@@ -19,9 +19,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jgrapht.experimental.dag.DirectedAcyclicGraph.CycleFoundException;
 
-import akka.actor.ActorSystem;
-import akka.routing.RoundRobinPool;
-
 import com.google.common.collect.Lists;
 import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.domain.JobStatus;
@@ -32,6 +29,7 @@ import com.mogujie.jarvis.core.expression.FixedDelayExpression;
 import com.mogujie.jarvis.core.expression.FixedRateExpression;
 import com.mogujie.jarvis.core.expression.ISO8601Expression;
 import com.mogujie.jarvis.core.expression.ScheduleExpression;
+import com.mogujie.jarvis.core.metrics.Metrics;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.dto.generate.Task;
@@ -54,6 +52,9 @@ import com.mogujie.jarvis.server.scheduler.time.TimePlan;
 import com.mogujie.jarvis.server.scheduler.time.TimeScheduler;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.TaskService;
+
+import akka.actor.ActorSystem;
+import akka.routing.RoundRobinPool;
 
 public class JarvisServer {
 
@@ -81,6 +82,8 @@ public class JarvisServer {
         taskRetryScheduler.start();
 
         init();
+
+        Metrics.start(ConfigUtils.getServerConfig());
 
         LOGGER.info("Jarvis server started.");
     }

@@ -8,6 +8,12 @@
 </jsp:include>
 
 
+<style>
+    .modal-dialog{
+        width:800px;
+    }
+</style>
+
 <div class="container">
 
     <div class="row">
@@ -71,7 +77,7 @@
             <div class="row top-buffer">
                 <div class="col-md-12">
                     <div id="toolbar">
-                        <a class="btn btn-primary" href="${contextPath}/manage/appAddOrEdit" target="_blank">新增应用</a>
+                        <a class="btn btn-primary" href="${contextPath}/manage/appDetail" target="_blank">新增应用</a>
                     </div>
                     <table id="content" data-toolbar="#toolbar">
 
@@ -84,6 +90,29 @@
         </div>
     </div>
 </div>
+
+<!-- 显示workerGroup的模态框 -->
+<div id="workerGroupModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="关闭">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">App对应的WorkerGroup列表</h4>
+            </div>
+            <div class="modal-body">
+                <table id="workerGroupList">
+
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button " data-dismiss="modal" class="btn btn-primary" >确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 
 <jsp:include page="../common/login.jsp">

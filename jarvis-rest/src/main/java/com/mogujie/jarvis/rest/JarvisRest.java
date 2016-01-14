@@ -9,9 +9,13 @@
 package com.mogujie.jarvis.rest;
 
 import java.io.IOException;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.glassfish.grizzly.http.server.HttpServer;
+
+import com.mogujie.jarvis.core.metrics.Metrics;
+import com.mogujie.jarvis.core.util.ConfigUtils;
 
 /**
  * 启动RestServer
@@ -19,16 +23,20 @@ import org.glassfish.grizzly.http.server.HttpServer;
  */
 public class JarvisRest {
 
-    static{
+    static {
         //FOR GrizzlyHttpServer`logger change
-        System.setProperty("java.util.logging.manager","org.apache.logging.log4j.jul.LogManager");
+        System.setProperty("java.util.logging.manager", "org.apache.logging.log4j.jul.LogManager");
     }
-    private  static final Logger LOGGER = LogManager.getLogger();
+
+    private static final Logger LOGGER = LogManager.getLogger();
 
     public static void main(String[] args) throws IOException {
         LOGGER.info("Starting rest server...");
         HttpServer server = RestServerFactory.createHttpServer();
         server.start();
+
+        Metrics.start(ConfigUtils.getRestConfig());
+
         LOGGER.info("Rest server started.");
     }
 

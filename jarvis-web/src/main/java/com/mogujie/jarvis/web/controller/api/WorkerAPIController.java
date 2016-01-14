@@ -1,8 +1,6 @@
 package com.mogujie.jarvis.web.controller.api;
 
-import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.domain.WorkerStatus;
-import com.mogujie.jarvis.web.entity.qo.WorkerGroupQo;
 import com.mogujie.jarvis.web.entity.qo.WorkerQo;
 import com.mogujie.jarvis.web.service.WorkerService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -138,8 +138,16 @@ public class TaskActor extends UntypedActor {
      */
     private void retryTask(RestServerRetryTaskRequest msg) {
         LOGGER.info("start retryTask");
-        controller.notify(new RetryTaskEvent(msg.getTaskId()));
-        ServerRetryTaskResponse response = ServerRetryTaskResponse.newBuilder().setSuccess(true).build();
+        long taskId = msg.getTaskId();
+        Task task = taskService.get(taskId);
+        TaskStatus oldStatus = TaskStatus.parseValue(task.getStatus());
+        ServerRetryTaskResponse response;
+        if (oldStatus.equals(TaskStatus.FAILED) || oldStatus.equals(TaskStatus.KILLED)) {
+            controller.notify(new RetryTaskEvent(taskId));
+            response = ServerRetryTaskResponse.newBuilder().setSuccess(true).build();
+        } else {
+            response = ServerRetryTaskResponse.newBuilder().setSuccess(false).setMessage("Only status FAILED|KILLED counld be retried.").build();
+        }
         getSender().tell(response, getSelf());
     }
 

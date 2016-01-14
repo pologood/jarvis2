@@ -210,7 +210,8 @@ var columns = [{
 }, {
     field: 'jobName',
     title: '任务名称',
-    switchable: true
+    switchable: true,
+    formatter:jobNameFormatter
 }, {
     field: 'appId',
     title: 'APP ID',
@@ -315,6 +316,12 @@ var columns = [{
     switchable: true,
     formatter: operateFormatter
 }];
+
+function jobNameFormatter(value,row,index){
+    var result='<a target="_blank" href="'+contextPath+"/job/detail?jobId="+row["jobId"]+'">'+value+'</a>';
+
+    return result;
+}
 
 function operateFormatter(value, row, index) {
     //console.log(row);

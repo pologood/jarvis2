@@ -9,4 +9,5 @@ import java.util.List;
  */
 public interface TaskHistoryMapper {
     List<TaskHistoryVo> getByTaskId(Long taskId);
+
 }

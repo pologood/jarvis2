@@ -11,8 +11,11 @@
 
 
 <style>
-    .popover {
-        max-width: 450px;
+    a:link{
+        color: #31708f;
+    }
+    a:visited{
+        color: #31708f;
     }
 </style>
 
@@ -30,7 +33,13 @@
             </nav>
         </div>
         <div class="col-md-6 top-buffer">
-            <span class="h3 pull-right"><span class="text-info"><strong>${jobVo.jobName}</strong></span> 的执行情况</span>
+            <span class="h3 pull-right">
+                <span >
+                    <strong>
+                        <a class="text-info" target="_blank" href="${contextPath}/job/detail?jobId=${jobVo.jobId}">${jobVo.jobName}</a>
+                    </strong>
+                </span> 的执行情况
+            </span>
         </div>
     </div>
 
@@ -43,8 +52,8 @@
         <span><i class="fa fa-circle fa-2x" style="color: #FF4136"></i>失败</span>
         <span><i class="fa fa-circle fa-2x" style="color: #111111"></i>终止</span>
         <span><i class="fa fa-circle fa-2x" style="color: #AAAAAA"></i>混合状态</span>
-        <span><i class="fa fa-circle fa-2x" style="color: #B10DC9"></i>失效或过期</span>
-        <span><i class="fa fa-circle fa-2x" style="color: #FFFFFF;border:1px solid steelblue;border-radius:50%;"></i>无执行</span>
+        <span><i class="fa fa-circle fa-2x" style="color: #B10DC9"></i>失效过期取消等</span>
+        <span><i class="fa fa-circle fa-2x" style="color: #FFFFFF;border:1px solid steelblue;border-radius:50%;"></i>此任务未依赖此次执行</span>
 
 
         <div id="pattern" style="display: none">

@@ -1,9 +1,7 @@
 package com.mogujie.jarvis.web.controller.jarvis;
 
-import com.atlassian.crowd.exception.*;
-import com.atlassian.crowd.model.user.User;
+
 import com.mogu.bigdata.admin.core.util.JsonReturn;
-import com.mogu.bigdata.admin.passport.session.SessionHelper;
 import com.mogu.bigdata.admin.passport.user.UuapService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
