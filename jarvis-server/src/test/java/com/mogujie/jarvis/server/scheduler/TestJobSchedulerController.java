@@ -69,7 +69,7 @@ public class TestJobSchedulerController extends TestSchedulerBase {
      *   B
      */
     @Test
-    public void testDependJobWithSuccessEvent() throws Exception {
+    public void testDependJobWithSuccessEvent1() throws Exception {
         jobGraph.addJob(jobAId, new DAGJob(jobAId, DAGJobType.TIME), null);
         jobGraph.addJob(jobBId, new DAGJob(jobBId, DAGJobType.DEPEND), Sets.newHashSet(jobAId));
 
@@ -97,36 +97,39 @@ public class TestJobSchedulerController extends TestSchedulerBase {
         Assert.assertEquals(2, taskQueue.size());
     }
 
+    /**
+     *     A
+     *    / \
+     *   B   C
+     */
+    @Test
+    public void testDependJobWithSuccessEvent2() throws Exception {
+        jobGraph.addJob(jobAId, new DAGJob(jobAId, DAGJobType.TIME), null);
+        jobGraph.addJob(jobBId, new DAGJob(jobBId, DAGJobType.DEPEND), Sets.newHashSet(jobAId));
+        jobGraph.addJob(jobCId, new DAGJob(jobCId, DAGJobType.DEPEND), Sets.newHashSet(jobAId));
 
-//    /**
-//     *      A
-//     *     / \
-//     *    B   C
-//     */
-//    @Test
-//    public void testHandleSuccessEvent2() throws Exception {
-//        jobGraph.addJob(jobAId, new DAGJob(jobAId, DAGJobType.TIME), null);
-//        jobGraph.addJob(jobBId, new DAGJob(jobBId, DAGJobType.DEPEND), Sets.newHashSet(jobAId));
-//        jobGraph.addJob(jobCId, new DAGJob(jobBId, DAGJobType.DEPEND), Sets.newHashSet(jobAId));
-//        Assert.assertEquals(2, jobGraph.getChildren(jobAId).size());
-//        Assert.assertEquals(1, jobGraph.getParents(jobBId).size());
-//        Assert.assertEquals(1, jobGraph.getParents(jobCId).size());
-//
-//        // jobA time ready, start to schedule jobB and jobC
-//        TimeReadyEvent timeEventA = new TimeReadyEvent(jobAId);
-//        controller.notify(timeEventA);
-//        Assert.assertEquals(3, taskGraph.getTaskMap().size());
-//        Assert.assertEquals(1, taskQueue.size());
-//
-//        List<Long> taskIds = new ArrayList<Long>(taskGraph.getTaskMap().keySet());
-//        Collections.sort(taskIds);
-//        taskAId = taskIds.get(0);
-//
-//        // jobA success
-//        SuccessEvent eventA = new SuccessEvent(jobAId, taskAId);
-//        controller.notify(eventA);
-//        // jobB and jobC run, taskScheduler remove jobA from readyTable
-//        Assert.assertEquals(2, taskGraph.getTaskMap().size());
-//        Assert.assertEquals(3, taskQueue.size());
-//    }
+        // jobA time ready
+        AddTaskEvent addTaskEvent = new AddTaskEvent(jobAId, t1);
+        controller.notify(addTaskEvent);
+        Assert.assertEquals(1, taskGraph.getTaskMap().size());
+        Assert.assertEquals(1, taskQueue.size());
+
+        List<Long> taskIds = new ArrayList<Long>(taskGraph.getTaskMap().keySet());
+        Collections.sort(taskIds);
+        long taskAId = taskIds.get(0);
+        Task task = taskService.get(taskAId);
+        Assert.assertEquals(TaskStatus.READY, TaskStatus.parseValue(task.getStatus()));
+        TaskType taskType = TaskType.parseValue(task.getType());
+
+        SuccessEvent successEvent = new SuccessEvent(jobAId, taskAId, task.getScheduleTime().getTime(), taskType, "test");
+        controller.notify(successEvent);
+
+        task = taskService.get(taskAId);
+        Assert.assertEquals(TaskStatus.SUCCESS, TaskStatus.parseValue(task.getStatus()));
+
+        // start jobB and jobC
+        Assert.assertEquals(2, taskGraph.getTaskMap().size());
+        Assert.assertEquals(3, taskQueue.size());
+    }
+
 }

@@ -14,11 +14,13 @@ import java.util.Objects;
 
 import org.joda.time.DateTime;
 
+import com.google.common.collect.Maps;
+
 public class TimePlanEntry  {
     private final long jobId;
     private final DateTime dateTime;
     private long taskId;
-    private Map<Long, List<Long>> dependTaskIdMap;
+    private Map<Long, List<Long>> dependTaskIdMap = Maps.newHashMap();
 
     public TimePlanEntry(long jobId, DateTime dateTime) {
         this.jobId = jobId;

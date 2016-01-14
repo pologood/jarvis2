@@ -8,6 +8,9 @@
 
 package com.mogujie.jarvis.server.service;
 
+import java.util.List;
+
+import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.mogujie.jarvis.dao.generate.TaskHistoryMapper;
@@ -45,5 +48,15 @@ public class TaskHistoryService {
         TaskHistoryExample example = new TaskHistoryExample();
         example.createCriteria().andTaskIdEqualTo(taskId);
         taskHistoryMapper.deleteByExample(example);
+    }
+
+    public List<TaskHistory> getHistories(long taskId) {
+        TaskHistoryExample example = new TaskHistoryExample();
+        example.createCriteria().andTaskIdEqualTo(taskId);
+        List<TaskHistory> histories = taskHistoryMapper.selectByExample(example);
+        if (histories == null) {
+            histories = Lists.newArrayList();
+        }
+        return histories;
     }
 }

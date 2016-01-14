@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <configuration>
 	<strategies>
-		<strategy>com.mogujie.jarvis.worker.strategy.impl.CpuAcceptanceStrategy
-		</strategy>
-		<strategy>com.mogujie.jarvis.worker.strategy.impl.TaskNumAcceptanceStrategy
-		</strategy>
-		<strategy>com.mogujie.jarvis.worker.strategy.impl.LoadAcceptanceStrategy
-		</strategy>
-		<strategy>com.mogujie.jarvis.worker.strategy.impl.MemoryAcceptanceStrategy
-		</strategy>
+		<!--<strategy>com.mogujie.jarvis.worker.strategy.impl.CpuAcceptanceStrategy</strategy>-->
+		<strategy>com.mogujie.jarvis.worker.strategy.impl.TaskNumAcceptanceStrategy</strategy>
+		<!--<strategy>com.mogujie.jarvis.worker.strategy.impl.LoadAcceptanceStrategy</strategy>-->
+		<!--<strategy>com.mogujie.jarvis.worker.strategy.impl.MemoryAcceptanceStrategy</strategy>-->
 	</strategies>
 
 	<tasks>

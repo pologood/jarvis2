@@ -18,9 +18,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 
 import com.google.common.eventbus.Subscribe;
+import com.mogujie.jarvis.dto.generate.Job;
+import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
 import com.mogujie.jarvis.server.scheduler.dag.DAGJob;
@@ -30,6 +34,7 @@ import com.mogujie.jarvis.server.scheduler.event.AddPlanEvent;
 import com.mogujie.jarvis.server.scheduler.event.AddTaskEvent;
 import com.mogujie.jarvis.server.scheduler.event.StartEvent;
 import com.mogujie.jarvis.server.scheduler.event.StopEvent;
+import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.util.PlanUtil;
 
 public class TimeScheduler extends Scheduler {
@@ -44,6 +49,9 @@ public class TimeScheduler extends Scheduler {
     private JobGraph jobGraph = JobGraph.INSTANCE;
     private volatile boolean running = true;
     private JobSchedulerController controller = JobSchedulerController.getInstance();
+    private JobService jobService = Injectors.getInjector().getInstance(JobService.class);
+
+    private static final Logger LOGGER = LogManager.getLogger();
 
     class TimeScanThread extends Thread {
         public TimeScanThread(String name) {
@@ -60,6 +68,7 @@ public class TimeScheduler extends Scheduler {
                         TimePlanEntry entry = planQueue.peek();
                         if (!entry.getDateTime().isAfter(now)) {
                             // 1. start this time based job
+                            LOGGER.info("{} time ready", entry);
                             submitJob(entry);
                             // 2. remove this from plan
                             planQueue.poll();
@@ -107,11 +116,22 @@ public class TimeScheduler extends Scheduler {
         long jobId = entry.getJobId();
         DateTime dt = entry.getDateTime();
         Map<Long, List<Long>> dependTaskIdMap = entry.getDependTaskIdMap();
-        AddTaskEvent event = new AddTaskEvent(jobId, dt.getMillis(), dependTaskIdMap);
-        controller.notify(event);
+        Job job = jobService.get(jobId).getJob();
+        int expiredTime = job.getExpiredTime();
+        DateTime expiredDateTime = dt.plusSeconds(expiredTime);
+        // 如果该任务没有过期，提交Task给TaskScheduler
+        if (expiredDateTime.isAfter(DateTime.now())) {
+            AddTaskEvent event = new AddTaskEvent(jobId, dt.getMillis(), dependTaskIdMap);
+            controller.notify(event);
+        } else {
+            LOGGER.warn("{} is expired.", entry);
+        }
+
+        // 如果是纯时间任务，并且不是临时任务，自动计算下一次
         DAGJob dagJob = jobGraph.getDAGJob(jobId);
-        // 如果是纯时间任务，自动计算下一次
-        if (dagJob.getType().equals(DAGJobType.TIME)) {
+        if (dagJob.getType().equals(DAGJobType.TIME) &&
+                jobService.isActive(jobId) &&
+                !job.getIsTemp()) {
             DateTime nextTime = PlanUtil.getScheduleTimeAfter(jobId, dt);
             plan.addPlan(new TimePlanEntry(jobId, nextTime));
         }

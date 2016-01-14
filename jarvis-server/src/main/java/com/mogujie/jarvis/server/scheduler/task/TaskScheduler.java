@@ -38,7 +38,6 @@ import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
 import com.mogujie.jarvis.server.scheduler.event.KilledEvent;
 import com.mogujie.jarvis.server.scheduler.event.ManualRerunTaskEvent;
 import com.mogujie.jarvis.server.scheduler.event.RetryTaskEvent;
-import com.mogujie.jarvis.server.scheduler.event.RunTaskEvent;
 import com.mogujie.jarvis.server.scheduler.event.RunningEvent;
 import com.mogujie.jarvis.server.scheduler.event.ScheduleEvent;
 import com.mogujie.jarvis.server.scheduler.event.StartEvent;
@@ -111,13 +110,14 @@ public class TaskScheduler extends Scheduler {
                     submitTask(childTask);
                 }
             }
-        } else {
-            // 如果是正常调度，交给DAGScheduler触发后续任务
-            if (taskType.equals(TaskType.SCHEDULE)) {
-                // JobGraph trigger
-                ScheduleEvent event = new ScheduleEvent(jobId, taskId, scheduleTime);
-                getSchedulerController().notify(event);
-            }
+        }
+
+        // 如果是正常调度，交给DAGScheduler触发后续任务
+        if (taskType.equals(TaskType.SCHEDULE)) {
+            // JobGraph trigger
+            LOGGER.debug("[taskId={}, taskType=SCHEDULE], notify ScheduleEvent to DAGScheudler", taskId);
+            ScheduleEvent event = new ScheduleEvent(jobId, taskId, scheduleTime);
+            getSchedulerController().notify(event);
         }
 
         // remove from taskGraph
@@ -264,8 +264,6 @@ public class TaskScheduler extends Scheduler {
                 Job job = jobService.get(dagTask.getJobId()).getJob();
                 updateTask.setContent(job.getContent());
                 updateTask.setExecuteUser(job.getUpdateUser());
-                updateTask.setAppId(job.getAppId());
-                updateTask.setWorkerId(job.getWorkerGroupId());
                 taskService.updateSelective(updateTask);
                 LOGGER.info("update task {}, attemptId={}", taskId, attemptId);
                 submitTask(dagTask);
@@ -283,16 +281,6 @@ public class TaskScheduler extends Scheduler {
                 LOGGER.info("{} pass status check", dagTask);
                 submitTask(dagTask);
             }
-        }
-    }
-
-    @Subscribe
-    public void handleRunTaskEvent(RunTaskEvent e) {
-        long taskId = e.getTaskId();
-        LOGGER.info("start handleRunTaskEvent, taskId={}", taskId);
-        DAGTask dagTask = taskGraph.getTask(taskId);
-        if (dagTask != null) {
-            submitTask(dagTask);
         }
     }
 
@@ -325,7 +313,7 @@ public class TaskScheduler extends Scheduler {
                 .setUser(job.getSubmitUser())
                 .setPriority(job.getPriority())
                 .setContent(job.getContent())
-                .setTaskType(job.getJobType())
+                .setJobType(job.getJobType())
                 .setParameters(JsonHelper.fromJson2JobParams(job.getParams()))
                 .setDataTime(new DateTime(dagTask.getDataTime()))
                 .setGroupId(job.getWorkerGroupId())
@@ -339,7 +327,9 @@ public class TaskScheduler extends Scheduler {
     private void reduceTaskNum(long taskId) {
         Task task = taskService.get(taskId);
         if (task != null) {
-            taskManager.appCounterDecrement(task.getAppId());
+            int appId = task.getAppId();
+            taskManager.appCounterDecrement(appId);
+            LOGGER.info("reduce task num, appId={}", appId);
         }
     }
 

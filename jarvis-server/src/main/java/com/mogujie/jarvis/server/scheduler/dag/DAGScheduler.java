@@ -12,10 +12,12 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.joda.time.DateTime;
 
 import com.google.common.eventbus.Subscribe;
 import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
+import com.mogujie.jarvis.server.scheduler.event.AddPlanEvent;
 import com.mogujie.jarvis.server.scheduler.event.ScheduleEvent;
 import com.mogujie.jarvis.server.scheduler.event.StartEvent;
 import com.mogujie.jarvis.server.scheduler.event.StopEvent;
@@ -70,6 +72,12 @@ public class DAGScheduler extends Scheduler {
                         jobGraph.submitJobWithCheck(child, scheduleTime, jobId, taskId);
                     }
                 }
+            } else if (dagJob.getType().equals(DAGJobType.CYCLE)) {
+                // 如果是固定延迟任务，在这里触发
+                long fixedPeriod = 10*60; //TODO
+                long nextScheduleTime = DateTime.now().getMillis() + fixedPeriod * 1000;
+                AddPlanEvent event = new AddPlanEvent(jobId, nextScheduleTime);
+                getSchedulerController().notify(event);
             }
         }
     }

@@ -4,6 +4,6 @@ option java_outer_classname = "ScheduleExpressionEntryProtos";
 message ScheduleExpressionEntry {
 	required int32 operator = 1;    //1:ADD; 2:EDIT; 3:DELETE
     required int64 expression_id = 2;
-	required int32 expression_type = 3;
-	required string schedule_expression = 4;
+	optional int32 expression_type = 3;
+	optional string schedule_expression = 4;
 }

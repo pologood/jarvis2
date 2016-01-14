@@ -6,13 +6,16 @@
 
 package com.mogujie.jarvis.server.service;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.google.common.base.Preconditions;
+
 import java.util.Date;
 
 import org.joda.time.DateTime;
-
-import com.google.common.base.Preconditions;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
+import com.mogujie.jarvis.core.domain.OperationMode;
+import com.mogujie.jarvis.core.expression.*;
+import com.mogujie.jarvis.core.util.ExpressionUtils;
 import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.domain.AppType;
 import com.mogujie.jarvis.core.domain.JobStatus;
@@ -21,13 +24,17 @@ import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.dto.generate.JobDepend;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
 import com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry;
+import com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry;
 import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobRequest;
 import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobStatusRequest;
 import com.mogujie.jarvis.protocol.JobProtos.RestSubmitJobRequest;
+import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobScheduleExpRequest;
+import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobDependRequest;
 import com.mogujie.jarvis.server.domain.JobEntry;
+import com.mogujie.jarvis.server.domain.CommonStrategy;
 
 /**
- * @author guangming
+ * @author guangming, muming
  */
 
 @Singleton
@@ -149,16 +156,27 @@ public class ConvertValidService {
         return job;
     }
 
-    public JobDepend convert2JobDepend(Long jobId, DependencyEntry entry, String user) {
+    /**
+     * 转化为_jobDepend
+     *
+     * @param jobId
+     * @param user
+     * @param entry
+     * @param time
+     * @return
+     */
+    public JobDepend convert2JobDepend(Long jobId, DependencyEntry entry, String user, DateTime time) {
         JobDepend jobDepend = new JobDepend();
         jobDepend.setJobId(jobId);
         jobDepend.setPreJobId(entry.getJobId());
         jobDepend.setCommonStrategy(entry.getCommonDependStrategy());
         jobDepend.setOffsetStrategy(entry.getOffsetDependStrategy());
-        Date currentTime = DateTime.now().toDate();
-        jobDepend.setCreateTime(currentTime);
-        jobDepend.setUpdateTime(currentTime);
+        jobDepend.setUpdateTime(time.toDate());
         jobDepend.setUpdateUser(user);
+
+        if (entry.getOperator() == OperationMode.ADD.getValue()) {
+            jobDepend.setCreateTime(time.toDate());
+        }
         return jobDepend;
     }
 
@@ -200,6 +218,73 @@ public class ConvertValidService {
             Preconditions.checkArgument(oldJob.getActiveStartDate().getTime() <= job.getActiveEndDate().getTime(), "有效开始日不能大于有效结束日");
         }
 
+    }
+
+
+    /**
+     * 检查-job依赖
+     *
+     * @param msg
+     * @return
+     */
+    public void Check2JobDependency(RestModifyJobDependRequest msg) throws IllegalArgumentException {
+
+        Preconditions.checkArgument(msg.getDependencyEntryList() != null && !msg.getDependencyEntryList().isEmpty()
+                , "依赖对象不能为空");
+
+        long jobId = msg.getJobId();
+        JobEntry job = jobService.get(jobId);
+        Preconditions.checkArgument(job != null, "jobId对象不存在");
+
+        for (DependencyEntry entry : msg.getDependencyEntryList()) {
+
+            int mode = entry.getOperator();
+            Preconditions.checkArgument(OperationMode.isValid(mode), "操作模式不对");
+
+            long preJobId = entry.getJobId();
+            Preconditions.checkArgument(preJobId != 0, "依赖JobId不能为空");
+
+            if(mode == OperationMode.ADD.getValue() || mode == OperationMode.EDIT.getValue()) {
+                int commonStrategy = entry.getCommonDependStrategy();
+                Preconditions.checkArgument(CommonStrategy.isValid(commonStrategy), "依赖的通用策略不对");
+
+                //偏移策略可以为空，表示runtime模式。
+                String offsetStrategy = entry.getOffsetDependStrategy();
+                if (offsetStrategy == null || offsetStrategy.equals("")) {
+                    // TODO: 16/1/8
+                } else {
+                    Preconditions.checkArgument(new TimeOffsetExpression(offsetStrategy).isValid(), "依赖的偏移策略不对");
+                }
+            }
+        }
+    }
+
+
+    /**
+     * 检查-job计划表达式
+     *
+     * @param msg
+     * @return
+     */
+    public void Check2JobScheculeExp(RestModifyJobScheduleExpRequest msg) {
+
+        Preconditions.checkArgument(msg.getExpressionEntryList() != null && !msg.getExpressionEntryList().isEmpty()
+                , "计划表达式不能为空");
+
+        long jobId = msg.getJobId();
+        JobEntry job = jobService.get(jobId);
+        Preconditions.checkArgument(job != null, "jobId对象不存在");
+
+        for (ScheduleExpressionEntry entry : msg.getExpressionEntryList()) {
+            int mode = entry.getOperator();
+            Preconditions.checkArgument(OperationMode.isValid(mode), "操作模式不对. mode:" + mode);
+
+            //追加与新建模式做检查,删除模式不做检查
+            if(mode == OperationMode.ADD.getValue() || mode == OperationMode.EDIT.getValue()){
+                ExpressionUtils.checkExpression(entry.getExpressionType(), entry.getScheduleExpression());
+            }
+
+        }
     }
 
     private int dealAppId(AppAuth appAuth, String appName) {

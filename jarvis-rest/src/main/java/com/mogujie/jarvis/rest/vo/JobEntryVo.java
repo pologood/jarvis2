@@ -3,7 +3,8 @@ package com.mogujie.jarvis.rest.vo;
 import java.util.List;
 import java.util.Map;
 
-import com.mogujie.jarvis.core.domain.OperationMode;
+import com.mogujie.jarvis.rest.vo.JobDependencyVo.DependencyEntry;
+import com.mogujie.jarvis.rest.vo.JobScheduleExpVo.ScheduleExpressionEntry;
 
 /**
  * job返回类
@@ -27,75 +28,6 @@ public class JobEntryVo extends AbstractVo {
     private Integer failedInterval;
     private List<DependencyEntry> dependencyList;
     private List<ScheduleExpressionEntry> scheduleExpressionList;
-
-    public static class DependencyEntry {
-        private Integer operatorMode;
-        private Long preJobId;
-        private Integer commonStrategy;
-        private String offsetStrategy;
-
-        public Integer getOperatorMode() {
-            return operatorMode;
-        }
-
-        public void setOperatorMode(Integer operatorMode) {
-            this.operatorMode = operatorMode;
-        }
-
-        public Integer getCommonStrategy() {
-            return commonStrategy;
-        }
-
-        public void setCommonStrategy(Integer commonStrategy) {
-            this.commonStrategy = commonStrategy;
-        }
-
-        public String getOffsetStrategy() {
-            return offsetStrategy;
-        }
-
-        public void setOffsetStrategy(String offsetStrategy) {
-            this.offsetStrategy = offsetStrategy;
-        }
-
-        public Long getPreJobId() {
-            return preJobId;
-        }
-
-        public void setPreJobId(Long preJobId) {
-            this.preJobId = preJobId;
-        }
-    }
-
-    public static class ScheduleExpressionEntry {
-        private OperationMode operatorMode;
-        private Integer expressionType;
-        private String expression;
-
-        public OperationMode getOperatorMode() {
-            return operatorMode;
-        }
-
-        public void setOperatorMode(OperationMode operatorMode) {
-            this.operatorMode = operatorMode;
-        }
-
-        public Integer getExpressionType() {
-            return expressionType;
-        }
-
-        public void setExpressionType(Integer expressionType) {
-            this.expressionType = expressionType;
-        }
-
-        public String getExpression() {
-            return expression;
-        }
-
-        public void setExpression(String expression) {
-            this.expression = expression;
-        }
-    }
 
     public long getJobId() {
         return jobId;

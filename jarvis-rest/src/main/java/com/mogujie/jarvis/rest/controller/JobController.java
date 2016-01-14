@@ -16,16 +16,21 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import com.google.common.base.Preconditions;
 import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.core.domain.JobRelationType;
 import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
 import com.mogujie.jarvis.protocol.JobProtos.JobStatusEntry;
 import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobRequest;
+import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobDependRequest;
+import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobScheduleExpRequest;
 import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobStatusRequest;
 import com.mogujie.jarvis.protocol.JobProtos.RestQueryJobRelationRequest;
 import com.mogujie.jarvis.protocol.JobProtos.RestSubmitJobRequest;
 import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobResponse;
+import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobDependResponse;
+import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobScheduleExpResponse;
 import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobStatusResponse;
 import com.mogujie.jarvis.protocol.JobProtos.ServerQueryJobRelationResponse;
 import com.mogujie.jarvis.protocol.JobProtos.ServerSubmitJobResponse;
@@ -35,6 +40,8 @@ import com.mogujie.jarvis.rest.utils.JsonParameters;
 import com.mogujie.jarvis.rest.vo.JobEntryVo;
 import com.mogujie.jarvis.rest.vo.JobRelationsVo;
 import com.mogujie.jarvis.rest.vo.JobVo;
+import com.mogujie.jarvis.rest.vo.JobDependencyVo;
+import com.mogujie.jarvis.rest.vo.JobScheduleExpVo;
 
 /**
  * @author muming
@@ -64,7 +71,7 @@ public class JobController extends AbstractController {
                 jobParameters = JsonHelper.toJson(jobVo.getParams(), Map.class);
             }
 
-            // 构造新增任务请求
+            // 构造请求
             RestSubmitJobRequest.Builder builder = RestSubmitJobRequest.newBuilder().setAppAuth(appAuth).setUser(user).setJobName(jobVo.getJobName())
                     .setJobType(jobVo.getJobType()).setStatus(jobVo.getStatus()).setContent(jobVo.getContent()).setParameters(jobParameters)
                     .setAppName(jobVo.getAppName(appName)).setWorkerGroupId(jobVo.getWorkerGroupId()).setPriority(jobVo.getPriority(1))
@@ -72,21 +79,21 @@ public class JobController extends AbstractController {
                     .setFailedAttempts(jobVo.getFailedAttempts(0)).setFailedInterval(jobVo.getFailedInterval(3));
 
             if (jobVo.getScheduleExpressionList() != null && jobVo.getScheduleExpressionList().size() > 0) {
-                for (JobEntryVo.ScheduleExpressionEntry entryInput : jobVo.getScheduleExpressionList()) {
+                for (JobScheduleExpVo.ScheduleExpressionEntry entryInput : jobVo.getScheduleExpressionList()) {
                     builder.addExpressionEntry(ConvertValidUtils.ConvertScheduleExpressionEntry(entryInput));
                 }
             }
 
             if (jobVo.getDependencyList() != null && jobVo.getDependencyList().size() > 0) {
-                for (JobEntryVo.DependencyEntry entryInput : jobVo.getDependencyList()) {
+                for (JobDependencyVo.DependencyEntry entryInput : jobVo.getDependencyList()) {
                     builder.addDependencyEntry(ConvertValidUtils.ConvertDependencyEntry(entryInput));
                 }
             }
 
-            // 发送请求到server尝试新增
+            // 发送请求到server
             ServerSubmitJobResponse response = (ServerSubmitJobResponse) callActor(AkkaType.SERVER, builder.build());
 
-            // 判断是否新增成功
+            // 判断是否成功
             if (response.getSuccess()) {
                 JobVo vo = new JobVo();
                 vo.setJobId(response.getJobId());
@@ -118,13 +125,7 @@ public class JobController extends AbstractController {
 
             JobEntryVo jobVo = JsonHelper.fromJson(parameters, JobEntryVo.class);
 
-            // JobParameters处理
-            String jobParameters = "";
-            if (jobVo.getParams() != null) {
-                jobParameters = JsonHelper.toJson(jobVo.getParams(), Map.class);
-            }
-
-            // 构造修改job基本信息请求
+            // 构造请求
             RestModifyJobRequest.Builder builder = RestModifyJobRequest.newBuilder().setAppAuth(appAuth).setUser(user).setJobId(jobVo.getJobId());
 
             if (jobVo.getJobName() != null && !jobVo.getJobName().equals("")) {
@@ -137,6 +138,7 @@ public class JobController extends AbstractController {
                 builder.setContent(jobVo.getContent());
             }
             if (jobVo.getParams() != null) {
+                String jobParameters = JsonHelper.toJson(jobVo.getParams(), Map.class);
                 builder.setParameters(jobParameters);
             }
             if (jobVo.getPriority() != null) {
@@ -163,26 +165,102 @@ public class JobController extends AbstractController {
             if (jobVo.getFailedInterval() != null) {
                 builder.setFailedInterval(jobVo.getFailedInterval());
             }
+
+            // 发送请求到server
+            ServerModifyJobResponse response = (ServerModifyJobResponse) callActor(AkkaType.SERVER, builder.build());
+
+            // 判断是否成功
+            if (response.getSuccess()) {
+                return successResult();
+            } else {
+                return errorResult(response.getMessage());
+            }
+        } catch (Exception e) {
+            LOGGER.error("edit job error", e);
+            return errorResult(e.getMessage());
+        }
+    }
+
+    /**
+     * 修改job任务依赖
+     *
+     * @throws Exception
+     */
+    @POST
+    @Path("dependency/set")
+    @Produces(MediaType.APPLICATION_JSON)
+    public RestResult dependencySet(@FormParam("appName") String appName,
+                                    @FormParam("appToken") String appToken,
+                                    @FormParam("user") String user,
+                                    @FormParam("parameters") String parameters) {
+
+        LOGGER.debug("更新job计划表达式");
+        try {
+            AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
+
+            JobDependencyVo jobVo = JsonHelper.fromJson(parameters, JobDependencyVo.class);
+            // 构造请求
+            RestModifyJobDependRequest.Builder builder = RestModifyJobDependRequest.newBuilder()
+                    .setAppAuth(appAuth).setUser(user).setJobId(jobVo.getJobId());
+
+            Preconditions.checkArgument(jobVo.getDependencyList() != null && jobVo.getDependencyList().size() > 0, "任务依赖为空");
+
+            for (JobDependencyVo.DependencyEntry entryInput : jobVo.getDependencyList()) {
+                builder.addDependencyEntry(ConvertValidUtils.ConvertDependencyEntry(entryInput));
+            }
+
+            // 发送请求到server
+            ServerModifyJobDependResponse response = (ServerModifyJobDependResponse) callActor(AkkaType.SERVER, builder.build());
+
+            // 判断是否成功
+            if (response.getSuccess()) {
+                return successResult();
+            } else {
+                return errorResult(response.getMessage());
+            }
+        } catch (Exception e) {
+            LOGGER.error("edit job error", e);
+            return errorResult(e.getMessage());
+        }
+    }
+
+
+    /**
+     * 修改job计划表达式
+     *
+     * @throws Exception
+     */
+    @POST
+    @Path("scheduleExp/set")
+    @Produces(MediaType.APPLICATION_JSON)
+    public RestResult scheduleExpSet(@FormParam("appName") String appName,
+                                     @FormParam("appToken") String appToken,
+                                     @FormParam("user") String user,
+                                     @FormParam("parameters") String parameters) {
+
+        LOGGER.debug("更新job依赖");
+        try {
+            AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
+
+            JobScheduleExpVo jobVo = JsonHelper.fromJson(parameters, JobScheduleExpVo.class);
+            // 构造请求
+            RestModifyJobScheduleExpRequest.Builder builder = RestModifyJobScheduleExpRequest.newBuilder().setAppAuth(appAuth).setUser(user).setJobId(jobVo.getJobId());
+
+            Preconditions.checkArgument(jobVo.getScheduleExpressionList() != null && jobVo.getScheduleExpressionList().size() > 0, "计划表达式为空");
+
             if (jobVo.getScheduleExpressionList() != null && jobVo.getScheduleExpressionList().size() > 0) {
-                for (JobEntryVo.ScheduleExpressionEntry entryInput : jobVo.getScheduleExpressionList()) {
+                for (JobScheduleExpVo.ScheduleExpressionEntry entryInput : jobVo.getScheduleExpressionList()) {
                     builder.addExpressionEntry(ConvertValidUtils.ConvertScheduleExpressionEntry(entryInput));
                 }
             }
-            if (jobVo.getDependencyList() != null && jobVo.getDependencyList().size() > 0) {
-                for (JobEntryVo.DependencyEntry entryInput : jobVo.getDependencyList()) {
-                    builder.addDependencyEntry(ConvertValidUtils.ConvertDependencyEntry(entryInput));
-                }
-            }
 
-            // 发送信息到server修改job基本信息
-            ServerModifyJobResponse response = (ServerModifyJobResponse) callActor(AkkaType.SERVER, builder.build());
+            // 发送请求到server
+            ServerModifyJobScheduleExpResponse response = (ServerModifyJobScheduleExpResponse) callActor(AkkaType.SERVER, builder.build());
 
-            // 判断修改基本信息是否成功，修改基本信息成功后才尝试修改依赖
+            // 判断是否成功
             if (response.getSuccess()) {
                 return successResult();
-            }
-            // 修改基本信息出错
-            else {
+            } else {
                 return errorResult(response.getMessage());
             }
         } catch (Exception e) {
@@ -210,19 +288,17 @@ public class JobController extends AbstractController {
             long jobId = para.getLongNotNull("jobId");
             int status = para.getIntegerNotNull("status");
 
-            // 构造修改job基本信息请求
+            // 构造请求
             RestModifyJobStatusRequest.Builder builder = RestModifyJobStatusRequest.newBuilder().setAppAuth(appAuth).setUser(user).setJobId(jobId)
                     .setStatus(status);
 
-            // 发送信息到server修改job基本信息
+            // 发送请求到server
             ServerModifyJobStatusResponse response = (ServerModifyJobStatusResponse) callActor(AkkaType.SERVER, builder.build());
 
-            // 判断修改基本信息是否成功，修改基本信息成功后才尝试修改依赖
+            // 判断是否成功
             if (response.getSuccess()) {
                 return successResult();
-            }
-            // 修改基本信息出错
-            else {
+            } else {
                 return errorResult(response.getMessage());
             }
         } catch (Exception e) {

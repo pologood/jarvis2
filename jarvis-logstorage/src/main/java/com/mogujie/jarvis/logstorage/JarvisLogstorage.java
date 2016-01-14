@@ -13,6 +13,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.mogujie.jarvis.core.JarvisConstants;
+import com.mogujie.jarvis.core.metrics.Metrics;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.logstorage.actor.LogReaderActor;
 import com.typesafe.config.Config;
@@ -35,6 +36,8 @@ public class JarvisLogstorage {
         int actorNum = logConfig.getInt("logstorage.actors.num", 1000);
 
         system.actorOf(new SmallestMailboxPool(actorNum).props(LogReaderActor.props()), JarvisConstants.LOGSTORAGE_AKKA_SYSTEM_NAME);
+
+        Metrics.start(ConfigUtils.getLogstorageConfig());
 
         LOGGER.info("Jarvis logStorage started.");
 

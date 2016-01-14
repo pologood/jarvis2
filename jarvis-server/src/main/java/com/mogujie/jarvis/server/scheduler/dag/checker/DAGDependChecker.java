@@ -16,12 +16,13 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.http.annotation.NotThreadSafe;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.google.common.collect.Maps;
 import com.mogujie.jarvis.core.expression.DefaultDependencyStrategyExpression;
 import com.mogujie.jarvis.core.expression.DependencyExpression;
 import com.mogujie.jarvis.core.expression.DependencyStrategyExpression;
-import com.mogujie.jarvis.core.expression.TimeOffsetExpression;
 import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.server.domain.CommonStrategy;
 import com.mogujie.jarvis.server.domain.JobDependencyEntry;
@@ -41,6 +42,8 @@ public class DAGDependChecker {
 
     // Map<JobId, JobDependStatus>
     private Map<Long, JobDependStatus> jobDependMap = Maps.newHashMap();
+
+    private static final Logger LOGGER = LogManager.getLogger();
 
     public DAGDependChecker(long jobId) {
         this.myJobId = jobId;
@@ -68,6 +71,9 @@ public class DAGDependChecker {
             JobDependStatus dependStatus = jobDependMap.get(jobId);
             if (dependStatus == null) {
                 dependStatus = create(myJobId, jobId);
+                LOGGER.info("create JobDependStatus, myJobId={}, preJobId={}, dependencyExpression={},"
+                        + "dependencyStrategy={}", myJobId, jobId, dependStatus.getDependencyExpression(),
+                        dependStatus.getDependencyStrategy());
                 jobDependMap.put(jobId, dependStatus);
             }
 
@@ -99,17 +105,12 @@ public class DAGDependChecker {
         return dependTaskMap;
     }
 
-    public void updateDependency(long parentId, String expression, int strategy) {
-        JobDependStatus dependSchedule = jobDependMap.get(parentId);
-        if (dependSchedule != null) {
-            DependencyExpression dependencyExpression = null;
-            if (expression != null) {
-                dependencyExpression = new TimeOffsetExpression(expression);
-                dependSchedule.setDependencyExpression(dependencyExpression);
-                CommonStrategy commonStrategy = CommonStrategy.getInstance(strategy);
-                DependencyStrategyExpression dependencyStrategy = new DefaultDependencyStrategyExpression(commonStrategy.getExpression());
-                dependSchedule.setDependencyStrategy(dependencyStrategy);
-            }
+    public void updateDependency(long preJobId) {
+        JobDependStatus dependStatus = jobDependMap.get(preJobId);
+        if (dependStatus != null) {
+            dependStatus.updateDependency();
+            LOGGER.info("update dependency, new expression={}, new strategy={}",
+                    dependStatus.getDependencyExpression(), dependStatus.getDependencyStrategy());
         }
     }
 
@@ -120,6 +121,7 @@ public class DAGDependChecker {
             long jobId = entry.getKey();
             if (!needJobs.contains(jobId)) {
                 it.remove();
+                LOGGER.warn("needJobs[{}] not contains JobDependStatus[jobId={}], auto fix to remove it.", needJobs, jobId);
             }
         }
     }

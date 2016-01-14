@@ -8,16 +8,15 @@
 
 package com.mogujie.jarvis.server.service;
 
-import java.util.Date;
-import java.util.List;
-
-import org.joda.time.DateTime;
-
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.mogujie.jarvis.dao.generate.WorkerMapper;
 import com.mogujie.jarvis.dto.generate.Worker;
 import com.mogujie.jarvis.dto.generate.WorkerExample;
+import org.joda.time.DateTime;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author guangming
@@ -64,4 +63,11 @@ public class WorkerService {
         workerMapper.updateByPrimaryKeySelective(worker);
     }
 
+    public WorkerMapper getWorkerMapper() {
+        return workerMapper;
+    }
+
+    public void setWorkerMapper(WorkerMapper workerMapper) {
+        this.workerMapper = workerMapper;
+    }
 }

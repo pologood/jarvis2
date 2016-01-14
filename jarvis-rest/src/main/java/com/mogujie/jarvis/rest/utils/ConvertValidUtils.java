@@ -3,16 +3,14 @@ package com.mogujie.jarvis.rest.utils;
 import com.google.common.base.Preconditions;
 import com.mogujie.jarvis.core.domain.AppStatus;
 import com.mogujie.jarvis.core.domain.OperationMode;
-import com.mogujie.jarvis.core.expression.CronExpression;
-import com.mogujie.jarvis.core.expression.FixedDelayExpression;
-import com.mogujie.jarvis.core.expression.FixedRateExpression;
-import com.mogujie.jarvis.core.expression.ISO8601Expression;
-import com.mogujie.jarvis.core.expression.ScheduleExpression;
-import com.mogujie.jarvis.core.expression.ScheduleExpressionType;
 import com.mogujie.jarvis.core.expression.TimeOffsetExpression;
+import com.mogujie.jarvis.core.util.ExpressionUtils;
 import com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry;
 import com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry;
 import com.mogujie.jarvis.rest.vo.JobEntryVo;
+import com.mogujie.jarvis.rest.vo.JobScheduleExpVo;
+import com.mogujie.jarvis.rest.vo.JobDependencyVo;
+
 import com.mogujie.jarvis.server.domain.CommonStrategy;
 
 /**
@@ -25,61 +23,64 @@ public class ConvertValidUtils {
 
     /**
      * 计划表达式-转换
+     *
      * @param input
      * @return
      */
-    public static ScheduleExpressionEntry ConvertScheduleExpressionEntry(JobEntryVo.ScheduleExpressionEntry input) {
+    public static ScheduleExpressionEntry ConvertScheduleExpressionEntry(JobScheduleExpVo.ScheduleExpressionEntry input) {
 
-        Integer expressionType = input.getExpressionType();
-        Preconditions.checkArgument(expressionType != null, "scheduleExpressionType不能为空");
-        Preconditions.checkArgument(ScheduleExpressionType.isValid(expressionType),
-                "scheduleExpressionType不对。type:" + expressionType.toString());
+        Integer mode = input.getOperatorMode();
+        Preconditions.checkArgument(mode != null && OperationMode.isValid(mode), "操作模式不对");
 
-        String expression = input.getExpression();
-        Preconditions.checkArgument(expression != null, "scheduleExpression不能为空");
-        ScheduleExpression scheduleExpression = null;
-        if (expressionType == ScheduleExpressionType.CRON.getValue()) {
-            scheduleExpression = new CronExpression(expression);
-        } else if (expressionType == ScheduleExpressionType.FIXED_RATE.getValue()) {
-            scheduleExpression = new FixedRateExpression(expression);
-        } else if (expressionType == ScheduleExpressionType.FIXED_DELAY.getValue()) {
-            scheduleExpression = new FixedDelayExpression(expression);
-        } else if (expressionType == ScheduleExpressionType.ISO8601.getValue()) {
-            scheduleExpression = new ISO8601Expression(expression);
+        Long expressionId = input.getExpressionId() == null ? 0 : input.getExpressionId();
+        if (mode == OperationMode.EDIT.getValue() || mode == OperationMode.DELETE.getValue()) {
+            Preconditions.checkArgument(expressionId != 0, "删除与编辑模式下,计划表达式ID不能为空");
         }
-        Preconditions.checkArgument(scheduleExpression.isValid(), "scheduleExpression不对");
 
-        ScheduleExpressionEntry entry = ScheduleExpressionEntry.newBuilder().setExpressionType(expressionType)
-                .setScheduleExpression(expression)
+        Integer expressType = input.getExpressionType();
+        String expression = input.getExpression();
+        //[追加]与[修改]模式下,计划表达式的内容要做检查
+        if (mode == OperationMode.ADD.getValue() || mode == OperationMode.EDIT.getValue()) {
+            ExpressionUtils.checkExpression(expressType, expression);
+        }
+
+        ScheduleExpressionEntry entry = ScheduleExpressionEntry.newBuilder()
+                .setOperator(mode)
+                .setExpressionId(expressionId)
+                .setExpressionType(expressType == null ? 0 : expressType)
+                .setScheduleExpression(expression == null ? "" : expression)
                 .build();
         return entry;
     }
 
     /**
      * 依赖-转换
+     *
      * @param input
      * @return
      */
-    public static DependencyEntry ConvertDependencyEntry(JobEntryVo.DependencyEntry input) {
+    public static DependencyEntry ConvertDependencyEntry(JobDependencyVo.DependencyEntry input) {
         Integer mode = input.getOperatorMode();
-        Preconditions.checkArgument(mode != null && OperationMode.isValid(mode), "操作模式不对");
+        Preconditions.checkArgument(mode != null && OperationMode.isValid(mode), "操作模式不对.value:" + input.getOperatorMode());
 
         Long preJobId = input.getPreJobId();
         Preconditions.checkArgument(preJobId != null && preJobId != 0, "依赖JobId不能为空");
 
         Integer commonStrategy = input.getCommonStrategy();
-        Preconditions.checkArgument(commonStrategy != null && CommonStrategy.isValid(commonStrategy), "依赖的通用策略不对");
-
-        //偏移策略可以为空，表示runtime模式。
         String offsetStrategy = input.getOffsetStrategy();
-        if (offsetStrategy == null || offsetStrategy.equals("")) {
-            offsetStrategy = "";
-        } else {
-            Preconditions.checkArgument(new TimeOffsetExpression(offsetStrategy).isValid(), "依赖的偏移策略不对");
+
+        if (mode == OperationMode.ADD.getValue() || mode == OperationMode.EDIT.getValue()) {
+            Preconditions.checkArgument(commonStrategy != null, "依赖的通用策略不能为空.value:" + commonStrategy);
+            Preconditions.checkArgument(CommonStrategy.isValid(commonStrategy), "依赖的通用策略不对.value:" + commonStrategy);
+
+            Preconditions.checkArgument(offsetStrategy == null || offsetStrategy.equals("") || new TimeOffsetExpression(offsetStrategy).isValid()
+                    , "依赖的偏移策略不对.value:" + input.getOffsetStrategy());
         }
 
-        DependencyEntry entry = DependencyEntry.newBuilder().setOperator(mode).setJobId(preJobId)
-                .setCommonDependStrategy(commonStrategy).setOffsetDependStrategy(offsetStrategy)
+        DependencyEntry entry = DependencyEntry.newBuilder()
+                .setOperator(mode).setJobId(preJobId)
+                .setCommonDependStrategy(commonStrategy == null ? 0 : commonStrategy)
+                .setOffsetDependStrategy(offsetStrategy == null ? "" : offsetStrategy)
                 .build();
         return entry;
     }

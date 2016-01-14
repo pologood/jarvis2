@@ -190,7 +190,7 @@ public enum JobGraph {
                 removeDependency(preJobId, jobId);
                 LOGGER.info("remove dependency successfully, parent {}, child {}", preJobId, jobId);
             } else if (entry.getOperation().equals(OperationMode.EDIT)) {
-                modifyDependency(preJobId, jobId, entry.getOffsetStrategy(), entry.getCommonStrategy());
+                modifyDependency(preJobId, jobId);
                 LOGGER.info("modify dependency strategy, new common strategy is {}, new offset Strategy is {}", entry.getCommonStrategy(),
                         entry.getOffsetStrategy());
             }
@@ -289,7 +289,7 @@ public enum JobGraph {
                     LOGGER.info("{} pass the dependency check", dagJob);
                     // 提交给TimeScheduler进行时间调度
                     Map<Long, List<Long>> dependTaskIdMap = dagJob.getDependTaskIdMap(planScheduleTime);
-                    AddPlanEvent event = new AddPlanEvent(jobId, scheduleTime, dependTaskIdMap);
+                    AddPlanEvent event = new AddPlanEvent(jobId, planScheduleTime, dependTaskIdMap);
                     controller.notify(event);
                 }
             }
@@ -389,12 +389,12 @@ public enum JobGraph {
         }
     }
 
-    protected void modifyDependency(long parentId, long childId, String offsetStrategy, int commonStrategy) {
+    protected void modifyDependency(long parentId, long childId) {
         DAGJob parent = jobMap.get(parentId);
         DAGJob child = jobMap.get(childId);
         if (parent != null && child != null) {
             DAGDependChecker checker = child.getDependChecker();
-            checker.updateDependency(parentId, offsetStrategy, commonStrategy);
+            checker.updateDependency(parentId);
         }
     }
 

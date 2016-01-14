@@ -196,7 +196,7 @@ public class JobService {
     public void deleteScheduleExpression(long jobId, long expressionId) {
         jobScheduleExpressionMapper.deleteByPrimaryKey(expressionId);
         get(jobId).removeScheduleExpression(expressionId);
-   }
+    }
 
     /**
      * 更新job的计划表达式
@@ -241,15 +241,19 @@ public class JobService {
 
         JobDependencyEntry jobDependencyEntry = getJobDependencyEntry(record);
         JobEntry jobEntry = metaStore.get(record.getJobId());
-        jobEntry.addDependency(record.getPreJobId(), jobDependencyEntry);
+        if (jobEntry != null) {
+            jobEntry.addDependency(record.getPreJobId(), jobDependencyEntry);
+        }
     }
 
     public void updateJobDepend(JobDepend record) {
-        jobDependMapper.updateByPrimaryKey(record);
+        jobDependMapper.updateByPrimaryKeySelective(record);
 
         JobDependencyEntry jobDependencyEntry = getJobDependencyEntry(record);
         JobEntry jobEntry = metaStore.get(record.getJobId());
-        jobEntry.updateDependency(record.getPreJobId(), jobDependencyEntry);
+        if (jobEntry != null) {
+            jobEntry.updateDependency(record.getPreJobId(), jobDependencyEntry);
+        }
     }
 
     public void deleteJobDepend(long jobId, long preJobId) {

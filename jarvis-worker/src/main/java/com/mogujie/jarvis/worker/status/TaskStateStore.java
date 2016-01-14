@@ -20,7 +20,7 @@ public interface TaskStateStore {
 
     void write(TaskDetail taskDetail, int status);
 
-    void delete(TaskDetail taskDetail);
+    void delete(String fullId);
 
     Map<TaskDetail, Integer> restore();
 
