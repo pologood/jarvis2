@@ -9,6 +9,7 @@ package com.mogujie.jarvis.server.alarm;
 
 import java.util.List;
 
+import com.mogujie.jarvis.core.domain.AlarmType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -91,7 +92,7 @@ public class AlarmScheduler extends Scheduler {
                 List<AlarmType> alarmTypes = Lists.newArrayList();
                 for (String str : tokens) {
                     int type = Integer.parseInt(str);
-                    alarmTypes.add(AlarmType.getInstance(type));
+                    alarmTypes.add(AlarmType.parseValue(type));
                 }
 
                 List<String> receiver = Lists.newArrayList(alarm.getReceiver().split(","));

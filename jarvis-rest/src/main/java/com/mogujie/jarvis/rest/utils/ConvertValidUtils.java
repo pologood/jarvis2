@@ -1,17 +1,19 @@
 package com.mogujie.jarvis.rest.utils;
 
 import com.google.common.base.Preconditions;
+import com.mogujie.jarvis.core.domain.AlarmStatus;
+import com.mogujie.jarvis.core.domain.AlarmType;
 import com.mogujie.jarvis.core.domain.AppStatus;
 import com.mogujie.jarvis.core.domain.OperationMode;
 import com.mogujie.jarvis.core.expression.TimeOffsetExpression;
 import com.mogujie.jarvis.core.util.ExpressionUtils;
 import com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry;
 import com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry;
-import com.mogujie.jarvis.rest.vo.JobEntryVo;
-import com.mogujie.jarvis.rest.vo.JobScheduleExpVo;
-import com.mogujie.jarvis.rest.vo.JobDependencyVo;
+import com.mogujie.jarvis.rest.vo.*;
 
 import com.mogujie.jarvis.server.domain.CommonStrategy;
+
+import java.util.Arrays;
 
 /**
  * 检验函数
@@ -89,6 +91,7 @@ public class ConvertValidUtils {
      * APP内容检查
      */
     public static void checkAppVo(OperationMode mode, String appName, String owner, Integer status, Integer maxConcurrency) {
+
         //追加模式
         if (mode == OperationMode.ADD) {
             Preconditions.checkArgument(appName != null && !appName.trim().equals(""), "appName不能为空");
@@ -103,5 +106,36 @@ public class ConvertValidUtils {
             Preconditions.checkArgument(status == null || AppStatus.isValid(status), "status内容不对。value:" + status);
         }
     }
+
+    /**
+     * alarm内容检查
+     */
+    public static void checkAlarm(OperationMode mode, AlarmVo vo) {
+
+        Long jobId = vo.getJobId();
+        Preconditions.checkArgument(!mode.isIn(OperationMode.ADD,OperationMode.EDIT,OperationMode.DELETE)
+        || (jobId != null && jobId != 0),"jobId不能为空。");
+
+        String type = vo.getAlarmType();
+        Preconditions.checkArgument( !mode.isIn(OperationMode.ADD) || type != null,"alarmType不能为空。");
+        Preconditions.checkArgument( type == null || AlarmType.isValid(type),"alarmType不对。value:" + type);
+
+        Preconditions.checkArgument( !mode.isIn(OperationMode.ADD) || vo.getReceiver() != null,"receiver不能为空。");
+
+        Integer status = vo.getStatus();
+        Preconditions.checkArgument( !mode.isIn(OperationMode.ADD) || status != null,"status不能为空。");
+        Preconditions.checkArgument(status == null || AlarmStatus.isValid(status),"status类型不对。 value:" + status);
+
+    }
+
+    /**
+     * alarm查询检查
+     */
+    public static void checkAlarmQuery(AlarmQueryVo vo) {
+        String jobIds = vo.getJobIds();
+    }
+
+
+
 
 }

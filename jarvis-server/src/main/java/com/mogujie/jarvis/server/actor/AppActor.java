@@ -27,6 +27,7 @@ import com.mogujie.jarvis.server.service.AppService;
 
 import akka.actor.Props;
 import akka.actor.UntypedActor;
+import org.mybatis.guice.transactional.Transactional;
 
 public class AppActor extends UntypedActor {
 
@@ -56,7 +57,8 @@ public class AppActor extends UntypedActor {
         }
     }
 
-    public void createApplication(RestCreateApplicationRequest request) {
+    @Transactional
+    private void createApplication(RestCreateApplicationRequest request) {
         ServerCreateApplicationResponse response = null;
         try {
             String key = UUID.randomUUID().toString().replace("-", "");
@@ -80,7 +82,8 @@ public class AppActor extends UntypedActor {
         }
     }
 
-    public void modifyApplication(RestModifyApplicationRequest request) {
+    @Transactional
+    private void modifyApplication(RestModifyApplicationRequest request) {
         ServerModifyApplicationResponse response = null;
 
         App app = new App();

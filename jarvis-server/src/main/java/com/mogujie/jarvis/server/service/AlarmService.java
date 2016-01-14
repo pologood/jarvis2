@@ -15,6 +15,7 @@ import com.google.inject.Singleton;
 import com.mogujie.jarvis.dao.generate.AlarmMapper;
 import com.mogujie.jarvis.dto.generate.Alarm;
 import com.mogujie.jarvis.dto.generate.AlarmExample;
+import com.mogujie.jarvis.dto.generate.WorkerGroup;
 
 @Singleton
 public class AlarmService {
@@ -32,4 +33,23 @@ public class AlarmService {
 
         return null;
     }
+
+    public int insert(Alarm alarm) {
+        return alarmMapper.insertSelective(alarm);
+    }
+
+    public int upsetByJobId(Alarm alarm){
+        AlarmExample alarmExample = new AlarmExample();
+        alarmExample.createCriteria().andJobIdEqualTo(alarm.getJobId());
+        return  alarmMapper.updateByExampleSelective(alarm,alarmExample);
+    }
+
+    public int deleteByJobId(long jobId){
+        AlarmExample alarmExample = new AlarmExample();
+        alarmExample.createCriteria().andJobIdEqualTo(jobId);
+        return  alarmMapper.deleteByExample(alarmExample);
+    }
+
+
+
 }

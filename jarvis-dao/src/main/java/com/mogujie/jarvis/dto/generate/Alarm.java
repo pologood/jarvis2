@@ -15,6 +15,10 @@ public class Alarm {
 
     private Date createTime;
 
+    private Date updateTime;
+
+    private String updateUser;
+
     public Integer getId() {
         return id;
     }
@@ -61,5 +65,21 @@ public class Alarm {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public String getUpdateUser() {
+        return updateUser;
+    }
+
+    public void setUpdateUser(String updateUser) {
+        this.updateUser = updateUser;
     }
 }

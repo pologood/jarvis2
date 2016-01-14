@@ -8,10 +8,10 @@ public final class ReportTaskProtos {
   public static void registerAllExtensions(
       com.google.protobuf.ExtensionRegistry registry) {
   }
-  public interface WorkerReportTaskRequestOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface WorkerReportTaskRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:WorkerReportTaskRequest)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required string full_id = 1;
     /**
      * <code>required string full_id = 1;</code>
      */
@@ -26,7 +26,6 @@ public final class ReportTaskProtos {
     com.google.protobuf.ByteString
         getFullIdBytes();
 
-    // required string task_name = 2;
     /**
      * <code>required string task_name = 2;</code>
      */
@@ -41,7 +40,6 @@ public final class ReportTaskProtos {
     com.google.protobuf.ByteString
         getTaskNameBytes();
 
-    // required string app_name = 3;
     /**
      * <code>required string app_name = 3;</code>
      */
@@ -56,7 +54,6 @@ public final class ReportTaskProtos {
     com.google.protobuf.ByteString
         getAppNameBytes();
 
-    // required string user = 4;
     /**
      * <code>required string user = 4;</code>
      */
@@ -71,7 +68,6 @@ public final class ReportTaskProtos {
     com.google.protobuf.ByteString
         getUserBytes();
 
-    // required string job_type = 5;
     /**
      * <code>required string job_type = 5;</code>
      */
@@ -86,7 +82,6 @@ public final class ReportTaskProtos {
     com.google.protobuf.ByteString
         getJobTypeBytes();
 
-    // required string content = 6;
     /**
      * <code>required string content = 6;</code>
      */
@@ -101,7 +96,6 @@ public final class ReportTaskProtos {
     com.google.protobuf.ByteString
         getContentBytes();
 
-    // optional int32 priority = 7 [default = 1];
     /**
      * <code>optional int32 priority = 7 [default = 1];</code>
      */
@@ -111,7 +105,6 @@ public final class ReportTaskProtos {
      */
     int getPriority();
 
-    // repeated .MapEntry parameters = 8;
     /**
      * <code>repeated .MapEntry parameters = 8;</code>
      */
@@ -140,8 +133,9 @@ public final class ReportTaskProtos {
    * Protobuf type {@code WorkerReportTaskRequest}
    */
   public static final class WorkerReportTaskRequest extends
-      com.google.protobuf.GeneratedMessage
-      implements WorkerReportTaskRequestOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:WorkerReportTaskRequest)
+      WorkerReportTaskRequestOrBuilder {
     // Use WorkerReportTaskRequest.newBuilder() to construct.
     private WorkerReportTaskRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -188,33 +182,39 @@ public final class ReportTaskProtos {
               break;
             }
             case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              fullId_ = input.readBytes();
+              fullId_ = bs;
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              taskName_ = input.readBytes();
+              taskName_ = bs;
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              appName_ = input.readBytes();
+              appName_ = bs;
               break;
             }
             case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              user_ = input.readBytes();
+              user_ = bs;
               break;
             }
             case 42: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000010;
-              jobType_ = input.readBytes();
+              jobType_ = bs;
               break;
             }
             case 50: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000020;
-              content_ = input.readBytes();
+              content_ = bs;
               break;
             }
             case 56: {
@@ -273,7 +273,6 @@ public final class ReportTaskProtos {
     }
 
     private int bitField0_;
-    // required string full_id = 1;
     public static final int FULL_ID_FIELD_NUMBER = 1;
     private java.lang.Object fullId_;
     /**
@@ -316,7 +315,6 @@ public final class ReportTaskProtos {
       }
     }
 
-    // required string task_name = 2;
     public static final int TASK_NAME_FIELD_NUMBER = 2;
     private java.lang.Object taskName_;
     /**
@@ -359,7 +357,6 @@ public final class ReportTaskProtos {
       }
     }
 
-    // required string app_name = 3;
     public static final int APP_NAME_FIELD_NUMBER = 3;
     private java.lang.Object appName_;
     /**
@@ -402,7 +399,6 @@ public final class ReportTaskProtos {
       }
     }
 
-    // required string user = 4;
     public static final int USER_FIELD_NUMBER = 4;
     private java.lang.Object user_;
     /**
@@ -445,7 +441,6 @@ public final class ReportTaskProtos {
       }
     }
 
-    // required string job_type = 5;
     public static final int JOB_TYPE_FIELD_NUMBER = 5;
     private java.lang.Object jobType_;
     /**
@@ -488,7 +483,6 @@ public final class ReportTaskProtos {
       }
     }
 
-    // required string content = 6;
     public static final int CONTENT_FIELD_NUMBER = 6;
     private java.lang.Object content_;
     /**
@@ -531,7 +525,6 @@ public final class ReportTaskProtos {
       }
     }
 
-    // optional int32 priority = 7 [default = 1];
     public static final int PRIORITY_FIELD_NUMBER = 7;
     private int priority_;
     /**
@@ -547,7 +540,6 @@ public final class ReportTaskProtos {
       return priority_;
     }
 
-    // repeated .MapEntry parameters = 8;
     public static final int PARAMETERS_FIELD_NUMBER = 8;
     private java.util.List<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry> parameters_;
     /**
@@ -596,7 +588,8 @@ public final class ReportTaskProtos {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasFullId()) {
         memoizedIsInitialized = 0;
@@ -782,8 +775,9 @@ public final class ReportTaskProtos {
      * Protobuf type {@code WorkerReportTaskRequest}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskRequestOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:WorkerReportTaskRequest)
+        com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mogujie.jarvis.protocol.ReportTaskProtos.internal_static_WorkerReportTaskRequest_descriptor;
@@ -1034,7 +1028,6 @@ public final class ReportTaskProtos {
       }
       private int bitField0_;
 
-      // required string full_id = 1;
       private java.lang.Object fullId_ = "";
       /**
        * <code>required string full_id = 1;</code>
@@ -1048,9 +1041,12 @@ public final class ReportTaskProtos {
       public java.lang.String getFullId() {
         java.lang.Object ref = fullId_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          fullId_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            fullId_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -1108,7 +1104,6 @@ public final class ReportTaskProtos {
         return this;
       }
 
-      // required string task_name = 2;
       private java.lang.Object taskName_ = "";
       /**
        * <code>required string task_name = 2;</code>
@@ -1122,9 +1117,12 @@ public final class ReportTaskProtos {
       public java.lang.String getTaskName() {
         java.lang.Object ref = taskName_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          taskName_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            taskName_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -1182,7 +1180,6 @@ public final class ReportTaskProtos {
         return this;
       }
 
-      // required string app_name = 3;
       private java.lang.Object appName_ = "";
       /**
        * <code>required string app_name = 3;</code>
@@ -1196,9 +1193,12 @@ public final class ReportTaskProtos {
       public java.lang.String getAppName() {
         java.lang.Object ref = appName_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          appName_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            appName_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -1256,7 +1256,6 @@ public final class ReportTaskProtos {
         return this;
       }
 
-      // required string user = 4;
       private java.lang.Object user_ = "";
       /**
        * <code>required string user = 4;</code>
@@ -1270,9 +1269,12 @@ public final class ReportTaskProtos {
       public java.lang.String getUser() {
         java.lang.Object ref = user_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          user_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            user_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -1330,7 +1332,6 @@ public final class ReportTaskProtos {
         return this;
       }
 
-      // required string job_type = 5;
       private java.lang.Object jobType_ = "";
       /**
        * <code>required string job_type = 5;</code>
@@ -1344,9 +1345,12 @@ public final class ReportTaskProtos {
       public java.lang.String getJobType() {
         java.lang.Object ref = jobType_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          jobType_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            jobType_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -1404,7 +1408,6 @@ public final class ReportTaskProtos {
         return this;
       }
 
-      // required string content = 6;
       private java.lang.Object content_ = "";
       /**
        * <code>required string content = 6;</code>
@@ -1418,9 +1421,12 @@ public final class ReportTaskProtos {
       public java.lang.String getContent() {
         java.lang.Object ref = content_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          content_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            content_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -1478,7 +1484,6 @@ public final class ReportTaskProtos {
         return this;
       }
 
-      // optional int32 priority = 7 [default = 1];
       private int priority_ = 1;
       /**
        * <code>optional int32 priority = 7 [default = 1];</code>
@@ -1511,7 +1516,6 @@ public final class ReportTaskProtos {
         return this;
       }
 
-      // repeated .MapEntry parameters = 8;
       private java.util.List<com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry> parameters_ =
         java.util.Collections.emptyList();
       private void ensureParametersIsMutable() {
@@ -1653,7 +1657,8 @@ public final class ReportTaskProtos {
           java.lang.Iterable<? extends com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry> values) {
         if (parametersBuilder_ == null) {
           ensureParametersIsMutable();
-          super.addAll(values, parameters_);
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, parameters_);
           onChanged();
         } else {
           parametersBuilder_.addAllMessages(values);
@@ -1762,10 +1767,10 @@ public final class ReportTaskProtos {
     // @@protoc_insertion_point(class_scope:WorkerReportTaskRequest)
   }
 
-  public interface ServerReportTaskResponseOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface ServerReportTaskResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:ServerReportTaskResponse)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required bool success = 1;
     /**
      * <code>required bool success = 1;</code>
      */
@@ -1775,7 +1780,6 @@ public final class ReportTaskProtos {
      */
     boolean getSuccess();
 
-    // optional string message = 2 [default = ""];
     /**
      * <code>optional string message = 2 [default = ""];</code>
      */
@@ -1794,8 +1798,9 @@ public final class ReportTaskProtos {
    * Protobuf type {@code ServerReportTaskResponse}
    */
   public static final class ServerReportTaskResponse extends
-      com.google.protobuf.GeneratedMessage
-      implements ServerReportTaskResponseOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:ServerReportTaskResponse)
+      ServerReportTaskResponseOrBuilder {
     // Use ServerReportTaskResponse.newBuilder() to construct.
     private ServerReportTaskResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -1847,8 +1852,9 @@ public final class ReportTaskProtos {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              message_ = input.readBytes();
+              message_ = bs;
               break;
             }
           }
@@ -1891,7 +1897,6 @@ public final class ReportTaskProtos {
     }
 
     private int bitField0_;
-    // required bool success = 1;
     public static final int SUCCESS_FIELD_NUMBER = 1;
     private boolean success_;
     /**
@@ -1907,7 +1912,6 @@ public final class ReportTaskProtos {
       return success_;
     }
 
-    // optional string message = 2 [default = ""];
     public static final int MESSAGE_FIELD_NUMBER = 2;
     private java.lang.Object message_;
     /**
@@ -1957,7 +1961,8 @@ public final class ReportTaskProtos {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasSuccess()) {
         memoizedIsInitialized = 0;
@@ -2075,8 +2080,9 @@ public final class ReportTaskProtos {
      * Protobuf type {@code ServerReportTaskResponse}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskResponseOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:ServerReportTaskResponse)
+        com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mogujie.jarvis.protocol.ReportTaskProtos.internal_static_ServerReportTaskResponse_descriptor;
@@ -2204,7 +2210,6 @@ public final class ReportTaskProtos {
       }
       private int bitField0_;
 
-      // required bool success = 1;
       private boolean success_ ;
       /**
        * <code>required bool success = 1;</code>
@@ -2237,7 +2242,6 @@ public final class ReportTaskProtos {
         return this;
       }
 
-      // optional string message = 2 [default = ""];
       private java.lang.Object message_ = "";
       /**
        * <code>optional string message = 2 [default = ""];</code>
@@ -2251,9 +2255,12 @@ public final class ReportTaskProtos {
       public java.lang.String getMessage() {
         java.lang.Object ref = message_;
         if (!(ref instanceof java.lang.String)) {
-          java.lang.String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          message_ = s;
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            message_ = s;
+          }
           return s;
         } else {
           return (java.lang.String) ref;
@@ -2322,12 +2329,12 @@ public final class ReportTaskProtos {
     // @@protoc_insertion_point(class_scope:ServerReportTaskResponse)
   }
 
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_WorkerReportTaskRequest_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_WorkerReportTaskRequest_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_ServerReportTaskResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -2352,30 +2359,31 @@ public final class ReportTaskProtos {
       "rtTaskProtos"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-      new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
-        public com.google.protobuf.ExtensionRegistry assignDescriptors(
-            com.google.protobuf.Descriptors.FileDescriptor root) {
-          descriptor = root;
-          internal_static_WorkerReportTaskRequest_descriptor =
-            getDescriptor().getMessageTypes().get(0);
-          internal_static_WorkerReportTaskRequest_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_WorkerReportTaskRequest_descriptor,
-              new java.lang.String[] { "FullId", "TaskName", "AppName", "User", "JobType", "Content", "Priority", "Parameters", });
-          internal_static_ServerReportTaskResponse_descriptor =
-            getDescriptor().getMessageTypes().get(1);
-          internal_static_ServerReportTaskResponse_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_ServerReportTaskResponse_descriptor,
-              new java.lang.String[] { "Success", "Message", });
-          return null;
-        }
-      };
+        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
+          public com.google.protobuf.ExtensionRegistry assignDescriptors(
+              com.google.protobuf.Descriptors.FileDescriptor root) {
+            descriptor = root;
+            return null;
+          }
+        };
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           com.mogujie.jarvis.protocol.MapEntryProtos.getDescriptor(),
         }, assigner);
+    internal_static_WorkerReportTaskRequest_descriptor =
+      getDescriptor().getMessageTypes().get(0);
+    internal_static_WorkerReportTaskRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_WorkerReportTaskRequest_descriptor,
+        new java.lang.String[] { "FullId", "TaskName", "AppName", "User", "JobType", "Content", "Priority", "Parameters", });
+    internal_static_ServerReportTaskResponse_descriptor =
+      getDescriptor().getMessageTypes().get(1);
+    internal_static_ServerReportTaskResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_ServerReportTaskResponse_descriptor,
+        new java.lang.String[] { "Success", "Message", });
+    com.mogujie.jarvis.protocol.MapEntryProtos.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

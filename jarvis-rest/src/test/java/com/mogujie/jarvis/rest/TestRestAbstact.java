@@ -21,14 +21,20 @@ public class TestRestAbstact {
     @BeforeClass
     public static void before() throws IOException {
         int port = ConfigUtils.getRestConfig().getInt("rest.http.port", 8080);
-        baseUrl = "http://" + IPUtils.getIPV4Address() + ":" + port;
+        String host = ConfigUtils.getRestConfig().getString("rest.http.hostname");
+        if (host == null || host.trim().equals("")) {
+            host = IPUtils.getIPV4Address();
+        }
+        baseUrl = "http://" + host + ":" + port;
         server = RestServerFactory.createHttpServer();
         server.start();
     }
 
     @AfterClass
     public static void after() {
-        server.shutdown();
+        if(server != null){
+            server.shutdown();
+        }
     }
 
 }

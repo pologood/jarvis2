@@ -1,5 +1,7 @@
 package com.mogujie.jarvis.core.domain;
 
+import com.google.common.primitives.Ints;
+
 /**
  * Created by hejian on 16/1/8.
  */
@@ -22,6 +24,17 @@ public enum AlarmType {
         return value;
     }
 
+    public static AlarmType parseValue(int value) {
+        AlarmType[] statusList = AlarmType.values();
+        for (AlarmType s : statusList) {
+            if (s.getValue() == value) {
+                return s;
+            }
+        }
+        throw new IllegalArgumentException("AlarmType value is invalid. value:" + value);
+    }
+
+
     public String getDescription() {
         return description;
     }
@@ -35,4 +48,25 @@ public enum AlarmType {
         }
         return false;
     }
+
+    /**
+     * 检查字符串(用逗号或者分号间隔的值)
+     *
+     * @param values
+     * @return
+     */
+    public static Boolean isValid(String values){
+        if (values == null) {
+            return false;
+        }
+        String[] valueArray = values.split("[;,]");
+        for (String strValue : valueArray) {
+            Integer intValue = Ints.tryParse(strValue);
+            if (intValue == null || !isValid(intValue)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }

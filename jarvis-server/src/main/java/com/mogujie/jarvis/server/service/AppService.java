@@ -86,7 +86,6 @@ public class AppService {
         appMetastore.put(app.getAppId(), app);
     }
 
-    @Transactional
     public void update(App app) {
         appMapper.updateByPrimaryKeySelective(app);
 
