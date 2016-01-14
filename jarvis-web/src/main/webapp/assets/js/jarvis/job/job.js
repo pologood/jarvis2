@@ -301,17 +301,21 @@ function operateFormatter(value, row, index) {
     var appName = row["appName"];
     var status = row["status"];
 
-    var result='';
 
-    if(appId==jobAppId){
-        result = [
+    var result = [
+        '<a  href="' + contextPath + '/job/detail?jobId=' + jobId + '" title="查看任务依赖" target="_blank">',
+        '<i class="glyphicon glyphicon-eye-open"></i>',
+        '</a>  '
+    ].join('');
+
+    if (appId == jobAppId) {
+        var edit = [
             '<a  href="' + contextPath + '/job/addOrEdit?jobId=' + jobId + '" title="编辑任务信息" target="_blank">',
             '<i class="glyphicon glyphicon-edit"></i>',
-            '</a>  ',
-            '<a  href="' + contextPath + '/job/dependency?jobId=' + jobId + '" title="查看任务依赖" target="_blank">',
-            '<i class="glyphicon glyphicon-eye-open"></i>',
             '</a>  '
         ].join('');
+
+        result += edit;
 
 
         var operation = '<div class="btn-group"> <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">修改状态 <span class="caret"></span> </button>';
@@ -323,17 +327,8 @@ function operateFormatter(value, row, index) {
             }
         });
         operation = operation + '</ul></div>';
-        result=result+operation;
+        result = result + operation;
     }
-    else{
-        result = [
-            '<a  href="' + contextPath + '/job/dependency?jobId=' + jobId + '" title="查看任务依赖" target="_blank">',
-            '<i class="glyphicon glyphicon-eye-open"></i>',
-            '</a>  '
-        ].join('');
-    }
-
-
 
 
     //console.log(result);

@@ -16,7 +16,6 @@ public class TaskVo extends Task {
     private String appName;
     private String workerGroupId;
 
-
     private Long executeTime;
     private Long avgExecuteTime;
 
@@ -84,4 +83,5 @@ public class TaskVo extends Task {
     public void setWorkerGroupId(String workerGroupId) {
         this.workerGroupId = workerGroupId;
     }
+
 }

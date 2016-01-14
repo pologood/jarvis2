@@ -61,11 +61,11 @@ public class JobDependService {
      */
     public Map<String, Object> getTwoDirectionTreeDependedOnJob(JobQo jobQo) {
         Map<String, Object> result = new HashMap<String, Object>();
-        if (null == jobQo || null == jobQo.getJobIdList() || (jobQo.getJobIdList() != null && 0 == jobQo.getJobIdList().size())) {
+        if (null == jobQo || null == jobQo.getJobId()) {
             return result;
         }
 
-        JobDependVo jobDependVo = jobDependMapper.getJobById(Long.valueOf(jobQo.getJobIdList().get(0)));
+        JobDependVo jobDependVo = jobDependMapper.getJobById(jobQo.getJobId());
         jobDependVo.setName(jobDependVo.getText());
         jobDependVo.setValue(jobDependVo.getId());
         jobDependVo.setRootFlag(true);
@@ -87,7 +87,8 @@ public class JobDependService {
             Field[] fields = jobDependVo.getClass().getDeclaredFields();
             for (int i = 0, len = fields.length; i < len; i++) {
                 Field field = fields[i];
-                Object value = (Object) field.get(jobDependVo);
+                field.setAccessible(true);
+                Object value = field.get(jobDependVo);
                 result.put(field.getName(), value);
             }
         } catch (Exception e) {

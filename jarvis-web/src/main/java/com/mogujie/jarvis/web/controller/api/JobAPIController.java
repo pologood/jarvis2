@@ -108,8 +108,8 @@ public class JobAPIController {
      */
     @RequestMapping("/getTwoDirectionTree")
     @ResponseBody
-    public Map<String, Object> getTwoDirectionTree(JobQo jobSearchVo) {
-        Map<String, Object> result = jobDependService.getTwoDirectionTreeDependedOnJob(jobSearchVo);
+    public Map<String, Object> getTwoDirectionTree(JobQo jobQo) {
+        Map<String, Object> result = jobDependService.getTwoDirectionTreeDependedOnJob(jobQo);
         return result;
     }
 

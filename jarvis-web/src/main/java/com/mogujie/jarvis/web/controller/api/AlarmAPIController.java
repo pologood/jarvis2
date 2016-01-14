@@ -4,6 +4,8 @@ import com.mogujie.jarvis.core.domain.AlarmType;
 import com.mogujie.jarvis.web.entity.qo.AlarmQo;
 import com.mogujie.jarvis.web.entity.vo.AlarmVo;
 import com.mogujie.jarvis.web.service.AlarmService;
+import com.mogujie.jarvis.web.utils.MessageStatus;
+import com.mogujie.jarvis.web.utils.Tools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +19,7 @@ import java.util.Map;
 /**
  * Created by hejian on 16/1/8.
  */
-@Controller()
+@Controller
 @RequestMapping(value = "/api/alarm")
 public class AlarmAPIController {
     @Autowired
@@ -29,6 +31,14 @@ public class AlarmAPIController {
     @RequestMapping(value = "getByJobId")
     @ResponseBody
     public Object getByJobId(AlarmQo alarmQo) {
+        if (null == alarmQo.getId()) {
+            Map<String,Object> map = new HashMap<String, Object>();
+            map.put("code", MessageStatus.FAILED.getValue());
+            map.put("msg","未传入id");
+            map.put("supportFields", Tools.getObjectField(AlarmQo.class));
+            return map;
+        }
+
         AlarmVo alarmVo = alarmService.getAlarmByJobId(alarmQo.getJobId());
         if (null == alarmVo) {
             alarmVo = new AlarmVo();

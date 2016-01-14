@@ -99,7 +99,10 @@ var CollapsibleTree = function (elt, w, h) {
                         window.location.href = contextPath + "/plan/dependency?taskId=" + d.taskId;
                     }
                     else {
-                        if (d.taskList.length == 1) {
+                        if(d.taskList.length == 0){
+                            window.location.href = contextPath + "/job/detail?jobId=" + d.jobId;
+                        }
+                        else if (d.taskList.length == 1) {
                             window.location.href = contextPath + "/plan/dependency?taskId=" + d.taskList[0].taskId;
                         }
                         else {

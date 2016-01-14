@@ -1,6 +1,5 @@
 package com.mogujie.jarvis.web.controller.jarvis;
 
-import com.mogu.bigdata.admin.core.entity.User;
 import com.mogu.bigdata.admin.inside.service.AdminUserService;
 import com.mogujie.jarvis.web.auth.annotation.JarvisPassport;
 import com.mogujie.jarvis.web.auth.conf.JarvisAuthType;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * Created by hejian on 15/9/15.
@@ -37,10 +35,10 @@ public class ManageController extends BaseController {
     @Autowired
     AdminUserService userService;
 
-    @RequestMapping
+    @RequestMapping(value = "system")
     @JarvisPassport(authTypes = JarvisAuthType.manage_system)
-    public String index() {
-        return "manage/index";
+    public String system() {
+        return "manage/system";
     }
 
     @RequestMapping(value = "app")
@@ -51,16 +49,11 @@ public class ManageController extends BaseController {
         return "manage/app";
     }
 
-    @RequestMapping(value = "appAddOrEdit")
+    @RequestMapping(value = "appDetail")
     @JarvisPassport(authTypes = JarvisAuthType.manage_app, isMenu = false)
-    public String appAddOrEdit(ModelMap modelMap, Integer appId) throws Exception {
-        List<User> userList = userService.getAllUsers();
-        if (appId != null) {
-            AppVo appVo = appService.getAppById(appId);
-            modelMap.put("appVo", appVo);
-        }
-        modelMap.put("userList", userList);
-        return "manage/appAddOrEdit";
+    public String appDetail(ModelMap modelMap, Integer appId) throws Exception {
+        modelMap.put("appId", appId);
+        return "manage/appDetail";
     }
 
     @RequestMapping(value = "checkAppName")
