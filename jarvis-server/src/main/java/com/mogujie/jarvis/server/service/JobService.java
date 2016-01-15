@@ -336,6 +336,9 @@ public class JobService {
         for (Job job : jobs) {
             long jobId = job.getJobId();
             Map<Long, ScheduleExpression> expressionMap = scheduleExpressionMap.get(jobId);
+            if (expressionMap == null) {
+                expressionMap = Maps.newHashMap();
+            }
             Map<Long, JobDependencyEntry> dependencies = Maps.newHashMap();
             Collection<JobDepend> jobDependsCollection = jobDependMap.get(jobId);
             if (jobDependsCollection != null && jobDependsCollection.size() > 0) {

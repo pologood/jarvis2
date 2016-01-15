@@ -8,6 +8,8 @@
 
 package com.mogujie.jarvis.server.scheduler.dag;
 
+import java.util.Map;
+
 import org.joda.time.DateTime;
 import org.junit.Assert;
 import org.junit.Test;
@@ -15,10 +17,16 @@ import org.junit.Test;
 import com.google.common.collect.Sets;
 import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.domain.TaskType;
+import com.mogujie.jarvis.core.expression.CronExpression;
+import com.mogujie.jarvis.core.expression.DefaultDependencyStrategyExpression;
+import com.mogujie.jarvis.core.expression.TimeOffsetExpression;
+import com.mogujie.jarvis.server.domain.JobDependencyEntry;
+import com.mogujie.jarvis.server.domain.JobEntry;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.TestSchedulerBase;
 import com.mogujie.jarvis.server.scheduler.event.ScheduleEvent;
 import com.mogujie.jarvis.server.scheduler.task.DAGTask;
+import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.TaskService;
 
 /**
@@ -120,6 +128,65 @@ public class TestDAGSchedulerWithEvent extends TestSchedulerBase {
         dagScheduler.handleScheduleEvent(scheduleEventE);
         Assert.assertEquals(1, plan.getPlan().size());
         System.out.println(plan.getPlan().peek());
+    }
+
+    /**
+     *   A
+     *   |
+     *   B
+     */
+    @Test
+    public void testLast3DaySchedule1() throws Exception {
+        long jobAId = 7;
+        long jobBId = 8;
+        long t1 = new DateTime("2020-10-10T10:10:00").getMillis();
+        long t2 = new DateTime("2020-10-11T10:10:00").getMillis();
+        long t3 = new DateTime("2020-10-12T10:10:00").getMillis();
+
+        // init
+        JobService jobService = Injectors.getInjector().getInstance(JobService.class);
+        JobEntry jobEntry = jobService.get(jobBId);
+        Map<Long, JobDependencyEntry> dependencyEntryMap = jobEntry.getDependencies();
+        JobDependencyEntry dependencyEntry = new JobDependencyEntry(new TimeOffsetExpression("d(3)"),
+                new DefaultDependencyStrategyExpression("*"));
+        dependencyEntryMap.put(jobAId, dependencyEntry);
+        jobEntry.addScheduleExpression(1, new CronExpression("0 44 6 * * ?"));
+
+        jobGraph.addJob(jobAId, new DAGJob(jobAId, DAGJobType.TIME), null);
+        jobGraph.addJob(jobBId, new DAGJob(jobBId, DAGJobType.DEPEND_TIME), null);
+        jobGraph.addDependency(jobAId, jobBId);
+        Assert.assertEquals(1, jobGraph.getChildren(jobAId).size());
+        Assert.assertEquals(jobBId, (long) jobGraph.getChildren(jobAId).get(0).getFirst());
+        Assert.assertEquals(1, jobGraph.getParents(jobBId).size());
+
+        long taskAId1 = taskService.createTaskByJobId(jobAId, t1, t1, TaskType.SCHEDULE);
+        taskGraph.addTask(taskAId1, new DAGTask(jobAId, taskAId1, t1, null));
+        long taskAId2 = taskService.createTaskByJobId(jobAId, t2, t2, TaskType.SCHEDULE);
+        taskGraph.addTask(taskAId2, new DAGTask(jobAId, taskAId2, t2, null));
+        long taskAId3 = taskService.createTaskByJobId(jobAId, t3, t3, TaskType.SCHEDULE);
+        taskGraph.addTask(taskAId3, new DAGTask(jobAId, taskAId3, t3, null));
+        Assert.assertEquals(3, taskGraph.getTaskMap().size());
+
+        taskService.updateStatus(taskAId1, TaskStatus.SUCCESS);
+        taskService.updateStatus(taskAId2, TaskStatus.FAILED);
+        taskService.updateStatus(taskAId3, TaskStatus.SUCCESS);
+
+        // schedule jobA
+        ScheduleEvent scheduleEventA2 = new ScheduleEvent(jobAId, taskAId2, t2);
+        dagScheduler.handleScheduleEvent(scheduleEventA2);
+        Assert.assertEquals(0, plan.getPlan().size());
+        System.out.println(plan.getPlan().peek());
+
+        // schedule jobA
+        taskService.updateStatus(taskAId2, TaskStatus.SUCCESS);
+        scheduleEventA2 = new ScheduleEvent(jobAId, taskAId2, t2);
+        dagScheduler.handleScheduleEvent(scheduleEventA2);
+        Assert.assertEquals(3, plan.getPlan().size());
+        System.out.println(plan.getPlan().toString());
+
+        //rollback
+        jobEntry.clearScheduleExpressions();
+        jobEntry.getDependencies().clear();
     }
 
 }
