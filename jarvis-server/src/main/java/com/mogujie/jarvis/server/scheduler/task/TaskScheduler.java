@@ -29,7 +29,7 @@ import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.server.dispatcher.TaskManager;
-import com.mogujie.jarvis.server.dispatcher.TaskQueue;
+import com.mogujie.jarvis.server.dispatcher.PriorityTaskQueue;
 import com.mogujie.jarvis.server.domain.RetryType;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
@@ -68,7 +68,7 @@ public class TaskScheduler extends Scheduler {
     private JobService jobService = Injectors.getInjector().getInstance(JobService.class);
     private TaskService taskService = Injectors.getInjector().getInstance(TaskService.class);
     private TaskManager taskManager = Injectors.getInjector().getInstance(TaskManager.class);
-    private TaskQueue taskQueue = Injectors.getInjector().getInstance(TaskQueue.class);
+    private PriorityTaskQueue taskQueue = Injectors.getInjector().getInstance(PriorityTaskQueue.class);
     private TaskRetryScheduler retryScheduler = TaskRetryScheduler.INSTANCE;
 
     private static final Logger LOGGER = LogManager.getLogger();
@@ -294,7 +294,7 @@ public class TaskScheduler extends Scheduler {
     }
 
     @VisibleForTesting
-    public TaskQueue getTaskQueue() {
+    public PriorityTaskQueue getTaskQueue() {
         return taskQueue;
     }
 

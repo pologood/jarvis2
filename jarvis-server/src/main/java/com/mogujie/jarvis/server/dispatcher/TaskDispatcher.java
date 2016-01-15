@@ -13,9 +13,6 @@ import java.util.Map.Entry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import akka.actor.ActorSelection;
-import akka.actor.ActorSystem;
-
 import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.domain.WorkerInfo;
 import com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry;
@@ -28,12 +25,15 @@ import com.mogujie.jarvis.server.scheduler.TaskRetryScheduler;
 import com.mogujie.jarvis.server.service.AppService;
 import com.mogujie.jarvis.server.util.FutureUtils;
 
+import akka.actor.ActorSelection;
+import akka.actor.ActorSystem;
+
 /**
  * Take task from task queue then dispatch it to selected worker
  */
 public class TaskDispatcher extends Thread {
 
-    private TaskQueue queue = Injectors.getInjector().getInstance(TaskQueue.class);
+    private PriorityTaskQueue queue = Injectors.getInjector().getInstance(PriorityTaskQueue.class);
     private TaskRetryScheduler taskRetryScheduler = TaskRetryScheduler.INSTANCE;
 
     private AppService appService = Injectors.getInjector().getInstance(AppService.class);
@@ -61,11 +61,7 @@ public class TaskDispatcher extends Thread {
         while (true) {
             if (running) {
                 TaskDetail task = null;
-                try {
-                    task = queue.take();
-                } catch (InterruptedException e) {
-                    LOGGER.error("Take taskDetail error from taskQueue", e);
-                }
+                task = queue.get();
 
                 if (task == null) {
                     continue;
