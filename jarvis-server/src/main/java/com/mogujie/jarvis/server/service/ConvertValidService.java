@@ -13,16 +13,15 @@ import com.google.common.base.Preconditions;
 import java.util.Date;
 
 import com.mogujie.jarvis.core.domain.*;
+import com.mogujie.jarvis.core.exception.NotFoundException;
+import com.mogujie.jarvis.dto.generate.*;
 import org.joda.time.DateTime;
 import com.mogujie.jarvis.core.expression.*;
 import com.mogujie.jarvis.core.util.ExpressionUtils;
 import com.mogujie.jarvis.core.JarvisConstants;
 
-import com.mogujie.jarvis.dto.generate.Alarm;
-import com.mogujie.jarvis.dto.generate.App;
-import com.mogujie.jarvis.dto.generate.Job;
-import com.mogujie.jarvis.dto.generate.JobDepend;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
+import com.mogujie.jarvis.protocol.ApplicationProtos.RestSetApplicationWorkerGroupRequest;
 import com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry;
 import com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry;
 import com.mogujie.jarvis.protocol.JobProtos.RestSubmitJobRequest;
@@ -73,17 +72,20 @@ public class ConvertValidService {
     private JobService jobService;
     @Inject
     private AlarmService alarmService;
-
+    @Inject
+    private WorkerGroupService workerGroupService;
+    @Inject
+    private AppWorkerGroupService appWorkerGroupService;
 
     //--------------------------------------- job ---------------------------------
 
-    public Job convert2JobByCheck(RestSubmitJobRequest msg) {
+    public Job convert2JobByCheck(RestSubmitJobRequest msg) throws NotFoundException {
         Job job = msg2Job(msg);
         checkJob(CheckMode.ADD, job);
         return job;
     }
 
-    public Job convert2JobByCheck(RestModifyJobRequest msg) {
+    public Job convert2JobByCheck(RestModifyJobRequest msg) throws NotFoundException {
         Job job = msg2Job(msg);
         checkJob(CheckMode.EDIT, job);
         return job;
@@ -135,7 +137,7 @@ public class ConvertValidService {
 
     }
 
-    private Job msg2Job(RestSubmitJobRequest msg) {
+    private Job msg2Job(RestSubmitJobRequest msg) throws NotFoundException {
         Job job = new Job();
         job.setAppId(analysisAppId(msg.getAppAuth(), msg.getAppName()));
         job.setJobName(msg.getJobName());
@@ -169,7 +171,7 @@ public class ConvertValidService {
         return job;
     }
 
-    private Job msg2Job(RestModifyJobRequest msg) {
+    private Job msg2Job(RestModifyJobRequest msg) throws NotFoundException {
         Job job = new Job();
         job.setJobId(msg.getJobId());
         job.setAppId(analysisAppId(msg.getAppAuth(), msg.getAppName()));
@@ -348,9 +350,9 @@ public class ConvertValidService {
             Preconditions.checkNotNull(job, "job对象不存在。jobId:" + jobId);
         }
 
-        if(mode.isIn(CheckMode.ADD)){
-            Alarm  cur = alarmService.getAlarmByJobId(jobId);
-            Preconditions.checkArgument(cur == null,"alarm对象已经存在,不能增加。jobId:" + jobId);
+        if (mode.isIn(CheckMode.ADD)) {
+            Alarm cur = alarmService.getAlarmByJobId(jobId);
+            Preconditions.checkArgument(cur == null, "alarm对象已经存在,不能增加。jobId:" + jobId);
         }
 
         String type = alarm.getAlarmType();
@@ -404,6 +406,28 @@ public class ConvertValidService {
         return alarm;
     }
 
+    //------------------------ App workerGroup ----------------------
+    public AppWorkerGroup convert2AppWorkeGroupByCheck(RestSetApplicationWorkerGroupRequest msg) throws NotFoundException {
+
+        int modeVal = msg.getMode();
+        OperationMode mode = OperationMode.parseValue(modeVal);
+
+        int appId = msg.getAppId();
+        appService.getAppById(appId);
+
+        int workerGroupId = msg.getWorkerGroupId();
+        workerGroupService.getGroupByGroupId(workerGroupId);
+
+        AppWorkerGroup appWorkerGroup = appWorkerGroupService.get4ReturnNull(appId, workerGroupId);
+        Preconditions.checkArgument(mode != OperationMode.ADD || appWorkerGroup == null
+                , "AppWorkerGroup对象已经存在,不能插入. appID:" + appId + "; workerGroupId:" + workerGroupId);
+
+        AppWorkerGroup ag = new AppWorkerGroup();
+        ag.setAppId(appId);
+        ag.setWorkerGroupId(workerGroupId);
+        return ag;
+    }
+
 
     //------------------------ 其他 ----------------------
 
@@ -414,7 +438,8 @@ public class ConvertValidService {
      * @param appName
      * @return
      */
-    private int analysisAppId(AppAuth appAuth, String appName) {
+    private int analysisAppId(AppAuth appAuth, String appName) throws NotFoundException {
+
         int appId;
         App app = appService.getAppByName(appAuth.getName());
         if (app.getAppType() == AppType.NORMAL.getValue()) {

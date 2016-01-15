@@ -87,6 +87,10 @@ public final class ApplicationProtos {
   }
   /**
    * Protobuf type {@code RestCreateApplicationRequest}
+   *
+   * <pre>
+   *add app
+   * </pre>
    */
   public static final class RestCreateApplicationRequest extends
       com.google.protobuf.GeneratedMessage implements
@@ -567,6 +571,10 @@ public final class ApplicationProtos {
     }
     /**
      * Protobuf type {@code RestCreateApplicationRequest}
+     *
+     * <pre>
+     *add app
+     * </pre>
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
@@ -1833,6 +1841,10 @@ public final class ApplicationProtos {
   }
   /**
    * Protobuf type {@code RestModifyApplicationRequest}
+   *
+   * <pre>
+   *modify app
+   * </pre>
    */
   public static final class RestModifyApplicationRequest extends
       com.google.protobuf.GeneratedMessage implements
@@ -2337,6 +2349,10 @@ public final class ApplicationProtos {
     }
     /**
      * Protobuf type {@code RestModifyApplicationRequest}
+     *
+     * <pre>
+     *modify app
+     * </pre>
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
@@ -3552,6 +3568,1555 @@ public final class ApplicationProtos {
     // @@protoc_insertion_point(class_scope:ServerModifyApplicationResponse)
   }
 
+  public interface RestSetApplicationWorkerGroupRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:RestSetApplicationWorkerGroupRequest)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required .AppAuth app_auth = 1;</code>
+     */
+    boolean hasAppAuth();
+    /**
+     * <code>required .AppAuth app_auth = 1;</code>
+     */
+    com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth getAppAuth();
+    /**
+     * <code>required .AppAuth app_auth = 1;</code>
+     */
+    com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder();
+
+    /**
+     * <code>required string user = 2;</code>
+     */
+    boolean hasUser();
+    /**
+     * <code>required string user = 2;</code>
+     */
+    java.lang.String getUser();
+    /**
+     * <code>required string user = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getUserBytes();
+
+    /**
+     * <code>required int32 mode = 3;</code>
+     *
+     * <pre>
+     *1:ADD; 2:EDIT; 3:DELETE
+     * </pre>
+     */
+    boolean hasMode();
+    /**
+     * <code>required int32 mode = 3;</code>
+     *
+     * <pre>
+     *1:ADD; 2:EDIT; 3:DELETE
+     * </pre>
+     */
+    int getMode();
+
+    /**
+     * <code>required int32 app_id = 4;</code>
+     */
+    boolean hasAppId();
+    /**
+     * <code>required int32 app_id = 4;</code>
+     */
+    int getAppId();
+
+    /**
+     * <code>required int32 worker_group_id = 5;</code>
+     */
+    boolean hasWorkerGroupId();
+    /**
+     * <code>required int32 worker_group_id = 5;</code>
+     */
+    int getWorkerGroupId();
+  }
+  /**
+   * Protobuf type {@code RestSetApplicationWorkerGroupRequest}
+   *
+   * <pre>
+   *setting app &amp; workerGroup
+   * </pre>
+   */
+  public static final class RestSetApplicationWorkerGroupRequest extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:RestSetApplicationWorkerGroupRequest)
+      RestSetApplicationWorkerGroupRequestOrBuilder {
+    // Use RestSetApplicationWorkerGroupRequest.newBuilder() to construct.
+    private RestSetApplicationWorkerGroupRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private RestSetApplicationWorkerGroupRequest(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final RestSetApplicationWorkerGroupRequest defaultInstance;
+    public static RestSetApplicationWorkerGroupRequest getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public RestSetApplicationWorkerGroupRequest getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private RestSetApplicationWorkerGroupRequest(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000001) == 0x00000001)) {
+                subBuilder = appAuth_.toBuilder();
+              }
+              appAuth_ = input.readMessage(com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(appAuth_);
+                appAuth_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000001;
+              break;
+            }
+            case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000002;
+              user_ = bs;
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              mode_ = input.readInt32();
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000008;
+              appId_ = input.readInt32();
+              break;
+            }
+            case 40: {
+              bitField0_ |= 0x00000010;
+              workerGroupId_ = input.readInt32();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.mogujie.jarvis.protocol.ApplicationProtos.internal_static_RestSetApplicationWorkerGroupRequest_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.mogujie.jarvis.protocol.ApplicationProtos.internal_static_RestSetApplicationWorkerGroupRequest_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.mogujie.jarvis.protocol.ApplicationProtos.RestSetApplicationWorkerGroupRequest.class, com.mogujie.jarvis.protocol.ApplicationProtos.RestSetApplicationWorkerGroupRequest.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<RestSetApplicationWorkerGroupRequest> PARSER =
+        new com.google.protobuf.AbstractParser<RestSetApplicationWorkerGroupRequest>() {
+      public RestSetApplicationWorkerGroupRequest parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new RestSetApplicationWorkerGroupRequest(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<RestSetApplicationWorkerGroupRequest> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int APP_AUTH_FIELD_NUMBER = 1;
+    private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_;
+    /**
+     * <code>required .AppAuth app_auth = 1;</code>
+     */
+    public boolean hasAppAuth() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required .AppAuth app_auth = 1;</code>
+     */
+    public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth getAppAuth() {
+      return appAuth_;
+    }
+    /**
+     * <code>required .AppAuth app_auth = 1;</code>
+     */
+    public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder() {
+      return appAuth_;
+    }
+
+    public static final int USER_FIELD_NUMBER = 2;
+    private java.lang.Object user_;
+    /**
+     * <code>required string user = 2;</code>
+     */
+    public boolean hasUser() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required string user = 2;</code>
+     */
+    public java.lang.String getUser() {
+      java.lang.Object ref = user_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          user_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string user = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getUserBytes() {
+      java.lang.Object ref = user_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        user_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int MODE_FIELD_NUMBER = 3;
+    private int mode_;
+    /**
+     * <code>required int32 mode = 3;</code>
+     *
+     * <pre>
+     *1:ADD; 2:EDIT; 3:DELETE
+     * </pre>
+     */
+    public boolean hasMode() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>required int32 mode = 3;</code>
+     *
+     * <pre>
+     *1:ADD; 2:EDIT; 3:DELETE
+     * </pre>
+     */
+    public int getMode() {
+      return mode_;
+    }
+
+    public static final int APP_ID_FIELD_NUMBER = 4;
+    private int appId_;
+    /**
+     * <code>required int32 app_id = 4;</code>
+     */
+    public boolean hasAppId() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>required int32 app_id = 4;</code>
+     */
+    public int getAppId() {
+      return appId_;
+    }
+
+    public static final int WORKER_GROUP_ID_FIELD_NUMBER = 5;
+    private int workerGroupId_;
+    /**
+     * <code>required int32 worker_group_id = 5;</code>
+     */
+    public boolean hasWorkerGroupId() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    /**
+     * <code>required int32 worker_group_id = 5;</code>
+     */
+    public int getWorkerGroupId() {
+      return workerGroupId_;
+    }
+
+    private void initFields() {
+      appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
+      user_ = "";
+      mode_ = 0;
+      appId_ = 0;
+      workerGroupId_ = 0;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasAppAuth()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasUser()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasMode()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasAppId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasWorkerGroupId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!getAppAuth().isInitialized()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeMessage(1, appAuth_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, getUserBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeInt32(3, mode_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeInt32(4, appId_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeInt32(5, workerGroupId_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, appAuth_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, getUserBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(3, mode_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(4, appId_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(5, workerGroupId_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.mogujie.jarvis.protocol.ApplicationProtos.RestSetApplicationWorkerGroupRequest parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.mogujie.jarvis.protocol.ApplicationProtos.RestSetApplicationWorkerGroupRequest parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.ApplicationProtos.RestSetApplicationWorkerGroupRequest parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.mogujie.jarvis.protocol.ApplicationProtos.RestSetApplicationWorkerGroupRequest parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.ApplicationProtos.RestSetApplicationWorkerGroupRequest parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.mogujie.jarvis.protocol.ApplicationProtos.RestSetApplicationWorkerGroupRequest parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.ApplicationProtos.RestSetApplicationWorkerGroupRequest parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.mogujie.jarvis.protocol.ApplicationProtos.RestSetApplicationWorkerGroupRequest parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.ApplicationProtos.RestSetApplicationWorkerGroupRequest parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.mogujie.jarvis.protocol.ApplicationProtos.RestSetApplicationWorkerGroupRequest parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.mogujie.jarvis.protocol.ApplicationProtos.RestSetApplicationWorkerGroupRequest prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code RestSetApplicationWorkerGroupRequest}
+     *
+     * <pre>
+     *setting app &amp; workerGroup
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:RestSetApplicationWorkerGroupRequest)
+        com.mogujie.jarvis.protocol.ApplicationProtos.RestSetApplicationWorkerGroupRequestOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.mogujie.jarvis.protocol.ApplicationProtos.internal_static_RestSetApplicationWorkerGroupRequest_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.mogujie.jarvis.protocol.ApplicationProtos.internal_static_RestSetApplicationWorkerGroupRequest_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.mogujie.jarvis.protocol.ApplicationProtos.RestSetApplicationWorkerGroupRequest.class, com.mogujie.jarvis.protocol.ApplicationProtos.RestSetApplicationWorkerGroupRequest.Builder.class);
+      }
+
+      // Construct using com.mogujie.jarvis.protocol.ApplicationProtos.RestSetApplicationWorkerGroupRequest.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getAppAuthFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        if (appAuthBuilder_ == null) {
+          appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
+        } else {
+          appAuthBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000001);
+        user_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        mode_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        appId_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        workerGroupId_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000010);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.mogujie.jarvis.protocol.ApplicationProtos.internal_static_RestSetApplicationWorkerGroupRequest_descriptor;
+      }
+
+      public com.mogujie.jarvis.protocol.ApplicationProtos.RestSetApplicationWorkerGroupRequest getDefaultInstanceForType() {
+        return com.mogujie.jarvis.protocol.ApplicationProtos.RestSetApplicationWorkerGroupRequest.getDefaultInstance();
+      }
+
+      public com.mogujie.jarvis.protocol.ApplicationProtos.RestSetApplicationWorkerGroupRequest build() {
+        com.mogujie.jarvis.protocol.ApplicationProtos.RestSetApplicationWorkerGroupRequest result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.mogujie.jarvis.protocol.ApplicationProtos.RestSetApplicationWorkerGroupRequest buildPartial() {
+        com.mogujie.jarvis.protocol.ApplicationProtos.RestSetApplicationWorkerGroupRequest result = new com.mogujie.jarvis.protocol.ApplicationProtos.RestSetApplicationWorkerGroupRequest(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        if (appAuthBuilder_ == null) {
+          result.appAuth_ = appAuth_;
+        } else {
+          result.appAuth_ = appAuthBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.user_ = user_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.mode_ = mode_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.appId_ = appId_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.workerGroupId_ = workerGroupId_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.mogujie.jarvis.protocol.ApplicationProtos.RestSetApplicationWorkerGroupRequest) {
+          return mergeFrom((com.mogujie.jarvis.protocol.ApplicationProtos.RestSetApplicationWorkerGroupRequest)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.mogujie.jarvis.protocol.ApplicationProtos.RestSetApplicationWorkerGroupRequest other) {
+        if (other == com.mogujie.jarvis.protocol.ApplicationProtos.RestSetApplicationWorkerGroupRequest.getDefaultInstance()) return this;
+        if (other.hasAppAuth()) {
+          mergeAppAuth(other.getAppAuth());
+        }
+        if (other.hasUser()) {
+          bitField0_ |= 0x00000002;
+          user_ = other.user_;
+          onChanged();
+        }
+        if (other.hasMode()) {
+          setMode(other.getMode());
+        }
+        if (other.hasAppId()) {
+          setAppId(other.getAppId());
+        }
+        if (other.hasWorkerGroupId()) {
+          setWorkerGroupId(other.getWorkerGroupId());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasAppAuth()) {
+          
+          return false;
+        }
+        if (!hasUser()) {
+          
+          return false;
+        }
+        if (!hasMode()) {
+          
+          return false;
+        }
+        if (!hasAppId()) {
+          
+          return false;
+        }
+        if (!hasWorkerGroupId()) {
+          
+          return false;
+        }
+        if (!getAppAuth().isInitialized()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.mogujie.jarvis.protocol.ApplicationProtos.RestSetApplicationWorkerGroupRequest parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.mogujie.jarvis.protocol.ApplicationProtos.RestSetApplicationWorkerGroupRequest) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> appAuthBuilder_;
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      public boolean hasAppAuth() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth getAppAuth() {
+        if (appAuthBuilder_ == null) {
+          return appAuth_;
+        } else {
+          return appAuthBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      public Builder setAppAuth(com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth value) {
+        if (appAuthBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          appAuth_ = value;
+          onChanged();
+        } else {
+          appAuthBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      public Builder setAppAuth(
+          com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder builderForValue) {
+        if (appAuthBuilder_ == null) {
+          appAuth_ = builderForValue.build();
+          onChanged();
+        } else {
+          appAuthBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      public Builder mergeAppAuth(com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth value) {
+        if (appAuthBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) == 0x00000001) &&
+              appAuth_ != com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance()) {
+            appAuth_ =
+              com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.newBuilder(appAuth_).mergeFrom(value).buildPartial();
+          } else {
+            appAuth_ = value;
+          }
+          onChanged();
+        } else {
+          appAuthBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      public Builder clearAppAuth() {
+        if (appAuthBuilder_ == null) {
+          appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
+          onChanged();
+        } else {
+          appAuthBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder getAppAuthBuilder() {
+        bitField0_ |= 0x00000001;
+        onChanged();
+        return getAppAuthFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder() {
+        if (appAuthBuilder_ != null) {
+          return appAuthBuilder_.getMessageOrBuilder();
+        } else {
+          return appAuth_;
+        }
+      }
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> 
+          getAppAuthFieldBuilder() {
+        if (appAuthBuilder_ == null) {
+          appAuthBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder>(
+                  getAppAuth(),
+                  getParentForChildren(),
+                  isClean());
+          appAuth_ = null;
+        }
+        return appAuthBuilder_;
+      }
+
+      private java.lang.Object user_ = "";
+      /**
+       * <code>required string user = 2;</code>
+       */
+      public boolean hasUser() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required string user = 2;</code>
+       */
+      public java.lang.String getUser() {
+        java.lang.Object ref = user_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            user_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string user = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getUserBytes() {
+        java.lang.Object ref = user_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          user_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string user = 2;</code>
+       */
+      public Builder setUser(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        user_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string user = 2;</code>
+       */
+      public Builder clearUser() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        user_ = getDefaultInstance().getUser();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string user = 2;</code>
+       */
+      public Builder setUserBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        user_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int mode_ ;
+      /**
+       * <code>required int32 mode = 3;</code>
+       *
+       * <pre>
+       *1:ADD; 2:EDIT; 3:DELETE
+       * </pre>
+       */
+      public boolean hasMode() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>required int32 mode = 3;</code>
+       *
+       * <pre>
+       *1:ADD; 2:EDIT; 3:DELETE
+       * </pre>
+       */
+      public int getMode() {
+        return mode_;
+      }
+      /**
+       * <code>required int32 mode = 3;</code>
+       *
+       * <pre>
+       *1:ADD; 2:EDIT; 3:DELETE
+       * </pre>
+       */
+      public Builder setMode(int value) {
+        bitField0_ |= 0x00000004;
+        mode_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int32 mode = 3;</code>
+       *
+       * <pre>
+       *1:ADD; 2:EDIT; 3:DELETE
+       * </pre>
+       */
+      public Builder clearMode() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        mode_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int appId_ ;
+      /**
+       * <code>required int32 app_id = 4;</code>
+       */
+      public boolean hasAppId() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>required int32 app_id = 4;</code>
+       */
+      public int getAppId() {
+        return appId_;
+      }
+      /**
+       * <code>required int32 app_id = 4;</code>
+       */
+      public Builder setAppId(int value) {
+        bitField0_ |= 0x00000008;
+        appId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int32 app_id = 4;</code>
+       */
+      public Builder clearAppId() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        appId_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int workerGroupId_ ;
+      /**
+       * <code>required int32 worker_group_id = 5;</code>
+       */
+      public boolean hasWorkerGroupId() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>required int32 worker_group_id = 5;</code>
+       */
+      public int getWorkerGroupId() {
+        return workerGroupId_;
+      }
+      /**
+       * <code>required int32 worker_group_id = 5;</code>
+       */
+      public Builder setWorkerGroupId(int value) {
+        bitField0_ |= 0x00000010;
+        workerGroupId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int32 worker_group_id = 5;</code>
+       */
+      public Builder clearWorkerGroupId() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        workerGroupId_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:RestSetApplicationWorkerGroupRequest)
+    }
+
+    static {
+      defaultInstance = new RestSetApplicationWorkerGroupRequest(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:RestSetApplicationWorkerGroupRequest)
+  }
+
+  public interface ServerSetApplicationWorkerGroupResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:ServerSetApplicationWorkerGroupResponse)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required bool success = 1;</code>
+     */
+    boolean hasSuccess();
+    /**
+     * <code>required bool success = 1;</code>
+     */
+    boolean getSuccess();
+
+    /**
+     * <code>optional string message = 2 [default = ""];</code>
+     */
+    boolean hasMessage();
+    /**
+     * <code>optional string message = 2 [default = ""];</code>
+     */
+    java.lang.String getMessage();
+    /**
+     * <code>optional string message = 2 [default = ""];</code>
+     */
+    com.google.protobuf.ByteString
+        getMessageBytes();
+  }
+  /**
+   * Protobuf type {@code ServerSetApplicationWorkerGroupResponse}
+   */
+  public static final class ServerSetApplicationWorkerGroupResponse extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:ServerSetApplicationWorkerGroupResponse)
+      ServerSetApplicationWorkerGroupResponseOrBuilder {
+    // Use ServerSetApplicationWorkerGroupResponse.newBuilder() to construct.
+    private ServerSetApplicationWorkerGroupResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private ServerSetApplicationWorkerGroupResponse(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final ServerSetApplicationWorkerGroupResponse defaultInstance;
+    public static ServerSetApplicationWorkerGroupResponse getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public ServerSetApplicationWorkerGroupResponse getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private ServerSetApplicationWorkerGroupResponse(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              success_ = input.readBool();
+              break;
+            }
+            case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000002;
+              message_ = bs;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.mogujie.jarvis.protocol.ApplicationProtos.internal_static_ServerSetApplicationWorkerGroupResponse_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.mogujie.jarvis.protocol.ApplicationProtos.internal_static_ServerSetApplicationWorkerGroupResponse_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.mogujie.jarvis.protocol.ApplicationProtos.ServerSetApplicationWorkerGroupResponse.class, com.mogujie.jarvis.protocol.ApplicationProtos.ServerSetApplicationWorkerGroupResponse.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<ServerSetApplicationWorkerGroupResponse> PARSER =
+        new com.google.protobuf.AbstractParser<ServerSetApplicationWorkerGroupResponse>() {
+      public ServerSetApplicationWorkerGroupResponse parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new ServerSetApplicationWorkerGroupResponse(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ServerSetApplicationWorkerGroupResponse> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int SUCCESS_FIELD_NUMBER = 1;
+    private boolean success_;
+    /**
+     * <code>required bool success = 1;</code>
+     */
+    public boolean hasSuccess() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required bool success = 1;</code>
+     */
+    public boolean getSuccess() {
+      return success_;
+    }
+
+    public static final int MESSAGE_FIELD_NUMBER = 2;
+    private java.lang.Object message_;
+    /**
+     * <code>optional string message = 2 [default = ""];</code>
+     */
+    public boolean hasMessage() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional string message = 2 [default = ""];</code>
+     */
+    public java.lang.String getMessage() {
+      java.lang.Object ref = message_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          message_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string message = 2 [default = ""];</code>
+     */
+    public com.google.protobuf.ByteString
+        getMessageBytes() {
+      java.lang.Object ref = message_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        message_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private void initFields() {
+      success_ = false;
+      message_ = "";
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasSuccess()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeBool(1, success_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, getMessageBytes());
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(1, success_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, getMessageBytes());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.mogujie.jarvis.protocol.ApplicationProtos.ServerSetApplicationWorkerGroupResponse parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.mogujie.jarvis.protocol.ApplicationProtos.ServerSetApplicationWorkerGroupResponse parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.ApplicationProtos.ServerSetApplicationWorkerGroupResponse parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.mogujie.jarvis.protocol.ApplicationProtos.ServerSetApplicationWorkerGroupResponse parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.ApplicationProtos.ServerSetApplicationWorkerGroupResponse parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.mogujie.jarvis.protocol.ApplicationProtos.ServerSetApplicationWorkerGroupResponse parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.ApplicationProtos.ServerSetApplicationWorkerGroupResponse parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.mogujie.jarvis.protocol.ApplicationProtos.ServerSetApplicationWorkerGroupResponse parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.ApplicationProtos.ServerSetApplicationWorkerGroupResponse parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.mogujie.jarvis.protocol.ApplicationProtos.ServerSetApplicationWorkerGroupResponse parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.mogujie.jarvis.protocol.ApplicationProtos.ServerSetApplicationWorkerGroupResponse prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code ServerSetApplicationWorkerGroupResponse}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:ServerSetApplicationWorkerGroupResponse)
+        com.mogujie.jarvis.protocol.ApplicationProtos.ServerSetApplicationWorkerGroupResponseOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.mogujie.jarvis.protocol.ApplicationProtos.internal_static_ServerSetApplicationWorkerGroupResponse_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.mogujie.jarvis.protocol.ApplicationProtos.internal_static_ServerSetApplicationWorkerGroupResponse_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.mogujie.jarvis.protocol.ApplicationProtos.ServerSetApplicationWorkerGroupResponse.class, com.mogujie.jarvis.protocol.ApplicationProtos.ServerSetApplicationWorkerGroupResponse.Builder.class);
+      }
+
+      // Construct using com.mogujie.jarvis.protocol.ApplicationProtos.ServerSetApplicationWorkerGroupResponse.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        success_ = false;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        message_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.mogujie.jarvis.protocol.ApplicationProtos.internal_static_ServerSetApplicationWorkerGroupResponse_descriptor;
+      }
+
+      public com.mogujie.jarvis.protocol.ApplicationProtos.ServerSetApplicationWorkerGroupResponse getDefaultInstanceForType() {
+        return com.mogujie.jarvis.protocol.ApplicationProtos.ServerSetApplicationWorkerGroupResponse.getDefaultInstance();
+      }
+
+      public com.mogujie.jarvis.protocol.ApplicationProtos.ServerSetApplicationWorkerGroupResponse build() {
+        com.mogujie.jarvis.protocol.ApplicationProtos.ServerSetApplicationWorkerGroupResponse result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.mogujie.jarvis.protocol.ApplicationProtos.ServerSetApplicationWorkerGroupResponse buildPartial() {
+        com.mogujie.jarvis.protocol.ApplicationProtos.ServerSetApplicationWorkerGroupResponse result = new com.mogujie.jarvis.protocol.ApplicationProtos.ServerSetApplicationWorkerGroupResponse(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.success_ = success_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.message_ = message_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.mogujie.jarvis.protocol.ApplicationProtos.ServerSetApplicationWorkerGroupResponse) {
+          return mergeFrom((com.mogujie.jarvis.protocol.ApplicationProtos.ServerSetApplicationWorkerGroupResponse)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.mogujie.jarvis.protocol.ApplicationProtos.ServerSetApplicationWorkerGroupResponse other) {
+        if (other == com.mogujie.jarvis.protocol.ApplicationProtos.ServerSetApplicationWorkerGroupResponse.getDefaultInstance()) return this;
+        if (other.hasSuccess()) {
+          setSuccess(other.getSuccess());
+        }
+        if (other.hasMessage()) {
+          bitField0_ |= 0x00000002;
+          message_ = other.message_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasSuccess()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.mogujie.jarvis.protocol.ApplicationProtos.ServerSetApplicationWorkerGroupResponse parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.mogujie.jarvis.protocol.ApplicationProtos.ServerSetApplicationWorkerGroupResponse) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private boolean success_ ;
+      /**
+       * <code>required bool success = 1;</code>
+       */
+      public boolean hasSuccess() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required bool success = 1;</code>
+       */
+      public boolean getSuccess() {
+        return success_;
+      }
+      /**
+       * <code>required bool success = 1;</code>
+       */
+      public Builder setSuccess(boolean value) {
+        bitField0_ |= 0x00000001;
+        success_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required bool success = 1;</code>
+       */
+      public Builder clearSuccess() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        success_ = false;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object message_ = "";
+      /**
+       * <code>optional string message = 2 [default = ""];</code>
+       */
+      public boolean hasMessage() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional string message = 2 [default = ""];</code>
+       */
+      public java.lang.String getMessage() {
+        java.lang.Object ref = message_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            message_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string message = 2 [default = ""];</code>
+       */
+      public com.google.protobuf.ByteString
+          getMessageBytes() {
+        java.lang.Object ref = message_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          message_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string message = 2 [default = ""];</code>
+       */
+      public Builder setMessage(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        message_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string message = 2 [default = ""];</code>
+       */
+      public Builder clearMessage() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        message_ = getDefaultInstance().getMessage();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string message = 2 [default = ""];</code>
+       */
+      public Builder setMessageBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        message_ = value;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:ServerSetApplicationWorkerGroupResponse)
+    }
+
+    static {
+      defaultInstance = new ServerSetApplicationWorkerGroupResponse(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:ServerSetApplicationWorkerGroupResponse)
+  }
+
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_RestCreateApplicationRequest_descriptor;
   private static
@@ -3572,6 +5137,16 @@ public final class ApplicationProtos {
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_ServerModifyApplicationResponse_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_RestSetApplicationWorkerGroupRequest_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_RestSetApplicationWorkerGroupRequest_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_ServerSetApplicationWorkerGroupResponse_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_ServerSetApplicationWorkerGroupResponse_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -3593,8 +5168,13 @@ public final class ApplicationProtos {
       " \001(\t\022\r\n\005owner\030\005 \001(\t\022\016\n\006status\030\006 \001(\005\022\027\n\017m",
       "ax_concurrency\030\007 \001(\005\"E\n\037ServerModifyAppl" +
       "icationResponse\022\017\n\007success\030\001 \002(\010\022\021\n\007mess" +
-      "age\030\002 \001(\t:\000B0\n\033com.mogujie.jarvis.protoc" +
-      "olB\021ApplicationProtos"
+      "age\030\002 \001(\t:\000\"\207\001\n$RestSetApplicationWorker" +
+      "GroupRequest\022\032\n\010app_auth\030\001 \002(\0132\010.AppAuth" +
+      "\022\014\n\004user\030\002 \002(\t\022\014\n\004mode\030\003 \002(\005\022\016\n\006app_id\030\004" +
+      " \002(\005\022\027\n\017worker_group_id\030\005 \002(\005\"M\n\'ServerS" +
+      "etApplicationWorkerGroupResponse\022\017\n\007succ" +
+      "ess\030\001 \002(\010\022\021\n\007message\030\002 \001(\t:\000B0\n\033com.mogu" +
+      "jie.jarvis.protocolB\021ApplicationProtos"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -3632,6 +5212,18 @@ public final class ApplicationProtos {
     internal_static_ServerModifyApplicationResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_ServerModifyApplicationResponse_descriptor,
+        new java.lang.String[] { "Success", "Message", });
+    internal_static_RestSetApplicationWorkerGroupRequest_descriptor =
+      getDescriptor().getMessageTypes().get(4);
+    internal_static_RestSetApplicationWorkerGroupRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_RestSetApplicationWorkerGroupRequest_descriptor,
+        new java.lang.String[] { "AppAuth", "User", "Mode", "AppId", "WorkerGroupId", });
+    internal_static_ServerSetApplicationWorkerGroupResponse_descriptor =
+      getDescriptor().getMessageTypes().get(5);
+    internal_static_ServerSetApplicationWorkerGroupResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_ServerSetApplicationWorkerGroupResponse_descriptor,
         new java.lang.String[] { "Success", "Message", });
     com.mogujie.jarvis.protocol.AppAuthProtos.getDescriptor();
   }

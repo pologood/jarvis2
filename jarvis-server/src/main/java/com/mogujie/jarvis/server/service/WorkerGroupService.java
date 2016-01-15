@@ -2,6 +2,8 @@ package com.mogujie.jarvis.server.service;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.mogujie.jarvis.core.domain.WorkerGroupStatus;
+import com.mogujie.jarvis.core.exception.NotFoundException;
 import com.mogujie.jarvis.dao.generate.WorkerGroupMapper;
 import com.mogujie.jarvis.dto.generate.WorkerGroup;
 import com.mogujie.jarvis.dto.generate.WorkerGroupExample;
@@ -9,6 +11,8 @@ import com.mogujie.jarvis.dto.generate.WorkerGroupExample;
 import java.util.List;
 
 /**
+ * WorkerGroupService
+ *
  * @author muming
  */
 @Singleton
@@ -43,8 +47,12 @@ public class WorkerGroupService {
         return 0;
     }
 
-    public WorkerGroup getGroupByGroupId(int groupId) {
-        return workerGroupMapper.selectByPrimaryKey(groupId);
+    public WorkerGroup getGroupByGroupId(int groupId) throws NotFoundException {
+        WorkerGroup wg = workerGroupMapper.selectByPrimaryKey(groupId);
+        if(wg == null || wg.getStatus() == WorkerGroupStatus.DELETED.getValue()){
+            throw new NotFoundException("WorkerGroup not found. groupId:" + groupId);
+        }
+        return wg;
     }
 
 }
