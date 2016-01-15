@@ -143,7 +143,9 @@ public enum JobGraph {
             }
             jobMap.put(jobId, dagJob);
             LOGGER.info("add DAGJob {} and dependency {} to JobGraph successfully.", dagJob.toString());
-            submitJobWithCheck(dagJob, DateTime.now().getMillis());
+            if (dependencies != null && !dependencies.isEmpty()) {
+                submitJobWithCheck(dagJob, DateTime.now().getMillis());
+            }
         }
     }
 

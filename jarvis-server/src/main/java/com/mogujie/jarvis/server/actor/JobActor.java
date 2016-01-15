@@ -151,10 +151,12 @@ public class JobActor extends UntypedActor {
 
             // 3. insert jobDepend to DB
             Set<Long> needDependencies = Sets.newHashSet();
-            for (DependencyEntry entry : msg.getDependencyEntryList()) {
-                needDependencies.add(entry.getJobId());
-                JobDepend jobDepend = convertValidService.convert2JobDepend(jobId, entry, msg.getUser(), now);
-                jobService.insertJobDepend(jobDepend);
+            if (msg.getDependencyEntryList() != null) {
+                for (DependencyEntry entry : msg.getDependencyEntryList()) {
+                    needDependencies.add(entry.getJobId());
+                    JobDepend jobDepend = convertValidService.convert2JobDepend(jobId, entry, msg.getUser(), now);
+                    jobService.insertJobDepend(jobDepend);
+                }
             }
 
             // 4. add job to scheduler

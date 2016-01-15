@@ -92,6 +92,7 @@ public class TestDAGSchedulerWithEvent extends TestSchedulerBase {
     public void testCurrentDaySchedule1() throws Exception {
         long t1 = new DateTime("2020-10-10T10:10:00").getMillis();
         long t2 = new DateTime("2020-10-10T11:11:00").getMillis();
+
         jobGraph.addJob(jobDId, new DAGJob(jobDId, DAGJobType.TIME), null);
         jobGraph.addJob(jobEId, new DAGJob(jobEId, DAGJobType.TIME), null);
         jobGraph.addJob(jobFId, new DAGJob(jobFId, DAGJobType.DEPEND_TIME), Sets.newHashSet(jobDId, jobEId));
@@ -117,7 +118,8 @@ public class TestDAGSchedulerWithEvent extends TestSchedulerBase {
         taskService.updateStatus(taskEId, TaskStatus.SUCCESS);
         ScheduleEvent scheduleEventE = new ScheduleEvent(jobEId, taskDId, t1);
         dagScheduler.handleScheduleEvent(scheduleEventE);
-
+        Assert.assertEquals(1, plan.getPlan().size());
+        System.out.println(plan.getPlan().peek());
     }
 
 }
