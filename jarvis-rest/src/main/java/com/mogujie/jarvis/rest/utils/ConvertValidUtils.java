@@ -129,6 +129,16 @@ public class ConvertValidUtils {
     }
 
     /**
+     * appWorkerGroup检查
+     */
+    public static void checkAppWorkerGroup(OperationMode mode, Integer appId, Integer workerGroupId) {
+        Preconditions.checkArgument((appId != null && appId != 0),"jobId不能为空。");
+        Preconditions.checkArgument((workerGroupId != null && workerGroupId != 0),"workerGroupId不能为空。");
+    }
+
+
+
+    /**
      * alarm查询检查
      */
     public static void checkAlarmQuery(AlarmQueryVo vo) {

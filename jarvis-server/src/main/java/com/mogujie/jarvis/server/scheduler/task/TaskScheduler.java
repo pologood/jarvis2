@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.mogujie.jarvis.core.exception.NotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
@@ -162,6 +163,13 @@ public class TaskScheduler extends Scheduler {
 
             int attemptId = dagTask.getAttemptId();
             LOGGER.info("attemptId={}, failedRetries={}", attemptId, failedRetries);
+            TaskDetail taskDetail=null;
+            try {
+                taskDetail = getTaskInfo(dagTask);
+            } catch (NotFoundException ex) {
+                //// TODO: 16/1/15 
+            }
+
             if (attemptId <= failedRetries) {
                 taskService.insertHistory(taskId);
                 LOGGER.info("insert task [taskId={},attemptId={}] to TaskHistory", taskId, attemptId);
@@ -175,7 +183,7 @@ public class TaskScheduler extends Scheduler {
                 task.setStatus(TaskStatus.READY.getValue());
                 taskService.updateSelective(task);
                 LOGGER.info("update task {}, attemptId={}", taskId, attemptId);
-                retryScheduler.addTask(getTaskInfo(dagTask), RetryType.FAILED_RETRY);
+                retryScheduler.addTask(taskDetail, RetryType.FAILED_RETRY);
                 LOGGER.info("add to retryScheduler");
             } else {
                 taskService.updateStatusWithEnd(taskId, TaskStatus.FAILED, reason);
@@ -295,18 +303,21 @@ public class TaskScheduler extends Scheduler {
         LOGGER.info("update {} with READY status", dagTask.getTaskId());
 
         // submit to TaskQueue
-        TaskDetail taskDetail = getTaskInfo(dagTask);
-        if (taskDetail != null) {
+        try{
+            TaskDetail taskDetail = getTaskInfo(dagTask);
             taskQueue.put(taskDetail);
+
+        }catch (NotFoundException ex){
+            // TODO: 16/1/15
+            LOGGER.error(ex);
         }
     }
 
-    private TaskDetail getTaskInfo(DAGTask dagTask) {
+    private TaskDetail getTaskInfo(DAGTask dagTask) throws NotFoundException {
         String fullId = IdUtils.getFullId(dagTask.getJobId(), dagTask.getTaskId(), dagTask.getAttemptId());
-        TaskDetail taskDetail = null;
         long jobId = dagTask.getJobId();
         Job job = jobService.get(jobId).getJob();
-        taskDetail = TaskDetail.newTaskDetailBuilder()
+        TaskDetail taskDetail = TaskDetail.newTaskDetailBuilder()
                 .setFullId(fullId)
                 .setTaskName(job.getJobName())
                 .setAppName(appService.getAppNameByAppId(job.getAppId()))
