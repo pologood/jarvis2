@@ -177,8 +177,22 @@ public class ManageController extends BaseController {
                 result.put("msg", "已存在名为" + name + "的worker group,不能新增");
             }
         }
-
-
         return result;
+    }
+
+    //业务类型首页
+    @RequestMapping(value = "/bizGroup")
+    @JarvisPassport(authTypes = JarvisAuthType.manage_biz)
+    public String bizGroup(){
+
+        return "manage/bizGroup";
+    }
+    //单个业务类型详情
+    @RequestMapping(value = "bizDetail")
+    @JarvisPassport(authTypes = JarvisAuthType.manage_biz, isMenu = false)
+    public String bizDetail(ModelMap modelMap,Integer id){
+
+        modelMap.put("id",id);
+        return "manage/bizDetail";
     }
 }

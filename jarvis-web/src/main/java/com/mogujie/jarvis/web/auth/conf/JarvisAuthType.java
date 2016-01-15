@@ -14,6 +14,7 @@ public enum JarvisAuthType implements AuthType {
     manage_system(5001,"调度系统管理"),
     manage_app(5002,"应用管理"),
     manage_worker(5003,"worker管理"),
+    manage_biz(5004,"业务类型管理"),
     help(6001,"使用帮助手册")
     ;
     private Integer code;

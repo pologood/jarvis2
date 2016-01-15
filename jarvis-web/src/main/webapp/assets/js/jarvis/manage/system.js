@@ -38,7 +38,7 @@ function initSystemStatus() {
 function initSystemAutoStatus() {
     //详细处理方式等待rest接口完成
     //var response = requestRemoteRestApi("/api/system/autoStatus", "获取系统当前状态", {});
-
+    //创建bootstrapSwitch
     $("#systemAutoStatus").bootstrapSwitch({
         onText: "启用",
         offText: "关闭",

@@ -6,6 +6,7 @@ import com.mogujie.jarvis.dto.generate.WorkerGroup;
  * Created by hejian on 15/9/28.
  */
 public class WorkerGroupQo{
+    private String name;
     private Integer offset;
     private Integer limit;
     private Long appId;
@@ -41,5 +42,13 @@ public class WorkerGroupQo{
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

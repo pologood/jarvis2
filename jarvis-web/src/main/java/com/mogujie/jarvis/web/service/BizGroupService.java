@@ -6,9 +6,7 @@ import com.mogujie.jarvis.web.mapper.BizGroupMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by hejian on 16/1/13.
@@ -37,12 +35,45 @@ public class BizGroupService {
     * */
     public Map<String, Object> getPaginationByCondition(BizGroupQo bizGroupQo) {
         Map<String, Object> result = new HashMap<String, Object>();
-
         Integer total = bizGroupMapper.getTotalByCondition(bizGroupQo);
         List<BizGroupVo> rows = bizGroupMapper.getByCondition(bizGroupQo);
         result.put("total", total);
         result.put("rows", rows);
 
         return result;
+    }
+
+    /*
+    * 检查是否存在此name，如果存在返回true
+    * */
+    public boolean hasName(String name) {
+        BizGroupVo bizGroupVo = bizGroupMapper.getByName(name);
+        if (null == bizGroupVo) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /*
+    * 获取所有业务名
+    * */
+    public List<String> getAllName() {
+        return bizGroupMapper.getAllName();
+    }
+
+    /*
+    * 获取所有维护人
+    * */
+    public Set<String> getAllOwner() {
+        List<String> sourceList = bizGroupMapper.getAllOwner();
+        Set<String> ownerSet = new HashSet<String>();
+        for (String item : sourceList) {
+            String[] arr = item.trim().split(",");
+            for (String owner : arr) {
+                ownerSet.add(owner.trim());
+            }
+        }
+        return ownerSet;
     }
 }

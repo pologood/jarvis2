@@ -131,7 +131,8 @@
                             <div class="col-md-6 col-md-offset-3">
                                 <div class="input-group" style="width:100%">
                                     <span class="input-group-addon" style="width:35%">任务参数</span>
-                                    <input id="params" value="{}" defaultValue="{}" class="form-control" onclick="showParaModel()"/>
+                                    <input id="params" value="{}" defaultValue="{}" class="form-control"
+                                           onclick="showParaModel()"/>
                                 </div>
                             </div>
 

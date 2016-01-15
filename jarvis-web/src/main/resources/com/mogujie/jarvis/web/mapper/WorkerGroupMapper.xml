@@ -7,9 +7,6 @@
             <if test="name!=null and name!=''">
                 `name`=#{name}
             </if>
-            <if test="updateUser!=null and updateUser!=''">
-                AND updateUser=#{updateUser}
-            </if>
         </where>
     </sql>
 
