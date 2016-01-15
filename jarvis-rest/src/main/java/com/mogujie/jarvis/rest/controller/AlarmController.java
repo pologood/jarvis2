@@ -149,7 +149,7 @@ public class AlarmController extends AbstractController {
      * 删除——报警信息
      */
     @POST
-    @Path("deleteByJobId")
+    @Path("delete")
     @Produces(MediaType.APPLICATION_JSON)
     public RestResult delete(@FormParam("user") String user,
                              @FormParam("appName") String appName,
@@ -178,6 +178,5 @@ public class AlarmController extends AbstractController {
             return errorResult(e.getMessage());
         }
     }
-
 
 }

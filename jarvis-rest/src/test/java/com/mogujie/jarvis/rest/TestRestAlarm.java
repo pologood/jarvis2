@@ -80,7 +80,7 @@ public class TestRestAlarm extends TestRestAbstact {
         params.put("jobId", jobId);
         String paramsJson = JsonHelper.toJson(params, Map.class);
 
-        HttpResponse<String> jsonResponse = Unirest.post(baseUrl + "/api/alarm/deleteByJobId")
+        HttpResponse<String> jsonResponse = Unirest.post(baseUrl + "/api/alarm/delete")
                 .field("appName", "jarvis-web")
                 .field("appToken", "123")
                 .field("user", "muming")
