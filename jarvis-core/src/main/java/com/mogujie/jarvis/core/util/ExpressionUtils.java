@@ -8,18 +8,21 @@
 package com.mogujie.jarvis.core.util;
 
 import com.google.common.base.Preconditions;
-import com.mogujie.jarvis.core.expression.*;
+import com.mogujie.jarvis.core.expression.CronExpression;
+import com.mogujie.jarvis.core.expression.FixedDelayExpression;
+import com.mogujie.jarvis.core.expression.FixedRateExpression;
+import com.mogujie.jarvis.core.expression.ISO8601Expression;
+import com.mogujie.jarvis.core.expression.ScheduleExpression;
+import com.mogujie.jarvis.core.expression.ScheduleExpressionType;
 
 public class ExpressionUtils {
 
-    public static  void checkExpression(Integer expressionType, String expressionStr)
-            throws IllegalArgumentException{
+    public static void checkExpression(Integer expressionType, String expressionStr) throws IllegalArgumentException {
 
         Preconditions.checkArgument(expressionType != null, "scheduleExpressionType不能为空");
         Preconditions.checkArgument(expressionStr != null, "scheduleExpression表达式不能为空");
 
-        Preconditions.checkArgument(ScheduleExpressionType.isValid(expressionType),
-                "scheduleExpressionType不对。type:" + expressionType);
+        Preconditions.checkArgument(ScheduleExpressionType.isValid(expressionType), "scheduleExpressionType不对。type:" + expressionType);
 
         ScheduleExpression scheduleExpression = null;
         if (expressionType == ScheduleExpressionType.CRON.getValue()) {
@@ -32,6 +35,7 @@ public class ExpressionUtils {
             scheduleExpression = new ISO8601Expression(expressionStr);
         }
 
+        Preconditions.checkNotNull(scheduleExpression, "scheduleExpression不能为空");
         Preconditions.checkArgument(scheduleExpression.isValid(), "scheduleExpression表达式不对 exp:" + expressionStr);
 
     }

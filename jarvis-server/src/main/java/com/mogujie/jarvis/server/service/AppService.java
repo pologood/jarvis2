@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.mogujie.jarvis.core.exception.NotFoundException;
 import org.mybatis.guice.transactional.Transactional;
 
 import com.google.common.base.Preconditions;
@@ -52,28 +53,31 @@ public class AppService {
         }
     }
 
-    public int getAppIdByName(String appName) {
-        return getAppByName(appName).getAppId();
-    }
-
-    public String getAppNameByAppId(Integer appId){
-        App app = appMetastore.get(appId);
-        if (app == null){
-            return "";
+    public App getAppById(Integer appId) throws  NotFoundException {
+        App app =  appMetastore.get(appId);
+        if(app ==null){
+            throw new NotFoundException("App not found. appId:" + appId);
         }
-        return app.getAppName();
+        return app;
     }
 
-    public App getAppByName(String appName) {
-        Preconditions.checkNotNull(appName, appName + "not found.");
+    public App getAppByName(String appName) throws NotFoundException{
         for (Entry<Integer, App> entry : appMetastore.entrySet()) {
             App app = entry.getValue();
             if (app.getAppName().equals(appName)) {
                 return app;
             }
         }
+        throw new NotFoundException("App not found. appName:" + appName);
+    }
 
-        return null;
+
+    public int getAppIdByName(String appName) throws NotFoundException{
+        return getAppByName(appName).getAppId();
+    }
+
+    public String getAppNameByAppId(Integer appId) throws  NotFoundException{
+        return getAppById(appId).getAppName();
     }
 
     public List<App> getAppList() {

@@ -16,7 +16,7 @@ import com.mogujie.jarvis.core.exception.AppTokenInvalidException;
 public class AppTokenUtils {
 
     private static final int APP_TOKEN_LENGTH = 42;
-    private static final int MAX_TIMESTAMP_OFFSET = 180;
+    public static final int MAX_TIMESTAMP_OFFSET = 180;
 
     public static String generateToken(long timestamp, String appKey) {
         return timestamp + Hashing.md5().hashString(appKey + timestamp, StandardCharsets.UTF_8).toString();

@@ -71,6 +71,8 @@ import com.mogujie.jarvis.server.util.PlanUtil;
  */
 public class JobActor extends UntypedActor {
 
+    private static Logger logger = LogManager.getLogger();
+
     private JobGraph jobGraph = JobGraph.INSTANCE;
     private TimePlan plan = TimePlan.INSTANCE;
 
@@ -80,8 +82,6 @@ public class JobActor extends UntypedActor {
     public static Props props() {
         return Props.create(JobActor.class);
     }
-
-    private Logger logger = LogManager.getLogger();
 
     /**
      * 处理消息

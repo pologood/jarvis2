@@ -23,12 +23,13 @@ import com.google.common.eventbus.Subscribe;
 import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.domain.TaskType;
+import com.mogujie.jarvis.core.exception.NotFoundException;
 import com.mogujie.jarvis.core.util.IdUtils;
 import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.server.dispatcher.TaskManager;
-import com.mogujie.jarvis.server.dispatcher.TaskQueue;
+import com.mogujie.jarvis.server.dispatcher.PriorityTaskQueue;
 import com.mogujie.jarvis.server.domain.RetryType;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
@@ -67,7 +68,7 @@ public class TaskScheduler extends Scheduler {
     private JobService jobService = Injectors.getInjector().getInstance(JobService.class);
     private TaskService taskService = Injectors.getInjector().getInstance(TaskService.class);
     private TaskManager taskManager = Injectors.getInjector().getInstance(TaskManager.class);
-    private TaskQueue taskQueue = Injectors.getInjector().getInstance(TaskQueue.class);
+    private PriorityTaskQueue taskQueue = Injectors.getInjector().getInstance(PriorityTaskQueue.class);
     private TaskRetryScheduler retryScheduler = TaskRetryScheduler.INSTANCE;
 
     private static final Logger LOGGER = LogManager.getLogger();
@@ -162,7 +163,15 @@ public class TaskScheduler extends Scheduler {
 
             int attemptId = dagTask.getAttemptId();
             LOGGER.info("attemptId={}, failedRetries={}", attemptId, failedRetries);
-            if (attemptId <= failedRetries) {
+
+            TaskDetail taskDetail = null;
+            try {
+                taskDetail = getTaskInfo(dagTask);
+            } catch (NotFoundException ex) {
+                reason = ex.getMessage();
+            }
+
+            if (taskDetail != null && attemptId <= failedRetries) {
                 taskService.insertHistory(taskId);
                 LOGGER.info("insert task [taskId={},attemptId={}] to TaskHistory", taskId, attemptId);
 
@@ -175,7 +184,7 @@ public class TaskScheduler extends Scheduler {
                 task.setStatus(TaskStatus.READY.getValue());
                 taskService.updateSelective(task);
                 LOGGER.info("update task {}, attemptId={}", taskId, attemptId);
-                retryScheduler.addTask(getTaskInfo(dagTask), RetryType.FAILED_RETRY);
+                retryScheduler.addTask(taskDetail, RetryType.FAILED_RETRY);
                 LOGGER.info("add to retryScheduler");
             } else {
                 taskService.updateStatusWithEnd(taskId, TaskStatus.FAILED, reason);
@@ -285,7 +294,7 @@ public class TaskScheduler extends Scheduler {
     }
 
     @VisibleForTesting
-    public TaskQueue getTaskQueue() {
+    public PriorityTaskQueue getTaskQueue() {
         return taskQueue;
     }
 
@@ -295,18 +304,19 @@ public class TaskScheduler extends Scheduler {
         LOGGER.info("update {} with READY status", dagTask.getTaskId());
 
         // submit to TaskQueue
-        TaskDetail taskDetail = getTaskInfo(dagTask);
-        if (taskDetail != null) {
+        try{
+            TaskDetail taskDetail = getTaskInfo(dagTask);
             taskQueue.put(taskDetail);
+        } catch (NotFoundException ex){
+            LOGGER.error(ex);
         }
     }
 
-    private TaskDetail getTaskInfo(DAGTask dagTask) {
+    private TaskDetail getTaskInfo(DAGTask dagTask) throws NotFoundException {
         String fullId = IdUtils.getFullId(dagTask.getJobId(), dagTask.getTaskId(), dagTask.getAttemptId());
-        TaskDetail taskDetail = null;
         long jobId = dagTask.getJobId();
         Job job = jobService.get(jobId).getJob();
-        taskDetail = TaskDetail.newTaskDetailBuilder()
+        TaskDetail taskDetail = TaskDetail.newTaskDetailBuilder()
                 .setFullId(fullId)
                 .setTaskName(job.getJobName())
                 .setAppName(appService.getAppNameByAppId(job.getAppId()))

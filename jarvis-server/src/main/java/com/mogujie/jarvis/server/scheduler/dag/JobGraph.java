@@ -122,6 +122,19 @@ public enum JobGraph {
      * @throws JobScheduleException
      */
     public synchronized void addJob(long jobId, DAGJob dagJob, Set<Long> dependencies) throws JobScheduleException {
+        addJob(jobId, dagJob, dependencies, DateTime.now());
+    }
+
+    /**
+     * Add job
+     *
+     * @param jobId
+     * @param dagJob
+     * @param dependencies set of dependency jobId
+     * @param dateTime
+     * @throws JobScheduleException
+     */
+    public synchronized void addJob(long jobId, DAGJob dagJob, Set<Long> dependencies, DateTime dateTime) throws JobScheduleException {
         if (jobMap.get(jobId) == null) {
             dag.addVertex(dagJob);
             LOGGER.debug("add DAGJob {} to graph successfully.", dagJob.toString());
@@ -144,7 +157,7 @@ public enum JobGraph {
             jobMap.put(jobId, dagJob);
             LOGGER.info("add DAGJob {} and dependency {} to JobGraph successfully.", dagJob.toString());
             if (dependencies != null && !dependencies.isEmpty()) {
-                submitJobWithCheck(dagJob, DateTime.now().getMillis());
+                submitJobWithCheck(dagJob, dateTime.getMillis());
             }
         }
     }
@@ -319,7 +332,7 @@ public enum JobGraph {
                         LOGGER.info("{} pass the dependency check", dagJob);
                         // 提交给TimeScheduler进行时间调度
                         Map<Long, List<Long>> dependTaskIdMap = dagJob.getDependTaskIdMap(planScheduleTime);
-                        AddPlanEvent event = new AddPlanEvent(jobId, scheduleTime, dependTaskIdMap);
+                        AddPlanEvent event = new AddPlanEvent(jobId, planScheduleTime, dependTaskIdMap);
                         controller.notify(event);
                     }
                 }

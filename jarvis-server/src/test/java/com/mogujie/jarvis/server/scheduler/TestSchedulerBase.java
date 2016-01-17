@@ -19,7 +19,7 @@ import com.mogujie.jarvis.core.domain.IdType;
 import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.core.util.IdUtils;
-import com.mogujie.jarvis.server.dispatcher.TaskQueue;
+import com.mogujie.jarvis.server.dispatcher.PriorityTaskQueue;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.dag.DAGScheduler;
 import com.mogujie.jarvis.server.scheduler.dag.JobGraph;
@@ -41,7 +41,7 @@ public class TestSchedulerBase {
     protected static JobSchedulerController controller;
     protected static JobGraph jobGraph;
     protected static TaskGraph taskGraph;
-    protected static TaskQueue taskQueue;
+    protected static PriorityTaskQueue taskQueue;
     protected static TimePlan plan = TimePlan.INSTANCE;
     protected static Configuration conf = ConfigUtils.getServerConfig();
     protected TaskService taskService = Injectors.getInjector().getInstance(TaskService.class);
@@ -76,7 +76,7 @@ public class TestSchedulerBase {
             taskService.deleteTaskAndRelation(taskId);
         }
         while (!taskQueue.isEmpty()) {
-            TaskDetail taskDetail = taskQueue.take();
+            TaskDetail taskDetail = taskQueue.get();
             long taskId = IdUtils.parse(taskDetail.getFullId(), IdType.TASK_ID);
             taskService.deleteTaskAndRelation(taskId);
         }
