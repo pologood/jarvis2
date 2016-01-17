@@ -71,6 +71,8 @@ import com.mogujie.jarvis.server.util.PlanUtil;
  */
 public class JobActor extends UntypedActor {
 
+    private static Logger logger = LogManager.getLogger();
+
     private JobGraph jobGraph = JobGraph.INSTANCE;
     private TimePlan plan = TimePlan.INSTANCE;
 
@@ -80,8 +82,6 @@ public class JobActor extends UntypedActor {
     public static Props props() {
         return Props.create(JobActor.class);
     }
-
-    private Logger logger = LogManager.getLogger();
 
     /**
      * 处理消息
@@ -136,7 +136,7 @@ public class JobActor extends UntypedActor {
             DateTime now = DateTime.now();
 
             // 参数检查
-            Job job = convertValidService.convertCheck2Job(msg);
+            Job job = convertValidService.convert2JobByCheck(msg);
 
             // 1. insert job to DB
             jobId = jobService.insertJob(job);
@@ -151,10 +151,12 @@ public class JobActor extends UntypedActor {
 
             // 3. insert jobDepend to DB
             Set<Long> needDependencies = Sets.newHashSet();
-            for (DependencyEntry entry : msg.getDependencyEntryList()) {
-                needDependencies.add(entry.getJobId());
-                JobDepend jobDepend = convertValidService.convert2JobDepend(jobId, entry, msg.getUser(), now);
-                jobService.insertJobDepend(jobDepend);
+            if (msg.getDependencyEntryList() != null) {
+                for (DependencyEntry entry : msg.getDependencyEntryList()) {
+                    needDependencies.add(entry.getJobId());
+                    JobDepend jobDepend = convertValidService.convert2JobDepend(jobId, entry, msg.getUser(), now);
+                    jobService.insertJobDepend(jobDepend);
+                }
             }
 
             // 4. add job to scheduler
@@ -203,7 +205,7 @@ public class JobActor extends UntypedActor {
         ServerModifyJobResponse response;
         try {
             // 参数检查
-            Job job = convertValidService.convertCheck2Job(msg);
+            Job job = convertValidService.convert2JobByCheck(msg);
 
             // update job to DB
             jobService.updateJob(job);
@@ -229,7 +231,7 @@ public class JobActor extends UntypedActor {
         ServerModifyJobDependResponse response;
         try {
             // 参数检查
-            convertValidService.Check2JobDependency(msg);
+            convertValidService.CheckJobDependency(msg);
 
             // 1. update jobService
             List<ModifyDependEntry> dependEntries = new ArrayList<>();
@@ -279,7 +281,7 @@ public class JobActor extends UntypedActor {
 
         try {
             // 参数检查
-            convertValidService.Check2JobScheculeExp(msg);
+            convertValidService.Check2JobScheduleExp(msg);
 
             // 1. update jobService
             List<ScheduleExpressionEntry> expressionEntries = msg.getExpressionEntryList();
@@ -364,7 +366,7 @@ public class JobActor extends UntypedActor {
         try {
             long jobId = msg.getJobId();
             // 参数检查
-            Job job = convertValidService.convertCheck2Job(msg);
+            Job job = convertValidService.convert2JobByCheck(msg);
 
             // 1. update job to DB
             JobStatus oldStatus = JobStatus.parseValue(jobService.get(jobId).getJob().getStatus());

@@ -11,6 +11,7 @@ package com.mogujie.jarvis.server.alarm;
 import java.util.List;
 import java.util.Map;
 
+import com.mogujie.jarvis.core.domain.AlarmType;
 import org.apache.commons.configuration.Configuration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

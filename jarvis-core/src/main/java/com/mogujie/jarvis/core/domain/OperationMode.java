@@ -46,4 +46,20 @@ public enum OperationMode {
         throw new IllegalArgumentException("OperationMode value is invalid. value:" + value);
     }
 
+    /**
+     * 是否在scope中
+     * @param scope
+     * @return
+     */
+    public Boolean isIn(OperationMode ... scope){
+
+        for(OperationMode member : scope){
+            if(ordinal() == member.ordinal()){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 }

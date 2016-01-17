@@ -19,13 +19,15 @@ import com.mogujie.jarvis.core.domain.IdType;
 import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.core.util.IdUtils;
-import com.mogujie.jarvis.server.dispatcher.TaskQueue;
+import com.mogujie.jarvis.server.dispatcher.PriorityTaskQueue;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.dag.DAGScheduler;
 import com.mogujie.jarvis.server.scheduler.dag.JobGraph;
 import com.mogujie.jarvis.server.scheduler.task.DAGTask;
 import com.mogujie.jarvis.server.scheduler.task.TaskGraph;
 import com.mogujie.jarvis.server.scheduler.task.TaskScheduler;
+import com.mogujie.jarvis.server.scheduler.time.TimePlan;
+import com.mogujie.jarvis.server.scheduler.time.TimeScheduler;
 import com.mogujie.jarvis.server.service.TaskService;
 
 /**
@@ -35,10 +37,12 @@ import com.mogujie.jarvis.server.service.TaskService;
 public class TestSchedulerBase {
     protected static DAGScheduler dagScheduler;
     protected static TaskScheduler taskScheduler;
+    protected static TimeScheduler timeScheduler;
     protected static JobSchedulerController controller;
     protected static JobGraph jobGraph;
     protected static TaskGraph taskGraph;
-    protected static TaskQueue taskQueue;
+    protected static PriorityTaskQueue taskQueue;
+    protected static TimePlan plan = TimePlan.INSTANCE;
     protected static Configuration conf = ConfigUtils.getServerConfig();
     protected TaskService taskService = Injectors.getInjector().getInstance(TaskService.class);
 
@@ -49,8 +53,10 @@ public class TestSchedulerBase {
         controller = JobSchedulerController.getInstance();
         dagScheduler = DAGScheduler.getInstance();
         taskScheduler = TaskScheduler.getInstance();
+        timeScheduler = TimeScheduler.getInstance();
         controller.register(dagScheduler);
         controller.register(taskScheduler);
+        controller.register(timeScheduler);
         jobGraph = JobGraph.INSTANCE;
         taskGraph = TaskGraph.INSTANCE;
         taskQueue = taskScheduler.getTaskQueue();
@@ -60,6 +66,7 @@ public class TestSchedulerBase {
     public static void afterClass() throws Exception {
         controller.unregister(dagScheduler);
         controller.unregister(taskScheduler);
+        controller.unregister(timeScheduler);
     }
 
     @After
@@ -69,12 +76,13 @@ public class TestSchedulerBase {
             taskService.deleteTaskAndRelation(taskId);
         }
         while (!taskQueue.isEmpty()) {
-            TaskDetail taskDetail = taskQueue.take();
+            TaskDetail taskDetail = taskQueue.get();
             long taskId = IdUtils.parse(taskDetail.getFullId(), IdType.TASK_ID);
             taskService.deleteTaskAndRelation(taskId);
         }
         dagScheduler.destroy();
         taskScheduler.destroy();
         taskQueue.clear();
+        plan.clear();
     }
 }

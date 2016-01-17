@@ -68,6 +68,7 @@ public class ServerActor extends UntypedActor {
         addActor(getContext().actorOf(WorkerModifyStatusActor.props()), WorkerModifyStatusActor.handledMessages());
         addActor(getContext().actorOf(WorkerRegistryActor.props()), WorkerRegistryActor.handledMessages());
         addActor(getContext().actorOf(SystemActor.props()), SystemActor.handledMessages());
+        addActor(getContext().actorOf(AlarmActor.props()), AlarmActor.handledMessages());
     }
 
     private Object generateResponse(Class<? extends GeneratedMessage> clazz, boolean success, String msg) {

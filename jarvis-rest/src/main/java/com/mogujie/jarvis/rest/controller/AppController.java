@@ -10,10 +10,13 @@ import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.core.domain.AppStatus;
 import com.mogujie.jarvis.core.domain.OperationMode;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
+import com.mogujie.jarvis.protocol.ApplicationProtos;
 import com.mogujie.jarvis.protocol.ApplicationProtos.RestCreateApplicationRequest;
-import com.mogujie.jarvis.protocol.ApplicationProtos.RestModifyApplicationRequest;
 import com.mogujie.jarvis.protocol.ApplicationProtos.ServerCreateApplicationResponse;
+import com.mogujie.jarvis.protocol.ApplicationProtos.RestModifyApplicationRequest;
 import com.mogujie.jarvis.protocol.ApplicationProtos.ServerModifyApplicationResponse;
+import com.mogujie.jarvis.protocol.ApplicationProtos.RestSetApplicationWorkerGroupRequest;
+import com.mogujie.jarvis.protocol.ApplicationProtos.ServerSetApplicationWorkerGroupResponse;
 import com.mogujie.jarvis.rest.RestResult;
 import com.mogujie.jarvis.rest.utils.ConvertValidUtils;
 import com.mogujie.jarvis.rest.utils.JsonParameters;
@@ -60,6 +63,7 @@ public class AppController extends AbstractController {
             return errorResult(e.getMessage());
         }
     }
+
 
     /**
      * 修改app
@@ -109,4 +113,87 @@ public class AppController extends AbstractController {
             return errorResult(e.getMessage());
         }
     }
+
+
+    /**
+     * app/workerGroup追加
+     */
+    @POST
+    @Path("/workerGroup/add")
+    @Produces(MediaType.APPLICATION_JSON)
+    public RestResult wgSet(@FormParam("user") String user,
+                             @FormParam("appName") String appName,
+                             @FormParam("appToken") String appToken,
+                             @FormParam("parameters") String parameters) {
+        try {
+            AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
+
+            JsonParameters paras = new JsonParameters(parameters);
+            Integer appId = paras.getIntegerNotNull("appId");
+            Integer workerGroupId = paras.getIntegerNotNull("workerGroupId");
+
+            ConvertValidUtils.checkAppWorkerGroup(OperationMode.ADD, appId, workerGroupId);
+            RestSetApplicationWorkerGroupRequest request = RestSetApplicationWorkerGroupRequest.newBuilder()
+                    .setAppAuth(appAuth)
+                    .setUser(user)
+                    .setMode(OperationMode.ADD.getValue())
+                    .setAppId(appId)
+                    .setWorkerGroupId(workerGroupId)
+                    .build();
+
+            ServerSetApplicationWorkerGroupResponse response = (ServerSetApplicationWorkerGroupResponse) callActor(AkkaType.SERVER, request);
+            if (response.getSuccess()) {
+                return successResult();
+            } else {
+                return errorResult(response.getMessage());
+            }
+        } catch (Exception e) {
+            LOGGER.error("", e);
+            return errorResult(e.getMessage());
+        }
+    }
+
+    /**
+     * app/workerGroup追加
+     */
+    @POST
+    @Path("/workerGroup/delete")
+    @Produces(MediaType.APPLICATION_JSON)
+    public RestResult wgDelete(@FormParam("user") String user,
+                            @FormParam("appName") String appName,
+                            @FormParam("appToken") String appToken,
+                            @FormParam("parameters") String parameters) {
+        try {
+            AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
+
+            JsonParameters paras = new JsonParameters(parameters);
+            Integer appId = paras.getIntegerNotNull("appId");
+            Integer workerGroupId = paras.getIntegerNotNull("workerGroupId");
+
+            ConvertValidUtils.checkAppWorkerGroup(OperationMode.DELETE, appId, workerGroupId);
+            RestSetApplicationWorkerGroupRequest request = RestSetApplicationWorkerGroupRequest.newBuilder()
+                    .setAppAuth(appAuth)
+                    .setUser(user)
+                    .setMode(OperationMode.DELETE.getValue())
+                    .setAppId(appId)
+                    .setWorkerGroupId(workerGroupId)
+                    .build();
+
+            ServerSetApplicationWorkerGroupResponse response = (ServerSetApplicationWorkerGroupResponse) callActor(AkkaType.SERVER, request);
+            if (response.getSuccess()) {
+                return successResult();
+            } else {
+                return errorResult(response.getMessage());
+            }
+        } catch (Exception e) {
+            LOGGER.error("", e);
+            return errorResult(e.getMessage());
+        }
+    }
+
+
+
+
+
+
 }

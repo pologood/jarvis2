@@ -4,15 +4,16 @@ package com.mogujie.jarvis.core.domain;
  * Created by hejian on 16/1/8.
  */
 public enum WorkerGroupStatus {
-    ENABLE(1,"启用"),
-    DISABLED(2,"禁用");
+    ENABLE(1, "启用"),
+    DISABLED(2, "禁用"),
+    DELETED(3, "删除");
 
     private int value;
     private String description;
 
-    WorkerGroupStatus(int value,String description){
-        this.value=value;
-        this.description=description;
+    WorkerGroupStatus(int value, String description) {
+        this.value = value;
+        this.description = description;
     }
 
     public int getValue() {
@@ -22,6 +23,7 @@ public enum WorkerGroupStatus {
     public String getDescription() {
         return description;
     }
+
     public static Boolean isValid(int value) {
         WorkerGroupStatus[] values = WorkerGroupStatus.values();
         for (WorkerGroupStatus s : values) {
@@ -32,7 +34,7 @@ public enum WorkerGroupStatus {
         return false;
     }
 
-    public static WorkerGroupStatus parseValue(int value) throws IllegalArgumentException{
+    public static WorkerGroupStatus parseValue(int value) throws IllegalArgumentException {
         WorkerGroupStatus[] statusList = WorkerGroupStatus.values();
         for (WorkerGroupStatus s : statusList) {
             if (s.getValue() == value) {

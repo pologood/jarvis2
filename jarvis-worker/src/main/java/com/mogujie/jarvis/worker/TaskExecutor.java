@@ -11,9 +11,10 @@ package com.mogujie.jarvis.worker;
 import java.lang.reflect.Constructor;
 import java.util.List;
 
-import akka.actor.ActorRef;
-import akka.actor.ActorSelection;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import com.google.common.base.Throwables;
 import com.mogujie.jarvis.core.AbstractLogCollector;
 import com.mogujie.jarvis.core.AbstractTask;
 import com.mogujie.jarvis.core.ProgressReporter;
@@ -30,6 +31,9 @@ import com.mogujie.jarvis.worker.strategy.AcceptanceResult;
 import com.mogujie.jarvis.worker.strategy.AcceptanceStrategy;
 import com.mogujie.jarvis.worker.util.TaskConfigUtils;
 
+import akka.actor.ActorRef;
+import akka.actor.ActorSelection;
+
 public class TaskExecutor extends Thread {
 
     private TaskContext taskContext;
@@ -37,6 +41,7 @@ public class TaskExecutor extends Thread {
     private ActorRef senderActor;
     private ActorSelection serverActor;
     private TaskPool taskPool = TaskPool.INSTANCE;
+    private static final Logger LOGGER = LogManager.getLogger();
 
     public TaskExecutor(TaskContext taskContext, ActorRef selfActor, ActorRef senderActor, ActorSelection serverActor) {
         this.taskContext = taskContext;
@@ -102,7 +107,10 @@ public class TaskExecutor extends Thread {
             logCollector.collectStderr("", true);
             logCollector.collectStdout("", true);
             taskPool.remove(fullId);
+        } catch (RuntimeException e) {
+            Throwables.propagate(e);
         } catch (Exception e) {
+            LOGGER.error("", e);
             senderActor.tell(WorkerSubmitTaskResponse.newBuilder().setAccept(false).setMessage(e.getMessage()).build(), selfActor);
         }
     }

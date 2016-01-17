@@ -12,20 +12,22 @@ import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.google.common.collect.Maps;
 import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.domain.TaskDetail.TaskDetailBuilder;
 import com.mogujie.jarvis.core.util.ThreadUtils;
-import com.mogujie.jarvis.server.dispatcher.TaskQueue;
+import com.mogujie.jarvis.server.dispatcher.PriorityTaskQueue;
 import com.mogujie.jarvis.server.domain.RetryType;
 import com.mogujie.jarvis.server.guice.Injectors;
 
+@Ignore
 public class TestTaskRetryScheduler {
 
     private TaskRetryScheduler taskRetryScheduler = TaskRetryScheduler.INSTANCE;
-    private TaskQueue taskQueue = Injectors.getInjector().getInstance(TaskQueue.class);
+    private PriorityTaskQueue taskQueue = Injectors.getInjector().getInstance(PriorityTaskQueue.class);
     private TaskDetail taskDetail = null;
 
     @Before
@@ -55,7 +57,7 @@ public class TestTaskRetryScheduler {
         for (int i = 0; i < 5; i++) {
             taskRetryScheduler.addTask(taskDetail, RetryType.FAILED_RETRY);
         }
-        ThreadUtils.sleep(5000);
+        ThreadUtils.sleep(10000);
         Assert.assertEquals(taskQueue.size(), taskDetail.getFailedRetries());
     }
 

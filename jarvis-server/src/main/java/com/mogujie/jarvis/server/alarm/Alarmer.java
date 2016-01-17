@@ -10,6 +10,7 @@ package com.mogujie.jarvis.server.alarm;
 import java.util.List;
 
 import com.google.common.collect.Lists;
+import com.mogujie.jarvis.core.domain.AlarmType;
 
 public abstract class Alarmer {
 

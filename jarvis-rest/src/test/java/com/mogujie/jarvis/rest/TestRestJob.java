@@ -40,9 +40,6 @@ public class TestRestJob {
         jobDependencySet(jobId);
     }
 
-
-
-
     private Long jobSubmit() throws UnirestException {
 
         JobEntryVo job = new JobEntryVo();
