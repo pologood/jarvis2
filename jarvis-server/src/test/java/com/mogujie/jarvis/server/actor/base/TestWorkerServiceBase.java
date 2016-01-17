@@ -1,4 +1,4 @@
-package com.mogujie.jarvis.server.actor;
+package com.mogujie.jarvis.server.actor.base;
 
 import com.google.inject.Injector;
 import com.mogujie.jarvis.dao.generate.WorkerGroupMapper;
@@ -7,6 +7,9 @@ import com.mogujie.jarvis.dto.generate.Worker;
 import com.mogujie.jarvis.dto.generate.WorkerExample;
 import com.mogujie.jarvis.dto.generate.WorkerGroup;
 import com.mogujie.jarvis.server.WorkerRegistry;
+import com.mogujie.jarvis.server.actor.WorkerGroupActor;
+import com.mogujie.jarvis.server.actor.WorkerModifyStatusActor;
+import com.mogujie.jarvis.server.actor.WorkerRegistryActor;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.service.WorkerGroupService;
 import com.mogujie.jarvis.server.service.WorkerService;

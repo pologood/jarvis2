@@ -1,18 +1,12 @@
 package com.mogujie.jarvis.server.actor;
 
 import akka.actor.*;
-import akka.remote.RemoteScope;
 import akka.testkit.JavaTestKit;
-import com.mogujie.jarvis.core.domain.MessageType;
-import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.dto.generate.Worker;
-import com.mogujie.jarvis.dto.generate.WorkerGroup;
 import com.mogujie.jarvis.protocol.*;
 import com.mogujie.jarvis.protocol.WorkerGroupProtos.RestServerModifyWorkerGroupRequest;
-import com.mogujie.jarvis.server.WorkerRegistry;
-import com.mogujie.jarvis.server.domain.ActorEntry;
+import com.mogujie.jarvis.server.actor.base.TestWorkerServiceBase;
 import com.mogujie.jarvis.server.util.AppTokenUtils;
-import com.typesafe.config.Config;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
