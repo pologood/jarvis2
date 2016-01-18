@@ -1,9 +1,10 @@
 package com.mogujie.jarvis.core.domain;
 
 /**
- * Created by hejian on 16/1/8.
+ * Created by hejian on 16/1/15.
  */
 public enum BizGroupStatus {
+
     ENABLE(1, "启用"),
     DISABLED(2, "禁用");
 
@@ -14,6 +15,7 @@ public enum BizGroupStatus {
         this.value = value;
         this.description = description;
     }
+
 
     public int getValue() {
         return value;

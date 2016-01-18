@@ -62,7 +62,6 @@ public class JobController extends AbstractController {
     @Produces(MediaType.APPLICATION_JSON)
     public RestResult submit(@FormParam("appName") String appName, @FormParam("appToken") String appToken, @FormParam("user") String user,
                              @FormParam("parameters") String parameters) {
-
         LOGGER.debug("提交job任务");
         try {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();

@@ -4,12 +4,12 @@ var url = dependencyUrl + jobVo.jobId;
 $(function () {
     if (undefined != jobVo.jobId) {
         initJobData();     //初始化job详细信息
-
         var tree = CollapsibleTree("#dependTree");
         tree.init(url);
     }
 });
 
+//初始化job基本信息
 function initJobData() {
     if (undefined != jobVo.jobId) {
         $.getJSON(contextPath + "/api/job/getById", {jobId: jobVo.jobId}, function (data) {

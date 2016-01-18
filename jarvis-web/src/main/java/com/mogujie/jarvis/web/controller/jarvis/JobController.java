@@ -116,11 +116,9 @@ public class JobController extends BaseController {
     @JarvisPassport(authTypes = JarvisAuthType.job, isMenu = false)
     public String dependency(ModelMap modelMap, Long jobId) {
         JobVo jobVo = jobService.getJobById(jobId);
-
         if (jobVo == null) {
             jobVo = new JobVo();
         }
-
         modelMap.put("jobVo", JsonHelper.toJson(jobVo));
         return "job/detail";
     }

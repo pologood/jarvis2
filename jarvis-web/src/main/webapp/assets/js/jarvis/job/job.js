@@ -1,6 +1,7 @@
 var jobTypeJson = null;
 var jobStatus = null;
 var jobPriorityJson = null;
+var bizGroup = {};
 $(function () {
     //select采用select2 实现
     $(".input-group select").select2({width: '100%'});
@@ -31,7 +32,7 @@ $(function () {
         });
     });
     $.ajaxSettings.async = true;
-
+    getBizGroup();
 
     $("#jobId").select2({
         ajax: {
@@ -154,6 +155,16 @@ function getQueryPara() {
     return queryPara;
 }
 
+function getBizGroup() {
+    $.ajaxSettings.async = false;
+    $.getJSON(contextPath + "/api/bizGroup/getAllByCondition", function (data) {
+        $(data.data).each(function (i, c) {
+            bizGroup[c.id] = c.name;
+        });
+    });
+    $.ajaxSettings.async = true;
+}
+
 //初始化数据及分页
 function initData() {
     var queryParams = getQueryPara();
@@ -184,15 +195,13 @@ function initData() {
         exportDataType: 'all'
     });
 }
-
-
+//更新job的状态
 function updateJobStatus(jobId, jobStatus) {
     var data = {jobId: jobId, status: jobStatus};
     requestRemoteRestApi("/api/job/status/set", "更新任务状态", data);
     search();
 }
-
-
+//job的字段列表
 var columns = [{
     field: 'jobId',
     title: '任务id',
@@ -219,6 +228,12 @@ var columns = [{
     field: 'jobType',
     title: '任务类型',
     switchable: true
+}, {
+    field: 'bizGroupId',
+    title: '业务标签',
+    switchable: true,
+    visible: true,
+    formatter:bizGroupFormatter
 }, {
     field: 'status',
     title: '任务状态',
@@ -292,7 +307,7 @@ var columns = [{
     formatter: operateFormatter
 }];
 
-
+//操作格式化器
 function operateFormatter(value, row, index) {
     //console.log(row);
     var jobId = row["jobId"];
@@ -329,30 +344,30 @@ function operateFormatter(value, row, index) {
         operation = operation + '</ul></div>';
         result = result + operation;
     }
-
-
-    //console.log(result);
-
     return result;
 }
 
+//job状态对应显示的图标
 var jobStatusClass = {
     "1": "glyphicon glyphicon-ok text-success",
     "2": "glyphicon glyphicon-remove text-danger",
     "3": "glyphicon glyphicon-calendar text-info",
-    "4": "glyphicon glyphicon-minus text-danger",
+    "4": "glyphicon glyphicon-trash text-danger",
     "5": "glyphicon glyphicon-pause text-warning"
 }
-
+//状态格式化器
 function statusFormatter(value, row, index) {
     var result;
     result = '<i class="' + jobStatusClass[value] + '"></i>'
     return result;
 }
-
+//
 function formatResult(result) {
     return result.text;
 }
 function formatResultSelection(result) {
     return result.id;
+}
+function bizGroupFormatter(value,row,index){
+    return bizGroup[value];
 }
