@@ -43,7 +43,7 @@
         <div class="col-md-6 col-md-offset-3 top-buffer">
             <div class="input-group" style="width:100%">
                 <span class="input-group-addon" style="width:35%">最大并发数</span>
-                <input id="maxConcurrency" class="form-control" placeholder="最大并发书,默认10"/>
+                <input id="maxConcurrency" class="form-control" placeholder="最大并发数,默认10"/>
             </div>
         </div>
 

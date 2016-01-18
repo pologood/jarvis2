@@ -104,6 +104,19 @@
                         <div class="row top-buffer">
                             <div class="col-md-6 col-md-offset-3">
                                 <div class="input-group" style="width:100%">
+                                    <span class="input-group-addon" style="width:35%">业务标签
+                                        <span class="text-danger" style="vertical-align: middle">*</span>
+                                    </span>
+                                    <select id="bizGroupId" desc="业务标签">
+
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row top-buffer">
+                            <div class="col-md-6 col-md-offset-3">
+                                <div class="input-group" style="width:100%">
                                     <span class="input-group-addon" style="width:35%">Worker Group
                                         <span class="text-danger" style="vertical-align: middle">*</span>
                                     </span>

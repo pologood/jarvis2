@@ -4,6 +4,7 @@ import com.google.common.hash.Hashing;
 import com.mogu.bigdata.admin.core.entity.User;
 import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.web.entity.vo.AppVo;
+import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -27,6 +28,8 @@ public class RemoteRestApiController extends BaseController {
     static String domain = "";
     static AppVo app = new AppVo();
 
+    static Logger logger = Logger.getLogger(RemoteRestApiController.class);
+
     /*
     * 读取配置文件
     * */
@@ -39,7 +42,8 @@ public class RemoteRestApiController extends BaseController {
 
             InputStream appInputStream = RemoteRestApiController.class.getClassLoader().getResourceAsStream("app.properties");
             Properties appProperties = new Properties();
-            properties.load(appInputStream);
+            appProperties.load(appInputStream);
+
             app.setAppId(Integer.parseInt(appProperties.getProperty("app.id")));
             app.setAppName(appProperties.getProperty("app.name"));
             app.setAppKey(appProperties.getProperty("app.key"));

@@ -153,11 +153,53 @@ function getData() {
     }
 
     result["appId"] = appId;
-    result["appName"] = appName;
+    result["applicationName"] = appName;
     result["maxConcurrency"] = maxConcurrency;
     result["status"] = status;
     result["owner"] = owner;
 
+    return result;
+}
+
+//获取app与workerGroup组的操作数据
+function getAppWorkerGroupData() {
+    var currentWorkerGroup = $("workerGroup").val();
+    var allWorkerGroup = {};    //暂存所有workerGroup
+    var appWorkerGroupJson = {};
+    var currentWorkerGroupJson = {};
+
+    $(appWorkerGroup).each(function (i, c) {
+        if (null == allWorkerGroup[c]) {
+            allWorkerGroup[c] = c;
+            appWorkerGroupJson[c] = c;
+        }
+    });
+    $(currentWorkerGroup).each(function (i, c) {
+        if (null == allWorkerGroup[c]) {
+            allWorkerGroup[c] = c;
+            currentWorkerGroupJson[c] = c;
+        }
+    });
+
+    var result = {};
+    var add = new Array();
+    var subtract = new Array();
+    for (key in allWorkerGroup) {
+        if (appWorkerGroupJson[key] != null && currentWorkerGroupJson[key] == null) {
+            var item = {};
+            item["appId"] = appId;
+            item["workerGroupId"] = key;
+            subtract.push(item);
+        }
+        else if (appWorkerGroupJson[key] == null && currentWorkerGroupJson[key] != null) {
+            var item = {};
+            item["appId"] = appId;
+            item["workerGroupId"] = key;
+            add.push(item);
+        }
+    }
+    result["add"] = add;
+    result["subtract"] = subtract;
     return result;
 }
 
@@ -169,15 +211,33 @@ function saveApp() {
     }
     var data = getData();   //获取应用数据
     //新增
-    if (null != appId && '' != appId) {
+    if (null == appId || '' == appId) {
         var response = requestRemoteRestApi("/api/app/add", "新增应用", data);
+        console.log(response);
+        if (true == response.flag) {
+            //appId=;
+            //modifyAppWorkerGroup();
+        }
+
     }
     //编辑
     else {
         var response = requestRemoteRestApi("/api/app/edit", "修改应用", data);
-        console.log(response);
+        //修改成功
+        if (true == response.flag) {
+            modifyAppWorkerGroup();
+        }
     }
-
+}
+//绑定workerGroup(新增或删除)
+function modifyAppWorkerGroup() {
+    var workerGroupData = getAppWorkerGroupData();
+    if (workerGroupData["add"].length > 0) {
+        requestRemoteRestApi("/api/app/workerGroup/add", "新增WorkerGroup", workerGroupData["add"]);
+    }
+    if (workerGroupData["subtract"].length > 0) {
+        requestRemoteRestApi("/api/app/workerGroup/delete", "删除WorkerGroup", workerGroupData["subtract"]);
+    }
 }
 //检查app名是否重复
 function checkAppName() {

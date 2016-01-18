@@ -30,6 +30,7 @@ $(function () {
     initJobPriority();           //初始化权重
     initExpressionType();        //初始化表达式类型
     initWorkerGroup();           //初始化workGroup
+    initBizGroupName();
 
     $("#dependJobIds").on("change", function () {
         generateStrategy();
@@ -37,6 +38,38 @@ $(function () {
     initCommonStrategy();        //初始化通用策略
     initDependJobs();            //初始化所有依赖job
 });
+
+//初始化业务类型
+function initBizGroupName() {
+    $.getJSON(contextPath + "/api/bizGroup/getAllByCondition", {status: 1}, function (data) {
+        if (data.code == 1000) {
+            var newData = new Array();
+            $(data.data).each(function (i, c) {
+                var item = {};
+                item["id"] = c.id;
+                item["text"] = c.name;
+                newData.push(item);
+            });
+
+            $("#bizGroupId").select2({
+                data: newData,
+                width: '100%'
+            });
+            if (job != null) {
+                $("#bizGroupId").val(job.bizGroupId).trigger("change");
+            }
+        }
+        else {
+            new PNotify({
+                title: '获取业务标签类型',
+                text: data.msg,
+                type: 'error',
+                icon: true,
+                styling: 'bootstrap3'
+            });
+        }
+    })
+}
 
 //初始化内网用户
 function generateUsers() {
@@ -241,7 +274,7 @@ function initAlarmType() {
 function initWorkerGroup() {
     $.getJSON(contextPath + "/api/workerGroup/getByAppId", {appId: appId}, function (data) {
         var newData = new Array();
-        $(data).each(function (i, c) {
+        $(data.rows).each(function (i, c) {
             var item = {};
             item["id"] = c.id;
             item["text"] = c.name;
@@ -404,13 +437,16 @@ function reset() {
 function checkEmpty(ids) {
     var flag = true;
     $(ids).each(function (i, c) {
-        var value = $("#" + c).val().trim();
+        var value = $("#" + c).val();
+        if (value != null) {
+            value = value.trim();
+        }
         if (value == undefined || value == '') {
             flag = false;
             var desc = $("#" + c).attr("desc");
             new PNotify({
                 title: '提交任务',
-                text: desc + '不能为空:' + c,
+                text: desc + '不能为空',
                 type: 'warning',
                 icon: true,
                 styling: 'bootstrap3'
@@ -465,13 +501,14 @@ function getJobData() {
             return;
         }
         var value = $(c).val();
+        if(typeof value =='string'){
+            value=value.trim();
+        }
 
         if (value != '' && testNum.test(value)) {
             value = parseInt(value);
         }
-        if (id == 'params') {
-            value = JSON.parse(value);
-        }
+
         if (id == 'activeStartTime' || id == 'activeEndTime') {
             if (value != '') {
                 value = (new Date(value)).getTime();
@@ -481,7 +518,7 @@ function getJobData() {
             }
         }
 
-        result[id] = value
+        result[id] = value;
 
     });
     $(selects).each(function (i, c) {
@@ -496,16 +533,13 @@ function getJobData() {
             value = parseInt(value);
         }
         result[id] = value;
-
     });
 
     //表示式类型与表达式内容
     var scheduleExpressionEntry = getScheduleExpressionEntry();
     result["scheduleExpressionEntry"] = scheduleExpressionEntry;
-
     var appId = $("#appId").val();
     result["appId"] = appId;
-
     return result;
 }
 
