@@ -20,11 +20,13 @@
 
 - 任务支持重试、重试次数、重试间隔的配置
 
-- 改进通信协议，采用更可靠的通信机制（Netty + Protocol Buffers）
+- 支持任务类型：纯时间任务，单亲纯依赖任务，多亲时间+依赖任务
 
-- 支持时间触发、依赖触发两种调度方式
+- 支持依赖配置：runtime依赖，offset依赖
 
-- 能够方便地修改执行计划
+- 支持历史任务按照新的依赖关系重跑
+
+- 在一个task ready之前，对该job配置关系的任何修改（比如调度时间和依赖关系）能够动态生效。
 
 - 支持细粒度周期（小于天）任务的调度
 
@@ -50,15 +52,19 @@
 
 - Server
 
->主要由调度器（时间调度器、依赖调度器）、执行队列、任务分发器组成
+>与worker,rest server,DB交互
 
->对任务（包括周期性、非周期性）进行调度管理，根据任务的时间或依赖条件以及分发策略将任务发送给对应的Worker执行
+>接收rest server的请求，添加、修改任务
+
+>核心模块由Scheduler和Dispatcher组成，负责任务的调度和分发。
 
 >监听Worker的注册信息
 
 >接收Worker发送的心跳汇报
 
 >以HA方式运行
+
+>无状态，持久化信息维护在DB中，异常重启可以重建所有job和task
 
 - Worker
 
@@ -99,9 +105,9 @@
 
 ### 2.3 模块设计
 
-#### 2.3.1 调度模块总体设计
+#### 2.3.1 调度器(Scheduler)设计
 
-调度器作为调度系统的心脏，主要作用是进行任务的调度。在该系统设计中，能实现纯时间任务，单亲纯依赖任务，多亲时间+依赖任务。
+调度器作为调度系统的心脏，主要作用是进行任务的调度。在该系统设计中，能实现对纯时间任务，单亲纯依赖任务，多亲时间+依赖任务的调度。
 
 调度器由三个子模块组成：TimeScheuler, DAGScheduler和TaskScheduler。
 
@@ -110,7 +116,7 @@
 调度器（Scheduler）和分发器（Dispatcher）之间是生产者和消费者的关系，Scheduler提交task给Dispatcher。只要Dispatcher空闲，就会拿走进行分发。
 
 
-![调度器](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/scheduler_design.png)
+![调度器设计](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/scheduler_design.png)
 
 如上图所示：  
 
@@ -121,69 +127,25 @@
 - TaskScheduler对task进行调度，接收task状态反馈，进行持久化、失败重试、后续任务触发等逻辑。TimeScheduler和DAGScheduler相当于生产者，输入job；TaskScheduler相当于消费者，输出为task. 为了处理重跑等逻辑，TaskScheduler内部还维护了一个TaskGraph进行task的依赖触发，不会干扰DAGScheduler的正常调度。
 
 
+#### 2.3.2 分发器(Dispatcher)设计
 
-#### 2.3.2 依赖调度器(DAGScheduler)
+Dispatcher通过push的方式，由任务分发器按照可扩展的分发策略，主动推送任务给某一个worker执行任务。
 
-依赖调度器是一个单例，内部维护一个plan表，DAG表和一个running表。
+Dispatcher由ExecuteQueue,TaskDispatcher,RetryScheduler 3个子模块组成。
 
-- plan表是定时任务下一周期（比如一小时）的执行计划，由定时调度器（比如quartz）进行调度。
+![分发器设计](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/Dispatcher_design.png)
 
-- DAG表维护所有的任务的依赖关系，一条记录通过jobid唯一标识，需要处理DependencyModifyEvent, SuccessEvent。
+- ExecuteQueue维护已经进入ready状态的task，由Scheduler提交，由TaskDispatcher进行消费。在该设计中，支持按照优先级先后顺序进行分发任务，所以内部实现是一个优先级队列。每次会把优先级最高的任务拿出给TaskDispatcher进行消费。
 
-- running表处理正在running的任务，一条记录通过taskid唯一标识，处理自己的SuccessEvent和FailedEvent。
+- TaskDispatcher从执行队列中获取task，通过可扩展的分发策略提交给某一个worker进行执行。默认的分发策略：轮询分发策略(RoundRobin)、随机分发策略(Random)。同时，TaskDispatcher还支持流控策略。
 
-- DAG表中每一条记录表示一个DAGJob，主要维护父子关系（定时任务只有孩子，没有父亲），依赖状态等信息，并提供依赖检查的方法。DAGJob是一个抽象类，至少支持DAGonly任务，Time+DAG任务，Time+DAG+offset任务的实现。
-
-- DAG表中的父子关系与DB中的jobDependency表映射，每次系统启动的时候，会通过该表重建DAG表所有任务，建立父子关系，并进行循环依赖检测。
-
-- DAG表中的依赖状态与DB中的jobDependStatus表映射。
-
-- 每次DAG表中父子关系或者依赖状态的修改，都确保实时更新到DB中相应的表中。
-
-![依赖调度器](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/dependency_based_scheduler_new.png)
-
-如上图所示
-
-- DAG依赖任务调度：
-
-1. 系统启动的时候，从DB中的jobDependency表重建所有任务到DAG表中，并从jobDependStatus表恢复每个DAGJob的依赖状态。
-2. 定时调度器调度plan表中的task，如果该任务没有依赖，加入到running表中，进入步骤4. 如果有依赖，从DAG表中找到该job，标记time_ready标识为true，进入步骤3.
-3. 对DAG表中的某一任务进行依赖检查，如果通过依赖检查，就会把该任务加入到running表中，然后进入步骤4.
-4. running表新增一条记录会分配一个唯一的taskid，并提交该task到ExecuteQuere中，同时复位依赖状态.
-5. TaskScheduler负责提交任务和状态结果反馈，当收到某个任务成功时，发送SuccessEvent给DAGScheduler。DAGScheduler收到成功事件会做两件事：1）把该任务的taskid所在的记录从running表中移除。2）先从DAG表中找到该任务的孩子，分别对每一个孩子，从DAG表中找到它，更新依赖状态，然后进入步骤3。
-6. TaskScheduler发送某个任务的失败事件时，running表通过失败重试策略进行失败重试。
-7. 如果修改了依赖关系，需要修改DAG表中的依赖关系，并更新到DB中的jobDependency表和jobDependStatus表，并重新对DAG表中的受影响的任务进行第3步操作。如果任务已经引入了running表，不做处理。
-
-
-- 支持不通周期依赖策略的调度：  
-DAG依赖任务的前置依赖可能有不同的周期，现在有三种依赖策略：ANYONE, LASTONE, ALL。比如c依赖于a和b，a一小时跑4次，b一小时跑1次。  
-ANYONE表示b成功，a四次中任意一次成功都可以触发c;  
-LASTONE表示b成功，a四次中最后一次成功才可以触发c；  
-ALL表示b成功，a四次中全部成功才可以触发c；  
-
-
-- 非正常逻辑任务的调度：  
-对于临时的，有复杂依赖的，非周期性的Plan，会需要由外部工具生成一份独立的Cron表来执行，JobID和原来的JobID是不一样的。这样任务触发的逻辑也不会和正常周期任务的处理逻辑混淆，调度流程也一致。 唯一的问题是，job的信息汇总比较麻烦，可以通过比如id里面特殊前后缀等来处理？
-
-
-
-#### 2.3.3 任务分发器(JobDispatcher)
-
-server通过push的方式，由任务分发器按照可扩展的分发策略，主动推送任务给某一个worker执行任务。
-
-- 任务分发策略可自定义扩展
-
-- 默认的分发策略：轮询分发策略(RoundRobin)、随机分发策略(Random)
-
-- 按照任务的优先级分发
-
-- 当分发的任务被Worker拒绝时，任务分发器将选择同一个组内的另一个Worker分发
-
-- 未避免任务分发过于频繁，当所有的Worker都拒绝后，任务分发器需间隔一段时间后再尝试重新发送
-
-- 当任务运行失败时，根据重试配置重新分发任务
+- RetryScheduler负责对拒绝的任务进行重试，通过配置的拒绝策略，延迟一段时间后再重新提交给执行队列。
 
 	
+#### 2.3.3 job executor设计
+
+TODO	
+
 
 #### 2.3.4 任务接受策略(Job Accept Strategy)
 
