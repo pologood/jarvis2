@@ -62,14 +62,12 @@ public class AppController extends AbstractController {
                     .build();
 
             ServerCreateApplicationResponse response = (ServerCreateApplicationResponse) callActor(AkkaType.SERVER, request);
-            if (response.getSuccess()) {
-                return successResult(new AppResultVo().setAppId(response.getAppId()));
-            } else {
-                return errorResult(response.getMessage());
-            }
+            return response.getSuccess() ? successResult(new AppResultVo().setAppId(response.getAppId()))
+                    : errorResult(response.getMessage());
+
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
-            return errorResult(e.getMessage());
+            return errorResult(e);
         }
     }
 
@@ -112,14 +110,10 @@ public class AppController extends AbstractController {
             RestModifyApplicationRequest request = builder.build();
 
             ServerModifyApplicationResponse response = (ServerModifyApplicationResponse) callActor(AkkaType.SERVER, request);
-            if (response.getSuccess()) {
-                return successResult();
-            } else {
-                return errorResult(response.getMessage());
-            }
+            return response.getSuccess() ? successResult() : errorResult(response.getMessage());
         } catch (Exception e) {
             LOGGER.error("", e);
-            return errorResult(e.getMessage());
+            return errorResult(e);
         }
     }
 
@@ -137,14 +131,10 @@ public class AppController extends AbstractController {
         try {
             RestSetApplicationWorkerGroupRequest request = _workerGroup(OperationMode.ADD, user, appName, appToken, parameters);
             ServerSetApplicationWorkerGroupResponse response = (ServerSetApplicationWorkerGroupResponse) callActor(AkkaType.SERVER, request);
-            if (response.getSuccess()) {
-                return successResult();
-            } else {
-                return errorResult(response.getMessage());
-            }
+            return response.getSuccess() ? successResult() : errorResult(response.getMessage());
         } catch (Exception e) {
             LOGGER.error("", e);
-            return errorResult(e.getMessage());
+            return errorResult(e);
         }
     }
 
@@ -161,14 +151,10 @@ public class AppController extends AbstractController {
         try {
             RestSetApplicationWorkerGroupRequest request = _workerGroup(OperationMode.DELETE, user, appName, appToken, parameters);
             ServerSetApplicationWorkerGroupResponse response = (ServerSetApplicationWorkerGroupResponse) callActor(AkkaType.SERVER, request);
-            if (response.getSuccess()) {
-                return successResult();
-            } else {
-                return errorResult(response.getMessage());
-            }
+            return response.getSuccess() ? successResult() : errorResult(response.getMessage());
         } catch (Exception e) {
             LOGGER.error("", e);
-            return errorResult(e.getMessage());
+            return errorResult(e);
         }
     }
 

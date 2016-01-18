@@ -47,14 +47,10 @@ public class SystemController extends AbstractController {
                     .build();
             ServerUpdateSystemStatusResponse response = (ServerUpdateSystemStatusResponse) callActor(AkkaType.SERVER, request);
 
-            if (response.getSuccess()) {
-                return successResult();
-            } else {
-                return errorResult(response.getMessage());
-            }
+            return response.getSuccess() ? successResult() : errorResult(response.getMessage());
         } catch (Exception e) {
             LOGGER.error("", e);
-            return errorResult(e.getMessage());
+            return errorResult(e);
         }
     }
 

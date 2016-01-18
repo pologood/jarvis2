@@ -9,6 +9,7 @@ import com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpress
 import com.mogujie.jarvis.rest.vo.*;
 
 import com.mogujie.jarvis.server.domain.CommonStrategy;
+import com.mogujie.jarvis.server.domain.JobEntry;
 
 import java.util.Arrays;
 
@@ -43,6 +44,48 @@ public class ConvertValidUtils {
         }
 
     }
+
+    /**
+     * @param job
+     */
+    public static void checkJob(CheckMode mode, JobEntryVo job) {
+
+        //为空检查
+        Long jobId = job.getJobId();
+        Preconditions.checkArgument(!mode.isIn(CheckMode.EDIT,CheckMode.EDIT_STATUS) || jobId != null, "jobId不能为空");
+        Preconditions.checkArgument(jobId == null ||jobId > 0, "jobId不能为空");
+
+        String name = job.getJobName();
+        Preconditions.checkArgument(mode != CheckMode.ADD || name != null, "jobName不能为空");
+        Preconditions.checkArgument(name == null || !name.trim().equals(""), "jobName不能为空");
+
+        String jobType = job.getJobType();
+        Preconditions.checkArgument(mode != CheckMode.ADD || jobType != null, "jobType不能为空");
+        Preconditions.checkArgument(jobType == null || !jobType.trim().equals(""), "jobType不能为空");
+
+        Integer workerGroupId = job.getWorkerGroupId();
+        Preconditions.checkArgument(mode != CheckMode.ADD || workerGroupId != null, "workGroupId不能为空");
+        Preconditions.checkArgument(workerGroupId == null ||workerGroupId > 0, "workGroupId不能为空");
+
+        String content = job.getContent();
+        Preconditions.checkArgument(mode != CheckMode.ADD || content != null, "job内容不能为空");
+        Preconditions.checkArgument(content == null || !content.trim().equals(""), "job内容不能为空");
+
+
+        Integer status = job.getStatus();
+        Preconditions.checkArgument(!mode.isIn(CheckMode.ADD,CheckMode.EDIT_STATUS) || status != null, "status不能为空");
+        Preconditions.checkArgument(status == null || JobStatus.isValid(status), "status内容不正确。value:" + status);
+
+
+        //内容检查
+        Long start = job.getActiveStartTime();
+        Long end = job.getActiveStartTime();
+        if (start != null && end != null) {
+            Preconditions.checkArgument(start <= end, "有效开始日不能大于有效结束日");
+        }
+
+    }
+
 
 
     /**

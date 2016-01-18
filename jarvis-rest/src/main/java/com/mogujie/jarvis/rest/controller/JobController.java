@@ -17,8 +17,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import com.google.common.base.Preconditions;
+import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.core.domain.JobRelationType;
+import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
 import com.mogujie.jarvis.protocol.JobProtos.JobStatusEntry;
@@ -36,6 +38,7 @@ import com.mogujie.jarvis.protocol.JobProtos.ServerQueryJobRelationResponse;
 import com.mogujie.jarvis.protocol.JobProtos.ServerSubmitJobResponse;
 import com.mogujie.jarvis.rest.RestResult;
 import com.mogujie.jarvis.rest.utils.ConvertValidUtils;
+import com.mogujie.jarvis.rest.utils.ConvertValidUtils.CheckMode;
 import com.mogujie.jarvis.rest.utils.JsonParameters;
 import com.mogujie.jarvis.rest.vo.JobEntryVo;
 import com.mogujie.jarvis.rest.vo.JobRelationsVo;
@@ -65,44 +68,19 @@ public class JobController extends AbstractController {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
             JobEntryVo jobVo = JsonHelper.fromJson(parameters, JobEntryVo.class);
-            // parameters处理
-            String jobParameters = "";
-            if (jobVo.getParams() != null) {
-                jobParameters = JsonHelper.toJson(jobVo.getParams(), Map.class);
-            }
-
-            // 构造请求
-            RestSubmitJobRequest.Builder builder = RestSubmitJobRequest.newBuilder().setAppAuth(appAuth).setUser(user).setJobName(jobVo.getJobName())
-                    .setJobType(jobVo.getJobType()).setStatus(jobVo.getStatus()).setContent(jobVo.getContent()).setParameters(jobParameters)
-                    .setAppName(jobVo.getAppName(appName)).setWorkerGroupId(jobVo.getWorkerGroupId()).setPriority(jobVo.getPriority(1))
-                    .setActiveStartTime(jobVo.getActiveStartTime(0L)).setActiveEndTime(jobVo.getActiveEndTime(0L)).setExpiredTime(600)
-                    .setFailedAttempts(jobVo.getFailedAttempts(0)).setFailedInterval(jobVo.getFailedInterval(3));
-
-            if (jobVo.getScheduleExpressionList() != null && jobVo.getScheduleExpressionList().size() > 0) {
-                for (JobScheduleExpVo.ScheduleExpressionEntry entryInput : jobVo.getScheduleExpressionList()) {
-                    builder.addExpressionEntry(ConvertValidUtils.ConvertScheduleExpressionEntry(entryInput));
-                }
-            }
-
-            if (jobVo.getDependencyList() != null && jobVo.getDependencyList().size() > 0) {
-                for (JobDependencyVo.DependencyEntry entryInput : jobVo.getDependencyList()) {
-                    builder.addDependencyEntry(ConvertValidUtils.ConvertDependencyEntry(entryInput));
-                }
-            }
+            ConvertValidUtils.checkJob(CheckMode.ADD, jobVo);
+            RestSubmitJobRequest request = vo2RequestByAdd(jobVo, appAuth, user);
 
             // 发送请求到server
-            ServerSubmitJobResponse response = (ServerSubmitJobResponse) callActor(AkkaType.SERVER, builder.build());
+            ServerSubmitJobResponse response = (ServerSubmitJobResponse) callActor(AkkaType.SERVER, request);
 
-            // 判断是否成功
-            if (response.getSuccess()) {
-                return successResult(new JobResultVo().setJobId(response.getJobId()));
-            } else {
-                return errorResult(response.getMessage());
-            }
+            return response.getSuccess() ? successResult(new JobResultVo().setJobId(response.getJobId()))
+                    : errorResult(response.getMessage());
+
         } catch (Exception e) {
             e.printStackTrace();
             LOGGER.error("", e);
-            return errorResult(e.getMessage());
+            return errorResult(e);
         }
     }
 
@@ -122,60 +100,16 @@ public class JobController extends AbstractController {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
             JobEntryVo jobVo = JsonHelper.fromJson(parameters, JobEntryVo.class);
-
-            // 构造请求
-            RestModifyJobRequest.Builder builder = RestModifyJobRequest.newBuilder().setAppAuth(appAuth).setUser(user).setJobId(jobVo.getJobId());
-
-            if (jobVo.getJobName() != null && !jobVo.getJobName().equals("")) {
-                builder.setJobName(jobVo.getJobName());
-            }
-            if (jobVo.getJobType() != null) {
-                builder.setJobType(jobVo.getJobType());
-            }
-            if (jobVo.getContent() != null && !jobVo.getContent().equals("")) {
-                builder.setContent(jobVo.getContent());
-            }
-            if (jobVo.getParams() != null) {
-                String jobParameters = JsonHelper.toJson(jobVo.getParams(), Map.class);
-                builder.setParameters(jobParameters);
-            }
-            if (jobVo.getPriority() != null) {
-                builder.setPriority(jobVo.getPriority());
-            }
-            if (jobVo.getAppName() != null) {
-                builder.setAppName(jobVo.getAppName());
-            }
-            if (jobVo.getWorkerGroupId() != null) {
-                builder.setWorkerGroupId(jobVo.getWorkerGroupId());
-            }
-            if (jobVo.getActiveStartTime() != null) {
-                builder.setActiveStartTime(jobVo.getActiveStartTime());
-            }
-            if (jobVo.getActiveEndTime() != null) {
-                builder.setActiveEndTime(jobVo.getActiveEndTime());
-            }
-            if (jobVo.getExpiredTime() != null) {
-                builder.setExpiredTime(jobVo.getExpiredTime());
-            }
-            if (jobVo.getFailedAttempts() != null) {
-                builder.setFailedAttempts(jobVo.getFailedAttempts());
-            }
-            if (jobVo.getFailedInterval() != null) {
-                builder.setFailedInterval(jobVo.getFailedInterval());
-            }
+            ConvertValidUtils.checkJob(CheckMode.EDIT, jobVo);
+            RestModifyJobRequest request = vo2RequestByEdit(jobVo, appAuth, user);
 
             // 发送请求到server
-            ServerModifyJobResponse response = (ServerModifyJobResponse) callActor(AkkaType.SERVER, builder.build());
+            ServerModifyJobResponse response = (ServerModifyJobResponse) callActor(AkkaType.SERVER, request);
 
-            // 判断是否成功
-            if (response.getSuccess()) {
-                return successResult();
-            } else {
-                return errorResult(response.getMessage());
-            }
+            return response.getSuccess() ? successResult() : errorResult(response.getMessage());
         } catch (Exception e) {
             LOGGER.error("edit job error", e);
-            return errorResult(e.getMessage());
+            return errorResult(e);
         }
     }
 
@@ -210,15 +144,10 @@ public class JobController extends AbstractController {
             // 发送请求到server
             ServerModifyJobDependResponse response = (ServerModifyJobDependResponse) callActor(AkkaType.SERVER, builder.build());
 
-            // 判断是否成功
-            if (response.getSuccess()) {
-                return successResult();
-            } else {
-                return errorResult(response.getMessage());
-            }
+            return response.getSuccess() ? successResult() : errorResult(response.getMessage());
         } catch (Exception e) {
             LOGGER.error("edit job error", e);
-            return errorResult(e.getMessage());
+            return errorResult(e);
         }
     }
 
@@ -255,15 +184,10 @@ public class JobController extends AbstractController {
             // 发送请求到server
             ServerModifyJobScheduleExpResponse response = (ServerModifyJobScheduleExpResponse) callActor(AkkaType.SERVER, builder.build());
 
-            // 判断是否成功
-            if (response.getSuccess()) {
-                return successResult();
-            } else {
-                return errorResult(response.getMessage());
-            }
+            return response.getSuccess() ? successResult() : errorResult(response.getMessage());
         } catch (Exception e) {
             LOGGER.error("edit job error", e);
-            return errorResult(e.getMessage());
+            return errorResult(e);
         }
     }
 
@@ -293,15 +217,10 @@ public class JobController extends AbstractController {
             // 发送请求到server
             ServerModifyJobStatusResponse response = (ServerModifyJobStatusResponse) callActor(AkkaType.SERVER, builder.build());
 
-            // 判断是否成功
-            if (response.getSuccess()) {
-                return successResult();
-            } else {
-                return errorResult(response.getMessage());
-            }
+            return response.getSuccess() ? successResult() : errorResult(response.getMessage());
         } catch (Exception e) {
             LOGGER.error("edit job error", e);
-            return errorResult(e.getMessage());
+            return errorResult(e);
         }
     }
 
@@ -342,9 +261,101 @@ public class JobController extends AbstractController {
             }
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
-            return errorResult(e.getMessage());
+            return errorResult(e);
         }
     }
+
+    /**
+     * jobVo转换为request——增加
+     */
+    private RestSubmitJobRequest vo2RequestByAdd(JobEntryVo vo, AppAuth appAuth, String user) {
+        // parameters处理
+        String jobParameters = "";
+        if (vo.getParams() != null) {
+            jobParameters = JsonHelper.toJson(vo.getParams(), Map.class);
+        }
+        // 构造请求
+        RestSubmitJobRequest.Builder builder = RestSubmitJobRequest.newBuilder().setAppAuth(appAuth).setUser(user)
+                .setJobName(vo.getJobName())
+                .setJobType(vo.getJobType())
+                .setStatus(vo.getStatus(JobStatus.ENABLE.getValue()))
+                .setContent(vo.getContent())
+                .setParameters(jobParameters)
+                .setAppName(vo.getAppName(appAuth.getName()))
+                .setWorkerGroupId(vo.getWorkerGroupId())
+                .setBizGroupId(JarvisConstants.BIZ_GROUP_ID_UNKNOWN)
+                .setPriority(vo.getPriority(1))
+                .setActiveStartTime(vo.getActiveStartTime(0L))
+                .setActiveEndTime(vo.getActiveEndTime(0L))
+                .setExpiredTime(600)
+                .setFailedAttempts(vo.getFailedAttempts(0))
+                .setFailedInterval(vo.getFailedInterval(3));
+
+        if (vo.getScheduleExpressionList() != null && vo.getScheduleExpressionList().size() > 0) {
+            for (JobScheduleExpVo.ScheduleExpressionEntry entryInput : vo.getScheduleExpressionList()) {
+                builder.addExpressionEntry(ConvertValidUtils.ConvertScheduleExpressionEntry(entryInput));
+            }
+        }
+        if (vo.getDependencyList() != null && vo.getDependencyList().size() > 0) {
+            for (JobDependencyVo.DependencyEntry entryInput : vo.getDependencyList()) {
+                builder.addDependencyEntry(ConvertValidUtils.ConvertDependencyEntry(entryInput));
+            }
+        }
+        return builder.build();
+    }
+
+    /**
+     * jobVo转换为request——修改
+     */
+    private RestModifyJobRequest vo2RequestByEdit(JobEntryVo vo, AppAuth appAuth, String user) {
+
+        // 构造请求
+        RestModifyJobRequest.Builder builder = RestModifyJobRequest.newBuilder().setAppAuth(appAuth).setUser(user);
+        builder.setJobId(vo.getJobId());
+
+        if (vo.getJobName() != null && !vo.getJobName().equals("")) {
+            builder.setJobName(vo.getJobName());
+        }
+        if (vo.getJobType() != null) {
+            builder.setJobType(vo.getJobType());
+        }
+        if (vo.getContent() != null && !vo.getContent().equals("")) {
+            builder.setContent(vo.getContent());
+        }
+        if (vo.getParams() != null) {
+            String jobParameters = JsonHelper.toJson(vo.getParams(), Map.class);
+            builder.setParameters(jobParameters);
+        }
+        if (vo.getPriority() != null) {
+            builder.setPriority(vo.getPriority());
+        }
+        if (vo.getAppName() != null) {
+            builder.setAppName(vo.getAppName());
+        }
+        if (vo.getWorkerGroupId() != null) {
+            builder.setWorkerGroupId(vo.getWorkerGroupId());
+        }
+        if (vo.getBizGroupId() != null) {
+            builder.setBizGroupId(vo.getBizGroupId());
+        }
+        if (vo.getActiveStartTime() != null) {
+            builder.setActiveStartTime(vo.getActiveStartTime());
+        }
+        if (vo.getActiveEndTime() != null) {
+            builder.setActiveEndTime(vo.getActiveEndTime());
+        }
+        if (vo.getExpiredTime() != null) {
+            builder.setExpiredTime(vo.getExpiredTime());
+        }
+        if (vo.getFailedAttempts() != null) {
+            builder.setFailedAttempts(vo.getFailedAttempts());
+        }
+        if (vo.getFailedInterval() != null) {
+            builder.setFailedInterval(vo.getFailedInterval());
+        }
+        return builder.build();
+    }
+
 
     /**
      * 测试

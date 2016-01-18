@@ -42,14 +42,10 @@ public class WorkerGroupController extends AbstractController {
 
             ServerCreateWorkerGroupResponse response = (ServerCreateWorkerGroupResponse) callActor(AkkaType.SERVER, request);
 
-            if (response.getSuccess()) {
-                return successResult();
-            } else {
-                return errorResult(response.getMessage());
-            }
+            return response.getSuccess() ? successResult() : errorResult(response.getMessage());
         } catch (Exception e) {
             LOGGER.error("", e);
-            return errorResult(e.getMessage());
+            return errorResult(e);
         }
     }
 
@@ -74,14 +70,10 @@ public class WorkerGroupController extends AbstractController {
                     .setWorkerGroupId(workerGroupId).build();
 
             ServerModifyWorkerGroupResponse response = (ServerModifyWorkerGroupResponse) callActor(AkkaType.SERVER, request);
-            if (response.getSuccess()) {
-                return successResult();
-            } else {
-                return errorResult(response.getMessage());
-            }
+            return response.getSuccess() ? successResult() : errorResult(response.getMessage());
         } catch (Exception e) {
             LOGGER.error("", e);
-            return errorResult(e.getMessage());
+            return errorResult(e);
         }
     }
 
@@ -108,15 +100,10 @@ public class WorkerGroupController extends AbstractController {
                     .build();
 
             ServerModifyWorkerGroupResponse response = (ServerModifyWorkerGroupResponse) callActor(AkkaType.SERVER, request);
-
-            if (response.getSuccess()) {
-                return successResult();
-            } else {
-                return errorResult(response.getMessage());
-            }
+            return response.getSuccess() ? successResult() : errorResult(response.getMessage());
         } catch (Exception e) {
             LOGGER.error("", e);
-            return errorResult(e.getMessage());
+            return errorResult(e);
         }
     }
 }

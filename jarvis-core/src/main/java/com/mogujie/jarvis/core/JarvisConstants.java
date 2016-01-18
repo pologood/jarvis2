@@ -34,6 +34,8 @@ public interface JarvisConstants {
     public static final DateTime DATETIME_MAX = new DateTime(9999, 12, 31, 0, 0, 0, DateTimeZone.forOffsetHours(0));
     public static final DateTime DATETIME_MIN = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeZone.forOffsetHours(0));
 
+    public static final int BIZ_GROUP_ID_UNKNOWN = 0;
+
     public static final Pattern IP_PATTERN = Pattern
             .compile("(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)");
 }

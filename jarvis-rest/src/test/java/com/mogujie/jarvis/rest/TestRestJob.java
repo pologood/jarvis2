@@ -14,11 +14,23 @@ import com.mogujie.jarvis.core.domain.OperationMode;
 import com.mogujie.jarvis.core.expression.ScheduleExpressionType;
 import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.server.domain.CommonStrategy;
+import org.junit.Test;
 
 /**
  * Created by muming on 15/12/1.
  */
 public class TestRestJob {
+
+    @Test
+    public void testMy(){
+        String a = "{\"jobName\":\"test\",\"activeStartDate\":\"\",\"activeEndDate\":\"\",\"content\":\"ls;\",\"params\":{},\"expression\":\"\",\"failedAttempts\":0,\"failedInterval\":3,\"jobType\":\"hive_script\",\"bizGroupId\":1,\"workerGroupId\":1,\"expressionType\":1,\"priority\":1,\"scheduleExpressionEntry\":{\"expressionType\":\"1\",\"expression\":\"\",\"operatorMode\":3}}";
+        JobEntryVo jobVo = JsonHelper.fromJson(a, JobEntryVo.class);
+        String b = "{\"jobName\":\"test\",\"activeStartDate\":\"\",\"activeEndDate\":\"\",\"content\":\"ls;\",\"params\":{},\"expression\":\"\",\"failedAttempts\":0,\"failedInterval\":3,\"jobType\":\"hive_script\",\"bizGroupId\":1,\"workerGroupId\":1,\"expressionType\":1,\"priority\":1,\"scheduleExpressionEntry\":{\"expressionType\":\"1\",\"expression\":\"\",\"operatorMode\":3}}";
+        JobEntryVo jobVo2= JsonHelper.fromJson(b, JobEntryVo.class);
+
+        int i = 3;
+    }
+
 
     private String baseUrl = "http://127.0.0.1:8080";
 //    private String baseUrl = "http://10.11.129.54:8080";
@@ -91,6 +103,7 @@ public class TestRestJob {
         jobPrams.put("name","muming");
         jobPrams.put("age", 18);
         jobPrams.put("isMail", false);
+        jobPrams.put("params","{\"para1\":\"1\",\"para2\":\"2\"}");
         job.setParams(jobPrams);
 
         // 任务参数

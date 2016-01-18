@@ -84,6 +84,17 @@ public abstract class AbstractController {
     /**
      * 返回错误结果
      *
+     * @param ex
+     * @return
+     */
+    protected RestResult errorResult(Exception ex) {
+        String msg = ex.getMessage() == null ? ex.toString() : ex.getMessage();
+        return errorResult(MsgCode.UNDEFINE_ERROR, msg);
+    }
+
+    /**
+     * 返回错误结果
+     *
      * @param msg
      * @return
      */
