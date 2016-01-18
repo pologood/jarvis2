@@ -35,6 +35,7 @@ import com.mogujie.jarvis.protocol.AlarmProtos.RestModifyAlarmRequest;
 import com.mogujie.jarvis.protocol.AlarmProtos.RestDeleteAlarmRequest;
 import com.mogujie.jarvis.protocol.BizGroupProtos.RestCreateBizGroupRequest;
 import com.mogujie.jarvis.protocol.BizGroupProtos.RestModifyBizGroupRequest;
+import com.mogujie.jarvis.protocol.BizGroupProtos.RestDeleteBizGroupRequest;
 import com.mogujie.jarvis.server.domain.JobEntry;
 import com.mogujie.jarvis.server.domain.CommonStrategy;
 
@@ -434,41 +435,54 @@ public class ConvertValidService {
     }
 
     //----------------- bizGroup -------------------------------
+    public BizGroup convert2BizGroupByCheck(RestCreateBizGroupRequest msg)throws IllegalArgumentException, NotFoundException {
+        BizGroup bizGroup = msg2BizGroup(msg);
+        checkBizGroup(CheckMode.ADD, bizGroup);
+        return bizGroup;
+    }
+
+    public BizGroup convert2BizGroupByCheck(RestModifyBizGroupRequest msg)throws IllegalArgumentException, NotFoundException {
+        BizGroup bizGroup = msg2BizGroup(msg);
+        checkBizGroup(CheckMode.EDIT, bizGroup);
+        return bizGroup;
+    }
+
+    public BizGroup convert2BizGroupByCheck(RestDeleteBizGroupRequest msg)throws IllegalArgumentException, NotFoundException {
+        BizGroup bizGroup = msg2BizGroup(msg);
+        checkBizGroup(CheckMode.EDIT, bizGroup);
+        return bizGroup;
+    }
+
+
     /**
      * @param mode
      * @param bg
      */
-    private void checkBizGroup(CheckMode mode, BizGroup bg) throws IllegalArgumentException{
+    private void checkBizGroup(CheckMode mode, BizGroup bg) throws IllegalArgumentException, NotFoundException {
 
         Integer id = bg.getId();
         Preconditions.checkArgument(!mode.isIn(CheckMode.EDIT, CheckMode.DELETE)
                 || (id != null && id != 0), "id is empty。 id:" + id);
 
-        if (mode.isIn(CheckMode.ADD)) {
-            BizGroup cur = bizGroupService.queryById(id);
-            Preconditions.checkArgument(cur == null, "bigGroup has exist,can't add. Id:" + id);
+        if (mode.isIn(CheckMode.DELETE)) {
+            bizGroupService.checkDeletable(id);
         }
 
         String name = bg.getName();
-        if(mode.isIn(CheckMode.ADD)){
-            Preconditions.checkArgument(name != null, "name不能为空。");
-        }
+        Preconditions.checkArgument(!mode.isIn(CheckMode.ADD) || name != null, "name不能为空。");
         if (name != null) {
-            Preconditions.checkArgument(!name.trim().equals(""),"name不能为空。");
+            Preconditions.checkArgument(!name.trim().equals(""), "name不能为空。");
             bizGroupService.checkDuplicateName(name);
         }
 
-        Preconditions.checkArgument(!mode.isIn(CheckMode.ADD) || bg.getReceiver() != null, "receiver不能为空。");
-
         Integer status = bg.getStatus();
         Preconditions.checkArgument(!mode.isIn(CheckMode.ADD) || status != null, "status不能为空。");
-        Preconditions.checkArgument(status == null || bgStatus.isValid(status), "status类型不对。value:" + status);
+        Preconditions.checkArgument(status == null || BizGroupStatus.isValid(status), "status类型不对。value:" + status);
 
     }
 
 
-
-    private BizGroup msg2BizGroup(RestCreateBizGroupRequest msg){
+    private BizGroup msg2BizGroup(RestCreateBizGroupRequest msg) {
         DateTime now = DateTime.now();
         BizGroup data = new BizGroup();
         data.setName(msg.getName());
@@ -480,23 +494,30 @@ public class ConvertValidService {
         return data;
     }
 
-    private BizGroup msg2BizGroup(RestModifyBizGroupRequest msg){
+    private BizGroup msg2BizGroup(RestModifyBizGroupRequest msg) {
         DateTime now = DateTime.now();
         BizGroup data = new BizGroup();
         data.setId(msg.getId());
-        if(msg.hasName()){
+        if (msg.hasName()) {
             data.setName(msg.getName());
         }
-        if(msg.hasOwner()){
+        if (msg.hasOwner()) {
             data.setOwner(msg.getOwner());
         }
-        if(msg.hasStatus()){
+        if (msg.hasStatus()) {
             data.setStatus(msg.getStatus());
         }
         data.setUpdateTime(now.toDate());
         data.setUpdateUser(msg.getUser());
         return data;
     }
+
+    private BizGroup msg2BizGroup(RestDeleteBizGroupRequest msg) {
+        BizGroup data = new BizGroup();
+        data.setId(msg.getId());
+        return data;
+    }
+
 
     //------------------------ 其他 ----------------------
 

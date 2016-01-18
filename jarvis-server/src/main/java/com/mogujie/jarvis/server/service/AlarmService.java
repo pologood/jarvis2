@@ -45,15 +45,13 @@ public class AlarmService {
     public int updateByJobId(Alarm alarm){
         AlarmExample alarmExample = new AlarmExample();
         alarmExample.createCriteria().andJobIdEqualTo(alarm.getJobId());
-        return  alarmMapper.updateByExampleSelective(alarm,alarmExample);
+        return alarmMapper.updateByExampleSelective(alarm, alarmExample);
     }
 
-    public int deleteByJobId(long jobId){
+    public int deleteByJobId(long jobId) {
         AlarmExample alarmExample = new AlarmExample();
         alarmExample.createCriteria().andJobIdEqualTo(jobId);
-        return  alarmMapper.deleteByExample(alarmExample);
+        return alarmMapper.deleteByExample(alarmExample);
     }
-
-
 
 }

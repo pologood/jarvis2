@@ -10,11 +10,14 @@ package com.mogujie.jarvis.server.service;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.core.exception.NotFoundException;
 import com.mogujie.jarvis.dao.generate.BizGroupMapper;
 import com.mogujie.jarvis.dao.generate.JobMapper;
 import com.mogujie.jarvis.dto.generate.BizGroup;
 import com.mogujie.jarvis.dto.generate.BizGroupExample;
+import com.mogujie.jarvis.dto.generate.Job;
+import com.mogujie.jarvis.dto.generate.JobExample;
 
 import java.util.List;
 
@@ -72,12 +75,13 @@ public class BizGroupService {
     }
 
 
-    public Boolean isUsed(Integer id) {
-        return false;
-//        JobExample example = new JobExample();
-//        example.createCriteria().andBizGroupIdEqualTo(id);
-//        jobMapper.selectByExample(example);
+    public void checkDeletable(Integer id) {
+        JobExample example = new JobExample();
+        example.createCriteria().andBizGroupIdEqualTo(id).andStatusNotEqualTo(JobStatus.DELETED.getValue());
+        List<Job> list = jobMapper.selectByExample(example);
+        if(list != null &&  list.size() >0){
+            throw new IllegalArgumentException("bizGroupId在job中还在使用,不能删除. id:" + id);
+        }
     }
-
 
 }

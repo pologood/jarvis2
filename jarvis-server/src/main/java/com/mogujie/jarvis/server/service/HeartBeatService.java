@@ -23,7 +23,7 @@ import com.mogujie.jarvis.core.domain.WorkerInfo;
 @Singleton
 public class HeartBeatService {
 
-    private static final int MAX_HEART_BEAT_TIMEOUT_SECONDS = 15;
+    public static final int MAX_HEART_BEAT_TIMEOUT_SECONDS = 15;
     private static final Map<Integer, Cache<WorkerInfo, Integer>> HEART_BEAT_CACHE = Maps.newConcurrentMap();
     private static final Ordering<WorkerInfo> WORKER_ORDERING = new Ordering<WorkerInfo>() {
 
@@ -55,7 +55,6 @@ public class HeartBeatService {
         }
 
         cache.put(workerInfo, jobNum);
-
     }
 
     public synchronized void remove(int groupId, WorkerInfo workerInfo) {

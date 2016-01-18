@@ -31,7 +31,7 @@ import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.core.util.IdUtils;
 import com.mogujie.jarvis.core.util.ThreadUtils;
 import com.mogujie.jarvis.server.ServerConigKeys;
-import com.mogujie.jarvis.server.dispatcher.TaskQueue;
+import com.mogujie.jarvis.server.dispatcher.PriorityTaskQueue;
 import com.mogujie.jarvis.server.domain.RetryType;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
@@ -43,7 +43,7 @@ import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
 public enum TaskRetryScheduler {
     INSTANCE;
 
-    private TaskQueue taskQueue = Injectors.getInjector().getInstance(TaskQueue.class);
+    private PriorityTaskQueue taskQueue = Injectors.getInjector().getInstance(PriorityTaskQueue.class);
     private volatile boolean running;
     private Map<Pair<String, RetryType>, TaskDetail> taskMap = Maps.newConcurrentMap();
     private Map<String, DateTime> expiredTimeMap = Maps.newConcurrentMap();

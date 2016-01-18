@@ -16,10 +16,6 @@ import org.apache.commons.configuration.Configuration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import akka.actor.ActorRef;
-import akka.actor.ActorSelection;
-import akka.actor.ActorSystem;
-
 import com.google.common.collect.Maps;
 import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.domain.TaskDetail;
@@ -31,6 +27,10 @@ import com.mogujie.jarvis.worker.status.TaskStateStore;
 import com.mogujie.jarvis.worker.status.TaskStateStoreFactory;
 import com.mogujie.jarvis.worker.status.TaskStatusLookup;
 import com.mogujie.jarvis.worker.util.TaskConfigUtils;
+
+import akka.actor.ActorRef;
+import akka.actor.ActorSelection;
+import akka.actor.ActorSystem;
 
 public class TaskStateRestore extends Thread {
 
@@ -77,6 +77,7 @@ public class TaskStateRestore extends Thread {
                             taskStatusLookupMap.put(type, taskStatusLookup);
                         } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
                             LOGGER.error("", e);
+                            continue;
                         }
                     }
 

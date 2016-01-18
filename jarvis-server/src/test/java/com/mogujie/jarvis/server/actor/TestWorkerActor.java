@@ -7,14 +7,17 @@ import com.google.inject.Injector;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.protocol.RegistryWorkerProtos;
 import com.mogujie.jarvis.server.JarvisServer;
-import com.mogujie.jarvis.server.guice.Injectors;
+import com.mogujie.jarvis.server.actor.util.TestUtil;
+import com.mogujie.jarvis.server.guice4test.Injectors4Test;
 import com.mogujie.jarvis.server.service.WorkerService;
 import com.typesafe.config.Config;
-import com.typesafe.config.ConfigFactory;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.IOException;
+import java.net.InetAddress;
 
 /**
  * Location www.mogujie.com
@@ -25,23 +28,26 @@ public class TestWorkerActor {
     String authKey = "d03fa97612734db7bdee3bbb2cdbf993";
     Thread threadServer = null;
 
-
     @Before
     public void setup() {
-
-
-            ServerProxy serverProxy = new ServerProxy();
-            threadServer = new Thread(serverProxy);
-            threadServer.start();
+        try {//检测server端口是否被占用
+            if(TestUtil.isPortHasBeenUse("localhost", 10000) && TestUtil.isPortHasBeenUse(InetAddress.getLocalHost().getHostAddress(), 10000)){
+                ServerProxy serverProxy = new ServerProxy();
+                threadServer = new Thread(serverProxy);
+                threadServer.start();
+            }
+        } catch (IOException e) {
+            System.err.println("no port to use");
+        }
 
 
     }
 
     @After
     public void tearDown() {
-     //   if (threadServer != null) threadServer.stop();
-        Injector injector=Injectors.getInjector();
-        WorkerService workerService=injector.getInstance(WorkerService.class);
+        if (threadServer != null) threadServer.stop();
+        Injector injector = Injectors4Test.getInjector();
+        WorkerService workerService = injector.getInstance(WorkerService.class);
         Assert.assertEquals(workerService.getWorkerId("127.0.0.1", 10003), 10);
 
     }
