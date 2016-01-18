@@ -22,8 +22,10 @@ import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.service.BizGroupService;
 import com.mogujie.jarvis.server.service.ConvertValidService;
+import com.mogujie.jarvis.server.service.ConvertValidService.CheckMode;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.joda.time.DateTime;
 import org.mybatis.guice.transactional.Transactional;
 
 import java.util.ArrayList;
@@ -64,8 +66,8 @@ public class BizGroupActor extends UntypedActor {
     public void createBizGroup(RestCreateBizGroupRequest request) throws NotFoundException {
         ServerCreateBizGroupResponse response;
         try {
-
-            BizGroup bizGroup = convertValidService.convert2BizGroupByCheck(request);
+            BizGroup bizGroup = msg2BizGroup(request);
+            convertValidService.checkBizGroup(CheckMode.ADD,bizGroup);
             BizGroupService.insert(bizGroup);
 
             response = ServerCreateBizGroupResponse.newBuilder().setSuccess(true).setId(bizGroup.getId()).build();
@@ -82,8 +84,10 @@ public class BizGroupActor extends UntypedActor {
     public void modifyBizGroup(RestModifyBizGroupRequest request) throws NotFoundException {
         ServerModifyBizGroupResponse response;
         try {
-            BizGroup bizGroup = convertValidService.convert2BizGroupByCheck(request);
+            BizGroup bizGroup = msg2BizGroup(request);
+            convertValidService.checkBizGroup(CheckMode.EDIT,bizGroup);
             BizGroupService.update(bizGroup);
+
             response = ServerModifyBizGroupResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());
         } catch (Exception ex) {
@@ -98,7 +102,8 @@ public class BizGroupActor extends UntypedActor {
     public void deleteBizGroup(RestDeleteBizGroupRequest request) throws NotFoundException {
         ServerDeleteBizGroupResponse response;
         try {
-            BizGroup bizGroup = convertValidService.convert2BizGroupByCheck(request);
+            BizGroup bizGroup = msg2BizGroup(request);
+            convertValidService.checkBizGroup(CheckMode.DELETE,bizGroup);
             BizGroupService.delete(bizGroup.getId());
             response = ServerDeleteBizGroupResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());
@@ -109,6 +114,42 @@ public class BizGroupActor extends UntypedActor {
             throw ex;
 
         }
+    }
+
+    private BizGroup msg2BizGroup(RestCreateBizGroupRequest msg) {
+        DateTime now = DateTime.now();
+        BizGroup data = new BizGroup();
+        data.setName(msg.getName());
+        data.setOwner(msg.getOwner());
+        data.setStatus(msg.getStatus());
+        data.setCreateTime(now.toDate());
+        data.setUpdateTime(now.toDate());
+        data.setUpdateUser(msg.getUser());
+        return data;
+    }
+
+    private BizGroup msg2BizGroup(RestModifyBizGroupRequest msg) {
+        DateTime now = DateTime.now();
+        BizGroup data = new BizGroup();
+        data.setId(msg.getId());
+        if (msg.hasName()) {
+            data.setName(msg.getName());
+        }
+        if (msg.hasOwner()) {
+            data.setOwner(msg.getOwner());
+        }
+        if (msg.hasStatus()) {
+            data.setStatus(msg.getStatus());
+        }
+        data.setUpdateTime(now.toDate());
+        data.setUpdateUser(msg.getUser());
+        return data;
+    }
+
+    private BizGroup msg2BizGroup(RestDeleteBizGroupRequest msg) {
+        BizGroup data = new BizGroup();
+        data.setId(msg.getId());
+        return data;
     }
 
 }

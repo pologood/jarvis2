@@ -46,7 +46,7 @@ import com.mogujie.jarvis.server.domain.CommonStrategy;
 @Singleton
 public class ConvertValidService {
 
-    private enum CheckMode {
+    public enum CheckMode {
         ADD, //追加
         EDIT, //修改
         EDIT_STATUS, //修改_状态
@@ -435,30 +435,11 @@ public class ConvertValidService {
     }
 
     //----------------- bizGroup -------------------------------
-    public BizGroup convert2BizGroupByCheck(RestCreateBizGroupRequest msg)throws IllegalArgumentException, NotFoundException {
-        BizGroup bizGroup = msg2BizGroup(msg);
-        checkBizGroup(CheckMode.ADD, bizGroup);
-        return bizGroup;
-    }
-
-    public BizGroup convert2BizGroupByCheck(RestModifyBizGroupRequest msg)throws IllegalArgumentException, NotFoundException {
-        BizGroup bizGroup = msg2BizGroup(msg);
-        checkBizGroup(CheckMode.EDIT, bizGroup);
-        return bizGroup;
-    }
-
-    public BizGroup convert2BizGroupByCheck(RestDeleteBizGroupRequest msg)throws IllegalArgumentException, NotFoundException {
-        BizGroup bizGroup = msg2BizGroup(msg);
-        checkBizGroup(CheckMode.EDIT, bizGroup);
-        return bizGroup;
-    }
-
-
     /**
      * @param mode
      * @param bg
      */
-    private void checkBizGroup(CheckMode mode, BizGroup bg) throws IllegalArgumentException, NotFoundException {
+    public void checkBizGroup(CheckMode mode, BizGroup bg) throws IllegalArgumentException, NotFoundException {
 
         Integer id = bg.getId();
         Preconditions.checkArgument(!mode.isIn(CheckMode.EDIT, CheckMode.DELETE)
@@ -480,44 +461,6 @@ public class ConvertValidService {
         Preconditions.checkArgument(status == null || BizGroupStatus.isValid(status), "status类型不对。value:" + status);
 
     }
-
-
-    private BizGroup msg2BizGroup(RestCreateBizGroupRequest msg) {
-        DateTime now = DateTime.now();
-        BizGroup data = new BizGroup();
-        data.setName(msg.getName());
-        data.setOwner(msg.getOwner());
-        data.setStatus(msg.getStatus());
-        data.setCreateTime(now.toDate());
-        data.setUpdateTime(now.toDate());
-        data.setUpdateUser(msg.getUser());
-        return data;
-    }
-
-    private BizGroup msg2BizGroup(RestModifyBizGroupRequest msg) {
-        DateTime now = DateTime.now();
-        BizGroup data = new BizGroup();
-        data.setId(msg.getId());
-        if (msg.hasName()) {
-            data.setName(msg.getName());
-        }
-        if (msg.hasOwner()) {
-            data.setOwner(msg.getOwner());
-        }
-        if (msg.hasStatus()) {
-            data.setStatus(msg.getStatus());
-        }
-        data.setUpdateTime(now.toDate());
-        data.setUpdateUser(msg.getUser());
-        return data;
-    }
-
-    private BizGroup msg2BizGroup(RestDeleteBizGroupRequest msg) {
-        BizGroup data = new BizGroup();
-        data.setId(msg.getId());
-        return data;
-    }
-
 
     //------------------------ 其他 ----------------------
 
