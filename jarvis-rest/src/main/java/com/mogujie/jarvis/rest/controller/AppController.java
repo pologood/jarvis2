@@ -24,11 +24,9 @@ import com.mogujie.jarvis.rest.utils.ConvertValidUtils;
 import com.mogujie.jarvis.rest.utils.JsonParameters;
 import com.mogujie.jarvis.rest.vo.AppResultVo;
 import com.mogujie.jarvis.rest.vo.AppWorkerGroupVo;
-import com.mogujie.jarvis.rest.vo.JobEntryVo;
 
 import java.lang.reflect.Type;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author muming

@@ -12,7 +12,7 @@ package com.mogujie.jarvis.rest.vo;
  * @author guangming
  *
  */
-public class TaskVo extends  AbstractVo{
+public class TaskResultVo extends  AbstractVo{
     private long taskId;
 
     public long getTaskId() {

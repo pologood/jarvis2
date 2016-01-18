@@ -11,7 +11,7 @@ import com.mogujie.jarvis.rest.vo.JobScheduleExpVo.ScheduleExpressionEntry;
  *
  * @author muming
  */
-public class JobEntryVo extends AbstractVo {
+public class JobVo extends AbstractVo {
 
     private Long jobId;
     private String jobName;

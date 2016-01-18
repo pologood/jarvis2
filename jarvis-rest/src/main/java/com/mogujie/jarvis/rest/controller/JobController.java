@@ -40,7 +40,7 @@ import com.mogujie.jarvis.rest.RestResult;
 import com.mogujie.jarvis.rest.utils.ConvertValidUtils;
 import com.mogujie.jarvis.rest.utils.ConvertValidUtils.CheckMode;
 import com.mogujie.jarvis.rest.utils.JsonParameters;
-import com.mogujie.jarvis.rest.vo.JobEntryVo;
+import com.mogujie.jarvis.rest.vo.JobVo;
 import com.mogujie.jarvis.rest.vo.JobRelationsVo;
 import com.mogujie.jarvis.rest.vo.JobResultVo;
 import com.mogujie.jarvis.rest.vo.JobDependencyVo;
@@ -66,7 +66,7 @@ public class JobController extends AbstractController {
         try {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
-            JobEntryVo jobVo = JsonHelper.fromJson(parameters, JobEntryVo.class);
+            JobVo jobVo = JsonHelper.fromJson(parameters, JobVo.class);
             ConvertValidUtils.checkJob(CheckMode.ADD, jobVo);
             RestSubmitJobRequest request = vo2RequestByAdd(jobVo, appAuth, user);
 
@@ -98,7 +98,7 @@ public class JobController extends AbstractController {
         try {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
-            JobEntryVo jobVo = JsonHelper.fromJson(parameters, JobEntryVo.class);
+            JobVo jobVo = JsonHelper.fromJson(parameters, JobVo.class);
             ConvertValidUtils.checkJob(CheckMode.EDIT, jobVo);
             RestModifyJobRequest request = vo2RequestByEdit(jobVo, appAuth, user);
 
@@ -267,7 +267,7 @@ public class JobController extends AbstractController {
     /**
      * jobVo转换为request——增加
      */
-    private RestSubmitJobRequest vo2RequestByAdd(JobEntryVo vo, AppAuth appAuth, String user) {
+    private RestSubmitJobRequest vo2RequestByAdd(JobVo vo, AppAuth appAuth, String user) {
         // parameters处理
         String jobParameters = "";
         if (vo.getParams() != null) {
@@ -306,7 +306,7 @@ public class JobController extends AbstractController {
     /**
      * jobVo转换为request——修改
      */
-    private RestModifyJobRequest vo2RequestByEdit(JobEntryVo vo, AppAuth appAuth, String user) {
+    private RestModifyJobRequest vo2RequestByEdit(JobVo vo, AppAuth appAuth, String user) {
 
         // 构造请求
         RestModifyJobRequest.Builder builder = RestModifyJobRequest.newBuilder().setAppAuth(appAuth).setUser(user);

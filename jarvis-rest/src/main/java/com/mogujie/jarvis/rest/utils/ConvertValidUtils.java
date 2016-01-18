@@ -9,9 +9,6 @@ import com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpress
 import com.mogujie.jarvis.rest.vo.*;
 
 import com.mogujie.jarvis.server.domain.CommonStrategy;
-import com.mogujie.jarvis.server.domain.JobEntry;
-
-import java.util.Arrays;
 
 /**
  * 检验函数
@@ -48,7 +45,7 @@ public class ConvertValidUtils {
     /**
      * @param job
      */
-    public static void checkJob(CheckMode mode, JobEntryVo job) {
+    public static void checkJob(CheckMode mode, JobVo job) {
 
         //为空检查
         Long jobId = job.getJobId();

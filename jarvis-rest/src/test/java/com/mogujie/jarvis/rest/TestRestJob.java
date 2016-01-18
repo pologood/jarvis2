@@ -24,9 +24,9 @@ public class TestRestJob {
     @Test
     public void testMy(){
         String a = "{\"jobName\":\"test\",\"activeStartDate\":\"\",\"activeEndDate\":\"\",\"content\":\"ls;\",\"params\":{},\"expression\":\"\",\"failedAttempts\":0,\"failedInterval\":3,\"jobType\":\"hive_script\",\"bizGroupId\":1,\"workerGroupId\":1,\"expressionType\":1,\"priority\":1,\"scheduleExpressionEntry\":{\"expressionType\":\"1\",\"expression\":\"\",\"operatorMode\":3}}";
-        JobEntryVo jobVo = JsonHelper.fromJson(a, JobEntryVo.class);
+        JobVo jobVo = JsonHelper.fromJson(a, JobVo.class);
         String b = "{\"jobName\":\"test\",\"activeStartDate\":\"\",\"activeEndDate\":\"\",\"content\":\"ls;\",\"params\":{},\"expression\":\"\",\"failedAttempts\":0,\"failedInterval\":3,\"jobType\":\"hive_script\",\"bizGroupId\":1,\"workerGroupId\":1,\"expressionType\":1,\"priority\":1,\"scheduleExpressionEntry\":{\"expressionType\":\"1\",\"expression\":\"\",\"operatorMode\":3}}";
-        JobEntryVo jobVo2= JsonHelper.fromJson(b, JobEntryVo.class);
+        JobVo jobVo2= JsonHelper.fromJson(b, JobVo.class);
 
         int i = 3;
     }
@@ -53,7 +53,7 @@ public class TestRestJob {
 
     private Long jobSubmit() throws UnirestException {
 
-        JobEntryVo job = new JobEntryVo();
+        JobVo job = new JobVo();
         job.setJobName("mmTest");
         job.setJobType("hive");
         job.setStatus(1);
@@ -107,7 +107,7 @@ public class TestRestJob {
         job.setParams(jobPrams);
 
         // 任务参数
-        String paramsJson = JsonHelper.toJson(job, JobEntryVo.class);
+        String paramsJson = JsonHelper.toJson(job, JobVo.class);
 
         HttpResponse<String> jsonResponse = Unirest.post(baseUrl + "/api/job/submit").field("appName", "jarvis-web").field("appToken", "123")
                 .field("user", "muming").field("parameters", paramsJson).asString();
