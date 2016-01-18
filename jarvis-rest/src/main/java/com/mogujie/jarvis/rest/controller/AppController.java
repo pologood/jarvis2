@@ -6,6 +6,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import com.google.gson.reflect.TypeToken;
 import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.core.domain.AppStatus;
 import com.mogujie.jarvis.core.domain.OperationMode;
@@ -25,7 +26,9 @@ import com.mogujie.jarvis.rest.vo.AppResultVo;
 import com.mogujie.jarvis.rest.vo.AppWorkerGroupVo;
 import com.mogujie.jarvis.rest.vo.JobEntryVo;
 
+import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author muming
@@ -174,18 +177,20 @@ public class AppController extends AbstractController {
                                                               String appName, String appToken, String parameters) {
 
         AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
-        AppWorkerGroupVo appWorkerGroupVo = JsonHelper.fromJson(parameters, AppWorkerGroupVo.class);
+
+        Type mapType = new TypeToken<List<AppWorkerGroupVo.AppWorkerGroupEntry>>() {
+        }.getType();
+        List<AppWorkerGroupVo.AppWorkerGroupEntry> list = JsonHelper.fromJson(parameters, mapType);
 
         // 构造请求
         RestSetApplicationWorkerGroupRequest.Builder builder = RestSetApplicationWorkerGroupRequest.newBuilder();
-        List<AppWorkerGroupVo.AppWorkerGroupEntry> list = appWorkerGroupVo.getList();
         if (list != null && list.size() > 0) {
             for (AppWorkerGroupVo.AppWorkerGroupEntry e : list) {
-                ConvertValidUtils.checkAppWorkerGroup(mode, e.getAppId(), e.getWorkGroupId());
+                ConvertValidUtils.checkAppWorkerGroup(mode, e.getAppId(), e.getWorkerGroupId());
                 ApplicationProtos.AppWorkerGroupEntry data = ApplicationProtos.AppWorkerGroupEntry
                         .newBuilder()
                         .setAppId(e.getAppId())
-                        .setWorkerGroupId(e.getWorkGroupId())
+                        .setWorkerGroupId(e.getWorkerGroupId())
                         .build();
                 builder.addAppWorkerGroups(data);
             }

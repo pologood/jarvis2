@@ -147,7 +147,7 @@ public class AppActor extends UntypedActor {
         try {
 
             List<AppWorkerGroup> list= msg2AppWorkerGroup(request);
-            convertValidService.checkAppWorkeGroup(request.getMode(),list);
+            convertValidService.checkAppWorkerGroup(request.getMode(),list);
 
             OperationMode mode = OperationMode.parseValue(request.getMode());
             for(AppWorkerGroup entry :list){

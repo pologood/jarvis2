@@ -350,7 +350,7 @@ public class ConvertValidService {
     }
 
     //------------------------ App workerGroup ----------------------
-    public void checkAppWorkeGroup(Integer modeVal, List<AppWorkerGroup> list) throws NotFoundException, IllegalArgumentException {
+    public void checkAppWorkerGroup(Integer modeVal, List<AppWorkerGroup> list) throws NotFoundException, IllegalArgumentException {
 
         OperationMode mode = OperationMode.parseValue(modeVal);
         Preconditions.checkArgument(mode.isIn(OperationMode.ADD, OperationMode.DELETE), "mode必须是增加或者删除. mode:" + modeVal);

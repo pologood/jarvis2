@@ -13,7 +13,7 @@ public class AppWorkerGroupVo extends AbstractVo{
 
     public class AppWorkerGroupEntry {
         private Integer appId;
-        private Integer workGroupId;
+        private Integer workerGroupId;
 
         public Integer getAppId() {
             return appId;
@@ -23,12 +23,12 @@ public class AppWorkerGroupVo extends AbstractVo{
             this.appId = appId;
         }
 
-        public Integer getWorkGroupId() {
-            return workGroupId;
+        public Integer getWorkerGroupId() {
+            return workerGroupId;
         }
 
-        public void setWorkGroupId(Integer workGroupId) {
-            this.workGroupId = workGroupId;
+        public void setWorkerGroupId(Integer workerGroupId) {
+            this.workerGroupId = workerGroupId;
         }
     }
 

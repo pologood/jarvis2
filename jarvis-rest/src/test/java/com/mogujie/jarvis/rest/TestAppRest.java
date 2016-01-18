@@ -1,10 +1,14 @@
 package com.mogujie.jarvis.rest;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.mogujie.jarvis.core.domain.OperationMode;
+import com.mogujie.jarvis.rest.controller.SystemController;
+import com.mogujie.jarvis.rest.vo.AppResultVo;
 import org.junit.Assert;
 
 import com.google.gson.reflect.TypeToken;
@@ -21,16 +25,21 @@ import org.junit.Test;
 public class TestAppRest extends TestRestAbstact {
 
     public void testAppWorkerGroup() throws UnirestException {
-        appWorkerGroupAdd(OperationMode.DELETE,26,8);
-        appWorkerGroupAdd(OperationMode.ADD,25,8);
-        appWorkerGroupAdd(OperationMode.DELETE,25,8);
+        appWorkerGroupSet(OperationMode.DELETE, 26, 8);
+        appWorkerGroupSet(OperationMode.ADD, 25, 8);
+        appWorkerGroupSet(OperationMode.DELETE, 25, 8);
     }
 
+    public void testApp()throws UnirestException{
+        Integer appId = addApp();
+        System.out.print("appId:" + appId);
+    }
 
-    private void appAdd() throws UnirestException {
+    private Integer addApp() throws UnirestException {
         Map<String, Object> params = new HashMap<>();
-        params.put("applicationName", "mumingTest2");
+        params.put("applicationName", "mumingTest4");
         params.put("status", 1);
+        params.put("owner", "tianhuo");
         params.put("maxConcurrency", 20);
         String paramsJson = JsonHelper.toJson(params, Map.class);
 
@@ -39,25 +48,32 @@ public class TestAppRest extends TestRestAbstact {
                 .field("appToken", "123")
                 .field("user", "muming").field("parameters", paramsJson).asString();
 
-        Type restType = new TypeToken<TestRestResultEntity<AbstractVo>>() {
+        Type restType = new TypeToken<TestRestResultEntity<AppResultVo>>() {
         }.getType();
 
         Assert.assertEquals(jsonResponse.getStatus(), 200);
-        TestRestResultEntity<?> result = JsonHelper.fromJson(jsonResponse.getBody(), restType);
+        TestRestResultEntity<AppResultVo> result = JsonHelper.fromJson(jsonResponse.getBody(), restType);
         Assert.assertEquals(result.getCode(), 0);
+        return result.getData().getAppId();
+
     }
 
-    private void appWorkerGroupAdd(OperationMode mode,Integer appId, Integer workerGroupId) throws UnirestException {
+    private void appWorkerGroupSet(OperationMode mode, Integer appId, Integer workerGroupId) throws UnirestException {
 
-        Map<String, Object> params = new HashMap<>();
-        params.put("appId", appId);
-        params.put("workerGroupId", workerGroupId);
-        String paramsJson = JsonHelper.toJson(params, Map.class);
+        List<Map<String, Object>> params = new ArrayList<>();
+        Map<String, Object> entry;
 
-        String path="";
-        if(mode ==OperationMode.ADD){
-            path ="/api/app/workerGroup/add";
-        }else if(mode == OperationMode.DELETE){
+        entry = new HashMap<>();
+        entry.put("appId", appId);
+        entry.put("workerGroupId", workerGroupId);
+        params.add(entry);
+
+        String paramsJson = JsonHelper.toJson(params);
+
+        String path = "";
+        if (mode == OperationMode.ADD) {
+            path = "/api/app/workerGroup/add";
+        } else if (mode == OperationMode.DELETE) {
             path = "/api/app/workerGroup/delete";
         }
 
@@ -73,8 +89,6 @@ public class TestAppRest extends TestRestAbstact {
         TestRestResultEntity<?> result = JsonHelper.fromJson(jsonResponse.getBody(), restType);
         Assert.assertEquals(result.getCode(), 0);
     }
-
-
 
 
 }
