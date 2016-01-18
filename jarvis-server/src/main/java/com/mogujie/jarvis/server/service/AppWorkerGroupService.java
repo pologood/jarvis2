@@ -12,7 +12,6 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.mogujie.jarvis.dao.generate.AppWorkerGroupMapper;
 import com.mogujie.jarvis.dto.generate.*;
-import com.sun.istack.internal.NotNull;
 
 
 /**
@@ -31,7 +30,7 @@ public class AppWorkerGroupService {
         return appWorkerGroupMapper.selectByPrimaryKey(key);
     }
 
-    public int insert(@NotNull AppWorkerGroup appWorkerGroup) {
+    public int insert(AppWorkerGroup appWorkerGroup) {
         return appWorkerGroupMapper.insertSelective(appWorkerGroup);
     }
 
