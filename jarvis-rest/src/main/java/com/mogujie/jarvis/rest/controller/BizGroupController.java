@@ -61,7 +61,7 @@ public class BizGroupController extends AbstractController {
      * 修改——bizGroup
      */
     @POST
-    @Path("set")
+    @Path("edit")
     @Produces(MediaType.APPLICATION_JSON)
     public RestResult set(@FormParam("user") String user,
                            @FormParam("appName") String appName,
