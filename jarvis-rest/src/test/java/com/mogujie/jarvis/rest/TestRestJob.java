@@ -14,7 +14,6 @@ import com.mogujie.jarvis.core.domain.OperationMode;
 import com.mogujie.jarvis.core.expression.ScheduleExpressionType;
 import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.server.domain.CommonStrategy;
-import org.junit.Test;
 
 /**
  * Created by muming on 15/12/1.
@@ -100,10 +99,10 @@ public class TestRestJob {
         HttpResponse<String> jsonResponse = Unirest.post(baseUrl + "/api/job/submit").field("appName", "jarvis-web").field("appToken", "123")
                 .field("user", "muming").field("parameters", paramsJson).asString();
 
-        Type restType = new TypeToken<TestRestResultEntity<JobVo>>() {}.getType();
+        Type restType = new TypeToken<TestRestResultEntity<JobResultVo>>() {}.getType();
 
         Assert.assertEquals(jsonResponse.getStatus(), 200);
-        TestRestResultEntity<JobVo> result = JsonHelper.fromJson(jsonResponse.getBody(), restType);
+        TestRestResultEntity<JobResultVo> result = JsonHelper.fromJson(jsonResponse.getBody(), restType);
         Assert.assertEquals(result.getCode(), 0);
 
         return result.getData().getJobId();
@@ -147,7 +146,7 @@ public class TestRestJob {
                 .field("user", "muming")
                 .field("parameters", paramsJson).asString();
 
-        Type restType = new TypeToken<TestRestResultEntity<JobVo>>() {
+        Type restType = new TypeToken<TestRestResultEntity<JobResultVo>>() {
         }.getType();
 
         Assert.assertEquals(jsonResponse.getStatus(), 200);
@@ -195,7 +194,7 @@ public class TestRestJob {
                 .field("user", "muming")
                 .field("parameters", paramsJson).asString();
 
-        Type restType = new TypeToken<TestRestResultEntity<JobVo>>() {
+        Type restType = new TypeToken<TestRestResultEntity<JobResultVo>>() {
         }.getType();
 
         Assert.assertEquals(jsonResponse.getStatus(), 200);

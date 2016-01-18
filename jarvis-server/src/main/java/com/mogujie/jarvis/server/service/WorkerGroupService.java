@@ -1,3 +1,11 @@
+/*
+ * 蘑菇街 Inc.
+ * Copyright (c) 2010-2015 All Rights Reserved.
+ *
+ * Author: muming
+ * Create Date: 2015年11月27日 下午3:45:24
+ */
+
 package com.mogujie.jarvis.server.service;
 
 import com.google.inject.Inject;

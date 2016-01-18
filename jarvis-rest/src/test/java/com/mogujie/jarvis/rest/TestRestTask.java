@@ -11,7 +11,7 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.mogujie.jarvis.core.util.JsonHelper;
-import com.mogujie.jarvis.rest.vo.JobVo;
+import com.mogujie.jarvis.rest.vo.JobResultVo;
 import com.mogujie.jarvis.rest.vo.TaskEntryVo;
 import com.mogujie.jarvis.rest.vo.TaskRelationsVo;
 
@@ -44,7 +44,7 @@ public class TestRestTask {
         HttpResponse<String> jsonResponse = Unirest.post(baseUrl + "/api/task/submit").field("appName", "jarvis-web").field("appToken", "123")
                 .field("user", "muming").field("parameters", paramsJson).asString();
 
-        Type restType = new TypeToken<TestRestResultEntity<JobVo>>() {
+        Type restType = new TypeToken<TestRestResultEntity<JobResultVo>>() {
         }.getType();
 
         Assert.assertEquals(jsonResponse.getStatus(), 200);

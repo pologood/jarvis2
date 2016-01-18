@@ -3,7 +3,7 @@ package com.mogujie.jarvis.server.actor;
 import com.google.inject.Injector;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.server.dispatcher.TaskManager;
-import com.mogujie.jarvis.server.dispatcher.TaskQueue;
+import com.mogujie.jarvis.server.dispatcher.PriorityTaskQueue;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.dag.DAGScheduler;
@@ -39,7 +39,7 @@ public class TestTaskBase {
     protected static JobSchedulerController controller;
     protected static JobGraph jobGraph;
     protected static TaskGraph taskGraph;
-    protected static TaskQueue taskQueue;
+    protected static PriorityTaskQueue taskQueue;
     protected static Configuration conf = ConfigUtils.getServerConfig();
     protected static TaskManager taskManager = new TaskManager();
     protected static TaskService taskService = new TaskService();

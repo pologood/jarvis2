@@ -4,7 +4,7 @@ package com.mogujie.jarvis.rest.vo;
  * job返回类
  * @author muming
  */
-public class JobVo extends  AbstractVo{
+public class JobResultVo extends  AbstractVo{
 
     private long jobId;
 
@@ -12,7 +12,8 @@ public class JobVo extends  AbstractVo{
         return jobId;
     }
 
-    public void setJobId(long jobId) {
+    public JobResultVo setJobId(long jobId) {
         this.jobId = jobId;
+        return this;
     }
 }

@@ -15,9 +15,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.mogujie.jarvis.core.exception.NotFoundException;
-import org.mybatis.guice.transactional.Transactional;
-
-import com.google.common.base.Preconditions;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -31,7 +28,7 @@ import com.mogujie.jarvis.dto.generate.AppWorkerGroup;
 import com.mogujie.jarvis.dto.generate.AppWorkerGroupExample;
 
 /**
- * @author guangming
+ * @author guangming,muming
  */
 @Singleton
 public class AppService {

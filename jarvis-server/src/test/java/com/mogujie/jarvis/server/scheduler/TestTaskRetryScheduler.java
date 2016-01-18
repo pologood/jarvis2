@@ -19,7 +19,7 @@ import com.google.common.collect.Maps;
 import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.domain.TaskDetail.TaskDetailBuilder;
 import com.mogujie.jarvis.core.util.ThreadUtils;
-import com.mogujie.jarvis.server.dispatcher.TaskQueue;
+import com.mogujie.jarvis.server.dispatcher.PriorityTaskQueue;
 import com.mogujie.jarvis.server.domain.RetryType;
 import com.mogujie.jarvis.server.guice.Injectors;
 
@@ -27,7 +27,7 @@ import com.mogujie.jarvis.server.guice.Injectors;
 public class TestTaskRetryScheduler {
 
     private TaskRetryScheduler taskRetryScheduler = TaskRetryScheduler.INSTANCE;
-    private TaskQueue taskQueue = Injectors.getInjector().getInstance(TaskQueue.class);
+    private PriorityTaskQueue taskQueue = Injectors.getInjector().getInstance(PriorityTaskQueue.class);
     private TaskDetail taskDetail = null;
 
     @Before

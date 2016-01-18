@@ -2,7 +2,7 @@
  * 蘑菇街 Inc.
  * Copyright (c) 2010-2015 All Rights Reserved.
  *
- * Author: wuya
+ * Author: muming
  * Create Date: 2015年12月16日 下午5:59:26
  */
 
@@ -15,8 +15,12 @@ import com.google.inject.Singleton;
 import com.mogujie.jarvis.dao.generate.AlarmMapper;
 import com.mogujie.jarvis.dto.generate.Alarm;
 import com.mogujie.jarvis.dto.generate.AlarmExample;
-import com.mogujie.jarvis.dto.generate.WorkerGroup;
 
+/**
+ * BizGroupService
+ *
+ * @author  muming
+ */
 @Singleton
 public class AlarmService {
 
@@ -38,18 +42,16 @@ public class AlarmService {
         return alarmMapper.insertSelective(alarm);
     }
 
-    public int upsetByJobId(Alarm alarm){
+    public int updateByJobId(Alarm alarm){
         AlarmExample alarmExample = new AlarmExample();
         alarmExample.createCriteria().andJobIdEqualTo(alarm.getJobId());
-        return  alarmMapper.updateByExampleSelective(alarm,alarmExample);
+        return alarmMapper.updateByExampleSelective(alarm, alarmExample);
     }
 
-    public int deleteByJobId(long jobId){
+    public int deleteByJobId(long jobId) {
         AlarmExample alarmExample = new AlarmExample();
         alarmExample.createCriteria().andJobIdEqualTo(jobId);
-        return  alarmMapper.deleteByExample(alarmExample);
+        return alarmMapper.deleteByExample(alarmExample);
     }
-
-
 
 }

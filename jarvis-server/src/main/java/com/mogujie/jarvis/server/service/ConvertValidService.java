@@ -1,7 +1,8 @@
 /*
  * 蘑菇街 Inc. Copyright (c) 2010-2015 All Rights Reserved.
  *
- * Author: guangming Create Date: 2015年9月29日 下午4:42:28
+ * Author: muming
+ * Create Date: 2015年9月29日 下午4:42:28
  */
 
 package com.mogujie.jarvis.server.service;
@@ -11,6 +12,7 @@ import com.google.inject.Singleton;
 import com.google.common.base.Preconditions;
 
 import java.util.Date;
+import java.util.List;
 
 import com.mogujie.jarvis.core.domain.*;
 import com.mogujie.jarvis.core.exception.NotFoundException;
@@ -21,7 +23,6 @@ import com.mogujie.jarvis.core.util.ExpressionUtils;
 import com.mogujie.jarvis.core.JarvisConstants;
 
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
-import com.mogujie.jarvis.protocol.ApplicationProtos.RestSetApplicationWorkerGroupRequest;
 import com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry;
 import com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry;
 import com.mogujie.jarvis.protocol.JobProtos.RestSubmitJobRequest;
@@ -29,9 +30,6 @@ import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobRequest;
 import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobScheduleExpRequest;
 import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobDependRequest;
 import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobStatusRequest;
-import com.mogujie.jarvis.protocol.AlarmProtos.RestCreateAlarmRequest;
-import com.mogujie.jarvis.protocol.AlarmProtos.RestModifyAlarmRequest;
-import com.mogujie.jarvis.protocol.AlarmProtos.RestDeleteAlarmRequest;
 import com.mogujie.jarvis.server.domain.JobEntry;
 import com.mogujie.jarvis.server.domain.CommonStrategy;
 
@@ -42,7 +40,7 @@ import com.mogujie.jarvis.server.domain.CommonStrategy;
 @Singleton
 public class ConvertValidService {
 
-    private enum CheckMode {
+    public enum CheckMode {
         ADD, //追加
         EDIT, //修改
         EDIT_STATUS, //修改_状态
@@ -76,6 +74,8 @@ public class ConvertValidService {
     private WorkerGroupService workerGroupService;
     @Inject
     private AppWorkerGroupService appWorkerGroupService;
+    @Inject
+    private BizGroupService bizGroupService;
 
     //--------------------------------------- job ---------------------------------
 
@@ -317,33 +317,15 @@ public class ConvertValidService {
 
     //------------------------ Alarm ----------------------
 
-    public Alarm convert2AlarmByCheck(RestCreateAlarmRequest msg) {
-        Alarm alarm = msg2Alarm(msg);
-        checkAlarm(CheckMode.ADD, alarm);
-        return alarm;
-    }
-
-    public Alarm convert2AlarmByCheck(RestModifyAlarmRequest msg) {
-        Alarm alarm = msg2Alarm(msg);
-        checkAlarm(CheckMode.EDIT, alarm);
-        return alarm;
-    }
-
-    public Alarm convert2AlarmByCheck(RestDeleteAlarmRequest msg) {
-        Alarm alarm = msg2Alarm(msg);
-        checkAlarm(CheckMode.DELETE, alarm);
-        return alarm;
-    }
-
     /**
      * @param mode
      * @param alarm
      */
-    private void checkAlarm(CheckMode mode, Alarm alarm) {
+    public void checkAlarm(CheckMode mode, Alarm alarm) {
 
         Long jobId = alarm.getJobId();
         Preconditions.checkArgument(!mode.isIn(CheckMode.ADD, CheckMode.EDIT, CheckMode.DELETE)
-                || (jobId != null && jobId != 0), "jobId不能为空。");
+                || (jobId != null && jobId != 0), "jobId不能为空。jobId:" + jobId);
 
         if (mode.isIn(CheckMode.ADD, CheckMode.EDIT)) {
             JobEntry job = jobService.get(jobId);
@@ -367,67 +349,63 @@ public class ConvertValidService {
 
     }
 
-
-    private Alarm msg2Alarm(RestCreateAlarmRequest msg) {
-        DateTime now = DateTime.now();
-        Alarm alarm = new Alarm();
-        alarm.setJobId(msg.getJobId());
-        alarm.setAlarmType(msg.getAlarmType());
-        alarm.setReceiver(msg.getReciever());
-        alarm.setStatus(msg.getStatus());
-
-        alarm.setCreateTime(now.toDate());
-        alarm.setUpdateTime(now.toDate());
-        alarm.setUpdateUser(msg.getUser());
-        return alarm;
-    }
-
-    private Alarm msg2Alarm(RestModifyAlarmRequest msg) {
-        DateTime now = DateTime.now();
-        Alarm alarm = new Alarm();
-        alarm.setJobId(msg.getJobId());
-        if (msg.hasAlarmType()) {
-            alarm.setAlarmType(msg.getAlarmType());
-        }
-        if (msg.hasReciever()) {
-            alarm.setReceiver(msg.getReciever());
-        }
-        if (msg.hasStatus()) {
-            alarm.setStatus(msg.getStatus());
-        }
-        alarm.setUpdateTime(now.toDate());
-        alarm.setUpdateUser(msg.getUser());
-        return alarm;
-    }
-
-    private Alarm msg2Alarm(RestDeleteAlarmRequest msg) {
-        Alarm alarm = new Alarm();
-        alarm.setJobId(msg.getJobId());
-        return alarm;
-    }
-
     //------------------------ App workerGroup ----------------------
-    public AppWorkerGroup convert2AppWorkeGroupByCheck(RestSetApplicationWorkerGroupRequest msg) throws NotFoundException {
+    public void checkAppWorkerGroup(Integer modeVal, List<AppWorkerGroup> list) throws NotFoundException, IllegalArgumentException {
 
-        int modeVal = msg.getMode();
         OperationMode mode = OperationMode.parseValue(modeVal);
+        Preconditions.checkArgument(mode.isIn(OperationMode.ADD, OperationMode.DELETE), "mode必须是增加或者删除. mode:" + modeVal);
 
-        int appId = msg.getAppId();
-        appService.getAppById(appId);
+        Preconditions.checkArgument(list != null && list.size() > 0, "数组对象为空");
 
-        int workerGroupId = msg.getWorkerGroupId();
-        workerGroupService.getGroupByGroupId(workerGroupId);
+        for (AppWorkerGroup entry : list) {
 
-        AppWorkerGroup appWorkerGroup = appWorkerGroupService.get4ReturnNull(appId, workerGroupId);
-        Preconditions.checkArgument(mode != OperationMode.ADD || appWorkerGroup == null
-                , "AppWorkerGroup对象已经存在,不能插入. appID:" + appId + "; workerGroupId:" + workerGroupId);
+            int appId = entry.getAppId();
+            appService.getAppById(appId);
 
-        AppWorkerGroup ag = new AppWorkerGroup();
-        ag.setAppId(appId);
-        ag.setWorkerGroupId(workerGroupId);
-        return ag;
+            int workerGroupId = entry.getWorkerGroupId();
+            workerGroupService.getGroupByGroupId(workerGroupId);
+
+            AppWorkerGroup appWorkerGroup = appWorkerGroupService.query(appId, workerGroupId);
+            Preconditions.checkArgument(mode != OperationMode.ADD || appWorkerGroup == null
+                    , "AppWorkerGroup对象已经存在,不能插入. appID:" + appId + "; workerGroupId:" + workerGroupId);
+
+        }
+
     }
 
+    //----------------- bizGroup -------------------------------
+
+    /**
+     * @param mode
+     * @param bg
+     */
+    public void checkBizGroup(CheckMode mode, BizGroup bg) throws IllegalArgumentException, NotFoundException {
+
+        Integer id = bg.getId();
+        Preconditions.checkArgument(!mode.isIn(CheckMode.EDIT, CheckMode.DELETE)
+                || (id != null && id != 0), "id is empty。 id:" + id);
+
+        if (mode.isIn(CheckMode.DELETE)) {
+            bizGroupService.checkDeletable(id);
+        }
+
+        String name = bg.getName();
+        Preconditions.checkArgument(!mode.isIn(CheckMode.ADD) || name != null, "name不能为空。");
+        if (name != null) {
+            Preconditions.checkArgument(!name.trim().equals(""), "name不能为空。");
+            bizGroupService.checkDuplicateName(name);
+        }
+
+        Integer status = bg.getStatus();
+        Preconditions.checkArgument(!mode.isIn(CheckMode.ADD) || status != null, "status不能为空。");
+        Preconditions.checkArgument(status == null || BizGroupStatus.isValid(status), "status类型不对。value:" + status);
+
+        String owner = bg.getOwner();
+        Preconditions.checkArgument(!mode.isIn(CheckMode.ADD) || owner != null, "owner不能为空。");
+        Preconditions.checkArgument(owner == null || !owner.trim().equals(""), "owner不能为空。");
+
+
+    }
 
     //------------------------ 其他 ----------------------
 

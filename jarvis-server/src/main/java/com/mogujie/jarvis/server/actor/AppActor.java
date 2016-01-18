@@ -15,6 +15,7 @@ import java.util.UUID;
 import com.mogujie.jarvis.core.domain.OperationMode;
 import com.mogujie.jarvis.core.exception.NotFoundException;
 import com.mogujie.jarvis.dto.generate.AppWorkerGroup;
+import com.mogujie.jarvis.protocol.ApplicationProtos;
 import com.mogujie.jarvis.server.service.AppWorkerGroupService;
 import com.mogujie.jarvis.server.service.ConvertValidService;
 import org.apache.logging.log4j.LogManager;
@@ -91,7 +92,7 @@ public class AppActor extends UntypedActor {
             app.setUpdateUser(request.getUser());
             appService.insert(app);
             taskManager.addApp(app.getAppId(), request.getMaxConcurrency());
-            response = ServerCreateApplicationResponse.newBuilder().setSuccess(true).build();
+            response = ServerCreateApplicationResponse.newBuilder().setSuccess(true).setAppId(app.getAppId()).build();
         } catch (Exception ex) {
             response = ServerCreateApplicationResponse.newBuilder().setSuccess(false).setMessage(ex.getMessage()).build();
             logger.error("", ex);
@@ -145,12 +146,16 @@ public class AppActor extends UntypedActor {
         ServerSetApplicationWorkerGroupResponse response = null;
         try {
 
-            AppWorkerGroup ag = convertValidService.convert2AppWorkeGroupByCheck(request);
+            List<AppWorkerGroup> list= msg2AppWorkerGroup(request);
+            convertValidService.checkAppWorkerGroup(request.getMode(),list);
+
             OperationMode mode = OperationMode.parseValue(request.getMode());
-            if (mode == OperationMode.ADD) {
-                appWorkerGroupService.insert(ag);
-            } else if (mode == OperationMode.DELETE) {
-                appWorkerGroupService.delete(ag.getAppId(), ag.getWorkerGroupId());
+            for(AppWorkerGroup entry :list){
+                if (mode == OperationMode.ADD) {
+                    appWorkerGroupService.insert(entry);
+                } else if (mode == OperationMode.DELETE) {
+                    appWorkerGroupService.delete(entry.getAppId(), entry.getWorkerGroupId());
+                }
             }
             response = ServerSetApplicationWorkerGroupResponse.newBuilder().setSuccess(true).build();
         } catch (Exception ex) {
@@ -160,6 +165,18 @@ public class AppActor extends UntypedActor {
         } finally {
             getSender().tell(response, getSelf());
         }
+    }
+
+
+    private List<AppWorkerGroup> msg2AppWorkerGroup(RestSetApplicationWorkerGroupRequest msg){
+        List<AppWorkerGroup> list = new ArrayList<>();
+        for(ApplicationProtos.AppWorkerGroupEntry entry : msg.getAppWorkerGroupsList()){
+            AppWorkerGroup aw = new AppWorkerGroup();
+            aw.setAppId(entry.getAppId());
+            aw.setWorkerGroupId(entry.getWorkerGroupId());
+            list.add(aw);
+        }
+        return list;
     }
 
 

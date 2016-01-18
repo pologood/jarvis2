@@ -1,4 +1,4 @@
-package com.mogujie.jarvis.server.actor;
+package com.mogujie.jarvis.server.actor.base;
 
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;

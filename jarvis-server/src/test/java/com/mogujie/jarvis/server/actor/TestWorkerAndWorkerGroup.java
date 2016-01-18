@@ -1,16 +1,12 @@
 package com.mogujie.jarvis.server.actor;
 
 import com.mogujie.jarvis.core.domain.WorkerInfo;
-import com.mogujie.jarvis.server.guice.Injectors;
+import com.mogujie.jarvis.server.actor.base.TestWorkerServiceBase;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.core.classloader.annotations.SuppressStaticInitializationFor;
-import org.powermock.modules.junit4.PowerMockRunner;
 
 import static org.mockito.Matchers.any;
 import static org.powermock.api.mockito.PowerMockito.when;
