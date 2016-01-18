@@ -101,19 +101,24 @@
 
 #### 2.3.1 调度模块总体设计
 
-DAGScheduler为调度模块，负责定时任务和依赖任务的调度，JobDispatcher负责任务的分发，StatusManager负责任务状态的维护。DAGScheduler，JobDispatcher和StatusManager一起完成调度任务的整个生命周期.
+调度器作为调度系统的心脏，主要作用是进行任务的调度。在该系统设计中，能实现纯时间任务，单亲纯依赖任务，多亲时间+依赖任务。
 
-![调度器](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/core_scheduler_new.png)
+调度器由三个子模块组成：TimeScheuler, DAGScheduler和TaskScheduler。
+
+三个调度器协同工作，共同完成对各种任务的调度，当完成对一个job的调度之后，提交一个task给Dispatcher。
+
+调度器（Scheduler）和分发器（Dispatcher）之间是生产者和消费者的关系，Scheduler提交task给Dispatcher。只要Dispatcher空闲，就会拿走进行分发。
+
+
+![调度器](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/scheduler_design.png)
 
 如上图所示：  
 
-- DAGScheduler提交任务并不是直接提交给JobDispatcher，而是先发送给ExecuteQueue。
+- TimeScheduler对纯时间任务进行调度，内部维护一个定时器每隔一秒扫描是否有任务调度时间已经到达。当添加一个任务的时候计算其下一次时间，当时间到达的时候，提交给TaskScheduler，并自动计算自己下一次时间接着调度。
 
-- JobDispatcher首先向ExecuteQueue注册自己，当ExecuteQueue中有任务到来的时候，会主动推送给JobDispatcher。如果注册多个JobDispatcher实例，则可以并发分发任务。
+- DAGScheduler对依赖任务进行调度，内部通过一个JobGraph维护了各个job之间的父子关系。当有task状态反馈的时候，TaskScheduler会进行状态处理，并且会触发DAGScheduler进行后续任务的调度。对DAGScheduler的任意一次依赖触发，都会进行依赖检查，如果通过依赖检查，根据不同的job类型进行后续操作：如果是单亲纯依赖任务，直接提交给TaskScheduler；如果是时间+依赖任务，提交给TimeScheduler进行时间调度。
 
-- DAGScheduler和JobDispatcher是一个生产者、消费者的关系，DAGScheduler是生产者，负责向执行队列中提交任务。JobDispatcher是消费者，由执行队列主动推送任务给JobDispatcher。
-
-- StatuManager维护任务状态，向DAGScheduler发送事件，进行依赖触发。
+- TaskScheduler对task进行调度，接收task状态反馈，进行持久化、失败重试、后续任务触发等逻辑。TimeScheduler和DAGScheduler相当于生产者，输入job；TaskScheduler相当于消费者，输出为task. 为了处理重跑等逻辑，TaskScheduler内部还维护了一个TaskGraph进行task的依赖触发，不会干扰DAGScheduler的正常调度。
 
 
 
