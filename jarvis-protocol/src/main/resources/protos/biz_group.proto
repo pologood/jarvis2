@@ -1,0 +1,33 @@
+import "app_auth.proto";
+
+option java_package = "com.mogujie.jarvis.protocol";
+option java_outer_classname = "BizGroupProtos";
+
+
+message RestCreateBizGroupRequest {
+    required AppAuth app_auth = 1;
+    required string user = 2;
+    required string name = 3;
+    required int32 status = 4;
+    required string owner = 5;
+}
+
+message ServerCreateBizGroupResponse {
+    required bool success = 1;
+    optional string message = 2 [default = ""];
+    optional string id = 3;
+}
+
+message RestModifyBizGroupRequest {
+    required AppAuth app_auth = 1;
+    required string user = 2;
+    required int32 id = 3;
+    required string name = 4;
+    required int32 status = 5;
+    required string owner = 6;
+}
+
+message ServerModifyBizGroupResponse {
+    required bool success = 1;
+    optional string message = 2 [default = ""];
+}

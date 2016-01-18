@@ -1,7 +1,8 @@
 /*
  * 蘑菇街 Inc. Copyright (c) 2010-2015 All Rights Reserved.
  *
- * Author: guangming Create Date: 2015年9月29日 下午4:42:28
+ * Author: muming
+ * Create Date: 2015年9月29日 下午4:42:28
  */
 
 package com.mogujie.jarvis.server.service;
@@ -32,6 +33,8 @@ import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobStatusRequest;
 import com.mogujie.jarvis.protocol.AlarmProtos.RestCreateAlarmRequest;
 import com.mogujie.jarvis.protocol.AlarmProtos.RestModifyAlarmRequest;
 import com.mogujie.jarvis.protocol.AlarmProtos.RestDeleteAlarmRequest;
+import com.mogujie.jarvis.protocol.BizGroupProtos.RestCreateBizGroupRequest;
+import com.mogujie.jarvis.protocol.BizGroupProtos.RestModifyBizGroupRequest;
 import com.mogujie.jarvis.server.domain.JobEntry;
 import com.mogujie.jarvis.server.domain.CommonStrategy;
 
@@ -76,6 +79,8 @@ public class ConvertValidService {
     private WorkerGroupService workerGroupService;
     @Inject
     private AppWorkerGroupService appWorkerGroupService;
+    @Inject
+    private BizGroupService bizGroupService;
 
     //--------------------------------------- job ---------------------------------
 
@@ -343,7 +348,7 @@ public class ConvertValidService {
 
         Long jobId = alarm.getJobId();
         Preconditions.checkArgument(!mode.isIn(CheckMode.ADD, CheckMode.EDIT, CheckMode.DELETE)
-                || (jobId != null && jobId != 0), "jobId不能为空。");
+                || (jobId != null && jobId != 0), "jobId不能为空。jobId:" + jobId);
 
         if (mode.isIn(CheckMode.ADD, CheckMode.EDIT)) {
             JobEntry job = jobService.get(jobId);
@@ -428,6 +433,70 @@ public class ConvertValidService {
         return ag;
     }
 
+    //----------------- bizGroup -------------------------------
+    /**
+     * @param mode
+     * @param bg
+     */
+    private void checkBizGroup(CheckMode mode, BizGroup bg) throws IllegalArgumentException{
+
+        Integer id = bg.getId();
+        Preconditions.checkArgument(!mode.isIn(CheckMode.EDIT, CheckMode.DELETE)
+                || (id != null && id != 0), "id is empty。 id:" + id);
+
+        if (mode.isIn(CheckMode.ADD)) {
+            BizGroup cur = bizGroupService.queryById(id);
+            Preconditions.checkArgument(cur == null, "bigGroup has exist,can't add. Id:" + id);
+        }
+
+        String name = bg.getName();
+        if(mode.isIn(CheckMode.ADD)){
+            Preconditions.checkArgument(name != null, "name不能为空。");
+        }
+        if (name != null) {
+            Preconditions.checkArgument(!name.trim().equals(""),"name不能为空。");
+            bizGroupService.checkDuplicateName(name);
+        }
+
+        Preconditions.checkArgument(!mode.isIn(CheckMode.ADD) || bg.getReceiver() != null, "receiver不能为空。");
+
+        Integer status = bg.getStatus();
+        Preconditions.checkArgument(!mode.isIn(CheckMode.ADD) || status != null, "status不能为空。");
+        Preconditions.checkArgument(status == null || bgStatus.isValid(status), "status类型不对。value:" + status);
+
+    }
+
+
+
+    private BizGroup msg2BizGroup(RestCreateBizGroupRequest msg){
+        DateTime now = DateTime.now();
+        BizGroup data = new BizGroup();
+        data.setName(msg.getName());
+        data.setOwner(msg.getOwner());
+        data.setStatus(msg.getStatus());
+        data.setCreateTime(now.toDate());
+        data.setUpdateTime(now.toDate());
+        data.setUpdateUser(msg.getUser());
+        return data;
+    }
+
+    private BizGroup msg2BizGroup(RestModifyBizGroupRequest msg){
+        DateTime now = DateTime.now();
+        BizGroup data = new BizGroup();
+        data.setId(msg.getId());
+        if(msg.hasName()){
+            data.setName(msg.getName());
+        }
+        if(msg.hasOwner()){
+            data.setOwner(msg.getOwner());
+        }
+        if(msg.hasStatus()){
+            data.setStatus(msg.getStatus());
+        }
+        data.setUpdateTime(now.toDate());
+        data.setUpdateUser(msg.getUser());
+        return data;
+    }
 
     //------------------------ 其他 ----------------------
 

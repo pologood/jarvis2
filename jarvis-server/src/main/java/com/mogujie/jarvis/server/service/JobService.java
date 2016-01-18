@@ -50,7 +50,7 @@ import com.mogujie.jarvis.server.domain.JobDependencyEntry;
 import com.mogujie.jarvis.server.domain.JobEntry;
 
 /**
- * @author wuya
+ * @author wuya,muming
  */
 @Singleton
 public class JobService {

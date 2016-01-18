@@ -83,7 +83,7 @@ public class AlarmActor extends UntypedActor {
         ServerModifyAlarmResponse response;
         try {
             Alarm alarm = convertValidService.convert2AlarmByCheck(request);
-            alarmService.upsetByJobId(alarm);
+            alarmService.updateByJobId(alarm);
             response = ServerModifyAlarmResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());
         } catch (Exception ex) {
