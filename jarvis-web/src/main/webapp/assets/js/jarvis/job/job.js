@@ -184,15 +184,13 @@ function initData() {
         exportDataType: 'all'
     });
 }
-
-
+//更新job的状态
 function updateJobStatus(jobId, jobStatus) {
     var data = {jobId: jobId, status: jobStatus};
     requestRemoteRestApi("/api/job/status/set", "更新任务状态", data);
     search();
 }
-
-
+//job的字段列表
 var columns = [{
     field: 'jobId',
     title: '任务id',
@@ -292,7 +290,7 @@ var columns = [{
     formatter: operateFormatter
 }];
 
-
+//操作格式化器
 function operateFormatter(value, row, index) {
     //console.log(row);
     var jobId = row["jobId"];
@@ -329,27 +327,24 @@ function operateFormatter(value, row, index) {
         operation = operation + '</ul></div>';
         result = result + operation;
     }
-
-
-    //console.log(result);
-
     return result;
 }
 
+//job状态对应显示的图标
 var jobStatusClass = {
     "1": "glyphicon glyphicon-ok text-success",
     "2": "glyphicon glyphicon-remove text-danger",
     "3": "glyphicon glyphicon-calendar text-info",
-    "4": "glyphicon glyphicon-minus text-danger",
+    "4": "glyphicon glyphicon-trash text-danger",
     "5": "glyphicon glyphicon-pause text-warning"
 }
-
+//状态格式化器
 function statusFormatter(value, row, index) {
     var result;
     result = '<i class="' + jobStatusClass[value] + '"></i>'
     return result;
 }
-
+//
 function formatResult(result) {
     return result.text;
 }

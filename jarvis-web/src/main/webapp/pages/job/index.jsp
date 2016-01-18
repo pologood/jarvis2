@@ -23,8 +23,8 @@
 
     <div class="row">
         <div class="col-md-12">
-
             <div class="row">
+
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:45%">任务ID</span>
@@ -33,6 +33,7 @@
                         </select>
                     </div>
                 </div>
+
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:45%">任务名称</span>
@@ -41,6 +42,7 @@
                         </select>
                     </div>
                 </div>
+
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:45%">任务类型</span>
@@ -59,7 +61,6 @@
             </div>
 
             <div class="row top-buffer">
-
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:45%">发布者</span>
@@ -102,7 +103,6 @@
                         </select>
                     </div>
                 </div>
-
             </div>
 
             <div class="row top-buffer">
@@ -117,7 +117,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -129,30 +128,22 @@
         <div class="col-md-12">
             <div id="toobar">
                 <a class="btn btn-primary" href="${contextPath}/job/addOrEdit" target="_blank">新增任务</a>
-
                 <i class="glyphicon glyphicon-ok text-success fa-lg"></i>启用
                 <i class="glyphicon glyphicon-remove text-danger fa-lg"></i>禁用
                 <i class="glyphicon glyphicon-calendar text-info fa-lg"></i>过期
-                <i class="glyphicon glyphicon-minus text-danger fa-lg"></i>删除
+                <i class="glyphicon glyphicon-trash text-danger fa-lg"></i>删除
                 <i class="glyphicon glyphicon-pause text-warning fa-lg"></i>暂停
-
             </div>
             <table id="content" data-toolbar="#toobar">
-
             </table>
-
         </div>
-
     </div>
-
-
 </div>
 
 
 <jsp:include page="../common/login.jsp">
     <jsp:param name="uname" value="${user.uname}"/>
 </jsp:include>
-
 
 <jsp:include page="../common/footer.jsp">
     <jsp:param name="menuMap" value="${menuMap}"/>

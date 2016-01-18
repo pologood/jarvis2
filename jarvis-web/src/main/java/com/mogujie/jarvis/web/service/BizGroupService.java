@@ -46,13 +46,9 @@ public class BizGroupService {
     /*
     * 检查是否存在此name，如果存在返回true
     * */
-    public boolean hasName(String name) {
+    public BizGroupVo getByName(String name) {
         BizGroupVo bizGroupVo = bizGroupMapper.getByName(name);
-        if (null == bizGroupVo) {
-            return false;
-        } else {
-            return true;
-        }
+        return bizGroupVo;
     }
 
     /*

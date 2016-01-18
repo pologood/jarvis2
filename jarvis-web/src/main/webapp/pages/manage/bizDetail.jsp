@@ -14,7 +14,7 @@
             <nav>
                 <ol class="cd-breadcrumb triangle">
                     <li><a href="${contextPath}/">首页</a></li>
-                    <li ><a href="${contextPath}/manage/bizGroup">业务类型管理</a></li>
+                    <li><a href="${contextPath}/manage/bizGroup">业务类型管理</a></li>
                     <li class="current"><em>业务类型管理</em></li>
                 </ol>
             </nav>
@@ -27,13 +27,22 @@
         <div class="col-md-4 col-md-offset-4">
             <div class="input-group">
                 <span class="input-group-addon">标签名</span>
-                <input class="form-control" />
+                <input id="name" class="form-control"/>
             </div>
+        </div>
+
+        <div class="col-md-4 col-md-offset-4 top-buffer">
+            <div class="input-group">
+                <span class="input-group-addon">维护人</span>
+                <select id="owner" multiple></select>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-md-offset-4 top-buffer text-center">
+            <button type="button" class="btn btn-primary" onclick="saveBizGroup()">保存</button>
         </div>
     </div>
 </div>
-
-
 
 
 <jsp:include page="../common/login.jsp">
@@ -46,7 +55,7 @@
 </jsp:include>
 
 <script>
-    var id='${id}';
+    var id = '${id}';
 </script>
 
 <script type="text/javascript" src="${contextPath}/assets/js/jarvis/manage/bizDetail.js"></script>

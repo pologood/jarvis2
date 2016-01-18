@@ -22,9 +22,12 @@ public class CommonAPIController {
     @Autowired
     AdminUserService userService;
 
+    /*
+    * 获取内网所有用户
+    * */
     @RequestMapping(value = "/getAllUser")
     @ResponseBody
-    public Map getAllUser() {
+    public Object getAllUser() {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
             List<User> userList = userService.getAllUsers();
@@ -35,6 +38,20 @@ public class CommonAPIController {
             e.printStackTrace();
             map.put("code",MessageStatus.FAILED.getValue());
             map.put("msg",e.getMessage());
+        }
+        return map;
+    }
+
+    /*
+    * 获取返回状态码说明
+    * */
+    @RequestMapping(value = "/getMessageStatus")
+    @ResponseBody
+    public Object getMessageStatus(){
+        Map<Object, Object> map = new HashMap<Object, Object>();
+        MessageStatus[] messageStatuses=MessageStatus.values();
+        for(MessageStatus messageStatus:messageStatuses){
+            map.put(messageStatus.getValue(),messageStatus.getText());
         }
         return map;
     }

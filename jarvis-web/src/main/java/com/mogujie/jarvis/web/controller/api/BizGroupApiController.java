@@ -28,14 +28,25 @@ public class BizGroupApiController {
     @RequestMapping(value = "getById")
     @ResponseBody
     public Object getById(BizGroupQo bizGroupQo) {
+        Map<String, Object> map = new HashMap<String, Object>();
         if (null == bizGroupQo.getId()) {
-            Map<String, Object> map = new HashMap<String, Object>();
             map.put("code", MessageStatus.FAILED.getValue());
             map.put("msg", "未传入id");
             map.put("supportFields", Tools.getObjectField(BizGroupQo.class));
             return map;
         }
-        return bizGroupService.getById(bizGroupQo.getId());
+        try {
+            BizGroupVo bizGroupVo = bizGroupService.getById(bizGroupQo.getId());
+            map.put("code", MessageStatus.SUCCESS.getValue());
+            map.put("msg", MessageStatus.SUCCESS.getText());
+            map.put("data", bizGroupVo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("code", MessageStatus.FAILED.getValue());
+            map.put("msg", e.getMessage());
+        }
+
+        return map;
     }
 
     /*
@@ -44,8 +55,18 @@ public class BizGroupApiController {
     @RequestMapping(value = "getAllByCondition")
     @ResponseBody
     public Object getAll(BizGroupQo bizGroupQo) {
-        List<BizGroupVo> list = bizGroupService.getAllByCondition(bizGroupQo);
-        return list;
+        Map<String, Object> map = new HashMap<String, Object>();
+        try {
+            List<BizGroupVo> list = bizGroupService.getAllByCondition(bizGroupQo);
+            map.put("code", MessageStatus.SUCCESS.getValue());
+            map.put("msg", MessageStatus.SUCCESS.getText());
+            map.put("data", list);
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("code", MessageStatus.FAILED.getValue());
+            map.put("msg", MessageStatus.SUCCESS.getText());
+        }
+        return map;
     }
 
     /*
@@ -80,12 +101,12 @@ public class BizGroupApiController {
     /*
     * 检查是否存在此业务名的业务类型
     * */
-    @RequestMapping(value = "hasName")
+    @RequestMapping(value = "getByName")
     @ResponseBody
-    public Object hasName(String name) {
+    public Object getByName(String name) {
         Map<String, Object> map = new HashMap<String, Object>();
-        boolean flag = bizGroupService.hasName(name);
-        map.put("flag", flag);
+        BizGroupVo bizGroupVo = bizGroupService.getByName(name);
+        map.put("data", bizGroupVo);
         return map;
     }
 
@@ -100,7 +121,7 @@ public class BizGroupApiController {
     }
 
     /*
-    * 获取维护用户名
+    * 获取维护用户名列表
     * */
     @RequestMapping(value = "getBizGroupOwner")
     @ResponseBody
