@@ -31,7 +31,7 @@ public class TestWorkerActor {
     @Before
     public void setup() {
         try {//检测server端口是否被占用
-            if(TestUtil.isPortHasBeenUse("localhost", 10000) && TestUtil.isPortHasBeenUse(InetAddress.getLocalHost().getHostAddress(), 10000)){
+            if (TestUtil.isPortHasBeenUse("localhost", 10000) && TestUtil.isPortHasBeenUse(InetAddress.getLocalHost().getHostAddress(), 10000)) {
                 ServerProxy serverProxy = new ServerProxy();
                 threadServer = new Thread(serverProxy);
                 threadServer.start();
