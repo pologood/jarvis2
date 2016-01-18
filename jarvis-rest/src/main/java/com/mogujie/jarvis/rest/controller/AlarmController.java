@@ -108,9 +108,9 @@ public class AlarmController extends AbstractController {
      * 修改——报警信息
      */
     @POST
-    @Path("set")
+    @Path("edit")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult set(@FormParam("user") String user,
+    public RestResult edit(@FormParam("user") String user,
                            @FormParam("appName") String appName,
                            @FormParam("appToken") String appToken,
                            @FormParam("parameters") String parameters) {

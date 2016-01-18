@@ -400,6 +400,11 @@ public class ConvertValidService {
         Preconditions.checkArgument(!mode.isIn(CheckMode.ADD) || status != null, "status不能为空。");
         Preconditions.checkArgument(status == null || BizGroupStatus.isValid(status), "status类型不对。value:" + status);
 
+        String owner = bg.getOwner();
+        Preconditions.checkArgument(!mode.isIn(CheckMode.ADD) || owner != null, "owner不能为空。");
+        Preconditions.checkArgument(owner == null || !owner.trim().equals(""), "owner不能为空。");
+
+
     }
 
     //------------------------ 其他 ----------------------

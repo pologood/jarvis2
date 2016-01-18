@@ -67,7 +67,7 @@ public class BizGroupService {
     }
 
     public int update(BizGroup bg) {
-        return bizGroupMapper.updateByPrimaryKey(bg);
+        return bizGroupMapper.updateByPrimaryKeySelective(bg);
     }
 
     public int delete(Integer id) {

@@ -7,6 +7,7 @@ import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
 import com.mogujie.jarvis.rest.RestResult;
 import com.mogujie.jarvis.rest.utils.ConvertValidUtils;
 import com.mogujie.jarvis.rest.utils.ConvertValidUtils.CheckMode;
+import com.mogujie.jarvis.rest.vo.BizGroupResultVo;
 import com.mogujie.jarvis.rest.vo.BizGroupVo;
 
 import javax.ws.rs.FormParam;
@@ -47,7 +48,7 @@ public class BizGroupController extends AbstractController {
 
             ServerCreateBizGroupResponse response = (ServerCreateBizGroupResponse) callActor(AkkaType.SERVER, request);
             if (response.getSuccess()) {
-                return successResult();
+                return successResult(new BizGroupResultVo().setId(response.getId()));
             } else {
                 return errorResult(response.getMessage());
             }

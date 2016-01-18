@@ -162,13 +162,16 @@ public class ConvertValidUtils {
 
         String name = bg.getName();
         Preconditions.checkArgument(!mode.isIn(CheckMode.ADD) || name != null, "name不能为空。");
-        if (name != null) {
-            Preconditions.checkArgument(!name.trim().equals(""), "name不能为空。");
-        }
+        Preconditions.checkArgument(name == null || !name.trim().equals(""), "name不能为空。");
 
         Integer status = bg.getStatus();
         Preconditions.checkArgument(!mode.isIn(CheckMode.ADD) || status != null, "status不能为空。");
         Preconditions.checkArgument(status == null || BizGroupStatus.isValid(status), "status类型不对。value:" + status);
+
+        String owner = bg.getOwner();
+        Preconditions.checkArgument(!mode.isIn(CheckMode.ADD) || owner != null, "owner不能为空。");
+        Preconditions.checkArgument(owner == null || !owner.trim().equals(""), "owner不能为空。");
+
 
     }
 
