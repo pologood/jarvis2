@@ -16,6 +16,7 @@ message RestCreateApplicationRequest {
 message ServerCreateApplicationResponse {
     required bool success = 1;
     optional string message = 2 [default = ""];
+    optional int32 appId = 3;
 }
 
 //modify app
@@ -34,13 +35,19 @@ message ServerModifyApplicationResponse {
     optional string message = 2 [default = ""];
 }
 
+
+
+message AppWorkerGroupEntry{
+    required int32 app_id = 1;
+    required int32 worker_group_id = 2;
+}
+
 //setting app & workerGroup
 message RestSetApplicationWorkerGroupRequest {
     required AppAuth app_auth = 1;
     required string user = 2;
     required int32 mode = 3;   //1:ADD; 2:EDIT; 3:DELETE
-    required int32 app_id = 4;
-    required int32 worker_group_id = 5;
+    repeated AppWorkerGroupEntry AppWorkerGroups = 4;
 }
 
 message ServerSetApplicationWorkerGroupResponse {

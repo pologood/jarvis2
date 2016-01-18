@@ -10,6 +10,7 @@ package com.mogujie.jarvis.server.actor;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.joda.time.DateTime;
 import org.mybatis.guice.transactional.Transactional;
 
 import java.util.ArrayList;
@@ -30,6 +31,8 @@ import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.service.AlarmService;
 import com.mogujie.jarvis.server.service.ConvertValidService;
+import com.mogujie.jarvis.server.service.ConvertValidService.CheckMode;
+
 
 public class AlarmActor extends UntypedActor {
 
@@ -66,8 +69,10 @@ public class AlarmActor extends UntypedActor {
     private void createAlarm(RestCreateAlarmRequest request) {
         ServerCreateAlarmResponse response;
         try {
-            Alarm alarm = convertValidService.convert2AlarmByCheck(request);
+            Alarm alarm = msg2Alarm(request);
+            convertValidService.checkAlarm(CheckMode.ADD, alarm);
             alarmService.insert(alarm);
+
             response = ServerCreateAlarmResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());
         } catch (Exception ex) {
@@ -82,8 +87,10 @@ public class AlarmActor extends UntypedActor {
     private void modifyAlarm(RestModifyAlarmRequest request) {
         ServerModifyAlarmResponse response;
         try {
-            Alarm alarm = convertValidService.convert2AlarmByCheck(request);
+            Alarm alarm = msg2Alarm(request);
+            convertValidService.checkAlarm(CheckMode.EDIT, alarm);
             alarmService.updateByJobId(alarm);
+
             response = ServerModifyAlarmResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());
         } catch (Exception ex) {
@@ -98,8 +105,10 @@ public class AlarmActor extends UntypedActor {
     private void deleteAlarm(RestDeleteAlarmRequest request) {
         ServerDeleteAlarmResponse response;
         try {
-            Alarm alarm = convertValidService.convert2AlarmByCheck(request);
+            Alarm alarm = msg2Alarm(request);
+            convertValidService.checkAlarm(CheckMode.DELETE, alarm);
             alarmService.deleteByJobId(alarm.getJobId());
+
             response = ServerDeleteAlarmResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());
         } catch (Exception ex) {
@@ -108,6 +117,45 @@ public class AlarmActor extends UntypedActor {
             logger.error("", ex);
             throw ex;
         }
+    }
+
+
+    private Alarm msg2Alarm(RestCreateAlarmRequest msg) {
+        DateTime now = DateTime.now();
+        Alarm alarm = new Alarm();
+        alarm.setJobId(msg.getJobId());
+        alarm.setAlarmType(msg.getAlarmType());
+        alarm.setReceiver(msg.getReciever());
+        alarm.setStatus(msg.getStatus());
+
+        alarm.setCreateTime(now.toDate());
+        alarm.setUpdateTime(now.toDate());
+        alarm.setUpdateUser(msg.getUser());
+        return alarm;
+    }
+
+    private Alarm msg2Alarm(RestModifyAlarmRequest msg) {
+        DateTime now = DateTime.now();
+        Alarm alarm = new Alarm();
+        alarm.setJobId(msg.getJobId());
+        if (msg.hasAlarmType()) {
+            alarm.setAlarmType(msg.getAlarmType());
+        }
+        if (msg.hasReciever()) {
+            alarm.setReceiver(msg.getReciever());
+        }
+        if (msg.hasStatus()) {
+            alarm.setStatus(msg.getStatus());
+        }
+        alarm.setUpdateTime(now.toDate());
+        alarm.setUpdateUser(msg.getUser());
+        return alarm;
+    }
+
+    private Alarm msg2Alarm(RestDeleteAlarmRequest msg) {
+        Alarm alarm = new Alarm();
+        alarm.setJobId(msg.getJobId());
+        return alarm;
     }
 
 

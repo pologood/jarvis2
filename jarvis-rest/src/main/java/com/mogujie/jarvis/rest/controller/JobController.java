@@ -39,7 +39,7 @@ import com.mogujie.jarvis.rest.utils.ConvertValidUtils;
 import com.mogujie.jarvis.rest.utils.JsonParameters;
 import com.mogujie.jarvis.rest.vo.JobEntryVo;
 import com.mogujie.jarvis.rest.vo.JobRelationsVo;
-import com.mogujie.jarvis.rest.vo.JobVo;
+import com.mogujie.jarvis.rest.vo.JobResultVo;
 import com.mogujie.jarvis.rest.vo.JobDependencyVo;
 import com.mogujie.jarvis.rest.vo.JobScheduleExpVo;
 
@@ -95,9 +95,7 @@ public class JobController extends AbstractController {
 
             // 判断是否成功
             if (response.getSuccess()) {
-                JobVo vo = new JobVo();
-                vo.setJobId(response.getJobId());
-                return successResult(vo);
+                return successResult(new JobResultVo().setJobId(response.getJobId()));
             } else {
                 return errorResult(response.getMessage());
             }
@@ -357,7 +355,7 @@ public class JobController extends AbstractController {
     @Path("test")
     @Produces(MediaType.APPLICATION_JSON)
     public RestResult test() throws Exception {
-        JobVo vo = new JobVo();
+        JobResultVo vo = new JobResultVo();
         vo.setJobId(123456);
         return successResult(vo);
 

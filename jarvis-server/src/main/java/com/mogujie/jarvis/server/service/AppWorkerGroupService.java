@@ -24,7 +24,7 @@ public class AppWorkerGroupService {
     @Inject
     private AppWorkerGroupMapper appWorkerGroupMapper;
 
-    public AppWorkerGroup get4ReturnNull(Integer appID,Integer workerGroupId){
+    public AppWorkerGroup query(Integer appID, Integer workerGroupId){
         AppWorkerGroupKey key = new AppWorkerGroupKey();
         key.setAppId(appID);
         key.setWorkerGroupId(workerGroupId);

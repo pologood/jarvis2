@@ -135,18 +135,18 @@ public class ConvertValidUtils {
     public static void checkAlarm(OperationMode mode, AlarmVo vo) {
 
         Long jobId = vo.getJobId();
-        Preconditions.checkArgument(!mode.isIn(OperationMode.ADD,OperationMode.EDIT,OperationMode.DELETE)
-        || (jobId != null && jobId != 0),"jobId不能为空。");
+        Preconditions.checkArgument(!mode.isIn(OperationMode.ADD, OperationMode.EDIT, OperationMode.DELETE)
+                || (jobId != null && jobId != 0), "jobId不能为空。");
 
         String type = vo.getAlarmType();
-        Preconditions.checkArgument( !mode.isIn(OperationMode.ADD) || type != null,"alarmType不能为空。");
-        Preconditions.checkArgument( type == null || AlarmType.isValid(type),"alarmType不对。value:" + type);
+        Preconditions.checkArgument(!mode.isIn(OperationMode.ADD) || type != null, "alarmType不能为空。");
+        Preconditions.checkArgument(type == null || AlarmType.isValid(type), "alarmType不对。value:" + type);
 
-        Preconditions.checkArgument( !mode.isIn(OperationMode.ADD) || vo.getReceiver() != null,"receiver不能为空。");
+        Preconditions.checkArgument(!mode.isIn(OperationMode.ADD) || vo.getReceiver() != null, "receiver不能为空。");
 
         Integer status = vo.getStatus();
-        Preconditions.checkArgument( !mode.isIn(OperationMode.ADD) || status != null,"status不能为空。");
-        Preconditions.checkArgument(status == null || AlarmStatus.isValid(status),"status类型不对。 value:" + status);
+        Preconditions.checkArgument(!mode.isIn(OperationMode.ADD) || status != null, "status不能为空。");
+        Preconditions.checkArgument(status == null || AlarmStatus.isValid(status), "status类型不对。 value:" + status);
 
     }
 
@@ -154,7 +154,7 @@ public class ConvertValidUtils {
      * @param mode
      * @param bg
      */
-    public static void checkBizGroup(CheckMode mode, BizGroupVo bg) throws IllegalArgumentException{
+    public static void checkBizGroup(CheckMode mode, BizGroupVo bg) throws IllegalArgumentException {
 
         Integer id = bg.getId();
         Preconditions.checkArgument(!mode.isIn(CheckMode.EDIT, CheckMode.DELETE)
@@ -173,15 +173,13 @@ public class ConvertValidUtils {
     }
 
 
-
-
-
     /**
      * appWorkerGroup检查
      */
-    public static void checkAppWorkerGroup(OperationMode mode, Integer appId, Integer workerGroupId) {
-        Preconditions.checkArgument((appId != null && appId != 0),"jobId不能为空。");
-        Preconditions.checkArgument((workerGroupId != null && workerGroupId != 0),"workerGroupId不能为空。");
+    public static void checkAppWorkerGroup(OperationMode mode, Integer appId, Integer workerGroupId)
+            throws IllegalArgumentException {
+        Preconditions.checkArgument((appId != null && appId != 0), "jobId不能为空。");
+        Preconditions.checkArgument((workerGroupId != null && workerGroupId != 0), "workerGroupId不能为空。");
     }
 
     /**
@@ -190,8 +188,6 @@ public class ConvertValidUtils {
     public static void checkAlarmQuery(AlarmQueryVo vo) {
         String jobIds = vo.getJobIds();
     }
-
-
 
 
 }
