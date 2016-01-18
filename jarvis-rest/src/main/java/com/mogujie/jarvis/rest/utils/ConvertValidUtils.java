@@ -26,12 +26,8 @@ public class ConvertValidUtils {
 
         /**
          * 是否在scope中
-         *
-         * @param scope
-         * @return
          */
         public Boolean isIn(CheckMode... scope) {
-
             for (CheckMode member : scope) {
                 if (ordinal() == member.ordinal()) {
                     return true;
@@ -39,18 +35,15 @@ public class ConvertValidUtils {
             }
             return false;
         }
-
     }
 
     /**
      * @param job
      */
     public static void checkJob(CheckMode mode, JobVo job) {
-
-        //为空检查
         Long jobId = job.getJobId();
-        Preconditions.checkArgument(!mode.isIn(CheckMode.EDIT,CheckMode.EDIT_STATUS) || jobId != null, "jobId不能为空");
-        Preconditions.checkArgument(jobId == null ||jobId > 0, "jobId不能为空");
+        Preconditions.checkArgument(!mode.isIn(CheckMode.EDIT, CheckMode.EDIT_STATUS)
+                || (jobId != null && jobId > 0), "jobId不能为空");
 
         String name = job.getJobName();
         Preconditions.checkArgument(mode != CheckMode.ADD || name != null, "jobName不能为空");
@@ -62,27 +55,22 @@ public class ConvertValidUtils {
 
         Integer workerGroupId = job.getWorkerGroupId();
         Preconditions.checkArgument(mode != CheckMode.ADD || workerGroupId != null, "workGroupId不能为空");
-        Preconditions.checkArgument(workerGroupId == null ||workerGroupId > 0, "workGroupId不能为空");
+        Preconditions.checkArgument(workerGroupId == null || workerGroupId > 0, "workGroupId不能为空");
 
         String content = job.getContent();
         Preconditions.checkArgument(mode != CheckMode.ADD || content != null, "job内容不能为空");
         Preconditions.checkArgument(content == null || !content.trim().equals(""), "job内容不能为空");
 
-
         Integer status = job.getStatus();
-        Preconditions.checkArgument(!mode.isIn(CheckMode.ADD,CheckMode.EDIT_STATUS) || status != null, "status不能为空");
+        Preconditions.checkArgument(!mode.isIn(CheckMode.ADD, CheckMode.EDIT_STATUS) || status != null, "status不能为空");
         Preconditions.checkArgument(status == null || JobStatus.isValid(status), "status内容不正确。value:" + status);
 
-
-        //内容检查
         Long start = job.getActiveStartTime();
         Long end = job.getActiveStartTime();
         if (start != null && end != null) {
             Preconditions.checkArgument(start <= end, "有效开始日不能大于有效结束日");
         }
-
     }
-
 
 
     /**
@@ -173,7 +161,6 @@ public class ConvertValidUtils {
      * alarm内容检查
      */
     public static void checkAlarm(OperationMode mode, AlarmVo vo) {
-
         Long jobId = vo.getJobId();
         Preconditions.checkArgument(!mode.isIn(OperationMode.ADD, OperationMode.EDIT, OperationMode.DELETE)
                 || (jobId != null && jobId != 0), "jobId不能为空。");
@@ -187,7 +174,6 @@ public class ConvertValidUtils {
         Integer status = vo.getStatus();
         Preconditions.checkArgument(!mode.isIn(OperationMode.ADD) || status != null, "status不能为空。");
         Preconditions.checkArgument(status == null || AlarmStatus.isValid(status), "status类型不对。 value:" + status);
-
     }
 
     /**
@@ -195,7 +181,6 @@ public class ConvertValidUtils {
      * @param bg
      */
     public static void checkBizGroup(CheckMode mode, BizGroupVo bg) throws IllegalArgumentException {
-
         Integer id = bg.getId();
         Preconditions.checkArgument(!mode.isIn(CheckMode.EDIT, CheckMode.DELETE)
                 || (id != null && id != 0), "id is empty。 id:" + id);
@@ -211,8 +196,6 @@ public class ConvertValidUtils {
         String owner = bg.getOwner();
         Preconditions.checkArgument(!mode.isIn(CheckMode.ADD) || owner != null, "owner不能为空。");
         Preconditions.checkArgument(owner == null || !owner.trim().equals(""), "owner不能为空。");
-
-
     }
 
 
