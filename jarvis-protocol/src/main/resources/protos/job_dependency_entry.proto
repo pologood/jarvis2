@@ -1,5 +1,5 @@
 option java_package = "com.mogujie.jarvis.protocol";
-option java_outer_classname = "DependencyEntryProtos";
+option java_outer_classname = "JobDependencyEntryProtos";
 
 message DependencyEntry {
     required int32 operator = 1;    //1:ADD; 2:EDIT; 3:DELETE

@@ -7,8 +7,8 @@ import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.dto.generate.JobDepend;
 import com.mogujie.jarvis.dto.generate.JobDependKey;
 import com.mogujie.jarvis.protocol.AppAuthProtos;
-import com.mogujie.jarvis.protocol.DependencyEntryProtos;
-import com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos;
+import com.mogujie.jarvis.protocol.JobDependencyEntryProtos;
+import com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos;
 import com.mogujie.jarvis.server.actor.base.DBTestBased;
 import com.mogujie.jarvis.server.actor.util.TestJobEntry;
 import com.mogujie.jarvis.server.guice4test.Injectors4Test;
@@ -78,8 +78,8 @@ public class TestJobActor extends DBTestBased {
             String content, Map<String, Object> params, String appName,
             Integer workerGroupId, Integer priority, Long activeStartTime,
             Long activeEndTime, Integer expiredTime, Integer failedAttempts,
-            Integer failedInterval, List<DependencyEntryProtos.DependencyEntry> dependencyList,
-            List<ScheduleExpressionEntryProtos.ScheduleExpressionEntry> scheduleExpressionList) {
+            Integer failedInterval, List<JobDependencyEntryProtos.DependencyEntry> dependencyList,
+            List<JobScheduleExpressionEntryProtos.ScheduleExpressionEntry> scheduleExpressionList) {
         TestJobEntry jobVo = new TestJobEntry(jobName, jobType, status, content,
                 params, appName, workerGroupId, priority, activeStartTime, activeEndTime, expiredTime, failedAttempts,
                 failedInterval, dependencyList, scheduleExpressionList);

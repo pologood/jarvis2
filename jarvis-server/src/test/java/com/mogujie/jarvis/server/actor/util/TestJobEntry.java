@@ -1,8 +1,8 @@
 package com.mogujie.jarvis.server.actor.util;
 
 import com.mogujie.jarvis.core.util.JsonHelper;
-import com.mogujie.jarvis.protocol.DependencyEntryProtos;
-import com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos;
+import com.mogujie.jarvis.protocol.JobDependencyEntryProtos;
+import com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos;
 
 import java.util.List;
 import java.util.Map;
@@ -27,8 +27,8 @@ public class TestJobEntry {
     private Integer expiredTime;
     private Integer failedAttempts;
     private Integer failedInterval;
-    private List<DependencyEntryProtos.DependencyEntry> dependencyList;
-    private List<ScheduleExpressionEntryProtos.ScheduleExpressionEntry> scheduleExpressionList;
+    private List<JobDependencyEntryProtos.DependencyEntry> dependencyList;
+    private List<JobScheduleExpressionEntryProtos.ScheduleExpressionEntry> scheduleExpressionList;
 
     public TestJobEntry() {
     }
@@ -38,8 +38,8 @@ public class TestJobEntry {
             String content, Map<String, Object> params, String appName,
             Integer workerGroupId, Integer priority, Long activeStartTime,
             Long activeEndTime, Integer expiredTime, Integer failedAttempts,
-            Integer failedInterval, List<DependencyEntryProtos.DependencyEntry> dependencyList,
-            List<ScheduleExpressionEntryProtos.ScheduleExpressionEntry> scheduleExpressionList) {
+            Integer failedInterval, List<JobDependencyEntryProtos.DependencyEntry> dependencyList,
+            List<JobScheduleExpressionEntryProtos.ScheduleExpressionEntry> scheduleExpressionList) {
 
         this.jobName = jobName;
         this.jobType = jobType;
@@ -170,19 +170,19 @@ public class TestJobEntry {
         this.failedInterval = failedInterval;
     }
 
-    public List<DependencyEntryProtos.DependencyEntry> getDependencyList() {
+    public List<JobDependencyEntryProtos.DependencyEntry> getDependencyList() {
         return dependencyList;
     }
 
-    public void setDependencyList(List<DependencyEntryProtos.DependencyEntry> dependencyList) {
+    public void setDependencyList(List<JobDependencyEntryProtos.DependencyEntry> dependencyList) {
         this.dependencyList = dependencyList;
     }
 
-    public List<ScheduleExpressionEntryProtos.ScheduleExpressionEntry> getScheduleExpressionList() {
+    public List<JobScheduleExpressionEntryProtos.ScheduleExpressionEntry> getScheduleExpressionList() {
         return scheduleExpressionList;
     }
 
-    public void setScheduleExpressionList(List<ScheduleExpressionEntryProtos.ScheduleExpressionEntry> scheduleExpressionList) {
+    public void setScheduleExpressionList(List<JobScheduleExpressionEntryProtos.ScheduleExpressionEntry> scheduleExpressionList) {
         this.scheduleExpressionList = scheduleExpressionList;
     }
 }
