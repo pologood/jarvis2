@@ -2,7 +2,7 @@
  * 蘑菇街 Inc. 
  * Copyright (c) 2010-2015 All Rights Reserved.
  *
- * Author: wuya
+ * Author: muming
  * Create Date: 2015年10月9日 下午5:14:53
  */
 

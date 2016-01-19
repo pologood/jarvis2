@@ -2,7 +2,7 @@
  * 蘑菇街 Inc.
  * Copyright (c) 2010-2015 All Rights Reserved.
  *
- * Author: wuya Create Date: 2015年10月12日 上午10:18:24
+ * Author: muming Create Date: 2015年10月12日 上午10:18:24
  */
 
 package com.mogujie.jarvis.server.actor;

@@ -77,11 +77,11 @@ public final class ApplicationProtos {
     int getStatus();
 
     /**
-     * <code>optional int32 max_concurrency = 6;</code>
+     * <code>optional int32 max_concurrency = 6 [default = 10];</code>
      */
     boolean hasMaxConcurrency();
     /**
-     * <code>optional int32 max_concurrency = 6;</code>
+     * <code>optional int32 max_concurrency = 6 [default = 10];</code>
      */
     int getMaxConcurrency();
   }
@@ -387,13 +387,13 @@ public final class ApplicationProtos {
     public static final int MAX_CONCURRENCY_FIELD_NUMBER = 6;
     private int maxConcurrency_;
     /**
-     * <code>optional int32 max_concurrency = 6;</code>
+     * <code>optional int32 max_concurrency = 6 [default = 10];</code>
      */
     public boolean hasMaxConcurrency() {
       return ((bitField0_ & 0x00000020) == 0x00000020);
     }
     /**
-     * <code>optional int32 max_concurrency = 6;</code>
+     * <code>optional int32 max_concurrency = 6 [default = 10];</code>
      */
     public int getMaxConcurrency() {
       return maxConcurrency_;
@@ -405,7 +405,7 @@ public final class ApplicationProtos {
       appName_ = "";
       owner_ = "";
       status_ = 0;
-      maxConcurrency_ = 0;
+      maxConcurrency_ = 10;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -627,7 +627,7 @@ public final class ApplicationProtos {
         bitField0_ = (bitField0_ & ~0x00000008);
         status_ = 0;
         bitField0_ = (bitField0_ & ~0x00000010);
-        maxConcurrency_ = 0;
+        maxConcurrency_ = 10;
         bitField0_ = (bitField0_ & ~0x00000020);
         return this;
       }
@@ -1148,21 +1148,21 @@ public final class ApplicationProtos {
         return this;
       }
 
-      private int maxConcurrency_ ;
+      private int maxConcurrency_ = 10;
       /**
-       * <code>optional int32 max_concurrency = 6;</code>
+       * <code>optional int32 max_concurrency = 6 [default = 10];</code>
        */
       public boolean hasMaxConcurrency() {
         return ((bitField0_ & 0x00000020) == 0x00000020);
       }
       /**
-       * <code>optional int32 max_concurrency = 6;</code>
+       * <code>optional int32 max_concurrency = 6 [default = 10];</code>
        */
       public int getMaxConcurrency() {
         return maxConcurrency_;
       }
       /**
-       * <code>optional int32 max_concurrency = 6;</code>
+       * <code>optional int32 max_concurrency = 6 [default = 10];</code>
        */
       public Builder setMaxConcurrency(int value) {
         bitField0_ |= 0x00000020;
@@ -1171,11 +1171,11 @@ public final class ApplicationProtos {
         return this;
       }
       /**
-       * <code>optional int32 max_concurrency = 6;</code>
+       * <code>optional int32 max_concurrency = 6 [default = 10];</code>
        */
       public Builder clearMaxConcurrency() {
         bitField0_ = (bitField0_ & ~0x00000020);
-        maxConcurrency_ = 0;
+        maxConcurrency_ = 10;
         onChanged();
         return this;
       }
@@ -5930,28 +5930,28 @@ public final class ApplicationProtos {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\021application.proto\032\016app_auth.proto\"\222\001\n\034" +
+      "\n\021application.proto\032\016app_auth.proto\"\226\001\n\034" +
       "RestCreateApplicationRequest\022\032\n\010app_auth" +
       "\030\001 \002(\0132\010.AppAuth\022\014\n\004user\030\002 \002(\t\022\020\n\010app_na" +
       "me\030\003 \002(\t\022\r\n\005owner\030\004 \002(\t\022\016\n\006status\030\005 \001(\005\022" +
-      "\027\n\017max_concurrency\030\006 \001(\005\"T\n\037ServerCreate" +
-      "ApplicationResponse\022\017\n\007success\030\001 \002(\010\022\021\n\007" +
-      "message\030\002 \001(\t:\000\022\r\n\005appId\030\003 \001(\005\"\242\001\n\034RestM" +
-      "odifyApplicationRequest\022\032\n\010app_auth\030\001 \002(" +
-      "\0132\010.AppAuth\022\014\n\004user\030\002 \002(\t\022\016\n\006app_id\030\003 \002(" +
-      "\005\022\020\n\010app_name\030\004 \001(\t\022\r\n\005owner\030\005 \001(\t\022\016\n\006st",
-      "atus\030\006 \001(\005\022\027\n\017max_concurrency\030\007 \001(\005\"E\n\037S" +
-      "erverModifyApplicationResponse\022\017\n\007succes" +
-      "s\030\001 \002(\010\022\021\n\007message\030\002 \001(\t:\000\">\n\023AppWorkerG" +
-      "roupEntry\022\016\n\006app_id\030\001 \002(\005\022\027\n\017worker_grou" +
-      "p_id\030\002 \002(\005\"\215\001\n$RestSetApplicationWorkerG" +
-      "roupRequest\022\032\n\010app_auth\030\001 \002(\0132\010.AppAuth\022" +
-      "\014\n\004user\030\002 \002(\t\022\014\n\004mode\030\003 \002(\005\022-\n\017AppWorker" +
-      "Groups\030\004 \003(\0132\024.AppWorkerGroupEntry\"M\n\'Se" +
-      "rverSetApplicationWorkerGroupResponse\022\017\n" +
-      "\007success\030\001 \002(\010\022\021\n\007message\030\002 \001(\t:\000B0\n\033com",
-      ".mogujie.jarvis.protocolB\021ApplicationPro" +
-      "tos"
+      "\033\n\017max_concurrency\030\006 \001(\005:\00210\"T\n\037ServerCr" +
+      "eateApplicationResponse\022\017\n\007success\030\001 \002(\010" +
+      "\022\021\n\007message\030\002 \001(\t:\000\022\r\n\005appId\030\003 \001(\005\"\242\001\n\034R" +
+      "estModifyApplicationRequest\022\032\n\010app_auth\030" +
+      "\001 \002(\0132\010.AppAuth\022\014\n\004user\030\002 \002(\t\022\016\n\006app_id\030" +
+      "\003 \002(\005\022\020\n\010app_name\030\004 \001(\t\022\r\n\005owner\030\005 \001(\t\022\016",
+      "\n\006status\030\006 \001(\005\022\027\n\017max_concurrency\030\007 \001(\005\"" +
+      "E\n\037ServerModifyApplicationResponse\022\017\n\007su" +
+      "ccess\030\001 \002(\010\022\021\n\007message\030\002 \001(\t:\000\">\n\023AppWor" +
+      "kerGroupEntry\022\016\n\006app_id\030\001 \002(\005\022\027\n\017worker_" +
+      "group_id\030\002 \002(\005\"\215\001\n$RestSetApplicationWor" +
+      "kerGroupRequest\022\032\n\010app_auth\030\001 \002(\0132\010.AppA" +
+      "uth\022\014\n\004user\030\002 \002(\t\022\014\n\004mode\030\003 \002(\005\022-\n\017AppWo" +
+      "rkerGroups\030\004 \003(\0132\024.AppWorkerGroupEntry\"M" +
+      "\n\'ServerSetApplicationWorkerGroupRespons" +
+      "e\022\017\n\007success\030\001 \002(\010\022\021\n\007message\030\002 \001(\t:\000B0\n",
+      "\033com.mogujie.jarvis.protocolB\021Applicatio" +
+      "nProtos"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
