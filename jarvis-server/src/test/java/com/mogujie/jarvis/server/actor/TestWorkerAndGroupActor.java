@@ -4,7 +4,7 @@ import akka.actor.*;
 import akka.testkit.JavaTestKit;
 import com.mogujie.jarvis.dto.generate.Worker;
 import com.mogujie.jarvis.protocol.*;
-import com.mogujie.jarvis.protocol.WorkerGroupProtos.RestServerModifyWorkerGroupRequest;
+import com.mogujie.jarvis.protocol.WorkerGroupProtos.RestModifyWorkerGroupRequest;
 import com.mogujie.jarvis.server.actor.base.TestWorkerServiceBase;
 import com.mogujie.jarvis.server.util.AppTokenUtils;
 import org.junit.AfterClass;
@@ -49,7 +49,7 @@ public class TestWorkerAndGroupActor extends TestWorkerServiceBase {
     @Test
     public void testCreateWorkerGroup() {
         system = ActorSystem.create("myActor");
-        WorkerGroupProtos.RestServerCreateWorkerGroupRequest createWorkerGroupRequest = WorkerGroupProtos.RestServerCreateWorkerGroupRequest
+        WorkerGroupProtos.RestCreateWorkerGroupRequest createWorkerGroupRequest = WorkerGroupProtos.RestCreateWorkerGroupRequest
                 .newBuilder().setWorkerGroupName("group1").setUser("qh").setAppAuth(appAuth).build();
         Props props = WorkerGroupActor.props();
         try {
@@ -69,7 +69,7 @@ public class TestWorkerAndGroupActor extends TestWorkerServiceBase {
     @Test
     public void testWorkerModifyStatusActor() {
         system = ActorSystem.create("myActor");
-        ModifyWorkerStatusProtos.RestServerModifyWorkerStatusRequest modifyWorkerStatusRequest = ModifyWorkerStatusProtos.RestServerModifyWorkerStatusRequest
+        WorkerProtos.RestServerModifyWorkerStatusRequest modifyWorkerStatusRequest = WorkerProtos.RestServerModifyWorkerStatusRequest
                 .newBuilder().setStatus(1).setIp("127.0.0.1").setPort(10002).setAppAuth(appAuth).build();
         List<Worker> workers = new ArrayList<>();
         Worker worker = new Worker();
@@ -86,8 +86,8 @@ public class TestWorkerAndGroupActor extends TestWorkerServiceBase {
             Props props = WorkerModifyStatusActor.props();
             ActorRef actorRef = system.actorOf(props, "modify");
             actorRef.tell(modifyWorkerStatusRequest, getRef());
-            ModifyWorkerStatusProtos.ServerModifyWorkerStatusResponse response =
-                    (ModifyWorkerStatusProtos.ServerModifyWorkerStatusResponse)
+            WorkerProtos.ServerModifyWorkerStatusResponse response =
+                    (WorkerProtos.ServerModifyWorkerStatusResponse)
                             receiveOne(duration("3 seconds"));
             Assert.assertEquals(response.getSuccess(), true);
         }};
@@ -103,7 +103,7 @@ public class TestWorkerAndGroupActor extends TestWorkerServiceBase {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        RestServerModifyWorkerGroupRequest request = RestServerModifyWorkerGroupRequest.newBuilder().setAppAuth(appAuth).setUser("qh")
+        RestModifyWorkerGroupRequest request = RestModifyWorkerGroupRequest.newBuilder().setAppAuth(appAuth).setUser("qh")
                 .setWorkerGroupName("group1").setStatus(1).setWorkerGroupId(1).build();
         Props props = WorkerGroupActor.props();
         new JavaTestKit(system) {{

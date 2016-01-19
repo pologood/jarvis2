@@ -5,7 +5,7 @@ import akka.actor.ActorSystem;
 import akka.testkit.JavaTestKit;
 import com.google.inject.Injector;
 import com.mogujie.jarvis.core.util.ConfigUtils;
-import com.mogujie.jarvis.protocol.RegistryWorkerProtos;
+import com.mogujie.jarvis.protocol.WorkerProtos;
 import com.mogujie.jarvis.server.JarvisServer;
 import com.mogujie.jarvis.server.actor.util.TestUtil;
 import com.mogujie.jarvis.server.guice4test.Injectors4Test;
@@ -60,14 +60,14 @@ public class TestWorkerActor {
         ActorSelection serverActor = system.actorSelection("akka.tcp://server@127.0.0.1:10000/user/server");
 
         new JavaTestKit(system) {{
-            RegistryWorkerProtos.WorkerRegistryRequest workerRegistryRequest = RegistryWorkerProtos.WorkerRegistryRequest.newBuilder().setKey(authKey).build();
+            WorkerProtos.WorkerRegistryRequest workerRegistryRequest = WorkerProtos.WorkerRegistryRequest.newBuilder().setKey(authKey).build();
             int flag = 0;
             while (flag < 10) {
                 try {
                     serverActor.tell(workerRegistryRequest, getRef());
 
-                    RegistryWorkerProtos.ServerRegistryResponse response
-                            = (RegistryWorkerProtos.ServerRegistryResponse) receiveOne(duration("3 seconds"));
+                    WorkerProtos.ServerRegistryResponse response
+                            = (WorkerProtos.ServerRegistryResponse) receiveOne(duration("3 seconds"));
                     //  if(serverActor.path())
                     if (response.getSuccess()) {
                         Assert.assertEquals(response.getSuccess(), true);

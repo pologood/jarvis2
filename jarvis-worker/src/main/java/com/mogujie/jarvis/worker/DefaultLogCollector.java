@@ -15,7 +15,7 @@ import com.mogujie.jarvis.core.AbstractLogCollector;
 import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.domain.StreamType;
 import com.mogujie.jarvis.core.util.ConfigUtils;
-import com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest;
+import com.mogujie.jarvis.protocol.LogProtos.WorkerWriteLogRequest;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSelection;
