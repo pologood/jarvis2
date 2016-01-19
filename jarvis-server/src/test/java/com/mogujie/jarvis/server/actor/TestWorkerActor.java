@@ -5,13 +5,10 @@ import akka.actor.ActorSystem;
 import akka.testkit.JavaTestKit;
 import com.google.inject.Injector;
 import com.mogujie.jarvis.core.util.ConfigUtils;
-<<<<<<< HEAD
+import com.mogujie.jarvis.core.util.IPUtils;
 import com.mogujie.jarvis.dto.generate.Worker;
 import com.mogujie.jarvis.protocol.ModifyWorkerStatusProtos;
 import com.mogujie.jarvis.protocol.RegistryWorkerProtos;
-=======
-import com.mogujie.jarvis.protocol.WorkerProtos;
->>>>>>> 778423ff2ebc37dbcf660d105a7d0261b02b7175
 import com.mogujie.jarvis.server.JarvisServer;
 import com.mogujie.jarvis.server.actor.base.DBTestBased;
 import com.mogujie.jarvis.server.actor.util.TestUtil;
@@ -29,7 +26,9 @@ import org.junit.Test;
 import org.mybatis.guice.transactional.Transactional;
 
 import java.io.IOException;
+import java.net.Inet4Address;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -38,7 +37,7 @@ import java.sql.SQLException;
  * Created by qinghuo on 16/1/14.
  * used by jarvis-parent
  */
-public class TestWorkerActor extends DBTestBased {
+public class TestWorkerActor  {
     String authKey = "d03fa97612734db7bdee3bbb2cdbf993";
     Thread threadServer = null;
     Connection conn = null;
@@ -51,8 +50,10 @@ public class TestWorkerActor extends DBTestBased {
 
     @Before
     public void setup() {
-        try {//检测server端口是否被占用
-            if (TestUtil.isPortHasBeenUse("localhost", 10000) && TestUtil.isPortHasBeenUse(InetAddress.getLocalHost().getHostAddress(), 10000)) {
+        try {
+//检测server端口是否被占用
+            if (TestUtil.isPortHasBeenUse("localhost", 10000) && TestUtil.isPortHasBeenUse(InetAddress.getLocalHost().getHostAddress(), 10000)
+                    &&TestUtil.isPortHasBeenUse(IPUtils.getIPV4Address(),10000)) {
                 ServerProxy serverProxy = new ServerProxy();
                 threadServer = new Thread(serverProxy);
                 threadServer.start();
@@ -64,23 +65,15 @@ public class TestWorkerActor extends DBTestBased {
 
     }
 
-    @Transactional
     @Test
     public void testModifyWorkerStatus() {
         Config akkaConfig = ConfigUtils.getAkkaConfig("akka-test.conf");
         String portPath = "akka.remote.netty.tcp.port";
         akkaConfig = akkaConfig.withValue(portPath, ConfigValueFactory.fromAnyRef(registPort));
         system = ActorSystem.create("worker", akkaConfig);
-        ActorSelection serverActor = system.actorSelection("akka.tcp://server@127.0.0.1:10000/user/server");
+        ActorSelection serverActor = system.actorSelection("akka.tcp://server@192.168.21.82:10000/user/server");
 
-        try {
-            iconn = getIDatabaseConnection();
-            conn = iconn.getConnection();
-            conn.setAutoCommit(false);
-            prepareData(iconn, "worker");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
 
         ModifyProxy proxy1 = new ModifyProxy(10006);
         Thread t1 = new Thread(proxy1);
@@ -106,30 +99,23 @@ public class TestWorkerActor extends DBTestBased {
 
 
     @Test
-    @Transactional
     public void testWorkerRegister() {
         //测试绑定10003至10004端口
         Config akkaConfig = ConfigUtils.getAkkaConfig("akka-test.conf");
         String portPath = "akka.remote.netty.tcp.port";
         akkaConfig = akkaConfig.withValue(portPath, ConfigValueFactory.fromAnyRef(registPort));
         system = ActorSystem.create("worker", akkaConfig);
-        ActorSelection serverActor = system.actorSelection("akka.tcp://server@127.0.0.1:10000/user/server");
+        ActorSelection serverActor = system.actorSelection("akka.tcp://server@"+IPUtils.getIPV4Address()+":10000/user/server");
 
         new JavaTestKit(system) {{
-            WorkerProtos.WorkerRegistryRequest workerRegistryRequest = WorkerProtos.WorkerRegistryRequest.newBuilder().setKey(authKey).build();
+            RegistryWorkerProtos.WorkerRegistryRequest workerRegistryRequest = RegistryWorkerProtos.WorkerRegistryRequest.newBuilder().setKey(authKey).build();
             int flag = 0;
             while (flag < 10) {
                 try {
                     serverActor.tell(workerRegistryRequest, getRef());
 
-<<<<<<< HEAD
                     RegistryWorkerProtos.ServerRegistryResponse response
                             = (RegistryWorkerProtos.ServerRegistryResponse) receiveOne(duration("3 seconds"));
-=======
-                    WorkerProtos.ServerRegistryResponse response
-                            = (WorkerProtos.ServerRegistryResponse) receiveOne(duration("3 seconds"));
-                    //  if(serverActor.path())
->>>>>>> 778423ff2ebc37dbcf660d105a7d0261b02b7175
                     if (response.getSuccess()) {
                         Assert.assertEquals(response.getSuccess(), true);
                         break;
@@ -153,16 +139,7 @@ public class TestWorkerActor extends DBTestBased {
         Assert.assertEquals(workerService.getWorkerId("127.0.0.1", registPort), 11);
     }
 
-    @Override
-    protected void prepareData(IDatabaseConnection iconn, String tableName) throws Exception {
 
-        //Remove the data from table app
-        execSql(iconn, "delete from " + tableName);
-        //INSERT TEST DATA
-        String fileName = "dataForExport/back_" + tableName + ".xml";
-        ReplacementDataSet createDataSet = createDataSet(Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName));
-        DatabaseOperation.INSERT.execute(iconn, createDataSet);
-    }
 
     class ModifyProxy implements Runnable {
         Config akkaConfig = ConfigUtils.getAkkaConfig("akka-test.conf");
