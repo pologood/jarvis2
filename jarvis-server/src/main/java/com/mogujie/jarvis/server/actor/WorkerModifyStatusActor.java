@@ -12,8 +12,8 @@ import java.util.List;
 import org.apache.ibatis.javassist.NotFoundException;
 
 import com.mogujie.jarvis.core.domain.MessageType;
-import com.mogujie.jarvis.protocol.ModifyWorkerStatusProtos.RestServerModifyWorkerStatusRequest;
-import com.mogujie.jarvis.protocol.ModifyWorkerStatusProtos.ServerModifyWorkerStatusResponse;
+import com.mogujie.jarvis.protocol.WorkerProtos.RestServerModifyWorkerStatusRequest;
+import com.mogujie.jarvis.protocol.WorkerProtos.ServerModifyWorkerStatusResponse;
 import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.service.WorkerService;

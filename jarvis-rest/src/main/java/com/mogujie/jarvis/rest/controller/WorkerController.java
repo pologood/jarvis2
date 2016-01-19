@@ -10,8 +10,8 @@ import com.mogujie.jarvis.core.domain.WorkerStatus;
 import com.mogujie.jarvis.rest.utils.JsonParameters;
 import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
-import com.mogujie.jarvis.protocol.ModifyWorkerStatusProtos.RestServerModifyWorkerStatusRequest;
-import com.mogujie.jarvis.protocol.ModifyWorkerStatusProtos.ServerModifyWorkerStatusResponse;
+import com.mogujie.jarvis.protocol.WorkerProtos.RestServerModifyWorkerStatusRequest;
+import com.mogujie.jarvis.protocol.WorkerProtos.ServerModifyWorkerStatusResponse;
 import com.mogujie.jarvis.rest.RestResult;
 
 /**

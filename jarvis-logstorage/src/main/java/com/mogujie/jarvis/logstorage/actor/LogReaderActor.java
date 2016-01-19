@@ -14,8 +14,8 @@ import com.mogujie.jarvis.core.domain.StreamType;
 import com.mogujie.jarvis.logstorage.domain.LogReadResult;
 import com.mogujie.jarvis.logstorage.logStream.LocalLogStream;
 import com.mogujie.jarvis.logstorage.logStream.LogStream;
-import com.mogujie.jarvis.protocol.ReadLogProtos.LogStorageReadLogResponse;
-import com.mogujie.jarvis.protocol.ReadLogProtos.RestReadLogRequest;
+import com.mogujie.jarvis.protocol.LogProtos.LogStorageReadLogResponse;
+import com.mogujie.jarvis.protocol.LogProtos.RestReadLogRequest;
 
 /**
  * @author 牧名

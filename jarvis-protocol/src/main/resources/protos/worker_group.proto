@@ -4,7 +4,7 @@ option java_package = "com.mogujie.jarvis.protocol";
 option java_outer_classname = "WorkerGroupProtos";
 
 
-message RestServerCreateWorkerGroupRequest {
+message RestCreateWorkerGroupRequest {
     required AppAuth app_auth = 1;
     required string worker_group_name = 2;
     required string user = 3;
@@ -18,7 +18,7 @@ message ServerCreateWorkerGroupResponse {
 }
 
 
-message RestServerModifyWorkerGroupRequest {
+message RestModifyWorkerGroupRequest {
     required AppAuth app_auth = 1;
     required int32 worker_group_id = 2;
     optional string worker_group_name = 3;

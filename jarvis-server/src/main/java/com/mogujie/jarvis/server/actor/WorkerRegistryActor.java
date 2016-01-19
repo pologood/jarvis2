@@ -10,6 +10,7 @@ package com.mogujie.jarvis.server.actor;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mogujie.jarvis.core.exception.JarvisException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -20,9 +21,8 @@ import akka.actor.UntypedActor;
 import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.core.domain.WorkerInfo;
 import com.mogujie.jarvis.core.domain.WorkerStatus;
-import com.mogujie.jarvis.core.exception.JarvisException;
-import com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse;
-import com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest;
+import com.mogujie.jarvis.protocol.WorkerProtos.ServerRegistryResponse;
+import com.mogujie.jarvis.protocol.WorkerProtos.WorkerRegistryRequest;
 import com.mogujie.jarvis.server.WorkerRegistry;
 import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.guice.Injectors;

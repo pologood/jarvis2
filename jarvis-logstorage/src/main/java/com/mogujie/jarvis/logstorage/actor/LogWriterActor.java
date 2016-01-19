@@ -11,8 +11,8 @@ package com.mogujie.jarvis.logstorage.actor;
 import com.mogujie.jarvis.core.domain.StreamType;
 import com.mogujie.jarvis.logstorage.logStream.LocalLogStream;
 import com.mogujie.jarvis.logstorage.logStream.LogStream;
-import com.mogujie.jarvis.protocol.WriteLogProtos.LogStorageWriteLogResponse;
-import com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest;
+import com.mogujie.jarvis.protocol.LogProtos.LogStorageWriteLogResponse;
+import com.mogujie.jarvis.protocol.LogProtos.WorkerWriteLogRequest;
 
 import akka.actor.Props;
 import akka.actor.UntypedActor;
