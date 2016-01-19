@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+	<strategies>
+		<!--<strategy>com.mogujie.jarvis.worker.strategy.impl.CpuAcceptanceStrategy</strategy>-->
+		<strategy>com.mogujie.jarvis.worker.strategy.impl.TaskNumAcceptanceStrategy</strategy>
+		<!--<strategy>com.mogujie.jarvis.worker.strategy.impl.LoadAcceptanceStrategy</strategy>-->
+		<!--<strategy>com.mogujie.jarvis.worker.strategy.impl.MemoryAcceptanceStrategy</strategy>-->
+	</strategies>
+
+	<tasks>
+		<!--<task type="hive_shell" class="com.mogujie.jarvis.tasks.shell.HiveSqlShellTask"> -->
+		<!--<strategies> -->
+		<!--<strategy>com.mogujie.jarvis.worker.strategy.impl.YarnMemoryAcceptanceStrategy</strategy> -->
+		<!--</strategies> -->
+		<!--</task> -->
+		<!--<task type="hive_script" class="com.mogujie.jarvis.tasks.shell.HiveScriptShellTask"> -->
+		<!--<strategies> -->
+		<!--<strategy>com.mogujie.jarvis.worker.strategy.impl.YarnMemoryAcceptanceStrategy</strategy> -->
+		<!--</strategies> -->
+		<!--</task> -->
+	    <!---->
+		<!--<task type="shell" class="com.mogujie.jarvis.tasks.shell.Shelltask" 
+			/> -->
+		<!--<task type="presto" class="com.mogujie.jarvis.tasks.jdbc.PrestoJdbctask" 
+			/> -->
+		<!--<task type="dummy" class="com.mogujie.jarvis.tasks.Dummytask" /> -->
+
+		<task type="hive_shell" class="com.mogujie.jarvis.tasks.DummyTask">
+			<lookup class="com.mogujie.jarvis.worker.status.lookup.ShellStatusLookup" />
+			<strategies>
+				<strategy>com.mogujie.jarvis.worker.strategy.impl.YarnMemoryAcceptanceStrategy
+				</strategy>
+			</strategies>
+		</task>
+		<task type="hive_script" class="com.mogujie.jarvis.tasks.DummyTask">
+			<lookup class="com.mogujie.jarvis.worker.status.lookup.ShellStatusLookup" />
+			<strategies>
+				<strategy>com.mogujie.jarvis.worker.strategy.impl.YarnMemoryAcceptanceStrategy
+				</strategy>
+			</strategies>
+		</task>
+
+		<task type="shell" class="com.mogujie.jarvis.tasks.DummyTask" />
+		<task type="presto" class="com.mogujie.jarvis.tasks.DummyTask" />
+		<task type="dummy" class="com.mogujie.jarvis.tasks.DummyTask" />
+
+	</tasks>
+</configuration>
