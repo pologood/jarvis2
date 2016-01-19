@@ -5,9 +5,13 @@ import akka.actor.ActorSystem;
 import akka.testkit.JavaTestKit;
 import com.google.inject.Injector;
 import com.mogujie.jarvis.core.util.ConfigUtils;
+<<<<<<< HEAD
 import com.mogujie.jarvis.dto.generate.Worker;
 import com.mogujie.jarvis.protocol.ModifyWorkerStatusProtos;
 import com.mogujie.jarvis.protocol.RegistryWorkerProtos;
+=======
+import com.mogujie.jarvis.protocol.WorkerProtos;
+>>>>>>> 778423ff2ebc37dbcf660d105a7d0261b02b7175
 import com.mogujie.jarvis.server.JarvisServer;
 import com.mogujie.jarvis.server.actor.base.DBTestBased;
 import com.mogujie.jarvis.server.actor.util.TestUtil;
@@ -112,14 +116,20 @@ public class TestWorkerActor extends DBTestBased {
         ActorSelection serverActor = system.actorSelection("akka.tcp://server@127.0.0.1:10000/user/server");
 
         new JavaTestKit(system) {{
-            RegistryWorkerProtos.WorkerRegistryRequest workerRegistryRequest = RegistryWorkerProtos.WorkerRegistryRequest.newBuilder().setKey(authKey).build();
+            WorkerProtos.WorkerRegistryRequest workerRegistryRequest = WorkerProtos.WorkerRegistryRequest.newBuilder().setKey(authKey).build();
             int flag = 0;
             while (flag < 10) {
                 try {
                     serverActor.tell(workerRegistryRequest, getRef());
 
+<<<<<<< HEAD
                     RegistryWorkerProtos.ServerRegistryResponse response
                             = (RegistryWorkerProtos.ServerRegistryResponse) receiveOne(duration("3 seconds"));
+=======
+                    WorkerProtos.ServerRegistryResponse response
+                            = (WorkerProtos.ServerRegistryResponse) receiveOne(duration("3 seconds"));
+                    //  if(serverActor.path())
+>>>>>>> 778423ff2ebc37dbcf660d105a7d0261b02b7175
                     if (response.getSuccess()) {
                         Assert.assertEquals(response.getSuccess(), true);
                         break;

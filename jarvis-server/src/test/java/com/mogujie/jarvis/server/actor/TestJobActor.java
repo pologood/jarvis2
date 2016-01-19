@@ -7,6 +7,11 @@ import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.dto.generate.JobDepend;
 import com.mogujie.jarvis.dto.generate.JobDependKey;
 import com.mogujie.jarvis.protocol.AppAuthProtos;
+<<<<<<< HEAD
+=======
+import com.mogujie.jarvis.protocol.JobDependencyEntryProtos;
+import com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos;
+>>>>>>> 778423ff2ebc37dbcf660d105a7d0261b02b7175
 import com.mogujie.jarvis.server.actor.base.DBTestBased;
 import com.mogujie.jarvis.server.guice4test.Injectors4Test;
 import com.mogujie.jarvis.server.service.JobService;
@@ -88,6 +93,22 @@ public class TestJobActor extends DBTestBased {
 
     }
 
+<<<<<<< HEAD
+=======
+    public TestJobEntry getJobEntry(
+            String jobName, String jobType, Integer status,
+            String content, Map<String, Object> params, String appName,
+            Integer workerGroupId, Integer priority, Long activeStartTime,
+            Long activeEndTime, Integer expiredTime, Integer failedAttempts,
+            Integer failedInterval, List<JobDependencyEntryProtos.DependencyEntry> dependencyList,
+            List<JobScheduleExpressionEntryProtos.ScheduleExpressionEntry> scheduleExpressionList) {
+        TestJobEntry jobVo = new TestJobEntry(jobName, jobType, status, content,
+                params, appName, workerGroupId, priority, activeStartTime, activeEndTime, expiredTime, failedAttempts,
+                failedInterval, dependencyList, scheduleExpressionList);
+
+        return jobVo;
+    }
+>>>>>>> 778423ff2ebc37dbcf660d105a7d0261b02b7175
 
     @Override
     protected void prepareData(IDatabaseConnection iconn, String tableName) throws Exception {

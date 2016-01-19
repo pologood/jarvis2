@@ -14,6 +14,8 @@ public interface TaskQueue {
 
     void put(TaskDetail taskDetail);
 
+    void removeByKey(String key);
+
     TaskDetail get();
 
     int size();

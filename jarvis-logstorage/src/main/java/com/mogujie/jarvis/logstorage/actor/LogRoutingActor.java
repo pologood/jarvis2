@@ -5,8 +5,8 @@ import akka.actor.Props;
 import akka.actor.UntypedActor;
 import com.mogujie.jarvis.core.domain.IdType;
 import com.mogujie.jarvis.core.util.IdUtils;
-import com.mogujie.jarvis.protocol.ReadLogProtos.RestReadLogRequest;
-import com.mogujie.jarvis.protocol.WriteLogProtos.WorkerWriteLogRequest;
+import com.mogujie.jarvis.protocol.LogProtos.RestReadLogRequest;
+import com.mogujie.jarvis.protocol.LogProtos.WorkerWriteLogRequest;
 
 
 import java.util.ArrayList;

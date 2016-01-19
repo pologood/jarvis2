@@ -2,53 +2,46 @@
  * 蘑菇街 Inc. 
  * Copyright (c) 2010-2015 All Rights Reserved.
  *
- * Author: wuya
+ * Author: muming
  * Create Date: 2015年10月9日 下午5:14:53
  */
 
 package com.mogujie.jarvis.server.actor;
 
+import akka.actor.Props;
+import akka.actor.UntypedActor;
+import org.mybatis.guice.transactional.Transactional;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import com.mogujie.jarvis.core.domain.OperationMode;
-import com.mogujie.jarvis.core.exception.NotFoundException;
-import com.mogujie.jarvis.dto.generate.AppWorkerGroup;
-import com.mogujie.jarvis.protocol.ApplicationProtos;
-import com.mogujie.jarvis.server.service.AppWorkerGroupService;
-import com.mogujie.jarvis.server.service.ConvertValidService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 
 import com.mogujie.jarvis.core.domain.MessageType;
+import com.mogujie.jarvis.core.domain.OperationMode;
+import com.mogujie.jarvis.core.exception.NotFoundException;
 import com.mogujie.jarvis.dto.generate.App;
-import com.mogujie.jarvis.protocol.ApplicationProtos.RestCreateApplicationRequest;
-import com.mogujie.jarvis.protocol.ApplicationProtos.ServerCreateApplicationResponse;
-import com.mogujie.jarvis.protocol.ApplicationProtos.RestModifyApplicationRequest;
-import com.mogujie.jarvis.protocol.ApplicationProtos.ServerModifyApplicationResponse;
-import com.mogujie.jarvis.protocol.ApplicationProtos.RestSetApplicationWorkerGroupRequest;
-import com.mogujie.jarvis.protocol.ApplicationProtos.ServerSetApplicationWorkerGroupResponse;
+import com.mogujie.jarvis.dto.generate.AppWorkerGroup;
+import com.mogujie.jarvis.protocol.ApplicationProtos;
+import com.mogujie.jarvis.protocol.ApplicationProtos.*;
 import com.mogujie.jarvis.server.dispatcher.TaskManager;
 import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.service.AppService;
-
-import akka.actor.Props;
-import akka.actor.UntypedActor;
-import org.mybatis.guice.transactional.Transactional;
+import com.mogujie.jarvis.server.service.AppWorkerGroupService;
+import com.mogujie.jarvis.server.service.ValidService;
+import com.mogujie.jarvis.server.service.ValidService.CheckMode;
 
 public class AppActor extends UntypedActor {
 
-    private static Logger logger = LogManager.getLogger();
-
+    private static final Logger logger = LogManager.getLogger();
     private TaskManager taskManager = Injectors.getInjector().getInstance(TaskManager.class);
-
     private AppService appService = Injectors.getInjector().getInstance(AppService.class);
     private AppWorkerGroupService appWorkerGroupService = Injectors.getInjector().getInstance(AppWorkerGroupService.class);
-    private ConvertValidService convertValidService = Injectors.getInjector().getInstance(ConvertValidService.class);
-
+    private ValidService validService = Injectors.getInjector().getInstance(ValidService.class);
 
     public static Props props() {
         return Props.create(AppActor.class);
@@ -79,78 +72,50 @@ public class AppActor extends UntypedActor {
     private void createApplication(RestCreateApplicationRequest request) {
         ServerCreateApplicationResponse response = null;
         try {
-            String key = UUID.randomUUID().toString().replace("-", "");
-            DateTime date = DateTime.now();
-            App app = new App();
-            app.setAppName(request.getAppName());
-            app.setAppKey(key);
-            app.setOwner(request.getOwner());
-            app.setStatus(request.getStatus());
-            app.setMaxConcurrency(request.getMaxConcurrency());
-            app.setCreateTime(date.toDate());
-            app.setUpdateTime(date.toDate());
-            app.setUpdateUser(request.getUser());
+            App app = msg2App(request);
+            validService.checkApp(CheckMode.ADD, app);
             appService.insert(app);
             taskManager.addApp(app.getAppId(), request.getMaxConcurrency());
             response = ServerCreateApplicationResponse.newBuilder().setSuccess(true).setAppId(app.getAppId()).build();
+            getSender().tell(response, getSelf());
         } catch (Exception ex) {
             response = ServerCreateApplicationResponse.newBuilder().setSuccess(false).setMessage(ex.getMessage()).build();
+            getSender().tell(response, getSelf());
             logger.error("", ex);
             throw ex;
-        } finally {
-            getSender().tell(response, getSelf());
         }
     }
 
     @Transactional
     private void modifyApplication(RestModifyApplicationRequest request) {
         ServerModifyApplicationResponse response = null;
-
-        App app = new App();
-        Integer appId = request.getAppId();
-        app.setAppId(appId);
-        if (request.hasAppName()) {
-            app.setAppName(request.getAppName());
-        }
-        if (request.hasOwner()) {
-            app.setOwner(request.getOwner());
-        }
-        if (request.hasStatus()) {
-            app.setStatus(request.getStatus());
-        }
-        if (request.hasMaxConcurrency()) {
-            app.setMaxConcurrency(request.getMaxConcurrency());
-        }
-        app.setUpdateTime(DateTime.now().toDate());
-        app.setUpdateUser(request.getUser());
-
         try {
+            App app = msg2App(request);
+            validService.checkApp(CheckMode.EDIT, app);
             appService.update(app);
             if (request.hasMaxConcurrency()) {
-                taskManager.updateAppMaxParallelism(appId, request.getMaxConcurrency());
+                taskManager.updateAppMaxParallelism(app.getAppId(), request.getMaxConcurrency());
             }
             response = ServerModifyApplicationResponse.newBuilder().setSuccess(true).build();
+            getSender().tell(response, getSelf());
         } catch (Exception ex) {
             response = ServerModifyApplicationResponse.newBuilder().setSuccess(false).setMessage(ex.getMessage()).build();
+            getSender().tell(response, getSelf());
             logger.error("", ex);
             throw ex;
-
-        } finally {
-            getSender().tell(response, getSelf());
         }
     }
 
-
     @Transactional
-    private void setApplicationWorkerGroup(RestSetApplicationWorkerGroupRequest request) throws NotFoundException{
+    private void setApplicationWorkerGroup(RestSetApplicationWorkerGroupRequest request) throws NotFoundException {
         ServerSetApplicationWorkerGroupResponse response = null;
         try {
 
-            List<AppWorkerGroup> list= msg2AppWorkerGroup(request);
-            convertValidService.checkAppWorkerGroup(request.getMode(),list);
+            List<AppWorkerGroup> list = msg2AppWorkerGroup(request);
+            validService.checkAppWorkerGroup(request.getMode(), list);
 
             OperationMode mode = OperationMode.parseValue(request.getMode());
-            for(AppWorkerGroup entry :list){
+            for (AppWorkerGroup entry : list) {
                 if (mode == OperationMode.ADD) {
                     appWorkerGroupService.insert(entry);
                 } else if (mode == OperationMode.DELETE) {
@@ -167,10 +132,44 @@ public class AppActor extends UntypedActor {
         }
     }
 
+    private App msg2App(RestCreateApplicationRequest msg) {
+        String key = UUID.randomUUID().toString().replace("-", "");
+        DateTime date = DateTime.now();
+        App app = new App();
+        app.setAppName(msg.getAppName());
+        app.setAppKey(key);
+        app.setOwner(msg.getOwner());
+        app.setStatus(msg.getStatus());
+        app.setMaxConcurrency(msg.getMaxConcurrency());
+        app.setCreateTime(date.toDate());
+        app.setUpdateTime(date.toDate());
+        app.setUpdateUser(msg.getUser());
+        return app;
+    }
 
-    private List<AppWorkerGroup> msg2AppWorkerGroup(RestSetApplicationWorkerGroupRequest msg){
+    private App msg2App(RestModifyApplicationRequest msg) {
+        App app = new App();
+        app.setAppId(msg.getAppId());
+        if (msg.hasAppName()) {
+            app.setAppName(msg.getAppName());
+        }
+        if (msg.hasOwner()) {
+            app.setOwner(msg.getOwner());
+        }
+        if (msg.hasStatus()) {
+            app.setStatus(msg.getStatus());
+        }
+        if (msg.hasMaxConcurrency()) {
+            app.setMaxConcurrency(msg.getMaxConcurrency());
+        }
+        app.setUpdateTime(DateTime.now().toDate());
+        app.setUpdateUser(msg.getUser());
+        return app;
+    }
+
+    private List<AppWorkerGroup> msg2AppWorkerGroup(RestSetApplicationWorkerGroupRequest msg) {
         List<AppWorkerGroup> list = new ArrayList<>();
-        for(ApplicationProtos.AppWorkerGroupEntry entry : msg.getAppWorkerGroupsList()){
+        for (ApplicationProtos.AppWorkerGroupEntry entry : msg.getAppWorkerGroupsList()) {
             AppWorkerGroup aw = new AppWorkerGroup();
             aw.setAppId(entry.getAppId());
             aw.setWorkerGroupId(entry.getWorkerGroupId());
@@ -178,6 +177,5 @@ public class AppActor extends UntypedActor {
         }
         return list;
     }
-
 
 }

@@ -47,13 +47,18 @@ import com.mogujie.jarvis.protocol.ModifyTaskStatusProtos.ServerModifyTaskStatus
 import com.mogujie.jarvis.protocol.QueryTaskRelationProtos.RestServerQueryTaskRelationRequest;
 import com.mogujie.jarvis.protocol.QueryTaskRelationProtos.ServerQueryTaskRelationResponse;
 import com.mogujie.jarvis.protocol.QueryTaskRelationProtos.TaskMapEntry;
+import com.mogujie.jarvis.protocol.RemoveTaskProtos.RestServerRemoveTaskRequest;
+import com.mogujie.jarvis.protocol.RemoveTaskProtos.ServerRemoveTaskResponse;
 import com.mogujie.jarvis.protocol.RetryTaskProtos.RestServerRetryTaskRequest;
 import com.mogujie.jarvis.protocol.RetryTaskProtos.ServerRetryTaskResponse;
+import com.mogujie.jarvis.server.dispatcher.PriorityTaskQueue;
 import com.mogujie.jarvis.server.dispatcher.TaskManager;
 import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.domain.JobDependencyEntry;
+import com.mogujie.jarvis.server.domain.RetryType;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
+import com.mogujie.jarvis.server.scheduler.TaskRetryScheduler;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
 import com.mogujie.jarvis.server.scheduler.event.ManualRerunTaskEvent;
 import com.mogujie.jarvis.server.scheduler.event.RetryTaskEvent;
@@ -104,6 +109,9 @@ public class TaskActor extends UntypedActor {
         } else if (obj instanceof RestServerQueryTaskRelationRequest) {
             RestServerQueryTaskRelationRequest msg = (RestServerQueryTaskRelationRequest) obj;
             queryTaskRelation(msg);
+        } else if (obj instanceof RestServerRemoveTaskRequest) {
+            RestServerRemoveTaskRequest msg = (RestServerRemoveTaskRequest) obj;
+            removeTask(msg);
         } else {
             unhandled(obj);
         }
@@ -306,6 +314,37 @@ public class TaskActor extends UntypedActor {
 
         } catch (Exception e) {
             response = ServerQueryTaskRelationResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
+            getSender().tell(response, getSelf());
+            throw e;
+        }
+    }
+
+    /**
+     * 删除task
+     *
+     * @param msg
+     */
+    private void removeTask(RestServerRemoveTaskRequest msg) throws Exception {
+        LOGGER.info("start removeTask");
+        ServerRemoveTaskResponse response;
+        try {
+            long taskId = msg.getTaskId();
+            // 1. update taskService
+            taskService.updateStatus(taskId, TaskStatus.REMOVED);
+            // 2. remove from taskGraph
+            taskGraph.removeTask(taskId);
+            // 3. remove from TaskQueue
+            PriorityTaskQueue taskQueue = Injectors.getInjector().getInstance(PriorityTaskQueue.class);
+            Task task = taskService.get(taskId);
+            String fullId = IdUtils.getFullId(task.getJobId(), taskId, task.getAttemptId());
+            taskQueue.removeByKey(fullId);
+            // 4. remove from RetryScheduler
+            String jobIdWithTaskId = fullId.replaceAll("_\\d+$", "");
+            TaskRetryScheduler retryScheduler = TaskRetryScheduler.INSTANCE;
+            retryScheduler.remove(jobIdWithTaskId, RetryType.FAILED_RETRY);
+            retryScheduler.remove(jobIdWithTaskId, RetryType.REJECT_RETRY);
+        } catch (Exception e) {
+            response = ServerRemoveTaskResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
             getSender().tell(response, getSelf());
             throw e;
         }

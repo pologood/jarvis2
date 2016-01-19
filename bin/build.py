@@ -26,13 +26,13 @@ def gitPull():
         execute(rootDir, 'git clone -b %s %s %s' % (gitBranch, gitUrl, srcDir))
 
 def mvnInstall():
-    execute(srcDir, 'mvn clean install')
+    execute(srcDir, 'mvn clean install -DskipTests')
 
 def copyLibs():
     if(os.path.exists(libDir)):
         shutil.rmtree(libDir)
 
-    execute(rootDir, 'mkdir -p %s && find ./src -name *.jar -exec cp {} ./lib/ \;' % libDir)
+    execute(rootDir, 'mkdir -p %s && find ./src -name *.jar ! -path "./src/jarvis-web/*" -exec cp {} ./lib/ \;' % libDir)
     execute(srcDir, 'mvn clean')
 
 def main():

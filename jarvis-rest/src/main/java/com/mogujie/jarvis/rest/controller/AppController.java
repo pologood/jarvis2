@@ -20,7 +20,8 @@ import com.mogujie.jarvis.protocol.ApplicationProtos.ServerModifyApplicationResp
 import com.mogujie.jarvis.protocol.ApplicationProtos.RestSetApplicationWorkerGroupRequest;
 import com.mogujie.jarvis.protocol.ApplicationProtos.ServerSetApplicationWorkerGroupResponse;
 import com.mogujie.jarvis.rest.RestResult;
-import com.mogujie.jarvis.rest.utils.ConvertValidUtils;
+import com.mogujie.jarvis.rest.utils.ValidUtils;
+import com.mogujie.jarvis.rest.utils.ValidUtils.CheckMode;
 import com.mogujie.jarvis.rest.utils.JsonParameters;
 import com.mogujie.jarvis.rest.vo.AppResultVo;
 import com.mogujie.jarvis.rest.vo.AppWorkerGroupVo;
@@ -53,7 +54,7 @@ public class AppController extends AbstractController {
             Integer status = paras.getInteger("status", AppStatus.ENABLE.getValue());
             Integer maxConcurrency = paras.getInteger("maxConcurrency", 10);
 
-            ConvertValidUtils.checkAppVo(OperationMode.ADD, applicationName, owner, status, maxConcurrency);
+            ValidUtils.checkAppVo(CheckMode.ADD, applicationName, owner, status, maxConcurrency);
             RestCreateApplicationRequest request = RestCreateApplicationRequest.newBuilder().setAppAuth(appAuth).setUser(user)
                     .setAppName(applicationName.trim()).setOwner(owner)
                     .setStatus(status).setMaxConcurrency(maxConcurrency)
@@ -90,7 +91,7 @@ public class AppController extends AbstractController {
             Integer status = paras.getInteger("status");
             Integer maxConcurrency = paras.getInteger("maxConcurrency");
 
-            ConvertValidUtils.checkAppVo(OperationMode.EDIT, applicationName, owner, status, maxConcurrency);
+            ValidUtils.checkAppVo(CheckMode.EDIT, applicationName, owner, status, maxConcurrency);
             RestModifyApplicationRequest.Builder builder = RestModifyApplicationRequest.newBuilder();
             builder.setAppAuth(appAuth).setUser(user).setAppId(appId);
             if (applicationName != null) {
@@ -169,7 +170,7 @@ public class AppController extends AbstractController {
         RestSetApplicationWorkerGroupRequest.Builder builder = RestSetApplicationWorkerGroupRequest.newBuilder();
         if (list != null && list.size() > 0) {
             for (AppWorkerGroupVo.AppWorkerGroupEntry e : list) {
-                ConvertValidUtils.checkAppWorkerGroup(mode, e.getAppId(), e.getWorkerGroupId());
+                ValidUtils.checkAppWorkerGroup(mode, e.getAppId(), e.getWorkerGroupId());
                 ApplicationProtos.AppWorkerGroupEntry data = ApplicationProtos.AppWorkerGroupEntry
                         .newBuilder()
                         .setAppId(e.getAppId())

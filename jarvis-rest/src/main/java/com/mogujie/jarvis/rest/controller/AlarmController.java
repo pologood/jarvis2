@@ -12,8 +12,7 @@ import com.mogujie.jarvis.protocol.AlarmProtos.RestDeleteAlarmRequest;
 import com.mogujie.jarvis.protocol.AlarmProtos.ServerDeleteAlarmResponse;
 
 import com.mogujie.jarvis.rest.RestResult;
-import com.mogujie.jarvis.rest.utils.ConvertValidUtils;
-import com.mogujie.jarvis.rest.vo.AlarmQueryVo;
+import com.mogujie.jarvis.rest.utils.ValidUtils;
 import com.mogujie.jarvis.rest.vo.AlarmVo;
 
 import javax.ws.rs.FormParam;
@@ -43,7 +42,7 @@ public class AlarmController extends AbstractController {
 //            AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 //
 //            AlarmQueryVo vo = JsonHelper.fromJson(parameters, AlarmQueryVo.class);
-//            ConvertValidUtils.checkAlarmQuery(vo);
+//            ValidUtils.checkAlarmQuery(vo);
 //
 //            RestCreateAlarmRequest request = RestCreateAlarmRequest.newBuilder()
 //                    .setAppAuth(appAuth)
@@ -81,7 +80,7 @@ public class AlarmController extends AbstractController {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
             AlarmVo vo = JsonHelper.fromJson(parameters, AlarmVo.class);
-            ConvertValidUtils.checkAlarm(OperationMode.ADD, vo);
+            ValidUtils.checkAlarm(OperationMode.ADD, vo);
 
             RestCreateAlarmRequest request = RestCreateAlarmRequest.newBuilder()
                     .setAppAuth(appAuth)
@@ -114,7 +113,7 @@ public class AlarmController extends AbstractController {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
             AlarmVo vo = JsonHelper.fromJson(parameters, AlarmVo.class);
-            ConvertValidUtils.checkAlarm(OperationMode.EDIT, vo);
+            ValidUtils.checkAlarm(OperationMode.EDIT, vo);
 
             RestModifyAlarmRequest.Builder builder = RestModifyAlarmRequest.newBuilder();
             builder.setAppAuth(appAuth).setUser(user).setJobId(vo.getJobId());
@@ -151,7 +150,7 @@ public class AlarmController extends AbstractController {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
             AlarmVo vo = JsonHelper.fromJson(parameters, AlarmVo.class);
-            ConvertValidUtils.checkAlarm(OperationMode.DELETE, vo);
+            ValidUtils.checkAlarm(OperationMode.DELETE, vo);
 
             RestDeleteAlarmRequest request = RestDeleteAlarmRequest.newBuilder()
                     .setAppAuth(appAuth)

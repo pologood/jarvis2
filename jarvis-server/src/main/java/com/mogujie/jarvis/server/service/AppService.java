@@ -115,6 +115,24 @@ public class AppService {
     }
 
     /**
+     * 检查——名字重复
+     *
+     * @param name
+     * @return
+     */
+    public void checkDuplicateName(String name,Integer ignoreId) throws IllegalArgumentException {
+        AppExample example = new AppExample();
+        example.createCriteria().andAppNameEqualTo(name);
+        List<App> list = appMapper.selectByExample(example);
+        if (list != null && list.size() > 0) {
+            if(ignoreId !=null && list.size() == 1 && list.get(0).getAppId().equals(ignoreId)){
+                return;
+            }
+            throw new IllegalArgumentException("appName名称重复了. name:" + name);
+        }
+    }
+
+    /**
      * app能否访问workerGroup
      *
      * @param appId         ：appId

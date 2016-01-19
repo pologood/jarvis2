@@ -1,7 +1,5 @@
 package com.mogujie.jarvis.rest.vo;
 
-import com.mogujie.jarvis.core.domain.OperationMode;
-
 import java.util.List;
 
 /**
