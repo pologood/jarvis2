@@ -350,7 +350,7 @@ public enum JobGraph {
                     LOGGER.error("parentJobId {} != preJobId {}", parentJobId, preJobId);
                 }
             } else {
-                LOGGER.warn("不是单亲纯依赖必须配置调度时间！！");
+                LOGGER.warn("{} 不是单亲纯依赖必须配置调度时间！！", dagJob);
             }
         }
     }
