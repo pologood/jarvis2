@@ -361,13 +361,18 @@ function statusFormatter(value, row, index) {
     result = '<i class="' + jobStatusClass[value] + '"></i>'
     return result;
 }
-//
+//格式化结果
 function formatResult(result) {
     return result.text;
 }
+//格式化选择框
 function formatResultSelection(result) {
     return result.id;
 }
+//业务标签格式化器
 function bizGroupFormatter(value,row,index){
-    return bizGroup[value];
+    return bizGroup[value];a
 }
+
+
+

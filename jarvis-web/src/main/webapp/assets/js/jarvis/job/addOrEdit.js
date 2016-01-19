@@ -30,9 +30,9 @@ $(function () {
     initJobPriority();           //初始化权重
     initExpressionType();        //初始化表达式类型
     initWorkerGroup();           //初始化workGroup
-    initBizGroupName();
+    initBizGroupName();          //初始化业务标签
 
-    $("#dependJobIds").on("change", function () {
+    $("#dependJobIds").on("change", function () {  //绑定修改依赖的事件
         generateStrategy();
     });
     initCommonStrategy();        //初始化通用策略
@@ -289,11 +289,9 @@ function initWorkerGroup() {
             $("#workerGroupId").val(job.workerGroupId).trigger("change");
         }
     })
-
-
 }
 
-
+//是否全选
 function changeAll(thisTag) {
     var thisTagValue = thisTag.checked;
     var siblings = $(thisTag).siblings();
@@ -353,12 +351,13 @@ function changeAlarm(e) {
         $("#alarmList").append(div);
     });
 }
-
+//添加报警
 function addAlarm(thisTag) {
     var self = $(thisTag).closest(".row").clone();
     $($(thisTag).closest(".row")).after(self);
 
 }
+//删除报警
 function deleteAlarm(thisTag) {
     $(thisTag).closest(".row").remove();
 }
@@ -411,7 +410,7 @@ function generateStrategy() {
 
 }
 
-
+//修改textarea大小
 function changeTextArea(thisTag, rows, cols) {
     $(thisTag).prop("rows", rows);
     $(thisTag).prop("cols", cols);
@@ -853,7 +852,7 @@ function checkActiveDate() {
     }
     return flag;
 }
-
+//显示参数模态框
 function showParaModel() {
     $("#paras tbody").empty();
     var params = $("#params").val();
@@ -870,7 +869,7 @@ function showParaModel() {
     $("#paraModal").modal("show");
 }
 
-
+///确认参数选择
 function ensurePara() {
     var trs = $("#paras tbody tr");
     var paras = {};
@@ -902,7 +901,7 @@ function ensurePara() {
     $("#params").val(JSON.stringify(paras));
     $("#paraModal").modal("hide");
 }
-
+//添加参数
 function addPara(thisTag) {
     var tr = $("#pattern tr").clone();
     if (thisTag == null) {
@@ -912,10 +911,11 @@ function addPara(thisTag) {
         $(thisTag).parent().parent().after(tr);
     }
 }
+//删除参数
 function deletePara(thisTag) {
     $(thisTag).parent().parent().remove();
 }
-
+//显示说明
 function showDescription(thisTag) {
     var options = {};
     var content = "通用策略:<br/>表示对前置任务的所有执行依赖策略<br/><br/>";
@@ -941,7 +941,7 @@ function showDescription(thisTag) {
     $(thisTag).popover('show');
     $(".popover-content").html(content);
 }
-
+//隐藏说明
 function hideDescription(thisTag) {
     $(thisTag).popover('hide');
 }

@@ -65,10 +65,6 @@
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:45%">发布者</span>
                         <select id="submitUser" multiple>
-                            <option value="all">全部</option>
-                            <c:forEach items="${submitUsers}" var="submitUser" varStatus="status">
-                                <option value="${submitUser}">${submitUser}</option>
-                            </c:forEach>
                         </select>
                     </div>
                 </div>
@@ -82,12 +78,8 @@
 
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:45%">应用名称</span>
+                        <span class="input-group-addon" style="width:45%">应用</span>
                         <select id="appId" multiple>
-                            <option value="">全部</option>
-                            <c:forEach items="${appVoList}" var="app">
-                                <option value="${app.appId}">${app.appName}</option>
-                            </c:forEach>
                         </select>
                     </div>
                 </div>
@@ -96,10 +88,6 @@
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:48%">WorkerGroup名</span>
                         <select id="workerGroupId" multiple>
-                            <option value="all">全部</option>
-                            <c:forEach items="${workerGroupVoList}" var="workerGroup">
-                                <option value="${workerGroup.id}">${workerGroup.name}</option>
-                            </c:forEach>
                         </select>
                     </div>
                 </div>
