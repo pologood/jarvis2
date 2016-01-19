@@ -316,9 +316,8 @@ public class JobController extends AbstractController {
         if (vo.getContent() != null && !vo.getContent().equals("")) {
             builder.setContent(vo.getContent());
         }
-        if (vo.getParams() != null) {
-            String jobParameters = JsonHelper.toJson(vo.getParams(), Map.class);
-            builder.setParameters(jobParameters);
+        if (vo.getParams() != null && !vo.getParams().equals("")) {
+            builder.setParameters(vo.getParams());
         }
         if (vo.getPriority() != null) {
             builder.setPriority(vo.getPriority());

@@ -453,7 +453,7 @@ public class JobActor extends UntypedActor {
     private Job msg2Job(RestModifyJobRequest msg) throws NotFoundException {
         Job job = new Job();
         job.setJobId(msg.getJobId());
-        job.setAppId(analysisAppId(msg.getAppAuth(), msg.getAppName()));
+        job.setAppId(analysisAppId(msg.getAppAuth(), msg.hasAppName()? msg.getAppName() : null));
         if (msg.hasJobName()) {
             job.setJobName(msg.getJobName());
         }
