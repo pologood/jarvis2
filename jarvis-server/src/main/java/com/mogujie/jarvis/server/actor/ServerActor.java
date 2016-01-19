@@ -13,21 +13,15 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 
-import com.mogujie.jarvis.core.domain.AppStatus;
 import org.apache.commons.configuration.Configuration;
-
-import akka.actor.ActorRef;
-import akka.actor.Props;
-import akka.actor.UntypedActor;
-import akka.routing.SmallestMailboxPool;
 
 import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.protobuf.GeneratedMessage;
+import com.mogujie.jarvis.core.domain.AppStatus;
 import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.core.domain.Pair;
-import com.mogujie.jarvis.core.exception.AppTokenInvalidException;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.dto.generate.App;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
@@ -36,6 +30,11 @@ import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.service.AppService;
 import com.mogujie.jarvis.server.util.AppTokenUtils;
+
+import akka.actor.ActorRef;
+import akka.actor.Props;
+import akka.actor.UntypedActor;
+import akka.routing.SmallestMailboxPool;
 
 public class ServerActor extends UntypedActor {
 
@@ -74,8 +73,8 @@ public class ServerActor extends UntypedActor {
 
     private Object generateResponse(Class<? extends GeneratedMessage> clazz, boolean success, String msg) {
         try {
-            Method method = clazz.getMethod("getDefaultInstance", new Class[]{});
-            Object object = method.invoke(null, new Object[]{});
+            Method method = clazz.getMethod("getDefaultInstance", new Class[] {});
+            Object object = method.invoke(null, new Object[] {});
             for (Field field : object.getClass().getDeclaredFields()) {
                 if ("success_".equals(field.getName())) {
                     field.setAccessible(true);
