@@ -5,8 +5,8 @@ import com.mogujie.jarvis.core.domain.*;
 import com.mogujie.jarvis.core.expression.TimeOffsetExpression;
 import com.mogujie.jarvis.core.util.ExpressionUtils;
 import com.mogujie.jarvis.core.util.JsonHelper;
-import com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry;
-import com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry;
+import com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry;
+import com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry;
 import com.mogujie.jarvis.rest.vo.*;
 
 import com.mogujie.jarvis.core.domain.CommonStrategy;

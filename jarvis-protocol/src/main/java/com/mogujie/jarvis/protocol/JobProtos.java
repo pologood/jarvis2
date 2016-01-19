@@ -212,12 +212,12 @@ public final class JobProtos {
         /**
          * <code>repeated .ScheduleExpressionEntry expression_entry = 17;</code>
          */
-        java.util.List<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry> getExpressionEntryList();
+        java.util.List<com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry> getExpressionEntryList();
 
         /**
          * <code>repeated .ScheduleExpressionEntry expression_entry = 17;</code>
          */
-        com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry getExpressionEntry(int index);
+        com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry getExpressionEntry(int index);
 
         /**
          * <code>repeated .ScheduleExpressionEntry expression_entry = 17;</code>
@@ -227,22 +227,22 @@ public final class JobProtos {
         /**
          * <code>repeated .ScheduleExpressionEntry expression_entry = 17;</code>
          */
-        java.util.List<? extends com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder> getExpressionEntryOrBuilderList();
+        java.util.List<? extends com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder> getExpressionEntryOrBuilderList();
 
         /**
          * <code>repeated .ScheduleExpressionEntry expression_entry = 17;</code>
          */
-        com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder getExpressionEntryOrBuilder(int index);
+        com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder getExpressionEntryOrBuilder(int index);
 
         /**
          * <code>repeated .DependencyEntry dependency_entry = 18;</code>
          */
-        java.util.List<com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry> getDependencyEntryList();
+        java.util.List<com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry> getDependencyEntryList();
 
         /**
          * <code>repeated .DependencyEntry dependency_entry = 18;</code>
          */
-        com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry getDependencyEntry(int index);
+        com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry getDependencyEntry(int index);
 
         /**
          * <code>repeated .DependencyEntry dependency_entry = 18;</code>
@@ -252,12 +252,12 @@ public final class JobProtos {
         /**
          * <code>repeated .DependencyEntry dependency_entry = 18;</code>
          */
-        java.util.List<? extends com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntryOrBuilder> getDependencyEntryOrBuilderList();
+        java.util.List<? extends com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntryOrBuilder> getDependencyEntryOrBuilderList();
 
         /**
          * <code>repeated .DependencyEntry dependency_entry = 18;</code>
          */
-        com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntryOrBuilder getDependencyEntryOrBuilder(int index);
+        com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntryOrBuilder getDependencyEntryOrBuilder(int index);
     }
 
     /**
@@ -413,20 +413,20 @@ public final class JobProtos {
                         }
                         case 138: {
                             if (!((mutable_bitField0_ & 0x00010000) == 0x00010000)) {
-                                expressionEntry_ = new java.util.ArrayList<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry>();
+                                expressionEntry_ = new java.util.ArrayList<com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry>();
                                 mutable_bitField0_ |= 0x00010000;
                             }
                             expressionEntry_.add(input.readMessage(
-                                    com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.PARSER, extensionRegistry));
+                                    com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry.PARSER, extensionRegistry));
                             break;
                         }
                         case 146: {
                             if (!((mutable_bitField0_ & 0x00020000) == 0x00020000)) {
-                                dependencyEntry_ = new java.util.ArrayList<com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry>();
+                                dependencyEntry_ = new java.util.ArrayList<com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry>();
                                 mutable_bitField0_ |= 0x00020000;
                             }
-                            dependencyEntry_.add(
-                                    input.readMessage(com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.PARSER, extensionRegistry));
+                            dependencyEntry_.add(input.readMessage(com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry.PARSER,
+                                    extensionRegistry));
                             break;
                         }
                     }
@@ -935,13 +935,13 @@ public final class JobProtos {
         }
 
         public static final int EXPRESSION_ENTRY_FIELD_NUMBER = 17;
-        private java.util.List<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry> expressionEntry_;
+        private java.util.List<com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry> expressionEntry_;
 
         /**
          * <code>repeated .ScheduleExpressionEntry expression_entry = 17;</code>
          */
         @Override
-        public java.util.List<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry> getExpressionEntryList() {
+        public java.util.List<com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry> getExpressionEntryList() {
             return expressionEntry_;
         }
 
@@ -949,7 +949,7 @@ public final class JobProtos {
          * <code>repeated .ScheduleExpressionEntry expression_entry = 17;</code>
          */
         @Override
-        public java.util.List<? extends com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder> getExpressionEntryOrBuilderList() {
+        public java.util.List<? extends com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder> getExpressionEntryOrBuilderList() {
             return expressionEntry_;
         }
 
@@ -965,7 +965,7 @@ public final class JobProtos {
          * <code>repeated .ScheduleExpressionEntry expression_entry = 17;</code>
          */
         @Override
-        public com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry getExpressionEntry(int index) {
+        public com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry getExpressionEntry(int index) {
             return expressionEntry_.get(index);
         }
 
@@ -973,18 +973,18 @@ public final class JobProtos {
          * <code>repeated .ScheduleExpressionEntry expression_entry = 17;</code>
          */
         @Override
-        public com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder getExpressionEntryOrBuilder(int index) {
+        public com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder getExpressionEntryOrBuilder(int index) {
             return expressionEntry_.get(index);
         }
 
         public static final int DEPENDENCY_ENTRY_FIELD_NUMBER = 18;
-        private java.util.List<com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry> dependencyEntry_;
+        private java.util.List<com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry> dependencyEntry_;
 
         /**
          * <code>repeated .DependencyEntry dependency_entry = 18;</code>
          */
         @Override
-        public java.util.List<com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry> getDependencyEntryList() {
+        public java.util.List<com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry> getDependencyEntryList() {
             return dependencyEntry_;
         }
 
@@ -992,7 +992,7 @@ public final class JobProtos {
          * <code>repeated .DependencyEntry dependency_entry = 18;</code>
          */
         @Override
-        public java.util.List<? extends com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntryOrBuilder> getDependencyEntryOrBuilderList() {
+        public java.util.List<? extends com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntryOrBuilder> getDependencyEntryOrBuilderList() {
             return dependencyEntry_;
         }
 
@@ -1008,7 +1008,7 @@ public final class JobProtos {
          * <code>repeated .DependencyEntry dependency_entry = 18;</code>
          */
         @Override
-        public com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry getDependencyEntry(int index) {
+        public com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry getDependencyEntry(int index) {
             return dependencyEntry_.get(index);
         }
 
@@ -1016,7 +1016,7 @@ public final class JobProtos {
          * <code>repeated .DependencyEntry dependency_entry = 18;</code>
          */
         @Override
-        public com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntryOrBuilder getDependencyEntryOrBuilder(int index) {
+        public com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntryOrBuilder getDependencyEntryOrBuilder(int index) {
             return dependencyEntry_.get(index);
         }
 
@@ -2657,24 +2657,24 @@ public final class JobProtos {
                 return this;
             }
 
-            private java.util.List<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry> expressionEntry_ = java.util.Collections
+            private java.util.List<com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry> expressionEntry_ = java.util.Collections
                     .emptyList();
 
             private void ensureExpressionEntryIsMutable() {
                 if (!((bitField0_ & 0x00010000) == 0x00010000)) {
-                    expressionEntry_ = new java.util.ArrayList<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry>(
+                    expressionEntry_ = new java.util.ArrayList<com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry>(
                             expressionEntry_);
                     bitField0_ |= 0x00010000;
                 }
             }
 
-            private com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder> expressionEntryBuilder_;
+            private com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry, com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder, com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder> expressionEntryBuilder_;
 
             /**
              * <code>repeated .ScheduleExpressionEntry expression_entry = 17;</code>
              */
             @Override
-            public java.util.List<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry> getExpressionEntryList() {
+            public java.util.List<com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry> getExpressionEntryList() {
                 if (expressionEntryBuilder_ == null) {
                     return java.util.Collections.unmodifiableList(expressionEntry_);
                 } else {
@@ -2698,7 +2698,7 @@ public final class JobProtos {
              * <code>repeated .ScheduleExpressionEntry expression_entry = 17;</code>
              */
             @Override
-            public com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry getExpressionEntry(int index) {
+            public com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry getExpressionEntry(int index) {
                 if (expressionEntryBuilder_ == null) {
                     return expressionEntry_.get(index);
                 } else {
@@ -2709,7 +2709,7 @@ public final class JobProtos {
             /**
              * <code>repeated .ScheduleExpressionEntry expression_entry = 17;</code>
              */
-            public Builder setExpressionEntry(int index, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry value) {
+            public Builder setExpressionEntry(int index, com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry value) {
                 if (expressionEntryBuilder_ == null) {
                     if (value == null) {
                         throw new NullPointerException();
@@ -2727,7 +2727,7 @@ public final class JobProtos {
              * <code>repeated .ScheduleExpressionEntry expression_entry = 17;</code>
              */
             public Builder setExpressionEntry(int index,
-                    com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder builderForValue) {
+                    com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder builderForValue) {
                 if (expressionEntryBuilder_ == null) {
                     ensureExpressionEntryIsMutable();
                     expressionEntry_.set(index, builderForValue.build());
@@ -2741,7 +2741,7 @@ public final class JobProtos {
             /**
              * <code>repeated .ScheduleExpressionEntry expression_entry = 17;</code>
              */
-            public Builder addExpressionEntry(com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry value) {
+            public Builder addExpressionEntry(com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry value) {
                 if (expressionEntryBuilder_ == null) {
                     if (value == null) {
                         throw new NullPointerException();
@@ -2758,7 +2758,7 @@ public final class JobProtos {
             /**
              * <code>repeated .ScheduleExpressionEntry expression_entry = 17;</code>
              */
-            public Builder addExpressionEntry(int index, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry value) {
+            public Builder addExpressionEntry(int index, com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry value) {
                 if (expressionEntryBuilder_ == null) {
                     if (value == null) {
                         throw new NullPointerException();
@@ -2776,7 +2776,7 @@ public final class JobProtos {
              * <code>repeated .ScheduleExpressionEntry expression_entry = 17;</code>
              */
             public Builder addExpressionEntry(
-                    com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder builderForValue) {
+                    com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder builderForValue) {
                 if (expressionEntryBuilder_ == null) {
                     ensureExpressionEntryIsMutable();
                     expressionEntry_.add(builderForValue.build());
@@ -2791,7 +2791,7 @@ public final class JobProtos {
              * <code>repeated .ScheduleExpressionEntry expression_entry = 17;</code>
              */
             public Builder addExpressionEntry(int index,
-                    com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder builderForValue) {
+                    com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder builderForValue) {
                 if (expressionEntryBuilder_ == null) {
                     ensureExpressionEntryIsMutable();
                     expressionEntry_.add(index, builderForValue.build());
@@ -2806,7 +2806,7 @@ public final class JobProtos {
              * <code>repeated .ScheduleExpressionEntry expression_entry = 17;</code>
              */
             public Builder addAllExpressionEntry(
-                    java.lang.Iterable<? extends com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry> values) {
+                    java.lang.Iterable<? extends com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry> values) {
                 if (expressionEntryBuilder_ == null) {
                     ensureExpressionEntryIsMutable();
                     com.google.protobuf.AbstractMessageLite.Builder.addAll(values, expressionEntry_);
@@ -2848,7 +2848,7 @@ public final class JobProtos {
             /**
              * <code>repeated .ScheduleExpressionEntry expression_entry = 17;</code>
              */
-            public com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder getExpressionEntryBuilder(int index) {
+            public com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder getExpressionEntryBuilder(int index) {
                 return getExpressionEntryFieldBuilder().getBuilder(index);
             }
 
@@ -2856,7 +2856,8 @@ public final class JobProtos {
              * <code>repeated .ScheduleExpressionEntry expression_entry = 17;</code>
              */
             @Override
-            public com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder getExpressionEntryOrBuilder(int index) {
+            public com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder getExpressionEntryOrBuilder(
+                    int index) {
                 if (expressionEntryBuilder_ == null) {
                     return expressionEntry_.get(index);
                 } else {
@@ -2868,7 +2869,7 @@ public final class JobProtos {
              * <code>repeated .ScheduleExpressionEntry expression_entry = 17;</code>
              */
             @Override
-            public java.util.List<? extends com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder> getExpressionEntryOrBuilderList() {
+            public java.util.List<? extends com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder> getExpressionEntryOrBuilderList() {
                 if (expressionEntryBuilder_ != null) {
                     return expressionEntryBuilder_.getMessageOrBuilderList();
                 } else {
@@ -2879,52 +2880,53 @@ public final class JobProtos {
             /**
              * <code>repeated .ScheduleExpressionEntry expression_entry = 17;</code>
              */
-            public com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder addExpressionEntryBuilder() {
+            public com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder addExpressionEntryBuilder() {
                 return getExpressionEntryFieldBuilder()
-                        .addBuilder(com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.getDefaultInstance());
+                        .addBuilder(com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry.getDefaultInstance());
             }
 
             /**
              * <code>repeated .ScheduleExpressionEntry expression_entry = 17;</code>
              */
-            public com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder addExpressionEntryBuilder(int index) {
+            public com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder addExpressionEntryBuilder(int index) {
                 return getExpressionEntryFieldBuilder().addBuilder(index,
-                        com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.getDefaultInstance());
+                        com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry.getDefaultInstance());
             }
 
             /**
              * <code>repeated .ScheduleExpressionEntry expression_entry = 17;</code>
              */
-            public java.util.List<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder> getExpressionEntryBuilderList() {
+            public java.util.List<com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder> getExpressionEntryBuilderList() {
                 return getExpressionEntryFieldBuilder().getBuilderList();
             }
 
-            private com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder> getExpressionEntryFieldBuilder() {
+            private com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry, com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder, com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder> getExpressionEntryFieldBuilder() {
                 if (expressionEntryBuilder_ == null) {
-                    expressionEntryBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder>(
+                    expressionEntryBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry, com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder, com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder>(
                             expressionEntry_, ((bitField0_ & 0x00010000) == 0x00010000), getParentForChildren(), isClean());
                     expressionEntry_ = null;
                 }
                 return expressionEntryBuilder_;
             }
 
-            private java.util.List<com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry> dependencyEntry_ = java.util.Collections
+            private java.util.List<com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry> dependencyEntry_ = java.util.Collections
                     .emptyList();
 
             private void ensureDependencyEntryIsMutable() {
                 if (!((bitField0_ & 0x00020000) == 0x00020000)) {
-                    dependencyEntry_ = new java.util.ArrayList<com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry>(dependencyEntry_);
+                    dependencyEntry_ = new java.util.ArrayList<com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry>(
+                            dependencyEntry_);
                     bitField0_ |= 0x00020000;
                 }
             }
 
-            private com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry, com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.Builder, com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntryOrBuilder> dependencyEntryBuilder_;
+            private com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry, com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry.Builder, com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntryOrBuilder> dependencyEntryBuilder_;
 
             /**
              * <code>repeated .DependencyEntry dependency_entry = 18;</code>
              */
             @Override
-            public java.util.List<com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry> getDependencyEntryList() {
+            public java.util.List<com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry> getDependencyEntryList() {
                 if (dependencyEntryBuilder_ == null) {
                     return java.util.Collections.unmodifiableList(dependencyEntry_);
                 } else {
@@ -2948,7 +2950,7 @@ public final class JobProtos {
              * <code>repeated .DependencyEntry dependency_entry = 18;</code>
              */
             @Override
-            public com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry getDependencyEntry(int index) {
+            public com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry getDependencyEntry(int index) {
                 if (dependencyEntryBuilder_ == null) {
                     return dependencyEntry_.get(index);
                 } else {
@@ -2959,7 +2961,7 @@ public final class JobProtos {
             /**
              * <code>repeated .DependencyEntry dependency_entry = 18;</code>
              */
-            public Builder setDependencyEntry(int index, com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry value) {
+            public Builder setDependencyEntry(int index, com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry value) {
                 if (dependencyEntryBuilder_ == null) {
                     if (value == null) {
                         throw new NullPointerException();
@@ -2976,7 +2978,8 @@ public final class JobProtos {
             /**
              * <code>repeated .DependencyEntry dependency_entry = 18;</code>
              */
-            public Builder setDependencyEntry(int index, com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.Builder builderForValue) {
+            public Builder setDependencyEntry(int index,
+                    com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry.Builder builderForValue) {
                 if (dependencyEntryBuilder_ == null) {
                     ensureDependencyEntryIsMutable();
                     dependencyEntry_.set(index, builderForValue.build());
@@ -2990,7 +2993,7 @@ public final class JobProtos {
             /**
              * <code>repeated .DependencyEntry dependency_entry = 18;</code>
              */
-            public Builder addDependencyEntry(com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry value) {
+            public Builder addDependencyEntry(com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry value) {
                 if (dependencyEntryBuilder_ == null) {
                     if (value == null) {
                         throw new NullPointerException();
@@ -3007,7 +3010,7 @@ public final class JobProtos {
             /**
              * <code>repeated .DependencyEntry dependency_entry = 18;</code>
              */
-            public Builder addDependencyEntry(int index, com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry value) {
+            public Builder addDependencyEntry(int index, com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry value) {
                 if (dependencyEntryBuilder_ == null) {
                     if (value == null) {
                         throw new NullPointerException();
@@ -3024,7 +3027,7 @@ public final class JobProtos {
             /**
              * <code>repeated .DependencyEntry dependency_entry = 18;</code>
              */
-            public Builder addDependencyEntry(com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.Builder builderForValue) {
+            public Builder addDependencyEntry(com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry.Builder builderForValue) {
                 if (dependencyEntryBuilder_ == null) {
                     ensureDependencyEntryIsMutable();
                     dependencyEntry_.add(builderForValue.build());
@@ -3038,7 +3041,8 @@ public final class JobProtos {
             /**
              * <code>repeated .DependencyEntry dependency_entry = 18;</code>
              */
-            public Builder addDependencyEntry(int index, com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.Builder builderForValue) {
+            public Builder addDependencyEntry(int index,
+                    com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry.Builder builderForValue) {
                 if (dependencyEntryBuilder_ == null) {
                     ensureDependencyEntryIsMutable();
                     dependencyEntry_.add(index, builderForValue.build());
@@ -3053,7 +3057,7 @@ public final class JobProtos {
              * <code>repeated .DependencyEntry dependency_entry = 18;</code>
              */
             public Builder addAllDependencyEntry(
-                    java.lang.Iterable<? extends com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry> values) {
+                    java.lang.Iterable<? extends com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry> values) {
                 if (dependencyEntryBuilder_ == null) {
                     ensureDependencyEntryIsMutable();
                     com.google.protobuf.AbstractMessageLite.Builder.addAll(values, dependencyEntry_);
@@ -3095,7 +3099,7 @@ public final class JobProtos {
             /**
              * <code>repeated .DependencyEntry dependency_entry = 18;</code>
              */
-            public com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.Builder getDependencyEntryBuilder(int index) {
+            public com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry.Builder getDependencyEntryBuilder(int index) {
                 return getDependencyEntryFieldBuilder().getBuilder(index);
             }
 
@@ -3103,7 +3107,7 @@ public final class JobProtos {
              * <code>repeated .DependencyEntry dependency_entry = 18;</code>
              */
             @Override
-            public com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntryOrBuilder getDependencyEntryOrBuilder(int index) {
+            public com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntryOrBuilder getDependencyEntryOrBuilder(int index) {
                 if (dependencyEntryBuilder_ == null) {
                     return dependencyEntry_.get(index);
                 } else {
@@ -3115,7 +3119,7 @@ public final class JobProtos {
              * <code>repeated .DependencyEntry dependency_entry = 18;</code>
              */
             @Override
-            public java.util.List<? extends com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntryOrBuilder> getDependencyEntryOrBuilderList() {
+            public java.util.List<? extends com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntryOrBuilder> getDependencyEntryOrBuilderList() {
                 if (dependencyEntryBuilder_ != null) {
                     return dependencyEntryBuilder_.getMessageOrBuilderList();
                 } else {
@@ -3126,29 +3130,29 @@ public final class JobProtos {
             /**
              * <code>repeated .DependencyEntry dependency_entry = 18;</code>
              */
-            public com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.Builder addDependencyEntryBuilder() {
+            public com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry.Builder addDependencyEntryBuilder() {
                 return getDependencyEntryFieldBuilder()
-                        .addBuilder(com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.getDefaultInstance());
+                        .addBuilder(com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry.getDefaultInstance());
             }
 
             /**
              * <code>repeated .DependencyEntry dependency_entry = 18;</code>
              */
-            public com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.Builder addDependencyEntryBuilder(int index) {
+            public com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry.Builder addDependencyEntryBuilder(int index) {
                 return getDependencyEntryFieldBuilder().addBuilder(index,
-                        com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.getDefaultInstance());
+                        com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry.getDefaultInstance());
             }
 
             /**
              * <code>repeated .DependencyEntry dependency_entry = 18;</code>
              */
-            public java.util.List<com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.Builder> getDependencyEntryBuilderList() {
+            public java.util.List<com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry.Builder> getDependencyEntryBuilderList() {
                 return getDependencyEntryFieldBuilder().getBuilderList();
             }
 
-            private com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry, com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.Builder, com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntryOrBuilder> getDependencyEntryFieldBuilder() {
+            private com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry, com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry.Builder, com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntryOrBuilder> getDependencyEntryFieldBuilder() {
                 if (dependencyEntryBuilder_ == null) {
-                    dependencyEntryBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry, com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.Builder, com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntryOrBuilder>(
+                    dependencyEntryBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry, com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry.Builder, com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntryOrBuilder>(
                             dependencyEntry_, ((bitField0_ & 0x00020000) == 0x00020000), getParentForChildren(), isClean());
                     dependencyEntry_ = null;
                 }
@@ -6842,12 +6846,12 @@ public final class JobProtos {
         /**
          * <code>repeated .DependencyEntry dependency_entry = 4;</code>
          */
-        java.util.List<com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry> getDependencyEntryList();
+        java.util.List<com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry> getDependencyEntryList();
 
         /**
          * <code>repeated .DependencyEntry dependency_entry = 4;</code>
          */
-        com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry getDependencyEntry(int index);
+        com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry getDependencyEntry(int index);
 
         /**
          * <code>repeated .DependencyEntry dependency_entry = 4;</code>
@@ -6857,12 +6861,12 @@ public final class JobProtos {
         /**
          * <code>repeated .DependencyEntry dependency_entry = 4;</code>
          */
-        java.util.List<? extends com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntryOrBuilder> getDependencyEntryOrBuilderList();
+        java.util.List<? extends com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntryOrBuilder> getDependencyEntryOrBuilderList();
 
         /**
          * <code>repeated .DependencyEntry dependency_entry = 4;</code>
          */
-        com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntryOrBuilder getDependencyEntryOrBuilder(int index);
+        com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntryOrBuilder getDependencyEntryOrBuilder(int index);
     }
 
     /**
@@ -6948,11 +6952,11 @@ public final class JobProtos {
                         }
                         case 34: {
                             if (!((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
-                                dependencyEntry_ = new java.util.ArrayList<com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry>();
+                                dependencyEntry_ = new java.util.ArrayList<com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry>();
                                 mutable_bitField0_ |= 0x00000008;
                             }
-                            dependencyEntry_.add(
-                                    input.readMessage(com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.PARSER, extensionRegistry));
+                            dependencyEntry_.add(input.readMessage(com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry.PARSER,
+                                    extensionRegistry));
                             break;
                         }
                     }
@@ -7086,13 +7090,13 @@ public final class JobProtos {
         }
 
         public static final int DEPENDENCY_ENTRY_FIELD_NUMBER = 4;
-        private java.util.List<com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry> dependencyEntry_;
+        private java.util.List<com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry> dependencyEntry_;
 
         /**
          * <code>repeated .DependencyEntry dependency_entry = 4;</code>
          */
         @Override
-        public java.util.List<com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry> getDependencyEntryList() {
+        public java.util.List<com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry> getDependencyEntryList() {
             return dependencyEntry_;
         }
 
@@ -7100,7 +7104,7 @@ public final class JobProtos {
          * <code>repeated .DependencyEntry dependency_entry = 4;</code>
          */
         @Override
-        public java.util.List<? extends com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntryOrBuilder> getDependencyEntryOrBuilderList() {
+        public java.util.List<? extends com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntryOrBuilder> getDependencyEntryOrBuilderList() {
             return dependencyEntry_;
         }
 
@@ -7116,7 +7120,7 @@ public final class JobProtos {
          * <code>repeated .DependencyEntry dependency_entry = 4;</code>
          */
         @Override
-        public com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry getDependencyEntry(int index) {
+        public com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry getDependencyEntry(int index) {
             return dependencyEntry_.get(index);
         }
 
@@ -7124,7 +7128,7 @@ public final class JobProtos {
          * <code>repeated .DependencyEntry dependency_entry = 4;</code>
          */
         @Override
-        public com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntryOrBuilder getDependencyEntryOrBuilder(int index) {
+        public com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntryOrBuilder getDependencyEntryOrBuilder(int index) {
             return dependencyEntry_.get(index);
         }
 
@@ -7757,23 +7761,24 @@ public final class JobProtos {
                 return this;
             }
 
-            private java.util.List<com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry> dependencyEntry_ = java.util.Collections
+            private java.util.List<com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry> dependencyEntry_ = java.util.Collections
                     .emptyList();
 
             private void ensureDependencyEntryIsMutable() {
                 if (!((bitField0_ & 0x00000008) == 0x00000008)) {
-                    dependencyEntry_ = new java.util.ArrayList<com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry>(dependencyEntry_);
+                    dependencyEntry_ = new java.util.ArrayList<com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry>(
+                            dependencyEntry_);
                     bitField0_ |= 0x00000008;
                 }
             }
 
-            private com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry, com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.Builder, com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntryOrBuilder> dependencyEntryBuilder_;
+            private com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry, com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry.Builder, com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntryOrBuilder> dependencyEntryBuilder_;
 
             /**
              * <code>repeated .DependencyEntry dependency_entry = 4;</code>
              */
             @Override
-            public java.util.List<com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry> getDependencyEntryList() {
+            public java.util.List<com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry> getDependencyEntryList() {
                 if (dependencyEntryBuilder_ == null) {
                     return java.util.Collections.unmodifiableList(dependencyEntry_);
                 } else {
@@ -7797,7 +7802,7 @@ public final class JobProtos {
              * <code>repeated .DependencyEntry dependency_entry = 4;</code>
              */
             @Override
-            public com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry getDependencyEntry(int index) {
+            public com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry getDependencyEntry(int index) {
                 if (dependencyEntryBuilder_ == null) {
                     return dependencyEntry_.get(index);
                 } else {
@@ -7808,7 +7813,7 @@ public final class JobProtos {
             /**
              * <code>repeated .DependencyEntry dependency_entry = 4;</code>
              */
-            public Builder setDependencyEntry(int index, com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry value) {
+            public Builder setDependencyEntry(int index, com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry value) {
                 if (dependencyEntryBuilder_ == null) {
                     if (value == null) {
                         throw new NullPointerException();
@@ -7825,7 +7830,8 @@ public final class JobProtos {
             /**
              * <code>repeated .DependencyEntry dependency_entry = 4;</code>
              */
-            public Builder setDependencyEntry(int index, com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.Builder builderForValue) {
+            public Builder setDependencyEntry(int index,
+                    com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry.Builder builderForValue) {
                 if (dependencyEntryBuilder_ == null) {
                     ensureDependencyEntryIsMutable();
                     dependencyEntry_.set(index, builderForValue.build());
@@ -7839,7 +7845,7 @@ public final class JobProtos {
             /**
              * <code>repeated .DependencyEntry dependency_entry = 4;</code>
              */
-            public Builder addDependencyEntry(com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry value) {
+            public Builder addDependencyEntry(com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry value) {
                 if (dependencyEntryBuilder_ == null) {
                     if (value == null) {
                         throw new NullPointerException();
@@ -7856,7 +7862,7 @@ public final class JobProtos {
             /**
              * <code>repeated .DependencyEntry dependency_entry = 4;</code>
              */
-            public Builder addDependencyEntry(int index, com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry value) {
+            public Builder addDependencyEntry(int index, com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry value) {
                 if (dependencyEntryBuilder_ == null) {
                     if (value == null) {
                         throw new NullPointerException();
@@ -7873,7 +7879,7 @@ public final class JobProtos {
             /**
              * <code>repeated .DependencyEntry dependency_entry = 4;</code>
              */
-            public Builder addDependencyEntry(com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.Builder builderForValue) {
+            public Builder addDependencyEntry(com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry.Builder builderForValue) {
                 if (dependencyEntryBuilder_ == null) {
                     ensureDependencyEntryIsMutable();
                     dependencyEntry_.add(builderForValue.build());
@@ -7887,7 +7893,8 @@ public final class JobProtos {
             /**
              * <code>repeated .DependencyEntry dependency_entry = 4;</code>
              */
-            public Builder addDependencyEntry(int index, com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.Builder builderForValue) {
+            public Builder addDependencyEntry(int index,
+                    com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry.Builder builderForValue) {
                 if (dependencyEntryBuilder_ == null) {
                     ensureDependencyEntryIsMutable();
                     dependencyEntry_.add(index, builderForValue.build());
@@ -7902,7 +7909,7 @@ public final class JobProtos {
              * <code>repeated .DependencyEntry dependency_entry = 4;</code>
              */
             public Builder addAllDependencyEntry(
-                    java.lang.Iterable<? extends com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry> values) {
+                    java.lang.Iterable<? extends com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry> values) {
                 if (dependencyEntryBuilder_ == null) {
                     ensureDependencyEntryIsMutable();
                     com.google.protobuf.AbstractMessageLite.Builder.addAll(values, dependencyEntry_);
@@ -7944,7 +7951,7 @@ public final class JobProtos {
             /**
              * <code>repeated .DependencyEntry dependency_entry = 4;</code>
              */
-            public com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.Builder getDependencyEntryBuilder(int index) {
+            public com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry.Builder getDependencyEntryBuilder(int index) {
                 return getDependencyEntryFieldBuilder().getBuilder(index);
             }
 
@@ -7952,7 +7959,7 @@ public final class JobProtos {
              * <code>repeated .DependencyEntry dependency_entry = 4;</code>
              */
             @Override
-            public com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntryOrBuilder getDependencyEntryOrBuilder(int index) {
+            public com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntryOrBuilder getDependencyEntryOrBuilder(int index) {
                 if (dependencyEntryBuilder_ == null) {
                     return dependencyEntry_.get(index);
                 } else {
@@ -7964,7 +7971,7 @@ public final class JobProtos {
              * <code>repeated .DependencyEntry dependency_entry = 4;</code>
              */
             @Override
-            public java.util.List<? extends com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntryOrBuilder> getDependencyEntryOrBuilderList() {
+            public java.util.List<? extends com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntryOrBuilder> getDependencyEntryOrBuilderList() {
                 if (dependencyEntryBuilder_ != null) {
                     return dependencyEntryBuilder_.getMessageOrBuilderList();
                 } else {
@@ -7975,29 +7982,29 @@ public final class JobProtos {
             /**
              * <code>repeated .DependencyEntry dependency_entry = 4;</code>
              */
-            public com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.Builder addDependencyEntryBuilder() {
+            public com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry.Builder addDependencyEntryBuilder() {
                 return getDependencyEntryFieldBuilder()
-                        .addBuilder(com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.getDefaultInstance());
+                        .addBuilder(com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry.getDefaultInstance());
             }
 
             /**
              * <code>repeated .DependencyEntry dependency_entry = 4;</code>
              */
-            public com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.Builder addDependencyEntryBuilder(int index) {
+            public com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry.Builder addDependencyEntryBuilder(int index) {
                 return getDependencyEntryFieldBuilder().addBuilder(index,
-                        com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.getDefaultInstance());
+                        com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry.getDefaultInstance());
             }
 
             /**
              * <code>repeated .DependencyEntry dependency_entry = 4;</code>
              */
-            public java.util.List<com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.Builder> getDependencyEntryBuilderList() {
+            public java.util.List<com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry.Builder> getDependencyEntryBuilderList() {
                 return getDependencyEntryFieldBuilder().getBuilderList();
             }
 
-            private com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry, com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.Builder, com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntryOrBuilder> getDependencyEntryFieldBuilder() {
+            private com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry, com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry.Builder, com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntryOrBuilder> getDependencyEntryFieldBuilder() {
                 if (dependencyEntryBuilder_ == null) {
-                    dependencyEntryBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry, com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.Builder, com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntryOrBuilder>(
+                    dependencyEntryBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry, com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry.Builder, com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntryOrBuilder>(
                             dependencyEntry_, ((bitField0_ & 0x00000008) == 0x00000008), getParentForChildren(), isClean());
                     dependencyEntry_ = null;
                 }
@@ -8661,12 +8668,12 @@ public final class JobProtos {
         /**
          * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
          */
-        java.util.List<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry> getExpressionEntryList();
+        java.util.List<com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry> getExpressionEntryList();
 
         /**
          * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
          */
-        com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry getExpressionEntry(int index);
+        com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry getExpressionEntry(int index);
 
         /**
          * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
@@ -8676,12 +8683,12 @@ public final class JobProtos {
         /**
          * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
          */
-        java.util.List<? extends com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder> getExpressionEntryOrBuilderList();
+        java.util.List<? extends com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder> getExpressionEntryOrBuilderList();
 
         /**
          * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
          */
-        com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder getExpressionEntryOrBuilder(int index);
+        com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder getExpressionEntryOrBuilder(int index);
     }
 
     /**
@@ -8767,11 +8774,11 @@ public final class JobProtos {
                         }
                         case 130: {
                             if (!((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
-                                expressionEntry_ = new java.util.ArrayList<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry>();
+                                expressionEntry_ = new java.util.ArrayList<com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry>();
                                 mutable_bitField0_ |= 0x00000008;
                             }
                             expressionEntry_.add(input.readMessage(
-                                    com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.PARSER, extensionRegistry));
+                                    com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry.PARSER, extensionRegistry));
                             break;
                         }
                     }
@@ -8905,13 +8912,13 @@ public final class JobProtos {
         }
 
         public static final int EXPRESSION_ENTRY_FIELD_NUMBER = 16;
-        private java.util.List<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry> expressionEntry_;
+        private java.util.List<com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry> expressionEntry_;
 
         /**
          * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
          */
         @Override
-        public java.util.List<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry> getExpressionEntryList() {
+        public java.util.List<com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry> getExpressionEntryList() {
             return expressionEntry_;
         }
 
@@ -8919,7 +8926,7 @@ public final class JobProtos {
          * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
          */
         @Override
-        public java.util.List<? extends com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder> getExpressionEntryOrBuilderList() {
+        public java.util.List<? extends com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder> getExpressionEntryOrBuilderList() {
             return expressionEntry_;
         }
 
@@ -8935,7 +8942,7 @@ public final class JobProtos {
          * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
          */
         @Override
-        public com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry getExpressionEntry(int index) {
+        public com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry getExpressionEntry(int index) {
             return expressionEntry_.get(index);
         }
 
@@ -8943,7 +8950,7 @@ public final class JobProtos {
          * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
          */
         @Override
-        public com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder getExpressionEntryOrBuilder(int index) {
+        public com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder getExpressionEntryOrBuilder(int index) {
             return expressionEntry_.get(index);
         }
 
@@ -9576,24 +9583,24 @@ public final class JobProtos {
                 return this;
             }
 
-            private java.util.List<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry> expressionEntry_ = java.util.Collections
+            private java.util.List<com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry> expressionEntry_ = java.util.Collections
                     .emptyList();
 
             private void ensureExpressionEntryIsMutable() {
                 if (!((bitField0_ & 0x00000008) == 0x00000008)) {
-                    expressionEntry_ = new java.util.ArrayList<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry>(
+                    expressionEntry_ = new java.util.ArrayList<com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry>(
                             expressionEntry_);
                     bitField0_ |= 0x00000008;
                 }
             }
 
-            private com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder> expressionEntryBuilder_;
+            private com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry, com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder, com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder> expressionEntryBuilder_;
 
             /**
              * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
              */
             @Override
-            public java.util.List<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry> getExpressionEntryList() {
+            public java.util.List<com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry> getExpressionEntryList() {
                 if (expressionEntryBuilder_ == null) {
                     return java.util.Collections.unmodifiableList(expressionEntry_);
                 } else {
@@ -9617,7 +9624,7 @@ public final class JobProtos {
              * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
              */
             @Override
-            public com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry getExpressionEntry(int index) {
+            public com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry getExpressionEntry(int index) {
                 if (expressionEntryBuilder_ == null) {
                     return expressionEntry_.get(index);
                 } else {
@@ -9628,7 +9635,7 @@ public final class JobProtos {
             /**
              * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
              */
-            public Builder setExpressionEntry(int index, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry value) {
+            public Builder setExpressionEntry(int index, com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry value) {
                 if (expressionEntryBuilder_ == null) {
                     if (value == null) {
                         throw new NullPointerException();
@@ -9646,7 +9653,7 @@ public final class JobProtos {
              * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
              */
             public Builder setExpressionEntry(int index,
-                    com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder builderForValue) {
+                    com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder builderForValue) {
                 if (expressionEntryBuilder_ == null) {
                     ensureExpressionEntryIsMutable();
                     expressionEntry_.set(index, builderForValue.build());
@@ -9660,7 +9667,7 @@ public final class JobProtos {
             /**
              * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
              */
-            public Builder addExpressionEntry(com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry value) {
+            public Builder addExpressionEntry(com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry value) {
                 if (expressionEntryBuilder_ == null) {
                     if (value == null) {
                         throw new NullPointerException();
@@ -9677,7 +9684,7 @@ public final class JobProtos {
             /**
              * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
              */
-            public Builder addExpressionEntry(int index, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry value) {
+            public Builder addExpressionEntry(int index, com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry value) {
                 if (expressionEntryBuilder_ == null) {
                     if (value == null) {
                         throw new NullPointerException();
@@ -9695,7 +9702,7 @@ public final class JobProtos {
              * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
              */
             public Builder addExpressionEntry(
-                    com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder builderForValue) {
+                    com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder builderForValue) {
                 if (expressionEntryBuilder_ == null) {
                     ensureExpressionEntryIsMutable();
                     expressionEntry_.add(builderForValue.build());
@@ -9710,7 +9717,7 @@ public final class JobProtos {
              * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
              */
             public Builder addExpressionEntry(int index,
-                    com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder builderForValue) {
+                    com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder builderForValue) {
                 if (expressionEntryBuilder_ == null) {
                     ensureExpressionEntryIsMutable();
                     expressionEntry_.add(index, builderForValue.build());
@@ -9725,7 +9732,7 @@ public final class JobProtos {
              * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
              */
             public Builder addAllExpressionEntry(
-                    java.lang.Iterable<? extends com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry> values) {
+                    java.lang.Iterable<? extends com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry> values) {
                 if (expressionEntryBuilder_ == null) {
                     ensureExpressionEntryIsMutable();
                     com.google.protobuf.AbstractMessageLite.Builder.addAll(values, expressionEntry_);
@@ -9767,7 +9774,7 @@ public final class JobProtos {
             /**
              * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
              */
-            public com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder getExpressionEntryBuilder(int index) {
+            public com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder getExpressionEntryBuilder(int index) {
                 return getExpressionEntryFieldBuilder().getBuilder(index);
             }
 
@@ -9775,7 +9782,8 @@ public final class JobProtos {
              * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
              */
             @Override
-            public com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder getExpressionEntryOrBuilder(int index) {
+            public com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder getExpressionEntryOrBuilder(
+                    int index) {
                 if (expressionEntryBuilder_ == null) {
                     return expressionEntry_.get(index);
                 } else {
@@ -9787,7 +9795,7 @@ public final class JobProtos {
              * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
              */
             @Override
-            public java.util.List<? extends com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder> getExpressionEntryOrBuilderList() {
+            public java.util.List<? extends com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder> getExpressionEntryOrBuilderList() {
                 if (expressionEntryBuilder_ != null) {
                     return expressionEntryBuilder_.getMessageOrBuilderList();
                 } else {
@@ -9798,29 +9806,29 @@ public final class JobProtos {
             /**
              * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
              */
-            public com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder addExpressionEntryBuilder() {
+            public com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder addExpressionEntryBuilder() {
                 return getExpressionEntryFieldBuilder()
-                        .addBuilder(com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.getDefaultInstance());
+                        .addBuilder(com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry.getDefaultInstance());
             }
 
             /**
              * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
              */
-            public com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder addExpressionEntryBuilder(int index) {
+            public com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder addExpressionEntryBuilder(int index) {
                 return getExpressionEntryFieldBuilder().addBuilder(index,
-                        com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.getDefaultInstance());
+                        com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry.getDefaultInstance());
             }
 
             /**
              * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
              */
-            public java.util.List<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder> getExpressionEntryBuilderList() {
+            public java.util.List<com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder> getExpressionEntryBuilderList() {
                 return getExpressionEntryFieldBuilder().getBuilderList();
             }
 
-            private com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder> getExpressionEntryFieldBuilder() {
+            private com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry, com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder, com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder> getExpressionEntryFieldBuilder() {
                 if (expressionEntryBuilder_ == null) {
-                    expressionEntryBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder>(
+                    expressionEntryBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry, com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder, com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder>(
                             expressionEntry_, ((bitField0_ & 0x00000008) == 0x00000008), getParentForChildren(), isClean());
                     expressionEntry_ = null;
                 }
@@ -14575,12 +14583,12 @@ public final class JobProtos {
         /**
          * <code>repeated .ScheduleExpressionEntry expression_list = 15;</code>
          */
-        java.util.List<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry> getExpressionListList();
+        java.util.List<com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry> getExpressionListList();
 
         /**
          * <code>repeated .ScheduleExpressionEntry expression_list = 15;</code>
          */
-        com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry getExpressionList(int index);
+        com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry getExpressionList(int index);
 
         /**
          * <code>repeated .ScheduleExpressionEntry expression_list = 15;</code>
@@ -14590,22 +14598,22 @@ public final class JobProtos {
         /**
          * <code>repeated .ScheduleExpressionEntry expression_list = 15;</code>
          */
-        java.util.List<? extends com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder> getExpressionListOrBuilderList();
+        java.util.List<? extends com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder> getExpressionListOrBuilderList();
 
         /**
          * <code>repeated .ScheduleExpressionEntry expression_list = 15;</code>
          */
-        com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder getExpressionListOrBuilder(int index);
+        com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder getExpressionListOrBuilder(int index);
 
         /**
          * <code>repeated .DependencyEntry dependency_list = 16;</code>
          */
-        java.util.List<com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry> getDependencyListList();
+        java.util.List<com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry> getDependencyListList();
 
         /**
          * <code>repeated .DependencyEntry dependency_list = 16;</code>
          */
-        com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry getDependencyList(int index);
+        com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry getDependencyList(int index);
 
         /**
          * <code>repeated .DependencyEntry dependency_list = 16;</code>
@@ -14615,12 +14623,12 @@ public final class JobProtos {
         /**
          * <code>repeated .DependencyEntry dependency_list = 16;</code>
          */
-        java.util.List<? extends com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntryOrBuilder> getDependencyListOrBuilderList();
+        java.util.List<? extends com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntryOrBuilder> getDependencyListOrBuilderList();
 
         /**
          * <code>repeated .DependencyEntry dependency_list = 16;</code>
          */
-        com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntryOrBuilder getDependencyListOrBuilder(int index);
+        com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntryOrBuilder getDependencyListOrBuilder(int index);
     }
 
     /**
@@ -14753,20 +14761,20 @@ public final class JobProtos {
                         }
                         case 122: {
                             if (!((mutable_bitField0_ & 0x00004000) == 0x00004000)) {
-                                expressionList_ = new java.util.ArrayList<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry>();
+                                expressionList_ = new java.util.ArrayList<com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry>();
                                 mutable_bitField0_ |= 0x00004000;
                             }
                             expressionList_.add(input.readMessage(
-                                    com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.PARSER, extensionRegistry));
+                                    com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry.PARSER, extensionRegistry));
                             break;
                         }
                         case 130: {
                             if (!((mutable_bitField0_ & 0x00008000) == 0x00008000)) {
-                                dependencyList_ = new java.util.ArrayList<com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry>();
+                                dependencyList_ = new java.util.ArrayList<com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry>();
                                 mutable_bitField0_ |= 0x00008000;
                             }
-                            dependencyList_.add(
-                                    input.readMessage(com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.PARSER, extensionRegistry));
+                            dependencyList_.add(input.readMessage(com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry.PARSER,
+                                    extensionRegistry));
                             break;
                         }
                     }
@@ -15203,13 +15211,13 @@ public final class JobProtos {
         }
 
         public static final int EXPRESSION_LIST_FIELD_NUMBER = 15;
-        private java.util.List<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry> expressionList_;
+        private java.util.List<com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry> expressionList_;
 
         /**
          * <code>repeated .ScheduleExpressionEntry expression_list = 15;</code>
          */
         @Override
-        public java.util.List<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry> getExpressionListList() {
+        public java.util.List<com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry> getExpressionListList() {
             return expressionList_;
         }
 
@@ -15217,7 +15225,7 @@ public final class JobProtos {
          * <code>repeated .ScheduleExpressionEntry expression_list = 15;</code>
          */
         @Override
-        public java.util.List<? extends com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder> getExpressionListOrBuilderList() {
+        public java.util.List<? extends com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder> getExpressionListOrBuilderList() {
             return expressionList_;
         }
 
@@ -15233,7 +15241,7 @@ public final class JobProtos {
          * <code>repeated .ScheduleExpressionEntry expression_list = 15;</code>
          */
         @Override
-        public com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry getExpressionList(int index) {
+        public com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry getExpressionList(int index) {
             return expressionList_.get(index);
         }
 
@@ -15241,18 +15249,18 @@ public final class JobProtos {
          * <code>repeated .ScheduleExpressionEntry expression_list = 15;</code>
          */
         @Override
-        public com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder getExpressionListOrBuilder(int index) {
+        public com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder getExpressionListOrBuilder(int index) {
             return expressionList_.get(index);
         }
 
         public static final int DEPENDENCY_LIST_FIELD_NUMBER = 16;
-        private java.util.List<com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry> dependencyList_;
+        private java.util.List<com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry> dependencyList_;
 
         /**
          * <code>repeated .DependencyEntry dependency_list = 16;</code>
          */
         @Override
-        public java.util.List<com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry> getDependencyListList() {
+        public java.util.List<com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry> getDependencyListList() {
             return dependencyList_;
         }
 
@@ -15260,7 +15268,7 @@ public final class JobProtos {
          * <code>repeated .DependencyEntry dependency_list = 16;</code>
          */
         @Override
-        public java.util.List<? extends com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntryOrBuilder> getDependencyListOrBuilderList() {
+        public java.util.List<? extends com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntryOrBuilder> getDependencyListOrBuilderList() {
             return dependencyList_;
         }
 
@@ -15276,7 +15284,7 @@ public final class JobProtos {
          * <code>repeated .DependencyEntry dependency_list = 16;</code>
          */
         @Override
-        public com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry getDependencyList(int index) {
+        public com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry getDependencyList(int index) {
             return dependencyList_.get(index);
         }
 
@@ -15284,7 +15292,7 @@ public final class JobProtos {
          * <code>repeated .DependencyEntry dependency_list = 16;</code>
          */
         @Override
-        public com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntryOrBuilder getDependencyListOrBuilder(int index) {
+        public com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntryOrBuilder getDependencyListOrBuilder(int index) {
             return dependencyList_.get(index);
         }
 
@@ -16723,24 +16731,24 @@ public final class JobProtos {
                 return this;
             }
 
-            private java.util.List<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry> expressionList_ = java.util.Collections
+            private java.util.List<com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry> expressionList_ = java.util.Collections
                     .emptyList();
 
             private void ensureExpressionListIsMutable() {
                 if (!((bitField0_ & 0x00004000) == 0x00004000)) {
-                    expressionList_ = new java.util.ArrayList<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry>(
+                    expressionList_ = new java.util.ArrayList<com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry>(
                             expressionList_);
                     bitField0_ |= 0x00004000;
                 }
             }
 
-            private com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder> expressionListBuilder_;
+            private com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry, com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder, com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder> expressionListBuilder_;
 
             /**
              * <code>repeated .ScheduleExpressionEntry expression_list = 15;</code>
              */
             @Override
-            public java.util.List<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry> getExpressionListList() {
+            public java.util.List<com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry> getExpressionListList() {
                 if (expressionListBuilder_ == null) {
                     return java.util.Collections.unmodifiableList(expressionList_);
                 } else {
@@ -16764,7 +16772,7 @@ public final class JobProtos {
              * <code>repeated .ScheduleExpressionEntry expression_list = 15;</code>
              */
             @Override
-            public com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry getExpressionList(int index) {
+            public com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry getExpressionList(int index) {
                 if (expressionListBuilder_ == null) {
                     return expressionList_.get(index);
                 } else {
@@ -16775,7 +16783,7 @@ public final class JobProtos {
             /**
              * <code>repeated .ScheduleExpressionEntry expression_list = 15;</code>
              */
-            public Builder setExpressionList(int index, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry value) {
+            public Builder setExpressionList(int index, com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry value) {
                 if (expressionListBuilder_ == null) {
                     if (value == null) {
                         throw new NullPointerException();
@@ -16793,7 +16801,7 @@ public final class JobProtos {
              * <code>repeated .ScheduleExpressionEntry expression_list = 15;</code>
              */
             public Builder setExpressionList(int index,
-                    com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder builderForValue) {
+                    com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder builderForValue) {
                 if (expressionListBuilder_ == null) {
                     ensureExpressionListIsMutable();
                     expressionList_.set(index, builderForValue.build());
@@ -16807,7 +16815,7 @@ public final class JobProtos {
             /**
              * <code>repeated .ScheduleExpressionEntry expression_list = 15;</code>
              */
-            public Builder addExpressionList(com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry value) {
+            public Builder addExpressionList(com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry value) {
                 if (expressionListBuilder_ == null) {
                     if (value == null) {
                         throw new NullPointerException();
@@ -16824,7 +16832,7 @@ public final class JobProtos {
             /**
              * <code>repeated .ScheduleExpressionEntry expression_list = 15;</code>
              */
-            public Builder addExpressionList(int index, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry value) {
+            public Builder addExpressionList(int index, com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry value) {
                 if (expressionListBuilder_ == null) {
                     if (value == null) {
                         throw new NullPointerException();
@@ -16842,7 +16850,7 @@ public final class JobProtos {
              * <code>repeated .ScheduleExpressionEntry expression_list = 15;</code>
              */
             public Builder addExpressionList(
-                    com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder builderForValue) {
+                    com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder builderForValue) {
                 if (expressionListBuilder_ == null) {
                     ensureExpressionListIsMutable();
                     expressionList_.add(builderForValue.build());
@@ -16857,7 +16865,7 @@ public final class JobProtos {
              * <code>repeated .ScheduleExpressionEntry expression_list = 15;</code>
              */
             public Builder addExpressionList(int index,
-                    com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder builderForValue) {
+                    com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder builderForValue) {
                 if (expressionListBuilder_ == null) {
                     ensureExpressionListIsMutable();
                     expressionList_.add(index, builderForValue.build());
@@ -16872,7 +16880,7 @@ public final class JobProtos {
              * <code>repeated .ScheduleExpressionEntry expression_list = 15;</code>
              */
             public Builder addAllExpressionList(
-                    java.lang.Iterable<? extends com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry> values) {
+                    java.lang.Iterable<? extends com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry> values) {
                 if (expressionListBuilder_ == null) {
                     ensureExpressionListIsMutable();
                     com.google.protobuf.AbstractMessageLite.Builder.addAll(values, expressionList_);
@@ -16914,7 +16922,7 @@ public final class JobProtos {
             /**
              * <code>repeated .ScheduleExpressionEntry expression_list = 15;</code>
              */
-            public com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder getExpressionListBuilder(int index) {
+            public com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder getExpressionListBuilder(int index) {
                 return getExpressionListFieldBuilder().getBuilder(index);
             }
 
@@ -16922,7 +16930,8 @@ public final class JobProtos {
              * <code>repeated .ScheduleExpressionEntry expression_list = 15;</code>
              */
             @Override
-            public com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder getExpressionListOrBuilder(int index) {
+            public com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder getExpressionListOrBuilder(
+                    int index) {
                 if (expressionListBuilder_ == null) {
                     return expressionList_.get(index);
                 } else {
@@ -16934,7 +16943,7 @@ public final class JobProtos {
              * <code>repeated .ScheduleExpressionEntry expression_list = 15;</code>
              */
             @Override
-            public java.util.List<? extends com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder> getExpressionListOrBuilderList() {
+            public java.util.List<? extends com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder> getExpressionListOrBuilderList() {
                 if (expressionListBuilder_ != null) {
                     return expressionListBuilder_.getMessageOrBuilderList();
                 } else {
@@ -16945,52 +16954,52 @@ public final class JobProtos {
             /**
              * <code>repeated .ScheduleExpressionEntry expression_list = 15;</code>
              */
-            public com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder addExpressionListBuilder() {
+            public com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder addExpressionListBuilder() {
                 return getExpressionListFieldBuilder()
-                        .addBuilder(com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.getDefaultInstance());
+                        .addBuilder(com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry.getDefaultInstance());
             }
 
             /**
              * <code>repeated .ScheduleExpressionEntry expression_list = 15;</code>
              */
-            public com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder addExpressionListBuilder(int index) {
+            public com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder addExpressionListBuilder(int index) {
                 return getExpressionListFieldBuilder().addBuilder(index,
-                        com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.getDefaultInstance());
+                        com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry.getDefaultInstance());
             }
 
             /**
              * <code>repeated .ScheduleExpressionEntry expression_list = 15;</code>
              */
-            public java.util.List<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder> getExpressionListBuilderList() {
+            public java.util.List<com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder> getExpressionListBuilderList() {
                 return getExpressionListFieldBuilder().getBuilderList();
             }
 
-            private com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder> getExpressionListFieldBuilder() {
+            private com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry, com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder, com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder> getExpressionListFieldBuilder() {
                 if (expressionListBuilder_ == null) {
-                    expressionListBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder, com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder>(
+                    expressionListBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry, com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder, com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder>(
                             expressionList_, ((bitField0_ & 0x00004000) == 0x00004000), getParentForChildren(), isClean());
                     expressionList_ = null;
                 }
                 return expressionListBuilder_;
             }
 
-            private java.util.List<com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry> dependencyList_ = java.util.Collections
+            private java.util.List<com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry> dependencyList_ = java.util.Collections
                     .emptyList();
 
             private void ensureDependencyListIsMutable() {
                 if (!((bitField0_ & 0x00008000) == 0x00008000)) {
-                    dependencyList_ = new java.util.ArrayList<com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry>(dependencyList_);
+                    dependencyList_ = new java.util.ArrayList<com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry>(dependencyList_);
                     bitField0_ |= 0x00008000;
                 }
             }
 
-            private com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry, com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.Builder, com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntryOrBuilder> dependencyListBuilder_;
+            private com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry, com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry.Builder, com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntryOrBuilder> dependencyListBuilder_;
 
             /**
              * <code>repeated .DependencyEntry dependency_list = 16;</code>
              */
             @Override
-            public java.util.List<com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry> getDependencyListList() {
+            public java.util.List<com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry> getDependencyListList() {
                 if (dependencyListBuilder_ == null) {
                     return java.util.Collections.unmodifiableList(dependencyList_);
                 } else {
@@ -17014,7 +17023,7 @@ public final class JobProtos {
              * <code>repeated .DependencyEntry dependency_list = 16;</code>
              */
             @Override
-            public com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry getDependencyList(int index) {
+            public com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry getDependencyList(int index) {
                 if (dependencyListBuilder_ == null) {
                     return dependencyList_.get(index);
                 } else {
@@ -17025,7 +17034,7 @@ public final class JobProtos {
             /**
              * <code>repeated .DependencyEntry dependency_list = 16;</code>
              */
-            public Builder setDependencyList(int index, com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry value) {
+            public Builder setDependencyList(int index, com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry value) {
                 if (dependencyListBuilder_ == null) {
                     if (value == null) {
                         throw new NullPointerException();
@@ -17042,7 +17051,8 @@ public final class JobProtos {
             /**
              * <code>repeated .DependencyEntry dependency_list = 16;</code>
              */
-            public Builder setDependencyList(int index, com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.Builder builderForValue) {
+            public Builder setDependencyList(int index,
+                    com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry.Builder builderForValue) {
                 if (dependencyListBuilder_ == null) {
                     ensureDependencyListIsMutable();
                     dependencyList_.set(index, builderForValue.build());
@@ -17056,7 +17066,7 @@ public final class JobProtos {
             /**
              * <code>repeated .DependencyEntry dependency_list = 16;</code>
              */
-            public Builder addDependencyList(com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry value) {
+            public Builder addDependencyList(com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry value) {
                 if (dependencyListBuilder_ == null) {
                     if (value == null) {
                         throw new NullPointerException();
@@ -17073,7 +17083,7 @@ public final class JobProtos {
             /**
              * <code>repeated .DependencyEntry dependency_list = 16;</code>
              */
-            public Builder addDependencyList(int index, com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry value) {
+            public Builder addDependencyList(int index, com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry value) {
                 if (dependencyListBuilder_ == null) {
                     if (value == null) {
                         throw new NullPointerException();
@@ -17090,7 +17100,7 @@ public final class JobProtos {
             /**
              * <code>repeated .DependencyEntry dependency_list = 16;</code>
              */
-            public Builder addDependencyList(com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.Builder builderForValue) {
+            public Builder addDependencyList(com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry.Builder builderForValue) {
                 if (dependencyListBuilder_ == null) {
                     ensureDependencyListIsMutable();
                     dependencyList_.add(builderForValue.build());
@@ -17104,7 +17114,8 @@ public final class JobProtos {
             /**
              * <code>repeated .DependencyEntry dependency_list = 16;</code>
              */
-            public Builder addDependencyList(int index, com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.Builder builderForValue) {
+            public Builder addDependencyList(int index,
+                    com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry.Builder builderForValue) {
                 if (dependencyListBuilder_ == null) {
                     ensureDependencyListIsMutable();
                     dependencyList_.add(index, builderForValue.build());
@@ -17119,7 +17130,7 @@ public final class JobProtos {
              * <code>repeated .DependencyEntry dependency_list = 16;</code>
              */
             public Builder addAllDependencyList(
-                    java.lang.Iterable<? extends com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry> values) {
+                    java.lang.Iterable<? extends com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry> values) {
                 if (dependencyListBuilder_ == null) {
                     ensureDependencyListIsMutable();
                     com.google.protobuf.AbstractMessageLite.Builder.addAll(values, dependencyList_);
@@ -17161,7 +17172,7 @@ public final class JobProtos {
             /**
              * <code>repeated .DependencyEntry dependency_list = 16;</code>
              */
-            public com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.Builder getDependencyListBuilder(int index) {
+            public com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry.Builder getDependencyListBuilder(int index) {
                 return getDependencyListFieldBuilder().getBuilder(index);
             }
 
@@ -17169,7 +17180,7 @@ public final class JobProtos {
              * <code>repeated .DependencyEntry dependency_list = 16;</code>
              */
             @Override
-            public com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntryOrBuilder getDependencyListOrBuilder(int index) {
+            public com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntryOrBuilder getDependencyListOrBuilder(int index) {
                 if (dependencyListBuilder_ == null) {
                     return dependencyList_.get(index);
                 } else {
@@ -17181,7 +17192,7 @@ public final class JobProtos {
              * <code>repeated .DependencyEntry dependency_list = 16;</code>
              */
             @Override
-            public java.util.List<? extends com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntryOrBuilder> getDependencyListOrBuilderList() {
+            public java.util.List<? extends com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntryOrBuilder> getDependencyListOrBuilderList() {
                 if (dependencyListBuilder_ != null) {
                     return dependencyListBuilder_.getMessageOrBuilderList();
                 } else {
@@ -17192,29 +17203,29 @@ public final class JobProtos {
             /**
              * <code>repeated .DependencyEntry dependency_list = 16;</code>
              */
-            public com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.Builder addDependencyListBuilder() {
+            public com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry.Builder addDependencyListBuilder() {
                 return getDependencyListFieldBuilder()
-                        .addBuilder(com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.getDefaultInstance());
+                        .addBuilder(com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry.getDefaultInstance());
             }
 
             /**
              * <code>repeated .DependencyEntry dependency_list = 16;</code>
              */
-            public com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.Builder addDependencyListBuilder(int index) {
+            public com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry.Builder addDependencyListBuilder(int index) {
                 return getDependencyListFieldBuilder().addBuilder(index,
-                        com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.getDefaultInstance());
+                        com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry.getDefaultInstance());
             }
 
             /**
              * <code>repeated .DependencyEntry dependency_list = 16;</code>
              */
-            public java.util.List<com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.Builder> getDependencyListBuilderList() {
+            public java.util.List<com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry.Builder> getDependencyListBuilderList() {
                 return getDependencyListFieldBuilder().getBuilderList();
             }
 
-            private com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry, com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.Builder, com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntryOrBuilder> getDependencyListFieldBuilder() {
+            private com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry, com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry.Builder, com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntryOrBuilder> getDependencyListFieldBuilder() {
                 if (dependencyListBuilder_ == null) {
-                    dependencyListBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry, com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry.Builder, com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntryOrBuilder>(
+                    dependencyListBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry, com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry.Builder, com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntryOrBuilder>(
                             dependencyList_, ((bitField0_ & 0x00008000) == 0x00008000), getParentForChildren(), isClean());
                     dependencyList_ = null;
                 }
@@ -19084,65 +19095,64 @@ public final class JobProtos {
 
     static {
         java.lang.String[] descriptorData = {
-                "\n\tjob.proto\032\026dependency_entry.proto\032\016app" + "_auth.proto\032\037schedule_expression_entry.p"
-                        + "roto\"\333\003\n\024RestSubmitJobRequest\022\032\n\010app_aut"
-                        + "h\030\001 \002(\0132\010.AppAuth\022\014\n\004user\030\002 \002(\t\022\020\n\010job_n"
-                        + "ame\030\003 \002(\t\022\020\n\010job_type\030\004 \002(\t\022\016\n\006status\030\005 "
-                        + "\002(\005\022\017\n\007content\030\006 \002(\t\022\024\n\nparameters\030\007 \001(\t"
-                        + ":\000\022\020\n\010app_name\030\010 \001(\t\022\027\n\017worker_group_id\030"
-                        + "\t \002(\005\022\027\n\014biz_group_id\030\n \001(\005:\0010\022\023\n\010priori"
-                        + "ty\030\013 \001(\005:\0011\022\031\n\021active_start_time\030\014 \001(\003\022\027"
-                        + "\n\017active_end_time\030\r \001(\003\022\031\n\014expired_time\030",
-                "\016 \001(\005:\003600\022\032\n\017failed_attempts\030\017 \001(\005:\0010\022\032"
-                        + "\n\017failed_interval\030\020 \001(\005:\0013\0222\n\020expression"
-                        + "_entry\030\021 \003(\0132\030.ScheduleExpressionEntry\022*" + "\n\020dependency_entry\030\022 \003(\0132\020.DependencyEnt"
-                        + "ry\"M\n\027ServerSubmitJobResponse\022\016\n\006job_id\030"
-                        + "\001 \001(\003\022\017\n\007success\030\002 \002(\010\022\021\n\007message\030\003 \001(\t:"
-                        + "\000\"\350\002\n\024RestModifyJobRequest\022\032\n\010app_auth\030\001"
+                "\n\tjob.proto\032\032job_dependency_entry.proto\032" + "\016app_auth.proto\032#job_schedule_expression"
+                        + "_entry.proto\"\333\003\n\024RestSubmitJobRequest\022\032\n"
+                        + "\010app_auth\030\001 \002(\0132\010.AppAuth\022\014\n\004user\030\002 \002(\t\022"
+                        + "\020\n\010job_name\030\003 \002(\t\022\020\n\010job_type\030\004 \002(\t\022\016\n\006s"
+                        + "tatus\030\005 \002(\005\022\017\n\007content\030\006 \002(\t\022\024\n\nparamete"
+                        + "rs\030\007 \001(\t:\000\022\020\n\010app_name\030\010 \001(\t\022\027\n\017worker_g"
+                        + "roup_id\030\t \002(\005\022\027\n\014biz_group_id\030\n \001(\005:\0010\022\023"
+                        + "\n\010priority\030\013 \001(\005:\0011\022\031\n\021active_start_time"
+                        + "\030\014 \001(\003\022\027\n\017active_end_time\030\r \001(\003\022\031\n\014expir",
+                "ed_time\030\016 \001(\005:\003600\022\032\n\017failed_attempts\030\017 "
+                        + "\001(\005:\0010\022\032\n\017failed_interval\030\020 \001(\005:\0013\0222\n\020ex"
+                        + "pression_entry\030\021 \003(\0132\030.ScheduleExpressio" + "nEntry\022*\n\020dependency_entry\030\022 \003(\0132\020.Depen"
+                        + "dencyEntry\"M\n\027ServerSubmitJobResponse\022\016\n"
+                        + "\006job_id\030\001 \001(\003\022\017\n\007success\030\002 \002(\010\022\021\n\007messag"
+                        + "e\030\003 \001(\t:\000\"\350\002\n\024RestModifyJobRequest\022\032\n\010ap"
+                        + "p_auth\030\001 \002(\0132\010.AppAuth\022\014\n\004user\030\002 \002(\t\022\016\n\006"
+                        + "job_id\030\003 \002(\003\022\020\n\010job_name\030\004 \001(\t\022\020\n\010job_ty"
+                        + "pe\030\005 \001(\t\022\017\n\007content\030\006 \001(\t\022\022\n\nparameters\030",
+                "\007 \001(\t\022\020\n\010app_name\030\010 \001(\t\022\027\n\017worker_group_"
+                        + "id\030\t \001(\005\022\024\n\014biz_group_id\030\n \001(\005\022\020\n\010priori"
+                        + "ty\030\013 \001(\005\022\031\n\021active_start_time\030\014 \001(\003\022\027\n\017a"
+                        + "ctive_end_time\030\r \001(\003\022\024\n\014expired_time\030\016 \001"
+                        + "(\005\022\027\n\017failed_attempts\030\017 \001(\005\022\027\n\017failed_in"
+                        + "terval\030\020 \001(\005\"=\n\027ServerModifyJobResponse\022"
+                        + "\017\n\007success\030\001 \002(\010\022\021\n\007message\030\002 \001(\t:\000\"\202\001\n\032"
+                        + "RestModifyJobDependRequest\022\032\n\010app_auth\030\001"
                         + " \002(\0132\010.AppAuth\022\014\n\004user\030\002 \002(\t\022\016\n\006job_id\030\003"
-                        + " \002(\003\022\020\n\010job_name\030\004 \001(\t\022\020\n\010job_type\030\005 \001(\t"
-                        + "\022\017\n\007content\030\006 \001(\t\022\022\n\nparameters\030\007 \001(\t\022\020\n",
-                "\010app_name\030\010 \001(\t\022\027\n\017worker_group_id\030\t \001(\005"
-                        + "\022\024\n\014biz_group_id\030\n \001(\005\022\020\n\010priority\030\013 \001(\005"
-                        + "\022\031\n\021active_start_time\030\014 \001(\003\022\027\n\017active_en"
-                        + "d_time\030\r \001(\003\022\024\n\014expired_time\030\016 \001(\005\022\027\n\017fa"
-                        + "iled_attempts\030\017 \001(\005\022\027\n\017failed_interval\030\020"
-                        + " \001(\005\"=\n\027ServerModifyJobResponse\022\017\n\007succe"
-                        + "ss\030\001 \002(\010\022\021\n\007message\030\002 \001(\t:\000\"\202\001\n\032RestModi"
-                        + "fyJobDependRequest\022\032\n\010app_auth\030\001 \002(\0132\010.A"
-                        + "ppAuth\022\014\n\004user\030\002 \002(\t\022\016\n\006job_id\030\003 \002(\003\022*\n\020"
-                        + "dependency_entry\030\004 \003(\0132\020.DependencyEntry",
-                "\"C\n\035ServerModifyJobDependResponse\022\017\n\007suc"
-                        + "cess\030\001 \002(\010\022\021\n\007message\030\002 \001(\t:\000\"\217\001\n\037RestMo"
-                        + "difyJobScheduleExpRequest\022\032\n\010app_auth\030\001 "
-                        + "\002(\0132\010.AppAuth\022\014\n\004user\030\002 \002(\t\022\016\n\006job_id\030\003 "
-                        + "\002(\003\0222\n\020expression_entry\030\020 \003(\0132\030.Schedule" + "ExpressionEntry\"H\n\"ServerModifyJobSchedu"
-                        + "leExpResponse\022\017\n\007success\030\001 \002(\010\022\021\n\007messag"
-                        + "e\030\002 \001(\t:\000\"f\n\032RestModifyJobStatusRequest\022"
-                        + "\032\n\010app_auth\030\001 \002(\0132\010.AppAuth\022\014\n\004user\030\002 \002("
-                        + "\t\022\016\n\006job_id\030\003 \002(\003\022\016\n\006status\030\004 \002(\005\"C\n\035Ser",
-                "verModifyJobStatusResponse\022\017\n\007success\030\001 "
-                        + "\002(\010\022\021\n\007message\030\002 \001(\t:\000\"0\n\016JobStatusEntry"
-                        + "\022\016\n\006job_id\030\001 \002(\003\022\016\n\006status\030\002 \002(\005\"n\n\033Rest"
-                        + "QueryJobRelationRequest\022\032\n\010app_auth\030\001 \002("
-                        + "\0132\010.AppAuth\022\014\n\004user\030\002 \002(\t\022\016\n\006job_id\030\003 \002("
-                        + "\003\022\025\n\rrelation_type\030\004 \002(\005\"o\n\036ServerQueryJ"
-                        + "obRelationResponse\022)\n\020job_status_entry\030\001"
-                        + " \003(\0132\017.JobStatusEntry\022\017\n\007success\030\002 \002(\010\022\021"
-                        + "\n\007message\030\003 \001(\t:\000\"\212\003\n\010jobEntry\022\016\n\006job_id"
-                        + "\030\001 \002(\003\022\020\n\010job_name\030\002 \002(\t\022\020\n\010job_type\030\003 \002",
-                "(\t\022\016\n\006status\030\004 \002(\005\022\017\n\007content\030\005 \002(\t\022\022\n\np"
-                        + "arameters\030\006 \002(\t\022\020\n\010app_name\030\007 \002(\t\022\027\n\017wor"
-                        + "ker_group_id\030\010 \002(\005\022\020\n\010priority\030\t \002(\005\022\031\n\021"
-                        + "active_start_time\030\n \002(\003\022\027\n\017active_end_ti"
-                        + "me\030\013 \002(\003\022\024\n\014expired_time\030\014 \002(\005\022\027\n\017failed"
-                        + "_attempts\030\r \002(\005\022\027\n\017failed_interval\030\016 \002(\005"
-                        + "\0221\n\017expression_list\030\017 \003(\0132\030.ScheduleExpr"
-                        + "essionEntry\022)\n\017dependency_list\030\020 \003(\0132\020.D" + "ependencyEntry\"O\n\023RestQueryJobRequest\022\032\n"
-                        + "\010app_auth\030\001 \002(\0132\010.AppAuth\022\014\n\004user\030\002 \002(\t\022",
-                "\016\n\006job_id\030\003 \002(\003\"U\n\026ServerQueryJobRespons"
-                        + "e\022\027\n\004list\030\001 \003(\0132\t.jobEntry\022\017\n\007success\030\002 "
-                        + "\002(\010\022\021\n\007message\030\003 \001(\t:\000B(\n\033com.mogujie.ja" + "rvis.protocolB\tJobProtos" };
+                        + " \002(\003\022*\n\020dependency_entry\030\004 \003(\0132\020.Depende",
+                "ncyEntry\"C\n\035ServerModifyJobDependRespons"
+                        + "e\022\017\n\007success\030\001 \002(\010\022\021\n\007message\030\002 \001(\t:\000\"\217\001"
+                        + "\n\037RestModifyJobScheduleExpRequest\022\032\n\010app"
+                        + "_auth\030\001 \002(\0132\010.AppAuth\022\014\n\004user\030\002 \002(\t\022\016\n\006j"
+                        + "ob_id\030\003 \002(\003\0222\n\020expression_entry\030\020 \003(\0132\030." + "ScheduleExpressionEntry\"H\n\"ServerModifyJ"
+                        + "obScheduleExpResponse\022\017\n\007success\030\001 \002(\010\022\021"
+                        + "\n\007message\030\002 \001(\t:\000\"f\n\032RestModifyJobStatus"
+                        + "Request\022\032\n\010app_auth\030\001 \002(\0132\010.AppAuth\022\014\n\004u"
+                        + "ser\030\002 \002(\t\022\016\n\006job_id\030\003 \002(\003\022\016\n\006status\030\004 \002(",
+                "\005\"C\n\035ServerModifyJobStatusResponse\022\017\n\007su"
+                        + "ccess\030\001 \002(\010\022\021\n\007message\030\002 \001(\t:\000\"0\n\016JobSta"
+                        + "tusEntry\022\016\n\006job_id\030\001 \002(\003\022\016\n\006status\030\002 \002(\005"
+                        + "\"n\n\033RestQueryJobRelationRequest\022\032\n\010app_a"
+                        + "uth\030\001 \002(\0132\010.AppAuth\022\014\n\004user\030\002 \002(\t\022\016\n\006job"
+                        + "_id\030\003 \002(\003\022\025\n\rrelation_type\030\004 \002(\005\"o\n\036Serv"
+                        + "erQueryJobRelationResponse\022)\n\020job_status" + "_entry\030\001 \003(\0132\017.JobStatusEntry\022\017\n\007success"
+                        + "\030\002 \002(\010\022\021\n\007message\030\003 \001(\t:\000\"\212\003\n\010jobEntry\022\016"
+                        + "\n\006job_id\030\001 \002(\003\022\020\n\010job_name\030\002 \002(\t\022\020\n\010job_",
+                "type\030\003 \002(\t\022\016\n\006status\030\004 \002(\005\022\017\n\007content\030\005 "
+                        + "\002(\t\022\022\n\nparameters\030\006 \002(\t\022\020\n\010app_name\030\007 \002("
+                        + "\t\022\027\n\017worker_group_id\030\010 \002(\005\022\020\n\010priority\030\t"
+                        + " \002(\005\022\031\n\021active_start_time\030\n \002(\003\022\027\n\017activ"
+                        + "e_end_time\030\013 \002(\003\022\024\n\014expired_time\030\014 \002(\005\022\027"
+                        + "\n\017failed_attempts\030\r \002(\005\022\027\n\017failed_interv"
+                        + "al\030\016 \002(\005\0221\n\017expression_list\030\017 \003(\0132\030.Sche"
+                        + "duleExpressionEntry\022)\n\017dependency_list\030\020" + " \003(\0132\020.DependencyEntry\"O\n\023RestQueryJobRe"
+                        + "quest\022\032\n\010app_auth\030\001 \002(\0132\010.AppAuth\022\014\n\004use",
+                "r\030\002 \002(\t\022\016\n\006job_id\030\003 \002(\003\"U\n\026ServerQueryJo"
+                        + "bResponse\022\027\n\004list\030\001 \003(\0132\t.jobEntry\022\017\n\007su"
+                        + "ccess\030\002 \002(\010\022\021\n\007message\030\003 \001(\t:\000B(\n\033com.mo" + "gujie.jarvis.protocolB\tJobProtos" };
         com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner = new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
             @Override
             public com.google.protobuf.ExtensionRegistry assignDescriptors(com.google.protobuf.Descriptors.FileDescriptor root) {
@@ -19151,9 +19161,9 @@ public final class JobProtos {
             }
         };
         com.google.protobuf.Descriptors.FileDescriptor.internalBuildGeneratedFileFrom(descriptorData,
-                new com.google.protobuf.Descriptors.FileDescriptor[] { com.mogujie.jarvis.protocol.DependencyEntryProtos.getDescriptor(),
+                new com.google.protobuf.Descriptors.FileDescriptor[] { com.mogujie.jarvis.protocol.JobDependencyEntryProtos.getDescriptor(),
                         com.mogujie.jarvis.protocol.AppAuthProtos.getDescriptor(),
-                        com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.getDescriptor(), },
+                        com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.getDescriptor(), },
                 assigner);
         internal_static_RestSubmitJobRequest_descriptor = getDescriptor().getMessageTypes().get(0);
         internal_static_RestSubmitJobRequest_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
@@ -19210,9 +19220,9 @@ public final class JobProtos {
         internal_static_ServerQueryJobResponse_descriptor = getDescriptor().getMessageTypes().get(15);
         internal_static_ServerQueryJobResponse_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
                 internal_static_ServerQueryJobResponse_descriptor, new java.lang.String[] { "List", "Success", "Message", });
-        com.mogujie.jarvis.protocol.DependencyEntryProtos.getDescriptor();
+        com.mogujie.jarvis.protocol.JobDependencyEntryProtos.getDescriptor();
         com.mogujie.jarvis.protocol.AppAuthProtos.getDescriptor();
-        com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.getDescriptor();
+        com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.getDescriptor();
     }
 
     // @@protoc_insertion_point(outer_class_scope)

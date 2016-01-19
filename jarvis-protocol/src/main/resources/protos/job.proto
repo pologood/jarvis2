@@ -1,8 +1,8 @@
-import "dependency_entry.proto";
+import "job_dependency_entry.proto";
 
 import "app_auth.proto";
 
-import "schedule_expression_entry.proto";
+import "job_schedule_expression_entry.proto";
 
 option java_package = "com.mogujie.jarvis.protocol";
 
