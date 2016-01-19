@@ -4,23 +4,19 @@ import org.dbunit.Assertion;
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.IDatabaseTester;
 import org.dbunit.JdbcDatabaseTester;
+import org.dbunit.database.AmbiguousTableNameException;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.database.QueryDataSet;
-import org.dbunit.dataset.Column;
-import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.ITable;
-import org.dbunit.dataset.ReplacementDataSet;
+import org.dbunit.dataset.*;
 import org.dbunit.dataset.filter.DefaultColumnFilter;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
+import org.dbunit.dataset.xml.XmlDataSetWriter;
 import org.junit.Assert;
 import org.mybatis.guice.transactional.Transactional;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -38,12 +34,12 @@ public abstract class DBTestBased {
 
     static {
         try {
-
             properties.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("server.properties"));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 
     /**
      * This abstract is used for prepare data before do the real method call.
@@ -70,6 +66,31 @@ public abstract class DBTestBased {
                 stmt.close();
             }
         }
+    }
+    /**
+     * 导出数据到指定文件
+     * @param file 一个标准的java.io.File
+     * @param connection  一个标准的java.sql.Connection
+     * @throws org.dbunit.DatabaseUnitException
+     */
+    protected void exportTable(File file, Connection connection,String tableName) throws DatabaseUnitException, IOException {
+        IDatabaseConnection databaseConnection = new DatabaseConnection(connection);
+        QueryDataSet dataSet = new QueryDataSet(databaseConnection);
+        try {
+            dataSet.addTable(tableName);
+            Writer writer = new FileWriter(file);
+            XmlDataSetWriter w = new XmlDataSetWriter(writer);
+            w.write(dataSet);
+            writer.flush();
+            writer.close();
+        } catch (AmbiguousTableNameException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (DataSetException e) {
+            e.printStackTrace();
+        }
+
     }
 
     /**

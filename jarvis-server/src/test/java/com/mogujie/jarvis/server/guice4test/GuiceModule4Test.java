@@ -46,9 +46,6 @@ public class GuiceModule4Test extends AbstractModule {
     @Override
     protected void configure() {
         Names.bindProperties(binder(), properties);
-
-        //ActorSystem actorSystem = ActorSystem.create(JarvisConstants.SERVER_AKKA_SYSTEM_NAME, ConfigUtils.getAkkaConfig("akka-server.conf"));
-        //bind(ActorSystem.class).toInstance(actorSystem);
         bind(TaskManager.class).in(Scopes.SINGLETON);
     }
 
