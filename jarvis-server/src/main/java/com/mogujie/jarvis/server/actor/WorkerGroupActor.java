@@ -52,7 +52,7 @@ public class WorkerGroupActor extends UntypedActor {
         }
     }
 
-    public void createWorkerGroup(RestServerCreateWorkerGroupRequest request) {
+    private void createWorkerGroup(RestServerCreateWorkerGroupRequest request) {
         ServerCreateWorkerGroupResponse response;
         try {
             WorkerGroup workerGroup = new WorkerGroup();
@@ -73,7 +73,7 @@ public class WorkerGroupActor extends UntypedActor {
         }
     }
 
-    public void modifyWorkerGroup(RestServerModifyWorkerGroupRequest request) {
+    private void modifyWorkerGroup(RestServerModifyWorkerGroupRequest request) {
         ServerModifyWorkerGroupResponse response;
         try {
             WorkerGroup workerGroup = new WorkerGroup();

@@ -38,7 +38,7 @@ public class AlarmActor extends UntypedActor {
 
     private ConvertValidService convertValidService = Injectors.getInjector().getInstance(ConvertValidService.class);
     private AlarmService alarmService = Injectors.getInjector().getInstance(AlarmService.class);
-    private Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
 
     public static Props props() {
         return Props.create(AlarmActor.class);
