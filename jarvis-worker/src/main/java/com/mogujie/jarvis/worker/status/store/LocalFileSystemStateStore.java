@@ -32,7 +32,7 @@ public class LocalFileSystemStateStore implements TaskStateStore {
     @Override
     public void init(Configuration conf) {
         String tmpDir = System.getProperty("java.io.tmpdir");
-        String defaultDir = tmpDir.endsWith(File.separator) ? tmpDir + "jarvis_state_store" : tmpDir + "/jarvis_state_store";
+        String defaultDir = tmpDir.endsWith(File.separator) ? tmpDir + "jarvis_state_store" : tmpDir + File.separator + "jarvis_state_store";
         File file = new File(conf.getString("local.filesystem.statestore.dir", defaultDir));
         Options options = new Options();
         options.createIfMissing(true);
