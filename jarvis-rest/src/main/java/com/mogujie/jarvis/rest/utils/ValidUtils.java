@@ -41,7 +41,7 @@ public class ValidUtils {
     }
 
     /**
-     * @param job
+     * 检查——任务
      */
     public static void checkJob(CheckMode mode, JobVo job) {
         Long jobId = job.getJobId();
@@ -70,10 +70,10 @@ public class ValidUtils {
 
         // parameters处理
         if (job.getParams() != null) {
-            try{
+            try {
                 JsonHelper.fromJson(job.getParams(), Map.class);
-            }catch (Exception ex){
-                throw new IllegalArgumentException("job参数不是key-value结构的json串. paras:" + job.getParams() );
+            } catch (Exception ex) {
+                throw new IllegalArgumentException("job参数不是key-value结构的json串. paras:" + job.getParams());
             }
         }
 
@@ -87,9 +87,6 @@ public class ValidUtils {
 
     /**
      * 计划表达式-转换
-     *
-     * @param input
-     * @return
      */
     public static ScheduleExpressionEntry ConvertScheduleExpressionEntry(JobScheduleExpVo.ScheduleExpressionEntry input) {
 
@@ -119,9 +116,6 @@ public class ValidUtils {
 
     /**
      * 依赖-转换
-     *
-     * @param input
-     * @return
      */
     public static DependencyEntry ConvertDependencyEntry(JobDependencyVo.DependencyEntry input) {
         Integer mode = input.getOperatorMode();
@@ -152,21 +146,15 @@ public class ValidUtils {
     /**
      * APP内容检查
      */
-    public static void checkAppVo(OperationMode mode, String appName, String owner, Integer status, Integer maxConcurrency) {
+    public static void checkAppVo(CheckMode mode, String appName, String owner, Integer status, Integer maxConcurrency) {
+        Preconditions.checkArgument(!mode.isIn(CheckMode.ADD) || appName != null, "appName不能为空");
+        Preconditions.checkArgument(appName == null || !appName.trim().equals(""), "appName不能为空。");
 
-        //追加模式
-        if (mode == OperationMode.ADD) {
-            Preconditions.checkArgument(appName != null && !appName.trim().equals(""), "appName不能为空");
-            Preconditions.checkArgument(owner != null && !owner.trim().equals(""), "owner不能为空");
-            Preconditions.checkArgument(status != null, "status不能为空");
-            Preconditions.checkArgument(AppStatus.isValid(status), "status内容不对。value:" + status);
-        }
-        //编辑模式
-        if (mode == OperationMode.EDIT) {
-            Preconditions.checkArgument(appName == null || !appName.trim().equals(""), "appName不能为空");
-            Preconditions.checkArgument(owner == null || !owner.trim().equals(""), "owner不能为空");
-            Preconditions.checkArgument(status == null || AppStatus.isValid(status), "status内容不对。value:" + status);
-        }
+        Preconditions.checkArgument(!mode.isIn(CheckMode.ADD) || owner != null, "owner不能为空");
+        Preconditions.checkArgument(owner == null || !owner.trim().equals(""), "owner不能为空");
+
+        Preconditions.checkArgument(!mode.isIn(CheckMode.ADD) || status != null, "status不能为空");
+        Preconditions.checkArgument(status == null || AppStatus.isValid(status), "status内容不对。value:" + status);
     }
 
     /**
@@ -189,8 +177,7 @@ public class ValidUtils {
     }
 
     /**
-     * @param mode
-     * @param bg
+     * 检查——BizGroup
      */
     public static void checkBizGroup(CheckMode mode, BizGroupVo bg) throws IllegalArgumentException {
         Integer id = bg.getId();

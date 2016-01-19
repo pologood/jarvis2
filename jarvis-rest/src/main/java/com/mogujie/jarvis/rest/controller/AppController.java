@@ -21,6 +21,7 @@ import com.mogujie.jarvis.protocol.ApplicationProtos.RestSetApplicationWorkerGro
 import com.mogujie.jarvis.protocol.ApplicationProtos.ServerSetApplicationWorkerGroupResponse;
 import com.mogujie.jarvis.rest.RestResult;
 import com.mogujie.jarvis.rest.utils.ValidUtils;
+import com.mogujie.jarvis.rest.utils.ValidUtils.CheckMode;
 import com.mogujie.jarvis.rest.utils.JsonParameters;
 import com.mogujie.jarvis.rest.vo.AppResultVo;
 import com.mogujie.jarvis.rest.vo.AppWorkerGroupVo;
@@ -53,7 +54,7 @@ public class AppController extends AbstractController {
             Integer status = paras.getInteger("status", AppStatus.ENABLE.getValue());
             Integer maxConcurrency = paras.getInteger("maxConcurrency", 10);
 
-            ValidUtils.checkAppVo(OperationMode.ADD, applicationName, owner, status, maxConcurrency);
+            ValidUtils.checkAppVo(CheckMode.ADD, applicationName, owner, status, maxConcurrency);
             RestCreateApplicationRequest request = RestCreateApplicationRequest.newBuilder().setAppAuth(appAuth).setUser(user)
                     .setAppName(applicationName.trim()).setOwner(owner)
                     .setStatus(status).setMaxConcurrency(maxConcurrency)
@@ -90,7 +91,7 @@ public class AppController extends AbstractController {
             Integer status = paras.getInteger("status");
             Integer maxConcurrency = paras.getInteger("maxConcurrency");
 
-            ValidUtils.checkAppVo(OperationMode.EDIT, applicationName, owner, status, maxConcurrency);
+            ValidUtils.checkAppVo(CheckMode.EDIT, applicationName, owner, status, maxConcurrency);
             RestModifyApplicationRequest.Builder builder = RestModifyApplicationRequest.newBuilder();
             builder.setAppAuth(appAuth).setUser(user).setAppId(appId);
             if (applicationName != null) {

@@ -68,7 +68,7 @@ public class ValidService {
     //--------------------------------------- job ---------------------------------
 
     /**
-     * @param job
+     * 检查——job任务
      */
     public void checkJob(CheckMode mode, Job job) throws NotFoundException, IllegalArgumentException {
 
@@ -116,7 +116,6 @@ public class ValidService {
         } else if (start != null && mode.isIn(CheckMode.EDIT)) {
             Preconditions.checkArgument(start.getTime() <= oldJob.getActiveEndDate().getTime(),
                     "有效开始时间不能大于有效结束时间. start:" + start.toString() + "; end:" + oldJob.getActiveEndDate().toString());
-
         } else if (end != null && mode.isIn(CheckMode.EDIT)) {
             Preconditions.checkArgument(oldJob.getActiveStartDate().getTime() <= end.getTime(),
                     "有效开始时间不能大于有效结束时间. start:" + oldJob.getActiveStartDate().toString() + "; end:" + end.toString());
@@ -270,6 +269,5 @@ public class ValidService {
                     , "AppWorkerGroup对象已经存在,不能插入. appID:" + appId + "; workerGroupId:" + workerGroupId);
         }
     }
-
 
 }
