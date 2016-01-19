@@ -47,14 +47,11 @@ public class BizGroupController extends AbstractController {
                     .build();
 
             ServerCreateBizGroupResponse response = (ServerCreateBizGroupResponse) callActor(AkkaType.SERVER, request);
-            if (response.getSuccess()) {
-                return successResult(new BizGroupResultVo().setId(response.getId()));
-            } else {
-                return errorResult(response.getMessage());
-            }
+            return response.getSuccess() ? successResult(new BizGroupResultVo().setId(response.getId()))
+                    : errorResult(response.getMessage());
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
-            return errorResult(e.getMessage());
+            return errorResult(e);
         }
     }
 
@@ -65,9 +62,9 @@ public class BizGroupController extends AbstractController {
     @Path("edit")
     @Produces(MediaType.APPLICATION_JSON)
     public RestResult set(@FormParam("user") String user,
-                           @FormParam("appName") String appName,
-                           @FormParam("appToken") String appToken,
-                           @FormParam("parameters") String parameters) {
+                          @FormParam("appName") String appName,
+                          @FormParam("appToken") String appToken,
+                          @FormParam("parameters") String parameters) {
         try {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
@@ -88,14 +85,10 @@ public class BizGroupController extends AbstractController {
             RestModifyBizGroupRequest request = builder.build();
 
             ServerModifyBizGroupResponse response = (ServerModifyBizGroupResponse) callActor(AkkaType.SERVER, request);
-            if (response.getSuccess()) {
-                return successResult();
-            } else {
-                return errorResult(response.getMessage());
-            }
+            return response.getSuccess() ? successResult() : errorResult(response.getMessage());
         } catch (Exception e) {
             LOGGER.error("", e);
-            return errorResult(e.getMessage());
+            return errorResult(e);
         }
     }
 
@@ -122,14 +115,10 @@ public class BizGroupController extends AbstractController {
                     .build();
 
             ServerDeleteBizGroupResponse response = (ServerDeleteBizGroupResponse) callActor(AkkaType.SERVER, request);
-            if (response.getSuccess()) {
-                return successResult();
-            } else {
-                return errorResult(response.getMessage());
-            }
+            return response.getSuccess() ? successResult() : errorResult(response.getMessage());
         } catch (Exception e) {
             LOGGER.error("", e);
-            return errorResult(e.getMessage());
+            return errorResult(e);
         }
     }
 

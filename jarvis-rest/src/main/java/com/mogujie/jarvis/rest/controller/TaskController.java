@@ -67,14 +67,10 @@ public class TaskController extends AbstractController {
             RestServerKillTaskRequest request = RestServerKillTaskRequest.newBuilder().setAppAuth(appAuth).setFullId(fullId).build();
 
             ServerKillTaskResponse response = (ServerKillTaskResponse) callActor(AkkaType.SERVER, request);
-            if (response.getSuccess()) {
-                return successResult();
-            } else {
-                return errorResult(response.getMessage());
-            }
+            return response.getSuccess() ? successResult() : errorResult(response.getMessage());
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
-            return errorResult(e.getMessage());
+            return errorResult(e);
         }
     }
 
@@ -97,14 +93,10 @@ public class TaskController extends AbstractController {
             RestServerRetryTaskRequest request = RestServerRetryTaskRequest.newBuilder().setAppAuth(appAuth).setTaskId(taskId).build();
 
             ServerRetryTaskResponse response = (ServerRetryTaskResponse) callActor(AkkaType.SERVER, request);
-            if (response.getSuccess()) {
-                return successResult();
-            } else {
-                return errorResult(response.getMessage());
-            }
+            return response.getSuccess() ? successResult() : errorResult(response.getMessage());
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
-            return errorResult(e.getMessage());
+            return errorResult(e);
         }
     }
 
@@ -133,14 +125,10 @@ public class TaskController extends AbstractController {
             RestServerManualRerunTaskRequest request = builder.setAppAuth(appAuth).setStartTime(startDate).setEndTime(endDate).build();
 
             ServerManualRerunTaskResponse response = (ServerManualRerunTaskResponse) callActor(AkkaType.SERVER, request);
-            if (response.getSuccess()) {
-                return successResult();
-            } else {
-                return errorResult(response.getMessage());
-            }
+            return response.getSuccess() ? successResult() : errorResult(response.getMessage());
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
-            return errorResult(e.getMessage());
+            return errorResult(e);
         }
     }
 
@@ -165,14 +153,10 @@ public class TaskController extends AbstractController {
                     .setStatus(status).build();
 
             ServerModifyTaskStatusResponse response = (ServerModifyTaskStatusResponse) callActor(AkkaType.SERVER, request);
-            if (response.getSuccess()) {
-                return successResult();
-            } else {
-                return errorResult(response.getMessage());
-            }
+            return response.getSuccess() ? successResult() : errorResult(response.getMessage());
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
-            return errorResult(e.getMessage());
+            return errorResult(e);
         }
     }
 
@@ -213,7 +197,7 @@ public class TaskController extends AbstractController {
             }
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
-            return errorResult(e.getMessage());
+            return errorResult(e);
         }
     }
 

@@ -133,7 +133,7 @@ Dispatcher通过push的方式，由任务分发器按照可扩展的分发策略
 
 Dispatcher由ExecuteQueue,TaskDispatcher,RetryScheduler 3个子模块组成。
 
-![分发器设计](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/Dispatcher_design.png)
+![分发器设计](http://gitlab.mogujie.org/bigdata/jarvis2/raw/master/docs/design/img/dispatcher_design.png)
 
 - ExecuteQueue维护已经进入ready状态的task，由Scheduler提交，由TaskDispatcher进行消费。在该设计中，支持按照优先级先后顺序进行分发任务，所以内部实现是一个优先级队列。每次会把优先级最高的任务拿出给TaskDispatcher进行消费。
 

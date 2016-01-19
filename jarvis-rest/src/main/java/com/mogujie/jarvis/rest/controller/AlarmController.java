@@ -93,14 +93,10 @@ public class AlarmController extends AbstractController {
                     .build();
 
             ServerCreateAlarmResponse response = (ServerCreateAlarmResponse) callActor(AkkaType.SERVER, request);
-            if (response.getSuccess()) {
-                return successResult();
-            } else {
-                return errorResult(response.getMessage());
-            }
+            return response.getSuccess() ? successResult() : errorResult(response.getMessage());
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
-            return errorResult(e.getMessage());
+            return errorResult(e);
         }
     }
 
@@ -134,14 +130,10 @@ public class AlarmController extends AbstractController {
             RestModifyAlarmRequest request = builder.build();
 
             ServerModifyAlarmResponse response = (ServerModifyAlarmResponse) callActor(AkkaType.SERVER, request);
-            if (response.getSuccess()) {
-                return successResult();
-            } else {
-                return errorResult(response.getMessage());
-            }
+            return response.getSuccess() ? successResult() : errorResult(response.getMessage());
         } catch (Exception e) {
             LOGGER.error("", e);
-            return errorResult(e.getMessage());
+            return errorResult(e);
         }
     }
 
@@ -168,14 +160,10 @@ public class AlarmController extends AbstractController {
                     .build();
 
             ServerDeleteAlarmResponse response = (ServerDeleteAlarmResponse) callActor(AkkaType.SERVER, request);
-            if (response.getSuccess()) {
-                return successResult();
-            } else {
-                return errorResult(response.getMessage());
-            }
+            return response.getSuccess() ? successResult() : errorResult(response.getMessage());
         } catch (Exception e) {
             LOGGER.error("", e);
-            return errorResult(e.getMessage());
+            return errorResult(e);
         }
     }
 

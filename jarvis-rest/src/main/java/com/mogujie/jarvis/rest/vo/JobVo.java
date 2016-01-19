@@ -7,19 +7,21 @@ import com.mogujie.jarvis.rest.vo.JobDependencyVo.DependencyEntry;
 import com.mogujie.jarvis.rest.vo.JobScheduleExpVo.ScheduleExpressionEntry;
 
 /**
- * job返回类
+ * jobVo类
+ *
  * @author muming
  */
-public class JobEntryVo extends AbstractVo {
+public class JobVo extends AbstractVo {
 
-    private long jobId;
+    private Long jobId;
     private String jobName;
     private String jobType;
     private Integer status;
     private String content;
-    private Map<String, Object> params;
+    private String params;
     private String appName;
     private Integer workerGroupId;
+    private Integer bizGroupId;
     private Integer priority;
     private Long activeStartTime;
     private Long activeEndTime;
@@ -29,11 +31,11 @@ public class JobEntryVo extends AbstractVo {
     private List<DependencyEntry> dependencyList;
     private List<ScheduleExpressionEntry> scheduleExpressionList;
 
-    public long getJobId() {
+    public Long getJobId() {
         return jobId;
     }
 
-    public void setJobId(long jobId) {
+    public void setJobId(Long jobId) {
         this.jobId = jobId;
     }
 
@@ -69,11 +71,11 @@ public class JobEntryVo extends AbstractVo {
         this.content = content;
     }
 
-    public Map<String, Object> getParams() {
+    public String getParams() {
         return params;
     }
 
-    public void setParams(Map<String, Object> params) {
+    public void setParams(String params) {
         this.params = params;
     }
 
@@ -91,6 +93,14 @@ public class JobEntryVo extends AbstractVo {
 
     public void setWorkerGroupId(Integer workerGroupId) {
         this.workerGroupId = workerGroupId;
+    }
+
+    public Integer getBizGroupId() {
+        return bizGroupId;
+    }
+
+    public void setBizGroupId(Integer bizGroupId) {
+        this.bizGroupId = bizGroupId;
     }
 
     public Integer getPriority() {
@@ -157,8 +167,18 @@ public class JobEntryVo extends AbstractVo {
         this.scheduleExpressionList = scheduleExpressionList;
     }
 
+
+    //---------- 默认值处理 -----------------------
     public String getAppName(String defaultValue) {
         return (appName != null) ? appName : defaultValue;
+    }
+
+    public Integer getStatus(Integer defaultValue) {
+        return status != null ? status : defaultValue;
+    }
+
+    public String getParams(String defaultValue) {
+        return params != null ?params :defaultValue;
     }
 
     public Long getActiveStartTime(Long defaultValue) {

@@ -9,11 +9,14 @@
 package com.mogujie.jarvis.server.actor;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
+import com.mogujie.jarvis.core.JarvisConstants;
+import com.mogujie.jarvis.core.domain.*;
+import com.mogujie.jarvis.core.exception.NotFoundException;
+import com.mogujie.jarvis.dto.generate.App;
+import com.mogujie.jarvis.protocol.AppAuthProtos;
+import com.mogujie.jarvis.server.service.AppService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
@@ -24,11 +27,6 @@ import akka.actor.UntypedActor;
 
 import com.google.common.collect.Range;
 import com.google.common.collect.Sets;
-import com.mogujie.jarvis.core.domain.JobRelationType;
-import com.mogujie.jarvis.core.domain.JobStatus;
-import com.mogujie.jarvis.core.domain.MessageType;
-import com.mogujie.jarvis.core.domain.OperationMode;
-import com.mogujie.jarvis.core.domain.Pair;
 import com.mogujie.jarvis.core.expression.CronExpression;
 import com.mogujie.jarvis.core.expression.FixedDelayExpression;
 import com.mogujie.jarvis.core.expression.FixedRateExpression;
@@ -38,19 +36,7 @@ import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.dto.generate.JobDepend;
 import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry;
-import com.mogujie.jarvis.protocol.JobProtos.JobStatusEntry;
-import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobDependRequest;
-import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobRequest;
-import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobScheduleExpRequest;
-import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobStatusRequest;
-import com.mogujie.jarvis.protocol.JobProtos.RestQueryJobRelationRequest;
-import com.mogujie.jarvis.protocol.JobProtos.RestSubmitJobRequest;
-import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobDependResponse;
-import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobResponse;
-import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobScheduleExpResponse;
-import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobStatusResponse;
-import com.mogujie.jarvis.protocol.JobProtos.ServerQueryJobRelationResponse;
-import com.mogujie.jarvis.protocol.JobProtos.ServerSubmitJobResponse;
+import com.mogujie.jarvis.protocol.JobProtos.*;
 import com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry;
 import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.domain.ModifyDependEntry;
@@ -61,6 +47,7 @@ import com.mogujie.jarvis.server.scheduler.dag.DAGJobType;
 import com.mogujie.jarvis.server.scheduler.dag.JobGraph;
 import com.mogujie.jarvis.server.scheduler.time.TimePlan;
 import com.mogujie.jarvis.server.service.ConvertValidService;
+import com.mogujie.jarvis.server.service.ConvertValidService.CheckMode;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.PlanUtil;
@@ -77,6 +64,7 @@ public class JobActor extends UntypedActor {
     private TimePlan plan = TimePlan.INSTANCE;
 
     private JobService jobService = Injectors.getInjector().getInstance(JobService.class);
+    private AppService appService = Injectors.getInjector().getInstance(AppService.class);
     private ConvertValidService convertValidService = Injectors.getInjector().getInstance(ConvertValidService.class);
 
     public static Props props() {
@@ -136,7 +124,8 @@ public class JobActor extends UntypedActor {
             DateTime now = DateTime.now();
 
             // 参数检查
-            Job job = convertValidService.convert2JobByCheck(msg);
+            Job job = msg2Job(msg);
+            convertValidService.checkJob(CheckMode.ADD, job);
 
             // 1. insert job to DB
             jobId = jobService.insertJob(job);
@@ -154,7 +143,7 @@ public class JobActor extends UntypedActor {
             if (msg.getDependencyEntryList() != null) {
                 for (DependencyEntry entry : msg.getDependencyEntryList()) {
                     needDependencies.add(entry.getJobId());
-                    JobDepend jobDepend = convertValidService.convert2JobDepend(jobId, entry, msg.getUser(), now);
+                    JobDepend jobDepend = convert2JobDepend(jobId, entry, msg.getUser(), now);
                     jobService.insertJobDepend(jobDepend);
                 }
             }
@@ -205,7 +194,8 @@ public class JobActor extends UntypedActor {
         ServerModifyJobResponse response;
         try {
             // 参数检查
-            Job job = convertValidService.convert2JobByCheck(msg);
+            Job job = msg2Job(msg);
+            convertValidService.checkJob(CheckMode.EDIT, job);
 
             // update job to DB
             jobService.updateJob(job);
@@ -238,7 +228,7 @@ public class JobActor extends UntypedActor {
             long jobId = msg.getJobId();
             DateTime now = DateTime.now();
             for (DependencyEntry entry : msg.getDependencyEntryList()) {
-                JobDepend jobDepend = convertValidService.convert2JobDepend(jobId, entry, msg.getUser(), now);
+                JobDepend jobDepend = convert2JobDepend(jobId, entry, msg.getUser(), now);
                 OperationMode operationMode = OperationMode.parseValue(entry.getOperator());
 
                 if (operationMode == OperationMode.ADD) {
@@ -269,7 +259,7 @@ public class JobActor extends UntypedActor {
 
 
     /**
-     * 修改任务
+     * 修改任务计划表达式
      *
      * @param msg
      * @throws IOException
@@ -366,7 +356,8 @@ public class JobActor extends UntypedActor {
         try {
             long jobId = msg.getJobId();
             // 参数检查
-            Job job = convertValidService.convert2JobByCheck(msg);
+            Job job = msg2Job(msg);
+            convertValidService.checkJob(CheckMode.EDIT_STATUS, job);
 
             // 1. update job to DB
             JobStatus oldStatus = JobStatus.parseValue(jobService.get(jobId).getJob().getStatus());
@@ -423,6 +414,134 @@ public class JobActor extends UntypedActor {
         }
 
     }
+
+    private Job msg2Job(RestSubmitJobRequest msg) throws NotFoundException {
+        Job job = new Job();
+        job.setAppId(analysisAppId(msg.getAppAuth(), msg.getAppName()));
+        job.setJobName(msg.getJobName());
+        job.setContent(msg.getContent());
+        job.setParams(msg.getParameters());
+        job.setPriority(msg.getPriority());
+        job.setStatus(msg.getStatus());
+        job.setJobType(msg.getJobType());
+        job.setWorkerGroupId(msg.getWorkerGroupId());
+        job.setBizGroupId(msg.getBizGroupId());
+        if (msg.hasActiveStartTime() && msg.getActiveStartTime() != 0) {
+            job.setActiveStartDate(new DateTime(msg.getActiveStartTime()).toDate());
+        } else {
+            job.setActiveStartDate(JarvisConstants.DATETIME_MIN.toDate());
+        }
+        if (msg.hasActiveEndTime() && msg.getActiveEndTime() != 0) {
+            job.setActiveEndDate(new DateTime(msg.getActiveEndTime()).toDate());
+        } else {
+            job.setActiveEndDate(JarvisConstants.DATETIME_MAX.toDate());
+        }
+
+        job.setExpiredTime(msg.getExpiredTime());
+        job.setFailedAttempts(msg.getFailedAttempts());
+        job.setFailedInterval(msg.getFailedInterval());
+        job.setSubmitUser(msg.getUser());
+        job.setUpdateUser(msg.getUser());
+
+        DateTime now = DateTime.now();
+        job.setCreateTime(now.toDate());
+        job.setUpdateTime(now.toDate());
+
+        return job;
+    }
+
+    private Job msg2Job(RestModifyJobRequest msg) throws NotFoundException {
+        Job job = new Job();
+        job.setJobId(msg.getJobId());
+        job.setAppId(analysisAppId(msg.getAppAuth(), msg.getAppName()));
+        if (msg.hasJobName()) {
+            job.setJobName(msg.getJobName());
+        }
+        if (msg.hasJobType()) {
+            job.setJobType(msg.getJobType());
+        }
+        if (msg.hasContent()) {
+            job.setContent(msg.getContent());
+        }
+        if (msg.hasParameters()) {
+            job.setParams(msg.getParameters());
+        }
+        if (msg.hasWorkerGroupId()) {
+            job.setWorkerGroupId(msg.getWorkerGroupId());
+        }
+        if(msg.hasBizGroupId()){
+            job.setBizGroupId(msg.getBizGroupId());
+        }
+        if (msg.hasPriority()) {
+            job.setPriority(msg.getPriority());
+        }
+        if (msg.hasActiveStartTime()) {
+            job.setActiveStartDate(new Date(msg.getActiveStartTime()));
+        }
+        if (msg.hasActiveEndTime()) {
+            job.setActiveEndDate(new Date(msg.getActiveEndTime()));
+        }
+        if (msg.hasExpiredTime()) {
+            job.setExpiredTime(msg.getExpiredTime());
+        }
+        if (msg.hasFailedAttempts()) {
+            job.setFailedAttempts(msg.getFailedAttempts());
+        }
+        if (msg.hasFailedInterval()) {
+            job.setFailedInterval(msg.getFailedInterval());
+        }
+
+        job.setUpdateUser(msg.getUser());
+        Date currentTime = DateTime.now().toDate();
+        job.setUpdateTime(currentTime);
+        return job;
+    }
+
+    public Job msg2Job(RestModifyJobStatusRequest msg) {
+        Job job = new Job();
+        job.setJobId(msg.getJobId());
+        job.setStatus(msg.getStatus());
+        return job;
+    }
+
+
+    /**
+     * 转化为_jobDepend
+     */
+    private JobDepend convert2JobDepend(Long jobId, DependencyEntry entry, String user, DateTime time) {
+        JobDepend jobDepend = new JobDepend();
+        jobDepend.setJobId(jobId);
+        jobDepend.setPreJobId(entry.getJobId());
+        jobDepend.setCommonStrategy(entry.getCommonDependStrategy());
+        jobDepend.setOffsetStrategy(entry.getOffsetDependStrategy());
+        jobDepend.setUpdateTime(time.toDate());
+        jobDepend.setUpdateUser(user);
+
+        if (entry.getOperator() == OperationMode.ADD.getValue()) {
+            jobDepend.setCreateTime(time.toDate());
+        }
+        return jobDepend;
+    }
+
+    /**
+     * 分析获得appId
+     */
+    private int analysisAppId(AppAuthProtos.AppAuth appAuth, String appName) throws NotFoundException {
+
+        int appId;
+        App app = appService.getAppByName(appAuth.getName());
+        if (app.getAppType() == AppType.NORMAL.getValue()) {
+            appId = app.getAppId();
+        } else {
+            if (appName != null) {
+                appId = appService.getAppIdByName(appName);
+            } else {
+                appId = app.getAppId();
+            }
+        }
+        return appId;
+    }
+
 
     /**
      * 测试用

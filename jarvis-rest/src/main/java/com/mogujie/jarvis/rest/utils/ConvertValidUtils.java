@@ -4,13 +4,14 @@ import com.google.common.base.Preconditions;
 import com.mogujie.jarvis.core.domain.*;
 import com.mogujie.jarvis.core.expression.TimeOffsetExpression;
 import com.mogujie.jarvis.core.util.ExpressionUtils;
+import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry;
 import com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry;
 import com.mogujie.jarvis.rest.vo.*;
 
 import com.mogujie.jarvis.server.domain.CommonStrategy;
 
-import java.util.Arrays;
+import java.util.Map;
 
 /**
  * 检验函数
@@ -28,12 +29,8 @@ public class ConvertValidUtils {
 
         /**
          * 是否在scope中
-         *
-         * @param scope
-         * @return
          */
         public Boolean isIn(CheckMode... scope) {
-
             for (CheckMode member : scope) {
                 if (ordinal() == member.ordinal()) {
                     return true;
@@ -41,7 +38,50 @@ public class ConvertValidUtils {
             }
             return false;
         }
+    }
 
+    /**
+     * @param job
+     */
+    public static void checkJob(CheckMode mode, JobVo job) {
+        Long jobId = job.getJobId();
+        Preconditions.checkArgument(!mode.isIn(CheckMode.EDIT, CheckMode.EDIT_STATUS)
+                || (jobId != null && jobId > 0), "jobId不能为空");
+
+        String name = job.getJobName();
+        Preconditions.checkArgument(mode != CheckMode.ADD || name != null, "jobName不能为空");
+        Preconditions.checkArgument(name == null || !name.trim().equals(""), "jobName不能为空");
+
+        String jobType = job.getJobType();
+        Preconditions.checkArgument(mode != CheckMode.ADD || jobType != null, "jobType不能为空");
+        Preconditions.checkArgument(jobType == null || !jobType.trim().equals(""), "jobType不能为空");
+
+        Integer workerGroupId = job.getWorkerGroupId();
+        Preconditions.checkArgument(mode != CheckMode.ADD || workerGroupId != null, "workGroupId不能为空");
+        Preconditions.checkArgument(workerGroupId == null || workerGroupId > 0, "workGroupId不能为空");
+
+        String content = job.getContent();
+        Preconditions.checkArgument(mode != CheckMode.ADD || content != null, "job内容不能为空");
+        Preconditions.checkArgument(content == null || !content.trim().equals(""), "job内容不能为空");
+
+        Integer status = job.getStatus();
+        Preconditions.checkArgument(!mode.isIn(CheckMode.EDIT_STATUS) || status != null, "status不能为空");
+        Preconditions.checkArgument(status == null || JobStatus.isValid(status), "status内容不正确。value:" + status);
+
+        // parameters处理
+        if (job.getParams() != null) {
+            try{
+                JsonHelper.fromJson(job.getParams(), Map.class);
+            }catch (Exception ex){
+                throw new IllegalArgumentException("job参数不是key-value结构的json串. paras:" + job.getParams() );
+            }
+        }
+
+        Long start = job.getActiveStartTime();
+        Long end = job.getActiveStartTime();
+        if (start != null && end != null) {
+            Preconditions.checkArgument(start <= end, "有效开始日不能大于有效结束日");
+        }
     }
 
 
@@ -133,7 +173,6 @@ public class ConvertValidUtils {
      * alarm内容检查
      */
     public static void checkAlarm(OperationMode mode, AlarmVo vo) {
-
         Long jobId = vo.getJobId();
         Preconditions.checkArgument(!mode.isIn(OperationMode.ADD, OperationMode.EDIT, OperationMode.DELETE)
                 || (jobId != null && jobId != 0), "jobId不能为空。");
@@ -147,7 +186,6 @@ public class ConvertValidUtils {
         Integer status = vo.getStatus();
         Preconditions.checkArgument(!mode.isIn(OperationMode.ADD) || status != null, "status不能为空。");
         Preconditions.checkArgument(status == null || AlarmStatus.isValid(status), "status类型不对。 value:" + status);
-
     }
 
     /**
@@ -155,7 +193,6 @@ public class ConvertValidUtils {
      * @param bg
      */
     public static void checkBizGroup(CheckMode mode, BizGroupVo bg) throws IllegalArgumentException {
-
         Integer id = bg.getId();
         Preconditions.checkArgument(!mode.isIn(CheckMode.EDIT, CheckMode.DELETE)
                 || (id != null && id != 0), "id is empty。 id:" + id);
@@ -171,8 +208,6 @@ public class ConvertValidUtils {
         String owner = bg.getOwner();
         Preconditions.checkArgument(!mode.isIn(CheckMode.ADD) || owner != null, "owner不能为空。");
         Preconditions.checkArgument(owner == null || !owner.trim().equals(""), "owner不能为空。");
-
-
     }
 
 
