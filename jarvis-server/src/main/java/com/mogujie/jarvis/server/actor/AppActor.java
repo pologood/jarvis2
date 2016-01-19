@@ -32,8 +32,8 @@ import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.service.AppService;
 import com.mogujie.jarvis.server.service.AppWorkerGroupService;
-import com.mogujie.jarvis.server.service.ConvertValidService;
-import com.mogujie.jarvis.server.service.ConvertValidService.CheckMode;
+import com.mogujie.jarvis.server.service.ValidService;
+import com.mogujie.jarvis.server.service.ValidService.CheckMode;
 
 public class AppActor extends UntypedActor {
 
@@ -41,7 +41,7 @@ public class AppActor extends UntypedActor {
     private TaskManager taskManager = Injectors.getInjector().getInstance(TaskManager.class);
     private AppService appService = Injectors.getInjector().getInstance(AppService.class);
     private AppWorkerGroupService appWorkerGroupService = Injectors.getInjector().getInstance(AppWorkerGroupService.class);
-    private ConvertValidService convertValidService = Injectors.getInjector().getInstance(ConvertValidService.class);
+    private ValidService validService = Injectors.getInjector().getInstance(ValidService.class);
 
     public static Props props() {
         return Props.create(AppActor.class);
@@ -73,7 +73,7 @@ public class AppActor extends UntypedActor {
         ServerCreateApplicationResponse response = null;
         try {
             App app = msg2App(request);
-            convertValidService.checkApp(CheckMode.ADD, app);
+            validService.checkApp(CheckMode.ADD, app);
             appService.insert(app);
             taskManager.addApp(app.getAppId(), request.getMaxConcurrency());
             response = ServerCreateApplicationResponse.newBuilder().setSuccess(true).setAppId(app.getAppId()).build();
@@ -91,7 +91,7 @@ public class AppActor extends UntypedActor {
         ServerModifyApplicationResponse response = null;
         try {
             App app = msg2App(request);
-            convertValidService.checkApp(CheckMode.EDIT, app);
+            validService.checkApp(CheckMode.EDIT, app);
             appService.update(app);
             if (request.hasMaxConcurrency()) {
                 taskManager.updateAppMaxParallelism(app.getAppId(), request.getMaxConcurrency());
@@ -112,7 +112,7 @@ public class AppActor extends UntypedActor {
         try {
 
             List<AppWorkerGroup> list = msg2AppWorkerGroup(request);
-            convertValidService.checkAppWorkerGroup(request.getMode(), list);
+            validService.checkAppWorkerGroup(request.getMode(), list);
 
             OperationMode mode = OperationMode.parseValue(request.getMode());
             for (AppWorkerGroup entry : list) {

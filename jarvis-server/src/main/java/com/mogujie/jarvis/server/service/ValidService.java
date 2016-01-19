@@ -31,7 +31,7 @@ import com.mogujie.jarvis.server.domain.JobEntry;
  */
 
 @Singleton
-public class ConvertValidService {
+public class ValidService {
 
     public enum CheckMode {
         ADD, //追加

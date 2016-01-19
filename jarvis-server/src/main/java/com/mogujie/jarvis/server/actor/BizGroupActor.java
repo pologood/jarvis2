@@ -21,8 +21,8 @@ import com.mogujie.jarvis.protocol.BizGroupProtos.ServerDeleteBizGroupResponse;
 import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.service.BizGroupService;
-import com.mogujie.jarvis.server.service.ConvertValidService;
-import com.mogujie.jarvis.server.service.ConvertValidService.CheckMode;
+import com.mogujie.jarvis.server.service.ValidService;
+import com.mogujie.jarvis.server.service.ValidService.CheckMode;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
@@ -35,7 +35,7 @@ public class BizGroupActor extends UntypedActor {
     private static final Logger logger = LogManager.getLogger();
 
     private BizGroupService BizGroupService = Injectors.getInjector().getInstance(BizGroupService.class);
-    private ConvertValidService convertValidService = Injectors.getInjector().getInstance(ConvertValidService.class);
+    private ValidService validService = Injectors.getInjector().getInstance(ValidService.class);
 
     public static Props props() {
         return Props.create(BizGroupActor.class);
@@ -67,7 +67,7 @@ public class BizGroupActor extends UntypedActor {
         ServerCreateBizGroupResponse response;
         try {
             BizGroup bizGroup = msg2BizGroup(request);
-            convertValidService.checkBizGroup(CheckMode.ADD,bizGroup);
+            validService.checkBizGroup(CheckMode.ADD,bizGroup);
             BizGroupService.insert(bizGroup);
 
             response = ServerCreateBizGroupResponse.newBuilder().setSuccess(true).setId(bizGroup.getId()).build();
@@ -85,7 +85,7 @@ public class BizGroupActor extends UntypedActor {
         ServerModifyBizGroupResponse response;
         try {
             BizGroup bizGroup = msg2BizGroup(request);
-            convertValidService.checkBizGroup(CheckMode.EDIT,bizGroup);
+            validService.checkBizGroup(CheckMode.EDIT,bizGroup);
             BizGroupService.update(bizGroup);
 
             response = ServerModifyBizGroupResponse.newBuilder().setSuccess(true).build();
@@ -103,7 +103,7 @@ public class BizGroupActor extends UntypedActor {
         ServerDeleteBizGroupResponse response;
         try {
             BizGroup bizGroup = msg2BizGroup(request);
-            convertValidService.checkBizGroup(CheckMode.DELETE,bizGroup);
+            validService.checkBizGroup(CheckMode.DELETE,bizGroup);
             BizGroupService.delete(bizGroup.getId());
             response = ServerDeleteBizGroupResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());

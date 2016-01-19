@@ -19,7 +19,7 @@ import java.util.Map;
  * @author muming
  */
 
-public class ConvertValidUtils {
+public class ValidUtils {
 
     public enum CheckMode {
         ADD, //追加
