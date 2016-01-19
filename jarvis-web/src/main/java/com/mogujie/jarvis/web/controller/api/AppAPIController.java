@@ -54,9 +54,8 @@ public class AppAPIController {
 
     @RequestMapping(value = "getApps")
     @ResponseBody
-    public Map<String, Object> getApps(AppQo appQo) {
+    public Object getApps(AppQo appQo) {
         Map<String, Object> result = appService.getApps(appQo);
-
         return result;
     }
 
@@ -65,7 +64,7 @@ public class AppAPIController {
     * */
     @RequestMapping(value = "getAppStatus")
     @ResponseBody
-    public List<Map<String, Object>> getAppStatus() {
+    public Object getAppStatus() {
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 
         AppStatus[] appStatuses = AppStatus.values();
@@ -84,7 +83,7 @@ public class AppAPIController {
     * */
     @RequestMapping(value = "getAppType")
     @ResponseBody
-    public List<Map<String, Object>> getAppType() {
+    public Object getAppType() {
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 
         AppType[] appStatuses = AppType.values();

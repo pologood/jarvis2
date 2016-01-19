@@ -4,8 +4,8 @@
     <!-- 公共条件sql -->
     <sql id="condition">
         <where>
-            <if test="id!=null">
-                id=#{id}
+            <if test="name!=null and name!=''">
+                `name`=#{name}
             </if>
             <if test="status!=null">
                 AND status=#{status}

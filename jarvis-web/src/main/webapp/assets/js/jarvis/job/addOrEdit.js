@@ -15,8 +15,12 @@ $(function () {
         $.getJSON(contextPath + "/api/job/getById", {jobId: jobId}, function (data) {
             job = data;
             $("#jobName").val(job.jobName);
-            $("#activeStartDate").val(moment(job.activeStartDate).format("YYYY-MM-DD"));
-            $("#activeEndDate").val(moment(job.activeEndDate).format("YYYY-MM-DD"));
+            if (null != job.activeStartDate) {
+                $("#activeStartDate").val(moment(job.activeStartDate).format("YYYY-MM-DD"));
+            }
+            if (null != job.activeEndDate) {
+                $("#activeEndDate").val(moment(job.activeEndDate).format("YYYY-MM-DD"));
+            }
             $("#content").val(job.content);
             $("#params").val(job.params);
             $("#expression").val(job.expression);
@@ -244,11 +248,11 @@ function initAlarmType() {
         if (null != jobId && '' != jobId) {
             $.getJSON(contextPath + "/api/alarm/getByJobId", {jobId: jobId}, function (data) {
                 //不存在的时候返回的是null,所以需要排除
-                if (data.jobId != null) {
-                    var alarmType = data.alarmType;
-                    var receiver = data.receiver;
+                if (data.data.jobId != null) {
+                    var alarmType = data.data.alarmType;
+                    var receiver = data.data.receiver;
                     var alarmTypes = alarmType.split(",");
-                    var status = data.status;
+                    var status = data.data.status;
 
                     $("#alarmStatus input[value=" + status + "]").click();
 
@@ -262,9 +266,7 @@ function initAlarmType() {
                         });
                     });
 
-                    $("#alarm").val(JSON.parse(receiver)).trigger("change");
-
-
+                    $("#alarm").val(stringToArr(receiver)).trigger("change");
                 }
             });
         }
@@ -500,8 +502,8 @@ function getJobData() {
             return;
         }
         var value = $(c).val();
-        if(typeof value =='string'){
-            value=value.trim();
+        if (typeof value == 'string') {
+            value = value.trim();
         }
 
         if (value != '' && testNum.test(value)) {
@@ -563,10 +565,15 @@ function saveJob() {
     var resultFlag;
     if (null != jobId && '' != jobId) {
         data["jobId"] = jobId;
-        resultFlag = requestRemoteRestApi("/api/job/edit", "编辑任务", data);
+        var response = requestRemoteRestApi("/api/job/edit", "编辑任务", data);
     }
     else {
-        resultFlag = requestRemoteRestApi("/api/job/submit", "新增任务", data);
+        var response = requestRemoteRestApi("/api/job/submit", "新增任务", data);
+        if (response.flag == true) {
+            window.setTimeout(function () {
+                window.location.href = window.location.href + "?jobId=" + response.data.data.jobId;
+            }, 1000);
+        }
     }
 }
 //重置job
@@ -685,7 +692,11 @@ function saveDepend() {
     if (null == dependJobData) {
         return;
     }
-    var resultFlag = requestRemoteRestApi("/api/job/depend/submit", "修改依赖信息", dependJobData);
+    var data = {};
+    data["jobId"] = jobId;
+    data["dependencyList"] = dependJobData;
+
+    var response = requestRemoteRestApi("/api/job/dependency/set", "修改依赖信息", data);
 }
 //重置依赖
 function resetDepend() {
@@ -719,6 +730,16 @@ function getAlarm() {
         });
         return null;
     }
+    var newReceiver = "";
+    $(receiver).each(function (i, c) {
+        if (newReceiver == "") {
+            newReceiver = c;
+        }
+        else {
+            newReceiver += "," + c;
+        }
+    });
+
     if ("" == alarmType) {
         new PNotify({
             title: '保存报警信息',
@@ -742,7 +763,7 @@ function getAlarm() {
     var alarm = {};
     alarm["jobId"] = jobId;
     alarm["alarmType"] = alarmType;
-    alarm["receiver"] = receiver;
+    alarm["receiver"] = newReceiver;
     alarm["status"] = status;
 
     return alarm;
@@ -758,14 +779,25 @@ function saveAlarm() {
         url: contextPath + "/api/alarm/getByJobId",
         data: {jobId: jobId},
         success: function (data) {
-            var resultFlag;
-            //代表不存在，需要新增
-            if (null == data.jobId) {
-                resultFlag = requestRemoteRestApi("/api/alarm/submit", "新增报警信息", alarmData);
+            var response;
+            if (data.code == 1000) {
+                //代表不存在，需要新增
+                if (null == data.data.jobId) {
+                    response = requestRemoteRestApi("/api/alarm/add", "新增报警信息", alarmData);
+                }
+                //修改
+                else {
+                    response = requestRemoteRestApi("/api/alarm/edit", "更新报警信息", alarmData);
+                }
             }
-            //修改
             else {
-                resultFlag = requestRemoteRestApi("/api/alarm/edit", "更新报警信息", alarmData);
+                new PNotify({
+                    title: '检查报警信息',
+                    text: data.msg,
+                    type: "warning",
+                    icon: true,
+                    styling: "bootstrap3"
+                })
             }
         }
     });

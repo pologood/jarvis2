@@ -3,6 +3,7 @@ var bizGroup = null;
 $(function () {
     initBizGroup();
     initUsers();
+    initStatus();
 });
 
 //初始化业务标签
@@ -64,11 +65,26 @@ function initUsers() {
         }
     })
 }
+//
+function initStatus() {
+    $.getJSON(contextPath + "/api/bizGroup/getBizGroupStatus", function (data) {
+        $(data).each(function (i, c) {
+            var input = '<input type="radio" name="status" value="' + c.id + '" />' + c.text + " ";
+            $("#status").append(input);
+        });
+
+        if (null != bizGroup) {
+            $("#status input[value=" + bizGroup.status + "]").click();
+        }
+    });
+}
+
 
 //获取配置信息
 function getData() {
     var name = $("#name").val();
     var ownerArr = $("#owner").val();
+    var status = $("#status input:checked").val();
     //检查维护人是否为空
     if (null == ownerArr) {
         new PNotify({
@@ -82,7 +98,7 @@ function getData() {
     }
     var hasName = false;
     $.ajaxSettings.async = false;
-    $.getJSON(contextPath + "/api/bizGroup/getByName", {name:name},function (data) {
+    $.getJSON(contextPath + "/api/bizGroup/getByName", {name: name}, function (data) {
         if (null == data.data) {
             hasName = true;
         }
@@ -124,10 +140,24 @@ function getData() {
         }
     });
 
+    if(undefined==status){
+        new PNotify({
+            title: '保存配置',
+            text: "业务标签状态必须选择",
+            type: 'error',
+            icon: true,
+            styling: 'bootstrap3'
+        });
+        return null;
+    }
+
     var result = {};
-    result["id"] = id;
+    if (null != id && '' != id) {
+        result["id"] = id;
+    }
     result["name"] = name;
     result["owner"] = owner;
+    result["status"] = status;
 
     return result;
 }
@@ -141,10 +171,10 @@ function saveBizGroup() {
     }
 
     if (null != id && '' != id) {
-        requestRemoteRestApi("/","修改业务标签",data);
+        requestRemoteRestApi("/api/bizGroup/edit", "修改业务标签", data);
 
     }
     else {
-        requestRemoteRestApi("/","新增业务标签",data);
+        requestRemoteRestApi("/api/bizGroup/add", "新增业务标签", data);
     }
 }

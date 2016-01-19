@@ -23,7 +23,7 @@
 
     <div class="row top-buffer">
         <div class="col-md-12">
-            index
+            欢迎使用调度系统
         </div>
     </div>
 </div>

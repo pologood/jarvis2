@@ -3,14 +3,12 @@ var planOperation = null;
 var taskStatusColor = null;
 
 $(function () {
-
     $('#dataTime').datetimepicker({
         language: 'zh-CN',
         minView: 'hour',
         format: 'yyyy-mm-dd hh:ii',
         autoclose: true
     });
-
     //初始化作业类型内容
     $.getJSON(contextPath + "/assets/json/jobType.json", function (data) {
         $("#jobType").select2({
@@ -19,7 +17,6 @@ $(function () {
             tags: true
         });
     });
-
     //初始化作业来源内容
     $.getJSON(contextPath + "/assets/json/jobPriority.json", function (data) {
         $("#priority").select2({
@@ -27,11 +24,8 @@ $(function () {
             width: '100%'
         });
     });
-
-
     //select采用select2 实现
     $(".input-group select").select2({width: '100%'});
-
     $("#jobId").select2({
         ajax: {
             url: contextPath + "/api/job/getSimilarJobIds",
@@ -56,7 +50,6 @@ $(function () {
         minimumInputLength: 1,
         templateResult: formatResult,
         templateSelection: formatResultSelection,
-
         width: '100%'
     });
     $("#jobName").select2({
@@ -87,7 +80,6 @@ $(function () {
     });
 
     $.ajaxSettings.async = false;
-    //
     $.getJSON(contextPath + "/api/job/getJobStatus", function (data) {
         taskStatusJson = data;
     });
@@ -99,13 +91,9 @@ $(function () {
     $.getJSON(contextPath + "/assets/json/planOperation.json", function (data) {
         planOperation = data;
     });
-
     $.ajaxSettings.async = true;
-
-
     initData();
 });
-
 
 function formatResult(result) {
     return result.text;
@@ -118,7 +106,7 @@ function search() {
     $("#content").bootstrapTable('destroy', '');
     initData();
 }
-
+//重置参数
 function reset() {
     $("#jobId").val("").trigger("change");
     $("#jobName").val("").trigger("change");
@@ -127,7 +115,6 @@ function reset() {
     $("#submitUser").val("all").trigger("change");
     $("#planDate").val("");
 }
-
 
 //获取查询参数
 function getQueryPara() {
@@ -176,13 +163,11 @@ function initData() {
                 var value = queryParams[key];
                 params[key] = value;
             }
-            //console.log(params);
             return params;
         },
         showColumns: true,
         showHeader: true,
         showToggle: true,
-        pageNumber: 1,
         pageSize: 20,
         pageList: [10, 20, 50, 100, 200, 500, 1000],
         paginationFirstText: '首页',
@@ -324,7 +309,6 @@ function jobNameFormatter(value,row,index){
 }
 
 function operateFormatter(value, row, index) {
-    //console.log(row);
     var jobId = row["jobId"];
     var taskId = row["taskId"];
     var attemptId = row["attemptId"];
@@ -337,8 +321,6 @@ function operateFormatter(value, row, index) {
         operationStr += '<li><a href="javascript:void(0)" onclick="TaskOperate(\'' + jobId + '\',\'' + taskId + '\',\'' + attemptId + '\',\'' + c.url + '\',\'' + c.text + '\')">' + c.text + '</a></li>';
     });
 
-
-    //console.log(jobId);
     var result = [
         '<a class="edit" href="' + contextPath + '/plan/dependency?taskId=' + taskId + '" title="查看执行详情" target="_blank">',
         '<i class="glyphicon glyphicon-eye-open"></i>',
@@ -349,15 +331,11 @@ function operateFormatter(value, row, index) {
         '</ul>',
         '</div>'
     ].join('');
-
-    //console.log(result);
-
     return result;
 }
 function taskStatusFormatter(value, row, index) {
     var color = taskStatusColor[value];
     var result = '<i class="fa fa-circle fa-2x" style="color: ' + color + '"></i>';
-
     return result;
 }
 function StringFormatter(value, row, index) {
@@ -366,7 +344,6 @@ function StringFormatter(value, row, index) {
 
 //重试还是kill，type与rest接口一一对应
 function TaskOperate(jobId, taskId, attemptId, url, text) {
-
     (new PNotify({
         title: '任务操作',
         text: '确定' + text + "?",
@@ -389,6 +366,6 @@ function TaskOperate(jobId, taskId, attemptId, url, text) {
             data["attemptId"] = attemptId;
             requestRemoteRestApi(url, text, data);
         }).on('pnotify.cancel', function () {
-
         });
 }
+

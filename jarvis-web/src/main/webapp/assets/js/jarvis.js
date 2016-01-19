@@ -142,3 +142,26 @@ function formatStatus(dataArr, status) {
     });
     return statusStr;
 }
+
+function arrToString(arr) {
+    if (null == arr) {
+        return "";
+    }
+    var result = "";
+    for (var i, len = arr.length; i < len; i++) {
+        if ("" == result) {
+            result = arr[i];
+        }
+        else {
+            result += "," + arr[i];
+        }
+    }
+}
+
+function stringToArr(source) {
+    if (null == source || "" == source) {
+        return [];
+    }
+    var arr = source.trim().split(",");
+    return arr;
+}

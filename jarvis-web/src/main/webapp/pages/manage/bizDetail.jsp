@@ -25,15 +25,24 @@
 
     <div class="row top-buffer">
         <div class="col-md-4 col-md-offset-4">
-            <div class="input-group">
-                <span class="input-group-addon">标签名</span>
+            <div class="input-group" style="width: 100%">
+                <span class="input-group-addon" style="width: 30%">标签名</span>
                 <input id="name" class="form-control"/>
             </div>
         </div>
 
         <div class="col-md-4 col-md-offset-4 top-buffer">
-            <div class="input-group">
-                <span class="input-group-addon">维护人</span>
+            <div class="input-group" style="width: 100%">
+                <span class="input-group-addon" style="width: 30%">状态</span>
+                <div id="status" class="form-control">
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-md-offset-4 top-buffer">
+            <div class="input-group" style="width: 100%">
+                <span class="input-group-addon" style="width: 30%">维护人</span>
                 <select id="owner" multiple></select>
             </div>
         </div>

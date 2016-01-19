@@ -43,8 +43,14 @@ public class PlanService {
                 Map<String, Long> map = avgTimeMap.get(planVo.getJobId());
                 Long size = map.get("size");
                 Long avgTime = map.get("avgTime");
+                if (null == avgTime) {
+                    avgTime = 0l;
+                }
                 Long newSize = size + 1;
-                Long newAvgTime = ((avgTime * size) + planVo.getExecuteTime()) / newSize;
+                Long newAvgTime=avgTime;
+                if(null!=planVo.getExecuteTime()){
+                    newAvgTime = ((avgTime * size) + planVo.getExecuteTime()) / newSize;
+                }
                 map.put("size", newSize);
                 map.put("avgTime", newAvgTime);
             } else {

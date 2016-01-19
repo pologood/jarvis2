@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,6 +32,9 @@ public class WorkerGroupAPIController {
     @RequestMapping(value = "getById")
     @ResponseBody
     public WorkerGroupVo getById(WorkerGroupQo workerGroupQo) {
+
+        Field[] fields=WorkerGroupAPIController.class.getDeclaredFields();
+
         WorkerGroupVo workerGroupVo = workerGroupService.getWorkerGroupById(workerGroupQo.getId());
         return workerGroupVo;
     }
@@ -52,7 +56,7 @@ public class WorkerGroupAPIController {
     * */
     @RequestMapping(value = "getAllWorkerGroup")
     @ResponseBody
-    public List<WorkerGroupVo> getAllWorkerGroups() {
+    public Object getAllWorkerGroups() {
         List<WorkerGroupVo> list = workerGroupService.getAllWorkerGroup();
         return list;
     }
@@ -62,15 +66,18 @@ public class WorkerGroupAPIController {
     * */
     @RequestMapping(value = "/getWorkerGroups")
     @ResponseBody
-    public Map<String, Object> getWorkerGroups(WorkerGroupQo workerGroupQo) {
+    public Object getWorkerGroups(WorkerGroupQo workerGroupQo) {
         Map<String, Object> result;
         result = workerGroupService.getWorkerGroups(workerGroupQo);
         return result;
     }
 
+    /*
+    * 获取workerGroup的所有可选状态
+    * */
     @RequestMapping(value = "getWorkerGroupStatus")
     @ResponseBody
-    public List<Map<String, Object>> getWorkerGroupStatus() {
+    public Object getWorkerGroupStatus() {
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 
         WorkerGroupStatus[] workerGroupStatuses = WorkerGroupStatus.values();

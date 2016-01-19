@@ -11,6 +11,7 @@ import com.mogujie.jarvis.web.entity.vo.JobDependVo;
 import com.mogujie.jarvis.web.entity.vo.JobVo;
 import com.mogujie.jarvis.web.service.JobDependService;
 import com.mogujie.jarvis.web.service.JobService;
+import com.mogujie.jarvis.web.utils.MessageStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -39,8 +40,23 @@ public class JobAPIController {
     @RequestMapping("getById")
     @ResponseBody
     public Object getById(JobQo jobQo) {
-        JobVo jobVo = jobService.getJobById(jobQo.getJobId());
-        return jobVo;
+        Map<String, Object> map = new HashMap<String, Object>();
+        if (null == jobQo.getJobId()) {
+            map.put("code", MessageStatus.FAILED.getValue());
+            map.put("msg", "jobId必须传入");
+            return map;
+        }
+        try {
+            JobVo jobVo = jobService.getJobById(jobQo.getJobId());
+            map.put("code", MessageStatus.SUCCESS.getValue());
+            map.put("msg", MessageStatus.SUCCESS.getText());
+            map.put("data", jobVo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("code", MessageStatus.FAILED.getValue());
+            map.put("msg", e.getMessage());
+        }
+        return map;
     }
 
     /*
@@ -48,22 +64,37 @@ public class JobAPIController {
     * */
     @RequestMapping("getParentsById")
     @ResponseBody
-    public List getParentsById(JobQo jobQo) {
-        List<JobDependVo> list = jobDependService.getParentById(jobQo.getJobId());
-        return list;
+    public Object getParentsById(JobQo jobQo) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        if (null == jobQo.getJobId()) {
+            map.put("code", MessageStatus.FAILED.getValue());
+            map.put("msg", "jobId必须传入");
+            return map;
+        }
+        try {
+            List<JobDependVo> list = jobDependService.getParentById(jobQo.getJobId());
+            map.put("code", MessageStatus.SUCCESS.getValue());
+            map.put("msg", MessageStatus.SUCCESS.getText());
+            map.put("data", list);
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("code", MessageStatus.FAILED.getValue());
+            map.put("msg", e.getMessage());
+        }
+        return map;
     }
 
 
     @RequestMapping("/getJobs")
     @ResponseBody
-    public Map<String, Object> getJobs(JobQo jobQo) {
-        Map<String, Object> result = jobService.getJobs(jobQo);
-        return result;
+    public Object getJobs(JobQo jobQo) {
+        Map<String, Object> map = jobService.getJobs(jobQo);
+        return map;
     }
 
     @RequestMapping("/getAllUser")
     @ResponseBody
-    public List<User> getAllUser() {
+    public Object getAllUser() {
         List<User> userList;
         try {
             userList = userService.getAllUsers();
@@ -79,14 +110,14 @@ public class JobAPIController {
     * */
     @RequestMapping(value = "getSubmitUsers")
     @ResponseBody
-    public List getSubmitUsers() {
+    public Object getSubmitUsers() {
         List<String> submitUsers = jobService.getSubmitUsers();
         return submitUsers;
     }
 
     @RequestMapping(value = "getAllJobIdAndName")
     @ResponseBody
-    public List getAllJobs() {
+    public Object getAllJobs() {
         List<Integer> statusList = new ArrayList<Integer>();
         List<Map> list = jobService.getAllJobIdAndName(statusList);
         return list;
@@ -98,7 +129,7 @@ public class JobAPIController {
      */
     @RequestMapping("/getTreeDependedOnJob")
     @ResponseBody
-    public Map<String, Object> getTreeDependedOnJob(JobQo jobQo) {
+    public Object getTreeDependedOnJob(JobQo jobQo) {
         Map<String, Object> result = jobDependService.getTreeDependedOnJob(jobQo);
         return result;
     }
@@ -108,7 +139,7 @@ public class JobAPIController {
      */
     @RequestMapping("/getTwoDirectionTree")
     @ResponseBody
-    public Map<String, Object> getTwoDirectionTree(JobQo jobQo) {
+    public Object getTwoDirectionTree(JobQo jobQo) {
         Map<String, Object> result = jobDependService.getTwoDirectionTreeDependedOnJob(jobQo);
         return result;
     }
@@ -118,7 +149,7 @@ public class JobAPIController {
      */
     @RequestMapping("/getSimilarJobIds")
     @ResponseBody
-    public Map<String, Object> getSimilarJobIds(Long q) {
+    public Object getSimilarJobIds(Long q) {
         Map<String, Object> result = jobService.getSimilarJobIds(q);
         return result;
     }
@@ -128,7 +159,7 @@ public class JobAPIController {
      */
     @RequestMapping("/getSimilarJobNames")
     @ResponseBody
-    public Map<String, Object> getSimilarJobNames(String q) {
+    public Object getSimilarJobNames(String q) {
         Map<String, Object> result = jobService.getSimilarJobNames(q);
         return result;
     }
@@ -138,7 +169,7 @@ public class JobAPIController {
      */
     @RequestMapping("/getJobBySimilarNames")
     @ResponseBody
-    public Map<String, Object> getJobBySimilarNames(String q) {
+    public Object getJobBySimilarNames(String q) {
         Map<String, Object> result = jobService.getJobBySimilarNames(q);
         return result;
     }
@@ -146,7 +177,7 @@ public class JobAPIController {
 
     @RequestMapping(value = "getJobStatus")
     @ResponseBody
-    public List<Map<String, Object>> getJobStatus() {
+    public Object getJobStatus() {
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
         JobStatus[] jobStatuses = JobStatus.values();
         for (JobStatus jobStatus : jobStatuses) {
@@ -161,7 +192,7 @@ public class JobAPIController {
 
     @RequestMapping(value = "getExpressionType")
     @ResponseBody
-    public List<Map<String, Object>> getExpressionType() {
+    public Object getExpressionType() {
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 
         ScheduleExpressionType[] scheduleExpressionTypes = ScheduleExpressionType.values();
@@ -177,7 +208,7 @@ public class JobAPIController {
 
     @RequestMapping(value = "getCommonStrategy")
     @ResponseBody
-    public List<Map<String, Object>> getCommonStrategy() {
+    public Object getCommonStrategy() {
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 
         CommonStrategy[] commonStrategies = CommonStrategy.values();

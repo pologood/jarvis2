@@ -64,7 +64,8 @@ public class RemoteRestApiController extends BaseController {
     public Map<String, Object> restApi(ModelMap modelMap, String url, String para) {
         Map<String, Object> result = new HashMap<String, Object>();
         url = domain + url;
-        log.info("remote url:" + url + ",para:" + para);
+        log.info("remote url:" + url );
+        log.info("para:" + para);
 
         Map<String, String> data = new HashMap<String, String>();
         data.put("parameters", para);
@@ -87,8 +88,6 @@ public class RemoteRestApiController extends BaseController {
         //请求远程REST服务器。
         try {
             log.info(data);
-            //log.info(data);
-            //log.info(newPara);
             Connection connection = Jsoup.connect(url)
                     .data(data)
                     .postDataCharset("UTF-8")
@@ -96,10 +95,9 @@ public class RemoteRestApiController extends BaseController {
                     .timeout(15000)
                     .method(Connection.Method.POST);
             Connection.Response response = connection.execute();
-
             log.info("request url:" + response.url());
             String resultBody = response.body();
-            log.info(result);
+            log.info("返回结果:"+resultBody);
             result = JsonHelper.fromJson(resultBody, Map.class);
             return result;
         } catch (Exception e) {

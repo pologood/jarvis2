@@ -5,6 +5,7 @@ package com.mogujie.jarvis.web.entity.qo;
  */
 public class BizGroupQo {
     private Integer id;
+    private String name;
     private Integer status;
     private String owner;
 
@@ -49,5 +50,13 @@ public class BizGroupQo {
 
     public void setLimit(Integer limit) {
         this.limit = limit;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
