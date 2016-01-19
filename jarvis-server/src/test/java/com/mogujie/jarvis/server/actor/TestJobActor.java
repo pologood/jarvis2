@@ -7,11 +7,6 @@ import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.dto.generate.JobDepend;
 import com.mogujie.jarvis.dto.generate.JobDependKey;
 import com.mogujie.jarvis.protocol.AppAuthProtos;
-<<<<<<< HEAD
-=======
-import com.mogujie.jarvis.protocol.JobDependencyEntryProtos;
-import com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos;
->>>>>>> 778423ff2ebc37dbcf660d105a7d0261b02b7175
 import com.mogujie.jarvis.server.actor.base.DBTestBased;
 import com.mogujie.jarvis.server.guice4test.Injectors4Test;
 import com.mogujie.jarvis.server.service.JobService;
@@ -75,40 +70,8 @@ public class TestJobActor extends DBTestBased {
 
     }
 
-    public void testSubmitJob() {
-        //    TestJobEntry jobVo = getJobEntry("test-2","dummy",1,"test for job","{\"para1\":\"1\",\"para2\":\"2\",\"para3\":\"3\"}","test-2",1,3,);
+   
 
-//        DependencyEntryProtos.DependencyEntry dependencyEntry = DependencyEntryProtos.DependencyEntry.newBuilder().setJobId(2).build();
-//        // 构造请求
-//        JobProtos.RestSubmitJobRequest.Builder builder = JobProtos.RestSubmitJobRequest.newBuilder().setAppAuth(appAuth).setUser("qinghuo").setJobName(jobVo.getJobName())
-//                .setJobType(jobVo.getJobType()).setStatus(jobVo.getStatus()).setContent(jobVo.getContent()).setParameters(jobParameters)
-//                .setAppName(jobVo.getAppName()).setWorkerGroupId(jobVo.getWorkerGroupId()).setPriority(jobVo.getPriority(1))
-//                .setActiveStartTime(jobVo.getActiveStartTime(0L)).setActiveEndTime(jobVo.getActiveEndTime(0L)).setExpiredTime(600)
-//                .setFailedAttempts(jobVo.getFailedAttempts(0)).setFailedInterval(jobVo.getFailedInterval(3));
-        new JavaTestKit(system) {{
-            ActorSelection serverActor = system.actorSelection("akka.tcp://server@127.0.0.1:10000/user/server");
-//            serverActor.tell(submitJobRequest, getRef());
-        }};
-
-
-    }
-
-<<<<<<< HEAD
-=======
-    public TestJobEntry getJobEntry(
-            String jobName, String jobType, Integer status,
-            String content, Map<String, Object> params, String appName,
-            Integer workerGroupId, Integer priority, Long activeStartTime,
-            Long activeEndTime, Integer expiredTime, Integer failedAttempts,
-            Integer failedInterval, List<JobDependencyEntryProtos.DependencyEntry> dependencyList,
-            List<JobScheduleExpressionEntryProtos.ScheduleExpressionEntry> scheduleExpressionList) {
-        TestJobEntry jobVo = new TestJobEntry(jobName, jobType, status, content,
-                params, appName, workerGroupId, priority, activeStartTime, activeEndTime, expiredTime, failedAttempts,
-                failedInterval, dependencyList, scheduleExpressionList);
-
-        return jobVo;
-    }
->>>>>>> 778423ff2ebc37dbcf660d105a7d0261b02b7175
 
     @Override
     protected void prepareData(IDatabaseConnection iconn, String tableName) throws Exception {
