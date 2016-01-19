@@ -9,6 +9,7 @@
 package com.mogujie.jarvis.server.dispatcher;
 
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.concurrent.PriorityBlockingQueue;
 
 import org.apache.logging.log4j.LogManager;
@@ -18,7 +19,7 @@ import com.google.inject.Singleton;
 import com.mogujie.jarvis.core.domain.TaskDetail;
 
 /**
- * Priority task queue 
+ * Priority task queue
  */
 @Singleton
 public class PriorityTaskQueue implements TaskQueue {
@@ -52,6 +53,17 @@ public class PriorityTaskQueue implements TaskQueue {
             LOGGER.error("", e);
         }
         return null;
+    }
+
+    @Override
+    public void removeByKey(String key) {
+        Iterator<TaskDetail> it = queue.iterator();
+        while(it.hasNext()) {
+            TaskDetail taskDetail = it.next();
+            if (taskDetail.getFullId().equalsIgnoreCase(key)) {
+                it.remove();
+            }
+        }
     }
 
     @Override
