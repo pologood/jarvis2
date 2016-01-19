@@ -9,7 +9,7 @@ import com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry;
 import com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry;
 import com.mogujie.jarvis.rest.vo.*;
 
-import com.mogujie.jarvis.server.domain.CommonStrategy;
+import com.mogujie.jarvis.core.domain.CommonStrategy;
 
 import java.util.Map;
 

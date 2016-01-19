@@ -24,7 +24,7 @@ import com.mogujie.jarvis.core.expression.DefaultDependencyStrategyExpression;
 import com.mogujie.jarvis.core.expression.DependencyExpression;
 import com.mogujie.jarvis.core.expression.DependencyStrategyExpression;
 import com.mogujie.jarvis.dto.generate.Task;
-import com.mogujie.jarvis.server.domain.CommonStrategy;
+import com.mogujie.jarvis.core.domain.CommonStrategy;
 import com.mogujie.jarvis.server.domain.JobDependencyEntry;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.service.JobService;

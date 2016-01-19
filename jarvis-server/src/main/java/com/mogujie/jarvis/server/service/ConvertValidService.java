@@ -25,7 +25,6 @@ import com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpress
 import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobScheduleExpRequest;
 import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobDependRequest;
 import com.mogujie.jarvis.server.domain.JobEntry;
-import com.mogujie.jarvis.server.domain.CommonStrategy;
 
 /**
  * @author muming
