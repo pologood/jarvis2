@@ -62,7 +62,7 @@ public class ConvertValidUtils {
         Preconditions.checkArgument(content == null || !content.trim().equals(""), "job内容不能为空");
 
         Integer status = job.getStatus();
-        Preconditions.checkArgument(!mode.isIn(CheckMode.ADD, CheckMode.EDIT_STATUS) || status != null, "status不能为空");
+        Preconditions.checkArgument(!mode.isIn(CheckMode.EDIT_STATUS) || status != null, "status不能为空");
         Preconditions.checkArgument(status == null || JobStatus.isValid(status), "status内容不正确。value:" + status);
 
         Long start = job.getActiveStartTime();
