@@ -268,18 +268,13 @@ public class JobController extends AbstractController {
      * jobVo转换为request——增加
      */
     private RestSubmitJobRequest vo2RequestByAdd(JobVo vo, AppAuth appAuth, String user) {
-        // parameters处理
-        String jobParameters = "";
-        if (vo.getParams() != null) {
-            jobParameters = JsonHelper.toJson(vo.getParams(), Map.class);
-        }
         // 构造请求
         RestSubmitJobRequest.Builder builder = RestSubmitJobRequest.newBuilder().setAppAuth(appAuth).setUser(user)
                 .setJobName(vo.getJobName())
                 .setJobType(vo.getJobType())
                 .setStatus(vo.getStatus(JobStatus.ENABLE.getValue()))
                 .setContent(vo.getContent())
-                .setParameters(jobParameters)
+                .setParameters(vo.getParams("{}"))
                 .setAppName(vo.getAppName(appAuth.getName()))
                 .setWorkerGroupId(vo.getWorkerGroupId())
                 .setBizGroupId(JarvisConstants.BIZ_GROUP_ID_UNKNOWN)

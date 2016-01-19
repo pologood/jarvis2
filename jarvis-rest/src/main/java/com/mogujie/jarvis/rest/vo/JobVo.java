@@ -18,7 +18,7 @@ public class JobVo extends AbstractVo {
     private String jobType;
     private Integer status;
     private String content;
-    private Map<String, Object> params;
+    private String params;
     private String appName;
     private Integer workerGroupId;
     private Integer bizGroupId;
@@ -71,11 +71,11 @@ public class JobVo extends AbstractVo {
         this.content = content;
     }
 
-    public Map<String, Object> getParams() {
+    public String getParams() {
         return params;
     }
 
-    public void setParams(Map<String, Object> params) {
+    public void setParams(String params) {
         this.params = params;
     }
 
@@ -175,6 +175,10 @@ public class JobVo extends AbstractVo {
 
     public Integer getStatus(Integer defaultValue) {
         return status != null ? status : defaultValue;
+    }
+
+    public String getParams(String defaultValue) {
+        return params != null ?params :defaultValue;
     }
 
     public Long getActiveStartTime(Long defaultValue) {

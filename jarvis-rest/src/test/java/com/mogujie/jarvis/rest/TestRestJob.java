@@ -104,7 +104,7 @@ public class TestRestJob {
         jobPrams.put("age", 18);
         jobPrams.put("isMail", false);
         jobPrams.put("params","{\"para1\":\"1\",\"para2\":\"2\"}");
-        job.setParams(jobPrams);
+        job.setParams(JsonHelper.toJson(jobPrams));
 
         // 任务参数
         String paramsJson = JsonHelper.toJson(job, JobVo.class);

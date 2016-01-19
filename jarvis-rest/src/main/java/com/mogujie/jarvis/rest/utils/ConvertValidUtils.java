@@ -4,11 +4,14 @@ import com.google.common.base.Preconditions;
 import com.mogujie.jarvis.core.domain.*;
 import com.mogujie.jarvis.core.expression.TimeOffsetExpression;
 import com.mogujie.jarvis.core.util.ExpressionUtils;
+import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry;
 import com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry;
 import com.mogujie.jarvis.rest.vo.*;
 
 import com.mogujie.jarvis.server.domain.CommonStrategy;
+
+import java.util.Map;
 
 /**
  * 检验函数
@@ -64,6 +67,15 @@ public class ConvertValidUtils {
         Integer status = job.getStatus();
         Preconditions.checkArgument(!mode.isIn(CheckMode.EDIT_STATUS) || status != null, "status不能为空");
         Preconditions.checkArgument(status == null || JobStatus.isValid(status), "status内容不正确。value:" + status);
+
+        // parameters处理
+        if (job.getParams() != null) {
+            try{
+                JsonHelper.fromJson(job.getParams(), Map.class);
+            }catch (Exception ex){
+                throw new IllegalArgumentException("job参数不是key-value结构的json串. paras:" + job.getParams() );
+            }
+        }
 
         Long start = job.getActiveStartTime();
         Long end = job.getActiveStartTime();
