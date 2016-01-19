@@ -15,26 +15,24 @@ import javax.ws.rs.core.MediaType;
 
 import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
-import com.mogujie.jarvis.protocol.SystemProtos.RestUpdateSystemStatusRequest;
-import com.mogujie.jarvis.protocol.SystemProtos.ServerUpdateSystemStatusResponse;
+import com.mogujie.jarvis.protocol.SystemProtos.*;
 import com.mogujie.jarvis.rest.RestResult;
 import com.mogujie.jarvis.rest.utils.JsonParameters;
+import com.mogujie.jarvis.rest.vo.SystemStatusResultVo;
 
 /**
- * @author muming
+ * @author muming,hejian
  */
 @Path("api/system")
 public class SystemController extends AbstractController {
 
     /**
-     * 修改系统状态
-     *
-     * @author hejian
+     * 修改——系统状态
      */
     @POST
     @Path("status")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult status(@FormParam("user") String user,
+    public RestResult setStatus(@FormParam("user") String user,
                              @FormParam("appToken") String appToken,
                              @FormParam("appName") String appName,
                              @FormParam("parameters") String parameters) {
@@ -45,11 +43,38 @@ public class SystemController extends AbstractController {
             int status = para.getIntegerNotNull("status");
             RestUpdateSystemStatusRequest request = RestUpdateSystemStatusRequest.newBuilder()
                     .setAppAuth(appAuth)
+                    .setUser(user)
                     .setStatus(status)
                     .build();
             ServerUpdateSystemStatusResponse response = (ServerUpdateSystemStatusResponse) callActor(AkkaType.SERVER, request);
 
             return response.getSuccess() ? successResult() : errorResult(response.getMessage());
+        } catch (Exception e) {
+            LOGGER.error("", e);
+            return errorResult(e);
+        }
+    }
+
+    /**
+     * 获得——系统状态
+     */
+    @POST
+    @Path("status/get")
+    @Produces(MediaType.APPLICATION_JSON)
+    public RestResult getStatus(@FormParam("user") String user,
+                             @FormParam("appToken") String appToken,
+                             @FormParam("appName") String appName,
+                             @FormParam("parameters") String parameters) {
+        try {
+            AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
+
+            RestGetSystemStatusRequest request = RestGetSystemStatusRequest.newBuilder()
+                    .setAppAuth(appAuth)
+                    .setUser(user)
+                    .build();
+            ServerGetSystemStatusResponse response = (ServerGetSystemStatusResponse) callActor(AkkaType.SERVER, request);
+
+            return response.getSuccess() ? successResult(new SystemStatusResultVo().setStatus(response.getStatus())) : errorResult(response.getMessage());
         } catch (Exception e) {
             LOGGER.error("", e);
             return errorResult(e);

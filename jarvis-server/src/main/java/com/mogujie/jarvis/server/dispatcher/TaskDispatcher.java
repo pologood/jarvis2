@@ -10,6 +10,7 @@ package com.mogujie.jarvis.server.dispatcher;
 
 import java.util.Map.Entry;
 
+import com.mogujie.jarvis.core.domain.SystemStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -42,24 +43,28 @@ public class TaskDispatcher extends Thread {
 
     private TaskManager taskManager = Injectors.getInjector().getInstance(TaskManager.class);
 
-    private volatile boolean running = true;
+    private volatile SystemStatus running = SystemStatus.RUNNING;
 
     private ActorSystem system = Injectors.getInjector().getInstance(ActorSystem.class);
 
     private static final Logger LOGGER = LogManager.getLogger();
 
     public void pause() {
-        running = false;
+        running = SystemStatus.PAUSE;
     }
 
     public void restart() {
-        running = true;
+        running = SystemStatus.RUNNING;
+    }
+
+    public SystemStatus getRunning() {
+        return running;
     }
 
     @Override
     public void run() {
         while (true) {
-            if (running) {
+            if (running== SystemStatus.RUNNING) {
                 TaskDetail task = null;
                 task = queue.get();
 

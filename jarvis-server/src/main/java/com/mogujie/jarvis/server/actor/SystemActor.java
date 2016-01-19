@@ -14,8 +14,8 @@ import akka.actor.Props;
 import akka.actor.UntypedActor;
 
 import com.mogujie.jarvis.core.domain.MessageType;
-import com.mogujie.jarvis.protocol.SystemProtos.RestUpdateSystemStatusRequest;
-import com.mogujie.jarvis.protocol.SystemProtos.ServerUpdateSystemStatusResponse;
+import com.mogujie.jarvis.core.domain.SystemStatus;
+import com.mogujie.jarvis.protocol.SystemProtos.*;
 import com.mogujie.jarvis.server.dispatcher.TaskDispatcher;
 import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.guice.Injectors;
@@ -39,6 +39,7 @@ public class SystemActor extends UntypedActor {
     public static List<ActorEntry> handledMessages() {
         List<ActorEntry> list = new ArrayList<>();
         list.add(new ActorEntry(RestUpdateSystemStatusRequest.class, ServerUpdateSystemStatusResponse.class, MessageType.SYSTEM));
+        list.add(new ActorEntry(RestGetSystemStatusRequest.class, ServerGetSystemStatusResponse.class, MessageType.SYSTEM));
         return list;
     }
 
@@ -46,6 +47,8 @@ public class SystemActor extends UntypedActor {
     public void onReceive(Object obj) throws Exception {
         if (obj instanceof RestUpdateSystemStatusRequest) {
             updateStatus((RestUpdateSystemStatusRequest) obj);
+        } else if (obj instanceof RestGetSystemStatusRequest) {
+            getStatus((RestGetSystemStatusRequest) obj);
         } else {
             unhandled(obj);
         }
@@ -55,14 +58,14 @@ public class SystemActor extends UntypedActor {
         ServerUpdateSystemStatusResponse response;
         try {
 
-            if (request.getStatus() > 0) {
+            SystemStatus status = SystemStatus.parseValue(request.getStatus());
+            if (status == SystemStatus.RUNNING) {
                 taskDispatcher.restart();
                 controller.notify(new StartEvent());
-            } else {
+            } else if (status == SystemStatus.PAUSE) {
                 taskDispatcher.pause();
                 controller.notify(new StopEvent());
             }
-
             response = ServerUpdateSystemStatusResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());
         } catch (Exception ex) {
@@ -73,5 +76,18 @@ public class SystemActor extends UntypedActor {
         }
     }
 
+    private void getStatus(RestGetSystemStatusRequest request) {
+        ServerGetSystemStatusResponse response;
+        try {
+            SystemStatus status = taskDispatcher.getRunning();
+            response = ServerGetSystemStatusResponse.newBuilder().setSuccess(true).setStatus(status.getValue()).build();
+            getSender().tell(response, getSelf());
+        } catch (Exception ex) {
+            response = ServerGetSystemStatusResponse.newBuilder().setSuccess(false).setMessage(ex.getMessage()).build();
+            getSender().tell(response, getSelf());
+            logger.error("", ex);
+            throw ex;
+        }
+    }
 
 }
