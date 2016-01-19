@@ -74,8 +74,8 @@ public class ServerActor extends UntypedActor {
 
     private Object generateResponse(Class<? extends GeneratedMessage> clazz, boolean success, String msg) {
         try {
-            Method method = clazz.getMethod("getDefaultInstance", new Class[] {});
-            Object object = method.invoke(null, new Object[] {});
+            Method method = clazz.getMethod("getDefaultInstance", new Class[]{});
+            Object object = method.invoke(null, new Object[]{});
             for (Field field : object.getClass().getDeclaredFields()) {
                 if ("success_".equals(field.getName())) {
                     field.setAccessible(true);
@@ -121,40 +121,30 @@ public class ServerActor extends UntypedActor {
         }
 
         ActorEntry actorEntry = pair.getSecond();
-        Field[] fields = clazz.getDeclaredFields();
-        for (Field field : fields) {
-            if (field.getType() == AppAuth.class) {
-                field.setAccessible(true);
-                AppAuth appAuth = (AppAuth) field.get(obj);
-                String appName = appAuth.getName();
-                App app = appService.getAppByName(appName);
-                if (app == null) {
-                    Object msg = generateResponse(actorEntry.getResponseClass(), false, "App[" + appName + "] not found");
-                    getSender().tell(msg, getSelf());
-                    return;
-                } else if(app.getStatus() != AppStatus.ENABLE.getValue()){
-                    Object msg = generateResponse(actorEntry.getResponseClass(), false, "App[" + appName + "] not enable");
-                    getSender().tell(msg, getSelf());
-                    return;
-                } else {
-                    if (appTokenVerifyEnable) {
-                        try {
-                            // 验证token
-                            AppTokenUtils.verifyToken(app.getAppKey(), appAuth.getToken());
-                            // 验证授权
-                            if (actorEntry.getMessageType() == MessageType.SYSTEM && app.getAppType() != MessageType.SYSTEM.getValue()) {
-                                Object msg = generateResponse(actorEntry.getResponseClass(), false, "request is rejected");
-                                getSender().tell(msg, getSelf());
-                                return;
-                            }
-                        } catch (AppTokenInvalidException e) {
-                            Object msg = generateResponse(actorEntry.getResponseClass(), false, e.getMessage());
-                            getSender().tell(msg, getSelf());
-                            return;
+        try {
+            Field[] fields = clazz.getDeclaredFields();
+            for (Field field : fields) {
+                if (field.getType() == AppAuth.class) {
+                    field.setAccessible(true);
+                    AppAuth appAuth = (AppAuth) field.get(obj);
+                    String appName = appAuth.getName();
+                    App app = appService.getAppByName(appName);
+                    if (app.getStatus() != AppStatus.ENABLE.getValue()) {
+                        throw new IllegalArgumentException("App is not enable. appName:" + appName);
+                    }
+
+                    if (appTokenVerifyEnable) {// 验证授权
+                        AppTokenUtils.verifyToken(app.getAppKey(), appAuth.getToken());
+                        if (actorEntry.getMessageType() == MessageType.SYSTEM && app.getAppType() != MessageType.SYSTEM.getValue()) {
+                            throw new IllegalArgumentException("该app没有管理权限. appName:" + appName);
                         }
                     }
                 }
             }
+        } catch (Exception e) {
+            Object msg = generateResponse(actorEntry.getResponseClass(), false, e.getMessage() != null ? e.getMessage() : e.toString());
+            getSender().tell(msg, getSelf());
+            return;
         }
         pair.getFirst().forward(obj, getContext());
     }
