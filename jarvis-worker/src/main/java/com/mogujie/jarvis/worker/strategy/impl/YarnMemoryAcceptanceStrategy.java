@@ -12,6 +12,8 @@ import java.text.DecimalFormat;
 import java.util.List;
 
 import org.apache.commons.configuration.Configuration;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -36,6 +38,7 @@ public class YarnMemoryAcceptanceStrategy implements AcceptanceStrategy {
     private static final Configuration CONFIG = ConfigUtils.getWorkerConfig();
     private static final double MAX_YARN_MEMORY_USAGE = CONFIG.getDouble(WorkerConfigKeys.YARN_MEMORY_USAGE_THRESHOLD, 0.9);
     private static final List<Object> YARN_REST_API_URIS = CONFIG.getList(WorkerConfigKeys.YARN_RESOUCEMANAGER_REST_API_URIS);
+    private static final Logger LOGGER = LogManager.getLogger();
 
     @Override
     public AcceptanceResult accept() throws AcceptanceException {
@@ -57,6 +60,8 @@ public class YarnMemoryAcceptanceStrategy implements AcceptanceStrategy {
                 }
             } catch (UnirestException | JSONException e) {
                 activeUriIndex = ++activeUriIndex % len;
+            } catch (Exception e) {
+                LOGGER.error("", e);
             }
         }
 
