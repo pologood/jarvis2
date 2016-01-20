@@ -76,6 +76,11 @@ public class TaskExecutor extends Thread {
                 senderActor.tell(WorkerSubmitTaskResponse.newBuilder().setAccept(false).setSuccess(false).setMessage(e.getMessage()).build(),
                         selfActor);
                 return;
+            } catch (Throwable e) {
+                LOGGER.error("", e);
+                senderActor.tell(WorkerSubmitTaskResponse.newBuilder().setAccept(false).setSuccess(false).setMessage(e.getMessage()).build(),
+                        selfActor);
+                return;
             }
         }
 
