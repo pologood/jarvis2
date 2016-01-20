@@ -60,7 +60,7 @@ public class YarnMemoryAcceptanceStrategy implements AcceptanceStrategy {
                 }
             } catch (UnirestException | JSONException e) {
                 activeUriIndex = ++activeUriIndex % len;
-            } catch (Exception e) {
+            } catch (Throwable e) {
                 LOGGER.error("", e);
             }
         }
