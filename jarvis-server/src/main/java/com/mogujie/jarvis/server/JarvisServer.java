@@ -18,6 +18,10 @@ import org.apache.commons.configuration.Configuration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jgrapht.experimental.dag.DirectedAcyclicGraph.CycleFoundException;
+import org.joda.time.DateTime;
+
+import akka.actor.ActorSystem;
+import akka.routing.RoundRobinPool;
 
 import com.google.common.collect.Lists;
 import com.mogujie.jarvis.core.JarvisConstants;
@@ -43,6 +47,7 @@ import com.mogujie.jarvis.server.scheduler.TaskRetryScheduler;
 import com.mogujie.jarvis.server.scheduler.dag.DAGJob;
 import com.mogujie.jarvis.server.scheduler.dag.DAGJobType;
 import com.mogujie.jarvis.server.scheduler.dag.DAGScheduler;
+import com.mogujie.jarvis.server.scheduler.dag.JobGraph;
 import com.mogujie.jarvis.server.scheduler.event.RetryTaskEvent;
 import com.mogujie.jarvis.server.scheduler.event.StartEvent;
 import com.mogujie.jarvis.server.scheduler.task.DAGTask;
@@ -52,9 +57,6 @@ import com.mogujie.jarvis.server.scheduler.time.TimePlan;
 import com.mogujie.jarvis.server.scheduler.time.TimeScheduler;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.TaskService;
-
-import akka.actor.ActorSystem;
-import akka.routing.RoundRobinPool;
 
 public class JarvisServer {
 
@@ -100,6 +102,7 @@ public class JarvisServer {
         TaskScheduler taskScheduler = TaskScheduler.getInstance();
         TimeScheduler timeScheduler = TimeScheduler.getInstance();
         AlarmScheduler alarmScheduler = Injectors.getInjector().getInstance(AlarmScheduler.class);
+        JobGraph jobGraph = JobGraph.INSTANCE;
         TaskGraph taskGraph = TaskGraph.INSTANCE;
         TimePlan plan = TimePlan.INSTANCE;
         controller.register(dagScheduler);
@@ -135,7 +138,7 @@ public class JarvisServer {
             int dependFlag = (!dependencies.isEmpty()) ? 1 : 0;
             DAGJobType type = DAGJobType.getDAGJobType(timeFlag, dependFlag, cycleFlag);
             DAGJob dagJob = new DAGJob(jobId, type);
-            dagScheduler.getJobGraph().addJob(jobId, dagJob, null);
+            jobGraph.addJob(jobId, dagJob, null);
             if (type.equals(DAGJobType.TIME) && dagJob.getJobStatus().equals(JobStatus.ENABLE) && jobService.isActive(jobId)) {
                 plan.recoverJob(jobId);
             }
@@ -146,7 +149,11 @@ public class JarvisServer {
             JobEntry jobEntry = jobService.get(jobId);
             Set<Long> dependencies = jobEntry.getDependencies().keySet();
             for (long parentId : dependencies) {
-                dagScheduler.getJobGraph().addDependency(parentId, jobId);
+                jobGraph.addDependency(parentId, jobId);
+            }
+            DAGJob dagJob = jobGraph.getDAGJob(jobId);
+            if (dagJob != null) {
+                jobGraph.submitJobWithCheck(dagJob, DateTime.now());
             }
         }
 

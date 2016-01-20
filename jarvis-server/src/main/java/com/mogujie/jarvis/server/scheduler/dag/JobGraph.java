@@ -157,7 +157,7 @@ public enum JobGraph {
             jobMap.put(jobId, dagJob);
             LOGGER.info("add DAGJob {} and dependency {} to JobGraph successfully.", dagJob.toString());
             if (dependencies != null && !dependencies.isEmpty()) {
-                submitJobWithCheck(dagJob, dateTime.getMillis());
+                submitJobWithCheck(dagJob, dateTime);
             }
         }
     }
@@ -220,7 +220,7 @@ public enum JobGraph {
             if (!oldType.equals(dagJob.getType())) {
                 LOGGER.info("moidfy DAGJob type from {} to {}", oldType, dagJob.getType());
             }
-            submitJobWithCheck(dagJob, DateTime.now().getMillis());
+            submitJobWithCheck(dagJob, DateTime.now());
         }
     }
 
@@ -247,7 +247,7 @@ public enum JobGraph {
         if (children != null) {
             // submit job if pass dependency check
             for (DAGJob child : children) {
-                submitJobWithCheck(child, DateTime.now().getMillis());
+                submitJobWithCheck(child, DateTime.now());
             }
         }
     }
@@ -290,13 +290,13 @@ public enum JobGraph {
      * 如果不是单亲纯依赖，必须配置调度时间
      *
      * @param dagJob
-     * @param scheduleTime
+     * @param scheduleDateTime
      */
-    public void submitJobWithCheck(DAGJob dagJob, long scheduleTime) {
+    public void submitJobWithCheck(DAGJob dagJob, DateTime scheduleDateTime) {
         long jobId = dagJob.getJobId();
         // 如果是时间任务，遍历自己的调度时间做依赖检查
         if (dagJob.getType().implies(DAGJobType.TIME)) {
-            DateTime nextDateTime = PlanUtil.getScheduleTimeAfter(jobId, new DateTime(scheduleTime));
+            DateTime nextDateTime = PlanUtil.getScheduleTimeAfter(jobId, scheduleDateTime);
             if (nextDateTime != null) {
                 long planScheduleTime = nextDateTime.getMillis();
                 if (dagJob.checkDependency(planScheduleTime)) {
