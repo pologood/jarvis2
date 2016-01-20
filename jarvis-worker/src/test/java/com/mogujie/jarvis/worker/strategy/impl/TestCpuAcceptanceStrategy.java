@@ -9,11 +9,9 @@
 package com.mogujie.jarvis.worker.strategy.impl;
 
 import org.hyperic.sigar.Sigar;
-import org.hyperic.sigar.SigarException;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.mogujie.jarvis.core.exception.AcceptanceException;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.worker.WorkerConfigKeys;
 import com.mogujie.jarvis.worker.strategy.AcceptanceStrategy;
@@ -21,7 +19,7 @@ import com.mogujie.jarvis.worker.strategy.AcceptanceStrategy;
 public class TestCpuAcceptanceStrategy {
 
     @Test
-    public void testAccept() throws AcceptanceException, SigarException {
+    public void testAccept() throws Exception {
         String javaLibraryPath = getClass().getProtectionDomain().getCodeSource().getLocation().getPath() + "../classes/native";
         System.setProperty("java.library.path", javaLibraryPath);
 
