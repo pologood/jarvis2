@@ -29,7 +29,7 @@ import com.mogujie.jarvis.rest.vo.LogResultVo;
 @Path("api/log")
 public class LogController extends AbstractController {
 
-    private final static int DEFAULT_LINE = 1000;
+    private final static int DEFAULT_SIZE = 10000;
 
     /**
      * 获取执行日志
@@ -91,14 +91,14 @@ public class LogController extends AbstractController {
                 fullId = IdUtils.getFullId(jobId, taskId, attemptId);
             }
             Long offset = para.getLong("offset", 0L);
-            Integer lines = para.getInteger("lines", DEFAULT_LINE);
+            Integer lines = para.getInteger("size", DEFAULT_SIZE);
 
             RestReadLogRequest request = RestReadLogRequest.newBuilder()
                     .setAppAuth(appAuth)
                     .setFullId(fullId)
                     .setType(type.getValue())
                     .setOffset(offset)
-                    .setLines(lines)
+                    .setSize(lines)
                     .build();
 
             LogStorageReadLogResponse response = (LogStorageReadLogResponse) callActor(AkkaType.LOGSTORAGE, request);

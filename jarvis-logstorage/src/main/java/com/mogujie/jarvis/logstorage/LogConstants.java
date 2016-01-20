@@ -5,8 +5,6 @@ package com.mogujie.jarvis.logstorage;
  */
 public interface LogConstants {
 
-    public static final int READ_MAX_LINES = 10000; //每次读取最大行数
-
-    public static final String END_OF_LOG = "\004"; //LOG结束符   （end of transmission EOT传输结束）
+    char END_OF_LOG = '\004';   //LOG结束符   （end of transmission EOT传输结束）
 
 }

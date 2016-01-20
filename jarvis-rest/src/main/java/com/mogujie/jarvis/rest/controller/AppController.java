@@ -70,7 +70,6 @@ public class AppController extends AbstractController {
         }
     }
 
-
     /**
      * 修改app
      */
@@ -116,7 +115,6 @@ public class AppController extends AbstractController {
         }
     }
 
-
     /**
      * app/workerGroup追加
      */
@@ -156,7 +154,6 @@ public class AppController extends AbstractController {
         }
     }
 
-
     private RestSetApplicationWorkerGroupRequest _workerGroup(OperationMode mode, String user,
                                                               String appName, String appToken, String parameters) {
 
@@ -189,6 +186,5 @@ public class AppController extends AbstractController {
         return request;
 
     }
-
 
 }

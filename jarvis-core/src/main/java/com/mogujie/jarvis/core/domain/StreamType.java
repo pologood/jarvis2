@@ -24,7 +24,7 @@ public enum StreamType {
     }
 
 
-    public static StreamType parseValue(int value) {
+    public static StreamType parseValue(int value) throws IllegalArgumentException{
         StreamType[] all = StreamType.values();
         for (StreamType s : all) {
             if (s.getValue() == value) {

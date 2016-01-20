@@ -10,7 +10,7 @@ import java.io.IOException;
 public interface LogStream {
 
     //写日志——一行
-    public void writeLine(String log) throws IOException;
+    public void writeText(String log) throws IOException;
 
     //写日志——结束标志
     public void writeEndFlag() throws IOException;
@@ -19,10 +19,10 @@ public interface LogStream {
      * 读取日志
      *
      * @param offset        ：偏移量
-     * @param lines         ：读取行数
+     * @param size          ：字节数
      * @return              ：读取内容返回
      * @throws java.io.IOException
      */
-    public LogReadResult readLines(long offset, int lines) throws IOException;
+    public LogReadResult readText(long offset, int size) throws IOException;
 
 }
