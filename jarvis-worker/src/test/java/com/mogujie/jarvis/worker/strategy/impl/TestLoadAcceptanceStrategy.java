@@ -10,11 +10,9 @@ package com.mogujie.jarvis.worker.strategy.impl;
 
 import java.lang.management.ManagementFactory;
 
-import org.hyperic.sigar.SigarException;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.mogujie.jarvis.core.exception.AcceptanceException;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.worker.WorkerConfigKeys;
 import com.mogujie.jarvis.worker.strategy.AcceptanceStrategy;
@@ -22,7 +20,7 @@ import com.mogujie.jarvis.worker.strategy.AcceptanceStrategy;
 public class TestLoadAcceptanceStrategy {
 
     @Test
-    public void testAccept() throws AcceptanceException, SigarException {
+    public void testAccept() throws Exception {
         int cpuNum = Runtime.getRuntime().availableProcessors();
         double threshold = ConfigUtils.getWorkerConfig().getDouble(WorkerConfigKeys.WORKER_CPU_LOAD_AVG_THRESHOLD, cpuNum * 1.5);
         AcceptanceStrategy acceptanceStrategy = new LoadAcceptanceStrategy();

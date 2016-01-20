@@ -28,8 +28,8 @@ import com.mogujie.jarvis.core.util.IdUtils;
 import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.dto.generate.Task;
-import com.mogujie.jarvis.server.dispatcher.TaskManager;
 import com.mogujie.jarvis.server.dispatcher.PriorityTaskQueue;
+import com.mogujie.jarvis.server.dispatcher.TaskManager;
 import com.mogujie.jarvis.server.domain.RetryType;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
@@ -339,7 +339,6 @@ public class TaskScheduler extends Scheduler {
         if (task != null) {
             int appId = task.getAppId();
             taskManager.appCounterDecrement(appId);
-            LOGGER.info("reduce task num, appId={}", appId);
         }
     }
 

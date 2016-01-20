@@ -8,16 +8,20 @@
 
 package com.mogujie.jarvis.worker;
 
-import com.mogujie.jarvis.core.ProgressReporter;
-import com.mogujie.jarvis.protocol.ReportTaskProgressProtos.WorkerReportTaskProgressRequest;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSelection;
+
+import com.mogujie.jarvis.core.ProgressReporter;
+import com.mogujie.jarvis.protocol.ReportTaskProgressProtos.WorkerReportTaskProgressRequest;
 
 public class DefaultProgressReporter implements ProgressReporter {
 
     private ActorSelection actor;
     private String fullId;
+    private static final Logger LOGGER = LogManager.getLogger();
 
     public DefaultProgressReporter(ActorSelection actor, String fullId) {
         this.actor = actor;
@@ -28,6 +32,7 @@ public class DefaultProgressReporter implements ProgressReporter {
     public void report(float progress) {
         WorkerReportTaskProgressRequest request = WorkerReportTaskProgressRequest.newBuilder().setFullId(fullId).setProgress(progress).build();
         actor.tell(request, ActorRef.noSender());
+        LOGGER.info("report progress[fullId={},progress={}] to server.", fullId, progress);
     }
 
 }
