@@ -2,7 +2,7 @@
  * 蘑菇街 Inc.
  * Copyright (c) 2010-2015 All Rights Reserved.
  *
- * Author: wuya Create Date: 2015年10月12日 上午10:18:24
+ * Author: muming Create Date: 2015年10月12日 上午10:18:24
  */
 
 package com.mogujie.jarvis.server.actor;
@@ -15,8 +15,8 @@ import org.joda.time.DateTime;
 
 import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.dto.generate.WorkerGroup;
-import com.mogujie.jarvis.protocol.WorkerGroupProtos.RestServerCreateWorkerGroupRequest;
-import com.mogujie.jarvis.protocol.WorkerGroupProtos.RestServerModifyWorkerGroupRequest;
+import com.mogujie.jarvis.protocol.WorkerGroupProtos.RestCreateWorkerGroupRequest;
+import com.mogujie.jarvis.protocol.WorkerGroupProtos.RestModifyWorkerGroupRequest;
 import com.mogujie.jarvis.protocol.WorkerGroupProtos.ServerCreateWorkerGroupResponse;
 import com.mogujie.jarvis.protocol.WorkerGroupProtos.ServerModifyWorkerGroupResponse;
 import com.mogujie.jarvis.server.domain.ActorEntry;
@@ -36,23 +36,23 @@ public class WorkerGroupActor extends UntypedActor {
 
     public static List<ActorEntry> handledMessages() {
         List<ActorEntry> list = new ArrayList<>();
-        list.add(new ActorEntry(RestServerCreateWorkerGroupRequest.class, ServerCreateWorkerGroupResponse.class, MessageType.SYSTEM));
-        list.add(new ActorEntry(RestServerModifyWorkerGroupRequest.class, ServerModifyWorkerGroupResponse.class, MessageType.SYSTEM));
+        list.add(new ActorEntry(RestCreateWorkerGroupRequest.class, ServerCreateWorkerGroupResponse.class, MessageType.SYSTEM));
+        list.add(new ActorEntry(RestModifyWorkerGroupRequest.class, ServerModifyWorkerGroupResponse.class, MessageType.SYSTEM));
         return list;
     }
 
     @Override
     public void onReceive(Object obj) throws Exception {
-        if (obj instanceof RestServerCreateWorkerGroupRequest) {
-            createWorkerGroup((RestServerCreateWorkerGroupRequest) obj);
-        } else if (obj instanceof RestServerModifyWorkerGroupRequest) {
-            modifyWorkerGroup((RestServerModifyWorkerGroupRequest) obj);
+        if (obj instanceof RestCreateWorkerGroupRequest) {
+            createWorkerGroup((RestCreateWorkerGroupRequest) obj);
+        } else if (obj instanceof RestModifyWorkerGroupRequest) {
+            modifyWorkerGroup((RestModifyWorkerGroupRequest) obj);
         } else {
             unhandled(obj);
         }
     }
 
-    public void createWorkerGroup(RestServerCreateWorkerGroupRequest request) {
+    private void createWorkerGroup(RestCreateWorkerGroupRequest request) {
         ServerCreateWorkerGroupResponse response;
         try {
             WorkerGroup workerGroup = new WorkerGroup();
@@ -73,7 +73,7 @@ public class WorkerGroupActor extends UntypedActor {
         }
     }
 
-    public void modifyWorkerGroup(RestServerModifyWorkerGroupRequest request) {
+    private void modifyWorkerGroup(RestModifyWorkerGroupRequest request) {
         ServerModifyWorkerGroupResponse response;
         try {
             WorkerGroup workerGroup = new WorkerGroup();

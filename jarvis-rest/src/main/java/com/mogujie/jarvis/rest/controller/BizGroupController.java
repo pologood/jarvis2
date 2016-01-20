@@ -5,8 +5,8 @@ import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.protocol.BizGroupProtos.*;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
 import com.mogujie.jarvis.rest.RestResult;
-import com.mogujie.jarvis.rest.utils.ConvertValidUtils;
-import com.mogujie.jarvis.rest.utils.ConvertValidUtils.CheckMode;
+import com.mogujie.jarvis.rest.utils.ValidUtils;
+import com.mogujie.jarvis.rest.utils.ValidUtils.CheckMode;
 import com.mogujie.jarvis.rest.vo.BizGroupResultVo;
 import com.mogujie.jarvis.rest.vo.BizGroupVo;
 
@@ -36,7 +36,7 @@ public class BizGroupController extends AbstractController {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
             BizGroupVo vo = JsonHelper.fromJson(parameters, BizGroupVo.class);
-            ConvertValidUtils.checkBizGroup(CheckMode.ADD, vo);
+            ValidUtils.checkBizGroup(CheckMode.ADD, vo);
 
             RestCreateBizGroupRequest request = RestCreateBizGroupRequest.newBuilder()
                     .setAppAuth(appAuth)
@@ -69,7 +69,7 @@ public class BizGroupController extends AbstractController {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
             BizGroupVo vo = JsonHelper.fromJson(parameters, BizGroupVo.class);
-            ConvertValidUtils.checkBizGroup(CheckMode.EDIT, vo);
+            ValidUtils.checkBizGroup(CheckMode.EDIT, vo);
 
             RestModifyBizGroupRequest.Builder builder = RestModifyBizGroupRequest.newBuilder();
             builder.setAppAuth(appAuth).setUser(user).setId(vo.getId());
@@ -106,7 +106,7 @@ public class BizGroupController extends AbstractController {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
             BizGroupVo vo = JsonHelper.fromJson(parameters, BizGroupVo.class);
-            ConvertValidUtils.checkBizGroup(CheckMode.DELETE, vo);
+            ValidUtils.checkBizGroup(CheckMode.DELETE, vo);
 
             RestDeleteBizGroupRequest request = RestDeleteBizGroupRequest.newBuilder()
                     .setAppAuth(appAuth)

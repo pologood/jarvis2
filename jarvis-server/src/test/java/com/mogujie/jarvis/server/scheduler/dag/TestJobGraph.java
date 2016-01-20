@@ -11,6 +11,7 @@ import org.jgrapht.experimental.dag.DirectedAcyclicGraph.CycleFoundException;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.server.scheduler.TestSchedulerBase;
@@ -260,6 +261,33 @@ public class TestJobGraph extends TestSchedulerBase {
         jobGraph.modifyJobFlag(jobBId, JobStatus.ENABLE, JobStatus.DELETED);
         // jobC has one parent
         Assert.assertEquals(1, jobGraph.getParents(jobCId).size());
+    }
+
+    /**
+     *   A         B
+     *   |   -->   |
+     *   C         C
+     * @throws CycleFoundException
+     */
+    @Test
+    public void testSetParents() throws Exception {
+        jobA = new DAGJob(jobAId, DAGJobType.TIME);
+        jobB = new DAGJob(jobBId, DAGJobType.TIME);
+        jobC = new DAGJob(jobCId, DAGJobType.DEPEND);
+        jobGraph.addJob(jobAId, jobA, null);
+        jobGraph.addJob(jobBId, jobB, null);
+        jobGraph.addJob(jobCId, jobC, Sets.newHashSet(jobAId));
+        Assert.assertEquals(1, jobGraph.getChildren(jobAId).size());
+        Assert.assertEquals(jobCId, (long)jobGraph.getChildren(jobAId).get(0).getFirst());
+        Assert.assertEquals(1, jobGraph.getParents(jobCId).size());
+        Assert.assertEquals(jobAId, (long)jobGraph.getParents(jobCId).get(0).getFirst());
+
+        jobGraph.setParents(jobC, Lists.newArrayList(jobB));
+        Assert.assertEquals(0, jobGraph.getChildren(jobAId).size());
+        Assert.assertEquals(1, jobGraph.getChildren(jobBId).size());
+        Assert.assertEquals(jobCId, (long)jobGraph.getChildren(jobBId).get(0).getFirst());
+        Assert.assertEquals(1, jobGraph.getParents(jobCId).size());
+        Assert.assertEquals(jobBId, (long)jobGraph.getParents(jobCId).get(0).getFirst());
     }
 
 }

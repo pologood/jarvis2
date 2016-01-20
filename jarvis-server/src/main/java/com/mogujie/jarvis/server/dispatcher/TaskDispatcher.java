@@ -13,6 +13,10 @@ import java.util.Map.Entry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import akka.actor.ActorSelection;
+import akka.actor.ActorSystem;
+
+import com.mogujie.jarvis.core.domain.SystemStatus;
 import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.domain.WorkerInfo;
 import com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry;
@@ -24,9 +28,6 @@ import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.TaskRetryScheduler;
 import com.mogujie.jarvis.server.service.AppService;
 import com.mogujie.jarvis.server.util.FutureUtils;
-
-import akka.actor.ActorSelection;
-import akka.actor.ActorSystem;
 
 /**
  * Take task from task queue then dispatch it to selected worker
@@ -42,24 +43,28 @@ public class TaskDispatcher extends Thread {
 
     private TaskManager taskManager = Injectors.getInjector().getInstance(TaskManager.class);
 
-    private volatile boolean running = true;
+    private volatile SystemStatus running = SystemStatus.RUNNING;
 
     private ActorSystem system = Injectors.getInjector().getInstance(ActorSystem.class);
 
     private static final Logger LOGGER = LogManager.getLogger();
 
     public void pause() {
-        running = false;
+        running = SystemStatus.PAUSE;
     }
 
     public void restart() {
-        running = true;
+        running = SystemStatus.RUNNING;
+    }
+
+    public SystemStatus getRunning() {
+        return running;
     }
 
     @Override
     public void run() {
         while (true) {
-            if (running) {
+            if (running== SystemStatus.RUNNING) {
                 TaskDetail task = null;
                 task = queue.get();
 
@@ -121,7 +126,7 @@ public class TaskDispatcher extends Thread {
                     } else {
                         // Worker不存在时进行重试处理(在一定时间内一直重试)
                         taskRetryScheduler.addTask(task, RetryType.REJECT_RETRY);
-                        LOGGER.warn("worker not exist, worker group id: {}", task.getGroupId());
+                        LOGGER.warn("worker not exist, fullId[{}], wokerGroupId[{}]", task.getFullId(), task.getGroupId());
                         continue;
                     }
 

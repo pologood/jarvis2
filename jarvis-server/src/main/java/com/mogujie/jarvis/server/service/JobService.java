@@ -45,7 +45,7 @@ import com.mogujie.jarvis.dto.generate.JobDependKey;
 import com.mogujie.jarvis.dto.generate.JobExample;
 import com.mogujie.jarvis.dto.generate.JobScheduleExpression;
 import com.mogujie.jarvis.dto.generate.JobScheduleExpressionExample;
-import com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry;
+import com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry;
 import com.mogujie.jarvis.server.domain.JobDependencyEntry;
 import com.mogujie.jarvis.server.domain.JobEntry;
 

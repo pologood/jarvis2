@@ -36,7 +36,11 @@ public class PlanService {
             jobIdList.add(planVo.getJobId());
         }
 
-        List<PlanVo> recentPlanList = taskMapper.getRecentExecuteTaskByJobId(jobIdList);
+        List<PlanVo> recentPlanList = new ArrayList<PlanVo>();
+        if (jobIdList.size() > 0) {
+            recentPlanList = taskMapper.getRecentExecuteTaskByJobId(jobIdList);
+        }
+
         Map<Long, Map<String, Long>> avgTimeMap = new HashMap<Long, Map<String, Long>>();
         for (PlanVo planVo : recentPlanList) {
             if (avgTimeMap.containsKey(planVo.getJobId())) {

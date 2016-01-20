@@ -2,7 +2,7 @@
  * 蘑菇街 Inc. 
  * Copyright (c) 2010-2015 All Rights Reserved.
  *
- * Author: wuya
+ * Author: muming
  * Create Date: 2015年10月9日 下午5:14:53
  */
 
@@ -30,15 +30,15 @@ import com.mogujie.jarvis.protocol.AlarmProtos.ServerDeleteAlarmResponse;
 import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.service.AlarmService;
-import com.mogujie.jarvis.server.service.ConvertValidService;
-import com.mogujie.jarvis.server.service.ConvertValidService.CheckMode;
+import com.mogujie.jarvis.server.service.ValidService;
+import com.mogujie.jarvis.server.service.ValidService.CheckMode;
 
 
 public class AlarmActor extends UntypedActor {
 
-    private ConvertValidService convertValidService = Injectors.getInjector().getInstance(ConvertValidService.class);
+    private ValidService validService = Injectors.getInjector().getInstance(ValidService.class);
     private AlarmService alarmService = Injectors.getInjector().getInstance(AlarmService.class);
-    private Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
 
     public static Props props() {
         return Props.create(AlarmActor.class);
@@ -70,7 +70,7 @@ public class AlarmActor extends UntypedActor {
         ServerCreateAlarmResponse response;
         try {
             Alarm alarm = msg2Alarm(request);
-            convertValidService.checkAlarm(CheckMode.ADD, alarm);
+            validService.checkAlarm(CheckMode.ADD, alarm);
             alarmService.insert(alarm);
 
             response = ServerCreateAlarmResponse.newBuilder().setSuccess(true).build();
@@ -88,7 +88,7 @@ public class AlarmActor extends UntypedActor {
         ServerModifyAlarmResponse response;
         try {
             Alarm alarm = msg2Alarm(request);
-            convertValidService.checkAlarm(CheckMode.EDIT, alarm);
+            validService.checkAlarm(CheckMode.EDIT, alarm);
             alarmService.updateByJobId(alarm);
 
             response = ServerModifyAlarmResponse.newBuilder().setSuccess(true).build();
@@ -106,7 +106,7 @@ public class AlarmActor extends UntypedActor {
         ServerDeleteAlarmResponse response;
         try {
             Alarm alarm = msg2Alarm(request);
-            convertValidService.checkAlarm(CheckMode.DELETE, alarm);
+            validService.checkAlarm(CheckMode.DELETE, alarm);
             alarmService.deleteByJobId(alarm.getJobId());
 
             response = ServerDeleteAlarmResponse.newBuilder().setSuccess(true).build();

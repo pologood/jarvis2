@@ -23,11 +23,6 @@
 			<groupId>com.mogujie.jarvis</groupId>
 			<artifactId>jarvis-protocol</artifactId>
 		</dependency>
-        <dependency>
-            <groupId>com.mogujie.jarvis</groupId>
-            <artifactId>jarvis-server</artifactId>
-        </dependency>
-
 		<!-- Jersey -->
 		<dependency>
 			<groupId>org.glassfish.jersey.containers</groupId>

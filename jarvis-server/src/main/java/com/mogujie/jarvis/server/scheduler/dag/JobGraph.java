@@ -229,9 +229,8 @@ public enum JobGraph {
      *
      * @param jobId
      * @param jobStatus
-     * @throws JobScheduleException
      */
-    public void modifyJobFlag(long jobId, JobStatus oldStatus, JobStatus newStatus) throws JobScheduleException {
+    public void modifyJobFlag(long jobId, JobStatus oldStatus, JobStatus newStatus) {
         DAGJob dagJob = getDAGJob(jobId);
         List<DAGJob> children = new ArrayList<DAGJob>();
         if (dagJob != null) {
@@ -351,7 +350,7 @@ public enum JobGraph {
                     LOGGER.error("parentJobId {} != preJobId {}", parentJobId, preJobId);
                 }
             } else {
-                LOGGER.warn("不是单亲纯依赖必须配置调度时间！！");
+                LOGGER.warn("{} 不是单亲纯依赖必须配置调度时间！！", dagJob);
             }
         }
     }
@@ -386,6 +385,40 @@ public enum JobGraph {
         return jobIds;
     }
 
+    /**
+     * get parent DAGJob
+     *
+     * @param dagJob
+     */
+    public List<DAGJob> getParents(DAGJob dagJob) {
+        List<DAGJob> parents = new ArrayList<DAGJob>();
+        Set<DefaultEdge> inEdges = dag.incomingEdgesOf(dagJob);
+        if (inEdges != null) {
+            for (DefaultEdge edge : inEdges) {
+                parents.add(dag.getEdgeSource(edge));
+            }
+        }
+        return parents;
+    }
+
+    /**
+     * set parent DAGJobs
+     *
+     * @param dagJob
+     * @param parents
+     */
+    public void setParents(DAGJob dagJob, List<DAGJob> parents) throws CycleFoundException {
+        Set<DefaultEdge> tmpEdges = Sets.newHashSet();
+        Set<DefaultEdge> inEdges = dag.incomingEdgesOf(dagJob);
+        if (inEdges != null) {
+            tmpEdges.addAll(inEdges);
+            dag.removeAllEdges(tmpEdges);
+        }
+        for (DAGJob parent : parents) {
+            dag.addDagEdge(parent, dagJob);
+        }
+    }
+
     @VisibleForTesting
     public synchronized void addDependency(long parentId, long childId) throws CycleFoundException {
         DAGJob parent = jobMap.get(parentId);
@@ -411,17 +444,6 @@ public enum JobGraph {
             DAGDependChecker checker = child.getDependChecker();
             checker.updateDependency(parentId);
         }
-    }
-
-    private List<DAGJob> getParents(DAGJob dagJob) {
-        List<DAGJob> parents = new ArrayList<DAGJob>();
-        Set<DefaultEdge> inEdges = dag.incomingEdgesOf(dagJob);
-        if (inEdges != null) {
-            for (DefaultEdge edge : inEdges) {
-                parents.add(dag.getEdgeSource(edge));
-            }
-        }
-        return parents;
     }
 
     private List<DAGJob> getChildren(DAGJob dagJob) {

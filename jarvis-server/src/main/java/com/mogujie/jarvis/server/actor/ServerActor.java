@@ -13,21 +13,15 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 
-import com.mogujie.jarvis.core.domain.AppStatus;
 import org.apache.commons.configuration.Configuration;
-
-import akka.actor.ActorRef;
-import akka.actor.Props;
-import akka.actor.UntypedActor;
-import akka.routing.SmallestMailboxPool;
 
 import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.protobuf.GeneratedMessage;
+import com.mogujie.jarvis.core.domain.AppStatus;
 import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.core.domain.Pair;
-import com.mogujie.jarvis.core.exception.AppTokenInvalidException;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.dto.generate.App;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
@@ -36,6 +30,11 @@ import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.service.AppService;
 import com.mogujie.jarvis.server.util.AppTokenUtils;
+
+import akka.actor.ActorRef;
+import akka.actor.Props;
+import akka.actor.UntypedActor;
+import akka.routing.SmallestMailboxPool;
 
 public class ServerActor extends UntypedActor {
 
@@ -121,40 +120,30 @@ public class ServerActor extends UntypedActor {
         }
 
         ActorEntry actorEntry = pair.getSecond();
-        Field[] fields = clazz.getDeclaredFields();
-        for (Field field : fields) {
-            if (field.getType() == AppAuth.class) {
-                field.setAccessible(true);
-                AppAuth appAuth = (AppAuth) field.get(obj);
-                String appName = appAuth.getName();
-                App app = appService.getAppByName(appName);
-                if (app == null) {
-                    Object msg = generateResponse(actorEntry.getResponseClass(), false, "App[" + appName + "] not found");
-                    getSender().tell(msg, getSelf());
-                    return;
-                } else if(app.getStatus() != AppStatus.ENABLE.getValue()){
-                    Object msg = generateResponse(actorEntry.getResponseClass(), false, "App[" + appName + "] not enable");
-                    getSender().tell(msg, getSelf());
-                    return;
-                } else {
-                    if (appTokenVerifyEnable) {
-                        try {
-                            // 验证token
-                            AppTokenUtils.verifyToken(app.getAppKey(), appAuth.getToken());
-                            // 验证授权
-                            if (actorEntry.getMessageType() == MessageType.SYSTEM && app.getAppType() != MessageType.SYSTEM.getValue()) {
-                                Object msg = generateResponse(actorEntry.getResponseClass(), false, "request is rejected");
-                                getSender().tell(msg, getSelf());
-                                return;
-                            }
-                        } catch (AppTokenInvalidException e) {
-                            Object msg = generateResponse(actorEntry.getResponseClass(), false, e.getMessage());
-                            getSender().tell(msg, getSelf());
-                            return;
+        try {
+            Field[] fields = clazz.getDeclaredFields();
+            for (Field field : fields) {
+                if (field.getType() == AppAuth.class) {
+                    field.setAccessible(true);
+                    AppAuth appAuth = (AppAuth) field.get(obj);
+                    String appName = appAuth.getName();
+                    App app = appService.getAppByName(appName);
+                    if (app.getStatus() != AppStatus.ENABLE.getValue()) {
+                        throw new IllegalArgumentException("App is not enable. appName:" + appName);
+                    }
+
+                    if (appTokenVerifyEnable) {// 验证授权
+                        AppTokenUtils.verifyToken(app.getAppKey(), appAuth.getToken());
+                        if (actorEntry.getMessageType() == MessageType.SYSTEM && app.getAppType() != MessageType.SYSTEM.getValue()) {
+                            throw new IllegalArgumentException("该app没有管理权限. appName:" + appName);
                         }
                     }
                 }
             }
+        } catch (Exception e) {
+            Object msg = generateResponse(actorEntry.getResponseClass(), false, e.getMessage() != null ? e.getMessage() : e.toString());
+            getSender().tell(msg, getSelf());
+            return;
         }
         pair.getFirst().forward(obj, getContext());
     }

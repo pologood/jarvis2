@@ -14,23 +14,23 @@ import org.apache.commons.configuration.Configuration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.mogujie.jarvis.core.JarvisConstants;
-import com.mogujie.jarvis.core.metrics.Metrics;
-import com.mogujie.jarvis.core.util.ConfigUtils;
-import com.mogujie.jarvis.core.util.ThreadUtils;
-import com.mogujie.jarvis.protocol.RegistryWorkerProtos.ServerRegistryResponse;
-import com.mogujie.jarvis.protocol.RegistryWorkerProtos.WorkerRegistryRequest;
-import com.mogujie.jarvis.worker.actor.DeadLetterActor;
-import com.mogujie.jarvis.worker.actor.TaskActor;
-import com.mogujie.jarvis.worker.util.FutureUtils;
-import com.typesafe.config.Config;
-
+import scala.concurrent.duration.Duration;
 import akka.actor.ActorRef;
 import akka.actor.ActorSelection;
 import akka.actor.ActorSystem;
 import akka.actor.DeadLetter;
 import akka.routing.SmallestMailboxPool;
-import scala.concurrent.duration.Duration;
+
+import com.mogujie.jarvis.core.JarvisConstants;
+import com.mogujie.jarvis.core.metrics.Metrics;
+import com.mogujie.jarvis.core.util.ConfigUtils;
+import com.mogujie.jarvis.core.util.ThreadUtils;
+import com.mogujie.jarvis.protocol.WorkerProtos.ServerRegistryResponse;
+import com.mogujie.jarvis.protocol.WorkerProtos.WorkerRegistryRequest;
+import com.mogujie.jarvis.worker.actor.DeadLetterActor;
+import com.mogujie.jarvis.worker.actor.TaskActor;
+import com.mogujie.jarvis.worker.util.FutureUtils;
+import com.typesafe.config.Config;
 
 public class JarvisWorker {
 
@@ -72,21 +72,20 @@ public class JarvisWorker {
         ActorRef deadLetterActor = system.actorOf(new SmallestMailboxPool(10).props(DeadLetterActor.props()));
         system.eventStream().subscribe(deadLetterActor, DeadLetter.class);
 
+        // 心跳汇报
         int actorNum = workerConfig.getInt(WorkerConfigKeys.WORKER_ACTORS_NUM, 500);
         ActorRef workerActor = system.actorOf(new SmallestMailboxPool(actorNum).props(TaskActor.props()), JarvisConstants.WORKER_AKKA_SYSTEM_NAME);
-
         ActorSelection heartBeatActor = system.actorSelection(serverAkkaPath);
-
         int heartBeatInterval = workerConfig.getInt(WorkerConfigKeys.WORKER_HEART_BEAT_INTERVAL_SECONDS, 5);
-
-        // 心跳汇报
         system.scheduler().schedule(Duration.Zero(), Duration.create(heartBeatInterval, TimeUnit.SECONDS),
                 new HeartBeatThread(heartBeatActor, workerActor), system.dispatcher());
 
         Thread taskStateRestore = new TaskStateRestore(system);
         taskStateRestore.start();
+        LOGGER.info("TaskStateRestore started.");
 
         Metrics.start(ConfigUtils.getWorkerConfig());
+        LOGGER.info("Metrics started.");
 
         LOGGER.info("Jarvis worker started.");
     }

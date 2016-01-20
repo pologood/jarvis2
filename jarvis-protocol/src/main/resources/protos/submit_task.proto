@@ -1,4 +1,3 @@
-import "app_auth.proto";
 import "map_entry.proto";
 
 option java_package = "com.mogujie.jarvis.protocol";

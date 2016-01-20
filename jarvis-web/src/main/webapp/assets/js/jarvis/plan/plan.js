@@ -26,32 +26,7 @@ $(function () {
     });
     //select采用select2 实现
     $(".input-group select").select2({width: '100%'});
-    $("#jobId").select2({
-        ajax: {
-            url: contextPath + "/api/job/getSimilarJobIds",
-            dataType: 'json',
-            delay: 250,
-            data: function (params) {
-                return {
-                    q: params.term, // search term
-                    page: params.page
-                };
-            },
-            processResults: function (data, page) {
-                return {
-                    results: data.items
-                };
-            },
-            cache: true
-        },
-        escapeMarkup: function (markup) {
-            return markup;
-        },
-        minimumInputLength: 1,
-        templateResult: formatResult,
-        templateSelection: formatResultSelection,
-        width: '100%'
-    });
+
     $("#jobName").select2({
         ajax: {
             url: contextPath + "/api/job/getSimilarJobNames",
@@ -108,27 +83,23 @@ function search() {
 }
 //重置参数
 function reset() {
-    $("#jobId").val("").trigger("change");
     $("#jobName").val("").trigger("change");
     $("#jobType").val("all").trigger("change");
     $("#priority").val("all").trigger("change");
-    $("#submitUser").val("all").trigger("change");
-    $("#planDate").val("");
+    $("#executeUser").val("all").trigger("change");
+    $("#dataTime").val("");
 }
 
 //获取查询参数
 function getQueryPara() {
     var queryPara = {};
 
-    var jobIdList = $("#jobId").val();
-    var jobNameList = $("#jobNameList").val();
-    var jobTypeList = $("#jobTypeList").val();
+    var jobNameList = $("#jobName").val();
+    var jobTypeList = $("#jobType").val();
     var priorityList = $("#priority").val();
     var executeUserList = $("#executeUser").val();
     var dataTime = $("#dataTime").val();
 
-    jobIdList = jobIdList == "all" ? undefined : jobIdList;
-    jobIdList = jobIdList == null ? undefined : jobIdList;
     jobNameList = jobNameList == 'all' ? undefined : jobNameList;
     jobNameList = jobNameList == null ? undefined : jobNameList;
     jobTypeList = jobTypeList == 'all' ? undefined : jobTypeList;
@@ -139,7 +110,6 @@ function getQueryPara() {
     priorityList = priorityList == null ? undefined : priorityList;
     dataTime = dataTime == '' ? undefined : dataTime;
 
-    queryPara["jobIdList"] = JSON.stringify(jobIdList);
     queryPara["jobNameList"] = JSON.stringify(jobNameList);
     queryPara["jobTypeList"] = JSON.stringify(jobTypeList);
     queryPara["executeUserList"] = JSON.stringify(executeUserList);

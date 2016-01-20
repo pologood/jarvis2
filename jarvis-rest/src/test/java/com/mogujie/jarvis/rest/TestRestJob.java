@@ -13,7 +13,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import com.mogujie.jarvis.core.domain.OperationMode;
 import com.mogujie.jarvis.core.expression.ScheduleExpressionType;
 import com.mogujie.jarvis.core.util.JsonHelper;
-import com.mogujie.jarvis.server.domain.CommonStrategy;
+import com.mogujie.jarvis.core.domain.CommonStrategy;
 import org.junit.Test;
 
 /**

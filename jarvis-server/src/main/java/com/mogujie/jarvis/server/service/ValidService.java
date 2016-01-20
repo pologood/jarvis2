@@ -20,19 +20,18 @@ import com.mogujie.jarvis.core.expression.*;
 import com.mogujie.jarvis.core.util.ExpressionUtils;
 import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.dto.generate.*;
-import com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry;
-import com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry;
+import com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry;
+import com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry;
 import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobScheduleExpRequest;
 import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobDependRequest;
 import com.mogujie.jarvis.server.domain.JobEntry;
-import com.mogujie.jarvis.server.domain.CommonStrategy;
 
 /**
  * @author muming
  */
 
 @Singleton
-public class ConvertValidService {
+public class ValidService {
 
     public enum CheckMode {
         ADD, //追加
@@ -69,7 +68,7 @@ public class ConvertValidService {
     //--------------------------------------- job ---------------------------------
 
     /**
-     * @param job
+     * 检查——job任务
      */
     public void checkJob(CheckMode mode, Job job) throws NotFoundException, IllegalArgumentException {
 
@@ -97,7 +96,7 @@ public class ConvertValidService {
         Preconditions.checkArgument(workerGroupId == null || workerGroupId > 0, "workGroupId不能为空");
 
         Integer bizGroupId = job.getBizGroupId();
-        if(bizGroupId != null && bizGroupId != JarvisConstants.BIZ_GROUP_ID_UNKNOWN){
+        if (bizGroupId != null && bizGroupId != JarvisConstants.BIZ_GROUP_ID_UNKNOWN) {
             bizGroupService.get(bizGroupId);
         }
 
@@ -117,7 +116,6 @@ public class ConvertValidService {
         } else if (start != null && mode.isIn(CheckMode.EDIT)) {
             Preconditions.checkArgument(start.getTime() <= oldJob.getActiveEndDate().getTime(),
                     "有效开始时间不能大于有效结束时间. start:" + start.toString() + "; end:" + oldJob.getActiveEndDate().toString());
-
         } else if (end != null && mode.isIn(CheckMode.EDIT)) {
             Preconditions.checkArgument(oldJob.getActiveStartDate().getTime() <= end.getTime(),
                     "有效开始时间不能大于有效结束时间. start:" + oldJob.getActiveStartDate().toString() + "; end:" + end.toString());
@@ -173,6 +171,59 @@ public class ConvertValidService {
     }
 
     /**
+     * APP内容检查
+     */
+    public void checkApp(CheckMode mode, App app) throws IllegalArgumentException {
+
+        Integer id = app.getAppId();
+        Preconditions.checkArgument(!mode.isIn(CheckMode.EDIT, CheckMode.DELETE) || id != null , "appId不能为空");
+        Preconditions.checkArgument(id == null || id == 0 , "appId不能为零");
+
+        String appName = app.getAppName();
+        Preconditions.checkArgument(!mode.isIn(CheckMode.ADD) || appName != null, "appName不能为空");
+        if (appName != null) {
+            Preconditions.checkArgument(!appName.trim().equals(""), "appName不能为空。");
+            appService.checkDuplicateName(appName, app.getAppType());
+        }
+
+        String owner = app.getOwner();
+        Preconditions.checkArgument(!mode.isIn(CheckMode.ADD) || owner != null, "owner不能为空");
+        Preconditions.checkArgument(owner == null || !owner.trim().equals(""), "owner不能为空");
+
+        Integer status = app.getStatus();
+        Preconditions.checkArgument(!mode.isIn(CheckMode.ADD) || status != null, "status不能为空");
+        Preconditions.checkArgument(status == null || AppStatus.isValid(status), "status内容不对。value:" + status);
+    }
+
+    /**
+     * 检查 ——BizGroup
+     */
+    public void checkBizGroup(CheckMode mode, BizGroup bg) throws IllegalArgumentException, NotFoundException {
+        Integer id = bg.getId();
+        Preconditions.checkArgument(!mode.isIn(CheckMode.EDIT, CheckMode.DELETE)
+                || (id != null && id != 0), "id is empty。 id:" + id);
+
+        if (mode.isIn(CheckMode.DELETE)) {
+            bizGroupService.checkDeletable(id);
+        }
+
+        String name = bg.getName();
+        Preconditions.checkArgument(!mode.isIn(CheckMode.ADD) || name != null, "name不能为空。");
+        if (name != null) {
+            Preconditions.checkArgument(!name.trim().equals(""), "name不能为空。");
+            bizGroupService.checkDuplicateName(name, bg.getId());
+        }
+
+        Integer status = bg.getStatus();
+        Preconditions.checkArgument(!mode.isIn(CheckMode.ADD) || status != null, "status不能为空。");
+        Preconditions.checkArgument(status == null || BizGroupStatus.isValid(status), "status类型不对。value:" + status);
+
+        String owner = bg.getOwner();
+        Preconditions.checkArgument(!mode.isIn(CheckMode.ADD) || owner != null, "owner不能为空。");
+        Preconditions.checkArgument(owner == null || !owner.trim().equals(""), "owner不能为空。");
+    }
+
+    /**
      * 检查——Alarm报警
      */
     public void checkAlarm(CheckMode mode, Alarm alarm) {
@@ -217,34 +268,6 @@ public class ConvertValidService {
             Preconditions.checkArgument(mode != OperationMode.ADD || appWorkerGroup == null
                     , "AppWorkerGroup对象已经存在,不能插入. appID:" + appId + "; workerGroupId:" + workerGroupId);
         }
-    }
-
-    /**
-     * 检查 ——BizGroup
-     */
-    public void checkBizGroup(CheckMode mode, BizGroup bg) throws IllegalArgumentException, NotFoundException {
-        Integer id = bg.getId();
-        Preconditions.checkArgument(!mode.isIn(CheckMode.EDIT, CheckMode.DELETE)
-                || (id != null && id != 0), "id is empty。 id:" + id);
-
-        if (mode.isIn(CheckMode.DELETE)) {
-            bizGroupService.checkDeletable(id);
-        }
-
-        String name = bg.getName();
-        Preconditions.checkArgument(!mode.isIn(CheckMode.ADD) || name != null, "name不能为空。");
-        if (name != null) {
-            Preconditions.checkArgument(!name.trim().equals(""), "name不能为空。");
-            bizGroupService.checkDuplicateName(name);
-        }
-
-        Integer status = bg.getStatus();
-        Preconditions.checkArgument(!mode.isIn(CheckMode.ADD) || status != null, "status不能为空。");
-        Preconditions.checkArgument(status == null || BizGroupStatus.isValid(status), "status类型不对。value:" + status);
-
-        String owner = bg.getOwner();
-        Preconditions.checkArgument(!mode.isIn(CheckMode.ADD) || owner != null, "owner不能为空。");
-        Preconditions.checkArgument(owner == null || !owner.trim().equals(""), "owner不能为空。");
     }
 
 }

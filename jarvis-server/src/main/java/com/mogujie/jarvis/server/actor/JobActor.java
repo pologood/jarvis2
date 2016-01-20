@@ -9,14 +9,12 @@
 package com.mogujie.jarvis.server.actor;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import com.mogujie.jarvis.core.JarvisConstants;
-import com.mogujie.jarvis.core.domain.*;
-import com.mogujie.jarvis.core.exception.NotFoundException;
-import com.mogujie.jarvis.dto.generate.App;
-import com.mogujie.jarvis.protocol.AppAuthProtos;
-import com.mogujie.jarvis.server.service.AppService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
@@ -27,17 +25,39 @@ import akka.actor.UntypedActor;
 
 import com.google.common.collect.Range;
 import com.google.common.collect.Sets;
+import com.mogujie.jarvis.core.JarvisConstants;
+import com.mogujie.jarvis.core.domain.AppType;
+import com.mogujie.jarvis.core.domain.JobRelationType;
+import com.mogujie.jarvis.core.domain.JobStatus;
+import com.mogujie.jarvis.core.domain.MessageType;
+import com.mogujie.jarvis.core.domain.OperationMode;
+import com.mogujie.jarvis.core.domain.Pair;
+import com.mogujie.jarvis.core.exception.NotFoundException;
 import com.mogujie.jarvis.core.expression.CronExpression;
 import com.mogujie.jarvis.core.expression.FixedDelayExpression;
 import com.mogujie.jarvis.core.expression.FixedRateExpression;
 import com.mogujie.jarvis.core.expression.ISO8601Expression;
 import com.mogujie.jarvis.core.expression.ScheduleExpression;
+import com.mogujie.jarvis.dto.generate.App;
 import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.dto.generate.JobDepend;
 import com.mogujie.jarvis.dto.generate.Task;
-import com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry;
-import com.mogujie.jarvis.protocol.JobProtos.*;
-import com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry;
+import com.mogujie.jarvis.protocol.AppAuthProtos;
+import com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry;
+import com.mogujie.jarvis.protocol.JobProtos.JobStatusEntry;
+import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobDependRequest;
+import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobRequest;
+import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobScheduleExpRequest;
+import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobStatusRequest;
+import com.mogujie.jarvis.protocol.JobProtos.RestQueryJobRelationRequest;
+import com.mogujie.jarvis.protocol.JobProtos.RestSubmitJobRequest;
+import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobDependResponse;
+import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobResponse;
+import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobScheduleExpResponse;
+import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobStatusResponse;
+import com.mogujie.jarvis.protocol.JobProtos.ServerQueryJobRelationResponse;
+import com.mogujie.jarvis.protocol.JobProtos.ServerSubmitJobResponse;
+import com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry;
 import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.domain.ModifyDependEntry;
 import com.mogujie.jarvis.server.domain.RemoveJobRequest;
@@ -46,8 +66,9 @@ import com.mogujie.jarvis.server.scheduler.dag.DAGJob;
 import com.mogujie.jarvis.server.scheduler.dag.DAGJobType;
 import com.mogujie.jarvis.server.scheduler.dag.JobGraph;
 import com.mogujie.jarvis.server.scheduler.time.TimePlan;
-import com.mogujie.jarvis.server.service.ConvertValidService;
-import com.mogujie.jarvis.server.service.ConvertValidService.CheckMode;
+import com.mogujie.jarvis.server.service.AppService;
+import com.mogujie.jarvis.server.service.ValidService;
+import com.mogujie.jarvis.server.service.ValidService.CheckMode;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.PlanUtil;
@@ -65,7 +86,7 @@ public class JobActor extends UntypedActor {
 
     private JobService jobService = Injectors.getInjector().getInstance(JobService.class);
     private AppService appService = Injectors.getInjector().getInstance(AppService.class);
-    private ConvertValidService convertValidService = Injectors.getInjector().getInstance(ConvertValidService.class);
+    private ValidService validService = Injectors.getInjector().getInstance(ValidService.class);
 
     public static Props props() {
         return Props.create(JobActor.class);
@@ -125,7 +146,7 @@ public class JobActor extends UntypedActor {
 
             // 参数检查
             Job job = msg2Job(msg);
-            convertValidService.checkJob(CheckMode.ADD, job);
+            validService.checkJob(CheckMode.ADD, job);
 
             // 1. insert job to DB
             jobId = jobService.insertJob(job);
@@ -195,7 +216,7 @@ public class JobActor extends UntypedActor {
         try {
             // 参数检查
             Job job = msg2Job(msg);
-            convertValidService.checkJob(CheckMode.EDIT, job);
+            validService.checkJob(CheckMode.EDIT, job);
 
             // update job to DB
             jobService.updateJob(job);
@@ -219,13 +240,16 @@ public class JobActor extends UntypedActor {
     @Transactional
     private void modifyJobDependency(RestModifyJobDependRequest msg) throws Exception {
         ServerModifyJobDependResponse response;
+        long jobId = msg.getJobId();
+        DAGJob dagJob = jobGraph.getDAGJob(jobId);
+        List<DAGJob> oldParents = jobGraph.getParents(dagJob);
+
         try {
             // 参数检查
-            convertValidService.CheckJobDependency(msg);
+            validService.CheckJobDependency(msg);
 
             // 1. update jobService
             List<ModifyDependEntry> dependEntries = new ArrayList<>();
-            long jobId = msg.getJobId();
             DateTime now = DateTime.now();
             for (DependencyEntry entry : msg.getDependencyEntryList()) {
                 JobDepend jobDepend = convert2JobDepend(jobId, entry, msg.getUser(), now);
@@ -250,6 +274,8 @@ public class JobActor extends UntypedActor {
             response = ServerModifyJobDependResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());
         } catch (Exception e) {
+            // roll back modify dependency
+            jobGraph.setParents(dagJob, oldParents);
             response = ServerModifyJobDependResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
             getSender().tell(response, getSelf());
             logger.error("", e);
@@ -271,7 +297,7 @@ public class JobActor extends UntypedActor {
 
         try {
             // 参数检查
-            convertValidService.Check2JobScheduleExp(msg);
+            validService.Check2JobScheduleExp(msg);
 
             // 1. update jobService
             List<ScheduleExpressionEntry> expressionEntries = msg.getExpressionEntryList();
@@ -357,7 +383,7 @@ public class JobActor extends UntypedActor {
             long jobId = msg.getJobId();
             // 参数检查
             Job job = msg2Job(msg);
-            convertValidService.checkJob(CheckMode.EDIT_STATUS, job);
+            validService.checkJob(CheckMode.EDIT_STATUS, job);
 
             // 1. update job to DB
             JobStatus oldStatus = JobStatus.parseValue(jobService.get(jobId).getJob().getStatus());
@@ -453,7 +479,7 @@ public class JobActor extends UntypedActor {
     private Job msg2Job(RestModifyJobRequest msg) throws NotFoundException {
         Job job = new Job();
         job.setJobId(msg.getJobId());
-        job.setAppId(analysisAppId(msg.getAppAuth(), msg.getAppName()));
+        job.setAppId(analysisAppId(msg.getAppAuth(), msg.hasAppName()? msg.getAppName() : null));
         if (msg.hasJobName()) {
             job.setJobName(msg.getJobName());
         }

@@ -1,7 +1,6 @@
 package com.mogujie.jarvis.rest.vo;
 
 import java.util.List;
-import java.util.Map;
 
 import com.mogujie.jarvis.rest.vo.JobDependencyVo.DependencyEntry;
 import com.mogujie.jarvis.rest.vo.JobScheduleExpVo.ScheduleExpressionEntry;
@@ -12,7 +11,6 @@ import com.mogujie.jarvis.rest.vo.JobScheduleExpVo.ScheduleExpressionEntry;
  * @author muming
  */
 public class JobVo extends AbstractVo {
-
     private Long jobId;
     private String jobName;
     private String jobType;
@@ -167,7 +165,6 @@ public class JobVo extends AbstractVo {
         this.scheduleExpressionList = scheduleExpressionList;
     }
 
-
     //---------- 默认值处理 -----------------------
     public String getAppName(String defaultValue) {
         return (appName != null) ? appName : defaultValue;
@@ -178,7 +175,7 @@ public class JobVo extends AbstractVo {
     }
 
     public String getParams(String defaultValue) {
-        return params != null ?params :defaultValue;
+        return params != null ? params : defaultValue;
     }
 
     public Long getActiveStartTime(Long defaultValue) {

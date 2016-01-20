@@ -33,6 +33,9 @@ $(function () {
     });
     $.ajaxSettings.async = true;
     getBizGroup();
+    initSubmitUser();
+    initApp();
+    initWorkerGroup();
 
     $("#jobId").select2({
         ajax: {
@@ -93,6 +96,54 @@ $(function () {
     initData();
 });
 
+
+function initSubmitUser() {
+    $.getJSON(contextPath + "/api/job/getSubmitUsers", function (data) {
+        var newData = new Array();
+        $(data).each(function (i, c) {
+            var item = {};
+            item["id"] = c;
+            item["text"] = c;
+            newData.push(item);
+        });
+        $("#submitUser").select2({
+            data:newData,
+            width:'100%'
+        });
+    });
+}
+
+function initApp(){
+    $.getJSON(contextPath + "/api/app/getApps", function (data) {
+        var newData = new Array();
+        $(data.rows).each(function (i, c) {
+            var item = {};
+            item["id"] = c.appId;
+            item["text"] = c.appName;
+            newData.push(item);
+        });
+        $("#appId").select2({
+            data:newData,
+            width:'100%'
+        });
+    });
+}
+
+function initWorkerGroup(){
+    $.getJSON(contextPath + "/api/workerGroup/getAllWorkerGroup", function (data) {
+        var newData = new Array();
+        $(data).each(function (i, c) {
+            var item = {};
+            item["id"] = c.id;
+            item["text"] = c.name;
+            newData.push(item);
+        });
+        $("#workerGroupId").select2({
+            data:newData,
+            width:'100%'
+        });
+    });
+}
 
 //查找
 function search() {
@@ -223,7 +274,7 @@ var columns = [{
     field: 'workerGroupName',
     title: 'WorkerGroup名',
     switchable: true,
-    visible: false
+    visible: true
 }, {
     field: 'jobType',
     title: '任务类型',
@@ -233,7 +284,7 @@ var columns = [{
     title: '业务标签',
     switchable: true,
     visible: true,
-    formatter:bizGroupFormatter
+    formatter: bizGroupFormatter
 }, {
     field: 'status',
     title: '任务状态',
@@ -370,8 +421,8 @@ function formatResultSelection(result) {
     return result.id;
 }
 //业务标签格式化器
-function bizGroupFormatter(value,row,index){
-    return bizGroup[value];a
+function bizGroupFormatter(value,row,index) {
+    return bizGroup[value];
 }
 
 

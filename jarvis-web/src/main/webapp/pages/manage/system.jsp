@@ -31,6 +31,7 @@
                     <input id="systemStatus" type="checkbox" checked="">
                 </div>
             </div>
+            <!--
             <div class="row top-buffer">
                 <div class="col-md-2 col-md-offset-4">
                     <span class="pull-right btn text-info">是否自动调度</span>
@@ -39,6 +40,7 @@
                     <input id="systemAutoStatus" type="checkbox" checked="">
                 </div>
             </div>
+            -->
         </div>
     </div>
 

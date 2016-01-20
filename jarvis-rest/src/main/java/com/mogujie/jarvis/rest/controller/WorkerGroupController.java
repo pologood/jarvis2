@@ -8,15 +8,15 @@ import javax.ws.rs.core.MediaType;
 
 import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.protocol.AppAuthProtos;
-import com.mogujie.jarvis.protocol.WorkerGroupProtos.RestServerCreateWorkerGroupRequest;
-import com.mogujie.jarvis.protocol.WorkerGroupProtos.RestServerModifyWorkerGroupRequest;
+import com.mogujie.jarvis.protocol.WorkerGroupProtos.RestCreateWorkerGroupRequest;
+import com.mogujie.jarvis.protocol.WorkerGroupProtos.RestModifyWorkerGroupRequest;
 import com.mogujie.jarvis.protocol.WorkerGroupProtos.ServerCreateWorkerGroupResponse;
 import com.mogujie.jarvis.protocol.WorkerGroupProtos.ServerModifyWorkerGroupResponse;
 import com.mogujie.jarvis.rest.RestResult;
 import com.mogujie.jarvis.rest.utils.JsonParameters;
 
 /**
- * @author muming,hejian
+ * @author muming, hejian
  */
 @Path("api/workerGroup")
 public class WorkerGroupController extends AbstractController {
@@ -35,7 +35,7 @@ public class WorkerGroupController extends AbstractController {
             JsonParameters para = new JsonParameters(parameters);
             String name = para.getStringNotEmpty("name");
 
-            RestServerCreateWorkerGroupRequest request = RestServerCreateWorkerGroupRequest.newBuilder()
+            RestCreateWorkerGroupRequest request = RestCreateWorkerGroupRequest.newBuilder()
                     .setAppAuth(appAuth)
                     .setUser(user)
                     .setWorkerGroupName(name).build();
@@ -63,7 +63,7 @@ public class WorkerGroupController extends AbstractController {
             int workerGroupId = para.getIntegerNotNull("workerGroupId");
             String name = para.getStringNotEmpty("name");
 
-            RestServerModifyWorkerGroupRequest request = RestServerModifyWorkerGroupRequest.newBuilder()
+            RestModifyWorkerGroupRequest request = RestModifyWorkerGroupRequest.newBuilder()
                     .setAppAuth(appAuth)
                     .setUser(user)
                     .setWorkerGroupName(name)
@@ -92,7 +92,7 @@ public class WorkerGroupController extends AbstractController {
             int workerGroupId = para.getIntegerNotNull("workerGroupId");
             int status = para.getIntegerNotNull("status");
 
-            RestServerModifyWorkerGroupRequest request = RestServerModifyWorkerGroupRequest.newBuilder()
+            RestModifyWorkerGroupRequest request = RestModifyWorkerGroupRequest.newBuilder()
                     .setAppAuth(appAuth)
                     .setUser(user)
                     .setWorkerGroupId(workerGroupId)

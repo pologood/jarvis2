@@ -7,7 +7,6 @@ package com.mogujie.jarvis.rest.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -37,8 +36,8 @@ import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobStatusResponse;
 import com.mogujie.jarvis.protocol.JobProtos.ServerQueryJobRelationResponse;
 import com.mogujie.jarvis.protocol.JobProtos.ServerSubmitJobResponse;
 import com.mogujie.jarvis.rest.RestResult;
-import com.mogujie.jarvis.rest.utils.ConvertValidUtils;
-import com.mogujie.jarvis.rest.utils.ConvertValidUtils.CheckMode;
+import com.mogujie.jarvis.rest.utils.ValidUtils;
+import com.mogujie.jarvis.rest.utils.ValidUtils.CheckMode;
 import com.mogujie.jarvis.rest.utils.JsonParameters;
 import com.mogujie.jarvis.rest.vo.JobVo;
 import com.mogujie.jarvis.rest.vo.JobRelationsVo;
@@ -67,7 +66,7 @@ public class JobController extends AbstractController {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
             JobVo jobVo = JsonHelper.fromJson(parameters, JobVo.class);
-            ConvertValidUtils.checkJob(CheckMode.ADD, jobVo);
+            ValidUtils.checkJob(CheckMode.ADD, jobVo);
             RestSubmitJobRequest request = vo2RequestByAdd(jobVo, appAuth, user);
 
             // 发送请求到server
@@ -99,7 +98,7 @@ public class JobController extends AbstractController {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
             JobVo jobVo = JsonHelper.fromJson(parameters, JobVo.class);
-            ConvertValidUtils.checkJob(CheckMode.EDIT, jobVo);
+            ValidUtils.checkJob(CheckMode.EDIT, jobVo);
             RestModifyJobRequest request = vo2RequestByEdit(jobVo, appAuth, user);
 
             // 发送请求到server
@@ -137,7 +136,7 @@ public class JobController extends AbstractController {
             Preconditions.checkArgument(jobVo.getDependencyList() != null && jobVo.getDependencyList().size() > 0, "任务依赖为空");
 
             for (JobDependencyVo.DependencyEntry entryInput : jobVo.getDependencyList()) {
-                builder.addDependencyEntry(ConvertValidUtils.ConvertDependencyEntry(entryInput));
+                builder.addDependencyEntry(ValidUtils.ConvertDependencyEntry(entryInput));
             }
 
             // 发送请求到server
@@ -176,7 +175,7 @@ public class JobController extends AbstractController {
 
             if (jobVo.getScheduleExpressionList() != null && jobVo.getScheduleExpressionList().size() > 0) {
                 for (JobScheduleExpVo.ScheduleExpressionEntry entryInput : jobVo.getScheduleExpressionList()) {
-                    builder.addExpressionEntry(ConvertValidUtils.ConvertScheduleExpressionEntry(entryInput));
+                    builder.addExpressionEntry(ValidUtils.ConvertScheduleExpressionEntry(entryInput));
                 }
             }
 
@@ -287,12 +286,12 @@ public class JobController extends AbstractController {
 
         if (vo.getScheduleExpressionList() != null && vo.getScheduleExpressionList().size() > 0) {
             for (JobScheduleExpVo.ScheduleExpressionEntry entryInput : vo.getScheduleExpressionList()) {
-                builder.addExpressionEntry(ConvertValidUtils.ConvertScheduleExpressionEntry(entryInput));
+                builder.addExpressionEntry(ValidUtils.ConvertScheduleExpressionEntry(entryInput));
             }
         }
         if (vo.getDependencyList() != null && vo.getDependencyList().size() > 0) {
             for (JobDependencyVo.DependencyEntry entryInput : vo.getDependencyList()) {
-                builder.addDependencyEntry(ConvertValidUtils.ConvertDependencyEntry(entryInput));
+                builder.addDependencyEntry(ValidUtils.ConvertDependencyEntry(entryInput));
             }
         }
         return builder.build();
@@ -316,9 +315,8 @@ public class JobController extends AbstractController {
         if (vo.getContent() != null && !vo.getContent().equals("")) {
             builder.setContent(vo.getContent());
         }
-        if (vo.getParams() != null) {
-            String jobParameters = JsonHelper.toJson(vo.getParams(), Map.class);
-            builder.setParameters(jobParameters);
+        if (vo.getParams() != null && !vo.getParams().equals("")) {
+            builder.setParameters(vo.getParams());
         }
         if (vo.getPriority() != null) {
             builder.setPriority(vo.getPriority());

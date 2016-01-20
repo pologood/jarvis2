@@ -1,7 +1,7 @@
 import "app_auth.proto";
 
 option java_package = "com.mogujie.jarvis.protocol";
-option java_outer_classname = "ModifyWorkerStatusProtos";
+option java_outer_classname = "WorkerProtos";
 
 
 message RestServerModifyWorkerStatusRequest {
@@ -12,6 +12,15 @@ message RestServerModifyWorkerStatusRequest {
 }
 
 message ServerModifyWorkerStatusResponse {
+    required bool success = 1;
+    optional string message = 2 [default = ""];
+}
+
+message WorkerRegistryRequest {
+    required string key = 1;
+}
+
+message ServerRegistryResponse {
     required bool success = 1;
     optional string message = 2 [default = ""];
 }

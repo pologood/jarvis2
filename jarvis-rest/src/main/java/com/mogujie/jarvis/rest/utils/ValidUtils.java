@@ -1,17 +1,26 @@
 package com.mogujie.jarvis.rest.utils;
 
+import java.util.Map;
+
 import com.google.common.base.Preconditions;
-import com.mogujie.jarvis.core.domain.*;
+import com.mogujie.jarvis.core.domain.AlarmStatus;
+import com.mogujie.jarvis.core.domain.AlarmType;
+import com.mogujie.jarvis.core.domain.AppStatus;
+import com.mogujie.jarvis.core.domain.BizGroupStatus;
+import com.mogujie.jarvis.core.domain.CommonStrategy;
+import com.mogujie.jarvis.core.domain.JobStatus;
+import com.mogujie.jarvis.core.domain.OperationMode;
 import com.mogujie.jarvis.core.expression.TimeOffsetExpression;
 import com.mogujie.jarvis.core.util.ExpressionUtils;
 import com.mogujie.jarvis.core.util.JsonHelper;
-import com.mogujie.jarvis.protocol.DependencyEntryProtos.DependencyEntry;
-import com.mogujie.jarvis.protocol.ScheduleExpressionEntryProtos.ScheduleExpressionEntry;
-import com.mogujie.jarvis.rest.vo.*;
-
-import com.mogujie.jarvis.server.domain.CommonStrategy;
-
-import java.util.Map;
+import com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry;
+import com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry;
+import com.mogujie.jarvis.rest.vo.AlarmQueryVo;
+import com.mogujie.jarvis.rest.vo.AlarmVo;
+import com.mogujie.jarvis.rest.vo.BizGroupVo;
+import com.mogujie.jarvis.rest.vo.JobDependencyVo;
+import com.mogujie.jarvis.rest.vo.JobScheduleExpVo;
+import com.mogujie.jarvis.rest.vo.JobVo;
 
 /**
  * 检验函数
@@ -19,7 +28,7 @@ import java.util.Map;
  * @author muming
  */
 
-public class ConvertValidUtils {
+public class ValidUtils {
 
     public enum CheckMode {
         ADD, //追加
@@ -41,12 +50,11 @@ public class ConvertValidUtils {
     }
 
     /**
-     * @param job
+     * 检查——任务
      */
     public static void checkJob(CheckMode mode, JobVo job) {
         Long jobId = job.getJobId();
-        Preconditions.checkArgument(!mode.isIn(CheckMode.EDIT, CheckMode.EDIT_STATUS)
-                || (jobId != null && jobId > 0), "jobId不能为空");
+        Preconditions.checkArgument(!mode.isIn(CheckMode.EDIT, CheckMode.EDIT_STATUS) || (jobId != null && jobId > 0), "jobId不能为空");
 
         String name = job.getJobName();
         Preconditions.checkArgument(mode != CheckMode.ADD || name != null, "jobName不能为空");
@@ -70,10 +78,10 @@ public class ConvertValidUtils {
 
         // parameters处理
         if (job.getParams() != null) {
-            try{
+            try {
                 JsonHelper.fromJson(job.getParams(), Map.class);
-            }catch (Exception ex){
-                throw new IllegalArgumentException("job参数不是key-value结构的json串. paras:" + job.getParams() );
+            } catch (Exception ex) {
+                throw new IllegalArgumentException("job参数不是key-value结构的json串. paras:" + job.getParams());
             }
         }
 
@@ -84,12 +92,8 @@ public class ConvertValidUtils {
         }
     }
 
-
     /**
      * 计划表达式-转换
-     *
-     * @param input
-     * @return
      */
     public static ScheduleExpressionEntry ConvertScheduleExpressionEntry(JobScheduleExpVo.ScheduleExpressionEntry input) {
 
@@ -108,20 +112,13 @@ public class ConvertValidUtils {
             ExpressionUtils.checkExpression(expressType, expression);
         }
 
-        ScheduleExpressionEntry entry = ScheduleExpressionEntry.newBuilder()
-                .setOperator(mode)
-                .setExpressionId(expressionId)
-                .setExpressionType(expressType == null ? 0 : expressType)
-                .setScheduleExpression(expression == null ? "" : expression)
-                .build();
+        ScheduleExpressionEntry entry = ScheduleExpressionEntry.newBuilder().setOperator(mode).setExpressionId(expressionId)
+                .setExpressionType(expressType == null ? 0 : expressType).setScheduleExpression(expression == null ? "" : expression).build();
         return entry;
     }
 
     /**
      * 依赖-转换
-     *
-     * @param input
-     * @return
      */
     public static DependencyEntry ConvertDependencyEntry(JobDependencyVo.DependencyEntry input) {
         Integer mode = input.getOperatorMode();
@@ -137,36 +134,28 @@ public class ConvertValidUtils {
             Preconditions.checkArgument(commonStrategy != null, "依赖的通用策略不能为空.value:" + commonStrategy);
             Preconditions.checkArgument(CommonStrategy.isValid(commonStrategy), "依赖的通用策略不对.value:" + commonStrategy);
 
-            Preconditions.checkArgument(offsetStrategy == null || offsetStrategy.equals("") || new TimeOffsetExpression(offsetStrategy).isValid()
-                    , "依赖的偏移策略不对.value:" + input.getOffsetStrategy());
+            Preconditions.checkArgument(offsetStrategy == null || offsetStrategy.equals("") || new TimeOffsetExpression(offsetStrategy).isValid(),
+                    "依赖的偏移策略不对.value:" + input.getOffsetStrategy());
         }
 
-        DependencyEntry entry = DependencyEntry.newBuilder()
-                .setOperator(mode).setJobId(preJobId)
+        DependencyEntry entry = DependencyEntry.newBuilder().setOperator(mode).setJobId(preJobId)
                 .setCommonDependStrategy(commonStrategy == null ? 0 : commonStrategy)
-                .setOffsetDependStrategy(offsetStrategy == null ? "" : offsetStrategy)
-                .build();
+                .setOffsetDependStrategy(offsetStrategy == null ? "" : offsetStrategy).build();
         return entry;
     }
 
     /**
      * APP内容检查
      */
-    public static void checkAppVo(OperationMode mode, String appName, String owner, Integer status, Integer maxConcurrency) {
+    public static void checkAppVo(CheckMode mode, String appName, String owner, Integer status, Integer maxConcurrency) {
+        Preconditions.checkArgument(!mode.isIn(CheckMode.ADD) || appName != null, "appName不能为空");
+        Preconditions.checkArgument(appName == null || !appName.trim().equals(""), "appName不能为空。");
 
-        //追加模式
-        if (mode == OperationMode.ADD) {
-            Preconditions.checkArgument(appName != null && !appName.trim().equals(""), "appName不能为空");
-            Preconditions.checkArgument(owner != null && !owner.trim().equals(""), "owner不能为空");
-            Preconditions.checkArgument(status != null, "status不能为空");
-            Preconditions.checkArgument(AppStatus.isValid(status), "status内容不对。value:" + status);
-        }
-        //编辑模式
-        if (mode == OperationMode.EDIT) {
-            Preconditions.checkArgument(appName == null || !appName.trim().equals(""), "appName不能为空");
-            Preconditions.checkArgument(owner == null || !owner.trim().equals(""), "owner不能为空");
-            Preconditions.checkArgument(status == null || AppStatus.isValid(status), "status内容不对。value:" + status);
-        }
+        Preconditions.checkArgument(!mode.isIn(CheckMode.ADD) || owner != null, "owner不能为空");
+        Preconditions.checkArgument(owner == null || !owner.trim().equals(""), "owner不能为空");
+
+        Preconditions.checkArgument(!mode.isIn(CheckMode.ADD) || status != null, "status不能为空");
+        Preconditions.checkArgument(status == null || AppStatus.isValid(status), "status内容不对。value:" + status);
     }
 
     /**
@@ -174,8 +163,8 @@ public class ConvertValidUtils {
      */
     public static void checkAlarm(OperationMode mode, AlarmVo vo) {
         Long jobId = vo.getJobId();
-        Preconditions.checkArgument(!mode.isIn(OperationMode.ADD, OperationMode.EDIT, OperationMode.DELETE)
-                || (jobId != null && jobId != 0), "jobId不能为空。");
+        Preconditions.checkArgument(!mode.isIn(OperationMode.ADD, OperationMode.EDIT, OperationMode.DELETE) || (jobId != null && jobId != 0),
+                "jobId不能为空。");
 
         String type = vo.getAlarmType();
         Preconditions.checkArgument(!mode.isIn(OperationMode.ADD) || type != null, "alarmType不能为空。");
@@ -189,13 +178,11 @@ public class ConvertValidUtils {
     }
 
     /**
-     * @param mode
-     * @param bg
+     * 检查——BizGroup
      */
     public static void checkBizGroup(CheckMode mode, BizGroupVo bg) throws IllegalArgumentException {
         Integer id = bg.getId();
-        Preconditions.checkArgument(!mode.isIn(CheckMode.EDIT, CheckMode.DELETE)
-                || (id != null && id != 0), "id is empty。 id:" + id);
+        Preconditions.checkArgument(!mode.isIn(CheckMode.EDIT, CheckMode.DELETE) || (id != null && id != 0), "id is empty。 id:" + id);
 
         String name = bg.getName();
         Preconditions.checkArgument(!mode.isIn(CheckMode.ADD) || name != null, "name不能为空。");
@@ -210,12 +197,10 @@ public class ConvertValidUtils {
         Preconditions.checkArgument(owner == null || !owner.trim().equals(""), "owner不能为空。");
     }
 
-
     /**
      * appWorkerGroup检查
      */
-    public static void checkAppWorkerGroup(OperationMode mode, Integer appId, Integer workerGroupId)
-            throws IllegalArgumentException {
+    public static void checkAppWorkerGroup(OperationMode mode, Integer appId, Integer workerGroupId) throws IllegalArgumentException {
         Preconditions.checkArgument((appId != null && appId != 0), "jobId不能为空。");
         Preconditions.checkArgument((workerGroupId != null && workerGroupId != 0), "workerGroupId不能为空。");
     }
@@ -226,6 +211,5 @@ public class ConvertValidUtils {
     public static void checkAlarmQuery(AlarmQueryVo vo) {
         String jobIds = vo.getJobIds();
     }
-
 
 }

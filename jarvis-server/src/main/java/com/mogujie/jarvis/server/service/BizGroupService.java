@@ -40,11 +40,14 @@ public class BizGroupService {
      * @param name
      * @return
      */
-    public void checkDuplicateName(String name) throws IllegalArgumentException {
+    public void checkDuplicateName(String name,Integer ignoreId) throws IllegalArgumentException {
         BizGroupExample example = new BizGroupExample();
         example.createCriteria().andNameEqualTo(name);
         List<BizGroup> list = bizGroupMapper.selectByExample(example);
         if (list != null && list.size() > 0) {
+            if(ignoreId != null && list.size() ==1 && list.get(0).getId().equals(ignoreId)){
+                return;
+            }
             throw new IllegalArgumentException("bizGroup 名称重复了. name:" + name);
         }
     }
