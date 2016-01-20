@@ -15,13 +15,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.configuration.Configuration;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
-
-import akka.actor.ActorSelection;
-import akka.actor.Props;
-import akka.actor.UntypedActor;
 
 import com.google.common.collect.Queues;
 import com.mogujie.jarvis.core.AbstractLogCollector;
@@ -35,12 +29,9 @@ import com.mogujie.jarvis.core.domain.TaskDetail.TaskDetailBuilder;
 import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.exception.TaskException;
 import com.mogujie.jarvis.core.util.ConfigUtils;
-import com.mogujie.jarvis.protocol.HeartBeatProtos.HeartBeatResponse;
 import com.mogujie.jarvis.protocol.KillTaskProtos.ServerKillTaskRequest;
 import com.mogujie.jarvis.protocol.KillTaskProtos.WorkerKillTaskResponse;
 import com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry;
-import com.mogujie.jarvis.protocol.WorkerProtos.ServerRegistryResponse;
-import com.mogujie.jarvis.protocol.WorkerProtos.WorkerRegistryRequest;
 import com.mogujie.jarvis.protocol.SubmitTaskProtos.ServerSubmitTaskRequest;
 import com.mogujie.jarvis.worker.DefaultLogCollector;
 import com.mogujie.jarvis.worker.DefaultProgressReporter;
@@ -49,7 +40,10 @@ import com.mogujie.jarvis.worker.TaskPool;
 import com.mogujie.jarvis.worker.WorkerConfigKeys;
 import com.mogujie.jarvis.worker.status.TaskStateStore;
 import com.mogujie.jarvis.worker.status.TaskStateStoreFactory;
-import com.mogujie.jarvis.worker.util.FutureUtils;
+
+import akka.actor.ActorSelection;
+import akka.actor.Props;
+import akka.actor.UntypedActor;
 
 public class TaskActor extends UntypedActor {
 
@@ -68,8 +62,6 @@ public class TaskActor extends UntypedActor {
     private static final String LOGSERVER_AKKA_PATH = ConfigUtils.getWorkerConfig().getString(WorkerConfigKeys.LOGSERVER_AKKA_PATH)
             + JarvisConstants.LOGSTORAGE_AKKA_USER_PATH;
 
-    private static final Logger LOGGER = LogManager.getLogger();
-
     public static Props props() {
         return Props.create(TaskActor.class);
     }
@@ -83,11 +75,6 @@ public class TaskActor extends UntypedActor {
             ServerKillTaskRequest request = (ServerKillTaskRequest) obj;
             WorkerKillTaskResponse response = killTask(request);
             getSender().tell(response, getSelf());
-        } else if (obj instanceof HeartBeatResponse) {
-            HeartBeatResponse response = (HeartBeatResponse) obj;
-            if (!response.getSuccess()) {
-                registerWorker();
-            }
         } else {
             unhandled(obj);
         }
@@ -145,29 +132,6 @@ public class TaskActor extends UntypedActor {
         }
 
         return WorkerKillTaskResponse.newBuilder().setSuccess(true).build();
-    }
-
-    private void registerWorker() {
-        Configuration workerConfig = ConfigUtils.getWorkerConfig();
-        String serverAkkaPath = workerConfig.getString(WorkerConfigKeys.SERVER_AKKA_PATH) + JarvisConstants.SERVER_AKKA_USER_PATH;
-        int workerGroupId = workerConfig.getInt(WorkerConfigKeys.WORKER_GROUP_ID, 0);
-        String workerKey = workerConfig.getString(WorkerConfigKeys.WORKER_KEY);
-        WorkerRegistryRequest request = WorkerRegistryRequest.newBuilder().setKey(workerKey).build();
-
-        // 注册Worker
-        ActorSelection serverActor = getContext().actorSelection(serverAkkaPath);
-        try {
-            ServerRegistryResponse response = (ServerRegistryResponse) FutureUtils.awaitResult(serverActor, request, 30);
-            if (!response.getSuccess()) {
-                LOGGER.error("Worker register failed with group.id={}, worker.key={}", workerGroupId, workerKey);
-                return;
-            } else {
-                LOGGER.info("Worker register successful");
-            }
-        } catch (Exception e) {
-            LOGGER.error("Worker register failed", e);
-            return;
-        }
     }
 
 }
