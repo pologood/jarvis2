@@ -52,7 +52,16 @@ public class TaskExecutor extends Thread {
 
     @Override
     public void run() {
-        TaskEntry taskEntry = TaskConfigUtils.getRegisteredTasks().get(taskContext.getTaskDetail().getJobType());
+        String fullId = taskContext.getTaskDetail().getFullId();
+        String jobType = taskContext.getTaskDetail().getJobType();
+        TaskEntry taskEntry = TaskConfigUtils.getRegisteredTasks().get(jobType);
+        if (taskEntry == null) {
+            String errMsg = "cant't get jobType={" + jobType + "} from task.xml";
+            LOGGER.error(errMsg);
+            senderActor.tell(WorkerSubmitTaskResponse.newBuilder().setAccept(false).setSuccess(false).setMessage(errMsg).build(),
+                    selfActor);
+            return;
+        }
         List<AcceptanceStrategy> strategies = taskEntry.getAcceptanceStrategy();
         for (AcceptanceStrategy strategy : strategies) {
             try {
@@ -76,7 +85,8 @@ public class TaskExecutor extends Thread {
             Constructor<? extends AbstractTask> constructor = ((Class<? extends AbstractTask>) Class.forName(taskEntry.getTaskClass()))
                     .getConstructor(TaskContext.class);
             AbstractTask task = constructor.newInstance(taskContext);
-            String fullId = taskContext.getTaskDetail().getFullId();
+            LOGGER.info("create task executor [fullId={},jobType={}]", fullId, jobType);
+
             ProgressReporter reporter = taskContext.getProgressReporter();
             AbstractLogCollector logCollector = taskContext.getLogCollector();
             taskPool.add(fullId, task);
