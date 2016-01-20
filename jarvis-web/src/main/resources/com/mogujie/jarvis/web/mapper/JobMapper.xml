@@ -4,50 +4,50 @@
 
     <sql id="condition">
       <where>
-          <if test="jobIdList!=null">
-              jobId IN
+          <if test="jobIdList!=null and jobIdList.size()>0">
+              t.jobId IN
               <foreach collection="jobIdList" item="jobId" open="(" close=")" separator=",">
                 #{jobId}
               </foreach>
           </if>
-          <if test="jobNameList!=null">
-              AND jobName IN
+          <if test="jobNameList!=null and jobNameList.size()>0">
+              AND t.jobName IN
               <foreach collection="jobNameList" item="jobName" open="(" close=")" separator=",">
                   #{jobName}
               </foreach>
           </if>
-          <if test="jobTypeList!=null">
-              AND jobType IN
+          <if test="jobTypeList!=null and jobTypeList.size()>0">
+              AND t.jobType IN
               <foreach collection="jobTypeList" item="jobType" open="(" close=")" separator=",">
                   #{jobType}
               </foreach>
           </if>
-          <if test="statusList!=null">
-              AND job.status IN
+          <if test="statusList!=null and statusList.size()>0">
+              AND t.status IN
               <foreach collection="statusList" item="status" open="(" close=")" separator=",">
                   #{status}
               </foreach>
           </if>
-          <if test="submitUserList!=null">
-              AND submitUser IN
+          <if test="submitUserList!=null and submitUserList.size()>0">
+              AND t.submitUser IN
               <foreach collection="submitUserList" item="submitUser" open="(" close=")" separator=",">
                   #{submitUser}
               </foreach>
           </if>
-          <if test="priorityList!=null">
-              AND priority IN
+          <if test="priorityList!=null and priorityList.size()>0">
+              AND t.priority IN
               <foreach collection="priorityList" item="priority" open="(" close=")" separator=",">
                   #{priority}
               </foreach>
           </if>
-          <if test="appIdList!=null">
-              AND appId IN
+          <if test="appIdList!=null and appIdList.size()>0">
+              AND t.appId IN
               <foreach collection="appIdList" item="appId" open="(" close=")" separator=",">
                   #{appId}
               </foreach>
           </if>
-          <if test="workerGroupIdList!=null">
-              AND workerGroupId IN
+          <if test="workerGroupIdList!=null and workerGroupIdList.size()>0">
+              AND t.workerGroupId IN
               <foreach collection="workerGroupIdList" item="workerGroupId" open="(" close=")" separator=",">
                   #{workerGroupId}
               </foreach>
@@ -62,24 +62,24 @@
     </sql>
     
     <select id="getCountByCondition" parameterType="JobQo" resultType="Integer">
-      SELECT COUNT(1) FROM job
+      SELECT COUNT(1) FROM job t
       <include refid="condition" />
     </select>
 
     <select id="getJobsByCondition" parameterType="JobQo" resultType="JobVo">
       SELECT
-        job.*,
+        t.*,
         app.appName,
         app.appKey,
         job_schedule_expression.expressionType,
         job_schedule_expression.expression,
         worker_group.name AS workerGroupName
-      FROM job
-        LEFT JOIN app ON job.appId=app.appId
-          LEFT JOIN job_schedule_expression ON job.jobId=job_schedule_expression.jobId
-            LEFT JOIN worker_group ON job.workerGroupId=worker_group.id
+      FROM job t
+        LEFT JOIN app ON t.appId=app.appId
+          LEFT JOIN job_schedule_expression ON t.jobId=job_schedule_expression.jobId
+            LEFT JOIN worker_group ON t.workerGroupId=worker_group.id
       <include refid="condition" />
-      ORDER BY job.jobId ASC
+      ORDER BY t.jobId ASC
       <include refid="pager" />
     </select>
 
