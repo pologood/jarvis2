@@ -157,7 +157,8 @@ public enum JobGraph {
             jobMap.put(jobId, dagJob);
             LOGGER.info("add DAGJob {} and dependency {} to JobGraph successfully.", dagJob.toString());
             if (dependencies != null && !dependencies.isEmpty()) {
-                submitJobWithCheck(dagJob, dateTime);
+                DateTime scheduleDateTime = PlanUtil.getScheduleTimeAfter(jobId, dateTime);
+                submitJobWithCheck(dagJob, scheduleDateTime);
             }
         }
     }
@@ -220,7 +221,8 @@ public enum JobGraph {
             if (!oldType.equals(dagJob.getType())) {
                 LOGGER.info("moidfy DAGJob type from {} to {}", oldType, dagJob.getType());
             }
-            submitJobWithCheck(dagJob, DateTime.now());
+            DateTime scheduleDateTime = PlanUtil.getScheduleTimeAfter(jobId, DateTime.now());
+            submitJobWithCheck(dagJob, scheduleDateTime);
         }
     }
 
@@ -247,7 +249,9 @@ public enum JobGraph {
         if (children != null) {
             // submit job if pass dependency check
             for (DAGJob child : children) {
-                submitJobWithCheck(child, DateTime.now());
+                DateTime now = DateTime.now();
+                DateTime scheduleDateTime = PlanUtil.getScheduleTimeAfter(jobId, now);
+                submitJobWithCheck(child, scheduleDateTime);
             }
         }
     }
@@ -296,9 +300,8 @@ public enum JobGraph {
         long jobId = dagJob.getJobId();
         // 如果是时间任务，遍历自己的调度时间做依赖检查
         if (dagJob.getType().implies(DAGJobType.TIME)) {
-            DateTime nextDateTime = PlanUtil.getScheduleTimeAfter(jobId, scheduleDateTime);
-            if (nextDateTime != null) {
-                long planScheduleTime = nextDateTime.getMillis();
+            if (scheduleDateTime != null) {
+                long planScheduleTime = scheduleDateTime.getMillis();
                 if (dagJob.checkDependency(planScheduleTime)) {
                     LOGGER.info("{} pass the dependency check", dagJob);
                     // 提交给TimeScheduler进行时间调度

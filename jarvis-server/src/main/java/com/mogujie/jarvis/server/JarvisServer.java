@@ -24,6 +24,7 @@ import akka.actor.ActorSystem;
 import akka.routing.RoundRobinPool;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Range;
 import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.core.domain.TaskStatus;
@@ -57,6 +58,7 @@ import com.mogujie.jarvis.server.scheduler.time.TimePlan;
 import com.mogujie.jarvis.server.scheduler.time.TimeScheduler;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.TaskService;
+import com.mogujie.jarvis.server.util.PlanUtil;
 
 public class JarvisServer {
 
@@ -151,9 +153,19 @@ public class JarvisServer {
             for (long parentId : dependencies) {
                 jobGraph.addDependency(parentId, jobId);
             }
+            //触发任务执行
             DAGJob dagJob = jobGraph.getDAGJob(jobId);
-            if (dagJob != null) {
-                jobGraph.submitJobWithCheck(dagJob, DateTime.now());
+            if (dagJob != null && dagJob.getType().implies(DAGJobType.TIME)) {
+                //重新计算下一次时间
+                DateTime now = DateTime.now();
+                DateTime lastTime = PlanUtil.getScheduleTimeBefore(jobId, now);
+                DateTime nextTime = PlanUtil.getScheduleTimeAfter(jobId, now);
+                List<Task> tasks = taskService.getTasksBetween(jobId, Range.closed(lastTime.minusSeconds(1), nextTime));
+                if (tasks == null || tasks.isEmpty()) {
+                    //如果当前周期内没有跑过，则重新检查依赖关系
+                    DateTime scheduleDateTime = lastTime;
+                    jobGraph.submitJobWithCheck(dagJob, scheduleDateTime);
+                }
             }
         }
 
