@@ -14,6 +14,9 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import akka.actor.ActorRef;
+import akka.actor.ActorSelection;
+
 import com.google.common.base.Throwables;
 import com.mogujie.jarvis.core.AbstractLogCollector;
 import com.mogujie.jarvis.core.AbstractTask;
@@ -30,9 +33,6 @@ import com.mogujie.jarvis.worker.status.TaskStateStoreFactory;
 import com.mogujie.jarvis.worker.strategy.AcceptanceResult;
 import com.mogujie.jarvis.worker.strategy.AcceptanceStrategy;
 import com.mogujie.jarvis.worker.util.TaskConfigUtils;
-
-import akka.actor.ActorRef;
-import akka.actor.ActorSelection;
 
 public class TaskExecutor extends Thread {
 
@@ -60,6 +60,7 @@ public class TaskExecutor extends Thread {
                 if (!result.isAccepted()) {
                     senderActor.tell(WorkerSubmitTaskResponse.newBuilder().setAccept(false).setSuccess(true).setMessage(result.getMessage()).build(),
                             selfActor);
+                    LOGGER.warn("AcceptanceStrategy={} check failed.", strategy.getClass().getSimpleName());
                     return;
                 }
             } catch (AcceptanceException e) {
@@ -81,6 +82,7 @@ public class TaskExecutor extends Thread {
             taskPool.add(fullId, task);
             serverActor.tell(WorkerReportTaskStatusRequest.newBuilder().setFullId(fullId).setStatus(TaskStatus.RUNNING.getValue())
                     .setTimestamp(System.currentTimeMillis() / 1000).build(), selfActor);
+            LOGGER.info("report status[fullId={},status=RUNNING] to server.", fullId);
             reporter.report(0);
 
             boolean result = false;
@@ -109,6 +111,7 @@ public class TaskExecutor extends Thread {
             taskPool.remove(fullId);
         } catch (RuntimeException e) {
             Throwables.propagate(e);
+            LOGGER.error("", e);
         } catch (Exception e) {
             LOGGER.error("", e);
             senderActor.tell(WorkerSubmitTaskResponse.newBuilder().setAccept(false).setMessage(e.getMessage()).build(), selfActor);

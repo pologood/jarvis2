@@ -15,7 +15,13 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.configuration.Configuration;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
+
+import akka.actor.ActorSelection;
+import akka.actor.Props;
+import akka.actor.UntypedActor;
 
 import com.google.common.collect.Queues;
 import com.mogujie.jarvis.core.AbstractLogCollector;
@@ -41,10 +47,6 @@ import com.mogujie.jarvis.worker.WorkerConfigKeys;
 import com.mogujie.jarvis.worker.status.TaskStateStore;
 import com.mogujie.jarvis.worker.status.TaskStateStoreFactory;
 
-import akka.actor.ActorSelection;
-import akka.actor.Props;
-import akka.actor.UntypedActor;
-
 public class TaskActor extends UntypedActor {
 
     private TaskPool taskPool = TaskPool.INSTANCE;
@@ -55,12 +57,12 @@ public class TaskActor extends UntypedActor {
     private static int keepAliveTime = workerConfig.getInt(WorkerConfigKeys.WORKER_EXECUTOR_POOL_KEEP_ALIVE_SECONDS, 3600);
     private static ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(corePoolSize, maximumPoolSize, keepAliveTime, TimeUnit.SECONDS,
             Queues.newArrayBlockingQueue(corePoolSize));
-
     private static final String SERVER_AKKA_PATH = ConfigUtils.getWorkerConfig().getString(WorkerConfigKeys.SERVER_AKKA_PATH)
             + JarvisConstants.SERVER_AKKA_USER_PATH;
-
     private static final String LOGSERVER_AKKA_PATH = ConfigUtils.getWorkerConfig().getString(WorkerConfigKeys.LOGSERVER_AKKA_PATH)
             + JarvisConstants.LOGSTORAGE_AKKA_USER_PATH;
+
+    private static final Logger LOGGER = LogManager.getLogger();
 
     public static Props props() {
         return Props.create(TaskActor.class);
@@ -83,6 +85,7 @@ public class TaskActor extends UntypedActor {
     private void submitTask(ServerSubmitTaskRequest request) {
         String fullId = request.getFullId();
         String jobType = request.getJobType();
+        LOGGER.info("receive ServerSubmitTaskRequest[fullId={},jobType={}]", fullId, jobType);
         TaskDetailBuilder taskBuilder = TaskDetail.newTaskDetailBuilder();
         taskBuilder.setFullId(fullId);
         taskBuilder.setTaskName(request.getTaskName());
@@ -115,12 +118,14 @@ public class TaskActor extends UntypedActor {
 
         TaskStateStore taskStateStore = TaskStateStoreFactory.getInstance();
         taskStateStore.write(taskDetail, TaskStatus.RUNNING.getValue());
+        LOGGER.info("write State[fullId={},status=RUNNING] to TaskStateStore", taskDetail.getFullId());
 
         threadPoolExecutor.execute(new TaskExecutor(contextBuilder.build(), getSelf(), getSender(), serverActor));
     }
 
     private WorkerKillTaskResponse killTask(ServerKillTaskRequest request) {
         String fullId = request.getFullId();
+        LOGGER.info("receive ServerKillTaskRequest[fullId={}]", fullId);
         AbstractTask task = taskPool.get(fullId);
         if (task != null) {
             taskPool.remove(fullId);
