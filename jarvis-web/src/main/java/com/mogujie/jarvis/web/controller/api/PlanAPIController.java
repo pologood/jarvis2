@@ -35,7 +35,7 @@ public class PlanAPIController {
     * */
     @RequestMapping(value = "getPlans")
     @ResponseBody
-    public Map<String, Object> getPlans(PlanQo planQo) {
+    public Object getPlans(PlanQo planQo) {
         Map<String, Object> result = planService.getPlans(planQo);
         return result;
     }

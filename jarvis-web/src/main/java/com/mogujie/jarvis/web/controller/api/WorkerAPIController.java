@@ -25,7 +25,7 @@ public class WorkerAPIController {
 
     @RequestMapping(value = "/getWorkers")
     @ResponseBody
-    public Map<String, Object> getWorkers(WorkerQo workerSearchVo) {
+    public Object getWorkers(WorkerQo workerSearchVo) {
         Map<String, Object> result;
         result = workerService.getWorkers(workerSearchVo);
         return result;
@@ -33,7 +33,7 @@ public class WorkerAPIController {
 
     @RequestMapping(value = "getWorkerStatus")
     @ResponseBody
-    public List<Map<String, Object>> getWorkerStatus() {
+    public Object getWorkerStatus() {
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 
         WorkerStatus[] workerStatuses = WorkerStatus.values();

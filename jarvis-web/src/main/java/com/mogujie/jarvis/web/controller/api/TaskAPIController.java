@@ -24,7 +24,7 @@ public class TaskAPIController {
 
     @RequestMapping(value = "/getTasks")
     @ResponseBody
-    public Map<String, Object> getTasks(TaskQo taskQo) {
+    public Object getTasks(TaskQo taskQo) {
         Map<String, Object> result = taskService.getTasks(taskQo);
         return result;
     }
@@ -32,7 +32,7 @@ public class TaskAPIController {
 
     @RequestMapping(value = "getTaskStatus")
     @ResponseBody
-    public List<Map<String, Object>> getJobStatus() {
+    public Object getJobStatus() {
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 
         TaskStatus[] taskStatuses = TaskStatus.values();

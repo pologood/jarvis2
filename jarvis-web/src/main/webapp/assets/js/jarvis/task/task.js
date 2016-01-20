@@ -7,7 +7,6 @@ $(function () {
     createDatetimePickerById("startDate");
     createDatetimePickerById("endDate");
 
-
     //初始化作业类型内容
     $.getJSON(contextPath + "/assets/json/jobType.json", function (data) {
         $("#jobType").select2({
@@ -126,7 +125,6 @@ $(function () {
     initData();
 });
 
-
 //查找
 function search() {
     $("#content").bootstrapTable("destroy");
@@ -146,7 +144,6 @@ function reset() {
         this.checked = false;
     });
 }
-
 
 //获取查询参数
 function getQueryPara() {
@@ -222,8 +219,7 @@ function initData() {
         exportDataType: 'all'
     });
 }
-
-
+//字段配置
 var columns = [{
     field: 'taskId',
     title: '执行ID',
@@ -425,10 +421,11 @@ function progressFormatter(value, row, index) {
     return result;
 }
 
-
+//格式化结果
 function formatResult(result) {
     return result.text;
 }
+//格式化结果选择框
 function formatResultSelection(result) {
     return result.id;
 }

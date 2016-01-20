@@ -1,19 +1,26 @@
 $(function () {
     initSystemStatus();
-    initSystemAutoStatus();
 });
 
 //初始化系统状态：初始状态、switch、事件
 function initSystemStatus() {
     //详细处理方式等待rest接口完成
-    //var response = requestRemoteRestApi("/api/system/autoStatus", "获取系统当前状态", {});
+    var response = requestRemoteRestApi("/api/system/status/get", "获取系统当前状态", {});
+
+
+    if (response.flag == false) {
+        return;
+    }
+    var status = response.data.data.status;
+
+    status = status == 1 ? true : false;
 
     $("#systemStatus").bootstrapSwitch({
         onText: "启用",
         offText: "关闭",
-        state: false,
-        labelText:"当前状态",
-        offColor:'danger'
+        state: status,
+        labelText: "当前状态",
+        offColor: 'danger'
     });
     $("#systemStatus").on("switchChange.bootstrapSwitch", function (e) {
         var input = e.target;
@@ -30,7 +37,7 @@ function initSystemStatus() {
                 status = 1;
         }
         //等rest接口完成再取消注释
-        //updateSystemStatus(status);
+        updateSystemStatus(status);
     });
 }
 
@@ -43,8 +50,8 @@ function initSystemAutoStatus() {
         onText: "启用",
         offText: "关闭",
         state: false,
-        labelText:"自动调度",
-        offColor:'danger'
+        labelText: "自动调度",
+        offColor: 'danger'
     });
 
     $("#systemAutoStatus").on("switchChange.bootstrapSwitch", function (e) {

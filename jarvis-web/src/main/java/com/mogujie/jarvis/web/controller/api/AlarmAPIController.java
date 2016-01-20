@@ -31,19 +31,28 @@ public class AlarmAPIController {
     @RequestMapping(value = "getByJobId")
     @ResponseBody
     public Object getByJobId(AlarmQo alarmQo) {
-        if (null == alarmQo.getId()) {
-            Map<String,Object> map = new HashMap<String, Object>();
+        Map<String,Object> map = new HashMap<String, Object>();
+        if (null == alarmQo.getJobId()) {
             map.put("code", MessageStatus.FAILED.getValue());
             map.put("msg","未传入id");
             map.put("supportFields", Tools.getObjectField(AlarmQo.class));
             return map;
         }
 
-        AlarmVo alarmVo = alarmService.getAlarmByJobId(alarmQo.getJobId());
-        if (null == alarmVo) {
-            alarmVo = new AlarmVo();
+        try {
+            AlarmVo alarmVo = alarmService.getAlarmByJobId(alarmQo.getJobId());
+            if (null == alarmVo) {
+                alarmVo = new AlarmVo();
+            }
+            map.put("code",MessageStatus.SUCCESS.getValue());
+            map.put("msg","查询成功");
+            map.put("data",alarmVo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("code",MessageStatus.FAILED.getValue());
+            map.put("msg", e.getMessage());
         }
-        return alarmVo;
+        return map;
     }
 
     /*
@@ -51,9 +60,8 @@ public class AlarmAPIController {
     * */
     @RequestMapping(value = "/getAlarmType")
     @ResponseBody
-    public List getAlarmType() {
+    public Object getAlarmType() {
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-
         AlarmType[] alarmTypes = AlarmType.values();
         for (AlarmType alarmType : alarmTypes) {
             Map<String, Object> map = new HashMap<String, Object>();
@@ -61,7 +69,6 @@ public class AlarmAPIController {
             map.put("text", alarmType.getDescription());
             list.add(map);
         }
-
         return list;
     }
 }

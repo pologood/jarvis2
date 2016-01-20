@@ -184,7 +184,7 @@ var columns = [{
     formatter: operationFormatter
 }];
 
-var statusClassStyle = {"1": "glyphicon glyphicon-ok text-success", "2": "glyphicon glyphicon-remove text-danger"};
+var statusClassStyle = {"1": "glyphicon glyphicon-ok text-success", "2": "glyphicon glyphicon-pause text-danger"};
 //格式化bizType状态
 function bizGroupStatusFormatter(value, row, index) {
     var result = '<i class="' + statusClassStyle[value] + '"></i>';
@@ -192,6 +192,40 @@ function bizGroupStatusFormatter(value, row, index) {
 }
 
 function operationFormatter(value, row, index) {
-    var result = '<a href="'+contextPath+'/manage/bizDetail?id='+row["id"]+'" target="_blank"><i class="glyphicon glyphicon-pencil"></i></a>';
+    var result = '<a href="' + contextPath + '/manage/bizDetail?id=' + row["id"] + '" target="_blank"><i class="glyphicon glyphicon-pencil"></i></a>';
+
+    result += ' <a href="javascript:void(0)" onclick="removeBizGroup(' + row["id"] + ')" title="删除业务标签"><i class="glyphicon glyphicon-remove text-danger"></i></a>';
+
     return result;
+}
+
+function removeBizGroup(id) {
+
+
+    (new PNotify({
+        title: '业务标签操作',
+        text: '确定删除此标签?',
+        icon: 'glyphicon glyphicon-question-sign',
+        hide: false,
+        confirm: {
+            confirm: true
+        },
+        buttons: {
+            closer: false,
+            sticker: false
+        },
+        history: {
+            history: false
+        }
+    })).get().on('pnotify.confirm', function () {
+            var data = {};
+            data["id"] = id;
+            requestRemoteRestApi("/api/bizGroup/delete", "删除业务标签", data);
+            window.setTimeout(function(){
+                search();
+            },1000);
+        }).on('pnotify.cancel', function () {
+        });
+
+
 }

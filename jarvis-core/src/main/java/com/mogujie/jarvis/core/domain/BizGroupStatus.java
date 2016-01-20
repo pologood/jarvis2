@@ -4,7 +4,6 @@ package com.mogujie.jarvis.core.domain;
  * Created by hejian on 16/1/15.
  */
 public enum BizGroupStatus {
-
     ENABLE(1, "启用"),
     DISABLED(2, "禁用");
 
