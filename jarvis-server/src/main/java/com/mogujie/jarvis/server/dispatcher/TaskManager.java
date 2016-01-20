@@ -45,11 +45,12 @@ public class TaskManager {
 
     public void addApp(int appId, int maxParallelism) {
         maxParallelismMap.put(appId, maxParallelism);
-        LOGGER.debug("add application: id[{}], parallelism[{}].", appId, maxParallelism);
+        LOGGER.info("add application: id[{}], parallelism[{}].", appId, maxParallelism);
     }
 
     public synchronized boolean addTask(String fullId, WorkerInfo workerInfo, int appId) {
         parallelismCounter.getAndIncrement(appId);
+        LOGGER.info("add task num, appId={}, num={}", appId, parallelismCounter.get(appId));
 
         taskMap.put(fullId, new Pair<>(workerInfo, appId));
         if (parallelismCounter.get(appId) >= maxParallelismMap.get(appId)) {
@@ -66,7 +67,7 @@ public class TaskManager {
         int appId = taskMap.get(fullId).getSecond();
         parallelismCounter.getAndDecrement(appId);
         taskMap.remove(fullId);
-        LOGGER.debug("remove task: {}", fullId);
+        LOGGER.info("remove task: {}", fullId);
     }
 
     public synchronized boolean contains(String fullId) {
@@ -76,6 +77,7 @@ public class TaskManager {
     public void appCounterDecrement(int appId) {
         if (parallelismCounter.get(appId) > 0) {
             parallelismCounter.getAndDecrement(appId);
+            LOGGER.info("reduce task num, appId={}, num={}", appId, parallelismCounter.get(appId));
         }
     }
 
