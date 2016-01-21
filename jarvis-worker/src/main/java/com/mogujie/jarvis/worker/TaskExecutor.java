@@ -94,6 +94,7 @@ public class TaskExecutor extends Thread {
             ProgressReporter reporter = taskContext.getProgressReporter();
             AbstractLogCollector logCollector = taskContext.getLogCollector();
             taskPool.add(fullId, task);
+
             serverActor.tell(WorkerReportTaskStatusRequest.newBuilder().setFullId(fullId).setStatus(TaskStatus.RUNNING.getValue())
                     .setTimestamp(System.currentTimeMillis() / 1000).build(), selfActor);
             LOGGER.info("report status[fullId={},status=RUNNING] to server.", fullId);
@@ -102,6 +103,7 @@ public class TaskExecutor extends Thread {
             boolean result = false;
             try {
                 task.preExecute();
+                taskContext.getTaskReporter().report(taskContext.getTaskDetail());
                 result = task.execute();
                 task.postExecute();
             } catch (TaskException e) {
