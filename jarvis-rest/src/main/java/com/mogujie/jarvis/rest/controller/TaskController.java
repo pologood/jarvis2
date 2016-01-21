@@ -21,7 +21,6 @@ import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.core.domain.JobRelationType;
 import com.mogujie.jarvis.core.util.IdUtils;
 import com.mogujie.jarvis.core.util.JsonHelper;
-import com.mogujie.jarvis.protocol.AppAuthProtos;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
 import com.mogujie.jarvis.protocol.KillTaskProtos.RestServerKillTaskRequest;
 import com.mogujie.jarvis.protocol.KillTaskProtos.ServerKillTaskResponse;
@@ -34,9 +33,12 @@ import com.mogujie.jarvis.protocol.QueryTaskRelationProtos.ServerQueryTaskRelati
 import com.mogujie.jarvis.protocol.QueryTaskRelationProtos.TaskMapEntry;
 import com.mogujie.jarvis.protocol.RetryTaskProtos.RestServerRetryTaskRequest;
 import com.mogujie.jarvis.protocol.RetryTaskProtos.ServerRetryTaskResponse;
+import com.mogujie.jarvis.protocol.RemoveTaskProtos.RestServerRemoveTaskRequest;
+import com.mogujie.jarvis.protocol.RemoveTaskProtos.ServerRemoveTaskResponse;
+
 import com.mogujie.jarvis.rest.RestResult;
 import com.mogujie.jarvis.rest.utils.JsonParameters;
-import com.mogujie.jarvis.rest.vo.RerunTaskVo;
+import com.mogujie.jarvis.rest.vo.TaskRerunVo;
 import com.mogujie.jarvis.rest.vo.TaskRelationsVo;
 
 /**
@@ -56,12 +58,12 @@ public class TaskController extends AbstractController {
     public RestResult kill(@FormParam("user") String user, @FormParam("appToken") String appToken, @FormParam("appName") String appName,
             @FormParam("parameters") String parameters) {
         try {
-            AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
+            AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
             JsonParameters para = new JsonParameters(parameters);
-            long jobId = para.getLong("jobId");
-            long taskId = para.getLong("taskId");
-            int attemptId = para.getInteger("attemptId");
+            long jobId = para.getLongNotNull("jobId");
+            long taskId = para.getLongNotNull("taskId");
+            int attemptId = para.getIntegerNotNull("attemptId");
             String fullId = IdUtils.getFullId(jobId, taskId, attemptId);
 
             RestServerKillTaskRequest request = RestServerKillTaskRequest.newBuilder().setAppAuth(appAuth).setFullId(fullId).build();
@@ -85,10 +87,10 @@ public class TaskController extends AbstractController {
     public RestResult retry(@FormParam("user") String user, @FormParam("appToken") String appToken, @FormParam("appName") String appName,
             @FormParam("parameters") String parameters) {
         try {
-            AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
+            AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
             JsonParameters para = new JsonParameters(parameters);
-            long taskId = para.getLong("taskId");
+            long taskId = para.getLongNotNull("taskId");
 
             RestServerRetryTaskRequest request = RestServerRetryTaskRequest.newBuilder().setAppAuth(appAuth).setTaskId(taskId).build();
 
@@ -111,9 +113,9 @@ public class TaskController extends AbstractController {
     public RestResult rerun(@FormParam("user") String user, @FormParam("appToken") String appToken, @FormParam("appName") String appName,
             @FormParam("parameters") String parameters) {
         try {
-            AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
+            AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
-            RerunTaskVo rerunVo = JsonHelper.fromJson(parameters, RerunTaskVo.class);
+            TaskRerunVo rerunVo = JsonHelper.fromJson(parameters, TaskRerunVo.class);
             List<Long> jobIdList = rerunVo.getJobIdList();
             long startDate = rerunVo.getStartDate();
             long endDate = rerunVo.getEndDate();
@@ -132,6 +134,35 @@ public class TaskController extends AbstractController {
         }
     }
 
+
+    /**
+     * 移除Task
+     *
+     * @throws Exception
+     */
+    @POST
+    @Path("remove")
+    @Produces(MediaType.APPLICATION_JSON)
+    public RestResult remove(@FormParam("user") String user, @FormParam("appToken") String appToken, @FormParam("appName") String appName,
+                            @FormParam("parameters") String parameters) {
+        try {
+            AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
+
+            JsonParameters para = new JsonParameters(parameters);
+            long taskId = para.getLongNotNull("taskId");
+
+            RestServerRemoveTaskRequest request = RestServerRemoveTaskRequest.newBuilder().setAppAuth(appAuth).setTaskId(taskId).build();
+
+            ServerRemoveTaskResponse response = (ServerRemoveTaskResponse) callActor(AkkaType.SERVER, request);
+            return response.getSuccess() ? successResult() : errorResult(response.getMessage());
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+            return errorResult(e);
+        }
+    }
+
+
+
     /**
      * 强制修改task的状态（慎用！！仅限管理员使用！！）
      *
@@ -143,11 +174,11 @@ public class TaskController extends AbstractController {
     public RestResult modifyStatus(@FormParam("user") String user, @FormParam("appToken") String appToken, @FormParam("appName") String appName,
             @FormParam("parameters") String parameters) {
         try {
-            AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setName(appName).setToken(appToken).build();
+            AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
             JsonParameters para = new JsonParameters(parameters);
-            long taskId = para.getLong("taskId");
-            int status = para.getInteger("status");
+            long taskId = para.getLongNotNull("taskId");
+            int status = para.getIntegerNotNull("status");
 
             RestServerModifyTaskStatusRequest request = RestServerModifyTaskStatusRequest.newBuilder().setAppAuth(appAuth).setTaskId(taskId)
                     .setStatus(status).build();
@@ -175,7 +206,7 @@ public class TaskController extends AbstractController {
             Long jobId = paras.getLongNotNull("taskId");
             Integer relationType = paras.getIntegerNotNull("relationType");
             if (!JobRelationType.isValid(relationType)) {
-                throw new IllegalArgumentException("参数不对。key='relationType',value=" + relationType.toString());
+                throw new IllegalArgumentException("relationType 内容不对. value:" + relationType);
             }
 
             RestServerQueryTaskRelationRequest request = RestServerQueryTaskRelationRequest.newBuilder().setAppAuth(appAuth).setTaskId(jobId)
