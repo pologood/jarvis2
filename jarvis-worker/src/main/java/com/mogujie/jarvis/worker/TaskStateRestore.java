@@ -31,6 +31,7 @@ import com.mogujie.jarvis.worker.util.TaskConfigUtils;
 import akka.actor.ActorRef;
 import akka.actor.ActorSelection;
 import akka.actor.ActorSystem;
+import org.joda.time.DateTime;
 
 public class TaskStateRestore extends Thread {
 
@@ -56,8 +57,10 @@ public class TaskStateRestore extends Thread {
         }
 
         LOGGER.info("Restoring task status: {} task(s)", taskDetailMap.size());
-        Configuration config = ConfigUtils.getServerConfig();
+        Configuration config = ConfigUtils.getWorkerConfig();
         ActorSelection serverActor = system.actorSelection(SERVER_AKKA_PATH);
+        DateTime now = DateTime.now();
+
         while (taskDetailMap.size() > 0) {
             Iterator<Entry<TaskDetail, Integer>> it = taskDetailMap.entrySet().iterator();
             while (it.hasNext()) {
@@ -89,11 +92,11 @@ public class TaskStateRestore extends Thread {
                     }
 
                     WorkerReportTaskStatusRequest request = WorkerReportTaskStatusRequest.newBuilder().setFullId(fullId).setStatus(taskStatus)
-                            .build();
+                            .setTimestamp(now.getMillis()).build();
                     serverActor.tell(request, ActorRef.noSender());
                 } else {
                     WorkerReportTaskStatusRequest request = WorkerReportTaskStatusRequest.newBuilder().setFullId(fullId).setStatus(taskStatus)
-                            .build();
+                            .setTimestamp(now.getMillis()).build();
                     serverActor.tell(request, ActorRef.noSender());
                     it.remove();
                     taskStateStore.delete(fullId);
