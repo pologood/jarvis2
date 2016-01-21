@@ -4,7 +4,7 @@
 		<strategy>com.mogujie.jarvis.worker.strategy.impl.CpuAcceptanceStrategy</strategy>
 		<strategy>com.mogujie.jarvis.worker.strategy.impl.TaskNumAcceptanceStrategy</strategy>
 		<strategy>com.mogujie.jarvis.worker.strategy.impl.LoadAcceptanceStrategy</strategy>
-		<strategy>com.mogujie.jarvis.worker.strategy.impl.MemoryAcceptanceStrategy</strategy>
+	    <strategy>com.mogujie.jarvis.worker.strategy.impl.MemoryAcceptanceStrategy</strategy>
 	</strategies>
 
 	<tasks>
@@ -23,7 +23,7 @@
 			</strategies>
 		</task>
 
-		<task type="shell" class="com.mogujie.jarvis.tasks.shell.Shelltask" />
+		<task type="shell" class="com.mogujie.jarvis.tasks.shell.ShellTask" />
 		<task type="presto" class="com.mogujie.jarvis.tasks.jdbc.PrestoJdbctask" />
 		<task type="dummy" class="com.mogujie.jarvis.tasks.DummyTask" />
 
