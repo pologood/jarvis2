@@ -36,9 +36,9 @@ import com.mogujie.jarvis.tasks.util.MoguAnnotationUtils;
 import com.mogujie.jarvis.tasks.util.YarnUtils;
 
 /**
- * @author wuya
+ * @author wuya,muming
  */
-public abstract class HiveShellTask extends ShellTask {
+public class HiveShellTask extends ShellTask {
 
     private Set<String> applicationIdSet = new HashSet<>();
     private static final Pattern APPLICATION_ID_PATTERN = Pattern.compile("application_\\d+_\\d+");
@@ -193,6 +193,8 @@ public abstract class HiveShellTask extends ShellTask {
         return null;
     }
 
-    protected abstract String getContent(TaskDetail task);
+    protected  String getContent(TaskDetail task){
+        return task.getContent();
+    }
 
 }
