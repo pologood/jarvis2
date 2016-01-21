@@ -14,10 +14,6 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import akka.actor.ActorRef;
-import akka.actor.ActorSelection;
-
-import com.google.common.base.Throwables;
 import com.mogujie.jarvis.core.AbstractLogCollector;
 import com.mogujie.jarvis.core.AbstractTask;
 import com.mogujie.jarvis.core.ProgressReporter;
@@ -33,6 +29,9 @@ import com.mogujie.jarvis.worker.status.TaskStateStoreFactory;
 import com.mogujie.jarvis.worker.strategy.AcceptanceResult;
 import com.mogujie.jarvis.worker.strategy.AcceptanceStrategy;
 import com.mogujie.jarvis.worker.util.TaskConfigUtils;
+
+import akka.actor.ActorRef;
+import akka.actor.ActorSelection;
 
 public class TaskExecutor extends Thread {
 
@@ -58,10 +57,10 @@ public class TaskExecutor extends Thread {
         if (taskEntry == null) {
             String errMsg = "cant't get jobType={" + jobType + "} from task.xml";
             LOGGER.error(errMsg);
-            senderActor.tell(WorkerSubmitTaskResponse.newBuilder().setAccept(false).setSuccess(false).setMessage(errMsg).build(),
-                    selfActor);
+            senderActor.tell(WorkerSubmitTaskResponse.newBuilder().setAccept(false).setSuccess(false).setMessage(errMsg).build(), selfActor);
             return;
         }
+
         List<AcceptanceStrategy> strategies = taskEntry.getAcceptanceStrategy();
         for (AcceptanceStrategy strategy : strategies) {
             try {
@@ -125,8 +124,8 @@ public class TaskExecutor extends Thread {
             logCollector.collectStdout("", true);
             taskPool.remove(fullId);
         } catch (RuntimeException e) {
-            Throwables.propagate(e);
             LOGGER.error("", e);
+            senderActor.tell(WorkerSubmitTaskResponse.newBuilder().setAccept(false).setMessage(e.getMessage()).build(), selfActor);
         } catch (Exception e) {
             LOGGER.error("", e);
             senderActor.tell(WorkerSubmitTaskResponse.newBuilder().setAccept(false).setMessage(e.getMessage()).build(), selfActor);
