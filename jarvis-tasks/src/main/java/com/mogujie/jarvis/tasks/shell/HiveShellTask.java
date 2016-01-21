@@ -27,6 +27,7 @@ import com.github.stuxuhai.jpinyin.PinyinHelper;
 import com.mogujie.jarvis.core.TaskContext;
 import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.exception.ShellException;
+import com.mogujie.jarvis.core.exception.TaskException;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.tasks.domain.HiveTaskEntity;
 import com.mogujie.jarvis.tasks.util.HiveConfigUtils;
@@ -163,6 +164,24 @@ public abstract class HiveShellTask extends ShellTask {
         }
 
         return result;
+    }
+
+    @Override
+    public void postExecute() throws TaskException {
+        super.postExecute();
+        // return new content
+        String newContent = getCommand();
+        TaskDetail oldTaskDetail = getTaskContext().getTaskDetail();
+        TaskDetail newTaskDetail = TaskDetail.newTaskDetailBuilder()
+                .setFullId(oldTaskDetail.getFullId())
+                .setTaskName(oldTaskDetail.getTaskName())
+                .setAppName(oldTaskDetail.getAppName())
+                .setUser(oldTaskDetail.getUser())
+                .setJobType(oldTaskDetail.getJobType())
+                .setContent(newContent)
+                .setPriority(oldTaskDetail.getPriority())
+                .build();
+        getTaskContext().getTaskReporter().report(newTaskDetail);
     }
 
     private String match(Pattern pattern, int group, String line) {

@@ -14,6 +14,9 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import akka.actor.ActorRef;
+import akka.actor.ActorSelection;
+
 import com.mogujie.jarvis.core.AbstractLogCollector;
 import com.mogujie.jarvis.core.AbstractTask;
 import com.mogujie.jarvis.core.ProgressReporter;
@@ -29,9 +32,6 @@ import com.mogujie.jarvis.worker.status.TaskStateStoreFactory;
 import com.mogujie.jarvis.worker.strategy.AcceptanceResult;
 import com.mogujie.jarvis.worker.strategy.AcceptanceStrategy;
 import com.mogujie.jarvis.worker.util.TaskConfigUtils;
-
-import akka.actor.ActorRef;
-import akka.actor.ActorSelection;
 
 public class TaskExecutor extends Thread {
 
@@ -103,9 +103,11 @@ public class TaskExecutor extends Thread {
             boolean result = false;
             try {
                 task.preExecute();
-                taskContext.getTaskReporter().report(taskContext.getTaskDetail());
+                LOGGER.info("task[fullId={}] preExecute finished.", fullId);
                 result = task.execute();
+                LOGGER.info("task[fullId={}] execute finished, result={}.", fullId, result);
                 task.postExecute();
+                LOGGER.info("task[fullId={}] postExecute finished.", fullId);
             } catch (TaskException e) {
                 logCollector.collectStderr(e.getMessage(), true);
             }
@@ -125,12 +127,10 @@ public class TaskExecutor extends Thread {
             logCollector.collectStderr("", true);
             logCollector.collectStdout("", true);
             taskPool.remove(fullId);
-        } catch (RuntimeException e) {
+        } catch (Throwable e) {
             LOGGER.error("", e);
-            senderActor.tell(WorkerSubmitTaskResponse.newBuilder().setAccept(false).setMessage(e.getMessage()).build(), selfActor);
-        } catch (Exception e) {
-            LOGGER.error("", e);
-            senderActor.tell(WorkerSubmitTaskResponse.newBuilder().setAccept(false).setMessage(e.getMessage()).build(), selfActor);
+            serverActor.tell(WorkerReportTaskStatusRequest.newBuilder().setFullId(fullId).setStatus(TaskStatus.FAILED.getValue())
+                    .setTimestamp(System.currentTimeMillis() / 1000).build(), selfActor);
         }
     }
 
