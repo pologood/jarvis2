@@ -20,9 +20,7 @@ import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 import org.mybatis.guice.transactional.Transactional;
 
-import akka.actor.Props;
-import akka.actor.UntypedActor;
-
+import com.google.common.base.Throwables;
 import com.google.common.collect.Range;
 import com.google.common.collect.Sets;
 import com.mogujie.jarvis.core.JarvisConstants;
@@ -67,12 +65,14 @@ import com.mogujie.jarvis.server.scheduler.dag.DAGJobType;
 import com.mogujie.jarvis.server.scheduler.dag.JobGraph;
 import com.mogujie.jarvis.server.scheduler.time.TimePlan;
 import com.mogujie.jarvis.server.service.AppService;
-import com.mogujie.jarvis.server.service.ValidService;
-import com.mogujie.jarvis.server.service.ValidService.CheckMode;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.TaskService;
+import com.mogujie.jarvis.server.service.ValidService;
+import com.mogujie.jarvis.server.service.ValidService.CheckMode;
 import com.mogujie.jarvis.server.util.PlanUtil;
 
+import akka.actor.Props;
+import akka.actor.UntypedActor;
 
 /**
  * @author guangming
@@ -200,7 +200,7 @@ public class JobActor extends UntypedActor {
             response = ServerSubmitJobResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
             getSender().tell(response, getSelf());
             logger.error("", e);
-            throw e;
+            Throwables.propagate(e);
         }
     }
 
@@ -246,7 +246,7 @@ public class JobActor extends UntypedActor {
 
         try {
             // 参数检查
-            validService.CheckJobDependency(msg);
+            validService.checkJobDependency(msg);
 
             // 1. update jobService
             List<ModifyDependEntry> dependEntries = new ArrayList<>();
@@ -263,8 +263,8 @@ public class JobActor extends UntypedActor {
                     jobService.updateJobDepend(jobDepend);
                 }
 
-                ModifyDependEntry dependEntry = new ModifyDependEntry(operationMode, entry.getJobId()
-                        , entry.getCommonDependStrategy(), entry.getOffsetDependStrategy());
+                ModifyDependEntry dependEntry = new ModifyDependEntry(operationMode, entry.getJobId(), entry.getCommonDependStrategy(),
+                        entry.getOffsetDependStrategy());
                 dependEntries.add(dependEntry);
             }
 
@@ -283,7 +283,6 @@ public class JobActor extends UntypedActor {
         }
     }
 
-
     /**
      * 修改任务计划表达式
      *
@@ -297,7 +296,7 @@ public class JobActor extends UntypedActor {
 
         try {
             // 参数检查
-            validService.Check2JobScheduleExp(msg);
+            validService.check2JobScheduleExp(msg);
 
             // 1. update jobService
             List<ScheduleExpressionEntry> expressionEntries = msg.getExpressionEntryList();
@@ -368,7 +367,6 @@ public class JobActor extends UntypedActor {
             throw e;
         }
     }
-
 
     /**
      * 修改任务状态
@@ -479,7 +477,7 @@ public class JobActor extends UntypedActor {
     private Job msg2Job(RestModifyJobRequest msg) throws NotFoundException {
         Job job = new Job();
         job.setJobId(msg.getJobId());
-        job.setAppId(analysisAppId(msg.getAppAuth(), msg.hasAppName()? msg.getAppName() : null));
+        job.setAppId(analysisAppId(msg.getAppAuth(), msg.hasAppName() ? msg.getAppName() : null));
         if (msg.hasJobName()) {
             job.setJobName(msg.getJobName());
         }
@@ -495,7 +493,7 @@ public class JobActor extends UntypedActor {
         if (msg.hasWorkerGroupId()) {
             job.setWorkerGroupId(msg.getWorkerGroupId());
         }
-        if(msg.hasBizGroupId()){
+        if (msg.hasBizGroupId()) {
             job.setBizGroupId(msg.getBizGroupId());
         }
         if (msg.hasPriority()) {
@@ -529,7 +527,6 @@ public class JobActor extends UntypedActor {
         job.setStatus(msg.getStatus());
         return job;
     }
-
 
     /**
      * 转化为_jobDepend
@@ -567,7 +564,6 @@ public class JobActor extends UntypedActor {
         }
         return appId;
     }
-
 
     /**
      * 测试用

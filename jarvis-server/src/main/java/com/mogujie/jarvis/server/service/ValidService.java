@@ -126,7 +126,7 @@ public class ValidService {
     /**
      * 检查-job依赖
      */
-    public void CheckJobDependency(RestModifyJobDependRequest msg) throws IllegalArgumentException {
+    public void checkJobDependency(RestModifyJobDependRequest msg) throws IllegalArgumentException {
         Preconditions.checkArgument(msg.getDependencyEntryList() != null && !msg.getDependencyEntryList().isEmpty()
                 , "依赖对象不能为空");
         long jobId = msg.getJobId();
@@ -154,7 +154,7 @@ public class ValidService {
     /**
      * 检查-job计划表达式
      */
-    public void Check2JobScheduleExp(RestModifyJobScheduleExpRequest msg) {
+    public void check2JobScheduleExp(RestModifyJobScheduleExpRequest msg) {
         Preconditions.checkArgument(msg.getExpressionEntryList() != null && !msg.getExpressionEntryList().isEmpty()
                 , "计划表达式不能为空");
         long jobId = msg.getJobId();
