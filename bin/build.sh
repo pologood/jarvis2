@@ -11,7 +11,10 @@ JARVIS_DIST_DIR="${JARVIS_PREFIX}/dist"
 JARVIS_TARGET_DIR="${JARVIS_DIST_DIR}/${version}"
 JARVIS_TARGET_LIB_DIR="${JARVIS_TARGET_DIR}/lib"
 
-mvn clean install -DskipTests -f ${JARVIS_PREFIX}/pom.xml
+mvn clean install -Dmaven.test.skip=true -f ${JARVIS_PREFIX}/pom.xml
+
+echo "Packaging..."
+
 mkdir -p ${JARVIS_TARGET_LIB_DIR}/common
 mkdir -p ${JARVIS_TARGET_LIB_DIR}/rest
 mkdir -p ${JARVIS_TARGET_LIB_DIR}/server
@@ -28,5 +31,8 @@ find ./jarvis-tasks/target -name *.jar -exec cp {} ${JARVIS_TARGET_LIB_DIR}/work
 mkdir -p ${JARVIS_TARGET_DIR}/bin
 cp ${JARVIS_PREFIX}/bin/jarvis-* ${JARVIS_TARGET_DIR}/bin/
 cp -r ${JARVIS_PREFIX}/conf ${JARVIS_TARGET_DIR}/conf
-mkdir ${JARVIS_TARGET_DIR}/logs
+mkdir -p ${JARVIS_TARGET_DIR}/logs
 cd ${JARVIS_DIST_DIR} && tar zcf ${version}.tar.gz ${version} && rm -rf ${version}
+
+
+echo "Package finished: ${JARVIS_DIST_DIR}/${version}.tar.gz"
