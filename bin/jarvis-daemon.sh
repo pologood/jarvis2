@@ -66,7 +66,7 @@ fi
 
 start()
 {
-    nohup ${JAVA} -Drole=${command} ${JAVA_OPTS} -cp ${JARVIS_CONF_DIR}:${JARVIS_LIB_DIR}/* ${MAIN_CLASS} > /dev/null 2>&1 &
+    nohup ${JAVA} -Drole=${command} ${JAVA_OPTS} -cp ${JARVIS_CONF_DIR}:${JARVIS_LIB_DIR}/common/*:${JARVIS_LIB_DIR}/${command}/* ${MAIN_CLASS} > /dev/null 2>&1 &
     echo $! > ${PID}
     echo "${command} started."
 }
