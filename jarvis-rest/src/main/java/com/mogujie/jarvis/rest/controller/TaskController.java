@@ -71,7 +71,7 @@ public class TaskController extends AbstractController {
             ServerKillTaskResponse response = (ServerKillTaskResponse) callActor(AkkaType.SERVER, request);
             return response.getSuccess() ? successResult() : errorResult(response.getMessage());
         } catch (Exception e) {
-            LOGGER.error(e.getMessage());
+            LOGGER.error("", e);
             return errorResult(e);
         }
     }
@@ -97,7 +97,7 @@ public class TaskController extends AbstractController {
             ServerRetryTaskResponse response = (ServerRetryTaskResponse) callActor(AkkaType.SERVER, request);
             return response.getSuccess() ? successResult() : errorResult(response.getMessage());
         } catch (Exception e) {
-            LOGGER.error(e.getMessage());
+            LOGGER.error("", e);
             return errorResult(e);
         }
     }
@@ -129,7 +129,7 @@ public class TaskController extends AbstractController {
             ServerManualRerunTaskResponse response = (ServerManualRerunTaskResponse) callActor(AkkaType.SERVER, request);
             return response.getSuccess() ? successResult() : errorResult(response.getMessage());
         } catch (Exception e) {
-            LOGGER.error(e.getMessage());
+            LOGGER.error("", e);
             return errorResult(e);
         }
     }
@@ -156,7 +156,7 @@ public class TaskController extends AbstractController {
             ServerRemoveTaskResponse response = (ServerRemoveTaskResponse) callActor(AkkaType.SERVER, request);
             return response.getSuccess() ? successResult() : errorResult(response.getMessage());
         } catch (Exception e) {
-            LOGGER.error(e.getMessage());
+            LOGGER.error("", e);
             return errorResult(e);
         }
     }
@@ -186,7 +186,7 @@ public class TaskController extends AbstractController {
             ServerModifyTaskStatusResponse response = (ServerModifyTaskStatusResponse) callActor(AkkaType.SERVER, request);
             return response.getSuccess() ? successResult() : errorResult(response.getMessage());
         } catch (Exception e) {
-            LOGGER.error(e.getMessage());
+            LOGGER.error("", e);
             return errorResult(e);
         }
     }
@@ -227,7 +227,7 @@ public class TaskController extends AbstractController {
                 return errorResult(response.getMessage());
             }
         } catch (Exception e) {
-            LOGGER.error(e.getMessage());
+            LOGGER.error("", e);
             return errorResult(e);
         }
     }

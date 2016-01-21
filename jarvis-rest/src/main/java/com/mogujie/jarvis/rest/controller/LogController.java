@@ -113,6 +113,7 @@ public class LogController extends AbstractController {
                 return errorResult(response.getMessage());
             }
         } catch (Exception e) {
+            LOGGER.error("", e);
             return errorResult(e);
         }
     }

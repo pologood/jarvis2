@@ -50,7 +50,7 @@ public class BizGroupController extends AbstractController {
             return response.getSuccess() ? successResult(new BizGroupResultVo().setId(response.getId()))
                     : errorResult(response.getMessage());
         } catch (Exception e) {
-            LOGGER.error(e.getMessage());
+            LOGGER.error("", e);
             return errorResult(e);
         }
     }

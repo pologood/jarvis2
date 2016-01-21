@@ -65,7 +65,7 @@ public class AppController extends AbstractController {
                     : errorResult(response.getMessage());
 
         } catch (Exception e) {
-            LOGGER.error(e.getMessage());
+            LOGGER.error("", e);
             return errorResult(e);
         }
     }

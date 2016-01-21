@@ -76,7 +76,6 @@ public class JobController extends AbstractController {
                     : errorResult(response.getMessage());
 
         } catch (Exception e) {
-            e.printStackTrace();
             LOGGER.error("", e);
             return errorResult(e);
         }
@@ -258,7 +257,7 @@ public class JobController extends AbstractController {
                 return errorResult(response.getMessage());
             }
         } catch (Exception e) {
-            LOGGER.error(e.getMessage());
+            LOGGER.error("", e);
             return errorResult(e);
         }
     }
