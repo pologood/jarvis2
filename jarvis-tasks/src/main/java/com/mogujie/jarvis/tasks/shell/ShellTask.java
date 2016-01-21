@@ -9,7 +9,6 @@
 package com.mogujie.jarvis.tasks.shell;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -91,16 +90,6 @@ public class ShellTask extends AbstractTask {
             stderrStreamProcessor.start();
 
             boolean result = (shellProcess.waitFor() == 0);
-
-            // 删除状态文件
-            File statusFile = new File(statusFilePath);
-            if (statusFile.exists()) {
-                boolean deleted = statusFile.delete();
-                if (!deleted) {
-                    LOGGER.error("File [" + statusFilePath + "] delete failed");
-                }
-            }
-
             return result;
         } catch (Exception e) {
             getTaskContext().getLogCollector().collectStderr(e.getMessage());
