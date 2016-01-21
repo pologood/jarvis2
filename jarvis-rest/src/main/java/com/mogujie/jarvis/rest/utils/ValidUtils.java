@@ -79,7 +79,7 @@ public class ValidUtils {
         // parameters处理
         if (job.getParams() != null) {
             try {
-                JsonHelper.fromJson(job.getParams(), Map.class);
+                JsonHelper.fromJson2JobParams(job.getParams());
             } catch (Exception ex) {
                 throw new IllegalArgumentException("job参数不是key-value结构的json串. paras:" + job.getParams());
             }
