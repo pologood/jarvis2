@@ -10,6 +10,7 @@ package com.mogujie.jarvis.worker;
 
 import java.nio.charset.StandardCharsets;
 
+import akka.actor.ActorRef;
 import com.google.protobuf.ByteString;
 import com.mogujie.jarvis.core.AbstractLogCollector;
 import com.mogujie.jarvis.core.JarvisConstants;
@@ -32,11 +33,13 @@ public class DefaultLogCollector extends AbstractLogCollector {
     private static Logger logger = LogManager.getLogger();
 
     private ActorSelection actor;
+    private ActorRef sender;
     private String fullId;
     private int maxBytes = ConfigUtils.getWorkerConfig().getInt(WorkerConfigKeys.LOG_SEND_MAX_BYTES, 1024 * 1024);
 
-    public DefaultLogCollector(ActorSelection actor, String fullId) {
+    public DefaultLogCollector(ActorSelection actor, ActorRef sender, String fullId) {
         this.actor = actor;
+        this.sender = sender;
         this.fullId = fullId;
     }
 
@@ -61,7 +64,7 @@ public class DefaultLogCollector extends AbstractLogCollector {
                     .setLog(ByteString.copyFrom(dest)).setIsEnd(sendEnd).build();
             LogStorageWriteLogResponse response;
             try {
-//                actor.tell(request, ActorRef.noSender());
+//                actor.tell(request, sender);
                 response = (LogStorageWriteLogResponse) FutureUtils.awaitResult(actor, request, 10);
                 if (response.getSuccess()){
                     i++;

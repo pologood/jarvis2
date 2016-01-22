@@ -8,6 +8,8 @@
 
 package com.mogujie.jarvis.worker;
 
+import com.mogujie.jarvis.worker.status.store.LocalFileSystemStateStore;
+
 public interface WorkerConfigKeys {
 
     public static final String SERVER_AKKA_PATH = "server.akka.path";
@@ -28,6 +30,8 @@ public interface WorkerConfigKeys {
     public static final String WORKER_MEMORY_USAGE_THRESHOLD = "worker.memory.usage.threshold";
     public static final String WORKER_JOB_NUM_THRESHOLD = "worker.job.num.threshold";
     public static final String WORKER_TASK_STATE_STORE_CLASS = "worker.task.state.store.class";
+    public static final String DEFAULT_WORKER_TASK_STATE_STORE_CLASS = LocalFileSystemStateStore.class.getName();
+    public static final String WORKER_TASK_STATE_STORE_SLEEP_INTERVAL = "worker.task.state.store.sleep.interval";
 
     public static final String LOG_SEND_MAX_BYTES = "log.send.max.bytes";
 }

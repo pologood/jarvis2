@@ -12,6 +12,7 @@ import org.apache.commons.configuration.Configuration;
 
 import com.google.common.base.Throwables;
 import com.mogujie.jarvis.core.util.ConfigUtils;
+import com.mogujie.jarvis.core.util.ReflectionUtils;
 import com.mogujie.jarvis.worker.WorkerConfigKeys;
 
 public class TaskStateStoreFactory {
@@ -21,9 +22,10 @@ public class TaskStateStoreFactory {
 
     static {
         try {
-            taskStateStore = (TaskStateStore) Class.forName(config.getString(WorkerConfigKeys.WORKER_TASK_STATE_STORE_CLASS)).newInstance();
+            String className = config.getString(WorkerConfigKeys.WORKER_TASK_STATE_STORE_CLASS, WorkerConfigKeys.DEFAULT_WORKER_TASK_STATE_STORE_CLASS);
+            taskStateStore = ReflectionUtils.getInstanceByClassName(className);
             taskStateStore.init(config);
-        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+        } catch (Exception e) {
             Throwables.propagate(e);
         }
     }

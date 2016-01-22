@@ -41,7 +41,6 @@ public class DeadLetterActor extends UntypedActor {
 
                     TaskStateStore taskStateStore = TaskStateStoreFactory.getInstance();
                     taskStateStore.delete(status.getFullId());
-
                     Thread.sleep(1000);
                 }
             }

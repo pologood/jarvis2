@@ -110,13 +110,13 @@ public class TaskActor extends UntypedActor {
         contextBuilder.setTaskDetail(taskDetail);
 
         ActorSelection logActor = getContext().actorSelection(LOGSERVER_AKKA_PATH);
-        AbstractLogCollector logCollector = new DefaultLogCollector(logActor, fullId);
+        AbstractLogCollector logCollector = new DefaultLogCollector(logActor, getSelf(), fullId);
         contextBuilder.setLogCollector(logCollector);
 
         ActorSelection serverActor = getContext().actorSelection(SERVER_AKKA_PATH);
-        ProgressReporter reporter = new DefaultProgressReporter(serverActor, fullId);
+        ProgressReporter reporter = new DefaultProgressReporter(serverActor, getSelf(), fullId);
         contextBuilder.setProgressReporter(reporter);
-        contextBuilder.setTaskReporter(new DefaultTaskReporter(serverActor));
+        contextBuilder.setTaskReporter(new DefaultTaskReporter(serverActor, getSelf()));
 
         TaskStateStore taskStateStore = TaskStateStoreFactory.getInstance();
         taskStateStore.write(taskDetail, TaskStatus.RUNNING.getValue());

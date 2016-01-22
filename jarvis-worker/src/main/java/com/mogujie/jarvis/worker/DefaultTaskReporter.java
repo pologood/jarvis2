@@ -21,11 +21,14 @@ import akka.actor.ActorSelection;
 public class DefaultTaskReporter implements TaskReporter {
 
     private ActorSelection actor;
+    private ActorRef sender;
 
-    public DefaultTaskReporter(ActorSelection actor) {
+    public DefaultTaskReporter(ActorSelection actor, ActorRef sender) {
         this.actor = actor;
+        this.sender = sender;
     }
 
+    @Override
     public void report(TaskDetail taskDetail) {
         WorkerReportTaskRequest.Builder builder = WorkerReportTaskRequest.newBuilder();
         builder.setFullId(taskDetail.getFullId());
@@ -41,7 +44,7 @@ public class DefaultTaskReporter implements TaskReporter {
             builder.addParameters(i++, mapEntry);
         }
 
-        actor.tell(builder.build(), ActorRef.noSender());
+        actor.tell(builder.build(), sender);
     }
 
 }
