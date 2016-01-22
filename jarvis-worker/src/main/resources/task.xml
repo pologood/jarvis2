@@ -8,23 +8,15 @@
 	</strategies>
 
 	<tasks>
-		<task type="hive_shell" class="com.mogujie.jarvis.tasks.shell.HiveSqlShellTask">
+		<task type="hive" class="com.mogujie.jarvis.tasks.shell.HiveShellTask">
 			<lookup class="com.mogujie.jarvis.worker.status.lookup.ShellStatusLookup" />
 			<strategies>
 				<strategy>com.mogujie.jarvis.worker.strategy.impl.YarnMemoryAcceptanceStrategy
 				</strategy>
 			</strategies>
 		</task>
-		<task type="hive_script" class="com.mogujie.jarvis.tasks.shell.HiveScriptShellTask">
-			<lookup class="com.mogujie.jarvis.worker.status.lookup.ShellStatusLookup" />
-			<strategies>
-				<strategy>com.mogujie.jarvis.worker.strategy.impl.YarnMemoryAcceptanceStrategy
-				</strategy>
-			</strategies>
-		</task>
-
 		<task type="shell" class="com.mogujie.jarvis.tasks.shell.ShellTask" />
-		<task type="presto" class="com.mogujie.jarvis.tasks.jdbc.PrestoJdbctask" />
+		<task type="presto" class="com.mogujie.jarvis.tasks.jdbc.PrestoJdbcTask" />
 		<task type="dummy" class="com.mogujie.jarvis.tasks.DummyTask" />
 
 	</tasks>

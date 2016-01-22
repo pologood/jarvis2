@@ -230,7 +230,8 @@ public enum JobGraph {
      * modify job flag
      *
      * @param jobId
-     * @param jobStatus
+     * @param oldStatus
+     * @param newStatus
      */
     public void modifyJobFlag(long jobId, JobStatus oldStatus, JobStatus newStatus) {
         DAGJob dagJob = getDAGJob(jobId);

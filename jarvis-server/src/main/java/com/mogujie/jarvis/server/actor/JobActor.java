@@ -20,6 +20,9 @@ import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 import org.mybatis.guice.transactional.Transactional;
 
+import akka.actor.Props;
+import akka.actor.UntypedActor;
+
 import com.google.common.base.Throwables;
 import com.google.common.collect.Range;
 import com.google.common.collect.Sets;
@@ -70,9 +73,6 @@ import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.service.ValidService;
 import com.mogujie.jarvis.server.service.ValidService.CheckMode;
 import com.mogujie.jarvis.server.util.PlanUtil;
-
-import akka.actor.Props;
-import akka.actor.UntypedActor;
 
 /**
  * @author guangming
@@ -184,7 +184,7 @@ public class JobActor extends UntypedActor {
                 }
             }
             int dependFlag = (!needDependencies.isEmpty()) ? 1 : 0;
-            DAGJobType type = DAGJobType.getDAGJobType(cycleFlag, dependFlag, timeFlag);
+            DAGJobType type = DAGJobType.getDAGJobType(timeFlag, dependFlag, cycleFlag);
             jobGraph.addJob(jobId, new DAGJob(jobId, type), needDependencies);
             if (type.equals(DAGJobType.TIME)) {
                 plan.addJob(jobId);

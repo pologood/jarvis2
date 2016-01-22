@@ -7,17 +7,6 @@
  */
 package com.mogujie.jarvis.server.service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.joda.time.DateTime;
-import org.mybatis.guice.transactional.Transactional;
-
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Maps;
@@ -25,32 +14,23 @@ import com.google.common.collect.Multimap;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.mogujie.jarvis.core.domain.JobStatus;
-import com.mogujie.jarvis.core.expression.CronExpression;
-import com.mogujie.jarvis.core.expression.DefaultDependencyStrategyExpression;
-import com.mogujie.jarvis.core.expression.DependencyExpression;
-import com.mogujie.jarvis.core.expression.DependencyStrategyExpression;
-import com.mogujie.jarvis.core.expression.FixedDelayExpression;
-import com.mogujie.jarvis.core.expression.FixedRateExpression;
-import com.mogujie.jarvis.core.expression.ISO8601Expression;
-import com.mogujie.jarvis.core.expression.ScheduleExpression;
-import com.mogujie.jarvis.core.expression.ScheduleExpressionType;
-import com.mogujie.jarvis.core.expression.TimeOffsetExpression;
+import com.mogujie.jarvis.core.expression.*;
 import com.mogujie.jarvis.dao.generate.JobDependMapper;
 import com.mogujie.jarvis.dao.generate.JobMapper;
 import com.mogujie.jarvis.dao.generate.JobScheduleExpressionMapper;
-import com.mogujie.jarvis.dto.generate.Job;
-import com.mogujie.jarvis.dto.generate.JobDepend;
-import com.mogujie.jarvis.dto.generate.JobDependExample;
-import com.mogujie.jarvis.dto.generate.JobDependKey;
-import com.mogujie.jarvis.dto.generate.JobExample;
-import com.mogujie.jarvis.dto.generate.JobScheduleExpression;
-import com.mogujie.jarvis.dto.generate.JobScheduleExpressionExample;
+import com.mogujie.jarvis.dto.generate.*;
 import com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry;
 import com.mogujie.jarvis.server.domain.JobDependencyEntry;
 import com.mogujie.jarvis.server.domain.JobEntry;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.joda.time.DateTime;
+import org.mybatis.guice.transactional.Transactional;
+
+import java.util.*;
 
 /**
- * @author wuya,muming
+ * @author wuya, muming
  */
 @Singleton
 public class JobService {
@@ -353,6 +333,14 @@ public class JobService {
             // 初始化 JobMetaStore
             metaStore.put(job.getJobId(), new JobEntry(job, expressionMap, dependencies));
         }
+    }
+
+    public JobMapper getJobMapper() {
+        return jobMapper;
+    }
+
+    public void setJobMapper(JobMapper jobMapper) {
+        this.jobMapper = jobMapper;
     }
 
     private JobDependencyEntry getJobDependencyEntry(JobDepend jobDepend) {

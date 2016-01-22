@@ -27,6 +27,7 @@ import com.github.stuxuhai.jpinyin.PinyinHelper;
 import com.mogujie.jarvis.core.TaskContext;
 import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.exception.ShellException;
+import com.mogujie.jarvis.core.exception.TaskException;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.tasks.domain.HiveTaskEntity;
 import com.mogujie.jarvis.tasks.util.HiveConfigUtils;
@@ -35,9 +36,9 @@ import com.mogujie.jarvis.tasks.util.MoguAnnotationUtils;
 import com.mogujie.jarvis.tasks.util.YarnUtils;
 
 /**
- * @author wuya
+ * @author wuya,muming
  */
-public abstract class HiveShellTask extends ShellTask {
+public class HiveShellTask extends ShellTask {
 
     private Set<String> applicationIdSet = new HashSet<>();
     private static final Pattern APPLICATION_ID_PATTERN = Pattern.compile("application_\\d+_\\d+");
@@ -165,6 +166,24 @@ public abstract class HiveShellTask extends ShellTask {
         return result;
     }
 
+    @Override
+    public void postExecute() throws TaskException {
+        super.postExecute();
+        // return new content
+        String newContent = getCommand();
+        TaskDetail oldTaskDetail = getTaskContext().getTaskDetail();
+        TaskDetail newTaskDetail = TaskDetail.newTaskDetailBuilder()
+                .setFullId(oldTaskDetail.getFullId())
+                .setTaskName(oldTaskDetail.getTaskName())
+                .setAppName(oldTaskDetail.getAppName())
+                .setUser(oldTaskDetail.getUser())
+                .setJobType(oldTaskDetail.getJobType())
+                .setContent(newContent)
+                .setPriority(oldTaskDetail.getPriority())
+                .build();
+        getTaskContext().getTaskReporter().report(newTaskDetail);
+    }
+
     private String match(Pattern pattern, int group, String line) {
         Matcher m = pattern.matcher(line);
         if (m.find()) {
@@ -174,6 +193,8 @@ public abstract class HiveShellTask extends ShellTask {
         return null;
     }
 
-    protected abstract String getContent(TaskDetail task);
+    protected  String getContent(TaskDetail task){
+        return task.getContent();
+    }
 
 }
