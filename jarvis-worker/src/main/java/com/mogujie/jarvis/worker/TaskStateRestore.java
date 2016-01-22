@@ -21,6 +21,7 @@ import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.util.ConfigUtils;
+import com.mogujie.jarvis.core.util.ThreadUtils;
 import com.mogujie.jarvis.protocol.ReportTaskStatusProtos.WorkerReportTaskStatusRequest;
 import com.mogujie.jarvis.worker.domain.TaskEntry;
 import com.mogujie.jarvis.worker.status.TaskStateStore;
@@ -99,6 +100,8 @@ public class TaskStateRestore extends Thread {
                     taskStateStore.delete(fullId);
                 }
             }
+
+            ThreadUtils.sleep(config.getInt(WorkerConfigKeys.WORKER_TASK_STATE_STORE_SLEEP_INTERVAL, 30000));
         }
 
         for (Entry<String, TaskStatusLookup> entry : taskStatusLookupMap.entrySet()) {
