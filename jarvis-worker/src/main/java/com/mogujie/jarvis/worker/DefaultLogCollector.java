@@ -16,15 +16,20 @@ import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.domain.StreamType;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.protocol.LogProtos.WorkerWriteLogRequest;
+import com.mogujie.jarvis.protocol.LogProtos.LogStorageWriteLogResponse;
 
-import akka.actor.ActorRef;
 import akka.actor.ActorSelection;
+import com.mogujie.jarvis.worker.util.FutureUtils;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 /**
  * @author wuya
- *
  */
 public class DefaultLogCollector extends AbstractLogCollector {
+
+    private static Logger logger = LogManager.getLogger();
 
     private ActorSelection actor;
     private String fullId;
@@ -54,8 +59,16 @@ public class DefaultLogCollector extends AbstractLogCollector {
 
             WorkerWriteLogRequest request = WorkerWriteLogRequest.newBuilder().setFullId(fullId).setType(streamType.getValue())
                     .setLog(ByteString.copyFrom(dest)).setIsEnd(sendEnd).build();
-            actor.tell(request, ActorRef.noSender());
-            i++;
+            LogStorageWriteLogResponse response;
+            try {
+//                actor.tell(request, ActorRef.noSender());
+                response = (LogStorageWriteLogResponse) FutureUtils.awaitResult(actor, request, 10);
+                if (response.getSuccess()){
+                    i++;
+                }
+            } catch (Exception e) {
+                logger.error(e);
+            }
         }
     }
 
