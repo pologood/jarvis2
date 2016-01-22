@@ -32,7 +32,9 @@ import com.mogujie.jarvis.tasks.util.ShellUtils;
 public class ShellTask extends AbstractTask {
 
     private Process shellProcess = null;
-    private static final String STATUS_PATH = ConfigUtils.getWorkerConfig().getString("shell.status.data.dir");
+    private static final String DEFAULT_STATUS_PATH = "/tmp/jarvis_shell_status";
+    private static final String STATUS_PATH_KEY = "shell.status.data.dir";
+    private static final String STATUS_PATH = ConfigUtils.getWorkerConfig().getString(STATUS_PATH_KEY, DEFAULT_STATUS_PATH);
     private static final Logger LOGGER = LogManager.getLogger();
 
     public ShellTask(TaskContext taskContext) {
