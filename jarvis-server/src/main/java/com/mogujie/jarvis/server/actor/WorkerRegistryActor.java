@@ -76,7 +76,7 @@ public class WorkerRegistryActor extends UntypedActor {
             workerRegistry.put(workerInfo, groupId);
             workerService.saveWorker(ip, port, groupId, WorkerStatus.ONLINE.getValue());
 
-            logger.info("register worker[ip={},port={}] successfully.");
+            logger.info("register worker[ip={},port={}] successfully.", ip, port);
 
             response = ServerRegistryResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());
