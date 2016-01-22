@@ -51,17 +51,18 @@ import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobRequest;
 import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobScheduleExpRequest;
 import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobStatusRequest;
 import com.mogujie.jarvis.protocol.JobProtos.RestQueryJobRelationRequest;
+import com.mogujie.jarvis.protocol.JobProtos.RestRemoveJobRequest;
 import com.mogujie.jarvis.protocol.JobProtos.RestSubmitJobRequest;
 import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobDependResponse;
 import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobResponse;
 import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobScheduleExpResponse;
 import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobStatusResponse;
 import com.mogujie.jarvis.protocol.JobProtos.ServerQueryJobRelationResponse;
+import com.mogujie.jarvis.protocol.JobProtos.ServerRemoveJobResponse;
 import com.mogujie.jarvis.protocol.JobProtos.ServerSubmitJobResponse;
 import com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry;
 import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.domain.ModifyDependEntry;
-import com.mogujie.jarvis.server.domain.RemoveJobRequest;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.dag.DAGJob;
 import com.mogujie.jarvis.server.scheduler.dag.DAGJobType;
@@ -105,6 +106,7 @@ public class JobActor extends UntypedActor {
         list.add(new ActorEntry(RestModifyJobScheduleExpRequest.class, ServerModifyJobScheduleExpResponse.class, MessageType.GENERAL));
         list.add(new ActorEntry(RestModifyJobStatusRequest.class, ServerModifyJobStatusResponse.class, MessageType.GENERAL));
         list.add(new ActorEntry(RestQueryJobRelationRequest.class, ServerQueryJobRelationResponse.class, MessageType.GENERAL));
+        list.add(new ActorEntry(RestRemoveJobRequest.class, ServerRemoveJobResponse.class, MessageType.GENERAL));
         return list;
     }
 
@@ -123,9 +125,11 @@ public class JobActor extends UntypedActor {
         } else if (obj instanceof RestQueryJobRelationRequest) {
             RestQueryJobRelationRequest msg = (RestQueryJobRelationRequest) obj;
             queryJobRelation(msg);
-        } else if (obj instanceof RemoveJobRequest) { // 回滚和测试用，无须加入handleMessage
-            RemoveJobRequest msg = (RemoveJobRequest) obj;
-            removeJob(msg);
+        } else if (obj instanceof RestRemoveJobRequest) { // 回滚和测试用，无须加入handleMessage
+            RestRemoveJobRequest msg = (RestRemoveJobRequest) obj;
+            removeJob(msg.getJobId());
+            ServerRemoveJobResponse response = ServerRemoveJobResponse.newBuilder().setSuccess(true).build();
+            getSender().tell(response, getSelf());
         } else {
             unhandled(obj);
         }
@@ -195,8 +199,7 @@ public class JobActor extends UntypedActor {
 
         } catch (Exception e) {
             // roll back submit job
-            RemoveJobRequest removeJobRequest = new RemoveJobRequest(jobId);
-            removeJob(removeJobRequest);
+            removeJob(jobId);
             response = ServerSubmitJobResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
             getSender().tell(response, getSelf());
             logger.error("", e);
@@ -436,7 +439,6 @@ public class JobActor extends UntypedActor {
             logger.error("", e);
             throw e;
         }
-
     }
 
     private Job msg2Job(RestSubmitJobRequest msg) throws NotFoundException {
@@ -572,18 +574,11 @@ public class JobActor extends UntypedActor {
      * @throws IOException
      */
     @Transactional
-    private void removeJob(RemoveJobRequest msg) throws IOException {
-        long jobId = msg.getJobId();
-        try {
-            // remove job
-            jobService.deleteJobAndRelation(jobId);
-            // scheduler remove job
-            plan.removeJob(jobId);
-            jobGraph.removeJob(jobId);
-            getSender().tell("remove success", getSelf());
-        } catch (Exception e) {
-            getSender().tell("remove failed", getSelf());
-            throw new IOException(e);
-        }
+    private void removeJob(long jobId) throws IOException {
+        // remove job
+        jobService.deleteJobAndRelation(jobId);
+        // scheduler remove job
+        plan.removeJob(jobId);
+        jobGraph.removeJob(jobId);
     }
 }

@@ -8,10 +8,10 @@ public final class JobProtos {
   public static void registerAllExtensions(
       com.google.protobuf.ExtensionRegistry registry) {
   }
-  public interface RestSubmitJobRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:RestSubmitJobRequest)
-      com.google.protobuf.MessageOrBuilder {
+  public interface RestSubmitJobRequestOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required .AppAuth app_auth = 1;
     /**
      * <code>required .AppAuth app_auth = 1;</code>
      */
@@ -25,6 +25,7 @@ public final class JobProtos {
      */
     com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder();
 
+    // required string user = 2;
     /**
      * <code>required string user = 2;</code>
      */
@@ -39,6 +40,7 @@ public final class JobProtos {
     com.google.protobuf.ByteString
         getUserBytes();
 
+    // required string job_name = 3;
     /**
      * <code>required string job_name = 3;</code>
      */
@@ -53,6 +55,7 @@ public final class JobProtos {
     com.google.protobuf.ByteString
         getJobNameBytes();
 
+    // required string job_type = 4;
     /**
      * <code>required string job_type = 4;</code>
      */
@@ -67,6 +70,7 @@ public final class JobProtos {
     com.google.protobuf.ByteString
         getJobTypeBytes();
 
+    // required int32 status = 5;
     /**
      * <code>required int32 status = 5;</code>
      */
@@ -76,6 +80,7 @@ public final class JobProtos {
      */
     int getStatus();
 
+    // required string content = 6;
     /**
      * <code>required string content = 6;</code>
      */
@@ -90,6 +95,7 @@ public final class JobProtos {
     com.google.protobuf.ByteString
         getContentBytes();
 
+    // optional string parameters = 7 [default = ""];
     /**
      * <code>optional string parameters = 7 [default = ""];</code>
      */
@@ -104,6 +110,7 @@ public final class JobProtos {
     com.google.protobuf.ByteString
         getParametersBytes();
 
+    // optional string app_name = 8;
     /**
      * <code>optional string app_name = 8;</code>
      */
@@ -118,6 +125,7 @@ public final class JobProtos {
     com.google.protobuf.ByteString
         getAppNameBytes();
 
+    // required int32 worker_group_id = 9;
     /**
      * <code>required int32 worker_group_id = 9;</code>
      */
@@ -127,6 +135,7 @@ public final class JobProtos {
      */
     int getWorkerGroupId();
 
+    // optional int32 biz_group_id = 10 [default = 0];
     /**
      * <code>optional int32 biz_group_id = 10 [default = 0];</code>
      */
@@ -136,6 +145,7 @@ public final class JobProtos {
      */
     int getBizGroupId();
 
+    // optional int32 priority = 11 [default = 1];
     /**
      * <code>optional int32 priority = 11 [default = 1];</code>
      */
@@ -145,6 +155,7 @@ public final class JobProtos {
      */
     int getPriority();
 
+    // optional int64 active_start_time = 12;
     /**
      * <code>optional int64 active_start_time = 12;</code>
      */
@@ -154,6 +165,7 @@ public final class JobProtos {
      */
     long getActiveStartTime();
 
+    // optional int64 active_end_time = 13;
     /**
      * <code>optional int64 active_end_time = 13;</code>
      */
@@ -163,6 +175,7 @@ public final class JobProtos {
      */
     long getActiveEndTime();
 
+    // optional int32 expired_time = 14 [default = 600];
     /**
      * <code>optional int32 expired_time = 14 [default = 600];</code>
      */
@@ -172,6 +185,7 @@ public final class JobProtos {
      */
     int getExpiredTime();
 
+    // optional int32 failed_attempts = 15 [default = 0];
     /**
      * <code>optional int32 failed_attempts = 15 [default = 0];</code>
      */
@@ -181,6 +195,7 @@ public final class JobProtos {
      */
     int getFailedAttempts();
 
+    // optional int32 failed_interval = 16 [default = 3];
     /**
      * <code>optional int32 failed_interval = 16 [default = 3];</code>
      */
@@ -190,6 +205,7 @@ public final class JobProtos {
      */
     int getFailedInterval();
 
+    // repeated .ScheduleExpressionEntry expression_entry = 17;
     /**
      * <code>repeated .ScheduleExpressionEntry expression_entry = 17;</code>
      */
@@ -214,6 +230,7 @@ public final class JobProtos {
     com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder getExpressionEntryOrBuilder(
         int index);
 
+    // repeated .DependencyEntry dependency_entry = 18;
     /**
      * <code>repeated .DependencyEntry dependency_entry = 18;</code>
      */
@@ -246,9 +263,8 @@ public final class JobProtos {
    * </pre>
    */
   public static final class RestSubmitJobRequest extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:RestSubmitJobRequest)
-      RestSubmitJobRequestOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements RestSubmitJobRequestOrBuilder {
     // Use RestSubmitJobRequest.newBuilder() to construct.
     private RestSubmitJobRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -308,21 +324,18 @@ public final class JobProtos {
               break;
             }
             case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              user_ = bs;
+              user_ = input.readBytes();
               break;
             }
             case 26: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              jobName_ = bs;
+              jobName_ = input.readBytes();
               break;
             }
             case 34: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              jobType_ = bs;
+              jobType_ = input.readBytes();
               break;
             }
             case 40: {
@@ -331,21 +344,18 @@ public final class JobProtos {
               break;
             }
             case 50: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000020;
-              content_ = bs;
+              content_ = input.readBytes();
               break;
             }
             case 58: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000040;
-              parameters_ = bs;
+              parameters_ = input.readBytes();
               break;
             }
             case 66: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000080;
-              appName_ = bs;
+              appName_ = input.readBytes();
               break;
             }
             case 72: {
@@ -450,6 +460,7 @@ public final class JobProtos {
     }
 
     private int bitField0_;
+    // required .AppAuth app_auth = 1;
     public static final int APP_AUTH_FIELD_NUMBER = 1;
     private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_;
     /**
@@ -471,6 +482,7 @@ public final class JobProtos {
       return appAuth_;
     }
 
+    // required string user = 2;
     public static final int USER_FIELD_NUMBER = 2;
     private java.lang.Object user_;
     /**
@@ -513,6 +525,7 @@ public final class JobProtos {
       }
     }
 
+    // required string job_name = 3;
     public static final int JOB_NAME_FIELD_NUMBER = 3;
     private java.lang.Object jobName_;
     /**
@@ -555,6 +568,7 @@ public final class JobProtos {
       }
     }
 
+    // required string job_type = 4;
     public static final int JOB_TYPE_FIELD_NUMBER = 4;
     private java.lang.Object jobType_;
     /**
@@ -597,6 +611,7 @@ public final class JobProtos {
       }
     }
 
+    // required int32 status = 5;
     public static final int STATUS_FIELD_NUMBER = 5;
     private int status_;
     /**
@@ -612,6 +627,7 @@ public final class JobProtos {
       return status_;
     }
 
+    // required string content = 6;
     public static final int CONTENT_FIELD_NUMBER = 6;
     private java.lang.Object content_;
     /**
@@ -654,6 +670,7 @@ public final class JobProtos {
       }
     }
 
+    // optional string parameters = 7 [default = ""];
     public static final int PARAMETERS_FIELD_NUMBER = 7;
     private java.lang.Object parameters_;
     /**
@@ -696,6 +713,7 @@ public final class JobProtos {
       }
     }
 
+    // optional string app_name = 8;
     public static final int APP_NAME_FIELD_NUMBER = 8;
     private java.lang.Object appName_;
     /**
@@ -738,6 +756,7 @@ public final class JobProtos {
       }
     }
 
+    // required int32 worker_group_id = 9;
     public static final int WORKER_GROUP_ID_FIELD_NUMBER = 9;
     private int workerGroupId_;
     /**
@@ -753,6 +772,7 @@ public final class JobProtos {
       return workerGroupId_;
     }
 
+    // optional int32 biz_group_id = 10 [default = 0];
     public static final int BIZ_GROUP_ID_FIELD_NUMBER = 10;
     private int bizGroupId_;
     /**
@@ -768,6 +788,7 @@ public final class JobProtos {
       return bizGroupId_;
     }
 
+    // optional int32 priority = 11 [default = 1];
     public static final int PRIORITY_FIELD_NUMBER = 11;
     private int priority_;
     /**
@@ -783,6 +804,7 @@ public final class JobProtos {
       return priority_;
     }
 
+    // optional int64 active_start_time = 12;
     public static final int ACTIVE_START_TIME_FIELD_NUMBER = 12;
     private long activeStartTime_;
     /**
@@ -798,6 +820,7 @@ public final class JobProtos {
       return activeStartTime_;
     }
 
+    // optional int64 active_end_time = 13;
     public static final int ACTIVE_END_TIME_FIELD_NUMBER = 13;
     private long activeEndTime_;
     /**
@@ -813,6 +836,7 @@ public final class JobProtos {
       return activeEndTime_;
     }
 
+    // optional int32 expired_time = 14 [default = 600];
     public static final int EXPIRED_TIME_FIELD_NUMBER = 14;
     private int expiredTime_;
     /**
@@ -828,6 +852,7 @@ public final class JobProtos {
       return expiredTime_;
     }
 
+    // optional int32 failed_attempts = 15 [default = 0];
     public static final int FAILED_ATTEMPTS_FIELD_NUMBER = 15;
     private int failedAttempts_;
     /**
@@ -843,6 +868,7 @@ public final class JobProtos {
       return failedAttempts_;
     }
 
+    // optional int32 failed_interval = 16 [default = 3];
     public static final int FAILED_INTERVAL_FIELD_NUMBER = 16;
     private int failedInterval_;
     /**
@@ -858,6 +884,7 @@ public final class JobProtos {
       return failedInterval_;
     }
 
+    // repeated .ScheduleExpressionEntry expression_entry = 17;
     public static final int EXPRESSION_ENTRY_FIELD_NUMBER = 17;
     private java.util.List<com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry> expressionEntry_;
     /**
@@ -893,6 +920,7 @@ public final class JobProtos {
       return expressionEntry_.get(index);
     }
 
+    // repeated .DependencyEntry dependency_entry = 18;
     public static final int DEPENDENCY_ENTRY_FIELD_NUMBER = 18;
     private java.util.List<com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry> dependencyEntry_;
     /**
@@ -951,8 +979,7 @@ public final class JobProtos {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasAppAuth()) {
         memoizedIsInitialized = 0;
@@ -1226,9 +1253,8 @@ public final class JobProtos {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:RestSubmitJobRequest)
-        com.mogujie.jarvis.protocol.JobProtos.RestSubmitJobRequestOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.mogujie.jarvis.protocol.JobProtos.RestSubmitJobRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mogujie.jarvis.protocol.JobProtos.internal_static_RestSubmitJobRequest_descriptor;
@@ -1625,6 +1651,7 @@ public final class JobProtos {
       }
       private int bitField0_;
 
+      // required .AppAuth app_auth = 1;
       private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> appAuthBuilder_;
@@ -1733,7 +1760,7 @@ public final class JobProtos {
         if (appAuthBuilder_ == null) {
           appAuthBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder>(
-                  getAppAuth(),
+                  appAuth_,
                   getParentForChildren(),
                   isClean());
           appAuth_ = null;
@@ -1741,6 +1768,7 @@ public final class JobProtos {
         return appAuthBuilder_;
       }
 
+      // required string user = 2;
       private java.lang.Object user_ = "";
       /**
        * <code>required string user = 2;</code>
@@ -1754,12 +1782,9 @@ public final class JobProtos {
       public java.lang.String getUser() {
         java.lang.Object ref = user_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            user_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          user_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -1817,6 +1842,7 @@ public final class JobProtos {
         return this;
       }
 
+      // required string job_name = 3;
       private java.lang.Object jobName_ = "";
       /**
        * <code>required string job_name = 3;</code>
@@ -1830,12 +1856,9 @@ public final class JobProtos {
       public java.lang.String getJobName() {
         java.lang.Object ref = jobName_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            jobName_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          jobName_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -1893,6 +1916,7 @@ public final class JobProtos {
         return this;
       }
 
+      // required string job_type = 4;
       private java.lang.Object jobType_ = "";
       /**
        * <code>required string job_type = 4;</code>
@@ -1906,12 +1930,9 @@ public final class JobProtos {
       public java.lang.String getJobType() {
         java.lang.Object ref = jobType_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            jobType_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          jobType_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -1969,6 +1990,7 @@ public final class JobProtos {
         return this;
       }
 
+      // required int32 status = 5;
       private int status_ ;
       /**
        * <code>required int32 status = 5;</code>
@@ -2001,6 +2023,7 @@ public final class JobProtos {
         return this;
       }
 
+      // required string content = 6;
       private java.lang.Object content_ = "";
       /**
        * <code>required string content = 6;</code>
@@ -2014,12 +2037,9 @@ public final class JobProtos {
       public java.lang.String getContent() {
         java.lang.Object ref = content_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            content_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          content_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -2077,6 +2097,7 @@ public final class JobProtos {
         return this;
       }
 
+      // optional string parameters = 7 [default = ""];
       private java.lang.Object parameters_ = "";
       /**
        * <code>optional string parameters = 7 [default = ""];</code>
@@ -2090,12 +2111,9 @@ public final class JobProtos {
       public java.lang.String getParameters() {
         java.lang.Object ref = parameters_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            parameters_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          parameters_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -2153,6 +2171,7 @@ public final class JobProtos {
         return this;
       }
 
+      // optional string app_name = 8;
       private java.lang.Object appName_ = "";
       /**
        * <code>optional string app_name = 8;</code>
@@ -2166,12 +2185,9 @@ public final class JobProtos {
       public java.lang.String getAppName() {
         java.lang.Object ref = appName_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            appName_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          appName_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -2229,6 +2245,7 @@ public final class JobProtos {
         return this;
       }
 
+      // required int32 worker_group_id = 9;
       private int workerGroupId_ ;
       /**
        * <code>required int32 worker_group_id = 9;</code>
@@ -2261,6 +2278,7 @@ public final class JobProtos {
         return this;
       }
 
+      // optional int32 biz_group_id = 10 [default = 0];
       private int bizGroupId_ ;
       /**
        * <code>optional int32 biz_group_id = 10 [default = 0];</code>
@@ -2293,6 +2311,7 @@ public final class JobProtos {
         return this;
       }
 
+      // optional int32 priority = 11 [default = 1];
       private int priority_ = 1;
       /**
        * <code>optional int32 priority = 11 [default = 1];</code>
@@ -2325,6 +2344,7 @@ public final class JobProtos {
         return this;
       }
 
+      // optional int64 active_start_time = 12;
       private long activeStartTime_ ;
       /**
        * <code>optional int64 active_start_time = 12;</code>
@@ -2357,6 +2377,7 @@ public final class JobProtos {
         return this;
       }
 
+      // optional int64 active_end_time = 13;
       private long activeEndTime_ ;
       /**
        * <code>optional int64 active_end_time = 13;</code>
@@ -2389,6 +2410,7 @@ public final class JobProtos {
         return this;
       }
 
+      // optional int32 expired_time = 14 [default = 600];
       private int expiredTime_ = 600;
       /**
        * <code>optional int32 expired_time = 14 [default = 600];</code>
@@ -2421,6 +2443,7 @@ public final class JobProtos {
         return this;
       }
 
+      // optional int32 failed_attempts = 15 [default = 0];
       private int failedAttempts_ ;
       /**
        * <code>optional int32 failed_attempts = 15 [default = 0];</code>
@@ -2453,6 +2476,7 @@ public final class JobProtos {
         return this;
       }
 
+      // optional int32 failed_interval = 16 [default = 3];
       private int failedInterval_ = 3;
       /**
        * <code>optional int32 failed_interval = 16 [default = 3];</code>
@@ -2485,6 +2509,7 @@ public final class JobProtos {
         return this;
       }
 
+      // repeated .ScheduleExpressionEntry expression_entry = 17;
       private java.util.List<com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry> expressionEntry_ =
         java.util.Collections.emptyList();
       private void ensureExpressionEntryIsMutable() {
@@ -2626,8 +2651,7 @@ public final class JobProtos {
           java.lang.Iterable<? extends com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry> values) {
         if (expressionEntryBuilder_ == null) {
           ensureExpressionEntryIsMutable();
-          com.google.protobuf.AbstractMessageLite.Builder.addAll(
-              values, expressionEntry_);
+          super.addAll(values, expressionEntry_);
           onChanged();
         } else {
           expressionEntryBuilder_.addAllMessages(values);
@@ -2725,6 +2749,7 @@ public final class JobProtos {
         return expressionEntryBuilder_;
       }
 
+      // repeated .DependencyEntry dependency_entry = 18;
       private java.util.List<com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry> dependencyEntry_ =
         java.util.Collections.emptyList();
       private void ensureDependencyEntryIsMutable() {
@@ -2866,8 +2891,7 @@ public final class JobProtos {
           java.lang.Iterable<? extends com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry> values) {
         if (dependencyEntryBuilder_ == null) {
           ensureDependencyEntryIsMutable();
-          com.google.protobuf.AbstractMessageLite.Builder.addAll(
-              values, dependencyEntry_);
+          super.addAll(values, dependencyEntry_);
           onChanged();
         } else {
           dependencyEntryBuilder_.addAllMessages(values);
@@ -2976,10 +3000,10 @@ public final class JobProtos {
     // @@protoc_insertion_point(class_scope:RestSubmitJobRequest)
   }
 
-  public interface ServerSubmitJobResponseOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:ServerSubmitJobResponse)
-      com.google.protobuf.MessageOrBuilder {
+  public interface ServerSubmitJobResponseOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // optional int64 job_id = 1;
     /**
      * <code>optional int64 job_id = 1;</code>
      */
@@ -2989,6 +3013,7 @@ public final class JobProtos {
      */
     long getJobId();
 
+    // required bool success = 2;
     /**
      * <code>required bool success = 2;</code>
      */
@@ -2998,6 +3023,7 @@ public final class JobProtos {
      */
     boolean getSuccess();
 
+    // optional string message = 3 [default = ""];
     /**
      * <code>optional string message = 3 [default = ""];</code>
      */
@@ -3016,9 +3042,8 @@ public final class JobProtos {
    * Protobuf type {@code ServerSubmitJobResponse}
    */
   public static final class ServerSubmitJobResponse extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:ServerSubmitJobResponse)
-      ServerSubmitJobResponseOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements ServerSubmitJobResponseOrBuilder {
     // Use ServerSubmitJobResponse.newBuilder() to construct.
     private ServerSubmitJobResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -3075,9 +3100,8 @@ public final class JobProtos {
               break;
             }
             case 26: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              message_ = bs;
+              message_ = input.readBytes();
               break;
             }
           }
@@ -3120,6 +3144,7 @@ public final class JobProtos {
     }
 
     private int bitField0_;
+    // optional int64 job_id = 1;
     public static final int JOB_ID_FIELD_NUMBER = 1;
     private long jobId_;
     /**
@@ -3135,6 +3160,7 @@ public final class JobProtos {
       return jobId_;
     }
 
+    // required bool success = 2;
     public static final int SUCCESS_FIELD_NUMBER = 2;
     private boolean success_;
     /**
@@ -3150,6 +3176,7 @@ public final class JobProtos {
       return success_;
     }
 
+    // optional string message = 3 [default = ""];
     public static final int MESSAGE_FIELD_NUMBER = 3;
     private java.lang.Object message_;
     /**
@@ -3200,8 +3227,7 @@ public final class JobProtos {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasSuccess()) {
         memoizedIsInitialized = 0;
@@ -3326,9 +3352,8 @@ public final class JobProtos {
      * Protobuf type {@code ServerSubmitJobResponse}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:ServerSubmitJobResponse)
-        com.mogujie.jarvis.protocol.JobProtos.ServerSubmitJobResponseOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.mogujie.jarvis.protocol.JobProtos.ServerSubmitJobResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mogujie.jarvis.protocol.JobProtos.internal_static_ServerSubmitJobResponse_descriptor;
@@ -3465,6 +3490,7 @@ public final class JobProtos {
       }
       private int bitField0_;
 
+      // optional int64 job_id = 1;
       private long jobId_ ;
       /**
        * <code>optional int64 job_id = 1;</code>
@@ -3497,6 +3523,7 @@ public final class JobProtos {
         return this;
       }
 
+      // required bool success = 2;
       private boolean success_ ;
       /**
        * <code>required bool success = 2;</code>
@@ -3529,6 +3556,7 @@ public final class JobProtos {
         return this;
       }
 
+      // optional string message = 3 [default = ""];
       private java.lang.Object message_ = "";
       /**
        * <code>optional string message = 3 [default = ""];</code>
@@ -3542,12 +3570,9 @@ public final class JobProtos {
       public java.lang.String getMessage() {
         java.lang.Object ref = message_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            message_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          message_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -3616,10 +3641,10 @@ public final class JobProtos {
     // @@protoc_insertion_point(class_scope:ServerSubmitJobResponse)
   }
 
-  public interface RestModifyJobRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:RestModifyJobRequest)
-      com.google.protobuf.MessageOrBuilder {
+  public interface RestModifyJobRequestOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required .AppAuth app_auth = 1;
     /**
      * <code>required .AppAuth app_auth = 1;</code>
      */
@@ -3633,6 +3658,7 @@ public final class JobProtos {
      */
     com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder();
 
+    // required string user = 2;
     /**
      * <code>required string user = 2;</code>
      */
@@ -3647,6 +3673,7 @@ public final class JobProtos {
     com.google.protobuf.ByteString
         getUserBytes();
 
+    // required int64 job_id = 3;
     /**
      * <code>required int64 job_id = 3;</code>
      */
@@ -3656,6 +3683,7 @@ public final class JobProtos {
      */
     long getJobId();
 
+    // optional string job_name = 4;
     /**
      * <code>optional string job_name = 4;</code>
      */
@@ -3670,6 +3698,7 @@ public final class JobProtos {
     com.google.protobuf.ByteString
         getJobNameBytes();
 
+    // optional string job_type = 5;
     /**
      * <code>optional string job_type = 5;</code>
      */
@@ -3684,6 +3713,7 @@ public final class JobProtos {
     com.google.protobuf.ByteString
         getJobTypeBytes();
 
+    // optional string content = 6;
     /**
      * <code>optional string content = 6;</code>
      */
@@ -3698,6 +3728,7 @@ public final class JobProtos {
     com.google.protobuf.ByteString
         getContentBytes();
 
+    // optional string parameters = 7;
     /**
      * <code>optional string parameters = 7;</code>
      */
@@ -3712,6 +3743,7 @@ public final class JobProtos {
     com.google.protobuf.ByteString
         getParametersBytes();
 
+    // optional string app_name = 8;
     /**
      * <code>optional string app_name = 8;</code>
      */
@@ -3726,6 +3758,7 @@ public final class JobProtos {
     com.google.protobuf.ByteString
         getAppNameBytes();
 
+    // optional int32 worker_group_id = 9;
     /**
      * <code>optional int32 worker_group_id = 9;</code>
      */
@@ -3735,6 +3768,7 @@ public final class JobProtos {
      */
     int getWorkerGroupId();
 
+    // optional int32 biz_group_id = 10;
     /**
      * <code>optional int32 biz_group_id = 10;</code>
      */
@@ -3744,6 +3778,7 @@ public final class JobProtos {
      */
     int getBizGroupId();
 
+    // optional int32 priority = 11;
     /**
      * <code>optional int32 priority = 11;</code>
      */
@@ -3753,6 +3788,7 @@ public final class JobProtos {
      */
     int getPriority();
 
+    // optional int64 active_start_time = 12;
     /**
      * <code>optional int64 active_start_time = 12;</code>
      */
@@ -3762,6 +3798,7 @@ public final class JobProtos {
      */
     long getActiveStartTime();
 
+    // optional int64 active_end_time = 13;
     /**
      * <code>optional int64 active_end_time = 13;</code>
      */
@@ -3771,6 +3808,7 @@ public final class JobProtos {
      */
     long getActiveEndTime();
 
+    // optional int32 expired_time = 14;
     /**
      * <code>optional int32 expired_time = 14;</code>
      */
@@ -3780,6 +3818,7 @@ public final class JobProtos {
      */
     int getExpiredTime();
 
+    // optional int32 failed_attempts = 15;
     /**
      * <code>optional int32 failed_attempts = 15;</code>
      */
@@ -3789,6 +3828,7 @@ public final class JobProtos {
      */
     int getFailedAttempts();
 
+    // optional int32 failed_interval = 16;
     /**
      * <code>optional int32 failed_interval = 16;</code>
      */
@@ -3806,9 +3846,8 @@ public final class JobProtos {
    * </pre>
    */
   public static final class RestModifyJobRequest extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:RestModifyJobRequest)
-      RestModifyJobRequestOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements RestModifyJobRequestOrBuilder {
     // Use RestModifyJobRequest.newBuilder() to construct.
     private RestModifyJobRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -3868,9 +3907,8 @@ public final class JobProtos {
               break;
             }
             case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              user_ = bs;
+              user_ = input.readBytes();
               break;
             }
             case 24: {
@@ -3879,33 +3917,28 @@ public final class JobProtos {
               break;
             }
             case 34: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              jobName_ = bs;
+              jobName_ = input.readBytes();
               break;
             }
             case 42: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000010;
-              jobType_ = bs;
+              jobType_ = input.readBytes();
               break;
             }
             case 50: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000020;
-              content_ = bs;
+              content_ = input.readBytes();
               break;
             }
             case 58: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000040;
-              parameters_ = bs;
+              parameters_ = input.readBytes();
               break;
             }
             case 66: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000080;
-              appName_ = bs;
+              appName_ = input.readBytes();
               break;
             }
             case 72: {
@@ -3988,6 +4021,7 @@ public final class JobProtos {
     }
 
     private int bitField0_;
+    // required .AppAuth app_auth = 1;
     public static final int APP_AUTH_FIELD_NUMBER = 1;
     private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_;
     /**
@@ -4009,6 +4043,7 @@ public final class JobProtos {
       return appAuth_;
     }
 
+    // required string user = 2;
     public static final int USER_FIELD_NUMBER = 2;
     private java.lang.Object user_;
     /**
@@ -4051,6 +4086,7 @@ public final class JobProtos {
       }
     }
 
+    // required int64 job_id = 3;
     public static final int JOB_ID_FIELD_NUMBER = 3;
     private long jobId_;
     /**
@@ -4066,6 +4102,7 @@ public final class JobProtos {
       return jobId_;
     }
 
+    // optional string job_name = 4;
     public static final int JOB_NAME_FIELD_NUMBER = 4;
     private java.lang.Object jobName_;
     /**
@@ -4108,6 +4145,7 @@ public final class JobProtos {
       }
     }
 
+    // optional string job_type = 5;
     public static final int JOB_TYPE_FIELD_NUMBER = 5;
     private java.lang.Object jobType_;
     /**
@@ -4150,6 +4188,7 @@ public final class JobProtos {
       }
     }
 
+    // optional string content = 6;
     public static final int CONTENT_FIELD_NUMBER = 6;
     private java.lang.Object content_;
     /**
@@ -4192,6 +4231,7 @@ public final class JobProtos {
       }
     }
 
+    // optional string parameters = 7;
     public static final int PARAMETERS_FIELD_NUMBER = 7;
     private java.lang.Object parameters_;
     /**
@@ -4234,6 +4274,7 @@ public final class JobProtos {
       }
     }
 
+    // optional string app_name = 8;
     public static final int APP_NAME_FIELD_NUMBER = 8;
     private java.lang.Object appName_;
     /**
@@ -4276,6 +4317,7 @@ public final class JobProtos {
       }
     }
 
+    // optional int32 worker_group_id = 9;
     public static final int WORKER_GROUP_ID_FIELD_NUMBER = 9;
     private int workerGroupId_;
     /**
@@ -4291,6 +4333,7 @@ public final class JobProtos {
       return workerGroupId_;
     }
 
+    // optional int32 biz_group_id = 10;
     public static final int BIZ_GROUP_ID_FIELD_NUMBER = 10;
     private int bizGroupId_;
     /**
@@ -4306,6 +4349,7 @@ public final class JobProtos {
       return bizGroupId_;
     }
 
+    // optional int32 priority = 11;
     public static final int PRIORITY_FIELD_NUMBER = 11;
     private int priority_;
     /**
@@ -4321,6 +4365,7 @@ public final class JobProtos {
       return priority_;
     }
 
+    // optional int64 active_start_time = 12;
     public static final int ACTIVE_START_TIME_FIELD_NUMBER = 12;
     private long activeStartTime_;
     /**
@@ -4336,6 +4381,7 @@ public final class JobProtos {
       return activeStartTime_;
     }
 
+    // optional int64 active_end_time = 13;
     public static final int ACTIVE_END_TIME_FIELD_NUMBER = 13;
     private long activeEndTime_;
     /**
@@ -4351,6 +4397,7 @@ public final class JobProtos {
       return activeEndTime_;
     }
 
+    // optional int32 expired_time = 14;
     public static final int EXPIRED_TIME_FIELD_NUMBER = 14;
     private int expiredTime_;
     /**
@@ -4366,6 +4413,7 @@ public final class JobProtos {
       return expiredTime_;
     }
 
+    // optional int32 failed_attempts = 15;
     public static final int FAILED_ATTEMPTS_FIELD_NUMBER = 15;
     private int failedAttempts_;
     /**
@@ -4381,6 +4429,7 @@ public final class JobProtos {
       return failedAttempts_;
     }
 
+    // optional int32 failed_interval = 16;
     public static final int FAILED_INTERVAL_FIELD_NUMBER = 16;
     private int failedInterval_;
     /**
@@ -4417,8 +4466,7 @@ public final class JobProtos {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasAppAuth()) {
         memoizedIsInitialized = 0;
@@ -4650,9 +4698,8 @@ public final class JobProtos {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:RestModifyJobRequest)
-        com.mogujie.jarvis.protocol.JobProtos.RestModifyJobRequestOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.mogujie.jarvis.protocol.JobProtos.RestModifyJobRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mogujie.jarvis.protocol.JobProtos.internal_static_RestModifyJobRequest_descriptor;
@@ -4937,6 +4984,7 @@ public final class JobProtos {
       }
       private int bitField0_;
 
+      // required .AppAuth app_auth = 1;
       private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> appAuthBuilder_;
@@ -5045,7 +5093,7 @@ public final class JobProtos {
         if (appAuthBuilder_ == null) {
           appAuthBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder>(
-                  getAppAuth(),
+                  appAuth_,
                   getParentForChildren(),
                   isClean());
           appAuth_ = null;
@@ -5053,6 +5101,7 @@ public final class JobProtos {
         return appAuthBuilder_;
       }
 
+      // required string user = 2;
       private java.lang.Object user_ = "";
       /**
        * <code>required string user = 2;</code>
@@ -5066,12 +5115,9 @@ public final class JobProtos {
       public java.lang.String getUser() {
         java.lang.Object ref = user_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            user_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          user_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -5129,6 +5175,7 @@ public final class JobProtos {
         return this;
       }
 
+      // required int64 job_id = 3;
       private long jobId_ ;
       /**
        * <code>required int64 job_id = 3;</code>
@@ -5161,6 +5208,7 @@ public final class JobProtos {
         return this;
       }
 
+      // optional string job_name = 4;
       private java.lang.Object jobName_ = "";
       /**
        * <code>optional string job_name = 4;</code>
@@ -5174,12 +5222,9 @@ public final class JobProtos {
       public java.lang.String getJobName() {
         java.lang.Object ref = jobName_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            jobName_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          jobName_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -5237,6 +5282,7 @@ public final class JobProtos {
         return this;
       }
 
+      // optional string job_type = 5;
       private java.lang.Object jobType_ = "";
       /**
        * <code>optional string job_type = 5;</code>
@@ -5250,12 +5296,9 @@ public final class JobProtos {
       public java.lang.String getJobType() {
         java.lang.Object ref = jobType_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            jobType_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          jobType_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -5313,6 +5356,7 @@ public final class JobProtos {
         return this;
       }
 
+      // optional string content = 6;
       private java.lang.Object content_ = "";
       /**
        * <code>optional string content = 6;</code>
@@ -5326,12 +5370,9 @@ public final class JobProtos {
       public java.lang.String getContent() {
         java.lang.Object ref = content_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            content_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          content_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -5389,6 +5430,7 @@ public final class JobProtos {
         return this;
       }
 
+      // optional string parameters = 7;
       private java.lang.Object parameters_ = "";
       /**
        * <code>optional string parameters = 7;</code>
@@ -5402,12 +5444,9 @@ public final class JobProtos {
       public java.lang.String getParameters() {
         java.lang.Object ref = parameters_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            parameters_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          parameters_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -5465,6 +5504,7 @@ public final class JobProtos {
         return this;
       }
 
+      // optional string app_name = 8;
       private java.lang.Object appName_ = "";
       /**
        * <code>optional string app_name = 8;</code>
@@ -5478,12 +5518,9 @@ public final class JobProtos {
       public java.lang.String getAppName() {
         java.lang.Object ref = appName_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            appName_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          appName_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -5541,6 +5578,7 @@ public final class JobProtos {
         return this;
       }
 
+      // optional int32 worker_group_id = 9;
       private int workerGroupId_ ;
       /**
        * <code>optional int32 worker_group_id = 9;</code>
@@ -5573,6 +5611,7 @@ public final class JobProtos {
         return this;
       }
 
+      // optional int32 biz_group_id = 10;
       private int bizGroupId_ ;
       /**
        * <code>optional int32 biz_group_id = 10;</code>
@@ -5605,6 +5644,7 @@ public final class JobProtos {
         return this;
       }
 
+      // optional int32 priority = 11;
       private int priority_ ;
       /**
        * <code>optional int32 priority = 11;</code>
@@ -5637,6 +5677,7 @@ public final class JobProtos {
         return this;
       }
 
+      // optional int64 active_start_time = 12;
       private long activeStartTime_ ;
       /**
        * <code>optional int64 active_start_time = 12;</code>
@@ -5669,6 +5710,7 @@ public final class JobProtos {
         return this;
       }
 
+      // optional int64 active_end_time = 13;
       private long activeEndTime_ ;
       /**
        * <code>optional int64 active_end_time = 13;</code>
@@ -5701,6 +5743,7 @@ public final class JobProtos {
         return this;
       }
 
+      // optional int32 expired_time = 14;
       private int expiredTime_ ;
       /**
        * <code>optional int32 expired_time = 14;</code>
@@ -5733,6 +5776,7 @@ public final class JobProtos {
         return this;
       }
 
+      // optional int32 failed_attempts = 15;
       private int failedAttempts_ ;
       /**
        * <code>optional int32 failed_attempts = 15;</code>
@@ -5765,6 +5809,7 @@ public final class JobProtos {
         return this;
       }
 
+      // optional int32 failed_interval = 16;
       private int failedInterval_ ;
       /**
        * <code>optional int32 failed_interval = 16;</code>
@@ -5808,10 +5853,10 @@ public final class JobProtos {
     // @@protoc_insertion_point(class_scope:RestModifyJobRequest)
   }
 
-  public interface ServerModifyJobResponseOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:ServerModifyJobResponse)
-      com.google.protobuf.MessageOrBuilder {
+  public interface ServerModifyJobResponseOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required bool success = 1;
     /**
      * <code>required bool success = 1;</code>
      */
@@ -5821,6 +5866,7 @@ public final class JobProtos {
      */
     boolean getSuccess();
 
+    // optional string message = 2 [default = ""];
     /**
      * <code>optional string message = 2 [default = ""];</code>
      */
@@ -5839,9 +5885,8 @@ public final class JobProtos {
    * Protobuf type {@code ServerModifyJobResponse}
    */
   public static final class ServerModifyJobResponse extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:ServerModifyJobResponse)
-      ServerModifyJobResponseOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements ServerModifyJobResponseOrBuilder {
     // Use ServerModifyJobResponse.newBuilder() to construct.
     private ServerModifyJobResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -5893,9 +5938,8 @@ public final class JobProtos {
               break;
             }
             case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              message_ = bs;
+              message_ = input.readBytes();
               break;
             }
           }
@@ -5938,6 +5982,7 @@ public final class JobProtos {
     }
 
     private int bitField0_;
+    // required bool success = 1;
     public static final int SUCCESS_FIELD_NUMBER = 1;
     private boolean success_;
     /**
@@ -5953,6 +5998,7 @@ public final class JobProtos {
       return success_;
     }
 
+    // optional string message = 2 [default = ""];
     public static final int MESSAGE_FIELD_NUMBER = 2;
     private java.lang.Object message_;
     /**
@@ -6002,8 +6048,7 @@ public final class JobProtos {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasSuccess()) {
         memoizedIsInitialized = 0;
@@ -6121,9 +6166,8 @@ public final class JobProtos {
      * Protobuf type {@code ServerModifyJobResponse}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:ServerModifyJobResponse)
-        com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobResponseOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mogujie.jarvis.protocol.JobProtos.internal_static_ServerModifyJobResponse_descriptor;
@@ -6251,6 +6295,7 @@ public final class JobProtos {
       }
       private int bitField0_;
 
+      // required bool success = 1;
       private boolean success_ ;
       /**
        * <code>required bool success = 1;</code>
@@ -6283,6 +6328,7 @@ public final class JobProtos {
         return this;
       }
 
+      // optional string message = 2 [default = ""];
       private java.lang.Object message_ = "";
       /**
        * <code>optional string message = 2 [default = ""];</code>
@@ -6296,12 +6342,9 @@ public final class JobProtos {
       public java.lang.String getMessage() {
         java.lang.Object ref = message_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            message_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          message_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -6370,10 +6413,10 @@ public final class JobProtos {
     // @@protoc_insertion_point(class_scope:ServerModifyJobResponse)
   }
 
-  public interface RestModifyJobDependRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:RestModifyJobDependRequest)
-      com.google.protobuf.MessageOrBuilder {
+  public interface RestModifyJobDependRequestOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required .AppAuth app_auth = 1;
     /**
      * <code>required .AppAuth app_auth = 1;</code>
      */
@@ -6387,6 +6430,7 @@ public final class JobProtos {
      */
     com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder();
 
+    // required string user = 2;
     /**
      * <code>required string user = 2;</code>
      */
@@ -6401,6 +6445,7 @@ public final class JobProtos {
     com.google.protobuf.ByteString
         getUserBytes();
 
+    // required int64 job_id = 3;
     /**
      * <code>required int64 job_id = 3;</code>
      */
@@ -6410,6 +6455,7 @@ public final class JobProtos {
      */
     long getJobId();
 
+    // repeated .DependencyEntry dependency_entry = 4;
     /**
      * <code>repeated .DependencyEntry dependency_entry = 4;</code>
      */
@@ -6442,9 +6488,8 @@ public final class JobProtos {
    * </pre>
    */
   public static final class RestModifyJobDependRequest extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:RestModifyJobDependRequest)
-      RestModifyJobDependRequestOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements RestModifyJobDependRequestOrBuilder {
     // Use RestModifyJobDependRequest.newBuilder() to construct.
     private RestModifyJobDependRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -6504,9 +6549,8 @@ public final class JobProtos {
               break;
             }
             case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              user_ = bs;
+              user_ = input.readBytes();
               break;
             }
             case 24: {
@@ -6565,6 +6609,7 @@ public final class JobProtos {
     }
 
     private int bitField0_;
+    // required .AppAuth app_auth = 1;
     public static final int APP_AUTH_FIELD_NUMBER = 1;
     private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_;
     /**
@@ -6586,6 +6631,7 @@ public final class JobProtos {
       return appAuth_;
     }
 
+    // required string user = 2;
     public static final int USER_FIELD_NUMBER = 2;
     private java.lang.Object user_;
     /**
@@ -6628,6 +6674,7 @@ public final class JobProtos {
       }
     }
 
+    // required int64 job_id = 3;
     public static final int JOB_ID_FIELD_NUMBER = 3;
     private long jobId_;
     /**
@@ -6643,6 +6690,7 @@ public final class JobProtos {
       return jobId_;
     }
 
+    // repeated .DependencyEntry dependency_entry = 4;
     public static final int DEPENDENCY_ENTRY_FIELD_NUMBER = 4;
     private java.util.List<com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry> dependencyEntry_;
     /**
@@ -6687,8 +6735,7 @@ public final class JobProtos {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasAppAuth()) {
         memoizedIsInitialized = 0;
@@ -6842,9 +6889,8 @@ public final class JobProtos {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:RestModifyJobDependRequest)
-        com.mogujie.jarvis.protocol.JobProtos.RestModifyJobDependRequestOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.mogujie.jarvis.protocol.JobProtos.RestModifyJobDependRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mogujie.jarvis.protocol.JobProtos.internal_static_RestModifyJobDependRequest_descriptor;
@@ -7050,6 +7096,7 @@ public final class JobProtos {
       }
       private int bitField0_;
 
+      // required .AppAuth app_auth = 1;
       private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> appAuthBuilder_;
@@ -7158,7 +7205,7 @@ public final class JobProtos {
         if (appAuthBuilder_ == null) {
           appAuthBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder>(
-                  getAppAuth(),
+                  appAuth_,
                   getParentForChildren(),
                   isClean());
           appAuth_ = null;
@@ -7166,6 +7213,7 @@ public final class JobProtos {
         return appAuthBuilder_;
       }
 
+      // required string user = 2;
       private java.lang.Object user_ = "";
       /**
        * <code>required string user = 2;</code>
@@ -7179,12 +7227,9 @@ public final class JobProtos {
       public java.lang.String getUser() {
         java.lang.Object ref = user_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            user_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          user_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -7242,6 +7287,7 @@ public final class JobProtos {
         return this;
       }
 
+      // required int64 job_id = 3;
       private long jobId_ ;
       /**
        * <code>required int64 job_id = 3;</code>
@@ -7274,6 +7320,7 @@ public final class JobProtos {
         return this;
       }
 
+      // repeated .DependencyEntry dependency_entry = 4;
       private java.util.List<com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry> dependencyEntry_ =
         java.util.Collections.emptyList();
       private void ensureDependencyEntryIsMutable() {
@@ -7415,8 +7462,7 @@ public final class JobProtos {
           java.lang.Iterable<? extends com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry> values) {
         if (dependencyEntryBuilder_ == null) {
           ensureDependencyEntryIsMutable();
-          com.google.protobuf.AbstractMessageLite.Builder.addAll(
-              values, dependencyEntry_);
+          super.addAll(values, dependencyEntry_);
           onChanged();
         } else {
           dependencyEntryBuilder_.addAllMessages(values);
@@ -7525,10 +7571,10 @@ public final class JobProtos {
     // @@protoc_insertion_point(class_scope:RestModifyJobDependRequest)
   }
 
-  public interface ServerModifyJobDependResponseOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:ServerModifyJobDependResponse)
-      com.google.protobuf.MessageOrBuilder {
+  public interface ServerModifyJobDependResponseOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required bool success = 1;
     /**
      * <code>required bool success = 1;</code>
      */
@@ -7538,6 +7584,7 @@ public final class JobProtos {
      */
     boolean getSuccess();
 
+    // optional string message = 2 [default = ""];
     /**
      * <code>optional string message = 2 [default = ""];</code>
      */
@@ -7556,9 +7603,8 @@ public final class JobProtos {
    * Protobuf type {@code ServerModifyJobDependResponse}
    */
   public static final class ServerModifyJobDependResponse extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:ServerModifyJobDependResponse)
-      ServerModifyJobDependResponseOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements ServerModifyJobDependResponseOrBuilder {
     // Use ServerModifyJobDependResponse.newBuilder() to construct.
     private ServerModifyJobDependResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -7610,9 +7656,8 @@ public final class JobProtos {
               break;
             }
             case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              message_ = bs;
+              message_ = input.readBytes();
               break;
             }
           }
@@ -7655,6 +7700,7 @@ public final class JobProtos {
     }
 
     private int bitField0_;
+    // required bool success = 1;
     public static final int SUCCESS_FIELD_NUMBER = 1;
     private boolean success_;
     /**
@@ -7670,6 +7716,7 @@ public final class JobProtos {
       return success_;
     }
 
+    // optional string message = 2 [default = ""];
     public static final int MESSAGE_FIELD_NUMBER = 2;
     private java.lang.Object message_;
     /**
@@ -7719,8 +7766,7 @@ public final class JobProtos {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasSuccess()) {
         memoizedIsInitialized = 0;
@@ -7838,9 +7884,8 @@ public final class JobProtos {
      * Protobuf type {@code ServerModifyJobDependResponse}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:ServerModifyJobDependResponse)
-        com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobDependResponseOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobDependResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mogujie.jarvis.protocol.JobProtos.internal_static_ServerModifyJobDependResponse_descriptor;
@@ -7968,6 +8013,7 @@ public final class JobProtos {
       }
       private int bitField0_;
 
+      // required bool success = 1;
       private boolean success_ ;
       /**
        * <code>required bool success = 1;</code>
@@ -8000,6 +8046,7 @@ public final class JobProtos {
         return this;
       }
 
+      // optional string message = 2 [default = ""];
       private java.lang.Object message_ = "";
       /**
        * <code>optional string message = 2 [default = ""];</code>
@@ -8013,12 +8060,9 @@ public final class JobProtos {
       public java.lang.String getMessage() {
         java.lang.Object ref = message_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            message_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          message_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -8087,10 +8131,10 @@ public final class JobProtos {
     // @@protoc_insertion_point(class_scope:ServerModifyJobDependResponse)
   }
 
-  public interface RestModifyJobScheduleExpRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:RestModifyJobScheduleExpRequest)
-      com.google.protobuf.MessageOrBuilder {
+  public interface RestModifyJobScheduleExpRequestOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required .AppAuth app_auth = 1;
     /**
      * <code>required .AppAuth app_auth = 1;</code>
      */
@@ -8104,6 +8148,7 @@ public final class JobProtos {
      */
     com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder();
 
+    // required string user = 2;
     /**
      * <code>required string user = 2;</code>
      */
@@ -8118,6 +8163,7 @@ public final class JobProtos {
     com.google.protobuf.ByteString
         getUserBytes();
 
+    // required int64 job_id = 3;
     /**
      * <code>required int64 job_id = 3;</code>
      */
@@ -8127,6 +8173,7 @@ public final class JobProtos {
      */
     long getJobId();
 
+    // repeated .ScheduleExpressionEntry expression_entry = 16;
     /**
      * <code>repeated .ScheduleExpressionEntry expression_entry = 16;</code>
      */
@@ -8159,9 +8206,8 @@ public final class JobProtos {
    * </pre>
    */
   public static final class RestModifyJobScheduleExpRequest extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:RestModifyJobScheduleExpRequest)
-      RestModifyJobScheduleExpRequestOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements RestModifyJobScheduleExpRequestOrBuilder {
     // Use RestModifyJobScheduleExpRequest.newBuilder() to construct.
     private RestModifyJobScheduleExpRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -8221,9 +8267,8 @@ public final class JobProtos {
               break;
             }
             case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              user_ = bs;
+              user_ = input.readBytes();
               break;
             }
             case 24: {
@@ -8282,6 +8327,7 @@ public final class JobProtos {
     }
 
     private int bitField0_;
+    // required .AppAuth app_auth = 1;
     public static final int APP_AUTH_FIELD_NUMBER = 1;
     private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_;
     /**
@@ -8303,6 +8349,7 @@ public final class JobProtos {
       return appAuth_;
     }
 
+    // required string user = 2;
     public static final int USER_FIELD_NUMBER = 2;
     private java.lang.Object user_;
     /**
@@ -8345,6 +8392,7 @@ public final class JobProtos {
       }
     }
 
+    // required int64 job_id = 3;
     public static final int JOB_ID_FIELD_NUMBER = 3;
     private long jobId_;
     /**
@@ -8360,6 +8408,7 @@ public final class JobProtos {
       return jobId_;
     }
 
+    // repeated .ScheduleExpressionEntry expression_entry = 16;
     public static final int EXPRESSION_ENTRY_FIELD_NUMBER = 16;
     private java.util.List<com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry> expressionEntry_;
     /**
@@ -8404,8 +8453,7 @@ public final class JobProtos {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasAppAuth()) {
         memoizedIsInitialized = 0;
@@ -8559,9 +8607,8 @@ public final class JobProtos {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:RestModifyJobScheduleExpRequest)
-        com.mogujie.jarvis.protocol.JobProtos.RestModifyJobScheduleExpRequestOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.mogujie.jarvis.protocol.JobProtos.RestModifyJobScheduleExpRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mogujie.jarvis.protocol.JobProtos.internal_static_RestModifyJobScheduleExpRequest_descriptor;
@@ -8767,6 +8814,7 @@ public final class JobProtos {
       }
       private int bitField0_;
 
+      // required .AppAuth app_auth = 1;
       private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> appAuthBuilder_;
@@ -8875,7 +8923,7 @@ public final class JobProtos {
         if (appAuthBuilder_ == null) {
           appAuthBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder>(
-                  getAppAuth(),
+                  appAuth_,
                   getParentForChildren(),
                   isClean());
           appAuth_ = null;
@@ -8883,6 +8931,7 @@ public final class JobProtos {
         return appAuthBuilder_;
       }
 
+      // required string user = 2;
       private java.lang.Object user_ = "";
       /**
        * <code>required string user = 2;</code>
@@ -8896,12 +8945,9 @@ public final class JobProtos {
       public java.lang.String getUser() {
         java.lang.Object ref = user_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            user_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          user_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -8959,6 +9005,7 @@ public final class JobProtos {
         return this;
       }
 
+      // required int64 job_id = 3;
       private long jobId_ ;
       /**
        * <code>required int64 job_id = 3;</code>
@@ -8991,6 +9038,7 @@ public final class JobProtos {
         return this;
       }
 
+      // repeated .ScheduleExpressionEntry expression_entry = 16;
       private java.util.List<com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry> expressionEntry_ =
         java.util.Collections.emptyList();
       private void ensureExpressionEntryIsMutable() {
@@ -9132,8 +9180,7 @@ public final class JobProtos {
           java.lang.Iterable<? extends com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry> values) {
         if (expressionEntryBuilder_ == null) {
           ensureExpressionEntryIsMutable();
-          com.google.protobuf.AbstractMessageLite.Builder.addAll(
-              values, expressionEntry_);
+          super.addAll(values, expressionEntry_);
           onChanged();
         } else {
           expressionEntryBuilder_.addAllMessages(values);
@@ -9242,10 +9289,10 @@ public final class JobProtos {
     // @@protoc_insertion_point(class_scope:RestModifyJobScheduleExpRequest)
   }
 
-  public interface ServerModifyJobScheduleExpResponseOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:ServerModifyJobScheduleExpResponse)
-      com.google.protobuf.MessageOrBuilder {
+  public interface ServerModifyJobScheduleExpResponseOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required bool success = 1;
     /**
      * <code>required bool success = 1;</code>
      */
@@ -9255,6 +9302,7 @@ public final class JobProtos {
      */
     boolean getSuccess();
 
+    // optional string message = 2 [default = ""];
     /**
      * <code>optional string message = 2 [default = ""];</code>
      */
@@ -9273,9 +9321,8 @@ public final class JobProtos {
    * Protobuf type {@code ServerModifyJobScheduleExpResponse}
    */
   public static final class ServerModifyJobScheduleExpResponse extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:ServerModifyJobScheduleExpResponse)
-      ServerModifyJobScheduleExpResponseOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements ServerModifyJobScheduleExpResponseOrBuilder {
     // Use ServerModifyJobScheduleExpResponse.newBuilder() to construct.
     private ServerModifyJobScheduleExpResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -9327,9 +9374,8 @@ public final class JobProtos {
               break;
             }
             case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              message_ = bs;
+              message_ = input.readBytes();
               break;
             }
           }
@@ -9372,6 +9418,7 @@ public final class JobProtos {
     }
 
     private int bitField0_;
+    // required bool success = 1;
     public static final int SUCCESS_FIELD_NUMBER = 1;
     private boolean success_;
     /**
@@ -9387,6 +9434,7 @@ public final class JobProtos {
       return success_;
     }
 
+    // optional string message = 2 [default = ""];
     public static final int MESSAGE_FIELD_NUMBER = 2;
     private java.lang.Object message_;
     /**
@@ -9436,8 +9484,7 @@ public final class JobProtos {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasSuccess()) {
         memoizedIsInitialized = 0;
@@ -9555,9 +9602,8 @@ public final class JobProtos {
      * Protobuf type {@code ServerModifyJobScheduleExpResponse}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:ServerModifyJobScheduleExpResponse)
-        com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobScheduleExpResponseOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobScheduleExpResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mogujie.jarvis.protocol.JobProtos.internal_static_ServerModifyJobScheduleExpResponse_descriptor;
@@ -9685,6 +9731,7 @@ public final class JobProtos {
       }
       private int bitField0_;
 
+      // required bool success = 1;
       private boolean success_ ;
       /**
        * <code>required bool success = 1;</code>
@@ -9717,6 +9764,7 @@ public final class JobProtos {
         return this;
       }
 
+      // optional string message = 2 [default = ""];
       private java.lang.Object message_ = "";
       /**
        * <code>optional string message = 2 [default = ""];</code>
@@ -9730,12 +9778,9 @@ public final class JobProtos {
       public java.lang.String getMessage() {
         java.lang.Object ref = message_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            message_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          message_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -9804,10 +9849,10 @@ public final class JobProtos {
     // @@protoc_insertion_point(class_scope:ServerModifyJobScheduleExpResponse)
   }
 
-  public interface RestModifyJobStatusRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:RestModifyJobStatusRequest)
-      com.google.protobuf.MessageOrBuilder {
+  public interface RestModifyJobStatusRequestOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required .AppAuth app_auth = 1;
     /**
      * <code>required .AppAuth app_auth = 1;</code>
      */
@@ -9821,6 +9866,7 @@ public final class JobProtos {
      */
     com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder();
 
+    // required string user = 2;
     /**
      * <code>required string user = 2;</code>
      */
@@ -9835,6 +9881,7 @@ public final class JobProtos {
     com.google.protobuf.ByteString
         getUserBytes();
 
+    // required int64 job_id = 3;
     /**
      * <code>required int64 job_id = 3;</code>
      */
@@ -9844,6 +9891,7 @@ public final class JobProtos {
      */
     long getJobId();
 
+    // required int32 status = 4;
     /**
      * <code>required int32 status = 4;</code>
      */
@@ -9861,9 +9909,8 @@ public final class JobProtos {
    * </pre>
    */
   public static final class RestModifyJobStatusRequest extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:RestModifyJobStatusRequest)
-      RestModifyJobStatusRequestOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements RestModifyJobStatusRequestOrBuilder {
     // Use RestModifyJobStatusRequest.newBuilder() to construct.
     private RestModifyJobStatusRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -9923,9 +9970,8 @@ public final class JobProtos {
               break;
             }
             case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              user_ = bs;
+              user_ = input.readBytes();
               break;
             }
             case 24: {
@@ -9978,6 +10024,7 @@ public final class JobProtos {
     }
 
     private int bitField0_;
+    // required .AppAuth app_auth = 1;
     public static final int APP_AUTH_FIELD_NUMBER = 1;
     private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_;
     /**
@@ -9999,6 +10046,7 @@ public final class JobProtos {
       return appAuth_;
     }
 
+    // required string user = 2;
     public static final int USER_FIELD_NUMBER = 2;
     private java.lang.Object user_;
     /**
@@ -10041,6 +10089,7 @@ public final class JobProtos {
       }
     }
 
+    // required int64 job_id = 3;
     public static final int JOB_ID_FIELD_NUMBER = 3;
     private long jobId_;
     /**
@@ -10056,6 +10105,7 @@ public final class JobProtos {
       return jobId_;
     }
 
+    // required int32 status = 4;
     public static final int STATUS_FIELD_NUMBER = 4;
     private int status_;
     /**
@@ -10080,8 +10130,7 @@ public final class JobProtos {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasAppAuth()) {
         memoizedIsInitialized = 0;
@@ -10233,9 +10282,8 @@ public final class JobProtos {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:RestModifyJobStatusRequest)
-        com.mogujie.jarvis.protocol.JobProtos.RestModifyJobStatusRequestOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.mogujie.jarvis.protocol.JobProtos.RestModifyJobStatusRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mogujie.jarvis.protocol.JobProtos.internal_static_RestModifyJobStatusRequest_descriptor;
@@ -10406,6 +10454,7 @@ public final class JobProtos {
       }
       private int bitField0_;
 
+      // required .AppAuth app_auth = 1;
       private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> appAuthBuilder_;
@@ -10514,7 +10563,7 @@ public final class JobProtos {
         if (appAuthBuilder_ == null) {
           appAuthBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder>(
-                  getAppAuth(),
+                  appAuth_,
                   getParentForChildren(),
                   isClean());
           appAuth_ = null;
@@ -10522,6 +10571,7 @@ public final class JobProtos {
         return appAuthBuilder_;
       }
 
+      // required string user = 2;
       private java.lang.Object user_ = "";
       /**
        * <code>required string user = 2;</code>
@@ -10535,12 +10585,9 @@ public final class JobProtos {
       public java.lang.String getUser() {
         java.lang.Object ref = user_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            user_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          user_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -10598,6 +10645,7 @@ public final class JobProtos {
         return this;
       }
 
+      // required int64 job_id = 3;
       private long jobId_ ;
       /**
        * <code>required int64 job_id = 3;</code>
@@ -10630,6 +10678,7 @@ public final class JobProtos {
         return this;
       }
 
+      // required int32 status = 4;
       private int status_ ;
       /**
        * <code>required int32 status = 4;</code>
@@ -10673,10 +10722,10 @@ public final class JobProtos {
     // @@protoc_insertion_point(class_scope:RestModifyJobStatusRequest)
   }
 
-  public interface ServerModifyJobStatusResponseOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:ServerModifyJobStatusResponse)
-      com.google.protobuf.MessageOrBuilder {
+  public interface ServerModifyJobStatusResponseOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required bool success = 1;
     /**
      * <code>required bool success = 1;</code>
      */
@@ -10686,6 +10735,7 @@ public final class JobProtos {
      */
     boolean getSuccess();
 
+    // optional string message = 2 [default = ""];
     /**
      * <code>optional string message = 2 [default = ""];</code>
      */
@@ -10704,9 +10754,8 @@ public final class JobProtos {
    * Protobuf type {@code ServerModifyJobStatusResponse}
    */
   public static final class ServerModifyJobStatusResponse extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:ServerModifyJobStatusResponse)
-      ServerModifyJobStatusResponseOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements ServerModifyJobStatusResponseOrBuilder {
     // Use ServerModifyJobStatusResponse.newBuilder() to construct.
     private ServerModifyJobStatusResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -10758,9 +10807,8 @@ public final class JobProtos {
               break;
             }
             case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              message_ = bs;
+              message_ = input.readBytes();
               break;
             }
           }
@@ -10803,6 +10851,7 @@ public final class JobProtos {
     }
 
     private int bitField0_;
+    // required bool success = 1;
     public static final int SUCCESS_FIELD_NUMBER = 1;
     private boolean success_;
     /**
@@ -10818,6 +10867,7 @@ public final class JobProtos {
       return success_;
     }
 
+    // optional string message = 2 [default = ""];
     public static final int MESSAGE_FIELD_NUMBER = 2;
     private java.lang.Object message_;
     /**
@@ -10867,8 +10917,7 @@ public final class JobProtos {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasSuccess()) {
         memoizedIsInitialized = 0;
@@ -10986,9 +11035,8 @@ public final class JobProtos {
      * Protobuf type {@code ServerModifyJobStatusResponse}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:ServerModifyJobStatusResponse)
-        com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobStatusResponseOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobStatusResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mogujie.jarvis.protocol.JobProtos.internal_static_ServerModifyJobStatusResponse_descriptor;
@@ -11116,6 +11164,7 @@ public final class JobProtos {
       }
       private int bitField0_;
 
+      // required bool success = 1;
       private boolean success_ ;
       /**
        * <code>required bool success = 1;</code>
@@ -11148,6 +11197,7 @@ public final class JobProtos {
         return this;
       }
 
+      // optional string message = 2 [default = ""];
       private java.lang.Object message_ = "";
       /**
        * <code>optional string message = 2 [default = ""];</code>
@@ -11161,12 +11211,9 @@ public final class JobProtos {
       public java.lang.String getMessage() {
         java.lang.Object ref = message_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            message_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          message_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -11235,10 +11282,10 @@ public final class JobProtos {
     // @@protoc_insertion_point(class_scope:ServerModifyJobStatusResponse)
   }
 
-  public interface JobStatusEntryOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:JobStatusEntry)
-      com.google.protobuf.MessageOrBuilder {
+  public interface JobStatusEntryOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required int64 job_id = 1;
     /**
      * <code>required int64 job_id = 1;</code>
      */
@@ -11248,6 +11295,7 @@ public final class JobProtos {
      */
     long getJobId();
 
+    // required int32 status = 2;
     /**
      * <code>required int32 status = 2;</code>
      */
@@ -11265,9 +11313,8 @@ public final class JobProtos {
    * </pre>
    */
   public static final class JobStatusEntry extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:JobStatusEntry)
-      JobStatusEntryOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements JobStatusEntryOrBuilder {
     // Use JobStatusEntry.newBuilder() to construct.
     private JobStatusEntry(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -11363,6 +11410,7 @@ public final class JobProtos {
     }
 
     private int bitField0_;
+    // required int64 job_id = 1;
     public static final int JOB_ID_FIELD_NUMBER = 1;
     private long jobId_;
     /**
@@ -11378,6 +11426,7 @@ public final class JobProtos {
       return jobId_;
     }
 
+    // required int32 status = 2;
     public static final int STATUS_FIELD_NUMBER = 2;
     private int status_;
     /**
@@ -11400,8 +11449,7 @@ public final class JobProtos {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasJobId()) {
         memoizedIsInitialized = 0;
@@ -11527,9 +11575,8 @@ public final class JobProtos {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:JobStatusEntry)
-        com.mogujie.jarvis.protocol.JobProtos.JobStatusEntryOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.mogujie.jarvis.protocol.JobProtos.JobStatusEntryOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mogujie.jarvis.protocol.JobProtos.internal_static_JobStatusEntry_descriptor;
@@ -11659,6 +11706,7 @@ public final class JobProtos {
       }
       private int bitField0_;
 
+      // required int64 job_id = 1;
       private long jobId_ ;
       /**
        * <code>required int64 job_id = 1;</code>
@@ -11691,6 +11739,7 @@ public final class JobProtos {
         return this;
       }
 
+      // required int32 status = 2;
       private int status_ ;
       /**
        * <code>required int32 status = 2;</code>
@@ -11734,10 +11783,10 @@ public final class JobProtos {
     // @@protoc_insertion_point(class_scope:JobStatusEntry)
   }
 
-  public interface RestQueryJobRelationRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:RestQueryJobRelationRequest)
-      com.google.protobuf.MessageOrBuilder {
+  public interface RestQueryJobRelationRequestOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required .AppAuth app_auth = 1;
     /**
      * <code>required .AppAuth app_auth = 1;</code>
      */
@@ -11751,6 +11800,7 @@ public final class JobProtos {
      */
     com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder();
 
+    // required string user = 2;
     /**
      * <code>required string user = 2;</code>
      */
@@ -11765,6 +11815,7 @@ public final class JobProtos {
     com.google.protobuf.ByteString
         getUserBytes();
 
+    // required int64 job_id = 3;
     /**
      * <code>required int64 job_id = 3;</code>
      */
@@ -11774,6 +11825,7 @@ public final class JobProtos {
      */
     long getJobId();
 
+    // required int32 relation_type = 4;
     /**
      * <code>required int32 relation_type = 4;</code>
      */
@@ -11787,9 +11839,8 @@ public final class JobProtos {
    * Protobuf type {@code RestQueryJobRelationRequest}
    */
   public static final class RestQueryJobRelationRequest extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:RestQueryJobRelationRequest)
-      RestQueryJobRelationRequestOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements RestQueryJobRelationRequestOrBuilder {
     // Use RestQueryJobRelationRequest.newBuilder() to construct.
     private RestQueryJobRelationRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -11849,9 +11900,8 @@ public final class JobProtos {
               break;
             }
             case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              user_ = bs;
+              user_ = input.readBytes();
               break;
             }
             case 24: {
@@ -11904,6 +11954,7 @@ public final class JobProtos {
     }
 
     private int bitField0_;
+    // required .AppAuth app_auth = 1;
     public static final int APP_AUTH_FIELD_NUMBER = 1;
     private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_;
     /**
@@ -11925,6 +11976,7 @@ public final class JobProtos {
       return appAuth_;
     }
 
+    // required string user = 2;
     public static final int USER_FIELD_NUMBER = 2;
     private java.lang.Object user_;
     /**
@@ -11967,6 +12019,7 @@ public final class JobProtos {
       }
     }
 
+    // required int64 job_id = 3;
     public static final int JOB_ID_FIELD_NUMBER = 3;
     private long jobId_;
     /**
@@ -11982,6 +12035,7 @@ public final class JobProtos {
       return jobId_;
     }
 
+    // required int32 relation_type = 4;
     public static final int RELATION_TYPE_FIELD_NUMBER = 4;
     private int relationType_;
     /**
@@ -12006,8 +12060,7 @@ public final class JobProtos {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasAppAuth()) {
         memoizedIsInitialized = 0;
@@ -12155,9 +12208,8 @@ public final class JobProtos {
      * Protobuf type {@code RestQueryJobRelationRequest}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:RestQueryJobRelationRequest)
-        com.mogujie.jarvis.protocol.JobProtos.RestQueryJobRelationRequestOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.mogujie.jarvis.protocol.JobProtos.RestQueryJobRelationRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mogujie.jarvis.protocol.JobProtos.internal_static_RestQueryJobRelationRequest_descriptor;
@@ -12328,6 +12380,7 @@ public final class JobProtos {
       }
       private int bitField0_;
 
+      // required .AppAuth app_auth = 1;
       private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> appAuthBuilder_;
@@ -12436,7 +12489,7 @@ public final class JobProtos {
         if (appAuthBuilder_ == null) {
           appAuthBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder>(
-                  getAppAuth(),
+                  appAuth_,
                   getParentForChildren(),
                   isClean());
           appAuth_ = null;
@@ -12444,6 +12497,7 @@ public final class JobProtos {
         return appAuthBuilder_;
       }
 
+      // required string user = 2;
       private java.lang.Object user_ = "";
       /**
        * <code>required string user = 2;</code>
@@ -12457,12 +12511,9 @@ public final class JobProtos {
       public java.lang.String getUser() {
         java.lang.Object ref = user_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            user_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          user_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -12520,6 +12571,7 @@ public final class JobProtos {
         return this;
       }
 
+      // required int64 job_id = 3;
       private long jobId_ ;
       /**
        * <code>required int64 job_id = 3;</code>
@@ -12552,6 +12604,7 @@ public final class JobProtos {
         return this;
       }
 
+      // required int32 relation_type = 4;
       private int relationType_ ;
       /**
        * <code>required int32 relation_type = 4;</code>
@@ -12595,10 +12648,10 @@ public final class JobProtos {
     // @@protoc_insertion_point(class_scope:RestQueryJobRelationRequest)
   }
 
-  public interface ServerQueryJobRelationResponseOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:ServerQueryJobRelationResponse)
-      com.google.protobuf.MessageOrBuilder {
+  public interface ServerQueryJobRelationResponseOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // repeated .JobStatusEntry job_status_entry = 1;
     /**
      * <code>repeated .JobStatusEntry job_status_entry = 1;</code>
      */
@@ -12623,6 +12676,7 @@ public final class JobProtos {
     com.mogujie.jarvis.protocol.JobProtos.JobStatusEntryOrBuilder getJobStatusEntryOrBuilder(
         int index);
 
+    // required bool success = 2;
     /**
      * <code>required bool success = 2;</code>
      */
@@ -12632,6 +12686,7 @@ public final class JobProtos {
      */
     boolean getSuccess();
 
+    // optional string message = 3 [default = ""];
     /**
      * <code>optional string message = 3 [default = ""];</code>
      */
@@ -12650,9 +12705,8 @@ public final class JobProtos {
    * Protobuf type {@code ServerQueryJobRelationResponse}
    */
   public static final class ServerQueryJobRelationResponse extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:ServerQueryJobRelationResponse)
-      ServerQueryJobRelationResponseOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements ServerQueryJobRelationResponseOrBuilder {
     // Use ServerQueryJobRelationResponse.newBuilder() to construct.
     private ServerQueryJobRelationResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -12712,9 +12766,8 @@ public final class JobProtos {
               break;
             }
             case 26: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              message_ = bs;
+              message_ = input.readBytes();
               break;
             }
           }
@@ -12760,6 +12813,7 @@ public final class JobProtos {
     }
 
     private int bitField0_;
+    // repeated .JobStatusEntry job_status_entry = 1;
     public static final int JOB_STATUS_ENTRY_FIELD_NUMBER = 1;
     private java.util.List<com.mogujie.jarvis.protocol.JobProtos.JobStatusEntry> jobStatusEntry_;
     /**
@@ -12795,6 +12849,7 @@ public final class JobProtos {
       return jobStatusEntry_.get(index);
     }
 
+    // required bool success = 2;
     public static final int SUCCESS_FIELD_NUMBER = 2;
     private boolean success_;
     /**
@@ -12810,6 +12865,7 @@ public final class JobProtos {
       return success_;
     }
 
+    // optional string message = 3 [default = ""];
     public static final int MESSAGE_FIELD_NUMBER = 3;
     private java.lang.Object message_;
     /**
@@ -12860,8 +12916,7 @@ public final class JobProtos {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasSuccess()) {
         memoizedIsInitialized = 0;
@@ -12992,9 +13047,8 @@ public final class JobProtos {
      * Protobuf type {@code ServerQueryJobRelationResponse}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:ServerQueryJobRelationResponse)
-        com.mogujie.jarvis.protocol.JobProtos.ServerQueryJobRelationResponseOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.mogujie.jarvis.protocol.JobProtos.ServerQueryJobRelationResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mogujie.jarvis.protocol.JobProtos.internal_static_ServerQueryJobRelationResponse_descriptor;
@@ -13170,6 +13224,7 @@ public final class JobProtos {
       }
       private int bitField0_;
 
+      // repeated .JobStatusEntry job_status_entry = 1;
       private java.util.List<com.mogujie.jarvis.protocol.JobProtos.JobStatusEntry> jobStatusEntry_ =
         java.util.Collections.emptyList();
       private void ensureJobStatusEntryIsMutable() {
@@ -13311,8 +13366,7 @@ public final class JobProtos {
           java.lang.Iterable<? extends com.mogujie.jarvis.protocol.JobProtos.JobStatusEntry> values) {
         if (jobStatusEntryBuilder_ == null) {
           ensureJobStatusEntryIsMutable();
-          com.google.protobuf.AbstractMessageLite.Builder.addAll(
-              values, jobStatusEntry_);
+          super.addAll(values, jobStatusEntry_);
           onChanged();
         } else {
           jobStatusEntryBuilder_.addAllMessages(values);
@@ -13410,6 +13464,7 @@ public final class JobProtos {
         return jobStatusEntryBuilder_;
       }
 
+      // required bool success = 2;
       private boolean success_ ;
       /**
        * <code>required bool success = 2;</code>
@@ -13442,6 +13497,7 @@ public final class JobProtos {
         return this;
       }
 
+      // optional string message = 3 [default = ""];
       private java.lang.Object message_ = "";
       /**
        * <code>optional string message = 3 [default = ""];</code>
@@ -13455,12 +13511,9 @@ public final class JobProtos {
       public java.lang.String getMessage() {
         java.lang.Object ref = message_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            message_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          message_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -13529,10 +13582,10 @@ public final class JobProtos {
     // @@protoc_insertion_point(class_scope:ServerQueryJobRelationResponse)
   }
 
-  public interface jobEntryOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:jobEntry)
-      com.google.protobuf.MessageOrBuilder {
+  public interface jobEntryOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required int64 job_id = 1;
     /**
      * <code>required int64 job_id = 1;</code>
      */
@@ -13542,6 +13595,7 @@ public final class JobProtos {
      */
     long getJobId();
 
+    // required string job_name = 2;
     /**
      * <code>required string job_name = 2;</code>
      */
@@ -13556,6 +13610,7 @@ public final class JobProtos {
     com.google.protobuf.ByteString
         getJobNameBytes();
 
+    // required string job_type = 3;
     /**
      * <code>required string job_type = 3;</code>
      */
@@ -13570,6 +13625,7 @@ public final class JobProtos {
     com.google.protobuf.ByteString
         getJobTypeBytes();
 
+    // required int32 status = 4;
     /**
      * <code>required int32 status = 4;</code>
      */
@@ -13579,6 +13635,7 @@ public final class JobProtos {
      */
     int getStatus();
 
+    // required string content = 5;
     /**
      * <code>required string content = 5;</code>
      */
@@ -13593,6 +13650,7 @@ public final class JobProtos {
     com.google.protobuf.ByteString
         getContentBytes();
 
+    // required string parameters = 6;
     /**
      * <code>required string parameters = 6;</code>
      */
@@ -13607,6 +13665,7 @@ public final class JobProtos {
     com.google.protobuf.ByteString
         getParametersBytes();
 
+    // required string app_name = 7;
     /**
      * <code>required string app_name = 7;</code>
      */
@@ -13621,6 +13680,7 @@ public final class JobProtos {
     com.google.protobuf.ByteString
         getAppNameBytes();
 
+    // required int32 worker_group_id = 8;
     /**
      * <code>required int32 worker_group_id = 8;</code>
      */
@@ -13630,6 +13690,7 @@ public final class JobProtos {
      */
     int getWorkerGroupId();
 
+    // required int32 priority = 9;
     /**
      * <code>required int32 priority = 9;</code>
      */
@@ -13639,6 +13700,7 @@ public final class JobProtos {
      */
     int getPriority();
 
+    // required int64 active_start_time = 10;
     /**
      * <code>required int64 active_start_time = 10;</code>
      */
@@ -13648,6 +13710,7 @@ public final class JobProtos {
      */
     long getActiveStartTime();
 
+    // required int64 active_end_time = 11;
     /**
      * <code>required int64 active_end_time = 11;</code>
      */
@@ -13657,6 +13720,7 @@ public final class JobProtos {
      */
     long getActiveEndTime();
 
+    // required int32 expired_time = 12;
     /**
      * <code>required int32 expired_time = 12;</code>
      */
@@ -13666,6 +13730,7 @@ public final class JobProtos {
      */
     int getExpiredTime();
 
+    // required int32 failed_attempts = 13;
     /**
      * <code>required int32 failed_attempts = 13;</code>
      */
@@ -13675,6 +13740,7 @@ public final class JobProtos {
      */
     int getFailedAttempts();
 
+    // required int32 failed_interval = 14;
     /**
      * <code>required int32 failed_interval = 14;</code>
      */
@@ -13684,6 +13750,7 @@ public final class JobProtos {
      */
     int getFailedInterval();
 
+    // repeated .ScheduleExpressionEntry expression_list = 15;
     /**
      * <code>repeated .ScheduleExpressionEntry expression_list = 15;</code>
      */
@@ -13708,6 +13775,7 @@ public final class JobProtos {
     com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder getExpressionListOrBuilder(
         int index);
 
+    // repeated .DependencyEntry dependency_list = 16;
     /**
      * <code>repeated .DependencyEntry dependency_list = 16;</code>
      */
@@ -13736,9 +13804,8 @@ public final class JobProtos {
    * Protobuf type {@code jobEntry}
    */
   public static final class jobEntry extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:jobEntry)
-      jobEntryOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements jobEntryOrBuilder {
     // Use jobEntry.newBuilder() to construct.
     private jobEntry(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -13790,15 +13857,13 @@ public final class JobProtos {
               break;
             }
             case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              jobName_ = bs;
+              jobName_ = input.readBytes();
               break;
             }
             case 26: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              jobType_ = bs;
+              jobType_ = input.readBytes();
               break;
             }
             case 32: {
@@ -13807,21 +13872,18 @@ public final class JobProtos {
               break;
             }
             case 42: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000010;
-              content_ = bs;
+              content_ = input.readBytes();
               break;
             }
             case 50: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000020;
-              parameters_ = bs;
+              parameters_ = input.readBytes();
               break;
             }
             case 58: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000040;
-              appName_ = bs;
+              appName_ = input.readBytes();
               break;
             }
             case 64: {
@@ -13921,6 +13983,7 @@ public final class JobProtos {
     }
 
     private int bitField0_;
+    // required int64 job_id = 1;
     public static final int JOB_ID_FIELD_NUMBER = 1;
     private long jobId_;
     /**
@@ -13936,6 +13999,7 @@ public final class JobProtos {
       return jobId_;
     }
 
+    // required string job_name = 2;
     public static final int JOB_NAME_FIELD_NUMBER = 2;
     private java.lang.Object jobName_;
     /**
@@ -13978,6 +14042,7 @@ public final class JobProtos {
       }
     }
 
+    // required string job_type = 3;
     public static final int JOB_TYPE_FIELD_NUMBER = 3;
     private java.lang.Object jobType_;
     /**
@@ -14020,6 +14085,7 @@ public final class JobProtos {
       }
     }
 
+    // required int32 status = 4;
     public static final int STATUS_FIELD_NUMBER = 4;
     private int status_;
     /**
@@ -14035,6 +14101,7 @@ public final class JobProtos {
       return status_;
     }
 
+    // required string content = 5;
     public static final int CONTENT_FIELD_NUMBER = 5;
     private java.lang.Object content_;
     /**
@@ -14077,6 +14144,7 @@ public final class JobProtos {
       }
     }
 
+    // required string parameters = 6;
     public static final int PARAMETERS_FIELD_NUMBER = 6;
     private java.lang.Object parameters_;
     /**
@@ -14119,6 +14187,7 @@ public final class JobProtos {
       }
     }
 
+    // required string app_name = 7;
     public static final int APP_NAME_FIELD_NUMBER = 7;
     private java.lang.Object appName_;
     /**
@@ -14161,6 +14230,7 @@ public final class JobProtos {
       }
     }
 
+    // required int32 worker_group_id = 8;
     public static final int WORKER_GROUP_ID_FIELD_NUMBER = 8;
     private int workerGroupId_;
     /**
@@ -14176,6 +14246,7 @@ public final class JobProtos {
       return workerGroupId_;
     }
 
+    // required int32 priority = 9;
     public static final int PRIORITY_FIELD_NUMBER = 9;
     private int priority_;
     /**
@@ -14191,6 +14262,7 @@ public final class JobProtos {
       return priority_;
     }
 
+    // required int64 active_start_time = 10;
     public static final int ACTIVE_START_TIME_FIELD_NUMBER = 10;
     private long activeStartTime_;
     /**
@@ -14206,6 +14278,7 @@ public final class JobProtos {
       return activeStartTime_;
     }
 
+    // required int64 active_end_time = 11;
     public static final int ACTIVE_END_TIME_FIELD_NUMBER = 11;
     private long activeEndTime_;
     /**
@@ -14221,6 +14294,7 @@ public final class JobProtos {
       return activeEndTime_;
     }
 
+    // required int32 expired_time = 12;
     public static final int EXPIRED_TIME_FIELD_NUMBER = 12;
     private int expiredTime_;
     /**
@@ -14236,6 +14310,7 @@ public final class JobProtos {
       return expiredTime_;
     }
 
+    // required int32 failed_attempts = 13;
     public static final int FAILED_ATTEMPTS_FIELD_NUMBER = 13;
     private int failedAttempts_;
     /**
@@ -14251,6 +14326,7 @@ public final class JobProtos {
       return failedAttempts_;
     }
 
+    // required int32 failed_interval = 14;
     public static final int FAILED_INTERVAL_FIELD_NUMBER = 14;
     private int failedInterval_;
     /**
@@ -14266,6 +14342,7 @@ public final class JobProtos {
       return failedInterval_;
     }
 
+    // repeated .ScheduleExpressionEntry expression_list = 15;
     public static final int EXPRESSION_LIST_FIELD_NUMBER = 15;
     private java.util.List<com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry> expressionList_;
     /**
@@ -14301,6 +14378,7 @@ public final class JobProtos {
       return expressionList_.get(index);
     }
 
+    // repeated .DependencyEntry dependency_list = 16;
     public static final int DEPENDENCY_LIST_FIELD_NUMBER = 16;
     private java.util.List<com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry> dependencyList_;
     /**
@@ -14357,8 +14435,7 @@ public final class JobProtos {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasJobId()) {
         memoizedIsInitialized = 0;
@@ -14638,9 +14715,8 @@ public final class JobProtos {
      * Protobuf type {@code jobEntry}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:jobEntry)
-        com.mogujie.jarvis.protocol.JobProtos.jobEntryOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.mogujie.jarvis.protocol.JobProtos.jobEntryOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mogujie.jarvis.protocol.JobProtos.internal_static_jobEntry_descriptor;
@@ -15032,6 +15108,7 @@ public final class JobProtos {
       }
       private int bitField0_;
 
+      // required int64 job_id = 1;
       private long jobId_ ;
       /**
        * <code>required int64 job_id = 1;</code>
@@ -15064,6 +15141,7 @@ public final class JobProtos {
         return this;
       }
 
+      // required string job_name = 2;
       private java.lang.Object jobName_ = "";
       /**
        * <code>required string job_name = 2;</code>
@@ -15077,12 +15155,9 @@ public final class JobProtos {
       public java.lang.String getJobName() {
         java.lang.Object ref = jobName_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            jobName_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          jobName_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -15140,6 +15215,7 @@ public final class JobProtos {
         return this;
       }
 
+      // required string job_type = 3;
       private java.lang.Object jobType_ = "";
       /**
        * <code>required string job_type = 3;</code>
@@ -15153,12 +15229,9 @@ public final class JobProtos {
       public java.lang.String getJobType() {
         java.lang.Object ref = jobType_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            jobType_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          jobType_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -15216,6 +15289,7 @@ public final class JobProtos {
         return this;
       }
 
+      // required int32 status = 4;
       private int status_ ;
       /**
        * <code>required int32 status = 4;</code>
@@ -15248,6 +15322,7 @@ public final class JobProtos {
         return this;
       }
 
+      // required string content = 5;
       private java.lang.Object content_ = "";
       /**
        * <code>required string content = 5;</code>
@@ -15261,12 +15336,9 @@ public final class JobProtos {
       public java.lang.String getContent() {
         java.lang.Object ref = content_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            content_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          content_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -15324,6 +15396,7 @@ public final class JobProtos {
         return this;
       }
 
+      // required string parameters = 6;
       private java.lang.Object parameters_ = "";
       /**
        * <code>required string parameters = 6;</code>
@@ -15337,12 +15410,9 @@ public final class JobProtos {
       public java.lang.String getParameters() {
         java.lang.Object ref = parameters_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            parameters_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          parameters_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -15400,6 +15470,7 @@ public final class JobProtos {
         return this;
       }
 
+      // required string app_name = 7;
       private java.lang.Object appName_ = "";
       /**
        * <code>required string app_name = 7;</code>
@@ -15413,12 +15484,9 @@ public final class JobProtos {
       public java.lang.String getAppName() {
         java.lang.Object ref = appName_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            appName_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          appName_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -15476,6 +15544,7 @@ public final class JobProtos {
         return this;
       }
 
+      // required int32 worker_group_id = 8;
       private int workerGroupId_ ;
       /**
        * <code>required int32 worker_group_id = 8;</code>
@@ -15508,6 +15577,7 @@ public final class JobProtos {
         return this;
       }
 
+      // required int32 priority = 9;
       private int priority_ ;
       /**
        * <code>required int32 priority = 9;</code>
@@ -15540,6 +15610,7 @@ public final class JobProtos {
         return this;
       }
 
+      // required int64 active_start_time = 10;
       private long activeStartTime_ ;
       /**
        * <code>required int64 active_start_time = 10;</code>
@@ -15572,6 +15643,7 @@ public final class JobProtos {
         return this;
       }
 
+      // required int64 active_end_time = 11;
       private long activeEndTime_ ;
       /**
        * <code>required int64 active_end_time = 11;</code>
@@ -15604,6 +15676,7 @@ public final class JobProtos {
         return this;
       }
 
+      // required int32 expired_time = 12;
       private int expiredTime_ ;
       /**
        * <code>required int32 expired_time = 12;</code>
@@ -15636,6 +15709,7 @@ public final class JobProtos {
         return this;
       }
 
+      // required int32 failed_attempts = 13;
       private int failedAttempts_ ;
       /**
        * <code>required int32 failed_attempts = 13;</code>
@@ -15668,6 +15742,7 @@ public final class JobProtos {
         return this;
       }
 
+      // required int32 failed_interval = 14;
       private int failedInterval_ ;
       /**
        * <code>required int32 failed_interval = 14;</code>
@@ -15700,6 +15775,7 @@ public final class JobProtos {
         return this;
       }
 
+      // repeated .ScheduleExpressionEntry expression_list = 15;
       private java.util.List<com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry> expressionList_ =
         java.util.Collections.emptyList();
       private void ensureExpressionListIsMutable() {
@@ -15841,8 +15917,7 @@ public final class JobProtos {
           java.lang.Iterable<? extends com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry> values) {
         if (expressionListBuilder_ == null) {
           ensureExpressionListIsMutable();
-          com.google.protobuf.AbstractMessageLite.Builder.addAll(
-              values, expressionList_);
+          super.addAll(values, expressionList_);
           onChanged();
         } else {
           expressionListBuilder_.addAllMessages(values);
@@ -15940,6 +16015,7 @@ public final class JobProtos {
         return expressionListBuilder_;
       }
 
+      // repeated .DependencyEntry dependency_list = 16;
       private java.util.List<com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry> dependencyList_ =
         java.util.Collections.emptyList();
       private void ensureDependencyListIsMutable() {
@@ -16081,8 +16157,7 @@ public final class JobProtos {
           java.lang.Iterable<? extends com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry> values) {
         if (dependencyListBuilder_ == null) {
           ensureDependencyListIsMutable();
-          com.google.protobuf.AbstractMessageLite.Builder.addAll(
-              values, dependencyList_);
+          super.addAll(values, dependencyList_);
           onChanged();
         } else {
           dependencyListBuilder_.addAllMessages(values);
@@ -16191,10 +16266,10 @@ public final class JobProtos {
     // @@protoc_insertion_point(class_scope:jobEntry)
   }
 
-  public interface RestQueryJobRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:RestQueryJobRequest)
-      com.google.protobuf.MessageOrBuilder {
+  public interface RestQueryJobRequestOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required .AppAuth app_auth = 1;
     /**
      * <code>required .AppAuth app_auth = 1;</code>
      */
@@ -16208,6 +16283,7 @@ public final class JobProtos {
      */
     com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder();
 
+    // required string user = 2;
     /**
      * <code>required string user = 2;</code>
      */
@@ -16222,6 +16298,7 @@ public final class JobProtos {
     com.google.protobuf.ByteString
         getUserBytes();
 
+    // required int64 job_id = 3;
     /**
      * <code>required int64 job_id = 3;</code>
      */
@@ -16239,9 +16316,8 @@ public final class JobProtos {
    * </pre>
    */
   public static final class RestQueryJobRequest extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:RestQueryJobRequest)
-      RestQueryJobRequestOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements RestQueryJobRequestOrBuilder {
     // Use RestQueryJobRequest.newBuilder() to construct.
     private RestQueryJobRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -16301,9 +16377,8 @@ public final class JobProtos {
               break;
             }
             case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              user_ = bs;
+              user_ = input.readBytes();
               break;
             }
             case 24: {
@@ -16351,6 +16426,7 @@ public final class JobProtos {
     }
 
     private int bitField0_;
+    // required .AppAuth app_auth = 1;
     public static final int APP_AUTH_FIELD_NUMBER = 1;
     private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_;
     /**
@@ -16372,6 +16448,7 @@ public final class JobProtos {
       return appAuth_;
     }
 
+    // required string user = 2;
     public static final int USER_FIELD_NUMBER = 2;
     private java.lang.Object user_;
     /**
@@ -16414,6 +16491,7 @@ public final class JobProtos {
       }
     }
 
+    // required int64 job_id = 3;
     public static final int JOB_ID_FIELD_NUMBER = 3;
     private long jobId_;
     /**
@@ -16437,8 +16515,7 @@ public final class JobProtos {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasAppAuth()) {
         memoizedIsInitialized = 0;
@@ -16579,9 +16656,8 @@ public final class JobProtos {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:RestQueryJobRequest)
-        com.mogujie.jarvis.protocol.JobProtos.RestQueryJobRequestOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.mogujie.jarvis.protocol.JobProtos.RestQueryJobRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mogujie.jarvis.protocol.JobProtos.internal_static_RestQueryJobRequest_descriptor;
@@ -16739,6 +16815,7 @@ public final class JobProtos {
       }
       private int bitField0_;
 
+      // required .AppAuth app_auth = 1;
       private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> appAuthBuilder_;
@@ -16847,7 +16924,7 @@ public final class JobProtos {
         if (appAuthBuilder_ == null) {
           appAuthBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder>(
-                  getAppAuth(),
+                  appAuth_,
                   getParentForChildren(),
                   isClean());
           appAuth_ = null;
@@ -16855,6 +16932,7 @@ public final class JobProtos {
         return appAuthBuilder_;
       }
 
+      // required string user = 2;
       private java.lang.Object user_ = "";
       /**
        * <code>required string user = 2;</code>
@@ -16868,12 +16946,9 @@ public final class JobProtos {
       public java.lang.String getUser() {
         java.lang.Object ref = user_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            user_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          user_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -16931,6 +17006,7 @@ public final class JobProtos {
         return this;
       }
 
+      // required int64 job_id = 3;
       private long jobId_ ;
       /**
        * <code>required int64 job_id = 3;</code>
@@ -16974,10 +17050,10 @@ public final class JobProtos {
     // @@protoc_insertion_point(class_scope:RestQueryJobRequest)
   }
 
-  public interface ServerQueryJobResponseOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:ServerQueryJobResponse)
-      com.google.protobuf.MessageOrBuilder {
+  public interface ServerQueryJobResponseOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // repeated .jobEntry list = 1;
     /**
      * <code>repeated .jobEntry list = 1;</code>
      */
@@ -17002,6 +17078,7 @@ public final class JobProtos {
     com.mogujie.jarvis.protocol.JobProtos.jobEntryOrBuilder getListOrBuilder(
         int index);
 
+    // required bool success = 2;
     /**
      * <code>required bool success = 2;</code>
      */
@@ -17011,6 +17088,7 @@ public final class JobProtos {
      */
     boolean getSuccess();
 
+    // optional string message = 3 [default = ""];
     /**
      * <code>optional string message = 3 [default = ""];</code>
      */
@@ -17029,9 +17107,8 @@ public final class JobProtos {
    * Protobuf type {@code ServerQueryJobResponse}
    */
   public static final class ServerQueryJobResponse extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:ServerQueryJobResponse)
-      ServerQueryJobResponseOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements ServerQueryJobResponseOrBuilder {
     // Use ServerQueryJobResponse.newBuilder() to construct.
     private ServerQueryJobResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -17091,9 +17168,8 @@ public final class JobProtos {
               break;
             }
             case 26: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              message_ = bs;
+              message_ = input.readBytes();
               break;
             }
           }
@@ -17139,6 +17215,7 @@ public final class JobProtos {
     }
 
     private int bitField0_;
+    // repeated .jobEntry list = 1;
     public static final int LIST_FIELD_NUMBER = 1;
     private java.util.List<com.mogujie.jarvis.protocol.JobProtos.jobEntry> list_;
     /**
@@ -17174,6 +17251,7 @@ public final class JobProtos {
       return list_.get(index);
     }
 
+    // required bool success = 2;
     public static final int SUCCESS_FIELD_NUMBER = 2;
     private boolean success_;
     /**
@@ -17189,6 +17267,7 @@ public final class JobProtos {
       return success_;
     }
 
+    // optional string message = 3 [default = ""];
     public static final int MESSAGE_FIELD_NUMBER = 3;
     private java.lang.Object message_;
     /**
@@ -17239,8 +17318,7 @@ public final class JobProtos {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasSuccess()) {
         memoizedIsInitialized = 0;
@@ -17371,9 +17449,8 @@ public final class JobProtos {
      * Protobuf type {@code ServerQueryJobResponse}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:ServerQueryJobResponse)
-        com.mogujie.jarvis.protocol.JobProtos.ServerQueryJobResponseOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.mogujie.jarvis.protocol.JobProtos.ServerQueryJobResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mogujie.jarvis.protocol.JobProtos.internal_static_ServerQueryJobResponse_descriptor;
@@ -17549,6 +17626,7 @@ public final class JobProtos {
       }
       private int bitField0_;
 
+      // repeated .jobEntry list = 1;
       private java.util.List<com.mogujie.jarvis.protocol.JobProtos.jobEntry> list_ =
         java.util.Collections.emptyList();
       private void ensureListIsMutable() {
@@ -17690,8 +17768,7 @@ public final class JobProtos {
           java.lang.Iterable<? extends com.mogujie.jarvis.protocol.JobProtos.jobEntry> values) {
         if (listBuilder_ == null) {
           ensureListIsMutable();
-          com.google.protobuf.AbstractMessageLite.Builder.addAll(
-              values, list_);
+          super.addAll(values, list_);
           onChanged();
         } else {
           listBuilder_.addAllMessages(values);
@@ -17789,6 +17866,7 @@ public final class JobProtos {
         return listBuilder_;
       }
 
+      // required bool success = 2;
       private boolean success_ ;
       /**
        * <code>required bool success = 2;</code>
@@ -17821,6 +17899,7 @@ public final class JobProtos {
         return this;
       }
 
+      // optional string message = 3 [default = ""];
       private java.lang.Object message_ = "";
       /**
        * <code>optional string message = 3 [default = ""];</code>
@@ -17834,12 +17913,9 @@ public final class JobProtos {
       public java.lang.String getMessage() {
         java.lang.Object ref = message_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            message_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          message_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -17908,86 +17984,1432 @@ public final class JobProtos {
     // @@protoc_insertion_point(class_scope:ServerQueryJobResponse)
   }
 
-  private static final com.google.protobuf.Descriptors.Descriptor
+  public interface RestRemoveJobRequestOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+
+    // required .AppAuth app_auth = 1;
+    /**
+     * <code>required .AppAuth app_auth = 1;</code>
+     */
+    boolean hasAppAuth();
+    /**
+     * <code>required .AppAuth app_auth = 1;</code>
+     */
+    com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth getAppAuth();
+    /**
+     * <code>required .AppAuth app_auth = 1;</code>
+     */
+    com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder();
+
+    // required string user = 2;
+    /**
+     * <code>required string user = 2;</code>
+     */
+    boolean hasUser();
+    /**
+     * <code>required string user = 2;</code>
+     */
+    java.lang.String getUser();
+    /**
+     * <code>required string user = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getUserBytes();
+
+    // required int64 job_id = 3;
+    /**
+     * <code>required int64 job_id = 3;</code>
+     */
+    boolean hasJobId();
+    /**
+     * <code>required int64 job_id = 3;</code>
+     */
+    long getJobId();
+  }
+  /**
+   * Protobuf type {@code RestRemoveJobRequest}
+   */
+  public static final class RestRemoveJobRequest extends
+      com.google.protobuf.GeneratedMessage
+      implements RestRemoveJobRequestOrBuilder {
+    // Use RestRemoveJobRequest.newBuilder() to construct.
+    private RestRemoveJobRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private RestRemoveJobRequest(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final RestRemoveJobRequest defaultInstance;
+    public static RestRemoveJobRequest getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public RestRemoveJobRequest getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private RestRemoveJobRequest(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000001) == 0x00000001)) {
+                subBuilder = appAuth_.toBuilder();
+              }
+              appAuth_ = input.readMessage(com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(appAuth_);
+                appAuth_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000001;
+              break;
+            }
+            case 18: {
+              bitField0_ |= 0x00000002;
+              user_ = input.readBytes();
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              jobId_ = input.readInt64();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.mogujie.jarvis.protocol.JobProtos.internal_static_RestRemoveJobRequest_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.mogujie.jarvis.protocol.JobProtos.internal_static_RestRemoveJobRequest_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.mogujie.jarvis.protocol.JobProtos.RestRemoveJobRequest.class, com.mogujie.jarvis.protocol.JobProtos.RestRemoveJobRequest.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<RestRemoveJobRequest> PARSER =
+        new com.google.protobuf.AbstractParser<RestRemoveJobRequest>() {
+      public RestRemoveJobRequest parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new RestRemoveJobRequest(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<RestRemoveJobRequest> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    // required .AppAuth app_auth = 1;
+    public static final int APP_AUTH_FIELD_NUMBER = 1;
+    private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_;
+    /**
+     * <code>required .AppAuth app_auth = 1;</code>
+     */
+    public boolean hasAppAuth() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required .AppAuth app_auth = 1;</code>
+     */
+    public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth getAppAuth() {
+      return appAuth_;
+    }
+    /**
+     * <code>required .AppAuth app_auth = 1;</code>
+     */
+    public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder() {
+      return appAuth_;
+    }
+
+    // required string user = 2;
+    public static final int USER_FIELD_NUMBER = 2;
+    private java.lang.Object user_;
+    /**
+     * <code>required string user = 2;</code>
+     */
+    public boolean hasUser() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required string user = 2;</code>
+     */
+    public java.lang.String getUser() {
+      java.lang.Object ref = user_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          user_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string user = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getUserBytes() {
+      java.lang.Object ref = user_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        user_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    // required int64 job_id = 3;
+    public static final int JOB_ID_FIELD_NUMBER = 3;
+    private long jobId_;
+    /**
+     * <code>required int64 job_id = 3;</code>
+     */
+    public boolean hasJobId() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>required int64 job_id = 3;</code>
+     */
+    public long getJobId() {
+      return jobId_;
+    }
+
+    private void initFields() {
+      appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
+      user_ = "";
+      jobId_ = 0L;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+
+      if (!hasAppAuth()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasUser()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasJobId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!getAppAuth().isInitialized()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeMessage(1, appAuth_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, getUserBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeInt64(3, jobId_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, appAuth_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, getUserBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(3, jobId_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.mogujie.jarvis.protocol.JobProtos.RestRemoveJobRequest parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.mogujie.jarvis.protocol.JobProtos.RestRemoveJobRequest parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.JobProtos.RestRemoveJobRequest parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.mogujie.jarvis.protocol.JobProtos.RestRemoveJobRequest parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.JobProtos.RestRemoveJobRequest parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.mogujie.jarvis.protocol.JobProtos.RestRemoveJobRequest parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.JobProtos.RestRemoveJobRequest parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.mogujie.jarvis.protocol.JobProtos.RestRemoveJobRequest parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.JobProtos.RestRemoveJobRequest parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.mogujie.jarvis.protocol.JobProtos.RestRemoveJobRequest parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.mogujie.jarvis.protocol.JobProtos.RestRemoveJobRequest prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code RestRemoveJobRequest}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.mogujie.jarvis.protocol.JobProtos.RestRemoveJobRequestOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.mogujie.jarvis.protocol.JobProtos.internal_static_RestRemoveJobRequest_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.mogujie.jarvis.protocol.JobProtos.internal_static_RestRemoveJobRequest_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.mogujie.jarvis.protocol.JobProtos.RestRemoveJobRequest.class, com.mogujie.jarvis.protocol.JobProtos.RestRemoveJobRequest.Builder.class);
+      }
+
+      // Construct using com.mogujie.jarvis.protocol.JobProtos.RestRemoveJobRequest.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getAppAuthFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        if (appAuthBuilder_ == null) {
+          appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
+        } else {
+          appAuthBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000001);
+        user_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        jobId_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.mogujie.jarvis.protocol.JobProtos.internal_static_RestRemoveJobRequest_descriptor;
+      }
+
+      public com.mogujie.jarvis.protocol.JobProtos.RestRemoveJobRequest getDefaultInstanceForType() {
+        return com.mogujie.jarvis.protocol.JobProtos.RestRemoveJobRequest.getDefaultInstance();
+      }
+
+      public com.mogujie.jarvis.protocol.JobProtos.RestRemoveJobRequest build() {
+        com.mogujie.jarvis.protocol.JobProtos.RestRemoveJobRequest result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.mogujie.jarvis.protocol.JobProtos.RestRemoveJobRequest buildPartial() {
+        com.mogujie.jarvis.protocol.JobProtos.RestRemoveJobRequest result = new com.mogujie.jarvis.protocol.JobProtos.RestRemoveJobRequest(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        if (appAuthBuilder_ == null) {
+          result.appAuth_ = appAuth_;
+        } else {
+          result.appAuth_ = appAuthBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.user_ = user_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.jobId_ = jobId_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.mogujie.jarvis.protocol.JobProtos.RestRemoveJobRequest) {
+          return mergeFrom((com.mogujie.jarvis.protocol.JobProtos.RestRemoveJobRequest)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.mogujie.jarvis.protocol.JobProtos.RestRemoveJobRequest other) {
+        if (other == com.mogujie.jarvis.protocol.JobProtos.RestRemoveJobRequest.getDefaultInstance()) return this;
+        if (other.hasAppAuth()) {
+          mergeAppAuth(other.getAppAuth());
+        }
+        if (other.hasUser()) {
+          bitField0_ |= 0x00000002;
+          user_ = other.user_;
+          onChanged();
+        }
+        if (other.hasJobId()) {
+          setJobId(other.getJobId());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasAppAuth()) {
+          
+          return false;
+        }
+        if (!hasUser()) {
+          
+          return false;
+        }
+        if (!hasJobId()) {
+          
+          return false;
+        }
+        if (!getAppAuth().isInitialized()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.mogujie.jarvis.protocol.JobProtos.RestRemoveJobRequest parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.mogujie.jarvis.protocol.JobProtos.RestRemoveJobRequest) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      // required .AppAuth app_auth = 1;
+      private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> appAuthBuilder_;
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      public boolean hasAppAuth() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth getAppAuth() {
+        if (appAuthBuilder_ == null) {
+          return appAuth_;
+        } else {
+          return appAuthBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      public Builder setAppAuth(com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth value) {
+        if (appAuthBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          appAuth_ = value;
+          onChanged();
+        } else {
+          appAuthBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      public Builder setAppAuth(
+          com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder builderForValue) {
+        if (appAuthBuilder_ == null) {
+          appAuth_ = builderForValue.build();
+          onChanged();
+        } else {
+          appAuthBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      public Builder mergeAppAuth(com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth value) {
+        if (appAuthBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) == 0x00000001) &&
+              appAuth_ != com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance()) {
+            appAuth_ =
+              com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.newBuilder(appAuth_).mergeFrom(value).buildPartial();
+          } else {
+            appAuth_ = value;
+          }
+          onChanged();
+        } else {
+          appAuthBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      public Builder clearAppAuth() {
+        if (appAuthBuilder_ == null) {
+          appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
+          onChanged();
+        } else {
+          appAuthBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder getAppAuthBuilder() {
+        bitField0_ |= 0x00000001;
+        onChanged();
+        return getAppAuthFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder() {
+        if (appAuthBuilder_ != null) {
+          return appAuthBuilder_.getMessageOrBuilder();
+        } else {
+          return appAuth_;
+        }
+      }
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> 
+          getAppAuthFieldBuilder() {
+        if (appAuthBuilder_ == null) {
+          appAuthBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder>(
+                  appAuth_,
+                  getParentForChildren(),
+                  isClean());
+          appAuth_ = null;
+        }
+        return appAuthBuilder_;
+      }
+
+      // required string user = 2;
+      private java.lang.Object user_ = "";
+      /**
+       * <code>required string user = 2;</code>
+       */
+      public boolean hasUser() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required string user = 2;</code>
+       */
+      public java.lang.String getUser() {
+        java.lang.Object ref = user_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          user_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string user = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getUserBytes() {
+        java.lang.Object ref = user_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          user_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string user = 2;</code>
+       */
+      public Builder setUser(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        user_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string user = 2;</code>
+       */
+      public Builder clearUser() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        user_ = getDefaultInstance().getUser();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string user = 2;</code>
+       */
+      public Builder setUserBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        user_ = value;
+        onChanged();
+        return this;
+      }
+
+      // required int64 job_id = 3;
+      private long jobId_ ;
+      /**
+       * <code>required int64 job_id = 3;</code>
+       */
+      public boolean hasJobId() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>required int64 job_id = 3;</code>
+       */
+      public long getJobId() {
+        return jobId_;
+      }
+      /**
+       * <code>required int64 job_id = 3;</code>
+       */
+      public Builder setJobId(long value) {
+        bitField0_ |= 0x00000004;
+        jobId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int64 job_id = 3;</code>
+       */
+      public Builder clearJobId() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        jobId_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:RestRemoveJobRequest)
+    }
+
+    static {
+      defaultInstance = new RestRemoveJobRequest(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:RestRemoveJobRequest)
+  }
+
+  public interface ServerRemoveJobResponseOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+
+    // required bool success = 1;
+    /**
+     * <code>required bool success = 1;</code>
+     */
+    boolean hasSuccess();
+    /**
+     * <code>required bool success = 1;</code>
+     */
+    boolean getSuccess();
+
+    // optional string message = 2 [default = ""];
+    /**
+     * <code>optional string message = 2 [default = ""];</code>
+     */
+    boolean hasMessage();
+    /**
+     * <code>optional string message = 2 [default = ""];</code>
+     */
+    java.lang.String getMessage();
+    /**
+     * <code>optional string message = 2 [default = ""];</code>
+     */
+    com.google.protobuf.ByteString
+        getMessageBytes();
+  }
+  /**
+   * Protobuf type {@code ServerRemoveJobResponse}
+   */
+  public static final class ServerRemoveJobResponse extends
+      com.google.protobuf.GeneratedMessage
+      implements ServerRemoveJobResponseOrBuilder {
+    // Use ServerRemoveJobResponse.newBuilder() to construct.
+    private ServerRemoveJobResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private ServerRemoveJobResponse(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final ServerRemoveJobResponse defaultInstance;
+    public static ServerRemoveJobResponse getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public ServerRemoveJobResponse getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private ServerRemoveJobResponse(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              success_ = input.readBool();
+              break;
+            }
+            case 18: {
+              bitField0_ |= 0x00000002;
+              message_ = input.readBytes();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.mogujie.jarvis.protocol.JobProtos.internal_static_ServerRemoveJobResponse_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.mogujie.jarvis.protocol.JobProtos.internal_static_ServerRemoveJobResponse_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.mogujie.jarvis.protocol.JobProtos.ServerRemoveJobResponse.class, com.mogujie.jarvis.protocol.JobProtos.ServerRemoveJobResponse.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<ServerRemoveJobResponse> PARSER =
+        new com.google.protobuf.AbstractParser<ServerRemoveJobResponse>() {
+      public ServerRemoveJobResponse parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new ServerRemoveJobResponse(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ServerRemoveJobResponse> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    // required bool success = 1;
+    public static final int SUCCESS_FIELD_NUMBER = 1;
+    private boolean success_;
+    /**
+     * <code>required bool success = 1;</code>
+     */
+    public boolean hasSuccess() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required bool success = 1;</code>
+     */
+    public boolean getSuccess() {
+      return success_;
+    }
+
+    // optional string message = 2 [default = ""];
+    public static final int MESSAGE_FIELD_NUMBER = 2;
+    private java.lang.Object message_;
+    /**
+     * <code>optional string message = 2 [default = ""];</code>
+     */
+    public boolean hasMessage() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional string message = 2 [default = ""];</code>
+     */
+    public java.lang.String getMessage() {
+      java.lang.Object ref = message_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          message_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string message = 2 [default = ""];</code>
+     */
+    public com.google.protobuf.ByteString
+        getMessageBytes() {
+      java.lang.Object ref = message_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        message_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private void initFields() {
+      success_ = false;
+      message_ = "";
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+
+      if (!hasSuccess()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeBool(1, success_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, getMessageBytes());
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(1, success_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, getMessageBytes());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.mogujie.jarvis.protocol.JobProtos.ServerRemoveJobResponse parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.mogujie.jarvis.protocol.JobProtos.ServerRemoveJobResponse parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.JobProtos.ServerRemoveJobResponse parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.mogujie.jarvis.protocol.JobProtos.ServerRemoveJobResponse parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.JobProtos.ServerRemoveJobResponse parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.mogujie.jarvis.protocol.JobProtos.ServerRemoveJobResponse parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.JobProtos.ServerRemoveJobResponse parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.mogujie.jarvis.protocol.JobProtos.ServerRemoveJobResponse parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.JobProtos.ServerRemoveJobResponse parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.mogujie.jarvis.protocol.JobProtos.ServerRemoveJobResponse parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.mogujie.jarvis.protocol.JobProtos.ServerRemoveJobResponse prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code ServerRemoveJobResponse}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.mogujie.jarvis.protocol.JobProtos.ServerRemoveJobResponseOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.mogujie.jarvis.protocol.JobProtos.internal_static_ServerRemoveJobResponse_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.mogujie.jarvis.protocol.JobProtos.internal_static_ServerRemoveJobResponse_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.mogujie.jarvis.protocol.JobProtos.ServerRemoveJobResponse.class, com.mogujie.jarvis.protocol.JobProtos.ServerRemoveJobResponse.Builder.class);
+      }
+
+      // Construct using com.mogujie.jarvis.protocol.JobProtos.ServerRemoveJobResponse.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        success_ = false;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        message_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.mogujie.jarvis.protocol.JobProtos.internal_static_ServerRemoveJobResponse_descriptor;
+      }
+
+      public com.mogujie.jarvis.protocol.JobProtos.ServerRemoveJobResponse getDefaultInstanceForType() {
+        return com.mogujie.jarvis.protocol.JobProtos.ServerRemoveJobResponse.getDefaultInstance();
+      }
+
+      public com.mogujie.jarvis.protocol.JobProtos.ServerRemoveJobResponse build() {
+        com.mogujie.jarvis.protocol.JobProtos.ServerRemoveJobResponse result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.mogujie.jarvis.protocol.JobProtos.ServerRemoveJobResponse buildPartial() {
+        com.mogujie.jarvis.protocol.JobProtos.ServerRemoveJobResponse result = new com.mogujie.jarvis.protocol.JobProtos.ServerRemoveJobResponse(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.success_ = success_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.message_ = message_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.mogujie.jarvis.protocol.JobProtos.ServerRemoveJobResponse) {
+          return mergeFrom((com.mogujie.jarvis.protocol.JobProtos.ServerRemoveJobResponse)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.mogujie.jarvis.protocol.JobProtos.ServerRemoveJobResponse other) {
+        if (other == com.mogujie.jarvis.protocol.JobProtos.ServerRemoveJobResponse.getDefaultInstance()) return this;
+        if (other.hasSuccess()) {
+          setSuccess(other.getSuccess());
+        }
+        if (other.hasMessage()) {
+          bitField0_ |= 0x00000002;
+          message_ = other.message_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasSuccess()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.mogujie.jarvis.protocol.JobProtos.ServerRemoveJobResponse parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.mogujie.jarvis.protocol.JobProtos.ServerRemoveJobResponse) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      // required bool success = 1;
+      private boolean success_ ;
+      /**
+       * <code>required bool success = 1;</code>
+       */
+      public boolean hasSuccess() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required bool success = 1;</code>
+       */
+      public boolean getSuccess() {
+        return success_;
+      }
+      /**
+       * <code>required bool success = 1;</code>
+       */
+      public Builder setSuccess(boolean value) {
+        bitField0_ |= 0x00000001;
+        success_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required bool success = 1;</code>
+       */
+      public Builder clearSuccess() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        success_ = false;
+        onChanged();
+        return this;
+      }
+
+      // optional string message = 2 [default = ""];
+      private java.lang.Object message_ = "";
+      /**
+       * <code>optional string message = 2 [default = ""];</code>
+       */
+      public boolean hasMessage() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional string message = 2 [default = ""];</code>
+       */
+      public java.lang.String getMessage() {
+        java.lang.Object ref = message_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          message_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string message = 2 [default = ""];</code>
+       */
+      public com.google.protobuf.ByteString
+          getMessageBytes() {
+        java.lang.Object ref = message_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          message_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string message = 2 [default = ""];</code>
+       */
+      public Builder setMessage(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        message_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string message = 2 [default = ""];</code>
+       */
+      public Builder clearMessage() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        message_ = getDefaultInstance().getMessage();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string message = 2 [default = ""];</code>
+       */
+      public Builder setMessageBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        message_ = value;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:ServerRemoveJobResponse)
+    }
+
+    static {
+      defaultInstance = new ServerRemoveJobResponse(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:ServerRemoveJobResponse)
+  }
+
+  private static com.google.protobuf.Descriptors.Descriptor
     internal_static_RestSubmitJobRequest_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_RestSubmitJobRequest_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
+  private static com.google.protobuf.Descriptors.Descriptor
     internal_static_ServerSubmitJobResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_ServerSubmitJobResponse_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
+  private static com.google.protobuf.Descriptors.Descriptor
     internal_static_RestModifyJobRequest_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_RestModifyJobRequest_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
+  private static com.google.protobuf.Descriptors.Descriptor
     internal_static_ServerModifyJobResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_ServerModifyJobResponse_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
+  private static com.google.protobuf.Descriptors.Descriptor
     internal_static_RestModifyJobDependRequest_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_RestModifyJobDependRequest_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
+  private static com.google.protobuf.Descriptors.Descriptor
     internal_static_ServerModifyJobDependResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_ServerModifyJobDependResponse_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
+  private static com.google.protobuf.Descriptors.Descriptor
     internal_static_RestModifyJobScheduleExpRequest_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_RestModifyJobScheduleExpRequest_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
+  private static com.google.protobuf.Descriptors.Descriptor
     internal_static_ServerModifyJobScheduleExpResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_ServerModifyJobScheduleExpResponse_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
+  private static com.google.protobuf.Descriptors.Descriptor
     internal_static_RestModifyJobStatusRequest_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_RestModifyJobStatusRequest_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
+  private static com.google.protobuf.Descriptors.Descriptor
     internal_static_ServerModifyJobStatusResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_ServerModifyJobStatusResponse_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
+  private static com.google.protobuf.Descriptors.Descriptor
     internal_static_JobStatusEntry_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_JobStatusEntry_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
+  private static com.google.protobuf.Descriptors.Descriptor
     internal_static_RestQueryJobRelationRequest_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_RestQueryJobRelationRequest_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
+  private static com.google.protobuf.Descriptors.Descriptor
     internal_static_ServerQueryJobRelationResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_ServerQueryJobRelationResponse_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
+  private static com.google.protobuf.Descriptors.Descriptor
     internal_static_jobEntry_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_jobEntry_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
+  private static com.google.protobuf.Descriptors.Descriptor
     internal_static_RestQueryJobRequest_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_RestQueryJobRequest_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
+  private static com.google.protobuf.Descriptors.Descriptor
     internal_static_ServerQueryJobResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_ServerQueryJobResponse_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_RestRemoveJobRequest_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_RestRemoveJobRequest_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_ServerRemoveJobResponse_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_ServerRemoveJobResponse_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -18059,17 +19481,129 @@ public final class JobProtos {
       "quest\022\032\n\010app_auth\030\001 \002(\0132\010.AppAuth\022\014\n\004use",
       "r\030\002 \002(\t\022\016\n\006job_id\030\003 \002(\003\"U\n\026ServerQueryJo" +
       "bResponse\022\027\n\004list\030\001 \003(\0132\t.jobEntry\022\017\n\007su" +
-      "ccess\030\002 \002(\010\022\021\n\007message\030\003 \001(\t:\000B(\n\033com.mo" +
-      "gujie.jarvis.protocolB\tJobProtos"
+      "ccess\030\002 \002(\010\022\021\n\007message\030\003 \001(\t:\000\"P\n\024RestRe" +
+      "moveJobRequest\022\032\n\010app_auth\030\001 \002(\0132\010.AppAu" +
+      "th\022\014\n\004user\030\002 \002(\t\022\016\n\006job_id\030\003 \002(\003\"=\n\027Serv" +
+      "erRemoveJobResponse\022\017\n\007success\030\001 \002(\010\022\021\n\007" +
+      "message\030\002 \001(\t:\000B(\n\033com.mogujie.jarvis.pr" +
+      "otocolB\tJobProtos"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
-          public com.google.protobuf.ExtensionRegistry assignDescriptors(
-              com.google.protobuf.Descriptors.FileDescriptor root) {
-            descriptor = root;
-            return null;
-          }
-        };
+      new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
+        public com.google.protobuf.ExtensionRegistry assignDescriptors(
+            com.google.protobuf.Descriptors.FileDescriptor root) {
+          descriptor = root;
+          internal_static_RestSubmitJobRequest_descriptor =
+            getDescriptor().getMessageTypes().get(0);
+          internal_static_RestSubmitJobRequest_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_RestSubmitJobRequest_descriptor,
+              new java.lang.String[] { "AppAuth", "User", "JobName", "JobType", "Status", "Content", "Parameters", "AppName", "WorkerGroupId", "BizGroupId", "Priority", "ActiveStartTime", "ActiveEndTime", "ExpiredTime", "FailedAttempts", "FailedInterval", "ExpressionEntry", "DependencyEntry", });
+          internal_static_ServerSubmitJobResponse_descriptor =
+            getDescriptor().getMessageTypes().get(1);
+          internal_static_ServerSubmitJobResponse_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_ServerSubmitJobResponse_descriptor,
+              new java.lang.String[] { "JobId", "Success", "Message", });
+          internal_static_RestModifyJobRequest_descriptor =
+            getDescriptor().getMessageTypes().get(2);
+          internal_static_RestModifyJobRequest_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_RestModifyJobRequest_descriptor,
+              new java.lang.String[] { "AppAuth", "User", "JobId", "JobName", "JobType", "Content", "Parameters", "AppName", "WorkerGroupId", "BizGroupId", "Priority", "ActiveStartTime", "ActiveEndTime", "ExpiredTime", "FailedAttempts", "FailedInterval", });
+          internal_static_ServerModifyJobResponse_descriptor =
+            getDescriptor().getMessageTypes().get(3);
+          internal_static_ServerModifyJobResponse_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_ServerModifyJobResponse_descriptor,
+              new java.lang.String[] { "Success", "Message", });
+          internal_static_RestModifyJobDependRequest_descriptor =
+            getDescriptor().getMessageTypes().get(4);
+          internal_static_RestModifyJobDependRequest_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_RestModifyJobDependRequest_descriptor,
+              new java.lang.String[] { "AppAuth", "User", "JobId", "DependencyEntry", });
+          internal_static_ServerModifyJobDependResponse_descriptor =
+            getDescriptor().getMessageTypes().get(5);
+          internal_static_ServerModifyJobDependResponse_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_ServerModifyJobDependResponse_descriptor,
+              new java.lang.String[] { "Success", "Message", });
+          internal_static_RestModifyJobScheduleExpRequest_descriptor =
+            getDescriptor().getMessageTypes().get(6);
+          internal_static_RestModifyJobScheduleExpRequest_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_RestModifyJobScheduleExpRequest_descriptor,
+              new java.lang.String[] { "AppAuth", "User", "JobId", "ExpressionEntry", });
+          internal_static_ServerModifyJobScheduleExpResponse_descriptor =
+            getDescriptor().getMessageTypes().get(7);
+          internal_static_ServerModifyJobScheduleExpResponse_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_ServerModifyJobScheduleExpResponse_descriptor,
+              new java.lang.String[] { "Success", "Message", });
+          internal_static_RestModifyJobStatusRequest_descriptor =
+            getDescriptor().getMessageTypes().get(8);
+          internal_static_RestModifyJobStatusRequest_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_RestModifyJobStatusRequest_descriptor,
+              new java.lang.String[] { "AppAuth", "User", "JobId", "Status", });
+          internal_static_ServerModifyJobStatusResponse_descriptor =
+            getDescriptor().getMessageTypes().get(9);
+          internal_static_ServerModifyJobStatusResponse_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_ServerModifyJobStatusResponse_descriptor,
+              new java.lang.String[] { "Success", "Message", });
+          internal_static_JobStatusEntry_descriptor =
+            getDescriptor().getMessageTypes().get(10);
+          internal_static_JobStatusEntry_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_JobStatusEntry_descriptor,
+              new java.lang.String[] { "JobId", "Status", });
+          internal_static_RestQueryJobRelationRequest_descriptor =
+            getDescriptor().getMessageTypes().get(11);
+          internal_static_RestQueryJobRelationRequest_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_RestQueryJobRelationRequest_descriptor,
+              new java.lang.String[] { "AppAuth", "User", "JobId", "RelationType", });
+          internal_static_ServerQueryJobRelationResponse_descriptor =
+            getDescriptor().getMessageTypes().get(12);
+          internal_static_ServerQueryJobRelationResponse_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_ServerQueryJobRelationResponse_descriptor,
+              new java.lang.String[] { "JobStatusEntry", "Success", "Message", });
+          internal_static_jobEntry_descriptor =
+            getDescriptor().getMessageTypes().get(13);
+          internal_static_jobEntry_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_jobEntry_descriptor,
+              new java.lang.String[] { "JobId", "JobName", "JobType", "Status", "Content", "Parameters", "AppName", "WorkerGroupId", "Priority", "ActiveStartTime", "ActiveEndTime", "ExpiredTime", "FailedAttempts", "FailedInterval", "ExpressionList", "DependencyList", });
+          internal_static_RestQueryJobRequest_descriptor =
+            getDescriptor().getMessageTypes().get(14);
+          internal_static_RestQueryJobRequest_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_RestQueryJobRequest_descriptor,
+              new java.lang.String[] { "AppAuth", "User", "JobId", });
+          internal_static_ServerQueryJobResponse_descriptor =
+            getDescriptor().getMessageTypes().get(15);
+          internal_static_ServerQueryJobResponse_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_ServerQueryJobResponse_descriptor,
+              new java.lang.String[] { "List", "Success", "Message", });
+          internal_static_RestRemoveJobRequest_descriptor =
+            getDescriptor().getMessageTypes().get(16);
+          internal_static_RestRemoveJobRequest_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_RestRemoveJobRequest_descriptor,
+              new java.lang.String[] { "AppAuth", "User", "JobId", });
+          internal_static_ServerRemoveJobResponse_descriptor =
+            getDescriptor().getMessageTypes().get(17);
+          internal_static_ServerRemoveJobResponse_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_ServerRemoveJobResponse_descriptor,
+              new java.lang.String[] { "Success", "Message", });
+          return null;
+        }
+      };
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
@@ -18077,105 +19611,6 @@ public final class JobProtos {
           com.mogujie.jarvis.protocol.AppAuthProtos.getDescriptor(),
           com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.getDescriptor(),
         }, assigner);
-    internal_static_RestSubmitJobRequest_descriptor =
-      getDescriptor().getMessageTypes().get(0);
-    internal_static_RestSubmitJobRequest_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_RestSubmitJobRequest_descriptor,
-        new java.lang.String[] { "AppAuth", "User", "JobName", "JobType", "Status", "Content", "Parameters", "AppName", "WorkerGroupId", "BizGroupId", "Priority", "ActiveStartTime", "ActiveEndTime", "ExpiredTime", "FailedAttempts", "FailedInterval", "ExpressionEntry", "DependencyEntry", });
-    internal_static_ServerSubmitJobResponse_descriptor =
-      getDescriptor().getMessageTypes().get(1);
-    internal_static_ServerSubmitJobResponse_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_ServerSubmitJobResponse_descriptor,
-        new java.lang.String[] { "JobId", "Success", "Message", });
-    internal_static_RestModifyJobRequest_descriptor =
-      getDescriptor().getMessageTypes().get(2);
-    internal_static_RestModifyJobRequest_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_RestModifyJobRequest_descriptor,
-        new java.lang.String[] { "AppAuth", "User", "JobId", "JobName", "JobType", "Content", "Parameters", "AppName", "WorkerGroupId", "BizGroupId", "Priority", "ActiveStartTime", "ActiveEndTime", "ExpiredTime", "FailedAttempts", "FailedInterval", });
-    internal_static_ServerModifyJobResponse_descriptor =
-      getDescriptor().getMessageTypes().get(3);
-    internal_static_ServerModifyJobResponse_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_ServerModifyJobResponse_descriptor,
-        new java.lang.String[] { "Success", "Message", });
-    internal_static_RestModifyJobDependRequest_descriptor =
-      getDescriptor().getMessageTypes().get(4);
-    internal_static_RestModifyJobDependRequest_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_RestModifyJobDependRequest_descriptor,
-        new java.lang.String[] { "AppAuth", "User", "JobId", "DependencyEntry", });
-    internal_static_ServerModifyJobDependResponse_descriptor =
-      getDescriptor().getMessageTypes().get(5);
-    internal_static_ServerModifyJobDependResponse_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_ServerModifyJobDependResponse_descriptor,
-        new java.lang.String[] { "Success", "Message", });
-    internal_static_RestModifyJobScheduleExpRequest_descriptor =
-      getDescriptor().getMessageTypes().get(6);
-    internal_static_RestModifyJobScheduleExpRequest_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_RestModifyJobScheduleExpRequest_descriptor,
-        new java.lang.String[] { "AppAuth", "User", "JobId", "ExpressionEntry", });
-    internal_static_ServerModifyJobScheduleExpResponse_descriptor =
-      getDescriptor().getMessageTypes().get(7);
-    internal_static_ServerModifyJobScheduleExpResponse_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_ServerModifyJobScheduleExpResponse_descriptor,
-        new java.lang.String[] { "Success", "Message", });
-    internal_static_RestModifyJobStatusRequest_descriptor =
-      getDescriptor().getMessageTypes().get(8);
-    internal_static_RestModifyJobStatusRequest_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_RestModifyJobStatusRequest_descriptor,
-        new java.lang.String[] { "AppAuth", "User", "JobId", "Status", });
-    internal_static_ServerModifyJobStatusResponse_descriptor =
-      getDescriptor().getMessageTypes().get(9);
-    internal_static_ServerModifyJobStatusResponse_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_ServerModifyJobStatusResponse_descriptor,
-        new java.lang.String[] { "Success", "Message", });
-    internal_static_JobStatusEntry_descriptor =
-      getDescriptor().getMessageTypes().get(10);
-    internal_static_JobStatusEntry_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_JobStatusEntry_descriptor,
-        new java.lang.String[] { "JobId", "Status", });
-    internal_static_RestQueryJobRelationRequest_descriptor =
-      getDescriptor().getMessageTypes().get(11);
-    internal_static_RestQueryJobRelationRequest_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_RestQueryJobRelationRequest_descriptor,
-        new java.lang.String[] { "AppAuth", "User", "JobId", "RelationType", });
-    internal_static_ServerQueryJobRelationResponse_descriptor =
-      getDescriptor().getMessageTypes().get(12);
-    internal_static_ServerQueryJobRelationResponse_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_ServerQueryJobRelationResponse_descriptor,
-        new java.lang.String[] { "JobStatusEntry", "Success", "Message", });
-    internal_static_jobEntry_descriptor =
-      getDescriptor().getMessageTypes().get(13);
-    internal_static_jobEntry_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_jobEntry_descriptor,
-        new java.lang.String[] { "JobId", "JobName", "JobType", "Status", "Content", "Parameters", "AppName", "WorkerGroupId", "Priority", "ActiveStartTime", "ActiveEndTime", "ExpiredTime", "FailedAttempts", "FailedInterval", "ExpressionList", "DependencyList", });
-    internal_static_RestQueryJobRequest_descriptor =
-      getDescriptor().getMessageTypes().get(14);
-    internal_static_RestQueryJobRequest_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_RestQueryJobRequest_descriptor,
-        new java.lang.String[] { "AppAuth", "User", "JobId", });
-    internal_static_ServerQueryJobResponse_descriptor =
-      getDescriptor().getMessageTypes().get(15);
-    internal_static_ServerQueryJobResponse_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_ServerQueryJobResponse_descriptor,
-        new java.lang.String[] { "List", "Success", "Message", });
-    com.mogujie.jarvis.protocol.JobDependencyEntryProtos.getDescriptor();
-    com.mogujie.jarvis.protocol.AppAuthProtos.getDescriptor();
-    com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)
