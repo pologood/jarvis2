@@ -27,11 +27,13 @@ import akka.actor.ActorSelection;
 public class DefaultLogCollector extends AbstractLogCollector {
 
     private ActorSelection actor;
+    private ActorRef sender;
     private String fullId;
     private int maxBytes = ConfigUtils.getWorkerConfig().getInt(WorkerConfigKeys.LOG_SEND_MAX_BYTES, 1024 * 1024);
 
-    public DefaultLogCollector(ActorSelection actor, String fullId) {
+    public DefaultLogCollector(ActorSelection actor, ActorRef sender, String fullId) {
         this.actor = actor;
+        this.sender = sender;
         this.fullId = fullId;
     }
 
@@ -54,7 +56,7 @@ public class DefaultLogCollector extends AbstractLogCollector {
 
             WorkerWriteLogRequest request = WorkerWriteLogRequest.newBuilder().setFullId(fullId).setType(streamType.getValue())
                     .setLog(ByteString.copyFrom(dest)).setIsEnd(sendEnd).build();
-            actor.tell(request, ActorRef.noSender());
+            actor.tell(request, sender);
             i++;
         }
     }
