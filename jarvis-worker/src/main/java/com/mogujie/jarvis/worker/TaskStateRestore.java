@@ -92,6 +92,8 @@ public class TaskStateRestore extends Thread {
                             || lookupStatus == TaskStatus.KILLED.getValue()) {
                         it.remove();
                         taskStateStore.delete(fullId);
+                    } else {
+                        continue;
                     }
 
                     WorkerReportTaskStatusRequest request = WorkerReportTaskStatusRequest.newBuilder().setFullId(fullId).setStatus(taskStatus)
