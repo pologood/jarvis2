@@ -17,7 +17,7 @@ public interface WorkerConfigKeys {
     public static final String WORKER_KEY = "worker.key";
     public static final String WORKER_ACTORS_NUM = "worker.actors.num";
     public static final String WORKER_HEART_BEAT_INTERVAL_SECONDS = "worker.heart.beat.interval.seconds";
-    public static final String LOGSERVER_AKKA_PATH = "logserver.akka.path";
+    public static final String LOGSTORAGE_AKKA_PATH = "logstorage.akka.path";
     public static final String WORKER_REGISTRY_FAILED_INTERVAL = "worker.registry.failed.interval";
     public static final String WORKER_EXECUTOR_POOL_CORE_SIZE = "worker.executor.pool.core.size";
     public static final String WORKER_EXECUTOR_POOL_MAXIMUM_SIZE = "worker.executor.pool.maximum.size";

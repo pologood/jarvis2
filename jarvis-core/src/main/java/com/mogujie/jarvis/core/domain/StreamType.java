@@ -11,18 +11,23 @@ package com.mogujie.jarvis.core.domain;
  * @author wuya
  */
 public enum StreamType {
-    STD_OUT(1), STD_ERR(2);
+    STD_OUT(1,"OUT"), STD_ERR(2,"ERR");
 
     private int value;
+    private String description;
 
-    StreamType(int value) {
+    StreamType(int value,String description) {
         this.value = value;
+        this.description = description;
     }
 
     public int getValue() {
         return value;
     }
 
+    public String getDescription() {
+        return description;
+    }
 
     public static StreamType parseValue(int value) throws IllegalArgumentException{
         StreamType[] all = StreamType.values();

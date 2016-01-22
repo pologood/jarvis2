@@ -44,6 +44,8 @@ public class DefaultLogCollector extends AbstractLogCollector {
     }
 
     private void sendLog(String line, boolean isEnd, StreamType streamType) {
+        logger.info("sendLog:fullId={} ,type={} ,isEnd={}, log={}", fullId, streamType.getDescription(), isEnd, line);
+
         byte[] bytes = (line + JarvisConstants.LINE_SEPARATOR).getBytes(StandardCharsets.UTF_8);
         int srcLen = bytes.length;
         int i = 0;
@@ -66,7 +68,7 @@ public class DefaultLogCollector extends AbstractLogCollector {
             try {
 //                actor.tell(request, sender);
                 response = (LogStorageWriteLogResponse) FutureUtils.awaitResult(actor, request, 10);
-                if (response.getSuccess()){
+                if (response.getSuccess()) {
                     i++;
                 }
             } catch (Exception e) {

@@ -8,6 +8,7 @@
 
 package com.mogujie.jarvis.logstorage;
 
+import com.mogujie.jarvis.logstorage.actor.LogRoutingActor;
 import org.apache.commons.configuration.Configuration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,7 +16,6 @@ import org.apache.logging.log4j.Logger;
 import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.metrics.Metrics;
 import com.mogujie.jarvis.core.util.ConfigUtils;
-import com.mogujie.jarvis.logstorage.actor.LogReaderActor;
 import com.typesafe.config.Config;
 
 import akka.actor.ActorSystem;
@@ -35,7 +35,7 @@ public class JarvisLogstorage {
         Configuration logConfig = ConfigUtils.getLogstorageConfig();
         int actorNum = logConfig.getInt("logstorage.actors.num", 1000);
 
-        system.actorOf(new SmallestMailboxPool(actorNum).props(LogReaderActor.props()), JarvisConstants.LOGSTORAGE_AKKA_SYSTEM_NAME);
+        system.actorOf(new SmallestMailboxPool(actorNum).props(LogRoutingActor.props(actorNum)), JarvisConstants.LOGSTORAGE_AKKA_SYSTEM_NAME);
 
         Metrics.start(ConfigUtils.getLogstorageConfig());
 

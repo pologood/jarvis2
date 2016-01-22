@@ -65,6 +65,7 @@ public class LogWriterActor extends UntypedActor {
             if (isEnd) {
                 logStream.writeEndFlag();
             }
+            logger.info("writeLog:fullId={}, type={}, isEnd={}, log={}",fullId,streamType.getDescription(),isEnd,log);
 
             response = LogStorageWriteLogResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());
@@ -73,7 +74,7 @@ public class LogWriterActor extends UntypedActor {
             response = LogStorageWriteLogResponse.newBuilder().setSuccess(false)
                     .setMessage(e.getMessage() != null ? e.getMessage() : e.toString()).build();
             getSender().tell(response, getSelf());
-            logger.error("",e);
+            logger.error(e);
             throw e;
 
         }

@@ -24,7 +24,8 @@ import org.apache.logging.log4j.Logger;
  */
 public class LogReaderActor extends UntypedActor {
 
-    private  static final Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
+
     public static Props props() {
         return Props.create(LogReaderActor.class);
     }
@@ -56,6 +57,8 @@ public class LogReaderActor extends UntypedActor {
 
             //读取日志（本地）
             LogReadResult readResult = logStream.readText(msg.getOffset(), msg.getSize());
+            logger.info("readLog:fullId={}, type={}, offset={}, size={}, isEnd={}, log={}", fullId, streamType.getDescription()
+                    , msg.getOffset(), msg.getSize(), readResult.isEnd(), readResult.getLog());
 
             //响应值_做成
             response = LogStorageReadLogResponse.newBuilder()
@@ -72,7 +75,7 @@ public class LogReaderActor extends UntypedActor {
             response = LogStorageReadLogResponse.newBuilder().setSuccess(false)
                     .setMessage(e.getMessage() != null ? e.getMessage() : e.toString()).build();
             getSender().tell(response, getSelf());
-            logger.error("",e);
+            logger.error("", e);
             throw e;
         }
 

@@ -60,7 +60,7 @@ public class TaskActor extends UntypedActor {
             Queues.newArrayBlockingQueue(corePoolSize));
     private static final String SERVER_AKKA_PATH = ConfigUtils.getWorkerConfig().getString(WorkerConfigKeys.SERVER_AKKA_PATH)
             + JarvisConstants.SERVER_AKKA_USER_PATH;
-    private static final String LOGSERVER_AKKA_PATH = ConfigUtils.getWorkerConfig().getString(WorkerConfigKeys.LOGSERVER_AKKA_PATH)
+    private static final String LOGSTORAGE_AKKA_PATH = ConfigUtils.getWorkerConfig().getString(WorkerConfigKeys.LOGSTORAGE_AKKA_PATH)
             + JarvisConstants.LOGSTORAGE_AKKA_USER_PATH;
 
     private static final Logger LOGGER = LogManager.getLogger();
@@ -109,7 +109,7 @@ public class TaskActor extends UntypedActor {
         TaskDetail taskDetail = taskBuilder.build();
         contextBuilder.setTaskDetail(taskDetail);
 
-        ActorSelection logActor = getContext().actorSelection(LOGSERVER_AKKA_PATH);
+        ActorSelection logActor = getContext().actorSelection(LOGSTORAGE_AKKA_PATH);
         AbstractLogCollector logCollector = new DefaultLogCollector(logActor, getSelf(), fullId);
         contextBuilder.setLogCollector(logCollector);
 
