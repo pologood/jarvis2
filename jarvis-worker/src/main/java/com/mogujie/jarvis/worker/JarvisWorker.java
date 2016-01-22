@@ -9,6 +9,7 @@
 package com.mogujie.jarvis.worker;
 
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import org.apache.commons.configuration.Configuration;
 import org.apache.logging.log4j.LogManager;
@@ -53,7 +54,7 @@ public class JarvisWorker {
             WorkerRegistryRequest request = WorkerRegistryRequest.newBuilder().setKey(workerKey).build();
             ActorSelection serverActor = system.actorSelection(serverAkkaPath);
             try {
-                ServerRegistryResponse response = (ServerRegistryResponse) FutureUtils.awaitResult(serverActor, request, 30);
+                ServerRegistryResponse response = (ServerRegistryResponse) FutureUtils.awaitResult(serverActor, request, 5);
                 if (!response.getSuccess()) {
                     LOGGER.error("Worker register failed with group.id={}, worker.key={}, exit", workerGroupId, workerKey);
                     system.terminate();
@@ -62,11 +63,13 @@ public class JarvisWorker {
                     LOGGER.info("Worker register successfully");
                     break;
                 }
-            } catch (Exception e) {
-                LOGGER.error("Worker register timeout, waiting to retry...", e.getMessage());
+            } catch (TimeoutException e) {
+                LOGGER.error("Worker register timeout, waiting to retry..."+ e.toString());
+            } catch (Exception e){
+                LOGGER.error("Worker register failed, waiting to retry...", e);
             }
 
-            ThreadUtils.sleep(workerConfig.getInt(WorkerConfigKeys.WORKER_REGISTRY_FAILED_INTERVAL, 5000));
+            ThreadUtils.sleep(workerConfig.getInt(WorkerConfigKeys.WORKER_REGISTRY_FAILED_INTERVAL, 3000));
         }
 
         ActorRef deadLetterActor = system.actorOf(new SmallestMailboxPool(10).props(DeadLetterActor.props()));
