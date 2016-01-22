@@ -9,6 +9,7 @@
 package com.mogujie.jarvis.tasks.shell;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -39,6 +40,10 @@ public class ShellTask extends AbstractTask {
 
     public ShellTask(TaskContext taskContext) {
         super(taskContext);
+        File file = new File(STATUS_PATH);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
     }
 
     public String getCommand() {
