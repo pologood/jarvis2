@@ -110,7 +110,7 @@ public class TaskActor extends UntypedActor {
         contextBuilder.setTaskDetail(taskDetail);
 
         ActorSelection logActor = getContext().actorSelection(LOGSTORAGE_AKKA_PATH);
-        AbstractLogCollector logCollector = new DefaultLogCollector(logActor, getSelf(), fullId);
+        AbstractLogCollector logCollector = new DefaultLogCollector(logActor, fullId);
         contextBuilder.setLogCollector(logCollector);
 
         ActorSelection serverActor = getContext().actorSelection(SERVER_AKKA_PATH);

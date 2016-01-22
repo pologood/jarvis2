@@ -65,13 +65,6 @@ public class TaskManager {
         return taskMap.get(fullId).getFirst();
     }
 
-    public synchronized void remove(String fullId) {
-        int appId = taskMap.get(fullId).getSecond();
-        parallelismCounter.getAndDecrement(appId);
-        taskMap.remove(fullId);
-        LOGGER.info("remove task: {}", fullId);
-    }
-
     public synchronized boolean contains(String fullId) {
         return taskMap.containsKey(fullId);
     }
