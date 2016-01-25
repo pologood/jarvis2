@@ -73,10 +73,11 @@ public class LogController extends AbstractController {
             JsonParameters para = new JsonParameters(parameters);
             String fullId = para.getString("fullId");
             if (fullId == null || fullId.equals("")) {
-                Long jobId = para.getLong("jobId");
-                if (jobId == null) {
-                    throw new IllegalArgumentException("请传入jobId 或者 fullId");
-                }
+                long jobId = 0;
+//                Long jobId = para.getLong("jobId");
+//                if (jobId == null) {
+//                    throw new IllegalArgumentException("请传入jobId 或者 fullId");
+//                }
                 Long taskId = para.getLong("taskId");
                 if (taskId == null) {
                     throw new IllegalArgumentException("请传入taskId 或者 fullId");
