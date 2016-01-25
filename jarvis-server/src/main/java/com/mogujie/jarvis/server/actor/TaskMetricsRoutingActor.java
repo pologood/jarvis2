@@ -10,13 +10,14 @@ package com.mogujie.jarvis.server.actor;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mogujie.jarvis.protocol.ReportTaskProgressProtos.WorkerReportTaskProgressRequest;
-import com.mogujie.jarvis.protocol.ReportTaskStatusProtos.WorkerReportTaskStatusRequest;
-import com.mogujie.jarvis.server.domain.ActorEntry;
-
 import akka.actor.ActorRef;
 import akka.actor.Props;
 import akka.actor.UntypedActor;
+
+import com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskContentRequest;
+import com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskProgressRequest;
+import com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskStatusRequest;
+import com.mogujie.jarvis.server.domain.ActorEntry;
 
 public class TaskMetricsRoutingActor extends UntypedActor {
 
@@ -45,6 +46,11 @@ public class TaskMetricsRoutingActor extends UntypedActor {
             actors.get((hashcode == Integer.MIN_VALUE ? 0 : Math.abs(hashcode)) % size).forward(obj, getContext());
         } else if (obj instanceof WorkerReportTaskProgressRequest) {
             WorkerReportTaskProgressRequest request = (WorkerReportTaskProgressRequest) obj;
+            String fullId = request.getFullId();
+            int hashcode = fullId.hashCode();
+            actors.get((hashcode == Integer.MIN_VALUE ? 0 : Math.abs(hashcode)) % size).forward(obj, getContext());
+        } else if (obj instanceof WorkerReportTaskContentRequest) {
+            WorkerReportTaskContentRequest request = (WorkerReportTaskContentRequest) obj;
             String fullId = request.getFullId();
             int hashcode = fullId.hashCode();
             actors.get((hashcode == Integer.MIN_VALUE ? 0 : Math.abs(hashcode)) % size).forward(obj, getContext());

@@ -11,11 +11,11 @@ package com.mogujie.jarvis.worker;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.mogujie.jarvis.core.ProgressReporter;
-import com.mogujie.jarvis.protocol.ReportTaskProgressProtos.WorkerReportTaskProgressRequest;
-
 import akka.actor.ActorRef;
 import akka.actor.ActorSelection;
+
+import com.mogujie.jarvis.core.ProgressReporter;
+import com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskProgressRequest;
 
 public class DefaultProgressReporter implements ProgressReporter {
 

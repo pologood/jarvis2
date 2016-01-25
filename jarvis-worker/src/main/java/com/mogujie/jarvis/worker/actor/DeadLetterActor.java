@@ -8,14 +8,14 @@
 
 package com.mogujie.jarvis.worker.actor;
 
-import com.mogujie.jarvis.core.domain.TaskStatus;
-import com.mogujie.jarvis.protocol.ReportTaskStatusProtos.WorkerReportTaskStatusRequest;
-import com.mogujie.jarvis.worker.status.TaskStateStore;
-import com.mogujie.jarvis.worker.status.TaskStateStoreFactory;
-
 import akka.actor.DeadLetter;
 import akka.actor.Props;
 import akka.actor.UntypedActor;
+
+import com.mogujie.jarvis.core.domain.TaskStatus;
+import com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskStatusRequest;
+import com.mogujie.jarvis.worker.status.TaskStateStore;
+import com.mogujie.jarvis.worker.status.TaskStateStoreFactory;
 
 /**
  * @author wuya
