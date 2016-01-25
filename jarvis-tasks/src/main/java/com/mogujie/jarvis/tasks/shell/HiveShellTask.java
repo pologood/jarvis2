@@ -46,9 +46,8 @@ public class HiveShellTask extends ShellTask {
 
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public HiveShellTask(TaskContext jobContext, Set<String> applicationIdSet) {
+    public HiveShellTask(TaskContext jobContext) {
         super(jobContext);
-        this.applicationIdSet = applicationIdSet;
     }
 
     @Override

@@ -19,6 +19,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 
+import akka.actor.ActorSelection;
+import akka.actor.Props;
+import akka.actor.UntypedActor;
+
 import com.google.common.collect.Queues;
 import com.mogujie.jarvis.core.AbstractLogCollector;
 import com.mogujie.jarvis.core.AbstractTask;
@@ -28,7 +32,6 @@ import com.mogujie.jarvis.core.TaskContext;
 import com.mogujie.jarvis.core.TaskContext.TaskContextBuilder;
 import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.domain.TaskDetail.TaskDetailBuilder;
-import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.exception.TaskException;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.protocol.KillTaskProtos.ServerKillTaskRequest;
@@ -41,12 +44,6 @@ import com.mogujie.jarvis.worker.DefaultTaskReporter;
 import com.mogujie.jarvis.worker.TaskExecutor;
 import com.mogujie.jarvis.worker.TaskPool;
 import com.mogujie.jarvis.worker.WorkerConfigKeys;
-import com.mogujie.jarvis.worker.status.TaskStateStore;
-import com.mogujie.jarvis.worker.status.TaskStateStoreFactory;
-
-import akka.actor.ActorSelection;
-import akka.actor.Props;
-import akka.actor.UntypedActor;
 
 public class TaskActor extends UntypedActor {
 
@@ -117,10 +114,6 @@ public class TaskActor extends UntypedActor {
         ProgressReporter reporter = new DefaultProgressReporter(serverActor, getSelf(), fullId);
         contextBuilder.setProgressReporter(reporter);
         contextBuilder.setTaskReporter(new DefaultTaskReporter(serverActor, getSelf()));
-
-        TaskStateStore taskStateStore = TaskStateStoreFactory.getInstance();
-        taskStateStore.write(taskDetail, TaskStatus.RUNNING.getValue());
-        LOGGER.info("write State[fullId={},status=RUNNING] to TaskStateStore", taskDetail.getFullId());
 
         threadPoolExecutor.execute(new TaskExecutor(contextBuilder.build(), getSelf(), getSender(), serverActor));
     }
