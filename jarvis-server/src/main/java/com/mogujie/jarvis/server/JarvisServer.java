@@ -20,9 +20,7 @@ import org.apache.logging.log4j.Logger;
 import org.jgrapht.experimental.dag.DirectedAcyclicGraph.CycleFoundException;
 import org.joda.time.DateTime;
 
-import akka.actor.ActorSystem;
-import akka.routing.RoundRobinPool;
-
+import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Range;
 import com.mogujie.jarvis.core.JarvisConstants;
@@ -59,6 +57,9 @@ import com.mogujie.jarvis.server.scheduler.time.TimeScheduler;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.PlanUtil;
+
+import akka.actor.ActorSystem;
+import akka.routing.RoundRobinPool;
 
 public class JarvisServer {
 
@@ -151,7 +152,11 @@ public class JarvisServer {
             JobEntry jobEntry = jobService.get(jobId);
             Set<Long> dependencies = jobEntry.getDependencies().keySet();
             for (long parentId : dependencies) {
-                jobGraph.addDependency(parentId, jobId);
+                try {
+                    jobGraph.addDependency(parentId, jobId);
+                } catch (Exception e) {
+                    Throwables.propagate(e);
+                }
             }
             //触发任务执行
             DAGJob dagJob = jobGraph.getDAGJob(jobId);

@@ -21,6 +21,7 @@ public class SparkTask extends JavaTask {
 
     @Override
     protected String getCmd(String jar, List<String> classpath, String mainClass, String args) {
-        return "spark-submit " + jar + " --jars " + Joiner.on(",").join(classpath) + " --class " + mainClass + " " + args;
+        String jars = classpath.size() == 0 ? "" : " --jars " + Joiner.on(",").join(classpath);
+        return "spark-submit " + jar + jars + " --class " + mainClass + " " + args;
     }
 }

@@ -21,7 +21,8 @@ public class MapReduceTask extends JavaTask {
 
     @Override
     protected String getCmd(String jar, List<String> classpath, String mainClass, String args) {
-        return "yarn jar " + jar + " -libjars " + Joiner.on(",").join(classpath) + " " + mainClass + " " + args;
+        String libjars = classpath.size() == 0 ? "" : " -libjars " + Joiner.on(",").join(classpath);
+        return "yarn jar " + jar + libjars + " " + mainClass + " " + args;
     }
 
 }
