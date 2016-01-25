@@ -63,8 +63,7 @@ public class PlanUtil {
                     result = nextTime;
                 }
             }
-
-            return result.toDateTime();
+            return result;
         }
 
         Set<Long> parentIds = jobGraph.getParentJobIds(jobId);
@@ -117,7 +116,6 @@ public class PlanUtil {
             }
             return result;
         }
-
         return result;
     }
 
