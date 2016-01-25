@@ -95,6 +95,9 @@ public class TaskExecutor extends Thread {
             AbstractLogCollector logCollector = taskContext.getLogCollector();
             taskPool.add(fullId, task);
 
+            TaskStateStore taskStateStore = TaskStateStoreFactory.getInstance();
+            taskStateStore.write(taskContext.getTaskDetail(), TaskStatus.RUNNING.getValue());
+            LOGGER.info("write State[fullId={},status=RUNNING] to TaskStateStore", fullId);
             serverActor.tell(WorkerReportTaskStatusRequest.newBuilder().setFullId(fullId).setStatus(TaskStatus.RUNNING.getValue())
                     .setTimestamp(System.currentTimeMillis() / 1000).build(), selfActor);
             LOGGER.info("report status[fullId={},status=RUNNING] to server.", fullId);
@@ -120,9 +123,6 @@ public class TaskExecutor extends Thread {
                         .setTimestamp(System.currentTimeMillis() / 1000).build(), selfActor);
             }
 
-            TaskStateStore taskStateStore = TaskStateStoreFactory.getInstance();
-            taskStateStore.delete(taskContext.getTaskDetail().getFullId());
-
             reporter.report(1);
             logCollector.collectStderr("", true);
             logCollector.collectStdout("", true);
@@ -131,6 +131,9 @@ public class TaskExecutor extends Thread {
             LOGGER.error("", e);
             serverActor.tell(WorkerReportTaskStatusRequest.newBuilder().setFullId(fullId).setStatus(TaskStatus.FAILED.getValue())
                     .setTimestamp(System.currentTimeMillis() / 1000).build(), selfActor);
+        }finally{
+            TaskStateStore taskStateStore = TaskStateStoreFactory.getInstance();
+            taskStateStore.delete(taskContext.getTaskDetail().getFullId());
         }
     }
 
