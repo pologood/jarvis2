@@ -145,7 +145,7 @@ public enum JobGraph {
                         try {
                             dag.addDagEdge(parent, dagJob);
                             LOGGER.debug("add dependency successfully, parent is {}, child is {}", parent.getJobId(), dagJob.getJobId());
-                        } catch (CycleFoundException e) {
+                        } catch (Exception e) {
                             LOGGER.error(e);
                             dag.removeVertex(dagJob);
                             LOGGER.warn("rollback {}", dagJob);
@@ -196,7 +196,7 @@ public enum JobGraph {
      * @param jobId
      * @param dependEntries List of ModifyDependEntry
      */
-    public void modifyDependency(long jobId, List<ModifyDependEntry> dependEntries) throws CycleFoundException {
+    public void modifyDependency(long jobId, List<ModifyDependEntry> dependEntries) throws Exception {
         for (ModifyDependEntry entry : dependEntries) {
             long preJobId = entry.getPreJobId();
             if (entry.getOperation().equals(OperationMode.ADD)) {
@@ -278,14 +278,18 @@ public enum JobGraph {
      */
     public synchronized List<DAGJob> getActiveChildren(DAGJob dagJob) {
         List<DAGJob> children = new ArrayList<DAGJob>();
-        Set<DefaultEdge> outEdges = dag.outgoingEdgesOf(dagJob);
-        if (outEdges != null) {
-            for (DefaultEdge edge : outEdges) {
-                DAGJob child = dag.getEdgeTarget(edge);
-                if (child.getJobStatus().equals(JobStatus.ENABLE) && jobService.isActive(child.getJobId())) {
-                    children.add(dag.getEdgeTarget(edge));
+        try {
+            Set<DefaultEdge> outEdges = dag.outgoingEdgesOf(dagJob);
+            if (outEdges != null) {
+                for (DefaultEdge edge : outEdges) {
+                    DAGJob child = dag.getEdgeTarget(edge);
+                    if (child.getJobStatus().equals(JobStatus.ENABLE) && jobService.isActive(child.getJobId())) {
+                        children.add(dag.getEdgeTarget(edge));
+                    }
                 }
             }
+        } catch (Exception e) {
+            LOGGER.warn(e.getMessage());
         }
         return children;
     }
@@ -396,11 +400,15 @@ public enum JobGraph {
      */
     public List<DAGJob> getParents(DAGJob dagJob) {
         List<DAGJob> parents = new ArrayList<DAGJob>();
-        Set<DefaultEdge> inEdges = dag.incomingEdgesOf(dagJob);
-        if (inEdges != null) {
-            for (DefaultEdge edge : inEdges) {
-                parents.add(dag.getEdgeSource(edge));
+        try {
+            Set<DefaultEdge> inEdges = dag.incomingEdgesOf(dagJob);
+            if (inEdges != null) {
+                for (DefaultEdge edge : inEdges) {
+                    parents.add(dag.getEdgeSource(edge));
+                }
             }
+        } catch (Exception e) {
+            LOGGER.warn(e.getMessage());
         }
         return parents;
     }
@@ -424,7 +432,7 @@ public enum JobGraph {
     }
 
     @VisibleForTesting
-    public synchronized void addDependency(long parentId, long childId) throws CycleFoundException {
+    public synchronized void addDependency(long parentId, long childId) throws Exception {
         DAGJob parent = jobMap.get(parentId);
         DAGJob child = jobMap.get(childId);
         if (parent != null && child != null) {
@@ -452,11 +460,15 @@ public enum JobGraph {
 
     private List<DAGJob> getChildren(DAGJob dagJob) {
         List<DAGJob> children = new ArrayList<DAGJob>();
-        Set<DefaultEdge> outEdges = dag.outgoingEdgesOf(dagJob);
-        if (outEdges != null) {
-            for (DefaultEdge edge : outEdges) {
-                children.add(dag.getEdgeTarget(edge));
+        try {
+            Set<DefaultEdge> outEdges = dag.outgoingEdgesOf(dagJob);
+            if (outEdges != null) {
+                for (DefaultEdge edge : outEdges) {
+                    children.add(dag.getEdgeTarget(edge));
+                }
             }
+        } catch (Exception e) {
+            LOGGER.warn(e.getMessage());
         }
         return children;
     }

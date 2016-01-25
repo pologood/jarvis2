@@ -8,6 +8,8 @@
 
 package com.mogujie.jarvis.server.scheduler.dag;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import org.jgrapht.experimental.dag.DirectedAcyclicGraph;
@@ -176,5 +178,35 @@ public class TestJgrapht {
         } catch (CycleFoundException e) {
             Assert.assertTrue(true);
         }
+    }
+
+    @Test
+    public void test123() throws CycleFoundException {
+        DirectedAcyclicGraph<MyVertex, DefaultEdge> g1 = new DirectedAcyclicGraph<MyVertex, DefaultEdge>(DefaultEdge.class);
+        MyVertex v1 = new MyVertex(1, "v1");
+        MyVertex v2 = new MyVertex(2, "v2");
+        MyVertex v3 = new MyVertex(3, "v3");
+        MyVertex v4 = new MyVertex(4, "v4");
+
+        g1.addDagEdge(v1, v2);
+
+        List<MyVertex> parents = getParents(g1, v1);
+        Assert.assertEquals(0, parents.size());
+    }
+
+    private List<MyVertex> getParents( DirectedAcyclicGraph<MyVertex, DefaultEdge> dag, MyVertex dagJob) {
+        List<MyVertex> parents = new ArrayList<MyVertex>();
+        try {
+            Set<DefaultEdge> inEdges = dag.incomingEdgesOf(dagJob);
+            if (inEdges != null) {
+                for (DefaultEdge edge : inEdges) {
+                    parents.add(dag.getEdgeSource(edge));
+                }
+            }
+        } catch (Exception e) {
+            //
+        }
+
+        return parents;
     }
 }
