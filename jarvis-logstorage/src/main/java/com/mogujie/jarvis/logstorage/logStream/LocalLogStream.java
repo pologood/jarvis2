@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.charset.StandardCharsets;
 
+import com.mogujie.jarvis.core.util.IdUtils;
 import com.mogujie.jarvis.logstorage.LogSetting;
 import org.apache.commons.io.FileUtils;
 
@@ -23,7 +24,8 @@ public class LocalLogStream implements LogStream {
 
     public LocalLogStream(String fullId, StreamType streamType) {
         String type = (streamType == StreamType.STD_OUT) ? ".out" : ".err";
-        logFile = LogSetting.LOG_LOCAL_PATH + "/" + fullId + type;
+        String logId = IdUtils.getLogIdFromFullId(fullId);
+        logFile = LogSetting.LOG_LOCAL_PATH + "/" + logId + type;
     }
 
     /**

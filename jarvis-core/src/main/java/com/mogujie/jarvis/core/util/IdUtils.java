@@ -28,4 +28,14 @@ public class IdUtils {
     public static String getFullId(long jobId, long taskId, int attemptId) {
         return jobId + "_" + taskId + "_" + attemptId;
     }
+
+    public static String getLogId(long taskId, int attemptId) {
+        return taskId + "_" + attemptId;
+    }
+
+    public static String getLogIdFromFullId(String fullId){
+        String[] tokens = fullId.split("_", 3);
+        return  tokens[1] + "_" + tokens[2];
+    }
+
 }

@@ -570,7 +570,7 @@ public class JobActor extends UntypedActor {
     /**
      * 测试用
      *
-     * @param msg
+     * @param jobId
      * @throws IOException
      */
     @Transactional
