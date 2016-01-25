@@ -27,7 +27,6 @@ import com.google.common.collect.Queues;
 import com.mogujie.jarvis.core.AbstractLogCollector;
 import com.mogujie.jarvis.core.AbstractTask;
 import com.mogujie.jarvis.core.JarvisConstants;
-import com.mogujie.jarvis.core.ProgressReporter;
 import com.mogujie.jarvis.core.TaskContext;
 import com.mogujie.jarvis.core.TaskContext.TaskContextBuilder;
 import com.mogujie.jarvis.core.domain.TaskDetail;
@@ -40,7 +39,7 @@ import com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry;
 import com.mogujie.jarvis.protocol.SubmitTaskProtos.ServerSubmitTaskRequest;
 import com.mogujie.jarvis.worker.DefaultLogCollector;
 import com.mogujie.jarvis.worker.DefaultProgressReporter;
-import com.mogujie.jarvis.worker.DefaultTaskReporter;
+import com.mogujie.jarvis.worker.TaskContentReporter;
 import com.mogujie.jarvis.worker.TaskExecutor;
 import com.mogujie.jarvis.worker.TaskPool;
 import com.mogujie.jarvis.worker.WorkerConfigKeys;
@@ -111,9 +110,8 @@ public class TaskActor extends UntypedActor {
         contextBuilder.setLogCollector(logCollector);
 
         ActorSelection serverActor = getContext().actorSelection(SERVER_AKKA_PATH);
-        ProgressReporter reporter = new DefaultProgressReporter(serverActor, getSelf(), fullId);
-        contextBuilder.setProgressReporter(reporter);
-        contextBuilder.setTaskReporter(new DefaultTaskReporter(serverActor, getSelf()));
+        contextBuilder.setProgressReporter(new DefaultProgressReporter(serverActor, getSelf(), fullId));
+        contextBuilder.setTaskReporter(new TaskContentReporter(serverActor, getSelf()));
 
         threadPoolExecutor.execute(new TaskExecutor(contextBuilder.build(), getSelf(), getSender(), serverActor));
     }

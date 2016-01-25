@@ -114,11 +114,19 @@ public class TaskDetail {
         return new TaskDetailBuilder();
     }
 
+    public static TaskDetailBuilder newTaskDetailBuilder(TaskDetail taskDetail) {
+        return new TaskDetailBuilder(taskDetail);
+    }
+
     public static class TaskDetailBuilder {
 
         private TaskDetail task = new TaskDetail();;
 
         private TaskDetailBuilder() {
+        }
+
+        public TaskDetailBuilder(TaskDetail taskDetail) {
+            this.task = taskDetail;
         }
 
         public TaskDetailBuilder setFullId(String fullId) {

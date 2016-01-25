@@ -30,12 +30,12 @@ import com.mogujie.jarvis.core.observer.Event;
 import com.mogujie.jarvis.core.util.IdUtils;
 import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.dto.generate.Task;
-import com.mogujie.jarvis.protocol.ReportTaskProgressProtos.ServerReportTaskProgressResponse;
-import com.mogujie.jarvis.protocol.ReportTaskProgressProtos.WorkerReportTaskProgressRequest;
-import com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskResponse;
-import com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskRequest;
-import com.mogujie.jarvis.protocol.ReportTaskStatusProtos.ServerReportTaskStatusResponse;
-import com.mogujie.jarvis.protocol.ReportTaskStatusProtos.WorkerReportTaskStatusRequest;
+import com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskContentResponse;
+import com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskProgressResponse;
+import com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskStatusResponse;
+import com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskContentRequest;
+import com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskProgressRequest;
+import com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskStatusRequest;
 import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.domain.JobEntry;
 import com.mogujie.jarvis.server.guice.Injectors;
@@ -120,8 +120,8 @@ public class TaskMetricsActor extends UntypedActor {
             float progress = msg.getProgress();
             LOGGER.info("receive WorkerReportTaskProgressRequest [taskId={},progress={}]", taskId, progress);
             taskService.updateProgress(taskId, progress);
-        } else if (obj instanceof WorkerReportTaskRequest) {
-            WorkerReportTaskRequest msg = (WorkerReportTaskRequest) obj;
+        } else if (obj instanceof WorkerReportTaskContentRequest) {
+            WorkerReportTaskContentRequest msg = (WorkerReportTaskContentRequest) obj;
             String fullId = msg.getFullId();
             String content = msg.getContent();
             long taskId = IdUtils.parse(fullId, IdType.TASK_ID);
@@ -140,7 +140,7 @@ public class TaskMetricsActor extends UntypedActor {
         List<ActorEntry> list = new ArrayList<>();
         list.add(new ActorEntry(WorkerReportTaskStatusRequest.class, ServerReportTaskStatusResponse.class, MessageType.SYSTEM));
         list.add(new ActorEntry(WorkerReportTaskProgressRequest.class, ServerReportTaskProgressResponse.class, MessageType.SYSTEM));
-        list.add(new ActorEntry(WorkerReportTaskRequest.class, ServerReportTaskResponse.class, MessageType.SYSTEM));
+        list.add(new ActorEntry(WorkerReportTaskContentRequest.class, ServerReportTaskContentResponse.class, MessageType.SYSTEM));
         return list;
     }
 }

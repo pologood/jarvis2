@@ -173,12 +173,7 @@ public class HiveShellTask extends ShellTask {
         TaskDetail oldTaskDetail = getTaskContext().getTaskDetail();
         TaskDetail newTaskDetail = TaskDetail.newTaskDetailBuilder()
                 .setFullId(oldTaskDetail.getFullId())
-                .setTaskName(oldTaskDetail.getTaskName())
-                .setAppName(oldTaskDetail.getAppName())
-                .setUser(oldTaskDetail.getUser())
-                .setJobType(oldTaskDetail.getJobType())
                 .setContent(newContent)
-                .setPriority(oldTaskDetail.getPriority())
                 .build();
         getTaskContext().getTaskReporter().report(newTaskDetail);
     }
