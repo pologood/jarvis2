@@ -15,12 +15,14 @@ import java.util.Map.Entry;
 import org.apache.commons.configuration.Configuration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.joda.time.DateTime;
 
 import com.google.common.collect.Maps;
 import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.util.ConfigUtils;
+import com.mogujie.jarvis.core.util.ThreadUtils;
 import com.mogujie.jarvis.protocol.ReportTaskStatusProtos.WorkerReportTaskStatusRequest;
 import com.mogujie.jarvis.worker.domain.TaskEntry;
 import com.mogujie.jarvis.worker.status.TaskStateStore;
@@ -35,6 +37,7 @@ import akka.actor.ActorSystem;
 public class TaskStateRestore extends Thread {
 
     private ActorSystem system;
+    private ActorRef sender;
     private Map<String, TaskEntry> taskEntryMap = TaskConfigUtils.getRegisteredTasks();
     private TaskStateStore taskStateStore = TaskStateStoreFactory.getInstance();
     private Map<TaskDetail, Integer> taskDetailMap = taskStateStore.restore();
@@ -44,8 +47,9 @@ public class TaskStateRestore extends Thread {
     private static final String SERVER_AKKA_PATH = ConfigUtils.getWorkerConfig().getString(WorkerConfigKeys.SERVER_AKKA_PATH)
             + JarvisConstants.SERVER_AKKA_USER_PATH;
 
-    public TaskStateRestore(ActorSystem system) {
+    public TaskStateRestore(ActorSystem system, ActorRef sender) {
         this.system = system;
+        this.sender = sender;
     }
 
     @Override
@@ -56,8 +60,10 @@ public class TaskStateRestore extends Thread {
         }
 
         LOGGER.info("Restoring task status: {} task(s)", taskDetailMap.size());
-        Configuration config = ConfigUtils.getServerConfig();
+        Configuration config = ConfigUtils.getWorkerConfig();
         ActorSelection serverActor = system.actorSelection(SERVER_AKKA_PATH);
+        DateTime now = DateTime.now();
+
         while (taskDetailMap.size() > 0) {
             Iterator<Entry<TaskDetail, Integer>> it = taskDetailMap.entrySet().iterator();
             while (it.hasNext()) {
@@ -86,19 +92,23 @@ public class TaskStateRestore extends Thread {
                             || lookupStatus == TaskStatus.KILLED.getValue()) {
                         it.remove();
                         taskStateStore.delete(fullId);
+                    } else {
+                        continue;
                     }
 
                     WorkerReportTaskStatusRequest request = WorkerReportTaskStatusRequest.newBuilder().setFullId(fullId).setStatus(taskStatus)
-                            .build();
-                    serverActor.tell(request, ActorRef.noSender());
+                            .setTimestamp(now.getMillis()).build();
+                    serverActor.tell(request, sender);
                 } else {
                     WorkerReportTaskStatusRequest request = WorkerReportTaskStatusRequest.newBuilder().setFullId(fullId).setStatus(taskStatus)
-                            .build();
-                    serverActor.tell(request, ActorRef.noSender());
+                            .setTimestamp(now.getMillis()).build();
+                    serverActor.tell(request, sender);
                     it.remove();
                     taskStateStore.delete(fullId);
                 }
             }
+
+            ThreadUtils.sleep(config.getInt(WorkerConfigKeys.WORKER_TASK_STATE_STORE_SLEEP_INTERVAL, 30000));
         }
 
         for (Entry<String, TaskStatusLookup> entry : taskStatusLookupMap.entrySet()) {

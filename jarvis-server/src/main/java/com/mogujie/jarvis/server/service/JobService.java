@@ -50,7 +50,7 @@ import com.mogujie.jarvis.server.domain.JobDependencyEntry;
 import com.mogujie.jarvis.server.domain.JobEntry;
 
 /**
- * @author wuya,muming
+ * @author wuya, muming
  */
 @Singleton
 public class JobService {
@@ -300,20 +300,20 @@ public class JobService {
         List<Job> jobs = getNotDeletedJobs();
         List<JobScheduleExpression> scheduleExpressions = jobScheduleExpressionMapper.selectByExample(new JobScheduleExpressionExample());
         Map<Long, Map<Long, ScheduleExpression>> scheduleExpressionMap = Maps.newHashMap();
-        for (JobScheduleExpression jobScheduleExpression : scheduleExpressions) {
-            long jobId = jobScheduleExpression.getJobId();
-            long expressionId = jobScheduleExpression.getId();
+        for (JobScheduleExpression exp : scheduleExpressions) {
+            long jobId = exp.getJobId();
+            long expressionId = exp.getId();
             ScheduleExpressionType expressionType;
             try {
-                expressionType = ScheduleExpressionType.parseValue(jobScheduleExpression.getExpressionType());
+                expressionType = ScheduleExpressionType.parseValue(exp.getExpressionType());
             } catch (Exception ex) {
-                LOGGER.warn("ExpressionType is undefined. id={};type={}", jobId, jobScheduleExpression.getExpressionType());
+                LOGGER.error("invalid expressionType is found, ignored! expId={}; jobId={}; type='{}'", exp.getId(), jobId, exp.getExpressionType());
                 continue;
             }
-            String expression = jobScheduleExpression.getExpression();
+            String expression = exp.getExpression();
             ScheduleExpression scheduleExpression = getScheduleExpression(expressionType, expression);
             if (scheduleExpression == null || !scheduleExpression.isValid()) {
-                LOGGER.warn("expression value is invalid. id={};value={}", jobId, expression);
+                LOGGER.error("invalid expression is found, ignored! expId={}; jobId={}; type={}; value='{}'", exp.getId(), jobId, expressionType.getDescription(), expression);
                 continue;
             }
 
@@ -353,6 +353,14 @@ public class JobService {
             // 初始化 JobMetaStore
             metaStore.put(job.getJobId(), new JobEntry(job, expressionMap, dependencies));
         }
+    }
+
+    public JobMapper getJobMapper() {
+        return jobMapper;
+    }
+
+    public void setJobMapper(JobMapper jobMapper) {
+        this.jobMapper = jobMapper;
     }
 
     private JobDependencyEntry getJobDependencyEntry(JobDepend jobDepend) {
@@ -423,10 +431,10 @@ public class JobService {
 
     @VisibleForTesting
     public void deleteJobAndRelation(long jobId) {
-        deleteJob(jobId);
         deleteJobDependByPreJobId(jobId);
         deleteJobDependByJobId(jobId);
         deleteScheduleExpressionByJobId(jobId);
+        deleteJob(jobId);
     }
 
 }

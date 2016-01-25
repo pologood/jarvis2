@@ -150,3 +150,14 @@ message ServerQueryJobResponse {
     required bool success = 2;
     optional string message = 3 [default = ""];
 }
+
+message RestRemoveJobRequest {
+	required AppAuth app_auth = 1;
+    required string user = 2;
+    required int64 job_id = 3;
+}
+
+message ServerRemoveJobResponse {
+    required bool success = 1;
+    optional string message = 2 [default = ""];
+}

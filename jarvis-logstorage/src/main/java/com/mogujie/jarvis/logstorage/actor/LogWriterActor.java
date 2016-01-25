@@ -2,7 +2,7 @@
  * 蘑菇街 Inc.
  * Copyright (c) 2010-2015 All Rights Reserved.
  *
- * Author: wuya
+ * Author: muming
  * Create Date: 2015年8月31日 下午4:10:00
  */
 
@@ -16,11 +16,15 @@ import com.mogujie.jarvis.protocol.LogProtos.WorkerWriteLogRequest;
 
 import akka.actor.Props;
 import akka.actor.UntypedActor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * @author 牧名
  */
 public class LogWriterActor extends UntypedActor {
+
+    private  static final Logger logger = LogManager.getLogger();
 
     public static Props props() {
         return Props.create(LogWriterActor.class);
@@ -43,27 +47,37 @@ public class LogWriterActor extends UntypedActor {
      */
     private void writeLog(WorkerWriteLogRequest msg) throws Exception {
 
-        String fullId = msg.getFullId();
-        StreamType streamType = StreamType.parseValue(msg.getType());
-        String log = msg.getLog().toStringUtf8();
-        Boolean isEnd = msg.getIsEnd();
-
-        LogStream logStream = new LocalLogStream(fullId, streamType);
-
-        //写log到本地文件
-        logStream.writeLine(log);
-
-        //log是否结束
-        if (isEnd) {
-            logStream.writeEndFlag();
-        }
-
         //响应值_做成
         LogStorageWriteLogResponse response;
-        response = LogStorageWriteLogResponse.newBuilder().setSuccess(true).build();
 
-        //响应值_返回
-        getSender().tell(response, getSelf());
+        try{
+            String fullId = msg.getFullId();
+            StreamType streamType = StreamType.parseValue(msg.getType());
+            String log = msg.getLog().toStringUtf8();
+            Boolean isEnd = msg.getIsEnd();
+
+            LogStream logStream = new LocalLogStream(fullId, streamType);
+
+            //写log到本地文件
+            logStream.writeText(log);
+
+            //log是否结束
+            if (isEnd) {
+                logStream.writeEndFlag();
+            }
+            logger.info("writeLog:fullId={}, type={}, isEnd={}, log={}",fullId,streamType.getDescription(),isEnd,log);
+
+            response = LogStorageWriteLogResponse.newBuilder().setSuccess(true).build();
+            getSender().tell(response, getSelf());
+        }
+        catch (Exception e){
+            response = LogStorageWriteLogResponse.newBuilder().setSuccess(false)
+                    .setMessage(e.getMessage() != null ? e.getMessage() : e.toString()).build();
+            getSender().tell(response, getSelf());
+            logger.error(e);
+            throw e;
+
+        }
 
     }
 

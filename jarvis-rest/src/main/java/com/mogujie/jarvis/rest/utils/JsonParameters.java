@@ -1,11 +1,11 @@
 package com.mogujie.jarvis.rest.utils;
 
-import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
-
-import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
+import java.lang.reflect.Type;
+
+import com.mogujie.jarvis.core.util.JsonHelper;
 
 /**
  * Created by muming on 15/11/26.
@@ -16,7 +16,6 @@ public class JsonParameters {
     static Type mapType = new TypeToken<Map<String, Object>>() {
     }.getType();
 
-    private static Gson gson = new Gson();
     private Map<String, Object> data;
 
     public JsonParameters(String jsonString) {
@@ -24,7 +23,7 @@ public class JsonParameters {
     }
 
     public JsonParameters(String jsonString, Type typeOfT) {
-        data = gson.fromJson(jsonString, typeOfT);
+        data = JsonHelper.fromJson(jsonString, typeOfT);
         if (data == null) {
             data = new HashMap<>();
         }

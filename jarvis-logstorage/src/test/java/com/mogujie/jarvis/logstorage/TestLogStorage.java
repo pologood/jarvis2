@@ -18,43 +18,46 @@ import com.mogujie.jarvis.logstorage.domain.LogReadResult;
 
 /**
  * @author 牧名
- *
  */
 public class TestLogStorage {
 
     @Test
-    public void testLogWrite() throws ParseException, IOException {
+    public void testLog() throws ParseException, IOException {
+//        testLogWrite();
+        testLogRead();
+    }
 
-        LocalLogStream localLogStream = new LocalLogStream("1001_1002_1",StreamType.STD_OUT);
+    private void testLogWrite() throws ParseException, IOException {
+
+        LocalLogStream localLogStream = new LocalLogStream("1001_1002_1", StreamType.STD_OUT);
         String log;
         for (Integer i = 1; i < 100; i++) {
-            log = "hello " + i.toString();
-            localLogStream.writeLine(log);
+            log = "hello_测试大法好,棒棒哒!" + i.toString()+"\n";
+            localLogStream.writeText(log);
         }
         localLogStream.writeEndFlag();
 
     }
 
-    @Test
-    public void testLogRead() throws ParseException, IOException {
-        LocalLogStream localLogStream = new LocalLogStream("1001_1002_1",StreamType.STD_OUT);
+    private void testLogRead() throws ParseException, IOException {
+        LocalLogStream localLogStream = new LocalLogStream("1001_1002_1", StreamType.STD_OUT);
         long offset = 0;
         int i = 0;
         while (true) {
             i++;
-            LogReadResult result = localLogStream.readLines(offset, 60);
+            LogReadResult result = localLogStream.readText(offset, 5);
             String log = result.getLog();
             if (log.length() > 0) {
-                System.out.printf(log);
+                System.out.printf(log + "\n");
             }
 
             offset = result.getOffset();
             if (result.isEnd()) {
-                System.out.printf("end");
+                System.out.printf("\nend\n");
                 break;
             }
-            if (i > 1000) {
-                System.out.printf("out of test lines");
+            if (i > 3) {
+                System.out.printf("\nout of test lines\n");
                 break;
             }
         }

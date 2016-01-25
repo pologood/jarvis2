@@ -32,24 +32,18 @@ import com.mogujie.jarvis.core.TaskContext;
 import com.mogujie.jarvis.core.TaskContext.TaskContextBuilder;
 import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.domain.TaskDetail.TaskDetailBuilder;
-import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.exception.TaskException;
 import com.mogujie.jarvis.core.util.ConfigUtils;
-import com.mogujie.jarvis.protocol.HeartBeatProtos.HeartBeatResponse;
 import com.mogujie.jarvis.protocol.KillTaskProtos.ServerKillTaskRequest;
 import com.mogujie.jarvis.protocol.KillTaskProtos.WorkerKillTaskResponse;
 import com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry;
-import com.mogujie.jarvis.protocol.WorkerProtos.ServerRegistryResponse;
-import com.mogujie.jarvis.protocol.WorkerProtos.WorkerRegistryRequest;
 import com.mogujie.jarvis.protocol.SubmitTaskProtos.ServerSubmitTaskRequest;
 import com.mogujie.jarvis.worker.DefaultLogCollector;
 import com.mogujie.jarvis.worker.DefaultProgressReporter;
+import com.mogujie.jarvis.worker.DefaultTaskReporter;
 import com.mogujie.jarvis.worker.TaskExecutor;
 import com.mogujie.jarvis.worker.TaskPool;
 import com.mogujie.jarvis.worker.WorkerConfigKeys;
-import com.mogujie.jarvis.worker.status.TaskStateStore;
-import com.mogujie.jarvis.worker.status.TaskStateStoreFactory;
-import com.mogujie.jarvis.worker.util.FutureUtils;
 
 public class TaskActor extends UntypedActor {
 
@@ -61,11 +55,9 @@ public class TaskActor extends UntypedActor {
     private static int keepAliveTime = workerConfig.getInt(WorkerConfigKeys.WORKER_EXECUTOR_POOL_KEEP_ALIVE_SECONDS, 3600);
     private static ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(corePoolSize, maximumPoolSize, keepAliveTime, TimeUnit.SECONDS,
             Queues.newArrayBlockingQueue(corePoolSize));
-
     private static final String SERVER_AKKA_PATH = ConfigUtils.getWorkerConfig().getString(WorkerConfigKeys.SERVER_AKKA_PATH)
             + JarvisConstants.SERVER_AKKA_USER_PATH;
-
-    private static final String LOGSERVER_AKKA_PATH = ConfigUtils.getWorkerConfig().getString(WorkerConfigKeys.LOGSERVER_AKKA_PATH)
+    private static final String LOGSTORAGE_AKKA_PATH = ConfigUtils.getWorkerConfig().getString(WorkerConfigKeys.LOGSTORAGE_AKKA_PATH)
             + JarvisConstants.LOGSTORAGE_AKKA_USER_PATH;
 
     private static final Logger LOGGER = LogManager.getLogger();
@@ -83,11 +75,6 @@ public class TaskActor extends UntypedActor {
             ServerKillTaskRequest request = (ServerKillTaskRequest) obj;
             WorkerKillTaskResponse response = killTask(request);
             getSender().tell(response, getSelf());
-        } else if (obj instanceof HeartBeatResponse) {
-            HeartBeatResponse response = (HeartBeatResponse) obj;
-            if (!response.getSuccess()) {
-                registerWorker();
-            }
         } else {
             unhandled(obj);
         }
@@ -96,6 +83,7 @@ public class TaskActor extends UntypedActor {
     private void submitTask(ServerSubmitTaskRequest request) {
         String fullId = request.getFullId();
         String jobType = request.getJobType();
+        LOGGER.info("receive ServerSubmitTaskRequest[fullId={},jobType={}]", fullId, jobType);
         TaskDetailBuilder taskBuilder = TaskDetail.newTaskDetailBuilder();
         taskBuilder.setFullId(fullId);
         taskBuilder.setTaskName(request.getTaskName());
@@ -118,22 +106,21 @@ public class TaskActor extends UntypedActor {
         TaskDetail taskDetail = taskBuilder.build();
         contextBuilder.setTaskDetail(taskDetail);
 
-        ActorSelection logActor = getContext().actorSelection(LOGSERVER_AKKA_PATH);
+        ActorSelection logActor = getContext().actorSelection(LOGSTORAGE_AKKA_PATH);
         AbstractLogCollector logCollector = new DefaultLogCollector(logActor, fullId);
         contextBuilder.setLogCollector(logCollector);
 
         ActorSelection serverActor = getContext().actorSelection(SERVER_AKKA_PATH);
-        ProgressReporter reporter = new DefaultProgressReporter(serverActor, fullId);
+        ProgressReporter reporter = new DefaultProgressReporter(serverActor, getSelf(), fullId);
         contextBuilder.setProgressReporter(reporter);
-
-        TaskStateStore taskStateStore = TaskStateStoreFactory.getInstance();
-        taskStateStore.write(taskDetail, TaskStatus.RUNNING.getValue());
+        contextBuilder.setTaskReporter(new DefaultTaskReporter(serverActor, getSelf()));
 
         threadPoolExecutor.execute(new TaskExecutor(contextBuilder.build(), getSelf(), getSender(), serverActor));
     }
 
     private WorkerKillTaskResponse killTask(ServerKillTaskRequest request) {
         String fullId = request.getFullId();
+        LOGGER.info("receive ServerKillTaskRequest[fullId={}]", fullId);
         AbstractTask task = taskPool.get(fullId);
         if (task != null) {
             taskPool.remove(fullId);
@@ -145,29 +132,6 @@ public class TaskActor extends UntypedActor {
         }
 
         return WorkerKillTaskResponse.newBuilder().setSuccess(true).build();
-    }
-
-    private void registerWorker() {
-        Configuration workerConfig = ConfigUtils.getWorkerConfig();
-        String serverAkkaPath = workerConfig.getString(WorkerConfigKeys.SERVER_AKKA_PATH) + JarvisConstants.SERVER_AKKA_USER_PATH;
-        int workerGroupId = workerConfig.getInt(WorkerConfigKeys.WORKER_GROUP_ID, 0);
-        String workerKey = workerConfig.getString(WorkerConfigKeys.WORKER_KEY);
-        WorkerRegistryRequest request = WorkerRegistryRequest.newBuilder().setKey(workerKey).build();
-
-        // 注册Worker
-        ActorSelection serverActor = getContext().actorSelection(serverAkkaPath);
-        try {
-            ServerRegistryResponse response = (ServerRegistryResponse) FutureUtils.awaitResult(serverActor, request, 30);
-            if (!response.getSuccess()) {
-                LOGGER.error("Worker register failed with group.id={}, worker.key={}", workerGroupId, workerKey);
-                return;
-            } else {
-                LOGGER.info("Worker register successful");
-            }
-        } catch (Exception e) {
-            LOGGER.error("Worker register failed", e);
-            return;
-        }
     }
 
 }

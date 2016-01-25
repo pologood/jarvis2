@@ -65,14 +65,14 @@ public final class LogProtos {
         long getOffset();
 
         /**
-         * <code>optional int32 lines = 5 [default = 100];</code>
+         * <code>optional int32 size = 5 [default = 10000];</code>
          */
-        boolean hasLines();
+        boolean hasSize();
 
         /**
-         * <code>optional int32 lines = 5 [default = 100];</code>
+         * <code>optional int32 size = 5 [default = 10000];</code>
          */
-        int getLines();
+        int getSize();
     }
 
     /**
@@ -158,7 +158,7 @@ public final class LogProtos {
                         }
                         case 40: {
                             bitField0_ |= 0x00000010;
-                            lines_ = input.readInt32();
+                            size_ = input.readInt32();
                             break;
                         }
                     }
@@ -307,23 +307,23 @@ public final class LogProtos {
             return offset_;
         }
 
-        public static final int LINES_FIELD_NUMBER = 5;
-        private int lines_;
+        public static final int SIZE_FIELD_NUMBER = 5;
+        private int size_;
 
         /**
-         * <code>optional int32 lines = 5 [default = 100];</code>
+         * <code>optional int32 size = 5 [default = 10000];</code>
          */
         @Override
-        public boolean hasLines() {
+        public boolean hasSize() {
             return ((bitField0_ & 0x00000010) == 0x00000010);
         }
 
         /**
-         * <code>optional int32 lines = 5 [default = 100];</code>
+         * <code>optional int32 size = 5 [default = 10000];</code>
          */
         @Override
-        public int getLines() {
-            return lines_;
+        public int getSize() {
+            return size_;
         }
 
         private void initFields() {
@@ -331,7 +331,7 @@ public final class LogProtos {
             fullId_ = "";
             type_ = 0;
             offset_ = 0L;
-            lines_ = 100;
+            size_ = 10000;
         }
 
         private byte memoizedIsInitialized = -1;
@@ -380,7 +380,7 @@ public final class LogProtos {
                 output.writeInt64(4, offset_);
             }
             if (((bitField0_ & 0x00000010) == 0x00000010)) {
-                output.writeInt32(5, lines_);
+                output.writeInt32(5, size_);
             }
             getUnknownFields().writeTo(output);
         }
@@ -407,7 +407,7 @@ public final class LogProtos {
                 size += com.google.protobuf.CodedOutputStream.computeInt64Size(4, offset_);
             }
             if (((bitField0_ & 0x00000010) == 0x00000010)) {
-                size += com.google.protobuf.CodedOutputStream.computeInt32Size(5, lines_);
+                size += com.google.protobuf.CodedOutputStream.computeInt32Size(5, size_);
             }
             size += getUnknownFields().getSerializedSize();
             memoizedSerializedSize = size;
@@ -546,7 +546,7 @@ public final class LogProtos {
                 bitField0_ = (bitField0_ & ~0x00000004);
                 offset_ = 0L;
                 bitField0_ = (bitField0_ & ~0x00000008);
-                lines_ = 100;
+                size_ = 10000;
                 bitField0_ = (bitField0_ & ~0x00000010);
                 return this;
             }
@@ -603,7 +603,7 @@ public final class LogProtos {
                 if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
                     to_bitField0_ |= 0x00000010;
                 }
-                result.lines_ = lines_;
+                result.size_ = size_;
                 result.bitField0_ = to_bitField0_;
                 onBuilt();
                 return result;
@@ -636,8 +636,8 @@ public final class LogProtos {
                 if (other.hasOffset()) {
                     setOffset(other.getOffset());
                 }
-                if (other.hasLines()) {
-                    setLines(other.getLines());
+                if (other.hasSize()) {
+                    setSize(other.getSize());
                 }
                 this.mergeUnknownFields(other.getUnknownFields());
                 return this;
@@ -959,40 +959,40 @@ public final class LogProtos {
                 return this;
             }
 
-            private int lines_ = 100;
+            private int size_ = 10000;
 
             /**
-             * <code>optional int32 lines = 5 [default = 100];</code>
+             * <code>optional int32 size = 5 [default = 10000];</code>
              */
             @Override
-            public boolean hasLines() {
+            public boolean hasSize() {
                 return ((bitField0_ & 0x00000010) == 0x00000010);
             }
 
             /**
-             * <code>optional int32 lines = 5 [default = 100];</code>
+             * <code>optional int32 size = 5 [default = 10000];</code>
              */
             @Override
-            public int getLines() {
-                return lines_;
+            public int getSize() {
+                return size_;
             }
 
             /**
-             * <code>optional int32 lines = 5 [default = 100];</code>
+             * <code>optional int32 size = 5 [default = 10000];</code>
              */
-            public Builder setLines(int value) {
+            public Builder setSize(int value) {
                 bitField0_ |= 0x00000010;
-                lines_ = value;
+                size_ = value;
                 onChanged();
                 return this;
             }
 
             /**
-             * <code>optional int32 lines = 5 [default = 100];</code>
+             * <code>optional int32 size = 5 [default = 10000];</code>
              */
-            public Builder clearLines() {
+            public Builder clearSize() {
                 bitField0_ = (bitField0_ & ~0x00000010);
-                lines_ = 100;
+                size_ = 10000;
                 onChanged();
                 return this;
             }
@@ -3362,16 +3362,16 @@ public final class LogProtos {
 
     static {
         java.lang.String[] descriptorData = {
-                "\n\tlog.proto\032\016app_auth.proto\"v\n\022RestReadL" + "ogRequest\022\032\n\010app_auth\030\001 \002(\0132\010.AppAuth\022\017\n"
+                "\n\tlog.proto\032\016app_auth.proto\"w\n\022RestReadL" + "ogRequest\022\032\n\010app_auth\030\001 \002(\0132\010.AppAuth\022\017\n"
                         + "\007full_id\030\002 \002(\t\022\014\n\004type\030\003 \002(\005\022\021\n\006offset\030\004"
-                        + " \001(\003:\0010\022\022\n\005lines\030\005 \001(\005:\003100\"l\n\031LogStorag"
-                        + "eReadLogResponse\022\013\n\003log\030\001 \001(\t\022\016\n\006is_end\030"
-                        + "\002 \001(\010\022\016\n\006offset\030\003 \001(\003\022\017\n\007success\030\004 \002(\010\022\021"
-                        + "\n\007message\030\005 \001(\t:\000\"S\n\025WorkerWriteLogReque"
-                        + "st\022\017\n\007full_id\030\001 \002(\t\022\013\n\003log\030\002 \002(\014\022\014\n\004type"
-                        + "\030\003 \002(\005\022\016\n\006is_end\030\004 \002(\010\"@\n\032LogStorageWrit"
-                        + "eLogResponse\022\017\n\007success\030\001 \002(\010\022\021\n\007message",
-                "\030\002 \001(\t:\000B(\n\033com.mogujie.jarvis.protocolB" + "\tLogProtos" };
+                        + " \001(\003:\0010\022\023\n\004size\030\005 \001(\005:\00510000\"l\n\031LogStora"
+                        + "geReadLogResponse\022\013\n\003log\030\001 \001(\t\022\016\n\006is_end"
+                        + "\030\002 \001(\010\022\016\n\006offset\030\003 \001(\003\022\017\n\007success\030\004 \002(\010\022"
+                        + "\021\n\007message\030\005 \001(\t:\000\"S\n\025WorkerWriteLogRequ"
+                        + "est\022\017\n\007full_id\030\001 \002(\t\022\013\n\003log\030\002 \002(\014\022\014\n\004typ"
+                        + "e\030\003 \002(\005\022\016\n\006is_end\030\004 \002(\010\"@\n\032LogStorageWri"
+                        + "teLogResponse\022\017\n\007success\030\001 \002(\010\022\021\n\007messag",
+                "e\030\002 \001(\t:\000B(\n\033com.mogujie.jarvis.protocol" + "B\tLogProtos" };
         com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner = new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
             @Override
             public com.google.protobuf.ExtensionRegistry assignDescriptors(com.google.protobuf.Descriptors.FileDescriptor root) {
@@ -3383,7 +3383,7 @@ public final class LogProtos {
                 new com.google.protobuf.Descriptors.FileDescriptor[] { com.mogujie.jarvis.protocol.AppAuthProtos.getDescriptor(), }, assigner);
         internal_static_RestReadLogRequest_descriptor = getDescriptor().getMessageTypes().get(0);
         internal_static_RestReadLogRequest_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-                internal_static_RestReadLogRequest_descriptor, new java.lang.String[] { "AppAuth", "FullId", "Type", "Offset", "Lines", });
+                internal_static_RestReadLogRequest_descriptor, new java.lang.String[] { "AppAuth", "FullId", "Type", "Offset", "Size", });
         internal_static_LogStorageReadLogResponse_descriptor = getDescriptor().getMessageTypes().get(1);
         internal_static_LogStorageReadLogResponse_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
                 internal_static_LogStorageReadLogResponse_descriptor, new java.lang.String[] { "Log", "IsEnd", "Offset", "Success", "Message", });

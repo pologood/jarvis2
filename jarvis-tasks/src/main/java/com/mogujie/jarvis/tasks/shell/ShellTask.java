@@ -33,11 +33,17 @@ import com.mogujie.jarvis.tasks.util.ShellUtils;
 public class ShellTask extends AbstractTask {
 
     private Process shellProcess = null;
-    private static final String STATUS_PATH = ConfigUtils.getWorkerConfig().getString("shell.status.data.dir");
+    private static final String DEFAULT_STATUS_PATH = "/tmp/jarvis_shell_status";
+    private static final String STATUS_PATH_KEY = "shell.status.data.dir";
+    private static final String STATUS_PATH = ConfigUtils.getWorkerConfig().getString(STATUS_PATH_KEY, DEFAULT_STATUS_PATH);
     private static final Logger LOGGER = LogManager.getLogger();
 
     public ShellTask(TaskContext taskContext) {
         super(taskContext);
+        File file = new File(STATUS_PATH);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
     }
 
     public String getCommand() {
@@ -69,8 +75,8 @@ public class ShellTask extends AbstractTask {
     @Override
     public boolean execute() {
         TaskDetail task = getTaskContext().getTaskDetail();
+        String statusFilePath = STATUS_PATH + "/" + task.getFullId() + ".status";
         try {
-            String statusFilePath = STATUS_PATH + "/" + task.getFullId() + ".status";
             StringBuilder sb = new StringBuilder();
             String cmd = getCommand();
             sb.append(cmd);
@@ -91,7 +97,11 @@ public class ShellTask extends AbstractTask {
             stderrStreamProcessor.start();
 
             boolean result = (shellProcess.waitFor() == 0);
-
+            return result;
+        } catch (Exception e) {
+            getTaskContext().getLogCollector().collectStderr(e.getMessage());
+            return false;
+        } finally {
             // 删除状态文件
             File statusFile = new File(statusFilePath);
             if (statusFile.exists()) {
@@ -100,11 +110,6 @@ public class ShellTask extends AbstractTask {
                     LOGGER.error("File [" + statusFilePath + "] delete failed");
                 }
             }
-
-            return result;
-        } catch (Exception e) {
-            getTaskContext().getLogCollector().collectStderr(e.getMessage());
-            return false;
         }
     }
 
@@ -113,7 +118,6 @@ public class ShellTask extends AbstractTask {
         if (shellProcess != null) {
             shellProcess.destroy();
         }
-
         return true;
     }
 

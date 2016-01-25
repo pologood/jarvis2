@@ -13,6 +13,7 @@ import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.joda.time.DateTime;
 
 import akka.actor.ActorRef;
 import akka.actor.Address;
@@ -31,6 +32,8 @@ import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.protocol.ReportTaskProgressProtos.ServerReportTaskProgressResponse;
 import com.mogujie.jarvis.protocol.ReportTaskProgressProtos.WorkerReportTaskProgressRequest;
+import com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskResponse;
+import com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskRequest;
 import com.mogujie.jarvis.protocol.ReportTaskStatusProtos.ServerReportTaskStatusResponse;
 import com.mogujie.jarvis.protocol.ReportTaskStatusProtos.WorkerReportTaskStatusRequest;
 import com.mogujie.jarvis.server.domain.ActorEntry;
@@ -72,7 +75,7 @@ public class TaskMetricsActor extends UntypedActor {
             long jobId = IdUtils.parse(fullId, IdType.JOB_ID);
             long taskId = IdUtils.parse(fullId, IdType.TASK_ID);
             TaskStatus status = TaskStatus.parseValue(msg.getStatus());
-            LOGGER.info("receive task {} status {}", taskId, status);
+            LOGGER.info("receive WorkerReportTaskStatusRequest [taskId={},status={}]", taskId, status);
             Event event = new UnhandleEvent();
             Address address = getSender().path().address();
             String ip = address.host().get();
@@ -93,9 +96,6 @@ public class TaskMetricsActor extends UntypedActor {
             }
             schedulerController.notify(event);
 
-            ServerReportTaskStatusResponse response = ServerReportTaskStatusResponse.newBuilder().setSuccess(true).build();
-            getSender().tell(response, getSelf());
-
             // http callback
             JobEntry jobEntry = jobService.get(jobId);
             if (jobEntry != null) {
@@ -114,14 +114,23 @@ public class TaskMetricsActor extends UntypedActor {
                 }
             }
         } else if (obj instanceof WorkerReportTaskProgressRequest) {
-            WorkerReportTaskProgressRequest request = (WorkerReportTaskProgressRequest) obj;
-            String fullId = request.getFullId();
+            WorkerReportTaskProgressRequest msg = (WorkerReportTaskProgressRequest) obj;
+            String fullId = msg.getFullId();
             long taskId = IdUtils.parse(fullId, IdType.TASK_ID);
-            float progress = request.getProgress();
-            LOGGER.info("receive task {} progress {}", taskId, progress);
+            float progress = msg.getProgress();
+            LOGGER.info("receive WorkerReportTaskProgressRequest [taskId={},progress={}]", taskId, progress);
             taskService.updateProgress(taskId, progress);
-            ServerReportTaskProgressResponse response = ServerReportTaskProgressResponse.newBuilder().setSuccess(true).build();
-            getSender().tell(response, getSelf());
+        } else if (obj instanceof WorkerReportTaskRequest) {
+            WorkerReportTaskRequest msg = (WorkerReportTaskRequest) obj;
+            String fullId = msg.getFullId();
+            String content = msg.getContent();
+            long taskId = IdUtils.parse(fullId, IdType.TASK_ID);
+            LOGGER.info("receive WorkerReportTaskRequest [taskId={}]", taskId);
+            Task task = new Task();
+            task.setTaskId(taskId);
+            task.setContent(content);
+            task.setUpdateTime(DateTime.now().toDate());
+            taskService.updateSelective(task);
         } else {
             unhandled(obj);
         }
@@ -131,6 +140,7 @@ public class TaskMetricsActor extends UntypedActor {
         List<ActorEntry> list = new ArrayList<>();
         list.add(new ActorEntry(WorkerReportTaskStatusRequest.class, ServerReportTaskStatusResponse.class, MessageType.SYSTEM));
         list.add(new ActorEntry(WorkerReportTaskProgressRequest.class, ServerReportTaskProgressResponse.class, MessageType.SYSTEM));
+        list.add(new ActorEntry(WorkerReportTaskRequest.class, ServerReportTaskResponse.class, MessageType.SYSTEM));
         return list;
     }
 }

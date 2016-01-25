@@ -25,7 +25,6 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.mashape.unirest.request.GetRequest;
-import com.mogujie.jarvis.core.exception.AcceptanceException;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.worker.WorkerConfigKeys;
 import com.mogujie.jarvis.worker.strategy.AcceptanceStrategy;
@@ -50,7 +49,7 @@ public class TestYarnMemoryAcceptanceStrategy {
     }
 
     @Test
-    public void testAccept() throws AcceptanceException {
+    public void testAccept() throws Exception {
         Configuration config = new PropertiesConfiguration();
         config.addProperty(WorkerConfigKeys.YARN_MEMORY_USAGE_THRESHOLD, 0.9);
         config.addProperty(WorkerConfigKeys.YARN_RESOUCEMANAGER_REST_API_URIS, Lists.newArrayList("", ""));

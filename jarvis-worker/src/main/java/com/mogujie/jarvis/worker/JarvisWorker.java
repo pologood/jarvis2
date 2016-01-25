@@ -9,17 +9,11 @@
 package com.mogujie.jarvis.worker;
 
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import org.apache.commons.configuration.Configuration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import scala.concurrent.duration.Duration;
-import akka.actor.ActorRef;
-import akka.actor.ActorSelection;
-import akka.actor.ActorSystem;
-import akka.actor.DeadLetter;
-import akka.routing.SmallestMailboxPool;
 
 import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.metrics.Metrics;
@@ -31,6 +25,13 @@ import com.mogujie.jarvis.worker.actor.DeadLetterActor;
 import com.mogujie.jarvis.worker.actor.TaskActor;
 import com.mogujie.jarvis.worker.util.FutureUtils;
 import com.typesafe.config.Config;
+
+import akka.actor.ActorRef;
+import akka.actor.ActorSelection;
+import akka.actor.ActorSystem;
+import akka.actor.DeadLetter;
+import akka.routing.SmallestMailboxPool;
+import scala.concurrent.duration.Duration;
 
 public class JarvisWorker {
 
@@ -53,7 +54,7 @@ public class JarvisWorker {
             WorkerRegistryRequest request = WorkerRegistryRequest.newBuilder().setKey(workerKey).build();
             ActorSelection serverActor = system.actorSelection(serverAkkaPath);
             try {
-                ServerRegistryResponse response = (ServerRegistryResponse) FutureUtils.awaitResult(serverActor, request, 30);
+                ServerRegistryResponse response = (ServerRegistryResponse) FutureUtils.awaitResult(serverActor, request, 5);
                 if (!response.getSuccess()) {
                     LOGGER.error("Worker register failed with group.id={}, worker.key={}, exit", workerGroupId, workerKey);
                     system.terminate();
@@ -62,11 +63,13 @@ public class JarvisWorker {
                     LOGGER.info("Worker register successfully");
                     break;
                 }
-            } catch (Exception e) {
-                LOGGER.error("Worker register timeout, waiting to retry...", e.getMessage());
+            } catch (TimeoutException e) {
+                LOGGER.error("Worker register timeout, waiting to retry..."+ e.toString());
+            } catch (Exception e){
+                LOGGER.error("Worker register failed, waiting to retry...", e);
             }
 
-            ThreadUtils.sleep(workerConfig.getInt(WorkerConfigKeys.WORKER_REGISTRY_FAILED_INTERVAL, 5000));
+            ThreadUtils.sleep(workerConfig.getInt(WorkerConfigKeys.WORKER_REGISTRY_FAILED_INTERVAL, 3000));
         }
 
         ActorRef deadLetterActor = system.actorOf(new SmallestMailboxPool(10).props(DeadLetterActor.props()));
@@ -74,13 +77,13 @@ public class JarvisWorker {
 
         // 心跳汇报
         int actorNum = workerConfig.getInt(WorkerConfigKeys.WORKER_ACTORS_NUM, 500);
-        ActorRef workerActor = system.actorOf(new SmallestMailboxPool(actorNum).props(TaskActor.props()), JarvisConstants.WORKER_AKKA_SYSTEM_NAME);
+        ActorRef taskActor = system.actorOf(new SmallestMailboxPool(actorNum).props(TaskActor.props()), JarvisConstants.WORKER_AKKA_SYSTEM_NAME);
         ActorSelection heartBeatActor = system.actorSelection(serverAkkaPath);
         int heartBeatInterval = workerConfig.getInt(WorkerConfigKeys.WORKER_HEART_BEAT_INTERVAL_SECONDS, 5);
         system.scheduler().schedule(Duration.Zero(), Duration.create(heartBeatInterval, TimeUnit.SECONDS),
-                new HeartBeatThread(heartBeatActor, workerActor), system.dispatcher());
+                new HeartBeatThread(heartBeatActor, taskActor), system.dispatcher());
 
-        Thread taskStateRestore = new TaskStateRestore(system);
+        Thread taskStateRestore = new TaskStateRestore(system, taskActor);
         taskStateRestore.start();
         LOGGER.info("TaskStateRestore started.");
 

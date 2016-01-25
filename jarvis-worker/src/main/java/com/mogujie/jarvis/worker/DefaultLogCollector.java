@@ -10,21 +10,26 @@ package com.mogujie.jarvis.worker;
 
 import java.nio.charset.StandardCharsets;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.google.protobuf.ByteString;
 import com.mogujie.jarvis.core.AbstractLogCollector;
 import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.domain.StreamType;
 import com.mogujie.jarvis.core.util.ConfigUtils;
+import com.mogujie.jarvis.protocol.LogProtos.LogStorageWriteLogResponse;
 import com.mogujie.jarvis.protocol.LogProtos.WorkerWriteLogRequest;
+import com.mogujie.jarvis.worker.util.FutureUtils;
 
-import akka.actor.ActorRef;
 import akka.actor.ActorSelection;
 
 /**
  * @author wuya
- *
  */
 public class DefaultLogCollector extends AbstractLogCollector {
+
+    private static Logger logger = LogManager.getLogger();
 
     private ActorSelection actor;
     private String fullId;
@@ -36,6 +41,8 @@ public class DefaultLogCollector extends AbstractLogCollector {
     }
 
     private void sendLog(String line, boolean isEnd, StreamType streamType) {
+        logger.info("sendLog:fullId={} ,type={} ,isEnd={}, log={}", fullId, streamType.getDescription(), isEnd, line);
+
         byte[] bytes = (line + JarvisConstants.LINE_SEPARATOR).getBytes(StandardCharsets.UTF_8);
         int srcLen = bytes.length;
         int i = 0;
@@ -54,8 +61,15 @@ public class DefaultLogCollector extends AbstractLogCollector {
 
             WorkerWriteLogRequest request = WorkerWriteLogRequest.newBuilder().setFullId(fullId).setType(streamType.getValue())
                     .setLog(ByteString.copyFrom(dest)).setIsEnd(sendEnd).build();
-            actor.tell(request, ActorRef.noSender());
-            i++;
+            LogStorageWriteLogResponse response;
+            try {
+                response = (LogStorageWriteLogResponse) FutureUtils.awaitResult(actor, request, 10);
+                if (response.getSuccess()) {
+                    i++;
+                }
+            } catch (Exception e) {
+                logger.error(e);
+            }
         }
     }
 

@@ -14,7 +14,7 @@ import java.util.List;
  * @author guangming
  *
  */
-public class RerunTaskVo extends  AbstractVo {
+public class TaskRerunVo extends  AbstractVo {
     private List<Long> jobIdList;
     private Long startDate;
     private Long endDate;

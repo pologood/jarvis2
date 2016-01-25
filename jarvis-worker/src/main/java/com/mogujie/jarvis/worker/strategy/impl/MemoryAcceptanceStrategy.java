@@ -14,7 +14,6 @@ import org.hyperic.sigar.Mem;
 import org.hyperic.sigar.Sigar;
 import org.hyperic.sigar.SigarException;
 
-import com.mogujie.jarvis.core.exception.AcceptanceException;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.worker.WorkerConfigKeys;
 import com.mogujie.jarvis.worker.strategy.AcceptanceResult;
@@ -31,7 +30,7 @@ public class MemoryAcceptanceStrategy implements AcceptanceStrategy {
       .getDouble(WorkerConfigKeys.WORKER_MEMORY_USAGE_THRESHOLD, 0.9);
 
   @Override
-  public AcceptanceResult accept() throws AcceptanceException {
+  public AcceptanceResult accept() throws Exception {
     Sigar sigar = new Sigar();
     try {
       Mem mem = sigar.getMem();

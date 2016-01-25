@@ -12,7 +12,6 @@ import java.lang.management.ManagementFactory;
 import java.lang.management.OperatingSystemMXBean;
 import java.text.DecimalFormat;
 
-import com.mogujie.jarvis.core.exception.AcceptanceException;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.worker.WorkerConfigKeys;
 import com.mogujie.jarvis.worker.strategy.AcceptanceResult;
@@ -30,7 +29,7 @@ public class LoadAcceptanceStrategy implements AcceptanceStrategy {
       .getDouble(WorkerConfigKeys.WORKER_CPU_LOAD_AVG_THRESHOLD, CPU_NUM * 1.5);
 
   @Override
-  public AcceptanceResult accept() throws AcceptanceException {
+  public AcceptanceResult accept() throws Exception {
     OperatingSystemMXBean bean = ManagementFactory.getOperatingSystemMXBean();
     double currentLoad = bean.getSystemLoadAverage();
     if (currentLoad > LOAD_THRESHOLD) {

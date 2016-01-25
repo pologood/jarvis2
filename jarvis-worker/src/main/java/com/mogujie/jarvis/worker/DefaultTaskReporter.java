@@ -10,21 +10,25 @@ package com.mogujie.jarvis.worker;
 
 import java.util.Map.Entry;
 
-import akka.actor.ActorRef;
-import akka.actor.ActorSelection;
-
+import com.mogujie.jarvis.core.TaskReporter;
 import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry;
 import com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskRequest;
 
-public class DefaultTaskReporter {
+import akka.actor.ActorRef;
+import akka.actor.ActorSelection;
+
+public class DefaultTaskReporter implements TaskReporter {
 
     private ActorSelection actor;
+    private ActorRef sender;
 
-    public DefaultTaskReporter(ActorSelection actor) {
+    public DefaultTaskReporter(ActorSelection actor, ActorRef sender) {
         this.actor = actor;
+        this.sender = sender;
     }
 
+    @Override
     public void report(TaskDetail taskDetail) {
         WorkerReportTaskRequest.Builder builder = WorkerReportTaskRequest.newBuilder();
         builder.setFullId(taskDetail.getFullId());
@@ -40,7 +44,7 @@ public class DefaultTaskReporter {
             builder.addParameters(i++, mapEntry);
         }
 
-        actor.tell(builder.build(), ActorRef.noSender());
+        actor.tell(builder.build(), sender);
     }
 
 }

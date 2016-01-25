@@ -8,7 +8,7 @@ message RestReadLogRequest {
     required string full_id = 2;
     required int32 type = 3;
     optional int64 offset = 4 [default = 0];
-    optional int32 lines = 5 [default = 100];
+    optional int32 size = 5 [default = 10000];
 }
 
 message LogStorageReadLogResponse {

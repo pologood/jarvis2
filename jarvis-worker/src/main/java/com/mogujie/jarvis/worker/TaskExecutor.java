@@ -14,7 +14,9 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.google.common.base.Throwables;
+import akka.actor.ActorRef;
+import akka.actor.ActorSelection;
+
 import com.mogujie.jarvis.core.AbstractLogCollector;
 import com.mogujie.jarvis.core.AbstractTask;
 import com.mogujie.jarvis.core.ProgressReporter;
@@ -30,9 +32,6 @@ import com.mogujie.jarvis.worker.status.TaskStateStoreFactory;
 import com.mogujie.jarvis.worker.strategy.AcceptanceResult;
 import com.mogujie.jarvis.worker.strategy.AcceptanceStrategy;
 import com.mogujie.jarvis.worker.util.TaskConfigUtils;
-
-import akka.actor.ActorRef;
-import akka.actor.ActorSelection;
 
 public class TaskExecutor extends Thread {
 
@@ -52,7 +51,16 @@ public class TaskExecutor extends Thread {
 
     @Override
     public void run() {
-        TaskEntry taskEntry = TaskConfigUtils.getRegisteredTasks().get(taskContext.getTaskDetail().getJobType());
+        String fullId = taskContext.getTaskDetail().getFullId();
+        String jobType = taskContext.getTaskDetail().getJobType();
+        TaskEntry taskEntry = TaskConfigUtils.getRegisteredTasks().get(jobType);
+        if (taskEntry == null) {
+            String errMsg = "cant't get jobType={" + jobType + "} from task.xml";
+            LOGGER.error(errMsg);
+            senderActor.tell(WorkerSubmitTaskResponse.newBuilder().setAccept(false).setSuccess(false).setMessage(errMsg).build(), selfActor);
+            return;
+        }
+
         List<AcceptanceStrategy> strategies = taskEntry.getAcceptanceStrategy();
         for (AcceptanceStrategy strategy : strategies) {
             try {
@@ -60,9 +68,15 @@ public class TaskExecutor extends Thread {
                 if (!result.isAccepted()) {
                     senderActor.tell(WorkerSubmitTaskResponse.newBuilder().setAccept(false).setSuccess(true).setMessage(result.getMessage()).build(),
                             selfActor);
+                    LOGGER.warn("AcceptanceStrategy={} check failed.", strategy.getClass().getSimpleName());
                     return;
                 }
             } catch (AcceptanceException e) {
+                senderActor.tell(WorkerSubmitTaskResponse.newBuilder().setAccept(false).setSuccess(false).setMessage(e.getMessage()).build(),
+                        selfActor);
+                return;
+            } catch (Throwable e) {
+                LOGGER.error("", e);
                 senderActor.tell(WorkerSubmitTaskResponse.newBuilder().setAccept(false).setSuccess(false).setMessage(e.getMessage()).build(),
                         selfActor);
                 return;
@@ -75,19 +89,28 @@ public class TaskExecutor extends Thread {
             Constructor<? extends AbstractTask> constructor = ((Class<? extends AbstractTask>) Class.forName(taskEntry.getTaskClass()))
                     .getConstructor(TaskContext.class);
             AbstractTask task = constructor.newInstance(taskContext);
-            String fullId = taskContext.getTaskDetail().getFullId();
+            LOGGER.info("create task executor [fullId={},jobType={}]", fullId, jobType);
+
             ProgressReporter reporter = taskContext.getProgressReporter();
             AbstractLogCollector logCollector = taskContext.getLogCollector();
             taskPool.add(fullId, task);
+
+            TaskStateStore taskStateStore = TaskStateStoreFactory.getInstance();
+            taskStateStore.write(taskContext.getTaskDetail(), TaskStatus.RUNNING.getValue());
+            LOGGER.info("write State[fullId={},status=RUNNING] to TaskStateStore", fullId);
             serverActor.tell(WorkerReportTaskStatusRequest.newBuilder().setFullId(fullId).setStatus(TaskStatus.RUNNING.getValue())
                     .setTimestamp(System.currentTimeMillis() / 1000).build(), selfActor);
+            LOGGER.info("report status[fullId={},status=RUNNING] to server.", fullId);
             reporter.report(0);
 
             boolean result = false;
             try {
                 task.preExecute();
+                LOGGER.info("task[fullId={}] preExecute finished.", fullId);
                 result = task.execute();
+                LOGGER.info("task[fullId={}] execute finished, result={}.", fullId, result);
                 task.postExecute();
+                LOGGER.info("task[fullId={}] postExecute finished.", fullId);
             } catch (TaskException e) {
                 logCollector.collectStderr(e.getMessage(), true);
             }
@@ -100,18 +123,17 @@ public class TaskExecutor extends Thread {
                         .setTimestamp(System.currentTimeMillis() / 1000).build(), selfActor);
             }
 
-            TaskStateStore taskStateStore = TaskStateStoreFactory.getInstance();
-            taskStateStore.delete(taskContext.getTaskDetail().getFullId());
-
             reporter.report(1);
             logCollector.collectStderr("", true);
             logCollector.collectStdout("", true);
             taskPool.remove(fullId);
-        } catch (RuntimeException e) {
-            Throwables.propagate(e);
-        } catch (Exception e) {
+        } catch (Throwable e) {
             LOGGER.error("", e);
-            senderActor.tell(WorkerSubmitTaskResponse.newBuilder().setAccept(false).setMessage(e.getMessage()).build(), selfActor);
+            serverActor.tell(WorkerReportTaskStatusRequest.newBuilder().setFullId(fullId).setStatus(TaskStatus.FAILED.getValue())
+                    .setTimestamp(System.currentTimeMillis() / 1000).build(), selfActor);
+        }finally{
+            TaskStateStore taskStateStore = TaskStateStoreFactory.getInstance();
+            taskStateStore.delete(taskContext.getTaskDetail().getFullId());
         }
     }
 

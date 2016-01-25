@@ -2,7 +2,8 @@
  * 蘑菇街 Inc.
  * Copyright (c) 2010-2015 All Rights Reserved.
  *
- * Author: wuya Create Date: 2015年10月12日 上午11:14:54
+ * Author: wuya
+ * Create Date: 2015年10月12日 上午11:14:54
  */
 
 package com.mogujie.jarvis.server.actor;
@@ -10,20 +11,24 @@ package com.mogujie.jarvis.server.actor;
 import java.util.ArrayList;
 import java.util.List;
 
-import akka.actor.Props;
-import akka.actor.UntypedActor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.core.domain.SystemStatus;
-import com.mogujie.jarvis.protocol.SystemProtos.*;
+import com.mogujie.jarvis.protocol.SystemProtos.RestGetSystemStatusRequest;
+import com.mogujie.jarvis.protocol.SystemProtos.RestUpdateSystemStatusRequest;
+import com.mogujie.jarvis.protocol.SystemProtos.ServerGetSystemStatusResponse;
+import com.mogujie.jarvis.protocol.SystemProtos.ServerUpdateSystemStatusResponse;
 import com.mogujie.jarvis.server.dispatcher.TaskDispatcher;
 import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.event.StartEvent;
 import com.mogujie.jarvis.server.scheduler.event.StopEvent;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
+import akka.actor.Props;
+import akka.actor.UntypedActor;
 
 public class SystemActor extends UntypedActor {
 

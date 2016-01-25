@@ -14,7 +14,6 @@ import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.service.WorkerGroupService;
 import com.mogujie.jarvis.server.service.WorkerService;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.core.classloader.annotations.SuppressStaticInitializationFor;
@@ -37,23 +36,23 @@ import static org.powermock.api.mockito.PowerMockito.when;
         WorkerModifyStatusActor.class,
         WorkerGroupActor.class})
 @SuppressStaticInitializationFor("com.mogujie.jarvis.server.guice.Injectors")
-public class TestWorkerServiceBase {
+public abstract class TestWorkerServiceBase {
 
-    protected  WorkerService workerService = new WorkerService();
-    protected  WorkerGroupService workerGroupService = new WorkerGroupService();
-    protected  WorkerRegistry workerRegistry = new WorkerRegistry();
-    protected  WorkerMapper workerMapper;
-    protected  WorkerGroupMapper workerGroupMapper;
-    protected  WorkerGroup workerGroup = new WorkerGroup();
-    protected  Worker worker = new Worker();
-    protected  List<Worker> workers = new ArrayList<Worker>();
-    protected  List<WorkerGroup> workerGroups = new ArrayList<WorkerGroup>();
-    protected  WorkerExample example;
-    protected  List<Integer> resultList = new ArrayList<Integer>();
-    protected  Injector injector;
+    protected WorkerService workerService = new WorkerService();
+    protected WorkerGroupService workerGroupService = new WorkerGroupService();
+    protected WorkerRegistry workerRegistry = new WorkerRegistry();
+    protected WorkerMapper workerMapper;
+    protected WorkerGroupMapper workerGroupMapper;
+    protected WorkerGroup workerGroup = new WorkerGroup();
+    protected Worker worker = new Worker();
+    protected List<Worker> workers = new ArrayList<Worker>();
+    protected List<WorkerGroup> workerGroups = new ArrayList<WorkerGroup>();
+    protected WorkerExample example;
+    protected List<Integer> resultList = new ArrayList<Integer>();
+    protected Injector injector;
 
     @Before
-    public  void setup() {
+    public void setup() {
         injector = mock(Injector.class);
         workerGroupMapper = mock(WorkerGroupMapper.class);
         workerMapper = mock(WorkerMapper.class);
