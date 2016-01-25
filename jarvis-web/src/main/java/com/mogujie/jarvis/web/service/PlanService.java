@@ -67,7 +67,12 @@ public class PlanService {
 
         for (PlanVo planVo : planVoList) {
             if (planVo.getStatus().equals(1) || planVo.getStatus().equals(2) || planVo.getStatus().equals(3)) {
-                planVo.setPredictExecuteTime(avgTimeMap.get(planVo.getJobId()).get("avgTime"));
+                if(null==avgTimeMap.get(planVo.getJobId())){
+                    planVo.setPredictExecuteTime(0l);
+                }
+                else{
+                    planVo.setPredictExecuteTime(avgTimeMap.get(planVo.getJobId()).get("avgTime"));
+                }
             }
         }
 
