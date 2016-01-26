@@ -245,6 +245,14 @@ public class JobActor extends UntypedActor {
         ServerModifyJobDependResponse response;
         long jobId = msg.getJobId();
         DAGJob dagJob = jobGraph.getDAGJob(jobId);
+        if (dagJob == null) {
+            response = ServerModifyJobDependResponse.newBuilder()
+                    .setSuccess(false)
+                    .setMessage(jobId + "is not existed.")
+                    .build();
+            getSender().tell(response, getSelf());
+            return;
+        }
         List<DAGJob> oldParents = jobGraph.getParents(dagJob);
 
         try {
