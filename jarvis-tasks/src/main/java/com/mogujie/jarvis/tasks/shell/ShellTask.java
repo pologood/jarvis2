@@ -56,6 +56,7 @@ public class ShellTask extends AbstractTask {
             while ((line = br.readLine()) != null) {
                 getTaskContext().getLogCollector().collectStdout(line);
             }
+            getTaskContext().getLogCollector().collectStdout("",true);
         } catch (IOException e) {
             LOGGER.error("error shellProcess stdout stream", e);
         }
@@ -67,6 +68,7 @@ public class ShellTask extends AbstractTask {
             while ((line = br.readLine()) != null) {
                 getTaskContext().getLogCollector().collectStderr(line);
             }
+            getTaskContext().getLogCollector().collectStderr("",true);
         } catch (IOException e) {
             LOGGER.error("error shellProcess stderr stream", e);
         }

@@ -124,8 +124,8 @@ public class TaskExecutor extends Thread {
             }
 
             reporter.report(1);
-            logCollector.collectStderr("", true);
-            logCollector.collectStdout("", true);
+//            logCollector.collectStderr("", true);
+//            logCollector.collectStdout("", true);
             taskPool.remove(fullId);
         } catch (Throwable e) {
             LOGGER.error("", e);
