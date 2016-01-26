@@ -7,9 +7,11 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.charset.StandardCharsets;
 
+import org.apache.commons.io.FileUtils;
+
+import com.google.common.annotations.VisibleForTesting;
 import com.mogujie.jarvis.core.util.IdUtils;
 import com.mogujie.jarvis.logstorage.LogSetting;
-import org.apache.commons.io.FileUtils;
 
 import com.mogujie.jarvis.core.domain.StreamType;
 import com.mogujie.jarvis.logstorage.LogConstants;
@@ -66,7 +68,11 @@ public class LocalLogStream implements LogStream {
         if (offset < 0) {
             offset = 0;
         }
-        if (size <= 0 || size >= LogSetting.LOG_READ_MAX_SIZE) {
+
+        if(size <= 0){
+            return new LogReadResult(false, "", offset);
+        }
+        if (size > LogSetting.LOG_READ_MAX_SIZE) {
             size = LogSetting.LOG_READ_MAX_SIZE;
         }
 
@@ -81,7 +87,7 @@ public class LocalLogStream implements LogStream {
             boolean isEnd = false;
             while (true) {
                 c = readUtfChar(raf);
-                if(c == -1){
+                if (c == -1) {
                     break;
                 }
                 //是否log结束
@@ -110,16 +116,24 @@ public class LocalLogStream implements LogStream {
         int c1, c2, c3;
         int ret;
         c1 = raf.read();
-        if(c1 ==-1) return -1;
+        if (c1 == -1) return -1;
         switch (c1 >> 4) {
-            case 0: case 1: case 2: case 3: case 4: case 5: case 6: case 7:
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            case 7:
                 /* 0xxxxxxx*/
                 ret = c1;
                 break;
-            case 12: case 13:
+            case 12:
+            case 13:
                 /* 110x xxxx   10xx xxxx*/
                 c2 = (int) raf.readByte();
-                if(c2 ==-1) return -1;
+                if (c2 == -1) return -1;
                 if ((c2 & 0xC0) != 0x80)
                     throw new UTFDataFormatException("uft转换出错. c1:" + c1 + ";c2" + c2);
                 ret = (((c1 & 0x1F) << 6) | (c2 & 0x3F));
@@ -127,9 +141,9 @@ public class LocalLogStream implements LogStream {
             case 14:
                 /* 1110 xxxx  10xx xxxx  10xx xxxx */
                 c2 = (int) raf.readByte();
-                if(c2 ==-1) return -1;
+                if (c2 == -1) return -1;
                 c3 = (int) raf.readByte();
-                if(c3 ==-1) return -1;
+                if (c3 == -1) return -1;
                 if (((c2 & 0xC0) != 0x80) || ((c3 & 0xC0) != 0x80))
                     throw new UTFDataFormatException("uft转换出错. c1:" + c1 + ";c2:" + c2 + ";c3:" + c3);
                 ret = (((c1 & 0x0F) << 12) | ((c2 & 0x3F) << 6) | ((c3 & 0x3F) << 0));
@@ -141,6 +155,15 @@ public class LocalLogStream implements LogStream {
         }
         return ret;
 
+    }
+
+    @VisibleForTesting
+    public void clearLog() throws IOException {
+        try {
+            FileUtils.write(new File(logFile),"");
+        } catch (IOException ex) {
+
+        }
     }
 
 
@@ -188,9 +211,6 @@ public class LocalLogStream implements LogStream {
 //            return new LogReadResult(true, "", 0);
 //        }
 //    }
-
-
-
 
 
 }
