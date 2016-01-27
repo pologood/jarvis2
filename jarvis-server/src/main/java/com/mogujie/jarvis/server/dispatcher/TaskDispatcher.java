@@ -120,7 +120,9 @@ public class TaskDispatcher extends Thread {
                                 LOGGER.error("Send ServerSubmitTaskRequest error", e);
                             }
                         } else {
+                            taskRetryScheduler.addTask(task, RetryType.REJECT_RETRY);
                             LOGGER.warn("The running task number of App[{}] more than maximum parallelism", appName);
+                            continue;
                         }
                         //taskManager.appCounterDecrement(appId);
                     } else {
