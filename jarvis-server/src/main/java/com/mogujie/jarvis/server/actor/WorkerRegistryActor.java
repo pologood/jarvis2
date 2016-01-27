@@ -65,7 +65,7 @@ public class WorkerRegistryActor extends UntypedActor {
             int groupId = workerGroupService.getGroupIdByAuthKey(key);
             if (groupId == 0) {
                 logger.error("worker group key不合法。key={}", key);
-                throw new JarvisException("worker group key不合法。key=" + key);
+                throw new IllegalArgumentException("worker group key不合法。key=" + key);
             }
 
             Address address = getSender().path().address();
@@ -84,6 +84,8 @@ public class WorkerRegistryActor extends UntypedActor {
         } catch (Exception ex) {
             response = ServerRegistryResponse.newBuilder().setSuccess(false).setMessage(ex.getMessage()).build();
             getSender().tell(response, getSelf());
+            logger.error(ex);
+            throw ex;
         }
     }
 

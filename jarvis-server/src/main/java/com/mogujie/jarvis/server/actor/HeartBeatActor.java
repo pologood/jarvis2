@@ -37,10 +37,24 @@ public class HeartBeatActor extends UntypedActor {
         return Props.create(HeartBeatActor.class);
     }
 
+    public static List<ActorEntry> handledMessages() {
+        List<ActorEntry> list = new ArrayList<>();
+        list.add(new ActorEntry(HeartBeatRequest.class, HeartBeatResponse.class, MessageType.SYSTEM));
+        return list;
+    }
+
     @Override
     public void onReceive(Object obj) throws Exception {
         if (obj instanceof HeartBeatRequest) {
-            HeartBeatRequest request = (HeartBeatRequest) obj;
+            heardBeat((HeartBeatRequest) obj);
+        } else {
+            unhandled(obj);
+        }
+    }
+
+    private void heardBeat(HeartBeatRequest request) {
+        HeartBeatResponse response;
+        try {
             Address address = getSender().path().address();
             String ip = address.host().get();
             int port = Integer.parseInt(address.port().get().toString());
@@ -48,28 +62,19 @@ public class HeartBeatActor extends UntypedActor {
             LOGGER.info("receive heartbeat from worker[ip={},port={},taskNum={}]", ip, port, taskNum);
             WorkerInfo workerInfo = new WorkerInfo(ip, port);
             int groupId = Injectors.getInjector().getInstance(WorkerRegistry.class).getWorkerGroupId(workerInfo);
-            HeartBeatResponse response = null;
             if (groupId < 0) {
-                LOGGER.warn("groupId is not valid: heartbeat[ip={}, port={}, groupId={}, jobNum={}]", ip, port, groupId, taskNum);
-                //todo debug 测试临时屏蔽worker注册
-                heartBeatService.put(groupId, workerInfo, taskNum);
-                //todo end.......
-                response = HeartBeatResponse.newBuilder().setSuccess(false).setMessage("groupId is not valid: " + groupId).build();
-            } else {
-                LOGGER.debug("heartbeat[ip={}, port={}, groupId={}, jobNum={}]", ip, port, groupId, taskNum);
-                heartBeatService.put(groupId, workerInfo, taskNum);
-                response = HeartBeatResponse.newBuilder().setSuccess(true).build();
+                LOGGER.warn("worker not register: heartbeat[ip={}, port={}, groupId={}, taskNum={}]", ip, port, groupId, taskNum);
+                throw new IllegalArgumentException("groupId is not valid: " + groupId);
             }
+            LOGGER.debug("heartbeat[ip={}, port={}, groupId={}, taskNum={}]", ip, port, groupId, taskNum);
+            heartBeatService.put(groupId, workerInfo, taskNum);
+            response = HeartBeatResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());
-        } else {
-            unhandled(obj);
+        } catch (Exception ex) {
+            response = HeartBeatResponse.newBuilder().setSuccess(false).setMessage(ex.getMessage()).build();
+            getSender().tell(response, getSelf());
+//            LOGGER.error(ex);
         }
-    }
-
-    public static List<ActorEntry> handledMessages() {
-        List<ActorEntry> list = new ArrayList<>();
-        list.add(new ActorEntry(HeartBeatRequest.class, HeartBeatResponse.class, MessageType.SYSTEM));
-        return list;
     }
 
 }
