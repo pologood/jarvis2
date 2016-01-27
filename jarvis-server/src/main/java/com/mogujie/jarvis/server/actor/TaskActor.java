@@ -92,6 +92,16 @@ public class TaskActor extends UntypedActor {
         return Props.create(TaskActor.class);
     }
 
+    public static List<ActorEntry> handledMessages() {
+        List<ActorEntry> list = new ArrayList<>();
+        list.add(new ActorEntry(RestServerKillTaskRequest.class, ServerKillTaskResponse.class, MessageType.GENERAL));
+        list.add(new ActorEntry(RestServerRetryTaskRequest.class, ServerRetryTaskResponse.class, MessageType.GENERAL));
+        list.add(new ActorEntry(RestServerManualRerunTaskRequest.class, ServerManualRerunTaskResponse.class, MessageType.GENERAL));
+        list.add(new ActorEntry(RestServerModifyTaskStatusRequest.class, ServerModifyTaskStatusResponse.class, MessageType.GENERAL));
+        list.add(new ActorEntry(RestServerQueryTaskRelationRequest.class, ServerQueryTaskRelationResponse.class, MessageType.GENERAL));
+        return list;
+    }
+
     @Override
     public void onReceive(Object obj) throws Exception {
         if (obj instanceof RestServerKillTaskRequest) {
@@ -350,13 +360,4 @@ public class TaskActor extends UntypedActor {
         }
     }
 
-    public static List<ActorEntry> handledMessages() {
-        List<ActorEntry> list = new ArrayList<>();
-        list.add(new ActorEntry(RestServerKillTaskRequest.class, ServerKillTaskResponse.class, MessageType.GENERAL));
-        list.add(new ActorEntry(RestServerRetryTaskRequest.class, ServerRetryTaskResponse.class, MessageType.GENERAL));
-        list.add(new ActorEntry(RestServerManualRerunTaskRequest.class, ServerManualRerunTaskResponse.class, MessageType.GENERAL));
-        list.add(new ActorEntry(RestServerModifyTaskStatusRequest.class, ServerModifyTaskStatusResponse.class, MessageType.GENERAL));
-        list.add(new ActorEntry(RestServerQueryTaskRelationRequest.class, ServerQueryTaskRelationResponse.class, MessageType.GENERAL));
-        return list;
-    }
 }

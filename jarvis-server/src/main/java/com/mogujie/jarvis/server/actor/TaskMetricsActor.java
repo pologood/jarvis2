@@ -67,6 +67,14 @@ public class TaskMetricsActor extends UntypedActor {
         return Props.create(TaskMetricsActor.class);
     }
 
+    public static List<ActorEntry> handledMessages() {
+        List<ActorEntry> list = new ArrayList<>();
+        list.add(new ActorEntry(WorkerReportTaskStatusRequest.class, ServerReportTaskStatusResponse.class, MessageType.SYSTEM));
+        list.add(new ActorEntry(WorkerReportTaskProgressRequest.class, ServerReportTaskProgressResponse.class, MessageType.SYSTEM));
+        list.add(new ActorEntry(WorkerReportTaskContentRequest.class, ServerReportTaskContentResponse.class, MessageType.SYSTEM));
+        return list;
+    }
+
     @Override
     public void onReceive(Object obj) throws Exception {
         if (obj instanceof WorkerReportTaskStatusRequest) {
@@ -136,11 +144,4 @@ public class TaskMetricsActor extends UntypedActor {
         }
     }
 
-    public static List<ActorEntry> handledMessages() {
-        List<ActorEntry> list = new ArrayList<>();
-        list.add(new ActorEntry(WorkerReportTaskStatusRequest.class, ServerReportTaskStatusResponse.class, MessageType.SYSTEM));
-        list.add(new ActorEntry(WorkerReportTaskProgressRequest.class, ServerReportTaskProgressResponse.class, MessageType.SYSTEM));
-        list.add(new ActorEntry(WorkerReportTaskContentRequest.class, ServerReportTaskContentResponse.class, MessageType.SYSTEM));
-        return list;
-    }
 }

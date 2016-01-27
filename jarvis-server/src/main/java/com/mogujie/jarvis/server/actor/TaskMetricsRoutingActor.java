@@ -37,6 +37,10 @@ public class TaskMetricsRoutingActor extends UntypedActor {
         return Props.create(TaskMetricsRoutingActor.class, size);
     }
 
+    public static List<ActorEntry> handledMessages() {
+        return TaskMetricsActor.handledMessages();
+    }
+
     @Override
     public void onReceive(Object obj) throws Exception {
         if (obj instanceof WorkerReportTaskStatusRequest) {
@@ -62,8 +66,5 @@ public class TaskMetricsRoutingActor extends UntypedActor {
         }
     }
 
-    public static List<ActorEntry> handledMessages() {
-        return TaskMetricsActor.handledMessages();
-    }
 
 }
