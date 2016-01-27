@@ -32,9 +32,11 @@ import com.mogujie.jarvis.core.util.IdUtils;
 import com.mogujie.jarvis.core.util.ThreadUtils;
 import com.mogujie.jarvis.server.ServerConigKeys;
 import com.mogujie.jarvis.server.dispatcher.PriorityTaskQueue;
+import com.mogujie.jarvis.server.dispatcher.TaskManager;
 import com.mogujie.jarvis.server.domain.RetryType;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
+import com.mogujie.jarvis.server.service.AppService;
 
 /**
  * Task Retry Scheduler
@@ -43,8 +45,10 @@ import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
 public enum TaskRetryScheduler {
     INSTANCE;
 
-    private PriorityTaskQueue taskQueue = Injectors.getInjector().getInstance(PriorityTaskQueue.class);
     private volatile boolean running;
+    private AppService appService = Injectors.getInjector().getInstance(AppService.class);
+    private TaskManager taskManager = Injectors.getInjector().getInstance(TaskManager.class);
+    private PriorityTaskQueue taskQueue = Injectors.getInjector().getInstance(PriorityTaskQueue.class);
     private Map<Pair<String, RetryType>, TaskDetail> taskMap = Maps.newConcurrentMap();
     private Map<String, DateTime> expiredTimeMap = Maps.newConcurrentMap();
     private AtomicLongMap<String> taskFailedRetryCounter = AtomicLongMap.create();
@@ -119,6 +123,7 @@ public enum TaskRetryScheduler {
                                 continue;
                             }
 
+                            int appId = appService.getAppIdByName(taskDetail.getAppName());
                             if (taskKey.t2() == RetryType.FAILED_RETRY) {
                                 int retries = taskDetail.getFailedRetries();
                                 if (taskFailedRetryCounter.get(jobIdWithTaskId) >= retries) {
@@ -129,6 +134,7 @@ public enum TaskRetryScheduler {
                                     Event event = new FailedEvent(jobId, taskId, "failed retry");
                                     schedulerController.notify(event);
                                 } else {
+                                    taskManager.appCounterDecrement(appId);
                                     taskQueue.put(taskDetail);
                                     taskFailedRetryCounter.getAndIncrement(jobIdWithTaskId);
                                 }
@@ -145,9 +151,11 @@ public enum TaskRetryScheduler {
                                         Event event = new FailedEvent(jobId, taskId, "task expired.");
                                         schedulerController.notify(event);
                                     } else {
+                                        taskManager.appCounterDecrement(appId);
                                         taskQueue.put(taskDetail);
                                     }
                                 } else {
+                                    taskManager.appCounterDecrement(appId);
                                     taskQueue.put(taskDetail);
                                 }
                             }

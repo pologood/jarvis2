@@ -124,7 +124,6 @@ public class TaskDispatcher extends Thread {
                             LOGGER.warn("The running task number of App[{}] more than maximum parallelism", appName);
                             continue;
                         }
-                        //taskManager.appCounterDecrement(appId);
                     } else {
                         // Worker不存在时进行重试处理(在一定时间内一直重试)
                         taskRetryScheduler.addTask(task, RetryType.REJECT_RETRY);
