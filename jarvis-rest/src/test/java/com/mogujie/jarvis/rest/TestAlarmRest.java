@@ -8,6 +8,7 @@ import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.rest.domain.RestResult4TestEntity;
 import com.mogujie.jarvis.rest.vo.AbstractVo;
 import org.junit.Assert;
+import org.junit.Test;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -20,7 +21,8 @@ public class TestAlarmRest extends AbstractTestRest {
 
     public void test() throws UnirestException {
 
-        long jobId = 5;
+        long jobId = 135;
+        alarmDelete(jobId);
         alarmAdd(jobId);
         alarmSet(jobId);
         alarmDelete(jobId);
@@ -60,7 +62,7 @@ public class TestAlarmRest extends AbstractTestRest {
         params.put("status",2);
         String paramsJson = JsonHelper.toJson(params, Map.class);
 
-        HttpResponse<String> jsonResponse = Unirest.post(baseUrl + "/api/alarm/set")
+        HttpResponse<String> jsonResponse = Unirest.post(baseUrl + "/api/alarm/edit")
                 .field("appName", "jarvis-web")
                 .field("appToken", "123")
                 .field("user", "muming")
