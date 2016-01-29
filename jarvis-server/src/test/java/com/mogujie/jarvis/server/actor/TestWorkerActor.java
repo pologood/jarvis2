@@ -24,6 +24,8 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 
 /**
  * Location www.mogujie.com
@@ -56,7 +58,7 @@ public class TestWorkerActor {
     }
 
     @Test
-    public void testModifyWorkerStatus() {
+    public void testModifyWorkerStatus() throws UnknownHostException, SocketException {
         Config akkaConfig = ConfigUtils.getAkkaConfig("akka-test.conf");
         String portPath = "akka.remote.netty.tcp.port";
         String hostPath = "akka.remote.netty.tcp.hostname";
@@ -81,7 +83,7 @@ public class TestWorkerActor {
 
 
     @Test
-    public void testWorkerRegister() {
+    public void testWorkerRegister() throws UnknownHostException, SocketException {
         //测试绑定10003至10004端口
         Config akkaConfig = ConfigUtils.getAkkaConfig("akka-test.conf");
         String portPath = "akka.remote.netty.tcp.port";

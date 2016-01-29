@@ -16,6 +16,9 @@ import com.google.common.base.Throwables;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 
+import java.net.SocketException;
+import java.net.UnknownHostException;
+
 public class ConfigUtils {
 
     private static PropertiesConfiguration workerConfig;
@@ -42,7 +45,7 @@ public class ConfigUtils {
 
     /**
      * 读取worker配置
-     * 
+     *
      * @return
      */
     public synchronized static Configuration getWorkerConfig() {
@@ -60,7 +63,7 @@ public class ConfigUtils {
 
     /**
      * 读取logstorage配置
-     * 
+     *
      * @return
      */
     public synchronized static Configuration getLogstorageConfig() {
@@ -78,7 +81,7 @@ public class ConfigUtils {
 
     /**
      * 读取rest配置
-     * 
+     *
      * @return
      */
     public synchronized static Configuration getRestConfig() {
@@ -106,7 +109,12 @@ public class ConfigUtils {
         if (akkaConfig.hasPath(key) && !akkaConfig.getString(key).isEmpty()) {
             return akkaConfig;
         } else {
-            return ConfigFactory.parseString(key + "=" + IPUtils.getIPV4Address()).withFallback(akkaConfig);
+            try {
+                return ConfigFactory.parseString(key + "=" + IPUtils.getIPV4Address()).withFallback(akkaConfig);
+            } catch (UnknownHostException | SocketException ex) {
+                Throwables.propagate(ex);
+                return null;
+            }
         }
     }
 }

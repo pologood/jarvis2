@@ -30,9 +30,12 @@ import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.ReplacementDataSet;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.After;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.File;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -53,8 +56,13 @@ public class TestJobActor extends DBTestBased {
     JobService jobService;
     Connection conn = null;
     Boolean result = Boolean.FALSE;
-    IDatabaseConnection iconn = null;
-    String actorPath = "akka.tcp://server@" + IPUtils.getIPV4Address() + ":10000/user/server";
+    IDatabaseConnection iconn = null;;
+    static String actorPath;
+
+    @BeforeClass
+    public static void init() throws UnknownHostException, SocketException {
+        actorPath= "akka.tcp://server@" + IPUtils.getIPV4Address() + ":10000/user/server";
+    }
 
     @Test
     public void testGetJobDepend() {

@@ -11,6 +11,7 @@ package com.mogujie.jarvis.worker;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import com.google.common.base.Throwables;
 import org.apache.commons.configuration.Configuration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -95,7 +96,8 @@ public class JarvisWorker {
             LOGGER.info("Jarvis worker started.");
 
         } catch (Exception ex) {
-            LOGGER.error(ex);
+            LOGGER.error("jarvis worker start error!", ex);
+            Throwables.propagate(ex);
         }
 
     }
