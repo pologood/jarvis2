@@ -37,12 +37,12 @@ import com.mogujie.jarvis.protocol.KillTaskProtos.ServerKillTaskRequest;
 import com.mogujie.jarvis.protocol.KillTaskProtos.WorkerKillTaskResponse;
 import com.mogujie.jarvis.protocol.MapEntryProtos.MapEntry;
 import com.mogujie.jarvis.protocol.SubmitTaskProtos.ServerSubmitTaskRequest;
-import com.mogujie.jarvis.worker.DefaultLogCollector;
-import com.mogujie.jarvis.worker.DefaultProgressReporter;
-import com.mogujie.jarvis.worker.TaskContentReporter;
-import com.mogujie.jarvis.worker.TaskExecutor;
 import com.mogujie.jarvis.worker.TaskPool;
 import com.mogujie.jarvis.worker.WorkerConfigKeys;
+import com.mogujie.jarvis.worker.executor.DefaultLogCollector;
+import com.mogujie.jarvis.worker.executor.DefaultProgressReporter;
+import com.mogujie.jarvis.worker.executor.TaskContentReporter;
+import com.mogujie.jarvis.worker.executor.TaskExecutor;
 
 public class TaskActor extends UntypedActor {
 

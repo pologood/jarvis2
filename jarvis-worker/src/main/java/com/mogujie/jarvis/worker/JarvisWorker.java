@@ -15,6 +15,13 @@ import org.apache.commons.configuration.Configuration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import scala.concurrent.duration.Duration;
+import akka.actor.ActorRef;
+import akka.actor.ActorSelection;
+import akka.actor.ActorSystem;
+import akka.actor.DeadLetter;
+import akka.routing.SmallestMailboxPool;
+
 import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.metrics.Metrics;
 import com.mogujie.jarvis.core.util.ConfigUtils;
@@ -25,13 +32,6 @@ import com.mogujie.jarvis.worker.actor.DeadLetterActor;
 import com.mogujie.jarvis.worker.actor.TaskActor;
 import com.mogujie.jarvis.worker.util.FutureUtils;
 import com.typesafe.config.Config;
-
-import akka.actor.ActorRef;
-import akka.actor.ActorSelection;
-import akka.actor.ActorSystem;
-import akka.actor.DeadLetter;
-import akka.routing.SmallestMailboxPool;
-import scala.concurrent.duration.Duration;
 
 public class JarvisWorker {
 
@@ -83,8 +83,8 @@ public class JarvisWorker {
         system.scheduler().schedule(Duration.Zero(), Duration.create(heartBeatInterval, TimeUnit.SECONDS),
                 new HeartBeatThread(heartBeatActor, taskActor), system.dispatcher());
 
-        Thread taskStateRestore = new TaskStateRestore(system, taskActor);
-        taskStateRestore.start();
+        Thread TaskStateRestoreThread = new TaskStateRestoreThread(system, taskActor);
+        TaskStateRestoreThread.start();
         LOGGER.info("TaskStateRestore started.");
 
         Metrics.start(ConfigUtils.getWorkerConfig());

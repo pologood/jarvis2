@@ -6,7 +6,7 @@
  * Create Date: 2015年9月7日 下午1:44:53
  */
 
-package com.mogujie.jarvis.worker;
+package com.mogujie.jarvis.worker.executor;
 
 import java.lang.reflect.Constructor;
 import java.util.List;
@@ -26,6 +26,7 @@ import com.mogujie.jarvis.core.exception.AcceptanceException;
 import com.mogujie.jarvis.core.exception.TaskException;
 import com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskStatusRequest;
 import com.mogujie.jarvis.protocol.SubmitTaskProtos.WorkerSubmitTaskResponse;
+import com.mogujie.jarvis.worker.TaskPool;
 import com.mogujie.jarvis.worker.domain.TaskEntry;
 import com.mogujie.jarvis.worker.status.TaskStateStore;
 import com.mogujie.jarvis.worker.status.TaskStateStoreFactory;
@@ -53,6 +54,7 @@ public class TaskExecutor extends Thread {
     public void run() {
         String fullId = taskContext.getTaskDetail().getFullId();
         String jobType = taskContext.getTaskDetail().getJobType();
+        // 首先从task.xml里反射出具体的task信息
         TaskEntry taskEntry = TaskConfigUtils.getRegisteredTasks().get(jobType);
         if (taskEntry == null) {
             String errMsg = "cant't get jobType={" + jobType + "} from task.xml";
@@ -61,6 +63,7 @@ public class TaskExecutor extends Thread {
             return;
         }
 
+        //根据task.xml配置的接收策略进行接收策略检查
         List<AcceptanceStrategy> strategies = taskEntry.getAcceptanceStrategy();
         for (AcceptanceStrategy strategy : strategies) {
             try {
@@ -83,8 +86,11 @@ public class TaskExecutor extends Thread {
             }
         }
 
+        // 如果通过接收策略返回已接受
         senderActor.tell(WorkerSubmitTaskResponse.newBuilder().setAccept(true).setSuccess(true).build(), selfActor);
+
         try {
+            //构造task实例
             @SuppressWarnings("unchecked")
             Constructor<? extends AbstractTask> constructor = ((Class<? extends AbstractTask>) Class.forName(taskEntry.getTaskClass()))
                     .getConstructor(TaskContext.class);
@@ -93,15 +99,16 @@ public class TaskExecutor extends Thread {
 
             ProgressReporter reporter = taskContext.getProgressReporter();
             AbstractLogCollector logCollector = taskContext.getLogCollector();
-            taskPool.add(fullId, task);
-
             TaskStateStore taskStateStore = TaskStateStoreFactory.getInstance();
+
+            // task running
             taskStateStore.write(taskContext.getTaskDetail(), TaskStatus.RUNNING.getValue());
             LOGGER.info("write State[fullId={},status=RUNNING] to TaskStateStore", fullId);
             serverActor.tell(WorkerReportTaskStatusRequest.newBuilder().setFullId(fullId).setStatus(TaskStatus.RUNNING.getValue())
                     .setTimestamp(System.currentTimeMillis() / 1000).build(), selfActor);
             LOGGER.info("report status[fullId={},status=RUNNING] to server.", fullId);
             reporter.report(0);
+            taskPool.add(fullId, task);
 
             boolean result = false;
             try {
@@ -113,6 +120,7 @@ public class TaskExecutor extends Thread {
                 LOGGER.info("task[fullId={}] postExecute finished.", fullId);
             } catch (TaskException e) {
                 logCollector.collectStderr(e.getMessage(), true);
+                LOGGER.error("", e);
             }
 
             if (result) {
@@ -123,15 +131,14 @@ public class TaskExecutor extends Thread {
                         .setTimestamp(System.currentTimeMillis() / 1000).build(), selfActor);
             }
 
+            // task finished
             reporter.report(1);
-//            logCollector.collectStderr("", true);
-//            logCollector.collectStdout("", true);
-            taskPool.remove(fullId);
         } catch (Throwable e) {
             LOGGER.error("", e);
             serverActor.tell(WorkerReportTaskStatusRequest.newBuilder().setFullId(fullId).setStatus(TaskStatus.FAILED.getValue())
                     .setTimestamp(System.currentTimeMillis() / 1000).build(), selfActor);
-        }finally{
+        } finally{
+            taskPool.remove(fullId);
             TaskStateStore taskStateStore = TaskStateStoreFactory.getInstance();
             taskStateStore.delete(taskContext.getTaskDetail().getFullId());
         }

@@ -110,7 +110,7 @@ public class TaskDispatcher extends Thread {
                                         LOGGER.debug("Task[{}] was accepted by worker[{}:{}]", fullId, ip, port);
                                         continue;
                                     } else {
-                                        LOGGER.warn("Task[{}] was rejected by worker[{}:{}]", fullId, ip, port);
+                                        LOGGER.warn("Task[{}] was rejected by worker[{}:{}], {}", fullId, ip, port, response.getMessage());
                                         taskRetryScheduler.addTask(task, RetryType.REJECT_RETRY);
                                     }
                                 } else {
