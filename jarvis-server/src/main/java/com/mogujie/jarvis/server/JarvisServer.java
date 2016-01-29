@@ -164,7 +164,13 @@ public class JarvisServer {
                 //重新计算下一次时间
                 DateTime now = DateTime.now();
                 DateTime lastTime = PlanUtil.getScheduleTimeBefore(jobId, now);
+                if (lastTime == null) {
+                    lastTime = JarvisConstants.DATETIME_MIN;
+                }
                 DateTime nextTime = PlanUtil.getScheduleTimeAfter(jobId, now);
+                if (nextTime == null) {
+                    nextTime = JarvisConstants.DATETIME_MAX;
+                }
                 List<Task> tasks = taskService.getTasksBetween(jobId, Range.closed(lastTime.minusSeconds(1), nextTime));
                 if (tasks == null || tasks.isEmpty()) {
                     //如果当前周期内没有跑过，则重新检查依赖关系

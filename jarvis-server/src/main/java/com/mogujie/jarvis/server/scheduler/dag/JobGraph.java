@@ -158,7 +158,11 @@ public enum JobGraph {
             LOGGER.info("add DAGJob {} and dependency {} to JobGraph successfully.", dagJob.toString());
             if (dependencies != null && !dependencies.isEmpty()) {
                 DateTime scheduleDateTime = PlanUtil.getScheduleTimeAfter(jobId, dateTime);
-                submitJobWithCheck(dagJob, scheduleDateTime);
+                if (scheduleDateTime != null) {
+                    submitJobWithCheck(dagJob, scheduleDateTime);
+                } else {
+                    LOGGER.warn("next time is null, jobId={}, dateTime={}", jobId, dateTime);
+                }
             }
         }
     }
@@ -221,8 +225,13 @@ public enum JobGraph {
             if (!oldType.equals(dagJob.getType())) {
                 LOGGER.info("moidfy DAGJob type from {} to {}", oldType, dagJob.getType());
             }
-            DateTime scheduleDateTime = PlanUtil.getScheduleTimeAfter(jobId, DateTime.now());
-            submitJobWithCheck(dagJob, scheduleDateTime);
+            DateTime now = DateTime.now();
+            DateTime scheduleDateTime = PlanUtil.getScheduleTimeAfter(jobId, now);
+            if (scheduleDateTime != null) {
+                submitJobWithCheck(dagJob, scheduleDateTime);
+            } else {
+                LOGGER.warn("next time is null, jobId={}, dateTime={}", jobId, now);
+            }
         }
     }
 
@@ -252,7 +261,11 @@ public enum JobGraph {
             for (DAGJob child : children) {
                 DateTime now = DateTime.now();
                 DateTime scheduleDateTime = PlanUtil.getScheduleTimeAfter(jobId, now);
-                submitJobWithCheck(child, scheduleDateTime);
+                if (scheduleDateTime != null) {
+                    submitJobWithCheck(child, scheduleDateTime);
+                } else {
+                    LOGGER.warn("next time is null, jobId={}, dateTime={}", jobId, now);
+                }
             }
         }
     }
