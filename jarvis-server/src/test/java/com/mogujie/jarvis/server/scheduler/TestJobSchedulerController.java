@@ -37,7 +37,6 @@ public class TestJobSchedulerController extends TestSchedulerBase {
     private long jobEId = 5;
     private long jobFId = 6;
     private long t1 = 1000;
-    private long t2 = 2000;
 
     /**
      *   A
