@@ -1,18 +1,16 @@
-package com.mogujie.jarvis.rest;
+package com.mogujie.jarvis.rest.domain;
 
+import com.mogujie.jarvis.rest.RestResult;
 import org.junit.Test;
 
 /**
  * Created by muming on 15/12/10.
  */
-public class TestRestResultEntity <T>{
+public class RestResult4TestEntity<T>{
         private int code;
         private String msg;
         private T data;
-        public TestRestResultEntity() {
-        }
-        public TestRestResultEntity(int code) {
-            this.code = code;
+        public RestResult4TestEntity() {
         }
         public int getCode() {
             return code;

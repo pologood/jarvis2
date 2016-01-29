@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.mogujie.jarvis.core.domain.OperationMode;
-import com.mogujie.jarvis.rest.controller.SystemController;
+import com.mogujie.jarvis.rest.domain.RestResult4TestEntity;
 import com.mogujie.jarvis.rest.vo.AppResultVo;
 import org.junit.Assert;
 
@@ -17,12 +17,11 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.rest.vo.AbstractVo;
-import org.junit.Test;
 
 /**
  * Created by muming on 15/12/1.
  */
-public class TestAppRest extends TestRestAbstact {
+public class TestAppRest extends AbstractTestRest {
 
     public void testAppWorkerGroup() throws UnirestException {
         appWorkerGroupSet(OperationMode.DELETE, 26, 8);
@@ -48,11 +47,11 @@ public class TestAppRest extends TestRestAbstact {
                 .field("appToken", "123")
                 .field("user", "muming").field("parameters", paramsJson).asString();
 
-        Type restType = new TypeToken<TestRestResultEntity<AppResultVo>>() {
+        Type restType = new TypeToken<RestResult4TestEntity<AppResultVo>>() {
         }.getType();
 
         Assert.assertEquals(jsonResponse.getStatus(), 200);
-        TestRestResultEntity<AppResultVo> result = JsonHelper.fromJson(jsonResponse.getBody(), restType);
+        RestResult4TestEntity<AppResultVo> result = JsonHelper.fromJson(jsonResponse.getBody(), restType);
         Assert.assertEquals(result.getCode(), 0);
         return result.getData().getAppId();
 
@@ -82,11 +81,11 @@ public class TestAppRest extends TestRestAbstact {
                 .field("appToken", "123")
                 .field("user", "muming").field("parameters", paramsJson).asString();
 
-        Type restType = new TypeToken<TestRestResultEntity<AbstractVo>>() {
+        Type restType = new TypeToken<RestResult4TestEntity<AbstractVo>>() {
         }.getType();
 
         Assert.assertEquals(jsonResponse.getStatus(), 200);
-        TestRestResultEntity<?> result = JsonHelper.fromJson(jsonResponse.getBody(), restType);
+        RestResult4TestEntity<?> result = JsonHelper.fromJson(jsonResponse.getBody(), restType);
         Assert.assertEquals(result.getCode(), 0);
     }
 

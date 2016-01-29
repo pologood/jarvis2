@@ -12,7 +12,7 @@ import com.mogujie.jarvis.core.util.IPUtils;
 /**
  * Created by muming on 15/12/10.
  */
-public class TestRestAbstact {
+public class AbstractTestRest {
 
     private static HttpServer server;
 
