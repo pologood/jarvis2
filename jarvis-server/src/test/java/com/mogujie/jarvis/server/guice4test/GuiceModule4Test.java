@@ -8,21 +8,18 @@
 
 package com.mogujie.jarvis.server.guice4test;
 
-import akka.actor.ActorSystem;
+import java.util.Properties;
+
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Scopes;
 import com.google.inject.Singleton;
 import com.google.inject.name.Names;
-import com.mogujie.jarvis.core.JarvisConstants;
-import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.server.ServerConigKeys;
 import com.mogujie.jarvis.server.dispatcher.TaskManager;
 import com.mogujie.jarvis.server.dispatcher.workerselector.RandomWorkerSelector;
 import com.mogujie.jarvis.server.dispatcher.workerselector.RoundRobinWorkerSelector;
 import com.mogujie.jarvis.server.dispatcher.workerselector.WorkerSelector;
-
-import java.util.Properties;
 
 public class GuiceModule4Test extends AbstractModule {
 

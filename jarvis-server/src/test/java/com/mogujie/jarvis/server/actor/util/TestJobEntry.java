@@ -1,11 +1,10 @@
 package com.mogujie.jarvis.server.actor.util;
 
-import com.mogujie.jarvis.core.util.JsonHelper;
-import com.mogujie.jarvis.protocol.JobDependencyEntryProtos;
-import com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos;
-
 import java.util.List;
 import java.util.Map;
+
+import com.mogujie.jarvis.protocol.JobDependencyEntryProtos;
+import com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos;
 
 /**
  * Location www.mogujie.com
