@@ -14,6 +14,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.configuration.Configuration;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import akka.actor.ActorRef;
+import akka.actor.Props;
+import akka.actor.UntypedActor;
+import akka.routing.SmallestMailboxPool;
 
 import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
@@ -31,11 +38,6 @@ import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.service.AppService;
 import com.mogujie.jarvis.server.util.AppTokenUtils;
 
-import akka.actor.ActorRef;
-import akka.actor.Props;
-import akka.actor.UntypedActor;
-import akka.routing.SmallestMailboxPool;
-
 public class ServerActor extends UntypedActor {
 
     private AppService appService = Injectors.getInjector().getInstance(AppService.class);
@@ -44,6 +46,8 @@ public class ServerActor extends UntypedActor {
     private static boolean appTokenVerifyEnable = serverConfig.getBoolean(ServerConigKeys.APP_TOKEN_VERIFY_ENABLE, true);
     private static Map<Class<?>, Pair<ActorRef, ActorEntry>> map = Maps.newConcurrentMap();
     private static List<Pair<ActorRef, List<ActorEntry>>> actorRefs = Lists.newArrayList();
+
+    private static Logger LOGGER = LogManager.getLogger();
 
     public static Props props() {
         return Props.create(ServerActor.class);
@@ -113,6 +117,9 @@ public class ServerActor extends UntypedActor {
     @Override
     public void onReceive(Object obj) throws Exception {
         Class<?> clazz = obj.getClass();
+
+        LOGGER.info("receive {}", clazz.getSimpleName());
+
         Pair<ActorRef, ActorEntry> pair = map.get(clazz);
         if (pair == null) {
             unhandled(obj);

@@ -80,7 +80,7 @@ import com.mogujie.jarvis.server.util.PlanUtil;
  */
 public class JobActor extends UntypedActor {
 
-    private static Logger logger = LogManager.getLogger();
+    private static Logger LOGGER = LogManager.getLogger();
 
     private JobGraph jobGraph = JobGraph.INSTANCE;
     private TimePlan plan = TimePlan.INSTANCE;
@@ -202,7 +202,7 @@ public class JobActor extends UntypedActor {
             removeJob(jobId);
             response = ServerSubmitJobResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
             getSender().tell(response, getSelf());
-            logger.error("", e);
+            LOGGER.error("", e);
             Throwables.propagate(e);
         }
     }
@@ -229,7 +229,7 @@ public class JobActor extends UntypedActor {
         } catch (Exception e) {
             response = ServerModifyJobResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
             getSender().tell(response, getSelf());
-            logger.error("", e);
+            LOGGER.error("", e);
             throw e;
         }
     }
@@ -289,7 +289,7 @@ public class JobActor extends UntypedActor {
             jobGraph.setParents(dagJob, oldParents);
             response = ServerModifyJobDependResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
             getSender().tell(response, getSelf());
-            logger.error("", e);
+            LOGGER.error("", e);
             throw e;
         }
     }
@@ -374,7 +374,7 @@ public class JobActor extends UntypedActor {
         } catch (Exception e) {
             response = ServerModifyJobScheduleExpResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
             getSender().tell(response, getSelf());
-            logger.error("", e);
+            LOGGER.error("", e);
             throw e;
         }
     }
@@ -407,7 +407,7 @@ public class JobActor extends UntypedActor {
         } catch (Exception e) {
             response = ServerModifyJobStatusResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
             getSender().tell(response, getSelf());
-            logger.error("", e);
+            LOGGER.error("", e);
             throw e;
         }
     }
@@ -444,7 +444,7 @@ public class JobActor extends UntypedActor {
         } catch (Exception e) {
             response = ServerQueryJobRelationResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
             getSender().tell(response, getSelf());
-            logger.error("", e);
+            LOGGER.error("", e);
             throw e;
         }
     }
