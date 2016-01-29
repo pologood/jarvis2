@@ -68,29 +68,33 @@ public class JarvisServer {
     public static void main(String[] args) throws Exception {
         LOGGER.info("Starting Jarvis server...");
 
-        ActorSystem system = Injectors.getInjector().getInstance(ActorSystem.class);
+        try {
+            ActorSystem system = Injectors.getInjector().getInstance(ActorSystem.class);
 
-        Configuration config = ConfigUtils.getServerConfig();
-        int serverActorNum = config.getInt(ServerConigKeys.SERVER_ACTOR_NUM, 500);
-        system.actorOf(ServerActor.props().withRouter(new RoundRobinPool(serverActorNum)), JarvisConstants.SERVER_AKKA_SYSTEM_NAME);
+            Configuration config = ConfigUtils.getServerConfig();
+            int serverActorNum = config.getInt(ServerConigKeys.SERVER_ACTOR_NUM, 500);
+            system.actorOf(ServerActor.props().withRouter(new RoundRobinPool(serverActorNum)), JarvisConstants.SERVER_AKKA_SYSTEM_NAME);
 
-        int taskDispatcherThreads = config.getInt(ServerConigKeys.SERVER_DISPATCHER_THREADS, 5);
-        ExecutorService executorService = Executors.newFixedThreadPool(taskDispatcherThreads);
-        for (int i = 0; i < taskDispatcherThreads; i++) {
-            Thread taskDispatcher = new TaskDispatcher();
-            taskDispatcher.setName("Jarvis-task-dispatcher-" + i);
-            executorService.submit(taskDispatcher);
+            int taskDispatcherThreads = config.getInt(ServerConigKeys.SERVER_DISPATCHER_THREADS, 5);
+            ExecutorService executorService = Executors.newFixedThreadPool(taskDispatcherThreads);
+            for (int i = 0; i < taskDispatcherThreads; i++) {
+                Thread taskDispatcher = new TaskDispatcher();
+                taskDispatcher.setName("Jarvis-task-dispatcher-" + i);
+                executorService.submit(taskDispatcher);
+            }
+            executorService.shutdown();
+
+            TaskRetryScheduler taskRetryScheduler = TaskRetryScheduler.INSTANCE;
+            taskRetryScheduler.start();
+
+            init();
+            Metrics.start(ConfigUtils.getServerConfig());
+            LOGGER.info("Jarvis server started.");
+
+        } catch (Exception ex) {
+            LOGGER.error("Jarvis server start error", ex);
+            Throwables.propagate(ex);
         }
-        executorService.shutdown();
-
-        TaskRetryScheduler taskRetryScheduler = TaskRetryScheduler.INSTANCE;
-        taskRetryScheduler.start();
-
-        init();
-
-        Metrics.start(ConfigUtils.getServerConfig());
-
-        LOGGER.info("Jarvis server started.");
     }
 
     public static void init() throws Exception {

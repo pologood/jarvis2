@@ -10,6 +10,7 @@ package com.mogujie.jarvis.rest;
 
 import java.io.IOException;
 
+import com.google.common.base.Throwables;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.glassfish.grizzly.http.server.HttpServer;
@@ -19,7 +20,6 @@ import com.mogujie.jarvis.core.util.ConfigUtils;
 
 /**
  * 启动RestServer
- *
  */
 public class JarvisRest {
 
@@ -31,13 +31,16 @@ public class JarvisRest {
     private static final Logger LOGGER = LogManager.getLogger();
 
     public static void main(String[] args) throws IOException {
-        LOGGER.info("Starting rest server...");
-        HttpServer server = RestServerFactory.createHttpServer();
-        server.start();
-
-        Metrics.start(ConfigUtils.getRestConfig());
-
-        LOGGER.info("Rest server started.");
+        LOGGER.info("Starting Jarvis rest server ...");
+        try {
+            HttpServer server = RestServerFactory.createHttpServer();
+            server.start();
+            Metrics.start(ConfigUtils.getRestConfig());
+            LOGGER.info("Rest server started.");
+        } catch (Exception ex) {
+            LOGGER.error("Jarvis rest server start error", ex);
+            Throwables.propagate(ex);
+        }
     }
 
 }

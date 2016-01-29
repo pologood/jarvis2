@@ -8,6 +8,7 @@
 
 package com.mogujie.jarvis.logstorage;
 
+import com.google.common.base.Throwables;
 import com.mogujie.jarvis.logstorage.actor.LogRoutingActor;
 import org.apache.commons.configuration.Configuration;
 import org.apache.logging.log4j.LogManager;
@@ -26,21 +27,24 @@ public class JarvisLogstorage {
     private static final Logger LOGGER = LogManager.getLogger();
 
     public static void main(String[] args) {
-
         LOGGER.info("Starting jarvis logStorage...");
+        try {
+            Config akkaConfig = ConfigUtils.getAkkaConfig("akka-logstorage.conf");
+            ActorSystem system = ActorSystem.create(JarvisConstants.LOGSTORAGE_AKKA_SYSTEM_NAME, akkaConfig);
 
-        Config akkaConfig = ConfigUtils.getAkkaConfig("akka-logstorage.conf");
-        ActorSystem system = ActorSystem.create(JarvisConstants.LOGSTORAGE_AKKA_SYSTEM_NAME, akkaConfig);
+            Configuration logConfig = ConfigUtils.getLogstorageConfig();
+            int actorNum = logConfig.getInt("logstorage.actors.num", 1000);
 
-        Configuration logConfig = ConfigUtils.getLogstorageConfig();
-        int actorNum = logConfig.getInt("logstorage.actors.num", 1000);
+            system.actorOf(new SmallestMailboxPool(actorNum).props(LogRoutingActor.props(actorNum)), JarvisConstants.LOGSTORAGE_AKKA_SYSTEM_NAME);
 
-        system.actorOf(new SmallestMailboxPool(actorNum).props(LogRoutingActor.props(actorNum)), JarvisConstants.LOGSTORAGE_AKKA_SYSTEM_NAME);
+            Metrics.start(ConfigUtils.getLogstorageConfig());
 
-        Metrics.start(ConfigUtils.getLogstorageConfig());
+            LOGGER.info("Jarvis logStorage started.");
 
-        LOGGER.info("Jarvis logStorage started.");
-
+        } catch (Exception ex) {
+            LOGGER.error("Jarvis LogStorage start error", ex);
+            Throwables.propagate(ex);
+        }
     }
 
 }
