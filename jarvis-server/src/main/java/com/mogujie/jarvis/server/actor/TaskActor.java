@@ -226,7 +226,7 @@ public class TaskActor extends UntypedActor {
                     }
                 }
                 // add to taskGraph
-                DAGTask dagTask = new DAGTask(jobId, taskId, dataTime, dependTaskIdMap);
+                DAGTask dagTask = new DAGTask(jobId, taskId, scheduleTime, dataTime, dependTaskIdMap);
                 taskGraph.addTask(taskId, dagTask);
             }
         }

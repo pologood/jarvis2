@@ -20,6 +20,9 @@ import org.apache.logging.log4j.Logger;
 import org.jgrapht.experimental.dag.DirectedAcyclicGraph.CycleFoundException;
 import org.joda.time.DateTime;
 
+import akka.actor.ActorSystem;
+import akka.routing.RoundRobinPool;
+
 import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Range;
@@ -57,9 +60,6 @@ import com.mogujie.jarvis.server.scheduler.time.TimeScheduler;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.PlanUtil;
-
-import akka.actor.ActorSystem;
-import akka.routing.RoundRobinPool;
 
 public class JarvisServer {
 
@@ -179,7 +179,8 @@ public class JarvisServer {
                 .getTasksByStatusNotIn(Lists.newArrayList(TaskStatus.SUCCESS.getValue(), TaskStatus.REMOVED.getValue()));
         // 4.1 先恢复task
         for (Task task : recoveryTasks) {
-            DAGTask dagTask = new DAGTask(task.getJobId(), task.getTaskId(), task.getAttemptId(), task.getDataTime().getTime());
+            DAGTask dagTask = new DAGTask(task.getJobId(), task.getTaskId(), task.getAttemptId(),
+                    task.getScheduleTime().getTime(), task.getDataTime().getTime());
             taskGraph.addTask(task.getTaskId(), dagTask);
         }
         // 4.2 再构造task依赖关系
