@@ -13,7 +13,7 @@ import java.util.Objects;
 
 import org.joda.time.DateTime;
 
-public class TaskDetail {
+public final class TaskDetail {
 
     private String fullId;
     private String taskName;
@@ -91,8 +91,8 @@ public class TaskDetail {
 
     @Override
     public int hashCode() {
-        return Objects.hash(fullId, taskName, appName, user, jobType, content, priority, groupId, parameters, expiredTime, scheduleTime, dataTime, failedRetries,
-                failedInterval);
+        return Objects.hash(fullId, taskName, appName, user, jobType, content, priority, groupId, parameters, expiredTime, scheduleTime, dataTime,
+                failedRetries, failedInterval);
     }
 
     @Override
@@ -123,7 +123,7 @@ public class TaskDetail {
         return new TaskDetailBuilder(taskDetail);
     }
 
-    public static class TaskDetailBuilder {
+    public static final class TaskDetailBuilder {
 
         private TaskDetail task = new TaskDetail();;
 
