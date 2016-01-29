@@ -13,7 +13,7 @@ $(function () {
     $.ajaxSettings.async = false;
     if (null != jobId && '' != jobId) {
         $.getJSON(contextPath + "/api/job/getById", {jobId: jobId}, function (data) {
-            job = data;
+            job = data.data;
             $("#jobName").val(job.jobName);
             if (null != job.activeStartDate) {
                 $("#activeStartDate").val(moment(job.activeStartDate).format("YYYY-MM-DD"));
@@ -206,7 +206,7 @@ function initDependJobs() {
                 data: {jobId: jobId},
                 success: function (data) {
                     var newData = new Array();
-                    $(data).each(function (i, c) {
+                    $(data.data).each(function (i, c) {
                         dependJobs[c.id] = c;
                         newData.push(c.id);
                         dependIds.push(c.id);

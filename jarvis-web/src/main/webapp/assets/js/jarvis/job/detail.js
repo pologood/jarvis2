@@ -13,8 +13,10 @@ $(function () {
 function initJobData() {
     if (undefined != jobVo.jobId) {
         $.getJSON(contextPath + "/api/job/getById", {jobId: jobVo.jobId}, function (data) {
-            for (var key in data) {
-                var value = generateValue(key, data[key]);
+            var newData = data.data;
+            console.log(newData);
+            for (var key in newData) {
+                var value = generateValue(key, newData[key]);
                 $("#" + key).text(value);
             }
         })
@@ -52,7 +54,7 @@ function generateValue(key, source) {
         "workerGroupId": function (sourceData) {
             var result = "";
             $.ajaxSettings.async = false;
-            $.getJSON(contextPath + "/api/workerGroup/getById",{id:sourceData},function (data) {
+            $.getJSON(contextPath + "/api/workerGroup/getById", {id: sourceData}, function (data) {
                 if (null != data.id) {
                     result = data.name;
                 }
@@ -63,7 +65,7 @@ function generateValue(key, source) {
         "bizGroupId": function (sourceData) {
             var result = "";
             $.ajaxSettings.async = false;
-            $.getJSON(contextPath + "/api/bizGroup/getById",{id:sourceData},function (data) {
+            $.getJSON(contextPath + "/api/bizGroup/getById", {id: sourceData}, function (data) {
                 if (null != data.id) {
                     result = data.name;
                 }
@@ -77,8 +79,8 @@ function generateValue(key, source) {
         "activeEndDate": function (sourceData) {
             return moment(sourceData).format("YYYY-MM-DD");
         },
-        "expiredTime":function(sourceData){
-            return sourceData+"秒";
+        "expiredTime": function (sourceData) {
+            return sourceData + "秒";
         }
     };
     if (key in formatter) {
