@@ -32,6 +32,7 @@ import com.mogujie.jarvis.core.domain.Pair;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.dto.generate.App;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
+import com.mogujie.jarvis.protocol.HeartBeatProtos.HeartBeatRequest;
 import com.mogujie.jarvis.server.ServerConigKeys;
 import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.guice.Injectors;
@@ -118,7 +119,9 @@ public class ServerActor extends UntypedActor {
     public void onReceive(Object obj) throws Exception {
         Class<?> clazz = obj.getClass();
 
-        LOGGER.info("receive {}", clazz.getSimpleName());
+        if (!clazz.equals(HeartBeatRequest.class)) {
+            LOGGER.info("receive {}", clazz.getSimpleName());
+        }
 
         Pair<ActorRef, ActorEntry> pair = map.get(clazz);
         if (pair == null) {
