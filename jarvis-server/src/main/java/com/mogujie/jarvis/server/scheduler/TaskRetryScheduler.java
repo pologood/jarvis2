@@ -17,8 +17,7 @@ import java.util.concurrent.Executors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
-
-import akka.japi.tuple.Tuple3;
+import org.joda.time.Seconds;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Queues;
@@ -38,6 +37,8 @@ import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
 import com.mogujie.jarvis.server.service.AppService;
 
+import akka.japi.tuple.Tuple3;
+
 /**
  * Task Retry Scheduler
  *
@@ -50,7 +51,6 @@ public enum TaskRetryScheduler {
     private TaskManager taskManager = Injectors.getInjector().getInstance(TaskManager.class);
     private PriorityTaskQueue taskQueue = Injectors.getInjector().getInstance(PriorityTaskQueue.class);
     private Map<Pair<String, RetryType>, TaskDetail> taskMap = Maps.newConcurrentMap();
-    private Map<String, DateTime> expiredTimeMap = Maps.newConcurrentMap();
     private AtomicLongMap<String> taskFailedRetryCounter = AtomicLongMap.create();
     private int rejectInterval = ConfigUtils.getServerConfig().getInt(ServerConigKeys.TASK_REJECT_INTERVAL, 10);
     private Queue<Tuple3<String, RetryType, DateTime>> tasks = Queues.newLinkedBlockingQueue(100);
@@ -76,10 +76,7 @@ public enum TaskRetryScheduler {
             taskMap.putIfAbsent(new Pair<String, RetryType>(jobIdWithTaskId, retryType), taskDetail);
         } else {
             expiredDateTime = DateTime.now().plusSeconds(rejectInterval);
-            if (!expiredTimeMap.containsKey(jobIdWithTaskId)) {
-                taskMap.putIfAbsent(new Pair<String, RetryType>(jobIdWithTaskId, retryType), taskDetail);
-                expiredTimeMap.putIfAbsent(jobIdWithTaskId, expiredDateTime);
-            }
+            taskMap.putIfAbsent(new Pair<String, RetryType>(jobIdWithTaskId, retryType), taskDetail);
         }
 
         tasks.add(new Tuple3<String, RetryType, DateTime>(jobIdWithTaskId, retryType, expiredDateTime));
@@ -139,13 +136,10 @@ public enum TaskRetryScheduler {
                                     taskFailedRetryCounter.getAndIncrement(jobIdWithTaskId);
                                 }
                             } else {
-                                DateTime firstRetryTime = expiredTimeMap.get(jobIdWithTaskId);
                                 int expiredTime = taskDetail.getExpiredTime();
-                                if (expiredTime > 0 && firstRetryTime != null) {
-                                    long timeDiff = (now.getMillis() - firstRetryTime.getMillis()) / 1000;
-                                    if (timeDiff > expiredTime) {
+                                if (expiredTime > 0) {
+                                    if (Seconds.secondsBetween(taskDetail.getScheduleTime(), DateTime.now()).getSeconds() > expiredTime) {
                                         taskMap.remove(pair);
-                                        expiredTimeMap.remove(jobIdWithTaskId);
                                         long jobId = IdUtils.parse(taskDetail.getFullId(), IdType.JOB_ID);
                                         long taskId = IdUtils.parse(taskDetail.getFullId(), IdType.TASK_ID);
                                         Event event = new FailedEvent(jobId, taskId, "task expired.");
