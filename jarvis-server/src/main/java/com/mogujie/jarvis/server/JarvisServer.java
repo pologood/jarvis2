@@ -196,11 +196,15 @@ public class JarvisServer {
         // 4.2 再构造task依赖关系
         for (Task task : recoveryTasks) {
             DAGTask dagTask = taskGraph.getTask(task.getTaskId());
-            List<Long> dependTaskIds = dagTask.getDependTaskIds();
-            if (dependTaskIds != null) {
-                for (Long parentId : dependTaskIds) {
-                    taskGraph.addDependency(parentId, task.getTaskId());
+            if (dagTask != null) {
+                List<Long> dependTaskIds = dagTask.getDependTaskIds();
+                if (dependTaskIds != null) {
+                    for (Long parentId : dependTaskIds) {
+                        taskGraph.addDependency(parentId, task.getTaskId());
+                    }
                 }
+            } else {
+                LOGGER.warn("DAGTask {} is not found in TaskGraph", task.getTaskId() );
             }
         }
         // 4.3 重试waiting和ready的task
