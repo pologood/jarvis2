@@ -16,7 +16,6 @@ import java.net.UnknownHostException;
 import java.util.Enumeration;
 import java.util.regex.Matcher;
 
-import com.google.common.base.Throwables;
 import com.mogujie.jarvis.core.JarvisConstants;
 
 public class IPUtils {
