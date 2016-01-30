@@ -8,30 +8,14 @@
 
 package com.mogujie.jarvis.server.actor;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.joda.time.DateTime;
-import org.mybatis.guice.transactional.Transactional;
-
 import akka.actor.ActorSelection;
 import akka.actor.Props;
 import akka.actor.UntypedActor;
-
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Range;
 import com.mogujie.jarvis.core.JarvisConstants;
-import com.mogujie.jarvis.core.domain.IdType;
-import com.mogujie.jarvis.core.domain.JobRelationType;
-import com.mogujie.jarvis.core.domain.MessageType;
-import com.mogujie.jarvis.core.domain.TaskStatus;
-import com.mogujie.jarvis.core.domain.TaskType;
-import com.mogujie.jarvis.core.domain.WorkerInfo;
+import com.mogujie.jarvis.core.domain.*;
 import com.mogujie.jarvis.core.expression.DependencyExpression;
 import com.mogujie.jarvis.core.observer.Event;
 import com.mogujie.jarvis.core.util.IdUtils;
@@ -59,11 +43,7 @@ import com.mogujie.jarvis.server.domain.RetryType;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.TaskRetryScheduler;
-import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
-import com.mogujie.jarvis.server.scheduler.event.ManualRerunTaskEvent;
-import com.mogujie.jarvis.server.scheduler.event.RetryTaskEvent;
-import com.mogujie.jarvis.server.scheduler.event.SuccessEvent;
-import com.mogujie.jarvis.server.scheduler.event.UnhandleEvent;
+import com.mogujie.jarvis.server.scheduler.event.*;
 import com.mogujie.jarvis.server.scheduler.task.DAGTask;
 import com.mogujie.jarvis.server.scheduler.task.TaskGraph;
 import com.mogujie.jarvis.server.scheduler.time.TimePlanEntry;
@@ -72,20 +52,27 @@ import com.mogujie.jarvis.server.service.TaskDependService;
 import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.FutureUtils;
 import com.mogujie.jarvis.server.util.PlanUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.joda.time.DateTime;
+import org.mybatis.guice.transactional.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * @author guangming
  */
 public class TaskActor extends UntypedActor {
+    private static final Logger LOGGER = LogManager.getLogger();
     private TaskManager taskManager = Injectors.getInjector().getInstance(TaskManager.class);
     private TaskService taskService = Injectors.getInjector().getInstance(TaskService.class);
     private JobService jobService = Injectors.getInjector().getInstance(JobService.class);
     private TaskDependService taskDependService = Injectors.getInjector().getInstance(TaskDependService.class);
-
     private TaskGraph taskGraph = TaskGraph.INSTANCE;
     private JobSchedulerController controller = JobSchedulerController.getInstance();
-
-    private static final Logger LOGGER = LogManager.getLogger();
 
     public static Props props() {
         return Props.create(TaskActor.class);
@@ -360,6 +347,8 @@ public class TaskActor extends UntypedActor {
             TaskRetryScheduler retryScheduler = TaskRetryScheduler.INSTANCE;
             retryScheduler.remove(jobIdWithTaskId, RetryType.FAILED_RETRY);
             retryScheduler.remove(jobIdWithTaskId, RetryType.REJECT_RETRY);
+            response = ServerRemoveTaskResponse.newBuilder().setSuccess(true).setMessage("task has been removed").build();
+            getSender().tell(response, getSelf());
         } catch (Exception e) {
             response = ServerRemoveTaskResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
             getSender().tell(response, getSelf());
