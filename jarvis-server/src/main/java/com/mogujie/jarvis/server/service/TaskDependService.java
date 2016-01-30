@@ -47,6 +47,7 @@ public class TaskDependService {
 
         TaskDepend oldData = mapper.selectByPrimaryKey(taskId);
         if (oldData == null) {
+            newData.setChildTaskIds("{}");
             mapper.insertSelective(newData);
             LOGGER.info("insert parent task dependecy, taskId={}, parents is {}", taskId, dependJson);
         } else {
@@ -78,6 +79,7 @@ public class TaskDependService {
         } else {
             TaskDepend newData = new TaskDepend();
             newData.setTaskId(taskId);
+            newData.setDependTaskIds("{}");
             newData.setChildTaskIds(childJson);
             newData.setCreateTime(DateTime.now().toDate());
             mapper.insertSelective(newData);
