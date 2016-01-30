@@ -10,6 +10,7 @@ import org.joda.time.DateTime;
 import org.junit.Test;
 
 import com.google.common.collect.Maps;
+import com.google.common.collect.Range;
 import com.google.common.collect.Sets;
 import com.mogujie.jarvis.core.domain.CommonStrategy;
 import com.mogujie.jarvis.core.domain.TaskStatus;
@@ -21,6 +22,16 @@ import com.mogujie.jarvis.core.expression.TimeOffsetExpression;
 import com.mogujie.jarvis.server.scheduler.TestSchedulerBase;
 import com.mogujie.jarvis.server.scheduler.dag.DAGJob;
 import com.mogujie.jarvis.server.scheduler.dag.DAGJobType;
+import com.mogujie.jarvis.server.scheduler.dag.checker.DAGDependChecker;
+import com.mogujie.jarvis.server.scheduler.dag.checker.JobDependStatus;
+import com.mogujie.jarvis.server.service.JobService;
+import org.joda.time.DateTime;
+import org.joda.time.DateTime.Property;
+import org.junit.Test;
+
+import java.util.Map;
+
+import static org.junit.Assert.*;
 
 /**
  * Location www.mogujie.com
@@ -34,10 +45,15 @@ public class TestJobScheduleWithOffset extends TestSchedulerBase {
     private Map<Long, JobDependStatus> jobDependStatusMap = Maps.newHashMap();
 
     @Test
-    public void testExp(){
+    public void testExp() {
+        DateTime dateTime = new DateTime("2019-01-19T00:00:00");
+        Property dayOfWeek = dateTime.dayOfWeek();
+        int todayOfWeek = dayOfWeek.get();
         DependencyExpression expression = new TimeOffsetExpression("cw");
+        Range<DateTime> range = expression.getRange(dateTime);
+        Range<DateTime> realRange = Range.closedOpen(dateTime.minusDays(todayOfWeek), dateTime.plusDays(7 - todayOfWeek));
 
-        System.out.println(expression.getRange(new DateTime("2019-01-19T04:05:00")));
+        assertEquals(realRange.toString(), range.toString());
     }
 
     /**
@@ -79,7 +95,6 @@ public class TestJobScheduleWithOffset extends TestSchedulerBase {
 
         DependencyExpression expression = new TimeOffsetExpression("cw");
 
-        System.out.println(expression.getRange(new DateTime("2019-01-19T04:05:00")));
 
         DependencyStrategyExpression dependencyStrategy = new DefaultDependencyStrategyExpression(CommonStrategy.ALL.getExpression());
 

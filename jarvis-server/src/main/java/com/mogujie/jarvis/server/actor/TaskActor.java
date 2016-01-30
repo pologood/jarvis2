@@ -75,7 +75,6 @@ import com.mogujie.jarvis.server.util.PlanUtil;
 
 /**
  * @author guangming
- *
  */
 public class TaskActor extends UntypedActor {
     private TaskManager taskManager = Injectors.getInjector().getInstance(TaskManager.class);
@@ -155,18 +154,25 @@ public class TaskActor extends UntypedActor {
      * @param msg
      */
     private void retryTask(RestServerRetryTaskRequest msg) {
-        LOGGER.info("start retryTask");
-        long taskId = msg.getTaskId();
-        Task task = taskService.get(taskId);
-        TaskStatus oldStatus = TaskStatus.parseValue(task.getStatus());
         ServerRetryTaskResponse response;
-        if (oldStatus.equals(TaskStatus.FAILED) || oldStatus.equals(TaskStatus.KILLED)) {
+        try {
+            long taskId = msg.getTaskId();
+            LOGGER.info("start retryTask taskId:{}", taskId);
+
+            Task task = taskService.get(taskId);
+            TaskStatus oldStatus = TaskStatus.parseValue(task.getStatus());
+            if (!oldStatus.equals(TaskStatus.FAILED) && !oldStatus.equals(TaskStatus.KILLED)) {
+                throw new IllegalArgumentException("Only status FAILED|KILLED could be retried.");
+            }
             controller.notify(new RetryTaskEvent(taskId));
             response = ServerRetryTaskResponse.newBuilder().setSuccess(true).build();
-        } else {
-            response = ServerRetryTaskResponse.newBuilder().setSuccess(false).setMessage("Only status FAILED|KILLED counld be retried.").build();
+            getSender().tell(response, getSelf());
+        } catch (Exception ex) {
+            response = ServerRetryTaskResponse.newBuilder().setSuccess(false).setMessage(ex.getMessage()).build();
+            getSender().tell(response, getSelf());
+            LOGGER.error("retryTask error", ex);
+            throw ex;
         }
-        getSender().tell(response, getSelf());
     }
 
     /**

@@ -57,6 +57,7 @@ public class DAGTask {
         this.jobId = jobId;
         this.taskId = taskId;
         this.attemptId = attemptId;
+        this.scheduleTime = scheduleTime;
         this.dataTime = dataTime;
         if (dependTaskIdMap != null && !dependTaskIdMap.isEmpty()) {
             // store parent dependency

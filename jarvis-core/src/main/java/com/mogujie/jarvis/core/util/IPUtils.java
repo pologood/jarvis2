@@ -16,36 +16,28 @@ import java.net.UnknownHostException;
 import java.util.Enumeration;
 import java.util.regex.Matcher;
 
-import com.google.common.base.Throwables;
 import com.mogujie.jarvis.core.JarvisConstants;
 
 public class IPUtils {
 
-    public static String getIPV4Address() {
-        try {
-            String ip = Inet4Address.getLocalHost().getHostName();
-            Matcher m = JarvisConstants.IP_PATTERN.matcher(ip);
-            if (m.matches() && !ip.equals("127.0.0.1")) {
-                return ip;
-            }
-
-            Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
-            while (networkInterfaces.hasMoreElements()) {
-                NetworkInterface networkInterface = networkInterfaces.nextElement();
-                Enumeration<InetAddress> inetAddresses = networkInterface.getInetAddresses();
-                while (inetAddresses.hasMoreElements()) {
-                    InetAddress inetAddress = inetAddresses.nextElement();
-                    if (inetAddress instanceof Inet4Address && !inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress()) {
-                        return inetAddress.getHostAddress();
-                    }
-                }
-            }
-        } catch (UnknownHostException e) {
-            Throwables.propagate(e);
-        } catch (SocketException e) {
-            Throwables.propagate(e);
+    public static String getIPV4Address() throws UnknownHostException, SocketException {
+        String ip = Inet4Address.getLocalHost().getHostName();
+        Matcher m = JarvisConstants.IP_PATTERN.matcher(ip);
+        if (m.matches() && !ip.equals("127.0.0.1")) {
+            return ip;
         }
 
+        Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
+        while (networkInterfaces.hasMoreElements()) {
+            NetworkInterface networkInterface = networkInterfaces.nextElement();
+            Enumeration<InetAddress> inetAddresses = networkInterface.getInetAddresses();
+            while (inetAddresses.hasMoreElements()) {
+                InetAddress inetAddress = inetAddresses.nextElement();
+                if (inetAddress instanceof Inet4Address && !inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress()) {
+                    return inetAddress.getHostAddress();
+                }
+            }
+        }
         return null;
     }
 }

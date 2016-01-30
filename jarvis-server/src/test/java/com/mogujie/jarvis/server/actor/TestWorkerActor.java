@@ -7,23 +7,23 @@ import com.google.inject.Injector;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.core.util.IPUtils;
 import com.mogujie.jarvis.dto.generate.Worker;
-import com.mogujie.jarvis.protocol.ModifyWorkerStatusProtos;
+import com.mogujie.jarvis.protocol.AppAuthProtos;
+import com.mogujie.jarvis.protocol.WorkerProtos.RestServerModifyWorkerStatusRequest;
+import com.mogujie.jarvis.protocol.WorkerProtos.ServerModifyWorkerStatusResponse;
 import com.mogujie.jarvis.protocol.WorkerProtos.ServerRegistryResponse;
 import com.mogujie.jarvis.protocol.WorkerProtos.WorkerRegistryRequest;
 import com.mogujie.jarvis.server.JarvisServer;
 import com.mogujie.jarvis.server.actor.util.TestUtil;
 import com.mogujie.jarvis.server.guice4test.Injectors4Test;
 import com.mogujie.jarvis.server.service.WorkerService;
-import com.mogujie.jarvis.server.util.FutureUtils;
 import com.typesafe.config.Config;
-import com.typesafe.config.ConfigValueFactory;
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 
 /**
  * Location www.mogujie.com
@@ -37,8 +37,9 @@ public class TestWorkerActor {
     Injector injector = Injectors4Test.getInjector();
     WorkerService workerService = injector.getInstance(WorkerService.class);
     ActorSystem system;
+    String serverHost = "10.11.6.129";
+    AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setToken("11111").setName("jarvis-web").build();
 
-    @Before
     public void setup() {
         try {
 //检测server端口是否被占用
@@ -56,42 +57,50 @@ public class TestWorkerActor {
     }
 
     @Test
-    public void testModifyWorkerStatus() {
+    public void testModifyWorkerStatus() throws SocketException, UnknownHostException {
+        int workerId = (int) workerService.getWorkerId(IPUtils.getIPV4Address(), registPort);
+        Worker worker = workerService.getWorkerMapper().selectByPrimaryKey(workerId);
+
+        int workerStatus = 1;
+        if (1 == worker.getStatus()) {
+            workerStatus = 2;
+        }
         Config akkaConfig = ConfigUtils.getAkkaConfig("akka-test.conf");
-        String portPath = "akka.remote.netty.tcp.port";
-        String hostPath = "akka.remote.netty.tcp.hostname";
-        String hostname = IPUtils.getIPV4Address();
-        akkaConfig = akkaConfig.withValue(portPath, ConfigValueFactory.fromAnyRef(registPort));
-        akkaConfig = akkaConfig.withValue(hostPath, ConfigValueFactory.fromAnyRef(hostname));
-         system = ActorSystem.create("worker", akkaConfig);
-        ActorSelection serverActor = system.actorSelection("akka.tcp://server@192.168.21.82:10000/user/server");
+        system = ActorSystem.create("worker", akkaConfig);
+        String serverPath = "akka.tcp://server@" + serverHost + ":10000/user/server";
+        ActorSelection serverActor = system.actorSelection(serverPath);
 
 
-        ModifyProxy proxy1 = new ModifyProxy(10006);
-        Thread t1 = new Thread(proxy1);
+        RestServerModifyWorkerStatusRequest request = RestServerModifyWorkerStatusRequest
+                .newBuilder()
+                .setStatus(workerStatus)
+                .setIp(IPUtils.getIPV4Address())
+                .setPort(registPort)
+                .setAppAuth(appAuth).build();
 
-    }
+        new JavaTestKit(system) {{
+            serverActor.tell(request, getRef());
 
-    @After
-    public void tearDown() {
-        //system.shutdown();
-        if (threadServer != null) threadServer.interrupt();
+            ServerModifyWorkerStatusResponse response = (ServerModifyWorkerStatusResponse) receiveOne(duration("10 seconds"));
+
+            Assert.assertTrue(response.getSuccess());
+
+        }};
+        workerId = (int) workerService.getWorkerId(IPUtils.getIPV4Address(), registPort);
+
+        worker = workerService.getWorkerMapper().selectByPrimaryKey(workerId);
+
+        Assert.assertEquals((int) worker.getStatus(), workerStatus);
 
     }
 
 
     @Test
-    public void testWorkerRegister() {
-        //测试绑定10003至10004端口
+    public void testWorkerRegister() throws SocketException, UnknownHostException {
+        //测试绑定10001端口
         Config akkaConfig = ConfigUtils.getAkkaConfig("akka-test.conf");
-        String portPath = "akka.remote.netty.tcp.port";
-        String hostPath = "akka.remote.netty.tcp.hostname";
-        String hostname = IPUtils.getIPV4Address();
-        // akkaConfig = akkaConfig.withValue(hostPath, ConfigValueFactory.fromAnyRef(hostname));
-        akkaConfig = akkaConfig.withValue(portPath, ConfigValueFactory.fromAnyRef(registPort));
-
-         system = ActorSystem.create("worker", akkaConfig);
-        String serverPath = "akka.tcp://server@"+IPUtils.getIPV4Address()+":10000/user/server";
+        system = ActorSystem.create("worker", akkaConfig);
+        String serverPath = "akka.tcp://server@" + serverHost + ":10000/user/server";
         ActorSelection serverActor = system.actorSelection(serverPath);
         WorkerRegistryRequest workerRegistryRequest =
                 WorkerRegistryRequest.newBuilder().setKey(authKey).build();
@@ -105,7 +114,6 @@ public class TestWorkerActor {
 
                     ServerRegistryResponse response
                             = (ServerRegistryResponse) receiveOne(duration("3 seconds"));
-
                     if (response.getSuccess()) {
                         Assert.assertEquals(response.getSuccess(), true);
                         break;
@@ -132,41 +140,6 @@ public class TestWorkerActor {
     }
 
 
-    class ModifyProxy implements Runnable {
-        Config akkaConfig = ConfigUtils.getAkkaConfig("akka-test.conf");
-        String portPath = "akka.remote.netty.tcp.port";
-        private int port;
-
-        public ModifyProxy(int port) {
-            this.port = port;
-        }
-
-        @Override
-        public void run() {
-            akkaConfig = akkaConfig.withValue(portPath, ConfigValueFactory.fromAnyRef(port));
-            ActorSystem system = ActorSystem.create("worker", akkaConfig);
-
-            ActorSelection serverActor = system.actorSelection("akka.tcp://server@127.0.0.1:10000/user/server");
-
-            ModifyWorkerStatusProtos.RestServerModifyWorkerStatusRequest request = ModifyWorkerStatusProtos.RestServerModifyWorkerStatusRequest.newBuilder().
-                    setStatus(3).build();
-            new JavaTestKit(system) {{
-                serverActor.tell(request, getRef());
-
-                ModifyWorkerStatusProtos.ServerModifyWorkerStatusResponse response = (ModifyWorkerStatusProtos.ServerModifyWorkerStatusResponse) receiveOne(duration("3 seconds"));
-
-                Assert.assertTrue(response.getSuccess());
-
-                int workerId = (int) workerService.getWorkerId("127.0.0.1", port);
-
-                Worker worker = workerService.getWorkerMapper().selectByPrimaryKey(workerId);
-
-                Assert.assertEquals((int) worker.getStatus(), 3);
-            }};
-        }
-
-
-    }
 }
 
 class ServerProxy implements Runnable {
