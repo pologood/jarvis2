@@ -1,8 +1,7 @@
 [
   {"id":"all","text":"全部"},
-  {"id":"hive_script","text":"hive_script"},
-  {"id":"hive_sql","text":"hive_sql"},
+  {"id":"hive","text":"hive"},
   {"id":"shell","text":"shell"},
   {"id":"java","text":"java"},
-  {"id":"MR","text":"MR"}
+  {"id":"mapreduce","text":"mapreduce"}
 ]

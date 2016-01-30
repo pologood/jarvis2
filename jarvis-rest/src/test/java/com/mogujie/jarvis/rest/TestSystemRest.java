@@ -6,10 +6,10 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.mogujie.jarvis.core.domain.SystemStatus;
 import com.mogujie.jarvis.core.util.JsonHelper;
+import com.mogujie.jarvis.rest.domain.RestResult4TestEntity;
 import com.mogujie.jarvis.rest.vo.AbstractVo;
 import com.mogujie.jarvis.rest.vo.SystemStatusResultVo;
 import org.junit.Assert;
-import org.junit.Test;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -18,7 +18,7 @@ import java.util.Map;
 /**
  * Created by muming on 15/12/1.
  */
-public class TestSystemRest extends TestRestAbstact {
+public class TestSystemRest extends AbstractTestRest {
 
     public void test() throws UnirestException {
         Integer status;
@@ -44,11 +44,11 @@ public class TestSystemRest extends TestRestAbstact {
                 .field("user", "muming")
                 .field("parameters", paramsJson).asString();
 
-        Type restType = new TypeToken<TestRestResultEntity<AbstractVo>>() {
+        Type restType = new TypeToken<RestResult4TestEntity<AbstractVo>>() {
         }.getType();
 
         Assert.assertEquals(jsonResponse.getStatus(), 200);
-        TestRestResultEntity<?> result = JsonHelper.fromJson(jsonResponse.getBody(), restType);
+        RestResult4TestEntity<?> result = JsonHelper.fromJson(jsonResponse.getBody(), restType);
         Assert.assertEquals(result.getCode(), 0);
     }
 
@@ -63,11 +63,11 @@ public class TestSystemRest extends TestRestAbstact {
                 .field("user", "muming")
                 .field("parameters", paramsJson).asString();
 
-        Type restType = new TypeToken<TestRestResultEntity<SystemStatusResultVo>>() {
+        Type restType = new TypeToken<RestResult4TestEntity<SystemStatusResultVo>>() {
         }.getType();
 
         Assert.assertEquals(jsonResponse.getStatus(), 200);
-        TestRestResultEntity<SystemStatusResultVo> result = JsonHelper.fromJson(jsonResponse.getBody(), restType);
+        RestResult4TestEntity<SystemStatusResultVo> result = JsonHelper.fromJson(jsonResponse.getBody(), restType);
         Assert.assertEquals(result.getCode(), 0);
         return result.getData().getStatus();
 

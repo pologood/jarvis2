@@ -10,6 +10,7 @@ import java.net.Socket;
  * used by jarvis-parent
  */
 public class TestUtil {
+    @SuppressWarnings("resource")
     public static boolean isPortHasBeenUse(String host, int port) {
         Socket socket = null;
         try {

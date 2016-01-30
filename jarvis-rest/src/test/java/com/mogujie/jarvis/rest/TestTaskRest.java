@@ -4,6 +4,7 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.mogujie.jarvis.rest.domain.RestResult4TestEntity;
 import org.junit.Assert;
 
 import com.google.gson.reflect.TypeToken;
@@ -18,7 +19,7 @@ import com.mogujie.jarvis.rest.vo.TaskRelationsVo;
 /**
  * Created by muming on 15/12/1.
  */
-public class TestRestTask {
+public class TestTaskRest {
 
     private String baseUrl = "http://127.0.0.1:8080";
 
@@ -44,11 +45,11 @@ public class TestRestTask {
         HttpResponse<String> jsonResponse = Unirest.post(baseUrl + "/api/task/submit").field("appName", "jarvis-web").field("appToken", "123")
                 .field("user", "muming").field("parameters", paramsJson).asString();
 
-        Type restType = new TypeToken<TestRestResultEntity<JobResultVo>>() {
+        Type restType = new TypeToken<RestResult4TestEntity<JobResultVo>>() {
         }.getType();
 
         Assert.assertEquals(jsonResponse.getStatus(), 200);
-        TestRestResultEntity<?> result = JsonHelper.fromJson(jsonResponse.getBody(), restType);
+        RestResult4TestEntity<?> result = JsonHelper.fromJson(jsonResponse.getBody(), restType);
         Assert.assertEquals(result.getCode(), 0);
     }
 
@@ -62,11 +63,11 @@ public class TestRestTask {
         HttpResponse<String> jsonResponse = Unirest.post(baseUrl + "/api/task/queryRelation").field("appName", "jarvis-web").field("appToken", "123")
                 .field("user", "muming").field("parameters", paramsJson).asString();
 
-        Type restType = new TypeToken<TestRestResultEntity<TaskRelationsVo>>() {
+        Type restType = new TypeToken<RestResult4TestEntity<TaskRelationsVo>>() {
         }.getType();
 
         Assert.assertEquals(jsonResponse.getStatus(), 200);
-        TestRestResultEntity<?> result = JsonHelper.fromJson(jsonResponse.getBody(), restType);
+        RestResult4TestEntity<?> result = JsonHelper.fromJson(jsonResponse.getBody(), restType);
         Assert.assertEquals(result.getCode(), 0);
 
     }

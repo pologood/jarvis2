@@ -133,7 +133,11 @@ public class TimeScheduler extends Scheduler {
                 jobService.isActive(jobId) &&
                 !job.getIsTemp()) {
             DateTime nextTime = PlanUtil.getScheduleTimeAfter(jobId, dt);
-            plan.addPlan(new TimePlanEntry(jobId, nextTime));
+            if (nextTime != null) {
+                plan.addPlan(new TimePlanEntry(jobId, nextTime));
+            } else {
+                LOGGER.warn("next time is null, jobId={}, dateTime={}", jobId, dt);
+            }
         }
     }
 }

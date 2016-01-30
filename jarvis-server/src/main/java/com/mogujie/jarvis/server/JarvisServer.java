@@ -20,6 +20,9 @@ import org.apache.logging.log4j.Logger;
 import org.jgrapht.experimental.dag.DirectedAcyclicGraph.CycleFoundException;
 import org.joda.time.DateTime;
 
+import akka.actor.ActorSystem;
+import akka.routing.RoundRobinPool;
+
 import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Range;
@@ -58,9 +61,6 @@ import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.PlanUtil;
 
-import akka.actor.ActorSystem;
-import akka.routing.RoundRobinPool;
-
 public class JarvisServer {
 
     private static final Logger LOGGER = LogManager.getLogger();
@@ -68,29 +68,33 @@ public class JarvisServer {
     public static void main(String[] args) throws Exception {
         LOGGER.info("Starting Jarvis server...");
 
-        ActorSystem system = Injectors.getInjector().getInstance(ActorSystem.class);
+        try {
+            ActorSystem system = Injectors.getInjector().getInstance(ActorSystem.class);
 
-        Configuration config = ConfigUtils.getServerConfig();
-        int serverActorNum = config.getInt(ServerConigKeys.SERVER_ACTOR_NUM, 500);
-        system.actorOf(ServerActor.props().withRouter(new RoundRobinPool(serverActorNum)), JarvisConstants.SERVER_AKKA_SYSTEM_NAME);
+            Configuration config = ConfigUtils.getServerConfig();
+            int serverActorNum = config.getInt(ServerConigKeys.SERVER_ACTOR_NUM, 500);
+            system.actorOf(ServerActor.props().withRouter(new RoundRobinPool(serverActorNum)), JarvisConstants.SERVER_AKKA_SYSTEM_NAME);
 
-        int taskDispatcherThreads = config.getInt(ServerConigKeys.SERVER_DISPATCHER_THREADS, 5);
-        ExecutorService executorService = Executors.newFixedThreadPool(taskDispatcherThreads);
-        for (int i = 0; i < taskDispatcherThreads; i++) {
-            Thread taskDispatcher = new TaskDispatcher();
-            taskDispatcher.setName("Jarvis-task-dispatcher-" + i);
-            executorService.submit(taskDispatcher);
+            int taskDispatcherThreads = config.getInt(ServerConigKeys.SERVER_DISPATCHER_THREADS, 5);
+            ExecutorService executorService = Executors.newFixedThreadPool(taskDispatcherThreads);
+            for (int i = 0; i < taskDispatcherThreads; i++) {
+                Thread taskDispatcher = new TaskDispatcher();
+                taskDispatcher.setName("Jarvis-task-dispatcher-" + i);
+                executorService.submit(taskDispatcher);
+            }
+            executorService.shutdown();
+
+            TaskRetryScheduler taskRetryScheduler = TaskRetryScheduler.INSTANCE;
+            taskRetryScheduler.start();
+
+            init();
+            Metrics.start(ConfigUtils.getServerConfig());
+            LOGGER.info("Jarvis server started.");
+
+        } catch (Exception ex) {
+            LOGGER.error("Jarvis server start error", ex);
+            Throwables.propagate(ex);
         }
-        executorService.shutdown();
-
-        TaskRetryScheduler taskRetryScheduler = TaskRetryScheduler.INSTANCE;
-        taskRetryScheduler.start();
-
-        init();
-
-        Metrics.start(ConfigUtils.getServerConfig());
-
-        LOGGER.info("Jarvis server started.");
     }
 
     public static void init() throws Exception {
@@ -164,7 +168,13 @@ public class JarvisServer {
                 //重新计算下一次时间
                 DateTime now = DateTime.now();
                 DateTime lastTime = PlanUtil.getScheduleTimeBefore(jobId, now);
+                if (lastTime == null) {
+                    lastTime = JarvisConstants.DATETIME_MIN;
+                }
                 DateTime nextTime = PlanUtil.getScheduleTimeAfter(jobId, now);
+                if (nextTime == null) {
+                    nextTime = JarvisConstants.DATETIME_MAX;
+                }
                 List<Task> tasks = taskService.getTasksBetween(jobId, Range.closed(lastTime.minusSeconds(1), nextTime));
                 if (tasks == null || tasks.isEmpty()) {
                     //如果当前周期内没有跑过，则重新检查依赖关系
@@ -179,7 +189,8 @@ public class JarvisServer {
                 .getTasksByStatusNotIn(Lists.newArrayList(TaskStatus.SUCCESS.getValue(), TaskStatus.REMOVED.getValue()));
         // 4.1 先恢复task
         for (Task task : recoveryTasks) {
-            DAGTask dagTask = new DAGTask(task.getJobId(), task.getTaskId(), task.getAttemptId(), task.getDataTime().getTime());
+            DAGTask dagTask = new DAGTask(task.getJobId(), task.getTaskId(), task.getAttemptId(),
+                    task.getScheduleTime().getTime(), task.getDataTime().getTime());
             taskGraph.addTask(task.getTaskId(), dagTask);
         }
         // 4.2 再构造task依赖关系

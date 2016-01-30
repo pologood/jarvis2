@@ -37,7 +37,7 @@ public class PlanUtil {
         DateTime startDateTime = dateTimeRange.lowerEndpoint();
         DateTime endDatetTime = dateTimeRange.upperEndpoint();
         DateTime nextDateTime = getScheduleTimeAfter(jobId, startDateTime.minusSeconds(1));
-        while (!nextDateTime.isBefore(startDateTime) && !nextDateTime.isAfter(endDatetTime)) {
+        while (nextDateTime != null && !nextDateTime.isBefore(startDateTime) && !nextDateTime.isAfter(endDatetTime)) {
             planList.add(new TimePlanEntry(jobId, nextDateTime));
             nextDateTime = getScheduleTimeAfter(jobId, nextDateTime);
         }
@@ -59,7 +59,9 @@ public class PlanUtil {
         if (expressions != null && !expressions.isEmpty()) {
             for (ScheduleExpression scheduleExpression : expressions.values()) {
                 DateTime nextTime = scheduleExpression.getTimeAfter(dateTime);
-                if (result == null || result.isAfter(nextTime)) {
+                if (nextTime == null) {
+                    continue;
+                } else if (result == null || result.isAfter(nextTime)) {
                     result = nextTime;
                 }
             }
@@ -71,7 +73,9 @@ public class PlanUtil {
             DependencyExpression dependencyExpression = jobEntry.getDependencies().get(dependencyJobId).getDependencyExpression();
             if (dependencyExpression == null) {
                 DateTime nextTime = getScheduleTimeAfter(dependencyJobId, dateTime);
-                if (result == null || result.isBefore(nextTime)) {
+                if (nextTime == null) {
+                    continue;
+                } else if (result == null || result.isBefore(nextTime)) {
                     result = nextTime;
                 }
             } else {
@@ -84,7 +88,7 @@ public class PlanUtil {
                             : dependencyRangeDateTime.upperEndpoint().plusSeconds(1);
 
                     DateTime nextTime = getScheduleTimeAfter(dependencyJobId, startDateTime);
-                    while (nextTime.isBefore(endDateTime)) {
+                    while (nextTime != null && nextTime.isBefore(endDateTime)) {
                         if (result == null || result.isBefore(nextTime)) {
                             result = nextTime;
                         }
@@ -110,7 +114,9 @@ public class PlanUtil {
         if (expressions != null && !expressions.isEmpty()) {
             for (ScheduleExpression scheduleExpression : expressions.values()) {
                 DateTime lastTime = scheduleExpression.getTimeBefore(dateTime);
-                if (result == null || result.isBefore(lastTime)) {
+                if (lastTime == null) {
+                    continue;
+                } else if (result == null || result.isBefore(lastTime)) {
                     result = lastTime;
                 }
             }

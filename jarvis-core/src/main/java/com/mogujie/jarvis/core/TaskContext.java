@@ -14,7 +14,7 @@ import com.mogujie.jarvis.core.domain.TaskDetail;
  * @author wuya
  *
  */
-public class TaskContext {
+public final class TaskContext {
 
     private TaskDetail taskDetail;
     private AbstractLogCollector logCollector;
@@ -44,7 +44,7 @@ public class TaskContext {
         return taskReporter;
     }
 
-    public static class TaskContextBuilder {
+    public static final class TaskContextBuilder {
 
         private TaskContext taskContext = new TaskContext();
 

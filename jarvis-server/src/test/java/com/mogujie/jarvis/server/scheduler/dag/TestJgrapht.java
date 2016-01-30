@@ -181,14 +181,17 @@ public class TestJgrapht {
     }
 
     @Test
-    public void test123() throws CycleFoundException {
+    public void testNotExistedException() throws CycleFoundException {
         DirectedAcyclicGraph<MyVertex, DefaultEdge> g1 = new DirectedAcyclicGraph<MyVertex, DefaultEdge>(DefaultEdge.class);
         MyVertex v1 = new MyVertex(1, "v1");
         MyVertex v2 = new MyVertex(2, "v2");
-        MyVertex v3 = new MyVertex(3, "v3");
-        MyVertex v4 = new MyVertex(4, "v4");
 
-        g1.addDagEdge(v1, v2);
+        try {
+            g1.addDagEdge(v1, v2);
+            Assert.assertTrue(false);
+        } catch (Exception e) {
+            Assert.assertTrue(true);
+        }
 
         List<MyVertex> parents = getParents(g1, v1);
         Assert.assertEquals(0, parents.size());

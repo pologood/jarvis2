@@ -6,7 +6,7 @@
  * Create Date: 2015年9月7日 下午2:31:05
  */
 
-package com.mogujie.jarvis.worker;
+package com.mogujie.jarvis.worker.executor;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

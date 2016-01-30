@@ -80,7 +80,7 @@ import com.mogujie.jarvis.server.util.PlanUtil;
  */
 public class JobActor extends UntypedActor {
 
-    private static Logger logger = LogManager.getLogger();
+    private static Logger LOGGER = LogManager.getLogger();
 
     private JobGraph jobGraph = JobGraph.INSTANCE;
     private TimePlan plan = TimePlan.INSTANCE;
@@ -202,7 +202,7 @@ public class JobActor extends UntypedActor {
             removeJob(jobId);
             response = ServerSubmitJobResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
             getSender().tell(response, getSelf());
-            logger.error("", e);
+            LOGGER.error("", e);
             Throwables.propagate(e);
         }
     }
@@ -229,7 +229,7 @@ public class JobActor extends UntypedActor {
         } catch (Exception e) {
             response = ServerModifyJobResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
             getSender().tell(response, getSelf());
-            logger.error("", e);
+            LOGGER.error("", e);
             throw e;
         }
     }
@@ -289,7 +289,7 @@ public class JobActor extends UntypedActor {
             jobGraph.setParents(dagJob, oldParents);
             response = ServerModifyJobDependResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
             getSender().tell(response, getSelf());
-            logger.error("", e);
+            LOGGER.error("", e);
             throw e;
         }
     }
@@ -350,13 +350,14 @@ public class JobActor extends UntypedActor {
                 DateTime now = DateTime.now();
                 DateTime lastTime = PlanUtil.getScheduleTimeBefore(jobId, now);
                 if (lastTime == null) {
-                    lastTime = new DateTime(0);
-                } else {
-                    lastTime = lastTime.minusSeconds(1);
+                    lastTime = JarvisConstants.DATETIME_MIN;
                 }
                 DateTime nextTime = PlanUtil.getScheduleTimeAfter(jobId, now);
+                if (nextTime == null) {
+                    nextTime = JarvisConstants.DATETIME_MAX;
+                }
                 TaskService taskService = Injectors.getInjector().getInstance(TaskService.class);
-                List<Task> tasks = taskService.getTasksBetween(jobId, Range.closed(lastTime, nextTime));
+                List<Task> tasks = taskService.getTasksBetween(jobId, Range.closed(lastTime.minusSeconds(1), nextTime));
                 if (tasks != null && !tasks.isEmpty()) {
                     //如果当前周期已经跑过一次，则下一周期生效
                     // noting to do
@@ -374,7 +375,7 @@ public class JobActor extends UntypedActor {
         } catch (Exception e) {
             response = ServerModifyJobScheduleExpResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
             getSender().tell(response, getSelf());
-            logger.error("", e);
+            LOGGER.error("", e);
             throw e;
         }
     }
@@ -407,7 +408,7 @@ public class JobActor extends UntypedActor {
         } catch (Exception e) {
             response = ServerModifyJobStatusResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
             getSender().tell(response, getSelf());
-            logger.error("", e);
+            LOGGER.error("", e);
             throw e;
         }
     }
@@ -444,7 +445,7 @@ public class JobActor extends UntypedActor {
         } catch (Exception e) {
             response = ServerQueryJobRelationResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
             getSender().tell(response, getSelf());
-            logger.error("", e);
+            LOGGER.error("", e);
             throw e;
         }
     }

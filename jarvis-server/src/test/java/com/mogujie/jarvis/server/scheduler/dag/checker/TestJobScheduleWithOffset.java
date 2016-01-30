@@ -1,4 +1,13 @@
-package com.mogujie.jarvis.server.scheduler;
+package com.mogujie.jarvis.server.scheduler.dag.checker;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.util.Map;
+
+import org.joda.time.DateTime;
+import org.junit.Test;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Range;
@@ -10,7 +19,7 @@ import com.mogujie.jarvis.core.expression.DefaultDependencyStrategyExpression;
 import com.mogujie.jarvis.core.expression.DependencyExpression;
 import com.mogujie.jarvis.core.expression.DependencyStrategyExpression;
 import com.mogujie.jarvis.core.expression.TimeOffsetExpression;
-import com.mogujie.jarvis.server.guice.Injectors;
+import com.mogujie.jarvis.server.scheduler.TestSchedulerBase;
 import com.mogujie.jarvis.server.scheduler.dag.DAGJob;
 import com.mogujie.jarvis.server.scheduler.dag.DAGJobType;
 import com.mogujie.jarvis.server.scheduler.dag.checker.DAGDependChecker;
@@ -33,10 +42,6 @@ public class TestJobScheduleWithOffset extends TestSchedulerBase {
     private long jobAId = 4;
     private long jobBId = 5;
     private long jobCId = 6;
-    private long jobDId = 4;
-    private long jobEId = 5;
-    private long jobFId = 6;
-    private JobService jobService = Injectors.getInjector().getInstance(JobService.class);
     private Map<Long, JobDependStatus> jobDependStatusMap = Maps.newHashMap();
 
     @Test
@@ -52,9 +57,9 @@ public class TestJobScheduleWithOffset extends TestSchedulerBase {
     }
 
     /**
-     * A   B
-     * \  /
-     * C
+     *  A   B
+     *   \ /
+     *    C
      */
     @Test
     public void testWeek() throws Exception {
@@ -137,7 +142,6 @@ public class TestJobScheduleWithOffset extends TestSchedulerBase {
         taskService.updateStatus(taskBId7, TaskStatus.SUCCESS);
         assertTrue(dependChecker.checkDependency(Sets.newHashSet(jobAId, jobBId), scheduleTime));
 
-
         taskService.deleteTaskAndRelation(taskAId1);
         taskService.deleteTaskAndRelation(taskAId2);
         taskService.deleteTaskAndRelation(taskAId3);
@@ -152,7 +156,5 @@ public class TestJobScheduleWithOffset extends TestSchedulerBase {
         taskService.deleteTaskAndRelation(taskBId5);
         taskService.deleteTaskAndRelation(taskBId6);
         taskService.deleteTaskAndRelation(taskBId7);
-
-
     }
 }

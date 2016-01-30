@@ -6,7 +6,7 @@
  * Create Date: 2015年9月1日 下午2:26:16
  */
 
-package com.mogujie.jarvis.worker;
+package com.mogujie.jarvis.worker.executor;
 
 import java.nio.charset.StandardCharsets;
 
@@ -20,6 +20,7 @@ import com.mogujie.jarvis.core.domain.StreamType;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.protocol.LogProtos.LogStorageWriteLogResponse;
 import com.mogujie.jarvis.protocol.LogProtos.WorkerWriteLogRequest;
+import com.mogujie.jarvis.worker.WorkerConfigKeys;
 import com.mogujie.jarvis.worker.util.FutureUtils;
 
 import akka.actor.ActorSelection;

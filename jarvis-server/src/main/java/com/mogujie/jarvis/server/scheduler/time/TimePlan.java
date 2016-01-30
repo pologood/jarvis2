@@ -13,6 +13,8 @@ import java.util.Iterator;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 
 import com.mogujie.jarvis.core.domain.JobStatus;
@@ -42,6 +44,8 @@ public enum TimePlan {
     // 优先级队列，通过调度时间由小到大排序
     private Queue<TimePlanEntry> plan = new PriorityQueue<>(comparator);
 
+    private static Logger LOGGER = LogManager.getLogger();
+
     /**
      * add a plan
      *
@@ -70,8 +74,13 @@ public enum TimePlan {
      * @param jobId
      */
     public synchronized void addJob(long jobId) {
-        DateTime nextTime = PlanUtil.getScheduleTimeAfter(jobId, DateTime.now());
-        plan.add(new TimePlanEntry(jobId, nextTime));
+        DateTime now = DateTime.now();
+        DateTime nextTime = PlanUtil.getScheduleTimeAfter(jobId, now);
+        if (nextTime != null) {
+            plan.add(new TimePlanEntry(jobId, nextTime));
+        } else {
+            LOGGER.warn("next time is null, jobId={}, dateTime={}", jobId, now);
+        }
     }
 
     /**
@@ -87,7 +96,11 @@ public enum TimePlan {
             scheduleTime = lastone.getScheduleTime().getTime();
         }
         DateTime nextTime = PlanUtil.getScheduleTimeAfter(jobId, new DateTime(scheduleTime));
-        plan.add(new TimePlanEntry(jobId, nextTime));
+        if (nextTime != null) {
+            plan.add(new TimePlanEntry(jobId, nextTime));
+        } else {
+            LOGGER.warn("next time is null, jobId={}, dateTime={}", jobId, new DateTime(scheduleTime));
+        }
     }
 
     /**

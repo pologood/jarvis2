@@ -26,22 +26,34 @@ public class DAGTask {
     private long jobId;
     private long taskId;
     private int attemptId;
+    private long scheduleTime;
     private long dataTime;
     private TaskGraph taskGraph = TaskGraph.INSTANCE;
     private TaskService taskService = Injectors.getInjector().getInstance(TaskService.class);
 
-    public DAGTask(long jobId, long taskId, int attemptId, long dataTime) {
+    // 正常调度逻辑，调度时间和数据时间一样
+    public DAGTask(long jobId, long taskId, int attemptId, long scheduleTime) {
+        this(jobId, taskId, attemptId, scheduleTime, scheduleTime);
+    }
+
+    public DAGTask(long jobId, long taskId, int attemptId, long scheduleTime, long dataTime) {
         this.jobId = jobId;
         this.taskId = taskId;
         this.attemptId = attemptId;
+        this.scheduleTime = scheduleTime;
         this.dataTime = dataTime;
     }
 
-    public DAGTask(long jobId, long taskId, long dataTime, Map<Long, List<Long>> dependTaskIdMap) {
-        this(jobId, taskId, 1, dataTime, dependTaskIdMap);
+    // 正常调度逻辑，调度时间和数据时间一样
+    public DAGTask(long jobId, long taskId, long scheduleTime, Map<Long, List<Long>> dependTaskIdMap) {
+        this(jobId, taskId, 1, scheduleTime, scheduleTime, dependTaskIdMap);
     }
 
-    public DAGTask(long jobId, long taskId, int attemptId, long dataTime, Map<Long, List<Long>> dependTaskIdMap) {
+    public DAGTask(long jobId, long taskId, long scheduletime, long dataTime, Map<Long, List<Long>> dependTaskIdMap) {
+        this(jobId, taskId, 1, scheduletime, dataTime, dependTaskIdMap);
+    }
+
+    public DAGTask(long jobId, long taskId, int attemptId, long scheduleTime, long dataTime, Map<Long, List<Long>> dependTaskIdMap) {
         this.jobId = jobId;
         this.taskId = taskId;
         this.attemptId = attemptId;
@@ -83,6 +95,14 @@ public class DAGTask {
         this.attemptId = attemptId;
     }
 
+    public long getScheduleTime() {
+        return scheduleTime;
+    }
+
+    public void setScheduleTime(long scheduleTime) {
+        this.scheduleTime = scheduleTime;
+    }
+
     public long getDataTime() {
         return dataTime;
     }
@@ -119,6 +139,8 @@ public class DAGTask {
 
     @Override
     public String toString() {
-        return "DAGTask [jobId=" + jobId + ", taskId=" + taskId + ", attemptId=" + attemptId + ", dataTime=" + dataTime + "]";
+        return "DAGTask [jobId=" + jobId + ", taskId=" + taskId + ", attemptId=" + attemptId + ", scheduleTime=" + scheduleTime + ", dataTime="
+                + dataTime + "]";
     }
+
 }

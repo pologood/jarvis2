@@ -34,7 +34,6 @@ public class TestDAGTask {
     private long jobBId = 2;
     private long jobCId = 3;
     private long t1 = 1000;
-    private long t2 = 2000;
 
     @After
     public void teardown() {

@@ -22,6 +22,8 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 
 /**
  * Location www.mogujie.com
@@ -55,13 +57,13 @@ public class TestWorkerActor {
     }
 
     @Test
-    public void testModifyWorkerStatus() {
+    public void testModifyWorkerStatus() throws SocketException, UnknownHostException {
         int workerId = (int) workerService.getWorkerId(IPUtils.getIPV4Address(), registPort);
         Worker worker = workerService.getWorkerMapper().selectByPrimaryKey(workerId);
 
         int workerStatus = 1;
         if (1 == worker.getStatus()) {
-            workerStatus = 3;
+            workerStatus = 2;
         }
         Config akkaConfig = ConfigUtils.getAkkaConfig("akka-test.conf");
         system = ActorSystem.create("worker", akkaConfig);
@@ -94,7 +96,7 @@ public class TestWorkerActor {
 
 
     @Test
-    public void testWorkerRegister() {
+    public void testWorkerRegister() throws SocketException, UnknownHostException {
         //测试绑定10001端口
         Config akkaConfig = ConfigUtils.getAkkaConfig("akka-test.conf");
         system = ActorSystem.create("worker", akkaConfig);

@@ -3,6 +3,7 @@ package com.mogujie.jarvis.rest;
 import java.lang.reflect.Type;
 import java.util.*;
 
+import com.mogujie.jarvis.rest.domain.RestResult4TestEntity;
 import com.mogujie.jarvis.rest.vo.*;
 import org.junit.Assert;
 
@@ -19,13 +20,13 @@ import org.junit.Test;
 /**
  * Created by muming on 15/12/1.
  */
-public class TestRestJob {
+public class TestJobRest {
 
     @Test
     public void testMy(){
-        String a = "{\"jobName\":\"test\",\"activeStartDate\":\"\",\"activeEndDate\":\"\",\"content\":\"ls;\",\"params\":{},\"expression\":\"\",\"failedAttempts\":0,\"failedInterval\":3,\"jobType\":\"hive_script\",\"bizGroupId\":1,\"workerGroupId\":1,\"expressionType\":1,\"priority\":1,\"scheduleExpressionEntry\":{\"expressionType\":\"1\",\"expression\":\"\",\"operatorMode\":3}}";
+        String a = "{\"jobName\":\"test\",\"activeStartDate\":\"\",\"activeEndDate\":\"\",\"content\":\"ls;\",\"params\":\"{}\",\"expression\":\"\",\"failedAttempts\":0,\"failedInterval\":3,\"jobType\":\"hive_script\",\"bizGroupId\":1,\"workerGroupId\":1,\"expressionType\":1,\"priority\":1,\"scheduleExpressionList\":[]}";
         JobVo jobVo = JsonHelper.fromJson(a, JobVo.class);
-        String b = "{\"jobName\":\"test\",\"activeStartDate\":\"\",\"activeEndDate\":\"\",\"content\":\"ls;\",\"params\":{},\"expression\":\"\",\"failedAttempts\":0,\"failedInterval\":3,\"jobType\":\"hive_script\",\"bizGroupId\":1,\"workerGroupId\":1,\"expressionType\":1,\"priority\":1,\"scheduleExpressionEntry\":{\"expressionType\":\"1\",\"expression\":\"\",\"operatorMode\":3}}";
+        String b = "{\"jobName\":\"test\",\"activeStartDate\":\"\",\"activeEndDate\":\"\",\"content\":\"ls;\",\"params\":\"{}\",\"expression\":\"\",\"failedAttempts\":0,\"failedInterval\":3,\"jobType\":\"hive_script\",\"bizGroupId\":1,\"workerGroupId\":1,\"expressionType\":1,\"priority\":1,\"scheduleExpressionList\":[{\"expressionType\":\"1\",\"expression\":\"\",\"operatorMode\":3}]}";
         JobVo jobVo2= JsonHelper.fromJson(b, JobVo.class);
 
         int i = 3;
@@ -112,10 +113,10 @@ public class TestRestJob {
         HttpResponse<String> jsonResponse = Unirest.post(baseUrl + "/api/job/submit").field("appName", "jarvis-web").field("appToken", "123")
                 .field("user", "muming").field("parameters", paramsJson).asString();
 
-        Type restType = new TypeToken<TestRestResultEntity<JobResultVo>>() {}.getType();
+        Type restType = new TypeToken<RestResult4TestEntity<JobResultVo>>() {}.getType();
 
         Assert.assertEquals(jsonResponse.getStatus(), 200);
-        TestRestResultEntity<JobResultVo> result = JsonHelper.fromJson(jsonResponse.getBody(), restType);
+        RestResult4TestEntity<JobResultVo> result = JsonHelper.fromJson(jsonResponse.getBody(), restType);
         Assert.assertEquals(result.getCode(), 0);
 
         return result.getData().getJobId();
@@ -159,11 +160,11 @@ public class TestRestJob {
                 .field("user", "muming")
                 .field("parameters", paramsJson).asString();
 
-        Type restType = new TypeToken<TestRestResultEntity<JobResultVo>>() {
+        Type restType = new TypeToken<RestResult4TestEntity<JobResultVo>>() {
         }.getType();
 
         Assert.assertEquals(jsonResponse.getStatus(), 200);
-        TestRestResultEntity<?> result = JsonHelper.fromJson(jsonResponse.getBody(), restType);
+        RestResult4TestEntity<?> result = JsonHelper.fromJson(jsonResponse.getBody(), restType);
         Assert.assertEquals(result.getCode(), 0);
 
     }
@@ -207,11 +208,11 @@ public class TestRestJob {
                 .field("user", "muming")
                 .field("parameters", paramsJson).asString();
 
-        Type restType = new TypeToken<TestRestResultEntity<JobResultVo>>() {
+        Type restType = new TypeToken<RestResult4TestEntity<JobResultVo>>() {
         }.getType();
 
         Assert.assertEquals(jsonResponse.getStatus(), 200);
-        TestRestResultEntity<?> result = JsonHelper.fromJson(jsonResponse.getBody(), restType);
+        RestResult4TestEntity<?> result = JsonHelper.fromJson(jsonResponse.getBody(), restType);
         Assert.assertEquals(result.getCode(), 0);
 
     }
@@ -229,10 +230,10 @@ public class TestRestJob {
                 .field("user", "muming")
                 .field("parameters", paramsJson).asString();
 
-        Type restType = new TypeToken<TestRestResultEntity<JobRelationsVo>>() {}.getType();
+        Type restType = new TypeToken<RestResult4TestEntity<JobRelationsVo>>() {}.getType();
 
         Assert.assertEquals(jsonResponse.getStatus(), 200);
-        TestRestResultEntity<?> result = JsonHelper.fromJson(jsonResponse.getBody(), restType);
+        RestResult4TestEntity<?> result = JsonHelper.fromJson(jsonResponse.getBody(), restType);
         Assert.assertEquals(result.getCode(), 0);
 
     }

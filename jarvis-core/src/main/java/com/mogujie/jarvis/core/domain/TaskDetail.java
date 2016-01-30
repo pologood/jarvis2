@@ -13,7 +13,7 @@ import java.util.Objects;
 
 import org.joda.time.DateTime;
 
-public class TaskDetail {
+public final class TaskDetail {
 
     private String fullId;
     private String taskName;
@@ -24,7 +24,8 @@ public class TaskDetail {
     private int priority;
     private int groupId;
     private Map<String, Object> parameters;
-    private int expiredTime;
+    private int expiredTime; //单位秒
+    private DateTime scheduleTime;
     private DateTime dataTime;
     private int failedRetries;
     private int failedInterval;
@@ -68,6 +69,10 @@ public class TaskDetail {
         return parameters;
     }
 
+    public DateTime getScheduleTime() {
+        return scheduleTime;
+    }
+
     public DateTime getDataTime() {
         return dataTime;
     }
@@ -86,8 +91,8 @@ public class TaskDetail {
 
     @Override
     public int hashCode() {
-        return Objects.hash(fullId, taskName, appName, user, jobType, content, priority, groupId, parameters, expiredTime, dataTime, failedRetries,
-                failedInterval);
+        return Objects.hash(fullId, taskName, appName, user, jobType, content, priority, groupId, parameters, expiredTime, scheduleTime, dataTime,
+                failedRetries, failedInterval);
     }
 
     @Override
@@ -102,8 +107,8 @@ public class TaskDetail {
                     && Objects.equals(user, other.user) && Objects.equals(jobType, other.jobType) && Objects.equals(content, other.content)
                     && Objects.equals(priority, other.priority) && Objects.equals(groupId, other.groupId)
                     && Objects.equals(parameters, other.parameters) && Objects.equals(expiredTime, other.expiredTime)
-                    && Objects.equals(dataTime, other.dataTime) && Objects.equals(failedRetries, other.failedRetries)
-                    && Objects.equals(failedInterval, other.failedInterval);
+                    && Objects.equals(scheduleTime, other.scheduleTime) && Objects.equals(dataTime, other.dataTime)
+                    && Objects.equals(failedRetries, other.failedRetries) && Objects.equals(failedInterval, other.failedInterval);
 
         }
 
@@ -118,7 +123,7 @@ public class TaskDetail {
         return new TaskDetailBuilder(taskDetail);
     }
 
-    public static class TaskDetailBuilder {
+    public static final class TaskDetailBuilder {
 
         private TaskDetail task = new TaskDetail();;
 
@@ -171,6 +176,11 @@ public class TaskDetail {
 
         public TaskDetailBuilder setParameters(Map<String, Object> parameters) {
             this.task.parameters = parameters;
+            return this;
+        }
+
+        public TaskDetailBuilder setScheduleTime(DateTime scheduleTime) {
+            this.task.scheduleTime = scheduleTime;
             return this;
         }
 

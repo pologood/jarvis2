@@ -34,7 +34,7 @@ import com.mogujie.jarvis.worker.status.TaskStateStoreFactory;
 import com.mogujie.jarvis.worker.status.TaskStatusLookup;
 import com.mogujie.jarvis.worker.util.TaskConfigUtils;
 
-public class TaskStateRestore extends Thread {
+public class TaskStateRestoreThread extends Thread {
 
     private ActorSystem system;
     private ActorRef sender;
@@ -47,7 +47,7 @@ public class TaskStateRestore extends Thread {
     private static final String SERVER_AKKA_PATH = ConfigUtils.getWorkerConfig().getString(WorkerConfigKeys.SERVER_AKKA_PATH)
             + JarvisConstants.SERVER_AKKA_USER_PATH;
 
-    public TaskStateRestore(ActorSystem system, ActorRef sender) {
+    public TaskStateRestoreThread(ActorSystem system, ActorRef sender) {
         this.system = system;
         this.sender = sender;
     }
