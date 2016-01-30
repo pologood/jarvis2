@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="warn">
   <Appenders>
-    <RollingFile name="RollingFile" fileName="logs/${sys:role}.log"
-                 filePattern="logs/${sys:role}-%d{yyyy-MM-dd}-%i.log">
+    <RollingFile name="RollingFile" fileName="${sys:log_dir}/${sys:role}.log"
+                 filePattern="${sys:log_dir}/${sys:role}-%d{yyyy-MM-dd}-%i.log">
       <PatternLayout>
         <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</Pattern>
       </PatternLayout>
@@ -12,7 +12,7 @@
       </Policies>
     </RollingFile>
     
-    <RollingFile name="heartbeat" fileName="logs/heartbeat.log" filePattern="logs/heartbeat.%d{yyyy-MM-dd}.%i.log">
+    <RollingFile name="heartbeat" fileName="${sys:log_dir}/heartbeat.log" filePattern="${sys:log_dir}/heartbeat.%d{yyyy-MM-dd}.%i.log">
        <PatternLayout>
            <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %m%n</Pattern>
        </PatternLayout>
