@@ -22,9 +22,6 @@ import com.mogujie.jarvis.server.scheduler.TestSchedulerBase;
  *
  */
 public class TestJobGraph extends TestSchedulerBase {
-    private long jobAId = 1;
-    private long jobBId = 2;
-    private long jobCId = 3;
     private DAGJob jobA;
     private DAGJob jobB;
     private DAGJob jobC;
@@ -37,6 +34,9 @@ public class TestJobGraph extends TestSchedulerBase {
      */
     @Test
     public void testAddJob1() throws Exception {
+        long jobAId = 4;
+        long jobBId = 5;
+        long jobCId = 6;
         jobA = new DAGJob(jobAId, DAGJobType.TIME);
         jobB = new DAGJob(jobBId, DAGJobType.TIME);
         jobC = new DAGJob(jobCId, DAGJobType.DEPEND);
@@ -44,9 +44,9 @@ public class TestJobGraph extends TestSchedulerBase {
         jobGraph.addJob(jobB.getJobId(), jobB, null);
         jobGraph.addJob(jobC.getJobId(), jobC, Sets.newHashSet(jobA.getJobId(),jobB.getJobId()));
         Assert.assertEquals(1, jobGraph.getChildren(jobA.getJobId()).size());
-        Assert.assertEquals(3, (long)jobGraph.getChildren(jobA.getJobId()).get(0).getFirst());
+        Assert.assertEquals(jobCId, (long)jobGraph.getChildren(jobA.getJobId()).get(0).getFirst());
         Assert.assertEquals(1, jobGraph.getChildren(jobB.getJobId()).size());
-        Assert.assertEquals(3, (long)jobGraph.getChildren(jobB.getJobId()).get(0).getFirst());
+        Assert.assertEquals(jobCId, (long)jobGraph.getChildren(jobB.getJobId()).get(0).getFirst());
         Assert.assertEquals(2, jobGraph.getParents(jobC.getJobId()).size());
     }
 
@@ -58,6 +58,9 @@ public class TestJobGraph extends TestSchedulerBase {
      */
     @Test
     public void testAddJob2() throws Exception {
+        long jobAId = 1;
+        long jobBId = 2;
+        long jobCId = 3;
         jobA = new DAGJob(jobAId, DAGJobType.TIME);
         jobB = new DAGJob(jobBId, DAGJobType.DEPEND);
         jobC = new DAGJob(jobCId, DAGJobType.DEPEND);
@@ -79,6 +82,9 @@ public class TestJobGraph extends TestSchedulerBase {
      */
     @Test
     public void testRemoveJob1() throws Exception {
+        long jobAId = 4;
+        long jobBId = 5;
+        long jobCId = 6;
         jobA = new DAGJob(jobAId, DAGJobType.TIME);
         jobB = new DAGJob(jobBId, DAGJobType.TIME);
         jobC = new DAGJob(jobCId, DAGJobType.DEPEND);
@@ -86,16 +92,16 @@ public class TestJobGraph extends TestSchedulerBase {
         jobGraph.addJob(jobB.getJobId(), jobB, null);
         jobGraph.addJob(jobC.getJobId(), jobC, Sets.newHashSet(jobA.getJobId(),jobB.getJobId()));
         Assert.assertEquals(1, jobGraph.getChildren(jobA.getJobId()).size());
-        Assert.assertEquals(3, (long)jobGraph.getChildren(jobA.getJobId()).get(0).getFirst());
+        Assert.assertEquals(jobCId, (long)jobGraph.getChildren(jobA.getJobId()).get(0).getFirst());
         Assert.assertEquals(1, jobGraph.getChildren(jobB.getJobId()).size());
-        Assert.assertEquals(3, (long)jobGraph.getChildren(jobB.getJobId()).get(0).getFirst());
+        Assert.assertEquals(jobCId, (long)jobGraph.getChildren(jobB.getJobId()).get(0).getFirst());
         Assert.assertEquals(2, jobGraph.getParents(jobC.getJobId()).size());
 
         jobGraph.removeJob(jobB);
         Assert.assertEquals(1, jobGraph.getChildren(jobA.getJobId()).size());
-        Assert.assertEquals(3, (long)jobGraph.getChildren(jobA.getJobId()).get(0).getFirst());
+        Assert.assertEquals(jobCId, (long)jobGraph.getChildren(jobA.getJobId()).get(0).getFirst());
         Assert.assertEquals(1, jobGraph.getParents(jobC.getJobId()).size());
-        Assert.assertEquals(1, (long)jobGraph.getParents(jobC.getJobId()).get(0).getFirst());
+        Assert.assertEquals(jobAId, (long)jobGraph.getParents(jobC.getJobId()).get(0).getFirst());
     }
 
     /**
@@ -106,6 +112,9 @@ public class TestJobGraph extends TestSchedulerBase {
      */
     @Test
     public void testRemoveJob2() throws Exception {
+        long jobAId = 4;
+        long jobBId = 5;
+        long jobCId = 6;
         jobA = new DAGJob(jobAId, DAGJobType.TIME);
         jobB = new DAGJob(jobBId, DAGJobType.TIME);
         jobC = new DAGJob(jobCId, DAGJobType.DEPEND);
@@ -113,9 +122,9 @@ public class TestJobGraph extends TestSchedulerBase {
         jobGraph.addJob(jobB.getJobId(), jobB, null);
         jobGraph.addJob(jobC.getJobId(), jobC, Sets.newHashSet(jobA.getJobId(),jobB.getJobId()));
         Assert.assertEquals(1, jobGraph.getChildren(jobA.getJobId()).size());
-        Assert.assertEquals(3, (long)jobGraph.getChildren(jobA.getJobId()).get(0).getFirst());
+        Assert.assertEquals(jobCId, (long)jobGraph.getChildren(jobA.getJobId()).get(0).getFirst());
         Assert.assertEquals(1, jobGraph.getChildren(jobB.getJobId()).size());
-        Assert.assertEquals(3, (long)jobGraph.getChildren(jobB.getJobId()).get(0).getFirst());
+        Assert.assertEquals(jobCId, (long)jobGraph.getChildren(jobB.getJobId()).get(0).getFirst());
         Assert.assertEquals(2, jobGraph.getParents(jobC.getJobId()).size());
 
         jobGraph.removeJob(jobC);
@@ -132,6 +141,9 @@ public class TestJobGraph extends TestSchedulerBase {
      */
     @Test
     public void testRemoveJob3() throws Exception {
+        long jobAId = 4;
+        long jobBId = 5;
+        long jobCId = 6;
         jobA = new DAGJob(jobAId, DAGJobType.TIME);
         jobB = new DAGJob(jobBId, DAGJobType.DEPEND);
         jobC = new DAGJob(jobCId, DAGJobType.DEPEND);
@@ -140,9 +152,9 @@ public class TestJobGraph extends TestSchedulerBase {
         jobGraph.addJob(jobC.getJobId(), jobC, Sets.newHashSet(jobA.getJobId()));
         Assert.assertEquals(2, jobGraph.getChildren(jobA.getJobId()).size());
         Assert.assertEquals(1, jobGraph.getParents(jobB.getJobId()).size());
-        Assert.assertEquals(1, (long)jobGraph.getParents(jobB.getJobId()).get(0).getFirst());
+        Assert.assertEquals(jobAId, (long)jobGraph.getParents(jobB.getJobId()).get(0).getFirst());
         Assert.assertEquals(1, jobGraph.getParents(jobC.getJobId()).size());
-        Assert.assertEquals(1, (long)jobGraph.getParents(jobC.getJobId()).get(0).getFirst());
+        Assert.assertEquals(jobAId, (long)jobGraph.getParents(jobC.getJobId()).get(0).getFirst());
 
         jobGraph.removeJob(jobA);
         Assert.assertEquals(0, jobGraph.getChildren(jobA.getJobId()).size());
@@ -160,6 +172,9 @@ public class TestJobGraph extends TestSchedulerBase {
      */
     @Test
     public void testModifyDependency1() throws Exception {
+        long jobAId = 1;
+        long jobBId = 2;
+        long jobCId = 3;
         jobA = new DAGJob(jobAId, DAGJobType.TIME);
         jobB = new DAGJob(jobBId, DAGJobType.DEPEND);
         jobC = new DAGJob(jobCId, DAGJobType.DEPEND);
@@ -191,6 +206,9 @@ public class TestJobGraph extends TestSchedulerBase {
      */
     @Test
     public void testModifyDependency2() throws Exception {
+        long jobAId = 1;
+        long jobBId = 2;
+        long jobCId = 3;
         jobA = new DAGJob(jobAId, DAGJobType.TIME);
         jobB = new DAGJob(jobBId, DAGJobType.DEPEND);
         jobC = new DAGJob(jobCId, DAGJobType.DEPEND);
@@ -220,6 +238,9 @@ public class TestJobGraph extends TestSchedulerBase {
      */
     @Test
     public void testModifyJobFlag1() throws Exception {
+        long jobAId = 4;
+        long jobBId = 5;
+        long jobCId = 6;
         jobA = new DAGJob(jobAId, DAGJobType.TIME);
         jobB = new DAGJob(jobBId, DAGJobType.TIME);
         jobC = new DAGJob(jobCId, DAGJobType.DEPEND);
@@ -245,6 +266,9 @@ public class TestJobGraph extends TestSchedulerBase {
      */
     @Test
     public void testModifyJobFlag2() throws Exception {
+        long jobAId = 4;
+        long jobBId = 5;
+        long jobCId = 6;
         jobA = new DAGJob(jobAId, DAGJobType.TIME);
         jobB = new DAGJob(jobBId, DAGJobType.TIME);
         jobC = new DAGJob(jobCId, DAGJobType.DEPEND);
@@ -271,6 +295,9 @@ public class TestJobGraph extends TestSchedulerBase {
      */
     @Test
     public void testSetParents() throws Exception {
+        long jobAId = 1;
+        long jobBId = 2;
+        long jobCId = 3;
         jobA = new DAGJob(jobAId, DAGJobType.TIME);
         jobB = new DAGJob(jobBId, DAGJobType.TIME);
         jobC = new DAGJob(jobCId, DAGJobType.DEPEND);
