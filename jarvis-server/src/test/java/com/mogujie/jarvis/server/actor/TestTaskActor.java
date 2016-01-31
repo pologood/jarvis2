@@ -7,8 +7,12 @@ import com.google.common.collect.Range;
 import com.mogujie.jarvis.core.domain.*;
 import com.mogujie.jarvis.core.expression.ScheduleExpressionType;
 import com.mogujie.jarvis.core.util.ConfigUtils;
+import com.mogujie.jarvis.dto.generate.JobScheduleExpression;
 import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
+import com.mogujie.jarvis.protocol.JobProtos;
+import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobScheduleExpRequest;
+import com.mogujie.jarvis.protocol.JobProtos.RestRemoveJobRequest;
 import com.mogujie.jarvis.protocol.JobProtos.RestSubmitJobRequest;
 import com.mogujie.jarvis.protocol.JobProtos.ServerSubmitJobResponse;
 import com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry;
@@ -17,14 +21,18 @@ import com.mogujie.jarvis.protocol.ModifyTaskStatusProtos.RestServerModifyTaskSt
 import com.mogujie.jarvis.protocol.ModifyTaskStatusProtos.ServerModifyTaskStatusResponse;
 import com.mogujie.jarvis.protocol.QueryTaskRelationProtos;
 import com.mogujie.jarvis.protocol.QueryTaskRelationProtos.RestServerQueryTaskRelationRequest;
+import com.mogujie.jarvis.protocol.RemoveTaskProtos.RestServerRemoveTaskRequest;
+import com.mogujie.jarvis.protocol.RemoveTaskProtos.ServerRemoveTaskResponse;
 import com.mogujie.jarvis.protocol.RetryTaskProtos.RestServerRetryTaskRequest;
 import com.mogujie.jarvis.protocol.RetryTaskProtos.ServerRetryTaskResponse;
 import com.mogujie.jarvis.server.guice4test.Injectors4Test;
+import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.TaskDependService;
 import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.FutureUtils;
 import com.typesafe.config.Config;
 import org.joda.time.DateTime;
+import org.junit.After;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -78,7 +86,7 @@ public class TestTaskActor {
 
         assertThat((int) retryTask.getStatus(),
                 allOf(greaterThanOrEqualTo(TaskStatus.WAITING.getValue()),
-                        lessThanOrEqualTo(TaskStatus.SUCCESS.getValue())));
+                        lessThanOrEqualTo(TaskStatus.FAILED.getValue())));
 
     }
 
@@ -180,7 +188,7 @@ public class TestTaskActor {
         assertEquals(TaskStatus.SUCCESS.getValue(), (int) taskService.get(taskId).getStatus());
     }
 
-    @Test
+    //@Test
     public void testKillTask() {
         system = getActorSystem();
 
@@ -221,13 +229,13 @@ public class TestTaskActor {
     }
 
     @Test
-    public void submitRunningJob() {
+    public void submitRunningJobMakePlanTask() {
         AppAuth appAuth = AppAuth.newBuilder().setToken("11111").setName("jarvis-web").build();
 
         system = getActorSystem();
 
         ActorSelection serverActor = system.actorSelection(actorPath);
-        String timeExpression = "R5/" + DateTime.now().plusMinutes(2).toString() + "/PT1H";
+        String timeExpression = "R1/" + DateTime.now().plusMinutes(1).toString() + "/PT1H";
         List<ScheduleExpressionEntry> expressionEntries = Lists.newArrayList();
         //添加时间依赖
         ScheduleExpressionEntry expressionEntry = ScheduleExpressionEntry.newBuilder()
@@ -263,45 +271,180 @@ public class TestTaskActor {
             e.printStackTrace();
         }
         long newJobid = response.getJobId();
-        System.out.println(newJobid);
+
+        DateTime now = DateTime.now();
+
+        //进行验证
+        new CheckTaskRunningService(newJobid, now, 2).run();
+
+
+        JobService jobService = Injectors4Test.getInjector().getInstance(JobService.class);
+        JobScheduleExpression scheduleExpression = jobService.getScheduleExpressionByJobId(newJobid);
+        long scheduleExpId = scheduleExpression.getId();
+
+        //删掉时间依赖
+        expressionEntry = ScheduleExpressionEntry.newBuilder()
+                .setExpressionType(ScheduleExpressionType.ISO8601.getValue())
+                .setOperator(OperationMode.DELETE.getValue())
+                .setExpressionId(scheduleExpId)
+                .build();
+
+        List<ScheduleExpressionEntry> removeEntries = Lists.newArrayList();
+        removeEntries.add(expressionEntry);
+        RestModifyJobScheduleExpRequest removeRequest = RestModifyJobScheduleExpRequest.newBuilder()
+                .setUser("qinghuo")
+                .setAppAuth(appAuth)
+                .setJobId(newJobid)
+                .addAllExpressionEntry(removeEntries)
+                .build();
+
         try {
-            new CheckService(newJobid, DateTime.now(), 2).run();
-            wait();
-        } catch (InterruptedException e) {
+            FutureUtils.awaitResult(serverActor, removeRequest, 15);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        //先把job设置为不可用，从内存里删除
+        JobProtos.RestModifyJobStatusRequest removeJobRequest = JobProtos.RestModifyJobStatusRequest.newBuilder()
+                .setAppAuth(appAuth)
+                .setStatus(JobStatus.DELETED.getValue())
+                .setUser("qinghuo")
+                .setJobId(newJobid)
+                .build();
+        try {
+            FutureUtils.awaitResult(serverActor, removeJobRequest, 15);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+//        //删掉job本身
+//        removeJobRequest = JobProtos.RestModifyJobStatusRequest.newBuilder()
+//                .setAppAuth(appAuth)
+//                .setStatus(JobStatus.DELETED.getValue())
+//                .setUser("qinghuo")
+//                .setJobId(response.getJobId())
+//                .build();
+//        try {
+//            FutureUtils.awaitResult(serverActor, removeJobRequest, 15);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+
+    }
+
+
+    public void testTmp() {
+        long scheduleExpId = 73;
+        long newJobid = 367L;
+        AppAuth appAuth = AppAuth.newBuilder().setToken("11111").setName("jarvis-web").build();
+
+        system = getActorSystem();
+
+        ActorSelection serverActor = system.actorSelection(actorPath);
+        //删掉时间依赖
+        ScheduleExpressionEntry expressionEntry = ScheduleExpressionEntry.newBuilder()
+                .setExpressionType(ScheduleExpressionType.ISO8601.getValue())
+                .setOperator(OperationMode.DELETE.getValue())
+                .setExpressionId(scheduleExpId)
+                .build();
+
+        List<ScheduleExpressionEntry> removeEntries = Lists.newArrayList();
+        removeEntries.add(expressionEntry);
+        RestModifyJobScheduleExpRequest removeRequest = RestModifyJobScheduleExpRequest.newBuilder()
+                .setUser("qinghuo")
+                .setAppAuth(appAuth)
+                .setJobId(newJobid)
+                .addAllExpressionEntry(removeEntries)
+                .build();
+
+        try {
+            FutureUtils.awaitResult(serverActor, removeRequest, 15);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //删掉job本身
+        RestRemoveJobRequest removeJobRequest = RestRemoveJobRequest.newBuilder()
+                .setUser("qinghuo")
+                .setAppAuth(appAuth)
+                .setJobId(newJobid)
+                .build();
+        try {
+            FutureUtils.awaitResult(serverActor, removeJobRequest, 15);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    class CheckService implements Runnable {
-        long taskid;
+    @Test
+    public void testRemoveTask() {
+
+        system = getActorSystem();
+        ActorSelection serverActor = system.actorSelection(actorPath);
+        long taskid = 8063L;
+        Task task = taskService.get(taskid);
+        assertNotNull(task);
+        RestServerRemoveTaskRequest request = RestServerRemoveTaskRequest.newBuilder()
+                .setAppAuth(appAuth)
+                .setTaskId(taskid)
+                .build();
+        ServerRemoveTaskResponse response = null;
+        try {
+            response = (ServerRemoveTaskResponse) FutureUtils.awaitResult(serverActor, request, 30);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        assertTrue(response.getSuccess());
+        Task taskNew = taskService.get(taskid);
+        assertEquals(TaskStatus.REMOVED.getValue(), (int) taskNew.getStatus());
+
+    }
+
+    @After
+    public void tearDown() {
+        if (system != null) system.shutdown();
+    }
+
+    class CheckTaskRunningService implements Runnable {
+        long jobId;
         DateTime dateTime;
         int offset;
 
-        public CheckService(long taskId, DateTime dateTime, int offset) {
-            this.taskid = taskId;
+        public CheckTaskRunningService(long jobId, DateTime dateTime, int offset) {
+            this.jobId = jobId;
             this.dateTime = dateTime;
             this.offset = offset;
         }
 
         @Override
         public void run() {
-            boolean flag = true;
-            while (flag) {
-                Range<DateTime> range = Range.atLeast(dateTime.minusMinutes(2));
-                List<Task> tasks = taskService.getTasksBetween(taskid, range);
+            int flag = 0;
+            while (true) {
+                Range<DateTime> range = Range.closedOpen(dateTime.minusMinutes(3), dateTime.plusMinutes(4));
+                List<Task> tasks = taskService.getTasksBetween(jobId, range);
+                System.out.println(range.toString());
                 for (Task task : tasks) {
-                    if (task != null && (task.getStatus() == 2 || task.getStatus() == 3)) {
-                        notifyAll();
-                        flag = false;
+                    if (task != null && (task.getStatus() == 2
+                            || task.getStatus() == 3
+                            || task.getStatus() == 4)) {
+
+                        assertThat(task.getStatus(), allOf(greaterThanOrEqualTo(2), lessThanOrEqualTo(4)));
+                        flag = 60;
+                        break;
                     }
                 }
 
                 try {
+                    flag++;
+                    if (flag > 60) break;
                     Thread.currentThread().sleep(1000);
+
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
         }
     }
+
 }

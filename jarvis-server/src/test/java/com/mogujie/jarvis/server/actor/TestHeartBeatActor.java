@@ -10,6 +10,7 @@ import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.protocol.HeartBeatProtos;
 import com.mogujie.jarvis.protocol.HeartBeatProtos.HeartBeatRequest;
 import com.typesafe.config.Config;
+import org.junit.After;
 import org.junit.Test;
 
 /**
@@ -19,7 +20,7 @@ import org.junit.Test;
  */
 
 public class TestHeartBeatActor {
-    protected static ActorSystem system;
+    protected  ActorSystem system;
 
     HeartBeatRequest heartBeatRequest = HeartBeatRequest.newBuilder().setJobNum(1).build();
     String serverHost = "10.11.6.129";
@@ -42,6 +43,11 @@ public class TestHeartBeatActor {
             }
         };
 
+    }
+    @After
+    public void tearDown() {
+        JavaTestKit.shutdownActorSystem(system);
+        if (system != null) system.shutdown();
     }
 
 }

@@ -6,6 +6,7 @@ import com.google.common.collect.Lists;
 import com.mogujie.jarvis.core.domain.*;
 import com.mogujie.jarvis.core.expression.ScheduleExpressionType;
 import com.mogujie.jarvis.core.util.ConfigUtils;
+import com.mogujie.jarvis.dao.generate.JobMapper;
 import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.dto.generate.JobDepend;
 import com.mogujie.jarvis.dto.generate.JobDependKey;
@@ -23,7 +24,6 @@ import com.typesafe.config.Config;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.ReplacementDataSet;
 import org.dbunit.operation.DatabaseOperation;
-import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.Test;
 
@@ -110,6 +110,7 @@ public class TestJobActor extends DBTestBased {
             e.printStackTrace();
         }
     }
+
 
     public ActorSystem getActorSystem() {
         Config akkaConfig = ConfigUtils.getAkkaConfig("akka-test.conf");
@@ -314,36 +315,36 @@ public class TestJobActor extends DBTestBased {
         jobService = Injectors4Test.getInjector().getInstance(JobService.class);
         ActorSystem system = getActorSystem();
         ActorSelection serverActor = getServerActor(system, actorPath);
-
-        DependencyEntry removeDependencyEntry3L = DependencyEntry.newBuilder()
-                .setOperator(OperationMode.DELETE.getValue())
-                .setJobId(addPreId)
-                .setCommonDependStrategy(CommonStrategy.ALL.getValue())
-                .setOffsetDependStrategy("d(2)")
-                .build();
-        DependencyEntry removeDependencyEntry2L = DependencyEntry.newBuilder()
-                .setOperator(OperationMode.DELETE.getValue())
-                .setJobId(addPreId1)
-                .setCommonDependStrategy(CommonStrategy.ANYONE.getValue())
-                .setOffsetDependStrategy("d(4)")
-                .build();
-
-        List<DependencyEntry> removeDependencyEntries = new ArrayList<>();
-        removeDependencyEntries.add(removeDependencyEntry3L);
-        removeDependencyEntries.add(removeDependencyEntry2L);
         AppAuth appAuth = AppAuth.newBuilder().setToken("11111").setName("jarvis-web").build();
-        RestModifyJobDependRequest removeRequest = RestModifyJobDependRequest.newBuilder()
-                .setUser("qinghuo")
-                .setAppAuth(appAuth)
-                .setJobId(modifyJobId)
-                .addAllDependencyEntry(removeDependencyEntries)
-                .build();
-        try {
-            //首先删除 已经有的depend
-            removeResponse = (ServerModifyJobDependResponse) FutureUtils.awaitResult(serverActor, removeRequest, 15);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
+//        DependencyEntry removeDependencyEntry3L = DependencyEntry.newBuilder()
+//                .setOperator(OperationMode.DELETE.getValue())
+//                .setJobId(addPreId)
+//                .setCommonDependStrategy(CommonStrategy.ALL.getValue())
+//                .setOffsetDependStrategy("d(2)")
+//                .build();
+//        DependencyEntry removeDependencyEntry2L = DependencyEntry.newBuilder()
+//                .setOperator(OperationMode.DELETE.getValue())
+//                .setJobId(addPreId1)
+//                .setCommonDependStrategy(CommonStrategy.ANYONE.getValue())
+//                .setOffsetDependStrategy("d(4)")
+//                .build();
+//
+//        List<DependencyEntry> removeDependencyEntries = new ArrayList<>();
+//        removeDependencyEntries.add(removeDependencyEntry3L);
+//        removeDependencyEntries.add(removeDependencyEntry2L);
+//        RestModifyJobDependRequest removeRequest = RestModifyJobDependRequest.newBuilder()
+//                .setUser("qinghuo")
+//                .setAppAuth(appAuth)
+//                .setJobId(modifyJobId)
+//                .addAllDependencyEntry(removeDependencyEntries)
+//                .build();
+//        try {
+//            //首先删除 已经有的depend
+//            removeResponse = (ServerModifyJobDependResponse) FutureUtils.awaitResult(serverActor, removeRequest, 15);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
 
         DependencyEntry dependencyEntry3L = DependencyEntry.newBuilder()
@@ -388,6 +389,35 @@ public class TestJobActor extends DBTestBased {
         assertNotNull(newJobDepend);
         assertEquals((long) newJobDepend.getPreJobId(), addPreId);
     }
+
+    @Test
+    public void modifyJobRemove() {
+        long removeJobId = 361L;
+        ServerModifyJobStatusResponse response = null;
+        AppAuth appAuth = AppAuth.newBuilder().setToken("11111").setName("jarvis-web").build();
+        RestModifyJobStatusRequest request = RestModifyJobStatusRequest.newBuilder()
+                .setAppAuth(appAuth)
+                .setStatus(JobStatus.DELETED.getValue())
+                .setUser("qinghuo")
+                .setJobId(removeJobId)
+                .build();
+        system = getActorSystem();
+        ActorSelection serverActor = getServerActor(system, actorPath);
+        try {
+            response = (ServerModifyJobStatusResponse) FutureUtils.awaitResult(serverActor, request, 30);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        assertTrue(response.getSuccess());
+        jobService = Injectors4Test.getInjector().getInstance(JobService.class);
+        JobMapper jobMapper = jobService.getJobMapper();
+        int status = jobMapper.selectByPrimaryKey(removeJobId).getStatus();
+        assertEquals(JobStatus.DELETED.getValue(), status);
+
+
+    }
+
 
     public void removeJob() {
         ActorSystem system = getActorSystem();
