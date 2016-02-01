@@ -108,6 +108,8 @@ public class TimeScheduler extends Scheduler {
         long jobId = event.getJobId();
         long scheduleTime = event.getScheduleTime();
         Map<Long, List<Long>> dependTaskIdMap = event.getDependTaskIdMap();
+        LOGGER.info("start handleAddPlanEvent, jobId={}, scheduleTime={}, dependTaskIdMap={}",
+                jobId, scheduleTime, dependTaskIdMap);
         TimePlanEntry entry = new TimePlanEntry(jobId, new DateTime(scheduleTime), dependTaskIdMap);
         plan.addPlan(entry);
     }
