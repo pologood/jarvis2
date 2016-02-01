@@ -28,7 +28,7 @@ public class StepParser extends AbstractParser {
     private Set<Integer> result = new HashSet<>();
     private Range<Integer> range;
     private DurationField type;
-    private static final Pattern STEP_PATTERN = Pattern.compile("(\\d+)/(\\d+)");
+    private static final Pattern STEP_PATTERN = Pattern.compile("(\\d+|\\*)/(\\d+)");
 
     public StepParser(Range<Integer> range, DurationField type) {
         super(range, type);
@@ -40,7 +40,7 @@ public class StepParser extends AbstractParser {
     public boolean matches(String cronFieldExp) throws ParseException {
         Matcher m = STEP_PATTERN.matcher(cronFieldExp);
         if (m.matches()) {
-            int start = Integer.parseInt(m.group(1));
+            int start = m.group(1).equals("*") ? 0 : Integer.parseInt(m.group(1));
             int step = Integer.parseInt(m.group(2));
             if (step > 0 && range.contains(step) && range.contains(start)) {
                 for (int i = start; range.contains(i); i += step) {
