@@ -26,11 +26,13 @@ import com.mogujie.jarvis.core.expression.cron.AbstractParser;
 import com.mogujie.jarvis.core.expression.cron.AbstractParser.DurationField;
 import com.mogujie.jarvis.core.expression.cron.AsteriskParser;
 import com.mogujie.jarvis.core.expression.cron.LastDayOfMonthParser;
+import com.mogujie.jarvis.core.expression.cron.MonthAbbreviationParser;
 import com.mogujie.jarvis.core.expression.cron.NearestWeekdayOfMonthParser;
 import com.mogujie.jarvis.core.expression.cron.PoundSignParser;
 import com.mogujie.jarvis.core.expression.cron.RangeParser;
 import com.mogujie.jarvis.core.expression.cron.SingleParser;
 import com.mogujie.jarvis.core.expression.cron.StepParser;
+import com.mogujie.jarvis.core.expression.cron.WeekAbbreviationParser;
 
 /**
  * Provides a parser and evaluator for unix-like cron expressions, such as "0 0 12 * * ?".
@@ -88,6 +90,7 @@ public class CronExpression extends ScheduleExpression {
         monthParsers.add(new RangeParser(MONTH_RANGE, DurationField.MONTH));
         monthParsers.add(new StepParser(MONTH_RANGE, DurationField.MONTH));
         monthParsers.add(new SingleParser(MONTH_RANGE, DurationField.MONTH));
+        monthParsers.add(new MonthAbbreviationParser(MONTH_RANGE, DurationField.MONTH));
 
         dayOfWeekParsers = new ArrayList<>();
         dayOfWeekParsers.add(new PoundSignParser(DAY_OF_WEEK_RANGE, DurationField.DAY_OF_WEEK));
@@ -96,6 +99,7 @@ public class CronExpression extends ScheduleExpression {
         dayOfWeekParsers.add(new LastDayOfMonthParser(DAY_OF_WEEK_RANGE, DurationField.DAY_OF_WEEK));
         dayOfWeekParsers.add(new AsteriskParser(DAY_OF_WEEK_RANGE, DurationField.DAY_OF_WEEK));
         dayOfWeekParsers.add(new SingleParser(DAY_OF_WEEK_RANGE, DurationField.DAY_OF_WEEK));
+        dayOfWeekParsers.add(new WeekAbbreviationParser(DAY_OF_WEEK_RANGE, DurationField.DAY_OF_WEEK));
 
         yearParsers = new ArrayList<>();
         yearParsers.add(new PoundSignParser(YEAR_RANGE, DurationField.YEAR));
