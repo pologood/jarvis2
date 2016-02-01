@@ -11,15 +11,19 @@ import java.util.List;
 
 import org.apache.ibatis.javassist.NotFoundException;
 
-import com.mogujie.jarvis.core.domain.MessageType;
-import com.mogujie.jarvis.protocol.WorkerProtos.RestServerModifyWorkerStatusRequest;
-import com.mogujie.jarvis.protocol.WorkerProtos.ServerModifyWorkerStatusResponse;
-import com.mogujie.jarvis.server.domain.ActorEntry;
-import com.mogujie.jarvis.server.guice.Injectors;
-import com.mogujie.jarvis.server.service.WorkerService;
-
 import akka.actor.Props;
 import akka.actor.UntypedActor;
+
+import com.mogujie.jarvis.core.domain.MessageType;
+import com.mogujie.jarvis.core.domain.WorkerInfo;
+import com.mogujie.jarvis.core.domain.WorkerStatus;
+import com.mogujie.jarvis.protocol.WorkerProtos.RestServerModifyWorkerStatusRequest;
+import com.mogujie.jarvis.protocol.WorkerProtos.ServerModifyWorkerStatusResponse;
+import com.mogujie.jarvis.server.WorkerRegistry;
+import com.mogujie.jarvis.server.domain.ActorEntry;
+import com.mogujie.jarvis.server.guice.Injectors;
+import com.mogujie.jarvis.server.service.HeartBeatService;
+import com.mogujie.jarvis.server.service.WorkerService;
 
 public class WorkerModifyStatusActor extends UntypedActor {
 
@@ -49,6 +53,16 @@ public class WorkerModifyStatusActor extends UntypedActor {
                 throw new NotFoundException("worker不存在。ip:" + ip + ";port:" + port);
             }
             workerService.updateWorkerStatus(workerId, status);
+            if (status == WorkerStatus.OFFLINE.getValue()) {
+                HeartBeatService heartBeatService = Injectors.getInjector().getInstance(HeartBeatService.class);
+                WorkerInfo workerInfo = new WorkerInfo(ip, port);
+                int groupId = Injectors.getInjector().getInstance(WorkerRegistry.class).getWorkerGroupId(workerInfo);
+                if (groupId < 0) {
+                    throw new IllegalArgumentException("groupId is not valid: " + groupId);
+                } else {
+                    heartBeatService.remove(groupId, workerInfo);
+                }
+            }
             response = ServerModifyWorkerStatusResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());
         } catch (Exception ex) {

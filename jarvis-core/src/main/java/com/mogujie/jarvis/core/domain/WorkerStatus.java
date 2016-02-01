@@ -11,8 +11,6 @@ package com.mogujie.jarvis.core.domain;
  * @author muming
  */
 public enum WorkerStatus {
-
-
     ONLINE(1, "上线"), //下线
     OFFLINE(2, "下线");  //上线
 
