@@ -26,6 +26,12 @@ public class TestUtil {
             }
             System.err.println("Address " + host + " on " + port + " already in use ");
             return false;
+        }finally {
+            try {
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
     }

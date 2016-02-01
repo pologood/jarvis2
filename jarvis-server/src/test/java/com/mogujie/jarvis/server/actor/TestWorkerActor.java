@@ -17,6 +17,7 @@ import com.mogujie.jarvis.server.actor.util.TestUtil;
 import com.mogujie.jarvis.server.guice4test.Injectors4Test;
 import com.mogujie.jarvis.server.service.WorkerService;
 import com.typesafe.config.Config;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -40,21 +41,22 @@ public class TestWorkerActor {
     String serverHost = "10.11.6.129";
     AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setToken("11111").setName("jarvis-web").build();
 
-    public void setup() {
+
+    @After
+    public void tearDown() {
         try {
-//检测server端口是否被占用
-            if (TestUtil.isPortHasBeenUse("localhost", 10000) && TestUtil.isPortHasBeenUse(InetAddress.getLocalHost().getHostAddress(), 10000)
-                    && TestUtil.isPortHasBeenUse(IPUtils.getIPV4Address(), 10000)) {
-                ServerProxy serverProxy = new ServerProxy();
-                threadServer = new Thread(serverProxy);
-                threadServer.start();
+            if (!TestUtil.isPortHasBeenUse(IPUtils.getIPV4Address(), 10010)) {
+                while (!system.isTerminated())
+                    system.terminate();
+
             }
-        } catch (IOException e) {
-            System.err.println("no port to use");
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        } catch (SocketException e) {
+            e.printStackTrace();
         }
-
-
     }
+
 
     @Test
     public void testModifyWorkerStatus() throws SocketException, UnknownHostException {
@@ -136,7 +138,7 @@ public class TestWorkerActor {
         }};
 
 
-        Assert.assertEquals(workerService.getWorkerId(IPUtils.getIPV4Address(), registPort), 22);
+        Assert.assertEquals(workerService.getWorkerId("192.168.21.82", registPort), 22);
     }
 
 

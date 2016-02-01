@@ -7,6 +7,7 @@ import com.google.common.collect.Range;
 import com.mogujie.jarvis.core.domain.*;
 import com.mogujie.jarvis.core.expression.ScheduleExpressionType;
 import com.mogujie.jarvis.core.util.ConfigUtils;
+import com.mogujie.jarvis.core.util.IPUtils;
 import com.mogujie.jarvis.dto.generate.JobScheduleExpression;
 import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
@@ -23,8 +24,7 @@ import com.mogujie.jarvis.protocol.QueryTaskRelationProtos;
 import com.mogujie.jarvis.protocol.QueryTaskRelationProtos.RestServerQueryTaskRelationRequest;
 import com.mogujie.jarvis.protocol.RemoveTaskProtos.RestServerRemoveTaskRequest;
 import com.mogujie.jarvis.protocol.RemoveTaskProtos.ServerRemoveTaskResponse;
-import com.mogujie.jarvis.protocol.RetryTaskProtos.RestServerRetryTaskRequest;
-import com.mogujie.jarvis.protocol.RetryTaskProtos.ServerRetryTaskResponse;
+import com.mogujie.jarvis.server.actor.util.TestUtil;
 import com.mogujie.jarvis.server.guice4test.Injectors4Test;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.TaskDependService;
@@ -35,7 +35,8 @@ import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.Test;
 
-import java.util.ArrayList;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -57,38 +58,21 @@ public class TestTaskActor {
     AppAuth appAuth = AppAuth.newBuilder().setToken("11111").setName("jarvis-web").build();
     TaskDependService taskDependService = Injectors4Test.getInjector().getInstance(TaskDependService.class);
 
-
-    @Test
-    public void testRetry() {
-        system = getActorSystem();
-        ServerRetryTaskResponse response = null;
-
-        ActorSelection serverActor = system.actorSelection(actorPath);
-        List<Integer> statusList = new ArrayList<>();
-        statusList.add(TaskStatus.FAILED.getValue());
-        //随机取一个taskid
-        long randomTaskId = getRandomTaskId(statusList);
-        assertEquals(TaskStatus.FAILED.getValue(), (int) taskService.get(randomTaskId).getStatus());
-
-        RestServerRetryTaskRequest request = RestServerRetryTaskRequest.newBuilder()
-                .setAppAuth(appAuth)
-                .setTaskId(randomTaskId)
-                .build();
-
+    @After
+    public void tearDown() {
         try {
-            response = (ServerRetryTaskResponse) FutureUtils.awaitResult(serverActor, request, 10);
-        } catch (Exception e) {
+            if (!TestUtil.isPortHasBeenUse(IPUtils.getIPV4Address(), 10010)) {
+                while (!system.isTerminated())
+                    system.terminate();
+
+            }
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        } catch (SocketException e) {
             e.printStackTrace();
         }
-        assertTrue(response.getSuccess());
-
-        Task retryTask = taskService.get(randomTaskId);
-
-        assertThat((int) retryTask.getStatus(),
-                allOf(greaterThanOrEqualTo(TaskStatus.WAITING.getValue()),
-                        lessThanOrEqualTo(TaskStatus.FAILED.getValue())));
-
     }
+
 
     @Test
     public void testQueryTaskRelation() {
@@ -162,7 +146,6 @@ public class TestTaskActor {
         return randomTaskId;
     }
 
-
     @Test
     public void testModifyTaskStatus() {
         system = getActorSystem();
@@ -223,8 +206,11 @@ public class TestTaskActor {
     }
 
     public ActorSystem getActorSystem() {
-        Config akkaConfig = ConfigUtils.getAkkaConfig("akka-test.conf");
-        system = ActorSystem.create("worker", akkaConfig);
+        if (system == null) {
+            Config akkaConfig = ConfigUtils.getAkkaConfig("akka-test.conf");
+            system = ActorSystem.create("worker", akkaConfig);
+        }
+
         return system;
     }
 
@@ -333,7 +319,6 @@ public class TestTaskActor {
 
     }
 
-
     public void testTmp() {
         long scheduleExpId = 73;
         long newJobid = 367L;
@@ -382,7 +367,7 @@ public class TestTaskActor {
 
         system = getActorSystem();
         ActorSelection serverActor = system.actorSelection(actorPath);
-        long taskid = 8063L;
+        long taskid = 8274L;
         Task task = taskService.get(taskid);
         assertNotNull(task);
         RestServerRemoveTaskRequest request = RestServerRemoveTaskRequest.newBuilder()
@@ -401,10 +386,6 @@ public class TestTaskActor {
 
     }
 
-    @After
-    public void tearDown() {
-        if (system != null) system.shutdown();
-    }
 
     class CheckTaskRunningService implements Runnable {
         long jobId;

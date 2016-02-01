@@ -6,6 +6,7 @@ import com.google.common.collect.Lists;
 import com.mogujie.jarvis.core.domain.*;
 import com.mogujie.jarvis.core.expression.ScheduleExpressionType;
 import com.mogujie.jarvis.core.util.ConfigUtils;
+import com.mogujie.jarvis.core.util.IPUtils;
 import com.mogujie.jarvis.dao.generate.JobMapper;
 import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.dto.generate.JobDepend;
@@ -15,6 +16,7 @@ import com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry;
 import com.mogujie.jarvis.protocol.JobProtos.*;
 import com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry;
 import com.mogujie.jarvis.server.actor.base.DBTestBased;
+import com.mogujie.jarvis.server.actor.util.TestUtil;
 import com.mogujie.jarvis.server.domain.JobEntry;
 import com.mogujie.jarvis.server.guice4test.Injectors4Test;
 import com.mogujie.jarvis.server.service.JobService;
@@ -28,8 +30,9 @@ import org.junit.After;
 import org.junit.Test;
 
 import java.io.File;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -257,21 +260,22 @@ public class TestJobActor extends DBTestBased {
         assertEquals(newName, newJob.getJobName());
     }
 
+
     @After
     public void tearDown() {
-        if (threadServer != null) threadServer.interrupt();
-        if (system != null) system.shutdown();
-        //just remember to rollback database
-        if (conn != null) {
-            try {
-                conn.rollback();
-                conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+        try {
+            if (!TestUtil.isPortHasBeenUse(IPUtils.getIPV4Address(), 10010)) {
+                while (!system.isTerminated())
+                    system.terminate();
 
+            }
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        } catch (SocketException e) {
+            e.printStackTrace();
         }
     }
+
 
     @Test
     public void testQueryJobRel() {
