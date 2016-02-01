@@ -1,3 +1,4 @@
+import "app_auth.proto";
 option java_package = "com.mogujie.jarvis.protocol";
 option java_outer_classname = "HeartBeatProtos";
 
@@ -9,4 +10,21 @@ message HeartBeatRequest {
 message HeartBeatResponse {
     required bool success = 1;
     optional string message = 2 [default = ""];
+}
+
+message RestQueryWorkerHeartbeatInfoRequest {
+    required AppAuth app_auth = 1;
+    required int32 worker_group_id = 2;
+}
+
+message WorkerHeartbeatEntry{
+    required string ip = 1;
+    required int32 port = 2;
+    required int32 taskNum=3;
+}
+
+message ServerQueryWorkerHeartbeatInfoResponse {
+    required bool success = 1;
+    optional string message = 2 [default = ""];
+    repeated WorkerHeartbeatEntry info = 3;
 }

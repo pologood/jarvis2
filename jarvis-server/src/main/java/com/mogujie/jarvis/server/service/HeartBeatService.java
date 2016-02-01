@@ -8,6 +8,7 @@
 
 package com.mogujie.jarvis.server.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -70,6 +71,14 @@ public class HeartBeatService {
         }
 
         return WORKER_ORDERING.sortedCopy(HEART_BEAT_CACHE.get(groupId).asMap().keySet());
+    }
+
+
+    public Map<WorkerInfo,Integer> getWorkerInfo(int groupId) {
+        if (!HEART_BEAT_CACHE.containsKey(groupId)) {
+            return new HashMap<>();
+        }
+        return HEART_BEAT_CACHE.get(groupId).asMap();
     }
 
 }

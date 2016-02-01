@@ -10,6 +10,8 @@ package com.mogujie.jarvis.server.actor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,6 +24,9 @@ import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.core.domain.WorkerInfo;
 import com.mogujie.jarvis.protocol.HeartBeatProtos.HeartBeatRequest;
 import com.mogujie.jarvis.protocol.HeartBeatProtos.HeartBeatResponse;
+import com.mogujie.jarvis.protocol.HeartBeatProtos.RestQueryWorkerHeartbeatInfoRequest;
+import com.mogujie.jarvis.protocol.HeartBeatProtos.ServerQueryWorkerHeartbeatInfoResponse;
+import com.mogujie.jarvis.protocol.HeartBeatProtos.WorkerHeartbeatEntry;
 import com.mogujie.jarvis.server.WorkerRegistry;
 import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.guice.Injectors;
@@ -40,6 +45,7 @@ public class HeartBeatActor extends UntypedActor {
     public static List<ActorEntry> handledMessages() {
         List<ActorEntry> list = new ArrayList<>();
         list.add(new ActorEntry(HeartBeatRequest.class, HeartBeatResponse.class, MessageType.SYSTEM));
+        list.add(new ActorEntry(RestQueryWorkerHeartbeatInfoRequest.class, ServerQueryWorkerHeartbeatInfoResponse.class, MessageType.SYSTEM));
         return list;
     }
 
@@ -47,6 +53,8 @@ public class HeartBeatActor extends UntypedActor {
     public void onReceive(Object obj) throws Exception {
         if (obj instanceof HeartBeatRequest) {
             heardBeat((HeartBeatRequest) obj);
+        } else if (obj instanceof RestQueryWorkerHeartbeatInfoRequest) {
+            queryWorkerHeartbeatInfo((RestQueryWorkerHeartbeatInfoRequest) obj);
         } else {
             unhandled(obj);
         }
@@ -73,7 +81,36 @@ public class HeartBeatActor extends UntypedActor {
         } catch (Exception ex) {
             response = HeartBeatResponse.newBuilder().setSuccess(false).setMessage(ex.getMessage()).build();
             getSender().tell(response, getSelf());
-//            LOGGER.error(ex);
+            if(!(ex instanceof  IllegalArgumentException)){
+                LOGGER.error("",ex);
+            }
+        }
+    }
+
+    private void queryWorkerHeartbeatInfo(RestQueryWorkerHeartbeatInfoRequest request) {
+        ServerQueryWorkerHeartbeatInfoResponse response;
+        try {
+            int workerGroupId = request.getWorkerGroupId();
+            if(workerGroupId <= 0){
+                throw new IllegalArgumentException("groupId is not valid. groupId: " + workerGroupId);
+            }
+
+            ServerQueryWorkerHeartbeatInfoResponse.Builder builder = ServerQueryWorkerHeartbeatInfoResponse.newBuilder();
+
+            Map<WorkerInfo,Integer> map = heartBeatService.getWorkerInfo(workerGroupId);
+            for( Entry<WorkerInfo,Integer> entry: map.entrySet()){
+                WorkerInfo key = entry.getKey();
+                WorkerHeartbeatEntry hb= WorkerHeartbeatEntry.newBuilder().setIp(key.getIp()).setPort(key.getPort()).setTaskNum(entry.getValue()).build();
+                builder.addInfo(hb);
+            }
+            response = builder.setSuccess(true).build();
+            getSender().tell(response, getSelf());
+        } catch (Exception ex) {
+            response = ServerQueryWorkerHeartbeatInfoResponse.newBuilder().setSuccess(false).setMessage(ex.getMessage()).build();
+            getSender().tell(response, getSelf());
+            if(!(ex instanceof  IllegalArgumentException)){
+                LOGGER.error("",ex);
+            }
         }
     }
 
