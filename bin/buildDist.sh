@@ -11,6 +11,7 @@ JARVIS_DIST_DIR="${JARVIS_PREFIX}/dist"
 JARVIS_TARGET_DIR="${JARVIS_DIST_DIR}/${version}"
 JARVIS_TARGET_LIB_DIR="${JARVIS_TARGET_DIR}/lib"
 
+cd $JARVIS_PREFIX
 mvn clean install -Dmaven.test.skip=true -f ${JARVIS_PREFIX}/pom.xml
 
 echo "Packaging..."

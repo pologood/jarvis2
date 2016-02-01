@@ -7,6 +7,7 @@ bin=`cd "$bin"; pwd`
 JARVIS_PREFIX=`dirname "$bin"`
 JARVIS_TARGET_LIB_DIR="${JARVIS_PREFIX}/lib"
 
+cd $JARVIS_PREFIX
 git pull
 mvn clean install -Dmaven.test.skip=true -f ${JARVIS_PREFIX}/pom.xml
 
