@@ -125,8 +125,8 @@ public class JarvisServer {
         JobService jobService = Injectors.getInjector().getInstance(JobService.class);
         TaskService taskService = Injectors.getInjector().getInstance(TaskService.class);
         List<Job> jobs = jobService.getNotDeletedJobs();
-        // 3.1 先添加job
 
+        // 3.1 先添加job
         for (Job job : jobs) {
             long jobId = job.getJobId();
             JobEntry jobEntry = jobService.get(jobId);

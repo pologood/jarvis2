@@ -297,7 +297,10 @@ public class JobService {
      */
     @Transactional
     private void loadMetaDataFromDB() {
-        List<Job> jobs = getNotDeletedJobs();
+        // load all jobs
+        JobExample example = new JobExample();
+        example.createCriteria();
+        List<Job> jobs = jobMapper.selectByExampleWithBLOBs(example);
         List<JobScheduleExpression> scheduleExpressions = jobScheduleExpressionMapper.selectByExample(new JobScheduleExpressionExample());
         Map<Long, Map<Long, ScheduleExpression>> scheduleExpressionMap = Maps.newHashMap();
         for (JobScheduleExpression exp : scheduleExpressions) {
