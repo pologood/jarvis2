@@ -26,6 +26,7 @@ import akka.routing.RoundRobinPool;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Range;
+import com.google.common.collect.Sets;
 import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.core.domain.TaskStatus;
@@ -125,10 +126,10 @@ public class JarvisServer {
         TaskService taskService = Injectors.getInjector().getInstance(TaskService.class);
         List<Job> jobs = jobService.getNotDeletedJobs();
         // 3.1 先添加job
+
         for (Job job : jobs) {
             long jobId = job.getJobId();
             JobEntry jobEntry = jobService.get(jobId);
-            Set<Long> dependencies = jobEntry.getDependencies().keySet();
             int cycleFlag = 0;
             int timeFlag = 0;
             Map<Long, ScheduleExpression> timeExpressions = jobEntry.getScheduleExpressions();
@@ -140,6 +141,13 @@ public class JarvisServer {
                     } else if (expression instanceof FixedDelayExpression) {
                         cycleFlag = 1;
                     }
+                }
+            }
+            //过滤DELETED父任务
+            Set<Long> dependencies = Sets.newHashSet();
+            for (long preJobId : jobEntry.getDependencies().keySet()) {
+                if (jobService.get(preJobId).getJob().getStatus() != JobStatus.DELETED.getValue()) {
+                    dependencies.add(preJobId);
                 }
             }
             int dependFlag = (!dependencies.isEmpty()) ? 1 : 0;

@@ -164,10 +164,10 @@ public class JobActor extends UntypedActor {
             }
 
             // 3. insert jobDepend to DB
-            Set<Long> needDependencies = Sets.newHashSet();
+            Set<Long> dependencies = Sets.newHashSet();
             if (msg.getDependencyEntryList() != null) {
                 for (DependencyEntry entry : msg.getDependencyEntryList()) {
-                    needDependencies.add(entry.getJobId());
+                    dependencies.add(entry.getJobId());
                     JobDepend jobDepend = convert2JobDepend(jobId, entry, msg.getUser(), now);
                     jobService.insertJobDepend(jobDepend);
                 }
@@ -185,6 +185,13 @@ public class JobActor extends UntypedActor {
                     } else if (expression instanceof FixedDelayExpression) {
                         cycleFlag = 1;
                     }
+                }
+            }
+            //过滤DELETED父任务
+            Set<Long> needDependencies = Sets.newHashSet();
+            for (long preJobId : dependencies) {
+                if (jobService.get(preJobId).getJob().getStatus() != JobStatus.DELETED.getValue()) {
+                    needDependencies.add(preJobId);
                 }
             }
             int dependFlag = (!needDependencies.isEmpty()) ? 1 : 0;
@@ -397,13 +404,17 @@ public class JobActor extends UntypedActor {
 
             // 1. update job to DB
             JobStatus oldStatus = JobStatus.parseValue(jobService.get(jobId).getJob().getStatus());
-            jobService.updateJob(job);
-
-            JobStatus newStatus = JobStatus.parseValue(msg.getStatus());
-            plan.modifyJobFlag(jobId, oldStatus, newStatus);
-            jobGraph.modifyJobFlag(jobId, oldStatus, newStatus);
-
-            response = ServerModifyJobStatusResponse.newBuilder().setSuccess(true).build();
+            if (oldStatus.equals(JobStatus.DELETED)) {
+                response = ServerModifyJobStatusResponse.newBuilder().setSuccess(false)
+                        .setMessage("已进入垃圾箱的job不允许修改状态")
+                        .build();
+            } else {
+                jobService.updateJob(job);
+                JobStatus newStatus = JobStatus.parseValue(msg.getStatus());
+                plan.modifyJobFlag(jobId, oldStatus, newStatus);
+                jobGraph.modifyJobFlag(jobId, oldStatus, newStatus);
+                response = ServerModifyJobStatusResponse.newBuilder().setSuccess(true).build();
+            }
             getSender().tell(response, getSelf());
         } catch (Exception e) {
             response = ServerModifyJobStatusResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
