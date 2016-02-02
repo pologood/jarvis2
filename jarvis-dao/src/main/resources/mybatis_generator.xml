@@ -36,7 +36,6 @@
 
 		<table schema="jarvis2" tableName="plan">
 			<property name="useActualColumnNames" value="true" />
-			<generatedKey column="jobId" sqlStatement="MySql" identity="false" />
 		</table>
 
 		<table schema="jarvis2" tableName="job_depend">
