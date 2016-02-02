@@ -1,53 +1,61 @@
 package com.mogujie.jarvis.rest;
 
 import java.lang.reflect.Type;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import com.mogujie.jarvis.rest.domain.RestResult4TestEntity;
-import com.mogujie.jarvis.rest.vo.*;
 import org.junit.Assert;
+import org.junit.Ignore;
+import org.junit.Test;
 
 import com.google.gson.reflect.TypeToken;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import com.mogujie.jarvis.core.domain.CommonStrategy;
 import com.mogujie.jarvis.core.domain.OperationMode;
 import com.mogujie.jarvis.core.expression.ScheduleExpressionType;
 import com.mogujie.jarvis.core.util.JsonHelper;
-import com.mogujie.jarvis.core.domain.CommonStrategy;
-import org.junit.Test;
+import com.mogujie.jarvis.rest.domain.RestResult4TestEntity;
+import com.mogujie.jarvis.rest.vo.JobDependencyVo;
+import com.mogujie.jarvis.rest.vo.JobRelationsVo;
+import com.mogujie.jarvis.rest.vo.JobResultVo;
+import com.mogujie.jarvis.rest.vo.JobScheduleExpVo;
+import com.mogujie.jarvis.rest.vo.JobVo;
 
 /**
  * Created by muming on 15/12/1.
  */
+@Ignore
 public class TestJobRest {
 
     @Test
-    public void testMy(){
-        String a = "{\"jobName\":\"test\",\"activeStartDate\":\"\",\"activeEndDate\":\"\",\"content\":\"ls;\",\"params\":\"{}\",\"expression\":\"\",\"failedAttempts\":0,\"failedInterval\":3,\"jobType\":\"hive_script\",\"bizGroupId\":1,\"workerGroupId\":1,\"expressionType\":1,\"priority\":1,\"scheduleExpressionList\":[]}";
-        JobVo jobVo = JsonHelper.fromJson(a, JobVo.class);
-        String b = "{\"jobName\":\"test\",\"activeStartDate\":\"\",\"activeEndDate\":\"\",\"content\":\"ls;\",\"params\":\"{}\",\"expression\":\"\",\"failedAttempts\":0,\"failedInterval\":3,\"jobType\":\"hive_script\",\"bizGroupId\":1,\"workerGroupId\":1,\"expressionType\":1,\"priority\":1,\"scheduleExpressionList\":[{\"expressionType\":\"1\",\"expression\":\"\",\"operatorMode\":3}]}";
-        JobVo jobVo2= JsonHelper.fromJson(b, JobVo.class);
-
-        int i = 3;
+    public void testMy() {
+        //        String a = "{\"jobName\":\"test\",\"activeStartDate\":\"\",\"activeEndDate\":\"\",\"content\":\"ls;\",\"params\":\"{}\",\"expression\":\"\",\"failedAttempts\":0,\"failedInterval\":3,\"jobType\":\"hive_script\",\"bizGroupId\":1,\"workerGroupId\":1,\"expressionType\":1,\"priority\":1,\"scheduleExpressionList\":[]}";
+        //        JobVo jobVo = JsonHelper.fromJson(a, JobVo.class);
+        //        String b = "{\"jobName\":\"test\",\"activeStartDate\":\"\",\"activeEndDate\":\"\",\"content\":\"ls;\",\"params\":\"{}\",\"expression\":\"\",\"failedAttempts\":0,\"failedInterval\":3,\"jobType\":\"hive_script\",\"bizGroupId\":1,\"workerGroupId\":1,\"expressionType\":1,\"priority\":1,\"scheduleExpressionList\":[{\"expressionType\":\"1\",\"expression\":\"\",\"operatorMode\":3}]}";
+        //        JobVo jobVo2 = JsonHelper.fromJson(b, JobVo.class);
+        //
+        //        int i = 3;
     }
-
 
     private String baseUrl = "http://127.0.0.1:8080";
-//    private String baseUrl = "http://10.11.129.54:8080";
+    //    private String baseUrl = "http://10.11.129.54:8080";
 
     public void testJobSubmit() throws UnirestException {
-        Long jobId = jobSubmit();
+        //Long jobId = jobSubmit();
 
     }
 
-    public void testJobScheduleSet() throws UnirestException{
-//        Long jobId = jobSubmit();
+    public void testJobScheduleSet() throws UnirestException {
+        //        Long jobId = jobSubmit();
         Long jobId = 299L;
         jobScheduleExpSet(jobId);
     }
 
-    public void testJobDependencySet() throws UnirestException{
+    public void testJobDependencySet() throws UnirestException {
         Long jobId = jobSubmit();
         jobDependencySet(jobId);
     }
@@ -79,7 +87,6 @@ public class TestJobRest {
 
         job.setScheduleExpressionList(list);
 
-
         // 依赖任务
         List<JobDependencyVo.DependencyEntry> dependList = new ArrayList<>();
         JobDependencyVo.DependencyEntry dependencyEntry;
@@ -100,11 +107,11 @@ public class TestJobRest {
         job.setDependencyList(dependList);
 
         //任务参数
-        Map<String,Object> jobPrams = new HashMap<>();
-        jobPrams.put("name","muming");
+        Map<String, Object> jobPrams = new HashMap<>();
+        jobPrams.put("name", "muming");
         jobPrams.put("age", 18);
         jobPrams.put("isMail", false);
-        jobPrams.put("params","{\"para1\":\"1\",\"para2\":\"2\"}");
+        jobPrams.put("params", "{\"para1\":\"1\",\"para2\":\"2\"}");
         job.setParams(JsonHelper.toJson(jobPrams));
 
         // 任务参数
@@ -113,7 +120,8 @@ public class TestJobRest {
         HttpResponse<String> jsonResponse = Unirest.post(baseUrl + "/api/job/submit").field("appName", "jarvis-web").field("appToken", "123")
                 .field("user", "muming").field("parameters", paramsJson).asString();
 
-        Type restType = new TypeToken<RestResult4TestEntity<JobResultVo>>() {}.getType();
+        Type restType = new TypeToken<RestResult4TestEntity<JobResultVo>>() {
+        }.getType();
 
         Assert.assertEquals(jsonResponse.getStatus(), 200);
         RestResult4TestEntity<JobResultVo> result = JsonHelper.fromJson(jsonResponse.getBody(), restType);
@@ -130,7 +138,6 @@ public class TestJobRest {
 
         List<JobScheduleExpVo.ScheduleExpressionEntry> list = new ArrayList<>();
         JobScheduleExpVo.ScheduleExpressionEntry expressionEntry;
-
 
         expressionEntry = new JobScheduleExpVo.ScheduleExpressionEntry();
         expressionEntry.setOperatorMode(OperationMode.DELETE.getValue());
@@ -154,11 +161,8 @@ public class TestJobRest {
 
         String paramsJson = JsonHelper.toJson(job, JobScheduleExpVo.class);
 
-        HttpResponse<String> jsonResponse = Unirest.post(baseUrl + "/api/job/scheduleExp/set")
-                .field("appName", "jarvis-web")
-                .field("appToken", "123")
-                .field("user", "muming")
-                .field("parameters", paramsJson).asString();
+        HttpResponse<String> jsonResponse = Unirest.post(baseUrl + "/api/job/scheduleExp/set").field("appName", "jarvis-web").field("appToken", "123")
+                .field("user", "muming").field("parameters", paramsJson).asString();
 
         Type restType = new TypeToken<RestResult4TestEntity<JobResultVo>>() {
         }.getType();
@@ -197,16 +201,12 @@ public class TestJobRest {
         entry.setPreJobId(1L);
         list.add(entry);
 
-
         job.setDependencyList(list);
 
         String paramsJson = JsonHelper.toJson(job, JobDependencyVo.class);
 
-        HttpResponse<String> jsonResponse = Unirest.post(baseUrl + "/api/job/dependency/set")
-                .field("appName", "jarvis-web")
-                .field("appToken", "123")
-                .field("user", "muming")
-                .field("parameters", paramsJson).asString();
+        HttpResponse<String> jsonResponse = Unirest.post(baseUrl + "/api/job/dependency/set").field("appName", "jarvis-web").field("appToken", "123")
+                .field("user", "muming").field("parameters", paramsJson).asString();
 
         Type restType = new TypeToken<RestResult4TestEntity<JobResultVo>>() {
         }.getType();
@@ -224,19 +224,16 @@ public class TestJobRest {
         params.put("relationType", 1);
         String paramsJson = JsonHelper.toJson(params, Map.class);
 
-        HttpResponse<String> jsonResponse = Unirest.post(baseUrl + "/api/job/queryRelation")
-                .field("appName", "jarvis-web")
-                .field("appToken", "123")
-                .field("user", "muming")
-                .field("parameters", paramsJson).asString();
+        HttpResponse<String> jsonResponse = Unirest.post(baseUrl + "/api/job/queryRelation").field("appName", "jarvis-web").field("appToken", "123")
+                .field("user", "muming").field("parameters", paramsJson).asString();
 
-        Type restType = new TypeToken<RestResult4TestEntity<JobRelationsVo>>() {}.getType();
+        Type restType = new TypeToken<RestResult4TestEntity<JobRelationsVo>>() {
+        }.getType();
 
         Assert.assertEquals(jsonResponse.getStatus(), 200);
         RestResult4TestEntity<?> result = JsonHelper.fromJson(jsonResponse.getBody(), restType);
         Assert.assertEquals(result.getCode(), 0);
 
     }
-
 
 }
