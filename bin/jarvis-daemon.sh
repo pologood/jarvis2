@@ -67,7 +67,7 @@ fi
 start()
 {
     export LD_LIBRARY_PATH=${JARVIS_LIB_DIR}/native
-    nohup ${JAVA} -Dlog_dir=${JARVIS_LOG_DIR} -Drole=${command} ${JAVA_OPTS} -cp ${JARVIS_CONF_DIR}:${JARVIS_LIB_DIR}/common/*:${JARVIS_LIB_DIR}/${command}/* ${MAIN_CLASS} > /dev/null 2>&1 &
+    nohup ${JAVA} -Dlog_dir=${JARVIS_LOG_DIR} -Drole=${command} ${JAVA_OPTS} -cp ${JARVIS_CONF_DIR}:${JARVIS_LIB_DIR}/common/*:${JARVIS_LIB_DIR}/${command}/* ${MAIN_CLASS} > ${JARVIS_LOG_DIR}/${command}.out 2>&1 &
     echo $! > ${PID}
     echo "${command} started."
 }
