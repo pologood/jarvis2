@@ -71,7 +71,7 @@ public class TimeScheduler extends Scheduler {
                             LOGGER.info("{} time ready", entry);
                             submitJob(entry);
                             // 2. remove this from plan
-                            planQueue.poll();
+                            plan.removePlan(entry);
                         } else {
                             break;
                         }
