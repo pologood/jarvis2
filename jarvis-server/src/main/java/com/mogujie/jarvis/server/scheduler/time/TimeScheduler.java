@@ -14,7 +14,6 @@ package com.mogujie.jarvis.server.scheduler.time;
  * @author guangming
  *
  */
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
@@ -110,7 +109,7 @@ public class TimeScheduler extends Scheduler {
         long scheduleTime = event.getScheduleTime();
         Map<Long, List<Long>> dependTaskIdMap = event.getDependTaskIdMap();
         LOGGER.info("start handleAddPlanEvent, jobId={}, scheduleTime={}, dependTaskIdMap={}",
-                jobId, new Date(scheduleTime), dependTaskIdMap);
+                jobId, new DateTime(scheduleTime), dependTaskIdMap);
         TimePlanEntry entry = new TimePlanEntry(jobId, new DateTime(scheduleTime), dependTaskIdMap);
         try {
             if (!plan.addPlan(entry)) {

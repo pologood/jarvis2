@@ -10,8 +10,8 @@ package com.mogujie.jarvis.server.scheduler.time;
 
 import java.util.Comparator;
 import java.util.Iterator;
-import java.util.PriorityQueue;
 import java.util.Queue;
+import java.util.concurrent.PriorityBlockingQueue;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -42,7 +42,7 @@ public enum TimePlan {
     };
 
     // 优先级队列，通过调度时间由小到大排序
-    private Queue<TimePlanEntry> plan = new PriorityQueue<>(comparator);
+    private Queue<TimePlanEntry> plan = new PriorityBlockingQueue<>(100, comparator);
 
     private static Logger LOGGER = LogManager.getLogger();
 
