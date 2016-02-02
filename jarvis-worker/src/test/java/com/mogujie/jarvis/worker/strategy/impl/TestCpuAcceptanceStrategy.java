@@ -20,7 +20,8 @@ public class TestCpuAcceptanceStrategy {
 
     @Test
     public void testAccept() throws Exception {
-        String javaLibraryPath = getClass().getProtectionDomain().getCodeSource().getLocation().getPath() + "../classes/native";
+        String javaLibraryPath = getClass().getProtectionDomain().getCodeSource().getLocation().getPath() + "./native";
+        System.out.println(javaLibraryPath);
         System.setProperty("java.library.path", javaLibraryPath);
 
         double threshold = ConfigUtils.getWorkerConfig().getDouble(WorkerConfigKeys.WORKER_CPU_USAGE_THRESHOLD, 0.85);

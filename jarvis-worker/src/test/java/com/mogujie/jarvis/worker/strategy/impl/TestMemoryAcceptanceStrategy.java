@@ -20,7 +20,7 @@ public class TestMemoryAcceptanceStrategy {
 
     @Test
     public void testAccept() throws Exception {
-        String javaLibraryPath = getClass().getProtectionDomain().getCodeSource().getLocation().getPath() + "../classes/native";
+        String javaLibraryPath = getClass().getProtectionDomain().getCodeSource().getLocation().getPath() + "./native";
         System.setProperty("java.library.path", javaLibraryPath);
 
         double threshold = ConfigUtils.getWorkerConfig().getDouble(WorkerConfigKeys.WORKER_MEMORY_USAGE_THRESHOLD, 0.9);
