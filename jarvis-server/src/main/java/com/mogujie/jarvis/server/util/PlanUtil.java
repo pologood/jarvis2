@@ -95,7 +95,7 @@ public class PlanUtil {
                         nextTime = getScheduleTimeAfter(dependencyJobId, nextTime);
                     }
 
-                    if (!result.isAfter(dateTime)) {
+                    if (result != null && !result.isAfter(dateTime)) {
                         mutableDateTime.setMillis(endDateTime);
                     } else {
                         break;
