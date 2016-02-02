@@ -22,7 +22,6 @@ mkdir -p ${JARVIS_TARGET_LIB_DIR}/rest
 mkdir -p ${JARVIS_TARGET_LIB_DIR}/server
 mkdir -p ${JARVIS_TARGET_LIB_DIR}/worker
 mkdir -p ${JARVIS_TARGET_LIB_DIR}/logstorage
-cp ./conf/native/* ${JARVIS_TARGET_LIB_DIR}/native
 find ./jarvis-core/target -name *.jar -exec cp {} ${JARVIS_TARGET_LIB_DIR}/common \;
 find ./jarvis-dao/target -name *.jar -exec cp {} ${JARVIS_TARGET_LIB_DIR}/common \;
 find ./jarvis-protocol/target -name *.jar -exec cp {} ${JARVIS_TARGET_LIB_DIR}/common \;
