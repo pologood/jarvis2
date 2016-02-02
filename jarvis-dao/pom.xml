@@ -52,6 +52,11 @@
 					<verbose>true</verbose>
 					<overwrite>true</overwrite>
 				</configuration>
+				<executions>
+					<execution>
+						<phase>test</phase>
+					</execution>
+				</executions>
 				<dependencies>
 					<dependency>
 						<groupId>mysql</groupId>
