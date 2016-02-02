@@ -32,12 +32,7 @@ import com.mogujie.jarvis.worker.strategy.AcceptanceStrategy;
 public class YarnMemoryAcceptanceStrategy implements AcceptanceStrategy {
 
     private int activeUriIndex = 0;
-    private static ThreadLocal<DecimalFormat> decimalFormatThreadLocal = new ThreadLocal<DecimalFormat>() {
-        @Override
-        protected DecimalFormat initialValue() {
-            return new DecimalFormat("#0.00");
-        };
-    };
+    private static final String DECIMAL_FORMAT = "#0.00";
     private static final Configuration CONFIG = ConfigUtils.getWorkerConfig();
     private static final double MAX_YARN_MEMORY_USAGE = CONFIG.getDouble(WorkerConfigKeys.YARN_MEMORY_USAGE_THRESHOLD, 0.9);
     private static final List<Object> YARN_REST_API_URIS = CONFIG.getList(WorkerConfigKeys.YARN_RESOUCEMANAGER_REST_API_URIS);
@@ -59,7 +54,7 @@ public class YarnMemoryAcceptanceStrategy implements AcceptanceStrategy {
                     return new AcceptanceResult(true, "");
                 } else {
                     return new AcceptanceResult(false,
-                            "Yarn集群当前内存使用率" + decimalFormatThreadLocal.get().format(currentMemoryUsage) + ", 超过阈值" + MAX_YARN_MEMORY_USAGE);
+                            "Yarn集群当前内存使用率" + new DecimalFormat(DECIMAL_FORMAT).format(currentMemoryUsage) + ", 超过阈值" + MAX_YARN_MEMORY_USAGE);
                 }
             } catch (UnirestException | JSONException e) {
                 activeUriIndex = ++activeUriIndex % len;

@@ -27,13 +27,7 @@ import com.mogujie.jarvis.worker.strategy.AcceptanceStrategy;
  */
 public class CpuAcceptanceStrategy implements AcceptanceStrategy {
 
-    private static ThreadLocal<DecimalFormat> decimalFormatThreadLocal = new ThreadLocal<DecimalFormat>() {
-        @Override
-        protected DecimalFormat initialValue() {
-            return new DecimalFormat("#0.00");
-        };
-    };
-
+    private static final String DECIMAL_FORMAT = "#0.00";
     public static final double MAX_CPU_USAGE = ConfigUtils.getWorkerConfig().getDouble(WorkerConfigKeys.WORKER_CPU_USAGE_THRESHOLD, 0.85);
 
     @Override
@@ -46,7 +40,7 @@ public class CpuAcceptanceStrategy implements AcceptanceStrategy {
                     / (double) (pair2.getFirst() - pair1.getFirst());
             if (currentCpuUsage > MAX_CPU_USAGE) {
                 return new AcceptanceResult(false,
-                        "client当前CPU使用率" + decimalFormatThreadLocal.get().format(currentCpuUsage) + ", 超过阈值" + MAX_CPU_USAGE);
+                        "client当前CPU使用率" + new DecimalFormat(DECIMAL_FORMAT).format(currentCpuUsage) + ", 超过阈值" + MAX_CPU_USAGE);
             }
         } catch (Exception e) {
             return new AcceptanceResult(false, e.getMessage());
