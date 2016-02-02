@@ -8,6 +8,8 @@
 
 package com.mogujie.jarvis.worker;
 
+import java.util.concurrent.TimeoutException;
+
 import org.apache.commons.configuration.Configuration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,8 +23,6 @@ import com.mogujie.jarvis.worker.util.FutureUtils;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSelection;
-
-import java.util.concurrent.TimeoutException;
 
 /**
  * @author wuya
@@ -65,7 +65,7 @@ public class HeartBeatThread extends Thread {
         HeartBeatRequest request = HeartBeatRequest.newBuilder().setJobNum(jobNum).build();
         heartBeatActor.tell(request, sender);
         try {
-            HeartBeatResponse response = (HeartBeatResponse) FutureUtils.awaitResult(heartBeatActor, request, 3);
+            HeartBeatResponse response = (HeartBeatResponse) FutureUtils.awaitResult(heartBeatActor, request, 30);
             if (!response.getSuccess()) {
                 registerWorker();
             }
