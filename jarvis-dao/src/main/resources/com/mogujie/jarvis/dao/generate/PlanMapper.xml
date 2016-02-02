@@ -97,23 +97,25 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.mogujie.jarvis.dto.generate.Plan" >
-    <selectKey resultType="java.lang.Long" keyProperty="jobId" order="AFTER" >
+    <selectKey resultType="java.lang.Long" keyProperty="jobId" order="BEFORE" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into plan (createTime)
-    values (#{createTime,jdbcType=TIMESTAMP})
+    insert into plan (jobId, createTime)
+    values (#{jobId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.mogujie.jarvis.dto.generate.Plan" >
-    <selectKey resultType="java.lang.Long" keyProperty="jobId" order="AFTER" >
+    <selectKey resultType="java.lang.Long" keyProperty="jobId" order="BEFORE" >
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into plan
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      jobId,
       <if test="createTime != null" >
         createTime,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{jobId,jdbcType=BIGINT},
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
       </if>
