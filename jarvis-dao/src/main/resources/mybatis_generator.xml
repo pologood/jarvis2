@@ -27,7 +27,6 @@
 
         <table schema="jarvis2" tableName="app_worker_group">
             <property name="useActualColumnNames" value="true" />
-            <generatedKey column="id" sqlStatement="MySql" identity="true" />
         </table>
 
 		<table schema="jarvis2" tableName="job">
