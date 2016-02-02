@@ -3,6 +3,7 @@ package com.mogujie.jarvis.server.actor;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
+import com.mogujie.jarvis.server.actor.util.TestJarvisConstants;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
@@ -33,8 +34,7 @@ import akka.testkit.JavaTestKit;
  */
 public class TestWorkerActor {
     String authKey = "ec80df2716a547b89d99a3d135dea1d3";
-    Thread threadServer = null;
-    int registPort = 10001;
+    int registPort = 10010;
     Injector injector = Injectors4Test.getInjector();
     WorkerService workerService = injector.getInstance(WorkerService.class);
     ActorSystem system;
@@ -58,7 +58,7 @@ public class TestWorkerActor {
 
     @Test
     public void testModifyWorkerStatus() throws SocketException, UnknownHostException {
-        int workerId = workerService.getWorkerId(IPUtils.getIPV4Address(), registPort);
+        int workerId = workerService.getWorkerId(IPUtils.getIPV4Address(), 10010);
         Worker worker = workerService.getWorkerMapper().selectByPrimaryKey(workerId);
 
         int workerStatus = 1;
@@ -66,8 +66,8 @@ public class TestWorkerActor {
             workerStatus = 2;
         }
         Config akkaConfig = ConfigUtils.getAkkaConfig("akka-test.conf");
-        system = ActorSystem.create("worker", akkaConfig);
-        String serverPath = "akka.tcp://server@" + serverHost + ":10000/user/server";
+        system = ActorSystem.create(TestJarvisConstants.TEST_AKKA_SYSTEM_NAME, akkaConfig);
+        String serverPath = TestJarvisConstants.TEST_SERVER_ACTOR_PATH;
         ActorSelection serverActor = system.actorSelection(serverPath);
 
         RestServerModifyWorkerStatusRequest request = RestServerModifyWorkerStatusRequest.newBuilder().setStatus(workerStatus)
@@ -83,7 +83,7 @@ public class TestWorkerActor {
 
             }
         };
-        workerId = workerService.getWorkerId(IPUtils.getIPV4Address(), registPort);
+        workerId = workerService.getWorkerId(IPUtils.getIPV4Address(), 10010);
 
         worker = workerService.getWorkerMapper().selectByPrimaryKey(workerId);
 
@@ -93,10 +93,9 @@ public class TestWorkerActor {
 
     @Test
     public void testWorkerRegister() throws SocketException, UnknownHostException {
-        //测试绑定10001端口
         Config akkaConfig = ConfigUtils.getAkkaConfig("akka-test.conf");
-        system = ActorSystem.create("worker", akkaConfig);
-        String serverPath = "akka.tcp://server@" + serverHost + ":10000/user/server";
+        system = ActorSystem.create(TestJarvisConstants.TEST_AKKA_SYSTEM_NAME, akkaConfig);
+        String serverPath = TestJarvisConstants.TEST_SERVER_ACTOR_PATH;
         ActorSelection serverActor = system.actorSelection(serverPath);
         WorkerRegistryRequest workerRegistryRequest = WorkerRegistryRequest.newBuilder().setKey(authKey).build();
 
@@ -131,7 +130,7 @@ public class TestWorkerActor {
             }
         };
 
-        Assert.assertEquals(workerService.getWorkerId("192.168.21.82", registPort), 22);
+        Assert.assertEquals(workerService.getWorkerId("192.168.21.82", registPort), 28);
     }
 
 }
