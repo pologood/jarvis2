@@ -22,6 +22,7 @@ import com.mogujie.jarvis.rest.vo.WorkerHeartbeatVo;
 @Ignore
 public class TestWorkerRest extends AbstractTestRest {
 
+    @Test
     public void testAppWorkerGroup() throws UnirestException {
         queryWorkerHeartbeatInfo(2);
     }
