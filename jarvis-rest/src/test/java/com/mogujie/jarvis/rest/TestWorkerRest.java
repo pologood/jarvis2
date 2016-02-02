@@ -24,7 +24,6 @@ import java.util.Map;
  */
 public class TestWorkerRest extends AbstractTestRest {
 
-    @Test
     public void testAppWorkerGroup() throws UnirestException {
         queryWorkerHeartbeatInfo(2);
     }
