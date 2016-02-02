@@ -67,7 +67,10 @@ public class HeartBeatThread extends Thread {
         try {
             HeartBeatResponse response = (HeartBeatResponse) FutureUtils.awaitResult(heartBeatActor, request, 30);
             if (!response.getSuccess()) {
+                LOGGER.info("Try to register again...");
                 registerWorker();
+            } else {
+                LOGGER.info("Send heartbeat successfully");
             }
         } catch (TimeoutException e) {
             LOGGER.error("Worker heartbeat timeout, waiting to retry..." + e.toString());
