@@ -16,10 +16,6 @@ import java.util.Map.Entry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import akka.actor.Address;
-import akka.actor.Props;
-import akka.actor.UntypedActor;
-
 import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.core.domain.WorkerInfo;
 import com.mogujie.jarvis.protocol.HeartBeatProtos.HeartBeatRequest;
@@ -31,6 +27,10 @@ import com.mogujie.jarvis.server.WorkerRegistry;
 import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.service.HeartBeatService;
+
+import akka.actor.Address;
+import akka.actor.Props;
+import akka.actor.UntypedActor;
 
 public class HeartBeatActor extends UntypedActor {
 
@@ -81,8 +81,8 @@ public class HeartBeatActor extends UntypedActor {
         } catch (Exception ex) {
             response = HeartBeatResponse.newBuilder().setSuccess(false).setMessage(ex.getMessage()).build();
             getSender().tell(response, getSelf());
-            if(!(ex instanceof  IllegalArgumentException)){
-                LOGGER.error("",ex);
+            if (!(ex instanceof IllegalArgumentException)) {
+                LOGGER.error("", ex);
             }
         }
     }
@@ -91,16 +91,17 @@ public class HeartBeatActor extends UntypedActor {
         ServerQueryWorkerHeartbeatInfoResponse response;
         try {
             int workerGroupId = request.getWorkerGroupId();
-            if(workerGroupId <= 0){
+            if (workerGroupId <= 0) {
                 throw new IllegalArgumentException("groupId is not valid. groupId: " + workerGroupId);
             }
 
             ServerQueryWorkerHeartbeatInfoResponse.Builder builder = ServerQueryWorkerHeartbeatInfoResponse.newBuilder();
 
-            Map<WorkerInfo,Integer> map = heartBeatService.getWorkerInfo(workerGroupId);
-            for( Entry<WorkerInfo,Integer> entry: map.entrySet()){
+            Map<WorkerInfo, Integer> map = heartBeatService.getWorkerInfo(workerGroupId);
+            for (Entry<WorkerInfo, Integer> entry : map.entrySet()) {
                 WorkerInfo key = entry.getKey();
-                WorkerHeartbeatEntry hb= WorkerHeartbeatEntry.newBuilder().setIp(key.getIp()).setPort(key.getPort()).setTaskNum(entry.getValue()).build();
+                WorkerHeartbeatEntry hb = WorkerHeartbeatEntry.newBuilder().setIp(key.getIp()).setPort(key.getPort()).setTaskNum(entry.getValue())
+                        .build();
                 builder.addInfo(hb);
             }
             response = builder.setSuccess(true).build();
@@ -108,8 +109,8 @@ public class HeartBeatActor extends UntypedActor {
         } catch (Exception ex) {
             response = ServerQueryWorkerHeartbeatInfoResponse.newBuilder().setSuccess(false).setMessage(ex.getMessage()).build();
             getSender().tell(response, getSelf());
-            if(!(ex instanceof  IllegalArgumentException)){
-                LOGGER.error("",ex);
+            if (!(ex instanceof IllegalArgumentException)) {
+                LOGGER.error("", ex);
             }
         }
     }

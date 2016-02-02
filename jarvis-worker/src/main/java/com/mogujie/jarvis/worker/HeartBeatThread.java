@@ -21,7 +21,6 @@ import com.mogujie.jarvis.protocol.WorkerProtos.ServerRegistryResponse;
 import com.mogujie.jarvis.protocol.WorkerProtos.WorkerRegistryRequest;
 import com.mogujie.jarvis.worker.util.FutureUtils;
 
-import akka.actor.ActorRef;
 import akka.actor.ActorSelection;
 
 /**
@@ -30,13 +29,11 @@ import akka.actor.ActorSelection;
 public class HeartBeatThread extends Thread {
 
     private ActorSelection heartBeatActor;
-    private ActorRef sender;
     private TaskPool taskPool = TaskPool.INSTANCE;
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public HeartBeatThread(ActorSelection heartBeatActor, ActorRef sender) {
+    public HeartBeatThread(ActorSelection heartBeatActor) {
         this.heartBeatActor = heartBeatActor;
-        this.sender = sender;
     }
 
     private void registerWorker() {
@@ -63,7 +60,6 @@ public class HeartBeatThread extends Thread {
     public void run() {
         int jobNum = taskPool.size();
         HeartBeatRequest request = HeartBeatRequest.newBuilder().setJobNum(jobNum).build();
-        heartBeatActor.tell(request, sender);
         try {
             HeartBeatResponse response = (HeartBeatResponse) FutureUtils.awaitResult(heartBeatActor, request, 30);
             if (!response.getSuccess()) {

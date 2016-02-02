@@ -72,7 +72,7 @@ public class JarvisWorker {
                     LOGGER.error("Worker register failed, waiting to retry...", e);
                 }
 
-                ThreadUtils.sleep(workerConfig.getInt(WorkerConfigKeys.WORKER_REGISTRY_FAILED_INTERVAL, 3000));
+                ThreadUtils.sleep(workerConfig.getInt(WorkerConfigKeys.WORKER_REGISTRY_FAILED_INTERVAL, 5000));
             }
 
             ActorRef deadLetterActor = system.actorOf(new SmallestMailboxPool(10).props(DeadLetterActor.props()));
@@ -83,8 +83,8 @@ public class JarvisWorker {
             ActorRef taskActor = system.actorOf(new SmallestMailboxPool(actorNum).props(TaskActor.props()), JarvisConstants.WORKER_AKKA_SYSTEM_NAME);
             ActorSelection heartBeatActor = system.actorSelection(serverAkkaPath);
             int heartBeatInterval = workerConfig.getInt(WorkerConfigKeys.WORKER_HEART_BEAT_INTERVAL_SECONDS, 10);
-            system.scheduler().schedule(Duration.Zero(), Duration.create(heartBeatInterval, TimeUnit.SECONDS),
-                    new HeartBeatThread(heartBeatActor, taskActor), system.dispatcher());
+            system.scheduler().schedule(Duration.Zero(), Duration.create(heartBeatInterval, TimeUnit.SECONDS), new HeartBeatThread(heartBeatActor),
+                    system.dispatcher());
 
             Thread TaskStateRestoreThread = new TaskStateRestoreThread(system, taskActor);
             TaskStateRestoreThread.start();
