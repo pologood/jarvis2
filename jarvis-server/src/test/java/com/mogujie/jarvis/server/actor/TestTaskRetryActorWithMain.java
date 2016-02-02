@@ -7,6 +7,7 @@ import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.protocol.AppAuthProtos;
 import com.mogujie.jarvis.protocol.RetryTaskProtos;
+import com.mogujie.jarvis.server.actor.util.TestJarvisConstants;
 import com.mogujie.jarvis.server.guice4test.Injectors4Test;
 import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.FutureUtils;
@@ -28,11 +29,10 @@ public class TestTaskRetryActorWithMain {
     static TaskService taskService = Injectors4Test.getInjector().getInstance(TaskService.class);
 
     public static void main(String[] args) {
-        String serverHost = "10.11.6.129";
         AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setToken("11111").setName("jarvis-web").build();
-        String actorPath = "akka.tcp://server@" + serverHost + ":10000/user/server";
+        String actorPath = TestJarvisConstants.TEST_SERVER_ACTOR_PATH;
         Config akkaConfig = ConfigUtils.getAkkaConfig("akka-test.conf");
-        ActorSystem system = ActorSystem.create("worker", akkaConfig);
+        ActorSystem system = ActorSystem.create(TestJarvisConstants.TEST_AKKA_SYSTEM_NAME, akkaConfig);
         List<Integer> statusList = new ArrayList<>();
         statusList.add(TaskStatus.FAILED.getValue());
         //随机取一个taskid
@@ -75,7 +75,7 @@ public class TestTaskRetryActorWithMain {
             while (true) {
 
                 retryTask = taskService.get(randomTaskId);
-                // System.out.println(retryTask.getStatus() + "-" + retryTask.getTaskId());
+                System.out.println(retryTask.getStatus() + "-" + retryTask.getTaskId());
                 if (retryTask.getStatus() >= TaskStatus.WAITING.getValue()
                         && retryTask.getStatus() <= TaskStatus.SUCCESS.getValue()) {
                     assertThat((int) retryTask.getStatus(),

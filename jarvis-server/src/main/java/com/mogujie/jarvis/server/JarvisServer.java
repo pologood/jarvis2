@@ -8,9 +8,11 @@
 
 package com.mogujie.jarvis.server;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Timer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -59,6 +61,7 @@ import com.mogujie.jarvis.server.scheduler.task.TaskScheduler;
 import com.mogujie.jarvis.server.scheduler.time.TimePlan;
 import com.mogujie.jarvis.server.scheduler.time.TimeScheduler;
 import com.mogujie.jarvis.server.service.JobService;
+import com.mogujie.jarvis.server.service.PlanService;
 import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.PlanUtil;
 
@@ -76,6 +79,7 @@ public class JarvisServer {
             int serverActorNum = config.getInt(ServerConigKeys.SERVER_ACTOR_NUM, 500);
             system.actorOf(ServerActor.props().withRouter(new RoundRobinPool(serverActorNum)), JarvisConstants.SERVER_AKKA_SYSTEM_NAME);
 
+            LOGGER.info("start dispatcher...");
             int taskDispatcherThreads = config.getInt(ServerConigKeys.SERVER_DISPATCHER_THREADS, 5);
             ExecutorService executorService = Executors.newFixedThreadPool(taskDispatcherThreads);
             for (int i = 0; i < taskDispatcherThreads; i++) {
@@ -85,6 +89,7 @@ public class JarvisServer {
             }
             executorService.shutdown();
 
+            LOGGER.info("start TaskRetryScheduler...");
             TaskRetryScheduler taskRetryScheduler = TaskRetryScheduler.INSTANCE;
             taskRetryScheduler.start();
 
@@ -99,8 +104,10 @@ public class JarvisServer {
     }
 
     public static void init() throws Exception {
+        LOGGER.info("start init Scheduler...");
         initScheduler();
-        // initTimerTask();
+        LOGGER.info("start init TimerTask...");
+        initTimerTask();
     }
 
     private static void initScheduler() throws JobScheduleException, CycleFoundException {
@@ -220,5 +227,20 @@ public class JarvisServer {
         for (Task task : readyTasks) {
             controller.notify(new RetryTaskEvent(task.getJobId(), task.getTaskId()));
         }
+    }
+
+    private static void initTimerTask() {
+        final String startTime = "23:30:00";
+        final long time24h = 24 * 60 * 60 * 1000;
+        String currentDate = DateTime.now().toString("yyyy-MM-dd");
+        Date firstTime = (new DateTime(currentDate + "T" + startTime)).toDate();
+        Timer timer = new Timer();
+        // init PlanTimerTask
+        timer.scheduleAtFixedRate(new PlanTimerTask(), firstTime, time24h);
+        // 系统启动的时候自动更新执行计划
+        PlanService planService = Injectors.getInjector().getInstance(PlanService.class);
+        DateTime now = DateTime.now();
+        Range<DateTime> range = Range.closedOpen(now.withTimeAtStartOfDay(), now.plusDays(1).withTimeAtStartOfDay());
+        planService.updateJobIds(range);
     }
 }

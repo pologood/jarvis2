@@ -70,6 +70,7 @@ import com.mogujie.jarvis.server.scheduler.dag.JobGraph;
 import com.mogujie.jarvis.server.scheduler.time.TimePlan;
 import com.mogujie.jarvis.server.service.AppService;
 import com.mogujie.jarvis.server.service.JobService;
+import com.mogujie.jarvis.server.service.PlanService;
 import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.service.ValidService;
 import com.mogujie.jarvis.server.service.ValidService.CheckMode;
@@ -112,26 +113,36 @@ public class JobActor extends UntypedActor {
 
     @Override
     public void onReceive(Object obj) throws Exception {
-        if (obj instanceof RestSubmitJobRequest) {
-            submitJob((RestSubmitJobRequest) obj);
-        } else if (obj instanceof RestModifyJobRequest) {
-            modifyJob((RestModifyJobRequest) obj);
-        } else if (obj instanceof RestModifyJobDependRequest) {
-            modifyJobDependency((RestModifyJobDependRequest) obj);
-        } else if (obj instanceof RestModifyJobScheduleExpRequest) {
-            modifyJobScheduleExp((RestModifyJobScheduleExpRequest) obj);
-        } else if (obj instanceof RestModifyJobStatusRequest) {
-            modifyJobStatus((RestModifyJobStatusRequest) obj);
-        } else if (obj instanceof RestQueryJobRelationRequest) {
-            RestQueryJobRelationRequest msg = (RestQueryJobRelationRequest) obj;
-            queryJobRelation(msg);
-        } else if (obj instanceof RestRemoveJobRequest) { // 回滚和测试用，无须加入handleMessage
-            RestRemoveJobRequest msg = (RestRemoveJobRequest) obj;
-            removeJob(msg.getJobId());
-            ServerRemoveJobResponse response = ServerRemoveJobResponse.newBuilder().setSuccess(true).build();
-            getSender().tell(response, getSelf());
-        } else {
-            unhandled(obj);
+        try {
+            if (obj instanceof RestSubmitJobRequest) {
+                submitJob((RestSubmitJobRequest) obj);
+            } else if (obj instanceof RestModifyJobRequest) {
+                modifyJob((RestModifyJobRequest) obj);
+            } else if (obj instanceof RestModifyJobDependRequest) {
+                modifyJobDependency((RestModifyJobDependRequest) obj);
+            } else if (obj instanceof RestModifyJobScheduleExpRequest) {
+                modifyJobScheduleExp((RestModifyJobScheduleExpRequest) obj);
+            } else if (obj instanceof RestModifyJobStatusRequest) {
+                modifyJobStatus((RestModifyJobStatusRequest) obj);
+            } else if (obj instanceof RestQueryJobRelationRequest) {
+                RestQueryJobRelationRequest msg = (RestQueryJobRelationRequest) obj;
+                queryJobRelation(msg);
+            } else if (obj instanceof RestRemoveJobRequest) { // 回滚和测试用，无须加入handleMessage
+                RestRemoveJobRequest msg = (RestRemoveJobRequest) obj;
+                removeJob(msg.getJobId());
+                ServerRemoveJobResponse response = ServerRemoveJobResponse.newBuilder().setSuccess(true).build();
+                getSender().tell(response, getSelf());
+            } else {
+                unhandled(obj);
+            }
+
+            //对job的任何成功操作都会刷新执行计划
+            PlanService planService = Injectors.getInjector().getInstance(PlanService.class);
+            DateTime now = DateTime.now();
+            Range<DateTime> range = Range.closedOpen(now.withTimeAtStartOfDay(), now.plusDays(1).withTimeAtStartOfDay());
+            planService.updateJobIds(range);
+        } catch (Exception e) {
+            throw e;
         }
     }
 
@@ -203,7 +214,6 @@ public class JobActor extends UntypedActor {
 
             response = ServerSubmitJobResponse.newBuilder().setSuccess(true).setJobId(jobId).build();
             getSender().tell(response, getSelf());
-
         } catch (Exception e) {
             // roll back submit job
             removeJob(jobId);

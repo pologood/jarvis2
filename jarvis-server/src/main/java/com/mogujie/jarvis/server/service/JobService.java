@@ -20,6 +20,7 @@ import org.mybatis.guice.transactional.Transactional;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.google.inject.Inject;
@@ -91,6 +92,18 @@ public class JobService {
             jobs = new ArrayList<>();
         }
         return jobs;
+    }
+
+    public List<Long> getNotDeletedActiveJobIds() {
+        List<Job> jobs = getNotDeletedJobs();
+        List<Long> activeJobIds = Lists.newArrayList();
+        for (Job job : jobs) {
+            long jobId = job.getJobId();
+            if (isActive(jobId)) {
+                activeJobIds.add(jobId);
+            }
+        }
+        return activeJobIds;
     }
 
     public boolean isActive(long jobId) {

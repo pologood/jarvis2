@@ -24,6 +24,7 @@ import com.mogujie.jarvis.protocol.QueryTaskRelationProtos;
 import com.mogujie.jarvis.protocol.QueryTaskRelationProtos.RestServerQueryTaskRelationRequest;
 import com.mogujie.jarvis.protocol.RemoveTaskProtos.RestServerRemoveTaskRequest;
 import com.mogujie.jarvis.protocol.RemoveTaskProtos.ServerRemoveTaskResponse;
+import com.mogujie.jarvis.server.actor.util.TestJarvisConstants;
 import com.mogujie.jarvis.server.actor.util.TestUtil;
 import com.mogujie.jarvis.server.guice4test.Injectors4Test;
 import com.mogujie.jarvis.server.service.JobService;
@@ -50,9 +51,7 @@ import static org.junit.Assert.*;
  * used by jarvis-parent
  */
 public class TestTaskActor {
-    String serverHost = "10.11.6.129";
-    //    String actorPath = "akka.tcp://server@" + IPUtils.getIPV4Address() + ":10000/user/server";
-    String actorPath = "akka.tcp://server@" + serverHost + ":10000/user/server";
+    String actorPath = TestJarvisConstants.TEST_SERVER_ACTOR_PATH;
     ActorSystem system;
     TaskService taskService = Injectors4Test.getInjector().getInstance(TaskService.class);
     AppAuth appAuth = AppAuth.newBuilder().setToken("11111").setName("jarvis-web").build();
@@ -208,7 +207,7 @@ public class TestTaskActor {
     public ActorSystem getActorSystem() {
         if (system == null) {
             Config akkaConfig = ConfigUtils.getAkkaConfig("akka-test.conf");
-            system = ActorSystem.create("worker", akkaConfig);
+            system = ActorSystem.create(TestJarvisConstants.TEST_AKKA_SYSTEM_NAME, akkaConfig);
         }
 
         return system;
@@ -385,7 +384,6 @@ public class TestTaskActor {
         assertEquals(TaskStatus.REMOVED.getValue(), (int) taskNew.getStatus());
 
     }
-
 
     class CheckTaskRunningService implements Runnable {
         long jobId;
