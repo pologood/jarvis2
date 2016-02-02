@@ -23,21 +23,26 @@ import com.mogujie.jarvis.worker.strategy.AcceptanceStrategy;
  */
 public class LoadAcceptanceStrategy implements AcceptanceStrategy {
 
-  private DecimalFormat decimalFormat = new DecimalFormat("#0.00");
-  public static final int CPU_NUM = Runtime.getRuntime().availableProcessors();
-  public static final double LOAD_THRESHOLD = ConfigUtils.getWorkerConfig()
-      .getDouble(WorkerConfigKeys.WORKER_CPU_LOAD_AVG_THRESHOLD, CPU_NUM * 1.5);
+    private static ThreadLocal<DecimalFormat> decimalFormatThreadLocal = new ThreadLocal<DecimalFormat>() {
+        @Override
+        protected DecimalFormat initialValue() {
+            return new DecimalFormat("#0.00");
+        };
+    };
 
-  @Override
-  public AcceptanceResult accept() throws Exception {
-    OperatingSystemMXBean bean = ManagementFactory.getOperatingSystemMXBean();
-    double currentLoad = bean.getSystemLoadAverage();
-    if (currentLoad > LOAD_THRESHOLD) {
-      return new AcceptanceResult(false,
-          "client当前CPU Load " + decimalFormat.format(currentLoad) + ", 超过阈值" + LOAD_THRESHOLD);
+    public static final int CPU_NUM = Runtime.getRuntime().availableProcessors();
+    public static final double LOAD_THRESHOLD = ConfigUtils.getWorkerConfig().getDouble(WorkerConfigKeys.WORKER_CPU_LOAD_AVG_THRESHOLD,
+            CPU_NUM * 1.5);
+
+    @Override
+    public AcceptanceResult accept() throws Exception {
+        OperatingSystemMXBean bean = ManagementFactory.getOperatingSystemMXBean();
+        double currentLoad = bean.getSystemLoadAverage();
+        if (currentLoad > LOAD_THRESHOLD) {
+            return new AcceptanceResult(false, "client当前CPU Load " + decimalFormatThreadLocal.get().format(currentLoad) + ", 超过阈值" + LOAD_THRESHOLD);
+        }
+
+        return new AcceptanceResult(true, "");
     }
-
-    return new AcceptanceResult(true, "");
-  }
 
 }

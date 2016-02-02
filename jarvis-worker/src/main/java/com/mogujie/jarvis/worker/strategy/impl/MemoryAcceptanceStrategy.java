@@ -27,7 +27,13 @@ import com.mogujie.jarvis.worker.strategy.AcceptanceStrategy;
  */
 public class MemoryAcceptanceStrategy implements AcceptanceStrategy {
 
-    private DecimalFormat decimalFormat = new DecimalFormat("#0.00");
+    private static ThreadLocal<DecimalFormat> decimalFormatThreadLocal = new ThreadLocal<DecimalFormat>() {
+        @Override
+        protected DecimalFormat initialValue() {
+            return new DecimalFormat("#0.00");
+        };
+    };
+
     private static final double MAX_MEMORY_USAGE = ConfigUtils.getWorkerConfig().getDouble(WorkerConfigKeys.WORKER_MEMORY_USAGE_THRESHOLD, 0.9);
 
     @Override
@@ -40,7 +46,8 @@ public class MemoryAcceptanceStrategy implements AcceptanceStrategy {
             long cached = Long.parseLong(CharMatcher.DIGIT.retainFrom(lines.get(3)));
             double currentMemoryUsage = (memTotal - memFree - buffers - cached) / (double) memTotal;
             if (currentMemoryUsage > MAX_MEMORY_USAGE) {
-                return new AcceptanceResult(false, "client当前内存使用率" + decimalFormat.format(currentMemoryUsage) + ", 超过阈值" + MAX_MEMORY_USAGE);
+                return new AcceptanceResult(false,
+                        "client当前内存使用率" + decimalFormatThreadLocal.get().format(currentMemoryUsage) + ", 超过阈值" + MAX_MEMORY_USAGE);
             }
         } catch (IOException e) {
             return new AcceptanceResult(false, e.getMessage());
