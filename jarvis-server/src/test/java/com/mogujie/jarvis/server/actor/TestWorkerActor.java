@@ -1,8 +1,12 @@
 package com.mogujie.jarvis.server.actor;
 
-import akka.actor.ActorSelection;
-import akka.actor.ActorSystem;
-import akka.testkit.JavaTestKit;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Test;
+
 import com.google.inject.Injector;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.core.util.IPUtils;
@@ -17,14 +21,10 @@ import com.mogujie.jarvis.server.actor.util.TestUtil;
 import com.mogujie.jarvis.server.guice4test.Injectors4Test;
 import com.mogujie.jarvis.server.service.WorkerService;
 import com.typesafe.config.Config;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Test;
 
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.SocketException;
-import java.net.UnknownHostException;
+import akka.actor.ActorSelection;
+import akka.actor.ActorSystem;
+import akka.testkit.JavaTestKit;
 
 /**
  * Location www.mogujie.com
@@ -41,7 +41,6 @@ public class TestWorkerActor {
     String serverHost = "10.11.6.129";
     AppAuthProtos.AppAuth appAuth = AppAuthProtos.AppAuth.newBuilder().setToken("11111").setName("jarvis-web").build();
 
-
     @After
     public void tearDown() {
         try {
@@ -57,10 +56,9 @@ public class TestWorkerActor {
         }
     }
 
-
     @Test
     public void testModifyWorkerStatus() throws SocketException, UnknownHostException {
-        int workerId = (int) workerService.getWorkerId(IPUtils.getIPV4Address(), registPort);
+        int workerId = workerService.getWorkerId(IPUtils.getIPV4Address(), registPort);
         Worker worker = workerService.getWorkerMapper().selectByPrimaryKey(workerId);
 
         int workerStatus = 1;
@@ -72,30 +70,26 @@ public class TestWorkerActor {
         String serverPath = "akka.tcp://server@" + serverHost + ":10000/user/server";
         ActorSelection serverActor = system.actorSelection(serverPath);
 
+        RestServerModifyWorkerStatusRequest request = RestServerModifyWorkerStatusRequest.newBuilder().setStatus(workerStatus)
+                .setIp(IPUtils.getIPV4Address()).setPort(registPort).setAppAuth(appAuth).build();
 
-        RestServerModifyWorkerStatusRequest request = RestServerModifyWorkerStatusRequest
-                .newBuilder()
-                .setStatus(workerStatus)
-                .setIp(IPUtils.getIPV4Address())
-                .setPort(registPort)
-                .setAppAuth(appAuth).build();
+        new JavaTestKit(system) {
+            {
+                serverActor.tell(request, getRef());
 
-        new JavaTestKit(system) {{
-            serverActor.tell(request, getRef());
+                ServerModifyWorkerStatusResponse response = (ServerModifyWorkerStatusResponse) receiveOne(duration("10 seconds"));
 
-            ServerModifyWorkerStatusResponse response = (ServerModifyWorkerStatusResponse) receiveOne(duration("10 seconds"));
+                Assert.assertTrue(response.getSuccess());
 
-            Assert.assertTrue(response.getSuccess());
-
-        }};
-        workerId = (int) workerService.getWorkerId(IPUtils.getIPV4Address(), registPort);
+            }
+        };
+        workerId = workerService.getWorkerId(IPUtils.getIPV4Address(), registPort);
 
         worker = workerService.getWorkerMapper().selectByPrimaryKey(workerId);
 
         Assert.assertEquals((int) worker.getStatus(), workerStatus);
 
     }
-
 
     @Test
     public void testWorkerRegister() throws SocketException, UnknownHostException {
@@ -104,43 +98,41 @@ public class TestWorkerActor {
         system = ActorSystem.create("worker", akkaConfig);
         String serverPath = "akka.tcp://server@" + serverHost + ":10000/user/server";
         ActorSelection serverActor = system.actorSelection(serverPath);
-        WorkerRegistryRequest workerRegistryRequest =
-                WorkerRegistryRequest.newBuilder().setKey(authKey).build();
+        WorkerRegistryRequest workerRegistryRequest = WorkerRegistryRequest.newBuilder().setKey(authKey).build();
 
-        new JavaTestKit(system) {{
+        new JavaTestKit(system) {
+            {
 
-            int flag = 0;
-            while (flag < 10) {
-                try {
-                    serverActor.tell(workerRegistryRequest, getRef());
+                int flag = 0;
+                while (flag < 10) {
+                    try {
+                        serverActor.tell(workerRegistryRequest, getRef());
 
-                    ServerRegistryResponse response
-                            = (ServerRegistryResponse) receiveOne(duration("3 seconds"));
-                    if (response.getSuccess()) {
+                        ServerRegistryResponse response = (ServerRegistryResponse) receiveOne(duration("3 seconds"));
+                        if (response.getSuccess()) {
+                            Assert.assertEquals(response.getSuccess(), true);
+                            break;
+                        }
                         Assert.assertEquals(response.getSuccess(), true);
-                        break;
+
+                    } catch (NullPointerException ex) {
+                        System.err.println("server not ready");
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                    Assert.assertEquals(response.getSuccess(), true);
 
-                } catch (NullPointerException ex) {
-                    System.err.println("server not ready");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                flag++;
-                try {
-                    Thread.currentThread().sleep(500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    flag++;
+                    try {
+                        Thread.currentThread().sleep(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
-        }};
-
+        };
 
         Assert.assertEquals(workerService.getWorkerId("192.168.21.82", registPort), 22);
     }
-
 
 }
 
@@ -150,10 +142,9 @@ class ServerProxy implements Runnable {
     public void run() {
         String[] s = new String[0];
         try {
-            new JarvisServer().main(s);
+            JarvisServer.main(s);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 }
-

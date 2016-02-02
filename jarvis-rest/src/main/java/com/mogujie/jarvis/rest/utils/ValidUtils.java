@@ -1,7 +1,5 @@
 package com.mogujie.jarvis.rest.utils;
 
-import java.util.Map;
-
 import com.google.common.base.Preconditions;
 import com.mogujie.jarvis.core.domain.AlarmStatus;
 import com.mogujie.jarvis.core.domain.AlarmType;
@@ -209,7 +207,6 @@ public class ValidUtils {
      * alarm查询检查
      */
     public static void checkAlarmQuery(AlarmQueryVo vo) {
-        String jobIds = vo.getJobIds();
     }
 
 }

@@ -10,7 +10,7 @@ package com.mogujie.jarvis.server.scheduler;
 
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Queue;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -19,6 +19,7 @@ import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.Seconds;
 
+import com.google.common.base.Throwables;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Queues;
 import com.google.common.util.concurrent.AtomicLongMap;
@@ -53,7 +54,7 @@ public enum TaskRetryScheduler {
     private Map<Pair<String, RetryType>, TaskDetail> taskMap = Maps.newConcurrentMap();
     private AtomicLongMap<String> taskFailedRetryCounter = AtomicLongMap.create();
     private int rejectInterval = ConfigUtils.getServerConfig().getInt(ServerConigKeys.TASK_REJECT_INTERVAL, 10);
-    private Queue<Tuple3<String, RetryType, DateTime>> tasks = Queues.newLinkedBlockingQueue(100);
+    private BlockingQueue<Tuple3<String, RetryType, DateTime>> tasks = Queues.newLinkedBlockingQueue(100);
     private JobSchedulerController schedulerController = JobSchedulerController.getInstance();
     private static final Logger LOGGER = LogManager.getLogger();
 
@@ -79,7 +80,11 @@ public enum TaskRetryScheduler {
             taskMap.putIfAbsent(new Pair<String, RetryType>(jobIdWithTaskId, retryType), taskDetail);
         }
 
-        tasks.add(new Tuple3<String, RetryType, DateTime>(jobIdWithTaskId, retryType, expiredDateTime));
+        try {
+            tasks.put(new Tuple3<String, RetryType, DateTime>(jobIdWithTaskId, retryType, expiredDateTime));
+        } catch (InterruptedException e) {
+            Throwables.propagate(e);
+        }
     }
 
     public void remove(String jobIdWithTaskId, RetryType retryType) {

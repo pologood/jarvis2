@@ -109,9 +109,15 @@ public class TimeScheduler extends Scheduler {
         long scheduleTime = event.getScheduleTime();
         Map<Long, List<Long>> dependTaskIdMap = event.getDependTaskIdMap();
         LOGGER.info("start handleAddPlanEvent, jobId={}, scheduleTime={}, dependTaskIdMap={}",
-                jobId, scheduleTime, dependTaskIdMap);
+                jobId, new DateTime(scheduleTime), dependTaskIdMap);
         TimePlanEntry entry = new TimePlanEntry(jobId, new DateTime(scheduleTime), dependTaskIdMap);
-        plan.addPlan(entry);
+        try {
+            if (!plan.addPlan(entry)) {
+                LOGGER.error("add plan {} failed.", entry);
+            }
+        } catch (Throwable e) {
+            LOGGER.error("add plan {} failed, {}", entry, e.getMessage());
+        }
     }
 
     private void submitJob(TimePlanEntry entry) {
