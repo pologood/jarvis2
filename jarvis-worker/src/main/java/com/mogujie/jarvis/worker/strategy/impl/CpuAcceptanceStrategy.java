@@ -8,13 +8,15 @@
 
 package com.mogujie.jarvis.worker.strategy.impl;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 
-import org.hyperic.sigar.CpuPerc;
-import org.hyperic.sigar.Sigar;
-import org.hyperic.sigar.SigarException;
-
+import com.google.common.io.Files;
+import com.mogujie.jarvis.core.domain.Pair;
 import com.mogujie.jarvis.core.util.ConfigUtils;
+import com.mogujie.jarvis.core.util.ThreadUtils;
 import com.mogujie.jarvis.worker.WorkerConfigKeys;
 import com.mogujie.jarvis.worker.strategy.AcceptanceResult;
 import com.mogujie.jarvis.worker.strategy.AcceptanceStrategy;
@@ -25,25 +27,35 @@ import com.mogujie.jarvis.worker.strategy.AcceptanceStrategy;
  */
 public class CpuAcceptanceStrategy implements AcceptanceStrategy {
 
-  private DecimalFormat decimalFormat = new DecimalFormat("#0.00");
-  public static final double MAX_CPU_USAGE = ConfigUtils.getWorkerConfig()
-      .getDouble(WorkerConfigKeys.WORKER_CPU_USAGE_THRESHOLD, 0.85);
+    private DecimalFormat decimalFormat = new DecimalFormat("#0.00");
+    public static final double MAX_CPU_USAGE = ConfigUtils.getWorkerConfig().getDouble(WorkerConfigKeys.WORKER_CPU_USAGE_THRESHOLD, 0.85);
 
-  @Override
-  public AcceptanceResult accept() throws Exception {
-    Sigar sigar = new Sigar();
-    try {
-      CpuPerc perc = sigar.getCpuPerc();
-      double currentCpuUsage = perc.getCombined();
-      if (currentCpuUsage > MAX_CPU_USAGE) {
-        return new AcceptanceResult(false,
-            "client当前CPU使用率" + decimalFormat.format(currentCpuUsage) + ", 超过阈值" + MAX_CPU_USAGE);
-      }
-    } catch (SigarException e) {
-      return new AcceptanceResult(false, e.getMessage());
+    @Override
+    public AcceptanceResult accept() throws Exception {
+        try {
+            Pair<Long, Long> pair1 = getCpuStat();
+            ThreadUtils.sleep(1000);
+            Pair<Long, Long> pair2 = getCpuStat();
+            double currentCpuUsage = ((pair2.getFirst() - pair2.getSecond()) - (pair1.getFirst() - pair1.getSecond()))
+                    / (double) (pair2.getFirst() - pair1.getFirst());
+            if (currentCpuUsage > MAX_CPU_USAGE) {
+                return new AcceptanceResult(false, "client当前CPU使用率" + decimalFormat.format(currentCpuUsage) + ", 超过阈值" + MAX_CPU_USAGE);
+            }
+        } catch (Exception e) {
+            return new AcceptanceResult(false, e.getMessage());
+        }
+
+        return new AcceptanceResult(true, "");
     }
 
-    return new AcceptanceResult(true, "");
-  }
-
+    private Pair<Long, Long> getCpuStat() throws IOException {
+        String line = Files.readFirstLine(new File("/proc/stat"), StandardCharsets.UTF_8);
+        String[] tokens = line.split("\\s+");
+        long idleCpuTime = Long.parseLong(tokens[4]);
+        long totalCpuTime = 0;
+        for (int i = 1, len = tokens.length; i < len; i++) {
+            totalCpuTime += Long.parseLong(tokens[i]);
+        }
+        return new Pair<Long, Long>(totalCpuTime, idleCpuTime);
+    }
 }
