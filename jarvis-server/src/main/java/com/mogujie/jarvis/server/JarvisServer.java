@@ -79,6 +79,7 @@ public class JarvisServer {
             int serverActorNum = config.getInt(ServerConigKeys.SERVER_ACTOR_NUM, 500);
             system.actorOf(ServerActor.props().withRouter(new RoundRobinPool(serverActorNum)), JarvisConstants.SERVER_AKKA_SYSTEM_NAME);
 
+            LOGGER.info("start dispatcher...");
             int taskDispatcherThreads = config.getInt(ServerConigKeys.SERVER_DISPATCHER_THREADS, 5);
             ExecutorService executorService = Executors.newFixedThreadPool(taskDispatcherThreads);
             for (int i = 0; i < taskDispatcherThreads; i++) {
@@ -88,6 +89,7 @@ public class JarvisServer {
             }
             executorService.shutdown();
 
+            LOGGER.info("start TaskRetryScheduler...");
             TaskRetryScheduler taskRetryScheduler = TaskRetryScheduler.INSTANCE;
             taskRetryScheduler.start();
 
@@ -102,7 +104,9 @@ public class JarvisServer {
     }
 
     public static void init() throws Exception {
+        LOGGER.info("start init Scheduler...");
         initScheduler();
+        LOGGER.info("start init TimerTask...");
         initTimerTask();
     }
 
