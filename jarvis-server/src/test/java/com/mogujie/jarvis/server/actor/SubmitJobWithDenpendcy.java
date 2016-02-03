@@ -41,6 +41,9 @@ public class SubmitJobWithDenpendcy {
      * @param args
      */
     public static void main(String[] args) {
+        Thread threadA;
+        Thread threadB;
+        Thread threadC;
         TaskService taskService = Injectors4Test.getInjector().getInstance(TaskService.class);
         JobService jobService = Injectors4Test.getInjector().getInstance(JobService.class);
         AppAuth appAuth = AppAuth.newBuilder().setToken("11111").setName("jarvis-web").build();
@@ -54,7 +57,11 @@ public class SubmitJobWithDenpendcy {
         long jobA = submitJobWithDenpendcy.submitJob(serverActor, 1, appAuth, "hive", "show databases;", now, false, 0L, 0L);
         long jobB = submitJobWithDenpendcy.submitJob(serverActor, 1, appAuth, "shell", "ls;", now, false, 0L, 0L);
         long jobC = submitJobWithDenpendcy.submitJob(serverActor, 3, appAuth, "hive", "show databases;", now, true, jobA, jobB);
+        threadA = new Thread(new CheckService(now, jobA, taskService, jobService, false));
 
+        synchronized (now) {
+
+        }
 
     }
 
@@ -125,18 +132,14 @@ public class SubmitJobWithDenpendcy {
 
     static class CheckService implements Runnable {
         DateTime now;
-        long jobA;
-        long jobB;
-        long jobC;
+        long job;
         TaskService taskService;
         JobService jobService;
         boolean isLastOne;
 
-        public CheckService(DateTime now, long jobA, long jobB, long jobC, TaskService taskService, JobService jobService, boolean isLastOne) {
+        public CheckService(DateTime now, long job, TaskService taskService, JobService jobService, boolean isLastOne) {
             this.now = now;
-            this.jobA = jobA;
-            this.jobB = jobB;
-            this.jobC = jobC;
+            this.job = job;
             this.taskService = taskService;
             this.jobService = jobService;
             this.isLastOne = isLastOne;
@@ -145,6 +148,7 @@ public class SubmitJobWithDenpendcy {
         @Override
         public void run() {
             while (true) {
+//            taskService.get();
 
             }
 

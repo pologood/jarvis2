@@ -58,7 +58,7 @@ public class TestWorkerActor {
 
     @Test
     public void testModifyWorkerStatus() throws SocketException, UnknownHostException {
-        int workerId = workerService.getWorkerId(IPUtils.getIPV4Address(), 10010);
+        int workerId = workerService.getWorkerId(IPUtils.getIPV4Address(), registPort);
         Worker worker = workerService.getWorkerMapper().selectByPrimaryKey(workerId);
 
         int workerStatus = 1;
@@ -83,7 +83,7 @@ public class TestWorkerActor {
 
             }
         };
-        workerId = workerService.getWorkerId(IPUtils.getIPV4Address(), 10010);
+        workerId = workerService.getWorkerId(IPUtils.getIPV4Address(), registPort);
 
         worker = workerService.getWorkerMapper().selectByPrimaryKey(workerId);
 
@@ -130,7 +130,7 @@ public class TestWorkerActor {
             }
         };
 
-        Assert.assertEquals(workerService.getWorkerId("192.168.21.82", registPort), 28);
+        Assert.assertEquals(workerService.getWorkerId("192.168.21.82", registPort), 26);
     }
 
 }
