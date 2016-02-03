@@ -286,7 +286,7 @@ public class TestJobActor extends DBTestBased {
                 .build();
 
         try {
-            response = (ServerQueryJobRelationResponse) FutureUtils.awaitResult(serverActor, request, 15);
+            response = (ServerQueryJobRelationResponse) FutureUtils.awaitResult(serverActor, request, 20);
         } catch (Exception e) {
             e.printStackTrace();
         }

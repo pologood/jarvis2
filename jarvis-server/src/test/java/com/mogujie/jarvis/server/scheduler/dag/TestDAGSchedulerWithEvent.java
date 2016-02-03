@@ -75,7 +75,7 @@ public class TestDAGSchedulerWithEvent extends TestSchedulerBase {
     public void testRunTimeSchedule2() throws Exception {
         jobGraph.addJob(jobAId, new DAGJob(jobAId, DAGJobType.TIME), null);
         jobGraph.addJob(jobBId, new DAGJob(jobBId, DAGJobType.DEPEND), Sets.newHashSet(jobAId));
-        jobGraph.addJob(jobCId, new DAGJob(jobBId, DAGJobType.DEPEND), Sets.newHashSet(jobAId));
+        jobGraph.addJob(jobCId, new DAGJob(jobCId, DAGJobType.DEPEND), Sets.newHashSet(jobAId));
         Assert.assertEquals(2, jobGraph.getChildren(jobAId).size());
         Assert.assertEquals(1, jobGraph.getParents(jobBId).size());
         Assert.assertEquals(1, jobGraph.getParents(jobCId).size());
