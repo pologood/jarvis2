@@ -14,6 +14,7 @@ package com.mogujie.jarvis.rest.vo;
  */
 public class TaskResultVo extends  AbstractVo{
     private long taskId;
+    private int status;
 
     public long getTaskId() {
         return taskId;
@@ -21,5 +22,13 @@ public class TaskResultVo extends  AbstractVo{
 
     public void setTaskId(long taskId) {
         this.taskId = taskId;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

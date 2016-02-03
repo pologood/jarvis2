@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -31,15 +32,17 @@ import com.mogujie.jarvis.protocol.ModifyTaskStatusProtos.ServerModifyTaskStatus
 import com.mogujie.jarvis.protocol.QueryTaskRelationProtos.RestServerQueryTaskRelationRequest;
 import com.mogujie.jarvis.protocol.QueryTaskRelationProtos.ServerQueryTaskRelationResponse;
 import com.mogujie.jarvis.protocol.QueryTaskRelationProtos.TaskMapEntry;
-import com.mogujie.jarvis.protocol.RetryTaskProtos.RestServerRetryTaskRequest;
-import com.mogujie.jarvis.protocol.RetryTaskProtos.ServerRetryTaskResponse;
+import com.mogujie.jarvis.protocol.QueryTaskStatusProtos.RestServerQueryTaskStatusRequest;
+import com.mogujie.jarvis.protocol.QueryTaskStatusProtos.ServerQueryTaskStatusResponse;
 import com.mogujie.jarvis.protocol.RemoveTaskProtos.RestServerRemoveTaskRequest;
 import com.mogujie.jarvis.protocol.RemoveTaskProtos.ServerRemoveTaskResponse;
-
+import com.mogujie.jarvis.protocol.RetryTaskProtos.RestServerRetryTaskRequest;
+import com.mogujie.jarvis.protocol.RetryTaskProtos.ServerRetryTaskResponse;
 import com.mogujie.jarvis.rest.RestResult;
 import com.mogujie.jarvis.rest.utils.JsonParameters;
-import com.mogujie.jarvis.rest.vo.TaskRerunVo;
 import com.mogujie.jarvis.rest.vo.TaskRelationsVo;
+import com.mogujie.jarvis.rest.vo.TaskRerunVo;
+import com.mogujie.jarvis.rest.vo.TaskResultVo;
 
 /**
  * @author guangming
@@ -192,7 +195,39 @@ public class TaskController extends AbstractController {
     }
 
     /**
-     * 查找Job关系
+     * 查询task的状态
+     */
+    @GET
+    @Path("query/status")
+    @Produces(MediaType.APPLICATION_JSON)
+    public RestResult queryStatus(@FormParam("user") String user, @FormParam("appToken") String appToken, @FormParam("appName") String appName,
+            @FormParam("parameters") String parameters) {
+        try {
+            AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
+
+            JsonParameters para = new JsonParameters(parameters);
+            long taskId = para.getLongNotNull("taskId");
+
+            RestServerQueryTaskStatusRequest request = RestServerQueryTaskStatusRequest.newBuilder()
+                    .setAppAuth(appAuth).setTaskId(taskId).build();
+
+            ServerQueryTaskStatusResponse response = (ServerQueryTaskStatusResponse) callActor(AkkaType.SERVER, request);
+            if (response.getSuccess()) {
+                TaskResultVo vo = new TaskResultVo();
+                vo.setTaskId(taskId);
+                vo.setStatus(response.getStatus());
+                return successResult(vo);
+            } else {
+                return errorResult(response.getMessage());
+            }
+        } catch (Exception e) {
+            LOGGER.error("", e);
+            return errorResult(e);
+        }
+    }
+
+    /**
+     * 查找task的依赖关系
      */
     @POST
     @Path("queryRelation")
