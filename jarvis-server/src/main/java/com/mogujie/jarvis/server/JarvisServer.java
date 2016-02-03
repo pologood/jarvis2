@@ -53,6 +53,7 @@ import com.mogujie.jarvis.server.scheduler.dag.DAGJob;
 import com.mogujie.jarvis.server.scheduler.dag.DAGJobType;
 import com.mogujie.jarvis.server.scheduler.dag.DAGScheduler;
 import com.mogujie.jarvis.server.scheduler.dag.JobGraph;
+import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
 import com.mogujie.jarvis.server.scheduler.event.RetryTaskEvent;
 import com.mogujie.jarvis.server.scheduler.event.StartEvent;
 import com.mogujie.jarvis.server.scheduler.task.DAGTask;
@@ -224,8 +225,26 @@ public class JarvisServer {
         }
         // 4.3 重试waiting和ready的task
         List<Task> readyTasks = taskService.getTasksByStatus(Lists.newArrayList(TaskStatus.WAITING.getValue(), TaskStatus.READY.getValue()));
+        DateTime now = DateTime.now();
         for (Task task : readyTasks) {
-            controller.notify(new RetryTaskEvent(task.getJobId(), task.getTaskId()));
+            long jobId = task.getJobId();
+            JobEntry jobEntry = jobService.get(jobId);
+            if (jobEntry != null) {
+                Job job = jobEntry.getJob();
+                int expiredTime = job.getExpiredTime();
+                DateTime scheduleTime = new DateTime(task.getScheduleTime());
+                DateTime expiredDateTime = scheduleTime.plusSeconds(expiredTime);
+                // 如果该任务没有过期，进行重试
+                if (expiredDateTime.isAfter(now)) {
+                    controller.notify(new RetryTaskEvent(jobId, task.getTaskId()));
+                } else {
+                    //如果该任务已过期，置为失败
+                    LOGGER.warn("{} is expired.", task.getTaskId());
+                    controller.notify(new FailedEvent(jobId, task.getTaskId(), "task expired"));
+                }
+            } else {
+                LOGGER.warn("job {} is not existed.", jobId);
+            }
         }
     }
 
