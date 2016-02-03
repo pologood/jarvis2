@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.Map;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTime.Property;
 import org.junit.Test;
 
 import com.google.common.collect.Maps;
@@ -22,16 +23,7 @@ import com.mogujie.jarvis.core.expression.TimeOffsetExpression;
 import com.mogujie.jarvis.server.scheduler.TestSchedulerBase;
 import com.mogujie.jarvis.server.scheduler.dag.DAGJob;
 import com.mogujie.jarvis.server.scheduler.dag.DAGJobType;
-import com.mogujie.jarvis.server.scheduler.dag.checker.DAGDependChecker;
-import com.mogujie.jarvis.server.scheduler.dag.checker.JobDependStatus;
-import com.mogujie.jarvis.server.service.JobService;
-import org.joda.time.DateTime;
-import org.joda.time.DateTime.Property;
-import org.junit.Test;
 
-import java.util.Map;
-
-import static org.junit.Assert.*;
 
 /**
  * Location www.mogujie.com
