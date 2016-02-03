@@ -135,7 +135,7 @@ public class JobController extends AbstractController {
             Preconditions.checkArgument(jobVo.getDependencyList() != null && jobVo.getDependencyList().size() > 0, "任务依赖为空");
 
             for (JobDependencyVo.DependencyEntry entryInput : jobVo.getDependencyList()) {
-                builder.addDependencyEntry(ValidUtils.ConvertDependencyEntry(entryInput));
+                builder.addDependencyEntry(ValidUtils.convertDependencyEntry(entryInput));
             }
 
             // 发送请求到server
@@ -174,7 +174,7 @@ public class JobController extends AbstractController {
 
             if (jobVo.getScheduleExpressionList() != null && jobVo.getScheduleExpressionList().size() > 0) {
                 for (JobScheduleExpVo.ScheduleExpressionEntry entryInput : jobVo.getScheduleExpressionList()) {
-                    builder.addExpressionEntry(ValidUtils.ConvertScheduleExpressionEntry(entryInput));
+                    builder.addExpressionEntry(ValidUtils.convertScheduleExpressionEntry(entryInput));
                 }
             }
 
@@ -285,12 +285,12 @@ public class JobController extends AbstractController {
 
         if (vo.getScheduleExpressionList() != null && vo.getScheduleExpressionList().size() > 0) {
             for (JobScheduleExpVo.ScheduleExpressionEntry entryInput : vo.getScheduleExpressionList()) {
-                builder.addExpressionEntry(ValidUtils.ConvertScheduleExpressionEntry(entryInput));
+                builder.addExpressionEntry(ValidUtils.convertScheduleExpressionEntry(entryInput));
             }
         }
         if (vo.getDependencyList() != null && vo.getDependencyList().size() > 0) {
             for (JobDependencyVo.DependencyEntry entryInput : vo.getDependencyList()) {
-                builder.addDependencyEntry(ValidUtils.ConvertDependencyEntry(entryInput));
+                builder.addDependencyEntry(ValidUtils.convertDependencyEntry(entryInput));
             }
         }
         return builder.build();

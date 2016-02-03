@@ -93,12 +93,12 @@ public class ValidUtils {
     /**
      * 计划表达式-转换
      */
-    public static ScheduleExpressionEntry ConvertScheduleExpressionEntry(JobScheduleExpVo.ScheduleExpressionEntry input) {
+    public static ScheduleExpressionEntry convertScheduleExpressionEntry(JobScheduleExpVo.ScheduleExpressionEntry input) {
 
         Integer mode = input.getOperatorMode();
         Preconditions.checkArgument(mode != null && OperationMode.isValid(mode), "操作模式不对");
 
-        Long expressionId = input.getExpressionId() == null ? 0 : input.getExpressionId();
+        long expressionId = input.getExpressionId() == null ? 0 : input.getExpressionId();
         if (mode == OperationMode.EDIT.getValue() || mode == OperationMode.DELETE.getValue()) {
             Preconditions.checkArgument(expressionId != 0, "删除与编辑模式下,计划表达式ID不能为空");
         }
@@ -118,7 +118,7 @@ public class ValidUtils {
     /**
      * 依赖-转换
      */
-    public static DependencyEntry ConvertDependencyEntry(JobDependencyVo.DependencyEntry input) {
+    public static DependencyEntry convertDependencyEntry(JobDependencyVo.DependencyEntry input) {
         Integer mode = input.getOperatorMode();
         Preconditions.checkArgument(mode != null && OperationMode.isValid(mode), "操作模式不对.value:" + input.getOperatorMode());
 

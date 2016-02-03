@@ -8,10 +8,9 @@ import java.util.List;
  * @author muming
  */
 
+public class AppWorkerGroupVo extends AbstractVo {
 
-public class AppWorkerGroupVo extends AbstractVo{
-
-    public class AppWorkerGroupEntry {
+    public static class AppWorkerGroupEntry {
         private Integer appId;
         private Integer workerGroupId;
 
