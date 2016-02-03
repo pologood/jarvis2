@@ -46,6 +46,7 @@ import com.mogujie.jarvis.server.scheduler.event.RunningEvent;
 import com.mogujie.jarvis.server.scheduler.event.SuccessEvent;
 import com.mogujie.jarvis.server.scheduler.event.UnhandleEvent;
 import com.mogujie.jarvis.server.service.JobService;
+import com.mogujie.jarvis.server.service.TaskHistoryService;
 import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.service.WorkerService;
 
@@ -57,6 +58,7 @@ import com.mogujie.jarvis.server.service.WorkerService;
  */
 public class TaskMetricsActor extends UntypedActor {
     private TaskService taskService = Injectors.getInjector().getInstance(TaskService.class);
+    private TaskHistoryService taskHistoryService = Injectors.getInjector().getInstance(TaskHistoryService.class);
     private WorkerService workerService = Injectors.getInjector().getInstance(WorkerService.class);
     private JobService jobService = Injectors.getInjector().getInstance(JobService.class);
 
@@ -125,9 +127,11 @@ public class TaskMetricsActor extends UntypedActor {
             WorkerReportTaskProgressRequest msg = (WorkerReportTaskProgressRequest) obj;
             String fullId = msg.getFullId();
             long taskId = IdUtils.parse(fullId, IdType.TASK_ID);
+            int attemptId = (int)IdUtils.parse(fullId, IdType.ATTEMPT_ID);
             float progress = msg.getProgress();
             LOGGER.info("receive WorkerReportTaskProgressRequest [taskId={},progress={}]", taskId, progress);
             taskService.updateProgress(taskId, progress);
+            taskHistoryService.updateProgress(taskId, attemptId, progress);
         } else if (obj instanceof WorkerReportTaskContentRequest) {
             WorkerReportTaskContentRequest msg = (WorkerReportTaskContentRequest) obj;
             String fullId = msg.getFullId();

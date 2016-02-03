@@ -10,6 +10,8 @@ package com.mogujie.jarvis.server.service;
 
 import java.util.List;
 
+import org.joda.time.DateTime;
+
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -42,6 +44,18 @@ public class TaskHistoryService {
 
     public void insertSelective(TaskHistory record) {
         taskHistoryMapper.insertSelective(record);
+    }
+
+    public void updateProgress(long taskId, int attemptId, float progress) {
+        TaskHistoryKey key = new TaskHistoryKey();
+        key.setTaskId(taskId);
+        key.setAttemptId(attemptId);
+        TaskHistory record = taskHistoryMapper.selectByPrimaryKey(key);
+        if (record != null) {
+            record.setProgress(progress);
+            record.setUpdateTime(DateTime.now().toDate());
+            taskHistoryMapper.updateByPrimaryKey(record);
+        }
     }
 
     public void deleteByTaskId(long taskId) {
