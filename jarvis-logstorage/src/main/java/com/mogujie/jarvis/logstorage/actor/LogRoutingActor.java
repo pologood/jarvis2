@@ -1,20 +1,19 @@
 package com.mogujie.jarvis.logstorage.actor;
 
-import akka.actor.ActorRef;
-import akka.actor.Props;
-import akka.actor.UntypedActor;
-import com.mogujie.jarvis.core.domain.IdType;
-import com.mogujie.jarvis.core.util.IdUtils;
-import com.mogujie.jarvis.protocol.LogProtos.RestReadLogRequest;
-import com.mogujie.jarvis.protocol.LogProtos.WorkerWriteLogRequest;
-import com.mogujie.jarvis.protocol.LogProtos.LogStorageWriteLogResponse;
-import com.mogujie.jarvis.protocol.LogProtos.LogStorageReadLogResponse;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.mogujie.jarvis.protocol.LogProtos.LogStorageReadLogResponse;
+import com.mogujie.jarvis.protocol.LogProtos.LogStorageWriteLogResponse;
+import com.mogujie.jarvis.protocol.LogProtos.RestReadLogRequest;
+import com.mogujie.jarvis.protocol.LogProtos.WorkerWriteLogRequest;
 
-import java.util.ArrayList;
-import java.util.List;
+import akka.actor.ActorRef;
+import akka.actor.Props;
+import akka.actor.UntypedActor;
 
 /**
  * @author wuya
@@ -49,8 +48,9 @@ public class LogRoutingActor extends UntypedActor {
 
     private void writeLog(WorkerWriteLogRequest request) {
         try {
-            long taskId = IdUtils.parse(request.getFullId(), IdType.TASK_ID);
-            writerActors.get((int) taskId % size).forward(request, getContext());
+            String fullId = request.getFullId();
+            int hashcode = fullId.hashCode();
+            writerActors.get((hashcode == Integer.MIN_VALUE ? 0 : Math.abs(hashcode)) % size).forward(request, getContext());
         } catch (Exception e) {
             LogStorageWriteLogResponse response = LogStorageWriteLogResponse.newBuilder().setSuccess(false)
                     .setMessage(e.getMessage() != null ? e.getMessage() : e.toString()).build();
