@@ -205,6 +205,13 @@ public class TaskScheduler extends Scheduler {
         LOGGER.info("start handleAddTaskEvent, jobId={}, scheduleTime={}", jobId, scheduleTime);
         Map<Long, List<Long>> dependTaskIdMap = e.getDependTaskIdMap();
 
+        //去重
+        Task oldTask = taskService.getTaskByJobIdAndScheduleTime(jobId, scheduleTime);
+        if (oldTask != null) {
+            LOGGER.warn("jobId={}, scheduleTime={} has existed in Task table.", jobId, new DateTime(scheduleTime));
+            return;
+        }
+
         // create new task
         long taskId = taskService.createTaskByJobId(jobId, scheduleTime, scheduleTime, TaskType.SCHEDULE);
         LOGGER.info("add new task[{}] to DB", taskId);
