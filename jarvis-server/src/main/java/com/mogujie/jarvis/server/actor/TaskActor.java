@@ -357,8 +357,8 @@ public class TaskActor extends UntypedActor {
             } else {
                 LOGGER.error("task {} is not existed!", taskId);
                 response = ServerQueryTaskStatusResponse.newBuilder().setSuccess(false).setMessage("task " + taskId + " is not existed!").build();
-                getSender().tell(response, getSelf());
             }
+            getSender().tell(response, getSelf());
         } catch (Exception e) {
             response = ServerQueryTaskStatusResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
             getSender().tell(response, getSelf());
