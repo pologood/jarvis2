@@ -17,6 +17,11 @@ import org.apache.commons.configuration.Configuration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import akka.actor.ActorRef;
+import akka.actor.Props;
+import akka.actor.UntypedActor;
+import akka.routing.SmallestMailboxPool;
+
 import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -33,11 +38,6 @@ import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.service.AppService;
 import com.mogujie.jarvis.server.util.AppTokenUtils;
-
-import akka.actor.ActorRef;
-import akka.actor.Props;
-import akka.actor.UntypedActor;
-import akka.routing.SmallestMailboxPool;
 
 public class ServerActor extends UntypedActor {
 
@@ -125,6 +125,7 @@ public class ServerActor extends UntypedActor {
 
         Pair<ActorRef, ActorEntry> pair = map.get(clazz);
         if (pair == null) {
+            LOGGER.warn("couldn't found handle actor for {}", clazz.getSimpleName());
             unhandled(obj);
             return;
         }
@@ -156,6 +157,7 @@ public class ServerActor extends UntypedActor {
             getSender().tell(msg, getSelf());
             return;
         }
+        LOGGER.info("forward message of {} from ServerActor to {}", clazz.getSimpleName(), pair.getFirst().getClass().getSimpleName());
         pair.getFirst().forward(obj, getContext());
     }
 
