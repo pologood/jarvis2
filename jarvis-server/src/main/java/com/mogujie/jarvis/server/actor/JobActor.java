@@ -117,14 +117,19 @@ public class JobActor extends UntypedActor {
         try {
             if (obj instanceof RestSubmitJobRequest) {
                 submitJob((RestSubmitJobRequest) obj);
+                updatePlan();
             } else if (obj instanceof RestModifyJobRequest) {
                 modifyJob((RestModifyJobRequest) obj);
+                updatePlan();
             } else if (obj instanceof RestModifyJobDependRequest) {
                 modifyJobDependency((RestModifyJobDependRequest) obj);
+                updatePlan();
             } else if (obj instanceof RestModifyJobScheduleExpRequest) {
                 modifyJobScheduleExp((RestModifyJobScheduleExpRequest) obj);
+                updatePlan();
             } else if (obj instanceof RestModifyJobStatusRequest) {
                 modifyJobStatus((RestModifyJobStatusRequest) obj);
+                updatePlan();
             } else if (obj instanceof RestQueryJobRelationRequest) {
                 RestQueryJobRelationRequest msg = (RestQueryJobRelationRequest) obj;
                 queryJobRelation(msg);
@@ -136,12 +141,6 @@ public class JobActor extends UntypedActor {
             } else {
                 unhandled(obj);
             }
-
-            //对job的任何成功操作都会刷新执行计划
-            PlanService planService = Injectors.getInjector().getInstance(PlanService.class);
-            DateTime now = DateTime.now();
-            Range<DateTime> range = Range.closedOpen(now.withTimeAtStartOfDay(), now.plusDays(1).withTimeAtStartOfDay());
-            planService.updateJobIds(range);
         } catch (Exception e) {
             throw e;
         }
@@ -612,5 +611,12 @@ public class JobActor extends UntypedActor {
         // scheduler remove job
         plan.removeJob(jobId);
         jobGraph.removeJob(jobId);
+    }
+
+    private void updatePlan() {
+        PlanService planService = Injectors.getInjector().getInstance(PlanService.class);
+        DateTime now = DateTime.now();
+        Range<DateTime> range = Range.closedOpen(now.withTimeAtStartOfDay(), now.plusDays(1).withTimeAtStartOfDay());
+        planService.updateJobIds(range);
     }
 }
