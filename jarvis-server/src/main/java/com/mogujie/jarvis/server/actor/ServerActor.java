@@ -63,17 +63,17 @@ public class ServerActor extends UntypedActor {
         actorRefs.add(new Pair<ActorRef, List<ActorEntry>>(getContext().actorOf(TaskMetricsRoutingActor.props(taskMetricsRoutingActorNum)),
                 TaskMetricsRoutingActor.handledMessages()));
 
-        int taskActorNum = serverConfig.getInt(ServerConigKeys.TASK_ACTOR_NUM, 10);
+        int taskActorNum = serverConfig.getInt(ServerConigKeys.TASK_ACTOR_NUM, 20);
         addActor(getContext().actorOf(TaskActor.props().withRouter(new RoundRobinPool(taskActorNum))), TaskActor.handledMessages());
-        addActor(getContext().actorOf(AppActor.props().withRouter(new RoundRobinPool(10))), AppActor.handledMessages());
-        addActor(getContext().actorOf(JobActor.props().withRouter(new RoundRobinPool(10))), JobActor.handledMessages());
-        addActor(getContext().actorOf(HeartBeatActor.props().withRouter(new RoundRobinPool(10))), HeartBeatActor.handledMessages());
-        addActor(getContext().actorOf(WorkerGroupActor.props().withRouter(new RoundRobinPool(10))), WorkerGroupActor.handledMessages());
-        addActor(getContext().actorOf(WorkerModifyStatusActor.props().withRouter(new RoundRobinPool(10))), WorkerModifyStatusActor.handledMessages());
-        addActor(getContext().actorOf(WorkerRegistryActor.props().withRouter(new RoundRobinPool(10))), WorkerRegistryActor.handledMessages());
-        addActor(getContext().actorOf(SystemActor.props().withRouter(new RoundRobinPool(10))), SystemActor.handledMessages());
-        addActor(getContext().actorOf(AlarmActor.props().withRouter(new RoundRobinPool(10))), AlarmActor.handledMessages());
-        addActor(getContext().actorOf(BizGroupActor.props().withRouter(new RoundRobinPool(10))), BizGroupActor.handledMessages());
+        addActor(getContext().actorOf(AppActor.props().withRouter(new RoundRobinPool(20))), AppActor.handledMessages());
+        addActor(getContext().actorOf(JobActor.props().withRouter(new RoundRobinPool(20))), JobActor.handledMessages());
+        addActor(getContext().actorOf(HeartBeatActor.props().withRouter(new RoundRobinPool(20))), HeartBeatActor.handledMessages());
+        addActor(getContext().actorOf(WorkerGroupActor.props().withRouter(new RoundRobinPool(20))), WorkerGroupActor.handledMessages());
+        addActor(getContext().actorOf(WorkerModifyStatusActor.props().withRouter(new RoundRobinPool(20))), WorkerModifyStatusActor.handledMessages());
+        addActor(getContext().actorOf(WorkerRegistryActor.props().withRouter(new RoundRobinPool(20))), WorkerRegistryActor.handledMessages());
+        addActor(getContext().actorOf(SystemActor.props().withRouter(new RoundRobinPool(20))), SystemActor.handledMessages());
+        addActor(getContext().actorOf(AlarmActor.props().withRouter(new RoundRobinPool(20))), AlarmActor.handledMessages());
+        addActor(getContext().actorOf(BizGroupActor.props().withRouter(new RoundRobinPool(20))), BizGroupActor.handledMessages());
     }
 
     private Object generateResponse(Class<? extends GeneratedMessage> clazz, boolean success, String msg) {
