@@ -17,11 +17,6 @@ import org.apache.commons.configuration.Configuration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import akka.actor.ActorRef;
-import akka.actor.Props;
-import akka.actor.UntypedActor;
-import akka.routing.SmallestMailboxPool;
-
 import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -38,6 +33,11 @@ import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.service.AppService;
 import com.mogujie.jarvis.server.util.AppTokenUtils;
+
+import akka.actor.ActorRef;
+import akka.actor.Props;
+import akka.actor.UntypedActor;
+import akka.routing.RoundRobinPool;
 
 public class ServerActor extends UntypedActor {
 
@@ -64,16 +64,16 @@ public class ServerActor extends UntypedActor {
                 TaskMetricsRoutingActor.handledMessages()));
 
         int taskActorNum = serverConfig.getInt(ServerConigKeys.TASK_ACTOR_NUM, 10);
-        addActor(getContext().actorOf(TaskActor.props().withRouter(new SmallestMailboxPool(taskActorNum))), TaskActor.handledMessages());
-        addActor(getContext().actorOf(AppActor.props()), AppActor.handledMessages());
-        addActor(getContext().actorOf(JobActor.props()), JobActor.handledMessages());
-        addActor(getContext().actorOf(HeartBeatActor.props()), HeartBeatActor.handledMessages());
-        addActor(getContext().actorOf(WorkerGroupActor.props()), WorkerGroupActor.handledMessages());
-        addActor(getContext().actorOf(WorkerModifyStatusActor.props()), WorkerModifyStatusActor.handledMessages());
-        addActor(getContext().actorOf(WorkerRegistryActor.props()), WorkerRegistryActor.handledMessages());
-        addActor(getContext().actorOf(SystemActor.props()), SystemActor.handledMessages());
-        addActor(getContext().actorOf(AlarmActor.props()), AlarmActor.handledMessages());
-        addActor(getContext().actorOf(BizGroupActor.props()), BizGroupActor.handledMessages());
+        addActor(getContext().actorOf(TaskActor.props().withRouter(new RoundRobinPool(taskActorNum))), TaskActor.handledMessages());
+        addActor(getContext().actorOf(AppActor.props().withRouter(new RoundRobinPool(10))), AppActor.handledMessages());
+        addActor(getContext().actorOf(JobActor.props().withRouter(new RoundRobinPool(10))), JobActor.handledMessages());
+        addActor(getContext().actorOf(HeartBeatActor.props().withRouter(new RoundRobinPool(10))), HeartBeatActor.handledMessages());
+        addActor(getContext().actorOf(WorkerGroupActor.props().withRouter(new RoundRobinPool(10))), WorkerGroupActor.handledMessages());
+        addActor(getContext().actorOf(WorkerModifyStatusActor.props().withRouter(new RoundRobinPool(10))), WorkerModifyStatusActor.handledMessages());
+        addActor(getContext().actorOf(WorkerRegistryActor.props().withRouter(new RoundRobinPool(10))), WorkerRegistryActor.handledMessages());
+        addActor(getContext().actorOf(SystemActor.props().withRouter(new RoundRobinPool(10))), SystemActor.handledMessages());
+        addActor(getContext().actorOf(AlarmActor.props().withRouter(new RoundRobinPool(10))), AlarmActor.handledMessages());
+        addActor(getContext().actorOf(BizGroupActor.props().withRouter(new RoundRobinPool(10))), BizGroupActor.handledMessages());
     }
 
     private Object generateResponse(Class<? extends GeneratedMessage> clazz, boolean success, String msg) {
