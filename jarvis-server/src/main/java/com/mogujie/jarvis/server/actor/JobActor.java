@@ -443,6 +443,7 @@ public class JobActor extends UntypedActor {
     private void queryJobRelation(RestQueryJobRelationRequest msg) throws Exception {
         ServerQueryJobRelationResponse response;
         try {
+            LOGGER.info("start queryJobRelation");
             long jobId = msg.getJobId();
             ServerQueryJobRelationResponse.Builder builder = ServerQueryJobRelationResponse.newBuilder();
             List<Pair<Long, JobStatus>> relations;

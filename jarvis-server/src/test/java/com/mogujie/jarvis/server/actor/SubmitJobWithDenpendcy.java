@@ -3,12 +3,11 @@ package com.mogujie.jarvis.server.actor;
 import akka.actor.ActorSelection;
 import akka.actor.ActorSystem;
 import com.google.common.collect.Lists;
-import com.mogujie.jarvis.core.domain.CommonStrategy;
-import com.mogujie.jarvis.core.domain.JobPriority;
-import com.mogujie.jarvis.core.domain.JobStatus;
-import com.mogujie.jarvis.core.domain.OperationMode;
+import com.google.common.collect.Range;
+import com.mogujie.jarvis.core.domain.*;
 import com.mogujie.jarvis.core.expression.ScheduleExpressionType;
 import com.mogujie.jarvis.core.util.ConfigUtils;
+import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
 import com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry;
 import com.mogujie.jarvis.protocol.JobProtos.RestSubmitJobRequest;
@@ -23,6 +22,9 @@ import com.typesafe.config.Config;
 import org.joda.time.DateTime;
 
 import java.util.List;
+
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
 
 /**
  * Location www.mogujie.com
@@ -41,9 +43,8 @@ public class SubmitJobWithDenpendcy {
      * @param args
      */
     public static void main(String[] args) {
-        Thread threadA;
-        Thread threadB;
-        Thread threadC;
+        Thread threadCheck;
+
         TaskService taskService = Injectors4Test.getInjector().getInstance(TaskService.class);
         JobService jobService = Injectors4Test.getInjector().getInstance(JobService.class);
         AppAuth appAuth = AppAuth.newBuilder().setToken("11111").setName("jarvis-web").build();
@@ -57,11 +58,8 @@ public class SubmitJobWithDenpendcy {
         long jobA = submitJobWithDenpendcy.submitJob(serverActor, 1, appAuth, "hive", "show databases;", now, false, 0L, 0L);
         long jobB = submitJobWithDenpendcy.submitJob(serverActor, 1, appAuth, "shell", "ls;", now, false, 0L, 0L);
         long jobC = submitJobWithDenpendcy.submitJob(serverActor, 3, appAuth, "hive", "show databases;", now, true, jobA, jobB);
-        threadA = new Thread(new CheckService(now, jobA, taskService, jobService, false));
-
-        synchronized (now) {
-
-        }
+        threadCheck = new Thread(new CheckService(now, jobC, taskService, jobService, false));
+        threadCheck.start();
 
     }
 
@@ -132,14 +130,15 @@ public class SubmitJobWithDenpendcy {
 
     static class CheckService implements Runnable {
         DateTime now;
-        long job;
+        long jobId;
         TaskService taskService;
         JobService jobService;
         boolean isLastOne;
+        int flag = 0;
 
         public CheckService(DateTime now, long job, TaskService taskService, JobService jobService, boolean isLastOne) {
             this.now = now;
-            this.job = job;
+            this.jobId = job;
             this.taskService = taskService;
             this.jobService = jobService;
             this.isLastOne = isLastOne;
@@ -148,8 +147,28 @@ public class SubmitJobWithDenpendcy {
         @Override
         public void run() {
             while (true) {
-//            taskService.get();
+                Range<DateTime> range = Range.closedOpen(now.minusMinutes(2), now.plus(5));
+                List<Task> tasks = taskService.getTasksBetween(jobId, range);
+                System.out.println(range.toString());
+                for (Task task : tasks) {
+                    if (task != null && (task.getStatus() == 2
+                            || task.getStatus() == 3
+                            || task.getStatus() == 4)) {
 
+                        assertThat(task.getStatus(), allOf(greaterThanOrEqualTo(TaskStatus.READY.getValue())
+                                , lessThanOrEqualTo(TaskStatus.FAILED.getValue())));
+                        flag = 60;
+                        break;
+                    }
+                }
+                try {
+                    flag++;
+                    if (flag > 100) break;
+                    Thread.currentThread().sleep(1000);
+
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
 
 
