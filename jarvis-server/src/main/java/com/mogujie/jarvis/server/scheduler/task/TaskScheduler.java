@@ -202,7 +202,7 @@ public class TaskScheduler extends Scheduler {
     public void handleAddTaskEvent(AddTaskEvent e) {
         long jobId = e.getJobId();
         long scheduleTime = e.getScheduleTime();
-        LOGGER.info("start handleAddTaskEvent, jobId={}, scheduleTime={}", jobId, scheduleTime);
+        LOGGER.info("start handleAddTaskEvent, jobId={}, scheduleTime={}", jobId, new DateTime(scheduleTime));
         Map<Long, List<Long>> dependTaskIdMap = e.getDependTaskIdMap();
 
         //去重

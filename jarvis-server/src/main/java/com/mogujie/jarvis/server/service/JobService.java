@@ -18,7 +18,6 @@ import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 import org.mybatis.guice.transactional.Transactional;
 
-import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -94,13 +93,17 @@ public class JobService {
         return jobs;
     }
 
-    public List<Long> getNotDeletedActiveJobIds() {
-        List<Job> jobs = getNotDeletedJobs();
+    public List<Long> getEnableActiveJobIds() {
+        JobExample example = new JobExample();
+        example.createCriteria().andStatusEqualTo(JobStatus.ENABLE.getValue());
+        List<Job> jobs = jobMapper.selectByExampleWithBLOBs(example);
         List<Long> activeJobIds = Lists.newArrayList();
-        for (Job job : jobs) {
-            long jobId = job.getJobId();
-            if (isActive(jobId)) {
-                activeJobIds.add(jobId);
+        if (jobs != null) {
+            for (Job job : jobs) {
+                long jobId = job.getJobId();
+                if (isActive(jobId)) {
+                    activeJobIds.add(jobId);
+                }
             }
         }
         return activeJobIds;
@@ -241,6 +244,24 @@ public class JobService {
 
         JobEntry jobEntry = metaStore.get(jobId);
         jobEntry.clearScheduleExpressions();
+    }
+
+    public void clearTempJobsBefore(DateTime dateTime) {
+        JobExample example = new JobExample();
+        example.createCriteria().andIsTempEqualTo(true).andCreateTimeLessThan(dateTime.toDate());
+        List<Job> jobs = jobMapper.selectByExample(example);
+        if (jobs != null) {
+            for (Job job : jobs) {
+                deleteJobAndRelation(job.getJobId());
+            }
+        }
+    }
+
+    public void deleteJobAndRelation(long jobId) {
+        deleteJobDependByPreJobId(jobId);
+        deleteJobDependByJobId(jobId);
+        deleteScheduleExpressionByJobId(jobId);
+        deleteJob(jobId);
     }
 
     //------------------------  job依赖处理 -------------------------------------
@@ -429,7 +450,6 @@ public class JobService {
      * @return
      */
     private ScheduleExpression getScheduleExpression(ScheduleExpressionType expressionType, String expression) {
-
         ScheduleExpression scheduleExpression = null;
         if (expressionType == ScheduleExpressionType.CRON) {
             scheduleExpression = new CronExpression(expression);
@@ -442,15 +462,6 @@ public class JobService {
         }
 
         return scheduleExpression;
-    }
-
-
-    @VisibleForTesting
-    public void deleteJobAndRelation(long jobId) {
-        deleteJobDependByPreJobId(jobId);
-        deleteJobDependByJobId(jobId);
-        deleteScheduleExpressionByJobId(jobId);
-        deleteJob(jobId);
     }
 
 }

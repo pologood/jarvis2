@@ -8,7 +8,6 @@
 
 package com.mogujie.jarvis.server;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -40,6 +39,7 @@ import com.mogujie.jarvis.core.expression.ISO8601Expression;
 import com.mogujie.jarvis.core.expression.ScheduleExpression;
 import com.mogujie.jarvis.core.metrics.Metrics;
 import com.mogujie.jarvis.core.util.ConfigUtils;
+import com.mogujie.jarvis.core.util.ReflectionUtils;
 import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.server.actor.ServerActor;
@@ -64,6 +64,7 @@ import com.mogujie.jarvis.server.scheduler.time.TimeScheduler;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.PlanService;
 import com.mogujie.jarvis.server.service.TaskService;
+import com.mogujie.jarvis.server.timer.AbstractTimerTask;
 import com.mogujie.jarvis.server.util.PlanUtil;
 
 public class JarvisServer {
@@ -109,6 +110,8 @@ public class JarvisServer {
         initScheduler();
         LOGGER.info("start init TimerTask...");
         initTimerTask();
+        LOGGER.info("start init plan table...");
+        initPlan();
     }
 
     private static void initScheduler() throws JobScheduleException, CycleFoundException {
@@ -248,14 +251,17 @@ public class JarvisServer {
         }
     }
 
-    private static void initTimerTask() {
-        final String startTime = "23:30:00";
-        final long time24h = 24 * 60 * 60 * 1000;
-        String currentDate = DateTime.now().toString("yyyy-MM-dd");
-        Date firstTime = (new DateTime(currentDate + "T" + startTime)).toDate();
+    private static void initTimerTask() throws Exception {
+        Configuration config = ConfigUtils.getServerConfig();
+        List<AbstractTimerTask> timerTasks = ReflectionUtils.getInstancesByConf(config, ServerConigKeys.SERVER_TIMER_TASKS);
         Timer timer = new Timer();
-        // init PlanTimerTask
-        timer.scheduleAtFixedRate(new PlanTimerTask(), firstTime, time24h);
+        DateTime now = DateTime.now();
+        for (AbstractTimerTask timerTask : timerTasks) {
+            timer.scheduleAtFixedRate(timerTask, timerTask.getFirstTime(now).toDate(), timerTask.getPeriod());
+        }
+    }
+
+    private static void initPlan() {
         // 系统启动的时候自动更新执行计划
         PlanService planService = Injectors.getInjector().getInstance(PlanService.class);
         DateTime now = DateTime.now();

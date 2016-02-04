@@ -51,7 +51,7 @@ public class ReflectionUtils {
         return (T) newInstance(clazz);
     }
 
-    public static <T> List<T> getInstancesByConf(Configuration conf, String key, Class<T> clazz)
+    public static <T> List<T> getInstancesByConf(Configuration conf, String key)
             throws InstantiationException, IllegalAccessException, ClassNotFoundException {
         String classString = conf.getString(key);
         List<T> instances = new ArrayList<T>();

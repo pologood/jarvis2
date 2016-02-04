@@ -48,7 +48,7 @@ public class PlanService {
     }
 
     public void updateJobIds(Range<DateTime> range) {
-        List<Long> activeJobIds = jobService.getNotDeletedActiveJobIds();
+        List<Long> activeJobIds = jobService.getEnableActiveJobIds();
         List<Long> planJobIds = Lists.newArrayList();
         for (long jobId : activeJobIds) {
             DateTime nextTime = PlanUtil.getScheduleTimeAfter(jobId, range.lowerEndpoint().minusSeconds(1));
