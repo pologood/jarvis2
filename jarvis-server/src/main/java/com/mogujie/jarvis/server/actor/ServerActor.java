@@ -157,7 +157,10 @@ public class ServerActor extends UntypedActor {
             getSender().tell(msg, getSelf());
             return;
         }
-        LOGGER.info("forward message of {} from ServerActor to {}", clazz.getSimpleName(), pair.getFirst().getClass().getSimpleName());
+
+        if (!clazz.equals(HeartBeatRequest.class)) {
+            LOGGER.info("forward message of {} from ServerActor to {}", clazz.getSimpleName(), pair.getFirst().getClass().getSimpleName());
+        }
         pair.getFirst().forward(obj, getContext());
     }
 
