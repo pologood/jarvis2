@@ -113,6 +113,7 @@ public class JobActor extends UntypedActor {
 
     @Override
     public void onReceive(Object obj) throws Exception {
+        LOGGER.info("receive {}", obj.getClass().getSimpleName());
         try {
             if (obj instanceof RestSubmitJobRequest) {
                 submitJob((RestSubmitJobRequest) obj);
