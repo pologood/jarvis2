@@ -33,12 +33,14 @@ import com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry;
 import com.mogujie.jarvis.protocol.JobProtos.JobStatusEntry;
 import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobDependRequest;
 import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobRequest;
+import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobScheduleExpRequest;
 import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobStatusRequest;
 import com.mogujie.jarvis.protocol.JobProtos.RestQueryJobRelationRequest;
 import com.mogujie.jarvis.protocol.JobProtos.RestRemoveJobRequest;
 import com.mogujie.jarvis.protocol.JobProtos.RestSubmitJobRequest;
 import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobDependResponse;
 import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobResponse;
+import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobScheduleExpResponse;
 import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobStatusResponse;
 import com.mogujie.jarvis.protocol.JobProtos.ServerQueryJobRelationResponse;
 import com.mogujie.jarvis.protocol.JobProtos.ServerRemoveJobResponse;
@@ -369,7 +371,7 @@ public class TestJobActor extends DBTestBased {
         assertEquals((long) newJobDepend.getPreJobId(), addPreId);
     }
 
-@Test
+    @Test
     public void testAddJobScheduleExp() {
         ActorSystem system = getActorSystem();
         ActorSelection serverActor = getServerActor(system, actorPath);
@@ -379,20 +381,11 @@ public class TestJobActor extends DBTestBased {
         AppAuth appAuth = AppAuth.newBuilder().setToken("11111").setName("jarvis-web").build();
 
         List<ScheduleExpressionEntry> scheduleExpressionEntries = Lists.newArrayList();
-        ScheduleExpressionEntry expressionEntry = ScheduleExpressionEntry.newBuilder()
-                .setOperator(OperationMode.ADD.getValue())
-                .setExpressionId(35L)
-                .setExpressionType(ScheduleExpressionType.ISO8601.getValue())
-                .setScheduleExpression("R1/2016-02-07T16:22:49.911+08:00/PT1H")
-                .build();
+        ScheduleExpressionEntry expressionEntry = ScheduleExpressionEntry.newBuilder().setOperator(OperationMode.ADD.getValue()).setExpressionId(35L)
+                .setExpressionType(ScheduleExpressionType.ISO8601.getValue()).setScheduleExpression("R1/2016-02-07T16:22:49.911+08:00/PT1H").build();
         scheduleExpressionEntries.add(expressionEntry);
-        request = RestModifyJobScheduleExpRequest.newBuilder()
-                .addAllExpressionEntry(scheduleExpressionEntries)
-                .setAppAuth(appAuth)
-                .setJobId(modifyJobId)
-                .setUser("qinghuo")
-                .build();
-
+        request = RestModifyJobScheduleExpRequest.newBuilder().addAllExpressionEntry(scheduleExpressionEntries).setAppAuth(appAuth)
+                .setJobId(modifyJobId).setUser("qinghuo").build();
 
         try {
             response = (ServerModifyJobScheduleExpResponse) FutureUtils.awaitResult(serverActor, request, 30);
