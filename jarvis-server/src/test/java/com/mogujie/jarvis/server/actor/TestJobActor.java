@@ -251,6 +251,31 @@ public class TestJobActor extends DBTestBased {
         assertTrue(response.getSuccess());
         assertNotEquals(oldName, newName);
         assertEquals(newName, newJob.getJobName());
+
+        RestQueryJobRelationRequest request1 = RestQueryJobRelationRequest
+                .newBuilder()
+                .setAppAuth(appAuth)
+                .setJobId(jobId)
+                .setRelationType(JobRelationType.PARENT.getValue())
+                .setUser("qinghuo")
+                .build();
+        ServerQueryJobRelationResponse response1 = null;
+
+        try {
+            response1 = (ServerQueryJobRelationResponse) FutureUtils.awaitResult(serverActor, request1, 20);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        List<JobStatusEntry> entryList = response1.getJobStatusEntryList();
+        List<Long> entryJobId = Lists.newArrayList();
+        List<Integer> statusId = Lists.newArrayList();
+        for (JobStatusEntry entry : entryList) {
+            entryJobId.add(entry.getJobId());
+            statusId.add(entry.getStatus());
+        }
+        assertArrayEquals(entryJobId.toArray(), new Long[]{2L, 3L});
+        assertArrayEquals(statusId.toArray(), new Integer[]{1, 1});
     }
 
 
@@ -463,5 +488,4 @@ public class TestJobActor extends DBTestBased {
             e.printStackTrace();
         }
     }
-
 }

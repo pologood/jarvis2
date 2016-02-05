@@ -63,21 +63,24 @@ public class TestWorkerActor {
 
         int workerStatus = 1;
         if (1 == worker.getStatus()) {
-            workerStatus = 2;
+            workerStatus = 3;
         }
         Config akkaConfig = ConfigUtils.getAkkaConfig("akka-test.conf");
         system = ActorSystem.create(TestJarvisConstants.TEST_AKKA_SYSTEM_NAME, akkaConfig);
         String serverPath = TestJarvisConstants.TEST_SERVER_ACTOR_PATH;
         ActorSelection serverActor = system.actorSelection(serverPath);
 
-        RestServerModifyWorkerStatusRequest request = RestServerModifyWorkerStatusRequest.newBuilder().setStatus(workerStatus)
-                .setIp(IPUtils.getIPV4Address()).setPort(registPort).setAppAuth(appAuth).build();
+        RestServerModifyWorkerStatusRequest request = RestServerModifyWorkerStatusRequest.newBuilder()
+                .setStatus(workerStatus)
+                .setIp(IPUtils.getIPV4Address())
+                .setPort(registPort)
+                .setAppAuth(appAuth).build();
 
         new JavaTestKit(system) {
             {
                 serverActor.tell(request, getRef());
 
-                ServerModifyWorkerStatusResponse response = (ServerModifyWorkerStatusResponse) receiveOne(duration("10 seconds"));
+                ServerModifyWorkerStatusResponse response = (ServerModifyWorkerStatusResponse) receiveOne(duration("20 seconds"));
 
                 Assert.assertTrue(response.getSuccess());
 
