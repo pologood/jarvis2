@@ -419,6 +419,41 @@ public class TestJobActor extends DBTestBased {
                 new Random().nextInt(jobList.size() - 1)));
     }
 
+@Test
+    public void testAddJobScheduleExp() {
+        ActorSystem system = getActorSystem();
+        ActorSelection serverActor = getServerActor(system, actorPath);
+        long modifyJobId = 317L;
+        RestModifyJobScheduleExpRequest request = null;
+        ServerModifyJobScheduleExpResponse response = null;
+        AppAuth appAuth = AppAuth.newBuilder().setToken("11111").setName("jarvis-web").build();
+
+        List<ScheduleExpressionEntry> scheduleExpressionEntries = Lists.newArrayList();
+        ScheduleExpressionEntry expressionEntry = ScheduleExpressionEntry.newBuilder()
+                .setOperator(OperationMode.ADD.getValue())
+                .setExpressionId(35L)
+                .setExpressionType(ScheduleExpressionType.ISO8601.getValue())
+                .setScheduleExpression("R1/2016-02-07T16:22:49.911+08:00/PT1H")
+                .build();
+        scheduleExpressionEntries.add(expressionEntry);
+        request = RestModifyJobScheduleExpRequest.newBuilder()
+                .addAllExpressionEntry(scheduleExpressionEntries)
+                .setAppAuth(appAuth)
+                .setJobId(modifyJobId)
+                .setUser("qinghuo")
+                .build();
+
+
+        try {
+            response = (ServerModifyJobScheduleExpResponse) FutureUtils.awaitResult(serverActor, request, 30);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        assertTrue(response.getSuccess());
+
+    }
+
     @Test
     public void modifyJobRemove() {
         // Job removeJob = getRandomNotDeleteJobId();
