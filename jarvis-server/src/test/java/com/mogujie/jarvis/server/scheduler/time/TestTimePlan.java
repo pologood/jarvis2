@@ -8,21 +8,19 @@
 
 package com.mogujie.jarvis.server.scheduler.time;
 
-import java.util.List;
-
+import com.mogujie.jarvis.dto.generate.Job;
+import com.mogujie.jarvis.server.guice.Injectors;
+import com.mogujie.jarvis.server.service.JobService;
+import com.mogujie.jarvis.server.util.PlanUtil;
 import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.mogujie.jarvis.dto.generate.Job;
-import com.mogujie.jarvis.server.guice.Injectors;
-import com.mogujie.jarvis.server.service.JobService;
-import com.mogujie.jarvis.server.util.PlanUtil;
+import java.util.List;
 
 /**
  * @author guangming
- *
  */
 public class TestTimePlan {
     private TimePlan plan = TimePlan.INSTANCE;
@@ -55,13 +53,13 @@ public class TestTimePlan {
 
     @Test
     public void testAddPlan() {
-        for (int i = 1; i < 10000; i+=2) {
-            TimePlanEntry entry = new TimePlanEntry(i, new DateTime(i*1000L));
+        for (int i = 1; i < 10000; i += 2) {
+            TimePlanEntry entry = new TimePlanEntry(i, new DateTime(i * 1000L));
             plan.addPlan(entry);
         }
 
-        for (int i = 2; i < 10000; i+=2) {
-            TimePlanEntry entry = new TimePlanEntry(i, new DateTime(i*1000L));
+        for (int i = 2; i < 10000; i += 2) {
+            TimePlanEntry entry = new TimePlanEntry(i, new DateTime(i * 1000L));
             plan.addPlan(entry);
         }
 
@@ -119,5 +117,13 @@ public class TestTimePlan {
             DateTime dt = PlanUtil.getScheduleTimeAfter(job.getJobId(), now);
             System.out.println("job " + job.getJobId() + ", " + dt);
         }
+    }
+
+
+    public void testNoScheduleExpJob() {
+        long jobId = 318L;
+        DateTime now = DateTime.now();
+        DateTime dt = PlanUtil.getScheduleTimeAfter(jobId, now);
+        System.out.println("job " + jobId + ", " + dt);
     }
 }
