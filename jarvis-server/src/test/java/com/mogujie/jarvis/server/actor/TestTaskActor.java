@@ -1,10 +1,25 @@
 package com.mogujie.jarvis.server.actor;
 
-import akka.actor.ActorSelection;
-import akka.actor.ActorSystem;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
+
+import java.net.SocketException;
+import java.net.UnknownHostException;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+
+import org.joda.time.DateTime;
+import org.junit.After;
+import org.junit.Test;
+
 import com.google.common.collect.Lists;
 import com.google.common.collect.Range;
-import com.mogujie.jarvis.core.domain.*;
+import com.mogujie.jarvis.core.domain.JobPriority;
+import com.mogujie.jarvis.core.domain.JobRelationType;
+import com.mogujie.jarvis.core.domain.JobStatus;
+import com.mogujie.jarvis.core.domain.OperationMode;
+import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.expression.ScheduleExpressionType;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.core.util.IPUtils;
@@ -32,18 +47,9 @@ import com.mogujie.jarvis.server.service.TaskDependService;
 import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.FutureUtils;
 import com.typesafe.config.Config;
-import org.joda.time.DateTime;
-import org.junit.After;
-import org.junit.Test;
 
-import java.net.SocketException;
-import java.net.UnknownHostException;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import akka.actor.ActorSelection;
+import akka.actor.ActorSystem;
 
 /**
  * Location www.mogujie.com
@@ -61,9 +67,7 @@ public class TestTaskActor {
     public void tearDown() {
         try {
             if (!TestUtil.isPortHasBeenUse(IPUtils.getIPV4Address(), 10010)) {
-                while (!system.isTerminated())
-                    system.terminate();
-
+                system.terminate();
             }
         } catch (UnknownHostException e) {
             e.printStackTrace();
@@ -71,7 +75,6 @@ public class TestTaskActor {
             e.printStackTrace();
         }
     }
-
 
     @Test
     public void testQueryTaskRelation() {
@@ -85,16 +88,10 @@ public class TestTaskActor {
         long queryId = getRandomTaskId(statusList);
 
         ActorSelection serverActor = system.actorSelection(actorPath);
-        RestServerQueryTaskRelationRequest childRequest = RestServerQueryTaskRelationRequest.newBuilder()
-                .setAppAuth(appAuth)
-                .setRelationType(JobRelationType.CHILD.getValue())
-                .setTaskId(queryId)
-                .build();
-        RestServerQueryTaskRelationRequest parentRequest = RestServerQueryTaskRelationRequest.newBuilder()
-                .setAppAuth(appAuth)
-                .setRelationType(JobRelationType.PARENT.getValue())
-                .setTaskId(queryId)
-                .build();
+        RestServerQueryTaskRelationRequest childRequest = RestServerQueryTaskRelationRequest.newBuilder().setAppAuth(appAuth)
+                .setRelationType(JobRelationType.CHILD.getValue()).setTaskId(queryId).build();
+        RestServerQueryTaskRelationRequest parentRequest = RestServerQueryTaskRelationRequest.newBuilder().setAppAuth(appAuth)
+                .setRelationType(JobRelationType.PARENT.getValue()).setTaskId(queryId).build();
         QueryTaskRelationProtos.ServerQueryTaskRelationResponse response = null;
         QueryTaskRelationProtos.ServerQueryTaskRelationResponse parentResponse = null;
 
@@ -111,7 +108,7 @@ public class TestTaskActor {
         List<Long> expectList = Lists.newArrayList();
         List<Long> actualList = Lists.newArrayList();
 
-        for (Map.Entry entry : childMap.entrySet()) {
+        for (Map.Entry<Long, List<Long>> entry : childMap.entrySet()) {
             expectList.add((long) entry.getKey());
         }
         for (QueryTaskRelationProtos.TaskMapEntry entry : taskRelationMapList) {
@@ -126,7 +123,7 @@ public class TestTaskActor {
 
         Map<Long, List<Long>> parentsMap = taskDependService.loadParent(queryId);
 
-        for (Map.Entry entry : parentsMap.entrySet()) {
+        for (Map.Entry<Long, List<Long>> entry : parentsMap.entrySet()) {
             expectList.add((long) entry.getKey());
         }
         for (QueryTaskRelationProtos.TaskMapEntry entry : taskRelationMapList) {
@@ -135,13 +132,11 @@ public class TestTaskActor {
 
         assertArrayEquals(expectList.toArray(), actualList.toArray());
 
-
     }
 
     private long getRandomTaskId(List<Integer> statusList) {
         List<Task> tasksByStatus = taskService.getTasksByStatus(statusList);
-        long randomTaskId = tasksByStatus.get(Math.abs(
-                new Random().nextInt(tasksByStatus.size() - 1))).getTaskId();
+        long randomTaskId = tasksByStatus.get(Math.abs(new Random().nextInt(tasksByStatus.size() - 1))).getTaskId();
         return randomTaskId;
     }
 
@@ -154,11 +149,8 @@ public class TestTaskActor {
         statusList.add(TaskStatus.FAILED.getValue());
         long taskId = getRandomTaskId(statusList);
         ServerModifyTaskStatusResponse response = null;
-        RestServerModifyTaskStatusRequest request = RestServerModifyTaskStatusRequest.newBuilder()
-                .setAppAuth(appAuth)
-                .setStatus(TaskStatus.SUCCESS.getValue())
-                .setTaskId(taskId)
-                .build();
+        RestServerModifyTaskStatusRequest request = RestServerModifyTaskStatusRequest.newBuilder().setAppAuth(appAuth)
+                .setStatus(TaskStatus.SUCCESS.getValue()).setTaskId(taskId).build();
 
         ActorSelection serverActor = system.actorSelection(actorPath);
         try {
@@ -179,22 +171,16 @@ public class TestTaskActor {
         ActorSelection serverActor = system.actorSelection(actorPath);
         List<Integer> statusList = Lists.newArrayList();
         statusList.add(TaskStatus.READY.getValue());
-//        statusList.add(TaskStatus.RUNNING.getValue());
+        //        statusList.add(TaskStatus.RUNNING.getValue());
         Long killTaskId = getRandomTaskId(statusList);
         Task killTask = taskService.get(killTaskId);
         long jobId = killTask.getJobId();
         long attemptId = killTask.getAttemptId();
 
         StringBuffer fullId = new StringBuffer(String.valueOf(jobId));
-        fullId.append("_")
-                .append(String.valueOf(killTaskId))
-                .append("_")
-                .append(String.valueOf(attemptId));
+        fullId.append("_").append(String.valueOf(killTaskId)).append("_").append(String.valueOf(attemptId));
 
-        request = KillTaskProtos.RestServerKillTaskRequest.newBuilder()
-                .setAppAuth(appAuth)
-                .setFullId(fullId.toString())
-                .build();
+        request = KillTaskProtos.RestServerKillTaskRequest.newBuilder().setAppAuth(appAuth).setFullId(fullId.toString()).build();
         try {
             response = (KillTaskProtos.ServerKillTaskResponse) FutureUtils.awaitResult(serverActor, request, 15);
         } catch (Exception e) {
@@ -223,32 +209,15 @@ public class TestTaskActor {
         String timeExpression = "R1/" + DateTime.now().plusMinutes(1).toString() + "/PT1H";
         List<ScheduleExpressionEntry> expressionEntries = Lists.newArrayList();
         //添加时间依赖
-        ScheduleExpressionEntry expressionEntry = ScheduleExpressionEntry.newBuilder()
-                .setExpressionType(ScheduleExpressionType.ISO8601.getValue())
-                .setOperator(OperationMode.ADD.getValue())
-                .setScheduleExpression(timeExpression)
-                .setExpressionId(35L)
-                .build();
+        ScheduleExpressionEntry expressionEntry = ScheduleExpressionEntry.newBuilder().setExpressionType(ScheduleExpressionType.ISO8601.getValue())
+                .setOperator(OperationMode.ADD.getValue()).setScheduleExpression(timeExpression).setExpressionId(35L).build();
 
         expressionEntries.add(expressionEntry);
 
-        RestSubmitJobRequest request = RestSubmitJobRequest.newBuilder()
-                .setJobName("qh_test")
-                .setAppName("jarvis-web")
-                .setAppAuth(appAuth)
-                .setContent("show databases;")
-                .setPriority(JobPriority.HIGH.getValue())
-                .setParameters("{\"para1\":\"1\",\"para2\":\"2\"}")
-                .setStatus(JobStatus.ENABLE.getValue())
-                .setUser("qinghuo")
-                .addAllExpressionEntry(expressionEntries)
-                .setExpiredTime(86400)
-                .setFailedAttempts(3)
-                .setFailedInterval(3)
-                .setBizGroupId(11)
-                .setJobType("hive")
-                .setWorkerGroupId(1).
-                        build();
+        RestSubmitJobRequest request = RestSubmitJobRequest.newBuilder().setJobName("qh_test").setAppName("jarvis-web").setAppAuth(appAuth)
+                .setContent("show databases;").setPriority(JobPriority.HIGH.getValue()).setParameters("{\"para1\":\"1\",\"para2\":\"2\"}")
+                .setStatus(JobStatus.ENABLE.getValue()).setUser("qinghuo").addAllExpressionEntry(expressionEntries).setExpiredTime(86400)
+                .setFailedAttempts(3).setFailedInterval(3).setBizGroupId(11).setJobType("hive").setWorkerGroupId(1).build();
         ServerSubmitJobResponse response = null;
         try {
             response = (ServerSubmitJobResponse) FutureUtils.awaitResult(serverActor, request, 30);
@@ -262,26 +231,18 @@ public class TestTaskActor {
         //进行验证
         new CheckTaskRunningService(newJobid, now, 2).run();
 
-
         JobService jobService = Injectors4Test.getInjector().getInstance(JobService.class);
         JobScheduleExpression scheduleExpression = jobService.getScheduleExpressionByJobId(newJobid);
         long scheduleExpId = scheduleExpression.getId();
 
         //删掉时间依赖
-        expressionEntry = ScheduleExpressionEntry.newBuilder()
-                .setExpressionType(ScheduleExpressionType.ISO8601.getValue())
-                .setOperator(OperationMode.DELETE.getValue())
-                .setExpressionId(scheduleExpId)
-                .build();
+        expressionEntry = ScheduleExpressionEntry.newBuilder().setExpressionType(ScheduleExpressionType.ISO8601.getValue())
+                .setOperator(OperationMode.DELETE.getValue()).setExpressionId(scheduleExpId).build();
 
         List<ScheduleExpressionEntry> removeEntries = Lists.newArrayList();
         removeEntries.add(expressionEntry);
-        RestModifyJobScheduleExpRequest removeRequest = RestModifyJobScheduleExpRequest.newBuilder()
-                .setUser("qinghuo")
-                .setAppAuth(appAuth)
-                .setJobId(newJobid)
-                .addAllExpressionEntry(removeEntries)
-                .build();
+        RestModifyJobScheduleExpRequest removeRequest = RestModifyJobScheduleExpRequest.newBuilder().setUser("qinghuo").setAppAuth(appAuth)
+                .setJobId(newJobid).addAllExpressionEntry(removeEntries).build();
 
         try {
             FutureUtils.awaitResult(serverActor, removeRequest, 15);
@@ -289,32 +250,27 @@ public class TestTaskActor {
             e.printStackTrace();
         }
 
-
         //先把job设置为不可用，从内存里删除
-        JobProtos.RestModifyJobStatusRequest removeJobRequest = JobProtos.RestModifyJobStatusRequest.newBuilder()
-                .setAppAuth(appAuth)
-                .setStatus(JobStatus.DELETED.getValue())
-                .setUser("qinghuo")
-                .setJobId(newJobid)
-                .build();
+        JobProtos.RestModifyJobStatusRequest removeJobRequest = JobProtos.RestModifyJobStatusRequest.newBuilder().setAppAuth(appAuth)
+                .setStatus(JobStatus.DELETED.getValue()).setUser("qinghuo").setJobId(newJobid).build();
         try {
             FutureUtils.awaitResult(serverActor, removeJobRequest, 15);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-//        //删掉job本身
-//        removeJobRequest = JobProtos.RestModifyJobStatusRequest.newBuilder()
-//                .setAppAuth(appAuth)
-//                .setStatus(JobStatus.DELETED.getValue())
-//                .setUser("qinghuo")
-//                .setJobId(response.getJobId())
-//                .build();
-//        try {
-//            FutureUtils.awaitResult(serverActor, removeJobRequest, 15);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+        //        //删掉job本身
+        //        removeJobRequest = JobProtos.RestModifyJobStatusRequest.newBuilder()
+        //                .setAppAuth(appAuth)
+        //                .setStatus(JobStatus.DELETED.getValue())
+        //                .setUser("qinghuo")
+        //                .setJobId(response.getJobId())
+        //                .build();
+        //        try {
+        //            FutureUtils.awaitResult(serverActor, removeJobRequest, 15);
+        //        } catch (Exception e) {
+        //            e.printStackTrace();
+        //        }
 
     }
 
@@ -327,20 +283,13 @@ public class TestTaskActor {
 
         ActorSelection serverActor = system.actorSelection(actorPath);
         //删掉时间依赖
-        ScheduleExpressionEntry expressionEntry = ScheduleExpressionEntry.newBuilder()
-                .setExpressionType(ScheduleExpressionType.ISO8601.getValue())
-                .setOperator(OperationMode.DELETE.getValue())
-                .setExpressionId(scheduleExpId)
-                .build();
+        ScheduleExpressionEntry expressionEntry = ScheduleExpressionEntry.newBuilder().setExpressionType(ScheduleExpressionType.ISO8601.getValue())
+                .setOperator(OperationMode.DELETE.getValue()).setExpressionId(scheduleExpId).build();
 
         List<ScheduleExpressionEntry> removeEntries = Lists.newArrayList();
         removeEntries.add(expressionEntry);
-        RestModifyJobScheduleExpRequest removeRequest = RestModifyJobScheduleExpRequest.newBuilder()
-                .setUser("qinghuo")
-                .setAppAuth(appAuth)
-                .setJobId(newJobid)
-                .addAllExpressionEntry(removeEntries)
-                .build();
+        RestModifyJobScheduleExpRequest removeRequest = RestModifyJobScheduleExpRequest.newBuilder().setUser("qinghuo").setAppAuth(appAuth)
+                .setJobId(newJobid).addAllExpressionEntry(removeEntries).build();
 
         try {
             FutureUtils.awaitResult(serverActor, removeRequest, 15);
@@ -349,11 +298,7 @@ public class TestTaskActor {
         }
 
         //删掉job本身
-        RestRemoveJobRequest removeJobRequest = RestRemoveJobRequest.newBuilder()
-                .setUser("qinghuo")
-                .setAppAuth(appAuth)
-                .setJobId(newJobid)
-                .build();
+        RestRemoveJobRequest removeJobRequest = RestRemoveJobRequest.newBuilder().setUser("qinghuo").setAppAuth(appAuth).setJobId(newJobid).build();
         try {
             FutureUtils.awaitResult(serverActor, removeJobRequest, 15);
         } catch (Exception e) {
@@ -369,10 +314,7 @@ public class TestTaskActor {
         long taskid = 8274L;
         Task task = taskService.get(taskid);
         assertNotNull(task);
-        RestServerRemoveTaskRequest request = RestServerRemoveTaskRequest.newBuilder()
-                .setAppAuth(appAuth)
-                .setTaskId(taskid)
-                .build();
+        RestServerRemoveTaskRequest request = RestServerRemoveTaskRequest.newBuilder().setAppAuth(appAuth).setTaskId(taskid).build();
         ServerRemoveTaskResponse response = null;
         try {
             response = (ServerRemoveTaskResponse) FutureUtils.awaitResult(serverActor, request, 30);
@@ -404,9 +346,7 @@ public class TestTaskActor {
                 List<Task> tasks = taskService.getTasksBetween(jobId, range);
                 System.out.println(range.toString());
                 for (Task task : tasks) {
-                    if (task != null && (task.getStatus() == 2
-                            || task.getStatus() == 3
-                            || task.getStatus() == 4)) {
+                    if (task != null && (task.getStatus() == 2 || task.getStatus() == 3 || task.getStatus() == 4)) {
 
                         assertThat(task.getStatus(), allOf(greaterThanOrEqualTo(2), lessThanOrEqualTo(4)));
                         flag = 60;
@@ -416,8 +356,9 @@ public class TestTaskActor {
 
                 try {
                     flag++;
-                    if (flag > 60) break;
-                    Thread.currentThread().sleep(1000);
+                    if (flag > 60)
+                        break;
+                    Thread.sleep(1000);
 
                 } catch (InterruptedException e) {
                     e.printStackTrace();

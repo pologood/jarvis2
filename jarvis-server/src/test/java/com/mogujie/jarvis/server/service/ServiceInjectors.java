@@ -8,17 +8,16 @@
 
 package com.mogujie.jarvis.server.service;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Properties;
+
 import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
-import com.mogujie.jarvis.server.guice.GuiceModule;
 import com.mogujie.jarvis.server.guice.JarvisMyBatisModule;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Properties;
 
 public class ServiceInjectors {
 

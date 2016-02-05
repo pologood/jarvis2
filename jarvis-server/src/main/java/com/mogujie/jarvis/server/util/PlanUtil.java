@@ -25,13 +25,11 @@ import com.mogujie.jarvis.core.expression.ScheduleExpression;
 import com.mogujie.jarvis.server.domain.JobDependencyEntry;
 import com.mogujie.jarvis.server.domain.JobEntry;
 import com.mogujie.jarvis.server.guice.Injectors;
-import com.mogujie.jarvis.server.scheduler.dag.JobGraph;
 import com.mogujie.jarvis.server.scheduler.time.TimePlanEntry;
 import com.mogujie.jarvis.server.service.JobService;
 
 public class PlanUtil {
 
-    private static JobGraph jobGraph = JobGraph.INSTANCE;
     private static JobService jobService = Injectors.getInjector().getInstance(JobService.class);
 
     public static List<TimePlanEntry> getReschedulePlan(long jobId, Range<DateTime> dateTimeRange) {
@@ -73,8 +71,7 @@ public class PlanUtil {
         Map<Long, JobDependencyEntry> dependencies = jobEntry.getDependencies();
         for (Entry<Long, JobDependencyEntry> entry : dependencies.entrySet()) {
             long dependencyJobId = entry.getKey();
-            if (jobService.get(dependencyJobId).getJob().getStatus() == JobStatus.ENABLE.getValue()
-                    && jobService.isActive(dependencyJobId)) {
+            if (jobService.get(dependencyJobId).getJob().getStatus() == JobStatus.ENABLE.getValue() && jobService.isActive(dependencyJobId)) {
                 DependencyExpression dependencyExpression = entry.getValue().getDependencyExpression();
                 if (dependencyExpression == null) {
                     DateTime nextTime = getScheduleTimeAfter(dependencyJobId, dateTime);

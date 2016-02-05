@@ -3,7 +3,6 @@ package com.mogujie.jarvis.server.actor;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
-import com.mogujie.jarvis.server.actor.util.TestJarvisConstants;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
@@ -18,6 +17,7 @@ import com.mogujie.jarvis.protocol.WorkerProtos.ServerModifyWorkerStatusResponse
 import com.mogujie.jarvis.protocol.WorkerProtos.ServerRegistryResponse;
 import com.mogujie.jarvis.protocol.WorkerProtos.WorkerRegistryRequest;
 import com.mogujie.jarvis.server.JarvisServer;
+import com.mogujie.jarvis.server.actor.util.TestJarvisConstants;
 import com.mogujie.jarvis.server.actor.util.TestUtil;
 import com.mogujie.jarvis.server.guice4test.Injectors4Test;
 import com.mogujie.jarvis.server.service.WorkerService;
@@ -45,9 +45,7 @@ public class TestWorkerActor {
     public void tearDown() {
         try {
             if (!TestUtil.isPortHasBeenUse(IPUtils.getIPV4Address(), 10010)) {
-                while (!system.isTerminated())
-                    system.terminate();
-
+                system.terminate();
             }
         } catch (UnknownHostException e) {
             e.printStackTrace();
@@ -70,11 +68,8 @@ public class TestWorkerActor {
         String serverPath = TestJarvisConstants.TEST_SERVER_ACTOR_PATH;
         ActorSelection serverActor = system.actorSelection(serverPath);
 
-        RestServerModifyWorkerStatusRequest request = RestServerModifyWorkerStatusRequest.newBuilder()
-                .setStatus(workerStatus)
-                .setIp(IPUtils.getIPV4Address())
-                .setPort(registPort)
-                .setAppAuth(appAuth).build();
+        RestServerModifyWorkerStatusRequest request = RestServerModifyWorkerStatusRequest.newBuilder().setStatus(workerStatus)
+                .setIp(IPUtils.getIPV4Address()).setPort(registPort).setAppAuth(appAuth).build();
 
         new JavaTestKit(system) {
             {
@@ -125,7 +120,7 @@ public class TestWorkerActor {
 
                     flag++;
                     try {
-                        Thread.currentThread().sleep(500);
+                        Thread.sleep(500);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
