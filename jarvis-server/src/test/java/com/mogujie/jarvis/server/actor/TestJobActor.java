@@ -8,11 +8,13 @@ import java.net.UnknownHostException;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.ReplacementDataSet;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import com.google.common.collect.Lists;
@@ -57,6 +59,8 @@ import com.typesafe.config.Config;
 
 import akka.actor.ActorSelection;
 import akka.actor.ActorSystem;
+import scala.concurrent.Await;
+import scala.concurrent.duration.Duration;
 
 /**
  * Location www.mogujie.com
@@ -64,11 +68,21 @@ import akka.actor.ActorSystem;
  * used by jarvis-parent
  */
 public class TestJobActor extends DBTestBased {
-    ActorSystem system;
+    ActorSystem system = null;
     JobService jobService;
     Connection conn = null;
     IDatabaseConnection iconn = null;
     String actorPath = TestJarvisConstants.TEST_SERVER_ACTOR_PATH;
+
+    @Before
+    public void setup() {
+        system = getActorSystem();
+    }
+
+    @After
+    public void close() throws TimeoutException, InterruptedException {
+        Await.ready(system.terminate(), Duration.Inf());
+    }
 
     @Test
     public void testGetJobDepend() {
@@ -144,8 +158,6 @@ public class TestJobActor extends DBTestBased {
     public void testSubmitJob() {
         // startUpServer();
         AppAuth appAuth = AppAuth.newBuilder().setToken("11111").setName("jarvis-web").build();
-
-        system = getActorSystem();
         ActorSelection serverActor = getServerActor(system, actorPath);
         RestRemoveJobRequest removeJobRequest;
         //添加任务依赖
@@ -169,7 +181,6 @@ public class TestJobActor extends DBTestBased {
         ServerSubmitJobResponse response = null;
         for (int i = 0; i < 9; i++) {
             try {
-
                 response = (ServerSubmitJobResponse) FutureUtils.awaitResult(serverActor, request, 15);
                 if (response.getSuccess())
                     break;
@@ -222,7 +233,6 @@ public class TestJobActor extends DBTestBased {
         }
         RestModifyJobRequest request = RestModifyJobRequest.newBuilder().setJobId(jobId).setAppName("jarvis-web").setUser("qinghuo")
                 .setAppAuth(appAuth).setJobName(newName).build();
-        system = getActorSystem();
         ActorSelection serverActor = getServerActor(system, actorPath);
         for (int i = 0; i < 9; i++) {
             try {
@@ -276,7 +286,6 @@ public class TestJobActor extends DBTestBased {
     @Test
     public void testQueryJobRel() {
         long modifyJobId = 318L;
-        ActorSystem system = getActorSystem();
         ActorSelection serverActor = system.actorSelection(actorPath);
         ServerQueryJobRelationResponse response = null;
         AppAuth appAuth = AppAuth.newBuilder().setToken("11111").setName("jarvis-web").build();
@@ -307,7 +316,6 @@ public class TestJobActor extends DBTestBased {
         long addPreId1 = 2L;
         ServerModifyJobDependResponse response = null;
         jobService = Injectors4Test.getInjector().getInstance(JobService.class);
-        ActorSystem system = getActorSystem();
         ActorSelection serverActor = getServerActor(system, actorPath);
         AppAuth appAuth = AppAuth.newBuilder().setToken("11111").setName("jarvis-web").build();
 
@@ -373,7 +381,6 @@ public class TestJobActor extends DBTestBased {
 
     @Test
     public void testAddJobScheduleExp() {
-        ActorSystem system = getActorSystem();
         ActorSelection serverActor = getServerActor(system, actorPath);
         long modifyJobId = 317L;
         RestModifyJobScheduleExpRequest request = null;
@@ -410,7 +417,6 @@ public class TestJobActor extends DBTestBased {
         AppAuth appAuth = AppAuth.newBuilder().setToken("11111").setName("jarvis-web").build();
         RestModifyJobStatusRequest request = RestModifyJobStatusRequest.newBuilder().setAppAuth(appAuth).setStatus(JobStatus.DELETED.getValue())
                 .setUser("qinghuo").setJobId(jobId).build();
-        system = getActorSystem();
         ActorSelection serverActor = getServerActor(system, actorPath);
         try {
             response = (ServerModifyJobStatusResponse) FutureUtils.awaitResult(serverActor, request, 30);
@@ -428,7 +434,6 @@ public class TestJobActor extends DBTestBased {
     }
 
     public void removeJob() {
-        ActorSystem system = getActorSystem();
         ActorSelection serverActor = system.actorSelection(actorPath);
         AppAuth appAuth = AppAuth.newBuilder().setToken("11111").setName("jarvis-web").build();
 
