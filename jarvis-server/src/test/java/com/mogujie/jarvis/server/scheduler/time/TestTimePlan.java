@@ -8,10 +8,17 @@
 
 package com.mogujie.jarvis.server.scheduler.time;
 
+import java.util.List;
+
 import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
+
+import com.mogujie.jarvis.dto.generate.Job;
+import com.mogujie.jarvis.server.guice.Injectors;
+import com.mogujie.jarvis.server.service.JobService;
+import com.mogujie.jarvis.server.util.PlanUtil;
 
 /**
  * @author guangming
@@ -101,5 +108,16 @@ public class TestTimePlan {
 
         plan.removeJob(3);
         Assert.assertEquals(1, plan.getPlan().size());
+    }
+
+    @Test
+    public void getNextTimeOfAllJobs() {
+        JobService jobService = Injectors.getInjector().getInstance(JobService.class);
+        List<Job> jobs = jobService.getNotDeletedJobs();
+        DateTime now = DateTime.now();
+        for (Job job : jobs) {
+            DateTime dt = PlanUtil.getScheduleTimeAfter(job.getJobId(), now);
+            System.out.println("job " + job.getJobId() + ", " + dt);
+        }
     }
 }

@@ -11,7 +11,7 @@ package com.mogujie.jarvis.server.util;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.Map.Entry;
 
 import org.joda.time.DateTime;
 import org.joda.time.MutableDateTime;
@@ -19,8 +19,10 @@ import org.joda.time.MutableDateTime;
 import com.google.common.collect.BoundType;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Range;
+import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.core.expression.DependencyExpression;
 import com.mogujie.jarvis.core.expression.ScheduleExpression;
+import com.mogujie.jarvis.server.domain.JobDependencyEntry;
 import com.mogujie.jarvis.server.domain.JobEntry;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.dag.JobGraph;
@@ -68,37 +70,41 @@ public class PlanUtil {
             return result;
         }
 
-        Set<Long> parentIds = jobGraph.getParentJobIds(jobId);
-        for (long dependencyJobId : parentIds) {
-            DependencyExpression dependencyExpression = jobEntry.getDependencies().get(dependencyJobId).getDependencyExpression();
-            if (dependencyExpression == null) {
-                DateTime nextTime = getScheduleTimeAfter(dependencyJobId, dateTime);
-                if (nextTime == null) {
-                    continue;
-                } else if (result == null || result.isBefore(nextTime)) {
-                    result = nextTime;
-                }
-            } else {
-                MutableDateTime mutableDateTime = dateTime.toMutableDateTime();
-                while (true) {
-                    Range<DateTime> dependencyRangeDateTime = dependencyExpression.getRange(mutableDateTime.toDateTime());
-                    DateTime startDateTime = dependencyRangeDateTime.lowerBoundType() == BoundType.OPEN ? dependencyRangeDateTime.lowerEndpoint()
-                            : dependencyRangeDateTime.lowerEndpoint().minusSeconds(1);
-                    DateTime endDateTime = dependencyRangeDateTime.upperBoundType() == BoundType.OPEN ? dependencyRangeDateTime.upperEndpoint()
-                            : dependencyRangeDateTime.upperEndpoint().plusSeconds(1);
-
-                    DateTime nextTime = getScheduleTimeAfter(dependencyJobId, startDateTime);
-                    while (nextTime != null && nextTime.isBefore(endDateTime)) {
-                        if (result == null || result.isBefore(nextTime)) {
-                            result = nextTime;
-                        }
-                        nextTime = getScheduleTimeAfter(dependencyJobId, nextTime);
+        Map<Long, JobDependencyEntry> dependencies = jobEntry.getDependencies();
+        for (Entry<Long, JobDependencyEntry> entry : dependencies.entrySet()) {
+            long dependencyJobId = entry.getKey();
+            if (jobService.get(dependencyJobId).getJob().getStatus() == JobStatus.ENABLE.getValue()
+                    && jobService.isActive(dependencyJobId)) {
+                DependencyExpression dependencyExpression = entry.getValue().getDependencyExpression();
+                if (dependencyExpression == null) {
+                    DateTime nextTime = getScheduleTimeAfter(dependencyJobId, dateTime);
+                    if (nextTime == null) {
+                        continue;
+                    } else if (result == null || result.isBefore(nextTime)) {
+                        result = nextTime;
                     }
+                } else {
+                    MutableDateTime mutableDateTime = dateTime.toMutableDateTime();
+                    while (true) {
+                        Range<DateTime> dependencyRangeDateTime = dependencyExpression.getRange(mutableDateTime.toDateTime());
+                        DateTime startDateTime = dependencyRangeDateTime.lowerBoundType() == BoundType.OPEN ? dependencyRangeDateTime.lowerEndpoint()
+                                : dependencyRangeDateTime.lowerEndpoint().minusSeconds(1);
+                        DateTime endDateTime = dependencyRangeDateTime.upperBoundType() == BoundType.OPEN ? dependencyRangeDateTime.upperEndpoint()
+                                : dependencyRangeDateTime.upperEndpoint().plusSeconds(1);
 
-                    if (result != null && !result.isAfter(dateTime)) {
-                        mutableDateTime.setMillis(endDateTime);
-                    } else {
-                        break;
+                        DateTime nextTime = getScheduleTimeAfter(dependencyJobId, startDateTime);
+                        while (nextTime != null && nextTime.isBefore(endDateTime)) {
+                            if (result == null || result.isBefore(nextTime)) {
+                                result = nextTime;
+                            }
+                            nextTime = getScheduleTimeAfter(dependencyJobId, nextTime);
+                        }
+
+                        if (result != null && !result.isAfter(dateTime)) {
+                            mutableDateTime.setMillis(endDateTime);
+                        } else {
+                            break;
+                        }
                     }
                 }
             }
