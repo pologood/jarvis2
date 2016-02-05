@@ -91,6 +91,11 @@ public class PlanUtil {
                                 : dependencyRangeDateTime.lowerEndpoint().minusSeconds(1);
                         DateTime endDateTime = dependencyRangeDateTime.upperBoundType() == BoundType.OPEN ? dependencyRangeDateTime.upperEndpoint()
                                 : dependencyRangeDateTime.upperEndpoint().plusSeconds(1);
+                        // 如果是依赖过去一段时间，无法算出下一次时间
+                        if (dateTime.isAfter(endDateTime)) {
+                            result = null;
+                            break;
+                        }
 
                         DateTime nextTime = getScheduleTimeAfter(dependencyJobId, startDateTime);
                         while (nextTime != null && nextTime.isBefore(endDateTime)) {
