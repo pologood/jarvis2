@@ -17,20 +17,20 @@
     </sql>
     <!--========================================================-->
 
-    <select id="getAllWorkerGroup" resultType="WorkerGroupVo">
+    <select id="getAllWorkerGroup" resultType="com.mogujie.jarvis.web.entity.vo.WorkerGroupVo">
       SELECT * FROM worker_group;
     </select>
-    <select id="getWorkerGroupById" parameterType="Integer" resultType="WorkerGroupVo">
+    <select id="getWorkerGroupById" parameterType="Integer" resultType="com.mogujie.jarvis.web.entity.vo.WorkerGroupVo">
         SELECT * FROM worker_group WHERE id=#{id};
     </select>
-    <select id="getWorkerGroupByName" parameterType="String" resultType="WorkerGroupVo">
+    <select id="getWorkerGroupByName" parameterType="String" resultType="com.mogujie.jarvis.web.entity.vo.WorkerGroupVo">
         SELECT * FROM worker_group WHERE name=#{_parameter} limit 0,1;
     </select>
     <select id="getWorkerGroupCount" parameterType="WorkerGroupQo" resultType="Integer">
         SELECT count(1) FROM worker_group
         <include refid="workerGroupCondition" />
     </select>
-    <select id="getWorkerGroupList" parameterType="WorkerGroupQo" resultType="WorkerGroupVo">
+    <select id="getWorkerGroupList" parameterType="WorkerGroupQo" resultType="com.mogujie.jarvis.web.entity.vo.WorkerGroupVo">
         SELECT * FROM worker_group
         <include refid="workerGroupCondition" />
         <include refid="pager" />
@@ -39,10 +39,12 @@
         SELECT DISTINCT `updateUser` FROM worker_group;
     </select>
 
-    <select id="getByAppId" parameterType="Long" resultType="WorkerGroupVo">
+    <select id="getByAppId" parameterType="Long" resultType="com.mogujie.jarvis.web.entity.vo.WorkerGroupVo">
       SELECT worker_group.* FROM app_worker_group LEFT JOIN worker_group
         ON app_worker_group.workerGroupId=worker_group.id
           WHERE app_worker_group.appId=#{_parameter}
     </select>
 
 </mapper>
+
+
