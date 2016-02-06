@@ -89,7 +89,7 @@ public class JobDependService {
     private List<JobDependVo> getChildren(JobDependVo jobDependVo, boolean all) {
         List<JobDependVo> jobChildren = jobDependMapper.getChildrenById(jobDependVo.getJobId());
         if (jobChildren == null) {
-            jobChildren = new ArrayList<>();
+            jobChildren = new ArrayList<JobDependVo>();
         }
         for (JobDependVo childJob : jobChildren) {
             if (all) {
@@ -105,7 +105,7 @@ public class JobDependService {
     private List<JobDependVo> getParents(JobDependVo jobDependVo, boolean all) {
         List<JobDependVo> jobParents = jobDependMapper.getParentById(jobDependVo.getJobId());
         if (jobParents == null) {
-            jobParents = new ArrayList<>();
+            jobParents = new ArrayList<JobDependVo>();
         }
         for (JobDependVo parentJob : jobParents) {
             parentJob.setParentFlag(true);
@@ -123,7 +123,7 @@ public class JobDependService {
     private void generateTaskList4Depend(JobDependVo jobRoot, JobDependQo query) {
 
         //做成JobIds
-        List<Long> jobIds = new ArrayList<>();
+        List<Long> jobIds = new ArrayList<Long>();
         jobIds.add(jobRoot.getJobId());
         for (JobDependVo parent : jobRoot.getParents()) {
             jobIds.add(parent.getJobId());
@@ -142,14 +142,14 @@ public class JobDependService {
         if (taskList == null || taskList.size() == 0) {
             return;
         }
-        Map<Long, List<TaskVo>> taskMap = new HashMap<>();
+        Map<Long, List<TaskVo>> taskMap = new HashMap<Long, List<TaskVo>>();
         for (TaskVo item : taskList) {
             Long jobId = item.getJobId();
             List<TaskVo> value;
             if (taskMap.containsKey(jobId)) {
                 value = taskMap.get(jobId);
             } else {
-                value = new ArrayList<>();
+                value = new ArrayList<TaskVo>();
                 taskMap.put(jobId, value);
             }
             value.add(item);

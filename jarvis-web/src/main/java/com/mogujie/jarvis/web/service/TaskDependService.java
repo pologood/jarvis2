@@ -51,7 +51,7 @@ public class TaskDependService {
         Map<String, List<Long>> childTaskIds = JsonHelper.fromJson(result.getChildTaskIds(), dependMapType);
 
         //获取所有taskDepend
-        List<Long> taskIds = new ArrayList<>();
+        List<Long> taskIds = new ArrayList<Long>();
         for (List<Long> taskIdList : parentTaskIds.values()) {
             taskIds.addAll(taskIdList);
         }
@@ -78,7 +78,7 @@ public class TaskDependService {
     }
 
     private TaskDependVo getTaskDependVoById(long taskId) {
-        List<Long> ids = new ArrayList<>();
+        List<Long> ids = new ArrayList<Long>();
         ids.add(taskId);
         List<TaskDependVo> data = taskDependMapper.getTaskDependByIds(ids);
         if (data == null) {

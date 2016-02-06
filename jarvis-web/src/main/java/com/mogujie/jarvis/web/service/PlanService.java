@@ -29,18 +29,18 @@ public class PlanService {
      * @author hejian
      */
     public Map<String, Object> getPlans(PlanQo planQo) {
-        Map<String, Object> result = new HashMap<>();
+        Map<String, Object> result = new HashMap<String, Object>();
 
         Integer total = planMapper.getPlanCountByCondition(planQo);
         List<PlanVo> planVoList = planMapper.getPlansByCondition(planQo);
-        Map<Long,PlanVo> planVoMap = new HashMap<>();
-        List<Long> jobIdList = new ArrayList<>();
+        Map<Long,PlanVo> planVoMap = new HashMap<Long,PlanVo>();
+        List<Long> jobIdList = new ArrayList<Long>();
         for(PlanVo planVo : planVoList){
             planVoMap.put(planVo.getJobId(),planVo);
             jobIdList.add(planVo.getJobId());
         }
 
-        List<TaskVo> recentTaskList = new ArrayList<>();
+        List<TaskVo> recentTaskList = new ArrayList<TaskVo>();
         if (jobIdList.size() > 0) {
             recentTaskList = taskService.getTaskByJobIdBetweenTime(jobIdList,planQo.getScheduleStartTime(),planQo.getScheduleEndTime());
         }

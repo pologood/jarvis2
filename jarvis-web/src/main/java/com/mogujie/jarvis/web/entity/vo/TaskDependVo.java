@@ -21,8 +21,8 @@ public class TaskDependVo {
 
     private String dependTaskIds;
     private String childTaskIds;
-    private List<TaskDependVo> children = new ArrayList<>();
-    private List<TaskDependVo> parents = new ArrayList<>();
+    private List<TaskDependVo> children = new ArrayList<TaskDependVo>();
+    private List<TaskDependVo> parents = new ArrayList<TaskDependVo>();
 
     private boolean parentFlag = false;
     private boolean rootFlag = false;
