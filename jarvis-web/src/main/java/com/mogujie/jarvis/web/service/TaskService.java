@@ -5,6 +5,7 @@ import com.mogujie.jarvis.web.entity.qo.TaskQo;
 import com.mogujie.jarvis.web.entity.vo.TaskVo;
 import com.mogujie.jarvis.web.mapper.TaskMapper;
 import org.apache.commons.lang.StringUtils;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -53,8 +54,21 @@ public class TaskService {
         return result;
     }
 
-
     public List<String> getAllExecuteUser() {
         return taskMapper.getAllExecuteUser();
     }
+
+    public List<TaskVo> getTaskByJobIdBetweenTime(List<Long> jobIdList, int startTime, int endTime){
+
+        DateTime now = DateTime.now();
+        if(startTime == 0 && endTime ==0){
+            startTime = (int) (now.withTime(0, 0, 0, 0).getMillis() / 1000);
+            endTime = (int) (now.withTime(23, 59, 59, 999).getMillis() / 1000);
+        }
+
+        return taskMapper.getTaskByJobIdBetweenTime(jobIdList,startTime,endTime);
+    }
+
+
+
 }

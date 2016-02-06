@@ -88,6 +88,13 @@ a:hover {
     stroke-width: 1.5px;
 }
 
+.node rect{
+    stroke: steelblue;
+    stroke-width: 1.5px;
+    cursor: pointer;
+}
+
+
 .node text {
     font-size: 11px;
 }

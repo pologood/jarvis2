@@ -3,18 +3,63 @@
 <mapper namespace="com.mogujie.jarvis.web.mapper.JobDependMapper">
 
     <select id="getJobById" parameterType="Long" resultType="JobDependVo">
-        SELECT jobId AS id,jobName AS text FROM job LEFT JOIN app ON job.appId=app.appId WHERE jobId=#{jobId}
+        SELECT job.jobId
+              ,job.jobName
+              ,job.status
+              ,jobType
+              ,job.submitUser
+              ,job.priority
+              ,job.bizGroupId
+              ,job.activeStartDate
+              ,job.activeEndDate
+              ,app.appName
+              ,app.appKey
+              ,biz_group.name as bizGroupName
+        FROM job
+        LEFT JOIN app ON job.appId=app.appId
+        LEFT JOIN biz_group on job.bizGroupId = biz_group.id
+        WHERE jobId=#{jobId}
     </select>
-    
+
     <select id="getChildrenById" parameterType="Long" resultType="JobDependVo">
-        SELECT job_depend.jobId as id,job.jobName AS text,app.appName AS appName,app.appKey AS appKey
-        FROM job_depend LEFT JOIN job ON job_depend.jobId=job.jobId LEFT JOIN app ON job.appId=app.appId
+        SELECT job_depend.jobId
+              ,job.jobName
+              ,job.status
+              ,jobType
+              ,job.submitUser
+              ,job.priority
+              ,job.bizGroupId
+              ,job.activeStartDate
+              ,job.activeEndDate
+              ,app.appName
+              ,app.appKey
+              ,biz_group.name as bizGroupName
+        FROM job_depend
+        LEFT JOIN job ON job_depend.jobId=job.jobId
+        LEFT JOIN app ON job.appId=app.appId
+        LEFT JOIN biz_group on job.bizGroupId = biz_group.id
         WHERE job_depend.preJobId=#{jobId}
     </select>
 
     <select id="getParentById" parameterType="Long" resultType="JobDependVo">
-        SELECT job_depend.preJobId as id,job.jobName AS text,job_depend.commonStrategy,job_depend.offsetStrategy
-        FROM job_depend LEFT JOIN job ON job_depend.preJobId=job.jobId
+        SELECT job_depend.preJobId as jobId
+              ,job.jobName
+              ,job.status
+              ,jobType
+              ,job.submitUser
+              ,job.priority
+              ,job.bizGroupId
+              ,job.activeStartDate
+              ,job.activeEndDate
+              ,app.appName
+              ,app.appKey
+              ,biz_group.name as bizGroupName
+              ,job_depend.commonStrategy
+              ,job_depend.offsetStrategy
+        FROM job_depend
+        LEFT JOIN job ON job_depend.preJobId=job.jobId
+        LEFT JOIN app ON job.appId=app.appId
+        LEFT JOIN biz_group on job.bizGroupId = biz_group.id
         WHERE job_depend.jobId=#{_parameter}
     </select>
 

@@ -1,153 +1,165 @@
 package com.mogujie.jarvis.web.entity.vo;
 
-import com.mogujie.jarvis.dto.generate.TaskDepend;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 /**
- * Created by hejian on 15/12/8.
+ * @author muming ,hejian
  */
-public class TaskDependVo extends TaskDepend {
+public class TaskDependVo {
 
+    private Long taskId;
     private Integer status;
+    private Long jobId;
+    private String jobName;
     private Date scheduleTime;
     private Date executeStartTime;
     private Date executeEndTime;
     private Long executeTime;
     private String executeUser;
-    private List<TaskDependVo> children = new ArrayList<TaskDependVo>();
-    private List<TaskDependVo> parents = new ArrayList<TaskDependVo>();
+
+    private String dependTaskIds;
+    private String childTaskIds;
+    private List<TaskDependVo> children = new ArrayList<>();
+    private List<TaskDependVo> parents = new ArrayList<>();
 
     private boolean parentFlag = false;
     private boolean rootFlag = false;
 
-    private Long jobId;
-    private String jobName;
-    private Integer completeTask;
-    private Integer totalTask;
-    private List<TaskVo> taskList = new ArrayList<TaskVo>();
 
-
-    public Integer getStatus() {
-        return status;
+    public Long getTaskId() {
+        return taskId;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public TaskDependVo setTaskId(Long taskId) {
+        this.taskId = taskId;
+        return this;
     }
 
-    public Date getScheduleTime() {
-        return scheduleTime;
+    public String getDependTaskIds() {
+        return dependTaskIds;
     }
 
-    public void setScheduleTime(Date scheduleTime) {
-        this.scheduleTime = scheduleTime;
+    public TaskDependVo setDependTaskIds(String dependTaskIds) {
+        this.dependTaskIds = dependTaskIds;
+        return this;
     }
 
-    public Date getExecuteStartTime() {
-        return executeStartTime;
+    public String getChildTaskIds() {
+        return childTaskIds;
     }
 
-    public void setExecuteStartTime(Date executeStartTime) {
-        this.executeStartTime = executeStartTime;
-    }
-
-    public Date getExecuteEndTime() {
-        return executeEndTime;
-    }
-
-    public void setExecuteEndTime(Date executeEndTime) {
-        this.executeEndTime = executeEndTime;
-    }
-
-    public Long getExecuteTime() {
-        return executeTime;
-    }
-
-    public void setExecuteTime(Long executeTime) {
-        this.executeTime = executeTime;
-    }
-
-    public List<TaskDependVo> getChildren() {
-        return children;
-    }
-
-    public void setChildren(List<TaskDependVo> children) {
-        this.children = children;
-    }
-
-    public List<TaskDependVo> getParents() {
-        return parents;
-    }
-
-    public void setParents(List<TaskDependVo> parents) {
-        this.parents = parents;
+    public TaskDependVo setChildTaskIds(String childTaskIds) {
+        this.childTaskIds = childTaskIds;
+        return this;
     }
 
     public Long getJobId() {
         return jobId;
     }
 
-    public void setJobId(Long jobId) {
+    public TaskDependVo setJobId(Long jobId) {
         this.jobId = jobId;
+        return this;
     }
 
     public String getJobName() {
         return jobName;
     }
 
-    public void setJobName(String jobName) {
+    public TaskDependVo setJobName(String jobName) {
         this.jobName = jobName;
+        return this;
     }
 
-    public Integer getCompleteTask() {
-        return completeTask;
+    public Integer getStatus() {
+        return status;
     }
 
-    public void setCompleteTask(Integer completeTask) {
-        this.completeTask = completeTask;
+    public TaskDependVo setStatus(Integer status) {
+        this.status = status;
+        return this;
     }
 
-    public Integer getTotalTask() {
-        return totalTask;
+    public Date getScheduleTime() {
+        return scheduleTime;
     }
 
-    public void setTotalTask(Integer totalTask) {
-        this.totalTask = totalTask;
+    public TaskDependVo setScheduleTime(Date scheduleTime) {
+        this.scheduleTime = scheduleTime;
+        return this;
     }
 
-    public List<TaskVo> getTaskList() {
-        return taskList;
+    public Date getExecuteStartTime() {
+        return executeStartTime;
     }
 
-    public void setTaskList(List<TaskVo> taskList) {
-        this.taskList = taskList;
+    public TaskDependVo setExecuteStartTime(Date executeStartTime) {
+        this.executeStartTime = executeStartTime;
+        return this;
     }
 
-    public boolean isParentFlag() {
-        return parentFlag;
+    public Date getExecuteEndTime() {
+        return executeEndTime;
     }
 
-    public void setParentFlag(boolean parentFlag) {
-        this.parentFlag = parentFlag;
+    public TaskDependVo setExecuteEndTime(Date executeEndTime) {
+        this.executeEndTime = executeEndTime;
+        return this;
     }
 
-    public boolean isRootFlag() {
-        return rootFlag;
+    public Long getExecuteTime() {
+        return executeTime;
     }
 
-    public void setRootFlag(boolean rootFlag) {
-        this.rootFlag = rootFlag;
+    public TaskDependVo setExecuteTime(Long executeTime) {
+        this.executeTime = executeTime;
+        return this;
     }
 
     public String getExecuteUser() {
         return executeUser;
     }
 
-    public void setExecuteUser(String executeUser) {
+    public TaskDependVo setExecuteUser(String executeUser) {
         this.executeUser = executeUser;
+        return this;
     }
 
+    public List<TaskDependVo> getChildren() {
+        return children;
+    }
+
+    public TaskDependVo setChildren(List<TaskDependVo> children) {
+        this.children = children;
+        return this;
+    }
+
+    public List<TaskDependVo> getParents() {
+        return parents;
+    }
+
+    public TaskDependVo setParents(List<TaskDependVo> parents) {
+        this.parents = parents;
+        return this;
+    }
+
+    public boolean isParentFlag() {
+        return parentFlag;
+    }
+
+    public TaskDependVo setParentFlag(boolean parentFlag) {
+        this.parentFlag = parentFlag;
+        return this;
+    }
+
+    public boolean isRootFlag() {
+        return rootFlag;
+    }
+
+    public TaskDependVo setRootFlag(boolean rootFlag) {
+        this.rootFlag = rootFlag;
+        return this;
+    }
 }

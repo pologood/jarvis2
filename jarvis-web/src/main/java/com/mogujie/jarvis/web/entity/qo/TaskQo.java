@@ -72,6 +72,8 @@ public class TaskQo {
         }
     }
 
+
+
     public List<String> getJobNameList() {
         return jobNameList;
     }

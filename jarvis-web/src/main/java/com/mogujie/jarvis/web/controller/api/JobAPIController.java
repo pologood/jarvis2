@@ -1,8 +1,10 @@
 package com.mogujie.jarvis.web.controller.api;
 
-import com.mogu.bigdata.admin.core.entity.User;
-import com.mogu.bigdata.admin.core.entity.vo.UserInfo;
-import com.mogu.bigdata.admin.inside.service.AdminUserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.mogujie.jarvis.core.domain.CommonStrategy;
 import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.core.expression.ScheduleExpressionType;
@@ -12,13 +14,12 @@ import com.mogujie.jarvis.web.entity.vo.JobVo;
 import com.mogujie.jarvis.web.service.JobDependService;
 import com.mogujie.jarvis.web.service.JobService;
 import com.mogujie.jarvis.web.utils.MessageStatus;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import com.mogujie.jarvis.web.entity.qo.JobDependQo;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by hejian on 15/9/15.
@@ -31,8 +32,6 @@ public class JobAPIController {
     private JobService jobService;
     @Autowired
     private JobDependService jobDependService;
-    @Autowired
-    protected AdminUserService userService;
 
     /*
     * 根据id获取job的详细信息
@@ -92,19 +91,6 @@ public class JobAPIController {
         return map;
     }
 
-    @RequestMapping("/getAllUser")
-    @ResponseBody
-    public Object getAllUser() {
-        List<User> userList;
-        try {
-            userList = userService.getAllUsers();
-        } catch (Exception e) {
-            e.printStackTrace();
-            userList = new ArrayList<User>();
-        }
-        return userList;
-    }
-
     /*
     * 提交过job的用户
     * */
@@ -123,26 +109,24 @@ public class JobAPIController {
         return list;
     }
 
+    /**
+    * 获取任务依赖
+    * */
+    @RequestMapping(value = "/getDepend")
+    @ResponseBody
+    public Object getDepend(JobDependQo jobQo) {
+        return jobDependService.getDepended(jobQo);
+    }
 
     /**
      * 单向依赖树
      */
     @RequestMapping("/getTreeDependedOnJob")
     @ResponseBody
-    public Object getTreeDependedOnJob(JobQo jobQo) {
-        Map<String, Object> result = jobDependService.getTreeDependedOnJob(jobQo);
-        return result;
+    public Object getTreeDependedOnJob(JobDependQo jobQo) {
+        return jobDependService.getSubTree(jobQo);
     }
 
-    /**
-     * 两向树
-     */
-    @RequestMapping("/getTwoDirectionTree")
-    @ResponseBody
-    public Object getTwoDirectionTree(JobQo jobQo) {
-        Map<String, Object> result = jobDependService.getTwoDirectionTreeDependedOnJob(jobQo);
-        return result;
-    }
 
     /**
      * 相似jobId
@@ -221,6 +205,5 @@ public class JobAPIController {
 
         return list;
     }
-
 
 }

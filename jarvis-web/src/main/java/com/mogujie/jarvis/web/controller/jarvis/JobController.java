@@ -4,9 +4,11 @@ import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.web.auth.annotation.JarvisPassport;
 import com.mogujie.jarvis.web.auth.conf.JarvisAuthType;
 import com.mogujie.jarvis.web.entity.qo.AppQo;
+import com.mogujie.jarvis.web.entity.qo.JobDependQo;
 import com.mogujie.jarvis.web.entity.vo.*;
 import com.mogujie.jarvis.web.service.*;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -17,7 +19,7 @@ import java.io.InputStream;
 import java.util.*;
 
 /**
- * Created by hejian on 15/9/15.
+ * @author hejian, muming
  */
 @Controller
 @RequestMapping("/job")
@@ -45,10 +47,9 @@ public class JobController extends BaseController {
         }
     }
 
-    /*
-    * job任务管理首页
-    * @author hejian
-    * */
+    /**
+     * job任务管理首页
+     */
     @RequestMapping
     @JarvisPassport(authTypes = JarvisAuthType.job)
     public String index(ModelMap modelMap) {
@@ -56,10 +57,49 @@ public class JobController extends BaseController {
         return "job/index";
     }
 
-    /*
-    * job任务新增或编辑页
-    * @author hejian
-    * */
+
+    /**
+     * job任务详情页面
+     */
+    @RequestMapping(value = "detail")
+    @JarvisPassport(authTypes = JarvisAuthType.job, isMenu = false)
+    public String detail(ModelMap modelMap, Long jobId) {
+        JobVo jobVo = jobService.getJobById(jobId);
+        if (jobVo == null) {
+            jobVo = new JobVo();
+        }
+        modelMap.put("jobVo", JsonHelper.toJson(jobVo));
+        return "job/detail";
+    }
+
+    /**
+     * job依赖
+     */
+    @RequestMapping(value = "dependency")
+    @JarvisPassport(authTypes = JarvisAuthType.job, isMenu = false)
+    public String dependency(ModelMap modelMap, JobDependQo query) {
+
+        Long jobId = query.getJobId();
+        JobVo jobVo = jobService.getJobById(jobId);
+        if (jobVo == null) {
+            modelMap.put("message", "job不存在.jobId:" + jobId);
+            return "common/error";
+        }
+
+        //默认为当天
+        modelMap.put("scheduleDate", DateTime.now().toString("yyyyMMdd"));
+
+        modelMap.put("jobId", jobId);
+        modelMap.put("jobName", jobVo.getJobName());
+        modelMap.put("showTaskStartTime", query.getShowTaskStartTime());
+        modelMap.put("showTaskEndTime", query.getShowTaskEndTime());
+
+        return "job/dependency";
+    }
+
+    /**
+     * job任务新增或编辑页
+     */
     @RequestMapping(value = "addOrEdit")
     @JarvisPassport(authTypes = JarvisAuthType.job, isMenu = false)
     public String addOrEdit(ModelMap modelMap, Long jobId) {
@@ -68,10 +108,9 @@ public class JobController extends BaseController {
         return "job/addOrEdit";
     }
 
-    /*
-    * 检查job名字是否重复
-    * @author hejian
-    * */
+    /**
+     * 检查job名字是否重复
+     */
     @RequestMapping("checkJobName")
     @ResponseBody
     public Map<String, Object> checkJobName(Long jobId, String jobName) {
@@ -104,24 +143,9 @@ public class JobController extends BaseController {
                 result.put("msg", "不存在此名字任务:" + jobName + ",可以更新");
             }
         }
-
         return result;
     }
 
-    /*
-    * job任务详情页面
-    * @author hejian
-    * */
-    @RequestMapping(value = "detail")
-    @JarvisPassport(authTypes = JarvisAuthType.job, isMenu = false)
-    public String dependency(ModelMap modelMap, Long jobId) {
-        JobVo jobVo = jobService.getJobById(jobId);
-        if (jobVo == null) {
-            jobVo = new JobVo();
-        }
-        modelMap.put("jobVo", JsonHelper.toJson(jobVo));
-        return "job/detail";
-    }
 
 
 }

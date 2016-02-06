@@ -1,5 +1,6 @@
 var taskStatusJson = null;
 var taskStatusColor = null;
+var taskOperation = null;
 
 $(function () {
     createDatetimePickerById("executeDate");
@@ -64,6 +65,10 @@ $(function () {
     $.getJSON(contextPath + "/assets/json/taskStatusColor.json", function (data) {
         taskStatusColor = data;
     });
+    //初始化操作类型
+    $.getJSON(contextPath + "/assets/json/taskOperation.json", function (data) {
+        taskOperation = data;
+    });
     $.ajaxSettings.async = true;
 
 
@@ -121,7 +126,7 @@ $(function () {
         width: '100%'
     });
 
-
+    initSearchCondition();
     initData();
 });
 
@@ -130,6 +135,25 @@ function search() {
     $("#content").bootstrapTable("destroy");
     initData();
 }
+
+function initSearchCondition() {
+    if (taskQo != null) {
+        if (taskQo.jobIdList != null) {
+            //var data = [];
+            $("#jobId").select2({data: [{id: -1, text: "撑住单元格,请@何剑"}]});
+            for (var i = 0; i < taskQo.jobIdList.length; i++) {
+                var jobId = taskQo.jobIdList[i];
+                //data.push();
+                $("#jobId").select2({data: [{id: jobId, text: jobId}]})
+                    .val(jobId).trigger("change");
+            }
+        }
+        if (taskQo.scheduleDate != null && taskQo.scheduleDate != "") {
+            $("#scheduleDate").val(taskQo.scheduleDate);
+        }
+    }
+}
+
 //重置参数
 function reset() {
     $("#scheduleDate").val("");
@@ -282,12 +306,12 @@ var columns = [{
     field: 'executeStartTime',
     title: '开始执行时间',
     switchable: true,
-    formatter: formatDateTime
+    formatter: formatDateTimeWithoutYear
 }, {
     field: 'executeEndTime',
     title: '执行结束时间',
     switchable: true,
-    formatter: formatDateTime
+    formatter: formatDateTimeWithoutYear
 }, {
     field: 'executeTime',
     title: '执行时长',
@@ -296,7 +320,7 @@ var columns = [{
     formatter: formatTimeInterval
 }, {
     field: 'status',
-    title: '执行状态',
+    title: '状态',
     switchable: true,
     formatter: taskStatusFormatter
 }, {
@@ -333,13 +357,59 @@ var columns = [{
     formatter: operateFormatter
 }];
 
+//重试还是kill，type与rest接口一一对应
+function TaskOperate(jobId, taskId, attemptId, url, text) {
+    (new PNotify({
+        title: '任务操作',
+        text: '确定' + text + "?",
+        icon: 'glyphicon glyphicon-question-sign',
+        hide: false,
+        confirm: {
+            confirm: true
+        },
+        buttons: {
+            closer: false,
+            sticker: false
+        },
+        history: {
+            history: false
+        }
+    })).get().on('pnotify.confirm', function () {
+        var data = {};
+        data["jobId"] = jobId;
+        data["taskId"] = taskId;
+        data["attemptId"] = attemptId;
+        requestRemoteRestApi(url, text, data);
+    }).on('pnotify.cancel', function () {
+    });
+}
+
 function operateFormatter(value, row, index) {
+    var jobId = row['jobId'];
+    var attemptId = row['attemptId'];
     var taskId = row["taskId"];
+    var status = row["status"];
+    var operations = taskOperation[status];
+    var operationStr = "";
+    $(operations).each(function (i, c) {
+        operationStr += '<li><a href="javascript:void(0)" onclick="TaskOperate(\'' + jobId + '\',\'' + taskId + '\',\'' + attemptId + '\',\'' + c.url + '\',\'' + c.text + '\')">' + c.text + '</a></li>';
+    });
+
     var result = [
-        '<a class="edit" href="' + contextPath + '/task/detail?taskId=' + taskId + '" title="查看执行详情" target="_blank">',
-        '<i class="glyphicon glyphicon-eye-open"></i>',
+        '<a class="edit" href="' + contextPath + '/task/dependency?taskId=' + taskId + '" title="查看task依赖" target="_blank">',
+        '<i class="glyphicon glyphicon-object-align-horizontal"></i>',
         '</a>  ',
-        ' <a href="javascript:void(0)" onclick="showTaskHistory(' + taskId + ')">执行记录</a>'
+        '<a class="edit" href="' + contextPath + '/task/detail?taskId=' + taskId + '" title="查看task详情" target="_blank">',
+        '<i class="glyphicon glyphicon-list-alt"></i>',
+        '</a>  ',
+        ' <a href="javascript:void(0)" onclick="showTaskHistory(' + taskId + ')" title="重试一览">',
+        '<i class="glyphicon glyphicon-list"></i>',
+        '</a>',
+        '<div class="btn-group"> <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">操作 <span class="caret"></span> </button>',
+        '<ul class="dropdown-menu">',
+        operationStr,
+        '</ul>',
+        '</div>'
     ].join('');
     return result;
 }
@@ -348,17 +418,17 @@ var taskHistoryColumn = [{
     field: 'executeStartTime',
     title: '开始执行时间',
     switchable: true,
-    formatter:formatDateTime
+    formatter: formatDateTime
 }, {
     field: 'executeEndTime',
     title: '执行结束时间',
     switchable: true,
-    formatter:formatDateTime
+    formatter: formatDateTime
 }, {
     field: 'dataTime',
     title: '数据时间',
     switchable: true,
-    formatter:formatDateTime
+    formatter: formatDateTime
 }, {
     field: 'executeUser',
     title: '执行者',

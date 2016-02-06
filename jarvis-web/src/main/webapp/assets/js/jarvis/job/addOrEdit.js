@@ -78,12 +78,12 @@ function initBizGroupName() {
 //初始化内网用户
 function generateUsers() {
     $.ajax({
-        url: contextPath + '/api/job/getAllUser',
+        url: contextPath + '/api/common/getAllUser',
         type: 'POST',
         data: {},
         success: function (data) {
             var selectData = new Array();
-            $(data).each(function (i, c) {
+            $(data.rows).each(function (i, c) {
                 var user = {};
                 var id = c.nick;
                 var text = c.nick;

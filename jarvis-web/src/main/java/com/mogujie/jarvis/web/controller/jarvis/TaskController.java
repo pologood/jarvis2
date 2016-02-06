@@ -3,6 +3,7 @@ package com.mogujie.jarvis.web.controller.jarvis;
 import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.web.auth.annotation.JarvisPassport;
 import com.mogujie.jarvis.web.auth.conf.JarvisAuthType;
+import com.mogujie.jarvis.web.entity.qo.TaskDependQo;
 import com.mogujie.jarvis.web.entity.vo.JobVo;
 import com.mogujie.jarvis.web.entity.qo.TaskQo;
 import com.mogujie.jarvis.web.entity.vo.TaskVo;
@@ -35,10 +36,11 @@ public class TaskController extends BaseController {
 
     @RequestMapping
     @JarvisPassport(authTypes = JarvisAuthType.task)
-    public String index(ModelMap modelMap) {
+    public String index(ModelMap modelMap,TaskQo taskQo) {
         List<String> executeUsers = taskService.getAllExecuteUser();
 
         modelMap.put("executeUsers", executeUsers);
+        modelMap.put("taskQo",JsonHelper.toJson(taskQo));
         return "task/index";
     }
 
@@ -91,4 +93,20 @@ public class TaskController extends BaseController {
 
         return "task/detail";
     }
+
+
+    /**
+     * task依赖
+     */
+    @RequestMapping(value = "dependency")
+    @JarvisPassport(authTypes = JarvisAuthType.job, isMenu = false)
+    public String dependency(ModelMap modelMap, TaskDependQo taskDependQo) {
+
+        modelMap.put("taskDependQo", JsonHelper.toJson(taskDependQo));
+        modelMap.put("taskId",taskDependQo.getTaskId());
+
+        return "task/dependency";
+    }
+
+
 }

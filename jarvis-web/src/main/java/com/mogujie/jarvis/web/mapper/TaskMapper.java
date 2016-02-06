@@ -22,16 +22,12 @@ public interface TaskMapper {
 
     List<String> getAllExecuteUser();
 
-    /**
-     * 执行计划
-     */
+    List<TaskVo> getTaskByIds(@Param("list") List<Long> taskIds);
 
-    Integer getPlanCountByCondition(PlanQo planQo);      //某个
+    List<TaskVo> getRecentExecuteTaskByJobId(List<Long> jobIdList);
 
-    List<PlanVo> getPlansByCondition(PlanQo planQo);
+    List<TaskVo> getTaskByJobIdBetweenTime(@Param("jobIdList") List<Long> jobIdList,
+                                           @Param("startTime") int startTime,
+                                           @Param("endTime") int endTime);
 
-
-    List<TaskVo> getTaskByIds(@Param("list") Set<String> taskIds);
-
-    List<PlanVo> getRecentExecuteTaskByJobId(List<Long> jobIdList);
 }

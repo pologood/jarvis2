@@ -91,6 +91,18 @@ function formatDateTime(dateTime) {
     var result = moment(theDate).format("YYYY-MM-DD HH:mm:ss");
     return result;
 }
+
+//时间戳转化成日期时间
+function formatDateTimeWithoutYear(dateTime) {
+    if (dateTime == undefined || dateTime == '') {
+        return '-';
+    }
+    var theDate = new Date(dateTime);
+    var result = moment(theDate).format("MM-DD HH:mm:ss");
+    return result;
+}
+
+
 //秒转化成对应的时间长度
 function formatTimeInterval(timeInterval) {
     //console.log(timeInterval);

@@ -3,7 +3,6 @@
 <mapper namespace="com.mogujie.jarvis.web.mapper.TaskMapper">
 
 
-
     <sql id="condition">
         <where>
             <if test="jobIdList!=null">
@@ -68,13 +67,13 @@
         <if test="orderField!=null">
             <choose>
                 <when test="order!=null and order=='ASC'">
-                    ORDER  BY #{orderField} ASC
+                    ORDER BY #{orderField} ASC
                 </when>
                 <when test="order!=null and order=='DESC'">
-                    ORDER  BY #{orderField} DESC
+                    ORDER BY #{orderField} DESC
                 </when>
                 <otherwise>
-                    ORDER  BY #{orderField}
+                    ORDER BY #{orderField}
                 </otherwise>
             </choose>
 
@@ -84,15 +83,15 @@
 
     <select id="getCountByCondition" parameterType="TaskQo" resultType="Integer">
         SELECT COUNT(1) FROM task LEFT JOIN job ON task.jobId=job.jobId
-        <include refid="condition" />
+        <include refid="condition"/>
     </select>
 
     <select id="getTasksByCondition" parameterType="TaskQo" resultType="TaskVo">
         SELECT *,time_to_sec(TIMEDIFF(task.executeEndTime,task.executeStartTime)) AS executeTime
         FROM task LEFT JOIN job ON task.jobId=job.jobId LEFT JOIN app ON job.appId=app.appId
-        <include refid="condition" />
+        <include refid="condition"/>
         ORDER BY scheduleTime DESC,executeEndTime DESC,executeStartTime DESC
-        <include refid="pager" />
+        <include refid="pager"/>
     </select>
 
     <select id="getTaskById" parameterType="Long" resultType="TaskVo">
@@ -104,48 +103,6 @@
         SELECT DISTINCT executeUser FROM task;
     </select>
 
-
-    <!--******************************************************-->
-    <!--*****************执行计划相关*************-->
-    <!--******************************************************-->
-    
-    <sql id="planCondition">
-        <where>
-            <if test="jobIdList!=null">
-                task.jobId IN
-                <foreach collection="jobIdList" item="jobId" open="(" close=")" separator=",">
-                    #{jobId}
-                </foreach>
-            </if>
-            <if test="jobNameList!=null and jobNameList!=''">
-                AND job.jobName IN
-                <foreach collection="jobNameList" item="jobName" open="(" close=")" separator=",">
-                    #{jobName}
-                </foreach>
-            </if>
-            <if test="jobTypeList!=null and jobTypeList!=''">
-                AND job.jobType IN
-                <foreach collection="jobTypeList" item="jobType" open="(" close=")" separator=",">
-                    #{jobType}
-                </foreach>
-            </if>
-            <if test="priorityList!=null">
-                AND job.priority IN
-                <foreach collection="priorityList" item="priority" open="(" close=")" separator=",">
-                    #{priority}
-                </foreach>
-            </if>
-            <if test="executeUserList!=null and executeUserList!=''">
-                AND task.executeUser IN
-                <foreach collection="executeUserList" item="executeUser" open="(" close=")" separator=",">
-                    #{executeUser}
-                </foreach>
-            </if>
-            <if test="dataTime!=null">
-                AND dataTime=#{dataTime}
-            </if>
-        </where>
-    </sql>
 
     <sql id="orderCondition">
         <choose>
@@ -161,49 +118,41 @@
         </choose>
     </sql>
 
-    
-    <select id="getPlanCountByCondition" parameterType="PlanQo" resultType="Integer">
-        SELECT COUNT(1) FROM task LEFT JOIN job ON task.jobId=job.jobId
-        <include refid="planCondition" />
-    </select>
-    
-    <select id="getPlansByCondition" parameterType="PlanQo" resultType="PlanVo">
-        SELECT
-          task.*,
-          job.jobName,
-          job.jobType,
-          job.submitUser,
-          job.priority,
-          job.appId,
-          job.workerGroupId,
-          app.appName,
-          time_to_sec(TIMEDIFF(task.executeEndTime,task.executeStartTime)) AS executeTime
-        FROM task LEFT JOIN job ON task.jobId=job.jobId LEFT JOIN app ON job.appId=app.appId
-        <include refid="planCondition" />
-        ORDER BY task.scheduleTime DESC
-        <include refid="pager" />
-    </select>
-
-
-
     <select id="getTaskByIds" resultType="TaskVo">
-        SELECT task.*,time_to_sec(TIMEDIFF(task.executeEndTime,task.executeStartTime)) AS executeTime,job.jobName
-        FROM task LEFT JOIN job ON task.jobId=job.jobId
+        SELECT task.*,
+        time_to_sec(TIMEDIFF(task.executeEndTime,task.executeStartTime)) AS executeTime,
+        job.jobName
+        FROM task
+        LEFT JOIN job ON task.jobId=job.jobId
         WHERE taskId IN
         <foreach collection="list" item="item" open="(" close=")" separator=",">
             #{item}
         </foreach>
     </select>
-    
-    <select id="getRecentExecuteTaskByJobId" parameterType="List" resultType="PlanVo">
+
+    <select id="getRecentExecuteTaskByJobId" parameterType="List" resultType="TaskVo">
         <foreach collection="list" item="jobId" open="" close="" separator="UNION">
             (
-            SELECT taskId,jobId,time_to_sec(TIMEDIFF(task.executeEndTime,task.executeStartTime)) as executeTime
-              from task
-                where status=4 and jobId=#{jobId}
-                  ORDER BY executeEndTime DESC limit 10
+            SELECT taskId,jobId,status,scheduleTime,executeEndTime,executeStartTime
+            from task
+            where jobId=#{jobId} and status!=99
+            ORDER BY scheduleTime DESC limit 10
             )
         </foreach>
     </select>
+
+    <select id="getTaskByJobIdBetweenTime" parameterType="map" resultType="TaskVo">
+        SELECT taskId,jobId,status,scheduleTime,executeEndTime,executeStartTime
+        from task
+        where
+        jobId IN
+        <foreach collection="jobIdList" item="jobId" open="(" close=")" separator=",">
+            #{jobId}
+        </foreach>
+        and status!=99
+        and scheduleTime between from_unixtime(#{startTime}) and from_unixtime(#{endTime})
+        ORDER BY jobId,scheduleTime
+    </select>
+
 
 </mapper>

@@ -324,7 +324,8 @@ var columns = [{
     field: 'createTime',
     title: '创建时间',
     switchable: true,
-    formatter: formatDateTime
+    formatter: formatDateTime,
+    visible: false
 }, {
     field: 'updateTime',
     title: '更新时间',
@@ -369,8 +370,11 @@ function operateFormatter(value, row, index) {
 
 
     var result = [
-        '<a  href="' + contextPath + '/job/detail?jobId=' + jobId + '" title="查看任务依赖" target="_blank">',
-        '<i class="glyphicon glyphicon-eye-open"></i>',
+        '<a  href="' + contextPath + '/job/dependency?jobId=' + jobId + '" title="查看任务依赖" target="_blank">',
+        '<i class="glyphicon glyphicon-object-align-vertical"></i>',
+        '</a>  ',
+        '<a  href="' + contextPath + '/job/detail?jobId=' + jobId + '" title="查看任务详情" target="_blank">',
+        '<i class="glyphicon glyphicon-list-alt"></i>',
         '</a>  '
     ].join('');
 

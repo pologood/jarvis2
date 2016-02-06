@@ -18,6 +18,10 @@ public class PlanQo {
     private List<String> submitUserList;
     private List<String> executeUserList;
 
+    private String scheduleDate;
+    private int scheduleStartTime;
+    private int scheduleEndTime;
+
     private String dataTime;
     private Integer offset;
     private Integer limit;
@@ -102,6 +106,33 @@ public class PlanQo {
         }
     }
 
+    public String getScheduleDate() {
+        return scheduleDate;
+    }
+
+    public PlanQo setScheduleDate(String scheduleDate) {
+        this.scheduleDate = scheduleDate;
+        return this;
+    }
+
+    public int getScheduleStartTime() {
+        return scheduleStartTime;
+    }
+
+    public PlanQo setScheduleStartTime(int scheduleStartTime) {
+        this.scheduleStartTime = scheduleStartTime;
+        return this;
+    }
+
+    public int getScheduleEndTime() {
+        return scheduleEndTime;
+    }
+
+    public PlanQo setScheduleEndTime(int scheduleEndTime) {
+        this.scheduleEndTime = scheduleEndTime;
+        return this;
+    }
+
     public String getDataTime() {
         return dataTime;
     }
@@ -125,4 +156,6 @@ public class PlanQo {
     public void setLimit(Integer limit) {
         this.limit = limit;
     }
+
+
 }

@@ -1,7 +1,9 @@
 package com.mogujie.jarvis.web.controller.api;
 
 import com.mogujie.jarvis.core.domain.TaskStatus;
+import com.mogujie.jarvis.web.entity.qo.TaskDependQo;
 import com.mogujie.jarvis.web.entity.qo.TaskQo;
+import com.mogujie.jarvis.web.service.TaskDependService;
 import com.mogujie.jarvis.web.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,6 +23,9 @@ import java.util.Map;
 public class TaskAPIController {
     @Autowired
     TaskService taskService;
+
+    @Autowired
+    TaskDependService taskDependService;
 
     @RequestMapping(value = "/getTasks")
     @ResponseBody
@@ -44,6 +49,15 @@ public class TaskAPIController {
         }
 
         return list;
+    }
+
+    /**
+     * 获取任务依赖
+     * */
+    @RequestMapping(value = "/getDepend")
+    @ResponseBody
+    public Object getDepend(TaskDependQo taskDependQo) {
+        return taskDependService.getDepended(taskDependQo);
     }
 
 }

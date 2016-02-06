@@ -1,5 +1,4 @@
 var taskStatusJson = null;
-var planOperation = null;
 var taskStatusColor = null;
 
 $(function () {
@@ -61,10 +60,6 @@ $(function () {
     //初始化颜色
     $.getJSON(contextPath + "/assets/json/taskStatusColor.json", function (data) {
         taskStatusColor = data;
-    });
-    //初始化操作类型
-    $.getJSON(contextPath + "/assets/json/planOperation.json", function (data) {
-        planOperation = data;
     });
     $.ajaxSettings.async = true;
     initData();
@@ -152,16 +147,10 @@ function initData() {
 
 
 var columns = [{
-    field: 'taskId',
-    title: '执行ID',
-    switchable: true,
-    visible: true
-}, {
     field: 'jobId',
     title: '任务ID',
     switchable: true,
-    visible: true,
-    visible: false
+    visible: true
 }, {
     field: 'jobName',
     title: '任务名称',
@@ -183,30 +172,23 @@ var columns = [{
     switchable: true,
     visible: true
 }, {
-    field: 'content',
-    title: '任务内容',
+    field: 'bizGroupId',
+    title: '业务组ID',
     switchable: true,
-    visible: false,
-    formatter: StringFormatter
+    visible: false
+}, {
+    field: 'bizGroupName',
+    title: '业务组名',
+    switchable: true,
+    visible: true
 }, {
     field: 'priority',
     title: '任务优先级',
     switchable: true,
     visible: true
 }, {
-    field: 'params',
-    title: '任务参数',
-    switchable: true,
-    visible: false,
-    formatter: StringFormatter
-}, {
     field: 'submitUser',
-    title: '创建用户',
-    switchable: true,
-    visible: false
-}, {
-    field: 'executeUser',
-    title: '执行用户',
+    title: '提交用户',
     switchable: true,
     visible: true
 }, {
@@ -215,45 +197,23 @@ var columns = [{
     switchable: true,
     visible: false
 }, {
-    field: 'workerId',
-    title: 'workerId',
+    field: 'workerGroupName',
+    title: 'worker组名',
     switchable: true,
     visible: false
 }, {
-    field: 'scheduleTime',
-    title: '调度时间',
+    field: 'scheduleTimeFirst',
+    title: '首个调度时间',
     switchable: true,
-    formatter: formatDateTime
+    formatter: formatDateTime,
+    visible: false
 }, {
-    field: 'predictExecuteTime',
-    title: '预计执行时长',
-    switchable: true,
-    formatter: formatTimeInterval
-}, {
-    field: 'status',
-    title: '状态',
+    field: 'taskStatus',
+    title: '执行状态一览',
     switchable: true,
     visible: true,
-    formatter: taskStatusFormatter
-}, {
-    field: 'executeTime',
-    title: '执行时长',
-    switchable: true,
-    visible: false,
-    formatter: formatTimeInterval
-}, {
-    field: 'executeStartTime',
-    title: '执行开始时间',
-    switchable: true,
-    visible: false,
-    formatter: formatDateTime
-}, {
-    field: 'executeEndTime',
-    title: '执行结束时间',
-    switchable: true,
-    visible: false,
-    formatter: formatDateTime
-}, {
+    formatter: taskStatusListFormatter
+},  {
     field: 'createTime',
     title: '创建时间',
     switchable: true,
@@ -280,26 +240,15 @@ function jobNameFormatter(value,row,index){
 
 function operateFormatter(value, row, index) {
     var jobId = row["jobId"];
-    var taskId = row["taskId"];
-    var attemptId = row["attemptId"];
-
-    var status = row["status"];
-    var operations = planOperation[status];
-
-    var operationStr = "";
-    $(operations).each(function (i, c) {
-        operationStr += '<li><a href="javascript:void(0)" onclick="TaskOperate(\'' + jobId + '\',\'' + taskId + '\',\'' + attemptId + '\',\'' + c.url + '\',\'' + c.text + '\')">' + c.text + '</a></li>';
-    });
-
+    var dependUrl = contextPath + '/job/dependency?jobId=' + jobId;
+    var taskUrl = contextPath + '/task?jobIdList=' + JSON.stringify([jobId]) + '&scheduleDate=' + planQo.scheduleDate;
     var result = [
-        '<a class="edit" href="' + contextPath + '/plan/dependency?taskId=' + taskId + '" title="查看执行详情" target="_blank">',
-        '<i class="glyphicon glyphicon-eye-open"></i>',
+        '<a class="edit" href="' + dependUrl + '" title="查看job依赖" target="_blank">',
+        '<i class="glyphicon glyphicon-object-align-vertical"></i>',
         '</a>  ',
-        '<div class="btn-group"> <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">操作 <span class="caret"></span> </button>',
-        '<ul class="dropdown-menu">',
-        operationStr,
-        '</ul>',
-        '</div>'
+        '<a class="edit" href="' + taskUrl + '" title="查看Task一览" target="_blank">',
+        '<i class="glyphicon glyphicon-list"></i>',
+        '</a>  ',
     ].join('');
     return result;
 }
@@ -308,34 +257,20 @@ function taskStatusFormatter(value, row, index) {
     var result = '<i class="fa fa-circle fa-2x" style="color: ' + color + '"></i>';
     return result;
 }
-function StringFormatter(value, row, index) {
-    return value;
+function taskStatusListFormatter(value, row, index) {
+    var array = value.split(',');
+    var result = "";
+    for(var key in array){
+        if(!array[key]){
+            continue;
+        }
+        var color = taskStatusColor[array[key]];
+        result = result + '<i class="fa fa-circle fa-2x" style="color: ' + color + '"></i>';
+    }
+    return result;
 }
 
-//重试还是kill，type与rest接口一一对应
-function TaskOperate(jobId, taskId, attemptId, url, text) {
-    (new PNotify({
-        title: '任务操作',
-        text: '确定' + text + "?",
-        icon: 'glyphicon glyphicon-question-sign',
-        hide: false,
-        confirm: {
-            confirm: true
-        },
-        buttons: {
-            closer: false,
-            sticker: false
-        },
-        history: {
-            history: false
-        }
-    })).get().on('pnotify.confirm', function () {
-            var data = {};
-            data["jobId"] = jobId;
-            data["taskId"] = taskId;
-            data["attemptId"] = attemptId;
-            requestRemoteRestApi(url, text, data);
-        }).on('pnotify.cancel', function () {
-        });
+function StringFormatter(value, row, index) {
+    return value;
 }
 

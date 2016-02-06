@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mogujie.jarvis.web.mapper.PlanMapper">
+
+    <sql id="pager">
+        <if test="offset!=null and limit!=null">
+            limit #{offset},#{limit}
+        </if>
+    </sql>
+
+    <sql id="planCondition">
+        <where>
+            <if test="jobIdList!=null">
+                task.jobId IN
+                <foreach collection="jobIdList" item="jobId" open="(" close=")" separator=",">
+                    #{jobId}
+                </foreach>
+            </if>
+            <if test="jobNameList!=null and jobNameList!=''">
+                AND job.jobName IN
+                <foreach collection="jobNameList" item="jobName" open="(" close=")" separator=",">
+                    #{jobName}
+                </foreach>
+            </if>
+            <if test="jobTypeList!=null and jobTypeList!=''">
+                AND job.jobType IN
+                <foreach collection="jobTypeList" item="jobType" open="(" close=")" separator=",">
+                    #{jobType}
+                </foreach>
+            </if>
+            <if test="priorityList!=null">
+                AND job.priority IN
+                <foreach collection="priorityList" item="priority" open="(" close=")" separator=",">
+                    #{priority}
+                </foreach>
+            </if>
+            <if test="executeUserList!=null and executeUserList!=''">
+                AND job.submitUser IN
+                <foreach collection="executeUserList" item="executeUser" open="(" close=")" separator=",">
+                    #{executeUser}
+                </foreach>
+            </if>
+            <if test="dataTime!=null">
+                AND dataTime=#{dataTime}
+            </if>
+        </where>
+    </sql>
+
+    <sql id="orderCondition">
+        <choose>
+            <when test="">
+
+            </when>
+            <when test="">
+
+            </when>
+            <otherwise>
+
+            </otherwise>
+        </choose>
+    </sql>
+
+    
+    <select id="getPlanCountByCondition" parameterType="PlanQo" resultType="Integer">
+        SELECT COUNT(1) FROM plan LEFT JOIN job ON plan.jobId=job.jobId
+        <include refid="planCondition" />
+    </select>
+    
+    <select id="getPlansByCondition" parameterType="PlanQo" resultType="PlanVo">
+        SELECT
+          plan.jobId,
+          job.jobName,
+          job.jobType,
+          job.submitUser,
+          job.priority,
+          job.appId,
+          job.workerGroupId,
+          job.bizGroupId,
+          job.createTime,
+          job.updateTime,
+          app.appName,
+          biz_group.name as bizGroupName,
+          worker_group.name as workerGroupName
+        FROM plan LEFT JOIN job ON job.jobId = plan.jobId
+                  LEFT JOIN app ON job.appId = app.appId
+                  LEFT JOIN biz_group on job.bizGroupId = biz_group.id
+                  LEFT JOIN worker_group on job.workerGroupId = worker_group.id
+        <include refid="planCondition" />
+        ORDER BY plan.jobId DESC
+        <include refid="pager" />
+    </select>
+
+</mapper>

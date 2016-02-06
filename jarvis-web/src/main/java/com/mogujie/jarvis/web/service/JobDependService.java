@@ -1,148 +1,35 @@
+
 package com.mogujie.jarvis.web.service;
 
-import com.mogujie.jarvis.web.entity.vo.JobDependVo;
-import com.mogujie.jarvis.web.mapper.JobDependMapper;
-import com.mogujie.jarvis.web.entity.qo.JobQo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Field;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.mogujie.jarvis.web.entity.vo.JobDependVo;
+import com.mogujie.jarvis.web.entity.vo.TaskVo;
+import com.mogujie.jarvis.web.entity.qo.JobDependQo;
+import com.mogujie.jarvis.web.mapper.JobDependMapper;
+
 
 /**
- * Created by hejian on 15/9/22.
+ * @author muming, hejian
  */
 @Service
 public class JobDependService {
     @Autowired
     JobDependMapper jobDependMapper;
 
-    /**
-     * 获取所有依赖于此job的job
-     */
-    public Map<String, Object> getTreeDependedOnJob(JobQo jobQo) {
-        Map<String, Object> result = new HashMap<String, Object>();
-        if (null == jobQo || null == jobQo.getJobId()) {
-            return result;
-        }
-        JobDependVo jobDependVo = jobDependMapper.getJobById(Long.valueOf(jobQo.getJobId()));
+    @Autowired
+    TaskService taskService;
 
-        if (null == jobDependVo) {
-            return result;
-        }
-        Map<String, Object> mapState = new HashMap<String, Object>();
-        mapState.put("opened", true);
-
-        List<JobDependVo> jobDependVoChildrenList = getChildren(jobDependVo, true);
-        jobDependVo.setChildren(jobDependVoChildrenList);
-
-        try {
-            Field[] fields = jobDependVo.getClass().getDeclaredFields();
-            for (int i = 0, len = fields.length; i < len; i++) {
-                Field field = fields[i];
-                field.setAccessible(true);
-                Object value = field.get(jobDependVo);
-                result.put(field.getName(), value);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        result.put("state", mapState);
-
-        return result;
-    }
-
-    /**
-     * 获取所有依赖于此job的job
-     */
-    public Map<String, Object> getTwoDirectionTreeDependedOnJob(JobQo jobQo) {
-        Map<String, Object> result = new HashMap<String, Object>();
-        if (null == jobQo || null == jobQo.getJobId()) {
-            return result;
-        }
-
-        JobDependVo jobDependVo = jobDependMapper.getJobById(jobQo.getJobId());
-        jobDependVo.setName(jobDependVo.getText());
-        jobDependVo.setValue(jobDependVo.getId());
-        jobDependVo.setRootFlag(true);
-
-        if (null == jobDependVo) {
-            return result;
-        }
-        Map<String, Object> mapState = new HashMap<String, Object>();
-        mapState.put("opened", true);
-
-        List<JobDependVo> jobDependVoChildrenList = getChildren(jobDependVo, false);
-        jobDependVo.setChildren(jobDependVoChildrenList);
-
-
-        List<JobDependVo> jobDependVoParentList = getParents(jobDependVo, false);
-        jobDependVo.setParents(jobDependVoParentList);
-
-        try {
-            Field[] fields = jobDependVo.getClass().getDeclaredFields();
-            for (int i = 0, len = fields.length; i < len; i++) {
-                Field field = fields[i];
-                field.setAccessible(true);
-                Object value = field.get(jobDependVo);
-                result.put(field.getName(), value);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        result.put("state", mapState);
-
-        return result;
-    }
-
-    /**
-     * 递归获取所有子节点
-     */
-    public List<JobDependVo> getChildren(JobDependVo jobDependVo, boolean all) {
-        List<JobDependVo> jobChildren = jobDependMapper.getChildrenById(jobDependVo.getId());
-        Map<String, Object> mapState = new HashMap<String, Object>();
-        mapState.put("opened", true);
-
-        if (jobChildren != null && jobChildren.size() > 0) {
-            for (JobDependVo childJob : jobChildren) {
-                childJob.setState(mapState);
-                childJob.setName(childJob.getText());
-                childJob.setValue(childJob.getId());
-                if (all) {
-                    childJob.setChildren(getChildren(childJob, all));
-                }
-            }
-        }
-
-        return jobChildren;
-    }
-
-    /**
-     * 递归获取所有父节点
-     */
-    public List<JobDependVo> getParents(JobDependVo jobDependVo, boolean all) {
-        List<JobDependVo> jobParents = jobDependMapper.getParentById(jobDependVo.getId());
-        Map<String, Object> mapState = new HashMap<String, Object>();
-        mapState.put("opened", true);
-        if (jobParents != null && jobParents.size() > 0) {
-            for (JobDependVo parentJob : jobParents) {
-                parentJob.setState(mapState);
-                parentJob.setParentFlag(true);
-                parentJob.setName(parentJob.getText());
-                parentJob.setValue(parentJob.getId());
-                if (all) {
-                    parentJob.setParents(getParents(parentJob, all));
-                }
-            }
-        }
-
-        return jobParents;
-    }
+    private static Logger logger = LogManager.getLogger();
 
     /**
      * 获取最近父节点
@@ -150,4 +37,141 @@ public class JobDependService {
     public List<JobDependVo> getParentById(Long jobId) {
         return jobDependMapper.getParentById(jobId);
     }
+
+    /**
+     * 获取——自身与所有子节点.
+     */
+    public JobDependVo getSubTree(JobDependQo query) {
+        if (null == query || 0 == query.getJobId()) {
+            return null;
+        }
+        JobDependVo jobDependVo = jobDependMapper.getJobById(query.getJobId());
+        if (null == jobDependVo) {
+            return null;
+        }
+        jobDependVo.setRootFlag(true);
+
+        List<JobDependVo> jobDependVoChildrenList = getChildren(jobDependVo, true);
+        jobDependVo.setChildren(jobDependVoChildrenList);
+
+        return jobDependVo;
+
+    }
+
+    /**
+     * 获取——依赖(自身,父节点,子节点,共三层节点)
+     */
+    public JobDependVo getDepended(JobDependQo query) {
+        if (null == query || 0 == query.getJobId()) {
+            return null;
+        }
+        JobDependVo jobDependVo = jobDependMapper.getJobById(query.getJobId());
+        if (null == jobDependVo) {
+            return null;
+        }
+        jobDependVo.setRootFlag(true);
+
+        List<JobDependVo> jobDependVoParentList = getParents(jobDependVo, false);
+        jobDependVo.setParents(jobDependVoParentList);
+
+        List<JobDependVo> jobDependVoChildrenList = getChildren(jobDependVo, false);
+        jobDependVo.setChildren(jobDependVoChildrenList);
+
+        generateTaskList4Depend(jobDependVo, query);
+
+        return jobDependVo;
+
+    }
+
+    /**
+     * 递归获取所有子节点
+     */
+    private List<JobDependVo> getChildren(JobDependVo jobDependVo, boolean all) {
+        List<JobDependVo> jobChildren = jobDependMapper.getChildrenById(jobDependVo.getJobId());
+        if (jobChildren == null) {
+            jobChildren = new ArrayList<>();
+        }
+        for (JobDependVo childJob : jobChildren) {
+            if (all) {
+                childJob.setChildren(getChildren(childJob, all));
+            }
+        }
+        return jobChildren;
+    }
+
+    /**
+     * 递归获取所有父节点
+     */
+    private List<JobDependVo> getParents(JobDependVo jobDependVo, boolean all) {
+        List<JobDependVo> jobParents = jobDependMapper.getParentById(jobDependVo.getJobId());
+        if (jobParents == null) {
+            jobParents = new ArrayList<>();
+        }
+        for (JobDependVo parentJob : jobParents) {
+            parentJob.setParentFlag(true);
+            if (all) {
+                parentJob.setParents(getParents(parentJob, all));
+            }
+        }
+
+        return jobParents;
+    }
+
+    /**
+     * 获取——TaskList
+     */
+    private void generateTaskList4Depend(JobDependVo jobRoot, JobDependQo query) {
+
+        //做成JobIds
+        List<Long> jobIds = new ArrayList<>();
+        jobIds.add(jobRoot.getJobId());
+        for (JobDependVo parent : jobRoot.getParents()) {
+            jobIds.add(parent.getJobId());
+        }
+        for (JobDependVo child : jobRoot.getChildren()) {
+            jobIds.add(child.getJobId());
+        }
+
+        //获取taskList
+        List<TaskVo> taskList = null;
+        try {
+            taskList = taskService.getTaskByJobIdBetweenTime(jobIds, query.getShowTaskStartTime(), query.getShowTaskEndTime());
+        } catch (Exception ex) {
+            logger.error("", ex);
+        }
+        if (taskList == null || taskList.size() == 0) {
+            return;
+        }
+        Map<Long, List<TaskVo>> taskMap = new HashMap<>();
+        for (TaskVo item : taskList) {
+            Long jobId = item.getJobId();
+            List<TaskVo> value;
+            if (taskMap.containsKey(jobId)) {
+                value = taskMap.get(jobId);
+            } else {
+                value = new ArrayList<>();
+                taskMap.put(jobId, value);
+            }
+            value.add(item);
+        }
+
+        //设置——taskList
+        long findJobId = jobRoot.getJobId();
+        if (taskMap.containsKey(findJobId)) {
+            jobRoot.setTaskList(taskMap.get(findJobId));
+        }
+        for (JobDependVo parent : jobRoot.getParents()) {
+            findJobId = parent.getJobId();
+            if (taskMap.containsKey(findJobId)) {
+                parent.setTaskList(taskMap.get(findJobId));
+            }
+        }
+        for (JobDependVo child : jobRoot.getChildren()) {
+            findJobId = child.getJobId();
+            if (taskMap.containsKey(findJobId)) {
+                child.setTaskList(taskMap.get(findJobId));
+            }
+        }
+    }
+
 }

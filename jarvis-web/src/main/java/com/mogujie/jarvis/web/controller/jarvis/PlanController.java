@@ -1,13 +1,16 @@
 package com.mogujie.jarvis.web.controller.jarvis;
 
+import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.web.auth.annotation.JarvisPassport;
 import com.mogujie.jarvis.web.auth.conf.JarvisAuthType;
+import com.mogujie.jarvis.web.entity.qo.PlanQo;
 import com.mogujie.jarvis.web.entity.vo.JobVo;
 import com.mogujie.jarvis.web.entity.vo.TaskDependVo;
 import com.mogujie.jarvis.web.entity.vo.TaskVo;
 import com.mogujie.jarvis.web.service.JobService;
 import com.mogujie.jarvis.web.service.TaskDependService;
 import com.mogujie.jarvis.web.service.TaskService;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -37,26 +40,15 @@ public class PlanController extends BaseController {
 
         List<Long> jobIdList = jobService.getJobIds();
         List<String> jobNameList = jobService.getJobNames();
-
         List<String> executeUserList = taskService.getAllExecuteUser();
+
+        PlanQo planQo = new PlanQo();
+        planQo.setScheduleDate(DateTime.now().toString("yyyyMMdd"));
+
         modelMap.put("jobIdList", jobIdList);
         modelMap.put("jobNameList", jobNameList);
         modelMap.put("executeUserList", executeUserList);
+        modelMap.put("planQo", JsonHelper.toJson(planQo));
         return "plan/index";
-    }
-
-    /**
-     * 执行计划详情，前置、后续计划执行状态
-     */
-    @RequestMapping(value = "dependency")
-    @JarvisPassport(authTypes = JarvisAuthType.plan, isMenu = false)
-    public String dependency(ModelMap modelMap, Long taskId) {
-
-        TaskVo taskVo = taskService.getTaskById(taskId);
-        JobVo jobVo = jobService.getJobById(taskVo.getJobId());
-
-        modelMap.put("taskId", taskId);
-        modelMap.put("jobVo", jobVo);
-        return "plan/dependency";
     }
 }

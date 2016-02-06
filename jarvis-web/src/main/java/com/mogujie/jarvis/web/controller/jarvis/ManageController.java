@@ -1,7 +1,16 @@
 package com.mogujie.jarvis.web.controller.jarvis;
 
-import com.mogu.bigdata.admin.inside.service.AdminUserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import com.mogujie.jarvis.web.auth.annotation.JarvisPassport;
+import org.springframework.ui.ModelMap;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.mogujie.jarvis.web.auth.conf.JarvisAuthType;
 import com.mogujie.jarvis.web.entity.vo.AppVo;
 import com.mogujie.jarvis.web.entity.vo.WorkerGroupVo;
@@ -9,15 +18,7 @@ import com.mogujie.jarvis.web.entity.vo.WorkerVo;
 import com.mogujie.jarvis.web.service.AppService;
 import com.mogujie.jarvis.web.service.WorkerGroupService;
 import com.mogujie.jarvis.web.service.WorkerService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by hejian on 15/9/15.
@@ -32,8 +33,6 @@ public class ManageController extends BaseController {
     WorkerService workerService;
     @Autowired
     WorkerGroupService workerGroupService;
-    @Autowired
-    AdminUserService userService;
 
     @RequestMapping(value = "system")
     @JarvisPassport(authTypes = JarvisAuthType.manage_system)

@@ -1,11 +1,11 @@
-var dependencyUrl = contextPath + "/api/job/getTwoDirectionTree?jobId=";
-var url = dependencyUrl + jobVo.jobId;
+//var dependencyUrl = contextPath + "/api/job/getDepend?jobId=";
+//var url = dependencyUrl + jobVo.jobId;
 
 $(function () {
     if (undefined != jobVo.jobId) {
         initJobData();     //初始化job详细信息
-        var tree = CollapsibleTree("#dependTree");
-        tree.init(url);
+        //var tree = CollapsibleTree("#dependTree");
+        //tree.init(url);
     }
 });
 

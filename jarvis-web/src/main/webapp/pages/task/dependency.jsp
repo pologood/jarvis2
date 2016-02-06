@@ -28,19 +28,21 @@
             <nav>
                 <ol class="cd-breadcrumb triangle">
                     <li><a href="${contextPath}/">首页</a></li>
-                    <li><a href="${contextPath}/plan">任务管理</a></li>
-                    <li class="current"><em>任务依赖</em></li>
+                    <li><a href="${contextPath}/task">Task管理</a></li>
+                    <li class="current"><em>Task依赖</em></li>
                 </ol>
             </nav>
         </div>
         <div class="col-md-6 top-buffer">
             <span class="h3 pull-right">
+                Task:&nbsp
                 <span>
                     <strong>
                         <a class="text-info" target="_blank"
-                           href="${contextPath}/job/detail?jobId=${jobVo.jobId}">${jobVo.jobName}</a>
-                    </strong>
-                </span> 的执行情况
+                           href="${contextPath}/task/detail?taskId=${taskId}">${taskId}
+                        </a>
+                    </strong>的依赖图
+                </span>
             </span>
         </div>
     </div>
@@ -53,30 +55,24 @@
         <span><i class="fa fa-circle fa-2x" style="color: #2ECC40"></i>成功</span>
         <span><i class="fa fa-circle fa-2x" style="color: #FF4136"></i>失败</span>
         <span><i class="fa fa-circle fa-2x" style="color: #111111"></i>终止</span>
-        <span><i class="fa fa-circle fa-2x" style="color: #AAAAAA"></i>混合状态</span>
-        <span><i class="fa fa-circle fa-2x" style="color: #B10DC9"></i>失效过期取消等</span>
-        <span><i class="fa fa-circle fa-2x" style="color: #FFFFFF;border:1px solid steelblue;border-radius:50%;"></i>此任务未依赖此次执行</span>
 
 
         <div id="pattern" style="display: none">
             <div class="row">
-                <div class="col-md-1">
-                    <a name="status" href=""><i class="fa fa-circle"></i></a>&nbsp;
-                </div>
-
                 <div class="col-md-11">
                     <dl>
                         <dd>
-                            执行Id:<span name="taskId" class="text-primary"></span>&nbsp;
-                            执行人:<span name="executeUser" class="text-primary"></span>&nbsp;
-
+                            taskId:<span name="taskId" class="text-primary"></span>
+                            执行人:<span name="executeUser" class="text-primary"></span>
                         </dd>
                         <dd>
-                            计划调度:<span name="scheduleTime" class="text-primary"></span>&nbsp
-                            时长:<span name="executeTime" class="text-primary"></span>
+                            计划调度:<span name="scheduleTime" class="text-primary"></span>
                         </dd>
-                        <dd>开始时间:<span name="executeStartTime" class="text-primary"></span>&nbsp;
-                            结束:<span name="executeEndTime" class="text-primary"></span>&nbsp;
+                        <dd>开始时间:<span name="executeStartTime" class="text-primary"></span>
+                        </dd>
+                        <dd>结束时间:<span name="executeEndTime" class="text-primary"></span>
+                        </dd>
+                        <dd>时长:<span name="executeTime" class="text-primary"></span>
                         </dd>
                     </dl>
                 </div>
@@ -122,16 +118,9 @@
 </jsp:include>
 
 <script type="text/javascript">
-    var query = {
-        jobId:${jobId},
-        showTaskFlag:${showTaskFlag},
-        showTaskStartTime:${showTaskStartTime},
-        showTaskEndTime:${showTaskEndTime}
-    };
-    var jobId =${jobId};
-    var stautsColor = {};
+    var taskDependQo = ${taskDependQo};
 </script>
-<script type="text/javascript" src="${contextPath}/assets/js/jarvis/job/concept-graph2.js" charset="UTF-8"></script>
+<script type="text/javascript" src="${contextPath}/assets/js/jarvis/task/concept-graph.js" charset="UTF-8"></script>
 
-<script type="text/javascript" src="${contextPath}/assets/js/jarvis/job/dependency.js"></script>
+<script type="text/javascript" src="${contextPath}/assets/js/jarvis/task/dependency.js"></script>
 

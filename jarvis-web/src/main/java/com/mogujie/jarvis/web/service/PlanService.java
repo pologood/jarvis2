@@ -3,7 +3,7 @@ package com.mogujie.jarvis.web.service;
 import com.mogujie.jarvis.web.entity.qo.PlanQo;
 import com.mogujie.jarvis.web.entity.vo.PlanVo;
 import com.mogujie.jarvis.web.entity.vo.TaskVo;
-import com.mogujie.jarvis.web.mapper.TaskMapper;
+import com.mogujie.jarvis.web.mapper.PlanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,12 +13,15 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by hejian on 15/10/21.
+ * Created by hejian,muming on 15/10/21.
  */
 @Service
 public class PlanService {
     @Autowired
-    TaskMapper taskMapper;
+    PlanMapper planMapper;
+
+    @Autowired
+    TaskService taskService;
 
     /**
      * @param planQo
@@ -26,56 +29,36 @@ public class PlanService {
      * @author hejian
      */
     public Map<String, Object> getPlans(PlanQo planQo) {
-        Map<String, Object> result = new HashMap<String, Object>();
+        Map<String, Object> result = new HashMap<>();
 
-        Integer total = taskMapper.getPlanCountByCondition(planQo);
-        List<PlanVo> planVoList = taskMapper.getPlansByCondition(planQo);
-
-        List<Long> jobIdList = new ArrayList<Long>();
-        for (PlanVo planVo : planVoList) {
+        Integer total = planMapper.getPlanCountByCondition(planQo);
+        List<PlanVo> planVoList = planMapper.getPlansByCondition(planQo);
+        Map<Long,PlanVo> planVoMap = new HashMap<>();
+        List<Long> jobIdList = new ArrayList<>();
+        for(PlanVo planVo : planVoList){
+            planVoMap.put(planVo.getJobId(),planVo);
             jobIdList.add(planVo.getJobId());
         }
 
-        List<PlanVo> recentPlanList = new ArrayList<PlanVo>();
+        List<TaskVo> recentTaskList = new ArrayList<>();
         if (jobIdList.size() > 0) {
-            recentPlanList = taskMapper.getRecentExecuteTaskByJobId(jobIdList);
+            recentTaskList = taskService.getTaskByJobIdBetweenTime(jobIdList,planQo.getScheduleStartTime(),planQo.getScheduleEndTime());
         }
 
-        Map<Long, Map<String, Long>> avgTimeMap = new HashMap<Long, Map<String, Long>>();
-        for (PlanVo planVo : recentPlanList) {
-            if (avgTimeMap.containsKey(planVo.getJobId())) {
-                Map<String, Long> map = avgTimeMap.get(planVo.getJobId());
-                Long size = map.get("size");
-                Long avgTime = map.get("avgTime");
-                if (null == avgTime) {
-                    avgTime = 0l;
+        for (TaskVo taskVo : recentTaskList) {
+            if (planVoMap.containsKey(taskVo.getJobId())) {
+                PlanVo value = planVoMap.get(taskVo.getJobId());
+                value.setTaskSize(value.getTaskSize() + 1);
+
+                String status = value.getTaskStatus();
+                if (status == null || status.equals("")) {
+                    status = taskVo.getStatus().toString();
+                } else {
+                    status = status + ',' + taskVo.getStatus().toString();
                 }
-                Long newSize = size + 1;
-                Long newAvgTime=avgTime;
-                if(null!=planVo.getExecuteTime()){
-                    newAvgTime = ((avgTime * size) + planVo.getExecuteTime()) / newSize;
-                }
-                map.put("size", newSize);
-                map.put("avgTime", newAvgTime);
-            } else {
-                Map<String, Long> map = new HashMap<String, Long>();
-                map.put("size", 1l);
-                map.put("avgTime", planVo.getExecuteTime());
-                avgTimeMap.put(planVo.getJobId(), map);
+                value.setTaskStatus(status);
             }
         }
-
-        for (PlanVo planVo : planVoList) {
-            if (planVo.getStatus().equals(1) || planVo.getStatus().equals(2) || planVo.getStatus().equals(3)) {
-                if(null==avgTimeMap.get(planVo.getJobId())){
-                    planVo.setPredictExecuteTime(0l);
-                }
-                else{
-                    planVo.setPredictExecuteTime(avgTimeMap.get(planVo.getJobId()).get("avgTime"));
-                }
-            }
-        }
-
 
         result.put("total", total);
         result.put("rows", planVoList);

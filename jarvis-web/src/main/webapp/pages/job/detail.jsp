@@ -18,7 +18,7 @@
                 <ol class="cd-breadcrumb triangle">
                     <li><a href="${contextPath}/">首页</a></li>
                     <li><a href="${contextPath}/job">任务管理</a></li>
-                    <li class="current"><em>任务依赖</em></li>
+                    <li class="current"><em>任务详情</em></li>
                 </ol>
             </nav>
         </div>
@@ -171,7 +171,7 @@
 <script type="text/javascript">
     var jobVo =${jobVo};
 </script>
-<script type="text/javascript" src="${contextPath}/assets/js/jarvis/job/concept-graph.js" charset="UTF-8"></script>
+<%--<script type="text/javascript" src="${contextPath}/assets/js/jarvis/job/delete_concept-graph.js" charset="UTF-8"></script>--%>
 
 <script type="text/javascript" src="${contextPath}/assets/js/jarvis/job/detail.js"></script>
 

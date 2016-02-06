@@ -150,7 +150,8 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">执行流水重试记录</h4>
                 </div>
                 <div class="modal-body">
@@ -178,5 +179,9 @@
 <jsp:include page="../common/footer.jsp">
     <jsp:param name="menuMap" value="${menuMap}"/>
 </jsp:include>
+
+<script type="text/javascript">
+    var taskQo = ${taskQo};
+</script>
 
 <script type="text/javascript" src="${contextPath}/assets/js/jarvis/task/task.js"></script>

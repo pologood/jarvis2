@@ -1,14 +1,13 @@
 package com.mogujie.jarvis.web.entity.vo;
 
-
-import com.mogujie.jarvis.dto.generate.Task;
+import com.mogujie.jarvis.dto.generate.Plan;
 
 import java.util.Date;
 
 /**
  * Created by hejian on 15/10/21.
  */
-public class PlanVo extends Task{
+public class PlanVo extends Plan {
 
     private String jobName;
     private String jobType;
@@ -17,79 +16,129 @@ public class PlanVo extends Task{
     private Integer appId;
     private String appName;
     private String workerGroupId;
+    private String workerGroupName;
+    private Integer bizGroupId;
+    private String bizGroupName;
 
-    private Long executeTime;
-    private Long predictExecuteTime;
+    private String taskStatus="";
+    private int taskSize;
+
+    private Date scheduleTimeFirst;
 
     public String getJobName() {
         return jobName;
     }
 
-    public void setJobName(String jobName) {
+    public PlanVo setJobName(String jobName) {
         this.jobName = jobName;
+        return this;
     }
 
     public String getJobType() {
         return jobType;
     }
 
-    public void setJobType(String jobType) {
+    public PlanVo setJobType(String jobType) {
         this.jobType = jobType;
+        return this;
     }
 
     public String getSubmitUser() {
         return submitUser;
     }
 
-    public void setSubmitUser(String submitUser) {
+    public PlanVo setSubmitUser(String submitUser) {
         this.submitUser = submitUser;
+        return this;
     }
 
     public Integer getPriority() {
         return priority;
     }
 
-    public void setPriority(Integer priority) {
+    public PlanVo setPriority(Integer priority) {
         this.priority = priority;
+        return this;
     }
 
     public Integer getAppId() {
         return appId;
     }
 
-    public void setAppId(Integer appId) {
+    public PlanVo setAppId(Integer appId) {
         this.appId = appId;
+        return this;
     }
 
     public String getAppName() {
         return appName;
     }
 
-    public void setAppName(String appName) {
+    public PlanVo setAppName(String appName) {
         this.appName = appName;
+        return this;
     }
 
     public String getWorkerGroupId() {
         return workerGroupId;
     }
 
-    public void setWorkerGroupId(String workerGroupId) {
+    public PlanVo setWorkerGroupId(String workerGroupId) {
         this.workerGroupId = workerGroupId;
+        return this;
     }
 
-    public Long getExecuteTime() {
-        return executeTime;
+    public String getWorkerGroupName() {
+        return workerGroupName;
     }
 
-    public void setExecuteTime(Long executeTime) {
-        this.executeTime = executeTime;
+    public PlanVo setWorkerGroupName(String workerGroupName) {
+        this.workerGroupName = workerGroupName;
+        return this;
     }
 
-    public Long getPredictExecuteTime() {
-        return predictExecuteTime;
+    public Integer getBizGroupId() {
+        return bizGroupId;
     }
 
-    public void setPredictExecuteTime(Long predictExecuteTime) {
-        this.predictExecuteTime = predictExecuteTime;
+    public PlanVo setBizGroupId(Integer bizGroupId) {
+        this.bizGroupId = bizGroupId;
+        return this;
+    }
+
+    public String getBizGroupName() {
+        return bizGroupName;
+    }
+
+    public PlanVo setBizGroupName(String bizGroupName) {
+        this.bizGroupName = bizGroupName;
+        return this;
+    }
+
+    public String getTaskStatus() {
+        return taskStatus;
+    }
+
+    public PlanVo setTaskStatus(String taskStatus) {
+        this.taskStatus = taskStatus;
+        return this;
+    }
+
+    public int getTaskSize() {
+        return taskSize;
+    }
+
+    public PlanVo setTaskSize(int taskSize) {
+        this.taskSize = taskSize;
+        return this;
+    }
+
+    public Date getScheduleTimeFirst() {
+        return scheduleTimeFirst;
+    }
+
+    public PlanVo setScheduleTimeFirst(Date scheduleTimeFirst) {
+        this.scheduleTimeFirst = scheduleTimeFirst;
+        return this;
     }
 }
