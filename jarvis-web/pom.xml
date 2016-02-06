@@ -60,10 +60,6 @@
             <version>${admin.version}</version>
         </dependency>
 
-
-
-
-
         <dependency>
             <groupId>com.mogujie.jarvis</groupId>
             <artifactId>jarvis-dao</artifactId>
@@ -126,12 +122,6 @@
             <version>2.4</version>
         </dependency>
 
-
-        <!--<dependency>-->
-            <!--<groupId>org.mybatis</groupId>-->
-            <!--<artifactId>mybatis</artifactId>-->
-            <!--<version>3.3.0</version>-->
-        <!--</dependency>-->
         <dependency>
             <groupId>org.mybatis</groupId>
             <artifactId>mybatis-spring</artifactId>
@@ -243,6 +233,11 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.16</version>
+        </dependency>
 
     </dependencies>
 
@@ -308,8 +303,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.3</version>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
             <plugin>
