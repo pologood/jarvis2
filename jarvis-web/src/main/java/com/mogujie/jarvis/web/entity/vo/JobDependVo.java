@@ -29,11 +29,11 @@ public class JobDependVo {
     private String offsetStrategy;
 
     //task——信息
-    private List<TaskVo> taskList = new ArrayList<>();
+    private List<TaskVo> taskList = new ArrayList<TaskVo>();
 
     //依赖节点——信息
-    private List<JobDependVo> children = new ArrayList<>();
-    private List<JobDependVo> parents = new ArrayList<>();
+    private List<JobDependVo> children = new ArrayList<JobDependVo>();
+    private List<JobDependVo> parents = new ArrayList<JobDependVo>();
     private boolean parentFlag=false;
     private boolean rootFlag=false;
 

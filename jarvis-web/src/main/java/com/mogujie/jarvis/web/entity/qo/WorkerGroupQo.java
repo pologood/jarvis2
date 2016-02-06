@@ -1,7 +1,5 @@
 package com.mogujie.jarvis.web.entity.qo;
 
-import com.mogujie.jarvis.dto.generate.WorkerGroup;
-
 /**
  * Created by hejian on 15/9/28.
  */
