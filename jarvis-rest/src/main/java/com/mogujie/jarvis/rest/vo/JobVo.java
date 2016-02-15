@@ -21,9 +21,10 @@ public class JobVo extends AbstractVo {
     private Integer workerGroupId;
     private Integer bizGroupId;
     private Integer priority;
+    private boolean isTemp;
     private Long activeStartTime;
     private Long activeEndTime;
-    private Integer expiredTime;
+    private Integer expiredTime; // 单位秒
     private Integer failedAttempts;
     private Integer failedInterval;
     private List<DependencyEntry> dependencyList;
@@ -107,6 +108,14 @@ public class JobVo extends AbstractVo {
 
     public void setPriority(Integer priority) {
         this.priority = priority;
+    }
+
+    public boolean isTemp() {
+        return isTemp;
+    }
+
+    public void setTemp(boolean isTemp) {
+        this.isTemp = isTemp;
     }
 
     public Long getActiveStartTime() {
