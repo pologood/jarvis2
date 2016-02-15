@@ -8,6 +8,8 @@
 
 package com.mogujie.jarvis.rest.controller;
 
+import java.util.List;
+
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -21,10 +23,16 @@ import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.core.domain.OperationMode;
 import com.mogujie.jarvis.core.expression.ScheduleExpressionType;
+import com.mogujie.jarvis.core.util.IdUtils;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
 import com.mogujie.jarvis.protocol.JobProtos.RestSubmitJobRequest;
 import com.mogujie.jarvis.protocol.JobProtos.ServerSubmitJobResponse;
 import com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry;
+import com.mogujie.jarvis.protocol.KillTaskProtos.RestServerKillTaskRequest;
+import com.mogujie.jarvis.protocol.KillTaskProtos.ServerKillTaskResponse;
+import com.mogujie.jarvis.protocol.QueryTaskByJobIdProtos.RestServerQueryTaskByJobIdRequest;
+import com.mogujie.jarvis.protocol.QueryTaskByJobIdProtos.ServerQueryTaskByJobIdResponse;
+import com.mogujie.jarvis.protocol.QueryTaskByJobIdProtos.TaskEntry;
 import com.mogujie.jarvis.rest.RestResult;
 import com.mogujie.jarvis.rest.utils.ValidUtils;
 import com.mogujie.jarvis.rest.utils.ValidUtils.CheckMode;
@@ -85,26 +93,34 @@ public class SentinelController extends AbstractController {
     @Path("killjob")
     @Produces(MediaType.APPLICATION_JSON)
     public RestResult killJob(@FormParam("token") String appToken, @FormParam("name") String appName, @FormParam("time") long time,
-            @FormParam("jobId") String jobId) {
+            @FormParam("jobId") long jobId) {
         LOGGER.debug("kill task");
-//        try {
-//            AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
-//
-//            JsonParameters para = new JsonParameters(parameters);
-//            long jobId = para.getLongNotNull("jobId");
-//            long taskId = para.getLongNotNull("taskId");
-//            int attemptId = para.getIntegerNotNull("attemptId");
-//            String fullId = IdUtils.getFullId(jobId, taskId, attemptId);
-//
-//            RestServerKillTaskRequest request = RestServerKillTaskRequest.newBuilder().setAppAuth(appAuth).setFullId(fullId).build();
-//
-//            ServerKillTaskResponse response = (ServerKillTaskResponse) callActor(AkkaType.SERVER, request);
-//            return response.getSuccess() ? successResult() : errorResult(response.getMessage());
-//        } catch (Exception e) {
-//            LOGGER.error("", e);
-//            return errorResult(e);
-//        }
-        return null;
+        try {
+            AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
+
+            RestServerQueryTaskByJobIdRequest queryTaskRequest = RestServerQueryTaskByJobIdRequest.newBuilder().setAppAuth(appAuth)
+                    .setAppAuth(appAuth).setJobId(jobId).build();
+            ServerQueryTaskByJobIdResponse queryTaskReponse = (ServerQueryTaskByJobIdResponse) callActor(AkkaType.SERVER, queryTaskRequest);
+            if (queryTaskReponse.getSuccess()) {
+                List<TaskEntry> taskEntryList = queryTaskReponse.getTaskEntryList();
+                if (taskEntryList == null || taskEntryList.size() != 1) {
+                    String err = "job[" + jobId + "] 尚未调度起来";
+                    return errorResult(err);
+                } else {
+                    long taskId = taskEntryList.get(0).getTaskId();
+                    int attemptId = taskEntryList.get(0).getAttemptId();
+                    String fullId = IdUtils.getFullId(jobId, taskId, attemptId);
+                    RestServerKillTaskRequest request = RestServerKillTaskRequest.newBuilder().setAppAuth(appAuth).setFullId(fullId).build();
+                    ServerKillTaskResponse response = (ServerKillTaskResponse) callActor(AkkaType.SERVER, request);
+                    return response.getSuccess() ? successResult() : errorResult(response.getMessage());
+                }
+            } else {
+                return errorResult(queryTaskReponse.getMessage());
+            }
+        } catch (Exception e) {
+            LOGGER.error("", e);
+            return errorResult(e);
+        }
     }
 
     @POST
@@ -157,13 +173,13 @@ public class SentinelController extends AbstractController {
                 .setFailedInterval(vo.getFailedInterval(3));
 
         DateTime now = DateTime.now();
-        String cronExpression = new StringBuilder().append(now.getSecondOfMinute())
-                .append(" ").append(now.getMinuteOfHour())
-                .append(" ").append(now.getHourOfDay())
-                .append(" ").append(now.getDayOfMonth())
-                .append(" ").append(now.getMonthOfYear())
-                .append(" ?")
-                .append(" ").append(now.getYear())
+        String cronExpression = new StringBuilder().append(now.getSecondOfMinute()) //秒
+                .append(" ").append(now.getMinuteOfHour()) //分
+                .append(" ").append(now.getHourOfDay()) //时
+                .append(" ").append(now.getDayOfMonth()) //天
+                .append(" ").append(now.getMonthOfYear()) //月
+                .append(" ?") //周
+                .append(" ").append(now.getYear()) //年
                 .toString();
         ScheduleExpressionEntry entry = ScheduleExpressionEntry.newBuilder().setOperator(OperationMode.ADD.getValue())
                 .setExpressionId(0)

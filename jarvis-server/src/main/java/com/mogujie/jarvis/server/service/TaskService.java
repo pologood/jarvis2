@@ -48,6 +48,12 @@ public class TaskService {
         return taskMapper.selectByPrimaryKey(taskId);
     }
 
+    public List<Task> getTasksByJobId(long jobId) {
+        TaskExample example = new TaskExample();
+        example.createCriteria().andJobIdEqualTo(jobId);
+        return taskMapper.selectByExample(example);
+    }
+
     public Task getTaskByJobIdAndScheduleTime(long jobId, long scheduleTime) {
         TaskExample example = new TaskExample();
         example.createCriteria().andJobIdEqualTo(jobId).andScheduleTimeEqualTo(new Date(scheduleTime));
