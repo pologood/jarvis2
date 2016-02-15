@@ -6,9 +6,11 @@
  * Create Date: 2016年2月15日 上午10:45:07
  */
 
-package com.mogujie.jarvis.rest.controller;
+package com.mogujie.jarvis.rest.sentinel;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
@@ -22,6 +24,7 @@ import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.core.domain.OperationMode;
+import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.expression.ScheduleExpressionType;
 import com.mogujie.jarvis.core.util.IdUtils;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
@@ -33,10 +36,11 @@ import com.mogujie.jarvis.protocol.KillTaskProtos.ServerKillTaskResponse;
 import com.mogujie.jarvis.protocol.QueryTaskByJobIdProtos.RestServerQueryTaskByJobIdRequest;
 import com.mogujie.jarvis.protocol.QueryTaskByJobIdProtos.ServerQueryTaskByJobIdResponse;
 import com.mogujie.jarvis.protocol.QueryTaskByJobIdProtos.TaskEntry;
-import com.mogujie.jarvis.rest.RestResult;
+import com.mogujie.jarvis.protocol.QueryTaskStatusProtos.RestServerQueryTaskStatusRequest;
+import com.mogujie.jarvis.protocol.QueryTaskStatusProtos.ServerQueryTaskStatusResponse;
+import com.mogujie.jarvis.rest.controller.AbstractController;
 import com.mogujie.jarvis.rest.utils.ValidUtils;
 import com.mogujie.jarvis.rest.utils.ValidUtils.CheckMode;
-import com.mogujie.jarvis.rest.vo.JobResultVo;
 import com.mogujie.jarvis.rest.vo.JobVo;
 
 /**
@@ -63,7 +67,7 @@ public class SentinelController extends AbstractController {
     @POST
     @Path("execute")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult executeSql(@FormParam("token") String appToken, @FormParam("name") String appName, @FormParam("time") long time,
+    public ResponseParams executeSql(@FormParam("token") String appToken, @FormParam("name") String appName, @FormParam("time") long time,
             @FormParam("content") String content, @FormParam("executor") String user, @FormParam("jobName") String jobName,
             @FormParam("jobType") String jobType, @FormParam("groupId") Integer groupId) {
         LOGGER.debug("提交job任务");
@@ -81,18 +85,25 @@ public class SentinelController extends AbstractController {
 
             // 发送请求到server
             ServerSubmitJobResponse response = (ServerSubmitJobResponse) callActor(AkkaType.SERVER, request);
-            return response.getSuccess() ? successResult(new JobResultVo().setJobId(response.getJobId()))
-                    : errorResult(response.getMessage());
+            BaseRet result;
+            if (response.getSuccess()) {
+                result = new BaseRet(ResponseCodeEnum.FAILED, "任务添加失败");
+            } else {
+                Map<String, Object> params = new HashMap<String, Object>();
+                params.put("jobId", response.getJobId());
+                result = new BaseRet(ResponseCodeEnum.SUCCESS, "任务提交成功", params);
+            }
+            return result;
         } catch (Exception e) {
             LOGGER.error("", e);
-            return errorResult(e);
+            return new BaseRet(ResponseCodeEnum.FAILED, "任务添加失败");
         }
     }
 
     @POST
     @Path("killjob")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult killJob(@FormParam("token") String appToken, @FormParam("name") String appName, @FormParam("time") long time,
+    public ResponseParams killJob(@FormParam("token") String appToken, @FormParam("name") String appName, @FormParam("time") long time,
             @FormParam("jobId") long jobId) {
         LOGGER.debug("kill task");
         try {
@@ -105,37 +116,79 @@ public class SentinelController extends AbstractController {
                 List<TaskEntry> taskEntryList = queryTaskReponse.getTaskEntryList();
                 if (taskEntryList == null || taskEntryList.size() != 1) {
                     String err = "job[" + jobId + "] 尚未调度起来";
-                    return errorResult(err);
+                    return new BaseRet(ResponseCodeEnum.FAILED, err);
                 } else {
                     long taskId = taskEntryList.get(0).getTaskId();
                     int attemptId = taskEntryList.get(0).getAttemptId();
                     String fullId = IdUtils.getFullId(jobId, taskId, attemptId);
                     RestServerKillTaskRequest request = RestServerKillTaskRequest.newBuilder().setAppAuth(appAuth).setFullId(fullId).build();
                     ServerKillTaskResponse response = (ServerKillTaskResponse) callActor(AkkaType.SERVER, request);
-                    return response.getSuccess() ? successResult() : errorResult(response.getMessage());
+                    if (response.getSuccess()) {
+                        return new BaseRet(ResponseCodeEnum.SUCCESS, "jobId: " + jobId + " 任务删除成功");
+                    } else {
+                        return new BaseRet(ResponseCodeEnum.FAILED, response.getMessage());
+                    }
                 }
             } else {
-                return errorResult(queryTaskReponse.getMessage());
+                return new BaseRet(ResponseCodeEnum.FAILED, queryTaskReponse.getMessage());
             }
         } catch (Exception e) {
             LOGGER.error("", e);
-            return errorResult(e);
+            return new BaseRet(ResponseCodeEnum.FAILED, e.getMessage());
+        }
+    }
+
+    @POST
+    @Path("jobstatus")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ResponseParams queryJobStatus(@FormParam("token") String appToken, @FormParam("name") String appName, @FormParam("time") long time,
+            @FormParam("jobId") long jobId) {
+        LOGGER.debug("query job status");
+        try {
+            AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
+
+            RestServerQueryTaskByJobIdRequest queryTaskRequest = RestServerQueryTaskByJobIdRequest.newBuilder().setAppAuth(appAuth)
+                    .setAppAuth(appAuth).setJobId(jobId).build();
+            ServerQueryTaskByJobIdResponse queryTaskReponse = (ServerQueryTaskByJobIdResponse) callActor(AkkaType.SERVER, queryTaskRequest);
+            if (queryTaskReponse.getSuccess()) {
+                List<TaskEntry> taskEntryList = queryTaskReponse.getTaskEntryList();
+                if (taskEntryList == null || taskEntryList.size() != 1) {
+                    String err = "job[" + jobId + "] 尚未调度起来";
+                    return new BaseRet(ResponseCodeEnum.FAILED, err);
+                } else {
+                    long taskId = taskEntryList.get(0).getTaskId();
+                    RestServerQueryTaskStatusRequest request = RestServerQueryTaskStatusRequest.newBuilder()
+                            .setAppAuth(appAuth).setTaskId(taskId).build();
+
+                    ServerQueryTaskStatusResponse response = (ServerQueryTaskStatusResponse) callActor(AkkaType.SERVER, request);
+                    if (response.getSuccess()) {
+                        TaskStatus jarvisStatus = TaskStatus.parseValue(response.getStatus());
+                        JobStatusEnum sentinelStatus = convert2SentinelStatus(jarvisStatus);
+                        if (sentinelStatus == null) {
+                            return new BaseRet(ResponseCodeEnum.FAILED, "无法转换到sentinel的状态，jarvis状态为: " + jarvisStatus);
+                        } else {
+                            BaseRet ret = new BaseRet(ResponseCodeEnum.SUCCESS);
+                            ret.put("jobStatus", sentinelStatus.getValue());
+                            ret.put("message", "查询状态成功");
+                            return ret;
+                        }
+                    } else {
+                        return new BaseRet(ResponseCodeEnum.FAILED, response.getMessage());
+                    }
+                }
+            } else {
+                return new BaseRet(ResponseCodeEnum.FAILED, queryTaskReponse.getMessage());
+            }
+        } catch (Exception e) {
+            LOGGER.error("", e);
+            return new BaseRet(ResponseCodeEnum.FAILED, e.getMessage());
         }
     }
 
     @POST
     @Path("querylog")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult queryLog(@FormParam("token") String appToke, @FormParam("name") String appName, @FormParam("time") long time,
-            @FormParam("jobId") String jobId) {
-        //TODO
-        return null;
-    }
-
-    @POST
-    @Path("jobstatus")
-    @Produces(MediaType.APPLICATION_JSON)
-    public RestResult queryJobStatus(@FormParam("token") String appKey, @FormParam("name") String appName, @FormParam("time") long time,
+    public ResponseParams queryLog(@FormParam("token") String appToke, @FormParam("name") String appName, @FormParam("time") long time,
             @FormParam("jobId") String jobId) {
         //TODO
         return null;
@@ -144,7 +197,7 @@ public class SentinelController extends AbstractController {
     @POST
     @Path("/result")
     @Produces(MediaType.APPLICATION_JSON)
-    public RestResult jobStatus(@FormParam("jobId") Integer jobId,
+    public ResponseParams queryResult(@FormParam("jobId") Integer jobId,
             @FormParam(value = "volume") String volume) {
         //TODO
         return null;
@@ -189,5 +242,25 @@ public class SentinelController extends AbstractController {
         builder.addExpressionEntry(entry);
 
         return builder.build();
+    }
+
+    private JobStatusEnum convert2SentinelStatus(TaskStatus jarvisStatus) {
+        JobStatusEnum sentinelStatus = null;
+        if (jarvisStatus.equals(TaskStatus.SUCCESS)) {
+            sentinelStatus = JobStatusEnum.SUCCESS;
+        } else if (jarvisStatus.equals(TaskStatus.WAITING)) {
+            sentinelStatus = JobStatusEnum.WAIT;
+        } else if (jarvisStatus.equals(TaskStatus.READY)) {
+            sentinelStatus = JobStatusEnum.WAIT;
+        } else if (jarvisStatus.equals(TaskStatus.RUNNING)) {
+            sentinelStatus = JobStatusEnum.RUNNING;
+        } else if (jarvisStatus.equals(TaskStatus.FAILED)) {
+            sentinelStatus = JobStatusEnum.FAIL;
+        } else if (jarvisStatus.equals(TaskStatus.KILLED)) {
+            sentinelStatus = JobStatusEnum.KILLED;
+        } else if (jarvisStatus.equals(TaskStatus.REMOVED)) {
+            sentinelStatus = JobStatusEnum.EXCEPTION;
+        }
+        return sentinelStatus;
     }
 }
