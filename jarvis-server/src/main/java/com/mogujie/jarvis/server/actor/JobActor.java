@@ -208,7 +208,7 @@ public class JobActor extends UntypedActor {
             int dependFlag = (!needDependencies.isEmpty()) ? 1 : 0;
             DAGJobType type = DAGJobType.getDAGJobType(timeFlag, dependFlag, cycleFlag);
             jobGraph.addJob(jobId, new DAGJob(jobId, type), needDependencies);
-            if (type.equals(DAGJobType.TIME)) {
+            if (type.equals(DAGJobType.TIME) || job.getIsTemp()) {
                 plan.addJob(jobId);
             }
 

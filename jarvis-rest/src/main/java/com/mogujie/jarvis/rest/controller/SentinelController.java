@@ -19,20 +19,15 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import org.joda.time.DateTime;
-
 import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.core.domain.JobStatus;
-import com.mogujie.jarvis.core.domain.OperationMode;
 import com.mogujie.jarvis.core.domain.StreamType;
 import com.mogujie.jarvis.core.domain.TaskStatus;
-import com.mogujie.jarvis.core.expression.ScheduleExpressionType;
 import com.mogujie.jarvis.core.util.IdUtils;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
 import com.mogujie.jarvis.protocol.JobProtos.RestSubmitJobRequest;
 import com.mogujie.jarvis.protocol.JobProtos.ServerSubmitJobResponse;
-import com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry;
 import com.mogujie.jarvis.protocol.KillTaskProtos.RestServerKillTaskRequest;
 import com.mogujie.jarvis.protocol.KillTaskProtos.ServerKillTaskResponse;
 import com.mogujie.jarvis.protocol.LogProtos.LogStorageReadLogResponse;
@@ -297,21 +292,21 @@ public class SentinelController extends AbstractController {
                 .setFailedAttempts(vo.getFailedAttempts(0))
                 .setFailedInterval(vo.getFailedInterval(3));
 
-        DateTime now = DateTime.now();
-        String cronExpression = new StringBuilder().append(now.getSecondOfMinute()) //秒
-                .append(" ").append(now.getMinuteOfHour()) //分
-                .append(" ").append(now.getHourOfDay()) //时
-                .append(" ").append(now.getDayOfMonth()) //天
-                .append(" ").append(now.getMonthOfYear()) //月
-                .append(" ?") //周
-                .append(" ").append(now.getYear()) //年
-                .toString();
-        ScheduleExpressionEntry entry = ScheduleExpressionEntry.newBuilder().setOperator(OperationMode.ADD.getValue())
-                .setExpressionId(0)
-                .setExpressionType(ScheduleExpressionType.CRON.getValue())
-                .setScheduleExpression(cronExpression)
-                .build();
-        builder.addExpressionEntry(entry);
+//        DateTime now = DateTime.now();
+//        String cronExpression = new StringBuilder().append(now.getSecondOfMinute()) //秒
+//                .append(" ").append(now.getMinuteOfHour()) //分
+//                .append(" ").append(now.getHourOfDay()) //时
+//                .append(" ").append(now.getDayOfMonth()) //天
+//                .append(" ").append(now.getMonthOfYear()) //月
+//                .append(" ?") //周
+//                .append(" ").append(now.getYear()) //年
+//                .toString();
+//        ScheduleExpressionEntry entry = ScheduleExpressionEntry.newBuilder().setOperator(OperationMode.ADD.getValue())
+//                .setExpressionId(0)
+//                .setExpressionType(ScheduleExpressionType.CRON.getValue())
+//                .setScheduleExpression(cronExpression)
+//                .build();
+//        builder.addExpressionEntry(entry);
 
         return builder.build();
     }
