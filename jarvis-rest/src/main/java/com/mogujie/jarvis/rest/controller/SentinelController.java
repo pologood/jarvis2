@@ -96,16 +96,16 @@ public class SentinelController extends AbstractController {
             ServerSubmitJobResponse response = (ServerSubmitJobResponse) callActor(AkkaType.SERVER, request);
             BaseRet result;
             if (response.getSuccess()) {
-                result = new BaseRet(ResponseCodeEnum.FAILED, "任务添加失败");
-            } else {
                 Map<String, Object> params = new HashMap<String, Object>();
                 params.put("jobId", response.getJobId());
                 result = new BaseRet(ResponseCodeEnum.SUCCESS, "任务提交成功", params);
+            } else {
+                result = new BaseRet(ResponseCodeEnum.FAILED, "任务添加失败:" + response.getMessage());
             }
             return result;
         } catch (Exception e) {
             LOGGER.error("", e);
-            return new BaseRet(ResponseCodeEnum.FAILED, "任务添加失败");
+            return new BaseRet(ResponseCodeEnum.FAILED, "任务添加失败:" + e.getMessage());
         }
     }
 
