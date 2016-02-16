@@ -19,6 +19,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import jersey.repackaged.com.google.common.collect.Maps;
+
 import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.core.domain.JobStatus;
@@ -39,6 +41,7 @@ import com.mogujie.jarvis.protocol.QueryTaskStatusProtos.RestServerQueryTaskStat
 import com.mogujie.jarvis.protocol.QueryTaskStatusProtos.ServerQueryTaskStatusResponse;
 import com.mogujie.jarvis.rest.sentinel.BaseRet;
 import com.mogujie.jarvis.rest.sentinel.JobStatusEnum;
+import com.mogujie.jarvis.rest.sentinel.LogQueryRet;
 import com.mogujie.jarvis.rest.sentinel.ResponseCodeEnum;
 import com.mogujie.jarvis.rest.sentinel.ResponseParams;
 import com.mogujie.jarvis.rest.utils.ValidUtils;
@@ -56,6 +59,7 @@ import com.mogujie.jarvis.rest.vo.JobVo;
 public class SentinelController extends AbstractController {
 
     private final static int DEFAULT_SIZE = 10000;
+    private static Map<String, Long> logOffsetMap = Maps.newConcurrentMap();
 
     /**
      * @param appToken
@@ -264,10 +268,57 @@ public class SentinelController extends AbstractController {
     @POST
     @Path("querylog")
     @Produces(MediaType.APPLICATION_JSON)
-    public ResponseParams queryLog(@FormParam("token") String appToke, @FormParam("name") String appName, @FormParam("time") long time,
-            @FormParam("jobId") String jobId) {
-        //TODO
-        return null;
+    public ResponseParams queryLog(@FormParam("token") String appToken, @FormParam("name") String appName, @FormParam("time") long time,
+            @FormParam("jobId") long jobId) {
+        LOGGER.debug("query job status");
+        try {
+            AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
+
+            RestServerQueryTaskByJobIdRequest queryTaskRequest = RestServerQueryTaskByJobIdRequest.newBuilder().setAppAuth(appAuth)
+                    .setAppAuth(appAuth).setJobId(jobId).build();
+            ServerQueryTaskByJobIdResponse queryTaskReponse = (ServerQueryTaskByJobIdResponse) callActor(AkkaType.SERVER, queryTaskRequest);
+            if (queryTaskReponse.getSuccess()) {
+                List<TaskEntry> taskEntryList = queryTaskReponse.getTaskEntryList();
+                if (taskEntryList == null || taskEntryList.size() != 1) {
+                    String err = "job[" + jobId + "] 尚未调度起来";
+                    return new BaseRet(ResponseCodeEnum.FAILED, err);
+                } else {
+                    long taskId = taskEntryList.get(0).getTaskId();
+                    int attemptId = taskEntryList.get(0).getAttemptId();
+                    String fullId = IdUtils.getFullId(jobId, taskId, attemptId);
+                    long offset = logOffsetMap.containsKey(fullId) ? logOffsetMap.get(fullId) : 0;
+                    int lines = DEFAULT_SIZE;
+
+                    RestReadLogRequest request = RestReadLogRequest.newBuilder()
+                            .setAppAuth(appAuth)
+                            .setFullId(fullId)
+                            .setType(StreamType.STD_ERR.getValue())
+                            .setOffset(offset)
+                            .setSize(lines)
+                            .build();
+
+                    LogStorageReadLogResponse response = (LogStorageReadLogResponse) callActor(AkkaType.LOGSTORAGE, request);
+                    if (response.getSuccess()) {
+                        LogQueryRet ret = new LogQueryRet(ResponseCodeEnum.SUCCESS, "success");
+                        ret.setLog(response.getLog());
+                        if (response.getIsEnd()) {
+                            ret.setIsEnd(true);
+                            logOffsetMap.remove(fullId);
+                        } else {
+                            logOffsetMap.put(fullId, response.getOffset());
+                        }
+                        return ret;
+                    } else {
+                        return new LogQueryRet(ResponseCodeEnum.FAILED, response.getMessage());
+                    }
+                }
+            } else {
+                return new LogQueryRet(ResponseCodeEnum.FAILED, queryTaskReponse.getMessage());
+            }
+        } catch (Exception e) {
+            LOGGER.error("", e);
+            return new LogQueryRet(ResponseCodeEnum.FAILED, e.getMessage());
+        }
     }
 
     /**
