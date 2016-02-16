@@ -6,6 +6,7 @@ import org.junit.Test;
 import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.protocol.HeartBeatProtos.HeartBeatRequest;
+import com.mogujie.jarvis.protocol.HeartBeatProtos.HeartBeatResponse;
 import com.typesafe.config.Config;
 
 import akka.actor.ActorSelection;
@@ -34,8 +35,7 @@ public class TestHeartBeatActor {
         new JavaTestKit(system) {
             {
                 serverActor.tell(heartBeatRequest, getRef());
-                expectNoMsg();
-
+                expectMsgEquals(HeartBeatResponse.newBuilder().setSuccess(true).build());
             }
         };
 
