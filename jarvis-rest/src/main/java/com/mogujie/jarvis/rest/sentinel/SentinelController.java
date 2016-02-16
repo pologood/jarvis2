@@ -8,6 +8,7 @@
 
 package com.mogujie.jarvis.rest.sentinel;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +25,7 @@ import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.core.domain.OperationMode;
+import com.mogujie.jarvis.core.domain.StreamType;
 import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.expression.ScheduleExpressionType;
 import com.mogujie.jarvis.core.util.IdUtils;
@@ -33,6 +35,8 @@ import com.mogujie.jarvis.protocol.JobProtos.ServerSubmitJobResponse;
 import com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry;
 import com.mogujie.jarvis.protocol.KillTaskProtos.RestServerKillTaskRequest;
 import com.mogujie.jarvis.protocol.KillTaskProtos.ServerKillTaskResponse;
+import com.mogujie.jarvis.protocol.LogProtos.LogStorageReadLogResponse;
+import com.mogujie.jarvis.protocol.LogProtos.RestReadLogRequest;
 import com.mogujie.jarvis.protocol.QueryTaskByJobIdProtos.RestServerQueryTaskByJobIdRequest;
 import com.mogujie.jarvis.protocol.QueryTaskByJobIdProtos.ServerQueryTaskByJobIdResponse;
 import com.mogujie.jarvis.protocol.QueryTaskByJobIdProtos.TaskEntry;
@@ -52,6 +56,8 @@ import com.mogujie.jarvis.rest.vo.JobVo;
 @Deprecated
 @Path("server")
 public class SentinelController extends AbstractController {
+
+    private final static int DEFAULT_SIZE = 10000;
 
     /**
      * @param appToken
@@ -186,19 +192,82 @@ public class SentinelController extends AbstractController {
     }
 
     @POST
+    @Path("result")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ResponseParams queryResult(@FormParam("token") String appToken, @FormParam("name") String appName,
+            @FormParam("time") long time, @FormParam("jobId") Integer jobId) {
+        LOGGER.debug("query result");
+        try {
+            AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
+
+            RestServerQueryTaskByJobIdRequest queryTaskRequest = RestServerQueryTaskByJobIdRequest.newBuilder().setAppAuth(appAuth)
+                    .setAppAuth(appAuth).setJobId(jobId).build();
+            ServerQueryTaskByJobIdResponse queryTaskReponse = (ServerQueryTaskByJobIdResponse) callActor(AkkaType.SERVER, queryTaskRequest);
+            if (queryTaskReponse.getSuccess()) {
+                List<TaskEntry> taskEntryList = queryTaskReponse.getTaskEntryList();
+                if (taskEntryList == null || taskEntryList.size() != 1) {
+                    String err = "job[" + jobId + "] 尚未调度起来";
+                    return new BaseRet(ResponseCodeEnum.FAILED, err);
+                } else {
+                    long taskId = taskEntryList.get(0).getTaskId();
+                    int attemptId = taskEntryList.get(0).getAttemptId();
+                    String fullId = IdUtils.getFullId(jobId, taskId, attemptId);
+                    long offset = 0;
+                    int lines = DEFAULT_SIZE;
+
+                    RestReadLogRequest request = RestReadLogRequest.newBuilder()
+                            .setAppAuth(appAuth)
+                            .setFullId(fullId)
+                            .setType(StreamType.STD_OUT.getValue())
+                            .setOffset(offset)
+                            .setSize(lines)
+                            .build();
+
+                    LogStorageReadLogResponse response = (LogStorageReadLogResponse) callActor(AkkaType.LOGSTORAGE, request);
+                    if (response.getSuccess()) {
+                        String result = response.getLog();
+                        while (!response.getIsEnd()) {
+                            offset = response.getOffset();
+                            request = RestReadLogRequest.newBuilder()
+                                    .setAppAuth(appAuth)
+                                    .setFullId(fullId)
+                                    .setType(StreamType.STD_OUT.getValue())
+                                    .setOffset(offset)
+                                    .setSize(lines)
+                                    .build();
+                            response = (LogStorageReadLogResponse) callActor(AkkaType.LOGSTORAGE, request);
+                            if (!response.getSuccess()) {
+                                return new BaseRet(ResponseCodeEnum.FAILED, response.getMessage());
+                            } else {
+                                result += response.getLog();
+                            }
+                        }
+                        String[] rows = result.split("\n", -1);
+                        rows = Arrays.copyOf(rows, rows.length - 1);
+                        Map<String,Object> map = new HashMap<String,Object>();
+                        map.put("data", rows);
+                        map.put("isEnd", true);
+                        map.put("rowCnt", rows.length);
+                        map.put("volume","");
+                        return new BaseRet(ResponseCodeEnum.SUCCESS, "成功", map);
+                    } else {
+                        return new BaseRet(ResponseCodeEnum.FAILED, response.getMessage());
+                    }
+                }
+            } else {
+                return new BaseRet(ResponseCodeEnum.FAILED, queryTaskReponse.getMessage());
+            }
+        } catch (Exception e) {
+            LOGGER.error("", e);
+            return new BaseRet(ResponseCodeEnum.FAILED, e.getMessage());
+        }
+    }
+
+    @POST
     @Path("querylog")
     @Produces(MediaType.APPLICATION_JSON)
     public ResponseParams queryLog(@FormParam("token") String appToke, @FormParam("name") String appName, @FormParam("time") long time,
             @FormParam("jobId") String jobId) {
-        //TODO
-        return null;
-    }
-
-    @POST
-    @Path("/result")
-    @Produces(MediaType.APPLICATION_JSON)
-    public ResponseParams queryResult(@FormParam("jobId") Integer jobId,
-            @FormParam(value = "volume") String volume) {
         //TODO
         return null;
     }
