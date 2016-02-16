@@ -85,7 +85,7 @@ public class SentinelController extends AbstractController {
 
             JobVo jobVo = new JobVo();
             jobVo.setJobName(jobName);
-            jobVo.setJobType(jobName);
+            jobVo.setJobType(jobType);
             jobVo.setWorkerGroupId(groupId);
             jobVo.setContent(content);
             jobVo.setTemp(true);
