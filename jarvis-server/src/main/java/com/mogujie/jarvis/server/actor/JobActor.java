@@ -165,6 +165,7 @@ public class JobActor extends UntypedActor {
 
             // 1. insert job to DB
             jobId = jobService.insertJob(job);
+            job = jobService.get(jobId).getJob();
 
             // 2. insert schedule expression to DB
             List<ScheduleExpressionEntry> expressionEntries = msg.getExpressionEntryList();
@@ -492,6 +493,12 @@ public class JobActor extends UntypedActor {
             job.setActiveEndDate(new DateTime(msg.getActiveEndTime()).toDate());
         } else {
             job.setActiveEndDate(JarvisConstants.DATETIME_MAX.toDate());
+        }
+        if (msg.hasIsSerial()) {
+            job.setIsSerial(msg.getIsSerial());
+        }
+        if (msg.hasIsTemp()) {
+            job.setIsTemp(msg.getIsTemp());
         }
 
         job.setExpiredTime(msg.getExpiredTime());
