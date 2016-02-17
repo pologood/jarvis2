@@ -86,14 +86,11 @@ public class LocalLogStream implements LogStream {
             boolean isEnd = false;
             while (true) {
                 c = readUtfChar(raf);
-                if (c == -1) {
-                    break;
-                }
-                //是否log结束
-                if (c == LogConstants.END_OF_LOG) {
+                if (c == -1 || c == LogConstants.END_OF_LOG) {
                     isEnd = true;
                     break;
                 }
+
                 i++;
                 if (i > size) {
                     break;
