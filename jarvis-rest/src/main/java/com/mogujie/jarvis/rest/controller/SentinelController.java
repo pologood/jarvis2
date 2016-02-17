@@ -8,6 +8,7 @@
 
 package com.mogujie.jarvis.rest.controller;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +20,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.domain.AkkaType;
@@ -214,14 +216,14 @@ public class SentinelController extends AbstractController {
                     int attemptId = taskEntryList.get(0).getAttemptId();
                     String fullId = IdUtils.getFullId(jobId, taskId, attemptId);
                     long offset = 0;
-                    int lines = DEFAULT_SIZE;
+                    int size = DEFAULT_SIZE;
 
                     RestReadLogRequest request = RestReadLogRequest.newBuilder()
                             .setAppAuth(appAuth)
                             .setFullId(fullId)
                             .setType(StreamType.STD_OUT.getValue())
                             .setOffset(offset)
-                            .setSize(lines)
+                            .setSize(size)
                             .build();
 
                     LogStorageReadLogResponse response = (LogStorageReadLogResponse) callActor(AkkaType.LOGSTORAGE, request);
@@ -234,7 +236,7 @@ public class SentinelController extends AbstractController {
                                     .setFullId(fullId)
                                     .setType(StreamType.STD_OUT.getValue())
                                     .setOffset(offset)
-                                    .setSize(lines)
+                                    .setSize(size)
                                     .build();
                             response = (LogStorageReadLogResponse) callActor(AkkaType.LOGSTORAGE, request);
                             if (!response.getSuccess()) {
@@ -245,8 +247,9 @@ public class SentinelController extends AbstractController {
                         }
                         String[] rows = result.split("\n", -1);
                         rows = Arrays.copyOf(rows, rows.length - 1);
+                        ArrayList<String> rowList = Lists.newArrayList(rows);
                         Map<String,Object> map = new HashMap<String,Object>();
-                        map.put("data", rows);
+                        map.put("data", rowList);
                         map.put("isEnd", true);
                         map.put("rowCnt", rows.length);
                         map.put("volume","");
@@ -269,7 +272,7 @@ public class SentinelController extends AbstractController {
     @Produces(MediaType.APPLICATION_JSON)
     public ResponseParams queryLog(@FormParam("token") String appToken, @FormParam("name") String appName, @FormParam("time") long time,
             @FormParam("jobId") long jobId) {
-        LOGGER.debug("query job status");
+        LOGGER.debug("query job log");
         try {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
@@ -280,20 +283,20 @@ public class SentinelController extends AbstractController {
                 List<TaskEntry> taskEntryList = queryTaskReponse.getTaskEntryList();
                 if (taskEntryList == null || taskEntryList.size() != 1) {
                     String err = "job[" + jobId + "] 尚未调度起来";
-                    return new BaseRet(ResponseCodeEnum.FAILED, err);
+                    return new LogQueryRet(ResponseCodeEnum.FAILED, err);
                 } else {
                     long taskId = taskEntryList.get(0).getTaskId();
                     int attemptId = taskEntryList.get(0).getAttemptId();
                     String fullId = IdUtils.getFullId(jobId, taskId, attemptId);
                     long offset = logOffsetMap.containsKey(fullId) ? logOffsetMap.get(fullId) : 0;
-                    int lines = DEFAULT_SIZE;
+                    int size = DEFAULT_SIZE;
 
                     RestReadLogRequest request = RestReadLogRequest.newBuilder()
                             .setAppAuth(appAuth)
                             .setFullId(fullId)
                             .setType(StreamType.STD_ERR.getValue())
                             .setOffset(offset)
-                            .setSize(lines)
+                            .setSize(size)
                             .build();
 
                     LogStorageReadLogResponse response = (LogStorageReadLogResponse) callActor(AkkaType.LOGSTORAGE, request);
