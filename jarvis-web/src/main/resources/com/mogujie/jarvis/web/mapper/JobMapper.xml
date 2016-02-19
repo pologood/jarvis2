@@ -71,12 +71,9 @@
         t.*,
         app.appName,
         app.appKey,
-        job_schedule_expression.expressionType,
-        job_schedule_expression.expression,
         worker_group.name AS workerGroupName
       FROM job t
         LEFT JOIN app ON t.appId=app.appId
-          LEFT JOIN job_schedule_expression ON t.jobId=job_schedule_expression.jobId
             LEFT JOIN worker_group ON t.workerGroupId=worker_group.id
       <include refid="condition" />
       ORDER BY t.jobId ASC

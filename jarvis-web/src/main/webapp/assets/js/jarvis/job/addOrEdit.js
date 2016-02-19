@@ -207,9 +207,9 @@ function initDependJobs() {
                 success: function (data) {
                     var newData = new Array();
                     $(data.data).each(function (i, c) {
-                        dependJobs[c.id] = c;
-                        newData.push(c.id);
-                        dependIds.push(c.id);
+                        dependJobs[c.jobId] = c;
+                        newData.push(c.jobId);
+                        dependIds.push(c.jobId);
                     });
 
                     $("#dependJobIds").val(newData).trigger("change");
@@ -467,25 +467,19 @@ function getScheduleExpressionEntry() {
     var newExpressionType = $("#expressionType").val();
     var newExpression = $("#expression").val();
 
-
+    scheduleExpressionEntry["expressionType"] = newExpressionType;
+    scheduleExpressionEntry["expression"] = newExpression;
     if ((expressionType == undefined || expressionType == '') && newExpressionType != null && newExpression != '') {
         var operatorMode = 1;
-        scheduleExpressionEntry["expressionType"] = newExpressionType;
-        scheduleExpressionEntry["expression"] = newExpression;
-        scheduleExpressionEntry["operatorMode"] = operatorMode;
+
     }
     if ((expressionType != undefined && expressionType != '') && newExpressionType != null && newExpression != '') {
         var operatorMode = 2;
-        scheduleExpressionEntry["expressionType"] = newExpressionType;
-        scheduleExpressionEntry["expression"] = newExpression;
-        scheduleExpressionEntry["operatorMode"] = operatorMode;
     }
     if ((expressionType != undefined && expressionType != '') && (newExpressionType == null || newExpression == '')) {
         var operatorMode = 3;
-        scheduleExpressionEntry["expressionType"] = newExpressionType;
-        scheduleExpressionEntry["expression"] = newExpression;
-        scheduleExpressionEntry["operatorMode"] = operatorMode;
     }
+    scheduleExpressionEntry["operatorMode"] = operatorMode;
 
 
     return scheduleExpressionEntry;
@@ -717,7 +711,7 @@ function getAlarm() {
             alarmType = value;
         }
         else {
-            alarmType += alarmType + "," + value;
+            alarmType +="," + value;
         }
     });
     if (null == receiver) {
