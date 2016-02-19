@@ -80,9 +80,9 @@ function initLog() {
     data["offset"] = 0;
     data["lines"] = 1000;
     var result = requestRemoteRestApi('/api/log/readResult', "读取执行日志", data);
-
     if (result.flag == true) {
-        $("#log").text(result.data.data.log);
+        var log = result.data.data.log.toString();
+        $("#log").html(log);
     }
 }
 

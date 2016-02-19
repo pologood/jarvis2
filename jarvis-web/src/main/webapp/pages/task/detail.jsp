@@ -117,9 +117,9 @@
                                         </pre>
                                     </div>
 
-                                    <div id="log" class="tab-pane">
+                                    <pre id="log" class="tab-pane">
 
-                                    </div>
+                                    </pre>
                                 </div>
 
 

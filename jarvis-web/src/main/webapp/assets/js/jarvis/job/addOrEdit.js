@@ -4,6 +4,7 @@ var job = null;
 var existAlarmList = undefined;
 var dependJobs = {};
 var dependIds = [];
+var expressionType = null;
 
 $(function () {
     generateUsers();           //初始化报警的内网所有用户,并初始化报警信息
@@ -168,6 +169,7 @@ function initExpressionType() {
             width: '100%'
         });
         if (job != null) {
+            expressionType = job.expressionType;
             $("#expressionType").val(job.expressionType).trigger("change");
         }
     });
@@ -530,9 +532,11 @@ function getJobData() {
         result[id] = value;
     });
 
-    //表示式类型与表达式内容
+    //表达式类型与表达式内容
     var scheduleExpressionEntry = getScheduleExpressionEntry();
-    result["scheduleExpressionEntry"] = scheduleExpressionEntry;
+    var scheduleExpressionList = new Array();
+    scheduleExpressionList.push(scheduleExpressionEntry);
+    result["scheduleExpressionList"] = scheduleExpressionList;
     var appId = $("#appId").val();
     result["appId"] = appId;
     return result;
@@ -711,7 +715,7 @@ function getAlarm() {
             alarmType = value;
         }
         else {
-            alarmType +="," + value;
+            alarmType += "," + value;
         }
     });
     if (null == receiver) {
