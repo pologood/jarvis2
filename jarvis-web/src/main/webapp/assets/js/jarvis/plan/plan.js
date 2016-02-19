@@ -243,10 +243,10 @@ function operateFormatter(value, row, index) {
     var dependUrl = contextPath + '/job/dependency?jobId=' + jobId;
     var taskUrl = contextPath + '/task?jobIdList=' + JSON.stringify([jobId]) + '&scheduleDate=' + planQo.scheduleDate;
     var result = [
-        '<a class="edit" href="' + dependUrl + '" title="查看job依赖" target="_blank">',
+        '<a class="edit" href="' + dependUrl + '" title="查看任务依赖" target="_blank">',
         '<i class="glyphicon glyphicon-object-align-vertical"></i>',
         '</a>  ',
-        '<a class="edit" href="' + taskUrl + '" title="查看Task一览" target="_blank">',
+        '<a class="edit" href="' + taskUrl + '" title="查看当前执行" target="_blank">',
         '<i class="glyphicon glyphicon-list"></i>',
         '</a>  ',
     ].join('');
@@ -258,15 +258,19 @@ function taskStatusFormatter(value, row, index) {
     return result;
 }
 function taskStatusListFormatter(value, row, index) {
-    var array = value.split(',');
     var result = "";
-    for(var key in array){
-        if(!array[key]){
-            continue;
-        }
-        var color = taskStatusColor[array[key]];
-        result = result + '<i class="fa fa-circle fa-2x" style="color: ' + color + '"></i>';
-    }
+    $(value).each(function(i,c){
+        var taskId= c.taskId;
+        var status= c.status;
+        var color = taskStatusColor[status];
+
+
+        var item='<a target="_blank" href="'+contextPath+"/task/detail?taskId="+taskId+'"><i class="fa fa-circle fa-2x" style="color: ' + color + '"></i></a>';
+
+        result = result + item;
+    });
+
+
     return result;
 }
 

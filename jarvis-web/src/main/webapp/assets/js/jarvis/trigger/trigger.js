@@ -12,12 +12,6 @@ $(function () {
         format: 'yyyy-mm-dd',
         autoclose: true
     });
-    $('#dataTime').datetimepicker({
-        language: 'zh-CN',
-        minView: 'hour',
-        format: 'yyyy-mm-dd hh:ii',
-        autoclose: true
-    });
     initValidDate();
 
     //select采用select2 实现
@@ -79,9 +73,11 @@ function buildTree(jobIds) {
             url: contextPath + '/api/job/getTreeDependedOnJob',
             data: {jobId: jobId},
             success: function (data) {
+                var newData = generateData(data);
+                //console.log(newData);
                 $("#" + id).jstree({
                     'core': {
-                        data: data
+                        data: newData
                     },
                     "types": {
                         "default": {"icon": "fa fa-users icon-green", "valid_children": []}
@@ -90,10 +86,43 @@ function buildTree(jobIds) {
                         'checkbox', 'types', 'unique'
                     ]
                 });
+                $("#" + id).bind('check_node.jstree', function (e, data) {
+                    data.inst.open_all(data.rslt.obj, true);
+                });
+                $("#" + id).bind('uncheck_node.jstree', function (e, data) {
+                    data.inst.close_all(data.rslt.obj, true);
+                })
             }
         });
     });
+}
 
+function generateData(data) {
+    var result = {};
+    result["li_attr"] = {jobId: data.jobId};
+    result["text"] = data.jobName;
+    var children = [];
+    if (data.children.length > 0) {
+        children = getChildren(data.children);
+    }
+    result["children"] = children;
+    return result;
+}
+
+function getChildren(childrenData) {
+    var result = new Array();
+    $(childrenData).each(function (i, c) {
+        var item = {};
+        item["li_attr"] = {jobId: c.jobId};
+        item["text"] = c.jobName;
+        var newChildren = [];
+        if (c.children.length > 0) {
+            newChildren = getChildren(c.children);
+        }
+        item["children"] = newChildren;
+        result.push(item);
+    });
+    return result;
 }
 
 //重置所有数据
@@ -101,9 +130,6 @@ function reset() {
     $("#originJobId").val({}).trigger("change");
     $("#startTime").val('');
     $("#endTime").val('');
-    $("#dataTime").val('');
-    $("input[name=runChild]").removeAttr("checked");
-    $("input[name=runChild][value=false]").click();
     $("#reRunJobs").removeAttr("checked");
 }
 
@@ -112,7 +138,6 @@ function submit() {
     var originJobId = $("#originJobId").val();
     var startTime = $("#startTime").val();
     var endTime = $("#endTime").val();
-    var dataTime = $("#dataTime").val();
     if (originJobId == null || originJobId == '') {
         new PNotify({
             title: '重跑任务',
@@ -128,16 +153,6 @@ function submit() {
         new PNotify({
             title: '重跑任务',
             text: "开始日期与结束日期必须填写",
-            type: 'warning',
-            icon: true,
-            styling: 'bootstrap3'
-        });
-        return;
-    }
-    if ('' == dataTime) {
-        new PNotify({
-            title: '重跑任务',
-            text: "请设置数据时间",
             type: 'warning',
             icon: true,
             styling: 'bootstrap3'
@@ -177,29 +192,21 @@ function submit() {
 
     var divTrees = $("#reRunJobs>div");
     $(divTrees).each(function (i, c) {
-        var treeJobIds = $(c).jstree().get_checked();
-        $(treeJobIds).each(function (i, c) {
-            if (jobIdCache[c] == null) {
-                reRunJobs.push(parseInt(c));
-                jobIdCache[c] = c;
+        var aIds = $(c).jstree().get_checked();
+        var modelData=$(c).jstree()._model.data;
+        $(aIds).each(function (i, c) {
+            var jobId =modelData[c].li_attr.jobId;
+            if (jobIdCache[jobId] == null) {
+                reRunJobs.push(parseInt(jobId));
+                jobIdCache[jobId] = jobId;
             }
         });
     });
 
-    //
-    var runChild = $("input[name=runChild]:checked").val();
-    if (runChild = 'true') {
-        runChild = true;
-    }
-    else {
-        runChild = false;
-    }
-
     var startDate = (new Date(startTime)).getTime();
     var endDate = (new Date(endTime)).getTime();
-    var data = {runChild: runChild, startDate: startDate, endDate: endDate, jobIdList: reRunJobs, dataTime: dataTime};
+    var data = {startDate: startDate, endDate: endDate, jobIdList: reRunJobs};
     requestRemoteRestApi("/api/task/rerun", "重跑任务", data);
-
 }
 
 //格式化结果

@@ -43,7 +43,7 @@ public class PlanController extends BaseController {
         List<String> executeUserList = taskService.getAllExecuteUser();
 
         PlanQo planQo = new PlanQo();
-        planQo.setScheduleDate(DateTime.now().toString("yyyyMMdd"));
+        planQo.setScheduleDate(DateTime.now().toString("yyyy-MM-dd"));
 
         modelMap.put("jobIdList", jobIdList);
         modelMap.put("jobNameList", jobNameList);

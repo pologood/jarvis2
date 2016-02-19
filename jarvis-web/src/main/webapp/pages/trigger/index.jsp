@@ -64,28 +64,6 @@
 
             <div class="row top-buffer">
                 <div class="col-md-6 col-md-offset-3">
-                    <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">数据时间</span>
-                        <input id="dataTime" class="form-control" placeholder="以天计算的时间请设置为00:00"/>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row top-buffer">
-                <div class="col-md-6 col-md-offset-3">
-                    <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">是否重跑后续任务</span>
-
-                        <div class="form-control">
-                            <input name="runChild" type="radio" value="true"/>重跑后续任务
-                            <input name="runChild" type="radio" value="false" checked="true"/>不重跑后续任务
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row top-buffer">
-                <div class="col-md-6 col-md-offset-3">
                     <div class="input-group">
                         <span class="input-group-addon" style="border-radius:4px;border:1px solid #ccc">选择重跑任务</span>
                     </div>

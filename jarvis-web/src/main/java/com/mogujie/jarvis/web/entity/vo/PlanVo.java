@@ -2,7 +2,9 @@ package com.mogujie.jarvis.web.entity.vo;
 
 import com.mogujie.jarvis.dto.generate.Plan;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by hejian on 15/10/21.
@@ -20,7 +22,7 @@ public class PlanVo extends Plan {
     private Integer bizGroupId;
     private String bizGroupName;
 
-    private String taskStatus="";
+    private List<Object> taskStatus =new ArrayList<>();
     private int taskSize;
 
     private Date scheduleTimeFirst;
@@ -115,13 +117,12 @@ public class PlanVo extends Plan {
         return this;
     }
 
-    public String getTaskStatus() {
+    public List<Object> getTaskStatus() {
         return taskStatus;
     }
 
-    public PlanVo setTaskStatus(String taskStatus) {
+    public void setTaskStatus(List<Object> taskStatus) {
         this.taskStatus = taskStatus;
-        return this;
     }
 
     public int getTaskSize() {

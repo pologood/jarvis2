@@ -1,5 +1,6 @@
 package com.mogujie.jarvis.web.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.mogujie.jarvis.web.entity.qo.PlanQo;
 import com.mogujie.jarvis.web.entity.vo.PlanVo;
 import com.mogujie.jarvis.web.entity.vo.TaskVo;
@@ -33,16 +34,16 @@ public class PlanService {
 
         Integer total = planMapper.getPlanCountByCondition(planQo);
         List<PlanVo> planVoList = planMapper.getPlansByCondition(planQo);
-        Map<Long,PlanVo> planVoMap = new HashMap<Long,PlanVo>();
+        Map<Long, PlanVo> planVoMap = new HashMap<Long, PlanVo>();
         List<Long> jobIdList = new ArrayList<Long>();
-        for(PlanVo planVo : planVoList){
-            planVoMap.put(planVo.getJobId(),planVo);
+        for (PlanVo planVo : planVoList) {
+            planVoMap.put(planVo.getJobId(), planVo);
             jobIdList.add(planVo.getJobId());
         }
 
         List<TaskVo> recentTaskList = new ArrayList<TaskVo>();
         if (jobIdList.size() > 0) {
-            recentTaskList = taskService.getTaskByJobIdBetweenTime(jobIdList,planQo.getScheduleStartTime(),planQo.getScheduleEndTime());
+            recentTaskList = taskService.getTaskByJobIdBetweenTime(jobIdList, planQo.getScheduleStartTime(), planQo.getScheduleEndTime());
         }
 
         for (TaskVo taskVo : recentTaskList) {
@@ -50,12 +51,12 @@ public class PlanService {
                 PlanVo value = planVoMap.get(taskVo.getJobId());
                 value.setTaskSize(value.getTaskSize() + 1);
 
-                String status = value.getTaskStatus();
-                if (status == null || status.equals("")) {
-                    status = taskVo.getStatus().toString();
-                } else {
-                    status = status + ',' + taskVo.getStatus().toString();
-                }
+                List<Object> status = value.getTaskStatus();
+                JSONObject object = new JSONObject();
+                object.put("taskId", taskVo.getTaskId());
+                object.put("status", taskVo.getStatus());
+                status.add(object);
+
                 value.setTaskStatus(status);
             }
         }

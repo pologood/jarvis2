@@ -396,16 +396,16 @@ function operateFormatter(value, row, index) {
     });
 
     var result = [
-        '<a class="edit" href="' + contextPath + '/task/dependency?taskId=' + taskId + '" title="查看task依赖" target="_blank">',
+        '<a class="edit" href="' + contextPath + '/task/dependency?taskId=' + taskId + '" title="查看当前执行依赖" target="_blank">',
         '<i class="glyphicon glyphicon-object-align-horizontal"></i>',
         '</a>  ',
-        '<a class="edit" href="' + contextPath + '/task/detail?taskId=' + taskId + '" title="查看task详情" target="_blank">',
+        '<a class="edit" href="' + contextPath + '/task/detail?taskId=' + taskId + '" title="查看执行详情" target="_blank">',
         '<i class="glyphicon glyphicon-list-alt"></i>',
         '</a>  ',
         ' <a href="javascript:void(0)" onclick="showTaskHistory(' + taskId + ')" title="重试一览">',
         '<i class="glyphicon glyphicon-list"></i>',
         '</a>',
-        '<div class="btn-group"> <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">操作 <span class="caret"></span> </button>',
+        ' <div class="btn-group"> <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">操作 <span class="caret"></span> </button>',
         '<ul class="dropdown-menu">',
         operationStr,
         '</ul>',
