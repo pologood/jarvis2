@@ -41,6 +41,7 @@ public class TestDAGTask {
         for (long taskId : taskIds) {
             taskService.deleteTaskAndRelation(taskId);
         }
+        taskGraph.clear();
     }
 
     /**
