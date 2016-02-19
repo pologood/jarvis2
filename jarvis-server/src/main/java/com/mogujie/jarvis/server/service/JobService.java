@@ -114,7 +114,8 @@ public class JobService {
         Date startDate = job.getActiveStartDate();
         Date endDate = job.getActiveEndDate();
         Date now = DateTime.now().toDate();
-        if ((startDate == null || now.after(startDate)) && (endDate == null || now.before(endDate))) {
+        if ((startDate == null || now.after(startDate)) && (endDate == null || now.before(endDate))
+                && !job.getIsTemp()) {
             return true;
         } else {
             return false;

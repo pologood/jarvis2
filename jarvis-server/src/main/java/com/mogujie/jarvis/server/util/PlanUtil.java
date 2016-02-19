@@ -55,6 +55,10 @@ public class PlanUtil {
     public static DateTime getScheduleTimeAfter(long jobId, DateTime dateTime) {
         DateTime result = null;
         JobEntry jobEntry = jobService.get(jobId);
+        //如果是临时任务，立即执行
+        if (jobEntry.getJob().getIsTemp()) {
+            return DateTime.now();
+        }
         Map<Long, ScheduleExpression> expressions = jobEntry.getScheduleExpressions();
         if (expressions != null && !expressions.isEmpty()) {
             for (ScheduleExpression scheduleExpression : expressions.values()) {

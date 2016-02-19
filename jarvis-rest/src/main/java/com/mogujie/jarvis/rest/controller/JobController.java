@@ -23,27 +23,27 @@ import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
 import com.mogujie.jarvis.protocol.JobProtos.JobStatusEntry;
-import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobRequest;
 import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobDependRequest;
+import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobRequest;
 import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobScheduleExpRequest;
 import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobStatusRequest;
 import com.mogujie.jarvis.protocol.JobProtos.RestQueryJobRelationRequest;
 import com.mogujie.jarvis.protocol.JobProtos.RestSubmitJobRequest;
-import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobResponse;
 import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobDependResponse;
+import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobResponse;
 import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobScheduleExpResponse;
 import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobStatusResponse;
 import com.mogujie.jarvis.protocol.JobProtos.ServerQueryJobRelationResponse;
 import com.mogujie.jarvis.protocol.JobProtos.ServerSubmitJobResponse;
 import com.mogujie.jarvis.rest.RestResult;
+import com.mogujie.jarvis.rest.utils.JsonParameters;
 import com.mogujie.jarvis.rest.utils.ValidUtils;
 import com.mogujie.jarvis.rest.utils.ValidUtils.CheckMode;
-import com.mogujie.jarvis.rest.utils.JsonParameters;
-import com.mogujie.jarvis.rest.vo.JobVo;
+import com.mogujie.jarvis.rest.vo.JobDependencyVo;
 import com.mogujie.jarvis.rest.vo.JobRelationsVo;
 import com.mogujie.jarvis.rest.vo.JobResultVo;
-import com.mogujie.jarvis.rest.vo.JobDependencyVo;
 import com.mogujie.jarvis.rest.vo.JobScheduleExpVo;
+import com.mogujie.jarvis.rest.vo.JobVo;
 
 /**
  * @author muming
@@ -277,9 +277,10 @@ public class JobController extends AbstractController {
                 .setWorkerGroupId(vo.getWorkerGroupId())
                 .setBizGroupId(JarvisConstants.BIZ_GROUP_ID_UNKNOWN)
                 .setPriority(vo.getPriority(1))
+                .setIsTemp(vo.isTemp())
                 .setActiveStartTime(vo.getActiveStartTime(0L))
                 .setActiveEndTime(vo.getActiveEndTime(0L))
-                .setExpiredTime(600)
+                .setExpiredTime(vo.getExpiredTime(60*60*24)) //默认24小时
                 .setFailedAttempts(vo.getFailedAttempts(0))
                 .setFailedInterval(vo.getFailedInterval(3));
 

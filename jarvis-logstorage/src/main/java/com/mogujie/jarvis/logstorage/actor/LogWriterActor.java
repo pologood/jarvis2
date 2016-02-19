@@ -8,6 +8,9 @@
 
 package com.mogujie.jarvis.logstorage.actor;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.mogujie.jarvis.core.domain.StreamType;
 import com.mogujie.jarvis.logstorage.logStream.LocalLogStream;
 import com.mogujie.jarvis.logstorage.logStream.LogStream;
@@ -16,15 +19,13 @@ import com.mogujie.jarvis.protocol.LogProtos.WorkerWriteLogRequest;
 
 import akka.actor.Props;
 import akka.actor.UntypedActor;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * @author 牧名
  */
 public class LogWriterActor extends UntypedActor {
 
-    private  static final Logger logger = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
 
     public static Props props() {
         return Props.create(LogWriterActor.class);
@@ -50,7 +51,7 @@ public class LogWriterActor extends UntypedActor {
         //响应值_做成
         LogStorageWriteLogResponse response;
 
-        try{
+        try {
             String fullId = msg.getFullId();
             StreamType streamType = StreamType.parseValue(msg.getType());
             String log = msg.getLog().toStringUtf8();
@@ -65,16 +66,15 @@ public class LogWriterActor extends UntypedActor {
             if (isEnd) {
                 logStream.writeEndFlag();
             }
-            logger.info("writeLog:fullId={}, type={}, isEnd={}, log={}",fullId,streamType.getDescription(),isEnd,log);
+            LOGGER.debug("writeLog:fullId={}, type={}, isEnd={}, log={}", fullId, streamType.getDescription(), isEnd, log);
 
             response = LogStorageWriteLogResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());
-        }
-        catch (Exception e){
-            response = LogStorageWriteLogResponse.newBuilder().setSuccess(false)
-                    .setMessage(e.getMessage() != null ? e.getMessage() : e.toString()).build();
+        } catch (Exception e) {
+            response = LogStorageWriteLogResponse.newBuilder().setSuccess(false).setMessage(e.getMessage() != null ? e.getMessage() : e.toString())
+                    .build();
             getSender().tell(response, getSelf());
-            logger.error(e);
+            LOGGER.error(e);
             throw e;
 
         }

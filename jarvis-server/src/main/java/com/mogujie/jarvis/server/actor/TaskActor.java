@@ -44,6 +44,9 @@ import com.mogujie.jarvis.protocol.ManualRerunTaskProtos.RestServerManualRerunTa
 import com.mogujie.jarvis.protocol.ManualRerunTaskProtos.ServerManualRerunTaskResponse;
 import com.mogujie.jarvis.protocol.ModifyTaskStatusProtos.RestServerModifyTaskStatusRequest;
 import com.mogujie.jarvis.protocol.ModifyTaskStatusProtos.ServerModifyTaskStatusResponse;
+import com.mogujie.jarvis.protocol.QueryTaskByJobIdProtos.RestServerQueryTaskByJobIdRequest;
+import com.mogujie.jarvis.protocol.QueryTaskByJobIdProtos.ServerQueryTaskByJobIdResponse;
+import com.mogujie.jarvis.protocol.QueryTaskByJobIdProtos.TaskEntry;
 import com.mogujie.jarvis.protocol.QueryTaskRelationProtos.RestServerQueryTaskRelationRequest;
 import com.mogujie.jarvis.protocol.QueryTaskRelationProtos.ServerQueryTaskRelationResponse;
 import com.mogujie.jarvis.protocol.QueryTaskRelationProtos.TaskMapEntry;
@@ -100,6 +103,7 @@ public class TaskActor extends UntypedActor {
         list.add(new ActorEntry(RestServerQueryTaskRelationRequest.class, ServerQueryTaskRelationResponse.class, MessageType.GENERAL));
         list.add(new ActorEntry(RestServerRemoveTaskRequest.class, ServerRemoveTaskResponse.class, MessageType.GENERAL));
         list.add(new ActorEntry(RestServerQueryTaskStatusRequest.class, ServerQueryTaskStatusResponse.class, MessageType.GENERAL));
+        list.add(new ActorEntry(RestServerQueryTaskByJobIdRequest.class, ServerQueryTaskByJobIdResponse.class, MessageType.GENERAL));
         return list;
     }
 
@@ -126,6 +130,9 @@ public class TaskActor extends UntypedActor {
         } else if (obj instanceof RestServerRemoveTaskRequest) {
             RestServerRemoveTaskRequest msg = (RestServerRemoveTaskRequest) obj;
             removeTask(msg);
+        } else if (obj instanceof RestServerQueryTaskByJobIdRequest) {
+            RestServerQueryTaskByJobIdRequest msg = (RestServerQueryTaskByJobIdRequest) obj;
+            queryTaskByJobId(msg);
         } else {
             unhandled(obj);
         }
@@ -394,6 +401,34 @@ public class TaskActor extends UntypedActor {
             getSender().tell(response, getSelf());
         } catch (Exception e) {
             response = ServerRemoveTaskResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
+            getSender().tell(response, getSelf());
+            throw e;
+        }
+    }
+
+    /**
+     * 查询task
+     *
+     * @param msg
+     */
+    private void queryTaskByJobId(RestServerQueryTaskByJobIdRequest msg) throws Exception {
+        LOGGER.info("start queryTaskByJobId");
+        ServerQueryTaskByJobIdResponse response;
+        try {
+            long jobId = msg.getJobId();
+            ServerQueryTaskByJobIdResponse.Builder builder = ServerQueryTaskByJobIdResponse.newBuilder();
+            List<Task> tasks = taskService.getTasksByJobId(jobId);
+            if (tasks != null) {
+                for (Task task : tasks) {
+                    TaskEntry taskEntry = TaskEntry.newBuilder().setTaskId(task.getTaskId())
+                            .setAttemptId(task.getAttemptId()).build();
+                    builder.addTaskEntry(taskEntry);
+                }
+            }
+            response = builder.setSuccess(true).build();
+            getSender().tell(response, getSelf());
+        } catch (Exception e) {
+            response = ServerQueryTaskByJobIdResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
             getSender().tell(response, getSelf());
             throw e;
         }

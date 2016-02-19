@@ -3,14 +3,15 @@ package com.mogujie.jarvis.server.actor;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
-import java.net.SocketException;
-import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.TimeoutException;
 
 import org.joda.time.DateTime;
 import org.junit.After;
+import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.google.common.collect.Lists;
@@ -22,7 +23,6 @@ import com.mogujie.jarvis.core.domain.OperationMode;
 import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.expression.ScheduleExpressionType;
 import com.mogujie.jarvis.core.util.ConfigUtils;
-import com.mogujie.jarvis.core.util.IPUtils;
 import com.mogujie.jarvis.dto.generate.JobScheduleExpression;
 import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
@@ -40,7 +40,6 @@ import com.mogujie.jarvis.protocol.QueryTaskRelationProtos.RestServerQueryTaskRe
 import com.mogujie.jarvis.protocol.RemoveTaskProtos.RestServerRemoveTaskRequest;
 import com.mogujie.jarvis.protocol.RemoveTaskProtos.ServerRemoveTaskResponse;
 import com.mogujie.jarvis.server.actor.util.TestJarvisConstants;
-import com.mogujie.jarvis.server.actor.util.TestUtil;
 import com.mogujie.jarvis.server.guice4test.Injectors4Test;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.TaskDependService;
@@ -50,6 +49,8 @@ import com.typesafe.config.Config;
 
 import akka.actor.ActorSelection;
 import akka.actor.ActorSystem;
+import scala.concurrent.Await;
+import scala.concurrent.duration.Duration;
 
 /**
  * Location www.mogujie.com
@@ -63,22 +64,18 @@ public class TestTaskActor {
     AppAuth appAuth = AppAuth.newBuilder().setToken("11111").setName("jarvis-web").build();
     TaskDependService taskDependService = Injectors4Test.getInjector().getInstance(TaskDependService.class);
 
+    @Before
+    public void setup() {
+        system = getActorSystem();
+    }
+
     @After
-    public void tearDown() {
-        try {
-            if (!TestUtil.isPortHasBeenUse(IPUtils.getIPV4Address(), 10010)) {
-                system.terminate();
-            }
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        } catch (SocketException e) {
-            e.printStackTrace();
-        }
+    public void close() throws TimeoutException, InterruptedException {
+        Await.ready(system.terminate(), Duration.Inf());
     }
 
     @Test
     public void testQueryTaskRelation() {
-        system = getActorSystem();
         List<Integer> statusList = Lists.newArrayList();
         statusList.add(TaskStatus.SUCCESS.getValue());
         statusList.add(TaskStatus.READY.getValue());
@@ -142,8 +139,6 @@ public class TestTaskActor {
 
     @Test
     public void testModifyTaskStatus() {
-        system = getActorSystem();
-
         List<Integer> statusList = Lists.newArrayList();
 
         statusList.add(TaskStatus.FAILED.getValue());
@@ -164,8 +159,6 @@ public class TestTaskActor {
 
     //@Test
     public void testKillTask() {
-        system = getActorSystem();
-
         KillTaskProtos.RestServerKillTaskRequest request = null;
         KillTaskProtos.ServerKillTaskResponse response = null;
         ActorSelection serverActor = system.actorSelection(actorPath);
@@ -199,12 +192,10 @@ public class TestTaskActor {
         return system;
     }
 
+    @Ignore
     @Test
     public void submitRunningJobMakePlanTask() {
         AppAuth appAuth = AppAuth.newBuilder().setToken("11111").setName("jarvis-web").build();
-
-        system = getActorSystem();
-
         ActorSelection serverActor = system.actorSelection(actorPath);
         String timeExpression = "R1/" + DateTime.now().plusMinutes(1).toString() + "/PT1H";
         List<ScheduleExpressionEntry> expressionEntries = Lists.newArrayList();
@@ -224,6 +215,7 @@ public class TestTaskActor {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         long newJobid = response.getJobId();
 
         DateTime now = DateTime.now();
@@ -279,8 +271,6 @@ public class TestTaskActor {
         long newJobid = 367L;
         AppAuth appAuth = AppAuth.newBuilder().setToken("11111").setName("jarvis-web").build();
 
-        system = getActorSystem();
-
         ActorSelection serverActor = system.actorSelection(actorPath);
         //删掉时间依赖
         ScheduleExpressionEntry expressionEntry = ScheduleExpressionEntry.newBuilder().setExpressionType(ScheduleExpressionType.ISO8601.getValue())
@@ -308,8 +298,6 @@ public class TestTaskActor {
 
     @Test
     public void testRemoveTask() {
-
-        system = getActorSystem();
         ActorSelection serverActor = system.actorSelection(actorPath);
         long taskid = 8274L;
         Task task = taskService.get(taskid);

@@ -12,6 +12,7 @@ import com.mogujie.jarvis.protocol.LogProtos.RestReadLogRequest;
 import com.mogujie.jarvis.protocol.LogProtos.WorkerWriteLogRequest;
 
 import akka.actor.ActorRef;
+import akka.actor.PoisonPill;
 import akka.actor.Props;
 import akka.actor.UntypedActor;
 
@@ -22,7 +23,7 @@ public class LogRoutingActor extends UntypedActor {
 
     private final static Logger logger = LogManager.getLogger();
     private int size;
-    private List<ActorRef> writerActors = new ArrayList<ActorRef>();
+    private static List<ActorRef> writerActors = new ArrayList<ActorRef>();
 
     public LogRoutingActor(int size) {
         this.size = size;
@@ -64,6 +65,7 @@ public class LogRoutingActor extends UntypedActor {
         try {
             ActorRef ref = getContext().actorOf(LogReaderActor.props());
             ref.forward(request, getContext());
+            ref.forward(PoisonPill.getInstance(), getContext());
         } catch (Exception e) {
             LogStorageReadLogResponse response = LogStorageReadLogResponse.newBuilder().setSuccess(false)
                     .setMessage(e.getMessage() != null ? e.getMessage() : e.toString()).build();
