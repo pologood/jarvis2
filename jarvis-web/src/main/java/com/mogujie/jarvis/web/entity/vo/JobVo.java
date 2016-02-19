@@ -11,6 +11,7 @@ public class JobVo extends Job {
     private String appKey;
 
     private Integer expressionType;
+    private Integer expressionId;
     private String expression;
     private String workerGroupName;
 
@@ -53,5 +54,13 @@ public class JobVo extends Job {
 
     public void setWorkerGroupName(String workerGroupName) {
         this.workerGroupName = workerGroupName;
+    }
+
+    public Integer getExpressionId() {
+        return expressionId;
+    }
+
+    public void setExpressionId(Integer expressionId) {
+        this.expressionId = expressionId;
     }
 }

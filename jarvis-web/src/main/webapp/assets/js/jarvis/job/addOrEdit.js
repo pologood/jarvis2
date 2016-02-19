@@ -4,7 +4,7 @@ var job = null;
 var existAlarmList = undefined;
 var dependJobs = {};
 var dependIds = [];
-var expressionType = null;
+var expressionId = null;
 
 $(function () {
     generateUsers();           //初始化报警的内网所有用户,并初始化报警信息
@@ -169,7 +169,7 @@ function initExpressionType() {
             width: '100%'
         });
         if (job != null) {
-            expressionType = job.expressionType;
+            expressionId = job.expressionId;
             $("#expressionType").val(job.expressionType).trigger("change");
         }
     });
@@ -471,16 +471,17 @@ function getScheduleExpressionEntry() {
 
     scheduleExpressionEntry["expressionType"] = newExpressionType;
     scheduleExpressionEntry["expression"] = newExpression;
-    if ((expressionType == undefined || expressionType == '') && newExpressionType != null && newExpression != '') {
+    if ((expressionId == undefined || expressionId == '') && newExpressionType != null && newExpression != '') {
         var operatorMode = 1;
 
     }
-    if ((expressionType != undefined && expressionType != '') && newExpressionType != null && newExpression != '') {
+    if ((expressionId != undefined && expressionId != '') && newExpressionType != null && newExpression != '') {
         var operatorMode = 2;
     }
-    if ((expressionType != undefined && expressionType != '') && (newExpressionType == null || newExpression == '')) {
+    if ((expressionId != undefined && expressionId != '') && (newExpressionType == null || newExpression == '')) {
         var operatorMode = 3;
     }
+    scheduleExpressionEntry["expressionId"] = expressionId;
     scheduleExpressionEntry["operatorMode"] = operatorMode;
 
 
@@ -564,6 +565,7 @@ function saveJob() {
     if (null != jobId && '' != jobId) {
         data["jobId"] = jobId;
         var response = requestRemoteRestApi("/api/job/edit", "编辑任务", data);
+        var response = requestRemoteRestApi("/api/job/scheduleExp/set", "修改表达式", data);
     }
     else {
         var response = requestRemoteRestApi("/api/job/submit", "新增任务", data);

@@ -92,7 +92,7 @@
     </select>
 
     <select id="getJobById" parameterType="Long" resultType="JobVo">
-        SELECT job.*,job_schedule_expression.expressionType,job_schedule_expression.expression
+        SELECT job.*,job_schedule_expression.id as expressionId,job_schedule_expression.expressionType,job_schedule_expression.expression
         FROM job LEFT JOIN job_schedule_expression ON job.jobId=job_schedule_expression.jobId
         WHERE job.jobId=#{jobId} limit 0,1
     </select>
