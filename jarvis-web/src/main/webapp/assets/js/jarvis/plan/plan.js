@@ -270,6 +270,10 @@ function taskStatusListFormatter(value, row, index) {
         result = result + item;
     });
 
+    if(""==result){
+        result="等待生成执行";
+    }
+
 
     return result;
 }
