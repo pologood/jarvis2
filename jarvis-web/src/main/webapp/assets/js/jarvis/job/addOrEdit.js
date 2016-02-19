@@ -158,19 +158,41 @@ function initJobPriority() {
 function initExpressionType() {
     $.getJSON(contextPath + "/api/job/getExpressionType", function (data) {
         var newData = new Array();
+        var no={};
+        no["id"]="no";
+        no["text"]="无";
+        newData.push(no);
+
         $(data).each(function (i, c) {
-            if (this.id != 'all') {
-                newData.push(this);
-            }
+            newData.push(c);
         });
 
         $("#expressionType").select2({
             data: newData,
             width: '100%'
         });
+
+        $("#expressionType").on("select2:select",function(e){
+            if("no"==$("#expressionType").val()){
+                $("#expression").val("");
+                $("#expression").attr("disabled","disabled");
+            }
+            else{
+                $("#expression").removeAttr("disabled");
+                $("#expression").val("");
+            }
+        })
+
+
         if (job != null) {
             expressionId = job.expressionId;
-            $("#expressionType").val(job.expressionType).trigger("change");
+            if(expressionId==null){
+                $("#expressionType").val("no").trigger("change");
+                $("#expression").attr("disabled","disabled");
+            }
+            else{
+                $("#expressionType").val(job.expressionType).trigger("change");
+            }
         }
     });
 }
@@ -467,6 +489,8 @@ function getScheduleExpressionEntry() {
     var scheduleExpressionEntry = {};
 
     var newExpressionType = $("#expressionType").val();
+    var newExpressionType=newExpressionType=="no"?null:newExpressionType;
+
     var newExpression = $("#expression").val();
 
     scheduleExpressionEntry["expressionType"] = newExpressionType;
@@ -566,6 +590,11 @@ function saveJob() {
         data["jobId"] = jobId;
         var response = requestRemoteRestApi("/api/job/edit", "编辑任务", data);
         var response = requestRemoteRestApi("/api/job/scheduleExp/set", "修改表达式", data);
+
+        window.setTimeout(function(){
+            window.location.reload();
+        },500);
+
     }
     else {
         var response = requestRemoteRestApi("/api/job/submit", "新增任务", data);

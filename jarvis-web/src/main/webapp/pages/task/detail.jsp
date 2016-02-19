@@ -21,6 +21,12 @@
                 </ol>
             </nav>
         </div>
+
+        <div class="col-md-2 pull-right">
+            <a href="${contextPath}/task/dependency?taskId=${taskVo.taskId}" target="_blank">
+                <h3>查看执行依赖</h3>
+            </a>
+        </div>
     </div>
 
     <div class="row top-buffer">
