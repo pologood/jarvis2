@@ -271,6 +271,7 @@ public class JobController extends AbstractController {
                 .setJobName(vo.getJobName())
                 .setJobType(vo.getJobType())
                 .setStatus(vo.getStatus(JobStatus.ENABLE.getValue()))
+                .setContentType(vo.getContentType())
                 .setContent(vo.getContent())
                 .setParameters(vo.getParams("{}"))
                 .setAppName(vo.getAppName(appAuth.getName()))

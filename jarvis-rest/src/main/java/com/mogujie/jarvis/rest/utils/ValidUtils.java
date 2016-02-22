@@ -66,6 +66,10 @@ public class ValidUtils {
         Preconditions.checkArgument(mode != CheckMode.ADD || workerGroupId != null, "workGroupId不能为空");
         Preconditions.checkArgument(workerGroupId == null || workerGroupId > 0, "workGroupId不能为空");
 
+        Integer contentType = job.getContentType();
+        Preconditions.checkArgument(mode != CheckMode.ADD || contentType != null, "job内容类型不能为空");
+        Preconditions.checkArgument(contentType == null || contentType > 0, "job内容类型不能为空");
+
         String content = job.getContent();
         Preconditions.checkArgument(mode != CheckMode.ADD || content != null, "job内容不能为空");
         Preconditions.checkArgument(content == null || !content.trim().equals(""), "job内容不能为空");

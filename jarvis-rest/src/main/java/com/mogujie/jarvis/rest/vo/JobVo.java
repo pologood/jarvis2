@@ -15,6 +15,7 @@ public class JobVo extends AbstractVo {
     private String jobName;
     private String jobType;
     private Integer status;
+    private Integer contentType;
     private String content;
     private String params;
     private String appName;
@@ -60,6 +61,14 @@ public class JobVo extends AbstractVo {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Integer getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(Integer contentType) {
+        this.contentType = contentType;
     }
 
     public String getContent() {

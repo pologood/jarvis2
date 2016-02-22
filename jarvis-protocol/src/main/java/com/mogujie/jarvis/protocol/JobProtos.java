@@ -80,13 +80,13 @@ public final class JobProtos {
      */
     int getStatus();
 
-    // optional int32 contentType = 6 [default = 1];
+    // required int32 contentType = 6 [default = 1];
     /**
-     * <code>optional int32 contentType = 6 [default = 1];</code>
+     * <code>required int32 contentType = 6 [default = 1];</code>
      */
     boolean hasContentType();
     /**
-     * <code>optional int32 contentType = 6 [default = 1];</code>
+     * <code>required int32 contentType = 6 [default = 1];</code>
      */
     int getContentType();
 
@@ -672,17 +672,17 @@ public final class JobProtos {
       return status_;
     }
 
-    // optional int32 contentType = 6 [default = 1];
+    // required int32 contentType = 6 [default = 1];
     public static final int CONTENTTYPE_FIELD_NUMBER = 6;
     private int contentType_;
     /**
-     * <code>optional int32 contentType = 6 [default = 1];</code>
+     * <code>required int32 contentType = 6 [default = 1];</code>
      */
     public boolean hasContentType() {
       return ((bitField0_ & 0x00000020) == 0x00000020);
     }
     /**
-     * <code>optional int32 contentType = 6 [default = 1];</code>
+     * <code>required int32 contentType = 6 [default = 1];</code>
      */
     public int getContentType() {
       return contentType_;
@@ -1094,6 +1094,10 @@ public final class JobProtos {
         return false;
       }
       if (!hasStatus()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasContentType()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -1749,6 +1753,10 @@ public final class JobProtos {
           
           return false;
         }
+        if (!hasContentType()) {
+          
+          return false;
+        }
         if (!hasContent()) {
           
           return false;
@@ -2167,22 +2175,22 @@ public final class JobProtos {
         return this;
       }
 
-      // optional int32 contentType = 6 [default = 1];
+      // required int32 contentType = 6 [default = 1];
       private int contentType_ = 1;
       /**
-       * <code>optional int32 contentType = 6 [default = 1];</code>
+       * <code>required int32 contentType = 6 [default = 1];</code>
        */
       public boolean hasContentType() {
         return ((bitField0_ & 0x00000020) == 0x00000020);
       }
       /**
-       * <code>optional int32 contentType = 6 [default = 1];</code>
+       * <code>required int32 contentType = 6 [default = 1];</code>
        */
       public int getContentType() {
         return contentType_;
       }
       /**
-       * <code>optional int32 contentType = 6 [default = 1];</code>
+       * <code>required int32 contentType = 6 [default = 1];</code>
        */
       public Builder setContentType(int value) {
         bitField0_ |= 0x00000020;
@@ -2191,7 +2199,7 @@ public final class JobProtos {
         return this;
       }
       /**
-       * <code>optional int32 contentType = 6 [default = 1];</code>
+       * <code>required int32 contentType = 6 [default = 1];</code>
        */
       public Builder clearContentType() {
         bitField0_ = (bitField0_ & ~0x00000020);
@@ -19829,7 +19837,7 @@ public final class JobProtos {
       "_entry.proto\"\243\004\n\024RestSubmitJobRequest\022\032\n" +
       "\010app_auth\030\001 \002(\0132\010.AppAuth\022\014\n\004user\030\002 \002(\t\022" +
       "\020\n\010job_name\030\003 \002(\t\022\020\n\010job_type\030\004 \002(\t\022\016\n\006s" +
-      "tatus\030\005 \002(\005\022\026\n\013contentType\030\006 \001(\005:\0011\022\017\n\007c" +
+      "tatus\030\005 \002(\005\022\026\n\013contentType\030\006 \002(\005:\0011\022\017\n\007c" +
       "ontent\030\007 \002(\t\022\024\n\nparameters\030\010 \001(\t:\000\022\020\n\010ap" +
       "p_name\030\t \001(\t\022\027\n\017worker_group_id\030\n \002(\005\022\027\n" +
       "\014biz_group_id\030\013 \001(\005:\0010\022\023\n\010priority\030\014 \001(\005" +

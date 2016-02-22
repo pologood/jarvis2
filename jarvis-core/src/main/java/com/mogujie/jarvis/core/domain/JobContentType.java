@@ -15,7 +15,7 @@ package com.mogujie.jarvis.core.domain;
 public enum JobContentType {
     UNKNOWN(0, "未知"),
     TEXT(1, "文本"),
-    SCRPIT(2, "脚本"),
+    SCRIPT(2, "脚本"),
     JAR(3, "jar包");
 
     private int value;

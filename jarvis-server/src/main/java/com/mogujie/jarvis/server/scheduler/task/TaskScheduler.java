@@ -20,7 +20,9 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Lists;
 import com.google.common.eventbus.AllowConcurrentEvents;
 import com.google.common.eventbus.Subscribe;
+import com.mogujie.jarvis.core.domain.JobContentType;
 import com.mogujie.jarvis.core.domain.TaskDetail;
+import com.mogujie.jarvis.core.domain.TaskDetail.TaskDetailBuilder;
 import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.domain.TaskType;
 import com.mogujie.jarvis.core.exception.NotFoundException;
@@ -46,6 +48,7 @@ import com.mogujie.jarvis.server.scheduler.event.StopEvent;
 import com.mogujie.jarvis.server.scheduler.event.SuccessEvent;
 import com.mogujie.jarvis.server.service.AppService;
 import com.mogujie.jarvis.server.service.JobService;
+import com.mogujie.jarvis.server.service.ScriptService;
 import com.mogujie.jarvis.server.service.TaskService;
 
 /**
@@ -67,6 +70,7 @@ public class TaskScheduler extends Scheduler {
     private AppService appService = Injectors.getInjector().getInstance(AppService.class);
     private JobService jobService = Injectors.getInjector().getInstance(JobService.class);
     private TaskService taskService = Injectors.getInjector().getInstance(TaskService.class);
+    private ScriptService scriptService = Injectors.getInjector().getInstance(ScriptService.class);
     private TaskManager taskManager = Injectors.getInjector().getInstance(TaskManager.class);
     private PriorityTaskQueue taskQueue = Injectors.getInjector().getInstance(PriorityTaskQueue.class);
     private TaskRetryScheduler retryScheduler = TaskRetryScheduler.INSTANCE;
@@ -324,13 +328,12 @@ public class TaskScheduler extends Scheduler {
         String fullId = IdUtils.getFullId(dagTask.getJobId(), dagTask.getTaskId(), dagTask.getAttemptId());
         long jobId = dagTask.getJobId();
         Job job = jobService.get(jobId).getJob();
-        TaskDetail taskDetail = TaskDetail.newTaskDetailBuilder()
+        TaskDetailBuilder builder = TaskDetail.newTaskDetailBuilder()
                 .setFullId(fullId)
                 .setTaskName(job.getJobName())
                 .setAppName(appService.getAppNameByAppId(job.getAppId()))
                 .setUser(job.getSubmitUser())
                 .setPriority(job.getPriority())
-                .setContent(job.getContent())
                 .setJobType(job.getJobType())
                 .setParameters(JsonHelper.fromJson2JobParams(job.getParams()))
                 .setScheduleTime(new DateTime(dagTask.getScheduleTime()))
@@ -338,9 +341,18 @@ public class TaskScheduler extends Scheduler {
                 .setGroupId(job.getWorkerGroupId())
                 .setFailedRetries(job.getFailedAttempts())
                 .setFailedInterval(job.getFailedInterval())
-                .setExpiredTime(job.getExpiredTime())
-                .build();
-        return taskDetail;
+                .setExpiredTime(job.getExpiredTime());
+        if (job.getContentType() == JobContentType.SCRIPT.getValue()) {
+            int scriptId = Integer.parseInt(job.getContent());
+            String content = scriptService.getContentById(scriptId);
+            if (content == null) {
+                LOGGER.error("couldn't get content by scriptId={}", scriptId);
+            }
+            builder.setContent(scriptService.getContentById(scriptId));
+        } else {
+            builder.setContent(job.getContent());
+        }
+        return builder.build();
     }
 
     private void reduceTaskNum(long taskId) {
