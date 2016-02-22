@@ -80,7 +80,7 @@
 			<property name="useActualColumnNames" value="true" />
 		</table>
 
-		<table catalog="ironman" tableName="script">
+		<table catalog="jarvis2" tableName="script">
 			<property name="useActualColumnNames" value="true" />
 			<generatedKey column="id" sqlStatement="MySql" identity="true" />
 		</table>

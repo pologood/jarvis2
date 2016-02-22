@@ -86,7 +86,7 @@
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
-    from ironman..script
+    from jarvis2..script
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -100,7 +100,7 @@
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from ironman..script
+    from jarvis2..script
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -113,15 +113,15 @@
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
-    from ironman..script
+    from jarvis2..script
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from ironman..script
+    delete from jarvis2..script
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <delete id="deleteByExample" parameterType="com.mogujie.jarvis.dto.generate.ScriptExample" >
-    delete from ironman..script
+    delete from jarvis2..script
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -130,7 +130,7 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into ironman..script (title, type, creator, 
+    insert into jarvis2..script (title, type, creator, 
       createTime, updateTime, last_editor, 
       status, content)
     values (#{title,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
@@ -141,7 +141,7 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into ironman..script
+    insert into jarvis2..script
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="title != null" >
         title,
@@ -196,13 +196,13 @@
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.mogujie.jarvis.dto.generate.ScriptExample" resultType="java.lang.Integer" >
-    select count(*) from ironman..script
+    select count(*) from jarvis2..script
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update ironman..script
+    update jarvis2..script
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
@@ -237,7 +237,7 @@
     </if>
   </update>
   <update id="updateByExampleWithBLOBs" parameterType="map" >
-    update ironman..script
+    update jarvis2..script
     set id = #{record.id,jdbcType=INTEGER},
       title = #{record.title,jdbcType=VARCHAR},
       type = #{record.type,jdbcType=VARCHAR},
@@ -252,7 +252,7 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update ironman..script
+    update jarvis2..script
     set id = #{record.id,jdbcType=INTEGER},
       title = #{record.title,jdbcType=VARCHAR},
       type = #{record.type,jdbcType=VARCHAR},
@@ -266,7 +266,7 @@
     </if>
   </update>
   <update id="updateByPrimaryKeySelective" parameterType="com.mogujie.jarvis.dto.generate.Script" >
-    update ironman..script
+    update jarvis2..script
     <set >
       <if test="title != null" >
         title = #{title,jdbcType=VARCHAR},
@@ -296,7 +296,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.mogujie.jarvis.dto.generate.Script" >
-    update ironman..script
+    update jarvis2..script
     set title = #{title,jdbcType=VARCHAR},
       type = #{type,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
@@ -308,7 +308,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.mogujie.jarvis.dto.generate.Script" >
-    update ironman..script
+    update jarvis2..script
     set title = #{title,jdbcType=VARCHAR},
       type = #{type,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
