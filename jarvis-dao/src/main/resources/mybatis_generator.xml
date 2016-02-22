@@ -80,5 +80,10 @@
 			<property name="useActualColumnNames" value="true" />
 		</table>
 
+		<table schema="ironman" tableName="script">
+			<property name="useActualColumnNames" value="true" />
+			<generatedKey column="id" sqlStatement="MySql" identity="true" />
+		</table>
+
 	</context>
 </generatorConfiguration>

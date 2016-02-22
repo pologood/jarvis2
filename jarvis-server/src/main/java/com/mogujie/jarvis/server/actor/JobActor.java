@@ -477,6 +477,7 @@ public class JobActor extends UntypedActor {
         Job job = new Job();
         job.setAppId(analysisAppId(msg.getAppAuth(), msg.getAppName()));
         job.setJobName(msg.getJobName());
+        job.setContentType(msg.getContentType());
         job.setContent(msg.getContent());
         job.setParams(msg.getParameters());
         job.setPriority(msg.getPriority());
