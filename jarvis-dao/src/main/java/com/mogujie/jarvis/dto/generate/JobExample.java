@@ -365,6 +365,66 @@ public class JobExample {
             return (Criteria) this;
         }
 
+        public Criteria andContentTypeIsNull() {
+            addCriterion("contentType is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentTypeIsNotNull() {
+            addCriterion("contentType is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentTypeEqualTo(Integer value) {
+            addCriterion("contentType =", value, "contentType");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentTypeNotEqualTo(Integer value) {
+            addCriterion("contentType <>", value, "contentType");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentTypeGreaterThan(Integer value) {
+            addCriterion("contentType >", value, "contentType");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("contentType >=", value, "contentType");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentTypeLessThan(Integer value) {
+            addCriterion("contentType <", value, "contentType");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("contentType <=", value, "contentType");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentTypeIn(List<Integer> values) {
+            addCriterion("contentType in", values, "contentType");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentTypeNotIn(List<Integer> values) {
+            addCriterion("contentType not in", values, "contentType");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentTypeBetween(Integer value1, Integer value2) {
+            addCriterion("contentType between", value1, value2, "contentType");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("contentType not between", value1, value2, "contentType");
+            return (Criteria) this;
+        }
+
         public Criteria andParamsIsNull() {
             addCriterion("params is null");
             return (Criteria) this;
@@ -1352,66 +1412,6 @@ public class JobExample {
 
         public Criteria andUpdateUserNotBetween(String value1, String value2) {
             addCriterion("updateUser not between", value1, value2, "updateUser");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentTypeIsNull() {
-            addCriterion("contentType is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentTypeIsNotNull() {
-            addCriterion("contentType is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentTypeEqualTo(Integer value) {
-            addCriterion("contentType =", value, "contentType");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentTypeNotEqualTo(Integer value) {
-            addCriterion("contentType <>", value, "contentType");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentTypeGreaterThan(Integer value) {
-            addCriterion("contentType >", value, "contentType");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentTypeGreaterThanOrEqualTo(Integer value) {
-            addCriterion("contentType >=", value, "contentType");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentTypeLessThan(Integer value) {
-            addCriterion("contentType <", value, "contentType");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentTypeLessThanOrEqualTo(Integer value) {
-            addCriterion("contentType <=", value, "contentType");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentTypeIn(List<Integer> values) {
-            addCriterion("contentType in", values, "contentType");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentTypeNotIn(List<Integer> values) {
-            addCriterion("contentType not in", values, "contentType");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentTypeBetween(Integer value1, Integer value2) {
-            addCriterion("contentType between", value1, value2, "contentType");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentTypeNotBetween(Integer value1, Integer value2) {
-            addCriterion("contentType not between", value1, value2, "contentType");
             return (Criteria) this;
         }
     }

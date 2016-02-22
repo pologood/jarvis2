@@ -6,6 +6,7 @@
     <result column="jobName" property="jobName" jdbcType="VARCHAR" />
     <result column="jobType" property="jobType" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="contentType" property="contentType" jdbcType="INTEGER" />
     <result column="params" property="params" jdbcType="VARCHAR" />
     <result column="submitUser" property="submitUser" jdbcType="VARCHAR" />
     <result column="priority" property="priority" jdbcType="INTEGER" />
@@ -22,7 +23,6 @@
     <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
     <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
     <result column="updateUser" property="updateUser" jdbcType="VARCHAR" />
-    <result column="contentType" property="contentType" jdbcType="INTEGER" />
   </resultMap>
   <resultMap id="ResultMapWithBLOBs" type="com.mogujie.jarvis.dto.generate.Job" extends="BaseResultMap" >
     <result column="content" property="content" jdbcType="LONGVARCHAR" />
@@ -86,9 +86,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    jobId, jobName, jobType, status, params, submitUser, priority, isSerial, isTemp, 
-    appId, workerGroupId, bizGroupId, activeStartDate, activeEndDate, expiredTime, failedAttempts, 
-    failedInterval, createTime, updateTime, updateUser, contentType
+    jobId, jobName, jobType, status, contentType, params, submitUser, priority, isSerial, 
+    isTemp, appId, workerGroupId, bizGroupId, activeStartDate, activeEndDate, expiredTime, 
+    failedAttempts, failedInterval, createTime, updateTime, updateUser
   </sql>
   <sql id="Blob_Column_List" >
     content
@@ -146,19 +146,21 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into job (jobName, jobType, status, 
-      params, submitUser, priority, 
-      isSerial, isTemp, appId, workerGroupId, 
-      bizGroupId, activeStartDate, activeEndDate, 
-      expiredTime, failedAttempts, failedInterval, 
-      createTime, updateTime, updateUser, 
-      contentType, content)
+      contentType, params, submitUser, 
+      priority, isSerial, isTemp, 
+      appId, workerGroupId, bizGroupId, 
+      activeStartDate, activeEndDate, expiredTime, 
+      failedAttempts, failedInterval, createTime, 
+      updateTime, updateUser, content
+      )
     values (#{jobName,jdbcType=VARCHAR}, #{jobType,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
-      #{params,jdbcType=VARCHAR}, #{submitUser,jdbcType=VARCHAR}, #{priority,jdbcType=INTEGER}, 
-      #{isSerial,jdbcType=BIT}, #{isTemp,jdbcType=BIT}, #{appId,jdbcType=INTEGER}, #{workerGroupId,jdbcType=INTEGER}, 
-      #{bizGroupId,jdbcType=INTEGER}, #{activeStartDate,jdbcType=TIMESTAMP}, #{activeEndDate,jdbcType=TIMESTAMP}, 
-      #{expiredTime,jdbcType=INTEGER}, #{failedAttempts,jdbcType=INTEGER}, #{failedInterval,jdbcType=INTEGER}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, 
-      #{contentType,jdbcType=INTEGER}, #{content,jdbcType=LONGVARCHAR})
+      #{contentType,jdbcType=INTEGER}, #{params,jdbcType=VARCHAR}, #{submitUser,jdbcType=VARCHAR}, 
+      #{priority,jdbcType=INTEGER}, #{isSerial,jdbcType=BIT}, #{isTemp,jdbcType=BIT}, 
+      #{appId,jdbcType=INTEGER}, #{workerGroupId,jdbcType=INTEGER}, #{bizGroupId,jdbcType=INTEGER}, 
+      #{activeStartDate,jdbcType=TIMESTAMP}, #{activeEndDate,jdbcType=TIMESTAMP}, #{expiredTime,jdbcType=INTEGER}, 
+      #{failedAttempts,jdbcType=INTEGER}, #{failedInterval,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, #{content,jdbcType=LONGVARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.mogujie.jarvis.dto.generate.Job" >
     <selectKey resultType="java.lang.Long" keyProperty="jobId" order="AFTER" >
@@ -174,6 +176,9 @@
       </if>
       <if test="status != null" >
         status,
+      </if>
+      <if test="contentType != null" >
+        contentType,
       </if>
       <if test="params != null" >
         params,
@@ -223,9 +228,6 @@
       <if test="updateUser != null" >
         updateUser,
       </if>
-      <if test="contentType != null" >
-        contentType,
-      </if>
       <if test="content != null" >
         content,
       </if>
@@ -239,6 +241,9 @@
       </if>
       <if test="status != null" >
         #{status,jdbcType=INTEGER},
+      </if>
+      <if test="contentType != null" >
+        #{contentType,jdbcType=INTEGER},
       </if>
       <if test="params != null" >
         #{params,jdbcType=VARCHAR},
@@ -288,9 +293,6 @@
       <if test="updateUser != null" >
         #{updateUser,jdbcType=VARCHAR},
       </if>
-      <if test="contentType != null" >
-        #{contentType,jdbcType=INTEGER},
-      </if>
       <if test="content != null" >
         #{content,jdbcType=LONGVARCHAR},
       </if>
@@ -316,6 +318,9 @@
       </if>
       <if test="record.status != null" >
         status = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.contentType != null" >
+        contentType = #{record.contentType,jdbcType=INTEGER},
       </if>
       <if test="record.params != null" >
         params = #{record.params,jdbcType=VARCHAR},
@@ -365,9 +370,6 @@
       <if test="record.updateUser != null" >
         updateUser = #{record.updateUser,jdbcType=VARCHAR},
       </if>
-      <if test="record.contentType != null" >
-        contentType = #{record.contentType,jdbcType=INTEGER},
-      </if>
       <if test="record.content != null" >
         content = #{record.content,jdbcType=LONGVARCHAR},
       </if>
@@ -382,6 +384,7 @@
       jobName = #{record.jobName,jdbcType=VARCHAR},
       jobType = #{record.jobType,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=INTEGER},
+      contentType = #{record.contentType,jdbcType=INTEGER},
       params = #{record.params,jdbcType=VARCHAR},
       submitUser = #{record.submitUser,jdbcType=VARCHAR},
       priority = #{record.priority,jdbcType=INTEGER},
@@ -398,7 +401,6 @@
       createTime = #{record.createTime,jdbcType=TIMESTAMP},
       updateTime = #{record.updateTime,jdbcType=TIMESTAMP},
       updateUser = #{record.updateUser,jdbcType=VARCHAR},
-      contentType = #{record.contentType,jdbcType=INTEGER},
       content = #{record.content,jdbcType=LONGVARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -410,6 +412,7 @@
       jobName = #{record.jobName,jdbcType=VARCHAR},
       jobType = #{record.jobType,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=INTEGER},
+      contentType = #{record.contentType,jdbcType=INTEGER},
       params = #{record.params,jdbcType=VARCHAR},
       submitUser = #{record.submitUser,jdbcType=VARCHAR},
       priority = #{record.priority,jdbcType=INTEGER},
@@ -425,8 +428,7 @@
       failedInterval = #{record.failedInterval,jdbcType=INTEGER},
       createTime = #{record.createTime,jdbcType=TIMESTAMP},
       updateTime = #{record.updateTime,jdbcType=TIMESTAMP},
-      updateUser = #{record.updateUser,jdbcType=VARCHAR},
-      contentType = #{record.contentType,jdbcType=INTEGER}
+      updateUser = #{record.updateUser,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -442,6 +444,9 @@
       </if>
       <if test="status != null" >
         status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="contentType != null" >
+        contentType = #{contentType,jdbcType=INTEGER},
       </if>
       <if test="params != null" >
         params = #{params,jdbcType=VARCHAR},
@@ -491,9 +496,6 @@
       <if test="updateUser != null" >
         updateUser = #{updateUser,jdbcType=VARCHAR},
       </if>
-      <if test="contentType != null" >
-        contentType = #{contentType,jdbcType=INTEGER},
-      </if>
       <if test="content != null" >
         content = #{content,jdbcType=LONGVARCHAR},
       </if>
@@ -505,6 +507,7 @@
     set jobName = #{jobName,jdbcType=VARCHAR},
       jobType = #{jobType,jdbcType=VARCHAR},
       status = #{status,jdbcType=INTEGER},
+      contentType = #{contentType,jdbcType=INTEGER},
       params = #{params,jdbcType=VARCHAR},
       submitUser = #{submitUser,jdbcType=VARCHAR},
       priority = #{priority,jdbcType=INTEGER},
@@ -521,7 +524,6 @@
       createTime = #{createTime,jdbcType=TIMESTAMP},
       updateTime = #{updateTime,jdbcType=TIMESTAMP},
       updateUser = #{updateUser,jdbcType=VARCHAR},
-      contentType = #{contentType,jdbcType=INTEGER},
       content = #{content,jdbcType=LONGVARCHAR}
     where jobId = #{jobId,jdbcType=BIGINT}
   </update>
@@ -530,6 +532,7 @@
     set jobName = #{jobName,jdbcType=VARCHAR},
       jobType = #{jobType,jdbcType=VARCHAR},
       status = #{status,jdbcType=INTEGER},
+      contentType = #{contentType,jdbcType=INTEGER},
       params = #{params,jdbcType=VARCHAR},
       submitUser = #{submitUser,jdbcType=VARCHAR},
       priority = #{priority,jdbcType=INTEGER},
@@ -545,8 +548,7 @@
       failedInterval = #{failedInterval,jdbcType=INTEGER},
       createTime = #{createTime,jdbcType=TIMESTAMP},
       updateTime = #{updateTime,jdbcType=TIMESTAMP},
-      updateUser = #{updateUser,jdbcType=VARCHAR},
-      contentType = #{contentType,jdbcType=INTEGER}
+      updateUser = #{updateUser,jdbcType=VARCHAR}
     where jobId = #{jobId,jdbcType=BIGINT}
   </update>
 </mapper>

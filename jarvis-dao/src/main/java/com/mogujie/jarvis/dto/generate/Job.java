@@ -11,6 +11,8 @@ public class Job {
 
     private Integer status;
 
+    private Integer contentType;
+
     private String params;
 
     private String submitUser;
@@ -42,8 +44,6 @@ public class Job {
     private Date updateTime;
 
     private String updateUser;
-
-    private Integer contentType;
 
     private String content;
 
@@ -77,6 +77,14 @@ public class Job {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Integer getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(Integer contentType) {
+        this.contentType = contentType;
     }
 
     public String getParams() {
@@ -205,14 +213,6 @@ public class Job {
 
     public void setUpdateUser(String updateUser) {
         this.updateUser = updateUser;
-    }
-
-    public Integer getContentType() {
-        return contentType;
-    }
-
-    public void setContentType(Integer contentType) {
-        this.contentType = contentType;
     }
 
     public String getContent() {
