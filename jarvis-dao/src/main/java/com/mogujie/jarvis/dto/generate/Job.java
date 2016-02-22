@@ -43,6 +43,8 @@ public class Job {
 
     private String updateUser;
 
+    private Integer contentType;
+
     private String content;
 
     public Long getJobId() {
@@ -203,6 +205,14 @@ public class Job {
 
     public void setUpdateUser(String updateUser) {
         this.updateUser = updateUser;
+    }
+
+    public Integer getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(Integer contentType) {
+        this.contentType = contentType;
     }
 
     public String getContent() {
