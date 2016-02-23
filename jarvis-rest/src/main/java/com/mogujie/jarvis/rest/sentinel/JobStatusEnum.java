@@ -11,10 +11,6 @@ package com.mogujie.jarvis.rest.sentinel;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @author guangming
- *
- */
 public enum JobStatusEnum {
     SUCCESS(0, "成功"), WAIT(1, "等待"), ACCEPT(2, "接收"), RUNNING(3, "执行中"), ERROR(4, "错误"), FAIL(5, "失败"), RECOVER(6, "恢复"), EXCEPTION(7, "异常"), KILLED(
             8, "KILLED");

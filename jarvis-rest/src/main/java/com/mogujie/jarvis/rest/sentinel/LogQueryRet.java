@@ -8,11 +8,6 @@
 
 package com.mogujie.jarvis.rest.sentinel;
 
-
-/**
- * @author guangming
- *
- */
 public class LogQueryRet extends BaseRet {
 
 

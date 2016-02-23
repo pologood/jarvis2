@@ -23,6 +23,13 @@
 			<groupId>com.mogujie.jarvis</groupId>
 			<artifactId>jarvis-protocol</artifactId>
 		</dependency>
+		
+		<!-- old jarvis -->
+		<dependency>
+            <groupId>com.mogujie.bigdata.app</groupId>
+            <artifactId>jarvis-common</artifactId>
+            <version>0.0.50-SNAPSHOT</version>
+        </dependency>
 		<!-- Jersey -->
 		<dependency>
 			<groupId>org.glassfish.jersey.containers</groupId>
