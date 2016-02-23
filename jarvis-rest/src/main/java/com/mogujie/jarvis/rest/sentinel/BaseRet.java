@@ -10,10 +10,6 @@ package com.mogujie.jarvis.rest.sentinel;
 
 import java.util.Map;
 
-/**
- * @author guangming
- *
- */
 public class BaseRet extends ResponseParams {
 
     @Override

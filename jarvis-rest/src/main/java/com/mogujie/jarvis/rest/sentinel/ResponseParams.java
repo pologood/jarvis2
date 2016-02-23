@@ -14,10 +14,6 @@ import java.util.Map;
 
 import com.google.gson.Gson;
 
-/**
- * @author guangming
- *
- */
 public class ResponseParams implements Serializable {
 
     private static final long serialVersionUID = 3481797831998852487L;

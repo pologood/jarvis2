@@ -8,10 +8,6 @@
 
 package com.mogujie.jarvis.rest.sentinel;
 
-/**
- * @author guangming
- *
- */
 public enum ResponseCodeEnum {
 
     SUCCESS(0, "成功"), FAILED(1, "失败"), REJECT(2, "拒绝"), VALDATION_FAILED(-1, "请求验证失败"), WRONG_PARAMS(
