@@ -16,7 +16,7 @@ public interface WorkerGroupMapper {
 
     int insertSelective(WorkerGroup record);
 
-    List<WorkerGroup> selectByExample(WorkerGroupExample example);
+    java.util.List<com.mogujie.jarvis.dto.generate.WorkerGroup> selectByExample(WorkerGroupExample example);
 
     WorkerGroup selectByPrimaryKey(Integer id);
 

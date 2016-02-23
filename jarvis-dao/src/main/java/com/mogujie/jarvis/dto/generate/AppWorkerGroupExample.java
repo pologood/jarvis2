@@ -9,7 +9,7 @@ public class AppWorkerGroupExample {
 
     protected boolean distinct;
 
-    protected List<Criteria> oredCriteria;
+    protected java.util.List<Criteria> oredCriteria;
 
     public AppWorkerGroupExample() {
         oredCriteria = new ArrayList<Criteria>();
@@ -31,7 +31,7 @@ public class AppWorkerGroupExample {
         return distinct;
     }
 
-    public List<Criteria> getOredCriteria() {
+    public java.util.List<Criteria> getOredCriteria() {
         return oredCriteria;
     }
 
@@ -65,7 +65,7 @@ public class AppWorkerGroupExample {
     }
 
     protected abstract static class GeneratedCriteria {
-        protected List<Criterion> criteria;
+        protected java.util.List<Criterion> criteria;
 
         protected GeneratedCriteria() {
             super();
@@ -80,7 +80,7 @@ public class AppWorkerGroupExample {
             return criteria;
         }
 
-        public List<Criterion> getCriteria() {
+        public java.util.List<Criterion> getCriteria() {
             return criteria;
         }
 
@@ -145,12 +145,12 @@ public class AppWorkerGroupExample {
             return (Criteria) this;
         }
 
-        public Criteria andAppIdIn(List<Integer> values) {
+        public Criteria andAppIdIn(java.util.List<java.lang.Integer> values) {
             addCriterion("appId in", values, "appId");
             return (Criteria) this;
         }
 
-        public Criteria andAppIdNotIn(List<Integer> values) {
+        public Criteria andAppIdNotIn(java.util.List<java.lang.Integer> values) {
             addCriterion("appId not in", values, "appId");
             return (Criteria) this;
         }
@@ -205,12 +205,12 @@ public class AppWorkerGroupExample {
             return (Criteria) this;
         }
 
-        public Criteria andWorkerGroupIdIn(List<Integer> values) {
+        public Criteria andWorkerGroupIdIn(java.util.List<java.lang.Integer> values) {
             addCriterion("workerGroupId in", values, "workerGroupId");
             return (Criteria) this;
         }
 
-        public Criteria andWorkerGroupIdNotIn(List<Integer> values) {
+        public Criteria andWorkerGroupIdNotIn(java.util.List<java.lang.Integer> values) {
             addCriterion("workerGroupId not in", values, "workerGroupId");
             return (Criteria) this;
         }
@@ -265,12 +265,12 @@ public class AppWorkerGroupExample {
             return (Criteria) this;
         }
 
-        public Criteria andCreateTimeIn(List<Date> values) {
+        public Criteria andCreateTimeIn(java.util.List<java.util.Date> values) {
             addCriterion("createTime in", values, "createTime");
             return (Criteria) this;
         }
 
-        public Criteria andCreateTimeNotIn(List<Date> values) {
+        public Criteria andCreateTimeNotIn(java.util.List<java.util.Date> values) {
             addCriterion("createTime not in", values, "createTime");
             return (Criteria) this;
         }
@@ -325,12 +325,12 @@ public class AppWorkerGroupExample {
             return (Criteria) this;
         }
 
-        public Criteria andUpdateTimeIn(List<Date> values) {
+        public Criteria andUpdateTimeIn(java.util.List<java.util.Date> values) {
             addCriterion("updateTime in", values, "updateTime");
             return (Criteria) this;
         }
 
-        public Criteria andUpdateTimeNotIn(List<Date> values) {
+        public Criteria andUpdateTimeNotIn(java.util.List<java.util.Date> values) {
             addCriterion("updateTime not in", values, "updateTime");
             return (Criteria) this;
         }
@@ -395,12 +395,12 @@ public class AppWorkerGroupExample {
             return (Criteria) this;
         }
 
-        public Criteria andUpdateUserIn(List<String> values) {
+        public Criteria andUpdateUserIn(java.util.List<java.lang.String> values) {
             addCriterion("updateUser in", values, "updateUser");
             return (Criteria) this;
         }
 
-        public Criteria andUpdateUserNotIn(List<String> values) {
+        public Criteria andUpdateUserNotIn(java.util.List<java.lang.String> values) {
             addCriterion("updateUser not in", values, "updateUser");
             return (Criteria) this;
         }

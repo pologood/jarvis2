@@ -16,7 +16,7 @@ public interface PlanMapper {
 
     int insertSelective(Plan record);
 
-    List<Plan> selectByExample(PlanExample example);
+    java.util.List<com.mogujie.jarvis.dto.generate.Plan> selectByExample(PlanExample example);
 
     Plan selectByPrimaryKey(Long jobId);
 

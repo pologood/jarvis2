@@ -16,7 +16,7 @@ public interface WorkerMapper {
 
     int insertSelective(Worker record);
 
-    List<Worker> selectByExample(WorkerExample example);
+    java.util.List<com.mogujie.jarvis.dto.generate.Worker> selectByExample(WorkerExample example);
 
     Worker selectByPrimaryKey(Integer id);
 

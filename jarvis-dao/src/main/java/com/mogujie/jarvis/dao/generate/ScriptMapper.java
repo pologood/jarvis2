@@ -16,9 +16,9 @@ public interface ScriptMapper {
 
     int insertSelective(Script record);
 
-    List<Script> selectByExampleWithBLOBs(ScriptExample example);
+    java.util.List<com.mogujie.jarvis.dto.generate.Script> selectByExampleWithBLOBs(ScriptExample example);
 
-    List<Script> selectByExample(ScriptExample example);
+    java.util.List<com.mogujie.jarvis.dto.generate.Script> selectByExample(ScriptExample example);
 
     Script selectByPrimaryKey(Integer id);
 

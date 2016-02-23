@@ -21,7 +21,7 @@ public class TestAlarmRest extends AbstractTestRest {
 
     public void test() throws UnirestException {
 
-        long jobId = 135;
+        long jobId = 12;
         alarmDelete(jobId);
         alarmAdd(jobId);
         alarmSet(jobId);

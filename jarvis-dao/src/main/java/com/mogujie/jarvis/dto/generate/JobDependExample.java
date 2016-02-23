@@ -9,7 +9,7 @@ public class JobDependExample {
 
     protected boolean distinct;
 
-    protected List<Criteria> oredCriteria;
+    protected java.util.List<Criteria> oredCriteria;
 
     public JobDependExample() {
         oredCriteria = new ArrayList<Criteria>();
@@ -31,7 +31,7 @@ public class JobDependExample {
         return distinct;
     }
 
-    public List<Criteria> getOredCriteria() {
+    public java.util.List<Criteria> getOredCriteria() {
         return oredCriteria;
     }
 
@@ -65,7 +65,7 @@ public class JobDependExample {
     }
 
     protected abstract static class GeneratedCriteria {
-        protected List<Criterion> criteria;
+        protected java.util.List<Criterion> criteria;
 
         protected GeneratedCriteria() {
             super();
@@ -80,7 +80,7 @@ public class JobDependExample {
             return criteria;
         }
 
-        public List<Criterion> getCriteria() {
+        public java.util.List<Criterion> getCriteria() {
             return criteria;
         }
 
@@ -145,12 +145,12 @@ public class JobDependExample {
             return (Criteria) this;
         }
 
-        public Criteria andJobIdIn(List<Long> values) {
+        public Criteria andJobIdIn(java.util.List<java.lang.Long> values) {
             addCriterion("jobId in", values, "jobId");
             return (Criteria) this;
         }
 
-        public Criteria andJobIdNotIn(List<Long> values) {
+        public Criteria andJobIdNotIn(java.util.List<java.lang.Long> values) {
             addCriterion("jobId not in", values, "jobId");
             return (Criteria) this;
         }
@@ -205,12 +205,12 @@ public class JobDependExample {
             return (Criteria) this;
         }
 
-        public Criteria andPreJobIdIn(List<Long> values) {
+        public Criteria andPreJobIdIn(java.util.List<java.lang.Long> values) {
             addCriterion("preJobId in", values, "preJobId");
             return (Criteria) this;
         }
 
-        public Criteria andPreJobIdNotIn(List<Long> values) {
+        public Criteria andPreJobIdNotIn(java.util.List<java.lang.Long> values) {
             addCriterion("preJobId not in", values, "preJobId");
             return (Criteria) this;
         }
@@ -265,12 +265,12 @@ public class JobDependExample {
             return (Criteria) this;
         }
 
-        public Criteria andCommonStrategyIn(List<Integer> values) {
+        public Criteria andCommonStrategyIn(java.util.List<java.lang.Integer> values) {
             addCriterion("commonStrategy in", values, "commonStrategy");
             return (Criteria) this;
         }
 
-        public Criteria andCommonStrategyNotIn(List<Integer> values) {
+        public Criteria andCommonStrategyNotIn(java.util.List<java.lang.Integer> values) {
             addCriterion("commonStrategy not in", values, "commonStrategy");
             return (Criteria) this;
         }
@@ -335,12 +335,12 @@ public class JobDependExample {
             return (Criteria) this;
         }
 
-        public Criteria andOffsetStrategyIn(List<String> values) {
+        public Criteria andOffsetStrategyIn(java.util.List<java.lang.String> values) {
             addCriterion("offsetStrategy in", values, "offsetStrategy");
             return (Criteria) this;
         }
 
-        public Criteria andOffsetStrategyNotIn(List<String> values) {
+        public Criteria andOffsetStrategyNotIn(java.util.List<java.lang.String> values) {
             addCriterion("offsetStrategy not in", values, "offsetStrategy");
             return (Criteria) this;
         }
@@ -395,12 +395,12 @@ public class JobDependExample {
             return (Criteria) this;
         }
 
-        public Criteria andCreateTimeIn(List<Date> values) {
+        public Criteria andCreateTimeIn(java.util.List<java.util.Date> values) {
             addCriterion("createTime in", values, "createTime");
             return (Criteria) this;
         }
 
-        public Criteria andCreateTimeNotIn(List<Date> values) {
+        public Criteria andCreateTimeNotIn(java.util.List<java.util.Date> values) {
             addCriterion("createTime not in", values, "createTime");
             return (Criteria) this;
         }
@@ -455,12 +455,12 @@ public class JobDependExample {
             return (Criteria) this;
         }
 
-        public Criteria andUpdateTimeIn(List<Date> values) {
+        public Criteria andUpdateTimeIn(java.util.List<java.util.Date> values) {
             addCriterion("updateTime in", values, "updateTime");
             return (Criteria) this;
         }
 
-        public Criteria andUpdateTimeNotIn(List<Date> values) {
+        public Criteria andUpdateTimeNotIn(java.util.List<java.util.Date> values) {
             addCriterion("updateTime not in", values, "updateTime");
             return (Criteria) this;
         }
@@ -525,12 +525,12 @@ public class JobDependExample {
             return (Criteria) this;
         }
 
-        public Criteria andUpdateUserIn(List<String> values) {
+        public Criteria andUpdateUserIn(java.util.List<java.lang.String> values) {
             addCriterion("updateUser in", values, "updateUser");
             return (Criteria) this;
         }
 
-        public Criteria andUpdateUserNotIn(List<String> values) {
+        public Criteria andUpdateUserNotIn(java.util.List<java.lang.String> values) {
             addCriterion("updateUser not in", values, "updateUser");
             return (Criteria) this;
         }

@@ -9,7 +9,7 @@ public class TaskHistoryExample {
 
     protected boolean distinct;
 
-    protected List<Criteria> oredCriteria;
+    protected java.util.List<Criteria> oredCriteria;
 
     public TaskHistoryExample() {
         oredCriteria = new ArrayList<Criteria>();
@@ -31,7 +31,7 @@ public class TaskHistoryExample {
         return distinct;
     }
 
-    public List<Criteria> getOredCriteria() {
+    public java.util.List<Criteria> getOredCriteria() {
         return oredCriteria;
     }
 
@@ -65,7 +65,7 @@ public class TaskHistoryExample {
     }
 
     protected abstract static class GeneratedCriteria {
-        protected List<Criterion> criteria;
+        protected java.util.List<Criterion> criteria;
 
         protected GeneratedCriteria() {
             super();
@@ -80,7 +80,7 @@ public class TaskHistoryExample {
             return criteria;
         }
 
-        public List<Criterion> getCriteria() {
+        public java.util.List<Criterion> getCriteria() {
             return criteria;
         }
 
@@ -145,12 +145,12 @@ public class TaskHistoryExample {
             return (Criteria) this;
         }
 
-        public Criteria andTaskIdIn(List<Long> values) {
+        public Criteria andTaskIdIn(java.util.List<java.lang.Long> values) {
             addCriterion("taskId in", values, "taskId");
             return (Criteria) this;
         }
 
-        public Criteria andTaskIdNotIn(List<Long> values) {
+        public Criteria andTaskIdNotIn(java.util.List<java.lang.Long> values) {
             addCriterion("taskId not in", values, "taskId");
             return (Criteria) this;
         }
@@ -205,12 +205,12 @@ public class TaskHistoryExample {
             return (Criteria) this;
         }
 
-        public Criteria andAttemptIdIn(List<Integer> values) {
+        public Criteria andAttemptIdIn(java.util.List<java.lang.Integer> values) {
             addCriterion("attemptId in", values, "attemptId");
             return (Criteria) this;
         }
 
-        public Criteria andAttemptIdNotIn(List<Integer> values) {
+        public Criteria andAttemptIdNotIn(java.util.List<java.lang.Integer> values) {
             addCriterion("attemptId not in", values, "attemptId");
             return (Criteria) this;
         }
@@ -265,12 +265,12 @@ public class TaskHistoryExample {
             return (Criteria) this;
         }
 
-        public Criteria andJobIdIn(List<Long> values) {
+        public Criteria andJobIdIn(java.util.List<java.lang.Long> values) {
             addCriterion("jobId in", values, "jobId");
             return (Criteria) this;
         }
 
-        public Criteria andJobIdNotIn(List<Long> values) {
+        public Criteria andJobIdNotIn(java.util.List<java.lang.Long> values) {
             addCriterion("jobId not in", values, "jobId");
             return (Criteria) this;
         }
@@ -335,12 +335,12 @@ public class TaskHistoryExample {
             return (Criteria) this;
         }
 
-        public Criteria andParamsIn(List<String> values) {
+        public Criteria andParamsIn(java.util.List<java.lang.String> values) {
             addCriterion("params in", values, "params");
             return (Criteria) this;
         }
 
-        public Criteria andParamsNotIn(List<String> values) {
+        public Criteria andParamsNotIn(java.util.List<java.lang.String> values) {
             addCriterion("params not in", values, "params");
             return (Criteria) this;
         }
@@ -395,12 +395,12 @@ public class TaskHistoryExample {
             return (Criteria) this;
         }
 
-        public Criteria andScheduleTimeIn(List<Date> values) {
+        public Criteria andScheduleTimeIn(java.util.List<java.util.Date> values) {
             addCriterion("scheduleTime in", values, "scheduleTime");
             return (Criteria) this;
         }
 
-        public Criteria andScheduleTimeNotIn(List<Date> values) {
+        public Criteria andScheduleTimeNotIn(java.util.List<java.util.Date> values) {
             addCriterion("scheduleTime not in", values, "scheduleTime");
             return (Criteria) this;
         }
@@ -455,12 +455,12 @@ public class TaskHistoryExample {
             return (Criteria) this;
         }
 
-        public Criteria andDataTimeIn(List<Date> values) {
+        public Criteria andDataTimeIn(java.util.List<java.util.Date> values) {
             addCriterion("dataTime in", values, "dataTime");
             return (Criteria) this;
         }
 
-        public Criteria andDataTimeNotIn(List<Date> values) {
+        public Criteria andDataTimeNotIn(java.util.List<java.util.Date> values) {
             addCriterion("dataTime not in", values, "dataTime");
             return (Criteria) this;
         }
@@ -515,12 +515,12 @@ public class TaskHistoryExample {
             return (Criteria) this;
         }
 
-        public Criteria andProgressIn(List<Float> values) {
+        public Criteria andProgressIn(java.util.List<java.lang.Float> values) {
             addCriterion("progress in", values, "progress");
             return (Criteria) this;
         }
 
-        public Criteria andProgressNotIn(List<Float> values) {
+        public Criteria andProgressNotIn(java.util.List<java.lang.Float> values) {
             addCriterion("progress not in", values, "progress");
             return (Criteria) this;
         }
@@ -575,12 +575,12 @@ public class TaskHistoryExample {
             return (Criteria) this;
         }
 
-        public Criteria andTypeIn(List<Integer> values) {
+        public Criteria andTypeIn(java.util.List<java.lang.Integer> values) {
             addCriterion("type in", values, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeNotIn(List<Integer> values) {
+        public Criteria andTypeNotIn(java.util.List<java.lang.Integer> values) {
             addCriterion("type not in", values, "type");
             return (Criteria) this;
         }
@@ -635,12 +635,12 @@ public class TaskHistoryExample {
             return (Criteria) this;
         }
 
-        public Criteria andStatusIn(List<Integer> values) {
+        public Criteria andStatusIn(java.util.List<java.lang.Integer> values) {
             addCriterion("status in", values, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotIn(List<Integer> values) {
+        public Criteria andStatusNotIn(java.util.List<java.lang.Integer> values) {
             addCriterion("status not in", values, "status");
             return (Criteria) this;
         }
@@ -705,12 +705,12 @@ public class TaskHistoryExample {
             return (Criteria) this;
         }
 
-        public Criteria andFinishReasonIn(List<String> values) {
+        public Criteria andFinishReasonIn(java.util.List<java.lang.String> values) {
             addCriterion("finishReason in", values, "finishReason");
             return (Criteria) this;
         }
 
-        public Criteria andFinishReasonNotIn(List<String> values) {
+        public Criteria andFinishReasonNotIn(java.util.List<java.lang.String> values) {
             addCriterion("finishReason not in", values, "finishReason");
             return (Criteria) this;
         }
@@ -765,12 +765,12 @@ public class TaskHistoryExample {
             return (Criteria) this;
         }
 
-        public Criteria andAppIdIn(List<Integer> values) {
+        public Criteria andAppIdIn(java.util.List<java.lang.Integer> values) {
             addCriterion("appId in", values, "appId");
             return (Criteria) this;
         }
 
-        public Criteria andAppIdNotIn(List<Integer> values) {
+        public Criteria andAppIdNotIn(java.util.List<java.lang.Integer> values) {
             addCriterion("appId not in", values, "appId");
             return (Criteria) this;
         }
@@ -825,12 +825,12 @@ public class TaskHistoryExample {
             return (Criteria) this;
         }
 
-        public Criteria andWorkerIdIn(List<Integer> values) {
+        public Criteria andWorkerIdIn(java.util.List<java.lang.Integer> values) {
             addCriterion("workerId in", values, "workerId");
             return (Criteria) this;
         }
 
-        public Criteria andWorkerIdNotIn(List<Integer> values) {
+        public Criteria andWorkerIdNotIn(java.util.List<java.lang.Integer> values) {
             addCriterion("workerId not in", values, "workerId");
             return (Criteria) this;
         }
@@ -895,12 +895,12 @@ public class TaskHistoryExample {
             return (Criteria) this;
         }
 
-        public Criteria andExecuteUserIn(List<String> values) {
+        public Criteria andExecuteUserIn(java.util.List<java.lang.String> values) {
             addCriterion("executeUser in", values, "executeUser");
             return (Criteria) this;
         }
 
-        public Criteria andExecuteUserNotIn(List<String> values) {
+        public Criteria andExecuteUserNotIn(java.util.List<java.lang.String> values) {
             addCriterion("executeUser not in", values, "executeUser");
             return (Criteria) this;
         }
@@ -955,12 +955,12 @@ public class TaskHistoryExample {
             return (Criteria) this;
         }
 
-        public Criteria andExecuteStartTimeIn(List<Date> values) {
+        public Criteria andExecuteStartTimeIn(java.util.List<java.util.Date> values) {
             addCriterion("executeStartTime in", values, "executeStartTime");
             return (Criteria) this;
         }
 
-        public Criteria andExecuteStartTimeNotIn(List<Date> values) {
+        public Criteria andExecuteStartTimeNotIn(java.util.List<java.util.Date> values) {
             addCriterion("executeStartTime not in", values, "executeStartTime");
             return (Criteria) this;
         }
@@ -1015,12 +1015,12 @@ public class TaskHistoryExample {
             return (Criteria) this;
         }
 
-        public Criteria andExecuteEndTimeIn(List<Date> values) {
+        public Criteria andExecuteEndTimeIn(java.util.List<java.util.Date> values) {
             addCriterion("executeEndTime in", values, "executeEndTime");
             return (Criteria) this;
         }
 
-        public Criteria andExecuteEndTimeNotIn(List<Date> values) {
+        public Criteria andExecuteEndTimeNotIn(java.util.List<java.util.Date> values) {
             addCriterion("executeEndTime not in", values, "executeEndTime");
             return (Criteria) this;
         }
@@ -1075,12 +1075,12 @@ public class TaskHistoryExample {
             return (Criteria) this;
         }
 
-        public Criteria andCreateTimeIn(List<Date> values) {
+        public Criteria andCreateTimeIn(java.util.List<java.util.Date> values) {
             addCriterion("createTime in", values, "createTime");
             return (Criteria) this;
         }
 
-        public Criteria andCreateTimeNotIn(List<Date> values) {
+        public Criteria andCreateTimeNotIn(java.util.List<java.util.Date> values) {
             addCriterion("createTime not in", values, "createTime");
             return (Criteria) this;
         }
@@ -1135,12 +1135,12 @@ public class TaskHistoryExample {
             return (Criteria) this;
         }
 
-        public Criteria andUpdateTimeIn(List<Date> values) {
+        public Criteria andUpdateTimeIn(java.util.List<java.util.Date> values) {
             addCriterion("updateTime in", values, "updateTime");
             return (Criteria) this;
         }
 
-        public Criteria andUpdateTimeNotIn(List<Date> values) {
+        public Criteria andUpdateTimeNotIn(java.util.List<java.util.Date> values) {
             addCriterion("updateTime not in", values, "updateTime");
             return (Criteria) this;
         }

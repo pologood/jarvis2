@@ -16,9 +16,9 @@ public interface JobMapper {
 
     int insertSelective(Job record);
 
-    List<Job> selectByExampleWithBLOBs(JobExample example);
+    java.util.List<com.mogujie.jarvis.dto.generate.Job> selectByExampleWithBLOBs(JobExample example);
 
-    List<Job> selectByExample(JobExample example);
+    java.util.List<com.mogujie.jarvis.dto.generate.Job> selectByExample(JobExample example);
 
     Job selectByPrimaryKey(Long jobId);
 

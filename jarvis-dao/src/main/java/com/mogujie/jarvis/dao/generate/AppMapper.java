@@ -16,7 +16,7 @@ public interface AppMapper {
 
     int insertSelective(App record);
 
-    List<App> selectByExample(AppExample example);
+    java.util.List<com.mogujie.jarvis.dto.generate.App> selectByExample(AppExample example);
 
     App selectByPrimaryKey(Integer appId);
 

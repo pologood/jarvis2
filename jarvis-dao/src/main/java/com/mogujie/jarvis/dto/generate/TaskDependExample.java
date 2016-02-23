@@ -9,7 +9,7 @@ public class TaskDependExample {
 
     protected boolean distinct;
 
-    protected List<Criteria> oredCriteria;
+    protected java.util.List<Criteria> oredCriteria;
 
     public TaskDependExample() {
         oredCriteria = new ArrayList<Criteria>();
@@ -31,7 +31,7 @@ public class TaskDependExample {
         return distinct;
     }
 
-    public List<Criteria> getOredCriteria() {
+    public java.util.List<Criteria> getOredCriteria() {
         return oredCriteria;
     }
 
@@ -65,7 +65,7 @@ public class TaskDependExample {
     }
 
     protected abstract static class GeneratedCriteria {
-        protected List<Criterion> criteria;
+        protected java.util.List<Criterion> criteria;
 
         protected GeneratedCriteria() {
             super();
@@ -80,7 +80,7 @@ public class TaskDependExample {
             return criteria;
         }
 
-        public List<Criterion> getCriteria() {
+        public java.util.List<Criterion> getCriteria() {
             return criteria;
         }
 
@@ -145,12 +145,12 @@ public class TaskDependExample {
             return (Criteria) this;
         }
 
-        public Criteria andTaskIdIn(List<Long> values) {
+        public Criteria andTaskIdIn(java.util.List<java.lang.Long> values) {
             addCriterion("taskId in", values, "taskId");
             return (Criteria) this;
         }
 
-        public Criteria andTaskIdNotIn(List<Long> values) {
+        public Criteria andTaskIdNotIn(java.util.List<java.lang.Long> values) {
             addCriterion("taskId not in", values, "taskId");
             return (Criteria) this;
         }
@@ -215,12 +215,12 @@ public class TaskDependExample {
             return (Criteria) this;
         }
 
-        public Criteria andDependTaskIdsIn(List<String> values) {
+        public Criteria andDependTaskIdsIn(java.util.List<java.lang.String> values) {
             addCriterion("dependTaskIds in", values, "dependTaskIds");
             return (Criteria) this;
         }
 
-        public Criteria andDependTaskIdsNotIn(List<String> values) {
+        public Criteria andDependTaskIdsNotIn(java.util.List<java.lang.String> values) {
             addCriterion("dependTaskIds not in", values, "dependTaskIds");
             return (Criteria) this;
         }
@@ -285,12 +285,12 @@ public class TaskDependExample {
             return (Criteria) this;
         }
 
-        public Criteria andChildTaskIdsIn(List<String> values) {
+        public Criteria andChildTaskIdsIn(java.util.List<java.lang.String> values) {
             addCriterion("childTaskIds in", values, "childTaskIds");
             return (Criteria) this;
         }
 
-        public Criteria andChildTaskIdsNotIn(List<String> values) {
+        public Criteria andChildTaskIdsNotIn(java.util.List<java.lang.String> values) {
             addCriterion("childTaskIds not in", values, "childTaskIds");
             return (Criteria) this;
         }
@@ -345,12 +345,12 @@ public class TaskDependExample {
             return (Criteria) this;
         }
 
-        public Criteria andCreateTimeIn(List<Date> values) {
+        public Criteria andCreateTimeIn(java.util.List<java.util.Date> values) {
             addCriterion("createTime in", values, "createTime");
             return (Criteria) this;
         }
 
-        public Criteria andCreateTimeNotIn(List<Date> values) {
+        public Criteria andCreateTimeNotIn(java.util.List<java.util.Date> values) {
             addCriterion("createTime not in", values, "createTime");
             return (Criteria) this;
         }
