@@ -813,11 +813,11 @@ public final class SearchJobProtos {
     /**
      * <code>optional .JobInfoEntry job_info = 2;</code>
      */
-    com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry getJobInfo();
+    com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry getJobInfo();
     /**
      * <code>optional .JobInfoEntry job_info = 2;</code>
      */
-    com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntryOrBuilder getJobInfoOrBuilder();
+    com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntryOrBuilder getJobInfoOrBuilder();
 
     // optional string message = 3 [default = ""];
     /**
@@ -891,11 +891,11 @@ public final class SearchJobProtos {
               break;
             }
             case 18: {
-              com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry.Builder subBuilder = null;
+              com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.Builder subBuilder = null;
               if (((bitField0_ & 0x00000002) == 0x00000002)) {
                 subBuilder = jobInfo_.toBuilder();
               }
-              jobInfo_ = input.readMessage(com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry.PARSER, extensionRegistry);
+              jobInfo_ = input.readMessage(com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.PARSER, extensionRegistry);
               if (subBuilder != null) {
                 subBuilder.mergeFrom(jobInfo_);
                 jobInfo_ = subBuilder.buildPartial();
@@ -966,7 +966,7 @@ public final class SearchJobProtos {
 
     // optional .JobInfoEntry job_info = 2;
     public static final int JOB_INFO_FIELD_NUMBER = 2;
-    private com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry jobInfo_;
+    private com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry jobInfo_;
     /**
      * <code>optional .JobInfoEntry job_info = 2;</code>
      */
@@ -976,13 +976,13 @@ public final class SearchJobProtos {
     /**
      * <code>optional .JobInfoEntry job_info = 2;</code>
      */
-    public com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry getJobInfo() {
+    public com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry getJobInfo() {
       return jobInfo_;
     }
     /**
      * <code>optional .JobInfoEntry job_info = 2;</code>
      */
-    public com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntryOrBuilder getJobInfoOrBuilder() {
+    public com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntryOrBuilder getJobInfoOrBuilder() {
       return jobInfo_;
     }
 
@@ -1031,7 +1031,7 @@ public final class SearchJobProtos {
 
     private void initFields() {
       success_ = false;
-      jobInfo_ = com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry.getDefaultInstance();
+      jobInfo_ = com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.getDefaultInstance();
       message_ = "";
     }
     private byte memoizedIsInitialized = -1;
@@ -1206,7 +1206,7 @@ public final class SearchJobProtos {
         success_ = false;
         bitField0_ = (bitField0_ & ~0x00000001);
         if (jobInfoBuilder_ == null) {
-          jobInfo_ = com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry.getDefaultInstance();
+          jobInfo_ = com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.getDefaultInstance();
         } else {
           jobInfoBuilder_.clear();
         }
@@ -1355,9 +1355,9 @@ public final class SearchJobProtos {
       }
 
       // optional .JobInfoEntry job_info = 2;
-      private com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry jobInfo_ = com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry.getDefaultInstance();
+      private com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry jobInfo_ = com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
-          com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry, com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry.Builder, com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntryOrBuilder> jobInfoBuilder_;
+          com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry, com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.Builder, com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntryOrBuilder> jobInfoBuilder_;
       /**
        * <code>optional .JobInfoEntry job_info = 2;</code>
        */
@@ -1367,7 +1367,7 @@ public final class SearchJobProtos {
       /**
        * <code>optional .JobInfoEntry job_info = 2;</code>
        */
-      public com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry getJobInfo() {
+      public com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry getJobInfo() {
         if (jobInfoBuilder_ == null) {
           return jobInfo_;
         } else {
@@ -1377,7 +1377,7 @@ public final class SearchJobProtos {
       /**
        * <code>optional .JobInfoEntry job_info = 2;</code>
        */
-      public Builder setJobInfo(com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry value) {
+      public Builder setJobInfo(com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry value) {
         if (jobInfoBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -1394,7 +1394,7 @@ public final class SearchJobProtos {
        * <code>optional .JobInfoEntry job_info = 2;</code>
        */
       public Builder setJobInfo(
-          com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry.Builder builderForValue) {
+          com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.Builder builderForValue) {
         if (jobInfoBuilder_ == null) {
           jobInfo_ = builderForValue.build();
           onChanged();
@@ -1407,12 +1407,12 @@ public final class SearchJobProtos {
       /**
        * <code>optional .JobInfoEntry job_info = 2;</code>
        */
-      public Builder mergeJobInfo(com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry value) {
+      public Builder mergeJobInfo(com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry value) {
         if (jobInfoBuilder_ == null) {
           if (((bitField0_ & 0x00000002) == 0x00000002) &&
-              jobInfo_ != com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry.getDefaultInstance()) {
+              jobInfo_ != com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.getDefaultInstance()) {
             jobInfo_ =
-              com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry.newBuilder(jobInfo_).mergeFrom(value).buildPartial();
+              com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.newBuilder(jobInfo_).mergeFrom(value).buildPartial();
           } else {
             jobInfo_ = value;
           }
@@ -1428,7 +1428,7 @@ public final class SearchJobProtos {
        */
       public Builder clearJobInfo() {
         if (jobInfoBuilder_ == null) {
-          jobInfo_ = com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry.getDefaultInstance();
+          jobInfo_ = com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.getDefaultInstance();
           onChanged();
         } else {
           jobInfoBuilder_.clear();
@@ -1439,7 +1439,7 @@ public final class SearchJobProtos {
       /**
        * <code>optional .JobInfoEntry job_info = 2;</code>
        */
-      public com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry.Builder getJobInfoBuilder() {
+      public com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.Builder getJobInfoBuilder() {
         bitField0_ |= 0x00000002;
         onChanged();
         return getJobInfoFieldBuilder().getBuilder();
@@ -1447,7 +1447,7 @@ public final class SearchJobProtos {
       /**
        * <code>optional .JobInfoEntry job_info = 2;</code>
        */
-      public com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntryOrBuilder getJobInfoOrBuilder() {
+      public com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntryOrBuilder getJobInfoOrBuilder() {
         if (jobInfoBuilder_ != null) {
           return jobInfoBuilder_.getMessageOrBuilder();
         } else {
@@ -1458,11 +1458,11 @@ public final class SearchJobProtos {
        * <code>optional .JobInfoEntry job_info = 2;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
-          com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry, com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry.Builder, com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntryOrBuilder> 
+          com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry, com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.Builder, com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntryOrBuilder> 
           getJobInfoFieldBuilder() {
         if (jobInfoBuilder_ == null) {
           jobInfoBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-              com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry, com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry.Builder, com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntryOrBuilder>(
+              com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry, com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.Builder, com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntryOrBuilder>(
                   jobInfo_,
                   getParentForChildren(),
                   isClean());
@@ -2436,11 +2436,11 @@ public final class SearchJobProtos {
     /**
      * <code>optional .JobInfoEntry job_info = 2;</code>
      */
-    com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry getJobInfo();
+    com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry getJobInfo();
     /**
      * <code>optional .JobInfoEntry job_info = 2;</code>
      */
-    com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntryOrBuilder getJobInfoOrBuilder();
+    com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntryOrBuilder getJobInfoOrBuilder();
 
     // optional string message = 3 [default = ""];
     /**
@@ -2514,11 +2514,11 @@ public final class SearchJobProtos {
               break;
             }
             case 18: {
-              com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry.Builder subBuilder = null;
+              com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.Builder subBuilder = null;
               if (((bitField0_ & 0x00000002) == 0x00000002)) {
                 subBuilder = jobInfo_.toBuilder();
               }
-              jobInfo_ = input.readMessage(com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry.PARSER, extensionRegistry);
+              jobInfo_ = input.readMessage(com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.PARSER, extensionRegistry);
               if (subBuilder != null) {
                 subBuilder.mergeFrom(jobInfo_);
                 jobInfo_ = subBuilder.buildPartial();
@@ -2589,7 +2589,7 @@ public final class SearchJobProtos {
 
     // optional .JobInfoEntry job_info = 2;
     public static final int JOB_INFO_FIELD_NUMBER = 2;
-    private com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry jobInfo_;
+    private com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry jobInfo_;
     /**
      * <code>optional .JobInfoEntry job_info = 2;</code>
      */
@@ -2599,13 +2599,13 @@ public final class SearchJobProtos {
     /**
      * <code>optional .JobInfoEntry job_info = 2;</code>
      */
-    public com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry getJobInfo() {
+    public com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry getJobInfo() {
       return jobInfo_;
     }
     /**
      * <code>optional .JobInfoEntry job_info = 2;</code>
      */
-    public com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntryOrBuilder getJobInfoOrBuilder() {
+    public com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntryOrBuilder getJobInfoOrBuilder() {
       return jobInfo_;
     }
 
@@ -2654,7 +2654,7 @@ public final class SearchJobProtos {
 
     private void initFields() {
       success_ = false;
-      jobInfo_ = com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry.getDefaultInstance();
+      jobInfo_ = com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.getDefaultInstance();
       message_ = "";
     }
     private byte memoizedIsInitialized = -1;
@@ -2829,7 +2829,7 @@ public final class SearchJobProtos {
         success_ = false;
         bitField0_ = (bitField0_ & ~0x00000001);
         if (jobInfoBuilder_ == null) {
-          jobInfo_ = com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry.getDefaultInstance();
+          jobInfo_ = com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.getDefaultInstance();
         } else {
           jobInfoBuilder_.clear();
         }
@@ -2978,9 +2978,9 @@ public final class SearchJobProtos {
       }
 
       // optional .JobInfoEntry job_info = 2;
-      private com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry jobInfo_ = com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry.getDefaultInstance();
+      private com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry jobInfo_ = com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
-          com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry, com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry.Builder, com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntryOrBuilder> jobInfoBuilder_;
+          com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry, com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.Builder, com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntryOrBuilder> jobInfoBuilder_;
       /**
        * <code>optional .JobInfoEntry job_info = 2;</code>
        */
@@ -2990,7 +2990,7 @@ public final class SearchJobProtos {
       /**
        * <code>optional .JobInfoEntry job_info = 2;</code>
        */
-      public com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry getJobInfo() {
+      public com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry getJobInfo() {
         if (jobInfoBuilder_ == null) {
           return jobInfo_;
         } else {
@@ -3000,7 +3000,7 @@ public final class SearchJobProtos {
       /**
        * <code>optional .JobInfoEntry job_info = 2;</code>
        */
-      public Builder setJobInfo(com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry value) {
+      public Builder setJobInfo(com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry value) {
         if (jobInfoBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -3017,7 +3017,7 @@ public final class SearchJobProtos {
        * <code>optional .JobInfoEntry job_info = 2;</code>
        */
       public Builder setJobInfo(
-          com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry.Builder builderForValue) {
+          com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.Builder builderForValue) {
         if (jobInfoBuilder_ == null) {
           jobInfo_ = builderForValue.build();
           onChanged();
@@ -3030,12 +3030,12 @@ public final class SearchJobProtos {
       /**
        * <code>optional .JobInfoEntry job_info = 2;</code>
        */
-      public Builder mergeJobInfo(com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry value) {
+      public Builder mergeJobInfo(com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry value) {
         if (jobInfoBuilder_ == null) {
           if (((bitField0_ & 0x00000002) == 0x00000002) &&
-              jobInfo_ != com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry.getDefaultInstance()) {
+              jobInfo_ != com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.getDefaultInstance()) {
             jobInfo_ =
-              com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry.newBuilder(jobInfo_).mergeFrom(value).buildPartial();
+              com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.newBuilder(jobInfo_).mergeFrom(value).buildPartial();
           } else {
             jobInfo_ = value;
           }
@@ -3051,7 +3051,7 @@ public final class SearchJobProtos {
        */
       public Builder clearJobInfo() {
         if (jobInfoBuilder_ == null) {
-          jobInfo_ = com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry.getDefaultInstance();
+          jobInfo_ = com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.getDefaultInstance();
           onChanged();
         } else {
           jobInfoBuilder_.clear();
@@ -3062,7 +3062,7 @@ public final class SearchJobProtos {
       /**
        * <code>optional .JobInfoEntry job_info = 2;</code>
        */
-      public com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry.Builder getJobInfoBuilder() {
+      public com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.Builder getJobInfoBuilder() {
         bitField0_ |= 0x00000002;
         onChanged();
         return getJobInfoFieldBuilder().getBuilder();
@@ -3070,7 +3070,7 @@ public final class SearchJobProtos {
       /**
        * <code>optional .JobInfoEntry job_info = 2;</code>
        */
-      public com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntryOrBuilder getJobInfoOrBuilder() {
+      public com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntryOrBuilder getJobInfoOrBuilder() {
         if (jobInfoBuilder_ != null) {
           return jobInfoBuilder_.getMessageOrBuilder();
         } else {
@@ -3081,11 +3081,11 @@ public final class SearchJobProtos {
        * <code>optional .JobInfoEntry job_info = 2;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
-          com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry, com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry.Builder, com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntryOrBuilder> 
+          com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry, com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.Builder, com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntryOrBuilder> 
           getJobInfoFieldBuilder() {
         if (jobInfoBuilder_ == null) {
           jobInfoBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-              com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry, com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry.Builder, com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntryOrBuilder>(
+              com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry, com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.Builder, com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntryOrBuilder>(
                   jobInfo_,
                   getParentForChildren(),
                   isClean());
@@ -3980,12 +3980,12 @@ public final class SearchJobProtos {
     /**
      * <code>repeated .JobInfoEntry pre_job_info = 2;</code>
      */
-    java.util.List<com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry> 
+    java.util.List<com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry> 
         getPreJobInfoList();
     /**
      * <code>repeated .JobInfoEntry pre_job_info = 2;</code>
      */
-    com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry getPreJobInfo(int index);
+    com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry getPreJobInfo(int index);
     /**
      * <code>repeated .JobInfoEntry pre_job_info = 2;</code>
      */
@@ -3993,12 +3993,12 @@ public final class SearchJobProtos {
     /**
      * <code>repeated .JobInfoEntry pre_job_info = 2;</code>
      */
-    java.util.List<? extends com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntryOrBuilder> 
+    java.util.List<? extends com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntryOrBuilder> 
         getPreJobInfoOrBuilderList();
     /**
      * <code>repeated .JobInfoEntry pre_job_info = 2;</code>
      */
-    com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntryOrBuilder getPreJobInfoOrBuilder(
+    com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntryOrBuilder getPreJobInfoOrBuilder(
         int index);
 
     // optional string message = 3 [default = ""];
@@ -4074,10 +4074,10 @@ public final class SearchJobProtos {
             }
             case 18: {
               if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
-                preJobInfo_ = new java.util.ArrayList<com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry>();
+                preJobInfo_ = new java.util.ArrayList<com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry>();
                 mutable_bitField0_ |= 0x00000002;
               }
-              preJobInfo_.add(input.readMessage(com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry.PARSER, extensionRegistry));
+              preJobInfo_.add(input.readMessage(com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.PARSER, extensionRegistry));
               break;
             }
             case 26: {
@@ -4146,17 +4146,17 @@ public final class SearchJobProtos {
 
     // repeated .JobInfoEntry pre_job_info = 2;
     public static final int PRE_JOB_INFO_FIELD_NUMBER = 2;
-    private java.util.List<com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry> preJobInfo_;
+    private java.util.List<com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry> preJobInfo_;
     /**
      * <code>repeated .JobInfoEntry pre_job_info = 2;</code>
      */
-    public java.util.List<com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry> getPreJobInfoList() {
+    public java.util.List<com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry> getPreJobInfoList() {
       return preJobInfo_;
     }
     /**
      * <code>repeated .JobInfoEntry pre_job_info = 2;</code>
      */
-    public java.util.List<? extends com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntryOrBuilder> 
+    public java.util.List<? extends com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntryOrBuilder> 
         getPreJobInfoOrBuilderList() {
       return preJobInfo_;
     }
@@ -4169,13 +4169,13 @@ public final class SearchJobProtos {
     /**
      * <code>repeated .JobInfoEntry pre_job_info = 2;</code>
      */
-    public com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry getPreJobInfo(int index) {
+    public com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry getPreJobInfo(int index) {
       return preJobInfo_.get(index);
     }
     /**
      * <code>repeated .JobInfoEntry pre_job_info = 2;</code>
      */
-    public com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntryOrBuilder getPreJobInfoOrBuilder(
+    public com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntryOrBuilder getPreJobInfoOrBuilder(
         int index) {
       return preJobInfo_.get(index);
     }
@@ -4573,22 +4573,22 @@ public final class SearchJobProtos {
       }
 
       // repeated .JobInfoEntry pre_job_info = 2;
-      private java.util.List<com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry> preJobInfo_ =
+      private java.util.List<com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry> preJobInfo_ =
         java.util.Collections.emptyList();
       private void ensurePreJobInfoIsMutable() {
         if (!((bitField0_ & 0x00000002) == 0x00000002)) {
-          preJobInfo_ = new java.util.ArrayList<com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry>(preJobInfo_);
+          preJobInfo_ = new java.util.ArrayList<com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry>(preJobInfo_);
           bitField0_ |= 0x00000002;
          }
       }
 
       private com.google.protobuf.RepeatedFieldBuilder<
-          com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry, com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry.Builder, com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntryOrBuilder> preJobInfoBuilder_;
+          com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry, com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.Builder, com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntryOrBuilder> preJobInfoBuilder_;
 
       /**
        * <code>repeated .JobInfoEntry pre_job_info = 2;</code>
        */
-      public java.util.List<com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry> getPreJobInfoList() {
+      public java.util.List<com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry> getPreJobInfoList() {
         if (preJobInfoBuilder_ == null) {
           return java.util.Collections.unmodifiableList(preJobInfo_);
         } else {
@@ -4608,7 +4608,7 @@ public final class SearchJobProtos {
       /**
        * <code>repeated .JobInfoEntry pre_job_info = 2;</code>
        */
-      public com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry getPreJobInfo(int index) {
+      public com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry getPreJobInfo(int index) {
         if (preJobInfoBuilder_ == null) {
           return preJobInfo_.get(index);
         } else {
@@ -4619,7 +4619,7 @@ public final class SearchJobProtos {
        * <code>repeated .JobInfoEntry pre_job_info = 2;</code>
        */
       public Builder setPreJobInfo(
-          int index, com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry value) {
+          int index, com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry value) {
         if (preJobInfoBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -4636,7 +4636,7 @@ public final class SearchJobProtos {
        * <code>repeated .JobInfoEntry pre_job_info = 2;</code>
        */
       public Builder setPreJobInfo(
-          int index, com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry.Builder builderForValue) {
+          int index, com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.Builder builderForValue) {
         if (preJobInfoBuilder_ == null) {
           ensurePreJobInfoIsMutable();
           preJobInfo_.set(index, builderForValue.build());
@@ -4649,7 +4649,7 @@ public final class SearchJobProtos {
       /**
        * <code>repeated .JobInfoEntry pre_job_info = 2;</code>
        */
-      public Builder addPreJobInfo(com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry value) {
+      public Builder addPreJobInfo(com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry value) {
         if (preJobInfoBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -4666,7 +4666,7 @@ public final class SearchJobProtos {
        * <code>repeated .JobInfoEntry pre_job_info = 2;</code>
        */
       public Builder addPreJobInfo(
-          int index, com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry value) {
+          int index, com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry value) {
         if (preJobInfoBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -4683,7 +4683,7 @@ public final class SearchJobProtos {
        * <code>repeated .JobInfoEntry pre_job_info = 2;</code>
        */
       public Builder addPreJobInfo(
-          com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry.Builder builderForValue) {
+          com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.Builder builderForValue) {
         if (preJobInfoBuilder_ == null) {
           ensurePreJobInfoIsMutable();
           preJobInfo_.add(builderForValue.build());
@@ -4697,7 +4697,7 @@ public final class SearchJobProtos {
        * <code>repeated .JobInfoEntry pre_job_info = 2;</code>
        */
       public Builder addPreJobInfo(
-          int index, com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry.Builder builderForValue) {
+          int index, com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.Builder builderForValue) {
         if (preJobInfoBuilder_ == null) {
           ensurePreJobInfoIsMutable();
           preJobInfo_.add(index, builderForValue.build());
@@ -4711,7 +4711,7 @@ public final class SearchJobProtos {
        * <code>repeated .JobInfoEntry pre_job_info = 2;</code>
        */
       public Builder addAllPreJobInfo(
-          java.lang.Iterable<? extends com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry> values) {
+          java.lang.Iterable<? extends com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry> values) {
         if (preJobInfoBuilder_ == null) {
           ensurePreJobInfoIsMutable();
           super.addAll(values, preJobInfo_);
@@ -4750,14 +4750,14 @@ public final class SearchJobProtos {
       /**
        * <code>repeated .JobInfoEntry pre_job_info = 2;</code>
        */
-      public com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry.Builder getPreJobInfoBuilder(
+      public com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.Builder getPreJobInfoBuilder(
           int index) {
         return getPreJobInfoFieldBuilder().getBuilder(index);
       }
       /**
        * <code>repeated .JobInfoEntry pre_job_info = 2;</code>
        */
-      public com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntryOrBuilder getPreJobInfoOrBuilder(
+      public com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntryOrBuilder getPreJobInfoOrBuilder(
           int index) {
         if (preJobInfoBuilder_ == null) {
           return preJobInfo_.get(index);  } else {
@@ -4767,7 +4767,7 @@ public final class SearchJobProtos {
       /**
        * <code>repeated .JobInfoEntry pre_job_info = 2;</code>
        */
-      public java.util.List<? extends com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntryOrBuilder> 
+      public java.util.List<? extends com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntryOrBuilder> 
            getPreJobInfoOrBuilderList() {
         if (preJobInfoBuilder_ != null) {
           return preJobInfoBuilder_.getMessageOrBuilderList();
@@ -4778,31 +4778,31 @@ public final class SearchJobProtos {
       /**
        * <code>repeated .JobInfoEntry pre_job_info = 2;</code>
        */
-      public com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry.Builder addPreJobInfoBuilder() {
+      public com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.Builder addPreJobInfoBuilder() {
         return getPreJobInfoFieldBuilder().addBuilder(
-            com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry.getDefaultInstance());
+            com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.getDefaultInstance());
       }
       /**
        * <code>repeated .JobInfoEntry pre_job_info = 2;</code>
        */
-      public com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry.Builder addPreJobInfoBuilder(
+      public com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.Builder addPreJobInfoBuilder(
           int index) {
         return getPreJobInfoFieldBuilder().addBuilder(
-            index, com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry.getDefaultInstance());
+            index, com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.getDefaultInstance());
       }
       /**
        * <code>repeated .JobInfoEntry pre_job_info = 2;</code>
        */
-      public java.util.List<com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry.Builder> 
+      public java.util.List<com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.Builder> 
            getPreJobInfoBuilderList() {
         return getPreJobInfoFieldBuilder().getBuilderList();
       }
       private com.google.protobuf.RepeatedFieldBuilder<
-          com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry, com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry.Builder, com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntryOrBuilder> 
+          com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry, com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.Builder, com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntryOrBuilder> 
           getPreJobInfoFieldBuilder() {
         if (preJobInfoBuilder_ == null) {
           preJobInfoBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
-              com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry, com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntry.Builder, com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.JobInfoEntryOrBuilder>(
+              com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry, com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.Builder, com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntryOrBuilder>(
                   preJobInfo_,
                   ((bitField0_ & 0x00000002) == 0x00000002),
                   getParentForChildren(),
@@ -5003,7 +5003,7 @@ public final class SearchJobProtos {
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           com.mogujie.jarvis.protocol.AppAuthProtos.getDescriptor(),
-          com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.getDescriptor(),
+          com.mogujie.jarvis.protocol.JobInfoEntryProtos.getDescriptor(),
         }, assigner);
   }
 

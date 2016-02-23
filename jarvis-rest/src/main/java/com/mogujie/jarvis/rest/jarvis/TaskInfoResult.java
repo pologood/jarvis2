@@ -8,7 +8,14 @@
 
 package com.mogujie.jarvis.rest.jarvis;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import org.joda.time.DateTime;
+
+import com.mogujie.jarvis.core.domain.JobContentType;
+import com.mogujie.jarvis.core.domain.JobStatus;
+import com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry;
 
 public class TaskInfoResult extends Result {
     private static final long serialVersionUID = -3564148230890004211L;
@@ -20,29 +27,59 @@ public class TaskInfoResult extends Result {
     private Integer priority;
     private String publisher;
     private String receiver;
+    private Integer status;
     private String publishTime;
     private String editTime;
     private String startDate;
     private String endDate;
     private String pline;
     private String department;
-    private Integer status;
     private List<PreTask> preTasks;
 
+    public TaskInfoResult() {}
+
+    public TaskInfoResult(JobInfoEntry jobInfo) {
+        this.id = jobInfo.getJobId();
+        this.cronExp = jobInfo.getScheduleExpression();
+        if (jobInfo.getContentType() == JobContentType.SCRIPT.getValue()) {
+            this.scriptId = Integer.valueOf(jobInfo.getContent());
+        }
+        this.title = jobInfo.getJobName();
+        this.priority = jobInfo.getPriority();
+        this.publisher = jobInfo.getUser();
+        this.receiver = jobInfo.getReceiver();
+        this.publishTime = new DateTime(jobInfo.getCreateTime()).toString();
+        this.editTime = new DateTime(jobInfo.getUpdateTime()).toString();
+        this.startDate = new DateTime(jobInfo.getStartDate()).toString();
+        this.endDate = new DateTime(jobInfo.getEndDate()).toString();
+        this.pline = jobInfo.getBizName();
+        this.department = jobInfo.getAppName();
+        //适配老jarvis状态
+        int newStatus = jobInfo.getStatus();
+        if (newStatus == JobStatus.ENABLE.getValue()) {
+            this.status = TaskStatusEnum.ENABLE.getValue();
+        } else if (newStatus == JobStatus.DISABLE.getValue() ||
+                newStatus == JobStatus.PAUSE.getValue()) {
+            this.status = TaskStatusEnum.DISABLE.getValue();
+        } else {
+            this.status = TaskStatusEnum.DELETE.getValue();
+        }
+    }
+
     static class PreTask {
-        private Integer id;
+        private long id;
         private String title;
 
-        public PreTask(Integer id, String title) {
+        public PreTask(long id, String title) {
             this.id = id;
             this.title = title;
         }
 
-        public Integer getId() {
+        public long getId() {
             return id;
         }
 
-        public void setId(Integer id) {
+        public void setId(long id) {
             this.id = id;
         }
 
@@ -182,6 +219,13 @@ public class TaskInfoResult extends Result {
 
     public void setPreTasks(List<PreTask> preTasks) {
         this.preTasks = preTasks;
+    }
+
+    public void setPreJobInfos(List<JobInfoEntry> preJobInfos) {
+        this.preTasks = new ArrayList<PreTask>();
+        for (JobInfoEntry jobInfo : preJobInfos) {
+            preTasks.add(new PreTask(jobInfo.getJobId(), jobInfo.getJobName()));
+        }
     }
 
 }

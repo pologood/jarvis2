@@ -8,6 +8,8 @@
 
 package com.mogujie.jarvis.rest.controller;
 
+import java.util.List;
+
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -21,8 +23,11 @@ import org.joda.time.DateTime;
 import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
+import com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry;
 import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchJobByScriptIdRequest;
+import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchPreJobInfoRequest;
 import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchJobByScriptIdResponse;
+import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchPreJobInfoResponse;
 import com.mogujie.jarvis.rest.jarvis.Result;
 import com.mogujie.jarvis.rest.jarvis.TaskInfo;
 import com.mogujie.jarvis.rest.jarvis.TaskInfoResult;
@@ -48,7 +53,6 @@ public class JarvisController extends AbstractController {
     @Produces(MediaType.APPLICATION_JSON)
     public TaskInfoResult getTaskInfo(@PathParam("scriptId") int scriptId) {
         LOGGER.debug("根据scriptId查询taskinfo");
-        TaskInfoResult result = new TaskInfoResult();
         try {
             String appToken = AppTokenUtils.generateToken(DateTime.now().getMillis(), APP_IRONMAN_KEY);
             AppAuth appAuth = AppAuth.newBuilder().setName(APP_IRONMAN_NAME).setToken(appToken).build();
@@ -59,14 +63,27 @@ public class JarvisController extends AbstractController {
             ServerSearchJobByScriptIdResponse response = (ServerSearchJobByScriptIdResponse) callActor(AkkaType.SERVER, request);
 
             if (response.getSuccess()) {
+                JobInfoEntry jobInfo = response.getJobInfo();
+                TaskInfoResult result = new TaskInfoResult(jobInfo);
                 result.setSuccess(true);
-                //TODO
+                RestSearchPreJobInfoRequest searchPreJobInfoRequest = RestSearchPreJobInfoRequest.newBuilder()
+                        .setAppAuth(appAuth).setUser(APP_IRONMAN_NAME).setJobId(jobInfo.getJobId()).build();
+                ServerSearchPreJobInfoResponse searchPreJobInfoResponse = (ServerSearchPreJobInfoResponse) callActor(AkkaType.SERVER, searchPreJobInfoRequest);
+                if (searchPreJobInfoResponse.getSuccess()) {
+                    List<JobInfoEntry> preJobInfos = searchPreJobInfoResponse.getPreJobInfoList();
+                    result.setPreJobInfos(preJobInfos);
+                } else {
+                    LOGGER.error("获取jobId={}的依赖关系失败", jobInfo.getJobId());
+                }
+                return result;
             } else {
+                TaskInfoResult result = new TaskInfoResult();
                 result.setSuccess(false);
                 result.setMessage(response.getMessage());
+                return result;
             }
-            return result;
         } catch (Exception e) {
+            TaskInfoResult result = new TaskInfoResult();
             result.setSuccess(false);
             result.setMessage(e.getMessage());
             return result;
