@@ -28,7 +28,7 @@ import com.mogujie.jarvis.rest.vo.JobVo;
 /**
  * Created by muming on 15/12/1.
  */
-@Ignore
+//@Ignore
 public class TestJobRest {
 
     @Test
@@ -55,6 +55,7 @@ public class TestJobRest {
         jobScheduleExpSet(jobId);
     }
 
+    @Test
     public void testJobDependencySet() throws UnirestException {
         Long jobId = jobSubmit();
         jobDependencySet(jobId);
@@ -228,6 +229,54 @@ public class TestJobRest {
                 .field("user", "muming").field("parameters", paramsJson).asString();
 
         Type restType = new TypeToken<RestResult4TestEntity<JobRelationsVo>>() {
+        }.getType();
+
+        Assert.assertEquals(jsonResponse.getStatus(), 200);
+        RestResult4TestEntity<?> result = JsonHelper.fromJson(jsonResponse.getBody(), restType);
+        Assert.assertEquals(result.getCode(), 0);
+
+    }
+
+    @Test
+    public void testXmenJobSubmit() throws UnirestException {
+        JobVo job = new JobVo();
+        job.setAppName("xmen");
+        job.setJobType("shell");
+        job.setContentType(2);
+        job.setStatus(1);
+        //script id
+        job.setContent("478");
+        job.setWorkerGroupId(1);
+
+        // 计划表达式
+        List<JobScheduleExpVo.ScheduleExpressionEntry> list = new ArrayList<>();
+        JobScheduleExpVo.ScheduleExpressionEntry expressionEntry;
+
+        expressionEntry = new JobScheduleExpVo.ScheduleExpressionEntry();
+        expressionEntry.setOperatorMode(OperationMode.ADD.getValue());
+        expressionEntry.setExpressionType(ScheduleExpressionType.CRON.getValue());
+        expressionEntry.setExpression("0 0 3 * * ?");
+        list.add(expressionEntry);
+
+        job.setScheduleExpressionList(list);
+
+        // 依赖任务
+        List<JobDependencyVo.DependencyEntry> dependList = new ArrayList<>();
+        JobDependencyVo.DependencyEntry dependencyEntry;
+
+        dependencyEntry = new JobDependencyVo.DependencyEntry();
+        dependencyEntry.setOperatorMode(OperationMode.ADD.getValue());
+        dependencyEntry.setPreJobId(1L);
+        dependencyEntry.setCommonStrategy(CommonStrategy.ALL.getValue());
+        dependList.add(dependencyEntry);
+
+        job.setDependencyList(dependList);
+        String paramsJson = JsonHelper.toJson(job, JobVo.class);
+
+        HttpResponse<String> jsonResponse = Unirest.post(baseUrl + "/api/job/dependency/set").field("appName", "xmen").field("appToken", "54fba65aae584ac6b6806045ea7dab5e")
+            .field("user", "qingyuan").field("parameters", paramsJson).asString();
+
+        Type restType = new TypeToken<RestResult4TestEntity<JobResultVo>>() {
         }.getType();
 
         Assert.assertEquals(jsonResponse.getStatus(), 200);

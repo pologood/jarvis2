@@ -1,78 +1,118 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>com.mogujie.jarvis</groupId>
-		<artifactId>jarvis-parent</artifactId>
-		<version>2.0</version>
-		<relativePath>../pom.xml</relativePath>
-	</parent>
-	<artifactId>jarvis-rest</artifactId>
-	<name>jarvis-rest</name>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.mogujie.jarvis</groupId>
+    <artifactId>jarvis-parent</artifactId>
+    <version>2.0</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+  <artifactId>jarvis-rest</artifactId>
+  <name>jarvis-rest</name>
 
-	<properties>
-		<jersey.version>2.22</jersey.version>
-	</properties>
+  <properties>
+    <jersey.version>2.22</jersey.version>
+    <local.repo.host>http://maven.mogujie.org</local.repo.host>
+  </properties>
 
-	<dependencies>
-		<dependency>
-			<groupId>com.mogujie.jarvis</groupId>
-			<artifactId>jarvis-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.mogujie.jarvis</groupId>
-			<artifactId>jarvis-protocol</artifactId>
-		</dependency>
-		
-		<!-- old jarvis -->
-		<dependency>
-            <groupId>com.mogujie.bigdata.app</groupId>
-            <artifactId>jarvis-common</artifactId>
-            <version>0.0.50-SNAPSHOT</version>
-        </dependency>
-		<!-- Jersey -->
-		<dependency>
-			<groupId>org.glassfish.jersey.containers</groupId>
-			<artifactId>jersey-container-grizzly2-http</artifactId>
-			<version>${jersey.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.glassfish.jersey.media</groupId>
-			<artifactId>jersey-media-json-jackson</artifactId>
-			<version>${jersey.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.glassfish.jersey.ext</groupId>
-			<artifactId>jersey-entity-filtering</artifactId>
-			<version>${jersey.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.jaxrs</groupId>
-			<artifactId>jackson-jaxrs-json-provider</artifactId>
-			<version>2.4.0</version>
-		</dependency>
-		<!-- Guice -->
-		<dependency>
-			<groupId>com.google.inject</groupId>
-			<artifactId>guice</artifactId>
-			<version>${guice.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.inject.extensions</groupId>
-			<artifactId>guice-multibindings</artifactId>
-			<version>${guice.version}</version>
-		</dependency>
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.5</version>
-        </dependency>
-        <dependency>
-            <groupId>com.mashape.unirest</groupId>
-            <artifactId>unirest-java</artifactId>
-            <version>1.4.7</version>
-            <scope>test</scope>
-        </dependency>
-	</dependencies>
+  <dependencies>
+    <dependency>
+      <groupId>com.mogujie.jarvis</groupId>
+      <artifactId>jarvis-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.mogujie.jarvis</groupId>
+      <artifactId>jarvis-protocol</artifactId>
+    </dependency>
 
+    <!-- old jarvis -->
+    <dependency>
+      <groupId>com.mogujie.bigdata.app</groupId>
+      <artifactId>jarvis-common</artifactId>
+      <version>0.0.50-SNAPSHOT</version>
+    </dependency>
+    <!-- Jersey -->
+    <dependency>
+      <groupId>org.glassfish.jersey.containers</groupId>
+      <artifactId>jersey-container-grizzly2-http</artifactId>
+      <version>${jersey.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.jersey.media</groupId>
+      <artifactId>jersey-media-json-jackson</artifactId>
+      <version>${jersey.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.jersey.ext</groupId>
+      <artifactId>jersey-entity-filtering</artifactId>
+      <version>${jersey.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.jaxrs</groupId>
+      <artifactId>jackson-jaxrs-json-provider</artifactId>
+      <version>2.4.0</version>
+    </dependency>
+    <!-- Guice -->
+    <dependency>
+      <groupId>com.google.inject</groupId>
+      <artifactId>guice</artifactId>
+      <version>${guice.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.inject.extensions</groupId>
+      <artifactId>guice-multibindings</artifactId>
+      <version>${guice.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <version>2.5</version>
+    </dependency>
+    <dependency>
+      <groupId>com.mashape.unirest</groupId>
+      <artifactId>unirest-java</artifactId>
+      <version>1.4.7</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <repositories>
+    <repository>
+      <id>releases</id>
+      <name>public</name>
+      <url>http://maven.mogujie.org/nexus/content/groups/public/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+
+    <repository>
+      <id>cloudera-releases</id>
+      <url>https://repository.cloudera.com/artifactory/cloudera-repos</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+
+
+  </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>plugin</id>
+      <url>${local.repo.host}/nexus/content/groups/public/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </pluginRepository>
+  </pluginRepositories>
 </project>
