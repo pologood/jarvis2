@@ -1,8 +1,9 @@
 package com.mogujie.jarvis.server.actor.base;
 
+import com.mogujie.jarvis.core.util.AppTokenUtils;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
-import com.mogujie.jarvis.server.util.AppTokenUtils;
+
 import org.apache.commons.configuration.Configuration;
 
 import java.util.Date;

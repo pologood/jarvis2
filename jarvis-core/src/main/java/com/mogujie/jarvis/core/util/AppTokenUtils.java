@@ -6,7 +6,7 @@
  * Create Date: 2015年10月16日 上午10:27:05
  */
 
-package com.mogujie.jarvis.server.util;
+package com.mogujie.jarvis.core.util;
 
 import java.nio.charset.StandardCharsets;
 

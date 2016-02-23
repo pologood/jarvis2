@@ -14,7 +14,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.mogujie.jarvis.core.exception.AppTokenInvalidException;
-import com.mogujie.jarvis.server.util.AppTokenUtils;
+import com.mogujie.jarvis.core.util.AppTokenUtils;
 
 public class TestAppTokenUtils {
 

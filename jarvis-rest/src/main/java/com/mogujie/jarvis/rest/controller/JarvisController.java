@@ -21,6 +21,7 @@ import javax.ws.rs.core.MediaType;
 import org.joda.time.DateTime;
 
 import com.mogujie.jarvis.core.domain.AkkaType;
+import com.mogujie.jarvis.core.util.AppTokenUtils;
 import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
 import com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry;
@@ -33,7 +34,6 @@ import com.mogujie.jarvis.rest.jarvis.TaskInfo;
 import com.mogujie.jarvis.rest.jarvis.TaskInfoResult;
 import com.mogujie.jarvis.rest.jarvis.TasksResult;
 import com.mogujie.jarvis.rest.jarvis.User;
-import com.mogujie.jarvis.server.util.AppTokenUtils;
 
 /**
  * @author guangming

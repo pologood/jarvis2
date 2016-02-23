@@ -16,13 +16,13 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.core.classloader.annotations.SuppressStaticInitializationFor;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import com.mogujie.jarvis.core.util.AppTokenUtils;
 import com.mogujie.jarvis.dto.generate.Worker;
 import com.mogujie.jarvis.protocol.AppAuthProtos;
 import com.mogujie.jarvis.protocol.WorkerGroupProtos;
 import com.mogujie.jarvis.protocol.WorkerGroupProtos.RestModifyWorkerGroupRequest;
 import com.mogujie.jarvis.protocol.WorkerProtos;
 import com.mogujie.jarvis.server.actor.base.TestWorkerServiceBase;
-import com.mogujie.jarvis.server.util.AppTokenUtils;
 
 import akka.actor.ActorPath;
 import akka.actor.ActorRef;

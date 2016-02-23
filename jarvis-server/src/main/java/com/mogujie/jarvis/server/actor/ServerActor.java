@@ -24,6 +24,7 @@ import com.google.protobuf.GeneratedMessage;
 import com.mogujie.jarvis.core.domain.AppStatus;
 import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.core.domain.Pair;
+import com.mogujie.jarvis.core.util.AppTokenUtils;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.dto.generate.App;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
@@ -32,7 +33,6 @@ import com.mogujie.jarvis.server.ServerConigKeys;
 import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.service.AppService;
-import com.mogujie.jarvis.server.util.AppTokenUtils;
 
 import akka.actor.ActorRef;
 import akka.actor.Props;
