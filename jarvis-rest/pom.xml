@@ -12,7 +12,7 @@
 
   <properties>
     <jersey.version>2.22</jersey.version>
-    <local.repo.host>http://maven.mogujie.org</local.repo.host>
+    <crowd.version>2.5.0</crowd.version>
   </properties>
 
   <dependencies>
@@ -25,12 +25,6 @@
       <artifactId>jarvis-protocol</artifactId>
     </dependency>
 
-    <!-- old jarvis -->
-    <dependency>
-      <groupId>com.mogujie.bigdata.app</groupId>
-      <artifactId>jarvis-common</artifactId>
-      <version>0.0.50-SNAPSHOT</version>
-    </dependency>
     <!-- Jersey -->
     <dependency>
       <groupId>org.glassfish.jersey.containers</groupId>
@@ -74,45 +68,7 @@
       <version>1.4.7</version>
       <scope>test</scope>
     </dependency>
+    
   </dependencies>
 
-  <repositories>
-    <repository>
-      <id>releases</id>
-      <name>public</name>
-      <url>http://maven.mogujie.org/nexus/content/groups/public/</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </repository>
-
-    <repository>
-      <id>cloudera-releases</id>
-      <url>https://repository.cloudera.com/artifactory/cloudera-repos</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-
-
-  </repositories>
-
-  <pluginRepositories>
-    <pluginRepository>
-      <id>plugin</id>
-      <url>${local.repo.host}/nexus/content/groups/public/</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </pluginRepository>
-  </pluginRepositories>
 </project>

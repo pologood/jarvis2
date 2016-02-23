@@ -10,8 +10,6 @@ package com.mogujie.jarvis.rest.jarvis;
 
 import java.io.Serializable;
 
-import com.mogujie.bigdata.app.jarvis.enums.TaskPriorityEnum;
-
 public class TaskInfo implements Serializable {
 
     private static final long serialVersionUID = 6129998102397429730L;

@@ -16,12 +16,12 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import com.mogujie.bigdata.app.jarvis.domain.User;
 import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.rest.jarvis.Result;
 import com.mogujie.jarvis.rest.jarvis.TaskInfo;
 import com.mogujie.jarvis.rest.jarvis.TaskInfoResult;
 import com.mogujie.jarvis.rest.jarvis.TasksResult;
+import com.mogujie.jarvis.rest.jarvis.User;
 
 /**
  * @author guangming
@@ -47,6 +47,7 @@ public class JarvisController {
         return null;
     }
 
+    @GET
     @Path("getdependencybyscript.htm")
     @Produces(MediaType.APPLICATION_JSON)
     public TasksResult getDependencyByScript(@PathParam("scriptId") int scriptId) {
