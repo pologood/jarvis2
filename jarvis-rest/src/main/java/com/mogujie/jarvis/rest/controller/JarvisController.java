@@ -9,6 +9,7 @@
 package com.mogujie.jarvis.rest.controller;
 
 import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -29,7 +30,7 @@ import com.mogujie.jarvis.rest.jarvis.TasksResult;
 @Path("api")
 public class JarvisController {
 
-    @POST
+    @GET
     @Path("taskinfo")
     @Produces(MediaType.APPLICATION_JSON)
     public TaskInfoResult getTaskInfo(@FormParam("scriptId") int scriptId) {
@@ -37,7 +38,7 @@ public class JarvisController {
         return null;
     }
 
-    @POST
+    @GET
     @Path("alltasks")
     @Produces(MediaType.APPLICATION_JSON)
     public TasksResult getAllTasks() {
@@ -45,7 +46,7 @@ public class JarvisController {
         return null;
     }
 
-    @POST
+    @GET
     @Path("getdependencybyscript.htm")
     @Produces(MediaType.APPLICATION_JSON)
     public TasksResult getDependencyByScript(@FormParam("scriptId") int scriptId) {
@@ -53,7 +54,7 @@ public class JarvisController {
         return null;
     }
 
-    @POST
+    @GET
     @Path("sdependtasks")
     @Produces(MediaType.APPLICATION_JSON)
     public TasksResult getScriptDepend(@FormParam("scriptId") int scriptId) {
@@ -61,7 +62,7 @@ public class JarvisController {
         return null;
     }
 
-    @POST
+    @GET
     @Path("searchtask")
     @Produces(MediaType.APPLICATION_JSON)
     public TasksResult searchTask(@FormParam("keyword") String title) {
