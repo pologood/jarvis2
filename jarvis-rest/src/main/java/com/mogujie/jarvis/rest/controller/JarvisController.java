@@ -9,8 +9,10 @@
 package com.mogujie.jarvis.rest.controller;
 
 import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -29,13 +31,15 @@ import com.mogujie.jarvis.rest.jarvis.TasksResult;
 @Path("api")
 public class JarvisController {
 
+    @GET
     @Path("taskinfo")
     @Produces(MediaType.APPLICATION_JSON)
-    public TaskInfoResult getTaskInfo(@FormParam("scriptId") int scriptId) {
+    public TaskInfoResult getTaskInfo(@PathParam("scriptId") int scriptId) {
         //TODO
         return null;
     }
 
+    @GET
     @Path("alltasks")
     @Produces(MediaType.APPLICATION_JSON)
     public TasksResult getAllTasks() {
@@ -45,21 +49,23 @@ public class JarvisController {
 
     @Path("getdependencybyscript.htm")
     @Produces(MediaType.APPLICATION_JSON)
-    public TasksResult getDependencyByScript(@FormParam("scriptId") int scriptId) {
+    public TasksResult getDependencyByScript(@PathParam("scriptId") int scriptId) {
         //TODO
         return null;
     }
 
+    @GET
     @Path("sdependtasks")
     @Produces(MediaType.APPLICATION_JSON)
-    public TasksResult getScriptDepend(@FormParam("scriptId") int scriptId) {
+    public TasksResult getScriptDepend(@PathParam("scriptId") int scriptId) {
         //TODO
         return null;
     }
 
+    @GET
     @Path("searchtask")
     @Produces(MediaType.APPLICATION_JSON)
-    public TasksResult searchTask(@FormParam("keyword") String title) {
+    public TasksResult searchTask(@PathParam("keyword") String title) {
         //TODO
         return null;
     }
