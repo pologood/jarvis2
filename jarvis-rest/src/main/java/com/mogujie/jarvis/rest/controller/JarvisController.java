@@ -16,12 +16,19 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.joda.time.DateTime;
+
+import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.core.util.JsonHelper;
+import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
+import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchJobByScriptIdRequest;
+import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchJobByScriptIdResponse;
 import com.mogujie.jarvis.rest.jarvis.Result;
 import com.mogujie.jarvis.rest.jarvis.TaskInfo;
 import com.mogujie.jarvis.rest.jarvis.TaskInfoResult;
 import com.mogujie.jarvis.rest.jarvis.TasksResult;
 import com.mogujie.jarvis.rest.jarvis.User;
+import com.mogujie.jarvis.server.util.AppTokenUtils;
 
 /**
  * @author guangming
@@ -29,14 +36,41 @@ import com.mogujie.jarvis.rest.jarvis.User;
  */
 @Deprecated
 @Path("api")
-public class JarvisController {
+public class JarvisController extends AbstractController {
+
+    private static String APP_IRONMAN_NAME = "ironman";
+    private static String APP_IRONMAN_KEY = "123";
+    private static String APP_XMEN_NAME = "xmen";
+    private static String APP_XMEN_KEY = "456";
 
     @GET
     @Path("taskinfo")
     @Produces(MediaType.APPLICATION_JSON)
     public TaskInfoResult getTaskInfo(@PathParam("scriptId") int scriptId) {
-        //TODO
-        return null;
+        LOGGER.debug("根据scriptId查询taskinfo");
+        TaskInfoResult result = new TaskInfoResult();
+        try {
+            String appToken = AppTokenUtils.generateToken(DateTime.now().getMillis(), APP_IRONMAN_KEY);
+            AppAuth appAuth = AppAuth.newBuilder().setName(APP_IRONMAN_NAME).setToken(appToken).build();
+
+            RestSearchJobByScriptIdRequest request = RestSearchJobByScriptIdRequest.newBuilder().setAppAuth(appAuth)
+                    .setUser(APP_IRONMAN_NAME).setScriptId(scriptId).build();
+
+            ServerSearchJobByScriptIdResponse response = (ServerSearchJobByScriptIdResponse) callActor(AkkaType.SERVER, request);
+
+            if (response.getSuccess()) {
+                result.setSuccess(true);
+                //TODO
+            } else {
+                result.setSuccess(false);
+                result.setMessage(response.getMessage());
+            }
+            return result;
+        } catch (Exception e) {
+            result.setSuccess(false);
+            result.setMessage(e.getMessage());
+            return result;
+        }
     }
 
     @GET

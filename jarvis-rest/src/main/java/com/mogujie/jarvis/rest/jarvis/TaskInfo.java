@@ -16,21 +16,10 @@ public class TaskInfo implements Serializable {
     public static final String TARGETMETHOD = "run";
 
     private Integer id;
-
-    public boolean isCritical() {
-        return isCritical;
-    }
-
-    public void setCritical(boolean isCritical) {
-        this.isCritical = isCritical;
-    }
-
-    private boolean isCritical;
     private String cronExp;
     private String cronExpExplain;
     private Integer scriptId;
     private String title;
-    private String file;
     private Integer priority;
     private String publisher;
     private String receiver;
@@ -39,23 +28,6 @@ public class TaskInfo implements Serializable {
     private String startDate;
     private String endDate;
     private Integer status;
-    private String dayTask;
-
-    public String getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(String department) {
-        this.department = department;
-    }
-
-    public String getPline() {
-        return pline;
-    }
-
-    public void setPline(String pline) {
-        this.pline = pline;
-    }
 
     //脚本所属部门
     private String department;
@@ -64,16 +36,6 @@ public class TaskInfo implements Serializable {
 
     // 前置程序IDS
     private String preTaskIds;
-
-    public boolean isDeleted() {
-        return isDeleted;
-    }
-
-    public void setDeleted(boolean isDeleted) {
-        this.isDeleted = isDeleted;
-    }
-
-    private boolean isDeleted;
 
     public TaskInfo(String username, Integer scriptId, String title,
                 String cronExp, String startDate, String endDate, String receiver) {
@@ -126,14 +88,6 @@ public class TaskInfo implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getFile() {
-        return file;
-    }
-
-    public void setFile(String file) {
-        this.file = file;
     }
 
     public Integer getPriority() {
@@ -212,20 +166,27 @@ public class TaskInfo implements Serializable {
         this.preTaskIds = preTaskIds;
     }
 
-    public String getDayTask() {
-        return dayTask;
-    }
-
-    public void setDayTask(String dayTask) {
-        this.dayTask = dayTask;
-    }
-
     public String getPriorityDisplay() {
         return TaskPriorityEnum.get(getPriority()).getDescription();
     }
 
-    public String toString() {
+    public String getDepartment() {
+        return department;
+    }
 
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+
+    public String getPline() {
+        return pline;
+    }
+
+    public void setPline(String pline) {
+        this.pline = pline;
+    }
+
+    public String toString() {
         return " crontab:"+cronExp+" scriptId:"+scriptId
                 +" title:"+title+" priority:"+priority+" receiver:"
                 +receiver+" publisher:"+publisher+" status:"+status;
