@@ -19,6 +19,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Range;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.mogujie.jarvis.core.domain.JobContentType;
 import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.domain.TaskType;
 import com.mogujie.jarvis.dao.generate.TaskMapper;
@@ -43,6 +44,9 @@ public class TaskService {
 
     @Inject
     private JobService jobService;
+
+    @Inject
+    private ScriptService scriptService;
 
     public Task get(long taskId) {
         return taskMapper.selectByPrimaryKey(taskId);
@@ -95,7 +99,12 @@ public class TaskService {
             record.setType(taskType.getValue());
         }
         record.setExecuteUser(job.getSubmitUser());
-        record.setContent(job.getContent());
+        if (job.getContentType() == JobContentType.SCRIPT.getValue()) {
+            int scriptId = Integer.valueOf(job.getContent());
+            record.setContent(scriptService.getContentById(scriptId));
+        } else {
+            record.setContent(job.getContent());
+        }
         record.setParams(job.getParams());
         record.setAppId(job.getAppId());
         return insertSelective(record);
