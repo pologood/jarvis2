@@ -206,4 +206,10 @@ public class JarvisController extends AbstractController {
         return null;
     }
 
+    @Path("updateTaskRelation")
+    public Result updateTaskRelation(@FormParam("oldPreScriptList") List<String> oldPreScriptList,
+        @FormParam("newPreScriptList") List<String> newPreScriptList, @FormParam("scriptName") String scriptName) {
+        return null;
+    }
+
 }
