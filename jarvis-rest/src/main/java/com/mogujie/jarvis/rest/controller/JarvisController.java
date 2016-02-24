@@ -22,11 +22,14 @@ import org.joda.time.DateTime;
 
 import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.core.util.AppTokenUtils;
+import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
 import com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry;
+import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchAllJobsRequest;
 import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchJobByScriptIdRequest;
 import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchPreJobInfoRequest;
+import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchAllJobsResponse;
 import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchJobByScriptIdResponse;
 import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchPreJobInfoResponse;
 import com.mogujie.jarvis.rest.jarvis.Result;
@@ -36,6 +39,8 @@ import com.mogujie.jarvis.rest.jarvis.TasksResult;
 import com.mogujie.jarvis.rest.jarvis.User;
 
 /**
+ * 兼容旧jarvis rest接口
+ *
  * @author guangming
  *
  */
@@ -43,10 +48,10 @@ import com.mogujie.jarvis.rest.jarvis.User;
 @Path("api")
 public class JarvisController extends AbstractController {
 
-    private static String APP_IRONMAN_NAME = "ironman";
-    private static String APP_IRONMAN_KEY = "123";
-    private static String APP_XMEN_NAME = "xmen";
-    private static String APP_XMEN_KEY = "456";
+    private static String APP_IRONMAN_NAME = ConfigUtils.getRestConfig().getString("app.ironman.name");
+    private static String APP_IRONMAN_KEY = ConfigUtils.getRestConfig().getString("app.ironman.key");
+    private static String APP_XMEN_NAME = ConfigUtils.getRestConfig().getString("app.xmen.name");
+    private static String APP_XMEN_KEY = ConfigUtils.getRestConfig().getString("app.xmen.key");
 
     @GET
     @Path("taskinfo")
@@ -94,31 +99,91 @@ public class JarvisController extends AbstractController {
     @Path("alltasks")
     @Produces(MediaType.APPLICATION_JSON)
     public TasksResult getAllTasks() {
-        //TODO
-        return null;
+        LOGGER.debug("查询所有jobs");
+        try {
+            String appToken = AppTokenUtils.generateToken(DateTime.now().getMillis(), APP_IRONMAN_KEY);
+            AppAuth appAuth = AppAuth.newBuilder().setName(APP_IRONMAN_NAME).setToken(appToken).build();
+
+            RestSearchAllJobsRequest request = RestSearchAllJobsRequest.newBuilder().setAppAuth(appAuth)
+                    .setUser(APP_IRONMAN_NAME).build();
+            ServerSearchAllJobsResponse response = (ServerSearchAllJobsResponse) callActor(AkkaType.SERVER, request);
+            if (response.getSuccess()) {
+                List<JobInfoEntry> jobInfos = response.getJobInfoList();
+                TasksResult result = new TasksResult(jobInfos);
+                result.setSuccess(true);
+                return result;
+            } else {
+                TasksResult result = new TasksResult();
+                result.setSuccess(false);
+                result.setMessage(response.getMessage());
+                return result;
+            }
+        } catch (Exception e) {
+            TasksResult result = new TasksResult();
+            result.setSuccess(false);
+            result.setMessage(e.getMessage());
+            return result;
+        }
     }
 
     @GET
     @Path("getdependencybyscript.htm")
     @Produces(MediaType.APPLICATION_JSON)
     public TasksResult getDependencyByScript(@PathParam("scriptId") int scriptId) {
-        //TODO
-        return null;
+        LOGGER.debug("根据scriptId查询依赖关系");
+        try {
+            String appToken = AppTokenUtils.generateToken(DateTime.now().getMillis(), APP_IRONMAN_KEY);
+            AppAuth appAuth = AppAuth.newBuilder().setName(APP_IRONMAN_NAME).setToken(appToken).build();
+
+            RestSearchJobByScriptIdRequest request = RestSearchJobByScriptIdRequest.newBuilder().setAppAuth(appAuth)
+                    .setUser(APP_IRONMAN_NAME).setScriptId(scriptId).build();
+
+            ServerSearchJobByScriptIdResponse response = (ServerSearchJobByScriptIdResponse) callActor(AkkaType.SERVER, request);
+
+            if (response.getSuccess()) {
+                JobInfoEntry jobInfo = response.getJobInfo();
+                RestSearchPreJobInfoRequest searchPreJobInfoRequest = RestSearchPreJobInfoRequest.newBuilder()
+                        .setAppAuth(appAuth).setUser(APP_IRONMAN_NAME).setJobId(jobInfo.getJobId()).build();
+                ServerSearchPreJobInfoResponse searchPreJobInfoResponse = (ServerSearchPreJobInfoResponse) callActor(AkkaType.SERVER, searchPreJobInfoRequest);
+                if (searchPreJobInfoResponse.getSuccess()) {
+                    List<JobInfoEntry> preJobInfos = searchPreJobInfoResponse.getPreJobInfoList();
+                    TasksResult result = new TasksResult(preJobInfos);
+                    result.setSuccess(true);
+                    return result;
+                } else {
+                    LOGGER.error("获取jobId={}的依赖关系失败", jobInfo.getJobId());
+                    TasksResult result = new TasksResult();
+                    result.setSuccess(false);
+                    result.setMessage("获取jobId=" + jobInfo.getJobId() + "的依赖关系失败");
+                    return result;
+                }
+            } else {
+                TasksResult result = new TasksResult();
+                result.setSuccess(false);
+                result.setMessage("通过srciptId=" + scriptId + "查找job失败");
+                return result;
+            }
+        } catch (Exception e) {
+            TasksResult result = new TasksResult();
+            result.setSuccess(false);
+            result.setMessage(e.getMessage());
+            return result;
+        }
     }
 
     @GET
     @Path("sdependtasks")
     @Produces(MediaType.APPLICATION_JSON)
     public TasksResult getScriptDepend(@PathParam("scriptId") int scriptId) {
-        //TODO
-        return null;
+        return getDependencyByScript(scriptId);
     }
 
     @GET
     @Path("searchtask")
     @Produces(MediaType.APPLICATION_JSON)
     public TasksResult searchTask(@PathParam("keyword") String title) {
-        //TODO
+        // NOT SUPPORTED
+        // 暂时没人用到
         return null;
     }
 

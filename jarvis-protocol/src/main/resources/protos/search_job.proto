@@ -44,3 +44,14 @@ message ServerSearchPreJobInfoResponse {
     optional string message = 3 [default = ""];
 }
 
+message RestSearchAllJobsRequest {
+	required AppAuth app_auth = 1;
+	required string user = 2;
+}
+
+message ServerSearchAllJobsResponse {
+	required bool success = 1;
+    repeated JobInfoEntry job_info = 2;
+    optional string message = 3 [default = ""];
+}
+

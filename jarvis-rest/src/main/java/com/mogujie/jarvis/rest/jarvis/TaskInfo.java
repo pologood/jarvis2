@@ -10,12 +10,18 @@ package com.mogujie.jarvis.rest.jarvis;
 
 import java.io.Serializable;
 
+import org.joda.time.DateTime;
+
+import com.mogujie.jarvis.core.domain.JobContentType;
+import com.mogujie.jarvis.core.domain.JobStatus;
+import com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry;
+
 public class TaskInfo implements Serializable {
 
     private static final long serialVersionUID = 6129998102397429730L;
     public static final String TARGETMETHOD = "run";
 
-    private Integer id;
+    private long id;
     private String cronExp;
     private String cronExpExplain;
     private Integer scriptId;
@@ -50,11 +56,39 @@ public class TaskInfo implements Serializable {
         this.priority = TaskPriorityEnum.MID.getValue();
     }
 
-    public Integer getId() {
+    public TaskInfo(JobInfoEntry jobInfo) {
+        this.id = jobInfo.getJobId();
+        this.cronExp = jobInfo.getScheduleExpression();
+        if (jobInfo.getContentType() == JobContentType.SCRIPT.getValue()) {
+            this.scriptId = Integer.valueOf(jobInfo.getContent());
+        }
+        this.title = jobInfo.getJobName();
+        this.priority = jobInfo.getPriority();
+        this.publisher = jobInfo.getUser();
+        this.receiver = jobInfo.getReceiver();
+        this.publishTime = new DateTime(jobInfo.getCreateTime()).toString();
+        this.editTime = new DateTime(jobInfo.getUpdateTime()).toString();
+        this.startDate = new DateTime(jobInfo.getStartDate()).toString();
+        this.endDate = new DateTime(jobInfo.getEndDate()).toString();
+        this.pline = jobInfo.getBizName();
+        this.department = jobInfo.getAppName();
+        //适配老jarvis状态
+        int newStatus = jobInfo.getStatus();
+        if (newStatus == JobStatus.ENABLE.getValue()) {
+            this.status = TaskStatusEnum.ENABLE.getValue();
+        } else if (newStatus == JobStatus.DISABLE.getValue() ||
+                newStatus == JobStatus.PAUSE.getValue()) {
+            this.status = TaskStatusEnum.DISABLE.getValue();
+        } else {
+            this.status = TaskStatusEnum.DELETE.getValue();
+        }
+    }
+
+    public long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(long id) {
         this.id = id;
     }
 
