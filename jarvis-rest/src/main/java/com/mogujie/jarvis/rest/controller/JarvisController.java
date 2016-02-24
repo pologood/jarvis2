@@ -8,6 +8,22 @@
 
 package com.mogujie.jarvis.rest.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import org.joda.time.DateTime;
+
+import com.google.common.collect.Sets;
+import com.google.common.collect.Sets.SetView;
 import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.core.domain.AlarmType;
 import com.mogujie.jarvis.core.domain.CommonStrategy;
@@ -20,33 +36,41 @@ import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.protocol.AlarmProtos;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
+import com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry;
 import com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry;
 import com.mogujie.jarvis.protocol.JobProtos;
+import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobDependRequest;
+import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobRequest;
+import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobScheduleExpRequest;
+import com.mogujie.jarvis.protocol.JobProtos.RestSubmitJobRequest;
+import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobDependResponse;
+import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobResponse;
+import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobScheduleExpResponse;
+import com.mogujie.jarvis.protocol.JobProtos.ServerSubmitJobResponse;
+import com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry;
 import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchAllJobsRequest;
+import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchBizIdByNameRequest;
 import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchJobByScriptIdRequest;
 import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchPreJobInfoRequest;
+import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchScriptTypeRequest;
 import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchAllJobsResponse;
+import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchBizIdByNamResponse;
 import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchJobByScriptIdResponse;
 import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchPreJobInfoResponse;
+import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchScriptTypeResponse;
+import com.mogujie.jarvis.rest.jarvis.PermissionEnum;
 import com.mogujie.jarvis.rest.jarvis.Result;
+import com.mogujie.jarvis.rest.jarvis.TaskIDResult;
 import com.mogujie.jarvis.rest.jarvis.TaskInfo;
 import com.mogujie.jarvis.rest.jarvis.TaskInfoResult;
+import com.mogujie.jarvis.rest.jarvis.TaskPriorityEnum;
+import com.mogujie.jarvis.rest.jarvis.TaskStatusEnum;
 import com.mogujie.jarvis.rest.jarvis.TasksResult;
 import com.mogujie.jarvis.rest.jarvis.User;
 import com.mogujie.jarvis.rest.utils.ValidUtils;
 import com.mogujie.jarvis.rest.vo.JobDependencyVo;
 import com.mogujie.jarvis.rest.vo.JobScheduleExpVo;
 import com.mogujie.jarvis.rest.vo.JobVo;
-import java.util.ArrayList;
-import java.util.List;
-import javax.ws.rs.FormParam;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import org.joda.time.DateTime;
 
 /**
  * 兼容旧jarvis rest接口
@@ -202,8 +226,224 @@ public class JarvisController extends AbstractController {
     @Produces(MediaType.APPLICATION_JSON)
     public Result submitTask(@FormParam("task") String task, @FormParam("globalUser") String globalUser,
             User user) {
-        TaskInfo taskInfo = JsonHelper.fromJson(task, TaskInfo.class);
-        return null;
+        LOGGER.debug("ironman提交job");
+        TaskIDResult result = new TaskIDResult();
+        try {
+            String appToken = AppTokenUtils.generateToken(DateTime.now().getMillis(), APP_IRONMAN_KEY);
+            AppAuth appAuth = AppAuth.newBuilder().setName(APP_IRONMAN_NAME).setToken(appToken).build();
+
+            TaskInfo taskInfo = JsonHelper.fromJson(task, TaskInfo.class);
+            int newStatus = JobStatus.ENABLE.getValue();
+            if (taskInfo.getStatus() == TaskStatusEnum.DISABLE.getValue()) {
+                newStatus = JobStatus.DISABLE.getValue();
+            }
+            // 根据id是否为null判断是更新还是添加
+            if (null == taskInfo.getId() || 0 == taskInfo.getId().longValue()) {
+                if (!user.haveFunction(PermissionEnum.SUPER_ADMIN)) {
+                    // 非管理员不得使用VERY_HIGH优先级
+                    Integer priority = taskInfo.getPriority();
+                    if (priority > TaskPriorityEnum.HIGH.getValue()) {
+                        taskInfo.setPriority(TaskPriorityEnum.HIGH.getValue());
+                    }
+                }
+                // 1.获取job type
+                int scriptId = taskInfo.getScriptId();
+                RestSearchScriptTypeRequest scriptTypeRequest = RestSearchScriptTypeRequest.newBuilder()
+                        .setAppAuth(appAuth).setUser(globalUser).setScriptId(scriptId).build();
+                ServerSearchScriptTypeResponse scriptTypeResponse = (ServerSearchScriptTypeResponse) callActor(AkkaType.SERVER, scriptTypeRequest);
+                if (!scriptTypeResponse.getSuccess()) {
+                    result.setSuccess(false);
+                    result.setMessage("通过scriptId=" + scriptId + "获取scriptType失败");
+                    return result;
+                }
+                //script type=> job type
+                String scriptType = scriptTypeResponse.getScriptType();
+                String jobType = "hive";
+                if (scriptType.equalsIgnoreCase("sql")) {
+                    jobType = "hive";
+                } else if (scriptType.equalsIgnoreCase("shell")) {
+                    jobType = "shell";
+                }
+
+                // 2. 获取biz_id
+                String bizName = taskInfo.getPline();
+                RestSearchBizIdByNameRequest bizIdByNameRequest = RestSearchBizIdByNameRequest.newBuilder()
+                        .setAppAuth(appAuth).setUser(globalUser).setBizName(bizName).build();
+                ServerSearchBizIdByNamResponse bizIdByNamResponse = (ServerSearchBizIdByNamResponse) callActor(AkkaType.SERVER, bizIdByNameRequest);
+                if (!bizIdByNamResponse.getSuccess()) {
+                    result.setSuccess(false);
+                    result.setMessage("通过pline=" + bizName + "获取biz_id失败");
+                    return result;
+                }
+                int biz_id = bizIdByNamResponse.getBizId();
+
+                RestSubmitJobRequest.Builder builder = RestSubmitJobRequest.newBuilder().setAppAuth(appAuth)
+                        .setUser(globalUser)
+                        .setJobName(taskInfo.getTitle())
+                        .setJobType(jobType)
+                        .setStatus(newStatus)
+                        .setContentType(JobContentType.SCRIPT.getValue())
+                        .setContent(taskInfo.getScriptId().toString())
+                        .setParameters("{}")
+                        .setAppName(taskInfo.getDepartment())
+                        .setWorkerGroupId(1) //默认MR集群
+                        .setBizGroupId(biz_id)
+                        .setPriority(taskInfo.getPriority())
+                        .setIsTemp(false)
+                        .setActiveStartTime(new DateTime(taskInfo.getStartDate()).getMillis())
+                        .setActiveEndTime(new DateTime(taskInfo.getEndDate()).getMillis())
+                        .setExpiredTime(60*60*24) //默认24小时
+                        .setFailedAttempts(0)
+                        .setFailedInterval(3);
+
+                // 3.调度表达式
+                ScheduleExpressionEntry scheduleExpressionEntry = ScheduleExpressionEntry.newBuilder().setOperator(OperationMode.ADD.getValue())
+                        .setExpressionId(0)
+                        .setExpressionType(ScheduleExpressionType.CRON.getValue())
+                        .setScheduleExpression(taskInfo.getCronExp())
+                        .build();
+                builder.addExpressionEntry(scheduleExpressionEntry);
+
+                // 4.依赖关系
+                String[] preJobIds = taskInfo.getPreTaskIds().trim().split(" ");
+                for (String preJobIdStr : preJobIds) {
+                    long preJobId = Long.valueOf(preJobIdStr);
+                    DependencyEntry dependencyEntry = DependencyEntry.newBuilder()
+                            .setOperator(OperationMode.ADD.getValue())
+                            .setJobId(preJobId)
+                            .setCommonDependStrategy(CommonStrategy.ALL.getValue())
+                            .setOffsetDependStrategy("cd")
+                            .build();
+                    builder.addDependencyEntry(dependencyEntry);
+                }
+                RestSubmitJobRequest submitJobRequest = builder.build();
+                ServerSubmitJobResponse submitJobResponse = (ServerSubmitJobResponse) callActor(AkkaType.SERVER, submitJobRequest);
+                if (submitJobResponse.getSuccess()) {
+                    result.setSuccess(true);
+                    result.setTaskId(submitJobResponse.getJobId());
+                    return result;
+                } else {
+                    result.setSuccess(false);
+                    result.setMessage(submitJobResponse.getMessage());
+                    return result;
+                }
+            } else {
+                result.setTaskId(taskInfo.getId());
+                if (!user.isAdminOrAuthor(taskInfo.getPublisher())
+                        && !globalUser.equals(taskInfo.getPublisher())) {
+                    result.setSuccess(false);
+                    result.setMessage("无权修改");
+                    return result;
+                }
+                // 判断用户是否是管理员来验证优先级设置是否合理
+                if (!user.haveFunction(PermissionEnum.SUPER_ADMIN)) {
+                    // 非管理员不得使用VERY_HIGH优先级
+                    Integer priority = taskInfo.getPriority();
+                    if (priority > TaskPriorityEnum.HIGH.getValue()) {
+                        taskInfo.setPriority(TaskPriorityEnum.HIGH.getValue());
+                    }
+                }
+                // 1. 修改job基本信息
+                String bizName = taskInfo.getPline();
+                RestSearchBizIdByNameRequest bizIdByNameRequest = RestSearchBizIdByNameRequest.newBuilder()
+                        .setAppAuth(appAuth).setUser(globalUser).setBizName(bizName).build();
+                ServerSearchBizIdByNamResponse bizIdByNamResponse = (ServerSearchBizIdByNamResponse) callActor(AkkaType.SERVER, bizIdByNameRequest);
+                if (!bizIdByNamResponse.getSuccess()) {
+                    result.setSuccess(false);
+                    result.setMessage("通过pline=" + bizName + "获取biz_id失败");
+                    return result;
+                }
+                int biz_id = bizIdByNamResponse.getBizId();
+                RestModifyJobRequest modifyJobRequest = RestModifyJobRequest.newBuilder()
+                        .setAppAuth(appAuth).setUser(globalUser)
+                        .setJobId(taskInfo.getId())
+                        .setAppName(taskInfo.getDepartment())
+                        .setBizGroupId(biz_id)
+                        .setPriority(taskInfo.getPriority())
+                        .setActiveStartTime(new DateTime(taskInfo.getStartDate()).getMillis())
+                        .setActiveEndTime(new DateTime(taskInfo.getEndDate()).getMillis())
+                        .build();
+                ServerModifyJobResponse modifyJobResponse = (ServerModifyJobResponse) callActor(AkkaType.SERVER, modifyJobRequest);
+                if (!modifyJobResponse.getSuccess()) {
+                    result.setSuccess(false);
+                    result.setMessage("修改job基本信息失败，jobId=" + taskInfo.getId());
+                    return result;
+                }
+
+                // 2. 修改依赖表达式
+                ScheduleExpressionEntry scheduleExpressionEntry = ScheduleExpressionEntry.newBuilder().setOperator(OperationMode.EDIT.getValue())
+                        .setExpressionId(0)
+                        .setExpressionType(ScheduleExpressionType.CRON.getValue())
+                        .setScheduleExpression(taskInfo.getCronExp())
+                        .build();
+                RestModifyJobScheduleExpRequest modifyScheduleExpRequest = RestModifyJobScheduleExpRequest.newBuilder()
+                        .setAppAuth(appAuth).setUser(globalUser)
+                        .setJobId(taskInfo.getId())
+                        .addExpressionEntry(scheduleExpressionEntry)
+                        .build();
+                ServerModifyJobScheduleExpResponse modifyScheduleExpResponse = (ServerModifyJobScheduleExpResponse) callActor(AkkaType.SERVER, modifyScheduleExpRequest);
+                if (!modifyScheduleExpResponse.getSuccess()) {
+                    result.setSuccess(false);
+                    result.setMessage("修改jobId=" + taskInfo.getId() + "依赖表达式失败:" + modifyScheduleExpResponse.getMessage());
+                    return result;
+                }
+
+                // 3.修改依赖关系
+                String[] preJobIds = taskInfo.getPreTaskIds().trim().split(" ");
+                Set<Long> oldPreJobIds = Sets.newHashSet();
+                for (String preJobIdStr : preJobIds) {
+                    oldPreJobIds.add(Long.valueOf(preJobIdStr));
+                }
+                RestSearchPreJobInfoRequest preJobInfoRequest = RestSearchPreJobInfoRequest.newBuilder().setAppAuth(appAuth)
+                        .setUser(APP_IRONMAN_NAME).setJobId(taskInfo.getId()).build();
+                ServerSearchPreJobInfoResponse preJobInfoResponse = (ServerSearchPreJobInfoResponse) callActor(AkkaType.SERVER, preJobInfoRequest);
+                if (!preJobInfoResponse.getSuccess()) {
+                    result.setSuccess(false);
+                    result.setMessage("根据scriptId=" + taskInfo.getScriptId() + "获取依赖关系失败：" + preJobInfoResponse.getMessage());
+                    return result;
+                }
+                List<JobInfoEntry> jobInfos = preJobInfoResponse.getPreJobInfoList();
+                Set<Long> newPreJobIds = Sets.newHashSet();
+                for (JobInfoEntry jobInfo : jobInfos) {
+                    newPreJobIds.add(jobInfo.getJobId());
+                }
+                SetView<Long> removeSet = Sets.difference(oldPreJobIds, newPreJobIds);
+                SetView<Long> addSet = Sets.difference(newPreJobIds, oldPreJobIds);
+
+                RestModifyJobDependRequest.Builder modifyDependBuilder = RestModifyJobDependRequest.newBuilder()
+                        .setAppAuth(appAuth).setUser(globalUser).setJobId(taskInfo.getId());
+                for (long removeJobId : removeSet) {
+                    DependencyEntry dependencyEntry = DependencyEntry.newBuilder()
+                            .setOperator(OperationMode.DELETE.getValue())
+                            .setJobId(removeJobId)
+                            .build();
+                    modifyDependBuilder.addDependencyEntry(dependencyEntry);
+                }
+                for (long addJobId : addSet) {
+                    DependencyEntry dependencyEntry = DependencyEntry.newBuilder()
+                            .setOperator(OperationMode.ADD.getValue())
+                            .setJobId(addJobId)
+                            .setCommonDependStrategy(CommonStrategy.ALL.getValue())
+                            .setOffsetDependStrategy("cd")
+                            .build();
+                    modifyDependBuilder.addDependencyEntry(dependencyEntry);
+                }
+                ServerModifyJobDependResponse modifyDependResponse = (ServerModifyJobDependResponse) callActor(AkkaType.SERVER, modifyDependBuilder.build());
+                if (!modifyDependResponse.getSuccess()) {
+                    result.setSuccess(false);
+                    result.setMessage("修改依赖关系失败：" + modifyDependResponse.getMessage());
+                    return result;
+                }
+
+                // 返回成功
+                result.setSuccess(true);
+                return result;
+            }
+        } catch (Exception e) {
+            result.setSuccess(false);
+            result.setMessage(e.getMessage());
+            return result;
+        }
     }
 
   @POST

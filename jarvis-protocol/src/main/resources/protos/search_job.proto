@@ -44,6 +44,8 @@ message ServerSearchPreJobInfoResponse {
     optional string message = 3 [default = ""];
 }
 
+
+//search all jobs
 message RestSearchAllJobsRequest {
 	required AppAuth app_auth = 1;
 	required string user = 2;
@@ -55,3 +57,30 @@ message ServerSearchAllJobsResponse {
     optional string message = 3 [default = ""];
 }
 
+
+//search script type 
+message RestSearchScriptTypeRequest {
+	required AppAuth app_auth = 1;
+	required string user = 2;
+	required int32 script_id = 3;
+}
+
+message ServerSearchScriptTypeResponse {
+	required bool success = 1;
+    required string script_type = 2;
+    optional string message = 3 [default = ""];
+}
+
+
+//search biz id
+message RestSearchBizIdByNameRequest {
+	required AppAuth app_auth = 1;
+	required string user = 2;
+	required string biz_name = 3;
+}
+
+message ServerSearchBizIdByNamResponse {
+	required bool success = 1;
+    required int32 biz_id = 2;
+    optional string message = 3 [default = ""];
+}

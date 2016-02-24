@@ -21,7 +21,7 @@ public class TaskInfo implements Serializable {
     private static final long serialVersionUID = 6129998102397429730L;
     public static final String TARGETMETHOD = "run";
 
-    private long id;
+    private Long id;
     private String cronExp;
     private String cronExpExplain;
     private Integer scriptId;
@@ -84,11 +84,11 @@ public class TaskInfo implements Serializable {
         }
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

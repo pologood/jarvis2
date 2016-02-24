@@ -123,7 +123,7 @@ public class JobController extends AbstractController {
                                     @FormParam("user") String user,
                                     @FormParam("parameters") String parameters) {
 
-        LOGGER.debug("更新job计划表达式");
+        LOGGER.debug("更新job依赖");
         try {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
@@ -162,7 +162,7 @@ public class JobController extends AbstractController {
                                      @FormParam("user") String user,
                                      @FormParam("parameters") String parameters) {
 
-        LOGGER.debug("更新job依赖");
+        LOGGER.debug("更新job时间表达式");
         try {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 

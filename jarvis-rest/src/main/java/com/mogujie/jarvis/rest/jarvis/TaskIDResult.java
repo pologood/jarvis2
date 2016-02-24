@@ -10,14 +10,14 @@ package com.mogujie.jarvis.rest.jarvis;
 
 public class TaskIDResult extends Result {
     private static final long serialVersionUID = 901386461875518L;
-    private Integer taskId;
+    private long taskId;
     private Integer errorCode;
 
-    public Integer getTaskId() {
+    public long getTaskId() {
         return taskId;
     }
 
-    public void setTaskId(Integer taskId) {
+    public void setTaskId(long taskId) {
         this.taskId = taskId;
     }
 

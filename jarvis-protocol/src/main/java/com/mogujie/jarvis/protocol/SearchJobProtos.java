@@ -4931,6 +4931,10 @@ public final class SearchJobProtos {
   }
   /**
    * Protobuf type {@code RestSearchAllJobsRequest}
+   *
+   * <pre>
+   *search all jobs
+   * </pre>
    */
   public static final class RestSearchAllJobsRequest extends
       com.google.protobuf.GeneratedMessage
@@ -5234,6 +5238,10 @@ public final class SearchJobProtos {
     }
     /**
      * Protobuf type {@code RestSearchAllJobsRequest}
+     *
+     * <pre>
+     *search all jobs
+     * </pre>
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder>
@@ -6518,6 +6526,3022 @@ public final class SearchJobProtos {
     // @@protoc_insertion_point(class_scope:ServerSearchAllJobsResponse)
   }
 
+  public interface RestSearchScriptTypeRequestOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+
+    // required .AppAuth app_auth = 1;
+    /**
+     * <code>required .AppAuth app_auth = 1;</code>
+     */
+    boolean hasAppAuth();
+    /**
+     * <code>required .AppAuth app_auth = 1;</code>
+     */
+    com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth getAppAuth();
+    /**
+     * <code>required .AppAuth app_auth = 1;</code>
+     */
+    com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder();
+
+    // required string user = 2;
+    /**
+     * <code>required string user = 2;</code>
+     */
+    boolean hasUser();
+    /**
+     * <code>required string user = 2;</code>
+     */
+    java.lang.String getUser();
+    /**
+     * <code>required string user = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getUserBytes();
+
+    // required int32 script_id = 3;
+    /**
+     * <code>required int32 script_id = 3;</code>
+     */
+    boolean hasScriptId();
+    /**
+     * <code>required int32 script_id = 3;</code>
+     */
+    int getScriptId();
+  }
+  /**
+   * Protobuf type {@code RestSearchScriptTypeRequest}
+   *
+   * <pre>
+   *search script type 
+   * </pre>
+   */
+  public static final class RestSearchScriptTypeRequest extends
+      com.google.protobuf.GeneratedMessage
+      implements RestSearchScriptTypeRequestOrBuilder {
+    // Use RestSearchScriptTypeRequest.newBuilder() to construct.
+    private RestSearchScriptTypeRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private RestSearchScriptTypeRequest(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final RestSearchScriptTypeRequest defaultInstance;
+    public static RestSearchScriptTypeRequest getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public RestSearchScriptTypeRequest getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private RestSearchScriptTypeRequest(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000001) == 0x00000001)) {
+                subBuilder = appAuth_.toBuilder();
+              }
+              appAuth_ = input.readMessage(com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(appAuth_);
+                appAuth_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000001;
+              break;
+            }
+            case 18: {
+              bitField0_ |= 0x00000002;
+              user_ = input.readBytes();
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              scriptId_ = input.readInt32();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.mogujie.jarvis.protocol.SearchJobProtos.internal_static_RestSearchScriptTypeRequest_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.mogujie.jarvis.protocol.SearchJobProtos.internal_static_RestSearchScriptTypeRequest_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchScriptTypeRequest.class, com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchScriptTypeRequest.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<RestSearchScriptTypeRequest> PARSER =
+        new com.google.protobuf.AbstractParser<RestSearchScriptTypeRequest>() {
+      public RestSearchScriptTypeRequest parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new RestSearchScriptTypeRequest(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<RestSearchScriptTypeRequest> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    // required .AppAuth app_auth = 1;
+    public static final int APP_AUTH_FIELD_NUMBER = 1;
+    private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_;
+    /**
+     * <code>required .AppAuth app_auth = 1;</code>
+     */
+    public boolean hasAppAuth() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required .AppAuth app_auth = 1;</code>
+     */
+    public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth getAppAuth() {
+      return appAuth_;
+    }
+    /**
+     * <code>required .AppAuth app_auth = 1;</code>
+     */
+    public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder() {
+      return appAuth_;
+    }
+
+    // required string user = 2;
+    public static final int USER_FIELD_NUMBER = 2;
+    private java.lang.Object user_;
+    /**
+     * <code>required string user = 2;</code>
+     */
+    public boolean hasUser() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required string user = 2;</code>
+     */
+    public java.lang.String getUser() {
+      java.lang.Object ref = user_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          user_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string user = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getUserBytes() {
+      java.lang.Object ref = user_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        user_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    // required int32 script_id = 3;
+    public static final int SCRIPT_ID_FIELD_NUMBER = 3;
+    private int scriptId_;
+    /**
+     * <code>required int32 script_id = 3;</code>
+     */
+    public boolean hasScriptId() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>required int32 script_id = 3;</code>
+     */
+    public int getScriptId() {
+      return scriptId_;
+    }
+
+    private void initFields() {
+      appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
+      user_ = "";
+      scriptId_ = 0;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+
+      if (!hasAppAuth()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasUser()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasScriptId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!getAppAuth().isInitialized()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeMessage(1, appAuth_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, getUserBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeInt32(3, scriptId_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, appAuth_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, getUserBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(3, scriptId_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchScriptTypeRequest parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchScriptTypeRequest parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchScriptTypeRequest parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchScriptTypeRequest parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchScriptTypeRequest parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchScriptTypeRequest parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchScriptTypeRequest parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchScriptTypeRequest parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchScriptTypeRequest parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchScriptTypeRequest parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchScriptTypeRequest prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code RestSearchScriptTypeRequest}
+     *
+     * <pre>
+     *search script type 
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchScriptTypeRequestOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.mogujie.jarvis.protocol.SearchJobProtos.internal_static_RestSearchScriptTypeRequest_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.mogujie.jarvis.protocol.SearchJobProtos.internal_static_RestSearchScriptTypeRequest_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchScriptTypeRequest.class, com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchScriptTypeRequest.Builder.class);
+      }
+
+      // Construct using com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchScriptTypeRequest.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getAppAuthFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        if (appAuthBuilder_ == null) {
+          appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
+        } else {
+          appAuthBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000001);
+        user_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        scriptId_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.mogujie.jarvis.protocol.SearchJobProtos.internal_static_RestSearchScriptTypeRequest_descriptor;
+      }
+
+      public com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchScriptTypeRequest getDefaultInstanceForType() {
+        return com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchScriptTypeRequest.getDefaultInstance();
+      }
+
+      public com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchScriptTypeRequest build() {
+        com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchScriptTypeRequest result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchScriptTypeRequest buildPartial() {
+        com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchScriptTypeRequest result = new com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchScriptTypeRequest(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        if (appAuthBuilder_ == null) {
+          result.appAuth_ = appAuth_;
+        } else {
+          result.appAuth_ = appAuthBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.user_ = user_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.scriptId_ = scriptId_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchScriptTypeRequest) {
+          return mergeFrom((com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchScriptTypeRequest)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchScriptTypeRequest other) {
+        if (other == com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchScriptTypeRequest.getDefaultInstance()) return this;
+        if (other.hasAppAuth()) {
+          mergeAppAuth(other.getAppAuth());
+        }
+        if (other.hasUser()) {
+          bitField0_ |= 0x00000002;
+          user_ = other.user_;
+          onChanged();
+        }
+        if (other.hasScriptId()) {
+          setScriptId(other.getScriptId());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasAppAuth()) {
+          
+          return false;
+        }
+        if (!hasUser()) {
+          
+          return false;
+        }
+        if (!hasScriptId()) {
+          
+          return false;
+        }
+        if (!getAppAuth().isInitialized()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchScriptTypeRequest parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchScriptTypeRequest) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      // required .AppAuth app_auth = 1;
+      private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> appAuthBuilder_;
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      public boolean hasAppAuth() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth getAppAuth() {
+        if (appAuthBuilder_ == null) {
+          return appAuth_;
+        } else {
+          return appAuthBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      public Builder setAppAuth(com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth value) {
+        if (appAuthBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          appAuth_ = value;
+          onChanged();
+        } else {
+          appAuthBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      public Builder setAppAuth(
+          com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder builderForValue) {
+        if (appAuthBuilder_ == null) {
+          appAuth_ = builderForValue.build();
+          onChanged();
+        } else {
+          appAuthBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      public Builder mergeAppAuth(com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth value) {
+        if (appAuthBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) == 0x00000001) &&
+              appAuth_ != com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance()) {
+            appAuth_ =
+              com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.newBuilder(appAuth_).mergeFrom(value).buildPartial();
+          } else {
+            appAuth_ = value;
+          }
+          onChanged();
+        } else {
+          appAuthBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      public Builder clearAppAuth() {
+        if (appAuthBuilder_ == null) {
+          appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
+          onChanged();
+        } else {
+          appAuthBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder getAppAuthBuilder() {
+        bitField0_ |= 0x00000001;
+        onChanged();
+        return getAppAuthFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder() {
+        if (appAuthBuilder_ != null) {
+          return appAuthBuilder_.getMessageOrBuilder();
+        } else {
+          return appAuth_;
+        }
+      }
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> 
+          getAppAuthFieldBuilder() {
+        if (appAuthBuilder_ == null) {
+          appAuthBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder>(
+                  appAuth_,
+                  getParentForChildren(),
+                  isClean());
+          appAuth_ = null;
+        }
+        return appAuthBuilder_;
+      }
+
+      // required string user = 2;
+      private java.lang.Object user_ = "";
+      /**
+       * <code>required string user = 2;</code>
+       */
+      public boolean hasUser() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required string user = 2;</code>
+       */
+      public java.lang.String getUser() {
+        java.lang.Object ref = user_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          user_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string user = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getUserBytes() {
+        java.lang.Object ref = user_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          user_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string user = 2;</code>
+       */
+      public Builder setUser(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        user_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string user = 2;</code>
+       */
+      public Builder clearUser() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        user_ = getDefaultInstance().getUser();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string user = 2;</code>
+       */
+      public Builder setUserBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        user_ = value;
+        onChanged();
+        return this;
+      }
+
+      // required int32 script_id = 3;
+      private int scriptId_ ;
+      /**
+       * <code>required int32 script_id = 3;</code>
+       */
+      public boolean hasScriptId() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>required int32 script_id = 3;</code>
+       */
+      public int getScriptId() {
+        return scriptId_;
+      }
+      /**
+       * <code>required int32 script_id = 3;</code>
+       */
+      public Builder setScriptId(int value) {
+        bitField0_ |= 0x00000004;
+        scriptId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int32 script_id = 3;</code>
+       */
+      public Builder clearScriptId() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        scriptId_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:RestSearchScriptTypeRequest)
+    }
+
+    static {
+      defaultInstance = new RestSearchScriptTypeRequest(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:RestSearchScriptTypeRequest)
+  }
+
+  public interface ServerSearchScriptTypeResponseOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+
+    // required bool success = 1;
+    /**
+     * <code>required bool success = 1;</code>
+     */
+    boolean hasSuccess();
+    /**
+     * <code>required bool success = 1;</code>
+     */
+    boolean getSuccess();
+
+    // required string script_type = 2;
+    /**
+     * <code>required string script_type = 2;</code>
+     */
+    boolean hasScriptType();
+    /**
+     * <code>required string script_type = 2;</code>
+     */
+    java.lang.String getScriptType();
+    /**
+     * <code>required string script_type = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getScriptTypeBytes();
+
+    // optional string message = 3 [default = ""];
+    /**
+     * <code>optional string message = 3 [default = ""];</code>
+     */
+    boolean hasMessage();
+    /**
+     * <code>optional string message = 3 [default = ""];</code>
+     */
+    java.lang.String getMessage();
+    /**
+     * <code>optional string message = 3 [default = ""];</code>
+     */
+    com.google.protobuf.ByteString
+        getMessageBytes();
+  }
+  /**
+   * Protobuf type {@code ServerSearchScriptTypeResponse}
+   */
+  public static final class ServerSearchScriptTypeResponse extends
+      com.google.protobuf.GeneratedMessage
+      implements ServerSearchScriptTypeResponseOrBuilder {
+    // Use ServerSearchScriptTypeResponse.newBuilder() to construct.
+    private ServerSearchScriptTypeResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private ServerSearchScriptTypeResponse(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final ServerSearchScriptTypeResponse defaultInstance;
+    public static ServerSearchScriptTypeResponse getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public ServerSearchScriptTypeResponse getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private ServerSearchScriptTypeResponse(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              success_ = input.readBool();
+              break;
+            }
+            case 18: {
+              bitField0_ |= 0x00000002;
+              scriptType_ = input.readBytes();
+              break;
+            }
+            case 26: {
+              bitField0_ |= 0x00000004;
+              message_ = input.readBytes();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.mogujie.jarvis.protocol.SearchJobProtos.internal_static_ServerSearchScriptTypeResponse_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.mogujie.jarvis.protocol.SearchJobProtos.internal_static_ServerSearchScriptTypeResponse_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchScriptTypeResponse.class, com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchScriptTypeResponse.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<ServerSearchScriptTypeResponse> PARSER =
+        new com.google.protobuf.AbstractParser<ServerSearchScriptTypeResponse>() {
+      public ServerSearchScriptTypeResponse parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new ServerSearchScriptTypeResponse(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ServerSearchScriptTypeResponse> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    // required bool success = 1;
+    public static final int SUCCESS_FIELD_NUMBER = 1;
+    private boolean success_;
+    /**
+     * <code>required bool success = 1;</code>
+     */
+    public boolean hasSuccess() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required bool success = 1;</code>
+     */
+    public boolean getSuccess() {
+      return success_;
+    }
+
+    // required string script_type = 2;
+    public static final int SCRIPT_TYPE_FIELD_NUMBER = 2;
+    private java.lang.Object scriptType_;
+    /**
+     * <code>required string script_type = 2;</code>
+     */
+    public boolean hasScriptType() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required string script_type = 2;</code>
+     */
+    public java.lang.String getScriptType() {
+      java.lang.Object ref = scriptType_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          scriptType_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string script_type = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getScriptTypeBytes() {
+      java.lang.Object ref = scriptType_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        scriptType_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    // optional string message = 3 [default = ""];
+    public static final int MESSAGE_FIELD_NUMBER = 3;
+    private java.lang.Object message_;
+    /**
+     * <code>optional string message = 3 [default = ""];</code>
+     */
+    public boolean hasMessage() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional string message = 3 [default = ""];</code>
+     */
+    public java.lang.String getMessage() {
+      java.lang.Object ref = message_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          message_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string message = 3 [default = ""];</code>
+     */
+    public com.google.protobuf.ByteString
+        getMessageBytes() {
+      java.lang.Object ref = message_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        message_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private void initFields() {
+      success_ = false;
+      scriptType_ = "";
+      message_ = "";
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+
+      if (!hasSuccess()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasScriptType()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeBool(1, success_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, getScriptTypeBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBytes(3, getMessageBytes());
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(1, success_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, getScriptTypeBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(3, getMessageBytes());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchScriptTypeResponse parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchScriptTypeResponse parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchScriptTypeResponse parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchScriptTypeResponse parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchScriptTypeResponse parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchScriptTypeResponse parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchScriptTypeResponse parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchScriptTypeResponse parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchScriptTypeResponse parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchScriptTypeResponse parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchScriptTypeResponse prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code ServerSearchScriptTypeResponse}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchScriptTypeResponseOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.mogujie.jarvis.protocol.SearchJobProtos.internal_static_ServerSearchScriptTypeResponse_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.mogujie.jarvis.protocol.SearchJobProtos.internal_static_ServerSearchScriptTypeResponse_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchScriptTypeResponse.class, com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchScriptTypeResponse.Builder.class);
+      }
+
+      // Construct using com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchScriptTypeResponse.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        success_ = false;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        scriptType_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        message_ = "";
+        bitField0_ = (bitField0_ & ~0x00000004);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.mogujie.jarvis.protocol.SearchJobProtos.internal_static_ServerSearchScriptTypeResponse_descriptor;
+      }
+
+      public com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchScriptTypeResponse getDefaultInstanceForType() {
+        return com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchScriptTypeResponse.getDefaultInstance();
+      }
+
+      public com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchScriptTypeResponse build() {
+        com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchScriptTypeResponse result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchScriptTypeResponse buildPartial() {
+        com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchScriptTypeResponse result = new com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchScriptTypeResponse(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.success_ = success_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.scriptType_ = scriptType_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.message_ = message_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchScriptTypeResponse) {
+          return mergeFrom((com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchScriptTypeResponse)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchScriptTypeResponse other) {
+        if (other == com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchScriptTypeResponse.getDefaultInstance()) return this;
+        if (other.hasSuccess()) {
+          setSuccess(other.getSuccess());
+        }
+        if (other.hasScriptType()) {
+          bitField0_ |= 0x00000002;
+          scriptType_ = other.scriptType_;
+          onChanged();
+        }
+        if (other.hasMessage()) {
+          bitField0_ |= 0x00000004;
+          message_ = other.message_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasSuccess()) {
+          
+          return false;
+        }
+        if (!hasScriptType()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchScriptTypeResponse parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchScriptTypeResponse) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      // required bool success = 1;
+      private boolean success_ ;
+      /**
+       * <code>required bool success = 1;</code>
+       */
+      public boolean hasSuccess() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required bool success = 1;</code>
+       */
+      public boolean getSuccess() {
+        return success_;
+      }
+      /**
+       * <code>required bool success = 1;</code>
+       */
+      public Builder setSuccess(boolean value) {
+        bitField0_ |= 0x00000001;
+        success_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required bool success = 1;</code>
+       */
+      public Builder clearSuccess() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        success_ = false;
+        onChanged();
+        return this;
+      }
+
+      // required string script_type = 2;
+      private java.lang.Object scriptType_ = "";
+      /**
+       * <code>required string script_type = 2;</code>
+       */
+      public boolean hasScriptType() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required string script_type = 2;</code>
+       */
+      public java.lang.String getScriptType() {
+        java.lang.Object ref = scriptType_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          scriptType_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string script_type = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getScriptTypeBytes() {
+        java.lang.Object ref = scriptType_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          scriptType_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string script_type = 2;</code>
+       */
+      public Builder setScriptType(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        scriptType_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string script_type = 2;</code>
+       */
+      public Builder clearScriptType() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        scriptType_ = getDefaultInstance().getScriptType();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string script_type = 2;</code>
+       */
+      public Builder setScriptTypeBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        scriptType_ = value;
+        onChanged();
+        return this;
+      }
+
+      // optional string message = 3 [default = ""];
+      private java.lang.Object message_ = "";
+      /**
+       * <code>optional string message = 3 [default = ""];</code>
+       */
+      public boolean hasMessage() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional string message = 3 [default = ""];</code>
+       */
+      public java.lang.String getMessage() {
+        java.lang.Object ref = message_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          message_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string message = 3 [default = ""];</code>
+       */
+      public com.google.protobuf.ByteString
+          getMessageBytes() {
+        java.lang.Object ref = message_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          message_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string message = 3 [default = ""];</code>
+       */
+      public Builder setMessage(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        message_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string message = 3 [default = ""];</code>
+       */
+      public Builder clearMessage() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        message_ = getDefaultInstance().getMessage();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string message = 3 [default = ""];</code>
+       */
+      public Builder setMessageBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        message_ = value;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:ServerSearchScriptTypeResponse)
+    }
+
+    static {
+      defaultInstance = new ServerSearchScriptTypeResponse(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:ServerSearchScriptTypeResponse)
+  }
+
+  public interface RestSearchBizIdByNameRequestOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+
+    // required .AppAuth app_auth = 1;
+    /**
+     * <code>required .AppAuth app_auth = 1;</code>
+     */
+    boolean hasAppAuth();
+    /**
+     * <code>required .AppAuth app_auth = 1;</code>
+     */
+    com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth getAppAuth();
+    /**
+     * <code>required .AppAuth app_auth = 1;</code>
+     */
+    com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder();
+
+    // required string user = 2;
+    /**
+     * <code>required string user = 2;</code>
+     */
+    boolean hasUser();
+    /**
+     * <code>required string user = 2;</code>
+     */
+    java.lang.String getUser();
+    /**
+     * <code>required string user = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getUserBytes();
+
+    // required string biz_name = 3;
+    /**
+     * <code>required string biz_name = 3;</code>
+     */
+    boolean hasBizName();
+    /**
+     * <code>required string biz_name = 3;</code>
+     */
+    java.lang.String getBizName();
+    /**
+     * <code>required string biz_name = 3;</code>
+     */
+    com.google.protobuf.ByteString
+        getBizNameBytes();
+  }
+  /**
+   * Protobuf type {@code RestSearchBizIdByNameRequest}
+   *
+   * <pre>
+   *search biz id
+   * </pre>
+   */
+  public static final class RestSearchBizIdByNameRequest extends
+      com.google.protobuf.GeneratedMessage
+      implements RestSearchBizIdByNameRequestOrBuilder {
+    // Use RestSearchBizIdByNameRequest.newBuilder() to construct.
+    private RestSearchBizIdByNameRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private RestSearchBizIdByNameRequest(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final RestSearchBizIdByNameRequest defaultInstance;
+    public static RestSearchBizIdByNameRequest getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public RestSearchBizIdByNameRequest getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private RestSearchBizIdByNameRequest(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000001) == 0x00000001)) {
+                subBuilder = appAuth_.toBuilder();
+              }
+              appAuth_ = input.readMessage(com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(appAuth_);
+                appAuth_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000001;
+              break;
+            }
+            case 18: {
+              bitField0_ |= 0x00000002;
+              user_ = input.readBytes();
+              break;
+            }
+            case 26: {
+              bitField0_ |= 0x00000004;
+              bizName_ = input.readBytes();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.mogujie.jarvis.protocol.SearchJobProtos.internal_static_RestSearchBizIdByNameRequest_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.mogujie.jarvis.protocol.SearchJobProtos.internal_static_RestSearchBizIdByNameRequest_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchBizIdByNameRequest.class, com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchBizIdByNameRequest.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<RestSearchBizIdByNameRequest> PARSER =
+        new com.google.protobuf.AbstractParser<RestSearchBizIdByNameRequest>() {
+      public RestSearchBizIdByNameRequest parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new RestSearchBizIdByNameRequest(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<RestSearchBizIdByNameRequest> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    // required .AppAuth app_auth = 1;
+    public static final int APP_AUTH_FIELD_NUMBER = 1;
+    private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_;
+    /**
+     * <code>required .AppAuth app_auth = 1;</code>
+     */
+    public boolean hasAppAuth() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required .AppAuth app_auth = 1;</code>
+     */
+    public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth getAppAuth() {
+      return appAuth_;
+    }
+    /**
+     * <code>required .AppAuth app_auth = 1;</code>
+     */
+    public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder() {
+      return appAuth_;
+    }
+
+    // required string user = 2;
+    public static final int USER_FIELD_NUMBER = 2;
+    private java.lang.Object user_;
+    /**
+     * <code>required string user = 2;</code>
+     */
+    public boolean hasUser() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required string user = 2;</code>
+     */
+    public java.lang.String getUser() {
+      java.lang.Object ref = user_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          user_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string user = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getUserBytes() {
+      java.lang.Object ref = user_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        user_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    // required string biz_name = 3;
+    public static final int BIZ_NAME_FIELD_NUMBER = 3;
+    private java.lang.Object bizName_;
+    /**
+     * <code>required string biz_name = 3;</code>
+     */
+    public boolean hasBizName() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>required string biz_name = 3;</code>
+     */
+    public java.lang.String getBizName() {
+      java.lang.Object ref = bizName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          bizName_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string biz_name = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+        getBizNameBytes() {
+      java.lang.Object ref = bizName_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        bizName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private void initFields() {
+      appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
+      user_ = "";
+      bizName_ = "";
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+
+      if (!hasAppAuth()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasUser()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasBizName()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!getAppAuth().isInitialized()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeMessage(1, appAuth_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, getUserBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBytes(3, getBizNameBytes());
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, appAuth_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, getUserBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(3, getBizNameBytes());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchBizIdByNameRequest parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchBizIdByNameRequest parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchBizIdByNameRequest parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchBizIdByNameRequest parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchBizIdByNameRequest parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchBizIdByNameRequest parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchBizIdByNameRequest parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchBizIdByNameRequest parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchBizIdByNameRequest parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchBizIdByNameRequest parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchBizIdByNameRequest prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code RestSearchBizIdByNameRequest}
+     *
+     * <pre>
+     *search biz id
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchBizIdByNameRequestOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.mogujie.jarvis.protocol.SearchJobProtos.internal_static_RestSearchBizIdByNameRequest_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.mogujie.jarvis.protocol.SearchJobProtos.internal_static_RestSearchBizIdByNameRequest_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchBizIdByNameRequest.class, com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchBizIdByNameRequest.Builder.class);
+      }
+
+      // Construct using com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchBizIdByNameRequest.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getAppAuthFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        if (appAuthBuilder_ == null) {
+          appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
+        } else {
+          appAuthBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000001);
+        user_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        bizName_ = "";
+        bitField0_ = (bitField0_ & ~0x00000004);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.mogujie.jarvis.protocol.SearchJobProtos.internal_static_RestSearchBizIdByNameRequest_descriptor;
+      }
+
+      public com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchBizIdByNameRequest getDefaultInstanceForType() {
+        return com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchBizIdByNameRequest.getDefaultInstance();
+      }
+
+      public com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchBizIdByNameRequest build() {
+        com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchBizIdByNameRequest result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchBizIdByNameRequest buildPartial() {
+        com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchBizIdByNameRequest result = new com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchBizIdByNameRequest(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        if (appAuthBuilder_ == null) {
+          result.appAuth_ = appAuth_;
+        } else {
+          result.appAuth_ = appAuthBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.user_ = user_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.bizName_ = bizName_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchBizIdByNameRequest) {
+          return mergeFrom((com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchBizIdByNameRequest)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchBizIdByNameRequest other) {
+        if (other == com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchBizIdByNameRequest.getDefaultInstance()) return this;
+        if (other.hasAppAuth()) {
+          mergeAppAuth(other.getAppAuth());
+        }
+        if (other.hasUser()) {
+          bitField0_ |= 0x00000002;
+          user_ = other.user_;
+          onChanged();
+        }
+        if (other.hasBizName()) {
+          bitField0_ |= 0x00000004;
+          bizName_ = other.bizName_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasAppAuth()) {
+          
+          return false;
+        }
+        if (!hasUser()) {
+          
+          return false;
+        }
+        if (!hasBizName()) {
+          
+          return false;
+        }
+        if (!getAppAuth().isInitialized()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchBizIdByNameRequest parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchBizIdByNameRequest) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      // required .AppAuth app_auth = 1;
+      private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> appAuthBuilder_;
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      public boolean hasAppAuth() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth getAppAuth() {
+        if (appAuthBuilder_ == null) {
+          return appAuth_;
+        } else {
+          return appAuthBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      public Builder setAppAuth(com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth value) {
+        if (appAuthBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          appAuth_ = value;
+          onChanged();
+        } else {
+          appAuthBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      public Builder setAppAuth(
+          com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder builderForValue) {
+        if (appAuthBuilder_ == null) {
+          appAuth_ = builderForValue.build();
+          onChanged();
+        } else {
+          appAuthBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      public Builder mergeAppAuth(com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth value) {
+        if (appAuthBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) == 0x00000001) &&
+              appAuth_ != com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance()) {
+            appAuth_ =
+              com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.newBuilder(appAuth_).mergeFrom(value).buildPartial();
+          } else {
+            appAuth_ = value;
+          }
+          onChanged();
+        } else {
+          appAuthBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      public Builder clearAppAuth() {
+        if (appAuthBuilder_ == null) {
+          appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
+          onChanged();
+        } else {
+          appAuthBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder getAppAuthBuilder() {
+        bitField0_ |= 0x00000001;
+        onChanged();
+        return getAppAuthFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder() {
+        if (appAuthBuilder_ != null) {
+          return appAuthBuilder_.getMessageOrBuilder();
+        } else {
+          return appAuth_;
+        }
+      }
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> 
+          getAppAuthFieldBuilder() {
+        if (appAuthBuilder_ == null) {
+          appAuthBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder>(
+                  appAuth_,
+                  getParentForChildren(),
+                  isClean());
+          appAuth_ = null;
+        }
+        return appAuthBuilder_;
+      }
+
+      // required string user = 2;
+      private java.lang.Object user_ = "";
+      /**
+       * <code>required string user = 2;</code>
+       */
+      public boolean hasUser() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required string user = 2;</code>
+       */
+      public java.lang.String getUser() {
+        java.lang.Object ref = user_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          user_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string user = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getUserBytes() {
+        java.lang.Object ref = user_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          user_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string user = 2;</code>
+       */
+      public Builder setUser(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        user_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string user = 2;</code>
+       */
+      public Builder clearUser() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        user_ = getDefaultInstance().getUser();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string user = 2;</code>
+       */
+      public Builder setUserBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        user_ = value;
+        onChanged();
+        return this;
+      }
+
+      // required string biz_name = 3;
+      private java.lang.Object bizName_ = "";
+      /**
+       * <code>required string biz_name = 3;</code>
+       */
+      public boolean hasBizName() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>required string biz_name = 3;</code>
+       */
+      public java.lang.String getBizName() {
+        java.lang.Object ref = bizName_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          bizName_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string biz_name = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+          getBizNameBytes() {
+        java.lang.Object ref = bizName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          bizName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string biz_name = 3;</code>
+       */
+      public Builder setBizName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        bizName_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string biz_name = 3;</code>
+       */
+      public Builder clearBizName() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        bizName_ = getDefaultInstance().getBizName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string biz_name = 3;</code>
+       */
+      public Builder setBizNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        bizName_ = value;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:RestSearchBizIdByNameRequest)
+    }
+
+    static {
+      defaultInstance = new RestSearchBizIdByNameRequest(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:RestSearchBizIdByNameRequest)
+  }
+
+  public interface ServerSearchBizIdByNamResponseOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+
+    // required bool success = 1;
+    /**
+     * <code>required bool success = 1;</code>
+     */
+    boolean hasSuccess();
+    /**
+     * <code>required bool success = 1;</code>
+     */
+    boolean getSuccess();
+
+    // required int32 biz_id = 2;
+    /**
+     * <code>required int32 biz_id = 2;</code>
+     */
+    boolean hasBizId();
+    /**
+     * <code>required int32 biz_id = 2;</code>
+     */
+    int getBizId();
+
+    // optional string message = 3 [default = ""];
+    /**
+     * <code>optional string message = 3 [default = ""];</code>
+     */
+    boolean hasMessage();
+    /**
+     * <code>optional string message = 3 [default = ""];</code>
+     */
+    java.lang.String getMessage();
+    /**
+     * <code>optional string message = 3 [default = ""];</code>
+     */
+    com.google.protobuf.ByteString
+        getMessageBytes();
+  }
+  /**
+   * Protobuf type {@code ServerSearchBizIdByNamResponse}
+   */
+  public static final class ServerSearchBizIdByNamResponse extends
+      com.google.protobuf.GeneratedMessage
+      implements ServerSearchBizIdByNamResponseOrBuilder {
+    // Use ServerSearchBizIdByNamResponse.newBuilder() to construct.
+    private ServerSearchBizIdByNamResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private ServerSearchBizIdByNamResponse(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final ServerSearchBizIdByNamResponse defaultInstance;
+    public static ServerSearchBizIdByNamResponse getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public ServerSearchBizIdByNamResponse getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private ServerSearchBizIdByNamResponse(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              success_ = input.readBool();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              bizId_ = input.readInt32();
+              break;
+            }
+            case 26: {
+              bitField0_ |= 0x00000004;
+              message_ = input.readBytes();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.mogujie.jarvis.protocol.SearchJobProtos.internal_static_ServerSearchBizIdByNamResponse_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.mogujie.jarvis.protocol.SearchJobProtos.internal_static_ServerSearchBizIdByNamResponse_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchBizIdByNamResponse.class, com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchBizIdByNamResponse.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<ServerSearchBizIdByNamResponse> PARSER =
+        new com.google.protobuf.AbstractParser<ServerSearchBizIdByNamResponse>() {
+      public ServerSearchBizIdByNamResponse parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new ServerSearchBizIdByNamResponse(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ServerSearchBizIdByNamResponse> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    // required bool success = 1;
+    public static final int SUCCESS_FIELD_NUMBER = 1;
+    private boolean success_;
+    /**
+     * <code>required bool success = 1;</code>
+     */
+    public boolean hasSuccess() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required bool success = 1;</code>
+     */
+    public boolean getSuccess() {
+      return success_;
+    }
+
+    // required int32 biz_id = 2;
+    public static final int BIZ_ID_FIELD_NUMBER = 2;
+    private int bizId_;
+    /**
+     * <code>required int32 biz_id = 2;</code>
+     */
+    public boolean hasBizId() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required int32 biz_id = 2;</code>
+     */
+    public int getBizId() {
+      return bizId_;
+    }
+
+    // optional string message = 3 [default = ""];
+    public static final int MESSAGE_FIELD_NUMBER = 3;
+    private java.lang.Object message_;
+    /**
+     * <code>optional string message = 3 [default = ""];</code>
+     */
+    public boolean hasMessage() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional string message = 3 [default = ""];</code>
+     */
+    public java.lang.String getMessage() {
+      java.lang.Object ref = message_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          message_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string message = 3 [default = ""];</code>
+     */
+    public com.google.protobuf.ByteString
+        getMessageBytes() {
+      java.lang.Object ref = message_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        message_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private void initFields() {
+      success_ = false;
+      bizId_ = 0;
+      message_ = "";
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+
+      if (!hasSuccess()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasBizId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeBool(1, success_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeInt32(2, bizId_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBytes(3, getMessageBytes());
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(1, success_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(2, bizId_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(3, getMessageBytes());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchBizIdByNamResponse parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchBizIdByNamResponse parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchBizIdByNamResponse parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchBizIdByNamResponse parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchBizIdByNamResponse parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchBizIdByNamResponse parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchBizIdByNamResponse parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchBizIdByNamResponse parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchBizIdByNamResponse parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchBizIdByNamResponse parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchBizIdByNamResponse prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code ServerSearchBizIdByNamResponse}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchBizIdByNamResponseOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.mogujie.jarvis.protocol.SearchJobProtos.internal_static_ServerSearchBizIdByNamResponse_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.mogujie.jarvis.protocol.SearchJobProtos.internal_static_ServerSearchBizIdByNamResponse_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchBizIdByNamResponse.class, com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchBizIdByNamResponse.Builder.class);
+      }
+
+      // Construct using com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchBizIdByNamResponse.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        success_ = false;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        bizId_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        message_ = "";
+        bitField0_ = (bitField0_ & ~0x00000004);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.mogujie.jarvis.protocol.SearchJobProtos.internal_static_ServerSearchBizIdByNamResponse_descriptor;
+      }
+
+      public com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchBizIdByNamResponse getDefaultInstanceForType() {
+        return com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchBizIdByNamResponse.getDefaultInstance();
+      }
+
+      public com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchBizIdByNamResponse build() {
+        com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchBizIdByNamResponse result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchBizIdByNamResponse buildPartial() {
+        com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchBizIdByNamResponse result = new com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchBizIdByNamResponse(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.success_ = success_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.bizId_ = bizId_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.message_ = message_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchBizIdByNamResponse) {
+          return mergeFrom((com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchBizIdByNamResponse)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchBizIdByNamResponse other) {
+        if (other == com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchBizIdByNamResponse.getDefaultInstance()) return this;
+        if (other.hasSuccess()) {
+          setSuccess(other.getSuccess());
+        }
+        if (other.hasBizId()) {
+          setBizId(other.getBizId());
+        }
+        if (other.hasMessage()) {
+          bitField0_ |= 0x00000004;
+          message_ = other.message_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasSuccess()) {
+          
+          return false;
+        }
+        if (!hasBizId()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchBizIdByNamResponse parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchBizIdByNamResponse) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      // required bool success = 1;
+      private boolean success_ ;
+      /**
+       * <code>required bool success = 1;</code>
+       */
+      public boolean hasSuccess() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required bool success = 1;</code>
+       */
+      public boolean getSuccess() {
+        return success_;
+      }
+      /**
+       * <code>required bool success = 1;</code>
+       */
+      public Builder setSuccess(boolean value) {
+        bitField0_ |= 0x00000001;
+        success_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required bool success = 1;</code>
+       */
+      public Builder clearSuccess() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        success_ = false;
+        onChanged();
+        return this;
+      }
+
+      // required int32 biz_id = 2;
+      private int bizId_ ;
+      /**
+       * <code>required int32 biz_id = 2;</code>
+       */
+      public boolean hasBizId() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required int32 biz_id = 2;</code>
+       */
+      public int getBizId() {
+        return bizId_;
+      }
+      /**
+       * <code>required int32 biz_id = 2;</code>
+       */
+      public Builder setBizId(int value) {
+        bitField0_ |= 0x00000002;
+        bizId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int32 biz_id = 2;</code>
+       */
+      public Builder clearBizId() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        bizId_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // optional string message = 3 [default = ""];
+      private java.lang.Object message_ = "";
+      /**
+       * <code>optional string message = 3 [default = ""];</code>
+       */
+      public boolean hasMessage() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional string message = 3 [default = ""];</code>
+       */
+      public java.lang.String getMessage() {
+        java.lang.Object ref = message_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          message_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string message = 3 [default = ""];</code>
+       */
+      public com.google.protobuf.ByteString
+          getMessageBytes() {
+        java.lang.Object ref = message_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          message_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string message = 3 [default = ""];</code>
+       */
+      public Builder setMessage(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        message_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string message = 3 [default = ""];</code>
+       */
+      public Builder clearMessage() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        message_ = getDefaultInstance().getMessage();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string message = 3 [default = ""];</code>
+       */
+      public Builder setMessageBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        message_ = value;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:ServerSearchBizIdByNamResponse)
+    }
+
+    static {
+      defaultInstance = new ServerSearchBizIdByNamResponse(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:ServerSearchBizIdByNamResponse)
+  }
+
   private static com.google.protobuf.Descriptors.Descriptor
     internal_static_RestSearchJobByScriptIdRequest_descriptor;
   private static
@@ -6558,6 +9582,26 @@ public final class SearchJobProtos {
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_ServerSearchAllJobsResponse_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_RestSearchScriptTypeRequest_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_RestSearchScriptTypeRequest_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_ServerSearchScriptTypeResponse_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_ServerSearchScriptTypeResponse_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_RestSearchBizIdByNameRequest_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_RestSearchBizIdByNameRequest_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_ServerSearchBizIdByNamResponse_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_ServerSearchBizIdByNamResponse_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -6587,8 +9631,17 @@ public final class SearchJobProtos {
       "_auth\030\001 \002(\0132\010.AppAuth\022\014\n\004user\030\002 \002(\t\"b\n\033S" +
       "erverSearchAllJobsResponse\022\017\n\007success\030\001 " +
       "\002(\010\022\037\n\010job_info\030\002 \003(\0132\r.JobInfoEntry\022\021\n\007",
-      "message\030\003 \001(\t:\000B.\n\033com.mogujie.jarvis.pr" +
-      "otocolB\017SearchJobProtos"
+      "message\030\003 \001(\t:\000\"Z\n\033RestSearchScriptTypeR" +
+      "equest\022\032\n\010app_auth\030\001 \002(\0132\010.AppAuth\022\014\n\004us" +
+      "er\030\002 \002(\t\022\021\n\tscript_id\030\003 \002(\005\"Y\n\036ServerSea" +
+      "rchScriptTypeResponse\022\017\n\007success\030\001 \002(\010\022\023" +
+      "\n\013script_type\030\002 \002(\t\022\021\n\007message\030\003 \001(\t:\000\"Z" +
+      "\n\034RestSearchBizIdByNameRequest\022\032\n\010app_au" +
+      "th\030\001 \002(\0132\010.AppAuth\022\014\n\004user\030\002 \002(\t\022\020\n\010biz_" +
+      "name\030\003 \002(\t\"T\n\036ServerSearchBizIdByNamResp" +
+      "onse\022\017\n\007success\030\001 \002(\010\022\016\n\006biz_id\030\002 \002(\005\022\021\n" +
+      "\007message\030\003 \001(\t:\000B.\n\033com.mogujie.jarvis.p",
+      "rotocolB\017SearchJobProtos"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -6643,6 +9696,30 @@ public final class SearchJobProtos {
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_ServerSearchAllJobsResponse_descriptor,
               new java.lang.String[] { "Success", "JobInfo", "Message", });
+          internal_static_RestSearchScriptTypeRequest_descriptor =
+            getDescriptor().getMessageTypes().get(8);
+          internal_static_RestSearchScriptTypeRequest_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_RestSearchScriptTypeRequest_descriptor,
+              new java.lang.String[] { "AppAuth", "User", "ScriptId", });
+          internal_static_ServerSearchScriptTypeResponse_descriptor =
+            getDescriptor().getMessageTypes().get(9);
+          internal_static_ServerSearchScriptTypeResponse_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_ServerSearchScriptTypeResponse_descriptor,
+              new java.lang.String[] { "Success", "ScriptType", "Message", });
+          internal_static_RestSearchBizIdByNameRequest_descriptor =
+            getDescriptor().getMessageTypes().get(10);
+          internal_static_RestSearchBizIdByNameRequest_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_RestSearchBizIdByNameRequest_descriptor,
+              new java.lang.String[] { "AppAuth", "User", "BizName", });
+          internal_static_ServerSearchBizIdByNamResponse_descriptor =
+            getDescriptor().getMessageTypes().get(11);
+          internal_static_ServerSearchBizIdByNamResponse_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_ServerSearchBizIdByNamResponse_descriptor,
+              new java.lang.String[] { "Success", "BizId", "Message", });
           return null;
         }
       };
