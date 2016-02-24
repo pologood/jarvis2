@@ -265,7 +265,7 @@ public class JobController extends AbstractController {
     /**
      * jobVo转换为request——增加
      */
-    private RestSubmitJobRequest vo2RequestByAdd(JobVo vo, AppAuth appAuth, String user) {
+    public static RestSubmitJobRequest vo2RequestByAdd(JobVo vo, AppAuth appAuth, String user) {
         // 构造请求
         RestSubmitJobRequest.Builder builder = RestSubmitJobRequest.newBuilder().setAppAuth(appAuth).setUser(user)
                 .setJobName(vo.getJobName())

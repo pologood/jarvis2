@@ -8,24 +8,20 @@
 
 package com.mogujie.jarvis.rest.controller;
 
-import java.util.List;
-
-import javax.ws.rs.FormParam;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-
-import org.joda.time.DateTime;
-
 import com.mogujie.jarvis.core.domain.AkkaType;
+import com.mogujie.jarvis.core.domain.AlarmType;
+import com.mogujie.jarvis.core.domain.CommonStrategy;
+import com.mogujie.jarvis.core.domain.JobContentType;
+import com.mogujie.jarvis.core.domain.JobStatus;
+import com.mogujie.jarvis.core.domain.OperationMode;
+import com.mogujie.jarvis.core.expression.ScheduleExpressionType;
 import com.mogujie.jarvis.core.util.AppTokenUtils;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.core.util.JsonHelper;
+import com.mogujie.jarvis.protocol.AlarmProtos;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
 import com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry;
+import com.mogujie.jarvis.protocol.JobProtos;
 import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchAllJobsRequest;
 import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchJobByScriptIdRequest;
 import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchPreJobInfoRequest;
@@ -37,6 +33,20 @@ import com.mogujie.jarvis.rest.jarvis.TaskInfo;
 import com.mogujie.jarvis.rest.jarvis.TaskInfoResult;
 import com.mogujie.jarvis.rest.jarvis.TasksResult;
 import com.mogujie.jarvis.rest.jarvis.User;
+import com.mogujie.jarvis.rest.utils.ValidUtils;
+import com.mogujie.jarvis.rest.vo.JobDependencyVo;
+import com.mogujie.jarvis.rest.vo.JobScheduleExpVo;
+import com.mogujie.jarvis.rest.vo.JobVo;
+import java.util.ArrayList;
+import java.util.List;
+import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import org.joda.time.DateTime;
 
 /**
  * 兼容旧jarvis rest接口
@@ -196,15 +206,87 @@ public class JarvisController extends AbstractController {
         return null;
     }
 
-    @POST
-    @Path("addtaskwithdependency")
-    public Result addTask(@FormParam("scriptId") Integer scriptId, @FormParam("taskTitle") String taskTitle,
-        @FormParam("beforeTaskId") String beforeTaskId,
-        @FormParam("cronExp") String cronExp, @FormParam("priority") Integer priority,
-        @FormParam("creator") String creator, @FormParam("receiver") String receiver, @FormParam("scode") String scode,
-        @FormParam("token") String token) {
-        return null;
+  @POST
+  @Path("addtaskwithdependency")
+  @Produces(MediaType.APPLICATION_JSON)
+  public TasksResult addTask(@FormParam("scriptId") Integer scriptId, @FormParam("taskTitle") String taskTitle,
+      @FormParam("beforeTaskId") String beforeTaskId, @FormParam("cronExp") String cronExp,
+      @FormParam("priority") Integer priority, @FormParam("creator") String creator,
+      @FormParam("receiver") String receiver, @FormParam("scode") String scode, @FormParam("token") String token) {
+
+    LOGGER.debug("add job dependency relation");
+
+    try {
+      String appToken = AppTokenUtils.generateToken(DateTime.now().getMillis(), APP_XMEN_KEY);
+      AppAuth appAuth = AppAuth.newBuilder().setName(APP_XMEN_NAME).setToken(appToken).build();
+
+      JobVo job = new JobVo();
+      job.setAppName(APP_XMEN_NAME);
+      job.setJobType("shell");
+      job.setContentType(JobContentType.SCRIPT.getValue());
+      job.setStatus(JobStatus.ENABLE.getValue());
+      job.setJobName(taskTitle);
+      job.setContent(String.valueOf(scriptId));
+      job.setWorkerGroupId(1);
+
+      // 计划表达式
+      List<JobScheduleExpVo.ScheduleExpressionEntry> list = new ArrayList<>();
+      JobScheduleExpVo.ScheduleExpressionEntry expressionEntry;
+
+      expressionEntry = new JobScheduleExpVo.ScheduleExpressionEntry();
+      expressionEntry.setOperatorMode(OperationMode.ADD.getValue());
+      expressionEntry.setExpressionType(ScheduleExpressionType.CRON.getValue());
+      expressionEntry.setExpression(cronExp);
+      list.add(expressionEntry);
+
+      job.setScheduleExpressionList(list);
+
+      // 依赖任务
+      List<JobDependencyVo.DependencyEntry> dependList = new ArrayList<>();
+      JobDependencyVo.DependencyEntry dependencyEntry;
+
+      dependencyEntry = new JobDependencyVo.DependencyEntry();
+      dependencyEntry.setOperatorMode(OperationMode.ADD.getValue());
+      dependencyEntry.setPreJobId(Long.valueOf(beforeTaskId));
+      dependencyEntry.setCommonStrategy(CommonStrategy.ALL.getValue());
+      dependList.add(dependencyEntry);
+
+      job.setDependencyList(dependList);
+
+      ValidUtils.checkJob(ValidUtils.CheckMode.ADD, job);
+      JobProtos.RestSubmitJobRequest request = JobController.vo2RequestByAdd(job, appAuth, creator);
+
+      // 发送请求到server
+      JobProtos.ServerSubmitJobResponse response =
+          (JobProtos.ServerSubmitJobResponse) callActor(AkkaType.SERVER, request);
+      TasksResult result = new TasksResult();
+      result.setMessage(response.getMessage());
+      if (response.getSuccess()) {
+        // add job alarm
+        AlarmProtos.RestCreateAlarmRequest alarmRequest = AlarmProtos.RestCreateAlarmRequest.newBuilder()
+            .setAppAuth(appAuth)
+            .setUser(creator)
+            .setJobId(response.getJobId())
+            .setAlarmType(String.valueOf(AlarmType.SMS.getValue()))
+            .setReciever(receiver)
+            .setStatus(JobStatus.ENABLE.getValue())
+            .build();
+        AlarmProtos.ServerCreateAlarmResponse
+            alarmResponse = (AlarmProtos.ServerCreateAlarmResponse) callActor(AkkaType.SERVER, alarmRequest);
+        LOGGER.info(alarmResponse.getMessage());
+        // TODO add job rollback if alarm add failure
+        result.setSuccess(true);
+      } else {
+        result.setSuccess(false);
+      }
+      return result;
+    } catch (Exception e) {
+      TasksResult result = new TasksResult();
+      result.setSuccess(false);
+      result.setMessage(e.getMessage());
+      return result;
     }
+  }
 
     @Path("updateTaskRelation")
     public Result updateTaskRelation(@FormParam("oldPreScriptList") List<String> oldPreScriptList,

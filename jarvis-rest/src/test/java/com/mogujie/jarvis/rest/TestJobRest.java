@@ -42,7 +42,6 @@ public class TestJobRest {
     }
 
     private String baseUrl = "http://127.0.0.1:8080";
-    //    private String baseUrl = "http://10.11.129.54:8080";
 
     public void testJobSubmit() throws UnirestException {
         //Long jobId = jobSubmit();
@@ -244,6 +243,7 @@ public class TestJobRest {
         job.setJobType("shell");
         job.setContentType(2);
         job.setStatus(1);
+        job.setJobName("xmen_job");
         //script id
         job.setContent("478");
         job.setWorkerGroupId(1);
@@ -273,7 +273,7 @@ public class TestJobRest {
         job.setDependencyList(dependList);
         String paramsJson = JsonHelper.toJson(job, JobVo.class);
 
-        HttpResponse<String> jsonResponse = Unirest.post(baseUrl + "/api/job/dependency/set").field("appName", "xmen").field("appToken", "54fba65aae584ac6b6806045ea7dab5e")
+        HttpResponse<String> jsonResponse = Unirest.post(baseUrl + "/api/job/submit").field("appName", "xmen").field("appToken", "54fba65aae584ac6b6806045ea7dab5e")
             .field("user", "qingyuan").field("parameters", paramsJson).asString();
 
         Type restType = new TypeToken<RestResult4TestEntity<JobResultVo>>() {
