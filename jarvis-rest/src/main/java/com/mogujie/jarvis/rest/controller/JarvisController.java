@@ -130,4 +130,15 @@ public class JarvisController extends AbstractController {
         TaskInfo taskInfo = JsonHelper.fromJson(task, TaskInfo.class);
         return null;
     }
+
+    @POST
+    @Path("addtaskwithdependency")
+    public Result addTask(@FormParam("scriptId") Integer scriptId, @FormParam("taskTitle") String taskTitle,
+        @FormParam("beforeTaskId") String beforeTaskId,
+        @FormParam("cronExp") String cronExp, @FormParam("priority") Integer priority,
+        @FormParam("creator") String creator, @FormParam("receiver") String receiver, @FormParam("scode") String scode,
+        @FormParam("token") String token) {
+        return null;
+    }
+
 }
