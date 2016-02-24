@@ -61,6 +61,18 @@ import com.mogujie.jarvis.protocol.JobProtos.ServerQueryJobRelationResponse;
 import com.mogujie.jarvis.protocol.JobProtos.ServerRemoveJobResponse;
 import com.mogujie.jarvis.protocol.JobProtos.ServerSubmitJobResponse;
 import com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry;
+import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchAllJobsRequest;
+import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchBizIdByNameRequest;
+import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchJobByNameRequest;
+import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchJobByScriptIdRequest;
+import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchPreJobInfoRequest;
+import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchScriptTypeRequest;
+import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchAllJobsResponse;
+import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchBizIdByNamResponse;
+import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchJobByNameResponse;
+import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchJobByScriptIdResponse;
+import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchPreJobInfoResponse;
+import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchScriptTypeResponse;
 import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.domain.ModifyDependEntry;
 import com.mogujie.jarvis.server.guice.Injectors;
@@ -108,6 +120,14 @@ public class JobActor extends UntypedActor {
         list.add(new ActorEntry(RestModifyJobStatusRequest.class, ServerModifyJobStatusResponse.class, MessageType.GENERAL));
         list.add(new ActorEntry(RestQueryJobRelationRequest.class, ServerQueryJobRelationResponse.class, MessageType.GENERAL));
         list.add(new ActorEntry(RestRemoveJobRequest.class, ServerRemoveJobResponse.class, MessageType.GENERAL));
+        // ----- 兼容老系统接口---
+        list.add(new ActorEntry(RestSearchJobByScriptIdRequest.class, ServerSearchJobByScriptIdResponse.class, MessageType.GENERAL));
+        list.add(new ActorEntry(RestSearchJobByNameRequest.class, ServerSearchJobByNameResponse.class, MessageType.GENERAL));
+        list.add(new ActorEntry(RestSearchPreJobInfoRequest.class, ServerSearchPreJobInfoResponse.class, MessageType.GENERAL));
+        list.add(new ActorEntry(RestSearchAllJobsRequest.class, ServerSearchAllJobsResponse.class, MessageType.GENERAL));
+        list.add(new ActorEntry(RestSearchScriptTypeRequest.class, ServerSearchScriptTypeResponse.class, MessageType.GENERAL));
+        list.add(new ActorEntry(RestSearchBizIdByNameRequest.class, ServerSearchBizIdByNamResponse.class, MessageType.GENERAL));
+        //---------
         return list;
     }
 
@@ -138,6 +158,24 @@ public class JobActor extends UntypedActor {
                 removeJob(msg.getJobId());
                 ServerRemoveJobResponse response = ServerRemoveJobResponse.newBuilder().setSuccess(true).build();
                 getSender().tell(response, getSelf());
+            } else if (obj instanceof RestSearchJobByScriptIdRequest) {
+                RestSearchJobByScriptIdRequest msg = (RestSearchJobByScriptIdRequest) obj;
+                searchJobByScriptId(msg);
+            } else if (obj instanceof RestSearchJobByNameRequest) {
+                RestSearchJobByNameRequest msg = (RestSearchJobByNameRequest) obj;
+                searchJobByName(msg);
+            } else if (obj instanceof RestSearchPreJobInfoRequest) {
+                RestSearchPreJobInfoRequest msg = (RestSearchPreJobInfoRequest) obj;
+                searchPreJobInfo(msg);
+            } else if (obj instanceof RestSearchAllJobsRequest) {
+                RestSearchAllJobsRequest msg = (RestSearchAllJobsRequest) obj;
+                searchAllJobs(msg);
+            } else if (obj instanceof RestSearchScriptTypeRequest) {
+                RestSearchScriptTypeRequest msg = (RestSearchScriptTypeRequest) obj;
+                searchScriptType(msg);
+            } else if (obj instanceof RestSearchBizIdByNameRequest) {
+                RestSearchBizIdByNameRequest msg = (RestSearchBizIdByNameRequest) obj;
+                searchBizIdByName(msg);
             } else {
                 unhandled(obj);
             }
@@ -626,5 +664,29 @@ public class JobActor extends UntypedActor {
         DateTime now = DateTime.now();
         Range<DateTime> range = Range.closedOpen(now.withTimeAtStartOfDay(), now.plusDays(1).withTimeAtStartOfDay());
         planService.updateJobIds(range);
+    }
+
+    private void searchJobByScriptId(RestSearchJobByScriptIdRequest msg) throws Exception {
+        //TODO
+    }
+
+    private void searchJobByName(RestSearchJobByNameRequest msg) throws Exception {
+        //TODO
+    }
+
+    private void searchPreJobInfo(RestSearchPreJobInfoRequest msg) throws Exception {
+        //TODO
+    }
+
+    private void searchAllJobs(RestSearchAllJobsRequest msg) throws Exception {
+        //TODO
+    }
+
+    private void searchScriptType(RestSearchScriptTypeRequest msg) throws Exception {
+        //TODO
+    }
+
+    private void searchBizIdByName(RestSearchBizIdByNameRequest msg) throws Exception {
+        //TODO
     }
 }

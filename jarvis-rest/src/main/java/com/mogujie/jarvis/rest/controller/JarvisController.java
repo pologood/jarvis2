@@ -12,6 +12,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Sets;
 import com.google.common.collect.Sets.SetView;
 import com.mogujie.jarvis.core.domain.AkkaType;
+import com.mogujie.jarvis.core.domain.AlarmStatus;
 import com.mogujie.jarvis.core.domain.AlarmType;
 import com.mogujie.jarvis.core.domain.CommonStrategy;
 import com.mogujie.jarvis.core.domain.JobContentType;
@@ -22,6 +23,10 @@ import com.mogujie.jarvis.core.util.AppTokenUtils;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.protocol.AlarmProtos;
+import com.mogujie.jarvis.protocol.AlarmProtos.RestCreateAlarmRequest;
+import com.mogujie.jarvis.protocol.AlarmProtos.RestModifyAlarmRequest;
+import com.mogujie.jarvis.protocol.AlarmProtos.ServerCreateAlarmResponse;
+import com.mogujie.jarvis.protocol.AlarmProtos.ServerModifyAlarmResponse;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
 import com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry;
 import com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry;
@@ -227,6 +232,7 @@ public class JarvisController extends AbstractController {
             User user) {
         LOGGER.debug("ironman提交job");
         TaskIDResult result = new TaskIDResult();
+        long jobId = 0;
         try {
             String appToken = AppTokenUtils.generateToken(DateTime.now().getMillis(), APP_IRONMAN_KEY);
             AppAuth appAuth = AppAuth.newBuilder().setName(APP_IRONMAN_NAME).setToken(appToken).build();
@@ -252,7 +258,7 @@ public class JarvisController extends AbstractController {
                 ServerSearchScriptTypeResponse scriptTypeResponse = (ServerSearchScriptTypeResponse) callActor(AkkaType.SERVER, scriptTypeRequest);
                 if (!scriptTypeResponse.getSuccess()) {
                     result.setSuccess(false);
-                    result.setMessage("通过scriptId=" + scriptId + "获取scriptType失败");
+                    result.setMessage("通过scriptId=" + scriptId + "获取scriptType失败:" + scriptTypeResponse.getMessage());
                     return result;
                 }
                 //script type=> job type
@@ -271,7 +277,7 @@ public class JarvisController extends AbstractController {
                 ServerSearchBizIdByNamResponse bizIdByNamResponse = (ServerSearchBizIdByNamResponse) callActor(AkkaType.SERVER, bizIdByNameRequest);
                 if (!bizIdByNamResponse.getSuccess()) {
                     result.setSuccess(false);
-                    result.setMessage("通过pline=" + bizName + "获取biz_id失败");
+                    result.setMessage("通过pline=" + bizName + "获取biz_id失败：" + bizIdByNamResponse.getMessage());
                     return result;
                 }
                 int biz_id = bizIdByNamResponse.getBizId();
@@ -315,19 +321,40 @@ public class JarvisController extends AbstractController {
                             .build();
                     builder.addDependencyEntry(dependencyEntry);
                 }
+
+                // 5. 提交job
                 RestSubmitJobRequest submitJobRequest = builder.build();
                 ServerSubmitJobResponse submitJobResponse = (ServerSubmitJobResponse) callActor(AkkaType.SERVER, submitJobRequest);
-                if (submitJobResponse.getSuccess()) {
-                    result.setSuccess(true);
-                    result.setTaskId(submitJobResponse.getJobId());
-                    return result;
-                } else {
+                if (!submitJobResponse.getSuccess()) {
                     result.setSuccess(false);
-                    result.setMessage(submitJobResponse.getMessage());
+                    result.setMessage("提交job失败：" + submitJobResponse.getMessage());
                     return result;
                 }
+                jobId = submitJobResponse.getJobId();
+
+                // 6. 增加报警
+                RestCreateAlarmRequest alarmRequest = RestCreateAlarmRequest.newBuilder()
+                        .setAppAuth(appAuth)
+                        .setUser(globalUser)
+                        .setJobId(jobId)
+                        .setAlarmType("1,2") //短信,TT
+                        .setReciever(taskInfo.getReceiver())
+                        .setStatus(AlarmStatus.ENABLE.getValue())
+                        .build();
+                ServerCreateAlarmResponse alarmResponse = (ServerCreateAlarmResponse) callActor(AkkaType.SERVER, alarmRequest);
+                if (!alarmResponse.getSuccess()) {
+                    result.setSuccess(false);
+                    result.setMessage("添加报警失败：" + alarmResponse.getMessage());
+                    return result;
+                }
+
+                //成功
+                result.setSuccess(true);
+                result.setTaskId(jobId);
+                return result;
             } else {
-                result.setTaskId(taskInfo.getId());
+                jobId = taskInfo.getId();
+                result.setTaskId(jobId);
                 if (!user.isAdminOrAuthor(taskInfo.getPublisher())
                         && !globalUser.equals(taskInfo.getPublisher())) {
                     result.setSuccess(false);
@@ -355,7 +382,7 @@ public class JarvisController extends AbstractController {
                 int biz_id = bizIdByNamResponse.getBizId();
                 RestModifyJobRequest modifyJobRequest = RestModifyJobRequest.newBuilder()
                         .setAppAuth(appAuth).setUser(globalUser)
-                        .setJobId(taskInfo.getId())
+                        .setJobId(jobId)
                         .setAppName(taskInfo.getDepartment())
                         .setBizGroupId(biz_id)
                         .setPriority(taskInfo.getPriority())
@@ -377,7 +404,7 @@ public class JarvisController extends AbstractController {
                         .build();
                 RestModifyJobScheduleExpRequest modifyScheduleExpRequest = RestModifyJobScheduleExpRequest.newBuilder()
                         .setAppAuth(appAuth).setUser(globalUser)
-                        .setJobId(taskInfo.getId())
+                        .setJobId(jobId)
                         .addExpressionEntry(scheduleExpressionEntry)
                         .build();
                 ServerModifyJobScheduleExpResponse modifyScheduleExpResponse = (ServerModifyJobScheduleExpResponse) callActor(AkkaType.SERVER, modifyScheduleExpRequest);
@@ -431,6 +458,17 @@ public class JarvisController extends AbstractController {
                 if (!modifyDependResponse.getSuccess()) {
                     result.setSuccess(false);
                     result.setMessage("修改依赖关系失败：" + modifyDependResponse.getMessage());
+                    return result;
+                }
+
+                //4.修改报警人
+                RestModifyAlarmRequest alarmRequest = RestModifyAlarmRequest.newBuilder()
+                        .setAppAuth(appAuth).setUser(globalUser).setJobId(jobId)
+                        .setReciever(taskInfo.getReceiver()).build();
+                ServerModifyAlarmResponse alarmResponse = (ServerModifyAlarmResponse) callActor(AkkaType.SERVER, alarmRequest);
+                if (!alarmResponse.getSuccess()) {
+                    result.setSuccess(false);
+                    result.setMessage("修改报警人失败：" + alarmResponse.getMessage());
                     return result;
                 }
 
