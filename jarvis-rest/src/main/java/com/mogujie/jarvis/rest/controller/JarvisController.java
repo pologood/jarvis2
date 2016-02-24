@@ -8,20 +8,7 @@
 
 package com.mogujie.jarvis.rest.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
-import javax.ws.rs.FormParam;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-
-import org.joda.time.DateTime;
-
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Sets;
 import com.google.common.collect.Sets.SetView;
 import com.mogujie.jarvis.core.domain.AkkaType;
@@ -48,6 +35,7 @@ import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobResponse;
 import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobScheduleExpResponse;
 import com.mogujie.jarvis.protocol.JobProtos.ServerSubmitJobResponse;
 import com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry;
+import com.mogujie.jarvis.protocol.SearchJobProtos;
 import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchAllJobsRequest;
 import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchBizIdByNameRequest;
 import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchJobByScriptIdRequest;
@@ -71,6 +59,17 @@ import com.mogujie.jarvis.rest.utils.ValidUtils;
 import com.mogujie.jarvis.rest.vo.JobDependencyVo;
 import com.mogujie.jarvis.rest.vo.JobScheduleExpVo;
 import com.mogujie.jarvis.rest.vo.JobVo;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import org.joda.time.DateTime;
 
 /**
  * 兼容旧jarvis rest接口
@@ -449,7 +448,7 @@ public class JarvisController extends AbstractController {
   @POST
   @Path("addtaskwithdependency")
   @Produces(MediaType.APPLICATION_JSON)
-  public TasksResult addTask(@FormParam("scriptId") Integer scriptId, @FormParam("taskTitle") String taskTitle,
+  public Result addTask(@FormParam("scriptId") Integer scriptId, @FormParam("taskTitle") String taskTitle,
       @FormParam("beforeTaskId") String beforeTaskId, @FormParam("cronExp") String cronExp,
       @FormParam("priority") Integer priority, @FormParam("creator") String creator,
       @FormParam("receiver") String receiver, @FormParam("scode") String scode, @FormParam("token") String token) {
@@ -499,7 +498,7 @@ public class JarvisController extends AbstractController {
       // 发送请求到server
       JobProtos.ServerSubmitJobResponse response =
           (JobProtos.ServerSubmitJobResponse) callActor(AkkaType.SERVER, request);
-      TasksResult result = new TasksResult();
+      Result result = new Result();
       result.setMessage(response.getMessage());
       if (response.getSuccess()) {
         // add job alarm
@@ -528,10 +527,126 @@ public class JarvisController extends AbstractController {
     }
   }
 
+    @POST
+    @Path("updateSingleTaskRelation")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Result updateSingleTaskRelation(@FormParam("oldPreScriptName") String oldPreScriptName,
+        @FormParam("newPreScriptName") String newPreScriptName, @FormParam("scriptName") String scriptName) {
+        List<String> oldPreScriptList = new ArrayList<>();
+        oldPreScriptList.add(oldPreScriptName);
+        List<String> newPreScriptList = new ArrayList<>();
+        newPreScriptList.add(newPreScriptName);
+
+        return this.updateTaskRelation(oldPreScriptList, newPreScriptList, scriptName);
+    }
+
+
+    @POST
     @Path("updateTaskRelation")
+    @Produces(MediaType.APPLICATION_JSON)
     public Result updateTaskRelation(@FormParam("oldPreScriptList") List<String> oldPreScriptList,
-        @FormParam("newPreScriptList") List<String> newPreScriptList, @FormParam("scriptName") String scriptName) {
-        return null;
+        @FormParam("newPreScriptList") List<String> newPreScriptList, @FormParam("scriptName") String title) {
+        LOGGER.debug("change job relation");
+        try {
+            String appToken = AppTokenUtils.generateToken(DateTime.now().getMillis(), APP_XMEN_KEY);
+            AppAuth appAuth = AppAuth.newBuilder().setName(APP_XMEN_NAME).setToken(appToken).build();
+
+            Result result = new Result();
+
+            // 1. get current jobid
+            SearchJobProtos.RestSearchJobInfoByScriptTitileRequest scriptTitleRequest =
+                SearchJobProtos.RestSearchJobInfoByScriptTitileRequest.newBuilder().setAppAuth(appAuth)
+                    .setUser(APP_XMEN_NAME).setTitle(title).build();
+            SearchJobProtos.ServerSearchJobByNameResponse scriptTitleResponse =
+                (SearchJobProtos.ServerSearchJobByNameResponse) callActor(AkkaType.SERVER, scriptTitleRequest);
+
+            JobDependencyVo job = new JobDependencyVo();
+            List<JobDependencyVo.DependencyEntry> list = new ArrayList<>();
+            JobDependencyVo.DependencyEntry entry;
+            if (scriptTitleResponse.getSuccess()) {
+                job.setJobId(scriptTitleResponse.getJobInfo().getJobId());
+            } else {
+                LOGGER.error("get jobId={} fail", job.getJobId());
+                result.setSuccess(false);
+                result.setMessage(scriptTitleResponse.getMessage());
+                return result;
+            }
+
+            // 2. get old pre job and delete
+            for (String oldPreScriptTitle : oldPreScriptList) {
+                SearchJobProtos.RestSearchJobInfoByScriptTitileRequest request =
+                    SearchJobProtos.RestSearchJobInfoByScriptTitileRequest.newBuilder().setAppAuth(appAuth)
+                        .setUser(APP_XMEN_NAME).setTitle(oldPreScriptTitle).build();
+                SearchJobProtos.ServerSearchJobByNameResponse response =
+                    (SearchJobProtos.ServerSearchJobByNameResponse) callActor(AkkaType.SERVER, request);
+                if (response.getSuccess()) {
+                    JobInfoEntry preJobInfo = response.getJobInfo();
+                    entry = new JobDependencyVo.DependencyEntry();
+                    entry.setOperatorMode(OperationMode.DELETE.getValue());
+                    entry.setPreJobId(preJobInfo.getJobId());
+                    entry.setCommonStrategy(CommonStrategy.ALL.getValue());
+                    entry.setOffsetStrategy("cd");
+                    list.add(entry);
+                } else {
+                    LOGGER.error("get jobId={} fail", job.getJobId());
+                    result.setSuccess(false);
+                    result.setMessage(scriptTitleResponse.getMessage());
+                    return result;
+                }
+            }
+
+            // 3. get new old job and add
+            for (String newPreScriptTitle : newPreScriptList) {
+                SearchJobProtos.RestSearchJobInfoByScriptTitileRequest request =
+                    SearchJobProtos.RestSearchJobInfoByScriptTitileRequest.newBuilder().setAppAuth(appAuth)
+                        .setUser(APP_XMEN_NAME).setTitle(newPreScriptTitle).build();
+                SearchJobProtos.ServerSearchJobByNameResponse response =
+                    (SearchJobProtos.ServerSearchJobByNameResponse) callActor(AkkaType.SERVER, request);
+                if (response.getSuccess()) {
+                    JobInfoEntry preJobInfo = response.getJobInfo();
+                    entry = new JobDependencyVo.DependencyEntry();
+                    entry.setOperatorMode(OperationMode.ADD.getValue());
+                    entry.setPreJobId(preJobInfo.getJobId());
+                    entry.setCommonStrategy(CommonStrategy.ALL.getValue());
+                    entry.setOffsetStrategy("cd");
+                    list.add(entry);
+                } else {
+                    LOGGER.error("get jobId={} fail", job.getJobId());
+                    result.setSuccess(false);
+                    result.setMessage(scriptTitleResponse.getMessage());
+                    return result;
+                }
+            }
+
+            job.setDependencyList(list);
+
+            // 4. construct request
+            RestModifyJobDependRequest.Builder builder =
+                RestModifyJobDependRequest.newBuilder().setAppAuth(appAuth).setUser(APP_XMEN_NAME)
+                    .setJobId(job.getJobId());
+            Preconditions
+                .checkArgument(job.getDependencyList() != null && job.getDependencyList().size() > 0, "任务依赖为空");
+            for (JobDependencyVo.DependencyEntry entryInput : job.getDependencyList()) {
+                builder.addDependencyEntry(ValidUtils.convertDependencyEntry(entryInput));
+            }
+
+            // 5. sent request to server
+            ServerModifyJobDependResponse response =
+                (ServerModifyJobDependResponse) callActor(AkkaType.SERVER, builder.build());
+            if (response.getSuccess()) {
+                result.setSuccess(true);
+                return result;
+            } else {
+                result.setSuccess(false);
+                result.setMessage(response.getMessage());
+                return result;
+            }
+        } catch (Exception e) {
+            TasksResult result = new TasksResult();
+            result.setSuccess(false);
+            result.setMessage(e.getMessage());
+            return result;
+        }
     }
 
 }
