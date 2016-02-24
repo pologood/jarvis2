@@ -58,7 +58,7 @@ message ServerSearchAllJobsResponse {
 }
 
 
-//search script type 
+//search script type
 message RestSearchScriptTypeRequest {
 	required AppAuth app_auth = 1;
 	required string user = 2;
@@ -66,11 +66,24 @@ message RestSearchScriptTypeRequest {
 }
 
 message ServerSearchScriptTypeResponse {
-	required bool success = 1;
-    required string script_type = 2;
-    optional string message = 3 [default = ""];
+  required bool success = 1;
+  required string script_type = 2;
+  optional string message = 3 [default = ""];
 }
 
+
+//search job info by script name
+message RestSearchJobInfoByScriptTitileRequest {
+    required AppAuth app_auth = 1;
+    required string user = 2;
+    required string title = 3;
+}
+
+message ServerSearchJobInfoByScriptTitileResponse {
+    required bool success = 1;
+    required JobInfoEntry job_info = 2;
+    optional string message = 3 [default = ""];
+}
 
 //search biz id
 message RestSearchBizIdByNameRequest {
