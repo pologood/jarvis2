@@ -40,6 +40,7 @@ import com.mogujie.jarvis.server.scheduler.event.AddTaskEvent;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
 import com.mogujie.jarvis.server.scheduler.event.KilledEvent;
 import com.mogujie.jarvis.server.scheduler.event.ManualRerunTaskEvent;
+import com.mogujie.jarvis.server.scheduler.event.RemoveTaskEvent;
 import com.mogujie.jarvis.server.scheduler.event.RetryTaskEvent;
 import com.mogujie.jarvis.server.scheduler.event.RunningEvent;
 import com.mogujie.jarvis.server.scheduler.event.ScheduleEvent;
@@ -103,27 +104,8 @@ public class TaskScheduler extends Scheduler {
         taskService.updateStatusWithEnd(taskId, TaskStatus.SUCCESS, reason);
         LOGGER.info("update {} with SUCCESS status", taskId);
 
-        List<DAGTask> childTasks = taskGraph.getChildren(taskId);
-        if (childTasks != null && !childTasks.isEmpty()) {
-            // TaskGraph trigger
-            // notify child tasks
-            // notice: 如果是串行任务，之前失败了，这里也可以触发自身后续跑起来
-            LOGGER.info("notify child tasks {}", childTasks);
-            for (DAGTask childTask : childTasks) {
-                if (childTask != null && childTask.checkStatus()) {
-                    LOGGER.info("child {} pass the status check", childTask);
-                    submitTask(childTask);
-                }
-            }
-        }
-
-        // 如果是正常调度，交给DAGScheduler触发后续任务
-        if (taskType.equals(TaskType.SCHEDULE)) {
-            // JobGraph trigger
-            LOGGER.debug("[taskId={}, taskType=SCHEDULE], notify ScheduleEvent to DAGScheudler", taskId);
-            ScheduleEvent event = new ScheduleEvent(jobId, taskId, scheduleTime);
-            getSchedulerController().notify(event);
-        }
+        // schedule child tasks
+        scheduleChildTask(jobId, taskId, scheduleTime, taskType);
 
         // remove from taskGraph
         taskGraph.removeTask(taskId);
@@ -150,6 +132,40 @@ public class TaskScheduler extends Scheduler {
         LOGGER.info("start handleKilledEvent, taskId={}", taskId);
         taskService.updateStatusWithEnd(taskId, TaskStatus.KILLED);
         LOGGER.info("update {} with KILLED status", taskId);
+        reduceTaskNum(taskId);
+    }
+
+    @Subscribe
+    @AllowConcurrentEvents
+    public void handleRemoveTaskEvent(RemoveTaskEvent e) {
+        long jobId = e.getJobId();
+        long taskId = e.getTaskId();
+        long scheduleTime = e.getScheduleTime();
+        TaskType taskType = e.getTaskType();
+        LOGGER.info("start handleRemoveTaskEvent, taskId={}", taskId);
+
+        // 1. update taskService
+        taskService.updateStatus(taskId, TaskStatus.REMOVED);
+
+        // 2. schedule child tasks
+        scheduleChildTask(jobId, taskId, scheduleTime, taskType);
+
+        // 3. remove from taskGraph
+        taskGraph.removeTask(taskId);
+
+        // 4. remove from TaskQueue
+        PriorityTaskQueue taskQueue = Injectors.getInjector().getInstance(PriorityTaskQueue.class);
+        Task task = taskService.get(taskId);
+        String fullId = IdUtils.getFullId(task.getJobId(), taskId, task.getAttemptId());
+        taskQueue.removeByKey(fullId);
+
+        // 5. remove from RetryScheduler
+        String jobIdWithTaskId = fullId.replaceAll("_\\d+$", "");
+        TaskRetryScheduler retryScheduler = TaskRetryScheduler.INSTANCE;
+        retryScheduler.remove(jobIdWithTaskId, RetryType.FAILED_RETRY);
+        retryScheduler.remove(jobIdWithTaskId, RetryType.REJECT_RETRY);
+
+        // 6. reduce task number
         reduceTaskNum(taskId);
     }
 
@@ -321,6 +337,30 @@ public class TaskScheduler extends Scheduler {
             taskQueue.put(taskDetail);
         } catch (NotFoundException ex){
             LOGGER.error(ex);
+        }
+    }
+
+    private void scheduleChildTask(long jobId, long taskId, long scheduleTime, TaskType taskType) {
+        List<DAGTask> childTasks = taskGraph.getChildren(taskId);
+        if (childTasks != null && !childTasks.isEmpty()) {
+            // TaskGraph trigger
+            // notify child tasks
+            // notice: 如果是串行任务，之前失败了，这里也可以触发自身后续跑起来
+            LOGGER.info("notify child tasks {}", childTasks);
+            for (DAGTask childTask : childTasks) {
+                if (childTask != null && childTask.checkStatus()) {
+                    LOGGER.info("child {} pass the status check", childTask);
+                    submitTask(childTask);
+                }
+            }
+        }
+
+        // 如果是正常调度，交给DAGScheduler触发后续任务
+        if (taskType.equals(TaskType.SCHEDULE)) {
+            // JobGraph trigger
+            LOGGER.debug("[taskId={}, taskType=SCHEDULE], notify ScheduleEvent to DAGScheudler", taskId);
+            ScheduleEvent event = new ScheduleEvent(jobId, taskId, scheduleTime);
+            getSchedulerController().notify(event);
         }
     }
 

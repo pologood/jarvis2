@@ -56,16 +56,14 @@ import com.mogujie.jarvis.protocol.RemoveTaskProtos.RestServerRemoveTaskRequest;
 import com.mogujie.jarvis.protocol.RemoveTaskProtos.ServerRemoveTaskResponse;
 import com.mogujie.jarvis.protocol.RetryTaskProtos.RestServerRetryTaskRequest;
 import com.mogujie.jarvis.protocol.RetryTaskProtos.ServerRetryTaskResponse;
-import com.mogujie.jarvis.server.dispatcher.PriorityTaskQueue;
 import com.mogujie.jarvis.server.dispatcher.TaskManager;
 import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.domain.JobDependencyEntry;
-import com.mogujie.jarvis.server.domain.RetryType;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
-import com.mogujie.jarvis.server.scheduler.TaskRetryScheduler;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
 import com.mogujie.jarvis.server.scheduler.event.ManualRerunTaskEvent;
+import com.mogujie.jarvis.server.scheduler.event.RemoveTaskEvent;
 import com.mogujie.jarvis.server.scheduler.event.RetryTaskEvent;
 import com.mogujie.jarvis.server.scheduler.event.SuccessEvent;
 import com.mogujie.jarvis.server.scheduler.event.UnhandleEvent;
@@ -383,20 +381,12 @@ public class TaskActor extends UntypedActor {
         ServerRemoveTaskResponse response;
         try {
             long taskId = msg.getTaskId();
-            // 1. update taskService
-            taskService.updateStatus(taskId, TaskStatus.REMOVED);
-            // 2. remove from taskGraph
-            taskGraph.removeTask(taskId);
-            // 3. remove from TaskQueue
-            PriorityTaskQueue taskQueue = Injectors.getInjector().getInstance(PriorityTaskQueue.class);
             Task task = taskService.get(taskId);
-            String fullId = IdUtils.getFullId(task.getJobId(), taskId, task.getAttemptId());
-            taskQueue.removeByKey(fullId);
-            // 4. remove from RetryScheduler
-            String jobIdWithTaskId = fullId.replaceAll("_\\d+$", "");
-            TaskRetryScheduler retryScheduler = TaskRetryScheduler.INSTANCE;
-            retryScheduler.remove(jobIdWithTaskId, RetryType.FAILED_RETRY);
-            retryScheduler.remove(jobIdWithTaskId, RetryType.REJECT_RETRY);
+            long jobId = task.getJobId();
+            long scheduleTime = task.getScheduleTime().getTime();
+            TaskType taskType = TaskType.parseValue(task.getType());
+            RemoveTaskEvent removeTaskEvent = new RemoveTaskEvent(jobId, taskId, scheduleTime, taskType);
+            controller.notify(removeTaskEvent);
             response = ServerRemoveTaskResponse.newBuilder().setSuccess(true).setMessage("task has been removed").build();
             getSender().tell(response, getSelf());
         } catch (Exception e) {
