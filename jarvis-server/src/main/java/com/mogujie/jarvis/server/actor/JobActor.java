@@ -88,6 +88,7 @@ import com.mogujie.jarvis.server.service.AppService;
 import com.mogujie.jarvis.server.service.BizGroupService;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.PlanService;
+import com.mogujie.jarvis.server.service.ScriptService;
 import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.service.ValidService;
 import com.mogujie.jarvis.server.service.ValidService.CheckMode;
@@ -107,6 +108,7 @@ public class JobActor extends UntypedActor {
     private AppService appService = Injectors.getInjector().getInstance(AppService.class);
     private AlarmService alarmService = Injectors.getInjector().getInstance(AlarmService.class);
     private BizGroupService bizService = Injectors.getInjector().getInstance(BizGroupService.class);
+    private ScriptService scriptService = Injectors.getInjector().getInstance(ScriptService.class);
     private ValidService validService = Injectors.getInjector().getInstance(ValidService.class);
 
     public static Props props() {
@@ -708,7 +710,7 @@ public class JobActor extends UntypedActor {
 
     /**
      * 兼容老系统API
-     * 通过scriptId查找job信息
+     * 通过job name查找job信息
      *
      * @param msg
      * @throws IOException
@@ -735,16 +737,117 @@ public class JobActor extends UntypedActor {
         }
     }
 
+    /**
+     * 兼容老系统API
+     * 查找依赖的jobInfo
+     *
+     * @param msg
+     * @throws IOException
+     */
     private void searchPreJobInfo(RestSearchPreJobInfoRequest msg) throws Exception {
-        //TODO
+        long jobId = msg.getJobId();
+        ServerSearchPreJobInfoResponse response;
+        try {
+            Set<Long> preJobIds = jobGraph.getParentJobIds(jobId);
+            ServerSearchPreJobInfoResponse.Builder builder = ServerSearchPreJobInfoResponse.newBuilder();
+            for (long preJobId : preJobIds) {
+                Job job = jobService.get(preJobId).getJob();
+                JobInfoEntry jobInfo = convertJob2JobInfo(job);
+                builder.addPreJobInfo(jobInfo);
+            }
+            response = builder.setSuccess(true).build();
+            getSender().tell(response, getSelf());
+        } catch (Exception e) {
+            response = ServerSearchPreJobInfoResponse.newBuilder()
+                    .setSuccess(false)
+                    .setMessage(e.getMessage())
+                    .build();
+            getSender().tell(response, getSelf());
+            LOGGER.error("", e);
+            throw e;
+        }
     }
 
+    /**
+     * 兼容老系统API
+     * 查找所有jobInfo
+     *
+     * @param msg
+     * @throws IOException
+     */
     private void searchAllJobs(RestSearchAllJobsRequest msg) throws Exception {
-        //TODO
+        ServerSearchAllJobsResponse response;
+        try {
+            List<Long> activeJobIds = jobService.getEnableActiveJobIds();
+            ServerSearchAllJobsResponse.Builder builder = ServerSearchAllJobsResponse.newBuilder();
+            for (long jobId : activeJobIds) {
+                Job job = jobService.get(jobId).getJob();
+                JobInfoEntry jobInfo = convertJob2JobInfo(job);
+                builder.addJobInfo(jobInfo);
+            }
+            response = builder.setSuccess(true).build();
+            getSender().tell(response, getSelf());
+        } catch (Exception e) {
+            response = ServerSearchAllJobsResponse.newBuilder()
+                    .setSuccess(false)
+                    .setMessage(e.getMessage())
+                    .build();
+            getSender().tell(response, getSelf());
+            LOGGER.error("", e);
+            throw e;
+        }
     }
 
+    /**
+     * 兼容老系统API
+     * 根据scriptId查找type
+     *
+     * @param msg
+     * @throws IOException
+     */
     private void searchScriptType(RestSearchScriptTypeRequest msg) throws Exception {
-        //TODO
+        int scriptId = msg.getScriptId();
+        ServerSearchScriptTypeResponse response;
+        try {
+            String type = scriptService.getTypeById(scriptId);
+            response = ServerSearchScriptTypeResponse.newBuilder()
+                    .setSuccess(true).setScriptType(type).build();
+            getSender().tell(response, getSelf());
+        } catch (Exception e) {
+            response = ServerSearchScriptTypeResponse.newBuilder()
+                    .setSuccess(false)
+                    .setMessage(e.getMessage())
+                    .build();
+            getSender().tell(response, getSelf());
+            LOGGER.error("", e);
+            throw e;
+        }
+    }
+
+    /**
+     * 兼容老系统API
+     * 根据bizName查找biz id
+     *
+     * @param msg
+     * @throws IOException
+     */
+    private void searchBizIdByName(RestSearchBizIdByNameRequest msg) throws Exception {
+        String bizName = msg.getBizName();
+        ServerSearchBizIdByNamResponse response;
+        try {
+            int bizId = bizService.queryByName(bizName).getId();
+            response = ServerSearchBizIdByNamResponse.newBuilder()
+                    .setSuccess(true).setBizId(bizId).build();
+            getSender().tell(response, getSelf());
+        } catch (Exception e) {
+            response = ServerSearchBizIdByNamResponse.newBuilder()
+                    .setSuccess(false)
+                    .setMessage(e.getMessage())
+                    .build();
+            getSender().tell(response, getSelf());
+            LOGGER.error("", e);
+            throw e;
+        }
     }
 
     private JobInfoEntry convertJob2JobInfo(Job job) throws NotFoundException {
@@ -771,9 +874,6 @@ public class JobActor extends UntypedActor {
         return jobInfo;
     }
 
-    private void searchBizIdByName(RestSearchBizIdByNameRequest msg) throws Exception {
-        //TODO
-    }
 
   /**
    * 兼容老系统API,通过title查找job
