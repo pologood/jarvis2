@@ -45,6 +45,7 @@ import com.mogujie.jarvis.dto.generate.JobDepend;
 import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.protocol.AppAuthProtos;
 import com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry;
+import com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry;
 import com.mogujie.jarvis.protocol.JobProtos.JobStatusEntry;
 import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobDependRequest;
 import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobRequest;
@@ -80,7 +81,9 @@ import com.mogujie.jarvis.server.scheduler.dag.DAGJob;
 import com.mogujie.jarvis.server.scheduler.dag.DAGJobType;
 import com.mogujie.jarvis.server.scheduler.dag.JobGraph;
 import com.mogujie.jarvis.server.scheduler.time.TimePlan;
+import com.mogujie.jarvis.server.service.AlarmService;
 import com.mogujie.jarvis.server.service.AppService;
+import com.mogujie.jarvis.server.service.BizGroupService;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.PlanService;
 import com.mogujie.jarvis.server.service.TaskService;
@@ -100,6 +103,8 @@ public class JobActor extends UntypedActor {
 
     private JobService jobService = Injectors.getInjector().getInstance(JobService.class);
     private AppService appService = Injectors.getInjector().getInstance(AppService.class);
+    private AlarmService alarmService = Injectors.getInjector().getInstance(AlarmService.class);
+    private BizGroupService bizService = Injectors.getInjector().getInstance(BizGroupService.class);
     private ValidService validService = Injectors.getInjector().getInstance(ValidService.class);
 
     public static Props props() {
@@ -666,12 +671,62 @@ public class JobActor extends UntypedActor {
         planService.updateJobIds(range);
     }
 
+    /**
+     * 兼容老系统API
+     * 通过scriptId查找job信息
+     *
+     * @param msg
+     * @throws IOException
+     */
     private void searchJobByScriptId(RestSearchJobByScriptIdRequest msg) throws Exception {
-        //TODO
+        int scriptId = msg.getScriptId();
+        ServerSearchJobByScriptIdResponse response;
+        try {
+            Job job = jobService.searchJobByScriptId(scriptId);
+            JobInfoEntry jobInfo = convertJob2JobInfo(job);
+            response = ServerSearchJobByScriptIdResponse.newBuilder()
+                    .setSuccess(true)
+                    .setJobInfo(jobInfo)
+                    .build();
+            getSender().tell(response, getSelf());
+        } catch (Exception e) {
+            response = ServerSearchJobByScriptIdResponse.newBuilder()
+                    .setSuccess(false)
+                    .setMessage(e.getMessage())
+                    .build();
+            getSender().tell(response, getSelf());
+            LOGGER.error("", e);
+            throw e;
+        }
     }
 
+    /**
+     * 兼容老系统API
+     * 通过scriptId查找job信息
+     *
+     * @param msg
+     * @throws IOException
+     */
     private void searchJobByName(RestSearchJobByNameRequest msg) throws Exception {
-        //TODO
+        String jobName = msg.getJobName();
+        ServerSearchJobByScriptIdResponse response;
+        try {
+            Job job = jobService.searchJobByName(jobName);
+            JobInfoEntry jobInfo = convertJob2JobInfo(job);
+            response = ServerSearchJobByScriptIdResponse.newBuilder()
+                    .setSuccess(true)
+                    .setJobInfo(jobInfo)
+                    .build();
+            getSender().tell(response, getSelf());
+        } catch (Exception e) {
+            response = ServerSearchJobByScriptIdResponse.newBuilder()
+                    .setSuccess(false)
+                    .setMessage(e.getMessage())
+                    .build();
+            getSender().tell(response, getSelf());
+            LOGGER.error("", e);
+            throw e;
+        }
     }
 
     private void searchPreJobInfo(RestSearchPreJobInfoRequest msg) throws Exception {
@@ -684,6 +739,30 @@ public class JobActor extends UntypedActor {
 
     private void searchScriptType(RestSearchScriptTypeRequest msg) throws Exception {
         //TODO
+    }
+
+    private JobInfoEntry convertJob2JobInfo(Job job) throws NotFoundException {
+        long jobId = job.getJobId();
+        List<ScheduleExpression> cronExps = (List<ScheduleExpression>) jobService.get(jobId).getScheduleExpressions().values();
+        String cronExp = cronExps.get(0).getExpression();
+        JobInfoEntry jobInfo = JobInfoEntry.newBuilder()
+                .setJobId(job.getJobId())
+                .setJobName(job.getJobName())
+                .setUser(job.getSubmitUser())
+                .setScheduleExpression(cronExp)
+                .setContentType(job.getContentType())
+                .setContent(job.getContent())
+                .setPriority(job.getPriority())
+                .setStatus(job.getStatus())
+                .setReceiver(alarmService.getAlarmByJobId(jobId).getReceiver())
+                .setAppName(appService.getAppNameByAppId(job.getAppId()))
+                .setBizName(bizService.get(job.getBizGroupId()).getName())
+                .setCreateTime(job.getCreateTime().getTime())
+                .setUpdateTime(job.getUpdateTime().getTime())
+                .setStartDate(job.getActiveStartDate().getTime())
+                .setEndDate(job.getActiveEndDate().getTime())
+                .build();
+        return jobInfo;
     }
 
     private void searchBizIdByName(RestSearchBizIdByNameRequest msg) throws Exception {
