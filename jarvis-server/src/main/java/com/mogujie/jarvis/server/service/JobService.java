@@ -35,6 +35,7 @@ import com.mogujie.jarvis.core.expression.ISO8601Expression;
 import com.mogujie.jarvis.core.expression.ScheduleExpression;
 import com.mogujie.jarvis.core.expression.ScheduleExpressionType;
 import com.mogujie.jarvis.core.expression.TimeOffsetExpression;
+import com.mogujie.jarvis.dao.DiyJobMapper;
 import com.mogujie.jarvis.dao.generate.JobDependMapper;
 import com.mogujie.jarvis.dao.generate.JobMapper;
 import com.mogujie.jarvis.dao.generate.JobScheduleExpressionMapper;
@@ -62,6 +63,9 @@ public class JobService {
     private JobMapper jobMapper;
 
     @Inject
+    private DiyJobMapper diyJobMapper;
+
+    @Inject
     private JobScheduleExpressionMapper jobScheduleExpressionMapper;
 
     @Inject
@@ -81,6 +85,21 @@ public class JobService {
 
     public JobEntry get(long jobId) {
         return metaStore.get(jobId);
+    }
+
+    public Job searchJobByScriptId(int scriptId) {
+        Job job = diyJobMapper.selectByScriptId(scriptId);
+        return job;
+    }
+
+    public Job searchJobByName(String name) {
+        JobExample example = new JobExample();
+        example.createCriteria().andJobNameEqualTo(name);
+        List<Job> jobs = jobMapper.selectByExample(example);
+        if (jobs != null && jobs.size() > 0) {
+            return jobs.get(0);
+        }
+        return null;
     }
 
     public List<Job> getNotDeletedJobs() {

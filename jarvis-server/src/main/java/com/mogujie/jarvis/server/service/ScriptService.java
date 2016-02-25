@@ -31,4 +31,13 @@ public class ScriptService {
             return null;
         }
     }
+
+    public String getTypeById(int id) {
+        Script script = mapper.selectByPrimaryKey(id);
+        if (script != null) {
+            return script.getType();
+        } else {
+            return null;
+        }
+    }
 }

@@ -8,6 +8,8 @@
 
 package com.mogujie.jarvis.server.service;
 
+import java.util.List;
+
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.mogujie.jarvis.core.domain.JobStatus;
@@ -18,8 +20,6 @@ import com.mogujie.jarvis.dto.generate.BizGroup;
 import com.mogujie.jarvis.dto.generate.BizGroupExample;
 import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.dto.generate.JobExample;
-
-import java.util.List;
 
 /**
  * BizGroupService
@@ -62,6 +62,16 @@ public class BizGroupService {
 
     public BizGroup queryById(Integer id) {
         return bizGroupMapper.selectByPrimaryKey(id);
+    }
+
+    public BizGroup queryByName(String name) {
+        BizGroupExample example = new BizGroupExample();
+        example.createCriteria().andNameEqualTo(name);
+        List<BizGroup> bizs = bizGroupMapper.selectByExample(example);
+        if (bizs !=null && bizs.size() > 0) {
+            return bizs.get(0);
+        }
+        return null;
     }
 
 
