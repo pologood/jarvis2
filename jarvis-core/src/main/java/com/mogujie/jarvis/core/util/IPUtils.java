@@ -21,8 +21,7 @@ import com.mogujie.jarvis.core.JarvisConstants;
 public class IPUtils {
 
     public static String getIPV4Address() throws UnknownHostException, SocketException {
-        return "127.0.0.1";
-        /*String ip = Inet4Address.getLocalHost().getHostName();
+        String ip = Inet4Address.getLocalHost().getHostName();
         Matcher m = JarvisConstants.IP_PATTERN.matcher(ip);
         if (m.matches() && !ip.equals("127.0.0.1")) {
             return ip;
@@ -39,6 +38,6 @@ public class IPUtils {
                 }
             }
         }
-        return null;*/
+        return null;
     }
 }
