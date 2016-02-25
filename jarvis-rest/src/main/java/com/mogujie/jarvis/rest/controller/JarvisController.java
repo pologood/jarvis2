@@ -595,8 +595,8 @@ public class JarvisController extends AbstractController {
             SearchJobProtos.RestSearchJobInfoByScriptTitileRequest scriptTitleRequest =
                 SearchJobProtos.RestSearchJobInfoByScriptTitileRequest.newBuilder().setAppAuth(appAuth)
                     .setUser(APP_XMEN_NAME).setTitle(title).build();
-            SearchJobProtos.ServerSearchJobByNameResponse scriptTitleResponse =
-                (SearchJobProtos.ServerSearchJobByNameResponse) callActor(AkkaType.SERVER, scriptTitleRequest);
+            SearchJobProtos.ServerSearchJobInfoByScriptTitileResponse scriptTitleResponse =
+                (SearchJobProtos.ServerSearchJobInfoByScriptTitileResponse) callActor(AkkaType.SERVER, scriptTitleRequest);
 
             JobDependencyVo job = new JobDependencyVo();
             List<JobDependencyVo.DependencyEntry> list = new ArrayList<>();
@@ -615,8 +615,8 @@ public class JarvisController extends AbstractController {
                 SearchJobProtos.RestSearchJobInfoByScriptTitileRequest request =
                     SearchJobProtos.RestSearchJobInfoByScriptTitileRequest.newBuilder().setAppAuth(appAuth)
                         .setUser(APP_XMEN_NAME).setTitle(oldPreScriptTitle).build();
-                SearchJobProtos.ServerSearchJobByNameResponse response =
-                    (SearchJobProtos.ServerSearchJobByNameResponse) callActor(AkkaType.SERVER, request);
+                SearchJobProtos.ServerSearchJobInfoByScriptTitileResponse response =
+                    (SearchJobProtos.ServerSearchJobInfoByScriptTitileResponse) callActor(AkkaType.SERVER, request);
                 if (response.getSuccess()) {
                     JobInfoEntry preJobInfo = response.getJobInfo();
                     entry = new JobDependencyVo.DependencyEntry();
@@ -638,8 +638,8 @@ public class JarvisController extends AbstractController {
                 SearchJobProtos.RestSearchJobInfoByScriptTitileRequest request =
                     SearchJobProtos.RestSearchJobInfoByScriptTitileRequest.newBuilder().setAppAuth(appAuth)
                         .setUser(APP_XMEN_NAME).setTitle(newPreScriptTitle).build();
-                SearchJobProtos.ServerSearchJobByNameResponse response =
-                    (SearchJobProtos.ServerSearchJobByNameResponse) callActor(AkkaType.SERVER, request);
+                SearchJobProtos.ServerSearchJobInfoByScriptTitileResponse response =
+                    (SearchJobProtos.ServerSearchJobInfoByScriptTitileResponse) callActor(AkkaType.SERVER, request);
                 if (response.getSuccess()) {
                     JobInfoEntry preJobInfo = response.getJobInfo();
                     entry = new JobDependencyVo.DependencyEntry();

@@ -207,7 +207,7 @@ public final class SearchJobProtos {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
@@ -223,7 +223,7 @@ public final class SearchJobProtos {
         getUserBytes() {
       java.lang.Object ref = user_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         user_ = b;
@@ -520,19 +520,19 @@ public final class SearchJobProtos {
 
       public final boolean isInitialized() {
         if (!hasAppAuth()) {
-          
+
           return false;
         }
         if (!hasUser()) {
-          
+
           return false;
         }
         if (!hasScriptId()) {
-          
+
           return false;
         }
         if (!getAppAuth().isInitialized()) {
-          
+
           return false;
         }
         return true;
@@ -661,7 +661,7 @@ public final class SearchJobProtos {
        * <code>required .AppAuth app_auth = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
-          com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> 
+          com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder>
           getAppAuthFieldBuilder() {
         if (appAuthBuilder_ == null) {
           appAuthBuilder_ = new com.google.protobuf.SingleFieldBuilder<
@@ -703,7 +703,7 @@ public final class SearchJobProtos {
           getUserBytes() {
         java.lang.Object ref = user_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
           user_ = b;
@@ -1003,7 +1003,7 @@ public final class SearchJobProtos {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
@@ -1019,7 +1019,7 @@ public final class SearchJobProtos {
         getMessageBytes() {
       java.lang.Object ref = message_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         message_ = b;
@@ -1290,12 +1290,12 @@ public final class SearchJobProtos {
 
       public final boolean isInitialized() {
         if (!hasSuccess()) {
-          
+
           return false;
         }
         if (hasJobInfo()) {
           if (!getJobInfo().isInitialized()) {
-            
+
             return false;
           }
         }
@@ -1458,7 +1458,7 @@ public final class SearchJobProtos {
        * <code>optional .JobInfoEntry job_info = 2;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
-          com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry, com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.Builder, com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntryOrBuilder> 
+          com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry, com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.Builder, com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntryOrBuilder>
           getJobInfoFieldBuilder() {
         if (jobInfoBuilder_ == null) {
           jobInfoBuilder_ = new com.google.protobuf.SingleFieldBuilder<
@@ -1500,7 +1500,7 @@ public final class SearchJobProtos {
           getMessageBytes() {
         java.lang.Object ref = message_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
           message_ = b;
@@ -1760,7 +1760,7 @@ public final class SearchJobProtos {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
@@ -1776,7 +1776,7 @@ public final class SearchJobProtos {
         getUserBytes() {
       java.lang.Object ref = user_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         user_ = b;
@@ -1803,7 +1803,7 @@ public final class SearchJobProtos {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
@@ -1819,7 +1819,7 @@ public final class SearchJobProtos {
         getJobNameBytes() {
       java.lang.Object ref = jobName_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         jobName_ = b;
@@ -2102,19 +2102,19 @@ public final class SearchJobProtos {
 
       public final boolean isInitialized() {
         if (!hasAppAuth()) {
-          
+
           return false;
         }
         if (!hasUser()) {
-          
+
           return false;
         }
         if (!hasJobName()) {
-          
+
           return false;
         }
         if (!getAppAuth().isInitialized()) {
-          
+
           return false;
         }
         return true;
@@ -2243,7 +2243,7 @@ public final class SearchJobProtos {
        * <code>required .AppAuth app_auth = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
-          com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> 
+          com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder>
           getAppAuthFieldBuilder() {
         if (appAuthBuilder_ == null) {
           appAuthBuilder_ = new com.google.protobuf.SingleFieldBuilder<
@@ -2285,7 +2285,7 @@ public final class SearchJobProtos {
           getUserBytes() {
         java.lang.Object ref = user_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
           user_ = b;
@@ -2359,7 +2359,7 @@ public final class SearchJobProtos {
           getJobNameBytes() {
         java.lang.Object ref = jobName_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
           jobName_ = b;
@@ -2626,7 +2626,7 @@ public final class SearchJobProtos {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
@@ -2642,7 +2642,7 @@ public final class SearchJobProtos {
         getMessageBytes() {
       java.lang.Object ref = message_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         message_ = b;
@@ -2913,12 +2913,12 @@ public final class SearchJobProtos {
 
       public final boolean isInitialized() {
         if (!hasSuccess()) {
-          
+
           return false;
         }
         if (hasJobInfo()) {
           if (!getJobInfo().isInitialized()) {
-            
+
             return false;
           }
         }
@@ -3081,7 +3081,7 @@ public final class SearchJobProtos {
        * <code>optional .JobInfoEntry job_info = 2;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
-          com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry, com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.Builder, com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntryOrBuilder> 
+          com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry, com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.Builder, com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntryOrBuilder>
           getJobInfoFieldBuilder() {
         if (jobInfoBuilder_ == null) {
           jobInfoBuilder_ = new com.google.protobuf.SingleFieldBuilder<
@@ -3123,7 +3123,7 @@ public final class SearchJobProtos {
           getMessageBytes() {
         java.lang.Object ref = message_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
           message_ = b;
@@ -3378,7 +3378,7 @@ public final class SearchJobProtos {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
@@ -3394,7 +3394,7 @@ public final class SearchJobProtos {
         getUserBytes() {
       java.lang.Object ref = user_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         user_ = b;
@@ -3691,19 +3691,19 @@ public final class SearchJobProtos {
 
       public final boolean isInitialized() {
         if (!hasAppAuth()) {
-          
+
           return false;
         }
         if (!hasUser()) {
-          
+
           return false;
         }
         if (!hasJobId()) {
-          
+
           return false;
         }
         if (!getAppAuth().isInitialized()) {
-          
+
           return false;
         }
         return true;
@@ -3832,7 +3832,7 @@ public final class SearchJobProtos {
        * <code>required .AppAuth app_auth = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
-          com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> 
+          com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder>
           getAppAuthFieldBuilder() {
         if (appAuthBuilder_ == null) {
           appAuthBuilder_ = new com.google.protobuf.SingleFieldBuilder<
@@ -3874,7 +3874,7 @@ public final class SearchJobProtos {
           getUserBytes() {
         java.lang.Object ref = user_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
           user_ = b;
@@ -3980,7 +3980,7 @@ public final class SearchJobProtos {
     /**
      * <code>repeated .JobInfoEntry pre_job_info = 2;</code>
      */
-    java.util.List<com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry> 
+    java.util.List<com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry>
         getPreJobInfoList();
     /**
      * <code>repeated .JobInfoEntry pre_job_info = 2;</code>
@@ -3993,7 +3993,7 @@ public final class SearchJobProtos {
     /**
      * <code>repeated .JobInfoEntry pre_job_info = 2;</code>
      */
-    java.util.List<? extends com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntryOrBuilder> 
+    java.util.List<? extends com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntryOrBuilder>
         getPreJobInfoOrBuilderList();
     /**
      * <code>repeated .JobInfoEntry pre_job_info = 2;</code>
@@ -4156,7 +4156,7 @@ public final class SearchJobProtos {
     /**
      * <code>repeated .JobInfoEntry pre_job_info = 2;</code>
      */
-    public java.util.List<? extends com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntryOrBuilder> 
+    public java.util.List<? extends com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntryOrBuilder>
         getPreJobInfoOrBuilderList() {
       return preJobInfo_;
     }
@@ -4197,7 +4197,7 @@ public final class SearchJobProtos {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
@@ -4213,7 +4213,7 @@ public final class SearchJobProtos {
         getMessageBytes() {
       java.lang.Object ref = message_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         message_ = b;
@@ -4489,7 +4489,7 @@ public final class SearchJobProtos {
               preJobInfoBuilder_ = null;
               preJobInfo_ = other.preJobInfo_;
               bitField0_ = (bitField0_ & ~0x00000002);
-              preJobInfoBuilder_ = 
+              preJobInfoBuilder_ =
                 com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
                    getPreJobInfoFieldBuilder() : null;
             } else {
@@ -4508,12 +4508,12 @@ public final class SearchJobProtos {
 
       public final boolean isInitialized() {
         if (!hasSuccess()) {
-          
+
           return false;
         }
         for (int i = 0; i < getPreJobInfoCount(); i++) {
           if (!getPreJobInfo(i).isInitialized()) {
-            
+
             return false;
           }
         }
@@ -4767,7 +4767,7 @@ public final class SearchJobProtos {
       /**
        * <code>repeated .JobInfoEntry pre_job_info = 2;</code>
        */
-      public java.util.List<? extends com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntryOrBuilder> 
+      public java.util.List<? extends com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntryOrBuilder>
            getPreJobInfoOrBuilderList() {
         if (preJobInfoBuilder_ != null) {
           return preJobInfoBuilder_.getMessageOrBuilderList();
@@ -4793,12 +4793,12 @@ public final class SearchJobProtos {
       /**
        * <code>repeated .JobInfoEntry pre_job_info = 2;</code>
        */
-      public java.util.List<com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.Builder> 
+      public java.util.List<com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.Builder>
            getPreJobInfoBuilderList() {
         return getPreJobInfoFieldBuilder().getBuilderList();
       }
       private com.google.protobuf.RepeatedFieldBuilder<
-          com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry, com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.Builder, com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntryOrBuilder> 
+          com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry, com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.Builder, com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntryOrBuilder>
           getPreJobInfoFieldBuilder() {
         if (preJobInfoBuilder_ == null) {
           preJobInfoBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
@@ -4841,7 +4841,7 @@ public final class SearchJobProtos {
           getMessageBytes() {
         java.lang.Object ref = message_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
           message_ = b;
@@ -5081,7 +5081,7 @@ public final class SearchJobProtos {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
@@ -5097,7 +5097,7 @@ public final class SearchJobProtos {
         getUserBytes() {
       java.lang.Object ref = user_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         user_ = b;
@@ -5357,15 +5357,15 @@ public final class SearchJobProtos {
 
       public final boolean isInitialized() {
         if (!hasAppAuth()) {
-          
+
           return false;
         }
         if (!hasUser()) {
-          
+
           return false;
         }
         if (!getAppAuth().isInitialized()) {
-          
+
           return false;
         }
         return true;
@@ -5494,7 +5494,7 @@ public final class SearchJobProtos {
        * <code>required .AppAuth app_auth = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
-          com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> 
+          com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder>
           getAppAuthFieldBuilder() {
         if (appAuthBuilder_ == null) {
           appAuthBuilder_ = new com.google.protobuf.SingleFieldBuilder<
@@ -5536,7 +5536,7 @@ public final class SearchJobProtos {
           getUserBytes() {
         java.lang.Object ref = user_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
           user_ = b;
@@ -5609,7 +5609,7 @@ public final class SearchJobProtos {
     /**
      * <code>repeated .JobInfoEntry job_info = 2;</code>
      */
-    java.util.List<com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry> 
+    java.util.List<com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry>
         getJobInfoList();
     /**
      * <code>repeated .JobInfoEntry job_info = 2;</code>
@@ -5622,7 +5622,7 @@ public final class SearchJobProtos {
     /**
      * <code>repeated .JobInfoEntry job_info = 2;</code>
      */
-    java.util.List<? extends com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntryOrBuilder> 
+    java.util.List<? extends com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntryOrBuilder>
         getJobInfoOrBuilderList();
     /**
      * <code>repeated .JobInfoEntry job_info = 2;</code>
@@ -5785,7 +5785,7 @@ public final class SearchJobProtos {
     /**
      * <code>repeated .JobInfoEntry job_info = 2;</code>
      */
-    public java.util.List<? extends com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntryOrBuilder> 
+    public java.util.List<? extends com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntryOrBuilder>
         getJobInfoOrBuilderList() {
       return jobInfo_;
     }
@@ -5826,7 +5826,7 @@ public final class SearchJobProtos {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
@@ -5842,7 +5842,7 @@ public final class SearchJobProtos {
         getMessageBytes() {
       java.lang.Object ref = message_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         message_ = b;
@@ -6118,7 +6118,7 @@ public final class SearchJobProtos {
               jobInfoBuilder_ = null;
               jobInfo_ = other.jobInfo_;
               bitField0_ = (bitField0_ & ~0x00000002);
-              jobInfoBuilder_ = 
+              jobInfoBuilder_ =
                 com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
                    getJobInfoFieldBuilder() : null;
             } else {
@@ -6137,12 +6137,12 @@ public final class SearchJobProtos {
 
       public final boolean isInitialized() {
         if (!hasSuccess()) {
-          
+
           return false;
         }
         for (int i = 0; i < getJobInfoCount(); i++) {
           if (!getJobInfo(i).isInitialized()) {
-            
+
             return false;
           }
         }
@@ -6396,7 +6396,7 @@ public final class SearchJobProtos {
       /**
        * <code>repeated .JobInfoEntry job_info = 2;</code>
        */
-      public java.util.List<? extends com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntryOrBuilder> 
+      public java.util.List<? extends com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntryOrBuilder>
            getJobInfoOrBuilderList() {
         if (jobInfoBuilder_ != null) {
           return jobInfoBuilder_.getMessageOrBuilderList();
@@ -6422,12 +6422,12 @@ public final class SearchJobProtos {
       /**
        * <code>repeated .JobInfoEntry job_info = 2;</code>
        */
-      public java.util.List<com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.Builder> 
+      public java.util.List<com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.Builder>
            getJobInfoBuilderList() {
         return getJobInfoFieldBuilder().getBuilderList();
       }
       private com.google.protobuf.RepeatedFieldBuilder<
-          com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry, com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.Builder, com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntryOrBuilder> 
+          com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry, com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.Builder, com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntryOrBuilder>
           getJobInfoFieldBuilder() {
         if (jobInfoBuilder_ == null) {
           jobInfoBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
@@ -6470,7 +6470,7 @@ public final class SearchJobProtos {
           getMessageBytes() {
         java.lang.Object ref = message_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
           message_ = b;
@@ -6725,7 +6725,7 @@ public final class SearchJobProtos {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
@@ -6741,7 +6741,7 @@ public final class SearchJobProtos {
         getUserBytes() {
       java.lang.Object ref = user_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         user_ = b;
@@ -7038,19 +7038,19 @@ public final class SearchJobProtos {
 
       public final boolean isInitialized() {
         if (!hasAppAuth()) {
-          
+
           return false;
         }
         if (!hasUser()) {
-          
+
           return false;
         }
         if (!hasScriptId()) {
-          
+
           return false;
         }
         if (!getAppAuth().isInitialized()) {
-          
+
           return false;
         }
         return true;
@@ -7179,7 +7179,7 @@ public final class SearchJobProtos {
        * <code>required .AppAuth app_auth = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
-          com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> 
+          com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder>
           getAppAuthFieldBuilder() {
         if (appAuthBuilder_ == null) {
           appAuthBuilder_ = new com.google.protobuf.SingleFieldBuilder<
@@ -7221,7 +7221,7 @@ public final class SearchJobProtos {
           getUserBytes() {
         java.lang.Object ref = user_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
           user_ = b;
@@ -7492,7 +7492,7 @@ public final class SearchJobProtos {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
@@ -7508,7 +7508,7 @@ public final class SearchJobProtos {
         getScriptTypeBytes() {
       java.lang.Object ref = scriptType_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         scriptType_ = b;
@@ -7535,7 +7535,7 @@ public final class SearchJobProtos {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
@@ -7551,7 +7551,7 @@ public final class SearchJobProtos {
         getMessageBytes() {
       java.lang.Object ref = message_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         message_ = b;
@@ -7813,11 +7813,11 @@ public final class SearchJobProtos {
 
       public final boolean isInitialized() {
         if (!hasSuccess()) {
-          
+
           return false;
         }
         if (!hasScriptType()) {
-          
+
           return false;
         }
         return true;
@@ -7904,7 +7904,7 @@ public final class SearchJobProtos {
           getScriptTypeBytes() {
         java.lang.Object ref = scriptType_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
           scriptType_ = b;
@@ -7978,7 +7978,7 @@ public final class SearchJobProtos {
           getMessageBytes() {
         java.lang.Object ref = message_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
           message_ = b;
@@ -8238,7 +8238,7 @@ public final class SearchJobProtos {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
@@ -8254,7 +8254,7 @@ public final class SearchJobProtos {
         getUserBytes() {
       java.lang.Object ref = user_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         user_ = b;
@@ -8281,7 +8281,7 @@ public final class SearchJobProtos {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
@@ -8297,7 +8297,7 @@ public final class SearchJobProtos {
         getTitleBytes() {
       java.lang.Object ref = title_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         title_ = b;
@@ -8580,19 +8580,19 @@ public final class SearchJobProtos {
 
       public final boolean isInitialized() {
         if (!hasAppAuth()) {
-          
+
           return false;
         }
         if (!hasUser()) {
-          
+
           return false;
         }
         if (!hasTitle()) {
-          
+
           return false;
         }
         if (!getAppAuth().isInitialized()) {
-          
+
           return false;
         }
         return true;
@@ -8721,7 +8721,7 @@ public final class SearchJobProtos {
        * <code>required .AppAuth app_auth = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
-          com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> 
+          com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder>
           getAppAuthFieldBuilder() {
         if (appAuthBuilder_ == null) {
           appAuthBuilder_ = new com.google.protobuf.SingleFieldBuilder<
@@ -8763,7 +8763,7 @@ public final class SearchJobProtos {
           getUserBytes() {
         java.lang.Object ref = user_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
           user_ = b;
@@ -8837,7 +8837,7 @@ public final class SearchJobProtos {
           getTitleBytes() {
         java.lang.Object ref = title_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
           title_ = b;
@@ -9104,7 +9104,7 @@ public final class SearchJobProtos {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
@@ -9120,7 +9120,7 @@ public final class SearchJobProtos {
         getMessageBytes() {
       java.lang.Object ref = message_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         message_ = b;
@@ -9393,15 +9393,15 @@ public final class SearchJobProtos {
 
       public final boolean isInitialized() {
         if (!hasSuccess()) {
-          
+
           return false;
         }
         if (!hasJobInfo()) {
-          
+
           return false;
         }
         if (!getJobInfo().isInitialized()) {
-          
+
           return false;
         }
         return true;
@@ -9563,7 +9563,7 @@ public final class SearchJobProtos {
        * <code>required .JobInfoEntry job_info = 2;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
-          com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry, com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.Builder, com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntryOrBuilder> 
+          com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry, com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.Builder, com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntryOrBuilder>
           getJobInfoFieldBuilder() {
         if (jobInfoBuilder_ == null) {
           jobInfoBuilder_ = new com.google.protobuf.SingleFieldBuilder<
@@ -9605,7 +9605,7 @@ public final class SearchJobProtos {
           getMessageBytes() {
         java.lang.Object ref = message_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
           message_ = b;
@@ -9865,7 +9865,7 @@ public final class SearchJobProtos {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
@@ -9881,7 +9881,7 @@ public final class SearchJobProtos {
         getUserBytes() {
       java.lang.Object ref = user_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         user_ = b;
@@ -9908,7 +9908,7 @@ public final class SearchJobProtos {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
@@ -9924,7 +9924,7 @@ public final class SearchJobProtos {
         getBizNameBytes() {
       java.lang.Object ref = bizName_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         bizName_ = b;
@@ -10207,19 +10207,19 @@ public final class SearchJobProtos {
 
       public final boolean isInitialized() {
         if (!hasAppAuth()) {
-          
+
           return false;
         }
         if (!hasUser()) {
-          
+
           return false;
         }
         if (!hasBizName()) {
-          
+
           return false;
         }
         if (!getAppAuth().isInitialized()) {
-          
+
           return false;
         }
         return true;
@@ -10348,7 +10348,7 @@ public final class SearchJobProtos {
        * <code>required .AppAuth app_auth = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
-          com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> 
+          com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder>
           getAppAuthFieldBuilder() {
         if (appAuthBuilder_ == null) {
           appAuthBuilder_ = new com.google.protobuf.SingleFieldBuilder<
@@ -10390,7 +10390,7 @@ public final class SearchJobProtos {
           getUserBytes() {
         java.lang.Object ref = user_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
           user_ = b;
@@ -10464,7 +10464,7 @@ public final class SearchJobProtos {
           getBizNameBytes() {
         java.lang.Object ref = bizName_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
           bizName_ = b;
@@ -10713,7 +10713,7 @@ public final class SearchJobProtos {
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
+        com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
@@ -10729,7 +10729,7 @@ public final class SearchJobProtos {
         getMessageBytes() {
       java.lang.Object ref = message_;
       if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
+        com.google.protobuf.ByteString b =
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         message_ = b;
@@ -10989,11 +10989,11 @@ public final class SearchJobProtos {
 
       public final boolean isInitialized() {
         if (!hasSuccess()) {
-          
+
           return false;
         }
         if (!hasBizId()) {
-          
+
           return false;
         }
         return true;
@@ -11113,7 +11113,7 @@ public final class SearchJobProtos {
           getMessageBytes() {
         java.lang.Object ref = message_;
         if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString b =
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
           message_ = b;

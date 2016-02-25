@@ -16,4 +16,7 @@ import com.mogujie.jarvis.dto.generate.Job;
  */
 public interface DiyJobMapper {
     Job selectByScriptId(int scriptId);
+
+    // add by @qingyuan
+    Job selectByScriptTitle(String title);
 }

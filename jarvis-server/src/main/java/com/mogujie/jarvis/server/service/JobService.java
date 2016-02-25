@@ -484,4 +484,9 @@ public class JobService {
         return scheduleExpression;
     }
 
+    public Job searchJobByScriptTitle(String title) {
+        Job job = diyJobMapper.selectByScriptTitle(title);
+        return job;
+    }
+
 }
