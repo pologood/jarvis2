@@ -855,7 +855,15 @@ public class JobActor extends UntypedActor {
     private JobInfoEntry convertJob2JobInfo(Job job) throws NotFoundException {
         long jobId = job.getJobId();
         List<ScheduleExpression> cronExps = Lists.newArrayList(jobService.get(jobId).getScheduleExpressions().values());
-        String cronExp = cronExps.get(0).getExpression();
+        String cronExp = cronExps.size() > 0 ? cronExps.get(0).getExpression() : null;
+        String recevier = "";
+        if (alarmService.getAlarmByJobId(jobId) != null) {
+            recevier = alarmService.getAlarmByJobId(jobId).getReceiver();
+        }
+        String bizNmae = "";
+        if (bizService.get(job.getBizGroupId()) != null) {
+            bizNmae = bizService.get(job.getBizGroupId()).getName();
+        }
         JobInfoEntry jobInfo = JobInfoEntry.newBuilder()
                 .setJobId(job.getJobId())
                 .setJobName(job.getJobName())
@@ -865,9 +873,9 @@ public class JobActor extends UntypedActor {
                 .setContent(job.getContent())
                 .setPriority(job.getPriority())
                 .setStatus(job.getStatus())
-                .setReceiver(alarmService.getAlarmByJobId(jobId).getReceiver())
+                .setReceiver(recevier)
                 .setAppName(appService.getAppNameByAppId(job.getAppId()))
-                .setBizName(bizService.get(job.getBizGroupId()).getName())
+                .setBizName(bizNmae)
                 .setCreateTime(job.getCreateTime().getTime())
                 .setUpdateTime(job.getUpdateTime().getTime())
                 .setStartDate(job.getActiveStartDate().getTime())

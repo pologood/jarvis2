@@ -201,7 +201,7 @@ public class JarvisController extends AbstractController {
             } else {
                 TasksResult result = new TasksResult();
                 result.setSuccess(false);
-                result.setMessage("通过srciptId=" + scriptId + "查找job失败");
+                result.setMessage("通过srciptId=" + scriptId + "查找job失败：" + response.getMessage());
                 return result;
             }
         } catch (Exception e) {
