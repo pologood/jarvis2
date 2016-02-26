@@ -855,7 +855,7 @@ public class JobActor extends UntypedActor {
     private JobInfoEntry convertJob2JobInfo(Job job) throws NotFoundException {
         long jobId = job.getJobId();
         List<ScheduleExpression> cronExps = Lists.newArrayList(jobService.get(jobId).getScheduleExpressions().values());
-        String cronExp = cronExps.size() > 0 ? cronExps.get(0).getExpression() : null;
+        String cronExp = cronExps.size() > 0 ? cronExps.get(0).getExpression() : "";
         String recevier = "";
         if (alarmService.getAlarmByJobId(jobId) != null) {
             recevier = alarmService.getAlarmByJobId(jobId).getReceiver();
