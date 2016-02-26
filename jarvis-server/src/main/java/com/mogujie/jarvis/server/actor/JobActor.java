@@ -24,6 +24,7 @@ import akka.actor.Props;
 import akka.actor.UntypedActor;
 
 import com.google.common.base.Throwables;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Range;
 import com.google.common.collect.Sets;
 import com.mogujie.jarvis.core.JarvisConstants;
@@ -853,7 +854,7 @@ public class JobActor extends UntypedActor {
 
     private JobInfoEntry convertJob2JobInfo(Job job) throws NotFoundException {
         long jobId = job.getJobId();
-        List<ScheduleExpression> cronExps = (List<ScheduleExpression>) jobService.get(jobId).getScheduleExpressions().values();
+        List<ScheduleExpression> cronExps = Lists.newArrayList(jobService.get(jobId).getScheduleExpressions().values());
         String cronExp = cronExps.get(0).getExpression();
         JobInfoEntry jobInfo = JobInfoEntry.newBuilder()
                 .setJobId(job.getJobId())
