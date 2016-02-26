@@ -1,5 +1,5 @@
 /*
- * 蘑菇街 Inc. 
+ * 蘑菇街 Inc.
  * Copyright (c) 2010-2015 All Rights Reserved.
  *
  * Author: muming
@@ -8,10 +8,6 @@
 
 package com.mogujie.jarvis.server.actor;
 
-import akka.actor.Props;
-import akka.actor.UntypedActor;
-import org.mybatis.guice.transactional.Transactional;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -19,14 +15,24 @@ import java.util.UUID;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
+import org.mybatis.guice.transactional.Transactional;
+
+import akka.actor.Props;
+import akka.actor.UntypedActor;
 
 import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.core.domain.OperationMode;
 import com.mogujie.jarvis.core.exception.NotFoundException;
+import com.mogujie.jarvis.core.util.ExceptionUtil;
 import com.mogujie.jarvis.dto.generate.App;
 import com.mogujie.jarvis.dto.generate.AppWorkerGroup;
 import com.mogujie.jarvis.protocol.ApplicationProtos;
-import com.mogujie.jarvis.protocol.ApplicationProtos.*;
+import com.mogujie.jarvis.protocol.ApplicationProtos.RestCreateApplicationRequest;
+import com.mogujie.jarvis.protocol.ApplicationProtos.RestModifyApplicationRequest;
+import com.mogujie.jarvis.protocol.ApplicationProtos.RestSetApplicationWorkerGroupRequest;
+import com.mogujie.jarvis.protocol.ApplicationProtos.ServerCreateApplicationResponse;
+import com.mogujie.jarvis.protocol.ApplicationProtos.ServerModifyApplicationResponse;
+import com.mogujie.jarvis.protocol.ApplicationProtos.ServerSetApplicationWorkerGroupResponse;
 import com.mogujie.jarvis.server.dispatcher.TaskManager;
 import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.guice.Injectors;
@@ -79,7 +85,7 @@ public class AppActor extends UntypedActor {
             response = ServerCreateApplicationResponse.newBuilder().setSuccess(true).setAppId(app.getAppId()).build();
             getSender().tell(response, getSelf());
         } catch (Exception ex) {
-            response = ServerCreateApplicationResponse.newBuilder().setSuccess(false).setMessage(ex.getMessage()).build();
+            response = ServerCreateApplicationResponse.newBuilder().setSuccess(false).setMessage(ExceptionUtil.getErrMsg(ex)).build();
             getSender().tell(response, getSelf());
             logger.error("", ex);
             throw ex;
@@ -99,7 +105,7 @@ public class AppActor extends UntypedActor {
             response = ServerModifyApplicationResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());
         } catch (Exception ex) {
-            response = ServerModifyApplicationResponse.newBuilder().setSuccess(false).setMessage(ex.getMessage()).build();
+            response = ServerModifyApplicationResponse.newBuilder().setSuccess(false).setMessage(ExceptionUtil.getErrMsg(ex)).build();
             getSender().tell(response, getSelf());
             logger.error("", ex);
             throw ex;
@@ -124,7 +130,7 @@ public class AppActor extends UntypedActor {
             }
             response = ServerSetApplicationWorkerGroupResponse.newBuilder().setSuccess(true).build();
         } catch (Exception ex) {
-            response = ServerSetApplicationWorkerGroupResponse.newBuilder().setSuccess(false).setMessage(ex.getMessage()).build();
+            response = ServerSetApplicationWorkerGroupResponse.newBuilder().setSuccess(false).setMessage(ExceptionUtil.getErrMsg(ex)).build();
             logger.error("", ex);
             throw ex;
         } finally {

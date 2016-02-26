@@ -92,7 +92,8 @@ public class JobDependStatus {
             List<Task> tasks = getDependTasks(scheduleTime);
             List<Boolean> taskStatus = new ArrayList<Boolean>();
             for (Task task : tasks) {
-                boolean status = (task.getStatus() == TaskStatus.SUCCESS.getValue()) ? true : false;
+                boolean status = (task.getStatus() == TaskStatus.SUCCESS.getValue() ||
+                        task.getStatus() == TaskStatus.REMOVED.getValue()) ? true : false;
                 taskStatus.add(status);
             }
             pass = dependencyStrategy.check(taskStatus);

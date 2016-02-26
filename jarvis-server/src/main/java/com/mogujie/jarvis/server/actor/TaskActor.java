@@ -26,7 +26,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Range;
 import com.mogujie.jarvis.core.JarvisConstants;
-import com.mogujie.jarvis.core.domain.IdType;
 import com.mogujie.jarvis.core.domain.JobRelationType;
 import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.core.domain.TaskStatus;
@@ -34,7 +33,7 @@ import com.mogujie.jarvis.core.domain.TaskType;
 import com.mogujie.jarvis.core.domain.WorkerInfo;
 import com.mogujie.jarvis.core.expression.DependencyExpression;
 import com.mogujie.jarvis.core.observer.Event;
-import com.mogujie.jarvis.core.util.IdUtils;
+import com.mogujie.jarvis.core.util.ExceptionUtil;
 import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.protocol.KillTaskProtos.RestServerKillTaskRequest;
 import com.mogujie.jarvis.protocol.KillTaskProtos.ServerKillTaskRequest;
@@ -56,16 +55,14 @@ import com.mogujie.jarvis.protocol.RemoveTaskProtos.RestServerRemoveTaskRequest;
 import com.mogujie.jarvis.protocol.RemoveTaskProtos.ServerRemoveTaskResponse;
 import com.mogujie.jarvis.protocol.RetryTaskProtos.RestServerRetryTaskRequest;
 import com.mogujie.jarvis.protocol.RetryTaskProtos.ServerRetryTaskResponse;
-import com.mogujie.jarvis.server.dispatcher.PriorityTaskQueue;
 import com.mogujie.jarvis.server.dispatcher.TaskManager;
 import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.domain.JobDependencyEntry;
-import com.mogujie.jarvis.server.domain.RetryType;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
-import com.mogujie.jarvis.server.scheduler.TaskRetryScheduler;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
 import com.mogujie.jarvis.server.scheduler.event.ManualRerunTaskEvent;
+import com.mogujie.jarvis.server.scheduler.event.RemoveTaskEvent;
 import com.mogujie.jarvis.server.scheduler.event.RetryTaskEvent;
 import com.mogujie.jarvis.server.scheduler.event.SuccessEvent;
 import com.mogujie.jarvis.server.scheduler.event.UnhandleEvent;
@@ -145,19 +142,25 @@ public class TaskActor extends UntypedActor {
      */
     private void killTask(RestServerKillTaskRequest msg) throws Exception {
         LOGGER.info("start killTask");
-        ServerKillTaskResponse response = null;
-        String fullId = msg.getFullId();
-        long taskId = IdUtils.parse(fullId, IdType.TASK_ID);
-        WorkerInfo workerInfo = taskManager.getWorkerInfo(fullId);
-        if (workerInfo != null) {
-            ActorSelection actorSelection = getContext().actorSelection(workerInfo.getAkkaRootPath() + JarvisConstants.WORKER_AKKA_USER_PATH);
-            ServerKillTaskRequest serverRequest = ServerKillTaskRequest.newBuilder().setFullId(fullId).build();
-            WorkerKillTaskResponse workerResponse = (WorkerKillTaskResponse) FutureUtils.awaitResult(actorSelection, serverRequest, 30);
-            response = ServerKillTaskResponse.newBuilder().setSuccess(workerResponse.getSuccess()).setMessage(workerResponse.getMessage()).build();
-        } else {
-            response = ServerKillTaskResponse.newBuilder().setSuccess(false).setMessage("Kill task[" + taskId + "] failed").build();
+        ServerKillTaskResponse response;
+        try {
+            String fullId = msg.getFullId();
+            WorkerInfo workerInfo = taskManager.getWorkerInfo(fullId);
+            if (workerInfo != null) {
+                ActorSelection actorSelection = getContext().actorSelection(workerInfo.getAkkaRootPath() + JarvisConstants.WORKER_AKKA_USER_PATH);
+                ServerKillTaskRequest serverRequest = ServerKillTaskRequest.newBuilder().setFullId(fullId).build();
+                WorkerKillTaskResponse workerResponse = (WorkerKillTaskResponse) FutureUtils.awaitResult(actorSelection, serverRequest, 30);
+                response = ServerKillTaskResponse.newBuilder().setSuccess(workerResponse.getSuccess()).setMessage(workerResponse.getMessage()).build();
+            } else {
+                response = ServerKillTaskResponse.newBuilder().setSuccess(false).setMessage("can't find worker by fullId=" + fullId).build();
+            }
+            getSender().tell(response, getSelf());
+        } catch (Exception e) {
+            response = ServerKillTaskResponse.newBuilder().setSuccess(false).setMessage(ExceptionUtil.getErrMsg(e)).build();
+            getSender().tell(response, getSelf());
+            LOGGER.error("killTask error", e);
+            throw e;
         }
-        getSender().tell(response, getSelf());
     }
 
     /**
@@ -180,7 +183,7 @@ public class TaskActor extends UntypedActor {
             response = ServerRetryTaskResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());
         } catch (Exception ex) {
-            response = ServerRetryTaskResponse.newBuilder().setSuccess(false).setMessage(ex.getMessage()).build();
+            response = ServerRetryTaskResponse.newBuilder().setSuccess(false).setMessage(ExceptionUtil.getErrMsg(ex)).build();
             getSender().tell(response, getSelf());
             LOGGER.error("retryTask error", ex);
             throw ex;
@@ -195,72 +198,80 @@ public class TaskActor extends UntypedActor {
     @Transactional
     private void manualRerunTask(RestServerManualRerunTaskRequest msg) {
         LOGGER.info("start manualRerunTask");
-        List<Long> jobIdList = msg.getJobIdList();
-        List<Long> taskIdList = new ArrayList<Long>();
-        DateTime startDate = new DateTime(msg.getStartTime());
-        DateTime endDate = new DateTime(msg.getEndTime());
-        // 1.生成所有任务的执行计划
-        Range<DateTime> range = Range.closed(startDate, endDate);
-        Map<Long, List<TimePlanEntry>> planMap = PlanUtil.getReschedulePlan(jobIdList, range);
-        // 2.生成新的task
-        long scheduleTime = DateTime.now().getMillis();
-        for (long jobId : jobIdList) {
-            List<TimePlanEntry> planList = planMap.get(jobId);
-            for (TimePlanEntry planEntry : planList) {
-                // create new task
-                long dataTime = planEntry.getDateTime().getMillis();
-                long taskId = taskService.createTaskByJobId(jobId, scheduleTime, dataTime, TaskType.RERUN);
-                planEntry.setTaskId(taskId);
-                taskIdList.add(taskId);
+        ServerManualRerunTaskResponse response;
+        try {
+            List<Long> jobIdList = msg.getJobIdList();
+            List<Long> taskIdList = new ArrayList<Long>();
+            DateTime startDate = new DateTime(msg.getStartTime());
+            DateTime endDate = new DateTime(msg.getEndTime());
+            // 1.生成所有任务的执行计划
+            Range<DateTime> range = Range.closed(startDate, endDate);
+            Map<Long, List<TimePlanEntry>> planMap = PlanUtil.getReschedulePlan(jobIdList, range);
+            // 2.生成新的task
+            long scheduleTime = DateTime.now().getMillis();
+            for (long jobId : jobIdList) {
+                List<TimePlanEntry> planList = planMap.get(jobId);
+                for (TimePlanEntry planEntry : planList) {
+                    // create new task
+                    long dataTime = planEntry.getDateTime().getMillis();
+                    long taskId = taskService.createTaskByJobId(jobId, scheduleTime, dataTime, TaskType.RERUN);
+                    planEntry.setTaskId(taskId);
+                    taskIdList.add(taskId);
+                }
             }
-        }
-        // 3.确定task依赖关系，添加DAGTask到TaskGraph中
-        for (long jobId : jobIdList) {
-            List<TimePlanEntry> planList = planMap.get(jobId);
-            for (int i = 0; i < planList.size(); i++) {
-                TimePlanEntry planEntry = planList.get(i);
-                long taskId = planEntry.getTaskId();
-                long dataTime = planEntry.getDateTime().getMillis();
-                Map<Long, List<Long>> dependTaskIdMap = Maps.newHashMap();
-                Map<Long, JobDependencyEntry> dependencyMap = jobService.get(jobId).getDependencies();
-                if (dependencyMap != null) {
-                    for (Entry<Long, JobDependencyEntry> entry : dependencyMap.entrySet()) {
-                        long preJobId = entry.getKey();
-                        if (jobIdList.contains(preJobId)) {
-                            JobDependencyEntry dependencyEntry = entry.getValue();
-                            DependencyExpression dependencyExpression = dependencyEntry.getDependencyExpression();
-                            List<Long> dependTaskIds = getDependTaskIds(planMap.get(preJobId), dataTime, dependencyExpression);
-                            dependTaskIdMap.put(preJobId, dependTaskIds);
+            // 3.确定task依赖关系，添加DAGTask到TaskGraph中
+            for (long jobId : jobIdList) {
+                List<TimePlanEntry> planList = planMap.get(jobId);
+                for (int i = 0; i < planList.size(); i++) {
+                    TimePlanEntry planEntry = planList.get(i);
+                    long taskId = planEntry.getTaskId();
+                    long dataTime = planEntry.getDateTime().getMillis();
+                    Map<Long, List<Long>> dependTaskIdMap = Maps.newHashMap();
+                    Map<Long, JobDependencyEntry> dependencyMap = jobService.get(jobId).getDependencies();
+                    if (dependencyMap != null) {
+                        for (Entry<Long, JobDependencyEntry> entry : dependencyMap.entrySet()) {
+                            long preJobId = entry.getKey();
+                            if (jobIdList.contains(preJobId)) {
+                                JobDependencyEntry dependencyEntry = entry.getValue();
+                                DependencyExpression dependencyExpression = dependencyEntry.getDependencyExpression();
+                                List<Long> dependTaskIds = getDependTaskIds(planMap.get(preJobId), dataTime, dependencyExpression);
+                                dependTaskIdMap.put(preJobId, dependTaskIds);
+                            }
                         }
                     }
-                }
-                //如果是串行任务
-                if (jobService.get(jobId).getJob().getIsSerial()) {
-                    if (i > 0) {
-                        // 增加自依赖
-                        long preTaskId = planList.get(i - 1).getTaskId();
-                        List<Long> dependTaskIds = Lists.newArrayList(preTaskId);
-                        dependTaskIdMap.put(jobId, dependTaskIds);
+                    //如果是串行任务
+                    if (jobService.get(jobId).getJob().getIsSerial()) {
+                        if (i > 0) {
+                            // 增加自依赖
+                            long preTaskId = planList.get(i - 1).getTaskId();
+                            List<Long> dependTaskIds = Lists.newArrayList(preTaskId);
+                            dependTaskIdMap.put(jobId, dependTaskIds);
+                        }
                     }
+                    // add to taskGraph
+                    DAGTask dagTask = new DAGTask(jobId, taskId, scheduleTime, dataTime, dependTaskIdMap);
+                    taskGraph.addTask(taskId, dagTask);
                 }
-                // add to taskGraph
-                DAGTask dagTask = new DAGTask(jobId, taskId, scheduleTime, dataTime, dependTaskIdMap);
-                taskGraph.addTask(taskId, dagTask);
             }
-        }
-        // 4.添加依赖关系
-        for (long taskId : taskIdList) {
-            DAGTask dagTask = taskGraph.getTask(taskId);
-            List<Long> dependTaskIds = dagTask.getDependTaskIds();
-            for (long parentId : dependTaskIds) {
-                taskGraph.addDependency(parentId, taskId);
+            // 4.添加依赖关系
+            for (long taskId : taskIdList) {
+                DAGTask dagTask = taskGraph.getTask(taskId);
+                List<Long> dependTaskIds = dagTask.getDependTaskIds();
+                for (long parentId : dependTaskIds) {
+                    taskGraph.addDependency(parentId, taskId);
+                }
             }
-        }
-        // 5. 重跑任务
-        controller.notify(new ManualRerunTaskEvent(taskIdList));
+            // 5. 重跑任务
+            controller.notify(new ManualRerunTaskEvent(taskIdList));
 
-        ServerManualRerunTaskResponse response = ServerManualRerunTaskResponse.newBuilder().setSuccess(true).build();
-        getSender().tell(response, getSelf());
+            response = ServerManualRerunTaskResponse.newBuilder().setSuccess(true).build();
+            getSender().tell(response, getSelf());
+        } catch (Exception e) {
+            response = ServerManualRerunTaskResponse.newBuilder().setSuccess(false).setMessage(ExceptionUtil.getErrMsg(e)).build();
+            getSender().tell(response, getSelf());
+            LOGGER.error("manualRerunTask error", e);
+            throw e;
+        }
     }
 
     private List<Long> getDependTaskIds(List<TimePlanEntry> planList, long dataTime, DependencyExpression dependencyExpression) {
@@ -290,22 +301,30 @@ public class TaskActor extends UntypedActor {
      */
     private void modifyTaskStatus(RestServerModifyTaskStatusRequest msg) {
         LOGGER.info("start modifyTaskStatus");
-        long taskId = msg.getTaskId();
-        TaskStatus status = TaskStatus.parseValue(msg.getStatus());
-        Event event = new UnhandleEvent();
-        String reason = "Manual modify task status.";
-        if (status.equals(TaskStatus.SUCCESS)) {
-            Task task = taskService.get(taskId);
-            event = new SuccessEvent(task.getJobId(), taskId, task.getScheduleTime().getTime(), TaskType.parseValue(task.getType()), reason);
-        } else if (status.equals(TaskStatus.FAILED)) {
-            event = new FailedEvent(taskId, reason);
-        }
-        // handle success/failed event
-        JobSchedulerController schedulerController = JobSchedulerController.getInstance();
-        schedulerController.notify(event);
+        ServerModifyTaskStatusResponse response;
+        try {
+            long taskId = msg.getTaskId();
+            TaskStatus status = TaskStatus.parseValue(msg.getStatus());
+            Event event = new UnhandleEvent();
+            String reason = "Manual modify task status.";
+            if (status.equals(TaskStatus.SUCCESS)) {
+                Task task = taskService.get(taskId);
+                event = new SuccessEvent(task.getJobId(), taskId, task.getScheduleTime().getTime(), TaskType.parseValue(task.getType()), reason);
+            } else if (status.equals(TaskStatus.FAILED)) {
+                event = new FailedEvent(taskId, reason);
+            }
+            // handle success/failed event
+            JobSchedulerController schedulerController = JobSchedulerController.getInstance();
+            schedulerController.notify(event);
 
-        ServerModifyTaskStatusResponse response = ServerModifyTaskStatusResponse.newBuilder().setSuccess(true).build();
-        getSender().tell(response, getSelf());
+            response = ServerModifyTaskStatusResponse.newBuilder().setSuccess(true).build();
+            getSender().tell(response, getSelf());
+        } catch (Exception e) {
+            response = ServerModifyTaskStatusResponse.newBuilder().setSuccess(false).setMessage(ExceptionUtil.getErrMsg(e)).build();
+            getSender().tell(response, getSelf());
+            LOGGER.error("modifyTaskStatus error", e);
+            throw e;
+        }
     }
 
     /**
@@ -341,7 +360,7 @@ public class TaskActor extends UntypedActor {
             getSender().tell(response, getSelf());
 
         } catch (Exception e) {
-            response = ServerQueryTaskRelationResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
+            response = ServerQueryTaskRelationResponse.newBuilder().setSuccess(false).setMessage(ExceptionUtil.getErrMsg(e)).build();
             getSender().tell(response, getSelf());
             throw e;
         }
@@ -367,7 +386,7 @@ public class TaskActor extends UntypedActor {
             }
             getSender().tell(response, getSelf());
         } catch (Exception e) {
-            response = ServerQueryTaskStatusResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
+            response = ServerQueryTaskStatusResponse.newBuilder().setSuccess(false).setMessage(ExceptionUtil.getErrMsg(e)).build();
             getSender().tell(response, getSelf());
             throw e;
         }
@@ -383,24 +402,16 @@ public class TaskActor extends UntypedActor {
         ServerRemoveTaskResponse response;
         try {
             long taskId = msg.getTaskId();
-            // 1. update taskService
-            taskService.updateStatus(taskId, TaskStatus.REMOVED);
-            // 2. remove from taskGraph
-            taskGraph.removeTask(taskId);
-            // 3. remove from TaskQueue
-            PriorityTaskQueue taskQueue = Injectors.getInjector().getInstance(PriorityTaskQueue.class);
             Task task = taskService.get(taskId);
-            String fullId = IdUtils.getFullId(task.getJobId(), taskId, task.getAttemptId());
-            taskQueue.removeByKey(fullId);
-            // 4. remove from RetryScheduler
-            String jobIdWithTaskId = fullId.replaceAll("_\\d+$", "");
-            TaskRetryScheduler retryScheduler = TaskRetryScheduler.INSTANCE;
-            retryScheduler.remove(jobIdWithTaskId, RetryType.FAILED_RETRY);
-            retryScheduler.remove(jobIdWithTaskId, RetryType.REJECT_RETRY);
+            long jobId = task.getJobId();
+            long scheduleTime = task.getScheduleTime().getTime();
+            TaskType taskType = TaskType.parseValue(task.getType());
+            RemoveTaskEvent removeTaskEvent = new RemoveTaskEvent(jobId, taskId, scheduleTime, taskType);
+            controller.notify(removeTaskEvent);
             response = ServerRemoveTaskResponse.newBuilder().setSuccess(true).setMessage("task has been removed").build();
             getSender().tell(response, getSelf());
         } catch (Exception e) {
-            response = ServerRemoveTaskResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
+            response = ServerRemoveTaskResponse.newBuilder().setSuccess(false).setMessage(ExceptionUtil.getErrMsg(e)).build();
             getSender().tell(response, getSelf());
             throw e;
         }
@@ -428,7 +439,7 @@ public class TaskActor extends UntypedActor {
             response = builder.setSuccess(true).build();
             getSender().tell(response, getSelf());
         } catch (Exception e) {
-            response = ServerQueryTaskByJobIdResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
+            response = ServerQueryTaskByJobIdResponse.newBuilder().setSuccess(false).setMessage(ExceptionUtil.getErrMsg(e)).build();
             getSender().tell(response, getSelf());
             throw e;
         }

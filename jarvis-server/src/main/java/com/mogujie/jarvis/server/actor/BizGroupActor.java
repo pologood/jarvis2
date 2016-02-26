@@ -7,29 +7,32 @@
 
 package com.mogujie.jarvis.server.actor;
 
-import akka.actor.Props;
-import akka.actor.UntypedActor;
-import com.mogujie.jarvis.core.domain.MessageType;
-import com.mogujie.jarvis.core.exception.NotFoundException;
-import com.mogujie.jarvis.dto.generate.BizGroup;
-import com.mogujie.jarvis.protocol.BizGroupProtos.RestCreateBizGroupRequest;
-import com.mogujie.jarvis.protocol.BizGroupProtos.ServerCreateBizGroupResponse;
-import com.mogujie.jarvis.protocol.BizGroupProtos.RestModifyBizGroupRequest;
-import com.mogujie.jarvis.protocol.BizGroupProtos.ServerModifyBizGroupResponse;
-import com.mogujie.jarvis.protocol.BizGroupProtos.RestDeleteBizGroupRequest;
-import com.mogujie.jarvis.protocol.BizGroupProtos.ServerDeleteBizGroupResponse;
-import com.mogujie.jarvis.server.domain.ActorEntry;
-import com.mogujie.jarvis.server.guice.Injectors;
-import com.mogujie.jarvis.server.service.BizGroupService;
-import com.mogujie.jarvis.server.service.ValidService;
-import com.mogujie.jarvis.server.service.ValidService.CheckMode;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 import org.mybatis.guice.transactional.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
+import akka.actor.Props;
+import akka.actor.UntypedActor;
+
+import com.mogujie.jarvis.core.domain.MessageType;
+import com.mogujie.jarvis.core.exception.NotFoundException;
+import com.mogujie.jarvis.core.util.ExceptionUtil;
+import com.mogujie.jarvis.dto.generate.BizGroup;
+import com.mogujie.jarvis.protocol.BizGroupProtos.RestCreateBizGroupRequest;
+import com.mogujie.jarvis.protocol.BizGroupProtos.RestDeleteBizGroupRequest;
+import com.mogujie.jarvis.protocol.BizGroupProtos.RestModifyBizGroupRequest;
+import com.mogujie.jarvis.protocol.BizGroupProtos.ServerCreateBizGroupResponse;
+import com.mogujie.jarvis.protocol.BizGroupProtos.ServerDeleteBizGroupResponse;
+import com.mogujie.jarvis.protocol.BizGroupProtos.ServerModifyBizGroupResponse;
+import com.mogujie.jarvis.server.domain.ActorEntry;
+import com.mogujie.jarvis.server.guice.Injectors;
+import com.mogujie.jarvis.server.service.BizGroupService;
+import com.mogujie.jarvis.server.service.ValidService;
+import com.mogujie.jarvis.server.service.ValidService.CheckMode;
 
 public class BizGroupActor extends UntypedActor {
     private static final Logger logger = LogManager.getLogger();
@@ -73,7 +76,7 @@ public class BizGroupActor extends UntypedActor {
             response = ServerCreateBizGroupResponse.newBuilder().setSuccess(true).setId(bizGroup.getId()).build();
             getSender().tell(response, getSelf());
         } catch (Exception ex) {
-            response = ServerCreateBizGroupResponse.newBuilder().setSuccess(false).setMessage(ex.getMessage()).build();
+            response = ServerCreateBizGroupResponse.newBuilder().setSuccess(false).setMessage(ExceptionUtil.getErrMsg(ex)).build();
             getSender().tell(response, getSelf());
             logger.error("", ex);
             throw ex;
@@ -91,7 +94,7 @@ public class BizGroupActor extends UntypedActor {
             response = ServerModifyBizGroupResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());
         } catch (Exception ex) {
-            response = ServerModifyBizGroupResponse.newBuilder().setSuccess(false).setMessage(ex.getMessage()).build();
+            response = ServerModifyBizGroupResponse.newBuilder().setSuccess(false).setMessage(ExceptionUtil.getErrMsg(ex)).build();
             getSender().tell(response, getSelf());
             logger.error("", ex);
             throw ex;
@@ -108,7 +111,7 @@ public class BizGroupActor extends UntypedActor {
             response = ServerDeleteBizGroupResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());
         } catch (Exception ex) {
-            response = ServerDeleteBizGroupResponse.newBuilder().setSuccess(false).setMessage(ex.getMessage()).build();
+            response = ServerDeleteBizGroupResponse.newBuilder().setSuccess(false).setMessage(ExceptionUtil.getErrMsg(ex)).build();
             getSender().tell(response, getSelf());
             logger.error("", ex);
             throw ex;

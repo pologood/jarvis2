@@ -1,6 +1,10 @@
 package com.mogujie.jarvis.server.actor;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.net.SocketException;
@@ -17,8 +21,14 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import scala.concurrent.Await;
+import scala.concurrent.duration.Duration;
+import akka.actor.ActorSelection;
+import akka.actor.ActorSystem;
+
 import com.google.common.collect.Lists;
 import com.mogujie.jarvis.core.domain.CommonStrategy;
+import com.mogujie.jarvis.core.domain.JobContentType;
 import com.mogujie.jarvis.core.domain.JobPriority;
 import com.mogujie.jarvis.core.domain.JobRelationType;
 import com.mogujie.jarvis.core.domain.JobStatus;
@@ -56,11 +66,6 @@ import com.mogujie.jarvis.server.guice4test.Injectors4Test;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.util.FutureUtils;
 import com.typesafe.config.Config;
-
-import akka.actor.ActorSelection;
-import akka.actor.ActorSystem;
-import scala.concurrent.Await;
-import scala.concurrent.duration.Duration;
 
 /**
  * Location www.mogujie.com
@@ -175,6 +180,7 @@ public class TestJobActor extends DBTestBased {
         expressionEntries.add(expressionEntry);
         RestSubmitJobRequest request = RestSubmitJobRequest.newBuilder().addAllDependencyEntry(dependencyEntryList)
                 .addAllExpressionEntry(expressionEntries).setJobName("qh_test").setAppName("jarvis-web").setAppAuth(appAuth)
+                .setContentType(JobContentType.TEXT.getValue())
                 .setContent("show databases;").setPriority(JobPriority.HIGH.getValue()).setParameters("{\"para1\":\"1\",\"para2\":\"2\"}")
                 .setStatus(JobStatus.ENABLE.getValue()).setUser("qinghuo").setExpiredTime(86400).setFailedAttempts(3).setFailedInterval(3)
                 .setBizGroupId(11).setJobType("hive").setWorkerGroupId(1).build();

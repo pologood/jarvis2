@@ -8,6 +8,20 @@
 
 package com.mogujie.jarvis.rest.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+
+import org.joda.time.DateTime;
+
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Sets;
 import com.google.common.collect.Sets.SetView;
@@ -64,17 +78,6 @@ import com.mogujie.jarvis.rest.utils.ValidUtils;
 import com.mogujie.jarvis.rest.vo.JobDependencyVo;
 import com.mogujie.jarvis.rest.vo.JobScheduleExpVo;
 import com.mogujie.jarvis.rest.vo.JobVo;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import javax.ws.rs.FormParam;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import org.joda.time.DateTime;
 
 /**
  * 兼容旧jarvis rest接口
@@ -94,7 +97,7 @@ public class JarvisController extends AbstractController {
     @GET
     @Path("taskinfo")
     @Produces(MediaType.APPLICATION_JSON)
-    public TaskInfoResult getTaskInfo(@PathParam("scriptId") int scriptId) {
+    public TaskInfoResult getTaskInfo(@QueryParam("scriptId") int scriptId) {
         LOGGER.debug("根据scriptId查询taskinfo");
         try {
             String appToken = AppTokenUtils.generateToken(DateTime.now().getMillis(), APP_IRONMAN_KEY);
@@ -167,7 +170,7 @@ public class JarvisController extends AbstractController {
     @GET
     @Path("getdependencybyscript.htm")
     @Produces(MediaType.APPLICATION_JSON)
-    public TasksResult getDependencyByScript(@PathParam("scriptId") int scriptId) {
+    public TasksResult getDependencyByScript(@QueryParam("scriptId") int scriptId) {
         LOGGER.debug("根据scriptId查询依赖关系");
         try {
             String appToken = AppTokenUtils.generateToken(DateTime.now().getMillis(), APP_IRONMAN_KEY);
@@ -198,7 +201,7 @@ public class JarvisController extends AbstractController {
             } else {
                 TasksResult result = new TasksResult();
                 result.setSuccess(false);
-                result.setMessage("通过srciptId=" + scriptId + "查找job失败");
+                result.setMessage("通过srciptId=" + scriptId + "查找job失败：" + response.getMessage());
                 return result;
             }
         } catch (Exception e) {
@@ -212,14 +215,14 @@ public class JarvisController extends AbstractController {
     @GET
     @Path("sdependtasks")
     @Produces(MediaType.APPLICATION_JSON)
-    public TasksResult getScriptDepend(@PathParam("scriptId") int scriptId) {
+    public TasksResult getScriptDepend(@QueryParam("scriptId") int scriptId) {
         return getDependencyByScript(scriptId);
     }
 
     @GET
     @Path("searchtask")
     @Produces(MediaType.APPLICATION_JSON)
-    public TasksResult searchTask(@PathParam("keyword") String title) {
+    public TasksResult searchTask(@QueryParam("keyword") String title) {
         // NOT SUPPORTED
         // 暂时没人用到
         return null;

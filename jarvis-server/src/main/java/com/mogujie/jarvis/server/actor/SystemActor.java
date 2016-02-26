@@ -14,8 +14,12 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import akka.actor.Props;
+import akka.actor.UntypedActor;
+
 import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.core.domain.SystemStatus;
+import com.mogujie.jarvis.core.util.ExceptionUtil;
 import com.mogujie.jarvis.protocol.SystemProtos.RestGetSystemStatusRequest;
 import com.mogujie.jarvis.protocol.SystemProtos.RestUpdateSystemStatusRequest;
 import com.mogujie.jarvis.protocol.SystemProtos.ServerGetSystemStatusResponse;
@@ -26,9 +30,6 @@ import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
 import com.mogujie.jarvis.server.scheduler.event.StartEvent;
 import com.mogujie.jarvis.server.scheduler.event.StopEvent;
-
-import akka.actor.Props;
-import akka.actor.UntypedActor;
 
 public class SystemActor extends UntypedActor {
 
@@ -74,7 +75,7 @@ public class SystemActor extends UntypedActor {
             response = ServerUpdateSystemStatusResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());
         } catch (Exception ex) {
-            response = ServerUpdateSystemStatusResponse.newBuilder().setSuccess(false).setMessage(ex.getMessage()).build();
+            response = ServerUpdateSystemStatusResponse.newBuilder().setSuccess(false).setMessage(ExceptionUtil.getErrMsg(ex)).build();
             getSender().tell(response, getSelf());
             logger.error("", ex);
             throw ex;
@@ -88,7 +89,7 @@ public class SystemActor extends UntypedActor {
             response = ServerGetSystemStatusResponse.newBuilder().setSuccess(true).setStatus(status.getValue()).build();
             getSender().tell(response, getSelf());
         } catch (Exception ex) {
-            response = ServerGetSystemStatusResponse.newBuilder().setSuccess(false).setMessage(ex.getMessage()).build();
+            response = ServerGetSystemStatusResponse.newBuilder().setSuccess(false).setMessage(ExceptionUtil.getErrMsg(ex)).build();
             getSender().tell(response, getSelf());
             logger.error("", ex);
             throw ex;

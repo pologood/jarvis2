@@ -20,6 +20,7 @@ import akka.actor.UntypedActor;
 import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.core.domain.WorkerInfo;
 import com.mogujie.jarvis.core.domain.WorkerStatus;
+import com.mogujie.jarvis.core.util.ExceptionUtil;
 import com.mogujie.jarvis.protocol.WorkerProtos.ServerRegistryResponse;
 import com.mogujie.jarvis.protocol.WorkerProtos.WorkerRegistryRequest;
 import com.mogujie.jarvis.server.WorkerRegistry;
@@ -36,7 +37,7 @@ public class WorkerRegistryActor extends UntypedActor {
     private WorkerService workerService = Injectors.getInjector().getInstance(WorkerService.class);
     private WorkerGroupService workerGroupService = Injectors.getInjector().getInstance(WorkerGroupService.class);
 
-    private static Logger logger = LogManager.getLogger();
+    private static Logger LOGGER = LogManager.getLogger();
 
     public static Props props() {
         return Props.create(WorkerRegistryActor.class);
@@ -63,7 +64,7 @@ public class WorkerRegistryActor extends UntypedActor {
             String key = request.getKey();
             int groupId = workerGroupService.getGroupIdByAuthKey(key);
             if (groupId == 0) {
-                logger.error("worker group key不合法。key={}", key);
+                LOGGER.error("worker group key不合法。key={}", key);
                 throw new IllegalArgumentException("worker group key不合法。key=" + key);
             }
 
@@ -75,15 +76,15 @@ public class WorkerRegistryActor extends UntypedActor {
             workerRegistry.put(workerInfo, groupId);
             workerService.saveWorker(ip, port, groupId, WorkerStatus.ONLINE.getValue());
 
-            logger.info("register worker[ip={},port={}] successfully.", ip, port);
+            LOGGER.info("register worker[ip={},port={}] successfully.", ip, port);
 
             response = ServerRegistryResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());
 
         } catch (Exception ex) {
-            response = ServerRegistryResponse.newBuilder().setSuccess(false).setMessage(ex.getMessage()).build();
+            response = ServerRegistryResponse.newBuilder().setSuccess(false).setMessage(ExceptionUtil.getErrMsg(ex)).build();
             getSender().tell(response, getSelf());
-            logger.error(ex);
+            LOGGER.error("", ex);
             throw ex;
         }
     }
