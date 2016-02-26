@@ -16,8 +16,13 @@ import java.util.Map.Entry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import akka.actor.Address;
+import akka.actor.Props;
+import akka.actor.UntypedActor;
+
 import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.core.domain.WorkerInfo;
+import com.mogujie.jarvis.core.util.ExceptionUtil;
 import com.mogujie.jarvis.protocol.HeartBeatProtos.HeartBeatRequest;
 import com.mogujie.jarvis.protocol.HeartBeatProtos.HeartBeatResponse;
 import com.mogujie.jarvis.protocol.HeartBeatProtos.RestQueryWorkerHeartbeatInfoRequest;
@@ -27,10 +32,6 @@ import com.mogujie.jarvis.server.WorkerRegistry;
 import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.service.HeartBeatService;
-
-import akka.actor.Address;
-import akka.actor.Props;
-import akka.actor.UntypedActor;
 
 public class HeartBeatActor extends UntypedActor {
 
@@ -79,7 +80,7 @@ public class HeartBeatActor extends UntypedActor {
             response = HeartBeatResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());
         } catch (Exception ex) {
-            response = HeartBeatResponse.newBuilder().setSuccess(false).setMessage(ex.getMessage()).build();
+            response = HeartBeatResponse.newBuilder().setSuccess(false).setMessage(ExceptionUtil.getErrMsg(ex)).build();
             getSender().tell(response, getSelf());
             if (!(ex instanceof IllegalArgumentException)) {
                 LOGGER.error("", ex);
@@ -107,7 +108,7 @@ public class HeartBeatActor extends UntypedActor {
             response = builder.setSuccess(true).build();
             getSender().tell(response, getSelf());
         } catch (Exception ex) {
-            response = ServerQueryWorkerHeartbeatInfoResponse.newBuilder().setSuccess(false).setMessage(ex.getMessage()).build();
+            response = ServerQueryWorkerHeartbeatInfoResponse.newBuilder().setSuccess(false).setMessage(ExceptionUtil.getErrMsg(ex)).build();
             getSender().tell(response, getSelf());
             if (!(ex instanceof IllegalArgumentException)) {
                 LOGGER.error("", ex);

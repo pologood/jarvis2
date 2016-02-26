@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.ibatis.javassist.NotFoundException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import akka.actor.Props;
 import akka.actor.UntypedActor;
@@ -17,6 +19,7 @@ import akka.actor.UntypedActor;
 import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.core.domain.WorkerInfo;
 import com.mogujie.jarvis.core.domain.WorkerStatus;
+import com.mogujie.jarvis.core.util.ExceptionUtil;
 import com.mogujie.jarvis.protocol.WorkerProtos.RestServerModifyWorkerStatusRequest;
 import com.mogujie.jarvis.protocol.WorkerProtos.ServerModifyWorkerStatusResponse;
 import com.mogujie.jarvis.server.WorkerRegistry;
@@ -28,6 +31,7 @@ import com.mogujie.jarvis.server.service.WorkerService;
 public class WorkerModifyStatusActor extends UntypedActor {
 
     private WorkerService workerService = Injectors.getInjector().getInstance(WorkerService.class);
+    private static final Logger LOGGER = LogManager.getLogger();
 
     public static Props props() {
         return Props.create(WorkerModifyStatusActor.class);
@@ -50,9 +54,12 @@ public class WorkerModifyStatusActor extends UntypedActor {
             int status = request.getStatus();
             int workerId = workerService.getWorkerId(ip, port);
             if (workerId == 0) {
-                throw new NotFoundException("worker不存在。ip:" + ip + ";port:" + port);
+                String errMsg = "worker不存在。ip:" + ip + ";port:" + port;
+                LOGGER.error(errMsg);
+                throw new NotFoundException(errMsg);
             }
             workerService.updateWorkerStatus(workerId, status);
+            LOGGER.info("update worker[{}:{}] status to {}", ip, port, status);
             if (status == WorkerStatus.OFFLINE.getValue()) {
                 HeartBeatService heartBeatService = Injectors.getInjector().getInstance(HeartBeatService.class);
                 WorkerInfo workerInfo = new WorkerInfo(ip, port);
@@ -66,8 +73,9 @@ public class WorkerModifyStatusActor extends UntypedActor {
             response = ServerModifyWorkerStatusResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());
         } catch (Exception ex) {
-            response = ServerModifyWorkerStatusResponse.newBuilder().setSuccess(false).setMessage(ex.getMessage()).build();
+            response = ServerModifyWorkerStatusResponse.newBuilder().setSuccess(false).setMessage(ExceptionUtil.getErrMsg(ex)).build();
             getSender().tell(response, getSelf());
+            LOGGER.error("", ex);
         }
     }
 

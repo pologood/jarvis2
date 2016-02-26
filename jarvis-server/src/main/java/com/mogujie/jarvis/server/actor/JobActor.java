@@ -39,6 +39,7 @@ import com.mogujie.jarvis.core.expression.FixedDelayExpression;
 import com.mogujie.jarvis.core.expression.FixedRateExpression;
 import com.mogujie.jarvis.core.expression.ISO8601Expression;
 import com.mogujie.jarvis.core.expression.ScheduleExpression;
+import com.mogujie.jarvis.core.util.ExceptionUtil;
 import com.mogujie.jarvis.dto.generate.App;
 import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.dto.generate.JobDepend;
@@ -66,16 +67,16 @@ import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchAllJobsRequest;
 import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchBizIdByNameRequest;
 import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchJobByNameRequest;
 import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchJobByScriptIdRequest;
+import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchJobInfoByScriptTitileRequest;
 import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchPreJobInfoRequest;
 import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchScriptTypeRequest;
-import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchJobInfoByScriptTitileRequest;
 import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchAllJobsResponse;
 import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchBizIdByNamResponse;
 import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchJobByNameResponse;
 import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchJobByScriptIdResponse;
+import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchJobInfoByScriptTitileResponse;
 import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchPreJobInfoResponse;
 import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchScriptTypeResponse;
-import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchJobInfoByScriptTitileResponse;
 import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.domain.ModifyDependEntry;
 import com.mogujie.jarvis.server.guice.Injectors;
@@ -296,7 +297,7 @@ public class JobActor extends UntypedActor {
             response = ServerModifyJobResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());
         } catch (Exception e) {
-            response = ServerModifyJobResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
+            response = ServerModifyJobResponse.newBuilder().setSuccess(false).setMessage(ExceptionUtil.getErrMsg(e)).build();
             getSender().tell(response, getSelf());
             LOGGER.error("", e);
             throw e;
@@ -356,7 +357,7 @@ public class JobActor extends UntypedActor {
         } catch (Exception e) {
             // roll back modify dependency
             jobGraph.setParents(dagJob, oldParents);
-            response = ServerModifyJobDependResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
+            response = ServerModifyJobDependResponse.newBuilder().setSuccess(false).setMessage(ExceptionUtil.getErrMsg(e)).build();
             getSender().tell(response, getSelf());
             LOGGER.error("", e);
             throw e;
@@ -442,7 +443,7 @@ public class JobActor extends UntypedActor {
             response = ServerModifyJobScheduleExpResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());
         } catch (Exception e) {
-            response = ServerModifyJobScheduleExpResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
+            response = ServerModifyJobScheduleExpResponse.newBuilder().setSuccess(false).setMessage(ExceptionUtil.getErrMsg(e)).build();
             getSender().tell(response, getSelf());
             LOGGER.error("", e);
             throw e;
@@ -479,7 +480,7 @@ public class JobActor extends UntypedActor {
             }
             getSender().tell(response, getSelf());
         } catch (Exception e) {
-            response = ServerModifyJobStatusResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
+            response = ServerModifyJobStatusResponse.newBuilder().setSuccess(false).setMessage(ExceptionUtil.getErrMsg(e)).build();
             getSender().tell(response, getSelf());
             LOGGER.error("", e);
             throw e;
@@ -517,7 +518,7 @@ public class JobActor extends UntypedActor {
             getSender().tell(response, getSelf());
 
         } catch (Exception e) {
-            response = ServerQueryJobRelationResponse.newBuilder().setSuccess(false).setMessage(e.getMessage()).build();
+            response = ServerQueryJobRelationResponse.newBuilder().setSuccess(false).setMessage(ExceptionUtil.getErrMsg(e)).build();
             getSender().tell(response, getSelf());
             LOGGER.error("", e);
             throw e;
@@ -700,7 +701,7 @@ public class JobActor extends UntypedActor {
         } catch (Exception e) {
             response = ServerSearchJobByScriptIdResponse.newBuilder()
                     .setSuccess(false)
-                    .setMessage(e.getMessage())
+                    .setMessage(ExceptionUtil.getErrMsg(e))
                     .build();
             getSender().tell(response, getSelf());
             LOGGER.error("", e);
@@ -729,7 +730,7 @@ public class JobActor extends UntypedActor {
         } catch (Exception e) {
             response = ServerSearchJobByScriptIdResponse.newBuilder()
                     .setSuccess(false)
-                    .setMessage(e.getMessage())
+                    .setMessage(ExceptionUtil.getErrMsg(e))
                     .build();
             getSender().tell(response, getSelf());
             LOGGER.error("", e);
@@ -760,7 +761,7 @@ public class JobActor extends UntypedActor {
         } catch (Exception e) {
             response = ServerSearchPreJobInfoResponse.newBuilder()
                     .setSuccess(false)
-                    .setMessage(e.getMessage())
+                    .setMessage(ExceptionUtil.getErrMsg(e))
                     .build();
             getSender().tell(response, getSelf());
             LOGGER.error("", e);
@@ -790,7 +791,7 @@ public class JobActor extends UntypedActor {
         } catch (Exception e) {
             response = ServerSearchAllJobsResponse.newBuilder()
                     .setSuccess(false)
-                    .setMessage(e.getMessage())
+                    .setMessage(ExceptionUtil.getErrMsg(e))
                     .build();
             getSender().tell(response, getSelf());
             LOGGER.error("", e);
@@ -816,7 +817,7 @@ public class JobActor extends UntypedActor {
         } catch (Exception e) {
             response = ServerSearchScriptTypeResponse.newBuilder()
                     .setSuccess(false)
-                    .setMessage(e.getMessage())
+                    .setMessage(ExceptionUtil.getErrMsg(e))
                     .build();
             getSender().tell(response, getSelf());
             LOGGER.error("", e);
@@ -842,7 +843,7 @@ public class JobActor extends UntypedActor {
         } catch (Exception e) {
             response = ServerSearchBizIdByNamResponse.newBuilder()
                     .setSuccess(false)
-                    .setMessage(e.getMessage())
+                    .setMessage(ExceptionUtil.getErrMsg(e))
                     .build();
             getSender().tell(response, getSelf());
             LOGGER.error("", e);
@@ -892,7 +893,7 @@ public class JobActor extends UntypedActor {
         } catch (Exception e) {
             response = ServerSearchJobInfoByScriptTitileResponse.newBuilder()
                 .setSuccess(false)
-                .setMessage(e.getMessage())
+                .setMessage(ExceptionUtil.getErrMsg(e))
                 .build();
             getSender().tell(response, getSelf());
             LOGGER.error("", e);

@@ -17,6 +17,11 @@ import org.apache.commons.configuration.Configuration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import akka.actor.ActorRef;
+import akka.actor.Props;
+import akka.actor.UntypedActor;
+import akka.routing.RoundRobinPool;
+
 import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -26,6 +31,7 @@ import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.core.domain.Pair;
 import com.mogujie.jarvis.core.util.AppTokenUtils;
 import com.mogujie.jarvis.core.util.ConfigUtils;
+import com.mogujie.jarvis.core.util.ExceptionUtil;
 import com.mogujie.jarvis.dto.generate.App;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
 import com.mogujie.jarvis.protocol.HeartBeatProtos.HeartBeatRequest;
@@ -33,11 +39,6 @@ import com.mogujie.jarvis.server.ServerConigKeys;
 import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.service.AppService;
-
-import akka.actor.ActorRef;
-import akka.actor.Props;
-import akka.actor.UntypedActor;
-import akka.routing.RoundRobinPool;
 
 public class ServerActor extends UntypedActor {
 
@@ -153,7 +154,7 @@ public class ServerActor extends UntypedActor {
                 }
             }
         } catch (Exception e) {
-            Object msg = generateResponse(actorEntry.getResponseClass(), false, e.getMessage() != null ? e.getMessage() : e.toString());
+            Object msg = generateResponse(actorEntry.getResponseClass(), false, ExceptionUtil.getErrMsg(e));
             getSender().tell(msg, getSelf());
             return;
         }

@@ -1,5 +1,5 @@
 /*
- * 蘑菇街 Inc. 
+ * 蘑菇街 Inc.
  * Copyright (c) 2010-2015 All Rights Reserved.
  *
  * Author: muming
@@ -8,25 +8,26 @@
 
 package com.mogujie.jarvis.server.actor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 import org.mybatis.guice.transactional.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import akka.actor.Props;
 import akka.actor.UntypedActor;
 
 import com.mogujie.jarvis.core.domain.MessageType;
+import com.mogujie.jarvis.core.util.ExceptionUtil;
 import com.mogujie.jarvis.dto.generate.Alarm;
 import com.mogujie.jarvis.protocol.AlarmProtos.RestCreateAlarmRequest;
-import com.mogujie.jarvis.protocol.AlarmProtos.ServerCreateAlarmResponse;
-import com.mogujie.jarvis.protocol.AlarmProtos.RestModifyAlarmRequest;
-import com.mogujie.jarvis.protocol.AlarmProtos.ServerModifyAlarmResponse;
 import com.mogujie.jarvis.protocol.AlarmProtos.RestDeleteAlarmRequest;
+import com.mogujie.jarvis.protocol.AlarmProtos.RestModifyAlarmRequest;
+import com.mogujie.jarvis.protocol.AlarmProtos.ServerCreateAlarmResponse;
 import com.mogujie.jarvis.protocol.AlarmProtos.ServerDeleteAlarmResponse;
+import com.mogujie.jarvis.protocol.AlarmProtos.ServerModifyAlarmResponse;
 import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.service.AlarmService;
@@ -76,7 +77,7 @@ public class AlarmActor extends UntypedActor {
             response = ServerCreateAlarmResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());
         } catch (Exception ex) {
-            response = ServerCreateAlarmResponse.newBuilder().setSuccess(false).setMessage(ex.getMessage()).build();
+            response = ServerCreateAlarmResponse.newBuilder().setSuccess(false).setMessage(ExceptionUtil.getErrMsg(ex)).build();
             getSender().tell(response, getSelf());
             logger.error("", ex);
             throw ex;
@@ -94,7 +95,7 @@ public class AlarmActor extends UntypedActor {
             response = ServerModifyAlarmResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());
         } catch (Exception ex) {
-            response = ServerModifyAlarmResponse.newBuilder().setSuccess(false).setMessage(ex.getMessage()).build();
+            response = ServerModifyAlarmResponse.newBuilder().setSuccess(false).setMessage(ExceptionUtil.getErrMsg(ex)).build();
             getSender().tell(response, getSelf());
             logger.error("", ex);
             throw ex;
@@ -112,7 +113,7 @@ public class AlarmActor extends UntypedActor {
             response = ServerDeleteAlarmResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());
         } catch (Exception ex) {
-            response = ServerDeleteAlarmResponse.newBuilder().setSuccess(false).setMessage(ex.getMessage()).build();
+            response = ServerDeleteAlarmResponse.newBuilder().setSuccess(false).setMessage(ExceptionUtil.getErrMsg(ex)).build();
             getSender().tell(response, getSelf());
             logger.error("", ex);
             throw ex;

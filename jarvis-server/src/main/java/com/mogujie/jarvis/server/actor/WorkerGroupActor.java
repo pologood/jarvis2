@@ -11,9 +11,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 
+import akka.actor.Props;
+import akka.actor.UntypedActor;
+
 import com.mogujie.jarvis.core.domain.MessageType;
+import com.mogujie.jarvis.core.util.ExceptionUtil;
 import com.mogujie.jarvis.dto.generate.WorkerGroup;
 import com.mogujie.jarvis.protocol.WorkerGroupProtos.RestCreateWorkerGroupRequest;
 import com.mogujie.jarvis.protocol.WorkerGroupProtos.RestModifyWorkerGroupRequest;
@@ -23,12 +29,10 @@ import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.service.WorkerGroupService;
 
-import akka.actor.Props;
-import akka.actor.UntypedActor;
-
 public class WorkerGroupActor extends UntypedActor {
 
     private WorkerGroupService workerGroupService = Injectors.getInjector().getInstance(WorkerGroupService.class);
+    private static final Logger LOGGER = LogManager.getLogger();
 
     public static Props props() {
         return Props.create(WorkerGroupActor.class);
@@ -65,11 +69,13 @@ public class WorkerGroupActor extends UntypedActor {
             workerGroup.setUpdateUser(request.getUser());
             workerGroupService.insert(workerGroup);
 
+            LOGGER.info("create workerGroup, key={}, name={}", key, request.getWorkerGroupName());
             response = ServerCreateWorkerGroupResponse.newBuilder().setSuccess(true).setWorkerGroupKey(key).build();
             getSender().tell(response, getSelf());
         } catch (Exception ex) {
-            response = ServerCreateWorkerGroupResponse.newBuilder().setSuccess(false).setMessage(ex.getMessage()).build();
+            response = ServerCreateWorkerGroupResponse.newBuilder().setSuccess(false).setMessage(ExceptionUtil.getErrMsg(ex)).build();
             getSender().tell(response, getSelf());
+            LOGGER.error("", ex);
         }
     }
 
@@ -90,11 +96,13 @@ public class WorkerGroupActor extends UntypedActor {
             workerGroup.setUpdateTime(DateTime.now().toDate());
             workerGroup.setUpdateUser(request.getUser());
             workerGroupService.update(workerGroup);
+            LOGGER.info("modify workerGroup, id={}", request.getWorkerGroupId());
             response = ServerModifyWorkerGroupResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());
         } catch (Exception ex) {
-            response = ServerModifyWorkerGroupResponse.newBuilder().setSuccess(false).setMessage(ex.getMessage()).build();
+            response = ServerModifyWorkerGroupResponse.newBuilder().setSuccess(false).setMessage(ExceptionUtil.getErrMsg(ex)).build();
             getSender().tell(response, getSelf());
+            LOGGER.error("", ex);
         }
     }
 
