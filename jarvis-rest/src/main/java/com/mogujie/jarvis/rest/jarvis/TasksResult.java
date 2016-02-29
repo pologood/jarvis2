@@ -16,22 +16,22 @@ import com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry;
 public class TasksResult extends Result {
 
     private static final long serialVersionUID = 291430869192344650L;
-    private List<TaskInfo> tasks;
+    private List<JobInfo> tasks;
 
     public TasksResult() {}
 
     public TasksResult(List<JobInfoEntry> jobInfos) {
-        this.tasks = new ArrayList<TaskInfo>();
-        for (JobInfoEntry jobInfo : jobInfos) {
-            this.tasks.add(new TaskInfo(jobInfo));
+        this.tasks = new ArrayList<JobInfo>();
+        for (JobInfoEntry jobInfoEntry : jobInfos) {
+            this.tasks.add(new JobInfo(jobInfoEntry));
         }
     }
 
-    public List<TaskInfo> getTasks() {
+    public List<JobInfo> getTasks() {
         return tasks;
     }
 
-    public void setTasks(List<TaskInfo> tasks) {
+    public void setTasks(List<JobInfo> tasks) {
         this.tasks = tasks;
     }
 

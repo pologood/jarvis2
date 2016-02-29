@@ -17,7 +17,7 @@ import com.mogujie.jarvis.core.domain.JobContentType;
 import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry;
 
-public class TaskInfoResult extends Result {
+public class JobInfoResult extends Result {
     private static final long serialVersionUID = -3564148230890004211L;
     private long id;
     private String cronExp;
@@ -36,9 +36,9 @@ public class TaskInfoResult extends Result {
     private String department;
     private List<PreTask> preTasks;
 
-    public TaskInfoResult() {}
+    public JobInfoResult() {}
 
-    public TaskInfoResult(JobInfoEntry jobInfo) {
+    public JobInfoResult(JobInfoEntry jobInfo) {
         this.id = jobInfo.getJobId();
         this.cronExp = jobInfo.getScheduleExpression();
         if (jobInfo.getContentType() == JobContentType.SCRIPT.getValue()) {
