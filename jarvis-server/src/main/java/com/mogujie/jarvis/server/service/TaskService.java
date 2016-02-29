@@ -52,6 +52,38 @@ public class TaskService {
         return taskMapper.selectByPrimaryKey(taskId);
     }
 
+    public Task getTaskByScheduleDateAndJobName(long scheduleDate, String jobName) {
+        Job job = jobService.searchJobByName(jobName);
+        if (job != null) {
+            DateTime scheduleDateTime = new DateTime(scheduleDate);
+            TaskExample example = new TaskExample();
+            example.createCriteria().andJobIdEqualTo(job.getJobId()).andScheduleTimeBetween(scheduleDateTime.toDate(), scheduleDateTime.plusDays(1).toDate());
+            List<Task> tasks = taskMapper.selectByExample(example);
+            if (tasks != null && !tasks.isEmpty()) {
+                return tasks.get(0);
+            }
+        }
+        return null;
+    }
+
+    public float getAvgExecTime(long jobId, int times) {
+        TaskExample example = new TaskExample();
+        example.createCriteria().andJobIdEqualTo(jobId).andStatusEqualTo(TaskStatus.SUCCESS.getValue());
+        example.setOrderByClause("executeStartTime desc");
+        List<Task> tasks = taskMapper.selectByExample(example);
+        float avgTime = 0;
+        if (tasks != null && !tasks.isEmpty()) {
+            int size = tasks.size() > times ? times : tasks.size();
+            float totalUseTime = 0;
+            for (int i = 0; i < size; i++) {
+                Task task = tasks.get(i);
+                totalUseTime += ((float)(task.getExecuteEndTime().getTime() - task.getExecuteStartTime().getTime()) /1000/60); //单位分
+            }
+            avgTime = totalUseTime / size;
+        }
+        return avgTime;
+    }
+
     public List<Task> getTasksByJobId(long jobId) {
         TaskExample example = new TaskExample();
         example.createCriteria().andJobIdEqualTo(jobId);

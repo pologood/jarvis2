@@ -908,6 +908,6 @@ public class JobActor extends UntypedActor {
             LOGGER.error("", e);
             throw e;
         }
-
     }
+
 }
