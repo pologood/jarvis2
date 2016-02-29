@@ -475,11 +475,15 @@ public class TaskActor extends UntypedActor {
                     for (Entry<Long, List<Long>> entry : parentTaskIdMap.entrySet()) {
                         List<Long> tasks = entry.getValue();
                         for (long taskId : tasks) {
-                            if (taskService.get(taskId).getExecuteEndTime().getTime() > maxEndTime) {
+                            if (taskService.get(taskId) != null && taskService.get(taskId).getExecuteEndTime().getTime() > maxEndTime) {
                                 maxEndTime = taskService.get(taskId).getExecuteEndTime().getTime();
                                 maxEndTaskId = taskId;
                             }
                         }
+                    }
+                    Task maxEndTask = taskService.get(maxEndTaskId);
+                    if (maxEndTask != null) {
+                        taskInfoEntries.add(convertTask2TaskInfoEntry(maxEndTask));
                     }
                     parentTaskIdMap = taskDependService.loadParent(maxEndTaskId);
                 }
