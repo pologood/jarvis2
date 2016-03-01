@@ -32,6 +32,7 @@ import com.mogujie.jarvis.core.domain.CommonStrategy;
 import com.mogujie.jarvis.core.domain.JobContentType;
 import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.core.domain.OperationMode;
+import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.expression.ScheduleExpressionType;
 import com.mogujie.jarvis.core.util.AppTokenUtils;
 import com.mogujie.jarvis.core.util.ConfigUtils;
@@ -62,11 +63,13 @@ import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchBizIdByNameRequest;
 import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchJobByScriptIdRequest;
 import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchPreJobInfoRequest;
 import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchScriptTypeRequest;
+import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchTaskStatusRequest;
 import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchAllJobsResponse;
 import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchBizIdByNamResponse;
 import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchJobByScriptIdResponse;
 import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchPreJobInfoResponse;
 import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchScriptTypeResponse;
+import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchTaskStatusResponse;
 import com.mogujie.jarvis.protocol.TaskInfoEntryProtos.TaskInfoEntry;
 import com.mogujie.jarvis.rest.jarvis.CriticalPathResult;
 import com.mogujie.jarvis.rest.jarvis.JobInfo;
@@ -704,7 +707,7 @@ public class JarvisController extends AbstractController {
         LOGGER.debug("query cirtical path");
         CriticalPathResult result = new CriticalPathResult();
         try {
-            String appToken = AppTokenUtils.generateToken(DateTime.now().getMillis(), APP_IRONMAN_KEY);
+            String appToken = AppTokenUtils.generateToken(DateTime.now().getMillis(), APP_BGMONITOR_KEY);
             AppAuth appAuth = AppAuth.newBuilder().setName(APP_BGMONITOR_NAME).setToken(appToken).build();
             RestQueryTaskCriticalPathRequest request = RestQueryTaskCriticalPathRequest.newBuilder()
                     .setAppAuth(appAuth).setDateTime(new DateTime(date).getMillis()).setJobName(taskTitle)
@@ -726,6 +729,37 @@ public class JarvisController extends AbstractController {
         } catch (Exception e) {
             result.setSuccess(false);
             result.setMessage("查询关键路径出错:" + e.getMessage());
+        }
+        return result;
+    }
+
+    @GET
+    @Path("istasksuccess")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Result isTaskSuccess(@QueryParam("tid") long jobId, @QueryParam("datadate") String dataDate) {
+        LOGGER.debug("is task success");
+        Result result = new Result();
+        try {
+            String appToken = AppTokenUtils.generateToken(DateTime.now().getMillis(), APP_IRONMAN_KEY);
+            AppAuth appAuth = AppAuth.newBuilder().setName(APP_IRONMAN_NAME).setToken(appToken).build();
+            RestSearchTaskStatusRequest request = RestSearchTaskStatusRequest.newBuilder().setAppAuth(appAuth)
+                    .setJobId(jobId).setDataDate(new DateTime(dataDate).getMillis()).build();
+            ServerSearchTaskStatusResponse response = (ServerSearchTaskStatusResponse) callActor(AkkaType.SERVER, request);
+            if (response.getSuccess()) {
+                int status = response.getStatus();
+                if (status == TaskStatus.SUCCESS.getValue()) {
+                    result.setSuccess(true);
+                } else {
+                    result.setSuccess(false);
+                    result.setMessage("task状态为" + TaskStatus.parseValue(status));
+                }
+            } else {
+                result.setSuccess(false);
+                result.setMessage("查询task状态出错:" + response.getMessage());
+            }
+        } catch (Exception e) {
+            result.setSuccess(false);
+            result.setMessage("查询task状态出错:" + e.getMessage());
         }
         return result;
     }

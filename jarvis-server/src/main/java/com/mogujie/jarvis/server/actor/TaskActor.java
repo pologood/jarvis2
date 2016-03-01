@@ -57,6 +57,8 @@ import com.mogujie.jarvis.protocol.RemoveTaskProtos.RestServerRemoveTaskRequest;
 import com.mogujie.jarvis.protocol.RemoveTaskProtos.ServerRemoveTaskResponse;
 import com.mogujie.jarvis.protocol.RetryTaskProtos.RestServerRetryTaskRequest;
 import com.mogujie.jarvis.protocol.RetryTaskProtos.ServerRetryTaskResponse;
+import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchTaskStatusRequest;
+import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchTaskStatusResponse;
 import com.mogujie.jarvis.protocol.TaskInfoEntryProtos.TaskInfoEntry;
 import com.mogujie.jarvis.server.dispatcher.TaskManager;
 import com.mogujie.jarvis.server.domain.ActorEntry;
@@ -105,6 +107,7 @@ public class TaskActor extends UntypedActor {
         list.add(new ActorEntry(RestServerQueryTaskStatusRequest.class, ServerQueryTaskStatusResponse.class, MessageType.GENERAL));
         list.add(new ActorEntry(RestServerQueryTaskByJobIdRequest.class, ServerQueryTaskByJobIdResponse.class, MessageType.GENERAL));
         list.add(new ActorEntry(RestQueryTaskCriticalPathRequest.class, ServerQueryTaskCriticalPathResponse.class, MessageType.GENERAL));
+        list.add(new ActorEntry(RestSearchTaskStatusRequest.class, ServerSearchTaskStatusResponse.class, MessageType.GENERAL));
         return list;
     }
 
@@ -137,6 +140,9 @@ public class TaskActor extends UntypedActor {
         } else if (obj instanceof RestQueryTaskCriticalPathRequest) {
             RestQueryTaskCriticalPathRequest msg = (RestQueryTaskCriticalPathRequest) obj;
             queryCriticalPath(msg);
+        } else if (obj instanceof RestSearchTaskStatusRequest) {
+            RestSearchTaskStatusRequest msg = (RestSearchTaskStatusRequest) obj;
+            searchTaskStatusByDataDate(msg);
         } else {
             unhandled(obj);
         }
@@ -495,6 +501,31 @@ public class TaskActor extends UntypedActor {
             }
         } catch (Exception e) {
             response = ServerQueryTaskCriticalPathResponse.newBuilder().setSuccess(false).setMessage(ExceptionUtil.getErrMsg(e)).build();
+            getSender().tell(response, getSelf());
+            LOGGER.error("", e);
+            throw e;
+        }
+    }
+
+    private void searchTaskStatusByDataDate(RestSearchTaskStatusRequest msg) throws Exception {
+        long jobId = msg.getJobId();
+        long dataDate = msg.getDataDate();
+        ServerSearchTaskStatusResponse response;
+        try {
+            List<Task> tasks = taskService.getTasksByJobIdAndDataDate(jobId, dataDate);
+            if (tasks == null || tasks.isEmpty()) {
+                response = ServerSearchTaskStatusResponse.newBuilder().setSuccess(false)
+                        .setMessage("can't find task by jobId=" + jobId + ", dataDate=" + new DateTime(dataDate)).build();
+            } else if (tasks.size() > 1) {
+                response = ServerSearchTaskStatusResponse.newBuilder().setSuccess(false)
+                        .setMessage("find more than 1 tasks by jobId=" + jobId + ", dataDate=" + new DateTime(dataDate)).build();
+            } else {
+                response = ServerSearchTaskStatusResponse.newBuilder().setSuccess(true)
+                        .setStatus(tasks.get(0).getStatus()).build();
+            }
+            getSender().tell(response, getSelf());
+        } catch (Exception e) {
+            response = ServerSearchTaskStatusResponse.newBuilder().setSuccess(false).setMessage(ExceptionUtil.getErrMsg(e)).build();
             getSender().tell(response, getSelf());
             LOGGER.error("", e);
             throw e;

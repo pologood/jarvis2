@@ -84,6 +84,13 @@ public class TaskService {
         return avgTime;
     }
 
+    public List<Task> getTasksByJobIdAndDataDate(long jobId, long dataDate) {
+        DateTime dataTime = new DateTime(dataDate);
+        TaskExample example = new TaskExample();
+        example.createCriteria().andJobIdEqualTo(jobId).andDataTimeBetween(dataTime.toDate(), dataTime.plusDays(1).toDate());
+        return taskMapper.selectByExample(example);
+    }
+
     public List<Task> getTasksByJobId(long jobId) {
         TaskExample example = new TaskExample();
         example.createCriteria().andJobIdEqualTo(jobId);
