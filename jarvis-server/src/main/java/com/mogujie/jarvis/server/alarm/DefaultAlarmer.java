@@ -11,21 +11,24 @@ package com.mogujie.jarvis.server.alarm;
 import java.util.List;
 import java.util.Map;
 
-import com.mogujie.jarvis.core.domain.AlarmType;
 import org.apache.commons.configuration.Configuration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.json.JSONObject;
 
 import com.google.common.collect.Maps;
+import com.google.gson.Gson;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import com.mogujie.jarvis.core.domain.AlarmType;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.server.ServerConigKeys;
 
 public class DefaultAlarmer extends Alarmer {
 
+    private static Gson gson = new Gson();
     private Configuration serverConfig = ConfigUtils.getServerConfig();
     private static final Logger LOGGER = LogManager.getLogger();
 
@@ -38,11 +41,16 @@ public class DefaultAlarmer extends Alarmer {
 
         Map<String, Object> ext = Maps.newHashMap();
         ext.put("nickname", receiver);
-        fields.put("ext", ext);
+        fields.put("ext", gson.toJson(ext));
 
         try {
             HttpResponse<JsonNode> response = Unirest.post(serverConfig.getString(ServerConigKeys.ALARM_SERVICE_URL)).fields(fields).asJson();
-            return response.getBody().getObject().getBoolean("success");
+            JSONObject json = response.getBody().getObject();
+            if (json.has("success")) {
+                return json.getBoolean("success");
+            } else {
+                LOGGER.error("Alarm error: {}", json.toString());
+            }
         } catch (UnirestException e) {
             LOGGER.error("Alarm error", e);
         }

@@ -11,15 +11,11 @@ package com.mogujie.jarvis.rest.jarvis;
 import java.io.Serializable;
 import java.math.BigInteger;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 /**
  * @author yinxiu
  * @version $Id: User.java,v 0.1 2013-6-6 上午9:17:02 yinxiu Exp $
  */
 public class User implements Serializable, SelfDependency {
-    private static Log log = LogFactory.getLog(User.class);
     private static final long serialVersionUID = 9054794938270174666L;
     private String name;
     private String menuId;
@@ -72,8 +68,7 @@ public class User implements Serializable, SelfDependency {
 
     public boolean isAdmin() {
 
-        if (name.equals("etlprd")
-                || this.functions.testBit(PermissionEnum.SUPER_ADMIN.getCode())) {
+        if (name.equals("etlprd") || this.functions.testBit(PermissionEnum.SUPER_ADMIN.getCode())) {
             return true;
         } else {
             return false;
@@ -82,9 +77,7 @@ public class User implements Serializable, SelfDependency {
 
     public boolean isAdminOrAuthor(String name) {
 
-
-        if ("etlprd".equalsIgnoreCase(this.name)
-                || this.functions.testBit(PermissionEnum.SUPER_ADMIN.getCode())) {
+        if ("etlprd".equalsIgnoreCase(this.name) || this.functions.testBit(PermissionEnum.SUPER_ADMIN.getCode())) {
             return true;
         }
         // 判断用户是否是任务发布者
@@ -99,8 +92,7 @@ public class User implements Serializable, SelfDependency {
      */
     public boolean haveFunction(int index) {
         // 超级管理员 或者 具有超级管理员权限的账号 没有权限限制
-        if ("etlprd".equalsIgnoreCase(this.name)
-                || this.functions.testBit(PermissionEnum.SUPER_ADMIN.getCode())) {
+        if ("etlprd".equalsIgnoreCase(this.name) || this.functions.testBit(PermissionEnum.SUPER_ADMIN.getCode())) {
             return true;
         }
         if (functions == null) {
@@ -127,8 +119,7 @@ public class User implements Serializable, SelfDependency {
      */
     public boolean haveFunction(String... permissionName) {
         // 超级管理员 或者 具有超级管理员权限的账号 没有权限限制
-        if ("etlprd".equalsIgnoreCase(this.name)
-                || this.functions.testBit(PermissionEnum.SUPER_ADMIN.getCode())) {
+        if ("etlprd".equalsIgnoreCase(this.name) || this.functions.testBit(PermissionEnum.SUPER_ADMIN.getCode())) {
             return true;
         }
         for (String pName : permissionName) {
@@ -145,8 +136,7 @@ public class User implements Serializable, SelfDependency {
 
     @Override
     public String lieDown() {
-        return SelfUtil.format(this.name, this.menuId,
-                this.functions.toString(36));
+        return SelfUtil.format(this.name, this.menuId, this.functions.toString(36));
     }
 
     @Override
@@ -160,11 +150,6 @@ public class User implements Serializable, SelfDependency {
 
     @Override
     public String toString() {
-        return "User{" +
-                "name='" + name + '\'' +
-                ", menuId='" + menuId + '\'' +
-                ", functions=" + functions +
-                ", pinYin='" + pinYin + '\'' +
-                '}';
+        return "User{" + "name='" + name + '\'' + ", menuId='" + menuId + '\'' + ", functions=" + functions + ", pinYin='" + pinYin + '\'' + '}';
     }
 }

@@ -4863,7 +4863,7 @@ public final class ApplicationProtos {
 
         public static com.mogujie.jarvis.protocol.ApplicationProtos.RestSetApplicationWorkerGroupRequest parseFrom(
                 com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-                        throws com.google.protobuf.InvalidProtocolBufferException {
+                throws com.google.protobuf.InvalidProtocolBufferException {
             return PARSER.parseFrom(data, extensionRegistry);
         }
 
@@ -5928,7 +5928,7 @@ public final class ApplicationProtos {
 
         public static com.mogujie.jarvis.protocol.ApplicationProtos.ServerSetApplicationWorkerGroupResponse parseFrom(
                 com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-                        throws com.google.protobuf.InvalidProtocolBufferException {
+                throws com.google.protobuf.InvalidProtocolBufferException {
             return PARSER.parseFrom(data, extensionRegistry);
         }
 

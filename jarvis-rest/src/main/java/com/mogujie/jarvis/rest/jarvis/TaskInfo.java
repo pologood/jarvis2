@@ -18,7 +18,6 @@ import com.mogujie.jarvis.protocol.TaskInfoEntryProtos.TaskInfoEntry;
  */
 public class TaskInfo {
 
-    private static final long serialVersionUID = 1L;
     private long taskId;
     private long jobId;
     private String taskTitle;
