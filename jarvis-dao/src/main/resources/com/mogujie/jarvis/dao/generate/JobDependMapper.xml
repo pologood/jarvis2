@@ -85,14 +85,14 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" parameterType="com.mogujie.jarvis.dto.generate.JobDependKey" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from job_depend
     where jobId = #{jobId,jdbcType=BIGINT}
       and preJobId = #{preJobId,jdbcType=BIGINT}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="com.mogujie.jarvis.dto.generate.JobDependKey">
+  <delete id="deleteByPrimaryKey" parameterType="map">
     delete from job_depend
     where jobId = #{jobId,jdbcType=BIGINT}
       and preJobId = #{preJobId,jdbcType=BIGINT}

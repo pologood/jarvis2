@@ -464,12 +464,12 @@ public class TaskActor extends UntypedActor {
      * @param msg
      */
     private void queryCriticalPath(RestQueryTaskCriticalPathRequest msg) throws Exception {
-        long scheduleTime = msg.getDateTime();
+        long scheduleDate = msg.getDateTime();
         String jobName = msg.getJobName();
         ServerQueryTaskCriticalPathResponse response;
         try {
             // find task
-            Task task = taskService.getTaskByScheduleDateAndJobName(scheduleTime, jobName);
+            Task task = taskService.getTaskByScheduleDateAndJobName(scheduleDate, jobName);
             if (task != null) {
                 // get critical path
                 List<TaskInfoEntry> taskInfoEntries = new ArrayList<TaskInfoEntry>();
@@ -494,7 +494,7 @@ public class TaskActor extends UntypedActor {
                     parentTaskIdMap = taskDependService.loadParent(maxEndTaskId);
                 }
             } else {
-                String errMsg = "can't find task, scheduleTime=" + new DateTime(scheduleTime).toString("yyyy-MM-dd hh:mm:ss") + ", jobName=" + jobName;
+                String errMsg = "can't find task, scheduleDate=" + new DateTime(scheduleDate).toString("yyyy-MM-dd hh:mm:ss") + ", jobName=" + jobName;
                 response = ServerQueryTaskCriticalPathResponse.newBuilder().setSuccess(false).setMessage(errMsg).build();
                 getSender().tell(response, getSelf());
                 LOGGER.error(errMsg);

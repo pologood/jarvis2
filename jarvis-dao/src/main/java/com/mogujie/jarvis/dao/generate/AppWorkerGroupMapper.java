@@ -1,17 +1,16 @@
 package com.mogujie.jarvis.dao.generate;
 
-import org.apache.ibatis.annotations.Param;
-
 import com.mogujie.jarvis.dto.generate.AppWorkerGroup;
 import com.mogujie.jarvis.dto.generate.AppWorkerGroupExample;
-import com.mogujie.jarvis.dto.generate.AppWorkerGroupKey;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface AppWorkerGroupMapper {
     int countByExample(AppWorkerGroupExample example);
 
     int deleteByExample(AppWorkerGroupExample example);
 
-    int deleteByPrimaryKey(AppWorkerGroupKey key);
+    int deleteByPrimaryKey(@Param("appId") Integer appId, @Param("workerGroupId") Integer workerGroupId);
 
     int insert(AppWorkerGroup record);
 
@@ -19,7 +18,7 @@ public interface AppWorkerGroupMapper {
 
     java.util.List<com.mogujie.jarvis.dto.generate.AppWorkerGroup> selectByExample(AppWorkerGroupExample example);
 
-    AppWorkerGroup selectByPrimaryKey(AppWorkerGroupKey key);
+    AppWorkerGroup selectByPrimaryKey(@Param("appId") Integer appId, @Param("workerGroupId") Integer workerGroupId);
 
     int updateByExampleSelective(@Param("record") AppWorkerGroup record, @Param("example") AppWorkerGroupExample example);
 

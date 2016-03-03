@@ -1,17 +1,16 @@
 package com.mogujie.jarvis.dao.generate;
 
-import org.apache.ibatis.annotations.Param;
-
 import com.mogujie.jarvis.dto.generate.JobDepend;
 import com.mogujie.jarvis.dto.generate.JobDependExample;
-import com.mogujie.jarvis.dto.generate.JobDependKey;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface JobDependMapper {
     int countByExample(JobDependExample example);
 
     int deleteByExample(JobDependExample example);
 
-    int deleteByPrimaryKey(JobDependKey key);
+    int deleteByPrimaryKey(@Param("jobId") Long jobId, @Param("preJobId") Long preJobId);
 
     int insert(JobDepend record);
 
@@ -19,7 +18,7 @@ public interface JobDependMapper {
 
     java.util.List<com.mogujie.jarvis.dto.generate.JobDepend> selectByExample(JobDependExample example);
 
-    JobDepend selectByPrimaryKey(JobDependKey key);
+    JobDepend selectByPrimaryKey(@Param("jobId") Long jobId, @Param("preJobId") Long preJobId);
 
     int updateByExampleSelective(@Param("record") JobDepend record, @Param("example") JobDependExample example);
 

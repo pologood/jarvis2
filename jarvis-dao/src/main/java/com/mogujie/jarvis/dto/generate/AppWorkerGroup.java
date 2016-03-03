@@ -2,12 +2,32 @@ package com.mogujie.jarvis.dto.generate;
 
 import java.util.Date;
 
-public class AppWorkerGroup extends AppWorkerGroupKey {
+public class AppWorkerGroup {
+    private Integer appId;
+
+    private Integer workerGroupId;
+
     private Date createTime;
 
     private Date updateTime;
 
     private String updateUser;
+
+    public Integer getAppId() {
+        return appId;
+    }
+
+    public void setAppId(Integer appId) {
+        this.appId = appId;
+    }
+
+    public Integer getWorkerGroupId() {
+        return workerGroupId;
+    }
+
+    public void setWorkerGroupId(Integer workerGroupId) {
+        this.workerGroupId = workerGroupId;
+    }
 
     public Date getCreateTime() {
         return createTime;

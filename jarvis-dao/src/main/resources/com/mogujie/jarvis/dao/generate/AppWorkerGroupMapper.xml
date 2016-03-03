@@ -83,14 +83,14 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" parameterType="com.mogujie.jarvis.dto.generate.AppWorkerGroupKey" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from app_worker_group
     where appId = #{appId,jdbcType=INTEGER}
       and workerGroupId = #{workerGroupId,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="com.mogujie.jarvis.dto.generate.AppWorkerGroupKey">
+  <delete id="deleteByPrimaryKey" parameterType="map">
     delete from app_worker_group
     where appId = #{appId,jdbcType=INTEGER}
       and workerGroupId = #{workerGroupId,jdbcType=INTEGER}
