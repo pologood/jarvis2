@@ -22,7 +22,6 @@ import javax.ws.rs.core.MediaType;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.core.domain.StreamType;
@@ -336,7 +335,8 @@ public class SentinelController extends AbstractController {
                 .setParameters(vo.getParams("{}"))
                 .setAppName(vo.getAppName(appAuth.getName()))
                 .setWorkerGroupId(vo.getWorkerGroupId())
-                .setBizGroupId(JarvisConstants.BIZ_GROUP_ID_UNKNOWN)
+                .setDepartment(vo.getDepartment(""))
+                .setBizGroups(vo.getBizGroups(""))
                 .setPriority(vo.getPriority(1))
                 .setIsTemp(vo.isTemp())
                 .setActiveStartTime(vo.getActiveStartTime(0L))

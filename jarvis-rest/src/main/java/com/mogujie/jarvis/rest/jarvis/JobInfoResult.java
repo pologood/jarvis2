@@ -53,7 +53,7 @@ public class JobInfoResult extends Result {
         this.startDate = new DateTime(jobInfo.getStartDate()).toString();
         this.endDate = new DateTime(jobInfo.getEndDate()).toString();
         this.pline = jobInfo.getBizName();
-        this.department = jobInfo.getAppName();
+        this.department = jobInfo.getDepartment();
         //适配老jarvis状态
         int newStatus = jobInfo.getStatus();
         if (newStatus == JobStatus.ENABLE.getValue()) {

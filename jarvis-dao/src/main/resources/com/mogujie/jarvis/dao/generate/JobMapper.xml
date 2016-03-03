@@ -15,7 +15,7 @@
     <result column="appId" jdbcType="INTEGER" property="appId" />
     <result column="workerGroupId" jdbcType="INTEGER" property="workerGroupId" />
     <result column="department" jdbcType="VARCHAR" property="department" />
-    <result column="bizGroupId" jdbcType="VARCHAR" property="bizGroupId" />
+    <result column="bizGroups" jdbcType="VARCHAR" property="bizGroups" />
     <result column="activeStartDate" jdbcType="TIMESTAMP" property="activeStartDate" />
     <result column="activeEndDate" jdbcType="TIMESTAMP" property="activeEndDate" />
     <result column="expiredTime" jdbcType="INTEGER" property="expiredTime" />
@@ -88,7 +88,7 @@
   </sql>
   <sql id="Base_Column_List">
     jobId, jobName, jobType, status, contentType, params, submitUser, priority, isSerial, 
-    isTemp, appId, workerGroupId, department, bizGroupId, activeStartDate, activeEndDate, 
+    isTemp, appId, workerGroupId, department, bizGroups, activeStartDate, activeEndDate, 
     expiredTime, failedAttempts, failedInterval, createTime, updateTime, updateUser
   </sql>
   <sql id="Blob_Column_List">
@@ -150,7 +150,7 @@
       contentType, params, submitUser, 
       priority, isSerial, isTemp, 
       appId, workerGroupId, department, 
-      bizGroupId, activeStartDate, activeEndDate, 
+      bizGroups, activeStartDate, activeEndDate, 
       expiredTime, failedAttempts, failedInterval, 
       createTime, updateTime, updateUser, 
       content)
@@ -158,7 +158,7 @@
       #{contentType,jdbcType=INTEGER}, #{params,jdbcType=VARCHAR}, #{submitUser,jdbcType=VARCHAR}, 
       #{priority,jdbcType=INTEGER}, #{isSerial,jdbcType=BIT}, #{isTemp,jdbcType=BIT}, 
       #{appId,jdbcType=INTEGER}, #{workerGroupId,jdbcType=INTEGER}, #{department,jdbcType=VARCHAR}, 
-      #{bizGroupId,jdbcType=VARCHAR}, #{activeStartDate,jdbcType=TIMESTAMP}, #{activeEndDate,jdbcType=TIMESTAMP}, 
+      #{bizGroups,jdbcType=VARCHAR}, #{activeStartDate,jdbcType=TIMESTAMP}, #{activeEndDate,jdbcType=TIMESTAMP}, 
       #{expiredTime,jdbcType=INTEGER}, #{failedAttempts,jdbcType=INTEGER}, #{failedInterval,jdbcType=INTEGER}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, 
       #{content,jdbcType=LONGVARCHAR})
@@ -205,8 +205,8 @@
       <if test="department != null">
         department,
       </if>
-      <if test="bizGroupId != null">
-        bizGroupId,
+      <if test="bizGroups != null">
+        bizGroups,
       </if>
       <if test="activeStartDate != null">
         activeStartDate,
@@ -273,8 +273,8 @@
       <if test="department != null">
         #{department,jdbcType=VARCHAR},
       </if>
-      <if test="bizGroupId != null">
-        #{bizGroupId,jdbcType=VARCHAR},
+      <if test="bizGroups != null">
+        #{bizGroups,jdbcType=VARCHAR},
       </if>
       <if test="activeStartDate != null">
         #{activeStartDate,jdbcType=TIMESTAMP},
@@ -353,8 +353,8 @@
       <if test="record.department != null">
         department = #{record.department,jdbcType=VARCHAR},
       </if>
-      <if test="record.bizGroupId != null">
-        bizGroupId = #{record.bizGroupId,jdbcType=VARCHAR},
+      <if test="record.bizGroups != null">
+        bizGroups = #{record.bizGroups,jdbcType=VARCHAR},
       </if>
       <if test="record.activeStartDate != null">
         activeStartDate = #{record.activeStartDate,jdbcType=TIMESTAMP},
@@ -403,7 +403,7 @@
       appId = #{record.appId,jdbcType=INTEGER},
       workerGroupId = #{record.workerGroupId,jdbcType=INTEGER},
       department = #{record.department,jdbcType=VARCHAR},
-      bizGroupId = #{record.bizGroupId,jdbcType=VARCHAR},
+      bizGroups = #{record.bizGroups,jdbcType=VARCHAR},
       activeStartDate = #{record.activeStartDate,jdbcType=TIMESTAMP},
       activeEndDate = #{record.activeEndDate,jdbcType=TIMESTAMP},
       expiredTime = #{record.expiredTime,jdbcType=INTEGER},
@@ -432,7 +432,7 @@
       appId = #{record.appId,jdbcType=INTEGER},
       workerGroupId = #{record.workerGroupId,jdbcType=INTEGER},
       department = #{record.department,jdbcType=VARCHAR},
-      bizGroupId = #{record.bizGroupId,jdbcType=VARCHAR},
+      bizGroups = #{record.bizGroups,jdbcType=VARCHAR},
       activeStartDate = #{record.activeStartDate,jdbcType=TIMESTAMP},
       activeEndDate = #{record.activeEndDate,jdbcType=TIMESTAMP},
       expiredTime = #{record.expiredTime,jdbcType=INTEGER},
@@ -484,8 +484,8 @@
       <if test="department != null">
         department = #{department,jdbcType=VARCHAR},
       </if>
-      <if test="bizGroupId != null">
-        bizGroupId = #{bizGroupId,jdbcType=VARCHAR},
+      <if test="bizGroups != null">
+        bizGroups = #{bizGroups,jdbcType=VARCHAR},
       </if>
       <if test="activeStartDate != null">
         activeStartDate = #{activeStartDate,jdbcType=TIMESTAMP},
@@ -531,7 +531,7 @@
       appId = #{appId,jdbcType=INTEGER},
       workerGroupId = #{workerGroupId,jdbcType=INTEGER},
       department = #{department,jdbcType=VARCHAR},
-      bizGroupId = #{bizGroupId,jdbcType=VARCHAR},
+      bizGroups = #{bizGroups,jdbcType=VARCHAR},
       activeStartDate = #{activeStartDate,jdbcType=TIMESTAMP},
       activeEndDate = #{activeEndDate,jdbcType=TIMESTAMP},
       expiredTime = #{expiredTime,jdbcType=INTEGER},
@@ -557,7 +557,7 @@
       appId = #{appId,jdbcType=INTEGER},
       workerGroupId = #{workerGroupId,jdbcType=INTEGER},
       department = #{department,jdbcType=VARCHAR},
-      bizGroupId = #{bizGroupId,jdbcType=VARCHAR},
+      bizGroups = #{bizGroups,jdbcType=VARCHAR},
       activeStartDate = #{activeStartDate,jdbcType=TIMESTAMP},
       activeEndDate = #{activeEndDate,jdbcType=TIMESTAMP},
       expiredTime = #{expiredTime,jdbcType=INTEGER},

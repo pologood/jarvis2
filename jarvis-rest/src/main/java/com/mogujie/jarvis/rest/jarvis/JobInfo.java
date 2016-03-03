@@ -71,7 +71,7 @@ public class JobInfo implements Serializable {
         this.startDate = new DateTime(jobInfoEntry.getStartDate()).toString();
         this.endDate = new DateTime(jobInfoEntry.getEndDate()).toString();
         this.pline = jobInfoEntry.getBizName();
-        this.department = jobInfoEntry.getAppName();
+        this.department = jobInfoEntry.getDepartment();
         //适配老jarvis状态
         int newStatus = jobInfoEntry.getStatus();
         if (newStatus == JobStatus.ENABLE.getValue()) {

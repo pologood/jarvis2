@@ -29,7 +29,7 @@ public class Job {
 
     private String department;
 
-    private String bizGroupId;
+    private String bizGroups;
 
     private Date activeStartDate;
 
@@ -153,12 +153,12 @@ public class Job {
         this.department = department;
     }
 
-    public String getBizGroupId() {
-        return bizGroupId;
+    public String getBizGroups() {
+        return bizGroups;
     }
 
-    public void setBizGroupId(String bizGroupId) {
-        this.bizGroupId = bizGroupId;
+    public void setBizGroups(String bizGroups) {
+        this.bizGroups = bizGroups;
     }
 
     public Date getActiveStartDate() {
