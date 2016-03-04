@@ -35,7 +35,7 @@ public class RemoteRestApiController extends BaseController {
     * */
     static {
         try {
-            InputStream inputStream = RemoteRestApiController.class.getClassLoader().getResourceAsStream("api.properties");
+            InputStream inputStream = RemoteRestApiController.class.getClassLoader().getResourceAsStream("config.properties");
             Properties properties = new Properties();
             properties.load(inputStream);
             domain = properties.getProperty("rest.domain");
