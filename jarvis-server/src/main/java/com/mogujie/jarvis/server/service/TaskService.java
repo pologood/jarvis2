@@ -90,7 +90,7 @@ public class TaskService {
     }
 
     public List<Task> getTasksByJobIdAndDataDate(long jobId, long dataDate) {
-        DateTime dataTime = new DateTime(dataDate);
+        DateTime dataTime = new DateTime(dataDate).withTimeAtStartOfDay();
         TaskExample example = new TaskExample();
         example.createCriteria().andJobIdEqualTo(jobId).andDataTimeBetween(dataTime.toDate(), dataTime.plusDays(1).toDate());
         return taskMapper.selectByExample(example);
