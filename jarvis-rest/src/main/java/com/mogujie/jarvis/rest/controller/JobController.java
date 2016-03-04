@@ -328,8 +328,8 @@ public class JobController extends AbstractController {
         if (vo.getWorkerGroupId() != null) {
             builder.setWorkerGroupId(vo.getWorkerGroupId());
         }
-        if (vo.getBizGroupId() != null) {
-            builder.setBizGroups(vo.getBizGroupId());
+        if (vo.getBizGroups() != null) {
+            builder.setBizGroups(vo.getBizGroups());
         }
         if (vo.getActiveStartTime() != null) {
             builder.setActiveStartTime(vo.getActiveStartTime());
