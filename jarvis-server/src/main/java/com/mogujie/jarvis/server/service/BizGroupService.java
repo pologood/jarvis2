@@ -10,6 +10,7 @@ package com.mogujie.jarvis.server.service;
 
 import java.util.List;
 
+import com.google.common.primitives.Ints;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.mogujie.jarvis.core.domain.JobStatus;
@@ -60,8 +61,20 @@ public class BizGroupService {
         return bizGroup;
     }
 
-    public BizGroup queryById(Integer id) {
-        return bizGroupMapper.selectByPrimaryKey(id);
+    public BizGroup queryById(String idStr) throws NotFoundException{
+        Integer id = Ints.tryParse(idStr);
+        if(id ==null){
+            throw new NotFoundException("bizGroup不存在. id:" + idStr);
+        }
+        return queryById(id);
+    }
+
+    public BizGroup queryById(Integer id) throws NotFoundException{
+        BizGroup biz =  bizGroupMapper.selectByPrimaryKey(id);
+        if (biz == null) {
+            throw new NotFoundException("bizGroup不存在. id:" + id);
+        }
+        return biz;
     }
 
     public BizGroup queryByName(String name) throws NotFoundException {

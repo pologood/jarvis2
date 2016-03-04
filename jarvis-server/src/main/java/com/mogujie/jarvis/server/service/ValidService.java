@@ -105,11 +105,11 @@ public class ValidService {
         Preconditions.checkArgument(mode != CheckMode.ADD || workerGroupId != null, "workGroupId不能为空");
         Preconditions.checkArgument(workerGroupId == null || workerGroupId > 0, "workGroupId不能为空");
 
-        String bizNames = job.getBizGroups();
-        if (bizNames != null && !bizNames.isEmpty()) {
-            String[] bizNameArray = StringUtils.split(bizNames, ",");
-            for (String bizName : bizNameArray) {
-                bizGroupService.queryByName(bizName);
+        String bizGroupIds = job.getBizGroups();
+        if (bizGroupIds != null && !bizGroupIds.isEmpty()) {
+            String[] bizIdArray = StringUtils.split(bizGroupIds, ",");
+            for (String bizId : bizIdArray) {
+                bizGroupService.queryById(bizId);
             }
         }
 
