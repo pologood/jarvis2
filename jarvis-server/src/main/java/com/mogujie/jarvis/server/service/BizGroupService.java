@@ -90,12 +90,13 @@ public class BizGroupService {
 
 
     public void checkDeletable(Integer id) {
-        JobExample example = new JobExample();
-        example.createCriteria().andBizGroupIdEqualTo(id).andStatusNotEqualTo(JobStatus.DELETED.getValue());
-        List<Job> list = jobMapper.selectByExample(example);
-        if(list != null &&  list.size() >0){
-            throw new IllegalArgumentException("bizGroupId在job中还在使用,不能删除. id:" + id);
-        }
+        return ;
+//        JobExample example = new JobExample();
+//        example.createCriteria().andBizGroupIdEqualTo(id).andStatusNotEqualTo(JobStatus.DELETED.getValue());
+//        List<Job> list = jobMapper.selectByExample(example);
+//        if(list != null &&  list.size() >0){
+//            throw new IllegalArgumentException("bizGroupId在job中还在使用,不能删除. id:" + id);
+//        }
     }
 
 }
