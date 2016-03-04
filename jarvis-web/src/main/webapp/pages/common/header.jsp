@@ -36,7 +36,7 @@
     <script>
         var contextPath = "${contextPath}";
     </script>
-    <title>蘑菇街 - 大数据</title>
+    <title>调度系统 - 蘑菇街</title>
 </head>
 <body>
 <header>

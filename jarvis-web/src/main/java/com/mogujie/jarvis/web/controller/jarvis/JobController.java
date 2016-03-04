@@ -3,10 +3,10 @@ package com.mogujie.jarvis.web.controller.jarvis;
 import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.web.auth.annotation.JarvisPassport;
 import com.mogujie.jarvis.web.auth.conf.JarvisAuthType;
-import com.mogujie.jarvis.web.entity.qo.AppQo;
 import com.mogujie.jarvis.web.entity.qo.JobDependQo;
 import com.mogujie.jarvis.web.entity.vo.*;
 import com.mogujie.jarvis.web.service.*;
+import com.mogujie.jarvis.web.utils.MessageStatus;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -121,26 +121,26 @@ public class JobController extends BaseController {
         if (jobId == null) {
             //已经存在此名字job
             if (jobVo != null) {
-                result.put("code", 1);
-                result.put("msg", "已存在此名字任务:" + jobName + ",不能新增");
+                result.put("code", MessageStatus.FAILED.getValue());
+                result.put("msg", "任务名称已经存在,不能追加. jobName:" + jobName);
             } else {
-                result.put("code", 0);
-                result.put("msg", "不存在此名字任务:" + jobName + ",可以新增");
+                result.put("code", MessageStatus.SUCCESS.getValue());
+                result.put("msg",  "任务名称不存在,可以追加. jobName:" + jobName);
             }
         }
         //已存在job的情况下校验
         else {
             if (jobVo != null) {
                 if (jobVo.getJobId().equals(jobId)) {
-                    result.put("code", 0);
-                    result.put("msg", "任务名为本身，没修改:" + jobName + ",可以更新");
+                    result.put("code", MessageStatus.SUCCESS.getValue());
+                    result.put("msg",  "任务名称未修改,可以更新. jobName:" + jobName);
                 } else {
-                    result.put("code", 1);
-                    result.put("msg", "已存在此名字任务:" + jobName + ",不能更新");
+                    result.put("code", MessageStatus.FAILED.getValue());
+                    result.put("msg", "任务名称已经存在,不能更新. jobName:" + jobName);
                 }
             } else {
-                result.put("code", 0);
-                result.put("msg", "不存在此名字任务:" + jobName + ",可以更新");
+                result.put("code", MessageStatus.SUCCESS.getValue());
+                result.put("msg",  "任务名称不存在,可以更新. jobName:" + jobName);
             }
         }
         return result;

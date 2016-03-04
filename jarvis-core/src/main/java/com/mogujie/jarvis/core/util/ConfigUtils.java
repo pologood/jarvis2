@@ -21,80 +21,52 @@ import java.net.UnknownHostException;
 
 public class ConfigUtils {
 
-    private static PropertiesConfiguration workerConfig;
-    private static PropertiesConfiguration serverConfig;
-    private static PropertiesConfiguration logstorageConfig;
+    private static PropertiesConfiguration workerConfig=null;
+    private static PropertiesConfiguration serverConfig=null;
+    private static PropertiesConfiguration logstorageConfig=null;
+    private static PropertiesConfiguration restConfig=null;
 
     /**
      * 读取Server配置
-     *
-     * @return
      */
     public synchronized static Configuration getServerConfig() {
-        if (serverConfig == null) {
-            try {
-                serverConfig = new PropertiesConfiguration("server.properties");
-                serverConfig.setReloadingStrategy(new FileChangedReloadingStrategy());
-            } catch (ConfigurationException e) {
-                Throwables.propagate(e);
-            }
-        }
-
-        return serverConfig;
+        return getPropertiesConfig(serverConfig,"server.properties");
     }
 
     /**
      * 读取worker配置
-     *
-     * @return
      */
     public synchronized static Configuration getWorkerConfig() {
-        if (workerConfig == null) {
-            try {
-                workerConfig = new PropertiesConfiguration("worker.properties");
-                workerConfig.setReloadingStrategy(new FileChangedReloadingStrategy());
-            } catch (ConfigurationException e) {
-                Throwables.propagate(e);
-            }
-        }
-
-        return workerConfig;
+        return getPropertiesConfig(workerConfig,"worker.properties");
     }
 
     /**
      * 读取logstorage配置
-     *
-     * @return
      */
     public synchronized static Configuration getLogstorageConfig() {
-        if (logstorageConfig == null) {
-            try {
-                logstorageConfig = new PropertiesConfiguration("logstorage.properties");
-                logstorageConfig.setReloadingStrategy(new FileChangedReloadingStrategy());
-            } catch (ConfigurationException e) {
-                Throwables.propagate(e);
-            }
-        }
-
-        return logstorageConfig;
+        return getPropertiesConfig(logstorageConfig,"logstorage.properties");
     }
 
     /**
      * 读取rest配置
-     *
-     * @return
      */
     public synchronized static Configuration getRestConfig() {
-        if (logstorageConfig == null) {
+        return getPropertiesConfig(restConfig,"rest.properties");
+    }
+
+    /**
+     * 读取属性文件配置
+     */
+    private static Configuration getPropertiesConfig(PropertiesConfiguration config, String fileName) {
+        if (config == null) {
             try {
-                logstorageConfig = new PropertiesConfiguration("rest.properties");
-                logstorageConfig.setReloadingStrategy(new FileChangedReloadingStrategy());
+                config = new PropertiesConfiguration(fileName);
+                config.setReloadingStrategy(new FileChangedReloadingStrategy());
             } catch (ConfigurationException e) {
                 Throwables.propagate(e);
             }
         }
-
-        return logstorageConfig;
+        return config;
     }
 
     /**

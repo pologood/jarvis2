@@ -18,12 +18,14 @@
         <spring.version>4.2.4.RELEASE</spring.version>
         <local.repo.host>http://maven.mogujie.org</local.repo.host>
         <admin.version>1.0-SNAPSHOT</admin.version>
+        <hadoop.version>2.7.1</hadoop.version>
     </properties>
 
+    <!-- 仓库相关配置 -->
     <repositories>
         <repository>
             <id>mogujie</id>
-            <url>http://maven.mogujie.org/nexus/content/groups/public/</url>
+            <url>${local.repo.host}/nexus/content/groups/public/</url>
         </repository>
     </repositories>
 
@@ -70,6 +72,12 @@
             <groupId>com.mogujie.jarvis</groupId>
             <artifactId>jarvis-core</artifactId>
             <version>2.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.mogujie.bigdata.base</groupId>
+            <artifactId>bigdata-utils</artifactId>
+            <version>0.0.19</version>
         </dependency>
 
         <dependency>
@@ -238,6 +246,27 @@
             <!--<artifactId>log4j</artifactId>-->
             <!--<version>1.2.16</version>-->
         <!--</dependency>-->
+
+        <!-- hadoop -->
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-common</artifactId>
+            <version>${hadoop.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+
+                <exclusion>
+                    <groupId>log4j</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+
+        </dependency>
+
+
 
     </dependencies>
 

@@ -15,6 +15,9 @@ public class JobVo extends Job {
     private String expression;
     private String workerGroupName;
 
+    private String scriptId;            //脚本ID
+    private String scriptTitle;         //脚本标题
+    private String scriptContent;       //脚本内容
 
     public String getAppName() {
         return appName;
@@ -63,4 +66,32 @@ public class JobVo extends Job {
     public void setExpressionId(Integer expressionId) {
         this.expressionId = expressionId;
     }
+
+    public String getScriptId() {
+        return scriptId;
+    }
+
+    public JobVo setScriptId(String scriptId) {
+        this.scriptId = scriptId;
+        return this;
+    }
+
+    public String getScriptTitle() {
+        return scriptTitle;
+    }
+
+    public JobVo setScriptTitle(String scriptTitle) {
+        this.scriptTitle = scriptTitle;
+        return this;
+    }
+
+    public String getScriptContent() {
+        return scriptContent;
+    }
+
+    public JobVo setScriptContent(String scriptContent) {
+        this.scriptContent = scriptContent;
+        return this;
+    }
+
 }
