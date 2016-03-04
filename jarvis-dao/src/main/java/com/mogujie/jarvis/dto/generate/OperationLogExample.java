@@ -1,16 +1,17 @@
 package com.mogujie.jarvis.dto.generate;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-public class JobOperationLogExample {
+public class OperationLogExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected java.util.List<Criteria> oredCriteria;
 
-    public JobOperationLogExample() {
+    public OperationLogExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -304,143 +305,73 @@ public class JobOperationLogExample {
             return (Criteria) this;
         }
 
-        public Criteria andJobIdIsNull() {
-            addCriterion("jobId is null");
+        public Criteria andReferIsNull() {
+            addCriterion("refer is null");
             return (Criteria) this;
         }
 
-        public Criteria andJobIdIsNotNull() {
-            addCriterion("jobId is not null");
+        public Criteria andReferIsNotNull() {
+            addCriterion("refer is not null");
             return (Criteria) this;
         }
 
-        public Criteria andJobIdEqualTo(String value) {
-            addCriterion("jobId =", value, "jobId");
+        public Criteria andReferEqualTo(String value) {
+            addCriterion("refer =", value, "refer");
             return (Criteria) this;
         }
 
-        public Criteria andJobIdNotEqualTo(String value) {
-            addCriterion("jobId <>", value, "jobId");
+        public Criteria andReferNotEqualTo(String value) {
+            addCriterion("refer <>", value, "refer");
             return (Criteria) this;
         }
 
-        public Criteria andJobIdGreaterThan(String value) {
-            addCriterion("jobId >", value, "jobId");
+        public Criteria andReferGreaterThan(String value) {
+            addCriterion("refer >", value, "refer");
             return (Criteria) this;
         }
 
-        public Criteria andJobIdGreaterThanOrEqualTo(String value) {
-            addCriterion("jobId >=", value, "jobId");
+        public Criteria andReferGreaterThanOrEqualTo(String value) {
+            addCriterion("refer >=", value, "refer");
             return (Criteria) this;
         }
 
-        public Criteria andJobIdLessThan(String value) {
-            addCriterion("jobId <", value, "jobId");
+        public Criteria andReferLessThan(String value) {
+            addCriterion("refer <", value, "refer");
             return (Criteria) this;
         }
 
-        public Criteria andJobIdLessThanOrEqualTo(String value) {
-            addCriterion("jobId <=", value, "jobId");
+        public Criteria andReferLessThanOrEqualTo(String value) {
+            addCriterion("refer <=", value, "refer");
             return (Criteria) this;
         }
 
-        public Criteria andJobIdLike(String value) {
-            addCriterion("jobId like", value, "jobId");
+        public Criteria andReferLike(String value) {
+            addCriterion("refer like", value, "refer");
             return (Criteria) this;
         }
 
-        public Criteria andJobIdNotLike(String value) {
-            addCriterion("jobId not like", value, "jobId");
+        public Criteria andReferNotLike(String value) {
+            addCriterion("refer not like", value, "refer");
             return (Criteria) this;
         }
 
-        public Criteria andJobIdIn(java.util.List<java.lang.String> values) {
-            addCriterion("jobId in", values, "jobId");
+        public Criteria andReferIn(java.util.List<java.lang.String> values) {
+            addCriterion("refer in", values, "refer");
             return (Criteria) this;
         }
 
-        public Criteria andJobIdNotIn(java.util.List<java.lang.String> values) {
-            addCriterion("jobId not in", values, "jobId");
+        public Criteria andReferNotIn(java.util.List<java.lang.String> values) {
+            addCriterion("refer not in", values, "refer");
             return (Criteria) this;
         }
 
-        public Criteria andJobIdBetween(String value1, String value2) {
-            addCriterion("jobId between", value1, value2, "jobId");
+        public Criteria andReferBetween(String value1, String value2) {
+            addCriterion("refer between", value1, value2, "refer");
             return (Criteria) this;
         }
 
-        public Criteria andJobIdNotBetween(String value1, String value2) {
-            addCriterion("jobId not between", value1, value2, "jobId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDetailIsNull() {
-            addCriterion("detail is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andDetailIsNotNull() {
-            addCriterion("detail is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andDetailEqualTo(String value) {
-            addCriterion("detail =", value, "detail");
-            return (Criteria) this;
-        }
-
-        public Criteria andDetailNotEqualTo(String value) {
-            addCriterion("detail <>", value, "detail");
-            return (Criteria) this;
-        }
-
-        public Criteria andDetailGreaterThan(String value) {
-            addCriterion("detail >", value, "detail");
-            return (Criteria) this;
-        }
-
-        public Criteria andDetailGreaterThanOrEqualTo(String value) {
-            addCriterion("detail >=", value, "detail");
-            return (Criteria) this;
-        }
-
-        public Criteria andDetailLessThan(String value) {
-            addCriterion("detail <", value, "detail");
-            return (Criteria) this;
-        }
-
-        public Criteria andDetailLessThanOrEqualTo(String value) {
-            addCriterion("detail <=", value, "detail");
-            return (Criteria) this;
-        }
-
-        public Criteria andDetailLike(String value) {
-            addCriterion("detail like", value, "detail");
-            return (Criteria) this;
-        }
-
-        public Criteria andDetailNotLike(String value) {
-            addCriterion("detail not like", value, "detail");
-            return (Criteria) this;
-        }
-
-        public Criteria andDetailIn(java.util.List<java.lang.String> values) {
-            addCriterion("detail in", values, "detail");
-            return (Criteria) this;
-        }
-
-        public Criteria andDetailNotIn(java.util.List<java.lang.String> values) {
-            addCriterion("detail not in", values, "detail");
-            return (Criteria) this;
-        }
-
-        public Criteria andDetailBetween(String value1, String value2) {
-            addCriterion("detail between", value1, value2, "detail");
-            return (Criteria) this;
-        }
-
-        public Criteria andDetailNotBetween(String value1, String value2) {
-            addCriterion("detail not between", value1, value2, "detail");
+        public Criteria andReferNotBetween(String value1, String value2) {
+            addCriterion("refer not between", value1, value2, "refer");
             return (Criteria) this;
         }
 
@@ -454,63 +385,123 @@ public class JobOperationLogExample {
             return (Criteria) this;
         }
 
-        public Criteria andOpeDateEqualTo(String value) {
+        public Criteria andOpeDateEqualTo(Date value) {
             addCriterion("opeDate =", value, "opeDate");
             return (Criteria) this;
         }
 
-        public Criteria andOpeDateNotEqualTo(String value) {
+        public Criteria andOpeDateNotEqualTo(Date value) {
             addCriterion("opeDate <>", value, "opeDate");
             return (Criteria) this;
         }
 
-        public Criteria andOpeDateGreaterThan(String value) {
+        public Criteria andOpeDateGreaterThan(Date value) {
             addCriterion("opeDate >", value, "opeDate");
             return (Criteria) this;
         }
 
-        public Criteria andOpeDateGreaterThanOrEqualTo(String value) {
+        public Criteria andOpeDateGreaterThanOrEqualTo(Date value) {
             addCriterion("opeDate >=", value, "opeDate");
             return (Criteria) this;
         }
 
-        public Criteria andOpeDateLessThan(String value) {
+        public Criteria andOpeDateLessThan(Date value) {
             addCriterion("opeDate <", value, "opeDate");
             return (Criteria) this;
         }
 
-        public Criteria andOpeDateLessThanOrEqualTo(String value) {
+        public Criteria andOpeDateLessThanOrEqualTo(Date value) {
             addCriterion("opeDate <=", value, "opeDate");
             return (Criteria) this;
         }
 
-        public Criteria andOpeDateLike(String value) {
-            addCriterion("opeDate like", value, "opeDate");
-            return (Criteria) this;
-        }
-
-        public Criteria andOpeDateNotLike(String value) {
-            addCriterion("opeDate not like", value, "opeDate");
-            return (Criteria) this;
-        }
-
-        public Criteria andOpeDateIn(java.util.List<java.lang.String> values) {
+        public Criteria andOpeDateIn(java.util.List<java.util.Date> values) {
             addCriterion("opeDate in", values, "opeDate");
             return (Criteria) this;
         }
 
-        public Criteria andOpeDateNotIn(java.util.List<java.lang.String> values) {
+        public Criteria andOpeDateNotIn(java.util.List<java.util.Date> values) {
             addCriterion("opeDate not in", values, "opeDate");
             return (Criteria) this;
         }
 
-        public Criteria andOpeDateBetween(String value1, String value2) {
+        public Criteria andOpeDateBetween(Date value1, Date value2) {
             addCriterion("opeDate between", value1, value2, "opeDate");
             return (Criteria) this;
         }
 
-        public Criteria andOpeDateNotBetween(String value1, String value2) {
+        public Criteria andOpeDateNotBetween(Date value1, Date value2) {
             addCriterion("opeDate not between", value1, value2, "opeDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeIsNull() {
+            addCriterion("type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeIsNotNull() {
+            addCriterion("type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeEqualTo(String value) {
+            addCriterion("type =", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotEqualTo(String value) {
+            addCriterion("type <>", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeGreaterThan(String value) {
+            addCriterion("type >", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeGreaterThanOrEqualTo(String value) {
+            addCriterion("type >=", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeLessThan(String value) {
+            addCriterion("type <", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeLessThanOrEqualTo(String value) {
+            addCriterion("type <=", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeLike(String value) {
+            addCriterion("type like", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotLike(String value) {
+            addCriterion("type not like", value, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeIn(java.util.List<java.lang.String> values) {
+            addCriterion("type in", values, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotIn(java.util.List<java.lang.String> values) {
+            addCriterion("type not in", values, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeBetween(String value1, String value2) {
+            addCriterion("type between", value1, value2, "type");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeNotBetween(String value1, String value2) {
+            addCriterion("type not between", value1, value2, "type");
             return (Criteria) this;
         }
     }

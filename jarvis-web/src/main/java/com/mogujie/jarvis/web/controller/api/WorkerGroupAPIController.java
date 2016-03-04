@@ -1,7 +1,6 @@
 package com.mogujie.jarvis.web.controller.api;
 
 import com.mogujie.jarvis.core.domain.WorkerGroupStatus;
-import com.mogujie.jarvis.core.domain.WorkerStatus;
 import com.mogujie.jarvis.web.entity.qo.WorkerGroupQo;
 import com.mogujie.jarvis.web.entity.vo.WorkerGroupVo;
 import com.mogujie.jarvis.web.service.WorkerGroupService;

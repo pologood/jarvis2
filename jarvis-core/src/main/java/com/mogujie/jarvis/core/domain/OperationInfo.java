@@ -28,7 +28,8 @@ public enum OperationInfo {
 
   // task related
   CREATETASKBYJOBID("createTaskByJobId", "根据jodId创建task"),
-  UPDATESTATUSWITHEND("updateStatusWithEnd", "根据endTime修改task的状态");
+  UPDATESTATUSWITHEND("updateStatusWithEnd", "根据endTime修改task的状态"),
+  INSERTSELECTIVE("insertSelective", "插入指定的task");
 
   OperationInfo(String name, String description) {
     this.name = name;

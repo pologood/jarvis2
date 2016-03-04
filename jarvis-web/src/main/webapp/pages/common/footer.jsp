@@ -32,6 +32,7 @@
 <script type="text/javascript" src="${contextPath}/assets/plugins/bootstrap-switch/js/bootstrap-switch.min.js" charset="UTF-8"></script>
 <script type="text/javascript" src="${contextPath}/assets/js/common.js" charset="UTF-8"></script>
 <script type="text/javascript" src="${contextPath}/assets/plugins/back-to-top/js/main.js" charset="UTF-8"></script>
+<script type="text/javascript" src="${contextPath}/assets/js/const.js" charset="UTF-8"></script>
 <script type="text/javascript" src="${contextPath}/assets/js/cart.js" charset="UTF-8"></script>
 <script type="text/javascript" src="${contextPath}/assets/js/pager.js" charset="UTF-8"></script>
 <script type="text/javascript" src="${contextPath}/assets/plugins/select2/4.0.1/js/select2.min.js"></script>
@@ -48,7 +49,7 @@
 <script type="text/javascript" src="${contextPath}/assets/plugins/momentjs/moment.js" charset="UTF-8"></script>
 <script type="text/javascript" src="${contextPath}/assets/plugins/d3/d3.min.js" charset="UTF-8"></script>
 <script type="text/javascript" src="${contextPath}/assets/plugins/d3/d3.layout.js" charset="UTF-8"></script>
-
+<script type="text/javascript" src="${contextPath}/assets/plugins/bootstrap-list-filter/bootstrap-list-filter.src.js"></script>
 
 <script type="text/javascript" src="${contextPath}/assets/js/jarvis.js" charset="UTF-8"></script>
 

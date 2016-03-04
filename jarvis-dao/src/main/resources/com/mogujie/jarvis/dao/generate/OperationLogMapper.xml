@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.mogujie.jarvis.dao.generate.JobOperationLogMapper">
-  <resultMap id="BaseResultMap" type="com.mogujie.jarvis.dto.generate.JobOperationLog">
+<mapper namespace="com.mogujie.jarvis.dao.generate.OperationLogMapper">
+  <resultMap id="BaseResultMap" type="com.mogujie.jarvis.dto.generate.OperationLog">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="title" jdbcType="VARCHAR" property="title" />
     <result column="operator" jdbcType="VARCHAR" property="operator" />
-    <result column="jobId" jdbcType="VARCHAR" property="jobId" />
-    <result column="detail" jdbcType="VARCHAR" property="detail" />
-    <result column="opeDate" jdbcType="VARCHAR" property="opeDate" />
+    <result column="refer" jdbcType="VARCHAR" property="refer" />
+    <result column="opeDate" jdbcType="TIMESTAMP" property="opeDate" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.mogujie.jarvis.dto.generate.OperationLog">
+    <result column="detail" jdbcType="LONGVARCHAR" property="detail" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -68,15 +71,20 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, title, operator, jobId, detail, opeDate
+    id, title, operator, refer, opeDate, type
   </sql>
-  <select id="selectByExample" parameterType="com.mogujie.jarvis.dto.generate.JobOperationLogExample" resultMap="BaseResultMap">
+  <sql id="Blob_Column_List">
+    detail
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.mogujie.jarvis.dto.generate.OperationLogExample" resultMap="ResultMapWithBLOBs">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from job_operation_log
+    ,
+    <include refid="Blob_Column_List" />
+    from operation_log
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -84,36 +92,54 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.mogujie.jarvis.dto.generate.OperationLogExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from operation_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
     select 
     <include refid="Base_Column_List" />
-    from job_operation_log
+    ,
+    <include refid="Blob_Column_List" />
+    from operation_log
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from job_operation_log
+    delete from operation_log
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.mogujie.jarvis.dto.generate.JobOperationLogExample">
-    delete from job_operation_log
+  <delete id="deleteByExample" parameterType="com.mogujie.jarvis.dto.generate.OperationLogExample">
+    delete from operation_log
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.mogujie.jarvis.dto.generate.JobOperationLog">
+  <insert id="insert" parameterType="com.mogujie.jarvis.dto.generate.OperationLog">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into job_operation_log (title, operator, jobId, 
-      detail, opeDate)
-    values (#{title,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR}, #{jobId,jdbcType=VARCHAR}, 
-      #{detail,jdbcType=VARCHAR}, #{opeDate,jdbcType=VARCHAR})
+    insert into operation_log (title, operator, refer, 
+      opeDate, type, detail
+      )
+    values (#{title,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR}, #{refer,jdbcType=VARCHAR}, 
+      #{opeDate,jdbcType=TIMESTAMP}, #{type,jdbcType=VARCHAR}, #{detail,jdbcType=LONGVARCHAR}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.mogujie.jarvis.dto.generate.JobOperationLog">
+  <insert id="insertSelective" parameterType="com.mogujie.jarvis.dto.generate.OperationLog">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into job_operation_log
+    insert into operation_log
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="title != null">
         title,
@@ -121,14 +147,17 @@
       <if test="operator != null">
         operator,
       </if>
-      <if test="jobId != null">
-        jobId,
-      </if>
-      <if test="detail != null">
-        detail,
+      <if test="refer != null">
+        refer,
       </if>
       <if test="opeDate != null">
         opeDate,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="detail != null">
+        detail,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -138,25 +167,28 @@
       <if test="operator != null">
         #{operator,jdbcType=VARCHAR},
       </if>
-      <if test="jobId != null">
-        #{jobId,jdbcType=VARCHAR},
-      </if>
-      <if test="detail != null">
-        #{detail,jdbcType=VARCHAR},
+      <if test="refer != null">
+        #{refer,jdbcType=VARCHAR},
       </if>
       <if test="opeDate != null">
-        #{opeDate,jdbcType=VARCHAR},
+        #{opeDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="detail != null">
+        #{detail,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.mogujie.jarvis.dto.generate.JobOperationLogExample" resultType="java.lang.Integer">
-    select count(*) from job_operation_log
+  <select id="countByExample" parameterType="com.mogujie.jarvis.dto.generate.OperationLogExample" resultType="java.lang.Integer">
+    select count(*) from operation_log
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update job_operation_log
+    update operation_log
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
@@ -167,34 +199,50 @@
       <if test="record.operator != null">
         operator = #{record.operator,jdbcType=VARCHAR},
       </if>
-      <if test="record.jobId != null">
-        jobId = #{record.jobId,jdbcType=VARCHAR},
-      </if>
-      <if test="record.detail != null">
-        detail = #{record.detail,jdbcType=VARCHAR},
+      <if test="record.refer != null">
+        refer = #{record.refer,jdbcType=VARCHAR},
       </if>
       <if test="record.opeDate != null">
-        opeDate = #{record.opeDate,jdbcType=VARCHAR},
+        opeDate = #{record.opeDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.type != null">
+        type = #{record.type,jdbcType=VARCHAR},
+      </if>
+      <if test="record.detail != null">
+        detail = #{record.detail,jdbcType=LONGVARCHAR},
       </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByExample" parameterType="map">
-    update job_operation_log
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update operation_log
     set id = #{record.id,jdbcType=INTEGER},
       title = #{record.title,jdbcType=VARCHAR},
       operator = #{record.operator,jdbcType=VARCHAR},
-      jobId = #{record.jobId,jdbcType=VARCHAR},
-      detail = #{record.detail,jdbcType=VARCHAR},
-      opeDate = #{record.opeDate,jdbcType=VARCHAR}
+      refer = #{record.refer,jdbcType=VARCHAR},
+      opeDate = #{record.opeDate,jdbcType=TIMESTAMP},
+      type = #{record.type,jdbcType=VARCHAR},
+      detail = #{record.detail,jdbcType=LONGVARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.mogujie.jarvis.dto.generate.JobOperationLog">
-    update job_operation_log
+  <update id="updateByExample" parameterType="map">
+    update operation_log
+    set id = #{record.id,jdbcType=INTEGER},
+      title = #{record.title,jdbcType=VARCHAR},
+      operator = #{record.operator,jdbcType=VARCHAR},
+      refer = #{record.refer,jdbcType=VARCHAR},
+      opeDate = #{record.opeDate,jdbcType=TIMESTAMP},
+      type = #{record.type,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mogujie.jarvis.dto.generate.OperationLog">
+    update operation_log
     <set>
       <if test="title != null">
         title = #{title,jdbcType=VARCHAR},
@@ -202,25 +250,38 @@
       <if test="operator != null">
         operator = #{operator,jdbcType=VARCHAR},
       </if>
-      <if test="jobId != null">
-        jobId = #{jobId,jdbcType=VARCHAR},
-      </if>
-      <if test="detail != null">
-        detail = #{detail,jdbcType=VARCHAR},
+      <if test="refer != null">
+        refer = #{refer,jdbcType=VARCHAR},
       </if>
       <if test="opeDate != null">
-        opeDate = #{opeDate,jdbcType=VARCHAR},
+        opeDate = #{opeDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="detail != null">
+        detail = #{detail,jdbcType=LONGVARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.mogujie.jarvis.dto.generate.JobOperationLog">
-    update job_operation_log
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.mogujie.jarvis.dto.generate.OperationLog">
+    update operation_log
     set title = #{title,jdbcType=VARCHAR},
       operator = #{operator,jdbcType=VARCHAR},
-      jobId = #{jobId,jdbcType=VARCHAR},
-      detail = #{detail,jdbcType=VARCHAR},
-      opeDate = #{opeDate,jdbcType=VARCHAR}
+      refer = #{refer,jdbcType=VARCHAR},
+      opeDate = #{opeDate,jdbcType=TIMESTAMP},
+      type = #{type,jdbcType=VARCHAR},
+      detail = #{detail,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mogujie.jarvis.dto.generate.OperationLog">
+    update operation_log
+    set title = #{title,jdbcType=VARCHAR},
+      operator = #{operator,jdbcType=VARCHAR},
+      refer = #{refer,jdbcType=VARCHAR},
+      opeDate = #{opeDate,jdbcType=TIMESTAMP},
+      type = #{type,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

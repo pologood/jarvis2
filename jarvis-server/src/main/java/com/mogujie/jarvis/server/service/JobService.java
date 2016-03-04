@@ -7,8 +7,6 @@
  */
 package com.mogujie.jarvis.server.service;
 
-import com.mogujie.jarvis.dao.generate.JobOperationLogMapper;
-import com.mogujie.jarvis.dto.generate.JobOperationLog;
 import com.mogujie.jarvis.server.interceptor.OperationLog;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -217,7 +215,7 @@ public class JobService {
      * @param jobId
      * @param entry
      */
-    @OperationLog
+//    @OperationLog
     public void insertScheduleExpression(long jobId, ScheduleExpressionEntry entry) {
         // 1. insert to DB
         JobScheduleExpression record = new JobScheduleExpression();
@@ -237,7 +235,7 @@ public class JobService {
         jobEntry.addScheduleExpression(record.getId(), scheduleExpression);
     }
 
-    @OperationLog
+//    @OperationLog
     public void deleteScheduleExpression(long jobId, long expressionId) {
         jobScheduleExpressionMapper.deleteByPrimaryKey(expressionId);
         get(jobId).removeScheduleExpression(expressionId);
@@ -249,7 +247,7 @@ public class JobService {
      * @param jobId
      * @param entry
      */
-    @OperationLog
+//    @OperationLog
     public void updateScheduleExpression(long jobId, ScheduleExpressionEntry entry) {
         // 1. update to DB
         long expressionId = entry.getExpressionId();
@@ -267,14 +265,15 @@ public class JobService {
         jobEntry.updateScheduleExpression(entry.getExpressionId(), scheduleExpression);
     }
 
-    @OperationLog
+//    @OperationLog
     public void deleteScheduleExpressionByJobId(long jobId) {
         JobScheduleExpressionExample example = new JobScheduleExpressionExample();
         example.createCriteria().andJobIdEqualTo(jobId);
         jobScheduleExpressionMapper.deleteByExample(example);
-
         JobEntry jobEntry = metaStore.get(jobId);
-        jobEntry.clearScheduleExpressions();
+        if(jobEntry != null){
+            jobEntry.clearScheduleExpressions();
+        }
     }
 
     public void clearTempJobsBefore(DateTime dateTime) {
@@ -301,7 +300,7 @@ public class JobService {
         return jobDependMapper.selectByPrimaryKey(key);
     }
 
-    @OperationLog
+//    @OperationLog
     public void insertJobDepend(JobDepend record) {
         jobDependMapper.insertSelective(record);
 
@@ -312,7 +311,7 @@ public class JobService {
         }
     }
 
-    @OperationLog
+//    @OperationLog
     public void updateJobDepend(JobDepend record) {
         jobDependMapper.updateByPrimaryKeySelective(record);
 
@@ -323,7 +322,7 @@ public class JobService {
         }
     }
 
-    @OperationLog
+//    @OperationLog
     public void deleteJobDepend(long jobId, long preJobId) {
         JobDependKey key = new JobDependKey();
         key.setJobId(jobId);
@@ -336,7 +335,7 @@ public class JobService {
         }
     }
 
-    @OperationLog
+//    @OperationLog
     public void deleteJobDependByPreJobId(long preJobId) {
         JobDependExample jobDependExample = new JobDependExample();
         jobDependExample.createCriteria().andPreJobIdEqualTo(preJobId);
@@ -353,7 +352,7 @@ public class JobService {
         }
     }
 
-    @OperationLog
+//    @OperationLog
     public void deleteJobDependByJobId(long jobId) {
         JobDependExample jobDependExample = new JobDependExample();
         jobDependExample.createCriteria().andJobIdEqualTo(jobId);

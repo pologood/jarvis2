@@ -100,7 +100,7 @@ public class ValidUtils {
     public static ScheduleExpressionEntry convertScheduleExpressionEntry(JobScheduleExpVo.ScheduleExpressionEntry input) {
 
         Integer mode = input.getOperatorMode();
-        Preconditions.checkArgument(mode != null && OperationMode.isValid(mode), "操作模式不对");
+        Preconditions.checkArgument(mode != null && OperationMode.isValid(mode), "计划表达式的操作模式不对. mode:" + mode);
 
         long expressionId = input.getExpressionId() == null ? 0 : input.getExpressionId();
         if (mode == OperationMode.EDIT.getValue() || mode == OperationMode.DELETE.getValue()) {
