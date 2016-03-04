@@ -272,9 +272,10 @@ public class JobService {
         JobScheduleExpressionExample example = new JobScheduleExpressionExample();
         example.createCriteria().andJobIdEqualTo(jobId);
         jobScheduleExpressionMapper.deleteByExample(example);
-
         JobEntry jobEntry = metaStore.get(jobId);
-        jobEntry.clearScheduleExpressions();
+        if(jobEntry != null){
+            jobEntry.clearScheduleExpressions();
+        }
     }
 
     public void clearTempJobsBefore(DateTime dateTime) {
