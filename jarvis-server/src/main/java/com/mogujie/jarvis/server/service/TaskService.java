@@ -150,6 +150,7 @@ public class TaskService {
             if (content != null ) {
                 record.setContent(content);
             } else {
+                content = "";
                 LOGGER.error("cant't find content from script! jobId={}, scriptId={}", jobId, scriptId);
             }
         } else {
