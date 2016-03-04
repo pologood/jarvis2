@@ -546,7 +546,6 @@ public class TaskActor extends UntypedActor {
                 .setAvgTime(taskService.getAvgExecTime(task.getJobId(), 30))
                 .setUseTime(((float)(task.getExecuteEndTime().getTime() - task.getExecuteStartTime().getTime()))/1000/60) //单位分钟
                 .setStatus(task.getStatus())
-                .setContent(task.getContent())
                 .build();
         return taskInfoEntry;
     }
