@@ -10,11 +10,12 @@ package com.mogujie.jarvis.server.service;
 
 
 import java.util.List;
+import java.util.Set;
 
 import org.joda.time.DateTime;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Range;
+import com.google.common.collect.Sets;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.mogujie.jarvis.dao.generate.PlanMapper;
@@ -35,7 +36,7 @@ public class PlanService {
     @Inject
     private JobService jobService;
 
-    public void updateJobIds(List<Long> jobIds) {
+    public void updateJobIds(Set<Long> jobIds) {
         PlanExample example = new PlanExample();
         example.createCriteria();
         planMapper.deleteByExample(example);
@@ -49,7 +50,7 @@ public class PlanService {
 
     public void updateJobIds(Range<DateTime> range) {
         List<Long> activeJobIds = jobService.getEnableActiveJobIds();
-        List<Long> planJobIds = Lists.newArrayList();
+        Set<Long> planJobIds = Sets.newHashSet();
         for (long jobId : activeJobIds) {
             DateTime nextTime = PlanUtil.getScheduleTimeAfter(jobId, range.lowerEndpoint().minusSeconds(1));
             if (nextTime != null && range.contains(nextTime)) {

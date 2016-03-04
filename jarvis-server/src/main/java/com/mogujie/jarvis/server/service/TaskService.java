@@ -8,11 +8,12 @@
 
 package com.mogujie.jarvis.server.service;
 
-import com.mogujie.jarvis.server.interceptor.OperationLog;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 
 import com.google.common.annotations.VisibleForTesting;
@@ -28,6 +29,7 @@ import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.dto.generate.TaskExample;
 import com.mogujie.jarvis.dto.generate.TaskHistory;
+import com.mogujie.jarvis.server.interceptor.OperationLog;
 
 /**
  * @author guangming
@@ -48,6 +50,8 @@ public class TaskService {
 
     @Inject
     private ScriptService scriptService;
+
+    private static final Logger LOGGER = LogManager.getLogger();
 
     public Task get(long taskId) {
         return taskMapper.selectByPrimaryKey(taskId);
@@ -142,7 +146,12 @@ public class TaskService {
         record.setExecuteUser(job.getSubmitUser());
         if (job.getContentType() == JobContentType.SCRIPT.getValue()) {
             int scriptId = Integer.valueOf(job.getContent());
-            record.setContent(scriptService.getContentById(scriptId));
+            String content = scriptService.getContentById(scriptId);
+            if (content != null ) {
+                record.setContent(content);
+            } else {
+                LOGGER.error("cant't find content from script! jobId={}, scriptId={}", jobId, scriptId);
+            }
         } else {
             record.setContent(job.getContent());
         }
