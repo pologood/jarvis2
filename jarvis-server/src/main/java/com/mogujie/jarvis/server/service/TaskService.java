@@ -144,18 +144,18 @@ public class TaskService {
             record.setType(taskType.getValue());
         }
         record.setExecuteUser(job.getSubmitUser());
+        String content = "";
         if (job.getContentType() == JobContentType.SCRIPT.getValue()) {
             int scriptId = Integer.valueOf(job.getContent());
-            String content = scriptService.getContentById(scriptId);
-            if (content != null ) {
-                record.setContent(content);
+            if (scriptService.getContentById(scriptId) != null ) {
+                content = scriptService.getContentById(scriptId);
             } else {
-                content = "";
                 LOGGER.error("cant't find content from script! jobId={}, scriptId={}", jobId, scriptId);
             }
         } else {
-            record.setContent(job.getContent());
+            content = job.getContent();
         }
+        record.setContent(content);
         record.setParams(job.getParams());
         record.setAppId(job.getAppId());
         return insertSelective(record);

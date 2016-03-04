@@ -44,7 +44,9 @@ public class PlanService {
         for (long jobId : jobIds) {
             Plan plan = new Plan();
             plan.setJobId(jobId);
-            planMapper.insertSelective(plan);
+            if (planMapper.selectByPrimaryKey(jobId) == null) {
+                planMapper.insertSelective(plan);
+            }
         }
     }
 
