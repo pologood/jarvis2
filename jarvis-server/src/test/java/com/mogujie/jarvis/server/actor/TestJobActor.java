@@ -183,7 +183,7 @@ public class TestJobActor extends DBTestBased {
                 .setContentType(JobContentType.TEXT.getValue())
                 .setContent("show databases;").setPriority(JobPriority.HIGH.getValue()).setParameters("{\"para1\":\"1\",\"para2\":\"2\"}")
                 .setStatus(JobStatus.ENABLE.getValue()).setUser("qinghuo").setExpiredTime(86400).setFailedAttempts(3).setFailedInterval(3)
-                .setBizGroupId(11).setJobType("hive").setWorkerGroupId(1).build();
+                .setJobType("hive").setWorkerGroupId(1).build();
         ServerSubmitJobResponse response = null;
         for (int i = 0; i < 9; i++) {
             try {

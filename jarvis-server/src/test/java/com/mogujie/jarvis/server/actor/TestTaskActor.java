@@ -208,7 +208,7 @@ public class TestTaskActor {
         RestSubmitJobRequest request = RestSubmitJobRequest.newBuilder().setJobName("qh_test").setAppName("jarvis-web").setAppAuth(appAuth)
                 .setContent("show databases;").setPriority(JobPriority.HIGH.getValue()).setParameters("{\"para1\":\"1\",\"para2\":\"2\"}")
                 .setStatus(JobStatus.ENABLE.getValue()).setUser("qinghuo").addAllExpressionEntry(expressionEntries).setExpiredTime(86400)
-                .setFailedAttempts(3).setFailedInterval(3).setBizGroupId(11).setJobType("hive").setWorkerGroupId(1).build();
+                .setFailedAttempts(3).setFailedInterval(3).setJobType("hive").setWorkerGroupId(1).build();
         ServerSubmitJobResponse response = null;
         try {
             response = (ServerSubmitJobResponse) FutureUtils.awaitResult(serverActor, request, 30);
