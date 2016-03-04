@@ -494,6 +494,7 @@ public class TaskActor extends UntypedActor {
                     parentTaskIdMap = taskDependService.loadParent(maxEndTaskId);
                 }
                 response = ServerQueryTaskCriticalPathResponse.newBuilder().setSuccess(true).addAllTaskInfo(taskInfoEntries).build();
+                getSender().tell(response, getSelf());
             } else {
                 String errMsg = "can't find task, scheduleDate=" + new DateTime(scheduleDate).toString("yyyy-MM-dd hh:mm:ss") + ", jobName=" + jobName;
                 response = ServerQueryTaskCriticalPathResponse.newBuilder().setSuccess(false).setMessage(errMsg).build();
