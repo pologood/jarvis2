@@ -3,5 +3,6 @@
   {"id":"hive","text":"hive"},
   {"id":"shell","text":"shell"},
   {"id":"java","text":"java"},
-  {"id":"mapreduce","text":"mapreduce"}
+  {"id":"mapreduce","text":"mapreduce"},
+  {"id":"dummy","text":"dummy"}
 ]

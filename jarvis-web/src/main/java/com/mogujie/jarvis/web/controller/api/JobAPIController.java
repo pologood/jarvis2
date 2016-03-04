@@ -110,8 +110,8 @@ public class JobAPIController {
     }
 
     /**
-    * 获取任务依赖
-    * */
+     * 获取任务依赖
+     */
     @RequestMapping(value = "/getDepend")
     @ResponseBody
     public Object getDepend(JobDependQo jobQo) {

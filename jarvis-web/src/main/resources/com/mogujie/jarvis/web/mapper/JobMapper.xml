@@ -91,10 +91,27 @@
 
     </select>
 
+    <!--<select id="getJobById" parameterType="Long" resultType="JobVo">-->
+        <!--SELECT job.*,-->
+        <!--job_schedule_expression.id as expressionId,-->
+        <!--job_schedule_expression.expressionType,-->
+        <!--job_schedule_expression.expression-->
+        <!--FROM job LEFT JOIN job_schedule_expression ON job.jobId=job_schedule_expression.jobId-->
+        <!--WHERE job.jobId=#{jobId} limit 1-->
+    <!--</select>-->
+
     <select id="getJobById" parameterType="Long" resultType="JobVo">
-        SELECT job.*,job_schedule_expression.id as expressionId,job_schedule_expression.expressionType,job_schedule_expression.expression
-        FROM job LEFT JOIN job_schedule_expression ON job.jobId=job_schedule_expression.jobId
-        WHERE job.jobId=#{jobId} limit 0,1
+        SELECT a.*,
+        b.id as expressionId,
+        b.expressionType,
+        b.expression,
+        c.id as scriptId,
+        c.title as scriptTitle,
+        c.content as scriptContent
+        FROM job a
+        LEFT JOIN job_schedule_expression b  ON a.jobId=b.jobId
+        LEFT JOIN ironman.script  c ON a.contentType = 2 and c.id = a.content and c.status = 0
+        WHERE a.jobId=#{jobId} limit 1
     </select>
 
     <select id="getJobByName" parameterType="String" resultType="JobVo">
