@@ -2,6 +2,7 @@ package com.mogujie.jarvis.dao.generate;
 
 import com.mogujie.jarvis.dto.generate.TaskHistory;
 import com.mogujie.jarvis.dto.generate.TaskHistoryExample;
+import com.mogujie.jarvis.dto.generate.TaskHistoryKey;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
@@ -10,7 +11,7 @@ public interface TaskHistoryMapper {
 
     int deleteByExample(TaskHistoryExample example);
 
-    int deleteByPrimaryKey(@Param("taskId") Long taskId, @Param("attemptId") Integer attemptId);
+    int deleteByPrimaryKey(TaskHistoryKey key);
 
     int insert(TaskHistory record);
 
@@ -20,7 +21,7 @@ public interface TaskHistoryMapper {
 
     java.util.List<com.mogujie.jarvis.dto.generate.TaskHistory> selectByExample(TaskHistoryExample example);
 
-    TaskHistory selectByPrimaryKey(@Param("taskId") Long taskId, @Param("attemptId") Integer attemptId);
+    TaskHistory selectByPrimaryKey(TaskHistoryKey key);
 
     int updateByExampleSelective(@Param("record") TaskHistory record, @Param("example") TaskHistoryExample example);
 

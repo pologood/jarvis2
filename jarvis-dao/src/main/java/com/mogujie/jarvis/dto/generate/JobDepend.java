@@ -2,11 +2,7 @@ package com.mogujie.jarvis.dto.generate;
 
 import java.util.Date;
 
-public class JobDepend {
-    private Long jobId;
-
-    private Long preJobId;
-
+public class JobDepend extends JobDependKey {
     private Integer commonStrategy;
 
     private String offsetStrategy;
@@ -16,22 +12,6 @@ public class JobDepend {
     private Date updateTime;
 
     private String updateUser;
-
-    public Long getJobId() {
-        return jobId;
-    }
-
-    public void setJobId(Long jobId) {
-        this.jobId = jobId;
-    }
-
-    public Long getPreJobId() {
-        return preJobId;
-    }
-
-    public void setPreJobId(Long preJobId) {
-        this.preJobId = preJobId;
-    }
 
     public Integer getCommonStrategy() {
         return commonStrategy;

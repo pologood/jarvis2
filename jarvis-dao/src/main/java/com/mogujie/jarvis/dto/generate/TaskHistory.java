@@ -2,11 +2,7 @@ package com.mogujie.jarvis.dto.generate;
 
 import java.util.Date;
 
-public class TaskHistory {
-    private Long taskId;
-
-    private Integer attemptId;
-
+public class TaskHistory extends TaskHistoryKey {
     private Long jobId;
 
     private String params;
@@ -38,22 +34,6 @@ public class TaskHistory {
     private Date updateTime;
 
     private String content;
-
-    public Long getTaskId() {
-        return taskId;
-    }
-
-    public void setTaskId(Long taskId) {
-        this.taskId = taskId;
-    }
-
-    public Integer getAttemptId() {
-        return attemptId;
-    }
-
-    public void setAttemptId(Integer attemptId) {
-        this.attemptId = attemptId;
-    }
 
     public Long getJobId() {
         return jobId;
