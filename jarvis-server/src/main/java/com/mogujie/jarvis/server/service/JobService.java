@@ -7,8 +7,6 @@
  */
 package com.mogujie.jarvis.server.service;
 
-import com.mogujie.jarvis.dao.generate.JobOperationLogMapper;
-import com.mogujie.jarvis.dto.generate.JobOperationLog;
 import com.mogujie.jarvis.server.interceptor.OperationLog;
 import java.util.ArrayList;
 import java.util.Collection;

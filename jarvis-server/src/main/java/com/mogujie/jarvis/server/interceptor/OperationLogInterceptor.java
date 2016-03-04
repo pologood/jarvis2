@@ -3,11 +3,10 @@ package com.mogujie.jarvis.server.interceptor;
 import com.google.inject.Inject;
 import com.mogujie.jarvis.core.domain.OperationInfo;
 import com.mogujie.jarvis.dao.generate.JobMapper;
-import com.mogujie.jarvis.dao.generate.JobOperationLogMapper;
+import com.mogujie.jarvis.dao.generate.OperationLogMapper;
 import com.mogujie.jarvis.dao.generate.TaskMapper;
-import com.mogujie.jarvis.dto.generate.Job;
-import com.mogujie.jarvis.dto.generate.JobOperationLog;
-import com.mogujie.jarvis.dto.generate.Task;
+import com.mogujie.jarvis.dto.generate.*;
+import com.mogujie.jarvis.dto.generate.OperationLog;
 import com.mogujie.jarvis.server.service.JobService;
 import com.mogujie.jarvis.server.service.TaskService;
 import java.util.Arrays;
@@ -29,7 +28,7 @@ import org.joda.time.DateTime;
 public class OperationLogInterceptor implements MethodInterceptor {
 
   @Inject
-  private JobOperationLogMapper jobOperationLogMapper;
+  private OperationLogMapper operationLogMapper;
   @Inject
   private JobMapper jobMapper;
   @Inject
@@ -62,14 +61,19 @@ public class OperationLogInterceptor implements MethodInterceptor {
    * @param invocation
    */
   private void handleJobOpeLog(MethodInvocation invocation) {
-    JobOperationLog operationLog = new JobOperationLog();
+    com.mogujie.jarvis.dto.generate.OperationLog operationLog = new OperationLog();
 
-    String operation = OperationInfo.valueOf(invocation.getMethod().getName().toUpperCase()).getDescription();
+    String operation;
+    try {
+      operation = OperationInfo.valueOf(invocation.getMethod().getName().toUpperCase()).getDescription();
+    } catch (IllegalArgumentException exception) {
+      operation = invocation.getMethod().getName();
+      LOGGER.error(String.format("method=%s is not register", invocation.getMethod().getName()));
+    }
     if (operation == null) {
       operation = invocation.getMethod().getName();
     }
 
-    DateTime dt = new DateTime(System.currentTimeMillis());
     Job job = null;
     if (invocation.getArguments().length == 1 && invocation.getArguments()[0] instanceof Job) {
       job = (Job) invocation.getArguments()[0];
@@ -82,25 +86,29 @@ public class OperationLogInterceptor implements MethodInterceptor {
       return;
     }
 
-    operationLog.setJobId(String.valueOf(job.getJobId()));
+    operationLog.setRefer(String.valueOf(job.getJobId()));
     operationLog.setOperator(job.getUpdateUser());
     operationLog.setTitle(job.getJobName());
     operationLog.setDetail(String.format("operation:%s\tcontent:%s", operation, job.getContent()));
-    operationLog.setOpeDate(dt.toString("yyyy-MM-dd HH:mm:ss"));
+    operationLog.setType("job");
+    DateTime now = DateTime.now();
+    operationLog.setOpeDate(now.toDate());
 
-    this.jobOperationLogMapper.insert(operationLog);
+    this.operationLogMapper.insert(operationLog);
 
   }
 
   private void handleTaskOpeLog(MethodInvocation invocation) {
-    JobOperationLog operationLog = new JobOperationLog();
+    OperationLog operationLog = new OperationLog();
 
-    String operation = OperationInfo.valueOf(invocation.getMethod().getName().toUpperCase()).getDescription();
-    if (operation == null) {
+    String operation;
+    try {
+      operation = OperationInfo.valueOf(invocation.getMethod().getName().toUpperCase()).getDescription();
+    } catch (IllegalArgumentException exception) {
       operation = invocation.getMethod().getName();
+      LOGGER.error(String.format("method=%s is not register", invocation.getMethod().getName()));
     }
 
-    DateTime dt = new DateTime(System.currentTimeMillis());
     Task task = null;
     if (invocation.getArguments().length == 1 && invocation.getArguments()[0] instanceof Task) {
       task = (Task) invocation.getArguments()[0];
@@ -113,12 +121,14 @@ public class OperationLogInterceptor implements MethodInterceptor {
       return;
     }
 
-    operationLog.setJobId(String.valueOf(task.getTaskId()));
+    operationLog.setRefer(String.valueOf(task.getTaskId()));
     operationLog.setOperator(task.getExecuteUser());
     operationLog.setTitle(String.valueOf(task.getJobId()));
     operationLog.setDetail(String.format("operation:%s\tcontent:%s", operation, task.getContent()));
-    operationLog.setOpeDate(dt.toString("yyyy-MM-dd HH:mm:ss"));
+    DateTime now = DateTime.now();
+    operationLog.setOpeDate(now.toDate());
+    operationLog.setType("task");
 
-    this.jobOperationLogMapper.insert(operationLog);
+    this.operationLogMapper.insert(operationLog);
   }
 }
