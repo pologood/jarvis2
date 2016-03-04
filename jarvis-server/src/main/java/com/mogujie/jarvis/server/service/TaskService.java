@@ -114,7 +114,7 @@ public class TaskService {
         return record.getTaskId();
     }
 
-    @OperationLog
+//    @OperationLog
     public long insertSelective(Task record) {
         taskMapper.insertSelective(record);
         return record.getTaskId();
