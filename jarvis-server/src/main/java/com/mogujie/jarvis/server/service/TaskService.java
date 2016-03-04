@@ -60,7 +60,7 @@ public class TaskService {
     public Task getTaskByScheduleDateAndJobName(long scheduleDate, String jobName) {
         Job job = jobService.searchJobByName(jobName);
         if (job != null) {
-            DateTime scheduleDateTime = new DateTime(scheduleDate);
+            DateTime scheduleDateTime = new DateTime(scheduleDate).withTimeAtStartOfDay();
             TaskExample example = new TaskExample();
             example.createCriteria().andJobIdEqualTo(job.getJobId()).andScheduleTimeBetween(scheduleDateTime.toDate(), scheduleDateTime.plusDays(1).toDate());
             List<Task> tasks = taskMapper.selectByExample(example);
