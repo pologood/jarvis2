@@ -3,226 +3,140 @@
  * Copyright (c) 2010-2016 All Rights Reserved.
  *
  * Author: guangming
- * Create Date: 2016年2月23日 下午1:16:31
+ * Create Date: 2016年2月26日 下午5:49:46
  */
 
 package com.mogujie.jarvis.rest.jarvis;
 
-import java.io.Serializable;
-
 import org.joda.time.DateTime;
 
-import com.mogujie.jarvis.core.domain.JobContentType;
-import com.mogujie.jarvis.core.domain.JobStatus;
-import com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry;
+import com.mogujie.jarvis.protocol.TaskInfoEntryProtos.TaskInfoEntry;
 
-public class TaskInfo implements Serializable {
+/**
+ * @author guangming
+ *
+ */
+public class TaskInfo {
 
-    private static final long serialVersionUID = 6129998102397429730L;
-    public static final String TARGETMETHOD = "run";
+    private long taskId;
+    private long jobId;
+    private String taskTitle;
+    private String runDate;
+    private String dataDate;
+    private String startTime;
+    private String endTime;
+    private float avgTime;
+    private float useTime;
+    private int status;
+    private String content;
 
-    private Long id;
-    private String cronExp;
-    private String cronExpExplain;
-    private Integer scriptId;
-    private String title;
-    private Integer priority;
-    private String publisher;
-    private String receiver;
-    private String publishTime;
-    private String editTime;
-    private String startDate;
-    private String endDate;
-    private Integer status;
-
-    //脚本所属部门
-    private String department;
-    //脚本所属生产线
-    private String pline;
-
-    // 前置程序IDS
-    private String preTaskIds;
-
-    public TaskInfo(String username, Integer scriptId, String title,
-                String cronExp, String startDate, String endDate, String receiver) {
-        this.publisher = username;
-        this.scriptId = scriptId;
-        this.title = title;
-        this.cronExp = cronExp;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.receiver = receiver;
-        this.status = new Integer(1);
-        this.priority = TaskPriorityEnum.MID.getValue();
+    public TaskInfo(TaskInfoEntry taskInfoEntry) {
+        this.taskId = taskInfoEntry.getTaskId();
+        this.jobId = taskInfoEntry.getJobId();
+        this.taskTitle = taskInfoEntry.getJobName();
+        this.runDate = new DateTime(taskInfoEntry.getScheduleTime()).toString("yyyy-MM-dd");
+        this.dataDate = new DateTime(taskInfoEntry.getDataTime()).toString("yyyy-MM-dd");
+        this.startTime = new DateTime(taskInfoEntry.getStartTime()).toString("yyyy-MM-dd hh:mm:ss");
+        this.endTime = new DateTime(taskInfoEntry.getEndTime()).toString("yyyy-MM-dd hh:mm:ss");
+        this.avgTime = taskInfoEntry.getAvgTime();
+        this.useTime = taskInfoEntry.getUseTime();
+        this.status = taskInfoEntry.getStatus();
+        this.content = taskInfoEntry.getContent();
     }
 
-    public TaskInfo(JobInfoEntry jobInfo) {
-        this.id = jobInfo.getJobId();
-        this.cronExp = jobInfo.getScheduleExpression();
-        if (jobInfo.getContentType() == JobContentType.SCRIPT.getValue()) {
-            this.scriptId = Integer.valueOf(jobInfo.getContent());
-        }
-        this.title = jobInfo.getJobName();
-        this.priority = jobInfo.getPriority();
-        this.publisher = jobInfo.getUser();
-        this.receiver = jobInfo.getReceiver();
-        this.publishTime = new DateTime(jobInfo.getCreateTime()).toString();
-        this.editTime = new DateTime(jobInfo.getUpdateTime()).toString();
-        this.startDate = new DateTime(jobInfo.getStartDate()).toString();
-        this.endDate = new DateTime(jobInfo.getEndDate()).toString();
-        this.pline = jobInfo.getBizName();
-        this.department = jobInfo.getAppName();
-        //适配老jarvis状态
-        int newStatus = jobInfo.getStatus();
-        if (newStatus == JobStatus.ENABLE.getValue()) {
-            this.status = TaskStatusEnum.ENABLE.getValue();
-        } else if (newStatus == JobStatus.DISABLE.getValue() ||
-                newStatus == JobStatus.PAUSE.getValue()) {
-            this.status = TaskStatusEnum.DISABLE.getValue();
-        } else {
-            this.status = TaskStatusEnum.DELETE.getValue();
-        }
+    public long getTaskId() {
+        return taskId;
     }
 
-    public Long getId() {
-        return id;
+    public void setTaskId(long taskId) {
+        this.taskId = taskId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public long getJobId() {
+        return jobId;
     }
 
-    public String getCronExp() {
-        return cronExp;
+    public void setJobId(long jobId) {
+        this.jobId = jobId;
     }
 
-    public void setCronExp(String cronExp) {
-        this.cronExp = cronExp;
+    public String getTaskTitle() {
+        return taskTitle;
     }
 
-    public String getCronExpExplain() {
-        return cronExpExplain;
+    public void setTaskTitle(String taskTitle) {
+        this.taskTitle = taskTitle;
     }
 
-    public void setCronExpExplain(String cronExpExplain) {
-        this.cronExpExplain = cronExpExplain;
+    public String getRunDate() {
+        return runDate;
     }
 
-    public Integer getScriptId() {
-        return scriptId;
+    public void setRunDate(String runDate) {
+        this.runDate = runDate;
     }
 
-    public void setScriptId(Integer scriptId) {
-        this.scriptId = scriptId;
+    public String getDataDate() {
+        return dataDate;
     }
 
-    public String getTitle() {
-        return title;
+    public void setDataDate(String dataDate) {
+        this.dataDate = dataDate;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public String getStartTime() {
+        return startTime;
     }
 
-    public Integer getPriority() {
-        return priority;
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
     }
 
-    public String fetchPriorityDisplay() {
-        return TaskPriorityEnum.get(getPriority()).getDescription();
+    public String getEndTime() {
+        return endTime;
     }
 
-    public void setPriority(Integer priority) {
-        this.priority = priority;
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 
-    public String getPublisher() {
-        return publisher;
+    public float getAvgTime() {
+        return avgTime;
     }
 
-    public void setPublisher(String publisher) {
-        this.publisher = publisher;
+    public void setAvgTime(float avgTime) {
+        this.avgTime = avgTime;
     }
 
-    public String getReceiver() {
-        return receiver;
+    public float getUseTime() {
+        return useTime;
     }
 
-    public void setReceiver(String receiver) {
-        this.receiver = receiver;
+    public void setUseTime(float useTime) {
+        this.useTime = useTime;
     }
 
-    public String getPublishTime() {
-        return publishTime;
-    }
-
-    public void setPublishTime(String publishTime) {
-        this.publishTime = publishTime;
-    }
-
-    public String getEditTime() {
-        return editTime;
-    }
-
-    public void setEditTime(String editTime) {
-        this.editTime = editTime;
-    }
-
-    public Integer getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
-    public String getStartDate() {
-        return startDate;
+    public String getContent() {
+        return content;
     }
 
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
+    public void setContent(String content) {
+        this.content = content;
     }
 
-    public String getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
-    }
-
-    public String getPreTaskIds() {
-        return preTaskIds;
-    }
-
-    public void setPreTaskIds(String preTaskIds) {
-        this.preTaskIds = preTaskIds;
-    }
-
-    public String getPriorityDisplay() {
-        return TaskPriorityEnum.get(getPriority()).getDescription();
-    }
-
-    public String getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(String department) {
-        this.department = department;
-    }
-
-    public String getPline() {
-        return pline;
-    }
-
-    public void setPline(String pline) {
-        this.pline = pline;
-    }
-
+    @Override
     public String toString() {
-        return " crontab:"+cronExp+" scriptId:"+scriptId
-                +" title:"+title+" priority:"+priority+" receiver:"
-                +receiver+" publisher:"+publisher+" status:"+status;
+        return "TaskLogInfo [taskId=" + taskId + ", jobId=" + jobId + ", taskTitle=" + taskTitle + ", runDate=" + runDate + ", dataDate=" + dataDate
+                + ", startTime=" + startTime + ", endTime=" + endTime + ", avgTime=" + avgTime + ", useTime=" + useTime + ", status=" + status
+                + ", content=" + content + "]";
     }
+
 }

@@ -126,20 +126,20 @@ public final class JobInfoEntryProtos {
     com.google.protobuf.ByteString
         getReceiverBytes();
 
-    // required string app_name = 10;
+    // required string department = 10;
     /**
-     * <code>required string app_name = 10;</code>
+     * <code>required string department = 10;</code>
      */
-    boolean hasAppName();
+    boolean hasDepartment();
     /**
-     * <code>required string app_name = 10;</code>
+     * <code>required string department = 10;</code>
      */
-    java.lang.String getAppName();
+    java.lang.String getDepartment();
     /**
-     * <code>required string app_name = 10;</code>
+     * <code>required string department = 10;</code>
      */
     com.google.protobuf.ByteString
-        getAppNameBytes();
+        getDepartmentBytes();
 
     // required string biz_name = 11;
     /**
@@ -294,7 +294,7 @@ public final class JobInfoEntryProtos {
             }
             case 82: {
               bitField0_ |= 0x00000200;
-              appName_ = input.readBytes();
+              department_ = input.readBytes();
               break;
             }
             case 90: {
@@ -641,20 +641,20 @@ public final class JobInfoEntryProtos {
       }
     }
 
-    // required string app_name = 10;
-    public static final int APP_NAME_FIELD_NUMBER = 10;
-    private java.lang.Object appName_;
+    // required string department = 10;
+    public static final int DEPARTMENT_FIELD_NUMBER = 10;
+    private java.lang.Object department_;
     /**
-     * <code>required string app_name = 10;</code>
+     * <code>required string department = 10;</code>
      */
-    public boolean hasAppName() {
+    public boolean hasDepartment() {
       return ((bitField0_ & 0x00000200) == 0x00000200);
     }
     /**
-     * <code>required string app_name = 10;</code>
+     * <code>required string department = 10;</code>
      */
-    public java.lang.String getAppName() {
-      java.lang.Object ref = appName_;
+    public java.lang.String getDepartment() {
+      java.lang.Object ref = department_;
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
@@ -662,22 +662,22 @@ public final class JobInfoEntryProtos {
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
-          appName_ = s;
+          department_ = s;
         }
         return s;
       }
     }
     /**
-     * <code>required string app_name = 10;</code>
+     * <code>required string department = 10;</code>
      */
     public com.google.protobuf.ByteString
-        getAppNameBytes() {
-      java.lang.Object ref = appName_;
+        getDepartmentBytes() {
+      java.lang.Object ref = department_;
       if (ref instanceof java.lang.String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        appName_ = b;
+        department_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
@@ -801,7 +801,7 @@ public final class JobInfoEntryProtos {
       priority_ = 0;
       status_ = 0;
       receiver_ = "";
-      appName_ = "";
+      department_ = "";
       bizName_ = "";
       createTime_ = 0L;
       updateTime_ = 0L;
@@ -849,7 +849,7 @@ public final class JobInfoEntryProtos {
         memoizedIsInitialized = 0;
         return false;
       }
-      if (!hasAppName()) {
+      if (!hasDepartment()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -908,7 +908,7 @@ public final class JobInfoEntryProtos {
         output.writeBytes(9, getReceiverBytes());
       }
       if (((bitField0_ & 0x00000200) == 0x00000200)) {
-        output.writeBytes(10, getAppNameBytes());
+        output.writeBytes(10, getDepartmentBytes());
       }
       if (((bitField0_ & 0x00000400) == 0x00000400)) {
         output.writeBytes(11, getBizNameBytes());
@@ -972,7 +972,7 @@ public final class JobInfoEntryProtos {
       }
       if (((bitField0_ & 0x00000200) == 0x00000200)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(10, getAppNameBytes());
+          .computeBytesSize(10, getDepartmentBytes());
       }
       if (((bitField0_ & 0x00000400) == 0x00000400)) {
         size += com.google.protobuf.CodedOutputStream
@@ -1128,7 +1128,7 @@ public final class JobInfoEntryProtos {
         bitField0_ = (bitField0_ & ~0x00000080);
         receiver_ = "";
         bitField0_ = (bitField0_ & ~0x00000100);
-        appName_ = "";
+        department_ = "";
         bitField0_ = (bitField0_ & ~0x00000200);
         bizName_ = "";
         bitField0_ = (bitField0_ & ~0x00000400);
@@ -1207,7 +1207,7 @@ public final class JobInfoEntryProtos {
         if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
           to_bitField0_ |= 0x00000200;
         }
-        result.appName_ = appName_;
+        result.department_ = department_;
         if (((from_bitField0_ & 0x00000400) == 0x00000400)) {
           to_bitField0_ |= 0x00000400;
         }
@@ -1281,9 +1281,9 @@ public final class JobInfoEntryProtos {
           receiver_ = other.receiver_;
           onChanged();
         }
-        if (other.hasAppName()) {
+        if (other.hasDepartment()) {
           bitField0_ |= 0x00000200;
-          appName_ = other.appName_;
+          department_ = other.department_;
           onChanged();
         }
         if (other.hasBizName()) {
@@ -1344,7 +1344,7 @@ public final class JobInfoEntryProtos {
           
           return false;
         }
-        if (!hasAppName()) {
+        if (!hasDepartment()) {
           
           return false;
         }
@@ -1892,76 +1892,76 @@ public final class JobInfoEntryProtos {
         return this;
       }
 
-      // required string app_name = 10;
-      private java.lang.Object appName_ = "";
+      // required string department = 10;
+      private java.lang.Object department_ = "";
       /**
-       * <code>required string app_name = 10;</code>
+       * <code>required string department = 10;</code>
        */
-      public boolean hasAppName() {
+      public boolean hasDepartment() {
         return ((bitField0_ & 0x00000200) == 0x00000200);
       }
       /**
-       * <code>required string app_name = 10;</code>
+       * <code>required string department = 10;</code>
        */
-      public java.lang.String getAppName() {
-        java.lang.Object ref = appName_;
+      public java.lang.String getDepartment() {
+        java.lang.Object ref = department_;
         if (!(ref instanceof java.lang.String)) {
           java.lang.String s = ((com.google.protobuf.ByteString) ref)
               .toStringUtf8();
-          appName_ = s;
+          department_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
         }
       }
       /**
-       * <code>required string app_name = 10;</code>
+       * <code>required string department = 10;</code>
        */
       public com.google.protobuf.ByteString
-          getAppNameBytes() {
-        java.lang.Object ref = appName_;
+          getDepartmentBytes() {
+        java.lang.Object ref = department_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
-          appName_ = b;
+          department_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
         }
       }
       /**
-       * <code>required string app_name = 10;</code>
+       * <code>required string department = 10;</code>
        */
-      public Builder setAppName(
+      public Builder setDepartment(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
   bitField0_ |= 0x00000200;
-        appName_ = value;
+        department_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required string app_name = 10;</code>
+       * <code>required string department = 10;</code>
        */
-      public Builder clearAppName() {
+      public Builder clearDepartment() {
         bitField0_ = (bitField0_ & ~0x00000200);
-        appName_ = getDefaultInstance().getAppName();
+        department_ = getDefaultInstance().getDepartment();
         onChanged();
         return this;
       }
       /**
-       * <code>required string app_name = 10;</code>
+       * <code>required string department = 10;</code>
        */
-      public Builder setAppNameBytes(
+      public Builder setDepartmentBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
   bitField0_ |= 0x00000200;
-        appName_ = value;
+        department_ = value;
         onChanged();
         return this;
       }
@@ -2197,16 +2197,16 @@ public final class JobInfoEntryProtos {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\024job_info_entry.proto\"\252\002\n\014JobInfoEntry\022" +
+      "\n\024job_info_entry.proto\"\254\002\n\014JobInfoEntry\022" +
       "\016\n\006job_id\030\001 \002(\003\022\020\n\010job_name\030\002 \002(\t\022\014\n\004use" +
       "r\030\003 \002(\t\022\033\n\023schedule_expression\030\004 \002(\t\022\024\n\014" +
       "content_type\030\005 \002(\005\022\017\n\007content\030\006 \002(\t\022\020\n\010p" +
       "riority\030\007 \002(\005\022\016\n\006status\030\010 \002(\005\022\020\n\010receive" +
-      "r\030\t \002(\t\022\020\n\010app_name\030\n \002(\t\022\020\n\010biz_name\030\013 " +
-      "\002(\t\022\023\n\013create_time\030\014 \002(\003\022\023\n\013update_time\030" +
-      "\r \002(\003\022\022\n\nstart_date\030\016 \002(\003\022\020\n\010end_date\030\017 " +
-      "\002(\003B1\n\033com.mogujie.jarvis.protocolB\022JobI" +
-      "nfoEntryProtos"
+      "r\030\t \002(\t\022\022\n\ndepartment\030\n \002(\t\022\020\n\010biz_name\030" +
+      "\013 \002(\t\022\023\n\013create_time\030\014 \002(\003\022\023\n\013update_tim" +
+      "e\030\r \002(\003\022\022\n\nstart_date\030\016 \002(\003\022\020\n\010end_date\030" +
+      "\017 \002(\003B1\n\033com.mogujie.jarvis.protocolB\022Jo" +
+      "bInfoEntryProtos"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -2218,7 +2218,7 @@ public final class JobInfoEntryProtos {
           internal_static_JobInfoEntry_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_JobInfoEntry_descriptor,
-              new java.lang.String[] { "JobId", "JobName", "User", "ScheduleExpression", "ContentType", "Content", "Priority", "Status", "Receiver", "AppName", "BizName", "CreateTime", "UpdateTime", "StartDate", "EndDate", });
+              new java.lang.String[] { "JobId", "JobName", "User", "ScheduleExpression", "ContentType", "Content", "Priority", "Status", "Receiver", "Department", "BizName", "CreateTime", "UpdateTime", "StartDate", "EndDate", });
           return null;
         }
       };

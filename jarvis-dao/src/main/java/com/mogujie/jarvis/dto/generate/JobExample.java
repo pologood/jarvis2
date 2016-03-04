@@ -865,63 +865,143 @@ public class JobExample {
             return (Criteria) this;
         }
 
-        public Criteria andBizGroupIdIsNull() {
-            addCriterion("bizGroupId is null");
+        public Criteria andDepartmentIsNull() {
+            addCriterion("department is null");
             return (Criteria) this;
         }
 
-        public Criteria andBizGroupIdIsNotNull() {
-            addCriterion("bizGroupId is not null");
+        public Criteria andDepartmentIsNotNull() {
+            addCriterion("department is not null");
             return (Criteria) this;
         }
 
-        public Criteria andBizGroupIdEqualTo(Integer value) {
-            addCriterion("bizGroupId =", value, "bizGroupId");
+        public Criteria andDepartmentEqualTo(String value) {
+            addCriterion("department =", value, "department");
             return (Criteria) this;
         }
 
-        public Criteria andBizGroupIdNotEqualTo(Integer value) {
-            addCriterion("bizGroupId <>", value, "bizGroupId");
+        public Criteria andDepartmentNotEqualTo(String value) {
+            addCriterion("department <>", value, "department");
             return (Criteria) this;
         }
 
-        public Criteria andBizGroupIdGreaterThan(Integer value) {
-            addCriterion("bizGroupId >", value, "bizGroupId");
+        public Criteria andDepartmentGreaterThan(String value) {
+            addCriterion("department >", value, "department");
             return (Criteria) this;
         }
 
-        public Criteria andBizGroupIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("bizGroupId >=", value, "bizGroupId");
+        public Criteria andDepartmentGreaterThanOrEqualTo(String value) {
+            addCriterion("department >=", value, "department");
             return (Criteria) this;
         }
 
-        public Criteria andBizGroupIdLessThan(Integer value) {
-            addCriterion("bizGroupId <", value, "bizGroupId");
+        public Criteria andDepartmentLessThan(String value) {
+            addCriterion("department <", value, "department");
             return (Criteria) this;
         }
 
-        public Criteria andBizGroupIdLessThanOrEqualTo(Integer value) {
-            addCriterion("bizGroupId <=", value, "bizGroupId");
+        public Criteria andDepartmentLessThanOrEqualTo(String value) {
+            addCriterion("department <=", value, "department");
             return (Criteria) this;
         }
 
-        public Criteria andBizGroupIdIn(java.util.List<java.lang.Integer> values) {
-            addCriterion("bizGroupId in", values, "bizGroupId");
+        public Criteria andDepartmentLike(String value) {
+            addCriterion("department like", value, "department");
             return (Criteria) this;
         }
 
-        public Criteria andBizGroupIdNotIn(java.util.List<java.lang.Integer> values) {
-            addCriterion("bizGroupId not in", values, "bizGroupId");
+        public Criteria andDepartmentNotLike(String value) {
+            addCriterion("department not like", value, "department");
             return (Criteria) this;
         }
 
-        public Criteria andBizGroupIdBetween(Integer value1, Integer value2) {
-            addCriterion("bizGroupId between", value1, value2, "bizGroupId");
+        public Criteria andDepartmentIn(java.util.List<java.lang.String> values) {
+            addCriterion("department in", values, "department");
             return (Criteria) this;
         }
 
-        public Criteria andBizGroupIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("bizGroupId not between", value1, value2, "bizGroupId");
+        public Criteria andDepartmentNotIn(java.util.List<java.lang.String> values) {
+            addCriterion("department not in", values, "department");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepartmentBetween(String value1, String value2) {
+            addCriterion("department between", value1, value2, "department");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepartmentNotBetween(String value1, String value2) {
+            addCriterion("department not between", value1, value2, "department");
+            return (Criteria) this;
+        }
+
+        public Criteria andBizGroupsIsNull() {
+            addCriterion("bizGroups is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBizGroupsIsNotNull() {
+            addCriterion("bizGroups is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBizGroupsEqualTo(String value) {
+            addCriterion("bizGroups =", value, "bizGroups");
+            return (Criteria) this;
+        }
+
+        public Criteria andBizGroupsNotEqualTo(String value) {
+            addCriterion("bizGroups <>", value, "bizGroups");
+            return (Criteria) this;
+        }
+
+        public Criteria andBizGroupsGreaterThan(String value) {
+            addCriterion("bizGroups >", value, "bizGroups");
+            return (Criteria) this;
+        }
+
+        public Criteria andBizGroupsGreaterThanOrEqualTo(String value) {
+            addCriterion("bizGroups >=", value, "bizGroups");
+            return (Criteria) this;
+        }
+
+        public Criteria andBizGroupsLessThan(String value) {
+            addCriterion("bizGroups <", value, "bizGroups");
+            return (Criteria) this;
+        }
+
+        public Criteria andBizGroupsLessThanOrEqualTo(String value) {
+            addCriterion("bizGroups <=", value, "bizGroups");
+            return (Criteria) this;
+        }
+
+        public Criteria andBizGroupsLike(String value) {
+            addCriterion("bizGroups like", value, "bizGroups");
+            return (Criteria) this;
+        }
+
+        public Criteria andBizGroupsNotLike(String value) {
+            addCriterion("bizGroups not like", value, "bizGroups");
+            return (Criteria) this;
+        }
+
+        public Criteria andBizGroupsIn(java.util.List<java.lang.String> values) {
+            addCriterion("bizGroups in", values, "bizGroups");
+            return (Criteria) this;
+        }
+
+        public Criteria andBizGroupsNotIn(java.util.List<java.lang.String> values) {
+            addCriterion("bizGroups not in", values, "bizGroups");
+            return (Criteria) this;
+        }
+
+        public Criteria andBizGroupsBetween(String value1, String value2) {
+            addCriterion("bizGroups between", value1, value2, "bizGroups");
+            return (Criteria) this;
+        }
+
+        public Criteria andBizGroupsNotBetween(String value1, String value2) {
+            addCriterion("bizGroups not between", value1, value2, "bizGroups");
             return (Criteria) this;
         }
 

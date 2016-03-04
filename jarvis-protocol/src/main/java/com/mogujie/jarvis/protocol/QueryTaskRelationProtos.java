@@ -921,7 +921,7 @@ public final class QueryTaskRelationProtos {
 
         public static com.mogujie.jarvis.protocol.QueryTaskRelationProtos.RestServerQueryTaskRelationRequest parseFrom(
                 com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-                        throws com.google.protobuf.InvalidProtocolBufferException {
+                throws com.google.protobuf.InvalidProtocolBufferException {
             return PARSER.parseFrom(data, extensionRegistry);
         }
 
@@ -1723,7 +1723,7 @@ public final class QueryTaskRelationProtos {
 
         public static com.mogujie.jarvis.protocol.QueryTaskRelationProtos.ServerQueryTaskRelationResponse parseFrom(
                 com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-                        throws com.google.protobuf.InvalidProtocolBufferException {
+                throws com.google.protobuf.InvalidProtocolBufferException {
             return PARSER.parseFrom(data, extensionRegistry);
         }
 

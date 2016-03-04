@@ -85,6 +85,7 @@ message ServerSearchJobInfoByScriptTitileResponse {
     optional string message = 3 [default = ""];
 }
 
+
 //search biz id
 message RestSearchBizIdByNameRequest {
 	required AppAuth app_auth = 1;
@@ -96,4 +97,19 @@ message ServerSearchBizIdByNamResponse {
 	required bool success = 1;
     required int32 biz_id = 2;
     optional string message = 3 [default = ""];
+}
+
+
+//search job status
+message RestSearchTaskStatusRequest {
+	required AppAuth app_auth = 1;
+	required string user = 2;
+	required int64 job_id = 3;
+	required int64 data_date = 4;
+}
+
+message ServerSearchTaskStatusResponse {
+	required bool success = 1;
+	required int32 status = 2;
+	optional string message = 3 [default = ""];
 }

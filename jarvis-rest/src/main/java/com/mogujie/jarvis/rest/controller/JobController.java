@@ -16,7 +16,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import com.google.common.base.Preconditions;
-import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.core.domain.JobRelationType;
 import com.mogujie.jarvis.core.domain.JobStatus;
@@ -276,7 +275,8 @@ public class JobController extends AbstractController {
                 .setParameters(vo.getParams("{}"))
                 .setAppName(vo.getAppName(appAuth.getName()))
                 .setWorkerGroupId(vo.getWorkerGroupId())
-                .setBizGroupId(JarvisConstants.BIZ_GROUP_ID_UNKNOWN)
+                .setDepartment(vo.getDepartment(""))
+                .setBizGroups(vo.getBizGroups(""))
                 .setPriority(vo.getPriority(1))
                 .setIsTemp(vo.isTemp())
                 .setActiveStartTime(vo.getActiveStartTime(0L))
@@ -329,7 +329,7 @@ public class JobController extends AbstractController {
             builder.setWorkerGroupId(vo.getWorkerGroupId());
         }
         if (vo.getBizGroupId() != null) {
-            builder.setBizGroupId(vo.getBizGroupId());
+            builder.setBizGroups(vo.getBizGroupId());
         }
         if (vo.getActiveStartTime() != null) {
             builder.setActiveStartTime(vo.getActiveStartTime());

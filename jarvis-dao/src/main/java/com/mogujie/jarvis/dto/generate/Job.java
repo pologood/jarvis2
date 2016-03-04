@@ -27,7 +27,9 @@ public class Job {
 
     private Integer workerGroupId;
 
-    private Integer bizGroupId;
+    private String department;
+
+    private String bizGroups;
 
     private Date activeStartDate;
 
@@ -143,12 +145,20 @@ public class Job {
         this.workerGroupId = workerGroupId;
     }
 
-    public Integer getBizGroupId() {
-        return bizGroupId;
+    public String getDepartment() {
+        return department;
     }
 
-    public void setBizGroupId(Integer bizGroupId) {
-        this.bizGroupId = bizGroupId;
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+
+    public String getBizGroups() {
+        return bizGroups;
+    }
+
+    public void setBizGroups(String bizGroups) {
+        this.bizGroups = bizGroups;
     }
 
     public Date getActiveStartDate() {

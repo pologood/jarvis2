@@ -46,6 +46,8 @@ import com.mogujie.jarvis.protocol.ModifyTaskStatusProtos.ServerModifyTaskStatus
 import com.mogujie.jarvis.protocol.QueryTaskByJobIdProtos.RestServerQueryTaskByJobIdRequest;
 import com.mogujie.jarvis.protocol.QueryTaskByJobIdProtos.ServerQueryTaskByJobIdResponse;
 import com.mogujie.jarvis.protocol.QueryTaskByJobIdProtos.TaskEntry;
+import com.mogujie.jarvis.protocol.QueryTaskProtos.RestQueryTaskCriticalPathRequest;
+import com.mogujie.jarvis.protocol.QueryTaskProtos.ServerQueryTaskCriticalPathResponse;
 import com.mogujie.jarvis.protocol.QueryTaskRelationProtos.RestServerQueryTaskRelationRequest;
 import com.mogujie.jarvis.protocol.QueryTaskRelationProtos.ServerQueryTaskRelationResponse;
 import com.mogujie.jarvis.protocol.QueryTaskRelationProtos.TaskMapEntry;
@@ -55,6 +57,9 @@ import com.mogujie.jarvis.protocol.RemoveTaskProtos.RestServerRemoveTaskRequest;
 import com.mogujie.jarvis.protocol.RemoveTaskProtos.ServerRemoveTaskResponse;
 import com.mogujie.jarvis.protocol.RetryTaskProtos.RestServerRetryTaskRequest;
 import com.mogujie.jarvis.protocol.RetryTaskProtos.ServerRetryTaskResponse;
+import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchTaskStatusRequest;
+import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchTaskStatusResponse;
+import com.mogujie.jarvis.protocol.TaskInfoEntryProtos.TaskInfoEntry;
 import com.mogujie.jarvis.server.dispatcher.TaskManager;
 import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.domain.JobDependencyEntry;
@@ -101,6 +106,8 @@ public class TaskActor extends UntypedActor {
         list.add(new ActorEntry(RestServerRemoveTaskRequest.class, ServerRemoveTaskResponse.class, MessageType.GENERAL));
         list.add(new ActorEntry(RestServerQueryTaskStatusRequest.class, ServerQueryTaskStatusResponse.class, MessageType.GENERAL));
         list.add(new ActorEntry(RestServerQueryTaskByJobIdRequest.class, ServerQueryTaskByJobIdResponse.class, MessageType.GENERAL));
+        list.add(new ActorEntry(RestQueryTaskCriticalPathRequest.class, ServerQueryTaskCriticalPathResponse.class, MessageType.GENERAL));
+        list.add(new ActorEntry(RestSearchTaskStatusRequest.class, ServerSearchTaskStatusResponse.class, MessageType.GENERAL));
         return list;
     }
 
@@ -130,6 +137,12 @@ public class TaskActor extends UntypedActor {
         } else if (obj instanceof RestServerQueryTaskByJobIdRequest) {
             RestServerQueryTaskByJobIdRequest msg = (RestServerQueryTaskByJobIdRequest) obj;
             queryTaskByJobId(msg);
+        } else if (obj instanceof RestQueryTaskCriticalPathRequest) {
+            RestQueryTaskCriticalPathRequest msg = (RestQueryTaskCriticalPathRequest) obj;
+            queryCriticalPath(msg);
+        } else if (obj instanceof RestSearchTaskStatusRequest) {
+            RestSearchTaskStatusRequest msg = (RestSearchTaskStatusRequest) obj;
+            searchTaskStatusByDataDate(msg);
         } else {
             unhandled(obj);
         }
@@ -443,6 +456,97 @@ public class TaskActor extends UntypedActor {
             getSender().tell(response, getSelf());
             throw e;
         }
+    }
+
+    /**
+     * 查询关键路径
+     *
+     * @param msg
+     */
+    private void queryCriticalPath(RestQueryTaskCriticalPathRequest msg) throws Exception {
+        long scheduleDate = msg.getDateTime();
+        String jobName = msg.getJobName();
+        ServerQueryTaskCriticalPathResponse response;
+        try {
+            // find task
+            Task task = taskService.getTaskByScheduleDateAndJobName(scheduleDate, jobName);
+            if (task != null) {
+                // get critical path
+                List<TaskInfoEntry> taskInfoEntries = new ArrayList<TaskInfoEntry>();
+                taskInfoEntries.add(convertTask2TaskInfoEntry(task));
+                Map<Long, List<Long>> parentTaskIdMap = taskDependService.loadParent(task.getTaskId());
+                while (parentTaskIdMap != null && !parentTaskIdMap.isEmpty()) {
+                    long maxEndTime = 0;
+                    long maxEndTaskId = 0;
+                    for (Entry<Long, List<Long>> entry : parentTaskIdMap.entrySet()) {
+                        List<Long> tasks = entry.getValue();
+                        for (long taskId : tasks) {
+                            if (taskService.get(taskId) != null && taskService.get(taskId).getExecuteEndTime().getTime() > maxEndTime) {
+                                maxEndTime = taskService.get(taskId).getExecuteEndTime().getTime();
+                                maxEndTaskId = taskId;
+                            }
+                        }
+                    }
+                    Task maxEndTask = taskService.get(maxEndTaskId);
+                    if (maxEndTask != null) {
+                        taskInfoEntries.add(convertTask2TaskInfoEntry(maxEndTask));
+                    }
+                    parentTaskIdMap = taskDependService.loadParent(maxEndTaskId);
+                }
+            } else {
+                String errMsg = "can't find task, scheduleDate=" + new DateTime(scheduleDate).toString("yyyy-MM-dd hh:mm:ss") + ", jobName=" + jobName;
+                response = ServerQueryTaskCriticalPathResponse.newBuilder().setSuccess(false).setMessage(errMsg).build();
+                getSender().tell(response, getSelf());
+                LOGGER.error(errMsg);
+            }
+        } catch (Exception e) {
+            response = ServerQueryTaskCriticalPathResponse.newBuilder().setSuccess(false).setMessage(ExceptionUtil.getErrMsg(e)).build();
+            getSender().tell(response, getSelf());
+            LOGGER.error("", e);
+            throw e;
+        }
+    }
+
+    private void searchTaskStatusByDataDate(RestSearchTaskStatusRequest msg) throws Exception {
+        long jobId = msg.getJobId();
+        long dataDate = msg.getDataDate();
+        ServerSearchTaskStatusResponse response;
+        try {
+            List<Task> tasks = taskService.getTasksByJobIdAndDataDate(jobId, dataDate);
+            if (tasks == null || tasks.isEmpty()) {
+                response = ServerSearchTaskStatusResponse.newBuilder().setSuccess(false)
+                        .setMessage("can't find task by jobId=" + jobId + ", dataDate=" + new DateTime(dataDate)).build();
+            } else if (tasks.size() > 1) {
+                response = ServerSearchTaskStatusResponse.newBuilder().setSuccess(false)
+                        .setMessage("find more than 1 tasks by jobId=" + jobId + ", dataDate=" + new DateTime(dataDate)).build();
+            } else {
+                response = ServerSearchTaskStatusResponse.newBuilder().setSuccess(true)
+                        .setStatus(tasks.get(0).getStatus()).build();
+            }
+            getSender().tell(response, getSelf());
+        } catch (Exception e) {
+            response = ServerSearchTaskStatusResponse.newBuilder().setSuccess(false).setMessage(ExceptionUtil.getErrMsg(e)).build();
+            getSender().tell(response, getSelf());
+            LOGGER.error("", e);
+            throw e;
+        }
+    }
+
+    private TaskInfoEntry convertTask2TaskInfoEntry(Task task) {
+        TaskInfoEntry taskInfoEntry = TaskInfoEntry.newBuilder()
+                .setTaskId(task.getTaskId())
+                .setJobId(task.getJobId())
+                .setJobName(jobService.get(task.getJobId()).getJob().getJobName())
+                .setScheduleTime(task.getScheduleTime().getTime())
+                .setDataTime(task.getDataTime().getTime())
+                .setStartTime(task.getExecuteStartTime().getTime())
+                .setEndTime(task.getExecuteEndTime().getTime())
+                .setAvgTime(taskService.getAvgExecTime(task.getTaskId(), 30))
+                .setUseTime(((float)(task.getExecuteEndTime().getTime() - task.getExecuteStartTime().getTime()))/1000/60) //单位分钟
+                .setStatus(task.getStatus())
+                .setContent(task.getContent())
+                .build();
+        return taskInfoEntry;
     }
 
 }

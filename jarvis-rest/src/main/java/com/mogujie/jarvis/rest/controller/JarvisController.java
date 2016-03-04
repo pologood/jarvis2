@@ -32,6 +32,7 @@ import com.mogujie.jarvis.core.domain.CommonStrategy;
 import com.mogujie.jarvis.core.domain.JobContentType;
 import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.core.domain.OperationMode;
+import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.expression.ScheduleExpressionType;
 import com.mogujie.jarvis.core.util.AppTokenUtils;
 import com.mogujie.jarvis.core.util.ConfigUtils;
@@ -54,22 +55,27 @@ import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobResponse;
 import com.mogujie.jarvis.protocol.JobProtos.ServerModifyJobScheduleExpResponse;
 import com.mogujie.jarvis.protocol.JobProtos.ServerSubmitJobResponse;
 import com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry;
+import com.mogujie.jarvis.protocol.QueryTaskProtos.RestQueryTaskCriticalPathRequest;
+import com.mogujie.jarvis.protocol.QueryTaskProtos.ServerQueryTaskCriticalPathResponse;
 import com.mogujie.jarvis.protocol.SearchJobProtos;
 import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchAllJobsRequest;
-import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchBizIdByNameRequest;
 import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchJobByScriptIdRequest;
 import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchPreJobInfoRequest;
 import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchScriptTypeRequest;
+import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchTaskStatusRequest;
 import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchAllJobsResponse;
-import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchBizIdByNamResponse;
 import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchJobByScriptIdResponse;
 import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchPreJobInfoResponse;
 import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchScriptTypeResponse;
+import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchTaskStatusResponse;
+import com.mogujie.jarvis.protocol.TaskInfoEntryProtos.TaskInfoEntry;
+import com.mogujie.jarvis.rest.jarvis.CriticalPathResult;
+import com.mogujie.jarvis.rest.jarvis.JobInfo;
+import com.mogujie.jarvis.rest.jarvis.JobInfoResult;
 import com.mogujie.jarvis.rest.jarvis.PermissionEnum;
 import com.mogujie.jarvis.rest.jarvis.Result;
 import com.mogujie.jarvis.rest.jarvis.TaskIDResult;
 import com.mogujie.jarvis.rest.jarvis.TaskInfo;
-import com.mogujie.jarvis.rest.jarvis.TaskInfoResult;
 import com.mogujie.jarvis.rest.jarvis.TaskPriorityEnum;
 import com.mogujie.jarvis.rest.jarvis.TaskStatusEnum;
 import com.mogujie.jarvis.rest.jarvis.TasksResult;
@@ -93,11 +99,13 @@ public class JarvisController extends AbstractController {
     private static String APP_IRONMAN_KEY = ConfigUtils.getRestConfig().getString("app.ironman.key");
     private static String APP_XMEN_NAME = ConfigUtils.getRestConfig().getString("app.xmen.name");
     private static String APP_XMEN_KEY = ConfigUtils.getRestConfig().getString("app.xmen.key");
+    private static String APP_BGMONITOR_NAME = ConfigUtils.getRestConfig().getString("app.bgmonitor.name");
+    private static String APP_BGMONITOR_KEY = ConfigUtils.getRestConfig().getString("app.bgmonitor.key");
 
     @GET
     @Path("taskinfo")
     @Produces(MediaType.APPLICATION_JSON)
-    public TaskInfoResult getTaskInfo(@QueryParam("scriptId") int scriptId) {
+    public JobInfoResult getTaskInfo(@QueryParam("scriptId") int scriptId) {
         LOGGER.debug("根据scriptId查询taskinfo");
         try {
             String appToken = AppTokenUtils.generateToken(DateTime.now().getMillis(), APP_IRONMAN_KEY);
@@ -110,7 +118,7 @@ public class JarvisController extends AbstractController {
 
             if (response.getSuccess()) {
                 JobInfoEntry jobInfo = response.getJobInfo();
-                TaskInfoResult result = new TaskInfoResult(jobInfo);
+                JobInfoResult result = new JobInfoResult(jobInfo);
                 result.setSuccess(true);
                 RestSearchPreJobInfoRequest searchPreJobInfoRequest = RestSearchPreJobInfoRequest.newBuilder()
                         .setAppAuth(appAuth).setUser(APP_IRONMAN_NAME).setJobId(jobInfo.getJobId()).build();
@@ -123,13 +131,13 @@ public class JarvisController extends AbstractController {
                 }
                 return result;
             } else {
-                TaskInfoResult result = new TaskInfoResult();
+                JobInfoResult result = new JobInfoResult();
                 result.setSuccess(false);
                 result.setMessage(response.getMessage());
                 return result;
             }
         } catch (Exception e) {
-            TaskInfoResult result = new TaskInfoResult();
+            JobInfoResult result = new JobInfoResult();
             result.setSuccess(false);
             result.setMessage(e.getMessage());
             return result;
@@ -240,22 +248,22 @@ public class JarvisController extends AbstractController {
             String appToken = AppTokenUtils.generateToken(DateTime.now().getMillis(), APP_IRONMAN_KEY);
             AppAuth appAuth = AppAuth.newBuilder().setName(APP_IRONMAN_NAME).setToken(appToken).build();
 
-            TaskInfo taskInfo = JsonHelper.fromJson(task, TaskInfo.class);
+            JobInfo jobInfo = JsonHelper.fromJson(task, JobInfo.class);
             int newStatus = JobStatus.ENABLE.getValue();
-            if (taskInfo.getStatus() == TaskStatusEnum.DISABLE.getValue()) {
+            if (jobInfo.getStatus() == TaskStatusEnum.DISABLE.getValue()) {
                 newStatus = JobStatus.DISABLE.getValue();
             }
             // 根据id是否为null判断是更新还是添加
-            if (null == taskInfo.getId() || 0 == taskInfo.getId().longValue()) {
+            if (null == jobInfo.getId() || 0 == jobInfo.getId().longValue()) {
                 if (!user.haveFunction(PermissionEnum.SUPER_ADMIN)) {
                     // 非管理员不得使用VERY_HIGH优先级
-                    Integer priority = taskInfo.getPriority();
+                    Integer priority = jobInfo.getPriority();
                     if (priority > TaskPriorityEnum.HIGH.getValue()) {
-                        taskInfo.setPriority(TaskPriorityEnum.HIGH.getValue());
+                        jobInfo.setPriority(TaskPriorityEnum.HIGH.getValue());
                     }
                 }
                 // 1.获取job type
-                int scriptId = taskInfo.getScriptId();
+                int scriptId = jobInfo.getScriptId();
                 RestSearchScriptTypeRequest scriptTypeRequest = RestSearchScriptTypeRequest.newBuilder()
                         .setAppAuth(appAuth).setUser(globalUser).setScriptId(scriptId).build();
                 ServerSearchScriptTypeResponse scriptTypeResponse = (ServerSearchScriptTypeResponse) callActor(AkkaType.SERVER, scriptTypeRequest);
@@ -273,33 +281,23 @@ public class JarvisController extends AbstractController {
                     jobType = "shell";
                 }
 
-                // 2. 获取biz_id
-                String bizName = taskInfo.getPline();
-                RestSearchBizIdByNameRequest bizIdByNameRequest = RestSearchBizIdByNameRequest.newBuilder()
-                        .setAppAuth(appAuth).setUser(globalUser).setBizName(bizName).build();
-                ServerSearchBizIdByNamResponse bizIdByNamResponse = (ServerSearchBizIdByNamResponse) callActor(AkkaType.SERVER, bizIdByNameRequest);
-                if (!bizIdByNamResponse.getSuccess()) {
-                    result.setSuccess(false);
-                    result.setMessage("通过pline=" + bizName + "获取biz_id失败：" + bizIdByNamResponse.getMessage());
-                    return result;
-                }
-                int biz_id = bizIdByNamResponse.getBizId();
-
+                // 2. 构造RestSubmitJobRequest
                 RestSubmitJobRequest.Builder builder = RestSubmitJobRequest.newBuilder().setAppAuth(appAuth)
                         .setUser(globalUser)
-                        .setJobName(taskInfo.getTitle())
+                        .setJobName(jobInfo.getTitle())
                         .setJobType(jobType)
                         .setStatus(newStatus)
                         .setContentType(JobContentType.SCRIPT.getValue())
-                        .setContent(taskInfo.getScriptId().toString())
+                        .setContent(jobInfo.getScriptId().toString())
                         .setParameters("{}")
-                        .setAppName(taskInfo.getDepartment())
+                        .setAppName(APP_IRONMAN_NAME)
+                        .setDepartment(jobInfo.getDepartment())
+                        .setBizGroups(jobInfo.getPline())
                         .setWorkerGroupId(1) //默认MR集群
-                        .setBizGroupId(biz_id)
-                        .setPriority(taskInfo.getPriority())
+                        .setPriority(jobInfo.getPriority())
                         .setIsTemp(false)
-                        .setActiveStartTime(new DateTime(taskInfo.getStartDate()).getMillis())
-                        .setActiveEndTime(new DateTime(taskInfo.getEndDate()).getMillis())
+                        .setActiveStartTime(new DateTime(jobInfo.getStartDate()).getMillis())
+                        .setActiveEndTime(new DateTime(jobInfo.getEndDate()).getMillis())
                         .setExpiredTime(60*60*24) //默认24小时
                         .setFailedAttempts(0)
                         .setFailedInterval(3);
@@ -308,12 +306,12 @@ public class JarvisController extends AbstractController {
                 ScheduleExpressionEntry scheduleExpressionEntry = ScheduleExpressionEntry.newBuilder().setOperator(OperationMode.ADD.getValue())
                         .setExpressionId(0)
                         .setExpressionType(ScheduleExpressionType.CRON.getValue())
-                        .setScheduleExpression(taskInfo.getCronExp())
+                        .setScheduleExpression(jobInfo.getCronExp())
                         .build();
                 builder.addExpressionEntry(scheduleExpressionEntry);
 
                 // 4.依赖关系
-                String[] preJobIds = taskInfo.getPreTaskIds().trim().split(" ");
+                String[] preJobIds = jobInfo.getPreTaskIds().trim().split(" ");
                 for (String preJobIdStr : preJobIds) {
                     long preJobId = Long.valueOf(preJobIdStr);
                     DependencyEntry dependencyEntry = DependencyEntry.newBuilder()
@@ -341,7 +339,7 @@ public class JarvisController extends AbstractController {
                         .setUser(globalUser)
                         .setJobId(jobId)
                         .setAlarmType("1,2") //短信,TT
-                        .setReciever(taskInfo.getReceiver())
+                        .setReciever(jobInfo.getReceiver())
                         .setStatus(AlarmStatus.ENABLE.getValue())
                         .build();
                 ServerCreateAlarmResponse alarmResponse = (ServerCreateAlarmResponse) callActor(AkkaType.SERVER, alarmRequest);
@@ -356,10 +354,10 @@ public class JarvisController extends AbstractController {
                 result.setTaskId(jobId);
                 return result;
             } else {
-                jobId = taskInfo.getId();
+                jobId = jobInfo.getId();
                 result.setTaskId(jobId);
-                if (!user.isAdminOrAuthor(taskInfo.getPublisher())
-                        && !globalUser.equals(taskInfo.getPublisher())) {
+                if (!user.isAdminOrAuthor(jobInfo.getPublisher())
+                        && !globalUser.equals(jobInfo.getPublisher())) {
                     result.setSuccess(false);
                     result.setMessage("无权修改");
                     return result;
@@ -367,35 +365,26 @@ public class JarvisController extends AbstractController {
                 // 判断用户是否是管理员来验证优先级设置是否合理
                 if (!user.haveFunction(PermissionEnum.SUPER_ADMIN)) {
                     // 非管理员不得使用VERY_HIGH优先级
-                    Integer priority = taskInfo.getPriority();
+                    Integer priority = jobInfo.getPriority();
                     if (priority > TaskPriorityEnum.HIGH.getValue()) {
-                        taskInfo.setPriority(TaskPriorityEnum.HIGH.getValue());
+                        jobInfo.setPriority(TaskPriorityEnum.HIGH.getValue());
                     }
                 }
-                // 1. 修改job基本信息
-                String bizName = taskInfo.getPline();
-                RestSearchBizIdByNameRequest bizIdByNameRequest = RestSearchBizIdByNameRequest.newBuilder()
-                        .setAppAuth(appAuth).setUser(globalUser).setBizName(bizName).build();
-                ServerSearchBizIdByNamResponse bizIdByNamResponse = (ServerSearchBizIdByNamResponse) callActor(AkkaType.SERVER, bizIdByNameRequest);
-                if (!bizIdByNamResponse.getSuccess()) {
-                    result.setSuccess(false);
-                    result.setMessage("通过pline=" + bizName + "获取biz_id失败");
-                    return result;
-                }
-                int biz_id = bizIdByNamResponse.getBizId();
+                // 1. 构造RestModifyJobRequest
                 RestModifyJobRequest modifyJobRequest = RestModifyJobRequest.newBuilder()
                         .setAppAuth(appAuth).setUser(globalUser)
                         .setJobId(jobId)
-                        .setAppName(taskInfo.getDepartment())
-                        .setBizGroupId(biz_id)
-                        .setPriority(taskInfo.getPriority())
-                        .setActiveStartTime(new DateTime(taskInfo.getStartDate()).getMillis())
-                        .setActiveEndTime(new DateTime(taskInfo.getEndDate()).getMillis())
+                        .setAppName(APP_IRONMAN_NAME)
+                        .setDepartment(jobInfo.getDepartment())
+                        .setBizGroups(jobInfo.getPline())
+                        .setPriority(jobInfo.getPriority())
+                        .setActiveStartTime(new DateTime(jobInfo.getStartDate()).getMillis())
+                        .setActiveEndTime(new DateTime(jobInfo.getEndDate()).getMillis())
                         .build();
                 ServerModifyJobResponse modifyJobResponse = (ServerModifyJobResponse) callActor(AkkaType.SERVER, modifyJobRequest);
                 if (!modifyJobResponse.getSuccess()) {
                     result.setSuccess(false);
-                    result.setMessage("修改job基本信息失败，jobId=" + taskInfo.getId());
+                    result.setMessage("修改job基本信息失败，jobId=" + jobInfo.getId());
                     return result;
                 }
 
@@ -403,7 +392,7 @@ public class JarvisController extends AbstractController {
                 ScheduleExpressionEntry scheduleExpressionEntry = ScheduleExpressionEntry.newBuilder().setOperator(OperationMode.EDIT.getValue())
                         .setExpressionId(0)
                         .setExpressionType(ScheduleExpressionType.CRON.getValue())
-                        .setScheduleExpression(taskInfo.getCronExp())
+                        .setScheduleExpression(jobInfo.getCronExp())
                         .build();
                 RestModifyJobScheduleExpRequest modifyScheduleExpRequest = RestModifyJobScheduleExpRequest.newBuilder()
                         .setAppAuth(appAuth).setUser(globalUser)
@@ -413,34 +402,34 @@ public class JarvisController extends AbstractController {
                 ServerModifyJobScheduleExpResponse modifyScheduleExpResponse = (ServerModifyJobScheduleExpResponse) callActor(AkkaType.SERVER, modifyScheduleExpRequest);
                 if (!modifyScheduleExpResponse.getSuccess()) {
                     result.setSuccess(false);
-                    result.setMessage("修改jobId=" + taskInfo.getId() + "依赖表达式失败:" + modifyScheduleExpResponse.getMessage());
+                    result.setMessage("修改jobId=" + jobInfo.getId() + "依赖表达式失败:" + modifyScheduleExpResponse.getMessage());
                     return result;
                 }
 
                 // 3.修改依赖关系
-                String[] preJobIds = taskInfo.getPreTaskIds().trim().split(" ");
+                String[] preJobIds = jobInfo.getPreTaskIds().trim().split(" ");
                 Set<Long> oldPreJobIds = Sets.newHashSet();
                 for (String preJobIdStr : preJobIds) {
                     oldPreJobIds.add(Long.valueOf(preJobIdStr));
                 }
                 RestSearchPreJobInfoRequest preJobInfoRequest = RestSearchPreJobInfoRequest.newBuilder().setAppAuth(appAuth)
-                        .setUser(APP_IRONMAN_NAME).setJobId(taskInfo.getId()).build();
+                        .setUser(APP_IRONMAN_NAME).setJobId(jobInfo.getId()).build();
                 ServerSearchPreJobInfoResponse preJobInfoResponse = (ServerSearchPreJobInfoResponse) callActor(AkkaType.SERVER, preJobInfoRequest);
                 if (!preJobInfoResponse.getSuccess()) {
                     result.setSuccess(false);
-                    result.setMessage("根据scriptId=" + taskInfo.getScriptId() + "获取依赖关系失败：" + preJobInfoResponse.getMessage());
+                    result.setMessage("根据scriptId=" + jobInfo.getScriptId() + "获取依赖关系失败：" + preJobInfoResponse.getMessage());
                     return result;
                 }
                 List<JobInfoEntry> jobInfos = preJobInfoResponse.getPreJobInfoList();
                 Set<Long> newPreJobIds = Sets.newHashSet();
-                for (JobInfoEntry jobInfo : jobInfos) {
-                    newPreJobIds.add(jobInfo.getJobId());
+                for (JobInfoEntry jobInfoEntry : jobInfos) {
+                    newPreJobIds.add(jobInfoEntry.getJobId());
                 }
                 SetView<Long> removeSet = Sets.difference(oldPreJobIds, newPreJobIds);
                 SetView<Long> addSet = Sets.difference(newPreJobIds, oldPreJobIds);
 
                 RestModifyJobDependRequest.Builder modifyDependBuilder = RestModifyJobDependRequest.newBuilder()
-                        .setAppAuth(appAuth).setUser(globalUser).setJobId(taskInfo.getId());
+                        .setAppAuth(appAuth).setUser(globalUser).setJobId(jobInfo.getId());
                 for (long removeJobId : removeSet) {
                     DependencyEntry dependencyEntry = DependencyEntry.newBuilder()
                             .setOperator(OperationMode.DELETE.getValue())
@@ -467,7 +456,7 @@ public class JarvisController extends AbstractController {
                 //4.修改报警人
                 RestModifyAlarmRequest alarmRequest = RestModifyAlarmRequest.newBuilder()
                         .setAppAuth(appAuth).setUser(globalUser).setJobId(jobId)
-                        .setReciever(taskInfo.getReceiver()).build();
+                        .setReciever(jobInfo.getReceiver()).build();
                 ServerModifyAlarmResponse alarmResponse = (ServerModifyAlarmResponse) callActor(AkkaType.SERVER, alarmRequest);
                 if (!alarmResponse.getSuccess()) {
                     result.setSuccess(false);
@@ -688,6 +677,70 @@ public class JarvisController extends AbstractController {
             result.setMessage(e.getMessage());
             return result;
         }
+    }
+
+    @POST
+    @Path("plan/cp")
+    @Produces(MediaType.APPLICATION_JSON)
+    public CriticalPathResult cp(@FormParam("date") String date, @FormParam("task") String taskTitle) {
+        LOGGER.debug("query cirtical path");
+        CriticalPathResult result = new CriticalPathResult();
+        try {
+            String appToken = AppTokenUtils.generateToken(DateTime.now().getMillis(), APP_BGMONITOR_KEY);
+            AppAuth appAuth = AppAuth.newBuilder().setName(APP_BGMONITOR_NAME).setToken(appToken).build();
+            RestQueryTaskCriticalPathRequest request = RestQueryTaskCriticalPathRequest.newBuilder()
+                    .setAppAuth(appAuth).setDateTime(new DateTime(date).getMillis()).setJobName(taskTitle)
+                    .build();
+            ServerQueryTaskCriticalPathResponse response = (ServerQueryTaskCriticalPathResponse) callActor(AkkaType.SERVER, request);
+            if (response.getSuccess()) {
+                List<TaskInfoEntry> taskInfoEntries = response.getTaskInfoList();
+                List<TaskInfo> taskInfos = new ArrayList<TaskInfo>();
+                for (TaskInfoEntry taskInfoEntry : taskInfoEntries) {
+                    taskInfos.add(new TaskInfo(taskInfoEntry));
+                }
+                result.setList(taskInfos);
+                result.setSuccess(true);
+                return result;
+            } else {
+                result.setSuccess(false);
+                result.setMessage("查询关键路径出错:" + response.getMessage());
+            }
+        } catch (Exception e) {
+            result.setSuccess(false);
+            result.setMessage("查询关键路径出错:" + e.getMessage());
+        }
+        return result;
+    }
+
+    @GET
+    @Path("istasksuccess")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Result isTaskSuccess(@QueryParam("tid") long jobId, @QueryParam("datadate") String dataDate) {
+        LOGGER.debug("is task success");
+        Result result = new Result();
+        try {
+            String appToken = AppTokenUtils.generateToken(DateTime.now().getMillis(), APP_IRONMAN_KEY);
+            AppAuth appAuth = AppAuth.newBuilder().setName(APP_IRONMAN_NAME).setToken(appToken).build();
+            RestSearchTaskStatusRequest request = RestSearchTaskStatusRequest.newBuilder().setAppAuth(appAuth)
+                    .setJobId(jobId).setDataDate(new DateTime(dataDate).getMillis()).build();
+            ServerSearchTaskStatusResponse response = (ServerSearchTaskStatusResponse) callActor(AkkaType.SERVER, request);
+            if (response.getSuccess()) {
+                int status = response.getStatus();
+                if (status == TaskStatus.SUCCESS.getValue()) {
+                    result.setSuccess(true);
+                } else {
+                    result.setSuccess(false);
+                    result.setMessage("task状态为" + TaskStatus.parseValue(status));
+                }
+            } else {
+                result.setSuccess(false);
+                result.setMessage("查询task状态出错:" + response.getMessage());
+            }
+        } catch (Exception e) {
+            result.setSuccess(false);
+            result.setMessage("查询task状态出错:" + e.getMessage());
+        }
+        return result;
     }
 
 }

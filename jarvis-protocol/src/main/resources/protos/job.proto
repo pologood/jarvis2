@@ -20,17 +20,18 @@ message RestSubmitJobRequest {
     optional string parameters = 8 [default = ""];
     optional string app_name = 9 ;
     required int32 worker_group_id = 10;
-    optional int32 biz_group_id = 11 [default = 0];
-    optional int32 priority = 12 [default = 1];
-    optional bool isTemp = 13 [default = false];
-    optional bool isSerial = 14 [default = false]; 
-    optional int64 active_start_time = 15;
-    optional int64 active_end_time = 16;
-    optional int32 expired_time = 17 [default = 600];
-    optional int32 failed_attempts = 18 [default = 0];
-    optional int32 failed_interval = 19 [default = 3];
-    repeated ScheduleExpressionEntry expression_entry = 20;
-    repeated DependencyEntry dependency_entry = 21;
+    optional string department = 11 [default = ""];
+    optional string biz_groups = 12 [default = ""];
+    optional int32 priority = 13 [default = 1];
+    optional bool isTemp = 14 [default = false];
+    optional bool isSerial = 15 [default = false]; 
+    optional int64 active_start_time = 16;
+    optional int64 active_end_time = 17;
+    optional int32 expired_time = 18 [default = 600];
+    optional int32 failed_attempts = 19 [default = 0];
+    optional int32 failed_interval = 20 [default = 3];
+    repeated ScheduleExpressionEntry expression_entry = 21;
+    repeated DependencyEntry dependency_entry = 22;
 }
 
 message ServerSubmitJobResponse {
@@ -50,15 +51,16 @@ message RestModifyJobRequest {
     optional string parameters = 7;
     optional string app_name = 8;
     optional int32 worker_group_id = 9;
-    optional int32 biz_group_id = 10;
-    optional int32 priority = 11;
-    optional bool isTemp = 12;
-    optional bool isSerial = 13; 
-    optional int64 active_start_time = 14;
-    optional int64 active_end_time = 15;
-    optional int32 expired_time = 16;
-    optional int32 failed_attempts = 17;
-    optional int32 failed_interval = 18;
+    optional string department = 10;
+    optional string biz_groups = 11;
+    optional int32 priority = 12;
+    optional bool isTemp = 13;
+    optional bool isSerial = 14; 
+    optional int64 active_start_time = 15;
+    optional int64 active_end_time = 16;
+    optional int32 expired_time = 17;
+    optional int32 failed_attempts = 18;
+    optional int32 failed_interval = 19;
 }
 
 message ServerModifyJobResponse {

@@ -145,142 +145,162 @@ public final class JobProtos {
      */
     int getWorkerGroupId();
 
-    // optional int32 biz_group_id = 11 [default = 0];
+    // optional string department = 11 [default = ""];
     /**
-     * <code>optional int32 biz_group_id = 11 [default = 0];</code>
+     * <code>optional string department = 11 [default = ""];</code>
      */
-    boolean hasBizGroupId();
+    boolean hasDepartment();
     /**
-     * <code>optional int32 biz_group_id = 11 [default = 0];</code>
+     * <code>optional string department = 11 [default = ""];</code>
      */
-    int getBizGroupId();
+    java.lang.String getDepartment();
+    /**
+     * <code>optional string department = 11 [default = ""];</code>
+     */
+    com.google.protobuf.ByteString
+        getDepartmentBytes();
 
-    // optional int32 priority = 12 [default = 1];
+    // optional string biz_groups = 12 [default = ""];
     /**
-     * <code>optional int32 priority = 12 [default = 1];</code>
+     * <code>optional string biz_groups = 12 [default = ""];</code>
+     */
+    boolean hasBizGroups();
+    /**
+     * <code>optional string biz_groups = 12 [default = ""];</code>
+     */
+    java.lang.String getBizGroups();
+    /**
+     * <code>optional string biz_groups = 12 [default = ""];</code>
+     */
+    com.google.protobuf.ByteString
+        getBizGroupsBytes();
+
+    // optional int32 priority = 13 [default = 1];
+    /**
+     * <code>optional int32 priority = 13 [default = 1];</code>
      */
     boolean hasPriority();
     /**
-     * <code>optional int32 priority = 12 [default = 1];</code>
+     * <code>optional int32 priority = 13 [default = 1];</code>
      */
     int getPriority();
 
-    // optional bool isTemp = 13 [default = false];
+    // optional bool isTemp = 14 [default = false];
     /**
-     * <code>optional bool isTemp = 13 [default = false];</code>
+     * <code>optional bool isTemp = 14 [default = false];</code>
      */
     boolean hasIsTemp();
     /**
-     * <code>optional bool isTemp = 13 [default = false];</code>
+     * <code>optional bool isTemp = 14 [default = false];</code>
      */
     boolean getIsTemp();
 
-    // optional bool isSerial = 14 [default = false];
+    // optional bool isSerial = 15 [default = false];
     /**
-     * <code>optional bool isSerial = 14 [default = false];</code>
+     * <code>optional bool isSerial = 15 [default = false];</code>
      */
     boolean hasIsSerial();
     /**
-     * <code>optional bool isSerial = 14 [default = false];</code>
+     * <code>optional bool isSerial = 15 [default = false];</code>
      */
     boolean getIsSerial();
 
-    // optional int64 active_start_time = 15;
+    // optional int64 active_start_time = 16;
     /**
-     * <code>optional int64 active_start_time = 15;</code>
+     * <code>optional int64 active_start_time = 16;</code>
      */
     boolean hasActiveStartTime();
     /**
-     * <code>optional int64 active_start_time = 15;</code>
+     * <code>optional int64 active_start_time = 16;</code>
      */
     long getActiveStartTime();
 
-    // optional int64 active_end_time = 16;
+    // optional int64 active_end_time = 17;
     /**
-     * <code>optional int64 active_end_time = 16;</code>
+     * <code>optional int64 active_end_time = 17;</code>
      */
     boolean hasActiveEndTime();
     /**
-     * <code>optional int64 active_end_time = 16;</code>
+     * <code>optional int64 active_end_time = 17;</code>
      */
     long getActiveEndTime();
 
-    // optional int32 expired_time = 17 [default = 600];
+    // optional int32 expired_time = 18 [default = 600];
     /**
-     * <code>optional int32 expired_time = 17 [default = 600];</code>
+     * <code>optional int32 expired_time = 18 [default = 600];</code>
      */
     boolean hasExpiredTime();
     /**
-     * <code>optional int32 expired_time = 17 [default = 600];</code>
+     * <code>optional int32 expired_time = 18 [default = 600];</code>
      */
     int getExpiredTime();
 
-    // optional int32 failed_attempts = 18 [default = 0];
+    // optional int32 failed_attempts = 19 [default = 0];
     /**
-     * <code>optional int32 failed_attempts = 18 [default = 0];</code>
+     * <code>optional int32 failed_attempts = 19 [default = 0];</code>
      */
     boolean hasFailedAttempts();
     /**
-     * <code>optional int32 failed_attempts = 18 [default = 0];</code>
+     * <code>optional int32 failed_attempts = 19 [default = 0];</code>
      */
     int getFailedAttempts();
 
-    // optional int32 failed_interval = 19 [default = 3];
+    // optional int32 failed_interval = 20 [default = 3];
     /**
-     * <code>optional int32 failed_interval = 19 [default = 3];</code>
+     * <code>optional int32 failed_interval = 20 [default = 3];</code>
      */
     boolean hasFailedInterval();
     /**
-     * <code>optional int32 failed_interval = 19 [default = 3];</code>
+     * <code>optional int32 failed_interval = 20 [default = 3];</code>
      */
     int getFailedInterval();
 
-    // repeated .ScheduleExpressionEntry expression_entry = 20;
+    // repeated .ScheduleExpressionEntry expression_entry = 21;
     /**
-     * <code>repeated .ScheduleExpressionEntry expression_entry = 20;</code>
+     * <code>repeated .ScheduleExpressionEntry expression_entry = 21;</code>
      */
     java.util.List<com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry> 
         getExpressionEntryList();
     /**
-     * <code>repeated .ScheduleExpressionEntry expression_entry = 20;</code>
+     * <code>repeated .ScheduleExpressionEntry expression_entry = 21;</code>
      */
     com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry getExpressionEntry(int index);
     /**
-     * <code>repeated .ScheduleExpressionEntry expression_entry = 20;</code>
+     * <code>repeated .ScheduleExpressionEntry expression_entry = 21;</code>
      */
     int getExpressionEntryCount();
     /**
-     * <code>repeated .ScheduleExpressionEntry expression_entry = 20;</code>
+     * <code>repeated .ScheduleExpressionEntry expression_entry = 21;</code>
      */
     java.util.List<? extends com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder> 
         getExpressionEntryOrBuilderList();
     /**
-     * <code>repeated .ScheduleExpressionEntry expression_entry = 20;</code>
+     * <code>repeated .ScheduleExpressionEntry expression_entry = 21;</code>
      */
     com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder getExpressionEntryOrBuilder(
         int index);
 
-    // repeated .DependencyEntry dependency_entry = 21;
+    // repeated .DependencyEntry dependency_entry = 22;
     /**
-     * <code>repeated .DependencyEntry dependency_entry = 21;</code>
+     * <code>repeated .DependencyEntry dependency_entry = 22;</code>
      */
     java.util.List<com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry> 
         getDependencyEntryList();
     /**
-     * <code>repeated .DependencyEntry dependency_entry = 21;</code>
+     * <code>repeated .DependencyEntry dependency_entry = 22;</code>
      */
     com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry getDependencyEntry(int index);
     /**
-     * <code>repeated .DependencyEntry dependency_entry = 21;</code>
+     * <code>repeated .DependencyEntry dependency_entry = 22;</code>
      */
     int getDependencyEntryCount();
     /**
-     * <code>repeated .DependencyEntry dependency_entry = 21;</code>
+     * <code>repeated .DependencyEntry dependency_entry = 22;</code>
      */
     java.util.List<? extends com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntryOrBuilder> 
         getDependencyEntryOrBuilderList();
     /**
-     * <code>repeated .DependencyEntry dependency_entry = 21;</code>
+     * <code>repeated .DependencyEntry dependency_entry = 22;</code>
      */
     com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntryOrBuilder getDependencyEntryOrBuilder(
         int index);
@@ -398,63 +418,68 @@ public final class JobProtos {
               workerGroupId_ = input.readInt32();
               break;
             }
-            case 88: {
+            case 90: {
               bitField0_ |= 0x00000400;
-              bizGroupId_ = input.readInt32();
+              department_ = input.readBytes();
               break;
             }
-            case 96: {
+            case 98: {
               bitField0_ |= 0x00000800;
-              priority_ = input.readInt32();
+              bizGroups_ = input.readBytes();
               break;
             }
             case 104: {
               bitField0_ |= 0x00001000;
-              isTemp_ = input.readBool();
+              priority_ = input.readInt32();
               break;
             }
             case 112: {
               bitField0_ |= 0x00002000;
-              isSerial_ = input.readBool();
+              isTemp_ = input.readBool();
               break;
             }
             case 120: {
               bitField0_ |= 0x00004000;
-              activeStartTime_ = input.readInt64();
+              isSerial_ = input.readBool();
               break;
             }
             case 128: {
               bitField0_ |= 0x00008000;
-              activeEndTime_ = input.readInt64();
+              activeStartTime_ = input.readInt64();
               break;
             }
             case 136: {
               bitField0_ |= 0x00010000;
-              expiredTime_ = input.readInt32();
+              activeEndTime_ = input.readInt64();
               break;
             }
             case 144: {
               bitField0_ |= 0x00020000;
-              failedAttempts_ = input.readInt32();
+              expiredTime_ = input.readInt32();
               break;
             }
             case 152: {
               bitField0_ |= 0x00040000;
-              failedInterval_ = input.readInt32();
+              failedAttempts_ = input.readInt32();
               break;
             }
-            case 162: {
-              if (!((mutable_bitField0_ & 0x00080000) == 0x00080000)) {
-                expressionEntry_ = new java.util.ArrayList<com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry>();
-                mutable_bitField0_ |= 0x00080000;
-              }
-              expressionEntry_.add(input.readMessage(com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry.PARSER, extensionRegistry));
+            case 160: {
+              bitField0_ |= 0x00080000;
+              failedInterval_ = input.readInt32();
               break;
             }
             case 170: {
               if (!((mutable_bitField0_ & 0x00100000) == 0x00100000)) {
-                dependencyEntry_ = new java.util.ArrayList<com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry>();
+                expressionEntry_ = new java.util.ArrayList<com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry>();
                 mutable_bitField0_ |= 0x00100000;
+              }
+              expressionEntry_.add(input.readMessage(com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry.PARSER, extensionRegistry));
+              break;
+            }
+            case 178: {
+              if (!((mutable_bitField0_ & 0x00200000) == 0x00200000)) {
+                dependencyEntry_ = new java.util.ArrayList<com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry>();
+                mutable_bitField0_ |= 0x00200000;
               }
               dependencyEntry_.add(input.readMessage(com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry.PARSER, extensionRegistry));
               break;
@@ -467,10 +492,10 @@ public final class JobProtos {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e.getMessage()).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00080000) == 0x00080000)) {
+        if (((mutable_bitField0_ & 0x00100000) == 0x00100000)) {
           expressionEntry_ = java.util.Collections.unmodifiableList(expressionEntry_);
         }
-        if (((mutable_bitField0_ & 0x00100000) == 0x00100000)) {
+        if (((mutable_bitField0_ & 0x00200000) == 0x00200000)) {
           dependencyEntry_ = java.util.Collections.unmodifiableList(dependencyEntry_);
         }
         this.unknownFields = unknownFields.build();
@@ -833,216 +858,286 @@ public final class JobProtos {
       return workerGroupId_;
     }
 
-    // optional int32 biz_group_id = 11 [default = 0];
-    public static final int BIZ_GROUP_ID_FIELD_NUMBER = 11;
-    private int bizGroupId_;
+    // optional string department = 11 [default = ""];
+    public static final int DEPARTMENT_FIELD_NUMBER = 11;
+    private java.lang.Object department_;
     /**
-     * <code>optional int32 biz_group_id = 11 [default = 0];</code>
+     * <code>optional string department = 11 [default = ""];</code>
      */
-    public boolean hasBizGroupId() {
+    public boolean hasDepartment() {
       return ((bitField0_ & 0x00000400) == 0x00000400);
     }
     /**
-     * <code>optional int32 biz_group_id = 11 [default = 0];</code>
+     * <code>optional string department = 11 [default = ""];</code>
      */
-    public int getBizGroupId() {
-      return bizGroupId_;
+    public java.lang.String getDepartment() {
+      java.lang.Object ref = department_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          department_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string department = 11 [default = ""];</code>
+     */
+    public com.google.protobuf.ByteString
+        getDepartmentBytes() {
+      java.lang.Object ref = department_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        department_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
 
-    // optional int32 priority = 12 [default = 1];
-    public static final int PRIORITY_FIELD_NUMBER = 12;
-    private int priority_;
+    // optional string biz_groups = 12 [default = ""];
+    public static final int BIZ_GROUPS_FIELD_NUMBER = 12;
+    private java.lang.Object bizGroups_;
     /**
-     * <code>optional int32 priority = 12 [default = 1];</code>
+     * <code>optional string biz_groups = 12 [default = ""];</code>
      */
-    public boolean hasPriority() {
+    public boolean hasBizGroups() {
       return ((bitField0_ & 0x00000800) == 0x00000800);
     }
     /**
-     * <code>optional int32 priority = 12 [default = 1];</code>
+     * <code>optional string biz_groups = 12 [default = ""];</code>
+     */
+    public java.lang.String getBizGroups() {
+      java.lang.Object ref = bizGroups_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          bizGroups_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string biz_groups = 12 [default = ""];</code>
+     */
+    public com.google.protobuf.ByteString
+        getBizGroupsBytes() {
+      java.lang.Object ref = bizGroups_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        bizGroups_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    // optional int32 priority = 13 [default = 1];
+    public static final int PRIORITY_FIELD_NUMBER = 13;
+    private int priority_;
+    /**
+     * <code>optional int32 priority = 13 [default = 1];</code>
+     */
+    public boolean hasPriority() {
+      return ((bitField0_ & 0x00001000) == 0x00001000);
+    }
+    /**
+     * <code>optional int32 priority = 13 [default = 1];</code>
      */
     public int getPriority() {
       return priority_;
     }
 
-    // optional bool isTemp = 13 [default = false];
-    public static final int ISTEMP_FIELD_NUMBER = 13;
+    // optional bool isTemp = 14 [default = false];
+    public static final int ISTEMP_FIELD_NUMBER = 14;
     private boolean isTemp_;
     /**
-     * <code>optional bool isTemp = 13 [default = false];</code>
+     * <code>optional bool isTemp = 14 [default = false];</code>
      */
     public boolean hasIsTemp() {
-      return ((bitField0_ & 0x00001000) == 0x00001000);
+      return ((bitField0_ & 0x00002000) == 0x00002000);
     }
     /**
-     * <code>optional bool isTemp = 13 [default = false];</code>
+     * <code>optional bool isTemp = 14 [default = false];</code>
      */
     public boolean getIsTemp() {
       return isTemp_;
     }
 
-    // optional bool isSerial = 14 [default = false];
-    public static final int ISSERIAL_FIELD_NUMBER = 14;
+    // optional bool isSerial = 15 [default = false];
+    public static final int ISSERIAL_FIELD_NUMBER = 15;
     private boolean isSerial_;
     /**
-     * <code>optional bool isSerial = 14 [default = false];</code>
+     * <code>optional bool isSerial = 15 [default = false];</code>
      */
     public boolean hasIsSerial() {
-      return ((bitField0_ & 0x00002000) == 0x00002000);
+      return ((bitField0_ & 0x00004000) == 0x00004000);
     }
     /**
-     * <code>optional bool isSerial = 14 [default = false];</code>
+     * <code>optional bool isSerial = 15 [default = false];</code>
      */
     public boolean getIsSerial() {
       return isSerial_;
     }
 
-    // optional int64 active_start_time = 15;
-    public static final int ACTIVE_START_TIME_FIELD_NUMBER = 15;
+    // optional int64 active_start_time = 16;
+    public static final int ACTIVE_START_TIME_FIELD_NUMBER = 16;
     private long activeStartTime_;
     /**
-     * <code>optional int64 active_start_time = 15;</code>
+     * <code>optional int64 active_start_time = 16;</code>
      */
     public boolean hasActiveStartTime() {
-      return ((bitField0_ & 0x00004000) == 0x00004000);
+      return ((bitField0_ & 0x00008000) == 0x00008000);
     }
     /**
-     * <code>optional int64 active_start_time = 15;</code>
+     * <code>optional int64 active_start_time = 16;</code>
      */
     public long getActiveStartTime() {
       return activeStartTime_;
     }
 
-    // optional int64 active_end_time = 16;
-    public static final int ACTIVE_END_TIME_FIELD_NUMBER = 16;
+    // optional int64 active_end_time = 17;
+    public static final int ACTIVE_END_TIME_FIELD_NUMBER = 17;
     private long activeEndTime_;
     /**
-     * <code>optional int64 active_end_time = 16;</code>
+     * <code>optional int64 active_end_time = 17;</code>
      */
     public boolean hasActiveEndTime() {
-      return ((bitField0_ & 0x00008000) == 0x00008000);
+      return ((bitField0_ & 0x00010000) == 0x00010000);
     }
     /**
-     * <code>optional int64 active_end_time = 16;</code>
+     * <code>optional int64 active_end_time = 17;</code>
      */
     public long getActiveEndTime() {
       return activeEndTime_;
     }
 
-    // optional int32 expired_time = 17 [default = 600];
-    public static final int EXPIRED_TIME_FIELD_NUMBER = 17;
+    // optional int32 expired_time = 18 [default = 600];
+    public static final int EXPIRED_TIME_FIELD_NUMBER = 18;
     private int expiredTime_;
     /**
-     * <code>optional int32 expired_time = 17 [default = 600];</code>
+     * <code>optional int32 expired_time = 18 [default = 600];</code>
      */
     public boolean hasExpiredTime() {
-      return ((bitField0_ & 0x00010000) == 0x00010000);
+      return ((bitField0_ & 0x00020000) == 0x00020000);
     }
     /**
-     * <code>optional int32 expired_time = 17 [default = 600];</code>
+     * <code>optional int32 expired_time = 18 [default = 600];</code>
      */
     public int getExpiredTime() {
       return expiredTime_;
     }
 
-    // optional int32 failed_attempts = 18 [default = 0];
-    public static final int FAILED_ATTEMPTS_FIELD_NUMBER = 18;
+    // optional int32 failed_attempts = 19 [default = 0];
+    public static final int FAILED_ATTEMPTS_FIELD_NUMBER = 19;
     private int failedAttempts_;
     /**
-     * <code>optional int32 failed_attempts = 18 [default = 0];</code>
+     * <code>optional int32 failed_attempts = 19 [default = 0];</code>
      */
     public boolean hasFailedAttempts() {
-      return ((bitField0_ & 0x00020000) == 0x00020000);
+      return ((bitField0_ & 0x00040000) == 0x00040000);
     }
     /**
-     * <code>optional int32 failed_attempts = 18 [default = 0];</code>
+     * <code>optional int32 failed_attempts = 19 [default = 0];</code>
      */
     public int getFailedAttempts() {
       return failedAttempts_;
     }
 
-    // optional int32 failed_interval = 19 [default = 3];
-    public static final int FAILED_INTERVAL_FIELD_NUMBER = 19;
+    // optional int32 failed_interval = 20 [default = 3];
+    public static final int FAILED_INTERVAL_FIELD_NUMBER = 20;
     private int failedInterval_;
     /**
-     * <code>optional int32 failed_interval = 19 [default = 3];</code>
+     * <code>optional int32 failed_interval = 20 [default = 3];</code>
      */
     public boolean hasFailedInterval() {
-      return ((bitField0_ & 0x00040000) == 0x00040000);
+      return ((bitField0_ & 0x00080000) == 0x00080000);
     }
     /**
-     * <code>optional int32 failed_interval = 19 [default = 3];</code>
+     * <code>optional int32 failed_interval = 20 [default = 3];</code>
      */
     public int getFailedInterval() {
       return failedInterval_;
     }
 
-    // repeated .ScheduleExpressionEntry expression_entry = 20;
-    public static final int EXPRESSION_ENTRY_FIELD_NUMBER = 20;
+    // repeated .ScheduleExpressionEntry expression_entry = 21;
+    public static final int EXPRESSION_ENTRY_FIELD_NUMBER = 21;
     private java.util.List<com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry> expressionEntry_;
     /**
-     * <code>repeated .ScheduleExpressionEntry expression_entry = 20;</code>
+     * <code>repeated .ScheduleExpressionEntry expression_entry = 21;</code>
      */
     public java.util.List<com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry> getExpressionEntryList() {
       return expressionEntry_;
     }
     /**
-     * <code>repeated .ScheduleExpressionEntry expression_entry = 20;</code>
+     * <code>repeated .ScheduleExpressionEntry expression_entry = 21;</code>
      */
     public java.util.List<? extends com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder> 
         getExpressionEntryOrBuilderList() {
       return expressionEntry_;
     }
     /**
-     * <code>repeated .ScheduleExpressionEntry expression_entry = 20;</code>
+     * <code>repeated .ScheduleExpressionEntry expression_entry = 21;</code>
      */
     public int getExpressionEntryCount() {
       return expressionEntry_.size();
     }
     /**
-     * <code>repeated .ScheduleExpressionEntry expression_entry = 20;</code>
+     * <code>repeated .ScheduleExpressionEntry expression_entry = 21;</code>
      */
     public com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry getExpressionEntry(int index) {
       return expressionEntry_.get(index);
     }
     /**
-     * <code>repeated .ScheduleExpressionEntry expression_entry = 20;</code>
+     * <code>repeated .ScheduleExpressionEntry expression_entry = 21;</code>
      */
     public com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder getExpressionEntryOrBuilder(
         int index) {
       return expressionEntry_.get(index);
     }
 
-    // repeated .DependencyEntry dependency_entry = 21;
-    public static final int DEPENDENCY_ENTRY_FIELD_NUMBER = 21;
+    // repeated .DependencyEntry dependency_entry = 22;
+    public static final int DEPENDENCY_ENTRY_FIELD_NUMBER = 22;
     private java.util.List<com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry> dependencyEntry_;
     /**
-     * <code>repeated .DependencyEntry dependency_entry = 21;</code>
+     * <code>repeated .DependencyEntry dependency_entry = 22;</code>
      */
     public java.util.List<com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry> getDependencyEntryList() {
       return dependencyEntry_;
     }
     /**
-     * <code>repeated .DependencyEntry dependency_entry = 21;</code>
+     * <code>repeated .DependencyEntry dependency_entry = 22;</code>
      */
     public java.util.List<? extends com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntryOrBuilder> 
         getDependencyEntryOrBuilderList() {
       return dependencyEntry_;
     }
     /**
-     * <code>repeated .DependencyEntry dependency_entry = 21;</code>
+     * <code>repeated .DependencyEntry dependency_entry = 22;</code>
      */
     public int getDependencyEntryCount() {
       return dependencyEntry_.size();
     }
     /**
-     * <code>repeated .DependencyEntry dependency_entry = 21;</code>
+     * <code>repeated .DependencyEntry dependency_entry = 22;</code>
      */
     public com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry getDependencyEntry(int index) {
       return dependencyEntry_.get(index);
     }
     /**
-     * <code>repeated .DependencyEntry dependency_entry = 21;</code>
+     * <code>repeated .DependencyEntry dependency_entry = 22;</code>
      */
     public com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntryOrBuilder getDependencyEntryOrBuilder(
         int index) {
@@ -1060,7 +1155,8 @@ public final class JobProtos {
       parameters_ = "";
       appName_ = "";
       workerGroupId_ = 0;
-      bizGroupId_ = 0;
+      department_ = "";
+      bizGroups_ = "";
       priority_ = 1;
       isTemp_ = false;
       isSerial_ = false;
@@ -1163,37 +1259,40 @@ public final class JobProtos {
         output.writeInt32(10, workerGroupId_);
       }
       if (((bitField0_ & 0x00000400) == 0x00000400)) {
-        output.writeInt32(11, bizGroupId_);
+        output.writeBytes(11, getDepartmentBytes());
       }
       if (((bitField0_ & 0x00000800) == 0x00000800)) {
-        output.writeInt32(12, priority_);
+        output.writeBytes(12, getBizGroupsBytes());
       }
       if (((bitField0_ & 0x00001000) == 0x00001000)) {
-        output.writeBool(13, isTemp_);
+        output.writeInt32(13, priority_);
       }
       if (((bitField0_ & 0x00002000) == 0x00002000)) {
-        output.writeBool(14, isSerial_);
+        output.writeBool(14, isTemp_);
       }
       if (((bitField0_ & 0x00004000) == 0x00004000)) {
-        output.writeInt64(15, activeStartTime_);
+        output.writeBool(15, isSerial_);
       }
       if (((bitField0_ & 0x00008000) == 0x00008000)) {
-        output.writeInt64(16, activeEndTime_);
+        output.writeInt64(16, activeStartTime_);
       }
       if (((bitField0_ & 0x00010000) == 0x00010000)) {
-        output.writeInt32(17, expiredTime_);
+        output.writeInt64(17, activeEndTime_);
       }
       if (((bitField0_ & 0x00020000) == 0x00020000)) {
-        output.writeInt32(18, failedAttempts_);
+        output.writeInt32(18, expiredTime_);
       }
       if (((bitField0_ & 0x00040000) == 0x00040000)) {
-        output.writeInt32(19, failedInterval_);
+        output.writeInt32(19, failedAttempts_);
+      }
+      if (((bitField0_ & 0x00080000) == 0x00080000)) {
+        output.writeInt32(20, failedInterval_);
       }
       for (int i = 0; i < expressionEntry_.size(); i++) {
-        output.writeMessage(20, expressionEntry_.get(i));
+        output.writeMessage(21, expressionEntry_.get(i));
       }
       for (int i = 0; i < dependencyEntry_.size(); i++) {
-        output.writeMessage(21, dependencyEntry_.get(i));
+        output.writeMessage(22, dependencyEntry_.get(i));
       }
       getUnknownFields().writeTo(output);
     }
@@ -1246,47 +1345,51 @@ public final class JobProtos {
       }
       if (((bitField0_ & 0x00000400) == 0x00000400)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(11, bizGroupId_);
+          .computeBytesSize(11, getDepartmentBytes());
       }
       if (((bitField0_ & 0x00000800) == 0x00000800)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(12, priority_);
+          .computeBytesSize(12, getBizGroupsBytes());
       }
       if (((bitField0_ & 0x00001000) == 0x00001000)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(13, isTemp_);
+          .computeInt32Size(13, priority_);
       }
       if (((bitField0_ & 0x00002000) == 0x00002000)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(14, isSerial_);
+          .computeBoolSize(14, isTemp_);
       }
       if (((bitField0_ & 0x00004000) == 0x00004000)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(15, activeStartTime_);
+          .computeBoolSize(15, isSerial_);
       }
       if (((bitField0_ & 0x00008000) == 0x00008000)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(16, activeEndTime_);
+          .computeInt64Size(16, activeStartTime_);
       }
       if (((bitField0_ & 0x00010000) == 0x00010000)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(17, expiredTime_);
+          .computeInt64Size(17, activeEndTime_);
       }
       if (((bitField0_ & 0x00020000) == 0x00020000)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(18, failedAttempts_);
+          .computeInt32Size(18, expiredTime_);
       }
       if (((bitField0_ & 0x00040000) == 0x00040000)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(19, failedInterval_);
+          .computeInt32Size(19, failedAttempts_);
+      }
+      if (((bitField0_ & 0x00080000) == 0x00080000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(20, failedInterval_);
       }
       for (int i = 0; i < expressionEntry_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(20, expressionEntry_.get(i));
+          .computeMessageSize(21, expressionEntry_.get(i));
       }
       for (int i = 0; i < dependencyEntry_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(21, dependencyEntry_.get(i));
+          .computeMessageSize(22, dependencyEntry_.get(i));
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -1435,33 +1538,35 @@ public final class JobProtos {
         bitField0_ = (bitField0_ & ~0x00000100);
         workerGroupId_ = 0;
         bitField0_ = (bitField0_ & ~0x00000200);
-        bizGroupId_ = 0;
+        department_ = "";
         bitField0_ = (bitField0_ & ~0x00000400);
-        priority_ = 1;
+        bizGroups_ = "";
         bitField0_ = (bitField0_ & ~0x00000800);
-        isTemp_ = false;
+        priority_ = 1;
         bitField0_ = (bitField0_ & ~0x00001000);
-        isSerial_ = false;
+        isTemp_ = false;
         bitField0_ = (bitField0_ & ~0x00002000);
-        activeStartTime_ = 0L;
+        isSerial_ = false;
         bitField0_ = (bitField0_ & ~0x00004000);
-        activeEndTime_ = 0L;
+        activeStartTime_ = 0L;
         bitField0_ = (bitField0_ & ~0x00008000);
-        expiredTime_ = 600;
+        activeEndTime_ = 0L;
         bitField0_ = (bitField0_ & ~0x00010000);
-        failedAttempts_ = 0;
+        expiredTime_ = 600;
         bitField0_ = (bitField0_ & ~0x00020000);
-        failedInterval_ = 3;
+        failedAttempts_ = 0;
         bitField0_ = (bitField0_ & ~0x00040000);
+        failedInterval_ = 3;
+        bitField0_ = (bitField0_ & ~0x00080000);
         if (expressionEntryBuilder_ == null) {
           expressionEntry_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00080000);
+          bitField0_ = (bitField0_ & ~0x00100000);
         } else {
           expressionEntryBuilder_.clear();
         }
         if (dependencyEntryBuilder_ == null) {
           dependencyEntry_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00100000);
+          bitField0_ = (bitField0_ & ~0x00200000);
         } else {
           dependencyEntryBuilder_.clear();
         }
@@ -1540,52 +1645,56 @@ public final class JobProtos {
         if (((from_bitField0_ & 0x00000400) == 0x00000400)) {
           to_bitField0_ |= 0x00000400;
         }
-        result.bizGroupId_ = bizGroupId_;
+        result.department_ = department_;
         if (((from_bitField0_ & 0x00000800) == 0x00000800)) {
           to_bitField0_ |= 0x00000800;
         }
-        result.priority_ = priority_;
+        result.bizGroups_ = bizGroups_;
         if (((from_bitField0_ & 0x00001000) == 0x00001000)) {
           to_bitField0_ |= 0x00001000;
         }
-        result.isTemp_ = isTemp_;
+        result.priority_ = priority_;
         if (((from_bitField0_ & 0x00002000) == 0x00002000)) {
           to_bitField0_ |= 0x00002000;
         }
-        result.isSerial_ = isSerial_;
+        result.isTemp_ = isTemp_;
         if (((from_bitField0_ & 0x00004000) == 0x00004000)) {
           to_bitField0_ |= 0x00004000;
         }
-        result.activeStartTime_ = activeStartTime_;
+        result.isSerial_ = isSerial_;
         if (((from_bitField0_ & 0x00008000) == 0x00008000)) {
           to_bitField0_ |= 0x00008000;
         }
-        result.activeEndTime_ = activeEndTime_;
+        result.activeStartTime_ = activeStartTime_;
         if (((from_bitField0_ & 0x00010000) == 0x00010000)) {
           to_bitField0_ |= 0x00010000;
         }
-        result.expiredTime_ = expiredTime_;
+        result.activeEndTime_ = activeEndTime_;
         if (((from_bitField0_ & 0x00020000) == 0x00020000)) {
           to_bitField0_ |= 0x00020000;
         }
-        result.failedAttempts_ = failedAttempts_;
+        result.expiredTime_ = expiredTime_;
         if (((from_bitField0_ & 0x00040000) == 0x00040000)) {
           to_bitField0_ |= 0x00040000;
         }
+        result.failedAttempts_ = failedAttempts_;
+        if (((from_bitField0_ & 0x00080000) == 0x00080000)) {
+          to_bitField0_ |= 0x00080000;
+        }
         result.failedInterval_ = failedInterval_;
         if (expressionEntryBuilder_ == null) {
-          if (((bitField0_ & 0x00080000) == 0x00080000)) {
+          if (((bitField0_ & 0x00100000) == 0x00100000)) {
             expressionEntry_ = java.util.Collections.unmodifiableList(expressionEntry_);
-            bitField0_ = (bitField0_ & ~0x00080000);
+            bitField0_ = (bitField0_ & ~0x00100000);
           }
           result.expressionEntry_ = expressionEntry_;
         } else {
           result.expressionEntry_ = expressionEntryBuilder_.build();
         }
         if (dependencyEntryBuilder_ == null) {
-          if (((bitField0_ & 0x00100000) == 0x00100000)) {
+          if (((bitField0_ & 0x00200000) == 0x00200000)) {
             dependencyEntry_ = java.util.Collections.unmodifiableList(dependencyEntry_);
-            bitField0_ = (bitField0_ & ~0x00100000);
+            bitField0_ = (bitField0_ & ~0x00200000);
           }
           result.dependencyEntry_ = dependencyEntry_;
         } else {
@@ -1649,8 +1758,15 @@ public final class JobProtos {
         if (other.hasWorkerGroupId()) {
           setWorkerGroupId(other.getWorkerGroupId());
         }
-        if (other.hasBizGroupId()) {
-          setBizGroupId(other.getBizGroupId());
+        if (other.hasDepartment()) {
+          bitField0_ |= 0x00000400;
+          department_ = other.department_;
+          onChanged();
+        }
+        if (other.hasBizGroups()) {
+          bitField0_ |= 0x00000800;
+          bizGroups_ = other.bizGroups_;
+          onChanged();
         }
         if (other.hasPriority()) {
           setPriority(other.getPriority());
@@ -1680,7 +1796,7 @@ public final class JobProtos {
           if (!other.expressionEntry_.isEmpty()) {
             if (expressionEntry_.isEmpty()) {
               expressionEntry_ = other.expressionEntry_;
-              bitField0_ = (bitField0_ & ~0x00080000);
+              bitField0_ = (bitField0_ & ~0x00100000);
             } else {
               ensureExpressionEntryIsMutable();
               expressionEntry_.addAll(other.expressionEntry_);
@@ -1693,7 +1809,7 @@ public final class JobProtos {
               expressionEntryBuilder_.dispose();
               expressionEntryBuilder_ = null;
               expressionEntry_ = other.expressionEntry_;
-              bitField0_ = (bitField0_ & ~0x00080000);
+              bitField0_ = (bitField0_ & ~0x00100000);
               expressionEntryBuilder_ = 
                 com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
                    getExpressionEntryFieldBuilder() : null;
@@ -1706,7 +1822,7 @@ public final class JobProtos {
           if (!other.dependencyEntry_.isEmpty()) {
             if (dependencyEntry_.isEmpty()) {
               dependencyEntry_ = other.dependencyEntry_;
-              bitField0_ = (bitField0_ & ~0x00100000);
+              bitField0_ = (bitField0_ & ~0x00200000);
             } else {
               ensureDependencyEntryIsMutable();
               dependencyEntry_.addAll(other.dependencyEntry_);
@@ -1719,7 +1835,7 @@ public final class JobProtos {
               dependencyEntryBuilder_.dispose();
               dependencyEntryBuilder_ = null;
               dependencyEntry_ = other.dependencyEntry_;
-              bitField0_ = (bitField0_ & ~0x00100000);
+              bitField0_ = (bitField0_ & ~0x00200000);
               dependencyEntryBuilder_ = 
                 com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
                    getDependencyEntryFieldBuilder() : null;
@@ -2463,310 +2579,425 @@ public final class JobProtos {
         return this;
       }
 
-      // optional int32 biz_group_id = 11 [default = 0];
-      private int bizGroupId_ ;
+      // optional string department = 11 [default = ""];
+      private java.lang.Object department_ = "";
       /**
-       * <code>optional int32 biz_group_id = 11 [default = 0];</code>
+       * <code>optional string department = 11 [default = ""];</code>
        */
-      public boolean hasBizGroupId() {
+      public boolean hasDepartment() {
         return ((bitField0_ & 0x00000400) == 0x00000400);
       }
       /**
-       * <code>optional int32 biz_group_id = 11 [default = 0];</code>
+       * <code>optional string department = 11 [default = ""];</code>
        */
-      public int getBizGroupId() {
-        return bizGroupId_;
+      public java.lang.String getDepartment() {
+        java.lang.Object ref = department_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          department_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
       }
       /**
-       * <code>optional int32 biz_group_id = 11 [default = 0];</code>
+       * <code>optional string department = 11 [default = ""];</code>
        */
-      public Builder setBizGroupId(int value) {
-        bitField0_ |= 0x00000400;
-        bizGroupId_ = value;
+      public com.google.protobuf.ByteString
+          getDepartmentBytes() {
+        java.lang.Object ref = department_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          department_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string department = 11 [default = ""];</code>
+       */
+      public Builder setDepartment(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000400;
+        department_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int32 biz_group_id = 11 [default = 0];</code>
+       * <code>optional string department = 11 [default = ""];</code>
        */
-      public Builder clearBizGroupId() {
+      public Builder clearDepartment() {
         bitField0_ = (bitField0_ & ~0x00000400);
-        bizGroupId_ = 0;
+        department_ = getDefaultInstance().getDepartment();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string department = 11 [default = ""];</code>
+       */
+      public Builder setDepartmentBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000400;
+        department_ = value;
         onChanged();
         return this;
       }
 
-      // optional int32 priority = 12 [default = 1];
-      private int priority_ = 1;
+      // optional string biz_groups = 12 [default = ""];
+      private java.lang.Object bizGroups_ = "";
       /**
-       * <code>optional int32 priority = 12 [default = 1];</code>
+       * <code>optional string biz_groups = 12 [default = ""];</code>
        */
-      public boolean hasPriority() {
+      public boolean hasBizGroups() {
         return ((bitField0_ & 0x00000800) == 0x00000800);
       }
       /**
-       * <code>optional int32 priority = 12 [default = 1];</code>
+       * <code>optional string biz_groups = 12 [default = ""];</code>
+       */
+      public java.lang.String getBizGroups() {
+        java.lang.Object ref = bizGroups_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          bizGroups_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string biz_groups = 12 [default = ""];</code>
+       */
+      public com.google.protobuf.ByteString
+          getBizGroupsBytes() {
+        java.lang.Object ref = bizGroups_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          bizGroups_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string biz_groups = 12 [default = ""];</code>
+       */
+      public Builder setBizGroups(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000800;
+        bizGroups_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string biz_groups = 12 [default = ""];</code>
+       */
+      public Builder clearBizGroups() {
+        bitField0_ = (bitField0_ & ~0x00000800);
+        bizGroups_ = getDefaultInstance().getBizGroups();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string biz_groups = 12 [default = ""];</code>
+       */
+      public Builder setBizGroupsBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000800;
+        bizGroups_ = value;
+        onChanged();
+        return this;
+      }
+
+      // optional int32 priority = 13 [default = 1];
+      private int priority_ = 1;
+      /**
+       * <code>optional int32 priority = 13 [default = 1];</code>
+       */
+      public boolean hasPriority() {
+        return ((bitField0_ & 0x00001000) == 0x00001000);
+      }
+      /**
+       * <code>optional int32 priority = 13 [default = 1];</code>
        */
       public int getPriority() {
         return priority_;
       }
       /**
-       * <code>optional int32 priority = 12 [default = 1];</code>
+       * <code>optional int32 priority = 13 [default = 1];</code>
        */
       public Builder setPriority(int value) {
-        bitField0_ |= 0x00000800;
+        bitField0_ |= 0x00001000;
         priority_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int32 priority = 12 [default = 1];</code>
+       * <code>optional int32 priority = 13 [default = 1];</code>
        */
       public Builder clearPriority() {
-        bitField0_ = (bitField0_ & ~0x00000800);
+        bitField0_ = (bitField0_ & ~0x00001000);
         priority_ = 1;
         onChanged();
         return this;
       }
 
-      // optional bool isTemp = 13 [default = false];
+      // optional bool isTemp = 14 [default = false];
       private boolean isTemp_ ;
       /**
-       * <code>optional bool isTemp = 13 [default = false];</code>
+       * <code>optional bool isTemp = 14 [default = false];</code>
        */
       public boolean hasIsTemp() {
-        return ((bitField0_ & 0x00001000) == 0x00001000);
+        return ((bitField0_ & 0x00002000) == 0x00002000);
       }
       /**
-       * <code>optional bool isTemp = 13 [default = false];</code>
+       * <code>optional bool isTemp = 14 [default = false];</code>
        */
       public boolean getIsTemp() {
         return isTemp_;
       }
       /**
-       * <code>optional bool isTemp = 13 [default = false];</code>
+       * <code>optional bool isTemp = 14 [default = false];</code>
        */
       public Builder setIsTemp(boolean value) {
-        bitField0_ |= 0x00001000;
+        bitField0_ |= 0x00002000;
         isTemp_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional bool isTemp = 13 [default = false];</code>
+       * <code>optional bool isTemp = 14 [default = false];</code>
        */
       public Builder clearIsTemp() {
-        bitField0_ = (bitField0_ & ~0x00001000);
+        bitField0_ = (bitField0_ & ~0x00002000);
         isTemp_ = false;
         onChanged();
         return this;
       }
 
-      // optional bool isSerial = 14 [default = false];
+      // optional bool isSerial = 15 [default = false];
       private boolean isSerial_ ;
       /**
-       * <code>optional bool isSerial = 14 [default = false];</code>
+       * <code>optional bool isSerial = 15 [default = false];</code>
        */
       public boolean hasIsSerial() {
-        return ((bitField0_ & 0x00002000) == 0x00002000);
+        return ((bitField0_ & 0x00004000) == 0x00004000);
       }
       /**
-       * <code>optional bool isSerial = 14 [default = false];</code>
+       * <code>optional bool isSerial = 15 [default = false];</code>
        */
       public boolean getIsSerial() {
         return isSerial_;
       }
       /**
-       * <code>optional bool isSerial = 14 [default = false];</code>
+       * <code>optional bool isSerial = 15 [default = false];</code>
        */
       public Builder setIsSerial(boolean value) {
-        bitField0_ |= 0x00002000;
+        bitField0_ |= 0x00004000;
         isSerial_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional bool isSerial = 14 [default = false];</code>
+       * <code>optional bool isSerial = 15 [default = false];</code>
        */
       public Builder clearIsSerial() {
-        bitField0_ = (bitField0_ & ~0x00002000);
+        bitField0_ = (bitField0_ & ~0x00004000);
         isSerial_ = false;
         onChanged();
         return this;
       }
 
-      // optional int64 active_start_time = 15;
+      // optional int64 active_start_time = 16;
       private long activeStartTime_ ;
       /**
-       * <code>optional int64 active_start_time = 15;</code>
+       * <code>optional int64 active_start_time = 16;</code>
        */
       public boolean hasActiveStartTime() {
-        return ((bitField0_ & 0x00004000) == 0x00004000);
+        return ((bitField0_ & 0x00008000) == 0x00008000);
       }
       /**
-       * <code>optional int64 active_start_time = 15;</code>
+       * <code>optional int64 active_start_time = 16;</code>
        */
       public long getActiveStartTime() {
         return activeStartTime_;
       }
       /**
-       * <code>optional int64 active_start_time = 15;</code>
+       * <code>optional int64 active_start_time = 16;</code>
        */
       public Builder setActiveStartTime(long value) {
-        bitField0_ |= 0x00004000;
+        bitField0_ |= 0x00008000;
         activeStartTime_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int64 active_start_time = 15;</code>
+       * <code>optional int64 active_start_time = 16;</code>
        */
       public Builder clearActiveStartTime() {
-        bitField0_ = (bitField0_ & ~0x00004000);
+        bitField0_ = (bitField0_ & ~0x00008000);
         activeStartTime_ = 0L;
         onChanged();
         return this;
       }
 
-      // optional int64 active_end_time = 16;
+      // optional int64 active_end_time = 17;
       private long activeEndTime_ ;
       /**
-       * <code>optional int64 active_end_time = 16;</code>
+       * <code>optional int64 active_end_time = 17;</code>
        */
       public boolean hasActiveEndTime() {
-        return ((bitField0_ & 0x00008000) == 0x00008000);
+        return ((bitField0_ & 0x00010000) == 0x00010000);
       }
       /**
-       * <code>optional int64 active_end_time = 16;</code>
+       * <code>optional int64 active_end_time = 17;</code>
        */
       public long getActiveEndTime() {
         return activeEndTime_;
       }
       /**
-       * <code>optional int64 active_end_time = 16;</code>
+       * <code>optional int64 active_end_time = 17;</code>
        */
       public Builder setActiveEndTime(long value) {
-        bitField0_ |= 0x00008000;
+        bitField0_ |= 0x00010000;
         activeEndTime_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int64 active_end_time = 16;</code>
+       * <code>optional int64 active_end_time = 17;</code>
        */
       public Builder clearActiveEndTime() {
-        bitField0_ = (bitField0_ & ~0x00008000);
+        bitField0_ = (bitField0_ & ~0x00010000);
         activeEndTime_ = 0L;
         onChanged();
         return this;
       }
 
-      // optional int32 expired_time = 17 [default = 600];
+      // optional int32 expired_time = 18 [default = 600];
       private int expiredTime_ = 600;
       /**
-       * <code>optional int32 expired_time = 17 [default = 600];</code>
+       * <code>optional int32 expired_time = 18 [default = 600];</code>
        */
       public boolean hasExpiredTime() {
-        return ((bitField0_ & 0x00010000) == 0x00010000);
+        return ((bitField0_ & 0x00020000) == 0x00020000);
       }
       /**
-       * <code>optional int32 expired_time = 17 [default = 600];</code>
+       * <code>optional int32 expired_time = 18 [default = 600];</code>
        */
       public int getExpiredTime() {
         return expiredTime_;
       }
       /**
-       * <code>optional int32 expired_time = 17 [default = 600];</code>
+       * <code>optional int32 expired_time = 18 [default = 600];</code>
        */
       public Builder setExpiredTime(int value) {
-        bitField0_ |= 0x00010000;
+        bitField0_ |= 0x00020000;
         expiredTime_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int32 expired_time = 17 [default = 600];</code>
+       * <code>optional int32 expired_time = 18 [default = 600];</code>
        */
       public Builder clearExpiredTime() {
-        bitField0_ = (bitField0_ & ~0x00010000);
+        bitField0_ = (bitField0_ & ~0x00020000);
         expiredTime_ = 600;
         onChanged();
         return this;
       }
 
-      // optional int32 failed_attempts = 18 [default = 0];
+      // optional int32 failed_attempts = 19 [default = 0];
       private int failedAttempts_ ;
       /**
-       * <code>optional int32 failed_attempts = 18 [default = 0];</code>
+       * <code>optional int32 failed_attempts = 19 [default = 0];</code>
        */
       public boolean hasFailedAttempts() {
-        return ((bitField0_ & 0x00020000) == 0x00020000);
+        return ((bitField0_ & 0x00040000) == 0x00040000);
       }
       /**
-       * <code>optional int32 failed_attempts = 18 [default = 0];</code>
+       * <code>optional int32 failed_attempts = 19 [default = 0];</code>
        */
       public int getFailedAttempts() {
         return failedAttempts_;
       }
       /**
-       * <code>optional int32 failed_attempts = 18 [default = 0];</code>
+       * <code>optional int32 failed_attempts = 19 [default = 0];</code>
        */
       public Builder setFailedAttempts(int value) {
-        bitField0_ |= 0x00020000;
+        bitField0_ |= 0x00040000;
         failedAttempts_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int32 failed_attempts = 18 [default = 0];</code>
+       * <code>optional int32 failed_attempts = 19 [default = 0];</code>
        */
       public Builder clearFailedAttempts() {
-        bitField0_ = (bitField0_ & ~0x00020000);
+        bitField0_ = (bitField0_ & ~0x00040000);
         failedAttempts_ = 0;
         onChanged();
         return this;
       }
 
-      // optional int32 failed_interval = 19 [default = 3];
+      // optional int32 failed_interval = 20 [default = 3];
       private int failedInterval_ = 3;
       /**
-       * <code>optional int32 failed_interval = 19 [default = 3];</code>
+       * <code>optional int32 failed_interval = 20 [default = 3];</code>
        */
       public boolean hasFailedInterval() {
-        return ((bitField0_ & 0x00040000) == 0x00040000);
+        return ((bitField0_ & 0x00080000) == 0x00080000);
       }
       /**
-       * <code>optional int32 failed_interval = 19 [default = 3];</code>
+       * <code>optional int32 failed_interval = 20 [default = 3];</code>
        */
       public int getFailedInterval() {
         return failedInterval_;
       }
       /**
-       * <code>optional int32 failed_interval = 19 [default = 3];</code>
+       * <code>optional int32 failed_interval = 20 [default = 3];</code>
        */
       public Builder setFailedInterval(int value) {
-        bitField0_ |= 0x00040000;
+        bitField0_ |= 0x00080000;
         failedInterval_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int32 failed_interval = 19 [default = 3];</code>
+       * <code>optional int32 failed_interval = 20 [default = 3];</code>
        */
       public Builder clearFailedInterval() {
-        bitField0_ = (bitField0_ & ~0x00040000);
+        bitField0_ = (bitField0_ & ~0x00080000);
         failedInterval_ = 3;
         onChanged();
         return this;
       }
 
-      // repeated .ScheduleExpressionEntry expression_entry = 20;
+      // repeated .ScheduleExpressionEntry expression_entry = 21;
       private java.util.List<com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry> expressionEntry_ =
         java.util.Collections.emptyList();
       private void ensureExpressionEntryIsMutable() {
-        if (!((bitField0_ & 0x00080000) == 0x00080000)) {
+        if (!((bitField0_ & 0x00100000) == 0x00100000)) {
           expressionEntry_ = new java.util.ArrayList<com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry>(expressionEntry_);
-          bitField0_ |= 0x00080000;
+          bitField0_ |= 0x00100000;
          }
       }
 
@@ -2774,7 +3005,7 @@ public final class JobProtos {
           com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry, com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder, com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder> expressionEntryBuilder_;
 
       /**
-       * <code>repeated .ScheduleExpressionEntry expression_entry = 20;</code>
+       * <code>repeated .ScheduleExpressionEntry expression_entry = 21;</code>
        */
       public java.util.List<com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry> getExpressionEntryList() {
         if (expressionEntryBuilder_ == null) {
@@ -2784,7 +3015,7 @@ public final class JobProtos {
         }
       }
       /**
-       * <code>repeated .ScheduleExpressionEntry expression_entry = 20;</code>
+       * <code>repeated .ScheduleExpressionEntry expression_entry = 21;</code>
        */
       public int getExpressionEntryCount() {
         if (expressionEntryBuilder_ == null) {
@@ -2794,7 +3025,7 @@ public final class JobProtos {
         }
       }
       /**
-       * <code>repeated .ScheduleExpressionEntry expression_entry = 20;</code>
+       * <code>repeated .ScheduleExpressionEntry expression_entry = 21;</code>
        */
       public com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry getExpressionEntry(int index) {
         if (expressionEntryBuilder_ == null) {
@@ -2804,7 +3035,7 @@ public final class JobProtos {
         }
       }
       /**
-       * <code>repeated .ScheduleExpressionEntry expression_entry = 20;</code>
+       * <code>repeated .ScheduleExpressionEntry expression_entry = 21;</code>
        */
       public Builder setExpressionEntry(
           int index, com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry value) {
@@ -2821,7 +3052,7 @@ public final class JobProtos {
         return this;
       }
       /**
-       * <code>repeated .ScheduleExpressionEntry expression_entry = 20;</code>
+       * <code>repeated .ScheduleExpressionEntry expression_entry = 21;</code>
        */
       public Builder setExpressionEntry(
           int index, com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder builderForValue) {
@@ -2835,7 +3066,7 @@ public final class JobProtos {
         return this;
       }
       /**
-       * <code>repeated .ScheduleExpressionEntry expression_entry = 20;</code>
+       * <code>repeated .ScheduleExpressionEntry expression_entry = 21;</code>
        */
       public Builder addExpressionEntry(com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry value) {
         if (expressionEntryBuilder_ == null) {
@@ -2851,7 +3082,7 @@ public final class JobProtos {
         return this;
       }
       /**
-       * <code>repeated .ScheduleExpressionEntry expression_entry = 20;</code>
+       * <code>repeated .ScheduleExpressionEntry expression_entry = 21;</code>
        */
       public Builder addExpressionEntry(
           int index, com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry value) {
@@ -2868,7 +3099,7 @@ public final class JobProtos {
         return this;
       }
       /**
-       * <code>repeated .ScheduleExpressionEntry expression_entry = 20;</code>
+       * <code>repeated .ScheduleExpressionEntry expression_entry = 21;</code>
        */
       public Builder addExpressionEntry(
           com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder builderForValue) {
@@ -2882,7 +3113,7 @@ public final class JobProtos {
         return this;
       }
       /**
-       * <code>repeated .ScheduleExpressionEntry expression_entry = 20;</code>
+       * <code>repeated .ScheduleExpressionEntry expression_entry = 21;</code>
        */
       public Builder addExpressionEntry(
           int index, com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder builderForValue) {
@@ -2896,7 +3127,7 @@ public final class JobProtos {
         return this;
       }
       /**
-       * <code>repeated .ScheduleExpressionEntry expression_entry = 20;</code>
+       * <code>repeated .ScheduleExpressionEntry expression_entry = 21;</code>
        */
       public Builder addAllExpressionEntry(
           java.lang.Iterable<? extends com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry> values) {
@@ -2910,12 +3141,12 @@ public final class JobProtos {
         return this;
       }
       /**
-       * <code>repeated .ScheduleExpressionEntry expression_entry = 20;</code>
+       * <code>repeated .ScheduleExpressionEntry expression_entry = 21;</code>
        */
       public Builder clearExpressionEntry() {
         if (expressionEntryBuilder_ == null) {
           expressionEntry_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00080000);
+          bitField0_ = (bitField0_ & ~0x00100000);
           onChanged();
         } else {
           expressionEntryBuilder_.clear();
@@ -2923,7 +3154,7 @@ public final class JobProtos {
         return this;
       }
       /**
-       * <code>repeated .ScheduleExpressionEntry expression_entry = 20;</code>
+       * <code>repeated .ScheduleExpressionEntry expression_entry = 21;</code>
        */
       public Builder removeExpressionEntry(int index) {
         if (expressionEntryBuilder_ == null) {
@@ -2936,14 +3167,14 @@ public final class JobProtos {
         return this;
       }
       /**
-       * <code>repeated .ScheduleExpressionEntry expression_entry = 20;</code>
+       * <code>repeated .ScheduleExpressionEntry expression_entry = 21;</code>
        */
       public com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder getExpressionEntryBuilder(
           int index) {
         return getExpressionEntryFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .ScheduleExpressionEntry expression_entry = 20;</code>
+       * <code>repeated .ScheduleExpressionEntry expression_entry = 21;</code>
        */
       public com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder getExpressionEntryOrBuilder(
           int index) {
@@ -2953,7 +3184,7 @@ public final class JobProtos {
         }
       }
       /**
-       * <code>repeated .ScheduleExpressionEntry expression_entry = 20;</code>
+       * <code>repeated .ScheduleExpressionEntry expression_entry = 21;</code>
        */
       public java.util.List<? extends com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder> 
            getExpressionEntryOrBuilderList() {
@@ -2964,14 +3195,14 @@ public final class JobProtos {
         }
       }
       /**
-       * <code>repeated .ScheduleExpressionEntry expression_entry = 20;</code>
+       * <code>repeated .ScheduleExpressionEntry expression_entry = 21;</code>
        */
       public com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder addExpressionEntryBuilder() {
         return getExpressionEntryFieldBuilder().addBuilder(
             com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry.getDefaultInstance());
       }
       /**
-       * <code>repeated .ScheduleExpressionEntry expression_entry = 20;</code>
+       * <code>repeated .ScheduleExpressionEntry expression_entry = 21;</code>
        */
       public com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder addExpressionEntryBuilder(
           int index) {
@@ -2979,7 +3210,7 @@ public final class JobProtos {
             index, com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry.getDefaultInstance());
       }
       /**
-       * <code>repeated .ScheduleExpressionEntry expression_entry = 20;</code>
+       * <code>repeated .ScheduleExpressionEntry expression_entry = 21;</code>
        */
       public java.util.List<com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder> 
            getExpressionEntryBuilderList() {
@@ -2992,7 +3223,7 @@ public final class JobProtos {
           expressionEntryBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
               com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry, com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry.Builder, com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder>(
                   expressionEntry_,
-                  ((bitField0_ & 0x00080000) == 0x00080000),
+                  ((bitField0_ & 0x00100000) == 0x00100000),
                   getParentForChildren(),
                   isClean());
           expressionEntry_ = null;
@@ -3000,13 +3231,13 @@ public final class JobProtos {
         return expressionEntryBuilder_;
       }
 
-      // repeated .DependencyEntry dependency_entry = 21;
+      // repeated .DependencyEntry dependency_entry = 22;
       private java.util.List<com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry> dependencyEntry_ =
         java.util.Collections.emptyList();
       private void ensureDependencyEntryIsMutable() {
-        if (!((bitField0_ & 0x00100000) == 0x00100000)) {
+        if (!((bitField0_ & 0x00200000) == 0x00200000)) {
           dependencyEntry_ = new java.util.ArrayList<com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry>(dependencyEntry_);
-          bitField0_ |= 0x00100000;
+          bitField0_ |= 0x00200000;
          }
       }
 
@@ -3014,7 +3245,7 @@ public final class JobProtos {
           com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry, com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry.Builder, com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntryOrBuilder> dependencyEntryBuilder_;
 
       /**
-       * <code>repeated .DependencyEntry dependency_entry = 21;</code>
+       * <code>repeated .DependencyEntry dependency_entry = 22;</code>
        */
       public java.util.List<com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry> getDependencyEntryList() {
         if (dependencyEntryBuilder_ == null) {
@@ -3024,7 +3255,7 @@ public final class JobProtos {
         }
       }
       /**
-       * <code>repeated .DependencyEntry dependency_entry = 21;</code>
+       * <code>repeated .DependencyEntry dependency_entry = 22;</code>
        */
       public int getDependencyEntryCount() {
         if (dependencyEntryBuilder_ == null) {
@@ -3034,7 +3265,7 @@ public final class JobProtos {
         }
       }
       /**
-       * <code>repeated .DependencyEntry dependency_entry = 21;</code>
+       * <code>repeated .DependencyEntry dependency_entry = 22;</code>
        */
       public com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry getDependencyEntry(int index) {
         if (dependencyEntryBuilder_ == null) {
@@ -3044,7 +3275,7 @@ public final class JobProtos {
         }
       }
       /**
-       * <code>repeated .DependencyEntry dependency_entry = 21;</code>
+       * <code>repeated .DependencyEntry dependency_entry = 22;</code>
        */
       public Builder setDependencyEntry(
           int index, com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry value) {
@@ -3061,7 +3292,7 @@ public final class JobProtos {
         return this;
       }
       /**
-       * <code>repeated .DependencyEntry dependency_entry = 21;</code>
+       * <code>repeated .DependencyEntry dependency_entry = 22;</code>
        */
       public Builder setDependencyEntry(
           int index, com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry.Builder builderForValue) {
@@ -3075,7 +3306,7 @@ public final class JobProtos {
         return this;
       }
       /**
-       * <code>repeated .DependencyEntry dependency_entry = 21;</code>
+       * <code>repeated .DependencyEntry dependency_entry = 22;</code>
        */
       public Builder addDependencyEntry(com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry value) {
         if (dependencyEntryBuilder_ == null) {
@@ -3091,7 +3322,7 @@ public final class JobProtos {
         return this;
       }
       /**
-       * <code>repeated .DependencyEntry dependency_entry = 21;</code>
+       * <code>repeated .DependencyEntry dependency_entry = 22;</code>
        */
       public Builder addDependencyEntry(
           int index, com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry value) {
@@ -3108,7 +3339,7 @@ public final class JobProtos {
         return this;
       }
       /**
-       * <code>repeated .DependencyEntry dependency_entry = 21;</code>
+       * <code>repeated .DependencyEntry dependency_entry = 22;</code>
        */
       public Builder addDependencyEntry(
           com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry.Builder builderForValue) {
@@ -3122,7 +3353,7 @@ public final class JobProtos {
         return this;
       }
       /**
-       * <code>repeated .DependencyEntry dependency_entry = 21;</code>
+       * <code>repeated .DependencyEntry dependency_entry = 22;</code>
        */
       public Builder addDependencyEntry(
           int index, com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry.Builder builderForValue) {
@@ -3136,7 +3367,7 @@ public final class JobProtos {
         return this;
       }
       /**
-       * <code>repeated .DependencyEntry dependency_entry = 21;</code>
+       * <code>repeated .DependencyEntry dependency_entry = 22;</code>
        */
       public Builder addAllDependencyEntry(
           java.lang.Iterable<? extends com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry> values) {
@@ -3150,12 +3381,12 @@ public final class JobProtos {
         return this;
       }
       /**
-       * <code>repeated .DependencyEntry dependency_entry = 21;</code>
+       * <code>repeated .DependencyEntry dependency_entry = 22;</code>
        */
       public Builder clearDependencyEntry() {
         if (dependencyEntryBuilder_ == null) {
           dependencyEntry_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00100000);
+          bitField0_ = (bitField0_ & ~0x00200000);
           onChanged();
         } else {
           dependencyEntryBuilder_.clear();
@@ -3163,7 +3394,7 @@ public final class JobProtos {
         return this;
       }
       /**
-       * <code>repeated .DependencyEntry dependency_entry = 21;</code>
+       * <code>repeated .DependencyEntry dependency_entry = 22;</code>
        */
       public Builder removeDependencyEntry(int index) {
         if (dependencyEntryBuilder_ == null) {
@@ -3176,14 +3407,14 @@ public final class JobProtos {
         return this;
       }
       /**
-       * <code>repeated .DependencyEntry dependency_entry = 21;</code>
+       * <code>repeated .DependencyEntry dependency_entry = 22;</code>
        */
       public com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry.Builder getDependencyEntryBuilder(
           int index) {
         return getDependencyEntryFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .DependencyEntry dependency_entry = 21;</code>
+       * <code>repeated .DependencyEntry dependency_entry = 22;</code>
        */
       public com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntryOrBuilder getDependencyEntryOrBuilder(
           int index) {
@@ -3193,7 +3424,7 @@ public final class JobProtos {
         }
       }
       /**
-       * <code>repeated .DependencyEntry dependency_entry = 21;</code>
+       * <code>repeated .DependencyEntry dependency_entry = 22;</code>
        */
       public java.util.List<? extends com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntryOrBuilder> 
            getDependencyEntryOrBuilderList() {
@@ -3204,14 +3435,14 @@ public final class JobProtos {
         }
       }
       /**
-       * <code>repeated .DependencyEntry dependency_entry = 21;</code>
+       * <code>repeated .DependencyEntry dependency_entry = 22;</code>
        */
       public com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry.Builder addDependencyEntryBuilder() {
         return getDependencyEntryFieldBuilder().addBuilder(
             com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry.getDefaultInstance());
       }
       /**
-       * <code>repeated .DependencyEntry dependency_entry = 21;</code>
+       * <code>repeated .DependencyEntry dependency_entry = 22;</code>
        */
       public com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry.Builder addDependencyEntryBuilder(
           int index) {
@@ -3219,7 +3450,7 @@ public final class JobProtos {
             index, com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry.getDefaultInstance());
       }
       /**
-       * <code>repeated .DependencyEntry dependency_entry = 21;</code>
+       * <code>repeated .DependencyEntry dependency_entry = 22;</code>
        */
       public java.util.List<com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry.Builder> 
            getDependencyEntryBuilderList() {
@@ -3232,7 +3463,7 @@ public final class JobProtos {
           dependencyEntryBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
               com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry, com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry.Builder, com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntryOrBuilder>(
                   dependencyEntry_,
-                  ((bitField0_ & 0x00100000) == 0x00100000),
+                  ((bitField0_ & 0x00200000) == 0x00200000),
                   getParentForChildren(),
                   isClean());
           dependencyEntry_ = null;
@@ -4019,93 +4250,113 @@ public final class JobProtos {
      */
     int getWorkerGroupId();
 
-    // optional int32 biz_group_id = 10;
+    // optional string department = 10;
     /**
-     * <code>optional int32 biz_group_id = 10;</code>
+     * <code>optional string department = 10;</code>
      */
-    boolean hasBizGroupId();
+    boolean hasDepartment();
     /**
-     * <code>optional int32 biz_group_id = 10;</code>
+     * <code>optional string department = 10;</code>
      */
-    int getBizGroupId();
+    java.lang.String getDepartment();
+    /**
+     * <code>optional string department = 10;</code>
+     */
+    com.google.protobuf.ByteString
+        getDepartmentBytes();
 
-    // optional int32 priority = 11;
+    // optional string biz_groups = 11;
     /**
-     * <code>optional int32 priority = 11;</code>
+     * <code>optional string biz_groups = 11;</code>
+     */
+    boolean hasBizGroups();
+    /**
+     * <code>optional string biz_groups = 11;</code>
+     */
+    java.lang.String getBizGroups();
+    /**
+     * <code>optional string biz_groups = 11;</code>
+     */
+    com.google.protobuf.ByteString
+        getBizGroupsBytes();
+
+    // optional int32 priority = 12;
+    /**
+     * <code>optional int32 priority = 12;</code>
      */
     boolean hasPriority();
     /**
-     * <code>optional int32 priority = 11;</code>
+     * <code>optional int32 priority = 12;</code>
      */
     int getPriority();
 
-    // optional bool isTemp = 12;
+    // optional bool isTemp = 13;
     /**
-     * <code>optional bool isTemp = 12;</code>
+     * <code>optional bool isTemp = 13;</code>
      */
     boolean hasIsTemp();
     /**
-     * <code>optional bool isTemp = 12;</code>
+     * <code>optional bool isTemp = 13;</code>
      */
     boolean getIsTemp();
 
-    // optional bool isSerial = 13;
+    // optional bool isSerial = 14;
     /**
-     * <code>optional bool isSerial = 13;</code>
+     * <code>optional bool isSerial = 14;</code>
      */
     boolean hasIsSerial();
     /**
-     * <code>optional bool isSerial = 13;</code>
+     * <code>optional bool isSerial = 14;</code>
      */
     boolean getIsSerial();
 
-    // optional int64 active_start_time = 14;
+    // optional int64 active_start_time = 15;
     /**
-     * <code>optional int64 active_start_time = 14;</code>
+     * <code>optional int64 active_start_time = 15;</code>
      */
     boolean hasActiveStartTime();
     /**
-     * <code>optional int64 active_start_time = 14;</code>
+     * <code>optional int64 active_start_time = 15;</code>
      */
     long getActiveStartTime();
 
-    // optional int64 active_end_time = 15;
+    // optional int64 active_end_time = 16;
     /**
-     * <code>optional int64 active_end_time = 15;</code>
+     * <code>optional int64 active_end_time = 16;</code>
      */
     boolean hasActiveEndTime();
     /**
-     * <code>optional int64 active_end_time = 15;</code>
+     * <code>optional int64 active_end_time = 16;</code>
      */
     long getActiveEndTime();
 
-    // optional int32 expired_time = 16;
+    // optional int32 expired_time = 17;
     /**
-     * <code>optional int32 expired_time = 16;</code>
+     * <code>optional int32 expired_time = 17;</code>
      */
     boolean hasExpiredTime();
     /**
-     * <code>optional int32 expired_time = 16;</code>
+     * <code>optional int32 expired_time = 17;</code>
      */
     int getExpiredTime();
 
-    // optional int32 failed_attempts = 17;
+    // optional int32 failed_attempts = 18;
     /**
-     * <code>optional int32 failed_attempts = 17;</code>
+     * <code>optional int32 failed_attempts = 18;</code>
      */
     boolean hasFailedAttempts();
     /**
-     * <code>optional int32 failed_attempts = 17;</code>
+     * <code>optional int32 failed_attempts = 18;</code>
      */
     int getFailedAttempts();
 
-    // optional int32 failed_interval = 18;
+    // optional int32 failed_interval = 19;
     /**
-     * <code>optional int32 failed_interval = 18;</code>
+     * <code>optional int32 failed_interval = 19;</code>
      */
     boolean hasFailedInterval();
     /**
-     * <code>optional int32 failed_interval = 18;</code>
+     * <code>optional int32 failed_interval = 19;</code>
      */
     int getFailedInterval();
   }
@@ -4217,48 +4468,53 @@ public final class JobProtos {
               workerGroupId_ = input.readInt32();
               break;
             }
-            case 80: {
+            case 82: {
               bitField0_ |= 0x00000200;
-              bizGroupId_ = input.readInt32();
+              department_ = input.readBytes();
               break;
             }
-            case 88: {
+            case 90: {
               bitField0_ |= 0x00000400;
-              priority_ = input.readInt32();
+              bizGroups_ = input.readBytes();
               break;
             }
             case 96: {
               bitField0_ |= 0x00000800;
-              isTemp_ = input.readBool();
+              priority_ = input.readInt32();
               break;
             }
             case 104: {
               bitField0_ |= 0x00001000;
-              isSerial_ = input.readBool();
+              isTemp_ = input.readBool();
               break;
             }
             case 112: {
               bitField0_ |= 0x00002000;
-              activeStartTime_ = input.readInt64();
+              isSerial_ = input.readBool();
               break;
             }
             case 120: {
               bitField0_ |= 0x00004000;
-              activeEndTime_ = input.readInt64();
+              activeStartTime_ = input.readInt64();
               break;
             }
             case 128: {
               bitField0_ |= 0x00008000;
-              expiredTime_ = input.readInt32();
+              activeEndTime_ = input.readInt64();
               break;
             }
             case 136: {
               bitField0_ |= 0x00010000;
-              failedAttempts_ = input.readInt32();
+              expiredTime_ = input.readInt32();
               break;
             }
             case 144: {
               bitField0_ |= 0x00020000;
+              failedAttempts_ = input.readInt32();
+              break;
+            }
+            case 152: {
+              bitField0_ |= 0x00040000;
               failedInterval_ = input.readInt32();
               break;
             }
@@ -4614,145 +4870,215 @@ public final class JobProtos {
       return workerGroupId_;
     }
 
-    // optional int32 biz_group_id = 10;
-    public static final int BIZ_GROUP_ID_FIELD_NUMBER = 10;
-    private int bizGroupId_;
+    // optional string department = 10;
+    public static final int DEPARTMENT_FIELD_NUMBER = 10;
+    private java.lang.Object department_;
     /**
-     * <code>optional int32 biz_group_id = 10;</code>
+     * <code>optional string department = 10;</code>
      */
-    public boolean hasBizGroupId() {
+    public boolean hasDepartment() {
       return ((bitField0_ & 0x00000200) == 0x00000200);
     }
     /**
-     * <code>optional int32 biz_group_id = 10;</code>
+     * <code>optional string department = 10;</code>
      */
-    public int getBizGroupId() {
-      return bizGroupId_;
+    public java.lang.String getDepartment() {
+      java.lang.Object ref = department_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          department_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string department = 10;</code>
+     */
+    public com.google.protobuf.ByteString
+        getDepartmentBytes() {
+      java.lang.Object ref = department_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        department_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
 
-    // optional int32 priority = 11;
-    public static final int PRIORITY_FIELD_NUMBER = 11;
-    private int priority_;
+    // optional string biz_groups = 11;
+    public static final int BIZ_GROUPS_FIELD_NUMBER = 11;
+    private java.lang.Object bizGroups_;
     /**
-     * <code>optional int32 priority = 11;</code>
+     * <code>optional string biz_groups = 11;</code>
      */
-    public boolean hasPriority() {
+    public boolean hasBizGroups() {
       return ((bitField0_ & 0x00000400) == 0x00000400);
     }
     /**
-     * <code>optional int32 priority = 11;</code>
+     * <code>optional string biz_groups = 11;</code>
+     */
+    public java.lang.String getBizGroups() {
+      java.lang.Object ref = bizGroups_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          bizGroups_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string biz_groups = 11;</code>
+     */
+    public com.google.protobuf.ByteString
+        getBizGroupsBytes() {
+      java.lang.Object ref = bizGroups_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        bizGroups_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    // optional int32 priority = 12;
+    public static final int PRIORITY_FIELD_NUMBER = 12;
+    private int priority_;
+    /**
+     * <code>optional int32 priority = 12;</code>
+     */
+    public boolean hasPriority() {
+      return ((bitField0_ & 0x00000800) == 0x00000800);
+    }
+    /**
+     * <code>optional int32 priority = 12;</code>
      */
     public int getPriority() {
       return priority_;
     }
 
-    // optional bool isTemp = 12;
-    public static final int ISTEMP_FIELD_NUMBER = 12;
+    // optional bool isTemp = 13;
+    public static final int ISTEMP_FIELD_NUMBER = 13;
     private boolean isTemp_;
     /**
-     * <code>optional bool isTemp = 12;</code>
+     * <code>optional bool isTemp = 13;</code>
      */
     public boolean hasIsTemp() {
-      return ((bitField0_ & 0x00000800) == 0x00000800);
+      return ((bitField0_ & 0x00001000) == 0x00001000);
     }
     /**
-     * <code>optional bool isTemp = 12;</code>
+     * <code>optional bool isTemp = 13;</code>
      */
     public boolean getIsTemp() {
       return isTemp_;
     }
 
-    // optional bool isSerial = 13;
-    public static final int ISSERIAL_FIELD_NUMBER = 13;
+    // optional bool isSerial = 14;
+    public static final int ISSERIAL_FIELD_NUMBER = 14;
     private boolean isSerial_;
     /**
-     * <code>optional bool isSerial = 13;</code>
+     * <code>optional bool isSerial = 14;</code>
      */
     public boolean hasIsSerial() {
-      return ((bitField0_ & 0x00001000) == 0x00001000);
+      return ((bitField0_ & 0x00002000) == 0x00002000);
     }
     /**
-     * <code>optional bool isSerial = 13;</code>
+     * <code>optional bool isSerial = 14;</code>
      */
     public boolean getIsSerial() {
       return isSerial_;
     }
 
-    // optional int64 active_start_time = 14;
-    public static final int ACTIVE_START_TIME_FIELD_NUMBER = 14;
+    // optional int64 active_start_time = 15;
+    public static final int ACTIVE_START_TIME_FIELD_NUMBER = 15;
     private long activeStartTime_;
     /**
-     * <code>optional int64 active_start_time = 14;</code>
+     * <code>optional int64 active_start_time = 15;</code>
      */
     public boolean hasActiveStartTime() {
-      return ((bitField0_ & 0x00002000) == 0x00002000);
+      return ((bitField0_ & 0x00004000) == 0x00004000);
     }
     /**
-     * <code>optional int64 active_start_time = 14;</code>
+     * <code>optional int64 active_start_time = 15;</code>
      */
     public long getActiveStartTime() {
       return activeStartTime_;
     }
 
-    // optional int64 active_end_time = 15;
-    public static final int ACTIVE_END_TIME_FIELD_NUMBER = 15;
+    // optional int64 active_end_time = 16;
+    public static final int ACTIVE_END_TIME_FIELD_NUMBER = 16;
     private long activeEndTime_;
     /**
-     * <code>optional int64 active_end_time = 15;</code>
+     * <code>optional int64 active_end_time = 16;</code>
      */
     public boolean hasActiveEndTime() {
-      return ((bitField0_ & 0x00004000) == 0x00004000);
+      return ((bitField0_ & 0x00008000) == 0x00008000);
     }
     /**
-     * <code>optional int64 active_end_time = 15;</code>
+     * <code>optional int64 active_end_time = 16;</code>
      */
     public long getActiveEndTime() {
       return activeEndTime_;
     }
 
-    // optional int32 expired_time = 16;
-    public static final int EXPIRED_TIME_FIELD_NUMBER = 16;
+    // optional int32 expired_time = 17;
+    public static final int EXPIRED_TIME_FIELD_NUMBER = 17;
     private int expiredTime_;
     /**
-     * <code>optional int32 expired_time = 16;</code>
+     * <code>optional int32 expired_time = 17;</code>
      */
     public boolean hasExpiredTime() {
-      return ((bitField0_ & 0x00008000) == 0x00008000);
+      return ((bitField0_ & 0x00010000) == 0x00010000);
     }
     /**
-     * <code>optional int32 expired_time = 16;</code>
+     * <code>optional int32 expired_time = 17;</code>
      */
     public int getExpiredTime() {
       return expiredTime_;
     }
 
-    // optional int32 failed_attempts = 17;
-    public static final int FAILED_ATTEMPTS_FIELD_NUMBER = 17;
+    // optional int32 failed_attempts = 18;
+    public static final int FAILED_ATTEMPTS_FIELD_NUMBER = 18;
     private int failedAttempts_;
     /**
-     * <code>optional int32 failed_attempts = 17;</code>
+     * <code>optional int32 failed_attempts = 18;</code>
      */
     public boolean hasFailedAttempts() {
-      return ((bitField0_ & 0x00010000) == 0x00010000);
+      return ((bitField0_ & 0x00020000) == 0x00020000);
     }
     /**
-     * <code>optional int32 failed_attempts = 17;</code>
+     * <code>optional int32 failed_attempts = 18;</code>
      */
     public int getFailedAttempts() {
       return failedAttempts_;
     }
 
-    // optional int32 failed_interval = 18;
-    public static final int FAILED_INTERVAL_FIELD_NUMBER = 18;
+    // optional int32 failed_interval = 19;
+    public static final int FAILED_INTERVAL_FIELD_NUMBER = 19;
     private int failedInterval_;
     /**
-     * <code>optional int32 failed_interval = 18;</code>
+     * <code>optional int32 failed_interval = 19;</code>
      */
     public boolean hasFailedInterval() {
-      return ((bitField0_ & 0x00020000) == 0x00020000);
+      return ((bitField0_ & 0x00040000) == 0x00040000);
     }
     /**
-     * <code>optional int32 failed_interval = 18;</code>
+     * <code>optional int32 failed_interval = 19;</code>
      */
     public int getFailedInterval() {
       return failedInterval_;
@@ -4768,7 +5094,8 @@ public final class JobProtos {
       parameters_ = "";
       appName_ = "";
       workerGroupId_ = 0;
-      bizGroupId_ = 0;
+      department_ = "";
+      bizGroups_ = "";
       priority_ = 0;
       isTemp_ = false;
       isSerial_ = false;
@@ -4834,31 +5161,34 @@ public final class JobProtos {
         output.writeInt32(9, workerGroupId_);
       }
       if (((bitField0_ & 0x00000200) == 0x00000200)) {
-        output.writeInt32(10, bizGroupId_);
+        output.writeBytes(10, getDepartmentBytes());
       }
       if (((bitField0_ & 0x00000400) == 0x00000400)) {
-        output.writeInt32(11, priority_);
+        output.writeBytes(11, getBizGroupsBytes());
       }
       if (((bitField0_ & 0x00000800) == 0x00000800)) {
-        output.writeBool(12, isTemp_);
+        output.writeInt32(12, priority_);
       }
       if (((bitField0_ & 0x00001000) == 0x00001000)) {
-        output.writeBool(13, isSerial_);
+        output.writeBool(13, isTemp_);
       }
       if (((bitField0_ & 0x00002000) == 0x00002000)) {
-        output.writeInt64(14, activeStartTime_);
+        output.writeBool(14, isSerial_);
       }
       if (((bitField0_ & 0x00004000) == 0x00004000)) {
-        output.writeInt64(15, activeEndTime_);
+        output.writeInt64(15, activeStartTime_);
       }
       if (((bitField0_ & 0x00008000) == 0x00008000)) {
-        output.writeInt32(16, expiredTime_);
+        output.writeInt64(16, activeEndTime_);
       }
       if (((bitField0_ & 0x00010000) == 0x00010000)) {
-        output.writeInt32(17, failedAttempts_);
+        output.writeInt32(17, expiredTime_);
       }
       if (((bitField0_ & 0x00020000) == 0x00020000)) {
-        output.writeInt32(18, failedInterval_);
+        output.writeInt32(18, failedAttempts_);
+      }
+      if (((bitField0_ & 0x00040000) == 0x00040000)) {
+        output.writeInt32(19, failedInterval_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -4907,39 +5237,43 @@ public final class JobProtos {
       }
       if (((bitField0_ & 0x00000200) == 0x00000200)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(10, bizGroupId_);
+          .computeBytesSize(10, getDepartmentBytes());
       }
       if (((bitField0_ & 0x00000400) == 0x00000400)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(11, priority_);
+          .computeBytesSize(11, getBizGroupsBytes());
       }
       if (((bitField0_ & 0x00000800) == 0x00000800)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(12, isTemp_);
+          .computeInt32Size(12, priority_);
       }
       if (((bitField0_ & 0x00001000) == 0x00001000)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(13, isSerial_);
+          .computeBoolSize(13, isTemp_);
       }
       if (((bitField0_ & 0x00002000) == 0x00002000)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(14, activeStartTime_);
+          .computeBoolSize(14, isSerial_);
       }
       if (((bitField0_ & 0x00004000) == 0x00004000)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(15, activeEndTime_);
+          .computeInt64Size(15, activeStartTime_);
       }
       if (((bitField0_ & 0x00008000) == 0x00008000)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(16, expiredTime_);
+          .computeInt64Size(16, activeEndTime_);
       }
       if (((bitField0_ & 0x00010000) == 0x00010000)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(17, failedAttempts_);
+          .computeInt32Size(17, expiredTime_);
       }
       if (((bitField0_ & 0x00020000) == 0x00020000)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(18, failedInterval_);
+          .computeInt32Size(18, failedAttempts_);
+      }
+      if (((bitField0_ & 0x00040000) == 0x00040000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(19, failedInterval_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -5084,24 +5418,26 @@ public final class JobProtos {
         bitField0_ = (bitField0_ & ~0x00000080);
         workerGroupId_ = 0;
         bitField0_ = (bitField0_ & ~0x00000100);
-        bizGroupId_ = 0;
+        department_ = "";
         bitField0_ = (bitField0_ & ~0x00000200);
-        priority_ = 0;
+        bizGroups_ = "";
         bitField0_ = (bitField0_ & ~0x00000400);
-        isTemp_ = false;
+        priority_ = 0;
         bitField0_ = (bitField0_ & ~0x00000800);
-        isSerial_ = false;
+        isTemp_ = false;
         bitField0_ = (bitField0_ & ~0x00001000);
-        activeStartTime_ = 0L;
+        isSerial_ = false;
         bitField0_ = (bitField0_ & ~0x00002000);
-        activeEndTime_ = 0L;
+        activeStartTime_ = 0L;
         bitField0_ = (bitField0_ & ~0x00004000);
-        expiredTime_ = 0;
+        activeEndTime_ = 0L;
         bitField0_ = (bitField0_ & ~0x00008000);
-        failedAttempts_ = 0;
+        expiredTime_ = 0;
         bitField0_ = (bitField0_ & ~0x00010000);
-        failedInterval_ = 0;
+        failedAttempts_ = 0;
         bitField0_ = (bitField0_ & ~0x00020000);
+        failedInterval_ = 0;
+        bitField0_ = (bitField0_ & ~0x00040000);
         return this;
       }
 
@@ -5173,37 +5509,41 @@ public final class JobProtos {
         if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
           to_bitField0_ |= 0x00000200;
         }
-        result.bizGroupId_ = bizGroupId_;
+        result.department_ = department_;
         if (((from_bitField0_ & 0x00000400) == 0x00000400)) {
           to_bitField0_ |= 0x00000400;
         }
-        result.priority_ = priority_;
+        result.bizGroups_ = bizGroups_;
         if (((from_bitField0_ & 0x00000800) == 0x00000800)) {
           to_bitField0_ |= 0x00000800;
         }
-        result.isTemp_ = isTemp_;
+        result.priority_ = priority_;
         if (((from_bitField0_ & 0x00001000) == 0x00001000)) {
           to_bitField0_ |= 0x00001000;
         }
-        result.isSerial_ = isSerial_;
+        result.isTemp_ = isTemp_;
         if (((from_bitField0_ & 0x00002000) == 0x00002000)) {
           to_bitField0_ |= 0x00002000;
         }
-        result.activeStartTime_ = activeStartTime_;
+        result.isSerial_ = isSerial_;
         if (((from_bitField0_ & 0x00004000) == 0x00004000)) {
           to_bitField0_ |= 0x00004000;
         }
-        result.activeEndTime_ = activeEndTime_;
+        result.activeStartTime_ = activeStartTime_;
         if (((from_bitField0_ & 0x00008000) == 0x00008000)) {
           to_bitField0_ |= 0x00008000;
         }
-        result.expiredTime_ = expiredTime_;
+        result.activeEndTime_ = activeEndTime_;
         if (((from_bitField0_ & 0x00010000) == 0x00010000)) {
           to_bitField0_ |= 0x00010000;
         }
-        result.failedAttempts_ = failedAttempts_;
+        result.expiredTime_ = expiredTime_;
         if (((from_bitField0_ & 0x00020000) == 0x00020000)) {
           to_bitField0_ |= 0x00020000;
+        }
+        result.failedAttempts_ = failedAttempts_;
+        if (((from_bitField0_ & 0x00040000) == 0x00040000)) {
+          to_bitField0_ |= 0x00040000;
         }
         result.failedInterval_ = failedInterval_;
         result.bitField0_ = to_bitField0_;
@@ -5261,8 +5601,15 @@ public final class JobProtos {
         if (other.hasWorkerGroupId()) {
           setWorkerGroupId(other.getWorkerGroupId());
         }
-        if (other.hasBizGroupId()) {
-          setBizGroupId(other.getBizGroupId());
+        if (other.hasDepartment()) {
+          bitField0_ |= 0x00000200;
+          department_ = other.department_;
+          onChanged();
+        }
+        if (other.hasBizGroups()) {
+          bitField0_ |= 0x00000400;
+          bizGroups_ = other.bizGroups_;
+          onChanged();
         }
         if (other.hasPriority()) {
           setPriority(other.getPriority());
@@ -5958,298 +6305,413 @@ public final class JobProtos {
         return this;
       }
 
-      // optional int32 biz_group_id = 10;
-      private int bizGroupId_ ;
+      // optional string department = 10;
+      private java.lang.Object department_ = "";
       /**
-       * <code>optional int32 biz_group_id = 10;</code>
+       * <code>optional string department = 10;</code>
        */
-      public boolean hasBizGroupId() {
+      public boolean hasDepartment() {
         return ((bitField0_ & 0x00000200) == 0x00000200);
       }
       /**
-       * <code>optional int32 biz_group_id = 10;</code>
+       * <code>optional string department = 10;</code>
        */
-      public int getBizGroupId() {
-        return bizGroupId_;
+      public java.lang.String getDepartment() {
+        java.lang.Object ref = department_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          department_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
       }
       /**
-       * <code>optional int32 biz_group_id = 10;</code>
+       * <code>optional string department = 10;</code>
        */
-      public Builder setBizGroupId(int value) {
-        bitField0_ |= 0x00000200;
-        bizGroupId_ = value;
+      public com.google.protobuf.ByteString
+          getDepartmentBytes() {
+        java.lang.Object ref = department_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          department_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string department = 10;</code>
+       */
+      public Builder setDepartment(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000200;
+        department_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int32 biz_group_id = 10;</code>
+       * <code>optional string department = 10;</code>
        */
-      public Builder clearBizGroupId() {
+      public Builder clearDepartment() {
         bitField0_ = (bitField0_ & ~0x00000200);
-        bizGroupId_ = 0;
+        department_ = getDefaultInstance().getDepartment();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string department = 10;</code>
+       */
+      public Builder setDepartmentBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000200;
+        department_ = value;
         onChanged();
         return this;
       }
 
-      // optional int32 priority = 11;
-      private int priority_ ;
+      // optional string biz_groups = 11;
+      private java.lang.Object bizGroups_ = "";
       /**
-       * <code>optional int32 priority = 11;</code>
+       * <code>optional string biz_groups = 11;</code>
        */
-      public boolean hasPriority() {
+      public boolean hasBizGroups() {
         return ((bitField0_ & 0x00000400) == 0x00000400);
       }
       /**
-       * <code>optional int32 priority = 11;</code>
+       * <code>optional string biz_groups = 11;</code>
+       */
+      public java.lang.String getBizGroups() {
+        java.lang.Object ref = bizGroups_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          bizGroups_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string biz_groups = 11;</code>
+       */
+      public com.google.protobuf.ByteString
+          getBizGroupsBytes() {
+        java.lang.Object ref = bizGroups_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          bizGroups_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string biz_groups = 11;</code>
+       */
+      public Builder setBizGroups(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000400;
+        bizGroups_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string biz_groups = 11;</code>
+       */
+      public Builder clearBizGroups() {
+        bitField0_ = (bitField0_ & ~0x00000400);
+        bizGroups_ = getDefaultInstance().getBizGroups();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string biz_groups = 11;</code>
+       */
+      public Builder setBizGroupsBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000400;
+        bizGroups_ = value;
+        onChanged();
+        return this;
+      }
+
+      // optional int32 priority = 12;
+      private int priority_ ;
+      /**
+       * <code>optional int32 priority = 12;</code>
+       */
+      public boolean hasPriority() {
+        return ((bitField0_ & 0x00000800) == 0x00000800);
+      }
+      /**
+       * <code>optional int32 priority = 12;</code>
        */
       public int getPriority() {
         return priority_;
       }
       /**
-       * <code>optional int32 priority = 11;</code>
+       * <code>optional int32 priority = 12;</code>
        */
       public Builder setPriority(int value) {
-        bitField0_ |= 0x00000400;
+        bitField0_ |= 0x00000800;
         priority_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int32 priority = 11;</code>
+       * <code>optional int32 priority = 12;</code>
        */
       public Builder clearPriority() {
-        bitField0_ = (bitField0_ & ~0x00000400);
+        bitField0_ = (bitField0_ & ~0x00000800);
         priority_ = 0;
         onChanged();
         return this;
       }
 
-      // optional bool isTemp = 12;
+      // optional bool isTemp = 13;
       private boolean isTemp_ ;
       /**
-       * <code>optional bool isTemp = 12;</code>
+       * <code>optional bool isTemp = 13;</code>
        */
       public boolean hasIsTemp() {
-        return ((bitField0_ & 0x00000800) == 0x00000800);
+        return ((bitField0_ & 0x00001000) == 0x00001000);
       }
       /**
-       * <code>optional bool isTemp = 12;</code>
+       * <code>optional bool isTemp = 13;</code>
        */
       public boolean getIsTemp() {
         return isTemp_;
       }
       /**
-       * <code>optional bool isTemp = 12;</code>
+       * <code>optional bool isTemp = 13;</code>
        */
       public Builder setIsTemp(boolean value) {
-        bitField0_ |= 0x00000800;
+        bitField0_ |= 0x00001000;
         isTemp_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional bool isTemp = 12;</code>
+       * <code>optional bool isTemp = 13;</code>
        */
       public Builder clearIsTemp() {
-        bitField0_ = (bitField0_ & ~0x00000800);
+        bitField0_ = (bitField0_ & ~0x00001000);
         isTemp_ = false;
         onChanged();
         return this;
       }
 
-      // optional bool isSerial = 13;
+      // optional bool isSerial = 14;
       private boolean isSerial_ ;
       /**
-       * <code>optional bool isSerial = 13;</code>
+       * <code>optional bool isSerial = 14;</code>
        */
       public boolean hasIsSerial() {
-        return ((bitField0_ & 0x00001000) == 0x00001000);
+        return ((bitField0_ & 0x00002000) == 0x00002000);
       }
       /**
-       * <code>optional bool isSerial = 13;</code>
+       * <code>optional bool isSerial = 14;</code>
        */
       public boolean getIsSerial() {
         return isSerial_;
       }
       /**
-       * <code>optional bool isSerial = 13;</code>
+       * <code>optional bool isSerial = 14;</code>
        */
       public Builder setIsSerial(boolean value) {
-        bitField0_ |= 0x00001000;
+        bitField0_ |= 0x00002000;
         isSerial_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional bool isSerial = 13;</code>
+       * <code>optional bool isSerial = 14;</code>
        */
       public Builder clearIsSerial() {
-        bitField0_ = (bitField0_ & ~0x00001000);
+        bitField0_ = (bitField0_ & ~0x00002000);
         isSerial_ = false;
         onChanged();
         return this;
       }
 
-      // optional int64 active_start_time = 14;
+      // optional int64 active_start_time = 15;
       private long activeStartTime_ ;
       /**
-       * <code>optional int64 active_start_time = 14;</code>
+       * <code>optional int64 active_start_time = 15;</code>
        */
       public boolean hasActiveStartTime() {
-        return ((bitField0_ & 0x00002000) == 0x00002000);
+        return ((bitField0_ & 0x00004000) == 0x00004000);
       }
       /**
-       * <code>optional int64 active_start_time = 14;</code>
+       * <code>optional int64 active_start_time = 15;</code>
        */
       public long getActiveStartTime() {
         return activeStartTime_;
       }
       /**
-       * <code>optional int64 active_start_time = 14;</code>
+       * <code>optional int64 active_start_time = 15;</code>
        */
       public Builder setActiveStartTime(long value) {
-        bitField0_ |= 0x00002000;
+        bitField0_ |= 0x00004000;
         activeStartTime_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int64 active_start_time = 14;</code>
+       * <code>optional int64 active_start_time = 15;</code>
        */
       public Builder clearActiveStartTime() {
-        bitField0_ = (bitField0_ & ~0x00002000);
+        bitField0_ = (bitField0_ & ~0x00004000);
         activeStartTime_ = 0L;
         onChanged();
         return this;
       }
 
-      // optional int64 active_end_time = 15;
+      // optional int64 active_end_time = 16;
       private long activeEndTime_ ;
       /**
-       * <code>optional int64 active_end_time = 15;</code>
+       * <code>optional int64 active_end_time = 16;</code>
        */
       public boolean hasActiveEndTime() {
-        return ((bitField0_ & 0x00004000) == 0x00004000);
+        return ((bitField0_ & 0x00008000) == 0x00008000);
       }
       /**
-       * <code>optional int64 active_end_time = 15;</code>
+       * <code>optional int64 active_end_time = 16;</code>
        */
       public long getActiveEndTime() {
         return activeEndTime_;
       }
       /**
-       * <code>optional int64 active_end_time = 15;</code>
+       * <code>optional int64 active_end_time = 16;</code>
        */
       public Builder setActiveEndTime(long value) {
-        bitField0_ |= 0x00004000;
+        bitField0_ |= 0x00008000;
         activeEndTime_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int64 active_end_time = 15;</code>
+       * <code>optional int64 active_end_time = 16;</code>
        */
       public Builder clearActiveEndTime() {
-        bitField0_ = (bitField0_ & ~0x00004000);
+        bitField0_ = (bitField0_ & ~0x00008000);
         activeEndTime_ = 0L;
         onChanged();
         return this;
       }
 
-      // optional int32 expired_time = 16;
+      // optional int32 expired_time = 17;
       private int expiredTime_ ;
       /**
-       * <code>optional int32 expired_time = 16;</code>
+       * <code>optional int32 expired_time = 17;</code>
        */
       public boolean hasExpiredTime() {
-        return ((bitField0_ & 0x00008000) == 0x00008000);
+        return ((bitField0_ & 0x00010000) == 0x00010000);
       }
       /**
-       * <code>optional int32 expired_time = 16;</code>
+       * <code>optional int32 expired_time = 17;</code>
        */
       public int getExpiredTime() {
         return expiredTime_;
       }
       /**
-       * <code>optional int32 expired_time = 16;</code>
+       * <code>optional int32 expired_time = 17;</code>
        */
       public Builder setExpiredTime(int value) {
-        bitField0_ |= 0x00008000;
+        bitField0_ |= 0x00010000;
         expiredTime_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int32 expired_time = 16;</code>
+       * <code>optional int32 expired_time = 17;</code>
        */
       public Builder clearExpiredTime() {
-        bitField0_ = (bitField0_ & ~0x00008000);
+        bitField0_ = (bitField0_ & ~0x00010000);
         expiredTime_ = 0;
         onChanged();
         return this;
       }
 
-      // optional int32 failed_attempts = 17;
+      // optional int32 failed_attempts = 18;
       private int failedAttempts_ ;
       /**
-       * <code>optional int32 failed_attempts = 17;</code>
+       * <code>optional int32 failed_attempts = 18;</code>
        */
       public boolean hasFailedAttempts() {
-        return ((bitField0_ & 0x00010000) == 0x00010000);
+        return ((bitField0_ & 0x00020000) == 0x00020000);
       }
       /**
-       * <code>optional int32 failed_attempts = 17;</code>
+       * <code>optional int32 failed_attempts = 18;</code>
        */
       public int getFailedAttempts() {
         return failedAttempts_;
       }
       /**
-       * <code>optional int32 failed_attempts = 17;</code>
+       * <code>optional int32 failed_attempts = 18;</code>
        */
       public Builder setFailedAttempts(int value) {
-        bitField0_ |= 0x00010000;
+        bitField0_ |= 0x00020000;
         failedAttempts_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int32 failed_attempts = 17;</code>
+       * <code>optional int32 failed_attempts = 18;</code>
        */
       public Builder clearFailedAttempts() {
-        bitField0_ = (bitField0_ & ~0x00010000);
+        bitField0_ = (bitField0_ & ~0x00020000);
         failedAttempts_ = 0;
         onChanged();
         return this;
       }
 
-      // optional int32 failed_interval = 18;
+      // optional int32 failed_interval = 19;
       private int failedInterval_ ;
       /**
-       * <code>optional int32 failed_interval = 18;</code>
+       * <code>optional int32 failed_interval = 19;</code>
        */
       public boolean hasFailedInterval() {
-        return ((bitField0_ & 0x00020000) == 0x00020000);
+        return ((bitField0_ & 0x00040000) == 0x00040000);
       }
       /**
-       * <code>optional int32 failed_interval = 18;</code>
+       * <code>optional int32 failed_interval = 19;</code>
        */
       public int getFailedInterval() {
         return failedInterval_;
       }
       /**
-       * <code>optional int32 failed_interval = 18;</code>
+       * <code>optional int32 failed_interval = 19;</code>
        */
       public Builder setFailedInterval(int value) {
-        bitField0_ |= 0x00020000;
+        bitField0_ |= 0x00040000;
         failedInterval_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int32 failed_interval = 18;</code>
+       * <code>optional int32 failed_interval = 19;</code>
        */
       public Builder clearFailedInterval() {
-        bitField0_ = (bitField0_ & ~0x00020000);
+        bitField0_ = (bitField0_ & ~0x00040000);
         failedInterval_ = 0;
         onChanged();
         return this;
@@ -19834,75 +20296,75 @@ public final class JobProtos {
     java.lang.String[] descriptorData = {
       "\n\tjob.proto\032\032job_dependency_entry.proto\032" +
       "\016app_auth.proto\032#job_schedule_expression" +
-      "_entry.proto\"\243\004\n\024RestSubmitJobRequest\022\032\n" +
+      "_entry.proto\"\266\004\n\024RestSubmitJobRequest\022\032\n" +
       "\010app_auth\030\001 \002(\0132\010.AppAuth\022\014\n\004user\030\002 \002(\t\022" +
       "\020\n\010job_name\030\003 \002(\t\022\020\n\010job_type\030\004 \002(\t\022\016\n\006s" +
       "tatus\030\005 \002(\005\022\026\n\013contentType\030\006 \002(\005:\0011\022\017\n\007c" +
       "ontent\030\007 \002(\t\022\024\n\nparameters\030\010 \001(\t:\000\022\020\n\010ap" +
-      "p_name\030\t \001(\t\022\027\n\017worker_group_id\030\n \002(\005\022\027\n" +
-      "\014biz_group_id\030\013 \001(\005:\0010\022\023\n\010priority\030\014 \001(\005" +
-      ":\0011\022\025\n\006isTemp\030\r \001(\010:\005false\022\027\n\010isSerial\030\016",
-      " \001(\010:\005false\022\031\n\021active_start_time\030\017 \001(\003\022\027" +
-      "\n\017active_end_time\030\020 \001(\003\022\031\n\014expired_time\030" +
-      "\021 \001(\005:\003600\022\032\n\017failed_attempts\030\022 \001(\005:\0010\022\032" +
-      "\n\017failed_interval\030\023 \001(\005:\0013\0222\n\020expression" +
-      "_entry\030\024 \003(\0132\030.ScheduleExpressionEntry\022*" +
-      "\n\020dependency_entry\030\025 \003(\0132\020.DependencyEnt" +
-      "ry\"M\n\027ServerSubmitJobResponse\022\016\n\006job_id\030" +
-      "\001 \001(\003\022\017\n\007success\030\002 \002(\010\022\021\n\007message\030\003 \001(\t:" +
-      "\000\"\212\003\n\024RestModifyJobRequest\022\032\n\010app_auth\030\001" +
-      " \002(\0132\010.AppAuth\022\014\n\004user\030\002 \002(\t\022\016\n\006job_id\030\003",
-      " \002(\003\022\020\n\010job_name\030\004 \001(\t\022\020\n\010job_type\030\005 \001(\t" +
-      "\022\017\n\007content\030\006 \001(\t\022\022\n\nparameters\030\007 \001(\t\022\020\n" +
-      "\010app_name\030\010 \001(\t\022\027\n\017worker_group_id\030\t \001(\005" +
-      "\022\024\n\014biz_group_id\030\n \001(\005\022\020\n\010priority\030\013 \001(\005" +
-      "\022\016\n\006isTemp\030\014 \001(\010\022\020\n\010isSerial\030\r \001(\010\022\031\n\021ac" +
-      "tive_start_time\030\016 \001(\003\022\027\n\017active_end_time" +
-      "\030\017 \001(\003\022\024\n\014expired_time\030\020 \001(\005\022\027\n\017failed_a" +
-      "ttempts\030\021 \001(\005\022\027\n\017failed_interval\030\022 \001(\005\"=" +
-      "\n\027ServerModifyJobResponse\022\017\n\007success\030\001 \002" +
-      "(\010\022\021\n\007message\030\002 \001(\t:\000\"\202\001\n\032RestModifyJobD",
-      "ependRequest\022\032\n\010app_auth\030\001 \002(\0132\010.AppAuth" +
-      "\022\014\n\004user\030\002 \002(\t\022\016\n\006job_id\030\003 \002(\003\022*\n\020depend" +
-      "ency_entry\030\004 \003(\0132\020.DependencyEntry\"C\n\035Se" +
-      "rverModifyJobDependResponse\022\017\n\007success\030\001" +
-      " \002(\010\022\021\n\007message\030\002 \001(\t:\000\"\217\001\n\037RestModifyJo" +
-      "bScheduleExpRequest\022\032\n\010app_auth\030\001 \002(\0132\010." +
-      "AppAuth\022\014\n\004user\030\002 \002(\t\022\016\n\006job_id\030\003 \002(\003\0222\n" +
-      "\020expression_entry\030\020 \003(\0132\030.ScheduleExpres" +
-      "sionEntry\"H\n\"ServerModifyJobScheduleExpR" +
-      "esponse\022\017\n\007success\030\001 \002(\010\022\021\n\007message\030\002 \001(",
-      "\t:\000\"f\n\032RestModifyJobStatusRequest\022\032\n\010app" +
-      "_auth\030\001 \002(\0132\010.AppAuth\022\014\n\004user\030\002 \002(\t\022\016\n\006j" +
-      "ob_id\030\003 \002(\003\022\016\n\006status\030\004 \002(\005\"C\n\035ServerMod" +
-      "ifyJobStatusResponse\022\017\n\007success\030\001 \002(\010\022\021\n" +
-      "\007message\030\002 \001(\t:\000\"0\n\016JobStatusEntry\022\016\n\006jo" +
-      "b_id\030\001 \002(\003\022\016\n\006status\030\002 \002(\005\"n\n\033RestQueryJ" +
-      "obRelationRequest\022\032\n\010app_auth\030\001 \002(\0132\010.Ap" +
-      "pAuth\022\014\n\004user\030\002 \002(\t\022\016\n\006job_id\030\003 \002(\003\022\025\n\rr" +
-      "elation_type\030\004 \002(\005\"o\n\036ServerQueryJobRela" +
-      "tionResponse\022)\n\020job_status_entry\030\001 \003(\0132\017",
-      ".JobStatusEntry\022\017\n\007success\030\002 \002(\010\022\021\n\007mess" +
-      "age\030\003 \001(\t:\000\"\212\003\n\010jobEntry\022\016\n\006job_id\030\001 \002(\003" +
-      "\022\020\n\010job_name\030\002 \002(\t\022\020\n\010job_type\030\003 \002(\t\022\016\n\006" +
-      "status\030\004 \002(\005\022\017\n\007content\030\005 \002(\t\022\022\n\nparamet" +
-      "ers\030\006 \002(\t\022\020\n\010app_name\030\007 \002(\t\022\027\n\017worker_gr" +
-      "oup_id\030\010 \002(\005\022\020\n\010priority\030\t \002(\005\022\031\n\021active" +
-      "_start_time\030\n \002(\003\022\027\n\017active_end_time\030\013 \002" +
-      "(\003\022\024\n\014expired_time\030\014 \002(\005\022\027\n\017failed_attem" +
-      "pts\030\r \002(\005\022\027\n\017failed_interval\030\016 \002(\005\0221\n\017ex" +
-      "pression_list\030\017 \003(\0132\030.ScheduleExpression",
-      "Entry\022)\n\017dependency_list\030\020 \003(\0132\020.Depende" +
-      "ncyEntry\"O\n\023RestQueryJobRequest\022\032\n\010app_a" +
-      "uth\030\001 \002(\0132\010.AppAuth\022\014\n\004user\030\002 \002(\t\022\016\n\006job" +
-      "_id\030\003 \002(\003\"U\n\026ServerQueryJobResponse\022\027\n\004l" +
-      "ist\030\001 \003(\0132\t.jobEntry\022\017\n\007success\030\002 \002(\010\022\021\n" +
-      "\007message\030\003 \001(\t:\000\"P\n\024RestRemoveJobRequest" +
-      "\022\032\n\010app_auth\030\001 \002(\0132\010.AppAuth\022\014\n\004user\030\002 \002" +
-      "(\t\022\016\n\006job_id\030\003 \002(\003\"=\n\027ServerRemoveJobRes" +
-      "ponse\022\017\n\007success\030\001 \002(\010\022\021\n\007message\030\002 \001(\t:" +
-      "\000B(\n\033com.mogujie.jarvis.protocolB\tJobPro",
-      "tos"
+      "p_name\030\t \001(\t\022\027\n\017worker_group_id\030\n \002(\005\022\024\n" +
+      "\ndepartment\030\013 \001(\t:\000\022\024\n\nbiz_groups\030\014 \001(\t:" +
+      "\000\022\023\n\010priority\030\r \001(\005:\0011\022\025\n\006isTemp\030\016 \001(\010:\005",
+      "false\022\027\n\010isSerial\030\017 \001(\010:\005false\022\031\n\021active" +
+      "_start_time\030\020 \001(\003\022\027\n\017active_end_time\030\021 \001" +
+      "(\003\022\031\n\014expired_time\030\022 \001(\005:\003600\022\032\n\017failed_" +
+      "attempts\030\023 \001(\005:\0010\022\032\n\017failed_interval\030\024 \001" +
+      "(\005:\0013\0222\n\020expression_entry\030\025 \003(\0132\030.Schedu" +
+      "leExpressionEntry\022*\n\020dependency_entry\030\026 " +
+      "\003(\0132\020.DependencyEntry\"M\n\027ServerSubmitJob" +
+      "Response\022\016\n\006job_id\030\001 \001(\003\022\017\n\007success\030\002 \002(" +
+      "\010\022\021\n\007message\030\003 \001(\t:\000\"\234\003\n\024RestModifyJobRe" +
+      "quest\022\032\n\010app_auth\030\001 \002(\0132\010.AppAuth\022\014\n\004use",
+      "r\030\002 \002(\t\022\016\n\006job_id\030\003 \002(\003\022\020\n\010job_name\030\004 \001(" +
+      "\t\022\020\n\010job_type\030\005 \001(\t\022\017\n\007content\030\006 \001(\t\022\022\n\n" +
+      "parameters\030\007 \001(\t\022\020\n\010app_name\030\010 \001(\t\022\027\n\017wo" +
+      "rker_group_id\030\t \001(\005\022\022\n\ndepartment\030\n \001(\t\022" +
+      "\022\n\nbiz_groups\030\013 \001(\t\022\020\n\010priority\030\014 \001(\005\022\016\n" +
+      "\006isTemp\030\r \001(\010\022\020\n\010isSerial\030\016 \001(\010\022\031\n\021activ" +
+      "e_start_time\030\017 \001(\003\022\027\n\017active_end_time\030\020 " +
+      "\001(\003\022\024\n\014expired_time\030\021 \001(\005\022\027\n\017failed_atte" +
+      "mpts\030\022 \001(\005\022\027\n\017failed_interval\030\023 \001(\005\"=\n\027S" +
+      "erverModifyJobResponse\022\017\n\007success\030\001 \002(\010\022",
+      "\021\n\007message\030\002 \001(\t:\000\"\202\001\n\032RestModifyJobDepe" +
+      "ndRequest\022\032\n\010app_auth\030\001 \002(\0132\010.AppAuth\022\014\n" +
+      "\004user\030\002 \002(\t\022\016\n\006job_id\030\003 \002(\003\022*\n\020dependenc" +
+      "y_entry\030\004 \003(\0132\020.DependencyEntry\"C\n\035Serve" +
+      "rModifyJobDependResponse\022\017\n\007success\030\001 \002(" +
+      "\010\022\021\n\007message\030\002 \001(\t:\000\"\217\001\n\037RestModifyJobSc" +
+      "heduleExpRequest\022\032\n\010app_auth\030\001 \002(\0132\010.App" +
+      "Auth\022\014\n\004user\030\002 \002(\t\022\016\n\006job_id\030\003 \002(\003\0222\n\020ex" +
+      "pression_entry\030\020 \003(\0132\030.ScheduleExpressio" +
+      "nEntry\"H\n\"ServerModifyJobScheduleExpResp",
+      "onse\022\017\n\007success\030\001 \002(\010\022\021\n\007message\030\002 \001(\t:\000" +
+      "\"f\n\032RestModifyJobStatusRequest\022\032\n\010app_au" +
+      "th\030\001 \002(\0132\010.AppAuth\022\014\n\004user\030\002 \002(\t\022\016\n\006job_" +
+      "id\030\003 \002(\003\022\016\n\006status\030\004 \002(\005\"C\n\035ServerModify" +
+      "JobStatusResponse\022\017\n\007success\030\001 \002(\010\022\021\n\007me" +
+      "ssage\030\002 \001(\t:\000\"0\n\016JobStatusEntry\022\016\n\006job_i" +
+      "d\030\001 \002(\003\022\016\n\006status\030\002 \002(\005\"n\n\033RestQueryJobR" +
+      "elationRequest\022\032\n\010app_auth\030\001 \002(\0132\010.AppAu" +
+      "th\022\014\n\004user\030\002 \002(\t\022\016\n\006job_id\030\003 \002(\003\022\025\n\rrela" +
+      "tion_type\030\004 \002(\005\"o\n\036ServerQueryJobRelatio",
+      "nResponse\022)\n\020job_status_entry\030\001 \003(\0132\017.Jo" +
+      "bStatusEntry\022\017\n\007success\030\002 \002(\010\022\021\n\007message" +
+      "\030\003 \001(\t:\000\"\212\003\n\010jobEntry\022\016\n\006job_id\030\001 \002(\003\022\020\n" +
+      "\010job_name\030\002 \002(\t\022\020\n\010job_type\030\003 \002(\t\022\016\n\006sta" +
+      "tus\030\004 \002(\005\022\017\n\007content\030\005 \002(\t\022\022\n\nparameters" +
+      "\030\006 \002(\t\022\020\n\010app_name\030\007 \002(\t\022\027\n\017worker_group" +
+      "_id\030\010 \002(\005\022\020\n\010priority\030\t \002(\005\022\031\n\021active_st" +
+      "art_time\030\n \002(\003\022\027\n\017active_end_time\030\013 \002(\003\022" +
+      "\024\n\014expired_time\030\014 \002(\005\022\027\n\017failed_attempts" +
+      "\030\r \002(\005\022\027\n\017failed_interval\030\016 \002(\005\0221\n\017expre",
+      "ssion_list\030\017 \003(\0132\030.ScheduleExpressionEnt" +
+      "ry\022)\n\017dependency_list\030\020 \003(\0132\020.Dependency" +
+      "Entry\"O\n\023RestQueryJobRequest\022\032\n\010app_auth" +
+      "\030\001 \002(\0132\010.AppAuth\022\014\n\004user\030\002 \002(\t\022\016\n\006job_id" +
+      "\030\003 \002(\003\"U\n\026ServerQueryJobResponse\022\027\n\004list" +
+      "\030\001 \003(\0132\t.jobEntry\022\017\n\007success\030\002 \002(\010\022\021\n\007me" +
+      "ssage\030\003 \001(\t:\000\"P\n\024RestRemoveJobRequest\022\032\n" +
+      "\010app_auth\030\001 \002(\0132\010.AppAuth\022\014\n\004user\030\002 \002(\t\022" +
+      "\016\n\006job_id\030\003 \002(\003\"=\n\027ServerRemoveJobRespon" +
+      "se\022\017\n\007success\030\001 \002(\010\022\021\n\007message\030\002 \001(\t:\000B(",
+      "\n\033com.mogujie.jarvis.protocolB\tJobProtos"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -19914,7 +20376,7 @@ public final class JobProtos {
           internal_static_RestSubmitJobRequest_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_RestSubmitJobRequest_descriptor,
-              new java.lang.String[] { "AppAuth", "User", "JobName", "JobType", "Status", "ContentType", "Content", "Parameters", "AppName", "WorkerGroupId", "BizGroupId", "Priority", "IsTemp", "IsSerial", "ActiveStartTime", "ActiveEndTime", "ExpiredTime", "FailedAttempts", "FailedInterval", "ExpressionEntry", "DependencyEntry", });
+              new java.lang.String[] { "AppAuth", "User", "JobName", "JobType", "Status", "ContentType", "Content", "Parameters", "AppName", "WorkerGroupId", "Department", "BizGroups", "Priority", "IsTemp", "IsSerial", "ActiveStartTime", "ActiveEndTime", "ExpiredTime", "FailedAttempts", "FailedInterval", "ExpressionEntry", "DependencyEntry", });
           internal_static_ServerSubmitJobResponse_descriptor =
             getDescriptor().getMessageTypes().get(1);
           internal_static_ServerSubmitJobResponse_fieldAccessorTable = new
@@ -19926,7 +20388,7 @@ public final class JobProtos {
           internal_static_RestModifyJobRequest_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_RestModifyJobRequest_descriptor,
-              new java.lang.String[] { "AppAuth", "User", "JobId", "JobName", "JobType", "Content", "Parameters", "AppName", "WorkerGroupId", "BizGroupId", "Priority", "IsTemp", "IsSerial", "ActiveStartTime", "ActiveEndTime", "ExpiredTime", "FailedAttempts", "FailedInterval", });
+              new java.lang.String[] { "AppAuth", "User", "JobId", "JobName", "JobType", "Content", "Parameters", "AppName", "WorkerGroupId", "Department", "BizGroups", "Priority", "IsTemp", "IsSerial", "ActiveStartTime", "ActiveEndTime", "ExpiredTime", "FailedAttempts", "FailedInterval", });
           internal_static_ServerModifyJobResponse_descriptor =
             getDescriptor().getMessageTypes().get(3);
           internal_static_ServerModifyJobResponse_fieldAccessorTable = new

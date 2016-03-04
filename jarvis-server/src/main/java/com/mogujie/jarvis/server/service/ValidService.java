@@ -7,23 +7,33 @@
 
 package com.mogujie.jarvis.server.service;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-import com.google.common.base.Preconditions;
-
 import java.util.Date;
 import java.util.List;
 
-import com.mogujie.jarvis.core.domain.*;
+import org.apache.commons.lang.StringUtils;
+
+import com.google.common.base.Preconditions;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.mogujie.jarvis.core.domain.AlarmStatus;
+import com.mogujie.jarvis.core.domain.AlarmType;
+import com.mogujie.jarvis.core.domain.AppStatus;
+import com.mogujie.jarvis.core.domain.BizGroupStatus;
+import com.mogujie.jarvis.core.domain.CommonStrategy;
+import com.mogujie.jarvis.core.domain.JobStatus;
+import com.mogujie.jarvis.core.domain.OperationMode;
 import com.mogujie.jarvis.core.exception.NotFoundException;
-import com.mogujie.jarvis.core.expression.*;
+import com.mogujie.jarvis.core.expression.TimeOffsetExpression;
 import com.mogujie.jarvis.core.util.ExpressionUtils;
-import com.mogujie.jarvis.core.JarvisConstants;
-import com.mogujie.jarvis.dto.generate.*;
+import com.mogujie.jarvis.dto.generate.Alarm;
+import com.mogujie.jarvis.dto.generate.App;
+import com.mogujie.jarvis.dto.generate.AppWorkerGroup;
+import com.mogujie.jarvis.dto.generate.BizGroup;
+import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.protocol.JobDependencyEntryProtos.DependencyEntry;
-import com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry;
-import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobScheduleExpRequest;
 import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobDependRequest;
+import com.mogujie.jarvis.protocol.JobProtos.RestModifyJobScheduleExpRequest;
+import com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry;
 import com.mogujie.jarvis.server.domain.JobEntry;
 
 /**
@@ -95,9 +105,12 @@ public class ValidService {
         Preconditions.checkArgument(mode != CheckMode.ADD || workerGroupId != null, "workGroupId不能为空");
         Preconditions.checkArgument(workerGroupId == null || workerGroupId > 0, "workGroupId不能为空");
 
-        Integer bizGroupId = job.getBizGroupId();
-        if (bizGroupId != null && bizGroupId != JarvisConstants.BIZ_GROUP_ID_UNKNOWN) {
-            bizGroupService.get(bizGroupId);
+        String bizNames = job.getBizGroups();
+        if (bizNames != null && !bizNames.isEmpty()) {
+            String[] bizNameArray = StringUtils.split(bizNames, ",");
+            for (String bizName : bizNameArray) {
+                bizGroupService.queryByName(bizName);
+            }
         }
 
         String content = job.getContent();

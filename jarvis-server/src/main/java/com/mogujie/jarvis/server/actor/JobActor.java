@@ -537,7 +537,8 @@ public class JobActor extends UntypedActor {
         job.setStatus(msg.getStatus());
         job.setJobType(msg.getJobType());
         job.setWorkerGroupId(msg.getWorkerGroupId());
-        job.setBizGroupId(msg.getBizGroupId());
+        job.setDepartment(msg.getDepartment());
+        job.setBizGroups(msg.getBizGroups());
         if (msg.hasActiveStartTime() && msg.getActiveStartTime() != 0) {
             job.setActiveStartDate(new DateTime(msg.getActiveStartTime()).toDate());
         } else {
@@ -587,8 +588,11 @@ public class JobActor extends UntypedActor {
         if (msg.hasWorkerGroupId()) {
             job.setWorkerGroupId(msg.getWorkerGroupId());
         }
-        if (msg.hasBizGroupId()) {
-            job.setBizGroupId(msg.getBizGroupId());
+        if (msg.hasDepartment()) {
+            job.setDepartment(msg.getDepartment());
+        }
+        if (msg.hasBizGroups()) {
+            job.setBizGroups(msg.getBizGroups());
         }
         if (msg.hasPriority()) {
             job.setPriority(msg.getPriority());
@@ -860,10 +864,6 @@ public class JobActor extends UntypedActor {
         if (alarmService.getAlarmByJobId(jobId) != null) {
             recevier = alarmService.getAlarmByJobId(jobId).getReceiver();
         }
-        String bizNmae = "";
-        if (bizService.get(job.getBizGroupId()) != null) {
-            bizNmae = bizService.get(job.getBizGroupId()).getName();
-        }
         JobInfoEntry jobInfo = JobInfoEntry.newBuilder()
                 .setJobId(job.getJobId())
                 .setJobName(job.getJobName())
@@ -874,8 +874,8 @@ public class JobActor extends UntypedActor {
                 .setPriority(job.getPriority())
                 .setStatus(job.getStatus())
                 .setReceiver(recevier)
-                .setAppName(appService.getAppNameByAppId(job.getAppId()))
-                .setBizName(bizNmae)
+                .setDepartment(job.getDepartment())
+                .setBizName(job.getBizGroups())
                 .setCreateTime(job.getCreateTime().getTime())
                 .setUpdateTime(job.getUpdateTime().getTime())
                 .setStartDate(job.getActiveStartDate().getTime())
@@ -908,6 +908,6 @@ public class JobActor extends UntypedActor {
             LOGGER.error("", e);
             throw e;
         }
-
     }
+
 }

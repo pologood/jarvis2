@@ -16,15 +16,21 @@ public interface TaskDependMapper {
 
     int insertSelective(TaskDepend record);
 
+    java.util.List<com.mogujie.jarvis.dto.generate.TaskDepend> selectByExampleWithBLOBs(TaskDependExample example);
+
     java.util.List<com.mogujie.jarvis.dto.generate.TaskDepend> selectByExample(TaskDependExample example);
 
     TaskDepend selectByPrimaryKey(Long taskId);
 
     int updateByExampleSelective(@Param("record") TaskDepend record, @Param("example") TaskDependExample example);
 
+    int updateByExampleWithBLOBs(@Param("record") TaskDepend record, @Param("example") TaskDependExample example);
+
     int updateByExample(@Param("record") TaskDepend record, @Param("example") TaskDependExample example);
 
     int updateByPrimaryKeySelective(TaskDepend record);
+
+    int updateByPrimaryKeyWithBLOBs(TaskDepend record);
 
     int updateByPrimaryKey(TaskDepend record);
 }

@@ -394,7 +394,7 @@ public final class ManualRerunTaskProtos {
 
         public static com.mogujie.jarvis.protocol.ManualRerunTaskProtos.RestServerManualRerunTaskRequest parseFrom(
                 com.google.protobuf.ByteString data, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-                        throws com.google.protobuf.InvalidProtocolBufferException {
+                throws com.google.protobuf.InvalidProtocolBufferException {
             return PARSER.parseFrom(data, extensionRegistry);
         }
 

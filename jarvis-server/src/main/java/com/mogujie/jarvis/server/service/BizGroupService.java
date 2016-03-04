@@ -64,14 +64,15 @@ public class BizGroupService {
         return bizGroupMapper.selectByPrimaryKey(id);
     }
 
-    public BizGroup queryByName(String name) {
+    public BizGroup queryByName(String name) throws NotFoundException {
         BizGroupExample example = new BizGroupExample();
         example.createCriteria().andNameEqualTo(name);
         List<BizGroup> bizs = bizGroupMapper.selectByExample(example);
-        if (bizs !=null && bizs.size() > 0) {
+        if (bizs != null && bizs.size() > 0) {
             return bizs.get(0);
+        } else {
+            throw new NotFoundException("bizGroup 不存在. name:" + name);
         }
-        return null;
     }
 
 
