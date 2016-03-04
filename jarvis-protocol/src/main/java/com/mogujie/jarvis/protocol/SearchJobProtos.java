@@ -11891,13 +11891,13 @@ public final class SearchJobProtos {
      */
     boolean getSuccess();
 
-    // required int32 status = 2;
+    // optional int32 status = 2;
     /**
-     * <code>required int32 status = 2;</code>
+     * <code>optional int32 status = 2;</code>
      */
     boolean hasStatus();
     /**
-     * <code>required int32 status = 2;</code>
+     * <code>optional int32 status = 2;</code>
      */
     int getStatus();
 
@@ -12038,17 +12038,17 @@ public final class SearchJobProtos {
       return success_;
     }
 
-    // required int32 status = 2;
+    // optional int32 status = 2;
     public static final int STATUS_FIELD_NUMBER = 2;
     private int status_;
     /**
-     * <code>required int32 status = 2;</code>
+     * <code>optional int32 status = 2;</code>
      */
     public boolean hasStatus() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
-     * <code>required int32 status = 2;</code>
+     * <code>optional int32 status = 2;</code>
      */
     public int getStatus() {
       return status_;
@@ -12108,10 +12108,6 @@ public final class SearchJobProtos {
       if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasSuccess()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasStatus()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -12350,10 +12346,6 @@ public final class SearchJobProtos {
           
           return false;
         }
-        if (!hasStatus()) {
-          
-          return false;
-        }
         return true;
       }
 
@@ -12409,22 +12401,22 @@ public final class SearchJobProtos {
         return this;
       }
 
-      // required int32 status = 2;
+      // optional int32 status = 2;
       private int status_ ;
       /**
-       * <code>required int32 status = 2;</code>
+       * <code>optional int32 status = 2;</code>
        */
       public boolean hasStatus() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
-       * <code>required int32 status = 2;</code>
+       * <code>optional int32 status = 2;</code>
        */
       public int getStatus() {
         return status_;
       }
       /**
-       * <code>required int32 status = 2;</code>
+       * <code>optional int32 status = 2;</code>
        */
       public Builder setStatus(int value) {
         bitField0_ |= 0x00000002;
@@ -12433,7 +12425,7 @@ public final class SearchJobProtos {
         return this;
       }
       /**
-       * <code>required int32 status = 2;</code>
+       * <code>optional int32 status = 2;</code>
        */
       public Builder clearStatus() {
         bitField0_ = (bitField0_ & ~0x00000002);
@@ -12654,7 +12646,7 @@ public final class SearchJobProtos {
       "rchTaskStatusRequest\022\032\n\010app_auth\030\001 \002(\0132\010" +
       ".AppAuth\022\016\n\006job_id\030\002 \002(\003\022\021\n\tdata_date\030\003 " +
       "\002(\003\"T\n\036ServerSearchTaskStatusResponse\022\017\n" +
-      "\007success\030\001 \002(\010\022\016\n\006status\030\002 \002(\005\022\021\n\007messag" +
+      "\007success\030\001 \002(\010\022\016\n\006status\030\002 \001(\005\022\021\n\007messag" +
       "e\030\003 \001(\t:\000B.\n\033com.mogujie.jarvis.protocol",
       "B\017SearchJobProtos"
     };
