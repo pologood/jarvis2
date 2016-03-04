@@ -493,6 +493,8 @@ public class TaskActor extends UntypedActor {
                     }
                     parentTaskIdMap = taskDependService.loadParent(maxEndTaskId);
                 }
+                response = ServerQueryTaskCriticalPathResponse.newBuilder().setSuccess(true).addAllTaskInfo(taskInfoEntries).build();
+                getSender().tell(response, getSelf());
             } else {
                 String errMsg = "can't find task, scheduleDate=" + new DateTime(scheduleDate).toString("yyyy-MM-dd hh:mm:ss") + ", jobName=" + jobName;
                 response = ServerQueryTaskCriticalPathResponse.newBuilder().setSuccess(false).setMessage(errMsg).build();
@@ -541,10 +543,9 @@ public class TaskActor extends UntypedActor {
                 .setDataTime(task.getDataTime().getTime())
                 .setStartTime(task.getExecuteStartTime().getTime())
                 .setEndTime(task.getExecuteEndTime().getTime())
-                .setAvgTime(taskService.getAvgExecTime(task.getTaskId(), 30))
+                .setAvgTime(taskService.getAvgExecTime(task.getJobId(), 30))
                 .setUseTime(((float)(task.getExecuteEndTime().getTime() - task.getExecuteStartTime().getTime()))/1000/60) //单位分钟
                 .setStatus(task.getStatus())
-                .setContent(task.getContent())
                 .build();
         return taskInfoEntry;
     }

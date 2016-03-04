@@ -12,5 +12,4 @@ message TaskInfoEntry {
 	required float avgTime = 8;
 	required float useTime = 9;
 	required int32 status = 10;
-	required string content = 11;
 }

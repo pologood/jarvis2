@@ -28,7 +28,6 @@ public class TaskInfo {
     private float avgTime;
     private float useTime;
     private int status;
-    private String content;
 
     public TaskInfo(TaskInfoEntry taskInfoEntry) {
         this.taskId = taskInfoEntry.getTaskId();
@@ -41,7 +40,6 @@ public class TaskInfo {
         this.avgTime = taskInfoEntry.getAvgTime();
         this.useTime = taskInfoEntry.getUseTime();
         this.status = taskInfoEntry.getStatus();
-        this.content = taskInfoEntry.getContent();
     }
 
     public long getTaskId() {
@@ -124,19 +122,10 @@ public class TaskInfo {
         this.status = status;
     }
 
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
     @Override
     public String toString() {
-        return "TaskLogInfo [taskId=" + taskId + ", jobId=" + jobId + ", taskTitle=" + taskTitle + ", runDate=" + runDate + ", dataDate=" + dataDate
-                + ", startTime=" + startTime + ", endTime=" + endTime + ", avgTime=" + avgTime + ", useTime=" + useTime + ", status=" + status
-                + ", content=" + content + "]";
+        return "TaskInfo [taskId=" + taskId + ", jobId=" + jobId + ", taskTitle=" + taskTitle + ", runDate=" + runDate + ", dataDate=" + dataDate
+                + ", startTime=" + startTime + ", endTime=" + endTime + ", avgTime=" + avgTime + ", useTime=" + useTime + ", status=" + status + "]";
     }
 
 }
