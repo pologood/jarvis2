@@ -7,6 +7,9 @@
  */
 package com.mogujie.jarvis.server.service;
 
+import com.mogujie.jarvis.dao.generate.JobOperationLogMapper;
+import com.mogujie.jarvis.dto.generate.JobOperationLog;
+import com.mogujie.jarvis.server.interceptor.OperationLog;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -141,6 +144,7 @@ public class JobService {
         }
     }
 
+    @OperationLog
     public long insertJob(Job record) {
         // 1. insert to DB
         jobMapper.insertSelective(record);
@@ -154,6 +158,7 @@ public class JobService {
         return jobId;
     }
 
+    @OperationLog
     public void updateJob(Job record) {
         // 1. update to DB
         jobMapper.updateByPrimaryKeySelective(record);
@@ -167,6 +172,7 @@ public class JobService {
         }
     }
 
+    @OperationLog
     public void updateStatus(long jobId, String user, int status) {
         Job record = jobMapper.selectByPrimaryKey(jobId);
         record.setStatus(status);
@@ -180,6 +186,7 @@ public class JobService {
         }
     }
 
+    @OperationLog
     public void deleteJob(long jobId) {
         jobMapper.deleteByPrimaryKey(jobId);
         metaStore.remove(jobId);
@@ -210,6 +217,7 @@ public class JobService {
      * @param jobId
      * @param entry
      */
+    @OperationLog
     public void insertScheduleExpression(long jobId, ScheduleExpressionEntry entry) {
         // 1. insert to DB
         JobScheduleExpression record = new JobScheduleExpression();
@@ -229,6 +237,7 @@ public class JobService {
         jobEntry.addScheduleExpression(record.getId(), scheduleExpression);
     }
 
+    @OperationLog
     public void deleteScheduleExpression(long jobId, long expressionId) {
         jobScheduleExpressionMapper.deleteByPrimaryKey(expressionId);
         get(jobId).removeScheduleExpression(expressionId);
@@ -240,6 +249,7 @@ public class JobService {
      * @param jobId
      * @param entry
      */
+    @OperationLog
     public void updateScheduleExpression(long jobId, ScheduleExpressionEntry entry) {
         // 1. update to DB
         long expressionId = entry.getExpressionId();
@@ -257,6 +267,7 @@ public class JobService {
         jobEntry.updateScheduleExpression(entry.getExpressionId(), scheduleExpression);
     }
 
+    @OperationLog
     public void deleteScheduleExpressionByJobId(long jobId) {
         JobScheduleExpressionExample example = new JobScheduleExpressionExample();
         example.createCriteria().andJobIdEqualTo(jobId);
@@ -290,6 +301,7 @@ public class JobService {
         return jobDependMapper.selectByPrimaryKey(key);
     }
 
+    @OperationLog
     public void insertJobDepend(JobDepend record) {
         jobDependMapper.insertSelective(record);
 
@@ -300,6 +312,7 @@ public class JobService {
         }
     }
 
+    @OperationLog
     public void updateJobDepend(JobDepend record) {
         jobDependMapper.updateByPrimaryKeySelective(record);
 
@@ -310,6 +323,7 @@ public class JobService {
         }
     }
 
+    @OperationLog
     public void deleteJobDepend(long jobId, long preJobId) {
         JobDependKey key = new JobDependKey();
         key.setJobId(jobId);
@@ -322,6 +336,7 @@ public class JobService {
         }
     }
 
+    @OperationLog
     public void deleteJobDependByPreJobId(long preJobId) {
         JobDependExample jobDependExample = new JobDependExample();
         jobDependExample.createCriteria().andPreJobIdEqualTo(preJobId);
@@ -338,6 +353,7 @@ public class JobService {
         }
     }
 
+    @OperationLog
     public void deleteJobDependByJobId(long jobId) {
         JobDependExample jobDependExample = new JobDependExample();
         jobDependExample.createCriteria().andJobIdEqualTo(jobId);

@@ -8,6 +8,8 @@
 
 package com.mogujie.jarvis.server.guice;
 
+import com.mogujie.jarvis.server.interceptor.OperationLogInterceptor;
+import com.mogujie.jarvis.server.interceptor.OperationLog;
 import java.util.Properties;
 
 import com.google.inject.AbstractModule;
@@ -24,6 +26,10 @@ import com.mogujie.jarvis.server.dispatcher.workerselector.RoundRobinWorkerSelec
 import com.mogujie.jarvis.server.dispatcher.workerselector.WorkerSelector;
 
 import akka.actor.ActorSystem;
+
+import static com.google.inject.matcher.Matchers.annotatedWith;
+import static com.google.inject.matcher.Matchers.any;
+
 
 public class GuiceModule extends AbstractModule {
 
@@ -51,6 +57,13 @@ public class GuiceModule extends AbstractModule {
         ActorSystem actorSystem = ActorSystem.create(JarvisConstants.SERVER_AKKA_SYSTEM_NAME, ConfigUtils.getAkkaConfig("akka-server.conf"));
         bind(ActorSystem.class).toInstance(actorSystem);
         bind(TaskManager.class).in(Scopes.SINGLETON);
+
+        // add operation log aspect
+        OperationLogInterceptor interceptor = new OperationLogInterceptor();
+        requestInjection(interceptor);
+        bindInterceptor(any(), annotatedWith(OperationLog.class), interceptor);
+        requestInjection(this);
     }
+
 
 }

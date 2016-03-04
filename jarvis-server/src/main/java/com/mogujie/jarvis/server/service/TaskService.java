@@ -8,6 +8,7 @@
 
 package com.mogujie.jarvis.server.service;
 
+import com.mogujie.jarvis.server.interceptor.OperationLog;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -113,6 +114,7 @@ public class TaskService {
         return record.getTaskId();
     }
 
+    @OperationLog
     public long insertSelective(Task record) {
         taskMapper.insertSelective(record);
         return record.getTaskId();
@@ -184,6 +186,7 @@ public class TaskService {
         updateStatusWithEnd(taskId, status, null);
     }
 
+    @OperationLog
     public void updateStatusWithEnd(long taskId, TaskStatus status, String reason) {
         Task task = new Task();
         task.setTaskId(taskId);

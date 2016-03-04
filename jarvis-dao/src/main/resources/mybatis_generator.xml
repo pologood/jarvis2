@@ -85,6 +85,11 @@
 			<generatedKey column="id" sqlStatement="MySql" identity="true" />
 		</table>
 
+		<table schema="jarvis2" tableName="job_operation_log">
+			<property name="useActualColumnNames" value="true"></property>
+			<generatedKey column="id" sqlStatement="MySql" identity="true" />
+		</table>
+
 	</context>
 
 </generatorConfiguration>
