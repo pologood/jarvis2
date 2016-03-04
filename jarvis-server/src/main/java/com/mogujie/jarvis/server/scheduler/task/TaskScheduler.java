@@ -382,16 +382,18 @@ public class TaskScheduler extends Scheduler {
                 .setFailedRetries(job.getFailedAttempts())
                 .setFailedInterval(job.getFailedInterval())
                 .setExpiredTime(job.getExpiredTime());
+        String content = "";
         if (job.getContentType() == JobContentType.SCRIPT.getValue()) {
             int scriptId = Integer.parseInt(job.getContent());
-            String content = scriptService.getContentById(scriptId);
-            if (content == null) {
+            if (scriptService.getContentById(scriptId) != null) {
+                content = scriptService.getContentById(scriptId);
+            } else {
                 LOGGER.error("couldn't get content by scriptId={}", scriptId);
             }
-            builder.setContent(scriptService.getContentById(scriptId));
         } else {
-            builder.setContent(job.getContent());
+            content = job.getContent();
         }
+        builder.setContent(content);
         return builder.build();
     }
 
