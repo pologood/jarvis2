@@ -32,21 +32,21 @@
   </sql>
 
   <select id="getCountByCondition" parameterType="OperationQo" resultType="Integer">
-    SELECT COUNT(1) FROM job_operation_log
+    SELECT COUNT(1) FROM operation_log
     <include refid="condition"/>
   </select>
 
   <select id="getOperationsByCondition" parameterType="OperationQo" resultType="OperationVo">
     SELECT
     t.*
-    FROM job_operation_log t
+    FROM operation_log t
     <include refid="condition"/>
     ORDER BY t.opeDate DESC
     <include refid="pager"/>
   </select>
 
   <select id="getAllOperationTitles" parameterType="String" resultType="String">
-    SELECT DISTINCT title FROM job_operation_log
+    SELECT DISTINCT title FROM operation_log
     <where>
       <if test="title != null">
         title LIKE '%${title}%'
@@ -55,7 +55,7 @@
   </select>
 
   <select id="getSimilarOperationTitle" parameterType="String" resultType="String">
-    SELECT DISTINCT title FROM job_operation_log
+    SELECT DISTINCT title FROM operation_log
     <where>
       <if test="_parameter!=null and _parameter!=''">
         title LIKE '%${_parameter}%'

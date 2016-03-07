@@ -56,7 +56,7 @@ public class OperationLogInterceptor implements MethodInterceptor {
   }
 
   /**
-   * 将insert,update,delete操作记录到DB中
+   * job操作记录
    *
    * @param invocation
    */
@@ -98,6 +98,11 @@ public class OperationLogInterceptor implements MethodInterceptor {
 
   }
 
+  /**
+   * task 操作记录
+   *
+   * @param invocation
+   */
   private void handleTaskOpeLog(MethodInvocation invocation) {
     OperationLog operationLog = new OperationLog();
 
