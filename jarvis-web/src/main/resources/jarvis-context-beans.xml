@@ -14,7 +14,6 @@
     <!-- enable transaction demarcation with annotations -->
     <tx:annotation-driven/>
 
-
     <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
         <property name="messageConverters">
             <list>

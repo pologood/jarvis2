@@ -175,10 +175,14 @@ public class AppActor extends UntypedActor {
 
     private List<AppWorkerGroup> msg2AppWorkerGroup(RestSetApplicationWorkerGroupRequest msg) {
         List<AppWorkerGroup> list = new ArrayList<>();
+        DateTime now = DateTime.now();
         for (ApplicationProtos.AppWorkerGroupEntry entry : msg.getAppWorkerGroupsList()) {
             AppWorkerGroup aw = new AppWorkerGroup();
             aw.setAppId(entry.getAppId());
             aw.setWorkerGroupId(entry.getWorkerGroupId());
+            aw.setCreateTime(now.toDate());
+            aw.setUpdateTime(now.toDate());
+            aw.setUpdateUser(msg.getUser());
             list.add(aw);
         }
         return list;

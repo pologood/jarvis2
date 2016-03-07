@@ -280,7 +280,7 @@ var columns = [{
     title: '任务类型',
     switchable: true
 }, {
-    field: 'bizGroupId',
+    field: 'bizGroups',
     title: '业务标签',
     switchable: true,
     visible: true,

@@ -30,8 +30,8 @@ import com.mogujie.jarvis.rest.vo.JobVo;
  */
 //@Ignore
 public class TestJobRest {
+    private String baseUrl = "http://127.0.0.1:8080";
 
-    @Test
     public void testMy() {
         //        String a = "{\"jobName\":\"test\",\"activeStartDate\":\"\",\"activeEndDate\":\"\",\"content\":\"ls;\",\"params\":\"{}\",\"expression\":\"\",\"failedAttempts\":0,\"failedInterval\":3,\"jobType\":\"hive_script\",\"bizGroupId\":1,\"workerGroupId\":1,\"expressionType\":1,\"priority\":1,\"scheduleExpressionList\":[]}";
         //        JobVo jobVo = JsonHelper.fromJson(a, JobVo.class);
@@ -41,10 +41,8 @@ public class TestJobRest {
         //        int i = 3;
     }
 
-    private String baseUrl = "http://127.0.0.1:8080";
-
     public void testJobSubmit() throws UnirestException {
-        //Long jobId = jobSubmit();
+        Long jobId = jobSubmit();
 
     }
 
@@ -54,7 +52,7 @@ public class TestJobRest {
         jobScheduleExpSet(jobId);
     }
 
-    @Test
+//    @Test
     public void testJobDependencySet() throws UnirestException {
         Long jobId = jobSubmit();
         jobDependencySet(jobId);

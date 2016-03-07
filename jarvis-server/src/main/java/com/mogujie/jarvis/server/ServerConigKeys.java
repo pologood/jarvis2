@@ -21,5 +21,7 @@ public interface ServerConigKeys {
     public static final String TASK_REJECT_INTERVAL = "task.reject.interval";
     public static final String ALARMER_CLASS = "alarmer.class";
     public static final String SERVER_TIMER_TASKS = "sever.timer.tasks";
+    public static final String JOB_ACTOR_POST_HOOKS = "job.actor.post.hooks";
+    public static final String BIZ_KPI_ID = "biz.kpi.id";
 
 }

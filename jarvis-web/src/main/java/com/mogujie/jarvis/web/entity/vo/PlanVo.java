@@ -19,7 +19,7 @@ public class PlanVo extends Plan {
     private String appName;
     private String workerGroupId;
     private String workerGroupName;
-    private Integer bizGroupId;
+    private String bizGroups;
     private String bizGroupName;
 
     private List<Object> taskStatus =new ArrayList<>();
@@ -99,12 +99,12 @@ public class PlanVo extends Plan {
         return this;
     }
 
-    public Integer getBizGroupId() {
-        return bizGroupId;
+    public String getBizGroups() {
+        return bizGroups;
     }
 
-    public PlanVo setBizGroupId(Integer bizGroupId) {
-        this.bizGroupId = bizGroupId;
+    public PlanVo setBizGroups(String bizGroups) {
+        this.bizGroups = bizGroups;
         return this;
     }
 

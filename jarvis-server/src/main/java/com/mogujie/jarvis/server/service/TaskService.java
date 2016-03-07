@@ -60,7 +60,7 @@ public class TaskService {
     public Task getTaskByScheduleDateAndJobName(long scheduleDate, String jobName) {
         Job job = jobService.searchJobByName(jobName);
         if (job != null) {
-            DateTime scheduleDateTime = new DateTime(scheduleDate);
+            DateTime scheduleDateTime = new DateTime(scheduleDate).withTimeAtStartOfDay();
             TaskExample example = new TaskExample();
             example.createCriteria().andJobIdEqualTo(job.getJobId()).andScheduleTimeBetween(scheduleDateTime.toDate(), scheduleDateTime.plusDays(1).toDate());
             List<Task> tasks = taskMapper.selectByExample(example);
@@ -90,7 +90,7 @@ public class TaskService {
     }
 
     public List<Task> getTasksByJobIdAndDataDate(long jobId, long dataDate) {
-        DateTime dataTime = new DateTime(dataDate);
+        DateTime dataTime = new DateTime(dataDate).withTimeAtStartOfDay();
         TaskExample example = new TaskExample();
         example.createCriteria().andJobIdEqualTo(jobId).andDataTimeBetween(dataTime.toDate(), dataTime.plusDays(1).toDate());
         return taskMapper.selectByExample(example);

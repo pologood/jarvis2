@@ -35,6 +35,7 @@ import com.mogujie.jarvis.core.domain.OperationMode;
 import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.expression.ScheduleExpressionType;
 import com.mogujie.jarvis.core.util.AppTokenUtils;
+import com.mogujie.jarvis.core.util.BizUtils;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.protocol.AlarmProtos;
@@ -59,11 +60,13 @@ import com.mogujie.jarvis.protocol.QueryTaskProtos.RestQueryTaskCriticalPathRequ
 import com.mogujie.jarvis.protocol.QueryTaskProtos.ServerQueryTaskCriticalPathResponse;
 import com.mogujie.jarvis.protocol.SearchJobProtos;
 import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchAllJobsRequest;
+import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchBizIdByNameRequest;
 import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchJobByScriptIdRequest;
 import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchPreJobInfoRequest;
 import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchScriptTypeRequest;
 import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchTaskStatusRequest;
 import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchAllJobsResponse;
+import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchBizIdByNamResponse;
 import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchJobByScriptIdResponse;
 import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchPreJobInfoResponse;
 import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchScriptTypeResponse;
@@ -281,7 +284,19 @@ public class JarvisController extends AbstractController {
                     jobType = "shell";
                 }
 
-                // 2. 构造RestSubmitJobRequest
+                // 2. 获取bizGroupId
+                List<Integer> bizIds = new ArrayList<Integer>();
+                RestSearchBizIdByNameRequest searchBizIdRequest = RestSearchBizIdByNameRequest.newBuilder()
+                        .setAppAuth(appAuth).setUser(globalUser).setBizName(jobInfo.getPline()).build();
+                ServerSearchBizIdByNamResponse searchBizIdResponse = (ServerSearchBizIdByNamResponse) callActor(AkkaType.SERVER, searchBizIdRequest);
+                if (searchBizIdResponse.getSuccess()) {
+                    bizIds.add(searchBizIdResponse.getBizId());
+                } else {
+                    result.setSuccess(false);
+                    result.setMessage("找不到pline=" + jobInfo.getPline());
+                    return result;
+                }
+
                 RestSubmitJobRequest.Builder builder = RestSubmitJobRequest.newBuilder().setAppAuth(appAuth)
                         .setUser(globalUser)
                         .setJobName(jobInfo.getTitle())
@@ -292,7 +307,7 @@ public class JarvisController extends AbstractController {
                         .setParameters("{}")
                         .setAppName(APP_IRONMAN_NAME)
                         .setDepartment(jobInfo.getDepartment())
-                        .setBizGroups(jobInfo.getPline())
+                        .setBizGroups(BizUtils.getBizGroupStr(bizIds))
                         .setWorkerGroupId(1) //默认MR集群
                         .setPriority(jobInfo.getPriority())
                         .setIsTemp(false)
@@ -370,13 +385,27 @@ public class JarvisController extends AbstractController {
                         jobInfo.setPriority(TaskPriorityEnum.HIGH.getValue());
                     }
                 }
-                // 1. 构造RestModifyJobRequest
+
+                // 1. 获取bizGroupId
+                List<Integer> bizIds = new ArrayList<Integer>();
+                RestSearchBizIdByNameRequest searchBizIdRequest = RestSearchBizIdByNameRequest.newBuilder()
+                        .setAppAuth(appAuth).setUser(globalUser).setBizName(jobInfo.getPline()).build();
+                ServerSearchBizIdByNamResponse searchBizIdResponse = (ServerSearchBizIdByNamResponse) callActor(AkkaType.SERVER, searchBizIdRequest);
+                if (searchBizIdResponse.getSuccess()) {
+                    bizIds.add(searchBizIdResponse.getBizId());
+                } else {
+                    result.setSuccess(false);
+                    result.setMessage("找不到pline=" + jobInfo.getPline());
+                    return result;
+                }
+
+                // 构造RestModifyJobRequest
                 RestModifyJobRequest modifyJobRequest = RestModifyJobRequest.newBuilder()
                         .setAppAuth(appAuth).setUser(globalUser)
                         .setJobId(jobId)
                         .setAppName(APP_IRONMAN_NAME)
                         .setDepartment(jobInfo.getDepartment())
-                        .setBizGroups(jobInfo.getPline())
+                        .setBizGroups(BizUtils.getBizGroupStr(bizIds))
                         .setPriority(jobInfo.getPriority())
                         .setActiveStartTime(new DateTime(jobInfo.getStartDate()).getMillis())
                         .setActiveEndTime(new DateTime(jobInfo.getEndDate()).getMillis())

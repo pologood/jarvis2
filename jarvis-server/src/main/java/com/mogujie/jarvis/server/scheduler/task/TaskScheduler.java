@@ -299,7 +299,18 @@ public class TaskScheduler extends Scheduler {
                 updateTask.setAttemptId(attemptId);
                 updateTask.setUpdateTime(DateTime.now().toDate());
                 Job job = jobService.get(dagTask.getJobId()).getJob();
-                updateTask.setContent(job.getContent());
+                String content = "";
+                if (job.getContentType() == JobContentType.SCRIPT.getValue()) {
+                    int scriptId = Integer.valueOf(job.getContent());
+                    if (scriptService.getContentById(scriptId) != null ) {
+                        content = scriptService.getContentById(scriptId);
+                    } else {
+                        LOGGER.error("cant't find content from scriptId={}", scriptId);
+                    }
+                } else {
+                    content = job.getContent();
+                }
+                updateTask.setContent(content);
                 updateTask.setExecuteUser(job.getUpdateUser());
                 taskService.updateSelective(updateTask);
                 LOGGER.info("update task {}, attemptId={}", taskId, attemptId);

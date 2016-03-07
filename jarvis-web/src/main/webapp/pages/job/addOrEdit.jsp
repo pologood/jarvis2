@@ -74,16 +74,22 @@
                             </div>
                         </div>
 
+                        <!--部门 -->
+                        <div class="row top-buffer">
+                            <div class="col-md-6 col-md-offset-3">
+                                <div class="input-group" style="width:100%">
+                                    <span class="input-group-addon" style="width:35%">部门</span>
+                                    <input id="department" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+
                         <!--业务标签 -->
                         <div class="row top-buffer">
                             <div class="col-md-6 col-md-offset-3">
                                 <div class="input-group" style="width:100%">
-                                    <span class="input-group-addon" style="width:35%">业务标签
-                                        <span class="text-danger" style="vertical-align: middle">*</span>
-                                    </span>
-                                    <select id="bizGroupId" desc="业务标签">
-
-                                    </select>
+                                    <span class="input-group-addon" style="width:35%">业务标签</span>
+                                    <select id="bizGroups" desc="业务标签" multiple="multiple"></select>
                                 </div>
                             </div>
                         </div>
@@ -95,8 +101,7 @@
                                     <span class="input-group-addon" style="width:35%">Worker Group
                                         <span class="text-danger" style="vertical-align: middle">*</span>
                                     </span>
-                                    <select id="workerGroupId" desc="Worker Group">
-                                    </select>
+                                    <select id="workerGroupId" desc="Worker Group"></select>
                                 </div>
                             </div>
                         </div>
@@ -108,9 +113,7 @@
                                     <span class="input-group-addon" style="width:35%">任务类型
                                         <span class="text-danger" style="vertical-align: middle">*</span>
                                     </span>
-                                    <select id="jobType" desc="任务类型">
-
-                                    </select>
+                                    <select id="jobType" desc="任务类型"></select>
                                 </div>
                             </div>
                         </div>

@@ -10,8 +10,6 @@ package com.mogujie.jarvis.server.service;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
-
 import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -104,14 +102,6 @@ public class ValidService {
         Integer workerGroupId = job.getWorkerGroupId();
         Preconditions.checkArgument(mode != CheckMode.ADD || workerGroupId != null, "workGroupId不能为空");
         Preconditions.checkArgument(workerGroupId == null || workerGroupId > 0, "workGroupId不能为空");
-
-        String bizNames = job.getBizGroups();
-        if (bizNames != null && !bizNames.isEmpty()) {
-            String[] bizNameArray = StringUtils.split(bizNames, ",");
-            for (String bizName : bizNameArray) {
-                bizGroupService.queryByName(bizName);
-            }
-        }
 
         String content = job.getContent();
         Preconditions.checkArgument(mode != CheckMode.ADD || content != null, "job内容不能为空");
