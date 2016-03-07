@@ -75,15 +75,13 @@
           job.priority,
           job.appId,
           job.workerGroupId,
-          job.bizGroupId,
+          job.bizGroups,
           job.createTime,
           job.updateTime,
           app.appName,
-          biz_group.name as bizGroupName,
           worker_group.name as workerGroupName
         FROM plan LEFT JOIN job ON job.jobId = plan.jobId
                   LEFT JOIN app ON job.appId = app.appId
-                  LEFT JOIN biz_group on job.bizGroupId = biz_group.id
                   LEFT JOIN worker_group on job.workerGroupId = worker_group.id
         <include refid="planCondition" />
         ORDER BY plan.jobId DESC

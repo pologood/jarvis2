@@ -17,7 +17,7 @@ public class JobDependVo {
     private Integer priority;
     private String jobType;
     private String submitUser;
-    private Integer bizGroupId;
+    private String bizGroups;
     private String bizGroupName;
     private Date activeStartDate;
     private Date activeEndDate;
@@ -96,12 +96,12 @@ public class JobDependVo {
         return this;
     }
 
-    public Integer getBizGroupId() {
-        return bizGroupId;
+    public String getBizGroups() {
+        return bizGroups;
     }
 
-    public JobDependVo setBizGroupId(Integer bizGroupId) {
-        this.bizGroupId = bizGroupId;
+    public JobDependVo setBizGroups(String bizGroups) {
+        this.bizGroups = bizGroups;
         return this;
     }
 

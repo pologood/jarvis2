@@ -313,7 +313,7 @@ public class JobController extends AbstractController {
         if (vo.getJobType() != null) {
             builder.setJobType(vo.getJobType());
         }
-        if (vo.getContent() != null && !vo.getContent().equals("")) {
+        if (vo.getContent() != null) {
             builder.setContent(vo.getContent());
         }
         if (vo.getParams() != null && !vo.getParams().equals("")) {
@@ -330,6 +330,9 @@ public class JobController extends AbstractController {
         }
         if (vo.getBizGroups() != null) {
             builder.setBizGroups(vo.getBizGroups());
+        }
+        if (vo.getDepartment() != null) {
+            builder.setDepartment(vo.getDepartment());
         }
         if (vo.getActiveStartTime() != null) {
             builder.setActiveStartTime(vo.getActiveStartTime());
