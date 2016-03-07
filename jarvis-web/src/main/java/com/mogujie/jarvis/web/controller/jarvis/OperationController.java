@@ -27,7 +27,7 @@ public class OperationController extends BaseController{
    * job任务管理首页
    */
   @RequestMapping
-//  @JarvisPassport(authTypes = JarvisAuthType.operation)
+  @JarvisPassport(authTypes = JarvisAuthType.operation)
   public String index(ModelMap modelMap) {
     List<String> titles = this.operationService.getAllOperationTitles();
     modelMap.put("titles", titles);

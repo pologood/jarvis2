@@ -27,7 +27,7 @@
 
        <!-- 声明需要暴露的服务接口 -->
 
-       <dubbo:service interface="com.mogu.bigdata.admin.client.adapter.AuthTypeAdapter" group="jarvis-web" ref="jarvisAuthTypeAdapter" timeout="1000"/>
+       <dubbo:service interface="com.mogu.bigdata.admin.client.adapter.AuthTypeAdapter" group="jarvis" ref="jarvisAuthTypeAdapter" timeout="1000"/>
 
        <bean id="propertyConfigurer4Redis" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" >
               <property name="order" value="1" />
