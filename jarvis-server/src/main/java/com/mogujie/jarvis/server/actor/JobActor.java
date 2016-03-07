@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
@@ -40,10 +41,12 @@ import com.mogujie.jarvis.core.expression.FixedDelayExpression;
 import com.mogujie.jarvis.core.expression.FixedRateExpression;
 import com.mogujie.jarvis.core.expression.ISO8601Expression;
 import com.mogujie.jarvis.core.expression.ScheduleExpression;
+import com.mogujie.jarvis.core.util.BizUtils;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.core.util.ExceptionUtil;
 import com.mogujie.jarvis.core.util.ReflectionUtils;
 import com.mogujie.jarvis.dto.generate.App;
+import com.mogujie.jarvis.dto.generate.BizGroup;
 import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.dto.generate.JobDepend;
 import com.mogujie.jarvis.dto.generate.Task;
@@ -886,6 +889,15 @@ public class JobActor extends UntypedActor {
         if (alarmService.getAlarmByJobId(jobId) != null) {
             recevier = alarmService.getAlarmByJobId(jobId).getReceiver();
         }
+        List<Integer> bizIds = BizUtils.getBizIds(job.getBizGroups());
+        List<String> bizNames = new ArrayList<String>();
+        for (int bizId : bizIds) {
+            BizGroup bg = bizService.get(bizId);
+            if (bg != null) {
+                bizNames.add(bg.getName());
+            }
+        }
+
         JobInfoEntry jobInfo = JobInfoEntry.newBuilder()
                 .setJobId(job.getJobId())
                 .setJobName(job.getJobName())
@@ -897,7 +909,7 @@ public class JobActor extends UntypedActor {
                 .setStatus(job.getStatus())
                 .setReceiver(recevier)
                 .setDepartment(job.getDepartment())
-                .setBizName(job.getBizGroups())
+                .setBizName(StringUtils.join(bizNames, BizUtils.SEPARATOR))
                 .setCreateTime(job.getCreateTime().getTime())
                 .setUpdateTime(job.getUpdateTime().getTime())
                 .setStartDate(job.getActiveStartDate().getTime())
