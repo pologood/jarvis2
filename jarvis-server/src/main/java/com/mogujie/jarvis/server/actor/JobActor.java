@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
@@ -40,8 +41,12 @@ import com.mogujie.jarvis.core.expression.FixedDelayExpression;
 import com.mogujie.jarvis.core.expression.FixedRateExpression;
 import com.mogujie.jarvis.core.expression.ISO8601Expression;
 import com.mogujie.jarvis.core.expression.ScheduleExpression;
+import com.mogujie.jarvis.core.util.BizUtils;
+import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.core.util.ExceptionUtil;
+import com.mogujie.jarvis.core.util.ReflectionUtils;
 import com.mogujie.jarvis.dto.generate.App;
+import com.mogujie.jarvis.dto.generate.BizGroup;
 import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.dto.generate.JobDepend;
 import com.mogujie.jarvis.dto.generate.Task;
@@ -78,6 +83,8 @@ import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchJobByScriptIdResp
 import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchJobInfoByScriptTitileResponse;
 import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchPreJobInfoResponse;
 import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchScriptTypeResponse;
+import com.mogujie.jarvis.server.ServerConigKeys;
+import com.mogujie.jarvis.server.actor.hook.JobPostHook;
 import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.domain.ModifyDependEntry;
 import com.mogujie.jarvis.server.guice.Injectors;
@@ -297,6 +304,12 @@ public class JobActor extends UntypedActor {
 
             response = ServerModifyJobResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());
+
+            // post hook
+            List<JobPostHook> postHooks = ReflectionUtils.getInstancesByConf(ConfigUtils.getServerConfig(), ServerConigKeys.JOB_ACTOR_POST_HOOKS);
+            for (JobPostHook hook : postHooks) {
+                hook.execute(msg);
+            }
         } catch (Exception e) {
             response = ServerModifyJobResponse.newBuilder().setSuccess(false).setMessage(ExceptionUtil.getErrMsg(e)).build();
             getSender().tell(response, getSelf());
@@ -355,6 +368,12 @@ public class JobActor extends UntypedActor {
 
             response = ServerModifyJobDependResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());
+
+            // post hook
+            List<JobPostHook> postHooks = ReflectionUtils.getInstancesByConf(ConfigUtils.getServerConfig(), ServerConigKeys.JOB_ACTOR_POST_HOOKS);
+            for (JobPostHook hook : postHooks) {
+                hook.execute(msg);
+            }
         } catch (Exception e) {
             // roll back modify dependency
             jobGraph.setParents(dagJob, oldParents);
@@ -443,6 +462,12 @@ public class JobActor extends UntypedActor {
 
             response = ServerModifyJobScheduleExpResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());
+
+            // post hook
+            List<JobPostHook> postHooks = ReflectionUtils.getInstancesByConf(ConfigUtils.getServerConfig(), ServerConigKeys.JOB_ACTOR_POST_HOOKS);
+            for (JobPostHook hook : postHooks) {
+                hook.execute(msg);
+            }
         } catch (Exception e) {
             response = ServerModifyJobScheduleExpResponse.newBuilder().setSuccess(false).setMessage(ExceptionUtil.getErrMsg(e)).build();
             getSender().tell(response, getSelf());
@@ -864,6 +889,15 @@ public class JobActor extends UntypedActor {
         if (alarmService.getAlarmByJobId(jobId) != null) {
             recevier = alarmService.getAlarmByJobId(jobId).getReceiver();
         }
+        List<Integer> bizIds = BizUtils.getBizIds(job.getBizGroups());
+        List<String> bizNames = new ArrayList<String>();
+        for (int bizId : bizIds) {
+            BizGroup bg = bizService.get(bizId);
+            if (bg != null) {
+                bizNames.add(bg.getName());
+            }
+        }
+
         JobInfoEntry jobInfo = JobInfoEntry.newBuilder()
                 .setJobId(job.getJobId())
                 .setJobName(job.getJobName())
@@ -875,7 +909,7 @@ public class JobActor extends UntypedActor {
                 .setStatus(job.getStatus())
                 .setReceiver(recevier)
                 .setDepartment(job.getDepartment())
-                .setBizName(job.getBizGroups())
+                .setBizName(StringUtils.join(bizNames, BizUtils.SEPARATOR))
                 .setCreateTime(job.getCreateTime().getTime())
                 .setUpdateTime(job.getUpdateTime().getTime())
                 .setStartDate(job.getActiveStartDate().getTime())

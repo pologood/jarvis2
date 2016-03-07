@@ -8,11 +8,12 @@
 
 package com.mogujie.jarvis.server.service;
 
-import com.mogujie.jarvis.server.interceptor.OperationLog;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 
 import com.google.common.annotations.VisibleForTesting;
@@ -28,6 +29,7 @@ import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.dto.generate.TaskExample;
 import com.mogujie.jarvis.dto.generate.TaskHistory;
+import com.mogujie.jarvis.server.interceptor.OperationLog;
 
 /**
  * @author guangming
@@ -49,6 +51,8 @@ public class TaskService {
     @Inject
     private ScriptService scriptService;
 
+    private static final Logger LOGGER = LogManager.getLogger();
+
     public Task get(long taskId) {
         return taskMapper.selectByPrimaryKey(taskId);
     }
@@ -56,7 +60,7 @@ public class TaskService {
     public Task getTaskByScheduleDateAndJobName(long scheduleDate, String jobName) {
         Job job = jobService.searchJobByName(jobName);
         if (job != null) {
-            DateTime scheduleDateTime = new DateTime(scheduleDate);
+            DateTime scheduleDateTime = new DateTime(scheduleDate).withTimeAtStartOfDay();
             TaskExample example = new TaskExample();
             example.createCriteria().andJobIdEqualTo(job.getJobId()).andScheduleTimeBetween(scheduleDateTime.toDate(), scheduleDateTime.plusDays(1).toDate());
             List<Task> tasks = taskMapper.selectByExample(example);
@@ -86,7 +90,7 @@ public class TaskService {
     }
 
     public List<Task> getTasksByJobIdAndDataDate(long jobId, long dataDate) {
-        DateTime dataTime = new DateTime(dataDate);
+        DateTime dataTime = new DateTime(dataDate).withTimeAtStartOfDay();
         TaskExample example = new TaskExample();
         example.createCriteria().andJobIdEqualTo(jobId).andDataTimeBetween(dataTime.toDate(), dataTime.plusDays(1).toDate());
         return taskMapper.selectByExample(example);
@@ -140,12 +144,18 @@ public class TaskService {
             record.setType(taskType.getValue());
         }
         record.setExecuteUser(job.getSubmitUser());
+        String content = "";
         if (job.getContentType() == JobContentType.SCRIPT.getValue()) {
             int scriptId = Integer.valueOf(job.getContent());
-            record.setContent(scriptService.getContentById(scriptId));
+            if (scriptService.getContentById(scriptId) != null ) {
+                content = scriptService.getContentById(scriptId);
+            } else {
+                LOGGER.error("cant't find content from script! jobId={}, scriptId={}", jobId, scriptId);
+            }
         } else {
-            record.setContent(job.getContent());
+            content = job.getContent();
         }
+        record.setContent(content);
         record.setParams(job.getParams());
         record.setAppId(job.getAppId());
         return insertSelective(record);

@@ -72,11 +72,14 @@ function initJobData() {
 
             job = data.data;
             $("#jobName").val(job.jobName);
-            if (null != job.activeStartDate) {
+            $("#department").val(job.department);
+            var startDate = job.activeStartDate;
+            if (startDate != null && startDate != CONST.JOB_ACTIVE_DATE.MIN_DATE) {
                 $("#activeStartDate").val(moment(job.activeStartDate).format("YYYY-MM-DD"));
             }
-            if (null != job.activeEndDate) {
-                $("#activeEndDate").val(moment(job.activeEndDate).format("YYYY-MM-DD"));
+            var endDate = job.activeEndDate;
+            if (endDate != null && endDate != CONST.JOB_ACTIVE_DATE.MAX_DATE) {
+                $("#activeEndDate").val(moment(endDate).format("YYYY-MM-DD"));
             }
 
             if (job.contentType == CONST.CONTENT_TYPE.SCRIPT) {
@@ -294,46 +297,13 @@ function initExpressionType() {
             expressionId = job.expressionId;
             if (expressionId == null) {
                 $("#expressionType").val("no").trigger("change");
-                $("#expression").attr("disabled", "disabled");
+                //$("#expression").attr("disabled", "disabled");
             }
             else {
                 $("#expressionType").val(job.expressionType).trigger("change");
             }
         }
     });
-}
-
-//计算表达式
-function getScheduleExpressionList() {
-
-    var scheduleExpressionList = [];
-    var scheduleExpressionEntry = {};
-
-    var newExpressionType = $("#expressionType").val();
-    newExpressionType = (newExpressionType == "no") ? null : newExpressionType;
-    if(newExpressionType == null){
-        return scheduleExpressionList;
-    }
-
-    var newExpression = $("#expression").val();
-
-    scheduleExpressionEntry["expressionType"] = newExpressionType;
-    scheduleExpressionEntry["expression"] = newExpression;
-    var operatorMode;
-    if ((expressionId == undefined || expressionId == '') && newExpressionType != null && newExpression != '') {
-        operatorMode = CONST.OPERATE_MODE.ADD;
-    }
-    if ((expressionId != undefined && expressionId != '') && newExpressionType != null && newExpression != '') {
-        operatorMode = CONST.OPERATE_MODE.EDIT;
-    }
-    if ((expressionId != undefined && expressionId != '') && (newExpressionType == null || newExpression == '')) {
-        operatorMode = CONST.OPERATE_MODE.DELETE;
-    }
-    scheduleExpressionEntry["expressionId"] = expressionId;
-    scheduleExpressionEntry["operatorMode"] = operatorMode;
-
-    scheduleExpressionList.push(scheduleExpressionEntry);
-    return scheduleExpressionList;
 }
 
 
@@ -349,12 +319,12 @@ function initBizGroupName() {
                 newData.push(item);
             });
 
-            $("#bizGroupId").select2({
+            $("#bizGroups").select2({
                 data: newData,
                 width: '100%'
             });
-            if (job != null) {
-                $("#bizGroupId").val(job.bizGroupId).trigger("change");
+            if (job != null && job.bizGroups != "") {
+                $("#bizGroups").val(job.bizGroups.split(",")).trigger("change");
             }
         }
         else {
@@ -513,6 +483,36 @@ function checkActiveDate() {
     return flag;
 }
 
+//计算表达式
+function getScheduleExpressionList() {
+    var scheduleExpressionList = [];
+    var operatorMode = null;
+    var newExpressionType = $("#expressionType").val();
+    newExpressionType = (newExpressionType == "no") ? null : newExpressionType;
+    var newExpression = $("#expression").val();
+    if (expressionId == null) {
+        if (newExpressionType != null && newExpression != '') {
+            operatorMode = CONST.OPERATE_MODE.ADD;
+        }
+    } else {
+        if (newExpressionType == null || newExpression == '') {
+            operatorMode = CONST.OPERATE_MODE.DELETE;
+        } else if (job.expressionType != newExpressionType || job.expression != newExpression) {
+            operatorMode = CONST.OPERATE_MODE.EDIT;
+        }
+    }
+    if (operatorMode != null) {
+        var entry = {
+            "operatorMode": operatorMode,
+            "expressionId": expressionId,
+            "expressionType": newExpressionType,
+            "expression": newExpression
+        };
+        scheduleExpressionList.push(entry);
+    }
+    return scheduleExpressionList;
+}
+
 
 //获取job数据
 function getJobDataFromPage() {
@@ -560,10 +560,14 @@ function getJobDataFromPage() {
         var id = $(c).prop("id");
         var value = $(c).val();
 
-        if (value != '' && testNum.test(value)) {
-            value = parseInt(value);
+        if ($(this).prop("multiple")) { //多选框
+            result[id] = value == null ? "" : value.join(",");
+        } else {
+            if (value != '' && testNum.test(value)) {
+                value = parseInt(value);
+            }
+            result[id] = value;
         }
-        result[id] = value;
     });
 
     var contentType = $("input[name='contentType']:checked").val();
@@ -579,7 +583,7 @@ function getJobDataFromPage() {
     }
 
     //表达式类型与表达式内容
-    result["scheduleExpressionList"] =  getScheduleExpressionList();
+    result["scheduleExpressionList"] = getScheduleExpressionList();
     var appId = $("#appId").val();
     result["appId"] = appId;
     return result;
@@ -649,13 +653,17 @@ function saveJob() {
     }
 
     var data = getJobDataFromPage();
-    var resultFlag;
     if (null != jobId && '' != jobId) {
         data["jobId"] = jobId;
         var response1 = requestRemoteRestApi("/api/job/edit", "编辑任务", data);
-        var response2 = requestRemoteRestApi("/api/job/scheduleExp/set", "修改表达式", data);
 
-        if (response1.flag && response2.flag) {
+        var flag2 = true;
+        if (data["scheduleExpressionList"].length > 0) {
+            var response2 = requestRemoteRestApi("/api/job/scheduleExp/set", "修改表达式", data);
+            flag2 = response2.flag;
+        }
+
+        if (response1.flag && flag2) {
             window.setTimeout(function () {
                 window.location.reload();
             }, 500);

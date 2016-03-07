@@ -116,8 +116,9 @@ public class JobVo extends AbstractVo {
         return bizGroups;
     }
 
-    public void setBizGroupId(String bizGroups) {
+    public JobVo setBizGroups(String bizGroups) {
         this.bizGroups = bizGroups;
+        return this;
     }
 
     public Integer getPriority() {

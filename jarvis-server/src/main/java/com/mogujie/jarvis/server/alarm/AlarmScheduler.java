@@ -9,22 +9,22 @@ package com.mogujie.jarvis.server.alarm;
 
 import java.util.List;
 
-import com.mogujie.jarvis.core.domain.AlarmType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
 import com.google.common.eventbus.Subscribe;
+import com.mogujie.jarvis.core.domain.AlarmType;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.dto.generate.Alarm;
 import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.server.ServerConigKeys;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.Scheduler;
-import com.mogujie.jarvis.server.scheduler.event.DAGTaskEvent;
 import com.mogujie.jarvis.server.scheduler.event.FailedEvent;
 import com.mogujie.jarvis.server.scheduler.event.KilledEvent;
+import com.mogujie.jarvis.server.scheduler.event.ModifyKpiEvent;
 import com.mogujie.jarvis.server.scheduler.event.StartEvent;
 import com.mogujie.jarvis.server.scheduler.event.StopEvent;
 import com.mogujie.jarvis.server.service.AlarmService;
@@ -62,32 +62,40 @@ public class AlarmScheduler extends Scheduler {
 
     @Subscribe
     public void handleFailedEvent(FailedEvent event) {
-        alarm(event);
-    }
-
-    @Subscribe
-    public void handleKilledEvent(KilledEvent event) {
-        alarm(event);
-    }
-
-    private void alarm(DAGTaskEvent event) {
-        if (alarmer == null) {
-            return;
-        }
-
         long jobId = event.getJobId();
         Job job = jobService.get(jobId).getJob();
         if (job != null) {
             String jobName = job.getJobName();
+            String msg = "任务[" + jobName + "]运行失败";
+            alarm(jobId, msg);
+        }
+    }
+
+    @Subscribe
+    public void handleKilledEvent(KilledEvent event) {
+        long jobId = event.getJobId();
+        Job job = jobService.get(jobId).getJob();
+        if (job != null) {
+            String jobName = job.getJobName();
+            String msg = "任务[" + jobName + "]被Kill";
+            alarm(jobId, msg);
+        }
+    }
+
+    @Subscribe
+    public void handleModifyKpiEvent(ModifyKpiEvent event) {
+        alarm(event.getJobId(), event.getMsg());
+    }
+
+    private void alarm(long jobId, String msg) {
+        if (alarmer == null) {
+            return;
+        }
+
+        Job job = jobService.get(jobId).getJob();
+        if (job != null) {
             Alarm alarm = alarmService.getAlarmByJobId(jobId);
             if (alarm != null && alarm.getStatus().intValue() == 1) {
-                String msg = null;
-                if (event instanceof FailedEvent) {
-                    msg = "任务[" + jobName + "]运行失败";
-                } else if (event instanceof KilledEvent) {
-                    msg = "任务[" + jobName + "]被Kill";
-                }
-
                 String[] tokens = alarm.getAlarmType().split(",");
                 List<AlarmType> alarmTypes = Lists.newArrayList();
                 for (String str : tokens) {
@@ -101,6 +109,8 @@ public class AlarmScheduler extends Scheduler {
                     LOGGER.warn("Alarm Failed");
                 }
             }
+        } else {
+            LOGGER.error("job={} not found!", jobId);
         }
     }
 

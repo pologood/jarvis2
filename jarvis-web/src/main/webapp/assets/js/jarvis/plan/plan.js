@@ -172,7 +172,7 @@ var columns = [{
     switchable: true,
     visible: true
 }, {
-    field: 'bizGroupId',
+    field: 'bizGroups',
     title: '业务组ID',
     switchable: true,
     visible: false

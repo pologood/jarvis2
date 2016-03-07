@@ -299,7 +299,18 @@ public class TaskScheduler extends Scheduler {
                 updateTask.setAttemptId(attemptId);
                 updateTask.setUpdateTime(DateTime.now().toDate());
                 Job job = jobService.get(dagTask.getJobId()).getJob();
-                updateTask.setContent(job.getContent());
+                String content = "";
+                if (job.getContentType() == JobContentType.SCRIPT.getValue()) {
+                    int scriptId = Integer.valueOf(job.getContent());
+                    if (scriptService.getContentById(scriptId) != null ) {
+                        content = scriptService.getContentById(scriptId);
+                    } else {
+                        LOGGER.error("cant't find content from scriptId={}", scriptId);
+                    }
+                } else {
+                    content = job.getContent();
+                }
+                updateTask.setContent(content);
                 updateTask.setExecuteUser(job.getUpdateUser());
                 taskService.updateSelective(updateTask);
                 LOGGER.info("update task {}, attemptId={}", taskId, attemptId);
@@ -382,16 +393,18 @@ public class TaskScheduler extends Scheduler {
                 .setFailedRetries(job.getFailedAttempts())
                 .setFailedInterval(job.getFailedInterval())
                 .setExpiredTime(job.getExpiredTime());
+        String content = "";
         if (job.getContentType() == JobContentType.SCRIPT.getValue()) {
             int scriptId = Integer.parseInt(job.getContent());
-            String content = scriptService.getContentById(scriptId);
-            if (content == null) {
+            if (scriptService.getContentById(scriptId) != null) {
+                content = scriptService.getContentById(scriptId);
+            } else {
                 LOGGER.error("couldn't get content by scriptId={}", scriptId);
             }
-            builder.setContent(scriptService.getContentById(scriptId));
         } else {
-            builder.setContent(job.getContent());
+            content = job.getContent();
         }
+        builder.setContent(content);
         return builder.build();
     }
 

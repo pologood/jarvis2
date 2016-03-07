@@ -12,14 +12,11 @@ import java.util.List;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.core.exception.NotFoundException;
 import com.mogujie.jarvis.dao.generate.BizGroupMapper;
 import com.mogujie.jarvis.dao.generate.JobMapper;
 import com.mogujie.jarvis.dto.generate.BizGroup;
 import com.mogujie.jarvis.dto.generate.BizGroupExample;
-import com.mogujie.jarvis.dto.generate.Job;
-import com.mogujie.jarvis.dto.generate.JobExample;
 
 /**
  * BizGroupService
@@ -58,10 +55,6 @@ public class BizGroupService {
             throw new NotFoundException("bizGroup 不存在. id:" + id);
         }
         return bizGroup;
-    }
-
-    public BizGroup queryById(Integer id) {
-        return bizGroupMapper.selectByPrimaryKey(id);
     }
 
     public BizGroup queryByName(String name) throws NotFoundException {

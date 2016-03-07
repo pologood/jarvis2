@@ -9,15 +9,13 @@
               ,jobType
               ,job.submitUser
               ,job.priority
-              ,job.bizGroupId
+              ,job.bizGroups
               ,job.activeStartDate
               ,job.activeEndDate
               ,app.appName
               ,app.appKey
-              ,biz_group.name as bizGroupName
         FROM job
         LEFT JOIN app ON job.appId=app.appId
-        LEFT JOIN biz_group on job.bizGroupId = biz_group.id
         WHERE jobId=#{jobId}
     </select>
 
@@ -28,16 +26,14 @@
               ,jobType
               ,job.submitUser
               ,job.priority
-              ,job.bizGroupId
+              ,job.bizGroups
               ,job.activeStartDate
               ,job.activeEndDate
               ,app.appName
               ,app.appKey
-              ,biz_group.name as bizGroupName
         FROM job_depend
         LEFT JOIN job ON job_depend.jobId=job.jobId
         LEFT JOIN app ON job.appId=app.appId
-        LEFT JOIN biz_group on job.bizGroupId = biz_group.id
         WHERE job_depend.preJobId=#{jobId}
     </select>
 
@@ -48,18 +44,16 @@
               ,jobType
               ,job.submitUser
               ,job.priority
-              ,job.bizGroupId
+              ,job.bizGroups
               ,job.activeStartDate
               ,job.activeEndDate
               ,app.appName
               ,app.appKey
-              ,biz_group.name as bizGroupName
               ,job_depend.commonStrategy
               ,job_depend.offsetStrategy
         FROM job_depend
         LEFT JOIN job ON job_depend.preJobId=job.jobId
         LEFT JOIN app ON job.appId=app.appId
-        LEFT JOIN biz_group on job.bizGroupId = biz_group.id
         WHERE job_depend.jobId=#{_parameter}
     </select>
 
