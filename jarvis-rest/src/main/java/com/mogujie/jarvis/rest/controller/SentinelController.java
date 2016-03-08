@@ -23,6 +23,7 @@ import javax.ws.rs.core.MediaType;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mogujie.jarvis.core.domain.AkkaType;
+import com.mogujie.jarvis.core.domain.JobContentType;
 import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.core.domain.StreamType;
 import com.mogujie.jarvis.core.domain.TaskStatus;
@@ -72,6 +73,7 @@ public class SentinelController extends AbstractController {
      * @param groupId
      * @return RestResult
      */
+
     @POST
     @Path("execute")
     @Produces(MediaType.APPLICATION_JSON)
@@ -88,6 +90,7 @@ public class SentinelController extends AbstractController {
             jobVo.setWorkerGroupId(groupId);
             jobVo.setContent(content);
             jobVo.setTemp(true);
+            jobVo.setContentType(JobContentType.TEXT.getValue()); //一次性任务都是文本格式
             ValidUtils.checkJob(CheckMode.ADD, jobVo);
             RestSubmitJobRequest request = vo2RequestByAdd(jobVo, appAuth, user);
 
