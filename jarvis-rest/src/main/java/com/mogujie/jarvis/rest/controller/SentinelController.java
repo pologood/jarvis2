@@ -99,7 +99,7 @@ public class SentinelController extends AbstractController {
             BaseRet result;
             if (response.getSuccess()) {
                 Map<String, Object> params = new HashMap<String, Object>();
-                params.put("jobId", response.getJobId());
+                params.put("jobId", String.valueOf(response.getJobId()));
                 result = new BaseRet(ResponseCodeEnum.SUCCESS, "任务提交成功", params);
             } else {
                 result = new BaseRet(ResponseCodeEnum.FAILED, "任务添加失败:" + response.getMessage());
@@ -179,7 +179,7 @@ public class SentinelController extends AbstractController {
                             return new BaseRet(ResponseCodeEnum.FAILED, "无法转换到sentinel的状态，jarvis状态为: " + jarvisStatus);
                         } else {
                             BaseRet ret = new BaseRet(ResponseCodeEnum.SUCCESS);
-                            ret.put("jobStatus", sentinelStatus.getValue());
+                            ret.put("jobStatus", String.valueOf(sentinelStatus.getValue()));
                             ret.put("message", "查询状态成功");
                             return ret;
                         }
