@@ -23,6 +23,7 @@ import javax.ws.rs.core.MediaType;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mogujie.jarvis.core.domain.AkkaType;
+import com.mogujie.jarvis.core.domain.JobContentType;
 import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.core.domain.StreamType;
 import com.mogujie.jarvis.core.domain.TaskStatus;
@@ -72,6 +73,7 @@ public class SentinelController extends AbstractController {
      * @param groupId
      * @return RestResult
      */
+
     @POST
     @Path("execute")
     @Produces(MediaType.APPLICATION_JSON)
@@ -88,6 +90,7 @@ public class SentinelController extends AbstractController {
             jobVo.setWorkerGroupId(groupId);
             jobVo.setContent(content);
             jobVo.setTemp(true);
+            jobVo.setContentType(JobContentType.TEXT.getValue()); //一次性任务都是文本格式
             ValidUtils.checkJob(CheckMode.ADD, jobVo);
             RestSubmitJobRequest request = vo2RequestByAdd(jobVo, appAuth, user);
 
@@ -96,7 +99,7 @@ public class SentinelController extends AbstractController {
             BaseRet result;
             if (response.getSuccess()) {
                 Map<String, Object> params = new HashMap<String, Object>();
-                params.put("jobId", response.getJobId());
+                params.put("jobId", String.valueOf(response.getJobId()));
                 result = new BaseRet(ResponseCodeEnum.SUCCESS, "任务提交成功", params);
             } else {
                 result = new BaseRet(ResponseCodeEnum.FAILED, "任务添加失败:" + response.getMessage());
@@ -176,7 +179,7 @@ public class SentinelController extends AbstractController {
                             return new BaseRet(ResponseCodeEnum.FAILED, "无法转换到sentinel的状态，jarvis状态为: " + jarvisStatus);
                         } else {
                             BaseRet ret = new BaseRet(ResponseCodeEnum.SUCCESS);
-                            ret.put("jobStatus", sentinelStatus.getValue());
+                            ret.put("jobStatus", String.valueOf(sentinelStatus.getValue()));
                             ret.put("message", "查询状态成功");
                             return ret;
                         }
@@ -331,6 +334,7 @@ public class SentinelController extends AbstractController {
                 .setJobName(vo.getJobName())
                 .setJobType(vo.getJobType())
                 .setStatus(vo.getStatus(JobStatus.ENABLE.getValue()))
+                .setContentType(vo.getContentType())
                 .setContent(vo.getContent())
                 .setParameters(vo.getParams("{}"))
                 .setAppName(vo.getAppName(appAuth.getName()))
@@ -344,22 +348,6 @@ public class SentinelController extends AbstractController {
                 .setExpiredTime(vo.getExpiredTime(60*10)) //临时任务默认十分钟
                 .setFailedAttempts(vo.getFailedAttempts(0))
                 .setFailedInterval(vo.getFailedInterval(3));
-
-//        DateTime now = DateTime.now();
-//        String cronExpression = new StringBuilder().append(now.getSecondOfMinute()) //秒
-//                .append(" ").append(now.getMinuteOfHour()) //分
-//                .append(" ").append(now.getHourOfDay()) //时
-//                .append(" ").append(now.getDayOfMonth()) //天
-//                .append(" ").append(now.getMonthOfYear()) //月
-//                .append(" ?") //周
-//                .append(" ").append(now.getYear()) //年
-//                .toString();
-//        ScheduleExpressionEntry entry = ScheduleExpressionEntry.newBuilder().setOperator(OperationMode.ADD.getValue())
-//                .setExpressionId(0)
-//                .setExpressionType(ScheduleExpressionType.CRON.getValue())
-//                .setScheduleExpression(cronExpression)
-//                .build();
-//        builder.addExpressionEntry(entry);
 
         return builder.build();
     }
