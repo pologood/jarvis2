@@ -68,7 +68,9 @@ $(function () {
 
     // 为echarts对象加载数据
     myChart.setOption(option);
-    initLog();
+    window.setTimeout(function(){
+        initLog();
+    },3000);
 });
 
 

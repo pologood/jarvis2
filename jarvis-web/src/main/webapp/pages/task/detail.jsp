@@ -35,19 +35,19 @@
                 <table class="table table-bordered">
                     <tbody>
                     <tr>
-                        <td class="emphasize bg-warning">任务ID</td>
+                        <td class=" bg-warning">任务ID</td>
                         <td>${jobVo.jobId}</td>
-                        <td class="emphasize bg-warning">任务名称</td>
+                        <td class=" bg-warning">任务名称</td>
                         <td>${jobVo.jobName}</td>
-                        <td class="emphasize bg-warning">参数</td>
+                        <td class=" bg-warning">参数</td>
                         <td>${taskVo.params}</td>
                     </tr>
                     <tr>
-                        <td class="emphasize bg-warning">执行ID</td>
+                        <td class=" bg-warning">执行ID</td>
                         <td>${taskVo.taskId}</td>
-                        <td class="emphasize bg-warning">执行者</td>
+                        <td class=" bg-warning">执行者</td>
                         <td>${taskVo.executeUser}</td>
-                        <td class="emphasize bg-warning">状态</td>
+                        <td class=" bg-warning">状态</td>
                         <td>
                             <c:choose>
                                 <c:when test="${taskVo.status==1}">
@@ -72,30 +72,30 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="emphasize bg-warning">调度时间</td>
+                        <td class=" bg-warning">调度时间</td>
                         <td><fmt:formatDate value="${taskVo.scheduleTime}"
                                             pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate></td>
-                        <td class="emphasize bg-warning">执行进度</td>
+                        <td class=" bg-warning">执行进度</td>
                         <td><fmt:formatNumber type="number" value="${taskVo.progress*100}"
                                               maxIntegerDigits="2"></fmt:formatNumber>%
                         </td>
-                        <td class="emphasize bg-warning">最近30次平均耗时(秒)</td>
+                        <td class=" bg-warning">最近30次平均耗时(秒)</td>
                         <td>${taskVo.avgExecuteTime}</td>
                     </tr>
                     <tr>
-                        <td class="emphasize bg-warning">开始时间</td>
+                        <td class=" bg-warning">开始时间</td>
                         <td><fmt:formatDate value="${taskVo.executeStartTime}"
                                             pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate></td>
-                        <td class="emphasize bg-warning">结束时间</td>
+                        <td class=" bg-warning">结束时间</td>
                         <td><fmt:formatDate value="${taskVo.executeEndTime}"
                                             pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate></td>
-                        <td class="emphasize bg-warning">耗时(秒)</td>
+                        <td class=" bg-warning">耗时(秒)</td>
                         <td>${taskVo.executeTime}</td>
                     </tr>
                     <tr>
-                        <td class="emphasize bg-warning">应用ID</td>
+                        <td class=" bg-warning">应用ID</td>
                         <td>${taskVo.appId}</td>
-                        <td class="emphasize bg-warning">workerId</td>
+                        <td class=" bg-warning">workerId</td>
                         <td>${taskVo.workerId}</td>
                     </tr>
 
@@ -117,8 +117,8 @@
                                 </ul>
 
                                 <div class="tab-content">
-                                    <div id="executeContent" class="tab-pane active">
-                                        <pre>
+                                    <div id="executeContent" class="tab-pane active" style="width: 1150px">
+                                        <pre >
                                             ${taskVo.content}
                                         </pre>
                                     </div>
