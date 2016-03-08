@@ -223,6 +223,9 @@ public class JobActor extends UntypedActor {
             Job job = msg2Job(msg);
             validService.checkJob(CheckMode.ADD, job);
 
+            //DEBUG
+            LOGGER.info("======jobId={}, jobName={}", job.getJobId(), job.getJobName());
+
             // 1. insert job to DB
             jobId = jobService.insertJob(job);
             job = jobService.get(jobId).getJob();
