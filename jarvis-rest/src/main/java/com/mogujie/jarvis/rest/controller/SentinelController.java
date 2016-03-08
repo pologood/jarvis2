@@ -334,6 +334,7 @@ public class SentinelController extends AbstractController {
                 .setJobName(vo.getJobName())
                 .setJobType(vo.getJobType())
                 .setStatus(vo.getStatus(JobStatus.ENABLE.getValue()))
+                .setContentType(vo.getContentType())
                 .setContent(vo.getContent())
                 .setParameters(vo.getParams("{}"))
                 .setAppName(vo.getAppName(appAuth.getName()))
@@ -347,22 +348,6 @@ public class SentinelController extends AbstractController {
                 .setExpiredTime(vo.getExpiredTime(60*10)) //临时任务默认十分钟
                 .setFailedAttempts(vo.getFailedAttempts(0))
                 .setFailedInterval(vo.getFailedInterval(3));
-
-//        DateTime now = DateTime.now();
-//        String cronExpression = new StringBuilder().append(now.getSecondOfMinute()) //秒
-//                .append(" ").append(now.getMinuteOfHour()) //分
-//                .append(" ").append(now.getHourOfDay()) //时
-//                .append(" ").append(now.getDayOfMonth()) //天
-//                .append(" ").append(now.getMonthOfYear()) //月
-//                .append(" ?") //周
-//                .append(" ").append(now.getYear()) //年
-//                .toString();
-//        ScheduleExpressionEntry entry = ScheduleExpressionEntry.newBuilder().setOperator(OperationMode.ADD.getValue())
-//                .setExpressionId(0)
-//                .setExpressionType(ScheduleExpressionType.CRON.getValue())
-//                .setScheduleExpression(cronExpression)
-//                .build();
-//        builder.addExpressionEntry(entry);
 
         return builder.build();
     }
