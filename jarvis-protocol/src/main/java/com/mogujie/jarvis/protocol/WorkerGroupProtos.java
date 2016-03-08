@@ -3348,7 +3348,6 @@ public final class WorkerGroupProtos {
     }
 
     private static com.google.protobuf.Descriptors.FileDescriptor descriptor;
-
     static {
         java.lang.String[] descriptorData = {
                 "\n\022worker_group.proto\032\016app_auth.proto\"c\n\034" + "RestCreateWorkerGroupRequest\022\032\n\010app_auth"

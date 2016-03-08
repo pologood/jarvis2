@@ -6286,7 +6286,6 @@ public final class ApplicationProtos {
     }
 
     private static com.google.protobuf.Descriptors.FileDescriptor descriptor;
-
     static {
         java.lang.String[] descriptorData = {
                 "\n\021application.proto\032\016app_auth.proto\"\226\001\n\034" + "RestCreateApplicationRequest\022\032\n\010app_auth"

@@ -17,11 +17,6 @@ import org.apache.commons.configuration.Configuration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import akka.actor.ActorRef;
-import akka.actor.Props;
-import akka.actor.UntypedActor;
-import akka.routing.RoundRobinPool;
-
 import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -39,6 +34,11 @@ import com.mogujie.jarvis.server.ServerConigKeys;
 import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.service.AppService;
+
+import akka.actor.ActorRef;
+import akka.actor.Props;
+import akka.actor.UntypedActor;
+import akka.routing.RoundRobinPool;
 
 public class ServerActor extends UntypedActor {
 
@@ -79,20 +79,12 @@ public class ServerActor extends UntypedActor {
 
     private Object generateResponse(Class<? extends GeneratedMessage> clazz, boolean success, String msg) {
         try {
-            Method method = clazz.getMethod("getDefaultInstance", new Class[] {});
-            Object object = method.invoke(null, new Object[] {});
-            for (Field field : object.getClass().getDeclaredFields()) {
-                if ("success_".equals(field.getName())) {
-                    field.setAccessible(true);
-                    field.set(object, success);
-                }
-
-                if ("message_".equals(field.getName())) {
-                    field.setAccessible(true);
-                    field.set(object, msg);
-                }
-            }
-
+            Method newBuilderMethod = clazz.getMethod("newBuilder", new Class[] {});
+            Object newBuilderObject = newBuilderMethod.invoke(null, new Object[] {});
+            Class<?> newBuilderObjectClass = newBuilderObject.getClass();
+            newBuilderObjectClass.getMethod("setSuccess", new Class[] { boolean.class }).invoke(newBuilderObject, success);
+            newBuilderObjectClass.getMethod("setMessage", new Class[] { String.class }).invoke(newBuilderObject, msg);
+            Object object = newBuilderObjectClass.getMethod("build", new Class[] {}).invoke(newBuilderObject, new Object[] {});
             return object;
         } catch (NoSuchMethodException | SecurityException | IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
             Throwables.propagate(e);

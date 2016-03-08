@@ -10,9 +10,10 @@ public final class JobScheduleExpressionEntryProtos {
     public static void registerAllExtensions(com.google.protobuf.ExtensionRegistry registry) {
     }
 
-    public interface ScheduleExpressionEntryOrBuilder extends com.google.protobuf.MessageOrBuilder {
+    public interface ScheduleExpressionEntryOrBuilder extends
+            // @@protoc_insertion_point(interface_extends:ScheduleExpressionEntry)
+            com.google.protobuf.MessageOrBuilder {
 
-        // required int32 operator = 1;
         /**
          * <code>required int32 operator = 1;</code>
          *
@@ -31,7 +32,6 @@ public final class JobScheduleExpressionEntryProtos {
          */
         int getOperator();
 
-        // required int64 expression_id = 2;
         /**
          * <code>required int64 expression_id = 2;</code>
          */
@@ -42,7 +42,6 @@ public final class JobScheduleExpressionEntryProtos {
          */
         long getExpressionId();
 
-        // optional int32 expression_type = 3;
         /**
          * <code>optional int32 expression_type = 3;</code>
          */
@@ -53,7 +52,6 @@ public final class JobScheduleExpressionEntryProtos {
          */
         int getExpressionType();
 
-        // optional string schedule_expression = 4;
         /**
          * <code>optional string schedule_expression = 4;</code>
          */
@@ -73,7 +71,9 @@ public final class JobScheduleExpressionEntryProtos {
     /**
      * Protobuf type {@code ScheduleExpressionEntry}
      */
-    public static final class ScheduleExpressionEntry extends com.google.protobuf.GeneratedMessage implements ScheduleExpressionEntryOrBuilder {
+    public static final class ScheduleExpressionEntry extends com.google.protobuf.GeneratedMessage implements
+            // @@protoc_insertion_point(message_implements:ScheduleExpressionEntry)
+            ScheduleExpressionEntryOrBuilder {
         // Use ScheduleExpressionEntry.newBuilder() to construct.
         private ScheduleExpressionEntry(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
             super(builder);
@@ -136,8 +136,9 @@ public final class JobScheduleExpressionEntryProtos {
                             break;
                         }
                         case 34: {
+                            com.google.protobuf.ByteString bs = input.readBytes();
                             bitField0_ |= 0x00000008;
-                            scheduleExpression_ = input.readBytes();
+                            scheduleExpression_ = bs;
                             break;
                         }
                     }
@@ -177,7 +178,6 @@ public final class JobScheduleExpressionEntryProtos {
         }
 
         private int bitField0_;
-        // required int32 operator = 1;
         public static final int OPERATOR_FIELD_NUMBER = 1;
         private int operator_;
 
@@ -205,7 +205,6 @@ public final class JobScheduleExpressionEntryProtos {
             return operator_;
         }
 
-        // required int64 expression_id = 2;
         public static final int EXPRESSION_ID_FIELD_NUMBER = 2;
         private long expressionId_;
 
@@ -225,7 +224,6 @@ public final class JobScheduleExpressionEntryProtos {
             return expressionId_;
         }
 
-        // optional int32 expression_type = 3;
         public static final int EXPRESSION_TYPE_FIELD_NUMBER = 3;
         private int expressionType_;
 
@@ -245,7 +243,6 @@ public final class JobScheduleExpressionEntryProtos {
             return expressionType_;
         }
 
-        // optional string schedule_expression = 4;
         public static final int SCHEDULE_EXPRESSION_FIELD_NUMBER = 4;
         private java.lang.Object scheduleExpression_;
 
@@ -302,8 +299,10 @@ public final class JobScheduleExpressionEntryProtos {
         @Override
         public final boolean isInitialized() {
             byte isInitialized = memoizedIsInitialized;
-            if (isInitialized != -1)
-                return isInitialized == 1;
+            if (isInitialized == 1)
+                return true;
+            if (isInitialized == 0)
+                return false;
 
             if (!hasOperator()) {
                 memoizedIsInitialized = 0;
@@ -446,8 +445,9 @@ public final class JobScheduleExpressionEntryProtos {
         /**
          * Protobuf type {@code ScheduleExpressionEntry}
          */
-        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder>
-                implements com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder {
+        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+                // @@protoc_insertion_point(builder_implements:ScheduleExpressionEntry)
+                com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntryOrBuilder {
             public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
                 return com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.internal_static_ScheduleExpressionEntry_descriptor;
             }
@@ -606,7 +606,6 @@ public final class JobScheduleExpressionEntryProtos {
 
             private int bitField0_;
 
-            // required int32 operator = 1;
             private int operator_;
 
             /**
@@ -661,7 +660,6 @@ public final class JobScheduleExpressionEntryProtos {
                 return this;
             }
 
-            // required int64 expression_id = 2;
             private long expressionId_;
 
             /**
@@ -700,7 +698,6 @@ public final class JobScheduleExpressionEntryProtos {
                 return this;
             }
 
-            // optional int32 expression_type = 3;
             private int expressionType_;
 
             /**
@@ -739,7 +736,6 @@ public final class JobScheduleExpressionEntryProtos {
                 return this;
             }
 
-            // optional string schedule_expression = 4;
             private java.lang.Object scheduleExpression_ = "";
 
             /**
@@ -757,8 +753,11 @@ public final class JobScheduleExpressionEntryProtos {
             public java.lang.String getScheduleExpression() {
                 java.lang.Object ref = scheduleExpression_;
                 if (!(ref instanceof java.lang.String)) {
-                    java.lang.String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
-                    scheduleExpression_ = s;
+                    com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                    java.lang.String s = bs.toStringUtf8();
+                    if (bs.isValidUtf8()) {
+                        scheduleExpression_ = s;
+                    }
                     return s;
                 } else {
                     return (java.lang.String) ref;
@@ -827,7 +826,7 @@ public final class JobScheduleExpressionEntryProtos {
         // @@protoc_insertion_point(class_scope:ScheduleExpressionEntry)
     }
 
-    private static com.google.protobuf.Descriptors.Descriptor internal_static_ScheduleExpressionEntry_descriptor;
+    private static final com.google.protobuf.Descriptors.Descriptor internal_static_ScheduleExpressionEntry_descriptor;
     private static com.google.protobuf.GeneratedMessage.FieldAccessorTable internal_static_ScheduleExpressionEntry_fieldAccessorTable;
 
     public static com.google.protobuf.Descriptors.FileDescriptor getDescriptor() {
@@ -845,15 +844,15 @@ public final class JobScheduleExpressionEntryProtos {
             @Override
             public com.google.protobuf.ExtensionRegistry assignDescriptors(com.google.protobuf.Descriptors.FileDescriptor root) {
                 descriptor = root;
-                internal_static_ScheduleExpressionEntry_descriptor = getDescriptor().getMessageTypes().get(0);
-                internal_static_ScheduleExpressionEntry_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-                        internal_static_ScheduleExpressionEntry_descriptor,
-                        new java.lang.String[] { "Operator", "ExpressionId", "ExpressionType", "ScheduleExpression", });
                 return null;
             }
         };
         com.google.protobuf.Descriptors.FileDescriptor.internalBuildGeneratedFileFrom(descriptorData,
                 new com.google.protobuf.Descriptors.FileDescriptor[] {}, assigner);
+        internal_static_ScheduleExpressionEntry_descriptor = getDescriptor().getMessageTypes().get(0);
+        internal_static_ScheduleExpressionEntry_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+                internal_static_ScheduleExpressionEntry_descriptor,
+                new java.lang.String[] { "Operator", "ExpressionId", "ExpressionType", "ScheduleExpression", });
     }
 
     // @@protoc_insertion_point(outer_class_scope)

@@ -10,9 +10,10 @@ public final class QueryTaskStatusProtos {
     public static void registerAllExtensions(com.google.protobuf.ExtensionRegistry registry) {
     }
 
-    public interface RestServerQueryTaskStatusRequestOrBuilder extends com.google.protobuf.MessageOrBuilder {
+    public interface RestServerQueryTaskStatusRequestOrBuilder extends
+            // @@protoc_insertion_point(interface_extends:RestServerQueryTaskStatusRequest)
+            com.google.protobuf.MessageOrBuilder {
 
-        // required .AppAuth app_auth = 1;
         /**
          * <code>required .AppAuth app_auth = 1;</code>
          */
@@ -28,7 +29,6 @@ public final class QueryTaskStatusProtos {
          */
         com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder();
 
-        // required int64 task_id = 2;
         /**
          * <code>required int64 task_id = 2;</code>
          */
@@ -43,8 +43,9 @@ public final class QueryTaskStatusProtos {
     /**
      * Protobuf type {@code RestServerQueryTaskStatusRequest}
      */
-    public static final class RestServerQueryTaskStatusRequest extends com.google.protobuf.GeneratedMessage
-            implements RestServerQueryTaskStatusRequestOrBuilder {
+    public static final class RestServerQueryTaskStatusRequest extends com.google.protobuf.GeneratedMessage implements
+            // @@protoc_insertion_point(message_implements:RestServerQueryTaskStatusRequest)
+            RestServerQueryTaskStatusRequestOrBuilder {
         // Use RestServerQueryTaskStatusRequest.newBuilder() to construct.
         private RestServerQueryTaskStatusRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
             super(builder);
@@ -146,7 +147,6 @@ public final class QueryTaskStatusProtos {
         }
 
         private int bitField0_;
-        // required .AppAuth app_auth = 1;
         public static final int APP_AUTH_FIELD_NUMBER = 1;
         private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_;
 
@@ -174,7 +174,6 @@ public final class QueryTaskStatusProtos {
             return appAuth_;
         }
 
-        // required int64 task_id = 2;
         public static final int TASK_ID_FIELD_NUMBER = 2;
         private long taskId_;
 
@@ -204,8 +203,10 @@ public final class QueryTaskStatusProtos {
         @Override
         public final boolean isInitialized() {
             byte isInitialized = memoizedIsInitialized;
-            if (isInitialized != -1)
-                return isInitialized == 1;
+            if (isInitialized == 1)
+                return true;
+            if (isInitialized == 0)
+                return false;
 
             if (!hasAppAuth()) {
                 memoizedIsInitialized = 0;
@@ -340,8 +341,9 @@ public final class QueryTaskStatusProtos {
         /**
          * Protobuf type {@code RestServerQueryTaskStatusRequest}
          */
-        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder>
-                implements com.mogujie.jarvis.protocol.QueryTaskStatusProtos.RestServerQueryTaskStatusRequestOrBuilder {
+        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+                // @@protoc_insertion_point(builder_implements:RestServerQueryTaskStatusRequest)
+                com.mogujie.jarvis.protocol.QueryTaskStatusProtos.RestServerQueryTaskStatusRequestOrBuilder {
             public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
                 return com.mogujie.jarvis.protocol.QueryTaskStatusProtos.internal_static_RestServerQueryTaskStatusRequest_descriptor;
             }
@@ -493,7 +495,6 @@ public final class QueryTaskStatusProtos {
 
             private int bitField0_;
 
-            // required .AppAuth app_auth = 1;
             private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth
                     .getDefaultInstance();
             private com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> appAuthBuilder_;
@@ -609,13 +610,12 @@ public final class QueryTaskStatusProtos {
             private com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> getAppAuthFieldBuilder() {
                 if (appAuthBuilder_ == null) {
                     appAuthBuilder_ = new com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder>(
-                            appAuth_, getParentForChildren(), isClean());
+                            getAppAuth(), getParentForChildren(), isClean());
                     appAuth_ = null;
                 }
                 return appAuthBuilder_;
             }
 
-            // required int64 task_id = 2;
             private long taskId_;
 
             /**
@@ -665,9 +665,10 @@ public final class QueryTaskStatusProtos {
         // @@protoc_insertion_point(class_scope:RestServerQueryTaskStatusRequest)
     }
 
-    public interface ServerQueryTaskStatusResponseOrBuilder extends com.google.protobuf.MessageOrBuilder {
+    public interface ServerQueryTaskStatusResponseOrBuilder extends
+            // @@protoc_insertion_point(interface_extends:ServerQueryTaskStatusResponse)
+            com.google.protobuf.MessageOrBuilder {
 
-        // required bool success = 1;
         /**
          * <code>required bool success = 1;</code>
          */
@@ -678,7 +679,6 @@ public final class QueryTaskStatusProtos {
          */
         boolean getSuccess();
 
-        // optional int32 status = 2;
         /**
          * <code>optional int32 status = 2;</code>
          */
@@ -689,7 +689,6 @@ public final class QueryTaskStatusProtos {
          */
         int getStatus();
 
-        // optional string message = 3 [default = ""];
         /**
          * <code>optional string message = 3 [default = ""];</code>
          */
@@ -709,8 +708,9 @@ public final class QueryTaskStatusProtos {
     /**
      * Protobuf type {@code ServerQueryTaskStatusResponse}
      */
-    public static final class ServerQueryTaskStatusResponse extends com.google.protobuf.GeneratedMessage
-            implements ServerQueryTaskStatusResponseOrBuilder {
+    public static final class ServerQueryTaskStatusResponse extends com.google.protobuf.GeneratedMessage implements
+            // @@protoc_insertion_point(message_implements:ServerQueryTaskStatusResponse)
+            ServerQueryTaskStatusResponseOrBuilder {
         // Use ServerQueryTaskStatusResponse.newBuilder() to construct.
         private ServerQueryTaskStatusResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
             super(builder);
@@ -768,8 +768,9 @@ public final class QueryTaskStatusProtos {
                             break;
                         }
                         case 26: {
+                            com.google.protobuf.ByteString bs = input.readBytes();
                             bitField0_ |= 0x00000004;
-                            message_ = input.readBytes();
+                            message_ = bs;
                             break;
                         }
                     }
@@ -809,7 +810,6 @@ public final class QueryTaskStatusProtos {
         }
 
         private int bitField0_;
-        // required bool success = 1;
         public static final int SUCCESS_FIELD_NUMBER = 1;
         private boolean success_;
 
@@ -829,7 +829,6 @@ public final class QueryTaskStatusProtos {
             return success_;
         }
 
-        // optional int32 status = 2;
         public static final int STATUS_FIELD_NUMBER = 2;
         private int status_;
 
@@ -849,7 +848,6 @@ public final class QueryTaskStatusProtos {
             return status_;
         }
 
-        // optional string message = 3 [default = ""];
         public static final int MESSAGE_FIELD_NUMBER = 3;
         private java.lang.Object message_;
 
@@ -905,8 +903,10 @@ public final class QueryTaskStatusProtos {
         @Override
         public final boolean isInitialized() {
             byte isInitialized = memoizedIsInitialized;
-            if (isInitialized != -1)
-                return isInitialized == 1;
+            if (isInitialized == 1)
+                return true;
+            if (isInitialized == 0)
+                return false;
 
             if (!hasSuccess()) {
                 memoizedIsInitialized = 0;
@@ -1038,8 +1038,9 @@ public final class QueryTaskStatusProtos {
         /**
          * Protobuf type {@code ServerQueryTaskStatusResponse}
          */
-        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder>
-                implements com.mogujie.jarvis.protocol.QueryTaskStatusProtos.ServerQueryTaskStatusResponseOrBuilder {
+        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+                // @@protoc_insertion_point(builder_implements:ServerQueryTaskStatusResponse)
+                com.mogujie.jarvis.protocol.QueryTaskStatusProtos.ServerQueryTaskStatusResponseOrBuilder {
             public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
                 return com.mogujie.jarvis.protocol.QueryTaskStatusProtos.internal_static_ServerQueryTaskStatusResponse_descriptor;
             }
@@ -1185,7 +1186,6 @@ public final class QueryTaskStatusProtos {
 
             private int bitField0_;
 
-            // required bool success = 1;
             private boolean success_;
 
             /**
@@ -1224,7 +1224,6 @@ public final class QueryTaskStatusProtos {
                 return this;
             }
 
-            // optional int32 status = 2;
             private int status_;
 
             /**
@@ -1263,7 +1262,6 @@ public final class QueryTaskStatusProtos {
                 return this;
             }
 
-            // optional string message = 3 [default = ""];
             private java.lang.Object message_ = "";
 
             /**
@@ -1281,8 +1279,11 @@ public final class QueryTaskStatusProtos {
             public java.lang.String getMessage() {
                 java.lang.Object ref = message_;
                 if (!(ref instanceof java.lang.String)) {
-                    java.lang.String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
-                    message_ = s;
+                    com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                    java.lang.String s = bs.toStringUtf8();
+                    if (bs.isValidUtf8()) {
+                        message_ = s;
+                    }
                     return s;
                 } else {
                     return (java.lang.String) ref;
@@ -1351,9 +1352,9 @@ public final class QueryTaskStatusProtos {
         // @@protoc_insertion_point(class_scope:ServerQueryTaskStatusResponse)
     }
 
-    private static com.google.protobuf.Descriptors.Descriptor internal_static_RestServerQueryTaskStatusRequest_descriptor;
+    private static final com.google.protobuf.Descriptors.Descriptor internal_static_RestServerQueryTaskStatusRequest_descriptor;
     private static com.google.protobuf.GeneratedMessage.FieldAccessorTable internal_static_RestServerQueryTaskStatusRequest_fieldAccessorTable;
-    private static com.google.protobuf.Descriptors.Descriptor internal_static_ServerQueryTaskStatusResponse_descriptor;
+    private static final com.google.protobuf.Descriptors.Descriptor internal_static_ServerQueryTaskStatusResponse_descriptor;
     private static com.google.protobuf.GeneratedMessage.FieldAccessorTable internal_static_ServerQueryTaskStatusResponse_fieldAccessorTable;
 
     public static com.google.protobuf.Descriptors.FileDescriptor getDescriptor() {
@@ -1361,7 +1362,6 @@ public final class QueryTaskStatusProtos {
     }
 
     private static com.google.protobuf.Descriptors.FileDescriptor descriptor;
-
     static {
         java.lang.String[] descriptorData = {
                 "\n\027query_task_status.proto\032\016app_auth.prot" + "o\"O\n RestServerQueryTaskStatusRequest\022\032\n"
@@ -1373,17 +1373,18 @@ public final class QueryTaskStatusProtos {
             @Override
             public com.google.protobuf.ExtensionRegistry assignDescriptors(com.google.protobuf.Descriptors.FileDescriptor root) {
                 descriptor = root;
-                internal_static_RestServerQueryTaskStatusRequest_descriptor = getDescriptor().getMessageTypes().get(0);
-                internal_static_RestServerQueryTaskStatusRequest_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-                        internal_static_RestServerQueryTaskStatusRequest_descriptor, new java.lang.String[] { "AppAuth", "TaskId", });
-                internal_static_ServerQueryTaskStatusResponse_descriptor = getDescriptor().getMessageTypes().get(1);
-                internal_static_ServerQueryTaskStatusResponse_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-                        internal_static_ServerQueryTaskStatusResponse_descriptor, new java.lang.String[] { "Success", "Status", "Message", });
                 return null;
             }
         };
         com.google.protobuf.Descriptors.FileDescriptor.internalBuildGeneratedFileFrom(descriptorData,
                 new com.google.protobuf.Descriptors.FileDescriptor[] { com.mogujie.jarvis.protocol.AppAuthProtos.getDescriptor(), }, assigner);
+        internal_static_RestServerQueryTaskStatusRequest_descriptor = getDescriptor().getMessageTypes().get(0);
+        internal_static_RestServerQueryTaskStatusRequest_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+                internal_static_RestServerQueryTaskStatusRequest_descriptor, new java.lang.String[] { "AppAuth", "TaskId", });
+        internal_static_ServerQueryTaskStatusResponse_descriptor = getDescriptor().getMessageTypes().get(1);
+        internal_static_ServerQueryTaskStatusResponse_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+                internal_static_ServerQueryTaskStatusResponse_descriptor, new java.lang.String[] { "Success", "Status", "Message", });
+        com.mogujie.jarvis.protocol.AppAuthProtos.getDescriptor();
     }
 
     // @@protoc_insertion_point(outer_class_scope)

@@ -3399,7 +3399,6 @@ public final class HeartBeatProtos {
     }
 
     private static com.google.protobuf.Descriptors.FileDescriptor descriptor;
-
     static {
         java.lang.String[] descriptorData = {
                 "\n\020heart_beat.proto\032\016app_auth.proto\"#\n\020He" + "artBeatRequest\022\017\n\007job_num\030\001 \002(\005\"7\n\021Heart"

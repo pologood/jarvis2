@@ -1370,7 +1370,6 @@ public final class ModifyTaskStatusProtos {
     }
 
     private static com.google.protobuf.Descriptors.FileDescriptor descriptor;
-
     static {
         java.lang.String[] descriptorData = { "\n\030modify_task_status.proto\032\016app_auth.pro" + "to\"`\n!RestServerModifyTaskStatusRequest\022"
                 + "\032\n\010app_auth\030\001 \002(\0132\010.AppAuth\022\017\n\007task_id\030\002"

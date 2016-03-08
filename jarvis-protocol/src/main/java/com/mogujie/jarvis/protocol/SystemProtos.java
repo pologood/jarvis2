@@ -2862,7 +2862,6 @@ public final class SystemProtos {
     }
 
     private static com.google.protobuf.Descriptors.FileDescriptor descriptor;
-
     static {
         java.lang.String[] descriptorData = { "\n\014system.proto\032\016app_auth.proto\"Y\n\035RestUp"
                 + "dateSystemStatusRequest\022\032\n\010app_auth\030\001 \002("

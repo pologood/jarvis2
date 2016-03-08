@@ -833,7 +833,6 @@ public final class JobDependencyEntryProtos {
     }
 
     private static com.google.protobuf.Descriptors.FileDescriptor descriptor;
-
     static {
         java.lang.String[] descriptorData = { "\n\032job_dependency_entry.proto\"x\n\017Dependen"
                 + "cyEntry\022\020\n\010operator\030\001 \002(\005\022\016\n\006job_id\030\002 \002("

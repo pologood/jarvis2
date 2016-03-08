@@ -1,9 +1,9 @@
 package com.mogujie.jarvis.dao.generate;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.mogujie.jarvis.dto.generate.Plan;
 import com.mogujie.jarvis.dto.generate.PlanExample;
-import java.util.List;
-import org.apache.ibatis.annotations.Param;
 
 public interface PlanMapper {
     int countByExample(PlanExample example);

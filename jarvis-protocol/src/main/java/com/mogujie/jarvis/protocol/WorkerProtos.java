@@ -2652,7 +2652,6 @@ public final class WorkerProtos {
     }
 
     private static com.google.protobuf.Descriptors.FileDescriptor descriptor;
-
     static {
         java.lang.String[] descriptorData = { "\n\014worker.proto\032\016app_auth.proto\"k\n#RestSe"
                 + "rverModifyWorkerStatusRequest\022\032\n\010app_aut"

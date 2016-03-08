@@ -2461,7 +2461,6 @@ public final class KillTaskProtos {
     }
 
     private static com.google.protobuf.Descriptors.FileDescriptor descriptor;
-
     static {
         java.lang.String[] descriptorData = {
                 "\n\017kill_task.proto\032\016app_auth.proto\"H\n\031Res" + "tServerKillTaskRequest\022\032\n\010app_auth\030\001 \002(\013"

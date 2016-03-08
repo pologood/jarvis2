@@ -3359,7 +3359,6 @@ public final class LogProtos {
     }
 
     private static com.google.protobuf.Descriptors.FileDescriptor descriptor;
-
     static {
         java.lang.String[] descriptorData = {
                 "\n\tlog.proto\032\016app_auth.proto\"w\n\022RestReadL" + "ogRequest\022\032\n\010app_auth\030\001 \002(\0132\010.AppAuth\022\017\n"

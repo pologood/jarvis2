@@ -1273,7 +1273,6 @@ public final class RemoveTaskProtos {
     }
 
     private static com.google.protobuf.Descriptors.FileDescriptor descriptor;
-
     static {
         java.lang.String[] descriptorData = {
                 "\n\021remove_task.proto\032\016app_auth.proto\"J\n\033R" + "estServerRemoveTaskRequest\022\032\n\010app_auth\030\001"
