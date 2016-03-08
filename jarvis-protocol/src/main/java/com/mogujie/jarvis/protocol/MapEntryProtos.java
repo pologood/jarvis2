@@ -694,7 +694,6 @@ public final class MapEntryProtos {
     }
 
     private static com.google.protobuf.Descriptors.FileDescriptor descriptor;
-
     static {
         java.lang.String[] descriptorData = { "\n\017map_entry.proto\"&\n\010MapEntry\022\013\n\003key\030\001 \002"
                 + "(\t\022\r\n\005value\030\002 \002(\tB-\n\033com.mogujie.jarvis." + "protocolB\016MapEntryProtos" };

@@ -3816,7 +3816,6 @@ public final class ReportTaskProtos {
     }
 
     private static com.google.protobuf.Descriptors.FileDescriptor descriptor;
-
     static {
         java.lang.String[] descriptorData = {
                 "\n\021report_task.proto\032\017map_entry.proto\"B\n\036" + "WorkerReportTaskContentRequest\022\017\n\007full_i"

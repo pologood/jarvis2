@@ -6613,7 +6613,6 @@ public final class AlarmProtos {
     }
 
     private static com.google.protobuf.Descriptors.FileDescriptor descriptor;
-
     static {
         java.lang.String[] descriptorData = {
                 "\n\013alarm.proto\032\016app_auth.proto\032\021alarm_ent" + "ry.proto\"\207\001\n\026RestCreateAlarmRequest\022\032\n\010a"

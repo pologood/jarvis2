@@ -1273,7 +1273,6 @@ public final class RetryTaskProtos {
     }
 
     private static com.google.protobuf.Descriptors.FileDescriptor descriptor;
-
     static {
         java.lang.String[] descriptorData = {
                 "\n\020retry_task.proto\032\016app_auth.proto\"I\n\032Re" + "stServerRetryTaskRequest\022\032\n\010app_auth\030\001 \002"

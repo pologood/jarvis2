@@ -2634,7 +2634,6 @@ public final class SubmitTaskProtos {
     }
 
     private static com.google.protobuf.Descriptors.FileDescriptor descriptor;
-
     static {
         java.lang.String[] descriptorData = {
                 "\n\021submit_task.proto\032\017map_entry.proto\"\307\001\n" + "\027ServerSubmitTaskRequest\022\017\n\007full_id\030\001 \002("

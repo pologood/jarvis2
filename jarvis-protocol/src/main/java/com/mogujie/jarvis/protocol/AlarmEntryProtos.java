@@ -985,7 +985,6 @@ public final class AlarmEntryProtos {
     }
 
     private static com.google.protobuf.Descriptors.FileDescriptor descriptor;
-
     static {
         java.lang.String[] descriptorData = { "\n\021alarm_entry.proto\"]\n\nAlarmEntry\022\n\n\002id\030"
                 + "\003 \002(\005\022\016\n\006job_id\030\004 \002(\003\022\021\n\talarmType\030\005 \002(\t"

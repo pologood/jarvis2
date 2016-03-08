@@ -694,7 +694,6 @@ public final class AppAuthProtos {
     }
 
     private static com.google.protobuf.Descriptors.FileDescriptor descriptor;
-
     static {
         java.lang.String[] descriptorData = { "\n\016app_auth.proto\"&\n\007AppAuth\022\014\n\004name\030\001 \002("
                 + "\t\022\r\n\005token\030\002 \002(\tB,\n\033com.mogujie.jarvis.p" + "rotocolB\rAppAuthProtos" };

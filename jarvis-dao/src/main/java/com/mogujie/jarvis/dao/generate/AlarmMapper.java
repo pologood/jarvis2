@@ -1,9 +1,9 @@
 package com.mogujie.jarvis.dao.generate;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.mogujie.jarvis.dto.generate.Alarm;
 import com.mogujie.jarvis.dto.generate.AlarmExample;
-import java.util.List;
-import org.apache.ibatis.annotations.Param;
 
 public interface AlarmMapper {
     int countByExample(AlarmExample example);

@@ -1539,7 +1539,6 @@ public final class ManualRerunTaskProtos {
     }
 
     private static com.google.protobuf.Descriptors.FileDescriptor descriptor;
-
     static {
         java.lang.String[] descriptorData = { "\n\027manual_rerun_task.proto\032\016app_auth.prot"
                 + "o\"t\n RestServerManualRerunTaskRequest\022\032\n" + "\010app_auth\030\001 \002(\0132\010.AppAuth\022\022\n\nstart_time\030"

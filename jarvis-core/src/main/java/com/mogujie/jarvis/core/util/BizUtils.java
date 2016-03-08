@@ -21,7 +21,7 @@ import org.apache.commons.lang.StringUtils;
 public class BizUtils {
     public static final String SEPARATOR = ",";
 
-    public static String getBizGroupStr(Collection bizIds) {
+    public static String getBizGroupStr(Collection<?> bizIds) {
         String bizGroups = StringUtils.join(bizIds, SEPARATOR);
         return SEPARATOR + bizGroups + SEPARATOR;
     }

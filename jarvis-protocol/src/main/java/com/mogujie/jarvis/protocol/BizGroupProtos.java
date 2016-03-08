@@ -5137,7 +5137,6 @@ public final class BizGroupProtos {
     }
 
     private static com.google.protobuf.Descriptors.FileDescriptor descriptor;
-
     static {
         java.lang.String[] descriptorData = {
                 "\n\017biz_group.proto\032\016app_auth.proto\"r\n\031Res" + "tCreateBizGroupRequest\022\032\n\010app_auth\030\001 \002(\013"

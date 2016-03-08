@@ -1,9 +1,9 @@
 package com.mogujie.jarvis.dao.generate;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.dto.generate.JobExample;
-import java.util.List;
-import org.apache.ibatis.annotations.Param;
 
 public interface JobMapper {
     int countByExample(JobExample example);

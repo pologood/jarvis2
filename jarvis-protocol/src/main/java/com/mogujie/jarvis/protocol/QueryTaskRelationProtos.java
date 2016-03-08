@@ -2367,7 +2367,6 @@ public final class QueryTaskRelationProtos {
     }
 
     private static com.google.protobuf.Descriptors.FileDescriptor descriptor;
-
     static {
         java.lang.String[] descriptorData = {
                 "\n\031query_task_relation.proto\032\016app_auth.pr" + "oto\"/\n\014TaskMapEntry\022\016\n\006job_id\030\001 \002(\003\022\017\n\007t"

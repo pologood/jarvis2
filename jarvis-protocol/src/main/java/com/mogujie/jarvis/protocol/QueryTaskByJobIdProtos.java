@@ -10,9 +10,10 @@ public final class QueryTaskByJobIdProtos {
     public static void registerAllExtensions(com.google.protobuf.ExtensionRegistry registry) {
     }
 
-    public interface TaskEntryOrBuilder extends com.google.protobuf.MessageOrBuilder {
+    public interface TaskEntryOrBuilder extends
+            // @@protoc_insertion_point(interface_extends:TaskEntry)
+            com.google.protobuf.MessageOrBuilder {
 
-        // required int64 task_id = 1;
         /**
          * <code>required int64 task_id = 1;</code>
          */
@@ -23,7 +24,6 @@ public final class QueryTaskByJobIdProtos {
          */
         long getTaskId();
 
-        // required int32 attempt_id = 2;
         /**
          * <code>required int32 attempt_id = 2;</code>
          */
@@ -38,7 +38,9 @@ public final class QueryTaskByJobIdProtos {
     /**
      * Protobuf type {@code TaskEntry}
      */
-    public static final class TaskEntry extends com.google.protobuf.GeneratedMessage implements TaskEntryOrBuilder {
+    public static final class TaskEntry extends com.google.protobuf.GeneratedMessage implements
+            // @@protoc_insertion_point(message_implements:TaskEntry)
+            TaskEntryOrBuilder {
         // Use TaskEntry.newBuilder() to construct.
         private TaskEntry(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
             super(builder);
@@ -132,7 +134,6 @@ public final class QueryTaskByJobIdProtos {
         }
 
         private int bitField0_;
-        // required int64 task_id = 1;
         public static final int TASK_ID_FIELD_NUMBER = 1;
         private long taskId_;
 
@@ -152,7 +153,6 @@ public final class QueryTaskByJobIdProtos {
             return taskId_;
         }
 
-        // required int32 attempt_id = 2;
         public static final int ATTEMPT_ID_FIELD_NUMBER = 2;
         private int attemptId_;
 
@@ -182,8 +182,10 @@ public final class QueryTaskByJobIdProtos {
         @Override
         public final boolean isInitialized() {
             byte isInitialized = memoizedIsInitialized;
-            if (isInitialized != -1)
-                return isInitialized == 1;
+            if (isInitialized == 1)
+                return true;
+            if (isInitialized == 0)
+                return false;
 
             if (!hasTaskId()) {
                 memoizedIsInitialized = 0;
@@ -312,8 +314,9 @@ public final class QueryTaskByJobIdProtos {
         /**
          * Protobuf type {@code TaskEntry}
          */
-        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder>
-                implements com.mogujie.jarvis.protocol.QueryTaskByJobIdProtos.TaskEntryOrBuilder {
+        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+                // @@protoc_insertion_point(builder_implements:TaskEntry)
+                com.mogujie.jarvis.protocol.QueryTaskByJobIdProtos.TaskEntryOrBuilder {
             public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
                 return com.mogujie.jarvis.protocol.QueryTaskByJobIdProtos.internal_static_TaskEntry_descriptor;
             }
@@ -452,7 +455,6 @@ public final class QueryTaskByJobIdProtos {
 
             private int bitField0_;
 
-            // required int64 task_id = 1;
             private long taskId_;
 
             /**
@@ -491,7 +493,6 @@ public final class QueryTaskByJobIdProtos {
                 return this;
             }
 
-            // required int32 attempt_id = 2;
             private int attemptId_;
 
             /**
@@ -541,9 +542,10 @@ public final class QueryTaskByJobIdProtos {
         // @@protoc_insertion_point(class_scope:TaskEntry)
     }
 
-    public interface RestServerQueryTaskByJobIdRequestOrBuilder extends com.google.protobuf.MessageOrBuilder {
+    public interface RestServerQueryTaskByJobIdRequestOrBuilder extends
+            // @@protoc_insertion_point(interface_extends:RestServerQueryTaskByJobIdRequest)
+            com.google.protobuf.MessageOrBuilder {
 
-        // required .AppAuth app_auth = 1;
         /**
          * <code>required .AppAuth app_auth = 1;</code>
          */
@@ -559,7 +561,6 @@ public final class QueryTaskByJobIdProtos {
          */
         com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder();
 
-        // required int64 job_id = 2;
         /**
          * <code>required int64 job_id = 2;</code>
          */
@@ -574,8 +575,9 @@ public final class QueryTaskByJobIdProtos {
     /**
      * Protobuf type {@code RestServerQueryTaskByJobIdRequest}
      */
-    public static final class RestServerQueryTaskByJobIdRequest extends com.google.protobuf.GeneratedMessage
-            implements RestServerQueryTaskByJobIdRequestOrBuilder {
+    public static final class RestServerQueryTaskByJobIdRequest extends com.google.protobuf.GeneratedMessage implements
+            // @@protoc_insertion_point(message_implements:RestServerQueryTaskByJobIdRequest)
+            RestServerQueryTaskByJobIdRequestOrBuilder {
         // Use RestServerQueryTaskByJobIdRequest.newBuilder() to construct.
         private RestServerQueryTaskByJobIdRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
             super(builder);
@@ -677,7 +679,6 @@ public final class QueryTaskByJobIdProtos {
         }
 
         private int bitField0_;
-        // required .AppAuth app_auth = 1;
         public static final int APP_AUTH_FIELD_NUMBER = 1;
         private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_;
 
@@ -705,7 +706,6 @@ public final class QueryTaskByJobIdProtos {
             return appAuth_;
         }
 
-        // required int64 job_id = 2;
         public static final int JOB_ID_FIELD_NUMBER = 2;
         private long jobId_;
 
@@ -735,8 +735,10 @@ public final class QueryTaskByJobIdProtos {
         @Override
         public final boolean isInitialized() {
             byte isInitialized = memoizedIsInitialized;
-            if (isInitialized != -1)
-                return isInitialized == 1;
+            if (isInitialized == 1)
+                return true;
+            if (isInitialized == 0)
+                return false;
 
             if (!hasAppAuth()) {
                 memoizedIsInitialized = 0;
@@ -871,8 +873,9 @@ public final class QueryTaskByJobIdProtos {
         /**
          * Protobuf type {@code RestServerQueryTaskByJobIdRequest}
          */
-        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder>
-                implements com.mogujie.jarvis.protocol.QueryTaskByJobIdProtos.RestServerQueryTaskByJobIdRequestOrBuilder {
+        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+                // @@protoc_insertion_point(builder_implements:RestServerQueryTaskByJobIdRequest)
+                com.mogujie.jarvis.protocol.QueryTaskByJobIdProtos.RestServerQueryTaskByJobIdRequestOrBuilder {
             public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
                 return com.mogujie.jarvis.protocol.QueryTaskByJobIdProtos.internal_static_RestServerQueryTaskByJobIdRequest_descriptor;
             }
@@ -1024,7 +1027,6 @@ public final class QueryTaskByJobIdProtos {
 
             private int bitField0_;
 
-            // required .AppAuth app_auth = 1;
             private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth
                     .getDefaultInstance();
             private com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> appAuthBuilder_;
@@ -1140,13 +1142,12 @@ public final class QueryTaskByJobIdProtos {
             private com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> getAppAuthFieldBuilder() {
                 if (appAuthBuilder_ == null) {
                     appAuthBuilder_ = new com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder>(
-                            appAuth_, getParentForChildren(), isClean());
+                            getAppAuth(), getParentForChildren(), isClean());
                     appAuth_ = null;
                 }
                 return appAuthBuilder_;
             }
 
-            // required int64 job_id = 2;
             private long jobId_;
 
             /**
@@ -1196,9 +1197,10 @@ public final class QueryTaskByJobIdProtos {
         // @@protoc_insertion_point(class_scope:RestServerQueryTaskByJobIdRequest)
     }
 
-    public interface ServerQueryTaskByJobIdResponseOrBuilder extends com.google.protobuf.MessageOrBuilder {
+    public interface ServerQueryTaskByJobIdResponseOrBuilder extends
+            // @@protoc_insertion_point(interface_extends:ServerQueryTaskByJobIdResponse)
+            com.google.protobuf.MessageOrBuilder {
 
-        // required bool success = 1;
         /**
          * <code>required bool success = 1;</code>
          */
@@ -1209,7 +1211,6 @@ public final class QueryTaskByJobIdProtos {
          */
         boolean getSuccess();
 
-        // repeated .TaskEntry task_entry = 2;
         /**
          * <code>repeated .TaskEntry task_entry = 2;</code>
          */
@@ -1235,7 +1236,6 @@ public final class QueryTaskByJobIdProtos {
          */
         com.mogujie.jarvis.protocol.QueryTaskByJobIdProtos.TaskEntryOrBuilder getTaskEntryOrBuilder(int index);
 
-        // optional string message = 3 [default = ""];
         /**
          * <code>optional string message = 3 [default = ""];</code>
          */
@@ -1255,8 +1255,9 @@ public final class QueryTaskByJobIdProtos {
     /**
      * Protobuf type {@code ServerQueryTaskByJobIdResponse}
      */
-    public static final class ServerQueryTaskByJobIdResponse extends com.google.protobuf.GeneratedMessage
-            implements ServerQueryTaskByJobIdResponseOrBuilder {
+    public static final class ServerQueryTaskByJobIdResponse extends com.google.protobuf.GeneratedMessage implements
+            // @@protoc_insertion_point(message_implements:ServerQueryTaskByJobIdResponse)
+            ServerQueryTaskByJobIdResponseOrBuilder {
         // Use ServerQueryTaskByJobIdResponse.newBuilder() to construct.
         private ServerQueryTaskByJobIdResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
             super(builder);
@@ -1318,8 +1319,9 @@ public final class QueryTaskByJobIdProtos {
                             break;
                         }
                         case 26: {
+                            com.google.protobuf.ByteString bs = input.readBytes();
                             bitField0_ |= 0x00000002;
-                            message_ = input.readBytes();
+                            message_ = bs;
                             break;
                         }
                     }
@@ -1362,7 +1364,6 @@ public final class QueryTaskByJobIdProtos {
         }
 
         private int bitField0_;
-        // required bool success = 1;
         public static final int SUCCESS_FIELD_NUMBER = 1;
         private boolean success_;
 
@@ -1382,7 +1383,6 @@ public final class QueryTaskByJobIdProtos {
             return success_;
         }
 
-        // repeated .TaskEntry task_entry = 2;
         public static final int TASK_ENTRY_FIELD_NUMBER = 2;
         private java.util.List<com.mogujie.jarvis.protocol.QueryTaskByJobIdProtos.TaskEntry> taskEntry_;
 
@@ -1426,7 +1426,6 @@ public final class QueryTaskByJobIdProtos {
             return taskEntry_.get(index);
         }
 
-        // optional string message = 3 [default = ""];
         public static final int MESSAGE_FIELD_NUMBER = 3;
         private java.lang.Object message_;
 
@@ -1482,8 +1481,10 @@ public final class QueryTaskByJobIdProtos {
         @Override
         public final boolean isInitialized() {
             byte isInitialized = memoizedIsInitialized;
-            if (isInitialized != -1)
-                return isInitialized == 1;
+            if (isInitialized == 1)
+                return true;
+            if (isInitialized == 0)
+                return false;
 
             if (!hasSuccess()) {
                 memoizedIsInitialized = 0;
@@ -1621,8 +1622,9 @@ public final class QueryTaskByJobIdProtos {
         /**
          * Protobuf type {@code ServerQueryTaskByJobIdResponse}
          */
-        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder>
-                implements com.mogujie.jarvis.protocol.QueryTaskByJobIdProtos.ServerQueryTaskByJobIdResponseOrBuilder {
+        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+                // @@protoc_insertion_point(builder_implements:ServerQueryTaskByJobIdResponse)
+                com.mogujie.jarvis.protocol.QueryTaskByJobIdProtos.ServerQueryTaskByJobIdResponseOrBuilder {
             public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
                 return com.mogujie.jarvis.protocol.QueryTaskByJobIdProtos.internal_static_ServerQueryTaskByJobIdResponse_descriptor;
             }
@@ -1805,7 +1807,6 @@ public final class QueryTaskByJobIdProtos {
 
             private int bitField0_;
 
-            // required bool success = 1;
             private boolean success_;
 
             /**
@@ -1844,7 +1845,6 @@ public final class QueryTaskByJobIdProtos {
                 return this;
             }
 
-            // repeated .TaskEntry task_entry = 2;
             private java.util.List<com.mogujie.jarvis.protocol.QueryTaskByJobIdProtos.TaskEntry> taskEntry_ = java.util.Collections.emptyList();
 
             private void ensureTaskEntryIsMutable() {
@@ -1991,7 +1991,7 @@ public final class QueryTaskByJobIdProtos {
             public Builder addAllTaskEntry(java.lang.Iterable<? extends com.mogujie.jarvis.protocol.QueryTaskByJobIdProtos.TaskEntry> values) {
                 if (taskEntryBuilder_ == null) {
                     ensureTaskEntryIsMutable();
-                    super.addAll(values, taskEntry_);
+                    com.google.protobuf.AbstractMessageLite.Builder.addAll(values, taskEntry_);
                     onChanged();
                 } else {
                     taskEntryBuilder_.addAllMessages(values);
@@ -2089,7 +2089,6 @@ public final class QueryTaskByJobIdProtos {
                 return taskEntryBuilder_;
             }
 
-            // optional string message = 3 [default = ""];
             private java.lang.Object message_ = "";
 
             /**
@@ -2107,8 +2106,11 @@ public final class QueryTaskByJobIdProtos {
             public java.lang.String getMessage() {
                 java.lang.Object ref = message_;
                 if (!(ref instanceof java.lang.String)) {
-                    java.lang.String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
-                    message_ = s;
+                    com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                    java.lang.String s = bs.toStringUtf8();
+                    if (bs.isValidUtf8()) {
+                        message_ = s;
+                    }
                     return s;
                 } else {
                     return (java.lang.String) ref;
@@ -2177,11 +2179,11 @@ public final class QueryTaskByJobIdProtos {
         // @@protoc_insertion_point(class_scope:ServerQueryTaskByJobIdResponse)
     }
 
-    private static com.google.protobuf.Descriptors.Descriptor internal_static_TaskEntry_descriptor;
+    private static final com.google.protobuf.Descriptors.Descriptor internal_static_TaskEntry_descriptor;
     private static com.google.protobuf.GeneratedMessage.FieldAccessorTable internal_static_TaskEntry_fieldAccessorTable;
-    private static com.google.protobuf.Descriptors.Descriptor internal_static_RestServerQueryTaskByJobIdRequest_descriptor;
+    private static final com.google.protobuf.Descriptors.Descriptor internal_static_RestServerQueryTaskByJobIdRequest_descriptor;
     private static com.google.protobuf.GeneratedMessage.FieldAccessorTable internal_static_RestServerQueryTaskByJobIdRequest_fieldAccessorTable;
-    private static com.google.protobuf.Descriptors.Descriptor internal_static_ServerQueryTaskByJobIdResponse_descriptor;
+    private static final com.google.protobuf.Descriptors.Descriptor internal_static_ServerQueryTaskByJobIdResponse_descriptor;
     private static com.google.protobuf.GeneratedMessage.FieldAccessorTable internal_static_ServerQueryTaskByJobIdResponse_fieldAccessorTable;
 
     public static com.google.protobuf.Descriptors.FileDescriptor getDescriptor() {
@@ -2189,7 +2191,6 @@ public final class QueryTaskByJobIdProtos {
     }
 
     private static com.google.protobuf.Descriptors.FileDescriptor descriptor;
-
     static {
         java.lang.String[] descriptorData = { "\n\031query_task_by_jobid.proto\032\016app_auth.pr"
                 + "oto\"0\n\tTaskEntry\022\017\n\007task_id\030\001 \002(\003\022\022\n\natt"
@@ -2202,20 +2203,21 @@ public final class QueryTaskByJobIdProtos {
             @Override
             public com.google.protobuf.ExtensionRegistry assignDescriptors(com.google.protobuf.Descriptors.FileDescriptor root) {
                 descriptor = root;
-                internal_static_TaskEntry_descriptor = getDescriptor().getMessageTypes().get(0);
-                internal_static_TaskEntry_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-                        internal_static_TaskEntry_descriptor, new java.lang.String[] { "TaskId", "AttemptId", });
-                internal_static_RestServerQueryTaskByJobIdRequest_descriptor = getDescriptor().getMessageTypes().get(1);
-                internal_static_RestServerQueryTaskByJobIdRequest_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-                        internal_static_RestServerQueryTaskByJobIdRequest_descriptor, new java.lang.String[] { "AppAuth", "JobId", });
-                internal_static_ServerQueryTaskByJobIdResponse_descriptor = getDescriptor().getMessageTypes().get(2);
-                internal_static_ServerQueryTaskByJobIdResponse_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-                        internal_static_ServerQueryTaskByJobIdResponse_descriptor, new java.lang.String[] { "Success", "TaskEntry", "Message", });
                 return null;
             }
         };
         com.google.protobuf.Descriptors.FileDescriptor.internalBuildGeneratedFileFrom(descriptorData,
                 new com.google.protobuf.Descriptors.FileDescriptor[] { com.mogujie.jarvis.protocol.AppAuthProtos.getDescriptor(), }, assigner);
+        internal_static_TaskEntry_descriptor = getDescriptor().getMessageTypes().get(0);
+        internal_static_TaskEntry_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+                internal_static_TaskEntry_descriptor, new java.lang.String[] { "TaskId", "AttemptId", });
+        internal_static_RestServerQueryTaskByJobIdRequest_descriptor = getDescriptor().getMessageTypes().get(1);
+        internal_static_RestServerQueryTaskByJobIdRequest_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+                internal_static_RestServerQueryTaskByJobIdRequest_descriptor, new java.lang.String[] { "AppAuth", "JobId", });
+        internal_static_ServerQueryTaskByJobIdResponse_descriptor = getDescriptor().getMessageTypes().get(2);
+        internal_static_ServerQueryTaskByJobIdResponse_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+                internal_static_ServerQueryTaskByJobIdResponse_descriptor, new java.lang.String[] { "Success", "TaskEntry", "Message", });
+        com.mogujie.jarvis.protocol.AppAuthProtos.getDescriptor();
     }
 
     // @@protoc_insertion_point(outer_class_scope)

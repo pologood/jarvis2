@@ -10,9 +10,10 @@ public final class QueryTaskProtos {
     public static void registerAllExtensions(com.google.protobuf.ExtensionRegistry registry) {
     }
 
-    public interface RestQueryTaskCriticalPathRequestOrBuilder extends com.google.protobuf.MessageOrBuilder {
+    public interface RestQueryTaskCriticalPathRequestOrBuilder extends
+            // @@protoc_insertion_point(interface_extends:RestQueryTaskCriticalPathRequest)
+            com.google.protobuf.MessageOrBuilder {
 
-        // required .AppAuth app_auth = 1;
         /**
          * <code>required .AppAuth app_auth = 1;</code>
          */
@@ -28,7 +29,6 @@ public final class QueryTaskProtos {
          */
         com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder();
 
-        // required int64 date_time = 2;
         /**
          * <code>required int64 date_time = 2;</code>
          */
@@ -39,7 +39,6 @@ public final class QueryTaskProtos {
          */
         long getDateTime();
 
-        // required string job_name = 3;
         /**
          * <code>required string job_name = 3;</code>
          */
@@ -59,8 +58,9 @@ public final class QueryTaskProtos {
     /**
      * Protobuf type {@code RestQueryTaskCriticalPathRequest}
      */
-    public static final class RestQueryTaskCriticalPathRequest extends com.google.protobuf.GeneratedMessage
-            implements RestQueryTaskCriticalPathRequestOrBuilder {
+    public static final class RestQueryTaskCriticalPathRequest extends com.google.protobuf.GeneratedMessage implements
+            // @@protoc_insertion_point(message_implements:RestQueryTaskCriticalPathRequest)
+            RestQueryTaskCriticalPathRequestOrBuilder {
         // Use RestQueryTaskCriticalPathRequest.newBuilder() to construct.
         private RestQueryTaskCriticalPathRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
             super(builder);
@@ -126,8 +126,9 @@ public final class QueryTaskProtos {
                             break;
                         }
                         case 26: {
+                            com.google.protobuf.ByteString bs = input.readBytes();
                             bitField0_ |= 0x00000004;
-                            jobName_ = input.readBytes();
+                            jobName_ = bs;
                             break;
                         }
                     }
@@ -167,7 +168,6 @@ public final class QueryTaskProtos {
         }
 
         private int bitField0_;
-        // required .AppAuth app_auth = 1;
         public static final int APP_AUTH_FIELD_NUMBER = 1;
         private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_;
 
@@ -195,7 +195,6 @@ public final class QueryTaskProtos {
             return appAuth_;
         }
 
-        // required int64 date_time = 2;
         public static final int DATE_TIME_FIELD_NUMBER = 2;
         private long dateTime_;
 
@@ -215,7 +214,6 @@ public final class QueryTaskProtos {
             return dateTime_;
         }
 
-        // required string job_name = 3;
         public static final int JOB_NAME_FIELD_NUMBER = 3;
         private java.lang.Object jobName_;
 
@@ -271,8 +269,10 @@ public final class QueryTaskProtos {
         @Override
         public final boolean isInitialized() {
             byte isInitialized = memoizedIsInitialized;
-            if (isInitialized != -1)
-                return isInitialized == 1;
+            if (isInitialized == 1)
+                return true;
+            if (isInitialized == 0)
+                return false;
 
             if (!hasAppAuth()) {
                 memoizedIsInitialized = 0;
@@ -416,8 +416,9 @@ public final class QueryTaskProtos {
         /**
          * Protobuf type {@code RestQueryTaskCriticalPathRequest}
          */
-        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder>
-                implements com.mogujie.jarvis.protocol.QueryTaskProtos.RestQueryTaskCriticalPathRequestOrBuilder {
+        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+                // @@protoc_insertion_point(builder_implements:RestQueryTaskCriticalPathRequest)
+                com.mogujie.jarvis.protocol.QueryTaskProtos.RestQueryTaskCriticalPathRequestOrBuilder {
             public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
                 return com.mogujie.jarvis.protocol.QueryTaskProtos.internal_static_RestQueryTaskCriticalPathRequest_descriptor;
             }
@@ -584,7 +585,6 @@ public final class QueryTaskProtos {
 
             private int bitField0_;
 
-            // required .AppAuth app_auth = 1;
             private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth
                     .getDefaultInstance();
             private com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> appAuthBuilder_;
@@ -700,13 +700,12 @@ public final class QueryTaskProtos {
             private com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> getAppAuthFieldBuilder() {
                 if (appAuthBuilder_ == null) {
                     appAuthBuilder_ = new com.google.protobuf.SingleFieldBuilder<com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder>(
-                            appAuth_, getParentForChildren(), isClean());
+                            getAppAuth(), getParentForChildren(), isClean());
                     appAuth_ = null;
                 }
                 return appAuthBuilder_;
             }
 
-            // required int64 date_time = 2;
             private long dateTime_;
 
             /**
@@ -745,7 +744,6 @@ public final class QueryTaskProtos {
                 return this;
             }
 
-            // required string job_name = 3;
             private java.lang.Object jobName_ = "";
 
             /**
@@ -763,8 +761,11 @@ public final class QueryTaskProtos {
             public java.lang.String getJobName() {
                 java.lang.Object ref = jobName_;
                 if (!(ref instanceof java.lang.String)) {
-                    java.lang.String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
-                    jobName_ = s;
+                    com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                    java.lang.String s = bs.toStringUtf8();
+                    if (bs.isValidUtf8()) {
+                        jobName_ = s;
+                    }
                     return s;
                 } else {
                     return (java.lang.String) ref;
@@ -833,9 +834,10 @@ public final class QueryTaskProtos {
         // @@protoc_insertion_point(class_scope:RestQueryTaskCriticalPathRequest)
     }
 
-    public interface ServerQueryTaskCriticalPathResponseOrBuilder extends com.google.protobuf.MessageOrBuilder {
+    public interface ServerQueryTaskCriticalPathResponseOrBuilder extends
+            // @@protoc_insertion_point(interface_extends:ServerQueryTaskCriticalPathResponse)
+            com.google.protobuf.MessageOrBuilder {
 
-        // required bool success = 1;
         /**
          * <code>required bool success = 1;</code>
          */
@@ -846,7 +848,6 @@ public final class QueryTaskProtos {
          */
         boolean getSuccess();
 
-        // repeated .TaskInfoEntry taskInfo = 2;
         /**
          * <code>repeated .TaskInfoEntry taskInfo = 2;</code>
          */
@@ -872,7 +873,6 @@ public final class QueryTaskProtos {
          */
         com.mogujie.jarvis.protocol.TaskInfoEntryProtos.TaskInfoEntryOrBuilder getTaskInfoOrBuilder(int index);
 
-        // optional string message = 3 [default = ""];
         /**
          * <code>optional string message = 3 [default = ""];</code>
          */
@@ -892,8 +892,9 @@ public final class QueryTaskProtos {
     /**
      * Protobuf type {@code ServerQueryTaskCriticalPathResponse}
      */
-    public static final class ServerQueryTaskCriticalPathResponse extends com.google.protobuf.GeneratedMessage
-            implements ServerQueryTaskCriticalPathResponseOrBuilder {
+    public static final class ServerQueryTaskCriticalPathResponse extends com.google.protobuf.GeneratedMessage implements
+            // @@protoc_insertion_point(message_implements:ServerQueryTaskCriticalPathResponse)
+            ServerQueryTaskCriticalPathResponseOrBuilder {
         // Use ServerQueryTaskCriticalPathResponse.newBuilder() to construct.
         private ServerQueryTaskCriticalPathResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
             super(builder);
@@ -955,8 +956,9 @@ public final class QueryTaskProtos {
                             break;
                         }
                         case 26: {
+                            com.google.protobuf.ByteString bs = input.readBytes();
                             bitField0_ |= 0x00000002;
-                            message_ = input.readBytes();
+                            message_ = bs;
                             break;
                         }
                     }
@@ -999,7 +1001,6 @@ public final class QueryTaskProtos {
         }
 
         private int bitField0_;
-        // required bool success = 1;
         public static final int SUCCESS_FIELD_NUMBER = 1;
         private boolean success_;
 
@@ -1019,7 +1020,6 @@ public final class QueryTaskProtos {
             return success_;
         }
 
-        // repeated .TaskInfoEntry taskInfo = 2;
         public static final int TASKINFO_FIELD_NUMBER = 2;
         private java.util.List<com.mogujie.jarvis.protocol.TaskInfoEntryProtos.TaskInfoEntry> taskInfo_;
 
@@ -1063,7 +1063,6 @@ public final class QueryTaskProtos {
             return taskInfo_.get(index);
         }
 
-        // optional string message = 3 [default = ""];
         public static final int MESSAGE_FIELD_NUMBER = 3;
         private java.lang.Object message_;
 
@@ -1119,8 +1118,10 @@ public final class QueryTaskProtos {
         @Override
         public final boolean isInitialized() {
             byte isInitialized = memoizedIsInitialized;
-            if (isInitialized != -1)
-                return isInitialized == 1;
+            if (isInitialized == 1)
+                return true;
+            if (isInitialized == 0)
+                return false;
 
             if (!hasSuccess()) {
                 memoizedIsInitialized = 0;
@@ -1258,8 +1259,9 @@ public final class QueryTaskProtos {
         /**
          * Protobuf type {@code ServerQueryTaskCriticalPathResponse}
          */
-        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder>
-                implements com.mogujie.jarvis.protocol.QueryTaskProtos.ServerQueryTaskCriticalPathResponseOrBuilder {
+        public static final class Builder extends com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+                // @@protoc_insertion_point(builder_implements:ServerQueryTaskCriticalPathResponse)
+                com.mogujie.jarvis.protocol.QueryTaskProtos.ServerQueryTaskCriticalPathResponseOrBuilder {
             public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
                 return com.mogujie.jarvis.protocol.QueryTaskProtos.internal_static_ServerQueryTaskCriticalPathResponse_descriptor;
             }
@@ -1442,7 +1444,6 @@ public final class QueryTaskProtos {
 
             private int bitField0_;
 
-            // required bool success = 1;
             private boolean success_;
 
             /**
@@ -1481,7 +1482,6 @@ public final class QueryTaskProtos {
                 return this;
             }
 
-            // repeated .TaskInfoEntry taskInfo = 2;
             private java.util.List<com.mogujie.jarvis.protocol.TaskInfoEntryProtos.TaskInfoEntry> taskInfo_ = java.util.Collections.emptyList();
 
             private void ensureTaskInfoIsMutable() {
@@ -1628,7 +1628,7 @@ public final class QueryTaskProtos {
             public Builder addAllTaskInfo(java.lang.Iterable<? extends com.mogujie.jarvis.protocol.TaskInfoEntryProtos.TaskInfoEntry> values) {
                 if (taskInfoBuilder_ == null) {
                     ensureTaskInfoIsMutable();
-                    super.addAll(values, taskInfo_);
+                    com.google.protobuf.AbstractMessageLite.Builder.addAll(values, taskInfo_);
                     onChanged();
                 } else {
                     taskInfoBuilder_.addAllMessages(values);
@@ -1726,7 +1726,6 @@ public final class QueryTaskProtos {
                 return taskInfoBuilder_;
             }
 
-            // optional string message = 3 [default = ""];
             private java.lang.Object message_ = "";
 
             /**
@@ -1744,8 +1743,11 @@ public final class QueryTaskProtos {
             public java.lang.String getMessage() {
                 java.lang.Object ref = message_;
                 if (!(ref instanceof java.lang.String)) {
-                    java.lang.String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
-                    message_ = s;
+                    com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
+                    java.lang.String s = bs.toStringUtf8();
+                    if (bs.isValidUtf8()) {
+                        message_ = s;
+                    }
                     return s;
                 } else {
                     return (java.lang.String) ref;
@@ -1814,9 +1816,9 @@ public final class QueryTaskProtos {
         // @@protoc_insertion_point(class_scope:ServerQueryTaskCriticalPathResponse)
     }
 
-    private static com.google.protobuf.Descriptors.Descriptor internal_static_RestQueryTaskCriticalPathRequest_descriptor;
+    private static final com.google.protobuf.Descriptors.Descriptor internal_static_RestQueryTaskCriticalPathRequest_descriptor;
     private static com.google.protobuf.GeneratedMessage.FieldAccessorTable internal_static_RestQueryTaskCriticalPathRequest_fieldAccessorTable;
-    private static com.google.protobuf.Descriptors.Descriptor internal_static_ServerQueryTaskCriticalPathResponse_descriptor;
+    private static final com.google.protobuf.Descriptors.Descriptor internal_static_ServerQueryTaskCriticalPathResponse_descriptor;
     private static com.google.protobuf.GeneratedMessage.FieldAccessorTable internal_static_ServerQueryTaskCriticalPathResponse_fieldAccessorTable;
 
     public static com.google.protobuf.Descriptors.FileDescriptor getDescriptor() {
@@ -1834,12 +1836,6 @@ public final class QueryTaskProtos {
             @Override
             public com.google.protobuf.ExtensionRegistry assignDescriptors(com.google.protobuf.Descriptors.FileDescriptor root) {
                 descriptor = root;
-                internal_static_RestQueryTaskCriticalPathRequest_descriptor = getDescriptor().getMessageTypes().get(0);
-                internal_static_RestQueryTaskCriticalPathRequest_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-                        internal_static_RestQueryTaskCriticalPathRequest_descriptor, new java.lang.String[] { "AppAuth", "DateTime", "JobName", });
-                internal_static_ServerQueryTaskCriticalPathResponse_descriptor = getDescriptor().getMessageTypes().get(1);
-                internal_static_ServerQueryTaskCriticalPathResponse_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-                        internal_static_ServerQueryTaskCriticalPathResponse_descriptor, new java.lang.String[] { "Success", "TaskInfo", "Message", });
                 return null;
             }
         };
@@ -1847,6 +1843,14 @@ public final class QueryTaskProtos {
                 new com.google.protobuf.Descriptors.FileDescriptor[] { com.mogujie.jarvis.protocol.AppAuthProtos.getDescriptor(),
                         com.mogujie.jarvis.protocol.TaskInfoEntryProtos.getDescriptor(), },
                 assigner);
+        internal_static_RestQueryTaskCriticalPathRequest_descriptor = getDescriptor().getMessageTypes().get(0);
+        internal_static_RestQueryTaskCriticalPathRequest_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+                internal_static_RestQueryTaskCriticalPathRequest_descriptor, new java.lang.String[] { "AppAuth", "DateTime", "JobName", });
+        internal_static_ServerQueryTaskCriticalPathResponse_descriptor = getDescriptor().getMessageTypes().get(1);
+        internal_static_ServerQueryTaskCriticalPathResponse_fieldAccessorTable = new com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+                internal_static_ServerQueryTaskCriticalPathResponse_descriptor, new java.lang.String[] { "Success", "TaskInfo", "Message", });
+        com.mogujie.jarvis.protocol.AppAuthProtos.getDescriptor();
+        com.mogujie.jarvis.protocol.TaskInfoEntryProtos.getDescriptor();
     }
 
     // @@protoc_insertion_point(outer_class_scope)
