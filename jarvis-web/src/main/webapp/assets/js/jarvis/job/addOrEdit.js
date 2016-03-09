@@ -22,7 +22,7 @@ $(function () {
     });
 
     formatDateTimePicker();         //格式化-时间选择器
-    initSearchScriptModal();              //初始化搜索Script模式框
+    initSearchScriptModal();        //初始化搜索Script模式框
 
     //由于后续的参数依赖于job详细信息，所以获取job详细信息禁用ajax请求，改为同步操作
     $.ajaxSettings.async = false;
@@ -101,24 +101,23 @@ function initJobData() {
 //初始化-job类型
 function initJobType() {
     console.log("initJobType");
+    var newData = [];
+    var object = CONST.JOB_TYPE;
+    for (var prop in object) {
+        if (object.hasOwnProperty(prop)) {
+            newData.push({id: object[prop], text: object[prop]});
+        }
+    }
 
-    $.getJSON(contextPath + "/assets/json/jobType.json", function (data) {
-        var newData = new Array();
-        $(data).each(function (i, c) {
-            if (this.id != 'all') {
-                newData.push(this);
-            }
-        });
-        $("#jobType").select2({
-            data: newData,
-            width: '100%'
-        });
-        var cur = job != null ? job.jobType : 'hive';
-        $("#jobType").val(cur).trigger("change");
-
-        console.log("initJobType end......");
-
+    var jobTypeSelector = $("#jobType");
+    $(jobTypeSelector).select2({
+        data: newData,
+        width: '100%'
     });
+    var cur = job != null ? job.jobType : 'hive';
+    $(jobTypeSelector).val(cur).trigger("change");
+
+    console.log("initJobType end......");
 
 }
 
@@ -138,24 +137,35 @@ function changeJobType() {
 
     var data = $("#jobType").select2('data')[0];
     var curJobType = data.id;
+    var text = $("#contentTypeText");
+    var script = $("#contentTypeScript");
+    var jar = ("#contentTypeJar");
+
     if (curJobType == CONST.JOB_TYPE.HIVE || curJobType == CONST.JOB_TYPE.SHELL) {
-        $("#contentTypeText").radioEnable(true);
-        $("#contentTypeScript").radioEnable(true);
-        $("#contentTypeJar").radioEnable(false);
-        if (!$("#contentTypeText").prop('checked') && !$("#contentTypeScript").prop('checked')) {
-            $("#contentTypeText").prop('checked', true).trigger("change");
+        $(text).radioEnable(true);
+        $(script).radioEnable(true);
+        $(jar).radioEnable(false);
+        if (!$(text).prop('checked') && !$(script).prop('checked')) {
+            $(text).prop('checked', true).trigger("change");
         }
     } else if (curJobType == CONST.JOB_TYPE.JAVA || curJobType == CONST.JOB_TYPE.MAPREDUCE) {
-        $("#contentTypeText").radioEnable(false);
-        $("#contentTypeScript").radioEnable(false);
-        $("#contentTypeJar").radioEnable(true);
-        if (!$("#contentTypeJar").prop('checked')) {
-            $("#contentTypeJar").prop('checked', true).trigger("change");
+        $(text).radioEnable(false);
+        $(script).radioEnable(false);
+        $(jar).radioEnable(true);
+        if (!$(jar).prop('checked')) {
+            $(jar).prop('checked', true).trigger("change");
+        }
+    } else if (curJobType == CONST.JOB_TYPE.SPARK_LAUNCHER) {
+        $(text).radioEnable(true);
+        $(script).radioEnable(false);
+        $(jar).radioEnable(false);
+        if (!$(text).prop('checked')) {
+            $(text).prop('checked', true).trigger("change");
         }
     } else if (curJobType == CONST.JOB_TYPE.DUMMY) {
-        $("#contentTypeText").radioEnable(true);
-        $("#contentTypeScript").radioEnable(true);
-        $("#contentTypeJar").radioEnable(true);
+        $(text).radioEnable(true);
+        $(script).radioEnable(true);
+        $(jar).radioEnable(true);
     }
 
     console.log("changeJobType end !!!!!!!!!!!");
@@ -191,10 +201,15 @@ function changeContentType(curRadio) {
     console.log("changeContentType " + curRadio.val());
 
     var curValue = $(curRadio).val();
+    var jobType = $("#jobType").val();
     if (curValue == CONST.CONTENT_TYPE.TEXT) {    //文本
         $("#scriptItemDiv").hide();
         $("#jarItemDiv").hide();
-        $("#jobContent").removeAttr("readonly");
+        if (jobType == CONST.JOB_TYPE.SPARK_LAUNCHER) {
+            $("#jobContent").attr("readonly", "readonly");
+        } else {
+            $("#jobContent").removeAttr("readonly");
+        }
     } else if (curValue == CONST.CONTENT_TYPE.SCRIPT) {  //脚本
         $("#scriptItemDiv").show();
         $("#jarItemDiv").hide();
@@ -562,6 +577,9 @@ function getJobDataFromPage() {
 
         if ($(this).prop("multiple")) { //多选框
             result[id] = value == null ? "" : value.join(",");
+            if (id == "bizGroups") {
+                result[id] = result[id] != "" ? result[id] : "," + result[id] + ",";
+            }
         } else {
             if (value != '' && testNum.test(value)) {
                 value = parseInt(value);
@@ -733,18 +751,30 @@ function showSearchScriptModal() {
     $("#searchScriptModal").modal("show");
 }
 
+
 //显示-任务参数-模态框
-function showParaModel() {
-    $("#paras tbody").empty();
+function showParaModal() {
+    if ($("#jobType").val() == CONST.JOB_TYPE.SPARK_LAUNCHER) {
+        showSparkLauncherParasModal();
+    } else {
+        showCommonJobParaModal()
+    }
+}
+
+//显示-任务参数-模态框
+function showCommonJobParaModal() {
+    var trBody = $("#parasTable tbody");
+    var trPattern = $("#pattern tr");
+    $(trBody).empty();
     var params = $("#params").val();
     if (params != null && params != '' && params.indexOf("}") > 0) {
         var existParas = JSON.parse(params);
         for (var key in existParas) {
             var value = existParas[key];
-            var tr = $("#pattern tr").clone();
+            var tr = $(trPattern).clone();
             $($(tr).find("input[name=key]").first()).val(key);
             $($(tr).find("input[name=value]").first()).val(value);
-            $("#paras tbody").append(tr);
+            $(trBody).append(tr);
         }
     }
     $("#paraModal").modal("show");
@@ -752,7 +782,7 @@ function showParaModel() {
 
 ///确认参数选择
 function ensurePara() {
-    var trs = $("#paras tbody tr");
+    var trs = $("#parasTable tbody tr");
     var paras = {};
     var flag = true;
     $(trs).each(function (i, c) {
@@ -770,23 +800,18 @@ function ensurePara() {
     });
 
     if (flag == false) {
-        new PNotify({
-            title: '修改参数',
-            text: "key不能为空,且不能为中文,请修改",
-            type: 'warning',
-            icon: true,
-            styling: 'bootstrap3'
-        });
+        showMsg('warning', '修改参数', "key不能为空,且不能为中文,请修改");
         return;
     }
     $("#params").val(JSON.stringify(paras));
     $("#paraModal").modal("hide");
 }
+
 //添加参数
 function addPara(thisTag) {
     var tr = $("#pattern tr").clone();
     if (thisTag == null) {
-        $("#paras tbody").append(tr);
+        $("#parasTable tbody").append(tr);
     }
     else {
         $(thisTag).parent().parent().after(tr);
@@ -796,6 +821,96 @@ function addPara(thisTag) {
 function deletePara(thisTag) {
     $(thisTag).parent().parent().remove();
 }
+
+
+//显示-任务参数-模态框
+function showSparkLauncherParasModal() {
+    var existParas = {};
+    var params = $("#params").val();
+    if (params != null && params != '' && params.indexOf("}") > 0) {
+        existParas = JSON.parse(params);
+    }
+
+    $("#sparkLauncherParasModalBody input,textarea").each(function (i, c) {
+        var key = $(this).attr("name");
+        if (key in existParas) {
+            $(this).val(existParas[key]);
+        } else {
+            $(this).val($(this).attr("data-defaultValue"));
+        }
+    });
+
+    $("#sparkLauncherParasModal").modal("show");
+}
+
+///确认参数选择
+function confirmJobParas4SparkLauncher() {
+    var paras = {};
+    var flag = true;
+    $("#sparkLauncherParasModalBody input,textarea").each(function (i, c) {
+        var key = $(this).attr("name");
+        var val = $(this).val();
+        var required = $(this).hasClass("required");
+        var desc = $(this).attr("data-desc");
+        //参数验证检查
+        if (!validSparkLauncherParas(key, val, desc, required)) {
+            flag = false;
+        }
+        paras[key] = val;
+    });
+
+    if (flag == false) {
+        return;
+    }
+
+    $("#params").val(JSON.stringify(paras));
+    $("#sparkLauncherParasModal").modal("hide");
+}
+
+
+function validSparkLauncherParas(key, val, desc, required) {
+
+    //为空检查
+    if (required && (val == null || val.trim() == "")) {
+        showMsg('warning', 'sparkLauncher参数', desc + "不能为空");
+        return false;
+    }
+
+    switch (key) {
+        case CONST.SPARK_LAUNCHER_JOB.PARAMS_KEY.driverCores:    //driver核数
+            if (!$.isNumeric(val) || val < 1 || val > 4) {
+                showMsg('warning', 'sparkLauncher参数', desc + "不对,请输入1-4之间数字.");
+                return false;
+            }
+            break;
+        case CONST.SPARK_LAUNCHER_JOB.PARAMS_KEY.driverMemory :  //driver内存
+            if (!/\d?g/i.test(val)) {
+                showMsg('warning', 'sparkLauncher参数', desc + "不对,请输入'数字+G',比如'4G'.");
+                return false;
+            }
+            break;
+        case CONST.SPARK_LAUNCHER_JOB.PARAMS_KEY.executorCores:  //executor核数
+            if (!$.isNumeric(val) || val < 1 || val > 4) {
+                showMsg('warning', 'sparkLauncher参数', desc + "不对,请输入1-4之间数字.");
+                return false;
+            }
+            break;
+        case CONST.SPARK_LAUNCHER_JOB.PARAMS_KEY.executorMemory :    //executor内存
+            if (!/\d?g/i.test(val)) {
+                showMsg('warning', 'sparkLauncher参数', desc + "不对,请输入'数字+G',比如'4G'.")
+                return false;
+            }
+            break;
+        case CONST.SPARK_LAUNCHER_JOB.PARAMS_KEY.executorNum:    //executor数目
+            if (!$.isNumeric(val) || val < 0) {
+                showMsg('warning', 'sparkLauncher参数', desc + "不对,请大于0的数字.")
+                return false;
+            }
+            break;
+    }
+    return true;
+}
+
 
 function showMsg(type, title, text) {
     new PNotify({
@@ -873,7 +988,6 @@ function generateStrategy() {
     });
 
 }
-
 
 //初始化依赖任务，如果是编辑则初始化已经依赖job
 function initDependJobs() {
