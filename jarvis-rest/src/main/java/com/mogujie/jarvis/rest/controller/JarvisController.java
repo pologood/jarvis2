@@ -310,15 +310,21 @@ public class JarvisController extends AbstractController {
 
                 // 2. 获取bizGroupId
                 List<Integer> bizIds = new ArrayList<Integer>();
-                RestSearchBizIdByNameRequest searchBizIdRequest = RestSearchBizIdByNameRequest.newBuilder()
-                        .setAppAuth(appAuth).setUser(globalUser).setBizName(pline).build();
-                ServerSearchBizIdByNamResponse searchBizIdResponse = (ServerSearchBizIdByNamResponse) callActor(AkkaType.SERVER, searchBizIdRequest);
-                if (searchBizIdResponse.getSuccess()) {
-                    bizIds.add(searchBizIdResponse.getBizId());
-                } else {
-                    result.setSuccess(false);
-                    result.setMessage("找不到pline=" + pline);
-                    return result;
+                if (pline != null && !pline.isEmpty()) {
+                    RestSearchBizIdByNameRequest searchBizIdRequest = RestSearchBizIdByNameRequest.newBuilder()
+                            .setAppAuth(appAuth).setUser(globalUser).setBizName(pline).build();
+                    ServerSearchBizIdByNamResponse searchBizIdResponse = (ServerSearchBizIdByNamResponse) callActor(AkkaType.SERVER, searchBizIdRequest);
+                    if (searchBizIdResponse.getSuccess()) {
+                        bizIds.add(searchBizIdResponse.getBizId());
+                    } else {
+                        result.setSuccess(false);
+                        result.setMessage("找不到pline=" + pline);
+                        return result;
+                    }
+                }
+                String bizGroups = "";
+                if (!bizIds.isEmpty()) {
+                    bizGroups = BizUtils.getBizGroupStr(bizIds);
                 }
 
                 RestSubmitJobRequest.Builder builder = RestSubmitJobRequest.newBuilder().setAppAuth(appAuth)
@@ -331,7 +337,7 @@ public class JarvisController extends AbstractController {
                         .setParameters("{}")
                         .setAppName(APP_IRONMAN_NAME)
                         .setDepartment(department)
-                        .setBizGroups(BizUtils.getBizGroupStr(bizIds))
+                        .setBizGroups(bizGroups)
                         .setWorkerGroupId(1) //默认MR集群
                         .setPriority(priority)
                         .setIsTemp(false)
