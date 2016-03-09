@@ -59,7 +59,11 @@ public class JobInfo implements Serializable {
     public JobInfo(JobInfoEntry jobInfoEntry) {
         this.id = jobInfoEntry.getJobId();
         // 适配老系统cron表达式
-        this.cronExp = jobInfoEntry.getScheduleExpression().substring(1).trim();
+        String exp = jobInfoEntry.getScheduleExpression();
+        if (exp != null && exp.length() > 1) {
+            this.cronExp = exp.substring(1).trim();
+        }
+
         if (jobInfoEntry.getContentType() == JobContentType.SCRIPT.getValue()) {
             this.scriptId = Integer.valueOf(jobInfoEntry.getContent());
         }
