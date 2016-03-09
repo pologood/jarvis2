@@ -106,7 +106,7 @@ public class JobService {
     public List<Job> searchJobLikeName(String name) {
         JobExample example = new JobExample();
         example.createCriteria().andJobNameLike("%" + name + "%").andStatusEqualTo(JobStatus.ENABLE.getValue());
-        List<Job> jobs = jobMapper.selectByExample(example);
+        List<Job> jobs = jobMapper.selectByExampleWithBLOBs(example);
         if (jobs != null) {
             return jobs;
         } else {
@@ -143,7 +143,7 @@ public class JobService {
     public List<Job> getEnableJobs() {
         JobExample example = new JobExample();
         example.createCriteria().andStatusEqualTo(JobStatus.ENABLE.getValue());
-        List<Job> jobs = jobMapper.selectByExample(example);
+        List<Job> jobs = jobMapper.selectByExampleWithBLOBs(example);
         if (jobs == null) {
             jobs = new ArrayList<Job>();
         }
