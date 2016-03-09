@@ -112,3 +112,17 @@ message ServerSearchTaskStatusResponse {
 	optional int32 status = 2;
 	optional string message = 3 [default = ""];
 }
+
+
+//search job like jobName
+message RestSearchJobLikeNameRequest {
+    required AppAuth app_auth = 1;
+    required string user = 2;
+    required string keyword = 3;
+}
+
+message ServerSearchJobLikeNameResponse {
+    required bool success = 1;
+    repeated JobInfoEntry job_info = 2;
+    optional string message = 3 [default = ""];
+}

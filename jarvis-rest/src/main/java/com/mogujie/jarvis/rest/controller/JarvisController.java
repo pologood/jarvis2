@@ -62,12 +62,14 @@ import com.mogujie.jarvis.protocol.SearchJobProtos;
 import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchAllJobsRequest;
 import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchBizIdByNameRequest;
 import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchJobByScriptIdRequest;
+import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchJobLikeNameRequest;
 import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchPreJobInfoRequest;
 import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchScriptTypeRequest;
 import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchTaskStatusRequest;
 import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchAllJobsResponse;
 import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchBizIdByNamResponse;
 import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchJobByScriptIdResponse;
+import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchJobLikeNameResponse;
 import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchPreJobInfoResponse;
 import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchScriptTypeResponse;
 import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchTaskStatusResponse;
@@ -233,10 +235,32 @@ public class JarvisController extends AbstractController {
     @GET
     @Path("searchtask.htm")
     @Produces(MediaType.APPLICATION_JSON)
-    public TasksResult searchTask(@QueryParam("keyword") String title) {
-        // NOT SUPPORTED
-        // 暂时没人用到
-        return null;
+    public TasksResult searchTask(@QueryParam("keyword") String keyword) {
+        LOGGER.debug("根据任务名的keyword查询job");
+        try {
+            String appToken = AppTokenUtils.generateToken(DateTime.now().getMillis(), APP_IRONMAN_KEY);
+            AppAuth appAuth = AppAuth.newBuilder().setName(APP_IRONMAN_NAME).setToken(appToken).build();
+
+            RestSearchJobLikeNameRequest request = RestSearchJobLikeNameRequest.newBuilder().setAppAuth(appAuth)
+                    .setUser(APP_IRONMAN_NAME).setKeyword(keyword).build();
+            ServerSearchJobLikeNameResponse response = (ServerSearchJobLikeNameResponse) callActor(AkkaType.SERVER, request);
+            if (response.getSuccess()) {
+                List<JobInfoEntry> jobInfos = response.getJobInfoList();
+                TasksResult result = new TasksResult(jobInfos);
+                result.setSuccess(true);
+                return result;
+            } else {
+                TasksResult result = new TasksResult();
+                result.setSuccess(false);
+                result.setMessage(response.getMessage());
+                return result;
+            }
+        } catch (Exception e) {
+            TasksResult result = new TasksResult();
+            result.setSuccess(false);
+            result.setMessage(e.getMessage());
+            return result;
+        }
     }
 
     @POST

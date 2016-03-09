@@ -74,6 +74,7 @@ import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchBizIdByNameRequest;
 import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchJobByNameRequest;
 import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchJobByScriptIdRequest;
 import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchJobInfoByScriptTitileRequest;
+import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchJobLikeNameRequest;
 import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchPreJobInfoRequest;
 import com.mogujie.jarvis.protocol.SearchJobProtos.RestSearchScriptTypeRequest;
 import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchAllJobsResponse;
@@ -81,6 +82,7 @@ import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchBizIdByNamRespons
 import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchJobByNameResponse;
 import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchJobByScriptIdResponse;
 import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchJobInfoByScriptTitileResponse;
+import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchJobLikeNameResponse;
 import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchPreJobInfoResponse;
 import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchScriptTypeResponse;
 import com.mogujie.jarvis.server.ServerConigKeys;
@@ -146,6 +148,7 @@ public class JobActor extends UntypedActor {
         list.add(new ActorEntry(RestSearchScriptTypeRequest.class, ServerSearchScriptTypeResponse.class, MessageType.GENERAL));
         list.add(new ActorEntry(RestSearchBizIdByNameRequest.class, ServerSearchBizIdByNamResponse.class, MessageType.GENERAL));
         list.add(new ActorEntry(RestSearchJobInfoByScriptTitileRequest.class, ServerSearchJobInfoByScriptTitileResponse.class, MessageType.GENERAL));
+        list.add(new ActorEntry(RestSearchJobLikeNameRequest.class, ServerSearchJobLikeNameResponse.class, MessageType.GENERAL));
         //---------
         return list;
     }
@@ -198,6 +201,9 @@ public class JobActor extends UntypedActor {
             } else if(obj instanceof RestSearchJobInfoByScriptTitileRequest) {
                 RestSearchJobInfoByScriptTitileRequest msg = (RestSearchJobInfoByScriptTitileRequest) obj;
                 searchJobByScriptTitle(msg);
+            } else if (obj instanceof RestSearchJobLikeNameRequest) {
+                RestSearchJobLikeNameRequest msg = (RestSearchJobLikeNameRequest) obj;
+                searchJobLikeName(msg);
             } else {
                 unhandled(obj);
             }
@@ -938,6 +944,36 @@ public class JobActor extends UntypedActor {
                 .setSuccess(false)
                 .setMessage(ExceptionUtil.getErrMsg(e))
                 .build();
+            getSender().tell(response, getSelf());
+            LOGGER.error("", e);
+            throw e;
+        }
+    }
+
+    /**
+     * 兼容老系统API
+     * 通过job name的关键字查询job信息
+     *
+     * @param msg
+     * @throws IOException
+     */
+    private void searchJobLikeName(RestSearchJobLikeNameRequest msg) throws Exception {
+        String keyword = msg.getKeyword();
+        ServerSearchJobLikeNameResponse response;
+        try {
+            List<Job> jobs = jobService.searchJobLikeName(keyword);
+            ServerSearchJobLikeNameResponse.Builder builder = ServerSearchJobLikeNameResponse.newBuilder();
+            for (Job job : jobs) {
+                JobInfoEntry jobInfo = convertJob2JobInfo(job);
+                builder.addJobInfo(jobInfo);
+            }
+            response = builder.setSuccess(true).build();
+            getSender().tell(response, getSelf());
+        } catch (Exception e) {
+            response = ServerSearchJobLikeNameResponse.newBuilder()
+                    .setSuccess(false)
+                    .setMessage(ExceptionUtil.getErrMsg(e))
+                    .build();
             getSender().tell(response, getSelf());
             LOGGER.error("", e);
             throw e;

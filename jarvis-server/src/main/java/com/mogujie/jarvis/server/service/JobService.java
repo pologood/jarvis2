@@ -7,7 +7,6 @@
  */
 package com.mogujie.jarvis.server.service;
 
-import com.mogujie.jarvis.server.interceptor.OperationLog;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -50,6 +49,7 @@ import com.mogujie.jarvis.dto.generate.JobScheduleExpressionExample;
 import com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry;
 import com.mogujie.jarvis.server.domain.JobDependencyEntry;
 import com.mogujie.jarvis.server.domain.JobEntry;
+import com.mogujie.jarvis.server.interceptor.OperationLog;
 
 /**
  * @author wuya, muming
@@ -103,6 +103,17 @@ public class JobService {
         return null;
     }
 
+    public List<Job> searchJobLikeName(String name) {
+        JobExample example = new JobExample();
+        example.createCriteria().andJobNameLike("%" + name + "%").andStatusEqualTo(JobStatus.ENABLE.getValue());
+        List<Job> jobs = jobMapper.selectByExample(example);
+        if (jobs != null) {
+            return jobs;
+        } else {
+            return new ArrayList<Job>();
+        }
+    }
+
     public List<Job> getNotDeletedJobs() {
         JobExample example = new JobExample();
         example.createCriteria().andStatusNotEqualTo(JobStatus.DELETED.getValue());
@@ -116,7 +127,7 @@ public class JobService {
     public List<Long> getEnableActiveJobIds() {
         JobExample example = new JobExample();
         example.createCriteria().andStatusEqualTo(JobStatus.ENABLE.getValue());
-        List<Job> jobs = jobMapper.selectByExampleWithBLOBs(example);
+        List<Job> jobs = jobMapper.selectByExample(example);
         List<Long> activeJobIds = Lists.newArrayList();
         if (jobs != null) {
             for (Job job : jobs) {
