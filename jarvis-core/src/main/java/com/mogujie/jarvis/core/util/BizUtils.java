@@ -30,8 +30,10 @@ public class BizUtils {
         bizGroupStr = bizGroupStr.trim();
         String[] bizGroups = StringUtils.split(bizGroupStr.substring(1, bizGroupStr.length() - 1), SEPARATOR);
         List<Integer> bizIds = new ArrayList<Integer>();
-        for (String bizId : bizGroups) {
-            bizIds.add(Integer.valueOf(bizId));
+        if (bizGroupStr.length() > 2) {
+            for (String bizId : bizGroups) {
+                bizIds.add(Integer.valueOf(bizId));
+            }
         }
         return bizIds;
     }
