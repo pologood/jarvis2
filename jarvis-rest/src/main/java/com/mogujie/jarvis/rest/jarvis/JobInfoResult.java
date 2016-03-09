@@ -40,7 +40,8 @@ public class JobInfoResult extends Result {
 
     public JobInfoResult(JobInfoEntry jobInfo) {
         this.id = jobInfo.getJobId();
-        this.cronExp = jobInfo.getScheduleExpression();
+        //适配老系统cron表达式
+        this.cronExp = jobInfo.getScheduleExpression().substring(1).trim();
         if (jobInfo.getContentType() == JobContentType.SCRIPT.getValue()) {
             this.scriptId = Integer.valueOf(jobInfo.getContent());
         }
