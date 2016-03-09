@@ -38,6 +38,10 @@ public class CpuAcceptanceStrategy implements AcceptanceStrategy {
             Pair<Long, Long> pair2 = getCpuStat();
             double currentCpuUsage = ((pair2.getFirst() - pair2.getSecond()) - (pair1.getFirst() - pair1.getSecond()))
                     / (double) (pair2.getFirst() - pair1.getFirst());
+            if (Double.isNaN(currentCpuUsage)) {
+                currentCpuUsage = 0;
+            }
+
             if (currentCpuUsage > MAX_CPU_USAGE) {
                 return new AcceptanceResult(false,
                         "client当前CPU使用率" + new DecimalFormat(DECIMAL_FORMAT).format(currentCpuUsage) + ", 超过阈值" + MAX_CPU_USAGE);

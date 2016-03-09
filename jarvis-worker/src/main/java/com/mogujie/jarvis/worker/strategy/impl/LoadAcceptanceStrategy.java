@@ -32,6 +32,10 @@ public class LoadAcceptanceStrategy implements AcceptanceStrategy {
     public AcceptanceResult accept() throws Exception {
         OperatingSystemMXBean bean = ManagementFactory.getOperatingSystemMXBean();
         double currentLoad = bean.getSystemLoadAverage();
+        if (Double.isNaN(currentLoad)) {
+            currentLoad = 0;
+        }
+
         if (currentLoad > LOAD_THRESHOLD) {
             return new AcceptanceResult(false,
                     "client当前CPU Load " + new DecimalFormat(DECIMAL_FORMAT).format(currentLoad) + ", 超过阈值" + LOAD_THRESHOLD);

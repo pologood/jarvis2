@@ -50,6 +50,10 @@ public class YarnMemoryAcceptanceStrategy implements AcceptanceStrategy {
                 int allocatedMB = clusterMetrics.getInt("allocatedMB");
                 int totalMB = clusterMetrics.getInt("totalMB");
                 double currentMemoryUsage = (double) allocatedMB / totalMB;
+                if (Double.isNaN(currentMemoryUsage)) {
+                    currentMemoryUsage = 0;
+                }
+
                 if (currentMemoryUsage < MAX_YARN_MEMORY_USAGE) {
                     return new AcceptanceResult(true, "");
                 } else {
