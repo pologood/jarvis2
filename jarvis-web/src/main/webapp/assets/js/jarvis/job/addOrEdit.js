@@ -831,7 +831,7 @@ function showSparkLauncherParasModal() {
         existParas = JSON.parse(params);
     }
 
-    $("#sparkLauncherParasModalBody input,textarea").each(function (i, c) {
+    $("#sparkLauncherParasModalBody input, #sparkLauncherParasModalBody textarea").each(function (i, c) {
         var key = $(this).attr("name");
         if (key in existParas) {
             $(this).val(existParas[key]);
@@ -847,7 +847,7 @@ function showSparkLauncherParasModal() {
 function confirmJobParas4SparkLauncher() {
     var paras = {};
     var flag = true;
-    $("#sparkLauncherParasModalBody input,textarea").each(function (i, c) {
+    $("#sparkLauncherParasModalBody input, #sparkLauncherParasModalBody textarea").each(function (i, c) {
         var key = $(this).attr("name");
         var val = $(this).val();
         var required = $(this).hasClass("required");

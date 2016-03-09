@@ -105,7 +105,7 @@ public class ValidService {
 
         String content = job.getContent();
         Preconditions.checkArgument(mode != CheckMode.ADD || content != null, "job内容不能为空");
-        Preconditions.checkArgument(content == null || !content.trim().equals(""), "job内容不能为空");
+//        Preconditions.checkArgument(content == null || !content.trim().equals(""), "job内容不能为空");
 
         Integer status = job.getStatus();
         Preconditions.checkArgument(!mode.isIn(CheckMode.ADD, CheckMode.EDIT_STATUS) || status != null, "status不能为空");
