@@ -232,10 +232,10 @@ public class JarvisController extends AbstractController {
         return getDependencyByScript(scriptId);
     }
 
-    @GET
+    @POST
     @Path("searchtask.htm")
     @Produces(MediaType.APPLICATION_JSON)
-    public TasksResult searchTask(@QueryParam("keyword") String keyword) {
+    public TasksResult searchTask(@FormParam("keyword") String keyword) {
         LOGGER.debug("根据任务名的keyword查询job");
         try {
             String appToken = AppTokenUtils.generateToken(DateTime.now().getMillis(), APP_IRONMAN_KEY);

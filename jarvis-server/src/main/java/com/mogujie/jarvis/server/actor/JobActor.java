@@ -815,10 +815,9 @@ public class JobActor extends UntypedActor {
     private void searchAllJobs(RestSearchAllJobsRequest msg) throws Exception {
         ServerSearchAllJobsResponse response;
         try {
-            List<Long> activeJobIds = jobService.getEnableActiveJobIds();
+            List<Job> enabledJobs = jobService.getEnableJobs();
             ServerSearchAllJobsResponse.Builder builder = ServerSearchAllJobsResponse.newBuilder();
-            for (long jobId : activeJobIds) {
-                Job job = jobService.get(jobId).getJob();
+            for (Job job : enabledJobs) {
                 JobInfoEntry jobInfo = convertJob2JobInfo(job);
                 builder.addJobInfo(jobInfo);
             }

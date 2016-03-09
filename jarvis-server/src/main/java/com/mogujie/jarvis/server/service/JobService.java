@@ -140,6 +140,16 @@ public class JobService {
         return activeJobIds;
     }
 
+    public List<Job> getEnableJobs() {
+        JobExample example = new JobExample();
+        example.createCriteria().andStatusEqualTo(JobStatus.ENABLE.getValue());
+        List<Job> jobs = jobMapper.selectByExample(example);
+        if (jobs == null) {
+            jobs = new ArrayList<Job>();
+        }
+        return jobs;
+    }
+
     public boolean isActive(long jobId) {
         Job job = metaStore.get(jobId).getJob();
         Date startDate = job.getActiveStartDate();
