@@ -105,10 +105,10 @@ public class JarvisController extends AbstractController {
     private static String APP_BGMONITOR_NAME = ConfigUtils.getRestConfig().getString("app.bgmonitor.name");
     private static String APP_BGMONITOR_KEY = ConfigUtils.getRestConfig().getString("app.bgmonitor.key");
 
-    @GET
+    @POST
     @Path("taskinfo")
     @Produces(MediaType.APPLICATION_JSON)
-    public JobInfoResult getTaskInfo(@QueryParam("scriptId") int scriptId) {
+    public JobInfoResult getTaskInfo(@FormParam("scriptId") int scriptId) {
         LOGGER.debug("根据scriptId查询taskinfo");
         try {
             String appToken = AppTokenUtils.generateToken(DateTime.now().getMillis(), APP_IRONMAN_KEY);
@@ -147,7 +147,7 @@ public class JarvisController extends AbstractController {
         }
     }
 
-    @GET
+    @POST
     @Path("alltasks")
     @Produces(MediaType.APPLICATION_JSON)
     public TasksResult getAllTasks() {
