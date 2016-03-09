@@ -1,5 +1,6 @@
 package com.mogujie.jarvis.web.controller.api;
 
+import com.mogujie.jarvis.core.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,6 +48,9 @@ public class JobAPIController {
         }
         try {
             JobVo jobVo = jobService.getJobById(jobQo.getJobId());
+            if(jobVo == null){
+                throw new NotFoundException("job不存在. jobId:" + jobQo.getJobId());
+            }
             map.put("code", MessageStatus.SUCCESS.getValue());
             map.put("msg", MessageStatus.SUCCESS.getText());
             map.put("data", jobVo);

@@ -31,7 +31,7 @@ const CONST = {
         JAR_URL: '_jarvis_jar_url'
     },
     SPARK_LAUNCHER_JOB: {        //sparkLauncher任务
-        COMMAND: "",
+        COMMAND: "sparkLauncher.sh",
         PARAMS_KEY: {
             taskName: 'taskName',
             taskJar: 'taskJar',

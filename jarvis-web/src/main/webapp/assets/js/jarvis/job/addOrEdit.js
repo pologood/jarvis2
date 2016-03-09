@@ -145,9 +145,9 @@ function changeJobType() {
         $(text).radioEnable(true);
         $(script).radioEnable(true);
         $(jar).radioEnable(false);
-        if (!$(text).prop('checked') && !$(script).prop('checked')) {
+        //if (!$(text).prop('checked') && !$(script).prop('checked')) {
             $(text).prop('checked', true).trigger("change");
-        }
+        //}
     } else if (curJobType == CONST.JOB_TYPE.JAVA || curJobType == CONST.JOB_TYPE.MAPREDUCE) {
         $(text).radioEnable(false);
         $(script).radioEnable(false);
@@ -159,9 +159,9 @@ function changeJobType() {
         $(text).radioEnable(true);
         $(script).radioEnable(false);
         $(jar).radioEnable(false);
-        if (!$(text).prop('checked')) {
+        //if (!$(text).prop('checked')) {
             $(text).prop('checked', true).trigger("change");
-        }
+        //}
     } else if (curJobType == CONST.JOB_TYPE.DUMMY) {
         $(text).radioEnable(true);
         $(script).radioEnable(true);
@@ -863,7 +863,9 @@ function confirmJobParas4SparkLauncher() {
         return;
     }
 
-    $("#params").val(JSON.stringify(paras));
+    var paramsStr = JSON.stringify(paras);
+    $("#params").val(paramsStr);
+    $("#jobContent").val(CONST.SPARK_LAUNCHER_JOB.COMMAND + " " + paramsStr);
     $("#sparkLauncherParasModal").modal("hide");
 }
 
