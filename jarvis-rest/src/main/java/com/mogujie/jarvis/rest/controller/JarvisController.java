@@ -360,16 +360,18 @@ public class JarvisController extends AbstractController {
                 builder.addExpressionEntry(scheduleExpressionEntry);
 
                 // 4.依赖关系
-                String[] preJobIds = preTaskIds.trim().split(" ");
-                for (String preJobIdStr : preJobIds) {
-                    long preJobId = Long.valueOf(preJobIdStr);
-                    DependencyEntry dependencyEntry = DependencyEntry.newBuilder()
-                            .setOperator(OperationMode.ADD.getValue())
-                            .setJobId(preJobId)
-                            .setCommonDependStrategy(CommonStrategy.ALL.getValue())
-                            .setOffsetDependStrategy("cd")
-                            .build();
-                    builder.addDependencyEntry(dependencyEntry);
+                if (preTaskIds != null && !preTaskIds.isEmpty()) {
+                    String[] preJobIds = preTaskIds.trim().split(" ");
+                    for (String preJobIdStr : preJobIds) {
+                        long preJobId = Long.valueOf(preJobIdStr);
+                        DependencyEntry dependencyEntry = DependencyEntry.newBuilder()
+                                .setOperator(OperationMode.ADD.getValue())
+                                .setJobId(preJobId)
+                                .setCommonDependStrategy(CommonStrategy.ALL.getValue())
+                                .setOffsetDependStrategy("cd")
+                                .build();
+                        builder.addDependencyEntry(dependencyEntry);
+                    }
                 }
 
                 // 5. 提交job
@@ -421,15 +423,21 @@ public class JarvisController extends AbstractController {
 
                 // 1. 获取bizGroupId
                 List<Integer> bizIds = new ArrayList<Integer>();
-                RestSearchBizIdByNameRequest searchBizIdRequest = RestSearchBizIdByNameRequest.newBuilder()
-                        .setAppAuth(appAuth).setUser(globalUser).setBizName(pline).build();
-                ServerSearchBizIdByNamResponse searchBizIdResponse = (ServerSearchBizIdByNamResponse) callActor(AkkaType.SERVER, searchBizIdRequest);
-                if (searchBizIdResponse.getSuccess()) {
-                    bizIds.add(searchBizIdResponse.getBizId());
-                } else {
-                    result.setSuccess(false);
-                    result.setMessage("找不到pline=" + pline);
-                    return result;
+                if (pline != null && !pline.isEmpty()) {
+                    RestSearchBizIdByNameRequest searchBizIdRequest = RestSearchBizIdByNameRequest.newBuilder()
+                            .setAppAuth(appAuth).setUser(globalUser).setBizName(pline).build();
+                    ServerSearchBizIdByNamResponse searchBizIdResponse = (ServerSearchBizIdByNamResponse) callActor(AkkaType.SERVER, searchBizIdRequest);
+                    if (searchBizIdResponse.getSuccess()) {
+                        bizIds.add(searchBizIdResponse.getBizId());
+                    } else {
+                        result.setSuccess(false);
+                        result.setMessage("找不到pline=" + pline);
+                        return result;
+                    }
+                }
+                String bizGroups = "";
+                if (!bizIds.isEmpty()) {
+                    bizGroups = BizUtils.getBizGroupStr(bizIds);
                 }
 
                 // 构造RestModifyJobRequest
@@ -438,7 +446,7 @@ public class JarvisController extends AbstractController {
                         .setJobId(jobId)
                         .setAppName(APP_IRONMAN_NAME)
                         .setDepartment(department)
-                        .setBizGroups(BizUtils.getBizGroupStr(bizIds))
+                        .setBizGroups(bizGroups)
                         .setPriority(priority);
                 if (startDate != null && !startDate.isEmpty()) {
                     modifyJobBuilder.setActiveStartTime(new DateTime(startDate).getMillis());
@@ -473,10 +481,12 @@ public class JarvisController extends AbstractController {
                 }
 
                 // 3.修改依赖关系
-                String[] preJobIds = preTaskIds.trim().split(" ");
-                Set<Long> oldPreJobIds = Sets.newHashSet();
-                for (String preJobIdStr : preJobIds) {
-                    oldPreJobIds.add(Long.valueOf(preJobIdStr));
+                Set<Long> newPreJobIds = Sets.newHashSet();
+                if (preTaskIds != null && !preTaskIds.isEmpty()) {
+                    String[] preJobIds = preTaskIds.trim().split(" ");
+                    for (String preJobIdStr : preJobIds) {
+                        newPreJobIds.add(Long.valueOf(preJobIdStr));
+                    }
                 }
                 RestSearchPreJobInfoRequest preJobInfoRequest = RestSearchPreJobInfoRequest.newBuilder().setAppAuth(appAuth)
                         .setUser(APP_IRONMAN_NAME).setJobId(id).build();
@@ -487,9 +497,9 @@ public class JarvisController extends AbstractController {
                     return result;
                 }
                 List<JobInfoEntry> jobInfos = preJobInfoResponse.getPreJobInfoList();
-                Set<Long> newPreJobIds = Sets.newHashSet();
+                Set<Long> oldPreJobIds = Sets.newHashSet();
                 for (JobInfoEntry jobInfoEntry : jobInfos) {
-                    newPreJobIds.add(jobInfoEntry.getJobId());
+                    oldPreJobIds.add(jobInfoEntry.getJobId());
                 }
                 SetView<Long> removeSet = Sets.difference(oldPreJobIds, newPreJobIds);
                 SetView<Long> addSet = Sets.difference(newPreJobIds, oldPreJobIds);
