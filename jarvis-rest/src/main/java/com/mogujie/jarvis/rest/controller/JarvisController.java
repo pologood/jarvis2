@@ -75,14 +75,11 @@ import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchTaskStatusRespons
 import com.mogujie.jarvis.protocol.TaskInfoEntryProtos.TaskInfoEntry;
 import com.mogujie.jarvis.rest.jarvis.CriticalPathResult;
 import com.mogujie.jarvis.rest.jarvis.JobInfoResult;
-import com.mogujie.jarvis.rest.jarvis.PermissionEnum;
 import com.mogujie.jarvis.rest.jarvis.Result;
 import com.mogujie.jarvis.rest.jarvis.TaskIDResult;
 import com.mogujie.jarvis.rest.jarvis.TaskInfo;
-import com.mogujie.jarvis.rest.jarvis.TaskPriorityEnum;
 import com.mogujie.jarvis.rest.jarvis.TaskStatusEnum;
 import com.mogujie.jarvis.rest.jarvis.TasksResult;
-import com.mogujie.jarvis.rest.jarvis.User;
 import com.mogujie.jarvis.rest.utils.ValidUtils;
 import com.mogujie.jarvis.rest.vo.JobDependencyVo;
 import com.mogujie.jarvis.rest.vo.JobScheduleExpVo;
@@ -268,7 +265,7 @@ public class JarvisController extends AbstractController {
             @FormParam("title") String title, @FormParam("cronExp") String cronExp, @FormParam("status") int status,
             @FormParam("priority") int priority, @FormParam("startDate") String startDate, @FormParam("endDate") String endDate,
             @FormParam("department") String department, @FormParam("pline") String pline, @FormParam("receiver") String receiver,
-            @FormParam("preTaskIds") String preTaskIds, @FormParam("globalUser") String globalUser, User user) {
+            @FormParam("preTaskIds") String preTaskIds, @FormParam("globalUser") String globalUser) {
         LOGGER.debug("ironman提交job");
         TaskIDResult result = new TaskIDResult();
         long jobId = 0;
@@ -287,12 +284,12 @@ public class JarvisController extends AbstractController {
 
             // 根据id是否为null判断是更新还是添加
             if (null == id || 0 == id.longValue()) {
-                if (!user.haveFunction(PermissionEnum.SUPER_ADMIN)) {
-                    // 非管理员不得使用VERY_HIGH优先级
-                    if (priority > TaskPriorityEnum.HIGH.getValue()) {
-                        priority = TaskPriorityEnum.HIGH.getValue();
-                    }
-                }
+//                if (!user.haveFunction(PermissionEnum.SUPER_ADMIN)) {
+//                    // 非管理员不得使用VERY_HIGH优先级
+//                    if (priority > TaskPriorityEnum.HIGH.getValue()) {
+//                        priority = TaskPriorityEnum.HIGH.getValue();
+//                    }
+//                }
                 // 1.获取job type
                 RestSearchScriptTypeRequest scriptTypeRequest = RestSearchScriptTypeRequest.newBuilder()
                         .setAppAuth(appAuth).setUser(globalUser).setScriptId(scriptId).build();
@@ -402,19 +399,19 @@ public class JarvisController extends AbstractController {
             } else {
                 jobId = id;
                 result.setTaskId(jobId);
-                if (!user.isAdminOrAuthor(publisher)
-                        && !globalUser.equals(publisher)) {
-                    result.setSuccess(false);
-                    result.setMessage("无权修改");
-                    return result;
-                }
-                // 判断用户是否是管理员来验证优先级设置是否合理
-                if (!user.haveFunction(PermissionEnum.SUPER_ADMIN)) {
-                    // 非管理员不得使用VERY_HIGH优先级
-                    if (priority > TaskPriorityEnum.HIGH.getValue()) {
-                        priority = TaskPriorityEnum.HIGH.getValue();
-                    }
-                }
+//                if (!user.isAdminOrAuthor(publisher)
+//                        && !globalUser.equals(publisher)) {
+//                    result.setSuccess(false);
+//                    result.setMessage("无权修改");
+//                    return result;
+//                }
+//                // 判断用户是否是管理员来验证优先级设置是否合理
+//                if (!user.haveFunction(PermissionEnum.SUPER_ADMIN)) {
+//                    // 非管理员不得使用VERY_HIGH优先级
+//                    if (priority > TaskPriorityEnum.HIGH.getValue()) {
+//                        priority = TaskPriorityEnum.HIGH.getValue();
+//                    }
+//                }
 
                 // 1. 获取bizGroupId
                 List<Integer> bizIds = new ArrayList<Integer>();
