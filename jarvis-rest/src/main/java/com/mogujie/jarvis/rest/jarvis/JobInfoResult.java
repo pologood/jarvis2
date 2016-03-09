@@ -58,11 +58,8 @@ public class JobInfoResult extends Result {
         int newStatus = jobInfo.getStatus();
         if (newStatus == JobStatus.ENABLE.getValue()) {
             this.status = TaskStatusEnum.ENABLE.getValue();
-        } else if (newStatus == JobStatus.DISABLE.getValue() ||
-                newStatus == JobStatus.PAUSE.getValue()) {
-            this.status = TaskStatusEnum.DISABLE.getValue();
         } else {
-            this.status = TaskStatusEnum.DELETE.getValue();
+            this.status = TaskStatusEnum.DISABLE.getValue();
         }
     }
 
