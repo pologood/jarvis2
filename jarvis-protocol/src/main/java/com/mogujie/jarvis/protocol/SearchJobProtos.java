@@ -7323,17 +7323,17 @@ public final class SearchJobProtos {
      */
     boolean getSuccess();
 
-    // required string script_type = 2;
+    // optional string script_type = 2;
     /**
-     * <code>required string script_type = 2;</code>
+     * <code>optional string script_type = 2;</code>
      */
     boolean hasScriptType();
     /**
-     * <code>required string script_type = 2;</code>
+     * <code>optional string script_type = 2;</code>
      */
     java.lang.String getScriptType();
     /**
-     * <code>required string script_type = 2;</code>
+     * <code>optional string script_type = 2;</code>
      */
     com.google.protobuf.ByteString
         getScriptTypeBytes();
@@ -7475,17 +7475,17 @@ public final class SearchJobProtos {
       return success_;
     }
 
-    // required string script_type = 2;
+    // optional string script_type = 2;
     public static final int SCRIPT_TYPE_FIELD_NUMBER = 2;
     private java.lang.Object scriptType_;
     /**
-     * <code>required string script_type = 2;</code>
+     * <code>optional string script_type = 2;</code>
      */
     public boolean hasScriptType() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
-     * <code>required string script_type = 2;</code>
+     * <code>optional string script_type = 2;</code>
      */
     public java.lang.String getScriptType() {
       java.lang.Object ref = scriptType_;
@@ -7502,7 +7502,7 @@ public final class SearchJobProtos {
       }
     }
     /**
-     * <code>required string script_type = 2;</code>
+     * <code>optional string script_type = 2;</code>
      */
     public com.google.protobuf.ByteString
         getScriptTypeBytes() {
@@ -7572,10 +7572,6 @@ public final class SearchJobProtos {
       if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasSuccess()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasScriptType()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -7816,10 +7812,6 @@ public final class SearchJobProtos {
           
           return false;
         }
-        if (!hasScriptType()) {
-          
-          return false;
-        }
         return true;
       }
 
@@ -7875,16 +7867,16 @@ public final class SearchJobProtos {
         return this;
       }
 
-      // required string script_type = 2;
+      // optional string script_type = 2;
       private java.lang.Object scriptType_ = "";
       /**
-       * <code>required string script_type = 2;</code>
+       * <code>optional string script_type = 2;</code>
        */
       public boolean hasScriptType() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
-       * <code>required string script_type = 2;</code>
+       * <code>optional string script_type = 2;</code>
        */
       public java.lang.String getScriptType() {
         java.lang.Object ref = scriptType_;
@@ -7898,7 +7890,7 @@ public final class SearchJobProtos {
         }
       }
       /**
-       * <code>required string script_type = 2;</code>
+       * <code>optional string script_type = 2;</code>
        */
       public com.google.protobuf.ByteString
           getScriptTypeBytes() {
@@ -7914,7 +7906,7 @@ public final class SearchJobProtos {
         }
       }
       /**
-       * <code>required string script_type = 2;</code>
+       * <code>optional string script_type = 2;</code>
        */
       public Builder setScriptType(
           java.lang.String value) {
@@ -7927,7 +7919,7 @@ public final class SearchJobProtos {
         return this;
       }
       /**
-       * <code>required string script_type = 2;</code>
+       * <code>optional string script_type = 2;</code>
        */
       public Builder clearScriptType() {
         bitField0_ = (bitField0_ & ~0x00000002);
@@ -7936,7 +7928,7 @@ public final class SearchJobProtos {
         return this;
       }
       /**
-       * <code>required string script_type = 2;</code>
+       * <code>optional string script_type = 2;</code>
        */
       public Builder setScriptTypeBytes(
           com.google.protobuf.ByteString value) {
@@ -8906,17 +8898,17 @@ public final class SearchJobProtos {
      */
     boolean getSuccess();
 
-    // required .JobInfoEntry job_info = 2;
+    // optional .JobInfoEntry job_info = 2;
     /**
-     * <code>required .JobInfoEntry job_info = 2;</code>
+     * <code>optional .JobInfoEntry job_info = 2;</code>
      */
     boolean hasJobInfo();
     /**
-     * <code>required .JobInfoEntry job_info = 2;</code>
+     * <code>optional .JobInfoEntry job_info = 2;</code>
      */
     com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry getJobInfo();
     /**
-     * <code>required .JobInfoEntry job_info = 2;</code>
+     * <code>optional .JobInfoEntry job_info = 2;</code>
      */
     com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntryOrBuilder getJobInfoOrBuilder();
 
@@ -9065,23 +9057,23 @@ public final class SearchJobProtos {
       return success_;
     }
 
-    // required .JobInfoEntry job_info = 2;
+    // optional .JobInfoEntry job_info = 2;
     public static final int JOB_INFO_FIELD_NUMBER = 2;
     private com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry jobInfo_;
     /**
-     * <code>required .JobInfoEntry job_info = 2;</code>
+     * <code>optional .JobInfoEntry job_info = 2;</code>
      */
     public boolean hasJobInfo() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
-     * <code>required .JobInfoEntry job_info = 2;</code>
+     * <code>optional .JobInfoEntry job_info = 2;</code>
      */
     public com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry getJobInfo() {
       return jobInfo_;
     }
     /**
-     * <code>required .JobInfoEntry job_info = 2;</code>
+     * <code>optional .JobInfoEntry job_info = 2;</code>
      */
     public com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntryOrBuilder getJobInfoOrBuilder() {
       return jobInfo_;
@@ -9144,13 +9136,11 @@ public final class SearchJobProtos {
         memoizedIsInitialized = 0;
         return false;
       }
-      if (!hasJobInfo()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!getJobInfo().isInitialized()) {
-        memoizedIsInitialized = 0;
-        return false;
+      if (hasJobInfo()) {
+        if (!getJobInfo().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
       }
       memoizedIsInitialized = 1;
       return true;
@@ -9396,13 +9386,11 @@ public final class SearchJobProtos {
           
           return false;
         }
-        if (!hasJobInfo()) {
-          
-          return false;
-        }
-        if (!getJobInfo().isInitialized()) {
-          
-          return false;
+        if (hasJobInfo()) {
+          if (!getJobInfo().isInitialized()) {
+            
+            return false;
+          }
         }
         return true;
       }
@@ -9459,18 +9447,18 @@ public final class SearchJobProtos {
         return this;
       }
 
-      // required .JobInfoEntry job_info = 2;
+      // optional .JobInfoEntry job_info = 2;
       private com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry jobInfo_ = com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry, com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.Builder, com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntryOrBuilder> jobInfoBuilder_;
       /**
-       * <code>required .JobInfoEntry job_info = 2;</code>
+       * <code>optional .JobInfoEntry job_info = 2;</code>
        */
       public boolean hasJobInfo() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
-       * <code>required .JobInfoEntry job_info = 2;</code>
+       * <code>optional .JobInfoEntry job_info = 2;</code>
        */
       public com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry getJobInfo() {
         if (jobInfoBuilder_ == null) {
@@ -9480,7 +9468,7 @@ public final class SearchJobProtos {
         }
       }
       /**
-       * <code>required .JobInfoEntry job_info = 2;</code>
+       * <code>optional .JobInfoEntry job_info = 2;</code>
        */
       public Builder setJobInfo(com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry value) {
         if (jobInfoBuilder_ == null) {
@@ -9496,7 +9484,7 @@ public final class SearchJobProtos {
         return this;
       }
       /**
-       * <code>required .JobInfoEntry job_info = 2;</code>
+       * <code>optional .JobInfoEntry job_info = 2;</code>
        */
       public Builder setJobInfo(
           com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.Builder builderForValue) {
@@ -9510,7 +9498,7 @@ public final class SearchJobProtos {
         return this;
       }
       /**
-       * <code>required .JobInfoEntry job_info = 2;</code>
+       * <code>optional .JobInfoEntry job_info = 2;</code>
        */
       public Builder mergeJobInfo(com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry value) {
         if (jobInfoBuilder_ == null) {
@@ -9529,7 +9517,7 @@ public final class SearchJobProtos {
         return this;
       }
       /**
-       * <code>required .JobInfoEntry job_info = 2;</code>
+       * <code>optional .JobInfoEntry job_info = 2;</code>
        */
       public Builder clearJobInfo() {
         if (jobInfoBuilder_ == null) {
@@ -9542,7 +9530,7 @@ public final class SearchJobProtos {
         return this;
       }
       /**
-       * <code>required .JobInfoEntry job_info = 2;</code>
+       * <code>optional .JobInfoEntry job_info = 2;</code>
        */
       public com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.Builder getJobInfoBuilder() {
         bitField0_ |= 0x00000002;
@@ -9550,7 +9538,7 @@ public final class SearchJobProtos {
         return getJobInfoFieldBuilder().getBuilder();
       }
       /**
-       * <code>required .JobInfoEntry job_info = 2;</code>
+       * <code>optional .JobInfoEntry job_info = 2;</code>
        */
       public com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntryOrBuilder getJobInfoOrBuilder() {
         if (jobInfoBuilder_ != null) {
@@ -9560,7 +9548,7 @@ public final class SearchJobProtos {
         }
       }
       /**
-       * <code>required .JobInfoEntry job_info = 2;</code>
+       * <code>optional .JobInfoEntry job_info = 2;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
           com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry, com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntry.Builder, com.mogujie.jarvis.protocol.JobInfoEntryProtos.JobInfoEntryOrBuilder> 
@@ -10533,13 +10521,13 @@ public final class SearchJobProtos {
      */
     boolean getSuccess();
 
-    // required int32 biz_id = 2;
+    // optional int32 biz_id = 2;
     /**
-     * <code>required int32 biz_id = 2;</code>
+     * <code>optional int32 biz_id = 2;</code>
      */
     boolean hasBizId();
     /**
-     * <code>required int32 biz_id = 2;</code>
+     * <code>optional int32 biz_id = 2;</code>
      */
     int getBizId();
 
@@ -10680,17 +10668,17 @@ public final class SearchJobProtos {
       return success_;
     }
 
-    // required int32 biz_id = 2;
+    // optional int32 biz_id = 2;
     public static final int BIZ_ID_FIELD_NUMBER = 2;
     private int bizId_;
     /**
-     * <code>required int32 biz_id = 2;</code>
+     * <code>optional int32 biz_id = 2;</code>
      */
     public boolean hasBizId() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
-     * <code>required int32 biz_id = 2;</code>
+     * <code>optional int32 biz_id = 2;</code>
      */
     public int getBizId() {
       return bizId_;
@@ -10750,10 +10738,6 @@ public final class SearchJobProtos {
       if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasSuccess()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasBizId()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -10992,10 +10976,6 @@ public final class SearchJobProtos {
           
           return false;
         }
-        if (!hasBizId()) {
-          
-          return false;
-        }
         return true;
       }
 
@@ -11051,22 +11031,22 @@ public final class SearchJobProtos {
         return this;
       }
 
-      // required int32 biz_id = 2;
+      // optional int32 biz_id = 2;
       private int bizId_ ;
       /**
-       * <code>required int32 biz_id = 2;</code>
+       * <code>optional int32 biz_id = 2;</code>
        */
       public boolean hasBizId() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
-       * <code>required int32 biz_id = 2;</code>
+       * <code>optional int32 biz_id = 2;</code>
        */
       public int getBizId() {
         return bizId_;
       }
       /**
-       * <code>required int32 biz_id = 2;</code>
+       * <code>optional int32 biz_id = 2;</code>
        */
       public Builder setBizId(int value) {
         bitField0_ |= 0x00000002;
@@ -11075,7 +11055,7 @@ public final class SearchJobProtos {
         return this;
       }
       /**
-       * <code>required int32 biz_id = 2;</code>
+       * <code>optional int32 biz_id = 2;</code>
        */
       public Builder clearBizId() {
         bitField0_ = (bitField0_ & ~0x00000002);
@@ -14435,17 +14415,17 @@ public final class SearchJobProtos {
       "equest\022\032\n\010app_auth\030\001 \002(\0132\010.AppAuth\022\014\n\004us" +
       "er\030\002 \002(\t\022\021\n\tscript_id\030\003 \002(\005\"Y\n\036ServerSea" +
       "rchScriptTypeResponse\022\017\n\007success\030\001 \002(\010\022\023" +
-      "\n\013script_type\030\002 \002(\t\022\021\n\007message\030\003 \001(\t:\000\"a" +
+      "\n\013script_type\030\002 \001(\t\022\021\n\007message\030\003 \001(\t:\000\"a" +
       "\n&RestSearchJobInfoByScriptTitileRequest" +
       "\022\032\n\010app_auth\030\001 \002(\0132\010.AppAuth\022\014\n\004user\030\002 \002" +
       "(\t\022\r\n\005title\030\003 \002(\t\"p\n)ServerSearchJobInfo" +
       "ByScriptTitileResponse\022\017\n\007success\030\001 \002(\010\022" +
-      "\037\n\010job_info\030\002 \002(\0132\r.JobInfoEntry\022\021\n\007mess",
+      "\037\n\010job_info\030\002 \001(\0132\r.JobInfoEntry\022\021\n\007mess",
       "age\030\003 \001(\t:\000\"Z\n\034RestSearchBizIdByNameRequ" +
       "est\022\032\n\010app_auth\030\001 \002(\0132\010.AppAuth\022\014\n\004user\030" +
       "\002 \002(\t\022\020\n\010biz_name\030\003 \002(\t\"T\n\036ServerSearchB" +
       "izIdByNamResponse\022\017\n\007success\030\001 \002(\010\022\016\n\006bi" +
-      "z_id\030\002 \002(\005\022\021\n\007message\030\003 \001(\t:\000\"\\\n\033RestSea" +
+      "z_id\030\002 \001(\005\022\021\n\007message\030\003 \001(\t:\000\"\\\n\033RestSea" +
       "rchTaskStatusRequest\022\032\n\010app_auth\030\001 \002(\0132\010" +
       ".AppAuth\022\016\n\006job_id\030\002 \002(\003\022\021\n\tdata_date\030\003 " +
       "\002(\003\"T\n\036ServerSearchTaskStatusResponse\022\017\n" +

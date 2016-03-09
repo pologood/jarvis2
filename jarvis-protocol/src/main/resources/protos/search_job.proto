@@ -67,7 +67,7 @@ message RestSearchScriptTypeRequest {
 
 message ServerSearchScriptTypeResponse {
   required bool success = 1;
-  required string script_type = 2;
+  optional string script_type = 2;
   optional string message = 3 [default = ""];
 }
 
@@ -81,7 +81,7 @@ message RestSearchJobInfoByScriptTitileRequest {
 
 message ServerSearchJobInfoByScriptTitileResponse {
     required bool success = 1;
-    required JobInfoEntry job_info = 2;
+    optional JobInfoEntry job_info = 2;
     optional string message = 3 [default = ""];
 }
 
@@ -95,7 +95,7 @@ message RestSearchBizIdByNameRequest {
 
 message ServerSearchBizIdByNamResponse {
 	required bool success = 1;
-    required int32 biz_id = 2;
+    optional int32 biz_id = 2;
     optional string message = 3 [default = ""];
 }
 
