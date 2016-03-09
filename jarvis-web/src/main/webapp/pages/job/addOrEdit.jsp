@@ -67,8 +67,8 @@
                         <div class="row top-buffer">
                             <div class="col-md-6 col-md-offset-3">
                                 <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">任务名称<span class="text-danger"
-                                                                                    style="vertical-align: middle">*</span></span>
+                        <span class="input-group-addon" style="width:35%">任务名称
+                            <span class="text-danger" style="vertical-align: middle">*</span></span>
                                     <input id="jobName" class="form-control" desc="任务名称" onblur="checkJobName(this)"/>
                                 </div>
                             </div>
@@ -79,7 +79,7 @@
                             <div class="col-md-6 col-md-offset-3">
                                 <div class="input-group" style="width:100%">
                                     <span class="input-group-addon" style="width:35%">部门</span>
-                                    <input id="department" class="form-control" />
+                                    <input id="department" class="form-control"/>
                                 </div>
                             </div>
                         </div>
@@ -89,7 +89,7 @@
                             <div class="col-md-6 col-md-offset-3">
                                 <div class="input-group" style="width:100%">
                                     <span class="input-group-addon" style="width:35%">业务标签</span>
-                                    <select id="bizGroups" desc="业务标签" multiple="multiple"></select>
+                                    <select id="bizGroups" desc="业务标签" multiple="multiple" placeholder="标签可多选,标签增加请联系管理员"></select>
                                 </div>
                             </div>
                         </div>
@@ -128,7 +128,8 @@
 
                                     <div class="form-control">
                                         <label class="radio-inline">
-                                            <input name="contentType" id="contentTypeText" value="1" type="radio" checked> 文本
+                                            <input name="contentType" id="contentTypeText" value="1" type="radio"
+                                                   checked> 文本
                                         </label>
                                         <label class="radio-inline">
                                             <input name="contentType" id="contentTypeScript" value="2" type="radio"> 脚本
@@ -156,34 +157,6 @@
                             <button id="searchScriptBtn" type="button" class="btn btn-xs btn-default"
                                     onclick="showSearchScriptModal()">选择脚本
                             </button>
-
-                            <!-- 选择脚本-弹出框 -->
-                            <div id="searchScriptModal" class="modal fade">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                            <h4 class="modal-title">选择脚本</h4>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="form-group">
-                                                <input id="searchScriptInput" class="form-control" type="search"
-                                                       placeholder="回车搜索"/>
-                                            </div>
-                                            <div><b>脚本一览</b><span style="color: gray">&nbsp&nbsp*双击选中*</span></div>
-                                            <div id="searchScriptList" class="list-group"
-                                                 style="height:400px; overflow:auto">
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">返回
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
 
                         <!-- jar包上传 -->
@@ -218,66 +191,10 @@
                                 <div class="input-group" style="width:100%">
                                     <span class="input-group-addon" style="width:35%">任务参数</span>
                                     <input id="params" value="{}" defaultValue="{}" class="form-control"
-                                           onclick="showParaModel()"/>
+                                           onclick="showParaModal()"/>
                                 </div>
                             </div>
 
-                            <!--任务参数——模式框 -->
-                            <div id="paraModal" class="modal fade">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                                    aria-hidden="true">&times;</span></button>
-                                            <h4 class="modal-title">任务参数</h4>
-                                        </div>
-                                        <div class="modal-body">
-                                            <table id="pattern" style="display: none">
-                                                <tr>
-                                                    <td>
-                                                        <input name="key" class="form-control" placeholder="请输入属性的key">
-                                                    </td>
-                                                    <td>
-                                                        <input name="value" class="form-control"
-                                                               placeholder="请输入属性的value">
-                                                    </td>
-                                                    <td>
-                                                        <a class="glyphicon glyphicon-plus" href="javascript:void(0)"
-                                                           onclick="addPara(this)"></a>
-                                                        <a class="glyphicon glyphicon-minus" href="javascript:void(0)"
-                                                           onclick="deletePara(this)"></a>
-                                                    </td>
-                                                </tr>
-                                            </table>
-
-                                            <table id="paras" class="table table-bordered">
-                                                <thead>
-                                                <tr>
-                                                    <th>key</th>
-                                                    <th>value</th>
-                                                    <th>操作</th>
-                                                </tr>
-
-                                                </thead>
-                                                <tbody>
-
-                                                </tbody>
-                                            </table>
-                                            <a class="glyphicon glyphicon-plus" href="javascript:void(0)"
-                                               onclick="addPara(null)"></a>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">取消
-                                            </button>
-                                            <button type="button" class="btn btn-primary" onclick="ensurePara()">确定
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <!-- /.modal-content -->
-                                </div>
-                                <!-- /.modal-dialog -->
-                            </div>
-                            <!-- /.modal -->
                         </div>
 
                         <!--表达式类型 -->
@@ -335,7 +252,7 @@
                         </div>
 
 
-                        <!--点击:配置详细参数 -->
+                        <!--点击:高级参数设置 -->
                         <div class="row top-buffer">
                             <div class="col-md-6 col-md-offset-3">
                                 <a href="javascript:void(0)" onclick="AdvancedOptionsToggle(this)"><i
@@ -345,7 +262,7 @@
                             </div>
                         </div>
 
-                        <!--展开:配置详细参数 -->
+                        <!--展开:高级参数设置 -->
                         <div id="other" style="display: none">
 
                             <!--失败重试数 -->
@@ -491,6 +408,7 @@
 
 </div>
 
+<%@include file="addOrEditModal.jsp" %>
 
 <jsp:include page="../common/login.jsp">
     <jsp:param name="uname" value="${user.uname}"/>
