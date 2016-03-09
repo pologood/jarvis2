@@ -100,7 +100,7 @@ public class LocalLogStream implements LogStream {
             }
             return new LogReadResult(isEnd, sb.toString(), offset);
         } catch (FileNotFoundException ex) {
-            return new LogReadResult(true, "", 0);
+            return new LogReadResult(false, "", 0);
         }
     }
 
