@@ -39,6 +39,9 @@ public class MemoryAcceptanceStrategy implements AcceptanceStrategy {
             long buffers = Long.parseLong(CharMatcher.DIGIT.retainFrom(lines.get(2)));
             long cached = Long.parseLong(CharMatcher.DIGIT.retainFrom(lines.get(3)));
             double currentMemoryUsage = (memTotal - memFree - buffers - cached) / (double) memTotal;
+            if (Double.isNaN(currentMemoryUsage)) {
+                currentMemoryUsage = 0;
+            }
             if (currentMemoryUsage > MAX_MEMORY_USAGE) {
                 return new AcceptanceResult(false,
                         "client当前内存使用率" + new DecimalFormat(DECIMAL_FORMAT).format(currentMemoryUsage) + ", 超过阈值" + MAX_MEMORY_USAGE);

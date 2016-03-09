@@ -98,17 +98,17 @@ import com.mogujie.jarvis.rest.vo.JobVo;
 @Path("api")
 public class JarvisController extends AbstractController {
 
-    private static String APP_IRONMAN_NAME = ConfigUtils.getRestConfig().getString("app.ironman.name");
-    private static String APP_IRONMAN_KEY = ConfigUtils.getRestConfig().getString("app.ironman.key");
-    private static String APP_XMEN_NAME = ConfigUtils.getRestConfig().getString("app.xmen.name");
-    private static String APP_XMEN_KEY = ConfigUtils.getRestConfig().getString("app.xmen.key");
-    private static String APP_BGMONITOR_NAME = ConfigUtils.getRestConfig().getString("app.bgmonitor.name");
-    private static String APP_BGMONITOR_KEY = ConfigUtils.getRestConfig().getString("app.bgmonitor.key");
+    private static String APP_IRONMAN_NAME = ConfigUtils.getRestConfig().getString("app.ironman.name", "ironman");
+    private static String APP_IRONMAN_KEY = ConfigUtils.getRestConfig().getString("app.ironman.key", "key1");
+    private static String APP_XMEN_NAME = ConfigUtils.getRestConfig().getString("app.xmen.name", "xmen");
+    private static String APP_XMEN_KEY = ConfigUtils.getRestConfig().getString("app.xmen.key", "key2");
+    private static String APP_BGMONITOR_NAME = ConfigUtils.getRestConfig().getString("app.bgmonitor.name", "bgmonitor");
+    private static String APP_BGMONITOR_KEY = ConfigUtils.getRestConfig().getString("app.bgmonitor.key", "key3");
 
-    @GET
-    @Path("taskinfo")
+    @POST
+    @Path("taskinfo.htm")
     @Produces(MediaType.APPLICATION_JSON)
-    public JobInfoResult getTaskInfo(@QueryParam("scriptId") int scriptId) {
+    public JobInfoResult getTaskInfo(@FormParam("scriptId") int scriptId) {
         LOGGER.debug("根据scriptId查询taskinfo");
         try {
             String appToken = AppTokenUtils.generateToken(DateTime.now().getMillis(), APP_IRONMAN_KEY);
@@ -148,7 +148,7 @@ public class JarvisController extends AbstractController {
     }
 
     @GET
-    @Path("alltasks")
+    @Path("alltasks.htm")
     @Produces(MediaType.APPLICATION_JSON)
     public TasksResult getAllTasks() {
         LOGGER.debug("查询所有jobs");
@@ -224,14 +224,14 @@ public class JarvisController extends AbstractController {
     }
 
     @GET
-    @Path("sdependtasks")
+    @Path("sdependtasks.htm")
     @Produces(MediaType.APPLICATION_JSON)
     public TasksResult getScriptDepend(@QueryParam("scriptId") int scriptId) {
         return getDependencyByScript(scriptId);
     }
 
     @GET
-    @Path("searchtask")
+    @Path("searchtask.htm")
     @Produces(MediaType.APPLICATION_JSON)
     public TasksResult searchTask(@QueryParam("keyword") String title) {
         // NOT SUPPORTED
@@ -240,7 +240,7 @@ public class JarvisController extends AbstractController {
     }
 
     @POST
-    @Path("submittask")
+    @Path("submittask.htm")
     @Produces(MediaType.APPLICATION_JSON)
     public Result submitTask(@FormParam("task") String task, @FormParam("globalUser") String globalUser,
             User user) {
