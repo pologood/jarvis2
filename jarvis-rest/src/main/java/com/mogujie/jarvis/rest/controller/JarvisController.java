@@ -98,12 +98,12 @@ import com.mogujie.jarvis.rest.vo.JobVo;
 @Path("api")
 public class JarvisController extends AbstractController {
 
-    private static String APP_IRONMAN_NAME = ConfigUtils.getRestConfig().getString("app.ironman.name");
-    private static String APP_IRONMAN_KEY = ConfigUtils.getRestConfig().getString("app.ironman.key");
-    private static String APP_XMEN_NAME = ConfigUtils.getRestConfig().getString("app.xmen.name");
-    private static String APP_XMEN_KEY = ConfigUtils.getRestConfig().getString("app.xmen.key");
-    private static String APP_BGMONITOR_NAME = ConfigUtils.getRestConfig().getString("app.bgmonitor.name");
-    private static String APP_BGMONITOR_KEY = ConfigUtils.getRestConfig().getString("app.bgmonitor.key");
+    private static String APP_IRONMAN_NAME = ConfigUtils.getRestConfig().getString("app.ironman.name", "ironman");
+    private static String APP_IRONMAN_KEY = ConfigUtils.getRestConfig().getString("app.ironman.key", "key1");
+    private static String APP_XMEN_NAME = ConfigUtils.getRestConfig().getString("app.xmen.name", "xmen");
+    private static String APP_XMEN_KEY = ConfigUtils.getRestConfig().getString("app.xmen.key", "key2");
+    private static String APP_BGMONITOR_NAME = ConfigUtils.getRestConfig().getString("app.bgmonitor.name", "bgmonitor");
+    private static String APP_BGMONITOR_KEY = ConfigUtils.getRestConfig().getString("app.bgmonitor.key", "key3");
 
     @POST
     @Path("taskinfo.htm")
@@ -147,7 +147,7 @@ public class JarvisController extends AbstractController {
         }
     }
 
-    @POST
+    @GET
     @Path("alltasks.htm")
     @Produces(MediaType.APPLICATION_JSON)
     public TasksResult getAllTasks() {
