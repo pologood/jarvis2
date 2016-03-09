@@ -28,9 +28,9 @@ public class BizUtils {
 
     public static List<Integer> getBizIds(String bizGroupStr) {
         bizGroupStr = bizGroupStr.trim();
-        String[] bizGroups = StringUtils.split(bizGroupStr.substring(1, bizGroupStr.length() - 1), SEPARATOR);
         List<Integer> bizIds = new ArrayList<Integer>();
         if (bizGroupStr.length() > 2) {
+            String[] bizGroups = StringUtils.split(bizGroupStr.substring(1, bizGroupStr.length() - 1), SEPARATOR);
             for (String bizId : bizGroups) {
                 bizIds.add(Integer.valueOf(bizId));
             }
