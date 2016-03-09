@@ -48,10 +48,10 @@ public class JobInfoResult extends Result {
         this.priority = jobInfo.getPriority();
         this.publisher = jobInfo.getUser();
         this.receiver = jobInfo.getReceiver();
-        this.publishTime = new DateTime(jobInfo.getCreateTime()).toString();
-        this.editTime = new DateTime(jobInfo.getUpdateTime()).toString();
-        this.startDate = new DateTime(jobInfo.getStartDate()).toString();
-        this.endDate = new DateTime(jobInfo.getEndDate()).toString();
+        this.publishTime = new DateTime(jobInfo.getCreateTime()).toString("yyyy-MM-dd hh:mm:ss");
+        this.editTime = new DateTime(jobInfo.getUpdateTime()).toString("yyyy-MM-dd hh:mm:ss");
+        this.startDate = new DateTime(jobInfo.getStartDate()).toString("yyyy-MM-dd");
+        this.endDate = new DateTime(jobInfo.getEndDate()).toString("yyyy-MM-dd");
         this.pline = jobInfo.getBizName();
         this.department = jobInfo.getDepartment();
         //适配老jarvis状态
