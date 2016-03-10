@@ -304,7 +304,12 @@ public class SentinelController extends AbstractController {
                     LogStorageReadLogResponse response = (LogStorageReadLogResponse) callActor(AkkaType.LOGSTORAGE, request);
                     if (response.getSuccess()) {
                         LogQueryRet ret = new LogQueryRet(ResponseCodeEnum.SUCCESS, "success");
-                        ret.setLog(response.getLog());
+                        String log = response.getLog();
+                        if (offset == 0) {
+                            log += "jobId is " + jobId + "\n";
+                        }
+
+                        ret.setLog(log);
                         if (response.getIsEnd()) {
                             ret.setIsEnd(true);
                             logOffsetMap.remove(fullId);
