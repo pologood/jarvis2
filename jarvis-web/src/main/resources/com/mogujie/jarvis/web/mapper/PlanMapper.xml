@@ -84,7 +84,11 @@
                   LEFT JOIN app ON job.appId = app.appId
                   LEFT JOIN worker_group on job.workerGroupId = worker_group.id
         <include refid="planCondition" />
-        ORDER BY plan.jobId DESC
+        <if test="sort!=null and sort!='' and order!=null and order!=''" >
+            ORDER BY #{sort} #{order}
+        </if>
+
+
         <include refid="pager" />
     </select>
 

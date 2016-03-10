@@ -107,13 +107,13 @@ function initSubmitUser() {
             newData.push(item);
         });
         $("#submitUser").select2({
-            data:newData,
-            width:'100%'
+            data: newData,
+            width: '100%'
         });
     });
 }
 
-function initApp(){
+function initApp() {
     $.getJSON(contextPath + "/api/app/getApps", function (data) {
         var newData = new Array();
         $(data.rows).each(function (i, c) {
@@ -123,13 +123,13 @@ function initApp(){
             newData.push(item);
         });
         $("#appId").select2({
-            data:newData,
-            width:'100%'
+            data: newData,
+            width: '100%'
         });
     });
 }
 
-function initWorkerGroup(){
+function initWorkerGroup() {
     $.getJSON(contextPath + "/api/workerGroup/getAllWorkerGroup", function (data) {
         var newData = new Array();
         $(data).each(function (i, c) {
@@ -139,8 +139,8 @@ function initWorkerGroup(){
             newData.push(item);
         });
         $("#workerGroupId").select2({
-            data:newData,
-            width:'100%'
+            data: newData,
+            width: '100%'
         });
     });
 }
@@ -260,7 +260,8 @@ var columns = [{
 }, {
     field: 'jobName',
     title: '任务名',
-    switchable: true
+    switchable: true,
+    formatter:jobNameFormatter
 }, {
     field: 'appName',
     title: '应用名',
@@ -371,24 +372,24 @@ function operateFormatter(value, row, index) {
 
     var result = [
         '<a  href="' + contextPath + '/job/dependency?jobId=' + jobId + '" title="查看任务依赖" target="_blank">',
-        '<i class="glyphicon glyphicon-object-align-vertical"></i>',
+        '<i class="glyphicon glyphicon-object-align-vertical"></i>依赖',
         '</a>  ',
         '<a  href="' + contextPath + '/job/detail?jobId=' + jobId + '" title="查看任务详情" target="_blank">',
-        '<i class="glyphicon glyphicon-list-alt"></i>',
+        '<i class="glyphicon glyphicon-list-alt"></i>详情',
         '</a>  '
     ].join('');
 
     if (appId == jobAppId) {
         var edit = [
             '<a  href="' + contextPath + '/job/addOrEdit?jobId=' + jobId + '" title="编辑任务信息" target="_blank">',
-            '<i class="glyphicon glyphicon-edit"></i>',
+            '<i class="glyphicon glyphicon-edit"></i>编辑',
             '</a>  '
         ].join('');
 
         result += edit;
 
 
-        var operation = '<div class="btn-group"> <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">修改状态 <span class="caret"></span> </button>';
+        var operation = '<div class="btn-group"> <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">状态 <span class="caret"></span> </button>';
         operation = operation + '<ul class="dropdown-menu">';
         $(jobStatus).each(function (i, c) {
             if (c["id"] != 'all' && c["id"] != status && c["id"] != '3') {
@@ -404,16 +405,16 @@ function operateFormatter(value, row, index) {
 
 //job状态对应显示的图标
 var jobStatusClass = {
-    "1": "glyphicon glyphicon-ok text-success",
-    "2": "glyphicon glyphicon-remove text-danger",
-    "3": "glyphicon glyphicon-calendar text-info",
-    "4": "glyphicon glyphicon-trash text-danger",
-    "5": "glyphicon glyphicon-pause text-warning"
+    "1": {"color": "glyphicon glyphicon-ok text-success", "text": "启用"},
+    "2": {"color": "glyphicon glyphicon-remove text-danger", "text": "禁用"},
+    "3": {"color": "glyphicon glyphicon-calendar text-info", "text": "过期"},
+    "4": {"color": "glyphicon glyphicon-trash text-danger", "text": "删除"},
+    "5": {"color": "glyphicon glyphicon-pause text-warning", "text": "暂停"}
 }
 //状态格式化器
 function statusFormatter(value, row, index) {
     var result;
-    result = '<i class="' + jobStatusClass[value] + '"></i>'
+    result = '<i class="' + jobStatusClass[value].color + '"></i> ' + jobStatusClass[value].text;
     return result;
 }
 //格式化结果
@@ -425,8 +426,13 @@ function formatResultSelection(result) {
     return result.id;
 }
 //业务标签格式化器
-function bizGroupFormatter(value,row,index) {
+function bizGroupFormatter(value, row, index) {
     return bizGroup[value];
+}
+
+function jobNameFormatter(value, row, index) {
+    var result = '<a target="_blank" href="' + contextPath + "/job/detail?jobId=" + row["jobId"] + '">' + value + '</a>';
+    return result;
 }
 
 
