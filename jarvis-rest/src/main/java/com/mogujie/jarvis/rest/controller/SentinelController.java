@@ -27,6 +27,7 @@ import com.mogujie.jarvis.core.domain.JobContentType;
 import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.core.domain.StreamType;
 import com.mogujie.jarvis.core.domain.TaskStatus;
+import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.core.util.IdUtils;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
 import com.mogujie.jarvis.protocol.JobProtos.RestSubmitJobRequest;
@@ -59,7 +60,7 @@ import com.mogujie.jarvis.rest.vo.JobVo;
 @Path("server")
 public class SentinelController extends AbstractController {
 
-    private final static int DEFAULT_SIZE = 10000;
+    private final static int DEFAULT_SIZE = ConfigUtils.getRestConfig().getInt("read.log.size", 10000);
     private static Map<String, Long> logOffsetMap = Maps.newConcurrentMap();
 
     /**
@@ -305,7 +306,7 @@ public class SentinelController extends AbstractController {
                     if (response.getSuccess()) {
                         LogQueryRet ret = new LogQueryRet(ResponseCodeEnum.SUCCESS, "success");
                         String log = response.getLog();
-                        if (offset == 0) {
+                        if (!logOffsetMap.containsKey(fullId)) {
                             log += "jobId is " + jobId + "\n";
                         }
 
