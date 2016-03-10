@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
+import com.mogujie.jarvis.core.exception.TaskException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -72,6 +73,23 @@ public class ShellTask extends AbstractTask {
         } catch (IOException e) {
             LOGGER.error("error shellProcess stderr stream", e);
         }
+    }
+
+    @Override
+    public void postExecute() throws TaskException {
+        super.postExecute();
+
+        //执行内容有变化情况下,返回 新的执行内容
+        String newContent = getCommand();
+        TaskDetail oldTaskDetail = getTaskContext().getTaskDetail();
+        if(!newContent.equals(oldTaskDetail.getContent())){
+            LOGGER.info("shellTask.postExecute() newContent: {}",newContent);
+            TaskDetail newTaskDetail = TaskDetail.newTaskDetailBuilder(oldTaskDetail)
+                    .setContent(newContent)
+                    .build();
+            getTaskContext().getTaskReporter().report(newTaskDetail);
+        }
+
     }
 
     @Override
