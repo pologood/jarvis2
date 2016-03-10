@@ -165,17 +165,18 @@ public class HiveShellTask extends ShellTask {
         return result;
     }
 
-    @Override
-    public void postExecute() throws TaskException {
-        super.postExecute();
-        // return new content
-        String newContent = getCommand();
-        TaskDetail oldTaskDetail = getTaskContext().getTaskDetail();
-        TaskDetail newTaskDetail = TaskDetail.newTaskDetailBuilder(oldTaskDetail)
-                .setContent(newContent)
-                .build();
-        getTaskContext().getTaskReporter().report(newTaskDetail);
-    }
+//    @Override
+//    public void postExecute() throws TaskException {
+//        super.postExecute();
+//        // return new content
+//        String newContent = getCommand();
+//        LOGGER.info("shellTask.postExecute() newContent: {}",newContent);
+//        TaskDetail oldTaskDetail = getTaskContext().getTaskDetail();
+//        TaskDetail newTaskDetail = TaskDetail.newTaskDetailBuilder(oldTaskDetail)
+//                .setContent(newContent)
+//                .build();
+//        getTaskContext().getTaskReporter().report(newTaskDetail);
+//    }
 
     private String match(Pattern pattern, int group, String line) {
         Matcher m = pattern.matcher(line);

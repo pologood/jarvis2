@@ -30,7 +30,7 @@ public class HeartBeatThread extends Thread {
 
     private ActorSelection heartBeatActor;
     private TaskPool taskPool = TaskPool.INSTANCE;
-    private static final Logger LOGGER = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger("heartbeat");
 
     public HeartBeatThread(ActorSelection heartBeatActor) {
         this.heartBeatActor = heartBeatActor;
@@ -60,16 +60,22 @@ public class HeartBeatThread extends Thread {
     public void run() {
         int jobNum = taskPool.size();
         HeartBeatRequest request = HeartBeatRequest.newBuilder().setJobNum(jobNum).build();
+        Configuration workerConfig = ConfigUtils.getWorkerConfig();
+        String akkaPath = workerConfig.getString(WorkerConfigKeys.SERVER_AKKA_PATH,"");
+        String address = akkaPath.substring(akkaPath.indexOf("@") + 1);
+
         try {
             HeartBeatResponse response = (HeartBeatResponse) FutureUtils.awaitResult(heartBeatActor, request, 30);
             if (!response.getSuccess()) {
-                LOGGER.info("Try to register again...");
+                LOGGER.error("refused! heartbeat to server[{}] msg:{}", address,response.getMessage());
                 registerWorker();
+            }else{
+                LOGGER.info("success! heartbeat to server[{}]", address);
             }
         } catch (TimeoutException e) {
-            LOGGER.error("Worker heartbeat timeout, waiting to retry..." + e.toString());
+            LOGGER.error("timeout! heartbeat to server[{}]", address);
         } catch (Exception e) {
-            LOGGER.error("Worker heartbeat failed, waiting to retry...", e);
+            LOGGER.error("exception! heartbeat to server[{}]", address, e);
         }
     }
 }

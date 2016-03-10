@@ -46,6 +46,12 @@ message ServerSearchPreJobInfoResponse {
 
 
 //search all jobs
+message SimpleJobInfoEntry {
+	required int64 job_id = 1;
+	required string job_name = 2;
+	required string user = 3;
+}
+
 message RestSearchAllJobsRequest {
 	required AppAuth app_auth = 1;
 	required string user = 2;
@@ -53,7 +59,7 @@ message RestSearchAllJobsRequest {
 
 message ServerSearchAllJobsResponse {
 	required bool success = 1;
-    repeated JobInfoEntry job_info = 2;
+    repeated SimpleJobInfoEntry job_info = 2;
     optional string message = 3 [default = ""];
 }
 
