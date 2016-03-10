@@ -79,13 +79,19 @@ public class JarvisWorker {
             system.eventStream().subscribe(deadLetterActor, DeadLetter.class);
 
             // 心跳汇报
-            int actorNum = workerConfig.getInt(WorkerConfigKeys.WORKER_ACTORS_NUM, 500);
-            ActorRef taskActor = system.actorOf(new SmallestMailboxPool(actorNum).props(TaskActor.props()), JarvisConstants.WORKER_AKKA_SYSTEM_NAME);
             ActorSelection heartBeatActor = system.actorSelection(serverAkkaPath);
             int heartBeatInterval = workerConfig.getInt(WorkerConfigKeys.WORKER_HEART_BEAT_INTERVAL_SECONDS, 10);
             system.scheduler().schedule(Duration.Zero(), Duration.create(heartBeatInterval, TimeUnit.SECONDS), new HeartBeatThread(heartBeatActor),
                     system.dispatcher());
 
+            //与logStorage心跳
+            String logStorageAkkaPath = workerConfig.getString(WorkerConfigKeys.LOGSTORAGE_AKKA_PATH) + JarvisConstants.LOGSTORAGE_AKKA_USER_PATH;
+            ActorSelection logHeartbeatActor = system.actorSelection(logStorageAkkaPath);
+            system.scheduler().schedule(Duration.Zero(), Duration.create(heartBeatInterval, TimeUnit.SECONDS), new LogStorageHeartbeatThread(logHeartbeatActor),
+                    system.dispatcher());
+
+            int actorNum = workerConfig.getInt(WorkerConfigKeys.WORKER_ACTORS_NUM, 500);
+            ActorRef taskActor = system.actorOf(new SmallestMailboxPool(actorNum).props(TaskActor.props()), JarvisConstants.WORKER_AKKA_SYSTEM_NAME);
             Thread TaskStateRestoreThread = new TaskStateRestoreThread(system, taskActor);
             TaskStateRestoreThread.start();
             LOGGER.info("TaskStateRestore started.");

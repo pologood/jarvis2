@@ -10,6 +10,9 @@ import com.mogujie.jarvis.protocol.LogProtos.LogStorageReadLogResponse;
 import com.mogujie.jarvis.protocol.LogProtos.LogStorageWriteLogResponse;
 import com.mogujie.jarvis.protocol.LogProtos.RestReadLogRequest;
 import com.mogujie.jarvis.protocol.LogProtos.WorkerWriteLogRequest;
+import com.mogujie.jarvis.protocol.LogProtos.LogStorageHeartBeatResponse;
+import com.mogujie.jarvis.protocol.LogProtos.WorkerHeartBeatRequest;
+
 
 import akka.actor.ActorRef;
 import akka.actor.PoisonPill;
@@ -42,6 +45,8 @@ public class LogRoutingActor extends UntypedActor {
             writeLog((WorkerWriteLogRequest) obj);
         } else if (obj instanceof RestReadLogRequest) {
             readLog((RestReadLogRequest) obj);
+        } else if (obj instanceof WorkerHeartBeatRequest) {
+            heartbeat((WorkerHeartBeatRequest) obj);
         } else {
             unhandled(obj);
         }
@@ -68,6 +73,19 @@ public class LogRoutingActor extends UntypedActor {
             ref.forward(PoisonPill.getInstance(), getContext());
         } catch (Exception e) {
             LogStorageReadLogResponse response = LogStorageReadLogResponse.newBuilder().setSuccess(false)
+                    .setMessage(e.getMessage() != null ? e.getMessage() : e.toString()).build();
+            getSender().tell(response, getSelf());
+            logger.error(e);
+            throw e;
+        }
+    }
+
+    private void heartbeat(WorkerHeartBeatRequest request) {
+        try {
+            ActorRef ref = getContext().actorOf(HeartbeatActor.props());
+            ref.forward(request, getContext());
+        } catch (Exception e) {
+            LogStorageHeartBeatResponse response = LogStorageHeartBeatResponse.newBuilder().setSuccess(false)
                     .setMessage(e.getMessage() != null ? e.getMessage() : e.toString()).build();
             getSender().tell(response, getSelf());
             logger.error(e);

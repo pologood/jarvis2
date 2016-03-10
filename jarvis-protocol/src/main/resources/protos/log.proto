@@ -30,3 +30,12 @@ message LogStorageWriteLogResponse {
     required bool success = 1;
     optional string message = 2 [default = ""];
 }
+
+message WorkerHeartBeatRequest {
+    required int32 worker_group_id = 1;
+}
+
+message LogStorageHeartBeatResponse {
+    required bool success = 1;
+    optional string message = 2 [default = ""];
+}
