@@ -25,7 +25,7 @@ import java.util.concurrent.TimeoutException;
 public class LogStorageHeartbeatThread extends Thread {
 
     private ActorSelection logStorageActor;
-    private static final Logger LOGGER = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger("heartbeat");
 
     public LogStorageHeartbeatThread(ActorSelection logStorageActor) {
         this.logStorageActor = logStorageActor;
@@ -35,18 +35,20 @@ public class LogStorageHeartbeatThread extends Thread {
     public void run() {
         Configuration workerConfig = ConfigUtils.getWorkerConfig();
         int workerGroupId = workerConfig.getInt(WorkerConfigKeys.WORKER_GROUP_ID, 0);
-        String akkaPath = workerConfig.getString("logstorage.akka.path");
+        String akkaPath = workerConfig.getString(WorkerConfigKeys.LOGSTORAGE_AKKA_PATH,"");
         String address = akkaPath.substring(akkaPath.indexOf("@") + 1);
         WorkerHeartBeatRequest request = WorkerHeartBeatRequest.newBuilder().setWorkerGroupId(workerGroupId).build();
         try {
             LogStorageHeartBeatResponse response = (LogStorageHeartBeatResponse) FutureUtils.awaitResult(logStorageActor, request, 30);
             if (!response.getSuccess()) {
-                LOGGER.error("connect to logStorage(" + address + ") faulted ......" + response.getMessage());
+                LOGGER.error("faulted! heartbeat to logStorage({})......{}", address, response.getMessage());
+            }else{
+                LOGGER.info("succeed! heartbeat to logStorage({})......", address);
             }
         } catch (TimeoutException e) {
-            LOGGER.error("connect to logStorage(" + address + ") timeout......");
+            LOGGER.error("timeout! heartbeat to logStorage({})......", address);
         } catch (Exception e) {
-            LOGGER.error("connect to logStorage(" + address + ") exception ......", e);
+            LOGGER.error("exception! heartbeat to logStorage({})......", address, e);
         }
     }
 }
