@@ -85,6 +85,7 @@ import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchJobInfoByScriptTi
 import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchJobLikeNameResponse;
 import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchPreJobInfoResponse;
 import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchScriptTypeResponse;
+import com.mogujie.jarvis.protocol.SearchJobProtos.SimpleJobInfoEntry;
 import com.mogujie.jarvis.server.ServerConigKeys;
 import com.mogujie.jarvis.server.actor.hook.JobPostHook;
 import com.mogujie.jarvis.server.domain.ActorEntry;
@@ -819,22 +820,10 @@ public class JobActor extends UntypedActor {
             List<Job> enabledJobs = jobService.getEnableJobsFromMetaStore();
             ServerSearchAllJobsResponse.Builder builder = ServerSearchAllJobsResponse.newBuilder();
             for (Job job : enabledJobs) {
-                JobInfoEntry jobInfo = JobInfoEntry.newBuilder()
+                SimpleJobInfoEntry jobInfo = SimpleJobInfoEntry.newBuilder()
                         .setJobId(job.getJobId())
                         .setJobName(job.getJobName())
                         .setUser(job.getSubmitUser())
-                        .setScheduleExpression("")
-                        .setContentType(job.getContentType())
-                        .setContent(job.getContent())
-                        .setPriority(job.getPriority())
-                        .setStatus(job.getStatus())
-                        .setReceiver("")
-                        .setDepartment(job.getDepartment())
-                        .setBizName("")
-                        .setCreateTime(job.getCreateTime().getTime())
-                        .setUpdateTime(job.getUpdateTime().getTime())
-                        .setStartDate(job.getActiveStartDate().getTime())
-                        .setEndDate(job.getActiveEndDate().getTime())
                         .build();
                 builder.addJobInfo(jobInfo);
             }

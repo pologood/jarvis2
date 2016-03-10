@@ -72,10 +72,12 @@ import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchJobLikeNameRespon
 import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchPreJobInfoResponse;
 import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchScriptTypeResponse;
 import com.mogujie.jarvis.protocol.SearchJobProtos.ServerSearchTaskStatusResponse;
+import com.mogujie.jarvis.protocol.SearchJobProtos.SimpleJobInfoEntry;
 import com.mogujie.jarvis.protocol.TaskInfoEntryProtos.TaskInfoEntry;
 import com.mogujie.jarvis.rest.jarvis.CriticalPathResult;
 import com.mogujie.jarvis.rest.jarvis.JobInfoResult;
 import com.mogujie.jarvis.rest.jarvis.Result;
+import com.mogujie.jarvis.rest.jarvis.SimpleTasksResult;
 import com.mogujie.jarvis.rest.jarvis.TaskIDResult;
 import com.mogujie.jarvis.rest.jarvis.TaskInfo;
 import com.mogujie.jarvis.rest.jarvis.TaskStatusEnum;
@@ -147,7 +149,7 @@ public class JarvisController extends AbstractController {
     @GET
     @Path("alltasks.htm")
     @Produces(MediaType.APPLICATION_JSON)
-    public TasksResult getAllTasks() {
+    public SimpleTasksResult getAllTasks() {
         LOGGER.debug("查询所有jobs");
         try {
             String appToken = AppTokenUtils.generateToken(DateTime.now().getMillis(), APP_IRONMAN_KEY);
@@ -157,18 +159,18 @@ public class JarvisController extends AbstractController {
                     .setUser(APP_IRONMAN_NAME).build();
             ServerSearchAllJobsResponse response = (ServerSearchAllJobsResponse) callActor(AkkaType.SERVER, request);
             if (response.getSuccess()) {
-                List<JobInfoEntry> jobInfos = response.getJobInfoList();
-                TasksResult result = new TasksResult(jobInfos);
+                List<SimpleJobInfoEntry> jobInfos = response.getJobInfoList();
+                SimpleTasksResult result = new SimpleTasksResult(jobInfos);
                 result.setSuccess(true);
                 return result;
             } else {
-                TasksResult result = new TasksResult();
+                SimpleTasksResult result = new SimpleTasksResult();
                 result.setSuccess(false);
                 result.setMessage(response.getMessage());
                 return result;
             }
         } catch (Exception e) {
-            TasksResult result = new TasksResult();
+            SimpleTasksResult result = new SimpleTasksResult();
             result.setSuccess(false);
             result.setMessage(e.getMessage());
             return result;
