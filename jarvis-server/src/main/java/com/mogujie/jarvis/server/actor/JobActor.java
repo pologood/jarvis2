@@ -819,7 +819,23 @@ public class JobActor extends UntypedActor {
             List<Job> enabledJobs = jobService.getEnableJobsFromMetaStore();
             ServerSearchAllJobsResponse.Builder builder = ServerSearchAllJobsResponse.newBuilder();
             for (Job job : enabledJobs) {
-                JobInfoEntry jobInfo = convertJob2JobInfo(job);
+                JobInfoEntry jobInfo = JobInfoEntry.newBuilder()
+                        .setJobId(job.getJobId())
+                        .setJobName(job.getJobName())
+                        .setUser(job.getSubmitUser())
+                        .setScheduleExpression("")
+                        .setContentType(job.getContentType())
+                        .setContent(job.getContent())
+                        .setPriority(job.getPriority())
+                        .setStatus(job.getStatus())
+                        .setReceiver("")
+                        .setDepartment(job.getDepartment())
+                        .setBizName("")
+                        .setCreateTime(job.getCreateTime().getTime())
+                        .setUpdateTime(job.getUpdateTime().getTime())
+                        .setStartDate(job.getActiveStartDate().getTime())
+                        .setEndDate(job.getActiveEndDate().getTime())
+                        .build();
                 builder.addJobInfo(jobInfo);
             }
             response = builder.setSuccess(true).build();
