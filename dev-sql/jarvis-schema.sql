@@ -10,7 +10,7 @@ CREATE TABLE `alarm` (
   `updateUser` varchar(32) NOT NULL DEFAULT '' COMMENT '最后更新用户',
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_jobId` (`jobId`)
-) ENGINE=InnoDB AUTO_INCREMENT=9009 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9011 DEFAULT CHARSET=utf8;
 
 -- Create syntax for TABLE 'app'
 CREATE TABLE `app` (
@@ -79,7 +79,7 @@ CREATE TABLE `job` (
   PRIMARY KEY (`jobId`),
   KEY `index_submitUser` (`submitUser`),
   KEY `index_createTime` (`createTime`)
-) ENGINE=InnoDB AUTO_INCREMENT=9020 DEFAULT CHARSET=utf8 COMMENT='job表';
+) ENGINE=InnoDB AUTO_INCREMENT=9050 DEFAULT CHARSET=utf8 COMMENT='job表';
 
 -- Create syntax for TABLE 'job_depend'
 CREATE TABLE `job_depend` (
@@ -102,8 +102,8 @@ CREATE TABLE `job_schedule_expression` (
   `createTime` datetime NOT NULL COMMENT '创建时间',
   `updateTime` datetime NOT NULL COMMENT '最后更新时间',
   PRIMARY KEY (`id`),
-  KEY `index_jobId` (`jobId`)
-) ENGINE=InnoDB AUTO_INCREMENT=9015 DEFAULT CHARSET=utf8;
+  KEY `index_jobId_type` (`jobId`,`expressionType`)
+) ENGINE=InnoDB AUTO_INCREMENT=9020 DEFAULT CHARSET=utf8;
 
 -- Create syntax for TABLE 'operation_log'
 CREATE TABLE `operation_log` (
@@ -117,14 +117,14 @@ CREATE TABLE `operation_log` (
   PRIMARY KEY (`id`),
   KEY `index_title` (`title`(191)),
   KEY `index_type` (`type`)
-) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=113 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Create syntax for TABLE 'plan'
 CREATE TABLE `plan` (
   `jobId` bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'jobID',
   `createTime` datetime NOT NULL,
   PRIMARY KEY (`jobId`)
-) ENGINE=InnoDB AUTO_INCREMENT=9982 DEFAULT CHARSET=utf8 COMMENT='plan表';
+) ENGINE=InnoDB AUTO_INCREMENT=9050 DEFAULT CHARSET=utf8 COMMENT='plan表';
 
 -- Create syntax for TABLE 'task'
 CREATE TABLE `task` (
@@ -151,7 +151,7 @@ CREATE TABLE `task` (
   KEY `index_dataYmd` (`scheduleTime`),
   KEY `index_executeStartTime` (`executeStartTime`),
   KEY `index_executeUser` (`executeUser`) KEY_BLOCK_SIZE=4
-) ENGINE=InnoDB AUTO_INCREMENT=32277 DEFAULT CHARSET=utf8 COMMENT='task表';
+) ENGINE=InnoDB AUTO_INCREMENT=38632 DEFAULT CHARSET=utf8 COMMENT='task表';
 
 -- Create syntax for TABLE 'task_depend'
 CREATE TABLE `task_depend` (
@@ -198,7 +198,7 @@ CREATE TABLE `worker` (
   `updateTime` datetime NOT NULL COMMENT '最后更新时间',
   PRIMARY KEY (`id`),
   KEY `index_ip_port` (`ip`,`port`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='worker表';
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='worker表';
 
 -- Create syntax for TABLE 'worker_group'
 CREATE TABLE `worker_group` (
