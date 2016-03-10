@@ -41,14 +41,14 @@ public class LogStorageHeartbeatThread extends Thread {
         try {
             LogStorageHeartBeatResponse response = (LogStorageHeartBeatResponse) FutureUtils.awaitResult(logStorageActor, request, 30);
             if (!response.getSuccess()) {
-                LOGGER.error("faulted! heartbeat to logStorage({})......{}", address, response.getMessage());
+                LOGGER.error("faulted! heartbeat to logStorage[{}]  {}", address, response.getMessage());
             }else{
-                LOGGER.info("succeed! heartbeat to logStorage({})......", address);
+                LOGGER.info("succeed! heartbeat to logStorage[{}]", address);
             }
         } catch (TimeoutException e) {
-            LOGGER.error("timeout! heartbeat to logStorage({})......", address);
+            LOGGER.error("timeout! heartbeat to logStorage[{}]", address);
         } catch (Exception e) {
-            LOGGER.error("exception! heartbeat to logStorage({})......", address, e);
+            LOGGER.error("exception! heartbeat to logStorage[{}]", address, e);
         }
     }
 }
