@@ -322,6 +322,7 @@ var columns = [{
     field: 'status',
     title: '状态',
     switchable: true,
+    width:'7%',
     formatter: taskStatusFormatter
 }, {
     field: 'createTime',
@@ -354,6 +355,7 @@ var columns = [{
     field: 'operation',
     title: '操作',
     switchable: true,
+    width:'12%',
     formatter: operateFormatter
 }];
 
@@ -375,13 +377,13 @@ function TaskOperate(jobId, taskId, attemptId, url, text) {
             history: false
         }
     })).get().on('pnotify.confirm', function () {
-        var data = {};
-        data["jobId"] = jobId;
-        data["taskId"] = taskId;
-        data["attemptId"] = attemptId;
-        requestRemoteRestApi(url, text, data);
-    }).on('pnotify.cancel', function () {
-    });
+            var data = {};
+            data["jobId"] = jobId;
+            data["taskId"] = taskId;
+            data["attemptId"] = attemptId;
+            requestRemoteRestApi(url, text, data);
+        }).on('pnotify.cancel', function () {
+        });
 }
 
 function operateFormatter(value, row, index) {
@@ -396,16 +398,20 @@ function operateFormatter(value, row, index) {
     });
 
     var result = [
-        '<a class="edit" href="' + contextPath + '/task/dependency?taskId=' + taskId + '" title="查看当前执行依赖" target="_blank">',
-        '<i class="glyphicon glyphicon-object-align-horizontal"></i>',
-        '</a>  ',
-        '<a class="edit" href="' + contextPath + '/task/detail?taskId=' + taskId + '" title="查看执行详情" target="_blank">',
-        '<i class="glyphicon glyphicon-list-alt"></i>',
-        '</a>  ',
-        ' <a href="javascript:void(0)" onclick="showTaskHistory(' + taskId + ')" title="重试一览">',
-        '<i class="glyphicon glyphicon-list"></i>',
-        '</a>',
-        ' <div class="btn-group"> <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">操作 <span class="caret"></span> </button>',
+        '<div class="btn-group"> <button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">查看 <span class="caret"></span> </button>',
+        '<ul class="dropdown-menu">',
+        '<li><a class="edit" href="' + contextPath + '/task/dependency?taskId=' + taskId + '" title="查看当前执行依赖" target="_blank">',
+        '<i class="glyphicon glyphicon-object-align-horizontal text-success"></i>执行依赖',
+        '</a></li>',
+        '<li><a class="edit" href="' + contextPath + '/task/detail?taskId=' + taskId + '" title="查看执行详情" target="_blank">',
+        '<i class="glyphicon glyphicon-list-alt text-success"></i>执行详情',
+        '</a></li>',
+        '<li><a href="javascript:void(0)" onclick="showTaskHistory(' + taskId + ')" title="重试记录">',
+        '<i class="glyphicon glyphicon-list text-success"></i>重试记录',
+        '</a></li>',
+        '</ul>',
+        '</div>',
+        ' <div class="btn-group"> <button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">操作 <span class="caret"></span> </button>',
         '<ul class="dropdown-menu">',
         operationStr,
         '</ul>',
@@ -480,8 +486,9 @@ function jobNameFormatter(value, row, index) {
 }
 //执行状态格式化
 function taskStatusFormatter(value, row, index) {
-    var color = taskStatusColor[value];
-    var result = '<i class="fa fa-circle fa-2x" style="color: ' + color + '"></i>';
+    var color = taskStatusColor[value].color;
+    var text = taskStatusColor[value].text;
+    var result = '<i class="fa fa-circle fa-2x" style="color: ' + color + '"></i>' + text;
 
     return result;
 }

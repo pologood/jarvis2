@@ -84,7 +84,7 @@ function formatDate(date) {
 }
 //时间戳转化成日期时间
 function formatDateTime(dateTime) {
-    if (dateTime == undefined || dateTime == '') {
+    if (dateTime == null || dateTime == '') {
         return '-';
     }
     var theDate = new Date(dateTime);
@@ -94,7 +94,7 @@ function formatDateTime(dateTime) {
 
 //时间戳转化成日期时间
 function formatDateTimeWithoutYear(dateTime) {
-    if (dateTime == undefined || dateTime == '') {
+    if (dateTime == null || dateTime == '') {
         return '-';
     }
     var theDate = new Date(dateTime);

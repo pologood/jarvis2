@@ -25,6 +25,8 @@ public class PlanQo {
     private String dataTime;
     private Integer offset;
     private Integer limit;
+    private String sort;
+    private String order;
 
     public List<Long> getJobIdList() {
         return jobIdList;
@@ -157,5 +159,19 @@ public class PlanQo {
         this.limit = limit;
     }
 
+    public String getSort() {
+        return sort;
+    }
 
+    public void setSort(String sort) {
+        this.sort = sort;
+    }
+
+    public String getOrder() {
+        return order;
+    }
+
+    public void setOrder(String order) {
+        this.order = order;
+    }
 }
