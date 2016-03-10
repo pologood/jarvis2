@@ -155,5 +155,8 @@
     var taskId = '${taskVo.taskId}';
     var jobId = '${taskVo.jobId}';
     var attemptId = '${taskVo.attemptId}';
+    var page = {
+        jobType : '${taskVo.jobType}'
+    }
 </script>
 <script type="text/javascript" src="${contextPath}/assets/js/jarvis/task/detail.js"></script>

@@ -68,9 +68,9 @@ $(function () {
 
     // 为echarts对象加载数据
     myChart.setOption(option);
-    window.setTimeout(function(){
+    window.setTimeout(function () {
         initLog();
-    },3000);
+    }, 3000);
 });
 
 
@@ -81,7 +81,15 @@ function initLog() {
     data["attemptId"] = attemptId;
     data["offset"] = 0;
     data["lines"] = 1000;
-    var result = requestRemoteRestApi('/api/log/readResult', "读取执行日志", data);
+
+    var url;
+    if(page.jobType == CONST.JOB_TYPE.HIVE){
+        url = "/api/log/readExecuteLog";
+    }else{
+        url = "/api/log/readResult";
+    }
+
+    var result = requestRemoteRestApi(url, "读取执行日志", data);
     if (result.flag == true) {
         var log = result.data.data.log.toString();
         $("#log").html(log);

@@ -83,7 +83,7 @@ public class ShellTask extends AbstractTask {
         String newContent = getCommand();
         TaskDetail oldTaskDetail = getTaskContext().getTaskDetail();
         if(!newContent.equals(oldTaskDetail.getContent())){
-            LOGGER.info("shellTask.postExecute() newContent: {}",newContent);
+            LOGGER.debug("shellTask.postExecute() update newContent: {}",newContent);
             TaskDetail newTaskDetail = TaskDetail.newTaskDetailBuilder(oldTaskDetail)
                     .setContent(newContent)
                     .build();
