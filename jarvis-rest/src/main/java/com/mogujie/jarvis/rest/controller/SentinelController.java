@@ -60,7 +60,7 @@ import com.mogujie.jarvis.rest.vo.JobVo;
 @Path("server")
 public class SentinelController extends AbstractController {
 
-    private final static int DEFAULT_SIZE = ConfigUtils.getRestConfig().getInt("read.log.size", 10000);
+    private final static int DEFAULT_SIZE = ConfigUtils.getRestConfig().getInt("read.log.size", 100);
     private static Map<String, Long> logOffsetMap = Maps.newConcurrentMap();
 
     /**
