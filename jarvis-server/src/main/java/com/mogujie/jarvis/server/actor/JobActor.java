@@ -409,6 +409,7 @@ public class JobActor extends UntypedActor {
             List<ScheduleExpressionEntry> expressionEntries = msg.getExpressionEntryList();
             for (ScheduleExpressionEntry entry : expressionEntries) {
                 OperationMode operation = OperationMode.parseValue(entry.getOperator());
+
                 if (operation.equals(OperationMode.ADD)) {
                     jobService.insertScheduleExpression(jobId, entry);
                 } else if (operation.equals(OperationMode.DELETE)) {
@@ -815,7 +816,7 @@ public class JobActor extends UntypedActor {
     private void searchAllJobs(RestSearchAllJobsRequest msg) throws Exception {
         ServerSearchAllJobsResponse response;
         try {
-            List<Job> enabledJobs = jobService.getEnableJobs();
+            List<Job> enabledJobs = jobService.getEnableJobsFromMetaStore();
             ServerSearchAllJobsResponse.Builder builder = ServerSearchAllJobsResponse.newBuilder();
             for (Job job : enabledJobs) {
                 JobInfoEntry jobInfo = convertJob2JobInfo(job);

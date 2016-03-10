@@ -140,12 +140,13 @@ public class JobService {
         return activeJobIds;
     }
 
-    public List<Job> getEnableJobs() {
-        JobExample example = new JobExample();
-        example.createCriteria().andStatusEqualTo(JobStatus.ENABLE.getValue());
-        List<Job> jobs = jobMapper.selectByExampleWithBLOBs(example);
-        if (jobs == null) {
-            jobs = new ArrayList<Job>();
+    public List<Job> getEnableJobsFromMetaStore() {
+        List<Job> jobs = new ArrayList<Job>();
+        for (JobEntry entry : metaStore.values()) {
+            Job job = entry.getJob();
+            if (job.getStatus() == JobStatus.ENABLE.getValue()) {
+                jobs.add(job);
+            }
         }
         return jobs;
     }
@@ -258,6 +259,16 @@ public class JobService {
 
 //    @OperationLog
     public void deleteScheduleExpression(long jobId, long expressionId) {
+        // 兼容ironman
+        if (expressionId == 0) {
+            JobScheduleExpressionExample example = new JobScheduleExpressionExample();
+            example.createCriteria().andJobIdEqualTo(jobId);
+            List<JobScheduleExpression> expressions = jobScheduleExpressionMapper.selectByExample(example);
+            if (expressions != null && !expressions.isEmpty()) {
+                expressionId = expressions.get(0).getId();
+            }
+        }
+
         jobScheduleExpressionMapper.deleteByPrimaryKey(expressionId);
         get(jobId).removeScheduleExpression(expressionId);
     }
@@ -270,8 +281,18 @@ public class JobService {
      */
 //    @OperationLog
     public void updateScheduleExpression(long jobId, ScheduleExpressionEntry entry) {
-        // 1. update to DB
+        // 兼容ironman
         long expressionId = entry.getExpressionId();
+        if (expressionId == 0) {
+            JobScheduleExpressionExample example = new JobScheduleExpressionExample();
+            example.createCriteria().andJobIdEqualTo(jobId);
+            List<JobScheduleExpression> expressions = jobScheduleExpressionMapper.selectByExample(example);
+            if (expressions != null && !expressions.isEmpty()) {
+                expressionId = expressions.get(0).getId();
+            }
+        }
+
+        // 1. update to DB
         JobScheduleExpression record = jobScheduleExpressionMapper.selectByPrimaryKey(expressionId);
         record.setExpressionType(entry.getExpressionType());
         record.setExpression(entry.getScheduleExpression());
