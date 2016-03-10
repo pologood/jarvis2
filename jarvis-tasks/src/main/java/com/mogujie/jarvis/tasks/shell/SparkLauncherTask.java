@@ -21,7 +21,7 @@ public class SparkLauncherTask extends ShellTask {
     public String getCommand() {
         Map<String, Object> parameters = getTaskContext().getTaskDetail().getParameters();
         parameters.put("taskName",getTaskContext().getTaskDetail().getTaskName());
-        return "sparkLauncher " + JsonHelper.toJson(parameters);
+        return "sparkLauncher.sh " + JsonHelper.toJson(parameters);
     }
 
 }
