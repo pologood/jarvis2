@@ -787,7 +787,7 @@ public class JarvisController extends AbstractController {
   @GET
   @Path("task/gettaskbyscriptid")
   @Produces(MediaType.APPLICATION_JSON)
-  public Result getTaskByScriptId(@QueryParam("scriptId") Integer scriptId, String scode, String token) {
+  public Result getTaskByScriptId(@QueryParam("scriptId") Integer scriptId, @QueryParam("scode") String scode, @QueryParam("token") String token) {
     return this.getTaskByScript(scriptId, APP_XMEN_NAME, APP_XMEN_KEY);
   }
 
