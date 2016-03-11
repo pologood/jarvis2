@@ -1,6 +1,6 @@
 package com.mogujie.jarvis.web.controller.jarvis;
 
-import com.mogujie.jarvis.web.auth.annotation.JarvisPassport;
+import com.mogu.bigdata.admin.client.annotation.Passport;
 import com.mogujie.jarvis.web.auth.conf.JarvisAuthType;
 import com.mogujie.jarvis.web.service.OperationService;
 import java.util.List;
@@ -20,14 +20,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 @RequestMapping("/operation")
-public class OperationController extends BaseController{
+public class OperationController{
   @Autowired
   OperationService operationService;
   /**
    * job任务管理首页
    */
   @RequestMapping
-  @JarvisPassport(authTypes = JarvisAuthType.operation)
+  @Passport(JarvisAuthType.operation)
   public String index(ModelMap modelMap) {
     List<String> titles = this.operationService.getAllOperationTitles();
     modelMap.put("titles", titles);

@@ -1,12 +1,9 @@
 package com.mogujie.jarvis.web.controller.jarvis;
 
+import com.mogu.bigdata.admin.client.annotation.Passport;
 import com.mogujie.jarvis.core.util.JsonHelper;
-import com.mogujie.jarvis.web.auth.annotation.JarvisPassport;
 import com.mogujie.jarvis.web.auth.conf.JarvisAuthType;
 import com.mogujie.jarvis.web.entity.qo.PlanQo;
-import com.mogujie.jarvis.web.entity.vo.JobVo;
-import com.mogujie.jarvis.web.entity.vo.TaskDependVo;
-import com.mogujie.jarvis.web.entity.vo.TaskVo;
 import com.mogujie.jarvis.web.service.JobService;
 import com.mogujie.jarvis.web.service.TaskDependService;
 import com.mogujie.jarvis.web.service.TaskService;
@@ -23,7 +20,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/plan")
-public class PlanController extends BaseController {
+public class PlanController {
     @Autowired
     JobService jobService;
     @Autowired
@@ -35,7 +32,7 @@ public class PlanController extends BaseController {
      * 执行计划首页
      */
     @RequestMapping
-    @JarvisPassport(authTypes = JarvisAuthType.plan)
+    @Passport(JarvisAuthType.plan)
     public String index(ModelMap modelMap) {
 
         List<Long> jobIdList = jobService.getJobIds();

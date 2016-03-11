@@ -1,14 +1,13 @@
 package com.mogujie.jarvis.web.controller.api;
 
 import com.mogu.bigdata.admin.core.entity.User;
-import com.mogu.bigdata.admin.inside.service.AdminUserService;
 import com.mogujie.jarvis.web.utils.MessageStatus;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mogujie.ppcenter.sdk.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.print.attribute.HashAttributeSet;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,8 +18,6 @@ import java.util.Map;
 @Controller
 @RequestMapping(value = "/api/common")
 public class CommonAPIController {
-    @Autowired
-    AdminUserService userService;
 
     /*
     * 获取内网所有用户
@@ -30,7 +27,17 @@ public class CommonAPIController {
     public Object getAllUser() {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
-            List<User> userList = userService.getAllUsers();
+            List<Map<String, Object>> allUsers = UserService.getAllUsers();
+            List<User> userList = new ArrayList<User>();
+            for(Map<String, Object> m: allUsers) {
+                User user = new User();
+                user.setUid(Long.valueOf(m.get("workId").toString()));
+                user.setUname(m.get("domain").toString());
+                user.setNick(m.get("nickname").toString());
+                user.setAvatar(m.get("avatar").toString());
+                user.setEmail(m.get("email").toString());
+                userList.add(user);
+            }
             map.put("code", MessageStatus.SUCCESS.getValue());
             map.put("msg","查询用户信息成功");
             map.put("rows",userList);

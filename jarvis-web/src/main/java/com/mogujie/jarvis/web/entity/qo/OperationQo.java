@@ -1,7 +1,8 @@
 package com.mogujie.jarvis.web.entity.qo;
 
 import com.mogujie.jarvis.core.util.JsonHelper;
-import com.mogujie.metabase.utils.StringUtils;
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.List;
 
 
