@@ -21,6 +21,7 @@ function createDatetimePickerById(tagId) {
         autoclose: true
     });
 }
+
 //通过后台请求远程rest api,根据请求结果返回flag
 function requestRemoteRestApi(url, title, data) {
     var flag = true;
@@ -51,6 +52,11 @@ function requestRemoteRestApi(url, title, data) {
                 }
             }
             result["data"] = data;
+        },
+        error: function (jqXHR, exception) {
+            flag = false;
+            var msg = getMsg4ajaxError(jqXHR, exception);
+            showMsg('warning', title, msg);
         }
     });
 
