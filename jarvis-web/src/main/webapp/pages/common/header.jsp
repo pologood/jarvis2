@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="admin" uri="http://bda.mogujie.org/admin" %>
 <c:set var="contextPath" scope="application" value="<%=request.getContextPath()%>" />
 
 <!doctype html>
@@ -51,28 +52,7 @@
 
 
     <nav id="cd-top-nav" class="navbar">
-        <ul class="main-menu">
-            <c:forEach var="m" items="${menu}">
-                <c:choose>
-                    <c:when test="${m.menuMap.size() > 1}">
-                        <li class="main-menu dropdown">
-                            <a class="main-menu dropdown-toggle <c:if test="${m.isCurrent}">current</c:if>"  data-toggle="dropdown" href="javascript:void(0);">${m.name}</a>
-                            <ul class="dropdown-menu">
-
-                                <c:forEach var="sm" items="${m.menuMap}">
-                                    <li <c:if test="${currentUri == sm.value}">class="active"</c:if>><a href="${contextPath}${sm.value}">${sm.key}</a></li>
-                                </c:forEach>
-                            </ul>
-                        </li>
-                    </c:when>
-                    <c:when test="${m.menuMap.size() == 1}">
-                        <c:forEach var="sm" items="${m.menuMap}">
-                            <li class="main-menu"><a class="main-menu <c:if test="${m.isCurrent}">current</c:if>"  href="${contextPath}${sm.value}">${m.name}</a></li>
-                        </c:forEach>
-                    </c:when>
-                </c:choose>
-            </c:forEach>
-        </ul>
+        ${admin:menus(__menus, contextPath)}
     </nav>
 
     <c:choose>
