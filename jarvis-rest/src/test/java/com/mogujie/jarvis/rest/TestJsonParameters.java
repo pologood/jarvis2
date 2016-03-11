@@ -1,6 +1,7 @@
 package com.mogujie.jarvis.rest;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mogujie.jarvis.rest.utils.JsonParameters;
@@ -8,6 +9,7 @@ import com.mogujie.jarvis.rest.utils.JsonParameters;
 /**
  * Created by muming on 15/12/1.
  */
+@Ignore
 public class TestJsonParameters {
 
     @Test

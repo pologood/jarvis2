@@ -92,13 +92,18 @@ public class HeartBeatActor extends UntypedActor {
         ServerQueryWorkerHeartbeatInfoResponse response;
         try {
             int workerGroupId = request.getWorkerGroupId();
-            if (workerGroupId <= 0) {
+            if (workerGroupId < 0) {
                 throw new IllegalArgumentException("groupId is not valid. groupId: " + workerGroupId);
             }
 
             ServerQueryWorkerHeartbeatInfoResponse.Builder builder = ServerQueryWorkerHeartbeatInfoResponse.newBuilder();
 
-            Map<WorkerInfo, Integer> map = heartBeatService.getWorkerInfo(workerGroupId);
+            Map<WorkerInfo, Integer> map;
+            if(workerGroupId > 0){
+                map = heartBeatService.getWorkerInfo(workerGroupId);
+            }else{
+                map = heartBeatService.getALLWorkerInfo();
+            }
             for (Entry<WorkerInfo, Integer> entry : map.entrySet()) {
                 WorkerInfo key = entry.getKey();
                 WorkerHeartbeatEntry hb = WorkerHeartbeatEntry.newBuilder().setIp(key.getIp()).setPort(key.getPort()).setTaskNum(entry.getValue())

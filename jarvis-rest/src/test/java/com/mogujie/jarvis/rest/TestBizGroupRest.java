@@ -9,6 +9,7 @@ import com.mogujie.jarvis.rest.domain.RestResult4TestEntity;
 import com.mogujie.jarvis.rest.vo.AbstractVo;
 import com.mogujie.jarvis.rest.vo.BizGroupResultVo;
 import org.junit.Assert;
+import org.junit.Ignore;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -17,6 +18,7 @@ import java.util.Map;
 /**
  * Created by muming on 15/12/1.
  */
+@Ignore
 public class TestBizGroupRest extends AbstractTestRest {
 
     public void test() throws UnirestException {

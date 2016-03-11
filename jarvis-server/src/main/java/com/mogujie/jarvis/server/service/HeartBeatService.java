@@ -81,4 +81,14 @@ public class HeartBeatService {
         return HEART_BEAT_CACHE.get(groupId).asMap();
     }
 
+
+    public Map<WorkerInfo,Integer> getALLWorkerInfo() {
+
+        Map<WorkerInfo,Integer> result= new HashMap<>();
+        for( int key : HEART_BEAT_CACHE.keySet()){
+            result.putAll( HEART_BEAT_CACHE.get(key).asMap());
+        }
+        return result;
+    }
+
 }

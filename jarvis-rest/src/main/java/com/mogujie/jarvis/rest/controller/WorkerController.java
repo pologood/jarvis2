@@ -76,7 +76,7 @@ public class WorkerController extends AbstractController {
         try {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
             JsonParameters para = new JsonParameters(parameters);
-            int workerGroupId = para.getIntegerNotNull("workerGroupId");
+            int workerGroupId = para.getInteger("workerGroupId",0);
 
             RestQueryWorkerHeartbeatInfoRequest request = RestQueryWorkerHeartbeatInfoRequest.newBuilder()
                     .setAppAuth(appAuth)

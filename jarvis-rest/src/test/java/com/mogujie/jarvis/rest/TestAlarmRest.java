@@ -13,10 +13,12 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.rest.domain.RestResult4TestEntity;
 import com.mogujie.jarvis.rest.vo.AbstractVo;
+import org.junit.Ignore;
 
 /**
  * Created by muming on 15/12/1.
  */
+@Ignore
 public class TestAlarmRest extends AbstractTestRest {
 
     public void test() throws UnirestException {

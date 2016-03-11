@@ -3,6 +3,7 @@ package com.mogujie.jarvis.rest;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import com.mogujie.jarvis.rest.domain.RestResult4TestEntity;
 import org.junit.Assert;
@@ -15,6 +16,7 @@ import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.rest.vo.JobResultVo;
 import com.mogujie.jarvis.rest.vo.TaskEntryVo;
 import com.mogujie.jarvis.rest.vo.TaskRelationsVo;
+import org.junit.Test;
 
 /**
  * Created by muming on 15/12/1.
@@ -22,6 +24,26 @@ import com.mogujie.jarvis.rest.vo.TaskRelationsVo;
 public class TestTaskRest {
 
     private String baseUrl = "http://127.0.0.1:8080";
+
+    @Test
+    public void temp(){
+
+        Map<String, Object> jobPrams = new HashMap<>();
+        jobPrams.put("name", "muming");
+        jobPrams.put("age", 18);
+        jobPrams.put("isMail", false);
+        String json = JsonHelper.toJson(jobPrams);
+        json = json.replaceAll("\"","\\\\\"");
+        String cmd =  "sparkLauncher.sh \""  +  JsonHelper.toJson(jobPrams).replaceAll("\"","\\\\\"") +"\"";
+
+        String akkaPath = "akka.tcp://logstorage@127.0.0.1:10002";
+        int i = akkaPath.indexOf("muming");
+        String address = akkaPath.substring(i+1);
+        System.out.println(address);
+
+        String key = UUID.randomUUID().toString().replace("-", "");
+        System.out.println(key);
+    }
 
     public void taskSubmit() throws UnirestException {
 
