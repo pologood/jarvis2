@@ -23,6 +23,8 @@
     <link rel="stylesheet" href="${contextPath}/assets/plugins/select2/4.0.1/css/select2.min.css" type="text/css" charset="utf-8">
     <link type="text/css" rel="stylesheet" href="${contextPath}/assets/plugins/qtip2/jquery.qtip.min.css" />
     <link type="text/css" rel="stylesheet" href="${contextPath}/assets/plugins/pnotify/pnotify.custom.min.css" />
+    <link type="text/css" rel="stylesheet" href="${contextPath}/assets/plugins/animate/animate.css" />
+
     <link type="text/css" rel="stylesheet" href="${contextPath}/assets/plugins/bootstrap-table/bootstrap-table.min.css" />
     <link type="text/css" rel="stylesheet" href="${contextPath}/assets/css/select2_special.css" />
     <link type="text/css" rel="stylesheet" href="${contextPath}/assets/plugins/jstree/3.2.1/themes/default/style.min.css" />

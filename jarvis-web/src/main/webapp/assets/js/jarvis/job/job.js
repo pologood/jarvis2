@@ -237,14 +237,14 @@ function initData() {
         showToggle: true,
         sortable:true,
         pageSize: 20,
-        pageList: [10, 20, 50, 100, 200, 500],
+        pageList: [10, 20, 50, 100, 200, 500,1000],
         paginationFirstText: '首页',
         paginationPreText: '上一页',
         paginationNextText: '下一页',
         paginationLastText: '末页',
         showExport: true,
         exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'doc', 'excel'],
-        exportDataType: 'all'
+        exportDataType: 'basic'
     });
 }
 //更新job的状态

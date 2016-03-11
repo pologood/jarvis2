@@ -47,16 +47,10 @@
                     </div>
                 </div>
 
-
             </div>
 
             <div class="row top-buffer">
-                <%--<div class="col-md-3">--%>
-                    <%--<div class="input-group" style="width:100%">--%>
-                        <%--<span class="input-group-addon" style="width:35%">调度日期</span>--%>
-                        <%--<input type="text" id="dataTime" class="form-control" placeholder="日期请选择0点(00:00)"/>--%>
-                    <%--</div>--%>
-                <%--</div>--%>
+
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">执行用户</span>
@@ -66,6 +60,18 @@
                                 <option value="${executeUser}">${executeUser}</option>
                             </c:forEach>
                         </select>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="input-group" style="width:100%">
+                        <span class="input-group-addon" style="width:35%">状态</span>
+
+                        <div class="form-control" id="taskStatus">
+                            <input type="checkbox" name="taskStatus" onclick="chooseStatus(this)" value="all">全部
+                            <input type="checkbox" name="taskStatus" onclick="chooseStatus(this)" value="1">等待
+                            <input type="checkbox" name="taskStatus" onclick="chooseStatus(this)" value="2">准备
+                        </div>
                     </div>
                 </div>
 
@@ -95,11 +101,12 @@
             <div id="toolBar">
                 <span><i class="fa fa-circle fa-2x" style="color: #FF851B"></i>等待</span>
                 <span><i class="fa fa-circle fa-2x" style="color: #FFDC00"></i>准备</span>
-                <span><i class="fa fa-circle fa-2x" style="color: #0074D9"></i>运行</span>
-                <span><i class="fa fa-circle fa-2x" style="color: #2ECC40"></i>成功</span>
-                <span><i class="fa fa-circle fa-2x" style="color: #FF4136"></i>失败</span>
-                <span><i class="fa fa-circle fa-2x" style="color: #111111"></i>终止</span>
-                <span><i class="fa fa-circle fa-2x" style="color: #ab279d"></i>删除</span>
+
+                <%--<span><i class="fa fa-circle fa-2x" style="color: #0074D9"></i>运行</span>--%>
+                <%--<span><i class="fa fa-circle fa-2x" style="color: #2ECC40"></i>成功</span>--%>
+                <%--<span><i class="fa fa-circle fa-2x" style="color: #FF4136"></i>失败</span>--%>
+                <%--<span><i class="fa fa-circle fa-2x" style="color: #111111"></i>终止</span>--%>
+                <%--<span><i class="fa fa-circle fa-2x" style="color: #ab279d"></i>删除</span>--%>
             </div>
 
             <table id="content" data-toolbar="#toolBar">

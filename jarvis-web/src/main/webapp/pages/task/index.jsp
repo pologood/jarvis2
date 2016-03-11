@@ -129,8 +129,8 @@
     <div class="row top-buffer">
         <div class="col-md-12">
             <div id="toolBar">
-                <span><i class="fa fa-circle fa-2x" style="color: #FF851B"></i>等待</span>
-                <span><i class="fa fa-circle fa-2x" style="color: #FFDC00"></i>准备</span>
+                <%--<span><i class="fa fa-circle fa-2x" style="color: #FF851B"></i>等待</span>--%>
+                <%--<span><i class="fa fa-circle fa-2x" style="color: #FFDC00"></i>准备</span>--%>
                 <span><i class="fa fa-circle fa-2x" style="color: #0074D9"></i>运行</span>
                 <span><i class="fa fa-circle fa-2x" style="color: #2ECC40"></i>成功</span>
                 <span><i class="fa fa-circle fa-2x" style="color: #FF4136"></i>失败</span>

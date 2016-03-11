@@ -171,17 +171,6 @@ function submit() {
         return;
     }
 
-    if (new Date(endTime) <= (new Date())) {
-        new PNotify({
-            title: '重跑任务',
-            text: "结束日期必须大于今天",
-            type: 'warning',
-            icon: true,
-            styling: 'bootstrap3'
-        });
-        return;
-    }
-
 
     var jobIdCache = {};
     var reRunJobs = new Array();
