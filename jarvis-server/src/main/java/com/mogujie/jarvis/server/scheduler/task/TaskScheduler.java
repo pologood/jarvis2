@@ -279,7 +279,11 @@ public class TaskScheduler extends Scheduler {
         LOGGER.info("start handleRetryTaskEvent, taskId={}", taskId);
         Task task = taskService.get(taskId);
         if (task != null) {
-            taskService.updateStatus(taskId, TaskStatus.WAITING);
+            task.setStatus(TaskStatus.WAITING.getValue());
+            task.setUpdateTime(DateTime.now().toDate());
+            task.setExecuteStartTime(null);
+            task.setExecuteEndTime(null);
+            taskService.update(task);
             LOGGER.info("update {} with WAITING status", taskId);
 
             DAGTask dagTask = taskGraph.getTask(taskId);

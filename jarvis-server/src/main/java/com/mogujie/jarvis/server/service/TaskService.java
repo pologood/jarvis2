@@ -57,6 +57,10 @@ public class TaskService {
         return taskMapper.selectByPrimaryKey(taskId);
     }
 
+    public void update(Task task) {
+        taskMapper.updateByPrimaryKey(task);
+    }
+
     public Task getTaskByScheduleDateAndJobName(long scheduleDate, String jobName) {
         Job job = jobService.searchJobByName(jobName);
         if (job != null) {
