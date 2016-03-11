@@ -8,6 +8,8 @@
 
 package com.mogujie.jarvis.rest.controller;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -15,10 +17,15 @@ import java.util.List;
 import java.util.Map;
 
 import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.StreamingOutput;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -27,6 +34,7 @@ import com.mogujie.jarvis.core.domain.JobContentType;
 import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.core.domain.StreamType;
 import com.mogujie.jarvis.core.domain.TaskStatus;
+import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.core.util.IdUtils;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
 import com.mogujie.jarvis.protocol.JobProtos.RestSubmitJobRequest;
@@ -59,7 +67,7 @@ import com.mogujie.jarvis.rest.vo.JobVo;
 @Path("server")
 public class SentinelController extends AbstractController {
 
-    private final static int DEFAULT_SIZE = 10000;
+    private final static int DEFAULT_SIZE = ConfigUtils.getRestConfig().getInt("read.log.size", 100);
     private static Map<String, Long> logOffsetMap = Maps.newConcurrentMap();
 
     /**
@@ -120,7 +128,7 @@ public class SentinelController extends AbstractController {
         try {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
-            RestServerQueryTaskByJobIdRequest queryTaskRequest = RestServerQueryTaskByJobIdRequest.newBuilder().setAppAuth(appAuth)
+            RestServerQueryTaskByJobIdRequest queryTaskRequest = RestServerQueryTaskByJobIdRequest.newBuilder()
                     .setAppAuth(appAuth).setJobId(jobId).build();
             ServerQueryTaskByJobIdResponse queryTaskReponse = (ServerQueryTaskByJobIdResponse) callActor(AkkaType.SERVER, queryTaskRequest);
             if (queryTaskReponse.getSuccess()) {
@@ -158,7 +166,7 @@ public class SentinelController extends AbstractController {
         try {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
-            RestServerQueryTaskByJobIdRequest queryTaskRequest = RestServerQueryTaskByJobIdRequest.newBuilder().setAppAuth(appAuth)
+            RestServerQueryTaskByJobIdRequest queryTaskRequest = RestServerQueryTaskByJobIdRequest.newBuilder()
                     .setAppAuth(appAuth).setJobId(jobId).build();
             ServerQueryTaskByJobIdResponse queryTaskReponse = (ServerQueryTaskByJobIdResponse) callActor(AkkaType.SERVER, queryTaskRequest);
             if (queryTaskReponse.getSuccess()) {
@@ -205,7 +213,7 @@ public class SentinelController extends AbstractController {
         try {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
-            RestServerQueryTaskByJobIdRequest queryTaskRequest = RestServerQueryTaskByJobIdRequest.newBuilder().setAppAuth(appAuth)
+            RestServerQueryTaskByJobIdRequest queryTaskRequest = RestServerQueryTaskByJobIdRequest.newBuilder()
                     .setAppAuth(appAuth).setJobId(jobId).build();
             ServerQueryTaskByJobIdResponse queryTaskReponse = (ServerQueryTaskByJobIdResponse) callActor(AkkaType.SERVER, queryTaskRequest);
             if (queryTaskReponse.getSuccess()) {
@@ -278,7 +286,7 @@ public class SentinelController extends AbstractController {
         try {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
-            RestServerQueryTaskByJobIdRequest queryTaskRequest = RestServerQueryTaskByJobIdRequest.newBuilder().setAppAuth(appAuth)
+            RestServerQueryTaskByJobIdRequest queryTaskRequest = RestServerQueryTaskByJobIdRequest.newBuilder()
                     .setAppAuth(appAuth).setJobId(jobId).build();
             ServerQueryTaskByJobIdResponse queryTaskReponse = (ServerQueryTaskByJobIdResponse) callActor(AkkaType.SERVER, queryTaskRequest);
             if (queryTaskReponse.getSuccess()) {
@@ -305,7 +313,7 @@ public class SentinelController extends AbstractController {
                     if (response.getSuccess()) {
                         LogQueryRet ret = new LogQueryRet(ResponseCodeEnum.SUCCESS, "success");
                         String log = response.getLog();
-                        if (offset == 0) {
+                        if (!logOffsetMap.containsKey(fullId)) {
                             log += "jobId is " + jobId + "\n";
                         }
 
@@ -328,6 +336,68 @@ public class SentinelController extends AbstractController {
             LOGGER.error("", e);
             return new LogQueryRet(ResponseCodeEnum.FAILED, e.getMessage());
         }
+    }
+
+    @GET
+    @Path("result/download")
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    public Response downloadFile(@QueryParam("token") String token, @QueryParam("time") long timestamp, @QueryParam("name") String appName,
+            @QueryParam("jobId") final long jobId) {
+        LOGGER.debug("download log");
+        AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(token).build();
+
+        StreamingOutput streamingOutput = new StreamingOutput() {
+            @Override
+            public void write(OutputStream output) throws IOException, WebApplicationException {
+                try {
+                    RestServerQueryTaskByJobIdRequest queryTaskRequest = RestServerQueryTaskByJobIdRequest.newBuilder()
+                            .setAppAuth(appAuth).setJobId(jobId).build();
+                    ServerQueryTaskByJobIdResponse queryTaskReponse = (ServerQueryTaskByJobIdResponse) callActor(AkkaType.SERVER, queryTaskRequest);
+                    if (queryTaskReponse.getSuccess()) {
+                        List<TaskEntry> taskEntryList = queryTaskReponse.getTaskEntryList();
+                        if (taskEntryList == null || taskEntryList.size() != 1) {
+                            LOGGER.error("jobId={} 尚未调度起来", jobId);
+                            return ;
+                        } else {
+                            long taskId = taskEntryList.get(0).getTaskId();
+                            int attemptId = taskEntryList.get(0).getAttemptId();
+                            String fullId = IdUtils.getFullId(jobId, taskId, attemptId);
+                            long offset = 0;
+                            final int size = 10000;
+                            boolean isEnd = false;
+
+                            while (!isEnd) {
+                                RestReadLogRequest request = RestReadLogRequest.newBuilder()
+                                        .setAppAuth(appAuth)
+                                        .setFullId(fullId)
+                                        .setType(StreamType.STD_ERR.getValue())
+                                        .setOffset(offset)
+                                        .setSize(size)
+                                        .build();
+                                LogStorageReadLogResponse response = (LogStorageReadLogResponse) callActor(AkkaType.LOGSTORAGE, request);
+                                if (response.getSuccess()) {
+                                    output.write(response.getLogBytes().toByteArray());
+                                    offset = response.getOffset();
+                                    isEnd = response.getIsEnd();
+                                } else {
+                                    LOGGER.error("获取日志失败:" + response.getMessage());
+                                    return ;
+                                }
+                            }
+                        }
+                    } else {
+                        LOGGER.error("通过jobId={}查询task失败!", jobId);
+                        return;
+                    }
+                } catch (Exception e) {
+                    LOGGER.error("", e);
+                } finally {
+                    output.close();
+                }
+            }
+        };
+
+        return Response.ok(streamingOutput).header("content-disposition", "attachment;filename=result_job_" + jobId + ".txt").build();
     }
 
     /**

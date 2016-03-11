@@ -103,9 +103,14 @@
     </select>
 
     <select id="getTaskById" parameterType="Long" resultType="TaskVo">
-        SELECT *,time_to_sec(TIMEDIFF(task.executeEndTime,task.executeStartTime)) AS executeTime FROM task WHERE taskId=#{taskId} limit 0,1
+        SELECT
+          task.*,
+          job.jobType,
+          time_to_sec(TIMEDIFF(task.executeEndTime,task.executeStartTime)) AS executeTime
+        FROM task
+          LEFT JOIN job ON task.jobId=job.jobId
+        WHERE taskId=#{taskId} limit 1
     </select>
-
 
     <select id="getAllExecuteUser" resultType="String">
         SELECT DISTINCT executeUser FROM task;
