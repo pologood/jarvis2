@@ -235,6 +235,7 @@ function initData() {
         showColumns: true,
         showHeader: true,
         showToggle: true,
+        sortable:true,
         pageSize: 20,
         pageList: [10, 20, 50, 100, 200, 500],
         paginationFirstText: '首页',
@@ -256,39 +257,47 @@ function updateJobStatus(jobId, jobStatus) {
 var columns = [{
     field: 'jobId',
     title: '任务id',
+    sortable:true,
     switchable: true
 }, {
     field: 'jobName',
     title: '任务名',
     switchable: true,
+    sortable:true,
     formatter:jobNameFormatter
 }, {
     field: 'appName',
-    title: '应用名',
+    title: '应用',
+    sortable:true,
     switchable: true
 }, {
     field: 'workerGroupId',
     title: 'worker组ID',
     switchable: true,
+    sortable:true,
     visible: false
 }, {
     field: 'workerGroupName',
-    title: 'WorkerGroup名',
+    title: 'Worker组',
     switchable: true,
+    sortable:true,
     visible: true
 }, {
     field: 'jobType',
     title: '任务类型',
+    sortable:true,
     switchable: true
 }, {
     field: 'bizGroups',
     title: '业务标签',
+    sortable:true,
     switchable: true,
     visible: true,
     formatter: bizGroupFormatter
 }, {
     field: 'status',
-    title: '任务状态',
+    title: '状态',
+    sortable:true,
     switchable: true,
     formatter: statusFormatter
 }, {
@@ -304,27 +313,32 @@ var columns = [{
 }, {
     field: 'priority',
     title: '优先级',
+    sortable:true,
     switchable: true
 }, {
     field: 'submitUser',
     title: '提交人',
+    sortable:true,
     switchable: true
 }, {
     field: 'activeStartDate',
     title: '开始日期',
     switchable: true,
+    sortable:true,
     formatter: formatDate,
     visible: false
 }, {
     field: 'activeEndDate',
     title: '结束日期',
     switchable: true,
+    sortable:true,
     formatter: formatDate,
     visible: false
 }, {
     field: 'createTime',
     title: '创建时间',
     switchable: true,
+    sortable:true,
     formatter: formatDateTime,
     visible: false
 }, {
@@ -332,25 +346,30 @@ var columns = [{
     title: '更新时间',
     switchable: true,
     visible: false,
+    sortable:true,
     formatter: formatDateTime
 }, {
     field: 'rejectAttempts',
     title: '被Worker拒绝时重试次数',
     switchable: true,
+    sortable:true,
     visible: false
 }, {
     field: 'rejectInterval',
     title: '被Worker拒绝时重试间隔(秒)',
+    sortable:true,
     switchable: true,
     visible: false
 }, {
     field: 'failedAttempts',
     title: '运行失败时重试次数',
+    sortable:true,
     switchable: true,
     visible: false
 }, {
     field: 'failedInterval',
     title: '运行失败时重试间隔(秒)',
+    sortable:true,
     switchable: true,
     visible: false
 }, {

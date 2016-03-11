@@ -64,16 +64,16 @@
     </sql>
 
     <sql id="order">
-        <if test="orderField!=null">
+        <if test="sort!=null and sort!=''">
             <choose>
                 <when test="order!=null and order=='ASC'">
-                    ORDER BY #{orderField} ASC
+                    ORDER BY #{sort} ASC
                 </when>
                 <when test="order!=null and order=='DESC'">
-                    ORDER BY #{orderField} DESC
+                    ORDER BY #{sort} DESC
                 </when>
                 <otherwise>
-                    ORDER BY #{orderField}
+                    ORDER BY #{sort}
                 </otherwise>
             </choose>
 
@@ -90,7 +90,15 @@
         SELECT *,time_to_sec(TIMEDIFF(task.executeEndTime,task.executeStartTime)) AS executeTime
         FROM task LEFT JOIN job ON task.jobId=job.jobId LEFT JOIN app ON job.appId=app.appId
         <include refid="condition"/>
-        ORDER BY scheduleTime DESC,executeEndTime DESC,executeStartTime DESC
+        <choose>
+            <when test="sort!=null and sort!=''">
+                ORDER BY ${sort} ${order}
+            </when>
+            <otherwise>
+                ORDER BY scheduleTime DESC,executeEndTime DESC,executeStartTime DESC
+            </otherwise>
+        </choose>
+
         <include refid="pager"/>
     </select>
 

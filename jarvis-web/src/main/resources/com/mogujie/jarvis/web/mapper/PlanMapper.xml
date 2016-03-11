@@ -85,7 +85,7 @@
                   LEFT JOIN worker_group on job.workerGroupId = worker_group.id
         <include refid="planCondition" />
         <if test="sort!=null and sort!='' and order!=null and order!=''" >
-            ORDER BY #{sort} #{order}
+            ORDER BY ${sort} ${order}
         </if>
 
 

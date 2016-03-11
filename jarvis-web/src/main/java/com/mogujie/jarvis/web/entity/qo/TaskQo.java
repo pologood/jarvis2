@@ -24,7 +24,7 @@ public class TaskQo {
     private String order;
     private Integer offset;
     private Integer limit;
-    private String orderField;
+    private String sort;
 
 
     public String getScheduleDate() {
@@ -154,11 +154,11 @@ public class TaskQo {
         this.limit = limit;
     }
 
-    public String getOrderField() {
-        return orderField;
+    public String getSort() {
+        return sort;
     }
 
-    public void setOrderField(String orderField) {
-        this.orderField = orderField;
+    public void setSort(String sort) {
+        this.sort = sort;
     }
 }

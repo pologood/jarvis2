@@ -76,7 +76,9 @@
         LEFT JOIN app ON t.appId=app.appId
             LEFT JOIN worker_group ON t.workerGroupId=worker_group.id
       <include refid="condition" />
-      ORDER BY t.jobId ASC
+      <if test="sort!=null and sort!='' and order!=null and order!=''">
+          ORDER BY ${sort} ${order}
+      </if>
       <include refid="pager" />
     </select>
 

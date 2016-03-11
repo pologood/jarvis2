@@ -58,7 +58,7 @@ public class TaskController extends BaseController {
         List<Integer> statusList = new ArrayList<Integer>();
         statusList.add(4);
         taskQo.setTaskStatus(statusList);
-        taskQo.setOrderField("executeEndTime");
+        taskQo.setSort("executeEndTime");
         taskQo.setOrder("DESC");
         taskQo.setOffset(0);
         taskQo.setLimit(30);

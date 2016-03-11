@@ -232,6 +232,7 @@ function initData() {
         showColumns: true,
         showHeader: true,
         showToggle: true,
+        sortable:true,
         pageSize: 20,
         pageList: [10, 20, 50, 100, 200, 500, 1000],
         paginationFirstText: '首页',
@@ -248,24 +249,29 @@ var columns = [{
     field: 'taskId',
     title: '执行ID',
     switchable: true,
+    sortable:true,
     visible: true
 }, {
     field: 'attemptId',
     title: '最后尝试ID',
     switchable: true,
+    sortable:true,
     visible: false
 }, {
     field: 'jobId',
     title: '任务ID',
+    sortable:true,
     switchable: true
 }, {
     field: 'jobName',
     title: '任务名',
     switchable: true,
+    sortable:true,
     formatter: jobNameFormatter
 }, {
     field: 'jobType',
     title: '任务类型',
+    sortable:true,
     switchable: true
 }, {
     field: 'content',
@@ -280,41 +286,49 @@ var columns = [{
 }, {
     field: 'executeUser',
     title: '执行用户',
+    sortable:true,
     switchable: true
 }, {
     field: 'scheduleTime',
     title: '调度时间',
     switchable: true,
+    sortable:true,
     formatter: formatDateTime
 }, {
     field: 'progress',
     title: '进度',
     switchable: true,
+    sortable:true,
     visible: false,
     formatter: progressFormatter
 }, {
     field: 'workerGroupId',
     title: 'workerGroupId',
     switchable: true,
+    sortable:true,
     visible: false
 }, {
     field: 'workerId',
     title: 'workerId',
+    sortable:true,
     switchable: true,
     visible: false
 }, {
     field: 'executeStartTime',
     title: '开始执行时间',
+    sortable:true,
     switchable: true,
     formatter: formatDateTimeWithoutYear
 }, {
     field: 'executeEndTime',
     title: '执行结束时间',
+    sortable:true,
     switchable: true,
     formatter: formatDateTimeWithoutYear
 }, {
     field: 'executeTime',
     title: '执行时长',
+    sortable:true,
     switchable: false,
     visible: true,
     formatter: formatTimeInterval
@@ -322,33 +336,39 @@ var columns = [{
     field: 'status',
     title: '状态',
     switchable: true,
+    sortable:true,
     width:'7%',
     formatter: taskStatusFormatter
 }, {
     field: 'createTime',
     title: '执行创建时间',
     switchable: false,
+    sortable:true,
     visible: false,
     formatter: formatDateTime
 }, {
     field: 'updateTime',
     title: '执行更新时间',
     switchable: true,
+    sortable:true,
     visible: false,
     formatter: formatDateTime
 }, {
     field: 'submitUser',
     title: '任务创建者',
+    sortable:true,
     switchable: true,
     visible: false
 }, {
     field: 'appName',
+    sortable:true,
     title: '应用名',
     switchable: true,
     visible: false
 }, {
     field: 'priority',
     title: '任务优先级',
+    sortable:true,
     switchable: true,
     visible: false
 }, {
@@ -358,6 +378,8 @@ var columns = [{
     width:'12%',
     formatter: operateFormatter
 }];
+
+
 
 //重试还是kill，type与rest接口一一对应
 function TaskOperate(jobId, taskId, attemptId, url, text) {

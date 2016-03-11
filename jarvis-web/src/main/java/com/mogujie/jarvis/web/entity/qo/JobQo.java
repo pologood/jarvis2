@@ -25,6 +25,7 @@ public class JobQo {
     private Integer offset;
     private Integer limit;
     private String order;
+    private String sort;
 
     public List<String> getJobIdList() {
         return jobIdList;
@@ -160,5 +161,13 @@ public class JobQo {
 
     public void setJobId(Long jobId) {
         this.jobId = jobId;
+    }
+
+    public String getSort() {
+        return sort;
+    }
+
+    public void setSort(String sort) {
+        this.sort = sort;
     }
 }
