@@ -15,7 +15,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
-import com.mogujie.jarvis.core.exception.TaskException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -23,6 +22,7 @@ import com.mogujie.jarvis.core.AbstractTask;
 import com.mogujie.jarvis.core.TaskContext;
 import com.mogujie.jarvis.core.domain.StreamType;
 import com.mogujie.jarvis.core.domain.TaskDetail;
+import com.mogujie.jarvis.core.exception.TaskException;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.tasks.ShellStreamProcessor;
 import com.mogujie.jarvis.tasks.util.ShellUtils;
@@ -57,7 +57,7 @@ public class ShellTask extends AbstractTask {
             while ((line = br.readLine()) != null) {
                 getTaskContext().getLogCollector().collectStdout(line);
             }
-            getTaskContext().getLogCollector().collectStdout("",true);
+            getTaskContext().getLogCollector().collectStdout("", true);
         } catch (IOException e) {
             LOGGER.error("error shellProcess stdout stream", e);
         }
@@ -69,7 +69,7 @@ public class ShellTask extends AbstractTask {
             while ((line = br.readLine()) != null) {
                 getTaskContext().getLogCollector().collectStderr(line);
             }
-            getTaskContext().getLogCollector().collectStderr("",true);
+            getTaskContext().getLogCollector().collectStderr("", true);
         } catch (IOException e) {
             LOGGER.error("error shellProcess stderr stream", e);
         }
@@ -82,11 +82,9 @@ public class ShellTask extends AbstractTask {
         //执行内容有变化情况下,返回 新的执行内容
         String newContent = getCommand();
         TaskDetail oldTaskDetail = getTaskContext().getTaskDetail();
-        if(!newContent.equals(oldTaskDetail.getContent())){
-            LOGGER.debug("shellTask.postExecute() update newContent: {}",newContent);
-            TaskDetail newTaskDetail = TaskDetail.newTaskDetailBuilder(oldTaskDetail)
-                    .setContent(newContent)
-                    .build();
+        if (!newContent.equals(oldTaskDetail.getContent())) {
+            LOGGER.debug("shellTask.postExecute() update newContent: {}", newContent);
+            TaskDetail newTaskDetail = TaskDetail.newTaskDetailBuilder(oldTaskDetail).setContent(newContent).build();
             getTaskContext().getTaskReporter().report(newTaskDetail);
         }
 
@@ -104,8 +102,8 @@ public class ShellTask extends AbstractTask {
                 sb.append(";");
             }
 
-            sb.append("export SENTINEL_EXIT_CODE=$? ").append("&& echo $SENTINEL_EXIT_CODE > ").append(statusFilePath)
-                    .append(" && exit $SENTINEL_EXIT_CODE");
+            sb.append("export JARVIS_EXIT_CODE=$? ").append("&& echo $JARVIS_EXIT_CODE > ").append(statusFilePath)
+                    .append(" && exit $JARVIS_EXIT_CODE");
 
             ProcessBuilder processBuilder = ShellUtils.createProcessBuilder(sb.toString());
             shellProcess = processBuilder.start();
