@@ -34,7 +34,6 @@ public class CommonAPIController {
                 user.setUid(Long.valueOf(m.get("workId").toString()));
                 user.setUname(m.get("domain").toString());
                 user.setNick(m.get("nickname").toString());
-                user.setAvatar(m.get("avatar").toString());
                 user.setEmail(m.get("email").toString());
                 userList.add(user);
             }
