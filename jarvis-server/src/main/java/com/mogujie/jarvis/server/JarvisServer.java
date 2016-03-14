@@ -237,9 +237,16 @@ public class JarvisServer {
                 int expiredTime = job.getExpiredTime(); //秒
                 DateTime scheduleTime = new DateTime(task.getScheduleTime());
                 DateTime expiredDateTime = scheduleTime.plusSeconds(expiredTime);
-                // 如果该任务没有过期，进行重试
+                // 如果该任务没有过期
                 if (expiredDateTime.isAfter(now)) {
-                    controller.notify(new RetryTaskEvent(jobId, task.getTaskId(), task.getExecuteUser()));
+                    // 如果该任务状态不是ENABLE
+                    if (jobService.isActive(jobId)) {
+                        controller.notify(new RetryTaskEvent(jobId, task.getTaskId(), task.getExecuteUser()));
+                    } else {
+                        //如果该任务不是ACTIVE
+                        LOGGER.warn("{} is not active.", jobId);
+                        controller.notify(new FailedEvent(jobId, task.getTaskId(), "job is not active"));
+                    }
                 } else {
                     //如果该任务已过期，置为失败
                     LOGGER.warn("{} is expired.", task.getTaskId());

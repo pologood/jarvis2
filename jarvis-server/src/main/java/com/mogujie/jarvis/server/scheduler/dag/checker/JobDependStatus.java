@@ -99,10 +99,10 @@ public class JobDependStatus {
             pass = dependencyStrategy.check(taskStatus);
             if (!pass) {
                 LOGGER.debug("check failed. myJobId={}, preJobId={}, dependencyExpression={}, dependencyStrategy={}, scheduleTime={}",
-                        myJobId, preJobId, dependencyExpression, dependencyStrategy, scheduleTime);
+                        myJobId, preJobId, dependencyExpression, dependencyStrategy, new DateTime(scheduleTime));
             } else {
                 LOGGER.info("check success. myJobId={}, preJobId={}, dependencyExpression={}, dependencyStrategy={}, scheduleTime={}",
-                        myJobId, preJobId, dependencyExpression, dependencyStrategy, scheduleTime);
+                        myJobId, preJobId, dependencyExpression, dependencyStrategy, new DateTime(scheduleTime));
             }
         }
 
