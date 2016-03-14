@@ -121,4 +121,14 @@
         <include refid="pager"/>
     </select>
 
+    <select id="getRecentTasks" resultType="TaskVo" parameterType="list">
+        <foreach collection="list" item="jobId" open="" close="" separator="UNION">
+            (select jobId,executeStartTime, executeEndTime from task
+            where jobId = #{jobId}
+            and executeEndTime is not null and executeStartTime is not null order by executeEndTime DESC limit 10)
+        </foreach>
+    </select>
+
+
+
 </mapper>

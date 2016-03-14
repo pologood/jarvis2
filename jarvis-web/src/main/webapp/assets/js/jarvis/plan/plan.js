@@ -279,11 +279,17 @@ var columns = [{
     title: '调度时间',
     switchable: true,
     sortable: true,
-    formatter: formatDateTime,
+    formatter: formatDateTimeWithoutYear,
+    visible: true
+}, {
+    field: 'averageExecuteTime',
+    title: '预计执行时长',
+    switchable: true,
+    formatter: formatTimeInterval,
     visible: true
 }, {
     field: 'taskStatus',
-    title: '执行状态一览',
+    title: '当前状态',
     switchable: true,
     visible: true,
     formatter: taskStatusFormatter
@@ -330,20 +336,6 @@ function priorityFormatter(value, row, index) {
     return text;
 }
 
-function operateFormatter(value, row, index) {
-    var jobId = row["jobId"];
-    var dependUrl = contextPath + '/job/dependency?jobId=' + jobId;
-    var taskUrl = contextPath + '/task?jobIdList=' + JSON.stringify([jobId]) + '&scheduleDate=' + planQo.scheduleDate;
-    var result = [
-        '<a class="edit" href="' + dependUrl + '" title="查看任务依赖" target="_blank">',
-        '<i class="glyphicon glyphicon-object-align-vertical"></i>任务依赖',
-        '</a>  ',
-        '<a class="edit" href="' + taskUrl + '" title="查看当前执行" target="_blank">',
-        '<i class="glyphicon glyphicon-list"></i>执行详情',
-        '</a>  ',
-    ].join('');
-    return result;
-}
 function taskStatusFormatter(value, row, index) {
     var taskId = row.taskId;
     var status = row.status;
@@ -362,9 +354,22 @@ function taskStatusFormatter(value, row, index) {
     }
     ;
 
-
+    item="<div style='white-space:nowrap;'>"+item+"</div>";
     return item;
 }
+
+function operateFormatter(value, row, index) {
+    var jobId = row["jobId"];
+    var dependUrl = contextPath + '/job/dependency?jobId=' + jobId;
+    var taskUrl = contextPath + '/task?jobIdList=' + JSON.stringify([jobId]) + '&scheduleDate=' + planQo.scheduleDate;
+    var result = [
+        '<a style="white-space:nowrap;" class="edit" href="' + dependUrl + '" title="查看任务依赖" target="_blank">',
+        '<i class="glyphicon glyphicon-object-align-vertical"></i>任务依赖',
+        '</a>'
+    ].join('');
+    return result;
+}
+
 
 function StringFormatter(value, row, index) {
     return value;

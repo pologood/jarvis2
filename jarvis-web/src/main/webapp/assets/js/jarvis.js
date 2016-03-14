@@ -91,6 +91,9 @@ function formatDateTimeWithoutYear(dateTime) {
     }
     var theDate = new Date(dateTime);
     var result = moment(theDate).format("MM-DD HH:mm:ss");
+
+    result="<div style='white-space:nowrap;'>"+result+"</div>";
+
     return result;
 }
 

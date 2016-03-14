@@ -18,4 +18,6 @@ public interface PlanMapper {
 
     List<PlanVo> getPlansByCondition(PlanQo planQo);
 
+    List<TaskVo> getRecentTasks(List<Long> jobIdList);
+
 }

@@ -26,6 +26,7 @@ public class PlanVo extends Plan {
     private int taskSize;
 
     private Date scheduleTime;
+    private Long averageExecuteTime;
 
     public String getJobName() {
         return jobName;
@@ -141,5 +142,13 @@ public class PlanVo extends Plan {
     public PlanVo setScheduleTime(Date scheduleTime) {
         this.scheduleTime = scheduleTime;
         return this;
+    }
+
+    public Long getAverageExecuteTime() {
+        return averageExecuteTime;
+    }
+
+    public void setAverageExecuteTime(Long averageExecuteTime) {
+        this.averageExecuteTime = averageExecuteTime;
     }
 }
