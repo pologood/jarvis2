@@ -37,17 +37,8 @@ public class PlanController extends BaseController {
     @RequestMapping
     @JarvisPassport(authTypes = JarvisAuthType.plan)
     public String index(ModelMap modelMap) {
-
-        List<Long> jobIdList = jobService.getJobIds();
-        List<String> jobNameList = jobService.getJobNames();
-        List<String> executeUserList = taskService.getAllExecuteUser();
-
         PlanQo planQo = new PlanQo();
         planQo.setScheduleDate(DateTime.now().toString("yyyy-MM-dd"));
-
-        modelMap.put("jobIdList", jobIdList);
-        modelMap.put("jobNameList", jobNameList);
-        modelMap.put("executeUserList", executeUserList);
         modelMap.put("planQo", JsonHelper.toJson(planQo));
         return "plan/index";
     }

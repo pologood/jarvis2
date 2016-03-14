@@ -1,13 +1,17 @@
-var taskStatusJson = null;
+var priority = {};
 var taskStatusColor = null;
 
 $(function () {
-    $('#dataTime').datetimepicker({
-        language: 'zh-CN',
-        minView: 'hour',
-        format: 'yyyy-mm-dd hh:ii',
-        autoclose: true
-    });
+    initJobType();
+    initJobPriority();
+    initExecuteUser();
+    initTaskStatusColor();
+    initJobName();
+
+    initData();
+});
+
+function initJobType(){
     //初始化作业类型内容
     $.getJSON(contextPath + "/assets/json/jobType.json", function (data) {
         $("#jobType").select2({
@@ -16,16 +20,26 @@ $(function () {
             tags: true
         });
     });
-    //初始化作业来源内容
+}
+function initJobPriority(){
+    //初始化权重
     $.getJSON(contextPath + "/assets/json/jobPriority.json", function (data) {
+
+        $(data).each(function (i, c) {
+            var key = c.id;
+            var value = c.text;
+            if (key != 'all') {
+                priority[key] = value;
+            }
+        });
         $("#priority").select2({
             data: data,
             width: '100%'
         });
     });
-    //select采用select2 实现
-    $(".input-group select").select2({width: '100%'});
+}
 
+function initJobName(){
     $("#jobName").select2({
         ajax: {
             url: contextPath + "/api/job/getSimilarJobNames",
@@ -50,20 +64,58 @@ $(function () {
         minimumInputLength: 1,
         templateResult: formatResult,
         templateSelection: formatResultSelection,
-        width: '100%'
+        width: '100%',
+        tags:true
     });
+}
 
-    $.ajaxSettings.async = false;
-    $.getJSON(contextPath + "/api/job/getJobStatus", function (data) {
-        taskStatusJson = data;
+function initExecuteUser() {
+    $.getJSON(contextPath + "/api/common/getExecuteUsers", function (data) {
+        var newData = [];
+        var all = {};
+        all["id"] = "all";
+        all["text"] = "全部";
+        newData.push(all);
+
+        $(data).each(function (i, c) {
+            var item = {};
+            item["id"] = c;
+            item["text"] = c;
+            newData.push(item);
+        });
+        $("#executeUser").select2({
+            data: newData,
+            width: '100%'
+        });
+    })
+}
+
+function initTaskStatusColor(){
+    $.ajax({
+        url: contextPath + "/assets/json/taskStatusColor.json",
+        async: false,
+        success: function (data) {
+            taskStatusColor = data;
+        }
     });
-    //初始化颜色
-    $.getJSON(contextPath + "/assets/json/taskStatusColor.json", function (data) {
-        taskStatusColor = data;
-    });
-    $.ajaxSettings.async = true;
-    initData();
-});
+}
+
+
+function chooseStatus(tag) {
+    if ($(tag).val() == 'all') {
+        if (tag.checked) {
+            $($("#taskStatus input")).each(function () {
+                this.checked = true;
+            });
+        }
+        else {
+            $($("#taskStatus input")).each(function () {
+                this.checked = false;
+            });
+        }
+    }
+}
+
 
 function formatResult(result) {
     return result.text;
@@ -73,8 +125,7 @@ function formatResultSelection(result) {
 }
 
 function search() {
-    $("#content").bootstrapTable('destroy', '');
-    initData();
+    $("#content").bootstrapTable('refresh');
 }
 //重置参数
 function reset() {
@@ -94,6 +145,16 @@ function getQueryPara() {
     var priorityList = $("#priority").val();
     var executeUserList = $("#executeUser").val();
     var dataTime = $("#dataTime").val();
+    var taskStatusList = [];
+
+    var inputs = $("#taskStatus input[value!=all]:checked");
+    //console.log(inputs);
+    if (inputs.length == 0) {
+        inputs = $("#taskStatus input[value!=all]");
+    }
+    $(inputs).each(function (i, c) {
+        taskStatusList.push($(c).val());
+    });
 
     jobNameList = jobNameList == 'all' ? undefined : jobNameList;
     jobNameList = jobNameList == null ? undefined : jobNameList;
@@ -103,20 +164,18 @@ function getQueryPara() {
     executeUserList = executeUserList == null ? undefined : executeUserList;
     priorityList = priorityList == "all" ? undefined : priorityList;
     priorityList = priorityList == null ? undefined : priorityList;
-    dataTime = dataTime == '' ? undefined : dataTime;
 
     queryPara["jobNameList"] = JSON.stringify(jobNameList);
     queryPara["jobTypeList"] = JSON.stringify(jobTypeList);
     queryPara["executeUserList"] = JSON.stringify(executeUserList);
     queryPara["priorityList"] = JSON.stringify(priorityList);
-    queryPara["dataTime"] = dataTime;
+    queryPara["taskStatusList"] = JSON.stringify(taskStatusList);
 
     return queryPara;
 }
 
 //初始化数据及分页
 function initData() {
-    var queryParams = getQueryPara();
     $("#content").bootstrapTable({
         columns: columns,
         pagination: true,
@@ -124,6 +183,7 @@ function initData() {
         search: false,
         url: contextPath + '/api/plan/getPlans',
         queryParams: function (params) {
+            var queryParams = getQueryPara();
             for (var key in queryParams) {
                 var value = queryParams[key];
                 params[key] = value;
@@ -134,7 +194,7 @@ function initData() {
         showHeader: true,
         showToggle: true,
         pageSize: 20,
-        sortable:true,
+        sortable: true,
         pageList: [10, 20, 50, 100, 200, 500, 1000],
         paginationFirstText: '首页',
         paginationPreText: '上一页',
@@ -143,95 +203,94 @@ function initData() {
         showExport: true,
         exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'doc', 'excel'],
         exportDataType: 'basic',
-        exportOptions:{}
+        exportOptions: {}
     });
 }
-
 
 var columns = [{
     field: 'jobId',
     title: '任务ID',
     switchable: true,
-    sortable:true,
+    sortable: true,
     visible: true
 }, {
     field: 'jobName',
     title: '任务名称',
     switchable: true,
-    sortable:true,
+    sortable: true,
     formatter: jobNameFormatter
 }, {
     field: 'appId',
     title: 'APP ID',
-    sortable:true,
+    sortable: true,
     switchable: true,
     visible: false
 }, {
     field: 'appName',
     title: 'APP名',
-    sortable:true,
+    sortable: true,
     switchable: true,
     visible: false
 }, {
     field: 'jobType',
     title: '任务类型',
-    sortable:true,
+    sortable: true,
     switchable: true,
     visible: true
 }, {
     field: 'bizGroups',
     title: '业务组ID',
-    sortable:true,
+    sortable: true,
     switchable: true,
     visible: false
 }, {
     field: 'bizGroupName',
     title: '业务组名',
-    sortable:true,
+    sortable: true,
     switchable: true,
     visible: true
 }, {
     field: 'priority',
     title: '任务优先级',
-    sortable:true,
+    sortable: true,
     switchable: true,
-    visible: true
+    visible: true,
+    formatter: priorityFormatter
 }, {
-    field: 'submitUser',
-    title: '提交用户',
-    sortable:true,
+    field: 'executeUser',
+    title: '执行用户',
+    sortable: true,
     switchable: true,
     visible: true
 }, {
     field: 'workerGroupId',
     title: 'workerGroupId',
     switchable: true,
-    sortable:true,
+    sortable: true,
     visible: false
 }, {
     field: 'workerGroupName',
     title: 'worker组名',
-    sortable:true,
+    sortable: true,
     switchable: true,
     visible: false
 }, {
-    field: 'scheduleTimeFirst',
-    title: '首个调度时间',
+    field: 'scheduleTime',
+    title: '调度时间',
     switchable: true,
-    sortable:true,
+    sortable: true,
     formatter: formatDateTime,
-    visible: false
+    visible: true
 }, {
     field: 'taskStatus',
     title: '执行状态一览',
     switchable: true,
-    sortable:true,
     visible: true,
-    formatter: taskStatusListFormatter
+    formatter: taskStatusFormatter
 }, {
     field: 'createTime',
     title: '创建时间',
-    sortable:true,
+    sortable: true,
     switchable: true,
     visible: false,
     formatter: formatDateTime
@@ -239,13 +298,13 @@ var columns = [{
     field: 'updateTime',
     title: '最后更新时间',
     switchable: true,
-    sortable:true,
+    sortable: true,
     visible: false,
     formatter: formatDateTime
 }, {
     field: 'operation',
     title: '操作',
-    width:'15%',
+    width: '15%',
     switchable: true,
     formatter: operateFormatter
 }];
@@ -254,6 +313,21 @@ function jobNameFormatter(value, row, index) {
     var result = '<a target="_blank" href="' + contextPath + "/job/detail?jobId=" + row["jobId"] + '">' + value + '</a>';
 
     return result;
+}
+
+function priorityFormatter(value, row, index) {
+    var text = priority[value];
+    if (null == text) {
+        $.getJSON(contextPath + "/assets/json/jobPriority.json", function (data) {
+            $(data).each(function (i, c) {
+                if (c.key == value) {
+                    text = c.text;
+                    return false;
+                }
+            });
+        });
+    }
+    return text;
 }
 
 function operateFormatter(value, row, index) {
@@ -271,30 +345,25 @@ function operateFormatter(value, row, index) {
     return result;
 }
 function taskStatusFormatter(value, row, index) {
-    var color = taskStatusColor[value].color;
-
-    var result = '<i class="fa fa-circle fa-2x" style="color: ' + color + '"></i>';
-    return result;
-}
-function taskStatusListFormatter(value, row, index) {
-    var result = "";
-    $(value).each(function (i, c) {
-        var taskId = c.taskId;
-        var status = c.status;
-        var color = taskStatusColor[status].color;
-        var text = taskStatusColor[status].text;
-
-        var item = '<a target="_blank" href="' + contextPath + "/task/detail?taskId=" + taskId + '"><i class="fa fa-circle fa-2x" style="color: ' + color + '"></i>'+text+'</a>';
-
-        result = result + item;
-    });
-
-    if ("" == result) {
-        result = "等待生成执行";
+    var taskId = row.taskId;
+    var status = row.status;
+    if (status == undefined) {
+        status = 0;
     }
+    var color = taskStatusColor[status].color;
+    var text = taskStatusColor[status].text;
+
+    var item = '';
+    if (undefined !== taskId) {
+        item = '<a target="_blank" href="' + contextPath + "/task/detail?taskId=" + taskId + '"><i class="fa fa-circle fa-2x" style="color: ' + color + '"></i>' + text + '</a>';
+    }
+    else {
+        item = '<i class="fa fa-circle fa-2x" style="color: ' + color + '"></i>' + text;
+    }
+    ;
 
 
-    return result;
+    return item;
 }
 
 function StringFormatter(value, row, index) {

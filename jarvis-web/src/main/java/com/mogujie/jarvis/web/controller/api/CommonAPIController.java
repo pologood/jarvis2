@@ -2,6 +2,7 @@ package com.mogujie.jarvis.web.controller.api;
 
 import com.mogu.bigdata.admin.core.entity.User;
 import com.mogu.bigdata.admin.inside.service.AdminUserService;
+import com.mogujie.jarvis.web.service.TaskService;
 import com.mogujie.jarvis.web.utils.MessageStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,8 @@ import java.util.Map;
 public class CommonAPIController {
     @Autowired
     AdminUserService userService;
+    @Autowired
+    TaskService taskService;
 
     /*
     * 获取内网所有用户
@@ -54,6 +57,14 @@ public class CommonAPIController {
             map.put(messageStatus.getValue(),messageStatus.getText());
         }
         return map;
+    }
+
+    @RequestMapping(value = "getExecuteUsers")
+    @ResponseBody
+    public Object getExecuteUsers() {
+        List<String> executeUserList = taskService.getAllExecuteUser();
+
+        return executeUserList;
     }
 
 }

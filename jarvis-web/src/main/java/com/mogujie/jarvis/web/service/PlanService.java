@@ -32,34 +32,21 @@ public class PlanService {
     public Map<String, Object> getPlans(PlanQo planQo) {
         Map<String, Object> result = new HashMap<String, Object>();
 
-        Integer total = planMapper.getPlanCountByCondition(planQo);
-        List<PlanVo> planVoList = planMapper.getPlansByCondition(planQo);
-        Map<Long, PlanVo> planVoMap = new HashMap<Long, PlanVo>();
-        List<Long> jobIdList = new ArrayList<Long>();
-        for (PlanVo planVo : planVoList) {
-            planVoMap.put(planVo.getJobId(), planVo);
-            jobIdList.add(planVo.getJobId());
-        }
 
-        List<TaskVo> recentTaskList = new ArrayList<TaskVo>();
-        if (jobIdList.size() > 0) {
-            recentTaskList = taskService.getTaskByJobIdBetweenTime(jobIdList, planQo.getScheduleStartTime(), planQo.getScheduleEndTime());
-        }
 
-        for (TaskVo taskVo : recentTaskList) {
-            if (planVoMap.containsKey(taskVo.getJobId())) {
-                PlanVo value = planVoMap.get(taskVo.getJobId());
-                value.setTaskSize(value.getTaskSize() + 1);
-
-                List<Object> status = value.getTaskStatus();
-                JSONObject object = new JSONObject();
-                object.put("taskId", taskVo.getTaskId());
-                object.put("status", taskVo.getStatus());
-                status.add(object);
-
-                value.setTaskStatus(status);
+        List<String> taskStatusList=planQo.getTaskStatusList();
+        //包含未初始化的job
+        for(String status:taskStatusList){
+            if(status.equals("0")){
+                planQo.setUnInitial(true);
+                break;
             }
         }
+
+        Integer total = planMapper.getPlanCountByCondition(planQo);
+        List<PlanVo> planVoList = planMapper.getPlansByCondition(planQo);
+
+
 
         result.put("total", total);
         result.put("rows", planVoList);

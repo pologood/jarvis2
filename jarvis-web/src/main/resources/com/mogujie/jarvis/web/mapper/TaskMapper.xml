@@ -113,7 +113,10 @@
     </select>
 
     <select id="getAllExecuteUser" resultType="String">
-        SELECT DISTINCT executeUser FROM task;
+        SELECT DISTINCT executeUser FROM (
+            SELECT DISTINCT executeUser FROM task UNION SELECT DISTINCT submitUser as executeUser FROM job
+        )t
+
     </select>
 
 

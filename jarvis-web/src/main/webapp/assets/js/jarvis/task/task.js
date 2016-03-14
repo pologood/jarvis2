@@ -241,7 +241,7 @@ function initData() {
         paginationLastText: '末页',
         showExport: true,
         exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'doc', 'excel'],
-        exportDataType: 'all'
+        exportDataType: 'basic'
     });
 }
 //字段配置

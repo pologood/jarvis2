@@ -3,6 +3,7 @@ package com.mogujie.jarvis.web.entity.qo;
 import com.mogujie.jarvis.core.util.JsonHelper;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,11 +18,14 @@ public class PlanQo {
 
     private List<String> submitUserList;
     private List<String> executeUserList;
+    private List<String> taskStatusList;
 
     private String scheduleDate;
     private int scheduleStartTime;
     private int scheduleEndTime;
 
+
+    private Boolean unInitial;
     private String dataTime;
     private Integer offset;
     private Integer limit;
@@ -173,5 +177,26 @@ public class PlanQo {
 
     public void setOrder(String order) {
         this.order = order;
+    }
+
+    public List<String> getTaskStatusList() {
+        return taskStatusList;
+    }
+
+    public void setTaskStatusList(String taskStatusList) {
+        if (StringUtils.isNotBlank(taskStatusList)) {
+            List<String> list = JsonHelper.fromJson(taskStatusList, List.class);
+            this.taskStatusList = list;
+        } else {
+            this.taskStatusList = new ArrayList<>();
+        }
+    }
+
+    public Boolean isUnInitial() {
+        return unInitial;
+    }
+
+    public void setUnInitial(Boolean unInitial) {
+        this.unInitial = unInitial;
     }
 }
