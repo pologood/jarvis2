@@ -10,12 +10,10 @@ package com.mogujie.jarvis.server.service;
 
 
 import java.util.List;
-import java.util.Set;
 
 import org.joda.time.DateTime;
 
 import com.google.common.collect.Range;
-import com.google.common.collect.Sets;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.mogujie.jarvis.dao.generate.PlanMapper;
@@ -36,30 +34,44 @@ public class PlanService {
     @Inject
     private JobService jobService;
 
-    public void updateJobIds(Set<Long> jobIds) {
+    public void refreshAllPlan(Range<DateTime> range) {
+        //先把所有老的删除
         PlanExample example = new PlanExample();
         example.createCriteria();
         planMapper.deleteByExample(example);
 
-        for (long jobId : jobIds) {
-            Plan plan = new Plan();
-            plan.setJobId(jobId);
-            plan.setCreateTime(DateTime.now().toDate());
-            if (planMapper.selectByPrimaryKey(jobId) == null) {
-                planMapper.insertSelective(plan);
+        //重新生成新的plan
+        List<Long> activeJobIds = jobService.getEnableActiveJobIds();
+        DateTime now = DateTime.now();
+        for (long jobId : activeJobIds) {
+            DateTime nextTime = PlanUtil.getScheduleTimeAfter(jobId, range.lowerEndpoint().minusSeconds(1));
+            while (nextTime != null && range.contains(nextTime)) {
+                Plan plan = new Plan();
+                plan.setJobId(jobId);
+                plan.setPlanTime(nextTime.toDate());
+                plan.setCreateTime(now.toDate());
+                planMapper.insert(plan);
+                nextTime = PlanUtil.getScheduleTimeAfter(jobId, nextTime);
             }
         }
     }
 
-    public void updateJobIds(Range<DateTime> range) {
-        List<Long> activeJobIds = jobService.getEnableActiveJobIds();
-        Set<Long> planJobIds = Sets.newHashSet();
-        for (long jobId : activeJobIds) {
-            DateTime nextTime = PlanUtil.getScheduleTimeAfter(jobId, range.lowerEndpoint().minusSeconds(1));
-            if (nextTime != null && range.contains(nextTime)) {
-                planJobIds.add(jobId);
-            }
+    public void refreshPlan(long jobId, Range<DateTime> range) {
+        //先把所有老的删除
+        PlanExample example = new PlanExample();
+        example.createCriteria().andJobIdEqualTo(jobId);
+        planMapper.deleteByExample(example);
+
+        //重新生成新的plan
+        DateTime now = DateTime.now();
+        DateTime nextTime = PlanUtil.getScheduleTimeAfter(jobId, range.lowerEndpoint().minusSeconds(1));
+        while (nextTime != null && range.contains(nextTime)) {
+            Plan plan = new Plan();
+            plan.setJobId(jobId);
+            plan.setPlanTime(nextTime.toDate());
+            plan.setCreateTime(now.toDate());
+            planMapper.insert(plan);
+            nextTime = PlanUtil.getScheduleTimeAfter(jobId, nextTime);
         }
-        updateJobIds(planJobIds);
     }
 }

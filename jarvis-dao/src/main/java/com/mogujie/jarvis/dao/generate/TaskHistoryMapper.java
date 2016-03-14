@@ -1,10 +1,10 @@
 package com.mogujie.jarvis.dao.generate;
 
-import org.apache.ibatis.annotations.Param;
-
 import com.mogujie.jarvis.dto.generate.TaskHistory;
 import com.mogujie.jarvis.dto.generate.TaskHistoryExample;
 import com.mogujie.jarvis.dto.generate.TaskHistoryKey;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface TaskHistoryMapper {
     int countByExample(TaskHistoryExample example);

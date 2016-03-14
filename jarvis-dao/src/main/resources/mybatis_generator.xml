@@ -9,9 +9,9 @@
         </commentGenerator>
 
 		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
-			connectionURL="jdbc:mysql://10.17.133.49/jarvis2"
-            userId="root"
-			password="mogujie" />
+			connectionURL="jdbc:mysql://10.11.2.191/jarvis2"
+            userId="data"
+			password="data@mogujie" />
 
         <javaModelGenerator targetPackage="com.mogujie.jarvis.dto.generate"
 			targetProject="src/main/java" />

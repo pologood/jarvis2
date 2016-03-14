@@ -1,9 +1,9 @@
 package com.mogujie.jarvis.dao.generate;
 
-import org.apache.ibatis.annotations.Param;
-
 import com.mogujie.jarvis.dto.generate.JobScheduleExpression;
 import com.mogujie.jarvis.dto.generate.JobScheduleExpressionExample;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface JobScheduleExpressionMapper {
     int countByExample(JobScheduleExpressionExample example);

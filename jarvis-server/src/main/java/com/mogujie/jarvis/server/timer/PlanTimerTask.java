@@ -29,7 +29,7 @@ public class PlanTimerTask extends AbstractTimerTask {
         DateTime endDateTime = now.plusDays(2).withTimeAtStartOfDay();
         Range<DateTime> range = Range.closedOpen(startDateTime, endDateTime);
         PlanService planSerivce = Injectors.getInjector().getInstance(PlanService.class);
-        planSerivce.updateJobIds(range);
+        planSerivce.refreshAllPlan(range);
     }
 
     @Override

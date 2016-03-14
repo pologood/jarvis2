@@ -165,6 +165,66 @@ public class PlanExample {
             return (Criteria) this;
         }
 
+        public Criteria andPlanTimeIsNull() {
+            addCriterion("planTime is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanTimeIsNotNull() {
+            addCriterion("planTime is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanTimeEqualTo(Date value) {
+            addCriterion("planTime =", value, "planTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanTimeNotEqualTo(Date value) {
+            addCriterion("planTime <>", value, "planTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanTimeGreaterThan(Date value) {
+            addCriterion("planTime >", value, "planTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanTimeGreaterThanOrEqualTo(Date value) {
+            addCriterion("planTime >=", value, "planTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanTimeLessThan(Date value) {
+            addCriterion("planTime <", value, "planTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanTimeLessThanOrEqualTo(Date value) {
+            addCriterion("planTime <=", value, "planTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanTimeIn(java.util.List<java.util.Date> values) {
+            addCriterion("planTime in", values, "planTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanTimeNotIn(java.util.List<java.util.Date> values) {
+            addCriterion("planTime not in", values, "planTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanTimeBetween(Date value1, Date value2) {
+            addCriterion("planTime between", value1, value2, "planTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanTimeNotBetween(Date value1, Date value2) {
+            addCriterion("planTime not between", value1, value2, "planTime");
+            return (Criteria) this;
+        }
+
         public Criteria andCreateTimeIsNull() {
             addCriterion("createTime is null");
             return (Criteria) this;

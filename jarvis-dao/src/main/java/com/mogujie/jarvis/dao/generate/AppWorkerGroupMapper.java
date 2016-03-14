@@ -1,10 +1,10 @@
 package com.mogujie.jarvis.dao.generate;
 
-import org.apache.ibatis.annotations.Param;
-
 import com.mogujie.jarvis.dto.generate.AppWorkerGroup;
 import com.mogujie.jarvis.dto.generate.AppWorkerGroupExample;
 import com.mogujie.jarvis.dto.generate.AppWorkerGroupKey;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface AppWorkerGroupMapper {
     int countByExample(AppWorkerGroupExample example);

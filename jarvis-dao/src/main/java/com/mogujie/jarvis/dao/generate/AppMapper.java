@@ -1,9 +1,9 @@
 package com.mogujie.jarvis.dao.generate;
 
-import org.apache.ibatis.annotations.Param;
-
 import com.mogujie.jarvis.dto.generate.App;
 import com.mogujie.jarvis.dto.generate.AppExample;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface AppMapper {
     int countByExample(AppExample example);

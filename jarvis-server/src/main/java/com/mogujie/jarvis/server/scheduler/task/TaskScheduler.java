@@ -18,6 +18,7 @@ import org.joda.time.DateTime;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Range;
 import com.google.common.eventbus.AllowConcurrentEvents;
 import com.google.common.eventbus.Subscribe;
 import com.mogujie.jarvis.core.domain.JobContentType;
@@ -49,6 +50,7 @@ import com.mogujie.jarvis.server.scheduler.event.StopEvent;
 import com.mogujie.jarvis.server.scheduler.event.SuccessEvent;
 import com.mogujie.jarvis.server.service.AppService;
 import com.mogujie.jarvis.server.service.JobService;
+import com.mogujie.jarvis.server.service.PlanService;
 import com.mogujie.jarvis.server.service.ScriptService;
 import com.mogujie.jarvis.server.service.TaskService;
 
@@ -71,6 +73,7 @@ public class TaskScheduler extends Scheduler {
     private AppService appService = Injectors.getInjector().getInstance(AppService.class);
     private JobService jobService = Injectors.getInjector().getInstance(JobService.class);
     private TaskService taskService = Injectors.getInjector().getInstance(TaskService.class);
+    private PlanService planService = Injectors.getInjector().getInstance(PlanService.class);
     private ScriptService scriptService = Injectors.getInjector().getInstance(ScriptService.class);
     private TaskManager taskManager = Injectors.getInjector().getInstance(TaskManager.class);
     private PriorityTaskQueue taskQueue = Injectors.getInjector().getInstance(PriorityTaskQueue.class);
@@ -235,6 +238,11 @@ public class TaskScheduler extends Scheduler {
         // create new task
         long taskId = taskService.createTaskByJobId(jobId, scheduleTime, scheduleTime, TaskType.SCHEDULE);
         LOGGER.info("add new task[{}] to DB", taskId);
+
+        // 创建新的task的时候，重新刷新改job的plan
+        DateTime now = DateTime.now();
+        Range<DateTime> range = Range.closedOpen(now, now.plusDays(1).withTimeAtStartOfDay());
+        planService.refreshPlan(jobId, range);
 
         // 如果是串行任务
         if (jobService.get(jobId).getJob().getIsSerial()) {

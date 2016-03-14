@@ -1,9 +1,9 @@
 package com.mogujie.jarvis.dao.generate;
 
-import org.apache.ibatis.annotations.Param;
-
 import com.mogujie.jarvis.dto.generate.OperationLog;
 import com.mogujie.jarvis.dto.generate.OperationLogExample;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface OperationLogMapper {
     int countByExample(OperationLogExample example);

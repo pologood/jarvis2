@@ -1,9 +1,9 @@
 package com.mogujie.jarvis.dao.generate;
 
-import org.apache.ibatis.annotations.Param;
-
 import com.mogujie.jarvis.dto.generate.BizGroup;
 import com.mogujie.jarvis.dto.generate.BizGroupExample;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface BizGroupMapper {
     int countByExample(BizGroupExample example);
