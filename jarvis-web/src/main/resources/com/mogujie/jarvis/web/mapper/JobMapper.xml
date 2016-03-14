@@ -11,9 +11,9 @@
               </foreach>
           </if>
           <if test="jobNameList!=null and jobNameList.size()>0">
-              AND t.jobName IN
-              <foreach collection="jobNameList" item="jobName" open="(" close=")" separator=",">
-                  #{jobName}
+              AND
+              <foreach collection="jobNameList" item="jobName" open="(" close=")" separator="OR">
+                  jobName LIKE concat('%',#{jobName},'%')
               </foreach>
           </if>
           <if test="jobTypeList!=null and jobTypeList.size()>0">

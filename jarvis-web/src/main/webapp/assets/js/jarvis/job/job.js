@@ -1,6 +1,6 @@
 var jobTypeJson = null;
 var jobStatus = null;
-var jobPriorityJson = null;
+var jobPriority = {};
 var bizGroup = {};
 $(function () {
     //select采用select2 实现
@@ -25,7 +25,13 @@ $(function () {
     });
 
     $.getJSON(contextPath + "/assets/json/jobPriority.json", function (data) {
-        jobPriorityJson = data;
+        $(data).each(function (i, c) {
+            var key = c.id;
+            var text = c.text;
+            jobPriority[key] = text;
+        });
+
+
         $("#jobPriority").select2({
             data: data,
             width: '100%'
@@ -89,7 +95,8 @@ $(function () {
         minimumInputLength: 1,
         templateResult: formatResult,
         templateSelection: formatResultSelection,
-        width: '100%'
+        width: '100%',
+        tags:true
     });
 
 
@@ -235,9 +242,9 @@ function initData() {
         showColumns: true,
         showHeader: true,
         showToggle: true,
-        sortable:true,
+        sortable: true,
         pageSize: 20,
-        pageList: [10, 20, 50, 100, 200, 500,1000],
+        pageList: [10, 20, 50, 100, 200, 500, 1000],
         paginationFirstText: '首页',
         paginationPreText: '上一页',
         paginationNextText: '下一页',
@@ -257,47 +264,48 @@ function updateJobStatus(jobId, jobStatus) {
 var columns = [{
     field: 'jobId',
     title: '任务id',
-    sortable:true,
+    sortable: true,
     switchable: true
 }, {
     field: 'jobName',
     title: '任务名',
     switchable: true,
-    sortable:true,
-    formatter:jobNameFormatter
+    sortable: true,
+    formatter: jobNameFormatter
 }, {
     field: 'appName',
     title: '应用',
-    sortable:true,
-    switchable: true
+    sortable: true,
+    switchable: true,
+    formatter: appNameFormatter
 }, {
     field: 'workerGroupId',
     title: 'worker组ID',
     switchable: true,
-    sortable:true,
+    sortable: true,
     visible: false
 }, {
     field: 'workerGroupName',
     title: 'Worker组',
     switchable: true,
-    sortable:true,
+    sortable: true,
     visible: true
 }, {
     field: 'jobType',
     title: '任务类型',
-    sortable:true,
+    sortable: true,
     switchable: true
 }, {
     field: 'bizGroups',
     title: '业务标签',
-    sortable:true,
+    sortable: true,
     switchable: true,
     visible: true,
     formatter: bizGroupFormatter
 }, {
     field: 'status',
     title: '状态',
-    sortable:true,
+    sortable: true,
     switchable: true,
     formatter: statusFormatter
 }, {
@@ -313,32 +321,33 @@ var columns = [{
 }, {
     field: 'priority',
     title: '优先级',
-    sortable:true,
-    switchable: true
+    sortable: true,
+    switchable: true,
+    formatter: jobPriorityFormatter
 }, {
     field: 'submitUser',
     title: '提交人',
-    sortable:true,
+    sortable: true,
     switchable: true
 }, {
     field: 'activeStartDate',
     title: '开始日期',
     switchable: true,
-    sortable:true,
+    sortable: true,
     formatter: formatDate,
     visible: false
 }, {
     field: 'activeEndDate',
     title: '结束日期',
     switchable: true,
-    sortable:true,
+    sortable: true,
     formatter: formatDate,
     visible: false
 }, {
     field: 'createTime',
     title: '创建时间',
     switchable: true,
-    sortable:true,
+    sortable: true,
     formatter: formatDateTime,
     visible: false
 }, {
@@ -346,30 +355,30 @@ var columns = [{
     title: '更新时间',
     switchable: true,
     visible: false,
-    sortable:true,
+    sortable: true,
     formatter: formatDateTime
 }, {
     field: 'rejectAttempts',
     title: '被Worker拒绝时重试次数',
     switchable: true,
-    sortable:true,
+    sortable: true,
     visible: false
 }, {
     field: 'rejectInterval',
     title: '被Worker拒绝时重试间隔(秒)',
-    sortable:true,
+    sortable: true,
     switchable: true,
     visible: false
 }, {
     field: 'failedAttempts',
     title: '运行失败时重试次数',
-    sortable:true,
+    sortable: true,
     switchable: true,
     visible: false
 }, {
     field: 'failedInterval',
     title: '运行失败时重试间隔(秒)',
-    sortable:true,
+    sortable: true,
     switchable: true,
     visible: false
 }, {
@@ -378,6 +387,30 @@ var columns = [{
     switchable: true,
     formatter: operateFormatter
 }];
+
+function appNameFormatter(value, row, index) {
+    var result = "<div style='white-space: nowrap'>" + value + "</div>";
+    return result;
+}
+
+function jobPriorityFormatter(value, row, index) {
+    var text = jobPriority[value];
+    if (text == null) {
+        $.getJSON(contextPath + "/assets/json/jobPriority.json", function (data) {
+            $(data).each(function (i, c) {
+                var key = c.id;
+                if (value == key) {
+                    text = c.text;
+                    return false;
+                }
+            });
+
+        });
+    }
+
+    return text;
+}
+
 
 //操作格式化器
 function operateFormatter(value, row, index) {
@@ -419,6 +452,9 @@ function operateFormatter(value, row, index) {
         operation = operation + '</ul></div>';
         result = result + operation;
     }
+
+    result = "<div style='white-space: nowrap'>" + result + "</div>";
+
     return result;
 }
 

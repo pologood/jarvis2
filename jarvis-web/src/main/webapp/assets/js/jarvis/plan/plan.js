@@ -6,12 +6,13 @@ $(function () {
     initJobPriority();
     initExecuteUser();
     initTaskStatusColor();
+    initJobId();
     initJobName();
 
     initData();
 });
 
-function initJobType(){
+function initJobType() {
     //初始化作业类型内容
     $.getJSON(contextPath + "/assets/json/jobType.json", function (data) {
         $("#jobType").select2({
@@ -21,7 +22,7 @@ function initJobType(){
         });
     });
 }
-function initJobPriority(){
+function initJobPriority() {
     //初始化权重
     $.getJSON(contextPath + "/assets/json/jobPriority.json", function (data) {
 
@@ -39,7 +40,37 @@ function initJobPriority(){
     });
 }
 
-function initJobName(){
+function initJobId() {
+    $("#jobId").select2({
+        ajax: {
+            url: contextPath + "/api/job/getSimilarJobIds",
+            dataType: 'json',
+            delay: 250,
+            data: function (params) {
+                return {
+                    q: params.term, // search term
+                    page: params.page
+                };
+            },
+            processResults: function (data, page) {
+                return {
+                    results: data.items
+                };
+            },
+            cache: true
+        },
+        escapeMarkup: function (markup) {
+            return markup;
+        },
+        minimumInputLength: 1,
+        templateResult: formatResult,
+        templateSelection: formatResultSelection,
+
+        width: '100%'
+    });
+}
+
+function initJobName() {
     $("#jobName").select2({
         ajax: {
             url: contextPath + "/api/job/getSimilarJobNames",
@@ -65,7 +96,7 @@ function initJobName(){
         templateResult: formatResult,
         templateSelection: formatResultSelection,
         width: '100%',
-        tags:true
+        tags: true
     });
 }
 
@@ -90,7 +121,7 @@ function initExecuteUser() {
     })
 }
 
-function initTaskStatusColor(){
+function initTaskStatusColor() {
     $.ajax({
         url: contextPath + "/assets/json/taskStatusColor.json",
         async: false,
@@ -140,6 +171,7 @@ function reset() {
 function getQueryPara() {
     var queryPara = {};
 
+    var jobIdList = $("#jobId").val();
     var jobNameList = $("#jobName").val();
     var jobTypeList = $("#jobType").val();
     var priorityList = $("#priority").val();
@@ -155,7 +187,7 @@ function getQueryPara() {
     $(inputs).each(function (i, c) {
         taskStatusList.push($(c).val());
     });
-
+    jobIdList = jobIdList == null ? undefined : jobIdList;
     jobNameList = jobNameList == 'all' ? undefined : jobNameList;
     jobNameList = jobNameList == null ? undefined : jobNameList;
     jobTypeList = jobTypeList == 'all' ? undefined : jobTypeList;
@@ -165,6 +197,7 @@ function getQueryPara() {
     priorityList = priorityList == "all" ? undefined : priorityList;
     priorityList = priorityList == null ? undefined : priorityList;
 
+    queryPara["jobIdList"] = JSON.stringify(jobIdList);
     queryPara["jobNameList"] = JSON.stringify(jobNameList);
     queryPara["jobTypeList"] = JSON.stringify(jobTypeList);
     queryPara["executeUserList"] = JSON.stringify(executeUserList);
@@ -354,7 +387,7 @@ function taskStatusFormatter(value, row, index) {
     }
     ;
 
-    item="<div style='white-space:nowrap;'>"+item+"</div>";
+    item = "<div style='white-space:nowrap;'>" + item + "</div>";
     return item;
 }
 
