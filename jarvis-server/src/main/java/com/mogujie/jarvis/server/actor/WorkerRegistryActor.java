@@ -13,13 +13,8 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import akka.actor.Address;
-import akka.actor.Props;
-import akka.actor.UntypedActor;
-
 import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.core.domain.WorkerInfo;
-import com.mogujie.jarvis.core.domain.WorkerStatus;
 import com.mogujie.jarvis.core.util.ExceptionUtil;
 import com.mogujie.jarvis.protocol.WorkerProtos.ServerRegistryResponse;
 import com.mogujie.jarvis.protocol.WorkerProtos.WorkerRegistryRequest;
@@ -28,6 +23,10 @@ import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.service.WorkerGroupService;
 import com.mogujie.jarvis.server.service.WorkerService;
+
+import akka.actor.Address;
+import akka.actor.Props;
+import akka.actor.UntypedActor;
 
 /**
  * Worker authentication

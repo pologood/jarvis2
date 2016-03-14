@@ -3,7 +3,6 @@ package com.mogujie.jarvis.dao.generate;
 import com.mogujie.jarvis.dto.generate.Plan;
 import com.mogujie.jarvis.dto.generate.PlanExample;
 import com.mogujie.jarvis.dto.generate.PlanKey;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface PlanMapper {

@@ -2,7 +2,6 @@ package com.mogujie.jarvis.dao.generate;
 
 import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.dto.generate.TaskExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface TaskMapper {
