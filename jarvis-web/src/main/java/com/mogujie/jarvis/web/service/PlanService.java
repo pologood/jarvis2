@@ -47,11 +47,15 @@ public class PlanService {
 
         List<Long> jobIdList = new ArrayList<>();
         for (PlanVo planVo : planVoList) {
-            if(null!=planVo.getJobId()){
+            if (null != planVo.getJobId()) {
                 jobIdList.add(planVo.getJobId());
             }
         }
-        List<TaskVo> taskVoList = planMapper.getRecentTasks(jobIdList);
+        List<TaskVo> taskVoList = new ArrayList<>();
+        if (jobIdList.size() > 0) {
+            taskVoList = planMapper.getRecentTasks(jobIdList);
+        }
+
         Map<Long, List<Long>> avgTime = new HashMap<>();
         for (TaskVo taskVo : taskVoList) {
             List<Long> item = avgTime.get(taskVo.getJobId());
@@ -75,7 +79,7 @@ public class PlanService {
         for (PlanVo planVo : planVoList) {
             List<Long> item = avgTime.get(planVo.getJobId());
             Long avgSecond = null;
-            if(item.size()>0){
+            if (item.size() > 0) {
                 Long totalSecond = 0l;
                 for (Long second : item) {
                     totalSecond += second;
