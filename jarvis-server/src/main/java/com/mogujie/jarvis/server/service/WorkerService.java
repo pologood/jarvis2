@@ -55,7 +55,7 @@ public class WorkerService {
             workerMapper.updateByPrimaryKeySelective(worker);
         } else {
             worker.setCreateTime(dt);
-            workerMapper.insert(worker);
+            workerMapper.insertSelective(worker);
         }
     }
 
