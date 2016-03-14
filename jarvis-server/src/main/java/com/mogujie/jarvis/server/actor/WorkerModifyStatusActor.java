@@ -1,7 +1,9 @@
 /*
- * 蘑菇街 Inc. Copyright (c) 2010-2015 All Rights Reserved.
+ * 蘑菇街 Inc.
+ * Copyright (c) 2010-2015 All Rights Reserved.
  *
- * Author: wuya Create Date: 2015年9月22日 下午3:25:50
+ * Author: wuya
+ * Create Date: 2015年9月22日 下午3:25:50
  */
 
 package com.mogujie.jarvis.server.actor;
@@ -12,9 +14,6 @@ import java.util.List;
 import org.apache.ibatis.javassist.NotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import akka.actor.Props;
-import akka.actor.UntypedActor;
 
 import com.mogujie.jarvis.core.domain.MessageType;
 import com.mogujie.jarvis.core.domain.WorkerInfo;
@@ -27,6 +26,9 @@ import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.service.HeartBeatService;
 import com.mogujie.jarvis.server.service.WorkerService;
+
+import akka.actor.Props;
+import akka.actor.UntypedActor;
 
 public class WorkerModifyStatusActor extends UntypedActor {
 
@@ -60,15 +62,18 @@ public class WorkerModifyStatusActor extends UntypedActor {
             }
             workerService.updateWorkerStatus(workerId, status);
             LOGGER.info("update worker[{}:{}] status to {}", ip, port, status);
+
+            HeartBeatService heartBeatService = Injectors.getInjector().getInstance(HeartBeatService.class);
+            WorkerInfo workerInfo = new WorkerInfo(ip, port);
             if (status == WorkerStatus.OFFLINE.getValue()) {
-                HeartBeatService heartBeatService = Injectors.getInjector().getInstance(HeartBeatService.class);
-                WorkerInfo workerInfo = new WorkerInfo(ip, port);
                 int groupId = Injectors.getInjector().getInstance(WorkerRegistry.class).getWorkerGroupId(workerInfo);
                 if (groupId < 0) {
                     throw new IllegalArgumentException("groupId is not valid: " + groupId);
                 } else {
                     heartBeatService.remove(groupId, workerInfo);
                 }
+            } else if (status == WorkerStatus.ONLINE.getValue()) {
+                heartBeatService.onlineWorker(workerInfo);
             }
             response = ServerModifyWorkerStatusResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());

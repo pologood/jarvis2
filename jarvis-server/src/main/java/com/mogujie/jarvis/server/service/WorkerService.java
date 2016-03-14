@@ -13,8 +13,11 @@ import java.util.List;
 
 import org.joda.time.DateTime;
 
+import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.mogujie.jarvis.core.domain.WorkerInfo;
+import com.mogujie.jarvis.core.domain.WorkerStatus;
 import com.mogujie.jarvis.dao.generate.WorkerMapper;
 import com.mogujie.jarvis.dto.generate.Worker;
 import com.mogujie.jarvis.dto.generate.WorkerExample;
@@ -71,5 +74,16 @@ public class WorkerService {
 
     public void setWorkerMapper(WorkerMapper workerMapper) {
         this.workerMapper = workerMapper;
+    }
+
+    public List<WorkerInfo> getOffLineWorkers() {
+        List<WorkerInfo> list = Lists.newArrayList();
+        WorkerExample example = new WorkerExample();
+        example.createCriteria().andStatusEqualTo(WorkerStatus.OFFLINE.getValue());
+        List<Worker> workers = workerMapper.selectByExample(example);
+        for (Worker worker : workers) {
+            list.add(new WorkerInfo(worker.getIp(), worker.getPort()));
+        }
+        return list;
     }
 }

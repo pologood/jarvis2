@@ -1,3 +1,13 @@
+function showMsg(type, title, text) {
+    new PNotify({
+        title: title,
+        text: text,
+        type: type,
+        icon: true,
+        styling: 'bootstrap3'
+    });
+}
+
 //时间选择器
 function createDatetimePickerById(tagId) {
     if (tagId == undefined || tagId == '') {
@@ -11,6 +21,7 @@ function createDatetimePickerById(tagId) {
         autoclose: true
     });
 }
+
 //通过后台请求远程rest api,根据请求结果返回flag
 function requestRemoteRestApi(url, title, data) {
     var flag = true;
@@ -25,46 +36,27 @@ function requestRemoteRestApi(url, title, data) {
             if (data.code == 0) {
                 flag = true;
                 if (data.msg == null || data.msg == '') {
-                    new PNotify({
-                        title: title,
-                        text: '操作成功',
-                        type: 'success',
-                        icon: true,
-                        styling: 'bootstrap3'
-                    });
+                    showMsg('success', title, '操作成功');
                 }
                 else {
-                    new PNotify({
-                        title: title,
-                        text: data.msg,
-                        type: 'success',
-                        icon: true,
-                        styling: 'bootstrap3'
-                    });
+                    showMsg('success', title, data.msg);
                 }
             }
             else {
                 flag = false;
                 if (data.msg == null || data.msg == '') {
-                    new PNotify({
-                        title: title,
-                        text: '操作失败',
-                        type: 'warning',
-                        icon: true,
-                        styling: 'bootstrap3'
-                    });
+                    showMsg('warning', title, '操作失败');
                 }
                 else {
-                    new PNotify({
-                        title: title,
-                        text: data.msg,
-                        type: 'warning',
-                        icon: true,
-                        styling: 'bootstrap3'
-                    });
+                    showMsg('warning', title, data.msg);
                 }
             }
             result["data"] = data;
+        },
+        error: function (jqXHR, exception) {
+            flag = false;
+            var msg = getMsg4ajaxError(jqXHR, exception);
+            showMsg('warning', title, msg);
         }
     });
 

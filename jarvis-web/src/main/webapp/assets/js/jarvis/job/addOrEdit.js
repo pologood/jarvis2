@@ -913,17 +913,6 @@ function validSparkLauncherParas(key, val, desc, required) {
     return true;
 }
 
-
-function showMsg(type, title, text) {
-    new PNotify({
-        title: title,
-        text: text,
-        type: type,
-        icon: true,
-        styling: 'bootstrap3'
-    });
-}
-
 //------------------------------  2.job依赖相关 ----------------------------------
 
 //初始化通用策略

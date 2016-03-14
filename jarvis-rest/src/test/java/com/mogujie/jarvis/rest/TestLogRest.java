@@ -14,10 +14,12 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.rest.vo.LogResultVo;
+import org.junit.Ignore;
 
 /**
  * Created by muming on 15/12/1.
  */
+@Ignore
 public class TestLogRest extends AbstractTestRest {
 
     public void TestLog() throws UnirestException{

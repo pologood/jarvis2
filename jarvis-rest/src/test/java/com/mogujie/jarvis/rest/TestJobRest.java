@@ -28,7 +28,7 @@ import com.mogujie.jarvis.rest.vo.JobVo;
 /**
  * Created by muming on 15/12/1.
  */
-//@Ignore
+@Ignore
 public class TestJobRest {
     private String baseUrl = "http://127.0.0.1:8080";
 

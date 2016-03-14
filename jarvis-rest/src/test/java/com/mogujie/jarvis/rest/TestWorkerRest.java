@@ -24,6 +24,7 @@ public class TestWorkerRest extends AbstractTestRest {
 
     @Test
     public void testAppWorkerGroup() throws UnirestException {
+        queryWorkerHeartbeatInfo(0);
         queryWorkerHeartbeatInfo(2);
     }
 

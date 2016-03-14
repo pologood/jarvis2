@@ -14,7 +14,6 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.mogujie.jarvis.core.exception.NotFoundException;
 import com.mogujie.jarvis.dao.generate.BizGroupMapper;
-import com.mogujie.jarvis.dao.generate.JobMapper;
 import com.mogujie.jarvis.dto.generate.BizGroup;
 import com.mogujie.jarvis.dto.generate.BizGroupExample;
 
@@ -28,8 +27,6 @@ public class BizGroupService {
 
     @Inject
     private BizGroupMapper bizGroupMapper;
-    @Inject
-    private JobMapper jobMapper;
 
     /**
      * 检查——名字重复
@@ -37,12 +34,12 @@ public class BizGroupService {
      * @param name
      * @return
      */
-    public void checkDuplicateName(String name,Integer ignoreId) throws IllegalArgumentException {
+    public void checkDuplicateName(String name, Integer ignoreId) throws IllegalArgumentException {
         BizGroupExample example = new BizGroupExample();
         example.createCriteria().andNameEqualTo(name);
         List<BizGroup> list = bizGroupMapper.selectByExample(example);
         if (list != null && list.size() > 0) {
-            if(ignoreId != null && list.size() ==1 && list.get(0).getId().equals(ignoreId)){
+            if (ignoreId != null && list.size() == 1 && list.get(0).getId().equals(ignoreId)) {
                 return;
             }
             throw new IllegalArgumentException("bizGroup 名称重复了. name:" + name);
@@ -68,7 +65,6 @@ public class BizGroupService {
         }
     }
 
-
     public int insert(BizGroup bg) {
         return bizGroupMapper.insertSelective(bg);
     }
@@ -81,15 +77,14 @@ public class BizGroupService {
         return bizGroupMapper.deleteByPrimaryKey(id);
     }
 
-
     public void checkDeletable(Integer id) {
-        return ;
-//        JobExample example = new JobExample();
-//        example.createCriteria().andBizGroupIdEqualTo(id).andStatusNotEqualTo(JobStatus.DELETED.getValue());
-//        List<Job> list = jobMapper.selectByExample(example);
-//        if(list != null &&  list.size() >0){
-//            throw new IllegalArgumentException("bizGroupId在job中还在使用,不能删除. id:" + id);
-//        }
+        return;
+        //        JobExample example = new JobExample();
+        //        example.createCriteria().andBizGroupIdEqualTo(id).andStatusNotEqualTo(JobStatus.DELETED.getValue());
+        //        List<Job> list = jobMapper.selectByExample(example);
+        //        if(list != null &&  list.size() >0){
+        //            throw new IllegalArgumentException("bizGroupId在job中还在使用,不能删除. id:" + id);
+        //        }
     }
 
 }

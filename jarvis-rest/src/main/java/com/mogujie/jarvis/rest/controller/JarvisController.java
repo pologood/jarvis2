@@ -8,20 +8,6 @@
 
 package com.mogujie.jarvis.rest.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
-import javax.ws.rs.FormParam;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
-
-import org.joda.time.DateTime;
-
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Sets;
 import com.google.common.collect.Sets.SetView;
@@ -86,6 +72,17 @@ import com.mogujie.jarvis.rest.utils.ValidUtils;
 import com.mogujie.jarvis.rest.vo.JobDependencyVo;
 import com.mogujie.jarvis.rest.vo.JobScheduleExpVo;
 import com.mogujie.jarvis.rest.vo.JobVo;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+import org.joda.time.DateTime;
 
 /**
  * 兼容旧jarvis rest接口
@@ -108,42 +105,7 @@ public class JarvisController extends AbstractController {
     @Path("taskinfo.htm")
     @Produces(MediaType.APPLICATION_JSON)
     public JobInfoResult getTaskInfo(@FormParam("scriptId") int scriptId) {
-        LOGGER.debug("根据scriptId查询taskinfo");
-        try {
-            String appToken = AppTokenUtils.generateToken(DateTime.now().getMillis(), APP_IRONMAN_KEY);
-            AppAuth appAuth = AppAuth.newBuilder().setName(APP_IRONMAN_NAME).setToken(appToken).build();
-
-            RestSearchJobByScriptIdRequest request = RestSearchJobByScriptIdRequest.newBuilder().setAppAuth(appAuth)
-                    .setUser(APP_IRONMAN_NAME).setScriptId(scriptId).build();
-
-            ServerSearchJobByScriptIdResponse response = (ServerSearchJobByScriptIdResponse) callActor(AkkaType.SERVER, request);
-
-            if (response.getSuccess()) {
-                JobInfoEntry jobInfo = response.getJobInfo();
-                JobInfoResult result = new JobInfoResult(jobInfo);
-                result.setSuccess(true);
-                RestSearchPreJobInfoRequest searchPreJobInfoRequest = RestSearchPreJobInfoRequest.newBuilder()
-                        .setAppAuth(appAuth).setUser(APP_IRONMAN_NAME).setJobId(jobInfo.getJobId()).build();
-                ServerSearchPreJobInfoResponse searchPreJobInfoResponse = (ServerSearchPreJobInfoResponse) callActor(AkkaType.SERVER, searchPreJobInfoRequest);
-                if (searchPreJobInfoResponse.getSuccess()) {
-                    List<JobInfoEntry> preJobInfos = searchPreJobInfoResponse.getPreJobInfoList();
-                    result.setPreJobInfos(preJobInfos);
-                } else {
-                    LOGGER.error("获取jobId={}的依赖关系失败", jobInfo.getJobId());
-                }
-                return result;
-            } else {
-                JobInfoResult result = new JobInfoResult();
-                result.setSuccess(false);
-                result.setMessage(response.getMessage());
-                return result;
-            }
-        } catch (Exception e) {
-            JobInfoResult result = new JobInfoResult();
-            result.setSuccess(false);
-            result.setMessage(e.getMessage());
-            return result;
-        }
+      return getTaskByScript(scriptId, APP_IRONMAN_NAME, APP_IRONMAN_KEY);
     }
 
     @GET
@@ -821,5 +783,51 @@ public class JarvisController extends AbstractController {
         }
         return result;
     }
+
+  @GET
+  @Path("task/gettaskbyscriptid")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Result getTaskByScriptId(@QueryParam("scriptId") Integer scriptId, @QueryParam("scode") String scode, @QueryParam("token") String token) {
+    return this.getTaskByScript(scriptId, APP_XMEN_NAME, APP_XMEN_KEY);
+  }
+
+  private JobInfoResult getTaskByScript(Integer scriptId, String appName, String appKey) {
+    LOGGER.debug("根据scriptId查询taskinfo");
+    try {
+      String appToken = AppTokenUtils.generateToken(DateTime.now().getMillis(), appKey);
+      AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
+
+      RestSearchJobByScriptIdRequest request = RestSearchJobByScriptIdRequest.newBuilder().setAppAuth(appAuth)
+          .setUser(appName).setScriptId(scriptId).build();
+
+      ServerSearchJobByScriptIdResponse response = (ServerSearchJobByScriptIdResponse) callActor(AkkaType.SERVER, request);
+
+      if (response.getSuccess()) {
+        JobInfoEntry jobInfo = response.getJobInfo();
+        JobInfoResult result = new JobInfoResult(jobInfo);
+        result.setSuccess(true);
+        RestSearchPreJobInfoRequest searchPreJobInfoRequest = RestSearchPreJobInfoRequest.newBuilder()
+            .setAppAuth(appAuth).setUser(appName).setJobId(jobInfo.getJobId()).build();
+        ServerSearchPreJobInfoResponse searchPreJobInfoResponse = (ServerSearchPreJobInfoResponse) callActor(AkkaType.SERVER, searchPreJobInfoRequest);
+        if (searchPreJobInfoResponse.getSuccess()) {
+          List<JobInfoEntry> preJobInfos = searchPreJobInfoResponse.getPreJobInfoList();
+          result.setPreJobInfos(preJobInfos);
+        } else {
+          LOGGER.error("获取jobId={}的依赖关系失败", jobInfo.getJobId());
+        }
+        return result;
+      } else {
+        JobInfoResult result = new JobInfoResult();
+        result.setSuccess(false);
+        result.setMessage(response.getMessage());
+        return result;
+      }
+    } catch (Exception e) {
+      JobInfoResult result = new JobInfoResult();
+      result.setSuccess(false);
+      result.setMessage(e.getMessage());
+      return result;
+    }
+  }
 
 }

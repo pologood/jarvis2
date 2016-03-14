@@ -27,7 +27,6 @@ import com.github.stuxuhai.jpinyin.PinyinHelper;
 import com.mogujie.jarvis.core.TaskContext;
 import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.exception.ShellException;
-import com.mogujie.jarvis.core.exception.TaskException;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.tasks.domain.HiveTaskEntity;
 import com.mogujie.jarvis.tasks.util.HiveConfigUtils;
@@ -174,7 +173,7 @@ public class HiveShellTask extends ShellTask {
         return null;
     }
 
-    protected  String getContent(TaskDetail task){
+    protected String getContent(TaskDetail task) {
         return task.getContent();
     }
 
