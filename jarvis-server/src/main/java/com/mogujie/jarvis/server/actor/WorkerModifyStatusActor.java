@@ -70,7 +70,7 @@ public class WorkerModifyStatusActor extends UntypedActor {
                 if (groupId < 0) {
                     throw new IllegalArgumentException("groupId is not valid: " + groupId);
                 } else {
-                    heartBeatService.remove(groupId, workerInfo);
+                    heartBeatService.offlineWorker(workerInfo);
                 }
             } else if (status == WorkerStatus.ONLINE.getValue()) {
                 heartBeatService.onlineWorker(workerInfo);

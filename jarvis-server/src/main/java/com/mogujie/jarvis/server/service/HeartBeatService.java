@@ -72,9 +72,7 @@ public class HeartBeatService {
             HEART_BEAT_CACHE.put(groupId, cache);
         }
 
-        if (!offlineWorkers.contains(workerInfo)) {
-            cache.put(workerInfo, jobNum);
-        }
+        cache.put(workerInfo, jobNum);
     }
 
     public synchronized void remove(int groupId, WorkerInfo workerInfo) {
@@ -89,18 +87,27 @@ public class HeartBeatService {
         if (!HEART_BEAT_CACHE.containsKey(groupId)) {
             return Lists.newArrayList();
         }
-
         return WORKER_ORDERING.sortedCopy(HEART_BEAT_CACHE.get(groupId).asMap().keySet());
     }
 
-    public Map<WorkerInfo, Integer> getWorkerInfo(int groupId) {
-        if (!HEART_BEAT_CACHE.containsKey(groupId)) {
-            return new HashMap<>();
+    public synchronized List<WorkerInfo> getOnlineWorkers(int groupId) {
+        List<WorkerInfo> result = getWorkers(groupId);
+        for (int i = result.size() - 1; i >= 0; i--) {
+            if (offlineWorkers.contains(result.get(i))) {
+                result.remove(i);
+            }
         }
-        return HEART_BEAT_CACHE.get(groupId).asMap();
+        return result;
     }
 
-    public Map<WorkerInfo, Integer> getALLWorkerInfo() {
+    /**
+     * 获取有心跳的worker
+     */
+    public Map<WorkerInfo, Integer> getLeavedWorkerInfo(int groupId) {
+
+        if (groupId != 0) {
+            return HEART_BEAT_CACHE.containsKey(groupId) ? HEART_BEAT_CACHE.get(groupId).asMap() : new HashMap<>();
+        }
 
         Map<WorkerInfo, Integer> result = new HashMap<>();
         for (int key : HEART_BEAT_CACHE.keySet()) {

@@ -60,7 +60,7 @@ public class TestWorkerAndWorkerGroup extends TestWorkerServiceBase {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        workerService.saveWorker("129.0.0.1", 8888, 2, 2);
+        workerService.saveWorker("129.0.0.1", 8888, 2);
         Assert.assertEquals((int) resultList.get(0), 1);
 
     }

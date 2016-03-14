@@ -24,7 +24,7 @@ public class RandomWorkerSelector implements WorkerSelector {
 
     @Override
     public WorkerInfo select(int workerGroupId) {
-        List<WorkerInfo> workers = heartBeatService.getWorkers(workerGroupId);
+        List<WorkerInfo> workers = heartBeatService.getOnlineWorkers(workerGroupId);
         if (workers != null && workers.size() > 0) {
             return workers.get(ThreadLocalRandom.current().nextInt(0, workers.size()));
         }
