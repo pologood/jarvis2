@@ -7,6 +7,7 @@ option java_outer_classname = "RetryTaskProtos";
 message RestServerRetryTaskRequest {
     required AppAuth app_auth = 1;
     required int64 task_id = 2;
+    required string user = 3;
 }
 
 message ServerRetryTaskResponse {

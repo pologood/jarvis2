@@ -94,7 +94,8 @@ public class TaskController extends AbstractController {
             JsonParameters para = new JsonParameters(parameters);
             long taskId = para.getLongNotNull("taskId");
 
-            RestServerRetryTaskRequest request = RestServerRetryTaskRequest.newBuilder().setAppAuth(appAuth).setTaskId(taskId).build();
+            RestServerRetryTaskRequest request = RestServerRetryTaskRequest.newBuilder()
+                    .setAppAuth(appAuth).setTaskId(taskId).setUser(user).build();
 
             ServerRetryTaskResponse response = (ServerRetryTaskResponse) callActor(AkkaType.SERVER, request);
             return response.getSuccess() ? successResult() : errorResult(response.getMessage());
@@ -126,7 +127,8 @@ public class TaskController extends AbstractController {
             for (long jobId : jobIdList) {
                 builder.addJobId(jobId);
             }
-            RestServerManualRerunTaskRequest request = builder.setAppAuth(appAuth).setStartTime(startDate).setEndTime(endDate).build();
+            RestServerManualRerunTaskRequest request = builder.setAppAuth(appAuth)
+                    .setStartTime(startDate).setEndTime(endDate).setUser(user).build();
 
             ServerManualRerunTaskResponse response = (ServerManualRerunTaskResponse) callActor(AkkaType.SERVER, request);
             return response.getSuccess() ? successResult() : errorResult(response.getMessage());

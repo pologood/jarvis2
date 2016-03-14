@@ -192,7 +192,7 @@ public class TaskActor extends UntypedActor {
             if (!oldStatus.equals(TaskStatus.FAILED) && !oldStatus.equals(TaskStatus.KILLED)) {
                 throw new IllegalArgumentException("Only status FAILED | KILLED could be retried.");
             }
-            controller.notify(new RetryTaskEvent(taskId, msg.getAppAuth().getName()));
+            controller.notify(new RetryTaskEvent(taskId, msg.getUser()));
             response = ServerRetryTaskResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());
         } catch (Exception ex) {
@@ -212,7 +212,7 @@ public class TaskActor extends UntypedActor {
     private void manualRerunTask(RestServerManualRerunTaskRequest msg) {
         LOGGER.info("start manualRerunTask");
         ServerManualRerunTaskResponse response;
-        String user = msg.getAppAuth().getName();
+        String user = msg.getUser();
         try {
             List<Long> jobIdList = msg.getJobIdList();
             List<Long> taskIdList = new ArrayList<Long>();
