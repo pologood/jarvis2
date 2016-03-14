@@ -3,6 +3,7 @@
 <mapper namespace="com.mogujie.jarvis.dao.generate.PlanMapper">
   <resultMap id="BaseResultMap" type="com.mogujie.jarvis.dto.generate.Plan">
     <id column="jobId" jdbcType="BIGINT" property="jobId" />
+    <id column="planTime" jdbcType="TIMESTAMP" property="planTime" />
     <result column="createTime" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
   <sql id="Example_Where_Clause">
@@ -64,7 +65,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    jobId, createTime
+    jobId, planTime, createTime
   </sql>
   <select id="selectByExample" parameterType="com.mogujie.jarvis.dto.generate.PlanExample" resultMap="BaseResultMap">
     select
@@ -80,15 +81,17 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="com.mogujie.jarvis.dto.generate.PlanKey" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from plan
     where jobId = #{jobId,jdbcType=BIGINT}
+      and planTime = #{planTime,jdbcType=TIMESTAMP}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+  <delete id="deleteByPrimaryKey" parameterType="com.mogujie.jarvis.dto.generate.PlanKey">
     delete from plan
     where jobId = #{jobId,jdbcType=BIGINT}
+      and planTime = #{planTime,jdbcType=TIMESTAMP}
   </delete>
   <delete id="deleteByExample" parameterType="com.mogujie.jarvis.dto.generate.PlanExample">
     delete from plan
@@ -97,14 +100,19 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.mogujie.jarvis.dto.generate.Plan">
-    insert into plan (jobId, createTime)
-    values (#{jobId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP})
+    insert into plan (jobId, planTime, createTime
+      )
+    values (#{jobId,jdbcType=BIGINT}, #{planTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.mogujie.jarvis.dto.generate.Plan">
     insert into plan
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="jobId != null">
         jobId,
+      </if>
+      <if test="planTime != null">
+        planTime,
       </if>
       <if test="createTime != null">
         createTime,
@@ -113,6 +121,9 @@
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="jobId != null">
         #{jobId,jdbcType=BIGINT},
+      </if>
+      <if test="planTime != null">
+        #{planTime,jdbcType=TIMESTAMP},
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
@@ -131,6 +142,9 @@
       <if test="record.jobId != null">
         jobId = #{record.jobId,jdbcType=BIGINT},
       </if>
+      <if test="record.planTime != null">
+        planTime = #{record.planTime,jdbcType=TIMESTAMP},
+      </if>
       <if test="record.createTime != null">
         createTime = #{record.createTime,jdbcType=TIMESTAMP},
       </if>
@@ -142,6 +156,7 @@
   <update id="updateByExample" parameterType="map">
     update plan
     set jobId = #{record.jobId,jdbcType=BIGINT},
+      planTime = #{record.planTime,jdbcType=TIMESTAMP},
       createTime = #{record.createTime,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -155,10 +170,12 @@
       </if>
     </set>
     where jobId = #{jobId,jdbcType=BIGINT}
+      and planTime = #{planTime,jdbcType=TIMESTAMP}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.mogujie.jarvis.dto.generate.Plan">
     update plan
     set createTime = #{createTime,jdbcType=TIMESTAMP}
     where jobId = #{jobId,jdbcType=BIGINT}
+      and planTime = #{planTime,jdbcType=TIMESTAMP}
   </update>
 </mapper>

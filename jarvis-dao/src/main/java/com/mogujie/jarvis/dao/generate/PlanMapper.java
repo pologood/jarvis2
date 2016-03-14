@@ -1,16 +1,17 @@
 package com.mogujie.jarvis.dao.generate;
 
-import org.apache.ibatis.annotations.Param;
-
 import com.mogujie.jarvis.dto.generate.Plan;
 import com.mogujie.jarvis.dto.generate.PlanExample;
+import com.mogujie.jarvis.dto.generate.PlanKey;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface PlanMapper {
     int countByExample(PlanExample example);
 
     int deleteByExample(PlanExample example);
 
-    int deleteByPrimaryKey(Long jobId);
+    int deleteByPrimaryKey(PlanKey key);
 
     int insert(Plan record);
 
@@ -18,7 +19,7 @@ public interface PlanMapper {
 
     java.util.List<com.mogujie.jarvis.dto.generate.Plan> selectByExample(PlanExample example);
 
-    Plan selectByPrimaryKey(Long jobId);
+    Plan selectByPrimaryKey(PlanKey key);
 
     int updateByExampleSelective(@Param("record") Plan record, @Param("example") PlanExample example);
 
