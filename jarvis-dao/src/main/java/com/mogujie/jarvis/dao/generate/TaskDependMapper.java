@@ -2,7 +2,6 @@ package com.mogujie.jarvis.dao.generate;
 
 import com.mogujie.jarvis.dto.generate.TaskDepend;
 import com.mogujie.jarvis.dto.generate.TaskDependExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface TaskDependMapper {

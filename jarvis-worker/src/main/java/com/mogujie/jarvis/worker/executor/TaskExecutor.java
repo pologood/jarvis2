@@ -14,9 +14,6 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import akka.actor.ActorRef;
-import akka.actor.ActorSelection;
-
 import com.mogujie.jarvis.core.AbstractLogCollector;
 import com.mogujie.jarvis.core.AbstractTask;
 import com.mogujie.jarvis.core.ProgressReporter;
@@ -33,6 +30,9 @@ import com.mogujie.jarvis.worker.status.TaskStateStoreFactory;
 import com.mogujie.jarvis.worker.strategy.AcceptanceResult;
 import com.mogujie.jarvis.worker.strategy.AcceptanceStrategy;
 import com.mogujie.jarvis.worker.util.TaskConfigUtils;
+
+import akka.actor.ActorRef;
+import akka.actor.ActorSelection;
 
 public class TaskExecutor extends Thread {
 
@@ -126,9 +126,11 @@ public class TaskExecutor extends Thread {
             if (result) {
                 serverActor.tell(WorkerReportTaskStatusRequest.newBuilder().setFullId(fullId).setStatus(TaskStatus.SUCCESS.getValue())
                         .setTimestamp(System.currentTimeMillis() / 1000).build(), selfActor);
+                LOGGER.info("report status[fullId={},status=SUCCESS] to server.", fullId);
             } else {
                 serverActor.tell(WorkerReportTaskStatusRequest.newBuilder().setFullId(fullId).setStatus(TaskStatus.FAILED.getValue())
                         .setTimestamp(System.currentTimeMillis() / 1000).build(), selfActor);
+                LOGGER.info("report status[fullId={},status=FAILED] to server.", fullId);
             }
 
             // task finished
@@ -137,7 +139,8 @@ public class TaskExecutor extends Thread {
             LOGGER.error("", e);
             serverActor.tell(WorkerReportTaskStatusRequest.newBuilder().setFullId(fullId).setStatus(TaskStatus.FAILED.getValue())
                     .setTimestamp(System.currentTimeMillis() / 1000).build(), selfActor);
-        } finally{
+            LOGGER.info("report status[fullId={},status=FAILED] to server.", fullId);
+        } finally {
             taskPool.remove(fullId);
             TaskStateStore taskStateStore = TaskStateStoreFactory.getInstance();
             taskStateStore.delete(taskContext.getTaskDetail().getFullId());

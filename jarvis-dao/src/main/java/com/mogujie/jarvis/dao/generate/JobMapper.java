@@ -2,7 +2,6 @@ package com.mogujie.jarvis.dao.generate;
 
 import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.dto.generate.JobExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface JobMapper {
