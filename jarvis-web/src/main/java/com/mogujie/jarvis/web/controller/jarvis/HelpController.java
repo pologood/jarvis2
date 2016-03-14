@@ -1,6 +1,6 @@
 package com.mogujie.jarvis.web.controller.jarvis;
 
-import com.mogujie.jarvis.web.auth.annotation.JarvisPassport;
+import com.mogu.bigdata.admin.client.annotation.Passport;
 import com.mogujie.jarvis.web.auth.conf.JarvisAuthType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 @RequestMapping("/help")
-public class HelpController extends BaseController {
+public class HelpController {
 
     @RequestMapping
-    @JarvisPassport(authTypes = JarvisAuthType.help)
+    @Passport(JarvisAuthType.help)
     public String index() {
         return "redirect:http://bda.mogujie.org/gitbooks/jarvis2/";
     }

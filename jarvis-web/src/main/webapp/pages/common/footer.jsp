@@ -19,7 +19,7 @@
             </div>
         </li>
     </ul>
-    <a href="${contextPath}/logout" class="checkout-btn">Logout</a>
+    <a href="${adminServletPath}/logout" class="checkout-btn">Logout</a>
 </div>
 
 
