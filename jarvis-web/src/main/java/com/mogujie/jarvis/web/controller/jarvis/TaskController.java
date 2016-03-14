@@ -37,9 +37,7 @@ public class TaskController extends BaseController {
     @RequestMapping
     @JarvisPassport(authTypes = JarvisAuthType.task)
     public String index(ModelMap modelMap,TaskQo taskQo) {
-        List<String> executeUsers = taskService.getAllExecuteUser();
 
-        modelMap.put("executeUsers", executeUsers);
         modelMap.put("taskQo",JsonHelper.toJson(taskQo));
         return "task/index";
     }

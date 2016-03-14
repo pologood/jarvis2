@@ -23,6 +23,7 @@ public class PlanVo extends Plan {
     private String bizGroupName;
 
     private List<Object> taskStatus =new ArrayList<>();
+    private Integer status;
     private int taskSize;
 
     private Date scheduleTime;
@@ -150,5 +151,13 @@ public class PlanVo extends Plan {
 
     public void setAverageExecuteTime(Long averageExecuteTime) {
         this.averageExecuteTime = averageExecuteTime;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }

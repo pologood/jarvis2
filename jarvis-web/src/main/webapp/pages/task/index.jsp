@@ -85,10 +85,6 @@
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:50%">执行用户</span>
                         <select id="executeUser" multiple>
-                            <option value="all">全部</option>
-                            <c:forEach items="${executeUsers}" var="executeUser" varStatus="status">
-                                <option value="${executeUser}">${executeUser}</option>
-                            </c:forEach>
                         </select>
                     </div>
                 </div>

@@ -276,7 +276,7 @@ var columns = [{
     visible: false
 }, {
     field: 'scheduleTime',
-    title: '调度时间',
+    title: '计划调度时间',
     switchable: true,
     sortable: true,
     formatter: formatDateTimeWithoutYear,

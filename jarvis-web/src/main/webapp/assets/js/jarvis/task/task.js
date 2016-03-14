@@ -28,10 +28,13 @@ $(function () {
         all["text"] = "全部";
         newData.push(all);
         $(data).each(function (i, c) {
-            var item = {};
-            item["id"] = c["id"];
-            item["text"] = c["text"];
-            newData.push(item);
+            if(c.id!=0&&c.id!=1&&c.id!=2){
+                var item = {};
+                item["id"] = c["id"];
+                item["text"] = c["text"];
+                newData.push(item);
+            }
+
         });
 
         $(newData).each(function (index, content) {
@@ -99,6 +102,7 @@ $(function () {
 
         width: '100%'
     });
+    initExecuteUser();
     $("#jobName").select2({
         ajax: {
             url: contextPath + "/api/job/getSimilarJobNames",
@@ -123,17 +127,40 @@ $(function () {
         minimumInputLength: 1,
         templateResult: formatResult,
         templateSelection: formatResultSelection,
-        width: '100%'
+        width: '100%',
+        tags:true
     });
 
     initSearchCondition();
     initData();
 });
 
+function initExecuteUser() {
+    $.getJSON(contextPath + "/api/common/getExecuteUsers", function (data) {
+        var newData = [];
+        var all = {};
+        all["id"] = "all";
+        all["text"] = "全部";
+        newData.push(all);
+
+        $(data).each(function (i, c) {
+            var item = {};
+            item["id"] = c;
+            item["text"] = c;
+            newData.push(item);
+        });
+        $("#executeUser").select2({
+            data: newData,
+            width: '100%'
+        });
+    })
+}
+
+
 //查找
 function search() {
-    $("#content").bootstrapTable("destroy");
-    initData();
+    $("#content").bootstrapTable("refresh");
+
 }
 
 function initSearchCondition() {
@@ -183,12 +210,13 @@ function getQueryPara() {
     var executeUserList = $("#executeUser").val();
 
     var taskStatus = new Array();
-    var inputs = $("#taskStatus").find("input:checked");
+    var inputs = $("#taskStatus").find("input:checked[value!=all]");
+    if(inputs.length==0){
+        inputs = $("#taskStatus").find("input[value!=all]");
+    }
     $(inputs).each(function (i, c) {
         var value = $(c).val();
-        if (value != 'all' && value != '') {
-            taskStatus.push(value);
-        }
+        taskStatus.push(value);
     });
 
     jobIdList = jobIdList == "all" ? undefined : jobIdList;
@@ -215,7 +243,6 @@ function getQueryPara() {
 
 //初始化数据及分页
 function initData() {
-    var queryParams = getQueryPara();
     $("#content").bootstrapTable({
         columns: columns,
         pagination: true,
@@ -223,6 +250,7 @@ function initData() {
         search: false,
         url: contextPath + '/api/task/getTasks',
         queryParams: function (params) {
+            var queryParams = getQueryPara();
             for (var key in queryParams) {
                 var value = queryParams[key];
                 params[key] = value;
@@ -293,7 +321,13 @@ var columns = [{
     title: '调度时间',
     switchable: true,
     sortable:true,
-    formatter: formatDateTime
+    formatter: formatDateTimeWithoutYear
+}, {
+    field: 'dataTime',
+    title: '数据时间',
+    switchable: true,
+    sortable:true,
+    formatter: formatDateTimeWithoutYear
 }, {
     field: 'progress',
     title: '进度',
@@ -318,12 +352,14 @@ var columns = [{
     title: '开始执行时间',
     sortable:true,
     switchable: true,
+    visible:false,
     formatter: formatDateTimeWithoutYear
 }, {
     field: 'executeEndTime',
     title: '执行结束时间',
     sortable:true,
     switchable: true,
+    visible:false,
     formatter: formatDateTimeWithoutYear
 }, {
     field: 'executeTime',
@@ -439,6 +475,9 @@ function operateFormatter(value, row, index) {
         '</ul>',
         '</div>'
     ].join('');
+
+    result="<div style='white-space: nowrap'>"+result+"</div";
+
     return result;
 }
 
@@ -511,6 +550,8 @@ function taskStatusFormatter(value, row, index) {
     var color = taskStatusColor[value].color;
     var text = taskStatusColor[value].text;
     var result = '<i class="fa fa-circle fa-2x" style="color: ' + color + '"></i>' + text;
+
+    result="<div style='white-space:nowrap;'>"+result+"</div?";
 
     return result;
 }

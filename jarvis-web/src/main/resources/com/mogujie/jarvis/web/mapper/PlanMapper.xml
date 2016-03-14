@@ -114,9 +114,15 @@
         LEFT JOIN worker_group on job.workerGroupId = worker_group.id
         )t
         <include refid="planCondition"/>
-        <if test="sort!=null and sort!='' and order!=null and order!=''">
-            ORDER BY ${sort} ${order}
-        </if>
+        <choose>
+            <when test="sort!=null and sort!='' and order!=null and order!=''">
+                ORDER BY ${sort} ${order}
+            </when>
+            <otherwise>
+                ORDER BY scheduleTime DESC
+            </otherwise>
+        </choose>
+
 
         <include refid="pager"/>
     </select>
