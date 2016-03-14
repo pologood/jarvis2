@@ -266,6 +266,6 @@ public class JarvisServer {
         PlanService planService = Injectors.getInjector().getInstance(PlanService.class);
         DateTime now = DateTime.now();
         Range<DateTime> range = Range.closedOpen(now.withTimeAtStartOfDay(), now.plusDays(1).withTimeAtStartOfDay());
-        planService.updateJobIds(range);
+        planService.refreshAllPlan(range);
     }
 }

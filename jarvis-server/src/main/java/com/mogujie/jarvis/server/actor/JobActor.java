@@ -117,6 +117,7 @@ public class JobActor extends UntypedActor {
     private TimePlan plan = TimePlan.INSTANCE;
 
     private JobService jobService = Injectors.getInjector().getInstance(JobService.class);
+    private PlanService planService = Injectors.getInjector().getInstance(PlanService.class);
     private AppService appService = Injectors.getInjector().getInstance(AppService.class);
     private AlarmService alarmService = Injectors.getInjector().getInstance(AlarmService.class);
     private BizGroupService bizService = Injectors.getInjector().getInstance(BizGroupService.class);
@@ -160,19 +161,14 @@ public class JobActor extends UntypedActor {
         try {
             if (obj instanceof RestSubmitJobRequest) {
                 submitJob((RestSubmitJobRequest) obj);
-                updatePlan();
             } else if (obj instanceof RestModifyJobRequest) {
                 modifyJob((RestModifyJobRequest) obj);
-                updatePlan();
             } else if (obj instanceof RestModifyJobDependRequest) {
                 modifyJobDependency((RestModifyJobDependRequest) obj);
-                updatePlan();
             } else if (obj instanceof RestModifyJobScheduleExpRequest) {
                 modifyJobScheduleExp((RestModifyJobScheduleExpRequest) obj);
-                updatePlan();
             } else if (obj instanceof RestModifyJobStatusRequest) {
                 modifyJobStatus((RestModifyJobStatusRequest) obj);
-                updatePlan();
             } else if (obj instanceof RestQueryJobRelationRequest) {
                 RestQueryJobRelationRequest msg = (RestQueryJobRelationRequest) obj;
                 queryJobRelation(msg);
@@ -471,6 +467,11 @@ public class JobActor extends UntypedActor {
             response = ServerModifyJobScheduleExpResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());
 
+            // 修改调度表达式的时候重新刷新该job的plan
+            DateTime now = DateTime.now();
+            Range<DateTime> range = Range.closedOpen(now, now.plusDays(1).withTimeAtStartOfDay());
+            planService.refreshPlan(jobId, range);
+
             // post hook
             List<JobPostHook> postHooks = ReflectionUtils.getInstancesByConf(ConfigUtils.getServerConfig(), ServerConigKeys.JOB_ACTOR_POST_HOOKS);
             for (JobPostHook hook : postHooks) {
@@ -709,13 +710,6 @@ public class JobActor extends UntypedActor {
         // scheduler remove job
         plan.removeJob(jobId);
         jobGraph.removeJob(jobId);
-    }
-
-    private void updatePlan() {
-        PlanService planService = Injectors.getInjector().getInstance(PlanService.class);
-        DateTime now = DateTime.now();
-        Range<DateTime> range = Range.closedOpen(now.withTimeAtStartOfDay(), now.plusDays(1).withTimeAtStartOfDay());
-        planService.updateJobIds(range);
     }
 
     /**
