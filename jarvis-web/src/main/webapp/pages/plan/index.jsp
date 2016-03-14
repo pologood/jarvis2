@@ -28,6 +28,13 @@
             <div class="row top-buffer">
                 <div class="col-md-3">
                     <div class="input-group" style="width:100%">
+                        <span class="input-group-addon" style="width:35%">任务ID</span>
+                        <select id="jobId" multiple>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">任务名称</span>
                         <select id="jobName" multiple>
                         </select>
