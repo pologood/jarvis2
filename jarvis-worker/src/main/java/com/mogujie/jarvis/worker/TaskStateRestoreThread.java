@@ -17,10 +17,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 
-import akka.actor.ActorRef;
-import akka.actor.ActorSelection;
-import akka.actor.ActorSystem;
-
 import com.google.common.collect.Maps;
 import com.mogujie.jarvis.core.JarvisConstants;
 import com.mogujie.jarvis.core.domain.TaskDetail;
@@ -33,6 +29,10 @@ import com.mogujie.jarvis.worker.status.TaskStateStore;
 import com.mogujie.jarvis.worker.status.TaskStateStoreFactory;
 import com.mogujie.jarvis.worker.status.TaskStatusLookup;
 import com.mogujie.jarvis.worker.util.TaskConfigUtils;
+
+import akka.actor.ActorRef;
+import akka.actor.ActorSelection;
+import akka.actor.ActorSystem;
 
 public class TaskStateRestoreThread extends Thread {
 
@@ -62,14 +62,13 @@ public class TaskStateRestoreThread extends Thread {
         LOGGER.info("Restoring task status: {} task(s)", taskDetailMap.size());
         Configuration config = ConfigUtils.getWorkerConfig();
         ActorSelection serverActor = system.actorSelection(SERVER_AKKA_PATH);
-        DateTime now = DateTime.now();
 
         while (taskDetailMap.size() > 0) {
+            DateTime now = DateTime.now();
             Iterator<Entry<TaskDetail, Integer>> it = taskDetailMap.entrySet().iterator();
             while (it.hasNext()) {
                 Entry<TaskDetail, Integer> entry = it.next();
                 TaskDetail taskDetail = entry.getKey();
-                int taskStatus = entry.getValue();
                 String fullId = taskDetail.getFullId();
                 String type = taskDetail.getJobType();
 
@@ -96,13 +95,12 @@ public class TaskStateRestoreThread extends Thread {
                         continue;
                     }
 
-                    WorkerReportTaskStatusRequest request = WorkerReportTaskStatusRequest.newBuilder().setFullId(fullId).setStatus(taskStatus)
+                    LOGGER.info("report status[fullId={},status={}] to server", fullId, TaskStatus.parseValue(lookupStatus).name());
+                    WorkerReportTaskStatusRequest request = WorkerReportTaskStatusRequest.newBuilder().setFullId(fullId).setStatus(lookupStatus)
                             .setTimestamp(now.getMillis()).build();
                     serverActor.tell(request, sender);
                 } else {
-                    WorkerReportTaskStatusRequest request = WorkerReportTaskStatusRequest.newBuilder().setFullId(fullId).setStatus(taskStatus)
-                            .setTimestamp(now.getMillis()).build();
-                    serverActor.tell(request, sender);
+                    LOGGER.info("Can't recovery status for task [fullId={}]", fullId);
                     it.remove();
                     taskStateStore.delete(fullId);
                 }

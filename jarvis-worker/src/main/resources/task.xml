@@ -11,11 +11,12 @@
 		<task type="hive" class="com.mogujie.jarvis.tasks.shell.HiveShellTask">
 			<lookup class="com.mogujie.jarvis.worker.status.lookup.ShellStatusLookup" />
 			<strategies>
-				<strategy>com.mogujie.jarvis.worker.strategy.impl.YarnMemoryAcceptanceStrategy
-				</strategy>
+				<strategy>com.mogujie.jarvis.worker.strategy.impl.YarnMemoryAcceptanceStrategy</strategy>
 			</strategies>
 		</task>
-		<task type="shell" class="com.mogujie.jarvis.tasks.shell.ShellTask" />
+		<task type="shell" class="com.mogujie.jarvis.tasks.shell.ShellTask">
+			<lookup class="com.mogujie.jarvis.worker.status.lookup.ShellStatusLookup" />
+		</task>
 		<task type="presto" class="com.mogujie.jarvis.tasks.jdbc.PrestoJdbcTask" />
 		<task type="dummy" class="com.mogujie.jarvis.tasks.DummyTask" />
 		<task type="sparkLauncher" class="com.mogujie.jarvis.tasks.shell.sparkLauncherTask" />
