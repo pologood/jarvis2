@@ -3,6 +3,7 @@ package com.mogujie.jarvis.web.entity.qo;
 import com.mogujie.jarvis.core.util.JsonHelper;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -183,9 +184,11 @@ public class PlanQo {
     }
 
     public void setTaskStatusList(String taskStatusList) {
-        if (StringUtils.isNoneBlank(taskStatusList)) {
+        if (StringUtils.isNotBlank(taskStatusList)) {
             List<String> list = JsonHelper.fromJson(taskStatusList, List.class);
             this.taskStatusList = list;
+        } else {
+            this.taskStatusList = new ArrayList<>();
         }
     }
 
