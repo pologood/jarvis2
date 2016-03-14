@@ -4,6 +4,6 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-       <import resource="classpath*:META-INF/admin/production/login-beans.xml" />
+       <import resource="classpath*:META-INF/admin/dev/login-beans.xml" />
 
 </beans>
