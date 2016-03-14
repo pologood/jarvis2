@@ -284,13 +284,15 @@ public class TaskScheduler extends Scheduler {
     @Subscribe
     public void handleRetryTaskEvent(RetryTaskEvent e) {
         long taskId = e.getTaskId();
-        LOGGER.info("start handleRetryTaskEvent, taskId={}", taskId);
+        String user = e.getUser();
+        LOGGER.info("start handleRetryTaskEvent, taskId={}, user={}", taskId, user);
         Task task = taskService.get(taskId);
         if (task != null) {
             task.setStatus(TaskStatus.WAITING.getValue());
             task.setUpdateTime(DateTime.now().toDate());
             task.setExecuteStartTime(null);
             task.setExecuteEndTime(null);
+            task.setExecuteUser(user);
             taskService.update(task);
             LOGGER.info("update {} with WAITING status", taskId);
 

@@ -190,9 +190,9 @@ public class TaskActor extends UntypedActor {
             Task task = taskService.get(taskId);
             TaskStatus oldStatus = TaskStatus.parseValue(task.getStatus());
             if (!oldStatus.equals(TaskStatus.FAILED) && !oldStatus.equals(TaskStatus.KILLED)) {
-                throw new IllegalArgumentException("Only status FAILED|KILLED could be retried.");
+                throw new IllegalArgumentException("Only status FAILED | KILLED could be retried.");
             }
-            controller.notify(new RetryTaskEvent(taskId));
+            controller.notify(new RetryTaskEvent(taskId, msg.getAppAuth().getName()));
             response = ServerRetryTaskResponse.newBuilder().setSuccess(true).build();
             getSender().tell(response, getSelf());
         } catch (Exception ex) {
@@ -212,6 +212,7 @@ public class TaskActor extends UntypedActor {
     private void manualRerunTask(RestServerManualRerunTaskRequest msg) {
         LOGGER.info("start manualRerunTask");
         ServerManualRerunTaskResponse response;
+        String user = msg.getAppAuth().getName();
         try {
             List<Long> jobIdList = msg.getJobIdList();
             List<Long> taskIdList = new ArrayList<Long>();
@@ -227,7 +228,7 @@ public class TaskActor extends UntypedActor {
                 for (TimePlanEntry planEntry : planList) {
                     // create new task
                     long dataTime = planEntry.getDateTime().getMillis();
-                    long taskId = taskService.createTaskByJobId(jobId, scheduleTime, dataTime, TaskType.RERUN);
+                    long taskId = taskService.createTaskByJobId(jobId, scheduleTime, dataTime, TaskType.RERUN, user);
                     planEntry.setTaskId(taskId);
                     taskIdList.add(taskId);
                 }
