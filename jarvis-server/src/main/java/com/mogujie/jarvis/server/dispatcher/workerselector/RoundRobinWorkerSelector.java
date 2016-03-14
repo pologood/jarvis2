@@ -27,7 +27,7 @@ public class RoundRobinWorkerSelector implements WorkerSelector {
 
     @Override
     public synchronized WorkerInfo select(int workerGroupId) {
-        List<WorkerInfo> workers = heartBeatService.getWorkers(workerGroupId);
+        List<WorkerInfo> workers = heartBeatService.getOnlineWorkers(workerGroupId);
         if (workers != null && workers.size() > 0) {
             if (map.containsKey(workerGroupId)) {
                 int index = map.get(workerGroupId) + 1;

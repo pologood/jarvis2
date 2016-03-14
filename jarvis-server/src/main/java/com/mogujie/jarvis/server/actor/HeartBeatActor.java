@@ -99,11 +99,8 @@ public class HeartBeatActor extends UntypedActor {
             ServerQueryWorkerHeartbeatInfoResponse.Builder builder = ServerQueryWorkerHeartbeatInfoResponse.newBuilder();
 
             Map<WorkerInfo, Integer> map;
-            if(workerGroupId > 0){
-                map = heartBeatService.getWorkerInfo(workerGroupId);
-            }else{
-                map = heartBeatService.getALLWorkerInfo();
-            }
+            map = heartBeatService.getLeavedWorkerInfo(workerGroupId);
+
             for (Entry<WorkerInfo, Integer> entry : map.entrySet()) {
                 WorkerInfo key = entry.getKey();
                 WorkerHeartbeatEntry hb = WorkerHeartbeatEntry.newBuilder().setIp(key.getIp()).setPort(key.getPort()).setTaskNum(entry.getValue())

@@ -74,7 +74,7 @@ public class WorkerRegistryActor extends UntypedActor {
             WorkerInfo workerInfo = new WorkerInfo(ip, port);
             WorkerRegistry workerRegistry = Injectors.getInjector().getInstance(WorkerRegistry.class);
             workerRegistry.put(workerInfo, groupId);
-            workerService.saveWorker(ip, port, groupId, WorkerStatus.ONLINE.getValue());
+            workerService.saveWorker(ip, port, groupId);
 
             LOGGER.info("register worker[ip={},port={}] successfully.", ip, port);
 

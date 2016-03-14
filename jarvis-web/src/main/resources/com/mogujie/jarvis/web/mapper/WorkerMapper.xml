@@ -16,7 +16,7 @@
                 AND port=#{port}
             </if>
             <if test="status!=null">
-                AND status=#{status}
+                AND worker.status=#{status}
             </if>
         </where>
     </sql>
@@ -39,11 +39,15 @@
         SELECT count(1) FROM worker
          <include refid="workerCondition" />
     </select>
+
     <select id="getWorkerList" parameterType="WorkerQo" resultType="WorkerVo">
-        SELECT worker.*,worker_group.name AS workerGroupName FROM worker LEFT JOIN worker_group ON worker.workerGroupId=worker_group.id
+        SELECT worker.*,
+        worker_group.name AS workerGroupName
+        FROM worker LEFT JOIN worker_group ON worker.workerGroupId=worker_group.id
         <include refid="workerCondition" />
         <include refid="pager" />
     </select>
+
     <select id="getAllWorkerIp" resultType="String">
         SELECT DISTINCT ip FROM worker;
     </select>

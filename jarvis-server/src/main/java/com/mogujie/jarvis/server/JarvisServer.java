@@ -110,7 +110,7 @@ public class JarvisServer {
         initScheduler();
         LOGGER.info("start init TimerTask...");
         initTimerTask();
-        LOGGER.info("start init plan table...");
+        LOGGER.info("start init plan table, please wait for several minutes...");
         initPlan();
     }
 
@@ -234,12 +234,12 @@ public class JarvisServer {
             JobEntry jobEntry = jobService.get(jobId);
             if (jobEntry != null) {
                 Job job = jobEntry.getJob();
-                int expiredTime = job.getExpiredTime();
+                int expiredTime = job.getExpiredTime(); //秒
                 DateTime scheduleTime = new DateTime(task.getScheduleTime());
                 DateTime expiredDateTime = scheduleTime.plusSeconds(expiredTime);
                 // 如果该任务没有过期，进行重试
                 if (expiredDateTime.isAfter(now)) {
-                    controller.notify(new RetryTaskEvent(jobId, task.getTaskId()));
+                    controller.notify(new RetryTaskEvent(jobId, task.getTaskId(), task.getExecuteUser()));
                 } else {
                     //如果该任务已过期，置为失败
                     LOGGER.warn("{} is expired.", task.getTaskId());

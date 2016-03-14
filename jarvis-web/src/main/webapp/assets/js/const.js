@@ -8,7 +8,15 @@ const CONST = {
         EDIT: 2,
         DELETE: 3
     },
-
+    WORKER_STATUS: {
+        ONLINE: 1,
+        OFFLINE: 2
+    },
+    WORKER_GROUP_STATUS: {
+        ENABLE: 1,
+        DISABLE: 2,
+        DELETED: 3
+    },
     JOB_TYPE: { //job类型
         DUMMY: 'dummy',
         MAPREDUCE: 'mapreduce',

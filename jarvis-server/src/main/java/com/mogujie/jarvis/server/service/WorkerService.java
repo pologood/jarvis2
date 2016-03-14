@@ -41,13 +41,12 @@ public class WorkerService {
         return workerId;
     }
 
-    public void saveWorker(String ip, int port, int groupId, int status) {
+    public void saveWorker(String ip, int port, int groupId) {
         Date dt = DateTime.now().toDate();
         Worker worker = new Worker();
         worker.setIp(ip);
         worker.setPort(port);
         worker.setWorkerGroupId(groupId);
-        worker.setStatus(status);
         worker.setUpdateTime(dt);
 
         int workerId = getWorkerId(ip, port);
@@ -56,7 +55,7 @@ public class WorkerService {
             workerMapper.updateByPrimaryKeySelective(worker);
         } else {
             worker.setCreateTime(dt);
-            workerMapper.insert(worker);
+            workerMapper.insertSelective(worker);
         }
     }
 

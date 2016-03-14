@@ -73,11 +73,11 @@
 
                         <div class="col-md-2">
                             <div class="input-group" style="width:100%">
-                                <span class="input-group-addon" style="width:35%">状态</span>
+                                <span class="input-group-addon" style="width:35%">启用状态</span>
                                 <select id="workerStatus">
                                     <option value="all">全部</option>
-                                    <option value="0">下线</option>
-                                    <option value="1">上线</option>
+                                    <option value="1">启用</option>
+                                    <option value="2">停用</option>
                                 </select>
                             </div>
                         </div>

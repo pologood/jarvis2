@@ -19,20 +19,33 @@ package com.mogujie.jarvis.server.scheduler.event;
  *
  */
 public class RetryTaskEvent extends DAGTaskEvent {
+    private String user;
 
     /**
      * @param jobId
      * @param taskId
+     * @param user
      */
-    public RetryTaskEvent(long jobId, long taskId) {
+    public RetryTaskEvent(long jobId, long taskId, String user) {
         super(jobId, taskId);
+        this.user = user;
     }
 
     /**
      * @param taskId
+     * @param user
      */
-    public RetryTaskEvent(long taskId) {
+    public RetryTaskEvent(long taskId, String user) {
         super(taskId);
+        this.user = user;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
     }
 
 }
