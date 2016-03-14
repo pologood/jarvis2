@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 @RequestMapping("/dashboard")
-public class DashBoardController extends BaseController {
+public class DashBoardController{
     @RequestMapping
 
     public String index(ModelMap modelMap) {

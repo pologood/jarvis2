@@ -1,10 +1,10 @@
 package com.mogujie.jarvis.web.controller.jarvis;
 
+import com.mogu.bigdata.admin.client.annotation.Passport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import com.mogujie.jarvis.web.auth.annotation.JarvisPassport;
 import org.springframework.ui.ModelMap;
 
 import java.util.HashMap;
@@ -25,7 +25,7 @@ import com.mogujie.jarvis.web.service.WorkerService;
  */
 @Controller
 @RequestMapping("/manage")
-public class ManageController extends BaseController {
+public class ManageController {
 
     @Autowired
     AppService appService;
@@ -35,13 +35,13 @@ public class ManageController extends BaseController {
     WorkerGroupService workerGroupService;
 
     @RequestMapping(value = "system")
-    @JarvisPassport(authTypes = JarvisAuthType.manage_system)
+    @Passport(JarvisAuthType.manage_system)
     public String system() {
         return "manage/system";
     }
 
     @RequestMapping(value = "app")
-    @JarvisPassport(authTypes = JarvisAuthType.manage_app)
+    @Passport(JarvisAuthType.manage_app)
     public String app(ModelMap modelMap) {
         List<String> appNameList = appService.getAllAppName();
         modelMap.put("appNameList", appNameList);
@@ -49,7 +49,7 @@ public class ManageController extends BaseController {
     }
 
     @RequestMapping(value = "appDetail")
-    @JarvisPassport(authTypes = JarvisAuthType.manage_app, isMenu = false)
+    @Passport(JarvisAuthType.manage_app)
     public String appDetail(ModelMap modelMap, Integer appId) throws Exception {
         modelMap.put("appId", appId);
         return "manage/appDetail";
@@ -84,7 +84,7 @@ public class ManageController extends BaseController {
 
 
     @RequestMapping(value = "worker")
-    @JarvisPassport(authTypes = JarvisAuthType.manage_worker)
+    @Passport(JarvisAuthType.manage_worker)
     public String worker(ModelMap modelMap) {
         List<WorkerGroupVo> workerGroupVoList = workerGroupService.getAllWorkerGroup();
         List<String> ipList = workerService.getAllWorkerIp();
@@ -99,7 +99,7 @@ public class ManageController extends BaseController {
     }
 
     @RequestMapping(value = "workerAddOrEdit")
-    @JarvisPassport(authTypes = JarvisAuthType.manage_worker, isMenu = false)
+    @Passport(JarvisAuthType.manage_worker)
     public String workerAddOrEdit(ModelMap modelMap, Integer id) {
         if (id != null) {
             WorkerVo workerVo = workerService.getWorkerById(id);
@@ -144,7 +144,7 @@ public class ManageController extends BaseController {
 
 
     @RequestMapping(value = "workerGroupAddOrEdit")
-    @JarvisPassport(authTypes = JarvisAuthType.manage_worker, isMenu = false)
+    @Passport(JarvisAuthType.manage_worker)
     public String workerGroupAddOrEdit(ModelMap modelMap, Integer id) {
         if (id != null) {
             WorkerGroupVo workerGroupVo = workerGroupService.getWorkerGroupById(id);
@@ -181,14 +181,14 @@ public class ManageController extends BaseController {
 
     //业务类型首页
     @RequestMapping(value = "/bizGroup")
-    @JarvisPassport(authTypes = JarvisAuthType.manage_biz)
+    @Passport(JarvisAuthType.manage_biz)
     public String bizGroup(){
 
         return "manage/bizGroup";
     }
     //单个业务类型详情
     @RequestMapping(value = "bizDetail")
-    @JarvisPassport(authTypes = JarvisAuthType.manage_biz, isMenu = false)
+    @Passport(JarvisAuthType.manage_biz)
     public String bizDetail(ModelMap modelMap,Integer id){
 
         modelMap.put("id",id);

@@ -1,20 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="DEBUG">
     <Properties>
-        <Property name="name1">value</Property>
+        <Property name="exceptionLogDir">../logs/exception</Property>
+        <Property name="exceptionLogFile">exception.log</Property>
+        <Property name="exceptionLogRollingFile">exceptionRolling.log</Property>
     </Properties>
 
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %m%n" />
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %m%n"/>
         </Console>
 
+        <File name="exceptionLogFile" fileName="${exceptionLogDir}/${exceptionLogFile}" append="false">
+            <PatternLayout pattern="%-d{yyyy-MM-dd HH:mm:ss}\t%m%n"/>
+        </File>
+        <RollingFile name="exceptionLogRollingFile" fileName="${exceptionLogDir}/${exceptionLogRollingFile}" append="true" filePattern="${exceptionLogDir}/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz">
+            <PatternLayout pattern="%-d{yyyy-MM-dd HH:mm:ss}\t%m%n"/>
+            <SizeBasedTriggeringPolicy size="4 MB"/>
+        </RollingFile>
     </Appenders>
+
     <Loggers>
-        <Root level="DEBUG">
+        <Root level="info">
             <AppenderRef ref="Console"/>
         </Root>
-
+        <Logger name="exceptionLogger" additivity="TRUE" level="info">
+            <AppenderRef ref="exceptionLogFile" level="info" />
+            <AppenderRef ref="exceptionLogRollingFile" level="info" />
+        </Logger>
     </Loggers>
+
 </Configuration>
 

@@ -18,28 +18,23 @@
 
     <mvc:annotation-driven />
 
-    <mvc:resources mapping="/assets/**" location="/assets/"></mvc:resources>
-
-
     <mvc:interceptors>
-
         <mvc:interceptor>
             <mvc:mapping path="/**"/>
-            <mvc:exclude-mapping path="/assets/**" />
-            <bean class="com.mogu.bigdata.admin.passport.interceptor.LoginInterceptor"/>
+            <mvc:exclude-mapping path="/api/**"/>
+            <bean class="com.mogu.bigdata.admin.passport.interceptor.RequestInterceptor"/>
         </mvc:interceptor>
-        <mvc:interceptor>
-            <mvc:mapping path="/**"/>
-            <mvc:exclude-mapping path="/assets/**" />
-            <bean class="com.mogujie.jarvis.web.auth.interceptor.JarvisInterceptor"/>
-        </mvc:interceptor>
-
     </mvc:interceptors>
+
+    <import resource="classpath*:META-INF/admin/production/rbac-beans.xml" />
+    <import resource="classpath*:META-INF/admin/production/menu-beans.xml" />
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/pages/"/>
         <property name="suffix" value=".jsp"/>
     </bean>
+
+    <bean id="handlerExceptionResolver" class="com.mogu.bigdata.admin.passport.support.http.GlobalExceptionResolver"/>
     <!-- SpringMVC上传文件时，需要配置MultipartResolver处理器 -->
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
         <property name="defaultEncoding" value="utf-8" />

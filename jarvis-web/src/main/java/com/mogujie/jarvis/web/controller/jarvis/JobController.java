@@ -1,14 +1,15 @@
 package com.mogujie.jarvis.web.controller.jarvis;
 
+import com.mogu.bigdata.admin.client.annotation.Passport;
 import com.mogujie.jarvis.core.util.JsonHelper;
-import com.mogujie.jarvis.web.auth.annotation.JarvisPassport;
 import com.mogujie.jarvis.web.auth.conf.JarvisAuthType;
 import com.mogujie.jarvis.web.entity.qo.JobDependQo;
 import com.mogujie.jarvis.web.entity.vo.*;
 import com.mogujie.jarvis.web.service.*;
 import com.mogujie.jarvis.web.utils.MessageStatus;
-import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -23,7 +24,7 @@ import java.util.*;
  */
 @Controller
 @RequestMapping("/job")
-public class JobController extends BaseController {
+public class JobController {
 
     @Autowired
     JobService jobService;
@@ -32,7 +33,8 @@ public class JobController extends BaseController {
     @Autowired
     WorkerGroupService workerGroupService;
     static AppVo app = new AppVo();
-    Logger logger = Logger.getLogger(JobController.class);
+
+    Logger logger = LoggerFactory.getLogger(JobController.class);
 
     static {
         try {
@@ -51,7 +53,7 @@ public class JobController extends BaseController {
      * job任务管理首页
      */
     @RequestMapping
-    @JarvisPassport(authTypes = JarvisAuthType.job)
+    @Passport(JarvisAuthType.job)
     public String index(ModelMap modelMap) {
         modelMap.put("app", app);
         return "job/index";
@@ -62,7 +64,7 @@ public class JobController extends BaseController {
      * job任务详情页面
      */
     @RequestMapping(value = "detail")
-    @JarvisPassport(authTypes = JarvisAuthType.job, isMenu = false)
+    @Passport(JarvisAuthType.job)
     public String detail(ModelMap modelMap, Long jobId) {
         JobVo jobVo = jobService.getJobById(jobId);
         if (jobVo == null) {
@@ -76,7 +78,7 @@ public class JobController extends BaseController {
      * job依赖
      */
     @RequestMapping(value = "dependency")
-    @JarvisPassport(authTypes = JarvisAuthType.job, isMenu = false)
+    @Passport(JarvisAuthType.job)
     public String dependency(ModelMap modelMap, JobDependQo query) {
 
         Long jobId = query.getJobId();
@@ -101,7 +103,7 @@ public class JobController extends BaseController {
      * job任务新增或编辑页
      */
     @RequestMapping(value = "addOrEdit")
-    @JarvisPassport(authTypes = JarvisAuthType.job, isMenu = false)
+    @Passport(JarvisAuthType.job)
     public String addOrEdit(ModelMap modelMap, Long jobId) {
         modelMap.put("app", app);
         modelMap.put("jobId", jobId);

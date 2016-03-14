@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * Created by hejian on 15/10/8.
  */
 @Controller
-public class ErrorController extends BaseController {
+public class ErrorController {
 
     @RequestMapping(value = "/error", method = RequestMethod.GET)
     public String error(ModelMap modelMap, String message) {
