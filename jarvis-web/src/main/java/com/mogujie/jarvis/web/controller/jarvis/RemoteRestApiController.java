@@ -64,15 +64,15 @@ public class RemoteRestApiController extends BaseController {
     public Map<String, Object> restApi(ModelMap modelMap, String url, String para) {
         Map<String, Object> result = new HashMap<String, Object>();
         url = domain + url;
-        log.info("remote url:" + url );
+        log.info("remote url:" + url);
         log.info("para:" + para);
 
         Map<String, String> data = new HashMap<String, String>();
         data.put("parameters", para);
         try {
-            User user = (User) modelMap.get("user");
-            String uname = user.getUname();
-            data.put("user", uname);
+            User currentUser = user.get();
+            String nick = currentUser.getNick();
+            data.put("user", nick);
 
             DateTime dateTime = new DateTime();
             Long timeStamp = dateTime.getMillis() / 1000;
@@ -97,7 +97,7 @@ public class RemoteRestApiController extends BaseController {
             Connection.Response response = connection.execute();
             log.info("request url:" + response.url());
             String resultBody = response.body();
-            log.info("返回结果:"+resultBody);
+            log.info("返回结果:" + resultBody);
             result = JsonHelper.fromJson(resultBody, Map.class);
             return result;
         } catch (Exception e) {

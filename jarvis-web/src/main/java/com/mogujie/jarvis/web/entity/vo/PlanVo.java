@@ -13,7 +13,7 @@ public class PlanVo extends Plan {
 
     private String jobName;
     private String jobType;
-    private String submitUser;
+    private String executeUser;
     private Integer priority;
     private Integer appId;
     private String appName;
@@ -25,7 +25,7 @@ public class PlanVo extends Plan {
     private List<Object> taskStatus =new ArrayList<>();
     private int taskSize;
 
-    private Date scheduleTimeFirst;
+    private Date scheduleTime;
 
     public String getJobName() {
         return jobName;
@@ -45,12 +45,12 @@ public class PlanVo extends Plan {
         return this;
     }
 
-    public String getSubmitUser() {
-        return submitUser;
+    public String getExecuteUser() {
+        return executeUser;
     }
 
-    public PlanVo setSubmitUser(String submitUser) {
-        this.submitUser = submitUser;
+    public PlanVo setExecuteUser(String executeUser) {
+        this.executeUser = executeUser;
         return this;
     }
 
@@ -134,12 +134,12 @@ public class PlanVo extends Plan {
         return this;
     }
 
-    public Date getScheduleTimeFirst() {
-        return scheduleTimeFirst;
+    public Date getScheduleTime() {
+        return scheduleTime;
     }
 
-    public PlanVo setScheduleTimeFirst(Date scheduleTimeFirst) {
-        this.scheduleTimeFirst = scheduleTimeFirst;
+    public PlanVo setScheduleTime(Date scheduleTime) {
+        this.scheduleTime = scheduleTime;
         return this;
     }
 }

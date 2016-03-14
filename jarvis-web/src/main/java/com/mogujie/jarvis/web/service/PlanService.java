@@ -32,8 +32,21 @@ public class PlanService {
     public Map<String, Object> getPlans(PlanQo planQo) {
         Map<String, Object> result = new HashMap<String, Object>();
 
+
+
+        List<String> taskStatusList=planQo.getTaskStatusList();
+        //包含未初始化的job
+        for(String status:taskStatusList){
+            if(status.equals("0")){
+                planQo.setUnInitial(true);
+                break;
+            }
+        }
+
         Integer total = planMapper.getPlanCountByCondition(planQo);
         List<PlanVo> planVoList = planMapper.getPlansByCondition(planQo);
+
+
 
         result.put("total", total);
         result.put("rows", planVoList);

@@ -55,20 +55,17 @@
                     <div class="input-group" style="width:100%">
                         <span class="input-group-addon" style="width:35%">执行用户</span>
                         <select id="executeUser" multiple>
-                            <option value="all">全部</option>
-                            <c:forEach items="${executeUserList}" var="executeUser" varStatus="status">
-                                <option value="${executeUser}">${executeUser}</option>
-                            </c:forEach>
                         </select>
                     </div>
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-md-6">
                     <div class="input-group" style="width:100%">
-                        <span class="input-group-addon" style="width:35%">状态</span>
+                        <span class="input-group-addon" style="width:16.5%">状态</span>
 
                         <div class="form-control" id="taskStatus">
                             <input type="checkbox" name="taskStatus" onclick="chooseStatus(this)" value="all">全部
+                            <input type="checkbox" name="taskStatus" onclick="chooseStatus(this)" value="0">未初始化
                             <input type="checkbox" name="taskStatus" onclick="chooseStatus(this)" value="1">等待
                             <input type="checkbox" name="taskStatus" onclick="chooseStatus(this)" value="2">准备
                         </div>
@@ -99,6 +96,7 @@
         <div class="col-md-12">
 
             <div id="toolBar">
+                <span><i class="fa fa-circle fa-2x" style="color: #c9c9c9"></i>未初始化</span>
                 <span><i class="fa fa-circle fa-2x" style="color: #FF851B"></i>等待</span>
                 <span><i class="fa fa-circle fa-2x" style="color: #FFDC00"></i>准备</span>
 

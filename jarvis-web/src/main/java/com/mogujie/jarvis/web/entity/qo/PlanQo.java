@@ -17,12 +17,14 @@ public class PlanQo {
 
     private List<String> submitUserList;
     private List<String> executeUserList;
-    private List<Integer> taskStatusList;
+    private List<String> taskStatusList;
 
     private String scheduleDate;
     private int scheduleStartTime;
     private int scheduleEndTime;
 
+
+    private Boolean unInitial;
     private String dataTime;
     private Integer offset;
     private Integer limit;
@@ -176,16 +178,22 @@ public class PlanQo {
         this.order = order;
     }
 
-    public List<Integer> getTaskStatusList() {
+    public List<String> getTaskStatusList() {
         return taskStatusList;
     }
 
     public void setTaskStatusList(String taskStatusList) {
         if (StringUtils.isNoneBlank(taskStatusList)) {
-            List<Integer> list = JsonHelper.fromJson(taskStatusList, List.class);
-            if (list.size() > 0) {
-                this.taskStatusList = list;
-            }
+            List<String> list = JsonHelper.fromJson(taskStatusList, List.class);
+            this.taskStatusList = list;
         }
+    }
+
+    public Boolean isUnInitial() {
+        return unInitial;
+    }
+
+    public void setUnInitial(Boolean unInitial) {
+        this.unInitial = unInitial;
     }
 }

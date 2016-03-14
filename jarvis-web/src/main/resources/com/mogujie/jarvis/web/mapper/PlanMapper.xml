@@ -11,31 +11,31 @@
     <sql id="planCondition">
         <where>
             <if test="jobIdList!=null">
-                task.jobId IN
+                t.jobId IN
                 <foreach collection="jobIdList" item="jobId" open="(" close=")" separator=",">
                     #{jobId}
                 </foreach>
             </if>
             <if test="jobNameList!=null and jobNameList!=''">
-                AND job.jobName IN
-                <foreach collection="jobNameList" item="jobName" open="(" close=")" separator=",">
-                    #{jobName}
+                AND
+                <foreach collection="jobNameList" item="jobName" open="(" close=")" separator="OR">
+                    jobName LIKE CONCAT('%',#{jobName},'%' )
                 </foreach>
             </if>
             <if test="jobTypeList!=null and jobTypeList!=''">
-                AND job.jobType IN
+                AND jobType IN
                 <foreach collection="jobTypeList" item="jobType" open="(" close=")" separator=",">
                     #{jobType}
                 </foreach>
             </if>
             <if test="priorityList!=null">
-                AND job.priority IN
+                AND priority IN
                 <foreach collection="priorityList" item="priority" open="(" close=")" separator=",">
                     #{priority}
                 </foreach>
             </if>
             <if test="executeUserList!=null and executeUserList!=''">
-                AND job.submitUser IN
+                AND executeUser IN
                 <foreach collection="executeUserList" item="executeUser" open="(" close=")" separator=",">
                     #{executeUser}
                 </foreach>
@@ -43,53 +43,82 @@
             <if test="dataTime!=null">
                 AND dataTime=#{dataTime}
             </if>
+            <if test="taskStatusList!=null and taskStatusList.size()>0">
+                AND
+                <foreach collection="taskStatusList" item="status" open="(" close=")" separator="OR">
+                    <choose>
+                        <when test="status==0">
+                            status IS NULL
+                        </when>
+                        <otherwise>
+                            status=#{status}
+                        </otherwise>
+                    </choose>
+                </foreach>
+            </if>
         </where>
     </sql>
 
-    <sql id="orderCondition">
-        <choose>
-            <when test="">
-
-            </when>
-            <when test="">
-
-            </when>
-            <otherwise>
-
-            </otherwise>
-        </choose>
-    </sql>
-
-    
     <select id="getPlanCountByCondition" parameterType="PlanQo" resultType="Integer">
-        SELECT COUNT(1) FROM plan LEFT JOIN job ON plan.jobId=job.jobId
-        <include refid="planCondition" />
-    </select>
-    
-    <select id="getPlansByCondition" parameterType="PlanQo" resultType="PlanVo">
+        SELECT COUNT(1) FROM(
         SELECT
-          plan.jobId,
-          job.jobName,
-          job.jobType,
-          job.submitUser,
-          job.priority,
-          job.appId,
-          job.workerGroupId,
-          job.bizGroups,
-          job.createTime,
-          job.updateTime,
-          app.appName,
-          worker_group.name as workerGroupName
-        FROM plan LEFT JOIN job ON job.jobId = plan.jobId
-                  LEFT JOIN app ON job.appId = app.appId
-                  LEFT JOIN worker_group on job.workerGroupId = worker_group.id
-        <include refid="planCondition" />
-        <if test="sort!=null and sort!='' and order!=null and order!=''" >
+        t.jobId,
+        t.scheduleTime,
+        t.status,
+        t.executeUser,
+        job.jobName,
+        job.jobType,
+        job.priority,
+        job.appId,
+        job.workerGroupId,
+        job.bizGroups,
+        job.createTime,
+        job.updateTime
+        FROM
+        (
+        SELECT jobId,scheduleTime,status,executeUser FROM task
+        <if test="unInitial!=null and unInitial==true">
+            UNION SELECT plan.jobId,plan.planTime as scheduleTime,NULL AS status,job.submitUser AS executeUser FROM plan
+              LEFT JOIN job ON plan.jobId=job.jobId
+        </if>)t LEFT JOIN job ON t.jobId=job.jobId)t
+
+        <include refid="planCondition"/>
+    </select>
+
+    <select id="getPlansByCondition" parameterType="PlanQo" resultType="PlanVo">
+        SELECT * FROM (
+        SELECT
+        t.jobId,
+        t.status,
+        t.executeUser,
+        t.scheduleTime,
+        job.jobName,
+        job.jobType,
+        job.priority,
+        job.appId,
+        job.workerGroupId,
+        job.bizGroups,
+        job.createTime,
+        job.updateTime,
+        app.appName,
+        worker_group.name as workerGroupName
+
+        FROM (
+        SELECT jobId,scheduleTime,status,executeUser FROM task
+        <if test="unInitial!=null and unInitial==true">
+            UNION SELECT plan.jobId,plan.planTime as scheduleTime,NULL AS status,job.submitUser AS executeUser FROM plan
+            LEFT JOIN job ON plan.jobId=job.jobId
+        </if>)t
+        LEFT JOIN job ON t.jobId=job.jobId
+        LEFT JOIN app ON job.appId = app.appId
+        LEFT JOIN worker_group on job.workerGroupId = worker_group.id
+        )t
+        <include refid="planCondition"/>
+        <if test="sort!=null and sort!='' and order!=null and order!=''">
             ORDER BY ${sort} ${order}
         </if>
 
-
-        <include refid="pager" />
+        <include refid="pager"/>
     </select>
 
 </mapper>

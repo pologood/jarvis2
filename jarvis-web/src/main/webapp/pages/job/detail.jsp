@@ -92,9 +92,9 @@
                         <span id="isTemp"></span>
                     </td>
 
-                    <td class="bg-warning" width="7%"></td>
+                    <td class="bg-warning" width="7%">表达式</td>
                     <td class="bg-info">
-                        <span ></span>
+                        <span id="expression"></span>
                     </td>
                 </tr>
 
