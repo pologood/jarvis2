@@ -7,7 +7,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="com.mogu.bigdata.admin.common.util.Util" %>
+<%@ page import="com.mogu.bigdata.admin.util.misc.Util" %>
 
 <div class="pull-right" style="margin:25px 0;">
     <select class="form-control" onchange="changeUrl(this,'pageSize')">

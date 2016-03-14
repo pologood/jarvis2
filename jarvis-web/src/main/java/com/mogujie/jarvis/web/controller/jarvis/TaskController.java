@@ -1,7 +1,7 @@
 package com.mogujie.jarvis.web.controller.jarvis;
 
+import com.mogu.bigdata.admin.client.annotation.Passport;
 import com.mogujie.jarvis.core.util.JsonHelper;
-import com.mogujie.jarvis.web.auth.annotation.JarvisPassport;
 import com.mogujie.jarvis.web.auth.conf.JarvisAuthType;
 import com.mogujie.jarvis.web.entity.qo.TaskDependQo;
 import com.mogujie.jarvis.web.entity.vo.JobVo;
@@ -25,7 +25,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("/task")
-public class TaskController extends BaseController {
+public class TaskController {
 
     @Autowired
     JobService jobService;
@@ -35,7 +35,7 @@ public class TaskController extends BaseController {
     Logger logger = Logger.getLogger(this.getClass());
 
     @RequestMapping
-    @JarvisPassport(authTypes = JarvisAuthType.task)
+    @Passport(JarvisAuthType.task)
     public String index(ModelMap modelMap,TaskQo taskQo) {
 
         modelMap.put("taskQo",JsonHelper.toJson(taskQo));
@@ -43,7 +43,7 @@ public class TaskController extends BaseController {
     }
 
     @RequestMapping(value = "detail")
-    @JarvisPassport(authTypes = JarvisAuthType.task, isMenu = false)
+    @Passport(JarvisAuthType.task)
     public String dependency(ModelMap modelMap, Long taskId) {
         TaskVo taskVo = taskService.getTaskById(taskId);
         Long jobId = taskVo.getJobId();
@@ -97,7 +97,7 @@ public class TaskController extends BaseController {
      * task依赖
      */
     @RequestMapping(value = "dependency")
-    @JarvisPassport(authTypes = JarvisAuthType.job, isMenu = false)
+    @Passport(JarvisAuthType.job)
     public String dependency(ModelMap modelMap, TaskDependQo taskDependQo) {
 
         modelMap.put("taskDependQo", JsonHelper.toJson(taskDependQo));

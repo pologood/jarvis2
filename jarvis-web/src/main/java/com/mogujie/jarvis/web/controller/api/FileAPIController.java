@@ -1,6 +1,7 @@
 package com.mogujie.jarvis.web.controller.api;
 
-import com.mogujie.jarvis.web.controller.jarvis.BaseController;
+import com.mogu.bigdata.admin.core.entity.User;
+import com.mogu.bigdata.admin.passport.user.UserContextHolder;
 import com.mogujie.jarvis.web.utils.HdfsUtil;
 import com.mogujie.jarvis.web.utils.MessageStatus;
 import org.apache.log4j.Logger;
@@ -19,7 +20,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping(value = "/api/file")
-public class FileAPIController extends BaseController {
+public class FileAPIController{
 
     Logger logger = Logger.getLogger(FileAPIController.class);
 
@@ -31,7 +32,7 @@ public class FileAPIController extends BaseController {
     @RequestMapping("/uploadJar")
     @ResponseBody
     public Object uploadJar(String title, HttpServletRequest request) {
-
+        User user = UserContextHolder.getUser();
         Map<String, Object> map = new HashMap<>();
         try {
             if (title == null || title.trim().isEmpty()) {
@@ -42,7 +43,7 @@ public class FileAPIController extends BaseController {
             if (jarFile == null) {
                 throw new IllegalArgumentException("上传文件不能为空");
             }
-            String url = HdfsUtil.uploadFile2Hdfs(jarFile, title, user.get().getUname(), true);
+            String url = HdfsUtil.uploadFile2Hdfs(jarFile, title, user.getUname(), true);
             map.put("code", MessageStatus.SUCCESS.getValue());
             map.put("msg", MessageStatus.SUCCESS.getText());
             map.put("data", url);

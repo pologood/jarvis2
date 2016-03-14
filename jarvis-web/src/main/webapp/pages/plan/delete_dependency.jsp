@@ -110,11 +110,6 @@
 </div>
 
 
-<jsp:include page="../common/login.jsp">
-    <jsp:param name="uname" value="${user.uname}"/>
-</jsp:include>
-
-
 <jsp:include page="../common/footer.jsp">
     <jsp:param name="menuMap" value="${menuMap}"/>
 </jsp:include>
