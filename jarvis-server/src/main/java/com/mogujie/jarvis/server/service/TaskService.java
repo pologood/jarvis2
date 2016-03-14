@@ -128,7 +128,7 @@ public class TaskService {
         return record.getTaskId();
     }
 
-    public long createTaskByJobId(long jobId, long scheduleTime, long dataTime, TaskType taskType) {
+    public long createTaskByJobId(long jobId, long scheduleTime, long dataTime, TaskType taskType, String user) {
         Task record = new Task();
         record.setJobId(jobId);
         record.setAttemptId(1);
@@ -147,7 +147,11 @@ public class TaskService {
         } else {
             record.setType(taskType.getValue());
         }
-        record.setExecuteUser(job.getSubmitUser());
+        if (user == null) {
+            record.setExecuteUser(job.getSubmitUser());
+        } else {
+            record.setExecuteUser(user);
+        }
         String content = "";
         if (job.getContentType() == JobContentType.SCRIPT.getValue()) {
             int scriptId = Integer.valueOf(job.getContent());
@@ -163,6 +167,10 @@ public class TaskService {
         record.setParams(job.getParams());
         record.setAppId(job.getAppId());
         return insertSelective(record);
+    }
+
+    public long createTaskByJobId(long jobId, long scheduleTime, long dataTime, TaskType taskType) {
+        return createTaskByJobId(jobId, scheduleTime, dataTime, taskType, null);
     }
 
     public void updateSelective(Task record) {
