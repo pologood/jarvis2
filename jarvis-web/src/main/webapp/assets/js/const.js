@@ -33,8 +33,9 @@ const CONST = {
     },
     JOB_ACTIVE_DATE: {  //任务有效日期
         MIN_DATE: 0,
-        MAX_DATE: 253402214400000
+        MAX_DATE: 253370764800000
     },
+
     JOB_PARAMS_KEY: {   //任务参数
         JAR_URL: '_jarvis_jar_url'
     },

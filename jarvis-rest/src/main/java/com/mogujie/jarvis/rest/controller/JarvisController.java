@@ -309,10 +309,10 @@ public class JarvisController extends AbstractController {
                         .setFailedAttempts(0)
                         .setFailedInterval(3);
                 if (startDate != null && !startDate.isEmpty()) {
-                    builder.setActiveStartTime(new DateTime(startDate).getMillis());
+                    builder.setActiveStartDate(new DateTime(startDate).getMillis());
                 }
                 if (endDate != null && !endDate.isEmpty()) {
-                    builder.setActiveEndTime(new DateTime(endDate).getMillis());
+                    builder.setActiveEndDate(new DateTime(endDate).getMillis());
                 }
 
                 // 3.调度表达式
@@ -413,10 +413,10 @@ public class JarvisController extends AbstractController {
                         .setBizGroups(bizGroups)
                         .setPriority(priority);
                 if (startDate != null && !startDate.isEmpty()) {
-                    modifyJobBuilder.setActiveStartTime(new DateTime(startDate).getMillis());
+                    modifyJobBuilder.setActiveStartDate(new DateTime(startDate).getMillis());
                 }
                 if (endDate != null && !endDate.isEmpty()) {
-                    modifyJobBuilder.setActiveEndTime(new DateTime(endDate).getMillis());
+                    modifyJobBuilder.setActiveEndDate(new DateTime(endDate).getMillis());
                 }
                 RestModifyJobRequest modifyJobRequest = modifyJobBuilder.build();
                 ServerModifyJobResponse modifyJobResponse = (ServerModifyJobResponse) callActor(AkkaType.SERVER, modifyJobRequest);

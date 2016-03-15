@@ -418,8 +418,8 @@ public class SentinelController extends AbstractController {
                 .setBizGroups(vo.getBizGroups(""))
                 .setPriority(vo.getPriority(1))
                 .setIsTemp(vo.isTemp())
-                .setActiveStartTime(vo.getActiveStartTime(0L))
-                .setActiveEndTime(vo.getActiveEndTime(0L))
+                .setActiveStartDate(vo.getActiveStartDate(0L))
+                .setActiveEndDate(vo.getActiveEndDate(0L))
                 .setExpiredTime(vo.getExpiredTime(60*10)) //临时任务默认十分钟
                 .setFailedAttempts(vo.getFailedAttempts(0))
                 .setFailedInterval(vo.getFailedInterval(3));

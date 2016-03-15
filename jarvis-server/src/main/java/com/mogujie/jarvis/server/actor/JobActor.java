@@ -195,7 +195,7 @@ public class JobActor extends UntypedActor {
             } else if (obj instanceof RestSearchBizIdByNameRequest) {
                 RestSearchBizIdByNameRequest msg = (RestSearchBizIdByNameRequest) obj;
                 searchBizIdByName(msg);
-            } else if(obj instanceof RestSearchJobInfoByScriptTitileRequest) {
+            } else if (obj instanceof RestSearchJobInfoByScriptTitileRequest) {
                 RestSearchJobInfoByScriptTitileRequest msg = (RestSearchJobInfoByScriptTitileRequest) obj;
                 searchJobByScriptTitle(msg);
             } else if (obj instanceof RestSearchJobLikeNameRequest) {
@@ -573,13 +573,13 @@ public class JobActor extends UntypedActor {
         job.setWorkerGroupId(msg.getWorkerGroupId());
         job.setDepartment(msg.getDepartment());
         job.setBizGroups(msg.getBizGroups());
-        if (msg.hasActiveStartTime() && msg.getActiveStartTime() != 0) {
-            job.setActiveStartDate(new DateTime(msg.getActiveStartTime()).toDate());
+        if (msg.hasActiveStartDate() && msg.getActiveStartDate() != 0) {
+            job.setActiveStartDate(new Date(msg.getActiveStartDate()));
         } else {
             job.setActiveStartDate(JarvisConstants.DATETIME_MIN.toDate());
         }
-        if (msg.hasActiveEndTime() && msg.getActiveEndTime() != 0) {
-            job.setActiveEndDate(new DateTime(msg.getActiveEndTime()).toDate());
+        if (msg.hasActiveEndDate() && msg.getActiveEndDate() != 0) {
+            job.setActiveEndDate(new Date(msg.getActiveEndDate()));
         } else {
             job.setActiveEndDate(JarvisConstants.DATETIME_MAX.toDate());
         }
@@ -613,6 +613,9 @@ public class JobActor extends UntypedActor {
         if (msg.hasJobType()) {
             job.setJobType(msg.getJobType());
         }
+        if (msg.hasContentType()) {
+            job.setContentType(msg.getContentType());
+        }
         if (msg.hasContent()) {
             job.setContent(msg.getContent());
         }
@@ -631,11 +634,19 @@ public class JobActor extends UntypedActor {
         if (msg.hasPriority()) {
             job.setPriority(msg.getPriority());
         }
-        if (msg.hasActiveStartTime()) {
-            job.setActiveStartDate(new Date(msg.getActiveStartTime()));
+        if (msg.hasActiveStartDate()) {
+            if (msg.getActiveStartDate() == 0) {
+                job.setActiveStartDate(JarvisConstants.DATETIME_MIN.toDate());
+            } else {
+                job.setActiveStartDate(new Date(msg.getActiveStartDate()));
+            }
         }
-        if (msg.hasActiveEndTime()) {
-            job.setActiveEndDate(new Date(msg.getActiveEndTime()));
+        if (msg.hasActiveEndDate()) {
+            if (msg.getActiveEndDate() == 0) {
+                job.setActiveEndDate(JarvisConstants.DATETIME_MAX.toDate());
+            } else {
+                job.setActiveEndDate(new Date(msg.getActiveEndDate()));
+            }
         }
         if (msg.hasExpiredTime()) {
             job.setExpiredTime(msg.getExpiredTime());
@@ -924,25 +935,25 @@ public class JobActor extends UntypedActor {
     }
 
 
-  /**
-   * 兼容老系统API,通过title查找job
-   *
-   * @param msg
-   * @throws Exception
-   */
+    /**
+     * 兼容老系统API,通过title查找job
+     *
+     * @param msg
+     * @throws Exception
+     */
     private void searchJobByScriptTitle(RestSearchJobInfoByScriptTitileRequest msg) throws Exception {
         String title = msg.getTitle();
         ServerSearchJobInfoByScriptTitileResponse response;
-        try{
+        try {
             Job job = jobService.searchJobByScriptTitle(title);
             JobInfoEntry jobInfo = convertJob2JobInfo(job);
             response = ServerSearchJobInfoByScriptTitileResponse.newBuilder().setSuccess(true).setJobInfo(jobInfo).build();
             getSender().tell(response, getSelf());
         } catch (Exception e) {
             response = ServerSearchJobInfoByScriptTitileResponse.newBuilder()
-                .setSuccess(false)
-                .setMessage(ExceptionUtil.getErrMsg(e))
-                .build();
+                    .setSuccess(false)
+                    .setMessage(ExceptionUtil.getErrMsg(e))
+                    .build();
             getSender().tell(response, getSelf());
             LOGGER.error("", e);
             throw e;

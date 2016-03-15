@@ -87,9 +87,9 @@ public class ValidUtils {
             }
         }
 
-        Long start = job.getActiveStartTime();
-        Long end = job.getActiveStartTime();
-        if (start != null && end != null) {
+        Long start = job.getActiveStartDate();
+        Long end = job.getActiveEndDate();
+        if (start != null && start != 0  && end != null && end!=0) {
             Preconditions.checkArgument(start <= end, "有效开始日不能大于有效结束日");
         }
     }

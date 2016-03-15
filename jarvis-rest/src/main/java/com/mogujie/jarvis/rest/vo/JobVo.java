@@ -24,8 +24,8 @@ public class JobVo extends AbstractVo {
     private String bizGroups;
     private Integer priority;
     private boolean isTemp;
-    private Long activeStartTime;
-    private Long activeEndTime;
+    private Long activeStartDate;
+    private Long activeEndDate;
     private Integer expiredTime; // 单位秒
     private Integer failedAttempts;
     private Integer failedInterval;
@@ -137,20 +137,20 @@ public class JobVo extends AbstractVo {
         this.isTemp = isTemp;
     }
 
-    public Long getActiveStartTime() {
-        return activeStartTime;
+    public Long getActiveStartDate() {
+        return activeStartDate;
     }
 
-    public void setActiveStartTime(Long activeStartTime) {
-        this.activeStartTime = activeStartTime;
+    public void setActiveStartDate(Long activeStartDate) {
+        this.activeStartDate = activeStartDate;
     }
 
-    public Long getActiveEndTime() {
-        return activeEndTime;
+    public Long getActiveEndDate() {
+        return activeEndDate;
     }
 
-    public void setActiveEndTime(Long activeEndTime) {
-        this.activeEndTime = activeEndTime;
+    public void setActiveEndDate(Long activeEndDate) {
+        this.activeEndDate = activeEndDate;
     }
 
     public Integer getExpiredTime() {
@@ -206,12 +206,12 @@ public class JobVo extends AbstractVo {
         return params != null ? params : defaultValue;
     }
 
-    public Long getActiveStartTime(Long defaultValue) {
-        return (activeStartTime != null) ? activeStartTime : defaultValue;
+    public Long getActiveStartDate(Long defaultValue) {
+        return (activeStartDate != null) ? activeStartDate : defaultValue;
     }
 
-    public Long getActiveEndTime(Long defaultValue) {
-        return (activeEndTime != null) ? activeEndTime : defaultValue;
+    public Long getActiveEndDate(Long defaultValue) {
+        return (activeEndDate != null) ? activeEndDate : defaultValue;
     }
 
     public Integer getPriority(Integer defaultValue) {

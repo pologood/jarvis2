@@ -112,7 +112,7 @@ public class ValidService {
         Preconditions.checkArgument(status == null || JobStatus.isValid(status), "status内容不正确。value:" + status);
 
         Date start = job.getActiveStartDate();
-        Date end = job.getActiveStartDate();
+        Date end = job.getActiveEndDate();
         if (start != null && end != null) {
             Preconditions.checkArgument(start.getTime() <= end.getTime(),
                     "有效开始时间不能大于有效结束时间. start:" + start.toString() + "; end:" + end.toString());
