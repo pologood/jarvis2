@@ -97,12 +97,9 @@ public class ShellTask extends AbstractTask {
         try {
             StringBuilder sb = new StringBuilder();
             String cmd = getCommand();
+            sb.append("(");
             sb.append(cmd);
-            if (!cmd.endsWith(";")) {
-                sb.append(";");
-            }
-
-            sb.append("export JARVIS_EXIT_CODE=$? ").append("&& echo $JARVIS_EXIT_CODE > ").append(statusFilePath)
+            sb.append(");export JARVIS_EXIT_CODE=$? ").append("&& echo $JARVIS_EXIT_CODE > ").append(statusFilePath)
                     .append(" && exit $JARVIS_EXIT_CODE");
 
             ProcessBuilder processBuilder = ShellUtils.createProcessBuilder(sb.toString());

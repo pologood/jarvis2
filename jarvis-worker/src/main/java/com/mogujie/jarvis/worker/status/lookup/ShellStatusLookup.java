@@ -28,7 +28,7 @@ public class ShellStatusLookup implements TaskStatusLookup {
 
     @Override
     public void init(Configuration conf) {
-        dir = conf.getString("shell.status.data.dir");
+        dir = conf.getString("shell.status.data.dir", "/tmp/jarvis_shell_status");
     }
 
     @Override
