@@ -225,6 +225,7 @@ public class TaskScheduler extends Scheduler {
     public void handleAddTaskEvent(AddTaskEvent e) {
         long jobId = e.getJobId();
         long scheduleTime = e.getScheduleTime();
+        Job job = jobService.get(jobId).getJob();
         LOGGER.info("start handleAddTaskEvent, jobId={}, scheduleTime={}", jobId, new DateTime(scheduleTime));
         Map<Long, List<Long>> dependTaskIdMap = e.getDependTaskIdMap();
 
@@ -239,13 +240,15 @@ public class TaskScheduler extends Scheduler {
         long taskId = taskService.createTaskByJobId(jobId, scheduleTime, scheduleTime, TaskType.SCHEDULE);
         LOGGER.info("add new task[{}] to DB", taskId);
 
-        // 创建新的task的时候，重新刷新改job的plan
-        DateTime now = DateTime.now();
-        Range<DateTime> range = Range.closedOpen(now, now.plusDays(1).withTimeAtStartOfDay());
-        planService.refreshPlan(jobId, range);
+        // 如果不是临时任务，创建新的task的时候，重新刷新该job的plan
+        if (!job.getIsTemp()) {
+            DateTime now = DateTime.now();
+            Range<DateTime> range = Range.closedOpen(now, now.plusDays(1).withTimeAtStartOfDay());
+            planService.refreshPlan(jobId, range);
+        }
 
         // 如果是串行任务
-        if (jobService.get(jobId).getJob().getIsSerial()) {
+        if (job.getIsSerial()) {
             // 首先检查自己上一次是否成功
             Task task = taskService.getLastTask(jobId, scheduleTime, TaskType.SCHEDULE);
             if (task != null) {

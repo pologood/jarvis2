@@ -75,7 +75,7 @@ function initJobData() {
             $("#department").val(job.department);
             var startDate = job.activeStartDate;
             if (startDate != null && startDate != CONST.JOB_ACTIVE_DATE.MIN_DATE) {
-                $("#activeStartDate").val(moment(job.activeStartDate).format("YYYY-MM-DD"));
+                $("#activeStartDate").val(moment(startDate).format("YYYY-MM-DD"));
             }
             var endDate = job.activeEndDate;
             if (endDate != null && endDate != CONST.JOB_ACTIVE_DATE.MAX_DATE) {
@@ -551,14 +551,24 @@ function getJobDataFromPage() {
             value = parseInt(value);
         }
 
-        if (id == 'activeStartTime' || id == 'activeEndTime') {
+        if (id == 'activeStartDate') {
             if (value != '') {
-                value = (new Date(value)).getTime();
+                value = (new Date(value + " 00:00:00")).getTime();
             }
             else {
                 value = 0;
             }
         }
+
+        if (id == 'activeEndDate') {
+            if (value != '') {
+                value = (new Date(value + " 23:59:59")).getTime();
+            }
+            else {
+                value = 0;
+            }
+        }
+
 
         //jobContent的名称转换.
         if (id == 'jobContent') {

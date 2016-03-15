@@ -31,8 +31,8 @@ public interface JarvisConstants {
     String DEFAULT_DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
     String HTTP_CALLBACK_URL = "httpCallbackUrl";
 
-    DateTime DATETIME_MAX = new DateTime(9999, 12, 31, 0, 0, 0, DateTimeZone.forOffsetHours(0));
     DateTime DATETIME_MIN = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeZone.forOffsetHours(0));
+    DateTime DATETIME_MAX = new DateTime(9999, 1, 1, 0, 0, 0, DateTimeZone.forOffsetHours(0));
 
     int BIZ_GROUP_ID_UNKNOWN = 0;
     String BIZ_GROUP_NAME_UNKNOWN = "";

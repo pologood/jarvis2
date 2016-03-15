@@ -15,7 +15,7 @@ message RestSubmitJobRequest {
     required string job_name = 3;
     required string job_type = 4;
     required int32 status = 5;
-    required int32 contentType = 6 [default = 1];
+    required int32 content_type = 6 [default = 1];
     required string content = 7;
     optional string parameters = 8 [default = ""];
     optional string app_name = 9 ;
@@ -25,8 +25,8 @@ message RestSubmitJobRequest {
     optional int32 priority = 13 [default = 1];
     optional bool isTemp = 14 [default = false];
     optional bool isSerial = 15 [default = false]; 
-    optional int64 active_start_time = 16;
-    optional int64 active_end_time = 17;
+    optional int64 active_start_date = 16;
+    optional int64 active_end_date = 17;
     optional int32 expired_time = 18 [default = 600];
     optional int32 failed_attempts = 19 [default = 0];
     optional int32 failed_interval = 20 [default = 3];
@@ -47,20 +47,21 @@ message RestModifyJobRequest {
     required int64 job_id = 3;
     optional string job_name = 4;
     optional string job_type = 5;
-    optional string content = 6;
-    optional string parameters = 7;
-    optional string app_name = 8;
-    optional int32 worker_group_id = 9;
-    optional string department = 10;
-    optional string biz_groups = 11;
-    optional int32 priority = 12;
-    optional bool isTemp = 13;
-    optional bool isSerial = 14; 
-    optional int64 active_start_time = 15;
-    optional int64 active_end_time = 16;
-    optional int32 expired_time = 17;
-    optional int32 failed_attempts = 18;
-    optional int32 failed_interval = 19;
+    optional int32 content_type = 6;
+    optional string content = 7;
+    optional string parameters = 8;
+    optional string app_name = 9;
+    optional int32 worker_group_id = 10;
+    optional string department = 11;
+    optional string biz_groups = 12;
+    optional int32 priority = 13;
+    optional bool isTemp = 14;
+    optional bool isSerial = 15;
+    optional int64 active_start_date = 16;
+    optional int64 active_end_date = 17;
+    optional int32 expired_time = 18;
+    optional int32 failed_attempts = 19;
+    optional int32 failed_interval = 20;
 }
 
 message ServerModifyJobResponse {
@@ -136,8 +137,8 @@ message jobEntry {
     required string app_name = 7;
     required int32 worker_group_id = 8;
     required int32 priority = 9;
-    required int64 active_start_time = 10;
-    required int64 active_end_time = 11;
+    required int64 active_start_date = 10;
+    required int64 active_end_date = 11;
     required int32 expired_time = 12;
     required int32 failed_attempts = 13;
     required int32 failed_interval = 14;

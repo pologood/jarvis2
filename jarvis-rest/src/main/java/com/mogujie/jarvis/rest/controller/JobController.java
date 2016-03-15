@@ -279,9 +279,9 @@ public class JobController extends AbstractController {
                 .setBizGroups(vo.getBizGroups(""))
                 .setPriority(vo.getPriority(1))
                 .setIsTemp(vo.isTemp())
-                .setActiveStartTime(vo.getActiveStartTime(0L))
-                .setActiveEndTime(vo.getActiveEndTime(0L))
-                .setExpiredTime(vo.getExpiredTime(60*60*24)) //默认24小时
+                .setActiveStartDate(vo.getActiveStartDate(0L))
+                .setActiveEndDate(vo.getActiveEndDate(0L))
+                .setExpiredTime(vo.getExpiredTime(86400)) //默认24小时
                 .setFailedAttempts(vo.getFailedAttempts(0))
                 .setFailedInterval(vo.getFailedInterval(3));
 
@@ -313,6 +313,9 @@ public class JobController extends AbstractController {
         if (vo.getJobType() != null) {
             builder.setJobType(vo.getJobType());
         }
+        if (vo.getContentType() != null) {
+            builder.setContentType(vo.getContentType());
+        }
         if (vo.getContent() != null) {
             builder.setContent(vo.getContent());
         }
@@ -334,11 +337,11 @@ public class JobController extends AbstractController {
         if (vo.getDepartment() != null) {
             builder.setDepartment(vo.getDepartment());
         }
-        if (vo.getActiveStartTime() != null) {
-            builder.setActiveStartTime(vo.getActiveStartTime());
+        if (vo.getActiveStartDate() != null) {
+            builder.setActiveStartDate(vo.getActiveStartDate());
         }
-        if (vo.getActiveEndTime() != null) {
-            builder.setActiveEndTime(vo.getActiveEndTime());
+        if (vo.getActiveEndDate() != null) {
+            builder.setActiveEndDate(vo.getActiveEndDate());
         }
         if (vo.getExpiredTime() != null) {
             builder.setExpiredTime(vo.getExpiredTime());

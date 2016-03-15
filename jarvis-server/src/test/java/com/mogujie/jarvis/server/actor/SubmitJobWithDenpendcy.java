@@ -97,7 +97,7 @@ public class SubmitJobWithDenpendcy {
                 .setPriority(JobPriority.HIGH.getValue()).setParameters("{\"para1\":\"1\",\"para2\":\"2\"}").setStatus(JobStatus.ENABLE.getValue())
                 .setUser("qinghuo").addAllExpressionEntry(expressionEntries).addAllDependencyEntry(dependencyEntryList).setExpiredTime(86400)
                 .setFailedAttempts(3).setFailedInterval(3).setJobType(jobType).setWorkerGroupId(1)
-                .setActiveStartTime(now.getMillis()).setActiveEndTime(now.plusHours(1).getMillis()).build();
+                .setActiveStartDate(now.getMillis()).setActiveEndDate(now.plusHours(1).getMillis()).build();
 
         try {
             response = (ServerSubmitJobResponse) FutureUtils.awaitResult(serverActor, request, 20);
