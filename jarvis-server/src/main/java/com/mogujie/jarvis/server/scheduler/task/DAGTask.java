@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.joda.time.DateTime;
+
 import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.server.guice.Injectors;
@@ -140,8 +142,8 @@ public class DAGTask {
 
     @Override
     public String toString() {
-        return "DAGTask [jobId=" + jobId + ", taskId=" + taskId + ", attemptId=" + attemptId + ", scheduleTime=" + scheduleTime + ", dataTime="
-                + dataTime + "]";
+        return "DAGTask [jobId=" + jobId + ", taskId=" + taskId + ", attemptId=" + attemptId + ", scheduleTime=" +  new DateTime(scheduleTime) + ", dataTime="
+                + new DateTime(dataTime) + "]";
     }
 
 }

@@ -8,6 +8,20 @@
 
 package com.mogujie.jarvis.rest.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+
+import org.joda.time.DateTime;
+
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Sets;
 import com.google.common.collect.Sets.SetView;
@@ -72,17 +86,6 @@ import com.mogujie.jarvis.rest.utils.ValidUtils;
 import com.mogujie.jarvis.rest.vo.JobDependencyVo;
 import com.mogujie.jarvis.rest.vo.JobScheduleExpVo;
 import com.mogujie.jarvis.rest.vo.JobVo;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import javax.ws.rs.FormParam;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
-import org.joda.time.DateTime;
 
 /**
  * 兼容旧jarvis rest接口
@@ -91,7 +94,7 @@ import org.joda.time.DateTime;
  *
  */
 @Deprecated
-@Path("api")
+@Path("sche/api")
 public class JarvisController extends AbstractController {
 
     private static String APP_IRONMAN_NAME = ConfigUtils.getRestConfig().getString("app.ironman.name", "ironman");
