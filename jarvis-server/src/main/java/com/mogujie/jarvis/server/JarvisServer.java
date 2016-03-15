@@ -272,7 +272,7 @@ public class JarvisServer {
         // 系统启动的时候自动更新执行计划
         PlanService planService = Injectors.getInjector().getInstance(PlanService.class);
         DateTime now = DateTime.now();
-        Range<DateTime> range = Range.closedOpen(now.withTimeAtStartOfDay(), now.plusDays(1).withTimeAtStartOfDay());
+        Range<DateTime> range = Range.closedOpen(now, now.plusDays(1).withTimeAtStartOfDay());
         planService.refreshAllPlan(range);
     }
 }
