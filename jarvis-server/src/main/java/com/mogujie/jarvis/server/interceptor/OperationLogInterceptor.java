@@ -7,7 +7,9 @@ import com.mogujie.jarvis.dao.generate.OperationLogMapper;
 import com.mogujie.jarvis.dao.generate.TaskMapper;
 import com.mogujie.jarvis.dto.generate.*;
 import com.mogujie.jarvis.dto.generate.OperationLog;
+import com.mogujie.jarvis.protocol.JobProtos;
 import com.mogujie.jarvis.server.service.JobService;
+import com.mogujie.jarvis.server.service.LogService;
 import com.mogujie.jarvis.server.service.TaskService;
 import java.util.Arrays;
 import org.aopalliance.intercept.MethodInterceptor;
@@ -40,19 +42,83 @@ public class OperationLogInterceptor implements MethodInterceptor {
       throws Throwable {
     long start = System.nanoTime();
     try {
+      Object result = invocation.proceed();
+
       if(invocation.getStaticPart().toString().indexOf(JobService.class.getCanonicalName()) != -1) {
         // add job operation log
         handleJobOpeLog(invocation);
       } else if(invocation.getStaticPart().toString().indexOf(TaskService.class.getCanonicalName()) != -1) {
         // add task operation log
         handleTaskOpeLog(invocation);
+      } else if(invocation.getStaticPart().toString().indexOf(LogService.class.getCanonicalName()) != -1) {
+        // add job actor log
+        this.handleJobActorLog(invocation);
       }
-      return invocation.proceed();
+
+      return result;
+
     } finally {
       LOGGER.info(String
           .format("Invocation of method %s () with parameters %s took %s ms.", invocation.getMethod().getName(),
               Arrays.toString(invocation.getArguments()), (System.nanoTime() - start) / 1000000.0));
     }
+  }
+
+  /**
+   * jobActor 操作记录
+   *
+   * @param invocation
+   */
+  private void handleJobActorLog(MethodInvocation invocation) {
+    com.mogujie.jarvis.dto.generate.OperationLog operationLog = new OperationLog();
+
+    Object obj = invocation.getArguments()[0];
+
+    if (obj instanceof JobProtos.RestSubmitJobRequest) {
+      JobProtos.RestSubmitJobRequest msg= (JobProtos.RestSubmitJobRequest) obj;
+      String operation = OperationInfo.valueOf("submitJob".toUpperCase()).getDescription();
+      operationLog.setDetail(String.format("operation:%s\tcontent:%s", operation, msg.getContent()));
+      operationLog.setOperator(msg.getAppAuth().getName());
+      operationLog.setTitle(msg.getJobName());
+      operationLog.setRefer(msg.getJobType());
+    } else if (obj instanceof JobProtos.RestModifyJobRequest) {
+      JobProtos.RestModifyJobRequest msg = (JobProtos.RestModifyJobRequest) obj;
+      String operation = OperationInfo.valueOf("modifyJob".toUpperCase()).getDescription();
+      operationLog.setDetail(String.format("operation:%s\tcontent:%s", operation, msg.getContent()));
+      operationLog.setOperator(msg.getUser());
+      operationLog.setTitle(msg.getJobName());
+      operationLog.setRefer(String.valueOf(msg.getJobId()));
+    } else if (obj instanceof JobProtos.RestModifyJobDependRequest) {
+      JobProtos.RestModifyJobDependRequest msg = (JobProtos.RestModifyJobDependRequest) obj;
+      String operation = OperationInfo.valueOf("modifyJobDependency".toUpperCase()).getDescription();
+      Job job = this.jobMapper.selectByPrimaryKey(msg.getJobId());
+      operationLog.setDetail(String.format("operation:%s\tcontent:%s", operation, job.getContent()));
+      operationLog.setOperator(msg.getAppAuth().getName());
+      operationLog.setTitle(job.getJobName());
+      operationLog.setRefer(String.valueOf(msg.getJobId()));
+    } else if (obj instanceof JobProtos.RestModifyJobScheduleExpRequest) {
+      JobProtos.RestModifyJobScheduleExpRequest msg = (JobProtos.RestModifyJobScheduleExpRequest) obj;
+      String operation = OperationInfo.valueOf("modifyJobScheduleExp".toUpperCase()).getDescription();
+      Job job = this.jobMapper.selectByPrimaryKey(msg.getJobId());
+      operationLog.setDetail(String.format("operation:%s\tcontent:%s", operation, job.getContent()));
+      operationLog.setOperator(msg.getAppAuth().getName());
+      operationLog.setTitle(job.getJobName());
+      operationLog.setRefer(String.valueOf(msg.getJobId()));
+    } else if (obj instanceof JobProtos.RestModifyJobStatusRequest) {
+      JobProtos.RestModifyJobStatusRequest msg = (JobProtos.RestModifyJobStatusRequest) obj;
+      String operation = OperationInfo.valueOf("modifyJobStatus".toUpperCase()).getDescription();
+      Job job = this.jobMapper.selectByPrimaryKey(msg.getJobId());
+      operationLog.setDetail(String.format("operation:%s\tcontent:%s", operation, job.getContent()));
+      operationLog.setOperator(msg.getAppAuth().getName());
+      operationLog.setTitle(job.getJobName());
+      operationLog.setRefer(String.valueOf(msg.getJobId()));
+    }
+
+    operationLog.setType("job");
+    DateTime now = DateTime.now();
+    operationLog.setOpeDate(now.toDate());
+
+    this.operationLogMapper.insert(operationLog);
   }
 
   /**

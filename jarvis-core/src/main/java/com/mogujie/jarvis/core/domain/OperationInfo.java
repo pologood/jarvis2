@@ -29,7 +29,14 @@ public enum OperationInfo {
   // task related
   CREATETASKBYJOBID("createTaskByJobId", "根据jodId创建task"),
   UPDATESTATUSWITHEND("updateStatusWithEnd", "根据endTime修改task的状态"),
-  INSERTSELECTIVE("insertSelective", "插入指定的task");
+  INSERTSELECTIVE("insertSelective", "插入指定的task"),
+
+  // job actor
+  SUBMITJOB("submitJob", "提交任务"),
+  MODIFYJOB("modifyJob", "修改任务"),
+  MODIFYJOBDEPENDENCY("modifyJobDependency", "修改任务依赖"),
+  modifyJobScheduleExp("modifyJobScheduleExp", "修改任务计划表达式"),
+  MODIFYJOBSTATUS("modifyJobStatus", "修改任务计划表达式");
 
   OperationInfo(String name, String description) {
     this.name = name;

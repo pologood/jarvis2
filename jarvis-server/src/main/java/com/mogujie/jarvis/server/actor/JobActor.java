@@ -8,6 +8,8 @@
 
 package com.mogujie.jarvis.server.actor;
 
+import com.mogujie.jarvis.server.interceptor.OperationLog;
+import com.mogujie.jarvis.server.service.LogService;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -123,6 +125,7 @@ public class JobActor extends UntypedActor {
     private BizGroupService bizService = Injectors.getInjector().getInstance(BizGroupService.class);
     private ScriptService scriptService = Injectors.getInjector().getInstance(ScriptService.class);
     private ValidService validService = Injectors.getInjector().getInstance(ValidService.class);
+    private LogService logService = Injectors.getInjector().getInstance(LogService.class);
 
     public static Props props() {
         return Props.create(JobActor.class);
@@ -158,6 +161,7 @@ public class JobActor extends UntypedActor {
     @Override
     public void onReceive(Object obj) throws Exception {
         LOGGER.info("receive {}", obj.getClass().getSimpleName());
+        logService.handleLog(obj);
         try {
             if (obj instanceof RestSubmitJobRequest) {
                 submitJob((RestSubmitJobRequest) obj);
