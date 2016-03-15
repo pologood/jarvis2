@@ -78,7 +78,7 @@ public class OperationLogInterceptor implements MethodInterceptor {
       JobProtos.RestSubmitJobRequest msg= (JobProtos.RestSubmitJobRequest) obj;
       String operation = OperationInfo.valueOf("submitJob".toUpperCase()).getDescription();
       operationLog.setDetail(String.format("operation:%s\tcontent:%s", operation, msg.getContent()));
-      operationLog.setOperator(msg.getAppAuth().getName());
+      operationLog.setOperator(msg.getUser());
       operationLog.setTitle(msg.getJobName());
       operationLog.setRefer(msg.getJobType());
     } else if (obj instanceof JobProtos.RestModifyJobRequest) {
@@ -93,7 +93,7 @@ public class OperationLogInterceptor implements MethodInterceptor {
       String operation = OperationInfo.valueOf("modifyJobDependency".toUpperCase()).getDescription();
       Job job = this.jobMapper.selectByPrimaryKey(msg.getJobId());
       operationLog.setDetail(String.format("operation:%s\tcontent:%s", operation, job.getContent()));
-      operationLog.setOperator(msg.getAppAuth().getName());
+      operationLog.setOperator(msg.getUser());
       operationLog.setTitle(job.getJobName());
       operationLog.setRefer(String.valueOf(msg.getJobId()));
     } else if (obj instanceof JobProtos.RestModifyJobScheduleExpRequest) {
@@ -101,7 +101,7 @@ public class OperationLogInterceptor implements MethodInterceptor {
       String operation = OperationInfo.valueOf("modifyJobScheduleExp".toUpperCase()).getDescription();
       Job job = this.jobMapper.selectByPrimaryKey(msg.getJobId());
       operationLog.setDetail(String.format("operation:%s\tcontent:%s", operation, job.getContent()));
-      operationLog.setOperator(msg.getAppAuth().getName());
+      operationLog.setOperator(msg.getUser());
       operationLog.setTitle(job.getJobName());
       operationLog.setRefer(String.valueOf(msg.getJobId()));
     } else if (obj instanceof JobProtos.RestModifyJobStatusRequest) {
@@ -109,7 +109,7 @@ public class OperationLogInterceptor implements MethodInterceptor {
       String operation = OperationInfo.valueOf("modifyJobStatus".toUpperCase()).getDescription();
       Job job = this.jobMapper.selectByPrimaryKey(msg.getJobId());
       operationLog.setDetail(String.format("operation:%s\tcontent:%s", operation, job.getContent()));
-      operationLog.setOperator(msg.getAppAuth().getName());
+      operationLog.setOperator(msg.getUser());
       operationLog.setTitle(job.getJobName());
       operationLog.setRefer(String.valueOf(msg.getJobId()));
     }
