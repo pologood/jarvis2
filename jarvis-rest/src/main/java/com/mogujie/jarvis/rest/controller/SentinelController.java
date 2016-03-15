@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -87,7 +88,7 @@ public class SentinelController extends AbstractController {
     @Produces(MediaType.APPLICATION_JSON)
     public ResponseParams executeSql(@FormParam("token") String appToken, @FormParam("name") String appName, @FormParam("time") long time,
             @FormParam("content") String content, @FormParam("executor") String user, @FormParam("jobName") String jobName,
-            @FormParam("jobType") String jobType, @FormParam("groupId") Integer groupId) {
+            @FormParam("jobType") String jobType, @FormParam("groupId") @DefaultValue("1") Integer groupId) {
         LOGGER.debug("提交job任务");
         try {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
