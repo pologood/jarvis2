@@ -49,7 +49,6 @@ import com.mogujie.jarvis.dto.generate.JobScheduleExpressionExample;
 import com.mogujie.jarvis.protocol.JobScheduleExpressionEntryProtos.ScheduleExpressionEntry;
 import com.mogujie.jarvis.server.domain.JobDependencyEntry;
 import com.mogujie.jarvis.server.domain.JobEntry;
-import com.mogujie.jarvis.server.interceptor.OperationLog;
 
 /**
  * @author wuya, muming
@@ -190,7 +189,6 @@ public class JobService {
         }
     }
 
-    @OperationLog
     public void updateStatus(long jobId, String user, int status) {
         Job record = jobMapper.selectByPrimaryKey(jobId);
         record.setStatus(status);

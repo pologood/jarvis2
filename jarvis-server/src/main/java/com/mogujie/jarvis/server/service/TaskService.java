@@ -29,7 +29,6 @@ import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.dto.generate.Task;
 import com.mogujie.jarvis.dto.generate.TaskExample;
 import com.mogujie.jarvis.dto.generate.TaskHistory;
-import com.mogujie.jarvis.server.interceptor.OperationLog;
 
 /**
  * @author guangming
@@ -122,7 +121,6 @@ public class TaskService {
         return record.getTaskId();
     }
 
-//    @OperationLog
     public long insertSelective(Task record) {
         taskMapper.insertSelective(record);
         return record.getTaskId();
@@ -208,7 +206,6 @@ public class TaskService {
         updateStatusWithEnd(taskId, status, null);
     }
 
-    @OperationLog
     public void updateStatusWithEnd(long taskId, TaskStatus status, String reason) {
         Task task = new Task();
         task.setTaskId(taskId);
