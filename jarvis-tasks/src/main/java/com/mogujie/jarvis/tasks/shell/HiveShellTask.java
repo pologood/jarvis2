@@ -21,6 +21,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.configuration.Configuration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.joda.time.DateTime;
 
 import com.github.stuxuhai.jpinyin.PinyinFormat;
 import com.github.stuxuhai.jpinyin.PinyinHelper;
@@ -83,7 +84,8 @@ public class HiveShellTask extends ShellTask {
         sb.append("set mapred.job.name=" + task.getTaskName() + ";");
         // 打印列名的时候不打印表名，否则xray无法显示数据
         sb.append("set hive.resultset.use.unique.column.names=false;");
-        sb.append(MoguAnnotationUtils.removeAnnotation(HiveScriptParamUtils.parse(getContent(task), task.getDataTime())));
+        sb.append(MoguAnnotationUtils
+                .removeAnnotation(HiveScriptParamUtils.parse(replaceTmpTableName(getContent(task), task.getDataTime()), task.getDataTime())));
         sb.append("\"");
 
         return sb.toString();
@@ -169,6 +171,16 @@ public class HiveShellTask extends ShellTask {
         }
 
         return result;
+    }
+
+    /**
+     * 替换临时表变量: $tmptable -> xray${yyyyMMdd}
+     * @param hql
+     * @param dataTime
+     * @return
+     */
+    private String replaceTmpTableName(String hql, DateTime dataTime) {
+        return hql.replace("$tmptable", "xray" + dataTime.toString("yyyyMMdd"));
     }
 
     private String match(Pattern pattern, int group, String line) {
