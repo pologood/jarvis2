@@ -6,7 +6,7 @@
  * Create Date: 2015年6月17日 下午1:07:46
  */
 
-package com.mogujie.jarvis.core.util;
+package com.mogujie.jarvis.tasks.util;
 
 import java.util.List;
 import java.util.Map;
@@ -19,7 +19,8 @@ import org.apache.commons.configuration.reloading.FileChangedReloadingStrategy;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.mogujie.jarvis.core.domain.HiveTaskEntity;
+import com.mogujie.jarvis.tasks.domain.HiveTaskEntity;
+
 
 /**
  * @author wuya

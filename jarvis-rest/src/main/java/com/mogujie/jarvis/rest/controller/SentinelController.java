@@ -32,13 +32,11 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mogujie.jarvis.core.domain.AkkaType;
-import com.mogujie.jarvis.core.domain.HiveTaskEntity;
 import com.mogujie.jarvis.core.domain.JobContentType;
 import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.core.domain.StreamType;
 import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.util.ConfigUtils;
-import com.mogujie.jarvis.core.util.HiveConfigUtils;
 import com.mogujie.jarvis.core.util.IdUtils;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
 import com.mogujie.jarvis.protocol.JobProtos.RestSubmitJobRequest;
@@ -100,9 +98,7 @@ public class SentinelController extends AbstractController {
             Preconditions.checkNotNull(jobName, "jobName不能为null");
 
             if (user == null) {
-                HiveTaskEntity entity = HiveConfigUtils.getHiveJobEntry(appName);
-                Preconditions.checkNotNull(entity, "job-hive.xml找不到name=" + appName + "的app");
-                user = entity.getUser();
+                user = "";
             }
 
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();

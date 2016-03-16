@@ -8,10 +8,10 @@ public final class ReportTaskProtos {
   public static void registerAllExtensions(
       com.google.protobuf.ExtensionRegistry registry) {
   }
-  public interface WorkerReportTaskContentRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:WorkerReportTaskContentRequest)
-      com.google.protobuf.MessageOrBuilder {
+  public interface WorkerReportTaskUpdateRequestOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required string full_id = 1;
     /**
      * <code>required string full_id = 1;</code>
      */
@@ -26,6 +26,7 @@ public final class ReportTaskProtos {
     com.google.protobuf.ByteString
         getFullIdBytes();
 
+    // required string content = 2;
     /**
      * <code>required string content = 2;</code>
      */
@@ -39,27 +40,41 @@ public final class ReportTaskProtos {
      */
     com.google.protobuf.ByteString
         getContentBytes();
+
+    // required string user = 3;
+    /**
+     * <code>required string user = 3;</code>
+     */
+    boolean hasUser();
+    /**
+     * <code>required string user = 3;</code>
+     */
+    java.lang.String getUser();
+    /**
+     * <code>required string user = 3;</code>
+     */
+    com.google.protobuf.ByteString
+        getUserBytes();
   }
   /**
-   * Protobuf type {@code WorkerReportTaskContentRequest}
+   * Protobuf type {@code WorkerReportTaskUpdateRequest}
    */
-  public static final class WorkerReportTaskContentRequest extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:WorkerReportTaskContentRequest)
-      WorkerReportTaskContentRequestOrBuilder {
-    // Use WorkerReportTaskContentRequest.newBuilder() to construct.
-    private WorkerReportTaskContentRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+  public static final class WorkerReportTaskUpdateRequest extends
+      com.google.protobuf.GeneratedMessage
+      implements WorkerReportTaskUpdateRequestOrBuilder {
+    // Use WorkerReportTaskUpdateRequest.newBuilder() to construct.
+    private WorkerReportTaskUpdateRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
       this.unknownFields = builder.getUnknownFields();
     }
-    private WorkerReportTaskContentRequest(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+    private WorkerReportTaskUpdateRequest(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
 
-    private static final WorkerReportTaskContentRequest defaultInstance;
-    public static WorkerReportTaskContentRequest getDefaultInstance() {
+    private static final WorkerReportTaskUpdateRequest defaultInstance;
+    public static WorkerReportTaskUpdateRequest getDefaultInstance() {
       return defaultInstance;
     }
 
-    public WorkerReportTaskContentRequest getDefaultInstanceForType() {
+    public WorkerReportTaskUpdateRequest getDefaultInstanceForType() {
       return defaultInstance;
     }
 
@@ -69,7 +84,7 @@ public final class ReportTaskProtos {
         getUnknownFields() {
       return this.unknownFields;
     }
-    private WorkerReportTaskContentRequest(
+    private WorkerReportTaskUpdateRequest(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -93,15 +108,18 @@ public final class ReportTaskProtos {
               break;
             }
             case 10: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              fullId_ = bs;
+              fullId_ = input.readBytes();
               break;
             }
             case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              content_ = bs;
+              content_ = input.readBytes();
+              break;
+            }
+            case 26: {
+              bitField0_ |= 0x00000004;
+              user_ = input.readBytes();
               break;
             }
           }
@@ -118,32 +136,33 @@ public final class ReportTaskProtos {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.mogujie.jarvis.protocol.ReportTaskProtos.internal_static_WorkerReportTaskContentRequest_descriptor;
+      return com.mogujie.jarvis.protocol.ReportTaskProtos.internal_static_WorkerReportTaskUpdateRequest_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.mogujie.jarvis.protocol.ReportTaskProtos.internal_static_WorkerReportTaskContentRequest_fieldAccessorTable
+      return com.mogujie.jarvis.protocol.ReportTaskProtos.internal_static_WorkerReportTaskUpdateRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskContentRequest.class, com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskContentRequest.Builder.class);
+              com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskUpdateRequest.class, com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskUpdateRequest.Builder.class);
     }
 
-    public static com.google.protobuf.Parser<WorkerReportTaskContentRequest> PARSER =
-        new com.google.protobuf.AbstractParser<WorkerReportTaskContentRequest>() {
-      public WorkerReportTaskContentRequest parsePartialFrom(
+    public static com.google.protobuf.Parser<WorkerReportTaskUpdateRequest> PARSER =
+        new com.google.protobuf.AbstractParser<WorkerReportTaskUpdateRequest>() {
+      public WorkerReportTaskUpdateRequest parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new WorkerReportTaskContentRequest(input, extensionRegistry);
+        return new WorkerReportTaskUpdateRequest(input, extensionRegistry);
       }
     };
 
     @java.lang.Override
-    public com.google.protobuf.Parser<WorkerReportTaskContentRequest> getParserForType() {
+    public com.google.protobuf.Parser<WorkerReportTaskUpdateRequest> getParserForType() {
       return PARSER;
     }
 
     private int bitField0_;
+    // required string full_id = 1;
     public static final int FULL_ID_FIELD_NUMBER = 1;
     private java.lang.Object fullId_;
     /**
@@ -186,6 +205,7 @@ public final class ReportTaskProtos {
       }
     }
 
+    // required string content = 2;
     public static final int CONTENT_FIELD_NUMBER = 2;
     private java.lang.Object content_;
     /**
@@ -228,21 +248,68 @@ public final class ReportTaskProtos {
       }
     }
 
+    // required string user = 3;
+    public static final int USER_FIELD_NUMBER = 3;
+    private java.lang.Object user_;
+    /**
+     * <code>required string user = 3;</code>
+     */
+    public boolean hasUser() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>required string user = 3;</code>
+     */
+    public java.lang.String getUser() {
+      java.lang.Object ref = user_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          user_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string user = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+        getUserBytes() {
+      java.lang.Object ref = user_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        user_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private void initFields() {
       fullId_ = "";
       content_ = "";
+      user_ = "";
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasFullId()) {
         memoizedIsInitialized = 0;
         return false;
       }
       if (!hasContent()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasUser()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -258,6 +325,9 @@ public final class ReportTaskProtos {
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         output.writeBytes(2, getContentBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBytes(3, getUserBytes());
       }
       getUnknownFields().writeTo(output);
     }
@@ -276,6 +346,10 @@ public final class ReportTaskProtos {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(2, getContentBytes());
       }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(3, getUserBytes());
+      }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
       return size;
@@ -288,53 +362,53 @@ public final class ReportTaskProtos {
       return super.writeReplace();
     }
 
-    public static com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskContentRequest parseFrom(
+    public static com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskUpdateRequest parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskContentRequest parseFrom(
+    public static com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskUpdateRequest parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskContentRequest parseFrom(byte[] data)
+    public static com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskUpdateRequest parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskContentRequest parseFrom(
+    public static com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskUpdateRequest parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskContentRequest parseFrom(java.io.InputStream input)
+    public static com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskUpdateRequest parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskContentRequest parseFrom(
+    public static com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskUpdateRequest parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseFrom(input, extensionRegistry);
     }
-    public static com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskContentRequest parseDelimitedFrom(java.io.InputStream input)
+    public static com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskUpdateRequest parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input);
     }
-    public static com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskContentRequest parseDelimitedFrom(
+    public static com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskUpdateRequest parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input, extensionRegistry);
     }
-    public static com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskContentRequest parseFrom(
+    public static com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskUpdateRequest parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskContentRequest parseFrom(
+    public static com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskUpdateRequest parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -343,7 +417,7 @@ public final class ReportTaskProtos {
 
     public static Builder newBuilder() { return Builder.create(); }
     public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskContentRequest prototype) {
+    public static Builder newBuilder(com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskUpdateRequest prototype) {
       return newBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() { return newBuilder(this); }
@@ -355,25 +429,24 @@ public final class ReportTaskProtos {
       return builder;
     }
     /**
-     * Protobuf type {@code WorkerReportTaskContentRequest}
+     * Protobuf type {@code WorkerReportTaskUpdateRequest}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:WorkerReportTaskContentRequest)
-        com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskContentRequestOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskUpdateRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.mogujie.jarvis.protocol.ReportTaskProtos.internal_static_WorkerReportTaskContentRequest_descriptor;
+        return com.mogujie.jarvis.protocol.ReportTaskProtos.internal_static_WorkerReportTaskUpdateRequest_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.mogujie.jarvis.protocol.ReportTaskProtos.internal_static_WorkerReportTaskContentRequest_fieldAccessorTable
+        return com.mogujie.jarvis.protocol.ReportTaskProtos.internal_static_WorkerReportTaskUpdateRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskContentRequest.class, com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskContentRequest.Builder.class);
+                com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskUpdateRequest.class, com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskUpdateRequest.Builder.class);
       }
 
-      // Construct using com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskContentRequest.newBuilder()
+      // Construct using com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskUpdateRequest.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -397,6 +470,8 @@ public final class ReportTaskProtos {
         bitField0_ = (bitField0_ & ~0x00000001);
         content_ = "";
         bitField0_ = (bitField0_ & ~0x00000002);
+        user_ = "";
+        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
 
@@ -406,23 +481,23 @@ public final class ReportTaskProtos {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.mogujie.jarvis.protocol.ReportTaskProtos.internal_static_WorkerReportTaskContentRequest_descriptor;
+        return com.mogujie.jarvis.protocol.ReportTaskProtos.internal_static_WorkerReportTaskUpdateRequest_descriptor;
       }
 
-      public com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskContentRequest getDefaultInstanceForType() {
-        return com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskContentRequest.getDefaultInstance();
+      public com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskUpdateRequest getDefaultInstanceForType() {
+        return com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskUpdateRequest.getDefaultInstance();
       }
 
-      public com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskContentRequest build() {
-        com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskContentRequest result = buildPartial();
+      public com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskUpdateRequest build() {
+        com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskUpdateRequest result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskContentRequest buildPartial() {
-        com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskContentRequest result = new com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskContentRequest(this);
+      public com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskUpdateRequest buildPartial() {
+        com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskUpdateRequest result = new com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskUpdateRequest(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
@@ -433,22 +508,26 @@ public final class ReportTaskProtos {
           to_bitField0_ |= 0x00000002;
         }
         result.content_ = content_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.user_ = user_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
 
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskContentRequest) {
-          return mergeFrom((com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskContentRequest)other);
+        if (other instanceof com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskUpdateRequest) {
+          return mergeFrom((com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskUpdateRequest)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskContentRequest other) {
-        if (other == com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskContentRequest.getDefaultInstance()) return this;
+      public Builder mergeFrom(com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskUpdateRequest other) {
+        if (other == com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskUpdateRequest.getDefaultInstance()) return this;
         if (other.hasFullId()) {
           bitField0_ |= 0x00000001;
           fullId_ = other.fullId_;
@@ -457,6 +536,11 @@ public final class ReportTaskProtos {
         if (other.hasContent()) {
           bitField0_ |= 0x00000002;
           content_ = other.content_;
+          onChanged();
+        }
+        if (other.hasUser()) {
+          bitField0_ |= 0x00000004;
+          user_ = other.user_;
           onChanged();
         }
         this.mergeUnknownFields(other.getUnknownFields());
@@ -472,6 +556,10 @@ public final class ReportTaskProtos {
           
           return false;
         }
+        if (!hasUser()) {
+          
+          return false;
+        }
         return true;
       }
 
@@ -479,11 +567,11 @@ public final class ReportTaskProtos {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskContentRequest parsedMessage = null;
+        com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskUpdateRequest parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskContentRequest) e.getUnfinishedMessage();
+          parsedMessage = (com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskUpdateRequest) e.getUnfinishedMessage();
           throw e;
         } finally {
           if (parsedMessage != null) {
@@ -494,6 +582,7 @@ public final class ReportTaskProtos {
       }
       private int bitField0_;
 
+      // required string full_id = 1;
       private java.lang.Object fullId_ = "";
       /**
        * <code>required string full_id = 1;</code>
@@ -507,12 +596,9 @@ public final class ReportTaskProtos {
       public java.lang.String getFullId() {
         java.lang.Object ref = fullId_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            fullId_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          fullId_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -570,6 +656,7 @@ public final class ReportTaskProtos {
         return this;
       }
 
+      // required string content = 2;
       private java.lang.Object content_ = "";
       /**
        * <code>required string content = 2;</code>
@@ -583,12 +670,9 @@ public final class ReportTaskProtos {
       public java.lang.String getContent() {
         java.lang.Object ref = content_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            content_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          content_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -646,21 +730,95 @@ public final class ReportTaskProtos {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:WorkerReportTaskContentRequest)
+      // required string user = 3;
+      private java.lang.Object user_ = "";
+      /**
+       * <code>required string user = 3;</code>
+       */
+      public boolean hasUser() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>required string user = 3;</code>
+       */
+      public java.lang.String getUser() {
+        java.lang.Object ref = user_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          user_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string user = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+          getUserBytes() {
+        java.lang.Object ref = user_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          user_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string user = 3;</code>
+       */
+      public Builder setUser(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        user_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string user = 3;</code>
+       */
+      public Builder clearUser() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        user_ = getDefaultInstance().getUser();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string user = 3;</code>
+       */
+      public Builder setUserBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        user_ = value;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:WorkerReportTaskUpdateRequest)
     }
 
     static {
-      defaultInstance = new WorkerReportTaskContentRequest(true);
+      defaultInstance = new WorkerReportTaskUpdateRequest(true);
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:WorkerReportTaskContentRequest)
+    // @@protoc_insertion_point(class_scope:WorkerReportTaskUpdateRequest)
   }
 
-  public interface ServerReportTaskContentResponseOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:ServerReportTaskContentResponse)
-      com.google.protobuf.MessageOrBuilder {
+  public interface ServerReportTaskUpdateResponseOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required bool success = 1;
     /**
      * <code>required bool success = 1;</code>
      */
@@ -670,6 +828,7 @@ public final class ReportTaskProtos {
      */
     boolean getSuccess();
 
+    // optional string message = 2 [default = ""];
     /**
      * <code>optional string message = 2 [default = ""];</code>
      */
@@ -685,25 +844,24 @@ public final class ReportTaskProtos {
         getMessageBytes();
   }
   /**
-   * Protobuf type {@code ServerReportTaskContentResponse}
+   * Protobuf type {@code ServerReportTaskUpdateResponse}
    */
-  public static final class ServerReportTaskContentResponse extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:ServerReportTaskContentResponse)
-      ServerReportTaskContentResponseOrBuilder {
-    // Use ServerReportTaskContentResponse.newBuilder() to construct.
-    private ServerReportTaskContentResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+  public static final class ServerReportTaskUpdateResponse extends
+      com.google.protobuf.GeneratedMessage
+      implements ServerReportTaskUpdateResponseOrBuilder {
+    // Use ServerReportTaskUpdateResponse.newBuilder() to construct.
+    private ServerReportTaskUpdateResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
       this.unknownFields = builder.getUnknownFields();
     }
-    private ServerReportTaskContentResponse(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+    private ServerReportTaskUpdateResponse(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
 
-    private static final ServerReportTaskContentResponse defaultInstance;
-    public static ServerReportTaskContentResponse getDefaultInstance() {
+    private static final ServerReportTaskUpdateResponse defaultInstance;
+    public static ServerReportTaskUpdateResponse getDefaultInstance() {
       return defaultInstance;
     }
 
-    public ServerReportTaskContentResponse getDefaultInstanceForType() {
+    public ServerReportTaskUpdateResponse getDefaultInstanceForType() {
       return defaultInstance;
     }
 
@@ -713,7 +871,7 @@ public final class ReportTaskProtos {
         getUnknownFields() {
       return this.unknownFields;
     }
-    private ServerReportTaskContentResponse(
+    private ServerReportTaskUpdateResponse(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -742,9 +900,8 @@ public final class ReportTaskProtos {
               break;
             }
             case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              message_ = bs;
+              message_ = input.readBytes();
               break;
             }
           }
@@ -761,32 +918,33 @@ public final class ReportTaskProtos {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.mogujie.jarvis.protocol.ReportTaskProtos.internal_static_ServerReportTaskContentResponse_descriptor;
+      return com.mogujie.jarvis.protocol.ReportTaskProtos.internal_static_ServerReportTaskUpdateResponse_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.mogujie.jarvis.protocol.ReportTaskProtos.internal_static_ServerReportTaskContentResponse_fieldAccessorTable
+      return com.mogujie.jarvis.protocol.ReportTaskProtos.internal_static_ServerReportTaskUpdateResponse_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskContentResponse.class, com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskContentResponse.Builder.class);
+              com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskUpdateResponse.class, com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskUpdateResponse.Builder.class);
     }
 
-    public static com.google.protobuf.Parser<ServerReportTaskContentResponse> PARSER =
-        new com.google.protobuf.AbstractParser<ServerReportTaskContentResponse>() {
-      public ServerReportTaskContentResponse parsePartialFrom(
+    public static com.google.protobuf.Parser<ServerReportTaskUpdateResponse> PARSER =
+        new com.google.protobuf.AbstractParser<ServerReportTaskUpdateResponse>() {
+      public ServerReportTaskUpdateResponse parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new ServerReportTaskContentResponse(input, extensionRegistry);
+        return new ServerReportTaskUpdateResponse(input, extensionRegistry);
       }
     };
 
     @java.lang.Override
-    public com.google.protobuf.Parser<ServerReportTaskContentResponse> getParserForType() {
+    public com.google.protobuf.Parser<ServerReportTaskUpdateResponse> getParserForType() {
       return PARSER;
     }
 
     private int bitField0_;
+    // required bool success = 1;
     public static final int SUCCESS_FIELD_NUMBER = 1;
     private boolean success_;
     /**
@@ -802,6 +960,7 @@ public final class ReportTaskProtos {
       return success_;
     }
 
+    // optional string message = 2 [default = ""];
     public static final int MESSAGE_FIELD_NUMBER = 2;
     private java.lang.Object message_;
     /**
@@ -851,8 +1010,7 @@ public final class ReportTaskProtos {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasSuccess()) {
         memoizedIsInitialized = 0;
@@ -900,53 +1058,53 @@ public final class ReportTaskProtos {
       return super.writeReplace();
     }
 
-    public static com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskContentResponse parseFrom(
+    public static com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskUpdateResponse parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskContentResponse parseFrom(
+    public static com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskUpdateResponse parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskContentResponse parseFrom(byte[] data)
+    public static com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskUpdateResponse parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskContentResponse parseFrom(
+    public static com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskUpdateResponse parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskContentResponse parseFrom(java.io.InputStream input)
+    public static com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskUpdateResponse parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskContentResponse parseFrom(
+    public static com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskUpdateResponse parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseFrom(input, extensionRegistry);
     }
-    public static com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskContentResponse parseDelimitedFrom(java.io.InputStream input)
+    public static com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskUpdateResponse parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input);
     }
-    public static com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskContentResponse parseDelimitedFrom(
+    public static com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskUpdateResponse parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input, extensionRegistry);
     }
-    public static com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskContentResponse parseFrom(
+    public static com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskUpdateResponse parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskContentResponse parseFrom(
+    public static com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskUpdateResponse parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -955,7 +1113,7 @@ public final class ReportTaskProtos {
 
     public static Builder newBuilder() { return Builder.create(); }
     public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskContentResponse prototype) {
+    public static Builder newBuilder(com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskUpdateResponse prototype) {
       return newBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() { return newBuilder(this); }
@@ -967,25 +1125,24 @@ public final class ReportTaskProtos {
       return builder;
     }
     /**
-     * Protobuf type {@code ServerReportTaskContentResponse}
+     * Protobuf type {@code ServerReportTaskUpdateResponse}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:ServerReportTaskContentResponse)
-        com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskContentResponseOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskUpdateResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.mogujie.jarvis.protocol.ReportTaskProtos.internal_static_ServerReportTaskContentResponse_descriptor;
+        return com.mogujie.jarvis.protocol.ReportTaskProtos.internal_static_ServerReportTaskUpdateResponse_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.mogujie.jarvis.protocol.ReportTaskProtos.internal_static_ServerReportTaskContentResponse_fieldAccessorTable
+        return com.mogujie.jarvis.protocol.ReportTaskProtos.internal_static_ServerReportTaskUpdateResponse_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskContentResponse.class, com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskContentResponse.Builder.class);
+                com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskUpdateResponse.class, com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskUpdateResponse.Builder.class);
       }
 
-      // Construct using com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskContentResponse.newBuilder()
+      // Construct using com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskUpdateResponse.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -1018,23 +1175,23 @@ public final class ReportTaskProtos {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.mogujie.jarvis.protocol.ReportTaskProtos.internal_static_ServerReportTaskContentResponse_descriptor;
+        return com.mogujie.jarvis.protocol.ReportTaskProtos.internal_static_ServerReportTaskUpdateResponse_descriptor;
       }
 
-      public com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskContentResponse getDefaultInstanceForType() {
-        return com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskContentResponse.getDefaultInstance();
+      public com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskUpdateResponse getDefaultInstanceForType() {
+        return com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskUpdateResponse.getDefaultInstance();
       }
 
-      public com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskContentResponse build() {
-        com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskContentResponse result = buildPartial();
+      public com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskUpdateResponse build() {
+        com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskUpdateResponse result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskContentResponse buildPartial() {
-        com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskContentResponse result = new com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskContentResponse(this);
+      public com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskUpdateResponse buildPartial() {
+        com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskUpdateResponse result = new com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskUpdateResponse(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
@@ -1051,16 +1208,16 @@ public final class ReportTaskProtos {
       }
 
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskContentResponse) {
-          return mergeFrom((com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskContentResponse)other);
+        if (other instanceof com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskUpdateResponse) {
+          return mergeFrom((com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskUpdateResponse)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskContentResponse other) {
-        if (other == com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskContentResponse.getDefaultInstance()) return this;
+      public Builder mergeFrom(com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskUpdateResponse other) {
+        if (other == com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskUpdateResponse.getDefaultInstance()) return this;
         if (other.hasSuccess()) {
           setSuccess(other.getSuccess());
         }
@@ -1085,11 +1242,11 @@ public final class ReportTaskProtos {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskContentResponse parsedMessage = null;
+        com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskUpdateResponse parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskContentResponse) e.getUnfinishedMessage();
+          parsedMessage = (com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskUpdateResponse) e.getUnfinishedMessage();
           throw e;
         } finally {
           if (parsedMessage != null) {
@@ -1100,6 +1257,7 @@ public final class ReportTaskProtos {
       }
       private int bitField0_;
 
+      // required bool success = 1;
       private boolean success_ ;
       /**
        * <code>required bool success = 1;</code>
@@ -1132,6 +1290,7 @@ public final class ReportTaskProtos {
         return this;
       }
 
+      // optional string message = 2 [default = ""];
       private java.lang.Object message_ = "";
       /**
        * <code>optional string message = 2 [default = ""];</code>
@@ -1145,12 +1304,9 @@ public final class ReportTaskProtos {
       public java.lang.String getMessage() {
         java.lang.Object ref = message_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            message_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          message_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -1208,21 +1364,21 @@ public final class ReportTaskProtos {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:ServerReportTaskContentResponse)
+      // @@protoc_insertion_point(builder_scope:ServerReportTaskUpdateResponse)
     }
 
     static {
-      defaultInstance = new ServerReportTaskContentResponse(true);
+      defaultInstance = new ServerReportTaskUpdateResponse(true);
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:ServerReportTaskContentResponse)
+    // @@protoc_insertion_point(class_scope:ServerReportTaskUpdateResponse)
   }
 
-  public interface WorkerReportTaskStatusRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:WorkerReportTaskStatusRequest)
-      com.google.protobuf.MessageOrBuilder {
+  public interface WorkerReportTaskStatusRequestOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required string full_id = 1;
     /**
      * <code>required string full_id = 1;</code>
      */
@@ -1237,6 +1393,7 @@ public final class ReportTaskProtos {
     com.google.protobuf.ByteString
         getFullIdBytes();
 
+    // required int32 status = 2;
     /**
      * <code>required int32 status = 2;</code>
      */
@@ -1246,6 +1403,7 @@ public final class ReportTaskProtos {
      */
     int getStatus();
 
+    // required int64 timestamp = 3;
     /**
      * <code>required int64 timestamp = 3;</code>
      */
@@ -1259,9 +1417,8 @@ public final class ReportTaskProtos {
    * Protobuf type {@code WorkerReportTaskStatusRequest}
    */
   public static final class WorkerReportTaskStatusRequest extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:WorkerReportTaskStatusRequest)
-      WorkerReportTaskStatusRequestOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements WorkerReportTaskStatusRequestOrBuilder {
     // Use WorkerReportTaskStatusRequest.newBuilder() to construct.
     private WorkerReportTaskStatusRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -1308,9 +1465,8 @@ public final class ReportTaskProtos {
               break;
             }
             case 10: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              fullId_ = bs;
+              fullId_ = input.readBytes();
               break;
             }
             case 16: {
@@ -1363,6 +1519,7 @@ public final class ReportTaskProtos {
     }
 
     private int bitField0_;
+    // required string full_id = 1;
     public static final int FULL_ID_FIELD_NUMBER = 1;
     private java.lang.Object fullId_;
     /**
@@ -1405,6 +1562,7 @@ public final class ReportTaskProtos {
       }
     }
 
+    // required int32 status = 2;
     public static final int STATUS_FIELD_NUMBER = 2;
     private int status_;
     /**
@@ -1420,6 +1578,7 @@ public final class ReportTaskProtos {
       return status_;
     }
 
+    // required int64 timestamp = 3;
     public static final int TIMESTAMP_FIELD_NUMBER = 3;
     private long timestamp_;
     /**
@@ -1443,8 +1602,7 @@ public final class ReportTaskProtos {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasFullId()) {
         memoizedIsInitialized = 0;
@@ -1577,9 +1735,8 @@ public final class ReportTaskProtos {
      * Protobuf type {@code WorkerReportTaskStatusRequest}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:WorkerReportTaskStatusRequest)
-        com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskStatusRequestOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskStatusRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mogujie.jarvis.protocol.ReportTaskProtos.internal_static_WorkerReportTaskStatusRequest_descriptor;
@@ -1724,6 +1881,7 @@ public final class ReportTaskProtos {
       }
       private int bitField0_;
 
+      // required string full_id = 1;
       private java.lang.Object fullId_ = "";
       /**
        * <code>required string full_id = 1;</code>
@@ -1737,12 +1895,9 @@ public final class ReportTaskProtos {
       public java.lang.String getFullId() {
         java.lang.Object ref = fullId_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            fullId_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          fullId_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -1800,6 +1955,7 @@ public final class ReportTaskProtos {
         return this;
       }
 
+      // required int32 status = 2;
       private int status_ ;
       /**
        * <code>required int32 status = 2;</code>
@@ -1832,6 +1988,7 @@ public final class ReportTaskProtos {
         return this;
       }
 
+      // required int64 timestamp = 3;
       private long timestamp_ ;
       /**
        * <code>required int64 timestamp = 3;</code>
@@ -1875,10 +2032,10 @@ public final class ReportTaskProtos {
     // @@protoc_insertion_point(class_scope:WorkerReportTaskStatusRequest)
   }
 
-  public interface ServerReportTaskStatusResponseOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:ServerReportTaskStatusResponse)
-      com.google.protobuf.MessageOrBuilder {
+  public interface ServerReportTaskStatusResponseOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required bool success = 1;
     /**
      * <code>required bool success = 1;</code>
      */
@@ -1888,6 +2045,7 @@ public final class ReportTaskProtos {
      */
     boolean getSuccess();
 
+    // optional string message = 2 [default = ""];
     /**
      * <code>optional string message = 2 [default = ""];</code>
      */
@@ -1906,9 +2064,8 @@ public final class ReportTaskProtos {
    * Protobuf type {@code ServerReportTaskStatusResponse}
    */
   public static final class ServerReportTaskStatusResponse extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:ServerReportTaskStatusResponse)
-      ServerReportTaskStatusResponseOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements ServerReportTaskStatusResponseOrBuilder {
     // Use ServerReportTaskStatusResponse.newBuilder() to construct.
     private ServerReportTaskStatusResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -1960,9 +2117,8 @@ public final class ReportTaskProtos {
               break;
             }
             case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              message_ = bs;
+              message_ = input.readBytes();
               break;
             }
           }
@@ -2005,6 +2161,7 @@ public final class ReportTaskProtos {
     }
 
     private int bitField0_;
+    // required bool success = 1;
     public static final int SUCCESS_FIELD_NUMBER = 1;
     private boolean success_;
     /**
@@ -2020,6 +2177,7 @@ public final class ReportTaskProtos {
       return success_;
     }
 
+    // optional string message = 2 [default = ""];
     public static final int MESSAGE_FIELD_NUMBER = 2;
     private java.lang.Object message_;
     /**
@@ -2069,8 +2227,7 @@ public final class ReportTaskProtos {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasSuccess()) {
         memoizedIsInitialized = 0;
@@ -2188,9 +2345,8 @@ public final class ReportTaskProtos {
      * Protobuf type {@code ServerReportTaskStatusResponse}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:ServerReportTaskStatusResponse)
-        com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskStatusResponseOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskStatusResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mogujie.jarvis.protocol.ReportTaskProtos.internal_static_ServerReportTaskStatusResponse_descriptor;
@@ -2318,6 +2474,7 @@ public final class ReportTaskProtos {
       }
       private int bitField0_;
 
+      // required bool success = 1;
       private boolean success_ ;
       /**
        * <code>required bool success = 1;</code>
@@ -2350,6 +2507,7 @@ public final class ReportTaskProtos {
         return this;
       }
 
+      // optional string message = 2 [default = ""];
       private java.lang.Object message_ = "";
       /**
        * <code>optional string message = 2 [default = ""];</code>
@@ -2363,12 +2521,9 @@ public final class ReportTaskProtos {
       public java.lang.String getMessage() {
         java.lang.Object ref = message_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            message_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          message_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -2437,10 +2592,10 @@ public final class ReportTaskProtos {
     // @@protoc_insertion_point(class_scope:ServerReportTaskStatusResponse)
   }
 
-  public interface WorkerReportTaskProgressRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:WorkerReportTaskProgressRequest)
-      com.google.protobuf.MessageOrBuilder {
+  public interface WorkerReportTaskProgressRequestOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required string full_id = 1;
     /**
      * <code>required string full_id = 1;</code>
      */
@@ -2455,6 +2610,7 @@ public final class ReportTaskProtos {
     com.google.protobuf.ByteString
         getFullIdBytes();
 
+    // required float progress = 2;
     /**
      * <code>required float progress = 2;</code>
      */
@@ -2468,9 +2624,8 @@ public final class ReportTaskProtos {
    * Protobuf type {@code WorkerReportTaskProgressRequest}
    */
   public static final class WorkerReportTaskProgressRequest extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:WorkerReportTaskProgressRequest)
-      WorkerReportTaskProgressRequestOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements WorkerReportTaskProgressRequestOrBuilder {
     // Use WorkerReportTaskProgressRequest.newBuilder() to construct.
     private WorkerReportTaskProgressRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -2517,9 +2672,8 @@ public final class ReportTaskProtos {
               break;
             }
             case 10: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              fullId_ = bs;
+              fullId_ = input.readBytes();
               break;
             }
             case 21: {
@@ -2567,6 +2721,7 @@ public final class ReportTaskProtos {
     }
 
     private int bitField0_;
+    // required string full_id = 1;
     public static final int FULL_ID_FIELD_NUMBER = 1;
     private java.lang.Object fullId_;
     /**
@@ -2609,6 +2764,7 @@ public final class ReportTaskProtos {
       }
     }
 
+    // required float progress = 2;
     public static final int PROGRESS_FIELD_NUMBER = 2;
     private float progress_;
     /**
@@ -2631,8 +2787,7 @@ public final class ReportTaskProtos {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasFullId()) {
         memoizedIsInitialized = 0;
@@ -2754,9 +2909,8 @@ public final class ReportTaskProtos {
      * Protobuf type {@code WorkerReportTaskProgressRequest}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:WorkerReportTaskProgressRequest)
-        com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskProgressRequestOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskProgressRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mogujie.jarvis.protocol.ReportTaskProtos.internal_static_WorkerReportTaskProgressRequest_descriptor;
@@ -2888,6 +3042,7 @@ public final class ReportTaskProtos {
       }
       private int bitField0_;
 
+      // required string full_id = 1;
       private java.lang.Object fullId_ = "";
       /**
        * <code>required string full_id = 1;</code>
@@ -2901,12 +3056,9 @@ public final class ReportTaskProtos {
       public java.lang.String getFullId() {
         java.lang.Object ref = fullId_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            fullId_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          fullId_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -2964,6 +3116,7 @@ public final class ReportTaskProtos {
         return this;
       }
 
+      // required float progress = 2;
       private float progress_ ;
       /**
        * <code>required float progress = 2;</code>
@@ -3007,10 +3160,10 @@ public final class ReportTaskProtos {
     // @@protoc_insertion_point(class_scope:WorkerReportTaskProgressRequest)
   }
 
-  public interface ServerReportTaskProgressResponseOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:ServerReportTaskProgressResponse)
-      com.google.protobuf.MessageOrBuilder {
+  public interface ServerReportTaskProgressResponseOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required bool success = 1;
     /**
      * <code>required bool success = 1;</code>
      */
@@ -3020,6 +3173,7 @@ public final class ReportTaskProtos {
      */
     boolean getSuccess();
 
+    // optional string message = 2 [default = ""];
     /**
      * <code>optional string message = 2 [default = ""];</code>
      */
@@ -3038,9 +3192,8 @@ public final class ReportTaskProtos {
    * Protobuf type {@code ServerReportTaskProgressResponse}
    */
   public static final class ServerReportTaskProgressResponse extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:ServerReportTaskProgressResponse)
-      ServerReportTaskProgressResponseOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements ServerReportTaskProgressResponseOrBuilder {
     // Use ServerReportTaskProgressResponse.newBuilder() to construct.
     private ServerReportTaskProgressResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -3092,9 +3245,8 @@ public final class ReportTaskProtos {
               break;
             }
             case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              message_ = bs;
+              message_ = input.readBytes();
               break;
             }
           }
@@ -3137,6 +3289,7 @@ public final class ReportTaskProtos {
     }
 
     private int bitField0_;
+    // required bool success = 1;
     public static final int SUCCESS_FIELD_NUMBER = 1;
     private boolean success_;
     /**
@@ -3152,6 +3305,7 @@ public final class ReportTaskProtos {
       return success_;
     }
 
+    // optional string message = 2 [default = ""];
     public static final int MESSAGE_FIELD_NUMBER = 2;
     private java.lang.Object message_;
     /**
@@ -3201,8 +3355,7 @@ public final class ReportTaskProtos {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasSuccess()) {
         memoizedIsInitialized = 0;
@@ -3320,9 +3473,8 @@ public final class ReportTaskProtos {
      * Protobuf type {@code ServerReportTaskProgressResponse}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:ServerReportTaskProgressResponse)
-        com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskProgressResponseOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskProgressResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mogujie.jarvis.protocol.ReportTaskProtos.internal_static_ServerReportTaskProgressResponse_descriptor;
@@ -3450,6 +3602,7 @@ public final class ReportTaskProtos {
       }
       private int bitField0_;
 
+      // required bool success = 1;
       private boolean success_ ;
       /**
        * <code>required bool success = 1;</code>
@@ -3482,6 +3635,7 @@ public final class ReportTaskProtos {
         return this;
       }
 
+      // optional string message = 2 [default = ""];
       private java.lang.Object message_ = "";
       /**
        * <code>optional string message = 2 [default = ""];</code>
@@ -3495,12 +3649,9 @@ public final class ReportTaskProtos {
       public java.lang.String getMessage() {
         java.lang.Object ref = message_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            message_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          message_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -3569,32 +3720,32 @@ public final class ReportTaskProtos {
     // @@protoc_insertion_point(class_scope:ServerReportTaskProgressResponse)
   }
 
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_WorkerReportTaskContentRequest_descriptor;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_WorkerReportTaskUpdateRequest_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_WorkerReportTaskContentRequest_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_ServerReportTaskContentResponse_descriptor;
+      internal_static_WorkerReportTaskUpdateRequest_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_ServerReportTaskUpdateResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_ServerReportTaskContentResponse_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
+      internal_static_ServerReportTaskUpdateResponse_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
     internal_static_WorkerReportTaskStatusRequest_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_WorkerReportTaskStatusRequest_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
+  private static com.google.protobuf.Descriptors.Descriptor
     internal_static_ServerReportTaskStatusResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_ServerReportTaskStatusResponse_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
+  private static com.google.protobuf.Descriptors.Descriptor
     internal_static_WorkerReportTaskProgressRequest_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_WorkerReportTaskProgressRequest_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
+  private static com.google.protobuf.Descriptors.Descriptor
     internal_static_ServerReportTaskProgressResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -3608,71 +3759,70 @@ public final class ReportTaskProtos {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\021report_task.proto\032\017map_entry.proto\"B\n\036" +
-      "WorkerReportTaskContentRequest\022\017\n\007full_i" +
-      "d\030\001 \002(\t\022\017\n\007content\030\002 \002(\t\"E\n\037ServerReport" +
-      "TaskContentResponse\022\017\n\007success\030\001 \002(\010\022\021\n\007" +
-      "message\030\002 \001(\t:\000\"S\n\035WorkerReportTaskStatu" +
-      "sRequest\022\017\n\007full_id\030\001 \002(\t\022\016\n\006status\030\002 \002(" +
-      "\005\022\021\n\ttimestamp\030\003 \002(\003\"D\n\036ServerReportTask" +
-      "StatusResponse\022\017\n\007success\030\001 \002(\010\022\021\n\007messa" +
-      "ge\030\002 \001(\t:\000\"D\n\037WorkerReportTaskProgressRe" +
-      "quest\022\017\n\007full_id\030\001 \002(\t\022\020\n\010progress\030\002 \002(\002",
-      "\"F\n ServerReportTaskProgressResponse\022\017\n\007" +
-      "success\030\001 \002(\010\022\021\n\007message\030\002 \001(\t:\000B/\n\033com." +
-      "mogujie.jarvis.protocolB\020ReportTaskProto" +
-      "s"
+      "\n\021report_task.proto\032\017map_entry.proto\"O\n\035" +
+      "WorkerReportTaskUpdateRequest\022\017\n\007full_id" +
+      "\030\001 \002(\t\022\017\n\007content\030\002 \002(\t\022\014\n\004user\030\003 \002(\t\"D\n" +
+      "\036ServerReportTaskUpdateResponse\022\017\n\007succe" +
+      "ss\030\001 \002(\010\022\021\n\007message\030\002 \001(\t:\000\"S\n\035WorkerRep" +
+      "ortTaskStatusRequest\022\017\n\007full_id\030\001 \002(\t\022\016\n" +
+      "\006status\030\002 \002(\005\022\021\n\ttimestamp\030\003 \002(\003\"D\n\036Serv" +
+      "erReportTaskStatusResponse\022\017\n\007success\030\001 " +
+      "\002(\010\022\021\n\007message\030\002 \001(\t:\000\"D\n\037WorkerReportTa" +
+      "skProgressRequest\022\017\n\007full_id\030\001 \002(\t\022\020\n\010pr",
+      "ogress\030\002 \002(\002\"F\n ServerReportTaskProgress" +
+      "Response\022\017\n\007success\030\001 \002(\010\022\021\n\007message\030\002 \001" +
+      "(\t:\000B/\n\033com.mogujie.jarvis.protocolB\020Rep" +
+      "ortTaskProtos"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
-          public com.google.protobuf.ExtensionRegistry assignDescriptors(
-              com.google.protobuf.Descriptors.FileDescriptor root) {
-            descriptor = root;
-            return null;
-          }
-        };
+      new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
+        public com.google.protobuf.ExtensionRegistry assignDescriptors(
+            com.google.protobuf.Descriptors.FileDescriptor root) {
+          descriptor = root;
+          internal_static_WorkerReportTaskUpdateRequest_descriptor =
+            getDescriptor().getMessageTypes().get(0);
+          internal_static_WorkerReportTaskUpdateRequest_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_WorkerReportTaskUpdateRequest_descriptor,
+              new java.lang.String[] { "FullId", "Content", "User", });
+          internal_static_ServerReportTaskUpdateResponse_descriptor =
+            getDescriptor().getMessageTypes().get(1);
+          internal_static_ServerReportTaskUpdateResponse_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_ServerReportTaskUpdateResponse_descriptor,
+              new java.lang.String[] { "Success", "Message", });
+          internal_static_WorkerReportTaskStatusRequest_descriptor =
+            getDescriptor().getMessageTypes().get(2);
+          internal_static_WorkerReportTaskStatusRequest_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_WorkerReportTaskStatusRequest_descriptor,
+              new java.lang.String[] { "FullId", "Status", "Timestamp", });
+          internal_static_ServerReportTaskStatusResponse_descriptor =
+            getDescriptor().getMessageTypes().get(3);
+          internal_static_ServerReportTaskStatusResponse_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_ServerReportTaskStatusResponse_descriptor,
+              new java.lang.String[] { "Success", "Message", });
+          internal_static_WorkerReportTaskProgressRequest_descriptor =
+            getDescriptor().getMessageTypes().get(4);
+          internal_static_WorkerReportTaskProgressRequest_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_WorkerReportTaskProgressRequest_descriptor,
+              new java.lang.String[] { "FullId", "Progress", });
+          internal_static_ServerReportTaskProgressResponse_descriptor =
+            getDescriptor().getMessageTypes().get(5);
+          internal_static_ServerReportTaskProgressResponse_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_ServerReportTaskProgressResponse_descriptor,
+              new java.lang.String[] { "Success", "Message", });
+          return null;
+        }
+      };
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           com.mogujie.jarvis.protocol.MapEntryProtos.getDescriptor(),
         }, assigner);
-    internal_static_WorkerReportTaskContentRequest_descriptor =
-      getDescriptor().getMessageTypes().get(0);
-    internal_static_WorkerReportTaskContentRequest_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_WorkerReportTaskContentRequest_descriptor,
-        new java.lang.String[] { "FullId", "Content", });
-    internal_static_ServerReportTaskContentResponse_descriptor =
-      getDescriptor().getMessageTypes().get(1);
-    internal_static_ServerReportTaskContentResponse_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_ServerReportTaskContentResponse_descriptor,
-        new java.lang.String[] { "Success", "Message", });
-    internal_static_WorkerReportTaskStatusRequest_descriptor =
-      getDescriptor().getMessageTypes().get(2);
-    internal_static_WorkerReportTaskStatusRequest_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_WorkerReportTaskStatusRequest_descriptor,
-        new java.lang.String[] { "FullId", "Status", "Timestamp", });
-    internal_static_ServerReportTaskStatusResponse_descriptor =
-      getDescriptor().getMessageTypes().get(3);
-    internal_static_ServerReportTaskStatusResponse_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_ServerReportTaskStatusResponse_descriptor,
-        new java.lang.String[] { "Success", "Message", });
-    internal_static_WorkerReportTaskProgressRequest_descriptor =
-      getDescriptor().getMessageTypes().get(4);
-    internal_static_WorkerReportTaskProgressRequest_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_WorkerReportTaskProgressRequest_descriptor,
-        new java.lang.String[] { "FullId", "Progress", });
-    internal_static_ServerReportTaskProgressResponse_descriptor =
-      getDescriptor().getMessageTypes().get(5);
-    internal_static_ServerReportTaskProgressResponse_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_ServerReportTaskProgressResponse_descriptor,
-        new java.lang.String[] { "Success", "Message", });
-    com.mogujie.jarvis.protocol.MapEntryProtos.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

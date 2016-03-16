@@ -30,12 +30,12 @@ import com.mogujie.jarvis.core.observer.Event;
 import com.mogujie.jarvis.core.util.IdUtils;
 import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.dto.generate.Task;
-import com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskContentResponse;
 import com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskProgressResponse;
 import com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskStatusResponse;
-import com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskContentRequest;
+import com.mogujie.jarvis.protocol.ReportTaskProtos.ServerReportTaskUpdateResponse;
 import com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskProgressRequest;
 import com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskStatusRequest;
+import com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskUpdateRequest;
 import com.mogujie.jarvis.server.domain.ActorEntry;
 import com.mogujie.jarvis.server.domain.JobEntry;
 import com.mogujie.jarvis.server.guice.Injectors;
@@ -73,7 +73,7 @@ public class TaskMetricsActor extends UntypedActor {
         List<ActorEntry> list = new ArrayList<>();
         list.add(new ActorEntry(WorkerReportTaskStatusRequest.class, ServerReportTaskStatusResponse.class, MessageType.SYSTEM));
         list.add(new ActorEntry(WorkerReportTaskProgressRequest.class, ServerReportTaskProgressResponse.class, MessageType.SYSTEM));
-        list.add(new ActorEntry(WorkerReportTaskContentRequest.class, ServerReportTaskContentResponse.class, MessageType.SYSTEM));
+        list.add(new ActorEntry(WorkerReportTaskUpdateRequest.class, ServerReportTaskUpdateResponse.class, MessageType.SYSTEM));
         return list;
     }
 
@@ -132,15 +132,15 @@ public class TaskMetricsActor extends UntypedActor {
             LOGGER.info("receive WorkerReportTaskProgressRequest [taskId={},progress={}]", taskId, progress);
             taskService.updateProgress(taskId, progress);
             taskHistoryService.updateProgress(taskId, attemptId, progress);
-        } else if (obj instanceof WorkerReportTaskContentRequest) {
-            WorkerReportTaskContentRequest msg = (WorkerReportTaskContentRequest) obj;
+        } else if (obj instanceof WorkerReportTaskUpdateRequest) {
+            WorkerReportTaskUpdateRequest msg = (WorkerReportTaskUpdateRequest) obj;
             String fullId = msg.getFullId();
-            String content = msg.getContent();
             long taskId = IdUtils.parse(fullId, IdType.TASK_ID);
             LOGGER.info("receive WorkerReportTaskRequest [taskId={}]", taskId);
             Task task = new Task();
             task.setTaskId(taskId);
-            task.setContent(content);
+            task.setContent(msg.getContent());
+            task.setExecuteUser(msg.getUser());
             task.setUpdateTime(DateTime.now().toDate());
             taskService.updateSelective(task);
         } else {

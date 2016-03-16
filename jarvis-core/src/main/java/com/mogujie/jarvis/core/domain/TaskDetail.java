@@ -29,8 +29,25 @@ public final class TaskDetail {
     private DateTime dataTime;
     private int failedRetries;
     private int failedInterval;
+    private boolean isChanged = false;
 
     private TaskDetail() {
+    }
+
+    public boolean isChanged() {
+        return isChanged;
+    }
+
+    public void setChanged(boolean isChanged) {
+        this.isChanged = isChanged;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public String getFullId() {

@@ -41,8 +41,8 @@ import com.mogujie.jarvis.worker.TaskPool;
 import com.mogujie.jarvis.worker.WorkerConfigKeys;
 import com.mogujie.jarvis.worker.executor.DefaultLogCollector;
 import com.mogujie.jarvis.worker.executor.DefaultProgressReporter;
-import com.mogujie.jarvis.worker.executor.TaskContentReporter;
 import com.mogujie.jarvis.worker.executor.TaskExecutor;
+import com.mogujie.jarvis.worker.executor.TaskUpdateReporter;
 
 public class TaskActor extends UntypedActor {
 
@@ -111,7 +111,7 @@ public class TaskActor extends UntypedActor {
 
         ActorSelection serverActor = getContext().actorSelection(SERVER_AKKA_PATH);
         contextBuilder.setProgressReporter(new DefaultProgressReporter(serverActor, getSelf(), fullId));
-        contextBuilder.setTaskReporter(new TaskContentReporter(serverActor, getSelf()));
+        contextBuilder.setTaskReporter(new TaskUpdateReporter(serverActor, getSelf()));
 
         threadPoolExecutor.execute(new TaskExecutor(contextBuilder.build(), getSelf(), getSender(), serverActor));
     }

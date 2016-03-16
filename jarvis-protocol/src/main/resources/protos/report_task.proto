@@ -4,12 +4,13 @@ option java_package = "com.mogujie.jarvis.protocol";
 option java_outer_classname = "ReportTaskProtos";
 
 
-message WorkerReportTaskContentRequest {
+message WorkerReportTaskUpdateRequest {
     required string full_id = 1;
     required string content = 2;
+    required string user = 3;
 }
 
-message ServerReportTaskContentResponse {
+message ServerReportTaskUpdateResponse {
     required bool success = 1;
     optional string message = 2 [default = ""];
 }

@@ -79,12 +79,13 @@ public class ShellTask extends AbstractTask {
     public void postExecute() throws TaskException {
         super.postExecute();
 
-        //执行内容有变化情况下,返回 新的执行内容
+        //task有变化情况下, 返回新的执行内容和user
         String newContent = getCommand();
         TaskDetail oldTaskDetail = getTaskContext().getTaskDetail();
-        if (!newContent.equals(oldTaskDetail.getContent())) {
-            LOGGER.debug("shellTask.postExecute() update newContent: {}", newContent);
-            TaskDetail newTaskDetail = TaskDetail.newTaskDetailBuilder(oldTaskDetail).setContent(newContent).build();
+        if (!newContent.equals(oldTaskDetail.getContent()) || oldTaskDetail.isChanged()) {
+            LOGGER.debug("shellTask.postExecute() update newContent and newUser");
+            TaskDetail newTaskDetail = TaskDetail.newTaskDetailBuilder(oldTaskDetail)
+                    .setContent(newContent).setUser(oldTaskDetail.getUser()).build();
             getTaskContext().getTaskReporter().report(newTaskDetail);
         }
 

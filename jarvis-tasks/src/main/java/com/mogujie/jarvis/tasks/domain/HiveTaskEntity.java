@@ -6,7 +6,7 @@
  * Create Date: 2015年6月17日 下午1:05:45
  */
 
-package com.mogujie.jarvis.core.domain;
+package com.mogujie.jarvis.tasks.domain;
 
 /**
  * @author wuya
