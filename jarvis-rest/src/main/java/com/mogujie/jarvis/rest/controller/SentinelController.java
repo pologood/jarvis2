@@ -101,6 +101,7 @@ public class SentinelController extends AbstractController {
 
             if (user == null) {
                 HiveTaskEntity entity = HiveConfigUtils.getHiveJobEntry(appName);
+                Preconditions.checkNotNull(entity, "job-hive.xml找不到name=" + appName + "的app");
                 user = entity.getUser();
             }
 

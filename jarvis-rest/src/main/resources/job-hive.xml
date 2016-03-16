@@ -24,4 +24,26 @@
 		maxMapperNum="2000" />
 	<App name="item_cate_order_info" user="shengqi" isAdmin="0"
 		maxResultRows="20000" maxMapperNum="2000" />
+	<App name="IMMonitor" user="qianfan" isAdmin="0"
+		maxResultRows="10000" maxMapperNum="2000" />
+	<App name="pay_accountant" user="nalan" isAdmin="0"
+		maxResultRows="10000" maxMapperNum="2000" />
+	<App name="ops" user="etlprd" isAdmin="0"
+		maxResultRows="10000" maxMapperNum="2000" />
+	<App name="antispam" user="zilin" isAdmin="0"
+		maxResultRows="10000" maxMapperNum="2000" />
+	<App name="user_portrait" user="banshan" isAdmin="0"
+		maxResultRows="10000" maxMapperNum="2000" />
+	<App name="dalin" user="dalin" isAdmin="0"
+		maxResultRows="10000" maxMapperNum="2000" />
+	<App name="algo_dc" user="fengjian" isAdmin="0"
+		maxResultRows="10000" maxMapperNum="2000" />
+	<App name="search_personal" user="zhouge" isAdmin="0"
+		maxResultRows="10000" maxMapperNum="2000" />
+	<App name="mogu_top" user="dixun" isAdmin="0"
+		maxResultRows="10000" maxMapperNum="2000" />
+	<App name="antispamDataVisualize" user="lianhua" isAdmin="0"
+		maxResultRows="10000" maxMapperNum="2000" />
+	<App name="流量数据平台" user="fanping" isAdmin="0"
+		maxResultRows="10000" maxMapperNum="2000" />
 </Apps>
