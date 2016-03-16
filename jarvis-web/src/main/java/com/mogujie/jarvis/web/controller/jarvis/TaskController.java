@@ -4,8 +4,8 @@ import com.mogu.bigdata.admin.client.annotation.Passport;
 import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.web.auth.conf.JarvisAuthType;
 import com.mogujie.jarvis.web.entity.qo.TaskDependQo;
-import com.mogujie.jarvis.web.entity.vo.JobVo;
 import com.mogujie.jarvis.web.entity.qo.TaskQo;
+import com.mogujie.jarvis.web.entity.vo.JobVo;
 import com.mogujie.jarvis.web.entity.vo.TaskVo;
 import com.mogujie.jarvis.web.service.JobService;
 import com.mogujie.jarvis.web.service.TaskService;
@@ -36,9 +36,9 @@ public class TaskController {
 
     @RequestMapping
     @Passport(JarvisAuthType.task)
-    public String index(ModelMap modelMap,TaskQo taskQo) {
+    public String index(ModelMap modelMap, TaskQo taskQo) {
 
-        modelMap.put("taskQo",JsonHelper.toJson(taskQo));
+        modelMap.put("taskQo", JsonHelper.toJson(taskQo));
         return "task/index";
     }
 
@@ -77,7 +77,14 @@ public class TaskController {
                 }
                 totalTime += taskVo1.getExecuteTime();
             }
-            avgTime = totalTime / taskVoList.size();
+
+            avgTime = totalTime;
+
+            if (!taskVoList.isEmpty()) {
+
+                avgTime = totalTime / taskVoList.size();
+            }
+
             taskVo.setAvgExecuteTime(avgTime);
 
         } catch (Exception e) {
@@ -101,7 +108,7 @@ public class TaskController {
     public String dependency(ModelMap modelMap, TaskDependQo taskDependQo) {
 
         modelMap.put("taskDependQo", JsonHelper.toJson(taskDependQo));
-        modelMap.put("taskId",taskDependQo.getTaskId());
+        modelMap.put("taskId", taskDependQo.getTaskId());
 
         return "task/dependency";
     }

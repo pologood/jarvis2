@@ -99,12 +99,27 @@
                         <td>${taskVo.workerId}</td>
                     </tr>
 
+                    <c:choose>
+                        <c:when test="${taskVo.status==5}">
+
+                            <tr id="errorNotify">
+                                <td colspan="6">
+                                    推测原因:
+                            <pre style="color:red" id="errorNotifyMsg">
+                            </pre>
+                                </td>
+                            </tr>
+                        </c:when>
+                    </c:choose>
                     <tr>
                         <td colspan="6">
                             <div id="container" style="height:400px;width:100%"></div>
                         </td>
                     </tr>
+
+
                     <tr>
+
                         <td colspan="6">
                             <div>
                                 <ul class="nav nav-tabs">
@@ -118,7 +133,7 @@
 
                                 <div class="tab-content">
                                     <div id="executeContent" class="tab-pane active" style="width: 1150px">
-                                        <pre >
+                                        <pre>
                                             ${taskVo.content}
                                         </pre>
                                     </div>
@@ -151,7 +166,7 @@
     var jobId = '${taskVo.jobId}';
     var attemptId = '${taskVo.attemptId}';
     var page = {
-        jobType : '${taskVo.jobType}'
+        jobType: '${taskVo.jobType}'
     }
 </script>
 <script type="text/javascript" src="${contextPath}/assets/js/jarvis/task/detail.js"></script>
