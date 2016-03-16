@@ -23,6 +23,7 @@ import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 
 import com.google.common.eventbus.Subscribe;
+import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.dto.generate.Job;
 import com.mogujie.jarvis.server.guice.Injectors;
 import com.mogujie.jarvis.server.scheduler.JobSchedulerController;
@@ -138,6 +139,7 @@ public class TimeScheduler extends Scheduler {
         // 如果是纯时间任务，并且不是临时任务，自动计算下一次
         DAGJob dagJob = jobGraph.getDAGJob(jobId);
         if (dagJob.getType().equals(DAGJobType.TIME) &&
+                job.getStatus() == JobStatus.ENABLE.getValue() &&
                 jobService.isActive(jobId) &&
                 !job.getIsTemp()) {
             DateTime nextTime = PlanUtil.getScheduleTimeAfter(jobId, dt);

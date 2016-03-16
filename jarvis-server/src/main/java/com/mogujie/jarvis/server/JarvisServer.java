@@ -239,13 +239,13 @@ public class JarvisServer {
                 DateTime expiredDateTime = scheduleTime.plusSeconds(expiredTime);
                 // 如果该任务没有过期
                 if (expiredDateTime.isAfter(now)) {
-                    // 如果该任务状态不是ENABLE
-                    if (jobService.isActive(jobId)) {
+                    // 如果该任务状态是ENABLE&ACTIVE
+                    if (job.getStatus() == JobStatus.ENABLE.getValue() && jobService.isActive(jobId)) {
                         controller.notify(new RetryTaskEvent(jobId, task.getTaskId(), task.getExecuteUser()));
                     } else {
                         //如果该任务不是ACTIVE
-                        LOGGER.warn("{} is not active.", jobId);
-                        controller.notify(new FailedEvent(jobId, task.getTaskId(), "job is not active"));
+                        LOGGER.warn("{} is not enable or active.", jobId);
+                        controller.notify(new FailedEvent(jobId, task.getTaskId(), "job is not enable or active"));
                     }
                 } else {
                     //如果该任务已过期，置为失败
