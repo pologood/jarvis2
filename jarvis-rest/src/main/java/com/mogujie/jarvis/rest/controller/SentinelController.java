@@ -28,6 +28,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.StreamingOutput;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mogujie.jarvis.core.domain.AkkaType;
@@ -91,6 +92,13 @@ public class SentinelController extends AbstractController {
             @FormParam("jobType") String jobType, @FormParam("groupId") @DefaultValue("1") Integer groupId) {
         LOGGER.debug("提交job任务");
         try {
+            Preconditions.checkNotNull(appToken, "token不能为null");
+            Preconditions.checkNotNull(appName, "name不能为null");
+            Preconditions.checkNotNull(content, "content不能为null");
+            Preconditions.checkNotNull(user, "executor不能为null");
+            Preconditions.checkNotNull(jobName, "jobName不能为null");
+            Preconditions.checkNotNull(jobType, "jobType不能为null");
+
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
             JobVo jobVo = new JobVo();
@@ -127,6 +135,9 @@ public class SentinelController extends AbstractController {
             @FormParam("jobId") long jobId) {
         LOGGER.debug("kill task");
         try {
+            Preconditions.checkNotNull(appToken, "token不能为null");
+            Preconditions.checkNotNull(appName, "name不能为null");
+
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
             RestServerQueryTaskByJobIdRequest queryTaskRequest = RestServerQueryTaskByJobIdRequest.newBuilder()
@@ -165,6 +176,9 @@ public class SentinelController extends AbstractController {
             @FormParam("jobId") long jobId) {
         LOGGER.debug("query job status");
         try {
+            Preconditions.checkNotNull(appToken, "token不能为null");
+            Preconditions.checkNotNull(appName, "name不能为null");
+
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
             RestServerQueryTaskByJobIdRequest queryTaskRequest = RestServerQueryTaskByJobIdRequest.newBuilder()
@@ -212,6 +226,9 @@ public class SentinelController extends AbstractController {
             @FormParam("time") long time, @FormParam("jobId") Integer jobId) {
         LOGGER.debug("query result");
         try {
+            Preconditions.checkNotNull(appToken, "token不能为null");
+            Preconditions.checkNotNull(appName, "name不能为null");
+
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
             RestServerQueryTaskByJobIdRequest queryTaskRequest = RestServerQueryTaskByJobIdRequest.newBuilder()
@@ -285,6 +302,9 @@ public class SentinelController extends AbstractController {
             @FormParam("jobId") long jobId) {
         LOGGER.debug("query job log");
         try {
+            Preconditions.checkNotNull(appToken, "token不能为null");
+            Preconditions.checkNotNull(appName, "name不能为null");
+
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
             RestServerQueryTaskByJobIdRequest queryTaskRequest = RestServerQueryTaskByJobIdRequest.newBuilder()
