@@ -32,11 +32,13 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mogujie.jarvis.core.domain.AkkaType;
+import com.mogujie.jarvis.core.domain.HiveTaskEntity;
 import com.mogujie.jarvis.core.domain.JobContentType;
 import com.mogujie.jarvis.core.domain.JobStatus;
 import com.mogujie.jarvis.core.domain.StreamType;
 import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.util.ConfigUtils;
+import com.mogujie.jarvis.core.util.HiveConfigUtils;
 import com.mogujie.jarvis.core.util.IdUtils;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
 import com.mogujie.jarvis.protocol.JobProtos.RestSubmitJobRequest;
@@ -89,15 +91,19 @@ public class SentinelController extends AbstractController {
     @Produces(MediaType.APPLICATION_JSON)
     public ResponseParams executeSql(@FormParam("token") String appToken, @FormParam("name") String appName, @FormParam("time") long time,
             @FormParam("content") String content, @FormParam("executor") String user, @FormParam("jobName") String jobName,
-            @FormParam("jobType") String jobType, @FormParam("groupId") @DefaultValue("1") Integer groupId) {
+            @FormParam("jobType") @DefaultValue("hive") String jobType, @FormParam("groupId") @DefaultValue("1") Integer groupId) {
         LOGGER.debug("提交job任务");
         try {
             Preconditions.checkNotNull(appToken, "token不能为null");
             Preconditions.checkNotNull(appName, "name不能为null");
             Preconditions.checkNotNull(content, "content不能为null");
-            Preconditions.checkNotNull(user, "executor不能为null");
             Preconditions.checkNotNull(jobName, "jobName不能为null");
-            Preconditions.checkNotNull(jobType, "jobType不能为null");
+
+            if (user == null) {
+                HiveTaskEntity entity = HiveConfigUtils.getHiveJobEntry(appName);
+                Preconditions.checkNotNull(entity, "job-hive.xml找不到name=" + appName + "的app");
+                user = entity.getUser();
+            }
 
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 

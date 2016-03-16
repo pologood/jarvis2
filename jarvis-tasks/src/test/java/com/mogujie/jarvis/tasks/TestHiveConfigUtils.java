@@ -1,7 +1,8 @@
 package com.mogujie.jarvis.tasks;
 
-import com.mogujie.jarvis.tasks.domain.HiveTaskEntity;
-import com.mogujie.jarvis.tasks.util.HiveConfigUtils;
+import com.mogujie.jarvis.core.domain.HiveTaskEntity;
+import com.mogujie.jarvis.core.util.HiveConfigUtils;
+
 import org.junit.Assert;
 import org.junit.Test;
 
