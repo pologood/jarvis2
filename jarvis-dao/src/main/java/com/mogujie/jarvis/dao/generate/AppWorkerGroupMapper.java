@@ -3,6 +3,7 @@ package com.mogujie.jarvis.dao.generate;
 import com.mogujie.jarvis.dto.generate.AppWorkerGroup;
 import com.mogujie.jarvis.dto.generate.AppWorkerGroupExample;
 import com.mogujie.jarvis.dto.generate.AppWorkerGroupKey;
+import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface AppWorkerGroupMapper {
@@ -16,7 +17,7 @@ public interface AppWorkerGroupMapper {
 
     int insertSelective(AppWorkerGroup record);
 
-    java.util.List<com.mogujie.jarvis.dto.generate.AppWorkerGroup> selectByExample(AppWorkerGroupExample example);
+    List<AppWorkerGroup> selectByExample(AppWorkerGroupExample example);
 
     AppWorkerGroup selectByPrimaryKey(AppWorkerGroupKey key);
 

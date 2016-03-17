@@ -2,6 +2,7 @@ package com.mogujie.jarvis.dao.generate;
 
 import com.mogujie.jarvis.dto.generate.Worker;
 import com.mogujie.jarvis.dto.generate.WorkerExample;
+import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface WorkerMapper {
@@ -15,7 +16,7 @@ public interface WorkerMapper {
 
     int insertSelective(Worker record);
 
-    java.util.List<com.mogujie.jarvis.dto.generate.Worker> selectByExample(WorkerExample example);
+    List<Worker> selectByExample(WorkerExample example);
 
     Worker selectByPrimaryKey(Integer id);
 

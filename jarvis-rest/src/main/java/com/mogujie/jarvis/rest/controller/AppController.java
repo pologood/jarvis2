@@ -1,9 +1,14 @@
 package com.mogujie.jarvis.rest.controller;
 
+import java.lang.reflect.Type;
+import java.util.List;
+
 import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import com.google.gson.reflect.TypeToken;
@@ -13,21 +18,22 @@ import com.mogujie.jarvis.core.domain.OperationMode;
 import com.mogujie.jarvis.core.util.JsonHelper;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
 import com.mogujie.jarvis.protocol.ApplicationProtos;
+import com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry;
 import com.mogujie.jarvis.protocol.ApplicationProtos.RestCreateApplicationRequest;
-import com.mogujie.jarvis.protocol.ApplicationProtos.ServerCreateApplicationResponse;
 import com.mogujie.jarvis.protocol.ApplicationProtos.RestModifyApplicationRequest;
-import com.mogujie.jarvis.protocol.ApplicationProtos.ServerModifyApplicationResponse;
+import com.mogujie.jarvis.protocol.ApplicationProtos.RestSearchAppCounterRequest;
 import com.mogujie.jarvis.protocol.ApplicationProtos.RestSetApplicationWorkerGroupRequest;
+import com.mogujie.jarvis.protocol.ApplicationProtos.ServerCreateApplicationResponse;
+import com.mogujie.jarvis.protocol.ApplicationProtos.ServerModifyApplicationResponse;
+import com.mogujie.jarvis.protocol.ApplicationProtos.ServerSearchAppCounterResponse;
 import com.mogujie.jarvis.protocol.ApplicationProtos.ServerSetApplicationWorkerGroupResponse;
 import com.mogujie.jarvis.rest.RestResult;
+import com.mogujie.jarvis.rest.utils.JsonParameters;
 import com.mogujie.jarvis.rest.utils.ValidUtils;
 import com.mogujie.jarvis.rest.utils.ValidUtils.CheckMode;
-import com.mogujie.jarvis.rest.utils.JsonParameters;
+import com.mogujie.jarvis.rest.vo.AppCounterVo;
 import com.mogujie.jarvis.rest.vo.AppResultVo;
 import com.mogujie.jarvis.rest.vo.AppWorkerGroupVo;
-
-import java.lang.reflect.Type;
-import java.util.List;
 
 /**
  * @author muming
@@ -148,6 +154,30 @@ public class AppController extends AbstractController {
             RestSetApplicationWorkerGroupRequest request = _workerGroup(OperationMode.DELETE, user, appName, appToken, parameters);
             ServerSetApplicationWorkerGroupResponse response = (ServerSetApplicationWorkerGroupResponse) callActor(AkkaType.SERVER, request);
             return response.getSuccess() ? successResult() : errorResult(response.getMessage());
+        } catch (Exception e) {
+            LOGGER.error("", e);
+            return errorResult(e);
+        }
+    }
+
+    @GET
+    @Path("query/appcounter")
+    public RestResult queryAppCounter(@QueryParam("user") String user, @QueryParam("appName") String appName, @QueryParam("appToken") String appToken) {
+        try {
+            AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
+
+            RestSearchAppCounterRequest request = RestSearchAppCounterRequest.newBuilder().setAppAuth(appAuth).build();
+            ServerSearchAppCounterResponse response = (ServerSearchAppCounterResponse) callActor(AkkaType.SERVER, request);
+            if (response.getSuccess()) {
+                AppCounterVo vo = new AppCounterVo();
+                List<AppCounterEntry> appCounterEnties = response.getAppCounterEntryList();
+                for (AppCounterEntry entry : appCounterEnties) {
+                    vo.setCounter(entry.getAppId(), entry.getCounter());
+                }
+                return successResult(vo);
+            } else {
+                return errorResult(response.getMessage());
+            }
         } catch (Exception e) {
             LOGGER.error("", e);
             return errorResult(e);

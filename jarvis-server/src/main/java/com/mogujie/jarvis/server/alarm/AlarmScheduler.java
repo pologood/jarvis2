@@ -39,6 +39,7 @@ public class AlarmScheduler extends Scheduler {
     private AlarmService alarmService = Injectors.getInjector().getInstance(AlarmService.class);
 
     private static Alarmer alarmer = null;
+    private boolean alarmEnable = ConfigUtils.getServerConfig().getBoolean(ServerConigKeys.ALARM_ENABLE, false);
     private static final Logger LOGGER = LogManager.getLogger();
 
     static {
@@ -62,23 +63,27 @@ public class AlarmScheduler extends Scheduler {
 
     @Subscribe
     public void handleFailedEvent(FailedEvent event) {
-        long jobId = event.getJobId();
-        Job job = jobService.get(jobId).getJob();
-        if (job != null) {
-            String jobName = job.getJobName();
-            String msg = "任务[" + jobName + "]运行失败";
-            alarm(jobId, msg);
+        if (alarmEnable) {
+            long jobId = event.getJobId();
+            Job job = jobService.get(jobId).getJob();
+            if (job != null) {
+                String jobName = job.getJobName();
+                String msg = "任务[" + jobName + "]运行失败";
+                alarm(jobId, msg);
+            }
         }
     }
 
     @Subscribe
     public void handleKilledEvent(KilledEvent event) {
-        long jobId = event.getJobId();
-        Job job = jobService.get(jobId).getJob();
-        if (job != null) {
-            String jobName = job.getJobName();
-            String msg = "任务[" + jobName + "]被Kill";
-            alarm(jobId, msg);
+        if (alarmEnable) {
+            long jobId = event.getJobId();
+            Job job = jobService.get(jobId).getJob();
+            if (job != null) {
+                String jobName = job.getJobName();
+                String msg = "任务[" + jobName + "]被Kill";
+                alarm(jobId, msg);
+            }
         }
     }
 

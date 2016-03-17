@@ -47,9 +47,20 @@ message RestQueryAlarmsRequest{
     optional string job_ids = 1;
 }
 
-message serverQueryAlarmsReponst{
+message ServerQueryAlarmsReponst{
     repeated AlarmEntry alarm_list = 1;
     required bool success = 2;
     optional string message = 3 [default = ""];
 
+}
+
+message RestServerUpdateTaskAlarmStatusRequest{
+    required AppAuth app_auth = 1;
+    repeated int64 task_id = 2;
+    required int32 alarm_status = 3;
+}
+
+message ServerUpdateTaskAlarmStatusResponse{
+    required bool success = 1;
+    optional string message = 2 [default = ""];
 }

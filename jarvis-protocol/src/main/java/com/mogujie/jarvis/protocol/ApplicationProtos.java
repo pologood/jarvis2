@@ -8,10 +8,10 @@ public final class ApplicationProtos {
   public static void registerAllExtensions(
       com.google.protobuf.ExtensionRegistry registry) {
   }
-  public interface RestCreateApplicationRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:RestCreateApplicationRequest)
-      com.google.protobuf.MessageOrBuilder {
+  public interface RestCreateApplicationRequestOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required .AppAuth app_auth = 1;
     /**
      * <code>required .AppAuth app_auth = 1;</code>
      */
@@ -25,6 +25,7 @@ public final class ApplicationProtos {
      */
     com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder();
 
+    // required string user = 2;
     /**
      * <code>required string user = 2;</code>
      */
@@ -39,6 +40,7 @@ public final class ApplicationProtos {
     com.google.protobuf.ByteString
         getUserBytes();
 
+    // required string app_name = 3;
     /**
      * <code>required string app_name = 3;</code>
      */
@@ -53,6 +55,7 @@ public final class ApplicationProtos {
     com.google.protobuf.ByteString
         getAppNameBytes();
 
+    // required string owner = 4;
     /**
      * <code>required string owner = 4;</code>
      */
@@ -67,6 +70,7 @@ public final class ApplicationProtos {
     com.google.protobuf.ByteString
         getOwnerBytes();
 
+    // optional int32 status = 5;
     /**
      * <code>optional int32 status = 5;</code>
      */
@@ -76,6 +80,7 @@ public final class ApplicationProtos {
      */
     int getStatus();
 
+    // optional int32 max_concurrency = 6 [default = 10];
     /**
      * <code>optional int32 max_concurrency = 6 [default = 10];</code>
      */
@@ -93,9 +98,8 @@ public final class ApplicationProtos {
    * </pre>
    */
   public static final class RestCreateApplicationRequest extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:RestCreateApplicationRequest)
-      RestCreateApplicationRequestOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements RestCreateApplicationRequestOrBuilder {
     // Use RestCreateApplicationRequest.newBuilder() to construct.
     private RestCreateApplicationRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -155,21 +159,18 @@ public final class ApplicationProtos {
               break;
             }
             case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              user_ = bs;
+              user_ = input.readBytes();
               break;
             }
             case 26: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              appName_ = bs;
+              appName_ = input.readBytes();
               break;
             }
             case 34: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              owner_ = bs;
+              owner_ = input.readBytes();
               break;
             }
             case 40: {
@@ -222,6 +223,7 @@ public final class ApplicationProtos {
     }
 
     private int bitField0_;
+    // required .AppAuth app_auth = 1;
     public static final int APP_AUTH_FIELD_NUMBER = 1;
     private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_;
     /**
@@ -243,6 +245,7 @@ public final class ApplicationProtos {
       return appAuth_;
     }
 
+    // required string user = 2;
     public static final int USER_FIELD_NUMBER = 2;
     private java.lang.Object user_;
     /**
@@ -285,6 +288,7 @@ public final class ApplicationProtos {
       }
     }
 
+    // required string app_name = 3;
     public static final int APP_NAME_FIELD_NUMBER = 3;
     private java.lang.Object appName_;
     /**
@@ -327,6 +331,7 @@ public final class ApplicationProtos {
       }
     }
 
+    // required string owner = 4;
     public static final int OWNER_FIELD_NUMBER = 4;
     private java.lang.Object owner_;
     /**
@@ -369,6 +374,7 @@ public final class ApplicationProtos {
       }
     }
 
+    // optional int32 status = 5;
     public static final int STATUS_FIELD_NUMBER = 5;
     private int status_;
     /**
@@ -384,6 +390,7 @@ public final class ApplicationProtos {
       return status_;
     }
 
+    // optional int32 max_concurrency = 6 [default = 10];
     public static final int MAX_CONCURRENCY_FIELD_NUMBER = 6;
     private int maxConcurrency_;
     /**
@@ -410,8 +417,7 @@ public final class ApplicationProtos {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasAppAuth()) {
         memoizedIsInitialized = 0;
@@ -577,9 +583,8 @@ public final class ApplicationProtos {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:RestCreateApplicationRequest)
-        com.mogujie.jarvis.protocol.ApplicationProtos.RestCreateApplicationRequestOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.mogujie.jarvis.protocol.ApplicationProtos.RestCreateApplicationRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mogujie.jarvis.protocol.ApplicationProtos.internal_static_RestCreateApplicationRequest_descriptor;
@@ -772,6 +777,7 @@ public final class ApplicationProtos {
       }
       private int bitField0_;
 
+      // required .AppAuth app_auth = 1;
       private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> appAuthBuilder_;
@@ -880,7 +886,7 @@ public final class ApplicationProtos {
         if (appAuthBuilder_ == null) {
           appAuthBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder>(
-                  getAppAuth(),
+                  appAuth_,
                   getParentForChildren(),
                   isClean());
           appAuth_ = null;
@@ -888,6 +894,7 @@ public final class ApplicationProtos {
         return appAuthBuilder_;
       }
 
+      // required string user = 2;
       private java.lang.Object user_ = "";
       /**
        * <code>required string user = 2;</code>
@@ -901,12 +908,9 @@ public final class ApplicationProtos {
       public java.lang.String getUser() {
         java.lang.Object ref = user_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            user_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          user_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -964,6 +968,7 @@ public final class ApplicationProtos {
         return this;
       }
 
+      // required string app_name = 3;
       private java.lang.Object appName_ = "";
       /**
        * <code>required string app_name = 3;</code>
@@ -977,12 +982,9 @@ public final class ApplicationProtos {
       public java.lang.String getAppName() {
         java.lang.Object ref = appName_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            appName_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          appName_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -1040,6 +1042,7 @@ public final class ApplicationProtos {
         return this;
       }
 
+      // required string owner = 4;
       private java.lang.Object owner_ = "";
       /**
        * <code>required string owner = 4;</code>
@@ -1053,12 +1056,9 @@ public final class ApplicationProtos {
       public java.lang.String getOwner() {
         java.lang.Object ref = owner_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            owner_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          owner_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -1116,6 +1116,7 @@ public final class ApplicationProtos {
         return this;
       }
 
+      // optional int32 status = 5;
       private int status_ ;
       /**
        * <code>optional int32 status = 5;</code>
@@ -1148,6 +1149,7 @@ public final class ApplicationProtos {
         return this;
       }
 
+      // optional int32 max_concurrency = 6 [default = 10];
       private int maxConcurrency_ = 10;
       /**
        * <code>optional int32 max_concurrency = 6 [default = 10];</code>
@@ -1191,10 +1193,10 @@ public final class ApplicationProtos {
     // @@protoc_insertion_point(class_scope:RestCreateApplicationRequest)
   }
 
-  public interface ServerCreateApplicationResponseOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:ServerCreateApplicationResponse)
-      com.google.protobuf.MessageOrBuilder {
+  public interface ServerCreateApplicationResponseOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required bool success = 1;
     /**
      * <code>required bool success = 1;</code>
      */
@@ -1204,6 +1206,7 @@ public final class ApplicationProtos {
      */
     boolean getSuccess();
 
+    // optional string message = 2 [default = ""];
     /**
      * <code>optional string message = 2 [default = ""];</code>
      */
@@ -1218,6 +1221,7 @@ public final class ApplicationProtos {
     com.google.protobuf.ByteString
         getMessageBytes();
 
+    // optional int32 appId = 3;
     /**
      * <code>optional int32 appId = 3;</code>
      */
@@ -1231,9 +1235,8 @@ public final class ApplicationProtos {
    * Protobuf type {@code ServerCreateApplicationResponse}
    */
   public static final class ServerCreateApplicationResponse extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:ServerCreateApplicationResponse)
-      ServerCreateApplicationResponseOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements ServerCreateApplicationResponseOrBuilder {
     // Use ServerCreateApplicationResponse.newBuilder() to construct.
     private ServerCreateApplicationResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -1285,9 +1288,8 @@ public final class ApplicationProtos {
               break;
             }
             case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              message_ = bs;
+              message_ = input.readBytes();
               break;
             }
             case 24: {
@@ -1335,6 +1337,7 @@ public final class ApplicationProtos {
     }
 
     private int bitField0_;
+    // required bool success = 1;
     public static final int SUCCESS_FIELD_NUMBER = 1;
     private boolean success_;
     /**
@@ -1350,6 +1353,7 @@ public final class ApplicationProtos {
       return success_;
     }
 
+    // optional string message = 2 [default = ""];
     public static final int MESSAGE_FIELD_NUMBER = 2;
     private java.lang.Object message_;
     /**
@@ -1392,6 +1396,7 @@ public final class ApplicationProtos {
       }
     }
 
+    // optional int32 appId = 3;
     public static final int APPID_FIELD_NUMBER = 3;
     private int appId_;
     /**
@@ -1415,8 +1420,7 @@ public final class ApplicationProtos {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasSuccess()) {
         memoizedIsInitialized = 0;
@@ -1541,9 +1545,8 @@ public final class ApplicationProtos {
      * Protobuf type {@code ServerCreateApplicationResponse}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:ServerCreateApplicationResponse)
-        com.mogujie.jarvis.protocol.ApplicationProtos.ServerCreateApplicationResponseOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.mogujie.jarvis.protocol.ApplicationProtos.ServerCreateApplicationResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mogujie.jarvis.protocol.ApplicationProtos.internal_static_ServerCreateApplicationResponse_descriptor;
@@ -1680,6 +1683,7 @@ public final class ApplicationProtos {
       }
       private int bitField0_;
 
+      // required bool success = 1;
       private boolean success_ ;
       /**
        * <code>required bool success = 1;</code>
@@ -1712,6 +1716,7 @@ public final class ApplicationProtos {
         return this;
       }
 
+      // optional string message = 2 [default = ""];
       private java.lang.Object message_ = "";
       /**
        * <code>optional string message = 2 [default = ""];</code>
@@ -1725,12 +1730,9 @@ public final class ApplicationProtos {
       public java.lang.String getMessage() {
         java.lang.Object ref = message_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            message_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          message_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -1788,6 +1790,7 @@ public final class ApplicationProtos {
         return this;
       }
 
+      // optional int32 appId = 3;
       private int appId_ ;
       /**
        * <code>optional int32 appId = 3;</code>
@@ -1831,10 +1834,10 @@ public final class ApplicationProtos {
     // @@protoc_insertion_point(class_scope:ServerCreateApplicationResponse)
   }
 
-  public interface RestModifyApplicationRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:RestModifyApplicationRequest)
-      com.google.protobuf.MessageOrBuilder {
+  public interface RestModifyApplicationRequestOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required .AppAuth app_auth = 1;
     /**
      * <code>required .AppAuth app_auth = 1;</code>
      */
@@ -1848,6 +1851,7 @@ public final class ApplicationProtos {
      */
     com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder();
 
+    // required string user = 2;
     /**
      * <code>required string user = 2;</code>
      */
@@ -1862,6 +1866,7 @@ public final class ApplicationProtos {
     com.google.protobuf.ByteString
         getUserBytes();
 
+    // required int32 app_id = 3;
     /**
      * <code>required int32 app_id = 3;</code>
      */
@@ -1871,6 +1876,7 @@ public final class ApplicationProtos {
      */
     int getAppId();
 
+    // optional string app_name = 4;
     /**
      * <code>optional string app_name = 4;</code>
      */
@@ -1885,6 +1891,7 @@ public final class ApplicationProtos {
     com.google.protobuf.ByteString
         getAppNameBytes();
 
+    // optional string owner = 5;
     /**
      * <code>optional string owner = 5;</code>
      */
@@ -1899,6 +1906,7 @@ public final class ApplicationProtos {
     com.google.protobuf.ByteString
         getOwnerBytes();
 
+    // optional int32 status = 6;
     /**
      * <code>optional int32 status = 6;</code>
      */
@@ -1908,6 +1916,7 @@ public final class ApplicationProtos {
      */
     int getStatus();
 
+    // optional int32 max_concurrency = 7;
     /**
      * <code>optional int32 max_concurrency = 7;</code>
      */
@@ -1925,9 +1934,8 @@ public final class ApplicationProtos {
    * </pre>
    */
   public static final class RestModifyApplicationRequest extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:RestModifyApplicationRequest)
-      RestModifyApplicationRequestOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements RestModifyApplicationRequestOrBuilder {
     // Use RestModifyApplicationRequest.newBuilder() to construct.
     private RestModifyApplicationRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -1987,9 +1995,8 @@ public final class ApplicationProtos {
               break;
             }
             case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              user_ = bs;
+              user_ = input.readBytes();
               break;
             }
             case 24: {
@@ -1998,15 +2005,13 @@ public final class ApplicationProtos {
               break;
             }
             case 34: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              appName_ = bs;
+              appName_ = input.readBytes();
               break;
             }
             case 42: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000010;
-              owner_ = bs;
+              owner_ = input.readBytes();
               break;
             }
             case 48: {
@@ -2059,6 +2064,7 @@ public final class ApplicationProtos {
     }
 
     private int bitField0_;
+    // required .AppAuth app_auth = 1;
     public static final int APP_AUTH_FIELD_NUMBER = 1;
     private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_;
     /**
@@ -2080,6 +2086,7 @@ public final class ApplicationProtos {
       return appAuth_;
     }
 
+    // required string user = 2;
     public static final int USER_FIELD_NUMBER = 2;
     private java.lang.Object user_;
     /**
@@ -2122,6 +2129,7 @@ public final class ApplicationProtos {
       }
     }
 
+    // required int32 app_id = 3;
     public static final int APP_ID_FIELD_NUMBER = 3;
     private int appId_;
     /**
@@ -2137,6 +2145,7 @@ public final class ApplicationProtos {
       return appId_;
     }
 
+    // optional string app_name = 4;
     public static final int APP_NAME_FIELD_NUMBER = 4;
     private java.lang.Object appName_;
     /**
@@ -2179,6 +2188,7 @@ public final class ApplicationProtos {
       }
     }
 
+    // optional string owner = 5;
     public static final int OWNER_FIELD_NUMBER = 5;
     private java.lang.Object owner_;
     /**
@@ -2221,6 +2231,7 @@ public final class ApplicationProtos {
       }
     }
 
+    // optional int32 status = 6;
     public static final int STATUS_FIELD_NUMBER = 6;
     private int status_;
     /**
@@ -2236,6 +2247,7 @@ public final class ApplicationProtos {
       return status_;
     }
 
+    // optional int32 max_concurrency = 7;
     public static final int MAX_CONCURRENCY_FIELD_NUMBER = 7;
     private int maxConcurrency_;
     /**
@@ -2263,8 +2275,7 @@ public final class ApplicationProtos {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasAppAuth()) {
         memoizedIsInitialized = 0;
@@ -2433,9 +2444,8 @@ public final class ApplicationProtos {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:RestModifyApplicationRequest)
-        com.mogujie.jarvis.protocol.ApplicationProtos.RestModifyApplicationRequestOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.mogujie.jarvis.protocol.ApplicationProtos.RestModifyApplicationRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mogujie.jarvis.protocol.ApplicationProtos.internal_static_RestModifyApplicationRequest_descriptor;
@@ -2633,6 +2643,7 @@ public final class ApplicationProtos {
       }
       private int bitField0_;
 
+      // required .AppAuth app_auth = 1;
       private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> appAuthBuilder_;
@@ -2741,7 +2752,7 @@ public final class ApplicationProtos {
         if (appAuthBuilder_ == null) {
           appAuthBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder>(
-                  getAppAuth(),
+                  appAuth_,
                   getParentForChildren(),
                   isClean());
           appAuth_ = null;
@@ -2749,6 +2760,7 @@ public final class ApplicationProtos {
         return appAuthBuilder_;
       }
 
+      // required string user = 2;
       private java.lang.Object user_ = "";
       /**
        * <code>required string user = 2;</code>
@@ -2762,12 +2774,9 @@ public final class ApplicationProtos {
       public java.lang.String getUser() {
         java.lang.Object ref = user_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            user_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          user_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -2825,6 +2834,7 @@ public final class ApplicationProtos {
         return this;
       }
 
+      // required int32 app_id = 3;
       private int appId_ ;
       /**
        * <code>required int32 app_id = 3;</code>
@@ -2857,6 +2867,7 @@ public final class ApplicationProtos {
         return this;
       }
 
+      // optional string app_name = 4;
       private java.lang.Object appName_ = "";
       /**
        * <code>optional string app_name = 4;</code>
@@ -2870,12 +2881,9 @@ public final class ApplicationProtos {
       public java.lang.String getAppName() {
         java.lang.Object ref = appName_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            appName_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          appName_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -2933,6 +2941,7 @@ public final class ApplicationProtos {
         return this;
       }
 
+      // optional string owner = 5;
       private java.lang.Object owner_ = "";
       /**
        * <code>optional string owner = 5;</code>
@@ -2946,12 +2955,9 @@ public final class ApplicationProtos {
       public java.lang.String getOwner() {
         java.lang.Object ref = owner_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            owner_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          owner_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -3009,6 +3015,7 @@ public final class ApplicationProtos {
         return this;
       }
 
+      // optional int32 status = 6;
       private int status_ ;
       /**
        * <code>optional int32 status = 6;</code>
@@ -3041,6 +3048,7 @@ public final class ApplicationProtos {
         return this;
       }
 
+      // optional int32 max_concurrency = 7;
       private int maxConcurrency_ ;
       /**
        * <code>optional int32 max_concurrency = 7;</code>
@@ -3084,10 +3092,10 @@ public final class ApplicationProtos {
     // @@protoc_insertion_point(class_scope:RestModifyApplicationRequest)
   }
 
-  public interface ServerModifyApplicationResponseOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:ServerModifyApplicationResponse)
-      com.google.protobuf.MessageOrBuilder {
+  public interface ServerModifyApplicationResponseOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required bool success = 1;
     /**
      * <code>required bool success = 1;</code>
      */
@@ -3097,6 +3105,7 @@ public final class ApplicationProtos {
      */
     boolean getSuccess();
 
+    // optional string message = 2 [default = ""];
     /**
      * <code>optional string message = 2 [default = ""];</code>
      */
@@ -3115,9 +3124,8 @@ public final class ApplicationProtos {
    * Protobuf type {@code ServerModifyApplicationResponse}
    */
   public static final class ServerModifyApplicationResponse extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:ServerModifyApplicationResponse)
-      ServerModifyApplicationResponseOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements ServerModifyApplicationResponseOrBuilder {
     // Use ServerModifyApplicationResponse.newBuilder() to construct.
     private ServerModifyApplicationResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -3169,9 +3177,8 @@ public final class ApplicationProtos {
               break;
             }
             case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              message_ = bs;
+              message_ = input.readBytes();
               break;
             }
           }
@@ -3214,6 +3221,7 @@ public final class ApplicationProtos {
     }
 
     private int bitField0_;
+    // required bool success = 1;
     public static final int SUCCESS_FIELD_NUMBER = 1;
     private boolean success_;
     /**
@@ -3229,6 +3237,7 @@ public final class ApplicationProtos {
       return success_;
     }
 
+    // optional string message = 2 [default = ""];
     public static final int MESSAGE_FIELD_NUMBER = 2;
     private java.lang.Object message_;
     /**
@@ -3278,8 +3287,7 @@ public final class ApplicationProtos {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasSuccess()) {
         memoizedIsInitialized = 0;
@@ -3397,9 +3405,8 @@ public final class ApplicationProtos {
      * Protobuf type {@code ServerModifyApplicationResponse}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:ServerModifyApplicationResponse)
-        com.mogujie.jarvis.protocol.ApplicationProtos.ServerModifyApplicationResponseOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.mogujie.jarvis.protocol.ApplicationProtos.ServerModifyApplicationResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mogujie.jarvis.protocol.ApplicationProtos.internal_static_ServerModifyApplicationResponse_descriptor;
@@ -3527,6 +3534,7 @@ public final class ApplicationProtos {
       }
       private int bitField0_;
 
+      // required bool success = 1;
       private boolean success_ ;
       /**
        * <code>required bool success = 1;</code>
@@ -3559,6 +3567,7 @@ public final class ApplicationProtos {
         return this;
       }
 
+      // optional string message = 2 [default = ""];
       private java.lang.Object message_ = "";
       /**
        * <code>optional string message = 2 [default = ""];</code>
@@ -3572,12 +3581,9 @@ public final class ApplicationProtos {
       public java.lang.String getMessage() {
         java.lang.Object ref = message_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            message_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          message_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -3646,10 +3652,10 @@ public final class ApplicationProtos {
     // @@protoc_insertion_point(class_scope:ServerModifyApplicationResponse)
   }
 
-  public interface AppWorkerGroupEntryOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:AppWorkerGroupEntry)
-      com.google.protobuf.MessageOrBuilder {
+  public interface AppWorkerGroupEntryOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required int32 app_id = 1;
     /**
      * <code>required int32 app_id = 1;</code>
      */
@@ -3659,6 +3665,7 @@ public final class ApplicationProtos {
      */
     int getAppId();
 
+    // required int32 worker_group_id = 2;
     /**
      * <code>required int32 worker_group_id = 2;</code>
      */
@@ -3672,9 +3679,8 @@ public final class ApplicationProtos {
    * Protobuf type {@code AppWorkerGroupEntry}
    */
   public static final class AppWorkerGroupEntry extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:AppWorkerGroupEntry)
-      AppWorkerGroupEntryOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements AppWorkerGroupEntryOrBuilder {
     // Use AppWorkerGroupEntry.newBuilder() to construct.
     private AppWorkerGroupEntry(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -3770,6 +3776,7 @@ public final class ApplicationProtos {
     }
 
     private int bitField0_;
+    // required int32 app_id = 1;
     public static final int APP_ID_FIELD_NUMBER = 1;
     private int appId_;
     /**
@@ -3785,6 +3792,7 @@ public final class ApplicationProtos {
       return appId_;
     }
 
+    // required int32 worker_group_id = 2;
     public static final int WORKER_GROUP_ID_FIELD_NUMBER = 2;
     private int workerGroupId_;
     /**
@@ -3807,8 +3815,7 @@ public final class ApplicationProtos {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasAppId()) {
         memoizedIsInitialized = 0;
@@ -3930,9 +3937,8 @@ public final class ApplicationProtos {
      * Protobuf type {@code AppWorkerGroupEntry}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:AppWorkerGroupEntry)
-        com.mogujie.jarvis.protocol.ApplicationProtos.AppWorkerGroupEntryOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.mogujie.jarvis.protocol.ApplicationProtos.AppWorkerGroupEntryOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mogujie.jarvis.protocol.ApplicationProtos.internal_static_AppWorkerGroupEntry_descriptor;
@@ -4062,6 +4068,7 @@ public final class ApplicationProtos {
       }
       private int bitField0_;
 
+      // required int32 app_id = 1;
       private int appId_ ;
       /**
        * <code>required int32 app_id = 1;</code>
@@ -4094,6 +4101,7 @@ public final class ApplicationProtos {
         return this;
       }
 
+      // required int32 worker_group_id = 2;
       private int workerGroupId_ ;
       /**
        * <code>required int32 worker_group_id = 2;</code>
@@ -4137,10 +4145,10 @@ public final class ApplicationProtos {
     // @@protoc_insertion_point(class_scope:AppWorkerGroupEntry)
   }
 
-  public interface RestSetApplicationWorkerGroupRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:RestSetApplicationWorkerGroupRequest)
-      com.google.protobuf.MessageOrBuilder {
+  public interface RestSetApplicationWorkerGroupRequestOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required .AppAuth app_auth = 1;
     /**
      * <code>required .AppAuth app_auth = 1;</code>
      */
@@ -4154,6 +4162,7 @@ public final class ApplicationProtos {
      */
     com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder();
 
+    // required string user = 2;
     /**
      * <code>required string user = 2;</code>
      */
@@ -4168,6 +4177,7 @@ public final class ApplicationProtos {
     com.google.protobuf.ByteString
         getUserBytes();
 
+    // required int32 mode = 3;
     /**
      * <code>required int32 mode = 3;</code>
      *
@@ -4185,6 +4195,7 @@ public final class ApplicationProtos {
      */
     int getMode();
 
+    // repeated .AppWorkerGroupEntry AppWorkerGroups = 4;
     /**
      * <code>repeated .AppWorkerGroupEntry AppWorkerGroups = 4;</code>
      */
@@ -4217,9 +4228,8 @@ public final class ApplicationProtos {
    * </pre>
    */
   public static final class RestSetApplicationWorkerGroupRequest extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:RestSetApplicationWorkerGroupRequest)
-      RestSetApplicationWorkerGroupRequestOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements RestSetApplicationWorkerGroupRequestOrBuilder {
     // Use RestSetApplicationWorkerGroupRequest.newBuilder() to construct.
     private RestSetApplicationWorkerGroupRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -4279,9 +4289,8 @@ public final class ApplicationProtos {
               break;
             }
             case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              user_ = bs;
+              user_ = input.readBytes();
               break;
             }
             case 24: {
@@ -4340,6 +4349,7 @@ public final class ApplicationProtos {
     }
 
     private int bitField0_;
+    // required .AppAuth app_auth = 1;
     public static final int APP_AUTH_FIELD_NUMBER = 1;
     private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_;
     /**
@@ -4361,6 +4371,7 @@ public final class ApplicationProtos {
       return appAuth_;
     }
 
+    // required string user = 2;
     public static final int USER_FIELD_NUMBER = 2;
     private java.lang.Object user_;
     /**
@@ -4403,6 +4414,7 @@ public final class ApplicationProtos {
       }
     }
 
+    // required int32 mode = 3;
     public static final int MODE_FIELD_NUMBER = 3;
     private int mode_;
     /**
@@ -4426,6 +4438,7 @@ public final class ApplicationProtos {
       return mode_;
     }
 
+    // repeated .AppWorkerGroupEntry AppWorkerGroups = 4;
     public static final int APPWORKERGROUPS_FIELD_NUMBER = 4;
     private java.util.List<com.mogujie.jarvis.protocol.ApplicationProtos.AppWorkerGroupEntry> appWorkerGroups_;
     /**
@@ -4470,8 +4483,7 @@ public final class ApplicationProtos {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasAppAuth()) {
         memoizedIsInitialized = 0;
@@ -4625,9 +4637,8 @@ public final class ApplicationProtos {
      * </pre>
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:RestSetApplicationWorkerGroupRequest)
-        com.mogujie.jarvis.protocol.ApplicationProtos.RestSetApplicationWorkerGroupRequestOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.mogujie.jarvis.protocol.ApplicationProtos.RestSetApplicationWorkerGroupRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mogujie.jarvis.protocol.ApplicationProtos.internal_static_RestSetApplicationWorkerGroupRequest_descriptor;
@@ -4833,6 +4844,7 @@ public final class ApplicationProtos {
       }
       private int bitField0_;
 
+      // required .AppAuth app_auth = 1;
       private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> appAuthBuilder_;
@@ -4941,7 +4953,7 @@ public final class ApplicationProtos {
         if (appAuthBuilder_ == null) {
           appAuthBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder>(
-                  getAppAuth(),
+                  appAuth_,
                   getParentForChildren(),
                   isClean());
           appAuth_ = null;
@@ -4949,6 +4961,7 @@ public final class ApplicationProtos {
         return appAuthBuilder_;
       }
 
+      // required string user = 2;
       private java.lang.Object user_ = "";
       /**
        * <code>required string user = 2;</code>
@@ -4962,12 +4975,9 @@ public final class ApplicationProtos {
       public java.lang.String getUser() {
         java.lang.Object ref = user_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            user_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          user_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -5025,6 +5035,7 @@ public final class ApplicationProtos {
         return this;
       }
 
+      // required int32 mode = 3;
       private int mode_ ;
       /**
        * <code>required int32 mode = 3;</code>
@@ -5073,6 +5084,7 @@ public final class ApplicationProtos {
         return this;
       }
 
+      // repeated .AppWorkerGroupEntry AppWorkerGroups = 4;
       private java.util.List<com.mogujie.jarvis.protocol.ApplicationProtos.AppWorkerGroupEntry> appWorkerGroups_ =
         java.util.Collections.emptyList();
       private void ensureAppWorkerGroupsIsMutable() {
@@ -5214,8 +5226,7 @@ public final class ApplicationProtos {
           java.lang.Iterable<? extends com.mogujie.jarvis.protocol.ApplicationProtos.AppWorkerGroupEntry> values) {
         if (appWorkerGroupsBuilder_ == null) {
           ensureAppWorkerGroupsIsMutable();
-          com.google.protobuf.AbstractMessageLite.Builder.addAll(
-              values, appWorkerGroups_);
+          super.addAll(values, appWorkerGroups_);
           onChanged();
         } else {
           appWorkerGroupsBuilder_.addAllMessages(values);
@@ -5324,10 +5335,10 @@ public final class ApplicationProtos {
     // @@protoc_insertion_point(class_scope:RestSetApplicationWorkerGroupRequest)
   }
 
-  public interface ServerSetApplicationWorkerGroupResponseOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:ServerSetApplicationWorkerGroupResponse)
-      com.google.protobuf.MessageOrBuilder {
+  public interface ServerSetApplicationWorkerGroupResponseOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required bool success = 1;
     /**
      * <code>required bool success = 1;</code>
      */
@@ -5337,6 +5348,7 @@ public final class ApplicationProtos {
      */
     boolean getSuccess();
 
+    // optional string message = 2 [default = ""];
     /**
      * <code>optional string message = 2 [default = ""];</code>
      */
@@ -5355,9 +5367,8 @@ public final class ApplicationProtos {
    * Protobuf type {@code ServerSetApplicationWorkerGroupResponse}
    */
   public static final class ServerSetApplicationWorkerGroupResponse extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:ServerSetApplicationWorkerGroupResponse)
-      ServerSetApplicationWorkerGroupResponseOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements ServerSetApplicationWorkerGroupResponseOrBuilder {
     // Use ServerSetApplicationWorkerGroupResponse.newBuilder() to construct.
     private ServerSetApplicationWorkerGroupResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -5409,9 +5420,8 @@ public final class ApplicationProtos {
               break;
             }
             case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              message_ = bs;
+              message_ = input.readBytes();
               break;
             }
           }
@@ -5454,6 +5464,7 @@ public final class ApplicationProtos {
     }
 
     private int bitField0_;
+    // required bool success = 1;
     public static final int SUCCESS_FIELD_NUMBER = 1;
     private boolean success_;
     /**
@@ -5469,6 +5480,7 @@ public final class ApplicationProtos {
       return success_;
     }
 
+    // optional string message = 2 [default = ""];
     public static final int MESSAGE_FIELD_NUMBER = 2;
     private java.lang.Object message_;
     /**
@@ -5518,8 +5530,7 @@ public final class ApplicationProtos {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasSuccess()) {
         memoizedIsInitialized = 0;
@@ -5637,9 +5648,8 @@ public final class ApplicationProtos {
      * Protobuf type {@code ServerSetApplicationWorkerGroupResponse}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:ServerSetApplicationWorkerGroupResponse)
-        com.mogujie.jarvis.protocol.ApplicationProtos.ServerSetApplicationWorkerGroupResponseOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.mogujie.jarvis.protocol.ApplicationProtos.ServerSetApplicationWorkerGroupResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mogujie.jarvis.protocol.ApplicationProtos.internal_static_ServerSetApplicationWorkerGroupResponse_descriptor;
@@ -5767,6 +5777,7 @@ public final class ApplicationProtos {
       }
       private int bitField0_;
 
+      // required bool success = 1;
       private boolean success_ ;
       /**
        * <code>required bool success = 1;</code>
@@ -5799,6 +5810,7 @@ public final class ApplicationProtos {
         return this;
       }
 
+      // optional string message = 2 [default = ""];
       private java.lang.Object message_ = "";
       /**
        * <code>optional string message = 2 [default = ""];</code>
@@ -5812,12 +5824,9 @@ public final class ApplicationProtos {
       public java.lang.String getMessage() {
         java.lang.Object ref = message_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            message_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          message_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -5886,41 +5895,2178 @@ public final class ApplicationProtos {
     // @@protoc_insertion_point(class_scope:ServerSetApplicationWorkerGroupResponse)
   }
 
-  private static final com.google.protobuf.Descriptors.Descriptor
+  public interface AppCounterEntryOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+
+    // required int32 app_id = 1;
+    /**
+     * <code>required int32 app_id = 1;</code>
+     */
+    boolean hasAppId();
+    /**
+     * <code>required int32 app_id = 1;</code>
+     */
+    int getAppId();
+
+    // required int32 counter = 2;
+    /**
+     * <code>required int32 counter = 2;</code>
+     */
+    boolean hasCounter();
+    /**
+     * <code>required int32 counter = 2;</code>
+     */
+    int getCounter();
+  }
+  /**
+   * Protobuf type {@code AppCounterEntry}
+   *
+   * <pre>
+   * search app counter
+   * </pre>
+   */
+  public static final class AppCounterEntry extends
+      com.google.protobuf.GeneratedMessage
+      implements AppCounterEntryOrBuilder {
+    // Use AppCounterEntry.newBuilder() to construct.
+    private AppCounterEntry(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private AppCounterEntry(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final AppCounterEntry defaultInstance;
+    public static AppCounterEntry getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public AppCounterEntry getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private AppCounterEntry(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              appId_ = input.readInt32();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              counter_ = input.readInt32();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.mogujie.jarvis.protocol.ApplicationProtos.internal_static_AppCounterEntry_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.mogujie.jarvis.protocol.ApplicationProtos.internal_static_AppCounterEntry_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry.class, com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<AppCounterEntry> PARSER =
+        new com.google.protobuf.AbstractParser<AppCounterEntry>() {
+      public AppCounterEntry parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new AppCounterEntry(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<AppCounterEntry> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    // required int32 app_id = 1;
+    public static final int APP_ID_FIELD_NUMBER = 1;
+    private int appId_;
+    /**
+     * <code>required int32 app_id = 1;</code>
+     */
+    public boolean hasAppId() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required int32 app_id = 1;</code>
+     */
+    public int getAppId() {
+      return appId_;
+    }
+
+    // required int32 counter = 2;
+    public static final int COUNTER_FIELD_NUMBER = 2;
+    private int counter_;
+    /**
+     * <code>required int32 counter = 2;</code>
+     */
+    public boolean hasCounter() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required int32 counter = 2;</code>
+     */
+    public int getCounter() {
+      return counter_;
+    }
+
+    private void initFields() {
+      appId_ = 0;
+      counter_ = 0;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+
+      if (!hasAppId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasCounter()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeInt32(1, appId_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeInt32(2, counter_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(1, appId_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(2, counter_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code AppCounterEntry}
+     *
+     * <pre>
+     * search app counter
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntryOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.mogujie.jarvis.protocol.ApplicationProtos.internal_static_AppCounterEntry_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.mogujie.jarvis.protocol.ApplicationProtos.internal_static_AppCounterEntry_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry.class, com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry.Builder.class);
+      }
+
+      // Construct using com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        appId_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        counter_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.mogujie.jarvis.protocol.ApplicationProtos.internal_static_AppCounterEntry_descriptor;
+      }
+
+      public com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry getDefaultInstanceForType() {
+        return com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry.getDefaultInstance();
+      }
+
+      public com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry build() {
+        com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry buildPartial() {
+        com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry result = new com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.appId_ = appId_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.counter_ = counter_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry) {
+          return mergeFrom((com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry other) {
+        if (other == com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry.getDefaultInstance()) return this;
+        if (other.hasAppId()) {
+          setAppId(other.getAppId());
+        }
+        if (other.hasCounter()) {
+          setCounter(other.getCounter());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasAppId()) {
+          
+          return false;
+        }
+        if (!hasCounter()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      // required int32 app_id = 1;
+      private int appId_ ;
+      /**
+       * <code>required int32 app_id = 1;</code>
+       */
+      public boolean hasAppId() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required int32 app_id = 1;</code>
+       */
+      public int getAppId() {
+        return appId_;
+      }
+      /**
+       * <code>required int32 app_id = 1;</code>
+       */
+      public Builder setAppId(int value) {
+        bitField0_ |= 0x00000001;
+        appId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int32 app_id = 1;</code>
+       */
+      public Builder clearAppId() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        appId_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // required int32 counter = 2;
+      private int counter_ ;
+      /**
+       * <code>required int32 counter = 2;</code>
+       */
+      public boolean hasCounter() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required int32 counter = 2;</code>
+       */
+      public int getCounter() {
+        return counter_;
+      }
+      /**
+       * <code>required int32 counter = 2;</code>
+       */
+      public Builder setCounter(int value) {
+        bitField0_ |= 0x00000002;
+        counter_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int32 counter = 2;</code>
+       */
+      public Builder clearCounter() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        counter_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:AppCounterEntry)
+    }
+
+    static {
+      defaultInstance = new AppCounterEntry(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:AppCounterEntry)
+  }
+
+  public interface RestSearchAppCounterRequestOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+
+    // required .AppAuth app_auth = 1;
+    /**
+     * <code>required .AppAuth app_auth = 1;</code>
+     */
+    boolean hasAppAuth();
+    /**
+     * <code>required .AppAuth app_auth = 1;</code>
+     */
+    com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth getAppAuth();
+    /**
+     * <code>required .AppAuth app_auth = 1;</code>
+     */
+    com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder();
+
+    // required string user = 2;
+    /**
+     * <code>required string user = 2;</code>
+     */
+    boolean hasUser();
+    /**
+     * <code>required string user = 2;</code>
+     */
+    java.lang.String getUser();
+    /**
+     * <code>required string user = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getUserBytes();
+  }
+  /**
+   * Protobuf type {@code RestSearchAppCounterRequest}
+   */
+  public static final class RestSearchAppCounterRequest extends
+      com.google.protobuf.GeneratedMessage
+      implements RestSearchAppCounterRequestOrBuilder {
+    // Use RestSearchAppCounterRequest.newBuilder() to construct.
+    private RestSearchAppCounterRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private RestSearchAppCounterRequest(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final RestSearchAppCounterRequest defaultInstance;
+    public static RestSearchAppCounterRequest getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public RestSearchAppCounterRequest getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private RestSearchAppCounterRequest(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000001) == 0x00000001)) {
+                subBuilder = appAuth_.toBuilder();
+              }
+              appAuth_ = input.readMessage(com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(appAuth_);
+                appAuth_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000001;
+              break;
+            }
+            case 18: {
+              bitField0_ |= 0x00000002;
+              user_ = input.readBytes();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.mogujie.jarvis.protocol.ApplicationProtos.internal_static_RestSearchAppCounterRequest_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.mogujie.jarvis.protocol.ApplicationProtos.internal_static_RestSearchAppCounterRequest_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.mogujie.jarvis.protocol.ApplicationProtos.RestSearchAppCounterRequest.class, com.mogujie.jarvis.protocol.ApplicationProtos.RestSearchAppCounterRequest.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<RestSearchAppCounterRequest> PARSER =
+        new com.google.protobuf.AbstractParser<RestSearchAppCounterRequest>() {
+      public RestSearchAppCounterRequest parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new RestSearchAppCounterRequest(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<RestSearchAppCounterRequest> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    // required .AppAuth app_auth = 1;
+    public static final int APP_AUTH_FIELD_NUMBER = 1;
+    private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_;
+    /**
+     * <code>required .AppAuth app_auth = 1;</code>
+     */
+    public boolean hasAppAuth() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required .AppAuth app_auth = 1;</code>
+     */
+    public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth getAppAuth() {
+      return appAuth_;
+    }
+    /**
+     * <code>required .AppAuth app_auth = 1;</code>
+     */
+    public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder() {
+      return appAuth_;
+    }
+
+    // required string user = 2;
+    public static final int USER_FIELD_NUMBER = 2;
+    private java.lang.Object user_;
+    /**
+     * <code>required string user = 2;</code>
+     */
+    public boolean hasUser() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required string user = 2;</code>
+     */
+    public java.lang.String getUser() {
+      java.lang.Object ref = user_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          user_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string user = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getUserBytes() {
+      java.lang.Object ref = user_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        user_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private void initFields() {
+      appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
+      user_ = "";
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+
+      if (!hasAppAuth()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasUser()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!getAppAuth().isInitialized()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeMessage(1, appAuth_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, getUserBytes());
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, appAuth_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, getUserBytes());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.mogujie.jarvis.protocol.ApplicationProtos.RestSearchAppCounterRequest parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.mogujie.jarvis.protocol.ApplicationProtos.RestSearchAppCounterRequest parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.ApplicationProtos.RestSearchAppCounterRequest parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.mogujie.jarvis.protocol.ApplicationProtos.RestSearchAppCounterRequest parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.ApplicationProtos.RestSearchAppCounterRequest parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.mogujie.jarvis.protocol.ApplicationProtos.RestSearchAppCounterRequest parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.ApplicationProtos.RestSearchAppCounterRequest parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.mogujie.jarvis.protocol.ApplicationProtos.RestSearchAppCounterRequest parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.ApplicationProtos.RestSearchAppCounterRequest parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.mogujie.jarvis.protocol.ApplicationProtos.RestSearchAppCounterRequest parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.mogujie.jarvis.protocol.ApplicationProtos.RestSearchAppCounterRequest prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code RestSearchAppCounterRequest}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.mogujie.jarvis.protocol.ApplicationProtos.RestSearchAppCounterRequestOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.mogujie.jarvis.protocol.ApplicationProtos.internal_static_RestSearchAppCounterRequest_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.mogujie.jarvis.protocol.ApplicationProtos.internal_static_RestSearchAppCounterRequest_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.mogujie.jarvis.protocol.ApplicationProtos.RestSearchAppCounterRequest.class, com.mogujie.jarvis.protocol.ApplicationProtos.RestSearchAppCounterRequest.Builder.class);
+      }
+
+      // Construct using com.mogujie.jarvis.protocol.ApplicationProtos.RestSearchAppCounterRequest.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getAppAuthFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        if (appAuthBuilder_ == null) {
+          appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
+        } else {
+          appAuthBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000001);
+        user_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.mogujie.jarvis.protocol.ApplicationProtos.internal_static_RestSearchAppCounterRequest_descriptor;
+      }
+
+      public com.mogujie.jarvis.protocol.ApplicationProtos.RestSearchAppCounterRequest getDefaultInstanceForType() {
+        return com.mogujie.jarvis.protocol.ApplicationProtos.RestSearchAppCounterRequest.getDefaultInstance();
+      }
+
+      public com.mogujie.jarvis.protocol.ApplicationProtos.RestSearchAppCounterRequest build() {
+        com.mogujie.jarvis.protocol.ApplicationProtos.RestSearchAppCounterRequest result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.mogujie.jarvis.protocol.ApplicationProtos.RestSearchAppCounterRequest buildPartial() {
+        com.mogujie.jarvis.protocol.ApplicationProtos.RestSearchAppCounterRequest result = new com.mogujie.jarvis.protocol.ApplicationProtos.RestSearchAppCounterRequest(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        if (appAuthBuilder_ == null) {
+          result.appAuth_ = appAuth_;
+        } else {
+          result.appAuth_ = appAuthBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.user_ = user_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.mogujie.jarvis.protocol.ApplicationProtos.RestSearchAppCounterRequest) {
+          return mergeFrom((com.mogujie.jarvis.protocol.ApplicationProtos.RestSearchAppCounterRequest)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.mogujie.jarvis.protocol.ApplicationProtos.RestSearchAppCounterRequest other) {
+        if (other == com.mogujie.jarvis.protocol.ApplicationProtos.RestSearchAppCounterRequest.getDefaultInstance()) return this;
+        if (other.hasAppAuth()) {
+          mergeAppAuth(other.getAppAuth());
+        }
+        if (other.hasUser()) {
+          bitField0_ |= 0x00000002;
+          user_ = other.user_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasAppAuth()) {
+          
+          return false;
+        }
+        if (!hasUser()) {
+          
+          return false;
+        }
+        if (!getAppAuth().isInitialized()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.mogujie.jarvis.protocol.ApplicationProtos.RestSearchAppCounterRequest parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.mogujie.jarvis.protocol.ApplicationProtos.RestSearchAppCounterRequest) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      // required .AppAuth app_auth = 1;
+      private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> appAuthBuilder_;
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      public boolean hasAppAuth() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth getAppAuth() {
+        if (appAuthBuilder_ == null) {
+          return appAuth_;
+        } else {
+          return appAuthBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      public Builder setAppAuth(com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth value) {
+        if (appAuthBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          appAuth_ = value;
+          onChanged();
+        } else {
+          appAuthBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      public Builder setAppAuth(
+          com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder builderForValue) {
+        if (appAuthBuilder_ == null) {
+          appAuth_ = builderForValue.build();
+          onChanged();
+        } else {
+          appAuthBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      public Builder mergeAppAuth(com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth value) {
+        if (appAuthBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) == 0x00000001) &&
+              appAuth_ != com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance()) {
+            appAuth_ =
+              com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.newBuilder(appAuth_).mergeFrom(value).buildPartial();
+          } else {
+            appAuth_ = value;
+          }
+          onChanged();
+        } else {
+          appAuthBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      public Builder clearAppAuth() {
+        if (appAuthBuilder_ == null) {
+          appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
+          onChanged();
+        } else {
+          appAuthBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder getAppAuthBuilder() {
+        bitField0_ |= 0x00000001;
+        onChanged();
+        return getAppAuthFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      public com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder() {
+        if (appAuthBuilder_ != null) {
+          return appAuthBuilder_.getMessageOrBuilder();
+        } else {
+          return appAuth_;
+        }
+      }
+      /**
+       * <code>required .AppAuth app_auth = 1;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> 
+          getAppAuthFieldBuilder() {
+        if (appAuthBuilder_ == null) {
+          appAuthBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder>(
+                  appAuth_,
+                  getParentForChildren(),
+                  isClean());
+          appAuth_ = null;
+        }
+        return appAuthBuilder_;
+      }
+
+      // required string user = 2;
+      private java.lang.Object user_ = "";
+      /**
+       * <code>required string user = 2;</code>
+       */
+      public boolean hasUser() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required string user = 2;</code>
+       */
+      public java.lang.String getUser() {
+        java.lang.Object ref = user_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          user_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string user = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getUserBytes() {
+        java.lang.Object ref = user_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          user_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string user = 2;</code>
+       */
+      public Builder setUser(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        user_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string user = 2;</code>
+       */
+      public Builder clearUser() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        user_ = getDefaultInstance().getUser();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string user = 2;</code>
+       */
+      public Builder setUserBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        user_ = value;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:RestSearchAppCounterRequest)
+    }
+
+    static {
+      defaultInstance = new RestSearchAppCounterRequest(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:RestSearchAppCounterRequest)
+  }
+
+  public interface ServerSearchAppCounterResponseOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+
+    // required bool success = 1;
+    /**
+     * <code>required bool success = 1;</code>
+     */
+    boolean hasSuccess();
+    /**
+     * <code>required bool success = 1;</code>
+     */
+    boolean getSuccess();
+
+    // repeated .AppCounterEntry app_counter_entry = 2;
+    /**
+     * <code>repeated .AppCounterEntry app_counter_entry = 2;</code>
+     */
+    java.util.List<com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry> 
+        getAppCounterEntryList();
+    /**
+     * <code>repeated .AppCounterEntry app_counter_entry = 2;</code>
+     */
+    com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry getAppCounterEntry(int index);
+    /**
+     * <code>repeated .AppCounterEntry app_counter_entry = 2;</code>
+     */
+    int getAppCounterEntryCount();
+    /**
+     * <code>repeated .AppCounterEntry app_counter_entry = 2;</code>
+     */
+    java.util.List<? extends com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntryOrBuilder> 
+        getAppCounterEntryOrBuilderList();
+    /**
+     * <code>repeated .AppCounterEntry app_counter_entry = 2;</code>
+     */
+    com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntryOrBuilder getAppCounterEntryOrBuilder(
+        int index);
+
+    // optional string message = 3 [default = ""];
+    /**
+     * <code>optional string message = 3 [default = ""];</code>
+     */
+    boolean hasMessage();
+    /**
+     * <code>optional string message = 3 [default = ""];</code>
+     */
+    java.lang.String getMessage();
+    /**
+     * <code>optional string message = 3 [default = ""];</code>
+     */
+    com.google.protobuf.ByteString
+        getMessageBytes();
+  }
+  /**
+   * Protobuf type {@code ServerSearchAppCounterResponse}
+   */
+  public static final class ServerSearchAppCounterResponse extends
+      com.google.protobuf.GeneratedMessage
+      implements ServerSearchAppCounterResponseOrBuilder {
+    // Use ServerSearchAppCounterResponse.newBuilder() to construct.
+    private ServerSearchAppCounterResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private ServerSearchAppCounterResponse(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final ServerSearchAppCounterResponse defaultInstance;
+    public static ServerSearchAppCounterResponse getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public ServerSearchAppCounterResponse getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private ServerSearchAppCounterResponse(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              success_ = input.readBool();
+              break;
+            }
+            case 18: {
+              if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+                appCounterEntry_ = new java.util.ArrayList<com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry>();
+                mutable_bitField0_ |= 0x00000002;
+              }
+              appCounterEntry_.add(input.readMessage(com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry.PARSER, extensionRegistry));
+              break;
+            }
+            case 26: {
+              bitField0_ |= 0x00000002;
+              message_ = input.readBytes();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+          appCounterEntry_ = java.util.Collections.unmodifiableList(appCounterEntry_);
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.mogujie.jarvis.protocol.ApplicationProtos.internal_static_ServerSearchAppCounterResponse_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.mogujie.jarvis.protocol.ApplicationProtos.internal_static_ServerSearchAppCounterResponse_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.mogujie.jarvis.protocol.ApplicationProtos.ServerSearchAppCounterResponse.class, com.mogujie.jarvis.protocol.ApplicationProtos.ServerSearchAppCounterResponse.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<ServerSearchAppCounterResponse> PARSER =
+        new com.google.protobuf.AbstractParser<ServerSearchAppCounterResponse>() {
+      public ServerSearchAppCounterResponse parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new ServerSearchAppCounterResponse(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ServerSearchAppCounterResponse> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    // required bool success = 1;
+    public static final int SUCCESS_FIELD_NUMBER = 1;
+    private boolean success_;
+    /**
+     * <code>required bool success = 1;</code>
+     */
+    public boolean hasSuccess() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required bool success = 1;</code>
+     */
+    public boolean getSuccess() {
+      return success_;
+    }
+
+    // repeated .AppCounterEntry app_counter_entry = 2;
+    public static final int APP_COUNTER_ENTRY_FIELD_NUMBER = 2;
+    private java.util.List<com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry> appCounterEntry_;
+    /**
+     * <code>repeated .AppCounterEntry app_counter_entry = 2;</code>
+     */
+    public java.util.List<com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry> getAppCounterEntryList() {
+      return appCounterEntry_;
+    }
+    /**
+     * <code>repeated .AppCounterEntry app_counter_entry = 2;</code>
+     */
+    public java.util.List<? extends com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntryOrBuilder> 
+        getAppCounterEntryOrBuilderList() {
+      return appCounterEntry_;
+    }
+    /**
+     * <code>repeated .AppCounterEntry app_counter_entry = 2;</code>
+     */
+    public int getAppCounterEntryCount() {
+      return appCounterEntry_.size();
+    }
+    /**
+     * <code>repeated .AppCounterEntry app_counter_entry = 2;</code>
+     */
+    public com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry getAppCounterEntry(int index) {
+      return appCounterEntry_.get(index);
+    }
+    /**
+     * <code>repeated .AppCounterEntry app_counter_entry = 2;</code>
+     */
+    public com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntryOrBuilder getAppCounterEntryOrBuilder(
+        int index) {
+      return appCounterEntry_.get(index);
+    }
+
+    // optional string message = 3 [default = ""];
+    public static final int MESSAGE_FIELD_NUMBER = 3;
+    private java.lang.Object message_;
+    /**
+     * <code>optional string message = 3 [default = ""];</code>
+     */
+    public boolean hasMessage() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional string message = 3 [default = ""];</code>
+     */
+    public java.lang.String getMessage() {
+      java.lang.Object ref = message_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          message_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string message = 3 [default = ""];</code>
+     */
+    public com.google.protobuf.ByteString
+        getMessageBytes() {
+      java.lang.Object ref = message_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        message_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private void initFields() {
+      success_ = false;
+      appCounterEntry_ = java.util.Collections.emptyList();
+      message_ = "";
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+
+      if (!hasSuccess()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      for (int i = 0; i < getAppCounterEntryCount(); i++) {
+        if (!getAppCounterEntry(i).isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeBool(1, success_);
+      }
+      for (int i = 0; i < appCounterEntry_.size(); i++) {
+        output.writeMessage(2, appCounterEntry_.get(i));
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(3, getMessageBytes());
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(1, success_);
+      }
+      for (int i = 0; i < appCounterEntry_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, appCounterEntry_.get(i));
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(3, getMessageBytes());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.mogujie.jarvis.protocol.ApplicationProtos.ServerSearchAppCounterResponse parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.mogujie.jarvis.protocol.ApplicationProtos.ServerSearchAppCounterResponse parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.ApplicationProtos.ServerSearchAppCounterResponse parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.mogujie.jarvis.protocol.ApplicationProtos.ServerSearchAppCounterResponse parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.ApplicationProtos.ServerSearchAppCounterResponse parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.mogujie.jarvis.protocol.ApplicationProtos.ServerSearchAppCounterResponse parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.ApplicationProtos.ServerSearchAppCounterResponse parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.mogujie.jarvis.protocol.ApplicationProtos.ServerSearchAppCounterResponse parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.mogujie.jarvis.protocol.ApplicationProtos.ServerSearchAppCounterResponse parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.mogujie.jarvis.protocol.ApplicationProtos.ServerSearchAppCounterResponse parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.mogujie.jarvis.protocol.ApplicationProtos.ServerSearchAppCounterResponse prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code ServerSearchAppCounterResponse}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.mogujie.jarvis.protocol.ApplicationProtos.ServerSearchAppCounterResponseOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.mogujie.jarvis.protocol.ApplicationProtos.internal_static_ServerSearchAppCounterResponse_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.mogujie.jarvis.protocol.ApplicationProtos.internal_static_ServerSearchAppCounterResponse_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.mogujie.jarvis.protocol.ApplicationProtos.ServerSearchAppCounterResponse.class, com.mogujie.jarvis.protocol.ApplicationProtos.ServerSearchAppCounterResponse.Builder.class);
+      }
+
+      // Construct using com.mogujie.jarvis.protocol.ApplicationProtos.ServerSearchAppCounterResponse.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getAppCounterEntryFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        success_ = false;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        if (appCounterEntryBuilder_ == null) {
+          appCounterEntry_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000002);
+        } else {
+          appCounterEntryBuilder_.clear();
+        }
+        message_ = "";
+        bitField0_ = (bitField0_ & ~0x00000004);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.mogujie.jarvis.protocol.ApplicationProtos.internal_static_ServerSearchAppCounterResponse_descriptor;
+      }
+
+      public com.mogujie.jarvis.protocol.ApplicationProtos.ServerSearchAppCounterResponse getDefaultInstanceForType() {
+        return com.mogujie.jarvis.protocol.ApplicationProtos.ServerSearchAppCounterResponse.getDefaultInstance();
+      }
+
+      public com.mogujie.jarvis.protocol.ApplicationProtos.ServerSearchAppCounterResponse build() {
+        com.mogujie.jarvis.protocol.ApplicationProtos.ServerSearchAppCounterResponse result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.mogujie.jarvis.protocol.ApplicationProtos.ServerSearchAppCounterResponse buildPartial() {
+        com.mogujie.jarvis.protocol.ApplicationProtos.ServerSearchAppCounterResponse result = new com.mogujie.jarvis.protocol.ApplicationProtos.ServerSearchAppCounterResponse(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.success_ = success_;
+        if (appCounterEntryBuilder_ == null) {
+          if (((bitField0_ & 0x00000002) == 0x00000002)) {
+            appCounterEntry_ = java.util.Collections.unmodifiableList(appCounterEntry_);
+            bitField0_ = (bitField0_ & ~0x00000002);
+          }
+          result.appCounterEntry_ = appCounterEntry_;
+        } else {
+          result.appCounterEntry_ = appCounterEntryBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.message_ = message_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.mogujie.jarvis.protocol.ApplicationProtos.ServerSearchAppCounterResponse) {
+          return mergeFrom((com.mogujie.jarvis.protocol.ApplicationProtos.ServerSearchAppCounterResponse)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.mogujie.jarvis.protocol.ApplicationProtos.ServerSearchAppCounterResponse other) {
+        if (other == com.mogujie.jarvis.protocol.ApplicationProtos.ServerSearchAppCounterResponse.getDefaultInstance()) return this;
+        if (other.hasSuccess()) {
+          setSuccess(other.getSuccess());
+        }
+        if (appCounterEntryBuilder_ == null) {
+          if (!other.appCounterEntry_.isEmpty()) {
+            if (appCounterEntry_.isEmpty()) {
+              appCounterEntry_ = other.appCounterEntry_;
+              bitField0_ = (bitField0_ & ~0x00000002);
+            } else {
+              ensureAppCounterEntryIsMutable();
+              appCounterEntry_.addAll(other.appCounterEntry_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.appCounterEntry_.isEmpty()) {
+            if (appCounterEntryBuilder_.isEmpty()) {
+              appCounterEntryBuilder_.dispose();
+              appCounterEntryBuilder_ = null;
+              appCounterEntry_ = other.appCounterEntry_;
+              bitField0_ = (bitField0_ & ~0x00000002);
+              appCounterEntryBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getAppCounterEntryFieldBuilder() : null;
+            } else {
+              appCounterEntryBuilder_.addAllMessages(other.appCounterEntry_);
+            }
+          }
+        }
+        if (other.hasMessage()) {
+          bitField0_ |= 0x00000004;
+          message_ = other.message_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasSuccess()) {
+          
+          return false;
+        }
+        for (int i = 0; i < getAppCounterEntryCount(); i++) {
+          if (!getAppCounterEntry(i).isInitialized()) {
+            
+            return false;
+          }
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.mogujie.jarvis.protocol.ApplicationProtos.ServerSearchAppCounterResponse parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.mogujie.jarvis.protocol.ApplicationProtos.ServerSearchAppCounterResponse) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      // required bool success = 1;
+      private boolean success_ ;
+      /**
+       * <code>required bool success = 1;</code>
+       */
+      public boolean hasSuccess() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required bool success = 1;</code>
+       */
+      public boolean getSuccess() {
+        return success_;
+      }
+      /**
+       * <code>required bool success = 1;</code>
+       */
+      public Builder setSuccess(boolean value) {
+        bitField0_ |= 0x00000001;
+        success_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required bool success = 1;</code>
+       */
+      public Builder clearSuccess() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        success_ = false;
+        onChanged();
+        return this;
+      }
+
+      // repeated .AppCounterEntry app_counter_entry = 2;
+      private java.util.List<com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry> appCounterEntry_ =
+        java.util.Collections.emptyList();
+      private void ensureAppCounterEntryIsMutable() {
+        if (!((bitField0_ & 0x00000002) == 0x00000002)) {
+          appCounterEntry_ = new java.util.ArrayList<com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry>(appCounterEntry_);
+          bitField0_ |= 0x00000002;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry, com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry.Builder, com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntryOrBuilder> appCounterEntryBuilder_;
+
+      /**
+       * <code>repeated .AppCounterEntry app_counter_entry = 2;</code>
+       */
+      public java.util.List<com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry> getAppCounterEntryList() {
+        if (appCounterEntryBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(appCounterEntry_);
+        } else {
+          return appCounterEntryBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .AppCounterEntry app_counter_entry = 2;</code>
+       */
+      public int getAppCounterEntryCount() {
+        if (appCounterEntryBuilder_ == null) {
+          return appCounterEntry_.size();
+        } else {
+          return appCounterEntryBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .AppCounterEntry app_counter_entry = 2;</code>
+       */
+      public com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry getAppCounterEntry(int index) {
+        if (appCounterEntryBuilder_ == null) {
+          return appCounterEntry_.get(index);
+        } else {
+          return appCounterEntryBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .AppCounterEntry app_counter_entry = 2;</code>
+       */
+      public Builder setAppCounterEntry(
+          int index, com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry value) {
+        if (appCounterEntryBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureAppCounterEntryIsMutable();
+          appCounterEntry_.set(index, value);
+          onChanged();
+        } else {
+          appCounterEntryBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .AppCounterEntry app_counter_entry = 2;</code>
+       */
+      public Builder setAppCounterEntry(
+          int index, com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry.Builder builderForValue) {
+        if (appCounterEntryBuilder_ == null) {
+          ensureAppCounterEntryIsMutable();
+          appCounterEntry_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          appCounterEntryBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .AppCounterEntry app_counter_entry = 2;</code>
+       */
+      public Builder addAppCounterEntry(com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry value) {
+        if (appCounterEntryBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureAppCounterEntryIsMutable();
+          appCounterEntry_.add(value);
+          onChanged();
+        } else {
+          appCounterEntryBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .AppCounterEntry app_counter_entry = 2;</code>
+       */
+      public Builder addAppCounterEntry(
+          int index, com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry value) {
+        if (appCounterEntryBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureAppCounterEntryIsMutable();
+          appCounterEntry_.add(index, value);
+          onChanged();
+        } else {
+          appCounterEntryBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .AppCounterEntry app_counter_entry = 2;</code>
+       */
+      public Builder addAppCounterEntry(
+          com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry.Builder builderForValue) {
+        if (appCounterEntryBuilder_ == null) {
+          ensureAppCounterEntryIsMutable();
+          appCounterEntry_.add(builderForValue.build());
+          onChanged();
+        } else {
+          appCounterEntryBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .AppCounterEntry app_counter_entry = 2;</code>
+       */
+      public Builder addAppCounterEntry(
+          int index, com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry.Builder builderForValue) {
+        if (appCounterEntryBuilder_ == null) {
+          ensureAppCounterEntryIsMutable();
+          appCounterEntry_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          appCounterEntryBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .AppCounterEntry app_counter_entry = 2;</code>
+       */
+      public Builder addAllAppCounterEntry(
+          java.lang.Iterable<? extends com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry> values) {
+        if (appCounterEntryBuilder_ == null) {
+          ensureAppCounterEntryIsMutable();
+          super.addAll(values, appCounterEntry_);
+          onChanged();
+        } else {
+          appCounterEntryBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .AppCounterEntry app_counter_entry = 2;</code>
+       */
+      public Builder clearAppCounterEntry() {
+        if (appCounterEntryBuilder_ == null) {
+          appCounterEntry_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000002);
+          onChanged();
+        } else {
+          appCounterEntryBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .AppCounterEntry app_counter_entry = 2;</code>
+       */
+      public Builder removeAppCounterEntry(int index) {
+        if (appCounterEntryBuilder_ == null) {
+          ensureAppCounterEntryIsMutable();
+          appCounterEntry_.remove(index);
+          onChanged();
+        } else {
+          appCounterEntryBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .AppCounterEntry app_counter_entry = 2;</code>
+       */
+      public com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry.Builder getAppCounterEntryBuilder(
+          int index) {
+        return getAppCounterEntryFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .AppCounterEntry app_counter_entry = 2;</code>
+       */
+      public com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntryOrBuilder getAppCounterEntryOrBuilder(
+          int index) {
+        if (appCounterEntryBuilder_ == null) {
+          return appCounterEntry_.get(index);  } else {
+          return appCounterEntryBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .AppCounterEntry app_counter_entry = 2;</code>
+       */
+      public java.util.List<? extends com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntryOrBuilder> 
+           getAppCounterEntryOrBuilderList() {
+        if (appCounterEntryBuilder_ != null) {
+          return appCounterEntryBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(appCounterEntry_);
+        }
+      }
+      /**
+       * <code>repeated .AppCounterEntry app_counter_entry = 2;</code>
+       */
+      public com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry.Builder addAppCounterEntryBuilder() {
+        return getAppCounterEntryFieldBuilder().addBuilder(
+            com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .AppCounterEntry app_counter_entry = 2;</code>
+       */
+      public com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry.Builder addAppCounterEntryBuilder(
+          int index) {
+        return getAppCounterEntryFieldBuilder().addBuilder(
+            index, com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .AppCounterEntry app_counter_entry = 2;</code>
+       */
+      public java.util.List<com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry.Builder> 
+           getAppCounterEntryBuilderList() {
+        return getAppCounterEntryFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry, com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry.Builder, com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntryOrBuilder> 
+          getAppCounterEntryFieldBuilder() {
+        if (appCounterEntryBuilder_ == null) {
+          appCounterEntryBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry, com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry.Builder, com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntryOrBuilder>(
+                  appCounterEntry_,
+                  ((bitField0_ & 0x00000002) == 0x00000002),
+                  getParentForChildren(),
+                  isClean());
+          appCounterEntry_ = null;
+        }
+        return appCounterEntryBuilder_;
+      }
+
+      // optional string message = 3 [default = ""];
+      private java.lang.Object message_ = "";
+      /**
+       * <code>optional string message = 3 [default = ""];</code>
+       */
+      public boolean hasMessage() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional string message = 3 [default = ""];</code>
+       */
+      public java.lang.String getMessage() {
+        java.lang.Object ref = message_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          message_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string message = 3 [default = ""];</code>
+       */
+      public com.google.protobuf.ByteString
+          getMessageBytes() {
+        java.lang.Object ref = message_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          message_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string message = 3 [default = ""];</code>
+       */
+      public Builder setMessage(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        message_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string message = 3 [default = ""];</code>
+       */
+      public Builder clearMessage() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        message_ = getDefaultInstance().getMessage();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string message = 3 [default = ""];</code>
+       */
+      public Builder setMessageBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        message_ = value;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:ServerSearchAppCounterResponse)
+    }
+
+    static {
+      defaultInstance = new ServerSearchAppCounterResponse(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:ServerSearchAppCounterResponse)
+  }
+
+  private static com.google.protobuf.Descriptors.Descriptor
     internal_static_RestCreateApplicationRequest_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_RestCreateApplicationRequest_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
+  private static com.google.protobuf.Descriptors.Descriptor
     internal_static_ServerCreateApplicationResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_ServerCreateApplicationResponse_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
+  private static com.google.protobuf.Descriptors.Descriptor
     internal_static_RestModifyApplicationRequest_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_RestModifyApplicationRequest_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
+  private static com.google.protobuf.Descriptors.Descriptor
     internal_static_ServerModifyApplicationResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_ServerModifyApplicationResponse_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
+  private static com.google.protobuf.Descriptors.Descriptor
     internal_static_AppWorkerGroupEntry_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_AppWorkerGroupEntry_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
+  private static com.google.protobuf.Descriptors.Descriptor
     internal_static_RestSetApplicationWorkerGroupRequest_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_RestSetApplicationWorkerGroupRequest_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
+  private static com.google.protobuf.Descriptors.Descriptor
     internal_static_ServerSetApplicationWorkerGroupResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_ServerSetApplicationWorkerGroupResponse_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_AppCounterEntry_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_AppCounterEntry_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_RestSearchAppCounterRequest_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_RestSearchAppCounterRequest_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_ServerSearchAppCounterResponse_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_ServerSearchAppCounterResponse_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -5949,66 +8095,89 @@ public final class ApplicationProtos {
       "uth\022\014\n\004user\030\002 \002(\t\022\014\n\004mode\030\003 \002(\005\022-\n\017AppWo" +
       "rkerGroups\030\004 \003(\0132\024.AppWorkerGroupEntry\"M" +
       "\n\'ServerSetApplicationWorkerGroupRespons" +
-      "e\022\017\n\007success\030\001 \002(\010\022\021\n\007message\030\002 \001(\t:\000B0\n",
+      "e\022\017\n\007success\030\001 \002(\010\022\021\n\007message\030\002 \001(\t:\000\"2\n",
+      "\017AppCounterEntry\022\016\n\006app_id\030\001 \002(\005\022\017\n\007coun" +
+      "ter\030\002 \002(\005\"G\n\033RestSearchAppCounterRequest" +
+      "\022\032\n\010app_auth\030\001 \002(\0132\010.AppAuth\022\014\n\004user\030\002 \002" +
+      "(\t\"q\n\036ServerSearchAppCounterResponse\022\017\n\007" +
+      "success\030\001 \002(\010\022+\n\021app_counter_entry\030\002 \003(\013" +
+      "2\020.AppCounterEntry\022\021\n\007message\030\003 \001(\t:\000B0\n" +
       "\033com.mogujie.jarvis.protocolB\021Applicatio" +
       "nProtos"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
-          public com.google.protobuf.ExtensionRegistry assignDescriptors(
-              com.google.protobuf.Descriptors.FileDescriptor root) {
-            descriptor = root;
-            return null;
-          }
-        };
+      new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
+        public com.google.protobuf.ExtensionRegistry assignDescriptors(
+            com.google.protobuf.Descriptors.FileDescriptor root) {
+          descriptor = root;
+          internal_static_RestCreateApplicationRequest_descriptor =
+            getDescriptor().getMessageTypes().get(0);
+          internal_static_RestCreateApplicationRequest_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_RestCreateApplicationRequest_descriptor,
+              new java.lang.String[] { "AppAuth", "User", "AppName", "Owner", "Status", "MaxConcurrency", });
+          internal_static_ServerCreateApplicationResponse_descriptor =
+            getDescriptor().getMessageTypes().get(1);
+          internal_static_ServerCreateApplicationResponse_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_ServerCreateApplicationResponse_descriptor,
+              new java.lang.String[] { "Success", "Message", "AppId", });
+          internal_static_RestModifyApplicationRequest_descriptor =
+            getDescriptor().getMessageTypes().get(2);
+          internal_static_RestModifyApplicationRequest_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_RestModifyApplicationRequest_descriptor,
+              new java.lang.String[] { "AppAuth", "User", "AppId", "AppName", "Owner", "Status", "MaxConcurrency", });
+          internal_static_ServerModifyApplicationResponse_descriptor =
+            getDescriptor().getMessageTypes().get(3);
+          internal_static_ServerModifyApplicationResponse_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_ServerModifyApplicationResponse_descriptor,
+              new java.lang.String[] { "Success", "Message", });
+          internal_static_AppWorkerGroupEntry_descriptor =
+            getDescriptor().getMessageTypes().get(4);
+          internal_static_AppWorkerGroupEntry_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_AppWorkerGroupEntry_descriptor,
+              new java.lang.String[] { "AppId", "WorkerGroupId", });
+          internal_static_RestSetApplicationWorkerGroupRequest_descriptor =
+            getDescriptor().getMessageTypes().get(5);
+          internal_static_RestSetApplicationWorkerGroupRequest_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_RestSetApplicationWorkerGroupRequest_descriptor,
+              new java.lang.String[] { "AppAuth", "User", "Mode", "AppWorkerGroups", });
+          internal_static_ServerSetApplicationWorkerGroupResponse_descriptor =
+            getDescriptor().getMessageTypes().get(6);
+          internal_static_ServerSetApplicationWorkerGroupResponse_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_ServerSetApplicationWorkerGroupResponse_descriptor,
+              new java.lang.String[] { "Success", "Message", });
+          internal_static_AppCounterEntry_descriptor =
+            getDescriptor().getMessageTypes().get(7);
+          internal_static_AppCounterEntry_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_AppCounterEntry_descriptor,
+              new java.lang.String[] { "AppId", "Counter", });
+          internal_static_RestSearchAppCounterRequest_descriptor =
+            getDescriptor().getMessageTypes().get(8);
+          internal_static_RestSearchAppCounterRequest_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_RestSearchAppCounterRequest_descriptor,
+              new java.lang.String[] { "AppAuth", "User", });
+          internal_static_ServerSearchAppCounterResponse_descriptor =
+            getDescriptor().getMessageTypes().get(9);
+          internal_static_ServerSearchAppCounterResponse_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_ServerSearchAppCounterResponse_descriptor,
+              new java.lang.String[] { "Success", "AppCounterEntry", "Message", });
+          return null;
+        }
+      };
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           com.mogujie.jarvis.protocol.AppAuthProtos.getDescriptor(),
         }, assigner);
-    internal_static_RestCreateApplicationRequest_descriptor =
-      getDescriptor().getMessageTypes().get(0);
-    internal_static_RestCreateApplicationRequest_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_RestCreateApplicationRequest_descriptor,
-        new java.lang.String[] { "AppAuth", "User", "AppName", "Owner", "Status", "MaxConcurrency", });
-    internal_static_ServerCreateApplicationResponse_descriptor =
-      getDescriptor().getMessageTypes().get(1);
-    internal_static_ServerCreateApplicationResponse_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_ServerCreateApplicationResponse_descriptor,
-        new java.lang.String[] { "Success", "Message", "AppId", });
-    internal_static_RestModifyApplicationRequest_descriptor =
-      getDescriptor().getMessageTypes().get(2);
-    internal_static_RestModifyApplicationRequest_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_RestModifyApplicationRequest_descriptor,
-        new java.lang.String[] { "AppAuth", "User", "AppId", "AppName", "Owner", "Status", "MaxConcurrency", });
-    internal_static_ServerModifyApplicationResponse_descriptor =
-      getDescriptor().getMessageTypes().get(3);
-    internal_static_ServerModifyApplicationResponse_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_ServerModifyApplicationResponse_descriptor,
-        new java.lang.String[] { "Success", "Message", });
-    internal_static_AppWorkerGroupEntry_descriptor =
-      getDescriptor().getMessageTypes().get(4);
-    internal_static_AppWorkerGroupEntry_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_AppWorkerGroupEntry_descriptor,
-        new java.lang.String[] { "AppId", "WorkerGroupId", });
-    internal_static_RestSetApplicationWorkerGroupRequest_descriptor =
-      getDescriptor().getMessageTypes().get(5);
-    internal_static_RestSetApplicationWorkerGroupRequest_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_RestSetApplicationWorkerGroupRequest_descriptor,
-        new java.lang.String[] { "AppAuth", "User", "Mode", "AppWorkerGroups", });
-    internal_static_ServerSetApplicationWorkerGroupResponse_descriptor =
-      getDescriptor().getMessageTypes().get(6);
-    internal_static_ServerSetApplicationWorkerGroupResponse_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_ServerSetApplicationWorkerGroupResponse_descriptor,
-        new java.lang.String[] { "Success", "Message", });
-    com.mogujie.jarvis.protocol.AppAuthProtos.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

@@ -18,10 +18,6 @@ import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 import org.mybatis.guice.transactional.Transactional;
 
-import akka.actor.ActorSelection;
-import akka.actor.Props;
-import akka.actor.UntypedActor;
-
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Range;
@@ -36,6 +32,8 @@ import com.mogujie.jarvis.core.observer.Event;
 import com.mogujie.jarvis.core.util.ExceptionUtil;
 import com.mogujie.jarvis.core.util.IdUtils;
 import com.mogujie.jarvis.dto.generate.Task;
+import com.mogujie.jarvis.protocol.AlarmProtos.RestServerUpdateTaskAlarmStatusRequest;
+import com.mogujie.jarvis.protocol.AlarmProtos.ServerUpdateTaskAlarmStatusResponse;
 import com.mogujie.jarvis.protocol.KillTaskProtos.RestServerKillTaskRequest;
 import com.mogujie.jarvis.protocol.KillTaskProtos.ServerKillTaskRequest;
 import com.mogujie.jarvis.protocol.KillTaskProtos.ServerKillTaskResponse;
@@ -80,6 +78,10 @@ import com.mogujie.jarvis.server.service.TaskDependService;
 import com.mogujie.jarvis.server.service.TaskService;
 import com.mogujie.jarvis.server.util.FutureUtils;
 import com.mogujie.jarvis.server.util.PlanUtil;
+
+import akka.actor.ActorSelection;
+import akka.actor.Props;
+import akka.actor.UntypedActor;
 
 /**
  * @author guangming
@@ -129,7 +131,7 @@ public class TaskActor extends UntypedActor {
         } else if (obj instanceof RestServerQueryTaskRelationRequest) {
             RestServerQueryTaskRelationRequest msg = (RestServerQueryTaskRelationRequest) obj;
             queryTaskRelation(msg);
-        } else if (obj instanceof RestServerQueryTaskStatusRequest){
+        } else if (obj instanceof RestServerQueryTaskStatusRequest) {
             RestServerQueryTaskStatusRequest msg = (RestServerQueryTaskStatusRequest) obj;
             queryTaskStatus(msg);
         } else if (obj instanceof RestServerRemoveTaskRequest) {
@@ -144,6 +146,9 @@ public class TaskActor extends UntypedActor {
         } else if (obj instanceof RestSearchTaskStatusRequest) {
             RestSearchTaskStatusRequest msg = (RestSearchTaskStatusRequest) obj;
             searchTaskStatusByDataDate(msg);
+        } else if (obj instanceof RestServerUpdateTaskAlarmStatusRequest) {
+            RestServerUpdateTaskAlarmStatusRequest msg = (RestServerUpdateTaskAlarmStatusRequest) obj;
+            updateTaskAlarmStatus(msg);
         } else {
             unhandled(obj);
         }
@@ -410,8 +415,7 @@ public class TaskActor extends UntypedActor {
             long taskId = msg.getTaskId();
             Task task = taskService.get(taskId);
             if (task != null) {
-                response = ServerQueryTaskStatusResponse.newBuilder().setSuccess(true)
-                        .setStatus(task.getStatus()).build();
+                response = ServerQueryTaskStatusResponse.newBuilder().setSuccess(true).setStatus(task.getStatus()).build();
             } else {
                 LOGGER.error("task {} is not existed!", taskId);
                 response = ServerQueryTaskStatusResponse.newBuilder().setSuccess(false).setMessage("task " + taskId + " is not existed!").build();
@@ -459,8 +463,7 @@ public class TaskActor extends UntypedActor {
             List<Task> tasks = taskService.getTasksByJobId(jobId);
             if (tasks != null) {
                 for (Task task : tasks) {
-                    TaskEntry taskEntry = TaskEntry.newBuilder().setTaskId(task.getTaskId())
-                            .setAttemptId(task.getAttemptId()).build();
+                    TaskEntry taskEntry = TaskEntry.newBuilder().setTaskId(task.getTaskId()).setAttemptId(task.getAttemptId()).build();
                     builder.addTaskEntry(taskEntry);
                 }
             }
@@ -511,7 +514,8 @@ public class TaskActor extends UntypedActor {
                 response = ServerQueryTaskCriticalPathResponse.newBuilder().setSuccess(true).addAllTaskInfo(taskInfoEntries).build();
                 getSender().tell(response, getSelf());
             } else {
-                String errMsg = "can't find task, scheduleDate=" + new DateTime(scheduleDate).toString("yyyy-MM-dd hh:mm:ss") + ", jobName=" + jobName;
+                String errMsg = "can't find task, scheduleDate=" + new DateTime(scheduleDate).toString("yyyy-MM-dd hh:mm:ss") + ", jobName="
+                        + jobName;
                 response = ServerQueryTaskCriticalPathResponse.newBuilder().setSuccess(false).setMessage(errMsg).build();
                 getSender().tell(response, getSelf());
                 LOGGER.error(errMsg);
@@ -537,8 +541,7 @@ public class TaskActor extends UntypedActor {
                 response = ServerSearchTaskStatusResponse.newBuilder().setSuccess(false)
                         .setMessage("find more than 1 tasks by jobId=" + jobId + ", dataDate=" + new DateTime(dataDate)).build();
             } else {
-                response = ServerSearchTaskStatusResponse.newBuilder().setSuccess(true)
-                        .setStatus(tasks.get(0).getStatus()).build();
+                response = ServerSearchTaskStatusResponse.newBuilder().setSuccess(true).setStatus(tasks.get(0).getStatus()).build();
             }
             getSender().tell(response, getSelf());
         } catch (Exception e) {
@@ -550,19 +553,29 @@ public class TaskActor extends UntypedActor {
     }
 
     private TaskInfoEntry convertTask2TaskInfoEntry(Task task) {
-        TaskInfoEntry taskInfoEntry = TaskInfoEntry.newBuilder()
-                .setTaskId(task.getTaskId())
-                .setJobId(task.getJobId())
-                .setJobName(jobService.get(task.getJobId()).getJob().getJobName())
-                .setScheduleTime(task.getScheduleTime().getTime())
-                .setDataTime(task.getDataTime().getTime())
-                .setStartTime(task.getExecuteStartTime().getTime())
-                .setEndTime(task.getExecuteEndTime().getTime())
-                .setAvgTime(taskService.getAvgExecTime(task.getJobId(), 30))
-                .setUseTime(((float)(task.getExecuteEndTime().getTime() - task.getExecuteStartTime().getTime()))/1000/60) //单位分钟
-                .setStatus(task.getStatus())
-                .build();
+        TaskInfoEntry taskInfoEntry = TaskInfoEntry.newBuilder().setTaskId(task.getTaskId()).setJobId(task.getJobId())
+                .setJobName(jobService.get(task.getJobId()).getJob().getJobName()).setScheduleTime(task.getScheduleTime().getTime())
+                .setDataTime(task.getDataTime().getTime()).setStartTime(task.getExecuteStartTime().getTime())
+                .setEndTime(task.getExecuteEndTime().getTime()).setAvgTime(taskService.getAvgExecTime(task.getJobId(), 30))
+                .setUseTime(((float) (task.getExecuteEndTime().getTime() - task.getExecuteStartTime().getTime())) / 1000 / 60) //单位分钟
+                .setStatus(task.getStatus()).build();
         return taskInfoEntry;
+    }
+
+    private void updateTaskAlarmStatus(RestServerUpdateTaskAlarmStatusRequest request) {
+        int status = request.getAlarmStatus();
+        List<Long> taskIds = request.getTaskIdList();
+        ServerUpdateTaskAlarmStatusResponse response = null;
+        try {
+            taskService.updateAlarmStatus(taskIds, status);
+            response = ServerUpdateTaskAlarmStatusResponse.newBuilder().setSuccess(true).build();
+            getSender().tell(response, getSelf());
+        } catch (Exception e) {
+            response = ServerUpdateTaskAlarmStatusResponse.newBuilder().setSuccess(false).setMessage(ExceptionUtil.getErrMsg(e)).build();
+            getSender().tell(response, getSelf());
+            LOGGER.error("", e);
+            throw e;
+        }
     }
 
 }

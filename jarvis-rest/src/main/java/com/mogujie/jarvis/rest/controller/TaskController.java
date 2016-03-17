@@ -21,6 +21,8 @@ import com.google.gson.reflect.TypeToken;
 import com.mogujie.jarvis.core.domain.AkkaType;
 import com.mogujie.jarvis.core.domain.JobRelationType;
 import com.mogujie.jarvis.core.util.JsonHelper;
+import com.mogujie.jarvis.protocol.AlarmProtos.RestServerUpdateTaskAlarmStatusRequest;
+import com.mogujie.jarvis.protocol.AlarmProtos.ServerUpdateTaskAlarmStatusResponse;
 import com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth;
 import com.mogujie.jarvis.protocol.KillTaskProtos.RestServerKillTaskRequest;
 import com.mogujie.jarvis.protocol.KillTaskProtos.ServerKillTaskResponse;
@@ -63,7 +65,8 @@ public class TaskController extends AbstractController {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
             JsonParameters para = new JsonParameters(parameters);
-            List<Long> taskIds = para.getList("taskIds", new TypeToken<List<Long>>(){}.getType());
+            List<Long> taskIds = para.getList("taskIds", new TypeToken<List<Long>>() {
+            }.getType());
             if (taskIds != null && !taskIds.isEmpty()) {
                 RestServerKillTaskRequest.Builder builder = RestServerKillTaskRequest.newBuilder().setAppAuth(appAuth);
                 for (long taskId : taskIds) {
@@ -96,8 +99,7 @@ public class TaskController extends AbstractController {
             JsonParameters para = new JsonParameters(parameters);
             long taskId = para.getLongNotNull("taskId");
 
-            RestServerRetryTaskRequest request = RestServerRetryTaskRequest.newBuilder()
-                    .setAppAuth(appAuth).setTaskId(taskId).setUser(user).build();
+            RestServerRetryTaskRequest request = RestServerRetryTaskRequest.newBuilder().setAppAuth(appAuth).setTaskId(taskId).setUser(user).build();
 
             ServerRetryTaskResponse response = (ServerRetryTaskResponse) callActor(AkkaType.SERVER, request);
             return response.getSuccess() ? successResult() : errorResult(response.getMessage());
@@ -129,8 +131,7 @@ public class TaskController extends AbstractController {
             for (long jobId : jobIdList) {
                 builder.addJobId(jobId);
             }
-            RestServerManualRerunTaskRequest request = builder.setAppAuth(appAuth)
-                    .setStartTime(startDate).setEndTime(endDate).setUser(user).build();
+            RestServerManualRerunTaskRequest request = builder.setAppAuth(appAuth).setStartTime(startDate).setEndTime(endDate).setUser(user).build();
 
             ServerManualRerunTaskResponse response = (ServerManualRerunTaskResponse) callActor(AkkaType.SERVER, request);
             return response.getSuccess() ? successResult() : errorResult(response.getMessage());
@@ -139,7 +140,6 @@ public class TaskController extends AbstractController {
             return errorResult(e);
         }
     }
-
 
     /**
      * 移除Task
@@ -150,12 +150,13 @@ public class TaskController extends AbstractController {
     @Path("remove")
     @Produces(MediaType.APPLICATION_JSON)
     public RestResult remove(@FormParam("user") String user, @FormParam("appToken") String appToken, @FormParam("appName") String appName,
-                            @FormParam("parameters") String parameters) {
+            @FormParam("parameters") String parameters) {
         try {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
             JsonParameters para = new JsonParameters(parameters);
-            List<Long> taskIds = para.getList("taskIds", new TypeToken<List<Long>>(){}.getType());
+            List<Long> taskIds = para.getList("taskIds", new TypeToken<List<Long>>() {
+            }.getType());
             if (taskIds != null && !taskIds.isEmpty()) {
                 RestServerRemoveTaskRequest.Builder builder = RestServerRemoveTaskRequest.newBuilder().setAppAuth(appAuth);
                 for (long taskId : taskIds) {
@@ -171,8 +172,6 @@ public class TaskController extends AbstractController {
             return errorResult(e);
         }
     }
-
-
 
     /**
      * 强制修改task的状态（慎用！！仅限管理员使用！！）
@@ -216,8 +215,7 @@ public class TaskController extends AbstractController {
             JsonParameters para = new JsonParameters(parameters);
             long taskId = para.getLongNotNull("taskId");
 
-            RestServerQueryTaskStatusRequest request = RestServerQueryTaskStatusRequest.newBuilder()
-                    .setAppAuth(appAuth).setTaskId(taskId).build();
+            RestServerQueryTaskStatusRequest request = RestServerQueryTaskStatusRequest.newBuilder().setAppAuth(appAuth).setTaskId(taskId).build();
 
             ServerQueryTaskStatusResponse response = (ServerQueryTaskStatusResponse) callActor(AkkaType.SERVER, request);
             if (response.getSuccess()) {
@@ -269,6 +267,30 @@ public class TaskController extends AbstractController {
             } else {
                 return errorResult(response.getMessage());
             }
+        } catch (Exception e) {
+            LOGGER.error("", e);
+            return errorResult(e);
+        }
+    }
+
+    @POST
+    @Path("updateAlarmStatus")
+    @Produces(MediaType.APPLICATION_JSON)
+    public RestResult updateAlarmStatus(@FormParam("user") String user, @FormParam("appToken") String appToken, @FormParam("appName") String appName,
+            @FormParam("parameters") String parameters) {
+        try {
+            AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
+
+            JsonParameters para = new JsonParameters(parameters);
+            List<Long> taskIds = para.getList("taskIds", new TypeToken<List<Long>>() {
+            }.getType());
+            int status = para.getIntegerNotNull("status");
+
+            RestServerUpdateTaskAlarmStatusRequest request = RestServerUpdateTaskAlarmStatusRequest.newBuilder().setAppAuth(appAuth)
+                    .addAllTaskId(taskIds).setAlarmStatus(status).build();
+
+            ServerUpdateTaskAlarmStatusResponse response = (ServerUpdateTaskAlarmStatusResponse) callActor(AkkaType.SERVER, request);
+            return response.getSuccess() ? successResult() : errorResult(response.getMessage());
         } catch (Exception e) {
             LOGGER.error("", e);
             return errorResult(e);

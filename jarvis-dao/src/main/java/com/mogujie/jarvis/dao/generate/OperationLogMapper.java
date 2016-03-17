@@ -2,6 +2,7 @@ package com.mogujie.jarvis.dao.generate;
 
 import com.mogujie.jarvis.dto.generate.OperationLog;
 import com.mogujie.jarvis.dto.generate.OperationLogExample;
+import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface OperationLogMapper {
@@ -15,9 +16,9 @@ public interface OperationLogMapper {
 
     int insertSelective(OperationLog record);
 
-    java.util.List<com.mogujie.jarvis.dto.generate.OperationLog> selectByExampleWithBLOBs(OperationLogExample example);
+    List<OperationLog> selectByExampleWithBLOBs(OperationLogExample example);
 
-    java.util.List<com.mogujie.jarvis.dto.generate.OperationLog> selectByExample(OperationLogExample example);
+    List<OperationLog> selectByExample(OperationLogExample example);
 
     OperationLog selectByPrimaryKey(Integer id);
 

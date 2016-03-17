@@ -9,7 +9,7 @@ public class JobExample {
 
     protected boolean distinct;
 
-    protected java.util.List<Criteria> oredCriteria;
+    protected List<Criteria> oredCriteria;
 
     public JobExample() {
         oredCriteria = new ArrayList<Criteria>();
@@ -31,7 +31,7 @@ public class JobExample {
         return distinct;
     }
 
-    public java.util.List<Criteria> getOredCriteria() {
+    public List<Criteria> getOredCriteria() {
         return oredCriteria;
     }
 
@@ -65,7 +65,7 @@ public class JobExample {
     }
 
     protected abstract static class GeneratedCriteria {
-        protected java.util.List<Criterion> criteria;
+        protected List<Criterion> criteria;
 
         protected GeneratedCriteria() {
             super();
@@ -80,7 +80,7 @@ public class JobExample {
             return criteria;
         }
 
-        public java.util.List<Criterion> getCriteria() {
+        public List<Criterion> getCriteria() {
             return criteria;
         }
 
@@ -145,12 +145,12 @@ public class JobExample {
             return (Criteria) this;
         }
 
-        public Criteria andJobIdIn(java.util.List<java.lang.Long> values) {
+        public Criteria andJobIdIn(List<Long> values) {
             addCriterion("jobId in", values, "jobId");
             return (Criteria) this;
         }
 
-        public Criteria andJobIdNotIn(java.util.List<java.lang.Long> values) {
+        public Criteria andJobIdNotIn(List<Long> values) {
             addCriterion("jobId not in", values, "jobId");
             return (Criteria) this;
         }
@@ -215,12 +215,12 @@ public class JobExample {
             return (Criteria) this;
         }
 
-        public Criteria andJobNameIn(java.util.List<java.lang.String> values) {
+        public Criteria andJobNameIn(List<String> values) {
             addCriterion("jobName in", values, "jobName");
             return (Criteria) this;
         }
 
-        public Criteria andJobNameNotIn(java.util.List<java.lang.String> values) {
+        public Criteria andJobNameNotIn(List<String> values) {
             addCriterion("jobName not in", values, "jobName");
             return (Criteria) this;
         }
@@ -285,12 +285,12 @@ public class JobExample {
             return (Criteria) this;
         }
 
-        public Criteria andJobTypeIn(java.util.List<java.lang.String> values) {
+        public Criteria andJobTypeIn(List<String> values) {
             addCriterion("jobType in", values, "jobType");
             return (Criteria) this;
         }
 
-        public Criteria andJobTypeNotIn(java.util.List<java.lang.String> values) {
+        public Criteria andJobTypeNotIn(List<String> values) {
             addCriterion("jobType not in", values, "jobType");
             return (Criteria) this;
         }
@@ -345,12 +345,12 @@ public class JobExample {
             return (Criteria) this;
         }
 
-        public Criteria andStatusIn(java.util.List<java.lang.Integer> values) {
+        public Criteria andStatusIn(List<Integer> values) {
             addCriterion("status in", values, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotIn(java.util.List<java.lang.Integer> values) {
+        public Criteria andStatusNotIn(List<Integer> values) {
             addCriterion("status not in", values, "status");
             return (Criteria) this;
         }
@@ -405,12 +405,12 @@ public class JobExample {
             return (Criteria) this;
         }
 
-        public Criteria andContentTypeIn(java.util.List<java.lang.Integer> values) {
+        public Criteria andContentTypeIn(List<Integer> values) {
             addCriterion("contentType in", values, "contentType");
             return (Criteria) this;
         }
 
-        public Criteria andContentTypeNotIn(java.util.List<java.lang.Integer> values) {
+        public Criteria andContentTypeNotIn(List<Integer> values) {
             addCriterion("contentType not in", values, "contentType");
             return (Criteria) this;
         }
@@ -475,12 +475,12 @@ public class JobExample {
             return (Criteria) this;
         }
 
-        public Criteria andParamsIn(java.util.List<java.lang.String> values) {
+        public Criteria andParamsIn(List<String> values) {
             addCriterion("params in", values, "params");
             return (Criteria) this;
         }
 
-        public Criteria andParamsNotIn(java.util.List<java.lang.String> values) {
+        public Criteria andParamsNotIn(List<String> values) {
             addCriterion("params not in", values, "params");
             return (Criteria) this;
         }
@@ -545,12 +545,12 @@ public class JobExample {
             return (Criteria) this;
         }
 
-        public Criteria andSubmitUserIn(java.util.List<java.lang.String> values) {
+        public Criteria andSubmitUserIn(List<String> values) {
             addCriterion("submitUser in", values, "submitUser");
             return (Criteria) this;
         }
 
-        public Criteria andSubmitUserNotIn(java.util.List<java.lang.String> values) {
+        public Criteria andSubmitUserNotIn(List<String> values) {
             addCriterion("submitUser not in", values, "submitUser");
             return (Criteria) this;
         }
@@ -605,12 +605,12 @@ public class JobExample {
             return (Criteria) this;
         }
 
-        public Criteria andPriorityIn(java.util.List<java.lang.Integer> values) {
+        public Criteria andPriorityIn(List<Integer> values) {
             addCriterion("priority in", values, "priority");
             return (Criteria) this;
         }
 
-        public Criteria andPriorityNotIn(java.util.List<java.lang.Integer> values) {
+        public Criteria andPriorityNotIn(List<Integer> values) {
             addCriterion("priority not in", values, "priority");
             return (Criteria) this;
         }
@@ -665,12 +665,12 @@ public class JobExample {
             return (Criteria) this;
         }
 
-        public Criteria andIsSerialIn(java.util.List<java.lang.Boolean> values) {
+        public Criteria andIsSerialIn(List<Boolean> values) {
             addCriterion("isSerial in", values, "isSerial");
             return (Criteria) this;
         }
 
-        public Criteria andIsSerialNotIn(java.util.List<java.lang.Boolean> values) {
+        public Criteria andIsSerialNotIn(List<Boolean> values) {
             addCriterion("isSerial not in", values, "isSerial");
             return (Criteria) this;
         }
@@ -725,12 +725,12 @@ public class JobExample {
             return (Criteria) this;
         }
 
-        public Criteria andIsTempIn(java.util.List<java.lang.Boolean> values) {
+        public Criteria andIsTempIn(List<Boolean> values) {
             addCriterion("isTemp in", values, "isTemp");
             return (Criteria) this;
         }
 
-        public Criteria andIsTempNotIn(java.util.List<java.lang.Boolean> values) {
+        public Criteria andIsTempNotIn(List<Boolean> values) {
             addCriterion("isTemp not in", values, "isTemp");
             return (Criteria) this;
         }
@@ -785,12 +785,12 @@ public class JobExample {
             return (Criteria) this;
         }
 
-        public Criteria andAppIdIn(java.util.List<java.lang.Integer> values) {
+        public Criteria andAppIdIn(List<Integer> values) {
             addCriterion("appId in", values, "appId");
             return (Criteria) this;
         }
 
-        public Criteria andAppIdNotIn(java.util.List<java.lang.Integer> values) {
+        public Criteria andAppIdNotIn(List<Integer> values) {
             addCriterion("appId not in", values, "appId");
             return (Criteria) this;
         }
@@ -845,12 +845,12 @@ public class JobExample {
             return (Criteria) this;
         }
 
-        public Criteria andWorkerGroupIdIn(java.util.List<java.lang.Integer> values) {
+        public Criteria andWorkerGroupIdIn(List<Integer> values) {
             addCriterion("workerGroupId in", values, "workerGroupId");
             return (Criteria) this;
         }
 
-        public Criteria andWorkerGroupIdNotIn(java.util.List<java.lang.Integer> values) {
+        public Criteria andWorkerGroupIdNotIn(List<Integer> values) {
             addCriterion("workerGroupId not in", values, "workerGroupId");
             return (Criteria) this;
         }
@@ -915,12 +915,12 @@ public class JobExample {
             return (Criteria) this;
         }
 
-        public Criteria andDepartmentIn(java.util.List<java.lang.String> values) {
+        public Criteria andDepartmentIn(List<String> values) {
             addCriterion("department in", values, "department");
             return (Criteria) this;
         }
 
-        public Criteria andDepartmentNotIn(java.util.List<java.lang.String> values) {
+        public Criteria andDepartmentNotIn(List<String> values) {
             addCriterion("department not in", values, "department");
             return (Criteria) this;
         }
@@ -985,12 +985,12 @@ public class JobExample {
             return (Criteria) this;
         }
 
-        public Criteria andBizGroupsIn(java.util.List<java.lang.String> values) {
+        public Criteria andBizGroupsIn(List<String> values) {
             addCriterion("bizGroups in", values, "bizGroups");
             return (Criteria) this;
         }
 
-        public Criteria andBizGroupsNotIn(java.util.List<java.lang.String> values) {
+        public Criteria andBizGroupsNotIn(List<String> values) {
             addCriterion("bizGroups not in", values, "bizGroups");
             return (Criteria) this;
         }
@@ -1045,12 +1045,12 @@ public class JobExample {
             return (Criteria) this;
         }
 
-        public Criteria andActiveStartDateIn(java.util.List<java.util.Date> values) {
+        public Criteria andActiveStartDateIn(List<Date> values) {
             addCriterion("activeStartDate in", values, "activeStartDate");
             return (Criteria) this;
         }
 
-        public Criteria andActiveStartDateNotIn(java.util.List<java.util.Date> values) {
+        public Criteria andActiveStartDateNotIn(List<Date> values) {
             addCriterion("activeStartDate not in", values, "activeStartDate");
             return (Criteria) this;
         }
@@ -1105,12 +1105,12 @@ public class JobExample {
             return (Criteria) this;
         }
 
-        public Criteria andActiveEndDateIn(java.util.List<java.util.Date> values) {
+        public Criteria andActiveEndDateIn(List<Date> values) {
             addCriterion("activeEndDate in", values, "activeEndDate");
             return (Criteria) this;
         }
 
-        public Criteria andActiveEndDateNotIn(java.util.List<java.util.Date> values) {
+        public Criteria andActiveEndDateNotIn(List<Date> values) {
             addCriterion("activeEndDate not in", values, "activeEndDate");
             return (Criteria) this;
         }
@@ -1165,12 +1165,12 @@ public class JobExample {
             return (Criteria) this;
         }
 
-        public Criteria andExpiredTimeIn(java.util.List<java.lang.Integer> values) {
+        public Criteria andExpiredTimeIn(List<Integer> values) {
             addCriterion("expiredTime in", values, "expiredTime");
             return (Criteria) this;
         }
 
-        public Criteria andExpiredTimeNotIn(java.util.List<java.lang.Integer> values) {
+        public Criteria andExpiredTimeNotIn(List<Integer> values) {
             addCriterion("expiredTime not in", values, "expiredTime");
             return (Criteria) this;
         }
@@ -1225,12 +1225,12 @@ public class JobExample {
             return (Criteria) this;
         }
 
-        public Criteria andFailedAttemptsIn(java.util.List<java.lang.Integer> values) {
+        public Criteria andFailedAttemptsIn(List<Integer> values) {
             addCriterion("failedAttempts in", values, "failedAttempts");
             return (Criteria) this;
         }
 
-        public Criteria andFailedAttemptsNotIn(java.util.List<java.lang.Integer> values) {
+        public Criteria andFailedAttemptsNotIn(List<Integer> values) {
             addCriterion("failedAttempts not in", values, "failedAttempts");
             return (Criteria) this;
         }
@@ -1285,12 +1285,12 @@ public class JobExample {
             return (Criteria) this;
         }
 
-        public Criteria andFailedIntervalIn(java.util.List<java.lang.Integer> values) {
+        public Criteria andFailedIntervalIn(List<Integer> values) {
             addCriterion("failedInterval in", values, "failedInterval");
             return (Criteria) this;
         }
 
-        public Criteria andFailedIntervalNotIn(java.util.List<java.lang.Integer> values) {
+        public Criteria andFailedIntervalNotIn(List<Integer> values) {
             addCriterion("failedInterval not in", values, "failedInterval");
             return (Criteria) this;
         }
@@ -1345,12 +1345,12 @@ public class JobExample {
             return (Criteria) this;
         }
 
-        public Criteria andCreateTimeIn(java.util.List<java.util.Date> values) {
+        public Criteria andCreateTimeIn(List<Date> values) {
             addCriterion("createTime in", values, "createTime");
             return (Criteria) this;
         }
 
-        public Criteria andCreateTimeNotIn(java.util.List<java.util.Date> values) {
+        public Criteria andCreateTimeNotIn(List<Date> values) {
             addCriterion("createTime not in", values, "createTime");
             return (Criteria) this;
         }
@@ -1405,12 +1405,12 @@ public class JobExample {
             return (Criteria) this;
         }
 
-        public Criteria andUpdateTimeIn(java.util.List<java.util.Date> values) {
+        public Criteria andUpdateTimeIn(List<Date> values) {
             addCriterion("updateTime in", values, "updateTime");
             return (Criteria) this;
         }
 
-        public Criteria andUpdateTimeNotIn(java.util.List<java.util.Date> values) {
+        public Criteria andUpdateTimeNotIn(List<Date> values) {
             addCriterion("updateTime not in", values, "updateTime");
             return (Criteria) this;
         }
@@ -1475,12 +1475,12 @@ public class JobExample {
             return (Criteria) this;
         }
 
-        public Criteria andUpdateUserIn(java.util.List<java.lang.String> values) {
+        public Criteria andUpdateUserIn(List<String> values) {
             addCriterion("updateUser in", values, "updateUser");
             return (Criteria) this;
         }
 
-        public Criteria andUpdateUserNotIn(java.util.List<java.lang.String> values) {
+        public Criteria andUpdateUserNotIn(List<String> values) {
             addCriterion("updateUser not in", values, "updateUser");
             return (Criteria) this;
         }

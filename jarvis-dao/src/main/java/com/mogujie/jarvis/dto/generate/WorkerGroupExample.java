@@ -9,7 +9,7 @@ public class WorkerGroupExample {
 
     protected boolean distinct;
 
-    protected java.util.List<Criteria> oredCriteria;
+    protected List<Criteria> oredCriteria;
 
     public WorkerGroupExample() {
         oredCriteria = new ArrayList<Criteria>();
@@ -31,7 +31,7 @@ public class WorkerGroupExample {
         return distinct;
     }
 
-    public java.util.List<Criteria> getOredCriteria() {
+    public List<Criteria> getOredCriteria() {
         return oredCriteria;
     }
 
@@ -65,7 +65,7 @@ public class WorkerGroupExample {
     }
 
     protected abstract static class GeneratedCriteria {
-        protected java.util.List<Criterion> criteria;
+        protected List<Criterion> criteria;
 
         protected GeneratedCriteria() {
             super();
@@ -80,7 +80,7 @@ public class WorkerGroupExample {
             return criteria;
         }
 
-        public java.util.List<Criterion> getCriteria() {
+        public List<Criterion> getCriteria() {
             return criteria;
         }
 
@@ -145,12 +145,12 @@ public class WorkerGroupExample {
             return (Criteria) this;
         }
 
-        public Criteria andIdIn(java.util.List<java.lang.Integer> values) {
+        public Criteria andIdIn(List<Integer> values) {
             addCriterion("id in", values, "id");
             return (Criteria) this;
         }
 
-        public Criteria andIdNotIn(java.util.List<java.lang.Integer> values) {
+        public Criteria andIdNotIn(List<Integer> values) {
             addCriterion("id not in", values, "id");
             return (Criteria) this;
         }
@@ -215,12 +215,12 @@ public class WorkerGroupExample {
             return (Criteria) this;
         }
 
-        public Criteria andNameIn(java.util.List<java.lang.String> values) {
+        public Criteria andNameIn(List<String> values) {
             addCriterion("name in", values, "name");
             return (Criteria) this;
         }
 
-        public Criteria andNameNotIn(java.util.List<java.lang.String> values) {
+        public Criteria andNameNotIn(List<String> values) {
             addCriterion("name not in", values, "name");
             return (Criteria) this;
         }
@@ -285,12 +285,12 @@ public class WorkerGroupExample {
             return (Criteria) this;
         }
 
-        public Criteria andAuthKeyIn(java.util.List<java.lang.String> values) {
+        public Criteria andAuthKeyIn(List<String> values) {
             addCriterion("authKey in", values, "authKey");
             return (Criteria) this;
         }
 
-        public Criteria andAuthKeyNotIn(java.util.List<java.lang.String> values) {
+        public Criteria andAuthKeyNotIn(List<String> values) {
             addCriterion("authKey not in", values, "authKey");
             return (Criteria) this;
         }
@@ -345,12 +345,12 @@ public class WorkerGroupExample {
             return (Criteria) this;
         }
 
-        public Criteria andStatusIn(java.util.List<java.lang.Integer> values) {
+        public Criteria andStatusIn(List<Integer> values) {
             addCriterion("status in", values, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotIn(java.util.List<java.lang.Integer> values) {
+        public Criteria andStatusNotIn(List<Integer> values) {
             addCriterion("status not in", values, "status");
             return (Criteria) this;
         }
@@ -415,12 +415,12 @@ public class WorkerGroupExample {
             return (Criteria) this;
         }
 
-        public Criteria andOwnerIn(java.util.List<java.lang.String> values) {
+        public Criteria andOwnerIn(List<String> values) {
             addCriterion("owner in", values, "owner");
             return (Criteria) this;
         }
 
-        public Criteria andOwnerNotIn(java.util.List<java.lang.String> values) {
+        public Criteria andOwnerNotIn(List<String> values) {
             addCriterion("owner not in", values, "owner");
             return (Criteria) this;
         }
@@ -475,12 +475,12 @@ public class WorkerGroupExample {
             return (Criteria) this;
         }
 
-        public Criteria andCreateTimeIn(java.util.List<java.util.Date> values) {
+        public Criteria andCreateTimeIn(List<Date> values) {
             addCriterion("createTime in", values, "createTime");
             return (Criteria) this;
         }
 
-        public Criteria andCreateTimeNotIn(java.util.List<java.util.Date> values) {
+        public Criteria andCreateTimeNotIn(List<Date> values) {
             addCriterion("createTime not in", values, "createTime");
             return (Criteria) this;
         }
@@ -535,12 +535,12 @@ public class WorkerGroupExample {
             return (Criteria) this;
         }
 
-        public Criteria andUpdateTimeIn(java.util.List<java.util.Date> values) {
+        public Criteria andUpdateTimeIn(List<Date> values) {
             addCriterion("updateTime in", values, "updateTime");
             return (Criteria) this;
         }
 
-        public Criteria andUpdateTimeNotIn(java.util.List<java.util.Date> values) {
+        public Criteria andUpdateTimeNotIn(List<Date> values) {
             addCriterion("updateTime not in", values, "updateTime");
             return (Criteria) this;
         }
@@ -605,12 +605,12 @@ public class WorkerGroupExample {
             return (Criteria) this;
         }
 
-        public Criteria andUpdateUserIn(java.util.List<java.lang.String> values) {
+        public Criteria andUpdateUserIn(List<String> values) {
             addCriterion("updateUser in", values, "updateUser");
             return (Criteria) this;
         }
 
-        public Criteria andUpdateUserNotIn(java.util.List<java.lang.String> values) {
+        public Criteria andUpdateUserNotIn(List<String> values) {
             addCriterion("updateUser not in", values, "updateUser");
             return (Criteria) this;
         }

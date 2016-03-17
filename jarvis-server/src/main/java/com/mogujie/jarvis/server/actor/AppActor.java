@@ -10,6 +10,8 @@ package com.mogujie.jarvis.server.actor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
@@ -27,11 +29,14 @@ import com.mogujie.jarvis.core.util.ExceptionUtil;
 import com.mogujie.jarvis.dto.generate.App;
 import com.mogujie.jarvis.dto.generate.AppWorkerGroup;
 import com.mogujie.jarvis.protocol.ApplicationProtos;
+import com.mogujie.jarvis.protocol.ApplicationProtos.AppCounterEntry;
 import com.mogujie.jarvis.protocol.ApplicationProtos.RestCreateApplicationRequest;
 import com.mogujie.jarvis.protocol.ApplicationProtos.RestModifyApplicationRequest;
+import com.mogujie.jarvis.protocol.ApplicationProtos.RestSearchAppCounterRequest;
 import com.mogujie.jarvis.protocol.ApplicationProtos.RestSetApplicationWorkerGroupRequest;
 import com.mogujie.jarvis.protocol.ApplicationProtos.ServerCreateApplicationResponse;
 import com.mogujie.jarvis.protocol.ApplicationProtos.ServerModifyApplicationResponse;
+import com.mogujie.jarvis.protocol.ApplicationProtos.ServerSearchAppCounterResponse;
 import com.mogujie.jarvis.protocol.ApplicationProtos.ServerSetApplicationWorkerGroupResponse;
 import com.mogujie.jarvis.server.dispatcher.TaskManager;
 import com.mogujie.jarvis.server.domain.ActorEntry;
@@ -58,6 +63,7 @@ public class AppActor extends UntypedActor {
         list.add(new ActorEntry(RestCreateApplicationRequest.class, ServerCreateApplicationResponse.class, MessageType.SYSTEM));
         list.add(new ActorEntry(RestModifyApplicationRequest.class, ServerModifyApplicationResponse.class, MessageType.SYSTEM));
         list.add(new ActorEntry(RestSetApplicationWorkerGroupRequest.class, ServerSetApplicationWorkerGroupResponse.class, MessageType.SYSTEM));
+        list.add(new ActorEntry(RestSearchAppCounterRequest.class, ServerSearchAppCounterResponse.class, MessageType.SYSTEM));
         return list;
     }
 
@@ -69,6 +75,8 @@ public class AppActor extends UntypedActor {
             modifyApplication((RestModifyApplicationRequest) obj);
         } else if (obj instanceof RestSetApplicationWorkerGroupRequest) {
             setApplicationWorkerGroup((RestSetApplicationWorkerGroupRequest) obj);
+        } else if (obj instanceof RestSearchAppCounterRequest) {
+            searchAppCounter((RestSearchAppCounterRequest) obj);
         } else {
             unhandled(obj);
         }
@@ -131,6 +139,25 @@ public class AppActor extends UntypedActor {
             response = ServerSetApplicationWorkerGroupResponse.newBuilder().setSuccess(true).build();
         } catch (Exception ex) {
             response = ServerSetApplicationWorkerGroupResponse.newBuilder().setSuccess(false).setMessage(ExceptionUtil.getErrMsg(ex)).build();
+            logger.error("", ex);
+            throw ex;
+        } finally {
+            getSender().tell(response, getSelf());
+        }
+    }
+
+    private void searchAppCounter(RestSearchAppCounterRequest request) {
+        ServerSearchAppCounterResponse response = null;
+        try {
+            ServerSearchAppCounterResponse.Builder builder = ServerSearchAppCounterResponse.newBuilder();
+            Map<Integer, Long> appCounterMap = taskManager.getAppCounter();
+            for (Entry<Integer, Long> entry : appCounterMap.entrySet()) {
+                AppCounterEntry appEntry = AppCounterEntry.newBuilder().setAppId(entry.getKey()).setCounter(entry.getValue().intValue()).build();
+                builder.addAppCounterEntry(appEntry);
+            }
+            response = builder.setSuccess(true).build();
+        } catch (Exception ex) {
+            response = ServerSearchAppCounterResponse.newBuilder().setSuccess(false).setMessage(ExceptionUtil.getErrMsg(ex)).build();
             logger.error("", ex);
             throw ex;
         } finally {
