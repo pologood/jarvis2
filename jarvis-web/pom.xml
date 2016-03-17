@@ -283,8 +283,6 @@
 
         </dependency>
 
-
-
     </dependencies>
 
 
@@ -300,17 +298,17 @@
             </activation>
         </profile>
         <profile>
-            <!-- 生产环境 -->
-            <id>production-one</id>
+            <!-- 测试环境 -->
+            <id>test</id>
             <properties>
-                <profiles.active>production-one</profiles.active>
+                <profiles.active>test</profiles.active>
             </properties>
         </profile>
         <profile>
             <!-- 生产环境 -->
-            <id>test</id>
+            <id>production-one</id>
             <properties>
-                <profiles.active>test</profiles.active>
+                <profiles.active>production-one</profiles.active>
             </properties>
         </profile>
 
