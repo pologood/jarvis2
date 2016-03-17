@@ -6,7 +6,7 @@ option java_outer_classname = "RemoveTaskProtos";
 
 message RestServerRemoveTaskRequest {
     required AppAuth app_auth = 1;
-    required int64 task_id = 2;
+    repeated int64 task_id = 2;
 }
 
 message ServerRemoveTaskResponse {

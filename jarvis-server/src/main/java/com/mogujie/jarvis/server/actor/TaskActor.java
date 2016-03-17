@@ -433,12 +433,8 @@ public class TaskActor extends UntypedActor {
         LOGGER.info("start removeTask");
         ServerRemoveTaskResponse response;
         try {
-            long taskId = msg.getTaskId();
-            Task task = taskService.get(taskId);
-            long jobId = task.getJobId();
-            long scheduleTime = task.getScheduleTime().getTime();
-            TaskType taskType = TaskType.parseValue(task.getType());
-            RemoveTaskEvent removeTaskEvent = new RemoveTaskEvent(jobId, taskId, scheduleTime, taskType);
+            List<Long> taskIds = msg.getTaskIdList();
+            RemoveTaskEvent removeTaskEvent = new RemoveTaskEvent(taskIds);
             controller.notify(removeTaskEvent);
             response = ServerRemoveTaskResponse.newBuilder().setSuccess(true).setMessage("task has been removed").build();
             getSender().tell(response, getSelf());

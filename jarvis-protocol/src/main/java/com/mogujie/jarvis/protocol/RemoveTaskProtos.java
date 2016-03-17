@@ -8,10 +8,10 @@ public final class RemoveTaskProtos {
   public static void registerAllExtensions(
       com.google.protobuf.ExtensionRegistry registry) {
   }
-  public interface RestServerRemoveTaskRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:RestServerRemoveTaskRequest)
-      com.google.protobuf.MessageOrBuilder {
+  public interface RestServerRemoveTaskRequestOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required .AppAuth app_auth = 1;
     /**
      * <code>required .AppAuth app_auth = 1;</code>
      */
@@ -25,22 +25,26 @@ public final class RemoveTaskProtos {
      */
     com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder getAppAuthOrBuilder();
 
+    // repeated int64 task_id = 2;
     /**
-     * <code>required int64 task_id = 2;</code>
+     * <code>repeated int64 task_id = 2;</code>
      */
-    boolean hasTaskId();
+    java.util.List<java.lang.Long> getTaskIdList();
     /**
-     * <code>required int64 task_id = 2;</code>
+     * <code>repeated int64 task_id = 2;</code>
      */
-    long getTaskId();
+    int getTaskIdCount();
+    /**
+     * <code>repeated int64 task_id = 2;</code>
+     */
+    long getTaskId(int index);
   }
   /**
    * Protobuf type {@code RestServerRemoveTaskRequest}
    */
   public static final class RestServerRemoveTaskRequest extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:RestServerRemoveTaskRequest)
-      RestServerRemoveTaskRequestOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements RestServerRemoveTaskRequestOrBuilder {
     // Use RestServerRemoveTaskRequest.newBuilder() to construct.
     private RestServerRemoveTaskRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -100,8 +104,24 @@ public final class RemoveTaskProtos {
               break;
             }
             case 16: {
-              bitField0_ |= 0x00000002;
-              taskId_ = input.readInt64();
+              if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+                taskId_ = new java.util.ArrayList<java.lang.Long>();
+                mutable_bitField0_ |= 0x00000002;
+              }
+              taskId_.add(input.readInt64());
+              break;
+            }
+            case 18: {
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              if (!((mutable_bitField0_ & 0x00000002) == 0x00000002) && input.getBytesUntilLimit() > 0) {
+                taskId_ = new java.util.ArrayList<java.lang.Long>();
+                mutable_bitField0_ |= 0x00000002;
+              }
+              while (input.getBytesUntilLimit() > 0) {
+                taskId_.add(input.readInt64());
+              }
+              input.popLimit(limit);
               break;
             }
           }
@@ -112,6 +132,9 @@ public final class RemoveTaskProtos {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e.getMessage()).setUnfinishedMessage(this);
       } finally {
+        if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+          taskId_ = java.util.Collections.unmodifiableList(taskId_);
+        }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
@@ -144,6 +167,7 @@ public final class RemoveTaskProtos {
     }
 
     private int bitField0_;
+    // required .AppAuth app_auth = 1;
     public static final int APP_AUTH_FIELD_NUMBER = 1;
     private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_;
     /**
@@ -165,36 +189,39 @@ public final class RemoveTaskProtos {
       return appAuth_;
     }
 
+    // repeated int64 task_id = 2;
     public static final int TASK_ID_FIELD_NUMBER = 2;
-    private long taskId_;
+    private java.util.List<java.lang.Long> taskId_;
     /**
-     * <code>required int64 task_id = 2;</code>
+     * <code>repeated int64 task_id = 2;</code>
      */
-    public boolean hasTaskId() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
+    public java.util.List<java.lang.Long>
+        getTaskIdList() {
+      return taskId_;
     }
     /**
-     * <code>required int64 task_id = 2;</code>
+     * <code>repeated int64 task_id = 2;</code>
      */
-    public long getTaskId() {
-      return taskId_;
+    public int getTaskIdCount() {
+      return taskId_.size();
+    }
+    /**
+     * <code>repeated int64 task_id = 2;</code>
+     */
+    public long getTaskId(int index) {
+      return taskId_.get(index);
     }
 
     private void initFields() {
       appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
-      taskId_ = 0L;
+      taskId_ = java.util.Collections.emptyList();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasAppAuth()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasTaskId()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -212,8 +239,8 @@ public final class RemoveTaskProtos {
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         output.writeMessage(1, appAuth_);
       }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeInt64(2, taskId_);
+      for (int i = 0; i < taskId_.size(); i++) {
+        output.writeInt64(2, taskId_.get(i));
       }
       getUnknownFields().writeTo(output);
     }
@@ -228,9 +255,14 @@ public final class RemoveTaskProtos {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(1, appAuth_);
       }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(2, taskId_);
+      {
+        int dataSize = 0;
+        for (int i = 0; i < taskId_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeInt64SizeNoTag(taskId_.get(i));
+        }
+        size += dataSize;
+        size += 1 * getTaskIdList().size();
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -314,9 +346,8 @@ public final class RemoveTaskProtos {
      * Protobuf type {@code RestServerRemoveTaskRequest}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:RestServerRemoveTaskRequest)
-        com.mogujie.jarvis.protocol.RemoveTaskProtos.RestServerRemoveTaskRequestOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.mogujie.jarvis.protocol.RemoveTaskProtos.RestServerRemoveTaskRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mogujie.jarvis.protocol.RemoveTaskProtos.internal_static_RestServerRemoveTaskRequest_descriptor;
@@ -356,7 +387,7 @@ public final class RemoveTaskProtos {
           appAuthBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000001);
-        taskId_ = 0L;
+        taskId_ = java.util.Collections.emptyList();
         bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
@@ -394,8 +425,9 @@ public final class RemoveTaskProtos {
         } else {
           result.appAuth_ = appAuthBuilder_.build();
         }
-        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-          to_bitField0_ |= 0x00000002;
+        if (((bitField0_ & 0x00000002) == 0x00000002)) {
+          taskId_ = java.util.Collections.unmodifiableList(taskId_);
+          bitField0_ = (bitField0_ & ~0x00000002);
         }
         result.taskId_ = taskId_;
         result.bitField0_ = to_bitField0_;
@@ -417,8 +449,15 @@ public final class RemoveTaskProtos {
         if (other.hasAppAuth()) {
           mergeAppAuth(other.getAppAuth());
         }
-        if (other.hasTaskId()) {
-          setTaskId(other.getTaskId());
+        if (!other.taskId_.isEmpty()) {
+          if (taskId_.isEmpty()) {
+            taskId_ = other.taskId_;
+            bitField0_ = (bitField0_ & ~0x00000002);
+          } else {
+            ensureTaskIdIsMutable();
+            taskId_.addAll(other.taskId_);
+          }
+          onChanged();
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -426,10 +465,6 @@ public final class RemoveTaskProtos {
 
       public final boolean isInitialized() {
         if (!hasAppAuth()) {
-          
-          return false;
-        }
-        if (!hasTaskId()) {
           
           return false;
         }
@@ -459,6 +494,7 @@ public final class RemoveTaskProtos {
       }
       private int bitField0_;
 
+      // required .AppAuth app_auth = 1;
       private com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth appAuth_ = com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder> appAuthBuilder_;
@@ -567,7 +603,7 @@ public final class RemoveTaskProtos {
         if (appAuthBuilder_ == null) {
           appAuthBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuth.Builder, com.mogujie.jarvis.protocol.AppAuthProtos.AppAuthOrBuilder>(
-                  getAppAuth(),
+                  appAuth_,
                   getParentForChildren(),
                   isClean());
           appAuth_ = null;
@@ -575,34 +611,68 @@ public final class RemoveTaskProtos {
         return appAuthBuilder_;
       }
 
-      private long taskId_ ;
-      /**
-       * <code>required int64 task_id = 2;</code>
-       */
-      public boolean hasTaskId() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
+      // repeated int64 task_id = 2;
+      private java.util.List<java.lang.Long> taskId_ = java.util.Collections.emptyList();
+      private void ensureTaskIdIsMutable() {
+        if (!((bitField0_ & 0x00000002) == 0x00000002)) {
+          taskId_ = new java.util.ArrayList<java.lang.Long>(taskId_);
+          bitField0_ |= 0x00000002;
+         }
       }
       /**
-       * <code>required int64 task_id = 2;</code>
+       * <code>repeated int64 task_id = 2;</code>
        */
-      public long getTaskId() {
-        return taskId_;
+      public java.util.List<java.lang.Long>
+          getTaskIdList() {
+        return java.util.Collections.unmodifiableList(taskId_);
       }
       /**
-       * <code>required int64 task_id = 2;</code>
+       * <code>repeated int64 task_id = 2;</code>
        */
-      public Builder setTaskId(long value) {
-        bitField0_ |= 0x00000002;
-        taskId_ = value;
+      public int getTaskIdCount() {
+        return taskId_.size();
+      }
+      /**
+       * <code>repeated int64 task_id = 2;</code>
+       */
+      public long getTaskId(int index) {
+        return taskId_.get(index);
+      }
+      /**
+       * <code>repeated int64 task_id = 2;</code>
+       */
+      public Builder setTaskId(
+          int index, long value) {
+        ensureTaskIdIsMutable();
+        taskId_.set(index, value);
         onChanged();
         return this;
       }
       /**
-       * <code>required int64 task_id = 2;</code>
+       * <code>repeated int64 task_id = 2;</code>
+       */
+      public Builder addTaskId(long value) {
+        ensureTaskIdIsMutable();
+        taskId_.add(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated int64 task_id = 2;</code>
+       */
+      public Builder addAllTaskId(
+          java.lang.Iterable<? extends java.lang.Long> values) {
+        ensureTaskIdIsMutable();
+        super.addAll(values, taskId_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated int64 task_id = 2;</code>
        */
       public Builder clearTaskId() {
+        taskId_ = java.util.Collections.emptyList();
         bitField0_ = (bitField0_ & ~0x00000002);
-        taskId_ = 0L;
         onChanged();
         return this;
       }
@@ -618,10 +688,10 @@ public final class RemoveTaskProtos {
     // @@protoc_insertion_point(class_scope:RestServerRemoveTaskRequest)
   }
 
-  public interface ServerRemoveTaskResponseOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:ServerRemoveTaskResponse)
-      com.google.protobuf.MessageOrBuilder {
+  public interface ServerRemoveTaskResponseOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
 
+    // required bool success = 1;
     /**
      * <code>required bool success = 1;</code>
      */
@@ -631,6 +701,7 @@ public final class RemoveTaskProtos {
      */
     boolean getSuccess();
 
+    // optional string message = 2 [default = ""];
     /**
      * <code>optional string message = 2 [default = ""];</code>
      */
@@ -649,9 +720,8 @@ public final class RemoveTaskProtos {
    * Protobuf type {@code ServerRemoveTaskResponse}
    */
   public static final class ServerRemoveTaskResponse extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:ServerRemoveTaskResponse)
-      ServerRemoveTaskResponseOrBuilder {
+      com.google.protobuf.GeneratedMessage
+      implements ServerRemoveTaskResponseOrBuilder {
     // Use ServerRemoveTaskResponse.newBuilder() to construct.
     private ServerRemoveTaskResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -703,9 +773,8 @@ public final class RemoveTaskProtos {
               break;
             }
             case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              message_ = bs;
+              message_ = input.readBytes();
               break;
             }
           }
@@ -748,6 +817,7 @@ public final class RemoveTaskProtos {
     }
 
     private int bitField0_;
+    // required bool success = 1;
     public static final int SUCCESS_FIELD_NUMBER = 1;
     private boolean success_;
     /**
@@ -763,6 +833,7 @@ public final class RemoveTaskProtos {
       return success_;
     }
 
+    // optional string message = 2 [default = ""];
     public static final int MESSAGE_FIELD_NUMBER = 2;
     private java.lang.Object message_;
     /**
@@ -812,8 +883,7 @@ public final class RemoveTaskProtos {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
+      if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasSuccess()) {
         memoizedIsInitialized = 0;
@@ -931,9 +1001,8 @@ public final class RemoveTaskProtos {
      * Protobuf type {@code ServerRemoveTaskResponse}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:ServerRemoveTaskResponse)
-        com.mogujie.jarvis.protocol.RemoveTaskProtos.ServerRemoveTaskResponseOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.mogujie.jarvis.protocol.RemoveTaskProtos.ServerRemoveTaskResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.mogujie.jarvis.protocol.RemoveTaskProtos.internal_static_ServerRemoveTaskResponse_descriptor;
@@ -1061,6 +1130,7 @@ public final class RemoveTaskProtos {
       }
       private int bitField0_;
 
+      // required bool success = 1;
       private boolean success_ ;
       /**
        * <code>required bool success = 1;</code>
@@ -1093,6 +1163,7 @@ public final class RemoveTaskProtos {
         return this;
       }
 
+      // optional string message = 2 [default = ""];
       private java.lang.Object message_ = "";
       /**
        * <code>optional string message = 2 [default = ""];</code>
@@ -1106,12 +1177,9 @@ public final class RemoveTaskProtos {
       public java.lang.String getMessage() {
         java.lang.Object ref = message_;
         if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            message_ = s;
-          }
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          message_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -1180,12 +1248,12 @@ public final class RemoveTaskProtos {
     // @@protoc_insertion_point(class_scope:ServerRemoveTaskResponse)
   }
 
-  private static final com.google.protobuf.Descriptors.Descriptor
+  private static com.google.protobuf.Descriptors.Descriptor
     internal_static_RestServerRemoveTaskRequest_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_RestServerRemoveTaskRequest_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
+  private static com.google.protobuf.Descriptors.Descriptor
     internal_static_ServerRemoveTaskResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -1201,37 +1269,36 @@ public final class RemoveTaskProtos {
     java.lang.String[] descriptorData = {
       "\n\021remove_task.proto\032\016app_auth.proto\"J\n\033R" +
       "estServerRemoveTaskRequest\022\032\n\010app_auth\030\001" +
-      " \002(\0132\010.AppAuth\022\017\n\007task_id\030\002 \002(\003\">\n\030Serve" +
+      " \002(\0132\010.AppAuth\022\017\n\007task_id\030\002 \003(\003\">\n\030Serve" +
       "rRemoveTaskResponse\022\017\n\007success\030\001 \002(\010\022\021\n\007" +
       "message\030\002 \001(\t:\000B/\n\033com.mogujie.jarvis.pr" +
       "otocolB\020RemoveTaskProtos"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
-          public com.google.protobuf.ExtensionRegistry assignDescriptors(
-              com.google.protobuf.Descriptors.FileDescriptor root) {
-            descriptor = root;
-            return null;
-          }
-        };
+      new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
+        public com.google.protobuf.ExtensionRegistry assignDescriptors(
+            com.google.protobuf.Descriptors.FileDescriptor root) {
+          descriptor = root;
+          internal_static_RestServerRemoveTaskRequest_descriptor =
+            getDescriptor().getMessageTypes().get(0);
+          internal_static_RestServerRemoveTaskRequest_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_RestServerRemoveTaskRequest_descriptor,
+              new java.lang.String[] { "AppAuth", "TaskId", });
+          internal_static_ServerRemoveTaskResponse_descriptor =
+            getDescriptor().getMessageTypes().get(1);
+          internal_static_ServerRemoveTaskResponse_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_ServerRemoveTaskResponse_descriptor,
+              new java.lang.String[] { "Success", "Message", });
+          return null;
+        }
+      };
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           com.mogujie.jarvis.protocol.AppAuthProtos.getDescriptor(),
         }, assigner);
-    internal_static_RestServerRemoveTaskRequest_descriptor =
-      getDescriptor().getMessageTypes().get(0);
-    internal_static_RestServerRemoveTaskRequest_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_RestServerRemoveTaskRequest_descriptor,
-        new java.lang.String[] { "AppAuth", "TaskId", });
-    internal_static_ServerRemoveTaskResponse_descriptor =
-      getDescriptor().getMessageTypes().get(1);
-    internal_static_ServerRemoveTaskResponse_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_ServerRemoveTaskResponse_descriptor,
-        new java.lang.String[] { "Success", "Message", });
-    com.mogujie.jarvis.protocol.AppAuthProtos.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

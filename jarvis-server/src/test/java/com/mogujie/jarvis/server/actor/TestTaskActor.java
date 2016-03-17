@@ -245,7 +245,7 @@ public class TestTaskActor {
 
         //先把job设置为不可用，从内存里删除
         JobProtos.RestModifyJobStatusRequest removeJobRequest = JobProtos.RestModifyJobStatusRequest.newBuilder().setAppAuth(appAuth)
-                .setStatus(JobStatus.DELETED.getValue()).setUser("qinghuo").setJobId(newJobid).build();
+                .setStatus(JobStatus.DELETED.getValue()).setUser("qinghuo").addJobId(newJobid).build();
         try {
             FutureUtils.awaitResult(serverActor, removeJobRequest, 15);
         } catch (Exception e) {
@@ -303,7 +303,7 @@ public class TestTaskActor {
         long taskid = 8274L;
         Task task = taskService.get(taskid);
         assertNotNull(task);
-        RestServerRemoveTaskRequest request = RestServerRemoveTaskRequest.newBuilder().setAppAuth(appAuth).setTaskId(taskid).build();
+        RestServerRemoveTaskRequest request = RestServerRemoveTaskRequest.newBuilder().setAppAuth(appAuth).addTaskId(taskid).build();
         ServerRemoveTaskResponse response = null;
         try {
             response = (ServerRemoveTaskResponse) FutureUtils.awaitResult(serverActor, request, 30);

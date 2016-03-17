@@ -72,7 +72,7 @@ public class TaskController extends AbstractController {
                 ServerKillTaskResponse response = (ServerKillTaskResponse) callActor(AkkaType.SERVER, builder.build());
                 return response.getSuccess() ? successResult() : errorResult(response.getMessage());
             } else {
-                return errorResult("taskId不能为空");
+                return errorResult("taskIds不能为空");
             }
         } catch (Exception e) {
             LOGGER.error("", e);
@@ -155,12 +155,17 @@ public class TaskController extends AbstractController {
             AppAuth appAuth = AppAuth.newBuilder().setName(appName).setToken(appToken).build();
 
             JsonParameters para = new JsonParameters(parameters);
-            long taskId = para.getLongNotNull("taskId");
-
-            RestServerRemoveTaskRequest request = RestServerRemoveTaskRequest.newBuilder().setAppAuth(appAuth).setTaskId(taskId).build();
-
-            ServerRemoveTaskResponse response = (ServerRemoveTaskResponse) callActor(AkkaType.SERVER, request);
-            return response.getSuccess() ? successResult() : errorResult(response.getMessage());
+            List<Long> taskIds = para.getList("taskIds", new TypeToken<List<Long>>(){}.getType());
+            if (taskIds != null && !taskIds.isEmpty()) {
+                RestServerRemoveTaskRequest.Builder builder = RestServerRemoveTaskRequest.newBuilder().setAppAuth(appAuth);
+                for (long taskId : taskIds) {
+                    builder.addTaskId(taskId);
+                }
+                ServerRemoveTaskResponse response = (ServerRemoveTaskResponse) callActor(AkkaType.SERVER, builder.build());
+                return response.getSuccess() ? successResult() : errorResult(response.getMessage());
+            } else {
+                return errorResult("taskIds不能为空");
+            }
         } catch (Exception e) {
             LOGGER.error("", e);
             return errorResult(e);

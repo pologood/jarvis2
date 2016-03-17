@@ -217,7 +217,7 @@ public class JobController extends AbstractController {
                 ServerModifyJobStatusResponse response = (ServerModifyJobStatusResponse) callActor(AkkaType.SERVER, builder.build());
                 return response.getSuccess() ? successResult() : errorResult(response.getMessage());
             } else {
-                return errorResult("jobId 不能为空");
+                return errorResult("jobIds不能为空");
             }
         } catch (Exception e) {
             LOGGER.error("edit job error", e);
