@@ -8,6 +8,10 @@
 
 package com.mogujie.jarvis.tasks.util;
 
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.HierarchicalConfiguration;
 import org.apache.commons.configuration.XMLConfiguration;
@@ -17,9 +21,6 @@ import org.apache.logging.log4j.Logger;
 
 import com.mogujie.jarvis.tasks.domain.HiveTaskEntity;
 
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author wuya

@@ -14,9 +14,9 @@ import akka.actor.ActorRef;
 import akka.actor.Props;
 import akka.actor.UntypedActor;
 
-import com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskContentRequest;
 import com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskProgressRequest;
 import com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskStatusRequest;
+import com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskUpdateRequest;
 import com.mogujie.jarvis.server.domain.ActorEntry;
 
 public class TaskMetricsRoutingActor extends UntypedActor {
@@ -53,8 +53,8 @@ public class TaskMetricsRoutingActor extends UntypedActor {
             String fullId = request.getFullId();
             int hashcode = fullId.hashCode();
             actors.get((hashcode == Integer.MIN_VALUE ? 0 : Math.abs(hashcode)) % size).forward(obj, getContext());
-        } else if (obj instanceof WorkerReportTaskContentRequest) {
-            WorkerReportTaskContentRequest request = (WorkerReportTaskContentRequest) obj;
+        } else if (obj instanceof WorkerReportTaskUpdateRequest) {
+            WorkerReportTaskUpdateRequest request = (WorkerReportTaskUpdateRequest) obj;
             String fullId = request.getFullId();
             int hashcode = fullId.hashCode();
             actors.get((hashcode == Integer.MIN_VALUE ? 0 : Math.abs(hashcode)) % size).forward(obj, getContext());

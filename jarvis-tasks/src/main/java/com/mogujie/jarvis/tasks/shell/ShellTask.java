@@ -25,6 +25,7 @@ import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.exception.TaskException;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.tasks.ShellStreamProcessor;
+import com.mogujie.jarvis.tasks.util.HiveScriptParamUtils;
 import com.mogujie.jarvis.tasks.util.ShellUtils;
 
 /**
@@ -79,12 +80,12 @@ public class ShellTask extends AbstractTask {
     public void postExecute() throws TaskException {
         super.postExecute();
 
-        //执行内容有变化情况下,返回 新的执行内容
+        //task有变化情况下, 返回新的执行内容和user
         String newContent = getCommand();
         TaskDetail oldTaskDetail = getTaskContext().getTaskDetail();
-        if (!newContent.equals(oldTaskDetail.getContent())) {
-            LOGGER.debug("shellTask.postExecute() update newContent: {}", newContent);
-            TaskDetail newTaskDetail = TaskDetail.newTaskDetailBuilder(oldTaskDetail).setContent(newContent).build();
+        if (!newContent.equals(oldTaskDetail.getContent()) || oldTaskDetail.isChanged()) {
+            LOGGER.debug("shellTask.postExecute() update newContent and newUser");
+            TaskDetail newTaskDetail = TaskDetail.newTaskDetailBuilder(oldTaskDetail).setContent(newContent).setUser(oldTaskDetail.getUser()).build();
             getTaskContext().getTaskReporter().report(newTaskDetail);
         }
 
@@ -96,7 +97,7 @@ public class ShellTask extends AbstractTask {
         String statusFilePath = STATUS_PATH + "/" + task.getFullId() + ".status";
         try {
             StringBuilder sb = new StringBuilder();
-            String cmd = getCommand();
+            String cmd = HiveScriptParamUtils.parse(getCommand(), task.getDataTime());
             sb.append("(");
             sb.append(cmd);
             sb.append(");export JARVIS_EXIT_CODE=$? ").append("&& echo $JARVIS_EXIT_CODE > ").append(statusFilePath)

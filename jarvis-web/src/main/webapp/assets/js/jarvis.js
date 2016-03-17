@@ -39,12 +39,12 @@ function requestRemoteRestApi(url, title, data, async) {
         success: function (data) {
             if (data.code == 0) {
                 flag = true;
-                if (data.msg == null || data.msg == '') {
+                /*if (data.msg == null || data.msg == '') {
                     showMsg('success', title, '操作成功');
                 }
                 else {
                     showMsg('success', title, data.msg);
-                }
+                }*/
             }
             else {
                 flag = false;

@@ -1,13 +1,20 @@
 $(function () {
-    initChart();
-    window.setTimeout(function () {
-        initLog();
-    }, 3000);
+    initLog();
+    initChart(echarts);
 });
 
-function initChart(){
+
+function initChart(echarts) {
+
     var xAxis = new Array();
     var data = new Array();
+
+    if (taskVoList.length == 0) {
+
+        document.getElementById('container').innerHTML = "暂无数据";
+
+        return;
+    }
     for (var i = 0; i < taskVoList.length; i++) {
         var task = taskVoList[i];
         var theDate = new Date(task["executeStartTime"]);
@@ -18,6 +25,7 @@ function initChart(){
     if(data.length<1){
         return;
     }
+
 
     var myChart = echarts.init(document.getElementById('container'));
     var option = {
@@ -91,16 +99,19 @@ function initLog() {
     data["lines"] = 1000;
 
     var url;
-    if(page.jobType == CONST.JOB_TYPE.HIVE){
+    if (page.jobType == CONST.JOB_TYPE.HIVE) {
         url = "/api/log/readExecuteLog";
-    }else{
+    } else {
         url = "/api/log/readResult";
     }
 
     var result = requestRemoteRestApi(url, "读取执行日志", data);
     if (result.flag == true) {
-        var log = result.data.data.log.toString();
+        
+        var log = result.data.data.log;
         $("#log").html(log);
+        $("#errorNotifyMsg").html(result.data.errorNotify);
+
     }
 }
 

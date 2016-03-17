@@ -13,23 +13,24 @@ import akka.actor.ActorSelection;
 
 import com.mogujie.jarvis.core.TaskReporter;
 import com.mogujie.jarvis.core.domain.TaskDetail;
-import com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskContentRequest;
+import com.mogujie.jarvis.protocol.ReportTaskProtos.WorkerReportTaskUpdateRequest;
 
-public class TaskContentReporter implements TaskReporter {
+public class TaskUpdateReporter implements TaskReporter {
 
     private ActorSelection actor;
     private ActorRef sender;
 
-    public TaskContentReporter(ActorSelection actor, ActorRef sender) {
+    public TaskUpdateReporter(ActorSelection actor, ActorRef sender) {
         this.actor = actor;
         this.sender = sender;
     }
 
     @Override
     public void report(TaskDetail taskDetail) {
-        WorkerReportTaskContentRequest request = WorkerReportTaskContentRequest.newBuilder()
+        WorkerReportTaskUpdateRequest request = WorkerReportTaskUpdateRequest.newBuilder()
                 .setFullId(taskDetail.getFullId())
                 .setContent(taskDetail.getContent())
+                .setUser(taskDetail.getUser())
                 .build();
 
         actor.tell(request, sender);

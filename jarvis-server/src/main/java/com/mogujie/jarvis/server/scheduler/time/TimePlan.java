@@ -77,7 +77,11 @@ public enum TimePlan {
         DateTime now = DateTime.now();
         DateTime nextTime = PlanUtil.getScheduleTimeAfter(jobId, now);
         if (nextTime != null) {
-            plan.add(new TimePlanEntry(jobId, nextTime));
+            TimePlanEntry planEntry = new TimePlanEntry(jobId, nextTime);
+            boolean ret = plan.add(planEntry);
+            if (!ret) {
+                LOGGER.error("add plan[{}] failed, plan size is {}", planEntry, plan.size());
+            }
         } else {
             LOGGER.warn("next time is null, jobId={}, dateTime={}", jobId, now);
         }

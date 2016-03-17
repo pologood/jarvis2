@@ -21,7 +21,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Range;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.mogujie.jarvis.core.domain.JobContentType;
 import com.mogujie.jarvis.core.domain.TaskStatus;
 import com.mogujie.jarvis.core.domain.TaskType;
 import com.mogujie.jarvis.dao.generate.TaskMapper;
@@ -150,18 +149,7 @@ public class TaskService {
         } else {
             record.setExecuteUser(user);
         }
-        String content = "";
-        if (job.getContentType() == JobContentType.SCRIPT.getValue()) {
-            int scriptId = Integer.valueOf(job.getContent());
-            if (scriptService.getContentById(scriptId) != null ) {
-                content = scriptService.getContentById(scriptId);
-            } else {
-                LOGGER.error("cant't find content from script! jobId={}, scriptId={}", jobId, scriptId);
-            }
-        } else {
-            content = job.getContent();
-        }
-        record.setContent(content);
+        record.setContent(job.getContent());
         record.setParams(job.getParams());
         record.setAppId(job.getAppId());
         return insertSelective(record);

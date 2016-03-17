@@ -21,12 +21,14 @@ import java.util.regex.Pattern;
 import org.apache.commons.configuration.Configuration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.joda.time.DateTime;
 
 import com.github.stuxuhai.jpinyin.PinyinFormat;
 import com.github.stuxuhai.jpinyin.PinyinHelper;
 import com.mogujie.jarvis.core.TaskContext;
 import com.mogujie.jarvis.core.domain.TaskDetail;
 import com.mogujie.jarvis.core.exception.ShellException;
+import com.mogujie.jarvis.core.exception.TaskException;
 import com.mogujie.jarvis.core.util.ConfigUtils;
 import com.mogujie.jarvis.tasks.domain.HiveTaskEntity;
 import com.mogujie.jarvis.tasks.util.HiveConfigUtils;
@@ -50,15 +52,21 @@ public class HiveShellTask extends ShellTask {
     }
 
     @Override
+    public void preExecute() throws TaskException {
+        TaskDetail task = getTaskContext().getTaskDetail();
+        // 更新user
+        HiveTaskEntity entity = HiveConfigUtils.getHiveJobEntry(task.getAppName());
+        if (entity != null && task.getUser().isEmpty()) {
+            task.setUser(entity.getUser());
+            task.setChanged(true);
+            LOGGER.info("更新task[{}] user from {} to {}", task.getFullId(), task.getUser(), entity.getUser());
+        }
+    }
+
+    @Override
     public String getCommand() {
         TaskDetail task = getTaskContext().getTaskDetail();
-        String user = null;
-        HiveTaskEntity entity = HiveConfigUtils.getHiveJobEntry(task.getAppName());
-        if (entity == null || (entity.isAdmin() && !task.getUser().isEmpty())) {
-            user = task.getUser();
-        } else {
-            user = entity.getUser();
-        }
+        String user = task.getUser();
 
         Configuration workerConfig = ConfigUtils.getWorkerConfig();
         boolean isHive2Enable = workerConfig.getBoolean("hive2.enable", false);
@@ -76,10 +84,11 @@ public class HiveShellTask extends ShellTask {
         sb.append("set mapred.job.name=" + task.getTaskName() + ";");
         // 打印列名的时候不打印表名，否则xray无法显示数据
         sb.append("set hive.resultset.use.unique.column.names=false;");
-        sb.append(MoguAnnotationUtils.removeAnnotation(HiveScriptParamUtils.parse(getContent(task), task.getDataTime())));
+        sb.append(MoguAnnotationUtils
+                .removeAnnotation(HiveScriptParamUtils.parse(replaceTmpTableName(getContent(task), task.getDataTime()), task.getDataTime())));
         sb.append("\"");
-        return sb.toString();
 
+        return sb.toString();
     }
 
     @Override
@@ -162,6 +171,16 @@ public class HiveShellTask extends ShellTask {
         }
 
         return result;
+    }
+
+    /**
+     * 替换临时表变量: $tmptable -> xray${yyyyMMdd}
+     * @param hql
+     * @param dataTime
+     * @return
+     */
+    private String replaceTmpTableName(String hql, DateTime dataTime) {
+        return hql.replace("$tmptable", "xray" + dataTime.toString("yyyyMMdd"));
     }
 
     private String match(Pattern pattern, int group, String line) {

@@ -151,7 +151,13 @@ public class JobService {
     }
 
     public boolean isActive(long jobId) {
-        Job job = metaStore.get(jobId).getJob();
+        Job job;
+        if (metaStore.get(jobId) != null) {
+            job = metaStore.get(jobId).getJob();
+        } else {
+            job = jobMapper.selectByPrimaryKey(jobId);
+        }
+
         Date startDate = job.getActiveStartDate();
         Date endDate = job.getActiveEndDate();
         Date now = DateTime.now().toDate();
