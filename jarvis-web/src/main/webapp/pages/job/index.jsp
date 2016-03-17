@@ -119,8 +119,8 @@
                 <i class="glyphicon glyphicon-ok text-success fa-lg"></i>启用
                 <i class="glyphicon glyphicon-remove text-danger fa-lg"></i>禁用
                 <i class="glyphicon glyphicon-calendar text-info fa-lg"></i>过期
-                <i class="glyphicon glyphicon-trash text-danger fa-lg"></i>删除
                 <i class="glyphicon glyphicon-pause text-warning fa-lg"></i>暂停
+                <i class="glyphicon glyphicon-trash text-danger fa-lg"></i>删除
             </div>
             <table id="content" data-toolbar="#toobar">
             </table>

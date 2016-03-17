@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +35,9 @@ public class PlanAPIController {
     @RequestMapping(value = "getPlans")
     @ResponseBody
     public Object getPlans(PlanQo planQo) {
-        Map<String, Object> result = planService.getPlans(planQo);
+        Map<String, Object> result = new HashMap<>();
+        result = planService.getPlans(planQo);
+
         return result;
     }
 

@@ -23,6 +23,10 @@ function checkWorkerExist() {
                 });
                 flag = false;
             }
+        },
+        error: function (jqXHR, exception) {
+            var msg = getMsg4ajaxError(jqXHR, exception);
+            showMsg('warning', '检查worker是否存在', msg);
         }
     });
 

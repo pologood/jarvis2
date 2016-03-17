@@ -28,7 +28,7 @@ $(function () {
         all["text"] = "全部";
         newData.push(all);
         $(data).each(function (i, c) {
-            if(c.id!=0&&c.id!=1&&c.id!=2){
+            if(c.id!=0){
                 var item = {};
                 item["id"] = c["id"];
                 item["text"] = c["text"];
@@ -400,7 +400,7 @@ var columns = [{
     sortable:true,
     title: '应用名',
     switchable: true,
-    visible: false
+    visible: true
 }, {
     field: 'priority',
     title: '任务优先级',
@@ -439,7 +439,7 @@ function TaskOperate(jobId, taskId, attemptId, url, text) {
             data["jobId"] = jobId;
             data["taskId"] = taskId;
             data["attemptId"] = attemptId;
-            requestRemoteRestApi(url, text, data);
+            requestRemoteRestApi(url, text, data,true);
         }).on('pnotify.cancel', function () {
         });
 }

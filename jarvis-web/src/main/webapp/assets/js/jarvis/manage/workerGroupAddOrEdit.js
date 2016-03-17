@@ -33,6 +33,10 @@ function checkWorkerGroupName() {
                 });
                 flag = false;
             }
+        },
+        error: function (jqXHR, exception) {
+            var msg = getMsg4ajaxError(jqXHR, exception);
+            showMsg('warning', '获取父任务', msg);
         }
     });
 

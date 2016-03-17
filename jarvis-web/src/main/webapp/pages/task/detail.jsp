@@ -118,8 +118,7 @@
 
                                 <div class="tab-content">
                                     <div id="executeContent" class="tab-pane active" style="width: 1150px">
-                                        <pre >
-                                            ${taskVo.content}
+                                        <pre>${taskVo.content}
                                         </pre>
                                     </div>
 

@@ -23,14 +23,18 @@ function createDatetimePickerById(tagId) {
 }
 
 //通过后台请求远程rest api,根据请求结果返回flag
-function requestRemoteRestApi(url, title, data) {
+function requestRemoteRestApi(url, title, data, async) {
     var flag = true;
     var result = {};
+
+    if (null == async) {
+        async = false;
+    }
 
     $.ajax({
         url: contextPath + '/remote/request',
         type: 'POST',
-        async: false,
+        async: async,
         data: {url: url, para: JSON.stringify(data)},
         success: function (data) {
             if (data.code == 0) {
@@ -92,7 +96,7 @@ function formatDateTimeWithoutYear(dateTime) {
     var theDate = new Date(dateTime);
     var result = moment(theDate).format("MM-DD HH:mm:ss");
 
-    result="<div style='white-space:nowrap;'>"+result+"</div>";
+    result = "<div style='white-space:nowrap;'>" + result + "</div>";
 
     return result;
 }

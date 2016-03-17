@@ -92,6 +92,10 @@ function buildTree(jobIds) {
                 $("#" + id).bind('uncheck_node.jstree', function (e, data) {
                     data.inst.close_all(data.rslt.obj, true);
                 })
+            },
+            error: function (jqXHR, exception) {
+                var msg = getMsg4ajaxError(jqXHR, exception);
+                showMsg('warning', '获取依赖任务', msg);
             }
         });
     });
@@ -195,7 +199,7 @@ function submit() {
     var startDate = (new Date(startTime)).getTime();
     var endDate = (new Date(endTime)).getTime();
     var data = {startDate: startDate, endDate: endDate, jobIdList: reRunJobs};
-    requestRemoteRestApi("/api/task/rerun", "重跑任务", data);
+    requestRemoteRestApi("/api/task/rerun", "重跑任务", data,true);
 }
 
 //格式化结果

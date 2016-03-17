@@ -79,7 +79,7 @@ public class PlanService {
         for (PlanVo planVo : planVoList) {
             List<Long> item = avgTime.get(planVo.getJobId());
             Long avgSecond = null;
-            if (item.size() > 0) {
+            if (item != null && item.size() > 0) {
                 Long totalSecond = 0l;
                 for (Long second : item) {
                     totalSecond += second;

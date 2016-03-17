@@ -1,4 +1,11 @@
 $(function () {
+    initChart();
+    window.setTimeout(function () {
+        initLog();
+    }, 3000);
+});
+
+function initChart(){
     var xAxis = new Array();
     var data = new Array();
     for (var i = 0; i < taskVoList.length; i++) {
@@ -8,6 +15,10 @@ $(function () {
         xAxis.push(result);
         data.push(task["executeTime"]);
     }
+    if(data.length<1){
+        return;
+    }
+
     var myChart = echarts.init(document.getElementById('container'));
     var option = {
         title: {
@@ -68,10 +79,7 @@ $(function () {
 
     // 为echarts对象加载数据
     myChart.setOption(option);
-    window.setTimeout(function () {
-        initLog();
-    }, 3000);
-});
+}
 
 
 function initLog() {

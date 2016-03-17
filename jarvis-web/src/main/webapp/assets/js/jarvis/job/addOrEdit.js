@@ -426,7 +426,6 @@ function checkJobName(thisTag) {
     var flag = true;
     if (jobName == '') {
         showMsg('warning', '提交任务', '任务名称不能为空,请先填写');
-        $(thisTag).focus();
         return;
     }
     $.ajax({
@@ -438,8 +437,11 @@ function checkJobName(thisTag) {
             if (CONST.MSG_CODE.SUCCESS !== data.code) {
                 showMsg('warning', '提交任务', data.msg);
                 flag = false;
-                $(thisTag).focus();
             }
+        },
+        error: function (jqXHR, exception) {
+            var msg = getMsg4ajaxError(jqXHR, exception);
+            showMsg('warning', '检查任务名', msg);
         }
     });
     return flag;
@@ -659,7 +661,7 @@ function uploadJarFile() {
         },
         error: function (jqXHR, exception) {
             var msg = getMsg4ajaxError(jqXHR, exception);
-            showMsg('warning', '上传jia包', msg);
+            showMsg('warning', '上传jar包', msg);
         }
     });
 
@@ -1018,6 +1020,10 @@ function initDependJobs() {
                     });
 
                     $("#dependJobIds").val(newData).trigger("change");
+                },
+                error: function (jqXHR, exception) {
+                    var msg = getMsg4ajaxError(jqXHR, exception);
+                    showMsg('warning', '获取父任务', msg);
                 }
             })
         }
@@ -1209,6 +1215,10 @@ function generateAlarmUsers() {
 
             //初始化报警类型
             initAlarmType();
+        },
+        error: function (jqXHR, exception) {
+            var msg = getMsg4ajaxError(jqXHR, exception);
+            showMsg('warning', '获取内网用户', msg);
         }
     });
 }
@@ -1355,6 +1365,10 @@ function saveAlarm() {
                     styling: "bootstrap3"
                 })
             }
+        },
+        error: function (jqXHR, exception) {
+            var msg = getMsg4ajaxError(jqXHR, exception);
+            showMsg('warning', '获取任务详情', msg);
         }
     });
 }

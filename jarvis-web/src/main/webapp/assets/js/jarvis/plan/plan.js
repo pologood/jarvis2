@@ -5,9 +5,9 @@ $(function () {
     initJobType();
     initJobPriority();
     initExecuteUser();
-    initTaskStatusColor();
     initJobId();
     initJobName();
+    initTaskStatusColor();
 
     initData();
 });
@@ -127,9 +127,15 @@ function initTaskStatusColor() {
         async: false,
         success: function (data) {
             taskStatusColor = data;
+        },
+        error: function (jqXHR, exception) {
+            var msg = getMsg4ajaxError(jqXHR, exception);
+            showMsg('warning', '初始化任务颜色', msg);
         }
     });
 }
+
+
 
 
 function chooseStatus(tag) {
@@ -236,7 +242,10 @@ function initData() {
         showExport: true,
         exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'doc', 'excel'],
         exportDataType: 'basic',
-        exportOptions: {}
+        exportOptions: {},
+        onLoadError:function(res){
+            console.log(res);
+        }
     });
 }
 
@@ -260,10 +269,11 @@ var columns = [{
     visible: false
 }, {
     field: 'appName',
-    title: 'APP名',
+    title: '应用名',
     sortable: true,
     switchable: true,
-    visible: false
+    visible: true,
+    formatter:appFormatter
 }, {
     field: 'jobType',
     title: '任务类型',
@@ -350,6 +360,12 @@ var columns = [{
 
 function jobNameFormatter(value, row, index) {
     var result = '<a target="_blank" href="' + contextPath + "/job/detail?jobId=" + row["jobId"] + '">' + value + '</a>';
+
+    return result;
+}
+
+function appFormatter(value, row, index){
+    var result="<div style='white-space: nowrap'>"+value+"</div>";
 
     return result;
 }

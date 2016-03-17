@@ -32,6 +32,10 @@ function getAppDetail() {
                         styling: 'bootstrap3'
                     });
                 }
+            },
+            error: function (jqXHR, exception) {
+                var msg = getMsg4ajaxError(jqXHR, exception);
+                showMsg('warning', '获取报警详情', msg);
             }
         });
     }
@@ -263,6 +267,10 @@ function checkAppName() {
                 flag = false;
                 $("#appName").focus();
             }
+        },
+        error: function (jqXHR, exception) {
+            var msg = getMsg4ajaxError(jqXHR, exception);
+            showMsg('warning', '检查应用名称', msg);
         }
     });
 
